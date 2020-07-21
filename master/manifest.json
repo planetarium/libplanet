@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "etbr1g9MRyFdcjTj4RJu+Q=="
+          "hash": "+Ws9GQx/FZHGbw9L7DIlmA=="
         }
       },
       "is_incremental": false,
@@ -525,7 +525,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Crypto.CryptoConfig.html",
-          "hash": "wm1QkPQZ6TZOAqarxa4YnA=="
+          "hash": "pyJYqOctOrD1Gsmav1P2PA=="
         }
       },
       "is_incremental": false,
@@ -533,11 +533,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/Libplanet.Crypto.DefaultCryptoBackend.yml",
+      "source_relative_path": "api/Libplanet.Crypto.DefaultCryptoBackend-1.yml",
       "output": {
         ".html": {
-          "relative_path": "api/Libplanet.Crypto.DefaultCryptoBackend.html",
-          "hash": "/1vwhV1Xc0816/8RzHWMdA=="
+          "relative_path": "api/Libplanet.Crypto.DefaultCryptoBackend-1.html",
+          "hash": "lfUnLOfYXNSlQkP6WGO5nw=="
         }
       },
       "is_incremental": false,
@@ -545,11 +545,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/Libplanet.Crypto.ICryptoBackend.yml",
+      "source_relative_path": "api/Libplanet.Crypto.ICryptoBackend-1.yml",
       "output": {
         ".html": {
-          "relative_path": "api/Libplanet.Crypto.ICryptoBackend.html",
-          "hash": "e827je++nD3y4Kf+RSO/sQ=="
+          "relative_path": "api/Libplanet.Crypto.ICryptoBackend-1.html",
+          "hash": "PakfmiOtQcENqB2h28Psyw=="
         }
       },
       "is_incremental": false,
@@ -573,7 +573,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Crypto.PrivateKey.html",
-          "hash": "PrKTOi2MAYch2OTj/nF8HA=="
+          "hash": "MBJ9zXIJoc3Au0yLiYgX0Q=="
         }
       },
       "is_incremental": false,
@@ -609,7 +609,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Crypto.html",
-          "hash": "mVnh7vptl4vCTMX/Ay3AaA=="
+          "hash": "3yy6v6gqEAF/P2sY0Xi1Lg=="
         }
       },
       "is_incremental": false,
@@ -1473,7 +1473,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "mm0zc0fRCQLURQFOvwb7pA=="
+          "hash": "qF/gr0M8XcFrXlmHRirLug=="
         }
       },
       "is_incremental": false,
@@ -1576,10 +1576,11 @@
         "full_build_reason_code": "NoAvailableBuildCache"
       },
       "processors": {
-        "ManagedReferenceDocumentProcessor": {
+        "ResourceDocumentProcessor": {
           "can_incremental": false,
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 118,
+          "total_file_count": 0,
           "skipped_file_count": 0
         },
         "ConceptualDocumentProcessor": {
@@ -1588,11 +1589,10 @@
           "total_file_count": 7,
           "skipped_file_count": 0
         },
-        "ResourceDocumentProcessor": {
+        "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 0,
+          "total_file_count": 118,
           "skipped_file_count": 0
         },
         "TocDocumentProcessor": {

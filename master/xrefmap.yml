@@ -2886,50 +2886,96 @@ references:
   isSpec: "True"
   fullName: Libplanet.Crypto.CryptoConfig.CryptoBackend
   nameWithType: CryptoConfig.CryptoBackend
-- uid: Libplanet.Crypto.DefaultCryptoBackend
-  name: DefaultCryptoBackend
-  href: api/Libplanet.Crypto.DefaultCryptoBackend.html
-  commentId: T:Libplanet.Crypto.DefaultCryptoBackend
-  fullName: Libplanet.Crypto.DefaultCryptoBackend
-  nameWithType: DefaultCryptoBackend
-- uid: Libplanet.Crypto.DefaultCryptoBackend.Verify(Libplanet.HashDigest{SHA256},System.Byte[],Libplanet.Crypto.PublicKey)
-  name: Verify(HashDigest<SHA256>, Byte[], PublicKey)
-  href: api/Libplanet.Crypto.DefaultCryptoBackend.html#Libplanet_Crypto_DefaultCryptoBackend_Verify_Libplanet_HashDigest_SHA256__System_Byte___Libplanet_Crypto_PublicKey_
-  commentId: M:Libplanet.Crypto.DefaultCryptoBackend.Verify(Libplanet.HashDigest{SHA256},System.Byte[],Libplanet.Crypto.PublicKey)
-  name.vb: Verify(HashDigest(Of SHA256), Byte(), PublicKey)
-  fullName: Libplanet.Crypto.DefaultCryptoBackend.Verify(Libplanet.HashDigest<SHA256>, System.Byte[], Libplanet.Crypto.PublicKey)
-  fullName.vb: Libplanet.Crypto.DefaultCryptoBackend.Verify(Libplanet.HashDigest(Of SHA256), System.Byte(), Libplanet.Crypto.PublicKey)
-  nameWithType: DefaultCryptoBackend.Verify(HashDigest<SHA256>, Byte[], PublicKey)
-  nameWithType.vb: DefaultCryptoBackend.Verify(HashDigest(Of SHA256), Byte(), PublicKey)
-- uid: Libplanet.Crypto.DefaultCryptoBackend.Verify*
-  name: Verify
-  href: api/Libplanet.Crypto.DefaultCryptoBackend.html#Libplanet_Crypto_DefaultCryptoBackend_Verify_
-  commentId: Overload:Libplanet.Crypto.DefaultCryptoBackend.Verify
+- uid: Libplanet.Crypto.DefaultCryptoBackend`1
+  name: DefaultCryptoBackend<T>
+  href: api/Libplanet.Crypto.DefaultCryptoBackend-1.html
+  commentId: T:Libplanet.Crypto.DefaultCryptoBackend`1
+  name.vb: DefaultCryptoBackend(Of T)
+  fullName: Libplanet.Crypto.DefaultCryptoBackend<T>
+  fullName.vb: Libplanet.Crypto.DefaultCryptoBackend(Of T)
+  nameWithType: DefaultCryptoBackend<T>
+  nameWithType.vb: DefaultCryptoBackend(Of T)
+- uid: Libplanet.Crypto.DefaultCryptoBackend`1.Sign(Libplanet.HashDigest{`0},Libplanet.Crypto.PrivateKey)
+  name: Sign(HashDigest<T>, PrivateKey)
+  href: api/Libplanet.Crypto.DefaultCryptoBackend-1.html#Libplanet_Crypto_DefaultCryptoBackend_1_Sign_Libplanet_HashDigest__0__Libplanet_Crypto_PrivateKey_
+  commentId: M:Libplanet.Crypto.DefaultCryptoBackend`1.Sign(Libplanet.HashDigest{`0},Libplanet.Crypto.PrivateKey)
+  name.vb: Sign(HashDigest(Of T), PrivateKey)
+  fullName: Libplanet.Crypto.DefaultCryptoBackend<T>.Sign(Libplanet.HashDigest<T>, Libplanet.Crypto.PrivateKey)
+  fullName.vb: Libplanet.Crypto.DefaultCryptoBackend(Of T).Sign(Libplanet.HashDigest(Of T), Libplanet.Crypto.PrivateKey)
+  nameWithType: DefaultCryptoBackend<T>.Sign(HashDigest<T>, PrivateKey)
+  nameWithType.vb: DefaultCryptoBackend(Of T).Sign(HashDigest(Of T), PrivateKey)
+- uid: Libplanet.Crypto.DefaultCryptoBackend`1.Sign*
+  name: Sign
+  href: api/Libplanet.Crypto.DefaultCryptoBackend-1.html#Libplanet_Crypto_DefaultCryptoBackend_1_Sign_
+  commentId: Overload:Libplanet.Crypto.DefaultCryptoBackend`1.Sign
   isSpec: "True"
-  fullName: Libplanet.Crypto.DefaultCryptoBackend.Verify
-  nameWithType: DefaultCryptoBackend.Verify
-- uid: Libplanet.Crypto.ICryptoBackend
-  name: ICryptoBackend
-  href: api/Libplanet.Crypto.ICryptoBackend.html
-  commentId: T:Libplanet.Crypto.ICryptoBackend
-  fullName: Libplanet.Crypto.ICryptoBackend
-  nameWithType: ICryptoBackend
-- uid: Libplanet.Crypto.ICryptoBackend.Verify(Libplanet.HashDigest{SHA256},System.Byte[],Libplanet.Crypto.PublicKey)
-  name: Verify(HashDigest<SHA256>, Byte[], PublicKey)
-  href: api/Libplanet.Crypto.ICryptoBackend.html#Libplanet_Crypto_ICryptoBackend_Verify_Libplanet_HashDigest_SHA256__System_Byte___Libplanet_Crypto_PublicKey_
-  commentId: M:Libplanet.Crypto.ICryptoBackend.Verify(Libplanet.HashDigest{SHA256},System.Byte[],Libplanet.Crypto.PublicKey)
-  name.vb: Verify(HashDigest(Of SHA256), Byte(), PublicKey)
-  fullName: Libplanet.Crypto.ICryptoBackend.Verify(Libplanet.HashDigest<SHA256>, System.Byte[], Libplanet.Crypto.PublicKey)
-  fullName.vb: Libplanet.Crypto.ICryptoBackend.Verify(Libplanet.HashDigest(Of SHA256), System.Byte(), Libplanet.Crypto.PublicKey)
-  nameWithType: ICryptoBackend.Verify(HashDigest<SHA256>, Byte[], PublicKey)
-  nameWithType.vb: ICryptoBackend.Verify(HashDigest(Of SHA256), Byte(), PublicKey)
-- uid: Libplanet.Crypto.ICryptoBackend.Verify*
+  fullName: Libplanet.Crypto.DefaultCryptoBackend<T>.Sign
+  fullName.vb: Libplanet.Crypto.DefaultCryptoBackend(Of T).Sign
+  nameWithType: DefaultCryptoBackend<T>.Sign
+  nameWithType.vb: DefaultCryptoBackend(Of T).Sign
+- uid: Libplanet.Crypto.DefaultCryptoBackend`1.Verify(Libplanet.HashDigest{`0},System.Byte[],Libplanet.Crypto.PublicKey)
+  name: Verify(HashDigest<T>, Byte[], PublicKey)
+  href: api/Libplanet.Crypto.DefaultCryptoBackend-1.html#Libplanet_Crypto_DefaultCryptoBackend_1_Verify_Libplanet_HashDigest__0__System_Byte___Libplanet_Crypto_PublicKey_
+  commentId: M:Libplanet.Crypto.DefaultCryptoBackend`1.Verify(Libplanet.HashDigest{`0},System.Byte[],Libplanet.Crypto.PublicKey)
+  name.vb: Verify(HashDigest(Of T), Byte(), PublicKey)
+  fullName: Libplanet.Crypto.DefaultCryptoBackend<T>.Verify(Libplanet.HashDigest<T>, System.Byte[], Libplanet.Crypto.PublicKey)
+  fullName.vb: Libplanet.Crypto.DefaultCryptoBackend(Of T).Verify(Libplanet.HashDigest(Of T), System.Byte(), Libplanet.Crypto.PublicKey)
+  nameWithType: DefaultCryptoBackend<T>.Verify(HashDigest<T>, Byte[], PublicKey)
+  nameWithType.vb: DefaultCryptoBackend(Of T).Verify(HashDigest(Of T), Byte(), PublicKey)
+- uid: Libplanet.Crypto.DefaultCryptoBackend`1.Verify*
   name: Verify
-  href: api/Libplanet.Crypto.ICryptoBackend.html#Libplanet_Crypto_ICryptoBackend_Verify_
-  commentId: Overload:Libplanet.Crypto.ICryptoBackend.Verify
+  href: api/Libplanet.Crypto.DefaultCryptoBackend-1.html#Libplanet_Crypto_DefaultCryptoBackend_1_Verify_
+  commentId: Overload:Libplanet.Crypto.DefaultCryptoBackend`1.Verify
   isSpec: "True"
-  fullName: Libplanet.Crypto.ICryptoBackend.Verify
-  nameWithType: ICryptoBackend.Verify
+  fullName: Libplanet.Crypto.DefaultCryptoBackend<T>.Verify
+  fullName.vb: Libplanet.Crypto.DefaultCryptoBackend(Of T).Verify
+  nameWithType: DefaultCryptoBackend<T>.Verify
+  nameWithType.vb: DefaultCryptoBackend(Of T).Verify
+- uid: Libplanet.Crypto.ICryptoBackend`1
+  name: ICryptoBackend<T>
+  href: api/Libplanet.Crypto.ICryptoBackend-1.html
+  commentId: T:Libplanet.Crypto.ICryptoBackend`1
+  name.vb: ICryptoBackend(Of T)
+  fullName: Libplanet.Crypto.ICryptoBackend<T>
+  fullName.vb: Libplanet.Crypto.ICryptoBackend(Of T)
+  nameWithType: ICryptoBackend<T>
+  nameWithType.vb: ICryptoBackend(Of T)
+- uid: Libplanet.Crypto.ICryptoBackend`1.Sign(Libplanet.HashDigest{`0},Libplanet.Crypto.PrivateKey)
+  name: Sign(HashDigest<T>, PrivateKey)
+  href: api/Libplanet.Crypto.ICryptoBackend-1.html#Libplanet_Crypto_ICryptoBackend_1_Sign_Libplanet_HashDigest__0__Libplanet_Crypto_PrivateKey_
+  commentId: M:Libplanet.Crypto.ICryptoBackend`1.Sign(Libplanet.HashDigest{`0},Libplanet.Crypto.PrivateKey)
+  name.vb: Sign(HashDigest(Of T), PrivateKey)
+  fullName: Libplanet.Crypto.ICryptoBackend<T>.Sign(Libplanet.HashDigest<T>, Libplanet.Crypto.PrivateKey)
+  fullName.vb: Libplanet.Crypto.ICryptoBackend(Of T).Sign(Libplanet.HashDigest(Of T), Libplanet.Crypto.PrivateKey)
+  nameWithType: ICryptoBackend<T>.Sign(HashDigest<T>, PrivateKey)
+  nameWithType.vb: ICryptoBackend(Of T).Sign(HashDigest(Of T), PrivateKey)
+- uid: Libplanet.Crypto.ICryptoBackend`1.Sign*
+  name: Sign
+  href: api/Libplanet.Crypto.ICryptoBackend-1.html#Libplanet_Crypto_ICryptoBackend_1_Sign_
+  commentId: Overload:Libplanet.Crypto.ICryptoBackend`1.Sign
+  isSpec: "True"
+  fullName: Libplanet.Crypto.ICryptoBackend<T>.Sign
+  fullName.vb: Libplanet.Crypto.ICryptoBackend(Of T).Sign
+  nameWithType: ICryptoBackend<T>.Sign
+  nameWithType.vb: ICryptoBackend(Of T).Sign
+- uid: Libplanet.Crypto.ICryptoBackend`1.Verify(Libplanet.HashDigest{`0},System.Byte[],Libplanet.Crypto.PublicKey)
+  name: Verify(HashDigest<T>, Byte[], PublicKey)
+  href: api/Libplanet.Crypto.ICryptoBackend-1.html#Libplanet_Crypto_ICryptoBackend_1_Verify_Libplanet_HashDigest__0__System_Byte___Libplanet_Crypto_PublicKey_
+  commentId: M:Libplanet.Crypto.ICryptoBackend`1.Verify(Libplanet.HashDigest{`0},System.Byte[],Libplanet.Crypto.PublicKey)
+  name.vb: Verify(HashDigest(Of T), Byte(), PublicKey)
+  fullName: Libplanet.Crypto.ICryptoBackend<T>.Verify(Libplanet.HashDigest<T>, System.Byte[], Libplanet.Crypto.PublicKey)
+  fullName.vb: Libplanet.Crypto.ICryptoBackend(Of T).Verify(Libplanet.HashDigest(Of T), System.Byte(), Libplanet.Crypto.PublicKey)
+  nameWithType: ICryptoBackend<T>.Verify(HashDigest<T>, Byte[], PublicKey)
+  nameWithType.vb: ICryptoBackend(Of T).Verify(HashDigest(Of T), Byte(), PublicKey)
+- uid: Libplanet.Crypto.ICryptoBackend`1.Verify*
+  name: Verify
+  href: api/Libplanet.Crypto.ICryptoBackend-1.html#Libplanet_Crypto_ICryptoBackend_1_Verify_
+  commentId: Overload:Libplanet.Crypto.ICryptoBackend`1.Verify
+  isSpec: "True"
+  fullName: Libplanet.Crypto.ICryptoBackend<T>.Verify
+  fullName.vb: Libplanet.Crypto.ICryptoBackend(Of T).Verify
+  nameWithType: ICryptoBackend<T>.Verify
+  nameWithType.vb: ICryptoBackend(Of T).Verify
 - uid: Libplanet.Crypto.InvalidCiphertextException
   name: InvalidCiphertextException
   href: api/Libplanet.Crypto.InvalidCiphertextException.html

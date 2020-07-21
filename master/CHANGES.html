@@ -94,6 +94,12 @@ constructor.  [<a href="https://github.com/planetarium/libplanet/issues/666">#66
 <code>Block&lt;T&gt;.Mine()</code> static method.  [<a href="https://github.com/planetarium/libplanet/issues/666">#666</a>, <a href="https://github.com/planetarium/libplanet/pull/917">#917</a>]</li>
 <li>Added <code>options</code> optional parameter to <code>Swarm&lt;T&gt;()</code> constructor.
 [<a href="https://github.com/planetarium/libplanet/pull/926">#926</a>]</li>
+<li><code>ICryptoBackend</code> became to <code>ICryptoBackend&lt;T&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/932">#932</a>]</li>
+<li><code>ICryptoBackend.Verify(HashDigest&lt;SHA256&gt;, byte[], PublicKey)</code> became to
+<code>ICryptoBackend&lt;T&gt;.Verify(HashDigest&lt;T&gt;, byte[], PublicKey)</code> [<a href="https://github.com/planetarium/libplanet/pull/932">#932</a>]</li>
+<li>Added <code>ICryptoBackend&lt;T&gt;.Sign(HashDigest&lt;T&gt;, PrivateKey)</code> method.
+[<a href="https://github.com/planetarium/libplanet/pull/932">#932</a>]</li>
+<li><code>DefaultCryptoBackend</code> became to <code>DefaultCryptoBackend&lt;T&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/932">#932</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <ul>
