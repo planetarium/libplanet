@@ -83,6 +83,17 @@ namespace Libplanet.Net.Messages
             /// Message containing demand block hashes with their index numbers.
             /// </summary>
             BlockHashes = 0x0e,
+
+            /// <summary>
+            /// Request current chain status of the peer.
+            /// </summary>
+            GetChainStatus = 0x20,
+
+            /// <summary>
+            /// A reply to <see cref="GetChainStatus"/>.
+            /// Contains the chain status of the peer at the moment.
+            /// </summary>
+            ChainStatus = 0x21,
         }
 
         public byte[] Identity { get; set; }
@@ -125,6 +136,8 @@ namespace Libplanet.Net.Messages
                 { MessageType.GetRecentStates, typeof(GetRecentStates) },
                 { MessageType.RecentStates, typeof(RecentStates) },
                 { MessageType.BlockHeaderMessage, typeof(BlockHeaderMessage) },
+                { MessageType.GetChainStatus, typeof(GetChainStatus) },
+                { MessageType.ChainStatus, typeof(ChainStatus) },
             };
 
             if (!types.TryGetValue(rawType, out Type type))

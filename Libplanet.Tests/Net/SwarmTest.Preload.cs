@@ -1198,7 +1198,7 @@ namespace Libplanet.Tests.Net
             minerSwarm.FindNextHashesChunkSize = 2;
             await StartAsync(minerSwarm);
 
-            (BoundPeer, long?)[] peers =
+            (BoundPeer, long)[] peers =
             {
                 ((BoundPeer)minerSwarm.AsPeer, minerChain.Count - 1),
             };
@@ -1289,7 +1289,7 @@ namespace Libplanet.Tests.Net
             minerSwarm.FindNextHashesChunkSize = 2;
             await StartAsync(minerSwarm);
 
-            (BoundPeer, long?)[] peers =
+            (BoundPeer, long)[] peers =
             {
                 ((BoundPeer)minerSwarm.AsPeer, minerChain.Count - 1),
             };

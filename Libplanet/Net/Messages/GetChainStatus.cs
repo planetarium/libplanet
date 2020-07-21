@@ -3,17 +3,17 @@ using NetMQ;
 
 namespace Libplanet.Net.Messages
 {
-    internal class Pong : Message
+    internal class GetChainStatus : Message
     {
-        public Pong()
+        public GetChainStatus()
         {
         }
 
-        public Pong(NetMQFrame[] body)
+        public GetChainStatus(NetMQFrame[] body)
         {
         }
 
-        protected override MessageType Type => MessageType.Pong;
+        protected override MessageType Type => MessageType.GetChainStatus;
 
         protected override IEnumerable<NetMQFrame> DataFrames
         {

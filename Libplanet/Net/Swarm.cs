@@ -464,8 +464,9 @@ namespace Libplanet.Net
             );
 
             var peersWithHeightAndDiff = (await DialToExistingPeers(dialTimeout, cancellationToken))
+                .Where(pp => !(pp.Item1 is null || pp.Item2 is null))
                 .Where(pp => pp.Item2.TotalDifficulty > (initialTip?.TotalDifficulty ?? 0))
-                .Select(pp => (pp.Item1, pp.Item2.TipIndex, pp.Item2.TotalDifficulty.Value))
+                .Select(pp => (pp.Item1, pp.Item2.TipIndex, pp.Item2.TotalDifficulty))
                 .ToList();
 
             if (!peersWithHeightAndDiff.Any())
@@ -762,10 +763,9 @@ namespace Libplanet.Net
                 IEnumerable<(BoundPeer, HashDigest<SHA256> Hash)> trustedPeersWithTip =
                     peersWithHeight.Where(pair =>
                             trustedStateValidators.Contains(pair.Item1.Address) &&
-                            !(pair.Item2 is null) &&
                             pair.Item2 <= height)
                         .OrderByDescending(pair => pair.Item2)
-                        .Select(pair => (pair.Item1, workspace[pair.Item2.Value].Hash));
+                        .Select(pair => (pair.Item1, workspace[pair.Item2].Hash));
 
                 // FIXME: It is not guaranteed that states will be reported in order.
                 // see issue #436, #430
@@ -1057,7 +1057,7 @@ namespace Libplanet.Net
 
         internal async IAsyncEnumerable<(long, HashDigest<SHA256>)> GetDemandBlockHashes(
             BlockChain<T> blockChain,
-            IList<(BoundPeer, long?)> peersWithHeight,
+            IList<(BoundPeer, long)> peersWithHeight,
             IProgress<PreloadState> progress,
             [EnumeratorCancellation] CancellationToken cancellationToken
         )
@@ -1232,18 +1232,18 @@ namespace Libplanet.Net
             Transport.BroadcastMessage(except, message);
         }
 
-        private Task<(BoundPeer, Pong)[]> DialToExistingPeers(
+        private Task<(BoundPeer, ChainStatus)[]> DialToExistingPeers(
             TimeSpan? dialTimeout,
             CancellationToken cancellationToken
         )
         {
-            IEnumerable<Task<(BoundPeer, Pong)>> tasks = Peers.Select(
+            IEnumerable<Task<(BoundPeer, ChainStatus)>> tasks = Peers.Select(
                 peer => Transport.SendMessageWithReplyAsync(
-                    peer, new Ping(), dialTimeout, cancellationToken
-                ).ContinueWith<(BoundPeer, Pong)>(
+                    peer, new GetChainStatus(), dialTimeout, cancellationToken
+                ).ContinueWith<(BoundPeer, ChainStatus)>(
                     t =>
                     {
-                        if (t.IsFaulted || t.IsCanceled || !(t.Result is Pong pong))
+                        if (t.IsFaulted || t.IsCanceled || !(t.Result is ChainStatus chainStatus))
                         {
                             switch (t.Exception?.InnerException)
                             {
@@ -1272,7 +1272,7 @@ namespace Libplanet.Net
                         }
                         else
                         {
-                            return (peer, pong);
+                            return (peer, chainStatus);
                         }
                     },
                     cancellationToken
@@ -1535,14 +1535,29 @@ namespace Libplanet.Net
                     {
                         _logger.Debug($"Ping received.");
 
-                        Pong pong = new Pong(
-                            BlockChain.Tip?.Index ?? -1,
-                            BlockChain.Tip?.TotalDifficulty ?? 0)
+                        // This case can be dealt in Transport.
+                        var pong = new Pong()
                         {
                             Identity = ping.Identity,
                         };
 
                         Transport.ReplyMessage(pong);
+                        break;
+                    }
+
+                case GetChainStatus getChainStatus:
+                    {
+                        _logger.Debug($"GetChainStatus received.");
+
+                        // This is based on the assumption that genesis block always exists.
+                        var chainStatus = new ChainStatus(
+                            BlockChain.Tip.Index,
+                            BlockChain.Tip.TotalDifficulty)
+                        {
+                            Identity = getChainStatus.Identity,
+                        };
+
+                        Transport.ReplyMessage(chainStatus);
                         break;
                     }
 

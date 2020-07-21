@@ -45,9 +45,11 @@ To be released.
  -  Added `BlockHeader.TotalDifficulty` property.  [[#666], [#917]]
  -  The existing `Pong` message type (with the type number `0x02`) was
     replaced by a new `Pong` message type
-    (with the type number `0x14`).  [[#459]. [#919]]
+    (with the type number `0x14`).  [[#459], [#919], [#920], [#930]]
  -  The `TimestampThreshold` between `Block<T>`s was changed from 15 minutes to
     15 seconds.  [[#922], [#925]]
+ -  `Swarm<T>` became to have two more message types: `GetChainStatus` (`0x20`)
+     and `ChainStatus` (`0x21`).  [[#920], [#930]]
 
 ### Backward-incompatible storage format changes
 
@@ -134,9 +136,11 @@ To be released.
 [#916]: https://github.com/planetarium/libplanet/pull/916
 [#917]: https://github.com/planetarium/libplanet/pull/917
 [#919]: https://github.com/planetarium/libplanet/pull/919
+[#920]: https://github.com/planetarium/libplanet/issues/920
 [#922]: https://github.com/planetarium/libplanet/issues/922
 [#925]: https://github.com/planetarium/libplanet/pull/925
 [#926]: https://github.com/planetarium/libplanet/pull/926
+[#930]: https://github.com/planetarium/libplanet/pull/930
 [sleep mode]: https://en.wikipedia.org/wiki/Sleep_mode
 
 
