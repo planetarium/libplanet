@@ -2,14 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Bencodex.Types;
+using CommandLine;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
+using Libplanet.Explorer.Executable.Exceptions;
 using Libplanet.Explorer.Interfaces;
 using Libplanet.Explorer.Store;
 using Libplanet.Net;
@@ -41,78 +44,92 @@ namespace Libplanet.Explorer.Executable
                 .WriteTo.Console();
             Log.Logger = loggerConfig.CreateLogger();
 
-            IStore store = LoadStore(options);
-            IBlockPolicy<AppAgnosticAction> policy = new BlockPolicy<AppAgnosticAction>(
-                null,
-                blockIntervalMilliseconds: options.BlockIntervalMilliseconds,
-                minimumDifficulty: options.MinimumDifficulty,
-                difficultyBoundDivisor: options.DifficultyBoundDivisor);
-            var blockChain = new BlockChain<AppAgnosticAction>(policy, store, options.GenesisBlock);
-            Startup.BlockChainSingleton = blockChain;
-            Startup.StoreSingleton = store;
-
-            IWebHost webHost = WebHost.CreateDefaultBuilder()
-                .UseStartup<ExplorerStartup<AppAgnosticAction, Startup>>()
-                .UseSerilog()
-                .UseUrls($"http://{options.Host}:{options.Port}/")
-                .Build();
-
-            Swarm<AppAgnosticAction> swarm = null;
-            if (options.Seeds.Any())
+            try
             {
-                Console.WriteLine(
-                    $"Seeds are {options.SeedStrings.Aggregate(string.Empty, (s, s1) => s + s1)}");
+                IStore store = LoadStore(options);
 
-                // TODO: Take privateKey as a CLI option
-                // TODO: Take appProtocolVersion as a CLI option
-                // TODO: Take host as a CLI option
-                // TODO: Take listenPort as a CLI option
-                if (options.IceServer is null)
+                IBlockPolicy<AppAgnosticAction> policy = new BlockPolicy<AppAgnosticAction>(
+                    null,
+                    blockIntervalMilliseconds: options.BlockIntervalMilliseconds,
+                    minimumDifficulty: options.MinimumDifficulty,
+                    difficultyBoundDivisor: options.DifficultyBoundDivisor);
+                var blockChain =
+                    new BlockChain<AppAgnosticAction>(policy, store, options.GenesisBlock);
+                Startup.BlockChainSingleton = blockChain;
+                Startup.StoreSingleton = store;
+
+                IWebHost webHost = WebHost.CreateDefaultBuilder()
+                    .UseStartup<ExplorerStartup<AppAgnosticAction, Startup>>()
+                    .UseSerilog()
+                    .UseUrls($"http://{options.Host}:{options.Port}/")
+                    .Build();
+
+                Swarm<AppAgnosticAction> swarm = null;
+                if (options.Seeds.Any())
                 {
-                    Console.Error.WriteLine(
-                        "error: -s/--seed option requires -I/--ice-server as well."
+                    string aggregatedSeedStrings =
+                        options.SeedStrings.Aggregate(string.Empty, (s, s1) => s + s1);
+                    Console.WriteLine(
+                        $"Seeds are {aggregatedSeedStrings}");
+
+                    // TODO: Take privateKey as a CLI option
+                    // TODO: Take appProtocolVersion as a CLI option
+                    // TODO: Take host as a CLI option
+                    // TODO: Take listenPort as a CLI option
+                    if (options.IceServer is null)
+                    {
+                        Console.Error.WriteLine(
+                            "error: -s/--seed option requires -I/--ice-server as well."
+                        );
+                        Environment.Exit(1);
+                        return;
+                    }
+
+                    Console.WriteLine("Creating Swarm.");
+
+                    var privateKey = new PrivateKey();
+
+                    // FIXME: The appProtocolVersion should be fixed properly.
+                    swarm = new Swarm<AppAgnosticAction>(
+                        blockChain,
+                        privateKey,
+                        options.AppProtocolVersionToken is string t
+                            ? AppProtocolVersion.FromToken(t)
+                            : default(AppProtocolVersion),
+                        differentAppProtocolVersionEncountered: (p, pv, lv) => true,
+                        iceServers: new[] { options.IceServer }
                     );
-                    Environment.Exit(1);
-                    return;
                 }
 
-                Console.WriteLine("Creating Swarm.");
+                using (var cts = new CancellationTokenSource())
+                using (swarm)
+                {
+                    Console.CancelKeyPress += (sender, eventArgs) =>
+                    {
+                        eventArgs.Cancel = true;
+                        cts.Cancel();
+                    };
 
-                var privateKey = new PrivateKey();
-
-                // FIXME: The appProtocolVersion should be fixed properly.
-                swarm = new Swarm<AppAgnosticAction>(
-                    blockChain,
-                    privateKey,
-                    options.AppProtocolVersionToken is string t
-                        ? AppProtocolVersion.FromToken(t)
-                        : default(AppProtocolVersion),
-                    differentAppProtocolVersionEncountered: (p, pv, lv) => true,
-                    iceServers: new[] { options.IceServer }
-                );
+                    try
+                    {
+                        await Task.WhenAll(
+                            webHost.RunAsync(cts.Token),
+                            StartSwarmAsync(swarm, options.Seeds, cts.Token)
+                        );
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        await swarm?.StopAsync(waitFor: TimeSpan.FromSeconds(1))
+                            .ContinueWith(_ => NetMQConfig.Cleanup(false));
+                    }
+                }
             }
-
-            using (var cts = new CancellationTokenSource())
-            using (swarm)
+            catch (InvalidOptionValueException e)
             {
-                Console.CancelKeyPress += (sender, eventArgs) =>
-                {
-                    eventArgs.Cancel = true;
-                    cts.Cancel();
-                };
-
-                try
-                {
-                    await Task.WhenAll(
-                        webHost.RunAsync(cts.Token),
-                        StartSwarmAsync(swarm, options.Seeds, cts.Token)
-                    );
-                }
-                catch (OperationCanceledException)
-                {
-                    await swarm?.StopAsync(waitFor: TimeSpan.FromSeconds(1))
-                        .ContinueWith(_ => NetMQConfig.Cleanup(false));
-                }
+                string expectedValues = string.Join(", ", e.ExpectedValues);
+                Console.Error.WriteLine($"Unexpected value given through '{e.OptionName}'\n"
+                          + $"  given value: {e.OptionValue}\n"
+                          + $"  expected values: {expectedValues}");
             }
         }
 
@@ -125,12 +142,21 @@ namespace Libplanet.Explorer.Executable
                 case "rocksdb":
                     innerStore = new RocksDBStore.RocksDBStore(options.StorePath);
                     break;
-                default:
+                case "default":
                     innerStore = new DefaultStore(
                         options.StorePath,
                         flush: false,
                         readOnly: readOnlyMode);
                     break;
+                default:
+                    // FIXME: give available store type as argument hint without code duplication.
+                    var availableStoreTypes = new[] { "rocksdb", "default" };
+                    string longOptionName = options.GetType().GetProperty(nameof(options.StoreType))
+                        .GetCustomAttribute<OptionAttribute>().LongName;
+                    throw new InvalidOptionValueException(
+                        "--" + longOptionName,
+                        options.StoreType,
+                        availableStoreTypes);
             }
 
             IStore store;
