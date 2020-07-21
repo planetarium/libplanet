@@ -112,7 +112,7 @@ To be released.
     with `BinaryFormatter`.  [[#913]]
  -  Fixed a bug where `TurnClient` hadn't applied cancellation token to its
     connections.  [[#916]]
- -  Fixed a bug where `BlockChain<T>.GetRawState()` had overwrite block states
+ -  Fixed a bug where `BlockChain<T>.GetRawState()` had overwritten block states
     without read lock.  [[#927]]
 
 ### CLI tools
