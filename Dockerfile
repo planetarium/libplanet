@@ -13,7 +13,7 @@ RUN dotnet publish -c Release -r linux-x64 -o out --self-contained
 RUN cp -r ./Libplanet.Explorer.Executable/wwwroot ./
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
+FROM mcr.microsoft.com/dotnet/core/runtime:3.1
 WORKDIR /app
 COPY --from=build-env /app/ .
 
