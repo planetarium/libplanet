@@ -112,6 +112,8 @@ To be released.
     with `BinaryFormatter`.  [[#913]]
  -  Fixed a bug where `TurnClient` hadn't applied cancellation token to its
     connections.  [[#916]]
+ -  Fixed a bug where `BlockChain<T>.GetRawState()` had overwritten block states
+    without read lock.  [[#927]]
 
 ### CLI tools
 
@@ -146,6 +148,7 @@ To be released.
 [#922]: https://github.com/planetarium/libplanet/issues/922
 [#925]: https://github.com/planetarium/libplanet/pull/925
 [#926]: https://github.com/planetarium/libplanet/pull/926
+[#927]: https://github.com/planetarium/libplanet/pull/927
 [#930]: https://github.com/planetarium/libplanet/pull/930
 [#932]: https://github.com/planetarium/libplanet/pull/932
 [sleep mode]: https://en.wikipedia.org/wiki/Sleep_mode
