@@ -131,6 +131,14 @@ in memory version is used.")]
         public string StorePath { get; set; }
 
         [Option(
+            'T',
+            "store-type",
+            Default = null,
+            HelpText = @"The type of the blockchain store. If omitted (default)
+in DefaultStore is used.")]
+        public string StoreType { get; set; }
+
+        [Option(
             'G',
             "genesis-block",
             HelpText = "The path of the genesis block. It should be absolute or http url.",
