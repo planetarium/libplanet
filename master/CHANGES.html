@@ -176,6 +176,8 @@ key is not an <code>Address</code> when preloading.  [<a href="https://github.co
 with <code>BinaryFormatter</code>.  [<a href="https://github.com/planetarium/libplanet/pull/913">#913</a>]</li>
 <li>Fixed a bug where <code>TurnClient</code> hadn't applied cancellation token to its
 connections.  [<a href="https://github.com/planetarium/libplanet/pull/916">#916</a>]</li>
+<li>Fixed a bug where <code>BlockChain&lt;T&gt;.GetRawState()</code> had overwritten block states
+without read lock.  [<a href="https://github.com/planetarium/libplanet/pull/927">#927</a>]</li>
 </ul>
 <h3 id="cli-tools">CLI tools</h3>
 <ul>
