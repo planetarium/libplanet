@@ -98,6 +98,8 @@ To be released.
     [[#459], [#919]]
  -  `Swarm<T>` became to promote the most difficult chain as a canonical chain
     instead of the longest chain.  [[#459], [#919]]
+ -  Changed to not throw an exception in `Swarm.BootstrapAsync()` when
+    connecting to all neighbors fails.  [[#933]]
 
 ### Bug fixes
 
@@ -151,6 +153,7 @@ To be released.
 [#927]: https://github.com/planetarium/libplanet/pull/927
 [#930]: https://github.com/planetarium/libplanet/pull/930
 [#932]: https://github.com/planetarium/libplanet/pull/932
+[#933]: https://github.com/planetarium/libplanet/pull/933
 [sleep mode]: https://en.wikipedia.org/wiki/Sleep_mode
 
 
