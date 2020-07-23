@@ -9,16 +9,21 @@ RUN dotnet restore Libplanet.Explorer.Executable
 
 # Copy everything else and build
 COPY . ./
-RUN dotnet publish -c Release -r linux-x64 -o out --self-contained
-RUN cp -r ./Libplanet.Explorer.Executable/wwwroot ./
+RUN dotnet publish -c Release -r linux-x64 -o out
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/core/runtime:3.1
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
 WORKDIR /app
-COPY --from=build-env /app/ .
+COPY --from=build-env /app/out .
+
+# Install native deps
+RUN apt-get update \
+    && apt-get install -y --allow-unauthenticated \
+        libc6-dev \
+     && rm -rf /var/lib/apt/lists/*
 
 # Runtime settings
 EXPOSE 5000
 VOLUME /data
 
-ENTRYPOINT ["dotnet", "Libplanet.Explorer.Executable/out/Libplanet.Explorer.Executable.dll"]
+ENTRYPOINT ["Libplanet.Explorer.Executable"]

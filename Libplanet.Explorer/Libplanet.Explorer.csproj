@@ -19,6 +19,7 @@
     <PackageReference Include="Menees.Analyzers.2017" Version="2.0.3">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.6" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.1-beta.61">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>
@@ -28,7 +29,7 @@
     <PackageReference Include="GraphQL" Version="2.4.0" />
     <PackageReference Include="Libplanet" Version="0.10.0-dev.20200721083957" />
     <PackageReference Include="Libplanet.RocksDBStore" Version="0.10.0-dev.20200721083957" />
-    <FrameworkReference Include="Microsoft.AspNetCore.App"/>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
   <ItemGroup>

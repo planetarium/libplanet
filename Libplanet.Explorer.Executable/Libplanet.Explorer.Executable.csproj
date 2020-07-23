@@ -34,4 +34,9 @@
     <ProjectReference
       Include="..\Libplanet.Explorer\Libplanet.Explorer.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="wwwroot\**\*">
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+    </Content>
+</ItemGroup>
 </Project>

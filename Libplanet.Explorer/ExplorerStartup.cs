@@ -31,10 +31,11 @@ namespace Libplanet.Explorer
                             .AllowAnyHeader()
                 )
             );
-            services.AddMvc()
+            services.AddControllers()
                 .ConfigureApplicationPartManager(p =>
                     p.FeatureProviders.Add(
-                        new GenericControllerFeatureProvider<T>()));
+                        new GenericControllerFeatureProvider<T>()))
+                .AddNewtonsoftJson();
             services.AddSingleton<IBlockChainContext<T>, TU>();
         }
 
@@ -47,7 +48,11 @@ namespace Libplanet.Explorer
 
             app.UseStaticFiles();
             app.UseCors("AllowAllOrigins");
-            app.UseMvc();
+            app.UseRouting();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 }
