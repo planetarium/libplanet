@@ -98,8 +98,8 @@ To be released.
     [[#459], [#919]]
  -  `Swarm<T>` became to promote the most difficult chain as a canonical chain
     instead of the longest chain.  [[#459], [#919]]
- -  Changed to not throw an exception in `Swarm.BootstrapAsync()` when
-    connecting to all neighbors fails.  [[#933]]
+ -  `Swarm<T>.BootstrapAsync()` method became not to throw `TimeoutException` when
+    it fails to connect to all neighbors.  [[#933]]
 
 ### Bug fixes
 
