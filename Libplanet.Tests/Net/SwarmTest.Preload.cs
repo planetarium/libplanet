@@ -599,7 +599,10 @@ namespace Libplanet.Tests.Net
                     foreach (BlockChain<DumbAction> chain in new[] { minerChain, receiverChain })
                     {
                         var chainType = ReferenceEquals(chain, minerChain) ? "M" : "R";
-                        var state = chain.GetState(target, completeStates: false);
+                        IValue state = chain.GetState(
+                            target,
+                            stateCompleter: StateCompleters<DumbAction>.Reject
+                        );
                         Assert.NotNull(state);
                         Assert.Equal(
                             $"({chainType}) Item0.{i},Item1.{i},Item2.{i}",
@@ -610,7 +613,7 @@ namespace Libplanet.Tests.Net
                     IValue TryToGetDeepStates() => receiverChain.GetState(
                         target,
                         deepBlockHash,
-                        completeStates: false
+                        StateCompleters<DumbAction>.Reject
                     );
 
                     if (trust)
@@ -633,7 +636,10 @@ namespace Libplanet.Tests.Net
                 {
                     foreach (BlockChain<DumbAction> chain in new[] { minerChain, receiverChain })
                     {
-                        var state = chain.GetState(genesisTarget, completeStates: false);
+                        IValue state = chain.GetState(
+                            genesisTarget,
+                            stateCompleter: StateCompleters<DumbAction>.Reject
+                        );
                         Assert.NotNull(state);
                         Assert.Equal((Text)"Genesis", state);
                     }
@@ -641,7 +647,10 @@ namespace Libplanet.Tests.Net
 
                 foreach (BlockChain<DumbAction> chain in new[] { minerChain, receiverChain })
                 {
-                    var minerState = chain.GetState(minerSwarm.Address, completeStates: false);
+                    IValue minerState = chain.GetState(
+                        minerSwarm.Address,
+                        stateCompleter: StateCompleters<DumbAction>.Reject
+                    );
                     Assert.NotNull(minerState);
                     Assert.Equal(
                         (Integer)((genesisWithAction ? 1 : 0) + repeat * fixturePairs.Length),
@@ -924,7 +933,10 @@ namespace Libplanet.Tests.Net
                     foreach (BlockChain<DumbAction> chain in new[] { minerChain, receiverChain })
                     {
                         var chainType = ReferenceEquals(chain, minerChain) ? "M" : "R";
-                        var state = chain.GetState(target, completeStates: false);
+                        IValue state = chain.GetState(
+                            target,
+                            stateCompleter: StateCompleters<DumbAction>.Reject
+                        );
                         Assert.NotNull(state);
                         Assert.Equal(
                             $"({chainType}) Item0.{i},Item1.{i},Item2.{i},Item3.{i},Item9.{i}",
@@ -935,7 +947,7 @@ namespace Libplanet.Tests.Net
                     IValue TryToGetDeepStates() => receiverChain.GetState(
                         target,
                         deepBlockHash,
-                        completeStates: false
+                        StateCompleters<DumbAction>.Reject
                     );
 
                     Assert.Throws<IncompleteBlockStatesException>(
@@ -947,7 +959,10 @@ namespace Libplanet.Tests.Net
 
                 foreach (BlockChain<DumbAction> chain in new[] { minerChain, receiverChain })
                 {
-                    var state = chain.GetState(genesisTarget, completeStates: false);
+                    IValue state = chain.GetState(
+                        genesisTarget,
+                        stateCompleter: StateCompleters<DumbAction>.Reject
+                    );
                     Assert.NotNull(state);
                     Assert.Equal((Text)"Genesis", state);
                 }
@@ -1014,7 +1029,10 @@ namespace Libplanet.Tests.Net
 
                 foreach (BlockChain<DumbAction> chain in new[] { chain0, chain1 })
                 {
-                    var blockActionState = chain.GetState(swarm0.Address, completeStates: false);
+                    IValue blockActionState = chain.GetState(
+                        swarm0.Address,
+                        stateCompleter: StateCompleters<DumbAction>.Reject
+                    );
                     Assert.NotNull(blockActionState);
                     Assert.Equal((Integer)repeat, (Integer)blockActionState);
                 }
@@ -1026,7 +1044,7 @@ namespace Libplanet.Tests.Net
                         var state = chain1.GetState(
                             swarm0.Address,
                             blockHashes[i],
-                            completeStates: false
+                            stateCompleter: StateCompleters<DumbAction>.Reject
                         );
                         Assert.NotNull(state);
                         Assert.Equal((Integer)i, (Integer)state);
@@ -1038,7 +1056,7 @@ namespace Libplanet.Tests.Net
                             chain1.GetState(
                                 swarm0.Address,
                                 blockHashes[i],
-                                completeStates: false
+                                stateCompleter: StateCompleters<DumbAction>.Reject
                             );
                         });
                     }
@@ -1052,7 +1070,10 @@ namespace Libplanet.Tests.Net
 
                 foreach (BlockChain<DumbAction> chain in new[] { chain1, chain2 })
                 {
-                    var blockActionState = chain.GetState(swarm0.Address, completeStates: false);
+                    IValue blockActionState = chain.GetState(
+                        swarm0.Address,
+                        stateCompleter: StateCompleters<DumbAction>.Reject
+                    );
                     Assert.NotNull(blockActionState);
                     Assert.Equal((Integer)repeat, (Integer)blockActionState);
                 }
@@ -1064,7 +1085,7 @@ namespace Libplanet.Tests.Net
                         var state = chain2.GetState(
                             swarm0.Address,
                             blockHashes[i],
-                            completeStates: false
+                            StateCompleters<DumbAction>.Reject
                         );
                         Assert.NotNull(state);
                         Assert.Equal((Integer)i, (Integer)state);
@@ -1076,7 +1097,7 @@ namespace Libplanet.Tests.Net
                             chain2.GetState(
                                 swarm0.Address,
                                 blockHashes[i],
-                                completeStates: false
+                                StateCompleters<DumbAction>.Reject
                             );
                         });
                     }

@@ -372,36 +372,33 @@ namespace Libplanet.Blockchain
         /// Gets the state of the given <paramref name="address"/> in the
         /// <see cref="BlockChain{T}"/> from <paramref name="offset"/>.
         /// </summary>
-        /// <param name="address">An <see cref="Address"/> to get
-        /// the states of.</param>
-        /// <param name="offset">The <see cref="HashDigest{T}"/> of the block to
-        /// start finding the state. It will be The tip of the
-        /// <see cref="BlockChain{T}"/> if it is <c>null</c>.</param>
-        /// <param name="completeStates">When the <see cref="BlockChain{T}"/>
-        /// instance does not contain states dirty of the block which lastly
-        /// updated states of a requested address, this option makes
-        /// the incomplete states calculated and filled on the fly.
-        /// If this option is turned off (which is default) this method throws
-        /// <see cref="IncompleteBlockStatesException"/> instead
-        /// for the same situation.
-        /// Just-in-time calculation of states could take a long time so that
-        /// the overall latency of an application may rise.</param>
+        /// <param name="address">An <see cref="Address"/> to get the states of.</param>
+        /// <param name="offset">The <see cref="HashDigest{T}"/> of the block to start finding
+        /// the state.  It will be The tip of the <see cref="BlockChain{T}"/> if it is <c>null</c>.
+        /// </param>
+        /// <param name="stateCompleter">When the <see cref="BlockChain{T}"/> instance does not
+        /// contain states dirty of the block which lastly updated states of a requested address,
+        /// this delegate is called and its return value is used instead.
+        /// <para><see cref="StateCompleters{T}.Recalculate"/> makes the incomplete states
+        /// recalculated and filled on the fly.</para>
+        /// <para><see cref="StateCompleters{T}.Reject"/> (which is default) makes the incomplete
+        /// states (if needed) to cause <see cref="IncompleteBlockStatesException"/> instead.</para>
+        /// </param>
         /// <returns>The current state of given <paramref name="address"/>.  This can be <c>null</c>
         /// if <paramref name="address"/> has no value.</returns>
-        /// <exception cref="IncompleteBlockStatesException">Thrown when
-        /// the <see cref="BlockChain{T}"/> instance does not contain
-        /// states dirty of the block which lastly updated states of a requested
-        /// address, because actions in the block have never been executed.
-        /// If <paramref name="completeStates"/> option is turned on
-        /// this exception is not thrown and incomplete states are calculated
-        /// and filled on the fly instead.
-        /// </exception>
         public IValue GetState(
             Address address,
             HashDigest<SHA256>? offset = null,
-            bool completeStates = false
+            StateCompleter<T> stateCompleter = null
         ) =>
-            GetRawState(ToStateKey(address), offset, completeStates);
+            GetRawState(
+                ToStateKey(address),
+                offset,
+                StateCompleters<T>.ToRawStateCompleter(
+                    stateCompleter ?? StateCompleters<T>.Reject,
+                    address
+                )
+            );
 
         /// <summary>
         /// Queries <paramref name="address"/>'s balance of the <paramref name="currency"/> in the
@@ -412,32 +409,34 @@ namespace Libplanet.Blockchain
         /// <param name="offset">The <see cref="HashDigest{T}"/> of the block to
         /// start finding the state. It will be the tip of the
         /// <see cref="BlockChain{T}"/> if it is <c>null</c>.</param>
-        /// <param name="completeStates">When the <see cref="BlockChain{T}"/> instance does not
+        /// <param name="stateCompleter">When the <see cref="BlockChain{T}"/> instance does not
         /// contain states dirty of the block which lastly updated states of a requested address,
-        /// this option makes the incomplete states calculated and filled on the fly.
-        /// If this option is turned off (which is default) this method throws
-        /// <see cref="IncompleteBlockStatesException"/> instead for the same situation.
-        /// Just-in-time calculation of states could take a long time so that the overall latency of
-        /// an application may rise.</param>
+        /// this delegate is called and its return value is used instead.
+        /// <para><see cref="FungibleAssetStateCompleters{T}.Recalculate"/> makes the incomplete
+        /// states recalculated and filled on the fly.</para>
+        /// <para><see cref="FungibleAssetStateCompleters{T}.Reject"/> (which is default) makes
+        /// the incomplete states (if needed) to cause <see cref="IncompleteBlockStatesException"/>
+        /// instead.</para></param>
         /// <returns>The <paramref name="address"/>'s current balance (or balance as of the given
         /// <paramref name="offset"/>) of the <paramref name="currency"/>.
         /// </returns>
-        /// <exception cref="IncompleteBlockStatesException">Thrown when the
-        /// <see cref="BlockChain{T}"/> instance does not contain states dirty of the block which
-        /// lastly updated states of a requested address, because actions in the block have never
-        /// been executed.
-        /// If <paramref name="completeStates"/> option is turned on this exception is not thrown
-        /// and incomplete states are calculated and filled on the fly instead.
-        /// </exception>
         public BigInteger GetBalance(
             Address address,
             Currency currency,
             HashDigest<SHA256>? offset = null,
-            bool completeStates = false
+            FungibleAssetStateCompleter<T> stateCompleter = null
         )
         {
-            string key = ToFungibleAssetKey(address, currency);
-            IValue v = GetRawState(key, offset, completeStates);
+            stateCompleter ??= FungibleAssetStateCompleters<T>.Reject;
+            IValue v = GetRawState(
+                ToFungibleAssetKey(address, currency),
+                offset,
+                FungibleAssetStateCompleters<T>.ToRawStateCompleter(
+                    stateCompleter,
+                    address,
+                    currency
+                )
+            );
             return v is Bencodex.Types.Integer i ? i.Value : 0;
         }
 
@@ -715,6 +714,15 @@ namespace Libplanet.Blockchain
             }
         }
 
+        internal static string ToStateKey(Address address) => address.ToHex().ToLowerInvariant();
+
+        internal static string ToFungibleAssetKey(Address address, Currency currency) =>
+            "_" + address.ToHex().ToLowerInvariant() +
+            "_" + ByteUtil.Hex(currency.Hash.ByteArray).ToLowerInvariant();
+
+        internal static string ToFungibleAssetKey((Address, Currency) pair) =>
+            ToFungibleAssetKey(pair.Item1, pair.Item2);
+
         internal void Append(
             Block<T> block,
             DateTimeOffset currentTime,
@@ -922,8 +930,13 @@ namespace Libplanet.Blockchain
             }
             else
             {
-                stateGetter = a => GetState(a, block.PreviousHash, true);
-                balanceGetter = (a, c) => GetBalance(a, c, block.PreviousHash, true);
+                stateGetter = a => GetState(a, block.PreviousHash, StateCompleters<T>.Recalculate);
+                balanceGetter = (address, currency) => GetBalance(
+                        address,
+                        currency,
+                        block.PreviousHash,
+                        FungibleAssetStateCompleters<T>.Recalculate
+                    );
             }
 
             ImmutableList<ActionEvaluation> txEvaluations = block
@@ -959,8 +972,13 @@ namespace Libplanet.Blockchain
             if (lastStates is null)
             {
                 lastStates = new AccountStateDeltaImpl(
-                    a => GetState(a, block.PreviousHash, true),
-                    (a, c) => GetBalance(a, c, block.PreviousHash, true),
+                    a => GetState(a, block.PreviousHash, StateCompleters<T>.Recalculate),
+                    (address, currency) => GetBalance(
+                        address,
+                        currency,
+                        block.PreviousHash,
+                        FungibleAssetStateCompleters<T>.Recalculate
+                    ),
                     miner
                 );
             }
@@ -1445,7 +1463,47 @@ namespace Libplanet.Blockchain
             return Hashcash.Hash(new Codec().Encode(dict));
         }
 
-        private IValue GetRawState(string key, HashDigest<SHA256>? offset, bool completeStates)
+        /// <summary>
+        /// Calculates and complements a block's incomplete states on the fly.
+        /// </summary>
+        /// <param name="blockHash">The hash of a block which has incomplete states.</param>
+        /// <returns>The dirty states made from actions in the requested block.</returns>
+        internal IImmutableDictionary<string, IValue> ComplementBlockStates(
+            HashDigest<SHA256> blockHash
+        )
+        {
+            // Calculates and fills the incomplete states
+            // on the fly.
+            foreach (HashDigest<SHA256> hash in BlockHashes)
+            {
+                Block<T> b = this[hash];
+                if (!(Store.GetBlockStates(b.Hash) is null))
+                {
+                    continue;
+                }
+
+                IReadOnlyList<ActionEvaluation> evaluations = EvaluateActions(b);
+
+                _rwlock.EnterWriteLock();
+
+                try
+                {
+                    SetStates(b, evaluations, buildStateReferences: false);
+                }
+                finally
+                {
+                    _rwlock.ExitWriteLock();
+                }
+            }
+
+            return Store.GetBlockStates(blockHash) ?? throw new NullReferenceException();
+        }
+
+        private IValue GetRawState(
+            string key,
+            HashDigest<SHA256>? offset,
+            Func<BlockChain<T>, HashDigest<SHA256>, IValue> rawStateCompleter
+        )
         {
             _rwlock.EnterReadLock();
             try
@@ -1482,63 +1540,16 @@ namespace Libplanet.Blockchain
                 IImmutableDictionary<string, IValue> blockStates = Store.GetBlockStates(hashValue);
                 if (blockStates is null)
                 {
-                    if (!completeStates)
-                    {
-                        throw new IncompleteBlockStatesException(hashValue);
-                    }
-
-                    // Calculates and fills the incomplete states
-                    // on the fly.
-                    foreach (HashDigest<SHA256> hash in BlockHashes)
-                    {
-                        Block<T> b = this[hash];
-                        if (!(Store.GetBlockStates(b.Hash) is null))
-                        {
-                            continue;
-                        }
-
-                        IReadOnlyList<ActionEvaluation> evaluations = EvaluateActions(b);
-
-                        _rwlock.EnterWriteLock();
-
-                        try
-                        {
-                            SetStates(b, evaluations, buildStateReferences: false);
-                        }
-                        finally
-                        {
-                            _rwlock.ExitWriteLock();
-                        }
-                    }
-
-                    blockStates = Store.GetBlockStates(hashValue);
-                    if (blockStates is null)
-                    {
-                        throw new NullReferenceException();
-                    }
+                    return rawStateCompleter(this, hashValue);
                 }
 
-                if (blockStates.TryGetValue(key, out IValue state))
-                {
-                    return state;
-                }
-
-                return null;
+                return blockStates.TryGetValue(key, out IValue state) ? state : null;
             }
             finally
             {
                 _rwlock.ExitUpgradeableReadLock();
             }
         }
-
-        private string ToStateKey(Address address) => address.ToHex().ToLowerInvariant();
-
-        private string ToFungibleAssetKey(Address address, Currency currency) =>
-            "_" + address.ToHex().ToLowerInvariant() +
-            "_" + ByteUtil.Hex(currency.Hash.ByteArray).ToLowerInvariant();
-
-        private string ToFungibleAssetKey((Address, Currency) pair) =>
-            ToFungibleAssetKey(pair.Item1, pair.Item2);
 
         /// <summary>
         /// Provides data for the <see cref="TipChanged"/> event.

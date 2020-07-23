@@ -91,6 +91,17 @@ To be released.
  -  Added `Block<T>.PreEvaluationHash` property.  [[#931], [#935]]
  -  Added `BlockHeader.PreEvaluationHash` property.  [[#931], [#935]]
  -  Added `HashDigest(ImmutableArray<byte>)` constructor.  [[#931], [#935]]
+ -  Incomplete block states became able to be handled in more flexible way.
+    [[#929], [#934]]
+     -  Replaced `BlockChain<T>.GetState(Address, HashDigest<SHA256>?, bool)`
+        method with `GetState(Address, HashDigest<SHA256>?, StateCompleter<T>)`
+        method.  Specifying `completeStates: true` and `false` can be replaced
+        by `stateCompleter: StateCompleters<T>.Recalculate` and
+        `StateCompleters<T>.Reject`, respectively.
+     -  Added `StateCompleter<T>` delegate.
+     -  Added `FungibleAssetStateCompleter<T>` delegate.
+     -  Added `StateCompleters<T>` static class.
+     -  Added `FungibleAssetStateCompleters<T>` static class.
 
 ### Behavioral changes
 
@@ -168,10 +179,12 @@ To be released.
 [#925]: https://github.com/planetarium/libplanet/pull/925
 [#926]: https://github.com/planetarium/libplanet/pull/926
 [#927]: https://github.com/planetarium/libplanet/pull/927
+[#929]: https://github.com/planetarium/libplanet/issues/929
 [#930]: https://github.com/planetarium/libplanet/pull/930
 [#931]: https://github.com/planetarium/libplanet/issues/931
 [#932]: https://github.com/planetarium/libplanet/pull/932
 [#933]: https://github.com/planetarium/libplanet/pull/933
+[#934]: https://github.com/planetarium/libplanet/pull/934
 [#935]: https://github.com/planetarium/libplanet/pull/935
 [#936]: https://github.com/planetarium/libplanet/pull/936
 [#940]: https://github.com/planetarium/libplanet/pull/940
