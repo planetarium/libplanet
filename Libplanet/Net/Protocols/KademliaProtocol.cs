@@ -127,15 +127,6 @@ namespace Libplanet.Net.Protocols
             }
             catch (Exception e)
             {
-                if (findPeerTasks.All(task =>
-                    task.IsFaulted &&
-                    !(task.Exception is null) &&
-                    task.Exception.InnerExceptions.All(ex => ex is TimeoutException)))
-                {
-                    throw new TimeoutException(
-                        $"Timeout exception occurred during {nameof(BootstrapAsync)}().");
-                }
-
                 var msg = $"An unexpected exception occurred during {nameof(BootstrapAsync)}()." +
                           " {Exception}";
                 _logger.Error(e, msg, e);
@@ -640,16 +631,6 @@ namespace Libplanet.Net.Protocols
             }
             catch (Exception e)
             {
-                if (awaitables.All(task =>
-                    task.IsFaulted &&
-                    !(task.Exception is null) &&
-                    task.Exception.InnerExceptions.All(ex => ex is TimeoutException)))
-                {
-                    throw new TimeoutException(
-                        $"All neighbors found do not respond in {_requestTimeout}."
-                    );
-                }
-
                 _logger.Error(
                     e,
                     "Some responses from neighbors found unexpectedly terminated: {Exception}",
@@ -695,16 +676,6 @@ namespace Libplanet.Net.Protocols
             }
             catch (Exception e)
             {
-                if (findPeerTasks.All(task =>
-                    task.IsFaulted &&
-                    !(task.Exception is null) &&
-                    task.Exception.InnerExceptions.All(ex => ex is TimeoutException)))
-                {
-                    throw new TimeoutException(
-                        "All FindPeer tasks caused timeout during " +
-                        $"{nameof(ProcessFoundAsync)}().");
-                }
-
                 _logger.Error(
                     e,
                     "Some FindPeer tasks were unexpectedly terminated: {Exception}",
