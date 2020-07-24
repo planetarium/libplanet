@@ -146,7 +146,7 @@ namespace Libplanet.Blocks
                 new Nonce(rb.Header.Nonce.ToArray()),
                 rb.Header.Miner.Any() ? new Address(rb.Header.Miner) : (Address?)null,
 #pragma warning disable MEN002 // Line is too long
-                rb.Header.PreviousHash.Any() ? new HashDigest<SHA256>(rb.Header.PreviousHash.ToArray()) : (HashDigest<SHA256>?)null,
+                rb.Header.PreviousHash.Any() ? new HashDigest<SHA256>(rb.Header.PreviousHash) : (HashDigest<SHA256>?)null,
 #pragma warning restore MEN002 // Line is too long
                 DateTimeOffset.ParseExact(
                     rb.Header.Timestamp,
@@ -156,7 +156,7 @@ namespace Libplanet.Blocks
                     .Select(tx => Transaction<T>.Deserialize(tx.ToArray()))
                     .ToList(),
 #pragma warning disable MEN002 // Line is too long
-                rb.Header.ActionsHash.Any() ? new HashDigest<SHA256>(rb.Header.ActionsHash.ToArray()) : (HashDigest<SHA256>?)null)
+                rb.Header.ActionsHash.Any() ? new HashDigest<SHA256>(rb.Header.ActionsHash) : (HashDigest<SHA256>?)null)
 #pragma warning restore MEN002 // Line is too long
         {
         }
