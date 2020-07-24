@@ -7,6 +7,7 @@ using System.Numerics;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
+using Bencodex;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain.Policies;
@@ -660,11 +661,15 @@ namespace Libplanet.Blockchain
                 throw new OperationCanceledException(cancellationToken);
             }
 
+            var actionEvaluations = ExecuteActions(block);
+
+            block = new Block<T>(block, ActionEvaluationsToHash(actionEvaluations));
+
             TipChanged -= WatchTip;
             cancellationTokenSource.Dispose();
             cts.Dispose();
 
-            Append(block, currentTime);
+            Append(block, currentTime, true, true, actionEvaluations);
 
             return block;
         }
@@ -714,7 +719,8 @@ namespace Libplanet.Blockchain
             Block<T> block,
             DateTimeOffset currentTime,
             bool evaluateActions,
-            bool renderActions
+            bool renderActions,
+            IReadOnlyList<ActionEvaluation> evaluations = null
         )
         {
             if (!evaluateActions && renderActions)
@@ -728,7 +734,6 @@ namespace Libplanet.Blockchain
 
             _logger.Debug("Trying to append block {blockIndex}: {block}", block?.Index, block);
 
-            IReadOnlyList<ActionEvaluation> evaluations = null;
             _rwlock.EnterUpgradeableReadLock();
             try
             {
@@ -778,7 +783,7 @@ namespace Libplanet.Blockchain
                 {
                     if (evaluateActions)
                     {
-                        evaluations = ExecuteActions(block);
+                        evaluations ??= ExecuteActions(block);
                     }
 
                     Block<T> prevTip = Tip;
@@ -1413,6 +1418,31 @@ namespace Libplanet.Blockchain
             {
                 _rwlock.ExitUpgradeableReadLock();
             }
+        }
+
+        internal HashDigest<SHA256>? ActionEvaluationsToHash(
+            IEnumerable<ActionEvaluation> actionEvaluations)
+        {
+            ActionEvaluation actionEvaluation;
+            var evaluations = actionEvaluations.ToList();
+            if (evaluations.Any())
+            {
+                actionEvaluation = evaluations.Last();
+            }
+            else
+            {
+                return null;
+            }
+
+            IImmutableSet<Address> updatedAddresses =
+                actionEvaluation.OutputStates.UpdatedAddresses;
+            var dict = Bencodex.Types.Dictionary.Empty;
+            foreach (Address address in updatedAddresses)
+            {
+                dict.Add(address.ToHex(), actionEvaluation.OutputStates.GetState(address));
+            }
+
+            return Hashcash.Hash(new Codec().Encode(dict));
         }
 
         private IValue GetRawState(string key, HashDigest<SHA256>? offset, bool completeStates)
