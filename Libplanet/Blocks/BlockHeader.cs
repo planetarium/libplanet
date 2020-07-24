@@ -6,6 +6,7 @@ using System.Numerics;
 using System.Security.Cryptography;
 using Bencodex;
 using Bencodex.Types;
+using Libplanet.Action;
 
 namespace Libplanet.Blocks
 {
@@ -34,6 +35,8 @@ namespace Libplanet.Blocks
 
         private static readonly byte[] HashKey = { 0x68 }; // 'h'
 
+        private static readonly byte[] ActionHashKey = { 0x61 }; // 'a'
+
         private static readonly TimeSpan TimestampThreshold =
             TimeSpan.FromSeconds(15);
 
@@ -59,6 +62,8 @@ namespace Libplanet.Blocks
         /// Goes to the <see cref="TxHash"/>.</param>
         /// <param name="hash">The hash of the <see cref="Block{T}"/>.
         /// Goes to the <see cref="Hash"/>.</param>
+        /// <param name="actionHash">The hash of the <see cref="ActionEvaluation"/> List.
+        /// Goes to the <see cref="ActionHash"/>.</param>
         public BlockHeader(
             long index,
             string timestamp,
@@ -68,7 +73,8 @@ namespace Libplanet.Blocks
             BigInteger totalDifficulty,
             ImmutableArray<byte> previousHash,
             ImmutableArray<byte> txHash,
-            ImmutableArray<byte> hash)
+            ImmutableArray<byte> hash,
+            ImmutableArray<byte> actionHash)
         {
             Index = index;
             Timestamp = timestamp;
@@ -79,6 +85,7 @@ namespace Libplanet.Blocks
             PreviousHash = previousHash;
             TxHash = txHash;
             Hash = hash;
+            ActionHash = actionHash;
         }
 
         public BlockHeader(Bencodex.Types.Dictionary dict)
@@ -104,6 +111,10 @@ namespace Libplanet.Blocks
             Hash = dict.ContainsKey((IKey)(Binary)HashKey)
                 ? dict.GetValue<Binary>(HashKey).ToImmutableArray()
                 : ImmutableArray<byte>.Empty;
+
+            ActionHash = dict.ContainsKey((IKey)(Binary)ActionHashKey)
+                ? dict.GetValue<Binary>(ActionHashKey).ToImmutableArray()
+                : ImmutableArray<byte>.Empty;
         }
 
         public long Index { get; }
@@ -123,6 +134,8 @@ namespace Libplanet.Blocks
         public ImmutableArray<byte> TxHash { get; }
 
         public ImmutableArray<byte> Hash { get; }
+
+        public ImmutableArray<byte> ActionHash { get; }
 
         /// <summary>
         /// Gets <see cref="BlockHeader"/> instance from serialized <paramref name="bytes"/>.
@@ -182,6 +195,11 @@ namespace Libplanet.Blocks
             if (TxHash.Any())
             {
                 dict = dict.Add(TxHashKey, TxHash.ToArray());
+            }
+
+            if (ActionHash.Any())
+            {
+                dict = dict.Add(ActionHashKey, ActionHash.ToArray());
             }
 
             return dict;

@@ -492,7 +492,10 @@ namespace Libplanet.Blocks
                 totalDifficulty: TotalDifficulty,
                 previousHash: previousHashAsArray,
                 txHash: TxHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty,
-                hash: Hash.ToByteArray().ToImmutableArray()
+                hash: Hash.ToByteArray().ToImmutableArray(),
+#pragma warning disable MEN002 // Line is too long
+                actionHash: ActionHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty
+#pragma warning restore MEN002 // Line is too long
             );
         }
 
