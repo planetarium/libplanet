@@ -435,12 +435,14 @@ namespace Libplanet.Tests.Blocks
                 new byte[10].ToImmutableArray()
             );
             var invalidTx = new Transaction<DumbAction>(rawTx);
-            Block<DumbAction> invalidBlock = MineNext(
-                MineGenesis<DumbAction>(),
-                new List<Transaction<DumbAction>> { invalidTx }
-            );
             Assert.Throws<InvalidTxSignatureException>(() =>
-                invalidBlock.Evaluate(DateTimeOffset.UtcNow, _ => null, (a, c) => 0)
+                MineNext(
+                    MineGenesis<DumbAction>(),
+                    new List<Transaction<DumbAction>>
+                    {
+                        invalidTx,
+                    }
+                )
             );
         }
 
@@ -472,12 +474,14 @@ namespace Libplanet.Tests.Blocks
                     sig.ToImmutableArray()
                 )
             );
-            Block<DumbAction> invalidBlock = MineNext(
-                MineGenesis<DumbAction>(),
-                new List<Transaction<DumbAction>> { invalidTx }
-            );
             Assert.Throws<InvalidTxPublicKeyException>(() =>
-                invalidBlock.Evaluate(DateTimeOffset.UtcNow, _ => null, (a, c) => 0)
+                MineNext(
+                    MineGenesis<DumbAction>(),
+                    new List<Transaction<DumbAction>>
+                    {
+                        invalidTx,
+                    }
+                )
             );
         }
 
@@ -514,16 +518,15 @@ namespace Libplanet.Tests.Blocks
                     sig.ToImmutableArray()
                 )
             );
-            Block<PolymorphicAction<BaseAction>> invalidBlock = MineNext(
-                _fx.Genesis,
-                new List<Transaction<PolymorphicAction<BaseAction>>>
-                {
-                    invalidTx,
-                }
-            );
             Assert.Throws<InvalidTxUpdatedAddressesException>(() =>
-                invalidBlock.Evaluate(DateTimeOffset.UtcNow, _ => null, (a, c) => 0)
-            );
+                    MineNext(
+                        _fx.Genesis,
+                        new List<Transaction<PolymorphicAction<BaseAction>>>
+                        {
+                            invalidTx,
+                        }
+                    )
+                );
         }
 
         [Fact]

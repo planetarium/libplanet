@@ -118,6 +118,19 @@ namespace Libplanet.Blocks
         {
         }
 
+        public Block(Block<T> block, HashDigest<SHA256> actionHash)
+            : this(
+                block.Index,
+                block.Difficulty,
+                block.TotalDifficulty,
+                block.Nonce,
+                block.Miner,
+                block.PreviousHash,
+                block.Timestamp,
+                block.Transactions)
+        {
+        }
+
         private Block(RawBlock rb)
             : this(
                 rb.Header.Index,
@@ -397,10 +410,13 @@ namespace Libplanet.Blocks
         /// in <see cref="Transaction{T}.UpdatedAddresses"/>.</exception>
         public IEnumerable<ActionEvaluation> Evaluate(
             DateTimeOffset currentTime,
-            AccountStateGetter accountStateGetter,
-            AccountBalanceGetter accountBalanceGetter
+            AccountStateGetter accountStateGetter = null,
+            AccountBalanceGetter accountBalanceGetter = null
         )
         {
+            accountStateGetter ??= a => null;
+            accountBalanceGetter ??= (a, c) => 0;
+
             Validate(currentTime);
             Tuple<Transaction<T>, ActionEvaluation>[] txEvaluations =
                 EvaluateActionsPerTx(accountStateGetter, accountBalanceGetter).ToArray();
