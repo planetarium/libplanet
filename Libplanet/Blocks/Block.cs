@@ -118,7 +118,7 @@ namespace Libplanet.Blocks
         {
         }
 
-        public Block(Block<T> block, HashDigest<SHA256>? actionHash)
+        public Block(Block<T> block, HashDigest<SHA256>? actionsHash)
             : this(
                 block.Index,
                 block.Difficulty,
@@ -127,9 +127,9 @@ namespace Libplanet.Blocks
                 block.Miner,
                 block.PreviousHash,
                 block.Timestamp,
-                block.Transactions)
+                block.Transactions,
+                actionsHash)
         {
-            ActionHash = actionHash;
         }
 
         private Block(RawBlock rb)
@@ -183,7 +183,7 @@ namespace Libplanet.Blocks
         public IEnumerable<Transaction<T>> Transactions { get; }
 
         [IgnoreDuringEquals]
-        public HashDigest<SHA256>? ActionHash { get; }
+        public HashDigest<SHA256>? ActionsHash { get; }
 
         public static bool operator ==(Block<T> left, Block<T> right) =>
             Operator.Weave(left, right);
@@ -481,6 +481,8 @@ namespace Libplanet.Blocks
             );
             ImmutableArray<byte> previousHashAsArray =
                 PreviousHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty;
+            var actionsHash = ActionsHash?.ToByteArray().ToImmutableArray() ??
+                              ImmutableArray<byte>.Empty;
 
             // FIXME: When hash is not assigned, should throw an exception.
             return new BlockHeader(
@@ -493,9 +495,7 @@ namespace Libplanet.Blocks
                 previousHash: previousHashAsArray,
                 txHash: TxHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty,
                 hash: Hash.ToByteArray().ToImmutableArray(),
-#pragma warning disable MEN002 // Line is too long
-                actionHash: ActionHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty
-#pragma warning restore MEN002 // Line is too long
+                actionsHash: actionsHash
             );
         }
 

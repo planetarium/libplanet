@@ -62,8 +62,8 @@ namespace Libplanet.Blocks
         /// Goes to the <see cref="TxHash"/>.</param>
         /// <param name="hash">The hash of the <see cref="Block{T}"/>.
         /// Goes to the <see cref="Hash"/>.</param>
-        /// <param name="actionHash">The hash of the <see cref="ActionEvaluation"/> List.
-        /// Goes to the <see cref="ActionHash"/>.</param>
+        /// <param name="actionsHash">The hash of the <see cref="ActionEvaluation"/> List.
+        /// Goes to the <see cref="ActionsHash"/>.</param>
         public BlockHeader(
             long index,
             string timestamp,
@@ -74,7 +74,7 @@ namespace Libplanet.Blocks
             ImmutableArray<byte> previousHash,
             ImmutableArray<byte> txHash,
             ImmutableArray<byte> hash,
-            ImmutableArray<byte> actionHash)
+            ImmutableArray<byte> actionsHash)
         {
             Index = index;
             Timestamp = timestamp;
@@ -85,7 +85,7 @@ namespace Libplanet.Blocks
             PreviousHash = previousHash;
             TxHash = txHash;
             Hash = hash;
-            ActionHash = actionHash;
+            ActionsHash = actionsHash;
         }
 
         public BlockHeader(Bencodex.Types.Dictionary dict)
@@ -112,7 +112,7 @@ namespace Libplanet.Blocks
                 ? dict.GetValue<Binary>(HashKey).ToImmutableArray()
                 : ImmutableArray<byte>.Empty;
 
-            ActionHash = dict.ContainsKey((IKey)(Binary)ActionHashKey)
+            ActionsHash = dict.ContainsKey((IKey)(Binary)ActionHashKey)
                 ? dict.GetValue<Binary>(ActionHashKey).ToImmutableArray()
                 : ImmutableArray<byte>.Empty;
         }
@@ -135,7 +135,7 @@ namespace Libplanet.Blocks
 
         public ImmutableArray<byte> Hash { get; }
 
-        public ImmutableArray<byte> ActionHash { get; }
+        public ImmutableArray<byte> ActionsHash { get; }
 
         /// <summary>
         /// Gets <see cref="BlockHeader"/> instance from serialized <paramref name="bytes"/>.
@@ -197,9 +197,9 @@ namespace Libplanet.Blocks
                 dict = dict.Add(TxHashKey, TxHash.ToArray());
             }
 
-            if (ActionHash.Any())
+            if (ActionsHash.Any())
             {
-                dict = dict.Add(ActionHashKey, ActionHash.ToArray());
+                dict = dict.Add(ActionHashKey, ActionsHash.ToArray());
             }
 
             return dict;
