@@ -76,6 +76,8 @@ To be released.
  -  Added `SwarmOptions` class.  [[#926]]
  -  Added `PeerChainState` struct.  [[#936]]
  -  Added `Swarm<T>.GetPeerChainStateAsync()` method.  [[#936]]
+ -  Added `Block<T>.ActionHash` property.  [[#931], [[#935]]]
+ -  Added `BlockHeader<T>.ActionHash` property.  [[#931], [[#935]]]
 
 ### Behavioral changes
 
