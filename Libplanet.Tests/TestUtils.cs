@@ -211,7 +211,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             long index = previousBlock.Index + 1;
             HashDigest<SHA256> previousHash = previousBlock.Hash;
             DateTimeOffset timestamp =
-                previousBlock.Timestamp.Add(blockInterval ?? TimeSpan.FromDays(1));
+                previousBlock.Timestamp.Add(blockInterval ?? TimeSpan.FromSeconds(15));
 
             Block<T> block;
             if (nonce == null)
