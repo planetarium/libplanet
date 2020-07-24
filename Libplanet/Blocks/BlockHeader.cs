@@ -62,8 +62,8 @@ namespace Libplanet.Blocks
         /// Goes to the <see cref="TxHash"/>.</param>
         /// <param name="hash">The hash of the <see cref="Block{T}"/>.
         /// Goes to the <see cref="Hash"/>.</param>
-        /// <param name="actionsHash">The hash of the <see cref="ActionEvaluation"/> List.
-        /// Goes to the <see cref="ActionsHash"/>.</param>
+        /// <param name="actionsHash">The hash of the <see cref="ActionEvaluation"/>s.
+        /// <seealso cref="ActionsHash"/>.</param>
         public BlockHeader(
             long index,
             string timestamp,

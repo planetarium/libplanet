@@ -243,8 +243,8 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             var actionEvaluations = block
                 .Evaluate(DateTimeOffset.UtcNow);
 
-            HashDigest<SHA256>? actionHash = ActionEvaluationsToHash(actionEvaluations);
-            return new Block<T>(block, actionHash);
+            HashDigest<SHA256>? actionsHash = ActionEvaluationsToHash(actionEvaluations);
+            return new Block<T>(block, actionsHash);
         }
 
         public static string ToString(BitArray bitArray)
