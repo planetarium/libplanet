@@ -42,6 +42,9 @@ namespace Libplanet.Blocks
         /// Transactions become sorted in an unpredicted-before-mined order and then go to
         /// the <see cref="Transactions"/> property.
         /// </param>
+        /// <param name="actionsHash">Tha actions <see cref="Hash"/>. To fill this field,
+        /// you must put a hash value of <see cref="ActionEvaluation"/>s
+        /// of the block that was mined.</param>
         /// <seealso cref="Mine"/>
         public Block(
             long index,
@@ -51,7 +54,8 @@ namespace Libplanet.Blocks
             Address? miner,
             HashDigest<SHA256>? previousHash,
             DateTimeOffset timestamp,
-            IEnumerable<Transaction<T>> transactions)
+            IEnumerable<Transaction<T>> transactions,
+            HashDigest<SHA256>? actionsHash = null)
         {
             Index = index;
             Difficulty = difficulty;
@@ -105,6 +109,8 @@ namespace Libplanet.Blocks
             Transactions = signers
                 .SelectMany(signer => signerTxs[signer].OrderBy(tx => tx.Nonce))
                 .ToImmutableArray();
+
+            ActionsHash = actionsHash;
         }
 
         /// <summary>
@@ -148,8 +154,10 @@ namespace Libplanet.Blocks
                     CultureInfo.InvariantCulture).ToUniversalTime(),
                 rb.Transactions
                     .Select(tx => Transaction<T>.Deserialize(tx.ToArray()))
-                    .ToList()
-            )
+                    .ToList(),
+#pragma warning disable MEN002 // Line is too long
+                rb.Header.ActionsHash.Any() ? new HashDigest<SHA256>(rb.Header.ActionsHash.ToArray()) : (HashDigest<SHA256>?)null)
+#pragma warning restore MEN002 // Line is too long
         {
         }
 
