@@ -118,7 +118,7 @@ namespace Libplanet.Blocks
         {
         }
 
-        public Block(Block<T> block, HashDigest<SHA256> actionHash)
+        public Block(Block<T> block, HashDigest<SHA256>? actionHash)
             : this(
                 block.Index,
                 block.Difficulty,
@@ -129,6 +129,7 @@ namespace Libplanet.Blocks
                 block.Timestamp,
                 block.Transactions)
         {
+            ActionHash = actionHash;
         }
 
         private Block(RawBlock rb)
@@ -180,6 +181,9 @@ namespace Libplanet.Blocks
 
         [IgnoreDuringEquals]
         public IEnumerable<Transaction<T>> Transactions { get; }
+
+        [IgnoreDuringEquals]
+        public HashDigest<SHA256>? ActionHash { get; }
 
         public static bool operator ==(Block<T> left, Block<T> right) =>
             Operator.Weave(left, right);

@@ -243,7 +243,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             var actionEvaluations = block
                 .Evaluate(DateTimeOffset.UtcNow);
 
-            HashDigest<SHA256> actionHash = ActionEvaluationsToHash(actionEvaluations);
+            HashDigest<SHA256>? actionHash = ActionEvaluationsToHash(actionEvaluations);
             return new Block<T>(block, actionHash);
         }
 
@@ -291,7 +291,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             return new BlockChain<T>(policy, store, genesisBlock);
         }
 
-        public static HashDigest<SHA256> ActionEvaluationsToHash(
+        public static HashDigest<SHA256>? ActionEvaluationsToHash(
             IEnumerable<ActionEvaluation> actionEvaluations)
         {
             ActionEvaluation actionEvaluation;
@@ -302,8 +302,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             }
             else
             {
-                return HashDigest<SHA256>.FromString(
-                    "0000000000000000000000000000000000000000000000000000000000000001");
+                return (HashDigest<SHA256>?)null;
             }
 
             IImmutableSet<Address> updatedAddresses =
