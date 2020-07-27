@@ -2016,6 +2016,54 @@ namespace Libplanet.Tests.Net
             }
         }
 
+        [Fact(Timeout = Timeout)]
+        public async Task GetPeerChainStatus()
+        {
+            Swarm<DumbAction> swarm1 = _swarms[0];
+            Swarm<DumbAction> swarm2 = _swarms[1];
+            Swarm<DumbAction> swarm3 = _swarms[2];
+
+            var peerStatus = await swarm1.GetPeerChainStatus(TimeSpan.FromSeconds(1), default);
+            Assert.Empty(peerStatus);
+
+            try
+            {
+                await StartAsync(swarm2);
+                await StartAsync(swarm3);
+
+                await BootstrapAsync(swarm1, swarm2.AsPeer);
+
+                peerStatus = await swarm1.GetPeerChainStatus(TimeSpan.FromSeconds(1), default);
+                Assert.Equal(
+                    new PeerChainStatus((BoundPeer)swarm2.AsPeer, 0, 0),
+                    peerStatus.First()
+                );
+
+                await swarm2.BlockChain.MineBlock(_fx1.Address1);
+                peerStatus = await swarm1.GetPeerChainStatus(TimeSpan.FromSeconds(1), default);
+                Assert.Equal(
+                    new PeerChainStatus((BoundPeer)swarm2.AsPeer, 1, 1024),
+                    peerStatus.First()
+                );
+
+                await BootstrapAsync(swarm1, swarm3.AsPeer);
+                peerStatus = await swarm1.GetPeerChainStatus(TimeSpan.FromSeconds(1), default);
+                Assert.Equal(
+                    new[]
+                    {
+                        new PeerChainStatus((BoundPeer)swarm2.AsPeer, 1, 1024),
+                        new PeerChainStatus((BoundPeer)swarm3.AsPeer, 0, 0),
+                    },
+                    peerStatus.ToArray()
+                );
+            }
+            finally
+            {
+                await StopAsync(swarm2);
+                await StopAsync(swarm3);
+            }
+        }
+
         private async Task<Task> StartAsync<T>(
             Swarm<T> swarm,
             CancellationToken cancellationToken = default
