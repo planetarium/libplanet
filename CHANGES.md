@@ -40,9 +40,9 @@ To be released.
     [[#932]]
  -  `DefaultCryptoBackend` became to `DefaultCryptoBackend<T>`.  [[#932]]
  -  Added `ImmutableArray<byte>`-typed `actionsHash` parameter to
-    `BlockHeader` constructor.
+    `BlockHeader` constructor. [[#931], [#935]]
  -  Added `HashDigest<SHA256>`-typed `actionsHash` parameter to
-    `Block` constructor.
+    `Block` constructor. [[#931], [#935]]
 
 ### Backward-incompatible network protocol changes
 
