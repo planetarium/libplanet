@@ -57,27 +57,12 @@ namespace Libplanet
         /// the same to the <see cref="Size"/> the hash algorithm
         /// (i.e., <typeparamref name="T"/> requires.</exception>
         public HashDigest(byte[] hashDigest)
+            : this((hashDigest ?? throw new ArgumentNullException(nameof(hashDigest)))
+                .ToImmutableArray())
         {
-            if (hashDigest == null)
-            {
-                throw new ArgumentNullException(nameof(hashDigest));
-            }
-
-            if (hashDigest.Length != Size)
-            {
-                string message =
-                    $"HashDigest<{typeof(T).Name}> must be {Size} bytes, " +
-                    $"but {hashDigest.Length} was given";
-                throw new ArgumentOutOfRangeException(
-                    nameof(hashDigest),
-                    message
-                );
-            }
-
-            _byteArray = hashDigest.ToImmutableArray();
         }
 
-         /// <summary>
+        /// <summary>
          /// Converts a <see cref="ImmutableArray"/> of <see cref="byte"/> array into a
          /// <see cref="HashDigest{T}"/>.
          /// </summary>
