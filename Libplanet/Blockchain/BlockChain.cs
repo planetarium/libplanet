@@ -661,7 +661,7 @@ namespace Libplanet.Blockchain
                 throw new OperationCanceledException(cancellationToken);
             }
 
-            var actionEvaluations = ExecuteActions(block);
+            var actionEvaluations = EvaluateActions(block);
 
             block = new Block<T>(block, ActionEvaluationsToHash(actionEvaluations));
 
@@ -669,7 +669,7 @@ namespace Libplanet.Blockchain
             cancellationTokenSource.Dispose();
             cts.Dispose();
 
-            Append(block, currentTime, true, true, actionEvaluations);
+            Append(block, currentTime);
 
             return block;
         }
@@ -719,8 +719,7 @@ namespace Libplanet.Blockchain
             Block<T> block,
             DateTimeOffset currentTime,
             bool evaluateActions,
-            bool renderActions,
-            IReadOnlyList<ActionEvaluation> evaluations = null
+            bool renderActions
         )
         {
             if (!evaluateActions && renderActions)
@@ -734,6 +733,7 @@ namespace Libplanet.Blockchain
 
             _logger.Debug("Trying to append block {blockIndex}: {block}", block?.Index, block);
 
+            IReadOnlyList<ActionEvaluation> evaluations = null;
             _rwlock.EnterUpgradeableReadLock();
             try
             {
@@ -783,7 +783,7 @@ namespace Libplanet.Blockchain
                 {
                     if (evaluateActions)
                     {
-                        evaluations ??= ExecuteActions(block);
+                        evaluations = ExecuteActions(block);
                     }
 
                     Block<T> prevTip = Tip;
