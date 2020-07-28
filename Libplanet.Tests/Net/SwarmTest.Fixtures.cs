@@ -83,7 +83,8 @@ namespace Libplanet.Tests.Net
             DateTimeOffset? createdAt = null,
             IEnumerable<IceServer> iceServers = null,
             DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered = null,
-            IEnumerable<PublicKey> trustedAppProtocolVersionSigners = null
+            IEnumerable<PublicKey> trustedAppProtocolVersionSigners = null,
+            SwarmOptions options = null
         )
             where T : IAction, new()
         {
@@ -104,7 +105,8 @@ namespace Libplanet.Tests.Net
                 createdAt,
                 iceServers,
                 differentAppProtocolVersionEncountered,
-                trustedAppProtocolVersionSigners);
+                trustedAppProtocolVersionSigners,
+                options);
         }
     }
 }
