@@ -2053,8 +2053,8 @@ namespace Libplanet.Tests.Net
                     {
                         new PeerChainStatus((BoundPeer)swarm2.AsPeer, 1, 1024),
                         new PeerChainStatus((BoundPeer)swarm3.AsPeer, 0, 0),
-                    },
-                    peerStatus.ToArray()
+                    }.ToHashSet(),
+                    peerStatus.ToHashSet()
                 );
             }
             finally
