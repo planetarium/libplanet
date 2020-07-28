@@ -115,16 +115,20 @@ namespace Libplanet.Tests.Blocks
         {
             byte[] expected =
             {
-                0x64, 0x31, 0x3a, 0x48, 0x64, 0x31, 0x3a, 0x54, 0x69, 0x30, 0x65, 0x31, 0x3a, 0x64,
-                0x69, 0x30, 0x65, 0x31, 0x3a, 0x68, 0x33, 0x32, 0x3a, 0xd4, 0xf3, 0x58, 0x34, 0xe2,
-                0x7d, 0x5a, 0xb4, 0x59, 0xa4, 0xd4, 0x01, 0xe9, 0xa0, 0x82, 0x68, 0xe3, 0xfe, 0x32,
-                0x1b, 0x8c, 0x68, 0x50, 0x75, 0xae, 0xc5, 0xbd, 0x5d, 0x18, 0xd6, 0x42, 0xaa, 0x31,
-                0x3a, 0x69, 0x69, 0x30, 0x65, 0x31, 0x3a, 0x6d, 0x32, 0x30, 0x3a, 0x21, 0x74, 0x4f,
-                0x4f, 0x08, 0xdb, 0x23, 0xe0, 0x44, 0x17, 0x8d, 0xaf, 0xb8, 0x27, 0x3a, 0xeb, 0x5e,
-                0xbe, 0x66, 0x44, 0x31, 0x3a, 0x6e, 0x34, 0x3a, 0x01, 0x00, 0x00, 0x00, 0x31, 0x3a,
-                0x74, 0x75, 0x32, 0x37, 0x3a, 0x32, 0x30, 0x31, 0x38, 0x2d, 0x31, 0x31, 0x2d, 0x32,
-                0x39, 0x54, 0x30, 0x30, 0x3a, 0x30, 0x30, 0x3a, 0x30, 0x30, 0x2e, 0x30, 0x30, 0x30,
-                0x30, 0x30, 0x30, 0x5a, 0x65, 0x65,
+                0x64, 0x31, 0x3a, 0x48, 0x64, 0x31, 0x3a, 0x54, 0x69, 0x30, 0x65, 0x31, 0x3a,
+                0x63, 0x33, 0x32, 0x3a, 0xd4, 0xf3, 0x58, 0x34, 0xe2, 0x7d, 0x5a, 0xb4, 0x59,
+                0xa4, 0xd4, 0x01, 0xe9, 0xa0, 0x82, 0x68, 0xe3, 0xfe, 0x32, 0x1b, 0x8c, 0x68,
+                0x50, 0x75, 0xae, 0xc5, 0xbd, 0x5d, 0x18, 0xd6, 0x42, 0xaa, 0x31, 0x3a, 0x64,
+                0x69, 0x30, 0x65, 0x31, 0x3a, 0x68, 0x33, 0x32, 0x3a, 0xd4, 0xf3, 0x58, 0x34,
+                0xe2, 0x7d, 0x5a, 0xb4, 0x59, 0xa4, 0xd4, 0x01, 0xe9, 0xa0, 0x82, 0x68, 0xe3,
+                0xfe, 0x32, 0x1b, 0x8c, 0x68, 0x50, 0x75, 0xae, 0xc5, 0xbd, 0x5d, 0x18, 0xd6,
+                0x42, 0xaa, 0x31, 0x3a, 0x69, 0x69, 0x30, 0x65, 0x31, 0x3a, 0x6d, 0x32, 0x30,
+                0x3a, 0x21, 0x74, 0x4f, 0x4f, 0x08, 0xdb, 0x23, 0xe0, 0x44, 0x17, 0x8d, 0xaf,
+                0xb8, 0x27, 0x3a, 0xeb, 0x5e, 0xbe, 0x66, 0x44, 0x31, 0x3a, 0x6e, 0x34, 0x3a,
+                0x01, 0x00, 0x00, 0x00, 0x31, 0x3a, 0x74, 0x75, 0x32, 0x37, 0x3a, 0x32, 0x30,
+                0x31, 0x38, 0x2d, 0x31, 0x31, 0x2d, 0x32, 0x39, 0x54, 0x30, 0x30, 0x3a, 0x30,
+                0x30, 0x3a, 0x30, 0x30, 0x2e, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x5a, 0x65,
+                0x65,
             };
 
             AssertBytesEqual(expected, _fx.Genesis.Serialize());
@@ -263,9 +267,9 @@ namespace Libplanet.Tests.Blocks
             int randomValue = 0;
             (int, int, string[], Address)[] expectations =
             {
-                (0, 0, new[] { "A", null, null, null, null }, _fx.TxFixture.Address1),
-                (0, 1, new[] { "A", "B", null, null, null }, _fx.TxFixture.Address1),
-                (1, 0, new[] { "A", "B", "C", null, null }, _fx.TxFixture.Address2),
+                (1, 0, new[] { null, null, "C", null, null }, _fx.TxFixture.Address2),
+                (0, 0, new[] { "A", null, "C", null, null }, _fx.TxFixture.Address1),
+                (0, 1, new[] { "A", "B", "C", null, null }, _fx.TxFixture.Address1),
             };
             Assert.Equal(expectations.Length, pairs.Length);
             foreach (
@@ -738,9 +742,9 @@ namespace Libplanet.Tests.Blocks
             AssertBytesEqual(
                 new byte[32]
                 {
-                    0x22, 0xe1, 0x3b, 0xb5, 0x46, 0x65, 0x91, 0x34, 0x28, 0xbc, 0x55, 0x86, 0xce,
-                    0xbd, 0x50, 0xdc, 0x25, 0x50, 0xb0, 0x36, 0xa6, 0x18, 0xe9, 0xb0, 0x5d, 0xb1,
-                    0x1c, 0x76, 0xad, 0xb0, 0x0a, 0xd7,
+                    0xbb, 0xb4, 0xb0, 0x0c, 0x0b, 0x23, 0x2a, 0xf7, 0xeb, 0xa3, 0x94, 0x37, 0x75,
+                    0x87, 0x16, 0x9b, 0xe3, 0x2c, 0x31, 0x4c, 0xa3, 0x89, 0xbc, 0x94, 0x5f, 0xec,
+                    0x3d, 0xfe, 0x3c, 0xb3, 0x2e, 0xae,
                 },
                 rawHasText.Header.Hash.ToArray()
             );
@@ -769,6 +773,78 @@ namespace Libplanet.Tests.Blocks
             Assert.False(sameBlock2.Equals(differentBlock));
         }
 
+#pragma warning disable SA1118 // Line is too long
+        [Fact]
+        public void CompareWithPreCommitBlock()
+        {
+            Address[] addresses =
+            {
+                _fx.TxFixture.Address1,
+                _fx.TxFixture.Address2,
+                _fx.TxFixture.Address3,
+                _fx.TxFixture.Address4,
+                _fx.TxFixture.Address5,
+            };
+            Block<DumbAction> genesis = MineGenesis<DumbAction>();
+            Assert.Empty(genesis.EvaluateActionsPerTx());
+            DumbAction MakeAction(Address address, char identifier, Address? transferTo = null) =>
+                new DumbAction(
+                    targetAddress: address,
+                    item: identifier.ToString(),
+                    recordRehearsal: false,
+                    recordRandom: true,
+                    transfer: transferTo is Address to
+                        ? Tuple.Create<Address, Address, BigInteger>(address, to, 5)
+                        : null
+                );
+
+            Transaction<DumbAction>[] txs =
+            {
+                Transaction<DumbAction>.Create(
+                    0,
+                    _fx.TxFixture.PrivateKey1,
+                    _fx.Genesis.Hash,
+                    new[]
+                    {
+                        MakeAction(addresses[0], 'A', addresses[1]),
+                        MakeAction(addresses[1], 'B', addresses[2]),
+                    },
+                    timestamp: DateTimeOffset.MinValue.AddSeconds(1)
+                ),
+                Transaction<DumbAction>.Create(
+                    0,
+                    _fx.TxFixture.PrivateKey2,
+                    _fx.Genesis.Hash,
+                    new[] { MakeAction(addresses[2], 'C', addresses[3]) },
+                    timestamp: DateTimeOffset.MinValue.AddSeconds(2)
+                ),
+                Transaction<DumbAction>.Create(
+                    0,
+                    _fx.TxFixture.PrivateKey3,
+                    _fx.Genesis.Hash,
+                    new DumbAction[0],
+                    timestamp: DateTimeOffset.MinValue.AddSeconds(4)
+                ),
+            };
+
+            var timestamp = genesis.Timestamp.Add(TimeSpan.FromSeconds(15));
+            var preCommitBlock = new Block<DumbAction>(
+                index: 1,
+                difficulty: 1,
+                totalDifficulty: 0,
+                nonce: new Nonce(new byte[] { }),
+                miner: genesis.Miner.Value,
+                previousHash: genesis.Hash,
+                timestamp: timestamp,
+                transactions: txs
+            );
+
+            Block<DumbAction> afterCommitBlock = MineNext(genesis, txs, new byte[] { });
+            Assert.NotEqual(preCommitBlock.Hash, afterCommitBlock.Hash);
+            Assert.Equal(preCommitBlock.Hash, afterCommitBlock.PreCommitHash);
+        }
+#pragma warning restore SA1118 // Line is too long
+
         [Fact]
         public void BlockStructureSize()
         {
@@ -777,19 +853,19 @@ namespace Libplanet.Tests.Blocks
             var codec = new Codec();
             // Case of a block with no any txs.
             // Size of RawBlock
-            Assert.Equal(170, emptyBlock.Serialize().Length);
+            Assert.Equal(208, emptyBlock.Serialize().Length);
             // Size of BlockDigest
-            Assert.Equal(170, emptyBlock.ToBlockDigest().Serialize().Length);
+            Assert.Equal(208, emptyBlock.ToBlockDigest().Serialize().Length);
             // Size of BlockHeader
-            Assert.Equal(165, codec.Encode(emptyBlock.GetBlockHeader().ToBencodex()).Length);
+            Assert.Equal(203, codec.Encode(emptyBlock.GetBlockHeader().ToBencodex()).Length);
 
             // Case of a block with txs.
             // Size of RawBlock
-            Assert.Equal(697, txBlock.Serialize().Length);
+            Assert.Equal(735, txBlock.Serialize().Length);
             // Size of BlockDigest
-            Assert.Equal(293, txBlock.ToBlockDigest().Serialize().Length);
+            Assert.Equal(331, txBlock.ToBlockDigest().Serialize().Length);
             // Size of BlockHeader
-            Assert.Equal(248, codec.Encode(txBlock.GetBlockHeader().ToBencodex()).Length);
+            Assert.Equal(286, codec.Encode(txBlock.GetBlockHeader().ToBencodex()).Length);
         }
     }
 }

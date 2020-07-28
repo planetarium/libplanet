@@ -28,6 +28,7 @@ namespace Libplanet.Tests.Blocks
                 hash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
                 miner: ImmutableArray<byte>.Empty,
                 timestamp: future,
+                preCommitHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
                 actionsHash: ImmutableArray<byte>.Empty
             );
 
@@ -54,6 +55,7 @@ namespace Libplanet.Tests.Blocks
                     BlockHeader.TimestampFormat,
                     CultureInfo.InvariantCulture
                 ),
+                preCommitHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
                 actionsHash: ImmutableArray<byte>.Empty
             );
 
@@ -77,6 +79,7 @@ namespace Libplanet.Tests.Blocks
                     BlockHeader.TimestampFormat,
                     CultureInfo.InvariantCulture
                 ),
+                preCommitHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
                 actionsHash: ImmutableArray<byte>.Empty
             );
 
@@ -98,6 +101,7 @@ namespace Libplanet.Tests.Blocks
                 hash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
                 miner: ImmutableArray<byte>.Empty,
                 timestamp: now.ToString(BlockHeader.TimestampFormat, CultureInfo.InvariantCulture),
+                preCommitHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
                 actionsHash: ImmutableArray<byte>.Empty
             );
 
@@ -114,6 +118,7 @@ namespace Libplanet.Tests.Blocks
                 hash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
                 miner: ImmutableArray<byte>.Empty,
                 timestamp: now.ToString(BlockHeader.TimestampFormat, CultureInfo.InvariantCulture),
+                preCommitHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
                 actionsHash: ImmutableArray<byte>.Empty
             );
 
@@ -130,6 +135,7 @@ namespace Libplanet.Tests.Blocks
                 hash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
                 miner: ImmutableArray<byte>.Empty,
                 timestamp: now.ToString(BlockHeader.TimestampFormat, CultureInfo.InvariantCulture),
+                preCommitHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
                 actionsHash: ImmutableArray<byte>.Empty
             );
 
@@ -151,6 +157,7 @@ namespace Libplanet.Tests.Blocks
                 hash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
                 miner: ImmutableArray<byte>.Empty,
                 timestamp: now.ToString(BlockHeader.TimestampFormat, CultureInfo.InvariantCulture),
+                preCommitHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
                 actionsHash: ImmutableArray<byte>.Empty
             );
 
@@ -167,6 +174,7 @@ namespace Libplanet.Tests.Blocks
                 hash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
                 miner: ImmutableArray<byte>.Empty,
                 timestamp: now.ToString(BlockHeader.TimestampFormat, CultureInfo.InvariantCulture),
+                preCommitHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
                 actionsHash: ImmutableArray<byte>.Empty
             );
 

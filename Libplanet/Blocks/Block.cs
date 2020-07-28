@@ -42,7 +42,9 @@ namespace Libplanet.Blocks
         /// Transactions become sorted in an unpredicted-before-mined order and then go to
         /// the <see cref="Transactions"/> property.
         /// </param>
-        /// <param name="actionsHash">Tha actions <see cref="Hash"/>. To fill this field,
+        /// <param name="preCommitHash">The <see cref="Hash"/> what created before
+        /// action evaluation. Generally, it fill automatically if you give a null. </param>
+        /// <param name="actionsHash">The actions <see cref="Hash"/>. To fill this field,
         /// you must put a hash value of <see cref="ActionEvaluation"/>s
         /// of the block that was mined.</param>
         /// <seealso cref="Mine"/>
@@ -55,6 +57,7 @@ namespace Libplanet.Blocks
             HashDigest<SHA256>? previousHash,
             DateTimeOffset timestamp,
             IEnumerable<Transaction<T>> transactions,
+            HashDigest<SHA256>? preCommitHash = null,
             HashDigest<SHA256>? actionsHash = null)
         {
             Index = index;
@@ -72,9 +75,11 @@ namespace Libplanet.Blocks
                         new Bencodex.Types.List(Transactions.Select(tx =>
                             (IValue)tx.ToBencodex(true)))))
                 : (HashDigest<SHA256>?)null;
+            PreCommitHash = preCommitHash ?? Hashcash.Hash(SerializeForHash());
+            ActionsHash = actionsHash;
 
             // FIXME: This does not need to be computed every time?
-            Hash = Hashcash.Hash(SerializeForHash());
+            Hash = Hashcash.Hash(SerializeForHash(actionsHash));
 
             // As the order of transactions should be unpredictable until a block is mined,
             // the sorter key should be derived from both a block hash and a txid.
@@ -109,8 +114,6 @@ namespace Libplanet.Blocks
             Transactions = signers
                 .SelectMany(signer => signerTxs[signer].OrderBy(tx => tx.Nonce))
                 .ToImmutableArray();
-
-            ActionsHash = actionsHash;
         }
 
         /// <summary>
@@ -134,6 +137,7 @@ namespace Libplanet.Blocks
                 block.PreviousHash,
                 block.Timestamp,
                 block.Transactions,
+                block.PreCommitHash,
                 actionsHash)
         {
         }
@@ -156,12 +160,15 @@ namespace Libplanet.Blocks
                     .Select(tx => Transaction<T>.Deserialize(tx.ToArray()))
                     .ToList(),
 #pragma warning disable MEN002 // Line is too long
+                rb.Header.PreCommitHash.Any() ? new HashDigest<SHA256>(rb.Header.PreCommitHash) : (HashDigest<SHA256>?)null,
                 rb.Header.ActionsHash.Any() ? new HashDigest<SHA256>(rb.Header.ActionsHash) : (HashDigest<SHA256>?)null)
 #pragma warning restore MEN002 // Line is too long
         {
         }
 
         public HashDigest<SHA256> Hash { get; }
+
+        public HashDigest<SHA256> PreCommitHash { get; }
 
         [IgnoreDuringEquals]
         public long Index { get; }
@@ -489,8 +496,13 @@ namespace Libplanet.Blocks
             );
             ImmutableArray<byte> previousHashAsArray =
                 PreviousHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty;
-            var actionsHash = ActionsHash?.ToByteArray().ToImmutableArray() ??
-                              ImmutableArray<byte>.Empty;
+            ImmutableArray<byte> actionsHashAsArray =
+                ActionsHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty;
+
+            if (PreviousHash.Equals(ActionsHash))
+            {
+                Console.WriteLine();
+            }
 
             // FIXME: When hash is not assigned, should throw an exception.
             return new BlockHeader(
@@ -503,7 +515,8 @@ namespace Libplanet.Blocks
                 previousHash: previousHashAsArray,
                 txHash: TxHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty,
                 hash: Hash.ToByteArray().ToImmutableArray(),
-                actionsHash: actionsHash
+                preCommitHash: PreCommitHash.ToByteArray().ToImmutableArray(),
+                actionsHash: actionsHashAsArray
             );
         }
 
@@ -526,7 +539,7 @@ namespace Libplanet.Blocks
                     .Select(tx => tx.Serialize(true).ToImmutableArray()).ToImmutableArray());
         }
 
-        private byte[] SerializeForHash()
+        private byte[] SerializeForHash(HashDigest<SHA256>? actionsHash = null)
         {
             var dict = Bencodex.Types.Dictionary.Empty
                 .Add("index", Index)
@@ -549,6 +562,11 @@ namespace Libplanet.Blocks
             if (!(TxHash is null))
             {
                 dict = dict.Add("transaction_fingerprint", TxHash.Value.ToByteArray());
+            }
+
+            if (!(actionsHash is null))
+            {
+                dict = dict.Add("actions_hash", actionsHash.Value.ToByteArray());
             }
 
             return new Codec().Encode(dict);

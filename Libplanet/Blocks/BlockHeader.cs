@@ -35,7 +35,9 @@ namespace Libplanet.Blocks
 
         private static readonly byte[] HashKey = { 0x68 }; // 'h'
 
-        private static readonly byte[] ActionHashKey = { 0x61 }; // 'a'
+        private static readonly byte[] ActionsHashKey = { 0x61 }; // 'a'
+
+        private static readonly byte[] PreCommitHashKey = { 0x63 }; // 'c'
 
         private static readonly TimeSpan TimestampThreshold =
             TimeSpan.FromSeconds(15);
@@ -62,6 +64,8 @@ namespace Libplanet.Blocks
         /// Goes to the <see cref="TxHash"/>.</param>
         /// <param name="hash">The hash of the <see cref="Block{T}"/>.
         /// Goes to the <see cref="Hash"/>.</param>
+        /// <param name="preCommitHash">The hash of pre-commit block.
+        /// using for check validate.</param>
         /// <param name="actionsHash">The hash of the <see cref="ActionEvaluation"/>s.
         /// <seealso cref="ActionsHash"/>.</param>
         public BlockHeader(
@@ -74,6 +78,7 @@ namespace Libplanet.Blocks
             ImmutableArray<byte> previousHash,
             ImmutableArray<byte> txHash,
             ImmutableArray<byte> hash,
+            ImmutableArray<byte> preCommitHash,
             ImmutableArray<byte> actionsHash)
         {
             Index = index;
@@ -85,6 +90,7 @@ namespace Libplanet.Blocks
             PreviousHash = previousHash;
             TxHash = txHash;
             Hash = hash;
+            PreCommitHash = preCommitHash;
             ActionsHash = actionsHash;
         }
 
@@ -112,8 +118,12 @@ namespace Libplanet.Blocks
                 ? dict.GetValue<Binary>(HashKey).ToImmutableArray()
                 : ImmutableArray<byte>.Empty;
 
-            ActionsHash = dict.ContainsKey((IKey)(Binary)ActionHashKey)
-                ? dict.GetValue<Binary>(ActionHashKey).ToImmutableArray()
+            PreCommitHash = dict.ContainsKey((IKey)(Binary)PreCommitHashKey)
+                ? dict.GetValue<Binary>(PreCommitHashKey).ToImmutableArray()
+                : ImmutableArray<byte>.Empty;
+
+            ActionsHash = dict.ContainsKey((IKey)(Binary)ActionsHashKey)
+                ? dict.GetValue<Binary>(ActionsHashKey).ToImmutableArray()
                 : ImmutableArray<byte>.Empty;
         }
 
@@ -134,6 +144,8 @@ namespace Libplanet.Blocks
         public ImmutableArray<byte> TxHash { get; }
 
         public ImmutableArray<byte> Hash { get; }
+
+        public ImmutableArray<byte> PreCommitHash { get; }
 
         public ImmutableArray<byte> ActionsHash { get; }
 
@@ -197,9 +209,14 @@ namespace Libplanet.Blocks
                 dict = dict.Add(TxHashKey, TxHash.ToArray());
             }
 
+            if (PreCommitHash.Any())
+            {
+                dict = dict.Add(PreCommitHashKey, PreCommitHash.ToArray());
+            }
+
             if (ActionsHash.Any())
             {
-                dict = dict.Add(ActionHashKey, ActionsHash.ToArray());
+                dict = dict.Add(ActionsHashKey, ActionsHash.ToArray());
             }
 
             return dict;
