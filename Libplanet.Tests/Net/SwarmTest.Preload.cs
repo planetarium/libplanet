@@ -1394,5 +1394,47 @@ namespace Libplanet.Tests.Net
                 Assert.Equal(minerChain2.Tip, receiverChain.Tip);
             }
         }
+
+        [Fact(Timeout = Timeout)]
+        public async Task ReorgWhilePreloadAsync()
+        {
+            BlockChain<DumbAction> seedChain = _blockchains[0];
+            BlockChain<DumbAction> receiverChain = _blockchains[1];
+            for (int i = 0; i < 10; i++)
+            {
+                await seedChain.MineBlock(_fx1.Address1);
+            }
+
+            var progress = new Progress<PreloadState>(state =>
+            {
+                _logger.Information("Received a progress event: {@State}", state);
+
+                if (state is BlockDownloadState blockDownloadState
+                    && blockDownloadState.ReceivedBlockHash.Equals(seedChain.Tip.Hash))
+                {
+                    var forked = seedChain.Fork(seedChain[9].Hash);
+                    seedChain.Swap(forked, false);
+                    seedChain.MineBlock(_fx1.Address1).Wait();
+                    seedChain.MineBlock(_fx1.Address1).Wait();
+                }
+            });
+
+            var seed = _swarms[0];
+            var receiver = _swarms[1];
+
+            try
+            {
+                await StartAsync(seed);
+                await BootstrapAsync(receiver, seed.AsPeer);
+                await receiver.PreloadAsync(
+                    progress: progress,
+                    trustedStateValidators: new[] { seed.Address }.ToImmutableHashSet());
+                Assert.Equal(seedChain.Tip, receiverChain.Tip);
+            }
+            finally
+            {
+                await StopAsync(seed);
+            }
+        }
     }
 }
