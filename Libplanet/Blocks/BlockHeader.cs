@@ -305,10 +305,10 @@ namespace Libplanet.Blocks
                 }
             }
 
-            if (!new HashDigest<SHA256>(Hash.ToArray()).Satisfies(Difficulty))
+            if (!new HashDigest<SHA256>(PreCommitHash.ToArray()).Satisfies(Difficulty))
             {
                 throw new InvalidBlockNonceException(
-                    $"hash ({Hash}) with the nonce ({Nonce}) does not " +
+                    $"hash ({PreCommitHash}) with the nonce ({Nonce}) does not " +
                     $"satisfy its difficulty level {Difficulty}."
                 );
             }
