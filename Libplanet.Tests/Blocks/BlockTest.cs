@@ -773,7 +773,10 @@ namespace Libplanet.Tests.Blocks
             Assert.False(sameBlock2.Equals(differentBlock));
         }
 
-#pragma warning disable SA1118 // Line is too long
+        [SuppressMessage(
+            "Microsoft.StyleCop.CSharp.ReadabilityRules",
+            "SA1118",
+            Justification = "Long array literals should be multiline.")]
         [Fact]
         public void CompareWithPreCommitBlock()
         {
@@ -843,7 +846,6 @@ namespace Libplanet.Tests.Blocks
             Assert.NotEqual(preCommitBlock.Hash, afterCommitBlock.Hash);
             Assert.Equal(preCommitBlock.Hash, afterCommitBlock.PreCommitHash);
         }
-#pragma warning restore SA1118 // Line is too long
 
         [Fact]
         public void BlockStructureSize()
