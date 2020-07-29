@@ -413,7 +413,7 @@ namespace Libplanet.Net
         /// operation should be canceled.
         /// </param>
         /// <returns><see cref="PeerChainStatus"/> of the connected <see cref="Peers"/>.</returns>
-        public async Task<IEnumerable<PeerChainStatus>> GetPeerChainStatus(
+        public async Task<IEnumerable<PeerChainStatus>> GetPeerChainStatusAsync(
             TimeSpan? dialTimeout,
             CancellationToken cancellationToken
         )

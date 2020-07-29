@@ -75,7 +75,7 @@ To be released.
  -  Added `Block<T>.TotalDifficulty` property.  [[#666], [#917]]
  -  Added `SwarmOptions` class.  [[#926]]
  -  Added `PeerChainStatus` struct.  [[#936]]
- -  Added `Swarm<T>.GetPeerChainStatus()` method.  [[#936]]
+ -  Added `Swarm<T>.GetPeerChainStatusAsync()` method.  [[#936]]
 
 ### Behavioral changes
 
