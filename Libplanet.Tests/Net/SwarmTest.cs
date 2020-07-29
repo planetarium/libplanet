@@ -2017,7 +2017,7 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact(Timeout = Timeout)]
-        public async Task GetPeerChainStatusAsync()
+        public async Task GetPeerChainStateAsync()
         {
             Swarm<DumbAction> swarm1 = _swarms[0];
             Swarm<DumbAction> swarm2 = _swarms[1];
