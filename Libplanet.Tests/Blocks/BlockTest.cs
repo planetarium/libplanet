@@ -781,7 +781,7 @@ namespace Libplanet.Tests.Blocks
             "SA1118",
             Justification = "Long array literals should be multiline.")]
         [Fact]
-        public void CompareWithPreCommitBlock()
+        public void CompareWithPreEvaluationBlock()
         {
             Address[] addresses =
             {

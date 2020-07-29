@@ -129,7 +129,7 @@ namespace Libplanet.Blocks
         {
         }
 
-        public Block(Block<T> block, HashDigest<SHA256>? actionsHash)
+        public Block(Block<T> block, HashDigest<SHA256>? evaluationDigest)
             : this(
                 block.Index,
                 block.Difficulty,
@@ -140,10 +140,15 @@ namespace Libplanet.Blocks
                 block.Timestamp,
                 block.Transactions,
                 block.PreEvaluationHash,
-                actionsHash)
+                evaluationDigest)
         {
         }
 
+        /// <summary>
+        /// Creates a <see cref="Block{T}"/> instance from its RawBlock.
+        /// </summary>
+        /// <param name="rb">The <see cref="RawBlock"/> representation of
+        /// <see cref="Block{T}"/> instance.</param>
         private Block(RawBlock rb)
             : this(
                 rb.Header.Index,
