@@ -9,18 +9,20 @@ namespace Libplanet.Serialization
             return (T)info.GetValue(name, typeof(T));
         }
 
-        public static T GetValueOrDefault<T>(
+        public static bool TryGetValue<T>(
             this SerializationInfo serializationInfo,
             string name,
-            T defaultValue)
+            out T value)
         {
             try
             {
-                return serializationInfo.GetValue<T>(name);
+                value = serializationInfo.GetValue<T>(name);
+                return true;
             }
             catch (SerializationException)
             {
-                return defaultValue;
+                value = default;
+                return false;
             }
         }
     }

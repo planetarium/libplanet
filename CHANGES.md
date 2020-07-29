@@ -47,6 +47,8 @@ To be released.
     `BlockHeader` constructor. [[#931], [#935]]
  -  Added `HashDigest<SHA256>`-typed `preEvaluationHash` parameter to
     `Block<T>()` constructor. [[#931], [#935]]
+ -  Replaced `SerializationInfoExtensions.GetValueOrDefault<T>()` to
+    `SerializationInfoExtensions.TryGetValue<T>()`.  [[#940]]
 
 ### Backward-incompatible network protocol changes
 
