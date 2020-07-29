@@ -120,7 +120,7 @@ namespace Libplanet.Net
             IEnumerable<IceServer> iceServers = null,
             DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered = null,
             IEnumerable<PublicKey> trustedAppProtocolVersionSigners = null,
-            SwarmOptions swarmOptions = null)
+            SwarmOptions options = null)
         {
             BlockChain = blockChain ?? throw new ArgumentNullException(nameof(blockChain));
             _store = BlockChain.Store;
@@ -161,7 +161,7 @@ namespace Libplanet.Net
                 ProcessMessageHandler,
                 _logger);
 
-            _options = swarmOptions ?? new SwarmOptions();
+            _options = options ?? new SwarmOptions();
         }
 
         ~Swarm()
