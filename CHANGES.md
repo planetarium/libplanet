@@ -74,6 +74,8 @@ To be released.
  -  Added `BlockChain<T>.GetBalance()` method.  [[#861], [#900]]
  -  Added `Block<T>.TotalDifficulty` property.  [[#666], [#917]]
  -  Added `SwarmOptions` class.  [[#926]]
+ -  Added `PeerChainState` struct.  [[#936]]
+ -  Added `Swarm<T>.GetPeerChainStateAsync()` method.  [[#936]]
 
 ### Behavioral changes
 
@@ -154,6 +156,7 @@ To be released.
 [#930]: https://github.com/planetarium/libplanet/pull/930
 [#932]: https://github.com/planetarium/libplanet/pull/932
 [#933]: https://github.com/planetarium/libplanet/pull/933
+[#936]: https://github.com/planetarium/libplanet/pull/936
 [sleep mode]: https://en.wikipedia.org/wiki/Sleep_mode
 
 

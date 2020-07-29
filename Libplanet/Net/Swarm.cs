@@ -405,6 +405,26 @@ namespace Libplanet.Net
         }
 
         /// <summary>
+        /// Gets the <see cref="PeerChainState"/> of the connected <see cref="Peers"/>.
+        /// </summary>
+        /// <param name="dialTimeout">A timeout value for dialing.</param>
+        /// <param name="cancellationToken">
+        /// A cancellation token used to propagate notification that this
+        /// operation should be canceled.
+        /// </param>
+        /// <returns><see cref="PeerChainState"/> of the connected <see cref="Peers"/>.</returns>
+        public async Task<IEnumerable<PeerChainState>> GetPeerChainStateAsync(
+            TimeSpan? dialTimeout,
+            CancellationToken cancellationToken
+        )
+        {
+            return (await DialToExistingPeers(dialTimeout, cancellationToken))
+                .Where(pp => !(pp.Item1 is null || pp.Item2 is null))
+                .Select(pp =>
+                    new PeerChainState(pp.Item1, pp.Item2.TipIndex, pp.Item2.TotalDifficulty));
+        }
+
+        /// <summary>
         /// Preemptively downloads blocks from registered <see cref="Peer"/>s.
         /// </summary>
         /// <param name="dialTimeout">

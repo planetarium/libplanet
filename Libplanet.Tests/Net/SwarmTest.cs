@@ -2016,6 +2016,58 @@ namespace Libplanet.Tests.Net
             }
         }
 
+        [Fact(Timeout = Timeout)]
+        public async Task GetPeerChainStateAsync()
+        {
+            Swarm<DumbAction> swarm1 = _swarms[0];
+            Swarm<DumbAction> swarm2 = _swarms[1];
+            Swarm<DumbAction> swarm3 = _swarms[2];
+
+            var peerChainState = await swarm1.GetPeerChainStateAsync(
+                TimeSpan.FromSeconds(1), default);
+            Assert.Empty(peerChainState);
+
+            try
+            {
+                await StartAsync(swarm2);
+                await StartAsync(swarm3);
+
+                await BootstrapAsync(swarm1, swarm2.AsPeer);
+
+                peerChainState = await swarm1.GetPeerChainStateAsync(
+                    TimeSpan.FromSeconds(1), default);
+                Assert.Equal(
+                    new PeerChainState((BoundPeer)swarm2.AsPeer, 0, 0),
+                    peerChainState.First()
+                );
+
+                await swarm2.BlockChain.MineBlock(_fx1.Address1);
+                peerChainState = await swarm1.GetPeerChainStateAsync(
+                    TimeSpan.FromSeconds(1), default);
+                Assert.Equal(
+                    new PeerChainState((BoundPeer)swarm2.AsPeer, 1, 1024),
+                    peerChainState.First()
+                );
+
+                await BootstrapAsync(swarm1, swarm3.AsPeer);
+                peerChainState = await swarm1.GetPeerChainStateAsync(
+                    TimeSpan.FromSeconds(1), default);
+                Assert.Equal(
+                    new[]
+                    {
+                        new PeerChainState((BoundPeer)swarm2.AsPeer, 1, 1024),
+                        new PeerChainState((BoundPeer)swarm3.AsPeer, 0, 0),
+                    }.ToHashSet(),
+                    peerChainState.ToHashSet()
+                );
+            }
+            finally
+            {
+                await StopAsync(swarm2);
+                await StopAsync(swarm3);
+            }
+        }
+
         private async Task<Task> StartAsync<T>(
             Swarm<T> swarm,
             CancellationToken cancellationToken = default
