@@ -11,6 +11,7 @@ using System.Threading;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Blockchain;
 using Libplanet.Tx;
 
 namespace Libplanet.Blocks
@@ -42,10 +43,11 @@ namespace Libplanet.Blocks
         /// Transactions become sorted in an unpredicted-before-mined order and then go to
         /// the <see cref="Transactions"/> property.
         /// </param>
-        /// <param name="preCommitHash">The <see cref="Hash"/> what created before
-        /// action evaluation. Generally, it fill automatically if you give a null. </param>
-        /// <param name="evaluationDigest">The actions <see cref="Hash"/>. To fill this field,
-        /// you must put a hash value of <see cref="ActionEvaluation"/>s
+        /// <param name="preEvaluationHash">The hash derived from the block <em>except of</em>.
+        /// </param>
+        /// <param name="evaluationDigest">The hash derived from the result states of every
+        /// <see cref="Transaction{T}.Actions"/> of the block's entire
+        /// <paramref name="transactions"/>
         /// of the block that was mined.</param>
         /// <seealso cref="Mine"/>
         public Block(
@@ -168,8 +170,18 @@ namespace Libplanet.Blocks
 
         public HashDigest<SHA256> Hash { get; }
 
+        /// <summary>
+        /// <see cref="PreEvaluationHash"/> is a Hash before evaluate actions.
+        /// Used for comparison with nonce during <see cref="Validate"/>.
+        /// <seealso cref="BlockHeader.Validate"/>
+        /// </summary>
         public HashDigest<SHA256> PreEvaluationHash { get; }
 
+        /// <summary>
+        /// <see cref="EvaluationDigest"/> is a Hash value derived from a dictionary that values
+        /// changed accounts in the status delta that the block has.
+        /// <seealso cref="BlockChain{T}.MineBlock(Libplanet.Address)"/>
+        /// </summary>
         public HashDigest<SHA256>? EvaluationDigest { get; }
 
         [IgnoreDuringEquals]
