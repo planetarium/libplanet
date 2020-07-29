@@ -844,7 +844,7 @@ namespace Libplanet.Tests.Blocks
 
             Block<DumbAction> afterCommitBlock = MineNext(genesis, txs, new byte[] { });
             Assert.NotEqual(preCommitBlock.Hash, afterCommitBlock.Hash);
-            Assert.Equal(preCommitBlock.Hash, afterCommitBlock.PreCommitHash);
+            Assert.Equal(preCommitBlock.Hash, afterCommitBlock.PreEvaluationHash);
         }
 
         [Fact]

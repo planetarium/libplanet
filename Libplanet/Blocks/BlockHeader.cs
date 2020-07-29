@@ -35,9 +35,9 @@ namespace Libplanet.Blocks
 
         private static readonly byte[] HashKey = { 0x68 }; // 'h'
 
-        private static readonly byte[] ActionsHashKey = { 0x61 }; // 'a'
+        private static readonly byte[] EvaluationDigestKey = { 0x65 }; // 'e'
 
-        private static readonly byte[] PreCommitHashKey = { 0x63 }; // 'c'
+        private static readonly byte[] PreEvaluationHashKey = { 0x63 }; // 'c'
 
         private static readonly TimeSpan TimestampThreshold =
             TimeSpan.FromSeconds(15);
@@ -64,10 +64,10 @@ namespace Libplanet.Blocks
         /// Goes to the <see cref="TxHash"/>.</param>
         /// <param name="hash">The hash of the <see cref="Block{T}"/>.
         /// Goes to the <see cref="Hash"/>.</param>
-        /// <param name="preCommitHash">The hash of pre-commit block.
+        /// <param name="preEvaluationHash">The hash of pre-commit block.
         /// using for check validate.</param>
-        /// <param name="actionsHash">The hash of the <see cref="ActionEvaluation"/>s.
-        /// <seealso cref="ActionsHash"/>.</param>
+        /// <param name="evaluationDigest">The hash of the <see cref="ActionEvaluation"/>s.
+        /// <seealso cref="EvaluationDigest"/>.</param>
         public BlockHeader(
             long index,
             string timestamp,
@@ -78,8 +78,8 @@ namespace Libplanet.Blocks
             ImmutableArray<byte> previousHash,
             ImmutableArray<byte> txHash,
             ImmutableArray<byte> hash,
-            ImmutableArray<byte> preCommitHash,
-            ImmutableArray<byte> actionsHash)
+            ImmutableArray<byte> preEvaluationHash,
+            ImmutableArray<byte> evaluationDigest)
         {
             Index = index;
             Timestamp = timestamp;
@@ -90,8 +90,8 @@ namespace Libplanet.Blocks
             PreviousHash = previousHash;
             TxHash = txHash;
             Hash = hash;
-            PreCommitHash = preCommitHash;
-            ActionsHash = actionsHash;
+            PreEvaluationHash = preEvaluationHash;
+            EvaluationDigest = evaluationDigest;
         }
 
         public BlockHeader(Bencodex.Types.Dictionary dict)
@@ -118,12 +118,12 @@ namespace Libplanet.Blocks
                 ? dict.GetValue<Binary>(HashKey).ToImmutableArray()
                 : ImmutableArray<byte>.Empty;
 
-            PreCommitHash = dict.ContainsKey((IKey)(Binary)PreCommitHashKey)
-                ? dict.GetValue<Binary>(PreCommitHashKey).ToImmutableArray()
+            PreEvaluationHash = dict.ContainsKey((IKey)(Binary)PreEvaluationHashKey)
+                ? dict.GetValue<Binary>(PreEvaluationHashKey).ToImmutableArray()
                 : ImmutableArray<byte>.Empty;
 
-            ActionsHash = dict.ContainsKey((IKey)(Binary)ActionsHashKey)
-                ? dict.GetValue<Binary>(ActionsHashKey).ToImmutableArray()
+            EvaluationDigest = dict.ContainsKey((IKey)(Binary)EvaluationDigestKey)
+                ? dict.GetValue<Binary>(EvaluationDigestKey).ToImmutableArray()
                 : ImmutableArray<byte>.Empty;
         }
 
@@ -145,9 +145,9 @@ namespace Libplanet.Blocks
 
         public ImmutableArray<byte> Hash { get; }
 
-        public ImmutableArray<byte> PreCommitHash { get; }
+        public ImmutableArray<byte> PreEvaluationHash { get; }
 
-        public ImmutableArray<byte> ActionsHash { get; }
+        public ImmutableArray<byte> EvaluationDigest { get; }
 
         /// <summary>
         /// Gets <see cref="BlockHeader"/> instance from serialized <paramref name="bytes"/>.
@@ -209,14 +209,14 @@ namespace Libplanet.Blocks
                 dict = dict.Add(TxHashKey, TxHash.ToArray());
             }
 
-            if (PreCommitHash.Any())
+            if (PreEvaluationHash.Any())
             {
-                dict = dict.Add(PreCommitHashKey, PreCommitHash.ToArray());
+                dict = dict.Add(PreEvaluationHashKey, PreEvaluationHash.ToArray());
             }
 
-            if (ActionsHash.Any())
+            if (EvaluationDigest.Any())
             {
-                dict = dict.Add(ActionsHashKey, ActionsHash.ToArray());
+                dict = dict.Add(EvaluationDigestKey, EvaluationDigest.ToArray());
             }
 
             return dict;
@@ -305,10 +305,10 @@ namespace Libplanet.Blocks
                 }
             }
 
-            if (!new HashDigest<SHA256>(PreCommitHash.ToArray()).Satisfies(Difficulty))
+            if (!new HashDigest<SHA256>(PreEvaluationHash.ToArray()).Satisfies(Difficulty))
             {
                 throw new InvalidBlockNonceException(
-                    $"hash ({PreCommitHash}) with the nonce ({Nonce}) does not " +
+                    $"hash ({PreEvaluationHash}) with the nonce ({Nonce}) does not " +
                     $"satisfy its difficulty level {Difficulty}."
                 );
             }

@@ -83,11 +83,11 @@ namespace Libplanet.Store
                 HashDigest<SHA256>? prevHash = blockDigest.Header.PreviousHash.Any()
                     ? new HashDigest<SHA256>(blockDigest.Header.PreviousHash)
                     : (HashDigest<SHA256>?)null;
-                HashDigest<SHA256>? preCommitHash = blockDigest.Header.PreCommitHash.Any()
-                    ? new HashDigest<SHA256>(blockDigest.Header.PreCommitHash)
+                HashDigest<SHA256>? preEvaluationHash = blockDigest.Header.PreEvaluationHash.Any()
+                    ? new HashDigest<SHA256>(blockDigest.Header.PreEvaluationHash)
                     : (HashDigest<SHA256>?)null;
-                HashDigest<SHA256>? actionsHash = blockDigest.Header.ActionsHash.Any()
-                    ? new HashDigest<SHA256>(blockDigest.Header.ActionsHash)
+                HashDigest<SHA256>? evaluationDigest = blockDigest.Header.EvaluationDigest.Any()
+                    ? new HashDigest<SHA256>(blockDigest.Header.EvaluationDigest)
                     : (HashDigest<SHA256>?)null;
 
                 return new Block<T>(
@@ -104,8 +104,8 @@ namespace Libplanet.Store
                     ).ToUniversalTime(),
                     transactions: blockDigest.TxIds
                         .Select(bytes => GetTransaction<T>(new TxId(bytes.ToArray()))),
-                    preCommitHash: preCommitHash,
-                    actionsHash: actionsHash
+                    preEvaluationHash: preEvaluationHash,
+                    evaluationDigest: evaluationDigest
                 );
             }
 

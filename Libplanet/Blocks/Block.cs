@@ -44,7 +44,7 @@ namespace Libplanet.Blocks
         /// </param>
         /// <param name="preCommitHash">The <see cref="Hash"/> what created before
         /// action evaluation. Generally, it fill automatically if you give a null. </param>
-        /// <param name="actionsHash">The actions <see cref="Hash"/>. To fill this field,
+        /// <param name="evaluationDigest">The actions <see cref="Hash"/>. To fill this field,
         /// you must put a hash value of <see cref="ActionEvaluation"/>s
         /// of the block that was mined.</param>
         /// <seealso cref="Mine"/>
@@ -57,8 +57,8 @@ namespace Libplanet.Blocks
             HashDigest<SHA256>? previousHash,
             DateTimeOffset timestamp,
             IEnumerable<Transaction<T>> transactions,
-            HashDigest<SHA256>? preCommitHash = null,
-            HashDigest<SHA256>? actionsHash = null)
+            HashDigest<SHA256>? preEvaluationHash = null,
+            HashDigest<SHA256>? evaluationDigest = null)
         {
             Index = index;
             Difficulty = difficulty;
@@ -75,11 +75,11 @@ namespace Libplanet.Blocks
                         new Bencodex.Types.List(Transactions.Select(tx =>
                             (IValue)tx.ToBencodex(true)))))
                 : (HashDigest<SHA256>?)null;
-            PreCommitHash = preCommitHash ?? Hashcash.Hash(SerializeForHash());
-            ActionsHash = actionsHash;
+            PreEvaluationHash = preEvaluationHash ?? Hashcash.Hash(SerializeForHash());
+            EvaluationDigest = evaluationDigest;
 
             // FIXME: This does not need to be computed every time?
-            Hash = Hashcash.Hash(SerializeForHash(actionsHash));
+            Hash = Hashcash.Hash(SerializeForHash(evaluationDigest));
 
             // As the order of transactions should be unpredictable until a block is mined,
             // the sorter key should be derived from both a block hash and a txid.
@@ -137,7 +137,7 @@ namespace Libplanet.Blocks
                 block.PreviousHash,
                 block.Timestamp,
                 block.Transactions,
-                block.PreCommitHash,
+                block.PreEvaluationHash,
                 actionsHash)
         {
         }
@@ -160,15 +160,17 @@ namespace Libplanet.Blocks
                     .Select(tx => Transaction<T>.Deserialize(tx.ToArray()))
                     .ToList(),
 #pragma warning disable MEN002 // Line is too long
-                rb.Header.PreCommitHash.Any() ? new HashDigest<SHA256>(rb.Header.PreCommitHash) : (HashDigest<SHA256>?)null,
-                rb.Header.ActionsHash.Any() ? new HashDigest<SHA256>(rb.Header.ActionsHash) : (HashDigest<SHA256>?)null)
+                rb.Header.PreEvaluationHash.Any() ? new HashDigest<SHA256>(rb.Header.PreEvaluationHash) : (HashDigest<SHA256>?)null,
+                rb.Header.EvaluationDigest.Any() ? new HashDigest<SHA256>(rb.Header.EvaluationDigest) : (HashDigest<SHA256>?)null)
 #pragma warning restore MEN002 // Line is too long
         {
         }
 
         public HashDigest<SHA256> Hash { get; }
 
-        public HashDigest<SHA256> PreCommitHash { get; }
+        public HashDigest<SHA256> PreEvaluationHash { get; }
+
+        public HashDigest<SHA256>? EvaluationDigest { get; }
 
         [IgnoreDuringEquals]
         public long Index { get; }
@@ -196,9 +198,6 @@ namespace Libplanet.Blocks
 
         [IgnoreDuringEquals]
         public IEnumerable<Transaction<T>> Transactions { get; }
-
-        [IgnoreDuringEquals]
-        public HashDigest<SHA256>? ActionsHash { get; }
 
         public static bool operator ==(Block<T> left, Block<T> right) =>
             Operator.Weave(left, right);
@@ -497,9 +496,9 @@ namespace Libplanet.Blocks
             ImmutableArray<byte> previousHashAsArray =
                 PreviousHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty;
             ImmutableArray<byte> actionsHashAsArray =
-                ActionsHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty;
+                EvaluationDigest?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty;
 
-            if (PreviousHash.Equals(ActionsHash))
+            if (PreviousHash.Equals(EvaluationDigest))
             {
                 Console.WriteLine();
             }
@@ -515,8 +514,8 @@ namespace Libplanet.Blocks
                 previousHash: previousHashAsArray,
                 txHash: TxHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty,
                 hash: Hash.ToByteArray().ToImmutableArray(),
-                preCommitHash: PreCommitHash.ToByteArray().ToImmutableArray(),
-                actionsHash: actionsHashAsArray
+                preEvaluationHash: PreEvaluationHash.ToByteArray().ToImmutableArray(),
+                evaluationDigest: actionsHashAsArray
             );
         }
 
@@ -539,7 +538,7 @@ namespace Libplanet.Blocks
                     .Select(tx => tx.Serialize(true).ToImmutableArray()).ToImmutableArray());
         }
 
-        private byte[] SerializeForHash(HashDigest<SHA256>? actionsHash = null)
+        private byte[] SerializeForHash(HashDigest<SHA256>? evaluationDigest = null)
         {
             var dict = Bencodex.Types.Dictionary.Empty
                 .Add("index", Index)
@@ -564,9 +563,9 @@ namespace Libplanet.Blocks
                 dict = dict.Add("transaction_fingerprint", TxHash.Value.ToByteArray());
             }
 
-            if (!(actionsHash is null))
+            if (!(evaluationDigest is null))
             {
-                dict = dict.Add("actions_hash", actionsHash.Value.ToByteArray());
+                dict = dict.Add("actions_hash", evaluationDigest.Value.ToByteArray());
             }
 
             return new Codec().Encode(dict);

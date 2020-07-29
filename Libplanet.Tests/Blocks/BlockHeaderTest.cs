@@ -28,8 +28,8 @@ namespace Libplanet.Tests.Blocks
                 hash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
                 miner: ImmutableArray<byte>.Empty,
                 timestamp: future,
-                preCommitHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
-                actionsHash: ImmutableArray<byte>.Empty
+                preEvaluationHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
+                evaluationDigest: ImmutableArray<byte>.Empty
             );
 
             Assert.Throws<InvalidBlockTimestampException>(
@@ -55,8 +55,8 @@ namespace Libplanet.Tests.Blocks
                     BlockHeader.TimestampFormat,
                     CultureInfo.InvariantCulture
                 ),
-                preCommitHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
-                actionsHash: ImmutableArray<byte>.Empty
+                preEvaluationHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
+                evaluationDigest: ImmutableArray<byte>.Empty
             );
 
             Assert.Throws<InvalidBlockNonceException>(() =>
@@ -79,8 +79,8 @@ namespace Libplanet.Tests.Blocks
                     BlockHeader.TimestampFormat,
                     CultureInfo.InvariantCulture
                 ),
-                preCommitHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
-                actionsHash: ImmutableArray<byte>.Empty
+                preEvaluationHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
+                evaluationDigest: ImmutableArray<byte>.Empty
             );
 
             Assert.Throws<InvalidBlockIndexException>(() =>
@@ -101,8 +101,8 @@ namespace Libplanet.Tests.Blocks
                 hash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
                 miner: ImmutableArray<byte>.Empty,
                 timestamp: now.ToString(BlockHeader.TimestampFormat, CultureInfo.InvariantCulture),
-                preCommitHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
-                actionsHash: ImmutableArray<byte>.Empty
+                preEvaluationHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
+                evaluationDigest: ImmutableArray<byte>.Empty
             );
 
             Assert.Throws<InvalidBlockDifficultyException>(() =>
@@ -118,8 +118,8 @@ namespace Libplanet.Tests.Blocks
                 hash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
                 miner: ImmutableArray<byte>.Empty,
                 timestamp: now.ToString(BlockHeader.TimestampFormat, CultureInfo.InvariantCulture),
-                preCommitHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
-                actionsHash: ImmutableArray<byte>.Empty
+                preEvaluationHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
+                evaluationDigest: ImmutableArray<byte>.Empty
             );
 
             Assert.Throws<InvalidBlockDifficultyException>(() =>
@@ -135,8 +135,8 @@ namespace Libplanet.Tests.Blocks
                 hash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
                 miner: ImmutableArray<byte>.Empty,
                 timestamp: now.ToString(BlockHeader.TimestampFormat, CultureInfo.InvariantCulture),
-                preCommitHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
-                actionsHash: ImmutableArray<byte>.Empty
+                preEvaluationHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
+                evaluationDigest: ImmutableArray<byte>.Empty
             );
 
             Assert.Throws<InvalidBlockTotalDifficultyException>(() =>
@@ -157,8 +157,8 @@ namespace Libplanet.Tests.Blocks
                 hash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
                 miner: ImmutableArray<byte>.Empty,
                 timestamp: now.ToString(BlockHeader.TimestampFormat, CultureInfo.InvariantCulture),
-                preCommitHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
-                actionsHash: ImmutableArray<byte>.Empty
+                preEvaluationHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
+                evaluationDigest: ImmutableArray<byte>.Empty
             );
 
             Assert.Throws<InvalidBlockPreviousHashException>(() =>
@@ -174,8 +174,8 @@ namespace Libplanet.Tests.Blocks
                 hash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
                 miner: ImmutableArray<byte>.Empty,
                 timestamp: now.ToString(BlockHeader.TimestampFormat, CultureInfo.InvariantCulture),
-                preCommitHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
-                actionsHash: ImmutableArray<byte>.Empty
+                preEvaluationHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
+                evaluationDigest: ImmutableArray<byte>.Empty
             );
 
             Assert.Throws<InvalidBlockPreviousHashException>(() =>
