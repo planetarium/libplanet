@@ -2023,8 +2023,9 @@ namespace Libplanet.Tests.Net
             Swarm<DumbAction> swarm2 = _swarms[1];
             Swarm<DumbAction> swarm3 = _swarms[2];
 
-            var peerStatus = await swarm1.GetPeerChainStatusAsync(TimeSpan.FromSeconds(1), default);
-            Assert.Empty(peerStatus);
+            var peerChainState = await swarm1.GetPeerChainStateAsync(
+                TimeSpan.FromSeconds(1), default);
+            Assert.Empty(peerChainState);
 
             try
             {
@@ -2033,28 +2034,31 @@ namespace Libplanet.Tests.Net
 
                 await BootstrapAsync(swarm1, swarm2.AsPeer);
 
-                peerStatus = await swarm1.GetPeerChainStatusAsync(TimeSpan.FromSeconds(1), default);
+                peerChainState = await swarm1.GetPeerChainStateAsync(
+                    TimeSpan.FromSeconds(1), default);
                 Assert.Equal(
-                    new PeerChainStatus((BoundPeer)swarm2.AsPeer, 0, 0),
-                    peerStatus.First()
+                    new PeerChainState((BoundPeer)swarm2.AsPeer, 0, 0),
+                    peerChainState.First()
                 );
 
                 await swarm2.BlockChain.MineBlock(_fx1.Address1);
-                peerStatus = await swarm1.GetPeerChainStatusAsync(TimeSpan.FromSeconds(1), default);
+                peerChainState = await swarm1.GetPeerChainStateAsync(
+                    TimeSpan.FromSeconds(1), default);
                 Assert.Equal(
-                    new PeerChainStatus((BoundPeer)swarm2.AsPeer, 1, 1024),
-                    peerStatus.First()
+                    new PeerChainState((BoundPeer)swarm2.AsPeer, 1, 1024),
+                    peerChainState.First()
                 );
 
                 await BootstrapAsync(swarm1, swarm3.AsPeer);
-                peerStatus = await swarm1.GetPeerChainStatusAsync(TimeSpan.FromSeconds(1), default);
+                peerChainState = await swarm1.GetPeerChainStateAsync(
+                    TimeSpan.FromSeconds(1), default);
                 Assert.Equal(
                     new[]
                     {
-                        new PeerChainStatus((BoundPeer)swarm2.AsPeer, 1, 1024),
-                        new PeerChainStatus((BoundPeer)swarm3.AsPeer, 0, 0),
+                        new PeerChainState((BoundPeer)swarm2.AsPeer, 1, 1024),
+                        new PeerChainState((BoundPeer)swarm3.AsPeer, 0, 0),
                     }.ToHashSet(),
-                    peerStatus.ToHashSet()
+                    peerChainState.ToHashSet()
                 );
             }
             finally

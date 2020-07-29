@@ -3,11 +3,11 @@ using System.Numerics;
 namespace Libplanet.Net
 {
     /// <summary>
-    /// The blockchain status of <see cref="BoundPeer"/>.
+    /// The blockchain state of <see cref="BoundPeer"/>.
     /// </summary>
-    public readonly struct PeerChainStatus
+    public readonly struct PeerChainState
     {
-        public PeerChainStatus(BoundPeer peer, long tipIndex, BigInteger totalDifficulty)
+        public PeerChainState(BoundPeer peer, long tipIndex, BigInteger totalDifficulty)
         {
             Peer = peer;
             TipIndex = tipIndex;
