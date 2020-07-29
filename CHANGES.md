@@ -42,7 +42,11 @@ To be released.
  -  Added `ImmutableArray<byte>`-typed `actionsHash` parameter to
     `BlockHeader` constructor. [[#931], [#935]]
  -  Added `HashDigest<SHA256>`-typed `actionsHash` parameter to
-    `Block` constructor. [[#931], [#935]]
+    `Block<T>()` constructor. [[#931], [#935]]
+ -  Added `ImmutableArray<byte>`-typed `preCommitHash` parameter to
+    `BlockHeader` constructor. [[#931], [#935]]
+ -  Added `HashDigest<SHA256>`-typed `preCommitHash` parameter to
+    `Block<T>()` constructor. [[#931], [#935]]
 
 ### Backward-incompatible network protocol changes
 
@@ -80,8 +84,10 @@ To be released.
  -  Added `SwarmOptions` class.  [[#926]]
  -  Added `PeerChainState` struct.  [[#936]]
  -  Added `Swarm<T>.GetPeerChainStateAsync()` method.  [[#936]]
- -  Added `Block<T>.ActionsHash` property.  [[#931], [[#935]]]
- -  Added `BlockHeader<T>.ActionsHash` property.  [[#931], [[#935]]]
+ -  Added `Block<T>.ActionsHash` property.  [[#931], [#935]]
+ -  Added `BlockHeader<T>.ActionsHash` property.  [[#931], [#935]]
+ -  Added `Block<T>.PreCommitHash` property.  [[#931], [#935]]
+ -  Added `BlockHeader<T>.PreCommitHash` property.  [[#931], [#935]]
 
 ### Behavioral changes
 
