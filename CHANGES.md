@@ -117,6 +117,7 @@ To be released.
     instead of the longest chain.  [[#459], [#919]]
  -  `Swarm<T>.BootstrapAsync()` method became not to throw `TimeoutException` when
     it fails to connect to all neighbors.  [[#933]]
+ -  `Currency` is now serializable.  [[#940]]
 
 ### Bug fixes
 
