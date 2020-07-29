@@ -128,8 +128,9 @@ To be released.
     [[#909]]
  -  Fixed a bug in which pre-computed state delivery had failed when a state
     key is not an `Address` when preloading.  [[#912]]
- -  Fixed a bug where `UnexpectedlyTerminatedException` hadn't been serialized
-    with `BinaryFormatter`.  [[#913]]
+ -  Fixed a bug where `UnexpectedlyTerminatedException` and
+    `InsufficientBalanceException` hadn't been serialized with
+    `BinaryFormatter`.  [[#913], [#940]]
  -  Fixed a bug where `TurnClient` hadn't applied cancellation token to its
     connections.  [[#916]]
  -  Fixed a bug where `BlockChain<T>.GetRawState()` had overwritten block states
