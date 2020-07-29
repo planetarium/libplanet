@@ -144,11 +144,6 @@ namespace Libplanet.Blocks
         {
         }
 
-        /// <summary>
-        /// Creates a <see cref="Block{T}"/> instance from its RawBlock.
-        /// </summary>
-        /// <param name="rb">The <see cref="RawBlock"/> representation of
-        /// <see cref="Block{T}"/> instance.</param>
         private Block(RawBlock rb)
             : this(
                 rb.Header.Index,
@@ -173,6 +168,13 @@ namespace Libplanet.Blocks
         {
         }
 
+        /// <summary>
+        /// <see cref="Hash"/> is a Hash derived from a serialized <see cref="Block{T}"/>
+        /// after evaluate actions. It is same as <see cref="PreEvaluationHash"/> when
+        /// <see cref="EvaluationDigest"/> is null.
+        /// <seealso cref="PreEvaluationHash"/>
+        /// <seealso cref="EvaluationDigest"/>
+        /// </summary>
         public HashDigest<SHA256> Hash { get; }
 
         /// <summary>
