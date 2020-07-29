@@ -88,6 +88,7 @@ To be released.
  -  Added `BlockHeader.EvaluationDigest` property.  [[#931], [#935]]
  -  Added `Block<T>.PreEvaluationHash` property.  [[#931], [#935]]
  -  Added `BlockHeader.PreEvaluationHash` property.  [[#931], [#935]]
+ -  Added `HashDigest(ImmutableArray<byte>)` constructor.  [[#931], [#935]]
 
 ### Behavioral changes
 

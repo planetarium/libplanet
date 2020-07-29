@@ -6,7 +6,6 @@ using System.Numerics;
 using System.Security.Cryptography;
 using Bencodex;
 using Bencodex.Types;
-using Libplanet.Action;
 
 namespace Libplanet.Blocks
 {
@@ -64,10 +63,12 @@ namespace Libplanet.Blocks
         /// Goes to the <see cref="TxHash"/>.</param>
         /// <param name="hash">The hash of the <see cref="Block{T}"/>.
         /// Goes to the <see cref="Hash"/>.</param>
-        /// <param name="preEvaluationHash">The hash of pre-commit block.
-        /// using for check validate.</param>
-        /// <param name="evaluationDigest">The hash of the <see cref="ActionEvaluation"/>s.
-        /// <seealso cref="EvaluationDigest"/>.</param>
+        /// <param name="preEvaluationHash">The hash derived from the block <em>except of</em>
+        /// <paramref name="evaluationDigest"/> (i.e., without action evaluation).
+        /// Used for <see cref="Validate"/> checking <paramref name="nonce"/>.
+        /// </param>
+        /// <param name="evaluationDigest">The hash derived from the result states of every
+        /// <see cref="Tx.Transaction{T}.Actions"/> of the block's entire transactions.</param>
         public BlockHeader(
             long index,
             string timestamp,

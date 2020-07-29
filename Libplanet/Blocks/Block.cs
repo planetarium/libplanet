@@ -43,12 +43,12 @@ namespace Libplanet.Blocks
         /// Transactions become sorted in an unpredicted-before-mined order and then go to
         /// the <see cref="Transactions"/> property.
         /// </param>
-        /// <param name="preEvaluationHash">The hash derived from the block <em>except of</em>.
-        /// </param>
+        /// <param name="preEvaluationHash">The hash derived from the block <em>except of</em>
+        /// <paramref name="evaluationDigest"/> (i.e., without action evaluation).
+        /// Automatically determined if <c>null</c> is passed (which is default).</param>
         /// <param name="evaluationDigest">The hash derived from the result states of every
         /// <see cref="Transaction{T}.Actions"/> of the block's entire
-        /// <paramref name="transactions"/>
-        /// of the block that was mined.</param>
+        /// <paramref name="transactions"/>.</param>
         /// <seealso cref="Mine"/>
         public Block(
             long index,
@@ -169,26 +169,28 @@ namespace Libplanet.Blocks
         }
 
         /// <summary>
-        /// <see cref="Hash"/> is a Hash derived from a serialized <see cref="Block{T}"/>
-        /// after evaluate actions. It is same as <see cref="PreEvaluationHash"/> when
-        /// <see cref="EvaluationDigest"/> is null.
+        /// <see cref="Hash"/> is derived from a serialized <see cref="Block{T}"/>
+        /// after <see cref="Transaction{T}.Actions"/> are evaluated.
+        /// </summary>
         /// <seealso cref="PreEvaluationHash"/>
         /// <seealso cref="EvaluationDigest"/>
-        /// </summary>
         public HashDigest<SHA256> Hash { get; }
 
         /// <summary>
-        /// <see cref="PreEvaluationHash"/> is a Hash before evaluate actions.
-        /// Used for comparison with nonce during <see cref="Validate"/>.
-        /// <seealso cref="BlockHeader.Validate"/>
+        /// The hash derived from the block <em>except of</em>
+        /// <see cref="EvaluationDigest"/> (i.e., without action evaluation).
+        /// Used for <see cref="BlockHeader.Validate"/> checking <see cref="Nonce"/>.
         /// </summary>
+        /// <seealso cref="Nonce"/>
+        /// <seealso cref="BlockHeader.Validate"/>
         public HashDigest<SHA256> PreEvaluationHash { get; }
 
         /// <summary>
-        /// <see cref="EvaluationDigest"/> is a Hash value derived from a dictionary that values
-        /// changed accounts in the status delta that the block has.
-        /// <seealso cref="BlockChain{T}.MineBlock(Libplanet.Address)"/>
+        /// <see cref="EvaluationDigest"/> derived from the result states of every
+        /// <see cref="Transaction{T}.Actions"/> of the block's entire
+        /// <see cref="Transactions"/>.
         /// </summary>
+        /// <seealso cref="BlockChain{T}.MineBlock(Libplanet.Address)"/>
         public HashDigest<SHA256>? EvaluationDigest { get; }
 
         [IgnoreDuringEquals]

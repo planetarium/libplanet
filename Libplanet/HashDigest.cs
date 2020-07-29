@@ -73,7 +73,7 @@ namespace Libplanet
          /// <exception cref="ArgumentNullException">Thrown when the given
          /// <paramref name="hashDigest"/> is <c>null</c>.</exception>
          /// <exception cref="ArgumentOutOfRangeException">Thrown when the given
-         /// <paramref name="hashDigest"/>'s <see cref="Array.Length"/> is not
+         /// <paramref name="hashDigest"/>'s <see cref="ImmutableArray{T}.Length"/> is not
          /// the same to the <see cref="Size"/> the hash algorithm
          /// (i.e., <typeparamref name="T"/> requires.</exception>
         public HashDigest(ImmutableArray<byte> hashDigest)
