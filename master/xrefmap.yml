@@ -5536,6 +5536,77 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Peer.ToString
   nameWithType: Peer.ToString
+- uid: Libplanet.Net.PeerChainState
+  name: PeerChainState
+  href: api/Libplanet.Net.PeerChainState.html
+  commentId: T:Libplanet.Net.PeerChainState
+  fullName: Libplanet.Net.PeerChainState
+  nameWithType: PeerChainState
+- uid: Libplanet.Net.PeerChainState.#ctor(Libplanet.Net.BoundPeer,System.Int64,BigInteger)
+  name: PeerChainState(BoundPeer, Int64, BigInteger)
+  href: api/Libplanet.Net.PeerChainState.html#Libplanet_Net_PeerChainState__ctor_Libplanet_Net_BoundPeer_System_Int64_BigInteger_
+  commentId: M:Libplanet.Net.PeerChainState.#ctor(Libplanet.Net.BoundPeer,System.Int64,BigInteger)
+  fullName: Libplanet.Net.PeerChainState.PeerChainState(Libplanet.Net.BoundPeer, System.Int64, BigInteger)
+  nameWithType: PeerChainState.PeerChainState(BoundPeer, Int64, BigInteger)
+- uid: Libplanet.Net.PeerChainState.#ctor*
+  name: PeerChainState
+  href: api/Libplanet.Net.PeerChainState.html#Libplanet_Net_PeerChainState__ctor_
+  commentId: Overload:Libplanet.Net.PeerChainState.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Net.PeerChainState.PeerChainState
+  nameWithType: PeerChainState.PeerChainState
+- uid: Libplanet.Net.PeerChainState.Peer
+  name: Peer
+  href: api/Libplanet.Net.PeerChainState.html#Libplanet_Net_PeerChainState_Peer
+  commentId: P:Libplanet.Net.PeerChainState.Peer
+  fullName: Libplanet.Net.PeerChainState.Peer
+  nameWithType: PeerChainState.Peer
+- uid: Libplanet.Net.PeerChainState.Peer*
+  name: Peer
+  href: api/Libplanet.Net.PeerChainState.html#Libplanet_Net_PeerChainState_Peer_
+  commentId: Overload:Libplanet.Net.PeerChainState.Peer
+  isSpec: "True"
+  fullName: Libplanet.Net.PeerChainState.Peer
+  nameWithType: PeerChainState.Peer
+- uid: Libplanet.Net.PeerChainState.TipIndex
+  name: TipIndex
+  href: api/Libplanet.Net.PeerChainState.html#Libplanet_Net_PeerChainState_TipIndex
+  commentId: P:Libplanet.Net.PeerChainState.TipIndex
+  fullName: Libplanet.Net.PeerChainState.TipIndex
+  nameWithType: PeerChainState.TipIndex
+- uid: Libplanet.Net.PeerChainState.TipIndex*
+  name: TipIndex
+  href: api/Libplanet.Net.PeerChainState.html#Libplanet_Net_PeerChainState_TipIndex_
+  commentId: Overload:Libplanet.Net.PeerChainState.TipIndex
+  isSpec: "True"
+  fullName: Libplanet.Net.PeerChainState.TipIndex
+  nameWithType: PeerChainState.TipIndex
+- uid: Libplanet.Net.PeerChainState.ToString
+  name: ToString()
+  href: api/Libplanet.Net.PeerChainState.html#Libplanet_Net_PeerChainState_ToString
+  commentId: M:Libplanet.Net.PeerChainState.ToString
+  fullName: Libplanet.Net.PeerChainState.ToString()
+  nameWithType: PeerChainState.ToString()
+- uid: Libplanet.Net.PeerChainState.ToString*
+  name: ToString
+  href: api/Libplanet.Net.PeerChainState.html#Libplanet_Net_PeerChainState_ToString_
+  commentId: Overload:Libplanet.Net.PeerChainState.ToString
+  isSpec: "True"
+  fullName: Libplanet.Net.PeerChainState.ToString
+  nameWithType: PeerChainState.ToString
+- uid: Libplanet.Net.PeerChainState.TotalDifficulty
+  name: TotalDifficulty
+  href: api/Libplanet.Net.PeerChainState.html#Libplanet_Net_PeerChainState_TotalDifficulty
+  commentId: P:Libplanet.Net.PeerChainState.TotalDifficulty
+  fullName: Libplanet.Net.PeerChainState.TotalDifficulty
+  nameWithType: PeerChainState.TotalDifficulty
+- uid: Libplanet.Net.PeerChainState.TotalDifficulty*
+  name: TotalDifficulty
+  href: api/Libplanet.Net.PeerChainState.html#Libplanet_Net_PeerChainState_TotalDifficulty_
+  commentId: Overload:Libplanet.Net.PeerChainState.TotalDifficulty
+  isSpec: "True"
+  fullName: Libplanet.Net.PeerChainState.TotalDifficulty
+  nameWithType: PeerChainState.TotalDifficulty
 - uid: Libplanet.Net.PeerNotFoundException
   name: PeerNotFoundException
   href: api/Libplanet.Net.PeerNotFoundException.html
@@ -6017,6 +6088,24 @@ references:
   fullName.vb: Libplanet.Net.Swarm(Of T).FindSpecificPeerAsync
   nameWithType: Swarm<T>.FindSpecificPeerAsync
   nameWithType.vb: Swarm(Of T).FindSpecificPeerAsync
+- uid: Libplanet.Net.Swarm`1.GetPeerChainStateAsync(System.Nullable{TimeSpan},CancellationToken)
+  name: GetPeerChainStateAsync(Nullable<TimeSpan>, CancellationToken)
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_GetPeerChainStateAsync_System_Nullable_TimeSpan__CancellationToken_
+  commentId: M:Libplanet.Net.Swarm`1.GetPeerChainStateAsync(System.Nullable{TimeSpan},CancellationToken)
+  name.vb: GetPeerChainStateAsync(Nullable(Of TimeSpan), CancellationToken)
+  fullName: Libplanet.Net.Swarm<T>.GetPeerChainStateAsync(System.Nullable<TimeSpan>, CancellationToken)
+  fullName.vb: Libplanet.Net.Swarm(Of T).GetPeerChainStateAsync(System.Nullable(Of TimeSpan), CancellationToken)
+  nameWithType: Swarm<T>.GetPeerChainStateAsync(Nullable<TimeSpan>, CancellationToken)
+  nameWithType.vb: Swarm(Of T).GetPeerChainStateAsync(Nullable(Of TimeSpan), CancellationToken)
+- uid: Libplanet.Net.Swarm`1.GetPeerChainStateAsync*
+  name: GetPeerChainStateAsync
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_GetPeerChainStateAsync_
+  commentId: Overload:Libplanet.Net.Swarm`1.GetPeerChainStateAsync
+  isSpec: "True"
+  fullName: Libplanet.Net.Swarm<T>.GetPeerChainStateAsync
+  fullName.vb: Libplanet.Net.Swarm(Of T).GetPeerChainStateAsync
+  nameWithType: Swarm<T>.GetPeerChainStateAsync
+  nameWithType.vb: Swarm(Of T).GetPeerChainStateAsync
 - uid: Libplanet.Net.Swarm`1.LastReceived
   name: LastReceived
   href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_LastReceived
