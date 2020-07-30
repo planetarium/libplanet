@@ -1,13 +1,16 @@
 #nullable enable
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Serialization;
 
 namespace Libplanet
 {
@@ -17,7 +20,8 @@ namespace Libplanet
     /// each <see cref="Currency"/> value represents such currencies as USD (US Dollar) or
     /// EUR (Euro), <em>not values</em> like $100 or €100.
     /// </summary>
-    public readonly struct Currency
+    [Serializable]
+    public readonly struct Currency : ISerializable
     {
         /// <summary>
         /// The ticker symbol, e.g., <c>&quot;USD&quot;</c>.
@@ -80,6 +84,22 @@ namespace Libplanet
         {
         }
 
+        private Currency(SerializationInfo info, StreamingContext context)
+        {
+            Ticker = info.GetValue<string>(nameof(Ticker));
+
+            if (info.TryGetValue(nameof(Minters), out List<byte[]> minters))
+            {
+                Minters = minters.Select(m => new Address(m)).ToImmutableHashSet();
+            }
+            else
+            {
+                Minters = default;
+            }
+
+            Hash = GetHash();
+        }
+
         /// <summary>
         /// Returns <c>true</c> if and only if the given <paramref name="address"/> is allowed
         /// to mint or burn assets of this currency.
@@ -89,6 +109,16 @@ namespace Libplanet
         /// mint or burn assets of this currency.</returns>
         [Pure]
         public bool AllowsToMint(Address address) => Minters is null || Minters.Contains(address);
+
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue(nameof(Ticker), Ticker);
+
+            if (Minters is IImmutableSet<Address> minters)
+            {
+                info.AddValue(nameof(Minters), minters.Select(m => m.ToByteArray()).ToList());
+            }
+        }
 
         [Pure]
         public override string ToString() =>

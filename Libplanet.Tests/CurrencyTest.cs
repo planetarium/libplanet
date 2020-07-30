@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Immutable;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 using Libplanet.Crypto;
 using Xunit;
@@ -106,6 +108,22 @@ namespace Libplanet.Tests
         {
             Currency currency = new Currency(ticker: "GOLD", minter: AddressA);
             Assert.Equal("GOLD (2ce0b92ff1c5e5631d73370ad2c45920c1ba9755)", currency.ToString());
+        }
+
+        [Fact]
+        public void Serializable()
+        {
+            var currency = new Currency(ticker: "GOLD", minter: AddressA);
+
+            var formatter = new BinaryFormatter();
+            using (var ms = new MemoryStream())
+            {
+                formatter.Serialize(ms, currency);
+                ms.Seek(0, SeekOrigin.Begin);
+
+                var deserialized = (Currency)formatter.Deserialize(ms);
+                Assert.Equal(currency.Hash, deserialized.Hash);
+            }
         }
     }
 }

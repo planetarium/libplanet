@@ -1,6 +1,8 @@
 #nullable enable
 using System;
 using System.Numerics;
+using System.Runtime.Serialization;
+using Libplanet.Serialization;
 
 namespace Libplanet.Action
 {
@@ -36,6 +38,14 @@ namespace Libplanet.Action
             Balance = balance;
         }
 
+        private InsufficientBalanceException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+            Address = info.GetValue<Address>(nameof(Address));
+            Balance = info.GetValue<BigInteger>(nameof(Balance));
+            Currency = info.GetValue<Currency>(nameof(Currency));
+        }
+
         /// <summary>
         /// The owner of the insufficient <see cref="Balance"/>.
         /// </summary>
@@ -50,5 +60,14 @@ namespace Libplanet.Action
         /// The account's current balance of the <see cref="Currency"/>.
         /// </summary>
         public BigInteger Balance { get; }
+
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            base.GetObjectData(info, context);
+
+            info.AddValue(nameof(Address), Address);
+            info.AddValue(nameof(Balance), Balance);
+            info.AddValue(nameof(Currency), Currency);
+        }
     }
 }

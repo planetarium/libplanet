@@ -47,6 +47,8 @@ To be released.
     `BlockHeader` constructor. [[#931], [#935]]
  -  Added `HashDigest<SHA256>`-typed `preEvaluationHash` parameter to
     `Block<T>()` constructor. [[#931], [#935]]
+ -  Replaced `SerializationInfoExtensions.GetValueOrDefault<T>()` to
+    `SerializationInfoExtensions.TryGetValue<T>()`.  [[#940]]
 
 ### Backward-incompatible network protocol changes
 
@@ -172,6 +174,7 @@ To be released.
 [#933]: https://github.com/planetarium/libplanet/pull/933
 [#935]: https://github.com/planetarium/libplanet/pull/935
 [#936]: https://github.com/planetarium/libplanet/pull/936
+[#940]: https://github.com/planetarium/libplanet/pull/940
 [sleep mode]: https://en.wikipedia.org/wiki/Sleep_mode
 
 

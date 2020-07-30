@@ -1,8 +1,11 @@
 using System;
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
+using Bencodex;
+using Bencodex.Types;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
+using Libplanet.Serialization;
 using Libplanet.Tx;
 
 namespace Libplanet.Action
@@ -55,6 +58,30 @@ namespace Libplanet.Action
         )
             : base(info, context)
         {
+            if (info.TryGetValue(nameof(BlockHash), out byte[] blockHash))
+            {
+                BlockHash = new HashDigest<SHA256>(blockHash);
+            }
+
+            if (info.TryGetValue(nameof(BlockIndex), out long blockIndex))
+            {
+                BlockIndex = blockIndex;
+            }
+
+            if (info.TryGetValue(nameof(TxId), out byte[] txId))
+            {
+                TxId = new TxId(txId);
+            }
+
+            if (info.TryGetValue($"{nameof(Action)}_type", out string actionType))
+            {
+                var values = (Dictionary)new Codec().Decode(
+                    info.GetValue<byte[]>($"{nameof(Action)}_values")
+                );
+
+                Action = (IAction)Activator.CreateInstance(Type.GetType(actionType, true, true));
+                Action?.LoadPlainValue(values);
+            }
         }
 
         /// <summary>
@@ -80,5 +107,31 @@ namespace Libplanet.Action
         /// The <see cref="IAction"/> object which threw an exception.
         /// </summary>
         public IAction Action { get; }
+
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            base.GetObjectData(info, context);
+
+            if (BlockHash is HashDigest<SHA256> blockHash)
+            {
+                info.AddValue(nameof(BlockHash), blockHash.ToByteArray());
+            }
+
+            if (BlockIndex is long blockIndex)
+            {
+                info.AddValue(nameof(BlockIndex), blockIndex);
+            }
+
+            if (TxId is TxId txId)
+            {
+                info.AddValue(nameof(TxId), txId.ToByteArray());
+            }
+
+            if (!(Action is null))
+            {
+                info.AddValue($"{nameof(Action)}_type", Action.GetType().AssemblyQualifiedName);
+                info.AddValue($"{nameof(Action)}_values", new Codec().Encode(Action.PlainValue));
+            }
+        }
     }
 }
