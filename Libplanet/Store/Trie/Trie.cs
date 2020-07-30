@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
@@ -168,6 +169,18 @@ namespace Libplanet.Store.Trie
                         prefix.Add(path[0]).ToImmutableArray(),
                         path.Skip(1).ToImmutableArray(),
                         out value);
+
+                case HashNode hashNode:
+                    try
+                    {
+                        INode resolvedNode = GetNode(hashNode.HashDigest);
+                        return TryGet(resolvedNode, prefix, path, out value);
+                    }
+                    catch (KeyNotFoundException)
+                    {
+                        value = null;
+                        return false;
+                    }
 
                 default:
                     throw new InvalidTrieNodeException(
