@@ -80,7 +80,7 @@ namespace Libplanet.Action
                 );
 
                 Action = (IAction)Activator.CreateInstance(Type.GetType(actionType, true, true));
-                Action.LoadPlainValue(values);
+                Action?.LoadPlainValue(values);
             }
         }
 
