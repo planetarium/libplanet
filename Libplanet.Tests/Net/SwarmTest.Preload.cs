@@ -249,7 +249,7 @@ namespace Libplanet.Tests.Net
                 await minerSwarm.BlockChain.MineBlock(_fx1.Address1);
             }
 
-            receiverSwarm.BlockHashRecvTimeout = TimeSpan.FromMilliseconds(10);
+            receiverSwarm.Options.BlockHashRecvTimeout = TimeSpan.FromMilliseconds(10);
 
             var isCalled = false;
             void Handler(object sender, PreloadBlockDownloadFailEventArgs e)
@@ -476,7 +476,7 @@ namespace Libplanet.Tests.Net
             Swarm<DumbAction> swarm1 = _swarms[1];
             Swarm<DumbAction> receiverSwarm = _swarms[2];
 
-            receiverSwarm.BlockHashRecvTimeout = TimeSpan.FromMilliseconds(100);
+            receiverSwarm.Options.BlockHashRecvTimeout = TimeSpan.FromMilliseconds(100);
 
             swarm0.FindNextHashesChunkSize = blockCount / 2;
             swarm1.FindNextHashesChunkSize = blockCount / 2;
@@ -1440,30 +1440,25 @@ namespace Libplanet.Tests.Net
                 }
             });
 
+            var seed = _swarms[0];
             var receiver = _swarms[1];
-            var swarmOptions = new SwarmOptions
-            {
-                RecentStateRecvTimeout = TimeSpan.FromDays(1),
-            };
+            seed.Options.RecentStateRecvTimeout = TimeSpan.FromDays(1);
 
             var initialTip = seedChain.Tip;
-            using (Swarm<DumbAction> seed = CreateSwarm(seedChain, options: swarmOptions))
+            try
             {
-                try
-                {
-                    await StartAsync(seed);
-                    await BootstrapAsync(receiver, seed.AsPeer);
-                    await receiver.PreloadAsync(
-                        progress: progress,
-                        trustedStateValidators: new[] { seed.Address }.ToImmutableHashSet());
+                await StartAsync(seed);
+                await BootstrapAsync(receiver, seed.AsPeer);
+                await receiver.PreloadAsync(
+                    progress: progress,
+                    trustedStateValidators: new[] { seed.Address }.ToImmutableHashSet());
 
-                    // FIXME: initialTip should be changed to seedChain.Tip
-                    Assert.Equal(initialTip, receiverChain.Tip);
-                }
-                finally
-                {
-                    await StopAsync(seed);
-                }
+                // FIXME: initialTip should be changed to seedChain.Tip
+                Assert.Equal(initialTip, receiverChain.Tip);
+            }
+            finally
+            {
+                await StopAsync(seed);
             }
         }
     }

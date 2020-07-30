@@ -213,8 +213,6 @@ namespace Libplanet.Net
         // FIXME: Should have a unit test.
         internal AsyncAutoResetEvent BlockAppended { get; }
 
-        internal TimeSpan BlockHashRecvTimeout { get; set; } = TimeSpan.FromSeconds(30);
-
         // FIXME: We need some sort of configuration method for it.
         internal int FindNextHashesChunkSize { get; set; } = 500;
 

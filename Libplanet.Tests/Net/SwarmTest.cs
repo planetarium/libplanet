@@ -1772,7 +1772,7 @@ namespace Libplanet.Tests.Net
 
             var swarmA = _swarms[0];
             var swarmB = _swarms[1];
-            swarmB.BlockHashRecvTimeout = TimeSpan.FromMilliseconds(10);
+            swarmB.Options.BlockHashRecvTimeout = TimeSpan.FromMilliseconds(10);
 
             var genesis = await chainA.MineBlock(_fx1.Address1);
             chainB.Append(genesis);
