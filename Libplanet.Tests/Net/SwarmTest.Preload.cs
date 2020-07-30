@@ -1426,17 +1426,22 @@ namespace Libplanet.Tests.Net
                 await seedChain.MineBlock(_fx1.Address1);
             }
 
+            bool reorg = true;
+
             var progress = new Progress<PreloadState>(state =>
             {
                 _logger.Information("Received a progress event: {@State}", state);
 
-                if (state is BlockDownloadState blockDownloadState
+                if (reorg
+                    && state is BlockDownloadState blockDownloadState
                     && blockDownloadState.ReceivedBlockHash.Equals(seedChain.Tip.Hash))
                 {
                     var forked = seedChain.Fork(seedChain[9].Hash);
                     seedChain.Swap(forked, false);
                     seedChain.MineBlock(_fx1.Address1).Wait();
                     seedChain.MineBlock(_fx1.Address1).Wait();
+
+                    reorg = false;
                 }
             });
 
@@ -1444,7 +1449,6 @@ namespace Libplanet.Tests.Net
             var receiver = _swarms[1];
             seed.Options.RecentStateRecvTimeout = TimeSpan.FromDays(1);
 
-            var initialTip = seedChain.Tip;
             try
             {
                 await StartAsync(seed);
@@ -1453,8 +1457,7 @@ namespace Libplanet.Tests.Net
                     progress: progress,
                     trustedStateValidators: new[] { seed.Address }.ToImmutableHashSet());
 
-                // FIXME: initialTip should be changed to seedChain.Tip
-                Assert.Equal(initialTip, receiverChain.Tip);
+                Assert.Equal(seedChain.Tip, receiverChain.Tip);
             }
             finally
             {
