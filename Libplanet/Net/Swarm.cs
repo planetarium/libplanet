@@ -2139,7 +2139,7 @@ namespace Libplanet.Net
 
             if (_logger.IsEnabled(LogEventLevel.Verbose))
             {
-                if (_store.ContainsBlock(target))
+                if (BlockChain.ContainsBlock(target))
                 {
                     var baseString = @base is HashDigest<SHA256> h
                         ? $"{BlockChain[h].Index}:{h}"
@@ -2174,7 +2174,7 @@ namespace Libplanet.Net
                 nextOffset,
                 iteration,
                 blockStates,
-                stateRefs.ToImmutableDictionary())
+                stateRefs?.ToImmutableDictionary())
             {
                 Identity = getRecentStates.Identity,
             };

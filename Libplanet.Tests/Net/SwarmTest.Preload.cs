@@ -1440,21 +1440,30 @@ namespace Libplanet.Tests.Net
                 }
             });
 
-            var seed = _swarms[0];
             var receiver = _swarms[1];
+            var swarmOptions = new SwarmOptions
+            {
+                RecentStateRecvTimeout = TimeSpan.FromDays(1),
+            };
 
-            try
+            var initialTip = seedChain.Tip;
+            using (Swarm<DumbAction> seed = CreateSwarm(seedChain, options: swarmOptions))
             {
-                await StartAsync(seed);
-                await BootstrapAsync(receiver, seed.AsPeer);
-                await receiver.PreloadAsync(
-                    progress: progress,
-                    trustedStateValidators: new[] { seed.Address }.ToImmutableHashSet());
-                Assert.Equal(seedChain.Tip, receiverChain.Tip);
-            }
-            finally
-            {
-                await StopAsync(seed);
+                try
+                {
+                    await StartAsync(seed);
+                    await BootstrapAsync(receiver, seed.AsPeer);
+                    await receiver.PreloadAsync(
+                        progress: progress,
+                        trustedStateValidators: new[] { seed.Address }.ToImmutableHashSet());
+
+                    // FIXME: initialTip should be changed to seedChain.Tip
+                    Assert.Equal(initialTip, receiverChain.Tip);
+                }
+                finally
+                {
+                    await StopAsync(seed);
+                }
             }
         }
     }
