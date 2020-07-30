@@ -31,7 +31,6 @@ namespace Libplanet.Net
         private const int InitialBlockDownloadWindow = 100;
         private readonly PrivateKey _privateKey;
         private readonly AppProtocolVersion _appProtocolVersion;
-        private readonly SwarmOptions _options;
 
         private readonly AsyncLock _blockSyncMutex;
         private readonly AsyncLock _runningMutex;
@@ -161,7 +160,7 @@ namespace Libplanet.Net
                 ProcessMessageHandler,
                 _logger);
 
-            _options = options ?? new SwarmOptions();
+            Options = options ?? new SwarmOptions();
         }
 
         ~Swarm()
@@ -226,6 +225,8 @@ namespace Libplanet.Net
         internal AsyncAutoResetEvent FillBlocksAsyncStarted { get; } = new AsyncAutoResetEvent();
 
         internal AsyncAutoResetEvent FillBlocksAsyncFailed { get; } = new AsyncAutoResetEvent();
+
+        internal SwarmOptions Options { get; }
 
         /// <summary>
         /// Waits until this <see cref="Swarm{T}"/> instance gets started to run.
@@ -923,7 +924,7 @@ namespace Libplanet.Net
             Message parsedMessage = await Transport.SendMessageWithReplyAsync(
                 peer,
                 request,
-                timeout: BlockHashRecvTimeout,
+                timeout: Options.BlockHashRecvTimeout,
                 cancellationToken: cancellationToken
             );
 
@@ -981,11 +982,11 @@ namespace Libplanet.Net
                 yield break;
             }
 
-            TimeSpan blockRecvTimeout = _options.BlockRecvTimeout
+            TimeSpan blockRecvTimeout = Options.BlockRecvTimeout
                                         + TimeSpan.FromSeconds(hashCount);
-            if (blockRecvTimeout > _options.MaxTimeout)
+            if (blockRecvTimeout > Options.MaxTimeout)
             {
-                blockRecvTimeout = _options.MaxTimeout;
+                blockRecvTimeout = Options.MaxTimeout;
             }
 
             IEnumerable<Message> replies = await Transport.SendMessageWithReplyAsync(
@@ -1043,10 +1044,10 @@ namespace Libplanet.Net
 
             _logger.Debug("Required tx count: {Count}.", txCount);
 
-            var txRecvTimeout = _options.TxRecvTimeout + TimeSpan.FromSeconds(txCount);
-            if (txRecvTimeout > _options.MaxTimeout)
+            var txRecvTimeout = Options.TxRecvTimeout + TimeSpan.FromSeconds(txCount);
+            if (txRecvTimeout > Options.MaxTimeout)
             {
-                txRecvTimeout = _options.MaxTimeout;
+                txRecvTimeout = Options.MaxTimeout;
             }
 
             IEnumerable<Message> replies = await Transport.SendMessageWithReplyAsync(
@@ -1345,7 +1346,7 @@ namespace Libplanet.Net
                         reply = await Transport.SendMessageWithReplyAsync(
                             peer,
                             request,
-                            timeout: _options.RecentStateRecvTimeout,
+                            timeout: Options.RecentStateRecvTimeout,
                             cancellationToken: cancellationToken
                         );
 
