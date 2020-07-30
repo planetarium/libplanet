@@ -554,6 +554,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.InsufficientBalanceException.Currency
   nameWithType: InsufficientBalanceException.Currency
+- uid: Libplanet.Action.InsufficientBalanceException.GetObjectData(SerializationInfo,StreamingContext)
+  name: GetObjectData(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Action.InsufficientBalanceException.html#Libplanet_Action_InsufficientBalanceException_GetObjectData_SerializationInfo_StreamingContext_
+  commentId: M:Libplanet.Action.InsufficientBalanceException.GetObjectData(SerializationInfo,StreamingContext)
+  fullName: Libplanet.Action.InsufficientBalanceException.GetObjectData(SerializationInfo, StreamingContext)
+  nameWithType: InsufficientBalanceException.GetObjectData(SerializationInfo, StreamingContext)
+- uid: Libplanet.Action.InsufficientBalanceException.GetObjectData*
+  name: GetObjectData
+  href: api/Libplanet.Action.InsufficientBalanceException.html#Libplanet_Action_InsufficientBalanceException_GetObjectData_
+  commentId: Overload:Libplanet.Action.InsufficientBalanceException.GetObjectData
+  isSpec: "True"
+  fullName: Libplanet.Action.InsufficientBalanceException.GetObjectData
+  nameWithType: InsufficientBalanceException.GetObjectData
 - uid: Libplanet.Action.IRandom
   name: IRandom
   href: api/Libplanet.Action.IRandom.html
@@ -927,6 +940,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.UnexpectedlyTerminatedActionException.BlockIndex
   nameWithType: UnexpectedlyTerminatedActionException.BlockIndex
+- uid: Libplanet.Action.UnexpectedlyTerminatedActionException.GetObjectData(SerializationInfo,StreamingContext)
+  name: GetObjectData(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Action.UnexpectedlyTerminatedActionException.html#Libplanet_Action_UnexpectedlyTerminatedActionException_GetObjectData_SerializationInfo_StreamingContext_
+  commentId: M:Libplanet.Action.UnexpectedlyTerminatedActionException.GetObjectData(SerializationInfo,StreamingContext)
+  fullName: Libplanet.Action.UnexpectedlyTerminatedActionException.GetObjectData(SerializationInfo, StreamingContext)
+  nameWithType: UnexpectedlyTerminatedActionException.GetObjectData(SerializationInfo, StreamingContext)
+- uid: Libplanet.Action.UnexpectedlyTerminatedActionException.GetObjectData*
+  name: GetObjectData
+  href: api/Libplanet.Action.UnexpectedlyTerminatedActionException.html#Libplanet_Action_UnexpectedlyTerminatedActionException_GetObjectData_
+  commentId: Overload:Libplanet.Action.UnexpectedlyTerminatedActionException.GetObjectData
+  isSpec: "True"
+  fullName: Libplanet.Action.UnexpectedlyTerminatedActionException.GetObjectData
+  nameWithType: UnexpectedlyTerminatedActionException.GetObjectData
 - uid: Libplanet.Action.UnexpectedlyTerminatedActionException.TxId
   name: TxId
   href: api/Libplanet.Action.UnexpectedlyTerminatedActionException.html#Libplanet_Action_UnexpectedlyTerminatedActionException_TxId
@@ -3450,6 +3476,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Currency.AllowsToMint
   nameWithType: Currency.AllowsToMint
+- uid: Libplanet.Currency.GetObjectData(SerializationInfo,StreamingContext)
+  name: GetObjectData(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Currency.html#Libplanet_Currency_GetObjectData_SerializationInfo_StreamingContext_
+  commentId: M:Libplanet.Currency.GetObjectData(SerializationInfo,StreamingContext)
+  fullName: Libplanet.Currency.GetObjectData(SerializationInfo, StreamingContext)
+  nameWithType: Currency.GetObjectData(SerializationInfo, StreamingContext)
+- uid: Libplanet.Currency.GetObjectData*
+  name: GetObjectData
+  href: api/Libplanet.Currency.html#Libplanet_Currency_GetObjectData_
+  commentId: Overload:Libplanet.Currency.GetObjectData
+  isSpec: "True"
+  fullName: Libplanet.Currency.GetObjectData
+  nameWithType: Currency.GetObjectData
 - uid: Libplanet.Currency.Hash
   name: Hash
   href: api/Libplanet.Currency.html#Libplanet_Currency_Hash
@@ -6581,22 +6620,22 @@ references:
   fullName.vb: Libplanet.Serialization.SerializationInfoExtensions.GetValue(Of T)(SerializationInfo, System.String)
   nameWithType: SerializationInfoExtensions.GetValue<T>(SerializationInfo, String)
   nameWithType.vb: SerializationInfoExtensions.GetValue(Of T)(SerializationInfo, String)
-- uid: Libplanet.Serialization.SerializationInfoExtensions.GetValueOrDefault*
-  name: GetValueOrDefault
-  href: api/Libplanet.Serialization.SerializationInfoExtensions.html#Libplanet_Serialization_SerializationInfoExtensions_GetValueOrDefault_
-  commentId: Overload:Libplanet.Serialization.SerializationInfoExtensions.GetValueOrDefault
+- uid: Libplanet.Serialization.SerializationInfoExtensions.TryGetValue*
+  name: TryGetValue
+  href: api/Libplanet.Serialization.SerializationInfoExtensions.html#Libplanet_Serialization_SerializationInfoExtensions_TryGetValue_
+  commentId: Overload:Libplanet.Serialization.SerializationInfoExtensions.TryGetValue
   isSpec: "True"
-  fullName: Libplanet.Serialization.SerializationInfoExtensions.GetValueOrDefault
-  nameWithType: SerializationInfoExtensions.GetValueOrDefault
-- uid: Libplanet.Serialization.SerializationInfoExtensions.GetValueOrDefault``1(SerializationInfo,System.String,``0)
-  name: GetValueOrDefault<T>(SerializationInfo, String, T)
-  href: api/Libplanet.Serialization.SerializationInfoExtensions.html#Libplanet_Serialization_SerializationInfoExtensions_GetValueOrDefault__1_SerializationInfo_System_String___0_
-  commentId: M:Libplanet.Serialization.SerializationInfoExtensions.GetValueOrDefault``1(SerializationInfo,System.String,``0)
-  name.vb: GetValueOrDefault(Of T)(SerializationInfo, String, T)
-  fullName: Libplanet.Serialization.SerializationInfoExtensions.GetValueOrDefault<T>(SerializationInfo, System.String, T)
-  fullName.vb: Libplanet.Serialization.SerializationInfoExtensions.GetValueOrDefault(Of T)(SerializationInfo, System.String, T)
-  nameWithType: SerializationInfoExtensions.GetValueOrDefault<T>(SerializationInfo, String, T)
-  nameWithType.vb: SerializationInfoExtensions.GetValueOrDefault(Of T)(SerializationInfo, String, T)
+  fullName: Libplanet.Serialization.SerializationInfoExtensions.TryGetValue
+  nameWithType: SerializationInfoExtensions.TryGetValue
+- uid: Libplanet.Serialization.SerializationInfoExtensions.TryGetValue``1(SerializationInfo,System.String,``0@)
+  name: TryGetValue<T>(SerializationInfo, String, out T)
+  href: api/Libplanet.Serialization.SerializationInfoExtensions.html#Libplanet_Serialization_SerializationInfoExtensions_TryGetValue__1_SerializationInfo_System_String___0__
+  commentId: M:Libplanet.Serialization.SerializationInfoExtensions.TryGetValue``1(SerializationInfo,System.String,``0@)
+  name.vb: TryGetValue(Of T)(SerializationInfo, String, ByRef T)
+  fullName: Libplanet.Serialization.SerializationInfoExtensions.TryGetValue<T>(SerializationInfo, System.String, out T)
+  fullName.vb: Libplanet.Serialization.SerializationInfoExtensions.TryGetValue(Of T)(SerializationInfo, System.String, ByRef T)
+  nameWithType: SerializationInfoExtensions.TryGetValue<T>(SerializationInfo, String, out T)
+  nameWithType.vb: SerializationInfoExtensions.TryGetValue(Of T)(SerializationInfo, String, ByRef T)
 - uid: Libplanet.Store
   name: Libplanet.Store
   href: api/Libplanet.Store.html
