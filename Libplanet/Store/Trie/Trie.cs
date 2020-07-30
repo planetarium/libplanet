@@ -127,7 +127,7 @@ namespace Libplanet.Store.Trie
 
                 default:
                     throw new InvalidTrieNodeException("Not supported node came." +
-                                                       $" raw: {ByteUtil.Hex(node.Serialize())}");
+                                                       $" raw: {node.ToBencodex().Inspection}");
             }
         }
 
@@ -170,8 +170,8 @@ namespace Libplanet.Store.Trie
                         out value);
 
                 default:
-                    byte[] rawNode = node.Serialize();
-                    throw new InvalidTrieNodeException($"Invalid node: raw: {rawNode}");
+                    throw new InvalidTrieNodeException(
+                        $"Invalid node: raw: {node.ToBencodex().Inspection}");
             }
         }
 
@@ -183,35 +183,7 @@ namespace Libplanet.Store.Trie
         /// <returns>The node corresponding to <paramref name="nodeHash"/>.</returns>
         private INode GetNode(HashDigest<SHA256> nodeHash)
         {
-            return DeserializeNode(KeyValueStore.Get(nodeHash.ToByteArray()));
-        }
-
-        private INode DeserializeNode(byte[] nodeBytes)
-        {
-            IValue decoded = Codec.Decode(nodeBytes);
-            if (!(decoded is List list))
-            {
-                throw new InvalidTrieNodeException($"{nameof(INode)} should be ${typeof(List)}");
-            }
-
-            // Children hashes... | value
-            if (list.Value.Length == 17)
-            {
-                return new FullNode(
-                    list.Cast<Binary>()
-                        .Select(binary => GetNode(new HashDigest<SHA256>(binary)))
-                        .Take(FullNode.ChildrenCount)
-                        .ToImmutableArray());
-            }
-
-            // path | value
-            if (list.Value.Length == 2)
-            {
-                // FIXME: DONT FETCH AS ValueNode. IT CAN BE AMONG IN HashNode, ValueNode, FullNode.
-                return new ShortNode(((Binary)list.Value[0]).Value, new ValueNode(list.Value[1]));
-            }
-
-            throw new InvalidTrieNodeException($"Invalid node came.");
+            return NodeDecoder.Decode(Codec.Decode(KeyValueStore.Get(nodeHash.ToByteArray())));
         }
 
         // TODO: Support secure trie.

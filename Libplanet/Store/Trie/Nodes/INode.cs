@@ -1,7 +1,9 @@
+using Bencodex.Types;
+
 namespace Libplanet.Store.Trie.Nodes
 {
     internal interface INode
     {
-        byte[] Serialize();
+        IValue ToBencodex();
     }
 }

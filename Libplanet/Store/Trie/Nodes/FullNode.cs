@@ -1,10 +1,11 @@
+using System;
 using System.Collections.Immutable;
 using System.Linq;
 using Bencodex.Types;
 
 namespace Libplanet.Store.Trie.Nodes
 {
-    internal sealed class FullNode : BaseNode
+    internal sealed class FullNode : BaseNode, IEquatable<FullNode>
     {
         // Children 0x10 + Value 0x1
         public const byte ChildrenCount = 0x11;
@@ -35,9 +36,48 @@ namespace Libplanet.Store.Trie.Nodes
             return new FullNode(Children.SetItem(index, childNode));
         }
 
-        protected override IValue ToBencodex()
+        public bool Equals(FullNode other)
         {
-            return (Bencodex.Types.List)Children.Select(child => (IValue)(Binary)child.Serialize());
+            if (other is null)
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return false;
+            }
+
+            for (var i = 0; i < ChildrenCount; ++i)
+            {
+                if (other.Children[i].GetType() != Children[i].GetType())
+                {
+                    return false;
+                }
+
+                if (other.Children[i].GetHashCode() != Children[i].GetHashCode())
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return ReferenceEquals(this, obj) || (obj is FullNode other && Equals(other));
+        }
+
+        public override int GetHashCode()
+        {
+            return Children.GetHashCode();
+        }
+
+        public override IValue ToBencodex()
+        {
+            return new List(Children.Select(child =>
+                child is null ? default(Null) : child.ToBencodex()));
         }
     }
 }

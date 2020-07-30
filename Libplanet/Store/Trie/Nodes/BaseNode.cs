@@ -15,12 +15,11 @@ namespace Libplanet.Store.Trie.Nodes
         {
             get
             {
-                Codec codec = new Codec();
-                var bytes = codec.Encode(ToBencodex());
-                return Hashcash.Hash(bytes);
+                return Hashcash.Hash(Serialize());
             }
         }
 
+        // It will not support embedded node.
         public INode Value { get; }
 
         public byte[] Serialize()
@@ -29,6 +28,6 @@ namespace Libplanet.Store.Trie.Nodes
             return codec.Encode(ToBencodex());
         }
 
-        protected abstract IValue ToBencodex();
+        public abstract IValue ToBencodex();
     }
 }
