@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Immutable;
 using System.Security.Cryptography;
 using Xunit;
 
@@ -82,6 +83,38 @@ namespace Libplanet.Tests
                     () => HashDigest<SHA1>.FromString(new string('0', i * 2))
                 );
             }
+        }
+
+        [Fact]
+        public void FromImmutableArrayConstructor()
+        {
+            var b =
+                new byte[20]
+                {
+                    0x45, 0xa2, 0x21, 0x87, 0xe2, 0xd8, 0x85, 0x0b, 0xb3, 0x57,
+                    0x88, 0x69, 0x58, 0xbc, 0x3e, 0x85, 0x60, 0x92, 0x9c, 0xcc,
+                };
+            var bAsArray = b.ToImmutableArray();
+
+            var expected = new HashDigest<SHA1>(b);
+            HashDigest<SHA1> actual = new HashDigest<SHA1>(bAsArray);
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void FromImmutableArrayDisallowIncorrectSizeBytes()
+        {
+            var b =
+                new byte[10]
+                {
+                    0x45, 0xa2, 0x21, 0x87, 0xe2, 0xd8, 0x85, 0x0b, 0xb3, 0x57,
+                };
+            var bAsArray = b.ToImmutableArray();
+
+            Assert.Throws<ArgumentOutOfRangeException>(
+                () => new HashDigest<SHA1>(bAsArray)
+            );
         }
     }
 }

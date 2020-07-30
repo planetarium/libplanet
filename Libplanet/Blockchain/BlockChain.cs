@@ -7,6 +7,7 @@ using System.Numerics;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
+using Bencodex;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain.Policies;
@@ -659,6 +660,10 @@ namespace Libplanet.Blockchain
 
                 throw new OperationCanceledException(cancellationToken);
             }
+
+            var actionEvaluations = EvaluateActions(block);
+
+            block = new Block<T>(block, ActionEvaluationsToHash(actionEvaluations));
 
             TipChanged -= WatchTip;
             cancellationTokenSource.Dispose();
@@ -1413,6 +1418,31 @@ namespace Libplanet.Blockchain
             {
                 _rwlock.ExitUpgradeableReadLock();
             }
+        }
+
+        internal HashDigest<SHA256>? ActionEvaluationsToHash(
+            IEnumerable<ActionEvaluation> actionEvaluations)
+        {
+            ActionEvaluation actionEvaluation;
+            var evaluations = actionEvaluations.ToList();
+            if (evaluations.Any())
+            {
+                actionEvaluation = evaluations.Last();
+            }
+            else
+            {
+                return null;
+            }
+
+            IImmutableSet<Address> updatedAddresses =
+                actionEvaluation.OutputStates.UpdatedAddresses;
+            var dict = Bencodex.Types.Dictionary.Empty;
+            foreach (Address address in updatedAddresses)
+            {
+                dict.Add(address.ToHex(), actionEvaluation.OutputStates.GetState(address));
+            }
+
+            return Hashcash.Hash(new Codec().Encode(dict));
         }
 
         private IValue GetRawState(string key, HashDigest<SHA256>? offset, bool completeStates)

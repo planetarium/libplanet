@@ -39,6 +39,14 @@ To be released.
  -  Added `ICryptoBackend<T>.Sign(HashDigest<T>, PrivateKey)` method.
     [[#932]]
  -  `DefaultCryptoBackend` became to `DefaultCryptoBackend<T>`.  [[#932]]
+ -  Added `ImmutableArray<byte>`-typed `evaluationDigest` parameter to
+    `BlockHeader` constructor. [[#931], [#935]]
+ -  Added `HashDigest<SHA256>`-typed `evaluationDigest` parameter to
+    `Block<T>()` constructor. [[#931], [#935]]
+ -  Added `ImmutableArray<byte>`-typed `preEvaluationHash` parameter to
+    `BlockHeader` constructor. [[#931], [#935]]
+ -  Added `HashDigest<SHA256>`-typed `preEvaluationHash` parameter to
+    `Block<T>()` constructor. [[#931], [#935]]
 
 ### Backward-incompatible network protocol changes
 
@@ -76,6 +84,11 @@ To be released.
  -  Added `SwarmOptions` class.  [[#926]]
  -  Added `PeerChainState` struct.  [[#936]]
  -  Added `Swarm<T>.GetPeerChainStateAsync()` method.  [[#936]]
+ -  Added `Block<T>.EvaluationDigest` property.  [[#931], [#935]]
+ -  Added `BlockHeader.EvaluationDigest` property.  [[#931], [#935]]
+ -  Added `Block<T>.PreEvaluationHash` property.  [[#931], [#935]]
+ -  Added `BlockHeader.PreEvaluationHash` property.  [[#931], [#935]]
+ -  Added `HashDigest(ImmutableArray<byte>)` constructor.  [[#931], [#935]]
 
 ### Behavioral changes
 
@@ -154,8 +167,10 @@ To be released.
 [#926]: https://github.com/planetarium/libplanet/pull/926
 [#927]: https://github.com/planetarium/libplanet/pull/927
 [#930]: https://github.com/planetarium/libplanet/pull/930
+[#931]: https://github.com/planetarium/libplanet/issues/931
 [#932]: https://github.com/planetarium/libplanet/pull/932
 [#933]: https://github.com/planetarium/libplanet/pull/933
+[#935]: https://github.com/planetarium/libplanet/pull/935
 [#936]: https://github.com/planetarium/libplanet/pull/936
 [sleep mode]: https://en.wikipedia.org/wiki/Sleep_mode
 

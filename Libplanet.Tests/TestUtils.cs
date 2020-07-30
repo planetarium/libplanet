@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using Bencodex;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -210,11 +211,12 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             long index = previousBlock.Index + 1;
             HashDigest<SHA256> previousHash = previousBlock.Hash;
             DateTimeOffset timestamp =
-                previousBlock.Timestamp.Add(blockInterval ?? TimeSpan.FromDays(1));
+                previousBlock.Timestamp.Add(blockInterval ?? TimeSpan.FromSeconds(15));
 
+            Block<T> block;
             if (nonce == null)
             {
-                return Block<T>.Mine(
+                block = Block<T>.Mine(
                     index: index,
                     difficulty: difficulty,
                     previousTotalDifficulty: previousBlock.TotalDifficulty,
@@ -224,17 +226,25 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     transactions: txs
                 );
             }
+            else
+            {
+                block = new Block<T>(
+                    index: index,
+                    difficulty: difficulty,
+                    totalDifficulty: previousBlock.TotalDifficulty + difficulty,
+                    nonce: new Nonce(nonce),
+                    miner: miner ?? previousBlock.Miner.Value,
+                    previousHash: previousHash,
+                    timestamp: timestamp,
+                    transactions: txs
+                );
+            }
 
-            return new Block<T>(
-                index: index,
-                difficulty: difficulty,
-                totalDifficulty: previousBlock.TotalDifficulty + difficulty,
-                nonce: new Nonce(nonce),
-                miner: miner ?? previousBlock.Miner.Value,
-                previousHash: previousHash,
-                timestamp: timestamp,
-                transactions: txs
-            );
+            var actionEvaluations = block
+                .Evaluate(DateTimeOffset.UtcNow);
+
+            HashDigest<SHA256>? actionsHash = ActionEvaluationsToHash(actionEvaluations);
+            return new Block<T>(block, actionsHash);
         }
 
         public static string ToString(BitArray bitArray)
@@ -279,6 +289,31 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 timestamp ?? DateTimeOffset.MinValue,
                 new[] { tx, });
             return new BlockChain<T>(policy, store, genesisBlock);
+        }
+
+        public static HashDigest<SHA256>? ActionEvaluationsToHash(
+            IEnumerable<ActionEvaluation> actionEvaluations)
+        {
+            ActionEvaluation actionEvaluation;
+            var evaluations = actionEvaluations.ToList();
+            if (evaluations.Any())
+            {
+                actionEvaluation = evaluations.Last();
+            }
+            else
+            {
+                return (HashDigest<SHA256>?)null;
+            }
+
+            IImmutableSet<Address> updatedAddresses =
+                actionEvaluation.OutputStates.UpdatedAddresses;
+            var dict = Bencodex.Types.Dictionary.Empty;
+            foreach (Address address in updatedAddresses)
+            {
+                dict.Add(address.ToHex(), actionEvaluation.OutputStates.GetState(address));
+            }
+
+            return Hashcash.Hash(new Codec().Encode(dict));
         }
     }
 }

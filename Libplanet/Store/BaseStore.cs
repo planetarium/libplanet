@@ -81,8 +81,15 @@ namespace Libplanet.Store
             if (GetBlockDigest(blockHash) is BlockDigest blockDigest)
             {
                 HashDigest<SHA256>? prevHash = blockDigest.Header.PreviousHash.Any()
-                    ? new HashDigest<SHA256>(blockDigest.Header.PreviousHash.ToArray())
+                    ? new HashDigest<SHA256>(blockDigest.Header.PreviousHash)
                     : (HashDigest<SHA256>?)null;
+                HashDigest<SHA256>? preEvaluationHash = blockDigest.Header.PreEvaluationHash.Any()
+                    ? new HashDigest<SHA256>(blockDigest.Header.PreEvaluationHash)
+                    : (HashDigest<SHA256>?)null;
+                HashDigest<SHA256>? evaluationDigest = blockDigest.Header.EvaluationDigest.Any()
+                    ? new HashDigest<SHA256>(blockDigest.Header.EvaluationDigest)
+                    : (HashDigest<SHA256>?)null;
+
                 return new Block<T>(
                     index: blockDigest.Header.Index,
                     difficulty: blockDigest.Header.Difficulty,
@@ -96,7 +103,9 @@ namespace Libplanet.Store
                         CultureInfo.InvariantCulture
                     ).ToUniversalTime(),
                     transactions: blockDigest.TxIds
-                        .Select(bytes => GetTransaction<T>(new TxId(bytes.ToArray())))
+                        .Select(bytes => GetTransaction<T>(new TxId(bytes.ToArray()))),
+                    preEvaluationHash: preEvaluationHash,
+                    evaluationDigest: evaluationDigest
                 );
             }
 

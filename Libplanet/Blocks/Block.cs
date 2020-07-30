@@ -11,6 +11,7 @@ using System.Threading;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Blockchain;
 using Libplanet.Tx;
 
 namespace Libplanet.Blocks
@@ -42,6 +43,12 @@ namespace Libplanet.Blocks
         /// Transactions become sorted in an unpredicted-before-mined order and then go to
         /// the <see cref="Transactions"/> property.
         /// </param>
+        /// <param name="preEvaluationHash">The hash derived from the block <em>except of</em>
+        /// <paramref name="evaluationDigest"/> (i.e., without action evaluation).
+        /// Automatically determined if <c>null</c> is passed (which is default).</param>
+        /// <param name="evaluationDigest">The hash derived from the result states of every
+        /// <see cref="Transaction{T}.Actions"/> of the block's entire
+        /// <paramref name="transactions"/>.</param>
         /// <seealso cref="Mine"/>
         public Block(
             long index,
@@ -51,7 +58,9 @@ namespace Libplanet.Blocks
             Address? miner,
             HashDigest<SHA256>? previousHash,
             DateTimeOffset timestamp,
-            IEnumerable<Transaction<T>> transactions)
+            IEnumerable<Transaction<T>> transactions,
+            HashDigest<SHA256>? preEvaluationHash = null,
+            HashDigest<SHA256>? evaluationDigest = null)
         {
             Index = index;
             Difficulty = difficulty;
@@ -68,9 +77,11 @@ namespace Libplanet.Blocks
                         new Bencodex.Types.List(Transactions.Select(tx =>
                             (IValue)tx.ToBencodex(true)))))
                 : (HashDigest<SHA256>?)null;
+            PreEvaluationHash = preEvaluationHash ?? Hashcash.Hash(SerializeForHash());
+            EvaluationDigest = evaluationDigest;
 
             // FIXME: This does not need to be computed every time?
-            Hash = Hashcash.Hash(SerializeForHash());
+            Hash = Hashcash.Hash(SerializeForHash(evaluationDigest));
 
             // As the order of transactions should be unpredictable until a block is mined,
             // the sorter key should be derived from both a block hash and a txid.
@@ -118,6 +129,21 @@ namespace Libplanet.Blocks
         {
         }
 
+        public Block(Block<T> block, HashDigest<SHA256>? evaluationDigest)
+            : this(
+                block.Index,
+                block.Difficulty,
+                block.TotalDifficulty,
+                block.Nonce,
+                block.Miner,
+                block.PreviousHash,
+                block.Timestamp,
+                block.Transactions,
+                block.PreEvaluationHash,
+                evaluationDigest)
+        {
+        }
+
         private Block(RawBlock rb)
             : this(
                 rb.Header.Index,
@@ -126,7 +152,7 @@ namespace Libplanet.Blocks
                 new Nonce(rb.Header.Nonce.ToArray()),
                 rb.Header.Miner.Any() ? new Address(rb.Header.Miner) : (Address?)null,
 #pragma warning disable MEN002 // Line is too long
-                rb.Header.PreviousHash.Any() ? new HashDigest<SHA256>(rb.Header.PreviousHash.ToArray()) : (HashDigest<SHA256>?)null,
+                rb.Header.PreviousHash.Any() ? new HashDigest<SHA256>(rb.Header.PreviousHash) : (HashDigest<SHA256>?)null,
 #pragma warning restore MEN002 // Line is too long
                 DateTimeOffset.ParseExact(
                     rb.Header.Timestamp,
@@ -134,12 +160,38 @@ namespace Libplanet.Blocks
                     CultureInfo.InvariantCulture).ToUniversalTime(),
                 rb.Transactions
                     .Select(tx => Transaction<T>.Deserialize(tx.ToArray()))
-                    .ToList()
-            )
+                    .ToList(),
+#pragma warning disable MEN002 // Line is too long
+                rb.Header.PreEvaluationHash.Any() ? new HashDigest<SHA256>(rb.Header.PreEvaluationHash) : (HashDigest<SHA256>?)null,
+                rb.Header.EvaluationDigest.Any() ? new HashDigest<SHA256>(rb.Header.EvaluationDigest) : (HashDigest<SHA256>?)null)
+#pragma warning restore MEN002 // Line is too long
         {
         }
 
+        /// <summary>
+        /// <see cref="Hash"/> is derived from a serialized <see cref="Block{T}"/>
+        /// after <see cref="Transaction{T}.Actions"/> are evaluated.
+        /// </summary>
+        /// <seealso cref="PreEvaluationHash"/>
+        /// <seealso cref="EvaluationDigest"/>
         public HashDigest<SHA256> Hash { get; }
+
+        /// <summary>
+        /// The hash derived from the block <em>except of</em>
+        /// <see cref="EvaluationDigest"/> (i.e., without action evaluation).
+        /// Used for <see cref="BlockHeader.Validate"/> checking <see cref="Nonce"/>.
+        /// </summary>
+        /// <seealso cref="Nonce"/>
+        /// <seealso cref="BlockHeader.Validate"/>
+        public HashDigest<SHA256> PreEvaluationHash { get; }
+
+        /// <summary>
+        /// <see cref="EvaluationDigest"/> derived from the result states of every
+        /// <see cref="Transaction{T}.Actions"/> of the block's entire
+        /// <see cref="Transactions"/>.
+        /// </summary>
+        /// <seealso cref="BlockChain{T}.MineBlock(Libplanet.Address)"/>
+        public HashDigest<SHA256>? EvaluationDigest { get; }
 
         [IgnoreDuringEquals]
         public long Index { get; }
@@ -397,10 +449,13 @@ namespace Libplanet.Blocks
         /// in <see cref="Transaction{T}.UpdatedAddresses"/>.</exception>
         public IEnumerable<ActionEvaluation> Evaluate(
             DateTimeOffset currentTime,
-            AccountStateGetter accountStateGetter,
-            AccountBalanceGetter accountBalanceGetter
+            AccountStateGetter accountStateGetter = null,
+            AccountBalanceGetter accountBalanceGetter = null
         )
         {
+            accountStateGetter ??= a => null;
+            accountBalanceGetter ??= (a, c) => 0;
+
             Validate(currentTime);
             Tuple<Transaction<T>, ActionEvaluation>[] txEvaluations =
                 EvaluateActionsPerTx(accountStateGetter, accountBalanceGetter).ToArray();
@@ -461,6 +516,13 @@ namespace Libplanet.Blocks
             );
             ImmutableArray<byte> previousHashAsArray =
                 PreviousHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty;
+            ImmutableArray<byte> actionsHashAsArray =
+                EvaluationDigest?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty;
+
+            if (PreviousHash.Equals(EvaluationDigest))
+            {
+                Console.WriteLine();
+            }
 
             // FIXME: When hash is not assigned, should throw an exception.
             return new BlockHeader(
@@ -472,7 +534,9 @@ namespace Libplanet.Blocks
                 totalDifficulty: TotalDifficulty,
                 previousHash: previousHashAsArray,
                 txHash: TxHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty,
-                hash: Hash.ToByteArray().ToImmutableArray()
+                hash: Hash.ToByteArray().ToImmutableArray(),
+                preEvaluationHash: PreEvaluationHash.ToByteArray().ToImmutableArray(),
+                evaluationDigest: actionsHashAsArray
             );
         }
 
@@ -495,7 +559,7 @@ namespace Libplanet.Blocks
                     .Select(tx => tx.Serialize(true).ToImmutableArray()).ToImmutableArray());
         }
 
-        private byte[] SerializeForHash()
+        private byte[] SerializeForHash(HashDigest<SHA256>? evaluationDigest = null)
         {
             var dict = Bencodex.Types.Dictionary.Empty
                 .Add("index", Index)
@@ -518,6 +582,11 @@ namespace Libplanet.Blocks
             if (!(TxHash is null))
             {
                 dict = dict.Add("transaction_fingerprint", TxHash.Value.ToByteArray());
+            }
+
+            if (!(evaluationDigest is null))
+            {
+                dict = dict.Add("actions_hash", evaluationDigest.Value.ToByteArray());
             }
 
             return new Codec().Encode(dict);

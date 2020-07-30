@@ -34,6 +34,10 @@ namespace Libplanet.Blocks
 
         private static readonly byte[] HashKey = { 0x68 }; // 'h'
 
+        private static readonly byte[] EvaluationDigestKey = { 0x65 }; // 'e'
+
+        private static readonly byte[] PreEvaluationHashKey = { 0x63 }; // 'c'
+
         private static readonly TimeSpan TimestampThreshold =
             TimeSpan.FromSeconds(15);
 
@@ -59,6 +63,12 @@ namespace Libplanet.Blocks
         /// Goes to the <see cref="TxHash"/>.</param>
         /// <param name="hash">The hash of the <see cref="Block{T}"/>.
         /// Goes to the <see cref="Hash"/>.</param>
+        /// <param name="preEvaluationHash">The hash derived from the block <em>except of</em>
+        /// <paramref name="evaluationDigest"/> (i.e., without action evaluation).
+        /// Used for <see cref="Validate"/> checking <paramref name="nonce"/>.
+        /// </param>
+        /// <param name="evaluationDigest">The hash derived from the result states of every
+        /// <see cref="Tx.Transaction{T}.Actions"/> of the block's entire transactions.</param>
         public BlockHeader(
             long index,
             string timestamp,
@@ -68,7 +78,9 @@ namespace Libplanet.Blocks
             BigInteger totalDifficulty,
             ImmutableArray<byte> previousHash,
             ImmutableArray<byte> txHash,
-            ImmutableArray<byte> hash)
+            ImmutableArray<byte> hash,
+            ImmutableArray<byte> preEvaluationHash,
+            ImmutableArray<byte> evaluationDigest)
         {
             Index = index;
             Timestamp = timestamp;
@@ -79,6 +91,8 @@ namespace Libplanet.Blocks
             PreviousHash = previousHash;
             TxHash = txHash;
             Hash = hash;
+            PreEvaluationHash = preEvaluationHash;
+            EvaluationDigest = evaluationDigest;
         }
 
         public BlockHeader(Bencodex.Types.Dictionary dict)
@@ -104,6 +118,14 @@ namespace Libplanet.Blocks
             Hash = dict.ContainsKey((IKey)(Binary)HashKey)
                 ? dict.GetValue<Binary>(HashKey).ToImmutableArray()
                 : ImmutableArray<byte>.Empty;
+
+            PreEvaluationHash = dict.ContainsKey((IKey)(Binary)PreEvaluationHashKey)
+                ? dict.GetValue<Binary>(PreEvaluationHashKey).ToImmutableArray()
+                : ImmutableArray<byte>.Empty;
+
+            EvaluationDigest = dict.ContainsKey((IKey)(Binary)EvaluationDigestKey)
+                ? dict.GetValue<Binary>(EvaluationDigestKey).ToImmutableArray()
+                : ImmutableArray<byte>.Empty;
         }
 
         public long Index { get; }
@@ -123,6 +145,10 @@ namespace Libplanet.Blocks
         public ImmutableArray<byte> TxHash { get; }
 
         public ImmutableArray<byte> Hash { get; }
+
+        public ImmutableArray<byte> PreEvaluationHash { get; }
+
+        public ImmutableArray<byte> EvaluationDigest { get; }
 
         /// <summary>
         /// Gets <see cref="BlockHeader"/> instance from serialized <paramref name="bytes"/>.
@@ -182,6 +208,16 @@ namespace Libplanet.Blocks
             if (TxHash.Any())
             {
                 dict = dict.Add(TxHashKey, TxHash.ToArray());
+            }
+
+            if (PreEvaluationHash.Any())
+            {
+                dict = dict.Add(PreEvaluationHashKey, PreEvaluationHash.ToArray());
+            }
+
+            if (EvaluationDigest.Any())
+            {
+                dict = dict.Add(EvaluationDigestKey, EvaluationDigest.ToArray());
             }
 
             return dict;
@@ -270,10 +306,10 @@ namespace Libplanet.Blocks
                 }
             }
 
-            if (!new HashDigest<SHA256>(Hash.ToArray()).Satisfies(Difficulty))
+            if (!new HashDigest<SHA256>(PreEvaluationHash.ToArray()).Satisfies(Difficulty))
             {
                 throw new InvalidBlockNonceException(
-                    $"hash ({Hash}) with the nonce ({Nonce}) does not " +
+                    $"hash ({PreEvaluationHash}) with the nonce ({Nonce}) does not " +
                     $"satisfy its difficulty level {Difficulty}."
                 );
             }
