@@ -117,7 +117,6 @@ To be released.
     instead of the longest chain.  [[#459], [#919]]
  -  `Swarm<T>.BootstrapAsync()` method became not to throw `TimeoutException` when
     it fails to connect to all neighbors.  [[#933]]
- -  `Currency` is now serializable.  [[#940]]
 
 ### Bug fixes
 
@@ -128,9 +127,8 @@ To be released.
     [[#909]]
  -  Fixed a bug in which pre-computed state delivery had failed when a state
     key is not an `Address` when preloading.  [[#912]]
- -  Fixed a bug where `UnexpectedlyTerminatedException` and
-    `InsufficientBalanceException` hadn't been serialized with
-    `BinaryFormatter`.  [[#913], [#940]]
+ -  Fixed a bug where `UnexpectedlyTerminatedException` hadn't been serialized
+    with `BinaryFormatter`.  [[#913]]
  -  Fixed a bug where `TurnClient` hadn't applied cancellation token to its
     connections.  [[#916]]
  -  Fixed a bug where `BlockChain<T>.GetRawState()` had overwritten block states
@@ -176,6 +174,7 @@ To be released.
 [#933]: https://github.com/planetarium/libplanet/pull/933
 [#935]: https://github.com/planetarium/libplanet/pull/935
 [#936]: https://github.com/planetarium/libplanet/pull/936
+[#940]: https://github.com/planetarium/libplanet/pull/940
 [sleep mode]: https://en.wikipedia.org/wiki/Sleep_mode
 
 
