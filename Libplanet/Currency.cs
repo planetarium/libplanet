@@ -21,7 +21,7 @@ namespace Libplanet
     /// EUR (Euro), <em>not values</em> like $100 or €100.
     /// </summary>
     [Serializable]
-    public readonly struct Currency : ISerializable
+    public readonly struct Currency : ISerializable, IEquatable<Currency>
     {
         /// <summary>
         /// The ticker symbol, e.g., <c>&quot;USD&quot;</c>.
@@ -123,6 +123,29 @@ namespace Libplanet
         [Pure]
         public override string ToString() =>
             $"{Ticker} ({Hash})";
+
+        [Pure]
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return -1545866855 + Hash.GetHashCode();
+            }
+        }
+
+        [Pure]
+        public override bool Equals(object? obj)
+        {
+            return obj is IEquatable<Currency> other
+                ? other.Equals(this)
+                : false;
+        }
+
+        [Pure]
+        public bool Equals(Currency other)
+        {
+            return Hash.Equals(other.Hash);
+        }
 
         [Pure]
         private HashDigest<SHA1> GetHash()

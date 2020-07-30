@@ -125,5 +125,19 @@ namespace Libplanet.Tests
                 Assert.Equal(currency.Hash, deserialized.Hash);
             }
         }
+
+        [Fact]
+        public void Equal()
+        {
+            var currencyA = new Currency(ticker: "GOLD", minter: AddressA);
+            var currencyB = new Currency(ticker: "GOLD", minter: AddressA);
+            var currencyC = new Currency(ticker: "GOLD", minter: AddressB);
+            var currencyD = new Currency(ticker: "SILVER", minter: AddressA);
+
+            Assert.Equal(currencyA, currencyA);
+            Assert.Equal(currencyA, currencyB);
+            Assert.NotEqual(currencyA, currencyC);
+            Assert.NotEqual(currencyA, currencyD);
+        }
     }
 }
