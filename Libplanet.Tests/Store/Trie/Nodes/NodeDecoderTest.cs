@@ -12,9 +12,11 @@ namespace Libplanet.Tests.Store.Trie.Nodes
         [Fact]
         public void DecodeValidFullNode()
         {
+            var hashA = Hashcash.Hash(TestUtils.GetRandomBytes(128));
+            var hashB = Hashcash.Hash(TestUtils.GetRandomBytes(128));
             var list = new List(new IValue[]
             {
-                (Binary)default(HashDigest<SHA256>).ToByteArray(),
+                (Binary)hashA.ToByteArray(),
                 default(Null),
                 default(Null),
                 default(Null),
@@ -30,15 +32,15 @@ namespace Libplanet.Tests.Store.Trie.Nodes
                 default(Null),
                 default(Null),
                 default(Null),
-                (Text)"foo",
+                (Binary)hashB.ToByteArray(),
             });
             Assert.Equal(17, list.Count);
 
             INode node = NodeDecoder.Decode(list);
             Assert.IsType<FullNode>(node);
             var fullNode = (FullNode)node;
-            Assert.Equal(new ValueNode((Text)"foo"), fullNode.Value);
-            Assert.Equal(new HashNode(default), fullNode.Children[0]);
+            Assert.Equal(new HashNode(hashB), fullNode.Value);
+            Assert.Equal(new HashNode(hashA), fullNode.Children[0]);
             for (int i = 1; i < 16; ++i)
             {
                 Assert.Null(fullNode.Children[i]);

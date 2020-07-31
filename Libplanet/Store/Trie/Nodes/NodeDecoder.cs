@@ -32,10 +32,12 @@ namespace Libplanet.Store.Trie.Nodes
 
         private static FullNode DecodeFull(List list)
         {
+            // Assume they will be always Bencodex.Types.Binary (i.e., HashNode) and
+            // Bencodex.Types.Null (i.e., null) because FullNode's value and children can be null,
+            // but there is no way to present null.
             return new FullNode(list
                 .Select(DecodeChild)
-                .Take(FullNode.ChildrenCount - 1)
-                .Concat(new[] { new ValueNode(list[list.Count - 1]) })
+                .Take(FullNode.ChildrenCount)
                 .ToImmutableArray());
         }
 
