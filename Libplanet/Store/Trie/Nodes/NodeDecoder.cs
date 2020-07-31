@@ -68,13 +68,8 @@ namespace Libplanet.Store.Trie.Nodes
                 return new ShortNode(RemoveValueNodeFlag(path), new ValueNode(list[1]));
             }
 
-            if (!(list[1] is Binary binary))
-            {
-                throw new InvalidTrieNodeException($"Invalid node came.");
-            }
-
             // Get referenced node corresponding.
-            var refNode = DecodeRef(binary);
+            var refNode = DecodeRef(list[1]);
 
             return new ShortNode(path, refNode);
         }
