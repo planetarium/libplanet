@@ -10,5 +10,7 @@ namespace Libplanet.Store.Trie
         public void Set(byte[] key, byte[] value);
 
         public void Delete(byte[] key);
+
+        public bool Exists(byte[] key);
     }
 }
