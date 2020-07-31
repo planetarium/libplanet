@@ -27,7 +27,8 @@ namespace Libplanet.Store.Trie.Nodes
                     break;
             }
 
-            throw new InvalidTrieNodeException($"Invalid node came.");
+            throw new InvalidTrieNodeException("Can't decode a node from the bencodex value:" +
+                                               $" {value.Inspection}");
         }
 
         private static FullNode DecodeFull(List list)
@@ -61,7 +62,9 @@ namespace Libplanet.Store.Trie.Nodes
         {
             if (!(list[0] is Binary path))
             {
-                throw new InvalidTrieNodeException($"Invalid node came.");
+                throw new InvalidTrieNodeException(
+                    $"Expected `{nameof(ShortNode)}.{nameof(ShortNode.Key)}`'s serialization type" +
+                    $" was {nameof(Binary)}, but it was {list[0].GetType().FullName}");
             }
 
             if (HasValueNodeFlag(path))
@@ -100,7 +103,7 @@ namespace Libplanet.Store.Trie.Nodes
                     break;
             }
 
-            throw new InvalidTrieNodeException("Invalid embedded node exists.");
+            throw new InvalidTrieNodeException("Failed to decode reference node or embedded node.");
         }
 
         private static long EstimateSize(IValue value)
