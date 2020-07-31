@@ -57,11 +57,8 @@ namespace Libplanet.Store.Trie.Nodes
             var list = new List<IValue>
             {
                 (Bencodex.Types.Binary)Key.ToArray(),
+                Value.ToBencodex(),
             };
-            if (Value is ValueNode valueNode)
-            {
-                list.Add(valueNode.Value);
-            }
 
             return new Bencodex.Types.List(list);
         }
