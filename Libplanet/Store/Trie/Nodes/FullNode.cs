@@ -50,6 +50,16 @@ namespace Libplanet.Store.Trie.Nodes
 
             for (var i = 0; i < ChildrenCount; ++i)
             {
+                if (other.Children[i] is null ^ Children[i] is null)
+                {
+                    return false;
+                }
+
+                if (other.Children[i] is null && Children[i] is null)
+                {
+                    return true;
+                }
+
                 if (other.Children[i].GetType() != Children[i].GetType())
                 {
                     return false;
