@@ -20,6 +20,6 @@ namespace Libplanet.Store.Trie
 
         bool TryGet(byte[] key, out IValue value);
 
-        void Commit();
+        ITrie Commit();
     }
 }
