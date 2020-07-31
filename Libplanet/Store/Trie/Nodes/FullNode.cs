@@ -20,6 +20,7 @@ namespace Libplanet.Store.Trie.Nodes
             }
 
             Children = children;
+            NodeFlag = new NodeFlag(true, null);
         }
 
         public FullNode()
