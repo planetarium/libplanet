@@ -3476,6 +3476,41 @@ references:
   isSpec: "True"
   fullName: Libplanet.Currency.AllowsToMint
   nameWithType: Currency.AllowsToMint
+- uid: Libplanet.Currency.Equals(Libplanet.Currency)
+  name: Equals(Currency)
+  href: api/Libplanet.Currency.html#Libplanet_Currency_Equals_Libplanet_Currency_
+  commentId: M:Libplanet.Currency.Equals(Libplanet.Currency)
+  fullName: Libplanet.Currency.Equals(Libplanet.Currency)
+  nameWithType: Currency.Equals(Currency)
+- uid: Libplanet.Currency.Equals(System.Nullable{System.Object})
+  name: Equals(Nullable<Object>)
+  href: api/Libplanet.Currency.html#Libplanet_Currency_Equals_System_Nullable_System_Object__
+  commentId: M:Libplanet.Currency.Equals(System.Nullable{System.Object})
+  name.vb: Equals(Nullable(Of Object))
+  fullName: Libplanet.Currency.Equals(System.Nullable<System.Object>)
+  fullName.vb: Libplanet.Currency.Equals(System.Nullable(Of System.Object))
+  nameWithType: Currency.Equals(Nullable<Object>)
+  nameWithType.vb: Currency.Equals(Nullable(Of Object))
+- uid: Libplanet.Currency.Equals*
+  name: Equals
+  href: api/Libplanet.Currency.html#Libplanet_Currency_Equals_
+  commentId: Overload:Libplanet.Currency.Equals
+  isSpec: "True"
+  fullName: Libplanet.Currency.Equals
+  nameWithType: Currency.Equals
+- uid: Libplanet.Currency.GetHashCode
+  name: GetHashCode()
+  href: api/Libplanet.Currency.html#Libplanet_Currency_GetHashCode
+  commentId: M:Libplanet.Currency.GetHashCode
+  fullName: Libplanet.Currency.GetHashCode()
+  nameWithType: Currency.GetHashCode()
+- uid: Libplanet.Currency.GetHashCode*
+  name: GetHashCode
+  href: api/Libplanet.Currency.html#Libplanet_Currency_GetHashCode_
+  commentId: Overload:Libplanet.Currency.GetHashCode
+  isSpec: "True"
+  fullName: Libplanet.Currency.GetHashCode
+  nameWithType: Currency.GetHashCode
 - uid: Libplanet.Currency.GetObjectData(SerializationInfo,StreamingContext)
   name: GetObjectData(SerializationInfo, StreamingContext)
   href: api/Libplanet.Currency.html#Libplanet_Currency_GetObjectData_SerializationInfo_StreamingContext_
