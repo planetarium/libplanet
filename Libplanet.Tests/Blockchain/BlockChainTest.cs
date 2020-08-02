@@ -1930,7 +1930,11 @@ namespace Libplanet.Tests.Blockchain
             );
 
             var miner = genesis.Miner.GetValueOrDefault();
-            var blockActionEvaluation = _blockChain.EvaluateBlockAction(genesis, null);
+            var blockActionEvaluation = _blockChain.EvaluateBlockAction(
+                genesis,
+                null,
+                StateCompleterSet<DumbAction>.Recalculate
+            );
             Assert.Equal(_blockChain.Policy.BlockAction, blockActionEvaluation.Action);
             Assert.Equal(
                 (Integer)2,
@@ -1946,7 +1950,11 @@ namespace Libplanet.Tests.Blockchain
             var txEvaluations = block1.EvaluateActionsPerTx(a =>
                     _blockChain.GetState(a, block1.PreviousHash))
                 .Select(te => te.Item2).ToList();
-            blockActionEvaluation = _blockChain.EvaluateBlockAction(block1, txEvaluations);
+            blockActionEvaluation = _blockChain.EvaluateBlockAction(
+                block1,
+                txEvaluations,
+                StateCompleterSet<DumbAction>.Recalculate
+            );
 
             Assert.Equal((Integer)2, (Integer)blockActionEvaluation.OutputStates.GetState(miner));
         }

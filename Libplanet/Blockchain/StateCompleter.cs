@@ -15,6 +15,7 @@ namespace Libplanet.Blockchain
     /// <param name="blockHash">The hash of a block to lacks its dirty states.</param>
     /// <param name="address">The address to query its state value.</param>
     /// <returns>A complement state.  This can be <c>null</c>.</returns>
+    /// <seealso cref="StateCompleters{T}"/>
     public delegate IValue StateCompleter<T>(
         BlockChain<T> blockChain,
         HashDigest<SHA256> blockHash,

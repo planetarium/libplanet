@@ -16,6 +16,7 @@ namespace Libplanet.Blockchain
     /// <param name="address">The account to query its balance.</param>
     /// <param name="currency">The currency to query.</param>
     /// <returns>A complement balance value.</returns>
+    /// <seealso cref="FungibleAssetStateCompleters{T}"/>
     public delegate BigInteger FungibleAssetStateCompleter<T>(
         BlockChain<T> blockChain,
         HashDigest<SHA256> blockHash,

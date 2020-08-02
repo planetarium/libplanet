@@ -100,6 +100,7 @@ To be released.
         `StateCompleters<T>.Reject`, respectively.
      -  Added `StateCompleter<T>` delegate.
      -  Added `FungibleAssetStateCompleter<T>` delegate.
+     -  Added `StateCompleterSet<T>` struct.
      -  Added `StateCompleters<T>` static class.
      -  Added `FungibleAssetStateCompleters<T>` static class.
 
