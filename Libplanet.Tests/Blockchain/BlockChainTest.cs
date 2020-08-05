@@ -1468,6 +1468,31 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
+        public void GetStateWithStateCompleter()
+        {
+            (Address signer, Address[] addresses, BlockChain<DumbAction> chain)
+                = MakeIncompleteBlockStates();
+            StoreTracker store = (StoreTracker)chain.Store;
+
+            IValue value = chain.GetState(
+                addresses[4],
+                chain.Tip.Hash,
+                (bc, bh, a) => throw new Exception("This exception should not be thrown.")
+            );
+            Assert.Equal(new Text("9"), value);
+
+            value = chain.GetState(
+                addresses[4],
+                chain.BlockHashes.Skip((int)chain.Count - 2).First(),
+                (bc, hash, addr) =>
+                    new Text($"{bc.Id}/{hash}/{addr}: callback called")
+            );
+            HashDigest<SHA256> prevUpdate = chain.BlockHashes.Skip(addresses.Length).First();
+            var expected = new Text($"{chain.Id}/{prevUpdate}/{addresses[4]}: callback called");
+            Assert.Equal(expected, value);
+        }
+
+        [Fact]
         public void GetStateWithCompletingStates()
         {
             (Address signer, Address[] addresses, BlockChain<DumbAction> chain)
@@ -1510,7 +1535,10 @@ namespace Libplanet.Tests.Blockchain
             long txNonce = store.GetTxNonce(chain.Id, signer);
 
             store.ClearLogs();
-            chain.GetState(addresses.Last(), completeStates: true);
+            chain.GetState(
+                addresses.Last(),
+                stateCompleter: StateCompleters<DumbAction>.Recalculate
+            );
 
             Assert.Empty(
                 store.Logs.Where(l => l.Method == "StoreStateReference")
@@ -1524,7 +1552,10 @@ namespace Libplanet.Tests.Blockchain
             }
 
             store.ClearLogs();
-            chain.GetState(addresses[0], completeStates: true);
+            chain.GetState(
+                addresses[0],
+                stateCompleter: StateCompleters<DumbAction>.Recalculate
+            );
 
             foreach (var blockHash in chain.BlockHashes)
             {
@@ -1899,7 +1930,11 @@ namespace Libplanet.Tests.Blockchain
             );
 
             var miner = genesis.Miner.GetValueOrDefault();
-            var blockActionEvaluation = _blockChain.EvaluateBlockAction(genesis, null);
+            var blockActionEvaluation = _blockChain.EvaluateBlockAction(
+                genesis,
+                null,
+                StateCompleterSet<DumbAction>.Recalculate
+            );
             Assert.Equal(_blockChain.Policy.BlockAction, blockActionEvaluation.Action);
             Assert.Equal(
                 (Integer)2,
@@ -1915,7 +1950,11 @@ namespace Libplanet.Tests.Blockchain
             var txEvaluations = block1.EvaluateActionsPerTx(a =>
                     _blockChain.GetState(a, block1.PreviousHash))
                 .Select(te => te.Item2).ToList();
-            blockActionEvaluation = _blockChain.EvaluateBlockAction(block1, txEvaluations);
+            blockActionEvaluation = _blockChain.EvaluateBlockAction(
+                block1,
+                txEvaluations,
+                StateCompleterSet<DumbAction>.Recalculate
+            );
 
             Assert.Equal((Integer)2, (Integer)blockActionEvaluation.OutputStates.GetState(miner));
         }
