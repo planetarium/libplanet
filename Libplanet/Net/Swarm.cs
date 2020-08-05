@@ -276,7 +276,9 @@ namespace Libplanet.Net
         /// Starts to periodically synchronize the <see cref="BlockChain"/>.
         /// </summary>
         /// <param name="dialTimeout">
-        /// A timeout value for dialing.
+        /// When the <see cref="Swarm{T}"/> tries to dial each peer in <see cref="Peers"/>,
+        /// the dial-up is cancelled after this timeout, and it tries another peer.
+        /// If <c>null</c> is given it never gives up dial-ups.
         /// </param>
         /// <param name="broadcastTxInterval">The time period of exchange of staged transactions.
         /// </param>
@@ -406,7 +408,11 @@ namespace Libplanet.Net
         /// <summary>
         /// Gets the <see cref="PeerChainState"/> of the connected <see cref="Peers"/>.
         /// </summary>
-        /// <param name="dialTimeout">A timeout value for dialing.</param>
+        /// <param name="dialTimeout">
+        /// When the <see cref="Swarm{T}"/> tries to dial each peer in <see cref="Peers"/>,
+        /// the dial-up is cancelled after this timeout, and it tries another peer.
+        /// If <c>null</c> is given it never gives up dial-ups.
+        /// </param>
         /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
         /// operation should be canceled.
@@ -427,7 +433,9 @@ namespace Libplanet.Net
         /// Preemptively downloads blocks from registered <see cref="Peer"/>s.
         /// </summary>
         /// <param name="dialTimeout">
-        /// A timeout value for dialing.
+        /// When the <see cref="Swarm{T}"/> tries to dial each peer in <see cref="Peers"/>,
+        /// the dial-up is cancelled after this timeout, and it tries another peer.
+        /// If <c>null</c> is given it never gives up dial-ups.
         /// </param>
         /// <param name="progress">
         /// An instance that receives progress updates for block downloads.
