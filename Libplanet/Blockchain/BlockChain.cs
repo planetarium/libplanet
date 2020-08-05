@@ -176,6 +176,11 @@ namespace Libplanet.Blockchain
         /// </summary>
         public event EventHandler<TipChangedEventArgs> TipChanged;
 
+        /// <summary>
+        /// An event which is invoked when chain is <see cref="Swap"/>ed.
+        /// </summary>
+        public event EventHandler<OnReorgEventArgs> OnReorg;
+
         public IBlockPolicy<T> Policy { get; }
 
         /// <summary>
@@ -1344,11 +1349,20 @@ namespace Libplanet.Blockchain
                     Hash = other.Tip.Hash,
                     Index = other.Tip.Index,
                 };
+
+                var onReorgEventArgs = new OnReorgEventArgs
+                {
+                    oldTip = Tip,
+                    newTip = other.Tip,
+                    branchPoint = topmostCommon,
+                };
+
                 Guid obsoleteId = Id;
                 Id = other.Id;
                 Store.SetCanonicalChainId(Id);
                 _blocks = new BlockSet<T>(Store);
                 TipChanged?.Invoke(this, tipChangedEventArgs);
+                OnReorg?.Invoke(this, onReorgEventArgs);
                 _transactions = new TransactionSet<T>(Store);
                 Store.DeleteChainId(obsoleteId);
             }
@@ -1623,6 +1637,27 @@ namespace Libplanet.Blockchain
             /// The <see cref="Block{T}.Hash"/> of <see cref="Tip"/> <em>after</em> changed.
             /// </summary>
             public HashDigest<SHA256> Hash { get; set; }
+        }
+
+        /// <summary>
+        /// Provides data for the <see cref="BlockChain{T}.OnReorg"/> event.
+        /// </summary>
+        public class OnReorgEventArgs : EventArgs
+        {
+            /// <summary>
+            /// The <see cref="Block{T}"/> before chain swapped.
+            /// </summary>
+            public Block<T> oldTip { get; set; }
+
+            /// <summary>
+            /// The <see cref="Block{T}"/> after chain swapped.
+            /// </summary>
+            public Block<T> newTip { get; set; }
+
+            /// <summary>
+            /// The <see cref="Block{T}"/> point of chain was branch off.
+            /// </summary>
+            public Block<T> branchPoint { get; set; }
         }
     }
 }
