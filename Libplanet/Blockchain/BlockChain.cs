@@ -179,7 +179,7 @@ namespace Libplanet.Blockchain
         /// <summary>
         /// An event which is invoked when chain is <see cref="Swap"/>ed.
         /// </summary>
-        public event EventHandler<OnReorgEventArgs> OnReorg;
+        public event EventHandler<ReorgedEventArgs> Reorged;
 
         public IBlockPolicy<T> Policy { get; }
 
@@ -1350,11 +1350,11 @@ namespace Libplanet.Blockchain
                     Index = other.Tip.Index,
                 };
 
-                var onReorgEventArgs = new OnReorgEventArgs
+                var reorgedEventArgs = new ReorgedEventArgs
                 {
-                    oldTip = Tip,
-                    newTip = other.Tip,
-                    branchPoint = topmostCommon,
+                    OldTip = Tip,
+                    NewTip = other.Tip,
+                    Branchpoint = topmostCommon,
                 };
 
                 Guid obsoleteId = Id;
@@ -1362,7 +1362,7 @@ namespace Libplanet.Blockchain
                 Store.SetCanonicalChainId(Id);
                 _blocks = new BlockSet<T>(Store);
                 TipChanged?.Invoke(this, tipChangedEventArgs);
-                OnReorg?.Invoke(this, onReorgEventArgs);
+                Reorged?.Invoke(this, reorgedEventArgs);
                 _transactions = new TransactionSet<T>(Store);
                 Store.DeleteChainId(obsoleteId);
             }
@@ -1640,24 +1640,24 @@ namespace Libplanet.Blockchain
         }
 
         /// <summary>
-        /// Provides data for the <see cref="BlockChain{T}.OnReorg"/> event.
+        /// Provides data for the <see cref="BlockChain{T}.Reorged"/> event.
         /// </summary>
-        public class OnReorgEventArgs : EventArgs
+        public class ReorgedEventArgs : EventArgs
         {
             /// <summary>
             /// The <see cref="Block{T}"/> before chain swapped.
             /// </summary>
-            public Block<T> oldTip { get; set; }
+            public Block<T> OldTip { get; set; }
 
             /// <summary>
             /// The <see cref="Block{T}"/> after chain swapped.
             /// </summary>
-            public Block<T> newTip { get; set; }
+            public Block<T> NewTip { get; set; }
 
             /// <summary>
             /// The <see cref="Block{T}"/> point of chain was branch off.
             /// </summary>
-            public Block<T> branchPoint { get; set; }
+            public Block<T> Branchpoint { get; set; }
         }
     }
 }
