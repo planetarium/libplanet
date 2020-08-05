@@ -103,6 +103,8 @@ To be released.
      -  Added `StateCompleterSet<T>` struct.
      -  Added `StateCompleters<T>` static class.
      -  Added `FungibleAssetStateCompleters<T>` static class.
+ -  Added `Reorged` event on `BlockChain<T>`.  [[#945]]
+ -  Added `ReorgedEventArgs` class.  [[#945]]
 
 ### Behavioral changes
 
@@ -192,6 +194,7 @@ To be released.
 [#936]: https://github.com/planetarium/libplanet/pull/936
 [#940]: https://github.com/planetarium/libplanet/pull/940
 [#941]: https://github.com/planetarium/libplanet/pull/941
+[#945]: https://github.com/planetarium/libplanet/pull/945
 [sleep mode]: https://en.wikipedia.org/wiki/Sleep_mode
 
 
