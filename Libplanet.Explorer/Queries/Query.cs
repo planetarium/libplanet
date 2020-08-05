@@ -32,7 +32,8 @@ namespace Libplanet.Explorer.Queries
             bool desc,
             long offset,
             long? limit,
-            bool excludeEmptyTxs)
+            bool excludeEmptyTxs,
+            Address? miner)
         {
             Block<T> tip = _chain.Tip;
             long tipIndex = tip.Index;
@@ -51,6 +52,12 @@ namespace Libplanet.Explorer.Queries
 
             while (limit is null || limit > 0)
             {
+                if (miner != null && miner == block.Miner)
+                {
+                    limit--;
+                    yield return block;
+                }
+
                 if (!excludeEmptyTxs || block.Transactions.Any())
                 {
                     limit--;
