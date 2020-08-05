@@ -2174,6 +2174,37 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
+        private async void Reorged()
+        {
+            Block<DumbAction> actualOldTip = default;
+            Block<DumbAction> actualNewTip = default;
+            Block<DumbAction> actualBranchpoint = default;
+
+            void ReorgedHandler(object target, BlockChain<DumbAction>.ReorgedEventArgs args)
+            {
+                actualOldTip = args.OldTip;
+                actualNewTip = args.NewTip;
+                actualBranchpoint = args.Branchpoint;
+            }
+
+            _blockChain.Reorged += ReorgedHandler;
+            var branchpoint = _blockChain.Tip;
+            var fork = _blockChain.Fork(_blockChain.Tip.Hash);
+            await fork.MineBlock(_fx.Address1);
+            await fork.MineBlock(_fx.Address2);
+            await _blockChain.MineBlock(_fx.Address3);
+
+            var oldTip = _blockChain.Tip;
+            var newTip = fork.Tip;
+
+            _blockChain.Swap(fork, false);
+
+            Assert.Equal(oldTip.Hash, actualOldTip.Hash);
+            Assert.Equal(newTip.Hash, actualNewTip.Hash);
+            Assert.Equal(branchpoint.Hash, actualBranchpoint.Hash);
+        }
+
+        [Fact]
         private async void AbortMining()
         {
             Block<DumbAction> genesis = await _blockChain.MineBlock(_fx.Address1);
