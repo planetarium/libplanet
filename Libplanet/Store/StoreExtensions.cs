@@ -24,6 +24,21 @@ namespace Libplanet.Store
         /// <paramref name="to"/> is not empty.</exception>
         public static void Copy(this IStore from, IStore to)
         {
+            if (from is IBlockStatesStore fromBlockStatesStore &&
+                to is IBlockStatesStore toBlockStatesStore)
+            {
+                CopyBlockStateStore(from, to, fromBlockStatesStore, toBlockStatesStore);
+            }
+            else
+            {
+                throw new NotSupportedException(
+                    $"The copy action is not supported from {from.GetType().FullName}" +
+                    $" to {to.GetType().FullName}");
+            }
+        }
+
+        private static void CopyBlockStateStore(IStore from, IStore to, IBlockStatesStore fromBlockStatesStore, IBlockStatesStore toBlockStatesStore)
+        {
             // TODO: take a IProgress<> so that a caller can be aware the progress of cloning.
             if (to.ListChainIds().Any())
             {
@@ -36,8 +51,8 @@ namespace Libplanet.Store
                 {
                     Block<NullAction> block = from.GetBlock<NullAction>(blockHash);
                     to.PutBlock(block);
-                    IImmutableDictionary<string, IValue> states = from.GetBlockStates(blockHash);
-                    to.SetBlockStates(blockHash, states);
+                    IImmutableDictionary<string, IValue> states = fromBlockStatesStore.GetBlockStates(blockHash);
+                    toBlockStatesStore.SetBlockStates(blockHash, states);
                     to.AppendIndex(chainId, blockHash);
                 }
 
@@ -46,12 +61,12 @@ namespace Libplanet.Store
                     to.IncreaseTxNonce(chainId, kv.Key, kv.Value);
                 }
 
-                foreach (string key in from.ListStateKeys(chainId))
+                foreach (string key in fromBlockStatesStore.ListStateKeys(chainId))
                 {
-                    foreach (var pair in from.IterateStateReferences(chainId, key).Reverse())
+                    foreach (var pair in fromBlockStatesStore.IterateStateReferences(chainId, key).Reverse())
                     {
                         pair.Deconstruct(out HashDigest<SHA256> refHash, out long refIndex);
-                        to.StoreStateReference(
+                        toBlockStatesStore.StoreStateReference(
                             chainId,
                             ImmutableHashSet.Create(key),
                             refHash,
