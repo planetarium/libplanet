@@ -1446,7 +1446,8 @@ namespace Libplanet.Net
                         break;
                     }
 
-                    if (reply is RecentStates recentStates)
+                    if (reply is RecentStates recentStates
+                        && _store is IBlockStatesStore blockStatesStore)
                     {
                         if (recentStates.Missing)
                         {
@@ -1493,7 +1494,7 @@ namespace Libplanet.Net
                                     .ToImmutableHashSet();
                                 if (_store.GetBlockIndex(hash) is long index)
                                 {
-                                    _store.StoreStateReference(chainId, stateKeys, hash, index);
+                                    blockStatesStore.StoreStateReference(chainId, stateKeys, hash, index);
                                 }
                             }
 
@@ -1505,7 +1506,7 @@ namespace Libplanet.Net
                                 cancellationToken.ThrowIfCancellationRequested();
                                 IImmutableDictionary<string, IValue> states =
                                     pair.Value.ToImmutableDictionary();
-                                _store.SetBlockStates(pair.Key, states);
+                                blockStatesStore.SetBlockStates(pair.Key, states);
                             }
 
                             progress?.Report(new StateDownloadState()

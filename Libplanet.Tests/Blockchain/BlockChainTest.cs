@@ -465,7 +465,7 @@ namespace Libplanet.Tests.Blockchain
                 _blockChain.Append(block2);
 
                 Assert.True(_blockChain.ContainsBlock(block2.Hash));
-                Assert.NotNull(_blockChain.Store.GetBlockStates(block2.Hash));
+                Assert.NotNull(_blockChain.BlockStatesStore.GetBlockStates(block2.Hash));
                 var renders = DumbAction.RenderRecords.Value;
                 var actions = renders.Select(r => (DumbAction)r.Action).ToArray();
                 Assert.Equal(4, renders.Count);
@@ -570,7 +570,7 @@ namespace Libplanet.Tests.Blockchain
                     renderActions: false
                 );
                 Assert.Equal(block, _blockChain.Tip);
-                Assert.Null(_blockChain.Store.GetBlockStates(block.Hash));
+                Assert.Null(_blockChain.BlockStatesStore.GetBlockStates(block.Hash));
                 Assert.Empty(DumbAction.RenderRecords.Value);
             }
             finally
@@ -769,18 +769,18 @@ namespace Libplanet.Tests.Blockchain
                 { MinerReward.RewardRecordAddress, (Text)$"{minerAddress},{minerAddress}" },
             };
 
-            Log.Debug("{@actual}", _blockChain.Store.GetBlockStates(block1.Hash));
+            Log.Debug("{@actual}", _blockChain.BlockStatesStore.GetBlockStates(block1.Hash));
 
             _blockChain.ExecuteActions(block1);
             Assert.Equal(
                 expectedStates.Count,
-                _blockChain.Store.GetBlockStates(block1.Hash).Count);
+                _blockChain.BlockStatesStore.GetBlockStates(block1.Hash).Count);
             Assert.Equal(
                 expectedStates.ToImmutableDictionary(
                     kv => kv.Key.ToHex().ToLowerInvariant(),
                     kv => kv.Value
                 ),
-                _blockChain.Store.GetBlockStates(block1.Hash)
+                _blockChain.BlockStatesStore.GetBlockStates(block1.Hash)
             );
         }
 
@@ -981,9 +981,9 @@ namespace Libplanet.Tests.Blockchain
             string stateKey2 = addr2.ToHex().ToLowerInvariant();
 
             Assert.Null(
-                forked.Store.LookupStateReference(fId, stateKey1, forked.Tip));
+                forked.BlockStatesStore.LookupStateReference(fId, stateKey1, forked.Tip.Index));
             Assert.Null(
-                forked.Store.LookupStateReference(fId, stateKey2, forked.Tip));
+                forked.BlockStatesStore.LookupStateReference(fId, stateKey2, forked.Tip.Index));
 
             // Fork from b1 and append a empty block.
             forked = _blockChain.Fork(b1.Hash);
@@ -993,9 +993,9 @@ namespace Libplanet.Tests.Blockchain
 
             Assert.Equal(
                 Tuple.Create(b1.Hash, b1.Index),
-                forked.Store.LookupStateReference(fId, stateKey1, forked.Tip));
+                forked.BlockStatesStore.LookupStateReference(fId, stateKey1, forked.Tip.Index));
             Assert.Null(
-                forked.Store.LookupStateReference(fId, stateKey2, forked.Tip));
+                forked.BlockStatesStore.LookupStateReference(fId, stateKey2, forked.Tip.Index));
 
             // Fork from b2.
             forked = _blockChain.Fork(b2.Hash);
@@ -1003,10 +1003,10 @@ namespace Libplanet.Tests.Blockchain
 
             Assert.Equal(
                 Tuple.Create(b1.Hash, b1.Index),
-                forked.Store.LookupStateReference(fId, stateKey1, forked.Tip));
+                forked.BlockStatesStore.LookupStateReference(fId, stateKey1, forked.Tip.Index));
             Assert.Equal(
                 Tuple.Create(b2.Hash, b2.Index),
-                forked.Store.LookupStateReference(fId, stateKey2, forked.Tip));
+                forked.BlockStatesStore.LookupStateReference(fId, stateKey2, forked.Tip.Index));
         }
 
         [Fact]
@@ -1304,7 +1304,7 @@ namespace Libplanet.Tests.Blockchain
                 _blockChain.Swap(fork, render);
 
                 Assert.Empty(_blockChain.Store.IterateIndexes(previousChainId));
-                Assert.Empty(_blockChain.Store.ListStateKeys(previousChainId));
+                Assert.Empty(_blockChain.BlockStatesStore.ListStateKeys(previousChainId));
                 Assert.Empty(_blockChain.Store.ListTxNonces(previousChainId));
 
                 var renders = DumbAction.RenderRecords.Value;
@@ -1547,6 +1547,9 @@ namespace Libplanet.Tests.Blockchain
                 = MakeIncompleteBlockStates();
             StoreTracker store = (StoreTracker)chain.Store;
 
+            // FIXME: Doesn't it need store tracker for IBlockStates?
+            IBlockStatesStore blockStatesStore = chain.BlockStatesStore;
+
             HashDigest<SHA256>[] ListStateReferences(string stateKey)
             {
                 Block<DumbAction> block = chain.Tip;
@@ -1555,7 +1558,7 @@ namespace Libplanet.Tests.Blockchain
                 while (true)
                 {
                     Tuple<HashDigest<SHA256>, long> sr =
-                        store.LookupStateReference(chain.Id, stateKey, block);
+                        blockStatesStore.LookupStateReference(chain.Id, stateKey, block.Index);
                     if (sr?.Item1 is HashDigest<SHA256> reference)
                     {
                         refs.Add(reference);
@@ -1596,7 +1599,7 @@ namespace Libplanet.Tests.Blockchain
             foreach (var blockHash in chain.BlockHashes.Skip(1).Take((int)chain.Count - 2))
             {
                 var block = chain[blockHash];
-                Assert.Null(store.GetBlockStates(block.Hash));
+                Assert.Null(blockStatesStore.GetBlockStates(block.Hash));
             }
 
             store.ClearLogs();
@@ -1608,7 +1611,7 @@ namespace Libplanet.Tests.Blockchain
             foreach (var blockHash in chain.BlockHashes)
             {
                 var block = chain[blockHash];
-                Assert.NotNull(store.GetBlockStates(block.Hash));
+                Assert.NotNull(blockStatesStore.GetBlockStates(block.Hash));
             }
 
             // Calculating and filling states should not affect state references
@@ -2065,7 +2068,7 @@ namespace Libplanet.Tests.Blockchain
         /// </code>
         /// </summary>
         internal static (Address, Address[] addresses, BlockChain<DumbAction> chain)
-        MakeIncompleteBlockStates(IStore store)
+        MakeIncompleteBlockStates(IStore store, IBlockStatesStore blockStatesStore)
         {
             store = new StoreTracker(store);
             Guid chainId = Guid.NewGuid();
@@ -2122,7 +2125,7 @@ namespace Libplanet.Tests.Blockchain
                     ).GetDirtyStates();
                     Assert.NotEmpty(dirty);
                     store.PutBlock(b);
-                    store.StoreStateReference(
+                    blockStatesStore.StoreStateReference(
                         chainId,
                         dirty.Keys.Select(a => a.ToHex().ToLowerInvariant()).ToImmutableHashSet(),
                         b.Hash,
@@ -2133,7 +2136,7 @@ namespace Libplanet.Tests.Blockchain
                 }
             }
 
-            store.SetBlockStates(
+            blockStatesStore.SetBlockStates(
                 b.Hash,
                 dirty.ToImmutableDictionary(kv => kv.Key.ToHex().ToLowerInvariant(), kv => kv.Value)
             );
@@ -2143,7 +2146,7 @@ namespace Libplanet.Tests.Blockchain
 
         private (Address, Address[] addresses, BlockChain<DumbAction> chain)
         MakeIncompleteBlockStates() =>
-            MakeIncompleteBlockStates(_fx.Store);
+            MakeIncompleteBlockStates(_fx.Store, _fx.BlockStatesStore);
 
         private (Address[], Transaction<DumbAction>[])
             MakeFixturesForAppendTests(PrivateKey privateKey = null)

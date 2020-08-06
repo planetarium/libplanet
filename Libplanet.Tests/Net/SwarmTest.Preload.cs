@@ -782,11 +782,11 @@ namespace Libplanet.Tests.Net
 
                 await t;
 
-                var minerStateRefs = minerChain.Store
+                var minerStateRefs = minerChain.BlockStatesStore
                     .ListAllStateReferences(minerChain.Id, 0, receiverChain.Tip.Index)
                     .FirstOrDefault().Value;
 
-                var receiverStateRefs = receiverChain.Store
+                var receiverStateRefs = receiverChain.BlockStatesStore
                     .ListAllStateReferences(receiverChain.Id, 0, receiverChain.Tip.Index)
                     .FirstOrDefault().Value;
 
