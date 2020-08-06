@@ -177,7 +177,7 @@ namespace Libplanet.Blockchain
         public event EventHandler<TipChangedEventArgs> TipChanged;
 
         /// <summary>
-        /// An event which is invoked when chain is <see cref="Swap"/>ped.
+        /// An event which is invoked when chain is reorged.
         /// </summary>
         public event EventHandler<ReorgedEventArgs> Reorged;
 
@@ -1645,12 +1645,12 @@ namespace Libplanet.Blockchain
         public class ReorgedEventArgs : EventArgs
         {
             /// <summary>
-            /// The <see cref="Block{T}"/> before chain swapped.
+            /// The <see cref="BlockChain{T}.Tip"/> before chain reorged.
             /// </summary>
             public Block<T> OldTip { get; set; }
 
             /// <summary>
-            /// The <see cref="Block{T}"/> after chain swapped.
+            /// The <see cref="BlockChain{T}.Tip"/> after chain reorged.
             /// </summary>
             public Block<T> NewTip { get; set; }
 
