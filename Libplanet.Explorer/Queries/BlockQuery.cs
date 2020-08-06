@@ -43,13 +43,23 @@ namespace Libplanet.Explorer.Queries
             Field<BlockType<T>>(
                 "block",
                 arguments: new QueryArguments(
-                    new QueryArgument<IdGraphType> { Name = "hash" }
+                    new QueryArgument<IdGraphType> { Name = "hash" },
+                    new QueryArgument<IdGraphType> { Name = "index" }
                 ),
                 resolve: context =>
                 {
-                    HashDigest<SHA256> hash = HashDigest<SHA256>.FromString(
-                        context.GetArgument<string>("hash"));
-                    return Query<T>.GetBlock(hash);
+                    string? hash = context.GetArgument<string?>("hash", null);
+                    if (hash != null) {
+                        return Query<T>.GetBlockByHash(HashDigest<SHA256>.FromString(hash));
+                    }
+
+                    long? index = context.GetArgument<long?>("index");
+
+                    if (index != null) {
+                        return Query<T>.GetBlockByIndex(index);
+                    }
+
+                    throw new System.Exception("Unexpected block query");
                 }
             );
 

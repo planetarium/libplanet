@@ -157,9 +157,14 @@ namespace Libplanet.Explorer.Queries
             return stagedTxs;
         }
 
-        internal static Block<T> GetBlock(HashDigest<SHA256> hash)
+        internal static Block<T> GetBlockByHash(HashDigest<SHA256> hash)
         {
             return _chain[hash];
+        }
+
+        internal static Block<T> GetBlockByIndex(long index)
+        {
+            return _chain[index];
         }
 
         internal static Transaction<T> GetTransaction(TxId id)
