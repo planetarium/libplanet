@@ -63,22 +63,6 @@ namespace Libplanet.Tests.Store
             return _store.ContainsBlock(blockHash);
         }
 
-        public IEnumerable<string> ListStateKeys(Guid chainId)
-        {
-            Log(nameof(ListStateKeys), chainId);
-            return _store.ListStateKeys(chainId);
-        }
-
-        public IImmutableDictionary<string, IImmutableList<HashDigest<SHA256>>>
-            ListAllStateReferences(
-                Guid chainId,
-                long lowestIndex,
-                long highestIndex)
-        {
-            Log(nameof(ListAllStateReferences), chainId, lowestIndex, highestIndex);
-            return _store.ListAllStateReferences(chainId, lowestIndex, highestIndex);
-        }
-
         public void DeleteChainId(Guid chainId)
         {
             Log(nameof(DeleteChainId), chainId);
@@ -108,12 +92,6 @@ namespace Libplanet.Tests.Store
         {
             Log(nameof(GetBlockDigest), blockHash);
             return _store.GetBlockDigest(blockHash);
-        }
-
-        public IImmutableDictionary<string, IValue> GetBlockStates(HashDigest<SHA256> blockHash)
-        {
-            Log(nameof(GetBlockStates), blockHash);
-            return _store.GetBlockStates(blockHash);
         }
 
         public Transaction<T> GetTransaction<T>(TxId txid)
@@ -177,72 +155,6 @@ namespace Libplanet.Tests.Store
         {
             Log(nameof(ContainsTransaction), txId);
             return _store.ContainsTransaction(txId);
-        }
-
-        public void SetBlockStates(
-            HashDigest<SHA256> blockHash,
-            IImmutableDictionary<string, IValue> states
-        )
-        {
-            Log(nameof(SetBlockStates), blockHash, states);
-            _store.SetBlockStates(blockHash, states);
-        }
-
-        public void PruneBlockStates<T>(
-            Guid chainId,
-            Block<T> until)
-            where T : IAction, new()
-        {
-            Log(nameof(PruneBlockStates), chainId, until);
-            _store.PruneBlockStates(chainId, until);
-        }
-
-        public Tuple<HashDigest<SHA256>, long> LookupStateReference<T>(
-            Guid chainId,
-            string key,
-            Block<T> lookupUntil)
-            where T : IAction, new()
-        {
-            Log(nameof(LookupStateReference), chainId, key, lookupUntil);
-            return _store.LookupStateReference(chainId, key, lookupUntil);
-        }
-
-        public IEnumerable<Tuple<HashDigest<SHA256>, long>> IterateStateReferences(
-            Guid chainId,
-            string key,
-            long? highestIndex,
-            long? lowestIndex,
-            int? limit)
-        {
-            Log(
-                nameof(IterateStateReferences),
-                chainId,
-                key,
-                highestIndex,
-                lowestIndex,
-                limit);
-            return _store.IterateStateReferences(
-                chainId, key, highestIndex, lowestIndex, limit);
-        }
-
-        public void StoreStateReference(
-            Guid chainId,
-            IImmutableSet<string> keys,
-            HashDigest<SHA256> blockHash,
-            long blockIndex)
-        {
-            Log(nameof(StoreStateReference), chainId, keys, blockHash, blockIndex);
-            _store.StoreStateReference(chainId, keys, blockHash, blockIndex);
-        }
-
-        public void ForkStateReferences<T>(
-            Guid sourceChainId,
-            Guid destinationChainId,
-            Block<T> branchPoint)
-            where T : IAction, new()
-        {
-            Log(nameof(ForkStateReferences), sourceChainId, destinationChainId, branchPoint);
-            _store.ForkStateReferences(sourceChainId, destinationChainId, branchPoint);
         }
 
         public void ForkBlockIndexes(
