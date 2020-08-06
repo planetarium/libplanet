@@ -6,6 +6,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using Bencodex;
 using Bencodex.Types;
+using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Store;
 using Libplanet.Tx;
@@ -20,7 +21,7 @@ namespace Libplanet.RocksDBStore
     /// This stores data in the RocksDB.
     /// </summary>
     /// <seealso cref="IStore"/>
-    public class RocksDBStore : BaseStore
+    public class RocksDBStore : BaseStore, IBlockStatesStore
     {
         private const string BlockDbName = "block";
         private const string TxDbName = "tx";
@@ -287,7 +288,7 @@ namespace Libplanet.RocksDBStore
         }
 
         /// <inheritdoc/>
-        public override IEnumerable<string> ListStateKeys(Guid chainId)
+        public IEnumerable<string> ListStateKeys(Guid chainId)
         {
             byte[] prefix = StateRefKeyPrefix;
             var prevStateKey = string.Empty;
@@ -308,7 +309,7 @@ namespace Libplanet.RocksDBStore
         }
 
         /// <inheritdoc/>
-        public override IImmutableDictionary<string, IImmutableList<HashDigest<SHA256>>>
+        public IImmutableDictionary<string, IImmutableList<HashDigest<SHA256>>>
             ListAllStateReferences(
                 Guid chainId,
                 long lowestIndex = 0,
@@ -561,7 +562,7 @@ namespace Libplanet.RocksDBStore
         }
 
         /// <inheritdoc/>
-        public override IImmutableDictionary<string, IValue> GetBlockStates(
+        public IImmutableDictionary<string, IValue> GetBlockStates(
             HashDigest<SHA256> blockHash
         )
         {
@@ -598,7 +599,7 @@ namespace Libplanet.RocksDBStore
         }
 
         /// <inheritdoc/>
-        public override void SetBlockStates(
+        public void SetBlockStates(
             HashDigest<SHA256> blockHash,
             IImmutableDictionary<string, IValue> states)
         {
@@ -619,9 +620,10 @@ namespace Libplanet.RocksDBStore
         }
 
         /// <inheritdoc/>
-        public override void PruneBlockStates<T>(
+        public void PruneBlockStates<T>(
             Guid chainId,
             Block<T> until)
+            where T : IAction, new()
         {
             string[] keys = ListStateKeys(chainId).ToArray();
             long untilIndex = until.Index;
@@ -649,10 +651,11 @@ namespace Libplanet.RocksDBStore
             }
         }
 
-        public override Tuple<HashDigest<SHA256>, long> LookupStateReference<T>(
+        public Tuple<HashDigest<SHA256>, long> LookupStateReference<T>(
             Guid chainId,
             string key,
             Block<T> lookupUntil)
+            where T : IAction, new()
         {
             if (lookupUntil is null)
             {
@@ -702,7 +705,7 @@ namespace Libplanet.RocksDBStore
         }
 
         /// <inheritdoc/>
-        public override IEnumerable<Tuple<HashDigest<SHA256>, long>> IterateStateReferences(
+        public IEnumerable<Tuple<HashDigest<SHA256>, long>> IterateStateReferences(
             Guid chainId,
             string key,
             long? highestIndex,
@@ -731,7 +734,7 @@ namespace Libplanet.RocksDBStore
         }
 
         /// <inheritdoc/>
-        public override void StoreStateReference(
+        public void StoreStateReference(
             Guid chainId,
             IImmutableSet<string> keys,
             HashDigest<SHA256> blockHash,
@@ -766,10 +769,11 @@ namespace Libplanet.RocksDBStore
         }
 
         /// <inheritdoc/>
-        public override void ForkStateReferences<T>(
+        public void ForkStateReferences<T>(
             Guid sourceChainId,
             Guid destinationChainId,
             Block<T> branchPoint)
+            where T : IAction, new()
         {
             byte[] prefix = StateRefKeyPrefix;
             ColumnFamilyHandle destCf = GetColumnFamily(_stateRefDb, destinationChainId);
