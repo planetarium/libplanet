@@ -9,7 +9,7 @@ using Libplanet.Tx;
 
 namespace Libplanet.Store
 {
-    public interface IStore
+    public interface IStore : IStateStore
     {
         /// <summary>
         /// Lists existing chain IDs.

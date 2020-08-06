@@ -863,6 +863,56 @@ namespace Libplanet.RocksDBStore
             _stagedTxDb?.Dispose();
         }
 
+        public override void SetStates(
+            HashDigest<SHA256> blockHash,
+            IImmutableDictionary<string, IValue> states)
+        {
+            SetBlockStates(blockHash, states);
+        }
+
+        public override IValue GetState(string stateKey, HashDigest<SHA256>? blockHash = null, Guid? chainId = null)
+        {
+            if (chainId is null)
+            {
+                throw new ArgumentNullException(nameof(chainId));
+            }
+
+            blockHash ??= IndexBlockHash(chainId.Value, -1);
+
+            if (blockHash is null)
+            {
+                return null;
+            }
+
+            BlockDigest block = GetBlockDigest(blockHash.Value).Value;
+            Tuple<HashDigest<SHA256>, long> stateReference;
+
+            stateReference = LookupStateReference(chainId.Value, stateKey, block.Header.Index);
+
+            if (stateReference is null)
+            {
+                return null;
+            }
+
+            HashDigest<SHA256> hashValue = stateReference.Item1;
+            IImmutableDictionary<string, IValue> blockStates = GetBlockStates(hashValue);
+
+            return blockStates.TryGetValue(stateKey, out IValue state) ? state : null;
+        }
+
+        public override bool BlockStateExists(HashDigest<SHA256> blockHash)
+        {
+            return !(GetBlockStates(blockHash) is null);
+        }
+
+        public override void ForkStates<T>(
+            Guid sourceChainId,
+            Guid destinationChainId,
+            Block<T> branchPoint)
+        {
+            ForkStateReferences(sourceChainId, destinationChainId, branchPoint);
+        }
+
         /// <summary>
         /// Deletes the states with specified keys (i.e., <paramref name="stateKeys"/>)
         /// updated by actions in the specified block (i.e., <paramref name="blockHash"/>).

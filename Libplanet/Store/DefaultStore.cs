@@ -882,7 +882,7 @@ namespace Libplanet.Store
             HashDigest<SHA256> blockHash,
             IImmutableDictionary<string, IValue> states)
         {
-            throw new NotImplementedException();
+            SetBlockStates(blockHash, states);
         }
 
         public override IValue GetState(
@@ -890,17 +890,22 @@ namespace Libplanet.Store
             HashDigest<SHA256>? blockHash = null,
             Guid? chainId = null)
         {
-            blockHash ??= IndexBlockHash(chainId, -1);
+            if (chainId is null)
+            {
+                throw new ArgumentNullException(nameof(chainId));
+            }
+
+            blockHash ??= IndexBlockHash(chainId.Value, -1);
 
             if (blockHash is null)
             {
                 return null;
             }
 
-            Block<T> block = GetBlockDi;
+            BlockDigest block = GetBlockDigest(blockHash.Value).Value;
             Tuple<HashDigest<SHA256>, long> stateReference;
 
-            stateReference = LookupStateReference(chainId, stateKey, block);
+            stateReference = LookupStateReference(chainId.Value, stateKey, block.Header.Index);
 
             if (stateReference is null)
             {
@@ -916,6 +921,14 @@ namespace Libplanet.Store
         public override bool BlockStateExists(HashDigest<SHA256> blockHash)
         {
             return !(GetBlockStates(blockHash) is null);
+        }
+
+        public override void ForkStates<T>(
+            Guid sourceChainId,
+            Guid destinationChainId,
+            Block<T> branchPoint)
+        {
+            ForkStateReferences(sourceChainId, destinationChainId, branchPoint);
         }
 
         internal static Guid ParseChainId(string chainIdString) =>

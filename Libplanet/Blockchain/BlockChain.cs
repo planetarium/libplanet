@@ -1247,7 +1247,7 @@ namespace Libplanet.Blockchain
                     }
                 }
 
-                Store.ForkStateReferences(Id, forked.Id, pointBlock);
+                Store.ForkStates(Id, forked.Id, pointBlock);
 
                 foreach (KeyValuePair<Address, long> pair in Store.ListTxNonces(Id))
                 {
@@ -1502,7 +1502,7 @@ namespace Libplanet.Blockchain
                     .SelectMany(kv => kv.Value.Select(c => (kv.Key, c))))
                 .ToImmutableHashSet();
 
-            if (Store.GetBlockStates(block.Hash) is null)
+            if (!Store.BlockStateExists(block.Hash))
             {
                 HashDigest<SHA256> blockHash = block.Hash;
                 IAccountStateDelta lastStates = actionEvaluations.Count > 0
@@ -1523,10 +1523,10 @@ namespace Libplanet.Blockchain
                         )
                     );
 
-                Store.SetBlockStates(blockHash, totalDelta);
+                Store.SetStates(blockHash, totalDelta);
             }
 
-            if (buildStateReferences)
+            if (buildStateReferences && Store is IBlockStatesStore blockStatesStore)
             {
                 IImmutableSet<string> stateUpdatedKeys = stateUpdatedAddresses
                     .Select(ToStateKey)
@@ -1535,7 +1535,7 @@ namespace Libplanet.Blockchain
                     .Select(ToFungibleAssetKey)
                     .ToImmutableHashSet();
                 IImmutableSet<string> updatedKeys = stateUpdatedKeys.Union(assetUpdatedKeys);
-                Store.StoreStateReference(Id, updatedKeys, block.Hash, block.Index);
+                blockStatesStore.StoreStateReference(Id, updatedKeys, block.Hash, block.Index);
             }
         }
 
@@ -1609,7 +1609,7 @@ namespace Libplanet.Blockchain
         /// </summary>
         /// <param name="blockHash">The hash of a block which has incomplete states.</param>
         /// <returns>The dirty states made from actions in the requested block.</returns>
-        internal IImmutableDictionary<string, IValue> ComplementBlockStates(
+        internal void ComplementBlockStates(
             HashDigest<SHA256> blockHash
         )
         {
@@ -1625,7 +1625,7 @@ namespace Libplanet.Blockchain
             foreach (HashDigest<SHA256> hash in BlockHashes)
             {
                 Block<T> block = this[hash];
-                if (!(Store.GetBlockStates(block.Hash) is null))
+                if (Store.BlockStateExists(hash))
                 {
                     continue;
                 }
@@ -1646,8 +1646,6 @@ namespace Libplanet.Blockchain
                     _rwlock.ExitWriteLock();
                 }
             }
-
-            return Store.GetBlockStates(blockHash) ?? throw new NullReferenceException();
         }
 
         private IValue GetRawState(
@@ -1659,46 +1657,16 @@ namespace Libplanet.Blockchain
             _rwlock.EnterReadLock();
             try
             {
-                if (offset is null)
+                if (offset is HashDigest<SHA256> blockHash && !Store.BlockStateExists(blockHash))
                 {
-                    offset = Store.IndexBlockHash(Id, -1);
+                    return rawStateCompleter(this, blockHash);
                 }
+
+                return Store.GetState(key, offset);
             }
             finally
             {
                 _rwlock.ExitReadLock();
-            }
-
-            if (offset is null)
-            {
-                return null;
-            }
-
-            Block<T> block = this[offset.Value];
-            Tuple<HashDigest<SHA256>, long> stateReference;
-
-            _rwlock.EnterUpgradeableReadLock();
-            try
-            {
-                stateReference = Store.LookupStateReference(Id, key, block);
-
-                if (stateReference is null)
-                {
-                    return null;
-                }
-
-                HashDigest<SHA256> hashValue = stateReference.Item1;
-                IImmutableDictionary<string, IValue> blockStates = Store.GetBlockStates(hashValue);
-                if (blockStates is null)
-                {
-                    return rawStateCompleter(this, hashValue);
-                }
-
-                return blockStates.TryGetValue(key, out IValue state) ? state : null;
-            }
-            finally
-            {
-                _rwlock.ExitUpgradeableReadLock();
             }
         }
 
