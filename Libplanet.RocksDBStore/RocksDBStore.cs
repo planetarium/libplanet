@@ -651,17 +651,11 @@ namespace Libplanet.RocksDBStore
             }
         }
 
-        public Tuple<HashDigest<SHA256>, long> LookupStateReference<T>(
+        public Tuple<HashDigest<SHA256>, long> LookupStateReference(
             Guid chainId,
             string key,
-            Block<T> lookupUntil)
-            where T : IAction, new()
+            long lookupUntilBlockIndex)
         {
-            if (lookupUntil is null)
-            {
-                throw new ArgumentNullException(nameof(lookupUntil));
-            }
-
             if (_lastStateRefCaches.TryGetValue(
                     chainId,
                     out LruCache<string, Tuple<HashDigest<SHA256>, long>> stateRefCache)
@@ -671,14 +665,14 @@ namespace Libplanet.RocksDBStore
             {
                 long cachedIndex = cache.Item2;
 
-                if (cachedIndex <= lookupUntil.Index)
+                if (cachedIndex <= lookupUntilBlockIndex)
                 {
                     return cache;
                 }
             }
 
             Tuple<HashDigest<SHA256>, long> stateRef =
-                IterateStateReferences(chainId, key, lookupUntil.Index, null, limit: 1)
+                IterateStateReferences(chainId, key, lookupUntilBlockIndex, null, limit: 1)
                 .FirstOrDefault();
 
             if (stateRef is null)

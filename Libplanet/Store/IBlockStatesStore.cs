@@ -42,13 +42,10 @@ namespace Libplanet.Store
         /// </summary>
         /// <param name="chainId">The chain ID to look up a state reference.</param>
         /// <param name="key">The state key to look up.</param>
-        /// <param name="lookupUntil">The upper bound (i.e., the latest block) of the search range.
-        /// <see cref="Block{T}"/>s after <paramref name="lookupUntil"/> are ignored.</param>
+        /// <param name="lookupUntilBlockIndex">The index of the block to stop looking up.</param>
         /// <returns>Returns a nullable tuple consisting of <see cref="Block{T}.Hash"/> and
         /// <see cref="Block{T}.Index"/> of the <see cref="Block{T}"/> with the state of the
         /// address.</returns>
-        /// <typeparam name="T">An <see cref="IAction"/> class used with
-        /// <paramref name="lookupUntil"/>.</typeparam>
         /// <seealso>
         /// <cref>
         /// IBlockStatesStore.StoreStateReference(Guid,
@@ -57,11 +54,10 @@ namespace Libplanet.Store
         /// </seealso>
         /// <seealso cref=
         /// "IBlockStatesStore.IterateStateReferences(Guid, string, long?, long?, int?)"/>
-        Tuple<HashDigest<SHA256>, long> LookupStateReference<T>(
+        Tuple<HashDigest<SHA256>, long> LookupStateReference(
             Guid chainId,
             string key,
-            Block<T> lookupUntil)
-            where T : IAction, new();
+            long lookupUntilBlockIndex);
 
         /// <summary>
         /// Gets pairs of a state reference and a corresponding <see cref="Block{T}.Index"/> of
