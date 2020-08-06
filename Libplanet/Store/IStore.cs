@@ -64,6 +64,26 @@ namespace Libplanet.Store
         long AppendIndex(Guid chainId, HashDigest<SHA256> hash);
 
         /// <summary>
+        /// Forks block indexes from
+        /// <paramref name="sourceChainId"/> to
+        /// <paramref name="destinationChainId"/>.
+        /// </summary>
+        /// <param name="sourceChainId">The chain ID of block indexes to
+        /// fork.</param>
+        /// <param name="destinationChainId">The chain ID of destination
+        /// block indexes.</param>
+        /// <param name="branchPoint">The branch point <see cref="Block{T}"/>
+        /// to fork.</param>
+        /// <exception cref="ChainIdNotFoundException">Thrown when the given
+        /// <paramref name="sourceChainId"/> does not exist.</exception>
+        /// <seealso cref="IterateIndexes(Guid, int, int?)"/>
+        /// <seealso cref="AppendIndex(Guid, HashDigest{SHA256})"/>
+        void ForkBlockIndexes(
+            Guid sourceChainId,
+            Guid destinationChainId,
+            HashDigest<SHA256> branchPoint);
+
+        /// <summary>
         /// Adds <see cref="TxId"/>s to the pending list so that
         /// a next <see cref="Block{T}"/> to be mined contains the corresponding
         /// <see cref="Transaction{T}"/>s.
