@@ -212,6 +212,8 @@ with <code>BinaryFormatter</code>.  [<a href="https://github.com/planetarium/lib
 connections.  [<a href="https://github.com/planetarium/libplanet/pull/916">#916</a>]</li>
 <li>Fixed a bug where <code>BlockChain&lt;T&gt;.GetRawState()</code> had overwritten block states
 without read lock.  [<a href="https://github.com/planetarium/libplanet/pull/927">#927</a>]</li>
+<li>Fixed a bug that <code>Swarm&lt;T&gt;</code> had not respond to <code>GetRecentStates</code> message
+when the target block does not exist in the chain.  [<a href="https://github.com/planetarium/libplanet/pull/941">#941</a>]</li>
 </ul>
 <h3 id="cli-tools">CLI tools</h3>
 <ul>

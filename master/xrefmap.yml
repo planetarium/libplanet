@@ -5633,6 +5633,43 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.InvalidMessageException.InvalidMessageException
   nameWithType: InvalidMessageException.InvalidMessageException
+- uid: Libplanet.Net.InvalidStateTargetException
+  name: InvalidStateTargetException
+  href: api/Libplanet.Net.InvalidStateTargetException.html
+  commentId: T:Libplanet.Net.InvalidStateTargetException
+  fullName: Libplanet.Net.InvalidStateTargetException
+  nameWithType: InvalidStateTargetException
+- uid: Libplanet.Net.InvalidStateTargetException.#ctor
+  name: InvalidStateTargetException()
+  href: api/Libplanet.Net.InvalidStateTargetException.html#Libplanet_Net_InvalidStateTargetException__ctor
+  commentId: M:Libplanet.Net.InvalidStateTargetException.#ctor
+  fullName: Libplanet.Net.InvalidStateTargetException.InvalidStateTargetException()
+  nameWithType: InvalidStateTargetException.InvalidStateTargetException()
+- uid: Libplanet.Net.InvalidStateTargetException.#ctor(SerializationInfo,StreamingContext)
+  name: InvalidStateTargetException(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Net.InvalidStateTargetException.html#Libplanet_Net_InvalidStateTargetException__ctor_SerializationInfo_StreamingContext_
+  commentId: M:Libplanet.Net.InvalidStateTargetException.#ctor(SerializationInfo,StreamingContext)
+  fullName: Libplanet.Net.InvalidStateTargetException.InvalidStateTargetException(SerializationInfo, StreamingContext)
+  nameWithType: InvalidStateTargetException.InvalidStateTargetException(SerializationInfo, StreamingContext)
+- uid: Libplanet.Net.InvalidStateTargetException.#ctor(System.String)
+  name: InvalidStateTargetException(String)
+  href: api/Libplanet.Net.InvalidStateTargetException.html#Libplanet_Net_InvalidStateTargetException__ctor_System_String_
+  commentId: M:Libplanet.Net.InvalidStateTargetException.#ctor(System.String)
+  fullName: Libplanet.Net.InvalidStateTargetException.InvalidStateTargetException(System.String)
+  nameWithType: InvalidStateTargetException.InvalidStateTargetException(String)
+- uid: Libplanet.Net.InvalidStateTargetException.#ctor(System.String,Exception)
+  name: InvalidStateTargetException(String, Exception)
+  href: api/Libplanet.Net.InvalidStateTargetException.html#Libplanet_Net_InvalidStateTargetException__ctor_System_String_Exception_
+  commentId: M:Libplanet.Net.InvalidStateTargetException.#ctor(System.String,Exception)
+  fullName: Libplanet.Net.InvalidStateTargetException.InvalidStateTargetException(System.String, Exception)
+  nameWithType: InvalidStateTargetException.InvalidStateTargetException(String, Exception)
+- uid: Libplanet.Net.InvalidStateTargetException.#ctor*
+  name: InvalidStateTargetException
+  href: api/Libplanet.Net.InvalidStateTargetException.html#Libplanet_Net_InvalidStateTargetException__ctor_
+  commentId: Overload:Libplanet.Net.InvalidStateTargetException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Net.InvalidStateTargetException.InvalidStateTargetException
+  nameWithType: InvalidStateTargetException.InvalidStateTargetException
 - uid: Libplanet.Net.NoSwarmContextException
   name: NoSwarmContextException
   href: api/Libplanet.Net.NoSwarmContextException.html
@@ -6615,6 +6652,19 @@ references:
   commentId: T:Libplanet.Net.SwarmOptions
   fullName: Libplanet.Net.SwarmOptions
   nameWithType: SwarmOptions
+- uid: Libplanet.Net.SwarmOptions.BlockHashRecvTimeout
+  name: BlockHashRecvTimeout
+  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_BlockHashRecvTimeout
+  commentId: P:Libplanet.Net.SwarmOptions.BlockHashRecvTimeout
+  fullName: Libplanet.Net.SwarmOptions.BlockHashRecvTimeout
+  nameWithType: SwarmOptions.BlockHashRecvTimeout
+- uid: Libplanet.Net.SwarmOptions.BlockHashRecvTimeout*
+  name: BlockHashRecvTimeout
+  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_BlockHashRecvTimeout_
+  commentId: Overload:Libplanet.Net.SwarmOptions.BlockHashRecvTimeout
+  isSpec: "True"
+  fullName: Libplanet.Net.SwarmOptions.BlockHashRecvTimeout
+  nameWithType: SwarmOptions.BlockHashRecvTimeout
 - uid: Libplanet.Net.SwarmOptions.BlockRecvTimeout
   name: BlockRecvTimeout
   href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_BlockRecvTimeout
