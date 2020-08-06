@@ -51,16 +51,18 @@ namespace Libplanet.Explorer.Queries
                     string? hash = context.GetArgument<string?>("hash", null);
                     long? index = context.GetArgument<long?>("index", null);
 
-                    if ((hash is string && index is long) || (hash is null && index is null)) {
-                        throw new System.Exception("Unexpected block query");    
+                    if ((hash is string && index is long) || (hash is null && index is null))
+                    {
+                        throw new System.Exception("Unexpected block query");
                     }
 
-                    if (hash is string hashNotNull) {
+                    if (hash is string hashNotNull)
+                    {
                         return Query<T>.GetBlockByHash(HashDigest<SHA256>.FromString(hashNotNull));
                     }
 
-
-                    if (index is long indexNotNull) {
+                    if (index is long indexNotNull)
+                    {
                         return Query<T>.GetBlockByIndex(indexNotNull);
                     }
 
