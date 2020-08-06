@@ -229,6 +229,8 @@ namespace Libplanet.Blockchain
 
         internal IStateStore StateStore => Store as IStateStore;
 
+        internal IBlockStatesStore BlockStatesStore => Store as IBlockStatesStore;
+
         /// <summary>
         /// Gets the block corresponding to the <paramref name="index"/>.
         /// </summary>
