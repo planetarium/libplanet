@@ -53,7 +53,9 @@ namespace Libplanet.Explorer.Queries
 
                     if (!(hash is null ^ index is null))
                     {
-                        throw new GraphQL.ExecutionError("Unexpected block query");
+                        throw new GraphQL.ExecutionError(
+                            "The parameters hash and index are mutually exclusive; " +
+                            "give only one at a time.");
                     }
 
                     if (hash is string hashNotNull)
