@@ -2176,18 +2176,18 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         private async void Reorged()
         {
-            Block<DumbAction> actualOldTip = default;
-            Block<DumbAction> actualNewTip = default;
-            Block<DumbAction> actualBranchpoint = default;
+            Block<DumbAction> actualOldTip = null;
+            Block<DumbAction> actualNewTip = null;
+            Block<DumbAction> actualBranchpoint = null;
+            int callCount = 0;
 
-            void ReorgedHandler(object target, BlockChain<DumbAction>.ReorgedEventArgs args)
+            _blockChain.Reorged += (target, args) =>
             {
                 actualOldTip = args.OldTip;
                 actualNewTip = args.NewTip;
                 actualBranchpoint = args.Branchpoint;
-            }
-
-            _blockChain.Reorged += ReorgedHandler;
+                callCount += 1;
+            };
             var branchpoint = _blockChain.Tip;
             var fork = _blockChain.Fork(_blockChain.Tip.Hash);
             await fork.MineBlock(_fx.Address1);
@@ -2197,11 +2197,17 @@ namespace Libplanet.Tests.Blockchain
             var oldTip = _blockChain.Tip;
             var newTip = fork.Tip;
 
+            Assert.Null(actualOldTip);
+            Assert.Null(actualNewTip);
+            Assert.Null(actualBranchpoint);
+            Assert.Equal(0, callCount);
+
             _blockChain.Swap(fork, false);
 
             Assert.Equal(oldTip.Hash, actualOldTip.Hash);
             Assert.Equal(newTip.Hash, actualNewTip.Hash);
             Assert.Equal(branchpoint.Hash, actualBranchpoint.Hash);
+            Assert.Equal(1, callCount);
         }
 
         [Fact]
