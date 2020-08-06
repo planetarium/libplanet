@@ -227,6 +227,8 @@ namespace Libplanet.Blockchain
 
         internal IStore Store { get; }
 
+        internal IStateStore StateStore => Store as IStateStore;
+
         /// <summary>
         /// Gets the block corresponding to the <paramref name="index"/>.
         /// </summary>
@@ -1247,7 +1249,7 @@ namespace Libplanet.Blockchain
                     }
                 }
 
-                Store.ForkStates(Id, forked.Id, pointBlock);
+                StateStore.ForkStates(Id, forked.Id, pointBlock);
 
                 foreach (KeyValuePair<Address, long> pair in Store.ListTxNonces(Id))
                 {
@@ -1502,7 +1504,7 @@ namespace Libplanet.Blockchain
                     .SelectMany(kv => kv.Value.Select(c => (kv.Key, c))))
                 .ToImmutableHashSet();
 
-            if (!Store.BlockStateExists(block.Hash))
+            if (!StateStore.BlockStateExists(block.Hash))
             {
                 HashDigest<SHA256> blockHash = block.Hash;
                 IAccountStateDelta lastStates = actionEvaluations.Count > 0
@@ -1523,7 +1525,7 @@ namespace Libplanet.Blockchain
                         )
                     );
 
-                Store.SetStates(blockHash, totalDelta);
+                StateStore.SetStates(blockHash, totalDelta);
             }
 
             if (buildStateReferences && Store is IBlockStatesStore blockStatesStore)
@@ -1625,7 +1627,7 @@ namespace Libplanet.Blockchain
             foreach (HashDigest<SHA256> hash in BlockHashes)
             {
                 Block<T> block = this[hash];
-                if (Store.BlockStateExists(hash))
+                if (StateStore.BlockStateExists(hash))
                 {
                     continue;
                 }
@@ -1657,12 +1659,12 @@ namespace Libplanet.Blockchain
             _rwlock.EnterReadLock();
             try
             {
-                if (offset is HashDigest<SHA256> blockHash && !Store.BlockStateExists(blockHash))
+                if (offset is HashDigest<SHA256> blockHash && !StateStore.BlockStateExists(blockHash))
                 {
                     return rawStateCompleter(this, blockHash);
                 }
 
-                return Store.GetState(key, offset);
+                return StateStore.GetState(key, offset);
             }
             finally
             {

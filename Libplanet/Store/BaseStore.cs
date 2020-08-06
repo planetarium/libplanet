@@ -147,22 +147,5 @@ namespace Libplanet.Store
 
         /// <inheritdoc/>
         public abstract void Dispose();
-
-        public abstract void SetStates(
-            HashDigest<SHA256> blockHash,
-            IImmutableDictionary<string, IValue> states);
-
-        public abstract IValue GetState(
-            string stateKey,
-            HashDigest<SHA256>? blockHash = null,
-            Guid? chainId = null);
-
-        public abstract bool BlockStateExists(HashDigest<SHA256> blockHash);
-
-        public abstract void ForkStates<T>(
-            Guid sourceChainId,
-            Guid destinationChainId,
-            Block<T> branchPoint)
-            where T : IAction, new();
     }
 }

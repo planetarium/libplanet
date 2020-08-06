@@ -26,7 +26,7 @@ namespace Libplanet.Store
     /// for some complex indices.
     /// </summary>
     /// <seealso cref="IStore"/>
-    public class DefaultStore : BaseStore, IBlockStatesStore
+    public class DefaultStore : BaseStore, IBlockStatesStore, IStateStore
     {
         private const string IndexColPrefix = "index_";
 
@@ -878,14 +878,14 @@ namespace Libplanet.Store
             _root.Dispose();
         }
 
-        public override void SetStates(
+        public void SetStates(
             HashDigest<SHA256> blockHash,
             IImmutableDictionary<string, IValue> states)
         {
             SetBlockStates(blockHash, states);
         }
 
-        public override IValue GetState(
+        public IValue GetState(
             string stateKey,
             HashDigest<SHA256>? blockHash = null,
             Guid? chainId = null)
@@ -918,15 +918,16 @@ namespace Libplanet.Store
             return blockStates.TryGetValue(stateKey, out IValue state) ? state : null;
         }
 
-        public override bool BlockStateExists(HashDigest<SHA256> blockHash)
+        public bool BlockStateExists(HashDigest<SHA256> blockHash)
         {
             return !(GetBlockStates(blockHash) is null);
         }
 
-        public override void ForkStates<T>(
+        public void ForkStates<T>(
             Guid sourceChainId,
             Guid destinationChainId,
             Block<T> branchPoint)
+            where T : IAction, new()
         {
             ForkStateReferences(sourceChainId, destinationChainId, branchPoint);
         }

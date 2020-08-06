@@ -21,7 +21,7 @@ namespace Libplanet.RocksDBStore
     /// This stores data in the RocksDB.
     /// </summary>
     /// <seealso cref="IStore"/>
-    public class RocksDBStore : BaseStore, IBlockStatesStore
+    public class RocksDBStore : BaseStore, IBlockStatesStore, IStateStore
     {
         private const string BlockDbName = "block";
         private const string TxDbName = "tx";
@@ -863,14 +863,14 @@ namespace Libplanet.RocksDBStore
             _stagedTxDb?.Dispose();
         }
 
-        public override void SetStates(
+        public void SetStates(
             HashDigest<SHA256> blockHash,
             IImmutableDictionary<string, IValue> states)
         {
             SetBlockStates(blockHash, states);
         }
 
-        public override IValue GetState(string stateKey, HashDigest<SHA256>? blockHash = null, Guid? chainId = null)
+        public IValue GetState(string stateKey, HashDigest<SHA256>? blockHash = null, Guid? chainId = null)
         {
             if (chainId is null)
             {
@@ -900,15 +900,16 @@ namespace Libplanet.RocksDBStore
             return blockStates.TryGetValue(stateKey, out IValue state) ? state : null;
         }
 
-        public override bool BlockStateExists(HashDigest<SHA256> blockHash)
+        public bool BlockStateExists(HashDigest<SHA256> blockHash)
         {
             return !(GetBlockStates(blockHash) is null);
         }
 
-        public override void ForkStates<T>(
+        public void ForkStates<T>(
             Guid sourceChainId,
             Guid destinationChainId,
             Block<T> branchPoint)
+            where T : IAction, new()
         {
             ForkStateReferences(sourceChainId, destinationChainId, branchPoint);
         }
