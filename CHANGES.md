@@ -104,7 +104,7 @@ To be released.
  -  Added `BlockHeader.PreEvaluationHash` property.  [[#931], [#935]]
  -  Added `HashDigest(ImmutableArray<byte>)` constructor.  [[#931], [#935]]
  -  Incomplete block states became able to be handled in more flexible way.
-    [[#929], [#934]]
+    [[#929], [#934], [#946]]
      -  Replaced `BlockChain<T>.GetState(Address, HashDigest<SHA256>?, bool)`
         method with `GetState(Address, HashDigest<SHA256>?, StateCompleter<T>)`
         method.  Specifying `completeStates: true` and `false` can be replaced
@@ -115,6 +115,7 @@ To be released.
      -  Added `StateCompleterSet<T>` struct.
      -  Added `StateCompleters<T>` static class.
      -  Added `FungibleAssetStateCompleters<T>` static class.
+     -  Added `Swarm<T>.GetTrustedStateCompleterAsync()` method.
  -  Added `Reorged` event on `BlockChain<T>`.  [[#945]]
  -  Added `ReorgedEventArgs` class.  [[#945]]
 

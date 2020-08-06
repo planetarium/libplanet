@@ -25,7 +25,7 @@ using Serilog.Events;
 
 namespace Libplanet.Net
 {
-    public class Swarm<T> : IDisposable
+    public partial class Swarm<T> : IDisposable
         where T : IAction, new()
     {
         private const int InitialBlockDownloadWindow = 100;
@@ -423,8 +423,8 @@ namespace Libplanet.Net
             CancellationToken cancellationToken
         )
         {
+            // FIXME: It would be better if it returns IAsyncEnumerable<PeerChainState> instead.
             return (await DialToExistingPeers(dialTimeout, cancellationToken))
-                .Where(pp => !(pp.Item1 is null || pp.Item2 is null))
                 .Select(pp =>
                     new PeerChainState(pp.Item1, pp.Item2.TipIndex, pp.Item2.TotalDifficulty));
         }
@@ -1269,11 +1269,13 @@ namespace Libplanet.Net
             Transport.BroadcastMessage(except, message);
         }
 
-        private Task<(BoundPeer, ChainStatus)[]> DialToExistingPeers(
+        private Task<(BoundPeer Peer, ChainStatus ChainStatus)[]> DialToExistingPeers(
             TimeSpan? dialTimeout,
             CancellationToken cancellationToken
         )
         {
+            // FIXME: It would be better if it returns IAsyncEnumerable<(BoundPeer, ChainStatus)>
+            // instead.
             IEnumerable<Task<(BoundPeer, ChainStatus)>> tasks = Peers.Select(
                 peer => Transport.SendMessageWithReplyAsync(
                     peer, new GetChainStatus(), dialTimeout, cancellationToken
@@ -1324,7 +1326,9 @@ namespace Libplanet.Net
                         throw t.Exception;
                     }
 
-                    return t.Result.Where(pair => !(pair.Item1 is null)).ToArray();
+                    return t.Result
+                        .Where(pair => !(pair.Item1 is null || pair.Item2 is null))
+                        .ToArray();
                 },
                 cancellationToken
             );
@@ -1336,7 +1340,6 @@ namespace Libplanet.Net
             CancellationToken cancellationToken)
         {
             var peersWithHeightAndDiff = (await DialToExistingPeers(dialTimeout, cancellationToken))
-                .Where(pp => !(pp.Item1 is null || pp.Item2 is null))
                 .Where(pp => pp.Item2.TotalDifficulty > (initialTip?.TotalDifficulty ?? 0))
                 .Select(pp => (pp.Item1, pp.Item2.TipIndex, pp.Item2.TotalDifficulty))
                 .ToList();
@@ -1355,7 +1358,7 @@ namespace Libplanet.Net
         private async Task<long?> SyncRecentStatesFromTrustedPeersAsync(
             BlockChain<T> blockChain,
             IProgress<PreloadState> progress,
-            IReadOnlyList<(BoundPeer, HashDigest<SHA256>)> trustedPeersWithTip,
+            IReadOnlyList<(BoundPeer Peer, HashDigest<SHA256> TipHash)> trustedPeersWithTip,
             BlockLocator baseLocator,
             CancellationToken cancellationToken)
         {
@@ -1687,6 +1690,10 @@ namespace Libplanet.Net
                             _cancellationToken);
                         break;
                     }
+
+                case GetBlockStates getBlockStates:
+                    TransferBlockStates(getBlockStates);
+                    break;
 
                 default:
                     throw new InvalidMessageException($"Can't handle message: {message}", message);

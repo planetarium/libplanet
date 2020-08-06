@@ -2023,16 +2023,16 @@ namespace Libplanet.Tests.Blockchain
         ///     10   addresses[4]       Present
         /// </code>
         /// </summary>
-        private (Address, Address[] addresses, BlockChain<DumbAction> chain)
-            MakeIncompleteBlockStates()
+        internal static (Address, Address[] addresses, BlockChain<DumbAction> chain)
+        MakeIncompleteBlockStates(IStore store)
         {
-            IStore store = new StoreTracker(_fx.Store);
+            store = new StoreTracker(store);
             Guid chainId = Guid.NewGuid();
             var chain = new BlockChain<DumbAction>(
                 new NullPolicy<DumbAction>(),
                 store,
                 chainId,
-                _fx.GenesisBlock,
+                TestUtils.MineGenesis<DumbAction>(),
                 true
             );
             var privateKey = new PrivateKey();
@@ -2088,6 +2088,7 @@ namespace Libplanet.Tests.Blockchain
                         b.Index
                     );
                     BuildIndex(chainId, b);
+                    Assert.Equal(b, chain[b.Hash]);
                 }
             }
 
@@ -2098,6 +2099,10 @@ namespace Libplanet.Tests.Blockchain
 
             return (signer, addresses, chain);
         }
+
+        private (Address, Address[] addresses, BlockChain<DumbAction> chain)
+        MakeIncompleteBlockStates() =>
+            MakeIncompleteBlockStates(_fx.Store);
 
         private (Address[], Transaction<DumbAction>[])
             MakeFixturesForAppendTests(PrivateKey privateKey = null)
