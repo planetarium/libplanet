@@ -52,26 +52,16 @@ namespace Libplanet.Explorer.Queries
 
             while (limit is null || limit > 0)
             {
-                if (excludeEmptyTxs && miner != null) {
-                    if (block.Transactions.Any() && miner == block.Miner) {
-                        limit--;
-                        yield return block;
-                    }
-
-                    block = GetNextBlock(block, desc);
-
-                    if (block is null) break;
-                    continue;
-                }
-
-                if ((excludeEmptyTxs && block.Transactions.Any())
-                    || (miner != null && miner == block.Miner)
-                    || !excludeEmptyTxs && miner == null)
+                if (miner != null && miner == block.Miner)
                 {
                     limit--;
                     yield return block;
-                } else {
-                    throw new ArgumentException("Invalid combination of query arguments.");
+                }
+
+                if (!excludeEmptyTxs || block.Transactions.Any())
+                {
+                    limit--;
+                    yield return block;
                 }
 
                 block = GetNextBlock(block, desc);
