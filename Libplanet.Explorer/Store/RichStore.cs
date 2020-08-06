@@ -63,6 +63,19 @@ namespace Libplanet.Explorer.Store
                 }
 
                 _db = new LiteDatabase(connectionString);
+
+                lock (_db.Mapper)
+                {
+                    _db.Mapper.RegisterType(
+                        hash => hash.ToByteArray(),
+                        b => new HashDigest<SHA256>(b));
+                    _db.Mapper.RegisterType(
+                        txid => txid.ToByteArray(),
+                        b => new TxId(b));
+                    _db.Mapper.RegisterType(
+                        address => address.ToByteArray(),
+                        b => new Address(b.AsBinary));
+                }
             }
         }
 
@@ -198,6 +211,7 @@ namespace Libplanet.Explorer.Store
             _store.PutBlock(block);
             foreach (var tx in block.Transactions)
             {
+                PutTransaction(tx);
                 StoreTxReferences(tx.Id, block.Hash, block.Index);
             }
         }
