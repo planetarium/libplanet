@@ -51,7 +51,7 @@ namespace Libplanet.Explorer.Queries
                     string hash = context.GetArgument<string>("hash");
                     long? index = context.GetArgument<long?>("index", null);
 
-                    if ((hash is string && index is long) || (hash is null && index is null))
+                    if (!(hash is null ^ index is null))
                     {
                         throw new GraphQL.ExecutionError("Unexpected block query");
                     }
