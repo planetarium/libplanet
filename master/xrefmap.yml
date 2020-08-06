@@ -1484,6 +1484,74 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Policy
   nameWithType: BlockChain<T>.Policy
   nameWithType.vb: BlockChain(Of T).Policy
+- uid: Libplanet.Blockchain.BlockChain`1.Reorged
+  name: Reorged
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Reorged
+  commentId: E:Libplanet.Blockchain.BlockChain`1.Reorged
+  fullName: Libplanet.Blockchain.BlockChain<T>.Reorged
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Reorged
+  nameWithType: BlockChain<T>.Reorged
+  nameWithType.vb: BlockChain(Of T).Reorged
+- uid: Libplanet.Blockchain.BlockChain`1.ReorgedEventArgs
+  name: BlockChain<T>.ReorgedEventArgs
+  href: api/Libplanet.Blockchain.BlockChain-1.ReorgedEventArgs.html
+  commentId: T:Libplanet.Blockchain.BlockChain`1.ReorgedEventArgs
+  name.vb: BlockChain(Of T).ReorgedEventArgs
+  fullName: Libplanet.Blockchain.BlockChain<T>.ReorgedEventArgs
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).ReorgedEventArgs
+  nameWithType: BlockChain<T>.ReorgedEventArgs
+  nameWithType.vb: BlockChain(Of T).ReorgedEventArgs
+- uid: Libplanet.Blockchain.BlockChain`1.ReorgedEventArgs.Branchpoint
+  name: Branchpoint
+  href: api/Libplanet.Blockchain.BlockChain-1.ReorgedEventArgs.html#Libplanet_Blockchain_BlockChain_1_ReorgedEventArgs_Branchpoint
+  commentId: P:Libplanet.Blockchain.BlockChain`1.ReorgedEventArgs.Branchpoint
+  fullName: Libplanet.Blockchain.BlockChain<T>.ReorgedEventArgs.Branchpoint
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).ReorgedEventArgs.Branchpoint
+  nameWithType: BlockChain<T>.ReorgedEventArgs.Branchpoint
+  nameWithType.vb: BlockChain(Of T).ReorgedEventArgs.Branchpoint
+- uid: Libplanet.Blockchain.BlockChain`1.ReorgedEventArgs.Branchpoint*
+  name: Branchpoint
+  href: api/Libplanet.Blockchain.BlockChain-1.ReorgedEventArgs.html#Libplanet_Blockchain_BlockChain_1_ReorgedEventArgs_Branchpoint_
+  commentId: Overload:Libplanet.Blockchain.BlockChain`1.ReorgedEventArgs.Branchpoint
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.BlockChain<T>.ReorgedEventArgs.Branchpoint
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).ReorgedEventArgs.Branchpoint
+  nameWithType: BlockChain<T>.ReorgedEventArgs.Branchpoint
+  nameWithType.vb: BlockChain(Of T).ReorgedEventArgs.Branchpoint
+- uid: Libplanet.Blockchain.BlockChain`1.ReorgedEventArgs.NewTip
+  name: NewTip
+  href: api/Libplanet.Blockchain.BlockChain-1.ReorgedEventArgs.html#Libplanet_Blockchain_BlockChain_1_ReorgedEventArgs_NewTip
+  commentId: P:Libplanet.Blockchain.BlockChain`1.ReorgedEventArgs.NewTip
+  fullName: Libplanet.Blockchain.BlockChain<T>.ReorgedEventArgs.NewTip
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).ReorgedEventArgs.NewTip
+  nameWithType: BlockChain<T>.ReorgedEventArgs.NewTip
+  nameWithType.vb: BlockChain(Of T).ReorgedEventArgs.NewTip
+- uid: Libplanet.Blockchain.BlockChain`1.ReorgedEventArgs.NewTip*
+  name: NewTip
+  href: api/Libplanet.Blockchain.BlockChain-1.ReorgedEventArgs.html#Libplanet_Blockchain_BlockChain_1_ReorgedEventArgs_NewTip_
+  commentId: Overload:Libplanet.Blockchain.BlockChain`1.ReorgedEventArgs.NewTip
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.BlockChain<T>.ReorgedEventArgs.NewTip
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).ReorgedEventArgs.NewTip
+  nameWithType: BlockChain<T>.ReorgedEventArgs.NewTip
+  nameWithType.vb: BlockChain(Of T).ReorgedEventArgs.NewTip
+- uid: Libplanet.Blockchain.BlockChain`1.ReorgedEventArgs.OldTip
+  name: OldTip
+  href: api/Libplanet.Blockchain.BlockChain-1.ReorgedEventArgs.html#Libplanet_Blockchain_BlockChain_1_ReorgedEventArgs_OldTip
+  commentId: P:Libplanet.Blockchain.BlockChain`1.ReorgedEventArgs.OldTip
+  fullName: Libplanet.Blockchain.BlockChain<T>.ReorgedEventArgs.OldTip
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).ReorgedEventArgs.OldTip
+  nameWithType: BlockChain<T>.ReorgedEventArgs.OldTip
+  nameWithType.vb: BlockChain(Of T).ReorgedEventArgs.OldTip
+- uid: Libplanet.Blockchain.BlockChain`1.ReorgedEventArgs.OldTip*
+  name: OldTip
+  href: api/Libplanet.Blockchain.BlockChain-1.ReorgedEventArgs.html#Libplanet_Blockchain_BlockChain_1_ReorgedEventArgs_OldTip_
+  commentId: Overload:Libplanet.Blockchain.BlockChain`1.ReorgedEventArgs.OldTip
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.BlockChain<T>.ReorgedEventArgs.OldTip
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).ReorgedEventArgs.OldTip
+  nameWithType: BlockChain<T>.ReorgedEventArgs.OldTip
+  nameWithType.vb: BlockChain(Of T).ReorgedEventArgs.OldTip
 - uid: Libplanet.Blockchain.BlockChain`1.StageTransaction(Libplanet.Tx.Transaction{`0})
   name: StageTransaction(Transaction<T>)
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_StageTransaction_Libplanet_Tx_Transaction__0__
