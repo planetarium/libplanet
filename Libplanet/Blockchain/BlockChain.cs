@@ -177,7 +177,7 @@ namespace Libplanet.Blockchain
         public event EventHandler<TipChangedEventArgs> TipChanged;
 
         /// <summary>
-        /// An event which is invoked when chain is <see cref="Swap"/>ed.
+        /// An event which is invoked when chain is <see cref="Swap"/>ped.
         /// </summary>
         public event EventHandler<ReorgedEventArgs> Reorged;
 
