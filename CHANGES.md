@@ -145,6 +145,8 @@ To be released.
     connections.  [[#916]]
  -  Fixed a bug where `BlockChain<T>.GetRawState()` had overwritten block states
     without read lock.  [[#927]]
+ -  Fixed a bug that `Swarm<T>` had not respond to `GetRecentStates` message
+    when the target block does not exist in the chain.  [[#941]]
 
 ### CLI tools
 
@@ -189,6 +191,7 @@ To be released.
 [#935]: https://github.com/planetarium/libplanet/pull/935
 [#936]: https://github.com/planetarium/libplanet/pull/936
 [#940]: https://github.com/planetarium/libplanet/pull/940
+[#941]: https://github.com/planetarium/libplanet/pull/941
 [sleep mode]: https://en.wikipedia.org/wiki/Sleep_mode
 
 

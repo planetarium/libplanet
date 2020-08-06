@@ -12,18 +12,23 @@ namespace Libplanet.Net
         public TimeSpan MaxTimeout { get; set; } = TimeSpan.FromSeconds(150);
 
         /// <summary>
+        /// The base timeout used to receive the block hashes from other peers.
+        /// </summary>
+        public TimeSpan BlockHashRecvTimeout { get; set; } = TimeSpan.FromSeconds(30);
+
+        /// <summary>
         /// The base timeout used to receive <see cref="Block{T}"/> from other peers.
         /// </summary>
-        public TimeSpan BlockRecvTimeout { get; } = TimeSpan.FromSeconds(15);
+        public TimeSpan BlockRecvTimeout { get; set; } = TimeSpan.FromSeconds(15);
 
         /// <summary>
         /// The base timeout used to receive <see cref="Transaction{T}"/> from other peers.
         /// </summary>
-        public TimeSpan TxRecvTimeout { get; } = TimeSpan.FromSeconds(3);
+        public TimeSpan TxRecvTimeout { get; set; } = TimeSpan.FromSeconds(3);
 
         /// <summary>
         /// The timeout used to receive recent states from other peers.
         /// </summary>
-        public TimeSpan RecentStateRecvTimeout { get; } = TimeSpan.FromSeconds(90);
+        public TimeSpan RecentStateRecvTimeout { get; set; } = TimeSpan.FromSeconds(90);
     }
 }

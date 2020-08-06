@@ -249,7 +249,7 @@ namespace Libplanet.Tests.Net
                 await minerSwarm.BlockChain.MineBlock(_fx1.Address1);
             }
 
-            receiverSwarm.BlockHashRecvTimeout = TimeSpan.FromMilliseconds(10);
+            receiverSwarm.Options.BlockHashRecvTimeout = TimeSpan.FromMilliseconds(10);
 
             var isCalled = false;
             void Handler(object sender, PreloadBlockDownloadFailEventArgs e)
@@ -476,7 +476,7 @@ namespace Libplanet.Tests.Net
             Swarm<DumbAction> swarm1 = _swarms[1];
             Swarm<DumbAction> receiverSwarm = _swarms[2];
 
-            receiverSwarm.BlockHashRecvTimeout = TimeSpan.FromMilliseconds(100);
+            receiverSwarm.Options.BlockHashRecvTimeout = TimeSpan.FromMilliseconds(100);
 
             swarm0.FindNextHashesChunkSize = blockCount / 2;
             swarm1.FindNextHashesChunkSize = blockCount / 2;
@@ -1413,6 +1413,55 @@ namespace Libplanet.Tests.Net
 
                 Assert.Equal(minerChain2.Count, receiverChain.Count);
                 Assert.Equal(minerChain2.Tip, receiverChain.Tip);
+            }
+        }
+
+        [Fact(Timeout = Timeout)]
+        public async Task ReorgWhilePreloadAsync()
+        {
+            BlockChain<DumbAction> seedChain = _blockchains[0];
+            BlockChain<DumbAction> receiverChain = _blockchains[1];
+            for (int i = 0; i < 10; i++)
+            {
+                await seedChain.MineBlock(_fx1.Address1);
+            }
+
+            bool reorg = true;
+
+            var progress = new Progress<PreloadState>(state =>
+            {
+                _logger.Information("Received a progress event: {@State}", state);
+
+                if (reorg
+                    && state is BlockDownloadState blockDownloadState
+                    && blockDownloadState.ReceivedBlockHash.Equals(seedChain.Tip.Hash))
+                {
+                    var forked = seedChain.Fork(seedChain[9].Hash);
+                    seedChain.Swap(forked, false);
+                    seedChain.MineBlock(_fx1.Address1).Wait();
+                    seedChain.MineBlock(_fx1.Address1).Wait();
+
+                    reorg = false;
+                }
+            });
+
+            var seed = _swarms[0];
+            var receiver = _swarms[1];
+            seed.Options.RecentStateRecvTimeout = TimeSpan.FromDays(1);
+
+            try
+            {
+                await StartAsync(seed);
+                await BootstrapAsync(receiver, seed.AsPeer);
+                await receiver.PreloadAsync(
+                    progress: progress,
+                    trustedStateValidators: new[] { seed.Address }.ToImmutableHashSet());
+
+                Assert.Equal(seedChain.Tip, receiverChain.Tip);
+            }
+            finally
+            {
+                await StopAsync(seed);
             }
         }
     }

@@ -31,7 +31,6 @@ namespace Libplanet.Net
         private const int InitialBlockDownloadWindow = 100;
         private readonly PrivateKey _privateKey;
         private readonly AppProtocolVersion _appProtocolVersion;
-        private readonly SwarmOptions _options;
 
         private readonly AsyncLock _blockSyncMutex;
         private readonly AsyncLock _runningMutex;
@@ -120,7 +119,7 @@ namespace Libplanet.Net
             IEnumerable<IceServer> iceServers = null,
             DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered = null,
             IEnumerable<PublicKey> trustedAppProtocolVersionSigners = null,
-            SwarmOptions swarmOptions = null)
+            SwarmOptions options = null)
         {
             BlockChain = blockChain ?? throw new ArgumentNullException(nameof(blockChain));
             _store = BlockChain.Store;
@@ -161,7 +160,7 @@ namespace Libplanet.Net
                 ProcessMessageHandler,
                 _logger);
 
-            _options = swarmOptions ?? new SwarmOptions();
+            Options = options ?? new SwarmOptions();
         }
 
         ~Swarm()
@@ -214,8 +213,6 @@ namespace Libplanet.Net
         // FIXME: Should have a unit test.
         internal AsyncAutoResetEvent BlockAppended { get; }
 
-        internal TimeSpan BlockHashRecvTimeout { get; set; } = TimeSpan.FromSeconds(30);
-
         // FIXME: We need some sort of configuration method for it.
         internal int FindNextHashesChunkSize { get; set; } = 500;
 
@@ -226,6 +223,8 @@ namespace Libplanet.Net
         internal AsyncAutoResetEvent FillBlocksAsyncStarted { get; } = new AsyncAutoResetEvent();
 
         internal AsyncAutoResetEvent FillBlocksAsyncFailed { get; } = new AsyncAutoResetEvent();
+
+        internal SwarmOptions Options { get; }
 
         /// <summary>
         /// Waits until this <see cref="Swarm{T}"/> instance gets started to run.
@@ -483,25 +482,6 @@ namespace Libplanet.Net
                 BlockChain.Tip.Hash
             );
 
-            var peersWithHeightAndDiff = (await DialToExistingPeers(dialTimeout, cancellationToken))
-                .Where(pp => !(pp.Item1 is null || pp.Item2 is null))
-                .Where(pp => pp.Item2.TotalDifficulty > (initialTip?.TotalDifficulty ?? 0))
-                .Select(pp => (pp.Item1, pp.Item2.TipIndex, pp.Item2.TotalDifficulty))
-                .ToList();
-
-            if (!peersWithHeightAndDiff.Any())
-            {
-                _logger.Information("There is no appropriate peer for preloading.");
-                return;
-            }
-
-            var peersWithHeight = peersWithHeightAndDiff
-                .OrderByDescending(p => p.Item3)
-                .Select(p => (p.Item1, p.Item2))
-                .ToList();
-
-            PreloadStarted.Set();
-
             // As preloading takes long, the blockchain data can corrupt if a program suddenly
             // terminates during preloading is going on.  In order to make preloading done
             // all or nothing (i.e., atomic), we first fork the chain and stack up preloaded data
@@ -540,27 +520,114 @@ namespace Libplanet.Net
 
                 Block<T> tempTip = tipCandidate;
 
-                try
+                long? receivedStateHeight = null;
+                long height = 0;
+
+                var retryCount = 0;
+                const int maxRetryCount = 1;
+
+                while (retryCount <= maxRetryCount)
                 {
-                    // From the second lap, as it's catching up the latest blocks made
-                    // in very short time, do not report the progress.  Even if it's reported,
-                    // it can be very confusing, because it looks like BlockHashDownloadState
-                    // recurring after later phases like BlockDownloadState.
-                    IProgress<PreloadState> demandProgress = lapCount++ < 1 ? progress : null;
+                    var peersWithHeight = await GetPeersWithHeight(
+                        initialTip, dialTimeout, cancellationToken);
 
-                    var demandBlockHashes = GetDemandBlockHashes(
-                        workspace,
-                        peersWithHeight,
-                        demandProgress,
-                        cancellationToken
-                    ).WithCancellation(cancellationToken);
-
-                    await foreach (var pair in demandBlockHashes)
+                    if (peersWithHeight is null)
                     {
-                        (long index, HashDigest<SHA256> hash) = pair;
+                        _logger.Information("There is no appropriate peer for preloading.");
+                        return;
+                    }
+
+                    PreloadStarted.Set();
+
+                    try
+                    {
+                        // From the second lap, as it's catching up the latest blocks made
+                        // in very short time, do not report the progress.  Even if it's reported,
+                        // it can be very confusing, because it looks like BlockHashDownloadState
+                        // recurring after later phases like BlockDownloadState.
+                        IProgress<PreloadState> demandProgress = lapCount++ < 1 ? progress : null;
+
+                        var demandBlockHashes = GetDemandBlockHashes(
+                            workspace,
+                            peersWithHeight,
+                            demandProgress,
+                            cancellationToken
+                        ).WithCancellation(cancellationToken);
+
+                        await foreach (var pair in demandBlockHashes)
+                        {
+                            (long index, HashDigest<SHA256> hash) = pair;
+                            cancellationToken.ThrowIfCancellationRequested();
+
+                            if (index == 0 && !hash.Equals(workspace.Genesis.Hash))
+                            {
+                                // FIXME: This behavior can unexpectedly terminate the swarm
+                                // (and the game app) if it encounters a peer having a different
+                                // blockchain, and therefore can be exploited to remotely shut
+                                // down other nodes as well.
+                                // Since the intention of this behavior is to prevent mistakes
+                                // to try to connect incorrect seeds (by a user),
+                                // this behavior should be limited for only seed peers.
+                                var msg =
+                                    $"Since the genesis block is fixed to {workspace.Genesis} " +
+                                    "protocol-wise, the blockchain which does not share " +
+                                    "any mutual block is not acceptable.";
+                                var e = new InvalidGenesisBlockException(
+                                    hash,
+                                    workspace.Genesis.Hash,
+                                    msg);
+                                throw new AggregateException(msg, e);
+                            }
+
+                            _logger.Verbose(
+                                "Enqueue #{BlockIndex} {BlockHash} to demands queue...",
+                                index,
+                                hash
+                            );
+                            if (blockCompletion.Demand(hash))
+                            {
+                                totalBlocksToDownload++;
+                            }
+                        }
+                    }
+                    catch (AggregateException e)
+                    {
                         cancellationToken.ThrowIfCancellationRequested();
 
-                        if (index == 0 && !hash.Equals(workspace.Genesis.Hash))
+                        if (blockDownloadFailed is null)
+                        {
+                            throw new AggregateException(e.Message, e.InnerExceptions);
+                        }
+
+                        blockDownloadFailed.Invoke(
+                            this,
+                            new PreloadBlockDownloadFailEventArgs
+                            {
+                                InnerExceptions = e.InnerExceptions,
+                            }
+                        );
+
+                        return;
+                    }
+
+                    IAsyncEnumerable<Tuple<Block<T>, BoundPeer>> completedBlocks =
+                        blockCompletion.Complete(
+                            peers: peersWithHeight.Select(pair => pair.Item1).ToList(),
+                            blockFetcher: GetBlocksAsync,
+                            cancellationToken: cancellationToken
+                        );
+                    await foreach (var pair in completedBlocks)
+                    {
+                        pair.Deconstruct(out Block<T> block, out BoundPeer sourcePeer);
+                        _logger.Verbose(
+                            "Got #{BlockIndex} {BlockHash} from {Pair}.",
+                            block.Index,
+                            block.Hash,
+                            sourcePeer
+                        );
+                        cancellationToken.ThrowIfCancellationRequested();
+
+                        if (block.Index == 0 && !block.Hash.Equals(workspace.Genesis.Hash))
                         {
                             // FIXME: This behavior can unexpectedly terminate the swarm
                             // (and the game app) if it encounters a peer having a different
@@ -573,229 +640,171 @@ namespace Libplanet.Net
                                 $"Since the genesis block is fixed to {workspace.Genesis} " +
                                 "protocol-wise, the blockchain which does not share " +
                                 "any mutual block is not acceptable.";
-                            var e = new InvalidGenesisBlockException(
-                                hash,
-                                workspace.Genesis.Hash,
-                                msg);
-                            throw new AggregateException(msg, e);
+
+                            // Although it's actually not aggregated, but to be consistent with
+                            // above code throwing InvalidGenesisBlockException, makes this
+                            // to wrap an exception with AggregateException... Not sure if
+                            // it show be wrapped from the very beginning.
+                            throw new AggregateException(
+                                msg,
+                                new InvalidGenesisBlockException(
+                                    block.Hash,
+                                    workspace.Genesis.Hash,
+                                    msg
+                                )
+                            );
                         }
 
                         _logger.Verbose(
-                            "Enqueue #{BlockIndex} {BlockHash} to demands queue...",
-                            index,
-                            hash
+                            "Add a block #{BlockIndex} {BlockHash}...",
+                            block.Index,
+                            block.Hash
                         );
-                        if (blockCompletion.Demand(hash))
+                        wStore.PutBlock(block);
+                        if (tempTip is null || block.Index > tempTip.Index)
                         {
-                            totalBlocksToDownload++;
+                            tempTip = block;
                         }
-                    }
-                }
-                catch (AggregateException e)
-                {
-                    cancellationToken.ThrowIfCancellationRequested();
 
-                    if (blockDownloadFailed is null)
-                    {
-                        throw new AggregateException(e.Message, e.InnerExceptions);
-                    }
-
-                    blockDownloadFailed.Invoke(
-                        this,
-                        new PreloadBlockDownloadFailEventArgs
+                        receivedBlockCount++;
+                        progress?.Report(new BlockDownloadState
                         {
-                            InnerExceptions = e.InnerExceptions,
-                        }
-                    );
-
-                    return;
-                }
-
-                IAsyncEnumerable<Tuple<Block<T>, BoundPeer>> completedBlocks =
-                    blockCompletion.Complete(
-                        peers: peersWithHeight.Select(pair => pair.Item1).ToList(),
-                        blockFetcher: GetBlocksAsync,
-                        cancellationToken: cancellationToken
-                    );
-                await foreach (var pair in completedBlocks)
-                {
-                    pair.Deconstruct(out Block<T> block, out BoundPeer sourcePeer);
-                    _logger.Verbose(
-                        "Got #{BlockIndex} {BlockHash} from {Pair}.",
-                        block.Index,
-                        block.Hash,
-                        sourcePeer
-                    );
-                    cancellationToken.ThrowIfCancellationRequested();
-
-                    if (block.Index == 0 && !block.Hash.Equals(workspace.Genesis.Hash))
-                    {
-                        // FIXME: This behavior can unexpectedly terminate the swarm
-                        // (and the game app) if it encounters a peer having a different
-                        // blockchain, and therefore can be exploited to remotely shut
-                        // down other nodes as well.
-                        // Since the intention of this behavior is to prevent mistakes
-                        // to try to connect incorrect seeds (by a user),
-                        // this behavior should be limited for only seed peers.
-                        var msg =
-                            $"Since the genesis block is fixed to {workspace.Genesis} " +
-                            "protocol-wise, the blockchain which does not share " +
-                            "any mutual block is not acceptable.";
-
-                        // Although it's actually not aggregated, but to be consistent with
-                        // above code throwing InvalidGenesisBlockException, makes this
-                        // to wrap an exception with AggregateException... Not sure if
-                        // it show be wrapped from the very beginning.
-                        throw new AggregateException(
-                            msg,
-                            new InvalidGenesisBlockException(
-                                block.Hash,
-                                workspace.Genesis.Hash,
-                                msg
-                            )
+                            TotalBlockCount = Math.Max(
+                                totalBlocksToDownload,
+                                receivedBlockCount),
+                            ReceivedBlockCount = receivedBlockCount,
+                            ReceivedBlockHash = block.Hash,
+                            SourcePeer = sourcePeer,
+                        });
+                        _logger.Debug(
+                            "Appended a block #{BlockIndex} {BlockHash} " +
+                            "to the workspace chain.",
+                            block.Index,
+                            block.Hash
                         );
                     }
 
-                    _logger.Verbose(
-                        "Add a block #{BlockIndex} {BlockHash}...",
-                        block.Index,
-                        block.Hash
-                    );
-                    wStore.PutBlock(block);
-                    if (tempTip is null || block.Index > tempTip.Index)
+                    tipCandidate = tempTip;
+
+                    if (tipCandidate is null)
                     {
-                        tempTip = block;
+                        // If there is no blocks in the network (or no consensus at least)
+                        // it doesn't need to receive states from other peers at all.
+                        return;
                     }
 
-                    receivedBlockCount++;
-                    progress?.Report(new BlockDownloadState
+                    var deltaBlocks = new LinkedList<Block<T>>();
+                    while (true)
                     {
-                        TotalBlockCount = Math.Max(
-                            totalBlocksToDownload,
-                            receivedBlockCount),
-                        ReceivedBlockCount = receivedBlockCount,
-                        ReceivedBlockHash = block.Hash,
-                        SourcePeer = sourcePeer,
-                    });
-                    _logger.Debug(
-                        "Appended a block #{BlockIndex} {BlockHash} " +
-                        "to the workspace chain.",
-                        block.Index,
-                        block.Hash
-                    );
-                }
-
-                tipCandidate = tempTip;
-
-                if (tipCandidate is null)
-                {
-                    // If there is no blocks in the network (or no consensus at least)
-                    // it doesn't need to receive states from other peers at all.
-                    return;
-                }
-
-                var deltaBlocks = new LinkedList<Block<T>>();
-                while (true)
-                {
-                    Block<T> blockToAdd;
-                    if (deltaBlocks.First is LinkedListNode<Block<T>> node)
-                    {
-                        Block<T> b = node.Value;
-                        if (b.PreviousHash is HashDigest<SHA256> p)
+                        Block<T> blockToAdd;
+                        if (deltaBlocks.First is LinkedListNode<Block<T>> node)
                         {
-                            blockToAdd = wStore.GetBlock<T>(p);
+                            Block<T> b = node.Value;
+                            if (b.PreviousHash is HashDigest<SHA256> p)
+                            {
+                                blockToAdd = wStore.GetBlock<T>(p);
+                            }
+                            else
+                            {
+                                break;
+                            }
                         }
                         else
                         {
+                            blockToAdd = tipCandidate;
+                        }
+
+                        if (!(initialTip is null) &&
+                            blockToAdd.Index <= initialTip.Index &&
+                            wStore.IndexBlockHash(wId, blockToAdd.Index).Equals(blockToAdd.Hash))
+                        {
                             break;
                         }
-                    }
-                    else
-                    {
-                        blockToAdd = tipCandidate;
+
+                        deltaBlocks.AddFirst(blockToAdd);
                     }
 
-                    if (!(initialTip is null) &&
-                        blockToAdd.Index <= initialTip.Index &&
-                        wStore.IndexBlockHash(wId, blockToAdd.Index).Equals(blockToAdd.Hash))
+                    cancellationToken.ThrowIfCancellationRequested();
+
+                    if (deltaBlocks.First is LinkedListNode<Block<T>> deltaBottom)
                     {
+                        Block<T> bottomBlock = deltaBottom.Value;
+                        if (bottomBlock.PreviousHash is HashDigest<SHA256> bp)
+                        {
+                            workspace = workspace.Fork(bp);
+                            chainIds.Add(workspace.Id);
+                            try
+                            {
+                                long verifiedBlockCount = 0;
+                                foreach (Block<T> deltaBlock in deltaBlocks)
+                                {
+                                    cancellationToken.ThrowIfCancellationRequested();
+                                    workspace.Append(
+                                        deltaBlock,
+                                        DateTimeOffset.UtcNow,
+                                        evaluateActions: false,
+                                        renderActions: false
+                                    );
+                                    progress?.Report(new BlockVerificationState
+                                    {
+                                        TotalBlockCount = deltaBlocks.Count,
+                                        VerifiedBlockCount = ++verifiedBlockCount,
+                                        VerifiedBlockHash = deltaBlock.Hash,
+                                    });
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                _logger.Error(
+                                    e,
+                                    "An exception occurred during appending blocks: {Exception}",
+                                    e
+                                );
+                                throw;
+                            }
+
+                            cancellationToken.ThrowIfCancellationRequested();
+                        }
+                        else
+                        {
+                            Block<T> first = deltaBlocks.First.Value, last = deltaBlocks.Last.Value;
+                            HashDigest<SHA256> g = wStore.IndexBlockHash(wId, 0L).Value;
+                            throw new SwarmException(
+                                $"Downloaded blocks (#{first.Index} {first.Hash}\u2013" +
+                                $"#{last.Index} {last.Hash}) are incompatible with the existing " +
+                                $"chain (#0 {g}\u2013#{initialTip.Index} {initialTip.Hash})."
+                            );
+                        }
+                    }
+
+                    height = workspace.Tip.Index;
+
+                    IEnumerable<(BoundPeer, HashDigest<SHA256> Hash)> trustedPeersWithTip =
+                        peersWithHeight.Where(pair =>
+                                trustedStateValidators.Contains(pair.Item1.Address) &&
+                                pair.Item2 <= height)
+                            .OrderByDescending(pair => pair.Item2)
+                            .Select(pair => (pair.Item1, workspace[pair.Item2].Hash));
+
+                    // FIXME: It is not guaranteed that states will be reported in order.
+                    // see issue #436, #430
+                    try
+                    {
+                        receivedStateHeight = await SyncRecentStatesFromTrustedPeersAsync(
+                            workspace,
+                            progress,
+                            trustedPeersWithTip.ToImmutableList(),
+                            initialLocator,
+                            cancellationToken
+                        );
                         break;
                     }
-
-                    deltaBlocks.AddFirst(blockToAdd);
-                }
-
-                cancellationToken.ThrowIfCancellationRequested();
-
-                if (deltaBlocks.First is LinkedListNode<Block<T>> deltaBottom)
-                {
-                    Block<T> bottomBlock = deltaBottom.Value;
-                    if (bottomBlock.PreviousHash is HashDigest<SHA256> bp)
+                    catch (InvalidStateTargetException e)
                     {
-                        workspace = workspace.Fork(bp);
-                        chainIds.Add(workspace.Id);
-                        try
-                        {
-                            long verifiedBlockCount = 0;
-                            foreach (Block<T> deltaBlock in deltaBlocks)
-                            {
-                                cancellationToken.ThrowIfCancellationRequested();
-                                workspace.Append(
-                                    deltaBlock,
-                                    DateTimeOffset.UtcNow,
-                                    evaluateActions: false,
-                                    renderActions: false
-                                );
-                                progress?.Report(new BlockVerificationState
-                                {
-                                    TotalBlockCount = deltaBlocks.Count,
-                                    VerifiedBlockCount = ++verifiedBlockCount,
-                                    VerifiedBlockHash = deltaBlock.Hash,
-                                });
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            _logger.Error(
-                                e,
-                                "An exception occurred during appending blocks: {Exception}",
-                                e
-                            );
-                            throw;
-                        }
-
-                        cancellationToken.ThrowIfCancellationRequested();
-                    }
-                    else
-                    {
-                        Block<T> first = deltaBlocks.First.Value, last = deltaBlocks.Last.Value;
-                        HashDigest<SHA256> g = wStore.IndexBlockHash(wId, 0L).Value;
-                        throw new SwarmException(
-                            $"Downloaded blocks (#{first.Index} {first.Hash}\u2013" +
-                            $"#{last.Index} {last.Hash}) are incompatible with the existing " +
-                            $"chain (#0 {g}\u2013#{initialTip.Index} {initialTip.Hash})."
-                        );
+                        Log.Error(e.ToString());
+                        retryCount++;
                     }
                 }
-
-                long height = workspace.Tip.Index;
-
-                IEnumerable<(BoundPeer, HashDigest<SHA256> Hash)> trustedPeersWithTip =
-                    peersWithHeight.Where(pair =>
-                            trustedStateValidators.Contains(pair.Item1.Address) &&
-                            pair.Item2 <= height)
-                        .OrderByDescending(pair => pair.Item2)
-                        .Select(pair => (pair.Item1, workspace[pair.Item2].Hash));
-
-                // FIXME: It is not guaranteed that states will be reported in order.
-                // see issue #436, #430
-                long? receivedStateHeight = await SyncRecentStatesFromTrustedPeersAsync(
-                    workspace,
-                    progress,
-                    trustedPeersWithTip.ToImmutableList(),
-                    initialLocator,
-                    cancellationToken
-                );
 
                 if (receivedStateHeight is null || receivedStateHeight < height)
                 {
@@ -923,7 +932,7 @@ namespace Libplanet.Net
             Message parsedMessage = await Transport.SendMessageWithReplyAsync(
                 peer,
                 request,
-                timeout: BlockHashRecvTimeout,
+                timeout: Options.BlockHashRecvTimeout,
                 cancellationToken: cancellationToken
             );
 
@@ -981,11 +990,11 @@ namespace Libplanet.Net
                 yield break;
             }
 
-            TimeSpan blockRecvTimeout = _options.BlockRecvTimeout
+            TimeSpan blockRecvTimeout = Options.BlockRecvTimeout
                                         + TimeSpan.FromSeconds(hashCount);
-            if (blockRecvTimeout > _options.MaxTimeout)
+            if (blockRecvTimeout > Options.MaxTimeout)
             {
-                blockRecvTimeout = _options.MaxTimeout;
+                blockRecvTimeout = Options.MaxTimeout;
             }
 
             IEnumerable<Message> replies = await Transport.SendMessageWithReplyAsync(
@@ -1043,10 +1052,10 @@ namespace Libplanet.Net
 
             _logger.Debug("Required tx count: {Count}.", txCount);
 
-            var txRecvTimeout = _options.TxRecvTimeout + TimeSpan.FromSeconds(txCount);
-            if (txRecvTimeout > _options.MaxTimeout)
+            var txRecvTimeout = Options.TxRecvTimeout + TimeSpan.FromSeconds(txCount);
+            if (txRecvTimeout > Options.MaxTimeout)
             {
-                txRecvTimeout = _options.MaxTimeout;
+                txRecvTimeout = Options.MaxTimeout;
             }
 
             IEnumerable<Message> replies = await Transport.SendMessageWithReplyAsync(
@@ -1313,6 +1322,28 @@ namespace Libplanet.Net
             );
         }
 
+        private async Task<List<(BoundPeer, long)>> GetPeersWithHeight(
+            Block<T> initialTip,
+            TimeSpan? dialTimeout,
+            CancellationToken cancellationToken)
+        {
+            var peersWithHeightAndDiff = (await DialToExistingPeers(dialTimeout, cancellationToken))
+                .Where(pp => !(pp.Item1 is null || pp.Item2 is null))
+                .Where(pp => pp.Item2.TotalDifficulty > (initialTip?.TotalDifficulty ?? 0))
+                .Select(pp => (pp.Item1, pp.Item2.TipIndex, pp.Item2.TotalDifficulty))
+                .ToList();
+
+            if (!peersWithHeightAndDiff.Any())
+            {
+                return null;
+            }
+
+            return peersWithHeightAndDiff
+                .OrderByDescending(p => p.Item3)
+                .Select(p => (p.Item1, p.Item2))
+                .ToList();
+        }
+
         private async Task<long?> SyncRecentStatesFromTrustedPeersAsync(
             BlockChain<T> blockChain,
             IProgress<PreloadState> progress,
@@ -1345,7 +1376,7 @@ namespace Libplanet.Net
                         reply = await Transport.SendMessageWithReplyAsync(
                             peer,
                             request,
-                            timeout: _options.RecentStateRecvTimeout,
+                            timeout: Options.RecentStateRecvTimeout,
                             cancellationToken: cancellationToken
                         );
 
@@ -1360,8 +1391,13 @@ namespace Libplanet.Net
                         break;
                     }
 
-                    if (reply is RecentStates recentStates && !recentStates.Missing)
+                    if (reply is RecentStates recentStates)
                     {
+                        if (recentStates.Missing)
+                        {
+                            throw new InvalidStateTargetException("Fuck");
+                        }
+
                         int totalCount = recentStates.Iteration;
                         _logger.Debug(
                             "Received {StateRefCount} state refs and {BlockStateCount} block" +
@@ -2139,7 +2175,7 @@ namespace Libplanet.Net
 
             if (_logger.IsEnabled(LogEventLevel.Verbose))
             {
-                if (_store.ContainsBlock(target))
+                if (BlockChain.ContainsBlock(target))
                 {
                     var baseString = @base is HashDigest<SHA256> h
                         ? $"{BlockChain[h].Index}:{h}"
@@ -2174,7 +2210,7 @@ namespace Libplanet.Net
                 nextOffset,
                 iteration,
                 blockStates,
-                stateRefs.ToImmutableDictionary())
+                stateRefs?.ToImmutableDictionary())
             {
                 Identity = getRecentStates.Identity,
             };
