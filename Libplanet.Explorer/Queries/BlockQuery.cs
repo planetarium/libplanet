@@ -53,7 +53,7 @@ namespace Libplanet.Explorer.Queries
 
                     if ((hash is string && index is long) || (hash is null && index is null))
                     {
-                        throw new System.Exception("Unexpected block query");
+                        throw new GraphQL.ExecutionError("Unexpected block query");
                     }
 
                     if (hash is string hashNotNull)
@@ -66,7 +66,7 @@ namespace Libplanet.Explorer.Queries
                         return Query<T>.GetBlockByIndex(indexNotNull);
                     }
 
-                    throw new System.Exception("Unexpected block query");
+                    throw new GraphQL.ExecutionError("Unexpected block query");
                 }
             );
 
