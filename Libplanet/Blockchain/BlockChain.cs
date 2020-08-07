@@ -1666,7 +1666,7 @@ namespace Libplanet.Blockchain
                     return rawStateCompleter(this, blockHash);
                 }
 
-                return StateStore.GetState(key, offset);
+                return StateStore.GetState(key, offset, Id);
             }
             finally
             {
