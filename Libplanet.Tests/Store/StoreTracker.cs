@@ -9,22 +9,14 @@ using Libplanet.Tx;
 
 namespace Libplanet.Tests.Store
 {
-    public sealed class StoreTracker : IStore
+    public sealed class StoreTracker : BaseTracker, IStore
     {
         private readonly IStore _store;
-
-        private readonly List<StoreTrackLog> _logs;
 
         public StoreTracker(IStore store)
         {
             _store = store;
-            _logs = new List<StoreTrackLog>();
         }
-
-        public IImmutableList<StoreTrackLog> Logs =>
-            _logs.ToImmutableList();
-
-        public void ClearLogs() => _logs.Clear();
 
         public long AppendIndex(Guid chainId, HashDigest<SHA256> hash)
         {
@@ -205,11 +197,6 @@ namespace Libplanet.Tests.Store
         {
             Log(nameof(SetCanonicalChainId), chainId);
             _store.SetCanonicalChainId(chainId);
-        }
-
-        private void Log(string method, params object[] @params)
-        {
-            _logs.Add(StoreTrackLog.Create(method, @params));
         }
     }
 }
