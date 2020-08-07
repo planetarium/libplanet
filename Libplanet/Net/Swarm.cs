@@ -801,7 +801,7 @@ namespace Libplanet.Net
                     }
                     catch (InvalidStateTargetException e)
                     {
-                        Log.Error(e.ToString());
+                        Log.Error(e, e.ToString());
                         retryCount++;
                     }
                 }
@@ -1395,7 +1395,8 @@ namespace Libplanet.Net
                     {
                         if (recentStates.Missing)
                         {
-                            throw new InvalidStateTargetException("Fuck");
+                            throw new InvalidStateTargetException(
+                                $"The peer {peer} lacks the target block: {blockHash}.");
                         }
 
                         int totalCount = recentStates.Iteration;
