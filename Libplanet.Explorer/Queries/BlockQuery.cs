@@ -28,7 +28,8 @@ namespace Libplanet.Explorer.Queries
                     {
                         Name = "excludeEmptyTxs",
                         DefaultValue = false,
-                    }
+                    },
+                    new QueryArgument<AddressType> { Name = "miner" }
                 ),
                 resolve: context =>
                 {
@@ -36,7 +37,8 @@ namespace Libplanet.Explorer.Queries
                     long offset = context.GetArgument<long>("offset");
                     int? limit = context.GetArgument<int?>("limit", null);
                     bool excludeEmptyTxs = context.GetArgument<bool>("excludeEmptyTxs");
-                    return Query<T>.ListBlocks(desc, offset, limit, excludeEmptyTxs);
+                    Address? miner = context.GetArgument<Address?>("miner", null);
+                    return Query<T>.ListBlocks(desc, offset, limit, excludeEmptyTxs, miner);
                 }
             );
 
