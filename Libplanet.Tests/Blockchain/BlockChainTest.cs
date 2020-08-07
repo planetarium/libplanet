@@ -1394,7 +1394,8 @@ namespace Libplanet.Tests.Blockchain
             var chain = new BlockChain<DumbAction>(
                 new NullPolicy<DumbAction>(),
                 tracker,
-                _fx.GenesisBlock
+                _fx.GenesisBlock,
+                stateStore: _fx.StateStore
             );
 
             Block<DumbAction> b = chain.Genesis;
@@ -1442,7 +1443,8 @@ namespace Libplanet.Tests.Blockchain
             var chain = new BlockChain<DumbAction>(
                 new NullPolicy<DumbAction>(),
                 tracker,
-                _fx.GenesisBlock
+                _fx.GenesisBlock,
+                stateStore: _fx.StateStore
             );
 
             Block<DumbAction> b = chain.Genesis;
@@ -2077,7 +2079,8 @@ namespace Libplanet.Tests.Blockchain
                 store,
                 chainId,
                 TestUtils.MineGenesis<DumbAction>(),
-                true
+                true,
+                stateStore: blockStatesStore
             );
             var privateKey = new PrivateKey();
             Address signer = privateKey.ToAddress();

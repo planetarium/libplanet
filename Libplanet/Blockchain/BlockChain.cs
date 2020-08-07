@@ -73,6 +73,7 @@ namespace Libplanet.Blockchain
         /// be used for that.</param>
         /// <param name="render">Defines whether to render actions on this
         /// <see cref="BlockChain{T}"/>.  Turned on by default.</param>
+        /// <param name="stateStore"><see cref="IStateStore"/> to store states.</param>
         /// <exception cref="InvalidGenesisBlockException">Thrown when the <paramref name="store"/>
         /// has a genesis block and it does not match to what the network expects
         /// (i.e., <paramref name="genesisBlock"/>).</exception>
@@ -80,14 +81,16 @@ namespace Libplanet.Blockchain
             IBlockPolicy<T> policy,
             IStore store,
             Block<T> genesisBlock,
-            bool render = true
+            bool render = true,
+            IStateStore stateStore = null
             )
             : this(
                 policy,
                 store,
                 store.GetCanonicalChainId() ?? Guid.NewGuid(),
                 genesisBlock,
-                render)
+                render,
+                stateStore)
         {
         }
 
@@ -96,11 +99,13 @@ namespace Libplanet.Blockchain
             IStore store,
             Guid id,
             Block<T> genesisBlock,
-            bool render
+            bool render,
+            IStateStore stateStore = null
         )
             : this(
                 policy,
                 store,
+                stateStore,
                 id,
                 genesisBlock,
                 false,
@@ -112,6 +117,7 @@ namespace Libplanet.Blockchain
         private BlockChain(
             IBlockPolicy<T> policy,
             IStore store,
+            IStateStore stateStore,
             Guid id,
             Block<T> genesisBlock,
             bool inFork,
@@ -121,6 +127,13 @@ namespace Libplanet.Blockchain
             Id = id;
             Policy = policy;
             Store = store;
+
+            // It expects store is DefaultStore or RocksDBStore.
+            StateStore = stateStore ?? store as IStateStore;
+            if (StateStore is null)
+            {
+                throw new ArgumentNullException(nameof(stateStore));
+            }
 
             _blocks = new BlockSet<T>(store);
             _transactions = new TransactionSet<T>(store);
@@ -227,11 +240,11 @@ namespace Libplanet.Blockchain
 
         internal IStore Store { get; }
 
-        internal IStateStore StateStore => Store as IStateStore;
+        internal IStateStore StateStore { get; }
 
         // FIXME: Now, it used in Libplanet.Tests project, but it should be removed.
         //        They should use only IStateStore
-        internal IBlockStatesStore BlockStatesStore => Store as IBlockStatesStore;
+        internal IBlockStatesStore BlockStatesStore => StateStore as IBlockStatesStore;
 
         /// <summary>
         /// Gets the block corresponding to the <paramref name="index"/>.
@@ -1218,7 +1231,7 @@ namespace Libplanet.Blockchain
             }
 
             var forked = new BlockChain<T>(
-                Policy, Store, Guid.NewGuid(), Genesis, true, Render);
+                Policy, Store, StateStore, Guid.NewGuid(), Genesis, true, Render);
             Guid forkedId = forked.Id;
             _logger.Debug(
                 "Trying to fork chain at {branchPoint}" +
