@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Blockchain;
 using Libplanet.Net.Messages;
+using Libplanet.Store;
 
 namespace Libplanet.Net
 {
@@ -67,6 +68,11 @@ namespace Libplanet.Net
 
             async Task FillTrustedBlockStates(HashDigest<SHA256> blockHash)
             {
+                if (!(BlockChain.StateStore is IBlockStatesStore blockStatesStore))
+                {
+                    return;
+                }
+
                 var request = new GetBlockStates(blockHash);
                 foreach (BoundPeer peer in trustedPeers)
                 {
@@ -113,7 +119,7 @@ namespace Libplanet.Net
                             continue;
                         }
 
-                        BlockChain.Store.SetBlockStates(blockStates.BlockHash, blockStates.States);
+                        blockStatesStore.SetBlockStates(blockStates.BlockHash, blockStates.States);
                     }
                     else
                     {

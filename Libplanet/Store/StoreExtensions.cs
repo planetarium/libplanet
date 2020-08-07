@@ -37,7 +37,11 @@ namespace Libplanet.Store
             }
         }
 
-        private static void CopyBlockStateStore(IStore from, IStore to, IBlockStatesStore fromBlockStatesStore, IBlockStatesStore toBlockStatesStore)
+        private static void CopyBlockStateStore(
+            IStore from,
+            IStore to,
+            IBlockStatesStore fromBlockStatesStore,
+            IBlockStatesStore toBlockStatesStore)
         {
             // TODO: take a IProgress<> so that a caller can be aware the progress of cloning.
             if (to.ListChainIds().Any())
@@ -51,7 +55,8 @@ namespace Libplanet.Store
                 {
                     Block<NullAction> block = from.GetBlock<NullAction>(blockHash);
                     to.PutBlock(block);
-                    IImmutableDictionary<string, IValue> states = fromBlockStatesStore.GetBlockStates(blockHash);
+                    IImmutableDictionary<string, IValue> states =
+                        fromBlockStatesStore.GetBlockStates(blockHash);
                     toBlockStatesStore.SetBlockStates(blockHash, states);
                     to.AppendIndex(chainId, blockHash);
                 }
@@ -63,7 +68,8 @@ namespace Libplanet.Store
 
                 foreach (string key in fromBlockStatesStore.ListStateKeys(chainId))
                 {
-                    foreach (var pair in fromBlockStatesStore.IterateStateReferences(chainId, key).Reverse())
+                    foreach (var pair in
+                        fromBlockStatesStore.IterateStateReferences(chainId, key).Reverse())
                     {
                         pair.Deconstruct(out HashDigest<SHA256> refHash, out long refIndex);
                         toBlockStatesStore.StoreStateReference(

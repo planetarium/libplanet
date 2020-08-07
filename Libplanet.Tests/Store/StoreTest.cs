@@ -454,15 +454,18 @@ namespace Libplanet.Tests.Store
                 stateKey,
                 Fx.Block3.Index));
             Assert.Null(
-                Fx.BlockStatesStore.LookupStateReference(Fx.StoreChainId,
+                Fx.BlockStatesStore.LookupStateReference(
+                Fx.StoreChainId,
                 stateKey,
                 block4.Index));
             Assert.Null(
-                Fx.BlockStatesStore.LookupStateReference(Fx.StoreChainId,
+                Fx.BlockStatesStore.LookupStateReference(
+                Fx.StoreChainId,
                 stateKey,
                 block5.Index));
             Assert.Null(
-                Fx.BlockStatesStore.LookupStateReference(Fx.StoreChainId,
+                Fx.BlockStatesStore.LookupStateReference(
+                Fx.StoreChainId,
                 stateKey,
                 block6.Index));
 
@@ -563,9 +566,21 @@ namespace Libplanet.Tests.Store
                 Fx.BlockStatesStore.IterateStateReferences(Fx.StoreChainId, stateKey)
             );
 
-            Fx.BlockStatesStore.StoreStateReference(Fx.StoreChainId, stateKeys, block3.Hash, block3.Index);
-            Fx.BlockStatesStore.StoreStateReference(Fx.StoreChainId, stateKeys, block2.Hash, block2.Index);
-            Fx.BlockStatesStore.StoreStateReference(Fx.StoreChainId, stateKeys, block1.Hash, block1.Index);
+            Fx.BlockStatesStore.StoreStateReference(
+                Fx.StoreChainId,
+                stateKeys,
+                block3.Hash,
+                block3.Index);
+            Fx.BlockStatesStore.StoreStateReference(
+                Fx.StoreChainId,
+                stateKeys,
+                block2.Hash,
+                block2.Index);
+            Fx.BlockStatesStore.StoreStateReference(
+                Fx.StoreChainId,
+                stateKeys,
+                block1.Hash,
+                block1.Index);
 
             Assert.Equal(
                 new[]
@@ -741,8 +756,7 @@ namespace Libplanet.Tests.Store
                     Fx.BlockStatesStore.LookupStateReference(
                         targetChainId,
                         stateKey2,
-                        blocks[3]
-                            .Index));
+                        blocks[3].Index));
         }
 
         [SkippableTheory]
@@ -873,7 +887,8 @@ namespace Libplanet.Tests.Store
             }.ToImmutableDictionary();
             Fx.BlockStatesStore.SetBlockStates(Fx.Hash1, states);
 
-            IImmutableDictionary<string, IValue> actual = Fx.BlockStatesStore.GetBlockStates(Fx.Hash1);
+            IImmutableDictionary<string, IValue> actual =
+                Fx.BlockStatesStore.GetBlockStates(Fx.Hash1);
             Assert.Equal(states["foo"], actual["foo"]);
             Assert.Equal(states["bar"], actual["bar"]);
         }

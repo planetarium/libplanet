@@ -25,17 +25,20 @@ namespace Libplanet.Tests.Net
             StateCompleter<DumbAction> noComplete = StateCompleters<DumbAction>.Reject;
 
             // The chain with incomplete states
+            var incompleteStateStore = new DefaultStore(null);
             (_, Address[] addresses, BlockChain<DumbAction> incompleteChain) =
-                BlockChainTest.MakeIncompleteBlockStates(new DefaultStore(null));
+                BlockChainTest.MakeIncompleteBlockStates(
+                    incompleteStateStore, incompleteStateStore);
             Swarm<DumbAction> incompleteSwarm = CreateSwarm(incompleteChain);
             Assert.Throws<IncompleteBlockStatesException>(() =>
                 incompleteChain.GetState(addresses[0], stateCompleter: noComplete)
             );
 
             // The chain with complete states
-            var store = new DefaultStore(null);
+            var completeStateStore = new DefaultStore(null);
             BlockChain<DumbAction> completeChain =
-                new BlockChain<DumbAction>(incompleteChain.Policy, store, incompleteChain.Genesis);
+                new BlockChain<DumbAction>(
+                    incompleteChain.Policy, completeStateStore, incompleteChain.Genesis);
             Swarm<DumbAction> completeSwarm = CreateSwarm(completeChain);
             foreach (HashDigest<SHA256> blockHash in incompleteChain.BlockHashes.Skip(1))
             {
@@ -91,16 +94,19 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact(Timeout = Timeout)]
+        // FIXME: typo
         public async Task TrustNewTipStatesAfterReog()
         {
+            var incompleteStore = new DefaultStore(null);
             (_, Address[] addresses, BlockChain<DumbAction> incomplete) =
-                BlockChainTest.MakeIncompleteBlockStates(new DefaultStore(null));
+                BlockChainTest.MakeIncompleteBlockStates(incompleteStore, incompleteStore);
             Block<DumbAction> genesis = incomplete.Genesis;
             Swarm<DumbAction> incompleteSwarm = CreateSwarm(incomplete);
 
+            var eventualCanonStore = new DefaultStore(null);
             BlockChain<DumbAction> eventualCanon = new BlockChain<DumbAction>(
                 incomplete.Policy,
-                new DefaultStore(null),
+                eventualCanonStore,
                 genesis
             );
             Swarm<DumbAction> eventualCanonSwarm = CreateSwarm(eventualCanon);
@@ -112,7 +118,7 @@ namespace Libplanet.Tests.Net
                 eventualCanon.Append(commonBlock);
             }
 
-            Assert.Null(incomplete.Store.GetBlockStates(incomplete[1].Hash));
+            Assert.Null(incompleteStore.GetBlockStates(incomplete[1].Hash));
 
             // Uncommon blocks
             var random = new Random();
@@ -169,10 +175,10 @@ namespace Libplanet.Tests.Net
             Assert.Equal(reorged.OldTip, staleTip);
             Assert.Equal(reorged.NewTip, canonTip);
             Assert.Equal(
-                eventualCanon.Store.GetBlockStates(canonTip.Hash),
-                incomplete.Store.GetBlockStates(canonTip.Hash)
+                eventualCanonStore.GetBlockStates(canonTip.Hash),
+                incompleteStore.GetBlockStates(canonTip.Hash)
             );
-            Assert.Null(incomplete.Store.GetBlockStates(incomplete[1].Hash));
+            Assert.Null(incompleteStore.GetBlockStates(incomplete[1].Hash));
         }
     }
 }

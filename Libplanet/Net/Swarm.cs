@@ -1494,7 +1494,11 @@ namespace Libplanet.Net
                                     .ToImmutableHashSet();
                                 if (_store.GetBlockIndex(hash) is long index)
                                 {
-                                    blockStatesStore.StoreStateReference(chainId, stateKeys, hash, index);
+                                    blockStatesStore.StoreStateReference(
+                                        chainId,
+                                        stateKeys,
+                                        hash,
+                                        index);
                                 }
                             }
 

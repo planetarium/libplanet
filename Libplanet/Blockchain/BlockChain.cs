@@ -1612,7 +1612,6 @@ namespace Libplanet.Blockchain
         /// Calculates and complements a block's incomplete states on the fly.
         /// </summary>
         /// <param name="blockHash">The hash of a block which has incomplete states.</param>
-        /// <returns>The dirty states made from actions in the requested block.</returns>
         internal void ComplementBlockStates(
             HashDigest<SHA256> blockHash
         )
@@ -1661,7 +1660,8 @@ namespace Libplanet.Blockchain
             _rwlock.EnterReadLock();
             try
             {
-                if (offset is HashDigest<SHA256> blockHash && !StateStore.BlockStateExists(blockHash))
+                if (offset is HashDigest<SHA256> blockHash
+                    && !StateStore.BlockStateExists(blockHash))
                 {
                     return rawStateCompleter(this, blockHash);
                 }

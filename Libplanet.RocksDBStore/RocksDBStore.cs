@@ -870,7 +870,10 @@ namespace Libplanet.RocksDBStore
             SetBlockStates(blockHash, states);
         }
 
-        public IValue GetState(string stateKey, HashDigest<SHA256>? blockHash = null, Guid? chainId = null)
+        public IValue GetState(
+            string stateKey,
+            HashDigest<SHA256>? blockHash = null,
+            Guid? chainId = null)
         {
             if (chainId is null)
             {

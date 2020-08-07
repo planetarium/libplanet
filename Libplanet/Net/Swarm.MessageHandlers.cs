@@ -9,6 +9,7 @@ using Bencodex.Types;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
 using Libplanet.Net.Messages;
+using Libplanet.Store;
 using Libplanet.Tx;
 using Serilog.Events;
 
@@ -113,17 +114,20 @@ namespace Libplanet.Net
 
         private void TransferBlockStates(GetBlockStates getBlockStates)
         {
-            IImmutableDictionary<string, IValue> states =
-                BlockChain.Store.GetBlockStates(getBlockStates.BlockHash);
-            _logger.Debug(
-                (states is null ? "Not found" : "Found") + " the block {BlockHash}'s states.",
-                getBlockStates.BlockHash
-            );
-            var reply = new BlockStates(getBlockStates.BlockHash, states)
+            if (BlockChain.StateStore is IBlockStatesStore blockStatesStore)
             {
-                Identity = getBlockStates.Identity,
-            };
-            Transport.ReplyMessage(reply);
+                IImmutableDictionary<string, IValue> states =
+                    blockStatesStore.GetBlockStates(getBlockStates.BlockHash);
+                _logger.Debug(
+                    (states is null ? "Not found" : "Found") + " the block {BlockHash}'s states.",
+                    getBlockStates.BlockHash
+                );
+                var reply = new BlockStates(getBlockStates.BlockHash, states)
+                {
+                    Identity = getBlockStates.Identity,
+                };
+                Transport.ReplyMessage(reply);
+            }
         }
 
         private async Task ProcessBlockHeader(
@@ -311,7 +315,8 @@ namespace Libplanet.Net
             long nextOffset = -1;
             int iteration = 0;
 
-            if (BlockChain.ContainsBlock(target))
+            if (BlockChain.StateStore is IBlockStatesStore blockStatesStore &&
+                BlockChain.ContainsBlock(target))
             {
                 ReaderWriterLockSlim rwlock = BlockChain._rwlock;
                 rwlock.EnterReadLock();
@@ -347,7 +352,7 @@ namespace Libplanet.Net
                         ? -1
                         : getRecentStates.Offset + FindNextStatesChunkSize;
 
-                    stateRefs = _store.ListAllStateReferences(
+                    stateRefs = blockStatesStore.ListAllStateReferences(
                         chainId,
                         lowestIndex: lowestIndex,
                         highestIndex: highestIndex
@@ -369,7 +374,7 @@ namespace Libplanet.Net
                     blockStates = stateRefs.Values
                         .Select(refs => refs.Last())
                         .ToImmutableHashSet()
-                        .Select(bh => (bh, _store.GetBlockStates(bh)))
+                        .Select(bh => (bh, blockStatesStore.GetBlockStates(bh)))
                         .Where(pair => !(pair.Item2 is null))
                         .ToImmutableDictionary(
                             pair => pair.Item1,
