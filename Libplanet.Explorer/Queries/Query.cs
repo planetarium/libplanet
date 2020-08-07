@@ -52,8 +52,10 @@ namespace Libplanet.Explorer.Queries
 
             while (limit is null || limit > 0)
             {
-                if ((miner is null || miner == block.Miner) &&
-                    (!excludeEmptyTxs || block.Transactions.Any()))
+                bool isMinerValid = miner is null || miner == block.Miner;
+                bool isTxValid = !excludeEmptyTxs || block.Transactions.Any();
+
+                if (isMinerValid && isTxValid)
                 {
                     limit--;
                     yield return block;
