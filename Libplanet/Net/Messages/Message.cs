@@ -105,6 +105,13 @@ namespace Libplanet.Net.Messages
             /// Contains the delta states of the requested block.
             /// </summary>
             BlockStates = 0x23,
+
+            /// <summary>
+            /// A reply to any messages with different <see cref="AppProtocolVersion"/>.
+            /// Contains the expected and actual <see cref="AppProtocolVersion"/>
+            /// value of the message.
+            /// </summary>
+            DifferentVersion = 0x30,
         }
 
         public byte[] Identity { get; set; }
@@ -157,6 +164,7 @@ namespace Libplanet.Net.Messages
                 { MessageType.ChainStatus, typeof(ChainStatus) },
                 { MessageType.GetBlockStates, typeof(GetBlockStates) },
                 { MessageType.BlockStates, typeof(BlockStates) },
+                { MessageType.DifferentVersion, typeof(DifferentVersion) },
             };
 
             if (!types.TryGetValue(rawType, out Type type))
