@@ -73,8 +73,11 @@ To be released.
     (with the type number `0x14`).  [[#459], [#919], [#920], [#930]]
  -  The `TimestampThreshold` between `Block<T>`s was changed from 15 minutes to
     15 seconds.  [[#922], [#925]]
- -  `Swarm<T>` became to have two more message types: `GetChainStatus` (`0x20`)
-     and `ChainStatus` (`0x21`).  [[#920], [#930]]
+ -  `Swarm<T>` became to have 4 more message types:
+     -  `GetChainStatus` (`0x20`)  [[#920], [#930]]
+     -  `ChainStatus` (`0x21`)  [[#920], [#930]]
+     -  `GetBlockStates` (`0x22`)  [[#946]]
+     -  `BlockStates` (`0x23`)  [[#946]]
 
 ### Backward-incompatible storage format changes
 
