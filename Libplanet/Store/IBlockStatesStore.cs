@@ -8,7 +8,7 @@ using Libplanet.Blocks;
 
 namespace Libplanet.Store
 {
-    public interface IBlockStatesStore
+    public interface IBlockStatesStore : IStateStore
     {
         /// <summary>
         /// Lists all keys that have ever had states.

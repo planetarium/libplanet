@@ -229,6 +229,8 @@ namespace Libplanet.Blockchain
 
         internal IStateStore StateStore => Store as IStateStore;
 
+        // FIXME: Now, it used in Libplanet.Tests project, but it should be removed.
+        //        They should use only IStateStore
         internal IBlockStatesStore BlockStatesStore => Store as IBlockStatesStore;
 
         /// <summary>

@@ -26,7 +26,7 @@ namespace Libplanet.Store
     /// for some complex indices.
     /// </summary>
     /// <seealso cref="IStore"/>
-    public class DefaultStore : BaseStore, IBlockStatesStore, IStateStore
+    public class DefaultStore : BaseStore, IBlockStatesStore
     {
         private const string IndexColPrefix = "index_";
 

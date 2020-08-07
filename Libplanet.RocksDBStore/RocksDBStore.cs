@@ -21,7 +21,7 @@ namespace Libplanet.RocksDBStore
     /// This stores data in the RocksDB.
     /// </summary>
     /// <seealso cref="IStore"/>
-    public class RocksDBStore : BaseStore, IBlockStatesStore, IStateStore
+    public class RocksDBStore : BaseStore, IBlockStatesStore
     {
         private const string BlockDbName = "block";
         private const string TxDbName = "tx";
