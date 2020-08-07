@@ -49,6 +49,15 @@ To be released.
     `Block<T>()` constructor. [[#931], [#935]]
  -  Replaced `SerializationInfoExtensions.GetValueOrDefault<T>()` to
     `SerializationInfoExtensions.TryGetValue<T>()`.  [[#940]]
+ -  Added `bool append = true` option to both `BlockChain<T>.MineBlock()`
+    overloaded methods.  Although this breaks ABI-level backward compatibility
+    (i.e., you need to rebuild your assemblies), still is backward-compatible at
+    API-level as the option is turned on by default.  [[#946]]
+ -  Added `CancellationToken cancellationToken = default(CancellationToken)`
+    option to `BlockChain<T>.MineBlock(Address miner)` overloaded method.
+    Although this breaks ABI-level backward compatibility (i.e., you need to
+    rebuild your assemblies), still is backward-compatible at API-level as
+    the option has the default value.  [[#946]]
 
 ### Backward-incompatible network protocol changes
 
@@ -195,6 +204,7 @@ To be released.
 [#940]: https://github.com/planetarium/libplanet/pull/940
 [#941]: https://github.com/planetarium/libplanet/pull/941
 [#945]: https://github.com/planetarium/libplanet/pull/945
+[#946]: https://github.com/planetarium/libplanet/pull/946
 [sleep mode]: https://en.wikipedia.org/wiki/Sleep_mode
 
 

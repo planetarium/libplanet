@@ -43,17 +43,24 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async void CanMineBlock()
+        public async void MineBlock()
         {
+            Assert.Equal(1, _blockChain.Count);
+
             Block<DumbAction> block = await _blockChain.MineBlock(_fx.Address1);
             block.Validate(DateTimeOffset.UtcNow);
-
             Assert.True(_blockChain.ContainsBlock(block.Hash));
+            Assert.Equal(2, _blockChain.Count);
 
             Block<DumbAction> anotherBlock = await _blockChain.MineBlock(_fx.Address2);
             anotherBlock.Validate(DateTimeOffset.UtcNow);
-
             Assert.True(_blockChain.ContainsBlock(anotherBlock.Hash));
+            Assert.Equal(3, _blockChain.Count);
+
+            Block<DumbAction> block3 = await _blockChain.MineBlock(_fx.Address3, append: false);
+            block3.Validate(DateTimeOffset.UtcNow);
+            Assert.False(_blockChain.ContainsBlock(block3.Hash));
+            Assert.Equal(3, _blockChain.Count);
         }
 
         [Fact]

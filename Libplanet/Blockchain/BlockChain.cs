@@ -588,10 +588,14 @@ namespace Libplanet.Blockchain
         }
 
         /// <summary>
-        /// Mine a <see cref="Block{T}"/> using staged <see cref="Transaction{T}"/>s.
+        /// Mines a next <see cref="Block{T}"/> using staged <see cref="Transaction{T}"/>s,
+        /// and then <see cref="Append(Block{T})"/> it to the chain (unless the <paramref
+        /// name="append"/> option is turned off).
         /// </summary>
         /// <param name="miner">The <see cref="Address"/> of miner that mined the block.</param>
         /// <param name="currentTime">The <see cref="DateTimeOffset"/> when mining started.</param>
+        /// <param name="append">Whether to <see cref="Append(Block{T})"/> the mined block.
+        /// Turned on by default.</param>
         /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
         /// operation should be canceled.
@@ -602,6 +606,7 @@ namespace Libplanet.Blockchain
         public async Task<Block<T>> MineBlock(
             Address miner,
             DateTimeOffset currentTime,
+            bool append = true,
             CancellationToken cancellationToken = default(CancellationToken)
         )
         {
@@ -673,13 +678,35 @@ namespace Libplanet.Blockchain
             cancellationTokenSource.Dispose();
             cts.Dispose();
 
-            Append(block, currentTime);
+            if (append)
+            {
+                Append(block, currentTime);
+            }
 
             return block;
         }
 
-        public async Task<Block<T>> MineBlock(Address miner) =>
-            await MineBlock(miner, DateTimeOffset.UtcNow);
+        /// <summary>
+        /// Mines a next <see cref="Block{T}"/> using staged <see cref="Transaction{T}"/>s,
+        /// and then <see cref="Append(Block{T})"/> it to the chain (unless the <paramref
+        /// name="append"/> option is turned off).
+        /// </summary>
+        /// <param name="miner">The <see cref="Address"/> of miner that mined the block.</param>
+        /// <param name="append">Whether to <see cref="Append(Block{T})"/> the mined block.
+        /// Turned on by default.</param>
+        /// <param name="cancellationToken">
+        /// A cancellation token used to propagate notification that this
+        /// operation should be canceled.
+        /// </param>
+        /// <returns>An awaitable task with a <see cref="Block{T}"/> that is mined.</returns>
+        /// <exception cref="OperationCanceledException">Thrown when
+        /// <see cref="BlockChain{T}.Tip"/> is changed while mining.</exception>
+        public Task<Block<T>> MineBlock(
+            Address miner,
+            bool append = true,
+            CancellationToken cancellationToken = default
+        ) =>
+            MineBlock(miner, DateTimeOffset.UtcNow, append, cancellationToken);
 
         /// <summary>
         /// Creates a new <see cref="Transaction{T}"/> and stage the transaction.
