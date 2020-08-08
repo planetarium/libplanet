@@ -2070,11 +2070,12 @@ namespace Libplanet.Tests.Net
 
         private async Task<Task> StartAsync<T>(
             Swarm<T> swarm,
+            IImmutableSet<Address> trustedStateValidators = null,
             CancellationToken cancellationToken = default
         )
             where T : IAction, new()
         {
-            Task task = swarm.StartAsync(200, 200, cancellationToken);
+            Task task = swarm.StartAsync(200, 200, trustedStateValidators, cancellationToken);
             await swarm.WaitForRunningAsync();
             return task;
         }

@@ -5,10 +5,13 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Bencodex.Types;
 using Libplanet.Blockchain;
+using Libplanet.Blocks;
+using Libplanet.Crypto;
 using Libplanet.Net;
 using Libplanet.Store;
 using Libplanet.Tests.Blockchain;
 using Libplanet.Tests.Common.Action;
+using Libplanet.Tx;
 using Serilog.Events;
 using Xunit;
 
@@ -85,6 +88,91 @@ namespace Libplanet.Tests.Net
                 (Text)"0,5",
                 incompleteChain.GetState(addresses[0], stateCompleter: noComplete)
             );
+        }
+
+        [Fact(Timeout = Timeout)]
+        public async Task TrustNewTipStatesAfterReog()
+        {
+            (_, Address[] addresses, BlockChain<DumbAction> incomplete) =
+                BlockChainTest.MakeIncompleteBlockStates(new DefaultStore(null));
+            Block<DumbAction> genesis = incomplete.Genesis;
+            Swarm<DumbAction> incompleteSwarm = CreateSwarm(incomplete);
+
+            BlockChain<DumbAction> eventualCanon = new BlockChain<DumbAction>(
+                incomplete.Policy,
+                new DefaultStore(null),
+                genesis
+            );
+            Swarm<DumbAction> eventualCanonSwarm = CreateSwarm(eventualCanon);
+
+            // Common blocks
+            for (int i = 0; i <= addresses.Length + 1; i++)
+            {
+                Block<DumbAction> commonBlock = incomplete[i + 1];
+                eventualCanon.Append(commonBlock);
+            }
+
+            Assert.Null(incomplete.Store.GetBlockStates(incomplete[1].Hash));
+
+            // Uncommon blocks
+            var random = new Random();
+            for (int i = 0; i < 10; i++)
+            {
+                var privateKey = new PrivateKey();
+                var tx = Transaction<DumbAction>.Create(
+                    0,
+                    privateKey,
+                    genesis.Hash,
+                    new[] { new DumbAction(privateKey.ToAddress(), "a") }
+                );
+                eventualCanon.StageTransaction(tx);
+                await eventualCanon.MineBlock(random.NextAddress());
+            }
+
+            _logger.CompareBothChains(
+                LogEventLevel.Debug,
+                nameof(incomplete),
+                incomplete,
+                nameof(eventualCanon),
+                eventualCanon
+            );
+
+            Block<DumbAction> staleTip = incomplete.Tip;
+            Block<DumbAction> canonTip = eventualCanon.Tip;
+            BlockChain<DumbAction>.ReorgedEventArgs reorged = null;
+            incomplete.Reorged += (sender, args) => reorged = args;
+
+            await StartAsync(
+                incompleteSwarm,
+                ImmutableHashSet.Create(eventualCanonSwarm.Address)
+            );
+            await StartAsync(
+                eventualCanonSwarm,
+                ImmutableHashSet.Create(incompleteSwarm.Address)
+            );
+            await incompleteSwarm.AddPeersAsync(new[] { eventualCanonSwarm.AsPeer }, null);
+            eventualCanonSwarm.BroadcastBlock(canonTip);
+
+            while (reorged is null)
+            {
+                await Task.Delay(500);
+            }
+
+            _logger.CompareBothChains(
+                LogEventLevel.Debug,
+                nameof(incomplete),
+                incomplete,
+                nameof(eventualCanon),
+                eventualCanon
+            );
+            Assert.Equal(incomplete.Tip, canonTip);
+            Assert.Equal(reorged.OldTip, staleTip);
+            Assert.Equal(reorged.NewTip, canonTip);
+            Assert.Equal(
+                eventualCanon.Store.GetBlockStates(canonTip.Hash),
+                incomplete.Store.GetBlockStates(canonTip.Hash)
+            );
+            Assert.Null(incomplete.Store.GetBlockStates(incomplete[1].Hash));
         }
     }
 }

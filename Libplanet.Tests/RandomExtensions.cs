@@ -12,6 +12,9 @@ namespace Libplanet.Tests
             return buffer;
         }
 
+        public static Address NextAddress(this Random random) =>
+            new Address(random.NextBytes(Address.Size));
+
         public static HashDigest<T> NextHashDigest<T>(this Random random)
             where T : HashAlgorithm
         =>

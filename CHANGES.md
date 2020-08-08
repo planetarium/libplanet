@@ -58,6 +58,11 @@ To be released.
     Although this breaks ABI-level backward compatibility (i.e., you need to
     rebuild your assemblies), still is backward-compatible at API-level as
     the option has the default value.  [[#946]]
+ -  Added `IImmutableSet<Address> trustedStateValidators = null` option to both
+    `Swarm<T>.StartAsync()` overloaded methods.  Although this breaks ABI-level
+    backward compatibility (i.e., you need to rebuild your assemblies), still is
+    backward-compatible at API-level as the option is turned on by default.
+    [[#946]]
 
 ### Backward-incompatible network protocol changes
 
@@ -116,6 +121,7 @@ To be released.
      -  Added `StateCompleters<T>` static class.
      -  Added `FungibleAssetStateCompleters<T>` static class.
      -  Added `Swarm<T>.GetTrustedStateCompleterAsync()` method.
+ -  Added `BlockChain<T>.Render` property.  [[#946]]
  -  Added `Reorged` event on `BlockChain<T>`.  [[#945]]
  -  Added `ReorgedEventArgs` class.  [[#945]]
 

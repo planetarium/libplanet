@@ -259,14 +259,50 @@ namespace Libplanet.Net
             _logger.Debug($"{nameof(Swarm<T>)} stopped.");
         }
 
+        /// <summary>
+        /// Starts to periodically synchronize the <see cref="BlockChain"/>.
+        /// </summary>
+        /// <param name="millisecondsDialTimeout">
+        /// When the <see cref="Swarm{T}"/> tries to dial each peer in <see cref="Peers"/>,
+        /// the dial-up is cancelled after this timeout, and it tries another peer.
+        /// If <c>null</c> is given it never gives up dial-ups.
+        /// </param>
+        /// <param name="millisecondsBroadcastTxInterval">
+        /// The time period of exchange of staged transactions.
+        /// </param>
+        /// <param name="trustedStateValidators">
+        /// If any peer in this set is reachable, <see cref="Swarm{T}"/> receives the latest
+        /// states of the major blockchain from that trusted peer, which is also calculated by
+        /// that peer, instead of autonomously calculating the states from scratch.
+        /// Note that this option is intended to be exposed to end users through a feasible user
+        /// interface so that they can decide whom to trust for themselves.
+        /// </param>
+        /// <param name="cancellationToken">
+        /// A cancellation token used to propagate notification that this
+        /// operation should be canceled.
+        /// </param>
+        /// <returns>An awaitable task without value.</returns>
+        /// <exception cref="SwarmException">Thrown when this <see cref="Swarm{T}"/> instance is
+        /// already <see cref="Running"/>.</exception>
+        /// <remarks>If the <see cref="BlockChain"/> has no blocks at all or there are long behind
+        /// blocks to caught in the network this method could lead to unexpected behaviors, because
+        /// this tries to <see cref="IAction.Render"/> <em>all</em> actions in the behind blocks
+        /// so that there are a lot of calls to <see cref="IAction.Render"/> method in a short
+        /// period of time.  This can lead a game startup slow.  If you want to omit rendering of
+        /// these actions in the behind blocks use <see cref=
+        /// "PreloadAsync(TimeSpan?, IProgress{PreloadState}, IImmutableSet{Address},
+        /// EventHandler{PreloadBlockDownloadFailEventArgs}, CancellationToken)"
+        /// /> method too.</remarks>
         public async Task StartAsync(
             int millisecondsDialTimeout = 15000,
             int millisecondsBroadcastTxInterval = 5000,
+            IImmutableSet<Address> trustedStateValidators = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             await StartAsync(
                 TimeSpan.FromMilliseconds(millisecondsDialTimeout),
                 TimeSpan.FromMilliseconds(millisecondsBroadcastTxInterval),
+                trustedStateValidators,
                 cancellationToken
             );
         }
@@ -280,6 +316,13 @@ namespace Libplanet.Net
         /// If <c>null</c> is given it never gives up dial-ups.
         /// </param>
         /// <param name="broadcastTxInterval">The time period of exchange of staged transactions.
+        /// </param>
+        /// <param name="trustedStateValidators">
+        /// If any peer in this set is reachable, <see cref="Swarm{T}"/> receives the latest
+        /// states of the major blockchain from that trusted peer, which is also calculated by
+        /// that peer, instead of autonomously calculating the states from scratch.
+        /// Note that this option is intended to be exposed to end users through a feasible user
+        /// interface so that they can decide whom to trust for themselves.
         /// </param>
         /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
@@ -300,9 +343,11 @@ namespace Libplanet.Net
         public async Task StartAsync(
             TimeSpan dialTimeout,
             TimeSpan broadcastTxInterval,
+            IImmutableSet<Address> trustedStateValidators = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             var tasks = new List<Task>();
+            trustedStateValidators ??= ImmutableHashSet<Address>.Empty;
             _workerCancellationTokenSource = new CancellationTokenSource();
             _cancellationToken = CancellationTokenSource.CreateLinkedTokenSource(
                     _workerCancellationTokenSource.Token, cancellationToken
@@ -318,7 +363,9 @@ namespace Libplanet.Net
             {
                 tasks.Add(Transport.RunAsync(_cancellationToken));
                 tasks.Add(BroadcastTxAsync(broadcastTxInterval, _cancellationToken));
-                tasks.Add(ProcessFillblock(_cancellationToken));
+                tasks.Add(
+                    ProcessFillBlocks(dialTimeout, trustedStateValidators, _cancellationToken)
+                );
                 tasks.Add(ProcessFillTxs(_cancellationToken));
                 _logger.Debug("Swarm started.");
 
@@ -440,12 +487,10 @@ namespace Libplanet.Net
         /// An instance that receives progress updates for block downloads.
         /// </param>
         /// <param name="trustedStateValidators">
-        /// If any peer in this set is reachable and there are no built-up
-        /// blocks in a current node, <see cref="Swarm{T}"/> receives the latest
-        /// states of the major blockchain from that trusted peer,
-        /// which is also calculated by that peer, instead of autonomously
-        /// calculating the states from scratch. Note that this option is
-        /// intended to be exposed to end users through a feasible user
+        /// If any peer in this set is reachable, <see cref="Swarm{T}"/> receives the latest
+        /// states of the major blockchain from that trusted peer, which is also calculated by
+        /// that peer, instead of autonomously calculating the states from scratch.
+        /// Note that this option is intended to be exposed to end users through a feasible user
         /// interface so that they can decide whom to trust for themselves.
         /// </param>
         /// <param name="blockDownloadFailed">
@@ -1606,6 +1651,8 @@ namespace Libplanet.Net
             BoundPeer peer,
             HashDigest<SHA256>? stop,
             IProgress<BlockDownloadState> progress,
+            IImmutableSet<Address> trustedStateValidators,
+            TimeSpan dialTimeout,
             long totalBlockCount,
             bool evaluateActions,
             CancellationToken cancellationToken
@@ -1614,6 +1661,11 @@ namespace Libplanet.Net
             int retry = 3;
             long previousTipIndex = blockChain.Tip?.Index ?? -1;
             BlockChain<T> synced = null;
+            StateCompleterSet<T> trustedStateCompleterSet = await GetTrustedStateCompleterAsync(
+                trustedStateValidators,
+                dialTimeout,
+                cancellationToken: cancellationToken
+            );
 
             try
             {
@@ -1667,7 +1719,7 @@ namespace Libplanet.Net
                 if (synced is BlockChain<T> syncedNotNull
                     && !syncedNotNull.Id.Equals(blockChain?.Id))
                 {
-                    blockChain.Swap(synced, evaluateActions);
+                    blockChain.Swap(synced, evaluateActions, trustedStateCompleterSet);
                 }
             }
         }
@@ -1836,7 +1888,11 @@ namespace Libplanet.Net
             return workspace;
         }
 
-        private async Task ProcessFillblock(CancellationToken cancellationToken)
+        private async Task ProcessFillBlocks(
+            TimeSpan dialTimeout,
+            IImmutableSet<Address> trustedStateValidators,
+            CancellationToken cancellationToken
+        )
         {
             while (!cancellationToken.IsCancellationRequested)
             {
@@ -1857,6 +1913,8 @@ namespace Libplanet.Net
                         peer,
                         hash,
                         null,
+                        trustedStateValidators,
+                        dialTimeout,
                         0,
                         true,
                         cancellationToken);
@@ -1868,13 +1926,13 @@ namespace Libplanet.Net
                 }
                 catch (TimeoutException)
                 {
-                    _logger.Debug($"Timeout occurred during {nameof(ProcessFillblock)}");
+                    _logger.Debug($"Timeout occurred during {nameof(ProcessFillBlocks)}");
                 }
                 catch (Exception e)
                 {
                     var msg =
                         $"Unexpected exception occurred during" +
-                        $" {nameof(ProcessFillblock)}: {{e}}";
+                        $" {nameof(ProcessFillBlocks)}: {{e}}";
                     _logger.Error(e, msg, e);
                 }
             }

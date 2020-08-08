@@ -43,11 +43,6 @@ namespace Libplanet.Blockchain
         private readonly ILogger _logger;
 
         /// <summary>
-        /// Defines whether to render actions on this <see cref="BlockChain{T}"/>.
-        /// </summary>
-        private readonly bool _render;
-
-        /// <summary>
         /// All <see cref="Block{T}"/>s in the <see cref="BlockChain{T}"/>
         /// storage, including orphan <see cref="Block{T}"/>s.
         /// Keys are <see cref="Block{T}.Hash"/>es and values are
@@ -129,7 +124,7 @@ namespace Libplanet.Blockchain
 
             _blocks = new BlockSet<T>(store);
             _transactions = new TransactionSet<T>(store);
-            _render = render;
+            Render = render;
             _rwlock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
             _txLock = new object();
 
@@ -180,6 +175,11 @@ namespace Libplanet.Blockchain
         /// An event which is invoked when the chain is reorged.
         /// </summary>
         public event EventHandler<ReorgedEventArgs> Reorged;
+
+        /// <summary>
+        /// Defines whether to render actions on this <see cref="BlockChain{T}"/>.
+        /// </summary>
+        public bool Render { get; }
 
         public IBlockPolicy<T> Policy { get; }
 
@@ -875,7 +875,7 @@ namespace Libplanet.Blockchain
                 _rwlock.ExitUpgradeableReadLock();
             }
 
-            if (_render && renderActions)
+            if (Render && renderActions)
             {
                 RenderBlock(evaluations, block);
             }
@@ -1170,7 +1170,7 @@ namespace Libplanet.Blockchain
             }
 
             var forked = new BlockChain<T>(
-                Policy, Store, Guid.NewGuid(), Genesis, true, _render);
+                Policy, Store, Guid.NewGuid(), Genesis, true, Render);
             Guid forkedId = forked.Id;
             _logger.Debug(
                 "Trying to fork chain at {branchPoint}" +
@@ -1330,7 +1330,7 @@ namespace Libplanet.Blockchain
                 topmostCommon
             );
 
-            if (_render && render)
+            if (Render && render)
             {
                 // Unrender stale actions.
                 _logger.Debug("Unrendering abandoned actions...");
@@ -1415,7 +1415,7 @@ namespace Libplanet.Blockchain
                 _rwlock.ExitWriteLock();
             }
 
-            if (_render && render)
+            if (Render && render)
             {
                 _logger.Debug("Rendering actions in new chain");
 
