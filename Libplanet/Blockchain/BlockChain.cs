@@ -1252,9 +1252,9 @@ namespace Libplanet.Blockchain
             }
 
             _logger.Debug(
-                "Swapping block chain." +
-                " (from: {fromChainId}, TipIndex - {fromTipIndex}, TipHash - {fromTipHash})" +
-                " (to: {toChainId}, TipIndex - {toTipIndex}, TipHash - {toTipHash})",
+                "The blockchain was reorged from " +
+                "{OldChainId} (#{OldTipIndex} {OldTipHash}) " +
+                "to {NewChainId} (#{NewTipIndex} {NewTipHash}).",
                 Id,
                 Tip.Index,
                 Tip.Hash,
