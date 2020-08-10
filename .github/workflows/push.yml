@@ -4,18 +4,18 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@main
     - name: build
       run: dotnet build
     - name: gcloud-auth
-      uses: actions/gcloud/auth@master
+      uses: actions/gcloud/auth@main
       env:
         GCLOUD_AUTH: ${{ secrets.GCLOUD_AUTH }}
     - name: pack
       shell: pwsh
       run: ./build.ps1
     - name: upload
-      uses: actions/gcloud/cli@master
+      uses: actions/gcloud/cli@main
       env:
         BUCKET: libplanet-explorer
       with:
@@ -23,7 +23,7 @@ jobs:
         args: -c "gsutil cp -a public-read Libplanet.Explorer.Executable/bin/Release/libplanet-explorer.*.zip
           gs://$BUCKET/${{ github.sha }}/"
     - name: share
-      uses: shawnbot/action-status@master
+      uses: shawnbot/action-status@main
       env:
         BUCKET: libplanet-explorer
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
