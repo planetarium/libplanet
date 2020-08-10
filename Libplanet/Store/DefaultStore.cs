@@ -915,6 +915,11 @@ namespace Libplanet.Store
             HashDigest<SHA256> hashValue = stateReference.Item1;
             IImmutableDictionary<string, IValue> blockStates = GetBlockStates(hashValue);
 
+            if (blockStates is null)
+            {
+                return null;
+            }
+
             return blockStates.TryGetValue(stateKey, out IValue state) ? state : null;
         }
 
