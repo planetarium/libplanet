@@ -68,6 +68,21 @@ To be released.
     backward compatibility (i.e., you need to rebuild your assemblies), still is
     backward-compatible at API-level as the option is turned on by default.
     [[#946]]
+ -  Separated `IStore`'s methods to handle block states and state references
+    into `IBlockStateStore`.  [[#950]]
+     -  `ListStateKeys()` method.
+     -  `ListAllStateReferences()` method.
+     -  `LookupStateReference()` method.
+     -  `IterateStateReferences()` method.
+     -  `StoreStateReference()` method.
+     -  `ForkStateReferences()` method.
+     -  `GetBlockStates()` method.
+     -  `SetBlockStates()` method.
+     -  `PruneBlockStates()` method.
+ -  (Libplanet.RocksDB) `RocksDBStore` became to implement `IBlockStateStore`.  [[#950]]
+ -  `DefaultStore` became to implement `IBlockStateStore`.  [[#950]]
+ -  The signature of `IStore.LookupStateReference<T>(Guid, string, Block<T>)` method was
+    changed to `LookupStateReference(Guid, string, long)`.  [[#950]]
 
 ### Backward-incompatible network protocol changes
 
@@ -220,6 +235,7 @@ To be released.
 [#941]: https://github.com/planetarium/libplanet/pull/941
 [#945]: https://github.com/planetarium/libplanet/pull/945
 [#946]: https://github.com/planetarium/libplanet/pull/946
+[#950]: https://github.com/planetarium/libplanet/pull/950
 [sleep mode]: https://en.wikipedia.org/wiki/Sleep_mode
 
 
