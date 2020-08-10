@@ -578,7 +578,7 @@ namespace Libplanet.Net
                     _logger.Debug("A message has parsed: {0}, from {1}", message, message.Remote);
                     MessageHistory.Enqueue(message);
 
-                    if (!IsMessageValid(message))
+                    if (!IsAppProtocolVersionValid(message))
                     {
                         var differentVersion = new DifferentVersion()
                         {
@@ -814,7 +814,7 @@ namespace Libplanet.Net
                         reply.Remote
                     );
 
-                    if (!IsMessageValid(reply))
+                    if (!IsAppProtocolVersionValid(reply))
                     {
                         throw new DifferentAppProtocolVersionException(
                             "Message protocol version is different.",
@@ -956,7 +956,7 @@ namespace Libplanet.Net
             }
         }
 
-        private bool IsMessageValid(Message message)
+        private bool IsAppProtocolVersionValid(Message message)
         {
             AppProtocolVersion remoteVersion = message.Version;
             if (remoteVersion.Equals(_appProtocolVersion))
