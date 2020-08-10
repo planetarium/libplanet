@@ -964,21 +964,19 @@ namespace Libplanet.Net
                 return true;
             }
 
-            if (_trustedAppProtocolVersionSigners is null ||
-                _trustedAppProtocolVersionSigners.Any(s => remoteVersion.Verify(s)))
+            if (!(_trustedAppProtocolVersionSigners is null) &&
+                !_trustedAppProtocolVersionSigners.Any(s => remoteVersion.Verify(s)))
             {
-                if (_differentAppProtocolVersionEncountered is null)
-                {
-                    return false;
-                }
-                else
-                {
-                    return _differentAppProtocolVersionEncountered(
-                        message.Remote, remoteVersion, _appProtocolVersion);
-                }
+                return false;
             }
 
-            return false;
+            if (_differentAppProtocolVersionEncountered is null)
+            {
+                return false;
+            }
+
+            return _differentAppProtocolVersionEncountered(
+                message.Remote, remoteVersion, _appProtocolVersion);
         }
 
         private async Task RefreshTableAsync(
