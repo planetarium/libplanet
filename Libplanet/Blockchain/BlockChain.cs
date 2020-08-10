@@ -242,10 +242,6 @@ namespace Libplanet.Blockchain
 
         internal IStateStore StateStore { get; }
 
-        // FIXME: Now, it used in Libplanet.Tests project, but it should be removed.
-        //        They should use only IStateStore
-        internal IBlockStatesStore BlockStatesStore => StateStore as IBlockStatesStore;
-
         /// <summary>
         /// Gets the block corresponding to the <paramref name="index"/>.
         /// </summary>
