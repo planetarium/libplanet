@@ -1545,7 +1545,7 @@ namespace Libplanet.Blockchain
                 StateStore.SetStates(blockHash, totalDelta);
             }
 
-            if (buildStateReferences && Store is IBlockStatesStore blockStatesStore)
+            if (buildStateReferences && StateStore is IBlockStatesStore blockStatesStore)
             {
                 IImmutableSet<string> stateUpdatedKeys = stateUpdatedAddresses
                     .Select(ToStateKey)
