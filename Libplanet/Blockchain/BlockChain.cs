@@ -1675,10 +1675,36 @@ namespace Libplanet.Blockchain
             _rwlock.EnterReadLock();
             try
             {
-                if (offset is HashDigest<SHA256> blockHash
-                    && !StateStore.BlockStateExists(blockHash))
+                if (offset is null)
                 {
-                    return rawStateCompleter(this, blockHash);
+                    if (Tip is null)
+                    {
+                        return null;
+                    }
+                    else
+                    {
+                        offset = Tip.Hash;
+                    }
+                }
+
+                if (StateStore is IBlockStatesStore blockStatesStore)
+                {
+                    var stateRef = blockStatesStore.LookupStateReference(
+                        Id,
+                        key,
+                        this[offset.Value].Index);
+
+                    if (stateRef is null)
+                    {
+                        return null;
+                    }
+
+                    offset = stateRef.Item1;
+                }
+
+                if (!StateStore.BlockStateExists(offset.Value))
+                {
+                    return rawStateCompleter(this, offset.Value);
                 }
 
                 return StateStore.GetState(key, offset, Id);

@@ -1535,7 +1535,10 @@ namespace Libplanet.Tests.Blockchain
                 addresses[4],
                 chain.BlockHashes.Skip((int)chain.Count - 2).First(),
                 (bc, hash, addr) =>
-                    new Text($"{bc.Id}/{hash}/{addr}: callback called")
+                {
+                    bc.ComplementBlockStates(hash);
+                    return new Text($"{bc.Id}/{hash}/{addr}: callback called");
+                }
             );
             HashDigest<SHA256> prevUpdate = chain.BlockHashes.Skip(addresses.Length).First();
             var expected = new Text($"{chain.Id}/{prevUpdate}/{addresses[4]}: callback called");
