@@ -15,9 +15,9 @@ jobs:
     name: dist
     runs-on: ubuntu-18.04
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@main
       if: github.event_name != 'pull_request'
-    - uses: actions/checkout@master
+    - uses: actions/checkout@main
       if: github.event_name == 'pull_request'
       with:
         ref: ${{ github.pull_request.head.sha }}
@@ -31,7 +31,7 @@ jobs:
     - run: .github/bin/dist-version.ps1
       shell: pwsh
     - run: .github/bin/dist-release-note.sh CHANGES.md obj/release_note.txt
-    - uses: actions/upload-artifact@master
+    - uses: actions/upload-artifact@main
       with:
         name: dist-obj
         path: obj/
@@ -42,7 +42,7 @@ jobs:
         for project in "${projects[@]}"; do
           cp -r "$project/bin/$configuration"/* /tmp/dist-bin/
         done
-    - uses: actions/upload-artifact@master
+    - uses: actions/upload-artifact@main
       with:
         name: dist-bin
         path: /tmp/dist-bin/
@@ -69,9 +69,9 @@ jobs:
     name: docs
     runs-on: ubuntu-18.04
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@main
       if: github.event_name != 'pull_request'
-    - uses: actions/checkout@master
+    - uses: actions/checkout@main
       if: github.event_name == 'pull_request'
       with:
         ref: ${{ github.pull_request.head.sha }}
@@ -79,7 +79,7 @@ jobs:
     - run: mkdir -p Docs/obj/
     - run: Docs/build.ps1
       shell: pwsh
-    - uses: actions/upload-artifact@master
+    - uses: actions/upload-artifact@main
       with:
         name: docs
         path: Docs/_site/
@@ -87,7 +87,7 @@ jobs:
       env:
         GHPAGES_SSH_KEY: ${{ secrets.GHPAGES_SSH_KEY }}
       if: github.event_name != 'pull_request'
-    - uses: shawnbot/action-status@master
+    - uses: shawnbot/action-status@v0.1.1
       env:
         GH_CHECK_STATUS_TOKEN: ${{ secrets.GH_CHECK_STATUS_TOKEN }}
       with:
@@ -107,13 +107,13 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
     - run: sudo apt-get install nuget
-    - uses: actions/checkout@master
+    - uses: actions/checkout@main
       if: github.event_name != 'pull_request'
-    - uses: actions/checkout@master
+    - uses: actions/checkout@main
       if: github.event_name == 'pull_request'
       with:
         ref: ${{ github.pull_request.head.sha }}
-    - uses: actions/download-artifact@master
+    - uses: actions/download-artifact@main
       with:
         name: dist-bin
         path: /tmp/nupkg
@@ -125,7 +125,7 @@ jobs:
             -exec .github/bin/bundle.sh {} /tmp/bundles "$target" ';'
         done
       shell: bash
-    - uses: actions/upload-artifact@master
+    - uses: actions/upload-artifact@main
       with:
         name: bundles
         path: /tmp/bundles

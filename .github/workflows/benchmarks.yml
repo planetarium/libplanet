@@ -14,9 +14,9 @@ jobs:
         - windows-latest
     runs-on: ${{ matrix.os }}
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@main
       if: github.event_name != 'pull_request'
-    - uses: actions/checkout@master
+    - uses: actions/checkout@main
       if: github.event_name == 'pull_request'
       with:
         ref: ${{ github.pull_request.head.sha }}
