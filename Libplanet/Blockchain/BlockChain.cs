@@ -1672,7 +1672,7 @@ namespace Libplanet.Blockchain
             Func<BlockChain<T>, HashDigest<SHA256>, IValue> rawStateCompleter
         )
         {
-            _rwlock.EnterReadLock();
+            _rwlock.EnterUpgradeableReadLock();
             try
             {
                 if (offset is null)
@@ -1711,7 +1711,7 @@ namespace Libplanet.Blockchain
             }
             finally
             {
-                _rwlock.ExitReadLock();
+                _rwlock.ExitUpgradeableReadLock();
             }
         }
 
