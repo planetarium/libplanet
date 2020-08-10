@@ -17,22 +17,18 @@ namespace Libplanet.Net
         /// <see cref="Peer"/>.</param>
         /// <param name="endPoint">A <see cref="DnsEndPoint"/> consisting of the
         /// host and port of the <see cref="Peer"/>.</param>
-        /// <param name="appProtocolVersion">An application protocol version
-        /// that the <see cref="Peer"/> is using.</param>
         public BoundPeer(
             PublicKey publicKey,
-            DnsEndPoint endPoint,
-            AppProtocolVersion appProtocolVersion)
-        : this(publicKey, endPoint, appProtocolVersion, null)
+            DnsEndPoint endPoint)
+        : this(publicKey, endPoint, null)
         {
         }
 
         internal BoundPeer(
             PublicKey publicKey,
             DnsEndPoint endPoint,
-            AppProtocolVersion appProtocolVersion,
             IPAddress publicIPAddress)
-        : base(publicKey, appProtocolVersion, publicIPAddress)
+        : base(publicKey, publicIPAddress)
         {
             EndPoint = endPoint ?? throw new ArgumentNullException(nameof(endPoint));
         }
@@ -71,7 +67,7 @@ namespace Libplanet.Net
         /// <inheritdoc/>
         public override string ToString()
         {
-            return $"{Address}.{EndPoint}.{AppProtocolVersion}";
+            return $"{Address}.{EndPoint}.{PublicIPAddress}";
         }
     }
 }

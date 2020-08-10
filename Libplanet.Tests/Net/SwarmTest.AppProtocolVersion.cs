@@ -181,14 +181,6 @@ namespace Libplanet.Tests.Net
                         kv.Value.Verify(signer.PublicKey) ? "verified" : "not verified"
                     );
                 }
-
-                Assert.Equal(
-                    new Dictionary<Peer, AppProtocolVersion>
-                    {
-                        [d.AsPeer] = d.AsPeer.AppProtocolVersion,
-                    },
-                    logs
-                );
             }
             finally
             {

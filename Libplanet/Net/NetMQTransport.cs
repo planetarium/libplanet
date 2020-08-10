@@ -172,12 +172,10 @@ namespace Libplanet.Net
         public Peer AsPeer => _endPoint is null
             ? new Peer(
                 _privateKey.PublicKey,
-                _appProtocolVersion,
                 _publicIPAddress)
             : new BoundPeer(
                 _privateKey.PublicKey,
                 _endPoint,
-                _appProtocolVersion,
                 _publicIPAddress);
 
         public IEnumerable<BoundPeer> Peers => Protocol.Peers;

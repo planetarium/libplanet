@@ -76,8 +76,7 @@ namespace Libplanet.Tests.Net.Protocols
 
         public Peer AsPeer => new BoundPeer(
             _privateKey.PublicKey,
-            new DnsEndPoint("localhost", 1234),
-            AppProtocolVersion);
+            new DnsEndPoint("localhost", 1234));
 
         public IEnumerable<BoundPeer> Peers => Protocol.Peers;
 
