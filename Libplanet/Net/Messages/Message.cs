@@ -116,6 +116,8 @@ namespace Libplanet.Net.Messages
 
         public byte[] Identity { get; set; }
 
+        public AppProtocolVersion Version { get; set; }
+
         public Peer Remote { get; set; }
 
         protected abstract MessageType Type { get; }
@@ -129,9 +131,10 @@ namespace Libplanet.Net.Messages
                 throw new ArgumentException("Can't parse empty NetMQMessage.");
             }
 
-            // (reply == true)  [type, sign, peer, frames...]
-            // (reply == false) [identity, type, sign, peer, frames...]
-            int headerCount = reply ? 3 : 4;
+            // (reply == true)  [version, type, sign, peer, frames...]
+            // (reply == false) [identity, version, type, sign, peer, frames...]
+            int headerCount = reply ? 4 : 5;
+            var versionToken = raw[headerCount - 4].ConvertToString();
             var rawType = (MessageType)raw[headerCount - 3].ConvertToInt32();
             var peer = raw[headerCount - 2].ToByteArray();
             byte[] signature = raw[headerCount - 1].ToByteArray();
@@ -175,6 +178,7 @@ namespace Libplanet.Net.Messages
 
             var message = (Message)Activator.CreateInstance(
                 type, new[] { body });
+            message.Version = AppProtocolVersion.FromToken(versionToken);
             message.Remote = DeserializePeer(peer);
 
             if (!message.Remote.PublicKey.Verify(body.ToByteArray(), signature))
@@ -192,7 +196,7 @@ namespace Libplanet.Net.Messages
             return message;
         }
 
-        public NetMQMessage ToNetMQMessage(PrivateKey key, Peer peer)
+        public NetMQMessage ToNetMQMessage(PrivateKey key, Peer peer, AppProtocolVersion version)
         {
             if (peer is null)
             {
@@ -211,6 +215,7 @@ namespace Libplanet.Net.Messages
             message.Push(key.Sign(message.ToByteArray()));
             message.Push(SerializePeer(peer));
             message.Push((byte)Type);
+            message.Push(version.Token);
 
             if (Identity is byte[] to)
             {

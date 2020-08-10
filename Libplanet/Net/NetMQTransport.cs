@@ -549,7 +549,7 @@ namespace Libplanet.Net
         {
             string identityHex = ByteUtil.Hex(message.Identity);
             _logger.Debug("Reply {Message} to {Identity}...", message, identityHex);
-            _replyQueue.Enqueue(message.ToNetMQMessage(_privateKey, AsPeer));
+            _replyQueue.Enqueue(message.ToNetMQMessage(_privateKey, AsPeer, _appProtocolVersion));
         }
 
         public async Task CheckAllPeersAsync(CancellationToken cancellationToken, TimeSpan? timeout)
@@ -577,9 +577,16 @@ namespace Libplanet.Net
                     Message message = Message.Parse(raw, reply: false);
                     _logger.Debug("A message has parsed: {0}, from {1}", message, message.Remote);
                     MessageHistory.Enqueue(message);
-                    if (!(message is Ping))
+
+                    if (!IsMessageValid(message))
                     {
-                        ValidateSender(message.Remote);
+                        var differentVersion = new DifferentVersion()
+                        {
+                            Identity = message.Identity,
+                        };
+                        ReplyMessage(differentVersion);
+                        _logger.Debug("Message from peer with different version received.");
+                        return;
                     }
 
                     try
@@ -595,10 +602,6 @@ namespace Libplanet.Net
                             exc);
                         throw;
                     }
-                }
-                catch (DifferentAppProtocolVersionException)
-                {
-                    _logger.Debug("Ignore message from peer with different version.");
                 }
                 catch (InvalidMessageException ex)
                 {
@@ -625,7 +628,7 @@ namespace Libplanet.Net
             _logger.Debug("Broadcasting message: {Message}", msg);
             _logger.Debug("Peers to broadcast: {PeersCount}", peers.Count);
 
-            NetMQMessage message = msg.ToNetMQMessage(_privateKey, AsPeer);
+            NetMQMessage message = msg.ToNetMQMessage(_privateKey, AsPeer, _appProtocolVersion);
 
             foreach (BoundPeer peer in peers)
             {
@@ -781,7 +784,7 @@ namespace Libplanet.Net
                 req.Message,
                 req.Peer
             );
-            var message = req.Message.ToNetMQMessage(_privateKey, AsPeer);
+            var message = req.Message.ToNetMQMessage(_privateKey, AsPeer, _appProtocolVersion);
             var result = new List<Message>();
             TaskCompletionSource<IEnumerable<Message>> tcs = req.TaskCompletionSource;
             try
@@ -810,7 +813,15 @@ namespace Libplanet.Net
                         reply,
                         reply.Remote
                     );
-                    ValidateSender(reply.Remote);
+
+                    if (!IsMessageValid(reply))
+                    {
+                        throw new DifferentAppProtocolVersionException(
+                            "Message protocol version is different.",
+                            _appProtocolVersion,
+                            reply.Version);
+                    }
+
                     result.Add(reply);
                 }
 
@@ -945,19 +956,29 @@ namespace Libplanet.Net
             }
         }
 
-        // FIXME: This method should be in Swarm<T>
-        private void ValidateSender(Peer peer)
+        private bool IsMessageValid(Message message)
         {
-            if (!peer.IsCompatibleWith(
-                    _appProtocolVersion,
-                    _trustedAppProtocolVersionSigners,
-                    _differentAppProtocolVersionEncountered))
+            AppProtocolVersion remoteVersion = message.Version;
+            if (remoteVersion.Equals(_appProtocolVersion))
             {
-                throw new DifferentAppProtocolVersionException(
-                    "Peer protocol version is different.",
-                    _appProtocolVersion,
-                    peer.AppProtocolVersion);
+                return true;
             }
+
+            if (_trustedAppProtocolVersionSigners is null ||
+                _trustedAppProtocolVersionSigners.Any(s => remoteVersion.Verify(s)))
+            {
+                if (_differentAppProtocolVersionEncountered is null)
+                {
+                    return false;
+                }
+                else
+                {
+                    return _differentAppProtocolVersionEncountered(
+                        message.Remote, remoteVersion, _appProtocolVersion);
+                }
+            }
+
+            return false;
         }
 
         private async Task RefreshTableAsync(

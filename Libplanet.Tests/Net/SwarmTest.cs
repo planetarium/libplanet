@@ -587,7 +587,7 @@ namespace Libplanet.Tests.Net
                 {
                     var request = new GetBlocks(hashes.Select(pair => pair.Item2), 2);
                     socket.SendMultipartMessage(
-                        request.ToNetMQMessage(privateKey, swarmB.AsPeer)
+                        request.ToNetMQMessage(privateKey, swarmB.AsPeer, swarmB.AppProtocolVersion)
                     );
 
                     NetMQMessage response = socket.ReceiveMultipartMessage();
