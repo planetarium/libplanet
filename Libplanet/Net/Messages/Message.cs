@@ -11,6 +11,8 @@ namespace Libplanet.Net.Messages
 {
     internal abstract class Message
     {
+        public const int CommonFrames = 4;
+
         internal enum MessageType : byte
         {
             /// <summary>
@@ -133,7 +135,7 @@ namespace Libplanet.Net.Messages
 
             // (reply == true)  [version, type, sign, peer, frames...]
             // (reply == false) [identity, version, type, sign, peer, frames...]
-            int headerCount = reply ? 4 : 5;
+            int headerCount = reply ? CommonFrames : CommonFrames + 1;
             var versionToken = raw[headerCount - 4].ConvertToString();
             var rawType = (MessageType)raw[headerCount - 3].ConvertToInt32();
             var peer = raw[headerCount - 2].ToByteArray();

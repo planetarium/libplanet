@@ -108,7 +108,7 @@ namespace Libplanet.Tests.Net.Messages
             Peer peer = new BoundPeer(privKey.PublicKey, new DnsEndPoint("0.0.0.0", 1234));
 
             NetMQMessage msg = reply.ToNetMQMessage(privKey, peer, version);
-            const int headerSize = 4;  // version, type, peer, sig
+            const int headerSize = Message.CommonFrames;  // version, type, peer, sig
             int stateRefsOffset = headerSize + 3;  // blockHash, offsetHash, iteration
             int blockStatesOffset = stateRefsOffset + 1 + (accountsCount * 4);
             Assert.Equal(
