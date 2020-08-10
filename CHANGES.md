@@ -68,6 +68,12 @@ To be released.
     backward compatibility (i.e., you need to rebuild your assemblies), still is
     backward-compatible at API-level as the option is turned on by default.
     [[#946]]
+ -  Removed `Peer.AppProtocolVersion` property.  [[#949]]
+ -  Removed `Peer.IsCompatibleWith()` method.  [[#949]]
+ -  Replaced `Peer(PublicKey, AppProtocolVersion)` constructor with
+    `Peer(PublicKey)` constructor.  [[#949]]
+ -  Replaced `BoundPeer(PublicKey, DnsEndPoint, AppProtocolVersion)` constructor
+    with `Peer(PublicKey, DnsEndPoint)` constructor.  [[#949]]
 
 ### Backward-incompatible network protocol changes
 
@@ -83,11 +89,13 @@ To be released.
     (with the type number `0x14`).  [[#459], [#919], [#920], [#930]]
  -  The `TimestampThreshold` between `Block<T>`s was changed from 15 minutes to
     15 seconds.  [[#922], [#925]]
- -  `Swarm<T>` became to have 4 more message types:
+ -  `Swarm<T>` became to have 5 more message types:
      -  `GetChainStatus` (`0x20`)  [[#920], [#930]]
      -  `ChainStatus` (`0x21`)  [[#920], [#930]]
      -  `GetBlockStates` (`0x22`)  [[#946]]
      -  `BlockStates` (`0x23`)  [[#946]]
+     -  `DifferentVersion` (`0x30`)  [[#949]]
+ -  Every message now contains app protocol version in its header.  [[#949]]
 
 ### Backward-incompatible storage format changes
 
@@ -129,6 +137,7 @@ To be released.
  -  Added `BlockChain<T>.Render` property.  [[#946]]
  -  Added `Reorged` event on `BlockChain<T>`.  [[#945]]
  -  Added `ReorgedEventArgs` class.  [[#945]]
+ -  Added `Swarm<T>.AppProtocolVersion` property.  [[#949]]
 
 ### Behavioral changes
 
@@ -155,6 +164,8 @@ To be released.
     instead of the longest chain.  [[#459], [#919]]
  -  `Swarm<T>.BootstrapAsync()` method became not to throw `TimeoutException` when
     it fails to connect to all neighbors.  [[#933]]
+ -  `Swarm<T>` became to respond to the messages with different app protocol version.
+    [[#949]]
 
 ### Bug fixes
 
@@ -220,6 +231,7 @@ To be released.
 [#941]: https://github.com/planetarium/libplanet/pull/941
 [#945]: https://github.com/planetarium/libplanet/pull/945
 [#946]: https://github.com/planetarium/libplanet/pull/946
+[#949]: https://github.com/planetarium/libplanet/pull/949
 [sleep mode]: https://en.wikipedia.org/wiki/Sleep_mode
 
 
