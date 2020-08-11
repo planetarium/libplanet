@@ -1267,16 +1267,14 @@ namespace Libplanet.Blockchain
             StateCompleterSet<T>? stateCompleters = null
         )
         {
+            if (other is null)
+            {
+                throw new ArgumentNullException(nameof(other));
+            }
+
             // As render/unrender processing requires every step's states from the branchpoint
             // to the new/stale tip, incomplete states need to be complemented anyway...
             StateCompleterSet<T> completers = stateCompleters ?? StateCompleterSet<T>.Recalculate;
-
-            if (other?.Tip is null)
-            {
-                throw new ArgumentException(
-                    $"The chain to be swapped is invalid. Id: {other?.Id}, Tip: {other?.Tip}",
-                    nameof(other));
-            }
 
             _logger.Debug(
                 "The blockchain was reorged from " +
@@ -1318,8 +1316,19 @@ namespace Libplanet.Blockchain
                 }
             }
 
+            if (topmostCommon is null)
+            {
+                const string msg =
+                    "A chain cannot be reorged into a heterogenous chain which has " +
+                    "no common genesis at all.";
+                throw new InvalidGenesisBlockException(Genesis.Hash, other.Genesis.Hash, msg);
+            }
+
             _logger.Debug(
-                "Branchpoint is {branchPoint} (at {index})", topmostCommon, topmostCommon?.Index);
+                "The branchpoint is #{BranchpointIndex} {BranchpointHash}.",
+                topmostCommon.Index,
+                topmostCommon
+            );
 
             if (_render && render)
             {

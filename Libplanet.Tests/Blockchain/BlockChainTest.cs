@@ -1179,6 +1179,8 @@ namespace Libplanet.Tests.Blockchain
         [InlineData(false)]
         public void Swap(bool render)
         {
+            Assert.Throws<ArgumentNullException>(() => _blockChain.Swap(null, render));
+
             (var addresses, Transaction<DumbAction>[] txs1) =
                 MakeFixturesForAppendTests();
             var genesis = _blockChain.Genesis;
@@ -1350,6 +1352,36 @@ namespace Libplanet.Tests.Blockchain
             {
                 DumbAction.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
                 MinerReward.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
+            }
+        }
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public async Task ReorgIsUnableToHeterogenousChain(bool render)
+        {
+            using (var fx2 = new DefaultStoreFixture(memory: true))
+            {
+                Block<DumbAction> genesis2 =
+                    TestUtils.MineGenesis<DumbAction>(timestamp: DateTimeOffset.UtcNow);
+                var chain2 = new BlockChain<DumbAction>(_blockChain.Policy, fx2.Store, genesis2);
+                for (int i = 0; i < 5; i++)
+                {
+                    await _blockChain.MineBlock(default);
+                    await chain2.MineBlock(default);
+                }
+
+                Log.Logger.CompareBothChains(
+                    LogEventLevel.Debug,
+                    nameof(_blockChain),
+                    _blockChain,
+                    nameof(chain2),
+                    chain2
+                );
+
+                Assert.Throws<InvalidGenesisBlockException>(() =>
+                    _blockChain.Swap(chain2, render)
+                );
             }
         }
 
