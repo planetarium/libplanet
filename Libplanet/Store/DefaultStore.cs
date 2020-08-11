@@ -8,7 +8,6 @@ using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using Bencodex;
 using Bencodex.Types;
-using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Tx;
 using LiteDB;
@@ -26,7 +25,7 @@ namespace Libplanet.Store
     /// for some complex indices.
     /// </summary>
     /// <seealso cref="IStore"/>
-    public class DefaultStore : BaseStore, IBlockStatesStore
+    public class DefaultStore : BaseBlockStatesStore
     {
         private const string IndexColPrefix = "index_";
 
@@ -273,7 +272,7 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public IEnumerable<string> ListStateKeys(Guid chainId)
+        public override IEnumerable<string> ListStateKeys(Guid chainId)
         {
             string collId = StateRefId(chainId);
             return _db.GetCollection<StateRefDoc>(collId)
@@ -283,7 +282,7 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public IImmutableDictionary<string, IImmutableList<HashDigest<SHA256>>>
+        public override IImmutableDictionary<string, IImmutableList<HashDigest<SHA256>>>
             ListAllStateReferences(
                 Guid chainId,
                 long lowestIndex = 0,
@@ -551,7 +550,7 @@ namespace Libplanet.Store
             return _blocks.FileExists(blockPath);
         }
 
-        public IImmutableDictionary<string, IValue> GetBlockStates(
+        public override IImmutableDictionary<string, IValue> GetBlockStates(
             HashDigest<SHA256> blockHash
         )
         {
@@ -598,7 +597,7 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public void SetBlockStates(
+        public override void SetBlockStates(
             HashDigest<SHA256> blockHash,
             IImmutableDictionary<string, IValue> states)
         {
@@ -629,10 +628,9 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public void PruneBlockStates<T>(
+        public override void PruneBlockStates<T>(
             Guid chainId,
             Block<T> until)
-            where T : IAction, new()
         {
             string[] keys = ListStateKeys(chainId).ToArray();
             long untilIndex = until.Index;
@@ -660,7 +658,7 @@ namespace Libplanet.Store
             }
         }
 
-        public Tuple<HashDigest<SHA256>, long> LookupStateReference(
+        public override Tuple<HashDigest<SHA256>, long> LookupStateReference(
             Guid chainId,
             string key,
             long lookupUntilBlockIndex)
@@ -708,7 +706,7 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public IEnumerable<Tuple<HashDigest<SHA256>, long>> IterateStateReferences(
+        public override IEnumerable<Tuple<HashDigest<SHA256>, long>> IterateStateReferences(
             Guid chainId,
             string key,
             long? highestIndex,
@@ -742,7 +740,7 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public void StoreStateReference(
+        public override void StoreStateReference(
             Guid chainId,
             IImmutableSet<string> keys,
             HashDigest<SHA256> blockHash,
@@ -784,11 +782,10 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public void ForkStateReferences<T>(
+        public override void ForkStateReferences<T>(
             Guid sourceChainId,
             Guid destinationChainId,
             Block<T> branchPoint)
-            where T : IAction, new()
         {
             string srcCollId = StateRefId(sourceChainId);
             string dstCollId = StateRefId(destinationChainId);
@@ -876,65 +873,6 @@ namespace Libplanet.Store
             _db?.Dispose();
             _memoryStream?.Dispose();
             _root.Dispose();
-        }
-
-        public void SetStates(
-            HashDigest<SHA256> blockHash,
-            IImmutableDictionary<string, IValue> states)
-        {
-            SetBlockStates(blockHash, states);
-        }
-
-        public IValue GetState(
-            string stateKey,
-            HashDigest<SHA256>? blockHash = null,
-            Guid? chainId = null)
-        {
-            if (chainId is null)
-            {
-                throw new ArgumentNullException(nameof(chainId));
-            }
-
-            blockHash ??= IndexBlockHash(chainId.Value, -1);
-
-            if (blockHash is null)
-            {
-                return null;
-            }
-
-            BlockDigest block = GetBlockDigest(blockHash.Value).Value;
-            Tuple<HashDigest<SHA256>, long> stateReference;
-
-            stateReference = LookupStateReference(chainId.Value, stateKey, block.Header.Index);
-
-            if (stateReference is null)
-            {
-                return null;
-            }
-
-            HashDigest<SHA256> hashValue = stateReference.Item1;
-            IImmutableDictionary<string, IValue> blockStates = GetBlockStates(hashValue);
-
-            if (blockStates is null)
-            {
-                return null;
-            }
-
-            return blockStates.TryGetValue(stateKey, out IValue state) ? state : null;
-        }
-
-        public bool BlockStateExists(HashDigest<SHA256> blockHash)
-        {
-            return !(GetBlockStates(blockHash) is null);
-        }
-
-        public void ForkStates<T>(
-            Guid sourceChainId,
-            Guid destinationChainId,
-            Block<T> branchPoint)
-            where T : IAction, new()
-        {
-            ForkStateReferences(sourceChainId, destinationChainId, branchPoint);
         }
 
         internal static Guid ParseChainId(string chainIdString) =>
