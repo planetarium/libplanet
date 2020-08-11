@@ -17,7 +17,9 @@ using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Libplanet.Tx;
 using Serilog;
+using Serilog.Events;
 using Xunit;
+using Xunit.Abstractions;
 using static Libplanet.Tests.Common.Action.ThrowException;
 
 namespace Libplanet.Tests.Blockchain
@@ -27,8 +29,15 @@ namespace Libplanet.Tests.Blockchain
         private StoreFixture _fx;
         private BlockChain<DumbAction> _blockChain;
 
-        public BlockChainTest()
+        public BlockChainTest(ITestOutputHelper output)
         {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .Enrich.WithThreadId()
+                .WriteTo.TestOutput(output)
+                .CreateLogger()
+                .ForContext<BlockChainTest>();
+
             _fx = new DefaultStoreFixture(memory: true);
             _blockChain = new BlockChain<DumbAction>(
                 new BlockPolicy<DumbAction>(new MinerReward(1)),
