@@ -53,6 +53,11 @@ To be released.
     overloaded methods.  Although this breaks ABI-level backward compatibility
     (i.e., you need to rebuild your assemblies), still is backward-compatible at
     API-level as the option is turned on by default.  [[#946]]
+ -  Added `StateCompleterSet<T>? stateCompleters` option to two
+    `BlockChain<T>.Append()` overloaded methods.  Although this breaks ABI-level
+    backward compatibility (i.e., you need to rebuild your assemblies), still
+    is backward-compatible at API-level as the option has the default value
+    (`StateCompleterSet<T>.Recalculate`).  [[#946]]
  -  Added `CancellationToken cancellationToken = default(CancellationToken)`
     option to `BlockChain<T>.MineBlock(Address miner)` overloaded method.
     Although this breaks ABI-level backward compatibility (i.e., you need to
