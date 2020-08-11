@@ -1252,7 +1252,15 @@ namespace Libplanet.Blockchain
             }
 
             _logger.Debug(
-                "Swapping block chain. (from: {fromChainId}) (to: {toChainId})", Id, other.Id);
+                "The blockchain was reorged from " +
+                "{OldChainId} (#{OldTipIndex} {OldTipHash}) " +
+                "to {NewChainId} (#{NewTipIndex} {NewTipHash}).",
+                Id,
+                Tip.Index,
+                Tip.Hash,
+                other.Id,
+                other.Tip.Index,
+                other.Tip.Hash);
 
             // Finds the branch point.
             Block<T> topmostCommon = null;
