@@ -1538,7 +1538,7 @@ namespace Libplanet.Blockchain
                         )
                     );
 
-                StateStore.SetStates(blockHash, totalDelta);
+                StateStore.SetStates(blockHash, totalDelta, blockHash => this[blockHash]);
             }
 
             if (buildStateReferences && StateStore is IBlockStatesStore blockStatesStore)

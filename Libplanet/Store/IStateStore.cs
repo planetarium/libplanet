@@ -21,7 +21,16 @@ namespace Libplanet.Store
         /// </summary>
         /// <param name="blockHash">The <see cref="Block{T}.Hash"/> to set states.</param>
         /// <param name="states">The dictionary has multiple paris, state key → state.</param>
-        void SetStates(HashDigest<SHA256> blockHash, IImmutableDictionary<string, IValue> states);
+        /// <param name="blockGetter">The getter returns the block corresponded to
+        /// <see cref="HashDigest{T}"/>–typed parameter.</param>
+        /// <typeparam name="T">An <see cref="IAction"/> type. It should match to
+        /// <paramref name="blockGetter"/>'s <see cref="Block{T}"/>–typed return value's
+        /// type parameter.</typeparam>
+        void SetStates<T>(
+            HashDigest<SHA256> blockHash,
+            IImmutableDictionary<string, IValue> states,
+            Func<HashDigest<SHA256>, Block<T>> blockGetter = null)
+            where T : IAction, new();
 
         /// <summary>
         /// Gets state queried by <paramref name="stateKey"/> in the point, <paramref name="blockHash"/>.
