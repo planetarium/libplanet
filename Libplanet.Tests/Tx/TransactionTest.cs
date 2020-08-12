@@ -586,7 +586,11 @@ namespace Libplanet.Tests.Tx
                 var evaluations = tx.EvaluateActionsGradually(
                     default,
                     1,
-                    new AccountStateDeltaImpl(address => null, (a, c) => 0, tx.Signer),
+                    new AccountStateDeltaImpl(
+                        address => null,
+                        (a, c) => new FungibleAssetValue(c),
+                        tx.Signer
+                    ),
                     addresses[0],
                     rehearsal: rehearsal
                 ).ToImmutableArray();
@@ -639,14 +643,15 @@ namespace Libplanet.Tests.Tx
                     Assert.Equal(
                         prevEval is null
                             ? initBalances
-                            : addresses.Select(a => prevEval.OutputStates.GetBalance(a, currency)),
+                            : addresses.Select(a =>
+                                prevEval.OutputStates.GetBalance(a, currency).Quantity),
                         addresses.Select(
-                            a => eval.InputContext.PreviousStates.GetBalance(a, currency)
+                            a => eval.InputContext.PreviousStates.GetBalance(a, currency).Quantity
                         )
                     );
                     Assert.Equal(
                         expectedBalances[i],
-                        addresses.Select(a => eval.OutputStates.GetBalance(a, currency))
+                        addresses.Select(a => eval.OutputStates.GetBalance(a, currency).Quantity)
                     );
                 }
 
@@ -670,7 +675,11 @@ namespace Libplanet.Tests.Tx
                 IAccountStateDelta delta = tx.EvaluateActions(
                     default,
                     1,
-                    new AccountStateDeltaImpl(address => null, (a, c) => 0, tx.Signer),
+                    new AccountStateDeltaImpl(
+                        address => null,
+                        (a, c) => new FungibleAssetValue(c),
+                        tx.Signer
+                    ),
                     addresses[0],
                     rehearsal: rehearsal
                 );
@@ -712,7 +721,11 @@ namespace Libplanet.Tests.Tx
             var nextStates = tx.EvaluateActions(
                 blockHash: hash,
                 blockIndex: 123,
-                previousStates: new AccountStateDeltaImpl(_ => null, (_, __) => 0, tx.Signer),
+                previousStates: new AccountStateDeltaImpl(
+                    _ => null,
+                    (_, c) => new FungibleAssetValue(c),
+                    tx.Signer
+                ),
                 minerAddress: GenesisMinerAddress,
                 rehearsal: false
             );

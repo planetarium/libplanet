@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Numerics;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Bencodex.Types;
@@ -2139,10 +2138,13 @@ namespace Libplanet.Tests.Blockchain
 
             // Build the store has incomplete states
             Block<DumbAction> b = chain.Genesis;
-            ActionEvaluation[] evals =
-                b.Evaluate(DateTimeOffset.UtcNow, _ => null, (a, c) => 0).ToArray();
+            ActionEvaluation[] evals = b.Evaluate(
+                DateTimeOffset.UtcNow,
+                _ => null,
+                (a, c) => new FungibleAssetValue(c)
+            ).ToArray();
             IImmutableDictionary<Address, IValue> dirty = evals.GetDirtyStates();
-            IImmutableDictionary<(Address, Currency), BigInteger> balances =
+            IImmutableDictionary<(Address, Currency), FungibleAssetValue> balances =
                 evals.GetDirtyBalances();
             const int accountsCount = 5;
             Address[] addresses = Enumerable.Repeat<object>(null, accountsCount)

@@ -8,6 +8,7 @@ using System.Security.Cryptography;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Assets;
 using Libplanet.Crypto;
 
 namespace Libplanet.Tx
@@ -435,7 +436,11 @@ namespace Libplanet.Tx
                 ).EvaluateActions(
                     default(HashDigest<SHA256>),
                     0,
-                    new AccountStateDeltaImpl(_ => null, (_, __) => 0, signer),
+                    new AccountStateDeltaImpl(
+                        _ => null,
+                        (_, c) => new FungibleAssetValue(c),
+                        signer
+                    ),
                     signer,
                     rehearsal: true
                 );

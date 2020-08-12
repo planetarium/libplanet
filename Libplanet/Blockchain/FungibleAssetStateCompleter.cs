@@ -1,4 +1,3 @@
-using System.Numerics;
 using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Assets;
@@ -16,9 +15,10 @@ namespace Libplanet.Blockchain
     /// <param name="blockHash">The hash of a block to lacks its dirty states.</param>
     /// <param name="address">The account to query its balance.</param>
     /// <param name="currency">The currency to query.</param>
-    /// <returns>A complement balance value.</returns>
+    /// <returns>A complement balance value.  <em>Its <see cref="FungibleAssetValue.Currency"/>
+    /// must match to the given <paramref name="currency"/>.</em></returns>
     /// <seealso cref="FungibleAssetStateCompleters{T}"/>
-    public delegate BigInteger FungibleAssetStateCompleter<T>(
+    public delegate FungibleAssetValue FungibleAssetStateCompleter<T>(
         BlockChain<T> blockChain,
         HashDigest<SHA256> blockHash,
         Address address,

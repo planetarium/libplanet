@@ -1,6 +1,5 @@
 #nullable enable
 using System;
-using System.Numerics;
 using System.Runtime.Serialization;
 using Libplanet.Assets;
 using Libplanet.Serialization;
@@ -21,21 +20,17 @@ namespace Libplanet.Action
         /// </summary>
         /// <param name="address">The owner of the insufficient <paramref name="balance"/>.
         /// Corresponds to the <see cref="Address"/> property.</param>
-        /// <param name="currency">The <see cref="Assets.Currency"/> of the insufficient
-        /// <paramref name="balance"/>.  Corresponds to the <see cref="Currency"/> property.</param>
-        /// <param name="balance">The account's current balance of the <paramref name="currency"/>.
+        /// <param name="balance">The account's current balance.
         /// Corresponds to the <see cref="Balance"/> property.</param>
         /// <param name="message">Specifies a <see cref="Exception.Message"/>.</param>
         public InsufficientBalanceException(
             Address address,
-            Currency currency,
-            BigInteger balance,
+            FungibleAssetValue balance,
             string? message
         )
             : base(message)
         {
             Address = address;
-            Currency = currency;
             Balance = balance;
         }
 
@@ -43,8 +38,7 @@ namespace Libplanet.Action
             : base(info, context)
         {
             Address = info.GetValue<Address>(nameof(Address));
-            Balance = info.GetValue<BigInteger>(nameof(Balance));
-            Currency = info.GetValue<Currency>(nameof(Currency));
+            Balance = info.GetValue<FungibleAssetValue>(nameof(Balance));
         }
 
         /// <summary>
@@ -53,14 +47,9 @@ namespace Libplanet.Action
         public Address Address { get; }
 
         /// <summary>
-        /// The <see cref="Assets.Currency"/> of the insufficient <see cref="Balance"/>.
+        /// The account's current balance.
         /// </summary>
-        public Currency Currency { get; }
-
-        /// <summary>
-        /// The account's current balance of the <see cref="Currency"/>.
-        /// </summary>
-        public BigInteger Balance { get; }
+        public FungibleAssetValue Balance { get; }
 
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
@@ -68,7 +57,6 @@ namespace Libplanet.Action
 
             info.AddValue(nameof(Address), Address);
             info.AddValue(nameof(Balance), Balance);
-            info.AddValue(nameof(Currency), Currency);
         }
     }
 }

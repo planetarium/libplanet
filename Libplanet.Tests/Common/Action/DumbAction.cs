@@ -183,8 +183,7 @@ namespace Libplanet.Tests.Common.Action
                 nextState = nextState.TransferAsset(
                     sender: Transfer.Item1,
                     recipient: Transfer.Item2,
-                    currency: DumbCurrency,
-                    amount: Transfer.Item3,
+                    value: new FungibleAssetValue(DumbCurrency, Transfer.Item3),
                     allowNegativeBalance: true
                 );
             }

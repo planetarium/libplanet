@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Immutable;
-using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
@@ -118,24 +117,20 @@ namespace Libplanet.Tests.Action
 
             public IAccountStateDelta SetState(Address address, IValue state) => this;
 
-            public BigInteger GetBalance(Address address, Currency currency) => 0;
+            public FungibleAssetValue GetBalance(Address address, Currency currency) =>
+                new FungibleAssetValue(currency);
 
-            public IAccountStateDelta MintAsset(
-                Address recipient,
-                Currency currency,
-                BigInteger amount
-            ) => this;
+            public IAccountStateDelta MintAsset(Address recipient, FungibleAssetValue value) =>
+                this;
 
             public IAccountStateDelta TransferAsset(
                 Address sender,
                 Address recipient,
-                Currency currency,
-                BigInteger amount,
+                FungibleAssetValue value,
                 bool allowNegativeBalance = false
             ) => this;
 
-            public IAccountStateDelta BurnAsset(Address owner, Currency currency, BigInteger amount)
-                => this;
+            public IAccountStateDelta BurnAsset(Address owner, FungibleAssetValue value) => this;
         }
     }
 }

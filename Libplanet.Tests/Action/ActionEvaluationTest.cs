@@ -1,5 +1,6 @@
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Assets;
 using Libplanet.Crypto;
 using Libplanet.Tests.Common.Action;
 using Xunit;
@@ -18,13 +19,17 @@ namespace Libplanet.Tests.Action
                     address,
                     address,
                     1,
-                    new AccountStateDeltaImpl(_ => null, (_, __) => 0, address),
+                    new AccountStateDeltaImpl(
+                        _ => null,
+                        (_, c) => new FungibleAssetValue(c),
+                        address
+                    ),
                     123,
                     false
                 ),
                 new AccountStateDeltaImpl(
                     a => a.Equals(address) ? (Text)"item" : null,
-                    (_, __) => 0,
+                    (_, c) => new FungibleAssetValue(c),
                     address
                 )
             );

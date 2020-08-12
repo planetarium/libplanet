@@ -23,7 +23,11 @@ namespace Libplanet.Tests.Action
             });
 
             var currency = new Currency("PLT", minter);
-            var exc = new InsufficientBalanceException(account, currency, 99, "for testing");
+            var exc = new InsufficientBalanceException(
+                account,
+                new FungibleAssetValue(currency, 99),
+                "for testing"
+            );
 
             var formatter = new BinaryFormatter();
             using (var ms = new MemoryStream())
@@ -34,8 +38,7 @@ namespace Libplanet.Tests.Action
                 var deserialized = (InsufficientBalanceException)formatter.Deserialize(ms);
                 Assert.Equal("for testing", deserialized.Message);
                 Assert.Equal(account, deserialized.Address);
-                Assert.Equal(currency.Hash, deserialized.Currency.Hash);
-                Assert.Equal(99, deserialized.Balance);
+                Assert.Equal(new FungibleAssetValue(currency, 99), deserialized.Balance);
             }
         }
     }

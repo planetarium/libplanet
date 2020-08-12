@@ -301,10 +301,13 @@ namespace Libplanet.Tests.Blocks
             }
 
             ActionEvaluation[] evals1 = blockIdx1
-                .Evaluate(DateTimeOffset.UtcNow, address => null, (address, currency) => 0)
+                .Evaluate(
+                    DateTimeOffset.UtcNow,
+                    address => null,
+                    (address, currency) => new FungibleAssetValue(currency, 0))
                 .ToArray();
             IImmutableDictionary<Address, IValue> dirty1 = evals1.GetDirtyStates();
-            IImmutableDictionary<(Address, Currency), BigInteger> balances1 =
+            IImmutableDictionary<(Address, Currency), FungibleAssetValue> balances1 =
                 evals1.GetDirtyBalances();
             Assert.Equal(
                 new Dictionary<Address, IValue>
@@ -317,12 +320,16 @@ namespace Libplanet.Tests.Blocks
                 dirty1
             );
             Assert.Equal(
-                new Dictionary<(Address, Currency), BigInteger>
+                new Dictionary<(Address, Currency), FungibleAssetValue>
                 {
-                    [(addresses[0], DumbAction.DumbCurrency)] = -5,
-                    [(addresses[1], DumbAction.DumbCurrency)] = 0,
-                    [(addresses[2], DumbAction.DumbCurrency)] = 0,
-                    [(addresses[3], DumbAction.DumbCurrency)] = 5,
+                    [(addresses[0], DumbAction.DumbCurrency)] =
+                        new FungibleAssetValue(DumbAction.DumbCurrency, -5),
+                    [(addresses[1], DumbAction.DumbCurrency)] =
+                        new FungibleAssetValue(DumbAction.DumbCurrency),
+                    [(addresses[2], DumbAction.DumbCurrency)] =
+                        new FungibleAssetValue(DumbAction.DumbCurrency),
+                    [(addresses[3], DumbAction.DumbCurrency)] =
+                        new FungibleAssetValue(DumbAction.DumbCurrency, 5),
                 }.ToImmutableDictionary(),
                 balances1
             );
@@ -372,7 +379,9 @@ namespace Libplanet.Tests.Blocks
             pairs = blockIdx2
                 .EvaluateActionsPerTx(
                     dirty1.GetValueOrDefault,
-                    (a, c) => balances1.GetValueOrDefault((a, c)))
+                    (a, c) => balances1.TryGetValue((a, c), out FungibleAssetValue v)
+                        ? v
+                        : new FungibleAssetValue(c))
                 .ToImmutableArray();
             expectations = new[]
             {
@@ -398,6 +407,7 @@ namespace Libplanet.Tests.Blocks
                 Assert.Equal(GenesisMinerAddress, eval.InputContext.Miner);
                 Assert.Equal(blockIdx2.Index, eval.InputContext.BlockIndex);
                 Assert.False(eval.InputContext.Rehearsal);
+                Assert.Null(eval.Exception);
                 Assert.Equal(
                     expect.Item3,
                     addresses
@@ -415,10 +425,12 @@ namespace Libplanet.Tests.Blocks
             var evals2 = blockIdx2.Evaluate(
                 DateTimeOffset.UtcNow,
                 dirty1.GetValueOrDefault,
-                (a, c) => balances1.GetValueOrDefault((a, c))
+                (a, c) => balances1.TryGetValue((a, c), out FungibleAssetValue v)
+                    ? v
+                    : new FungibleAssetValue(c)
             ).ToArray();
             IImmutableDictionary<Address, IValue> dirty2 = evals2.GetDirtyStates();
-            IImmutableDictionary<(Address, Currency), BigInteger> balances2 =
+            IImmutableDictionary<(Address, Currency), FungibleAssetValue> balances2 =
                 evals2.GetDirtyBalances();
             Assert.Equal(
                 new Dictionary<Address, IValue>

@@ -41,6 +41,9 @@ namespace Libplanet.Blockchain
             Currency currency
         ) =>
             (blockChain, hash) =>
-                (Bencodex.Types.Integer)stateCompleter(blockChain, hash, address, currency);
+            {
+                FungibleAssetValue balance = stateCompleter(blockChain, hash, address, currency);
+                return (Bencodex.Types.Integer)balance.Quantity;
+            };
     }
 }
