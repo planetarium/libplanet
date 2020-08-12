@@ -20,6 +20,7 @@ namespace Libplanet.Assets
     /// each <see cref="Currency"/> value represents such currencies as USD (US Dollar) or
     /// EUR (Euro), <em>not values</em> like $100 or €100.
     /// </summary>
+    /// <seealso cref="FungibleAssetValue"/>
     [Serializable]
     public readonly struct Currency : IEquatable<Currency>, ISerializable
     {

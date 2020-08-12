@@ -11,7 +11,7 @@ To be released.
  -  Added `IAction.RenderError()` and `IAction.UnrenderError()` methods.
     [[#860], [#875]]
  -  Added methods related fungible asset states to `IAccountStateDelta`:
-    [[#861], [#900]]
+    [[#861], [#900], [#954]]
      -  `UpdatedFungibleAssetsAccounts` property
      -  `MintAsset(Address, Currency, BigInteger)` method
      -  `TransferAsset(Address, Address, Currency, BigInteger)` method
@@ -118,12 +118,13 @@ To be released.
 ### Added APIs
 
  -  Added `Currency` struct.  [[#861], [#900], [#954]]
- -  Added `AccountBalanceGetter` delegate.  [[#861], [#900]]
+ -  Added `FungibleAssetValue` struct.  [[#861], [#944], [#954]]
+ -  Added `AccountBalanceGetter` delegate.  [[#861], [#900], [#954]]
  -  Added `TurnClient.BindProxies()` method. [[#756], [#868]]
  -  Added `ActionEvaluation.Exception` property.  [[#860], [[#875]]]
  -  Added `InvalidTxGenesisHashException` class.  [[#796], [#878]]
  -  Added `CurrencyPermissionException` class.  [[#861], [#900]]
- -  Added `InsufficientBalanceException` class.  [[#861], [#900]]
+ -  Added `InsufficientBalanceException` class.  [[#861], [#900], [#954]]
  -  Added `BlockChain<T>.GetBalance()` method.  [[#861], [#900]]
  -  Added `Block<T>.TotalDifficulty` property.  [[#666], [#917]]
  -  Added `SwarmOptions` class.  [[#926]]
@@ -135,12 +136,19 @@ To be released.
  -  Added `BlockHeader.PreEvaluationHash` property.  [[#931], [#935]]
  -  Added `HashDigest(ImmutableArray<byte>)` constructor.  [[#931], [#935]]
  -  Incomplete block states became able to be handled in more flexible way.
-    [[#929], [#934], [#946]]
+    [[#929], [#934], [#946], [#954]]
      -  Replaced `BlockChain<T>.GetState(Address, HashDigest<SHA256>?, bool)`
         method with `GetState(Address, HashDigest<SHA256>?, StateCompleter<T>)`
         method.  Specifying `completeStates: true` and `false` can be replaced
         by `stateCompleter: StateCompleters<T>.Recalculate` and
         `StateCompleters<T>.Reject`, respectively.
+     -  Replaced
+        `BlockChain<T>.GetBalance(Address, Currency, HashDigest<SHA256>?, bool)`
+        method with
+        `GetState(Address, Currency, HashDigest<SHA256>?, StateCompleter<T>)`
+        method.  Specifying `completeStates: true` and `false` can be replaced
+        by `stateCompleter: FungibleAssetStateCompleters<T>.Recalculate` and
+        `FungibleAssetStateCompleters<T>.Reject`, respectively.
      -  Added `StateCompleter<T>` delegate.
      -  Added `FungibleAssetStateCompleter<T>` delegate.
      -  Added `StateCompleterSet<T>` struct.
@@ -246,6 +254,7 @@ To be released.
 [#936]: https://github.com/planetarium/libplanet/pull/936
 [#940]: https://github.com/planetarium/libplanet/pull/940
 [#941]: https://github.com/planetarium/libplanet/pull/941
+[#944]: https://github.com/planetarium/libplanet/issues/944
 [#945]: https://github.com/planetarium/libplanet/pull/945
 [#946]: https://github.com/planetarium/libplanet/pull/946
 [#949]: https://github.com/planetarium/libplanet/pull/949
