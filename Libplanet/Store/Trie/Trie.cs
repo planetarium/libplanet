@@ -9,6 +9,7 @@ using Libplanet.Store.Trie.Nodes;
 
 namespace Libplanet.Store.Trie
 {
+    // TODO: implement 'logs' for debugging.
     internal class Trie : ITrie
     {
         public Trie(IKeyValueStore keyValueStore, INode root = null)
@@ -226,6 +227,12 @@ namespace Libplanet.Store.Trie
                     {
                         value = null;
                         return false;
+                    }
+
+                    if (shortNode.Key.Last() == 0x10)
+                    {
+                        value = shortNode.Value.ToBencodex();
+                        return true;
                     }
 
                     return TryGet(
