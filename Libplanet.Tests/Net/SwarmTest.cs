@@ -69,6 +69,7 @@ namespace Libplanet.Tests.Net
                 TestUtils.MakeBlockChain(policy, _fx4.Store),
             };
 
+            _finalizers = new List<Func<Task>>();
             _swarms = new List<Swarm<DumbAction>>
             {
                 CreateSwarm(_blockchains[0]),
@@ -84,26 +85,15 @@ namespace Libplanet.Tests.Net
         {
             try
             {
-                Log.Logger.Debug(
-                    $"Started to {nameof(Dispose)}() {nameof(Swarm<DumbAction>)} instances."
-                );
+                Log.Logger.Debug("Starts to finalize {Resources} resources...", _finalizers.Count);
                 int i = 1;
-                foreach (Swarm<DumbAction> s in _swarms)
+                foreach (Func<Task> finalize in _finalizers)
                 {
-                    StopAsync(s).Wait(DisposeTimeout);
-                    Log.Logger.Debug(
-                        $"Finished to {nameof(Dispose)}() a {nameof(Swarm<DumbAction>)} " +
-                        "instance #{0}.",
-                        i
-                    );
-                    i++;
-
-                    s.Dispose();
+                    Log.Logger.Debug("Tries to finalize the resource #{Resource}...", i++);
+                    finalize().Wait(DisposeTimeout);
                 }
 
-                Log.Logger.Debug(
-                    $"Finished to {nameof(Dispose)}() {nameof(Swarm<DumbAction>)} instances."
-                );
+                Log.Logger.Debug("Finished to finalize {Resources} resources.", _finalizers.Count);
 
                 NetMQConfig.Cleanup(false);
                 Log.Logger.Debug($"Finished to clean up the {nameof(NetMQConfig)} singleton.");
