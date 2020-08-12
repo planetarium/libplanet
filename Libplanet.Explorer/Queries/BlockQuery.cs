@@ -45,13 +45,32 @@ namespace Libplanet.Explorer.Queries
             Field<BlockType<T>>(
                 "block",
                 arguments: new QueryArguments(
-                    new QueryArgument<IdGraphType> { Name = "hash" }
+                    new QueryArgument<IdGraphType> { Name = "hash" },
+                    new QueryArgument<IdGraphType> { Name = "index" }
                 ),
                 resolve: context =>
                 {
-                    HashDigest<SHA256> hash = HashDigest<SHA256>.FromString(
-                        context.GetArgument<string>("hash"));
-                    return Query<T>.GetBlock(hash);
+                    string hash = context.GetArgument<string>("hash");
+                    long? index = context.GetArgument<long?>("index", null);
+
+                    if (!(hash is null ^ index is null))
+                    {
+                        throw new GraphQL.ExecutionError(
+                            "The parameters hash and index are mutually exclusive; " +
+                            "give only one at a time.");
+                    }
+
+                    if (hash is string hashNotNull)
+                    {
+                        return Query<T>.GetBlockByHash(HashDigest<SHA256>.FromString(hashNotNull));
+                    }
+
+                    if (index is long indexNotNull)
+                    {
+                        return Query<T>.GetBlockByIndex(indexNotNull);
+                    }
+
+                    throw new GraphQL.ExecutionError("Unexpected block query");
                 }
             );
 
