@@ -2,6 +2,7 @@
 using System;
 using System.Numerics;
 using System.Runtime.Serialization;
+using Libplanet.Assets;
 using Libplanet.Serialization;
 
 namespace Libplanet.Action
@@ -20,7 +21,7 @@ namespace Libplanet.Action
         /// </summary>
         /// <param name="address">The owner of the insufficient <paramref name="balance"/>.
         /// Corresponds to the <see cref="Address"/> property.</param>
-        /// <param name="currency">The <see cref="Libplanet.Currency"/> of the insufficient
+        /// <param name="currency">The <see cref="Assets.Currency"/> of the insufficient
         /// <paramref name="balance"/>.  Corresponds to the <see cref="Currency"/> property.</param>
         /// <param name="balance">The account's current balance of the <paramref name="currency"/>.
         /// Corresponds to the <see cref="Balance"/> property.</param>
@@ -52,7 +53,7 @@ namespace Libplanet.Action
         public Address Address { get; }
 
         /// <summary>
-        /// The <see cref="Libplanet.Currency"/> of the insufficient <see cref="Balance"/>.
+        /// The <see cref="Assets.Currency"/> of the insufficient <see cref="Balance"/>.
         /// </summary>
         public Currency Currency { get; }
 

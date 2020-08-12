@@ -7,6 +7,7 @@ using System.Numerics;
 using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Assets;
 using Libplanet.Crypto;
 using Libplanet.Tests.Action;
 using Libplanet.Tests.Common.Action;

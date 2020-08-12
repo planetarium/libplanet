@@ -1,6 +1,7 @@
 using System.Numerics;
 using System.Security.Cryptography;
 using Libplanet.Action;
+using Libplanet.Assets;
 
 namespace Libplanet.Blockchain
 {

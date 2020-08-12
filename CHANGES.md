@@ -117,7 +117,7 @@ To be released.
 
 ### Added APIs
 
- -  Added `Currency` struct.  [[#861], [#900]]
+ -  Added `Currency` struct.  [[#861], [#900], [#954]]
  -  Added `AccountBalanceGetter` delegate.  [[#861], [#900]]
  -  Added `TurnClient.BindProxies()` method. [[#756], [#868]]
  -  Added `ActionEvaluation.Exception` property.  [[#860], [[#875]]]
@@ -250,6 +250,7 @@ To be released.
 [#946]: https://github.com/planetarium/libplanet/pull/946
 [#949]: https://github.com/planetarium/libplanet/pull/949
 [#950]: https://github.com/planetarium/libplanet/pull/950
+[#954]: https://github.com/planetarium/libplanet/pull/954
 [sleep mode]: https://en.wikipedia.org/wiki/Sleep_mode
 
 

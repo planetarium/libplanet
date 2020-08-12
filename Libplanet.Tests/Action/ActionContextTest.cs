@@ -3,6 +3,7 @@ using System.Collections.Immutable;
 using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Assets;
 using Xunit;
 
 namespace Libplanet.Tests.Action

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Assets;
 
 namespace Libplanet.Tests.Action
 {

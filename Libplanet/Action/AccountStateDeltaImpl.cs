@@ -6,6 +6,7 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Numerics;
 using Bencodex.Types;
+using Libplanet.Assets;
 
 namespace Libplanet.Action
 {

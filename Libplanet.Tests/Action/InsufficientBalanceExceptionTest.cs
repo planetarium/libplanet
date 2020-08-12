@@ -1,6 +1,7 @@
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using Libplanet.Action;
+using Libplanet.Assets;
 using Xunit;
 
 namespace Libplanet.Tests.Action

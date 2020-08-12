@@ -5,6 +5,7 @@ using System.Linq;
 using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Assets;
 using Libplanet.Crypto;
 using Xunit;
 using Xunit.Abstractions;

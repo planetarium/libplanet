@@ -1,5 +1,6 @@
 #nullable enable
 using System.Numerics;
+using Libplanet.Assets;
 
 namespace Libplanet.Action
 {

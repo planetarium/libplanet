@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Numerics;
 using Bencodex.Types;
+using Libplanet.Assets;
 
 namespace Libplanet.Action
 {

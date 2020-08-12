@@ -2,6 +2,7 @@ using System;
 using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Assets;
 
 namespace Libplanet.Blockchain
 {

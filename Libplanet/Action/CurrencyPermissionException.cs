@@ -1,5 +1,6 @@
 #nullable enable
 using System;
+using Libplanet.Assets;
 
 namespace Libplanet.Action
 {
@@ -18,7 +19,7 @@ namespace Libplanet.Action
         /// <param name="transactionSigner"> The address of the account who tried to mint or burn
         /// assets of a <paramref name="currency"/>.  Corresponds to
         /// the <see cref="TransactionSigner"/> property.</param>
-        /// <param name="currency"> The <see cref="Libplanet.Currency"/> to be tried to be minted
+        /// <param name="currency"> The <see cref="Assets.Currency"/> to be tried to be minted
         /// or burned by the <paramref name="transactionSigner"/>.  Corresponds to
         /// the <see cref="Currency"/> property.</param>
         /// <param name="message">Specifies a <see cref="Exception.Message"/>.</param>
@@ -39,7 +40,7 @@ namespace Libplanet.Action
         public Address TransactionSigner { get; }
 
         /// <summary>
-        /// The <see cref="Libplanet.Currency"/> to be tried to be minted or burned by
+        /// The <see cref="Assets.Currency"/> to be tried to be minted or burned by
         /// the <see cref="TransactionSigner"/>.
         /// </summary>
         public Currency Currency { get; }

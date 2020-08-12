@@ -12,7 +12,7 @@ using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Serialization;
 
-namespace Libplanet
+namespace Libplanet.Assets
 {
     /// <summary>
     /// Represents a currency type.  Every single value of <see cref="Currency"/> defines
@@ -21,7 +21,7 @@ namespace Libplanet
     /// EUR (Euro), <em>not values</em> like $100 or €100.
     /// </summary>
     [Serializable]
-    public readonly struct Currency : ISerializable, IEquatable<Currency>
+    public readonly struct Currency : IEquatable<Currency>, ISerializable
     {
         /// <summary>
         /// The ticker symbol, e.g., <c>&quot;USD&quot;</c>.
@@ -110,7 +110,7 @@ namespace Libplanet
         [Pure]
         public bool AllowsToMint(Address address) => Minters is null || Minters.Contains(address);
 
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue(nameof(Ticker), Ticker);
 

@@ -7,6 +7,7 @@ using System.Numerics;
 using System.Threading;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Assets;
 using Boolean = Bencodex.Types.Boolean;
 
 namespace Libplanet.Tests.Common.Action
