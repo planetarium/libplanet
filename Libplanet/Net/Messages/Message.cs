@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -126,7 +127,12 @@ namespace Libplanet.Net.Messages
 
         protected abstract IEnumerable<NetMQFrame> DataFrames { get; }
 
-        public static Message Parse(NetMQMessage raw, bool reply)
+        public static Message Parse(
+            NetMQMessage raw,
+            bool reply,
+            AppProtocolVersion localVersion,
+            IImmutableSet<PublicKey> trustedAppProtocolVersionSigners,
+            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered)
         {
             if (raw.FrameCount == 0)
             {
@@ -137,6 +143,32 @@ namespace Libplanet.Net.Messages
             // (reply == false) [identity, version, type, sign, peer, frames...]
             int headerCount = reply ? CommonFrames : CommonFrames + 1;
             var versionToken = raw[headerCount - 4].ConvertToString();
+
+            AppProtocolVersion remoteVersion = AppProtocolVersion.FromToken(versionToken);
+            Peer remotePeer = null;
+            try
+            {
+                remotePeer = DeserializePeer(raw[headerCount - 2].ToByteArray());
+            }
+            catch (Exception)
+            {
+                // If failed to find out remotePeer, leave it null.
+            }
+
+            if (!IsAppProtocolVersionValid(
+                remotePeer,
+                localVersion,
+                remoteVersion,
+                trustedAppProtocolVersionSigners,
+                differentAppProtocolVersionEncountered))
+            {
+                throw new DifferentAppProtocolVersionException(
+                    "Received message's version is not valid.",
+                    reply ? null : raw[0].Buffer.ToArray(),
+                    localVersion,
+                    remoteVersion);
+            }
+
             var rawType = (MessageType)raw[headerCount - 3].ConvertToInt32();
             var peer = raw[headerCount - 2].ToByteArray();
             byte[] signature = raw[headerCount - 1].ToByteArray();
@@ -180,8 +212,8 @@ namespace Libplanet.Net.Messages
 
             var message = (Message)Activator.CreateInstance(
                 type, new[] { body });
-            message.Version = AppProtocolVersion.FromToken(versionToken);
-            message.Remote = DeserializePeer(peer);
+            message.Version = remoteVersion;
+            message.Remote = remotePeer;
 
             if (!message.Remote.PublicKey.Verify(body.ToByteArray(), signature))
             {
@@ -240,6 +272,32 @@ namespace Libplanet.Net.Messages
             using MemoryStream stream = new MemoryStream();
             formatter.Serialize(stream, peer);
             return stream.ToArray();
+        }
+
+        private static bool IsAppProtocolVersionValid(
+            Peer remotePeer,
+            AppProtocolVersion localVersion,
+            AppProtocolVersion remoteVersion,
+            IImmutableSet<PublicKey> trustedAppProtocolVersionSigners,
+            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered)
+        {
+            if (remoteVersion.Equals(localVersion))
+            {
+                return true;
+            }
+
+            if (!(trustedAppProtocolVersionSigners is null) &&
+                !trustedAppProtocolVersionSigners.Any(remoteVersion.Verify))
+            {
+                return false;
+            }
+
+            if (differentAppProtocolVersionEncountered is null)
+            {
+                return false;
+            }
+
+            return differentAppProtocolVersionEncountered(remotePeer, remoteVersion, localVersion);
         }
     }
 }

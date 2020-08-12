@@ -574,20 +574,14 @@ namespace Libplanet.Net
                         "A raw message [frame count: {0}] has received.",
                         raw.FrameCount
                     );
-                    Message message = Message.Parse(raw, reply: false);
+                    Message message = Message.Parse(
+                        raw,
+                        false,
+                        _appProtocolVersion,
+                        _trustedAppProtocolVersionSigners,
+                        _differentAppProtocolVersionEncountered);
                     _logger.Debug("A message has parsed: {0}, from {1}", message, message.Remote);
                     MessageHistory.Enqueue(message);
-
-                    if (!IsAppProtocolVersionValid(message))
-                    {
-                        var differentVersion = new DifferentVersion()
-                        {
-                            Identity = message.Identity,
-                        };
-                        ReplyMessage(differentVersion);
-                        _logger.Debug("Message from peer with different version received.");
-                        return;
-                    }
 
                     try
                     {
@@ -602,6 +596,15 @@ namespace Libplanet.Net
                             exc);
                         throw;
                     }
+                }
+                catch (DifferentAppProtocolVersionException dapve)
+                {
+                    var differentVersion = new DifferentVersion()
+                    {
+                        Identity = dapve.Identity,
+                    };
+                    ReplyMessage(differentVersion);
+                    _logger.Debug("Message from peer with different version received.");
                 }
                 catch (InvalidMessageException ex)
                 {
@@ -807,20 +810,17 @@ namespace Libplanet.Net
                         "A raw message ({FrameCount} frames) has replied.",
                         raw.FrameCount
                     );
-                    Message reply = Message.Parse(raw, true);
+                    Message reply = Message.Parse(
+                        raw,
+                        true,
+                        _appProtocolVersion,
+                        _trustedAppProtocolVersionSigners,
+                        _differentAppProtocolVersionEncountered);
                     _logger.Debug(
                         "A reply has parsed: {Reply} from {ReplyRemote}",
                         reply,
                         reply.Remote
                     );
-
-                    if (!IsAppProtocolVersionValid(reply))
-                    {
-                        throw new DifferentAppProtocolVersionException(
-                            "Message protocol version is different.",
-                            _appProtocolVersion,
-                            reply.Version);
-                    }
 
                     result.Add(reply);
                 }
@@ -832,9 +832,9 @@ namespace Libplanet.Net
 
                 tcs.TrySetResult(result);
             }
-            catch (DifferentAppProtocolVersionException dape)
+            catch (DifferentAppProtocolVersionException dapve)
             {
-                tcs.TrySetException(dape);
+                tcs.TrySetException(dapve);
             }
             catch (TimeoutException te)
             {
@@ -954,29 +954,6 @@ namespace Libplanet.Net
                 _turnTasks.Add(RefreshAllocate(_turnCancellationTokenSource.Token));
                 _turnTasks.Add(RefreshPermissions(_turnCancellationTokenSource.Token));
             }
-        }
-
-        private bool IsAppProtocolVersionValid(Message message)
-        {
-            AppProtocolVersion remoteVersion = message.Version;
-            if (remoteVersion.Equals(_appProtocolVersion))
-            {
-                return true;
-            }
-
-            if (!(_trustedAppProtocolVersionSigners is null) &&
-                !_trustedAppProtocolVersionSigners.Any(s => remoteVersion.Verify(s)))
-            {
-                return false;
-            }
-
-            if (_differentAppProtocolVersionEncountered is null)
-            {
-                return false;
-            }
-
-            return _differentAppProtocolVersionEncountered(
-                message.Remote, remoteVersion, _appProtocolVersion);
         }
 
         private async Task RefreshTableAsync(

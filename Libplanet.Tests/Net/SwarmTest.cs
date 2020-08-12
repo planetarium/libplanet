@@ -591,14 +591,24 @@ namespace Libplanet.Tests.Net
                     );
 
                     NetMQMessage response = socket.ReceiveMultipartMessage();
-                    Message parsedMessage = Message.Parse(response, true);
+                    Message parsedMessage = Message.Parse(
+                        response,
+                        true,
+                        swarmA.AppProtocolVersion,
+                        swarmA.TrustedAppProtocolVersionSigners,
+                        null);
                     Libplanet.Net.Messages.Blocks blockMessage =
                         (Libplanet.Net.Messages.Blocks)parsedMessage;
 
                     Assert.Equal(2, blockMessage.Payloads.Count);
 
                     response = socket.ReceiveMultipartMessage();
-                    parsedMessage = Message.Parse(response, true);
+                    parsedMessage = Message.Parse(
+                        response,
+                        true,
+                        swarmA.AppProtocolVersion,
+                        swarmA.TrustedAppProtocolVersionSigners,
+                        null);
                     blockMessage = (Libplanet.Net.Messages.Blocks)parsedMessage;
 
                     Assert.Single(blockMessage.Payloads);
