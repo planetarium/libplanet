@@ -1671,17 +1671,12 @@ namespace Libplanet.Blockchain
             _rwlock.EnterUpgradeableReadLock();
             try
             {
-                if (offset is null)
+                if (offset is null && Tip is null)
                 {
-                    if (Tip is null)
-                    {
-                        return null;
-                    }
-                    else
-                    {
-                        offset = Tip.Hash;
-                    }
+                    return null;
                 }
+
+                offset ??= Tip.Hash;
 
                 if (StateStore is IBlockStatesStore blockStatesStore)
                 {
@@ -1698,12 +1693,9 @@ namespace Libplanet.Blockchain
                     offset = stateRef.Item1;
                 }
 
-                if (!StateStore.ExistsBlockState(offset.Value))
-                {
-                    return rawStateCompleter(this, offset.Value);
-                }
-
-                return StateStore.GetState(key, offset, Id);
+                return StateStore.ExistsBlockState(offset.Value)
+                    ? StateStore.GetState(key, offset, Id)
+                    : rawStateCompleter(this, offset.Value);
             }
             finally
             {
