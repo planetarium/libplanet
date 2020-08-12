@@ -83,6 +83,7 @@ To be released.
  -  `DefaultStore` became to implement `IBlockStateStore`.  [[#950]]
  -  The signature of `IStore.LookupStateReference<T>(Guid, string, Block<T>)` method was
     changed to `LookupStateReference(Guid, string, long)`.  [[#950]]
+ -  Added `IStateStore`-typed `stateStore` to `BlockChain<T>` constructor.  [[#950]]
 
 ### Backward-incompatible network protocol changes
 
