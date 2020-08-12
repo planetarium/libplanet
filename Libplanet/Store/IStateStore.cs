@@ -23,7 +23,7 @@ namespace Libplanet.Store
         /// </param>
         /// <returns>Whether to exist the states corresponded to <paramref name="blockHash"/>.
         /// </returns>
-        bool BlockStateExists(HashDigest<SHA256> blockHash);
+        bool ExistsBlockState(HashDigest<SHA256> blockHash);
 
         void ForkStates<T>(
             Guid sourceChainId,

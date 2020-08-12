@@ -34,10 +34,10 @@ namespace Libplanet.Tests.Store
             return _stateStore.GetState(stateKey, blockHash, chainId);
         }
 
-        public bool BlockStateExists(HashDigest<SHA256> blockHash)
+        public bool ExistsBlockState(HashDigest<SHA256> blockHash)
         {
-            Log(nameof(BlockStateExists), blockHash);
-            return _stateStore.BlockStateExists(blockHash);
+            Log(nameof(ExistsBlockState), blockHash);
+            return _stateStore.ExistsBlockState(blockHash);
         }
 
         public void ForkStates<T>(Guid sourceChainId, Guid destinationChainId, Block<T> branchPoint)

@@ -31,10 +31,10 @@ namespace Libplanet.Tests.Store
 
             var hashDigest =
                 new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size));
-            _tracker.BlockStateExists(hashDigest);
+            _tracker.ExistsBlockState(hashDigest);
             Assert.Equal(2, _tracker.Logs.Count);
             Assert.Equal(
-                StoreTrackLog.Create(nameof(_tracker.BlockStateExists), hashDigest),
+                StoreTrackLog.Create(nameof(_tracker.ExistsBlockState), hashDigest),
                 _tracker.Logs[1]);
         }
 
@@ -44,7 +44,7 @@ namespace Libplanet.Tests.Store
             _tracker.GetState("stateKey", chainId: _fx.StoreChainId);
             var hashDigest =
                 new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size));
-            _tracker.BlockStateExists(hashDigest);
+            _tracker.ExistsBlockState(hashDigest);
             Assert.Equal(2, _tracker.Logs.Count);
 
             _tracker.ClearLogs();

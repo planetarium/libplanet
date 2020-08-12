@@ -1517,7 +1517,7 @@ namespace Libplanet.Blockchain
                     .SelectMany(kv => kv.Value.Select(c => (kv.Key, c))))
                 .ToImmutableHashSet();
 
-            if (!StateStore.BlockStateExists(block.Hash))
+            if (!StateStore.ExistsBlockState(block.Hash))
             {
                 HashDigest<SHA256> blockHash = block.Hash;
                 IAccountStateDelta lastStates = actionEvaluations.Count > 0
@@ -1639,7 +1639,7 @@ namespace Libplanet.Blockchain
             foreach (HashDigest<SHA256> hash in BlockHashes)
             {
                 Block<T> block = this[hash];
-                if (StateStore.BlockStateExists(hash))
+                if (StateStore.ExistsBlockState(hash))
                 {
                     continue;
                 }
@@ -1698,7 +1698,7 @@ namespace Libplanet.Blockchain
                     offset = stateRef.Item1;
                 }
 
-                if (!StateStore.BlockStateExists(offset.Value))
+                if (!StateStore.ExistsBlockState(offset.Value))
                 {
                     return rawStateCompleter(this, offset.Value);
                 }
