@@ -65,7 +65,10 @@ namespace Libplanet.Net
             StateCompleterSet<T> fallback = fallbackCompleterSet
                 ?? StateCompleterSet<T>.Recalculate;
 
-            async Task FillTrustedBlockStates(HashDigest<SHA256> blockHash)
+            async Task FillTrustedBlockStates(
+                HashDigest<SHA256> blockHash,
+                Func<IDisposable> enterWriteMode
+            )
             {
                 var request = new GetBlockStates(blockHash);
                 foreach (BoundPeer peer in trustedPeers)
@@ -113,7 +116,13 @@ namespace Libplanet.Net
                             continue;
                         }
 
-                        BlockChain.Store.SetBlockStates(blockStates.BlockHash, blockStates.States);
+                        using (enterWriteMode())
+                        {
+                            BlockChain.Store.SetBlockStates(
+                                blockStates.BlockHash,
+                                blockStates.States
+                            );
+                        }
                     }
                     else
                     {
@@ -127,21 +136,22 @@ namespace Libplanet.Net
 
             return new StateCompleterSet<T>
             {
-                StateCompleter = (blockChain, blockHash, address) =>
+                StateCompleter = (blockChain, blockHash, address, enterWriteLock) =>
                 {
-                    FillTrustedBlockStates(blockHash).Wait(cancellationToken);
+                    FillTrustedBlockStates(blockHash, enterWriteLock).Wait(cancellationToken);
                     return blockChain.GetState(address, blockHash, fallback.StateCompleter);
                 },
-                FungibleAssetStateCompleter = (blockChain, blockHash, address, currency) =>
-                {
-                    FillTrustedBlockStates(blockHash).Wait(cancellationToken);
-                    return blockChain.GetBalance(
-                        address,
-                        currency,
-                        blockHash,
-                        fallback.FungibleAssetStateCompleter
-                    );
-                },
+                FungibleAssetStateCompleter =
+                    (blockChain, blockHash, address, currency, enterWriteLock) =>
+                    {
+                        FillTrustedBlockStates(blockHash, enterWriteLock).Wait(cancellationToken);
+                        return blockChain.GetBalance(
+                            address,
+                            currency,
+                            blockHash,
+                            fallback.FungibleAssetStateCompleter
+                        );
+                    },
             };
         }
     }

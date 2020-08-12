@@ -15,6 +15,7 @@ using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Tx;
+using Nito.Disposables;
 using Serilog;
 
 namespace Libplanet.Blockchain
@@ -1608,9 +1609,12 @@ namespace Libplanet.Blockchain
         /// Calculates and complements a block's incomplete states on the fly.
         /// </summary>
         /// <param name="blockHash">The hash of a block which has incomplete states.</param>
+        /// <param name="enterWriteMode">An optional function to enter the <em>write mode</em> and
+        /// returns an <see cref="IDisposable"/> to exit it.</param>
         /// <returns>The dirty states made from actions in the requested block.</returns>
         internal IImmutableDictionary<string, IValue> ComplementBlockStates(
-            HashDigest<SHA256> blockHash
+            HashDigest<SHA256> blockHash,
+            Func<IDisposable> enterWriteMode
         )
         {
             _logger.Verbose("Recalculates the block {BlockHash}'s states...", blockHash);
@@ -1635,15 +1639,9 @@ namespace Libplanet.Blockchain
                     stateCompleters
                 );
 
-                _rwlock.EnterWriteLock();
-
-                try
+                using (enterWriteMode())
                 {
                     SetStates(block, evaluations, buildStateReferences: false);
-                }
-                finally
-                {
-                    _rwlock.ExitWriteLock();
                 }
             }
 
@@ -1653,7 +1651,7 @@ namespace Libplanet.Blockchain
         private IValue GetRawState(
             string key,
             HashDigest<SHA256>? offset,
-            Func<BlockChain<T>, HashDigest<SHA256>, IValue> rawStateCompleter
+            Func<BlockChain<T>, HashDigest<SHA256>, Func<IDisposable>, IValue> rawStateCompleter
         )
         {
             _rwlock.EnterReadLock();
@@ -1691,7 +1689,11 @@ namespace Libplanet.Blockchain
                 IImmutableDictionary<string, IValue> blockStates = Store.GetBlockStates(hashValue);
                 if (blockStates is null)
                 {
-                    return rawStateCompleter(this, hashValue);
+                    return rawStateCompleter(this, hashValue, () =>
+                    {
+                        _rwlock.EnterWriteLock();
+                        return new AnonymousDisposable(_rwlock.ExitWriteLock);
+                    });
                 }
 
                 return blockStates.TryGetValue(key, out IValue state) ? state : null;

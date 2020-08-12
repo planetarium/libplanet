@@ -1,3 +1,4 @@
+using System;
 using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
@@ -14,12 +15,17 @@ namespace Libplanet.Blockchain
     /// <param name="blockChain">The blockchain to query.</param>
     /// <param name="blockHash">The hash of a block to lacks its dirty states.</param>
     /// <param name="address">The address to query its state value.</param>
+    /// <param name="enterWriteMode">An optional function to enter the <em>write mode</em> and
+    /// returns an <see cref="IDisposable"/> to exit it.  If the delegate tries to update
+    /// the <paramref name="blockChain"/> such operation has to be done in the <em>write mode</em>
+    /// in order to prevent race condition.</param>
     /// <returns>A complement state.  This can be <c>null</c>.</returns>
     /// <seealso cref="StateCompleters{T}"/>
     public delegate IValue StateCompleter<T>(
         BlockChain<T> blockChain,
         HashDigest<SHA256> blockHash,
-        Address address
+        Address address,
+        Func<IDisposable> enterWriteMode
     )
         where T : IAction, new();
 }

@@ -1525,14 +1525,14 @@ namespace Libplanet.Tests.Blockchain
             IValue value = chain.GetState(
                 addresses[4],
                 chain.Tip.Hash,
-                (bc, bh, a) => throw new Exception("This exception should not be thrown.")
+                (bc, bh, a, _) => throw new Exception("This exception should not be thrown.")
             );
             Assert.Equal(new Text("9"), value);
 
             value = chain.GetState(
                 addresses[4],
                 chain.BlockHashes.Skip((int)chain.Count - 2).First(),
-                (bc, hash, addr) =>
+                (bc, hash, addr, _) =>
                     new Text($"{bc.Id}/{hash}/{addr}: callback called")
             );
             HashDigest<SHA256> prevUpdate = chain.BlockHashes.Skip(addresses.Length).First();

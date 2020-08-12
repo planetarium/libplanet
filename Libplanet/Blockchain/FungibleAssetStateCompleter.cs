@@ -1,3 +1,4 @@
+using System;
 using System.Numerics;
 using System.Security.Cryptography;
 using Libplanet.Action;
@@ -15,13 +16,18 @@ namespace Libplanet.Blockchain
     /// <param name="blockHash">The hash of a block to lacks its dirty states.</param>
     /// <param name="address">The account to query its balance.</param>
     /// <param name="currency">The currency to query.</param>
+    /// <param name="enterWriteMode">An optional function to enter the <em>write mode</em> and
+    /// returns an <see cref="IDisposable"/> to exit it.  If the delegate tries to update
+    /// the <paramref name="blockChain"/> such operation has to be done in the <em>write mode</em>
+    /// in order to prevent race condition.</param>
     /// <returns>A complement balance value.</returns>
     /// <seealso cref="FungibleAssetStateCompleters{T}"/>
     public delegate BigInteger FungibleAssetStateCompleter<T>(
         BlockChain<T> blockChain,
         HashDigest<SHA256> blockHash,
         Address address,
-        Currency currency
+        Currency currency,
+        Func<IDisposable> enterWriteMode
     )
         where T : IAction, new();
 }

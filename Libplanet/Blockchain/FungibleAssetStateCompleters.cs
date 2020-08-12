@@ -21,8 +21,8 @@ namespace Libplanet.Blockchain
         /// permanently remained in the store.
         /// </summary>
         public static readonly FungibleAssetStateCompleter<T> Recalculate =
-            (blockChain, blockHash, address, currency) =>
-                blockChain.ComplementBlockStates(blockHash).TryGetValue(
+            (blockChain, blockHash, address, currency, enterWriteMode) =>
+                blockChain.ComplementBlockStates(blockHash, enterWriteMode).TryGetValue(
                     BlockChain<T>.ToFungibleAssetKey(address, currency),
                     out IValue v
                 ) ? (BigInteger)(Bencodex.Types.Integer)v : 0;
@@ -32,15 +32,22 @@ namespace Libplanet.Blockchain
         /// an <see cref="IncompleteBlockStatesException"/>.
         /// </summary>
         public static readonly FungibleAssetStateCompleter<T> Reject =
-            (chain, blockHash, address, currency) =>
+            (chain, blockHash, address, currency, enterWriteMode) =>
                 throw new IncompleteBlockStatesException(blockHash);
 
-        internal static Func<BlockChain<T>, HashDigest<SHA256>, IValue> ToRawStateCompleter(
+        internal static Func<BlockChain<T>, HashDigest<SHA256>, Func<IDisposable>, IValue>
+        ToRawStateCompleter(
             FungibleAssetStateCompleter<T> stateCompleter,
             Address address,
             Currency currency
         ) =>
-            (blockChain, hash) =>
-                (Bencodex.Types.Integer)stateCompleter(blockChain, hash, address, currency);
+            (blockChain, hash, enterWriteMode) =>
+                (Bencodex.Types.Integer)stateCompleter(
+                    blockChain,
+                    hash,
+                    address,
+                    currency,
+                    enterWriteMode
+                );
     }
 }

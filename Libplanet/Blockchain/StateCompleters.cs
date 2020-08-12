@@ -18,23 +18,26 @@ namespace Libplanet.Blockchain
         /// Incomplete states are filled with the recalculated states and the states are
         /// permanently remained in the store.
         /// </summary>
-        public static readonly StateCompleter<T> Recalculate = (blockChain, blockHash, address) =>
-            blockChain.ComplementBlockStates(blockHash).TryGetValue(
-                BlockChain<T>.ToStateKey(address),
-                out IValue v
-            ) ? v : null;
+        public static readonly StateCompleter<T> Recalculate =
+            (blockChain, blockHash, address, enterWriteMode) =>
+                blockChain.ComplementBlockStates(blockHash, enterWriteMode).TryGetValue(
+                    BlockChain<T>.ToStateKey(address),
+                    out IValue v
+                ) ? v : null;
 
         /// <summary>
         /// Rejects to complement incomplete state and throws
         /// an <see cref="IncompleteBlockStatesException"/>.
         /// </summary>
-        public static readonly StateCompleter<T> Reject = (chain, blockHash, address) =>
+        public static readonly StateCompleter<T> Reject = (chain, blockHash, address, _) =>
             throw new IncompleteBlockStatesException(blockHash);
 
-        internal static Func<BlockChain<T>, HashDigest<SHA256>, IValue> ToRawStateCompleter(
+        internal static Func<BlockChain<T>, HashDigest<SHA256>, Func<IDisposable>, IValue>
+        ToRawStateCompleter(
             StateCompleter<T> stateCompleter,
             Address address
         ) =>
-            (blockChain, hash) => stateCompleter(blockChain, hash, address);
+            (blockChain, hash, enterWriteMode) =>
+                stateCompleter(blockChain, hash, address, enterWriteMode);
     }
 }
