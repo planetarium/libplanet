@@ -80,27 +80,27 @@ namespace Libplanet.Blockchain
         public BlockChain(
             IBlockPolicy<T> policy,
             IStore store,
+            IStateStore stateStore,
             Block<T> genesisBlock,
-            bool render = true,
-            IStateStore stateStore = null
+            bool render = true
             )
             : this(
                 policy,
                 store,
+                stateStore,
                 store.GetCanonicalChainId() ?? Guid.NewGuid(),
                 genesisBlock,
-                render,
-                stateStore)
+                render)
         {
         }
 
         internal BlockChain(
             IBlockPolicy<T> policy,
             IStore store,
+            IStateStore stateStore,
             Guid id,
             Block<T> genesisBlock,
-            bool render,
-            IStateStore stateStore = null
+            bool render
         )
             : this(
                 policy,

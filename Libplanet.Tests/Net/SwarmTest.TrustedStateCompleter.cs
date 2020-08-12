@@ -38,7 +38,10 @@ namespace Libplanet.Tests.Net
             var completeStateStore = new DefaultStore(null);
             BlockChain<DumbAction> completeChain =
                 new BlockChain<DumbAction>(
-                    incompleteChain.Policy, completeStateStore, incompleteChain.Genesis);
+                    incompleteChain.Policy,
+                    completeStateStore,
+                    completeStateStore,
+                    incompleteChain.Genesis);
             Swarm<DumbAction> completeSwarm = CreateSwarm(completeChain);
             foreach (HashDigest<SHA256> blockHash in incompleteChain.BlockHashes.Skip(1))
             {
@@ -106,6 +109,7 @@ namespace Libplanet.Tests.Net
             var eventualCanonStore = new DefaultStore(null);
             BlockChain<DumbAction> eventualCanon = new BlockChain<DumbAction>(
                 incomplete.Policy,
+                eventualCanonStore,
                 eventualCanonStore,
                 genesis
             );

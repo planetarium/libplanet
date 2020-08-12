@@ -20,6 +20,7 @@ namespace Libplanet.Benchmarks
             _blockChain = new BlockChain<DumbAction>(
                 new NullPolicy<DumbAction>(),
                 _fx.Store,
+                _fx.StateStore,
                 _fx.GenesisBlock
             );
         }

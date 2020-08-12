@@ -749,7 +749,7 @@ namespace Libplanet.Tests.Net
 
             var fxMiner = new DefaultStoreFixture(memory: true);
             var minerChain = new BlockChain<DumbAction>(
-                policy, fxMiner.Store, fxMiner.GenesisBlock);
+                policy, fxMiner.Store, fxMiner.StateStore, fxMiner.GenesisBlock);
             var minerAddress = fxMiner.Address1;
 
             async Task MineBlocks()
@@ -767,7 +767,7 @@ namespace Libplanet.Tests.Net
 
             var fxReceiver = new DefaultStoreFixture(memory: true);
             var receiverChain = new BlockChain<DumbAction>(
-                policy, fxReceiver.Store, fxReceiver.GenesisBlock);
+                policy, fxReceiver.Store, fxReceiver.StateStore, fxReceiver.GenesisBlock);
 
             var minerSwarm = CreateSwarm(minerChain);
             var receiverSwarm = CreateSwarm(receiverChain);

@@ -1103,6 +1103,7 @@ namespace Libplanet.Tests.Store
             var blocks = new BlockChain<DumbAction>(
                 new NullPolicy<DumbAction>(),
                 store,
+                store as IStateStore,
                 Fx.GenesisBlock
             );
 
@@ -1113,6 +1114,7 @@ namespace Libplanet.Tests.Store
             var forked = new BlockChain<DumbAction>(
                 new NullPolicy<DumbAction>(),
                 store,
+                store as IStateStore,
                 Guid.NewGuid(),
                 Fx.GenesisBlock,
                 true
@@ -1139,6 +1141,7 @@ namespace Libplanet.Tests.Store
                 var blocks = new BlockChain<DumbAction>(
                     new NullPolicy<DumbAction>(),
                     s1,
+                    s1 as IStateStore,
                     Fx.GenesisBlock
                 );
 
@@ -1188,6 +1191,7 @@ namespace Libplanet.Tests.Store
                 var blocks = new BlockChain<DumbAction>(
                     new NullPolicy<DumbAction>(),
                     store,
+                    store as IStateStore,
                     Fx.GenesisBlock
                 );
 
