@@ -3,7 +3,7 @@ namespace Libplanet.Store.Trie
     /// <summary>
     /// An interface to access key-value store.
     /// </summary>
-    internal interface IKeyValueStore
+    public interface IKeyValueStore
     {
         public byte[] Get(byte[] key);
 
