@@ -1361,7 +1361,7 @@ namespace Libplanet.Blockchain
             if (topmostCommon is null)
             {
                 const string msg =
-                    "A chain cannot be reorged into a heterogenous chain which has " +
+                    "A chain cannot be reorged into a heterogeneous chain which has " +
                     "no common genesis at all.";
                 throw new InvalidGenesisBlockException(Genesis.Hash, other.Genesis.Hash, msg);
             }

@@ -15,7 +15,7 @@ namespace Libplanet.Net
         /// <summary>
         /// Gets state completers that complement incomplete block states by trusting
         /// (i.e., download-and-reusing) states calculated by the given
-        /// <paramref name="trustedStateValidators"/>.  If no trustable states are available
+        /// <paramref name="trustedStateValidators"/>.  If no trustworthy states are available
         /// incomplete states are complemented by recalculating
         /// (i.e., <see cref="StateCompleterSet{T}.Recalculate"/>).
         /// </summary>
@@ -23,7 +23,7 @@ namespace Libplanet.Net
         /// If any peer in this set is reachable and there are no block states in the current node
         /// <see cref="Swarm{T}"/> tries to receive the needed states from that trusted peer,
         /// which is also calculated by that peer.
-        /// <para>If it fails to find or receive trustable states from peers it recalculates
+        /// <para>If it fails to find or receive trustworthy states from peers it recalculates
         /// (i.e., <see cref="StateCompleterSet{T}.Recalculate"/>) states by executing actions by
         /// itself instead.</para>
         /// <para>Note that this option is intended to be exposed to end users through a feasible
