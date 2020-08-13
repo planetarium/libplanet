@@ -68,8 +68,7 @@ To be released.
     backward compatibility (i.e., you need to rebuild your assemblies), still is
     backward-compatible at API-level as the option is turned on by default.
     [[#946]]
- -  Separated `IStore`'s methods to handle block states and state references
-    into `IBlockStateStore`.  [[#950]]
+ -  Extracted `IStore`'s some methods dedicated to block states into `IBlockStatesStore`. [[#950]]
      -  `ListStateKeys()` method.
      -  `ListAllStateReferences()` method.
      -  `LookupStateReference()` method.
@@ -79,8 +78,6 @@ To be released.
      -  `GetBlockStates()` method.
      -  `SetBlockStates()` method.
      -  `PruneBlockStates()` method.
- -  (Libplanet.RocksDB) `RocksDBStore` became to implement `IBlockStateStore`.  [[#950]]
- -  `DefaultStore` became to implement `IBlockStateStore`.  [[#950]]
  -  The signature of `IStore.LookupStateReference<T>(Guid, string, Block<T>)` method was
     changed to `LookupStateReference(Guid, string, long)`.  [[#950]]
  -  Added `IStateStore`-typed `stateStore` to `BlockChain<T>` constructor.  [[#950]]
@@ -145,6 +142,10 @@ To be released.
  -  Added `BlockChain<T>.Render` property.  [[#946]]
  -  Added `Reorged` event on `BlockChain<T>`.  [[#945]]
  -  Added `ReorgedEventArgs` class.  [[#945]]
+ -  (Libplanet.RocksDB) `RocksDBStore` became to implement `IBlockStatesStore`.  [[#950]]
+ -  `DefaultStore` became to implement `IBlockStatesStore`.  [[#950]]
+ -  Added `IStateStore` interface.  [[#950]]
+ -  Added `IBlockStatesStore` interface.  [[#950]]
 
 ### Behavioral changes
 
