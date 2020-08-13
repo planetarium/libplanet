@@ -45,6 +45,12 @@ namespace Libplanet.Store.Trie
 
         public ITrie Commit()
         {
+            var newRoot = Commit(Root);
+            if (!(newRoot is HashNode))
+            {
+                KeyValueStore.Set(newRoot.Hash().ToByteArray(), newRoot.Serialize());
+            }
+
             return new Trie(KeyValueStore, Commit(Root));
         }
 
