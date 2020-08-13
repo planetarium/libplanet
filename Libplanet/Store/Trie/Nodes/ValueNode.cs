@@ -7,7 +7,8 @@ namespace Libplanet.Store.Trie.Nodes
     /// <summary>
     /// Wrapper class.
     /// </summary>
-    public class ValueNode : INode, IEquatable<ValueNode>
+    [Equals]
+    public class ValueNode : INode
     {
         public ValueNode(IValue value)
         {
@@ -15,6 +16,12 @@ namespace Libplanet.Store.Trie.Nodes
         }
 
         public IValue Value { get; }
+
+        public static bool operator ==(ValueNode left, ValueNode right) =>
+            Operator.Weave(left, right);
+
+        public static bool operator !=(ValueNode left, ValueNode right) =>
+            Operator.Weave(left, right);
 
         public byte[] Serialize()
         {
@@ -25,41 +32,6 @@ namespace Libplanet.Store.Trie.Nodes
         public IValue ToBencodex()
         {
             return new List(new IValue[] { default(Null), Value });
-        }
-
-        public bool Equals(ValueNode other)
-        {
-            if (other is null)
-            {
-                return false;
-            }
-
-            if (ReferenceEquals(this, other))
-            {
-                return true;
-            }
-
-            return Equals(Value, other.Value);
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (obj is null)
-            {
-                return false;
-            }
-
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-
-            if (obj.GetType() != this.GetType())
-            {
-                return false;
-            }
-
-            return Equals((ValueNode)obj);
         }
 
         public override int GetHashCode()

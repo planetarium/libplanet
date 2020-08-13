@@ -10,6 +10,7 @@ using Libplanet.Store.Trie.Nodes;
 namespace Libplanet.Store.Trie
 {
     // TODO: implement 'logs' for debugging.
+    [Equals]
     internal class Trie : ITrie
     {
         public Trie(IKeyValueStore keyValueStore, INode root = null)
@@ -24,6 +25,12 @@ namespace Libplanet.Store.Trie
         private IKeyValueStore KeyValueStore { get; }
 
         private Codec Codec { get; }
+
+        public static bool operator ==(Trie left, Trie right) =>
+            Operator.Weave(left, right);
+
+        public static bool operator !=(Trie left, Trie right) =>
+            Operator.Weave(left, right);
 
         public void Set(byte[] key, IValue value)
         {
