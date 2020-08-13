@@ -33,7 +33,8 @@ namespace Libplanet.Store
             where T : IAction, new();
 
         /// <summary>
-        /// Gets state queried by <paramref name="stateKey"/> in the point, <paramref name="blockHash"/>.
+        /// Gets state queried by <paramref name="stateKey"/> in the point,
+        /// <paramref name="blockHash"/>.
         /// </summary>
         /// <param name="stateKey">The key to query state.</param>
         /// <param name="blockHash">The <see cref="Block{T}.Hash"/> which the point to query by
