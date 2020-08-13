@@ -43,11 +43,6 @@ namespace Libplanet.Blockchain
         private readonly ILogger _logger;
 
         /// <summary>
-        /// Defines whether to render actions on this <see cref="BlockChain{T}"/>.
-        /// </summary>
-        private readonly bool _render;
-
-        /// <summary>
         /// All <see cref="Block{T}"/>s in the <see cref="BlockChain{T}"/>
         /// storage, including orphan <see cref="Block{T}"/>s.
         /// Keys are <see cref="Block{T}.Hash"/>es and values are
@@ -129,7 +124,7 @@ namespace Libplanet.Blockchain
 
             _blocks = new BlockSet<T>(store);
             _transactions = new TransactionSet<T>(store);
-            _render = render;
+            Render = render;
             _rwlock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
             _txLock = new object();
 
@@ -180,6 +175,11 @@ namespace Libplanet.Blockchain
         /// An event which is invoked when the chain is reorged.
         /// </summary>
         public event EventHandler<ReorgedEventArgs> Reorged;
+
+        /// <summary>
+        /// Defines whether to render actions on this <see cref="BlockChain{T}"/>.
+        /// </summary>
+        public bool Render { get; }
 
         public IBlockPolicy<T> Policy { get; }
 
@@ -455,6 +455,10 @@ namespace Libplanet.Blockchain
         /// </summary>
         /// <param name="block">A next <see cref="Block{T}"/>, which is mined,
         /// to add.</param>
+        /// <param name="stateCompleters">The strategy to complement incomplete block states which
+        /// are required for action execution and rendering.
+        /// <see cref="StateCompleterSet{T}.Recalculate"/> by default.
+        /// </param>
         /// <exception cref="InvalidBlockException">Thrown when the given
         /// <paramref name="block"/> is invalid, in itself or according to
         /// the <see cref="Policy"/>.</exception>
@@ -462,8 +466,8 @@ namespace Libplanet.Blockchain
         /// <see cref="Transaction{T}.Nonce"/> is different from
         /// <see cref="GetNextTxNonce"/> result of the
         /// <see cref="Transaction{T}.Signer"/>.</exception>
-        public void Append(Block<T> block) =>
-            Append(block, DateTimeOffset.UtcNow);
+        public void Append(Block<T> block, StateCompleterSet<T>? stateCompleters = null) =>
+            Append(block, DateTimeOffset.UtcNow, stateCompleters);
 
         /// <summary>
         /// Adds a <paramref name="block"/> to the end of this chain.
@@ -476,6 +480,10 @@ namespace Libplanet.Blockchain
         /// <param name="block">A next <see cref="Block{T}"/>, which is mined,
         /// to add.</param>
         /// <param name="currentTime">The current time.</param>
+        /// <param name="stateCompleters">The strategy to complement incomplete block states which
+        /// are required for action execution and rendering.
+        /// <see cref="StateCompleterSet{T}.Recalculate"/> by default.
+        /// </param>
         /// <exception cref="InvalidBlockException">Thrown when the given
         /// <paramref name="block"/> is invalid, in itself or according to
         /// the <see cref="Policy"/>.</exception>
@@ -483,8 +491,18 @@ namespace Libplanet.Blockchain
         /// <see cref="Transaction{T}.Nonce"/> is different from
         /// <see cref="GetNextTxNonce"/> result of the
         /// <see cref="Transaction{T}.Signer"/>.</exception>
-        public void Append(Block<T> block, DateTimeOffset currentTime) =>
-            Append(block, currentTime, evaluateActions: true, renderActions: true);
+        public void Append(
+            Block<T> block,
+            DateTimeOffset currentTime,
+            StateCompleterSet<T>? stateCompleters = null
+        ) =>
+            Append(
+                block,
+                currentTime,
+                evaluateActions: true,
+                renderActions: true,
+                stateCompleters: stateCompleters
+            );
 
         /// <summary>
         /// Adds a <paramref name="transaction"/> to the pending list so that
@@ -588,10 +606,14 @@ namespace Libplanet.Blockchain
         }
 
         /// <summary>
-        /// Mine a <see cref="Block{T}"/> using staged <see cref="Transaction{T}"/>s.
+        /// Mines a next <see cref="Block{T}"/> using staged <see cref="Transaction{T}"/>s,
+        /// and then <see cref="Append(Block{T}, StateCompleterSet{T}?)"/> it to the chain
+        /// (unless the <paramref name="append"/> option is turned off).
         /// </summary>
         /// <param name="miner">The <see cref="Address"/> of miner that mined the block.</param>
         /// <param name="currentTime">The <see cref="DateTimeOffset"/> when mining started.</param>
+        /// <param name="append">Whether to <see cref="Append(Block{T}, StateCompleterSet{T}?)"/>
+        /// the mined block.  Turned on by default.</param>
         /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
         /// operation should be canceled.
@@ -602,6 +624,7 @@ namespace Libplanet.Blockchain
         public async Task<Block<T>> MineBlock(
             Address miner,
             DateTimeOffset currentTime,
+            bool append = true,
             CancellationToken cancellationToken = default(CancellationToken)
         )
         {
@@ -673,13 +696,35 @@ namespace Libplanet.Blockchain
             cancellationTokenSource.Dispose();
             cts.Dispose();
 
-            Append(block, currentTime);
+            if (append)
+            {
+                Append(block, currentTime);
+            }
 
             return block;
         }
 
-        public async Task<Block<T>> MineBlock(Address miner) =>
-            await MineBlock(miner, DateTimeOffset.UtcNow);
+        /// <summary>
+        /// Mines a next <see cref="Block{T}"/> using staged <see cref="Transaction{T}"/>s,
+        /// and then <see cref="Append(Block{T}, StateCompleterSet{T}?)"/> it to the chain
+        /// (unless the <paramref name="append"/> option is turned off).
+        /// </summary>
+        /// <param name="miner">The <see cref="Address"/> of miner that mined the block.</param>
+        /// <param name="append">Whether to <see cref="Append(Block{T}, StateCompleterSet{T}?)"/>
+        /// the mined block.  Turned on by default.</param>
+        /// <param name="cancellationToken">
+        /// A cancellation token used to propagate notification that this
+        /// operation should be canceled.
+        /// </param>
+        /// <returns>An awaitable task with a <see cref="Block{T}"/> that is mined.</returns>
+        /// <exception cref="OperationCanceledException">Thrown when
+        /// <see cref="BlockChain{T}.Tip"/> is changed while mining.</exception>
+        public Task<Block<T>> MineBlock(
+            Address miner,
+            bool append = true,
+            CancellationToken cancellationToken = default
+        ) =>
+            MineBlock(miner, DateTimeOffset.UtcNow, append, cancellationToken);
 
         /// <summary>
         /// Creates a new <see cref="Transaction{T}"/> and stage the transaction.
@@ -732,7 +777,8 @@ namespace Libplanet.Blockchain
             Block<T> block,
             DateTimeOffset currentTime,
             bool evaluateActions,
-            bool renderActions
+            bool renderActions,
+            StateCompleterSet<T>? stateCompleters = null
         )
         {
             if (!evaluateActions && renderActions)
@@ -743,6 +789,10 @@ namespace Libplanet.Blockchain
                     nameof(renderActions)
                 );
             }
+
+            // Since rendering process requires every step's states, if required block states
+            // are incomplete they are complemented anyway:
+            stateCompleters ??= StateCompleterSet<T>.Recalculate;
 
             _logger.Debug("Trying to append block {blockIndex}: {block}", block?.Index, block);
 
@@ -848,9 +898,9 @@ namespace Libplanet.Blockchain
                 _rwlock.ExitUpgradeableReadLock();
             }
 
-            if (_render && renderActions)
+            if (Render && renderActions)
             {
-                RenderBlock(evaluations, block);
+                RenderBlock(evaluations, block, stateCompleters);
             }
         }
 
@@ -860,17 +910,21 @@ namespace Libplanet.Blockchain
         /// <param name="offset">Index of the block to start rendering from.</param>
         /// <param name="stateCompleters">The strategy to complement incomplete block states.
         /// <see cref="StateCompleterSet{T}.Recalculate"/> by default.</param>
-        internal void RenderBlocks(long offset, StateCompleterSet<T>? stateCompleters = null)
+        /// <returns>The number of actions rendered.</returns>
+        internal int RenderBlocks(long offset, StateCompleterSet<T>? stateCompleters = null)
         {
             // Since rendering process requires every step's states, if required block states
             // are incomplete they are complemented anyway:
             stateCompleters ??= StateCompleterSet<T>.Recalculate;
 
             // FIXME: We should consider the case where block count is larger than int.MaxSize.
+            int cnt = 0;
             foreach (var block in IterateBlocks((int)offset))
             {
-                RenderBlock(null, block, stateCompleters);
+                cnt += RenderBlock(null, block, stateCompleters);
             }
+
+            return cnt;
         }
 
         /// <summary>
@@ -881,7 +935,8 @@ namespace Libplanet.Blockchain
         /// <param name="block"><see cref="Block{T}"/> to render actions.</param>
         /// <param name="stateCompleters">The strategy to complement incomplete block states.
         /// <see cref="StateCompleterSet{T}.Recalculate"/> by default.</param>
-        internal void RenderBlock(
+        /// <returns>The number of actions rendered.</returns>
+        internal int RenderBlock(
             IReadOnlyList<ActionEvaluation> evaluations,
             Block<T> block,
             StateCompleterSet<T>? stateCompleters = null
@@ -898,6 +953,7 @@ namespace Libplanet.Blockchain
                 evaluations = EvaluateActions(block, stateCompleters.Value);
             }
 
+            int cnt = 0;
             foreach (var evaluation in evaluations)
             {
                 if (evaluation.Exception is null)
@@ -908,7 +964,11 @@ namespace Libplanet.Blockchain
                 {
                     evaluation.Action.RenderError(evaluation.InputContext, evaluation.Exception);
                 }
+
+                cnt++;
             }
+
+            return cnt;
         }
 
         /// <summary>
@@ -916,12 +976,18 @@ namespace Libplanet.Blockchain
         /// results.
         /// </summary>
         /// <param name="block">A block to execute.</param>
+        /// <param name="stateCompleters">The strategy to complement incomplete previous block
+        /// states.  <see cref="StateCompleterSet{T}.Recalculate"/> by default.
+        /// </param>
         /// <returns>The result of action evaluations of the given <paramref name="block"/>.
         /// </returns>
         /// <remarks>This method is idempotent (except for rendering).  If the given
         /// <paramref name="block"/> has executed before, it does not execute it nor mutate states.
         /// </remarks>
-        internal IReadOnlyList<ActionEvaluation> ExecuteActions(Block<T> block)
+        internal IReadOnlyList<ActionEvaluation> ExecuteActions(
+            Block<T> block,
+            StateCompleterSet<T>? stateCompleters = null
+        )
         {
             _logger.Debug(
                 "Execute actions in the block #{BlockIndex} {Block}.",
@@ -929,7 +995,10 @@ namespace Libplanet.Blockchain
                 block
             );
             IReadOnlyList<ActionEvaluation> evaluations = null;
-            evaluations = EvaluateActions(block, StateCompleterSet<T>.Recalculate);
+            evaluations = EvaluateActions(
+                block,
+                stateCompleters ?? StateCompleterSet<T>.Recalculate
+            );
 
             _rwlock.EnterWriteLock();
             try
@@ -1143,7 +1212,7 @@ namespace Libplanet.Blockchain
             }
 
             var forked = new BlockChain<T>(
-                Policy, Store, Guid.NewGuid(), Genesis, true, _render);
+                Policy, Store, Guid.NewGuid(), Genesis, true, Render);
             Guid forkedId = forked.Id;
             _logger.Debug(
                 "Trying to fork chain at {branchPoint}" +
@@ -1240,16 +1309,14 @@ namespace Libplanet.Blockchain
             StateCompleterSet<T>? stateCompleters = null
         )
         {
+            if (other is null)
+            {
+                throw new ArgumentNullException(nameof(other));
+            }
+
             // As render/unrender processing requires every step's states from the branchpoint
             // to the new/stale tip, incomplete states need to be complemented anyway...
             StateCompleterSet<T> completers = stateCompleters ?? StateCompleterSet<T>.Recalculate;
-
-            if (other?.Tip is null)
-            {
-                throw new ArgumentException(
-                    $"The chain to be swapped is invalid. Id: {other?.Id}, Tip: {other?.Tip}",
-                    nameof(other));
-            }
 
             _logger.Debug(
                 "The blockchain was reorged from " +
@@ -1291,13 +1358,25 @@ namespace Libplanet.Blockchain
                 }
             }
 
-            _logger.Debug(
-                "Branchpoint is {branchPoint} (at {index})", topmostCommon, topmostCommon?.Index);
+            if (topmostCommon is null)
+            {
+                const string msg =
+                    "A chain cannot be reorged into a heterogeneous chain which has " +
+                    "no common genesis at all.";
+                throw new InvalidGenesisBlockException(Genesis.Hash, other.Genesis.Hash, msg);
+            }
 
-            if (_render && render)
+            _logger.Debug(
+                "The branchpoint is #{BranchpointIndex} {BranchpointHash}.",
+                topmostCommon.Index,
+                topmostCommon
+            );
+
+            if (Render && render)
             {
                 // Unrender stale actions.
                 _logger.Debug("Unrendering abandoned actions...");
+                int cnt = 0;
 
                 for (
                     Block<T> b = Tip;
@@ -1312,7 +1391,7 @@ namespace Libplanet.Blockchain
 
                     foreach (var evaluation in evaluations)
                     {
-                        _logger.Debug("Unrender action {action}", evaluation.Action);
+                        _logger.Debug("Unrender an action: {Action}.", evaluation.Action);
                         if (evaluation.Exception is null)
                         {
                             evaluation.Action.Unrender(
@@ -1327,10 +1406,12 @@ namespace Libplanet.Blockchain
                                 evaluation.Exception
                             );
                         }
+
+                        cnt++;
                     }
                 }
 
-                _logger.Debug($"Unrender for {nameof(Swap)}() is completed.");
+                _logger.Debug($"{nameof(Swap)}() completed unrendering {{Actions}} actions.", cnt);
             }
 
             IEnumerable<TxId> GetTxIdsWithRange(BlockChain<T> chain, Block<T> start, Block<T> end)
@@ -1379,17 +1460,17 @@ namespace Libplanet.Blockchain
                 _rwlock.ExitWriteLock();
             }
 
-            if (_render && render)
+            if (Render && render)
             {
-                _logger.Debug("Rendering actions in new chain");
+                _logger.Debug("Rendering actions in new chain.");
 
                 // Render actions that had been behind.
-                long startToRenderIndex = topmostCommon is Block<T> branchPoint
-                    ? branchPoint.Index + 1
+                long startToRenderIndex = topmostCommon is Block<T> branchpoint
+                    ? branchpoint.Index + 1
                     : 0;
 
-                RenderBlocks(startToRenderIndex, completers);
-                _logger.Debug($"Render for {nameof(Swap)}() is completed.");
+                int cnt = RenderBlocks(startToRenderIndex, completers);
+                _logger.Debug($"{nameof(Swap)}() completed rendering {{Actions}} actions.", cnt);
             }
         }
 
@@ -1532,6 +1613,8 @@ namespace Libplanet.Blockchain
             HashDigest<SHA256> blockHash
         )
         {
+            _logger.Verbose("Recalculates the block {BlockHash}'s states...", blockHash);
+
             // Prevent recursive trial to recalculate & complement incomplete block states by
             // mistake; if the below code works as intended, these state completers must never
             // be invoked.

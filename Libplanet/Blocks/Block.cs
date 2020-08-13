@@ -190,7 +190,7 @@ namespace Libplanet.Blocks
         /// <see cref="Transaction{T}.Actions"/> of the block's entire
         /// <see cref="Transactions"/>.
         /// </summary>
-        /// <seealso cref="BlockChain{T}.MineBlock(Libplanet.Address)"/>
+        /// <seealso cref="BlockChain{T}.MineBlock(Libplanet.Address, bool, CancellationToken)"/>
         public HashDigest<SHA256>? EvaluationDigest { get; }
 
         [IgnoreDuringEquals]

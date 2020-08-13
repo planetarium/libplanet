@@ -171,11 +171,11 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
 
         public static Block<T> MineGenesis<T>(
             Address? miner = null,
-            IEnumerable<Transaction<T>> transactions = null
+            IEnumerable<Transaction<T>> transactions = null,
+            DateTimeOffset? timestamp = null
         )
             where T : IAction, new()
         {
-            var timestamp = new DateTimeOffset(2018, 11, 29, 0, 0, 0, TimeSpan.Zero);
             if (transactions is null)
             {
                 transactions = new List<Transaction<T>>();
@@ -188,7 +188,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 nonce: new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 }),
                 miner: miner ?? GenesisMinerAddress,
                 previousHash: null,
-                timestamp: timestamp,
+                timestamp: timestamp ?? new DateTimeOffset(2018, 11, 29, 0, 0, 0, TimeSpan.Zero),
                 transactions: transactions
             );
         }

@@ -21,11 +21,10 @@ using Libplanet.Store;
 using Libplanet.Tx;
 using Nito.AsyncEx;
 using Serilog;
-using Serilog.Events;
 
 namespace Libplanet.Net
 {
-    public class Swarm<T> : IDisposable
+    public partial class Swarm<T> : IDisposable
         where T : IAction, new()
     {
         private const int InitialBlockDownloadWindow = 100;
@@ -260,14 +259,50 @@ namespace Libplanet.Net
             _logger.Debug($"{nameof(Swarm<T>)} stopped.");
         }
 
+        /// <summary>
+        /// Starts to periodically synchronize the <see cref="BlockChain"/>.
+        /// </summary>
+        /// <param name="millisecondsDialTimeout">
+        /// When the <see cref="Swarm{T}"/> tries to dial each peer in <see cref="Peers"/>,
+        /// the dial-up is cancelled after this timeout, and it tries another peer.
+        /// If <c>null</c> is given it never gives up dial-ups.
+        /// </param>
+        /// <param name="millisecondsBroadcastTxInterval">
+        /// The time period of exchange of staged transactions.
+        /// </param>
+        /// <param name="trustedStateValidators">
+        /// If any peer in this set is reachable, <see cref="Swarm{T}"/> receives the latest
+        /// states of the major blockchain from that trusted peer, which is also calculated by
+        /// that peer, instead of autonomously calculating the states from scratch.
+        /// Note that this option is intended to be exposed to end users through a feasible user
+        /// interface so that they can decide whom to trust for themselves.
+        /// </param>
+        /// <param name="cancellationToken">
+        /// A cancellation token used to propagate notification that this
+        /// operation should be canceled.
+        /// </param>
+        /// <returns>An awaitable task without value.</returns>
+        /// <exception cref="SwarmException">Thrown when this <see cref="Swarm{T}"/> instance is
+        /// already <see cref="Running"/>.</exception>
+        /// <remarks>If the <see cref="BlockChain"/> has no blocks at all or there are long behind
+        /// blocks to caught in the network this method could lead to unexpected behaviors, because
+        /// this tries to <see cref="IAction.Render"/> <em>all</em> actions in the behind blocks
+        /// so that there are a lot of calls to <see cref="IAction.Render"/> method in a short
+        /// period of time.  This can lead a game startup slow.  If you want to omit rendering of
+        /// these actions in the behind blocks use <see cref=
+        /// "PreloadAsync(TimeSpan?, IProgress{PreloadState}, IImmutableSet{Address},
+        /// EventHandler{PreloadBlockDownloadFailEventArgs}, CancellationToken)"
+        /// /> method too.</remarks>
         public async Task StartAsync(
             int millisecondsDialTimeout = 15000,
             int millisecondsBroadcastTxInterval = 5000,
+            IImmutableSet<Address> trustedStateValidators = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             await StartAsync(
                 TimeSpan.FromMilliseconds(millisecondsDialTimeout),
                 TimeSpan.FromMilliseconds(millisecondsBroadcastTxInterval),
+                trustedStateValidators,
                 cancellationToken
             );
         }
@@ -276,9 +311,18 @@ namespace Libplanet.Net
         /// Starts to periodically synchronize the <see cref="BlockChain"/>.
         /// </summary>
         /// <param name="dialTimeout">
-        /// A timeout value for dialing.
+        /// When the <see cref="Swarm{T}"/> tries to dial each peer in <see cref="Peers"/>,
+        /// the dial-up is cancelled after this timeout, and it tries another peer.
+        /// If <c>null</c> is given it never gives up dial-ups.
         /// </param>
         /// <param name="broadcastTxInterval">The time period of exchange of staged transactions.
+        /// </param>
+        /// <param name="trustedStateValidators">
+        /// If any peer in this set is reachable, <see cref="Swarm{T}"/> receives the latest
+        /// states of the major blockchain from that trusted peer, which is also calculated by
+        /// that peer, instead of autonomously calculating the states from scratch.
+        /// Note that this option is intended to be exposed to end users through a feasible user
+        /// interface so that they can decide whom to trust for themselves.
         /// </param>
         /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
@@ -299,9 +343,11 @@ namespace Libplanet.Net
         public async Task StartAsync(
             TimeSpan dialTimeout,
             TimeSpan broadcastTxInterval,
+            IImmutableSet<Address> trustedStateValidators = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             var tasks = new List<Task>();
+            trustedStateValidators ??= ImmutableHashSet<Address>.Empty;
             _workerCancellationTokenSource = new CancellationTokenSource();
             _cancellationToken = CancellationTokenSource.CreateLinkedTokenSource(
                     _workerCancellationTokenSource.Token, cancellationToken
@@ -317,7 +363,9 @@ namespace Libplanet.Net
             {
                 tasks.Add(Transport.RunAsync(_cancellationToken));
                 tasks.Add(BroadcastTxAsync(broadcastTxInterval, _cancellationToken));
-                tasks.Add(ProcessFillblock(_cancellationToken));
+                tasks.Add(
+                    ProcessFillBlocks(dialTimeout, trustedStateValidators, _cancellationToken)
+                );
                 tasks.Add(ProcessFillTxs(_cancellationToken));
                 _logger.Debug("Swarm started.");
 
@@ -406,7 +454,11 @@ namespace Libplanet.Net
         /// <summary>
         /// Gets the <see cref="PeerChainState"/> of the connected <see cref="Peers"/>.
         /// </summary>
-        /// <param name="dialTimeout">A timeout value for dialing.</param>
+        /// <param name="dialTimeout">
+        /// When the <see cref="Swarm{T}"/> tries to dial each peer in <see cref="Peers"/>,
+        /// the dial-up is cancelled after this timeout, and it tries another peer.
+        /// If <c>null</c> is given it never gives up dial-ups.
+        /// </param>
         /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
         /// operation should be canceled.
@@ -417,8 +469,8 @@ namespace Libplanet.Net
             CancellationToken cancellationToken
         )
         {
+            // FIXME: It would be better if it returns IAsyncEnumerable<PeerChainState> instead.
             return (await DialToExistingPeers(dialTimeout, cancellationToken))
-                .Where(pp => !(pp.Item1 is null || pp.Item2 is null))
                 .Select(pp =>
                     new PeerChainState(pp.Item1, pp.Item2.TipIndex, pp.Item2.TotalDifficulty));
         }
@@ -427,18 +479,18 @@ namespace Libplanet.Net
         /// Preemptively downloads blocks from registered <see cref="Peer"/>s.
         /// </summary>
         /// <param name="dialTimeout">
-        /// A timeout value for dialing.
+        /// When the <see cref="Swarm{T}"/> tries to dial each peer in <see cref="Peers"/>,
+        /// the dial-up is cancelled after this timeout, and it tries another peer.
+        /// If <c>null</c> is given it never gives up dial-ups.
         /// </param>
         /// <param name="progress">
         /// An instance that receives progress updates for block downloads.
         /// </param>
         /// <param name="trustedStateValidators">
-        /// If any peer in this set is reachable and there are no built-up
-        /// blocks in a current node, <see cref="Swarm{T}"/> receives the latest
-        /// states of the major blockchain from that trusted peer,
-        /// which is also calculated by that peer, instead of autonomously
-        /// calculating the states from scratch. Note that this option is
-        /// intended to be exposed to end users through a feasible user
+        /// If any peer in this set is reachable, <see cref="Swarm{T}"/> receives the latest
+        /// states of the major blockchain from that trusted peer, which is also calculated by
+        /// that peer, instead of autonomously calculating the states from scratch.
+        /// Note that this option is intended to be exposed to end users through a feasible user
         /// interface so that they can decide whom to trust for themselves.
         /// </param>
         /// <param name="blockDownloadFailed">
@@ -1261,11 +1313,13 @@ namespace Libplanet.Net
             Transport.BroadcastMessage(except, message);
         }
 
-        private Task<(BoundPeer, ChainStatus)[]> DialToExistingPeers(
+        private Task<(BoundPeer Peer, ChainStatus ChainStatus)[]> DialToExistingPeers(
             TimeSpan? dialTimeout,
             CancellationToken cancellationToken
         )
         {
+            // FIXME: It would be better if it returns IAsyncEnumerable<(BoundPeer, ChainStatus)>
+            // instead.
             IEnumerable<Task<(BoundPeer, ChainStatus)>> tasks = Peers.Select(
                 peer => Transport.SendMessageWithReplyAsync(
                     peer, new GetChainStatus(), dialTimeout, cancellationToken
@@ -1316,7 +1370,9 @@ namespace Libplanet.Net
                         throw t.Exception;
                     }
 
-                    return t.Result.Where(pair => !(pair.Item1 is null)).ToArray();
+                    return t.Result
+                        .Where(pair => !(pair.Item1 is null || pair.Item2 is null))
+                        .ToArray();
                 },
                 cancellationToken
             );
@@ -1328,7 +1384,6 @@ namespace Libplanet.Net
             CancellationToken cancellationToken)
         {
             var peersWithHeightAndDiff = (await DialToExistingPeers(dialTimeout, cancellationToken))
-                .Where(pp => !(pp.Item1 is null || pp.Item2 is null))
                 .Where(pp => pp.Item2.TotalDifficulty > (initialTip?.TotalDifficulty ?? 0))
                 .Select(pp => (pp.Item1, pp.Item2.TipIndex, pp.Item2.TotalDifficulty))
                 .ToList();
@@ -1347,7 +1402,7 @@ namespace Libplanet.Net
         private async Task<long?> SyncRecentStatesFromTrustedPeersAsync(
             BlockChain<T> blockChain,
             IProgress<PreloadState> progress,
-            IReadOnlyList<(BoundPeer, HashDigest<SHA256>)> trustedPeersWithTip,
+            IReadOnlyList<(BoundPeer Peer, HashDigest<SHA256> TipHash)> trustedPeersWithTip,
             BlockLocator baseLocator,
             CancellationToken cancellationToken)
         {
@@ -1584,107 +1639,6 @@ namespace Libplanet.Net
             BroadcastMessage(except, message);
         }
 
-        private void ProcessMessageHandler(object target, Message message)
-        {
-            switch (message)
-            {
-                case Ping ping:
-                    {
-                        _logger.Debug($"Ping received.");
-
-                        // This case can be dealt in Transport.
-                        var pong = new Pong()
-                        {
-                            Identity = ping.Identity,
-                        };
-
-                        Transport.ReplyMessage(pong);
-                        break;
-                    }
-
-                case GetChainStatus getChainStatus:
-                    {
-                        _logger.Debug($"GetChainStatus received.");
-
-                        // This is based on the assumption that genesis block always exists.
-                        var chainStatus = new ChainStatus(
-                            BlockChain.Tip.Index,
-                            BlockChain.Tip.TotalDifficulty)
-                        {
-                            Identity = getChainStatus.Identity,
-                        };
-
-                        Transport.ReplyMessage(chainStatus);
-                        break;
-                    }
-
-                case FindNeighbors findPeer:
-                    {
-                        _logger.Debug($"FindNeighbors received.");
-                        break;
-                    }
-
-                case GetBlockHashes getBlockHashes:
-                    {
-                        BlockChain.FindNextHashes(
-                            getBlockHashes.Locator,
-                            getBlockHashes.Stop,
-                            FindNextHashesChunkSize
-                        ).Deconstruct(
-                            out long? offset,
-                            out IReadOnlyList<HashDigest<SHA256>> hashes
-                        );
-                        var reply = new BlockHashes(offset, hashes)
-                        {
-                            Identity = getBlockHashes.Identity,
-                        };
-                        Transport.ReplyMessage(reply);
-                        break;
-                    }
-
-                case GetRecentStates getRecentStates:
-                    {
-                        TransferRecentStates(getRecentStates);
-                        break;
-                    }
-
-                case GetBlocks getBlocks:
-                    {
-                        TransferBlocks(getBlocks);
-                        break;
-                    }
-
-                case GetTxs getTxs:
-                    {
-                        TransferTxs(getTxs);
-                        break;
-                    }
-
-                case TxIds txIds:
-                    {
-                        ProcessTxIds(txIds);
-                        break;
-                    }
-
-                case BlockHashes blockHashes:
-                    {
-                        _logger.Error("BlockHashes message is only for IBD.");
-                        break;
-                    }
-
-                case BlockHeaderMessage blockHeader:
-                    {
-                        Task.Run(
-                            async () => await ProcessBlockHeader(blockHeader, _cancellationToken),
-                            _cancellationToken);
-                        break;
-                    }
-
-                default:
-                    throw new InvalidMessageException($"Can't handle message: {message}", message);
-            }
-        }
-
         private bool IsDemandNeeded(BlockHeader target)
         {
             return target.TotalDifficulty > BlockChain.Tip.TotalDifficulty &&
@@ -1692,66 +1646,13 @@ namespace Libplanet.Net
                     _demandBlockHash.Value.Header.TotalDifficulty < target.TotalDifficulty);
         }
 
-        private async Task ProcessBlockHeader(
-            BlockHeaderMessage message,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            if (!(message.Remote is BoundPeer peer))
-            {
-                _logger.Information(
-                    "BlockHeaderMessage was sent from invalid peer " +
-                    "{PeerAddress}; ignored.",
-                    message.Remote.Address);
-                return;
-            }
-
-            BlockHeaderReceived.Set();
-            BlockHeader header = message.Header;
-
-            _logger.Debug(
-                "Block header of hash [{Hash}] (index: {Index}) received.",
-                ByteUtil.Hex(header.Hash),
-                header.Index,
-                Address.ToHex());
-
-            try
-            {
-                header.Validate(DateTimeOffset.UtcNow);
-            }
-            catch (InvalidBlockException ibe)
-            {
-                _logger.Information(
-                    ibe,
-                    "Received header[{Hash}] seems invalid; ignore.",
-                    ByteUtil.Hex(header.Hash)
-                );
-                return;
-            }
-
-            using (await _blockSyncMutex.LockAsync(cancellationToken))
-            {
-                if (IsDemandNeeded(header))
-                {
-                    _demandBlockHash = new BlockHashDemand(header, peer);
-                }
-                else
-                {
-                    _logger.Debug(
-                        "No blocks are required " +
-                        "(current: {Current}, demand: {Demand}, received: {Received});" +
-                        $" {nameof(BlockHeaderMessage)} is ignored.",
-                        BlockChain.Tip.Index,
-                        _demandBlockHash?.Header.Index,
-                        header.Index);
-                }
-            }
-        }
-
         private async Task SyncPreviousBlocksAsync(
             BlockChain<T> blockChain,
             BoundPeer peer,
             HashDigest<SHA256>? stop,
             IProgress<BlockDownloadState> progress,
+            IImmutableSet<Address> trustedStateValidators,
+            TimeSpan dialTimeout,
             long totalBlockCount,
             bool evaluateActions,
             CancellationToken cancellationToken
@@ -1760,6 +1661,11 @@ namespace Libplanet.Net
             int retry = 3;
             long previousTipIndex = blockChain.Tip?.Index ?? -1;
             BlockChain<T> synced = null;
+            StateCompleterSet<T> trustedStateCompleterSet = await GetTrustedStateCompleterAsync(
+                trustedStateValidators,
+                dialTimeout,
+                cancellationToken: cancellationToken
+            );
 
             try
             {
@@ -1813,7 +1719,7 @@ namespace Libplanet.Net
                 if (synced is BlockChain<T> syncedNotNull
                     && !syncedNotNull.Id.Equals(blockChain?.Id))
                 {
-                    blockChain.Swap(synced, evaluateActions);
+                    blockChain.Swap(synced, evaluateActions, trustedStateCompleterSet);
                 }
             }
         }
@@ -1982,244 +1888,11 @@ namespace Libplanet.Net
             return workspace;
         }
 
-        private void TransferTxs(GetTxs getTxs)
-        {
-            IEnumerable<Transaction<T>> txs = getTxs.TxIds
-                .Where(txId => _store.ContainsTransaction(txId))
-                .Select(BlockChain.GetTransaction);
-
-            foreach (Transaction<T> tx in txs)
-            {
-                Message response = new Messages.Tx(tx.Serialize(true))
-                {
-                    Identity = getTxs.Identity,
-                };
-                Transport.ReplyMessage(response);
-            }
-        }
-
-        private void ProcessTxIds(TxIds message)
-        {
-            if (!(message.Remote is BoundPeer peer))
-            {
-                _logger.Information(
-                    "TxIds was sent from invalid peer " +
-                    $"[{message.Remote?.Address.ToHex()}]. ignored.");
-                return;
-            }
-
-            _logger.Debug(
-                "Received TxIds: [{txIds}]",
-                string.Join(", ", message.Ids));
-
-            ImmutableHashSet<TxId> newTxIds = message.Ids
-                .Where(id => !_demandTxIds.ContainsKey(id))
-                .Where(id => !_store.ContainsTransaction(id))
-                .ToImmutableHashSet();
-
-            if (!newTxIds.Any())
-            {
-                _logger.Debug("No txs to require.");
-                return;
-            }
-
-            _logger.Debug("Txs to require: {@txIds}", newTxIds.Select(txid => txid.ToString()));
-            foreach (var txid in newTxIds)
-            {
-                _demandTxIds.TryAdd(txid, peer);
-            }
-        }
-
-        private void TransferBlocks(GetBlocks getData)
-        {
-            string identityHex = ByteUtil.Hex(getData.Identity);
-            _logger.Verbose("Preparing a blocks reply to request {Identity}...", identityHex);
-
-            var blocks = new List<byte[]>();
-
-            List<HashDigest<SHA256>> hashes = getData.BlockHashes.ToList();
-            int i = 1;
-            int total = hashes.Count;
-            const string logMsg =
-                "Fetching a block #{Index}/{Total} ({Hash}) to include to " +
-                "a reply to {Identity}...";
-            foreach (HashDigest<SHA256> hash in hashes)
-            {
-                _logger.Verbose(logMsg, i, total, hash, identityHex);
-                if (_store.ContainsBlock(hash))
-                {
-                    Block<T> block = _store.GetBlock<T>(hash);
-                    byte[] payload = block.Serialize();
-                    blocks.Add(payload);
-                }
-
-                if (blocks.Count == getData.ChunkSize)
-                {
-                    var response = new Messages.Blocks(blocks)
-                    {
-                        Identity = getData.Identity,
-                    };
-                    _logger.Verbose(
-                        "Enqueuing a blocks reply (...{Index}/{Total})...",
-                        i,
-                        total
-                    );
-                    Transport.ReplyMessage(response);
-                    blocks.Clear();
-                }
-
-                i++;
-            }
-
-            if (blocks.Any())
-            {
-                var response = new Messages.Blocks(blocks)
-                {
-                    Identity = getData.Identity,
-                };
-                _logger.Verbose(
-                    "Enqueuing a blocks reply (...{Index}/{Total}) to {Identity}...",
-                    total,
-                    total,
-                    identityHex
-                );
-                Transport.ReplyMessage(response);
-            }
-
-            _logger.Debug("Blocks were transferred to {Identity}.", identityHex);
-        }
-
-        private void TransferRecentStates(GetRecentStates getRecentStates)
-        {
-            BlockLocator baseLocator = getRecentStates.BaseLocator;
-            HashDigest<SHA256>? @base = BlockChain.FindBranchPoint(baseLocator);
-            HashDigest<SHA256> target = getRecentStates.TargetBlockHash;
-            IImmutableDictionary<HashDigest<SHA256>,
-                IImmutableDictionary<string, IValue>
-            > blockStates = null;
-            IImmutableDictionary<string, IImmutableList<HashDigest<SHA256>>> stateRefs = null;
-            long nextOffset = -1;
-            int iteration = 0;
-
-            if (BlockChain.ContainsBlock(target))
-            {
-                ReaderWriterLockSlim rwlock = BlockChain._rwlock;
-                rwlock.EnterReadLock();
-                try
-                {
-                    Guid chainId = BlockChain.Id;
-
-                    _logger.Debug(
-                        "Getting state references from {Offset}",
-                        getRecentStates.Offset);
-
-                    long baseIndex =
-                        (@base is HashDigest<SHA256> bbh &&
-                         _store.GetBlockIndex(bbh) is long bbIdx)
-                            ? bbIdx
-                            : 0;
-                    long lowestIndex = baseIndex + getRecentStates.Offset;
-                    long targetIndex =
-                        (target is HashDigest<SHA256> tgt &&
-                         _store.GetBlockIndex(tgt) is long tgtIdx)
-                            ? tgtIdx
-                            : long.MaxValue;
-
-                    iteration =
-                        (int)Math.Ceiling(
-                            (double)(targetIndex - baseIndex + 1) / FindNextStatesChunkSize);
-                    _logger.Verbose("Iteration is : {Iteration}", iteration);
-
-                    long highestIndex = lowestIndex + FindNextStatesChunkSize - 1 > targetIndex
-                        ? targetIndex
-                        : lowestIndex + FindNextStatesChunkSize - 1;
-
-                    nextOffset = highestIndex == targetIndex
-                        ? -1
-                        : getRecentStates.Offset + FindNextStatesChunkSize;
-
-                    stateRefs = _store.ListAllStateReferences(
-                        chainId,
-                        lowestIndex: lowestIndex,
-                        highestIndex: highestIndex
-                    );
-                    if (_logger.IsEnabled(LogEventLevel.Verbose))
-                    {
-                        _logger.Verbose(
-                            "List state references from {From} to {To}:\n{StateReferences}",
-                            lowestIndex,
-                            highestIndex,
-                            string.Join(
-                                "\n",
-                                stateRefs.Select(kv => $"{kv.Key}: {string.Join(", ", kv.Value)}")
-                            )
-                        );
-                    }
-
-                    // GetBlockStates may return null since swarm may not have deep states.
-                    blockStates = stateRefs.Values
-                        .Select(refs => refs.Last())
-                        .ToImmutableHashSet()
-                        .Select(bh => (bh, _store.GetBlockStates(bh)))
-                        .Where(pair => !(pair.Item2 is null))
-                        .ToImmutableDictionary(
-                            pair => pair.Item1,
-                            pair => (IImmutableDictionary<string, IValue>)pair.Item2
-                                .ToImmutableDictionary(kv => kv.Key, kv => kv.Value)
-                        );
-                }
-                finally
-                {
-                    rwlock.ExitReadLock();
-                }
-            }
-
-            if (_logger.IsEnabled(LogEventLevel.Verbose))
-            {
-                if (BlockChain.ContainsBlock(target))
-                {
-                    var baseString = @base is HashDigest<SHA256> h
-                        ? $"{BlockChain[h].Index}:{h}"
-                        : null;
-                    var targetString = $"{BlockChain[target].Index}:{target}";
-                    _logger.Verbose(
-                        "State references to send (preload): {StateReferences} ({Base}-{Target})",
-                        stateRefs.Select(kv =>
-                            (
-                                kv.Key,
-                                string.Join(", ", kv.Value.Select(v => v.ToString()))
-                            )
-                        ).ToArray(),
-                        baseString,
-                        targetString
-                    );
-                    _logger.Verbose(
-                        "Block states to send (preload): {BlockStates} ({Base}-{Target})",
-                        blockStates.Select(kv => (kv.Key, kv.Value)).ToArray(),
-                        baseString,
-                        targetString
-                    );
-                }
-                else
-                {
-                    _logger.Verbose("Nothing to reply because {TargetHash} doesn't exist.", target);
-                }
-            }
-
-            var reply = new RecentStates(
-                target,
-                nextOffset,
-                iteration,
-                blockStates,
-                stateRefs?.ToImmutableDictionary())
-            {
-                Identity = getRecentStates.Identity,
-            };
-
-            Transport.ReplyMessage(reply);
-        }
-
-        private async Task ProcessFillblock(CancellationToken cancellationToken)
+        private async Task ProcessFillBlocks(
+            TimeSpan dialTimeout,
+            IImmutableSet<Address> trustedStateValidators,
+            CancellationToken cancellationToken
+        )
         {
             while (!cancellationToken.IsCancellationRequested)
             {
@@ -2240,6 +1913,8 @@ namespace Libplanet.Net
                         peer,
                         hash,
                         null,
+                        trustedStateValidators,
+                        dialTimeout,
                         0,
                         true,
                         cancellationToken);
@@ -2251,13 +1926,13 @@ namespace Libplanet.Net
                 }
                 catch (TimeoutException)
                 {
-                    _logger.Debug($"Timeout occurred during {nameof(ProcessFillblock)}");
+                    _logger.Debug($"Timeout occurred during {nameof(ProcessFillBlocks)}");
                 }
                 catch (Exception e)
                 {
                     var msg =
                         $"Unexpected exception occurred during" +
-                        $" {nameof(ProcessFillblock)}: {{e}}";
+                        $" {nameof(ProcessFillBlocks)}: {{e}}";
                     _logger.Error(e, msg, e);
                 }
             }

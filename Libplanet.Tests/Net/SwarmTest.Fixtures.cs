@@ -26,6 +26,7 @@ namespace Libplanet.Tests.Net
 
         private readonly List<BlockChain<DumbAction>> _blockchains;
         private readonly List<Swarm<DumbAction>> _swarms;
+        private readonly List<Func<Task>> _finalizers;
 
         private static async Task<(Address, Block<DumbAction>[])>
             MakeFixtureBlocksForPreloadAsyncCancellationTest()
@@ -93,7 +94,7 @@ namespace Libplanet.Tests.Net
                 host = IPAddress.Loopback.ToString();
             }
 
-            return new Swarm<T>(
+            var swarm = new Swarm<T>(
                 blockChain,
                 privateKey ?? new PrivateKey(),
                 appProtocolVersion ?? DefaultAppProtocolVersion,
@@ -107,6 +108,12 @@ namespace Libplanet.Tests.Net
                 differentAppProtocolVersionEncountered,
                 trustedAppProtocolVersionSigners,
                 options);
+            _finalizers.Add(async () =>
+            {
+                await StopAsync(swarm);
+                swarm.Dispose();
+            });
+            return swarm;
         }
     }
 }

@@ -49,6 +49,25 @@ To be released.
     `Block<T>()` constructor. [[#931], [#935]]
  -  Replaced `SerializationInfoExtensions.GetValueOrDefault<T>()` to
     `SerializationInfoExtensions.TryGetValue<T>()`.  [[#940]]
+ -  Added `bool append = true` option to both `BlockChain<T>.MineBlock()`
+    overloaded methods.  Although this breaks ABI-level backward compatibility
+    (i.e., you need to rebuild your assemblies), still is backward-compatible at
+    API-level as the option is turned on by default.  [[#946]]
+ -  Added `StateCompleterSet<T>? stateCompleters` option to two
+    `BlockChain<T>.Append()` overloaded methods.  Although this breaks ABI-level
+    backward compatibility (i.e., you need to rebuild your assemblies), still
+    is backward-compatible at API-level as the option has the default value
+    (`StateCompleterSet<T>.Recalculate`).  [[#946]]
+ -  Added `CancellationToken cancellationToken = default(CancellationToken)`
+    option to `BlockChain<T>.MineBlock(Address miner)` overloaded method.
+    Although this breaks ABI-level backward compatibility (i.e., you need to
+    rebuild your assemblies), still is backward-compatible at API-level as
+    the option has the default value.  [[#946]]
+ -  Added `IImmutableSet<Address> trustedStateValidators = null` option to both
+    `Swarm<T>.StartAsync()` overloaded methods.  Although this breaks ABI-level
+    backward compatibility (i.e., you need to rebuild your assemblies), still is
+    backward-compatible at API-level as the option is turned on by default.
+    [[#946]]
 
 ### Backward-incompatible network protocol changes
 
@@ -64,8 +83,11 @@ To be released.
     (with the type number `0x14`).  [[#459], [#919], [#920], [#930]]
  -  The `TimestampThreshold` between `Block<T>`s was changed from 15 minutes to
     15 seconds.  [[#922], [#925]]
- -  `Swarm<T>` became to have two more message types: `GetChainStatus` (`0x20`)
-     and `ChainStatus` (`0x21`).  [[#920], [#930]]
+ -  `Swarm<T>` became to have 4 more message types:
+     -  `GetChainStatus` (`0x20`)  [[#920], [#930]]
+     -  `ChainStatus` (`0x21`)  [[#920], [#930]]
+     -  `GetBlockStates` (`0x22`)  [[#946]]
+     -  `BlockStates` (`0x23`)  [[#946]]
 
 ### Backward-incompatible storage format changes
 
@@ -92,7 +114,7 @@ To be released.
  -  Added `BlockHeader.PreEvaluationHash` property.  [[#931], [#935]]
  -  Added `HashDigest(ImmutableArray<byte>)` constructor.  [[#931], [#935]]
  -  Incomplete block states became able to be handled in more flexible way.
-    [[#929], [#934]]
+    [[#929], [#934], [#946]]
      -  Replaced `BlockChain<T>.GetState(Address, HashDigest<SHA256>?, bool)`
         method with `GetState(Address, HashDigest<SHA256>?, StateCompleter<T>)`
         method.  Specifying `completeStates: true` and `false` can be replaced
@@ -103,6 +125,8 @@ To be released.
      -  Added `StateCompleterSet<T>` struct.
      -  Added `StateCompleters<T>` static class.
      -  Added `FungibleAssetStateCompleters<T>` static class.
+     -  Added `Swarm<T>.GetTrustedStateCompleterAsync()` method.
+ -  Added `BlockChain<T>.Render` property.  [[#946]]
  -  Added `Reorged` event on `BlockChain<T>`.  [[#945]]
  -  Added `ReorgedEventArgs` class.  [[#945]]
 
@@ -195,6 +219,7 @@ To be released.
 [#940]: https://github.com/planetarium/libplanet/pull/940
 [#941]: https://github.com/planetarium/libplanet/pull/941
 [#945]: https://github.com/planetarium/libplanet/pull/945
+[#946]: https://github.com/planetarium/libplanet/pull/946
 [sleep mode]: https://en.wikipedia.org/wiki/Sleep_mode
 
 

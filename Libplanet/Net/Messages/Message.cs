@@ -94,6 +94,17 @@ namespace Libplanet.Net.Messages
             /// Contains the chain status of the peer at the moment.
             /// </summary>
             ChainStatus = 0x21,
+
+            /// <summary>
+            /// Request a block's delta states.
+            /// </summary>
+            GetBlockStates = 0x22,
+
+            /// <summary>
+            /// A reply to <see cref="GetBlockStates"/>.
+            /// Contains the delta states of the requested block.
+            /// </summary>
+            BlockStates = 0x23,
         }
 
         public byte[] Identity { get; set; }
@@ -120,6 +131,12 @@ namespace Libplanet.Net.Messages
 
             NetMQFrame[] body = raw.Skip(headerCount).ToArray();
 
+            // FIXME: The below code is too repetitive and prone to miss to add, which means,
+            // when you add a new message type, you adds an enum member to MessageType and
+            // a corresponding subclass of Message, but misses to add that correspondence here,
+            // you may take a long time to be aware you've missed here, because the code is still
+            // built well and it looks like just Swarm<T> silently ignore new messages.
+            // At least this correspondence map should not be here.
             var types = new Dictionary<MessageType, Type>
             {
                 { MessageType.Ping, typeof(Ping) },
@@ -138,6 +155,8 @@ namespace Libplanet.Net.Messages
                 { MessageType.BlockHeaderMessage, typeof(BlockHeaderMessage) },
                 { MessageType.GetChainStatus, typeof(GetChainStatus) },
                 { MessageType.ChainStatus, typeof(ChainStatus) },
+                { MessageType.GetBlockStates, typeof(GetBlockStates) },
+                { MessageType.BlockStates, typeof(BlockStates) },
             };
 
             if (!types.TryGetValue(rawType, out Type type))
