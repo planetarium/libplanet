@@ -3,14 +3,35 @@ using System.Collections.Immutable;
 using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Blockchain;
 using Libplanet.Blocks;
 
 namespace Libplanet.Store
 {
+    /// <summary>
+    /// An interface to abstract methods which handle states.
+    /// </summary>
     public interface IStateStore
     {
+        /// <summary>
+        /// Sets states mapped as relation <see cref="Block{T}.Hash"/> → states.
+        /// It guarantees <see cref="GetState"/> will return the same state if you passed same
+        /// <paramref name="blockHash"/> and haven't written overwrite the value, storage was
+        /// not broken.
+        /// </summary>
+        /// <param name="blockHash">The <see cref="Block{T}.Hash"/> to set states.</param>
+        /// <param name="states">The dictionary has multiple paris, state key → state.</param>
         void SetStates(HashDigest<SHA256> blockHash, IImmutableDictionary<string, IValue> states);
 
+        /// <summary>
+        /// Gets state queried by <paramref name="stateKey"/> in the point, <paramref name="blockHash"/>.
+        /// </summary>
+        /// <param name="stateKey">The key to query state.</param>
+        /// <param name="blockHash">The <see cref="Block{T}.Hash"/> which the point to query by
+        /// <paramref name="stateKey"/> at.</param>
+        /// <param name="chainId">The <see cref="BlockChain{T}.Id"/> of wanted got.</param>
+        /// <returns>The state queried from <paramref name="blockHash"/> and
+        /// <paramref name="stateKey"/>. If it couldn't find state, returns `null`.</returns>
         IValue GetState(
             string stateKey,
             HashDigest<SHA256>? blockHash = null,
@@ -25,6 +46,17 @@ namespace Libplanet.Store
         /// </returns>
         bool ExistsBlockState(HashDigest<SHA256> blockHash);
 
+        /// <summary>
+        /// Copies metadata related to states from <paramref name="sourceChainId"/> to
+        /// <paramref name="destinationChainId"/>, with <paramref name="branchPoint"/>.
+        /// </summary>
+        /// <param name="sourceChainId">The <see cref="BlockChain{T}.Id"/> of the chain which
+        /// copies from.</param>
+        /// <param name="destinationChainId">The <see cref="BlockChain{T}.Id"/> of the chain which
+        /// copies to.</param>
+        /// <param name="branchPoint">The branch point to begin coping.</param>
+        /// <typeparam name="T">An <see cref="IAction"/> type.  It should match to
+        /// <paramref name="branchPoint"/>'s type parameter.</typeparam>
         void ForkStates<T>(
             Guid sourceChainId,
             Guid destinationChainId,
