@@ -6,6 +6,7 @@ using Bencodex;
 using Bencodex.Types;
 using Libplanet.Crypto;
 using Libplanet.Store.Trie;
+using Libplanet.Store.Trie.Nodes;
 using Xunit;
 
 namespace Libplanet.Tests.Store.Trie
@@ -96,10 +97,10 @@ namespace Libplanet.Tests.Store.Trie
             ITrie trieC = trieB.Commit();
             ITrie trieD = trieC.Commit();
 
-            Assert.NotEqual(trieA.Root, trieB.Root);
-            Assert.NotEqual(trieA.Root, trieC.Root);
-            Assert.NotEqual(trieB.Root, trieC.Root);
-            Assert.Equal(trieC.Root, trieD.Root);
+            Assert.NotEqual(trieA.Root.Hash(), trieB.Root.Hash());
+            Assert.NotEqual(trieA.Root.Hash(), trieC.Root.Hash());
+            Assert.NotEqual(trieB.Root.Hash(), trieC.Root.Hash());
+            Assert.Equal(trieC.Root.Hash(), trieD.Root.Hash());
         }
     }
 }
