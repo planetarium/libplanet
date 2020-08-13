@@ -22,6 +22,10 @@ namespace Libplanet.Store.Trie
             else
             {
                 path = Path.GetFullPath(path);
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
 
                 var pfs = new PhysicalFileSystem();
                 _root = new SubFileSystem(

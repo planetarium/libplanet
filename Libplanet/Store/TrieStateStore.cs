@@ -23,6 +23,11 @@ namespace Libplanet.Store
                 path = Path.GetFullPath(path);
             }
 
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
             _stateKeyValueStore =
                 new DefaultKeyValueStore(path is null ? null : Path.Combine(path, "states"));
             _stateHashKeyValueStore =
