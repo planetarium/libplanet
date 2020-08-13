@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Immutable;
 using System.Security.Cryptography;
-using System.Text;
 using Bencodex.Types;
 using Libplanet.Blocks;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
-using Libplanet.Store.Trie.Nodes;
 using Libplanet.Tests.Common.Action;
 using Xunit;
 
@@ -18,7 +16,6 @@ namespace Libplanet.Tests.Store
         private readonly IKeyValueStore _stateHashKeyValueStore;
         private readonly TrieStateStore _stateStore;
 
-        private readonly HashDigest<SHA256> _prestoredBlockHash;
         private readonly IImmutableDictionary<string, IValue> _prestoredValues;
 
         private readonly DefaultStoreFixture _fx;
@@ -55,43 +52,38 @@ namespace Libplanet.Tests.Store
             _stateKeyValueStore = new DefaultKeyValueStore(null);
             _stateHashKeyValueStore = new DefaultKeyValueStore(null);
 
-            _prestoredBlockHash =
-                new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size));
             _prestoredValues = ImmutableDictionary<string, IValue>.Empty
                 .Add("foo", (Binary)TestUtils.GetRandomBytes(32))
                 .Add("bar", (Text)ByteUtil.Hex(TestUtils.GetRandomBytes(32)))
                 .Add("baz", (Bencodex.Types.Boolean)false)
                 .Add("qux", Bencodex.Types.Dictionary.Empty);
 
-            var trie = new Libplanet.Store.Trie.Trie(_stateKeyValueStore);
-            foreach (var (key, value) in _prestoredValues)
-            {
-                trie.Set(Encoding.UTF8.GetBytes(key), value);
-            }
-
-            var committedTrie = trie.Commit();
-            _stateHashKeyValueStore.Set(
-                _prestoredBlockHash.ToByteArray(), committedTrie.Root.Hash().ToByteArray());
-
             _stateStore = new TrieStateStore(_stateKeyValueStore, _stateHashKeyValueStore);
+            _stateStore.SetStates(_fx.GenesisBlock.Hash, _prestoredValues, _fxBlockGetter);
         }
 
         [Fact]
         public void SetStates()
         {
             // Check to set and to get.
-            Assert.Null(_stateStore.GetRootHash(_fx.GenesisBlock.Hash));
-            Assert.False(_stateStore.ExistsBlockState(_fx.GenesisBlock.Hash));
+            Assert.Null(_stateStore.GetRootHash(_fx.Hash1));
+            Assert.False(_stateStore.ExistsBlockState(_fx.Hash1));
             var states = ImmutableDictionary<string, IValue>.Empty
                 .Add("foo", (Text)"value");
-            _stateStore.SetStates(_fx.GenesisBlock.Hash, states, _fxBlockGetter);
-            Assert.Equal((Text)"value", _stateStore.GetState("foo", _fx.GenesisBlock.Hash));
-            Assert.NotNull(_stateStore.GetRootHash(_fx.GenesisBlock.Hash));
-            Assert.True(_stateStore.ExistsBlockState(_fx.GenesisBlock.Hash));
+            _stateStore.SetStates(_fx.Hash1, states, _fxBlockGetter);
+            Assert.Equal((Text)"value", _stateStore.GetState("foo", _fx.Hash1));
+            Assert.NotNull(_stateStore.GetRootHash(_fx.Hash1));
+            Assert.True(_stateStore.ExistsBlockState(_fx.Hash1));
+
+            _stateStore.SetStates(_fx.Hash2, _prestoredValues, _fxBlockGetter);
 
             // Check same states have same state hash.
-            _stateStore.SetStates(_fx.Hash1, _prestoredValues, _fxBlockGetter);
-            Assert.Equal(_prestoredBlockHash, _stateStore.GetRootHash(_fx.Hash1));
+            Assert.NotEqual(
+                _stateStore.GetRootHash(_fx.GenesisBlock.Hash),
+                _stateStore.GetRootHash(_fx.Hash1));
+            Assert.Equal(
+                _stateStore.GetRootHash(_fx.GenesisBlock.Hash),
+                _stateStore.GetRootHash(_fx.Hash2));
         }
 
         [Fact]
@@ -101,7 +93,7 @@ namespace Libplanet.Tests.Store
             {
                 Assert.Equal(
                     state,
-                    _stateStore.GetState(key, _prestoredBlockHash));
+                    _stateStore.GetState(key, _fx.GenesisBlock.Hash));
             }
         }
 
@@ -114,10 +106,10 @@ namespace Libplanet.Tests.Store
                 randomBlockHash =
                     new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size));
             }
-            while (!randomBlockHash.Equals(_prestoredBlockHash));
+            while (randomBlockHash.Equals(_fx.GenesisBlock.Hash));
 
             Assert.False(_stateStore.ExistsBlockState(randomBlockHash));
-            Assert.True(_stateStore.ExistsBlockState(_prestoredBlockHash));
+            Assert.True(_stateStore.ExistsBlockState(_fx.GenesisBlock.Hash));
         }
     }
 }
