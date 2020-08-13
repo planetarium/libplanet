@@ -43,7 +43,7 @@ namespace Libplanet.Store
             where T : IAction, new()
         {
             var block = blockGetter(blockHash);
-            var previousBlockStateHashBytes = block.PreviousHash is null
+            var previousBlockStateHashBytes = block?.PreviousHash is null
                 ? null
                 : _stateHashKeyValueStore.Get(block.PreviousHash.Value.ToByteArray());
             var trieRoot = previousBlockStateHashBytes is null
