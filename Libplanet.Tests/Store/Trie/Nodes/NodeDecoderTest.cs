@@ -61,8 +61,8 @@ namespace Libplanet.Tests.Store.Trie.Nodes
         {
             var list = new List(new IValue[]
             {
-                (Binary)ByteUtil.ParseHex("beef").Append<byte>(0x10).ToArray(),
-                (Text)"beef",
+                (Binary)ByteUtil.ParseHex("beef").ToArray(),
+                new List(new IValue[] { default(Null), (Text)"beef", }),
             });
 
             INode node = NodeDecoder.Decode(list);

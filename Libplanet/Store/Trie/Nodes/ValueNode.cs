@@ -19,12 +19,12 @@ namespace Libplanet.Store.Trie.Nodes
         public byte[] Serialize()
         {
             var codec = new Codec();
-            return codec.Encode(Value);
+            return codec.Encode(ToBencodex());
         }
 
         public IValue ToBencodex()
         {
-            return Value;
+            return new List(new IValue[] { default(Null), Value });
         }
 
         public bool Equals(ValueNode other)

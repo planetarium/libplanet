@@ -1,5 +1,5 @@
+using System;
 using System.Collections.Immutable;
-using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Security.Cryptography;
 using Bencodex.Types;
@@ -16,19 +16,32 @@ namespace Libplanet.Store.Trie.Nodes
                     switch (list.Count)
                     {
                         // Children hashes... | value
-                        case 17:
+                        case FullNode.ChildrenCount:
                             return DecodeFull(list);
 
                         // path | value
                         case 2:
-                            return DecodeShort(list);
+                            if (list[0] is Binary)
+                            {
+                                return DecodeShort(list);
+                            }
+
+                            if (list[0] is Null)
+                            {
+                                return new ValueNode(list[1]);
+                            }
+
+                            break;
+
+                        default:
+                            throw new InvalidTrieNodeException(
+                                $"Can't decode a node from the bencodex value: {value.Inspection}");
                     }
 
                     break;
             }
 
-            throw new InvalidTrieNodeException("Can't decode a node from the bencodex value:" +
-                                               $" {value.Inspection}");
+            return DecodeRef(value);
         }
 
         private static FullNode DecodeFull(List list)
@@ -37,7 +50,7 @@ namespace Libplanet.Store.Trie.Nodes
             // Bencodex.Types.Null (i.e., null) because FullNode's value and children can be null,
             // but there is no way to present null.
             return new FullNode(list
-                .Select(DecodeChild)
+                .Select(DecodeRef)
                 .Take(FullNode.ChildrenCount)
                 .ToImmutableArray());
         }
@@ -65,12 +78,6 @@ namespace Libplanet.Store.Trie.Nodes
                 throw new InvalidTrieNodeException(
                     $"Expected `{nameof(ShortNode)}.{nameof(ShortNode.Key)}`'s serialization type" +
                     $" was {nameof(Binary)}, but it was {list[0].GetType().FullName}");
-            }
-
-            if (HasValueNodeFlag(path))
-            {
-                // TODO: Check embedded node.
-                return new ShortNode(RemoveValueNodeFlag(path), new ValueNode(list[1]));
             }
 
             // Get referenced node corresponding.
@@ -101,6 +108,9 @@ namespace Libplanet.Store.Trie.Nodes
                     }
 
                     break;
+
+                case Null _:
+                    return null;
             }
 
             throw new InvalidTrieNodeException("Failed to decode reference node or embedded node.");
@@ -115,21 +125,6 @@ namespace Libplanet.Store.Trie.Nodes
             }
 
             return size;
-        }
-
-        [Pure]
-        private static bool HasValueNodeFlag(byte[] path)
-        {
-            // path[path.Length - 1] can't be 16 without value node flag,
-            // because hexadecimal values are in 0..15 range.
-            return path.Length > 0 && path[path.Length - 1] == 16;
-        }
-
-        // NOTE: Add ValueNodeFlag for storing.
-        [Pure]
-        private static byte[] RemoveValueNodeFlag(byte[] path)
-        {
-            return path.Take(path.Length - 1).ToArray();
         }
     }
 }

@@ -68,42 +68,45 @@ namespace Libplanet.Store.Trie
                         INode child = fullNode.Children[i];
                         if (child is null)
                         {
-                            virtualChildren[i] = new ValueNode(default(Null));
+                            virtualChildren[i] = null;
                         }
                         else
                         {
-                            child = Commit(child);
-                            HashDigest<SHA256> nodeHash = child.Hash();
-                            virtualChildren[i] = new HashNode(nodeHash);
-                            KeyValueStore.Set(
-                                nodeHash.ToByteArray(),
-                                child.Serialize());
+                            virtualChildren[i] = Commit(child);
                         }
                     }
 
                     fullNode = new FullNode(virtualChildren.ToImmutableArray());
-                    HashDigest<SHA256> fullNodeHash = fullNode.Hash();
-                    KeyValueStore.Set(fullNodeHash.ToByteArray(), fullNode.Serialize());
-
-                    return fullNode;
-
-                case ShortNode shortNode:
-                    var committedValueNode = Commit(shortNode.Value);
-
-                    // Whether to use embedded node.
-                    if (!(committedValueNode is HashNode hashNode))
+                    if (fullNode.Serialize().Length <= HashDigest<SHA256>.Size)
                     {
-                        shortNode = new ShortNode(shortNode.Key.Add(0x10), shortNode.Value);
+                        return fullNode;
                     }
                     else
                     {
-                        shortNode = new ShortNode(shortNode.Key, hashNode);
+                        var fullNodeHash = fullNode.Hash();
+                        KeyValueStore.Set(
+                            fullNodeHash.ToByteArray(),
+                            fullNode.Serialize());
+
+                        return new HashNode(fullNodeHash);
                     }
 
-                    HashDigest<SHA256> shortNodeHash = shortNode.Hash();
-                    KeyValueStore.Set(shortNodeHash.ToByteArray(), shortNode.Serialize());
+                case ShortNode shortNode:
+                    var committedValueNode = Commit(shortNode.Value);
+                    shortNode = new ShortNode(shortNode.Key, committedValueNode);
+                    if (shortNode.Serialize().Length <= HashDigest<SHA256>.Size)
+                    {
+                        return shortNode;
+                    }
+                    else
+                    {
+                        var shortNodeHash = shortNode.Hash();
+                        KeyValueStore.Set(
+                            shortNodeHash.ToByteArray(),
+                            shortNode.Serialize());
 
-                    return shortNode;
+                        return new HashNode(shortNodeHash);
+                    }
 
                 case ValueNode valueNode:
                     int nodeSize = valueNode.Serialize().Length;
@@ -233,12 +236,6 @@ namespace Libplanet.Store.Trie
                     {
                         value = null;
                         return false;
-                    }
-
-                    if (shortNode.Key.Last() == 0x10)
-                    {
-                        value = shortNode.Value.ToBencodex();
-                        return true;
                     }
 
                     return TryGet(

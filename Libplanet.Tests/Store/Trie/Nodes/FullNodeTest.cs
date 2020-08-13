@@ -16,7 +16,8 @@ namespace Libplanet.Tests.Store.Trie.Nodes
                     .Append(new ValueNode(Dictionary.Empty)).ToImmutableArray());
 
             var expected =
-                new List(Enumerable.Repeat<IValue>(default(Null), 16).Append(Dictionary.Empty));
+                new List(Enumerable.Repeat<IValue>(default(Null), 16)
+                    .Append(new List(new IValue[] { default(Null), Dictionary.Empty })));
             var encoded = fullNode.ToBencodex();
             Assert.IsType<List>(encoded);
             Assert.Equal(expected.Count, ((List)encoded).Count);

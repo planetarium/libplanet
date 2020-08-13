@@ -21,7 +21,11 @@ namespace Libplanet.Tests.Store.Trie.Nodes
             foreach (var value in values)
             {
                 var valueNode = new ValueNode(value);
-                Assert.Equal(value, valueNode.ToBencodex());
+                var expected = new List(new[]
+                {
+                    default(Null), value,
+                });
+                Assert.Equal(expected, valueNode.ToBencodex());
             }
         }
     }
