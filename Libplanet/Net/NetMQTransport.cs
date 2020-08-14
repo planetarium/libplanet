@@ -172,12 +172,10 @@ namespace Libplanet.Net
         public Peer AsPeer => _endPoint is null
             ? new Peer(
                 _privateKey.PublicKey,
-                _appProtocolVersion,
                 _publicIPAddress)
             : new BoundPeer(
                 _privateKey.PublicKey,
                 _endPoint,
-                _appProtocolVersion,
                 _publicIPAddress);
 
         public IEnumerable<BoundPeer> Peers => Protocol.Peers;
@@ -551,7 +549,7 @@ namespace Libplanet.Net
         {
             string identityHex = ByteUtil.Hex(message.Identity);
             _logger.Debug("Reply {Message} to {Identity}...", message, identityHex);
-            _replyQueue.Enqueue(message.ToNetMQMessage(_privateKey, AsPeer));
+            _replyQueue.Enqueue(message.ToNetMQMessage(_privateKey, AsPeer, _appProtocolVersion));
         }
 
         public async Task CheckAllPeersAsync(CancellationToken cancellationToken, TimeSpan? timeout)
@@ -576,13 +574,14 @@ namespace Libplanet.Net
                         "A raw message [frame count: {0}] has received.",
                         raw.FrameCount
                     );
-                    Message message = Message.Parse(raw, reply: false);
+                    Message message = Message.Parse(
+                        raw,
+                        false,
+                        _appProtocolVersion,
+                        _trustedAppProtocolVersionSigners,
+                        _differentAppProtocolVersionEncountered);
                     _logger.Debug("A message has parsed: {0}, from {1}", message, message.Remote);
                     MessageHistory.Enqueue(message);
-                    if (!(message is Ping))
-                    {
-                        ValidateSender(message.Remote);
-                    }
 
                     try
                     {
@@ -598,9 +597,14 @@ namespace Libplanet.Net
                         throw;
                     }
                 }
-                catch (DifferentAppProtocolVersionException)
+                catch (DifferentAppProtocolVersionException dapve)
                 {
-                    _logger.Debug("Ignore message from peer with different version.");
+                    var differentVersion = new DifferentVersion()
+                    {
+                        Identity = dapve.Identity,
+                    };
+                    ReplyMessage(differentVersion);
+                    _logger.Debug("Message from peer with different version received.");
                 }
                 catch (InvalidMessageException ex)
                 {
@@ -627,7 +631,7 @@ namespace Libplanet.Net
             _logger.Debug("Broadcasting message: {Message}", msg);
             _logger.Debug("Peers to broadcast: {PeersCount}", peers.Count);
 
-            NetMQMessage message = msg.ToNetMQMessage(_privateKey, AsPeer);
+            NetMQMessage message = msg.ToNetMQMessage(_privateKey, AsPeer, _appProtocolVersion);
 
             foreach (BoundPeer peer in peers)
             {
@@ -783,7 +787,7 @@ namespace Libplanet.Net
                 req.Message,
                 req.Peer
             );
-            var message = req.Message.ToNetMQMessage(_privateKey, AsPeer);
+            var message = req.Message.ToNetMQMessage(_privateKey, AsPeer, _appProtocolVersion);
             var result = new List<Message>();
             TaskCompletionSource<IEnumerable<Message>> tcs = req.TaskCompletionSource;
             try
@@ -806,13 +810,18 @@ namespace Libplanet.Net
                         "A raw message ({FrameCount} frames) has replied.",
                         raw.FrameCount
                     );
-                    Message reply = Message.Parse(raw, true);
+                    Message reply = Message.Parse(
+                        raw,
+                        true,
+                        _appProtocolVersion,
+                        _trustedAppProtocolVersionSigners,
+                        _differentAppProtocolVersionEncountered);
                     _logger.Debug(
                         "A reply has parsed: {Reply} from {ReplyRemote}",
                         reply,
                         reply.Remote
                     );
-                    ValidateSender(reply.Remote);
+
                     result.Add(reply);
                 }
 
@@ -823,9 +832,9 @@ namespace Libplanet.Net
 
                 tcs.TrySetResult(result);
             }
-            catch (DifferentAppProtocolVersionException dape)
+            catch (DifferentAppProtocolVersionException dapve)
             {
-                tcs.TrySetException(dape);
+                tcs.TrySetException(dapve);
             }
             catch (TimeoutException te)
             {
@@ -944,21 +953,6 @@ namespace Libplanet.Net
                     _listenPort.Value, 3, _turnCancellationTokenSource.Token);
                 _turnTasks.Add(RefreshAllocate(_turnCancellationTokenSource.Token));
                 _turnTasks.Add(RefreshPermissions(_turnCancellationTokenSource.Token));
-            }
-        }
-
-        // FIXME: This method should be in Swarm<T>
-        private void ValidateSender(Peer peer)
-        {
-            if (!peer.IsCompatibleWith(
-                    _appProtocolVersion,
-                    _trustedAppProtocolVersionSigners,
-                    _differentAppProtocolVersionEncountered))
-            {
-                throw new DifferentAppProtocolVersionException(
-                    "Peer protocol version is different.",
-                    _appProtocolVersion,
-                    peer.AppProtocolVersion);
             }
         }
 

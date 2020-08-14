@@ -441,17 +441,11 @@ namespace Libplanet.Net.Protocols
                 throw new ArgumentNullException(nameof(rawPeer));
             }
 
-            if (!(rawPeer is BoundPeer peer &&
-                  peer.IsCompatibleWith(
-                      _appProtocolVersion,
-                      _trustedAppProtocolVersionSigners,
-                      _differentAppProtocolVersionEncountered)))
+            if (rawPeer is BoundPeer peer)
             {
                 // Don't update peer without endpoint or with different appProtocolVersion.
-                return;
+                _routing.AddPeer(peer);
             }
-
-            _routing.AddPeer(peer);
         }
 
         private void RemovePeer(BoundPeer peer)

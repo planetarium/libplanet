@@ -26,24 +26,19 @@ namespace Libplanet.Tests.Net.Protocols
             var bucket = new KBucket(4, new System.Random(), Logger.None);
             var peer1 = new BoundPeer(
                 new PrivateKey().PublicKey,
-                new DnsEndPoint("0.0.0.0", 1234),
-                AppProtocolVer);
+                new DnsEndPoint("0.0.0.0", 1234));
             var peer2 = new BoundPeer(
                 new PrivateKey().PublicKey,
-                new DnsEndPoint("0.0.0.0", 1234),
-                AppProtocolVer);
+                new DnsEndPoint("0.0.0.0", 1234));
             var peer3 = new BoundPeer(
                 new PrivateKey().PublicKey,
-                new DnsEndPoint("0.0.0.0", 1234),
-                AppProtocolVer);
+                new DnsEndPoint("0.0.0.0", 1234));
             var peer4 = new BoundPeer(
                 new PrivateKey().PublicKey,
-                new DnsEndPoint("0.0.0.0", 1234),
-                AppProtocolVer);
+                new DnsEndPoint("0.0.0.0", 1234));
             var peer5 = new BoundPeer(
                 new PrivateKey().PublicKey,
-                new DnsEndPoint("0.0.0.0", 1234),
-                AppProtocolVer);
+                new DnsEndPoint("0.0.0.0", 1234));
 
             Assert.Empty(bucket.Peers);
             Assert.True(bucket.IsEmpty());
@@ -104,7 +99,7 @@ namespace Libplanet.Tests.Net.Protocols
         {
             var pubKey = new PrivateKey().PublicKey;
             RoutingTable table = CreateTable(pubKey.ToAddress());
-            var peer = new BoundPeer(pubKey, new DnsEndPoint("0.0.0.0", 1234), AppProtocolVer);
+            var peer = new BoundPeer(pubKey, new DnsEndPoint("0.0.0.0", 1234));
             Assert.Throws<ArgumentException>(() => table.AddPeer(peer));
         }
 
@@ -129,9 +124,9 @@ namespace Libplanet.Tests.Net.Protocols
                 2,
                 new System.Random(),
                 Logger.None);
-            var peer1 = new BoundPeer(pubKey1, new DnsEndPoint("0.0.0.0", 1234), AppProtocolVer);
-            var peer2 = new BoundPeer(pubKey2, new DnsEndPoint("0.0.0.0", 1234), AppProtocolVer);
-            var peer3 = new BoundPeer(pubKey3, new DnsEndPoint("0.0.0.0", 1234), AppProtocolVer);
+            var peer1 = new BoundPeer(pubKey1, new DnsEndPoint("0.0.0.0", 1234));
+            var peer2 = new BoundPeer(pubKey2, new DnsEndPoint("0.0.0.0", 1234));
+            var peer3 = new BoundPeer(pubKey3, new DnsEndPoint("0.0.0.0", 1234));
             table.AddPeer(peer1);
             table.AddPeer(peer2);
             table.AddPeer(peer3);
@@ -154,8 +149,8 @@ namespace Libplanet.Tests.Net.Protocols
                 2,
                 new System.Random(),
                 Logger.None);
-            var peer1 = new BoundPeer(pubKey1, new DnsEndPoint("0.0.0.0", 1234), AppProtocolVer);
-            var peer2 = new BoundPeer(pubKey2, new DnsEndPoint("0.0.0.0", 1234), AppProtocolVer);
+            var peer1 = new BoundPeer(pubKey1, new DnsEndPoint("0.0.0.0", 1234));
+            var peer2 = new BoundPeer(pubKey2, new DnsEndPoint("0.0.0.0", 1234));
 
             Assert.Throws<ArgumentException>(() => table.RemovePeer(peer1));
             Assert.Throws<ArgumentNullException>(() => table.RemovePeer(null));

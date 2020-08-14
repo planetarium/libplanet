@@ -199,6 +199,8 @@ namespace Libplanet.Net
 
         public IImmutableSet<PublicKey> TrustedAppProtocolVersionSigners { get; }
 
+        public AppProtocolVersion AppProtocolVersion => _appProtocolVersion;
+
         internal ITransport Transport { get; private set; }
 
         internal IProtocol Protocol => (Transport as NetMQTransport)?.Protocol;

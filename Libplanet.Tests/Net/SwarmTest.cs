@@ -587,18 +587,28 @@ namespace Libplanet.Tests.Net
                 {
                     var request = new GetBlocks(hashes.Select(pair => pair.Item2), 2);
                     socket.SendMultipartMessage(
-                        request.ToNetMQMessage(privateKey, swarmB.AsPeer)
+                        request.ToNetMQMessage(privateKey, swarmB.AsPeer, swarmB.AppProtocolVersion)
                     );
 
                     NetMQMessage response = socket.ReceiveMultipartMessage();
-                    Message parsedMessage = Message.Parse(response, true);
+                    Message parsedMessage = Message.Parse(
+                        response,
+                        true,
+                        swarmA.AppProtocolVersion,
+                        swarmA.TrustedAppProtocolVersionSigners,
+                        null);
                     Libplanet.Net.Messages.Blocks blockMessage =
                         (Libplanet.Net.Messages.Blocks)parsedMessage;
 
                     Assert.Equal(2, blockMessage.Payloads.Count);
 
                     response = socket.ReceiveMultipartMessage();
-                    parsedMessage = Message.Parse(response, true);
+                    parsedMessage = Message.Parse(
+                        response,
+                        true,
+                        swarmA.AppProtocolVersion,
+                        swarmA.TrustedAppProtocolVersionSigners,
+                        null);
                     blockMessage = (Libplanet.Net.Messages.Blocks)parsedMessage;
 
                     Assert.Single(blockMessage.Payloads);
