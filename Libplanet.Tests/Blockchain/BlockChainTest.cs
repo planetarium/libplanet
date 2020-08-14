@@ -790,35 +790,20 @@ namespace Libplanet.Tests.Blockchain
                 { MinerReward.RewardRecordAddress, (Text)$"{minerAddress},{minerAddress}" },
             };
 
-            if (_blockChain.StateStore is IBlockStatesStore blockStatesStore)
-            {
-                Log.Debug("{@actual}", blockStatesStore.GetBlockStates(block1.Hash));
-            }
-            else
-            {
-                // NOTE: The reason to throw exception is, it checks only block states and
-                //       block state is a feature of IBlockStateStore. So if _blockChain.StateStore
-                //       became use IStateStore implementation not to implement IBlockStateStore,
-                //       then this test should be updated also.
-                throw new XunitException(
-                    $"{nameof(_blockChain.StateStore)} is not able to test here.");
-            }
+            Log.Debug("{@actual}", _fx.BlockStatesStore.GetBlockStates(block1.Hash));
 
             _blockChain.ExecuteActions(block1);
-            if (_blockChain.StateStore is IBlockStatesStore)
-            {
-                Log.Debug("{@actual}", blockStatesStore.GetBlockStates(block1.Hash));
-                Assert.Equal(
-                    expectedStates.Count,
-                    blockStatesStore.GetBlockStates(block1.Hash).Count);
-                Assert.Equal(
-                    expectedStates.ToImmutableDictionary(
-                        kv => kv.Key.ToHex().ToLowerInvariant(),
-                        kv => kv.Value
-                    ),
-                    blockStatesStore.GetBlockStates(block1.Hash)
-                );
-            }
+            Log.Debug("{@actual}", _fx.BlockStatesStore.GetBlockStates(block1.Hash));
+            Assert.Equal(
+                expectedStates.Count,
+                _fx.BlockStatesStore.GetBlockStates(block1.Hash).Count);
+            Assert.Equal(
+                expectedStates.ToImmutableDictionary(
+                    kv => kv.Key.ToHex().ToLowerInvariant(),
+                    kv => kv.Value
+                ),
+                _fx.BlockStatesStore.GetBlockStates(block1.Hash)
+            );
         }
 
         [Fact]
@@ -955,17 +940,6 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void ForkStateReferences()
         {
-            if (!(_blockChain.StateStore is IBlockStatesStore blockStatesStore))
-            {
-                    // NOTE: The reason to throw exception is, it checks only block states and
-                    //       block state is a feature of IBlockStateStore.
-                    //       So if _blockChain.StateStore became use IStateStore implementation
-                    //       not to implement IBlockStateStore,
-                    //       then this test should be updated also.
-                    throw new XunitException(
-                        $"{nameof(_blockChain.StateStore)} is not able to test here.");
-            }
-
             Address addr1 = new PrivateKey().ToAddress();
             Address addr2 = new PrivateKey().ToAddress();
 
@@ -1029,9 +1003,9 @@ namespace Libplanet.Tests.Blockchain
             string stateKey2 = addr2.ToHex().ToLowerInvariant();
 
             Assert.Null(
-                blockStatesStore.LookupStateReference(fId, stateKey1, forked.Tip.Index));
+                _fx.BlockStatesStore.LookupStateReference(fId, stateKey1, forked.Tip.Index));
             Assert.Null(
-                blockStatesStore.LookupStateReference(fId, stateKey2, forked.Tip.Index));
+                _fx.BlockStatesStore.LookupStateReference(fId, stateKey2, forked.Tip.Index));
 
             // Fork from b1 and append a empty block.
             forked = _blockChain.Fork(b1.Hash);
@@ -1041,9 +1015,9 @@ namespace Libplanet.Tests.Blockchain
 
             Assert.Equal(
                 Tuple.Create(b1.Hash, b1.Index),
-                blockStatesStore.LookupStateReference(fId, stateKey1, forked.Tip.Index));
+                _fx.BlockStatesStore.LookupStateReference(fId, stateKey1, forked.Tip.Index));
             Assert.Null(
-                blockStatesStore.LookupStateReference(fId, stateKey2, forked.Tip.Index));
+                _fx.BlockStatesStore.LookupStateReference(fId, stateKey2, forked.Tip.Index));
 
             // Fork from b2.
             forked = _blockChain.Fork(b2.Hash);
@@ -1051,10 +1025,10 @@ namespace Libplanet.Tests.Blockchain
 
             Assert.Equal(
                 Tuple.Create(b1.Hash, b1.Index),
-                blockStatesStore.LookupStateReference(fId, stateKey1, forked.Tip.Index));
+                _fx.BlockStatesStore.LookupStateReference(fId, stateKey1, forked.Tip.Index));
             Assert.Equal(
                 Tuple.Create(b2.Hash, b2.Index),
-                blockStatesStore.LookupStateReference(fId, stateKey2, forked.Tip.Index));
+                _fx.BlockStatesStore.LookupStateReference(fId, stateKey2, forked.Tip.Index));
         }
 
         [Fact]
