@@ -20,6 +20,13 @@ namespace Libplanet.Assets
     /// each <see cref="Currency"/> value represents such currencies as USD (US Dollar) or
     /// EUR (Euro), <em>not values</em> like $100 or €100.
     /// </summary>
+    /// <example>
+    /// Here is how US Dollar can be represented using <see cref="Currency"/>:
+    /// <code>
+    /// var USMint = new PrivateKey();
+    /// var USD = new Currency(ticker: "USD", decimalPlace: 2, minter: USMint.ToAddress());
+    /// </code>
+    /// </example>
     /// <seealso cref="FungibleAssetValue"/>
     [Serializable]
     public readonly struct Currency : IEquatable<Currency>, ISerializable
@@ -28,6 +35,13 @@ namespace Libplanet.Assets
         /// The ticker symbol, e.g., <c>&quot;USD&quot;</c>.
         /// </summary>
         public readonly string Ticker;
+
+        /// <summary>
+        /// The number of digits to treat as <a
+        /// href="https://w.wiki/ZXv#Treatment_of_minor_currency_units_(the_%22exponent%22)">minor
+        /// units (i.e., exponent)</a>.
+        /// </summary>
+        public readonly byte DecimalPlaces;
 
         /// <summary>
         /// The <see cref="Address"/>es who can mint the currency.
@@ -48,11 +62,14 @@ namespace Libplanet.Assets
         /// Defines a <see cref="Currency"/> type.
         /// </summary>
         /// <param name="ticker">The ticker symbol, e.g., <c>&quot;USD&quot;</c>.</param>
+        /// <param name="decimalPlaces">The number of digits to treat as <a
+        /// href="https://w.wiki/ZXv#Treatment_of_minor_currency_units_(the_%22exponent%22)">minor
+        /// units (i.e., exponent)</a>.</param>
         /// <param name="minters">The <see cref="Address"/>es who can mint the currency.
         /// See also <see cref="Minters"/> field which corresponds to this.</param>
         /// <exception cref="ArgumentException">Thrown when the given <paramref name="ticker"/>
         /// is an empty string.</exception>
-        public Currency(string ticker, IImmutableSet<Address>? minters)
+        public Currency(string ticker, byte decimalPlaces, IImmutableSet<Address>? minters)
         {
             ticker = ticker.Trim();
 
@@ -66,6 +83,7 @@ namespace Libplanet.Assets
 
             Ticker = ticker;
             Minters = minters;
+            DecimalPlaces = decimalPlaces;
             Hash = GetHash();
         }
 
@@ -73,13 +91,17 @@ namespace Libplanet.Assets
         /// Defines a <see cref="Currency"/> type.
         /// </summary>
         /// <param name="ticker">The ticker symbol, e.g., <c>&quot;USD&quot;</c>.</param>
+        /// <param name="decimalPlaces">The number of digits to treat as <a
+        /// href="https://w.wiki/ZXv#Treatment_of_minor_currency_units_(the_%22exponent%22)">minor
+        /// units (i.e., exponent)</a>.</param>
         /// <param name="minter">The address who can mint the currency.  To specify multiple
-        /// minters, use the <see cref="Currency(string, IImmutableSet{Address})"/> constructor
+        /// minters, use the <see cref="Currency(string,byte,IImmutableSet{Address})"/> constructor
         /// instead.  See also <see cref="Minters"/> field which corresponds to this.</param>
-        /// <seealso cref="Currency(string, IImmutableSet{Address})"/>
-        public Currency(string ticker, Address? minter)
+        /// <seealso cref="Currency(string, byte, IImmutableSet{Address})"/>
+        public Currency(string ticker, byte decimalPlaces, Address? minter)
             : this(
                 ticker,
+                decimalPlaces,
                 minter is Address m ? ImmutableHashSet.Create(m) : null
             )
         {
@@ -88,6 +110,7 @@ namespace Libplanet.Assets
         private Currency(SerializationInfo info, StreamingContext context)
         {
             Ticker = info.GetValue<string>(nameof(Ticker));
+            DecimalPlaces = info.GetValue<byte>(nameof(DecimalPlaces));
 
             if (info.TryGetValue(nameof(Minters), out List<byte[]> minters))
             {
@@ -111,9 +134,11 @@ namespace Libplanet.Assets
         [Pure]
         public bool AllowsToMint(Address address) => Minters is null || Minters.Contains(address);
 
+        /// <inheritdoc cref="ISerializable.GetObjectData(SerializationInfo, StreamingContext)"/>
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue(nameof(Ticker), Ticker);
+            info.AddValue(nameof(DecimalPlaces), DecimalPlaces);
 
             if (Minters is IImmutableSet<Address> minters)
             {
@@ -121,32 +146,23 @@ namespace Libplanet.Assets
             }
         }
 
+        /// <inheritdoc cref="object.ToString()"/>
         [Pure]
-        public override string ToString() =>
-            $"{Ticker} ({Hash})";
+        public override string ToString() => $"{Ticker} ({Hash})";
 
+        /// <inheritdoc cref="object.GetHashCode()"/>
         [Pure]
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                return -1545866855 + Hash.GetHashCode();
-            }
-        }
+        public override int GetHashCode() => Hash.GetHashCode();
 
+        /// <inheritdoc cref="object.Equals(object?)"/>
         [Pure]
-        public override bool Equals(object? obj)
-        {
-            return obj is IEquatable<Currency> other
-                ? other.Equals(this)
-                : false;
-        }
+        public override bool Equals(object? obj) =>
+            obj is IEquatable<Currency> other && other.Equals(this);
 
+        /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>
         [Pure]
-        public bool Equals(Currency other)
-        {
-            return Hash.Equals(other.Hash);
-        }
+        public bool Equals(Currency other) =>
+            Hash.Equals(other.Hash);
 
         [Pure]
         private HashDigest<SHA1> GetHash()
@@ -162,6 +178,7 @@ namespace Libplanet.Assets
 #pragma warning restore SA1129
             IValue serialized = Dictionary.Empty
                 .Add("ticker", Ticker)
+                .Add("decimals", DecimalPlaces)
                 .Add("minters", minters);
             codec.Encode(serialized, stream);
             stream.FlushFinalBlock();

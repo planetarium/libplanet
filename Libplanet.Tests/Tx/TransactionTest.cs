@@ -644,14 +644,14 @@ namespace Libplanet.Tests.Tx
                         prevEval is null
                             ? initBalances
                             : addresses.Select(a =>
-                                prevEval.OutputStates.GetBalance(a, currency).Quantity),
+                                prevEval.OutputStates.GetBalance(a, currency).RawValue),
                         addresses.Select(
-                            a => eval.InputContext.PreviousStates.GetBalance(a, currency).Quantity
+                            a => eval.InputContext.PreviousStates.GetBalance(a, currency).RawValue
                         )
                     );
                     Assert.Equal(
                         expectedBalances[i],
-                        addresses.Select(a => eval.OutputStates.GetBalance(a, currency).Quantity)
+                        addresses.Select(a => eval.OutputStates.GetBalance(a, currency).RawValue)
                     );
                 }
 

@@ -22,7 +22,7 @@ namespace Libplanet.Tests.Action
                 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02,
             });
 
-            var currency = new Currency("PLT", minter);
+            var currency = new Currency("PLT", 0, minter);
             var exc = new InsufficientBalanceException(
                 account,
                 new FungibleAssetValue(currency, 99),

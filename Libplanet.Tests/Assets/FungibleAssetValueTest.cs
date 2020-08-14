@@ -9,8 +9,81 @@ namespace Libplanet.Tests.Assets
 {
     public class FungibleAssetValueTest
     {
-        private static readonly Currency FOO = new Currency("FOO", minter: null);
-        private static readonly Currency BAR = new Currency("BAR", minter: null);
+        private static readonly Currency FOO = new Currency("FOO", 2, minter: null);
+        private static readonly Currency BAR = new Currency("BAR", 0, minter: null);
+
+        [Fact]
+        public void Constructor()
+        {
+            FungibleAssetValue v;
+            v = new FungibleAssetValue(FOO, 123, 45);
+            Assert.Equal(new FungibleAssetValue(FOO, 1, 123, 45), v);
+            Assert.Equal(12345, v.RawValue);
+            Assert.Equal(123, v.MajorUnit);
+            Assert.Equal(45, v.MinorUnit);
+            Assert.Equal(1, v.Sign);
+
+            v = new FungibleAssetValue(FOO, 456, 9);
+            Assert.Equal(new FungibleAssetValue(FOO, 1, 456, 9), v);
+            Assert.Equal(45609, v.RawValue);
+            Assert.Equal(456, v.MajorUnit);
+            Assert.Equal(9, v.MinorUnit);
+            Assert.Equal(1, v.Sign);
+
+            v = new FungibleAssetValue(FOO, 0, 10);
+            Assert.Equal(new FungibleAssetValue(FOO, 1, 0, 10), v);
+            Assert.Equal(10, v.RawValue);
+            Assert.Equal(0, v.MajorUnit);
+            Assert.Equal(10, v.MinorUnit);
+            Assert.Equal(1, v.Sign);
+
+            v = new FungibleAssetValue(FOO, 0, 9);
+            Assert.Equal(new FungibleAssetValue(FOO, 1, 0, 9), v);
+            Assert.Equal(9, v.RawValue);
+            Assert.Equal(0, v.MajorUnit);
+            Assert.Equal(9, v.MinorUnit);
+            Assert.Equal(1, v.Sign);
+
+            v = new FungibleAssetValue(FOO, -789, 1);
+            Assert.Equal(new FungibleAssetValue(FOO, -1, 789, 1), v);
+            Assert.Equal(-78901, v.RawValue);
+            Assert.Equal(789, v.MajorUnit);
+            Assert.Equal(1, v.MinorUnit);
+            Assert.Equal(-1, v.Sign);
+
+            v = new FungibleAssetValue(FOO, 0, -2);
+            Assert.Equal(new FungibleAssetValue(FOO, -1, 0, 2), v);
+            Assert.Equal(-2, v.RawValue);
+            Assert.Equal(0, v.MajorUnit);
+            Assert.Equal(2, v.MinorUnit);
+            Assert.Equal(-1, v.Sign);
+
+            v = new FungibleAssetValue(FOO, 123, 0);
+            Assert.Equal(new FungibleAssetValue(FOO, 1, 123, 0), v);
+            Assert.Equal(12300, v.RawValue);
+            Assert.Equal(123, v.MajorUnit);
+            Assert.Equal(0, v.MinorUnit);
+            Assert.Equal(1, v.Sign);
+
+            v = new FungibleAssetValue(FOO, 0, 0);
+            Assert.Equal(new FungibleAssetValue(FOO, 0, 0, 0), v);
+            Assert.Equal(new FungibleAssetValue(FOO), v);
+            Assert.Equal(0, v.RawValue);
+            Assert.Equal(0, v.MajorUnit);
+            Assert.Equal(0, v.MinorUnit);
+            Assert.Equal(0, v.Sign);
+
+            Assert.Throws<ArgumentException>(() => new FungibleAssetValue(FOO, -2, 1, 0));
+            Assert.Throws<ArgumentException>(() => new FungibleAssetValue(FOO, 2, 1, 0));
+            Assert.Throws<ArgumentException>(() => new FungibleAssetValue(FOO, 0, 1, 0));
+            Assert.Throws<ArgumentException>(() => new FungibleAssetValue(FOO, 0, 0, 1));
+            Assert.Throws<ArgumentException>(() => new FungibleAssetValue(FOO, 1, -1, 0));
+            Assert.Throws<ArgumentException>(() => new FungibleAssetValue(FOO, 1, 1, -1));
+            Assert.Throws<ArgumentException>(() => new FungibleAssetValue(FOO, 1, 1, 100));
+            Assert.Throws<ArgumentException>(() => new FungibleAssetValue(FOO, 10, -10));
+            Assert.Throws<ArgumentException>(() => new FungibleAssetValue(FOO, -10, -10));
+            Assert.Throws<ArgumentException>(() => new FungibleAssetValue(FOO, 1, 100));
+        }
 
         [Fact]
         public void Equality()
@@ -293,11 +366,48 @@ namespace Libplanet.Tests.Assets
         }
 
         [Fact]
+        public void GetQuantityString()
+        {
+            FungibleAssetValue v;
+            v = new FungibleAssetValue(FOO, 123, 45);
+            Assert.Equal("123.45", v.GetQuantityString());
+            Assert.Equal("123.45", v.GetQuantityString(true));
+
+            v = new FungibleAssetValue(FOO, 456, 9);
+            Assert.Equal("456.09", v.GetQuantityString());
+            Assert.Equal("456.09", v.GetQuantityString(true));
+
+            v = new FungibleAssetValue(FOO, 0, 10);
+            Assert.Equal("0.1", v.GetQuantityString());
+            Assert.Equal("0.10", v.GetQuantityString(true));
+
+            v = new FungibleAssetValue(FOO, 0, 9);
+            Assert.Equal("0.09", v.GetQuantityString());
+            Assert.Equal("0.09", v.GetQuantityString(true));
+
+            v = new FungibleAssetValue(FOO, -789, 1);
+            Assert.Equal("-789.01", v.GetQuantityString());
+            Assert.Equal("-789.01", v.GetQuantityString(true));
+
+            v = new FungibleAssetValue(FOO, 0, -2);
+            Assert.Equal("-0.02", v.GetQuantityString());
+            Assert.Equal("-0.02", v.GetQuantityString(true));
+
+            v = new FungibleAssetValue(FOO, 123, 0);
+            Assert.Equal("123", v.GetQuantityString());
+            Assert.Equal("123.00", v.GetQuantityString(true));
+
+            v = new FungibleAssetValue(FOO, 0, 0);
+            Assert.Equal("0", v.GetQuantityString());
+            Assert.Equal("0.00", v.GetQuantityString(true));
+        }
+
+        [Fact]
         public void String()
         {
             FungibleAssetValue foo100 = new FungibleAssetValue(FOO, 100);
             FungibleAssetValue bar90000000 = new FungibleAssetValue(BAR, 90000000);
-            Assert.Equal("100 FOO", foo100.ToString());
+            Assert.Equal("1 FOO", foo100.ToString());
             Assert.Equal("90000000 BAR", bar90000000.ToString());
         }
     }

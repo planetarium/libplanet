@@ -43,7 +43,7 @@ namespace Libplanet.Blockchain
             (blockChain, hash) =>
             {
                 FungibleAssetValue balance = stateCompleter(blockChain, hash, address, currency);
-                return (Bencodex.Types.Integer)balance.Quantity;
+                return (Bencodex.Types.Integer)balance.RawValue;
             };
     }
 }

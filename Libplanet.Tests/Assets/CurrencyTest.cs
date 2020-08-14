@@ -21,58 +21,65 @@ namespace Libplanet.Tests.Assets
         [Fact]
         public void Constructor()
         {
-            var foo = new Currency("FOO", ImmutableHashSet<Address>.Empty);
+            var foo = new Currency("FOO", 2, ImmutableHashSet<Address>.Empty);
             Assert.Equal("FOO", foo.Ticker);
+            Assert.Equal(2, foo.DecimalPlaces);
             Assert.Empty(foo.Minters);
 
-            var bar = new Currency("\t BAR \n", ImmutableHashSet.Create(AddressA, AddressB));
+            var bar = new Currency("\t BAR \n", 0, ImmutableHashSet.Create(AddressA, AddressB));
             Assert.Equal("BAR", bar.Ticker);
+            Assert.Equal(0, bar.DecimalPlaces);
             Assert.True(bar.Minters.SetEquals(new[] { AddressA, AddressB }));
 
-            var baz = new Currency("baz", AddressA);
+            var baz = new Currency("baz", 1, AddressA);
             Assert.Equal("baz", baz.Ticker);
+            Assert.Equal(1, baz.DecimalPlaces);
             Assert.True(baz.Minters.SetEquals(new[] { AddressA }));
 
-            var qux = new Currency("QUX", minters: null);
+            var qux = new Currency("QUX", decimalPlaces: 0, minters: null);
             Assert.Equal("QUX", qux.Ticker);
+            Assert.Equal(0, qux.DecimalPlaces);
             Assert.Null(qux.Minters);
 
-            var quux = new Currency("QUUX", minter: null);
+            var quux = new Currency("QUUX", decimalPlaces: 3, minter: null);
             Assert.Equal("QUUX", quux.Ticker);
+            Assert.Equal(3, quux.DecimalPlaces);
             Assert.Null(quux.Minters);
 
             Assert.Throws<ArgumentException>(() =>
-                new Currency(string.Empty, ImmutableHashSet<Address>.Empty)
+                new Currency(string.Empty, 0, ImmutableHashSet<Address>.Empty)
             );
             Assert.Throws<ArgumentException>(() =>
-                new Currency("   \n", ImmutableHashSet<Address>.Empty)
+                new Currency("   \n", 1, ImmutableHashSet<Address>.Empty)
             );
         }
 
         [Fact]
         public void Hash()
         {
-            Currency currency = new Currency(ticker: "GOLD", minter: AddressA);
+            Currency currency = new Currency(ticker: "GOLD", decimalPlaces: 2, minter: AddressA);
             HashDigest<SHA1> expected =
-                HashDigest<SHA1>.FromString("2ce0b92ff1c5e5631d73370ad2c45920c1ba9755");
+                HashDigest<SHA1>.FromString("81446cd346c1be9e686835742bfd3772194dea21");
             AssertBytesEqual(expected, currency.Hash);
 
             currency = new Currency(
                 ticker: "NCG",
+                decimalPlaces: 8,
                 minters: ImmutableHashSet.Create(AddressA, AddressB)
             );
-            expected = HashDigest<SHA1>.FromString("1c978d2f95370e73ffe640e85baa51a6514122a3");
+            expected = HashDigest<SHA1>.FromString("42ce3a098fe14084e89d3d4449f56126693aeed1");
             AssertBytesEqual(expected, currency.Hash);
 
             currency = new Currency(
                 ticker: "FOO",
+                decimalPlaces: 0,
                 minters: ImmutableHashSet<Address>.Empty
             );
-            expected = HashDigest<SHA1>.FromString("fccaa58d80d8388190ece63718af395d14857f88");
+            expected = HashDigest<SHA1>.FromString("801990ea2885bd51eebca0e826cc0e27f0917a9b");
             AssertBytesEqual(expected, currency.Hash);
 
-            currency = new Currency(ticker: "BAR", minter: null);
-            expected = HashDigest<SHA1>.FromString("fd19100c874c062b73b9a93dbffeae7ae506ecd4");
+            currency = new Currency(ticker: "BAR", decimalPlaces: 1, minter: null);
+            expected = HashDigest<SHA1>.FromString("da42781871890f1e1b7d6f49c7f2733d3ba7b8bd");
             AssertBytesEqual(expected, currency.Hash);
         }
 
@@ -80,25 +87,30 @@ namespace Libplanet.Tests.Assets
         public void AllowsToMint()
         {
             Address addressC = new PrivateKey().ToAddress();
-            Currency currency = new Currency(ticker: "FOO", minter: AddressA);
+            Currency currency = new Currency(ticker: "FOO", decimalPlaces: 0, minter: AddressA);
             Assert.True(currency.AllowsToMint(AddressA));
             Assert.False(currency.AllowsToMint(AddressB));
             Assert.False(currency.AllowsToMint(addressC));
 
             currency = new Currency(
                 ticker: "BAR",
+                decimalPlaces: 2,
                 minters: ImmutableHashSet.Create(AddressA, AddressB)
             );
             Assert.True(currency.AllowsToMint(AddressA));
             Assert.True(currency.AllowsToMint(AddressB));
             Assert.False(currency.AllowsToMint(addressC));
 
-            currency = new Currency(ticker: "BAZ", minters: ImmutableHashSet<Address>.Empty);
+            currency = new Currency(
+                ticker: "BAZ",
+                decimalPlaces: 0,
+                minters: ImmutableHashSet<Address>.Empty
+            );
             Assert.False(currency.AllowsToMint(AddressA));
             Assert.False(currency.AllowsToMint(AddressB));
             Assert.False(currency.AllowsToMint(addressC));
 
-            currency = new Currency(ticker: "QUX", minter: null);
+            currency = new Currency(ticker: "QUX", decimalPlaces: 3, minter: null);
             Assert.True(currency.AllowsToMint(AddressA));
             Assert.True(currency.AllowsToMint(AddressB));
             Assert.True(currency.AllowsToMint(addressC));
@@ -107,14 +119,14 @@ namespace Libplanet.Tests.Assets
         [Fact]
         public void String()
         {
-            Currency currency = new Currency(ticker: "GOLD", minter: AddressA);
-            Assert.Equal("GOLD (2ce0b92ff1c5e5631d73370ad2c45920c1ba9755)", currency.ToString());
+            Currency currency = new Currency(ticker: "GOLD", decimalPlaces: 0, minter: AddressA);
+            Assert.Equal("GOLD (688ded7b7ae6e551e14e58ec23fef3540d442a35)", currency.ToString());
         }
 
         [Fact]
         public void Serializable()
         {
-            var currency = new Currency(ticker: "GOLD", minter: AddressA);
+            var currency = new Currency(ticker: "GOLD", decimalPlaces: 2, minter: AddressA);
 
             var formatter = new BinaryFormatter();
             using (var ms = new MemoryStream())
@@ -130,15 +142,17 @@ namespace Libplanet.Tests.Assets
         [Fact]
         public void Equal()
         {
-            var currencyA = new Currency(ticker: "GOLD", minter: AddressA);
-            var currencyB = new Currency(ticker: "GOLD", minter: AddressA);
-            var currencyC = new Currency(ticker: "GOLD", minter: AddressB);
-            var currencyD = new Currency(ticker: "SILVER", minter: AddressA);
+            var currencyA = new Currency(ticker: "GOLD", decimalPlaces: 0, minter: AddressA);
+            var currencyB = new Currency(ticker: "GOLD", decimalPlaces: 0, minter: AddressA);
+            var currencyC = new Currency(ticker: "GOLD", decimalPlaces: 1, minter: AddressA);
+            var currencyD = new Currency(ticker: "GOLD", decimalPlaces: 0, minter: AddressB);
+            var currencyE = new Currency(ticker: "SILVER", decimalPlaces: 2, minter: AddressA);
 
             Assert.Equal(currencyA, currencyA);
             Assert.Equal(currencyA, currencyB);
             Assert.NotEqual(currencyA, currencyC);
             Assert.NotEqual(currencyA, currencyD);
+            Assert.NotEqual(currencyA, currencyE);
         }
     }
 }

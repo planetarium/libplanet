@@ -26,7 +26,7 @@ namespace Libplanet.Assets
         /// </summary>
         public readonly Currency Currency;
 
-        internal readonly BigInteger Quantity;
+        internal readonly BigInteger RawValue;
 
         /// <summary>
         /// Creates a zero value of the <paramref name="currency"/>.
@@ -38,15 +38,115 @@ namespace Libplanet.Assets
         }
 
         /// <summary>
-        /// Creates a value of the <paramref name="currency"/> with the specified <paramref
-        /// name="quantity"/>.
+        /// Creates a value of the <paramref name="currency"/> from the given
+        /// <paramref name="majorUnit"/> and <paramref name="minorUnit"/>.
         /// </summary>
         /// <param name="currency">The currency to create a value.</param>
-        /// <param name="quantity">The quantity of the value to create.</param>
-        internal FungibleAssetValue(Currency currency, BigInteger quantity)
+        /// <param name="majorUnit">The major unit of the fungible asset value,
+        /// i.e., digits <em>before</em> the decimal separator.</param>
+        /// <param name="minorUnit">The minor unit of the fungible asset value,
+        /// i.e., digits <em>after</em> the decimal separator.</param>
+        /// <exception cref="ArgumentException">Thrown when the negativity sign is ambiguous
+        /// (e.g., both units have signs) or too big for the <paramref name="currency"/>.
+        /// </exception>
+        /// <seealso cref="Assets.Currency.DecimalPlaces"/>
+        public FungibleAssetValue(Currency currency, BigInteger majorUnit, BigInteger minorUnit)
+            : this(
+                currency,
+                majorUnit.IsZero ? minorUnit.Sign : majorUnit.Sign,
+                BigInteger.Abs(majorUnit),
+                BigInteger.Abs(minorUnit)
+            )
+        {
+            if (!majorUnit.IsZero && minorUnit < BigInteger.Zero)
+            {
+                throw new ArgumentException(
+                    "Unless the major unit is zero, the minor unit cannot be negative.",
+                    nameof(minorUnit)
+                );
+            }
+        }
+
+        /// <summary>
+        /// Creates a value of the <paramref name="currency"/> from the given <paramref
+        /// name="sign"/>, <paramref name="majorUnit"/> and <paramref name="minorUnit"/>.
+        /// </summary>
+        /// <param name="currency">The currency to create a value.</param>
+        /// <param name="sign">Indicates the sign (negative, positive, or zero) of the value.
+        /// <c>-1</c> indicates negative, <c>1</c> indicates positive, and <c>0</c> indicates
+        /// zero.</param>
+        /// <param name="majorUnit">The major unit of the fungible asset value,
+        /// i.e., digits <em>before</em> the decimal separator.  Must not be negative.</param>
+        /// <param name="minorUnit">The minor unit of the fungible asset value,
+        /// i.e., digits <em>after</em> the decimal separator.  Must not be negative.</param>
+        /// <exception cref="ArgumentException">Thrown when the the <paramref name="sign"/> is not
+        /// one of <c>1</c>, <c>0</c>, and <c>-1</c>, or <paramref name="majorUnit"/> or
+        /// <paramref name="minorUnit"/> is negative.
+        /// </exception>
+        /// <seealso cref="Assets.Currency.DecimalPlaces"/>
+        public FungibleAssetValue(
+            Currency currency,
+            int sign,
+            BigInteger majorUnit,
+            BigInteger minorUnit
+        )
+            : this(
+                currency,
+                sign * (majorUnit * BigInteger.Pow(10, currency.DecimalPlaces) + minorUnit)
+            )
+        {
+            if (sign > 1 || sign < -1)
+            {
+                throw new ArgumentException("The sign must be 1, 0, or -1.", nameof(sign));
+            }
+            else if (sign == 0 && !majorUnit.IsZero)
+            {
+                throw new ArgumentException(
+                    "If the sign is zero, the major unit must be also zero.",
+                    nameof(majorUnit)
+                );
+            }
+            else if (sign == 0 && !minorUnit.IsZero)
+            {
+                throw new ArgumentException(
+                    "If the sign is zero, the minor unit must be also zero.",
+                    nameof(minorUnit)
+                );
+            }
+            else if (majorUnit < 0)
+            {
+                throw new ArgumentException(
+                    "The major unit must not be negative.",
+                    nameof(majorUnit)
+                );
+            }
+            else if (minorUnit < 0)
+            {
+                throw new ArgumentException(
+                    "The minor unit must not be negative.",
+                    nameof(minorUnit)
+                );
+            }
+            else if (minorUnit > 0 &&
+                     (int)Math.Floor(BigInteger.Log10(minorUnit) + 1) > currency.DecimalPlaces)
+            {
+                string msg =
+                    $"Since the currency {currency} allows upto {currency.DecimalPlaces} " +
+                    $"decimal places, the given minor unit {minorUnit} is too big.";
+                throw new ArgumentException(msg, nameof(minorUnit));
+            }
+        }
+
+        /// <summary>
+        /// Creates a value of the <paramref name="currency"/> with the specified <paramref
+        /// name="rawValue"/>.
+        /// </summary>
+        /// <param name="currency">The currency to create a value.</param>
+        /// <param name="rawValue">The raw quantity of the value to create.</param>
+        internal FungibleAssetValue(Currency currency, BigInteger rawValue)
         {
             Currency = currency;
-            Quantity = quantity;
+            RawValue = rawValue;
         }
 
         /// <summary>
@@ -57,10 +157,46 @@ namespace Libplanet.Assets
         private FungibleAssetValue(SerializationInfo info, StreamingContext context)
             : this(
                 info.GetValue<Currency>(nameof(Currency)),
-                info.GetValue<BigInteger>(nameof(Quantity))
+                info.GetValue<BigInteger>(nameof(RawValue))
             )
         {
         }
+
+        /// <summary>
+        /// Gets a number that indicates the sign (negative, positive, or zero) of the value.
+        /// </summary>
+        /// <value>
+        /// A number that indicates the sign of the fungible asset value, as shown in the following
+        /// table:
+        /// <list type="table">
+        /// <listheader><term>Number</term><description>Description</description></listheader>
+        /// <item><term>-1</term><description>The value is negative.</description></item>
+        /// <item><term>0</term><description>The value is zero.</description></item>
+        /// <item><term>1</term><description>The value is positive.</description></item>
+        /// </list>
+        /// </value>
+        [Pure]
+        public int Sign => RawValue < 0 ? -1 : RawValue > 0 ? 1 : 0;
+
+        /// <summary>
+        /// The major unit of the fungible asset value, i.e., digits <em>before</em> the decimal
+        /// separator, in absolute value.
+        /// </summary>
+        /// <remarks>It is absolute value, which lacks <see cref="Sign"/>.</remarks>
+        /// <seealso cref="Assets.Currency.DecimalPlaces"/>
+        [Pure]
+        public BigInteger MajorUnit =>
+            BigInteger.Abs(RawValue) / BigInteger.Pow(10, Currency.DecimalPlaces);
+
+        /// <summary>
+        /// The minor unit of the fungible asset value, i.e., digits <em>after</em> the decimal
+        /// separator, in absolute value.
+        /// </summary>
+        /// <remarks>It is absolute value, which lacks <see cref="Sign"/>.</remarks>
+        /// <seealso cref="Assets.Currency.DecimalPlaces"/>
+        [Pure]
+        public BigInteger MinorUnit =>
+            BigInteger.Abs(RawValue) % BigInteger.Pow(10, Currency.DecimalPlaces);
 
         /// <summary>
         /// Tests if two values are equal.
@@ -142,7 +278,7 @@ namespace Libplanet.Assets
         /// <returns>A negated <paramref name="value"/>.</returns>
         [Pure]
         public static FungibleAssetValue operator -(FungibleAssetValue value) =>
-            new FungibleAssetValue(value.Currency, -value.Quantity);
+            new FungibleAssetValue(value.Currency, -value.RawValue);
 
         /// <summary>
         /// Adds two values and returns the result.
@@ -157,7 +293,7 @@ namespace Libplanet.Assets
             FungibleAssetValue left,
             FungibleAssetValue right
         ) => left.Currency.Equals(right.Currency)
-            ? new FungibleAssetValue(left.Currency, left.Quantity + right.Quantity)
+            ? new FungibleAssetValue(left.Currency, left.RawValue + right.RawValue)
             : throw new ArgumentException(
                 "Unable to add heterogeneous currencies: " +
                 $"{left.Currency} \u2260 {right.Currency}.",
@@ -177,7 +313,7 @@ namespace Libplanet.Assets
             FungibleAssetValue left,
             FungibleAssetValue right
         ) => left.Currency.Equals(right.Currency)
-            ? new FungibleAssetValue(left.Currency, left.Quantity - right.Quantity)
+            ? new FungibleAssetValue(left.Currency, left.RawValue - right.RawValue)
             : throw new ArgumentException(
                 "Unable to subtract heterogeneous currencies: " +
                 $"{left.Currency} \u2260 {right.Currency}.",
@@ -191,7 +327,7 @@ namespace Libplanet.Assets
         /// <returns>The multiplied value.</returns>
         [Pure]
         public static FungibleAssetValue operator *(FungibleAssetValue left, BigInteger right) =>
-            new FungibleAssetValue(left.Currency, left.Quantity * right);
+            new FungibleAssetValue(left.Currency, left.RawValue * right);
 
         /// <summary>
         /// Multiplies <paramref name="left"/> times the <paramref name="right"/> value.
@@ -201,7 +337,7 @@ namespace Libplanet.Assets
         /// <returns>The multiplied value.</returns>
         [Pure]
         public static FungibleAssetValue operator *(BigInteger left, FungibleAssetValue right) =>
-            new FungibleAssetValue(right.Currency, left * right.Quantity);
+            new FungibleAssetValue(right.Currency, left * right.RawValue);
 
         /// <summary>
         /// Divides the value (<paramref name="dividend"/>) by <paramref name="divisor"/>,
@@ -215,7 +351,7 @@ namespace Libplanet.Assets
         /// <c>0</c> (zero).</exception>
         [Pure]
         public static FungibleAssetValue operator %(FungibleAssetValue dividend, BigInteger divisor)
-            => new FungibleAssetValue(dividend.Currency, dividend.Quantity % divisor);
+            => new FungibleAssetValue(dividend.Currency, dividend.RawValue % divisor);
 
         /// <summary>
         /// Divides the value (<paramref name="dividend"/>) by <paramref name="divisor"/>,
@@ -242,7 +378,7 @@ namespace Libplanet.Assets
                 );
             }
 
-            return new FungibleAssetValue(dividend.Currency, dividend.Quantity % divisor.Quantity);
+            return new FungibleAssetValue(dividend.Currency, dividend.RawValue % divisor.RawValue);
         }
 
         /// <summary>
@@ -259,7 +395,7 @@ namespace Libplanet.Assets
         [Pure]
         public FungibleAssetValue DivRem(BigInteger divisor, out FungibleAssetValue remainder)
         {
-            BigInteger q = BigInteger.DivRem(Quantity, divisor, out BigInteger rem);
+            BigInteger q = BigInteger.DivRem(RawValue, divisor, out BigInteger rem);
             remainder = new FungibleAssetValue(Currency, rem);
             return new FungibleAssetValue(Currency, q);
         }
@@ -288,7 +424,7 @@ namespace Libplanet.Assets
                 );
             }
 
-            BigInteger d = BigInteger.DivRem(Quantity, divisor.Quantity, out BigInteger rem);
+            BigInteger d = BigInteger.DivRem(RawValue, divisor.RawValue, out BigInteger rem);
             remainder = new FungibleAssetValue(Currency, rem);
             return d;
         }
@@ -328,12 +464,30 @@ namespace Libplanet.Assets
         /// <returns>Its absolute value.</returns>
         [Pure]
         public FungibleAssetValue Abs()
-            => new FungibleAssetValue(Currency, BigInteger.Abs(Quantity));
+            => new FungibleAssetValue(Currency, BigInteger.Abs(RawValue));
+
+        /// <summary>
+        /// Gets the value quantity without its <see cref="Currency"/> in <see cref="string"/>.
+        /// </summary>
+        /// <param name="minorUnit">Whether to show all possible decimal places even
+        /// if they are zeros.</param>
+        /// <returns>A quantity string in decimal system.  Consists of an optional sign (minus),
+        /// digits and an optional decimal separator (period).</returns>
+        [Pure]
+        public string GetQuantityString(bool minorUnit = false) => minorUnit || MinorUnit > 0
+            ? string.Format(
+                CultureInfo.InvariantCulture,
+                "{0}{1}.{2:d" + Currency.DecimalPlaces.ToString(CultureInfo.InvariantCulture) + "}",
+                Sign < 0 ? "-" : string.Empty,
+                MajorUnit,
+                MinorUnit
+            ).TrimEnd(minorUnit ? ' ' : '0')
+            : (MajorUnit * Sign).ToString(CultureInfo.InvariantCulture);
 
         /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>
         [Pure]
         public bool Equals(FungibleAssetValue other) =>
-            Currency.Equals(other.Currency) && Quantity.Equals(other.Quantity);
+            Currency.Equals(other.Currency) && RawValue.Equals(other.RawValue);
 
         /// <inheritdoc cref="object.Equals(object)"/>
         [Pure]
@@ -343,7 +497,7 @@ namespace Libplanet.Assets
         /// <inheritdoc cref="object.GetHashCode()"/>
         [Pure]
         public override int GetHashCode() =>
-            unchecked((Currency.GetHashCode() * 397) ^ Quantity.GetHashCode());
+            unchecked((Currency.GetHashCode() * 397) ^ RawValue.GetHashCode());
 
         /// <inheritdoc cref="IComparable.CompareTo(object)"/>
         [Pure]
@@ -356,7 +510,7 @@ namespace Libplanet.Assets
         /// <inheritdoc cref="IComparable{T}.CompareTo(T)"/>
         [Pure]
         public int CompareTo(FungibleAssetValue other) => Currency.Equals(other.Currency)
-            ? Quantity.CompareTo(other.Quantity)
+            ? RawValue.CompareTo(other.RawValue)
             : throw new ArgumentException(
                 $"Unable to compare heterogeneous currencies: {Currency} \u2260 {other.Currency}.",
                 nameof(other));
@@ -365,12 +519,12 @@ namespace Libplanet.Assets
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue(nameof(Currency), Currency);
-            info.AddValue(nameof(Quantity), Quantity);
+            info.AddValue(nameof(RawValue), RawValue);
         }
 
         /// <inheritdoc cref="object.ToString()"/>
         [Pure]
         public override string ToString() =>
-            $"{Quantity.ToString(CultureInfo.InvariantCulture)} {Currency.Ticker}";
+            $"{GetQuantityString()} {Currency.Ticker}";
     }
 }

@@ -1535,9 +1535,7 @@ namespace Libplanet.Blockchain
                             new KeyValuePair<string, IValue>(
                                 ToFungibleAssetKey(pair),
                                 new Bencodex.Types.Integer(
-                                    lastStates is null
-                                        ? 0
-                                        : lastStates.GetBalance(pair.Item1, pair.Item2).Quantity
+                                    lastStates?.GetBalance(pair.Item1, pair.Item2).RawValue ?? 0
                                 )
                             )
                         )

@@ -85,7 +85,7 @@ namespace Libplanet.Action
         [Pure]
         public IAccountStateDelta MintAsset(Address recipient, FungibleAssetValue value)
         {
-            if (value.Quantity <= 0)
+            if (value.Sign <= 0)
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(value),
@@ -105,7 +105,7 @@ namespace Libplanet.Action
 
             FungibleAssetValue balance = GetBalance(recipient, currency);
             return UpdateFungibleAssets(
-                _updatedFungibleAssets.SetItem((recipient, currency), (balance + value).Quantity)
+                _updatedFungibleAssets.SetItem((recipient, currency), (balance + value).RawValue)
             );
         }
 
@@ -118,7 +118,7 @@ namespace Libplanet.Action
             bool allowNegativeBalance = false
         )
         {
-            if (value.Quantity <= 0)
+            if (value.Sign <= 0)
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(value),
@@ -139,8 +139,8 @@ namespace Libplanet.Action
 
             return UpdateFungibleAssets(
                 _updatedFungibleAssets
-                    .SetItem((sender, currency), (senderBalance - value).Quantity)
-                    .SetItem((recipient, currency), (recipientBalance + value).Quantity)
+                    .SetItem((sender, currency), (senderBalance - value).RawValue)
+                    .SetItem((recipient, currency), (recipientBalance + value).RawValue)
             );
         }
 
@@ -150,7 +150,7 @@ namespace Libplanet.Action
         {
             string msg;
 
-            if (value.Quantity <= 0)
+            if (value.Sign <= 0)
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(value),
@@ -176,7 +176,7 @@ namespace Libplanet.Action
             }
 
             return UpdateFungibleAssets(
-                _updatedFungibleAssets.SetItem((owner, currency), (balance - value).Quantity)
+                _updatedFungibleAssets.SetItem((owner, currency), (balance - value).RawValue)
             );
         }
 
