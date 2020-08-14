@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using Bencodex;
@@ -25,6 +26,9 @@ namespace Libplanet.Assets
     /// <code>
     /// var USMint = new PrivateKey();
     /// var USD = new Currency(ticker: "USD", decimalPlace: 2, minter: USMint.ToAddress());
+    /// var twentyThreeBucks = 23 * USD;
+    /// // Or alternatively: USD * 23;
+    /// // Or explicitly: new FungibleAssetValue(USD, 23, 0)
     /// </code>
     /// </example>
     /// <seealso cref="FungibleAssetValue"/>
@@ -123,6 +127,38 @@ namespace Libplanet.Assets
 
             Hash = GetHash();
         }
+
+        /// <summary>
+        /// Gets a fungible asset value with the given <paramref name="quantity"/> of the
+        /// specified <paramref name="currency"/>.
+        /// </summary>
+        /// <param name="currency">The currency to get a value.</param>
+        /// <param name="quantity">The major unit of the fungible asset value,
+        /// i.e., digits <em>before</em> the decimal separator.</param>
+        /// <returns>A fungible asset value with the given <paramref name="quantity"/> of the
+        /// specified <paramref name="currency"/>.</returns>
+        /// <remarks>This cannot specify <see cref="FungibleAssetValue.MinorUnit"/> but only
+        /// <see cref="FungibleAssetValue.MajorUnit"/>.  For more precision, directly use <see
+        /// cref="FungibleAssetValue"/>'s constructors instead.</remarks>
+        [Pure]
+        public static FungibleAssetValue operator *(Currency currency, BigInteger quantity) =>
+            new FungibleAssetValue(currency, majorUnit: quantity, minorUnit: 0);
+
+        /// <summary>
+        /// Gets a fungible asset value with the given <paramref name="quantity"/> of the
+        /// specified <paramref name="currency"/>.
+        /// </summary>
+        /// <param name="quantity">The major unit of the fungible asset value,
+        /// i.e., digits <em>before</em> the decimal separator.</param>
+        /// <param name="currency">The currency to get a value.</param>
+        /// <returns>A fungible asset value with the given <paramref name="quantity"/> of the
+        /// specified <paramref name="currency"/>.</returns>
+        /// <remarks>This cannot specify <see cref="FungibleAssetValue.MinorUnit"/> but only
+        /// <see cref="FungibleAssetValue.MajorUnit"/>.  For more precision, directly use <see
+        /// cref="FungibleAssetValue"/>'s constructors instead.</remarks>
+        [Pure]
+        public static FungibleAssetValue operator *(BigInteger quantity, Currency currency) =>
+            new FungibleAssetValue(currency, majorUnit: quantity, minorUnit: 0);
 
         /// <summary>
         /// Returns <c>true</c> if and only if the given <paramref name="address"/> is allowed

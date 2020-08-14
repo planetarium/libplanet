@@ -154,5 +154,13 @@ namespace Libplanet.Tests.Assets
             Assert.NotEqual(currencyA, currencyD);
             Assert.NotEqual(currencyA, currencyE);
         }
+
+        [Fact]
+        public void GetFungibleAssetValue()
+        {
+            var foo = new Currency(ticker: "FOO", decimalPlaces: 0, minter: null);
+            Assert.Equal(new FungibleAssetValue(foo, 123, 0), 123 * foo);
+            Assert.Equal(new FungibleAssetValue(foo, -123, 0), foo * -123);
+        }
     }
 }
