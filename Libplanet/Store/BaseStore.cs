@@ -4,7 +4,6 @@ using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
-using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Tx;
@@ -41,16 +40,6 @@ namespace Libplanet.Store
             Guid sourceChainId,
             Guid destinationChainId,
             HashDigest<SHA256> branchPoint);
-
-        /// <inheritdoc />
-        public abstract IEnumerable<string> ListStateKeys(Guid chainId);
-
-        /// <inheritdoc/>
-        public abstract IImmutableDictionary<string, IImmutableList<HashDigest<SHA256>>>
-            ListAllStateReferences(
-                Guid chainId,
-                long lowestIndex = 0,
-                long highestIndex = long.MaxValue);
 
         /// <inheritdoc />
         public abstract void StageTransactionIds(IImmutableSet<TxId> txids);
@@ -129,50 +118,6 @@ namespace Libplanet.Store
 
         /// <inheritdoc />
         public abstract bool ContainsBlock(HashDigest<SHA256> blockHash);
-
-        public abstract IImmutableDictionary<string, IValue> GetBlockStates(
-            HashDigest<SHA256> blockHash
-        );
-
-        /// <inheritdoc />
-        public abstract void SetBlockStates(
-            HashDigest<SHA256> blockHash,
-            IImmutableDictionary<string, IValue> states
-        );
-
-        /// <inheritdoc />
-        public abstract void PruneBlockStates<T>(
-            Guid chainId,
-            Block<T> until)
-            where T : IAction, new();
-
-        /// <inheritdoc />
-        public abstract Tuple<HashDigest<SHA256>, long> LookupStateReference<T>(
-            Guid chainId,
-            string key,
-            Block<T> lookupUntil)
-            where T : IAction, new();
-
-        /// <inheritdoc />
-        public abstract IEnumerable<Tuple<HashDigest<SHA256>, long>> IterateStateReferences(
-            Guid chainId,
-            string key,
-            long? highestIndex,
-            long? lowestIndex,
-            int? limit);
-
-        public abstract void StoreStateReference(
-            Guid chainId,
-            IImmutableSet<string> keys,
-            HashDigest<SHA256> blockHash,
-            long blockIndex);
-
-        /// <inheritdoc />
-        public abstract void ForkStateReferences<T>(
-            Guid sourceChainId,
-            Guid destinationChainId,
-            Block<T> branchPoint)
-            where T : IAction, new();
 
         /// <inheritdoc/>
         public abstract IEnumerable<KeyValuePair<Address, long>> ListTxNonces(Guid chainId);

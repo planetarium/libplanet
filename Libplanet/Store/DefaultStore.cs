@@ -25,7 +25,7 @@ namespace Libplanet.Store
     /// for some complex indices.
     /// </summary>
     /// <seealso cref="IStore"/>
-    public class DefaultStore : BaseStore
+    public class DefaultStore : BaseBlockStatesStore
     {
         private const string IndexColPrefix = "index_";
 
@@ -550,7 +550,6 @@ namespace Libplanet.Store
             return _blocks.FileExists(blockPath);
         }
 
-        /// <inheritdoc/>
         public override IImmutableDictionary<string, IValue> GetBlockStates(
             HashDigest<SHA256> blockHash
         )
@@ -659,16 +658,11 @@ namespace Libplanet.Store
             }
         }
 
-        public override Tuple<HashDigest<SHA256>, long> LookupStateReference<T>(
+        public override Tuple<HashDigest<SHA256>, long> LookupStateReference(
             Guid chainId,
             string key,
-            Block<T> lookupUntil)
+            long lookupUntilBlockIndex)
         {
-            if (lookupUntil is null)
-            {
-                throw new ArgumentNullException(nameof(lookupUntil));
-            }
-
             if (_lastStateRefCaches.TryGetValue(
                     chainId,
                     out LruCache<string, Tuple<HashDigest<SHA256>, long>> stateRefCache)
@@ -678,14 +672,14 @@ namespace Libplanet.Store
             {
                 long cachedIndex = cache.Item2;
 
-                if (cachedIndex <= lookupUntil.Index)
+                if (cachedIndex <= lookupUntilBlockIndex)
                 {
                     return cache;
                 }
             }
 
             Tuple<HashDigest<SHA256>, long> stateRef =
-                IterateStateReferences(chainId, key, lookupUntil.Index, null, limit: 1)
+                IterateStateReferences(chainId, key, lookupUntilBlockIndex, null, limit: 1)
                 .FirstOrDefault();
 
             if (stateRef is null)

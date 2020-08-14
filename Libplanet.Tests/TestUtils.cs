@@ -288,7 +288,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 null,
                 timestamp ?? DateTimeOffset.MinValue,
                 new[] { tx, });
-            return new BlockChain<T>(policy, store, genesisBlock);
+            return new BlockChain<T>(policy, store, store as IStateStore, genesisBlock);
         }
 
         public static HashDigest<SHA256>? ActionEvaluationsToHash(

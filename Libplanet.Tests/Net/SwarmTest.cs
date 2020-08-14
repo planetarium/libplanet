@@ -825,6 +825,7 @@ namespace Libplanet.Tests.Net
                 blockChains[i] = new BlockChain<DumbAction>(
                     policy,
                     fxs[i].Store,
+                    fxs[i].StateStore,
                     fxs[i].GenesisBlock
                 );
                 swarms[i] = CreateSwarm(blockChains[i]);
@@ -1822,7 +1823,11 @@ namespace Libplanet.Tests.Net
 
             BlockChain<DumbAction>
                 MakeGenesisChain(IStore store, Block<DumbAction> genesisBlock) =>
-                new BlockChain<DumbAction>(new BlockPolicy<DumbAction>(), store, genesisBlock);
+                new BlockChain<DumbAction>(
+                    new BlockPolicy<DumbAction>(),
+                    store,
+                    store as IStateStore,
+                    genesisBlock);
 
             var genesisChainA = MakeGenesisChain(new DefaultStore(null), genesisBlockA);
             var genesisChainB = MakeGenesisChain(new DefaultStore(null), genesisBlockB);

@@ -38,7 +38,11 @@ namespace Libplanet.Tests.Blockchain.Policies
                 TimeSpan.FromHours(3),
                 1024,
                 128);
-            _chain = new BlockChain<DumbAction>(_policy, _fx.Store, _fx.GenesisBlock);
+            _chain = new BlockChain<DumbAction>(
+                _policy,
+                _fx.Store,
+                _fx.StateStore,
+                _fx.GenesisBlock);
             _emptyTransaction = new List<Transaction<DumbAction>>();
             _genesis = _chain.Genesis;
             _validNext = Block<DumbAction>.Mine(

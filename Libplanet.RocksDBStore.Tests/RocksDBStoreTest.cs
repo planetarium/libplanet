@@ -41,6 +41,7 @@ namespace Libplanet.RocksDBStore.Tests
                 var blocks = new BlockChain<DumbAction>(
                     new NullPolicy<DumbAction>(),
                     store,
+                    store,
                     Fx.GenesisBlock
                 );
                 store.Dispose();

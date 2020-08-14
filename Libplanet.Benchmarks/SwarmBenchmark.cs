@@ -58,7 +58,8 @@ namespace Libplanet.Benchmarks
             {
                 _keys[i] = _keys[i] ?? new PrivateKey();
                 _fxs[i] = new DefaultStoreFixture(memory: true);
-                _blockChains[i] = new BlockChain<DumbAction>(_policy, _fxs[i].Store, _blocks[0]);
+                _blockChains[i] = new BlockChain<DumbAction>(
+                    _policy, _fxs[i].Store, _fxs[i].StateStore, _blocks[0]);
                 _swarms[i] = new Swarm<DumbAction>(
                     _blockChains[i],
                     _keys[i],

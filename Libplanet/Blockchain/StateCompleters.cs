@@ -19,10 +19,10 @@ namespace Libplanet.Blockchain
         /// permanently remained in the store.
         /// </summary>
         public static readonly StateCompleter<T> Recalculate = (blockChain, blockHash, address) =>
-            blockChain.ComplementBlockStates(blockHash).TryGetValue(
-                BlockChain<T>.ToStateKey(address),
-                out IValue v
-            ) ? v : null;
+        {
+            blockChain.ComplementBlockStates(blockHash);
+            return blockChain.GetState(address, blockHash);
+        };
 
         /// <summary>
         /// Rejects to complement incomplete state and throws
