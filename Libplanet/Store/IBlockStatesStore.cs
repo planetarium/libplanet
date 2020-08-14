@@ -9,7 +9,7 @@ using Libplanet.Blocks;
 namespace Libplanet.Store
 {
     /// <summary>
-    /// An interface to store state with <c>block-states state-reference</c> model.
+    /// An interface to store block states and state references to them.
     /// </summary>
     public interface IBlockStatesStore : IStateStore
     {

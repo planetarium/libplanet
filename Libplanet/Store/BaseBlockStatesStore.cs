@@ -65,10 +65,10 @@ namespace Libplanet.Store
         public void ForkStates<T>(
             Guid sourceChainId,
             Guid destinationChainId,
-            Block<T> branchPoint)
+            Block<T> branchpoint)
             where T : IAction, new()
         {
-            ForkStateReferences(sourceChainId, destinationChainId, branchPoint);
+            ForkStateReferences(sourceChainId, destinationChainId, branchpoint);
         }
 
         public abstract IEnumerable<string> ListStateKeys(Guid chainId);
