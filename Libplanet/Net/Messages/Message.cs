@@ -117,6 +117,29 @@ namespace Libplanet.Net.Messages
             DifferentVersion = 0x30,
         }
 
+        private enum MessageFrame
+        {
+            /// <summary>
+            /// Frame containing <see cref="AppProtocolVersion"/>.
+            /// </summary>
+            Version = 0,
+
+            /// <summary>
+            /// Frame containing <see cref="MessageType"/>.
+            /// </summary>
+            Type = 1,
+
+            /// <summary>
+            /// Frame containing the sender <see cref="Peer"/> of the <see cref="Message"/>.
+            /// </summary>
+            Peer = 2,
+
+            /// <summary>
+            /// Frame containing signature of the <see cref="Message"/>.
+            /// </summary>
+            Sign = 3,
+        }
+
         public byte[] Identity { get; set; }
 
         public AppProtocolVersion Version { get; set; }
@@ -139,16 +162,17 @@ namespace Libplanet.Net.Messages
                 throw new ArgumentException("Can't parse empty NetMQMessage.");
             }
 
-            // (reply == true)  [version, type, sign, peer, frames...]
-            // (reply == false) [identity, version, type, sign, peer, frames...]
-            int headerCount = reply ? CommonFrames : CommonFrames + 1;
-            var versionToken = raw[headerCount - 4].ConvertToString();
+            // (reply == true)  [version, type, peer, sign, frames...]
+            // (reply == false) [identity, version, type, peer, sign, frames...]
+            NetMQFrame[] remains = reply ? raw.ToArray() : raw.Skip(1).ToArray();
+
+            var versionToken = remains[(int)MessageFrame.Version].ConvertToString();
 
             AppProtocolVersion remoteVersion = AppProtocolVersion.FromToken(versionToken);
             Peer remotePeer = null;
             try
             {
-                remotePeer = DeserializePeer(raw[headerCount - 2].ToByteArray());
+                remotePeer = DeserializePeer(remains[(int)MessageFrame.Peer].ToByteArray());
             }
             catch (Exception)
             {
@@ -169,11 +193,11 @@ namespace Libplanet.Net.Messages
                     remoteVersion);
             }
 
-            var rawType = (MessageType)raw[headerCount - 3].ConvertToInt32();
-            var peer = raw[headerCount - 2].ToByteArray();
-            byte[] signature = raw[headerCount - 1].ToByteArray();
+            var rawType = (MessageType)remains[(int)MessageFrame.Type].ConvertToInt32();
+            var peer = remains[(int)MessageFrame.Peer].ToByteArray();
+            byte[] signature = remains[(int)MessageFrame.Sign].ToByteArray();
 
-            NetMQFrame[] body = raw.Skip(headerCount).ToArray();
+            NetMQFrame[] body = remains.Skip(CommonFrames).ToArray();
 
             // FIXME: The below code is too repetitive and prone to miss to add, which means,
             // when you add a new message type, you adds an enum member to MessageType and
