@@ -73,18 +73,21 @@ namespace Libplanet.Blockchain
         /// be used for that.</param>
         /// <param name="render">Defines whether to render actions on this
         /// <see cref="BlockChain{T}"/>.  Turned on by default.</param>
+        /// <param name="stateStore"><see cref="IStateStore"/> to store states.</param>
         /// <exception cref="InvalidGenesisBlockException">Thrown when the <paramref name="store"/>
         /// has a genesis block and it does not match to what the network expects
         /// (i.e., <paramref name="genesisBlock"/>).</exception>
         public BlockChain(
             IBlockPolicy<T> policy,
             IStore store,
+            IStateStore stateStore,
             Block<T> genesisBlock,
             bool render = true
             )
             : this(
                 policy,
                 store,
+                stateStore,
                 store.GetCanonicalChainId() ?? Guid.NewGuid(),
                 genesisBlock,
                 render)
@@ -94,6 +97,7 @@ namespace Libplanet.Blockchain
         internal BlockChain(
             IBlockPolicy<T> policy,
             IStore store,
+            IStateStore stateStore,
             Guid id,
             Block<T> genesisBlock,
             bool render
@@ -101,6 +105,7 @@ namespace Libplanet.Blockchain
             : this(
                 policy,
                 store,
+                stateStore,
                 id,
                 genesisBlock,
                 false,
@@ -112,6 +117,7 @@ namespace Libplanet.Blockchain
         private BlockChain(
             IBlockPolicy<T> policy,
             IStore store,
+            IStateStore stateStore,
             Guid id,
             Block<T> genesisBlock,
             bool inFork,
@@ -121,6 +127,13 @@ namespace Libplanet.Blockchain
             Id = id;
             Policy = policy;
             Store = store;
+
+            // It expects store is DefaultStore or RocksDBStore.
+            StateStore = stateStore ?? store as IStateStore;
+            if (StateStore is null)
+            {
+                throw new ArgumentNullException(nameof(stateStore));
+            }
 
             _blocks = new BlockSet<T>(store);
             _transactions = new TransactionSet<T>(store);
@@ -226,6 +239,8 @@ namespace Libplanet.Blockchain
         public long Count => Store.CountIndex(Id);
 
         internal IStore Store { get; }
+
+        internal IStateStore StateStore { get; }
 
         /// <summary>
         /// Gets the block corresponding to the <paramref name="index"/>.
@@ -1212,7 +1227,7 @@ namespace Libplanet.Blockchain
             }
 
             var forked = new BlockChain<T>(
-                Policy, Store, Guid.NewGuid(), Genesis, true, Render);
+                Policy, Store, StateStore, Guid.NewGuid(), Genesis, true, Render);
             Guid forkedId = forked.Id;
             _logger.Debug(
                 "Trying to fork chain at {branchPoint}" +
@@ -1247,7 +1262,7 @@ namespace Libplanet.Blockchain
                     }
                 }
 
-                Store.ForkStateReferences(Id, forked.Id, pointBlock);
+                StateStore.ForkStates(Id, forked.Id, pointBlock);
 
                 foreach (KeyValuePair<Address, long> pair in Store.ListTxNonces(Id))
                 {
@@ -1502,7 +1517,7 @@ namespace Libplanet.Blockchain
                     .SelectMany(kv => kv.Value.Select(c => (kv.Key, c))))
                 .ToImmutableHashSet();
 
-            if (Store.GetBlockStates(block.Hash) is null)
+            if (!StateStore.ContainsBlockStates(block.Hash))
             {
                 HashDigest<SHA256> blockHash = block.Hash;
                 IAccountStateDelta lastStates = actionEvaluations.Count > 0
@@ -1523,10 +1538,10 @@ namespace Libplanet.Blockchain
                         )
                     );
 
-                Store.SetBlockStates(blockHash, totalDelta);
+                StateStore.SetStates(blockHash, totalDelta, blockHash => this[blockHash]);
             }
 
-            if (buildStateReferences)
+            if (buildStateReferences && StateStore is IBlockStatesStore blockStatesStore)
             {
                 IImmutableSet<string> stateUpdatedKeys = stateUpdatedAddresses
                     .Select(ToStateKey)
@@ -1535,7 +1550,7 @@ namespace Libplanet.Blockchain
                     .Select(ToFungibleAssetKey)
                     .ToImmutableHashSet();
                 IImmutableSet<string> updatedKeys = stateUpdatedKeys.Union(assetUpdatedKeys);
-                Store.StoreStateReference(Id, updatedKeys, block.Hash, block.Index);
+                blockStatesStore.StoreStateReference(Id, updatedKeys, block.Hash, block.Index);
             }
         }
 
@@ -1608,8 +1623,7 @@ namespace Libplanet.Blockchain
         /// Calculates and complements a block's incomplete states on the fly.
         /// </summary>
         /// <param name="blockHash">The hash of a block which has incomplete states.</param>
-        /// <returns>The dirty states made from actions in the requested block.</returns>
-        internal IImmutableDictionary<string, IValue> ComplementBlockStates(
+        internal void ComplementBlockStates(
             HashDigest<SHA256> blockHash
         )
         {
@@ -1625,7 +1639,7 @@ namespace Libplanet.Blockchain
             foreach (HashDigest<SHA256> hash in BlockHashes)
             {
                 Block<T> block = this[hash];
-                if (!(Store.GetBlockStates(block.Hash) is null))
+                if (StateStore.ContainsBlockStates(hash))
                 {
                     continue;
                 }
@@ -1646,8 +1660,6 @@ namespace Libplanet.Blockchain
                     _rwlock.ExitWriteLock();
                 }
             }
-
-            return Store.GetBlockStates(blockHash) ?? throw new NullReferenceException();
         }
 
         private IValue GetRawState(
@@ -1656,45 +1668,34 @@ namespace Libplanet.Blockchain
             Func<BlockChain<T>, HashDigest<SHA256>, IValue> rawStateCompleter
         )
         {
-            _rwlock.EnterReadLock();
-            try
-            {
-                if (offset is null)
-                {
-                    offset = Store.IndexBlockHash(Id, -1);
-                }
-            }
-            finally
-            {
-                _rwlock.ExitReadLock();
-            }
-
-            if (offset is null)
-            {
-                return null;
-            }
-
-            Block<T> block = this[offset.Value];
-            Tuple<HashDigest<SHA256>, long> stateReference;
-
             _rwlock.EnterUpgradeableReadLock();
             try
             {
-                stateReference = Store.LookupStateReference(Id, key, block);
-
-                if (stateReference is null)
+                if (offset is null && Tip is null)
                 {
                     return null;
                 }
 
-                HashDigest<SHA256> hashValue = stateReference.Item1;
-                IImmutableDictionary<string, IValue> blockStates = Store.GetBlockStates(hashValue);
-                if (blockStates is null)
+                offset ??= Tip.Hash;
+
+                if (StateStore is IBlockStatesStore blockStatesStore)
                 {
-                    return rawStateCompleter(this, hashValue);
+                    var stateRef = blockStatesStore.LookupStateReference(
+                        Id,
+                        key,
+                        this[offset.Value].Index);
+
+                    if (stateRef is null)
+                    {
+                        return null;
+                    }
+
+                    offset = stateRef.Item1;
                 }
 
-                return blockStates.TryGetValue(key, out IValue state) ? state : null;
+                return StateStore.ContainsBlockStates(offset.Value)
+                    ? StateStore.GetState(key, offset, Id)
+                    : rawStateCompleter(this, offset.Value);
             }
             finally
             {

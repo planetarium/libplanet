@@ -68,6 +68,19 @@ To be released.
     backward compatibility (i.e., you need to rebuild your assemblies), still is
     backward-compatible at API-level as the option is turned on by default.
     [[#946]]
+ -  Extracted `IStore`'s some methods dedicated to block states into `IBlockStatesStore`. [[#950]]
+     -  `ListStateKeys()` method.
+     -  `ListAllStateReferences()` method.
+     -  `LookupStateReference()` method.
+     -  `IterateStateReferences()` method.
+     -  `StoreStateReference()` method.
+     -  `ForkStateReferences()` method.
+     -  `GetBlockStates()` method.
+     -  `SetBlockStates()` method.
+     -  `PruneBlockStates()` method.
+ -  The signature of `IStore.LookupStateReference<T>(Guid, string, Block<T>)` method was
+    changed to `LookupStateReference(Guid, string, long)`.  [[#950]]
+ -  Added `IStateStore`-typed `stateStore` to `BlockChain<T>` constructor.  [[#950]]
 
 ### Backward-incompatible network protocol changes
 
@@ -129,6 +142,10 @@ To be released.
  -  Added `BlockChain<T>.Render` property.  [[#946]]
  -  Added `Reorged` event on `BlockChain<T>`.  [[#945]]
  -  Added `ReorgedEventArgs` class.  [[#945]]
+ -  (Libplanet.RocksDB) `RocksDBStore` became to implement `IBlockStatesStore`.  [[#950]]
+ -  `DefaultStore` became to implement `IBlockStatesStore`.  [[#950]]
+ -  Added `IStateStore` interface.  [[#950]]
+ -  Added `IBlockStatesStore` interface.  [[#950]]
 
 ### Behavioral changes
 
@@ -220,6 +237,7 @@ To be released.
 [#941]: https://github.com/planetarium/libplanet/pull/941
 [#945]: https://github.com/planetarium/libplanet/pull/945
 [#946]: https://github.com/planetarium/libplanet/pull/946
+[#950]: https://github.com/planetarium/libplanet/pull/950
 [sleep mode]: https://en.wikipedia.org/wiki/Sleep_mode
 
 

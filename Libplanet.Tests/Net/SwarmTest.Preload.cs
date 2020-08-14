@@ -12,6 +12,7 @@ using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net;
+using Libplanet.Store;
 using Libplanet.Tests.Blockchain;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
@@ -748,7 +749,7 @@ namespace Libplanet.Tests.Net
 
             var fxMiner = new DefaultStoreFixture(memory: true);
             var minerChain = new BlockChain<DumbAction>(
-                policy, fxMiner.Store, fxMiner.GenesisBlock);
+                policy, fxMiner.Store, fxMiner.StateStore, fxMiner.GenesisBlock);
             var minerAddress = fxMiner.Address1;
 
             async Task MineBlocks()
@@ -766,7 +767,7 @@ namespace Libplanet.Tests.Net
 
             var fxReceiver = new DefaultStoreFixture(memory: true);
             var receiverChain = new BlockChain<DumbAction>(
-                policy, fxReceiver.Store, fxReceiver.GenesisBlock);
+                policy, fxReceiver.Store, fxReceiver.StateStore, fxReceiver.GenesisBlock);
 
             var minerSwarm = CreateSwarm(minerChain);
             var receiverSwarm = CreateSwarm(receiverChain);
@@ -782,15 +783,29 @@ namespace Libplanet.Tests.Net
 
                 await t;
 
-                var minerStateRefs = minerChain.Store
-                    .ListAllStateReferences(minerChain.Id, 0, receiverChain.Tip.Index)
-                    .FirstOrDefault().Value;
+                if (minerChain.StateStore is IBlockStatesStore minerBlockStatesStore &&
+                    receiverChain.StateStore is IBlockStatesStore receiverBlockStatesStore)
+                {
+                    var minerStateRefs = minerBlockStatesStore
+                        .ListAllStateReferences(minerChain.Id, 0, receiverChain.Tip.Index)
+                        .FirstOrDefault().Value;
 
-                var receiverStateRefs = receiverChain.Store
-                    .ListAllStateReferences(receiverChain.Id, 0, receiverChain.Tip.Index)
-                    .FirstOrDefault().Value;
+                    var receiverStateRefs = receiverBlockStatesStore
+                        .ListAllStateReferences(receiverChain.Id, 0, receiverChain.Tip.Index)
+                        .FirstOrDefault().Value;
+                    Assert.Equal(receiverChain.Count, receiverStateRefs.Count + 1);
 
-                Assert.Equal(receiverChain.Count, receiverStateRefs.Count + 1);
+                    _logger.Verbose(
+                        "minerStateRefs = {@minerStateRefs}",
+                        minerStateRefs.Select(s => s.ToString())
+                    );
+                    _logger.Verbose(
+                        "receiverStateRefs = {@receiverStateRefs}",
+                        receiverStateRefs.Select(s => s.ToString())
+                    );
+                    Assert.Equal(minerStateRefs, receiverStateRefs);
+                }
+
                 _logger.CompareBothChains(
                     LogEventLevel.Verbose,
                     "minerChain",
@@ -798,15 +813,6 @@ namespace Libplanet.Tests.Net
                     "receiverChain",
                     receiverChain
                 );
-                _logger.Verbose(
-                    "minerStateRefs = {@minerStateRefs}",
-                    minerStateRefs.Select(s => s.ToString())
-                );
-                _logger.Verbose(
-                    "receiverStateRefs = {@receiverStateRefs}",
-                    receiverStateRefs.Select(s => s.ToString())
-                );
-                Assert.Equal(minerStateRefs, receiverStateRefs);
             }
             finally
             {

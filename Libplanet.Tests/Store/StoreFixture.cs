@@ -134,6 +134,10 @@ namespace Libplanet.Tests.Store
 
         public IStore Store { get; set; }
 
+        public IBlockStatesStore BlockStatesStore => Store as IBlockStatesStore;
+
+        public IStateStore StateStore => Store as IStateStore;
+
         public abstract void Dispose();
 
         public Transaction<DumbAction> MakeTransaction(

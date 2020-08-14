@@ -1,5 +1,4 @@
 using System;
-using System.Numerics;
 using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
@@ -22,10 +21,10 @@ namespace Libplanet.Blockchain
         /// </summary>
         public static readonly FungibleAssetStateCompleter<T> Recalculate =
             (blockChain, blockHash, address, currency) =>
-                blockChain.ComplementBlockStates(blockHash).TryGetValue(
-                    BlockChain<T>.ToFungibleAssetKey(address, currency),
-                    out IValue v
-                ) ? (BigInteger)(Bencodex.Types.Integer)v : 0;
+            {
+                blockChain.ComplementBlockStates(blockHash);
+                return blockChain.GetBalance(address, currency, blockHash);
+            };
 
         /// <summary>
         /// Rejects to complement incomplete state and throws
