@@ -20,7 +20,6 @@ using Serilog;
 using Serilog.Events;
 using Xunit;
 using Xunit.Abstractions;
-using Xunit.Sdk;
 using static Libplanet.Tests.Common.Action.ThrowException;
 
 namespace Libplanet.Tests.Blockchain
