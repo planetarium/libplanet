@@ -9,7 +9,7 @@ using Libplanet.Blocks;
 namespace Libplanet.Store
 {
     /// <summary>
-    /// An interface to abstract methods which handle states.
+    /// An interface to store states.
     /// </summary>
     public interface IStateStore
     {
@@ -48,7 +48,8 @@ namespace Libplanet.Store
             Guid? chainId = null);
 
         /// <summary>
-        /// Check the states corresponded to the block derived from <paramref name="blockHash"/>.
+        /// Checks if the states corresponded to the block derived from <paramref name="blockHash"/>
+        /// exist.
         /// </summary>
         /// <param name="blockHash">The <see cref="Block{T}.Hash"/> of <see cref="Block{T}"/>.
         /// </param>
