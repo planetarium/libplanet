@@ -53,9 +53,9 @@ namespace Libplanet.Store
         /// </summary>
         /// <param name="blockHash">The <see cref="Block{T}.Hash"/> of <see cref="Block{T}"/>.
         /// </param>
-        /// <returns>Whether to exist the states corresponded to <paramref name="blockHash"/>.
+        /// <returns>Whether it contains the states corresponded to <paramref name="blockHash"/>.
         /// </returns>
-        bool ExistsBlockState(HashDigest<SHA256> blockHash);
+        bool ContainsBlockStates(HashDigest<SHA256> blockHash);
 
         /// <summary>
         /// Copies metadata related to states from <paramref name="sourceChainId"/> to

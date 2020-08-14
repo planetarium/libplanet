@@ -57,7 +57,7 @@ namespace Libplanet.Store
             return blockStates.TryGetValue(stateKey, out IValue state) ? state : null;
         }
 
-        public bool ExistsBlockState(HashDigest<SHA256> blockHash)
+        public bool ContainsBlockStates(HashDigest<SHA256> blockHash)
         {
             return !(GetBlockStates(blockHash) is null);
         }
