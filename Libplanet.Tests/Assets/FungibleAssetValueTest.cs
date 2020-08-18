@@ -410,6 +410,80 @@ namespace Libplanet.Tests.Assets
             Assert.Equal("1 FOO", foo100.ToString());
             Assert.Equal("90000000 BAR", bar90000000.ToString());
         }
+
+        [Fact]
+        public void Parse()
+        {
+            Currency baz = new Currency("BAZ", 1, minter: null);
+            FormatException e;
+
+            e = Assert.Throws<FormatException>(() => FungibleAssetValue.Parse(FOO, "abc"));
+            Assert.StartsWith("The value string must consist of digits", e.Message);
+
+            const string signError = "Plus (+) or minus (-) sign can be appeared only at";
+            e = Assert.Throws<FormatException>(() => FungibleAssetValue.Parse(FOO, "++123"));
+            Assert.StartsWith(signError, e.Message);
+            e = Assert.Throws<FormatException>(() => FungibleAssetValue.Parse(FOO, "--123"));
+            Assert.StartsWith(signError, e.Message);
+            e = Assert.Throws<FormatException>(() => FungibleAssetValue.Parse(FOO, "++123.45"));
+            Assert.StartsWith(signError, e.Message);
+            e = Assert.Throws<FormatException>(() => FungibleAssetValue.Parse(FOO, "--123.45"));
+            Assert.StartsWith(signError, e.Message);
+            e = Assert.Throws<FormatException>(() => FungibleAssetValue.Parse(FOO, "23.4-5"));
+            Assert.StartsWith(signError, e.Message);
+            e = Assert.Throws<FormatException>(() => FungibleAssetValue.Parse(FOO, "45.6+7"));
+            Assert.StartsWith(signError, e.Message);
+            e = Assert.Throws<FormatException>(() => FungibleAssetValue.Parse(FOO, "2-3"));
+            Assert.StartsWith(signError, e.Message);
+            e = Assert.Throws<FormatException>(() => FungibleAssetValue.Parse(FOO, "45+6"));
+            Assert.StartsWith(signError, e.Message);
+            e = Assert.Throws<FormatException>(() => FungibleAssetValue.Parse(FOO, "+12-3"));
+            Assert.StartsWith(signError, e.Message);
+            e = Assert.Throws<FormatException>(() => FungibleAssetValue.Parse(FOO, "-45+6"));
+            Assert.StartsWith(signError, e.Message);
+
+            const string decimalSeparatorError = "The decimal separator (.) cannot be appeared";
+            e = Assert.Throws<FormatException>(() => FungibleAssetValue.Parse(FOO, "123..4"));
+            Assert.Contains(decimalSeparatorError, e.Message);
+            e = Assert.Throws<FormatException>(() => FungibleAssetValue.Parse(FOO, "123.4.5"));
+            Assert.Contains(decimalSeparatorError, e.Message);
+
+            const string decimalsError = "does not allow more than";
+            e = Assert.Throws<FormatException>(() => FungibleAssetValue.Parse(FOO, "123.456"));
+            Assert.Contains(decimalsError, e.Message);
+            e = Assert.Throws<FormatException>(() => FungibleAssetValue.Parse(BAR, "123.0"));
+            Assert.Contains(decimalsError, e.Message);
+            e = Assert.Throws<FormatException>(() => FungibleAssetValue.Parse(baz, "123.12"));
+            Assert.Contains(decimalsError, e.Message);
+
+            Assert.Equal(
+                new FungibleAssetValue(FOO, 123, 45),
+                FungibleAssetValue.Parse(FOO, "123.45")
+            );
+            Assert.Equal(
+                new FungibleAssetValue(FOO, 123, 45),
+                FungibleAssetValue.Parse(FOO, "+123.45")
+            );
+            Assert.Equal(
+                new FungibleAssetValue(FOO, -123, 45),
+                FungibleAssetValue.Parse(FOO, "-123.45")
+            );
+            Assert.Equal(
+                new FungibleAssetValue(FOO, 123, 40),
+                FungibleAssetValue.Parse(FOO, "123.4")
+            );
+            Assert.Equal(
+                new FungibleAssetValue(FOO, 123, 40),
+                FungibleAssetValue.Parse(FOO, "+123.4")
+            );
+            Assert.Equal(
+                new FungibleAssetValue(FOO, -123, 40),
+                FungibleAssetValue.Parse(FOO, "-123.4")
+            );
+            Assert.Equal(new FungibleAssetValue(FOO, 123, 0), FungibleAssetValue.Parse(FOO, "123"));
+            Assert.Equal(new FungibleAssetValue(FOO, 12, 0), FungibleAssetValue.Parse(FOO, "+12"));
+            Assert.Equal(new FungibleAssetValue(FOO, -12, 0), FungibleAssetValue.Parse(FOO, "-12"));
+        }
     }
 }
 

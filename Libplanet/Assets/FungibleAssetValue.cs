@@ -2,6 +2,7 @@
 using System;
 using System.Diagnostics.Contracts;
 using System.Globalization;
+using System.Linq;
 using System.Numerics;
 using System.Runtime.Serialization;
 using Libplanet.Serialization;
@@ -379,6 +380,64 @@ namespace Libplanet.Assets
             }
 
             return new FungibleAssetValue(dividend.Currency, dividend.RawValue % divisor.RawValue);
+        }
+
+        /// <summary>
+        /// Parses a numeric string and returns a corresponding <see cref="FungibleAssetValue"/>.
+        /// </summary>
+        /// <param name="currency">The currency of the value to parse.</param>
+        /// <param name="value">A numeric string to parse.  Can consist of digits, plus (+),
+        /// minus (-), and decimal separator (.).</param>
+        /// <returns>The parsed asset value.</returns>
+        /// <exception cref="FormatException">Thrown when the given <paramref name="value"/> is not
+        /// a valid numeric string.</exception>
+        public static FungibleAssetValue Parse(Currency currency, string value)
+        {
+            int sign = 1;
+            if (value[0] == '-' || value[0] == '+')
+            {
+                sign = value[0] == '-' ? -1 : 1;
+                value = value.Remove(0, 1);
+            }
+
+            if (value.IndexOfAny(new[] { '+', '-' }) >= 0)
+            {
+                const string msg =
+                    "Plus (+) or minus (-) sign can be appeared only at first and cannot be " +
+                    "more than one.";
+                throw new FormatException(msg);
+            }
+
+            string[] parts = value.Split(new[] { '.' }, count: 2);
+            bool minorExist = parts.Length > 1;
+            if (minorExist && parts[1].IndexOf('.') >= 0)
+            {
+                throw new FormatException(
+                    "The decimal separator (.) cannot be appeared more than once."
+                );
+            }
+            else if (!parts[0].All(char.IsDigit) || (minorExist && !parts[1].All(char.IsDigit)))
+            {
+                const string msg =
+                    "The value string must consist of digits, decimal separator (.), plus (+), " +
+                    "and minus(-).";
+                throw new FormatException(msg);
+            }
+            else if (minorExist && parts[1].Length > currency.DecimalPlaces)
+            {
+                throw new FormatException(
+                    $"The currency {currency} does not allow more than {currency.DecimalPlaces} " +
+                    (currency.DecimalPlaces == 1 ? "decimal place" : "decimal places")
+                );
+            }
+
+            BigInteger major = BigInteger.Parse(parts[0], CultureInfo.InvariantCulture);
+            BigInteger minor = minorExist
+                ? BigInteger.Parse(parts[1], CultureInfo.InvariantCulture) * BigInteger.Pow(
+                    10,
+                    currency.DecimalPlaces - parts[1].Length)
+                : 0;
+            return new FungibleAssetValue(currency, sign, major, minor);
         }
 
         /// <summary>
