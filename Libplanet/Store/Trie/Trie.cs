@@ -15,6 +15,16 @@ namespace Libplanet.Store.Trie
     {
         private readonly bool _secure;
 
+        /// <summary>
+        /// An <see cref="ITrie"/> implementation.
+        /// </summary>
+        /// <param name="keyValueStore">The <see cref="IKeyValueStore"/> storage to store
+        /// nodes.</param>
+        /// <param name="root">The root node of <see cref="Trie"/>. If it is <c>null</c>,
+        /// it will be treated like empty trie.</param>
+        /// <param name="secure">The flag to determine to use <see cref="Trie"/> in secure mode.
+        /// If it is true, <see cref="Trie"/> will stores the value with the hashed result from the
+        /// given key as the key. It will hash with <see cref="Hashcash.Hash"/>.</param>
         public Trie(IKeyValueStore keyValueStore, INode root = null, bool secure = false)
         {
             KeyValueStore = keyValueStore;
@@ -23,6 +33,7 @@ namespace Libplanet.Store.Trie
             _secure = secure;
         }
 
+        /// <inheritdoc/>
         public INode Root { get; private set; }
 
         private IKeyValueStore KeyValueStore { get; }
@@ -35,6 +46,7 @@ namespace Libplanet.Store.Trie
         public static bool operator !=(Trie left, Trie right) =>
             Operator.Weave(left, right);
 
+        /// <inheritdoc/>
         public void Set(byte[] key, IValue value)
         {
             Root = Insert(
@@ -44,6 +56,7 @@ namespace Libplanet.Store.Trie
                 new ValueNode(value));
         }
 
+        /// <inheritdoc/>
         public bool TryGet(byte[] key, out IValue value)
         {
             return TryGet(
@@ -53,6 +66,7 @@ namespace Libplanet.Store.Trie
                 out value);
         }
 
+        /// <inheritdoc/>
         public ITrie Commit()
         {
             var newRoot = Commit(Root);

@@ -10,11 +10,21 @@ using Libplanet.Store.Trie.Nodes;
 
 namespace Libplanet.Store
 {
+    /// <summary>
+    /// An <see cref="IStateStore"/> implementation. It stores states with <see cref="Trie"/>.
+    /// </summary>
     public class TrieStateStore : IStateStore
     {
         private readonly IKeyValueStore _stateKeyValueStore;
         private readonly IKeyValueStore _stateHashKeyValueStore;
 
+        /// <summary>
+        /// Creates a new <see cref="TrieStateStore"/>.
+        /// </summary>
+        /// <param name="stateKeyValueStore">The storage to store states. It used by
+        /// <see cref="Trie"/> in internal.</param>
+        /// <param name="stateHashKeyValueStore">The storage to store state hash corresponding to
+        /// block hash.</param>
         public TrieStateStore(
             IKeyValueStore stateKeyValueStore, IKeyValueStore stateHashKeyValueStore)
         {
@@ -22,6 +32,7 @@ namespace Libplanet.Store
             _stateHashKeyValueStore = stateHashKeyValueStore;
         }
 
+        /// <inheritdoc/>
         public void SetStates<T>(
             HashDigest<SHA256> blockHash,
             IImmutableDictionary<string, IValue> states,
@@ -48,6 +59,7 @@ namespace Libplanet.Store
                 blockHash.ToByteArray(), newStateTrie.Root.Hash().ToByteArray());
         }
 
+        /// <inheritdoc/>
         public IValue GetState(
             string stateKey,
             HashDigest<SHA256>? blockHash = null,
@@ -60,17 +72,25 @@ namespace Libplanet.Store
             return stateTrie.TryGet(key, out IValue value) ? value : null;
         }
 
+        /// <inheritdoc/>
         public bool ContainsBlockStates(HashDigest<SHA256> blockHash)
         {
             return _stateHashKeyValueStore.Exists(blockHash.ToByteArray());
         }
 
+        /// <inheritdoc/>
         public void ForkStates<T>(Guid sourceChainId, Guid destinationChainId, Block<T> branchpoint)
             where T : IAction, new()
         {
             // Do nothing.
         }
 
+        /// <summary>
+        /// Gets the state hash corresponded to <paramref name="blockHash"/>.
+        /// </summary>
+        /// <param name="blockHash">The <see cref="Block{T}.Hash"/> to get state hash.</param>
+        /// <returns>If there is state hash corresponded to <paramref name="blockHash"/>,
+        /// it will return the state hash. If not, it will return null.</returns>
         public HashDigest<SHA256>? GetRootHash(HashDigest<SHA256> blockHash)
             => _stateHashKeyValueStore.Get(blockHash.ToByteArray()) is byte[] bytes
                 ? new HashDigest<SHA256>(bytes)
