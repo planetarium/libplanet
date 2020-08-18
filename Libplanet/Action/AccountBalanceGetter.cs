@@ -1,5 +1,5 @@
 #nullable enable
-using System.Numerics;
+using Libplanet.Assets;
 
 namespace Libplanet.Action
 {
@@ -15,5 +15,5 @@ namespace Libplanet.Action
     /// <returns>
     /// The <paramref name="address"/>'s balance of the <paramref name="currency"/>.
     /// </returns>
-    public delegate BigInteger AccountBalanceGetter(Address address, Currency currency);
+    public delegate FungibleAssetValue AccountBalanceGetter(Address address, Currency currency);
 }

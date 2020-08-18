@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Numerics;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Assets;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
@@ -440,7 +440,7 @@ namespace Libplanet.Blockchain
         /// <returns>The <paramref name="address"/>'s current balance (or balance as of the given
         /// <paramref name="offset"/>) of the <paramref name="currency"/>.
         /// </returns>
-        public BigInteger GetBalance(
+        public FungibleAssetValue GetBalance(
             Address address,
             Currency currency,
             HashDigest<SHA256>? offset = null,
@@ -457,7 +457,10 @@ namespace Libplanet.Blockchain
                     currency
                 )
             );
-            return v is Bencodex.Types.Integer i ? i.Value : 0;
+            return new FungibleAssetValue(
+                currency,
+                v is Bencodex.Types.Integer i ? i.Value : 0
+            );
         }
 
         /// <summary>
@@ -1038,7 +1041,7 @@ namespace Libplanet.Blockchain
             if (block.PreviousHash is null)
             {
                 stateGetter = _ => null;
-                balanceGetter = (a, c) => 0;
+                balanceGetter = (a, c) => new FungibleAssetValue(c);
             }
             else
             {
@@ -1532,7 +1535,7 @@ namespace Libplanet.Blockchain
                             new KeyValuePair<string, IValue>(
                                 ToFungibleAssetKey(pair),
                                 new Bencodex.Types.Integer(
-                                    lastStates?.GetBalance(pair.Item1, pair.Item2) ?? 0
+                                    lastStates?.GetBalance(pair.Item1, pair.Item2).RawValue ?? 0
                                 )
                             )
                         )

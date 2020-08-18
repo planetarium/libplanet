@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Assets;
 
 namespace Libplanet.Tests.Action
 {
@@ -21,12 +21,11 @@ namespace Libplanet.Tests.Action
             ).ToImmutableDictionary();
         }
 
-        public static IImmutableDictionary<(Address, Currency), BigInteger> GetUpdatedBalances(
-            this IAccountStateDelta delta
-        ) =>
+        public static IImmutableDictionary<(Address, Currency), FungibleAssetValue>
+        GetUpdatedBalances(this IAccountStateDelta delta) =>
             delta.UpdatedFungibleAssets.SelectMany(kv =>
                 kv.Value.Select(currency =>
-                    new KeyValuePair<(Address, Currency), BigInteger>(
+                    new KeyValuePair<(Address, Currency), FungibleAssetValue>(
                         (kv.Key, currency),
                         delta.GetBalance(kv.Key, currency)
                     )

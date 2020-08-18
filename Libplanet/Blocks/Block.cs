@@ -11,6 +11,7 @@ using System.Threading;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Tx;
 
@@ -370,7 +371,7 @@ namespace Libplanet.Blocks
         )
         {
             accountStateGetter ??= a => null;
-            accountBalanceGetter ??= (a, c) => 0;
+            accountBalanceGetter ??= (a, c) => new FungibleAssetValue(c);
 
             IAccountStateDelta delta;
             foreach (Transaction<T> tx in Transactions)
@@ -454,7 +455,7 @@ namespace Libplanet.Blocks
         )
         {
             accountStateGetter ??= a => null;
-            accountBalanceGetter ??= (a, c) => 0;
+            accountBalanceGetter ??= (a, c) => new FungibleAssetValue(c);
 
             Validate(currentTime);
             Tuple<Transaction<T>, ActionEvaluation>[] txEvaluations =

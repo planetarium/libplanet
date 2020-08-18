@@ -7,6 +7,7 @@ using System.Numerics;
 using System.Threading;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Assets;
 using Boolean = Bencodex.Types.Boolean;
 
 namespace Libplanet.Tests.Common.Action
@@ -16,7 +17,7 @@ namespace Libplanet.Tests.Common.Action
         public static readonly Address RandomRecordsAddress =
             new Address("7811C3fAa0f9Cc41F7971c3d9b031B1095b20AB2");
 
-        public static readonly Currency DumbCurrency = new Currency("DUMB", minters: null);
+        public static readonly Currency DumbCurrency = new Currency("DUMB", 0, minters: null);
 
         public DumbAction()
         {
@@ -182,8 +183,7 @@ namespace Libplanet.Tests.Common.Action
                 nextState = nextState.TransferAsset(
                     sender: Transfer.Item1,
                     recipient: Transfer.Item2,
-                    currency: DumbCurrency,
-                    amount: Transfer.Item3,
+                    value: new FungibleAssetValue(DumbCurrency, Transfer.Item3),
                     allowNegativeBalance: true
                 );
             }

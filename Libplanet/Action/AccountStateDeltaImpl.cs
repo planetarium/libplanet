@@ -6,6 +6,7 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Numerics;
 using Bencodex.Types;
+using Libplanet.Assets;
 
 namespace Libplanet.Action
 {
@@ -75,23 +76,25 @@ namespace Libplanet.Action
 
         /// <inheritdoc/>
         [Pure]
-        public BigInteger GetBalance(Address address, Currency currency) =>
+        public FungibleAssetValue GetBalance(Address address, Currency currency) =>
             _updatedFungibleAssets.TryGetValue((address, currency), out BigInteger balance)
-                ? balance
+                ? new FungibleAssetValue(currency, balance)
                 : _accountBalanceGetter(address, currency);
 
         /// <inheritdoc/>
         [Pure]
-        public IAccountStateDelta MintAsset(Address recipient, Currency currency, BigInteger amount)
+        public IAccountStateDelta MintAsset(Address recipient, FungibleAssetValue value)
         {
-            if (amount <= 0)
+            if (value.Sign <= 0)
             {
                 throw new ArgumentOutOfRangeException(
-                    nameof(amount),
-                    "The amount to mint has to be greater than 0."
+                    nameof(value),
+                    "The value to mint has to be greater than zero."
                 );
             }
-            else if (!currency.AllowsToMint(_signer))
+
+            Currency currency = value.Currency;
+            if (!currency.AllowsToMint(_signer))
             {
                 throw new CurrencyPermissionException(
                     _signer,
@@ -100,9 +103,9 @@ namespace Libplanet.Action
                 );
             }
 
-            BigInteger balance = GetBalance(recipient, currency);
+            FungibleAssetValue balance = GetBalance(recipient, currency);
             return UpdateFungibleAssets(
-                _updatedFungibleAssets.SetItem((recipient, currency), balance + amount)
+                _updatedFungibleAssets.SetItem((recipient, currency), (balance + value).RawValue)
             );
         }
 
@@ -111,67 +114,69 @@ namespace Libplanet.Action
         public IAccountStateDelta TransferAsset(
             Address sender,
             Address recipient,
-            Currency currency,
-            BigInteger amount,
+            FungibleAssetValue value,
             bool allowNegativeBalance = false
         )
         {
-            if (amount <= 0)
+            if (value.Sign <= 0)
             {
                 throw new ArgumentOutOfRangeException(
-                    nameof(amount),
-                    "The amount to transfer has to be greater than 0."
+                    nameof(value),
+                    "The value to transfer has to be greater than zero."
                 );
             }
 
-            BigInteger senderBalance = GetBalance(sender, currency),
-                       recipientBalance = GetBalance(recipient, currency);
+            Currency currency = value.Currency;
+            FungibleAssetValue senderBalance = GetBalance(sender, currency);
+            FungibleAssetValue recipientBalance = GetBalance(recipient, currency);
 
-            if (!allowNegativeBalance && senderBalance < amount)
+            if (!allowNegativeBalance && senderBalance < value)
             {
                 var msg = $"The account {sender}'s balance of {currency} is insufficient to " +
-                          $"transfer: {senderBalance} {currency} < {amount} {currency}.";
-                throw new InsufficientBalanceException(sender, currency, senderBalance, msg);
+                          $"transfer: {senderBalance} < {value}.";
+                throw new InsufficientBalanceException(sender, senderBalance, msg);
             }
 
             return UpdateFungibleAssets(
                 _updatedFungibleAssets
-                    .SetItem((sender, currency), senderBalance - amount)
-                    .SetItem((recipient, currency), recipientBalance + amount)
+                    .SetItem((sender, currency), (senderBalance - value).RawValue)
+                    .SetItem((recipient, currency), (recipientBalance + value).RawValue)
             );
         }
 
         /// <inheritdoc/>
         [Pure]
-        public IAccountStateDelta BurnAsset(Address owner, Currency currency, BigInteger amount)
+        public IAccountStateDelta BurnAsset(Address owner, FungibleAssetValue value)
         {
             string msg;
 
-            if (amount <= 0)
+            if (value.Sign <= 0)
             {
                 throw new ArgumentOutOfRangeException(
-                    nameof(amount),
-                    "The amount to burn has to be greater than 0."
+                    nameof(value),
+                    "The value to burn has to be greater than zero."
                 );
             }
-            else if (!currency.AllowsToMint(_signer))
+
+            Currency currency = value.Currency;
+            if (!currency.AllowsToMint(_signer))
             {
                 msg = $"The account {_signer} has no permission to burn assets of " +
                       $"the currency {currency}.";
                 throw new CurrencyPermissionException(_signer, currency, msg);
             }
 
-            BigInteger balance = GetBalance(owner, currency);
+            FungibleAssetValue balance = GetBalance(owner, currency);
 
-            if (balance < amount)
+            if (balance < value)
             {
                 msg = $"The account {owner}'s balance of {currency} is insufficient to burn: " +
-                      $"{balance} {currency} < {amount} {currency}.";
-                throw new InsufficientBalanceException(owner, currency, balance, msg);
+                      $"{balance} < {value}.";
+                throw new InsufficientBalanceException(owner, balance, msg);
             }
 
             return UpdateFungibleAssets(
-                _updatedFungibleAssets.SetItem((owner, currency), balance - amount)
+                _updatedFungibleAssets.SetItem((owner, currency), (balance - value).RawValue)
             );
         }
 
