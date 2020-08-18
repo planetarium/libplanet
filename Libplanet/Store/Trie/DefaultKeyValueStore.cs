@@ -1,5 +1,4 @@
 using System.IO;
-using LruCacheNet;
 using Zio;
 using Zio.FileSystems;
 
@@ -8,12 +7,8 @@ namespace Libplanet.Store.Trie
     public class DefaultKeyValueStore : IKeyValueStore
     {
         private readonly IFileSystem _root;
-        private readonly LruCache<byte[], byte[]> _cache;
 
-        public DefaultKeyValueStore(
-            string path,
-            int cacheSize = 100
-        )
+        public DefaultKeyValueStore(string path)
         {
             if (path is null)
             {
@@ -34,8 +29,6 @@ namespace Libplanet.Store.Trie
                     owned: true
                 );
             }
-
-            _cache = new LruCache<byte[], byte[]>(cacheSize);
         }
 
         public byte[] Get(byte[] key)
