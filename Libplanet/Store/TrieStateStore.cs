@@ -79,12 +79,12 @@ namespace Libplanet.Store
             return stateTrie.TryGet(key, out IValue value) ? value : null;
         }
 
-        public bool ExistsBlockState(HashDigest<SHA256> blockHash)
+        public bool ContainsBlockStates(HashDigest<SHA256> blockHash)
         {
             return _stateHashKeyValueStore.Exists(blockHash.ToByteArray());
         }
 
-        public void ForkStates<T>(Guid sourceChainId, Guid destinationChainId, Block<T> branchPoint)
+        public void ForkStates<T>(Guid sourceChainId, Guid destinationChainId, Block<T> branchpoint)
             where T : IAction, new()
         {
             // Do nothing.

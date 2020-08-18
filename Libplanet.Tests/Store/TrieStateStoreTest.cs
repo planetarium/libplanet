@@ -67,13 +67,13 @@ namespace Libplanet.Tests.Store
         {
             // Check to set and to get.
             Assert.Null(_stateStore.GetRootHash(_fx.Hash1));
-            Assert.False(_stateStore.ExistsBlockState(_fx.Hash1));
+            Assert.False(_stateStore.ContainsBlockStates(_fx.Hash1));
             var states = ImmutableDictionary<string, IValue>.Empty
                 .Add("foo", (Text)"value");
             _stateStore.SetStates(_fx.Hash1, states, _fxBlockGetter);
             Assert.Equal((Text)"value", _stateStore.GetState("foo", _fx.Hash1));
             Assert.NotNull(_stateStore.GetRootHash(_fx.Hash1));
-            Assert.True(_stateStore.ExistsBlockState(_fx.Hash1));
+            Assert.True(_stateStore.ContainsBlockStates(_fx.Hash1));
 
             _stateStore.SetStates(_fx.Hash2, _prestoredValues, _fxBlockGetter);
 
@@ -108,8 +108,8 @@ namespace Libplanet.Tests.Store
             }
             while (randomBlockHash.Equals(_fx.GenesisBlock.Hash));
 
-            Assert.False(_stateStore.ExistsBlockState(randomBlockHash));
-            Assert.True(_stateStore.ExistsBlockState(_fx.GenesisBlock.Hash));
+            Assert.False(_stateStore.ContainsBlockStates(randomBlockHash));
+            Assert.True(_stateStore.ContainsBlockStates(_fx.GenesisBlock.Hash));
         }
     }
 }
