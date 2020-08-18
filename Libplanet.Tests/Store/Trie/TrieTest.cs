@@ -20,7 +20,6 @@ namespace Libplanet.Tests.Store.Trie
         [InlineData(16)]
         [InlineData(128)]
         [InlineData(1024)]
-        [InlineData(4096)]
         public void GetAndSet(int addressCount)
         {
             ITrie trie = new Libplanet.Store.Trie.Trie(new MemoryKeyValueStore());
@@ -58,7 +57,6 @@ namespace Libplanet.Tests.Store.Trie
         [InlineData(16)]
         [InlineData(128)]
         [InlineData(1024)]
-        [InlineData(4096)]
         public void Commit(int addressCount)
         {
             IKeyValueStore keyValueStore = new MemoryKeyValueStore();
