@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Libplanet.Store.Trie;
 using Xunit;
@@ -37,7 +38,8 @@ namespace Libplanet.Tests.Store.Trie
         [Fact]
         public void Get()
         {
-            foreach (var (key, expectedValue) in PreStoredDataKeys.Zip(PreStoredDataValues))
+            foreach (var (key, expectedValue) in PreStoredDataKeys.Zip(
+                PreStoredDataValues, ValueTuple.Create))
             {
                 var actual = _keyValueStore.Get(key);
                 Assert.Equal(expectedValue, actual);
@@ -51,7 +53,8 @@ namespace Libplanet.Tests.Store.Trie
         [Fact]
         public void Overwrite()
         {
-            foreach (var (key, expectedValue) in PreStoredDataKeys.Zip(PreStoredDataValues))
+            foreach (var (key, expectedValue) in PreStoredDataKeys.Zip(
+                PreStoredDataValues, ValueTuple.Create))
             {
                 var randomValue = TestUtils.GetRandomBytes(PreStoredDataValueSize);
                 var actual = _keyValueStore.Get(key);
@@ -67,7 +70,8 @@ namespace Libplanet.Tests.Store.Trie
         [Fact]
         public void Delete()
         {
-            foreach (var (key, expectedValue) in PreStoredDataKeys.Zip(PreStoredDataValues))
+            foreach (var (key, expectedValue) in PreStoredDataKeys.Zip(
+                PreStoredDataValues, ValueTuple.Create))
             {
                 var actual = _keyValueStore.Get(key);
                 Assert.Equal(expectedValue, actual);
@@ -77,7 +81,7 @@ namespace Libplanet.Tests.Store.Trie
         [Fact]
         public void Exists()
         {
-            foreach (var (key, expectedValue) in PreStoredDataKeys.Zip(PreStoredDataValues))
+            foreach (var (key, _) in PreStoredDataKeys.Zip(PreStoredDataValues, ValueTuple.Create))
             {
                 Assert.True(_keyValueStore.Exists(key));
             }

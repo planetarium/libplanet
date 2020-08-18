@@ -89,11 +89,11 @@ namespace Libplanet.Tests.Store
         [Fact]
         public void GetState()
         {
-            foreach (var (key, state) in _prestoredValues)
+            foreach (var pair in _prestoredValues)
             {
                 Assert.Equal(
-                    state,
-                    _stateStore.GetState(key, _fx.GenesisBlock.Hash));
+                    pair.Value,
+                    _stateStore.GetState(pair.Key, _fx.GenesisBlock.Hash));
             }
         }
 
