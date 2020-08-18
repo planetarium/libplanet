@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Immutable;
-using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using Bencodex.Types;
@@ -16,25 +15,7 @@ namespace Libplanet.Store
         private readonly IKeyValueStore _stateKeyValueStore;
         private readonly IKeyValueStore _stateHashKeyValueStore;
 
-        public TrieStateStore(string path)
-        {
-            if (!(path is null))
-            {
-                path = Path.GetFullPath(path);
-            }
-
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-
-            _stateKeyValueStore =
-                new DefaultKeyValueStore(path is null ? null : Path.Combine(path, "states"));
-            _stateHashKeyValueStore =
-                new DefaultKeyValueStore(path is null ? null : Path.Combine(path, "state_hash"));
-        }
-
-        internal TrieStateStore(
+        public TrieStateStore(
             IKeyValueStore stateKeyValueStore, IKeyValueStore stateHashKeyValueStore)
         {
             _stateKeyValueStore = stateKeyValueStore;
