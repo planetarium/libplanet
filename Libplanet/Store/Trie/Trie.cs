@@ -13,11 +13,14 @@ namespace Libplanet.Store.Trie
     [Equals]
     internal class Trie : ITrie
     {
-        public Trie(IKeyValueStore keyValueStore, INode root = null)
+        private readonly bool _secure;
+
+        public Trie(IKeyValueStore keyValueStore, INode root = null, bool secure = false)
         {
             KeyValueStore = keyValueStore;
             Root = root;
             Codec = new Codec();
+            _secure = secure;
         }
 
         public INode Root { get; private set; }
@@ -291,6 +294,11 @@ namespace Libplanet.Store.Trie
         // TODO: Support secure trie.
         private byte[] ToKey(byte[] key)
         {
+            if (_secure)
+            {
+                key = Hashcash.Hash(key).ToByteArray();
+            }
+
             var res = new byte[key.Length * 2];
             for (var i = 0; i < key.Length; ++i)
             {
