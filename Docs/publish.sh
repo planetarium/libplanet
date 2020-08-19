@@ -41,10 +41,10 @@ if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
   pr_number="$(jq '.pull_request.number' "$GITHUB_EVENT_PATH")"
   slug="pulls/$pr_number"
 else
-  if [ "$GITHUB_REPOSITORY" = "planetarium/libplanet" ] && \
-     [ "$GITHUB_REF" = "${GITHUB_REF#refs/tags/}" ] &&
-     [ "$GITHUB_REF" != refs/heads/master ] && \
-     [ "$GITHUB_REF" = "${GITHUB_REF#refs/heads/maintenance-}" ]; then
+  if [[ "$GITHUB_REPOSITORY" = "planetarium/libplanet" ]] && \
+     [[ "$GITHUB_REF" != refs/tags/* ]] &&
+     [[ "$GITHUB_REF" != refs/heads/main ]] && \
+     [[ "$GITHUB_REF" != refs/heads/maintenance-* ]]; then
     echo "This branch is not for releases, so docs won't be published." >&2
     exit 0
   fi
