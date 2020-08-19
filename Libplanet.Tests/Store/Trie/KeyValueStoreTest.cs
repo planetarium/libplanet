@@ -15,6 +15,8 @@ namespace Libplanet.Tests.Store.Trie
 
         protected IKeyValueStore KeyValueStore { get; set; }
 
+        protected Random Random { get; } = new Random();
+
         private byte[][] PreStoredDataKeys { get; set; }
 
         private byte[][] PreStoredDataValues { get; set; }
@@ -40,7 +42,7 @@ namespace Libplanet.Tests.Store.Trie
             foreach (var (key, expectedValue) in PreStoredDataKeys.Zip(
                 PreStoredDataValues, ValueTuple.Create))
             {
-                var randomValue = TestUtils.GetRandomBytes(PreStoredDataValueSize);
+                var randomValue = Random.NextBytes(PreStoredDataValueSize);
                 var actual = KeyValueStore.Get(key);
                 Assert.Equal(expectedValue, actual);
 
@@ -79,7 +81,7 @@ namespace Libplanet.Tests.Store.Trie
             byte[] randomKey;
             do
             {
-                randomKey = TestUtils.GetRandomBytes(PreStoredDataKeySize);
+                randomKey = Random.NextBytes(PreStoredDataKeySize);
             }
             while (KeyValueStore.Exists(randomKey));
 
@@ -93,8 +95,8 @@ namespace Libplanet.Tests.Store.Trie
 
             for (int i = 0; i < PreStoredDataCount; ++i)
             {
-                PreStoredDataKeys[i] = TestUtils.GetRandomBytes(PreStoredDataKeySize);
-                PreStoredDataValues[i] = TestUtils.GetRandomBytes(PreStoredDataValueSize);
+                PreStoredDataKeys[i] = Random.NextBytes(PreStoredDataKeySize);
+                PreStoredDataValues[i] = Random.NextBytes(PreStoredDataValueSize);
                 KeyValueStore.Set(PreStoredDataKeys[i], PreStoredDataValues[i]);
             }
         }
