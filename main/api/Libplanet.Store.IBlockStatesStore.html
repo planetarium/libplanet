@@ -1,0 +1,738 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Interface IBlockStatesStore
+   | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Interface IBlockStatesStore
+   | Libplanet ">
+    <meta name="generator" content="docfx 2.48.1.0">
+    
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Store.IBlockStatesStore">
+  
+  
+  <h1 id="Libplanet_Store_IBlockStatesStore" data-uid="Libplanet.Store.IBlockStatesStore" class="text-break">Interface IBlockStatesStore
+  </h1>
+  <div class="markdown level0 summary"><p>An interface to store block states and state references to them.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Libplanet.Store.IStateStore.html#Libplanet_Store_IStateStore_SetStates__1_Libplanet_HashDigest_SHA256__IImmutableDictionary_System_String_IValue__Func_Libplanet_HashDigest_SHA256__Libplanet_Blocks_Block___0___">IStateStore.SetStates&lt;T&gt;(HashDigest&lt;SHA256&gt;, IImmutableDictionary&lt;String, IValue&gt;, Func&lt;HashDigest&lt;SHA256&gt;, Block&lt;T&gt;&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Libplanet.Store.IStateStore.html#Libplanet_Store_IStateStore_GetState_System_String_System_Nullable_Libplanet_HashDigest_SHA256___System_Nullable_Guid__">IStateStore.GetState(String, Nullable&lt;HashDigest&lt;SHA256&gt;&gt;, Nullable&lt;Guid&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Libplanet.Store.IStateStore.html#Libplanet_Store_IStateStore_ContainsBlockStates_Libplanet_HashDigest_SHA256__">IStateStore.ContainsBlockStates(HashDigest&lt;SHA256&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Libplanet.Store.IStateStore.html#Libplanet_Store_IStateStore_ForkStates__1_Guid_Guid_Libplanet_Blocks_Block___0__">IStateStore.ForkStates&lt;T&gt;(Guid, Guid, Block&lt;T&gt;)</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Store.html">Libplanet.Store</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.dll</h6>
+  <h5 id="Libplanet_Store_IBlockStatesStore_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public interface IBlockStatesStore : IStateStore</code></pre>
+  </div>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IBlockStatesStore_ForkStateReferences__1_Guid_Guid_Libplanet_Blocks_Block___0__.md&amp;value=---%0Auid%3A%20Libplanet.Store.IBlockStatesStore.ForkStateReferences%60%601(Guid%2CGuid%2CLibplanet.Blocks.Block%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/IBlockStatesStore.cs/#L126">View Source</a>
+  </span>
+  <a id="Libplanet_Store_IBlockStatesStore_ForkStateReferences_" data-uid="Libplanet.Store.IBlockStatesStore.ForkStateReferences*"></a>
+  <h4 id="Libplanet_Store_IBlockStatesStore_ForkStateReferences__1_Guid_Guid_Libplanet_Blocks_Block___0__" data-uid="Libplanet.Store.IBlockStatesStore.ForkStateReferences``1(Guid,Guid,Libplanet.Blocks.Block{``0})">ForkStateReferences&lt;T&gt;(Guid, Guid, Block&lt;T&gt;)</h4>
+  <div class="markdown level1 summary"><p>Forks state references, which are <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Hash">Hash</a>es that
+have the state of the <a class="xref" href="Libplanet.Address.html">Address</a>es, from
+<code data-dev-comment-type="paramref" class="paramref">sourceChainId</code> to <code data-dev-comment-type="paramref" class="paramref">destinationChainId</code>.</p>
+<p>This method copies state references from
+<code data-dev-comment-type="paramref" class="paramref">sourceChainId</code> to <code data-dev-comment-type="paramref" class="paramref">destinationChainId</code> and strips
+state references after <code data-dev-comment-type="paramref" class="paramref">branchPoint</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void ForkStateReferences&lt;T&gt;(Guid sourceChainId, Guid destinationChainId, Block&lt;T&gt; branchPoint)
+    where T : IAction, new()</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Guid</span></td>
+        <td><span class="parametername">sourceChainId</span></td>
+        <td><p>The chain ID of state references to fork.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Guid</span></td>
+        <td><span class="parametername">destinationChainId</span></td>
+        <td><p>The new chain ID to have state references.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td><span class="parametername">branchPoint</span></td>
+        <td><p>The branch point <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>
+to fork.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>An <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> class used with
+<code data-dev-comment-type="paramref" class="paramref">branchPoint</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.ChainIdNotFoundException.html">ChainIdNotFoundException</a></td>
+        <td><p>Thrown when the given
+<code data-dev-comment-type="paramref" class="paramref">sourceChainId</code> does not exist.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Store_IBlockStatesStore_ForkStateReferences__1_Guid_Guid_Libplanet_Blocks_Block___0___seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.IBlockStatesStore.html#Libplanet_Store_IBlockStatesStore_IterateStateReferences_Guid_System_String_System_Nullable_System_Int64__System_Nullable_System_Int64__System_Nullable_System_Int32__">IterateStateReferences(Guid, String, Nullable&lt;Int64&gt;, Nullable&lt;Int64&gt;, Nullable&lt;Int32&gt;)</a></div>
+      <div><a class="xref" href="Libplanet.Store.IBlockStatesStore.html#Libplanet_Store_IBlockStatesStore_StoreStateReference_Guid_IImmutableSet_System_String__Libplanet_HashDigest_SHA256__System_Int64_">StoreStateReference(Guid, IImmutableSet&lt;String&gt;, HashDigest&lt;SHA256&gt;, Int64)</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IBlockStatesStore_GetBlockStates_Libplanet_HashDigest_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.IBlockStatesStore.GetBlockStates(Libplanet.HashDigest%7BSHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/IBlockStatesStore.cs/#L154">View Source</a>
+  </span>
+  <a id="Libplanet_Store_IBlockStatesStore_GetBlockStates_" data-uid="Libplanet.Store.IBlockStatesStore.GetBlockStates*"></a>
+  <h4 id="Libplanet_Store_IBlockStatesStore_GetBlockStates_Libplanet_HashDigest_SHA256__" data-uid="Libplanet.Store.IBlockStatesStore.GetBlockStates(Libplanet.HashDigest{SHA256})">GetBlockStates(HashDigest&lt;SHA256&gt;)</h4>
+  <div class="markdown level1 summary"><p>Gets the states updated by actions in the inquired block.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IImmutableDictionary&lt;string, IValue&gt; GetBlockStates(HashDigest&lt;SHA256&gt; blockHash)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA256</span>&gt;</td>
+        <td><span class="parametername">blockHash</span></td>
+        <td><p><a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Hash">Hash</a> to query.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IImmutableDictionary</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, <span class="xref">IValue</span>&gt;</td>
+        <td><p>The states updated by actions in the inquired block.
+If actions definitely do not update any addresses it returns
+an empty map.  If there is no record for the inquired block
+(because actions in it have never been evaluated yet) it returns
+<code>null</code> instead.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Store_IBlockStatesStore_GetBlockStates_Libplanet_HashDigest_SHA256___remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>It does not return all states built up from the genesis
+block nor delta, but only dirty states by actions the inquired
+block.</p>
+<p>For example, if actions in the genesis block do
+<code>a++; b++</code>, /// and actions in the second block do
+<code>b++; c++</code>, this method /// for the second block returns
+<code>b = 2; c = 1</code> (dirty), not
+<code>a = 1; b = 2; c = 1</code> (all states) nor
+<code>b = 1; c = 1</code> (delta).</p>
+</div>
+  <h5 id="Libplanet_Store_IBlockStatesStore_GetBlockStates_Libplanet_HashDigest_SHA256___seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.IBlockStatesStore.html#Libplanet_Store_IBlockStatesStore_SetBlockStates_Libplanet_HashDigest_SHA256__IImmutableDictionary_System_String_IValue__">SetBlockStates(HashDigest&lt;SHA256&gt;, IImmutableDictionary&lt;String, IValue&gt;)</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IBlockStatesStore_IterateStateReferences_Guid_System_String_System_Nullable_System_Int64__System_Nullable_System_Int64__System_Nullable_System_Int32__.md&amp;value=---%0Auid%3A%20Libplanet.Store.IBlockStatesStore.IterateStateReferences(Guid%2CSystem.String%2CSystem.Nullable%7BSystem.Int64%7D%2CSystem.Nullable%7BSystem.Int64%7D%2CSystem.Nullable%7BSystem.Int32%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/IBlockStatesStore.cs/#L84">View Source</a>
+  </span>
+  <a id="Libplanet_Store_IBlockStatesStore_IterateStateReferences_" data-uid="Libplanet.Store.IBlockStatesStore.IterateStateReferences*"></a>
+  <h4 id="Libplanet_Store_IBlockStatesStore_IterateStateReferences_Guid_System_String_System_Nullable_System_Int64__System_Nullable_System_Int64__System_Nullable_System_Int32__" data-uid="Libplanet.Store.IBlockStatesStore.IterateStateReferences(Guid,System.String,System.Nullable{System.Int64},System.Nullable{System.Int64},System.Nullable{System.Int32})">IterateStateReferences(Guid, String, Nullable&lt;Int64&gt;, Nullable&lt;Int64&gt;, Nullable&lt;Int32&gt;)</h4>
+  <div class="markdown level1 summary"><p>Gets pairs of a state reference and a corresponding <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Index">Index</a> of
+the requested <code data-dev-comment-type="paramref" class="paramref">key</code> in the specified <code data-dev-comment-type="paramref" class="paramref">chainId</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IEnumerable&lt;Tuple&lt;HashDigest&lt;SHA256&gt;, long&gt;&gt; IterateStateReferences(Guid chainId, string key, long? highestIndex = null, long? lowestIndex = null, int? limit = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Guid</span></td>
+        <td><span class="parametername">chainId</span></td>
+        <td><p>The chain ID.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">key</span></td>
+        <td><p>The key to get state references.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a>&gt;</td>
+        <td><span class="parametername">highestIndex</span></td>
+        <td><p>The highest index of state references to get. If it is
+<code>null</code>, it will be the highest index possible.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a>&gt;</td>
+        <td><span class="parametername">lowestIndex</span></td>
+        <td><p>The lowest index of state references to get.  If it is
+<code>null</code>, it will be the lowest index possible.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a>&gt;</td>
+        <td><span class="parametername">limit</span></td>
+        <td><p>The maximum number of state references to get.  If it is
+<code>null</code>, it does not limit the number of state references.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<span class="xref">Tuple</span>&lt;<a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA256</span>&gt;, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a>&gt;&gt;</td>
+        <td><p><em>Ordered</em> pairs of a state reference and a corresponding
+<a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Index">Index</a>.  The highest index (i.e., the closest to the tip) goes
+first and the lowest index (i.e., the closest to the genesis) goes last.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Store_IBlockStatesStore_IterateStateReferences_Guid_System_String_System_Nullable_System_Int64__System_Nullable_System_Int64__System_Nullable_System_Int32___seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.IBlockStatesStore.html#Libplanet_Store_IBlockStatesStore_StoreStateReference_Guid_IImmutableSet_System_String__Libplanet_HashDigest_SHA256__System_Int64_">StoreStateReference(Guid, IImmutableSet&lt;String&gt;, HashDigest&lt;SHA256&gt;, Int64)</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IBlockStatesStore_ListAllStateReferences_Guid_System_Int64_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IBlockStatesStore.ListAllStateReferences(Guid%2CSystem.Int64%2CSystem.Int64)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/IBlockStatesStore.cs/#L36">View Source</a>
+  </span>
+  <a id="Libplanet_Store_IBlockStatesStore_ListAllStateReferences_" data-uid="Libplanet.Store.IBlockStatesStore.ListAllStateReferences*"></a>
+  <h4 id="Libplanet_Store_IBlockStatesStore_ListAllStateReferences_Guid_System_Int64_System_Int64_" data-uid="Libplanet.Store.IBlockStatesStore.ListAllStateReferences(Guid,System.Int64,System.Int64)">ListAllStateReferences(Guid, Int64, Int64)</h4>
+  <div class="markdown level1 summary"><p>Lists all accounts, that have any states, in the given <code data-dev-comment-type="paramref" class="paramref">chainId</code> and
+their state references.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IImmutableDictionary&lt;string, IImmutableList&lt;HashDigest&lt;SHA256&gt;&gt;&gt; ListAllStateReferences(Guid chainId, long lowestIndex = null, long highestIndex = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Guid</span></td>
+        <td><span class="parametername">chainId</span></td>
+        <td><p>The chain ID to look up state references.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><span class="parametername">lowestIndex</span></td>
+        <td><p>Includes state references only made after the block
+this argument refers to.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><span class="parametername">highestIndex</span></td>
+        <td><p>Excludes state references made after the block
+this argument refers to.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IImmutableDictionary</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, <span class="xref">IImmutableList</span>&lt;<a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA256</span>&gt;&gt;&gt;</td>
+        <td><p>A dictionary of account addresses to lists of their corresponding state
+references.  Each list of state references is in ascending order, i.e., the block
+closest to the genesis goes first and the block closest to the tip goes last.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IBlockStatesStore_ListStateKeys_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IBlockStatesStore.ListStateKeys(Guid)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/IBlockStatesStore.cs/#L22">View Source</a>
+  </span>
+  <a id="Libplanet_Store_IBlockStatesStore_ListStateKeys_" data-uid="Libplanet.Store.IBlockStatesStore.ListStateKeys*"></a>
+  <h4 id="Libplanet_Store_IBlockStatesStore_ListStateKeys_Guid_" data-uid="Libplanet.Store.IBlockStatesStore.ListStateKeys(Guid)">ListStateKeys(Guid)</h4>
+  <div class="markdown level1 summary"><p>Lists all keys that have ever had states.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IEnumerable&lt;string&gt; ListStateKeys(Guid chainId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Guid</span></td>
+        <td><span class="parametername">chainId</span></td>
+        <td><p>The ID of the chain to list state keys.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><p>All state keys in an arbitrary order.  The order might
+be vary for each call.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IBlockStatesStore_LookupStateReference_Guid_System_String_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IBlockStatesStore.LookupStateReference(Guid%2CSystem.String%2CSystem.Int64)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/IBlockStatesStore.cs/#L60">View Source</a>
+  </span>
+  <a id="Libplanet_Store_IBlockStatesStore_LookupStateReference_" data-uid="Libplanet.Store.IBlockStatesStore.LookupStateReference*"></a>
+  <h4 id="Libplanet_Store_IBlockStatesStore_LookupStateReference_Guid_System_String_System_Int64_" data-uid="Libplanet.Store.IBlockStatesStore.LookupStateReference(Guid,System.String,System.Int64)">LookupStateReference(Guid, String, Int64)</h4>
+  <div class="markdown level1 summary"><p>Looks up a state reference, which is a block's <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Hash">Hash</a> that contains
+an action mutating the <code data-dev-comment-type="paramref" class="paramref">key</code>'s tate.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Tuple&lt;HashDigest&lt;SHA256&gt;, long&gt; LookupStateReference(Guid chainId, string key, long lookupUntilBlockIndex)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Guid</span></td>
+        <td><span class="parametername">chainId</span></td>
+        <td><p>The chain ID to look up a state reference.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">key</span></td>
+        <td><p>The state key to look up.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><span class="parametername">lookupUntilBlockIndex</span></td>
+        <td><p>The index of the block to stop looking up.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Tuple</span>&lt;<a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA256</span>&gt;, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a>&gt;</td>
+        <td><p>Returns a nullable tuple consisting of <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Hash">Hash</a> and
+<a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Index">Index</a> of the <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> with the state of the
+address.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Store_IBlockStatesStore_LookupStateReference_Guid_System_String_System_Int64__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.IBlockStatesStore.html#Libplanet_Store_IBlockStatesStore_IterateStateReferences_Guid_System_String_System_Nullable_System_Int64__System_Nullable_System_Int64__System_Nullable_System_Int32__">IterateStateReferences(Guid, String, Nullable&lt;Int64&gt;, Nullable&lt;Int64&gt;, Nullable&lt;Int32&gt;)</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IBlockStatesStore_PruneBlockStates__1_Guid_Libplanet_Blocks_Block___0__.md&amp;value=---%0Auid%3A%20Libplanet.Store.IBlockStatesStore.PruneBlockStates%60%601(Guid%2CLibplanet.Blocks.Block%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/IBlockStatesStore.cs/#L179">View Source</a>
+  </span>
+  <a id="Libplanet_Store_IBlockStatesStore_PruneBlockStates_" data-uid="Libplanet.Store.IBlockStatesStore.PruneBlockStates*"></a>
+  <h4 id="Libplanet_Store_IBlockStatesStore_PruneBlockStates__1_Guid_Libplanet_Blocks_Block___0__" data-uid="Libplanet.Store.IBlockStatesStore.PruneBlockStates``1(Guid,Libplanet.Blocks.Block{``0})">PruneBlockStates&lt;T&gt;(Guid, Block&lt;T&gt;)</h4>
+  <div class="markdown level1 summary"><p>Prunes states in blockchain <code data-dev-comment-type="paramref" class="paramref">chainId</code> with until specified block
+<code data-dev-comment-type="paramref" class="paramref">until</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void PruneBlockStates&lt;T&gt;(Guid chainId, Block&lt;T&gt; until)
+    where T : IAction, new()</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Guid</span></td>
+        <td><span class="parametername">chainId</span></td>
+        <td><p>The chain ID to prune block states.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td><span class="parametername">until</span></td>
+        <td><p>The upper bound block to prune states.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>An <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> class used with
+<code data-dev-comment-type="paramref" class="paramref">until</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IBlockStatesStore_SetBlockStates_Libplanet_HashDigest_SHA256__IImmutableDictionary_System_String_IValue__.md&amp;value=---%0Auid%3A%20Libplanet.Store.IBlockStatesStore.SetBlockStates(Libplanet.HashDigest%7BSHA256%7D%2CIImmutableDictionary%7BSystem.String%2CIValue%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/IBlockStatesStore.cs/#L166">View Source</a>
+  </span>
+  <a id="Libplanet_Store_IBlockStatesStore_SetBlockStates_" data-uid="Libplanet.Store.IBlockStatesStore.SetBlockStates*"></a>
+  <h4 id="Libplanet_Store_IBlockStatesStore_SetBlockStates_Libplanet_HashDigest_SHA256__IImmutableDictionary_System_String_IValue__" data-uid="Libplanet.Store.IBlockStatesStore.SetBlockStates(Libplanet.HashDigest{SHA256},IImmutableDictionary{System.String,IValue})">SetBlockStates(HashDigest&lt;SHA256&gt;, IImmutableDictionary&lt;String, IValue&gt;)</h4>
+  <div class="markdown level1 summary"><p>Sets the states updated by actions in the specified block
+(i.e., <code data-dev-comment-type="paramref" class="paramref">blockHash</code>).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void SetBlockStates(HashDigest&lt;SHA256&gt; blockHash, IImmutableDictionary&lt;string, IValue&gt; states)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA256</span>&gt;</td>
+        <td><span class="parametername">blockHash</span></td>
+        <td><p><a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Hash">Hash</a> to update states.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">IImmutableDictionary</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, <span class="xref">IValue</span>&gt;</td>
+        <td><span class="parametername">states</span></td>
+        <td><p>The states updated by actions in the specified block
+(i.e., <code data-dev-comment-type="paramref" class="paramref">blockHash</code>).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Store_IBlockStatesStore_SetBlockStates_Libplanet_HashDigest_SHA256__IImmutableDictionary_System_String_IValue___seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.IBlockStatesStore.html#Libplanet_Store_IBlockStatesStore_GetBlockStates_Libplanet_HashDigest_SHA256__">GetBlockStates(HashDigest&lt;SHA256&gt;)</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IBlockStatesStore_StoreStateReference_Guid_IImmutableSet_System_String__Libplanet_HashDigest_SHA256__System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IBlockStatesStore.StoreStateReference(Guid%2CIImmutableSet%7BSystem.String%7D%2CLibplanet.HashDigest%7BSHA256%7D%2CSystem.Int64)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/IBlockStatesStore.cs/#L101">View Source</a>
+  </span>
+  <a id="Libplanet_Store_IBlockStatesStore_StoreStateReference_" data-uid="Libplanet.Store.IBlockStatesStore.StoreStateReference*"></a>
+  <h4 id="Libplanet_Store_IBlockStatesStore_StoreStateReference_Guid_IImmutableSet_System_String__Libplanet_HashDigest_SHA256__System_Int64_" data-uid="Libplanet.Store.IBlockStatesStore.StoreStateReference(Guid,IImmutableSet{System.String},Libplanet.HashDigest{SHA256},System.Int64)">StoreStateReference(Guid, IImmutableSet&lt;String&gt;, HashDigest&lt;SHA256&gt;, Int64)</h4>
+  <div class="markdown level1 summary"><p>Marks the specified <code data-dev-comment-type="paramref" class="paramref">keys</code> updated by any action in the specified block
+(i.e., <code data-dev-comment-type="paramref" class="paramref">blockHash</code>).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void StoreStateReference(Guid chainId, IImmutableSet&lt;string&gt; keys, HashDigest&lt;SHA256&gt; blockHash, long blockIndex)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Guid</span></td>
+        <td><span class="parametername">chainId</span></td>
+        <td><p>The ID of the chain to store a state reference.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">IImmutableSet</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><span class="parametername">keys</span></td>
+        <td><p>The keys updated by the block.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA256</span>&gt;</td>
+        <td><span class="parametername">blockHash</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Hash">Hash</a> of the block which changes
+the <code data-dev-comment-type="paramref" class="paramref">keys</code>' states.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><span class="parametername">blockIndex</span></td>
+        <td><p>The block index.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Store_IBlockStatesStore_StoreStateReference_Guid_IImmutableSet_System_String__Libplanet_HashDigest_SHA256__System_Int64__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.IBlockStatesStore.html#Libplanet_Store_IBlockStatesStore_IterateStateReferences_Guid_System_String_System_Nullable_System_Int64__System_Nullable_System_Int64__System_Nullable_System_Int32__">IterateStateReferences(Guid, String, Nullable&lt;Int64&gt;, Nullable&lt;Int64&gt;, Nullable&lt;Int32&gt;)</a></div>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IBlockStatesStore.md&amp;value=---%0Auid%3A%20Libplanet.Store.IBlockStatesStore%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/IBlockStatesStore.cs/#L14" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2019–2020 <a href="https://planetariumhq.com/">Planetarium</a>
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
