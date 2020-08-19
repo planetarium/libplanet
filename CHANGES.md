@@ -175,7 +175,8 @@ To be released.
  -  Added `LoggedRenderer<T>` class.  [[#959], [#963]]
  -  Added `BlockChain<T>.Renderers` property.  [[#945], [#959], [#963]]
  -  Added `Swarm<T>.AppProtocolVersion` property.  [[#949]]
- -  (Libplanet.RocksDB) `RocksDBStore` became to implement `IBlockStatesStore`.  [[#950]]
+ -  (Libplanet.RocksDBStore) `RocksDBStore` became to implement
+    `IBlockStatesStore`.  [[#950]]
  -  `DefaultStore` became to implement `IBlockStatesStore`.  [[#950]]
  -  Added `IStateStore` interface.  [[#950]]
  -  Added `IBlockStatesStore` interface.  [[#950]]
