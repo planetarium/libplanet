@@ -39,8 +39,8 @@ namespace Libplanet.Store
             Func<HashDigest<SHA256>, Block<T>> blockGetter)
             where T : IAction, new()
         {
-            var block = blockGetter(blockHash);
-            var previousBlockStateHashBytes = block?.PreviousHash is null
+            Block<T> block = blockGetter(blockHash);
+            byte[] previousBlockStateHashBytes = block?.PreviousHash is null
                 ? null
                 : _stateHashKeyValueStore.Get(block.PreviousHash.Value.ToByteArray());
             var trieRoot = previousBlockStateHashBytes is null

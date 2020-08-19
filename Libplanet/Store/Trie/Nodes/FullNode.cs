@@ -84,8 +84,7 @@ namespace Libplanet.Store.Trie.Nodes
 
         public override IValue ToBencodex()
         {
-            return new List(Children.Select(child =>
-                child is null ? default(Null) : child.ToBencodex()));
+            return new List(Children.Select(child => child?.ToBencodex() ?? default(Null)));
         }
     }
 }

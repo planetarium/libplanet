@@ -13,7 +13,14 @@ namespace Libplanet.Store.Trie
     [Equals]
     internal class Trie : ITrie
     {
+        private static Codec _codec;
+
         private readonly bool _secure;
+
+        static Trie()
+        {
+            _codec = new Codec();
+        }
 
         /// <summary>
         /// An <see cref="ITrie"/> implementation.
@@ -29,7 +36,6 @@ namespace Libplanet.Store.Trie
         {
             KeyValueStore = keyValueStore;
             Root = root;
-            Codec = new Codec();
             _secure = secure;
         }
 
@@ -37,8 +43,6 @@ namespace Libplanet.Store.Trie
         public INode Root { get; private set; }
 
         private IKeyValueStore KeyValueStore { get; }
-
-        private Codec Codec { get; }
 
         public static bool operator ==(Trie left, Trie right) =>
             Operator.Weave(left, right);
@@ -304,10 +308,10 @@ namespace Libplanet.Store.Trie
         /// <returns>The node corresponding to <paramref name="nodeHash"/>.</returns>
         private INode GetNode(HashDigest<SHA256> nodeHash)
         {
-            return NodeDecoder.Decode(Codec.Decode(KeyValueStore.Get(nodeHash.ToByteArray())));
+            return NodeDecoder.Decode(
+                _codec.Decode(KeyValueStore.Get(nodeHash.ToByteArray())));
         }
 
-        // TODO: Support secure trie.
         private byte[] ToKey(byte[] key)
         {
             if (_secure)

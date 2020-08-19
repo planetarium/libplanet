@@ -6,6 +6,13 @@ namespace Libplanet.Store.Trie.Nodes
 {
     internal abstract class BaseNode : INode
     {
+        private static Codec _codec;
+
+        static BaseNode()
+        {
+            _codec = new Codec();
+        }
+
         public BaseNode(INode value)
         {
             Value = value;
@@ -22,11 +29,7 @@ namespace Libplanet.Store.Trie.Nodes
         // It will not support embedded node.
         public INode Value { get; }
 
-        public byte[] Serialize()
-        {
-            var codec = new Codec();
-            return codec.Encode(ToBencodex());
-        }
+        public byte[] Serialize() => _codec.Encode(ToBencodex());
 
         public abstract IValue ToBencodex();
     }

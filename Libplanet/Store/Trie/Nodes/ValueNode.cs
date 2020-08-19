@@ -1,4 +1,3 @@
-using System;
 using Bencodex;
 using Bencodex.Types;
 
@@ -34,9 +33,6 @@ namespace Libplanet.Store.Trie.Nodes
             return new List(new IValue[] { default(Null), Value });
         }
 
-        public override int GetHashCode()
-        {
-            return !(Value is null) ? Value.GetHashCode() : 0;
-        }
+        public override int GetHashCode() => Value?.GetHashCode() ?? 0;
     }
 }
