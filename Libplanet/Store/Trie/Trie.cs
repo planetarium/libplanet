@@ -70,12 +70,14 @@ namespace Libplanet.Store.Trie
         public ITrie Commit()
         {
             var newRoot = Commit(Root);
+
+            // It assumes embedded node if it's not HashNode.
             if (!(newRoot is HashNode))
             {
                 KeyValueStore.Set(newRoot.Hash().ToByteArray(), newRoot.Serialize());
             }
 
-            return new Trie(KeyValueStore, Commit(Root));
+            return new Trie(KeyValueStore, newRoot);
         }
 
         private INode Commit(INode node)
