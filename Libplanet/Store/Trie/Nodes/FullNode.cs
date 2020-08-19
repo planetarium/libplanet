@@ -20,7 +20,6 @@ namespace Libplanet.Store.Trie.Nodes
             }
 
             Children = children;
-            NodeFlag = new NodeFlag(true, null);
         }
 
         public FullNode()
@@ -29,8 +28,6 @@ namespace Libplanet.Store.Trie.Nodes
         }
 
         public ImmutableArray<INode> Children { get; }
-
-        public NodeFlag NodeFlag { get; set; }
 
         public FullNode SetChild(int index, INode childNode)
         {

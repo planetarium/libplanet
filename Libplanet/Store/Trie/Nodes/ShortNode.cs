@@ -17,12 +17,9 @@ namespace Libplanet.Store.Trie.Nodes
             : base(value)
         {
             Key = key;
-            NodeFlag = new NodeFlag(true, null);
         }
 
         public ImmutableArray<byte> Key { get; }
-
-        public NodeFlag NodeFlag { get; set; }
 
         public bool Equals(ShortNode other)
         {
@@ -36,7 +33,7 @@ namespace Libplanet.Store.Trie.Nodes
                 return true;
             }
 
-            return Key.Equals(other.Key) && NodeFlag.Equals(other.NodeFlag);
+            return Key.Equals(other.Key);
         }
 
         public override bool Equals(object obj)
