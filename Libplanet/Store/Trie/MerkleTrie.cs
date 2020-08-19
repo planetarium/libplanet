@@ -11,13 +11,13 @@ namespace Libplanet.Store.Trie
 {
     // TODO: implement 'logs' for debugging.
     [Equals]
-    internal class Trie : ITrie
+    internal class MerkleTrie : ITrie
     {
         private static Codec _codec;
 
         private readonly bool _secure;
 
-        static Trie()
+        static MerkleTrie()
         {
             _codec = new Codec();
         }
@@ -27,12 +27,13 @@ namespace Libplanet.Store.Trie
         /// </summary>
         /// <param name="keyValueStore">The <see cref="IKeyValueStore"/> storage to store
         /// nodes.</param>
-        /// <param name="root">The root node of <see cref="Trie"/>. If it is <c>null</c>,
+        /// <param name="root">The root node of <see cref="MerkleTrie"/>. If it is <c>null</c>,
         /// it will be treated like empty trie.</param>
-        /// <param name="secure">The flag to determine to use <see cref="Trie"/> in secure mode.
-        /// If it is true, <see cref="Trie"/> will stores the value with the hashed result from the
-        /// given key as the key. It will hash with <see cref="Hashcash.Hash"/>.</param>
-        public Trie(IKeyValueStore keyValueStore, INode root = null, bool secure = false)
+        /// <param name="secure">The flag to determine to use <see cref="MerkleTrie"/> in secure
+        /// mode. If it is true, <see cref="MerkleTrie"/> will stores the value with the hashed
+        /// result from the given key as the key. It will hash with
+        /// <see cref="Hashcash.Hash"/>.</param>
+        public MerkleTrie(IKeyValueStore keyValueStore, INode root = null, bool secure = false)
         {
             KeyValueStore = keyValueStore;
             Root = root;
@@ -44,10 +45,10 @@ namespace Libplanet.Store.Trie
 
         private IKeyValueStore KeyValueStore { get; }
 
-        public static bool operator ==(Trie left, Trie right) =>
+        public static bool operator ==(MerkleTrie left, MerkleTrie right) =>
             Operator.Weave(left, right);
 
-        public static bool operator !=(Trie left, Trie right) =>
+        public static bool operator !=(MerkleTrie left, MerkleTrie right) =>
             Operator.Weave(left, right);
 
         /// <inheritdoc/>
@@ -81,7 +82,7 @@ namespace Libplanet.Store.Trie
                 KeyValueStore.Set(newRoot.Hash().ToByteArray(), newRoot.Serialize());
             }
 
-            return new Trie(KeyValueStore, newRoot);
+            return new MerkleTrie(KeyValueStore, newRoot);
         }
 
         private INode Commit(INode node)

@@ -22,7 +22,7 @@ namespace Libplanet.Tests.Store.Trie
         [InlineData(1024)]
         public void GetAndSet(int addressCount)
         {
-            ITrie trie = new Libplanet.Store.Trie.Trie(new MemoryKeyValueStore());
+            ITrie trie = new MerkleTrie(new MemoryKeyValueStore());
 
             var addresses = Enumerable
                 .Range(0, addressCount)
@@ -62,7 +62,7 @@ namespace Libplanet.Tests.Store.Trie
             IKeyValueStore keyValueStore = new MemoryKeyValueStore();
             var codec = new Codec();
 
-            ITrie trieA = new Libplanet.Store.Trie.Trie(keyValueStore);
+            ITrie trieA = new MerkleTrie(keyValueStore);
 
             var addresses = new Address[addressCount];
             var states = new IValue[addressCount];

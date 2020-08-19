@@ -11,7 +11,7 @@ using Libplanet.Store.Trie.Nodes;
 namespace Libplanet.Store
 {
     /// <summary>
-    /// An <see cref="IStateStore"/> implementation. It stores states with <see cref="Trie"/>.
+    /// An <see cref="IStateStore"/> implementation. It stores states with <see cref="MerkleTrie"/>.
     /// </summary>
     public class TrieStateStore : IStateStore
     {
@@ -22,7 +22,7 @@ namespace Libplanet.Store
         /// Creates a new <see cref="TrieStateStore"/>.
         /// </summary>
         /// <param name="stateKeyValueStore">The storage to store states. It used by
-        /// <see cref="Trie"/> in internal.</param>
+        /// <see cref="MerkleTrie"/> in internal.</param>
         /// <param name="stateHashKeyValueStore">The storage to store state hash corresponding to
         /// block hash.</param>
         public TrieStateStore(
@@ -47,7 +47,7 @@ namespace Libplanet.Store
                 ? null
                 : new HashNode(new HashDigest<SHA256>(previousBlockStateHashBytes));
 
-            var prevStatesTrie = new Trie.Trie(_stateKeyValueStore, trieRoot);
+            var prevStatesTrie = new MerkleTrie(_stateKeyValueStore, trieRoot);
 
             foreach (var pair in states)
             {
@@ -66,7 +66,7 @@ namespace Libplanet.Store
             Guid? chainId = null)
         {
             var stateHash = _stateHashKeyValueStore.Get(blockHash?.ToByteArray());
-            var stateTrie = new Trie.Trie(
+            var stateTrie = new MerkleTrie(
                 _stateKeyValueStore, new HashNode(new HashDigest<SHA256>(stateHash)));
             var key = Encoding.UTF8.GetBytes(stateKey);
             return stateTrie.TryGet(key, out IValue value) ? value : null;
