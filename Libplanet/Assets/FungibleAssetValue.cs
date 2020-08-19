@@ -11,10 +11,12 @@ namespace Libplanet.Assets
 {
     /// <summary>
     /// Holds a fungible asset value which holds its <see cref="Currency"/> together.
-    /// <para>It behaves like numbers except for division operator (<c>/</c>) to prevent to forget
-    /// to handle its remainder; use <see cref="DivRem(FungibleAssetValue)"/> and <see
-    /// cref="DivRem(BigInteger)"/> methods instead.</para>
     /// </summary>
+    /// <remarks>
+    /// It behaves like numbers except for division operator (<c>/</c>) to prevent to forget
+    /// to handle its remainder; use <see cref="DivRem(FungibleAssetValue)"/> and <see
+    /// cref="DivRem(BigInteger)"/> methods instead.
+    /// </remarks>
     [Serializable]
     public readonly struct FungibleAssetValue :
         IEquatable<FungibleAssetValue>,
@@ -27,7 +29,14 @@ namespace Libplanet.Assets
         /// </summary>
         public readonly Currency Currency;
 
-        internal readonly BigInteger RawValue;
+        /// <summary>
+        /// The internal representation of the fungible asset.
+        /// </summary>
+        /// <remarks>
+        /// Since this is an internal representation, this does not guarantee forward compatibility.
+        /// Therefore, do not depend on this value for permanent uses but only for volatile data.
+        /// </remarks>
+        public readonly BigInteger RawValue;
 
         /// <summary>
         /// Creates a zero value of the <paramref name="currency"/>.
