@@ -2,7 +2,7 @@ using RocksDbSharp;
 
 namespace Libplanet.RocksDBStore
 {
-    public static class RocksDBUtils
+    internal static class RocksDBUtils
     {
         internal static RocksDb OpenRocksDb(
             DbOptions options, string dbPath, ColumnFamilies columnFamilies = null)

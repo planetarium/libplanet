@@ -7,7 +7,7 @@ namespace Libplanet.Store.Trie.Nodes
     /// Wrapper class.
     /// </summary>
     [Equals]
-    public class HashNode : INode
+    internal class HashNode : INode
     {
         public HashNode(HashDigest<SHA256> hashDigest)
         {

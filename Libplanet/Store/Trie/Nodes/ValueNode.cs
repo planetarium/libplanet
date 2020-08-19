@@ -8,7 +8,7 @@ namespace Libplanet.Store.Trie.Nodes
     /// Wrapper class.
     /// </summary>
     [Equals]
-    public class ValueNode : INode
+    internal class ValueNode : INode
     {
         public ValueNode(IValue value)
         {
