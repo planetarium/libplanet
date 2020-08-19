@@ -457,7 +457,7 @@ namespace Libplanet.Blockchain
                     currency
                 )
             );
-            return new FungibleAssetValue(
+            return FungibleAssetValue.FromRawValue(
                 currency,
                 v is Bencodex.Types.Integer i ? i.Value : 0
             );

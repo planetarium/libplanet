@@ -36,6 +36,7 @@ namespace Libplanet.Assets
         /// Since this is an internal representation, this does not guarantee forward compatibility.
         /// Therefore, do not depend on this value for permanent uses but only for volatile data.
         /// </remarks>
+        /// <seealso cref="FromRawValue(Assets.Currency, BigInteger)"/>
         public readonly BigInteger RawValue;
 
         /// <summary>
@@ -153,7 +154,7 @@ namespace Libplanet.Assets
         /// </summary>
         /// <param name="currency">The currency to create a value.</param>
         /// <param name="rawValue">The raw quantity of the value to create.</param>
-        internal FungibleAssetValue(Currency currency, BigInteger rawValue)
+        private FungibleAssetValue(Currency currency, BigInteger rawValue)
         {
             Currency = currency;
             RawValue = rawValue;
@@ -448,6 +449,16 @@ namespace Libplanet.Assets
                 : 0;
             return new FungibleAssetValue(currency, sign, major, minor);
         }
+
+        /// <summary>
+        /// Restores a value from a <paramref name="rawValue"/> of a <paramref name="currency"/>.
+        /// </summary>
+        /// <param name="currency">The currency to create a value.</param>
+        /// <param name="rawValue">The <see cref="RawValue"/> to restore.</param>
+        /// <returns>The value restored from the given <paramref name="rawValue"/>.</returns>
+        /// <seealso cref="RawValue"/>
+        public static FungibleAssetValue FromRawValue(Currency currency, BigInteger rawValue) =>
+            new FungibleAssetValue(currency, rawValue: rawValue);
 
         /// <summary>
         /// Divides the value by <paramref name="divisor"/>, returns the quotient, and returns

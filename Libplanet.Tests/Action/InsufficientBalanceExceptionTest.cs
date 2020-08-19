@@ -25,7 +25,7 @@ namespace Libplanet.Tests.Action
             var currency = new Currency("PLT", 0, minter);
             var exc = new InsufficientBalanceException(
                 account,
-                new FungibleAssetValue(currency, 99),
+                FungibleAssetValue.FromRawValue(currency, 99),
                 "for testing"
             );
 
@@ -38,7 +38,7 @@ namespace Libplanet.Tests.Action
                 var deserialized = (InsufficientBalanceException)formatter.Deserialize(ms);
                 Assert.Equal("for testing", deserialized.Message);
                 Assert.Equal(account, deserialized.Address);
-                Assert.Equal(new FungibleAssetValue(currency, 99), deserialized.Balance);
+                Assert.Equal(FungibleAssetValue.FromRawValue(currency, 99), deserialized.Balance);
             }
         }
     }
