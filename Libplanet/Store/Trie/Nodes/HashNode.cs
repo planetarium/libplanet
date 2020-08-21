@@ -5,7 +5,7 @@ using Bencodex.Types;
 namespace Libplanet.Store.Trie.Nodes
 {
     /// <summary>
-    /// Wrapper class.
+    /// <see cref="HashDigest{T}"/>'s wrapper class, used in <see cref="ITrie"/> interface.
     /// </summary>
     [Equals]
     internal class HashNode : INode
