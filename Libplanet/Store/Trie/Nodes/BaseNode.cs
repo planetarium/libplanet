@@ -1,4 +1,3 @@
-using System.Security.Cryptography;
 using Bencodex;
 using Bencodex.Types;
 
@@ -16,14 +15,6 @@ namespace Libplanet.Store.Trie.Nodes
         public BaseNode(INode value)
         {
             Value = value;
-        }
-
-        public HashDigest<SHA256> Hash
-        {
-            get
-            {
-                return Hashcash.Hash(Serialize());
-            }
         }
 
         // It will not support embedded node.

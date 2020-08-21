@@ -93,70 +93,80 @@ namespace Libplanet.Store.Trie
                     return node;
 
                 case FullNode fullNode:
-                    var virtualChildren = new INode[FullNode.ChildrenCount];
-                    for (int i = 0; i < FullNode.ChildrenCount; ++i)
-                    {
-                        INode child = fullNode.Children[i];
-                        if (child is null)
-                        {
-                            virtualChildren[i] = null;
-                        }
-                        else
-                        {
-                            virtualChildren[i] = Commit(child);
-                        }
-                    }
-
-                    fullNode = new FullNode(virtualChildren.ToImmutableArray());
-                    if (fullNode.Serialize().Length <= HashDigest<SHA256>.Size)
-                    {
-                        return fullNode;
-                    }
-                    else
-                    {
-                        var fullNodeHash = fullNode.Hash();
-                        KeyValueStore.Set(
-                            fullNodeHash.ToByteArray(),
-                            fullNode.Serialize());
-
-                        return new HashNode(fullNodeHash);
-                    }
+                    return CommitFullNode(fullNode);
 
                 case ShortNode shortNode:
-                    var committedValueNode = Commit(shortNode.Value);
-                    shortNode = new ShortNode(shortNode.Key, committedValueNode);
-                    if (shortNode.Serialize().Length <= HashDigest<SHA256>.Size)
-                    {
-                        return shortNode;
-                    }
-                    else
-                    {
-                        var shortNodeHash = shortNode.Hash();
-                        KeyValueStore.Set(
-                            shortNodeHash.ToByteArray(),
-                            shortNode.Serialize());
-
-                        return new HashNode(shortNodeHash);
-                    }
+                    return CommitShortNode(shortNode);
 
                 case ValueNode valueNode:
-                    int nodeSize = valueNode.Serialize().Length;
-                    if (nodeSize <= HashDigest<SHA256>.Size)
-                    {
-                        return valueNode;
-                    }
-                    else
-                    {
-                        var valueNodeHash = valueNode.Hash();
-                        KeyValueStore.Set(
-                            valueNodeHash.ToByteArray(),
-                            valueNode.Serialize());
-
-                        return new HashNode(valueNodeHash);
-                    }
+                    return CommitValueNode(valueNode);
 
                 default:
                     throw new NotSupportedException("Not supported node came.");
+            }
+        }
+
+        private INode CommitFullNode(FullNode fullNode)
+        {
+            var virtualChildren = new INode[FullNode.ChildrenCount];
+            for (int i = 0; i < FullNode.ChildrenCount; ++i)
+            {
+                INode child = fullNode.Children[i];
+                virtualChildren[i] = child is null
+                    ? null
+                    : Commit(child);
+            }
+
+            fullNode = new FullNode(virtualChildren.ToImmutableArray());
+            if (fullNode.Serialize().Length <= HashDigest<SHA256>.Size)
+            {
+                return fullNode;
+            }
+            else
+            {
+                var fullNodeHash = fullNode.Hash();
+                KeyValueStore.Set(
+                    fullNodeHash.ToByteArray(),
+                    fullNode.Serialize());
+
+                return new HashNode(fullNodeHash);
+            }
+        }
+
+        private INode CommitShortNode(ShortNode shortNode)
+        {
+            var committedValueNode = Commit(shortNode.Value);
+            shortNode = new ShortNode(shortNode.Key, committedValueNode);
+            if (shortNode.Serialize().Length <= HashDigest<SHA256>.Size)
+            {
+                return shortNode;
+            }
+            else
+            {
+                var shortNodeHash = shortNode.Hash();
+                KeyValueStore.Set(
+                    shortNodeHash.ToByteArray(),
+                    shortNode.Serialize());
+
+                return new HashNode(shortNodeHash);
+            }
+        }
+
+        private INode CommitValueNode(ValueNode valueNode)
+        {
+            int nodeSize = valueNode.Serialize().Length;
+            if (nodeSize <= HashDigest<SHA256>.Size)
+            {
+                return valueNode;
+            }
+            else
+            {
+                var valueNodeHash = valueNode.Hash();
+                KeyValueStore.Set(
+                    valueNodeHash.ToByteArray(),
+                    valueNode.Serialize());
+
+                return new HashNode(valueNodeHash);
             }
         }
 
@@ -175,54 +185,7 @@ namespace Libplanet.Store.Trie
             switch (node)
             {
                 case ShortNode shortNode:
-                    int CommonPrefixLen(ImmutableArray<byte> a, ImmutableArray<byte> b)
-                    {
-                        var length = Math.Min(a.Length, b.Length);
-                        foreach (var i in Enumerable.Range(0, length))
-                        {
-                            if (a[i] != b[i])
-                            {
-                                return i;
-                            }
-                        }
-
-                        return length;
-                    }
-
-                    int commonPrefixLength = CommonPrefixLen(shortNode.Key, key);
-                    if (commonPrefixLength == shortNode.Key.Length)
-                    {
-                        var nn = Insert(
-                            shortNode.Value,
-                            prefix.AddRange(key.Take(commonPrefixLength)),
-                            key.Skip(commonPrefixLength).ToImmutableArray(),
-                            value);
-                        return new ShortNode(shortNode.Key, nn);
-                    }
-
-                    var branch = new FullNode();
-                    branch = branch.SetChild(
-                        key[commonPrefixLength],
-                        Insert(
-                            null,
-                            prefix.AddRange(key.Take(commonPrefixLength + 1)),
-                            key.Skip(commonPrefixLength + 1).ToImmutableArray(),
-                            value));
-                    branch = branch.SetChild(
-                        shortNode.Key[commonPrefixLength],
-                        Insert(
-                            null,
-                            prefix.AddRange(shortNode.Key.Take(commonPrefixLength + 1)),
-                            shortNode.Key.Skip(commonPrefixLength + 1).ToImmutableArray(),
-                            shortNode.Value));
-
-                    if (commonPrefixLength == 0)
-                    {
-                        return branch;
-                    }
-
-                    // extension node
-                    return new ShortNode(key.Take(commonPrefixLength).ToArray(), branch);
+                    return InsertShortNode(shortNode, prefix, key, value);
 
                 case FullNode fullNode:
                     var n = Insert(
@@ -243,6 +206,62 @@ namespace Libplanet.Store.Trie
                     throw new InvalidTrieNodeException("Not supported node came." +
                                                        $" raw: {node.ToBencodex().Inspection}");
             }
+        }
+
+        private INode InsertShortNode(
+            ShortNode shortNode,
+            ImmutableArray<byte> prefix,
+            ImmutableArray<byte> key,
+            INode value)
+        {
+            int CommonPrefixLen(ImmutableArray<byte> a, ImmutableArray<byte> b)
+            {
+                var length = Math.Min(a.Length, b.Length);
+                foreach (var i in Enumerable.Range(0, length))
+                {
+                    if (a[i] != b[i])
+                    {
+                        return i;
+                    }
+                }
+
+                return length;
+            }
+
+            int commonPrefixLength = CommonPrefixLen(shortNode.Key, key);
+            if (commonPrefixLength == shortNode.Key.Length)
+            {
+                var nn = Insert(
+                    shortNode.Value,
+                    prefix.AddRange(key.Take(commonPrefixLength)),
+                    key.Skip(commonPrefixLength).ToImmutableArray(),
+                    value);
+                return new ShortNode(shortNode.Key, nn);
+            }
+
+            var branch = new FullNode();
+            branch = branch.SetChild(
+                key[commonPrefixLength],
+                Insert(
+                    null,
+                    prefix.AddRange(key.Take(commonPrefixLength + 1)),
+                    key.Skip(commonPrefixLength + 1).ToImmutableArray(),
+                    value));
+            branch = branch.SetChild(
+                shortNode.Key[commonPrefixLength],
+                Insert(
+                    null,
+                    prefix.AddRange(shortNode.Key.Take(commonPrefixLength + 1)),
+                    shortNode.Key.Skip(commonPrefixLength + 1).ToImmutableArray(),
+                    shortNode.Value));
+
+            if (commonPrefixLength == 0)
+            {
+                return branch;
+            }
+
+            // extension node
+            return new ShortNode(key.Take(commonPrefixLength).ToArray(), branch);
         }
 
         private bool TryGet(
@@ -321,10 +340,11 @@ namespace Libplanet.Store.Trie
             }
 
             var res = new byte[key.Length * 2];
+            const int lowerBytesMask = 0b00001111;
             for (var i = 0; i < key.Length; ++i)
             {
                 res[i * 2] = (byte)(key[i] >> 4);
-                res[i * 2 + 1] = (byte)(key[i] & 0b00001111);
+                res[i * 2 + 1] = (byte)(key[i] & lowerBytesMask);
             }
 
             return res;

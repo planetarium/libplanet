@@ -10,35 +10,32 @@ namespace Libplanet.Store.Trie.Nodes
     {
         internal static INode Decode(IValue value)
         {
-            switch (value)
+            if (value is Bencodex.Types.List list)
             {
-                case List list:
-                    switch (list.Count)
-                    {
-                        // Children hashes... | value
-                        case FullNode.ChildrenCount:
-                            return DecodeFull(list);
+                switch (list.Count)
+                {
+                    // Children hashes... | value
+                    case FullNode.ChildrenCount:
+                        return DecodeFull(list);
 
-                        // path | value
-                        case 2:
-                            if (list[0] is Binary)
-                            {
-                                return DecodeShort(list);
-                            }
+                    // path | value
+                    case 2:
+                        if (list[0] is Binary)
+                        {
+                            return DecodeShort(list);
+                        }
 
-                            if (list[0] is Null)
-                            {
-                                return new ValueNode(list[1]);
-                            }
+                        if (list[0] is Null)
+                        {
+                            return new ValueNode(list[1]);
+                        }
 
-                            break;
+                        break;
 
-                        default:
-                            throw new InvalidTrieNodeException(
-                                $"Can't decode a node from the bencodex value: {value.Inspection}");
-                    }
-
-                    break;
+                    default:
+                        throw new InvalidTrieNodeException(
+                            $"Can't decode a node from the bencodex value: {value.Inspection}");
+                }
             }
 
             return DecodeRef(value);
@@ -53,22 +50,6 @@ namespace Libplanet.Store.Trie.Nodes
                 .Select(DecodeRef)
                 .Take(FullNode.ChildrenCount)
                 .ToImmutableArray());
-        }
-
-        // FIXME: replace with DecodeRef after resolving full-node-null issues.
-        private static INode DecodeChild(IValue value)
-        {
-            if (value is Binary binary)
-            {
-                return new HashNode(new HashDigest<SHA256>(binary));
-            }
-
-            if (value is Null)
-            {
-                return null;
-            }
-
-            throw new InvalidTrieNodeException($"Invalid child node came. raw: {value.Inspection}");
         }
 
         private static ShortNode DecodeShort(List list)
