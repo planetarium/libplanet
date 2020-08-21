@@ -29,7 +29,7 @@ namespace Libplanet.Tests.Blockchain
     {
         private StoreFixture _fx;
         private BlockChain<DumbAction> _blockChain;
-        private DumbRenderer _renderer;
+        private DumbRenderer<DumbAction> _renderer;
 
         public BlockChainTest(ITestOutputHelper output)
         {
@@ -41,7 +41,7 @@ namespace Libplanet.Tests.Blockchain
                 .ForContext<BlockChainTest>();
 
             _fx = new DefaultStoreFixture(memory: true);
-            _renderer = new DumbRenderer();
+            _renderer = new DumbRenderer<DumbAction>();
             _blockChain = new BlockChain<DumbAction>(
                 new BlockPolicy<DumbAction>(new MinerReward(1)),
                 _fx.Store,
@@ -463,7 +463,7 @@ namespace Libplanet.Tests.Blockchain
             var genesis = _blockChain.Genesis;
 
             Assert.Equal(1, _blockChain.Count);
-            Assert.Empty(_renderer.Records.Value);
+            Assert.Empty(_renderer.ActionRecords);
             Assert.Empty(MinerReward.RenderRecords.Value);
             try
             {
@@ -489,7 +489,7 @@ namespace Libplanet.Tests.Blockchain
                     Assert.NotNull(blockStatesStore.GetBlockStates(block2.Hash));
                 }
 
-                RenderRecord[] renders = _renderer.Records.Value
+                RenderRecord[] renders = _renderer.ActionRecords
                     .Where(r => r.Action is DumbAction)
                     .ToArray();
                 DumbAction[] actions = renders.Select(r => (DumbAction)r.Action).ToArray();
@@ -537,7 +537,7 @@ namespace Libplanet.Tests.Blockchain
                 );
 
                 var minerAddress = addresses[4];
-                RenderRecord[] blockRenders = _renderer.Records.Value
+                RenderRecord[] blockRenders = _renderer.ActionRecords
                     .Where(r => r.Action is MinerReward)
                     .ToArray();
 
@@ -1083,7 +1083,7 @@ namespace Libplanet.Tests.Blockchain
             using (var store = new DefaultStore(null))
             {
                 store.PutBlock(genesis);
-                var renderer = new DumbRenderer();
+                var renderer = new DumbRenderer<DumbAction>();
                 var blockChain = new BlockChain<DumbAction>(
                     _blockChain.Policy,
                     store,
@@ -1092,7 +1092,7 @@ namespace Libplanet.Tests.Blockchain
                     renderers: new[] { renderer }
                 );
 
-                Assert.Equal(1, renderer.Records.Value.Count(r => r.Action is DumbAction));
+                Assert.Equal(1, renderer.ActionRecords.Count(r => r.Action is DumbAction));
                 Assert.Single(DumbAction.ExecuteRecords.Value.Where(r => !r.Rehearsal));
                 Assert.Single(DumbAction.RenderRecords.Value);
 
@@ -1101,7 +1101,7 @@ namespace Libplanet.Tests.Blockchain
 
                 blockChain.Fork(blockChain.Tip.Hash);
 
-                Assert.Equal(1, renderer.Records.Value.Count(r => r.Action is DumbAction));
+                Assert.Equal(1, renderer.ActionRecords.Count(r => r.Action is DumbAction));
                 Assert.Single(DumbAction.ExecuteRecords.Value.Where(r => !r.Rehearsal));
                 Assert.Single(DumbAction.RenderRecords.Value);
             }
@@ -1373,7 +1373,7 @@ namespace Libplanet.Tests.Blockchain
 
                 Assert.Empty(_blockChain.Store.ListTxNonces(previousChainId));
 
-                RenderRecord[] renders = _renderer.Records.Value
+                RenderRecord[] renders = _renderer.ActionRecords
                     .Where(r => r.Action is DumbAction)
                     .ToArray();
                 DumbAction[] actions = renders.Select(r => (DumbAction)r.Action).ToArray();
@@ -1402,7 +1402,7 @@ namespace Libplanet.Tests.Blockchain
                     Assert.Equal("fork-bar", actions[5].Item);
                     Assert.Equal("fork-baz", actions[6].Item);
 
-                    RenderRecord[] blockRenders = _renderer.Records.Value
+                    RenderRecord[] blockRenders = _renderer.ActionRecords
                         .Where(r => r.Action is MinerReward)
                         .ToArray();
 
@@ -2298,35 +2298,33 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         private async void TipChanged()
         {
-            bool called = false;
-            long? prevTipIndex = null;
-            HashDigest<SHA256>? prevTipHash = null;
-            long tipIndex = -1;
-            HashDigest<SHA256> tipHash;
+            BlockChain<DumbAction>.TipChangedEventArgs eventLog = null;
             var genesis = _blockChain.Genesis;
 
-            void TipChangedHandler(object target, BlockChain<DumbAction>.TipChangedEventArgs args)
-            {
-                called = true;
-                prevTipIndex = args.PreviousIndex;
-                prevTipHash = args.PreviousHash;
-                tipIndex = args.Index;
-                tipHash = args.Hash;
-            }
+            _renderer.ResetRecords();
+            _blockChain.TipChanged += (target, args) => eventLog = args;
 
-            _blockChain.TipChanged += TipChangedHandler;
             // Mine block
-            called = false;
+            Assert.Empty(_renderer.BlockRecords);
             Block<DumbAction> block = await _blockChain.MineBlock(_fx.Address1);
-            Assert.True(called);
-            Assert.Equal(prevTipHash, genesis.Hash);
-            Assert.Equal(prevTipIndex, genesis.Index);
-            Assert.Equal(block.Hash, tipHash);
-            Assert.Equal(1, tipIndex);
-            Assert.Equal(block.Hash, tipHash);
-            called = false;
+            ImmutableList<(Block<DumbAction> Old, Block<DumbAction> New)> records =
+                _renderer.BlockRecords;
+            Assert.Single(records);
+            (Block<DumbAction> old, Block<DumbAction> @new) = records[0];
+            Assert.Equal(genesis, old);
+            Assert.Equal(block, @new);
+            Assert.Equal(1, @new.Index);
+            Assert.NotNull(eventLog);
+            Assert.Equal(old.Hash, eventLog.PreviousHash);
+            Assert.Equal(old.Index, eventLog.PreviousIndex);
+            Assert.Equal(@new.Hash, eventLog.Hash);
+            Assert.Equal(@new.Index, eventLog.Index);
+
+            _renderer.ResetRecords();
+            eventLog = null;
             Assert.Throws<InvalidBlockIndexException>(() => _blockChain.Append(block));
-            Assert.False(called);
+            Assert.Empty(_renderer.BlockRecords);
+            Assert.Null(eventLog);
 
             // TODO: Add test cases for swap
         }
@@ -2383,42 +2381,38 @@ namespace Libplanet.Tests.Blockchain
                 fx1.Store,
                 fx1.StateStore,
                 fx1.GenesisBlock);
+            var renderer2 = new DumbRenderer<DumbAction>();
             var chain2 = new BlockChain<DumbAction>(
                 policy2,
                 fx2.Store,
                 fx1.StateStore,
-                fx2.GenesisBlock);
+                fx2.GenesisBlock,
+                renderers: new[] { renderer2 });
 
             chain1.Append(genesis);
             chain2.Append(genesis);
 
-            bool called = false;
-            long? prevTipIndex = null;
-            HashDigest<SHA256>? prevTipHash = null;
-            long tipIndex = -1;
-            HashDigest<SHA256> tipHash;
-            void TipChangedHandler(object target, BlockChain<DumbAction>.TipChangedEventArgs args)
-            {
-                called = true;
-                prevTipIndex = args.PreviousIndex;
-                prevTipHash = args.PreviousHash;
-                tipIndex = args.Index;
-                tipHash = args.Hash;
-            }
+            BlockChain<DumbAction>.TipChangedEventArgs eventLog = null;
 
             try
             {
                 Block<DumbAction> block = await chain1.MineBlock(fx1.Address1);
-                chain2.TipChanged += TipChangedHandler;
+                renderer2.ResetRecords();
+                chain2.TipChanged += (sender, args) => eventLog = args;
 
                 Task miningTask = chain2.MineBlock(fx2.Address1);
-
                 chain2.Append(block);
-                Assert.True(called);
-                Assert.Equal(1, prevTipIndex);
-                Assert.Equal(genesis.Hash, prevTipHash);
-                Assert.Equal(2, tipIndex);
-                Assert.Equal(block.Hash, tipHash);
+
+                ImmutableList<(Block<DumbAction> Old, Block<DumbAction> New)> records =
+                    renderer2.BlockRecords;
+                Assert.Single(records);
+                Assert.Equal(genesis, records[0].Old);
+                Assert.Equal(block, records[0].New);
+                Assert.NotNull(eventLog);
+                Assert.Equal(1, eventLog.PreviousIndex);
+                Assert.Equal(genesis.Hash, eventLog.PreviousHash);
+                Assert.Equal(2, eventLog.Index);
+                Assert.Equal(block.Hash, eventLog.Hash);
                 await Task.Delay(100);
                 Assert.True(miningTask.IsCanceled);
             }

@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Immutable;
-using System.Threading;
 using Libplanet.Action;
 using Libplanet.Blockchain;
+using Libplanet.Blocks;
 
 namespace Libplanet.Tests.Common
 {
-    public sealed class DumbRenderer : IRenderer
+    public sealed class DumbRenderer<T> : IRenderer<T>
+        where T : IAction, new()
     {
         public DumbRenderer()
         {
@@ -15,12 +16,14 @@ namespace Libplanet.Tests.Common
 
         public EventHandler<IAction> RenderEventHandler { get; set; }
 
-        public AsyncLocal<ImmutableList<RenderRecord>> Records { get; private set; } =
-            new AsyncLocal<ImmutableList<RenderRecord>>();
+        public ImmutableList<RenderRecord> ActionRecords { get; private set; }
+
+        public ImmutableList<(Block<T> Old, Block<T> New)> BlockRecords { get; private set; }
 
         public void ResetRecords()
         {
-            Records.Value = ImmutableList<RenderRecord>.Empty;
+            ActionRecords = ImmutableList<RenderRecord>.Empty;
+            BlockRecords = ImmutableList<(Block<T> Old, Block<T> New)>.Empty;
         }
 
         public void RenderAction(
@@ -29,7 +32,7 @@ namespace Libplanet.Tests.Common
             IAccountStateDelta nextStates
         )
         {
-            Records.Value = Records.Value.Add(new RenderRecord
+            ActionRecords = ActionRecords.Add(new RenderRecord
             {
                 Render = true,
                 Action = action,
@@ -52,16 +55,14 @@ namespace Libplanet.Tests.Common
             IAction action,
             IActionContext context,
             IAccountStateDelta nextStates
-        )
-        {
-            Records.Value = Records.Value.Add(new RenderRecord
+        ) =>
+            ActionRecords = ActionRecords.Add(new RenderRecord
             {
                 Unrender = true,
                 Action = action,
                 Context = context,
                 NextStates = nextStates,
             });
-        }
 
         public void UnrenderActionError(
             IAction action,
@@ -70,5 +71,8 @@ namespace Libplanet.Tests.Common
         )
         {
         }
+
+        public void RenderBlock(Block<T> oldTip, Block<T> newTip) =>
+            BlockRecords = BlockRecords.Add((oldTip, newTip));
     }
 }

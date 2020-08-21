@@ -26,7 +26,7 @@ namespace Libplanet.Tests.Net
         private readonly StoreFixture _fx4;
 
         private readonly List<BlockChain<DumbAction>> _blockchains;
-        private readonly List<DumbRenderer> _renderers;
+        private readonly List<DumbRenderer<DumbAction>> _renderers;
         private readonly List<Swarm<DumbAction>> _swarms;
         private readonly List<Func<Task>> _finalizers;
 

@@ -1,6 +1,7 @@
 #nullable enable
 using System;
 using Libplanet.Action;
+using Libplanet.Blocks;
 
 namespace Libplanet.Blockchain
 {
@@ -10,7 +11,10 @@ namespace Libplanet.Blockchain
     /// (if exist), or send a signal to the UI thread (usually the main thread) so that the graphics
     /// on the display is redrawn.</para>
     /// </summary>
-    public interface IRenderer
+    /// <typeparam name="T">An <see cref="IAction"/> type.  It should match to
+    /// <see cref="BlockChain{T}"/>'s type parameter.</typeparam>
+    public interface IRenderer<T>
+        where T : IAction, new()
     {
         /// <summary>
         /// Does things that should be done right after an <paramref name="action"/>
@@ -30,6 +34,10 @@ namespace Libplanet.Blockchain
         /// <param name="nextStates">The states right <em>after</em> this action executed,
         /// which means it is equivalent to the states <paramref name="action"/>'s
         /// <see cref="IAction.Execute(IActionContext)"/> method returned.</param>
+        /// <remarks>The reason why the parameter <paramref name="action"/> takes
+        /// <see cref="IAction"/> instead of <typeparamref name="T"/> is because it can take
+        /// block actions (<see cref="Policies.IBlockPolicy{T}.BlockAction"/>) besides transaction
+        /// actions (<see cref="Tx.Transaction{T}.Actions"/>).</remarks>
         void RenderAction(IAction action, IActionContext context, IAccountStateDelta nextStates);
 
         /// <summary>
@@ -51,6 +59,10 @@ namespace Libplanet.Blockchain
         /// <remarks>As a rule of thumb, this should be the inverse of
         /// <see cref="RenderAction(IAction, IActionContext, IAccountStateDelta)"/> method
         /// with redrawing the graphics on the display at the finish.</remarks>
+        /// <remarks>The reason why the parameter <paramref name="action"/> takes
+        /// <see cref="IAction"/> instead of <typeparamref name="T"/> is because it can take
+        /// block actions (<see cref="Policies.IBlockPolicy{T}.BlockAction"/>) besides transaction
+        /// actions (<see cref="Tx.Transaction{T}.Actions"/>).</remarks>
         void UnrenderAction(IAction action, IActionContext context, IAccountStateDelta nextStates);
 
         /// <summary>
@@ -65,6 +77,10 @@ namespace Libplanet.Blockchain
         /// <em>before</em> this action executed.</param>
         /// <param name="exception">The exception thrown during executing the <paramref
         /// name="action"/>.</param>
+        /// <remarks>The reason why the parameter <paramref name="action"/> takes
+        /// <see cref="IAction"/> instead of <typeparamref name="T"/> is because it can take
+        /// block actions (<see cref="Policies.IBlockPolicy{T}.BlockAction"/>) besides transaction
+        /// actions (<see cref="Tx.Transaction{T}.Actions"/>).</remarks>
         void RenderActionError(IAction action, IActionContext context, Exception exception);
 
         /// <summary>
@@ -81,6 +97,20 @@ namespace Libplanet.Blockchain
         /// <em>before</em> this action executed.</param>
         /// <param name="exception">The exception thrown during executing the <paramref
         /// name="action"/>.</param>
+        /// <remarks>The reason why the parameter <paramref name="action"/> takes
+        /// <see cref="IAction"/> instead of <typeparamref name="T"/> is because it can take
+        /// block actions (<see cref="Policies.IBlockPolicy{T}.BlockAction"/>) besides transaction
+        /// actions (<see cref="Tx.Transaction{T}.Actions"/>).</remarks>
         void UnrenderActionError(IAction action, IActionContext context, Exception exception);
+
+        /// <summary>
+        /// Does things that should be done right after a new <see cref="Block{T}"/> is appended to
+        /// a <see cref="BlockChain{T}"/> (so that its <see cref="BlockChain{T}.Tip"/> has changed).
+        /// </summary>
+        /// <remarks>It is guranteed to be called only once for a block, and only after applied to
+        /// the blockchain, unless it has been stale due to reorg.</remarks>
+        /// <param name="oldTip">The previous <see cref="BlockChain{T}.Tip"/>.</param>
+        /// <param name="newTip">The current <see cref="BlockChain{T}.Tip"/>.</param>
+        void RenderBlock(Block<T> oldTip, Block<T> newTip);
     }
 }

@@ -85,7 +85,7 @@ namespace Libplanet.Blockchain
             IStore store,
             IStateStore stateStore,
             Block<T> genesisBlock,
-            IEnumerable<IRenderer> renderers = null,
+            IEnumerable<IRenderer<T>> renderers = null,
             bool render = true
             )
             : this(
@@ -105,7 +105,7 @@ namespace Libplanet.Blockchain
             IStateStore stateStore,
             Guid id,
             Block<T> genesisBlock,
-            IEnumerable<IRenderer> renderers,
+            IEnumerable<IRenderer<T>> renderers,
             bool render
         )
             : this(
@@ -128,7 +128,7 @@ namespace Libplanet.Blockchain
             Guid id,
             Block<T> genesisBlock,
             bool inFork,
-            IEnumerable<IRenderer> renderers,
+            IEnumerable<IRenderer<T>> renderers,
             bool render
         )
         {
@@ -145,9 +145,9 @@ namespace Libplanet.Blockchain
 
             _blocks = new BlockSet<T>(store);
             _transactions = new TransactionSet<T>(store);
-            Renderers = renderers is IEnumerable<IRenderer> r
+            Renderers = renderers is IEnumerable<IRenderer<T>> r
                 ? r.ToImmutableArray()
-                : ImmutableArray<IRenderer>.Empty;
+                : ImmutableArray<IRenderer<T>>.Empty;
             Render = render;
             _rwlock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
             _txLock = new object();
@@ -205,16 +205,18 @@ namespace Libplanet.Blockchain
         /// </summary>
         public bool Render { get; }
 
+#pragma warning disable SA1004
         /// <summary>
         /// The list of registered renderers listening the state changes.
         /// </summary>
         /// <remarks>
         /// Since this value is immutable, renderers cannot be registered after once a <see
         /// cref="BlockChain{T}"/> object is instantiated; use <c>renderers</c> option of <see cref=
-        /// "BlockChain{T}(IBlockPolicy{T},IStore,IStateStore,Block{T},IEnumerable{IRenderer},bool)"
-        /// /> constructor instead.
+        /// "BlockChain{T}(IBlockPolicy{T},IStore,IStateStore,Block{T},IEnumerable{IRenderer{T}},
+        /// bool)"/> constructor instead.
         /// </remarks>
-        public IImmutableList<IRenderer> Renderers { get; }
+#pragma warning restore SA1004
+        public IImmutableList<IRenderer<T>> Renderers { get; }
 
         public IBlockPolicy<T> Policy { get; }
 
@@ -926,6 +928,11 @@ namespace Libplanet.Blockchain
                         .ToImmutableHashSet();
                     Store.UnstageTransactionIds(txIds);
                     TipChanged?.Invoke(this, tipChangedEventArgs);
+                    foreach (IRenderer<T> renderer in Renderers)
+                    {
+                        renderer.RenderBlock(oldTip: prevTip ?? Genesis, newTip: block);
+                    }
+
                     _logger.Debug("Block {blockIndex}: {block} is appended.", block?.Index, block);
                 }
                 finally
@@ -999,7 +1006,7 @@ namespace Libplanet.Blockchain
                 if (evaluation.Exception is null)
                 {
                     evaluation.Action.Render(evaluation.InputContext, evaluation.OutputStates);
-                    foreach (IRenderer renderer in Renderers)
+                    foreach (IRenderer<T> renderer in Renderers)
                     {
                         renderer.RenderAction(
                             evaluation.Action,
@@ -1011,7 +1018,7 @@ namespace Libplanet.Blockchain
                 else
                 {
                     evaluation.Action.RenderError(evaluation.InputContext, evaluation.Exception);
-                    foreach (IRenderer renderer in Renderers)
+                    foreach (IRenderer<T> renderer in Renderers)
                     {
                         renderer.RenderActionError(
                             evaluation.Action,
@@ -1455,7 +1462,7 @@ namespace Libplanet.Blockchain
                                 evaluation.InputContext,
                                 evaluation.OutputStates
                             );
-                            foreach (IRenderer renderer in Renderers)
+                            foreach (IRenderer<T> renderer in Renderers)
                             {
                                 renderer.UnrenderAction(
                                     evaluation.Action,
@@ -1470,7 +1477,7 @@ namespace Libplanet.Blockchain
                                 evaluation.InputContext,
                                 evaluation.Exception
                             );
-                            foreach (IRenderer renderer in Renderers)
+                            foreach (IRenderer<T> renderer in Renderers)
                             {
                                 renderer.UnrenderActionError(
                                     evaluation.Action,
@@ -1504,18 +1511,18 @@ namespace Libplanet.Blockchain
             {
                 _rwlock.EnterWriteLock();
 
+                Block<T> oldTip = Tip ?? Genesis, newTip = other.Tip ?? other.Genesis;
                 var tipChangedEventArgs = new TipChangedEventArgs
                 {
-                    PreviousHash = Tip?.Hash,
-                    PreviousIndex = Tip?.Index,
-                    Hash = other.Tip.Hash,
-                    Index = other.Tip.Index,
+                    PreviousHash = oldTip.Hash,
+                    PreviousIndex = oldTip.Index,
+                    Hash = newTip.Hash,
+                    Index = newTip.Index,
                 };
-
                 var reorgedEventArgs = new ReorgedEventArgs
                 {
-                    OldTip = Tip,
-                    NewTip = other.Tip,
+                    OldTip = oldTip,
+                    NewTip = newTip,
                     Branchpoint = topmostCommon,
                 };
 
@@ -1525,6 +1532,11 @@ namespace Libplanet.Blockchain
                 _blocks = new BlockSet<T>(Store);
                 TipChanged?.Invoke(this, tipChangedEventArgs);
                 Reorged?.Invoke(this, reorgedEventArgs);
+                foreach (IRenderer<T> renderer in Renderers)
+                {
+                    renderer.RenderBlock(oldTip: oldTip, newTip: newTip);
+                }
+
                 _transactions = new TransactionSet<T>(Store);
                 Store.DeleteChainId(obsoleteId);
             }

@@ -261,7 +261,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             IEnumerable<T> actions = null,
             PrivateKey privateKey = null,
             DateTimeOffset? timestamp = null,
-            IEnumerable<IRenderer> renderers = null
+            IEnumerable<IRenderer<T>> renderers = null
         )
             where T : IAction, new()
         {
@@ -296,7 +296,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 store,
                 store as IStateStore,
                 genesisBlock,
-                renderers: renderers ?? new[] { new DumbRenderer() }
+                renderers: renderers ?? new[] { new DumbRenderer<T>() }
             );
         }
 
