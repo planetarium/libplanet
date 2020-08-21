@@ -78,7 +78,7 @@ namespace Libplanet.Action
         [Pure]
         public FungibleAssetValue GetBalance(Address address, Currency currency) =>
             _updatedFungibleAssets.TryGetValue((address, currency), out BigInteger balance)
-                ? new FungibleAssetValue(currency, balance)
+                ? FungibleAssetValue.FromRawValue(currency, balance)
                 : _accountBalanceGetter(address, currency);
 
         /// <inheritdoc/>

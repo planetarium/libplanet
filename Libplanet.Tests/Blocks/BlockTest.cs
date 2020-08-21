@@ -304,7 +304,7 @@ namespace Libplanet.Tests.Blocks
                 .Evaluate(
                     DateTimeOffset.UtcNow,
                     address => null,
-                    (address, currency) => new FungibleAssetValue(currency, 0))
+                    (address, currency) => new FungibleAssetValue(currency))
                 .ToArray();
             IImmutableDictionary<Address, IValue> dirty1 = evals1.GetDirtyStates();
             IImmutableDictionary<(Address, Currency), FungibleAssetValue> balances1 =
@@ -323,13 +323,13 @@ namespace Libplanet.Tests.Blocks
                 new Dictionary<(Address, Currency), FungibleAssetValue>
                 {
                     [(addresses[0], DumbAction.DumbCurrency)] =
-                        new FungibleAssetValue(DumbAction.DumbCurrency, -5),
+                        new FungibleAssetValue(DumbAction.DumbCurrency, -5, 0),
                     [(addresses[1], DumbAction.DumbCurrency)] =
                         new FungibleAssetValue(DumbAction.DumbCurrency),
                     [(addresses[2], DumbAction.DumbCurrency)] =
                         new FungibleAssetValue(DumbAction.DumbCurrency),
                     [(addresses[3], DumbAction.DumbCurrency)] =
-                        new FungibleAssetValue(DumbAction.DumbCurrency, 5),
+                        new FungibleAssetValue(DumbAction.DumbCurrency, 5, 0),
                 }.ToImmutableDictionary(),
                 balances1
             );

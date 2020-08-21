@@ -65,6 +65,14 @@ namespace Libplanet.Tests.Assets
             Assert.Equal(0, v.MinorUnit);
             Assert.Equal(1, v.Sign);
 
+            v = new FungibleAssetValue(BAR, 1, 0);
+            Assert.Equal(new FungibleAssetValue(BAR, 1, 1, 0), v);
+            Assert.Equal(FungibleAssetValue.FromRawValue(BAR, 1), v);
+            Assert.Equal(1, v.RawValue);
+            Assert.Equal(1, v.MajorUnit);
+            Assert.Equal(0, v.MinorUnit);
+            Assert.Equal(1, v.Sign);
+
             v = new FungibleAssetValue(FOO, 0, 0);
             Assert.Equal(new FungibleAssetValue(FOO, 0, 0, 0), v);
             Assert.Equal(new FungibleAssetValue(FOO), v);
@@ -83,19 +91,20 @@ namespace Libplanet.Tests.Assets
             Assert.Throws<ArgumentException>(() => new FungibleAssetValue(FOO, 10, -10));
             Assert.Throws<ArgumentException>(() => new FungibleAssetValue(FOO, -10, -10));
             Assert.Throws<ArgumentException>(() => new FungibleAssetValue(FOO, 1, 100));
+            Assert.Throws<ArgumentException>(() => new FungibleAssetValue(BAR, 1, 2));
         }
 
         [Fact]
         public void Equality()
         {
-            FungibleAssetValue foo100a = new FungibleAssetValue(FOO, 100);
-            FungibleAssetValue foo100b = new FungibleAssetValue(FOO, 100);
-            FungibleAssetValue foo200a = new FungibleAssetValue(FOO, 200);
-            FungibleAssetValue foo200b = new FungibleAssetValue(FOO, 200);
-            FungibleAssetValue bar100a = new FungibleAssetValue(BAR, 100);
-            FungibleAssetValue bar100b = new FungibleAssetValue(BAR, 100);
-            FungibleAssetValue bar200a = new FungibleAssetValue(BAR, 200);
-            FungibleAssetValue bar200b = new FungibleAssetValue(BAR, 200);
+            FungibleAssetValue foo100a = FungibleAssetValue.FromRawValue(FOO, 100);
+            FungibleAssetValue foo100b = FungibleAssetValue.FromRawValue(FOO, 100);
+            FungibleAssetValue foo200a = FungibleAssetValue.FromRawValue(FOO, 200);
+            FungibleAssetValue foo200b = FungibleAssetValue.FromRawValue(FOO, 200);
+            FungibleAssetValue bar100a = FungibleAssetValue.FromRawValue(BAR, 100);
+            FungibleAssetValue bar100b = FungibleAssetValue.FromRawValue(BAR, 100);
+            FungibleAssetValue bar200a = FungibleAssetValue.FromRawValue(BAR, 200);
+            FungibleAssetValue bar200b = FungibleAssetValue.FromRawValue(BAR, 200);
 
             Assert.Equal(foo100b, foo100a);
             Assert.Equal(foo100b.GetHashCode(), foo100a.GetHashCode());
@@ -150,10 +159,10 @@ namespace Libplanet.Tests.Assets
         [Fact]
         public void Compare()
         {
-            FungibleAssetValue foo100a = new FungibleAssetValue(FOO, 100);
-            FungibleAssetValue foo100b = new FungibleAssetValue(FOO, 100);
-            FungibleAssetValue foo200 = new FungibleAssetValue(FOO, 200);
-            FungibleAssetValue bar100 = new FungibleAssetValue(BAR, 100);
+            FungibleAssetValue foo100a = FungibleAssetValue.FromRawValue(FOO, 100);
+            FungibleAssetValue foo100b = FungibleAssetValue.FromRawValue(FOO, 100);
+            FungibleAssetValue foo200 = FungibleAssetValue.FromRawValue(FOO, 200);
+            FungibleAssetValue bar100 = FungibleAssetValue.FromRawValue(BAR, 100);
 
             Assert.Equal(0, foo100a.CompareTo(foo100b));
             Assert.Equal(0, foo100a.CompareTo((object)foo100b));
@@ -189,9 +198,9 @@ namespace Libplanet.Tests.Assets
         [Fact]
         public void Negate()
         {
-            FungibleAssetValue foo_3 = new FungibleAssetValue(FOO, -3);
+            FungibleAssetValue foo_3 = FungibleAssetValue.FromRawValue(FOO, -3);
             FungibleAssetValue foo0 = new FungibleAssetValue(FOO);
-            FungibleAssetValue foo3 = new FungibleAssetValue(FOO, 3);
+            FungibleAssetValue foo3 = FungibleAssetValue.FromRawValue(FOO, 3);
 
             Assert.Equal(foo_3, -foo3);
             Assert.Equal(foo3, -foo_3);
@@ -201,12 +210,12 @@ namespace Libplanet.Tests.Assets
         [Fact]
         public void Add()
         {
-            FungibleAssetValue foo_1 = new FungibleAssetValue(FOO, -1);
+            FungibleAssetValue foo_1 = FungibleAssetValue.FromRawValue(FOO, -1);
             FungibleAssetValue foo0 = new FungibleAssetValue(FOO);
-            FungibleAssetValue foo1 = new FungibleAssetValue(FOO, 1);
-            FungibleAssetValue foo2 = new FungibleAssetValue(FOO, 2);
-            FungibleAssetValue foo3 = new FungibleAssetValue(FOO, 3);
-            FungibleAssetValue bar3 = new FungibleAssetValue(BAR, 3);
+            FungibleAssetValue foo1 = FungibleAssetValue.FromRawValue(FOO, 1);
+            FungibleAssetValue foo2 = FungibleAssetValue.FromRawValue(FOO, 2);
+            FungibleAssetValue foo3 = FungibleAssetValue.FromRawValue(FOO, 3);
+            FungibleAssetValue bar3 = FungibleAssetValue.FromRawValue(BAR, 3);
 
             Assert.Equal(foo1, foo1 + foo0);
             Assert.Equal(foo1, foo0 + foo1);
@@ -224,11 +233,11 @@ namespace Libplanet.Tests.Assets
         [Fact]
         public void Subtract()
         {
-            FungibleAssetValue foo_1 = new FungibleAssetValue(FOO, -1);
+            FungibleAssetValue foo_1 = FungibleAssetValue.FromRawValue(FOO, -1);
             FungibleAssetValue foo0 = new FungibleAssetValue(FOO);
-            FungibleAssetValue foo1 = new FungibleAssetValue(FOO, 1);
-            FungibleAssetValue foo2 = new FungibleAssetValue(FOO, 2);
-            FungibleAssetValue bar3 = new FungibleAssetValue(BAR, 3);
+            FungibleAssetValue foo1 = FungibleAssetValue.FromRawValue(FOO, 1);
+            FungibleAssetValue foo2 = FungibleAssetValue.FromRawValue(FOO, 2);
+            FungibleAssetValue bar3 = FungibleAssetValue.FromRawValue(BAR, 3);
 
             Assert.Equal(foo0, foo1 - foo1);
             Assert.Equal(foo_1, foo1 - foo2);
@@ -241,12 +250,12 @@ namespace Libplanet.Tests.Assets
         [Fact]
         public void Multiply()
         {
-            FungibleAssetValue foo_2 = new FungibleAssetValue(FOO, -2);
-            FungibleAssetValue foo_1 = new FungibleAssetValue(FOO, -1);
+            FungibleAssetValue foo_2 = FungibleAssetValue.FromRawValue(FOO, -2);
+            FungibleAssetValue foo_1 = FungibleAssetValue.FromRawValue(FOO, -1);
             FungibleAssetValue foo0 = new FungibleAssetValue(FOO);
-            FungibleAssetValue foo1 = new FungibleAssetValue(FOO, 1);
-            FungibleAssetValue foo2 = new FungibleAssetValue(FOO, 2);
-            FungibleAssetValue foo4 = new FungibleAssetValue(FOO, 4);
+            FungibleAssetValue foo1 = FungibleAssetValue.FromRawValue(FOO, 1);
+            FungibleAssetValue foo2 = FungibleAssetValue.FromRawValue(FOO, 2);
+            FungibleAssetValue foo4 = FungibleAssetValue.FromRawValue(FOO, 4);
 
             Assert.Equal(foo2, foo1 * 2);
             Assert.Equal(foo2, 2 * foo1);
@@ -269,11 +278,11 @@ namespace Libplanet.Tests.Assets
         [Fact]
         public void DivRem()
         {
-            FungibleAssetValue foo7 = new FungibleAssetValue(FOO, 7);
-            FungibleAssetValue foo6 = new FungibleAssetValue(FOO, 6);
-            FungibleAssetValue foo3 = new FungibleAssetValue(FOO, 3);
-            FungibleAssetValue foo2 = new FungibleAssetValue(FOO, 2);
-            FungibleAssetValue foo1 = new FungibleAssetValue(FOO, 1);
+            FungibleAssetValue foo7 = FungibleAssetValue.FromRawValue(FOO, 7);
+            FungibleAssetValue foo6 = FungibleAssetValue.FromRawValue(FOO, 6);
+            FungibleAssetValue foo3 = FungibleAssetValue.FromRawValue(FOO, 3);
+            FungibleAssetValue foo2 = FungibleAssetValue.FromRawValue(FOO, 2);
+            FungibleAssetValue foo1 = FungibleAssetValue.FromRawValue(FOO, 1);
             FungibleAssetValue foo0 = new FungibleAssetValue(FOO);
             FungibleAssetValue rem;
 
@@ -334,7 +343,7 @@ namespace Libplanet.Tests.Assets
             Assert.Throws<DivideByZeroException>(() => foo1.DivRem(foo0, out rem));
             Assert.Throws<DivideByZeroException>(() => foo1 % foo0);
 
-            FungibleAssetValue bar1 = new FungibleAssetValue(BAR, 1);
+            FungibleAssetValue bar1 = FungibleAssetValue.FromRawValue(BAR, 1);
             Assert.Throws<ArgumentException>(() => bar1.DivRem(foo1));
             Assert.Throws<ArgumentException>(() => bar1.DivRem(foo1, out rem));
             Assert.Throws<ArgumentException>(() => bar1 % foo1);
@@ -343,9 +352,9 @@ namespace Libplanet.Tests.Assets
         [Fact]
         public void Abs()
         {
-            FungibleAssetValue foo_3 = new FungibleAssetValue(FOO, -3);
+            FungibleAssetValue foo_3 = FungibleAssetValue.FromRawValue(FOO, -3);
             FungibleAssetValue foo0 = new FungibleAssetValue(FOO);
-            FungibleAssetValue foo3 = new FungibleAssetValue(FOO, 3);
+            FungibleAssetValue foo3 = FungibleAssetValue.FromRawValue(FOO, 3);
 
             Assert.Equal(foo3, foo3.Abs());
             Assert.Equal(foo3, foo_3.Abs());
@@ -355,7 +364,7 @@ namespace Libplanet.Tests.Assets
         [Fact]
         public void Serialize()
         {
-            FungibleAssetValue foo100 = new FungibleAssetValue(FOO, 100);
+            FungibleAssetValue foo100 = FungibleAssetValue.FromRawValue(FOO, 100);
             var f = new BinaryFormatter();
             var s = new MemoryStream();
             f.Serialize(s, foo100);
@@ -405,8 +414,8 @@ namespace Libplanet.Tests.Assets
         [Fact]
         public void String()
         {
-            FungibleAssetValue foo100 = new FungibleAssetValue(FOO, 100);
-            FungibleAssetValue bar90000000 = new FungibleAssetValue(BAR, 90000000);
+            FungibleAssetValue foo100 = FungibleAssetValue.FromRawValue(FOO, 100);
+            FungibleAssetValue bar90000000 = FungibleAssetValue.FromRawValue(BAR, 90000000);
             Assert.Equal("1 FOO", foo100.ToString());
             Assert.Equal("90000000 BAR", bar90000000.ToString());
         }

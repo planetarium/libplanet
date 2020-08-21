@@ -258,7 +258,7 @@ namespace Libplanet.Tests.Action
         }
 
         private FungibleAssetValue Value(int currencyIndex, BigInteger quantity) =>
-            new FungibleAssetValue(_currencies[currencyIndex], quantity);
+            new FungibleAssetValue(_currencies[currencyIndex], quantity, 0);
 
         private FungibleAssetValue Zero(int currencyIndex) => Value(currencyIndex, 0);
 
@@ -268,7 +268,8 @@ namespace Libplanet.Tests.Action
         private FungibleAssetValue GetBalance(Address address, Currency currency) =>
             new FungibleAssetValue(
                 currency,
-                _assets.TryGetValue((address, currency), out BigInteger balance) ? balance : 0
+                _assets.TryGetValue((address, currency), out BigInteger balance) ? balance : 0,
+                0
             );
     }
 }
