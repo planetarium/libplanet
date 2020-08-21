@@ -19,6 +19,7 @@ using Libplanet.Net.Protocols;
 using Libplanet.Store;
 using Libplanet.Stun;
 using Libplanet.Tests.Blockchain;
+using Libplanet.Tests.Common;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Libplanet.Tx;
@@ -61,12 +62,20 @@ namespace Libplanet.Tests.Net
             _fx3 = new DefaultStoreFixture(memory: true);
             _fx4 = new DefaultStoreFixture(memory: true);
 
+            _renderers = new List<DumbRenderer>
+            {
+                new DumbRenderer(),
+                new DumbRenderer(),
+                new DumbRenderer(),
+                new DumbRenderer(),
+            };
+
             _blockchains = new List<BlockChain<DumbAction>>
             {
-                TestUtils.MakeBlockChain(policy, _fx1.Store),
-                TestUtils.MakeBlockChain(policy, _fx2.Store),
-                TestUtils.MakeBlockChain(policy, _fx3.Store),
-                TestUtils.MakeBlockChain(policy, _fx4.Store),
+                TestUtils.MakeBlockChain(policy, _fx1.Store, renderers: new[] { _renderers[0] }),
+                TestUtils.MakeBlockChain(policy, _fx2.Store, renderers: new[] { _renderers[1] }),
+                TestUtils.MakeBlockChain(policy, _fx3.Store, renderers: new[] { _renderers[2] }),
+                TestUtils.MakeBlockChain(policy, _fx4.Store, renderers: new[] { _renderers[3] }),
             };
 
             _finalizers = new List<Func<Task>>();
@@ -957,18 +966,13 @@ namespace Libplanet.Tests.Net
             var privateKey = new PrivateKey();
             var minerSwarm = CreateSwarm(blockChain, privateKey);
             Swarm<DumbAction> receiverSwarm = _swarms[0];
-
-            DumbAction.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
-            MinerReward.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
+            DumbRenderer receiverRenderer = _renderers[0];
 
             int renderCount = 0;
+            int renderCount2 = 0;
 
-            void RenderHandler(object target, IAction action)
-            {
-                renderCount += 1;
-            }
-
-            DumbAction.RenderEventHandler += RenderHandler;
+            receiverRenderer.RenderEventHandler += (_, a) => renderCount += a is DumbAction ? 1 : 0;
+            DumbAction.RenderEventHandler += (_, __) => renderCount2++;
 
             Transaction<DumbAction>[] transactions =
             {
@@ -1017,6 +1021,7 @@ namespace Libplanet.Tests.Net
 
                 Assert.Equal(3, _blockchains[0].Count);
                 Assert.Equal(4, renderCount);
+                Assert.Equal(renderCount2, renderCount);
             }
             finally
             {
@@ -1375,15 +1380,17 @@ namespace Libplanet.Tests.Net
         public async Task RenderInFork()
         {
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
-            var miner1 = CreateSwarm(TestUtils.MakeBlockChain(policy, new DefaultStore(null)));
+            var renderer = new DumbRenderer();
+            var chain = TestUtils.MakeBlockChain(
+                policy,
+                new DefaultStore(null),
+                renderers: new[] { renderer }
+            );
+            var miner1 = CreateSwarm(chain);
             var miner2 = CreateSwarm(TestUtils.MakeBlockChain(policy, new DefaultStore(null)));
 
             int renderCount = 0;
-
-            void RenderHandler(object target, IAction action)
-            {
-                renderCount += 1;
-            }
+            int renderCount2 = 0;
 
             try
             {
@@ -1405,7 +1412,8 @@ namespace Libplanet.Tests.Net
                 miner2.BlockChain.MakeTransaction(privKey, new[] { new DumbAction(addr, item) });
                 var latest = await miner2.BlockChain.MineBlock(miner2.Address);
 
-                DumbAction.RenderEventHandler += RenderHandler;
+                renderer.RenderEventHandler += (_, a) => renderCount += a is DumbAction ? 1 : 0;
+                DumbAction.RenderEventHandler += (_, __) => renderCount2++;
 
                 miner2.BroadcastBlock(latest);
 
@@ -1414,6 +1422,7 @@ namespace Libplanet.Tests.Net
                 Assert.Equal(miner1.BlockChain.Tip, miner2.BlockChain.Tip);
                 Assert.Equal(miner1.BlockChain.Count, miner2.BlockChain.Count);
                 Assert.Equal(2, renderCount);
+                Assert.Equal(renderCount, renderCount2);
             }
             finally
             {

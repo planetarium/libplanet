@@ -12,6 +12,7 @@ using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Store;
+using Libplanet.Tests.Common;
 using Libplanet.Tx;
 using Xunit;
 
@@ -259,7 +260,9 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             IStore store,
             IEnumerable<T> actions = null,
             PrivateKey privateKey = null,
-            DateTimeOffset? timestamp = null)
+            DateTimeOffset? timestamp = null,
+            IEnumerable<IRenderer> renderers = null
+        )
             where T : IAction, new()
         {
             actions = actions ?? ImmutableArray<T>.Empty;
@@ -288,7 +291,13 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 null,
                 timestamp ?? DateTimeOffset.MinValue,
                 new[] { tx, });
-            return new BlockChain<T>(policy, store, store as IStateStore, genesisBlock);
+            return new BlockChain<T>(
+                policy,
+                store,
+                store as IStateStore,
+                genesisBlock,
+                renderers: renderers ?? new[] { new DumbRenderer() }
+            );
         }
 
         public static HashDigest<SHA256>? ActionEvaluationsToHash(

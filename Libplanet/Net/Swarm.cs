@@ -541,6 +541,7 @@ namespace Libplanet.Net
             // all or nothing (i.e., atomic), we first fork the chain and stack up preloaded data
             // upon that forked workspace, and then if preloading ends replace the existing
             // blockchain with it.
+            // FIXME: Is it okay to copy BlockChain.Renderers?
             BlockChain<T> workspace = initialTip is Block<T> tip
                 ? BlockChain.Fork(tip.Hash)
                 : new BlockChain<T>(
@@ -549,6 +550,7 @@ namespace Libplanet.Net
                     _store as IStateStore,
                     Guid.NewGuid(),
                     BlockChain.Genesis,
+                    BlockChain.Renderers,
                     false);
             Guid wId = workspace.Id;
             IStore wStore = workspace.Store;

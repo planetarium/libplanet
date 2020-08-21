@@ -9,6 +9,7 @@ using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net;
+using Libplanet.Tests.Common;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Serilog;
@@ -25,6 +26,7 @@ namespace Libplanet.Tests.Net
         private readonly StoreFixture _fx4;
 
         private readonly List<BlockChain<DumbAction>> _blockchains;
+        private readonly List<DumbRenderer> _renderers;
         private readonly List<Swarm<DumbAction>> _swarms;
         private readonly List<Func<Task>> _finalizers;
 

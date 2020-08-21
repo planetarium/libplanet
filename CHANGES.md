@@ -27,6 +27,8 @@ To be released.
     [[#796], [#878]]
  -  Added `render` optional parameter to `BlockChain<T>()` constructor.
     [[#883]]
+ -  Added `renderers` optional parameter to `BlockChain<T>()` constructor.
+    [[#959], [#963]]
  -  Added `BigInteger`-typed `totalDifficulty` parameter to `Block<T>()`
     constructor.  [[#666], [#917]]
  -  Added `BigInteger`-typed `previousTotalDifficulty` parameter to
@@ -155,6 +157,8 @@ To be released.
      -  Added `StateCompleters<T>` static class.
      -  Added `FungibleAssetStateCompleters<T>` static class.
      -  Added `Swarm<T>.GetTrustedStateCompleterAsync()` method.
+ -  Added `IRenderer` interface.  [[#959], [#963]]
+ -  Added `BlockChain<T>.Renderers` property.  [[#959], [#963]]
  -  Added `BlockChain<T>.Render` property.  [[#946]]
  -  Added `Reorged` event on `BlockChain<T>`.  [[#945]]
  -  Added `ReorgedEventArgs` class.  [[#945]]
@@ -259,7 +263,9 @@ To be released.
 [#946]: https://github.com/planetarium/libplanet/pull/946
 [#949]: https://github.com/planetarium/libplanet/pull/949
 [#950]: https://github.com/planetarium/libplanet/pull/950
+[#959]: https://github.com/planetarium/libplanet/issues/959
 [#954]: https://github.com/planetarium/libplanet/pull/954
+[#963]: https://github.com/planetarium/libplanet/pull/963
 [sleep mode]: https://en.wikipedia.org/wiki/Sleep_mode
 
 

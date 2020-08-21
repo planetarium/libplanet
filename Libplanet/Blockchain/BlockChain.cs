@@ -22,14 +22,15 @@ namespace Libplanet.Blockchain
     /// <summary>
     /// A class have <see cref="Block{T}"/>s, <see cref="Transaction{T}"/>s, and the chain
     /// information.
+    /// <para>In order to watch its state changes, implement <see cref="IRenderer{T}"/>
+    /// interface and pass it to the <see
+    /// cref="BlockChain{T}(IBlockPolicy{T},IStore,IStateStore,Block{T},IEnumerable{IRenderer{T}})"
+    /// /> constructor.</para>
     /// </summary>
     /// <remarks>This object is guaranteed that it has at least one block, since it takes a genesis
     /// block when it's instantiated.</remarks>
     /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
     /// to <see cref="Block{T}"/>'s type parameter.</typeparam>
-    /// <seealso cref="IAction"/>
-    /// <seealso cref="Block{T}"/>
-    /// <seealso cref="Transaction{T}"/>
     public class BlockChain<T>
         where T : IAction, new()
     {
@@ -71,6 +72,8 @@ namespace Libplanet.Blockchain
         /// it checks if the existing genesis block and this argument is the same.
         /// If the <paramref name="store"/> has no genesis block yet this argument will
         /// be used for that.</param>
+        /// <param name="renderers">Listens state changes on the created chain.  Listens nothing
+        /// by default or if it is <c>null</c>.</param>
         /// <param name="render">Defines whether to render actions on this
         /// <see cref="BlockChain{T}"/>.  Turned on by default.</param>
         /// <param name="stateStore"><see cref="IStateStore"/> to store states.</param>
@@ -82,6 +85,7 @@ namespace Libplanet.Blockchain
             IStore store,
             IStateStore stateStore,
             Block<T> genesisBlock,
+            IEnumerable<IRenderer> renderers = null,
             bool render = true
             )
             : this(
@@ -90,6 +94,7 @@ namespace Libplanet.Blockchain
                 stateStore,
                 store.GetCanonicalChainId() ?? Guid.NewGuid(),
                 genesisBlock,
+                renderers,
                 render)
         {
         }
@@ -100,6 +105,7 @@ namespace Libplanet.Blockchain
             IStateStore stateStore,
             Guid id,
             Block<T> genesisBlock,
+            IEnumerable<IRenderer> renderers,
             bool render
         )
             : this(
@@ -109,6 +115,7 @@ namespace Libplanet.Blockchain
                 id,
                 genesisBlock,
                 false,
+                renderers,
                 render
             )
         {
@@ -121,6 +128,7 @@ namespace Libplanet.Blockchain
             Guid id,
             Block<T> genesisBlock,
             bool inFork,
+            IEnumerable<IRenderer> renderers,
             bool render
         )
         {
@@ -137,6 +145,9 @@ namespace Libplanet.Blockchain
 
             _blocks = new BlockSet<T>(store);
             _transactions = new TransactionSet<T>(store);
+            Renderers = renderers is IEnumerable<IRenderer> r
+                ? r.ToImmutableArray()
+                : ImmutableArray<IRenderer>.Empty;
             Render = render;
             _rwlock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
             _txLock = new object();
@@ -193,6 +204,17 @@ namespace Libplanet.Blockchain
         /// Defines whether to render actions on this <see cref="BlockChain{T}"/>.
         /// </summary>
         public bool Render { get; }
+
+        /// <summary>
+        /// The list of registered renderers listening the state changes.
+        /// </summary>
+        /// <remarks>
+        /// Since this value is immutable, renderers cannot be registered after once a <see
+        /// cref="BlockChain{T}"/> object is instantiated; use <c>renderers</c> option of <see cref=
+        /// "BlockChain{T}(IBlockPolicy{T},IStore,IStateStore,Block{T},IEnumerable{IRenderer},bool)"
+        /// /> constructor instead.
+        /// </remarks>
+        public IImmutableList<IRenderer> Renderers { get; }
 
         public IBlockPolicy<T> Policy { get; }
 
@@ -977,10 +999,26 @@ namespace Libplanet.Blockchain
                 if (evaluation.Exception is null)
                 {
                     evaluation.Action.Render(evaluation.InputContext, evaluation.OutputStates);
+                    foreach (IRenderer renderer in Renderers)
+                    {
+                        renderer.RenderAction(
+                            evaluation.Action,
+                            evaluation.InputContext,
+                            evaluation.OutputStates
+                        );
+                    }
                 }
                 else
                 {
                     evaluation.Action.RenderError(evaluation.InputContext, evaluation.Exception);
+                    foreach (IRenderer renderer in Renderers)
+                    {
+                        renderer.RenderActionError(
+                            evaluation.Action,
+                            evaluation.InputContext,
+                            evaluation.Exception
+                        );
+                    }
                 }
 
                 cnt++;
@@ -1229,8 +1267,9 @@ namespace Libplanet.Blockchain
                     nameof(point));
             }
 
+            // FIXME: Is it okay to pass the renderers?
             var forked = new BlockChain<T>(
-                Policy, Store, StateStore, Guid.NewGuid(), Genesis, true, Render);
+                Policy, Store, StateStore, Guid.NewGuid(), Genesis, true, Renderers, Render);
             Guid forkedId = forked.Id;
             _logger.Debug(
                 "Trying to fork chain at {branchPoint}" +
@@ -1416,6 +1455,14 @@ namespace Libplanet.Blockchain
                                 evaluation.InputContext,
                                 evaluation.OutputStates
                             );
+                            foreach (IRenderer renderer in Renderers)
+                            {
+                                renderer.UnrenderAction(
+                                    evaluation.Action,
+                                    evaluation.InputContext,
+                                    evaluation.OutputStates
+                                );
+                            }
                         }
                         else
                         {
@@ -1423,6 +1470,14 @@ namespace Libplanet.Blockchain
                                 evaluation.InputContext,
                                 evaluation.Exception
                             );
+                            foreach (IRenderer renderer in Renderers)
+                            {
+                                renderer.UnrenderActionError(
+                                    evaluation.Action,
+                                    evaluation.InputContext,
+                                    evaluation.Exception
+                                );
+                            }
                         }
 
                         cnt++;
