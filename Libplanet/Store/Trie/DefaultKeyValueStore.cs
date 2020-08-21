@@ -44,14 +44,9 @@ namespace Libplanet.Store.Trie
         public byte[] Get(byte[] key)
         {
             var path = DataPath(key);
-            if (_root.FileExists(path))
-            {
-                return _root.ReadAllBytes(path);
-            }
-            else
-            {
-                return null;
-            }
+            return _root.FileExists(path)
+                ? _root.ReadAllBytes(path)
+                : null;
         }
 
         /// <inheritdoc/>
