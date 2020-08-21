@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Libplanet.Store.Trie;
 using Xunit;
@@ -32,7 +33,7 @@ namespace Libplanet.Tests.Store.Trie
             }
 
             var randomKey = NewRandomKey();
-            Assert.Null(KeyValueStore.Get(randomKey));
+            Assert.Throws<KeyNotFoundException>(() => KeyValueStore.Get(randomKey));
         }
 
         // This test will cover DefaultKeyValueStore.Set

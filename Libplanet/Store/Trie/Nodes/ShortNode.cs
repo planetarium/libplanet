@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -8,12 +9,12 @@ namespace Libplanet.Store.Trie.Nodes
 {
     internal sealed class ShortNode : BaseNode, IEquatable<ShortNode>
     {
-        public ShortNode(byte[] key, INode value)
+        public ShortNode(byte[] key, INode? value)
             : this(key.ToImmutableArray(), value)
         {
         }
 
-        public ShortNode(ImmutableArray<byte> key, INode value)
+        public ShortNode(ImmutableArray<byte> key, INode? value)
             : base(value)
         {
             Key = key;
@@ -21,7 +22,7 @@ namespace Libplanet.Store.Trie.Nodes
 
         public ImmutableArray<byte> Key { get; }
 
-        public bool Equals(ShortNode other)
+        public bool Equals(ShortNode? other)
         {
             if (other is null)
             {
@@ -36,7 +37,7 @@ namespace Libplanet.Store.Trie.Nodes
             return Key.Equals(other.Key);
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return ReferenceEquals(this, obj) || (obj is ShortNode other && Equals(other));
         }
@@ -45,7 +46,7 @@ namespace Libplanet.Store.Trie.Nodes
         {
             unchecked
             {
-                return (Key.GetHashCode() * 397) ^ Value.GetHashCode();
+                return (Key.GetHashCode() * 397) ^ Value!.GetHashCode();
             }
         }
 
@@ -54,7 +55,7 @@ namespace Libplanet.Store.Trie.Nodes
             var list = new List<IValue>
             {
                 (Bencodex.Types.Binary)Key.ToArray(),
-                Value.ToBencodex(),
+                Value!.ToBencodex(),
             };
 
             return new Bencodex.Types.List(list);

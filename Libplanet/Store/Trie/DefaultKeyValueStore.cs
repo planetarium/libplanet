@@ -1,3 +1,5 @@
+#nullable enable
+using System.Collections.Generic;
 using System.IO;
 using Zio;
 using Zio.FileSystems;
@@ -46,7 +48,8 @@ namespace Libplanet.Store.Trie
             var path = DataPath(key);
             return _root.FileExists(path)
                 ? _root.ReadAllBytes(path)
-                : null;
+                : throw new KeyNotFoundException("There was no element corresponded to the key" +
+                                                 $" (hex: {ByteUtil.Hex(key)}).");
         }
 
         /// <inheritdoc/>

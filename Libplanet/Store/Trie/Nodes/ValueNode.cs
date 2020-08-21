@@ -1,3 +1,4 @@
+#nullable enable
 using Bencodex;
 using Bencodex.Types;
 
@@ -30,7 +31,7 @@ namespace Libplanet.Store.Trie.Nodes
 
         public IValue ToBencodex()
         {
-            return new List(new IValue[] { default(Null), Value });
+            return new List(new IValue[] { default(Null)!, Value });
         }
 
         public override int GetHashCode() => Value?.GetHashCode() ?? 0;

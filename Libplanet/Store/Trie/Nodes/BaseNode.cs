@@ -1,3 +1,4 @@
+#nullable enable
 using Bencodex;
 using Bencodex.Types;
 
@@ -12,13 +13,13 @@ namespace Libplanet.Store.Trie.Nodes
             _codec = new Codec();
         }
 
-        public BaseNode(INode value)
+        public BaseNode(INode? value)
         {
             Value = value;
         }
 
         // It will not support embedded node.
-        public INode Value { get; }
+        public INode? Value { get; }
 
         public byte[] Serialize() => _codec.Encode(ToBencodex());
 

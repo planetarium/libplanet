@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Security.Cryptography;
 using Bencodex.Types;
@@ -66,13 +67,13 @@ namespace Libplanet.Tests.Store
         public void SetStates()
         {
             // Check to set and to get.
-            Assert.Null(_stateStore.GetRootHash(_fx.Hash1));
+            Assert.Throws<KeyNotFoundException>(() => _stateStore.GetRootHash(_fx.Hash1));
             Assert.False(_stateStore.ContainsBlockStates(_fx.Hash1));
             var states = ImmutableDictionary<string, IValue>.Empty
                 .Add("foo", (Text)"value");
             _stateStore.SetStates(_fx.Hash1, states, _fxBlockGetter);
             Assert.Equal((Text)"value", _stateStore.GetState("foo", _fx.Hash1));
-            Assert.NotNull(_stateStore.GetRootHash(_fx.Hash1));
+            Assert.IsType<HashDigest<SHA256>>(_stateStore.GetRootHash(_fx.Hash1));
             Assert.True(_stateStore.ContainsBlockStates(_fx.Hash1));
 
             _stateStore.SetStates(_fx.Hash2, _prestoredValues, _fxBlockGetter);

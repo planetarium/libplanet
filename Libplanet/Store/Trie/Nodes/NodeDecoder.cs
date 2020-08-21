@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Collections.Immutable;
 using System.Linq;
@@ -8,7 +9,7 @@ namespace Libplanet.Store.Trie.Nodes
 {
     internal static class NodeDecoder
     {
-        internal static INode Decode(IValue value)
+        internal static INode? Decode(IValue value)
         {
             if (value is Bencodex.Types.List list)
             {
@@ -67,7 +68,7 @@ namespace Libplanet.Store.Trie.Nodes
             return new ShortNode(path, refNode);
         }
 
-        private static INode DecodeRef(IValue value)
+        private static INode? DecodeRef(IValue value)
         {
             switch (value)
             {

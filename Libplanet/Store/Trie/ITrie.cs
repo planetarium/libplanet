@@ -1,3 +1,4 @@
+#nullable enable
 using Bencodex.Types;
 using Libplanet.Store.Trie.Nodes;
 
@@ -8,7 +9,7 @@ namespace Libplanet.Store.Trie
         /// <summary>
         /// The root node of the trie.
         /// </summary>
-        INode Root { get; }
+        INode? Root { get; }
 
         /// <summary>
         /// Stores the <paramref name="value"/> to the
@@ -26,7 +27,7 @@ namespace Libplanet.Store.Trie
         /// <returns>If there is a value corresponded to <paramref name="key"/>,
         /// set <paramref name="value"/> to it and return true. If not, set <paramref name="value"/>
         /// to null and return false.</returns>
-        bool TryGet(byte[] key, out IValue value);
+        bool TryGet(byte[] key, out IValue? value);
 
         /// <summary>
         /// Cleans up and stores the <see cref="ITrie"/> in storage.

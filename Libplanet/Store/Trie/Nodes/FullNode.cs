@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Collections.Immutable;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace Libplanet.Store.Trie.Nodes
         // Children 0x10 + Value 0x1
         public const byte ChildrenCount = 0x11;
 
-        public FullNode(ImmutableArray<INode> children)
+        public FullNode(ImmutableArray<INode?> children)
             : base(children[ChildrenCount - 1])
         {
             if (children.Length != ChildrenCount)
@@ -23,18 +24,18 @@ namespace Libplanet.Store.Trie.Nodes
         }
 
         public FullNode()
-            : this(new INode[ChildrenCount].ToImmutableArray())
+            : this(new INode?[ChildrenCount].ToImmutableArray())
         {
         }
 
-        public ImmutableArray<INode> Children { get; }
+        public ImmutableArray<INode?> Children { get; }
 
         public FullNode SetChild(int index, INode childNode)
         {
             return new FullNode(Children.SetItem(index, childNode));
         }
 
-        public bool Equals(FullNode other)
+        public bool Equals(FullNode? other)
         {
             if (other is null)
             {
@@ -58,12 +59,12 @@ namespace Libplanet.Store.Trie.Nodes
                     return true;
                 }
 
-                if (other.Children[i].GetType() != Children[i].GetType())
+                if (other.Children[i]?.GetType() != Children[i]?.GetType())
                 {
                     return false;
                 }
 
-                if (other.Children[i].GetHashCode() != Children[i].GetHashCode())
+                if (other.Children[i]?.GetHashCode() != Children[i]?.GetHashCode())
                 {
                     return false;
                 }
@@ -72,7 +73,7 @@ namespace Libplanet.Store.Trie.Nodes
             return true;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return ReferenceEquals(this, obj) || (obj is FullNode other && Equals(other));
         }

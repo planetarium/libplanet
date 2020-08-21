@@ -1,3 +1,5 @@
+#nullable enable
+using System.Collections.Generic;
 using LruCacheNet;
 
 namespace Libplanet.Store.Trie
@@ -36,7 +38,8 @@ namespace Libplanet.Store.Trie
                 return bytes;
             }
 
-            return null;
+            throw new KeyNotFoundException("There was no element corresponded to the key" +
+                                           $" (hex: {ByteUtil.Hex(key)}).");
         }
 
         /// <inheritdoc/>

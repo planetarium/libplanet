@@ -1,4 +1,6 @@
+#nullable enable
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Security.Cryptography;
 using System.Text;
@@ -39,15 +41,22 @@ namespace Libplanet.Store
             Func<HashDigest<SHA256>, Block<T>> blockGetter)
             where T : IAction, new()
         {
-            Block<T> block = blockGetter(blockHash);
-            byte[] previousBlockStateHashBytes = block?.PreviousHash is null
-                ? null
-                : _stateHashKeyValueStore.Get(block.PreviousHash.Value.ToByteArray());
-            var trieRoot = previousBlockStateHashBytes is null
-                ? null
-                : new HashNode(new HashDigest<SHA256>(previousBlockStateHashBytes));
-
-            var prevStatesTrie = new MerkleTrie(_stateKeyValueStore, trieRoot);
+            MerkleTrie prevStatesTrie;
+            try
+            {
+                Block<T> block = blockGetter(blockHash);
+                var previousBlockStateHashBytes = block?.PreviousHash is null
+                    ? null
+                    : _stateHashKeyValueStore.Get(block.PreviousHash.Value.ToByteArray());
+                var trieRoot = previousBlockStateHashBytes is null
+                    ? null
+                    : new HashNode(new HashDigest<SHA256>(previousBlockStateHashBytes));
+                prevStatesTrie = new MerkleTrie(_stateKeyValueStore, trieRoot);
+            }
+            catch (KeyNotFoundException)
+            {
+                prevStatesTrie = new MerkleTrie(_stateKeyValueStore);
+            }
 
             foreach (var pair in states)
             {
@@ -56,20 +65,25 @@ namespace Libplanet.Store
 
             var newStateTrie = prevStatesTrie.Commit();
             _stateHashKeyValueStore.Set(
-                blockHash.ToByteArray(), newStateTrie.Root.Hash().ToByteArray());
+                blockHash.ToByteArray(), newStateTrie.Root!.Hash().ToByteArray());
         }
 
         /// <inheritdoc/>
-        public IValue GetState(
+        public IValue? GetState(
             string stateKey,
             HashDigest<SHA256>? blockHash = null,
             Guid? chainId = null)
         {
-            var stateHash = _stateHashKeyValueStore.Get(blockHash?.ToByteArray());
+            if (blockHash is null)
+            {
+                throw new ArgumentNullException(nameof(blockHash));
+            }
+
+            var stateHash = _stateHashKeyValueStore.Get(blockHash?.ToByteArray()!);
             var stateTrie = new MerkleTrie(
                 _stateKeyValueStore, new HashNode(new HashDigest<SHA256>(stateHash)));
             var key = Encoding.UTF8.GetBytes(stateKey);
-            return stateTrie.TryGet(key, out IValue value) ? value : null;
+            return stateTrie.TryGet(key, out IValue? value) ? value : null;
         }
 
         /// <inheritdoc/>
@@ -91,9 +105,9 @@ namespace Libplanet.Store
         /// <param name="blockHash">The <see cref="Block{T}.Hash"/> to get state hash.</param>
         /// <returns>If there is state hash corresponded to <paramref name="blockHash"/>,
         /// it will return the state hash. If not, it will return null.</returns>
-        public HashDigest<SHA256>? GetRootHash(HashDigest<SHA256> blockHash)
-            => _stateHashKeyValueStore.Get(blockHash.ToByteArray()) is byte[] bytes
-                ? new HashDigest<SHA256>(bytes)
-                : (HashDigest<SHA256>?)null;
+        /// <exception cref="KeyNotFoundException">If there is no root hash corresponded to
+        /// <paramref name="blockHash"/>.</exception>
+        public HashDigest<SHA256> GetRootHash(HashDigest<SHA256> blockHash)
+            => new HashDigest<SHA256>(_stateHashKeyValueStore.Get(blockHash.ToByteArray()));
     }
 }

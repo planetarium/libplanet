@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -33,7 +34,7 @@ namespace Libplanet.Store.Trie
         /// mode. If it is true, <see cref="MerkleTrie"/> will stores the value with the hashed
         /// result from the given key as the key. It will hash with
         /// <see cref="Hashcash.Hash"/>.</param>
-        public MerkleTrie(IKeyValueStore keyValueStore, INode root = null, bool secure = false)
+        public MerkleTrie(IKeyValueStore keyValueStore, INode? root = null, bool secure = false)
         {
             KeyValueStore = keyValueStore;
             Root = root;
@@ -41,7 +42,7 @@ namespace Libplanet.Store.Trie
         }
 
         /// <inheritdoc/>
-        public INode Root { get; private set; }
+        public INode? Root { get; private set; }
 
         private IKeyValueStore KeyValueStore { get; }
 
@@ -62,7 +63,7 @@ namespace Libplanet.Store.Trie
         }
 
         /// <inheritdoc/>
-        public bool TryGet(byte[] key, out IValue value)
+        public bool TryGet(byte[] key, out IValue? value)
         {
             return TryGet(
                 Root,
@@ -74,6 +75,11 @@ namespace Libplanet.Store.Trie
         /// <inheritdoc/>
         public ITrie Commit()
         {
+            if (Root is null)
+            {
+                return this;
+            }
+
             var newRoot = Commit(Root);
 
             // It assumes embedded node if it's not HashNode.
@@ -108,10 +114,10 @@ namespace Libplanet.Store.Trie
 
         private INode CommitFullNode(FullNode fullNode)
         {
-            var virtualChildren = new INode[FullNode.ChildrenCount];
+            var virtualChildren = new INode?[FullNode.ChildrenCount];
             for (int i = 0; i < FullNode.ChildrenCount; ++i)
             {
-                INode child = fullNode.Children[i];
+                INode? child = fullNode.Children[i];
                 virtualChildren[i] = child is null
                     ? null
                     : Commit(child);
@@ -135,7 +141,7 @@ namespace Libplanet.Store.Trie
 
         private INode CommitShortNode(ShortNode shortNode)
         {
-            var committedValueNode = Commit(shortNode.Value);
+            var committedValueNode = Commit(shortNode.Value!);
             shortNode = new ShortNode(shortNode.Key, committedValueNode);
             if (shortNode.Serialize().Length <= HashDigest<SHA256>.Size)
             {
@@ -171,7 +177,7 @@ namespace Libplanet.Store.Trie
         }
 
         private INode Insert(
-            INode node,
+            INode? node,
             ImmutableArray<byte> prefix,
             ImmutableArray<byte> key,
             INode value)
@@ -253,7 +259,7 @@ namespace Libplanet.Store.Trie
                     null,
                     prefix.AddRange(shortNode.Key.Take(commonPrefixLength + 1)),
                     shortNode.Key.Skip(commonPrefixLength + 1).ToImmutableArray(),
-                    shortNode.Value));
+                    shortNode.Value!));
 
             if (commonPrefixLength == 0)
             {
@@ -265,10 +271,10 @@ namespace Libplanet.Store.Trie
         }
 
         private bool TryGet(
-            INode node,
+            INode? node,
             ImmutableArray<byte> prefix,
             ImmutableArray<byte> path,
-            out IValue value)
+            out IValue? value)
         {
             switch (node)
             {
@@ -295,7 +301,7 @@ namespace Libplanet.Store.Trie
                         out value);
 
                 case FullNode fullNode:
-                    INode childNode = fullNode.Children[path[0]];
+                    INode? childNode = fullNode.Children[path[0]];
                     return TryGet(
                         childNode,
                         prefix.Add(path[0]).ToImmutableArray(),
@@ -305,7 +311,7 @@ namespace Libplanet.Store.Trie
                 case HashNode hashNode:
                     try
                     {
-                        INode resolvedNode = GetNode(hashNode.HashDigest);
+                        INode? resolvedNode = GetNode(hashNode.HashDigest);
                         return TryGet(resolvedNode, prefix, path, out value);
                     }
                     catch (KeyNotFoundException)
@@ -326,7 +332,7 @@ namespace Libplanet.Store.Trie
         /// </summary>
         /// <param name="nodeHash">The hash of node to get.</param>
         /// <returns>The node corresponding to <paramref name="nodeHash"/>.</returns>
-        private INode GetNode(HashDigest<SHA256> nodeHash)
+        private INode? GetNode(HashDigest<SHA256> nodeHash)
         {
             return NodeDecoder.Decode(
                 _codec.Decode(KeyValueStore.Get(nodeHash.ToByteArray())));

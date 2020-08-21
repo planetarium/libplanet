@@ -1,3 +1,4 @@
+#nullable enable
 namespace Libplanet.Store.Trie
 {
     /// <summary>

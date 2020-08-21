@@ -1,3 +1,5 @@
+#nullable enable
+using System.Collections.Generic;
 using Libplanet.Store.Trie;
 using RocksDbSharp;
 
@@ -24,7 +26,8 @@ namespace Libplanet.RocksDBStore
         }
 
         /// <inheritdoc/>
-        public byte[] Get(byte[] key) => _keyValueDb.Get(key);
+        public byte[] Get(byte[] key) => _keyValueDb.Get(key) ?? throw new KeyNotFoundException(
+            "There was no element corresponded to the key (hex: {ByteUtil.Hex(key)}).");
 
         /// <inheritdoc/>
         public void Set(byte[] key, byte[] value)
