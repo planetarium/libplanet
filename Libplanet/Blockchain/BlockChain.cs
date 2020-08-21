@@ -1534,6 +1534,11 @@ namespace Libplanet.Blockchain
                 Reorged?.Invoke(this, reorgedEventArgs);
                 foreach (IRenderer<T> renderer in Renderers)
                 {
+                    renderer.RenderReorg(oldTip, newTip, branchpoint: topmostCommon);
+                }
+
+                foreach (IRenderer<T> renderer in Renderers)
+                {
                     renderer.RenderBlock(oldTip: oldTip, newTip: newTip);
                 }
 

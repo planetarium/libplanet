@@ -20,10 +20,17 @@ namespace Libplanet.Tests.Common
 
         public ImmutableList<(Block<T> Old, Block<T> New)> BlockRecords { get; private set; }
 
+        public ImmutableList<(Block<T> Old, Block<T> New, Block<T> Branchpoint)> ReorgRecords
+        {
+            get;
+            private set;
+        }
+
         public void ResetRecords()
         {
             ActionRecords = ImmutableList<RenderRecord>.Empty;
             BlockRecords = ImmutableList<(Block<T> Old, Block<T> New)>.Empty;
+            ReorgRecords = ImmutableList<(Block<T> Old, Block<T> New, Block<T> Branchpoint)>.Empty;
         }
 
         public void RenderAction(
@@ -74,5 +81,10 @@ namespace Libplanet.Tests.Common
 
         public void RenderBlock(Block<T> oldTip, Block<T> newTip) =>
             BlockRecords = BlockRecords.Add((oldTip, newTip));
+
+        public void RenderReorg(Block<T> oldTip, Block<T> newTip, Block<T> branchpoint)
+        {
+            ReorgRecords = ReorgRecords.Add((oldTip, newTip, branchpoint));
+        }
     }
 }

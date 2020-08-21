@@ -107,10 +107,26 @@ namespace Libplanet.Blockchain
         /// Does things that should be done right after a new <see cref="Block{T}"/> is appended to
         /// a <see cref="BlockChain{T}"/> (so that its <see cref="BlockChain{T}.Tip"/> has changed).
         /// </summary>
-        /// <remarks>It is guranteed to be called only once for a block, and only after applied to
-        /// the blockchain, unless it has been stale due to reorg.</remarks>
+        /// <remarks>It is guaranteed to be called only once for a block, and only after applied to
+        /// the blockchain, unless it has been stale due to reorg (for that case, <see
+        /// cref="RenderReorg(Block{T}, Block{T}, Block{T})"/> is called in advance).</remarks>
         /// <param name="oldTip">The previous <see cref="BlockChain{T}.Tip"/>.</param>
         /// <param name="newTip">The current <see cref="BlockChain{T}.Tip"/>.</param>
         void RenderBlock(Block<T> oldTip, Block<T> newTip);
+
+        /// <summary>
+        /// Does things that should be done right after reorg has happened to a <see
+        /// cref="BlockChain{T}"/>.
+        /// </summary>
+        /// <remarks>For every call to this method, a call to <see
+        /// cref="RenderBlock(Block{T}, Block{T})"/> method with the same <paramref name="newTip"/>
+        /// is made too.  Note that this method is guaranteed to be called before <see
+        /// cref="RenderBlock(Block{T}, Block{T})"/> method for the same <paramref name="newTip"/>.
+        /// </remarks>
+        /// <param name="oldTip">The <see cref="BlockChain{T}.Tip"/> right before reorg.</param>
+        /// <param name="newTip">The <see cref="BlockChain{T}.Tip"/> after reorg.</param>
+        /// <param name="branchpoint">The highest common <see cref="Block{T}"/> between
+        /// <paramref name="oldTip"/> and <paramref name="newTip"/>.</param>
+        void RenderReorg(Block<T> oldTip, Block<T> newTip, Block<T> branchpoint);
     }
 }

@@ -2332,18 +2332,10 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         private async void Reorged()
         {
-            Block<DumbAction> actualOldTip = null;
-            Block<DumbAction> actualNewTip = null;
-            Block<DumbAction> actualBranchpoint = null;
-            int callCount = 0;
+            BlockChain<DumbAction>.ReorgedEventArgs eventLog = null;
 
-            _blockChain.Reorged += (target, args) =>
-            {
-                actualOldTip = args.OldTip;
-                actualNewTip = args.NewTip;
-                actualBranchpoint = args.Branchpoint;
-                callCount += 1;
-            };
+            _renderer.ResetRecords();
+            _blockChain.Reorged += (target, args) => eventLog = args;
             var branchpoint = _blockChain.Tip;
             var fork = _blockChain.Fork(_blockChain.Tip.Hash);
             await fork.MineBlock(_fx.Address1);
@@ -2353,17 +2345,20 @@ namespace Libplanet.Tests.Blockchain
             var oldTip = _blockChain.Tip;
             var newTip = fork.Tip;
 
-            Assert.Null(actualOldTip);
-            Assert.Null(actualNewTip);
-            Assert.Null(actualBranchpoint);
-            Assert.Equal(0, callCount);
+            Assert.Empty(_renderer.ReorgRecords);
+            Assert.Null(eventLog);
 
             _blockChain.Swap(fork, false);
 
-            Assert.Equal(oldTip.Hash, actualOldTip.Hash);
-            Assert.Equal(newTip.Hash, actualNewTip.Hash);
-            Assert.Equal(branchpoint.Hash, actualBranchpoint.Hash);
-            Assert.Equal(1, callCount);
+            Assert.Single(_renderer.ReorgRecords);
+            var (old, @new, bp) = _renderer.ReorgRecords[0];
+            Assert.Equal(oldTip, old);
+            Assert.Equal(newTip, @new);
+            Assert.Equal(branchpoint, bp);
+            Assert.NotNull(eventLog);
+            Assert.Equal(old, eventLog.OldTip);
+            Assert.Equal(@new, eventLog.NewTip);
+            Assert.Equal(bp, eventLog.Branchpoint);
         }
 
         [Fact]
