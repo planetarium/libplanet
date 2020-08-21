@@ -1396,6 +1396,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Assets.FungibleAssetValue.Equals
   nameWithType: FungibleAssetValue.Equals
+- uid: Libplanet.Assets.FungibleAssetValue.FromRawValue(Libplanet.Assets.Currency,BigInteger)
+  name: FromRawValue(Currency, BigInteger)
+  href: api/Libplanet.Assets.FungibleAssetValue.html#Libplanet_Assets_FungibleAssetValue_FromRawValue_Libplanet_Assets_Currency_BigInteger_
+  commentId: M:Libplanet.Assets.FungibleAssetValue.FromRawValue(Libplanet.Assets.Currency,BigInteger)
+  fullName: Libplanet.Assets.FungibleAssetValue.FromRawValue(Libplanet.Assets.Currency, BigInteger)
+  nameWithType: FungibleAssetValue.FromRawValue(Currency, BigInteger)
+- uid: Libplanet.Assets.FungibleAssetValue.FromRawValue*
+  name: FromRawValue
+  href: api/Libplanet.Assets.FungibleAssetValue.html#Libplanet_Assets_FungibleAssetValue_FromRawValue_
+  commentId: Overload:Libplanet.Assets.FungibleAssetValue.FromRawValue
+  isSpec: "True"
+  fullName: Libplanet.Assets.FungibleAssetValue.FromRawValue
+  nameWithType: FungibleAssetValue.FromRawValue
 - uid: Libplanet.Assets.FungibleAssetValue.GetHashCode
   name: GetHashCode()
   href: api/Libplanet.Assets.FungibleAssetValue.html#Libplanet_Assets_FungibleAssetValue_GetHashCode
@@ -1616,6 +1629,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Assets.FungibleAssetValue.Parse
   nameWithType: FungibleAssetValue.Parse
+- uid: Libplanet.Assets.FungibleAssetValue.RawValue
+  name: RawValue
+  href: api/Libplanet.Assets.FungibleAssetValue.html#Libplanet_Assets_FungibleAssetValue_RawValue
+  commentId: F:Libplanet.Assets.FungibleAssetValue.RawValue
+  fullName: Libplanet.Assets.FungibleAssetValue.RawValue
+  nameWithType: FungibleAssetValue.RawValue
 - uid: Libplanet.Assets.FungibleAssetValue.Sign
   name: Sign
   href: api/Libplanet.Assets.FungibleAssetValue.html#Libplanet_Assets_FungibleAssetValue_Sign
