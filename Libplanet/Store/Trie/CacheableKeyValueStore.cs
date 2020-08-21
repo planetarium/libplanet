@@ -30,7 +30,13 @@ namespace Libplanet.Store.Trie
                 return _cache[key];
             }
 
-            return _cache[key] = _keyValueStore.Get(key);
+            if (_keyValueStore.Get(key) is byte[] bytes)
+            {
+                _cache[key] = bytes;
+                return bytes;
+            }
+
+            return null;
         }
 
         /// <inheritdoc/>
