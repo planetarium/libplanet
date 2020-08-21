@@ -10,7 +10,6 @@ namespace Libplanet.RocksDBStore
     public class RocksDBKeyValueStore : IKeyValueStore
     {
         private readonly RocksDb _keyValueDb;
-        private readonly DbOptions _options;
 
         /// <summary>
         /// Creates a new <see cref="RocksDBKeyValueStore"/>.
@@ -18,10 +17,10 @@ namespace Libplanet.RocksDBStore
         /// <param name="path">The path of the storage file will be saved.</param>
         public RocksDBKeyValueStore(string path)
         {
-            _options = new DbOptions()
+            var options = new DbOptions()
                 .SetCreateIfMissing();
 
-            _keyValueDb = RocksDBUtils.OpenRocksDb(_options, path);
+            _keyValueDb = RocksDBUtils.OpenRocksDb(options, path);
         }
 
         /// <inheritdoc/>
