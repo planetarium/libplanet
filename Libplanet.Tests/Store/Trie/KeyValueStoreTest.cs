@@ -21,7 +21,7 @@ namespace Libplanet.Tests.Store.Trie
 
         private byte[][] PreStoredDataValues { get; set; }
 
-        [Fact]
+        [SkippableFact]
         public void Get()
         {
             foreach (var (key, expectedValue) in PreStoredDataKeys.Zip(
@@ -36,7 +36,7 @@ namespace Libplanet.Tests.Store.Trie
         }
 
         // This test will cover DefaultKeyValueStore.Set
-        [Fact]
+        [SkippableFact]
         public void Overwrite()
         {
             foreach (var (key, expectedValue) in PreStoredDataKeys.Zip(
@@ -53,7 +53,7 @@ namespace Libplanet.Tests.Store.Trie
             }
         }
 
-        [Fact]
+        [SkippableFact]
         public void Delete()
         {
             foreach (var (key, expectedValue) in PreStoredDataKeys.Zip(
@@ -64,7 +64,7 @@ namespace Libplanet.Tests.Store.Trie
             }
         }
 
-        [Fact]
+        [SkippableFact]
         public void Exists()
         {
             foreach (var (key, _) in PreStoredDataKeys.Zip(PreStoredDataValues, ValueTuple.Create))
