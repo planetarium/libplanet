@@ -1,3 +1,22 @@
 {
-  "editor.rulers": [80, 100]
+  "editor.rulers": [80, 100],
+  "cSpell.words": [
+    "Bencodex",
+    "Bitcoin",
+    "Ethereum",
+    "Kademlia",
+    "Libplanet",
+    "Libplanet's",
+    "PRNG",
+    "blockchain",
+    "broadcasted",
+    "changeset",
+    "ciphertext",
+    "indeterministic",
+    "nonces",
+    "parameterless",
+    "secp256k1",
+    "struct",
+    "unrender",
+  ]
 }
