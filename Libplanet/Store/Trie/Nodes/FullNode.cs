@@ -35,7 +35,7 @@ namespace Libplanet.Store.Trie.Nodes
             return new FullNode(Children.SetItem(index, childNode));
         }
 
-        public bool Equals(FullNode? other)
+        bool IEquatable<FullNode>.Equals(FullNode? other)
         {
             if (other is null)
             {

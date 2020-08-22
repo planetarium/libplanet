@@ -22,7 +22,7 @@ namespace Libplanet.Store.Trie.Nodes
 
         public ImmutableArray<byte> Key { get; }
 
-        public bool Equals(ShortNode? other)
+        bool IEquatable<ShortNode>.Equals(ShortNode? other)
         {
             if (other is null)
             {
