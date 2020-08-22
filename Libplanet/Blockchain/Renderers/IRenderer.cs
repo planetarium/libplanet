@@ -3,7 +3,7 @@ using System;
 using Libplanet.Action;
 using Libplanet.Blocks;
 
-namespace Libplanet.Blockchain
+namespace Libplanet.Blockchain.Renderers
 {
     /// <summary>
     /// Listens state changes on a <see cref="BlockChain{T}"/>.
