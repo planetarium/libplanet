@@ -159,6 +159,7 @@ To be released.
      -  Added `Swarm<T>.GetTrustedStateCompleterAsync()` method.
  -  Added `IRenderer<T>` interface.  [[#959], [#963]]
  -  Added `AnonymousRenderer<T>` class.  [[#959], [#963]]
+ -  Added `LoggedRenderer<T>` class.  [[#959], [#963]]
  -  Added `BlockChain<T>.Renderers` property.  [[#959], [#963]]
  -  Added `BlockChain<T>.Render` property.  [[#946]]
  -  Added `Reorged` event on `BlockChain<T>`.  [[#945]]
