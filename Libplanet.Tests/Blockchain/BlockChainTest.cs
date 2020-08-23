@@ -2174,11 +2174,9 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         private async void TipChanged()
         {
-            BlockChain<DumbAction>.TipChangedEventArgs eventLog = null;
             var genesis = _blockChain.Genesis;
 
             _renderer.ResetRecords();
-            _blockChain.TipChanged += (target, args) => eventLog = args;
 
             // Mine block
             Assert.Empty(_renderer.BlockRecords);
@@ -2190,17 +2188,10 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(genesis, old);
             Assert.Equal(block, @new);
             Assert.Equal(1, @new.Index);
-            Assert.NotNull(eventLog);
-            Assert.Equal(old.Hash, eventLog.PreviousHash);
-            Assert.Equal(old.Index, eventLog.PreviousIndex);
-            Assert.Equal(@new.Hash, eventLog.Hash);
-            Assert.Equal(@new.Index, eventLog.Index);
 
             _renderer.ResetRecords();
-            eventLog = null;
             Assert.Throws<InvalidBlockIndexException>(() => _blockChain.Append(block));
             Assert.Empty(_renderer.BlockRecords);
-            Assert.Null(eventLog);
 
             // TODO: Add test cases for swap
         }
@@ -2263,13 +2254,10 @@ namespace Libplanet.Tests.Blockchain
             chain1.Append(genesis);
             chain2.Append(genesis);
 
-            BlockChain<DumbAction>.TipChangedEventArgs eventLog = null;
-
             try
             {
                 Block<DumbAction> block = await chain1.MineBlock(fx1.Address1);
                 renderer2.ResetRecords();
-                chain2.TipChanged += (sender, args) => eventLog = args;
 
                 Task miningTask = chain2.MineBlock(fx2.Address1);
                 chain2.Append(block);
@@ -2279,11 +2267,6 @@ namespace Libplanet.Tests.Blockchain
                 Assert.Single(records);
                 Assert.Equal(genesis, records[0].Old);
                 Assert.Equal(block, records[0].New);
-                Assert.NotNull(eventLog);
-                Assert.Equal(1, eventLog.PreviousIndex);
-                Assert.Equal(genesis.Hash, eventLog.PreviousHash);
-                Assert.Equal(2, eventLog.Index);
-                Assert.Equal(block.Hash, eventLog.Hash);
                 await Task.Delay(100);
                 Assert.True(miningTask.IsCanceled);
             }

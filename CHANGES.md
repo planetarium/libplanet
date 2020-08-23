@@ -21,6 +21,8 @@ To be released.
         `IRenderer<T>.RenderAction()`.
      -  Removed `IAction.Unrender()` method, which was replaced by
         `IRenderer<T>.UnrenderAction()`.
+     -  Removed `BlockChain<T>.TipChanged` event, which was replaced by
+        `IRenderer<T>.RenderBlock()`.
      -  Removed `PolymorphicAction<T>.Render()` and `Unrender()` methods.
  -  Added methods related fungible asset states to `IAccountStateDelta`:
     [[#861], [#900], [#954]]
