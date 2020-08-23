@@ -2042,7 +2042,11 @@ namespace Libplanet.Tests.Blockchain
         /// </code>
         /// </summary>
         internal static (Address, Address[] addresses, BlockChain<DumbAction> chain)
-        MakeIncompleteBlockStates(IStore store, IBlockStatesStore blockStatesStore)
+        MakeIncompleteBlockStates(
+            IStore store,
+            IBlockStatesStore blockStatesStore,
+            IRenderer<DumbAction> renderer = null
+        )
         {
             store = new StoreTracker(store);
             Guid chainId = Guid.NewGuid();
@@ -2052,7 +2056,7 @@ namespace Libplanet.Tests.Blockchain
                 blockStatesStore,
                 chainId,
                 TestUtils.MineGenesis<DumbAction>(),
-                renderers: null
+                renderers: renderer is null ? null : new[] { renderer }
             );
             var privateKey = new PrivateKey();
             Address signer = privateKey.ToAddress();
@@ -2199,10 +2203,7 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         private async void Reorged()
         {
-            BlockChain<DumbAction>.ReorgedEventArgs eventLog = null;
-
             _renderer.ResetRecords();
-            _blockChain.Reorged += (target, args) => eventLog = args;
             var branchpoint = _blockChain.Tip;
             var fork = _blockChain.Fork(_blockChain.Tip.Hash);
             await fork.MineBlock(_fx.Address1);
@@ -2213,7 +2214,6 @@ namespace Libplanet.Tests.Blockchain
             var newTip = fork.Tip;
 
             Assert.Empty(_renderer.ReorgRecords);
-            Assert.Null(eventLog);
 
             _blockChain.Swap(fork, false);
 
@@ -2222,10 +2222,6 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(oldTip, old);
             Assert.Equal(newTip, @new);
             Assert.Equal(branchpoint, bp);
-            Assert.NotNull(eventLog);
-            Assert.Equal(old, eventLog.OldTip);
-            Assert.Equal(@new, eventLog.NewTip);
-            Assert.Equal(bp, eventLog.Branchpoint);
         }
 
         [Fact]

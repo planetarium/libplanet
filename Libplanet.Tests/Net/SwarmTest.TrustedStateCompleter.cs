@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Bencodex.Types;
 using Libplanet.Blockchain;
+using Libplanet.Blockchain.Renderers;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net;
@@ -101,8 +102,18 @@ namespace Libplanet.Tests.Net
         public async Task TrustNewTipStatesAfterReog()
         {
             var incompleteStore = new DefaultStore(null);
+            (Block<DumbAction> Old, Block<DumbAction> New, Block<DumbAction> Bp)? reorged = null;
+            IRenderer<DumbAction> renderer = new AnonymousRenderer<DumbAction>
+            {
+                ReorgRenderer = (old, @new, bp) => reorged = (old, @new, bp),
+            };
+            renderer = new LoggedRenderer<DumbAction>(renderer, _logger);
             (_, Address[] addresses, BlockChain<DumbAction> incomplete) =
-                BlockChainTest.MakeIncompleteBlockStates(incompleteStore, incompleteStore);
+                BlockChainTest.MakeIncompleteBlockStates(
+                    incompleteStore,
+                    incompleteStore,
+                    renderer
+                );
             Block<DumbAction> genesis = incomplete.Genesis;
             Swarm<DumbAction> incompleteSwarm = CreateSwarm(incomplete);
 
@@ -149,8 +160,7 @@ namespace Libplanet.Tests.Net
 
             Block<DumbAction> staleTip = incomplete.Tip;
             Block<DumbAction> canonTip = eventualCanon.Tip;
-            BlockChain<DumbAction>.ReorgedEventArgs reorged = null;
-            incomplete.Reorged += (sender, args) => reorged = args;
+            reorged = null;
 
             await StartAsync(
                 incompleteSwarm,
@@ -176,8 +186,8 @@ namespace Libplanet.Tests.Net
                 eventualCanon
             );
             Assert.Equal(incomplete.Tip, canonTip);
-            Assert.Equal(reorged.OldTip, staleTip);
-            Assert.Equal(reorged.NewTip, canonTip);
+            Assert.Equal(reorged?.Old, staleTip);
+            Assert.Equal(reorged?.New, canonTip);
             Assert.Equal(
                 eventualCanonStore.GetBlockStates(canonTip.Hash),
                 incompleteStore.GetBlockStates(canonTip.Hash)
