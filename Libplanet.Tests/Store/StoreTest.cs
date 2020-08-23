@@ -1117,8 +1117,7 @@ namespace Libplanet.Tests.Store
                 store as IStateStore,
                 Guid.NewGuid(),
                 Fx.GenesisBlock,
-                renderers: null,
-                render: true
+                renderers: null
             );
 
             store.ForkBlockIndexes(blocks.Id, forked.Id, blocks[branchPointIndex].Hash);

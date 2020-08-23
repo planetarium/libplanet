@@ -37,10 +37,8 @@ To be released.
     `InvalidTxGenesisHashException` when it takes a `Transaction<T>` from
     a heterogeneous `BlockChain<T>` with a different genesis block.
     [[#796], [#878]]
- -  Added `render` optional parameter to `BlockChain<T>()` constructor.
-    [[#883]]
  -  Added `renderers` optional parameter to `BlockChain<T>()` constructor.
-    [[#959], [#963]]
+    [[#883], [#959], [#963]]
  -  Added `BigInteger`-typed `totalDifficulty` parameter to `Block<T>()`
     constructor.  [[#666], [#917]]
  -  Added `BigInteger`-typed `previousTotalDifficulty` parameter to
@@ -174,7 +172,6 @@ To be released.
  -  Added `AnonymousRenderer<T>` class.  [[#959], [#963]]
  -  Added `LoggedRenderer<T>` class.  [[#959], [#963]]
  -  Added `BlockChain<T>.Renderers` property.  [[#959], [#963]]
- -  Added `BlockChain<T>.Render` property.  [[#946]]
  -  Added `Reorged` event on `BlockChain<T>`.  [[#945]]
  -  Added `ReorgedEventArgs` class.  [[#945]]
  -  Added `Swarm<T>.AppProtocolVersion` property.  [[#949]]

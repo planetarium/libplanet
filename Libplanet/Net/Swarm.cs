@@ -13,6 +13,7 @@ using AsyncIO;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain;
+using Libplanet.Blockchain.Renderers;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
@@ -541,17 +542,17 @@ namespace Libplanet.Net
             // all or nothing (i.e., atomic), we first fork the chain and stack up preloaded data
             // upon that forked workspace, and then if preloading ends replace the existing
             // blockchain with it.
-            // FIXME: Is it okay to copy BlockChain.Renderers?
+            // Note that it does not pass any renderers here so that they render nothing
+            // (because the workspace chain is for underlying).
             BlockChain<T> workspace = initialTip is Block<T> tip
-                ? BlockChain.Fork(tip.Hash)
+                ? BlockChain.Fork(tip.Hash, inheritRenderers: false)
                 : new BlockChain<T>(
                     BlockChain.Policy,
                     _store,
                     _store as IStateStore,
                     Guid.NewGuid(),
                     BlockChain.Genesis,
-                    BlockChain.Renderers,
-                    false);
+                    Enumerable.Empty<IRenderer<T>>());
             Guid wId = workspace.Id;
             IStore wStore = workspace.Store;
             var chainIds = new HashSet<Guid>

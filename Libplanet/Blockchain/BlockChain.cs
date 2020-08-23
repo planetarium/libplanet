@@ -75,8 +75,6 @@ namespace Libplanet.Blockchain
         /// be used for that.</param>
         /// <param name="renderers">Listens state changes on the created chain.  Listens nothing
         /// by default or if it is <c>null</c>.</param>
-        /// <param name="render">Defines whether to render actions on this
-        /// <see cref="BlockChain{T}"/>.  Turned on by default.</param>
         /// <param name="stateStore"><see cref="IStateStore"/> to store states.</param>
         /// <exception cref="InvalidGenesisBlockException">Thrown when the <paramref name="store"/>
         /// has a genesis block and it does not match to what the network expects
@@ -86,8 +84,7 @@ namespace Libplanet.Blockchain
             IStore store,
             IStateStore stateStore,
             Block<T> genesisBlock,
-            IEnumerable<IRenderer<T>> renderers = null,
-            bool render = true
+            IEnumerable<IRenderer<T>> renderers = null
             )
             : this(
                 policy,
@@ -95,8 +92,8 @@ namespace Libplanet.Blockchain
                 stateStore,
                 store.GetCanonicalChainId() ?? Guid.NewGuid(),
                 genesisBlock,
-                renderers,
-                render)
+                renderers
+            )
         {
         }
 
@@ -106,8 +103,7 @@ namespace Libplanet.Blockchain
             IStateStore stateStore,
             Guid id,
             Block<T> genesisBlock,
-            IEnumerable<IRenderer<T>> renderers,
-            bool render
+            IEnumerable<IRenderer<T>> renderers
         )
             : this(
                 policy,
@@ -116,8 +112,7 @@ namespace Libplanet.Blockchain
                 id,
                 genesisBlock,
                 false,
-                renderers,
-                render
+                renderers
             )
         {
         }
@@ -129,8 +124,7 @@ namespace Libplanet.Blockchain
             Guid id,
             Block<T> genesisBlock,
             bool inFork,
-            IEnumerable<IRenderer<T>> renderers,
-            bool render
+            IEnumerable<IRenderer<T>> renderers
         )
         {
             Id = id;
@@ -149,7 +143,6 @@ namespace Libplanet.Blockchain
             Renderers = renderers is IEnumerable<IRenderer<T>> r
                 ? r.ToImmutableArray()
                 : ImmutableArray<IRenderer<T>>.Empty;
-            Render = render;
             _rwlock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
             _txLock = new object();
 
@@ -202,21 +195,14 @@ namespace Libplanet.Blockchain
         public event EventHandler<ReorgedEventArgs> Reorged;
 
         /// <summary>
-        /// Defines whether to render actions on this <see cref="BlockChain{T}"/>.
-        /// </summary>
-        public bool Render { get; }
-
-#pragma warning disable SA1004
-        /// <summary>
         /// The list of registered renderers listening the state changes.
         /// </summary>
         /// <remarks>
         /// Since this value is immutable, renderers cannot be registered after once a <see
         /// cref="BlockChain{T}"/> object is instantiated; use <c>renderers</c> option of <see cref=
-        /// "BlockChain{T}(IBlockPolicy{T},IStore,IStateStore,Block{T},IEnumerable{IRenderer{T}},
-        /// bool)"/> constructor instead.
+        /// "BlockChain{T}(IBlockPolicy{T},IStore,IStateStore,Block{T},IEnumerable{IRenderer{T}})"/>
+        /// constructor instead.
         /// </remarks>
-#pragma warning restore SA1004
         public IImmutableList<IRenderer<T>> Renderers { get; }
 
         public IBlockPolicy<T> Policy { get; }
@@ -942,7 +928,7 @@ namespace Libplanet.Blockchain
                 _rwlock.ExitUpgradeableReadLock();
             }
 
-            if (Render && renderActions)
+            if (renderActions)
             {
                 RenderBlock(evaluations, block, stateCompleters);
             }
@@ -1251,7 +1237,7 @@ namespace Libplanet.Blockchain
             }
         }
 
-        internal BlockChain<T> Fork(HashDigest<SHA256> point)
+        internal BlockChain<T> Fork(HashDigest<SHA256> point, bool inheritRenderers = true)
         {
             if (!ContainsBlock(point))
             {
@@ -1269,9 +1255,11 @@ namespace Libplanet.Blockchain
                     nameof(point));
             }
 
-            // FIXME: Is it okay to pass the renderers?
+            IEnumerable<IRenderer<T>> renderers = inheritRenderers
+                ? Renderers
+                : Enumerable.Empty<IRenderer<T>>();
             var forked = new BlockChain<T>(
-                Policy, Store, StateStore, Guid.NewGuid(), Genesis, true, Renderers, Render);
+                Policy, Store, StateStore, Guid.NewGuid(), Genesis, true, renderers);
             Guid forkedId = forked.Id;
             _logger.Debug(
                 "Trying to fork chain at {branchPoint}" +
@@ -1431,7 +1419,7 @@ namespace Libplanet.Blockchain
                 topmostCommon
             );
 
-            if (Render && render)
+            if (render)
             {
                 // Unrender stale actions.
                 _logger.Debug("Unrendering abandoned actions...");
@@ -1537,7 +1525,7 @@ namespace Libplanet.Blockchain
                 _rwlock.ExitWriteLock();
             }
 
-            if (Render && render)
+            if (render)
             {
                 _logger.Debug("Rendering actions in new chain.");
 

@@ -398,65 +398,6 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public void TurnOffRendering()
-        {
-            var policy = new BlockPolicy<DumbAction>();
-            var fx = new DefaultStoreFixture(memory: true);
-            var key = new PrivateKey();
-            var miner = key.ToAddress();
-
-            try
-            {
-                var renderer = new DumbRenderer<DumbAction>();
-                var chain = new BlockChain<DumbAction>(
-                    policy,
-                    fx.Store,
-                    fx.StateStore,
-                    fx.GenesisBlock,
-                    render: false,
-                    renderers: new[] { renderer }
-                );
-                var actions = new[] { new DumbAction(miner, "foo") };
-                var tx = chain.MakeTransaction(key, actions);
-                Assert.Empty(renderer.ActionRecords);
-
-                var block = TestUtils.MineNext(
-                    chain.Genesis,
-                    new[] { tx },
-                    miner: miner,
-                    difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain));
-                Assert.Empty(renderer.ActionRecords);
-
-                // Render should not work when appending a block
-                chain.Append(block);
-                Assert.Empty(renderer.ActionRecords);
-
-                // Render should not work when appending a block to forked chain
-                var forked = chain.Fork(chain.Genesis.Hash);
-                forked.Append(block);
-                Assert.Empty(renderer.ActionRecords);
-
-                // Render should not work when swapping the chain
-                var newChain = new BlockChain<DumbAction>(
-                    policy,
-                    fx.Store,
-                    fx.StateStore,
-                    Guid.NewGuid(),
-                    fx.GenesisBlock,
-                    renderers: new[] { renderer },
-                    render: true
-                );
-                chain.Swap(newChain, true);
-                chain.Append(block);
-                Assert.Empty(renderer.ActionRecords);
-            }
-            finally
-            {
-                fx.Dispose();
-            }
-        }
-
-        [Fact]
         public void Append()
         {
             (Address[] addresses, Transaction<DumbAction>[] txs) =
@@ -2111,8 +2052,7 @@ namespace Libplanet.Tests.Blockchain
                 blockStatesStore,
                 chainId,
                 TestUtils.MineGenesis<DumbAction>(),
-                renderers: null,
-                render: true
+                renderers: null
             );
             var privateKey = new PrivateKey();
             Address signer = privateKey.ToAddress();
