@@ -11,6 +11,7 @@ using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
+using Libplanet.Blockchain.Renderers;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net;
@@ -70,12 +71,16 @@ namespace Libplanet.Tests.Net
                 new DumbRenderer<DumbAction>(),
             };
 
+            LoggedRenderer<DumbAction>[][] loggedRenderers = _renderers
+                .Select(r => new[] { new LoggedRenderer<DumbAction>(r, _logger) })
+                .ToArray();
+
             _blockchains = new List<BlockChain<DumbAction>>
             {
-                TestUtils.MakeBlockChain(policy, _fx1.Store, renderers: new[] { _renderers[0] }),
-                TestUtils.MakeBlockChain(policy, _fx2.Store, renderers: new[] { _renderers[1] }),
-                TestUtils.MakeBlockChain(policy, _fx3.Store, renderers: new[] { _renderers[2] }),
-                TestUtils.MakeBlockChain(policy, _fx4.Store, renderers: new[] { _renderers[3] }),
+                TestUtils.MakeBlockChain(policy, _fx1.Store, renderers: loggedRenderers[0]),
+                TestUtils.MakeBlockChain(policy, _fx2.Store, renderers: loggedRenderers[1]),
+                TestUtils.MakeBlockChain(policy, _fx3.Store, renderers: loggedRenderers[2]),
+                TestUtils.MakeBlockChain(policy, _fx4.Store, renderers: loggedRenderers[3]),
             };
 
             _finalizers = new List<Func<Task>>();
@@ -969,10 +974,8 @@ namespace Libplanet.Tests.Net
             DumbRenderer<DumbAction> receiverRenderer = _renderers[0];
 
             int renderCount = 0;
-            int renderCount2 = 0;
 
             receiverRenderer.RenderEventHandler += (_, a) => renderCount += a is DumbAction ? 1 : 0;
-            DumbAction.RenderEventHandler += (_, __) => renderCount2++;
 
             Transaction<DumbAction>[] transactions =
             {
@@ -1021,7 +1024,6 @@ namespace Libplanet.Tests.Net
 
                 Assert.Equal(3, _blockchains[0].Count);
                 Assert.Equal(4, renderCount);
-                Assert.Equal(renderCount2, renderCount);
             }
             finally
             {
@@ -1390,7 +1392,6 @@ namespace Libplanet.Tests.Net
             var miner2 = CreateSwarm(TestUtils.MakeBlockChain(policy, new DefaultStore(null)));
 
             int renderCount = 0;
-            int renderCount2 = 0;
 
             try
             {
@@ -1413,7 +1414,6 @@ namespace Libplanet.Tests.Net
                 var latest = await miner2.BlockChain.MineBlock(miner2.Address);
 
                 renderer.RenderEventHandler += (_, a) => renderCount += a is DumbAction ? 1 : 0;
-                DumbAction.RenderEventHandler += (_, __) => renderCount2++;
 
                 miner2.BroadcastBlock(latest);
 
@@ -1422,7 +1422,6 @@ namespace Libplanet.Tests.Net
                 Assert.Equal(miner1.BlockChain.Tip, miner2.BlockChain.Tip);
                 Assert.Equal(miner1.BlockChain.Count, miner2.BlockChain.Count);
                 Assert.Equal(2, renderCount);
-                Assert.Equal(renderCount, renderCount2);
             }
             finally
             {
@@ -1430,7 +1429,6 @@ namespace Libplanet.Tests.Net
                 await StopAsync(miner2);
                 miner1.Dispose();
                 miner2.Dispose();
-                DumbAction.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
             }
         }
 
@@ -2187,22 +2185,6 @@ namespace Libplanet.Tests.Net
             }
 
             public void LoadPlainValue(IValue plainValue)
-            {
-            }
-
-            public void Render(IActionContext context, IAccountStateDelta nextStates)
-            {
-            }
-
-            public void RenderError(IActionContext context, Exception exception)
-            {
-            }
-
-            public void Unrender(IActionContext context, IAccountStateDelta nextStates)
-            {
-            }
-
-            public void UnrenderError(IActionContext context, Exception exception)
             {
             }
         }

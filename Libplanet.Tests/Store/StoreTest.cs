@@ -1277,22 +1277,6 @@ namespace Libplanet.Tests.Store
             {
                 return context.PreviousStates;
             }
-
-            public void Render(IActionContext context, IAccountStateDelta nextStates)
-            {
-            }
-
-            public void Unrender(IActionContext context, IAccountStateDelta nextStates)
-            {
-            }
-
-            public void RenderError(IActionContext context, Exception exception)
-            {
-            }
-
-            public void UnrenderError(IActionContext context, Exception exception)
-            {
-            }
         }
     }
 }

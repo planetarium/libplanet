@@ -9,6 +9,7 @@ using Libplanet.Action;
 using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
+using Libplanet.Blockchain.Renderers;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Store;
@@ -47,7 +48,7 @@ namespace Libplanet.Tests.Blockchain
                 _fx.Store,
                 _fx.StateStore,
                 _fx.GenesisBlock,
-                renderers: new[] { _renderer }
+                renderers: new[] { new LoggedRenderer<DumbAction>(_renderer, Log.Logger) }
             );
             _renderer.ResetRecords();
         }
@@ -397,11 +398,8 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public void Render()
+        public void TurnOffRendering()
         {
-            DumbAction.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
-            MinerReward.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
-
             var policy = new BlockPolicy<DumbAction>();
             var fx = new DefaultStoreFixture(memory: true);
             var key = new PrivateKey();
@@ -409,27 +407,34 @@ namespace Libplanet.Tests.Blockchain
 
             try
             {
+                var renderer = new DumbRenderer<DumbAction>();
                 var chain = new BlockChain<DumbAction>(
-                    policy, fx.Store, fx.StateStore, fx.GenesisBlock, render: false);
+                    policy,
+                    fx.Store,
+                    fx.StateStore,
+                    fx.GenesisBlock,
+                    render: false,
+                    renderers: new[] { renderer }
+                );
                 var actions = new[] { new DumbAction(miner, "foo") };
                 var tx = chain.MakeTransaction(key, actions);
-                Assert.Empty(DumbAction.RenderRecords.Value);
+                Assert.Empty(renderer.ActionRecords);
 
                 var block = TestUtils.MineNext(
                     chain.Genesis,
                     new[] { tx },
                     miner: miner,
                     difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain));
-                Assert.Empty(DumbAction.RenderRecords.Value);
+                Assert.Empty(renderer.ActionRecords);
 
                 // Render should not work when appending a block
                 chain.Append(block);
-                Assert.Empty(DumbAction.RenderRecords.Value);
+                Assert.Empty(renderer.ActionRecords);
 
                 // Render should not work when appending a block to forked chain
                 var forked = chain.Fork(chain.Genesis.Hash);
                 forked.Append(block);
-                Assert.Empty(DumbAction.RenderRecords.Value);
+                Assert.Empty(renderer.ActionRecords);
 
                 // Render should not work when swapping the chain
                 var newChain = new BlockChain<DumbAction>(
@@ -438,16 +443,15 @@ namespace Libplanet.Tests.Blockchain
                     fx.StateStore,
                     Guid.NewGuid(),
                     fx.GenesisBlock,
-                    renderers: null,
-                    render: true);
+                    renderers: new[] { renderer },
+                    render: true
+                );
                 chain.Swap(newChain, true);
                 chain.Append(block);
-                Assert.Empty(DumbAction.RenderRecords.Value);
+                Assert.Empty(renderer.ActionRecords);
             }
             finally
             {
-                DumbAction.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
-                MinerReward.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
                 fx.Dispose();
             }
         }
@@ -455,139 +459,105 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void Append()
         {
-            DumbAction.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
-            MinerReward.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
-
             (Address[] addresses, Transaction<DumbAction>[] txs) =
                 MakeFixturesForAppendTests();
             var genesis = _blockChain.Genesis;
 
             Assert.Equal(1, _blockChain.Count);
             Assert.Empty(_renderer.ActionRecords);
-            Assert.Empty(MinerReward.RenderRecords.Value);
-            try
+            Assert.Empty(_renderer.BlockRecords);
+            var block1 = TestUtils.MineNext(
+                genesis,
+                miner: addresses[4],
+                difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
+                blockInterval: TimeSpan.FromSeconds(10));
+            _blockChain.Append(block1);
+            Block<DumbAction> block2 = TestUtils.MineNext(
+                block1,
+                txs,
+                difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
+                blockInterval: TimeSpan.FromSeconds(10)
+            );
+            _blockChain.Append(block2);
+
+            Assert.True(_blockChain.ContainsBlock(block2.Hash));
+            if (_blockChain.StateStore is IBlockStatesStore blockStatesStore)
             {
-                Assert.Empty(DumbAction.RenderRecords.Value);
-
-                var block1 = TestUtils.MineNext(
-                    genesis,
-                    miner: addresses[4],
-                    difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
-                    blockInterval: TimeSpan.FromSeconds(10));
-                _blockChain.Append(block1);
-                Block<DumbAction> block2 = TestUtils.MineNext(
-                    block1,
-                    txs,
-                    difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
-                    blockInterval: TimeSpan.FromSeconds(10)
-                );
-                _blockChain.Append(block2);
-
-                Assert.True(_blockChain.ContainsBlock(block2.Hash));
-                if (_blockChain.StateStore is IBlockStatesStore blockStatesStore)
-                {
-                    Assert.NotNull(blockStatesStore.GetBlockStates(block2.Hash));
-                }
-
-                RenderRecord[] renders = _renderer.ActionRecords
-                    .Where(r => r.Action is DumbAction)
-                    .ToArray();
-                DumbAction[] actions = renders.Select(r => (DumbAction)r.Action).ToArray();
-                Assert.Equal(4, renders.Length);
-                Assert.True(renders.All(r => r.Render));
-                Assert.Equal("foo", actions[0].Item);
-                Assert.Equal(2, renders[0].Context.BlockIndex);
-                Assert.Equal(
-                    new IValue[] { null, null, null, null, (Integer)1 },
-                    addresses.Select(renders[0].Context.PreviousStates.GetState)
-                );
-                Assert.Equal(
-                    new IValue[] { (Text)"foo", null, null, null, (Integer)1 },
-                    addresses.Select(renders[0].NextStates.GetState)
-                );
-                Assert.Equal("bar", actions[1].Item);
-                Assert.Equal(2, renders[1].Context.BlockIndex);
-                Assert.Equal(
-                    addresses.Select(renders[0].NextStates.GetState),
-                    addresses.Select(renders[1].Context.PreviousStates.GetState)
-                );
-                Assert.Equal(
-                    new IValue[] { (Text)"foo", (Text)"bar", null, null, (Integer)1 },
-                    addresses.Select(renders[1].NextStates.GetState)
-                );
-                Assert.Equal("baz", actions[2].Item);
-                Assert.Equal(2, renders[2].Context.BlockIndex);
-                Assert.Equal(
-                    addresses.Select(renders[1].NextStates.GetState),
-                    addresses.Select(renders[2].Context.PreviousStates.GetState)
-                );
-                Assert.Equal(
-                    new IValue[] { (Text)"foo", (Text)"bar", (Text)"baz", null, (Integer)1 },
-                    addresses.Select(renders[2].NextStates.GetState)
-                );
-                Assert.Equal("qux", actions[3].Item);
-                Assert.Equal(2, renders[3].Context.BlockIndex);
-                Assert.Equal(
-                    addresses.Select(renders[2].NextStates.GetState),
-                    addresses.Select(renders[3].Context.PreviousStates.GetState)
-                );
-                Assert.Equal(
-                    new IValue[] { (Text)"foo", (Text)"bar", (Text)"baz", (Text)"qux", (Integer)1 },
-                    addresses.Select(renders[3].NextStates.GetState)
-                );
-
-                var minerAddress = addresses[4];
-                RenderRecord[] blockRenders = _renderer.ActionRecords
-                    .Where(r => r.Action is MinerReward)
-                    .ToArray();
-
-                Assert.Equal((Integer)2, (Integer)_blockChain.GetState(minerAddress));
-                Assert.Equal(2, blockRenders.Length);
-                Assert.True(blockRenders.All(r => r.Render));
-                Assert.Equal(1, blockRenders[0].Context.BlockIndex);
-                Assert.Equal(2, blockRenders[1].Context.BlockIndex);
-
-                Assert.Equal(
-                    (Integer)1,
-                    (Integer)blockRenders[0].NextStates.GetState(minerAddress));
-                Assert.Equal(
-                    (Integer)1,
-                    (Integer)blockRenders[1].Context.PreviousStates.GetState(minerAddress));
-                Assert.Equal(
-                    (Integer)2,
-                    (Integer)blockRenders[1].NextStates.GetState(minerAddress));
-
-                ImmutableList<RenderRecord> renders2 = DumbAction.RenderRecords.Value;
-                DumbAction[] actions2 = renders.Select(r => (DumbAction)r.Action).ToArray();
-                ImmutableList<RenderRecord> blockRenders2 = MinerReward.RenderRecords.Value;
-
-                Assert.Equal(renders.Select(r => r.Render), renders2.Select(r => r.Render));
-                Assert.Equal(
-                    renders.Select(r => r.Context.BlockIndex),
-                    renders2.Select(r => r.Context.BlockIndex)
-                );
-                Assert.Equal(actions.Select(a => a.Item), actions2.Select(a => a.Item));
-                Assert.Equal(
-                    blockRenders.Select(r => r.Render),
-                    blockRenders2.Select(r => r.Render)
-                );
-                Assert.Equal(
-                    blockRenders.Select(r => r.Context.BlockIndex),
-                    blockRenders2.Select(r => r.Context.BlockIndex)
-                );
+                Assert.NotNull(blockStatesStore.GetBlockStates(block2.Hash));
             }
-            finally
-            {
-                DumbAction.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
-                MinerReward.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
-            }
+
+            RenderRecord[] renders = _renderer.ActionRecords
+                .Where(r => r.Action is DumbAction)
+                .ToArray();
+            DumbAction[] actions = renders.Select(r => (DumbAction)r.Action).ToArray();
+            Assert.Equal(4, renders.Length);
+            Assert.True(renders.All(r => r.Render));
+            Assert.Equal("foo", actions[0].Item);
+            Assert.Equal(2, renders[0].Context.BlockIndex);
+            Assert.Equal(
+                new IValue[] { null, null, null, null, (Integer)1 },
+                addresses.Select(renders[0].Context.PreviousStates.GetState)
+            );
+            Assert.Equal(
+                new IValue[] { (Text)"foo", null, null, null, (Integer)1 },
+                addresses.Select(renders[0].NextStates.GetState)
+            );
+            Assert.Equal("bar", actions[1].Item);
+            Assert.Equal(2, renders[1].Context.BlockIndex);
+            Assert.Equal(
+                addresses.Select(renders[0].NextStates.GetState),
+                addresses.Select(renders[1].Context.PreviousStates.GetState)
+            );
+            Assert.Equal(
+                new IValue[] { (Text)"foo", (Text)"bar", null, null, (Integer)1 },
+                addresses.Select(renders[1].NextStates.GetState)
+            );
+            Assert.Equal("baz", actions[2].Item);
+            Assert.Equal(2, renders[2].Context.BlockIndex);
+            Assert.Equal(
+                addresses.Select(renders[1].NextStates.GetState),
+                addresses.Select(renders[2].Context.PreviousStates.GetState)
+            );
+            Assert.Equal(
+                new IValue[] { (Text)"foo", (Text)"bar", (Text)"baz", null, (Integer)1 },
+                addresses.Select(renders[2].NextStates.GetState)
+            );
+            Assert.Equal("qux", actions[3].Item);
+            Assert.Equal(2, renders[3].Context.BlockIndex);
+            Assert.Equal(
+                addresses.Select(renders[2].NextStates.GetState),
+                addresses.Select(renders[3].Context.PreviousStates.GetState)
+            );
+            Assert.Equal(
+                new IValue[] { (Text)"foo", (Text)"bar", (Text)"baz", (Text)"qux", (Integer)1 },
+                addresses.Select(renders[3].NextStates.GetState)
+            );
+
+            var minerAddress = addresses[4];
+            RenderRecord[] blockRenders = _renderer.ActionRecords
+                .Where(r => r.Action is MinerReward)
+                .ToArray();
+
+            Assert.Equal((Integer)2, (Integer)_blockChain.GetState(minerAddress));
+            Assert.Equal(2, blockRenders.Length);
+            Assert.True(blockRenders.All(r => r.Render));
+            Assert.Equal(1, blockRenders[0].Context.BlockIndex);
+            Assert.Equal(2, blockRenders[1].Context.BlockIndex);
+
+            Assert.Equal(
+                (Integer)1,
+                (Integer)blockRenders[0].NextStates.GetState(minerAddress));
+            Assert.Equal(
+                (Integer)1,
+                (Integer)blockRenders[1].Context.PreviousStates.GetState(minerAddress));
+            Assert.Equal(
+                (Integer)2,
+                (Integer)blockRenders[1].NextStates.GetState(minerAddress));
         }
 
         [Fact]
         public void AppendWithoutEvaluateActions()
         {
-            DumbAction.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
-
             (_, Transaction<DumbAction>[] txs) =
                 MakeFixturesForAppendTests();
             var genesis = _blockChain.Genesis;
@@ -596,37 +566,30 @@ namespace Libplanet.Tests.Blockchain
                 genesis,
                 difficulty: 1024,
                 blockInterval: TimeSpan.FromSeconds(10));
-            try
-            {
-                Assert.Throws<ArgumentException>(() =>
-                    _blockChain.Append(
-                        block,
-                        DateTimeOffset.UtcNow,
-                        evaluateActions: false,
-                        renderActions: true
-                    )
-                );
-                Assert.False(_blockChain.ContainsBlock(block.Hash));
-                Assert.Empty(DumbAction.RenderRecords.Value);
-
+            Assert.Throws<ArgumentException>(() =>
                 _blockChain.Append(
                     block,
                     DateTimeOffset.UtcNow,
                     evaluateActions: false,
-                    renderActions: false
-                );
-                Assert.Equal(block, _blockChain.Tip);
-                if (_blockChain.StateStore is IBlockStatesStore blockStatesStore)
-                {
-                    Assert.Null(blockStatesStore.GetBlockStates(block.Hash));
-                }
+                    renderActions: true
+                )
+            );
+            Assert.False(_blockChain.ContainsBlock(block.Hash));
+            Assert.Empty(_renderer.ActionRecords);
 
-                Assert.Empty(DumbAction.RenderRecords.Value);
-            }
-            finally
+            _blockChain.Append(
+                block,
+                DateTimeOffset.UtcNow,
+                evaluateActions: false,
+                renderActions: false
+            );
+            Assert.Equal(block, _blockChain.Tip);
+            if (_blockChain.StateStore is IBlockStatesStore blockStatesStore)
             {
-                DumbAction.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
+                Assert.Null(blockStatesStore.GetBlockStates(block.Hash));
             }
+
+            Assert.Empty(_renderer.ActionRecords);
         }
 
         [Fact]
@@ -634,25 +597,23 @@ namespace Libplanet.Tests.Blockchain
         {
             var policy = new NullPolicy<ThrowException>();
             var store = new DefaultStore(null);
-            var blockChain = TestUtils.MakeBlockChain(policy, store);
+            var renderer = new DumbRenderer<ThrowException>();
+            var blockChain = TestUtils.MakeBlockChain(policy, store, renderers: new[] { renderer });
             var privateKey = new PrivateKey();
 
             var action = new ThrowException { ThrowOnExecution = true };
-            var onRenderErrorCalled = false;
-            action.OnRenderError = (ctx, exc) =>
-            {
-                onRenderErrorCalled = true;
-                Assert.IsType<UnexpectedlyTerminatedActionException>(exc);
-                Assert.IsType<SomeException>(exc.InnerException);
-            };
+            blockChain.MakeTransaction(privateKey, new[] { action });
 
-            var actions = new[] { action };
-            blockChain.MakeTransaction(privateKey, actions);
-
+            renderer.ResetRecords();
             await blockChain.MineBlock(_fx.Address1);
 
             Assert.Equal(2, blockChain.Count);
-            Assert.True(onRenderErrorCalled);
+            Assert.Empty(renderer.ActionRecords);
+            Assert.Single(renderer.ErrorRecords);
+            (IAction act, Exception exc, _) = renderer.ErrorRecords[0];
+            Assert.Same(action, act);
+            Assert.IsType<UnexpectedlyTerminatedActionException>(exc);
+            Assert.IsType<SomeException>(exc.InnerException);
         }
 
         [Fact]
@@ -704,78 +665,75 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void UnstageAfterAppendComplete()
         {
-            DumbAction.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
-            MinerReward.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
-
             PrivateKey privateKey = new PrivateKey();
             (Address[] addresses, Transaction<DumbAction>[] txs) =
                 MakeFixturesForAppendTests(privateKey);
             var genesis = _blockChain.Genesis;
 
-            try
+            Block<DumbAction> block1 = TestUtils.MineNext(
+                genesis,
+                miner: addresses[4],
+                difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
+                blockInterval: TimeSpan.FromSeconds(10));
+            _blockChain.Append(block1);
+            Assert.Empty(_blockChain.GetStagedTransactionIds());
+
+            StageTransactions(txs);
+
+            Assert.Equal(2, _blockChain.GetStagedTransactionIds().Count);
+
+            Block<DumbAction> block2 = TestUtils.MineNext(
+                block1,
+                ImmutableHashSet<Transaction<DumbAction>>.Empty.Add(txs[0]),
+                difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
+                blockInterval: TimeSpan.FromSeconds(10)
+            );
+            _blockChain.Append(block2);
+            Assert.Equal(1, _blockChain.GetStagedTransactionIds().Count);
+            StageTransactions(txs);
+            Assert.Equal(1, _blockChain.GetStagedTransactionIds().Count);
+
+            var actions = new[] { new DumbAction(addresses[0], "foobar") };
+            Transaction<DumbAction>[] txs2 =
             {
-                Block<DumbAction> block1 = TestUtils.MineNext(
-                    genesis,
-                    miner: addresses[4],
-                    difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
-                    blockInterval: TimeSpan.FromSeconds(10));
-                _blockChain.Append(block1);
-                Assert.Empty(_blockChain.GetStagedTransactionIds());
+                _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 0),
+            };
+            StageTransactions(txs2);
+            Assert.Equal(2, _blockChain.GetStagedTransactionIds().Count);
 
-                StageTransactions(txs);
-
-                Assert.Equal(2, _blockChain.GetStagedTransactionIds().Count);
-
-                Block<DumbAction> block2 = TestUtils.MineNext(
-                    block1,
-                    ImmutableHashSet<Transaction<DumbAction>>.Empty.Add(txs[0]),
-                    difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
-                    blockInterval: TimeSpan.FromSeconds(10)
-                );
-                _blockChain.Append(block2);
-                Assert.Equal(1, _blockChain.GetStagedTransactionIds().Count);
-                StageTransactions(txs);
-                Assert.Equal(1, _blockChain.GetStagedTransactionIds().Count);
-
-                var actions = new[] { new DumbAction(addresses[0], "foobar") };
-                Transaction<DumbAction>[] txs2 =
-                {
-                    _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 0),
-                };
-                StageTransactions(txs2);
-                Assert.Equal(2, _blockChain.GetStagedTransactionIds().Count);
-
-                Block<DumbAction> block3 = TestUtils.MineNext(
-                    block2,
-                    ImmutableHashSet<Transaction<DumbAction>>.Empty.Add(txs[1]),
-                    difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
-                    blockInterval: TimeSpan.FromSeconds(10)
-                );
-                _blockChain.Append(block3);
-                Assert.Empty(_blockChain.GetStagedTransactionIds());
-            }
-            finally
-            {
-                DumbAction.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
-                MinerReward.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
-            }
+            Block<DumbAction> block3 = TestUtils.MineNext(
+                block2,
+                ImmutableHashSet<Transaction<DumbAction>>.Empty.Add(txs[1]),
+                difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
+                blockInterval: TimeSpan.FromSeconds(10)
+            );
+            _blockChain.Append(block3);
+            Assert.Empty(_blockChain.GetStagedTransactionIds());
         }
 
         [Fact]
         public async Task RenderAfterAppendComplete()
         {
-             var policy = new NullPolicy<ThrowException>();
+             var policy = new NullPolicy<DumbAction>();
              var store = new DefaultStore(null);
-             var blockChain = TestUtils.MakeBlockChain<ThrowException>(policy, store);
+             IRenderer<DumbAction> renderer = new AnonymousRenderer<DumbAction>
+             {
+                 ActionRenderer = (_, __, nextStates) =>
+                     throw new SomeException("thrown by renderer"),
+             };
+             renderer = new LoggedRenderer<DumbAction>(renderer, Log.Logger);
+             BlockChain<DumbAction> blockChain =
+                 TestUtils.MakeBlockChain(policy, store, renderers: new[] { renderer });
              var privateKey = new PrivateKey();
 
-             var action = new ThrowException { ThrowOnRendering = true };
+             var action = new DumbAction(default, string.Empty);
              var actions = new[] { action };
              blockChain.MakeTransaction(privateKey, actions);
 
-             await Assert.ThrowsAsync<ThrowException.SomeException>(async () =>
-                 await blockChain.MineBlock(_fx.Address1));
-
+             SomeException e = await Assert.ThrowsAsync<SomeException>(
+                 async () => await blockChain.MineBlock(_fx.Address1)
+             );
+             Assert.Equal("thrown by renderer", e.Message);
              Assert.Equal(2, blockChain.Count);
         }
 
@@ -1094,7 +1052,6 @@ namespace Libplanet.Tests.Blockchain
 
                 Assert.Equal(1, renderer.ActionRecords.Count(r => r.Action is DumbAction));
                 Assert.Single(DumbAction.ExecuteRecords.Value.Where(r => !r.Rehearsal));
-                Assert.Single(DumbAction.RenderRecords.Value);
 
                 await blockChain.MineBlock(miner, DateTimeOffset.UtcNow);
                 await blockChain.MineBlock(miner, DateTimeOffset.UtcNow);
@@ -1103,7 +1060,6 @@ namespace Libplanet.Tests.Blockchain
 
                 Assert.Equal(1, renderer.ActionRecords.Count(r => r.Action is DumbAction));
                 Assert.Single(DumbAction.ExecuteRecords.Value.Where(r => !r.Rehearsal));
-                Assert.Single(DumbAction.RenderRecords.Value);
             }
         }
 
@@ -1342,96 +1298,76 @@ namespace Libplanet.Tests.Blockchain
                     privateKey: privateKey),
             };
 
-            try
+            _renderer.ResetRecords();
+
+            Block<DumbAction> forkTip = TestUtils.MineNext(
+                fork.Tip,
+                txsB,
+                null,
+                _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
+                blockInterval: TimeSpan.FromSeconds(10)
+            );
+            fork.Append(
+                forkTip,
+                DateTimeOffset.UtcNow,
+                evaluateActions: true,
+                renderActions: false
+            );
+
+            Guid previousChainId = _blockChain.Id;
+            _blockChain.Swap(fork, render);
+
+            Assert.Empty(_blockChain.Store.IterateIndexes(previousChainId));
+            if (_blockChain.StateStore is IBlockStatesStore blockStatesStore)
             {
-                _renderer.ResetRecords();
-                DumbAction.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
-                MinerReward.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
-
-                Block<DumbAction> forkTip = TestUtils.MineNext(
-                    fork.Tip,
-                    txsB,
-                    null,
-                    _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
-                    blockInterval: TimeSpan.FromSeconds(10)
-                );
-                fork.Append(
-                    forkTip,
-                    DateTimeOffset.UtcNow,
-                    evaluateActions: true,
-                    renderActions: false
-                );
-
-                Guid previousChainId = _blockChain.Id;
-                _blockChain.Swap(fork, render);
-
-                Assert.Empty(_blockChain.Store.IterateIndexes(previousChainId));
-                if (_blockChain.StateStore is IBlockStatesStore blockStatesStore)
-                {
-                    Assert.Empty(blockStatesStore.ListStateKeys(previousChainId));
-                }
-
-                Assert.Empty(_blockChain.Store.ListTxNonces(previousChainId));
-
-                RenderRecord[] renders = _renderer.ActionRecords
-                    .Where(r => r.Action is DumbAction)
-                    .ToArray();
-                DumbAction[] actions = renders.Select(r => (DumbAction)r.Action).ToArray();
-                ImmutableList<RenderRecord> renders2 = DumbAction.RenderRecords.Value;
-                DumbAction[] actions2 = renders2.Select(r => (DumbAction)r.Action).ToArray();
-
-                int actionsCountA = txsA.Sum(
-                    a => a.Sum(tx => tx.Actions.Count)
-                );
-                int actionsCountB = txsB.Sum(tx => tx.Actions.Count);
-
-                int totalBlockCount = (int)_blockChain[-1].Index + 1;
-                int unRenderBlockCount = 2;
-
-                if (render)
-                {
-                    Assert.Equal(actionsCountB + actionsCountA, renders.Length);
-                    Assert.True(renders.Take(actionsCountA).All(r => r.Unrender));
-                    Assert.True(renders.Skip(actionsCountA).All(r => r.Render));
-
-                    Assert.Equal("qux", actions[0].Item);
-                    Assert.Equal("baz", actions[1].Item);
-                    Assert.Equal("bar", actions[2].Item);
-                    Assert.Equal("foo", actions[3].Item);
-                    Assert.Equal("fork-foo", actions[4].Item);
-                    Assert.Equal("fork-bar", actions[5].Item);
-                    Assert.Equal("fork-baz", actions[6].Item);
-
-                    RenderRecord[] blockRenders = _renderer.ActionRecords
-                        .Where(r => r.Action is MinerReward)
-                        .ToArray();
-
-                    // except genesis block.
-                    Assert.Equal(
-                        (Integer)(totalBlockCount - 1),
-                        (Integer)_blockChain.GetState(minerAddress)
-                    );
-                    Assert.Equal(totalBlockCount, blockRenders.Length);
-                    Assert.True(blockRenders.Take(unRenderBlockCount).All(r => r.Unrender));
-                    Assert.True(blockRenders.Skip(unRenderBlockCount).All(r => r.Render));
-
-                    Assert.Equal(renders.Select(r => r.Render), renders2.Select(r => r.Render));
-                    Assert.Equal(actions.Select(a => a.Item), actions2.Select(a => a.Item));
-                    Assert.Equal(
-                        blockRenders.Select(r => r.Render),
-                        MinerReward.RenderRecords.Value.Select(r => r.Render)
-                    );
-                }
-                else
-                {
-                    Assert.Empty(renders);
-                    Assert.Empty(renders2);
-                }
+                Assert.Empty(blockStatesStore.ListStateKeys(previousChainId));
             }
-            finally
+
+            Assert.Empty(_blockChain.Store.ListTxNonces(previousChainId));
+
+            RenderRecord[] renders = _renderer.ActionRecords
+                .Where(r => r.Action is DumbAction)
+                .ToArray();
+            DumbAction[] actions = renders.Select(r => (DumbAction)r.Action).ToArray();
+
+            int actionsCountA = txsA.Sum(
+                a => a.Sum(tx => tx.Actions.Count)
+            );
+            int actionsCountB = txsB.Sum(tx => tx.Actions.Count);
+
+            int totalBlockCount = (int)_blockChain[-1].Index + 1;
+            int unRenderBlockCount = 2;
+
+            if (render)
             {
-                DumbAction.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
-                MinerReward.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
+                Assert.Equal(actionsCountB + actionsCountA, renders.Length);
+                Assert.True(renders.Take(actionsCountA).All(r => r.Unrender));
+                Assert.True(renders.Skip(actionsCountA).All(r => r.Render));
+
+                Assert.Equal("qux", actions[0].Item);
+                Assert.Equal("baz", actions[1].Item);
+                Assert.Equal("bar", actions[2].Item);
+                Assert.Equal("foo", actions[3].Item);
+                Assert.Equal("fork-foo", actions[4].Item);
+                Assert.Equal("fork-bar", actions[5].Item);
+                Assert.Equal("fork-baz", actions[6].Item);
+
+                RenderRecord[] blockRenders = _renderer.ActionRecords
+                    .Where(r => r.Action is MinerReward)
+                    .ToArray();
+
+                // except genesis block.
+                Assert.Equal(
+                    (Integer)(totalBlockCount - 1),
+                    (Integer)_blockChain.GetState(minerAddress)
+                );
+                Assert.Equal(totalBlockCount, blockRenders.Length);
+                Assert.True(blockRenders.Take(unRenderBlockCount).All(r => r.Unrender));
+                Assert.True(blockRenders.Skip(unRenderBlockCount).All(r => r.Render));
+            }
+            else
+            {
+                Assert.Empty(renders);
             }
         }
 
@@ -2524,26 +2460,6 @@ namespace Libplanet.Tests.Blockchain
                     .SetState(SignerKey, (Text)context.Signer.ToHex())
                     .SetState(MinerKey, (Text)context.Miner.ToHex())
                     .SetState(BlockIndexKey, (Integer)context.BlockIndex);
-            }
-
-            public void Render(
-                IActionContext context,
-                IAccountStateDelta nextStates)
-            {
-            }
-
-            public void Unrender(
-                IActionContext context,
-                IAccountStateDelta nextStates)
-            {
-            }
-
-            public void RenderError(IActionContext context, Exception exception)
-            {
-            }
-
-            public void UnrenderError(IActionContext context, Exception exception)
-            {
             }
         }
     }

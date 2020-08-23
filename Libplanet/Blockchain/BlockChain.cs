@@ -490,11 +490,9 @@ namespace Libplanet.Blockchain
 
         /// <summary>
         /// Adds a <paramref name="block"/> to the end of this chain.
-        /// <para>Note that <see cref="IAction.Render"/> methods of
-        /// all <see cref="IAction"/> objects that belong
-        /// to the <paramref name="block"/> are called right after
-        /// the <paramref name="block"/> is confirmed (and thus all states
-        /// reflect changes in the <paramref name="block"/>).</para>
+        /// <para>Note that <see cref="Renderers"/> receive events right after the <paramref
+        /// name="block"/> is confirmed (and thus all states reflect changes in the <paramref
+        /// name="block"/>).</para>
         /// </summary>
         /// <param name="block">A next <see cref="Block{T}"/>, which is mined,
         /// to add.</param>
@@ -514,11 +512,9 @@ namespace Libplanet.Blockchain
 
         /// <summary>
         /// Adds a <paramref name="block"/> to the end of this chain.
-        /// <para>Note that <see cref="IAction.Render"/> methods of
-        /// all <see cref="IAction"/> objects that belong
-        /// to the <paramref name="block"/> are called right after
-        /// the <paramref name="block"/> is confirmed (and thus all states
-        /// reflect changes in the <paramref name="block"/>).</para>
+        /// <para>Note that <see cref="Renderers"/> receive events right after the <paramref
+        /// name="block"/> is confirmed (and thus all states reflect changes in the <paramref
+        /// name="block"/>).</para>
         /// </summary>
         /// <param name="block">A next <see cref="Block{T}"/>, which is mined,
         /// to add.</param>
@@ -1006,7 +1002,6 @@ namespace Libplanet.Blockchain
             {
                 if (evaluation.Exception is null)
                 {
-                    evaluation.Action.Render(evaluation.InputContext, evaluation.OutputStates);
                     foreach (IRenderer<T> renderer in Renderers)
                     {
                         renderer.RenderAction(
@@ -1018,7 +1013,6 @@ namespace Libplanet.Blockchain
                 }
                 else
                 {
-                    evaluation.Action.RenderError(evaluation.InputContext, evaluation.Exception);
                     foreach (IRenderer<T> renderer in Renderers)
                     {
                         renderer.RenderActionError(
@@ -1459,10 +1453,6 @@ namespace Libplanet.Blockchain
                         _logger.Debug("Unrender an action: {Action}.", evaluation.Action);
                         if (evaluation.Exception is null)
                         {
-                            evaluation.Action.Unrender(
-                                evaluation.InputContext,
-                                evaluation.OutputStates
-                            );
                             foreach (IRenderer<T> renderer in Renderers)
                             {
                                 renderer.UnrenderAction(
@@ -1474,10 +1464,6 @@ namespace Libplanet.Blockchain
                         }
                         else
                         {
-                            evaluation.Action.UnrenderError(
-                                evaluation.InputContext,
-                                evaluation.Exception
-                            );
                             foreach (IRenderer<T> renderer in Renderers)
                             {
                                 renderer.UnrenderActionError(

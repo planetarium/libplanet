@@ -8,8 +8,20 @@ To be released.
 
 ### Backward-incompatible API changes
 
- -  Added `IAction.RenderError()` and `IAction.UnrenderError()` methods.
-    [[#860], [#875]]
+ -  Extracted rendering methods from `IAction` to `IRenderer<T>`,
+    which is introduced in this version.
+    From now on, rendering logic needs to be *injected* from outside
+    through `BlockChain<T>.Renderers`, rather than `IAction`s knowing
+    how to render themselves.
+    `IRenderer<T>` also unified `BlockChain<T>.TipChanged` event,
+    and introduced new events like `IRenderer<T>.RenderActionError()`
+    and `IRenderer<T>.RenderReorg()`.
+    [[#860], [#875], [#959], [#963]]
+     -  Removed `IAction.Render()` method, which was replaced by
+        `IRenderer<T>.RenderAction()`.
+     -  Removed `IAction.Unrender()` method, which was replaced by
+        `IRenderer<T>.UnrenderAction()`.
+     -  Removed `PolymorphicAction<T>.Render()` and `Unrender()` methods.
  -  Added methods related fungible asset states to `IAccountStateDelta`:
     [[#861], [#900], [#954]]
      -  `UpdatedFungibleAssetsAccounts` property
@@ -158,6 +170,7 @@ To be released.
      -  Added `FungibleAssetStateCompleters<T>` static class.
      -  Added `Swarm<T>.GetTrustedStateCompleterAsync()` method.
  -  Added `IRenderer<T>` interface.  [[#959], [#963]]
+ -  Added `PolymorphicRenderer<T>` class.  [[#959], [#963]]
  -  Added `AnonymousRenderer<T>` class.  [[#959], [#963]]
  -  Added `LoggedRenderer<T>` class.  [[#959], [#963]]
  -  Added `BlockChain<T>.Renderers` property.  [[#959], [#963]]

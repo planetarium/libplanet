@@ -3,6 +3,7 @@ using System.Collections.Immutable;
 using Libplanet.Action;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Blocks;
+using Serilog;
 
 namespace Libplanet.Tests.Common
 {
@@ -18,6 +19,12 @@ namespace Libplanet.Tests.Common
 
         public ImmutableList<RenderRecord> ActionRecords { get; private set; }
 
+        public ImmutableList<(IAction Action, Exception Exception, bool Unrender)> ErrorRecords
+        {
+            get;
+            private set;
+        }
+
         public ImmutableList<(Block<T> Old, Block<T> New)> BlockRecords { get; private set; }
 
         public ImmutableList<(Block<T> Old, Block<T> New, Block<T> Branchpoint)> ReorgRecords
@@ -29,8 +36,10 @@ namespace Libplanet.Tests.Common
         public void ResetRecords()
         {
             ActionRecords = ImmutableList<RenderRecord>.Empty;
+            ErrorRecords = ImmutableList<(IAction, Exception, bool)>.Empty;
             BlockRecords = ImmutableList<(Block<T> Old, Block<T> New)>.Empty;
             ReorgRecords = ImmutableList<(Block<T> Old, Block<T> New, Block<T> Branchpoint)>.Empty;
+            Log.Logger.ForContext<DumbRenderer<T>>().Debug("Reset records.");
         }
 
         public void RenderAction(
@@ -56,6 +65,7 @@ namespace Libplanet.Tests.Common
             Exception exception
         )
         {
+            ErrorRecords = ErrorRecords.Add((action, exception, false));
         }
 
         public void UnrenderAction(
@@ -77,6 +87,7 @@ namespace Libplanet.Tests.Common
             Exception exception
         )
         {
+            ErrorRecords = ErrorRecords.Add((action, exception, true));
         }
 
         public void RenderBlock(Block<T> oldTip, Block<T> newTip) =>

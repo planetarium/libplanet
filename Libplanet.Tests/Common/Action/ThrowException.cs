@@ -16,18 +16,11 @@ namespace Libplanet.Tests.Common.Action
 
         public bool ThrowOnExecution { get; set; }
 
-        public bool ThrowOnRendering { get; set; }
-
-        public Action<IActionContext, Exception> OnRenderError { get; set; }
-
-        public Action<IActionContext, Exception> OnUnrenderError { get; set; }
-
         public IValue PlainValue =>
             new Bencodex.Types.Dictionary(new Dictionary<IKey, IValue>
             {
                 [(Text)"throw_on_rehearsal"] = new Boolean(ThrowOnRehearsal),
                 [(Text)"throw_on_execution"] = new Boolean(ThrowOnExecution),
-                [(Text)"throw_on_rendering"] = new Boolean(ThrowOnRendering),
             });
 
         public void LoadPlainValue(IValue plainValue)
@@ -39,7 +32,6 @@ namespace Libplanet.Tests.Common.Action
         {
             ThrowOnRehearsal = plainValue.GetValue<Boolean>("throw_on_rehearsal");
             ThrowOnExecution = plainValue.GetValue<Boolean>("throw_on_execution");
-            ThrowOnRendering = plainValue.GetValue<Boolean>("throw_on_rendering");
         }
 
         public IAccountStateDelta Execute(IActionContext context)
@@ -50,38 +42,6 @@ namespace Libplanet.Tests.Common.Action
             }
 
             return context.PreviousStates;
-        }
-
-        public void Render(
-            IActionContext context,
-            IAccountStateDelta nextStates)
-        {
-            if (ThrowOnRendering)
-            {
-                throw new SomeException("An expected exception.");
-            }
-        }
-
-        public void Unrender(
-            IActionContext context,
-            IAccountStateDelta nextStates)
-        {
-        }
-
-        public void RenderError(IActionContext context, Exception exception)
-        {
-            if (!(OnRenderError is null))
-            {
-                OnRenderError(context, exception);
-            }
-        }
-
-        public void UnrenderError(IActionContext context, Exception exception)
-        {
-            if (!(OnUnrenderError is null))
-            {
-                OnUnrenderError(context, exception);
-            }
         }
 
         public class SomeException : Exception

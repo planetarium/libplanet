@@ -154,8 +154,8 @@ To manage these Blocks, Libplanet offers a class called @"Libplanet.Blockchain.B
 Rendering
 ---------
 
-One way for game developers to reflect the State of the game is by using [`BlockChain<T>.GetState()`].
-
+One way for game developers to reflect the State of the game is by using
+@"Libplanet.Blockchain.BlockChain`1.GetState(Libplanet.Address,System.Nullable{Libplanet.HashDigest{SHA256}},Libplanet.Blockchain.StateCompleter{`0})".
 
 ```csharp
 public class Game : MonoBehaviour
@@ -204,22 +204,28 @@ Although this method works, there are still some problems because reflecting the
 - If the wait time is long, the interval between States being reflected in the game is also extended, and if it becomes too short, frequent State checks makes the process inefficient.
 - If multiple actions were executed in a short period of time, they would not be handled accurately.
 
-Libplanet provides a rendering mechanism called [`IAction.Render()`] to solve this problem. [`IAction.Render()`] is called after a Block with the corresponding Actions is confirmed and the State is transitioned. The following code has been re-implemented using [`IAction.Render()`].
+Libplanet provides a rendering mechanism called
+@"Libplanet.Blockchain.Renderers.IRenderer`1" to solve this problem.
+@"Libplanet.Blockchain.Renderers.IRenderer`1.RenderAction(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)"
+is called after a @"Libplanet.Blocks.Block`1" with the corresponding
+@"Libplanet.Action.IAction"s is confirmed and the state is transitioned.
+The following code has been re-implemented using
+@"Libplanet.Blockchain.Renderers.IRenderer`1.RenderAction(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)".
 
 ```csharp
-public class Win : IAction
+public class WinRenderer : IRenderer<Win>
 {
     // ...
 
-    public override void Render(IActioncontext ctx, IAccountstatedelta nextStates)
+    public void RenderAction(IAction action,
+                             IActionContext context,
+                             IAccountStateDelta nextStates)
     {
-        Game.UpdateScore((long?) nextStates.GetState())
+        Game.UpdateScore((long?)nextStates.GetState())
     }
 }
 ```
 
-[`BlockChain<T>.GetState()`]: xref:Libplanet.Blockchain.BlockChain`1.GetState(Libplanet.Address,System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},System.Boolean)
-[`IAction.Render()`]: xref:Libplanet.Action.IAction.Render(Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
 
 Networking
 ----------
