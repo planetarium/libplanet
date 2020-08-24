@@ -4,14 +4,21 @@ using Libplanet.Tests.Store.Trie;
 
 namespace Libplanet.RocksDBStore.Tests
 {
-    public class RocksDBKeyValueStoreTest : KeyValueStoreTest
+    public class RocksDBKeyValueStoreTest : KeyValueStoreTest, IDisposable
     {
+        private readonly RocksDBKeyValueStore _rocksDbKeyValueStore;
+
         public RocksDBKeyValueStoreTest()
         {
-            KeyValueStore = new RocksDBKeyValueStore(Path.Combine(
+            KeyValueStore = _rocksDbKeyValueStore = new RocksDBKeyValueStore(Path.Combine(
                     Path.GetTempPath(),
                     $"rocksdb_key_value_test_{Guid.NewGuid()}"));
             InitializePreStoredData();
+        }
+
+        public void Dispose()
+        {
+            _rocksDbKeyValueStore.Dispose();
         }
     }
 }

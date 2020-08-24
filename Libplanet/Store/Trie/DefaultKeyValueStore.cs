@@ -1,4 +1,5 @@
 #nullable enable
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Zio;
@@ -10,7 +11,7 @@ namespace Libplanet.Store.Trie
     /// The default built-in <see cref="IKeyValueStore"/> implementation. This stores data in
     /// the file system or in memory.
     /// </summary>
-    public class DefaultKeyValueStore : IKeyValueStore
+    public class DefaultKeyValueStore : IKeyValueStore, IDisposable
     {
         private readonly IFileSystem _root;
 
@@ -67,6 +68,11 @@ namespace Libplanet.Store.Trie
             {
                 _root.DeleteFile(path);
             }
+        }
+
+        public void Dispose()
+        {
+            _root.Dispose();
         }
 
         /// <inheritdoc/>

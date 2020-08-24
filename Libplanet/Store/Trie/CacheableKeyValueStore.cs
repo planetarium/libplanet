@@ -1,4 +1,5 @@
 #nullable enable
+using System;
 using System.Collections.Generic;
 using LruCacheNet;
 
@@ -7,7 +8,7 @@ namespace Libplanet.Store.Trie
     /// <summary>
     /// The proxy class to cache <see cref="IKeyValueStore"/> operations.
     /// </summary>
-    public class CacheableKeyValueStore : IKeyValueStore
+    public class CacheableKeyValueStore : IKeyValueStore, IDisposable
     {
         private readonly IKeyValueStore _keyValueStore;
         private readonly LruCache<byte[], byte[]> _cache;
@@ -60,6 +61,11 @@ namespace Libplanet.Store.Trie
         public bool Exists(byte[] key)
         {
             return _cache.ContainsKey(key) || _keyValueStore.Exists(key);
+        }
+
+        public void Dispose()
+        {
+            (_keyValueStore as IDisposable)?.Dispose();
         }
     }
 }

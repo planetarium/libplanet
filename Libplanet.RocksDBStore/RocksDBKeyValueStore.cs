@@ -1,4 +1,5 @@
 #nullable enable
+using System;
 using System.Collections.Generic;
 using Libplanet.Store.Trie;
 using RocksDbSharp;
@@ -9,7 +10,7 @@ namespace Libplanet.RocksDBStore
     /// The <a href="https://rocksdb.org/">RocksDB</a> <see cref="IKeyValueStore"/> implementation.
     /// This stores data in the RocksDB.
     /// </summary>
-    public class RocksDBKeyValueStore : IKeyValueStore
+    public class RocksDBKeyValueStore : IKeyValueStore, IDisposable
     {
         private readonly RocksDb _keyValueDb;
 
@@ -39,6 +40,11 @@ namespace Libplanet.RocksDBStore
         public void Delete(byte[] key)
         {
             _keyValueDb.Remove(key);
+        }
+
+        public void Dispose()
+        {
+            _keyValueDb.Dispose();
         }
 
         /// <inheritdoc/>
