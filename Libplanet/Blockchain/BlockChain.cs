@@ -11,6 +11,7 @@ using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
 using Libplanet.Blockchain.Policies;
+using Libplanet.Blockchain.Renderers;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Store;
@@ -22,14 +23,15 @@ namespace Libplanet.Blockchain
     /// <summary>
     /// A class have <see cref="Block{T}"/>s, <see cref="Transaction{T}"/>s, and the chain
     /// information.
+    /// <para>In order to watch its state changes, implement <see cref="IRenderer{T}"/>
+    /// interface and pass it to the <see
+    /// cref="BlockChain{T}(IBlockPolicy{T},IStore,IStateStore,Block{T},IEnumerable{IRenderer{T}})"
+    /// /> constructor.</para>
     /// </summary>
     /// <remarks>This object is guaranteed that it has at least one block, since it takes a genesis
     /// block when it's instantiated.</remarks>
     /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
     /// to <see cref="Block{T}"/>'s type parameter.</typeparam>
-    /// <seealso cref="IAction"/>
-    /// <seealso cref="Block{T}"/>
-    /// <seealso cref="Transaction{T}"/>
     public class BlockChain<T>
         where T : IAction, new()
     {
@@ -71,8 +73,8 @@ namespace Libplanet.Blockchain
         /// it checks if the existing genesis block and this argument is the same.
         /// If the <paramref name="store"/> has no genesis block yet this argument will
         /// be used for that.</param>
-        /// <param name="render">Defines whether to render actions on this
-        /// <see cref="BlockChain{T}"/>.  Turned on by default.</param>
+        /// <param name="renderers">Listens state changes on the created chain.  Listens nothing
+        /// by default or if it is <c>null</c>.</param>
         /// <param name="stateStore"><see cref="IStateStore"/> to store states.</param>
         /// <exception cref="InvalidGenesisBlockException">Thrown when the <paramref name="store"/>
         /// has a genesis block and it does not match to what the network expects
@@ -82,7 +84,7 @@ namespace Libplanet.Blockchain
             IStore store,
             IStateStore stateStore,
             Block<T> genesisBlock,
-            bool render = true
+            IEnumerable<IRenderer<T>> renderers = null
             )
             : this(
                 policy,
@@ -90,7 +92,8 @@ namespace Libplanet.Blockchain
                 stateStore,
                 store.GetCanonicalChainId() ?? Guid.NewGuid(),
                 genesisBlock,
-                render)
+                renderers
+            )
         {
         }
 
@@ -100,7 +103,7 @@ namespace Libplanet.Blockchain
             IStateStore stateStore,
             Guid id,
             Block<T> genesisBlock,
-            bool render
+            IEnumerable<IRenderer<T>> renderers
         )
             : this(
                 policy,
@@ -109,7 +112,7 @@ namespace Libplanet.Blockchain
                 id,
                 genesisBlock,
                 false,
-                render
+                renderers
             )
         {
         }
@@ -121,7 +124,7 @@ namespace Libplanet.Blockchain
             Guid id,
             Block<T> genesisBlock,
             bool inFork,
-            bool render
+            IEnumerable<IRenderer<T>> renderers
         )
         {
             Id = id;
@@ -137,7 +140,9 @@ namespace Libplanet.Blockchain
 
             _blocks = new BlockSet<T>(store);
             _transactions = new TransactionSet<T>(store);
-            Render = render;
+            Renderers = renderers is IEnumerable<IRenderer<T>> r
+                ? r.ToImmutableArray()
+                : ImmutableArray<IRenderer<T>>.Empty;
             _rwlock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
             _txLock = new object();
 
@@ -182,17 +187,18 @@ namespace Libplanet.Blockchain
         /// <summary>
         /// An event which is invoked when <see cref="Tip"/> is changed.
         /// </summary>
-        public event EventHandler<TipChangedEventArgs> TipChanged;
+        private event EventHandler<(Block<T> OldTip, Block<T> NewTip)> TipChanged;
 
         /// <summary>
-        /// An event which is invoked when the chain is reorged.
+        /// The list of registered renderers listening the state changes.
         /// </summary>
-        public event EventHandler<ReorgedEventArgs> Reorged;
-
-        /// <summary>
-        /// Defines whether to render actions on this <see cref="BlockChain{T}"/>.
-        /// </summary>
-        public bool Render { get; }
+        /// <remarks>
+        /// Since this value is immutable, renderers cannot be registered after once a <see
+        /// cref="BlockChain{T}"/> object is instantiated; use <c>renderers</c> option of <see cref=
+        /// "BlockChain{T}(IBlockPolicy{T},IStore,IStateStore,Block{T},IEnumerable{IRenderer{T}})"/>
+        /// constructor instead.
+        /// </remarks>
+        public IImmutableList<IRenderer<T>> Renderers { get; }
 
         public IBlockPolicy<T> Policy { get; }
 
@@ -465,11 +471,9 @@ namespace Libplanet.Blockchain
 
         /// <summary>
         /// Adds a <paramref name="block"/> to the end of this chain.
-        /// <para>Note that <see cref="IAction.Render"/> methods of
-        /// all <see cref="IAction"/> objects that belong
-        /// to the <paramref name="block"/> are called right after
-        /// the <paramref name="block"/> is confirmed (and thus all states
-        /// reflect changes in the <paramref name="block"/>).</para>
+        /// <para>Note that <see cref="Renderers"/> receive events right after the <paramref
+        /// name="block"/> is confirmed (and thus all states reflect changes in the <paramref
+        /// name="block"/>).</para>
         /// </summary>
         /// <param name="block">A next <see cref="Block{T}"/>, which is mined,
         /// to add.</param>
@@ -489,11 +493,9 @@ namespace Libplanet.Blockchain
 
         /// <summary>
         /// Adds a <paramref name="block"/> to the end of this chain.
-        /// <para>Note that <see cref="IAction.Render"/> methods of
-        /// all <see cref="IAction"/> objects that belong
-        /// to the <paramref name="block"/> are called right after
-        /// the <paramref name="block"/> is confirmed (and thus all states
-        /// reflect changes in the <paramref name="block"/>).</para>
+        /// <para>Note that <see cref="Renderers"/> receive events right after the <paramref
+        /// name="block"/> is confirmed (and thus all states reflect changes in the <paramref
+        /// name="block"/>).</para>
         /// </summary>
         /// <param name="block">A next <see cref="Block{T}"/>, which is mined,
         /// to add.</param>
@@ -672,11 +674,7 @@ namespace Libplanet.Blockchain
             CancellationTokenSource cancellationTokenSource =
                 CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, cts.Token);
 
-            void WatchTip(object target, TipChangedEventArgs args)
-            {
-                cts.Cancel();
-            }
-
+            void WatchTip(object target, (Block<T> OldTip, Block<T> NewTip) tip) => cts.Cancel();
             TipChanged += WatchTip;
 
             Block<T> block;
@@ -705,14 +703,16 @@ namespace Libplanet.Blockchain
 
                 throw new OperationCanceledException(cancellationToken);
             }
+            finally
+            {
+                TipChanged -= WatchTip;
+                cancellationTokenSource.Dispose();
+                cts.Dispose();
+            }
 
             var actionEvaluations = EvaluateActions(block, StateCompleterSet<T>.Recalculate);
 
             block = new Block<T>(block, ActionEvaluationsToHash(actionEvaluations));
-
-            TipChanged -= WatchTip;
-            cancellationTokenSource.Dispose();
-            cts.Dispose();
 
             if (append)
             {
@@ -875,13 +875,6 @@ namespace Libplanet.Blockchain
                     }
 
                     Store.AppendIndex(Id, block.Hash);
-                    var tipChangedEventArgs = new TipChangedEventArgs
-                    {
-                        PreviousIndex = prevTip?.Index,
-                        PreviousHash = prevTip?.Hash,
-                        Index = block.Index,
-                        Hash = block.Hash,
-                    };
 
                     _logger.Debug("Unstaging transactions...");
 
@@ -903,7 +896,12 @@ namespace Libplanet.Blockchain
                         .Select(tx => tx.Id)
                         .ToImmutableHashSet();
                     Store.UnstageTransactionIds(txIds);
-                    TipChanged?.Invoke(this, tipChangedEventArgs);
+                    TipChanged?.Invoke(this, (prevTip, block));
+                    foreach (IRenderer<T> renderer in Renderers)
+                    {
+                        renderer.RenderBlock(oldTip: prevTip ?? Genesis, newTip: block);
+                    }
+
                     _logger.Debug("Block {blockIndex}: {block} is appended.", block?.Index, block);
                 }
                 finally
@@ -916,7 +914,7 @@ namespace Libplanet.Blockchain
                 _rwlock.ExitUpgradeableReadLock();
             }
 
-            if (Render && renderActions)
+            if (renderActions)
             {
                 RenderBlock(evaluations, block, stateCompleters);
             }
@@ -976,11 +974,25 @@ namespace Libplanet.Blockchain
             {
                 if (evaluation.Exception is null)
                 {
-                    evaluation.Action.Render(evaluation.InputContext, evaluation.OutputStates);
+                    foreach (IRenderer<T> renderer in Renderers)
+                    {
+                        renderer.RenderAction(
+                            evaluation.Action,
+                            evaluation.InputContext,
+                            evaluation.OutputStates
+                        );
+                    }
                 }
                 else
                 {
-                    evaluation.Action.RenderError(evaluation.InputContext, evaluation.Exception);
+                    foreach (IRenderer<T> renderer in Renderers)
+                    {
+                        renderer.RenderActionError(
+                            evaluation.Action,
+                            evaluation.InputContext,
+                            evaluation.Exception
+                        );
+                    }
                 }
 
                 cnt++;
@@ -1211,7 +1223,7 @@ namespace Libplanet.Blockchain
             }
         }
 
-        internal BlockChain<T> Fork(HashDigest<SHA256> point)
+        internal BlockChain<T> Fork(HashDigest<SHA256> point, bool inheritRenderers = true)
         {
             if (!ContainsBlock(point))
             {
@@ -1229,8 +1241,11 @@ namespace Libplanet.Blockchain
                     nameof(point));
             }
 
+            IEnumerable<IRenderer<T>> renderers = inheritRenderers
+                ? Renderers
+                : Enumerable.Empty<IRenderer<T>>();
             var forked = new BlockChain<T>(
-                Policy, Store, StateStore, Guid.NewGuid(), Genesis, true, Render);
+                Policy, Store, StateStore, Guid.NewGuid(), Genesis, true, renderers);
             Guid forkedId = forked.Id;
             _logger.Debug(
                 "Trying to fork chain at {branchPoint}" +
@@ -1390,7 +1405,7 @@ namespace Libplanet.Blockchain
                 topmostCommon
             );
 
-            if (Render && render)
+            if (render)
             {
                 // Unrender stale actions.
                 _logger.Debug("Unrendering abandoned actions...");
@@ -1412,17 +1427,25 @@ namespace Libplanet.Blockchain
                         _logger.Debug("Unrender an action: {Action}.", evaluation.Action);
                         if (evaluation.Exception is null)
                         {
-                            evaluation.Action.Unrender(
-                                evaluation.InputContext,
-                                evaluation.OutputStates
-                            );
+                            foreach (IRenderer<T> renderer in Renderers)
+                            {
+                                renderer.UnrenderAction(
+                                    evaluation.Action,
+                                    evaluation.InputContext,
+                                    evaluation.OutputStates
+                                );
+                            }
                         }
                         else
                         {
-                            evaluation.Action.UnrenderError(
-                                evaluation.InputContext,
-                                evaluation.Exception
-                            );
+                            foreach (IRenderer<T> renderer in Renderers)
+                            {
+                                renderer.UnrenderActionError(
+                                    evaluation.Action,
+                                    evaluation.InputContext,
+                                    evaluation.Exception
+                                );
+                            }
                         }
 
                         cnt++;
@@ -1449,27 +1472,22 @@ namespace Libplanet.Blockchain
             {
                 _rwlock.EnterWriteLock();
 
-                var tipChangedEventArgs = new TipChangedEventArgs
-                {
-                    PreviousHash = Tip?.Hash,
-                    PreviousIndex = Tip?.Index,
-                    Hash = other.Tip.Hash,
-                    Index = other.Tip.Index,
-                };
-
-                var reorgedEventArgs = new ReorgedEventArgs
-                {
-                    OldTip = Tip,
-                    NewTip = other.Tip,
-                    Branchpoint = topmostCommon,
-                };
-
+                Block<T> oldTip = Tip ?? Genesis, newTip = other.Tip ?? other.Genesis;
                 Guid obsoleteId = Id;
                 Id = other.Id;
                 Store.SetCanonicalChainId(Id);
                 _blocks = new BlockSet<T>(Store);
-                TipChanged?.Invoke(this, tipChangedEventArgs);
-                Reorged?.Invoke(this, reorgedEventArgs);
+                TipChanged?.Invoke(this, (oldTip, newTip));
+                foreach (IRenderer<T> renderer in Renderers)
+                {
+                    renderer.RenderReorg(oldTip, newTip, branchpoint: topmostCommon);
+                }
+
+                foreach (IRenderer<T> renderer in Renderers)
+                {
+                    renderer.RenderBlock(oldTip: oldTip, newTip: newTip);
+                }
+
                 _transactions = new TransactionSet<T>(Store);
                 Store.DeleteChainId(obsoleteId);
             }
@@ -1478,7 +1496,7 @@ namespace Libplanet.Blockchain
                 _rwlock.ExitWriteLock();
             }
 
-            if (Render && render)
+            if (render)
             {
                 _logger.Debug("Rendering actions in new chain.");
 
@@ -1704,55 +1722,6 @@ namespace Libplanet.Blockchain
             {
                 _rwlock.ExitUpgradeableReadLock();
             }
-        }
-
-        /// <summary>
-        /// Provides data for the <see cref="TipChanged"/> event.
-        /// </summary>
-        public class TipChangedEventArgs : EventArgs
-        {
-            /// <summary>
-            /// The <see cref="Block{T}.Index"/> of <see cref="Tip"/> <em>before</em> changed.
-            /// Can be <c>null</c> if the blockchain was empty before.
-            /// </summary>
-            public long? PreviousIndex { get; set; }
-
-            /// <summary>
-            /// The <see cref="Block{T}.Hash"/> of <see cref="Tip"/> <em>before</em> changed.
-            /// Can be <c>null</c> if the blockchain was empty before.
-            /// </summary>
-            public HashDigest<SHA256>? PreviousHash { get; set; }
-
-            /// <summary>
-            /// The <see cref="Block{T}.Index"/> of <see cref="Tip"/> <em>after</em> changed.
-            /// </summary>
-            public long Index { get; set; }
-
-            /// <summary>
-            /// The <see cref="Block{T}.Hash"/> of <see cref="Tip"/> <em>after</em> changed.
-            /// </summary>
-            public HashDigest<SHA256> Hash { get; set; }
-        }
-
-        /// <summary>
-        /// Provides data for the <see cref="BlockChain{T}.Reorged"/> event.
-        /// </summary>
-        public class ReorgedEventArgs : EventArgs
-        {
-            /// <summary>
-            /// The <see cref="BlockChain{T}.Tip"/> before the chain is reorged.
-            /// </summary>
-            public Block<T> OldTip { get; set; }
-
-            /// <summary>
-            /// The <see cref="BlockChain{T}.Tip"/> after the chain is reorged.
-            /// </summary>
-            public Block<T> NewTip { get; set; }
-
-            /// <summary>
-            /// The <see cref="Block{T}"/> point of the chain branches off.
-            /// </summary>
-            public Block<T> Branchpoint { get; set; }
         }
     }
 }

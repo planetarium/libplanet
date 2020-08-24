@@ -14,6 +14,7 @@ using Libplanet.Crypto;
 using Libplanet.Net;
 using Libplanet.Store;
 using Libplanet.Tests.Blockchain;
+using Libplanet.Tests.Common;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Libplanet.Tx;
@@ -527,6 +528,7 @@ namespace Libplanet.Tests.Net
 
             BlockChain<DumbAction> minerChain = _blockchains[0];
             BlockChain<DumbAction> receiverChain = _blockchains[1];
+            DumbRenderer<DumbAction> receiverRenderer = _renderers[1];
             PrivateKey[] signers =
                 Enumerable.Repeat(0, 10).Select(_ => new PrivateKey()).ToArray();
             Address[] targets = Enumerable.Repeat(0, signers.Length).Select(_
@@ -581,8 +583,7 @@ namespace Libplanet.Tests.Net
 
                 await receiverSwarm.AddPeersAsync(new[] { minerSwarm.AsPeer }, null);
 
-                DumbAction.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
-                MinerReward.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
+                receiverRenderer.ResetRecords();
 
                 IImmutableSet<Address> trustedPeers = trust
                     ? new[] { minerSwarm.Address }.ToImmutableHashSet()
@@ -591,8 +592,7 @@ namespace Libplanet.Tests.Net
                 await receiverSwarm.PreloadAsync(trustedStateValidators: trustedPeers);
                 _logger.Verbose("The receiver swarm finished preloading.");
 
-                Assert.Empty(DumbAction.RenderRecords.Value);
-                Assert.Empty(MinerReward.RenderRecords.Value);
+                Assert.Empty(receiverRenderer.ActionRecords);
                 Assert.Equal(minerChain.BlockHashes, receiverChain.BlockHashes);
                 int i = 0;
                 foreach (Address target in targets)
@@ -663,9 +663,6 @@ namespace Libplanet.Tests.Net
             {
                 await StopAsync(minerSwarm);
                 await StopAsync(receiverSwarm);
-
-                DumbAction.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
-                MinerReward.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
             }
         }
 
@@ -836,8 +833,9 @@ namespace Libplanet.Tests.Net
 
             BlockChain<DumbAction> minerChain =
                 TestUtils.MakeBlockChain(policy, fx1.Store);
+            var receiverRenderer = new DumbRenderer<DumbAction>();
             BlockChain<DumbAction> receiverChain =
-                TestUtils.MakeBlockChain(policy, fx2.Store);
+                TestUtils.MakeBlockChain(policy, fx2.Store, renderers: new[] { receiverRenderer });
 
             Swarm<DumbAction> minerSwarm = CreateSwarm(minerChain);
             Swarm<DumbAction> receiverSwarm = CreateSwarm(receiverChain);
@@ -903,7 +901,7 @@ namespace Libplanet.Tests.Net
 
                 await receiverSwarm.AddPeersAsync(new[] { minerSwarm.AsPeer }, null);
 
-                DumbAction.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
+                receiverRenderer.ResetRecords();
 
                 IImmutableSet<Address> trustedPeers =
                     new[] { minerSwarm.Address }.ToImmutableHashSet();
@@ -931,7 +929,7 @@ namespace Libplanet.Tests.Net
 
                 await allProgressesReported.WaitAsync();
 
-                Assert.Empty(DumbAction.RenderRecords.Value);
+                Assert.Empty(receiverRenderer.ActionRecords);
                 Assert.Equal(minerChain.BlockHashes, receiverChain.BlockHashes);
                 int i = 0;
                 foreach (Address target in targets)
@@ -986,8 +984,6 @@ namespace Libplanet.Tests.Net
             {
                 await StopAsync(minerSwarm);
                 await StopAsync(receiverSwarm);
-
-                DumbAction.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
 
                 fx1.Dispose();
                 fx2.Dispose();

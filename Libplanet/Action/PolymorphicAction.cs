@@ -42,19 +42,6 @@ namespace Libplanet.Action
     ///     // Leaves Execute() abstract so that concrete subclasses
     ///     // implement their own logic.
     ///     public abstract IAccountStateDelta Execute(IActionContext context);
-    ///     // Makes Render() no-op by default, but overrideable by subclasses.
-    ///     public virtual void Render(
-    ///         IActionContext context,
-    ///         IAccountStateDelta nextStates)
-    ///     {
-    ///     }
-    ///     // Makes Unrender() no-op by default,
-    ///     // but overrideable by subclasses.
-    ///     public virtual void Unrender(
-    ///         IActionContext context,
-    ///         IAccountStateDelta nextStates)
-    ///     {
-    ///     }
     ///     IValue IAction.PlainValue =>
     ///         new Bencodex.Types.Dictionary(new Dictionary<IKey, IValue>
     ///         {
@@ -95,24 +82,6 @@ namespace Libplanet.Action
     ///             })
     ///         );
     ///     }
-    ///     void IAction.Render(
-    ///         IActionContext context,
-    ///         IAccountStateDelta nextStates)
-    ///     {
-    ///         var c = new Character
-    ///         {
-    ///             Address = TargetAddress,
-    ///             Hp = (Integer)nextStates.GetState(TargetAddress),
-    ///         };
-    ///         c.Draw();
-    ///     }
-    ///     void IAction.Unrender(
-    ///         IActionContext context,
-    ///         IAccountStateDelta nextStates)
-    ///     {
-    ///         Character c = Character.GetByAddress(TargetAddress);
-    ///         c.Hide();
-    ///     }
     /// }
     /// [ActionType("attack")]
     /// public sealed class Attack : ActionBase
@@ -128,25 +97,6 @@ namespace Libplanet.Action
     ///                     (Text)"hp",
     ///                     (Integer)Math.Max(state.GetValue<Integer>("hp") - 5, 0))
     ///         );
-    ///     }
-    ///     void IAction.Render(
-    ///         IActionContext context,
-    ///         IAccountStateDelta nextStates)
-    ///     {
-    ///         Character c = Character.GetByAddress(TargetAddress);
-    ///         c.Hp = ((Bencodex.Types.Dictionary)nextStates.GetState(TargetAddress))
-    ///             .GetValue<Integer>("hp");
-    ///         c.Draw();
-    ///     }
-    ///     void IAction.Unrender(
-    ///         IActionContext context,
-    ///         IAccountStateDelta nextStates)
-    ///     {
-    ///         Character c = Character.GetByAddress(TargetAddress);
-    ///         var target =
-    ///             (Bencodex.Types.Dictionary)context.PreviousStates.GetState(TargetAddress);
-    ///         c.Hp = target.GetValue<Integer>("hp");
-    ///         c.Draw();
     ///     }
     /// }
     /// [ActionType("heal")]
@@ -164,28 +114,29 @@ namespace Libplanet.Action
     ///                     (Integer)Math.Min(state.GetValue<Integer>("hp") + 5, 20))
     ///         );
     ///     }
-    ///     void IAction.Render(
-    ///         IActionContext context,
-    ///         IAccountStateDelta nextStates)
-    ///     {
-    ///         Character c = Character.GetByAddress(TargetAddress);
-    ///         var target =
-    ///             (Bencodex.Types.Dictionary)context.PreviousStates.GetState(TargetAddress);
-    ///         c.Hp = target.GetValue<Integer>("hp");
-    ///         c.Draw();
-    ///     }
-    ///     void IAction.Unrender(
-    ///         IActionContext context,
-    ///         IAccountStateDelta nextStates)
-    ///     {
-    ///         Character c = Character.GetByAddress(TargetAddress);
-    ///         var target =
-    ///             (Bencodex.Types.Dictionary)context.PreviousStates.GetState(TargetAddress);
-    ///         c.Hp = target.GetValue<Integer>("hp");
-    ///         c.Draw();
-    ///     }
     /// }
     /// ]]></code>
+    /// Note that when it's rendered through <see cref="Blockchain.Renderers.IRenderer{T}"/>,
+    /// an instance of <see cref="PolymorphicAction{T}"/> is passed instead of its
+    /// <see cref="InnerAction"/>:
+    /// <code>
+    /// public class Renderer : IRenderer&lt;PolymorphicAction&lt;ActionBase&gt;&gt;
+    /// {
+    ///     public void RenderAction(IAction action,
+    ///                              IActionContext context,
+    ///                              IAccountStateDelta nextStates)
+    ///     {
+    ///         if (action is PolymorphicAction&lt;ActionBase&gt; polymorphicAction)
+    ///         {
+    ///             switch (polymorphicAction.InnerAction)
+    ///             {
+    ///                 // render things here
+    ///             }
+    ///         }
+    ///     }
+    ///     // ... other method implementations
+    /// }
+    /// </code>
     /// </example>
     /// <remarks>Every concrete action subclass of <typeparamref name="T"/>
     /// has to be marked with the <see cref="ActionTypeAttribute"/>.
@@ -298,31 +249,5 @@ namespace Libplanet.Action
         /// <inheritdoc/>
         public IAccountStateDelta Execute(IActionContext context) =>
             InnerAction.Execute(context);
-
-        /// <inheritdoc/>
-        public void Render(
-            IActionContext context,
-            IAccountStateDelta nextStates
-        ) =>
-            InnerAction.Render(context, nextStates);
-
-        /// <inheritdoc/>
-        public void Unrender(
-            IActionContext context,
-            IAccountStateDelta nextStates
-        ) =>
-            InnerAction.Unrender(context, nextStates);
-
-        /// <inheritdoc/>
-        public override string ToString() =>
-            $"{nameof(PolymorphicAction<T>)}<{InnerAction.GetType().FullName}>({InnerAction})";
-
-        /// <inheritdoc/>
-        public void RenderError(IActionContext context, Exception exception)
-            => InnerAction.RenderError(context, exception);
-
-        /// <inheritdoc/>
-        public void UnrenderError(IActionContext context, Exception exception)
-            => InnerAction.UnrenderError(context, exception);
     }
 }

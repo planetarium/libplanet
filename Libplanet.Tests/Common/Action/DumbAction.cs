@@ -61,12 +61,6 @@ namespace Libplanet.Tests.Common.Action
         {
         }
 
-        public static EventHandler<IAction> RenderEventHandler { get; set; }
-
-        public static AsyncLocal<ImmutableList<RenderRecord>>
-            RenderRecords { get; } =
-                new AsyncLocal<ImmutableList<RenderRecord>>();
-
         public static AsyncLocal<ImmutableList<ExecuteRecord>>
             ExecuteRecords { get; } = new AsyncLocal<ImmutableList<ExecuteRecord>>();
 
@@ -201,52 +195,6 @@ namespace Libplanet.Tests.Common.Action
             });
 
             return nextState;
-        }
-
-        public void Render(
-            IActionContext context,
-            IAccountStateDelta nextStates)
-        {
-            if (RenderRecords.Value is null)
-            {
-                RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
-            }
-
-            RenderRecords.Value = RenderRecords.Value.Add(new RenderRecord()
-            {
-                Render = true,
-                Action = this,
-                Context = context,
-                NextStates = nextStates,
-            });
-
-            RenderEventHandler?.Invoke(this, this);
-        }
-
-        public void Unrender(
-            IActionContext context,
-            IAccountStateDelta nextStates)
-        {
-            if (RenderRecords.Value is null)
-            {
-                RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
-            }
-
-            RenderRecords.Value = RenderRecords.Value.Add(new RenderRecord()
-            {
-                Unrender = true,
-                Action = this,
-                Context = context,
-                NextStates = nextStates,
-            });
-        }
-
-        public void RenderError(IActionContext context, Exception exception)
-        {
-        }
-
-        public void UnrenderError(IActionContext context, Exception exception)
-        {
         }
 
         public void LoadPlainValue(IValue plainValue)

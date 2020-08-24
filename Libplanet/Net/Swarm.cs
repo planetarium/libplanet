@@ -13,6 +13,7 @@ using AsyncIO;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain;
+using Libplanet.Blockchain.Renderers;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
@@ -288,8 +289,8 @@ namespace Libplanet.Net
         /// already <see cref="Running"/>.</exception>
         /// <remarks>If the <see cref="BlockChain"/> has no blocks at all or there are long behind
         /// blocks to caught in the network this method could lead to unexpected behaviors, because
-        /// this tries to <see cref="IAction.Render"/> <em>all</em> actions in the behind blocks
-        /// so that there are a lot of calls to <see cref="IAction.Render"/> method in a short
+        /// this tries to render <em>all</em> actions in the behind blocks so that there are
+        /// a lot of calls to methods of <see cref="BlockChain{T}.Renderers"/> in a short
         /// period of time.  This can lead a game startup slow.  If you want to omit rendering of
         /// these actions in the behind blocks use <see cref=
         /// "PreloadAsync(TimeSpan?, IProgress{PreloadState}, IImmutableSet{Address},
@@ -335,8 +336,8 @@ namespace Libplanet.Net
         /// already <see cref="Running"/>.</exception>
         /// <remarks>If the <see cref="BlockChain"/> has no blocks at all or there are long behind
         /// blocks to caught in the network this method could lead to unexpected behaviors, because
-        /// this tries to <see cref="IAction.Render"/> <em>all</em> actions in the behind blocks
-        /// so that there are a lot of calls to <see cref="IAction.Render"/> method in a short
+        /// this tries to render <em>all</em> actions in the behind blocks so that there are
+        /// a lot of calls to methods of <see cref="BlockChain{T}.Renderers"/> in a short
         /// period of time.  This can lead a game startup slow.  If you want to omit rendering of
         /// these actions in the behind blocks use <see cref=
         /// "PreloadAsync(TimeSpan?, IProgress{PreloadState}, IImmutableSet{Address},
@@ -541,15 +542,17 @@ namespace Libplanet.Net
             // all or nothing (i.e., atomic), we first fork the chain and stack up preloaded data
             // upon that forked workspace, and then if preloading ends replace the existing
             // blockchain with it.
+            // Note that it does not pass any renderers here so that they render nothing
+            // (because the workspace chain is for underlying).
             BlockChain<T> workspace = initialTip is Block<T> tip
-                ? BlockChain.Fork(tip.Hash)
+                ? BlockChain.Fork(tip.Hash, inheritRenderers: false)
                 : new BlockChain<T>(
                     BlockChain.Policy,
                     _store,
                     _store as IStateStore,
                     Guid.NewGuid(),
                     BlockChain.Genesis,
-                    false);
+                    Enumerable.Empty<IRenderer<T>>());
             Guid wId = workspace.Id;
             IStore wStore = workspace.Store;
             var chainIds = new HashSet<Guid>

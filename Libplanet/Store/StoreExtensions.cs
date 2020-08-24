@@ -117,30 +117,6 @@ namespace Libplanet.Store
             {
                 _value = plainValue;
             }
-
-            /// <inheritdoc/>
-            public void Render(IActionContext context, IAccountStateDelta nextStates)
-            {
-                // Does nothing.
-            }
-
-            /// <inheritdoc/>
-            public void RenderError(IActionContext context, Exception exception)
-            {
-                // Does nothing.
-            }
-
-            /// <inheritdoc/>
-            public void Unrender(IActionContext context, IAccountStateDelta nextStates)
-            {
-                // Does nothing.
-            }
-
-            /// <inheritdoc/>
-            public void UnrenderError(IActionContext context, Exception exception)
-            {
-                // Does nothing.
-            }
         }
     }
 }

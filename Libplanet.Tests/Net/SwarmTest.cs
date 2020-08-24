@@ -11,6 +11,7 @@ using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
+using Libplanet.Blockchain.Renderers;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net;
@@ -19,6 +20,7 @@ using Libplanet.Net.Protocols;
 using Libplanet.Store;
 using Libplanet.Stun;
 using Libplanet.Tests.Blockchain;
+using Libplanet.Tests.Common;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Libplanet.Tx;
@@ -61,12 +63,24 @@ namespace Libplanet.Tests.Net
             _fx3 = new DefaultStoreFixture(memory: true);
             _fx4 = new DefaultStoreFixture(memory: true);
 
+            _renderers = new List<DumbRenderer<DumbAction>>
+            {
+                new DumbRenderer<DumbAction>(),
+                new DumbRenderer<DumbAction>(),
+                new DumbRenderer<DumbAction>(),
+                new DumbRenderer<DumbAction>(),
+            };
+
+            LoggedRenderer<DumbAction>[][] loggedRenderers = _renderers
+                .Select(r => new[] { new LoggedRenderer<DumbAction>(r, _logger) })
+                .ToArray();
+
             _blockchains = new List<BlockChain<DumbAction>>
             {
-                TestUtils.MakeBlockChain(policy, _fx1.Store),
-                TestUtils.MakeBlockChain(policy, _fx2.Store),
-                TestUtils.MakeBlockChain(policy, _fx3.Store),
-                TestUtils.MakeBlockChain(policy, _fx4.Store),
+                TestUtils.MakeBlockChain(policy, _fx1.Store, renderers: loggedRenderers[0]),
+                TestUtils.MakeBlockChain(policy, _fx2.Store, renderers: loggedRenderers[1]),
+                TestUtils.MakeBlockChain(policy, _fx3.Store, renderers: loggedRenderers[2]),
+                TestUtils.MakeBlockChain(policy, _fx4.Store, renderers: loggedRenderers[3]),
             };
 
             _finalizers = new List<Func<Task>>();
@@ -957,18 +971,11 @@ namespace Libplanet.Tests.Net
             var privateKey = new PrivateKey();
             var minerSwarm = CreateSwarm(blockChain, privateKey);
             Swarm<DumbAction> receiverSwarm = _swarms[0];
-
-            DumbAction.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
-            MinerReward.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
+            DumbRenderer<DumbAction> receiverRenderer = _renderers[0];
 
             int renderCount = 0;
 
-            void RenderHandler(object target, IAction action)
-            {
-                renderCount += 1;
-            }
-
-            DumbAction.RenderEventHandler += RenderHandler;
+            receiverRenderer.RenderEventHandler += (_, a) => renderCount += a is DumbAction ? 1 : 0;
 
             Transaction<DumbAction>[] transactions =
             {
@@ -1375,15 +1382,16 @@ namespace Libplanet.Tests.Net
         public async Task RenderInFork()
         {
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
-            var miner1 = CreateSwarm(TestUtils.MakeBlockChain(policy, new DefaultStore(null)));
+            var renderer = new DumbRenderer<DumbAction>();
+            var chain = TestUtils.MakeBlockChain(
+                policy,
+                new DefaultStore(null),
+                renderers: new[] { renderer }
+            );
+            var miner1 = CreateSwarm(chain);
             var miner2 = CreateSwarm(TestUtils.MakeBlockChain(policy, new DefaultStore(null)));
 
             int renderCount = 0;
-
-            void RenderHandler(object target, IAction action)
-            {
-                renderCount += 1;
-            }
 
             try
             {
@@ -1405,7 +1413,7 @@ namespace Libplanet.Tests.Net
                 miner2.BlockChain.MakeTransaction(privKey, new[] { new DumbAction(addr, item) });
                 var latest = await miner2.BlockChain.MineBlock(miner2.Address);
 
-                DumbAction.RenderEventHandler += RenderHandler;
+                renderer.RenderEventHandler += (_, a) => renderCount += a is DumbAction ? 1 : 0;
 
                 miner2.BroadcastBlock(latest);
 
@@ -1421,7 +1429,6 @@ namespace Libplanet.Tests.Net
                 await StopAsync(miner2);
                 miner1.Dispose();
                 miner2.Dispose();
-                DumbAction.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
             }
         }
 
@@ -2178,22 +2185,6 @@ namespace Libplanet.Tests.Net
             }
 
             public void LoadPlainValue(IValue plainValue)
-            {
-            }
-
-            public void Render(IActionContext context, IAccountStateDelta nextStates)
-            {
-            }
-
-            public void RenderError(IActionContext context, Exception exception)
-            {
-            }
-
-            public void Unrender(IActionContext context, IAccountStateDelta nextStates)
-            {
-            }
-
-            public void UnrenderError(IActionContext context, Exception exception)
             {
             }
         }

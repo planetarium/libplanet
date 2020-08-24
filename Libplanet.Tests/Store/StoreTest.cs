@@ -1117,7 +1117,7 @@ namespace Libplanet.Tests.Store
                 store as IStateStore,
                 Guid.NewGuid(),
                 Fx.GenesisBlock,
-                true
+                renderers: null
             );
 
             store.ForkBlockIndexes(blocks.Id, forked.Id, blocks[branchPointIndex].Hash);
@@ -1275,22 +1275,6 @@ namespace Libplanet.Tests.Store
             public IAccountStateDelta Execute(IActionContext context)
             {
                 return context.PreviousStates;
-            }
-
-            public void Render(IActionContext context, IAccountStateDelta nextStates)
-            {
-            }
-
-            public void Unrender(IActionContext context, IAccountStateDelta nextStates)
-            {
-            }
-
-            public void RenderError(IActionContext context, Exception exception)
-            {
-            }
-
-            public void UnrenderError(IActionContext context, Exception exception)
-            {
             }
         }
     }

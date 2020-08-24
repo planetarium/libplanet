@@ -1,7 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Threading;
 using Bencodex.Types;
 using Libplanet.Action;
 
@@ -20,9 +17,6 @@ namespace Libplanet.Tests.Common.Action
 
         public static Address RewardRecordAddress =>
             new Address("0000000000000000000000000000000000000000");
-
-        public static AsyncLocal<ImmutableList<RenderRecord>>
-            RenderRecords { get; } = new AsyncLocal<ImmutableList<RenderRecord>>();
 
         public int Reward { get; private set; }
 
@@ -59,46 +53,6 @@ namespace Libplanet.Tests.Common.Action
             int reward = previousReward + Reward;
 
             return states.SetState(ctx.Miner, (Integer)reward);
-        }
-
-        public void Render(IActionContext context, IAccountStateDelta nextStates)
-        {
-            if (RenderRecords.Value is null)
-            {
-                RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
-            }
-
-            RenderRecords.Value = RenderRecords.Value.Add(new RenderRecord()
-            {
-                Render = true,
-                Action = this,
-                Context = context,
-                NextStates = nextStates,
-            });
-        }
-
-        public void Unrender(IActionContext context, IAccountStateDelta nextStates)
-        {
-            if (RenderRecords.Value is null)
-            {
-                RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
-            }
-
-            RenderRecords.Value = RenderRecords.Value.Add(new RenderRecord()
-            {
-                Unrender = true,
-                Action = this,
-                Context = context,
-                NextStates = nextStates,
-            });
-        }
-
-        public void RenderError(IActionContext context, Exception exception)
-        {
-        }
-
-        public void UnrenderError(IActionContext context, Exception exception)
-        {
         }
     }
 }

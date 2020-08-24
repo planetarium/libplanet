@@ -126,62 +126,6 @@ namespace Libplanet.Action
     ///         return context.PreviousStates.SetState(TargetAddress,
     ///             (Dictionary)nextState);
     ///     }
-    ///     // Side effects, i.e., any effects on other than states, are
-    ///     // done here.
-    ///     void IAction.Render(
-    ///         IActionContext context,
-    ///         IAccountStateDelta nextStates)
-    ///     {
-    ///         Character c;
-    ///         // You could compare this with a better example of
-    ///         // PolymorphicAction<T> class.
-    ///         switch (Type)
-    ///         {
-    ///             case ActType.CreateCharacter:
-    ///                 c = new Character
-    ///                 {
-    ///                     Address = TargetAddress,
-    ///                     Hp = 0,
-    ///                 };
-    ///                 break;
-    ///             case ActType.Attack:
-    ///             case ActType.Heal:
-    ///                 c = Character.GetByAddress(TargetAddress);
-    ///                 break;
-    ///             default:
-    ///                 return;
-    ///         }
-    ///         c.Hp =
-    ///             ((Bencodex.Types.Dictionary)nextStates.GetState(TargetAddress))
-    ///                 .GetValue<Integer>("hp");
-    ///         c.Draw();
-    ///     }
-    ///     // Sometimes a block to which an action belongs can be
-    ///     // a "stale."  If that action already has been rendered,
-    ///     // it should be undone.
-    ///     void IAction.Unrender(
-    ///         IActionContext context,
-    ///         IAccountStateDelta nextStates)
-    ///     {
-    ///         Character c = Character.GetByAddress(TargetAddress);
-    ///         // You could compare this with a better example of
-    ///         // PolymorphicAction<T> class.
-    ///         switch (Type)
-    ///         {
-    ///             case ActType.CreateCharacter:
-    ///                 c.Hide();
-    ///                 break;
-    ///             case ActType.Attack:
-    ///             case ActType.Heal:
-    ///                 IAccountStateDelta prevStates = context.PreviousStates;
-    ///                 c.Hp = ((Bencodex.Types.Dictionary)prevStates.GetState(TargetAddress))
-    ///                     .GetValue<Integer>("hp");
-    ///                 c.Draw();
-    ///                 break;
-    ///             default:
-    ///                 break;
-    ///         }
-    ///     }
     ///     // Serializes its "bound arguments" so that they are transmitted
     ///     // over network or stored to the persistent storage.
     ///     IValue IAction.PlainValue =>
@@ -256,11 +200,8 @@ namespace Libplanet.Action
         /// <see cref="Execute(IActionContext)"/> method can be called more
         /// than once, the time it's called is difficult to predict.
         /// <para>For changing in-memory game states or drawing graphics,
-        /// write such code in the <see
-        /// cref="Render(IActionContext, IAccountStateDelta)"/> method instead.
-        /// The <see cref="Render(IActionContext, IAccountStateDelta)"/> method
-        /// is guaranteed to be called only once, and only after an action is
-        /// transmitted to other nodes in the network.</para>
+        /// implement the <see cref="Blockchain.Renderers.IRenderer{T}"/> interface separately and
+        /// attach it to a <see cref="Blockchain.BlockChain{T}"/> instance.</para>
         /// <para>For randomness, <em>never</em> use <see cref="System.Random"/>
         /// nor any other PRNGs provided by other than Libplanet.
         /// Use <see cref="IActionContext.Random"/> instead.
@@ -291,82 +232,5 @@ namespace Libplanet.Action
         /// </remarks>
         /// <seealso cref="IActionContext"/>
         IAccountStateDelta Execute(IActionContext context);
-
-        /// <summary>
-        /// Does things that should be done right after this action is
-        /// spread to the network or is &#x201c;confirmed&#x201d; (kind of)
-        /// by each peer node.
-        /// <para>Usually, this method updates the in-memory game states
-        /// (if exist), and then sends a signal to the UI thread (usually
-        /// the main thread) so that the graphics on the display is redrawn.
-        /// </para>
-        /// </summary>
-        /// <param name="context">The equivalent context object to
-        /// what <see cref="Execute(IActionContext)"/> method had received.
-        /// That means <see cref="IActionContext.PreviousStates"/> are
-        /// the states right <em>before</em> this action executed.
-        /// For the states after this action executed,
-        /// use the <paramref name="nextStates"/> argument instead.
-        /// </param>
-        /// <param name="nextStates">The states right <em>after</em> this action
-        /// executed, which means it is equivalent to what <see
-        /// cref="Execute(IActionContext)"/> method returned.
-        /// </param>
-        void Render(IActionContext context, IAccountStateDelta nextStates);
-
-        /// <summary>
-        /// Does the similar things to <see cref="Render(IActionContext, IAccountStateDelta)"/>,
-        /// except that this method is invoked when <see cref="Execute(IActionContext)"/> method
-        /// has terminated with an exception.
-        /// </summary>
-        /// <param name="context">The equivalent context object to
-        /// what <see cref="Execute(IActionContext)"/> method had received.
-        /// That means <see cref="IActionContext.PreviousStates"/> are
-        /// the states right <em>before</em> this action executed.
-        /// </param>
-        /// <param name="exception">The exception that had raised during excuting this action.
-        /// </param>
-        void RenderError(IActionContext context, Exception exception);
-
-        /// <summary>
-        /// Does things that should be undone right after this action is
-        /// invalidated (mostly due to a block which this action has belonged
-        /// to becoming considered a stale).
-        /// <para>This method takes the equivalent arguments to
-        /// <see cref="Render(IActionContext, IAccountStateDelta)"/> method.
-        /// </para>
-        /// </summary>
-        /// <param name="context">The equivalent context object to
-        /// what <see cref="Execute(IActionContext)"/> method had received.
-        /// That means <see cref="IActionContext.PreviousStates"/> are
-        /// the states right <em>before</em> this action executed.
-        /// For the states after this action executed,
-        /// use the <paramref name="nextStates"/> argument instead.
-        /// </param>
-        /// <param name="nextStates">The states right <em>after</em> this action
-        /// executed, which means it is equivalent to what <see
-        /// cref="Execute(IActionContext)"/> method returned.
-        /// </param>
-        /// <remarks>As a rule of thumb, this should be the inverse of
-        /// <see cref="Render(IActionContext, IAccountStateDelta)"/> method
-        /// with redrawing the graphics on the display at the finish.</remarks>
-        void Unrender(IActionContext context, IAccountStateDelta nextStates);
-
-        /// <summary>
-        /// Does the similar things to <see cref="Unrender(IActionContext, IAccountStateDelta)"/>,
-        /// except that this method is invoked when see cref="Execute(IActionContext)"/> method
-        /// has terminated with an exception.
-        /// <para>This method takes the equivalent arguments to
-        /// <see cref="RenderError(IActionContext, Exception)"/> method.
-        /// </para>
-        /// </summary>
-        /// <param name="context">The equivalent context object to
-        /// what <see cref="Execute(IActionContext)"/> method had received.
-        /// That means <see cref="IActionContext.PreviousStates"/> are
-        /// the states right <em>before</em> this action executed.
-        /// </param>
-        /// <param name="exception">The exception that had raised during excuting this action.
-        /// </param>
-        void UnrenderError(IActionContext context, Exception exception);
     }
 }

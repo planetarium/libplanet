@@ -1,6 +1,6 @@
 using Libplanet.Action;
 
-namespace Libplanet.Tests.Common.Action
+namespace Libplanet.Tests.Common
 {
     public struct RenderRecord
     {
