@@ -129,7 +129,6 @@ namespace Libplanet.Net
 
             DateTimeOffset now = createdAt.GetValueOrDefault(
                 DateTimeOffset.UtcNow);
-            LastReceived = now;
             TxReceived = new AsyncAutoResetEvent();
             BlockHeaderReceived = new AsyncAutoResetEvent();
             BlockAppended = new AsyncAutoResetEvent();
@@ -182,7 +181,11 @@ namespace Libplanet.Net
 
         public Peer AsPeer => Transport.AsPeer;
 
-        public DateTimeOffset LastReceived { get; private set; }
+        /// <summary>
+        /// The time the message was last received.
+        /// </summary>
+        public DateTimeOffset? LastMessageTimestamp =>
+            Running ? Transport.LastMessageTimestamp : (DateTimeOffset?)null;
 
         public IDictionary<Peer, DateTimeOffset> LastSeenTimestamps
         {

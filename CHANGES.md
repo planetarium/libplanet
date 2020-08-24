@@ -144,6 +144,7 @@ To be released.
  -  Added `SwarmOptions` class.  [[#926]]
  -  Added `PeerChainState` struct.  [[#936]]
  -  Added `Swarm<T>.GetPeerChainStateAsync()` method.  [[#936]]
+ -  Added `Swarm<T>.LastMessageTimestamp` property.  [[#964]]
  -  Added `Block<T>.EvaluationDigest` property.  [[#931], [#935]]
  -  Added `BlockHeader.EvaluationDigest` property.  [[#931], [#935]]
  -  Added `Block<T>.PreEvaluationHash` property.  [[#931], [#935]]
@@ -285,6 +286,7 @@ To be released.
 [#959]: https://github.com/planetarium/libplanet/issues/959
 [#954]: https://github.com/planetarium/libplanet/pull/954
 [#963]: https://github.com/planetarium/libplanet/pull/963
+[#964]: https://github.com/planetarium/libplanet/pull/964
 [sleep mode]: https://en.wikipedia.org/wiki/Sleep_mode
 
 

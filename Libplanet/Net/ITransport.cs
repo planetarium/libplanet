@@ -12,6 +12,8 @@ namespace Libplanet.Net
 
         IEnumerable<BoundPeer> Peers { get; }
 
+        DateTimeOffset? LastMessageTimestamp { get; }
+
         Task StartAsync(CancellationToken cancellationToken = default(CancellationToken));
 
         Task RunAsync(CancellationToken cancellationToken = default(CancellationToken));

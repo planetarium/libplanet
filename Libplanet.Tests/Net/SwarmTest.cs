@@ -2080,6 +2080,36 @@ namespace Libplanet.Tests.Net
             }
         }
 
+        [Fact(Timeout = Timeout)]
+        public async Task LastMessageTimestamp()
+        {
+            Swarm<DumbAction> swarm1 = _swarms[0];
+            Swarm<DumbAction> swarm2 = _swarms[1];
+
+            Assert.Null(swarm1.LastMessageTimestamp);
+
+            try
+            {
+                await StartAsync(swarm1);
+                Assert.Null(swarm1.LastMessageTimestamp);
+                DateTimeOffset bootstrappedAt = DateTimeOffset.UtcNow;
+                await BootstrapAsync(swarm2, swarm1.AsPeer);
+                await StartAsync(swarm2);
+
+                Assert.NotNull(swarm1.LastMessageTimestamp);
+                Assert.InRange(
+                    swarm1.LastMessageTimestamp.Value,
+                    bootstrappedAt,
+                    DateTimeOffset.UtcNow
+                );
+            }
+            finally
+            {
+                await StopAsync(swarm1);
+                await StopAsync(swarm2);
+            }
+        }
+
         private async Task<Task> StartAsync<T>(
             Swarm<T> swarm,
             IImmutableSet<Address> trustedStateValidators = null,
