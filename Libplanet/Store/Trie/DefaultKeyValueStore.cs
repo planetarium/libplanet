@@ -19,7 +19,7 @@ namespace Libplanet.Store.Trie
         /// </summary>
         /// <param name="path">The path of the directory where the storage files will be saved.
         /// If the path is <c>null</c>, the database is created in memory.</param>
-        public DefaultKeyValueStore(string path)
+        public DefaultKeyValueStore(string? path)
         {
             if (path is null)
             {
