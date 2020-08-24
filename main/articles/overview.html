@@ -183,7 +183,8 @@
 <li>Inquire State obtained by evaluating Blocks.</li>
 </ul>
 <h2 id="rendering">Rendering</h2>
-<p>One way for game developers to reflect the State of the game is by using <a href="xref:Libplanet.Blockchain.BlockChain%601.GetState(Libplanet.Address,System.Nullable%7BLibplanet.HashDigest%7BSystem.Security.Cryptography.SHA256%7D%7D,System.Boolean)"><code>BlockChain&lt;T&gt;.GetState()</code></a>.</p>
+<p>One way for game developers to reflect the State of the game is by using
+<a class="xref" href="../api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetState_Libplanet_Address_System_Nullable_Libplanet_HashDigest_SHA256___Libplanet_Blockchain_StateCompleter__0__">GetState(Address, Nullable&lt;HashDigest&lt;SHA256&gt;&gt;, StateCompleter&lt;T&gt;)</a>.</p>
 <pre><code class="lang-csharp">public class Game : MonoBehaviour
 {
     private BlockChain&lt;Action&gt; _blockChain;
@@ -226,14 +227,22 @@
 <li>If the wait time is long, the interval between States being reflected in the game is also extended, and if it becomes too short, frequent State checks makes the process inefficient.</li>
 <li>If multiple actions were executed in a short period of time, they would not be handled accurately.</li>
 </ul>
-<p>Libplanet provides a rendering mechanism called <a class="xref" href="../api/Libplanet.Action.IAction.html#Libplanet_Action_IAction_Render_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_"><code>IAction.Render()</code></a> to solve this problem. <a class="xref" href="../api/Libplanet.Action.IAction.html#Libplanet_Action_IAction_Render_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_"><code>IAction.Render()</code></a> is called after a Block with the corresponding Actions is confirmed and the State is transitioned. The following code has been re-implemented using <a class="xref" href="../api/Libplanet.Action.IAction.html#Libplanet_Action_IAction_Render_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_"><code>IAction.Render()</code></a>.</p>
-<pre><code class="lang-csharp">public class Win : IAction
+<p>Libplanet provides a rendering mechanism called
+<a class="xref" href="../api/Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a> to solve this problem.
+<a class="xref" href="../api/Libplanet.Blockchain.Renderers.IRenderer-1.html#Libplanet_Blockchain_Renderers_IRenderer_1_RenderAction_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_">RenderAction(IAction, IActionContext, IAccountStateDelta)</a>
+is called after a <a class="xref" href="../api/Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> with the corresponding
+<a class="xref" href="../api/Libplanet.Action.IAction.html">IAction</a>s is confirmed and the state is transitioned.
+The following code has been re-implemented using
+<a class="xref" href="../api/Libplanet.Blockchain.Renderers.IRenderer-1.html#Libplanet_Blockchain_Renderers_IRenderer_1_RenderAction_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_">RenderAction(IAction, IActionContext, IAccountStateDelta)</a>.</p>
+<pre><code class="lang-csharp">public class WinRenderer : IRenderer&lt;Win&gt;
 {
     // ...
 
-    public override void Render(IActioncontext ctx, IAccountstatedelta nextStates)
+    public void RenderAction(IAction action,
+                             IActionContext context,
+                             IAccountStateDelta nextStates)
     {
-        Game.UpdateScore((long?) nextStates.GetState())
+        Game.UpdateScore((long?)nextStates.GetState())
     }
 }
 </code></pre>

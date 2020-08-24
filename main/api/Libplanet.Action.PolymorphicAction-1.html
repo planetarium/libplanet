@@ -145,19 +145,6 @@ public abstract class ActionBase : IAction
     // Leaves Execute() abstract so that concrete subclasses
     // implement their own logic.
     public abstract IAccountStateDelta Execute(IActionContext context);
-    // Makes Render() no-op by default, but overrideable by subclasses.
-    public virtual void Render(
-        IActionContext context,
-        IAccountStateDelta nextStates)
-    {
-    }
-    // Makes Unrender() no-op by default,
-    // but overrideable by subclasses.
-    public virtual void Unrender(
-        IActionContext context,
-        IAccountStateDelta nextStates)
-    {
-    }
     IValue IAction.PlainValue =>
         new Bencodex.Types.Dictionary(new Dictionary&lt;IKey, IValue>
         {
@@ -198,24 +185,6 @@ public sealed class CreateCharacter : ActionBase
             })
         );
     }
-    void IAction.Render(
-        IActionContext context,
-        IAccountStateDelta nextStates)
-    {
-        var c = new Character
-        {
-            Address = TargetAddress,
-            Hp = (Integer)nextStates.GetState(TargetAddress),
-        };
-        c.Draw();
-    }
-    void IAction.Unrender(
-        IActionContext context,
-        IAccountStateDelta nextStates)
-    {
-        Character c = Character.GetByAddress(TargetAddress);
-        c.Hide();
-    }
 }
 [ActionType(&quot;attack&quot;)]
 public sealed class Attack : ActionBase
@@ -231,25 +200,6 @@ public sealed class Attack : ActionBase
                     (Text)&quot;hp&quot;,
                     (Integer)Math.Max(state.GetValue&lt;Integer>(&quot;hp&quot;) - 5, 0))
         );
-    }
-    void IAction.Render(
-        IActionContext context,
-        IAccountStateDelta nextStates)
-    {
-        Character c = Character.GetByAddress(TargetAddress);
-        c.Hp = ((Bencodex.Types.Dictionary)nextStates.GetState(TargetAddress))
-            .GetValue&lt;Integer>(&quot;hp&quot;);
-        c.Draw();
-    }
-    void IAction.Unrender(
-        IActionContext context,
-        IAccountStateDelta nextStates)
-    {
-        Character c = Character.GetByAddress(TargetAddress);
-        var target =
-            (Bencodex.Types.Dictionary)context.PreviousStates.GetState(TargetAddress);
-        c.Hp = target.GetValue&lt;Integer>(&quot;hp&quot;);
-        c.Draw();
     }
 }
 [ActionType(&quot;heal&quot;)]
@@ -267,26 +217,25 @@ public sealed class Heal : ActionBase
                     (Integer)Math.Min(state.GetValue&lt;Integer>(&quot;hp&quot;) + 5, 20))
         );
     }
-    void IAction.Render(
-        IActionContext context,
-        IAccountStateDelta nextStates)
+}</code></pre>
+<p>Note that when it's rendered through <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a>,
+an instance of <a class="xref" href="Libplanet.Action.PolymorphicAction-1.html">PolymorphicAction&lt;T&gt;</a> is passed instead of its
+<a class="xref" href="Libplanet.Action.PolymorphicAction-1.html#Libplanet_Action_PolymorphicAction_1_InnerAction">InnerAction</a>:</p>
+<pre><code>public class Renderer : IRenderer&lt;PolymorphicAction&lt;ActionBase>>
+{
+    public void RenderAction(IAction action,
+                             IActionContext context,
+                             IAccountStateDelta nextStates)
     {
-        Character c = Character.GetByAddress(TargetAddress);
-        var target =
-            (Bencodex.Types.Dictionary)context.PreviousStates.GetState(TargetAddress);
-        c.Hp = target.GetValue&lt;Integer>(&quot;hp&quot;);
-        c.Draw();
+        if (action is PolymorphicAction&lt;ActionBase> polymorphicAction)
+        {
+            switch (polymorphicAction.InnerAction)
+            {
+                // render things here
+            }
+        }
     }
-    void IAction.Unrender(
-        IActionContext context,
-        IAccountStateDelta nextStates)
-    {
-        Character c = Character.GetByAddress(TargetAddress);
-        var target =
-            (Bencodex.Types.Dictionary)context.PreviousStates.GetState(TargetAddress);
-        c.Hp = target.GetValue&lt;Integer>(&quot;hp&quot;);
-        c.Draw();
-    }
+    // ... other method implementations
 }</code></pre>
 
   <h3 id="constructors">Constructors
@@ -296,7 +245,7 @@ public sealed class Heal : ActionBase
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_PolymorphicAction_1__ctor.md&amp;value=---%0Auid%3A%20Libplanet.Action.PolymorphicAction%601.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/PolymorphicAction.cs/#L211">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/PolymorphicAction.cs/#L162">View Source</a>
   </span>
   <a id="Libplanet_Action_PolymorphicAction_1__ctor_" data-uid="Libplanet.Action.PolymorphicAction`1.#ctor*"></a>
   <h4 id="Libplanet_Action_PolymorphicAction_1__ctor" data-uid="Libplanet.Action.PolymorphicAction`1.#ctor">PolymorphicAction()</h4>
@@ -313,7 +262,7 @@ Use <a class="xref" href="Libplanet.Action.PolymorphicAction-1.html#Libplanet_Ac
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_PolymorphicAction_1__ctor__0_.md&amp;value=---%0Auid%3A%20Libplanet.Action.PolymorphicAction%601.%23ctor(%600)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/PolymorphicAction.cs/#L225">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/PolymorphicAction.cs/#L176">View Source</a>
   </span>
   <a id="Libplanet_Action_PolymorphicAction_1__ctor_" data-uid="Libplanet.Action.PolymorphicAction`1.#ctor*"></a>
   <h4 id="Libplanet_Action_PolymorphicAction_1__ctor__0_" data-uid="Libplanet.Action.PolymorphicAction`1.#ctor(`0)">PolymorphicAction(T)</h4>
@@ -369,7 +318,7 @@ is not annotated with <a class="xref" href="Libplanet.Action.ActionTypeAttribute
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_PolymorphicAction_1_InnerAction.md&amp;value=---%0Auid%3A%20Libplanet.Action.PolymorphicAction%601.InnerAction%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/PolymorphicAction.cs/#L234">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/PolymorphicAction.cs/#L185">View Source</a>
   </span>
   <a id="Libplanet_Action_PolymorphicAction_1_InnerAction_" data-uid="Libplanet.Action.PolymorphicAction`1.InnerAction*"></a>
   <h4 id="Libplanet_Action_PolymorphicAction_1_InnerAction" data-uid="Libplanet.Action.PolymorphicAction`1.InnerAction">InnerAction</h4>
@@ -401,7 +350,7 @@ is not annotated with <a class="xref" href="Libplanet.Action.ActionTypeAttribute
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_PolymorphicAction_1_PlainValue.md&amp;value=---%0Auid%3A%20Libplanet.Action.PolymorphicAction%601.PlainValue%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/PolymorphicAction.cs/#L252">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/PolymorphicAction.cs/#L203">View Source</a>
   </span>
   <a id="Libplanet_Action_PolymorphicAction_1_PlainValue_" data-uid="Libplanet.Action.PolymorphicAction`1.PlainValue*"></a>
   <h4 id="Libplanet_Action_PolymorphicAction_1_PlainValue" data-uid="Libplanet.Action.PolymorphicAction`1.PlainValue">PlainValue</h4>
@@ -433,7 +382,7 @@ is not annotated with <a class="xref" href="Libplanet.Action.ActionTypeAttribute
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_PolymorphicAction_1_Execute_Libplanet_Action_IActionContext_.md&amp;value=---%0Auid%3A%20Libplanet.Action.PolymorphicAction%601.Execute(Libplanet.Action.IActionContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/PolymorphicAction.cs/#L299">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/PolymorphicAction.cs/#L250">View Source</a>
   </span>
   <a id="Libplanet_Action_PolymorphicAction_1_Execute_" data-uid="Libplanet.Action.PolymorphicAction`1.Execute*"></a>
   <h4 id="Libplanet_Action_PolymorphicAction_1_Execute_Libplanet_Action_IActionContext_" data-uid="Libplanet.Action.PolymorphicAction`1.Execute(Libplanet.Action.IActionContext)">Execute(IActionContext)</h4>
@@ -497,10 +446,8 @@ Side effects should be avoided, because an action's
 <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext_">Execute(IActionContext)</a> method can be called more
 than once, the time it's called is difficult to predict.</p>
 <p>For changing in-memory game states or drawing graphics,
-write such code in the <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_Render_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_">Render(IActionContext, IAccountStateDelta)</a> method instead.
-The <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_Render_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_">Render(IActionContext, IAccountStateDelta)</a> method
-is guaranteed to be called only once, and only after an action is
-transmitted to other nodes in the network.</p>
+implement the <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a> interface separately and
+attach it to a <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> instance.</p>
 <p>For randomness, <em>never</em> use <see cref="!:System.Random"></see>
 nor any other PRNGs provided by other than Libplanet.
 Use <a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_Random">Random</a> instead.
@@ -533,7 +480,7 @@ you have to explicitly pass <see cref="!:System.Globalization.CultureInfo.Invari
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_PolymorphicAction_1_LoadPlainValue_Dictionary_.md&amp;value=---%0Auid%3A%20Libplanet.Action.PolymorphicAction%601.LoadPlainValue(Dictionary)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/PolymorphicAction.cs/#L281">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/PolymorphicAction.cs/#L232">View Source</a>
   </span>
   <a id="Libplanet_Action_PolymorphicAction_1_LoadPlainValue_" data-uid="Libplanet.Action.PolymorphicAction`1.LoadPlainValue*"></a>
   <h4 id="Libplanet_Action_PolymorphicAction_1_LoadPlainValue_Dictionary_" data-uid="Libplanet.Action.PolymorphicAction`1.LoadPlainValue(Dictionary)">LoadPlainValue(Dictionary)</h4>
@@ -565,7 +512,7 @@ you have to explicitly pass <see cref="!:System.Globalization.CultureInfo.Invari
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_PolymorphicAction_1_LoadPlainValue_IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Action.PolymorphicAction%601.LoadPlainValue(IValue)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/PolymorphicAction.cs/#L293">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/PolymorphicAction.cs/#L244">View Source</a>
   </span>
   <a id="Libplanet_Action_PolymorphicAction_1_LoadPlainValue_" data-uid="Libplanet.Action.PolymorphicAction`1.LoadPlainValue*"></a>
   <h4 id="Libplanet_Action_PolymorphicAction_1_LoadPlainValue_IValue_" data-uid="Libplanet.Action.PolymorphicAction`1.LoadPlainValue(IValue)">LoadPlainValue(IValue)</h4>
@@ -602,237 +549,6 @@ properties (or fields).</p>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_PlainValue">PlainValue</a></div>
   </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_PolymorphicAction_1_Render_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_.md&amp;value=---%0Auid%3A%20Libplanet.Action.PolymorphicAction%601.Render(Libplanet.Action.IActionContext%2CLibplanet.Action.IAccountStateDelta)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/PolymorphicAction.cs/#L303">View Source</a>
-  </span>
-  <a id="Libplanet_Action_PolymorphicAction_1_Render_" data-uid="Libplanet.Action.PolymorphicAction`1.Render*"></a>
-  <h4 id="Libplanet_Action_PolymorphicAction_1_Render_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_" data-uid="Libplanet.Action.PolymorphicAction`1.Render(Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)">Render(IActionContext, IAccountStateDelta)</h4>
-  <div class="markdown level1 summary"><p>Does things that should be done right after this action is
-spread to the network or is “confirmed” (kind of)
-by each peer node.</p>
-<p>Usually, this method updates the in-memory game states
-(if exist), and then sends a signal to the UI thread (usually
-the main thread) so that the graphics on the display is redrawn.
-</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Render(IActionContext context, IAccountStateDelta nextStates)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a></td>
-        <td><span class="parametername">context</span></td>
-        <td><p>The equivalent context object to
-what <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext_">Execute(IActionContext)</a> method had received.
-That means <a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_PreviousStates">PreviousStates</a> are
-the states right <em>before</em> this action executed.
-For the states after this action executed,
-use the <code data-dev-comment-type="paramref" class="paramref">nextStates</code> argument instead.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Action.IAccountStateDelta.html">IAccountStateDelta</a></td>
-        <td><span class="parametername">nextStates</span></td>
-        <td><p>The states right <em>after</em> this action
-executed, which means it is equivalent to what <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext_">Execute(IActionContext)</a> method returned.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_PolymorphicAction_1_RenderError_Libplanet_Action_IActionContext_Exception_.md&amp;value=---%0Auid%3A%20Libplanet.Action.PolymorphicAction%601.RenderError(Libplanet.Action.IActionContext%2CException)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/PolymorphicAction.cs/#L321">View Source</a>
-  </span>
-  <a id="Libplanet_Action_PolymorphicAction_1_RenderError_" data-uid="Libplanet.Action.PolymorphicAction`1.RenderError*"></a>
-  <h4 id="Libplanet_Action_PolymorphicAction_1_RenderError_Libplanet_Action_IActionContext_Exception_" data-uid="Libplanet.Action.PolymorphicAction`1.RenderError(Libplanet.Action.IActionContext,Exception)">RenderError(IActionContext, Exception)</h4>
-  <div class="markdown level1 summary"><p>Does the similar things to <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_Render_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_">Render(IActionContext, IAccountStateDelta)</a>,
-except that this method is invoked when <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext_">Execute(IActionContext)</a> method
-has terminated with an exception.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void RenderError(IActionContext context, Exception exception)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a></td>
-        <td><span class="parametername">context</span></td>
-        <td><p>The equivalent context object to
-what <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext_">Execute(IActionContext)</a> method had received.
-That means <a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_PreviousStates">PreviousStates</a> are
-the states right <em>before</em> this action executed.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">Exception</span></td>
-        <td><span class="parametername">exception</span></td>
-        <td><p>The exception that had raised during excuting this action.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_PolymorphicAction_1_ToString.md&amp;value=---%0Auid%3A%20Libplanet.Action.PolymorphicAction%601.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/PolymorphicAction.cs/#L317">View Source</a>
-  </span>
-  <a id="Libplanet_Action_PolymorphicAction_1_ToString_" data-uid="Libplanet.Action.PolymorphicAction`1.ToString*"></a>
-  <h4 id="Libplanet_Action_PolymorphicAction_1_ToString" data-uid="Libplanet.Action.PolymorphicAction`1.ToString">ToString()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_PolymorphicAction_1_Unrender_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_.md&amp;value=---%0Auid%3A%20Libplanet.Action.PolymorphicAction%601.Unrender(Libplanet.Action.IActionContext%2CLibplanet.Action.IAccountStateDelta)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/PolymorphicAction.cs/#L310">View Source</a>
-  </span>
-  <a id="Libplanet_Action_PolymorphicAction_1_Unrender_" data-uid="Libplanet.Action.PolymorphicAction`1.Unrender*"></a>
-  <h4 id="Libplanet_Action_PolymorphicAction_1_Unrender_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_" data-uid="Libplanet.Action.PolymorphicAction`1.Unrender(Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)">Unrender(IActionContext, IAccountStateDelta)</h4>
-  <div class="markdown level1 summary"><p>Does things that should be undone right after this action is
-invalidated (mostly due to a block which this action has belonged
-to becoming considered a stale).</p>
-<p>This method takes the equivalent arguments to
-<a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_Render_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_">Render(IActionContext, IAccountStateDelta)</a> method.
-</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Unrender(IActionContext context, IAccountStateDelta nextStates)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a></td>
-        <td><span class="parametername">context</span></td>
-        <td><p>The equivalent context object to
-what <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext_">Execute(IActionContext)</a> method had received.
-That means <a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_PreviousStates">PreviousStates</a> are
-the states right <em>before</em> this action executed.
-For the states after this action executed,
-use the <code data-dev-comment-type="paramref" class="paramref">nextStates</code> argument instead.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Action.IAccountStateDelta.html">IAccountStateDelta</a></td>
-        <td><span class="parametername">nextStates</span></td>
-        <td><p>The states right <em>after</em> this action
-executed, which means it is equivalent to what <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext_">Execute(IActionContext)</a> method returned.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Libplanet_Action_PolymorphicAction_1_Unrender_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>As a rule of thumb, this should be the inverse of
-<a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_Render_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_">Render(IActionContext, IAccountStateDelta)</a> method
-with redrawing the graphics on the display at the finish.</p>
-</div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_PolymorphicAction_1_UnrenderError_Libplanet_Action_IActionContext_Exception_.md&amp;value=---%0Auid%3A%20Libplanet.Action.PolymorphicAction%601.UnrenderError(Libplanet.Action.IActionContext%2CException)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/PolymorphicAction.cs/#L325">View Source</a>
-  </span>
-  <a id="Libplanet_Action_PolymorphicAction_1_UnrenderError_" data-uid="Libplanet.Action.PolymorphicAction`1.UnrenderError*"></a>
-  <h4 id="Libplanet_Action_PolymorphicAction_1_UnrenderError_Libplanet_Action_IActionContext_Exception_" data-uid="Libplanet.Action.PolymorphicAction`1.UnrenderError(Libplanet.Action.IActionContext,Exception)">UnrenderError(IActionContext, Exception)</h4>
-  <div class="markdown level1 summary"><p>Does the similar things to <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_Unrender_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_">Unrender(IActionContext, IAccountStateDelta)</a>,
-except that this method is invoked when see cref=&quot;Execute(IActionContext)&quot;/&gt; method
-has terminated with an exception.</p>
-<p>This method takes the equivalent arguments to
-<a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_RenderError_Libplanet_Action_IActionContext_Exception_">RenderError(IActionContext, Exception)</a> method.
-</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void UnrenderError(IActionContext context, Exception exception)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a></td>
-        <td><span class="parametername">context</span></td>
-        <td><p>The equivalent context object to
-what <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext_">Execute(IActionContext)</a> method had received.
-That means <a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_PreviousStates">PreviousStates</a> are
-the states right <em>before</em> this action executed.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">Exception</span></td>
-        <td><span class="parametername">exception</span></td>
-        <td><p>The exception that had raised during excuting this action.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="operators">Operators
   </h3>
   <span class="small pull-right mobile-hide">
@@ -840,7 +556,7 @@ the states right <em>before</em> this action executed.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_PolymorphicAction_1_op_Implicit__0__Libplanet_Action_PolymorphicAction__0_.md&amp;value=---%0Auid%3A%20Libplanet.Action.PolymorphicAction%601.op_Implicit(%600)~Libplanet.Action.PolymorphicAction%7B%600%7D%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/PolymorphicAction.cs/#L276">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/PolymorphicAction.cs/#L227">View Source</a>
   </span>
   <a id="Libplanet_Action_PolymorphicAction_1_op_Implicit_" data-uid="Libplanet.Action.PolymorphicAction`1.op_Implicit*"></a>
   <h4 id="Libplanet_Action_PolymorphicAction_1_op_Implicit__0__Libplanet_Action_PolymorphicAction__0_" data-uid="Libplanet.Action.PolymorphicAction`1.op_Implicit(`0)~Libplanet.Action.PolymorphicAction{`0}">Implicit(T to PolymorphicAction&lt;T&gt;)</h4>
@@ -921,7 +637,7 @@ is not annotated with <a class="xref" href="Libplanet.Action.ActionTypeAttribute
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_PolymorphicAction_1.md&amp;value=---%0Auid%3A%20Libplanet.Action.PolymorphicAction%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/PolymorphicAction.cs/#L196" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/PolymorphicAction.cs/#L147" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
