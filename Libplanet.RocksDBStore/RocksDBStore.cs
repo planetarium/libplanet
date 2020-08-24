@@ -102,18 +102,20 @@ namespace Libplanet.RocksDBStore
             _options = new DbOptions()
                 .SetCreateIfMissing();
 
-            _blockDb = OpenRocksDb(_options, BlockDbName);
-            _txDb = OpenRocksDb(_options, TxDbName);
-            _stateDb = OpenRocksDb(_options, StateDbName);
-            _stagedTxDb = OpenRocksDb(_options, StagedTxDbName);
+            _blockDb = RocksDBUtils.OpenRocksDb(_options, RocksDbPath(BlockDbName));
+            _txDb = RocksDBUtils.OpenRocksDb(_options, RocksDbPath(TxDbName));
+            _stateDb = RocksDBUtils.OpenRocksDb(_options, RocksDbPath(StateDbName));
+            _stagedTxDb = RocksDBUtils.OpenRocksDb(_options, RocksDbPath(StagedTxDbName));
 
             // When opening a DB in a read-write mode, you need to specify all Column Families that
             // currently exist in a DB. https://github.com/facebook/rocksdb/wiki/Column-Families
             var chainDbColumnFamilies = GetColumnFamilies(_options, ChainDbName);
-            _chainDb = OpenRocksDb(_options, ChainDbName, chainDbColumnFamilies);
+            _chainDb = RocksDBUtils.OpenRocksDb(
+                _options, RocksDbPath(ChainDbName), chainDbColumnFamilies);
 
             var stateRefDbColumnFamilies = GetColumnFamilies(_options, StateRefDbName);
-            _stateRefDb = OpenRocksDb(_options, StateRefDbName, stateRefDbColumnFamilies);
+            _stateRefDb = RocksDBUtils.OpenRocksDb(
+                _options, RocksDbPath(StateRefDbName), stateRefDbColumnFamilies);
         }
 
         /// <inheritdoc/>
@@ -1026,15 +1028,7 @@ namespace Libplanet.RocksDBStore
             return columnFamilies;
         }
 
-        private RocksDb OpenRocksDb(
-            DbOptions options, string dbName, ColumnFamilies columnFamilies = null)
-        {
-            var dbPath = Path.Combine(_path, dbName);
-
-            return columnFamilies is null
-                ? RocksDb.Open(options, dbPath)
-                : RocksDb.Open(options, dbPath, columnFamilies);
-        }
+        private string RocksDbPath(string dbName) => Path.Combine(_path, dbName);
 
         private class StateRef
         {

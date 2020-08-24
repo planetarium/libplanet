@@ -175,10 +175,16 @@ To be released.
  -  Added `LoggedRenderer<T>` class.  [[#959], [#963]]
  -  Added `BlockChain<T>.Renderers` property.  [[#945], [#959], [#963]]
  -  Added `Swarm<T>.AppProtocolVersion` property.  [[#949]]
- -  (Libplanet.RocksDB) `RocksDBStore` became to implement `IBlockStatesStore`.  [[#950]]
  -  `DefaultStore` became to implement `IBlockStatesStore`.  [[#950]]
  -  Added `IStateStore` interface.  [[#950]]
  -  Added `IBlockStatesStore` interface.  [[#950]]
+ -  Added `TrieStateStore` class.  [[#939]]
+ -  Added `IKeyValueStore` interface.  [[#939]]
+ -  Added `DefaultKeyValueStore` class.  [[#939]]
+ -  Added `CacheableKeyValueStore` class.  [[#939]]
+ -  (Libplanet.RocksDBStore) `RocksDBStore` became to implement
+    `IBlockStatesStore`.  [[#950]]
+ -  (Libplanet.RocksDBStore) Added `RocksDBKeyValueStore`.  [[#939]]
 
 ### Behavioral changes
 
@@ -268,6 +274,7 @@ To be released.
 [#934]: https://github.com/planetarium/libplanet/pull/934
 [#935]: https://github.com/planetarium/libplanet/pull/935
 [#936]: https://github.com/planetarium/libplanet/pull/936
+[#939]: https://github.com/planetarium/libplanet/pull/939
 [#940]: https://github.com/planetarium/libplanet/pull/940
 [#941]: https://github.com/planetarium/libplanet/pull/941
 [#944]: https://github.com/planetarium/libplanet/issues/944
