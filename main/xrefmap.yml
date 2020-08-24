@@ -10048,6 +10048,420 @@ references:
   fullName.vb: Libplanet.Store.TransactionSet(Of T).Values
   nameWithType: TransactionSet<T>.Values
   nameWithType.vb: TransactionSet(Of T).Values
+- uid: Libplanet.Store.Trie
+  name: Libplanet.Store.Trie
+  href: api/Libplanet.Store.Trie.html
+  commentId: N:Libplanet.Store.Trie
+  fullName: Libplanet.Store.Trie
+  nameWithType: Libplanet.Store.Trie
+- uid: Libplanet.Store.Trie.CacheableKeyValueStore
+  name: CacheableKeyValueStore
+  href: api/Libplanet.Store.Trie.CacheableKeyValueStore.html
+  commentId: T:Libplanet.Store.Trie.CacheableKeyValueStore
+  fullName: Libplanet.Store.Trie.CacheableKeyValueStore
+  nameWithType: CacheableKeyValueStore
+- uid: Libplanet.Store.Trie.CacheableKeyValueStore.#ctor(Libplanet.Store.Trie.IKeyValueStore,System.Int32)
+  name: CacheableKeyValueStore(IKeyValueStore, Int32)
+  href: api/Libplanet.Store.Trie.CacheableKeyValueStore.html#Libplanet_Store_Trie_CacheableKeyValueStore__ctor_Libplanet_Store_Trie_IKeyValueStore_System_Int32_
+  commentId: M:Libplanet.Store.Trie.CacheableKeyValueStore.#ctor(Libplanet.Store.Trie.IKeyValueStore,System.Int32)
+  fullName: Libplanet.Store.Trie.CacheableKeyValueStore.CacheableKeyValueStore(Libplanet.Store.Trie.IKeyValueStore, System.Int32)
+  nameWithType: CacheableKeyValueStore.CacheableKeyValueStore(IKeyValueStore, Int32)
+- uid: Libplanet.Store.Trie.CacheableKeyValueStore.#ctor*
+  name: CacheableKeyValueStore
+  href: api/Libplanet.Store.Trie.CacheableKeyValueStore.html#Libplanet_Store_Trie_CacheableKeyValueStore__ctor_
+  commentId: Overload:Libplanet.Store.Trie.CacheableKeyValueStore.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.CacheableKeyValueStore.CacheableKeyValueStore
+  nameWithType: CacheableKeyValueStore.CacheableKeyValueStore
+- uid: Libplanet.Store.Trie.CacheableKeyValueStore.Delete(System.Byte[])
+  name: Delete(Byte[])
+  href: api/Libplanet.Store.Trie.CacheableKeyValueStore.html#Libplanet_Store_Trie_CacheableKeyValueStore_Delete_System_Byte___
+  commentId: M:Libplanet.Store.Trie.CacheableKeyValueStore.Delete(System.Byte[])
+  name.vb: Delete(Byte())
+  fullName: Libplanet.Store.Trie.CacheableKeyValueStore.Delete(System.Byte[])
+  fullName.vb: Libplanet.Store.Trie.CacheableKeyValueStore.Delete(System.Byte())
+  nameWithType: CacheableKeyValueStore.Delete(Byte[])
+  nameWithType.vb: CacheableKeyValueStore.Delete(Byte())
+- uid: Libplanet.Store.Trie.CacheableKeyValueStore.Delete*
+  name: Delete
+  href: api/Libplanet.Store.Trie.CacheableKeyValueStore.html#Libplanet_Store_Trie_CacheableKeyValueStore_Delete_
+  commentId: Overload:Libplanet.Store.Trie.CacheableKeyValueStore.Delete
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.CacheableKeyValueStore.Delete
+  nameWithType: CacheableKeyValueStore.Delete
+- uid: Libplanet.Store.Trie.CacheableKeyValueStore.Dispose
+  name: Dispose()
+  href: api/Libplanet.Store.Trie.CacheableKeyValueStore.html#Libplanet_Store_Trie_CacheableKeyValueStore_Dispose
+  commentId: M:Libplanet.Store.Trie.CacheableKeyValueStore.Dispose
+  fullName: Libplanet.Store.Trie.CacheableKeyValueStore.Dispose()
+  nameWithType: CacheableKeyValueStore.Dispose()
+- uid: Libplanet.Store.Trie.CacheableKeyValueStore.Dispose*
+  name: Dispose
+  href: api/Libplanet.Store.Trie.CacheableKeyValueStore.html#Libplanet_Store_Trie_CacheableKeyValueStore_Dispose_
+  commentId: Overload:Libplanet.Store.Trie.CacheableKeyValueStore.Dispose
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.CacheableKeyValueStore.Dispose
+  nameWithType: CacheableKeyValueStore.Dispose
+- uid: Libplanet.Store.Trie.CacheableKeyValueStore.Exists(System.Byte[])
+  name: Exists(Byte[])
+  href: api/Libplanet.Store.Trie.CacheableKeyValueStore.html#Libplanet_Store_Trie_CacheableKeyValueStore_Exists_System_Byte___
+  commentId: M:Libplanet.Store.Trie.CacheableKeyValueStore.Exists(System.Byte[])
+  name.vb: Exists(Byte())
+  fullName: Libplanet.Store.Trie.CacheableKeyValueStore.Exists(System.Byte[])
+  fullName.vb: Libplanet.Store.Trie.CacheableKeyValueStore.Exists(System.Byte())
+  nameWithType: CacheableKeyValueStore.Exists(Byte[])
+  nameWithType.vb: CacheableKeyValueStore.Exists(Byte())
+- uid: Libplanet.Store.Trie.CacheableKeyValueStore.Exists*
+  name: Exists
+  href: api/Libplanet.Store.Trie.CacheableKeyValueStore.html#Libplanet_Store_Trie_CacheableKeyValueStore_Exists_
+  commentId: Overload:Libplanet.Store.Trie.CacheableKeyValueStore.Exists
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.CacheableKeyValueStore.Exists
+  nameWithType: CacheableKeyValueStore.Exists
+- uid: Libplanet.Store.Trie.CacheableKeyValueStore.Get(System.Byte[])
+  name: Get(Byte[])
+  href: api/Libplanet.Store.Trie.CacheableKeyValueStore.html#Libplanet_Store_Trie_CacheableKeyValueStore_Get_System_Byte___
+  commentId: M:Libplanet.Store.Trie.CacheableKeyValueStore.Get(System.Byte[])
+  name.vb: Get(Byte())
+  fullName: Libplanet.Store.Trie.CacheableKeyValueStore.Get(System.Byte[])
+  fullName.vb: Libplanet.Store.Trie.CacheableKeyValueStore.Get(System.Byte())
+  nameWithType: CacheableKeyValueStore.Get(Byte[])
+  nameWithType.vb: CacheableKeyValueStore.Get(Byte())
+- uid: Libplanet.Store.Trie.CacheableKeyValueStore.Get*
+  name: Get
+  href: api/Libplanet.Store.Trie.CacheableKeyValueStore.html#Libplanet_Store_Trie_CacheableKeyValueStore_Get_
+  commentId: Overload:Libplanet.Store.Trie.CacheableKeyValueStore.Get
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.CacheableKeyValueStore.Get
+  nameWithType: CacheableKeyValueStore.Get
+- uid: Libplanet.Store.Trie.CacheableKeyValueStore.Set(System.Byte[],System.Byte[])
+  name: Set(Byte[], Byte[])
+  href: api/Libplanet.Store.Trie.CacheableKeyValueStore.html#Libplanet_Store_Trie_CacheableKeyValueStore_Set_System_Byte___System_Byte___
+  commentId: M:Libplanet.Store.Trie.CacheableKeyValueStore.Set(System.Byte[],System.Byte[])
+  name.vb: Set(Byte(), Byte())
+  fullName: Libplanet.Store.Trie.CacheableKeyValueStore.Set(System.Byte[], System.Byte[])
+  fullName.vb: Libplanet.Store.Trie.CacheableKeyValueStore.Set(System.Byte(), System.Byte())
+  nameWithType: CacheableKeyValueStore.Set(Byte[], Byte[])
+  nameWithType.vb: CacheableKeyValueStore.Set(Byte(), Byte())
+- uid: Libplanet.Store.Trie.CacheableKeyValueStore.Set*
+  name: Set
+  href: api/Libplanet.Store.Trie.CacheableKeyValueStore.html#Libplanet_Store_Trie_CacheableKeyValueStore_Set_
+  commentId: Overload:Libplanet.Store.Trie.CacheableKeyValueStore.Set
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.CacheableKeyValueStore.Set
+  nameWithType: CacheableKeyValueStore.Set
+- uid: Libplanet.Store.Trie.DefaultKeyValueStore
+  name: DefaultKeyValueStore
+  href: api/Libplanet.Store.Trie.DefaultKeyValueStore.html
+  commentId: T:Libplanet.Store.Trie.DefaultKeyValueStore
+  fullName: Libplanet.Store.Trie.DefaultKeyValueStore
+  nameWithType: DefaultKeyValueStore
+- uid: Libplanet.Store.Trie.DefaultKeyValueStore.#ctor(System.Nullable{System.String})
+  name: DefaultKeyValueStore(Nullable<String>)
+  href: api/Libplanet.Store.Trie.DefaultKeyValueStore.html#Libplanet_Store_Trie_DefaultKeyValueStore__ctor_System_Nullable_System_String__
+  commentId: M:Libplanet.Store.Trie.DefaultKeyValueStore.#ctor(System.Nullable{System.String})
+  name.vb: DefaultKeyValueStore(Nullable(Of String))
+  fullName: Libplanet.Store.Trie.DefaultKeyValueStore.DefaultKeyValueStore(System.Nullable<System.String>)
+  fullName.vb: Libplanet.Store.Trie.DefaultKeyValueStore.DefaultKeyValueStore(System.Nullable(Of System.String))
+  nameWithType: DefaultKeyValueStore.DefaultKeyValueStore(Nullable<String>)
+  nameWithType.vb: DefaultKeyValueStore.DefaultKeyValueStore(Nullable(Of String))
+- uid: Libplanet.Store.Trie.DefaultKeyValueStore.#ctor*
+  name: DefaultKeyValueStore
+  href: api/Libplanet.Store.Trie.DefaultKeyValueStore.html#Libplanet_Store_Trie_DefaultKeyValueStore__ctor_
+  commentId: Overload:Libplanet.Store.Trie.DefaultKeyValueStore.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.DefaultKeyValueStore.DefaultKeyValueStore
+  nameWithType: DefaultKeyValueStore.DefaultKeyValueStore
+- uid: Libplanet.Store.Trie.DefaultKeyValueStore.Delete(System.Byte[])
+  name: Delete(Byte[])
+  href: api/Libplanet.Store.Trie.DefaultKeyValueStore.html#Libplanet_Store_Trie_DefaultKeyValueStore_Delete_System_Byte___
+  commentId: M:Libplanet.Store.Trie.DefaultKeyValueStore.Delete(System.Byte[])
+  name.vb: Delete(Byte())
+  fullName: Libplanet.Store.Trie.DefaultKeyValueStore.Delete(System.Byte[])
+  fullName.vb: Libplanet.Store.Trie.DefaultKeyValueStore.Delete(System.Byte())
+  nameWithType: DefaultKeyValueStore.Delete(Byte[])
+  nameWithType.vb: DefaultKeyValueStore.Delete(Byte())
+- uid: Libplanet.Store.Trie.DefaultKeyValueStore.Delete*
+  name: Delete
+  href: api/Libplanet.Store.Trie.DefaultKeyValueStore.html#Libplanet_Store_Trie_DefaultKeyValueStore_Delete_
+  commentId: Overload:Libplanet.Store.Trie.DefaultKeyValueStore.Delete
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.DefaultKeyValueStore.Delete
+  nameWithType: DefaultKeyValueStore.Delete
+- uid: Libplanet.Store.Trie.DefaultKeyValueStore.Dispose
+  name: Dispose()
+  href: api/Libplanet.Store.Trie.DefaultKeyValueStore.html#Libplanet_Store_Trie_DefaultKeyValueStore_Dispose
+  commentId: M:Libplanet.Store.Trie.DefaultKeyValueStore.Dispose
+  fullName: Libplanet.Store.Trie.DefaultKeyValueStore.Dispose()
+  nameWithType: DefaultKeyValueStore.Dispose()
+- uid: Libplanet.Store.Trie.DefaultKeyValueStore.Dispose*
+  name: Dispose
+  href: api/Libplanet.Store.Trie.DefaultKeyValueStore.html#Libplanet_Store_Trie_DefaultKeyValueStore_Dispose_
+  commentId: Overload:Libplanet.Store.Trie.DefaultKeyValueStore.Dispose
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.DefaultKeyValueStore.Dispose
+  nameWithType: DefaultKeyValueStore.Dispose
+- uid: Libplanet.Store.Trie.DefaultKeyValueStore.Exists(System.Byte[])
+  name: Exists(Byte[])
+  href: api/Libplanet.Store.Trie.DefaultKeyValueStore.html#Libplanet_Store_Trie_DefaultKeyValueStore_Exists_System_Byte___
+  commentId: M:Libplanet.Store.Trie.DefaultKeyValueStore.Exists(System.Byte[])
+  name.vb: Exists(Byte())
+  fullName: Libplanet.Store.Trie.DefaultKeyValueStore.Exists(System.Byte[])
+  fullName.vb: Libplanet.Store.Trie.DefaultKeyValueStore.Exists(System.Byte())
+  nameWithType: DefaultKeyValueStore.Exists(Byte[])
+  nameWithType.vb: DefaultKeyValueStore.Exists(Byte())
+- uid: Libplanet.Store.Trie.DefaultKeyValueStore.Exists*
+  name: Exists
+  href: api/Libplanet.Store.Trie.DefaultKeyValueStore.html#Libplanet_Store_Trie_DefaultKeyValueStore_Exists_
+  commentId: Overload:Libplanet.Store.Trie.DefaultKeyValueStore.Exists
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.DefaultKeyValueStore.Exists
+  nameWithType: DefaultKeyValueStore.Exists
+- uid: Libplanet.Store.Trie.DefaultKeyValueStore.Get(System.Byte[])
+  name: Get(Byte[])
+  href: api/Libplanet.Store.Trie.DefaultKeyValueStore.html#Libplanet_Store_Trie_DefaultKeyValueStore_Get_System_Byte___
+  commentId: M:Libplanet.Store.Trie.DefaultKeyValueStore.Get(System.Byte[])
+  name.vb: Get(Byte())
+  fullName: Libplanet.Store.Trie.DefaultKeyValueStore.Get(System.Byte[])
+  fullName.vb: Libplanet.Store.Trie.DefaultKeyValueStore.Get(System.Byte())
+  nameWithType: DefaultKeyValueStore.Get(Byte[])
+  nameWithType.vb: DefaultKeyValueStore.Get(Byte())
+- uid: Libplanet.Store.Trie.DefaultKeyValueStore.Get*
+  name: Get
+  href: api/Libplanet.Store.Trie.DefaultKeyValueStore.html#Libplanet_Store_Trie_DefaultKeyValueStore_Get_
+  commentId: Overload:Libplanet.Store.Trie.DefaultKeyValueStore.Get
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.DefaultKeyValueStore.Get
+  nameWithType: DefaultKeyValueStore.Get
+- uid: Libplanet.Store.Trie.DefaultKeyValueStore.Set(System.Byte[],System.Byte[])
+  name: Set(Byte[], Byte[])
+  href: api/Libplanet.Store.Trie.DefaultKeyValueStore.html#Libplanet_Store_Trie_DefaultKeyValueStore_Set_System_Byte___System_Byte___
+  commentId: M:Libplanet.Store.Trie.DefaultKeyValueStore.Set(System.Byte[],System.Byte[])
+  name.vb: Set(Byte(), Byte())
+  fullName: Libplanet.Store.Trie.DefaultKeyValueStore.Set(System.Byte[], System.Byte[])
+  fullName.vb: Libplanet.Store.Trie.DefaultKeyValueStore.Set(System.Byte(), System.Byte())
+  nameWithType: DefaultKeyValueStore.Set(Byte[], Byte[])
+  nameWithType.vb: DefaultKeyValueStore.Set(Byte(), Byte())
+- uid: Libplanet.Store.Trie.DefaultKeyValueStore.Set*
+  name: Set
+  href: api/Libplanet.Store.Trie.DefaultKeyValueStore.html#Libplanet_Store_Trie_DefaultKeyValueStore_Set_
+  commentId: Overload:Libplanet.Store.Trie.DefaultKeyValueStore.Set
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.DefaultKeyValueStore.Set
+  nameWithType: DefaultKeyValueStore.Set
+- uid: Libplanet.Store.Trie.IKeyValueStore
+  name: IKeyValueStore
+  href: api/Libplanet.Store.Trie.IKeyValueStore.html
+  commentId: T:Libplanet.Store.Trie.IKeyValueStore
+  fullName: Libplanet.Store.Trie.IKeyValueStore
+  nameWithType: IKeyValueStore
+- uid: Libplanet.Store.Trie.IKeyValueStore.Delete(System.Byte[])
+  name: Delete(Byte[])
+  href: api/Libplanet.Store.Trie.IKeyValueStore.html#Libplanet_Store_Trie_IKeyValueStore_Delete_System_Byte___
+  commentId: M:Libplanet.Store.Trie.IKeyValueStore.Delete(System.Byte[])
+  name.vb: Delete(Byte())
+  fullName: Libplanet.Store.Trie.IKeyValueStore.Delete(System.Byte[])
+  fullName.vb: Libplanet.Store.Trie.IKeyValueStore.Delete(System.Byte())
+  nameWithType: IKeyValueStore.Delete(Byte[])
+  nameWithType.vb: IKeyValueStore.Delete(Byte())
+- uid: Libplanet.Store.Trie.IKeyValueStore.Delete*
+  name: Delete
+  href: api/Libplanet.Store.Trie.IKeyValueStore.html#Libplanet_Store_Trie_IKeyValueStore_Delete_
+  commentId: Overload:Libplanet.Store.Trie.IKeyValueStore.Delete
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.IKeyValueStore.Delete
+  nameWithType: IKeyValueStore.Delete
+- uid: Libplanet.Store.Trie.IKeyValueStore.Exists(System.Byte[])
+  name: Exists(Byte[])
+  href: api/Libplanet.Store.Trie.IKeyValueStore.html#Libplanet_Store_Trie_IKeyValueStore_Exists_System_Byte___
+  commentId: M:Libplanet.Store.Trie.IKeyValueStore.Exists(System.Byte[])
+  name.vb: Exists(Byte())
+  fullName: Libplanet.Store.Trie.IKeyValueStore.Exists(System.Byte[])
+  fullName.vb: Libplanet.Store.Trie.IKeyValueStore.Exists(System.Byte())
+  nameWithType: IKeyValueStore.Exists(Byte[])
+  nameWithType.vb: IKeyValueStore.Exists(Byte())
+- uid: Libplanet.Store.Trie.IKeyValueStore.Exists*
+  name: Exists
+  href: api/Libplanet.Store.Trie.IKeyValueStore.html#Libplanet_Store_Trie_IKeyValueStore_Exists_
+  commentId: Overload:Libplanet.Store.Trie.IKeyValueStore.Exists
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.IKeyValueStore.Exists
+  nameWithType: IKeyValueStore.Exists
+- uid: Libplanet.Store.Trie.IKeyValueStore.Get(System.Byte[])
+  name: Get(Byte[])
+  href: api/Libplanet.Store.Trie.IKeyValueStore.html#Libplanet_Store_Trie_IKeyValueStore_Get_System_Byte___
+  commentId: M:Libplanet.Store.Trie.IKeyValueStore.Get(System.Byte[])
+  name.vb: Get(Byte())
+  fullName: Libplanet.Store.Trie.IKeyValueStore.Get(System.Byte[])
+  fullName.vb: Libplanet.Store.Trie.IKeyValueStore.Get(System.Byte())
+  nameWithType: IKeyValueStore.Get(Byte[])
+  nameWithType.vb: IKeyValueStore.Get(Byte())
+- uid: Libplanet.Store.Trie.IKeyValueStore.Get*
+  name: Get
+  href: api/Libplanet.Store.Trie.IKeyValueStore.html#Libplanet_Store_Trie_IKeyValueStore_Get_
+  commentId: Overload:Libplanet.Store.Trie.IKeyValueStore.Get
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.IKeyValueStore.Get
+  nameWithType: IKeyValueStore.Get
+- uid: Libplanet.Store.Trie.IKeyValueStore.Set(System.Byte[],System.Byte[])
+  name: Set(Byte[], Byte[])
+  href: api/Libplanet.Store.Trie.IKeyValueStore.html#Libplanet_Store_Trie_IKeyValueStore_Set_System_Byte___System_Byte___
+  commentId: M:Libplanet.Store.Trie.IKeyValueStore.Set(System.Byte[],System.Byte[])
+  name.vb: Set(Byte(), Byte())
+  fullName: Libplanet.Store.Trie.IKeyValueStore.Set(System.Byte[], System.Byte[])
+  fullName.vb: Libplanet.Store.Trie.IKeyValueStore.Set(System.Byte(), System.Byte())
+  nameWithType: IKeyValueStore.Set(Byte[], Byte[])
+  nameWithType.vb: IKeyValueStore.Set(Byte(), Byte())
+- uid: Libplanet.Store.Trie.IKeyValueStore.Set*
+  name: Set
+  href: api/Libplanet.Store.Trie.IKeyValueStore.html#Libplanet_Store_Trie_IKeyValueStore_Set_
+  commentId: Overload:Libplanet.Store.Trie.IKeyValueStore.Set
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.IKeyValueStore.Set
+  nameWithType: IKeyValueStore.Set
+- uid: Libplanet.Store.Trie.InvalidTrieNodeException
+  name: InvalidTrieNodeException
+  href: api/Libplanet.Store.Trie.InvalidTrieNodeException.html
+  commentId: T:Libplanet.Store.Trie.InvalidTrieNodeException
+  fullName: Libplanet.Store.Trie.InvalidTrieNodeException
+  nameWithType: InvalidTrieNodeException
+- uid: Libplanet.Store.Trie.InvalidTrieNodeException.#ctor(SerializationInfo,StreamingContext)
+  name: InvalidTrieNodeException(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Store.Trie.InvalidTrieNodeException.html#Libplanet_Store_Trie_InvalidTrieNodeException__ctor_SerializationInfo_StreamingContext_
+  commentId: M:Libplanet.Store.Trie.InvalidTrieNodeException.#ctor(SerializationInfo,StreamingContext)
+  fullName: Libplanet.Store.Trie.InvalidTrieNodeException.InvalidTrieNodeException(SerializationInfo, StreamingContext)
+  nameWithType: InvalidTrieNodeException.InvalidTrieNodeException(SerializationInfo, StreamingContext)
+- uid: Libplanet.Store.Trie.InvalidTrieNodeException.#ctor(System.String)
+  name: InvalidTrieNodeException(String)
+  href: api/Libplanet.Store.Trie.InvalidTrieNodeException.html#Libplanet_Store_Trie_InvalidTrieNodeException__ctor_System_String_
+  commentId: M:Libplanet.Store.Trie.InvalidTrieNodeException.#ctor(System.String)
+  fullName: Libplanet.Store.Trie.InvalidTrieNodeException.InvalidTrieNodeException(System.String)
+  nameWithType: InvalidTrieNodeException.InvalidTrieNodeException(String)
+- uid: Libplanet.Store.Trie.InvalidTrieNodeException.#ctor(System.String,Exception)
+  name: InvalidTrieNodeException(String, Exception)
+  href: api/Libplanet.Store.Trie.InvalidTrieNodeException.html#Libplanet_Store_Trie_InvalidTrieNodeException__ctor_System_String_Exception_
+  commentId: M:Libplanet.Store.Trie.InvalidTrieNodeException.#ctor(System.String,Exception)
+  fullName: Libplanet.Store.Trie.InvalidTrieNodeException.InvalidTrieNodeException(System.String, Exception)
+  nameWithType: InvalidTrieNodeException.InvalidTrieNodeException(String, Exception)
+- uid: Libplanet.Store.Trie.InvalidTrieNodeException.#ctor*
+  name: InvalidTrieNodeException
+  href: api/Libplanet.Store.Trie.InvalidTrieNodeException.html#Libplanet_Store_Trie_InvalidTrieNodeException__ctor_
+  commentId: Overload:Libplanet.Store.Trie.InvalidTrieNodeException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.InvalidTrieNodeException.InvalidTrieNodeException
+  nameWithType: InvalidTrieNodeException.InvalidTrieNodeException
+- uid: Libplanet.Store.TrieStateStore
+  name: TrieStateStore
+  href: api/Libplanet.Store.TrieStateStore.html
+  commentId: T:Libplanet.Store.TrieStateStore
+  fullName: Libplanet.Store.TrieStateStore
+  nameWithType: TrieStateStore
+- uid: Libplanet.Store.TrieStateStore.#ctor(Libplanet.Store.Trie.IKeyValueStore,Libplanet.Store.Trie.IKeyValueStore)
+  name: TrieStateStore(IKeyValueStore, IKeyValueStore)
+  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore__ctor_Libplanet_Store_Trie_IKeyValueStore_Libplanet_Store_Trie_IKeyValueStore_
+  commentId: M:Libplanet.Store.TrieStateStore.#ctor(Libplanet.Store.Trie.IKeyValueStore,Libplanet.Store.Trie.IKeyValueStore)
+  fullName: Libplanet.Store.TrieStateStore.TrieStateStore(Libplanet.Store.Trie.IKeyValueStore, Libplanet.Store.Trie.IKeyValueStore)
+  nameWithType: TrieStateStore.TrieStateStore(IKeyValueStore, IKeyValueStore)
+- uid: Libplanet.Store.TrieStateStore.#ctor*
+  name: TrieStateStore
+  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore__ctor_
+  commentId: Overload:Libplanet.Store.TrieStateStore.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Store.TrieStateStore.TrieStateStore
+  nameWithType: TrieStateStore.TrieStateStore
+- uid: Libplanet.Store.TrieStateStore.ContainsBlockStates(Libplanet.HashDigest{SHA256})
+  name: ContainsBlockStates(HashDigest<SHA256>)
+  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_ContainsBlockStates_Libplanet_HashDigest_SHA256__
+  commentId: M:Libplanet.Store.TrieStateStore.ContainsBlockStates(Libplanet.HashDigest{SHA256})
+  name.vb: ContainsBlockStates(HashDigest(Of SHA256))
+  fullName: Libplanet.Store.TrieStateStore.ContainsBlockStates(Libplanet.HashDigest<SHA256>)
+  fullName.vb: Libplanet.Store.TrieStateStore.ContainsBlockStates(Libplanet.HashDigest(Of SHA256))
+  nameWithType: TrieStateStore.ContainsBlockStates(HashDigest<SHA256>)
+  nameWithType.vb: TrieStateStore.ContainsBlockStates(HashDigest(Of SHA256))
+- uid: Libplanet.Store.TrieStateStore.ContainsBlockStates*
+  name: ContainsBlockStates
+  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_ContainsBlockStates_
+  commentId: Overload:Libplanet.Store.TrieStateStore.ContainsBlockStates
+  isSpec: "True"
+  fullName: Libplanet.Store.TrieStateStore.ContainsBlockStates
+  nameWithType: TrieStateStore.ContainsBlockStates
+- uid: Libplanet.Store.TrieStateStore.Dispose
+  name: Dispose()
+  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_Dispose
+  commentId: M:Libplanet.Store.TrieStateStore.Dispose
+  fullName: Libplanet.Store.TrieStateStore.Dispose()
+  nameWithType: TrieStateStore.Dispose()
+- uid: Libplanet.Store.TrieStateStore.Dispose*
+  name: Dispose
+  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_Dispose_
+  commentId: Overload:Libplanet.Store.TrieStateStore.Dispose
+  isSpec: "True"
+  fullName: Libplanet.Store.TrieStateStore.Dispose
+  nameWithType: TrieStateStore.Dispose
+- uid: Libplanet.Store.TrieStateStore.ForkStates*
+  name: ForkStates
+  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_ForkStates_
+  commentId: Overload:Libplanet.Store.TrieStateStore.ForkStates
+  isSpec: "True"
+  fullName: Libplanet.Store.TrieStateStore.ForkStates
+  nameWithType: TrieStateStore.ForkStates
+- uid: Libplanet.Store.TrieStateStore.ForkStates``1(Guid,Guid,Libplanet.Blocks.Block{``0})
+  name: ForkStates<T>(Guid, Guid, Block<T>)
+  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_ForkStates__1_Guid_Guid_Libplanet_Blocks_Block___0__
+  commentId: M:Libplanet.Store.TrieStateStore.ForkStates``1(Guid,Guid,Libplanet.Blocks.Block{``0})
+  name.vb: ForkStates(Of T)(Guid, Guid, Block(Of T))
+  fullName: Libplanet.Store.TrieStateStore.ForkStates<T>(Guid, Guid, Libplanet.Blocks.Block<T>)
+  fullName.vb: Libplanet.Store.TrieStateStore.ForkStates(Of T)(Guid, Guid, Libplanet.Blocks.Block(Of T))
+  nameWithType: TrieStateStore.ForkStates<T>(Guid, Guid, Block<T>)
+  nameWithType.vb: TrieStateStore.ForkStates(Of T)(Guid, Guid, Block(Of T))
+- uid: Libplanet.Store.TrieStateStore.GetRootHash(Libplanet.HashDigest{SHA256})
+  name: GetRootHash(HashDigest<SHA256>)
+  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_GetRootHash_Libplanet_HashDigest_SHA256__
+  commentId: M:Libplanet.Store.TrieStateStore.GetRootHash(Libplanet.HashDigest{SHA256})
+  name.vb: GetRootHash(HashDigest(Of SHA256))
+  fullName: Libplanet.Store.TrieStateStore.GetRootHash(Libplanet.HashDigest<SHA256>)
+  fullName.vb: Libplanet.Store.TrieStateStore.GetRootHash(Libplanet.HashDigest(Of SHA256))
+  nameWithType: TrieStateStore.GetRootHash(HashDigest<SHA256>)
+  nameWithType.vb: TrieStateStore.GetRootHash(HashDigest(Of SHA256))
+- uid: Libplanet.Store.TrieStateStore.GetRootHash*
+  name: GetRootHash
+  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_GetRootHash_
+  commentId: Overload:Libplanet.Store.TrieStateStore.GetRootHash
+  isSpec: "True"
+  fullName: Libplanet.Store.TrieStateStore.GetRootHash
+  nameWithType: TrieStateStore.GetRootHash
+- uid: Libplanet.Store.TrieStateStore.GetState(System.String,System.Nullable{Libplanet.HashDigest{SHA256}},System.Nullable{Guid})
+  name: GetState(String, Nullable<HashDigest<SHA256>>, Nullable<Guid>)
+  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_GetState_System_String_System_Nullable_Libplanet_HashDigest_SHA256___System_Nullable_Guid__
+  commentId: M:Libplanet.Store.TrieStateStore.GetState(System.String,System.Nullable{Libplanet.HashDigest{SHA256}},System.Nullable{Guid})
+  name.vb: GetState(String, Nullable(Of HashDigest(Of SHA256)), Nullable(Of Guid))
+  fullName: Libplanet.Store.TrieStateStore.GetState(System.String, System.Nullable<Libplanet.HashDigest<SHA256>>, System.Nullable<Guid>)
+  fullName.vb: Libplanet.Store.TrieStateStore.GetState(System.String, System.Nullable(Of Libplanet.HashDigest(Of SHA256)), System.Nullable(Of Guid))
+  nameWithType: TrieStateStore.GetState(String, Nullable<HashDigest<SHA256>>, Nullable<Guid>)
+  nameWithType.vb: TrieStateStore.GetState(String, Nullable(Of HashDigest(Of SHA256)), Nullable(Of Guid))
+- uid: Libplanet.Store.TrieStateStore.GetState*
+  name: GetState
+  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_GetState_
+  commentId: Overload:Libplanet.Store.TrieStateStore.GetState
+  isSpec: "True"
+  fullName: Libplanet.Store.TrieStateStore.GetState
+  nameWithType: TrieStateStore.GetState
+- uid: Libplanet.Store.TrieStateStore.SetStates*
+  name: SetStates
+  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_SetStates_
+  commentId: Overload:Libplanet.Store.TrieStateStore.SetStates
+  isSpec: "True"
+  fullName: Libplanet.Store.TrieStateStore.SetStates
+  nameWithType: TrieStateStore.SetStates
+- uid: Libplanet.Store.TrieStateStore.SetStates``1(Libplanet.HashDigest{SHA256},IImmutableDictionary{System.String,IValue},Func{Libplanet.HashDigest{SHA256},Libplanet.Blocks.Block{``0}})
+  name: SetStates<T>(HashDigest<SHA256>, IImmutableDictionary<String, IValue>, Func<HashDigest<SHA256>, Block<T>>)
+  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_SetStates__1_Libplanet_HashDigest_SHA256__IImmutableDictionary_System_String_IValue__Func_Libplanet_HashDigest_SHA256__Libplanet_Blocks_Block___0___
+  commentId: M:Libplanet.Store.TrieStateStore.SetStates``1(Libplanet.HashDigest{SHA256},IImmutableDictionary{System.String,IValue},Func{Libplanet.HashDigest{SHA256},Libplanet.Blocks.Block{``0}})
+  name.vb: SetStates(Of T)(HashDigest(Of SHA256), IImmutableDictionary(Of String, IValue), Func(Of HashDigest(Of SHA256), Block(Of T)))
+  fullName: Libplanet.Store.TrieStateStore.SetStates<T>(Libplanet.HashDigest<SHA256>, IImmutableDictionary<System.String, IValue>, Func<Libplanet.HashDigest<SHA256>, Libplanet.Blocks.Block<T>>)
+  fullName.vb: Libplanet.Store.TrieStateStore.SetStates(Of T)(Libplanet.HashDigest(Of SHA256), IImmutableDictionary(Of System.String, IValue), Func(Of Libplanet.HashDigest(Of SHA256), Libplanet.Blocks.Block(Of T)))
+  nameWithType: TrieStateStore.SetStates<T>(HashDigest<SHA256>, IImmutableDictionary<String, IValue>, Func<HashDigest<SHA256>, Block<T>>)
+  nameWithType.vb: TrieStateStore.SetStates(Of T)(HashDigest(Of SHA256), IImmutableDictionary(Of String, IValue), Func(Of HashDigest(Of SHA256), Block(Of T)))
 - uid: Libplanet.Tx
   name: Libplanet.Tx
   href: api/Libplanet.Tx.html
