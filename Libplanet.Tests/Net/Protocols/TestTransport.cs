@@ -241,7 +241,7 @@ namespace Libplanet.Tests.Net.Protocols
 
             Task.Run(() =>
             {
-                (Protocol as KademliaProtocol).PingAsync(
+                _ = (Protocol as KademliaProtocol).PingAsync(
                     boundPeer,
                     timeSpan,
                     default(CancellationToken));
