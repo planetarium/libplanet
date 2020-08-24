@@ -27,7 +27,7 @@ namespace Libplanet.RocksDBStore
 
         /// <inheritdoc/>
         public byte[] Get(byte[] key) => _keyValueDb.Get(key) ?? throw new KeyNotFoundException(
-            "There was no element corresponded to the key (hex: {ByteUtil.Hex(key)}).");
+            $"There were no elements that correspond to the key (hex: {ByteUtil.Hex(key)}).");
 
         /// <inheritdoc/>
         public void Set(byte[] key, byte[] value)

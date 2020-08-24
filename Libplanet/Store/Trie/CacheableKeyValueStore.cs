@@ -38,7 +38,7 @@ namespace Libplanet.Store.Trie
                 return bytes;
             }
 
-            throw new KeyNotFoundException("There was no element corresponded to the key" +
+            throw new KeyNotFoundException("There were no elements that correspond to the key" +
                                            $" (hex: {ByteUtil.Hex(key)}).");
         }
 

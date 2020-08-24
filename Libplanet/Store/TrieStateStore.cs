@@ -100,12 +100,12 @@ namespace Libplanet.Store
         }
 
         /// <summary>
-        /// Gets the state hash corresponded to <paramref name="blockHash"/>.
+        /// Gets the state hash corresponds to <paramref name="blockHash"/>.
         /// </summary>
         /// <param name="blockHash">The <see cref="Block{T}.Hash"/> to get state hash.</param>
-        /// <returns>If there is state hash corresponded to <paramref name="blockHash"/>,
+        /// <returns>If there is a state hash corresponds to <paramref name="blockHash"/>,
         /// it will return the state hash. If not, it will return null.</returns>
-        /// <exception cref="KeyNotFoundException">If there is no root hash corresponded to
+        /// <exception cref="KeyNotFoundException">If there are no root hashes that correspond to
         /// <paramref name="blockHash"/>.</exception>
         public HashDigest<SHA256> GetRootHash(HashDigest<SHA256> blockHash)
             => new HashDigest<SHA256>(_stateHashKeyValueStore.Get(blockHash.ToByteArray()));

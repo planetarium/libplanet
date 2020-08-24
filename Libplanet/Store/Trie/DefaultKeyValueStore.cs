@@ -48,8 +48,8 @@ namespace Libplanet.Store.Trie
             var path = DataPath(key);
             return _root.FileExists(path)
                 ? _root.ReadAllBytes(path)
-                : throw new KeyNotFoundException("There was no element corresponded to the key" +
-                                                 $" (hex: {ByteUtil.Hex(key)}).");
+                : throw new KeyNotFoundException("There were no elements that correspond to the" +
+                                                 $" key (hex: {ByteUtil.Hex(key)}).");
         }
 
         /// <inheritdoc/>
