@@ -182,7 +182,8 @@ namespace Libplanet.Net
         public Peer AsPeer => Transport.AsPeer;
 
         /// <summary>
-        /// The time the message was last received.
+        /// The last time when any message was arrived.
+        /// It can be <c>null</c> if no message has been arrived yet.
         /// </summary>
         public DateTimeOffset? LastMessageTimestamp =>
             Running ? Transport.LastMessageTimestamp : (DateTimeOffset?)null;
