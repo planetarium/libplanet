@@ -279,7 +279,6 @@ namespace Libplanet.Net
             CancellationToken cancellationToken = default(CancellationToken)
         )
         {
-            _runtimeCancellationTokenSource?.Cancel();
             if (Running)
             {
                 await Task.Delay(waitFor, cancellationToken);
@@ -287,6 +286,7 @@ namespace Libplanet.Net
                 _broadcastQueue.ReceiveReady -= DoBroadcast;
                 _replyQueue.ReceiveReady -= DoReply;
                 _router.ReceiveReady -= ReceiveMessage;
+                _router.Unbind($"tcp://*:{_listenPort}");
 
                 if (_routerPoller.IsRunning)
                 {
@@ -307,6 +307,8 @@ namespace Libplanet.Net
                 {
                     dealer.Dispose();
                 }
+
+                _dealers.Clear();
 
                 Running = false;
             }
