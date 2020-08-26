@@ -7123,23 +7123,23 @@ references:
   fullName.vb: Libplanet.Net.Swarm(Of T).GetTrustedStateCompleterAsync
   nameWithType: Swarm<T>.GetTrustedStateCompleterAsync
   nameWithType.vb: Swarm(Of T).GetTrustedStateCompleterAsync
-- uid: Libplanet.Net.Swarm`1.LastReceived
-  name: LastReceived
-  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_LastReceived
-  commentId: P:Libplanet.Net.Swarm`1.LastReceived
-  fullName: Libplanet.Net.Swarm<T>.LastReceived
-  fullName.vb: Libplanet.Net.Swarm(Of T).LastReceived
-  nameWithType: Swarm<T>.LastReceived
-  nameWithType.vb: Swarm(Of T).LastReceived
-- uid: Libplanet.Net.Swarm`1.LastReceived*
-  name: LastReceived
-  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_LastReceived_
-  commentId: Overload:Libplanet.Net.Swarm`1.LastReceived
+- uid: Libplanet.Net.Swarm`1.LastMessageTimestamp
+  name: LastMessageTimestamp
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_LastMessageTimestamp
+  commentId: P:Libplanet.Net.Swarm`1.LastMessageTimestamp
+  fullName: Libplanet.Net.Swarm<T>.LastMessageTimestamp
+  fullName.vb: Libplanet.Net.Swarm(Of T).LastMessageTimestamp
+  nameWithType: Swarm<T>.LastMessageTimestamp
+  nameWithType.vb: Swarm(Of T).LastMessageTimestamp
+- uid: Libplanet.Net.Swarm`1.LastMessageTimestamp*
+  name: LastMessageTimestamp
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_LastMessageTimestamp_
+  commentId: Overload:Libplanet.Net.Swarm`1.LastMessageTimestamp
   isSpec: "True"
-  fullName: Libplanet.Net.Swarm<T>.LastReceived
-  fullName.vb: Libplanet.Net.Swarm(Of T).LastReceived
-  nameWithType: Swarm<T>.LastReceived
-  nameWithType.vb: Swarm(Of T).LastReceived
+  fullName: Libplanet.Net.Swarm<T>.LastMessageTimestamp
+  fullName.vb: Libplanet.Net.Swarm(Of T).LastMessageTimestamp
+  nameWithType: Swarm<T>.LastMessageTimestamp
+  nameWithType.vb: Swarm(Of T).LastMessageTimestamp
 - uid: Libplanet.Net.Swarm`1.LastSeenTimestamps
   name: LastSeenTimestamps
   href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_LastSeenTimestamps
