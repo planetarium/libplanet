@@ -180,6 +180,8 @@ namespace Libplanet.Net
 
         public IEnumerable<BoundPeer> Peers => Protocol.Peers;
 
+        public DateTimeOffset? LastMessageTimestamp { get; private set; }
+
         /// <summary>
         /// Whether this <see cref="NetMQTransport"/> instance is running.
         /// </summary>
@@ -582,6 +584,7 @@ namespace Libplanet.Net
                         _differentAppProtocolVersionEncountered);
                     _logger.Debug("A message has parsed: {0}, from {1}", message, message.Remote);
                     MessageHistory.Enqueue(message);
+                    LastMessageTimestamp = DateTimeOffset.UtcNow;
 
                     try
                     {
