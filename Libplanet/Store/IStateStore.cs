@@ -16,19 +16,15 @@ namespace Libplanet.Store
         /// <summary>
         /// Sets states mapped as relation <see cref="Block{T}.Hash"/> → states.
         /// It guarantees <see cref="GetState"/> will return the same state if you passed same
-        /// <paramref name="blockHash"/> unless it has overwritten.
+        /// <paramref name="block"/> unless it has overwritten.
         /// </summary>
-        /// <param name="blockHash">The <see cref="Block{T}.Hash"/> to set states.</param>
+        /// <param name="block">The <see cref="Block{T}"/> to set states.</param>
         /// <param name="states">The dictionary of state keys to states.</param>
-        /// <param name="blockGetter">The getter returns the block corresponded to
-        /// <see cref="HashDigest{T}"/>-typed parameter.</param>
         /// <typeparam name="T">An <see cref="IAction"/> type. It should match to
-        /// <paramref name="blockGetter"/>'s <see cref="Block{T}"/>-typed return value's
-        /// type parameter.</typeparam>
+        /// <paramref name="block"/>'s type parameter.</typeparam>
         void SetStates<T>(
-            HashDigest<SHA256> blockHash,
-            IImmutableDictionary<string, IValue> states,
-            Func<HashDigest<SHA256>, Block<T>> blockGetter = null)
+            Block<T> block,
+            IImmutableDictionary<string, IValue> states)
             where T : IAction, new();
 
         /// <summary>
