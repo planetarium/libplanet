@@ -2110,15 +2110,36 @@ namespace Libplanet.Tests.Net
 
             try
             {
+                // Setup
                 await StartAsync(swarm1);
                 await BootstrapAsync(swarm2, swarm1.AsPeer);
                 await StartAsync(swarm2);
+
                 await Task.Delay(1000);
+
+                // Restart
                 await swarm1.StopAsync();
                 Assert.False(swarm1.Running);
                 await Task.Delay(1000);
                 await StartAsync(swarm1);
-                Assert.True(swarm1.Running);
+                DateTimeOffset restartedAt = DateTimeOffset.UtcNow;
+
+                // Check
+                await swarm1.CheckAllPeersAsync();
+                await swarm2.CheckAllPeersAsync();
+
+                Assert.Contains(swarm1.AsPeer, swarm2.Peers);
+                Assert.Contains(swarm2.AsPeer, swarm1.Peers);
+                Assert.InRange(
+                    swarm1.LastMessageTimestamp.Value,
+                    restartedAt,
+                    DateTimeOffset.UtcNow
+                );
+                Assert.InRange(
+                    swarm2.LastMessageTimestamp.Value,
+                    restartedAt,
+                    DateTimeOffset.UtcNow
+                );
             }
             finally
             {
