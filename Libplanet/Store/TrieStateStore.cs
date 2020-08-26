@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using Bencodex.Types;
@@ -88,6 +89,47 @@ namespace Libplanet.Store
             where T : IAction, new()
         {
             // Do nothing.
+        }
+
+        public void PruneStates(ImmutableHashSet<HashDigest<SHA256>> excludeBlockHashes)
+        {
+            var excludeNodes = ImmutableHashSet<HashDigest<SHA256>>.Empty;
+            foreach (var blockHash in excludeBlockHashes)
+            {
+                if (!_stateHashKeyValueStore.Exists(blockHash.ToByteArray()))
+                {
+                    continue;
+                }
+
+                byte[] stateRootHashBytes = _stateHashKeyValueStore.Get(blockHash.ToByteArray());
+                var stateTrie = new MerkleTrie(
+                    _stateKeyValueStore,
+                    new HashNode(new HashDigest<SHA256>(stateRootHashBytes)));
+                var nodeHashes = stateTrie.IterateHashNodes();
+                excludeNodes = excludeNodes.Concat(nodeHashes).ToImmutableHashSet();
+            }
+
+            // Clean up nodes.
+            foreach (var stateKey in _stateKeyValueStore.ListKeys())
+            {
+                if (excludeNodes.Contains(new HashDigest<SHA256>(stateKey)))
+                {
+                    continue;
+                }
+
+                _stateKeyValueStore.Delete(stateKey);
+            }
+
+            // Clean up state root hashes.
+            foreach (var stateHashKey in _stateHashKeyValueStore.ListKeys())
+            {
+                if (excludeBlockHashes.Contains(new HashDigest<SHA256>(stateHashKey)))
+                {
+                    continue;
+                }
+
+                _stateHashKeyValueStore.Delete(stateHashKey);
+            }
         }
 
         public void Dispose()

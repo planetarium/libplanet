@@ -91,6 +91,51 @@ namespace Libplanet.Store.Trie
             return new MerkleTrie(KeyValueStore, newRoot);
         }
 
+        internal IEnumerable<HashDigest<SHA256>> IterateHashNodes()
+        {
+            if (Root is null)
+            {
+                yield break;
+            }
+
+            var queue = new Queue<HashNode>();
+            if (!(Root is HashNode))
+            {
+                yield return Root.Hash();
+            }
+            else
+            {
+                queue.Enqueue((Root as HashNode)!);
+            }
+
+            while (queue.Count > 0)
+            {
+                var hashNode = queue.Dequeue();
+                yield return hashNode.HashDigest;
+                var node = GetNode(hashNode.HashDigest);
+                switch (node)
+                {
+                    case FullNode fullNode:
+                        var childHashNodes = fullNode.Children.Where(child => child is HashNode)
+                            .Cast<HashNode>();
+                        foreach (var childHashNode in childHashNodes)
+                        {
+                            queue.Enqueue(childHashNode);
+                        }
+
+                        break;
+
+                    case ShortNode shortNode:
+                        if (shortNode.Value is HashNode shortNodeValue)
+                        {
+                            queue.Enqueue(shortNodeValue);
+                        }
+
+                        break;
+                }
+            }
+        }
+
         private INode Commit(INode node)
         {
             switch (node)
