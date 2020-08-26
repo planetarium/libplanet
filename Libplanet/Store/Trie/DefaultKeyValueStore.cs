@@ -79,6 +79,15 @@ namespace Libplanet.Store.Trie
         public bool Exists(byte[] key)
             => _root.FileExists(DataPath(key));
 
+        /// <inheritdoc/>
+        public IEnumerable<byte[]> ListKeys()
+        {
+            foreach (var path in _root.EnumerateFiles(UPath.Root))
+            {
+                yield return ByteUtil.ParseHex(path.GetName());
+            }
+        }
+
         private UPath DataPath(byte[] key)
         {
             return UPath.Root / ByteUtil.Hex(key);

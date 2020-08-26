@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 #nullable enable
 namespace Libplanet.Store.Trie
 {
@@ -13,5 +15,7 @@ namespace Libplanet.Store.Trie
         public void Delete(byte[] key);
 
         public bool Exists(byte[] key);
+
+        public IEnumerable<byte[]> ListKeys();
     }
 }

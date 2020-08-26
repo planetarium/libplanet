@@ -49,5 +49,15 @@ namespace Libplanet.RocksDBStore
 
         /// <inheritdoc/>
         public bool Exists(byte[] key) => !(_keyValueDb.Get(key) is null);
+
+        /// <inheritdoc/>
+        public IEnumerable<byte[]> ListKeys()
+        {
+            using Iterator it = _keyValueDb.NewIterator();
+            for (it.SeekToFirst(); it.Valid(); it.Next())
+            {
+                yield return it.Key();
+            }
+        }
     }
 }
