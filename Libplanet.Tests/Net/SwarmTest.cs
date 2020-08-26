@@ -1192,18 +1192,7 @@ namespace Libplanet.Tests.Net
         [FactOnlyTurnAvailable(Timeout = Timeout)]
         public async Task ExchangeWithIceServer()
         {
-            Uri turnUrl = FactOnlyTurnAvailableAttribute.TurnUri;
-            string username = FactOnlyTurnAvailableAttribute.Username;
-            string password = FactOnlyTurnAvailableAttribute.Password;
-
-            IEnumerable<IceServer> iceServers = new[]
-            {
-                new IceServer(
-                    urls: new[] { turnUrl },
-                    username: username,
-                    credential: password),
-            };
-
+            var iceServers = FactOnlyTurnAvailableAttribute.IceServers;
             var seed = CreateSwarm(_blockchains[0], host: "localhost");
             var swarmA = CreateSwarm(_blockchains[1], iceServers: iceServers);
             var swarmB = CreateSwarm(_blockchains[2], iceServers: iceServers);
@@ -2100,6 +2089,55 @@ namespace Libplanet.Tests.Net
                 Assert.InRange(
                     swarm1.LastMessageTimestamp.Value,
                     bootstrappedAt,
+                    DateTimeOffset.UtcNow
+                );
+            }
+            finally
+            {
+                await StopAsync(swarm1);
+                await StopAsync(swarm2);
+            }
+        }
+
+        [FactOnlyTurnAvailable(Timeout = Timeout)]
+        public async Task Restart()
+        {
+            Swarm<DumbAction> swarm1 = CreateSwarm(
+                blockChain: _blockchains[0],
+                iceServers: FactOnlyTurnAvailableAttribute.IceServers
+            );
+            Swarm<DumbAction> swarm2 = _swarms[0];
+
+            try
+            {
+                // Setup
+                await StartAsync(swarm1);
+                await BootstrapAsync(swarm2, swarm1.AsPeer);
+                await StartAsync(swarm2);
+
+                await Task.Delay(1000);
+
+                // Restart
+                await swarm1.StopAsync();
+                Assert.False(swarm1.Running);
+                await Task.Delay(1000);
+                await StartAsync(swarm1);
+                DateTimeOffset restartedAt = DateTimeOffset.UtcNow;
+
+                // Check
+                await swarm1.CheckAllPeersAsync();
+                await swarm2.CheckAllPeersAsync();
+
+                Assert.Contains(swarm1.AsPeer, swarm2.Peers);
+                Assert.Contains(swarm2.AsPeer, swarm1.Peers);
+                Assert.InRange(
+                    swarm1.LastMessageTimestamp.Value,
+                    restartedAt,
+                    DateTimeOffset.UtcNow
+                );
+                Assert.InRange(
+                    swarm2.LastMessageTimestamp.Value,
+                    restartedAt,
                     DateTimeOffset.UtcNow
                 );
             }

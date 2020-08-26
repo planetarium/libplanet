@@ -1,4 +1,5 @@
 using System;
+using Libplanet.Net;
 using Xunit;
 
 namespace Libplanet.Tests.Net
@@ -19,6 +20,14 @@ namespace Libplanet.Tests.Net
 
                 Username = userInfo[0];
                 Password = userInfo[1];
+
+                IceServers = new[]
+                {
+                    new IceServer(
+                        urls: new[] { TurnUri },
+                        username: Username,
+                        credential: Password),
+                };
             }
             catch (ArgumentNullException)
             {
@@ -38,5 +47,7 @@ namespace Libplanet.Tests.Net
         public static string Username { get; }
 
         public static string Password { get; }
+
+        public static IceServer[] IceServers { get; }
     }
 }

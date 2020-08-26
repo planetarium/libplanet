@@ -232,6 +232,8 @@ To be released.
     without read lock.  [[#927]]
  -  Fixed a bug that `Swarm<T>` had not respond to `GetRecentStates` message
     when the target block does not exist in the chain.  [[#941]]
+ -  Fixed a bug that `Swarm<T>.StartAsync()` had not worked after `Swarm<T>.StopAsync()`
+    was once called.  [[#965]]
 
 ### CLI tools
 
@@ -287,6 +289,7 @@ To be released.
 [#954]: https://github.com/planetarium/libplanet/pull/954
 [#963]: https://github.com/planetarium/libplanet/pull/963
 [#964]: https://github.com/planetarium/libplanet/pull/964
+[#965]: https://github.com/planetarium/libplanet/pull/965
 [sleep mode]: https://en.wikipedia.org/wiki/Sleep_mode
 
 
