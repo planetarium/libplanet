@@ -232,7 +232,8 @@ To be released.
     without read lock.  [[#927]]
  -  Fixed a bug that `Swarm<T>` had not respond to `GetRecentStates` message
     when the target block does not exist in the chain.  [[#941]]
- -  Fixed a bug that `Swarm<T>` had not started after `.StopAsync()`.  [[#965]]
+ -  Fixed a bug that `Swarm<T>.StartAsync()` had not worked after `Swarm<T>.StopAsync()`
+    was once called.  [[#965]]
 
 ### CLI tools
 
