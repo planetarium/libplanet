@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -10,6 +11,7 @@ using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Store.Trie;
 using Libplanet.Store.Trie.Nodes;
+using Serilog;
 
 namespace Libplanet.Store
 {
@@ -93,6 +95,8 @@ namespace Libplanet.Store
 
         public void PruneStates(ImmutableHashSet<HashDigest<SHA256>> excludeBlockHashes)
         {
+            var stopwatch = new Stopwatch();
+            Log.Debug($"Started {nameof(PruneStates)}()");
             var excludeNodes = ImmutableHashSet<HashDigest<SHA256>>.Empty;
             foreach (var blockHash in excludeBlockHashes)
             {
@@ -105,11 +109,21 @@ namespace Libplanet.Store
                 var stateTrie = new MerkleTrie(
                     _stateKeyValueStore,
                     new HashNode(new HashDigest<SHA256>(stateRootHashBytes)));
+                Log.Debug("Start to iterate hash-nodes.");
+                stopwatch.Start();
                 var nodeHashes = stateTrie.IterateHashNodes();
                 excludeNodes = excludeNodes.Concat(nodeHashes).ToImmutableHashSet();
+                Log.Debug(
+                    $"Finished to iterate hash-nodes. elapsed: {stopwatch.ElapsedMilliseconds} ms");
+                stopwatch.Stop();
             }
 
+            Log.Debug("ExcludedNodes' count: {Count}", excludeNodes.Count);
+
             // Clean up nodes.
+            long deleteCount = 0;
+            Log.Debug("Started to clean up states.");
+            stopwatch.Restart();
             foreach (var stateKey in _stateKeyValueStore.ListKeys())
             {
                 if (excludeNodes.Contains(new HashDigest<SHA256>(stateKey)))
@@ -118,9 +132,20 @@ namespace Libplanet.Store
                 }
 
                 _stateKeyValueStore.Delete(stateKey);
+                ++deleteCount;
             }
 
+            Log.Debug(
+                "Finished to clean up states. Deleted {DeleteCount}." +
+                " elapsed: {ElapsedMilliseconds} ms",
+                deleteCount,
+                stopwatch.ElapsedMilliseconds);
+            stopwatch.Stop();
+
             // Clean up state root hashes.
+            deleteCount = 0;
+            Log.Debug("Started to clean up state hashes.");
+            stopwatch.Restart();
             foreach (var stateHashKey in _stateHashKeyValueStore.ListKeys())
             {
                 if (excludeBlockHashes.Contains(new HashDigest<SHA256>(stateHashKey)))
@@ -129,7 +154,15 @@ namespace Libplanet.Store
                 }
 
                 _stateHashKeyValueStore.Delete(stateHashKey);
+                ++deleteCount;
             }
+
+            Log.Debug(
+                "Finished to clean up state hashes. Deleted {DeleteCount}." +
+                " elapsed: {ElapsedMilliseconds} ms",
+                deleteCount,
+                stopwatch.ElapsedMilliseconds);
+            stopwatch.Stop();
         }
 
         public void Dispose()
