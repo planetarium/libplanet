@@ -36,27 +36,18 @@ namespace Libplanet.Store
 
         /// <inheritdoc/>
         public void SetStates<T>(
-            HashDigest<SHA256> blockHash,
-            IImmutableDictionary<string, IValue> states,
-            Func<HashDigest<SHA256>, Block<T>> blockGetter)
+            Block<T> block,
+            IImmutableDictionary<string, IValue> states)
             where T : IAction, new()
         {
             MerkleTrie prevStatesTrie;
-            try
-            {
-                Block<T> block = blockGetter(blockHash);
-                var previousBlockStateHashBytes = block?.PreviousHash is null
-                    ? null
-                    : _stateHashKeyValueStore.Get(block.PreviousHash.Value.ToByteArray());
-                var trieRoot = previousBlockStateHashBytes is null
-                    ? null
-                    : new HashNode(new HashDigest<SHA256>(previousBlockStateHashBytes));
-                prevStatesTrie = new MerkleTrie(_stateKeyValueStore, trieRoot);
-            }
-            catch (KeyNotFoundException)
-            {
-                prevStatesTrie = new MerkleTrie(_stateKeyValueStore);
-            }
+            var previousBlockStateHashBytes = block.PreviousHash is null
+                ? null
+                : _stateHashKeyValueStore.Get(block.PreviousHash.Value.ToByteArray());
+            var trieRoot = previousBlockStateHashBytes is null
+                ? null
+                : new HashNode(new HashDigest<SHA256>(previousBlockStateHashBytes));
+            prevStatesTrie = new MerkleTrie(_stateKeyValueStore, trieRoot);
 
             foreach (var pair in states)
             {
@@ -65,7 +56,7 @@ namespace Libplanet.Store
 
             var newStateTrie = prevStatesTrie.Commit();
             _stateHashKeyValueStore.Set(
-                blockHash.ToByteArray(), newStateTrie.Root!.Hash().ToByteArray());
+                block.Hash.ToByteArray(), newStateTrie.Root!.Hash().ToByteArray());
         }
 
         /// <inheritdoc/>

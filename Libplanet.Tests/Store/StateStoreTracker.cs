@@ -18,13 +18,12 @@ namespace Libplanet.Tests.Store
         }
 
         public void SetStates<T>(
-            HashDigest<SHA256> blockHash,
-            IImmutableDictionary<string, IValue> states,
-            Func<HashDigest<SHA256>, Block<T>> blockGetter)
+            Block<T> blockHash,
+            IImmutableDictionary<string, IValue> states)
             where T : IAction, new()
         {
-            Log(nameof(SetStates), blockHash, states, blockGetter);
-            _stateStore.SetStates(blockHash, states, blockGetter);
+            Log(nameof(SetStates), blockHash, states);
+            _stateStore.SetStates(blockHash, states);
         }
 
         public IValue GetState(

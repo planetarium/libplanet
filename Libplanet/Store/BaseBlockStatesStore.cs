@@ -11,12 +11,11 @@ namespace Libplanet.Store
     public abstract class BaseBlockStatesStore : BaseStore, IBlockStatesStore
     {
         public void SetStates<T>(
-            HashDigest<SHA256> blockHash,
-            IImmutableDictionary<string, IValue> states,
-            Func<HashDigest<SHA256>, Block<T>> blockGetter)
+            Block<T> block,
+            IImmutableDictionary<string, IValue> states)
             where T : IAction, new()
         {
-            SetBlockStates(blockHash, states);
+            SetBlockStates(block.Hash, states);
         }
 
         public IValue GetState(
