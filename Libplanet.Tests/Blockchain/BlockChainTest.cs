@@ -398,6 +398,58 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
+        public void ShortCircuitActionEvaluationForUnrenderWithNoActionRenderers()
+        {
+            IEnumerable<ExecuteRecord> NonRehearsalExecutions() =>
+                DumbAction.ExecuteRecords.Value.Where(r => !r.Rehearsal);
+
+            var policy = new BlockPolicy<DumbAction>();
+            var key = new PrivateKey();
+            Address miner = key.ToAddress();
+
+            using (var fx = new DefaultStoreFixture(memory: true))
+            {
+                var emptyRenderer = new AnonymousRenderer<DumbAction>();
+                var chain = new BlockChain<DumbAction>(
+                    policy,
+                    fx.Store,
+                    fx.StateStore,
+                    fx.GenesisBlock,
+                    renderers: new[] { emptyRenderer }
+                );
+                var actions = new[] { new DumbAction(miner, "foo") };
+                var tx = chain.MakeTransaction(key, actions);
+                var block = TestUtils.MineNext(
+                    chain.Genesis,
+                    new[] { tx },
+                    miner: miner,
+                    difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain));
+                chain.Append(block);
+                var forked = chain.Fork(chain.Genesis.Hash);
+                forked.Append(block);
+
+                DumbAction.ExecuteRecords.Value = ImmutableList<ExecuteRecord>.Empty;
+                Assert.Empty(DumbAction.ExecuteRecords.Value);
+
+                // Stale actions shouldn't be evaluated because the "renderer" here is not an
+                // IActionRenderer<T> but a vanilla IRenderer<T> which means they don't have to
+                // be unrendered.
+                var renderer = new DumbRenderer<DumbAction>();
+                var newChain = new BlockChain<DumbAction>(
+                    policy,
+                    fx.Store,
+                    fx.StateStore,
+                    Guid.NewGuid(),
+                    fx.GenesisBlock,
+                    renderers: new[] { renderer }
+                );
+                chain.Swap(newChain, true);
+                Assert.Empty(renderer.ActionRecords);
+                Assert.Empty(NonRehearsalExecutions());
+            }
+        }
+
+        [Fact]
         public void Append()
         {
             (Address[] addresses, Transaction<DumbAction>[] txs) =

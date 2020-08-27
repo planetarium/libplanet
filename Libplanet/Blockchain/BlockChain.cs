@@ -815,6 +815,8 @@ namespace Libplanet.Blockchain
                 );
             }
 
+            renderActions = renderActions && ActionRenderers.Any();
+
             // Since rendering process requires every step's states, if required block states
             // are incomplete they are complemented anyway:
             stateCompleters ??= StateCompleterSet<T>.Recalculate;
@@ -1412,7 +1414,7 @@ namespace Libplanet.Blockchain
                 topmostCommon
             );
 
-            if (render)
+            if (render && ActionRenderers.Any())
             {
                 // Unrender stale actions.
                 _logger.Debug("Unrendering abandoned actions...");
@@ -1503,7 +1505,7 @@ namespace Libplanet.Blockchain
                 _rwlock.ExitWriteLock();
             }
 
-            if (render)
+            if (render && ActionRenderers.Any())
             {
                 _logger.Debug("Rendering actions in new chain.");
 

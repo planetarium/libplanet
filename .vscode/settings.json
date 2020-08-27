@@ -18,5 +18,6 @@
     "secp256k1",
     "struct",
     "unrender",
+    "unrendered",
   ]
 }
