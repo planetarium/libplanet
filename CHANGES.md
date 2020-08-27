@@ -172,9 +172,13 @@ To be released.
      -  Added `FungibleAssetStateCompleters<T>` static class.
      -  Added `Swarm<T>.GetTrustedStateCompleterAsync()` method.
  -  Added `IRenderer<T>` interface.  [[#959], [#963]]
+ -  Added `IActionRenderer<T>` interface.  [[#959], [#967], [#970]]
  -  Added `AnonymousRenderer<T>` class.  [[#959], [#963]]
+ -  Added `AnonymousActionRenderer<T>` interface.  [[#959], [#967], [#970]]
  -  Added `LoggedRenderer<T>` class.  [[#959], [#963]]
+ -  Added `LoggedActionRenderer<T>` interface.  [[#959], [#967], [#970]]
  -  Added `BlockChain<T>.Renderers` property.  [[#945], [#959], [#963]]
+ -  Added `BlockChain<T>.ActionRenderers` property.  [[#959], [#967], [#970]]
  -  Added `Swarm<T>.AppProtocolVersion` property.  [[#949]]
  -  `DefaultStore` became to implement `IBlockStatesStore`.  [[#950]]
  -  Added `IStateStore` interface.  [[#950]]
@@ -293,6 +297,8 @@ To be released.
 [#963]: https://github.com/planetarium/libplanet/pull/963
 [#964]: https://github.com/planetarium/libplanet/pull/964
 [#965]: https://github.com/planetarium/libplanet/pull/965
+[#967]: https://github.com/planetarium/libplanet/issues/967
+[#970]: https://github.com/planetarium/libplanet/pull/970
 [#972]: https://github.com/planetarium/libplanet/pull/972
 [sleep mode]: https://en.wikipedia.org/wiki/Sleep_mode
 

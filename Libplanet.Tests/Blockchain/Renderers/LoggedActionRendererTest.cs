@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Libplanet.Action;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Blocks;
 using Libplanet.Tests.Common.Action;
@@ -13,8 +14,15 @@ using Constants = Serilog.Core.Constants;
 
 namespace Libplanet.Tests.Blockchain.Renderers
 {
-    public class LoggedRendererTest : IDisposable
+    public class LoggedActionRendererTest : IDisposable
     {
+        private static IAction _action = new DumbAction();
+
+        private static IAccountStateDelta _stateDelta =
+            new AccountStateDeltaImpl(_ => null, (_, __) => default, default);
+
+        private static Exception _exception = new Exception();
+
         private static Block<DumbAction> _genesis =
             TestUtils.MineGenesis<DumbAction>(default(Address));
 
@@ -26,7 +34,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
 
         private ITestCorrelatorContext _context;
 
-        public LoggedRendererTest()
+        public LoggedActionRendererTest()
         {
             _logger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
@@ -44,6 +52,223 @@ namespace Libplanet.Tests.Blockchain.Renderers
         }
 
         [Theory]
+        [InlineData(false, false, false, false)]
+        [InlineData(true, false, false, false)]
+        [InlineData(false, true, false, false)]
+        [InlineData(true, true, false, false)]
+        [InlineData(false, false, true, false)]
+        [InlineData(true, false, true, false)]
+        [InlineData(false, true, true, false)]
+        [InlineData(true, true, true, false)]
+        [InlineData(false, false, false, true)]
+        [InlineData(true, false, false, true)]
+        [InlineData(false, true, false, true)]
+        [InlineData(true, true, false, true)]
+        [InlineData(false, false, true, true)]
+        [InlineData(true, false, true, true)]
+        [InlineData(false, true, true, true)]
+        [InlineData(true, true, true, true)]
+        public void ActionRenderings(bool unrender, bool error, bool rehearsal, bool exception)
+        {
+            bool called = false;
+            LogEvent firstLog = null;
+            IActionContext actionContext =
+                new ActionContext(default, default, 123, _stateDelta, default, rehearsal);
+            Exception actionError = new Exception();
+            IActionRenderer<DumbAction> actionRenderer;
+            if (error)
+            {
+                Action<IAction, IActionContext, Exception> render = (action, cxt, e) =>
+                {
+                    LogEvent[] logs = LogEvents.ToArray();
+                    Assert.Single(logs);
+                    firstLog = logs[0];
+                    Assert.Same(_action, action);
+                    Assert.Same(actionContext, cxt);
+                    Assert.Same(actionError, e);
+                    called = true;
+                    if (exception)
+                    {
+                        throw new ThrowException.SomeException(string.Empty);
+                    }
+                };
+                actionRenderer = new AnonymousActionRenderer<DumbAction>
+                {
+                    ActionErrorRenderer = unrender ? null : render,
+                    ActionErrorUnrenderer = unrender ? render : null,
+                };
+            }
+            else
+            {
+                Action<IAction, IActionContext, IAccountStateDelta> render = (action, cxt, next) =>
+                {
+                    LogEvent[] logs = LogEvents.ToArray();
+                    Assert.Single(logs);
+                    firstLog = logs[0];
+                    Assert.Same(_action, action);
+                    Assert.Same(actionContext, cxt);
+                    Assert.Same(_stateDelta, next);
+                    called = true;
+                    if (exception)
+                    {
+                        throw new ThrowException.SomeException(string.Empty);
+                    }
+                };
+                actionRenderer = new AnonymousActionRenderer<DumbAction>
+                {
+                    ActionRenderer = unrender ? null : render,
+                    ActionUnrenderer = unrender ? render : null,
+                };
+            }
+
+            actionRenderer = new LoggedActionRenderer<DumbAction>(
+                actionRenderer,
+                _logger,
+                LogEventLevel.Information
+            );
+            Assert.False(called);
+            Assert.Empty(LogEvents);
+
+            actionRenderer.RenderBlock(_genesis, _blockA);
+            Assert.False(called);
+            Assert.Equal(2, LogEvents.Count());
+            ResetContext();
+
+            ThrowException.SomeException thrownException = null;
+            try
+            {
+                if (error)
+                {
+                    if (unrender)
+                    {
+                        actionRenderer.UnrenderActionError(_action, actionContext, actionError);
+                    }
+                    else
+                    {
+                        actionRenderer.RenderActionError(_action, actionContext, actionError);
+                    }
+                }
+                else
+                {
+                    if (unrender)
+                    {
+                        actionRenderer.UnrenderAction(_action, actionContext, _stateDelta);
+                    }
+                    else
+                    {
+                        actionRenderer.RenderAction(_action, actionContext, _stateDelta);
+                    }
+                }
+            }
+            catch (ThrowException.SomeException e)
+            {
+                thrownException = e;
+            }
+
+            if (exception)
+            {
+                Assert.NotNull(thrownException);
+                Assert.IsType<ThrowException.SomeException>(thrownException);
+            }
+            else
+            {
+                Assert.Null(thrownException);
+            }
+
+            Assert.True(called);
+            LogEvent[] logEvents = LogEvents.ToArray();
+            Assert.Equal(2, logEvents.Length);
+            Assert.Equal(firstLog, logEvents[0]);
+            Assert.Equal(LogEventLevel.Information, firstLog.Level);
+            const string expected1stLog =
+                "Invoking {MethodName}() for an action {ActionType} at block #{BlockIndex}...";
+            Assert.Equal(
+                expected1stLog + (rehearsal ? " (rehearsal: {Rehearsal})" : string.Empty),
+                firstLog.MessageTemplate.Text
+            );
+            string methodName =
+                (unrender ? "Unrender" : "Render") +
+                "Action" + (error ? "Error" : string.Empty);
+            Assert.Equal($"\"{methodName}\"", firstLog.Properties["MethodName"].ToString());
+            Assert.Equal(
+                $"\"{typeof(DumbAction).FullName}\"",
+                firstLog.Properties["ActionType"].ToString()
+            );
+            Assert.Equal(
+                actionContext.BlockIndex.ToString(CultureInfo.InvariantCulture),
+                firstLog.Properties["BlockIndex"].ToString()
+            );
+            Assert.Equal(
+                $"\"{typeof(AnonymousActionRenderer<DumbAction>).FullName}\"",
+                firstLog.Properties[Constants.SourceContextPropertyName].ToString()
+            );
+            Assert.Null(firstLog.Exception);
+            if (rehearsal)
+            {
+                Assert.Equal("True", firstLog.Properties["Rehearsal"].ToString());
+            }
+            else
+            {
+                Assert.False(firstLog.Properties.ContainsKey("Rehearsal"));
+            }
+
+            LogEvent secondLog = logEvents[1];
+            Assert.Equal(
+                exception ? LogEventLevel.Error : LogEventLevel.Information,
+                secondLog.Level
+            );
+            string expected2ndLog;
+            if (exception)
+            {
+                expected2ndLog =
+                    "An exception was thrown during {MethodName}() for an action {ActionType} at " +
+                    "block #{BlockIndex}" +
+                    (rehearsal ? " (rehearsal: {Rehearsal})" : string.Empty) +
+                    ": {Exception}";
+            }
+            else
+            {
+                expected2ndLog =
+                    "Invoked {MethodName}() for an action {ActionType} at block #{BlockIndex}" +
+                    (rehearsal ? " (rehearsal: {Rehearsal})." : ".");
+            }
+
+            Assert.Equal(
+                expected2ndLog,
+                secondLog.MessageTemplate.Text
+            );
+            Assert.Equal(firstLog.Properties["MethodName"], secondLog.Properties["MethodName"]);
+            Assert.Equal(firstLog.Properties["ActionType"], secondLog.Properties["ActionType"]);
+            Assert.Equal(firstLog.Properties["BlockIndex"], secondLog.Properties["BlockIndex"]);
+            Assert.Equal(
+                firstLog.Properties[Constants.SourceContextPropertyName],
+                secondLog.Properties[Constants.SourceContextPropertyName]
+            );
+            if (exception)
+            {
+                Assert.StartsWith(
+                    $"\"{typeof(ThrowException.SomeException).FullName}",
+                    secondLog.Properties["Exception"].ToString()
+                );
+                Assert.NotNull(secondLog.Exception);
+                Assert.IsType<ThrowException.SomeException>(secondLog.Exception);
+            }
+            else
+            {
+                Assert.Null(secondLog.Exception);
+            }
+
+            if (rehearsal)
+            {
+                Assert.Equal("True", firstLog.Properties["Rehearsal"].ToString());
+            }
+            else
+            {
+                Assert.False(firstLog.Properties.ContainsKey("Rehearsal"));
+            }
+        }
+
+        [Theory]
         [InlineData(false)]
         [InlineData(true)]
         public void RenderBlock(bool exception)
@@ -51,7 +276,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             bool called = false;
             LogEvent firstLog = null;
 
-            IRenderer<DumbAction> renderer = new AnonymousRenderer<DumbAction>
+            IActionRenderer<DumbAction> actionRenderer = new AnonymousActionRenderer<DumbAction>
             {
                 BlockRenderer = (oldTip, newTip) =>
                 {
@@ -67,12 +292,12 @@ namespace Libplanet.Tests.Blockchain.Renderers
                     }
                 },
             };
-            renderer = new LoggedRenderer<DumbAction>(renderer, _logger);
+            actionRenderer = new LoggedActionRenderer<DumbAction>(actionRenderer, _logger);
 
             Assert.False(called);
             Assert.Empty(LogEvents);
 
-            renderer.RenderReorg(_blockA, _blockB, _genesis);
+            actionRenderer.RenderReorg(_blockA, _blockB, _genesis);
             Assert.False(called);
             Assert.Equal(2, LogEvents.Count());
             ResetContext();
@@ -80,12 +305,12 @@ namespace Libplanet.Tests.Blockchain.Renderers
             if (exception)
             {
                 Assert.Throws<ThrowException.SomeException>(
-                    () => renderer.RenderBlock(_genesis, _blockA)
+                    () => actionRenderer.RenderBlock(_genesis, _blockA)
                 );
             }
             else
             {
-                renderer.RenderBlock(_genesis, _blockA);
+                actionRenderer.RenderBlock(_genesis, _blockA);
             }
 
             Assert.True(called);
@@ -109,7 +334,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             );
             Assert.Equal($"\"{_genesis.Hash}\"", firstLog.Properties["OldHash"].ToString());
             Assert.Equal(
-                $"\"{typeof(AnonymousRenderer<DumbAction>).FullName}\"",
+                $"\"{typeof(AnonymousActionRenderer<DumbAction>).FullName}\"",
                 firstLog.Properties[Constants.SourceContextPropertyName].ToString()
             );
             Assert.Null(firstLog.Exception);
@@ -159,7 +384,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             bool called = false;
             LogEvent firstLog = null;
 
-            IRenderer<DumbAction> renderer = new AnonymousRenderer<DumbAction>
+            IActionRenderer<DumbAction> actionRenderer = new AnonymousActionRenderer<DumbAction>
             {
                 ReorgRenderer = (oldTip, newTip, branchpoint) =>
                 {
@@ -176,12 +401,16 @@ namespace Libplanet.Tests.Blockchain.Renderers
                     }
                 },
             };
-            renderer = new LoggedRenderer<DumbAction>(renderer, _logger, LogEventLevel.Verbose);
+            actionRenderer = new LoggedActionRenderer<DumbAction>(
+                actionRenderer,
+                _logger,
+                LogEventLevel.Verbose
+            );
 
             Assert.False(called);
             Assert.Empty(LogEvents);
 
-            renderer.RenderBlock(_genesis, _blockA);
+            actionRenderer.RenderBlock(_genesis, _blockA);
             Assert.False(called);
             Assert.Equal(2, LogEvents.Count());
             ResetContext();
@@ -189,12 +418,12 @@ namespace Libplanet.Tests.Blockchain.Renderers
             if (exception)
             {
                 Assert.Throws<ThrowException.SomeException>(
-                    () => renderer.RenderReorg(_blockA, _blockB, _genesis)
+                    () => actionRenderer.RenderReorg(_blockA, _blockB, _genesis)
                 );
             }
             else
             {
-                renderer.RenderReorg(_blockA, _blockB, _genesis);
+                actionRenderer.RenderReorg(_blockA, _blockB, _genesis);
             }
 
             Assert.True(called);
@@ -224,7 +453,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             );
             Assert.Equal($"\"{_genesis.Hash}\"", firstLog.Properties["BranchpointHash"].ToString());
             Assert.Equal(
-                $"\"{typeof(AnonymousRenderer<DumbAction>).FullName}\"",
+                $"\"{typeof(AnonymousActionRenderer<DumbAction>).FullName}\"",
                 firstLog.Properties[Constants.SourceContextPropertyName].ToString()
             );
             Assert.Null(firstLog.Exception);

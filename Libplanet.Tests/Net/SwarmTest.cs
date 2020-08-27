@@ -71,8 +71,8 @@ namespace Libplanet.Tests.Net
                 new DumbRenderer<DumbAction>(),
             };
 
-            LoggedRenderer<DumbAction>[][] loggedRenderers = _renderers
-                .Select(r => new[] { new LoggedRenderer<DumbAction>(r, _logger) })
+            LoggedActionRenderer<DumbAction>[][] loggedRenderers = _renderers
+                .Select(r => new[] { new LoggedActionRenderer<DumbAction>(r, _logger) })
                 .ToArray();
 
             _blockchains = new List<BlockChain<DumbAction>>

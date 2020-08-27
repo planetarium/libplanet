@@ -48,7 +48,7 @@ namespace Libplanet.Tests.Blockchain
                 _fx.Store,
                 _fx.StateStore,
                 _fx.GenesisBlock,
-                renderers: new[] { new LoggedRenderer<DumbAction>(_renderer, Log.Logger) }
+                renderers: new[] { new LoggedActionRenderer<DumbAction>(_renderer, Log.Logger) }
             );
             _renderer.ResetRecords();
         }
@@ -653,16 +653,16 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async Task RenderAfterAppendComplete()
+        public async Task RenderActionsAfterAppendComplete()
         {
              var policy = new NullPolicy<DumbAction>();
              var store = new DefaultStore(null);
-             IRenderer<DumbAction> renderer = new AnonymousRenderer<DumbAction>
+             IActionRenderer<DumbAction> renderer = new AnonymousActionRenderer<DumbAction>
              {
                  ActionRenderer = (_, __, nextStates) =>
                      throw new SomeException("thrown by renderer"),
              };
-             renderer = new LoggedRenderer<DumbAction>(renderer, Log.Logger);
+             renderer = new LoggedActionRenderer<DumbAction>(renderer, Log.Logger);
              BlockChain<DumbAction> blockChain =
                  TestUtils.MakeBlockChain(policy, store, renderers: new[] { renderer });
              var privateKey = new PrivateKey();
