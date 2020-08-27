@@ -7737,15 +7737,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BaseBlockStatesStore.SetStates
   nameWithType: BaseBlockStatesStore.SetStates
-- uid: Libplanet.Store.BaseBlockStatesStore.SetStates``1(Libplanet.HashDigest{SHA256},IImmutableDictionary{System.String,IValue},Func{Libplanet.HashDigest{SHA256},Libplanet.Blocks.Block{``0}})
-  name: SetStates<T>(HashDigest<SHA256>, IImmutableDictionary<String, IValue>, Func<HashDigest<SHA256>, Block<T>>)
-  href: api/Libplanet.Store.BaseBlockStatesStore.html#Libplanet_Store_BaseBlockStatesStore_SetStates__1_Libplanet_HashDigest_SHA256__IImmutableDictionary_System_String_IValue__Func_Libplanet_HashDigest_SHA256__Libplanet_Blocks_Block___0___
-  commentId: M:Libplanet.Store.BaseBlockStatesStore.SetStates``1(Libplanet.HashDigest{SHA256},IImmutableDictionary{System.String,IValue},Func{Libplanet.HashDigest{SHA256},Libplanet.Blocks.Block{``0}})
-  name.vb: SetStates(Of T)(HashDigest(Of SHA256), IImmutableDictionary(Of String, IValue), Func(Of HashDigest(Of SHA256), Block(Of T)))
-  fullName: Libplanet.Store.BaseBlockStatesStore.SetStates<T>(Libplanet.HashDigest<SHA256>, IImmutableDictionary<System.String, IValue>, Func<Libplanet.HashDigest<SHA256>, Libplanet.Blocks.Block<T>>)
-  fullName.vb: Libplanet.Store.BaseBlockStatesStore.SetStates(Of T)(Libplanet.HashDigest(Of SHA256), IImmutableDictionary(Of System.String, IValue), Func(Of Libplanet.HashDigest(Of SHA256), Libplanet.Blocks.Block(Of T)))
-  nameWithType: BaseBlockStatesStore.SetStates<T>(HashDigest<SHA256>, IImmutableDictionary<String, IValue>, Func<HashDigest<SHA256>, Block<T>>)
-  nameWithType.vb: BaseBlockStatesStore.SetStates(Of T)(HashDigest(Of SHA256), IImmutableDictionary(Of String, IValue), Func(Of HashDigest(Of SHA256), Block(Of T)))
+- uid: Libplanet.Store.BaseBlockStatesStore.SetStates``1(Libplanet.Blocks.Block{``0},IImmutableDictionary{System.String,IValue})
+  name: SetStates<T>(Block<T>, IImmutableDictionary<String, IValue>)
+  href: api/Libplanet.Store.BaseBlockStatesStore.html#Libplanet_Store_BaseBlockStatesStore_SetStates__1_Libplanet_Blocks_Block___0__IImmutableDictionary_System_String_IValue__
+  commentId: M:Libplanet.Store.BaseBlockStatesStore.SetStates``1(Libplanet.Blocks.Block{``0},IImmutableDictionary{System.String,IValue})
+  name.vb: SetStates(Of T)(Block(Of T), IImmutableDictionary(Of String, IValue))
+  fullName: Libplanet.Store.BaseBlockStatesStore.SetStates<T>(Libplanet.Blocks.Block<T>, IImmutableDictionary<System.String, IValue>)
+  fullName.vb: Libplanet.Store.BaseBlockStatesStore.SetStates(Of T)(Libplanet.Blocks.Block(Of T), IImmutableDictionary(Of System.String, IValue))
+  nameWithType: BaseBlockStatesStore.SetStates<T>(Block<T>, IImmutableDictionary<String, IValue>)
+  nameWithType.vb: BaseBlockStatesStore.SetStates(Of T)(Block(Of T), IImmutableDictionary(Of String, IValue))
 - uid: Libplanet.Store.BaseBlockStatesStore.StoreStateReference(Guid,IImmutableSet{System.String},Libplanet.HashDigest{SHA256},System.Int64)
   name: StoreStateReference(Guid, IImmutableSet<String>, HashDigest<SHA256>, Int64)
   href: api/Libplanet.Store.BaseBlockStatesStore.html#Libplanet_Store_BaseBlockStatesStore_StoreStateReference_Guid_IImmutableSet_System_String__Libplanet_HashDigest_SHA256__System_Int64_
@@ -9434,15 +9434,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStateStore.SetStates
   nameWithType: IStateStore.SetStates
-- uid: Libplanet.Store.IStateStore.SetStates``1(Libplanet.HashDigest{SHA256},IImmutableDictionary{System.String,IValue},Func{Libplanet.HashDigest{SHA256},Libplanet.Blocks.Block{``0}})
-  name: SetStates<T>(HashDigest<SHA256>, IImmutableDictionary<String, IValue>, Func<HashDigest<SHA256>, Block<T>>)
-  href: api/Libplanet.Store.IStateStore.html#Libplanet_Store_IStateStore_SetStates__1_Libplanet_HashDigest_SHA256__IImmutableDictionary_System_String_IValue__Func_Libplanet_HashDigest_SHA256__Libplanet_Blocks_Block___0___
-  commentId: M:Libplanet.Store.IStateStore.SetStates``1(Libplanet.HashDigest{SHA256},IImmutableDictionary{System.String,IValue},Func{Libplanet.HashDigest{SHA256},Libplanet.Blocks.Block{``0}})
-  name.vb: SetStates(Of T)(HashDigest(Of SHA256), IImmutableDictionary(Of String, IValue), Func(Of HashDigest(Of SHA256), Block(Of T)))
-  fullName: Libplanet.Store.IStateStore.SetStates<T>(Libplanet.HashDigest<SHA256>, IImmutableDictionary<System.String, IValue>, Func<Libplanet.HashDigest<SHA256>, Libplanet.Blocks.Block<T>>)
-  fullName.vb: Libplanet.Store.IStateStore.SetStates(Of T)(Libplanet.HashDigest(Of SHA256), IImmutableDictionary(Of System.String, IValue), Func(Of Libplanet.HashDigest(Of SHA256), Libplanet.Blocks.Block(Of T)))
-  nameWithType: IStateStore.SetStates<T>(HashDigest<SHA256>, IImmutableDictionary<String, IValue>, Func<HashDigest<SHA256>, Block<T>>)
-  nameWithType.vb: IStateStore.SetStates(Of T)(HashDigest(Of SHA256), IImmutableDictionary(Of String, IValue), Func(Of HashDigest(Of SHA256), Block(Of T)))
+- uid: Libplanet.Store.IStateStore.SetStates``1(Libplanet.Blocks.Block{``0},IImmutableDictionary{System.String,IValue})
+  name: SetStates<T>(Block<T>, IImmutableDictionary<String, IValue>)
+  href: api/Libplanet.Store.IStateStore.html#Libplanet_Store_IStateStore_SetStates__1_Libplanet_Blocks_Block___0__IImmutableDictionary_System_String_IValue__
+  commentId: M:Libplanet.Store.IStateStore.SetStates``1(Libplanet.Blocks.Block{``0},IImmutableDictionary{System.String,IValue})
+  name.vb: SetStates(Of T)(Block(Of T), IImmutableDictionary(Of String, IValue))
+  fullName: Libplanet.Store.IStateStore.SetStates<T>(Libplanet.Blocks.Block<T>, IImmutableDictionary<System.String, IValue>)
+  fullName.vb: Libplanet.Store.IStateStore.SetStates(Of T)(Libplanet.Blocks.Block(Of T), IImmutableDictionary(Of System.String, IValue))
+  nameWithType: IStateStore.SetStates<T>(Block<T>, IImmutableDictionary<String, IValue>)
+  nameWithType.vb: IStateStore.SetStates(Of T)(Block(Of T), IImmutableDictionary(Of String, IValue))
 - uid: Libplanet.Store.IStore
   name: IStore
   href: api/Libplanet.Store.IStore.html
@@ -10453,15 +10453,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.TrieStateStore.SetStates
   nameWithType: TrieStateStore.SetStates
-- uid: Libplanet.Store.TrieStateStore.SetStates``1(Libplanet.HashDigest{SHA256},IImmutableDictionary{System.String,IValue},Func{Libplanet.HashDigest{SHA256},Libplanet.Blocks.Block{``0}})
-  name: SetStates<T>(HashDigest<SHA256>, IImmutableDictionary<String, IValue>, Func<HashDigest<SHA256>, Block<T>>)
-  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_SetStates__1_Libplanet_HashDigest_SHA256__IImmutableDictionary_System_String_IValue__Func_Libplanet_HashDigest_SHA256__Libplanet_Blocks_Block___0___
-  commentId: M:Libplanet.Store.TrieStateStore.SetStates``1(Libplanet.HashDigest{SHA256},IImmutableDictionary{System.String,IValue},Func{Libplanet.HashDigest{SHA256},Libplanet.Blocks.Block{``0}})
-  name.vb: SetStates(Of T)(HashDigest(Of SHA256), IImmutableDictionary(Of String, IValue), Func(Of HashDigest(Of SHA256), Block(Of T)))
-  fullName: Libplanet.Store.TrieStateStore.SetStates<T>(Libplanet.HashDigest<SHA256>, IImmutableDictionary<System.String, IValue>, Func<Libplanet.HashDigest<SHA256>, Libplanet.Blocks.Block<T>>)
-  fullName.vb: Libplanet.Store.TrieStateStore.SetStates(Of T)(Libplanet.HashDigest(Of SHA256), IImmutableDictionary(Of System.String, IValue), Func(Of Libplanet.HashDigest(Of SHA256), Libplanet.Blocks.Block(Of T)))
-  nameWithType: TrieStateStore.SetStates<T>(HashDigest<SHA256>, IImmutableDictionary<String, IValue>, Func<HashDigest<SHA256>, Block<T>>)
-  nameWithType.vb: TrieStateStore.SetStates(Of T)(HashDigest(Of SHA256), IImmutableDictionary(Of String, IValue), Func(Of HashDigest(Of SHA256), Block(Of T)))
+- uid: Libplanet.Store.TrieStateStore.SetStates``1(Libplanet.Blocks.Block{``0},IImmutableDictionary{System.String,IValue})
+  name: SetStates<T>(Block<T>, IImmutableDictionary<String, IValue>)
+  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_SetStates__1_Libplanet_Blocks_Block___0__IImmutableDictionary_System_String_IValue__
+  commentId: M:Libplanet.Store.TrieStateStore.SetStates``1(Libplanet.Blocks.Block{``0},IImmutableDictionary{System.String,IValue})
+  name.vb: SetStates(Of T)(Block(Of T), IImmutableDictionary(Of String, IValue))
+  fullName: Libplanet.Store.TrieStateStore.SetStates<T>(Libplanet.Blocks.Block<T>, IImmutableDictionary<System.String, IValue>)
+  fullName.vb: Libplanet.Store.TrieStateStore.SetStates(Of T)(Libplanet.Blocks.Block(Of T), IImmutableDictionary(Of System.String, IValue))
+  nameWithType: TrieStateStore.SetStates<T>(Block<T>, IImmutableDictionary<String, IValue>)
+  nameWithType.vb: TrieStateStore.SetStates(Of T)(Block(Of T), IImmutableDictionary(Of String, IValue))
 - uid: Libplanet.Tx
   name: Libplanet.Tx
   href: api/Libplanet.Tx.html
