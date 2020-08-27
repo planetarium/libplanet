@@ -24,6 +24,7 @@ To be released.
      -  Removed `BlockChain<T>.TipChanged` event, which was replaced by
         `IRenderer<T>.RenderBlock()`.
      -  Removed `PolymorphicAction<T>.Render()` and `Unrender()` methods.
+     -  Removed `BlockChain<T>.TipChangedEventArgs` class.
  -  Added methods related fungible asset states to `IAccountStateDelta`:
     [[#861], [#900], [#954]]
      -  `UpdatedFungibleAssetsAccounts` property
@@ -171,7 +172,6 @@ To be released.
      -  Added `FungibleAssetStateCompleters<T>` static class.
      -  Added `Swarm<T>.GetTrustedStateCompleterAsync()` method.
  -  Added `IRenderer<T>` interface.  [[#959], [#963]]
- -  Added `PolymorphicRenderer<T>` class.  [[#959], [#963]]
  -  Added `AnonymousRenderer<T>` class.  [[#959], [#963]]
  -  Added `LoggedRenderer<T>` class.  [[#959], [#963]]
  -  Added `BlockChain<T>.Renderers` property.  [[#945], [#959], [#963]]
