@@ -20,7 +20,7 @@ namespace Libplanet.Tests.Net
 {
     public partial class SwarmTest
     {
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public async Task TrustedStateCompleter()
         {
             StateCompleter<DumbAction> noComplete = StateCompleters<DumbAction>.Reject;
