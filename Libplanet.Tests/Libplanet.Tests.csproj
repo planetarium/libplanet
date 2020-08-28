@@ -1,6 +1,4 @@
-<Project
-  xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
-  Sdk="Microsoft.NET.Sdk">
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <IsPackable>false</IsPackable>
@@ -18,13 +16,11 @@
     <AdditionalFiles Include="..\stylecop.json" />
   </ItemGroup>
 
-  <PropertyGroup Condition=" '$(MSBuildRuntimeType)'!='Mono' And
-                             '$(MSBuildVersion)'&gt;='16.3.0'">
+  <PropertyGroup Condition=" '$(MSBuildRuntimeType)'!='Mono' And '$(MSBuildVersion)'&gt;='16.3.0'">
     <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(MSBuildRuntimeType)'=='Mono' And
-                             '$(BuildingByReSharper)'!='true'">
+  <PropertyGroup Condition=" '$(MSBuildRuntimeType)'=='Mono' And '$(BuildingByReSharper)'!='true'">
     <TargetFramework>net47</TargetFramework>
   </PropertyGroup>
 
@@ -37,6 +33,7 @@
     <PackageReference Include="Menees.Analyzers.2017" Version="2.0.3">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="1.1.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.1.0" />
     <PackageReference Include="Serilog.Enrichers.Thread" Version="3.0.0" />
     <PackageReference Include="Serilog.Sinks.TestCorrelator" Version="3.2.0" />
