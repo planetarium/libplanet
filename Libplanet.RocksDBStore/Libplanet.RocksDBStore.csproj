@@ -42,7 +42,7 @@
     </IncludeAssets>
   </PackageReference>
   <PackageReference Include="Planetarium.RocksDbSharp" Version="6.2.2.3-planetarium" />
-  <PackageReference Include="SonarAnalyzer.CSharp" Version="8.1.0.13383">
+  <PackageReference Include="SonarAnalyzer.CSharp" Version="8.12.0.21095">
     <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     <PrivateAssets>all</PrivateAssets>
   </PackageReference>
