@@ -307,7 +307,8 @@ namespace Libplanet.Stun
                         message.TransactionId,
                         out TaskCompletionSource<StunMessage> tcs))
                     {
-                        tcs.SetResult(message);
+                        // tcs may be already canceled.
+                        tcs.TrySetResult(message);
                     }
                 }
                 catch (Exception e)

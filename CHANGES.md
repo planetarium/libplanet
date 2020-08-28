@@ -234,6 +234,8 @@ To be released.
     when the target block does not exist in the chain.  [[#941]]
  -  Fixed a bug that `Swarm<T>.StartAsync()` had not worked after `Swarm<T>.StopAsync()`
     was once called.  [[#965]]
+ -  Fixed a bug that `TurnClient` had thrown `InvalidOperationException` when
+    reconnecting.  [[#957], [#972]]
 
 ### CLI tools
 
@@ -285,11 +287,13 @@ To be released.
 [#946]: https://github.com/planetarium/libplanet/pull/946
 [#949]: https://github.com/planetarium/libplanet/pull/949
 [#950]: https://github.com/planetarium/libplanet/pull/950
+[#957]: https://github.com/planetarium/libplanet/issues/957
 [#959]: https://github.com/planetarium/libplanet/issues/959
 [#954]: https://github.com/planetarium/libplanet/pull/954
 [#963]: https://github.com/planetarium/libplanet/pull/963
 [#964]: https://github.com/planetarium/libplanet/pull/964
 [#965]: https://github.com/planetarium/libplanet/pull/965
+[#972]: https://github.com/planetarium/libplanet/pull/972
 [sleep mode]: https://en.wikipedia.org/wiki/Sleep_mode
 
 
