@@ -62,6 +62,9 @@ namespace Libplanet.Tests.Net
             _fx2 = new DefaultStoreFixture(memory: true);
             _fx3 = new DefaultStoreFixture(memory: true);
             _fx4 = new DefaultStoreFixture(memory: true);
+            _mptFx1 = new DefaultStoreFixture(memory: true, mpt: true);
+            _mptFx2 = new DefaultStoreFixture(memory: true, mpt: true);
+            _mptFx3 = new DefaultStoreFixture(memory: true, mpt: true);
 
             _renderers = new List<DumbRenderer<DumbAction>>
             {
@@ -83,6 +86,25 @@ namespace Libplanet.Tests.Net
                 TestUtils.MakeBlockChain(policy, _fx4.Store, renderers: loggedRenderers[3]),
             };
 
+            _mptBlockchains = new List<BlockChain<DumbAction>>
+            {
+                TestUtils.MakeBlockChain(
+                    policy,
+                    _mptFx1.Store,
+                    stateStore: _mptFx1.StateStore,
+                    renderers: loggedRenderers[0]),
+                TestUtils.MakeBlockChain(
+                    policy,
+                    _mptFx2.Store,
+                    stateStore: _mptFx2.StateStore,
+                    renderers: loggedRenderers[1]),
+                TestUtils.MakeBlockChain(
+                    policy,
+                    _mptFx3.Store,
+                    stateStore: _mptFx3.StateStore,
+                    renderers: loggedRenderers[2]),
+            };
+
             _finalizers = new List<Func<Task>>();
             _swarms = new List<Swarm<DumbAction>>
             {
@@ -90,6 +112,12 @@ namespace Libplanet.Tests.Net
                 CreateSwarm(_blockchains[1]),
                 CreateSwarm(_blockchains[2]),
                 CreateSwarm(_blockchains[3]),
+            };
+            _mptSwarms = new List<Swarm<DumbAction>>
+            {
+                CreateSwarm(_mptBlockchains[0]),
+                CreateSwarm(_mptBlockchains[1]),
+                CreateSwarm(_mptBlockchains[2]),
             };
 
             Log.Logger.Debug($"Finished to initialize a {nameof(SwarmTest)} instance.");
@@ -117,6 +145,11 @@ namespace Libplanet.Tests.Net
                 _fx1.Dispose();
                 _fx2.Dispose();
                 _fx3.Dispose();
+                _fx4.Dispose();
+
+                _mptFx1.Dispose();
+                _mptFx2.Dispose();
+                _mptFx3.Dispose();
             }
 
             Log.Logger.Debug($"Finished to {nameof(Dispose)}() a {nameof(SwarmTest)} instance.");
