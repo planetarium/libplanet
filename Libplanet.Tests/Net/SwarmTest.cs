@@ -1303,7 +1303,11 @@ namespace Libplanet.Tests.Net
                 cts.Cancel();
                 await Task.Delay(1000);
 
-                Assert.Equal(_blockchains[0].Tip, _blockchains[1].Tip);
+                Assert.NotEqual(_blockchains[1].Genesis, _blockchains[1].Tip);
+                Assert.Contains(
+                    _blockchains[1].Tip.Hash,
+                    _blockchains[0].BlockHashes
+                );
             }
             finally
             {
