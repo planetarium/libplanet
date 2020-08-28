@@ -1371,7 +1371,7 @@ namespace Libplanet.Tests.Net
             }
         }
 
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public async Task RenderInFork()
         {
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
