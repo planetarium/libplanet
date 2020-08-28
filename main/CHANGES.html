@@ -310,6 +310,8 @@ without read lock.  [<a href="https://github.com/planetarium/libplanet/pull/927"
 when the target block does not exist in the chain.  [<a href="https://github.com/planetarium/libplanet/pull/941">#941</a>]</li>
 <li>Fixed a bug that <code>Swarm&lt;T&gt;.StartAsync()</code> had not worked after <code>Swarm&lt;T&gt;.StopAsync()</code>
 was once called.  [<a href="https://github.com/planetarium/libplanet/pull/965">#965</a>]</li>
+<li>Fixed a bug that <code>TurnClient</code> had thrown <code>InvalidOperationException</code> when
+reconnecting.  [<a href="https://github.com/planetarium/libplanet/issues/957">#957</a>, <a href="https://github.com/planetarium/libplanet/pull/972">#972</a>]</li>
 </ul>
 <h3 id="cli-tools">CLI tools</h3>
 <ul>
