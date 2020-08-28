@@ -1475,7 +1475,7 @@ namespace Libplanet.Net
                     }
 
                     if (reply is RecentStates recentStates
-                        && _store is IBlockStatesStore blockStatesStore)
+                        && BlockChain.StateStore is IBlockStatesStore blockStatesStore)
                     {
                         if (recentStates.Missing)
                         {
