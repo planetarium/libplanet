@@ -228,13 +228,14 @@
 <li>If multiple actions were executed in a short period of time, they would not be handled accurately.</li>
 </ul>
 <p>Libplanet provides a rendering mechanism called
-<a class="xref" href="../api/Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a> to solve this problem.
-<a class="xref" href="../api/Libplanet.Blockchain.Renderers.IRenderer-1.html#Libplanet_Blockchain_Renderers_IRenderer_1_RenderAction_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_">RenderAction(IAction, IActionContext, IAccountStateDelta)</a>
+<a class="xref" href="../api/Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a> and its subtype
+<a class="xref" href="../api/Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a> to solve this problem.
+<a class="xref" href="../api/Libplanet.Blockchain.Renderers.IActionRenderer-1.html#Libplanet_Blockchain_Renderers_IActionRenderer_1_RenderAction_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_">RenderAction(IAction, IActionContext, IAccountStateDelta)</a>
 is called after a <a class="xref" href="../api/Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> with the corresponding
 <a class="xref" href="../api/Libplanet.Action.IAction.html">IAction</a>s is confirmed and the state is transitioned.
 The following code has been re-implemented using
-<a class="xref" href="../api/Libplanet.Blockchain.Renderers.IRenderer-1.html#Libplanet_Blockchain_Renderers_IRenderer_1_RenderAction_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_">RenderAction(IAction, IActionContext, IAccountStateDelta)</a>.</p>
-<pre><code class="lang-csharp">public class WinRenderer : IRenderer&lt;Win&gt;
+<a class="xref" href="../api/Libplanet.Blockchain.Renderers.IActionRenderer-1.html#Libplanet_Blockchain_Renderers_IActionRenderer_1_RenderAction_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_">RenderAction(IAction, IActionContext, IAccountStateDelta)</a>.</p>
+<pre><code class="lang-csharp">public class WinRenderer : IActionRenderer&lt;Win&gt;
 {
     // ...
 

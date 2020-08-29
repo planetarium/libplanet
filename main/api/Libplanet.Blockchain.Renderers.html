@@ -77,10 +77,26 @@
   <div class="markdown level0 remarks"></div>
     <h3 id="classes">Classes
   </h3>
+      <h4><a class="xref" href="Libplanet.Blockchain.Renderers.AnonymousActionRenderer-1.html">AnonymousActionRenderer&lt;T&gt;</a></h4>
+      <section><p>An <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a> that invokes its callbacks.
+In other words, this is an <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a> version of
+<a class="xref" href="Libplanet.Blockchain.Renderers.AnonymousRenderer-1.html">AnonymousRenderer&lt;T&gt;</a>.</p>
+<p>This class is useful when you want an one-use ad-hoc implementation (i.e., Java-style
+anonymous class) of <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a> interface.</p>
+</section>
       <h4><a class="xref" href="Libplanet.Blockchain.Renderers.AnonymousRenderer-1.html">AnonymousRenderer&lt;T&gt;</a></h4>
       <section><p>A renderer that invokes its callbacks.</p>
 <p>This class is useful when you want an one-use ad-hoc implementation (i.e., Java-style
 anonymous class) of <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a> interface.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Blockchain.Renderers.LoggedActionRenderer-1.html">LoggedActionRenderer&lt;T&gt;</a></h4>
+      <section><p>Decorates an <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a> so that all event messages are logged.
+In other words, this is an <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a> version of
+<a class="xref" href="Libplanet.Blockchain.Renderers.LoggedRenderer-1.html">LoggedRenderer&lt;T&gt;</a>.</p>
+<p>Every single event message causes two log messages: one is logged <em>before</em>
+rendering, and other one is logged <em>after</em> rendering.  If any exception is thrown
+it is also logged with the log level <see cref="!:LogEventLevel.Error"></see> (regardless of
+<a class="xref" href="Libplanet.Blockchain.Renderers.LoggedRenderer-1.html#Libplanet_Blockchain_Renderers_LoggedRenderer_1_Level">Level</a> configuration).</p>
 </section>
       <h4><a class="xref" href="Libplanet.Blockchain.Renderers.LoggedRenderer-1.html">LoggedRenderer&lt;T&gt;</a></h4>
       <section><p>Decorates an <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a> so that all event messages are logged.</p>
@@ -91,6 +107,12 @@ it is also logged with the log level <see cref="!:LogEventLevel.Error"></see> (r
 </section>
     <h3 id="interfaces">Interfaces
   </h3>
+      <h4><a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a></h4>
+      <section><p>Listens state changes of every step of actions, besides blocks,
+on a <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a>.
+If you need more fine-grained events than <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a>,
+implement this interface instead.</p>
+</section>
       <h4><a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a></h4>
       <section><p>Listens state changes on a <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a>.</p>
 <p>Usually, implementations of this interface purpose to update the in-memory game states

@@ -221,7 +221,7 @@ public sealed class Heal : ActionBase
 <p>Note that when it's rendered through <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a>,
 an instance of <a class="xref" href="Libplanet.Action.PolymorphicAction-1.html">PolymorphicAction&lt;T&gt;</a> is passed instead of its
 <a class="xref" href="Libplanet.Action.PolymorphicAction-1.html#Libplanet_Action_PolymorphicAction_1_InnerAction">InnerAction</a>:</p>
-<pre><code>public class Renderer : IRenderer&lt;PolymorphicAction&lt;ActionBase>>
+<pre><code>public class Renderer : IActionRenderer&lt;PolymorphicAction&lt;ActionBase>>
 {
     public void RenderAction(IAction action,
                              IActionContext context,

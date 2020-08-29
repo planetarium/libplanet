@@ -83,6 +83,7 @@ and <code>IRenderer&lt;T&gt;.RenderReorg()</code>.
 <li>Removed <code>BlockChain&lt;T&gt;.TipChanged</code> event, which was replaced by
 <code>IRenderer&lt;T&gt;.RenderBlock()</code>.</li>
 <li>Removed <code>PolymorphicAction&lt;T&gt;.Render()</code> and <code>Unrender()</code> methods.</li>
+<li>Removed <code>BlockChain&lt;T&gt;.TipChangedEventArgs</code> class.</li>
 </ul>
 </li>
 <li>Added methods related fungible asset states to <code>IAccountStateDelta</code>:
@@ -244,10 +245,13 @@ by <code>stateCompleter: FungibleAssetStateCompleters&lt;T&gt;.Recalculate</code
 </ul>
 </li>
 <li>Added <code>IRenderer&lt;T&gt;</code> interface.  [<a href="https://github.com/planetarium/libplanet/issues/959">#959</a>, <a href="https://github.com/planetarium/libplanet/pull/963">#963</a>]</li>
-<li>Added <code>PolymorphicRenderer&lt;T&gt;</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/959">#959</a>, <a href="https://github.com/planetarium/libplanet/pull/963">#963</a>]</li>
+<li>Added <code>IActionRenderer&lt;T&gt;</code> interface.  [<a href="https://github.com/planetarium/libplanet/issues/959">#959</a>, <a href="https://github.com/planetarium/libplanet/issues/967">#967</a>, <a href="https://github.com/planetarium/libplanet/pull/970">#970</a>]</li>
 <li>Added <code>AnonymousRenderer&lt;T&gt;</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/959">#959</a>, <a href="https://github.com/planetarium/libplanet/pull/963">#963</a>]</li>
+<li>Added <code>AnonymousActionRenderer&lt;T&gt;</code> interface.  [<a href="https://github.com/planetarium/libplanet/issues/959">#959</a>, <a href="https://github.com/planetarium/libplanet/issues/967">#967</a>, <a href="https://github.com/planetarium/libplanet/pull/970">#970</a>]</li>
 <li>Added <code>LoggedRenderer&lt;T&gt;</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/959">#959</a>, <a href="https://github.com/planetarium/libplanet/pull/963">#963</a>]</li>
+<li>Added <code>LoggedActionRenderer&lt;T&gt;</code> interface.  [<a href="https://github.com/planetarium/libplanet/issues/959">#959</a>, <a href="https://github.com/planetarium/libplanet/issues/967">#967</a>, <a href="https://github.com/planetarium/libplanet/pull/970">#970</a>]</li>
 <li>Added <code>BlockChain&lt;T&gt;.Renderers</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/945">#945</a>, <a href="https://github.com/planetarium/libplanet/issues/959">#959</a>, <a href="https://github.com/planetarium/libplanet/pull/963">#963</a>]</li>
+<li>Added <code>BlockChain&lt;T&gt;.ActionRenderers</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/959">#959</a>, <a href="https://github.com/planetarium/libplanet/issues/967">#967</a>, <a href="https://github.com/planetarium/libplanet/pull/970">#970</a>]</li>
 <li>Added <code>Swarm&lt;T&gt;.AppProtocolVersion</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/949">#949</a>]</li>
 <li><code>DefaultStore</code> became to implement <code>IBlockStatesStore</code>.  [<a href="https://github.com/planetarium/libplanet/pull/950">#950</a>]</li>
 <li>Added <code>IStateStore</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/950">#950</a>]</li>

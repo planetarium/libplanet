@@ -84,6 +84,7 @@ it is also logged with the log level <see cref="!:LogEventLevel.Error"></see> (r
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">LoggedRenderer&lt;T&gt;</span></div>
+      <div class="level2"><a class="xref" href="Libplanet.Blockchain.Renderers.LoggedActionRenderer-1.html">LoggedActionRenderer</a>&lt;T&gt;</div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
@@ -112,6 +113,13 @@ it is also logged with the log level <see cref="!:LogEventLevel.Error"></see> (r
       </tr>
     </tbody>
   </table>
+  <h5 id="Libplanet_Blockchain_Renderers_LoggedRenderer_1_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>Since <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a> is a subtype of <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a>,
+<a class="xref" href="Libplanet.Blockchain.Renderers.LoggedRenderer-1.html#Libplanet_Blockchain_Renderers_LoggedRenderer_1__ctor_Libplanet_Blockchain_Renderers_IRenderer__0__ILogger_LogEventLevel_">LoggedRenderer(IRenderer&lt;T&gt;, ILogger, LogEventLevel)</a> constructor can take
+an <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a> instance as well.  However, even it takes an action
+renderer, action-level fine-grained events will not be logged.  For action renderers,
+please use <a class="xref" href="Libplanet.Blockchain.Renderers.LoggedActionRenderer-1.html">LoggedActionRenderer&lt;T&gt;</a> instead.</p>
+</div>
   <h5 id="Libplanet_Blockchain_Renderers_LoggedRenderer_1_examples"><strong>Examples</strong></h5>
   <pre><code>IRenderer&lt;ExampleAction> renderer = new SomeRenderer();
 // Wraps the renderer with LoggedRenderer:
@@ -128,7 +136,7 @@ renderer = new LoggedRenderer&lt;ExampleAction>(
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_LoggedRenderer_1__ctor_Libplanet_Blockchain_Renderers_IRenderer__0__ILogger_LogEventLevel_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.LoggedRenderer%601.%23ctor(Libplanet.Blockchain.Renderers.IRenderer%7B%600%7D%2CILogger%2CLogEventLevel)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/LoggedRenderer.cs/#L45">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/LoggedRenderer.cs/#L48">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Renderers_LoggedRenderer_1__ctor_" data-uid="Libplanet.Blockchain.Renderers.LoggedRenderer`1.#ctor*"></a>
   <h4 id="Libplanet_Blockchain_Renderers_LoggedRenderer_1__ctor_Libplanet_Blockchain_Renderers_IRenderer__0__ILogger_LogEventLevel_" data-uid="Libplanet.Blockchain.Renderers.LoggedRenderer`1.#ctor(Libplanet.Blockchain.Renderers.IRenderer{`0},ILogger,LogEventLevel)">LoggedRenderer(IRenderer&lt;T&gt;, ILogger, LogEventLevel)</h4>
@@ -180,7 +188,7 @@ type (with the context property <code>SourceContext</code>).</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_LoggedRenderer_1_Level.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.LoggedRenderer%601.Level%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/LoggedRenderer.cs/#L64">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/LoggedRenderer.cs/#L67">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Renderers_LoggedRenderer_1_Level_" data-uid="Libplanet.Blockchain.Renderers.LoggedRenderer`1.Level*"></a>
   <h4 id="Libplanet_Blockchain_Renderers_LoggedRenderer_1_Level" data-uid="Libplanet.Blockchain.Renderers.LoggedRenderer`1.Level">Level</h4>
@@ -208,10 +216,43 @@ type (with the context property <code>SourceContext</code>).</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_LoggedRenderer_1_Logger.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.LoggedRenderer%601.Logger%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/LoggedRenderer.cs/#L74">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_Renderers_LoggedRenderer_1_Logger_" data-uid="Libplanet.Blockchain.Renderers.LoggedRenderer`1.Logger*"></a>
+  <h4 id="Libplanet_Blockchain_Renderers_LoggedRenderer_1_Logger" data-uid="Libplanet.Blockchain.Renderers.LoggedRenderer`1.Logger">Logger</h4>
+  <div class="markdown level1 summary"><p>The logger to write log messages to.  Note that all log messages this decorator writes
+become in the context of the <a class="xref" href="Libplanet.Blockchain.Renderers.LoggedRenderer-1.html#Libplanet_Blockchain_Renderers_LoggedRenderer_1_Renderer">Renderer</a>'s type (with the context
+property <code>SourceContext</code>).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected ILogger Logger { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ILogger</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_LoggedRenderer_1_Renderer.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.LoggedRenderer%601.Renderer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/LoggedRenderer.cs/#L59">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/LoggedRenderer.cs/#L62">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Renderers_LoggedRenderer_1_Renderer_" data-uid="Libplanet.Blockchain.Renderers.LoggedRenderer`1.Renderer*"></a>
   <h4 id="Libplanet_Blockchain_Renderers_LoggedRenderer_1_Renderer" data-uid="Libplanet.Blockchain.Renderers.LoggedRenderer`1.Renderer">Renderer</h4>
@@ -241,94 +282,10 @@ type (with the context property <code>SourceContext</code>).</p>
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_LoggedRenderer_1_RenderAction_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.LoggedRenderer%601.RenderAction(Libplanet.Action.IAction%2CLibplanet.Action.IActionContext%2CLibplanet.Action.IAccountStateDelta)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/LoggedRenderer.cs/#L68">View Source</a>
-  </span>
-  <a id="Libplanet_Blockchain_Renderers_LoggedRenderer_1_RenderAction_" data-uid="Libplanet.Blockchain.Renderers.LoggedRenderer`1.RenderAction*"></a>
-  <h4 id="Libplanet_Blockchain_Renderers_LoggedRenderer_1_RenderAction_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_" data-uid="Libplanet.Blockchain.Renderers.LoggedRenderer`1.RenderAction(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)">RenderAction(IAction, IActionContext, IAccountStateDelta)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void RenderAction(IAction action, IActionContext context, IAccountStateDelta nextStates)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Action.IAction.html">IAction</a></td>
-        <td><span class="parametername">action</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a></td>
-        <td><span class="parametername">context</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Action.IAccountStateDelta.html">IAccountStateDelta</a></td>
-        <td><span class="parametername">nextStates</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_LoggedRenderer_1_RenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Exception_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.LoggedRenderer%601.RenderActionError(Libplanet.Action.IAction%2CLibplanet.Action.IActionContext%2CException)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/LoggedRenderer.cs/#L95">View Source</a>
-  </span>
-  <a id="Libplanet_Blockchain_Renderers_LoggedRenderer_1_RenderActionError_" data-uid="Libplanet.Blockchain.Renderers.LoggedRenderer`1.RenderActionError*"></a>
-  <h4 id="Libplanet_Blockchain_Renderers_LoggedRenderer_1_RenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Exception_" data-uid="Libplanet.Blockchain.Renderers.LoggedRenderer`1.RenderActionError(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Exception)">RenderActionError(IAction, IActionContext, Exception)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void RenderActionError(IAction action, IActionContext context, Exception exception)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Action.IAction.html">IAction</a></td>
-        <td><span class="parametername">action</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a></td>
-        <td><span class="parametername">context</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">Exception</span></td>
-        <td><span class="parametername">exception</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_LoggedRenderer_1_RenderBlock_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.LoggedRenderer%601.RenderBlock(Libplanet.Blocks.Block%7B%600%7D%2CLibplanet.Blocks.Block%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/LoggedRenderer.cs/#L122">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/LoggedRenderer.cs/#L77">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Renderers_LoggedRenderer_1_RenderBlock_" data-uid="Libplanet.Blockchain.Renderers.LoggedRenderer`1.RenderBlock*"></a>
   <h4 id="Libplanet_Blockchain_Renderers_LoggedRenderer_1_RenderBlock_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__" data-uid="Libplanet.Blockchain.Renderers.LoggedRenderer`1.RenderBlock(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})">RenderBlock(Block&lt;T&gt;, Block&lt;T&gt;)</h4>
@@ -365,7 +322,7 @@ type (with the context property <code>SourceContext</code>).</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_LoggedRenderer_1_RenderReorg_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.LoggedRenderer%601.RenderReorg(Libplanet.Blocks.Block%7B%600%7D%2CLibplanet.Blocks.Block%7B%600%7D%2CLibplanet.Blocks.Block%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/LoggedRenderer.cs/#L171">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/LoggedRenderer.cs/#L126">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Renderers_LoggedRenderer_1_RenderReorg_" data-uid="Libplanet.Blockchain.Renderers.LoggedRenderer`1.RenderReorg*"></a>
   <h4 id="Libplanet_Blockchain_Renderers_LoggedRenderer_1_RenderReorg_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__" data-uid="Libplanet.Blockchain.Renderers.LoggedRenderer`1.RenderReorg(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})">RenderReorg(Block&lt;T&gt;, Block&lt;T&gt;, Block&lt;T&gt;)</h4>
@@ -402,90 +359,6 @@ type (with the context property <code>SourceContext</code>).</p>
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_LoggedRenderer_1_UnrenderAction_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.LoggedRenderer%601.UnrenderAction(Libplanet.Action.IAction%2CLibplanet.Action.IActionContext%2CLibplanet.Action.IAccountStateDelta)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/LoggedRenderer.cs/#L82">View Source</a>
-  </span>
-  <a id="Libplanet_Blockchain_Renderers_LoggedRenderer_1_UnrenderAction_" data-uid="Libplanet.Blockchain.Renderers.LoggedRenderer`1.UnrenderAction*"></a>
-  <h4 id="Libplanet_Blockchain_Renderers_LoggedRenderer_1_UnrenderAction_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_" data-uid="Libplanet.Blockchain.Renderers.LoggedRenderer`1.UnrenderAction(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)">UnrenderAction(IAction, IActionContext, IAccountStateDelta)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void UnrenderAction(IAction action, IActionContext context, IAccountStateDelta nextStates)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Action.IAction.html">IAction</a></td>
-        <td><span class="parametername">action</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a></td>
-        <td><span class="parametername">context</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Action.IAccountStateDelta.html">IAccountStateDelta</a></td>
-        <td><span class="parametername">nextStates</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_LoggedRenderer_1_UnrenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Exception_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.LoggedRenderer%601.UnrenderActionError(Libplanet.Action.IAction%2CLibplanet.Action.IActionContext%2CException)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/LoggedRenderer.cs/#L109">View Source</a>
-  </span>
-  <a id="Libplanet_Blockchain_Renderers_LoggedRenderer_1_UnrenderActionError_" data-uid="Libplanet.Blockchain.Renderers.LoggedRenderer`1.UnrenderActionError*"></a>
-  <h4 id="Libplanet_Blockchain_Renderers_LoggedRenderer_1_UnrenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Exception_" data-uid="Libplanet.Blockchain.Renderers.LoggedRenderer`1.UnrenderActionError(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Exception)">UnrenderActionError(IAction, IActionContext, Exception)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void UnrenderActionError(IAction action, IActionContext context, Exception exception)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Action.IAction.html">IAction</a></td>
-        <td><span class="parametername">action</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a></td>
-        <td><span class="parametername">context</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">Exception</span></td>
-        <td><span class="parametername">exception</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a>
@@ -501,7 +374,7 @@ type (with the context property <code>SourceContext</code>).</p>
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_LoggedRenderer_1.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.LoggedRenderer%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/LoggedRenderer.cs/#L30" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/LoggedRenderer.cs/#L35" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

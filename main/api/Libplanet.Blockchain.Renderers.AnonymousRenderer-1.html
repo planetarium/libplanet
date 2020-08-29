@@ -82,6 +82,7 @@ anonymous class) of <a class="xref" href="Libplanet.Blockchain.Renderers.IRender
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">AnonymousRenderer&lt;T&gt;</span></div>
+      <div class="level2"><a class="xref" href="Libplanet.Blockchain.Renderers.AnonymousActionRenderer-1.html">AnonymousActionRenderer&lt;T&gt;</a></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
@@ -91,7 +92,7 @@ anonymous class) of <a class="xref" href="Libplanet.Blockchain.Renderers.IRender
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
   <h5 id="Libplanet_Blockchain_Renderers_AnonymousRenderer_1_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class AnonymousRenderer&lt;T&gt; : object, IRenderer&lt;T&gt; where T : IAction, new()</code></pre>
+    <pre><code class="lang-csharp hljs">public class AnonymousRenderer&lt;T&gt; : object, IRenderer&lt;T&gt; where T : IAction, new()</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -114,9 +115,9 @@ anonymous class) of <a class="xref" href="Libplanet.Blockchain.Renderers.IRender
   <p>With object initializers, you can easily make an one-use renderer:</p>
 <pre><code>var renderer = new AnonymousRenderer&lt;ExampleAction>
 {
-    ActionRenderer = (action, context, nextStates) =>
+    BlockRenderer = (oldTip, newTip) =>
     {
-        // Implement RenderAction() here.
+        // Implement RenderBlock() here.
     };
 };</code></pre>
 
@@ -124,138 +125,10 @@ anonymous class) of <a class="xref" href="Libplanet.Blockchain.Renderers.IRender
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_AnonymousRenderer_1_ActionErrorRenderer.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.AnonymousRenderer%601.ActionErrorRenderer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/AnonymousRenderer.cs/#L46">View Source</a>
-  </span>
-  <a id="Libplanet_Blockchain_Renderers_AnonymousRenderer_1_ActionErrorRenderer_" data-uid="Libplanet.Blockchain.Renderers.AnonymousRenderer`1.ActionErrorRenderer*"></a>
-  <h4 id="Libplanet_Blockchain_Renderers_AnonymousRenderer_1_ActionErrorRenderer" data-uid="Libplanet.Blockchain.Renderers.AnonymousRenderer`1.ActionErrorRenderer">ActionErrorRenderer</h4>
-  <div class="markdown level1 summary"><p>A callback function to be invoked together with
-<a class="xref" href="Libplanet.Blockchain.Renderers.AnonymousRenderer-1.html#Libplanet_Blockchain_Renderers_AnonymousRenderer_1_RenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Exception_">RenderActionError(IAction, IActionContext, Exception)</a>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Action&lt;IAction, IActionContext, Exception&gt;? ActionErrorRenderer { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">Libplanet.Action</span>&lt;<a class="xref" href="Libplanet.Action.IAction.html">IAction</a>, <a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a>, <span class="xref">Exception</span>&gt;&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_AnonymousRenderer_1_ActionErrorUnrenderer.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.AnonymousRenderer%601.ActionErrorUnrenderer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/AnonymousRenderer.cs/#L52">View Source</a>
-  </span>
-  <a id="Libplanet_Blockchain_Renderers_AnonymousRenderer_1_ActionErrorUnrenderer_" data-uid="Libplanet.Blockchain.Renderers.AnonymousRenderer`1.ActionErrorUnrenderer*"></a>
-  <h4 id="Libplanet_Blockchain_Renderers_AnonymousRenderer_1_ActionErrorUnrenderer" data-uid="Libplanet.Blockchain.Renderers.AnonymousRenderer`1.ActionErrorUnrenderer">ActionErrorUnrenderer</h4>
-  <div class="markdown level1 summary"><p>A callback function to be invoked together with
-<a class="xref" href="Libplanet.Blockchain.Renderers.AnonymousRenderer-1.html#Libplanet_Blockchain_Renderers_AnonymousRenderer_1_UnrenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Exception_">UnrenderActionError(IAction, IActionContext, Exception)</a>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Action&lt;IAction, IActionContext, Exception&gt;? ActionErrorUnrenderer { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">Libplanet.Action</span>&lt;<a class="xref" href="Libplanet.Action.IAction.html">IAction</a>, <a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a>, <span class="xref">Exception</span>&gt;&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_AnonymousRenderer_1_ActionRenderer.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.AnonymousRenderer%601.ActionRenderer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/AnonymousRenderer.cs/#L34">View Source</a>
-  </span>
-  <a id="Libplanet_Blockchain_Renderers_AnonymousRenderer_1_ActionRenderer_" data-uid="Libplanet.Blockchain.Renderers.AnonymousRenderer`1.ActionRenderer*"></a>
-  <h4 id="Libplanet_Blockchain_Renderers_AnonymousRenderer_1_ActionRenderer" data-uid="Libplanet.Blockchain.Renderers.AnonymousRenderer`1.ActionRenderer">ActionRenderer</h4>
-  <div class="markdown level1 summary"><p>A callback function to be invoked together with
-<a class="xref" href="Libplanet.Blockchain.Renderers.AnonymousRenderer-1.html#Libplanet_Blockchain_Renderers_AnonymousRenderer_1_RenderAction_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_">RenderAction(IAction, IActionContext, IAccountStateDelta)</a>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Action&lt;IAction, IActionContext, IAccountStateDelta&gt;? ActionRenderer { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">Libplanet.Action</span>&lt;<a class="xref" href="Libplanet.Action.IAction.html">IAction</a>, <a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a>, <a class="xref" href="Libplanet.Action.IAccountStateDelta.html">IAccountStateDelta</a>&gt;&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_AnonymousRenderer_1_ActionUnrenderer.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.AnonymousRenderer%601.ActionUnrenderer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/AnonymousRenderer.cs/#L40">View Source</a>
-  </span>
-  <a id="Libplanet_Blockchain_Renderers_AnonymousRenderer_1_ActionUnrenderer_" data-uid="Libplanet.Blockchain.Renderers.AnonymousRenderer`1.ActionUnrenderer*"></a>
-  <h4 id="Libplanet_Blockchain_Renderers_AnonymousRenderer_1_ActionUnrenderer" data-uid="Libplanet.Blockchain.Renderers.AnonymousRenderer`1.ActionUnrenderer">ActionUnrenderer</h4>
-  <div class="markdown level1 summary"><p>A callback function to be invoked together with
-<a class="xref" href="Libplanet.Blockchain.Renderers.AnonymousRenderer-1.html#Libplanet_Blockchain_Renderers_AnonymousRenderer_1_UnrenderAction_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_">UnrenderAction(IAction, IActionContext, IAccountStateDelta)</a>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Action&lt;IAction, IActionContext, IAccountStateDelta&gt;? ActionUnrenderer { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">Libplanet.Action</span>&lt;<a class="xref" href="Libplanet.Action.IAction.html">IAction</a>, <a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a>, <a class="xref" href="Libplanet.Action.IAccountStateDelta.html">IAccountStateDelta</a>&gt;&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_AnonymousRenderer_1_BlockRenderer.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.AnonymousRenderer%601.BlockRenderer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/AnonymousRenderer.cs/#L58">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/AnonymousRenderer.cs/#L34">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Renderers_AnonymousRenderer_1_BlockRenderer_" data-uid="Libplanet.Blockchain.Renderers.AnonymousRenderer`1.BlockRenderer*"></a>
   <h4 id="Libplanet_Blockchain_Renderers_AnonymousRenderer_1_BlockRenderer" data-uid="Libplanet.Blockchain.Renderers.AnonymousRenderer`1.BlockRenderer">BlockRenderer</h4>
@@ -287,7 +160,7 @@ anonymous class) of <a class="xref" href="Libplanet.Blockchain.Renderers.IRender
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_AnonymousRenderer_1_ReorgRenderer.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.AnonymousRenderer%601.ReorgRenderer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/AnonymousRenderer.cs/#L64">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/AnonymousRenderer.cs/#L40">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Renderers_AnonymousRenderer_1_ReorgRenderer_" data-uid="Libplanet.Blockchain.Renderers.AnonymousRenderer`1.ReorgRenderer*"></a>
   <h4 id="Libplanet_Blockchain_Renderers_AnonymousRenderer_1_ReorgRenderer" data-uid="Libplanet.Blockchain.Renderers.AnonymousRenderer`1.ReorgRenderer">ReorgRenderer</h4>
@@ -318,94 +191,10 @@ anonymous class) of <a class="xref" href="Libplanet.Blockchain.Renderers.IRender
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_AnonymousRenderer_1_RenderAction_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.AnonymousRenderer%601.RenderAction(Libplanet.Action.IAction%2CLibplanet.Action.IActionContext%2CLibplanet.Action.IAccountStateDelta)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/AnonymousRenderer.cs/#L68">View Source</a>
-  </span>
-  <a id="Libplanet_Blockchain_Renderers_AnonymousRenderer_1_RenderAction_" data-uid="Libplanet.Blockchain.Renderers.AnonymousRenderer`1.RenderAction*"></a>
-  <h4 id="Libplanet_Blockchain_Renderers_AnonymousRenderer_1_RenderAction_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_" data-uid="Libplanet.Blockchain.Renderers.AnonymousRenderer`1.RenderAction(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)">RenderAction(IAction, IActionContext, IAccountStateDelta)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void RenderAction(IAction action, IActionContext context, IAccountStateDelta nextStates)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Action.IAction.html">IAction</a></td>
-        <td><span class="parametername">action</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a></td>
-        <td><span class="parametername">context</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Action.IAccountStateDelta.html">IAccountStateDelta</a></td>
-        <td><span class="parametername">nextStates</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_AnonymousRenderer_1_RenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Exception_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.AnonymousRenderer%601.RenderActionError(Libplanet.Action.IAction%2CLibplanet.Action.IActionContext%2CException)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/AnonymousRenderer.cs/#L85">View Source</a>
-  </span>
-  <a id="Libplanet_Blockchain_Renderers_AnonymousRenderer_1_RenderActionError_" data-uid="Libplanet.Blockchain.Renderers.AnonymousRenderer`1.RenderActionError*"></a>
-  <h4 id="Libplanet_Blockchain_Renderers_AnonymousRenderer_1_RenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Exception_" data-uid="Libplanet.Blockchain.Renderers.AnonymousRenderer`1.RenderActionError(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Exception)">RenderActionError(IAction, IActionContext, Exception)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void RenderActionError(IAction action, IActionContext context, Exception exception)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Action.IAction.html">IAction</a></td>
-        <td><span class="parametername">action</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a></td>
-        <td><span class="parametername">context</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">Exception</span></td>
-        <td><span class="parametername">exception</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_AnonymousRenderer_1_RenderBlock_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.AnonymousRenderer%601.RenderBlock(Libplanet.Blocks.Block%7B%600%7D%2CLibplanet.Blocks.Block%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/AnonymousRenderer.cs/#L94">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/AnonymousRenderer.cs/#L43">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Renderers_AnonymousRenderer_1_RenderBlock_" data-uid="Libplanet.Blockchain.Renderers.AnonymousRenderer`1.RenderBlock*"></a>
   <h4 id="Libplanet_Blockchain_Renderers_AnonymousRenderer_1_RenderBlock_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__" data-uid="Libplanet.Blockchain.Renderers.AnonymousRenderer`1.RenderBlock(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})">RenderBlock(Block&lt;T&gt;, Block&lt;T&gt;)</h4>
@@ -442,7 +231,7 @@ anonymous class) of <a class="xref" href="Libplanet.Blockchain.Renderers.IRender
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_AnonymousRenderer_1_RenderReorg_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.AnonymousRenderer%601.RenderReorg(Libplanet.Blocks.Block%7B%600%7D%2CLibplanet.Blocks.Block%7B%600%7D%2CLibplanet.Blocks.Block%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/AnonymousRenderer.cs/#L98">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/AnonymousRenderer.cs/#L47">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Renderers_AnonymousRenderer_1_RenderReorg_" data-uid="Libplanet.Blockchain.Renderers.AnonymousRenderer`1.RenderReorg*"></a>
   <h4 id="Libplanet_Blockchain_Renderers_AnonymousRenderer_1_RenderReorg_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__" data-uid="Libplanet.Blockchain.Renderers.AnonymousRenderer`1.RenderReorg(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})">RenderReorg(Block&lt;T&gt;, Block&lt;T&gt;, Block&lt;T&gt;)</h4>
@@ -475,90 +264,6 @@ anonymous class) of <a class="xref" href="Libplanet.Blockchain.Renderers.IRender
       <tr>
         <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
         <td><span class="parametername">branchpoint</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_AnonymousRenderer_1_UnrenderAction_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.AnonymousRenderer%601.UnrenderAction(Libplanet.Action.IAction%2CLibplanet.Action.IActionContext%2CLibplanet.Action.IAccountStateDelta)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/AnonymousRenderer.cs/#L77">View Source</a>
-  </span>
-  <a id="Libplanet_Blockchain_Renderers_AnonymousRenderer_1_UnrenderAction_" data-uid="Libplanet.Blockchain.Renderers.AnonymousRenderer`1.UnrenderAction*"></a>
-  <h4 id="Libplanet_Blockchain_Renderers_AnonymousRenderer_1_UnrenderAction_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_" data-uid="Libplanet.Blockchain.Renderers.AnonymousRenderer`1.UnrenderAction(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)">UnrenderAction(IAction, IActionContext, IAccountStateDelta)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void UnrenderAction(IAction action, IActionContext context, IAccountStateDelta nextStates)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Action.IAction.html">IAction</a></td>
-        <td><span class="parametername">action</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a></td>
-        <td><span class="parametername">context</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Action.IAccountStateDelta.html">IAccountStateDelta</a></td>
-        <td><span class="parametername">nextStates</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_AnonymousRenderer_1_UnrenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Exception_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.AnonymousRenderer%601.UnrenderActionError(Libplanet.Action.IAction%2CLibplanet.Action.IActionContext%2CException)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/AnonymousRenderer.cs/#L90">View Source</a>
-  </span>
-  <a id="Libplanet_Blockchain_Renderers_AnonymousRenderer_1_UnrenderActionError_" data-uid="Libplanet.Blockchain.Renderers.AnonymousRenderer`1.UnrenderActionError*"></a>
-  <h4 id="Libplanet_Blockchain_Renderers_AnonymousRenderer_1_UnrenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Exception_" data-uid="Libplanet.Blockchain.Renderers.AnonymousRenderer`1.UnrenderActionError(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Exception)">UnrenderActionError(IAction, IActionContext, Exception)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void UnrenderActionError(IAction action, IActionContext context, Exception exception)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Action.IAction.html">IAction</a></td>
-        <td><span class="parametername">action</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a></td>
-        <td><span class="parametername">context</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">Exception</span></td>
-        <td><span class="parametername">exception</span></td>
         <td></td>
       </tr>
     </tbody>

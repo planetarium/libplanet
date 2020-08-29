@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "Hc9+w4C8AHVLR9yG7LP3ew=="
+          "hash": "MwUBw0Pp0StQFgNJh8Rpug=="
         }
       },
       "is_incremental": false,
@@ -177,7 +177,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Action.PolymorphicAction-1.html",
-          "hash": "4p8vt1G/PtU5ec2OKcJ+RA=="
+          "hash": "ZjY9MBvhMYVVmto5Xxnmcw=="
         }
       },
       "is_incremental": false,
@@ -285,7 +285,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.BlockChain-1.html",
-          "hash": "ARlx3tf/mjCOfylwhezgTA=="
+          "hash": "MExC5p78g3iS5FUrl31qZw=="
         }
       },
       "is_incremental": false,
@@ -377,11 +377,35 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Blockchain.Renderers.AnonymousActionRenderer-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Blockchain.Renderers.AnonymousActionRenderer-1.html",
+          "hash": "2eBd8uJqFJXHCtFzAA5qPg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Libplanet.Blockchain.Renderers.AnonymousRenderer-1.yml",
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.Renderers.AnonymousRenderer-1.html",
-          "hash": "RAtwkgOkK/7Dn018ZCX0RA=="
+          "hash": "2ieQkZvKtPfATZo8/7Jgqw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Blockchain.Renderers.IActionRenderer-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Blockchain.Renderers.IActionRenderer-1.html",
+          "hash": "OiPKkL5s30CL3WIQ3q873w=="
         }
       },
       "is_incremental": false,
@@ -393,7 +417,19 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.Renderers.IRenderer-1.html",
-          "hash": "rR/wQmQLu5Xqho6asDf6cQ=="
+          "hash": "yEYBgqhu6kVAIQI/Tc6Tlw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Blockchain.Renderers.LoggedActionRenderer-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Blockchain.Renderers.LoggedActionRenderer-1.html",
+          "hash": "h9Jj/ZsrZIhIrReUKu2iUg=="
         }
       },
       "is_incremental": false,
@@ -405,7 +441,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.Renderers.LoggedRenderer-1.html",
-          "hash": "HM6MiZfPEQmN0D3GLc8L3Q=="
+          "hash": "+9S6zWlFBaX0ajoXsPiwOA=="
         }
       },
       "is_incremental": false,
@@ -417,7 +453,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.Renderers.html",
-          "hash": "GnSL5bGOLdZRX2rijNzOuA=="
+          "hash": "D2fD8DjwKsohuJCLK3y9lw=="
         }
       },
       "is_incremental": false,
@@ -1725,7 +1761,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "4P6VZJmX9ABwD4Pv/C8lPQ=="
+          "hash": "PJgtPO2IN6E4vCdQht2oSA=="
         }
       },
       "is_incremental": false,
@@ -1749,7 +1785,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/overview.html",
-          "hash": "pfkHQe6uE2+MabYEs/S61Q=="
+          "hash": "S4NatXCxb3PRn3DNA9Ukgw=="
         }
       },
       "is_incremental": false,
@@ -1825,10 +1861,17 @@
         "full_build_reason_code": "NoAvailableBuildCache"
       },
       "processors": {
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 139,
+          "total_file_count": 142,
           "skipped_file_count": 0
         },
         "ConceptualDocumentProcessor": {
@@ -1840,13 +1883,6 @@
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "TocDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0
