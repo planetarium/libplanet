@@ -15,42 +15,18 @@ namespace Libplanet.Blockchain.Renderers
     /// <code>
     /// var renderer = new AnonymousRenderer&lt;ExampleAction&gt;
     /// {
-    ///     ActionRenderer = (action, context, nextStates) =>
+    ///     BlockRenderer = (oldTip, newTip) =>
     ///     {
-    ///         // Implement RenderAction() here.
+    ///         // Implement RenderBlock() here.
     ///     };
     /// };
     /// </code>
     /// </example>
     /// <typeparam name="T">An <see cref="IAction"/> type.  It should match to
     /// <see cref="BlockChain{T}"/>'s type parameter.</typeparam>
-    public sealed class AnonymousRenderer<T> : IRenderer<T>
+    public class AnonymousRenderer<T> : IRenderer<T>
         where T : IAction, new()
     {
-        /// <summary>
-        /// A callback function to be invoked together with
-        /// <see cref="RenderAction(IAction, IActionContext, IAccountStateDelta)"/>.
-        /// </summary>
-        public Action<IAction, IActionContext, IAccountStateDelta>? ActionRenderer { get; set; }
-
-        /// <summary>
-        /// A callback function to be invoked together with
-        /// <see cref="UnrenderAction(IAction, IActionContext, IAccountStateDelta)"/>.
-        /// </summary>
-        public Action<IAction, IActionContext, IAccountStateDelta>? ActionUnrenderer { get; set; }
-
-        /// <summary>
-        /// A callback function to be invoked together with
-        /// <see cref="RenderActionError(IAction, IActionContext, Exception)"/>.
-        /// </summary>
-        public Action<IAction, IActionContext, Exception>? ActionErrorRenderer { get; set; }
-
-        /// <summary>
-        /// A callback function to be invoked together with
-        /// <see cref="UnrenderActionError(IAction, IActionContext, Exception)"/>.
-        /// </summary>
-        public Action<IAction, IActionContext, Exception>? ActionErrorUnrenderer { get; set; }
-
         /// <summary>
         /// A callback function to be invoked together with
         /// <see cref="RenderBlock(Block{T}, Block{T})"/>.
@@ -62,33 +38,6 @@ namespace Libplanet.Blockchain.Renderers
         /// <see cref="RenderReorg(Block{T}, Block{T}, Block{T})"/>.
         /// </summary>
         public Action<Block<T>, Block<T>, Block<T>>? ReorgRenderer { get; set; }
-
-        /// <inheritdoc
-        /// cref="IRenderer{T}.RenderAction(IAction, IActionContext, IAccountStateDelta)"/>
-        public void RenderAction(
-            IAction action,
-            IActionContext context,
-            IAccountStateDelta nextStates
-        ) =>
-            ActionRenderer?.Invoke(action, context, nextStates);
-
-        /// <inheritdoc
-        /// cref="IRenderer{T}.UnrenderAction(IAction, IActionContext, IAccountStateDelta)"/>
-        public void UnrenderAction(
-            IAction action,
-            IActionContext context,
-            IAccountStateDelta nextStates
-        ) =>
-            ActionUnrenderer?.Invoke(action, context, nextStates);
-
-        /// <inheritdoc cref="IRenderer{T}.RenderActionError(IAction, IActionContext, Exception)"/>
-        public void RenderActionError(IAction action, IActionContext context, Exception exception)
-            => ActionErrorRenderer?.Invoke(action, context, exception);
-
-        /// <inheritdoc
-        /// cref="IRenderer{T}.UnrenderActionError(IAction, IActionContext, Exception)"/>
-        public void UnrenderActionError(IAction action, IActionContext context, Exception exception)
-            => ActionErrorUnrenderer?.Invoke(action, context, exception);
 
         /// <inheritdoc cref="IRenderer{T}.RenderBlock(Block{T}, Block{T})"/>
         public void RenderBlock(Block<T> oldTip, Block<T> newTip) =>

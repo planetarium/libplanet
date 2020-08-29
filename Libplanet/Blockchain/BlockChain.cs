@@ -143,6 +143,7 @@ namespace Libplanet.Blockchain
             Renderers = renderers is IEnumerable<IRenderer<T>> r
                 ? r.ToImmutableArray()
                 : ImmutableArray<IRenderer<T>>.Empty;
+            ActionRenderers = Renderers.OfType<IActionRenderer<T>>().ToImmutableArray();
             _rwlock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
             _txLock = new object();
 
@@ -199,6 +200,12 @@ namespace Libplanet.Blockchain
         /// constructor instead.
         /// </remarks>
         public IImmutableList<IRenderer<T>> Renderers { get; }
+
+        /// <summary>
+        /// A filtered list, from <see cref="Renderers"/>, which contains only <see
+        /// cref="IActionRenderer{T}"/> instances.
+        /// </summary>
+        public IImmutableList<IActionRenderer<T>> ActionRenderers { get; }
 
         public IBlockPolicy<T> Policy { get; }
 
@@ -808,6 +815,8 @@ namespace Libplanet.Blockchain
                 );
             }
 
+            renderActions = renderActions && ActionRenderers.Any();
+
             // Since rendering process requires every step's states, if required block states
             // are incomplete they are complemented anyway:
             stateCompleters ??= StateCompleterSet<T>.Recalculate;
@@ -974,7 +983,7 @@ namespace Libplanet.Blockchain
             {
                 if (evaluation.Exception is null)
                 {
-                    foreach (IRenderer<T> renderer in Renderers)
+                    foreach (IActionRenderer<T> renderer in ActionRenderers)
                     {
                         renderer.RenderAction(
                             evaluation.Action,
@@ -985,7 +994,7 @@ namespace Libplanet.Blockchain
                 }
                 else
                 {
-                    foreach (IRenderer<T> renderer in Renderers)
+                    foreach (IActionRenderer<T> renderer in ActionRenderers)
                     {
                         renderer.RenderActionError(
                             evaluation.Action,
@@ -1405,7 +1414,7 @@ namespace Libplanet.Blockchain
                 topmostCommon
             );
 
-            if (render)
+            if (render && ActionRenderers.Any())
             {
                 // Unrender stale actions.
                 _logger.Debug("Unrendering abandoned actions...");
@@ -1427,7 +1436,7 @@ namespace Libplanet.Blockchain
                         _logger.Debug("Unrender an action: {Action}.", evaluation.Action);
                         if (evaluation.Exception is null)
                         {
-                            foreach (IRenderer<T> renderer in Renderers)
+                            foreach (IActionRenderer<T> renderer in ActionRenderers)
                             {
                                 renderer.UnrenderAction(
                                     evaluation.Action,
@@ -1438,7 +1447,7 @@ namespace Libplanet.Blockchain
                         }
                         else
                         {
-                            foreach (IRenderer<T> renderer in Renderers)
+                            foreach (IActionRenderer<T> renderer in ActionRenderers)
                             {
                                 renderer.UnrenderActionError(
                                     evaluation.Action,
@@ -1496,7 +1505,7 @@ namespace Libplanet.Blockchain
                 _rwlock.ExitWriteLock();
             }
 
-            if (render)
+            if (render && ActionRenderers.Any())
             {
                 _logger.Debug("Rendering actions in new chain.");
 

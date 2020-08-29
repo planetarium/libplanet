@@ -27,11 +27,14 @@ namespace Libplanet.Blockchain.Renderers
     /// );
     /// </code>
     /// </example>
+    /// <remarks>Since <see cref="IActionRenderer{T}"/> is a subtype of <see cref="IRenderer{T}"/>,
+    /// <see cref="LoggedRenderer{T}(IRenderer{T}, ILogger, LogEventLevel)"/> constructor can take
+    /// an <see cref="IActionRenderer{T}"/> instance as well.  However, even it takes an action
+    /// renderer, action-level fine-grained events will not be logged.  For action renderers,
+    /// please use <see cref="LoggedActionRenderer{T}"/> instead.</remarks>
     public class LoggedRenderer<T> : IRenderer<T>
         where T : IAction, new()
     {
-        private ILogger _logger;
-
         /// <summary>
         /// Creates a new <see cref="LoggedRenderer{T}"/> instance which decorates the given
         /// <paramref name="renderer"/>.
@@ -49,7 +52,7 @@ namespace Libplanet.Blockchain.Renderers
         )
         {
             Renderer = renderer;
-            _logger = logger.ForContext(renderer.GetType());
+            Logger = logger.ForContext(renderer.GetType());
             Level = level;
         }
 
@@ -63,60 +66,12 @@ namespace Libplanet.Blockchain.Renderers
         /// </summary>
         public LogEventLevel Level { get; }
 
-        /// <inheritdoc
-        /// cref="IRenderer{T}.RenderAction(IAction, IActionContext, IAccountStateDelta)"/>
-        public void RenderAction(
-            IAction action,
-            IActionContext context,
-            IAccountStateDelta nextStates
-        ) =>
-            LogActionRendering(
-                nameof(RenderAction),
-                action,
-                context,
-                () => Renderer.RenderAction(action, context, nextStates)
-            );
-
-        /// <inheritdoc
-        /// cref="IRenderer{T}.UnrenderAction(IAction, IActionContext, IAccountStateDelta)"/>
-        public void UnrenderAction(
-            IAction action,
-            IActionContext context,
-            IAccountStateDelta nextStates
-        ) =>
-            LogActionRendering(
-                nameof(UnrenderAction),
-                action,
-                context,
-                () => Renderer.UnrenderAction(action, context, nextStates)
-            );
-
-        /// <inheritdoc cref="IRenderer{T}.RenderActionError(IAction, IActionContext, Exception)"/>
-        public void RenderActionError(
-            IAction action,
-            IActionContext context,
-            Exception exception
-        ) =>
-            LogActionRendering(
-                nameof(RenderActionError),
-                action,
-                context,
-                () => Renderer.RenderActionError(action, context, exception)
-            );
-
-        /// <inheritdoc
-        /// cref="IRenderer{T}.UnrenderActionError(IAction, IActionContext, Exception)"/>
-        public void UnrenderActionError(
-            IAction action,
-            IActionContext context,
-            Exception exception
-        ) =>
-            LogActionRendering(
-                nameof(UnrenderActionError),
-                action,
-                context,
-                () => Renderer.UnrenderActionError(action, context, exception)
-            );
+        /// <summary>
+        /// The logger to write log messages to.  Note that all log messages this decorator writes
+        /// become in the context of the <see cref="Renderer"/>'s type (with the context
+        /// property <c>SourceContext</c>).
+        /// </summary>
+        protected ILogger Logger { get; }
 
         /// <inheritdoc cref="IRenderer{T}.RenderBlock(Block{T}, Block{T})"/>
         public void RenderBlock(
@@ -124,7 +79,7 @@ namespace Libplanet.Blockchain.Renderers
             Block<T> newTip
         )
         {
-            _logger.Write(
+            Logger.Write(
                 Level,
                 "Invoking {MethodName}() for #{NewIndex} {NewHash} (was #{OldIndex} {OldHash})...",
                 nameof(RenderBlock),
@@ -143,7 +98,7 @@ namespace Libplanet.Blockchain.Renderers
                 const string errorMessage =
                     "An exception was thrown during {MethodName}() for #{NewIndex} {NewHash} " +
                     "(was #{OldIndex} {OldHash}): {Exception}";
-                _logger.Error(
+                Logger.Error(
                     e,
                     errorMessage,
                     nameof(RenderBlock),
@@ -156,7 +111,7 @@ namespace Libplanet.Blockchain.Renderers
                 throw;
             }
 
-            _logger.Write(
+            Logger.Write(
                 Level,
                 "Invoked {MethodName}() for #{NewIndex} {NewHash} (was #{OldIndex} {OldHash}).",
                 nameof(RenderBlock),
@@ -177,7 +132,7 @@ namespace Libplanet.Blockchain.Renderers
             const string startMessage =
                 "Invoking {MethodName}() for #{NewIndex} {NewHash} (was #{OldIndex} {OldHash} " +
                 "through #{BranchpointIndex} {BranchpointHash})...";
-            _logger.Write(
+            Logger.Write(
                 Level,
                 startMessage,
                 nameof(RenderReorg),
@@ -199,7 +154,7 @@ namespace Libplanet.Blockchain.Renderers
                     "An exception was thrown during {MethodName}() for #{NewIndex} {NewHash} " +
                     "(was #{OldIndex} {OldHash} through #{BranchpointIndex} {BranchpointHash}): " +
                     "{Exception}";
-                _logger.Error(
+                Logger.Error(
                     e,
                     errorMessage,
                     nameof(RenderReorg),
@@ -217,7 +172,7 @@ namespace Libplanet.Blockchain.Renderers
             const string endMessage =
                 "Invoked {MethodName}() for #{NewIndex} {NewHash} (was #{OldIndex} {OldHash} " +
                 "through #{BranchpointIndex} {BranchpointHash}).";
-            _logger.Write(
+            Logger.Write(
                 Level,
                 endMessage,
                 nameof(RenderReorg),
@@ -228,100 +183,6 @@ namespace Libplanet.Blockchain.Renderers
                 branchpoint.Index,
                 branchpoint.Hash
             );
-        }
-
-        private void LogActionRendering(
-            string methodName,
-            IAction action,
-            IActionContext context,
-            System.Action callback
-        )
-        {
-            Type actionType = action.GetType();
-            const string startMessage =
-                "Invoking {MethodName}() for an action {ActionType} at block #{BlockIndex}...";
-            if (context.Rehearsal)
-            {
-                _logger.Write(
-                    Level,
-                    startMessage + " (rehearsal: {Rehearsal})",
-                    methodName,
-                    actionType,
-                    context.BlockIndex,
-                    context.Rehearsal
-                );
-            }
-            else
-            {
-                _logger.Write(
-                    Level,
-                    startMessage,
-                    methodName,
-                    actionType,
-                    context.BlockIndex
-                );
-            }
-
-            try
-            {
-                callback();
-            }
-            catch (Exception e)
-            {
-                const string errorMessage =
-                    "An exception was thrown during {MethodName}() for an action {ActionType} at " +
-                    "block #{BlockIndex}";
-                if (context.Rehearsal)
-                {
-                    _logger.Error(
-                        e,
-                        errorMessage + " (rehearsal: {Rehearsal}): {Exception}",
-                        methodName,
-                        actionType,
-                        context.BlockIndex,
-                        context.Rehearsal,
-                        e
-                    );
-                }
-                else
-                {
-                    _logger.Error(
-                        e,
-                        errorMessage + ": {Exception}",
-                        methodName,
-                        actionType,
-                        context.BlockIndex,
-                        e
-                    );
-                }
-
-                throw;
-            }
-
-            const string endMessage =
-                "Invoked {MethodName}() for an action {ActionType} at block #{BlockIndex}";
-
-            if (context.Rehearsal)
-            {
-                _logger.Write(
-                    Level,
-                    endMessage + " (rehearsal: {Rehearsal}).",
-                    methodName,
-                    actionType,
-                    context.BlockIndex,
-                    context.Rehearsal
-                );
-            }
-            else
-            {
-                _logger.Write(
-                    Level,
-                    endMessage + ".",
-                    methodName,
-                    actionType,
-                    context.BlockIndex
-                );
-            }
         }
     }
 }

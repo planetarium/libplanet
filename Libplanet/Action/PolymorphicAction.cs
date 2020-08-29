@@ -120,7 +120,7 @@ namespace Libplanet.Action
     /// an instance of <see cref="PolymorphicAction{T}"/> is passed instead of its
     /// <see cref="InnerAction"/>:
     /// <code>
-    /// public class Renderer : IRenderer&lt;PolymorphicAction&lt;ActionBase&gt;&gt;
+    /// public class Renderer : IActionRenderer&lt;PolymorphicAction&lt;ActionBase&gt;&gt;
     /// {
     ///     public void RenderAction(IAction action,
     ///                              IActionContext context,

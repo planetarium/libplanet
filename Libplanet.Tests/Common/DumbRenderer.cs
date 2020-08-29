@@ -7,7 +7,7 @@ using Serilog;
 
 namespace Libplanet.Tests.Common
 {
-    public sealed class DumbRenderer<T> : IRenderer<T>
+    public sealed class DumbRenderer<T> : IActionRenderer<T>
         where T : IAction, new()
     {
         public DumbRenderer()

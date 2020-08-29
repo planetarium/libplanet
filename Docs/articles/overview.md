@@ -205,15 +205,16 @@ Although this method works, there are still some problems because reflecting the
 - If multiple actions were executed in a short period of time, they would not be handled accurately.
 
 Libplanet provides a rendering mechanism called
-@"Libplanet.Blockchain.Renderers.IRenderer`1" to solve this problem.
-@"Libplanet.Blockchain.Renderers.IRenderer`1.RenderAction(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)"
+@"Libplanet.Blockchain.Renderers.IRenderer`1" and its subtype
+@"Libplanet.Blockchain.Renderers.IActionRenderer`1" to solve this problem.
+@"Libplanet.Blockchain.Renderers.IActionRenderer`1.RenderAction(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)"
 is called after a @"Libplanet.Blocks.Block`1" with the corresponding
 @"Libplanet.Action.IAction"s is confirmed and the state is transitioned.
 The following code has been re-implemented using
-@"Libplanet.Blockchain.Renderers.IRenderer`1.RenderAction(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)".
+@"Libplanet.Blockchain.Renderers.IActionRenderer`1.RenderAction(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)".
 
 ```csharp
-public class WinRenderer : IRenderer<Win>
+public class WinRenderer : IActionRenderer<Win>
 {
     // ...
 
