@@ -1,0 +1,20 @@
+on:
+  push: []
+  pull_request: []
+name: check-build
+
+jobs:
+  build:
+    name: check-build
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@main
+      if: github.event_name != 'pull_request'
+    - uses: actions/checkout@main
+      if: github.event_name == 'pull_request'
+      with:
+        ref: ${{ github.pull_request.head.sha }}
+    - uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.100
+    - run: 'dotnet build'
