@@ -101,6 +101,10 @@ which works well together.</p>
 builds the entire <em>Libplanet</em> solution:</p>
 <pre><code>dotnet build
 </code></pre>
+<p>We use <a href="https://github.com/SonarSource/sonar-dotnet">SonarAnalyzer</a> to check our code quality but it takes longer to build.
+To skip the analyzer, you can use:</p>
+<pre><code>dotnet build -p:SkipSonar=true
+</code></pre>
 <h2 id="projects">Projects</h2>
 <p>The <a href="https://github.com/planetarium/libplanet">planetarium/libplanet</a> repository
 on GitHub consists of several projects:</p>
