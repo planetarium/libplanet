@@ -96,7 +96,7 @@ namespace Libplanet.Store
         public void PruneStates(ImmutableHashSet<HashDigest<SHA256>> excludeBlockHashes)
         {
             var stopwatch = new Stopwatch();
-            Log.Debug($"Started {nameof(PruneStates)}()");
+            Log.Verbose($"Started {nameof(PruneStates)}()");
             var excludeNodes = ImmutableHashSet<HashDigest<SHA256>>.Empty;
             foreach (var blockHash in excludeBlockHashes)
             {

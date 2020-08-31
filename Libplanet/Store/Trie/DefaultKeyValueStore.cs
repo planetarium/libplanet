@@ -82,7 +82,7 @@ namespace Libplanet.Store.Trie
         /// <inheritdoc/>
         public IEnumerable<byte[]> ListKeys()
         {
-            foreach (var path in _root.EnumerateFiles(UPath.Root))
+            foreach (UPath path in _root.EnumerateFiles(UPath.Root))
             {
                 yield return ByteUtil.ParseHex(path.GetName());
             }

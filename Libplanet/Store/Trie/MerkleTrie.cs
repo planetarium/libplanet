@@ -110,14 +110,13 @@ namespace Libplanet.Store.Trie
 
             while (queue.Count > 0)
             {
-                var hashNode = queue.Dequeue();
+                HashNode hashNode = queue.Dequeue();
                 yield return hashNode.HashDigest;
-                var node = GetNode(hashNode.HashDigest);
+                INode? node = GetNode(hashNode.HashDigest);
                 switch (node)
                 {
                     case FullNode fullNode:
-                        var childHashNodes = fullNode.Children.Where(child => child is HashNode)
-                            .Cast<HashNode>();
+                        IEnumerable<HashNode> childHashNodes = fullNode.Children.OfType<HashNode>();
                         foreach (var childHashNode in childHashNodes)
                         {
                             queue.Enqueue(childHashNode);
