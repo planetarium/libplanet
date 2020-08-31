@@ -32,7 +32,9 @@ steps:
   displayName: dotnet build
   inputs:
     command: build
-    arguments: --configuration ${{ parameters.configuration }}
+    arguments: >-
+      --configuration ${{ parameters.configuration }}
+      -p:SkipSonar=true
 
 - task: DotNetCoreCLI@2
   displayName: dotnet test
@@ -41,6 +43,7 @@ steps:
     projects: '**/*Tests/*.csproj'
     arguments: >-
       --configuration ${{ parameters.configuration }}
+      -p:SkipSonar=true
       ${{ parameters.testArguments }}
   env:
     TURN_SERVER_URL: ${{ parameters.turnServerUrl }}
@@ -55,6 +58,7 @@ steps:
     projects: '**/*Tests/*.csproj'
     arguments: >-
       --configuration ${{ parameters.configuration }}
+      -p:SkipSonar=true
       ${{ parameters.testArguments }}
   env:
     TURN_SERVER_URL: ${{ parameters.turnServerUrl }}
