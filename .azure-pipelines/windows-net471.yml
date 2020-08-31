@@ -31,7 +31,7 @@ steps:
     solution: Libplanet.sln
     msbuildVersion: "16.0"
     configuration: ${{ parameters.configuration }}
-    msbuildArguments: /restore
+    msbuildArguments: /restore /p:SkipSonar=true
 
 - task: Bash@3
   displayName: xunit.console.exe *.Tests.dll

@@ -24,7 +24,8 @@ steps:
     script: |
       msbuild \
         /restore \
-        /p:Configuration=${{ parameters.configuration }}
+        /p:Configuration=${{ parameters.configuration }} \
+        /p:SkipSonar=true
 
 - task: CmdLine@2
   displayName: ${{ parameters.testDisplayName }}

@@ -86,5 +86,16 @@
     <Rule Id="S4035" Action="None" />
     <!-- Remove this unnecessary null check; 'is' returns false for nulls. -->
     <Rule Id="S4201" Action="None" />
+
+    <!-- Remove this parameter 'x', whose value is ignored in the method. -->
+    <Rule Id="S1172" Action="None" />
+    <!-- Remove this useless assignment to local variable x -->
+    <Rule Id="S1854" Action="None" />
+    <!-- Change this condition so that it does not always evaluate to 'false'; some subsequent code is never executed. -->
+    <Rule Id="S2583" Action="None" />
+    <!-- Remove this redundant jump. -->
+    <Rule Id="S3626" Action="None" />
+    <!-- Restrict types of objects allowed to be deserialized. -->
+    <Rule Id="S5773" Action="None" />
   </Rules>
 </RuleSet>

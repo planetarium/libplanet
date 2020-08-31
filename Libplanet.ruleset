@@ -123,5 +123,12 @@
     <!-- Seal class 'Transaction' or implement 'IEqualityComparer<T>'
     instead. -->
     <Rule Id="S4035" Action="None" />
+
+    <!-- Remove this useless assignment to local variable x -->
+    <Rule Id="S1854" Action="None" />
+    <!-- Remove this redundant jump. -->
+    <Rule Id="S3626" Action="None" />
+    <!-- Restrict types of objects allowed to be deserialized. -->
+    <Rule Id="S5773" Action="None" />
   </Rules>
 </RuleSet>

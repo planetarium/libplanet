@@ -240,7 +240,7 @@ namespace Libplanet.Tests.Net
             }
         }
 
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public async Task PreloadFailed()
         {
             Swarm<DumbAction> minerSwarm = _swarms[0];
@@ -666,7 +666,7 @@ namespace Libplanet.Tests.Net
             }
         }
 
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public async Task PreloadWithBranchesAndTrustedPeers()
         {
             // Two miners; one trusts other one.  Test if it downloads the minimum range of blocks
@@ -736,7 +736,7 @@ namespace Libplanet.Tests.Net
             */
         }
 
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public async Task PreloadWhilePeerTipIsChanging()
         {
             var key = new PrivateKey();
@@ -1239,7 +1239,7 @@ namespace Libplanet.Tests.Net
             Assert.Equal(expectedBlocks, demands);
         }
 
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public async Task PreloadAfterReorg()
         {
             Swarm<DumbAction> minerSwarm = _swarms[0];

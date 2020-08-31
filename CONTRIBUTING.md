@@ -64,6 +64,13 @@ builds the entire *Libplanet* solution:
 
     dotnet build
 
+We use [SonarAnalyzer] to check our code quality but it takes longer to build.
+To skip the analyzer, you can use:
+
+    dotnet build -p:SkipSonar=true
+
+[SonarAnalyzer]: https://github.com/SonarSource/sonar-dotnet
+
 
 Projects
 --------

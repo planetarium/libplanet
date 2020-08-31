@@ -1,0 +1,28 @@
+# This workflow checks if the build (compilation) succeeds without any errors.
+# Although the build is done in Azure Pipelines as well, to speed up the build time
+# some checks are turned off in Azure Pipelines.  To conduct the complete checks
+# there should be this separated workflow.
+# See also the below issues:
+# - https://github.com/planetarium/libplanet/pull/979
+# - https://github.com/planetarium/libplanet/pull/977
+# - https://github.com/planetarium/libplanet/issues/976
+on:
+  push: []
+  pull_request: []
+name: check-build
+
+jobs:
+  build:
+    name: check-build
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@main
+      if: github.event_name != 'pull_request'
+    - uses: actions/checkout@main
+      if: github.event_name == 'pull_request'
+      with:
+        ref: ${{ github.pull_request.head.sha }}
+    - uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.100
+    - run: 'dotnet build -p:SkipSonar=false'
