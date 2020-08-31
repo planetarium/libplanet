@@ -42,10 +42,6 @@
     </IncludeAssets>
   </PackageReference>
   <PackageReference Include="Planetarium.RocksDbSharp" Version="6.2.2.3-planetarium" />
-  <PackageReference Include="SonarAnalyzer.CSharp" Version="8.12.0.21095">
-    <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-    <PrivateAssets>all</PrivateAssets>
-  </PackageReference>
   <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
     <PrivateAssets>all</PrivateAssets>
     <IncludeAssets>
@@ -53,6 +49,13 @@
     </IncludeAssets>
   </PackageReference>
   <PackageReference Include="Serilog" Version="2.8.0" />
+</ItemGroup>
+
+<ItemGroup Condition="'$(SkipSonar)' != 'true'">
+  <PackageReference Include="SonarAnalyzer.CSharp" Version="8.12.0.21095">
+    <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    <PrivateAssets>all</PrivateAssets>
+  </PackageReference>
 </ItemGroup>
 
 <ItemGroup>
