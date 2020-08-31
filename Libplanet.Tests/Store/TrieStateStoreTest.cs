@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Store;
@@ -83,6 +84,28 @@ namespace Libplanet.Tests.Store
 
             Assert.False(_stateStore.ContainsBlockStates(randomBlockHash));
             Assert.True(_stateStore.ContainsBlockStates(_fx.GenesisBlock.Hash));
+        }
+
+        [Fact]
+        public void PruneStates()
+        {
+            int prevStateHashesCount = _stateHashKeyValueStore.ListKeys().Count(),
+                prevStatesCount = _stateKeyValueStore.ListKeys().Count();
+            var nextStates = _prestoredValues.SetItem("foo", (Binary)TestUtils.GetRandomBytes(32));
+            _stateStore.SetStates(_fx.Block1, nextStates);
+
+            // Hash of _fx.Block1
+            Assert.Equal(prevStateHashesCount + 1, _stateHashKeyValueStore.ListKeys().Count());
+            // foo = 0x666f6f
+            // updated branch node (0x6, aka root) + updated branch node (0x66) +
+            // updated short node + new value node
+            Assert.Equal(prevStatesCount + 4, _stateKeyValueStore.ListKeys().Count());
+
+            _stateStore.PruneStates(
+                ImmutableHashSet<HashDigest<SHA256>>.Empty.Add(_fx.Block1.Hash));
+            Assert.Single(_stateHashKeyValueStore.ListKeys());
+            // It will stay at the same count of nodes.
+            Assert.Equal(prevStatesCount, _stateKeyValueStore.ListKeys().Count());
         }
     }
 }
