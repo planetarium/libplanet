@@ -1,3 +1,11 @@
+# This workflow checks if the build (compilation) succeeds without any errors.
+# Although the build is done in Azure Pipelines as well, to speed up the build time
+# some checks are turned off in Azure Pipelines.  To conduct the complete checks
+# there should be this separated workflow.
+# See also the below issues:
+# - https://github.com/planetarium/libplanet/pull/979
+# - https://github.com/planetarium/libplanet/pull/977
+# - https://github.com/planetarium/libplanet/issues/976
 on:
   push: []
   pull_request: []
