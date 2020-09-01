@@ -499,6 +499,10 @@ namespace Libplanet.Net.Protocols
                 history.Add(viaPeer);
             }
 
+            // In ethereum's devp2p, GetNeighbors request will exclude peer with address of
+            // target. But our implementation contains target itself for FindSpecificPeerAsync(),
+            // so it should be excluded in here.
+            found = found.Where(peer => !peer.Address.Equals(target));
             await ProcessFoundAsync(history, found, target, depth, timeout, cancellationToken);
         }
 
@@ -508,11 +512,9 @@ namespace Libplanet.Net.Protocols
             TimeSpan? timeout,
             CancellationToken cancellationToken)
         {
-            List<BoundPeer> neighbors = _routing.Neighbors(target, _bucketSize).ToList();
+            List<BoundPeer> neighbors = _routing.Neighbors(target, _bucketSize, false).ToList();
             var found = new List<BoundPeer>();
-            int count = neighbors.Count < Kademlia.FindConcurrency
-                ? neighbors.Count
-                : Kademlia.FindConcurrency;
+            int count = Math.Min(neighbors.Count, Kademlia.FindConcurrency);
             var timeoutOccurred = true;
             for (var i = 0; i < count; i++)
             {
@@ -614,7 +616,8 @@ namespace Libplanet.Net.Protocols
 
             peers = Kademlia.SortByDistance(peers, target);
 
-            List<BoundPeer> closestCandidate = _routing.Neighbors(target, _bucketSize).ToList();
+            List<BoundPeer> closestCandidate =
+                _routing.Neighbors(target, _bucketSize, false).ToList();
 
             Task[] awaitables = peers.Select(peer =>
                 PingAsync(peer, _requestTimeout, cancellationToken)
@@ -625,6 +628,7 @@ namespace Libplanet.Net.Protocols
             }
             catch (Exception e)
             {
+                // FIXME: If timeout occurred, the peer should be removed from the peers list.
                 _logger.Error(
                     e,
                     "Some responses from neighbors found unexpectedly terminated: {Exception}",
@@ -633,7 +637,7 @@ namespace Libplanet.Net.Protocols
             }
 
             var findPeerTasks = new List<Task>();
-            Peer closestKnown = closestCandidate.Count == 0 ? null : closestCandidate[0];
+            Peer closestKnown = closestCandidate.FirstOrDefault();
             var count = 0;
             foreach (var peer in peers)
             {
@@ -699,7 +703,8 @@ namespace Libplanet.Net.Protocols
 
             peers = Kademlia.SortByDistance(peers, target);
 
-            List<BoundPeer> closestNeighbors = _routing.Neighbors(target, _bucketSize).ToList();
+            List<BoundPeer> closestNeighbors =
+                _routing.Neighbors(target, _bucketSize, false).ToList();
 
             Task[] awaitables = peers.Select(peer =>
                 PingAsync(peer, _requestTimeout, cancellationToken)
@@ -792,7 +797,8 @@ namespace Libplanet.Net.Protocols
         // maybe ping/pong/ping/pong is required
         private void ReceiveFindPeer(FindNeighbors findNeighbors)
         {
-            IEnumerable<BoundPeer> found = _routing.Neighbors(findNeighbors.Target, _bucketSize);
+            IEnumerable<BoundPeer> found =
+                _routing.Neighbors(findNeighbors.Target, _bucketSize, true);
 
             Neighbors neighbors = new Neighbors(found)
             {
