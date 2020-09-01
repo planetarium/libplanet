@@ -520,11 +520,6 @@ namespace Libplanet.Blocks
             ImmutableArray<byte> actionsHashAsArray =
                 EvaluationDigest?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty;
 
-            if (PreviousHash.Equals(EvaluationDigest))
-            {
-                Console.WriteLine();
-            }
-
             // FIXME: When hash is not assigned, should throw an exception.
             return new BlockHeader(
                 index: Index,
