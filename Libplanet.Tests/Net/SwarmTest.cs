@@ -1953,6 +1953,46 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact(Timeout = Timeout)]
+        public async Task FindSpecificPeerAsyncFail()
+        {
+            Swarm<DumbAction> swarmA = _swarms[0];
+            Swarm<DumbAction> swarmB = _swarms[1];
+            Swarm<DumbAction> swarmC = _swarms[2];
+            try
+            {
+                await StartAsync(swarmA);
+                await StartAsync(swarmB);
+                await StartAsync(swarmC);
+
+                await swarmA.AddPeersAsync(new Peer[] { swarmB.AsPeer }, null);
+                await swarmB.AddPeersAsync(new Peer[] { swarmC.AsPeer }, null);
+
+                await StopAsync(swarmB);
+
+                BoundPeer foundPeer = await swarmA.FindSpecificPeerAsync(
+                    swarmB.AsPeer.Address,
+                    -1,
+                    TimeSpan.FromMilliseconds(3000));
+
+                Assert.Null(foundPeer);
+
+                foundPeer = await swarmA.FindSpecificPeerAsync(
+                    swarmC.AsPeer.Address,
+                    -1,
+                    TimeSpan.FromMilliseconds(3000));
+
+                Assert.Null(foundPeer);
+                Assert.DoesNotContain(swarmC.AsPeer, swarmA.Peers);
+            }
+            finally
+            {
+                await StopAsync(swarmA);
+                await StopAsync(swarmB);
+                await StopAsync(swarmC);
+            }
+        }
+
+        [Fact(Timeout = Timeout)]
         public async Task DoNotFillMultipleTimes()
         {
             Swarm<DumbAction> receiver = _swarms[0];
