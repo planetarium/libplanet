@@ -26,6 +26,7 @@ namespace Libplanet.Net.Protocols
         private readonly RoutingTable _routing;
         private readonly int _tableSize;
         private readonly int _bucketSize;
+        private readonly int _findConcurrency;
 
         private readonly ILogger _logger;
 
@@ -38,6 +39,7 @@ namespace Libplanet.Net.Protocols
             ILogger logger,
             int? tableSize,
             int? bucketSize,
+            int findConcurrency = Kademlia.FindConcurrency,
             TimeSpan? requestTimeout = null)
         {
             _transport = transport;
@@ -50,6 +52,7 @@ namespace Libplanet.Net.Protocols
             _random = new System.Random();
             _tableSize = tableSize ?? Kademlia.TableSize;
             _bucketSize = bucketSize ?? Kademlia.BucketSize;
+            _findConcurrency = findConcurrency;
             _routing = new RoutingTable(_address, _tableSize, _bucketSize, _random, _logger);
             _requestTimeout =
                 requestTimeout ??
@@ -193,7 +196,7 @@ namespace Libplanet.Net.Protocols
             _logger.Debug("Rebuilding connection...");
             var buffer = new byte[20];
             var tasks = new List<Task>();
-            for (int i = 0; i < Kademlia.FindConcurrency; i++)
+            for (int i = 0; i < _findConcurrency; i++)
             {
                 _random.NextBytes(buffer);
                 tasks.Add(FindPeerAsync(
@@ -519,7 +522,7 @@ namespace Libplanet.Net.Protocols
         {
             List<BoundPeer> neighbors = _routing.Neighbors(target, _bucketSize, false).ToList();
             var found = new List<BoundPeer>();
-            int count = Math.Min(neighbors.Count, Kademlia.FindConcurrency);
+            int count = Math.Min(neighbors.Count, _findConcurrency);
             var timeoutOccurred = true;
             for (var i = 0; i < count; i++)
             {
@@ -667,7 +670,7 @@ namespace Libplanet.Net.Protocols
                     depth == -1 ? depth : depth - 1,
                     timeout,
                     cancellationToken));
-                if (count++ >= Kademlia.FindConcurrency)
+                if (count++ >= _findConcurrency)
                 {
                     break;
                 }
@@ -743,7 +746,7 @@ namespace Libplanet.Net.Protocols
                     (depth == -1) ? depth : depth - 1,
                     timeout,
                     cancellationToken));
-                if (count++ >= Kademlia.FindConcurrency)
+                if (count++ >= _findConcurrency)
                 {
                     break;
                 }
