@@ -1,6 +1,11 @@
 // The planet binary downloader for npm.
 // Inspired by Elm's npm packaging: <https://www.npmjs.com/package/elm>.
 "use strict";
+const nodeMajorVersion = process.versions.node.split('.')[0]
+if (nodeMajorVersion < 8) {
+  throw new Error("Requires Node.js v8 or Higher Version.");
+}
+
 const child_process = require("child_process");
 const fs = require("fs");
 const os = require("os");
