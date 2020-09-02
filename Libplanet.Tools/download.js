@@ -90,8 +90,11 @@ function download(options = {}) {
     if (log != null) log(`
 -------------------------------------------------------------------------------
 Downloaing Libplanet CLI Tools ${ver} from GitHub...
+
 NOTE: You can avoid npm entirely by downloading directly from:
+
   ${url}
+
 All this package does is downloading that file and put it somewhere.
 -------------------------------------------------------------------------------
     `);
@@ -102,6 +105,7 @@ All this package does is downloading that file and put it somewhere.
       .catch(err => console.error(`
 -------------------------------------------------------------------------------
 Error from downloding Libplanet CLI Tools from GitHub...
+
 Report this issue from https://github.com/planetarium/libplanet/issues
 
 ${err}
