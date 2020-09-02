@@ -300,11 +300,7 @@ namespace Libplanet.Net.Protocols
         /// Use <see cref="FindNeighbors"/> messages to to find a <see cref="BoundPeer"/> with
         /// <see cref="Address"/> of <paramref name="target"/>.
         /// </summary>
-        /// <param name="history">The <see cref="Peer"/> that searched.</param>
         /// <param name="target">The <see cref="Address"/> to find.</param>
-        /// <param name="viaPeer">The target <see cref="Peer"/> to send <see cref="FindNeighbors"/>
-        /// message. If null, selects 3 <see cref="Peer"/>s from <see cref="RoutingTable"/> of
-        /// self.</param>
         /// <param name="depth">Target depth of recursive operation.</param>
         /// <param name="timeout"><see cref="TimeSpan"/> for waiting reply of
         /// <see cref="FindNeighbors"/>.</param>
@@ -313,21 +309,18 @@ namespace Libplanet.Net.Protocols
         /// <returns>A <see cref="BoundPeer"/> with <see cref="Address"/> of
         /// <paramref name="target"/>.</returns>
         public async Task<BoundPeer> FindSpecificPeerAsync(
-            ConcurrentBag<BoundPeer> history,
             Address target,
-            BoundPeer viaPeer,
             int depth,
             TimeSpan? timeout,
             CancellationToken cancellationToken)
         {
             _logger.Debug(
-                $"{nameof(FindSpecificPeerAsync)}() with {{Target}} to {{Peer}}. " +
+                $"{nameof(FindSpecificPeerAsync)}() with {{Target}}. " +
                 "(depth: {Depth})",
                 target,
-                viaPeer,
                 depth);
 
-            if (history is null && _routing.ContainsAddress(target) is BoundPeer boundPeer)
+            if (_routing.ContainsAddress(target) is BoundPeer boundPeer)
             {
                 try
                 {
@@ -347,27 +340,62 @@ namespace Libplanet.Net.Protocols
                 return boundPeer;
             }
 
-            history ??= new ConcurrentBag<BoundPeer>();
-
-            IEnumerable<BoundPeer> found;
-            if (viaPeer is null)
+            var history = new ConcurrentBag<BoundPeer>();
+            var peersToFind = new ConcurrentQueue<BoundPeer>();
+            foreach (var peer in _routing.Neighbors(target, _findConcurrency, false))
             {
-                found = await QueryNeighborsAsync(history, target, timeout, cancellationToken);
+                peersToFind.Enqueue(peer);
             }
-            else
+
+            while (peersToFind.Any())
             {
-                found = await GetNeighbors(viaPeer, target, timeout, cancellationToken);
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    throw new TaskCanceledException(
+                        $"Task is cancelled during {nameof(FindSpecificPeerAsync)}()");
+                }
+
+                if (!peersToFind.TryDequeue(out BoundPeer viaPeer))
+                {
+                    continue;
+                }
+
                 history.Add(viaPeer);
+                List<BoundPeer> foundPeers =
+                    (await GetNeighbors(viaPeer, target, timeout, cancellationToken)).ToList();
+
+                int count = 0;
+                foreach (var found in foundPeers
+                    .Where(peer => !history.Contains(peer) && !peer.Address.Equals(_address))
+                    .Take(_findConcurrency))
+                {
+                    try
+                    {
+                        await PingAsync(found, _requestTimeout, cancellationToken);
+                        if (found.Address.Equals(target))
+                        {
+                            return found;
+                        }
+
+                        peersToFind.Enqueue(found);
+                        if (count++ >= _findConcurrency)
+                        {
+                            break;
+                        }
+                    }
+                    catch (TaskCanceledException)
+                    {
+                        throw new TaskCanceledException(
+                            $"Task is cancelled during {nameof(FindSpecificPeerAsync)}()");
+                    }
+                    catch (Exception)
+                    {
+                        continue;
+                    }
+                }
             }
 
-            return await ProcessFoundForSpecificAsync(
-                history,
-                found,
-                target,
-                depth,
-                timeout,
-                cancellationToken
-            );
+            return null;
         }
 
         internal async Task PingAsync(
@@ -692,92 +720,6 @@ namespace Libplanet.Net.Protocols
                     e
                 );
             }
-        }
-
-        private async Task<BoundPeer> ProcessFoundForSpecificAsync(
-            ConcurrentBag<BoundPeer> history,
-            IEnumerable<BoundPeer> found,
-            Address target,
-            int depth,
-            TimeSpan? timeout,
-            CancellationToken cancellationToken)
-        {
-            List<BoundPeer> peers = found.Where(
-                peer => !peer.Address.Equals(_address)).ToList();
-
-            if (peers.Count == 0)
-            {
-                _logger.Debug("Received no neighbors at all.");
-                return null;
-            }
-
-            peers = Kademlia.SortByDistance(peers, target);
-
-            Task[] awaitables = peers.Select(peer =>
-                PingAsync(peer, _requestTimeout, cancellationToken)
-            ).ToArray();
-            try
-            {
-                await Task.WhenAll(awaitables);
-            }
-            catch (AggregateException ae)
-            {
-                foreach (var e in ae.InnerExceptions)
-                {
-                    if (e is PingTimeoutException pte)
-                    {
-                        // Remove timed out peers from the list.
-                        peers.Remove(pte.Target);
-                    }
-                    else
-                    {
-                        _logger.Error(
-                            e,
-                            "Some responses from neighbors found unexpectedly terminated: {e}",
-                            e
-                        );
-                    }
-                }
-            }
-
-            if (peers[0].Address.Equals(target))
-            {
-                return peers[0];
-            }
-
-            var findNeighboursTasks = new List<Task<BoundPeer>>();
-            var count = 0;
-            foreach (var peer in peers.Where(peer => !history.Contains(peer)))
-            {
-                findNeighboursTasks.Add(FindSpecificPeerAsync(
-                    history,
-                    target,
-                    peer,
-                    (depth == -1) ? depth : depth - 1,
-                    timeout,
-                    cancellationToken));
-                if (count++ >= _findConcurrency)
-                {
-                    break;
-                }
-            }
-
-            var foundSpecificPeer = new List<BoundPeer>();
-            try
-            {
-                foundSpecificPeer.AddRange(await Task.WhenAll(findNeighboursTasks));
-            }
-            catch (TimeoutException)
-            {
-                if (findNeighboursTasks.All(findPeerTask => findPeerTask.IsFaulted))
-                {
-                    throw new TimeoutException(
-                        "Timeout exception occurred during " +
-                        $"{nameof(ProcessFoundForSpecificAsync)}.");
-                }
-            }
-
-            return foundSpecificPeer.FirstOrDefault(peer => peer.Address.Equals(target));
         }
 
         // FIXME: this method is not safe from amplification attack

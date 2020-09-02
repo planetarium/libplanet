@@ -404,9 +404,7 @@ namespace Libplanet.Net
         {
             var kp = (KademliaProtocol)Protocol;
             return await kp.FindSpecificPeerAsync(
-                null,
                 target,
-                null,
                 depth,
                 timeout,
                 cancellationToken);
