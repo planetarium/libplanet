@@ -294,9 +294,8 @@ namespace Libplanet.Net.Protocols
         }
 
         /// <summary>
-        /// Send <see cref="FindNeighbors"/> messages to <paramref name="viaPeer"/>
-        /// to find <see cref="Peer"/>s near <paramref name="target"/>
-        /// to see if the <see cref="Peer"/>s have a specific address.
+        /// Use <see cref="FindNeighbors"/> messages to to find a <see cref="BoundPeer"/> with
+        /// <see cref="Address"/> of <paramref name="target"/>.
         /// </summary>
         /// <param name="history">The <see cref="Peer"/> that searched.</param>
         /// <param name="target">The <see cref="Address"/> to find.</param>
@@ -304,18 +303,16 @@ namespace Libplanet.Net.Protocols
         /// message. If null, selects 3 <see cref="Peer"/>s from <see cref="RoutingTable"/> of
         /// self.</param>
         /// <param name="depth">Target depth of recursive operation.</param>
-        /// <param name="searchTarget">The address to search for among peers.</param>
         /// <param name="timeout"><see cref="TimeSpan"/> for waiting reply of
         /// <see cref="FindNeighbors"/>.</param>
         /// <param name="cancellationToken">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
-        /// <returns>BoundPeer containing the <paramref name="searchTarget"/>'s address.</returns>
+        /// <returns>A BoundPeer with <see cref="Address"/> of <paramref name="target"/>.</returns>
         public async Task<BoundPeer> FindSpecificPeerAsync(
             ConcurrentBag<BoundPeer> history,
             Address target,
             BoundPeer viaPeer,
             int depth,
-            Address searchTarget,
             TimeSpan? timeout,
             CancellationToken cancellationToken)
         {
@@ -328,6 +325,12 @@ namespace Libplanet.Net.Protocols
 
             if (history is null)
             {
+                if (_routing.ContainsAddress(target) is BoundPeer boundPeer)
+                {
+                    _logger.Debug("Target peer was in routing table. {BoundPeer}", boundPeer);
+                    return boundPeer;
+                }
+
                 history = new ConcurrentBag<BoundPeer>();
             }
 
@@ -348,8 +351,7 @@ namespace Libplanet.Net.Protocols
                 target,
                 depth,
                 timeout,
-                cancellationToken,
-                searchTarget
+                cancellationToken
             );
 
             return specificPeerFound;
@@ -688,23 +690,22 @@ namespace Libplanet.Net.Protocols
             Address target,
             int depth,
             TimeSpan? timeout,
-            CancellationToken cancellationToken,
-            Address searchAddress)
+            CancellationToken cancellationToken)
         {
-            BoundPeer peerFound = null;
             List<BoundPeer> peers = found.Where(
                 peer => !peer.Address.Equals(_address)).ToList();
 
             if (peers.Count == 0)
             {
                 _logger.Debug("No any neighbor received.");
-                return peerFound;
+                return null;
             }
 
             peers = Kademlia.SortByDistance(peers, target);
-
-            List<BoundPeer> closestNeighbors =
-                _routing.Neighbors(target, _bucketSize, false).ToList();
+            if (peers[0].Address.Equals(target))
+            {
+                return peers[0];
+            }
 
             Task[] awaitables = peers.Select(peer =>
                 PingAsync(peer, _requestTimeout, cancellationToken)
@@ -713,16 +714,9 @@ namespace Libplanet.Net.Protocols
             {
                 await Task.WhenAll(awaitables);
             }
-            catch (AggregateException e)
+            catch (Exception e)
             {
-                if (e.InnerExceptions.All(ie => ie is TimeoutException) &&
-                    e.InnerExceptions.Count == awaitables.Length)
-                {
-                    throw new TimeoutException(
-                        $"All neighbors found do not respond in {_requestTimeout}."
-                    );
-                }
-
+                // FIXME: If timeout occurred, the peer should be removed from the peers list.
                 _logger.Error(
                     e,
                     "Some responses from neighbors found unexpectedly terminated: {Exception}",
@@ -730,36 +724,25 @@ namespace Libplanet.Net.Protocols
                 );
             }
 
-            for (int i = 0; i < closestNeighbors.Count; i++)
-            {
-                if (string.CompareOrdinal(
-                        closestNeighbors[i].Address.ToHex(),
-                        searchAddress.ToHex()
-                   ) == 0 && _routing.Contains(closestNeighbors[i]))
-                {
-                    peerFound = closestNeighbors[i];
-                    return peerFound;
-                }
-            }
-
             var findNeighboursTasks = new List<Task<BoundPeer>>();
-            Peer closestKnown = closestNeighbors.Count == 0 ? null : closestNeighbors[0];
-            for (int i = 0; i < Kademlia.FindConcurrency && i < peers.Count; i++)
+            var count = 0;
+            foreach (var peer in peers)
             {
-                if (peerFound is null ||
-                    string.CompareOrdinal(
-                        Kademlia.CalculateDistance(peers[i].Address, target).ToHex(),
-                        Kademlia.CalculateDistance(closestKnown.Address, target).ToHex()
-                    ) < 1)
+                if (history.Contains(peer))
                 {
-                    findNeighboursTasks.Add(FindSpecificPeerAsync(
-                        history,
-                        target,
-                        peers[i],
-                        (depth == -1) ? depth : depth - 1,
-                        searchAddress,
-                        timeout,
-                        cancellationToken));
+                    continue;
+                }
+
+                findNeighboursTasks.Add(FindSpecificPeerAsync(
+                    history,
+                    target,
+                    peer,
+                    (depth == -1) ? depth : depth - 1,
+                    timeout,
+                    cancellationToken));
+                if (count++ >= Kademlia.FindConcurrency)
+                {
+                    break;
                 }
             }
 
@@ -778,19 +761,7 @@ namespace Libplanet.Net.Protocols
                 }
             }
 
-            for (int i = 0; i < foundSpecificPeer.Count; i++)
-            {
-                if (string.CompareOrdinal(
-                        foundSpecificPeer[i].Address.ToHex(),
-                        searchAddress.ToHex()
-                   ) == 0 && _routing.Contains(foundSpecificPeer[i]))
-                {
-                    peerFound = foundSpecificPeer[i];
-                    return peerFound;
-                }
-            }
-
-            return peerFound;
+            return foundSpecificPeer.FirstOrDefault(peer => peer.Address.Equals(target));
         }
 
         // FIXME: this method is not safe from amplification attack

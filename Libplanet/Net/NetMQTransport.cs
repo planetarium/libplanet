@@ -398,9 +398,7 @@ namespace Libplanet.Net
 
         public async Task<BoundPeer> FindSpecificPeerAsync(
             Address target,
-            Address searchAddress,
             int depth,
-            BoundPeer viaPeer,
             TimeSpan? timeout,
             CancellationToken cancellationToken)
         {
@@ -408,9 +406,8 @@ namespace Libplanet.Net
             return await kp.FindSpecificPeerAsync(
                 null,
                 target,
-                viaPeer,
+                null,
                 depth,
-                searchAddress,
                 timeout,
                 cancellationToken);
         }

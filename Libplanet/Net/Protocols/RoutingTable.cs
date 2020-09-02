@@ -160,6 +160,12 @@ namespace Libplanet.Net.Protocols
             return BucketOf(peer).Contains(peer);
         }
 
+        public BoundPeer ContainsAddress(Address addr) =>
+            _buckets
+                .Where(b => !b.IsEmpty())
+                .SelectMany(b => b.Peers)
+                .FirstOrDefault(peer => peer.Address.Equals(addr));
+
         public void Clear()
         {
             foreach (KBucket bucket in _buckets)

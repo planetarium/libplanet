@@ -926,20 +926,32 @@ namespace Libplanet.Net
             }
         }
 
+        /// <summary>
+        /// Use <see cref="FindNeighbors"/> messages to to find a <see cref="BoundPeer"/> with
+        /// <see cref="Address"/> of <paramref name="target"/>.
+        /// </summary>
+        /// <param name="target">The <see cref="Address"/> to find.</param>
+        /// <param name="depth">Target depth of recursive operation. If -1 is given,
+        /// will recursive until the closest <see cref="BoundPeer"/> to the
+        /// <paramref name="target"/> is found.</param>
+        /// <param name="timeout">
+        /// <see cref="TimeSpan"/> for waiting reply of <see cref="FindNeighbors"/>.
+        /// If <c>null</c> is given, <see cref="TimeoutException"/> will not be thrown.
+        /// </param>
+        /// <param name="cancellationToken">A cancellation token used to propagate notification
+        /// that this operation should be canceled.</param>
+        /// <returns>A BoundPeer with <see cref="Address"/> of <paramref name="target"/>.
+        /// Returns <c>null</c> if the peer with address does not exist.</returns>
         public async Task<BoundPeer> FindSpecificPeerAsync(
             Address target,
-            Address searchAddress,
-            int depth,
-            BoundPeer viaPeer,
-            TimeSpan? timeout,
-            CancellationToken cancellationToken)
+            int depth = 3,
+            TimeSpan? timeout = null,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             NetMQTransport netMQTransport = (NetMQTransport)Transport;
             return await netMQTransport.FindSpecificPeerAsync(
                 target,
-                searchAddress,
                 depth,
-                viaPeer,
                 timeout,
                 cancellationToken);
         }
