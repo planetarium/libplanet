@@ -207,11 +207,12 @@ namespace Libplanet.Tests.Net.Protocols
                 {
                     _logger.Debug("Different version encountered during AddPeersAsync().");
                 }
-                catch (TimeoutException)
+                catch (PingTimeoutException)
                 {
-                    _logger.Debug(
-                        $"Timeout occurred during {nameof(AddPeersAsync)}() after {timeout}.");
-                    throw;
+                    var msg =
+                        $"Timeout occurred during {nameof(AddPeersAsync)}() after {timeout}.";
+                    _logger.Debug(msg);
+                    throw new TimeoutException(msg);
                 }
                 catch (TaskCanceledException)
                 {

@@ -100,7 +100,7 @@ namespace Libplanet.Net.Protocols
                 {
                     _logger.Error("Version is different from seed peer.");
                 }
-                catch (TimeoutException)
+                catch (PingTimeoutException)
                 {
                     _logger.Error("A timeout exception occurred connecting to seed peer.");
                     RemovePeer(peer);
@@ -246,7 +246,7 @@ namespace Libplanet.Net.Protocols
 
                         await PingAsync(replacement, _requestTimeout, cancellationToken);
                     }
-                    catch (TimeoutException)
+                    catch (PingTimeoutException)
                     {
                         _logger.Debug(
                             "Remove stale peer {Peer} from replacement cache.",
@@ -399,7 +399,9 @@ namespace Libplanet.Net.Protocols
             }
             catch (TimeoutException)
             {
-                throw new TimeoutException($"Timeout occurred during {nameof(PingAsync)}().");
+                throw new PingTimeoutException(
+                    target,
+                    $"Timeout occurred during dial to {target}.");
             }
             catch (DifferentAppProtocolVersionException)
             {
@@ -429,7 +431,7 @@ namespace Libplanet.Net.Protocols
                 await PingAsync(peer, timeout, cancellationToken);
                 _routing.Check(peer, check, DateTimeOffset.UtcNow);
             }
-            catch (TimeoutException)
+            catch (PingTimeoutException)
             {
                 _logger.Debug("Peer {Peer} is invalid, removing...", peer);
                 RemovePeer(peer);
@@ -634,14 +636,24 @@ namespace Libplanet.Net.Protocols
             {
                 await Task.WhenAll(awaitables);
             }
-            catch (Exception e)
+            catch (AggregateException ae)
             {
-                // FIXME: If timeout occurred, the peer should be removed from the peers list.
-                _logger.Error(
-                    e,
-                    "Some responses from neighbors found unexpectedly terminated: {Exception}",
-                    e
-                );
+                foreach (var e in ae.InnerExceptions)
+                {
+                    if (e is PingTimeoutException pte)
+                    {
+                        // Remove timed out peers from the list.
+                        peers.Remove(pte.Target);
+                    }
+                    else
+                    {
+                        _logger.Error(
+                            e,
+                            "Some responses from neighbors found unexpectedly terminated: {e}",
+                            e
+                        );
+                    }
+                }
             }
 
             var findPeerTasks = new List<Task>();
@@ -708,10 +720,6 @@ namespace Libplanet.Net.Protocols
             }
 
             peers = Kademlia.SortByDistance(peers, target);
-            if (peers[0].Address.Equals(target))
-            {
-                return peers[0];
-            }
 
             Task[] awaitables = peers.Select(peer =>
                 PingAsync(peer, _requestTimeout, cancellationToken)
@@ -720,14 +728,29 @@ namespace Libplanet.Net.Protocols
             {
                 await Task.WhenAll(awaitables);
             }
-            catch (Exception e)
+            catch (AggregateException ae)
             {
-                // FIXME: If timeout occurred, the peer should be removed from the peers list.
-                _logger.Error(
-                    e,
-                    "Some responses from neighbors found unexpectedly terminated: {Exception}",
-                    e
-                );
+                foreach (var e in ae.InnerExceptions)
+                {
+                    if (e is PingTimeoutException pte)
+                    {
+                        // Remove timed out peers from the list.
+                        peers.Remove(pte.Target);
+                    }
+                    else
+                    {
+                        _logger.Error(
+                            e,
+                            "Some responses from neighbors found unexpectedly terminated: {e}",
+                            e
+                        );
+                    }
+                }
+            }
+
+            if (peers[0].Address.Equals(target))
+            {
+                return peers[0];
             }
 
             var findNeighboursTasks = new List<Task<BoundPeer>>();
