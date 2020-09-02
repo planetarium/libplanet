@@ -331,6 +331,18 @@ namespace Libplanet.Net.Protocols
             {
                 if (_routing.ContainsAddress(target) is BoundPeer boundPeer)
                 {
+                    try
+                    {
+                        await PingAsync(boundPeer, _requestTimeout, cancellationToken);
+                    }
+                    catch (PingTimeoutException)
+                    {
+                        var msg =
+                            "{BoundPeer}, a target peer, is in the routing table does not respond.";
+                        _logger.Debug(msg, boundPeer);
+                        return null;
+                    }
+
                     _logger.Debug(
                         "{BoundPeer}, a target peer, is in the routing table.",
                         boundPeer);
