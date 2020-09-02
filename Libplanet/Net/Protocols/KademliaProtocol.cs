@@ -363,7 +363,7 @@ namespace Libplanet.Net.Protocols
                 history.Add(viaPeer);
             }
 
-            BoundPeer specificPeerFound = await ProcessFoundForSpecificAsync(
+            return await ProcessFoundForSpecificAsync(
                 history,
                 found,
                 target,
@@ -371,8 +371,6 @@ namespace Libplanet.Net.Protocols
                 timeout,
                 cancellationToken
             );
-
-            return specificPeerFound;
         }
 
         internal async Task PingAsync(
@@ -537,27 +535,12 @@ namespace Libplanet.Net.Protocols
             List<BoundPeer> neighbors = _routing.Neighbors(target, _bucketSize, false).ToList();
             var found = new List<BoundPeer>();
             int count = Math.Min(neighbors.Count, _findConcurrency);
-            var timeoutOccurred = true;
             for (var i = 0; i < count; i++)
             {
-                try
-                {
-                    var peers =
-                        await GetNeighbors(neighbors[i], target, timeout, cancellationToken);
-                    history.Add(neighbors[i]);
-                    found.AddRange(peers.Where(peer => !found.Contains(peer)));
-                    timeoutOccurred = false;
-                }
-                catch (TimeoutException)
-                {
-                }
-            }
-
-            if (count != 0 && timeoutOccurred)
-            {
-                _logger.Debug($"Timeout occurred during {nameof(QueryNeighborsAsync)}.");
-                throw new TimeoutException(
-                    $"Timeout occurred during {nameof(QueryNeighborsAsync)}.");
+                var peers =
+                    await GetNeighbors(neighbors[i], target, timeout, cancellationToken);
+                history.Add(neighbors[i]);
+                found.AddRange(peers.Where(peer => !found.Contains(peer)));
             }
 
             return found;
@@ -586,7 +569,7 @@ namespace Libplanet.Net.Protocols
             catch (TimeoutException)
             {
                 RemovePeer(addressee);
-                throw;
+                return ImmutableArray<BoundPeer>.Empty;
             }
         }
 
