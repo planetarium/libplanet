@@ -307,7 +307,8 @@ namespace Libplanet.Net.Protocols
         /// <see cref="FindNeighbors"/>.</param>
         /// <param name="cancellationToken">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
-        /// <returns>A BoundPeer with <see cref="Address"/> of <paramref name="target"/>.</returns>
+        /// <returns>A <see cref="BoundPeer"/> with <see cref="Address"/> of
+        /// <paramref name="target"/>.</returns>
         public async Task<BoundPeer> FindSpecificPeerAsync(
             ConcurrentBag<BoundPeer> history,
             Address target,
@@ -327,7 +328,9 @@ namespace Libplanet.Net.Protocols
             {
                 if (_routing.ContainsAddress(target) is BoundPeer boundPeer)
                 {
-                    _logger.Debug("Target peer was in routing table. {BoundPeer}", boundPeer);
+                    _logger.Debug(
+                        "{BoundPeer}, a target peer, is in the routing table.",
+                        boundPeer);
                     return boundPeer;
                 }
 
@@ -697,7 +700,7 @@ namespace Libplanet.Net.Protocols
 
             if (peers.Count == 0)
             {
-                _logger.Debug("No any neighbor received.");
+                _logger.Debug("Received no neighbors at all.");
                 return null;
             }
 
