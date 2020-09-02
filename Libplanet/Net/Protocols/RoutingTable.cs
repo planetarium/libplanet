@@ -207,24 +207,16 @@ namespace Libplanet.Net.Protocols
                 .ToList();
 
             sorted = Kademlia.SortByDistance(sorted, target);
-            var peers = new List<BoundPeer>();
 
             // Select maximum k * 2 peers excluding the target itself.
             bool containsTarget = sorted.Any(peer => peer.Address.Equals(target));
             int maxCount = (includeTarget && containsTarget) ? k * 2 + 1 : k * 2;
 
-            foreach (var peer in includeTarget
+            IEnumerable<BoundPeer> peers = includeTarget
                 ? sorted
-                : sorted.Where(peer => !peer.Address.Equals(target)))
-            {
-                peers.Add(peer);
-                if (peers.Count >= maxCount)
-                {
-                    break;
-                }
-            }
+                : sorted.Where(peer => !peer.Address.Equals(target));
 
-            return peers;
+            return peers.Take(maxCount);
         }
 
         public void Check(BoundPeer peer, DateTimeOffset start, DateTimeOffset end)

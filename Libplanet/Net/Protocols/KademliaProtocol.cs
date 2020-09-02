@@ -327,30 +327,27 @@ namespace Libplanet.Net.Protocols
                 viaPeer,
                 depth);
 
-            if (history is null)
+            if (history is null && _routing.ContainsAddress(target) is BoundPeer boundPeer)
             {
-                if (_routing.ContainsAddress(target) is BoundPeer boundPeer)
+                try
                 {
-                    try
-                    {
-                        await PingAsync(boundPeer, _requestTimeout, cancellationToken);
-                    }
-                    catch (PingTimeoutException)
-                    {
-                        var msg =
-                            "{BoundPeer}, a target peer, is in the routing table does not respond.";
-                        _logger.Debug(msg, boundPeer);
-                        return null;
-                    }
-
-                    _logger.Debug(
-                        "{BoundPeer}, a target peer, is in the routing table.",
-                        boundPeer);
-                    return boundPeer;
+                    await PingAsync(boundPeer, _requestTimeout, cancellationToken);
+                }
+                catch (PingTimeoutException)
+                {
+                    var msg =
+                        "{BoundPeer}, a target peer, is in the routing table does not respond.";
+                    _logger.Debug(msg, boundPeer);
+                    return null;
                 }
 
-                history = new ConcurrentBag<BoundPeer>();
+                _logger.Debug(
+                    "{BoundPeer}, a target peer, is in the routing table.",
+                    boundPeer);
+                return boundPeer;
             }
+
+            history ??= new ConcurrentBag<BoundPeer>();
 
             IEnumerable<BoundPeer> found;
             if (viaPeer is null)
@@ -750,13 +747,8 @@ namespace Libplanet.Net.Protocols
 
             var findNeighboursTasks = new List<Task<BoundPeer>>();
             var count = 0;
-            foreach (var peer in peers)
+            foreach (var peer in peers.Where(peer => !history.Contains(peer)))
             {
-                if (history.Contains(peer))
-                {
-                    continue;
-                }
-
                 findNeighboursTasks.Add(FindSpecificPeerAsync(
                     history,
                     target,
