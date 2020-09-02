@@ -6,7 +6,7 @@ using Libplanet.Tx;
 
 namespace Libplanet.Explorer.Store
 {
-    public interface IRichStore : IStore
+    public interface IRichStore : IStore, IStateStore
     {
         void StoreTxReferences(TxId txId, HashDigest<SHA256> blockHash, long blockIndex);
 

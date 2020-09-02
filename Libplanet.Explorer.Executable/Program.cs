@@ -46,7 +46,7 @@ namespace Libplanet.Explorer.Executable
 
             try
             {
-                IStore store = LoadStore(options);
+                RichStore store = LoadStore(options);
 
                 IBlockPolicy<AppAgnosticAction> policy = new BlockPolicy<AppAgnosticAction>(
                     null,
@@ -54,7 +54,7 @@ namespace Libplanet.Explorer.Executable
                     minimumDifficulty: options.MinimumDifficulty,
                     difficultyBoundDivisor: options.DifficultyBoundDivisor);
                 var blockChain =
-                    new BlockChain<AppAgnosticAction>(policy, store, options.GenesisBlock);
+                    new BlockChain<AppAgnosticAction>(policy, store, store, options.GenesisBlock);
                 Startup.BlockChainSingleton = blockChain;
                 Startup.StoreSingleton = store;
 
@@ -133,10 +133,10 @@ namespace Libplanet.Explorer.Executable
             }
         }
 
-        private static IStore LoadStore(Options options)
+        private static RichStore LoadStore(Options options)
         {
             bool readOnlyMode = options.Seeds is null;
-            IStore innerStore;
+            BaseBlockStatesStore innerStore;
             switch (options.StoreType)
             {
                 case "rocksdb":
@@ -159,25 +159,12 @@ namespace Libplanet.Explorer.Executable
                         availableStoreTypes);
             }
 
-            IStore store;
-            if (options.Seeds.Any())
-            {
-                // Wrap up store to use more useful features.
-                store = new RichStore(
-                    innerStore,
-                    path: options.StorePath,
-                    flush: false,
-                    readOnly: readOnlyMode
-                );
-            }
-            else
-            {
-                // If there were no given seeds,
-                // use the store directly.
-                store = innerStore;
-            }
-
-            return store;
+            return new RichStore(
+                innerStore,
+                path: options.StorePath,
+                flush: false,
+                readOnly: readOnlyMode
+            );
         }
 
         private static async Task StartSwarmAsync(

@@ -24,10 +24,12 @@ namespace Libplanet.Explorer.Store
 
         private readonly MemoryStream _memoryStream;
         private readonly LiteDatabase _db;
-        private readonly IStore _store;
+
+        // FIXME we should separate it.
+        private readonly BaseBlockStatesStore _store;
 
         public RichStore(
-            IStore store,
+            BaseBlockStatesStore store,
             string path,
             bool journal = true,
             int indexCacheSize = 50000,
@@ -129,7 +131,7 @@ namespace Libplanet.Explorer.Store
             Block<T> lookupUntil)
             where T : IAction, new()
         {
-            return _store.LookupStateReference(chainId, key, lookupUntil);
+            return _store.LookupStateReference(chainId, key, lookupUntil.Index);
         }
 
         /// <inheritdoc cref="IStore"/>
@@ -442,6 +444,23 @@ namespace Libplanet.Explorer.Store
             );
             return collection.Find(query, offset, limit).Select(doc => doc.TxId);
         }
+
+        public void SetStates<T>(Block<T> block, IImmutableDictionary<string, IValue> states)
+            where T : IAction, new()
+            => _store.SetStates(block, states);
+
+        public IValue GetState(
+            string stateKey,
+            HashDigest<SHA256>? blockHash = null,
+            Guid? chainId = null)
+            => _store.GetState(stateKey);
+
+        public bool ContainsBlockStates(HashDigest<SHA256> blockHash)
+            => _store.ContainsBlockStates(blockHash);
+
+        public void ForkStates<T>(Guid sourceChainId, Guid destinationChainId, Block<T> branchpoint)
+            where T : IAction, new()
+            => _store.ForkStates(sourceChainId, destinationChainId, branchpoint);
 
         private LiteCollection<TxRefDoc> TxRefCollection() =>
             _db.GetCollection<TxRefDoc>(TxRefCollectionName);
