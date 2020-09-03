@@ -24,14 +24,24 @@ namespace Libplanet.Net.Protocols
             Target = target;
         }
 
-        protected PingTimeoutException(
-            SerializationInfo info,
-            StreamingContext context
-        )
+        protected PingTimeoutException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
+            Target = (BoundPeer)info.GetValue("Target", typeof(BoundPeer));
         }
 
         public BoundPeer Target { get; private set; }
+
+        public override void GetObjectData(
+            SerializationInfo info, StreamingContext context)
+        {
+            if (info == null)
+            {
+                throw new System.ArgumentNullException(nameof(info));
+            }
+
+            base.GetObjectData(info, context);
+            info.AddValue("Target", Target);
+        }
     }
 }

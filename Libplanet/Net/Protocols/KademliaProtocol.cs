@@ -320,7 +320,7 @@ namespace Libplanet.Net.Protocols
                 target,
                 depth);
 
-            if (_routing.ContainsAddress(target) is BoundPeer boundPeer)
+            if (_routing.GetPeer(target) is BoundPeer boundPeer)
             {
                 try
                 {
@@ -342,18 +342,14 @@ namespace Libplanet.Net.Protocols
 
             var history = new ConcurrentBag<BoundPeer>();
             var peersToFind = new ConcurrentQueue<BoundPeer>();
-            foreach (var peer in _routing.Neighbors(target, _findConcurrency, false))
+            foreach (BoundPeer peer in _routing.Neighbors(target, _findConcurrency, false))
             {
                 peersToFind.Enqueue(peer);
             }
 
             while (peersToFind.Any())
             {
-                if (cancellationToken.IsCancellationRequested)
-                {
-                    throw new TaskCanceledException(
-                        $"Task is cancelled during {nameof(FindSpecificPeerAsync)}()");
-                }
+                cancellationToken.ThrowIfCancellationRequested();
 
                 if (!peersToFind.TryDequeue(out BoundPeer viaPeer))
                 {
@@ -365,9 +361,13 @@ namespace Libplanet.Net.Protocols
                     (await GetNeighbors(viaPeer, target, timeout, cancellationToken)).ToList();
 
                 int count = 0;
-                foreach (var found in foundPeers
-                    .Where(peer => !history.Contains(peer) && !peer.Address.Equals(_address))
-                    .Take(_findConcurrency))
+                IEnumerable<BoundPeer> filteredPeers = foundPeers
+                    .Where(peer =>
+                        !history.Contains(peer) &&
+                        !peersToFind.Contains(peer) &&
+                        !peer.Address.Equals(_address))
+                    .Take(_findConcurrency);
+                foreach (var found in filteredPeers)
                 {
                     try
                     {
@@ -378,6 +378,7 @@ namespace Libplanet.Net.Protocols
                         }
 
                         peersToFind.Enqueue(found);
+
                         if (count++ >= _findConcurrency)
                         {
                             break;
@@ -388,7 +389,7 @@ namespace Libplanet.Net.Protocols
                         throw new TaskCanceledException(
                             $"Task is cancelled during {nameof(FindSpecificPeerAsync)}()");
                     }
-                    catch (Exception)
+                    catch (PingTimeoutException)
                     {
                         continue;
                     }
