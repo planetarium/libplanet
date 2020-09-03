@@ -35,7 +35,7 @@ namespace Libplanet.Net.Protocols
         public override void GetObjectData(
             SerializationInfo info, StreamingContext context)
         {
-            if (info == null)
+            if (info is null)
             {
                 throw new System.ArgumentNullException(nameof(info));
             }
