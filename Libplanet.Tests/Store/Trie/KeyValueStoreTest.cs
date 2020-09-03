@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using Libplanet.Store.Trie;
 using Xunit;
@@ -75,6 +76,15 @@ namespace Libplanet.Tests.Store.Trie
 
             var randomKey = NewRandomKey();
             Assert.False(KeyValueStore.Exists(randomKey));
+        }
+
+        [SkippableFact]
+        public void ListKeys()
+        {
+            ImmutableHashSet<byte[]> keys = KeyValueStore.ListKeys().ToImmutableHashSet();
+            Assert.Equal(PreStoredDataCount, keys.Count);
+            var equalityComparer = new BytesEqualityComparer();
+            Assert.True(PreStoredDataKeys.ToImmutableHashSet(equalityComparer).SetEquals(keys));
         }
 
         public byte[] NewRandomKey()

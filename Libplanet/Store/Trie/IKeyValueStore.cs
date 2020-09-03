@@ -1,4 +1,6 @@
 #nullable enable
+using System.Collections.Generic;
+
 namespace Libplanet.Store.Trie
 {
     /// <summary>
@@ -13,5 +15,12 @@ namespace Libplanet.Store.Trie
         public void Delete(byte[] key);
 
         public bool Exists(byte[] key);
+
+        /// <summary>
+        /// Lists all keys that have been stored in the storage.
+        /// </summary>
+        /// <returns>All keys in an arbitrary order.  The order might be vary for each call.
+        /// </returns>
+        public IEnumerable<byte[]> ListKeys();
     }
 }

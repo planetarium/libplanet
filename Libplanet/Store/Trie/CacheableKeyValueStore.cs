@@ -63,6 +63,9 @@ namespace Libplanet.Store.Trie
             return _cache.ContainsKey(key) || _keyValueStore.Exists(key);
         }
 
+        /// <inheritdoc/>
+        public IEnumerable<byte[]> ListKeys() => _keyValueStore.ListKeys();
+
         public void Dispose()
         {
             (_keyValueStore as IDisposable)?.Dispose();

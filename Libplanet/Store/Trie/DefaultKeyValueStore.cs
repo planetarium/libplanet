@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Zio;
 using Zio.FileSystems;
 
@@ -78,6 +79,11 @@ namespace Libplanet.Store.Trie
         /// <inheritdoc/>
         public bool Exists(byte[] key)
             => _root.FileExists(DataPath(key));
+
+        /// <inheritdoc/>
+        public IEnumerable<byte[]> ListKeys() =>
+            _root.EnumerateFiles(UPath.Root)
+                .Select(path => ByteUtil.ParseHex(path.GetName()));
 
         private UPath DataPath(byte[] key)
         {

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Text;
 using Bencodex.Types;
@@ -9,6 +10,7 @@ using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Store.Trie;
 using Libplanet.Store.Trie.Nodes;
+using Serilog;
 
 namespace Libplanet.Store
 {
@@ -88,6 +90,81 @@ namespace Libplanet.Store
             where T : IAction, new()
         {
             // Do nothing.
+        }
+
+        public void PruneStates(ImmutableHashSet<HashDigest<SHA256>> excludeBlockHashes)
+        {
+            var stopwatch = new Stopwatch();
+            Log.Verbose($"Started {nameof(PruneStates)}()");
+            var excludeNodes = new HashSet<HashDigest<SHA256>>();
+            foreach (var blockHash in excludeBlockHashes)
+            {
+                if (!_stateHashKeyValueStore.Exists(blockHash.ToByteArray()))
+                {
+                    continue;
+                }
+
+                byte[] stateRootHashBytes = _stateHashKeyValueStore.Get(blockHash.ToByteArray());
+                var stateTrie = new MerkleTrie(
+                    _stateKeyValueStore,
+                    new HashNode(new HashDigest<SHA256>(stateRootHashBytes)));
+                Log.Debug("Started to iterate hash nodes.");
+                stopwatch.Start();
+                foreach (HashDigest<SHA256> nodeHash in stateTrie.IterateHashNodes())
+                {
+                    excludeNodes.Add(nodeHash);
+                }
+
+                Log.Debug(
+                    "Finished to iterate hash nodes (elapsed: {ElapsedMilliseconds} ms).",
+                    stopwatch.ElapsedMilliseconds);
+                stopwatch.Stop();
+            }
+
+            Log.Debug("{Count} hash nodes are excluded.", excludeNodes.Count);
+
+            // Clean up nodes.
+            long deleteCount = 0;
+            Log.Debug("Started to clean up states.");
+            stopwatch.Restart();
+            foreach (var stateKey in _stateKeyValueStore.ListKeys())
+            {
+                if (excludeNodes.Contains(new HashDigest<SHA256>(stateKey)))
+                {
+                    continue;
+                }
+
+                _stateKeyValueStore.Delete(stateKey);
+                ++deleteCount;
+            }
+
+            Log.Debug(
+                "Finished to clean up {DeleteCount} state hashes " +
+                "(elapsed: {ElapsedMilliseconds} ms).",
+                deleteCount,
+                stopwatch.ElapsedMilliseconds);
+            stopwatch.Stop();
+
+            // Clean up state root hashes.
+            deleteCount = 0;
+            Log.Debug("Started to clean up state hashes.");
+            stopwatch.Restart();
+            foreach (var stateHashKey in _stateHashKeyValueStore.ListKeys())
+            {
+                if (excludeBlockHashes.Contains(new HashDigest<SHA256>(stateHashKey)))
+                {
+                    continue;
+                }
+
+                _stateHashKeyValueStore.Delete(stateHashKey);
+                ++deleteCount;
+            }
+
+            Log.Debug(
+                "Finished to clean up {DeleteCount} states (elapsed: {ElapsedMilliseconds} ms).",
+                deleteCount,
+                stopwatch.ElapsedMilliseconds);
+            stopwatch.Stop();
         }
 
         public void Dispose()
