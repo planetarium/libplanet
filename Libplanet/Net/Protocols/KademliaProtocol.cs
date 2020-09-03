@@ -357,16 +357,15 @@ namespace Libplanet.Net.Protocols
                 }
 
                 history.Add(viaPeer);
-                List<BoundPeer> foundPeers =
-                    (await GetNeighbors(viaPeer, target, timeout, cancellationToken)).ToList();
-
-                int count = 0;
+                IEnumerable<BoundPeer> foundPeers =
+                    await GetNeighbors(viaPeer, target, timeout, cancellationToken);
                 IEnumerable<BoundPeer> filteredPeers = foundPeers
                     .Where(peer =>
                         !history.Contains(peer) &&
                         !peersToFind.Contains(peer) &&
                         !peer.Address.Equals(_address))
                     .Take(_findConcurrency);
+                int count = 0;
                 foreach (var found in filteredPeers)
                 {
                     try
@@ -391,7 +390,7 @@ namespace Libplanet.Net.Protocols
                     }
                     catch (PingTimeoutException)
                     {
-                        continue;
+                        history.Add(found);
                     }
                 }
             }
