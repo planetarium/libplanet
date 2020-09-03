@@ -39,7 +39,6 @@ namespace Libplanet.Tools
             }
             while (true);
 
-            Console.WriteLine(password.ToString());
             return password.ToString();
         }
     }
