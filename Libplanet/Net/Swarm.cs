@@ -940,8 +940,10 @@ namespace Libplanet.Net
         /// </param>
         /// <param name="cancellationToken">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
-        /// <returns>A BoundPeer with <see cref="Address"/> of <paramref name="target"/>.
-        /// Returns <c>null</c> if the peer with address does not exist.</returns>
+        /// <returns>
+        /// A <see cref="BoundPeer"/> with <see cref="Address"/> of <paramref name="target"/>.
+        /// Returns <c>null</c> if the peer with address does not exist.
+        /// </returns>
         public async Task<BoundPeer> FindSpecificPeerAsync(
             Address target,
             int depth = 3,
