@@ -10230,6 +10230,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.CacheableKeyValueStore.Get
   nameWithType: CacheableKeyValueStore.Get
+- uid: Libplanet.Store.Trie.CacheableKeyValueStore.ListKeys
+  name: ListKeys()
+  href: api/Libplanet.Store.Trie.CacheableKeyValueStore.html#Libplanet_Store_Trie_CacheableKeyValueStore_ListKeys
+  commentId: M:Libplanet.Store.Trie.CacheableKeyValueStore.ListKeys
+  fullName: Libplanet.Store.Trie.CacheableKeyValueStore.ListKeys()
+  nameWithType: CacheableKeyValueStore.ListKeys()
+- uid: Libplanet.Store.Trie.CacheableKeyValueStore.ListKeys*
+  name: ListKeys
+  href: api/Libplanet.Store.Trie.CacheableKeyValueStore.html#Libplanet_Store_Trie_CacheableKeyValueStore_ListKeys_
+  commentId: Overload:Libplanet.Store.Trie.CacheableKeyValueStore.ListKeys
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.CacheableKeyValueStore.ListKeys
+  nameWithType: CacheableKeyValueStore.ListKeys
 - uid: Libplanet.Store.Trie.CacheableKeyValueStore.Set(System.Byte[],System.Byte[])
   name: Set(Byte[], Byte[])
   href: api/Libplanet.Store.Trie.CacheableKeyValueStore.html#Libplanet_Store_Trie_CacheableKeyValueStore_Set_System_Byte___System_Byte___
@@ -10329,6 +10342,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.DefaultKeyValueStore.Get
   nameWithType: DefaultKeyValueStore.Get
+- uid: Libplanet.Store.Trie.DefaultKeyValueStore.ListKeys
+  name: ListKeys()
+  href: api/Libplanet.Store.Trie.DefaultKeyValueStore.html#Libplanet_Store_Trie_DefaultKeyValueStore_ListKeys
+  commentId: M:Libplanet.Store.Trie.DefaultKeyValueStore.ListKeys
+  fullName: Libplanet.Store.Trie.DefaultKeyValueStore.ListKeys()
+  nameWithType: DefaultKeyValueStore.ListKeys()
+- uid: Libplanet.Store.Trie.DefaultKeyValueStore.ListKeys*
+  name: ListKeys
+  href: api/Libplanet.Store.Trie.DefaultKeyValueStore.html#Libplanet_Store_Trie_DefaultKeyValueStore_ListKeys_
+  commentId: Overload:Libplanet.Store.Trie.DefaultKeyValueStore.ListKeys
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.DefaultKeyValueStore.ListKeys
+  nameWithType: DefaultKeyValueStore.ListKeys
 - uid: Libplanet.Store.Trie.DefaultKeyValueStore.Set(System.Byte[],System.Byte[])
   name: Set(Byte[], Byte[])
   href: api/Libplanet.Store.Trie.DefaultKeyValueStore.html#Libplanet_Store_Trie_DefaultKeyValueStore_Set_System_Byte___System_Byte___
@@ -10399,6 +10425,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.IKeyValueStore.Get
   nameWithType: IKeyValueStore.Get
+- uid: Libplanet.Store.Trie.IKeyValueStore.ListKeys
+  name: ListKeys()
+  href: api/Libplanet.Store.Trie.IKeyValueStore.html#Libplanet_Store_Trie_IKeyValueStore_ListKeys
+  commentId: M:Libplanet.Store.Trie.IKeyValueStore.ListKeys
+  fullName: Libplanet.Store.Trie.IKeyValueStore.ListKeys()
+  nameWithType: IKeyValueStore.ListKeys()
+- uid: Libplanet.Store.Trie.IKeyValueStore.ListKeys*
+  name: ListKeys
+  href: api/Libplanet.Store.Trie.IKeyValueStore.html#Libplanet_Store_Trie_IKeyValueStore_ListKeys_
+  commentId: Overload:Libplanet.Store.Trie.IKeyValueStore.ListKeys
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.IKeyValueStore.ListKeys
+  nameWithType: IKeyValueStore.ListKeys
 - uid: Libplanet.Store.Trie.IKeyValueStore.Set(System.Byte[],System.Byte[])
   name: Set(Byte[], Byte[])
   href: api/Libplanet.Store.Trie.IKeyValueStore.html#Libplanet_Store_Trie_IKeyValueStore_Set_System_Byte___System_Byte___
@@ -10542,6 +10581,22 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.TrieStateStore.GetState
   nameWithType: TrieStateStore.GetState
+- uid: Libplanet.Store.TrieStateStore.PruneStates(ImmutableHashSet{Libplanet.HashDigest{SHA256}})
+  name: PruneStates(ImmutableHashSet<HashDigest<SHA256>>)
+  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_PruneStates_ImmutableHashSet_Libplanet_HashDigest_SHA256___
+  commentId: M:Libplanet.Store.TrieStateStore.PruneStates(ImmutableHashSet{Libplanet.HashDigest{SHA256}})
+  name.vb: PruneStates(ImmutableHashSet(Of HashDigest(Of SHA256)))
+  fullName: Libplanet.Store.TrieStateStore.PruneStates(ImmutableHashSet<Libplanet.HashDigest<SHA256>>)
+  fullName.vb: Libplanet.Store.TrieStateStore.PruneStates(ImmutableHashSet(Of Libplanet.HashDigest(Of SHA256)))
+  nameWithType: TrieStateStore.PruneStates(ImmutableHashSet<HashDigest<SHA256>>)
+  nameWithType.vb: TrieStateStore.PruneStates(ImmutableHashSet(Of HashDigest(Of SHA256)))
+- uid: Libplanet.Store.TrieStateStore.PruneStates*
+  name: PruneStates
+  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_PruneStates_
+  commentId: Overload:Libplanet.Store.TrieStateStore.PruneStates
+  isSpec: "True"
+  fullName: Libplanet.Store.TrieStateStore.PruneStates
+  nameWithType: TrieStateStore.PruneStates
 - uid: Libplanet.Store.TrieStateStore.SetStates*
   name: SetStates
   href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_SetStates_
