@@ -705,29 +705,66 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
+        public async Task RenderActionsAfterBlockIsRendered()
+        {
+            var policy = new NullPolicy<DumbAction>();
+            var store = new DefaultStore(null);
+            int idx = 0;
+            var blockLogs = new List<(Block<DumbAction> Old, Block<DumbAction> New, int Index)>();
+            var actionLogs = new List<(ActionEvaluation Evaluation, int Index)>();
+            IActionRenderer<DumbAction> renderer = new AnonymousActionRenderer<DumbAction>
+            {
+                BlockRenderer = (oldTip, newTip) =>
+                   blockLogs.Add((oldTip, newTip, idx++)),
+                ActionRenderer = (act, context, nextStates) =>
+                    actionLogs.Add((new ActionEvaluation(act, context, nextStates), idx++)),
+            };
+            renderer = new LoggedActionRenderer<DumbAction>(renderer, Log.Logger);
+            BlockChain<DumbAction> blockChain =
+                TestUtils.MakeBlockChain(policy, store, renderers: new[] { renderer });
+            var privateKey = new PrivateKey();
+
+            var action = new DumbAction(default, string.Empty);
+            var actions = new[] { action };
+            blockChain.MakeTransaction(privateKey, actions);
+            idx = 0;
+            blockLogs.Clear();
+            actionLogs.Clear();
+            Block<DumbAction> prevBlock = blockChain.Tip;
+            Block<DumbAction> block = await blockChain.MineBlock(_fx.Address1);
+
+            Assert.Equal(2, blockChain.Count);
+            Assert.Single(blockLogs);
+            Assert.Single(actionLogs);
+            Assert.Equal((prevBlock, block, 0), blockLogs[0]);
+            Assert.Equal(1, actionLogs[0].Index);
+            Assert.Equal(action, actionLogs[0].Evaluation.Action);
+        }
+
+        [Fact]
         public async Task RenderActionsAfterAppendComplete()
         {
-             var policy = new NullPolicy<DumbAction>();
-             var store = new DefaultStore(null);
-             IActionRenderer<DumbAction> renderer = new AnonymousActionRenderer<DumbAction>
-             {
-                 ActionRenderer = (_, __, nextStates) =>
-                     throw new SomeException("thrown by renderer"),
-             };
-             renderer = new LoggedActionRenderer<DumbAction>(renderer, Log.Logger);
-             BlockChain<DumbAction> blockChain =
-                 TestUtils.MakeBlockChain(policy, store, renderers: new[] { renderer });
-             var privateKey = new PrivateKey();
+            var policy = new NullPolicy<DumbAction>();
+            var store = new DefaultStore(null);
+            IActionRenderer<DumbAction> renderer = new AnonymousActionRenderer<DumbAction>
+            {
+                ActionRenderer = (_, __, nextStates) =>
+                    throw new SomeException("thrown by renderer"),
+            };
+            renderer = new LoggedActionRenderer<DumbAction>(renderer, Log.Logger);
+            BlockChain<DumbAction> blockChain =
+                TestUtils.MakeBlockChain(policy, store, renderers: new[] { renderer });
+            var privateKey = new PrivateKey();
 
-             var action = new DumbAction(default, string.Empty);
-             var actions = new[] { action };
-             blockChain.MakeTransaction(privateKey, actions);
+            var action = new DumbAction(default, string.Empty);
+            var actions = new[] { action };
+            blockChain.MakeTransaction(privateKey, actions);
 
-             SomeException e = await Assert.ThrowsAsync<SomeException>(
-                 async () => await blockChain.MineBlock(_fx.Address1)
-             );
-             Assert.Equal("thrown by renderer", e.Message);
-             Assert.Equal(2, blockChain.Count);
+            SomeException e = await Assert.ThrowsAsync<SomeException>(
+                async () => await blockChain.MineBlock(_fx.Address1)
+            );
+            Assert.Equal("thrown by renderer", e.Message);
+            Assert.Equal(2, blockChain.Count);
         }
 
         [Fact]

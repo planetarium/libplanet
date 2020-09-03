@@ -1,6 +1,7 @@
 #nullable enable
 using System;
 using Libplanet.Action;
+using Libplanet.Blocks;
 
 namespace Libplanet.Blockchain.Renderers
 {
@@ -19,11 +20,6 @@ namespace Libplanet.Blockchain.Renderers
         /// Does things that should be done right after an <paramref name="action"/>
         /// is executed and applied to the blockchain.
         /// </summary>
-        /// <remarks>It is guaranteed to be called only once for an <paramref name="action"/>,
-        /// and only after applied to the blockchain, unless an exception is thrown during executing
-        /// the <paramref name="action"/> (in that case <see
-        /// cref="RenderActionError(IAction, IActionContext, Exception)"/> is called instead) or
-        /// once the <paramref name="action"/> has been unrendered.</remarks>
         /// <param name="action">An executed action.</param>
         /// <param name="context">The equivalent context object to an object passed to
         /// the <paramref name="action"/>'s <see cref="IAction.Execute(IActionContext)"/> method.
@@ -33,10 +29,21 @@ namespace Libplanet.Blockchain.Renderers
         /// <param name="nextStates">The states right <em>after</em> this action executed,
         /// which means it is equivalent to the states <paramref name="action"/>'s
         /// <see cref="IAction.Execute(IActionContext)"/> method returned.</param>
-        /// <remarks>The reason why the parameter <paramref name="action"/> takes
+        /// <remarks>
+        /// It is guaranteed to be called only once for an <paramref name="action"/>,
+        /// and only after applied to the blockchain, unless an exception is thrown during executing
+        /// the <paramref name="action"/> (in that case <see
+        /// cref="RenderActionError(IAction, IActionContext, Exception)"/> is called instead) or
+        /// once the <paramref name="action"/> has been unrendered.
+        /// <para>Also note that this method is invoked after <see
+        /// cref="IRenderer{T}.RenderBlock(Block{T}, Block{T})"/> method is called
+        /// (where its second parameter <c>newTip</c> contains a transaction the <paramref
+        /// name="action"/> belongs to).</para>
+        /// <para>The reason why the parameter <paramref name="action"/> takes
         /// <see cref="IAction"/> instead of <typeparamref name="T"/> is because it can take
         /// block actions (<see cref="Policies.IBlockPolicy{T}.BlockAction"/>) besides transaction
-        /// actions (<see cref="Tx.Transaction{T}.Actions"/>).</remarks>
+        /// actions (<see cref="Tx.Transaction{T}.Actions"/>).</para>
+        /// </remarks>
         void RenderAction(IAction action, IActionContext context, IAccountStateDelta nextStates);
 
         /// <summary>
@@ -76,10 +83,16 @@ namespace Libplanet.Blockchain.Renderers
         /// <em>before</em> this action executed.</param>
         /// <param name="exception">The exception thrown during executing the <paramref
         /// name="action"/>.</param>
-        /// <remarks>The reason why the parameter <paramref name="action"/> takes
+        /// <remarks>
+        /// Also note that this method is invoked after <see
+        /// cref="IRenderer{T}.RenderBlock(Block{T}, Block{T})"/> method is called
+        /// (where its second parameter <c>newTip</c> contains a transaction the <paramref
+        /// name="action"/> belongs to).
+        /// <param>The reason why the parameter <paramref name="action"/> takes
         /// <see cref="IAction"/> instead of <typeparamref name="T"/> is because it can take
         /// block actions (<see cref="Policies.IBlockPolicy{T}.BlockAction"/>) besides transaction
-        /// actions (<see cref="Tx.Transaction{T}.Actions"/>).</remarks>
+        /// actions (<see cref="Tx.Transaction{T}.Actions"/>).</param>
+        /// </remarks>
         void RenderActionError(IAction action, IActionContext context, Exception exception);
 
         /// <summary>
