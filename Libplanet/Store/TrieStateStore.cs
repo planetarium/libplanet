@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using Bencodex.Types;
@@ -97,7 +96,7 @@ namespace Libplanet.Store
         {
             var stopwatch = new Stopwatch();
             Log.Verbose($"Started {nameof(PruneStates)}()");
-            var excludeNodes = ImmutableHashSet<HashDigest<SHA256>>.Empty;
+            var excludeNodes = new HashSet<HashDigest<SHA256>>();
             foreach (var blockHash in excludeBlockHashes)
             {
                 if (!_stateHashKeyValueStore.Exists(blockHash.ToByteArray()))
@@ -109,16 +108,20 @@ namespace Libplanet.Store
                 var stateTrie = new MerkleTrie(
                     _stateKeyValueStore,
                     new HashNode(new HashDigest<SHA256>(stateRootHashBytes)));
-                Log.Debug("Start to iterate hash-nodes.");
+                Log.Debug("Started to iterate hash nodes.");
                 stopwatch.Start();
-                var nodeHashes = stateTrie.IterateHashNodes();
-                excludeNodes = excludeNodes.Concat(nodeHashes).ToImmutableHashSet();
+                foreach (HashDigest<SHA256> nodeHash in stateTrie.IterateHashNodes())
+                {
+                    excludeNodes.Add(nodeHash);
+                }
+
                 Log.Debug(
-                    $"Finished to iterate hash-nodes. elapsed: {stopwatch.ElapsedMilliseconds} ms");
+                    "Finished to iterate hash nodes (elapsed: {ElapsedMilliseconds} ms).",
+                    stopwatch.ElapsedMilliseconds);
                 stopwatch.Stop();
             }
 
-            Log.Debug("ExcludedNodes' count: {Count}", excludeNodes.Count);
+            Log.Debug("{Count} hash nodes are excluded.", excludeNodes.Count);
 
             // Clean up nodes.
             long deleteCount = 0;
@@ -136,8 +139,8 @@ namespace Libplanet.Store
             }
 
             Log.Debug(
-                "Finished to clean up states. Deleted {DeleteCount}." +
-                " elapsed: {ElapsedMilliseconds} ms",
+                "Finished to clean up {DeleteCount} state hashes " +
+                "(elapsed: {ElapsedMilliseconds} ms).",
                 deleteCount,
                 stopwatch.ElapsedMilliseconds);
             stopwatch.Stop();
@@ -158,8 +161,7 @@ namespace Libplanet.Store
             }
 
             Log.Debug(
-                "Finished to clean up state hashes. Deleted {DeleteCount}." +
-                " elapsed: {ElapsedMilliseconds} ms",
+                "Finished to clean up {DeleteCount} states (elapsed: {ElapsedMilliseconds} ms).",
                 deleteCount,
                 stopwatch.ElapsedMilliseconds);
             stopwatch.Stop();

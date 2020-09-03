@@ -64,10 +64,7 @@ namespace Libplanet.Store.Trie
         }
 
         /// <inheritdoc/>
-        public IEnumerable<byte[]> ListKeys()
-        {
-            return _keyValueStore.ListKeys();
-        }
+        public IEnumerable<byte[]> ListKeys() => _keyValueStore.ListKeys();
 
         public void Dispose()
         {

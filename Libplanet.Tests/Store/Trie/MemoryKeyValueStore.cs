@@ -37,9 +37,6 @@ namespace Libplanet.Tests.Store.Trie
             return Dictionary.ContainsKey(key);
         }
 
-        public IEnumerable<byte[]> ListKeys()
-        {
-            return Dictionary.Keys;
-        }
+        public IEnumerable<byte[]> ListKeys() => Dictionary.Keys;
     }
 }
