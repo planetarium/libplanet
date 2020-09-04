@@ -2118,7 +2118,7 @@ namespace Libplanet.Tests.Blockchain
             );
 
             var miner = genesis.Miner.GetValueOrDefault();
-            var blockActionEvaluation = _blockChain.EvaluateBlockAction(
+            var blockActionEvaluation = _blockChain.BlockEvaluator.EvaluateBlockAction(
                 genesis,
                 null,
                 StateCompleterSet<DumbAction>.Recalculate
@@ -2138,7 +2138,7 @@ namespace Libplanet.Tests.Blockchain
             var txEvaluations = block1.EvaluateActionsPerTx(a =>
                     _blockChain.GetState(a, block1.PreviousHash))
                 .Select(te => te.Item2).ToList();
-            blockActionEvaluation = _blockChain.EvaluateBlockAction(
+            blockActionEvaluation = _blockChain.BlockEvaluator.EvaluateBlockAction(
                 block1,
                 txEvaluations,
                 StateCompleterSet<DumbAction>.Recalculate

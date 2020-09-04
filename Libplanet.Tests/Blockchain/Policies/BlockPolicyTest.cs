@@ -315,7 +315,7 @@ namespace Libplanet.Tests.Blockchain.Policies
                 validNext.Hash,
                 validNext.Timestamp.AddSeconds(1),
                 _emptyTransaction);
-            var actionEvaluations = _chain.EvaluateActions(
+            var actionEvaluations = _chain.BlockEvaluator.EvaluateActions(
                 invalidStateRootHash,
                 StateCompleterSet<DumbAction>.Recalculate);
             chain.SetStates(invalidStateRootHash, actionEvaluations, false);
