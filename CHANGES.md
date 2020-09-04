@@ -106,6 +106,7 @@ To be released.
     BoundPeer, TimeSpan?, CancellationToken)` method with
     `Swarm<T>.FindSpecificPeerAsync(Address, int, TimeSpan?, CancellationToken)`.
     [[#981]]
+ -  Added `IActionContext.GetUnconsumedContext()` method.  [[#980]]
 
 ### Backward-incompatible network protocol changes
 
