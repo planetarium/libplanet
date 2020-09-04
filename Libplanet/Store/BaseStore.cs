@@ -78,6 +78,9 @@ namespace Libplanet.Store
                 HashDigest<SHA256>? evaluationDigest = blockDigest.Header.EvaluationDigest.Any()
                     ? new HashDigest<SHA256>(blockDigest.Header.EvaluationDigest)
                     : (HashDigest<SHA256>?)null;
+                HashDigest<SHA256>? stateRootHash = blockDigest.Header.StateRootHash.Any()
+                    ? new HashDigest<SHA256>(blockDigest.Header.StateRootHash)
+                    : (HashDigest<SHA256>?)null;
 
                 return new Block<T>(
                     index: blockDigest.Header.Index,
@@ -94,7 +97,8 @@ namespace Libplanet.Store
                     transactions: blockDigest.TxIds
                         .Select(bytes => GetTransaction<T>(new TxId(bytes.ToArray()))),
                     preEvaluationHash: preEvaluationHash,
-                    evaluationDigest: evaluationDigest
+                    evaluationDigest: evaluationDigest,
+                    stateRootHash: stateRootHash
                 );
             }
 

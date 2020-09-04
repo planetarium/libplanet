@@ -36,6 +36,8 @@ namespace Libplanet.Blocks
 
         private static readonly byte[] EvaluationDigestKey = { 0x65 }; // 'e'
 
+        private static readonly byte[] StateRootHashKey = { 0x73 }; // 's'
+
         private static readonly byte[] PreEvaluationHashKey = { 0x63 }; // 'c'
 
         private static readonly TimeSpan TimestampThreshold =
@@ -69,6 +71,7 @@ namespace Libplanet.Blocks
         /// </param>
         /// <param name="evaluationDigest">The hash derived from the result states of every
         /// <see cref="Tx.Transaction{T}.Actions"/> of the block's entire transactions.</param>
+        /// <param name="stateRootHash">...</param>
         public BlockHeader(
             long index,
             string timestamp,
@@ -80,7 +83,8 @@ namespace Libplanet.Blocks
             ImmutableArray<byte> txHash,
             ImmutableArray<byte> hash,
             ImmutableArray<byte> preEvaluationHash,
-            ImmutableArray<byte> evaluationDigest)
+            ImmutableArray<byte> evaluationDigest,
+            ImmutableArray<byte> stateRootHash)
         {
             Index = index;
             Timestamp = timestamp;
@@ -93,6 +97,7 @@ namespace Libplanet.Blocks
             Hash = hash;
             PreEvaluationHash = preEvaluationHash;
             EvaluationDigest = evaluationDigest;
+            StateRootHash = stateRootHash;
         }
 
         public BlockHeader(Bencodex.Types.Dictionary dict)
@@ -126,6 +131,10 @@ namespace Libplanet.Blocks
             EvaluationDigest = dict.ContainsKey((IKey)(Binary)EvaluationDigestKey)
                 ? dict.GetValue<Binary>(EvaluationDigestKey).ToImmutableArray()
                 : ImmutableArray<byte>.Empty;
+
+            StateRootHash = dict.ContainsKey((IKey)(Binary)StateRootHashKey)
+                ? dict.GetValue<Binary>(StateRootHashKey).ToImmutableArray()
+                : ImmutableArray<byte>.Empty;
         }
 
         public long Index { get; }
@@ -149,6 +158,8 @@ namespace Libplanet.Blocks
         public ImmutableArray<byte> PreEvaluationHash { get; }
 
         public ImmutableArray<byte> EvaluationDigest { get; }
+
+        public ImmutableArray<byte> StateRootHash { get; }
 
         /// <summary>
         /// Gets <see cref="BlockHeader"/> instance from serialized <paramref name="bytes"/>.
@@ -218,6 +229,11 @@ namespace Libplanet.Blocks
             if (EvaluationDigest.Any())
             {
                 dict = dict.Add(EvaluationDigestKey, EvaluationDigest.ToArray());
+            }
+
+            if (StateRootHash.Any())
+            {
+                dict = dict.Add(StateRootHashKey, StateRootHash.ToArray());
             }
 
             return dict;

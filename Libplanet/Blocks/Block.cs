@@ -13,6 +13,7 @@ using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
 using Libplanet.Blockchain;
+using Libplanet.Store.Trie;
 using Libplanet.Tx;
 
 namespace Libplanet.Blocks
@@ -50,6 +51,7 @@ namespace Libplanet.Blocks
         /// <param name="evaluationDigest">The hash derived from the result states of every
         /// <see cref="Transaction{T}.Actions"/> of the block's entire
         /// <paramref name="transactions"/>.</param>
+        /// <param name="stateRootHash">The <see cref="ITrie.Hash"/> at states the block.</param>
         /// <seealso cref="Mine"/>
         public Block(
             long index,
@@ -61,7 +63,8 @@ namespace Libplanet.Blocks
             DateTimeOffset timestamp,
             IEnumerable<Transaction<T>> transactions,
             HashDigest<SHA256>? preEvaluationHash = null,
-            HashDigest<SHA256>? evaluationDigest = null)
+            HashDigest<SHA256>? evaluationDigest = null,
+            HashDigest<SHA256>? stateRootHash = null)
         {
             Index = index;
             Difficulty = difficulty;
@@ -80,9 +83,10 @@ namespace Libplanet.Blocks
                 : (HashDigest<SHA256>?)null;
             PreEvaluationHash = preEvaluationHash ?? Hashcash.Hash(SerializeForHash());
             EvaluationDigest = evaluationDigest;
+            StateRootHash = stateRootHash;
 
             // FIXME: This does not need to be computed every time?
-            Hash = Hashcash.Hash(SerializeForHash(evaluationDigest));
+            Hash = Hashcash.Hash(SerializeForHash(evaluationDigest, stateRootHash));
 
             // As the order of transactions should be unpredictable until a block is mined,
             // the sorter key should be derived from both a block hash and a txid.
@@ -130,7 +134,10 @@ namespace Libplanet.Blocks
         {
         }
 
-        public Block(Block<T> block, HashDigest<SHA256>? evaluationDigest)
+        public Block(
+            Block<T> block,
+            HashDigest<SHA256>? evaluationDigest,
+            HashDigest<SHA256>? stateRootHash)
             : this(
                 block.Index,
                 block.Difficulty,
@@ -141,7 +148,8 @@ namespace Libplanet.Blocks
                 block.Timestamp,
                 block.Transactions,
                 block.PreEvaluationHash,
-                evaluationDigest)
+                evaluationDigest,
+                stateRootHash)
         {
         }
 
@@ -164,7 +172,8 @@ namespace Libplanet.Blocks
                     .ToList(),
 #pragma warning disable MEN002 // Line is too long
                 rb.Header.PreEvaluationHash.Any() ? new HashDigest<SHA256>(rb.Header.PreEvaluationHash) : (HashDigest<SHA256>?)null,
-                rb.Header.EvaluationDigest.Any() ? new HashDigest<SHA256>(rb.Header.EvaluationDigest) : (HashDigest<SHA256>?)null)
+                rb.Header.EvaluationDigest.Any() ? new HashDigest<SHA256>(rb.Header.EvaluationDigest) : (HashDigest<SHA256>?)null,
+                rb.Header.StateRootHash.Any() ? new HashDigest<SHA256>(rb.Header.StateRootHash) : (HashDigest<SHA256>?)null)
 #pragma warning restore MEN002 // Line is too long
         {
         }
@@ -193,6 +202,11 @@ namespace Libplanet.Blocks
         /// </summary>
         /// <seealso cref="BlockChain{T}.MineBlock(Libplanet.Address, bool, CancellationToken)"/>
         public HashDigest<SHA256>? EvaluationDigest { get; }
+
+        /// <summary>
+        /// ...
+        /// </summary>
+        public HashDigest<SHA256>? StateRootHash { get; }
 
         [IgnoreDuringEquals]
         public long Index { get; }
@@ -519,6 +533,8 @@ namespace Libplanet.Blocks
                 PreviousHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty;
             ImmutableArray<byte> actionsHashAsArray =
                 EvaluationDigest?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty;
+            ImmutableArray<byte> stateRootHashAsArray =
+                StateRootHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty;
 
             // FIXME: When hash is not assigned, should throw an exception.
             return new BlockHeader(
@@ -532,7 +548,8 @@ namespace Libplanet.Blocks
                 txHash: TxHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty,
                 hash: Hash.ToByteArray().ToImmutableArray(),
                 preEvaluationHash: PreEvaluationHash.ToByteArray().ToImmutableArray(),
-                evaluationDigest: actionsHashAsArray
+                evaluationDigest: actionsHashAsArray,
+                stateRootHash: stateRootHashAsArray
             );
         }
 
@@ -555,7 +572,8 @@ namespace Libplanet.Blocks
                     .Select(tx => tx.Serialize(true).ToImmutableArray()).ToImmutableArray());
         }
 
-        private byte[] SerializeForHash(HashDigest<SHA256>? evaluationDigest = null)
+        private byte[] SerializeForHash(
+            HashDigest<SHA256>? evaluationDigest = null, HashDigest<SHA256>? stateRootHash = null)
         {
             var dict = Bencodex.Types.Dictionary.Empty
                 .Add("index", Index)
@@ -583,6 +601,11 @@ namespace Libplanet.Blocks
             if (!(evaluationDigest is null))
             {
                 dict = dict.Add("actions_hash", evaluationDigest.Value.ToByteArray());
+            }
+
+            if (!(stateRootHash is null))
+            {
+                dict = dict.Add("state_root_hash", stateRootHash.Value.ToByteArray());
             }
 
             return new Codec().Encode(dict);

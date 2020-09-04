@@ -719,7 +719,18 @@ namespace Libplanet.Blockchain
 
             var actionEvaluations = EvaluateActions(block, StateCompleterSet<T>.Recalculate);
 
-            block = new Block<T>(block, ActionEvaluationsToHash(actionEvaluations));
+            if (StateStore is TrieStateStore trieStateStore)
+            {
+                // FIXME: Now it must update states through SetStates() and
+                //        it also affects to state root hash. It needs ways to calculate
+                //        state root hash in memory.
+                SetStates(block, actionEvaluations, false);
+                block = new Block<T>(block, null, trieStateStore.GetRootHash(block.Hash));
+            }
+            else
+            {
+                block = new Block<T>(block, ActionEvaluationsToHash(actionEvaluations), null);
+            }
 
             if (append)
             {
