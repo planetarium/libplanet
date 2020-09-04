@@ -42,23 +42,7 @@ namespace Libplanet.Store
             IImmutableDictionary<string, IValue> states)
             where T : IAction, new()
         {
-            MerkleTrie prevStatesTrie;
-            var previousBlockStateHashBytes = block.PreviousHash is null
-                ? null
-                : _stateHashKeyValueStore.Get(block.PreviousHash.Value.ToByteArray());
-            var trieRoot = previousBlockStateHashBytes is null
-                ? null
-                : new HashNode(new HashDigest<SHA256>(previousBlockStateHashBytes));
-            prevStatesTrie = new MerkleTrie(_stateKeyValueStore, trieRoot);
-
-            foreach (var pair in states)
-            {
-                prevStatesTrie.Set(Encoding.UTF8.GetBytes(pair.Key), pair.Value);
-            }
-
-            var newStateTrie = prevStatesTrie.Commit();
-            _stateHashKeyValueStore.Set(
-                block.Hash.ToByteArray(), newStateTrie.Root!.Hash().ToByteArray());
+            SetStates(block, states, false);
         }
 
         /// <inheritdoc/>
@@ -183,5 +167,35 @@ namespace Libplanet.Store
         /// <paramref name="blockHash"/>.</exception>
         public HashDigest<SHA256> GetRootHash(HashDigest<SHA256> blockHash)
             => new HashDigest<SHA256>(_stateHashKeyValueStore.Get(blockHash.ToByteArray()));
+
+        internal HashDigest<SHA256>? SetStates<T>(
+            Block<T> block,
+            IImmutableDictionary<string, IValue> states,
+            bool rehearsal)
+            where T : IAction, new()
+        {
+            MerkleTrie prevStatesTrie;
+            var previousBlockStateHashBytes = block.PreviousHash is null
+                ? null
+                : _stateHashKeyValueStore.Get(block.PreviousHash.Value.ToByteArray());
+            var trieRoot = previousBlockStateHashBytes is null
+                ? null
+                : new HashNode(new HashDigest<SHA256>(previousBlockStateHashBytes));
+            prevStatesTrie = new MerkleTrie(_stateKeyValueStore, trieRoot);
+
+            foreach (var pair in states)
+            {
+                prevStatesTrie.Set(Encoding.UTF8.GetBytes(pair.Key), pair.Value);
+            }
+
+            var newStateTrie = prevStatesTrie.Commit(rehearsal);
+            if (!rehearsal)
+            {
+                _stateHashKeyValueStore.Set(
+                    block.Hash.ToByteArray(), newStateTrie.Hash.ToByteArray());
+            }
+
+            return newStateTrie.Hash;
+        }
     }
 }

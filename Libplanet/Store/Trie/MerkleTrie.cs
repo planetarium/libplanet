@@ -78,17 +78,17 @@ namespace Libplanet.Store.Trie
         }
 
         /// <inheritdoc/>
-        public ITrie Commit()
+        public ITrie Commit(bool rehearsal = false)
         {
             if (Root is null)
             {
                 return new MerkleTrie(KeyValueStore, new HashNode(EmptyRootHash));
             }
 
-            var newRoot = Commit(Root);
+            var newRoot = Commit(Root, rehearsal);
 
             // It assumes embedded node if it's not HashNode.
-            if (!(newRoot is HashNode))
+            if (!(newRoot is HashNode) && !rehearsal)
             {
                 KeyValueStore.Set(newRoot.Hash().ToByteArray(), newRoot.Serialize());
             }
@@ -140,7 +140,7 @@ namespace Libplanet.Store.Trie
             }
         }
 
-        private INode Commit(INode node)
+        private INode Commit(INode node, bool rehearsal = false)
         {
             switch (node)
             {
@@ -148,20 +148,20 @@ namespace Libplanet.Store.Trie
                     return node;
 
                 case FullNode fullNode:
-                    return CommitFullNode(fullNode);
+                    return CommitFullNode(fullNode, rehearsal);
 
                 case ShortNode shortNode:
-                    return CommitShortNode(shortNode);
+                    return CommitShortNode(shortNode, rehearsal);
 
                 case ValueNode valueNode:
-                    return CommitValueNode(valueNode);
+                    return CommitValueNode(valueNode, rehearsal);
 
                 default:
                     throw new NotSupportedException("Not supported node came.");
             }
         }
 
-        private INode CommitFullNode(FullNode fullNode)
+        private INode CommitFullNode(FullNode fullNode, bool rehearsal)
         {
             var virtualChildren = new INode?[FullNode.ChildrenCount];
             for (int i = 0; i < FullNode.ChildrenCount; ++i)
@@ -169,7 +169,7 @@ namespace Libplanet.Store.Trie
                 INode? child = fullNode.Children[i];
                 virtualChildren[i] = child is null
                     ? null
-                    : Commit(child);
+                    : Commit(child, rehearsal);
             }
 
             fullNode = new FullNode(virtualChildren.ToImmutableArray());
@@ -180,15 +180,18 @@ namespace Libplanet.Store.Trie
             else
             {
                 var fullNodeHash = fullNode.Hash();
-                KeyValueStore.Set(
-                    fullNodeHash.ToByteArray(),
-                    fullNode.Serialize());
+                if (!rehearsal)
+                {
+                    KeyValueStore.Set(
+                        fullNodeHash.ToByteArray(),
+                        fullNode.Serialize());
+                }
 
                 return new HashNode(fullNodeHash);
             }
         }
 
-        private INode CommitShortNode(ShortNode shortNode)
+        private INode CommitShortNode(ShortNode shortNode, bool rehearsal)
         {
             var committedValueNode = Commit(shortNode.Value!);
             shortNode = new ShortNode(shortNode.Key, committedValueNode);
@@ -199,15 +202,18 @@ namespace Libplanet.Store.Trie
             else
             {
                 var shortNodeHash = shortNode.Hash();
-                KeyValueStore.Set(
-                    shortNodeHash.ToByteArray(),
-                    shortNode.Serialize());
+                if (!rehearsal)
+                {
+                    KeyValueStore.Set(
+                        shortNodeHash.ToByteArray(),
+                        shortNode.Serialize());
+                }
 
                 return new HashNode(shortNodeHash);
             }
         }
 
-        private INode CommitValueNode(ValueNode valueNode)
+        private INode CommitValueNode(ValueNode valueNode, bool rehearsal)
         {
             int nodeSize = valueNode.Serialize().Length;
             if (nodeSize <= HashDigest<SHA256>.Size)
@@ -217,9 +223,12 @@ namespace Libplanet.Store.Trie
             else
             {
                 var valueNodeHash = valueNode.Hash();
-                KeyValueStore.Set(
-                    valueNodeHash.ToByteArray(),
-                    valueNode.Serialize());
+                if (!rehearsal)
+                {
+                    KeyValueStore.Set(
+                        valueNodeHash.ToByteArray(),
+                        valueNode.Serialize());
+                }
 
                 return new HashNode(valueNodeHash);
             }

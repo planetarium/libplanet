@@ -32,7 +32,8 @@ namespace Libplanet.Store.Trie
         /// <summary>
         /// Cleans up and stores the <see cref="ITrie"/> in storage.
         /// </summary>
+        /// <param name="rehearsal">Whether to store nodes.</param>
         /// <returns>Returns new committed <see cref="ITrie"/>.</returns>
-        ITrie Commit();
+        ITrie Commit(bool rehearsal = false);
     }
 }
