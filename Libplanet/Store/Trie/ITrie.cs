@@ -1,15 +1,15 @@
 #nullable enable
+using System.Security.Cryptography;
 using Bencodex.Types;
-using Libplanet.Store.Trie.Nodes;
 
 namespace Libplanet.Store.Trie
 {
     internal interface ITrie
     {
         /// <summary>
-        /// The root node of the trie.
+        /// The state root hash of the trie.
         /// </summary>
-        INode? Root { get; }
+        HashDigest<SHA256> Hash { get; }
 
         /// <summary>
         /// Stores the <paramref name="value"/> to the

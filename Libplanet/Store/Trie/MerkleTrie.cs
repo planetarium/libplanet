@@ -14,6 +14,8 @@ namespace Libplanet.Store.Trie
     [Equals]
     internal class MerkleTrie : ITrie
     {
+        public static readonly HashDigest<SHA256> EmptyRootHash;
+
         private static Codec _codec;
 
         private readonly bool _secure;
@@ -21,6 +23,8 @@ namespace Libplanet.Store.Trie
         static MerkleTrie()
         {
             _codec = new Codec();
+            EmptyRootHash = Hashcash.Hash(
+                _codec.Encode(default(Null)!));
         }
 
         /// <summary>
@@ -41,8 +45,9 @@ namespace Libplanet.Store.Trie
             _secure = secure;
         }
 
-        /// <inheritdoc/>
-        public INode? Root { get; private set; }
+        public HashDigest<SHA256> Hash => Root?.Hash() ?? EmptyRootHash;
+
+        private INode? Root { get; set; }
 
         private IKeyValueStore KeyValueStore { get; }
 
@@ -77,7 +82,7 @@ namespace Libplanet.Store.Trie
         {
             if (Root is null)
             {
-                return this;
+                return new MerkleTrie(KeyValueStore, new HashNode(EmptyRootHash));
             }
 
             var newRoot = Commit(Root);
