@@ -268,20 +268,22 @@ namespace Libplanet.Tests.Net
                 await StartAsync(minerSwarm);
 
                 await receiverSwarm.AddPeersAsync(new[] { minerSwarm.AsPeer }, null);
-                var t = receiverSwarm.PreloadAsync(TimeSpan.FromSeconds(15));
-                await receiverSwarm.PreloadStarted.WaitAsync();
+                Task waitTask = receiverSwarm.PreloadStarted.WaitAsync();
+                Task preloadTask = receiverSwarm.PreloadAsync(TimeSpan.FromSeconds(15));
+                await waitTask;
                 await StopAsync(minerSwarm);
-                await Assert.ThrowsAsync<AggregateException>(async () => await t);
+                await Assert.ThrowsAsync<AggregateException>(async () => await preloadTask);
 
                 // Event handler should be called if it exists.
                 await StartAsync(minerSwarm);
 
-                t = receiverSwarm.PreloadAsync(
+                waitTask = receiverSwarm.PreloadStarted.WaitAsync();
+                preloadTask = receiverSwarm.PreloadAsync(
                     TimeSpan.FromSeconds(15),
                     blockDownloadFailed: Handler);
-                await receiverSwarm.PreloadStarted.WaitAsync();
+                await waitTask;
                 await StopAsync(minerSwarm);
-                await t;
+                await preloadTask;
                 Assert.True(isCalled);
             }
             finally

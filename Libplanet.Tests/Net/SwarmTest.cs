@@ -1326,8 +1326,8 @@ namespace Libplanet.Tests.Net
             // while FillBlocksAsync.
             var policy1 = new BlockPolicy<DumbAction>();
             var policy2 = new NullPolicy<DumbAction>();
-            var fx1 = new DefaultStoreFixture();
-            var fx2 = new DefaultStoreFixture();
+            var fx1 = new DefaultStoreFixture(true);
+            var fx2 = new DefaultStoreFixture(true);
 
             var chain1 = TestUtils.MakeBlockChain(policy1, fx1.Store);
             var chain2 = TestUtils.MakeBlockChain(policy2, fx2.Store);
@@ -1363,11 +1363,11 @@ namespace Libplanet.Tests.Net
                 await StopAsync(swarm1);
                 await StopAsync(swarm2);
 
-                fx1.Dispose();
-                fx2.Dispose();
-
                 swarm1.Dispose();
                 swarm2.Dispose();
+
+                fx1.Dispose();
+                fx2.Dispose();
             }
         }
 
