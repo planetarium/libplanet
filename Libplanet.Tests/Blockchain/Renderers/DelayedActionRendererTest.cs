@@ -19,14 +19,16 @@ namespace Libplanet.Tests.Blockchain.Renderers
         {
         }
 
-        [Fact]
-        public override void Constructor()
+        [InlineData(0)]
+        [InlineData(-123)]
+        [Theory]
+        public override void Constructor(int invalidConfirmations)
         {
             ArgumentOutOfRangeException e = Assert.Throws<ArgumentOutOfRangeException>(() =>
                 new DelayedActionRenderer<DumbAction>(
                     new AnonymousActionRenderer<DumbAction>(),
                     _store,
-                    confirmations: 0
+                    confirmations: invalidConfirmations
                 )
             );
             Assert.Equal("confirmations", e.ParamName);

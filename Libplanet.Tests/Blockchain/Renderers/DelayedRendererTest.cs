@@ -66,14 +66,16 @@ namespace Libplanet.Tests.Blockchain.Renderers
             }
         }
 
-        [Fact]
-        public virtual void Constructor()
+        [InlineData(0)]
+        [InlineData(-123)]
+        [Theory]
+        public virtual void Constructor(int invalidConfirmations)
         {
             ArgumentOutOfRangeException e = Assert.Throws<ArgumentOutOfRangeException>(() =>
                 new DelayedRenderer<DumbAction>(
                     new AnonymousRenderer<DumbAction>(),
                     _store,
-                    confirmations: 0
+                    confirmations: invalidConfirmations
                 )
             );
             Assert.Equal("confirmations", e.ParamName);

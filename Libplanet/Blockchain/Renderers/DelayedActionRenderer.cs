@@ -58,7 +58,7 @@ namespace Libplanet.Blockchain.Renderers
         /// <param name="store">The same store to what <see cref="BlockChain{T}"/> uses.</param>
         /// <param name="confirmations">The required number of confirmations to recognize a block.
         /// See also the <see cref="DelayedRenderer{T}.Confirmations"/> property.</param>
-        public DelayedActionRenderer(IActionRenderer<T> renderer, IStore store, uint confirmations)
+        public DelayedActionRenderer(IActionRenderer<T> renderer, IStore store, int confirmations)
             : base(renderer, store, confirmations)
         {
             ActionRenderer = renderer;

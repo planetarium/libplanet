@@ -29,7 +29,7 @@ namespace Libplanet.Blockchain.Renderers
     /// ]]></code>
     /// </example>
     /// <remarks>Since <see cref="IActionRenderer{T}"/> is a subtype of <see cref="IRenderer{T}"/>,
-    /// <see cref="DelayedRenderer{T}(IRenderer{T}, IStore, uint)"/> constructor can take
+    /// <see cref="DelayedRenderer{T}(IRenderer{T}, IStore, int)"/> constructor can take
     /// an <see cref="IActionRenderer{T}"/> instance as well.  However, even it takes an action
     /// renderer, action-level fine-grained events won't hear.  For action renderers,
     /// please use <see cref="DelayedActionRenderer{T}"/> instead.</remarks>
@@ -52,14 +52,21 @@ namespace Libplanet.Blockchain.Renderers
         /// See also the <see cref="Confirmations"/> property.</param>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the argument
         /// <paramref name="confirmations"/> is not greater than zero.</exception>
-        public DelayedRenderer(IRenderer<T> renderer, IStore store, uint confirmations)
+        public DelayedRenderer(IRenderer<T> renderer, IStore store, int confirmations)
         {
-            if (confirmations < 1)
+            if (confirmations == 0)
             {
                 string msg =
                     "Zero confirmations mean nothing is delayed so that it is equivalent to the " +
                     $"bare {nameof(renderer)}; configure it to more than zero.";
                 throw new ArgumentOutOfRangeException(nameof(confirmations), msg);
+            }
+            else if (confirmations < 0)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(confirmations),
+                    $"Expected more than zero {nameof(confirmations)}."
+                );
             }
 
             Logger = Log.ForContext(GetType());
@@ -85,7 +92,7 @@ namespace Libplanet.Blockchain.Renderers
         /// <para>For example, the required confirmations are 2, the block #N is recognized after
         /// the block #N+1 and the block #N+2 are discovered.</para>
         /// </summary>
-        public uint Confirmations { get; }
+        public int Confirmations { get; }
 
         /// <summary>
         /// The <em>recognized</em> topmost block.  If not enough blocks are discovered yet,
