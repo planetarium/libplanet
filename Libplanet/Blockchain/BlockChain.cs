@@ -987,7 +987,7 @@ namespace Libplanet.Blockchain
                     {
                         renderer.RenderAction(
                             evaluation.Action,
-                            evaluation.InputContext,
+                            evaluation.InputContext.GetUnconsumedContext(),
                             evaluation.OutputStates
                         );
                     }
@@ -998,7 +998,7 @@ namespace Libplanet.Blockchain
                     {
                         renderer.RenderActionError(
                             evaluation.Action,
-                            evaluation.InputContext,
+                            evaluation.InputContext.GetUnconsumedContext(),
                             evaluation.Exception
                         );
                     }
@@ -1440,7 +1440,7 @@ namespace Libplanet.Blockchain
                             {
                                 renderer.UnrenderAction(
                                     evaluation.Action,
-                                    evaluation.InputContext,
+                                    evaluation.InputContext.GetUnconsumedContext(),
                                     evaluation.OutputStates
                                 );
                             }
@@ -1451,7 +1451,7 @@ namespace Libplanet.Blockchain
                             {
                                 renderer.UnrenderActionError(
                                     evaluation.Action,
-                                    evaluation.InputContext,
+                                    evaluation.InputContext.GetUnconsumedContext(),
                                     evaluation.Exception
                                 );
                             }

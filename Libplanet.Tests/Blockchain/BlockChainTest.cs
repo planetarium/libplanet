@@ -705,29 +705,102 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
+        public async Task ActionRenderersHaveDistinctContexts()
+        {
+            var policy = new NullPolicy<DumbAction>();
+            var store = new DefaultStore(null);
+            var generatedRandomValueLogs = new List<int>();
+            IActionRenderer<DumbAction>[] renderers = Enumerable.Range(0, 2).Select(i =>
+                new LoggedActionRenderer<DumbAction>(
+                    new AnonymousActionRenderer<DumbAction>
+                    {
+                        ActionRenderer = (act, context, nextStates) =>
+                            // Consuming the random state through IRandom.Next() should not
+                            // affect contexts passed to other action renderers.
+                            generatedRandomValueLogs.Add(context.Random.Next()),
+                    },
+                    Log.Logger.ForContext("RendererIndex", i)
+                )
+            ).ToArray();
+            BlockChain<DumbAction> blockChain = TestUtils.MakeBlockChain(
+                policy,
+                store,
+                renderers: renderers
+            );
+            var privateKey = new PrivateKey();
+            var action = new DumbAction(default, string.Empty);
+            var actions = new[] { action };
+            blockChain.MakeTransaction(privateKey, actions);
+            Block<DumbAction> block = await blockChain.MineBlock(_fx.Address1, append: false);
+
+            generatedRandomValueLogs.Clear();
+            Assert.Empty(generatedRandomValueLogs);
+            blockChain.Append(block);
+            Assert.Equal(2, generatedRandomValueLogs.Count);
+            Assert.Equal(generatedRandomValueLogs[0], generatedRandomValueLogs[1]);
+        }
+
+        [Fact]
+        public async Task RenderActionsAfterBlockIsRendered()
+        {
+            var policy = new NullPolicy<DumbAction>();
+            var store = new DefaultStore(null);
+            int idx = 0;
+            var blockLogs = new List<(Block<DumbAction> Old, Block<DumbAction> New, int Index)>();
+            var actionLogs = new List<(ActionEvaluation Evaluation, int Index)>();
+            IActionRenderer<DumbAction> renderer = new AnonymousActionRenderer<DumbAction>
+            {
+                BlockRenderer = (oldTip, newTip) =>
+                   blockLogs.Add((oldTip, newTip, idx++)),
+                ActionRenderer = (act, context, nextStates) =>
+                    actionLogs.Add((new ActionEvaluation(act, context, nextStates), idx++)),
+            };
+            renderer = new LoggedActionRenderer<DumbAction>(renderer, Log.Logger);
+            BlockChain<DumbAction> blockChain =
+                TestUtils.MakeBlockChain(policy, store, renderers: new[] { renderer });
+            var privateKey = new PrivateKey();
+
+            var action = new DumbAction(default, string.Empty);
+            var actions = new[] { action };
+            blockChain.MakeTransaction(privateKey, actions);
+            idx = 0;
+            blockLogs.Clear();
+            actionLogs.Clear();
+            Block<DumbAction> prevBlock = blockChain.Tip;
+            Block<DumbAction> block = await blockChain.MineBlock(_fx.Address1);
+
+            Assert.Equal(2, blockChain.Count);
+            Assert.Single(blockLogs);
+            Assert.Single(actionLogs);
+            Assert.Equal((prevBlock, block, 0), blockLogs[0]);
+            Assert.Equal(1, actionLogs[0].Index);
+            Assert.Equal(action, actionLogs[0].Evaluation.Action);
+        }
+
+        [Fact]
         public async Task RenderActionsAfterAppendComplete()
         {
-             var policy = new NullPolicy<DumbAction>();
-             var store = new DefaultStore(null);
-             IActionRenderer<DumbAction> renderer = new AnonymousActionRenderer<DumbAction>
-             {
-                 ActionRenderer = (_, __, nextStates) =>
-                     throw new SomeException("thrown by renderer"),
-             };
-             renderer = new LoggedActionRenderer<DumbAction>(renderer, Log.Logger);
-             BlockChain<DumbAction> blockChain =
-                 TestUtils.MakeBlockChain(policy, store, renderers: new[] { renderer });
-             var privateKey = new PrivateKey();
+            var policy = new NullPolicy<DumbAction>();
+            var store = new DefaultStore(null);
+            IActionRenderer<DumbAction> renderer = new AnonymousActionRenderer<DumbAction>
+            {
+                ActionRenderer = (_, __, nextStates) =>
+                    throw new SomeException("thrown by renderer"),
+            };
+            renderer = new LoggedActionRenderer<DumbAction>(renderer, Log.Logger);
+            BlockChain<DumbAction> blockChain =
+                TestUtils.MakeBlockChain(policy, store, renderers: new[] { renderer });
+            var privateKey = new PrivateKey();
 
-             var action = new DumbAction(default, string.Empty);
-             var actions = new[] { action };
-             blockChain.MakeTransaction(privateKey, actions);
+            var action = new DumbAction(default, string.Empty);
+            var actions = new[] { action };
+            blockChain.MakeTransaction(privateKey, actions);
 
-             SomeException e = await Assert.ThrowsAsync<SomeException>(
-                 async () => await blockChain.MineBlock(_fx.Address1)
-             );
-             Assert.Equal("thrown by renderer", e.Message);
-             Assert.Equal(2, blockChain.Count);
+            SomeException e = await Assert.ThrowsAsync<SomeException>(
+                async () => await blockChain.MineBlock(_fx.Address1)
+            );
+            Assert.Equal("thrown by renderer", e.Message);
+            Assert.Equal(2, blockChain.Count);
         }
 
         [Fact]

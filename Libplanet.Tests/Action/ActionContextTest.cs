@@ -101,6 +101,33 @@ namespace Libplanet.Tests.Action
             }
         }
 
+        [Fact]
+        public void GetUnconsumedContext()
+        {
+            var random = new System.Random();
+            var original = new ActionContext(
+                signer: random.NextAddress(),
+                miner: random.NextAddress(),
+                blockIndex: 1,
+                previousStates: new DumbAccountStateDelta(),
+                randomSeed: random.Next()
+            );
+
+            // Consume original's random state...
+            int[] values =
+            {
+                original.Random.Next(),
+                original.Random.Next(),
+                original.Random.Next(),
+            };
+
+            IActionContext clone = original.GetUnconsumedContext();
+            Assert.Equal(
+                values,
+                new[] { clone.Random.Next(), clone.Random.Next(), clone.Random.Next() }
+            );
+        }
+
         private class DumbAccountStateDelta : IAccountStateDelta
         {
             public IImmutableSet<Address> UpdatedAddresses =>

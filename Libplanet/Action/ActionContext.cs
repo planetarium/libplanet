@@ -1,7 +1,11 @@
+using System.Diagnostics.Contracts;
+
 namespace Libplanet.Action
 {
     internal class ActionContext : IActionContext
     {
+        private readonly int _randomSeed;
+
         public ActionContext(
             Address signer,
             Address miner,
@@ -17,6 +21,7 @@ namespace Libplanet.Action
             Rehearsal = rehearsal;
             PreviousStates = previousStates;
             Random = new Random(randomSeed);
+            _randomSeed = randomSeed;
         }
 
         public Address Signer { get; }
@@ -30,5 +35,9 @@ namespace Libplanet.Action
         public IAccountStateDelta PreviousStates { get; }
 
         public IRandom Random { get; }
+
+        [Pure]
+        public IActionContext GetUnconsumedContext() =>
+            new ActionContext(Signer, Miner, BlockIndex, PreviousStates, _randomSeed, Rehearsal);
     }
 }

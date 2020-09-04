@@ -106,6 +106,7 @@ To be released.
     BoundPeer, TimeSpan?, CancellationToken)` method with
     `Swarm<T>.FindSpecificPeerAsync(Address, int, TimeSpan?, CancellationToken)`.
     [[#981]]
+ -  Added `IActionContext.GetUnconsumedContext()` method.  [[#980]]
 
 ### Backward-incompatible network protocol changes
 
@@ -179,6 +180,8 @@ To be released.
  -  Added `IActionRenderer<T>` interface.  [[#959], [#967], [#970]]
  -  Added `AnonymousRenderer<T>` class.  [[#959], [#963]]
  -  Added `AnonymousActionRenderer<T>` interface.  [[#959], [#967], [#970]]
+ -  Added `DelayedRenderer<T>` class.  [[#980]]
+ -  Added `DelayedActionRenderer<T>` class.  [[#980]]
  -  Added `LoggedRenderer<T>` class.  [[#959], [#963]]
  -  Added `LoggedActionRenderer<T>` interface.  [[#959], [#967], [#970]]
  -  Added `BlockChain<T>.Renderers` property.  [[#945], [#959], [#963]]
@@ -304,6 +307,7 @@ To be released.
 [#967]: https://github.com/planetarium/libplanet/issues/967
 [#970]: https://github.com/planetarium/libplanet/pull/970
 [#972]: https://github.com/planetarium/libplanet/pull/972
+[#980]: https://github.com/planetarium/libplanet/pull/980
 [#981]: https://github.com/planetarium/libplanet/pull/981
 [sleep mode]: https://en.wikipedia.org/wiki/Sleep_mode
 
