@@ -169,6 +169,9 @@ with <code>Peer(PublicKey, DnsEndPoint)</code> constructor.  [<a href="https://g
 <li>The signature of <code>IStore.LookupStateReference&lt;T&gt;(Guid, string, Block&lt;T&gt;)</code> method was
 changed to <code>LookupStateReference(Guid, string, long)</code>.  [<a href="https://github.com/planetarium/libplanet/pull/950">#950</a>]</li>
 <li>Added <code>IStateStore</code>-typed <code>stateStore</code> to <code>BlockChain&lt;T&gt;</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/950">#950</a>]</li>
+<li>Replaced <code>Swarm&lt;T&gt;.FindSpecificPeerAsync(Address, Address, int, BoundPeer, TimeSpan?, CancellationToken)</code> method with
+<code>Swarm&lt;T&gt;.FindSpecificPeerAsync(Address, int, TimeSpan?, CancellationToken)</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/981">#981</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <ul>

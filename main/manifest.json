@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "MwUBw0Pp0StQFgNJh8Rpug=="
+          "hash": "sBhd0cWYoIcoxcmh7uCRmw=="
         }
       },
       "is_incremental": false,
@@ -1277,11 +1277,23 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Net.Protocols.PingTimeoutException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Net.Protocols.PingTimeoutException.html",
+          "hash": "q6sIAajwGnebVhpmGTfKKw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Libplanet.Net.Protocols.yml",
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Protocols.html",
-          "hash": "+/qTZ5dPeW+aE2yOxtqA5A=="
+          "hash": "stKySQ9vOle4Z1zX1zHnPQ=="
         }
       },
       "is_incremental": false,
@@ -1305,7 +1317,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Swarm-1.html",
-          "hash": "YvO8kMOZn9qmTd1ffkmfDg=="
+          "hash": "189Zk8kpVd4P+aC9aVOEjQ=="
         }
       },
       "is_incremental": false,
@@ -1761,7 +1773,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "PJgtPO2IN6E4vCdQht2oSA=="
+          "hash": "UWuSqDwWDYUv2J4UkhYMgw=="
         }
       },
       "is_incremental": false,
@@ -1877,7 +1889,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 142,
+          "total_file_count": 143,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {

@@ -6893,6 +6893,69 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Protocols.PeerDiscoveryException.PeerDiscoveryException
   nameWithType: PeerDiscoveryException.PeerDiscoveryException
+- uid: Libplanet.Net.Protocols.PingTimeoutException
+  name: PingTimeoutException
+  href: api/Libplanet.Net.Protocols.PingTimeoutException.html
+  commentId: T:Libplanet.Net.Protocols.PingTimeoutException
+  fullName: Libplanet.Net.Protocols.PingTimeoutException
+  nameWithType: PingTimeoutException
+- uid: Libplanet.Net.Protocols.PingTimeoutException.#ctor(Libplanet.Net.BoundPeer)
+  name: PingTimeoutException(BoundPeer)
+  href: api/Libplanet.Net.Protocols.PingTimeoutException.html#Libplanet_Net_Protocols_PingTimeoutException__ctor_Libplanet_Net_BoundPeer_
+  commentId: M:Libplanet.Net.Protocols.PingTimeoutException.#ctor(Libplanet.Net.BoundPeer)
+  fullName: Libplanet.Net.Protocols.PingTimeoutException.PingTimeoutException(Libplanet.Net.BoundPeer)
+  nameWithType: PingTimeoutException.PingTimeoutException(BoundPeer)
+- uid: Libplanet.Net.Protocols.PingTimeoutException.#ctor(Libplanet.Net.BoundPeer,System.String)
+  name: PingTimeoutException(BoundPeer, String)
+  href: api/Libplanet.Net.Protocols.PingTimeoutException.html#Libplanet_Net_Protocols_PingTimeoutException__ctor_Libplanet_Net_BoundPeer_System_String_
+  commentId: M:Libplanet.Net.Protocols.PingTimeoutException.#ctor(Libplanet.Net.BoundPeer,System.String)
+  fullName: Libplanet.Net.Protocols.PingTimeoutException.PingTimeoutException(Libplanet.Net.BoundPeer, System.String)
+  nameWithType: PingTimeoutException.PingTimeoutException(BoundPeer, String)
+- uid: Libplanet.Net.Protocols.PingTimeoutException.#ctor(Libplanet.Net.BoundPeer,System.String,Exception)
+  name: PingTimeoutException(BoundPeer, String, Exception)
+  href: api/Libplanet.Net.Protocols.PingTimeoutException.html#Libplanet_Net_Protocols_PingTimeoutException__ctor_Libplanet_Net_BoundPeer_System_String_Exception_
+  commentId: M:Libplanet.Net.Protocols.PingTimeoutException.#ctor(Libplanet.Net.BoundPeer,System.String,Exception)
+  fullName: Libplanet.Net.Protocols.PingTimeoutException.PingTimeoutException(Libplanet.Net.BoundPeer, System.String, Exception)
+  nameWithType: PingTimeoutException.PingTimeoutException(BoundPeer, String, Exception)
+- uid: Libplanet.Net.Protocols.PingTimeoutException.#ctor(SerializationInfo,StreamingContext)
+  name: PingTimeoutException(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Net.Protocols.PingTimeoutException.html#Libplanet_Net_Protocols_PingTimeoutException__ctor_SerializationInfo_StreamingContext_
+  commentId: M:Libplanet.Net.Protocols.PingTimeoutException.#ctor(SerializationInfo,StreamingContext)
+  fullName: Libplanet.Net.Protocols.PingTimeoutException.PingTimeoutException(SerializationInfo, StreamingContext)
+  nameWithType: PingTimeoutException.PingTimeoutException(SerializationInfo, StreamingContext)
+- uid: Libplanet.Net.Protocols.PingTimeoutException.#ctor*
+  name: PingTimeoutException
+  href: api/Libplanet.Net.Protocols.PingTimeoutException.html#Libplanet_Net_Protocols_PingTimeoutException__ctor_
+  commentId: Overload:Libplanet.Net.Protocols.PingTimeoutException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Net.Protocols.PingTimeoutException.PingTimeoutException
+  nameWithType: PingTimeoutException.PingTimeoutException
+- uid: Libplanet.Net.Protocols.PingTimeoutException.GetObjectData(SerializationInfo,StreamingContext)
+  name: GetObjectData(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Net.Protocols.PingTimeoutException.html#Libplanet_Net_Protocols_PingTimeoutException_GetObjectData_SerializationInfo_StreamingContext_
+  commentId: M:Libplanet.Net.Protocols.PingTimeoutException.GetObjectData(SerializationInfo,StreamingContext)
+  fullName: Libplanet.Net.Protocols.PingTimeoutException.GetObjectData(SerializationInfo, StreamingContext)
+  nameWithType: PingTimeoutException.GetObjectData(SerializationInfo, StreamingContext)
+- uid: Libplanet.Net.Protocols.PingTimeoutException.GetObjectData*
+  name: GetObjectData
+  href: api/Libplanet.Net.Protocols.PingTimeoutException.html#Libplanet_Net_Protocols_PingTimeoutException_GetObjectData_
+  commentId: Overload:Libplanet.Net.Protocols.PingTimeoutException.GetObjectData
+  isSpec: "True"
+  fullName: Libplanet.Net.Protocols.PingTimeoutException.GetObjectData
+  nameWithType: PingTimeoutException.GetObjectData
+- uid: Libplanet.Net.Protocols.PingTimeoutException.Target
+  name: Target
+  href: api/Libplanet.Net.Protocols.PingTimeoutException.html#Libplanet_Net_Protocols_PingTimeoutException_Target
+  commentId: P:Libplanet.Net.Protocols.PingTimeoutException.Target
+  fullName: Libplanet.Net.Protocols.PingTimeoutException.Target
+  nameWithType: PingTimeoutException.Target
+- uid: Libplanet.Net.Protocols.PingTimeoutException.Target*
+  name: Target
+  href: api/Libplanet.Net.Protocols.PingTimeoutException.html#Libplanet_Net_Protocols_PingTimeoutException_Target_
+  commentId: Overload:Libplanet.Net.Protocols.PingTimeoutException.Target
+  isSpec: "True"
+  fullName: Libplanet.Net.Protocols.PingTimeoutException.Target
+  nameWithType: PingTimeoutException.Target
 - uid: Libplanet.Net.StateDownloadState
   name: StateDownloadState
   href: api/Libplanet.Net.StateDownloadState.html
@@ -7165,15 +7228,15 @@ references:
   fullName.vb: Libplanet.Net.Swarm(Of T).Finalize
   nameWithType: Swarm<T>.Finalize
   nameWithType.vb: Swarm(Of T).Finalize
-- uid: Libplanet.Net.Swarm`1.FindSpecificPeerAsync(Libplanet.Address,Libplanet.Address,System.Int32,Libplanet.Net.BoundPeer,System.Nullable{TimeSpan},CancellationToken)
-  name: FindSpecificPeerAsync(Address, Address, Int32, BoundPeer, Nullable<TimeSpan>, CancellationToken)
-  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_FindSpecificPeerAsync_Libplanet_Address_Libplanet_Address_System_Int32_Libplanet_Net_BoundPeer_System_Nullable_TimeSpan__CancellationToken_
-  commentId: M:Libplanet.Net.Swarm`1.FindSpecificPeerAsync(Libplanet.Address,Libplanet.Address,System.Int32,Libplanet.Net.BoundPeer,System.Nullable{TimeSpan},CancellationToken)
-  name.vb: FindSpecificPeerAsync(Address, Address, Int32, BoundPeer, Nullable(Of TimeSpan), CancellationToken)
-  fullName: Libplanet.Net.Swarm<T>.FindSpecificPeerAsync(Libplanet.Address, Libplanet.Address, System.Int32, Libplanet.Net.BoundPeer, System.Nullable<TimeSpan>, CancellationToken)
-  fullName.vb: Libplanet.Net.Swarm(Of T).FindSpecificPeerAsync(Libplanet.Address, Libplanet.Address, System.Int32, Libplanet.Net.BoundPeer, System.Nullable(Of TimeSpan), CancellationToken)
-  nameWithType: Swarm<T>.FindSpecificPeerAsync(Address, Address, Int32, BoundPeer, Nullable<TimeSpan>, CancellationToken)
-  nameWithType.vb: Swarm(Of T).FindSpecificPeerAsync(Address, Address, Int32, BoundPeer, Nullable(Of TimeSpan), CancellationToken)
+- uid: Libplanet.Net.Swarm`1.FindSpecificPeerAsync(Libplanet.Address,System.Int32,System.Nullable{TimeSpan},CancellationToken)
+  name: FindSpecificPeerAsync(Address, Int32, Nullable<TimeSpan>, CancellationToken)
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_FindSpecificPeerAsync_Libplanet_Address_System_Int32_System_Nullable_TimeSpan__CancellationToken_
+  commentId: M:Libplanet.Net.Swarm`1.FindSpecificPeerAsync(Libplanet.Address,System.Int32,System.Nullable{TimeSpan},CancellationToken)
+  name.vb: FindSpecificPeerAsync(Address, Int32, Nullable(Of TimeSpan), CancellationToken)
+  fullName: Libplanet.Net.Swarm<T>.FindSpecificPeerAsync(Libplanet.Address, System.Int32, System.Nullable<TimeSpan>, CancellationToken)
+  fullName.vb: Libplanet.Net.Swarm(Of T).FindSpecificPeerAsync(Libplanet.Address, System.Int32, System.Nullable(Of TimeSpan), CancellationToken)
+  nameWithType: Swarm<T>.FindSpecificPeerAsync(Address, Int32, Nullable<TimeSpan>, CancellationToken)
+  nameWithType.vb: Swarm(Of T).FindSpecificPeerAsync(Address, Int32, Nullable(Of TimeSpan), CancellationToken)
 - uid: Libplanet.Net.Swarm`1.FindSpecificPeerAsync*
   name: FindSpecificPeerAsync
   href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_FindSpecificPeerAsync_
