@@ -88,10 +88,10 @@ namespace Libplanet.Blockchain.Renderers
         /// cref="IRenderer{T}.RenderBlock(Block{T}, Block{T})"/> method is called
         /// (where its second parameter <c>newTip</c> contains a transaction the <paramref
         /// name="action"/> belongs to).
-        /// <param>The reason why the parameter <paramref name="action"/> takes
+        /// <para>The reason why the parameter <paramref name="action"/> takes
         /// <see cref="IAction"/> instead of <typeparamref name="T"/> is because it can take
         /// block actions (<see cref="Policies.IBlockPolicy{T}.BlockAction"/>) besides transaction
-        /// actions (<see cref="Tx.Transaction{T}.Actions"/>).</param>
+        /// actions (<see cref="Tx.Transaction{T}.Actions"/>).</para>
         /// </remarks>
         void RenderActionError(IAction action, IActionContext context, Exception exception);
 
