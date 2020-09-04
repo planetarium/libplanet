@@ -398,19 +398,14 @@ namespace Libplanet.Net
 
         public async Task<BoundPeer> FindSpecificPeerAsync(
             Address target,
-            Address searchAddress,
             int depth,
-            BoundPeer viaPeer,
             TimeSpan? timeout,
             CancellationToken cancellationToken)
         {
             var kp = (KademliaProtocol)Protocol;
             return await kp.FindSpecificPeerAsync(
-                null,
                 target,
-                viaPeer,
                 depth,
-                searchAddress,
                 timeout,
                 cancellationToken);
         }

@@ -1915,7 +1915,6 @@ namespace Libplanet.Tests.Net
             Swarm<DumbAction> swarmB = _swarms[1];
             Swarm<DumbAction> swarmC = _swarms[2];
             Swarm<DumbAction> swarmD = _swarms[3];
-            BoundPeer foundPeer;
             try
             {
                 await StartAsync(swarmA);
@@ -1927,25 +1926,22 @@ namespace Libplanet.Tests.Net
                 await swarmB.AddPeersAsync(new Peer[] { swarmC.AsPeer }, null);
                 await swarmC.AddPeersAsync(new Peer[] { swarmD.AsPeer }, null);
 
-                foundPeer = await swarmA.FindSpecificPeerAsync(
-                    swarmA.AsPeer.Address,
+                BoundPeer foundPeer = await swarmA.FindSpecificPeerAsync(
                     swarmB.AsPeer.Address,
                     -1,
-                    null,
-                    TimeSpan.FromMilliseconds(3000),
-                    default(CancellationToken));
+                    TimeSpan.FromMilliseconds(3000));
 
                 Assert.Equal(swarmB.AsPeer.Address, foundPeer.Address);
+                Assert.DoesNotContain(swarmC.AsPeer, swarmA.Peers);
 
                 foundPeer = await swarmA.FindSpecificPeerAsync(
-                    swarmA.AsPeer.Address,
                     swarmD.AsPeer.Address,
                     -1,
-                    null,
-                    TimeSpan.FromMilliseconds(3000),
-                    default(CancellationToken));
+                    TimeSpan.FromMilliseconds(3000));
 
                 Assert.Equal(swarmD.AsPeer.Address, foundPeer.Address);
+                Assert.Contains(swarmC.AsPeer, swarmA.Peers);
+                Assert.Contains(swarmD.AsPeer, swarmA.Peers);
             }
             finally
             {
@@ -1953,6 +1949,46 @@ namespace Libplanet.Tests.Net
                 await StopAsync(swarmB);
                 await StopAsync(swarmC);
                 await StopAsync(swarmD);
+            }
+        }
+
+        [Fact(Timeout = Timeout)]
+        public async Task FindSpecificPeerAsyncFail()
+        {
+            Swarm<DumbAction> swarmA = _swarms[0];
+            Swarm<DumbAction> swarmB = _swarms[1];
+            Swarm<DumbAction> swarmC = _swarms[2];
+            try
+            {
+                await StartAsync(swarmA);
+                await StartAsync(swarmB);
+                await StartAsync(swarmC);
+
+                await swarmA.AddPeersAsync(new Peer[] { swarmB.AsPeer }, null);
+                await swarmB.AddPeersAsync(new Peer[] { swarmC.AsPeer }, null);
+
+                await StopAsync(swarmB);
+
+                BoundPeer foundPeer = await swarmA.FindSpecificPeerAsync(
+                    swarmB.AsPeer.Address,
+                    -1,
+                    TimeSpan.FromMilliseconds(3000));
+
+                Assert.Null(foundPeer);
+
+                foundPeer = await swarmA.FindSpecificPeerAsync(
+                    swarmC.AsPeer.Address,
+                    -1,
+                    TimeSpan.FromMilliseconds(3000));
+
+                Assert.Null(foundPeer);
+                Assert.DoesNotContain(swarmC.AsPeer, swarmA.Peers);
+            }
+            finally
+            {
+                await StopAsync(swarmA);
+                await StopAsync(swarmB);
+                await StopAsync(swarmC);
             }
         }
 

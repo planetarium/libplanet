@@ -160,6 +160,12 @@ namespace Libplanet.Net.Protocols
             return BucketOf(peer).Contains(peer);
         }
 
+        public BoundPeer GetPeer(Address addr) =>
+            _buckets
+                .Where(b => !b.IsEmpty())
+                .SelectMany(b => b.Peers)
+                .FirstOrDefault(peer => peer.Address.Equals(addr));
+
         public void Clear()
         {
             foreach (KBucket bucket in _buckets)
@@ -168,14 +174,32 @@ namespace Libplanet.Net.Protocols
             }
         }
 
-        public IEnumerable<BoundPeer> Neighbors(Peer target, int k)
+        /// <summary>
+        /// Returns <paramref name="k"/> nearest peers to given parameter peer from routing table.
+        /// Return value is already sorted with respect to target.
+        /// </summary>
+        /// <param name="target"><see cref="Peer"/> to look up.</param>
+        /// <param name="k">Number of peers to return.</param>
+        /// <param name="includeTarget">A boolean value indicates to include a peer with
+        /// <see cref="Address"/> of <paramref name="target"/> in return value or not.</param>
+        /// <returns>An enumerable of <see cref="BoundPeer"/>.</returns>
+        public IEnumerable<BoundPeer> Neighbors(Peer target, int k, bool includeTarget)
         {
-            return Neighbors(target.Address, k);
+            return Neighbors(target.Address, k, includeTarget);
         }
 
-        // returns k nearest peers to given parameter peer from routing table.
-        // return value is already sorted with respect to target.
-        public IEnumerable<BoundPeer> Neighbors(Address target, int k)
+        /// <summary>
+        /// Returns at most 2 * <paramref name="k"/> (2 * <paramref name="k"/> + 1 if
+        /// <paramref name="includeTarget"/> is <c>true</c>) nearest peers to given parameter peer
+        /// from routing table. Return value is sorted with respect to target.
+        /// <seealso cref="Kademlia.SortByDistance(IEnumerable{BoundPeer}, Address)"/>
+        /// </summary>
+        /// <param name="target"><see cref="Address"/> to look up.</param>
+        /// <param name="k">Number of peers to return.</param>
+        /// <param name="includeTarget">A boolean value indicates to include a peer with
+        /// <see cref="Address"/> of <paramref name="target"/> in return value or not.</param>
+        /// <returns>An enumerable of <see cref="BoundPeer"/>.</returns>
+        public IEnumerable<BoundPeer> Neighbors(Address target, int k, bool includeTarget)
         {
             var sorted = _buckets
                 .Where(b => !b.IsEmpty())
@@ -183,17 +207,16 @@ namespace Libplanet.Net.Protocols
                 .ToList();
 
             sorted = Kademlia.SortByDistance(sorted, target);
-            var peers = new List<BoundPeer>();
-            foreach (var peer in sorted.Where(peer => !peer.Address.Equals(target)))
-            {
-                peers.Add(peer);
-                if (peers.Count >= k * 2)
-                {
-                    break;
-                }
-            }
 
-            return peers;
+            // Select maximum k * 2 peers excluding the target itself.
+            bool containsTarget = sorted.Any(peer => peer.Address.Equals(target));
+            int maxCount = (includeTarget && containsTarget) ? k * 2 + 1 : k * 2;
+
+            IEnumerable<BoundPeer> peers = includeTarget
+                ? sorted
+                : sorted.Where(peer => !peer.Address.Equals(target));
+
+            return peers.Take(maxCount);
         }
 
         public void Check(BoundPeer peer, DateTimeOffset start, DateTimeOffset end)

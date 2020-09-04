@@ -102,6 +102,10 @@ To be released.
  -  The signature of `IStore.LookupStateReference<T>(Guid, string, Block<T>)` method was
     changed to `LookupStateReference(Guid, string, long)`.  [[#950]]
  -  Added `IStateStore`-typed `stateStore` to `BlockChain<T>` constructor.  [[#950]]
+ -  Replaced `Swarm<T>.FindSpecificPeerAsync(Address, Address, int,
+    BoundPeer, TimeSpan?, CancellationToken)` method with
+    `Swarm<T>.FindSpecificPeerAsync(Address, int, TimeSpan?, CancellationToken)`.
+    [[#981]]
 
 ### Backward-incompatible network protocol changes
 
@@ -300,6 +304,7 @@ To be released.
 [#967]: https://github.com/planetarium/libplanet/issues/967
 [#970]: https://github.com/planetarium/libplanet/pull/970
 [#972]: https://github.com/planetarium/libplanet/pull/972
+[#981]: https://github.com/planetarium/libplanet/pull/981
 [sleep mode]: https://en.wikipedia.org/wiki/Sleep_mode
 
 
