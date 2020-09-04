@@ -180,6 +180,7 @@ To be released.
  -  Added `AnonymousRenderer<T>` class.  [[#959], [#963]]
  -  Added `AnonymousActionRenderer<T>` interface.  [[#959], [#967], [#970]]
  -  Added `DelayedRenderer<T>` class.  [[#980]]
+ -  Added `DelayedActionRenderer<T>` class.  [[#980]]
  -  Added `LoggedRenderer<T>` class.  [[#959], [#963]]
  -  Added `LoggedActionRenderer<T>` interface.  [[#959], [#967], [#970]]
  -  Added `BlockChain<T>.Renderers` property.  [[#945], [#959], [#963]]

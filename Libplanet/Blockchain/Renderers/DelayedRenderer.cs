@@ -28,10 +28,14 @@ namespace Libplanet.Blockchain.Renderers
     /// var chain = new BlockChain<ExampleAction>(..., store: store, renderers: new[] { renderer });
     /// ]]></code>
     /// </example>
+    /// <remarks>Since <see cref="IActionRenderer{T}"/> is a subtype of <see cref="IRenderer{T}"/>,
+    /// <see cref="DelayedRenderer{T}(IRenderer{T}, IStore, uint)"/> constructor can take
+    /// an <see cref="IActionRenderer{T}"/> instance as well.  However, even it takes an action
+    /// renderer, action-level fine-grained events won't hear.  For action renderers,
+    /// please use <see cref="DelayedActionRenderer{T}"/> instead.</remarks>
     public class DelayedRenderer<T> : IRenderer<T>
         where T : IAction, new()
     {
-        private ILogger _logger;
         private ConcurrentDictionary<HashDigest<SHA256>, uint> _confirmed;
         private Block<T>? _tip;
 
@@ -46,7 +50,7 @@ namespace Libplanet.Blockchain.Renderers
         /// See also the <see cref="Confirmations"/> property.</param>
         public DelayedRenderer(IRenderer<T> renderer, IStore store, uint confirmations)
         {
-            _logger = Log.ForContext<DelayedRenderer<T>>();
+            Logger = Log.ForContext(GetType());
             Renderer = renderer;
             Store = store;
             Confirmations = confirmations;
@@ -88,7 +92,7 @@ namespace Libplanet.Blockchain.Renderers
 
                 if (_tip is null)
                 {
-                    _logger.Verbose(
+                    Logger.Verbose(
                         $"{nameof(DelayedRenderer<T>)}.{nameof(Tip)} is tried to be updated to " +
                         "#{NewTipIndex} {NewTipHash} (from null).",
                         newTip.Index,
@@ -97,7 +101,7 @@ namespace Libplanet.Blockchain.Renderers
                 }
                 else
                 {
-                    _logger.Verbose(
+                    Logger.Verbose(
                         $"{nameof(DelayedRenderer<T>)}.{nameof(Tip)} is tried to be updated to " +
                         "#{NewTipIndex} {NewTipHash} (from #{OldTipIndex} {OldTipHash}).",
                         newTip.Index,
@@ -111,7 +115,7 @@ namespace Libplanet.Blockchain.Renderers
                 _tip = newTip;
                 if (oldTip is null)
                 {
-                    _logger.Debug(
+                    Logger.Debug(
                         $"{nameof(DelayedRenderer<T>)}.{nameof(Tip)} was updated to " +
                         "#{NewTipIndex} {NewTipHash} (from null).",
                         newTip.Index,
@@ -120,7 +124,7 @@ namespace Libplanet.Blockchain.Renderers
                 }
                 else
                 {
-                    _logger.Debug(
+                    Logger.Debug(
                         $"{nameof(DelayedRenderer<T>)}.{nameof(Tip)} was updated to " +
                         "#{NewTipIndex} {NewTipHash} (from #{OldTipIndex} {OldTipHash}).",
                         newTip.Index,
@@ -134,15 +138,20 @@ namespace Libplanet.Blockchain.Renderers
             }
         }
 
+        /// <summary>
+        /// The logger to record internal state changes.
+        /// </summary>
+        protected ILogger Logger { get; }
+
         /// <inheritdoc cref="IRenderer{T}.RenderBlock(Block{T}, Block{T})"/>
-        public void RenderBlock(Block<T> oldTip, Block<T> newTip)
+        public virtual void RenderBlock(Block<T> oldTip, Block<T> newTip)
         {
             _confirmed.TryAdd(oldTip.Hash, 0);
             DiscoverBlock(newTip);
         }
 
         /// <inheritdoc cref="IRenderer{T}.RenderReorg(Block{T}, Block{T}, Block{T})"/>
-        public void RenderReorg(Block<T> oldTip, Block<T> newTip, Block<T> branchpoint)
+        public virtual void RenderReorg(Block<T> oldTip, Block<T> newTip, Block<T> branchpoint)
         {
             _confirmed.TryAdd(branchpoint.Hash, 0);
         }
@@ -153,19 +162,24 @@ namespace Libplanet.Blockchain.Renderers
         /// </summary>
         /// <param name="oldTip">The previously recognized topmost block.</param>
         /// <param name="newTip">The topmost block recognized this time.</param>
-        protected virtual void OnTipChanged(Block<T>? oldTip, Block<T> newTip)
+        /// <returns>A branchpoint between <paramref name="oldTip"/> and <paramref name="newTip"/>
+        /// if the tip change is a reorg.  Otherwise returns <c>null</c>.</returns>
+        protected virtual Block<T>? OnTipChanged(Block<T>? oldTip, Block<T> newTip)
         {
             if (oldTip is null)
             {
-                return;
+                return null;
             }
 
+            Block<T>? branchpoint = null;
             if (!newTip.PreviousHash.Equals(oldTip.Hash))
             {
-                Renderer.RenderReorg(oldTip, newTip, FindBranchpoint(oldTip, newTip));
+                branchpoint = FindBranchpoint(oldTip, newTip);
+                Renderer.RenderReorg(oldTip, newTip, branchpoint);
             }
 
             Renderer.RenderBlock(oldTip, newTip);
+            return branchpoint;
         }
 
         private void DiscoverBlock(Block<T> block)
@@ -188,7 +202,7 @@ namespace Libplanet.Blockchain.Renderers
                 }
 
                 uint c = _confirmed.AddOrUpdate(prevHash, k => 1U, (k, v) => v + 1U);
-                _logger.Verbose(
+                Logger.Verbose(
                     "The block #{BlockIndex} {BlockHash} has {Confirmations} confirmations.",
                     prevBlock.Index,
                     prevBlock.Hash,

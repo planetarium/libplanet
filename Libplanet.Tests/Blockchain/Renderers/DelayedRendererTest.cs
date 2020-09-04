@@ -13,11 +13,11 @@ namespace Libplanet.Tests.Blockchain.Renderers
 {
     public class DelayedRendererTest
     {
-        private static readonly IReadOnlyList<Block<DumbAction>> _chainA;
-        private static readonly IReadOnlyList<Block<DumbAction>> _chainB;
-        private static readonly Block<DumbAction> _branchpoint;
-        private IStore _store;
-        private ILogger _logger;
+        protected static readonly IReadOnlyList<Block<DumbAction>> _chainA;
+        protected static readonly IReadOnlyList<Block<DumbAction>> _chainB;
+        protected static readonly Block<DumbAction> _branchpoint;
+        protected IStore _store;
+        protected ILogger _logger;
 
 #pragma warning disable S3963
         static DelayedRendererTest()
@@ -48,7 +48,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 .Enrich.WithThreadId()
                 .WriteTo.TestOutput(output)
                 .CreateLogger()
-                .ForContext<DelayedRendererTest>();
+                .ForContext(GetType());
             Log.Logger = _logger;
             _logger.CompareBothChains(
                 LogEventLevel.Debug,
@@ -66,7 +66,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
         }
 
         [Fact]
-        public void BlocksBeingAppended()
+        public virtual void BlocksBeingAppended()
         {
             var blockLogs = new List<(Block<DumbAction> OldTip, Block<DumbAction> NewTip)>();
             uint reorgs = 0;
@@ -119,7 +119,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
         }
 
         [Fact]
-        public void BlocksBeingAppendedInParallel()
+        public virtual void BlocksBeingAppendedInParallel()
         {
             var blockLogs = new List<(Block<DumbAction> OldTip, Block<DumbAction> NewTip)>();
             var reorgLogs = new List<(
