@@ -89,6 +89,19 @@ anonymous class) of <a class="xref" href="Libplanet.Blockchain.Renderers.IAction
 <p>This class is useful when you want an one-use ad-hoc implementation (i.e., Java-style
 anonymous class) of <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a> interface.</p>
 </section>
+      <h4><a class="xref" href="Libplanet.Blockchain.Renderers.DelayedActionRenderer-1.html">DelayedActionRenderer&lt;T&gt;</a></h4>
+      <section><p>An <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a> version of <a class="xref" href="Libplanet.Blockchain.Renderers.DelayedRenderer-1.html">DelayedRenderer&lt;T&gt;</a>.</p>
+<p>Decorates an <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a> instance and delays the events until
+blocks are <em>confirmed</em> the certain number of blocks.  When blocks are recognized
+the delayed events relevant to these blocks are relayed to the decorated
+<a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a>.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Blockchain.Renderers.DelayedRenderer-1.html">DelayedRenderer&lt;T&gt;</a></h4>
+      <section><p>Decorates an <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a> instance and delays the events until blocks
+are <em>confirmed</em> the certain number of blocks.  When blocks are recognized
+the delayed events relevant to these blocks are relayed to the decorated
+<a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a>.</p>
+</section>
       <h4><a class="xref" href="Libplanet.Blockchain.Renderers.LoggedActionRenderer-1.html">LoggedActionRenderer&lt;T&gt;</a></h4>
       <section><p>Decorates an <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a> so that all event messages are logged.
 In other words, this is an <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a> version of

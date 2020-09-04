@@ -172,6 +172,7 @@ changed to <code>LookupStateReference(Guid, string, long)</code>.  [<a href="htt
 <li>Replaced <code>Swarm&lt;T&gt;.FindSpecificPeerAsync(Address, Address, int, BoundPeer, TimeSpan?, CancellationToken)</code> method with
 <code>Swarm&lt;T&gt;.FindSpecificPeerAsync(Address, int, TimeSpan?, CancellationToken)</code>.
 [<a href="https://github.com/planetarium/libplanet/pull/981">#981</a>]</li>
+<li>Added <code>IActionContext.GetUnconsumedContext()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/980">#980</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <ul>
@@ -251,6 +252,8 @@ by <code>stateCompleter: FungibleAssetStateCompleters&lt;T&gt;.Recalculate</code
 <li>Added <code>IActionRenderer&lt;T&gt;</code> interface.  [<a href="https://github.com/planetarium/libplanet/issues/959">#959</a>, <a href="https://github.com/planetarium/libplanet/issues/967">#967</a>, <a href="https://github.com/planetarium/libplanet/pull/970">#970</a>]</li>
 <li>Added <code>AnonymousRenderer&lt;T&gt;</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/959">#959</a>, <a href="https://github.com/planetarium/libplanet/pull/963">#963</a>]</li>
 <li>Added <code>AnonymousActionRenderer&lt;T&gt;</code> interface.  [<a href="https://github.com/planetarium/libplanet/issues/959">#959</a>, <a href="https://github.com/planetarium/libplanet/issues/967">#967</a>, <a href="https://github.com/planetarium/libplanet/pull/970">#970</a>]</li>
+<li>Added <code>DelayedRenderer&lt;T&gt;</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/980">#980</a>]</li>
+<li>Added <code>DelayedActionRenderer&lt;T&gt;</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/980">#980</a>]</li>
 <li>Added <code>LoggedRenderer&lt;T&gt;</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/959">#959</a>, <a href="https://github.com/planetarium/libplanet/pull/963">#963</a>]</li>
 <li>Added <code>LoggedActionRenderer&lt;T&gt;</code> interface.  [<a href="https://github.com/planetarium/libplanet/issues/959">#959</a>, <a href="https://github.com/planetarium/libplanet/issues/967">#967</a>, <a href="https://github.com/planetarium/libplanet/pull/970">#970</a>]</li>
 <li>Added <code>BlockChain&lt;T&gt;.Renderers</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/945">#945</a>, <a href="https://github.com/planetarium/libplanet/issues/959">#959</a>, <a href="https://github.com/planetarium/libplanet/pull/963">#963</a>]</li>

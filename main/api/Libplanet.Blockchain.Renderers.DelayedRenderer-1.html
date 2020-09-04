@@ -1,0 +1,529 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class DelayedRenderer&lt;T&gt;
+   | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class DelayedRenderer&lt;T&gt;
+   | Libplanet ">
+    <meta name="generator" content="docfx 2.48.1.0">
+    
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Blockchain.Renderers.DelayedRenderer`1">
+  
+  
+  <h1 id="Libplanet_Blockchain_Renderers_DelayedRenderer_1" data-uid="Libplanet.Blockchain.Renderers.DelayedRenderer`1" class="text-break">Class DelayedRenderer&lt;T&gt;
+  </h1>
+  <div class="markdown level0 summary"><p>Decorates an <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a> instance and delays the events until blocks
+are <em>confirmed</em> the certain number of blocks.  When blocks are recognized
+the delayed events relevant to these blocks are relayed to the decorated
+<a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a>.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">DelayedRenderer&lt;T&gt;</span></div>
+      <div class="level2"><a class="xref" href="Libplanet.Blockchain.Renderers.DelayedActionRenderer-1.html">DelayedActionRenderer</a>&lt;T&gt;</div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer</a>&lt;T&gt;</div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Blockchain.Renderers.html">Libplanet.Blockchain.Renderers</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.dll</h6>
+  <h5 id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class DelayedRenderer&lt;T&gt; : object, IRenderer&lt;T&gt; where T : IAction, new()</code></pre>
+  </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>An <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> type.  It should match to
+<a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a>'s type parameter.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>Since <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a> is a subtype of <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a>,
+<a class="xref" href="Libplanet.Blockchain.Renderers.DelayedRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedRenderer_1__ctor_Libplanet_Blockchain_Renderers_IRenderer__0__Libplanet_Store_IStore_System_Int32_">DelayedRenderer(IRenderer&lt;T&gt;, IStore, Int32)</a> constructor can take
+an <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a> instance as well.  However, even it takes an action
+renderer, action-level fine-grained events won't hear.  For action renderers,
+please use <a class="xref" href="Libplanet.Blockchain.Renderers.DelayedActionRenderer-1.html">DelayedActionRenderer&lt;T&gt;</a> instead.</p>
+</div>
+  <h5 id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_examples"><strong>Examples</strong></h5>
+  <pre><code>IStore store = GetStore();
+IRenderer&lt;ExampleAction> renderer = new SomeRenderer();
+// Wraps the renderer with DelayedRenderer; the SomeRenderer instance becomes to receive
+// event messages only after the relevent blocks are confirmed by 3+ blocks.
+renderer = new DelayedRenderer&lt;ExampleAction>(renderer, store, confirmations: 3);
+// You must pass the same store to the BlockChain&lt;T>() constructor:
+var chain = new BlockChain&lt;ExampleAction>(..., store: store, renderers: new[] { renderer });</code></pre>
+
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_DelayedRenderer_1__ctor_Libplanet_Blockchain_Renderers_IRenderer__0__Libplanet_Store_IStore_System_Int32_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.DelayedRenderer%601.%23ctor(Libplanet.Blockchain.Renderers.IRenderer%7B%600%7D%2CLibplanet.Store.IStore%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedRenderer.cs/#L55">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_Renderers_DelayedRenderer_1__ctor_" data-uid="Libplanet.Blockchain.Renderers.DelayedRenderer`1.#ctor*"></a>
+  <h4 id="Libplanet_Blockchain_Renderers_DelayedRenderer_1__ctor_Libplanet_Blockchain_Renderers_IRenderer__0__Libplanet_Store_IStore_System_Int32_" data-uid="Libplanet.Blockchain.Renderers.DelayedRenderer`1.#ctor(Libplanet.Blockchain.Renderers.IRenderer{`0},Libplanet.Store.IStore,System.Int32)">DelayedRenderer(IRenderer&lt;T&gt;, IStore, Int32)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Blockchain.Renderers.DelayedRenderer-1.html">DelayedRenderer&lt;T&gt;</a> instance decorating the given
+<code data-dev-comment-type="paramref" class="paramref">renderer</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DelayedRenderer(IRenderer&lt;T&gt; renderer, IStore store, int confirmations)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer</a>&lt;T&gt;</td>
+        <td><span class="parametername">renderer</span></td>
+        <td><p>The renderer to decorate which has the <em>actual</em>
+implementations and receives delayed events.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.IStore.html">IStore</a></td>
+        <td><span class="parametername">store</span></td>
+        <td><p>The same store to what <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> uses.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">confirmations</span></td>
+        <td><p>The required number of confirmations to recognize a block.
+It must be greater than zero (note that zero <code data-dev-comment-type="paramref" class="paramref">confirmations</code> mean
+nothing is delayed so that it is equivalent to the bare <code data-dev-comment-type="paramref" class="paramref">renderer</code>).
+See also the <a class="xref" href="Libplanet.Blockchain.Renderers.DelayedRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedRenderer_1_Confirmations">Confirmations</a> property.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_DelayedRenderer_1_Confirmations.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.DelayedRenderer%601.Confirmations%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedRenderer.cs/#L95">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_Confirmations_" data-uid="Libplanet.Blockchain.Renderers.DelayedRenderer`1.Confirmations*"></a>
+  <h4 id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_Confirmations" data-uid="Libplanet.Blockchain.Renderers.DelayedRenderer`1.Confirmations">Confirmations</h4>
+  <div class="markdown level1 summary"><p>The required number of confirmations to recognize a block.</p>
+<p>For example, the required confirmations are 2, the block #N is recognized after
+the block #N+1 and the block #N+2 are discovered.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Confirmations { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_DelayedRenderer_1_Logger.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.DelayedRenderer%601.Logger%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedRenderer.cs/#L163">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_Logger_" data-uid="Libplanet.Blockchain.Renderers.DelayedRenderer`1.Logger*"></a>
+  <h4 id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_Logger" data-uid="Libplanet.Blockchain.Renderers.DelayedRenderer`1.Logger">Logger</h4>
+  <div class="markdown level1 summary"><p>The logger to record internal state changes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected ILogger Logger { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ILogger</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_DelayedRenderer_1_Renderer.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.DelayedRenderer%601.Renderer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedRenderer.cs/#L83">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_Renderer_" data-uid="Libplanet.Blockchain.Renderers.DelayedRenderer`1.Renderer*"></a>
+  <h4 id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_Renderer" data-uid="Libplanet.Blockchain.Renderers.DelayedRenderer`1.Renderer">Renderer</h4>
+  <div class="markdown level1 summary"><p>The inner renderer which has the <em>actual</em> implementations and receives delayed
+events.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IRenderer&lt;T&gt; Renderer { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_DelayedRenderer_1_Store.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.DelayedRenderer%601.Store%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedRenderer.cs/#L88">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_Store_" data-uid="Libplanet.Blockchain.Renderers.DelayedRenderer`1.Store*"></a>
+  <h4 id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_Store" data-uid="Libplanet.Blockchain.Renderers.DelayedRenderer`1.Store">Store</h4>
+  <div class="markdown level1 summary"><p>The same store to what <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> uses.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IStore Store { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.IStore.html">IStore</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_DelayedRenderer_1_Tip.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.DelayedRenderer%601.Tip%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedRenderer.cs/#L101">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_Tip_" data-uid="Libplanet.Blockchain.Renderers.DelayedRenderer`1.Tip*"></a>
+  <h4 id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_Tip" data-uid="Libplanet.Blockchain.Renderers.DelayedRenderer`1.Tip">Tip</h4>
+  <div class="markdown level1 summary"><p>The <em>recognized</em> topmost block.  If not enough blocks are discovered yet,
+this property can be <code>null</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Block&lt;T&gt; Tip { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_DelayedRenderer_1_OnTipChanged_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.DelayedRenderer%601.OnTipChanged(Libplanet.Blocks.Block%7B%600%7D%2CLibplanet.Blocks.Block%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedRenderer.cs/#L186">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_OnTipChanged_" data-uid="Libplanet.Blockchain.Renderers.DelayedRenderer`1.OnTipChanged*"></a>
+  <h4 id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_OnTipChanged_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__" data-uid="Libplanet.Blockchain.Renderers.DelayedRenderer`1.OnTipChanged(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})">OnTipChanged(Block&lt;T&gt;, Block&lt;T&gt;)</h4>
+  <div class="markdown level1 summary"><p>The callback method which is invoked when the new <a class="xref" href="Libplanet.Blockchain.Renderers.DelayedRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedRenderer_1_Tip">Tip</a> is recognized and
+changed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual Block&lt;T&gt; OnTipChanged(Block&lt;T&gt; oldTip, Block&lt;T&gt; newTip)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td><span class="parametername">oldTip</span></td>
+        <td><p>The previously recognized topmost block.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td><span class="parametername">newTip</span></td>
+        <td><p>The topmost block recognized this time.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td><p>A branchpoint between <code data-dev-comment-type="paramref" class="paramref">oldTip</code> and <code data-dev-comment-type="paramref" class="paramref">newTip</code>
+if the tip change is a reorg.  Otherwise returns <code>null</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_DelayedRenderer_1_RenderBlock_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.DelayedRenderer%601.RenderBlock(Libplanet.Blocks.Block%7B%600%7D%2CLibplanet.Blocks.Block%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedRenderer.cs/#L166">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_RenderBlock_" data-uid="Libplanet.Blockchain.Renderers.DelayedRenderer`1.RenderBlock*"></a>
+  <h4 id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_RenderBlock_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__" data-uid="Libplanet.Blockchain.Renderers.DelayedRenderer`1.RenderBlock(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})">RenderBlock(Block&lt;T&gt;, Block&lt;T&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void RenderBlock(Block&lt;T&gt; oldTip, Block&lt;T&gt; newTip)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td><span class="parametername">oldTip</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td><span class="parametername">newTip</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_DelayedRenderer_1_RenderReorg_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.DelayedRenderer%601.RenderReorg(Libplanet.Blocks.Block%7B%600%7D%2CLibplanet.Blocks.Block%7B%600%7D%2CLibplanet.Blocks.Block%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedRenderer.cs/#L173">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_RenderReorg_" data-uid="Libplanet.Blockchain.Renderers.DelayedRenderer`1.RenderReorg*"></a>
+  <h4 id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_RenderReorg_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__" data-uid="Libplanet.Blockchain.Renderers.DelayedRenderer`1.RenderReorg(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})">RenderReorg(Block&lt;T&gt;, Block&lt;T&gt;, Block&lt;T&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void RenderReorg(Block&lt;T&gt; oldTip, Block&lt;T&gt; newTip, Block&lt;T&gt; branchpoint)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td><span class="parametername">oldTip</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td><span class="parametername">newTip</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td><span class="parametername">branchpoint</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_DelayedRenderer_1.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.DelayedRenderer%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedRenderer.cs/#L36" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2019–2020 <a href="https://planetariumhq.com/">Planetarium</a>
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
