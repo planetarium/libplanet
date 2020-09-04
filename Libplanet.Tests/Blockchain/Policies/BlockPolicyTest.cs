@@ -1,14 +1,18 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using Bencodex.Types;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Store;
+using Libplanet.Store.Trie;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
+using Libplanet.Tests.Store.Trie;
 using Libplanet.Tx;
 using Xunit;
 using Xunit.Abstractions;
@@ -266,6 +270,63 @@ namespace Libplanet.Tests.Blockchain.Policies
                 _policy.ValidateNextBlock(
                     _chain,
                     invalidPreviousTimestamp));
+        }
+
+        [Fact]
+        public void ValidateNextBlockInvalidStateRootHash()
+        {
+            IKeyValueStore stateKeyValueStore = new MemoryKeyValueStore(),
+                stateHashKeyValueStore = new MemoryKeyValueStore();
+            var stateStore = new TrieStateStore(stateKeyValueStore, stateHashKeyValueStore);
+            // FIXME: It assumes that _fx.GenesisBlock doesn't update any states with transactions.
+            //        Actually, it depends on BlockChain<T> to update states and it makes hard to
+            //        calculate state root hash. To resolve this problem,
+            //        it should be moved into StateStore.
+            HashDigest<SHA256>? genesisStateRootHash = stateStore.SetStates(
+                _fx.GenesisBlock,
+                ImmutableDictionary<string, IValue>.Empty,
+                rehearsal: true);
+            var genesisBlock = new Block<DumbAction>(
+                _fx.GenesisBlock, null, stateRootHash: genesisStateRootHash);
+            var store = new DefaultStore(null);
+            var chain = new BlockChain<DumbAction>(
+                _policy,
+                store,
+                stateStore,
+                genesisBlock);
+            var validNext = Block<DumbAction>.Mine(
+                1,
+                1024,
+                genesisBlock.TotalDifficulty,
+                genesisBlock.Miner.Value,
+                genesisBlock.Hash,
+                genesisBlock.Timestamp.AddSeconds(1),
+                _emptyTransaction);
+            chain.ExecuteActions(validNext);
+            validNext =
+                new Block<DumbAction>(validNext, null, stateStore.GetRootHash(validNext.Hash));
+            chain.Append(validNext);
+
+            var invalidStateRootHash = Block<DumbAction>.Mine(
+                2,
+                1032,
+                validNext.TotalDifficulty,
+                genesisBlock.Miner.Value,
+                validNext.Hash,
+                validNext.Timestamp.AddSeconds(1),
+                _emptyTransaction);
+            var actionEvaluations = _chain.EvaluateActions(
+                invalidStateRootHash,
+                StateCompleterSet<DumbAction>.Recalculate);
+            chain.SetStates(invalidStateRootHash, actionEvaluations, false);
+            invalidStateRootHash = new Block<DumbAction>(
+                invalidStateRootHash,
+                null,
+                new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)));
+            Assert.IsType<InvalidBlockStateRootHashException>(
+                _policy.ValidateNextBlock(
+                    chain,
+                    invalidStateRootHash));
         }
     }
 }

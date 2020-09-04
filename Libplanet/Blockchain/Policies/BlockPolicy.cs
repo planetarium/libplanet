@@ -3,6 +3,7 @@ using System.Numerics;
 using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Blocks;
+using Libplanet.Store;
 using Libplanet.Tx;
 
 namespace Libplanet.Blockchain.Policies
@@ -129,6 +130,8 @@ namespace Libplanet.Blockchain.Policies
         }
 
         /// <inheritdoc/>
+        /// <exception cref="InvalidBlockStateRootHashException">It will be thrown when the
+        /// given block has incorrect <see cref="Block{T}.StateRootHash"/>.</exception>
         public InvalidBlockException ValidateNextBlock(
             BlockChain<T> blocks,
             Block<T> nextBlock)
@@ -191,6 +194,25 @@ namespace Libplanet.Blockchain.Policies
                     $"the block #{index}'s timestamp " +
                     $"({nextBlock.Timestamp}) is earlier than" +
                     $" the block #{index - 1}'s ({prevTimestamp})");
+            }
+
+            // FIXME: receive validation conditions on the constructor and
+            //        extract type testing codes into it.
+            if (blocks.StateStore is TrieStateStore trieStateStore)
+            {
+                blocks.ExecuteActions(nextBlock, StateCompleterSet<T>.Recalculate);
+                HashDigest<SHA256> rootHash =
+                    trieStateStore.GetRootHash(nextBlock.Hash);
+                if (!rootHash.Equals(nextBlock.StateRootHash))
+                {
+                    var message = $"the block #{index}'s state root hash is " +
+                                  $"{nextBlock.StateRootHash?.ToString()}, but the execution " +
+                                  $"result is {rootHash.ToString()}";
+                    return new InvalidBlockStateRootHashException(
+                        nextBlock.StateRootHash,
+                        rootHash,
+                        message);
+                }
             }
 
             return null;
