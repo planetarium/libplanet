@@ -20,6 +20,19 @@ namespace Libplanet.Tests.Blockchain.Renderers
         }
 
         [Fact]
+        public override void Constructor()
+        {
+            ArgumentOutOfRangeException e = Assert.Throws<ArgumentOutOfRangeException>(() =>
+                new DelayedActionRenderer<DumbAction>(
+                    new AnonymousActionRenderer<DumbAction>(),
+                    _store,
+                    confirmations: 0
+                )
+            );
+            Assert.Equal("confirmations", e.ParamName);
+        }
+
+        [Fact]
         public override void BlocksBeingAppended()
         {
             // FIXME: Eliminate duplication between this and DelayedRendererTest

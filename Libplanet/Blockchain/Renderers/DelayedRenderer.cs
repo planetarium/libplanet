@@ -47,9 +47,21 @@ namespace Libplanet.Blockchain.Renderers
         /// implementations and receives delayed events.</param>
         /// <param name="store">The same store to what <see cref="BlockChain{T}"/> uses.</param>
         /// <param name="confirmations">The required number of confirmations to recognize a block.
+        /// It must be greater than zero (note that zero <paramref name="confirmations"/> mean
+        /// nothing is delayed so that it is equivalent to the bare <paramref name="renderer"/>).
         /// See also the <see cref="Confirmations"/> property.</param>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when the argument
+        /// <paramref name="confirmations"/> is not greater than zero.</exception>
         public DelayedRenderer(IRenderer<T> renderer, IStore store, uint confirmations)
         {
+            if (confirmations < 1)
+            {
+                string msg =
+                    "Zero confirmations mean nothing is delayed so that it is equivalent to the " +
+                    $"bare {nameof(renderer)}; configure it to more than zero.";
+                throw new ArgumentOutOfRangeException(nameof(confirmations), msg);
+            }
+
             Logger = Log.ForContext(GetType());
             Renderer = renderer;
             Store = store;

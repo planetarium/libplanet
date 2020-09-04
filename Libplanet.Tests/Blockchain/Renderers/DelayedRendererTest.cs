@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Libplanet.Blockchain.Renderers;
@@ -63,6 +64,19 @@ namespace Libplanet.Tests.Blockchain.Renderers
             {
                 _store.PutBlock(b);
             }
+        }
+
+        [Fact]
+        public virtual void Constructor()
+        {
+            ArgumentOutOfRangeException e = Assert.Throws<ArgumentOutOfRangeException>(() =>
+                new DelayedRenderer<DumbAction>(
+                    new AnonymousRenderer<DumbAction>(),
+                    _store,
+                    confirmations: 0
+                )
+            );
+            Assert.Equal("confirmations", e.ParamName);
         }
 
         [Fact]
