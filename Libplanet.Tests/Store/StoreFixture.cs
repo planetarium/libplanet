@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Security.Cryptography;
+using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Store;
@@ -12,7 +13,7 @@ namespace Libplanet.Tests.Store
 {
     public abstract class StoreFixture : IDisposable
     {
-        public StoreFixture()
+        public StoreFixture(IAction blockAction = null)
         {
             StoreChainId = Guid.NewGuid();
 
@@ -84,7 +85,7 @@ namespace Libplanet.Tests.Store
                 0x9c, 0xee,
             });
 
-            GenesisBlock = TestUtils.MineGenesis<DumbAction>();
+            GenesisBlock = TestUtils.MineGenesis<DumbAction>(blockAction: blockAction);
             Block1 = TestUtils.MineNext(GenesisBlock);
             Block2 = TestUtils.MineNext(Block1);
             Block3 = TestUtils.MineNext(Block2);

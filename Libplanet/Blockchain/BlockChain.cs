@@ -15,6 +15,7 @@ using Libplanet.Blockchain.Renderers;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Store;
+using Libplanet.Store.Trie;
 using Libplanet.Tx;
 using Serilog;
 
@@ -334,11 +335,15 @@ namespace Libplanet.Blockchain
         /// If it's null, it will use new private key as default.</param>
         /// <param name="timestamp">The timestamp of the genesis block. If it's null, it will
         /// use <see cref="DateTimeOffset.UtcNow"/> as default.</param>
+        /// <param name="blockAction">A block action to execute and be rendered for every block.
+        /// It must match to <see cref="BlockPolicy{T}.BlockAction"/> of <see cref="Policy"/>.
+        /// </param>
         /// <returns>The genesis block mined with parameters.</returns>
         public static Block<T> MakeGenesisBlock(
             IEnumerable<T> actions = null,
             PrivateKey privateKey = null,
-            DateTimeOffset? timestamp = null)
+            DateTimeOffset? timestamp = null,
+            IAction blockAction = null)
         {
             privateKey = privateKey ?? new PrivateKey();
             actions = actions ?? ImmutableArray<T>.Empty;
@@ -347,7 +352,7 @@ namespace Libplanet.Blockchain
                 Transaction<T>.Create(0, privateKey, null, actions, timestamp: timestamp),
             };
 
-            return Block<T>.Mine(
+            Block<T> block = Block<T>.Mine(
                 0,
                 0,
                 0,
@@ -355,6 +360,23 @@ namespace Libplanet.Blockchain
                 null,
                 timestamp ?? DateTimeOffset.UtcNow,
                 transactions);
+
+            var blockEvaluator = new BlockEvaluator<T>(
+                blockAction,
+                (address, digest, stateCompleter) => null,
+                (address, currency, hash, fungibleAssetStateCompleter)
+                    => new FungibleAssetValue(currency));
+            var actionEvaluationResult = blockEvaluator
+                .EvaluateActions(block, StateCompleterSet<T>.Reject)
+                .GetTotalDelta(ToStateKey, ToFungibleAssetKey);
+            var trie = new MerkleTrie(new DefaultKeyValueStore(null));
+            trie.Set(actionEvaluationResult);
+            var stateRootHash = trie.Commit(rehearsal: true).Hash;
+
+            return new Block<T>(
+                block,
+                null,
+                stateRootHash);
         }
 
         /// <summary>

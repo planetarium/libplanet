@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using Libplanet.Action;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 
@@ -7,7 +8,9 @@ namespace Libplanet.Tests.Store
 {
     public class DefaultStoreFixture : StoreFixture, IDisposable
     {
-        public DefaultStoreFixture(bool memory = false, bool mpt = false)
+        public DefaultStoreFixture(
+            bool memory = false, bool mpt = false, IAction blockAction = null)
+            : base(blockAction)
         {
             if (memory)
             {
