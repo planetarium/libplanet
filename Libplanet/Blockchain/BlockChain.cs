@@ -747,9 +747,6 @@ namespace Libplanet.Blockchain
 
             if (StateStore is TrieStateStore trieStateStore)
             {
-                // FIXME: Now it must update states through SetStates() and
-                //        it also affects to state root hash. It needs ways to calculate
-                //        state root hash in memory.
                 SetStates(block, actionEvaluations, false);
                 block = new Block<T>(block, null, trieStateStore.GetRootHash(block.Hash));
             }
@@ -1521,25 +1518,7 @@ namespace Libplanet.Blockchain
 
             if (!StateStore.ContainsBlockStates(block.Hash))
             {
-                HashDigest<SHA256> blockHash = block.Hash;
-                IAccountStateDelta lastStates = actionEvaluations.Count > 0
-                    ? actionEvaluations[actionEvaluations.Count - 1].OutputStates
-                    : null;
-                ImmutableDictionary<string, IValue> totalDelta =
-                    stateUpdatedAddresses.ToImmutableDictionary(
-                        ToStateKey,
-                        a => lastStates?.GetState(a)
-                    ).SetItems(
-                        updatedFungibleAssets.Select(pair =>
-                            new KeyValuePair<string, IValue>(
-                                ToFungibleAssetKey(pair),
-                                new Bencodex.Types.Integer(
-                                    lastStates?.GetBalance(pair.Item1, pair.Item2).RawValue ?? 0
-                                )
-                            )
-                        )
-                    );
-
+                var totalDelta = actionEvaluations.GetTotalDelta(ToStateKey, ToFungibleAssetKey);
                 StateStore.SetStates(block, totalDelta);
             }
 
