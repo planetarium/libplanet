@@ -341,17 +341,24 @@ namespace Libplanet.Net.Protocols
             }
 
             var history = new ConcurrentBag<BoundPeer>();
-            var peersToFind = new ConcurrentQueue<BoundPeer>();
+            var peersToFind = new ConcurrentQueue<Tuple<BoundPeer, int>>();
             foreach (BoundPeer peer in _routing.Neighbors(target, _findConcurrency, false))
             {
-                peersToFind.Enqueue(peer);
+                peersToFind.Enqueue(new Tuple<BoundPeer, int>(peer, 0));
             }
 
             while (peersToFind.Any())
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                if (!peersToFind.TryDequeue(out BoundPeer viaPeer))
+                if (!peersToFind.TryDequeue(out Tuple<BoundPeer, int> tuple))
+                {
+                    continue;
+                }
+
+                tuple.Deconstruct(out BoundPeer viaPeer, out int curDepth);
+                _logger.Debug("ViaPeer: {Peer}, curDepth: {curDepth}", viaPeer, curDepth);
+                if (depth != -1 && curDepth >= depth)
                 {
                     continue;
                 }
@@ -362,7 +369,7 @@ namespace Libplanet.Net.Protocols
                 IEnumerable<BoundPeer> filteredPeers = foundPeers
                     .Where(peer =>
                         !history.Contains(peer) &&
-                        !peersToFind.Contains(peer) &&
+                        !peersToFind.Any(t => t.Item1.Equals(peer)) &&
                         !peer.Address.Equals(_address))
                     .Take(_findConcurrency);
                 int count = 0;
@@ -376,7 +383,7 @@ namespace Libplanet.Net.Protocols
                             return found;
                         }
 
-                        peersToFind.Enqueue(found);
+                        peersToFind.Enqueue(new Tuple<BoundPeer, int>(found, curDepth + 1));
 
                         if (count++ >= _findConcurrency)
                         {
@@ -443,6 +450,11 @@ namespace Libplanet.Net.Protocols
                 _logger.Debug("Different AppProtocolVersion encountered at PingAsync.");
                 throw;
             }
+        }
+
+        internal void ClearTable()
+        {
+            _routing.Clear();
         }
 
         /// <summary>
