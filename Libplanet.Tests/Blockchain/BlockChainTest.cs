@@ -1440,6 +1440,20 @@ namespace Libplanet.Tests.Blockchain
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
+        public async Task SwapWithoutReorg(bool render)
+        {
+            BlockChain<DumbAction> fork = _blockChain.Fork(_blockChain.Tip.Hash);
+            await fork.MineBlock(default);
+            var prevRecords = _renderer.ReorgRecords;
+            _blockChain.Swap(fork, render: render);
+
+            // RenderReorg() should be invoked if and only if the actual reorg happens
+            Assert.Equal(prevRecords, _renderer.ReorgRecords);
+        }
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
         public async Task ReorgIsUnableToHeterogenousChain(bool render)
         {
             using (var fx2 = new DefaultStoreFixture(memory: true))

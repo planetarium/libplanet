@@ -1487,9 +1487,12 @@ namespace Libplanet.Blockchain
                 Store.SetCanonicalChainId(Id);
                 _blocks = new BlockSet<T>(Store);
                 TipChanged?.Invoke(this, (oldTip, newTip));
-                foreach (IRenderer<T> renderer in Renderers)
+                if (!oldTip.Equals(topmostCommon))
                 {
-                    renderer.RenderReorg(oldTip, newTip, branchpoint: topmostCommon);
+                    foreach (IRenderer<T> renderer in Renderers)
+                    {
+                        renderer.RenderReorg(oldTip, newTip, branchpoint: topmostCommon);
+                    }
                 }
 
                 foreach (IRenderer<T> renderer in Renderers)
