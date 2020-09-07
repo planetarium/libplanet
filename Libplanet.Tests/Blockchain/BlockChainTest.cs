@@ -17,6 +17,7 @@ using Libplanet.Tests.Action;
 using Libplanet.Tests.Common;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
+using Libplanet.Tests.Store.Trie;
 using Libplanet.Tx;
 using Serilog;
 using Serilog.Events;
@@ -2508,6 +2509,20 @@ namespace Libplanet.Tests.Blockchain
             Block<DumbAction> b2 = await _blockChain.MineBlock(address);
             Assert.Single(b2.Transactions);
             Assert.Contains(txsB[3], b2.Transactions);
+        }
+
+        [Fact]
+        private void ConstructBlockchainWithGenesisBlockHavingStateRootHash()
+        {
+            var store = new DefaultStore(null);
+            var stateStore = new TrieStateStore(
+                new MemoryKeyValueStore(), new MemoryKeyValueStore());
+            var genesisBlock =
+                TestUtils.MineGenesis<DumbAction>(blockAction: _blockChain.Policy.BlockAction);
+            BlockChain<DumbAction> blockChain = TestUtils.MakeBlockChain(
+                _blockChain.Policy, store, stateStore: stateStore, genesisBlock: genesisBlock);
+
+            Assert.NotNull(blockChain[0].StateRootHash);
         }
 
         private void StageTransactions(IEnumerable<Transaction<DumbAction>> txs)

@@ -290,7 +290,8 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             PrivateKey privateKey = null,
             DateTimeOffset? timestamp = null,
             IEnumerable<IRenderer<T>> renderers = null,
-            IStateStore stateStore = null
+            IStateStore stateStore = null,
+            Block<T> genesisBlock = null
         )
             where T : IAction, new()
         {
@@ -311,7 +312,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 null,
                 actions,
                 timestamp: timestamp ?? DateTimeOffset.MinValue);
-            var genesisBlock = new Block<T>(
+            genesisBlock = genesisBlock ?? new Block<T>(
                 0,
                 0,
                 0,
