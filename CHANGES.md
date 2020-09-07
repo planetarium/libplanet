@@ -107,6 +107,10 @@ To be released.
     `Swarm<T>.FindSpecificPeerAsync(Address, int, TimeSpan?, CancellationToken)`.
     [[#981]]
  -  Added `IActionContext.GetUnconsumedContext()` method.  [[#980]]
+ -  Added `ImmutableArray<byte>`-typed `stateRootHash` parameter to
+    `BlockHeader` constructor.  [[#986]]
+ -  Added `HashDigest<SHA256>`-typed `stateRootHash` parameter to
+    `Block<T>()` constructor.  [[#986]]
 
 ### Backward-incompatible network protocol changes
 
@@ -197,6 +201,9 @@ To be released.
  -  (Libplanet.RocksDBStore) `RocksDBStore` became to implement
     `IBlockStatesStore`.  [[#950]]
  -  (Libplanet.RocksDBStore) Added `RocksDBKeyValueStore`.  [[#939]]
+ -  Added `InvalidBlockStateRootHashException` class.  [[#986]]
+ -  Added `Block<T>.StateRootHash` property.  [[#986]]
+ -  Added `BlockHeader.StateRootHash` property.  [[#986]]
 
 ### Behavioral changes
 
@@ -227,6 +234,8 @@ To be released.
     [[#949]]
  -  `Swarm<T>.PreloadAsync()` became to execute the actions from the branch point
     rather than the genesis block when there is a branch point.  [[#991]]
+ -  `BlockPolicy<T>` became to validate `Block<T>.StateRootHash` property
+     of a `Block<T>`.  [[#986]]
 
 ### Bug fixes
 
@@ -315,6 +324,7 @@ To be released.
 [#972]: https://github.com/planetarium/libplanet/pull/972
 [#980]: https://github.com/planetarium/libplanet/pull/980
 [#981]: https://github.com/planetarium/libplanet/pull/981
+[#986]: https://github.com/planetarium/libplanet/pull/986
 [#991]: https://github.com/planetarium/libplanet/pull/991
 [#996]: https://github.com/planetarium/libplanet/pull/996
 [sleep mode]: https://en.wikipedia.org/wiki/Sleep_mode
