@@ -910,7 +910,7 @@ namespace Libplanet.Net
                         wId,
                         workspace.Tip
                     );
-                    BlockChain.Swap(workspace, render: false);
+                    BlockChain.Swap(workspace, renderActions: false);
                 }
 
                 foreach (Guid chainId in chainIds)

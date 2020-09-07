@@ -27,7 +27,7 @@ namespace Libplanet.Blockchain.Renderers
         void RenderBlock(Block<T> oldTip, Block<T> newTip);
 
         /// <summary>
-        /// Does things that should be done right after reorg has happened to a <see
+        /// Does things that should be done right before reorg happens to a <see
         /// cref="BlockChain{T}"/>.
         /// </summary>
         /// <remarks>For every call to this method, a call to <see

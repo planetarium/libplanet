@@ -1445,7 +1445,7 @@ namespace Libplanet.Tests.Blockchain
             BlockChain<DumbAction> fork = _blockChain.Fork(_blockChain.Tip.Hash);
             await fork.MineBlock(default);
             var prevRecords = _renderer.ReorgRecords;
-            _blockChain.Swap(fork, render: render);
+            _blockChain.Swap(fork, renderActions: render);
 
             // RenderReorg() should be invoked if and only if the actual reorg happens
             Assert.Equal(prevRecords, _renderer.ReorgRecords);

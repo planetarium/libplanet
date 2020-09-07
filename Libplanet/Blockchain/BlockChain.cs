@@ -1347,7 +1347,7 @@ namespace Libplanet.Blockchain
         // we need to add a synchronization mechanism to handle this correctly.
         internal void Swap(
             BlockChain<T> other,
-            bool render,
+            bool renderActions,
             StateCompleterSet<T>? stateCompleters = null
         )
         {
@@ -1414,7 +1414,15 @@ namespace Libplanet.Blockchain
                 topmostCommon
             );
 
-            if (render && ActionRenderers.Any())
+            if (!Tip.Equals(topmostCommon))
+            {
+                foreach (IRenderer<T> renderer in Renderers)
+                {
+                    renderer.RenderReorg(Tip, other.Tip, branchpoint: topmostCommon);
+                }
+            }
+
+            if (renderActions && ActionRenderers.Any())
             {
                 // Unrender stale actions.
                 _logger.Debug("Unrendering abandoned actions...");
@@ -1487,13 +1495,6 @@ namespace Libplanet.Blockchain
                 Store.SetCanonicalChainId(Id);
                 _blocks = new BlockSet<T>(Store);
                 TipChanged?.Invoke(this, (oldTip, newTip));
-                if (!oldTip.Equals(topmostCommon))
-                {
-                    foreach (IRenderer<T> renderer in Renderers)
-                    {
-                        renderer.RenderReorg(oldTip, newTip, branchpoint: topmostCommon);
-                    }
-                }
 
                 foreach (IRenderer<T> renderer in Renderers)
                 {
@@ -1508,7 +1509,7 @@ namespace Libplanet.Blockchain
                 _rwlock.ExitWriteLock();
             }
 
-            if (render && ActionRenderers.Any())
+            if (renderActions && ActionRenderers.Any())
             {
                 _logger.Debug("Rendering actions in new chain.");
 
