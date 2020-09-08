@@ -664,7 +664,7 @@ namespace Libplanet.Net.Protocols
             catch (Exception)
             {
                 IEnumerable<AggregateException> exceptions = awaitables
-                    .Where(t => !(t.Exception is null))
+                    .Where(t => t.IsFaulted)
                     .Select(t => t.Exception);
                 foreach (var ae in exceptions)
                 {
