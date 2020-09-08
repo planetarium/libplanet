@@ -6,6 +6,7 @@ using System.Numerics;
 using System.Security.Cryptography;
 using Bencodex;
 using Bencodex.Types;
+using Libplanet.Store.Trie;
 
 namespace Libplanet.Blocks
 {
@@ -67,7 +68,8 @@ namespace Libplanet.Blocks
         /// <paramref name="stateRootHash"/> (i.e., without action evaluation).
         /// Used for <see cref="Validate"/> checking <paramref name="nonce"/>.
         /// </param>
-        /// <param name="stateRootHash">...</param>
+        /// <param name="stateRootHash">The <see cref="ITrie.Hash"/> of the states on the block.
+        /// </param>
         public BlockHeader(
             long index,
             string timestamp,

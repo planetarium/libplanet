@@ -47,7 +47,8 @@ namespace Libplanet.Blocks
         /// <param name="preEvaluationHash">The hash derived from the block <em>except of</em>
         /// <paramref name="stateRootHash"/> (i.e., without action evaluation).
         /// Automatically determined if <c>null</c> is passed (which is default).</param>
-        /// <param name="stateRootHash">The <see cref="ITrie.Hash"/> at states the block.</param>
+        /// <param name="stateRootHash">The <see cref="ITrie.Hash"/> of the states on the block.
+        /// </param>
         /// <seealso cref="Mine"/>
         public Block(
             long index,
@@ -187,8 +188,9 @@ namespace Libplanet.Blocks
         public HashDigest<SHA256> PreEvaluationHash { get; }
 
         /// <summary>
-        /// ...
+        /// The <see cref="ITrie.Hash"/> of the states on the block.
         /// </summary>
+        /// <seealso cref="ITrie.Hash"/>
         public HashDigest<SHA256>? StateRootHash { get; }
 
         [IgnoreDuringEquals]
