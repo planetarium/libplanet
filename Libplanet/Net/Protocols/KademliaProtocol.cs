@@ -661,23 +661,27 @@ namespace Libplanet.Net.Protocols
             {
                 await Task.WhenAll(awaitables);
             }
-            catch (AggregateException ae)
+            catch (Exception)
             {
-                foreach (var e in ae.InnerExceptions)
+                IEnumerable<AggregateException> exceptions = awaitables
+                    .Where(t => !(t.Exception is null))
+                    .Select(t => t.Exception);
+                foreach (var ae in exceptions)
                 {
-                    if (e is PingTimeoutException pte)
+                    foreach (var ie in ae.InnerExceptions)
                     {
-                        // Remove timed out peers from the list.
-                        peers.Remove(pte.Target);
+                        if (ie is PingTimeoutException pte)
+                        {
+                            peers.Remove(pte.Target);
+                            break;
+                        }
                     }
-                    else
-                    {
-                        _logger.Error(
-                            e,
-                            "Some responses from neighbors found unexpectedly terminated: {e}",
-                            e
-                        );
-                    }
+
+                    _logger.Error(
+                        ae,
+                        "Some responses from neighbors found unexpectedly terminated: {ae}",
+                        ae
+                    );
                 }
             }
 
