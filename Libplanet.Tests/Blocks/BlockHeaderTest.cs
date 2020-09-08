@@ -29,7 +29,6 @@ namespace Libplanet.Tests.Blocks
                 miner: ImmutableArray<byte>.Empty,
                 timestamp: future,
                 preEvaluationHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
-                evaluationDigest: ImmutableArray<byte>.Empty,
                 stateRootHash: ImmutableArray<byte>.Empty
             );
 
@@ -57,7 +56,6 @@ namespace Libplanet.Tests.Blocks
                     CultureInfo.InvariantCulture
                 ),
                 preEvaluationHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
-                evaluationDigest: ImmutableArray<byte>.Empty,
                 stateRootHash: ImmutableArray<byte>.Empty
             );
 
@@ -82,7 +80,6 @@ namespace Libplanet.Tests.Blocks
                     CultureInfo.InvariantCulture
                 ),
                 preEvaluationHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
-                evaluationDigest: ImmutableArray<byte>.Empty,
                 stateRootHash: ImmutableArray<byte>.Empty
             );
 
@@ -105,7 +102,6 @@ namespace Libplanet.Tests.Blocks
                 miner: ImmutableArray<byte>.Empty,
                 timestamp: now.ToString(BlockHeader.TimestampFormat, CultureInfo.InvariantCulture),
                 preEvaluationHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
-                evaluationDigest: ImmutableArray<byte>.Empty,
                 stateRootHash: ImmutableArray<byte>.Empty
             );
 
@@ -123,7 +119,6 @@ namespace Libplanet.Tests.Blocks
                 miner: ImmutableArray<byte>.Empty,
                 timestamp: now.ToString(BlockHeader.TimestampFormat, CultureInfo.InvariantCulture),
                 preEvaluationHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
-                evaluationDigest: ImmutableArray<byte>.Empty,
                 stateRootHash: ImmutableArray<byte>.Empty
             );
 
@@ -141,7 +136,6 @@ namespace Libplanet.Tests.Blocks
                 miner: ImmutableArray<byte>.Empty,
                 timestamp: now.ToString(BlockHeader.TimestampFormat, CultureInfo.InvariantCulture),
                 preEvaluationHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
-                evaluationDigest: ImmutableArray<byte>.Empty,
                 stateRootHash: ImmutableArray<byte>.Empty
             );
 
@@ -164,7 +158,6 @@ namespace Libplanet.Tests.Blocks
                 miner: ImmutableArray<byte>.Empty,
                 timestamp: now.ToString(BlockHeader.TimestampFormat, CultureInfo.InvariantCulture),
                 preEvaluationHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
-                evaluationDigest: ImmutableArray<byte>.Empty,
                 stateRootHash: ImmutableArray<byte>.Empty
             );
 
@@ -182,7 +175,6 @@ namespace Libplanet.Tests.Blocks
                 miner: ImmutableArray<byte>.Empty,
                 timestamp: now.ToString(BlockHeader.TimestampFormat, CultureInfo.InvariantCulture),
                 preEvaluationHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
-                evaluationDigest: ImmutableArray<byte>.Empty,
                 stateRootHash: ImmutableArray<byte>.Empty
             );
 

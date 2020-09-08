@@ -213,10 +213,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 }
 
                 var stateRootHash = trie.Commit(rehearsal: true).Hash;
-                block = new Block<T>(
-                    block,
-                    null,
-                    stateRootHash);
+                block = new Block<T>(block, stateRootHash);
             }
 
             return block;
@@ -269,11 +266,9 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 );
             }
 
-            var actionEvaluations = block
-                .Evaluate(DateTimeOffset.UtcNow);
+            block.Validate(DateTimeOffset.Now);
 
-            HashDigest<SHA256>? actionsHash = ActionEvaluationsToHash(actionEvaluations);
-            return new Block<T>(block, actionsHash, null);
+            return block;
         }
 
         public static string ToString(BitArray bitArray)

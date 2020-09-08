@@ -34,8 +34,6 @@ namespace Libplanet.Blocks
 
         private static readonly byte[] HashKey = { 0x68 }; // 'h'
 
-        private static readonly byte[] EvaluationDigestKey = { 0x65 }; // 'e'
-
         private static readonly byte[] StateRootHashKey = { 0x73 }; // 's'
 
         private static readonly byte[] PreEvaluationHashKey = { 0x63 }; // 'c'
@@ -66,11 +64,9 @@ namespace Libplanet.Blocks
         /// <param name="hash">The hash of the <see cref="Block{T}"/>.
         /// Goes to the <see cref="Hash"/>.</param>
         /// <param name="preEvaluationHash">The hash derived from the block <em>except of</em>
-        /// <paramref name="evaluationDigest"/> (i.e., without action evaluation).
+        /// <paramref name="stateRootHash"/> (i.e., without action evaluation).
         /// Used for <see cref="Validate"/> checking <paramref name="nonce"/>.
         /// </param>
-        /// <param name="evaluationDigest">The hash derived from the result states of every
-        /// <see cref="Tx.Transaction{T}.Actions"/> of the block's entire transactions.</param>
         /// <param name="stateRootHash">...</param>
         public BlockHeader(
             long index,
@@ -83,7 +79,6 @@ namespace Libplanet.Blocks
             ImmutableArray<byte> txHash,
             ImmutableArray<byte> hash,
             ImmutableArray<byte> preEvaluationHash,
-            ImmutableArray<byte> evaluationDigest,
             ImmutableArray<byte> stateRootHash)
         {
             Index = index;
@@ -96,7 +91,6 @@ namespace Libplanet.Blocks
             TxHash = txHash;
             Hash = hash;
             PreEvaluationHash = preEvaluationHash;
-            EvaluationDigest = evaluationDigest;
             StateRootHash = stateRootHash;
         }
 
@@ -128,10 +122,6 @@ namespace Libplanet.Blocks
                 ? dict.GetValue<Binary>(PreEvaluationHashKey).ToImmutableArray()
                 : ImmutableArray<byte>.Empty;
 
-            EvaluationDigest = dict.ContainsKey((IKey)(Binary)EvaluationDigestKey)
-                ? dict.GetValue<Binary>(EvaluationDigestKey).ToImmutableArray()
-                : ImmutableArray<byte>.Empty;
-
             StateRootHash = dict.ContainsKey((IKey)(Binary)StateRootHashKey)
                 ? dict.GetValue<Binary>(StateRootHashKey).ToImmutableArray()
                 : ImmutableArray<byte>.Empty;
@@ -156,8 +146,6 @@ namespace Libplanet.Blocks
         public ImmutableArray<byte> Hash { get; }
 
         public ImmutableArray<byte> PreEvaluationHash { get; }
-
-        public ImmutableArray<byte> EvaluationDigest { get; }
 
         public ImmutableArray<byte> StateRootHash { get; }
 
@@ -224,11 +212,6 @@ namespace Libplanet.Blocks
             if (PreEvaluationHash.Any())
             {
                 dict = dict.Add(PreEvaluationHashKey, PreEvaluationHash.ToArray());
-            }
-
-            if (EvaluationDigest.Any())
-            {
-                dict = dict.Add(EvaluationDigestKey, EvaluationDigest.ToArray());
             }
 
             if (StateRootHash.Any())

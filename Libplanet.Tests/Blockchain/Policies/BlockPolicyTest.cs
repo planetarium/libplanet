@@ -287,7 +287,8 @@ namespace Libplanet.Tests.Blockchain.Policies
                 ImmutableDictionary<string, IValue>.Empty,
                 rehearsal: true);
             var genesisBlock = new Block<DumbAction>(
-                _fx.GenesisBlock, null, stateRootHash: genesisStateRootHash);
+                _fx.GenesisBlock,
+                stateRootHash: genesisStateRootHash);
             var store = new DefaultStore(null);
             var chain = new BlockChain<DumbAction>(
                 _policy,
@@ -304,7 +305,7 @@ namespace Libplanet.Tests.Blockchain.Policies
                 _emptyTransaction);
             chain.ExecuteActions(validNext);
             validNext =
-                new Block<DumbAction>(validNext, null, stateStore.GetRootHash(validNext.Hash));
+                new Block<DumbAction>(validNext, stateStore.GetRootHash(validNext.Hash));
             chain.Append(validNext);
 
             var invalidStateRootHash = Block<DumbAction>.Mine(
@@ -321,7 +322,6 @@ namespace Libplanet.Tests.Blockchain.Policies
             chain.SetStates(invalidStateRootHash, actionEvaluations, false);
             invalidStateRootHash = new Block<DumbAction>(
                 invalidStateRootHash,
-                null,
                 new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)));
             Assert.IsType<InvalidBlockStateRootHashException>(
                 _policy.ValidateNextBlock(

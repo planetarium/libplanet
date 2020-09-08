@@ -375,7 +375,6 @@ namespace Libplanet.Blockchain
 
             return new Block<T>(
                 block,
-                null,
                 stateRootHash);
         }
 
@@ -748,11 +747,7 @@ namespace Libplanet.Blockchain
             if (StateStore is TrieStateStore trieStateStore)
             {
                 SetStates(block, actionEvaluations, false);
-                block = new Block<T>(block, null, trieStateStore.GetRootHash(block.Hash));
-            }
-            else
-            {
-                block = new Block<T>(block, ActionEvaluationsToHash(actionEvaluations), null);
+                block = new Block<T>(block, trieStateStore.GetRootHash(block.Hash));
             }
 
             if (append)
