@@ -445,6 +445,11 @@ namespace Libplanet.Net.Protocols
             }
         }
 
+        internal void ClearTable()
+        {
+            _routing.Clear();
+        }
+
         /// <summary>
         /// Validate peer by send <see cref="Ping"/> to <paramref name="peer"/>. If target peer
         /// does not responds, remove it from the table.
