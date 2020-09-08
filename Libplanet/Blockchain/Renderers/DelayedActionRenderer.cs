@@ -171,8 +171,8 @@ namespace Libplanet.Blockchain.Renderers
             if (lower.Index >= upper.Index)
             {
                 throw new ArgumentException(
-                    $"The {nameof(upper)} block must has the greater index than " +
-                    $"the {nameof(lower)} block.",
+                    $"The {nameof(upper)} block (#{upper.Index} {upper}) must has the greater " +
+                    $"index than the {nameof(lower)} block (#{lower.Index} {lower}).",
                     nameof(upper)
                 );
             }

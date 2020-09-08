@@ -199,8 +199,8 @@ namespace Libplanet.Tests.Blockchain.Renderers
             // #5  -> no confirms
             // #5' -> no confirms
             renderer.RenderReorg(_chainA[5], _chainB[5], _branchpoint);
-            renderer.RenderBlock(_chainA[5], _chainB[5]);
             renderer.UnrenderAction(new DumbAction(default, "#5.1"), FakeContext(5), _emptyStates);
+            renderer.RenderBlock(_chainA[5], _chainB[5]);
             renderer.RenderAction(new DumbAction(default, "#5'.1"), FakeContext(5), _emptyStates);
             renderer.RenderActionError(
                 new DumbAction(default, "#5'.2"),
@@ -216,13 +216,13 @@ namespace Libplanet.Tests.Blockchain.Renderers
             // #5  -> 1 confirm;  #6 -> no confirm
             // #5' -> no confirms
             renderer.RenderReorg(_chainB[5], _chainA[6], _branchpoint);
-            renderer.RenderBlock(_chainB[5], _chainA[6]);
             renderer.UnrenderActionError(
                 new DumbAction(default, "#5'.2"),
                 FakeContext(5),
                 new ThrowException.SomeException("#5'.2")
             );
             renderer.UnrenderAction(new DumbAction(default, "#5'.1"), FakeContext(5), _emptyStates);
+            renderer.RenderBlock(_chainB[5], _chainA[6]);
             renderer.RenderAction(new DumbAction(default, "#5.1"), FakeContext(5), _emptyStates);
             renderer.RenderAction(new DumbAction(default, "#6.1"), FakeContext(6), _emptyStates);
             Assert.Equal(_chainA[4], renderer.Tip);
@@ -234,9 +234,9 @@ namespace Libplanet.Tests.Blockchain.Renderers
             // #5  -> 1 confirm; #6  -> no confirm
             // #5' -> 1 confirm; #6' -> no confirm
             renderer.RenderReorg(_chainA[6], _chainB[6], _branchpoint);
-            renderer.RenderBlock(_chainA[6], _chainB[6]);
             renderer.UnrenderAction(new DumbAction(default, "#6.1"), FakeContext(6), _emptyStates);
             renderer.UnrenderAction(new DumbAction(default, "#5.1"), FakeContext(5), _emptyStates);
+            renderer.RenderBlock(_chainA[6], _chainB[6]);
             renderer.RenderAction(new DumbAction(default, "#5'.1"), FakeContext(5), _emptyStates);
             renderer.RenderActionError(
                 new DumbAction(default, "#5'.2"),
@@ -253,7 +253,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
             // #5  -> 2 confirms; #6  -> 1 confirm; #7 -> no confirm
             // #5' -> 1 confirm;  #6' -> no confirm
             renderer.RenderReorg(_chainB[6], _chainA[7], _branchpoint);
-            renderer.RenderBlock(_chainB[6], _chainA[7]);
             renderer.UnrenderAction(new DumbAction(default, "#6'.1"), FakeContext(6), _emptyStates);
             renderer.UnrenderActionError(
                 new DumbAction(default, "#5'.2"),
@@ -261,6 +260,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 new ThrowException.SomeException("#5'.2")
             );
             renderer.UnrenderAction(new DumbAction(default, "#5'.1"), FakeContext(5), _emptyStates);
+            renderer.RenderBlock(_chainB[6], _chainA[7]);
             renderer.RenderAction(new DumbAction(default, "#5.1"), FakeContext(5), _emptyStates);
             renderer.RenderAction(new DumbAction(default, "#6.1"), FakeContext(6), _emptyStates);
             renderer.RenderAction(new DumbAction(default, "#7.1"), FakeContext(7), _emptyStates);
@@ -273,10 +273,10 @@ namespace Libplanet.Tests.Blockchain.Renderers
             // #5  -> 2 confirms; #6  -> 1 confirm; #7  -> no confirm
             // #5' -> 2 confirms; #6' -> 1 confirm; #7' -> no confirm
             renderer.RenderReorg(_chainA[7], _chainB[7], _branchpoint);
-            renderer.RenderBlock(_chainA[7], _chainB[7]);
             renderer.UnrenderAction(new DumbAction(default, "#7.1"), FakeContext(7), _emptyStates);
             renderer.UnrenderAction(new DumbAction(default, "#6.1"), FakeContext(6), _emptyStates);
             renderer.UnrenderAction(new DumbAction(default, "#5.1"), FakeContext(5), _emptyStates);
+            renderer.RenderBlock(_chainA[7], _chainB[7]);
             renderer.RenderAction(new DumbAction(default, "#5'.1"), FakeContext(5), _emptyStates);
             renderer.RenderActionError(
                 new DumbAction(default, "#5'.2"),
@@ -294,7 +294,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
             // #5  -> 3 confirms; #6  -> 2 confirms; #7  -> 1 confirm; #8 -> no confirm
             // #5' -> 2 confirms; #6' -> 1 confirm;  #7' -> no confirm
             renderer.RenderReorg(_chainB[7], _chainA[8], _branchpoint);
-            renderer.RenderBlock(_chainB[7], _chainA[8]);
             renderer.UnrenderAction(new DumbAction(default, "#7'.1"), FakeContext(7), _emptyStates);
             renderer.UnrenderAction(new DumbAction(default, "#6'.1"), FakeContext(6), _emptyStates);
             renderer.UnrenderActionError(
@@ -303,6 +302,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 new ThrowException.SomeException("#5'.2")
             );
             renderer.UnrenderAction(new DumbAction(default, "#5'.1"), FakeContext(5), _emptyStates);
+            renderer.RenderBlock(_chainB[7], _chainA[8]);
             renderer.RenderAction(new DumbAction(default, "#5.1"), FakeContext(5), _emptyStates);
             renderer.RenderAction(new DumbAction(default, "#6.1"), FakeContext(6), _emptyStates);
             renderer.RenderAction(new DumbAction(default, "#7.1"), FakeContext(7), _emptyStates);
@@ -319,11 +319,11 @@ namespace Libplanet.Tests.Blockchain.Renderers
             // #5  -> 3 confirms; #6  -> 2 confirms; #7  -> 1 confirm; #8  -> no confirm
             // #5' -> 3 confirms; #6' -> 2 confirms; #7' -> 1 confirm; #8' -> no confirm
             renderer.RenderReorg(_chainA[8], _chainB[8], _branchpoint);
-            renderer.RenderBlock(_chainA[8], _chainB[8]);
             renderer.UnrenderAction(new DumbAction(default, "#8.1"), FakeContext(8), _emptyStates);
             renderer.UnrenderAction(new DumbAction(default, "#7.1"), FakeContext(7), _emptyStates);
             renderer.UnrenderAction(new DumbAction(default, "#6.1"), FakeContext(6), _emptyStates);
             renderer.UnrenderAction(new DumbAction(default, "#5.1"), FakeContext(5), _emptyStates);
+            renderer.RenderBlock(_chainA[8], _chainB[8]);
             renderer.RenderAction(new DumbAction(default, "#5'.1"), FakeContext(5), _emptyStates);
             renderer.RenderActionError(
                 new DumbAction(default, "#5'.2"),
