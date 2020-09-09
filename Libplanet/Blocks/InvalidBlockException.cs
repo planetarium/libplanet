@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Serialization;
 
 namespace Libplanet.Blocks
 {
@@ -6,6 +7,11 @@ namespace Libplanet.Blocks
     {
         public InvalidBlockException(string message)
             : base(message)
+        {
+        }
+
+        protected InvalidBlockException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
         }
     }
