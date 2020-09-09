@@ -1,7 +1,7 @@
 parameters:
   configuration: Debug
   testArguments: ""
-  altLocale: ""
+  locale: "en_US.UTF8"
 
 steps:
 
@@ -47,24 +47,9 @@ steps:
       ${{ parameters.testArguments }}
   env:
     TURN_SERVER_URL: ${{ parameters.turnServerUrl }}
-  timeoutInMinutes: 10
-
-# Run tests with an alternative locale configuration
-- task: DotNetCoreCLI@2
-  displayName: dotnet test (${{ parameters.altLocale }})
-  condition: ne('${{ parameters.altLocale }}', '')
-  inputs:
-    command: test
-    projects: '**/*Tests/*.csproj'
-    arguments: >-
-      --configuration ${{ parameters.configuration }}
-      -p:SkipSonar=true
-      ${{ parameters.testArguments }}
-  env:
-    TURN_SERVER_URL: ${{ parameters.turnServerUrl }}
-    LANG: ${{ parameters.altLocale }}
-    LANGUAGE: ${{ parameters.altLocale }}
-    LC_ALL: ${{ parameters.altLocale }}
+    LANG: ${{ parameters.locale }}
+    LANGUAGE: ${{ parameters.locale }}
+    LC_ALL: ${{ parameters.locale }}
   timeoutInMinutes: 10
 
 - task: PublishTestResults@2

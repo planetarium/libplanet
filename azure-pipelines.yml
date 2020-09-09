@@ -76,6 +76,7 @@ jobs:
     parameters:
       configuration: $(configuration)
       turnServerUrl: $(turnServerUrl)
+      testArguments: -stoponfail
   timeoutInMinutes: 30
 
 - job: macOS_Mono
@@ -86,6 +87,7 @@ jobs:
     parameters:
       configuration: $(configuration)
       turnServerUrl: $(turnServerUrl)
+      testArguments: -stoponfail
   timeoutInMinutes: 30
 
 - job: Windows_Mono
@@ -101,7 +103,7 @@ jobs:
       configuration: $(configuration)
       turnServerUrl: $(turnServerUrl)
       testPrefix: '"$PROGRAMFILES/Mono/bin/mono.exe"'
-      testArguments: -appdomains denied
+      testArguments: -appdomains denied -stoponfail
   timeoutInMinutes: 30
 
 - job: macOS_Unity
@@ -135,7 +137,6 @@ jobs:
     parameters:
       configuration: $(configuration)
       turnServerUrl: $(turnServerUrl)
-      altLocale: ar_SA.UTF8
   timeoutInMinutes: 30
 
 - job: macOS_NETCore
@@ -146,7 +147,6 @@ jobs:
     parameters:
       configuration: $(configuration)
       turnServerUrl: $(turnServerUrl)
-      altLocale: he_IL.UTF8
   timeoutInMinutes: 30
 
 - job: Windows_NETCore
@@ -158,7 +158,41 @@ jobs:
       configuration: $(configuration)
       turnServerUrl: $(turnServerUrl)
       testArguments: '-v n'
-      altLocale: fr_FR.UTF8
+  timeoutInMinutes: 30
+
+# Run tests with an alternative locale configuration
+- job: Linux_NETCore_ar_SA
+  pool:
+    vmImage: 'ubuntu-16.04'
+  steps:
+  - template: .azure-pipelines/dotnet-core.yml
+    parameters:
+      configuration: $(configuration)
+      turnServerUrl: $(turnServerUrl)
+      locale: ar_SA.UTF8
+  timeoutInMinutes: 30
+
+- job: macOS_NETCore_he_IL
+  pool:
+    vmImage: macOS-10.15
+  steps:
+  - template: .azure-pipelines/dotnet-core.yml
+    parameters:
+      configuration: $(configuration)
+      turnServerUrl: $(turnServerUrl)
+      locale: he_IL.UTF8
+  timeoutInMinutes: 30
+
+- job: Windows_NETCore_fr_FR
+  pool:
+    vmImage: windows-2019
+  steps:
+  - template: .azure-pipelines/dotnet-core.yml
+    parameters:
+      configuration: $(configuration)
+      turnServerUrl: $(turnServerUrl)
+      testArguments: '-v n'
+      locale: fr_FR.UTF8
   timeoutInMinutes: 30
 
 - job: Windows_NETFramework
@@ -169,3 +203,4 @@ jobs:
     parameters:
       configuration: $(configuration)
       turnServerUrl: $(turnServerUrl)
+      testArguments: -stoponfail
