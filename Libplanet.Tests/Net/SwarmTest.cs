@@ -86,23 +86,28 @@ namespace Libplanet.Tests.Net
                 TestUtils.MakeBlockChain(policy, _fx4.Store, renderers: loggedRenderers[3]),
             };
 
+            var genesisBlockHavingStateRoot =
+                TestUtils.MineGenesis<DumbAction>(blockAction: policy.BlockAction);
             _mptBlockchains = new List<BlockChain<DumbAction>>
             {
                 TestUtils.MakeBlockChain(
                     policy,
                     _mptFx1.Store,
                     stateStore: _mptFx1.StateStore,
-                    renderers: loggedRenderers[0]),
+                    renderers: loggedRenderers[0],
+                    genesisBlock: genesisBlockHavingStateRoot),
                 TestUtils.MakeBlockChain(
                     policy,
                     _mptFx2.Store,
                     stateStore: _mptFx2.StateStore,
-                    renderers: loggedRenderers[1]),
+                    renderers: loggedRenderers[1],
+                    genesisBlock: genesisBlockHavingStateRoot),
                 TestUtils.MakeBlockChain(
                     policy,
                     _mptFx3.Store,
                     stateStore: _mptFx3.StateStore,
-                    renderers: loggedRenderers[2]),
+                    renderers: loggedRenderers[2],
+                    genesisBlock: genesisBlockHavingStateRoot),
             };
 
             _finalizers = new List<Func<Task>>();
