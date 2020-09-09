@@ -1457,12 +1457,17 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Theory]
-        [InlineData(true)]
-        [InlineData(false)]
-        public async Task SwapWithoutReorg(bool render)
+        [InlineData(true, true)]
+        [InlineData(true, false)]
+        [InlineData(false, true)]
+        [InlineData(false, false)]
+        public async Task SwapWithoutReorg(bool direction, bool render)
         {
             BlockChain<DumbAction> fork = _blockChain.Fork(_blockChain.Tip.Hash);
-            await fork.MineBlock(default);
+
+            // When direction == true:  the higher chain goes to the lower  chain  [#N -> #N-1]
+            // When direction == false: the lower  chain goes to the higher chain  [#N -> #N+1]
+            await (direction ? _blockChain : fork).MineBlock(default);
             var prevRecords = _renderer.ReorgRecords;
             _blockChain.Swap(fork, renderActions: render);
 
