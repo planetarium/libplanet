@@ -76,6 +76,7 @@ jobs:
     parameters:
       configuration: $(configuration)
       turnServerUrl: $(turnServerUrl)
+      testArguments: -stoponfail
   timeoutInMinutes: 30
 
 - job: macOS_Mono
@@ -86,6 +87,7 @@ jobs:
     parameters:
       configuration: $(configuration)
       turnServerUrl: $(turnServerUrl)
+      testArguments: -stoponfail
   timeoutInMinutes: 30
 
 - job: Windows_Mono
@@ -101,7 +103,7 @@ jobs:
       configuration: $(configuration)
       turnServerUrl: $(turnServerUrl)
       testPrefix: '"$PROGRAMFILES/Mono/bin/mono.exe"'
-      testArguments: -appdomains denied
+      testArguments: -appdomains denied -stoponfail
   timeoutInMinutes: 30
 
 - job: macOS_Unity
@@ -169,3 +171,4 @@ jobs:
     parameters:
       configuration: $(configuration)
       turnServerUrl: $(turnServerUrl)
+      testArguments: -stoponfail
