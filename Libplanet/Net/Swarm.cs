@@ -803,10 +803,13 @@ namespace Libplanet.Net
                                 foreach (Block<T> deltaBlock in deltaBlocks)
                                 {
                                     cancellationToken.ThrowIfCancellationRequested();
+
+                                    // FIXME: Shouldn't we turn off renderBlocks option in IBD?
                                     workspace.Append(
                                         deltaBlock,
                                         DateTimeOffset.UtcNow,
                                         evaluateActions: false,
+                                        renderBlocks: true,
                                         renderActions: false
                                     );
                                     progress?.Report(new BlockVerificationState
@@ -1880,6 +1883,7 @@ namespace Libplanet.Net
                             block,
                             DateTimeOffset.UtcNow,
                             evaluateActions: evaluateActions,
+                            renderBlocks: true,
                             renderActions: renderActions
                         );
                         receivedBlockCount++;

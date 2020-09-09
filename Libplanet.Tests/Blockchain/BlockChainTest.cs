@@ -565,6 +565,7 @@ namespace Libplanet.Tests.Blockchain
                     block,
                     DateTimeOffset.UtcNow,
                     evaluateActions: false,
+                    renderBlocks: true,
                     renderActions: true
                 )
             );
@@ -575,6 +576,7 @@ namespace Libplanet.Tests.Blockchain
                 block,
                 DateTimeOffset.UtcNow,
                 evaluateActions: false,
+                renderBlocks: true,
                 renderActions: false
             );
             Assert.Equal(block, _blockChain.Tip);
@@ -834,6 +836,7 @@ namespace Libplanet.Tests.Blockchain
                 block1,
                 DateTimeOffset.UtcNow,
                 evaluateActions: false,
+                renderBlocks: true,
                 renderActions: false
             );
 
@@ -1378,6 +1381,7 @@ namespace Libplanet.Tests.Blockchain
                 forkTip,
                 DateTimeOffset.UtcNow,
                 evaluateActions: true,
+                renderBlocks: true,
                 renderActions: false
             );
 
@@ -2134,6 +2138,7 @@ namespace Libplanet.Tests.Blockchain
                 block1,
                 DateTimeOffset.UtcNow,
                 evaluateActions: false,
+                renderBlocks: true,
                 renderActions: false);
 
             var txEvaluations = block1.EvaluateActionsPerTx(a =>
