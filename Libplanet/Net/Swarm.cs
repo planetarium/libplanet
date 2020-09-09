@@ -852,13 +852,17 @@ namespace Libplanet.Net
                     // see issue #436, #430
                     try
                     {
-                        receivedStateHeight = await SyncRecentStatesFromTrustedPeersAsync(
-                            workspace,
-                            progress,
-                            trustedPeersWithTip.ToImmutableList(),
-                            initialLocator,
-                            cancellationToken
-                        );
+                        if (BlockChain.StateStore is IBlockStatesStore)
+                        {
+                            receivedStateHeight = await SyncRecentStatesFromTrustedPeersAsync(
+                                workspace,
+                                progress,
+                                trustedPeersWithTip.ToImmutableList(),
+                                initialLocator,
+                                cancellationToken
+                            );
+                        }
+
                         break;
                     }
                     catch (InvalidStateTargetException e)
@@ -1471,7 +1475,7 @@ namespace Libplanet.Net
                     }
 
                     if (reply is RecentStates recentStates
-                        && _store is IBlockStatesStore blockStatesStore)
+                        && BlockChain.StateStore is IBlockStatesStore blockStatesStore)
                     {
                         if (recentStates.Missing)
                         {

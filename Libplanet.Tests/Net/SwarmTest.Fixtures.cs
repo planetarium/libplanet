@@ -25,9 +25,15 @@ namespace Libplanet.Tests.Net
         private readonly StoreFixture _fx3;
         private readonly StoreFixture _fx4;
 
+        private readonly StoreFixture _mptFx1;
+        private readonly StoreFixture _mptFx2;
+        private readonly StoreFixture _mptFx3;
+
         private readonly List<BlockChain<DumbAction>> _blockchains;
+        private readonly List<BlockChain<DumbAction>> _mptBlockchains;
         private readonly List<DumbRenderer<DumbAction>> _renderers;
         private readonly List<Swarm<DumbAction>> _swarms;
+        private readonly List<Swarm<DumbAction>> _mptSwarms;
         private readonly List<Func<Task>> _finalizers;
 
         private static async Task<(Address, Block<DumbAction>[])>
