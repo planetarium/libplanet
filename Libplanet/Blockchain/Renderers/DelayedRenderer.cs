@@ -212,10 +212,12 @@ namespace Libplanet.Blockchain.Renderers
 
             HashDigest<SHA256>? prev = block.PreviousHash;
             Block<T>? newTip = null;
+            int i = 0;
             do
             {
                 if (!(prev is HashDigest<SHA256> prevHash &&
-                      Store.GetBlock<T>(prevHash) is Block<T> prevBlock))
+                      Store.GetBlock<T>(prevHash) is Block<T> prevBlock) ||
+                    i > Confirmations)
                 {
                     break;
                 }
@@ -244,6 +246,7 @@ namespace Libplanet.Blockchain.Renderers
                 }
 
                 prev = prevBlock.PreviousHash;
+                i++;
             }
             while (true);
 
