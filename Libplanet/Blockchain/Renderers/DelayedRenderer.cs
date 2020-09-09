@@ -153,7 +153,10 @@ namespace Libplanet.Blockchain.Renderers
                     );
                 }
 
-                OnTipChanged(oldTip, newTip);
+                if (oldTip is null || !oldTip.Equals(newTip))
+                {
+                    OnTipChanged(oldTip, newTip);
+                }
             }
         }
 
