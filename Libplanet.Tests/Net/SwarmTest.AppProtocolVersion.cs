@@ -17,15 +17,13 @@ namespace Libplanet.Tests.Net
         [Fact(Timeout = Timeout)]
         public async Task DetectAppProtocolVersion()
         {
-            var blockChain = _blockchains[0];
-
             var signer = new PrivateKey();
             AppProtocolVersion v2 = AppProtocolVersion.Sign(signer, 2);
             AppProtocolVersion v3 = AppProtocolVersion.Sign(signer, 3);
-            var a = CreateSwarm(blockChain, appProtocolVersion: v2);
-            var b = CreateSwarm(blockChain, appProtocolVersion: v3);
-            var c = CreateSwarm(blockChain, appProtocolVersion: v2);
-            var d = CreateSwarm(blockChain, appProtocolVersion: v3);
+            var a = CreateSwarm(appProtocolVersion: v2);
+            var b = CreateSwarm(appProtocolVersion: v3);
+            var c = CreateSwarm(appProtocolVersion: v2);
+            var d = CreateSwarm(appProtocolVersion: v3);
 
             try
             {
@@ -64,7 +62,6 @@ namespace Libplanet.Tests.Net
             AppProtocolVersion v1 = AppProtocolVersion.Sign(signer, 1);
             AppProtocolVersion v2 = AppProtocolVersion.Sign(signer, 2);
             var a = CreateSwarm(
-                _blockchains[0],
                 appProtocolVersion: v1,
                 differentAppProtocolVersionEncountered: (_, ver, __) =>
                 {
@@ -72,7 +69,7 @@ namespace Libplanet.Tests.Net
                     return false;
                 }
             );
-            var b = CreateSwarm(_blockchains[1], appProtocolVersion: v2);
+            var b = CreateSwarm(appProtocolVersion: v2);
 
             try
             {
@@ -95,8 +92,6 @@ namespace Libplanet.Tests.Net
         [Fact(Timeout = Timeout)]
         public async Task IgnoreUntrustedAppProtocolVersion()
         {
-            var blockChain = _blockchains[0];
-
             var signer = new PrivateKey();
             AppProtocolVersion older = AppProtocolVersion.Sign(signer, 2);
             AppProtocolVersion newer = AppProtocolVersion.Sign(signer, 3);
@@ -121,33 +116,27 @@ namespace Libplanet.Tests.Net
             }
 
             var a = CreateSwarm(
-                blockChain,
                 appProtocolVersion: older,
                 trustedAppProtocolVersionSigners: new[] { signer.PublicKey },
                 differentAppProtocolVersionEncountered: DifferentAppProtocolVersionEncountered
             );
             var b = CreateSwarm(
-                blockChain,
                 appProtocolVersion: newer,
                 trustedAppProtocolVersionSigners: new[] { signer.PublicKey }
             );
             var c = CreateSwarm(
-                blockChain,
                 appProtocolVersion: older,
                 trustedAppProtocolVersionSigners: new[] { signer.PublicKey }
             );
             var d = CreateSwarm(
-                blockChain,
                 appProtocolVersion: newer,
                 trustedAppProtocolVersionSigners: new[] { signer.PublicKey }
             );
             var e = CreateSwarm(
-                blockChain,
                 appProtocolVersion: untrustedOlder,
                 trustedAppProtocolVersionSigners: new[] { untrustedSigner.PublicKey }
             );
             var f = CreateSwarm(
-                blockChain,
                 appProtocolVersion: untrustedNewer,
                 trustedAppProtocolVersionSigners: new[] { untrustedSigner.PublicKey }
             );
