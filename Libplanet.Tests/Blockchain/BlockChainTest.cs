@@ -1440,6 +1440,25 @@ namespace Libplanet.Tests.Blockchain
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
+        public void SwapForSameTip(bool render)
+        {
+            BlockChain<DumbAction> fork = _blockChain.Fork(_blockChain.Tip.Hash);
+            var prevBlockRecords = _renderer.BlockRecords;
+            var prevReorgRecords = _renderer.ReorgRecords;
+            var prevActionRecords = _renderer.ActionRecords;
+            var prevErrorRecords = _renderer.ErrorRecords;
+            _blockChain.Swap(fork, renderActions: render);
+
+            // Render methods should be invoked if and only if the tip changes
+            Assert.Equal(prevBlockRecords, _renderer.BlockRecords);
+            Assert.Equal(prevReorgRecords, _renderer.ReorgRecords);
+            Assert.Equal(prevActionRecords, _renderer.ActionRecords);
+            Assert.Equal(prevErrorRecords, _renderer.ErrorRecords);
+        }
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
         public async Task SwapWithoutReorg(bool render)
         {
             BlockChain<DumbAction> fork = _blockChain.Fork(_blockChain.Tip.Hash);
