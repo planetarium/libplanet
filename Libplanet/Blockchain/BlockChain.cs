@@ -1360,16 +1360,28 @@ namespace Libplanet.Blockchain
             // to the new/stale tip, incomplete states need to be complemented anyway...
             StateCompleterSet<T> completers = stateCompleters ?? StateCompleterSet<T>.Recalculate;
 
-            _logger.Debug(
-                "The blockchain was reorged from " +
-                "{OldChainId} (#{OldTipIndex} {OldTipHash}) " +
-                "to {NewChainId} (#{NewTipIndex} {NewTipHash}).",
-                Id,
-                Tip.Index,
-                Tip.Hash,
-                other.Id,
-                other.Tip.Index,
-                other.Tip.Hash);
+            bool renderBlocks;
+            if (Tip.Equals(other.Tip))
+            {
+                // If it's swapped for a chain with the same tip, it means there is no state change.
+                // Hence render is unnecessary.
+                renderActions = false;
+                renderBlocks = false;
+            }
+            else
+            {
+                renderBlocks = true;
+                _logger.Debug(
+                    "The blockchain was reorged from " +
+                    "{OldChainId} (#{OldTipIndex} {OldTipHash}) " +
+                    "to {NewChainId} (#{NewTipIndex} {NewTipHash}).",
+                    Id,
+                    Tip.Index,
+                    Tip.Hash,
+                    other.Id,
+                    other.Tip.Index,
+                    other.Tip.Hash);
+            }
 
             // Finds the branch point.
             Block<T> topmostCommon = null;
@@ -1414,7 +1426,7 @@ namespace Libplanet.Blockchain
                 topmostCommon
             );
 
-            if (!Tip.Equals(topmostCommon))
+            if (renderBlocks && !Tip.Equals(topmostCommon))
             {
                 foreach (IRenderer<T> renderer in Renderers)
                 {
@@ -1496,9 +1508,12 @@ namespace Libplanet.Blockchain
                 _blocks = new BlockSet<T>(Store);
                 TipChanged?.Invoke(this, (oldTip, newTip));
 
-                foreach (IRenderer<T> renderer in Renderers)
+                if (renderBlocks)
                 {
-                    renderer.RenderBlock(oldTip: oldTip, newTip: newTip);
+                    foreach (IRenderer<T> renderer in Renderers)
+                    {
+                        renderer.RenderBlock(oldTip: oldTip, newTip: newTip);
+                    }
                 }
 
                 _transactions = new TransactionSet<T>(Store);
