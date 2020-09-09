@@ -174,19 +174,34 @@ namespace Libplanet.Tests.Net.Protocols
             var transportB = CreateTestTransport();
             var transportC = CreateTestTransport();
 
-            await StartTestTransportAsync(transportA);
-            await StartTestTransportAsync(transportB);
-            await StartTestTransportAsync(transportC);
+            try
+            {
+                await StartTestTransportAsync(transportA);
+                await StartTestTransportAsync(transportB);
+                await StartTestTransportAsync(transportC);
 
-            await transportB.BootstrapAsync(new[] { transportA.AsPeer });
-            await transportC.BootstrapAsync(new[] { transportA.AsPeer });
+                await transportB.BootstrapAsync(new[] { transportA.AsPeer });
+                await transportC.BootstrapAsync(new[] { transportA.AsPeer });
 
-            Assert.Contains(transportB.AsPeer, transportC.Protocol.Peers);
-            Assert.Contains(transportC.AsPeer, transportB.Protocol.Peers);
+                Assert.Contains(transportB.AsPeer, transportC.Protocol.Peers);
+                Assert.Contains(transportC.AsPeer, transportB.Protocol.Peers);
 
-            await transportA.StopAsync(TimeSpan.Zero);
-            await transportB.StopAsync(TimeSpan.Zero);
-            await transportC.StopAsync(TimeSpan.Zero);
+                ((KademliaProtocol)transportA.Protocol).ClearTable();
+                ((KademliaProtocol)transportB.Protocol).ClearTable();
+                ((KademliaProtocol)transportC.Protocol).ClearTable();
+
+                await transportB.AddPeersAsync(new[] { transportC.AsPeer }, null);
+                await transportC.StopAsync(TimeSpan.Zero);
+                await transportA.BootstrapAsync(new[] { transportB.AsPeer });
+                Assert.Contains(transportB.AsPeer, transportA.Peers);
+                Assert.DoesNotContain(transportC.AsPeer, transportA.Peers);
+            }
+            finally
+            {
+                await transportA.StopAsync(TimeSpan.Zero);
+                await transportB.StopAsync(TimeSpan.Zero);
+                await transportC.StopAsync(TimeSpan.Zero);
+            }
         }
 
         [Fact(Timeout = Timeout)]

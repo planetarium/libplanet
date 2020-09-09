@@ -445,6 +445,11 @@ namespace Libplanet.Net.Protocols
             }
         }
 
+        internal void ClearTable()
+        {
+            _routing.Clear();
+        }
+
         /// <summary>
         /// Validate peer by send <see cref="Ping"/> to <paramref name="peer"/>. If target peer
         /// does not responds, remove it from the table.
@@ -656,23 +661,27 @@ namespace Libplanet.Net.Protocols
             {
                 await Task.WhenAll(awaitables);
             }
-            catch (AggregateException ae)
+            catch (Exception)
             {
-                foreach (var e in ae.InnerExceptions)
+                IEnumerable<AggregateException> exceptions = awaitables
+                    .Where(t => t.IsFaulted)
+                    .Select(t => t.Exception);
+                foreach (var ae in exceptions)
                 {
-                    if (e is PingTimeoutException pte)
+                    foreach (var ie in ae.InnerExceptions)
                     {
-                        // Remove timed out peers from the list.
-                        peers.Remove(pte.Target);
+                        if (ie is PingTimeoutException pte)
+                        {
+                            peers.Remove(pte.Target);
+                            break;
+                        }
                     }
-                    else
-                    {
-                        _logger.Error(
-                            e,
-                            "Some responses from neighbors found unexpectedly terminated: {e}",
-                            e
-                        );
-                    }
+
+                    _logger.Error(
+                        ae,
+                        "Some responses from neighbors found unexpectedly terminated: {ae}",
+                        ae
+                    );
                 }
             }
 
