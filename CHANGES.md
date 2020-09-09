@@ -225,6 +225,8 @@ To be released.
     it fails to connect to all neighbors.  [[#933]]
  -  `Swarm<T>` became to respond to the messages with different app protocol version.
     [[#949]]
+ -  `Swarm<T>.PreloadAsync()` became to execute the actions from the branch point
+    rather than the genesis block when there is a branch point.  [[#991]]
 
 ### Bug fixes
 
@@ -309,6 +311,7 @@ To be released.
 [#972]: https://github.com/planetarium/libplanet/pull/972
 [#980]: https://github.com/planetarium/libplanet/pull/980
 [#981]: https://github.com/planetarium/libplanet/pull/981
+[#991]: https://github.com/planetarium/libplanet/pull/991
 [sleep mode]: https://en.wikipedia.org/wiki/Sleep_mode
 
 

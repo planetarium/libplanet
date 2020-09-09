@@ -1469,6 +1469,60 @@ namespace Libplanet.Tests.Net
             }
         }
 
+        [Fact(Timeout = Timeout)]
+        public async Task ActionExecutionWithBranchpoint()
+        {
+            var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
+            var fx1 = new DefaultStoreFixture(memory: true, mpt: true);
+            var fx2 = new DefaultStoreFixture(memory: true, mpt: true);
+            var seedChain = TestUtils.MakeBlockChain(policy, fx1.Store);
+            var receiverChain = TestUtils.MakeBlockChain(policy, fx2.Store);
+            var receiverStateStore = (TrieStateStore)fx2.StateStore;
+
+            Swarm<DumbAction> seed = CreateSwarm(seedChain);
+            Swarm<DumbAction> receiver = CreateSwarm(receiverChain);
+
+            for (int i = 0; i < 10; i++)
+            {
+                var block = await seedChain.MineBlock(_fx1.Address1);
+                receiverChain.Append(block);
+            }
+
+            receiverStateStore.PruneStates(new[] { receiverChain.Tip.Hash }.ToImmutableHashSet());
+
+            var forked = seedChain.Fork(seedChain[5].Hash);
+            seedChain.Swap(forked, false);
+            for (int i = 0; i < 10; i++)
+            {
+                await seedChain.MineBlock(_fx1.Address1);
+            }
+
+            var actionExecutionCount = 0;
+
+            var progress = new Progress<PreloadState>(state =>
+            {
+                if (state is ActionExecutionState)
+                {
+                    actionExecutionCount++;
+                }
+            });
+
+            try
+            {
+                await StartAsync(seed);
+                await BootstrapAsync(receiver, seed.AsPeer);
+                await receiver.PreloadAsync(progress: progress);
+                await Task.Delay(500);
+
+                Assert.Equal(seedChain.Tip, receiverChain.Tip);
+                Assert.Equal(10, actionExecutionCount);
+            }
+            finally
+            {
+                await StopAsync(seed);
+            }
+        }
+
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
@@ -1504,6 +1558,7 @@ namespace Libplanet.Tests.Net
                 await receiverSwarm.PreloadAsync(
                     trustedStateValidators: ImmutableHashSet<Address>.Empty.Add(seedSwarm.Address),
                     progress: progress);
+                await Task.Delay(500);
 
                 Assert.Equal(seedSwarm.BlockChain.Tip, receiverSwarm.BlockChain.Tip);
                 // NOTE: the reason to use ternary-operator is because it repeat block verification

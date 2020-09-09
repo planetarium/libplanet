@@ -581,6 +581,7 @@ namespace Libplanet.Net
                 Block<T> tipCandidate = initialTip;
 
                 Block<T> tempTip = tipCandidate;
+                Block<T> branchpoint = null;
 
                 long? receivedStateHeight = null;
                 long height = 0;
@@ -793,6 +794,7 @@ namespace Libplanet.Net
                         Block<T> bottomBlock = deltaBottom.Value;
                         if (bottomBlock.PreviousHash is HashDigest<SHA256> bp)
                         {
+                            branchpoint = workspace[bp];
                             workspace = workspace.Fork(bp);
                             chainIds.Add(workspace.Id);
                             try
@@ -876,7 +878,7 @@ namespace Libplanet.Net
                 {
                     PreloadExecuteActions(
                         workspace,
-                        initialTip,
+                        branchpoint,
                         receivedStateHeight,
                         progress,
                         cancellationToken);
@@ -1582,7 +1584,7 @@ namespace Libplanet.Net
 
         private void PreloadExecuteActions(
             BlockChain<T> workspace,
-            Block<T> initialTip,
+            Block<T> branchpoint,
             long? receivedStateHeight,
             IProgress<PreloadState> progress,
             CancellationToken cancellationToken)
@@ -1590,9 +1592,7 @@ namespace Libplanet.Net
             long initHeight;
             if (receivedStateHeight is null)
             {
-                initHeight = initialTip is null || !workspace[initialTip.Index].Equals(initialTip)
-                    ? 0
-                    : initialTip.Index + 1;
+                initHeight = branchpoint?.Index + 1 ?? 0;
             }
             else
             {
