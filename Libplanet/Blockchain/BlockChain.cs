@@ -1426,7 +1426,7 @@ namespace Libplanet.Blockchain
                 topmostCommon
             );
 
-            if (renderBlocks && !Tip.Equals(topmostCommon))
+            if (renderBlocks && !Tip.Equals(topmostCommon) && !other.Tip.Equals(topmostCommon))
             {
                 foreach (IRenderer<T> renderer in Renderers)
                 {

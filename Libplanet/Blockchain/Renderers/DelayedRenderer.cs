@@ -197,7 +197,14 @@ namespace Libplanet.Blockchain.Renderers
             if (!newTip.PreviousHash.Equals(oldTip.Hash))
             {
                 branchpoint = FindBranchpoint(oldTip, newTip);
-                Renderer.RenderReorg(oldTip, newTip, branchpoint);
+                if (!branchpoint.Equals(oldTip) && !branchpoint.Equals(newTip))
+                {
+                    Renderer.RenderReorg(oldTip, newTip, branchpoint);
+                }
+                else
+                {
+                    branchpoint = null;
+                }
             }
 
             Renderer.RenderBlock(oldTip, newTip);
