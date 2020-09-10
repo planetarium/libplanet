@@ -250,9 +250,9 @@ To be released.
  -  Fixed a bug that `TurnClient` had thrown `InvalidOperationException` when
     reconnecting.  [[#957], [#972]]
  -  Fixed a bug that `Swarm<T>` had not received block headers after failing
-    to recevie previous blocks.  [[#996]]
+    to receive previous blocks.  [[#996]]
  -  Fixed a bug that `Swarm<T>` had thrown `InvalidGenesisBlockException`
-    when reorganizing repeatedly.  [[#996]]
+    when reorg its chain repeatedly.  [[#996]]
 
 ### CLI tools
 
