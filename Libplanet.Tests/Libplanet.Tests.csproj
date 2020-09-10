@@ -29,6 +29,10 @@
     <TargetFramework>net47</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(TestsTargetFramework)'!='' ">
+    <TargetFramework>$(TestsTargetFramework)</TargetFramework>
+  </PropertyGroup>
+
   <PropertyGroup>
     <CodeAnalysisRuleSet>..\Libplanet.Tests.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
