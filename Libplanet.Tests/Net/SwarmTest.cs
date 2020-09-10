@@ -2026,6 +2026,50 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact(Timeout = Timeout)]
+        public async Task FindSpecificPeerAsyncDepthFail()
+        {
+            Swarm<DumbAction> swarmA = _swarms[0];
+            Swarm<DumbAction> swarmB = _swarms[1];
+            Swarm<DumbAction> swarmC = _swarms[2];
+            Swarm<DumbAction> swarmD = _swarms[3];
+            try
+            {
+                await StartAsync(swarmA);
+                await StartAsync(swarmB);
+                await StartAsync(swarmC);
+                await StartAsync(swarmD);
+
+                await swarmA.AddPeersAsync(new Peer[] { swarmB.AsPeer }, null);
+                await swarmB.AddPeersAsync(new Peer[] { swarmC.AsPeer }, null);
+                await swarmC.AddPeersAsync(new Peer[] { swarmD.AsPeer }, null);
+
+                BoundPeer foundPeer = await swarmA.FindSpecificPeerAsync(
+                    swarmC.AsPeer.Address,
+                    1,
+                    TimeSpan.FromMilliseconds(3000));
+
+                Assert.Equal(swarmC.AsPeer.Address, foundPeer.Address);
+                ((KademliaProtocol)swarmA.Protocol).ClearTable();
+                Assert.Empty(swarmA.Peers);
+                await swarmA.AddPeersAsync(new Peer[] { swarmB.AsPeer }, null);
+
+                foundPeer = await swarmA.FindSpecificPeerAsync(
+                    swarmD.AsPeer.Address,
+                    1,
+                    TimeSpan.FromMilliseconds(3000));
+
+                Assert.Null(foundPeer);
+            }
+            finally
+            {
+                await StopAsync(swarmA);
+                await StopAsync(swarmB);
+                await StopAsync(swarmC);
+                await StopAsync(swarmD);
+            }
+        }
+
+        [Fact(Timeout = Timeout)]
         public async Task DoNotFillMultipleTimes()
         {
             Swarm<DumbAction> receiver = _swarms[0];
