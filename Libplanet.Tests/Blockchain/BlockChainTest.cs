@@ -1121,14 +1121,18 @@ namespace Libplanet.Tests.Blockchain
                 );
 
                 Assert.Equal(1, renderer.ActionRecords.Count(r => r.Action is DumbAction));
+                Assert.Single(renderer.BlockRecords);
                 Assert.Single(DumbAction.ExecuteRecords.Value.Where(r => !r.Rehearsal));
 
                 await blockChain.MineBlock(miner, DateTimeOffset.UtcNow);
                 await blockChain.MineBlock(miner, DateTimeOffset.UtcNow);
 
+                int blockRecordsBeforeFork = renderer.BlockRecords.Count;
+
                 blockChain.Fork(blockChain.Tip.Hash);
 
                 Assert.Equal(1, renderer.ActionRecords.Count(r => r.Action is DumbAction));
+                Assert.Equal(blockRecordsBeforeFork, renderer.BlockRecords.Count);
                 Assert.Single(DumbAction.ExecuteRecords.Value.Where(r => !r.Rehearsal));
             }
         }
