@@ -1968,6 +1968,13 @@ namespace Libplanet.Net
                         $" {nameof(ProcessFillBlocks)}: {{e}}";
                     _logger.Error(e, msg, e);
                 }
+                finally
+                {
+                    using (await _blockSyncMutex.LockAsync(cancellationToken))
+                    {
+                        _demandBlockHash = null;
+                    }
+                }
             }
         }
 

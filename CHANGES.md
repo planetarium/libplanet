@@ -249,6 +249,8 @@ To be released.
     was once called.  [[#965]]
  -  Fixed a bug that `TurnClient` had thrown `InvalidOperationException` when
     reconnecting.  [[#957], [#972]]
+ -  Fixed a bug that `Swarm<T>` had not received block headers after failing
+    to recevie previous blocks.  [[#996]]
 
 ### CLI tools
 
@@ -312,6 +314,7 @@ To be released.
 [#980]: https://github.com/planetarium/libplanet/pull/980
 [#981]: https://github.com/planetarium/libplanet/pull/981
 [#991]: https://github.com/planetarium/libplanet/pull/991
+[#996]: https://github.com/planetarium/libplanet/pull/996
 [sleep mode]: https://en.wikipedia.org/wiki/Sleep_mode
 
 
