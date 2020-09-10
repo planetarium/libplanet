@@ -1810,10 +1810,7 @@ namespace Libplanet.Net
                     {
                         _logger.Debug("It doesn't need to fork.");
                     }
-
-                    // We can omit this clause if assume every chain shares
-                    // same genesis block...
-                    else if (!BlockChain.ContainsBlock(branchPoint))
+                    else if (!workspace.ContainsBlock(branchPoint))
                     {
                         // FIXME: This behavior can unexpectedly terminate the swarm (and the game
                         // app) if it encounters a peer having a different blockchain, and therefore
