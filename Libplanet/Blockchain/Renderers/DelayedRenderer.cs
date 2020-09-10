@@ -221,49 +221,73 @@ namespace Libplanet.Blockchain.Renderers
             _confirmed.TryAdd(block.Hash, 0);
 
             HashDigest<SHA256>? prev = block.PreviousHash;
-            Block<T>? newTip = null;
-            int i = 0;
             do
             {
                 if (!(prev is HashDigest<SHA256> prevHash &&
-                      Store.GetBlock<T>(prevHash) is Block<T> prevBlock) ||
-                    i > Confirmations)
+                      Store.GetBlock<T>(prevHash) is Block<T> prevBlock))
                 {
                     break;
                 }
 
                 uint c = _confirmed.AddOrUpdate(prevHash, k => 1U, (k, v) => v + 1U);
                 Logger.Verbose(
-                    "The block #{BlockIndex} {BlockHash} has {Confirmations} confirmations.",
+                    "The block #{BlockIndex} {BlockHash} has {Confirmations} confirmations. " +
+                    "(The last confirmation was done by #{DiscoveredIndex} {DiscoveredHash}.)",
                     prevBlock.Index,
                     prevBlock.Hash,
-                    c
+                    c,
+                    block.Index,
+                    block.Hash
                 );
 
                 if (c >= Confirmations)
                 {
-                    if (newTip is null)
+                    if (!(Tip is Block<T> t))
                     {
-                        newTip = prevBlock;
+                        Logger.Verbose(
+                            "Promoting #{NewTipIndex} {NewTipHash} as a new tip since there is " +
+                            "no tip yet...",
+                            prevBlock.Index,
+                            prevBlock.Hash
+                        );
+                        Tip = prevBlock;
+                    }
+                    else if (t.TotalDifficulty < prevBlock.TotalDifficulty)
+                    {
+                        Logger.Verbose(
+                            "Promoting #{NewTipIndex} {NewTipHash} as a new tip since its total " +
+                            "difficulty is more than the previous tip #{PreviousTipIndex} " +
+                            "{PreviousTipHash} ({NewDifficulty} > {PreviousDifficulty}).",
+                            prevBlock.Index,
+                            prevBlock.Hash,
+                            t.Index,
+                            t.Hash,
+                            prevBlock.TotalDifficulty,
+                            t.TotalDifficulty
+                        );
+                        Tip = prevBlock;
                     }
                     else
                     {
-#pragma warning disable S1116, SA1106, SA1503
-                        // The below while statement is not "empty"; its condition has an effect.
-                        while (!_confirmed.TryRemove(prevHash, out _));
-#pragma warning restore S1116, SA1106, SA1503
+                        Logger.Verbose(
+                            "Although #{BlockIndex} {BlockHash} has been confirmed enough," +
+                            "its difficulty is less than the current tip #{TipIndex} {TipHash} " +
+                            "({Difficulty} < {TipDifficulty}).",
+                            prevBlock.Index,
+                            prevBlock.Hash,
+                            t.Index,
+                            t.Hash,
+                            prevBlock.TotalDifficulty,
+                            t.TotalDifficulty
+                        );
                     }
+
+                    break;
                 }
 
                 prev = prevBlock.PreviousHash;
-                i++;
             }
             while (true);
-
-            if (newTip is Block<T>)
-            {
-                Tip = newTip;
-            }
         }
 
         private Block<T> FindBranchpoint(Block<T> a, Block<T> b)
