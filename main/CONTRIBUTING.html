@@ -148,8 +148,20 @@ All of them depend on <a href="https://xunit.github.io/">Xunit</a>, and every na
 corresponds to one in <em>Libplanet*</em> projects.
 If there's <em>Libplanet.Foo.Bar</em> class there also should be
 <em>Libplanet.Foo.Bar.Tests</em> to test it.</p>
-<p>To build and run unit tests at a time execute the below command:</p>
+<p>To build and run unit tests at a time with .NET Core execute the below command:</p>
 <pre><code>dotnet test
+</code></pre>
+<p>To run unit tests with .NET Framework:</p>
+<pre><code class="lang-pwsh">nuget install xunit.runner.console -Version 2.4.1
+msbuild /restore /p:TestsTargetFramework=net472
+&amp; (gci xunit.runner.console.*\tools\net472\xunit.console.exe | select -f 1) `
+  (gci *.Tests\bin\Debug\net472\*.Tests.dll)
+</code></pre>
+<p>Or with Mono:</p>
+<pre><code class="lang-bash">nuget install xunit.runner.console
+msbuild /restore /p:TestsTargetFramework=net472
+mono xunit.runner.console.*/tools/net472/xunit.console.exe \
+    *.Tests/bin/Debug/net472/*.Tests.dll
 </code></pre>
 <h3 id="turn_server_url"><code>TURN_SERVER_URL</code></h3>
 <p>Some tests depend on a TURN server.  If <code>TURN_SERVER_URL</code> environment variable
