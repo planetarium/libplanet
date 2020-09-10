@@ -128,9 +128,27 @@ corresponds to one in *Libplanet&ast;* projects.
 If there's *Libplanet.Foo.Bar* class there also should be
 *Libplanet.Foo.Bar.Tests* to test it.
 
-To build and run unit tests at a time execute the below command:
+To build and run unit tests at a time with .NET Core execute the below command:
 
     dotnet test
+
+To run unit tests with .NET Framework:
+
+~~~~ pwsh
+nuget install xunit.runner.console -Version 2.4.1
+msbuild /restore /p:TestsTargetFramework=net472
+& (gci xunit.runner.console.*\tools\net472\xunit.console.exe | select -f 1) `
+  (gci *.Tests\bin\Debug\net472\*.Tests.dll)
+~~~~
+
+Or with Mono:
+
+~~~~ bash
+nuget install xunit.runner.console
+msbuild /restore /p:TestsTargetFramework=net472
+mono xunit.runner.console.*/tools/net472/xunit.console.exe \
+    *.Tests/bin/Debug/net472/*.Tests.dll
+~~~~
 
 [Azure Pipelines]: https://dev.azure.com/planetarium/libplanet/_build?definitionId=3&_a=summary&repositoryFilter=3&branchFilter=622%2C622%2C622%2C622
 [3]: https://codecov.io/gh/planetarium/libplanet

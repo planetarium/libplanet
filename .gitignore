@@ -32,6 +32,7 @@ _UpgradeReport_Files/
 mono_crash.*.json
 FodyWeavers.xsd
 BenchmarkDotNet.Artifacts
+xunit.runner.console.*/
 
 Thumbs.db
 Desktop.ini

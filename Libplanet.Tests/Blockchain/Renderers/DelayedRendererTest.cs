@@ -28,13 +28,21 @@ namespace Libplanet.Tests.Blockchain.Renderers
             chainA[0] = chainB[0] = TestUtils.MineGenesis<DumbAction>();
             for (int i = 1; i < chainA.Length / 2; i++)
             {
-                _branchpoint = chainA[i] = chainB[i] = TestUtils.MineNext(chainA[i - 1]);
+                _branchpoint = chainA[i] = chainB[i] =
+                    TestUtils.MineNext(chainA[i - 1]);
             }
 
+            int extraDifficulty = 1;
             for (int i = chainA.Length / 2; i < chainA.Length; i++)
             {
-                chainA[i] = TestUtils.MineNext(chainA[i - 1]);
-                chainB[i] = TestUtils.MineNext(chainB[i - 1]);
+                chainA[i] = TestUtils.MineNext(chainA[i - 1], difficulty: 2);
+                chainB[i] = TestUtils.MineNext(chainB[i - 1], difficulty: 2 + extraDifficulty);
+
+                // The block right next the branchpoint in the chainB has 1 more difficulty than
+                // the block with the same index in the chainA, and then rest blocks have the
+                // same difficulty 2.  That means, every block after the branchpoint in the chainB
+                // has exactly 1 more difficulty than a block with the same index in the chainA.
+                extraDifficulty = 0;
             }
 
             _chainA = chainA;
@@ -148,8 +156,13 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 BlockRenderer = (oldTip, newTip) => blockLogs.Add((oldTip, newTip)),
                 ReorgRenderer = (oldTip, newTip, bp) => reorgLogs.Add((oldTip, newTip, bp)),
             };
-            var renderer = new DelayedRenderer<DumbAction>(innerRenderer, _store, 3);
-            Assert.Null(renderer.Tip);
+            var delayedRenderer = new DelayedRenderer<DumbAction>(innerRenderer, _store, 3);
+            var renderer = new LoggedRenderer<DumbAction>(
+                delayedRenderer,
+                _logger,
+                LogEventLevel.Verbose
+            );
+            Assert.Null(delayedRenderer.Tip);
             Assert.Empty(blockLogs);
             Assert.Empty(reorgLogs);
 
@@ -178,7 +191,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             // #5  -> no confirms
             // #5' -> no confirms
             renderer.RenderBlock(_chainA[4], _chainA[5]);
-            Assert.Null(renderer.Tip);
+            Assert.Null(delayedRenderer.Tip);
             Assert.Empty(reorgLogs);
             Assert.Empty(blockLogs);
 
@@ -187,7 +200,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             // #5' -> no confirms
             renderer.RenderReorg(_chainA[5], _chainB[5], _branchpoint);
             renderer.RenderBlock(_chainA[5], _chainB[5]);
-            Assert.Null(renderer.Tip);
+            Assert.Null(delayedRenderer.Tip);
             Assert.Empty(reorgLogs);
             Assert.Empty(blockLogs);
 
@@ -196,7 +209,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             // #5' -> no confirms
             renderer.RenderReorg(_chainB[5], _chainA[6], _branchpoint);
             renderer.RenderBlock(_chainB[5], _chainA[6]);
-            Assert.Equal(_chainA[4], renderer.Tip);
+            Assert.Equal(_chainA[4], delayedRenderer.Tip);
             Assert.Empty(reorgLogs);
             Assert.Empty(blockLogs);
 
@@ -205,7 +218,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             // #5' -> 1 confirm; #6' -> no confirm
             renderer.RenderReorg(_chainA[6], _chainB[6], _branchpoint);
             renderer.RenderBlock(_chainA[6], _chainB[6]);
-            Assert.Equal(_chainA[4], renderer.Tip);
+            Assert.Equal(_chainA[4], delayedRenderer.Tip);
             Assert.Empty(reorgLogs);
             Assert.Empty(blockLogs);
 
@@ -214,7 +227,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             // #5' -> 1 confirm;  #6' -> no confirm
             renderer.RenderReorg(_chainB[6], _chainA[7], _branchpoint);
             renderer.RenderBlock(_chainB[6], _chainA[7]);
-            Assert.Equal(_chainA[4], renderer.Tip);
+            Assert.Equal(_chainA[4], delayedRenderer.Tip);
             Assert.Empty(reorgLogs);
             Assert.Empty(blockLogs);
 
@@ -223,7 +236,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             // #5' -> 2 confirms; #6' -> 1 confirm; #7' -> no confirm
             renderer.RenderReorg(_chainA[7], _chainB[7], _branchpoint);
             renderer.RenderBlock(_chainA[7], _chainB[7]);
-            Assert.Equal(_chainA[4], renderer.Tip);
+            Assert.Equal(_chainA[4], delayedRenderer.Tip);
             Assert.Empty(reorgLogs);
             Assert.Empty(blockLogs);
 
@@ -232,7 +245,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             // #5' -> 2 confirms; #6' -> 1 confirm;  #7' -> no confirm
             renderer.RenderReorg(_chainB[7], _chainA[8], _branchpoint);
             renderer.RenderBlock(_chainB[7], _chainA[8]);
-            Assert.Equal(_chainA[5], renderer.Tip);
+            Assert.Equal(_chainA[5], delayedRenderer.Tip);
             Assert.Empty(reorgLogs);
             Assert.Equal(new[] { (_chainA[4], _chainA[5]) }, blockLogs);
 
@@ -241,14 +254,14 @@ namespace Libplanet.Tests.Blockchain.Renderers
             // #5' -> 3 confirms; #6' -> 2 confirms; #7' -> 1 confirm; #8' -> no confirm
             renderer.RenderReorg(_chainA[8], _chainB[8], _branchpoint);
             renderer.RenderBlock(_chainA[8], _chainB[8]);
-            Assert.Equal(_chainB[5], renderer.Tip);
+            Assert.Equal(_chainB[5], delayedRenderer.Tip);
             Assert.Equal(new[] { (_chainA[5], _chainB[5], _branchpoint) }, reorgLogs);
             Assert.Equal(new[] { (_chainA[4], _chainA[5]), (_chainA[5], _chainB[5]) }, blockLogs);
 
             // tip changed -> #6'; render(#5', #6')
             // #5' -> gone; #6' -> 3 confirms; #7' -> 2 confirm; #8' -> 1 confirm; #9' -> 1 confirm
             renderer.RenderBlock(_chainB[8], _chainB[9]);
-            Assert.Equal(_chainB[6], renderer.Tip);
+            Assert.Equal(_chainB[6], delayedRenderer.Tip);
             Assert.Single(reorgLogs);
             Assert.Equal(
                 new[]

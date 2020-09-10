@@ -10,6 +10,19 @@ namespace Libplanet.Blockchain.Renderers
     /// on a <see cref="BlockChain{T}"/>.
     /// If you need more fine-grained events than <see cref="IRenderer{T}"/>,
     /// implement this interface instead.
+    /// <para>The invocation order of methods are:</para>
+    /// <list type="number">
+    /// <item><description><see cref="IRenderer{T}.RenderReorg(Block{T}, Block{T}, Block{T})"/>
+    /// </description></item>
+    /// <item><description><see cref="UnrenderAction(IAction, IActionContext, IAccountStateDelta)"/>
+    /// &amp; <see cref="UnrenderActionError(IAction, IActionContext, Exception)"/></description>
+    /// </item>
+    /// <item><description><see cref="IRenderer{T}.RenderBlock(Block{T}, Block{T})"/>
+    /// </description></item>
+    /// <item><description><see cref="RenderAction(IAction, IActionContext, IAccountStateDelta)"/>
+    /// &amp; <see cref="RenderActionError(IAction, IActionContext, Exception)"/></description>
+    /// </item>
+    /// </list>
     /// </summary>
     /// <typeparam name="T">An <see cref="IAction"/> type.  It should match to
     /// <see cref="BlockChain{T}"/>'s type parameter.</typeparam>
