@@ -16,7 +16,7 @@ namespace Libplanet.Blockchain
         where T : IAction, new()
     {
         private readonly ILogger _logger;
-        private readonly IAction _blockAction;
+        private readonly IAction? _blockAction;
         private readonly Func<Address, HashDigest<SHA256>?, StateCompleter<T>, IValue?>
             _stateGetter;
 
@@ -25,7 +25,7 @@ namespace Libplanet.Blockchain
             _balanceGetter;
 
         internal BlockEvaluator(
-            IAction blockAction,
+            IAction? blockAction,
             Func<Address, HashDigest<SHA256>?, StateCompleter<T>, IValue?> stateGetter,
             Func<Address, Currency, HashDigest<SHA256>?,
                 FungibleAssetStateCompleter<T>, FungibleAssetValue> balanceGetter)

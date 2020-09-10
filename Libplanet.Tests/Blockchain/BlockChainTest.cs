@@ -2518,7 +2518,8 @@ namespace Libplanet.Tests.Blockchain
             var stateStore = new TrieStateStore(
                 new MemoryKeyValueStore(), new MemoryKeyValueStore());
             var genesisBlock =
-                TestUtils.MineGenesis<DumbAction>(blockAction: _blockChain.Policy.BlockAction);
+                TestUtils.MineGenesis<DumbAction>(
+                    blockAction: _blockChain.Policy.BlockAction, checkStateRootHash: true);
             BlockChain<DumbAction> blockChain = TestUtils.MakeBlockChain(
                 _blockChain.Policy, store, stateStore: stateStore, genesisBlock: genesisBlock);
 

@@ -177,7 +177,8 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             Address? miner = null,
             IEnumerable<Transaction<T>> transactions = null,
             DateTimeOffset? timestamp = null,
-            IAction blockAction = null
+            IAction blockAction = null,
+            bool checkStateRootHash = false
         )
             where T : IAction, new()
         {
@@ -197,7 +198,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 transactions: transactions
             );
 
-            if (!(blockAction is null))
+            if (checkStateRootHash)
             {
                 var blockEvaluator = new BlockEvaluator<T>(
                     blockAction,

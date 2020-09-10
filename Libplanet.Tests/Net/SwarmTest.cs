@@ -87,7 +87,8 @@ namespace Libplanet.Tests.Net
             };
 
             var genesisBlockHavingStateRoot =
-                TestUtils.MineGenesis<DumbAction>(blockAction: policy.BlockAction);
+                TestUtils.MineGenesis<DumbAction>(
+                    blockAction: policy.BlockAction, checkStateRootHash: true);
             _mptBlockchains = new List<BlockChain<DumbAction>>
             {
                 TestUtils.MakeBlockChain(

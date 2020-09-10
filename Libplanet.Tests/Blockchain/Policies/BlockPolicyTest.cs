@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
-using Bencodex.Types;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
@@ -282,13 +280,8 @@ namespace Libplanet.Tests.Blockchain.Policies
             //        Actually, it depends on BlockChain<T> to update states and it makes hard to
             //        calculate state root hash. To resolve this problem,
             //        it should be moved into StateStore.
-            HashDigest<SHA256>? genesisStateRootHash = stateStore.SetStates(
-                _fx.GenesisBlock,
-                ImmutableDictionary<string, IValue>.Empty,
-                rehearsal: true);
-            var genesisBlock = new Block<DumbAction>(
-                _fx.GenesisBlock,
-                stateRootHash: genesisStateRootHash);
+            var genesisBlock = TestUtils.MineGenesis<DumbAction>(
+                blockAction: _policy.BlockAction, checkStateRootHash: true);
             var store = new DefaultStore(null);
             var chain = new BlockChain<DumbAction>(
                 _policy,
