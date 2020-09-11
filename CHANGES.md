@@ -137,6 +137,8 @@ To be released.
  -  The existing `BlockHeaderMessage` message type (with the type number `0x0d`) was
     replaced by a new `BlockHeaderMessage` message type
     (with the type number `0x0c`).  [[#1003], [#1004]]
+ -  Removed `PreloadBlockDownloadFailEventArgs` class.
+ -  Removed `blockDownloadFailed` parameter from `Swarm<T>.PreloadAsync()` method.
 
 ### Backward-incompatible storage format changes
 

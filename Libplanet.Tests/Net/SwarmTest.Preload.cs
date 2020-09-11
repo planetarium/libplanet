@@ -241,58 +241,6 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact(Timeout = Timeout)]
-        public async Task PreloadFailed()
-        {
-            Swarm<DumbAction> minerSwarm = _swarms[0];
-            Swarm<DumbAction> receiverSwarm = _swarms[1];
-
-            foreach (var unused in Enumerable.Range(0, 10))
-            {
-                await minerSwarm.BlockChain.MineBlock(_fx1.Address1);
-            }
-
-            receiverSwarm.Options.BlockHashRecvTimeout = TimeSpan.FromMilliseconds(10);
-
-            var isCalled = false;
-            void Handler(object sender, PreloadBlockDownloadFailEventArgs e)
-            {
-                if (e.InnerExceptions.All(ex => ex is TimeoutException))
-                {
-                    isCalled = true;
-                }
-            }
-
-            try
-            {
-                // SwarmException should be thrown if event handler doesn't exist.
-                await StartAsync(minerSwarm);
-
-                await receiverSwarm.AddPeersAsync(new[] { minerSwarm.AsPeer }, null);
-                Task waitTask = receiverSwarm.PreloadStarted.WaitAsync();
-                Task preloadTask = receiverSwarm.PreloadAsync(TimeSpan.FromSeconds(15));
-                await waitTask;
-                await StopAsync(minerSwarm);
-                await Assert.ThrowsAsync<AggregateException>(async () => await preloadTask);
-
-                // Event handler should be called if it exists.
-                await StartAsync(minerSwarm);
-
-                waitTask = receiverSwarm.PreloadStarted.WaitAsync();
-                preloadTask = receiverSwarm.PreloadAsync(
-                    TimeSpan.FromSeconds(15),
-                    blockDownloadFailed: Handler);
-                await waitTask;
-                await StopAsync(minerSwarm);
-                await preloadTask;
-                Assert.True(isCalled);
-            }
-            finally
-            {
-                await StopAsync(minerSwarm);
-            }
-        }
-
-        [Fact(Timeout = Timeout)]
         public async Task PreloadWithFailedActions()
         {
             var policy = new BlockPolicy<ThrowException>();
