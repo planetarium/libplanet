@@ -7,12 +7,14 @@ using System.Security.Cryptography;
 using System.Text;
 using Bencodex;
 using Libplanet.Action;
+using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Store;
+using Libplanet.Store.Trie;
 using Libplanet.Tests.Common;
 using Libplanet.Tx;
 using Xunit;
@@ -174,7 +176,9 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         public static Block<T> MineGenesis<T>(
             Address? miner = null,
             IEnumerable<Transaction<T>> transactions = null,
-            DateTimeOffset? timestamp = null
+            DateTimeOffset? timestamp = null,
+            IAction blockAction = null,
+            bool checkStateRootHash = false
         )
             where T : IAction, new()
         {
@@ -183,7 +187,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 transactions = new List<Transaction<T>>();
             }
 
-            return new Block<T>(
+            var block = new Block<T>(
                 index: 0,
                 difficulty: 0,
                 totalDifficulty: 0,
@@ -193,6 +197,27 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 timestamp: timestamp ?? new DateTimeOffset(2018, 11, 29, 0, 0, 0, TimeSpan.Zero),
                 transactions: transactions
             );
+
+            if (checkStateRootHash)
+            {
+                var blockEvaluator = new BlockEvaluator<T>(
+                    blockAction,
+                    (address, digest, arg3) => null,
+                    (address, currency, arg3, arg4) => new FungibleAssetValue(currency));
+                var actionEvaluationResult = blockEvaluator
+                    .EvaluateActions(block, StateCompleterSet<T>.Reject)
+                    .GetTotalDelta(BlockChain<T>.ToStateKey, BlockChain<T>.ToFungibleAssetKey);
+                var trie = new MerkleTrie(new DefaultKeyValueStore(null));
+                foreach (var pair in actionEvaluationResult)
+                {
+                    trie.Set(Encoding.UTF8.GetBytes(pair.Key), pair.Value);
+                }
+
+                var stateRootHash = trie.Commit(rehearsal: true).Hash;
+                block = new Block<T>(block, stateRootHash);
+            }
+
+            return block;
         }
 
         public static Block<T> MineNext<T>(
@@ -242,11 +267,9 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 );
             }
 
-            var actionEvaluations = block
-                .Evaluate(DateTimeOffset.UtcNow);
+            block.Validate(DateTimeOffset.Now);
 
-            HashDigest<SHA256>? actionsHash = ActionEvaluationsToHash(actionEvaluations);
-            return new Block<T>(block, actionsHash);
+            return block;
         }
 
         public static string ToString(BitArray bitArray)
@@ -263,7 +286,8 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             PrivateKey privateKey = null,
             DateTimeOffset? timestamp = null,
             IEnumerable<IRenderer<T>> renderers = null,
-            IStateStore stateStore = null
+            IStateStore stateStore = null,
+            Block<T> genesisBlock = null
         )
             where T : IAction, new()
         {
@@ -284,7 +308,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 null,
                 actions,
                 timestamp: timestamp ?? DateTimeOffset.MinValue);
-            var genesisBlock = new Block<T>(
+            genesisBlock = genesisBlock ?? new Block<T>(
                 0,
                 0,
                 0,

@@ -6,7 +6,6 @@ using Bencodex;
 using Bencodex.Types;
 using Libplanet.Crypto;
 using Libplanet.Store.Trie;
-using Libplanet.Store.Trie.Nodes;
 using Xunit;
 
 namespace Libplanet.Tests.Store.Trie
@@ -76,7 +75,7 @@ namespace Libplanet.Tests.Store.Trie
 
             byte[] path = TestUtils.GetRandomBytes(32);
             trieA.Set(path, (Text)"foo");
-            HashDigest<SHA256> rootHash = Hashcash.Hash(codec.Encode(trieA.Root.ToBencodex()));
+            HashDigest<SHA256> rootHash = trieA.Hash;
             Assert.True(trieA.TryGet(path, out IValue stateA));
             Assert.Equal((Text)"foo", stateA);
 
@@ -95,10 +94,25 @@ namespace Libplanet.Tests.Store.Trie
             ITrie trieC = trieB.Commit();
             ITrie trieD = trieC.Commit();
 
-            Assert.NotEqual(trieA.Root.Hash(), trieB.Root.Hash());
-            Assert.NotEqual(trieA.Root.Hash(), trieC.Root.Hash());
-            Assert.NotEqual(trieB.Root.Hash(), trieC.Root.Hash());
-            Assert.Equal(trieC.Root.Hash(), trieD.Root.Hash());
+            Assert.NotEqual(trieA.Hash, trieB.Hash);
+            Assert.NotEqual(trieA.Hash, trieC.Hash);
+            Assert.NotEqual(trieB.Hash, trieC.Hash);
+            Assert.Equal(trieC.Hash, trieD.Hash);
+        }
+
+        [Fact]
+        public void EmptyRootHash()
+        {
+            IKeyValueStore keyValueStore = new MemoryKeyValueStore();
+            ITrie trie = new MerkleTrie(keyValueStore);
+            Assert.Equal(MerkleTrie.EmptyRootHash, trie.Hash);
+
+            var committedTrie = trie.Commit();
+            Assert.Equal(MerkleTrie.EmptyRootHash, committedTrie.Hash);
+
+            trie.Set(default(Address).ToByteArray(), Dictionary.Empty);
+            committedTrie = trie.Commit();
+            Assert.NotEqual(MerkleTrie.EmptyRootHash, committedTrie.Hash);
         }
     }
 }

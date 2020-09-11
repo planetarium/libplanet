@@ -15,6 +15,7 @@ using Libplanet.Blockchain.Renderers;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Store;
+using Libplanet.Store.Trie;
 using Libplanet.Tx;
 using Serilog;
 
@@ -154,6 +155,7 @@ namespace Libplanet.Blockchain
 
             _logger = Log.ForContext<BlockChain<T>>()
                 .ForContext("CanonicalChainId", Id);
+            BlockEvaluator = new BlockEvaluator<T>(policy.BlockAction, GetState, GetBalance);
 
             if (Count == 0)
             {
@@ -255,6 +257,8 @@ namespace Libplanet.Blockchain
 
         internal IStateStore StateStore { get; }
 
+        internal BlockEvaluator<T> BlockEvaluator { get; }
+
         /// <summary>
         /// Gets the block corresponding to the <paramref name="index"/>.
         /// </summary>
@@ -331,11 +335,15 @@ namespace Libplanet.Blockchain
         /// If it's null, it will use new private key as default.</param>
         /// <param name="timestamp">The timestamp of the genesis block. If it's null, it will
         /// use <see cref="DateTimeOffset.UtcNow"/> as default.</param>
+        /// <param name="blockAction">A block action to execute and be rendered for every block.
+        /// It must match to <see cref="BlockPolicy{T}.BlockAction"/> of <see cref="Policy"/>.
+        /// </param>
         /// <returns>The genesis block mined with parameters.</returns>
         public static Block<T> MakeGenesisBlock(
             IEnumerable<T> actions = null,
             PrivateKey privateKey = null,
-            DateTimeOffset? timestamp = null)
+            DateTimeOffset? timestamp = null,
+            IAction blockAction = null)
         {
             privateKey = privateKey ?? new PrivateKey();
             actions = actions ?? ImmutableArray<T>.Empty;
@@ -344,7 +352,7 @@ namespace Libplanet.Blockchain
                 Transaction<T>.Create(0, privateKey, null, actions, timestamp: timestamp),
             };
 
-            return Block<T>.Mine(
+            Block<T> block = Block<T>.Mine(
                 0,
                 0,
                 0,
@@ -352,6 +360,22 @@ namespace Libplanet.Blockchain
                 null,
                 timestamp ?? DateTimeOffset.UtcNow,
                 transactions);
+
+            var blockEvaluator = new BlockEvaluator<T>(
+                blockAction,
+                (address, digest, stateCompleter) => null,
+                (address, currency, hash, fungibleAssetStateCompleter)
+                    => new FungibleAssetValue(currency));
+            var actionEvaluationResult = blockEvaluator
+                .EvaluateActions(block, StateCompleterSet<T>.Reject)
+                .GetTotalDelta(ToStateKey, ToFungibleAssetKey);
+            var trie = new MerkleTrie(new DefaultKeyValueStore(null));
+            trie.Set(actionEvaluationResult);
+            var stateRootHash = trie.Commit(rehearsal: true).Hash;
+
+            return new Block<T>(
+                block,
+                stateRootHash);
         }
 
         /// <summary>
@@ -717,9 +741,14 @@ namespace Libplanet.Blockchain
                 cts.Dispose();
             }
 
-            var actionEvaluations = EvaluateActions(block, StateCompleterSet<T>.Recalculate);
+            var actionEvaluations = BlockEvaluator.EvaluateActions(
+                block, StateCompleterSet<T>.Recalculate);
 
-            block = new Block<T>(block, ActionEvaluationsToHash(actionEvaluations));
+            if (StateStore is TrieStateStore trieStateStore)
+            {
+                SetStates(block, actionEvaluations, false);
+                block = new Block<T>(block, trieStateStore.GetRootHash(block.Hash));
+            }
 
             if (append)
             {
@@ -975,7 +1004,7 @@ namespace Libplanet.Blockchain
 
             if (evaluations is null)
             {
-                evaluations = EvaluateActions(block, stateCompleters.Value);
+                evaluations = BlockEvaluator.EvaluateActions(block, stateCompleters.Value);
             }
 
             int cnt = 0;
@@ -1034,7 +1063,7 @@ namespace Libplanet.Blockchain
                 block
             );
             IReadOnlyList<ActionEvaluation> evaluations = null;
-            evaluations = EvaluateActions(
+            evaluations = BlockEvaluator.EvaluateActions(
                 block,
                 stateCompleters ?? StateCompleterSet<T>.Recalculate
             );
@@ -1050,90 +1079,6 @@ namespace Libplanet.Blockchain
             }
 
             return evaluations;
-        }
-
-        internal IReadOnlyList<ActionEvaluation> EvaluateActions(
-            Block<T> block,
-            StateCompleterSet<T> stateCompleters
-        )
-        {
-            AccountStateGetter stateGetter;
-            AccountBalanceGetter balanceGetter;
-            if (block.PreviousHash is null)
-            {
-                stateGetter = _ => null;
-                balanceGetter = (a, c) => new FungibleAssetValue(c);
-            }
-            else
-            {
-                stateGetter = a => GetState(
-                    a,
-                    block.PreviousHash,
-                    stateCompleters.StateCompleter
-                );
-                balanceGetter = (address, currency) => GetBalance(
-                        address,
-                        currency,
-                        block.PreviousHash,
-                        stateCompleters.FungibleAssetStateCompleter
-                    );
-            }
-
-            ImmutableList<ActionEvaluation> txEvaluations = block
-                .Evaluate(DateTimeOffset.UtcNow, stateGetter, balanceGetter)
-                .ToImmutableList();
-            return Policy.BlockAction is null
-                ? txEvaluations
-                : txEvaluations.Add(EvaluateBlockAction(block, txEvaluations, stateCompleters));
-        }
-
-        internal ActionEvaluation EvaluateBlockAction(
-            Block<T> block,
-            IReadOnlyList<ActionEvaluation> txActionEvaluations,
-            StateCompleterSet<T> stateCompleters
-        )
-        {
-            if (Policy.BlockAction is null)
-            {
-                var message = "To evaluate block action, Policy.BlockAction must not be null.";
-                throw new InvalidOperationException(message);
-            }
-
-            _logger.Debug(
-                "Evaluating block action in block {blockIndex}: {block}", block?.Index, block);
-
-            IAccountStateDelta lastStates = null;
-
-            if (!(txActionEvaluations is null) && txActionEvaluations.Count > 0)
-            {
-                lastStates = txActionEvaluations[txActionEvaluations.Count - 1].OutputStates;
-            }
-
-            Address miner = block.Miner.GetValueOrDefault();
-
-            if (lastStates is null)
-            {
-                lastStates = new AccountStateDeltaImpl(
-                    a => GetState(a, block.PreviousHash, stateCompleters.StateCompleter),
-                    (address, currency) => GetBalance(
-                        address,
-                        currency,
-                        block.PreviousHash,
-                        stateCompleters.FungibleAssetStateCompleter
-                    ),
-                    miner
-                );
-            }
-
-            return ActionEvaluation.EvaluateActionsGradually(
-                block.Hash,
-                block.Index,
-                null,
-                lastStates,
-                miner,
-                miner,
-                Array.Empty<byte>(),
-                new[] { Policy.BlockAction }.ToImmutableList()).First();
         }
 
         /// <summary>
@@ -1448,7 +1393,7 @@ namespace Libplanet.Blockchain
                 )
                 {
                     List<ActionEvaluation> evaluations =
-                        EvaluateActions(b, completers).ToList();
+                        BlockEvaluator.EvaluateActions(b, completers).ToList();
                     evaluations.Reverse();
 
                     foreach (var evaluation in evaluations)
@@ -1568,25 +1513,7 @@ namespace Libplanet.Blockchain
 
             if (!StateStore.ContainsBlockStates(block.Hash))
             {
-                HashDigest<SHA256> blockHash = block.Hash;
-                IAccountStateDelta lastStates = actionEvaluations.Count > 0
-                    ? actionEvaluations[actionEvaluations.Count - 1].OutputStates
-                    : null;
-                ImmutableDictionary<string, IValue> totalDelta =
-                    stateUpdatedAddresses.ToImmutableDictionary(
-                        ToStateKey,
-                        a => lastStates?.GetState(a)
-                    ).SetItems(
-                        updatedFungibleAssets.Select(pair =>
-                            new KeyValuePair<string, IValue>(
-                                ToFungibleAssetKey(pair),
-                                new Bencodex.Types.Integer(
-                                    lastStates?.GetBalance(pair.Item1, pair.Item2).RawValue ?? 0
-                                )
-                            )
-                        )
-                    );
-
+                var totalDelta = actionEvaluations.GetTotalDelta(ToStateKey, ToFungibleAssetKey);
                 StateStore.SetStates(block, totalDelta);
             }
 
@@ -1693,7 +1620,7 @@ namespace Libplanet.Blockchain
                     continue;
                 }
 
-                IReadOnlyList<ActionEvaluation> evaluations = EvaluateActions(
+                IReadOnlyList<ActionEvaluation> evaluations = BlockEvaluator.EvaluateActions(
                     block,
                     stateCompleters
                 );

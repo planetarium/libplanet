@@ -58,7 +58,7 @@ namespace Libplanet.Store
 
             var newStateTrie = prevStatesTrie.Commit();
             _stateHashKeyValueStore.Set(
-                block.Hash.ToByteArray(), newStateTrie.Root!.Hash().ToByteArray());
+                block.Hash.ToByteArray(), newStateTrie.Hash.ToByteArray());
         }
 
         /// <inheritdoc/>

@@ -255,7 +255,7 @@ namespace Libplanet.Tests.Blocks
                     _fx.TxFixture.PrivateKey3,
                     _fx.Genesis.Hash,
                     new DumbAction[0],
-                    timestamp: DateTimeOffset.MinValue.AddSeconds(4)
+                    timestamp: DateTimeOffset.MinValue.AddSeconds(8)
                 ),
             };
             int i = 0;
@@ -366,7 +366,7 @@ namespace Libplanet.Tests.Blocks
                             recordRandom: true
                         ),
                     },
-                    timestamp: DateTimeOffset.MinValue.AddSeconds(5)
+                    timestamp: DateTimeOffset.MinValue.AddSeconds(6)
                 ),
             };
             i = 0;
@@ -541,15 +541,17 @@ namespace Libplanet.Tests.Blocks
                     sig.ToImmutableArray()
                 )
             );
+            Block<PolymorphicAction<BaseAction>> invalidBlock = MineNext(
+                _fx.Genesis,
+                new List<Transaction<PolymorphicAction<BaseAction>>>
+                {
+                    invalidTx,
+                }
+            );
             Assert.Throws<InvalidTxUpdatedAddressesException>(() =>
-                    MineNext(
-                        _fx.Genesis,
-                        new List<Transaction<PolymorphicAction<BaseAction>>>
-                        {
-                            invalidTx,
-                        }
-                    )
-                );
+                invalidBlock.Evaluate(
+                    DateTimeOffset.UtcNow, _ => null, (a, c) => new FungibleAssetValue(c))
+            );
         }
 
         [Fact]
@@ -758,9 +760,9 @@ namespace Libplanet.Tests.Blocks
             AssertBytesEqual(
                 new byte[32]
                 {
-                    0xbb, 0xb4, 0xb0, 0x0c, 0x0b, 0x23, 0x2a, 0xf7, 0xeb, 0xa3, 0x94, 0x37, 0x75,
-                    0x87, 0x16, 0x9b, 0xe3, 0x2c, 0x31, 0x4c, 0xa3, 0x89, 0xbc, 0x94, 0x5f, 0xec,
-                    0x3d, 0xfe, 0x3c, 0xb3, 0x2e, 0xae,
+                    0x22, 0xe1, 0x3b, 0xb5, 0x46, 0x65, 0x91, 0x34, 0x28, 0xbc, 0x55, 0x86, 0xce,
+                    0xbd, 0x50, 0xdc, 0x25, 0x50, 0xb0, 0x36, 0xa6, 0x18, 0xe9, 0xb0, 0x5d, 0xb1,
+                    0x1c, 0x76, 0xad, 0xb0, 0x0a, 0xd7,
                 },
                 rawHasText.Header.Hash.ToArray()
             );
@@ -789,87 +791,13 @@ namespace Libplanet.Tests.Blocks
             Assert.False(sameBlock2.Equals(differentBlock));
         }
 
-        [SuppressMessage(
-            "Microsoft.StyleCop.CSharp.ReadabilityRules",
-            "SA1118",
-            Justification = "Long array literals should be multiline.")]
-        [Fact]
-        public void CompareWithPreEvaluationBlock()
-        {
-            Address[] addresses =
-            {
-                _fx.TxFixture.Address1,
-                _fx.TxFixture.Address2,
-                _fx.TxFixture.Address3,
-                _fx.TxFixture.Address4,
-                _fx.TxFixture.Address5,
-            };
-            Block<DumbAction> genesis = MineGenesis<DumbAction>();
-            Assert.Empty(genesis.EvaluateActionsPerTx());
-            DumbAction MakeAction(Address address, char identifier, Address? transferTo = null) =>
-                new DumbAction(
-                    targetAddress: address,
-                    item: identifier.ToString(),
-                    recordRehearsal: false,
-                    recordRandom: true,
-                    transfer: transferTo is Address to
-                        ? Tuple.Create<Address, Address, BigInteger>(address, to, 5)
-                        : null
-                );
-
-            Transaction<DumbAction>[] txs =
-            {
-                Transaction<DumbAction>.Create(
-                    0,
-                    _fx.TxFixture.PrivateKey1,
-                    _fx.Genesis.Hash,
-                    new[]
-                    {
-                        MakeAction(addresses[0], 'A', addresses[1]),
-                        MakeAction(addresses[1], 'B', addresses[2]),
-                    },
-                    timestamp: DateTimeOffset.MinValue.AddSeconds(1)
-                ),
-                Transaction<DumbAction>.Create(
-                    0,
-                    _fx.TxFixture.PrivateKey2,
-                    _fx.Genesis.Hash,
-                    new[] { MakeAction(addresses[2], 'C', addresses[3]) },
-                    timestamp: DateTimeOffset.MinValue.AddSeconds(2)
-                ),
-                Transaction<DumbAction>.Create(
-                    0,
-                    _fx.TxFixture.PrivateKey3,
-                    _fx.Genesis.Hash,
-                    new DumbAction[0],
-                    timestamp: DateTimeOffset.MinValue.AddSeconds(4)
-                ),
-            };
-
-            var timestamp = genesis.Timestamp.Add(TimeSpan.FromSeconds(15));
-            var preCommitBlock = new Block<DumbAction>(
-                index: 1,
-                difficulty: 1,
-                totalDifficulty: 0,
-                nonce: new Nonce(new byte[] { }),
-                miner: genesis.Miner.Value,
-                previousHash: genesis.Hash,
-                timestamp: timestamp,
-                transactions: txs
-            );
-
-            Block<DumbAction> afterCommitBlock = MineNext(genesis, txs, new byte[] { });
-            Assert.NotEqual(preCommitBlock.Hash, afterCommitBlock.Hash);
-            Assert.Equal(preCommitBlock.Hash, afterCommitBlock.PreEvaluationHash);
-        }
-
         [Fact]
         public void BlockStructureSize()
         {
             var emptyBlock = _fx.Next;
             var txBlock = _fx.HasTx;
             var codec = new Codec();
-            // Case of a block with no any txs.
+            // Case of a block with no any txs, contained state root.
             // Size of RawBlock
             Assert.Equal(208, emptyBlock.Serialize().Length);
             // Size of BlockDigest
@@ -877,13 +805,13 @@ namespace Libplanet.Tests.Blocks
             // Size of BlockHeader
             Assert.Equal(203, codec.Encode(emptyBlock.GetBlockHeader().ToBencodex()).Length);
 
-            // Case of a block with txs.
+            // Case of a block with txs, not contained state root.
             // Size of RawBlock
-            Assert.Equal(735, txBlock.Serialize().Length);
+            Assert.Equal(697, txBlock.Serialize().Length);
             // Size of BlockDigest
-            Assert.Equal(331, txBlock.ToBlockDigest().Serialize().Length);
+            Assert.Equal(293, txBlock.ToBlockDigest().Serialize().Length);
             // Size of BlockHeader
-            Assert.Equal(286, codec.Encode(txBlock.GetBlockHeader().ToBencodex()).Length);
+            Assert.Equal(248, codec.Encode(txBlock.GetBlockHeader().ToBencodex()).Length);
         }
     }
 }

@@ -17,6 +17,7 @@ using Libplanet.Tests.Action;
 using Libplanet.Tests.Common;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
+using Libplanet.Tests.Store.Trie;
 using Libplanet.Tx;
 using Serilog;
 using Serilog.Events;
@@ -2118,7 +2119,7 @@ namespace Libplanet.Tests.Blockchain
             );
 
             var miner = genesis.Miner.GetValueOrDefault();
-            var blockActionEvaluation = _blockChain.EvaluateBlockAction(
+            var blockActionEvaluation = _blockChain.BlockEvaluator.EvaluateBlockAction(
                 genesis,
                 null,
                 StateCompleterSet<DumbAction>.Recalculate
@@ -2138,7 +2139,7 @@ namespace Libplanet.Tests.Blockchain
             var txEvaluations = block1.EvaluateActionsPerTx(a =>
                     _blockChain.GetState(a, block1.PreviousHash))
                 .Select(te => te.Item2).ToList();
-            blockActionEvaluation = _blockChain.EvaluateBlockAction(
+            blockActionEvaluation = _blockChain.BlockEvaluator.EvaluateBlockAction(
                 block1,
                 txEvaluations,
                 StateCompleterSet<DumbAction>.Recalculate
@@ -2508,6 +2509,21 @@ namespace Libplanet.Tests.Blockchain
             Block<DumbAction> b2 = await _blockChain.MineBlock(address);
             Assert.Single(b2.Transactions);
             Assert.Contains(txsB[3], b2.Transactions);
+        }
+
+        [Fact]
+        private void ConstructBlockchainWithGenesisBlockHavingStateRootHash()
+        {
+            var store = new DefaultStore(null);
+            var stateStore = new TrieStateStore(
+                new MemoryKeyValueStore(), new MemoryKeyValueStore());
+            var genesisBlock =
+                TestUtils.MineGenesis<DumbAction>(
+                    blockAction: _blockChain.Policy.BlockAction, checkStateRootHash: true);
+            BlockChain<DumbAction> blockChain = TestUtils.MakeBlockChain(
+                _blockChain.Policy, store, stateStore: stateStore, genesisBlock: genesisBlock);
+
+            Assert.NotNull(blockChain[0].StateRootHash);
         }
 
         private void StageTransactions(IEnumerable<Transaction<DumbAction>> txs)
