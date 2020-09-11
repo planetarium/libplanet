@@ -2,6 +2,7 @@ parameters:
   configuration: Debug
   testArguments: ""
   locale: "en_US.UTF8"
+  testTimeoutInMinutes: 12
 
 steps:
 
@@ -50,7 +51,7 @@ steps:
     LANG: ${{ parameters.locale }}
     LANGUAGE: ${{ parameters.locale }}
     LC_ALL: ${{ parameters.locale }}
-  timeoutInMinutes: 10
+  timeoutInMinutes: ${{ parameters.testTimeoutInMinutes }}
 
 - task: PublishTestResults@2
   inputs:
