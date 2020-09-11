@@ -565,6 +565,7 @@ namespace Libplanet.Tests.Blockchain
                     block,
                     DateTimeOffset.UtcNow,
                     evaluateActions: false,
+                    renderBlocks: true,
                     renderActions: true
                 )
             );
@@ -575,6 +576,7 @@ namespace Libplanet.Tests.Blockchain
                 block,
                 DateTimeOffset.UtcNow,
                 evaluateActions: false,
+                renderBlocks: true,
                 renderActions: false
             );
             Assert.Equal(block, _blockChain.Tip);
@@ -834,6 +836,7 @@ namespace Libplanet.Tests.Blockchain
                 block1,
                 DateTimeOffset.UtcNow,
                 evaluateActions: false,
+                renderBlocks: true,
                 renderActions: false
             );
 
@@ -1118,14 +1121,18 @@ namespace Libplanet.Tests.Blockchain
                 );
 
                 Assert.Equal(1, renderer.ActionRecords.Count(r => r.Action is DumbAction));
+                Assert.Single(renderer.BlockRecords);
                 Assert.Single(DumbAction.ExecuteRecords.Value.Where(r => !r.Rehearsal));
 
                 await blockChain.MineBlock(miner, DateTimeOffset.UtcNow);
                 await blockChain.MineBlock(miner, DateTimeOffset.UtcNow);
 
+                int blockRecordsBeforeFork = renderer.BlockRecords.Count;
+
                 blockChain.Fork(blockChain.Tip.Hash);
 
                 Assert.Equal(1, renderer.ActionRecords.Count(r => r.Action is DumbAction));
+                Assert.Equal(blockRecordsBeforeFork, renderer.BlockRecords.Count);
                 Assert.Single(DumbAction.ExecuteRecords.Value.Where(r => !r.Rehearsal));
             }
         }
@@ -1378,6 +1385,7 @@ namespace Libplanet.Tests.Blockchain
                 forkTip,
                 DateTimeOffset.UtcNow,
                 evaluateActions: true,
+                renderBlocks: true,
                 renderActions: false
             );
 
@@ -2134,6 +2142,7 @@ namespace Libplanet.Tests.Blockchain
                 block1,
                 DateTimeOffset.UtcNow,
                 evaluateActions: false,
+                renderBlocks: true,
                 renderActions: false);
 
             var txEvaluations = block1.EvaluateActionsPerTx(a =>

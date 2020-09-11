@@ -1050,13 +1050,13 @@ namespace Libplanet.Tests.Net
                     new[] { transactions[0] },
                     null,
                     policy.GetNextBlockDifficulty(blockChain));
-                blockChain.Append(block1, DateTimeOffset.MinValue.AddSeconds(3), true, false);
+                blockChain.Append(block1, DateTimeOffset.MinValue.AddSeconds(3), true, true, false);
                 var block2 = TestUtils.MineNext(
                     block1,
                     new[] { transactions[1] },
                     null,
                     policy.GetNextBlockDifficulty(blockChain));
-                blockChain.Append(block2, DateTimeOffset.MinValue.AddSeconds(8), true, false);
+                blockChain.Append(block2, DateTimeOffset.MinValue.AddSeconds(8), true, true, false);
                 Log.Debug("Ready to broadcast blocks.");
                 minerSwarm.BroadcastBlock(block2);
                 await receiverSwarm.BlockAppended.WaitAsync();

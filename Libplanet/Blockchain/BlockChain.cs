@@ -162,6 +162,7 @@ namespace Libplanet.Blockchain
                 Append(
                     genesisBlock,
                     currentTime: genesisBlock.Timestamp,
+                    renderBlocks: !inFork,
                     renderActions: !inFork,
                     evaluateActions: !inFork
                 );
@@ -551,6 +552,7 @@ namespace Libplanet.Blockchain
                 block,
                 currentTime,
                 evaluateActions: true,
+                renderBlocks: true,
                 renderActions: true,
                 stateCompleters: stateCompleters
             );
@@ -831,6 +833,7 @@ namespace Libplanet.Blockchain
             Block<T> block,
             DateTimeOffset currentTime,
             bool evaluateActions,
+            bool renderBlocks,
             bool renderActions,
             StateCompleterSet<T>? stateCompleters = null
         )
@@ -935,9 +938,12 @@ namespace Libplanet.Blockchain
                         .ToImmutableHashSet();
                     Store.UnstageTransactionIds(txIds);
                     TipChanged?.Invoke(this, (prevTip, block));
-                    foreach (IRenderer<T> renderer in Renderers)
+                    if (renderBlocks)
                     {
-                        renderer.RenderBlock(oldTip: prevTip ?? Genesis, newTip: block);
+                        foreach (IRenderer<T> renderer in Renderers)
+                        {
+                            renderer.RenderBlock(oldTip: prevTip ?? Genesis, newTip: block);
+                        }
                     }
 
                     _logger.Debug("Block {blockIndex}: {block} is appended.", block?.Index, block);

@@ -333,7 +333,7 @@ namespace Libplanet.Tests.Net
                     new[] { tx },
                     difficulty: policy.GetNextBlockDifficulty(minerChain),
                     blockInterval: TimeSpan.FromSeconds(1));
-                minerSwarm.BlockChain.Append(block, DateTimeOffset.UtcNow, false, false);
+                minerSwarm.BlockChain.Append(block, DateTimeOffset.UtcNow, false, true, false);
 
                 await receiverSwarm.PreloadAsync(TimeSpan.FromSeconds(1));
 
@@ -864,6 +864,7 @@ namespace Libplanet.Tests.Net
                 genesis,
                 DateTimeOffset.UtcNow,
                 evaluateActions: true,
+                renderBlocks: true,
                 renderActions: true);
 
             const int repeat = 10;
