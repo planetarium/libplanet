@@ -322,7 +322,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 store,
                 stateStore ?? store as IStateStore,
                 genesisBlock,
-                renderers: renderers ?? new[] { new DumbRenderer<T>() }
+                renderers: renderers ?? new[] { new RecordingRenderer<T>() }
             );
         }
 

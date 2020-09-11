@@ -66,12 +66,12 @@ namespace Libplanet.Tests.Net
             _mptFx2 = new DefaultStoreFixture(memory: true, mpt: true);
             _mptFx3 = new DefaultStoreFixture(memory: true, mpt: true);
 
-            _renderers = new List<DumbRenderer<DumbAction>>
+            _renderers = new List<RecordingRenderer<DumbAction>>
             {
-                new DumbRenderer<DumbAction>(),
-                new DumbRenderer<DumbAction>(),
-                new DumbRenderer<DumbAction>(),
-                new DumbRenderer<DumbAction>(),
+                new RecordingRenderer<DumbAction>(),
+                new RecordingRenderer<DumbAction>(),
+                new RecordingRenderer<DumbAction>(),
+                new RecordingRenderer<DumbAction>(),
             };
 
             LoggedActionRenderer<DumbAction>[][] loggedRenderers = _renderers
@@ -1010,7 +1010,7 @@ namespace Libplanet.Tests.Net
             var privateKey = new PrivateKey();
             var minerSwarm = CreateSwarm(blockChain, privateKey);
             Swarm<DumbAction> receiverSwarm = _swarms[0];
-            DumbRenderer<DumbAction> receiverRenderer = _renderers[0];
+            RecordingRenderer<DumbAction> receiverRenderer = _renderers[0];
 
             int renderCount = 0;
 
@@ -1414,7 +1414,7 @@ namespace Libplanet.Tests.Net
         public async Task RenderInFork()
         {
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
-            var renderer = new DumbRenderer<DumbAction>();
+            var renderer = new RecordingRenderer<DumbAction>();
             var chain = TestUtils.MakeBlockChain(
                 policy,
                 new DefaultStore(null),
