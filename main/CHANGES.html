@@ -173,6 +173,10 @@ changed to <code>LookupStateReference(Guid, string, long)</code>.  [<a href="htt
 <code>Swarm&lt;T&gt;.FindSpecificPeerAsync(Address, int, TimeSpan?, CancellationToken)</code>.
 [<a href="https://github.com/planetarium/libplanet/pull/981">#981</a>]</li>
 <li>Added <code>IActionContext.GetUnconsumedContext()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/980">#980</a>]</li>
+<li>Added <code>ImmutableArray&lt;byte&gt;</code>-typed <code>stateRootHash</code> parameter to
+<code>BlockHeader</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/986">#986</a>]</li>
+<li>Added <code>HashDigest&lt;SHA256&gt;</code>-typed <code>stateRootHash</code> parameter to
+<code>Block&lt;T&gt;()</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/986">#986</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <ul>
@@ -269,6 +273,9 @@ by <code>stateCompleter: FungibleAssetStateCompleters&lt;T&gt;.Recalculate</code
 <li>(Libplanet.RocksDBStore) <code>RocksDBStore</code> became to implement
 <code>IBlockStatesStore</code>.  [<a href="https://github.com/planetarium/libplanet/pull/950">#950</a>]</li>
 <li>(Libplanet.RocksDBStore) Added <code>RocksDBKeyValueStore</code>.  [<a href="https://github.com/planetarium/libplanet/pull/939">#939</a>]</li>
+<li>Added <code>InvalidBlockStateRootHashException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/986">#986</a>]</li>
+<li>Added <code>Block&lt;T&gt;.StateRootHash</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/986">#986</a>]</li>
+<li>Added <code>BlockHeader.StateRootHash</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/986">#986</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
@@ -302,6 +309,8 @@ it fails to connect to all neighbors.  [<a href="https://github.com/planetarium/
 [<a href="https://github.com/planetarium/libplanet/pull/949">#949</a>]</li>
 <li><code>Swarm&lt;T&gt;.PreloadAsync()</code> became to execute the actions from the branch point
 rather than the genesis block when there is a branch point.  [<a href="https://github.com/planetarium/libplanet/pull/991">#991</a>]</li>
+<li><code>BlockPolicy&lt;T&gt;</code> became to validate <code>Block&lt;T&gt;.StateRootHash</code> property
+of a <code>Block&lt;T&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/986">#986</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>

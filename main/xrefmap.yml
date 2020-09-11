@@ -1823,15 +1823,15 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Item
   nameWithType: BlockChain<T>.Item
   nameWithType.vb: BlockChain(Of T).Item
-- uid: Libplanet.Blockchain.BlockChain`1.MakeGenesisBlock(IEnumerable{`0},Libplanet.Crypto.PrivateKey,System.Nullable{DateTimeOffset})
-  name: MakeGenesisBlock(IEnumerable<T>, PrivateKey, Nullable<DateTimeOffset>)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MakeGenesisBlock_IEnumerable__0__Libplanet_Crypto_PrivateKey_System_Nullable_DateTimeOffset__
-  commentId: M:Libplanet.Blockchain.BlockChain`1.MakeGenesisBlock(IEnumerable{`0},Libplanet.Crypto.PrivateKey,System.Nullable{DateTimeOffset})
-  name.vb: MakeGenesisBlock(IEnumerable(Of T), PrivateKey, Nullable(Of DateTimeOffset))
-  fullName: Libplanet.Blockchain.BlockChain<T>.MakeGenesisBlock(IEnumerable<T>, Libplanet.Crypto.PrivateKey, System.Nullable<DateTimeOffset>)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).MakeGenesisBlock(IEnumerable(Of T), Libplanet.Crypto.PrivateKey, System.Nullable(Of DateTimeOffset))
-  nameWithType: BlockChain<T>.MakeGenesisBlock(IEnumerable<T>, PrivateKey, Nullable<DateTimeOffset>)
-  nameWithType.vb: BlockChain(Of T).MakeGenesisBlock(IEnumerable(Of T), PrivateKey, Nullable(Of DateTimeOffset))
+- uid: Libplanet.Blockchain.BlockChain`1.MakeGenesisBlock(IEnumerable{`0},Libplanet.Crypto.PrivateKey,System.Nullable{DateTimeOffset},Libplanet.Action.IAction)
+  name: MakeGenesisBlock(IEnumerable<T>, PrivateKey, Nullable<DateTimeOffset>, IAction)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MakeGenesisBlock_IEnumerable__0__Libplanet_Crypto_PrivateKey_System_Nullable_DateTimeOffset__Libplanet_Action_IAction_
+  commentId: M:Libplanet.Blockchain.BlockChain`1.MakeGenesisBlock(IEnumerable{`0},Libplanet.Crypto.PrivateKey,System.Nullable{DateTimeOffset},Libplanet.Action.IAction)
+  name.vb: MakeGenesisBlock(IEnumerable(Of T), PrivateKey, Nullable(Of DateTimeOffset), IAction)
+  fullName: Libplanet.Blockchain.BlockChain<T>.MakeGenesisBlock(IEnumerable<T>, Libplanet.Crypto.PrivateKey, System.Nullable<DateTimeOffset>, Libplanet.Action.IAction)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).MakeGenesisBlock(IEnumerable(Of T), Libplanet.Crypto.PrivateKey, System.Nullable(Of DateTimeOffset), Libplanet.Action.IAction)
+  nameWithType: BlockChain<T>.MakeGenesisBlock(IEnumerable<T>, PrivateKey, Nullable<DateTimeOffset>, IAction)
+  nameWithType.vb: BlockChain(Of T).MakeGenesisBlock(IEnumerable(Of T), PrivateKey, Nullable(Of DateTimeOffset), IAction)
 - uid: Libplanet.Blockchain.BlockChain`1.MakeGenesisBlock*
   name: MakeGenesisBlock
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MakeGenesisBlock_
@@ -3416,23 +3416,6 @@ references:
   fullName.vb: Libplanet.Blocks.Block(Of T).EvaluateActionsPerTx
   nameWithType: Block<T>.EvaluateActionsPerTx
   nameWithType.vb: Block(Of T).EvaluateActionsPerTx
-- uid: Libplanet.Blocks.Block`1.EvaluationDigest
-  name: EvaluationDigest
-  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_EvaluationDigest
-  commentId: P:Libplanet.Blocks.Block`1.EvaluationDigest
-  fullName: Libplanet.Blocks.Block<T>.EvaluationDigest
-  fullName.vb: Libplanet.Blocks.Block(Of T).EvaluationDigest
-  nameWithType: Block<T>.EvaluationDigest
-  nameWithType.vb: Block(Of T).EvaluationDigest
-- uid: Libplanet.Blocks.Block`1.EvaluationDigest*
-  name: EvaluationDigest
-  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_EvaluationDigest_
-  commentId: Overload:Libplanet.Blocks.Block`1.EvaluationDigest
-  isSpec: "True"
-  fullName: Libplanet.Blocks.Block<T>.EvaluationDigest
-  fullName.vb: Libplanet.Blocks.Block(Of T).EvaluationDigest
-  nameWithType: Block<T>.EvaluationDigest
-  nameWithType.vb: Block(Of T).EvaluationDigest
 - uid: Libplanet.Blocks.Block`1.Hash
   name: Hash
   href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Hash
@@ -3606,6 +3589,23 @@ references:
   fullName.vb: Libplanet.Blocks.Block(Of T).Serialize
   nameWithType: Block<T>.Serialize
   nameWithType.vb: Block(Of T).Serialize
+- uid: Libplanet.Blocks.Block`1.StateRootHash
+  name: StateRootHash
+  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_StateRootHash
+  commentId: P:Libplanet.Blocks.Block`1.StateRootHash
+  fullName: Libplanet.Blocks.Block<T>.StateRootHash
+  fullName.vb: Libplanet.Blocks.Block(Of T).StateRootHash
+  nameWithType: Block<T>.StateRootHash
+  nameWithType.vb: Block(Of T).StateRootHash
+- uid: Libplanet.Blocks.Block`1.StateRootHash*
+  name: StateRootHash
+  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_StateRootHash_
+  commentId: Overload:Libplanet.Blocks.Block`1.StateRootHash
+  isSpec: "True"
+  fullName: Libplanet.Blocks.Block<T>.StateRootHash
+  fullName.vb: Libplanet.Blocks.Block(Of T).StateRootHash
+  nameWithType: Block<T>.StateRootHash
+  nameWithType.vb: Block(Of T).StateRootHash
 - uid: Libplanet.Blocks.Block`1.Timestamp
   name: Timestamp
   href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Timestamp
@@ -3878,19 +3878,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.BlockHeader.Difficulty
   nameWithType: BlockHeader.Difficulty
-- uid: Libplanet.Blocks.BlockHeader.EvaluationDigest
-  name: EvaluationDigest
-  href: api/Libplanet.Blocks.BlockHeader.html#Libplanet_Blocks_BlockHeader_EvaluationDigest
-  commentId: P:Libplanet.Blocks.BlockHeader.EvaluationDigest
-  fullName: Libplanet.Blocks.BlockHeader.EvaluationDigest
-  nameWithType: BlockHeader.EvaluationDigest
-- uid: Libplanet.Blocks.BlockHeader.EvaluationDigest*
-  name: EvaluationDigest
-  href: api/Libplanet.Blocks.BlockHeader.html#Libplanet_Blocks_BlockHeader_EvaluationDigest_
-  commentId: Overload:Libplanet.Blocks.BlockHeader.EvaluationDigest
-  isSpec: "True"
-  fullName: Libplanet.Blocks.BlockHeader.EvaluationDigest
-  nameWithType: BlockHeader.EvaluationDigest
 - uid: Libplanet.Blocks.BlockHeader.Hash
   name: Hash
   href: api/Libplanet.Blocks.BlockHeader.html#Libplanet_Blocks_BlockHeader_Hash
@@ -3982,6 +3969,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.BlockHeader.Serialize
   nameWithType: BlockHeader.Serialize
+- uid: Libplanet.Blocks.BlockHeader.StateRootHash
+  name: StateRootHash
+  href: api/Libplanet.Blocks.BlockHeader.html#Libplanet_Blocks_BlockHeader_StateRootHash
+  commentId: P:Libplanet.Blocks.BlockHeader.StateRootHash
+  fullName: Libplanet.Blocks.BlockHeader.StateRootHash
+  nameWithType: BlockHeader.StateRootHash
+- uid: Libplanet.Blocks.BlockHeader.StateRootHash*
+  name: StateRootHash
+  href: api/Libplanet.Blocks.BlockHeader.html#Libplanet_Blocks_BlockHeader_StateRootHash_
+  commentId: Overload:Libplanet.Blocks.BlockHeader.StateRootHash
+  isSpec: "True"
+  fullName: Libplanet.Blocks.BlockHeader.StateRootHash
+  nameWithType: BlockHeader.StateRootHash
 - uid: Libplanet.Blocks.BlockHeader.Timestamp
   name: Timestamp
   href: api/Libplanet.Blocks.BlockHeader.html#Libplanet_Blocks_BlockHeader_Timestamp
@@ -4059,6 +4059,12 @@ references:
   commentId: T:Libplanet.Blocks.InvalidBlockException
   fullName: Libplanet.Blocks.InvalidBlockException
   nameWithType: InvalidBlockException
+- uid: Libplanet.Blocks.InvalidBlockException.#ctor(SerializationInfo,StreamingContext)
+  name: InvalidBlockException(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Blocks.InvalidBlockException.html#Libplanet_Blocks_InvalidBlockException__ctor_SerializationInfo_StreamingContext_
+  commentId: M:Libplanet.Blocks.InvalidBlockException.#ctor(SerializationInfo,StreamingContext)
+  fullName: Libplanet.Blocks.InvalidBlockException.InvalidBlockException(SerializationInfo, StreamingContext)
+  nameWithType: InvalidBlockException.InvalidBlockException(SerializationInfo, StreamingContext)
 - uid: Libplanet.Blocks.InvalidBlockException.#ctor(System.String)
   name: InvalidBlockException(String)
   href: api/Libplanet.Blocks.InvalidBlockException.html#Libplanet_Blocks_InvalidBlockException__ctor_System_String_
@@ -4148,6 +4154,67 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.InvalidBlockPreviousHashException.InvalidBlockPreviousHashException
   nameWithType: InvalidBlockPreviousHashException.InvalidBlockPreviousHashException
+- uid: Libplanet.Blocks.InvalidBlockStateRootHashException
+  name: InvalidBlockStateRootHashException
+  href: api/Libplanet.Blocks.InvalidBlockStateRootHashException.html
+  commentId: T:Libplanet.Blocks.InvalidBlockStateRootHashException
+  fullName: Libplanet.Blocks.InvalidBlockStateRootHashException
+  nameWithType: InvalidBlockStateRootHashException
+- uid: Libplanet.Blocks.InvalidBlockStateRootHashException.#ctor(System.Nullable{Libplanet.HashDigest{SHA256}},Libplanet.HashDigest{SHA256},System.String)
+  name: InvalidBlockStateRootHashException(Nullable<HashDigest<SHA256>>, HashDigest<SHA256>, String)
+  href: api/Libplanet.Blocks.InvalidBlockStateRootHashException.html#Libplanet_Blocks_InvalidBlockStateRootHashException__ctor_System_Nullable_Libplanet_HashDigest_SHA256___Libplanet_HashDigest_SHA256__System_String_
+  commentId: M:Libplanet.Blocks.InvalidBlockStateRootHashException.#ctor(System.Nullable{Libplanet.HashDigest{SHA256}},Libplanet.HashDigest{SHA256},System.String)
+  name.vb: InvalidBlockStateRootHashException(Nullable(Of HashDigest(Of SHA256)), HashDigest(Of SHA256), String)
+  fullName: Libplanet.Blocks.InvalidBlockStateRootHashException.InvalidBlockStateRootHashException(System.Nullable<Libplanet.HashDigest<SHA256>>, Libplanet.HashDigest<SHA256>, System.String)
+  fullName.vb: Libplanet.Blocks.InvalidBlockStateRootHashException.InvalidBlockStateRootHashException(System.Nullable(Of Libplanet.HashDigest(Of SHA256)), Libplanet.HashDigest(Of SHA256), System.String)
+  nameWithType: InvalidBlockStateRootHashException.InvalidBlockStateRootHashException(Nullable<HashDigest<SHA256>>, HashDigest<SHA256>, String)
+  nameWithType.vb: InvalidBlockStateRootHashException.InvalidBlockStateRootHashException(Nullable(Of HashDigest(Of SHA256)), HashDigest(Of SHA256), String)
+- uid: Libplanet.Blocks.InvalidBlockStateRootHashException.#ctor*
+  name: InvalidBlockStateRootHashException
+  href: api/Libplanet.Blocks.InvalidBlockStateRootHashException.html#Libplanet_Blocks_InvalidBlockStateRootHashException__ctor_
+  commentId: Overload:Libplanet.Blocks.InvalidBlockStateRootHashException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Blocks.InvalidBlockStateRootHashException.InvalidBlockStateRootHashException
+  nameWithType: InvalidBlockStateRootHashException.InvalidBlockStateRootHashException
+- uid: Libplanet.Blocks.InvalidBlockStateRootHashException.ActualStateRootHash
+  name: ActualStateRootHash
+  href: api/Libplanet.Blocks.InvalidBlockStateRootHashException.html#Libplanet_Blocks_InvalidBlockStateRootHashException_ActualStateRootHash
+  commentId: P:Libplanet.Blocks.InvalidBlockStateRootHashException.ActualStateRootHash
+  fullName: Libplanet.Blocks.InvalidBlockStateRootHashException.ActualStateRootHash
+  nameWithType: InvalidBlockStateRootHashException.ActualStateRootHash
+- uid: Libplanet.Blocks.InvalidBlockStateRootHashException.ActualStateRootHash*
+  name: ActualStateRootHash
+  href: api/Libplanet.Blocks.InvalidBlockStateRootHashException.html#Libplanet_Blocks_InvalidBlockStateRootHashException_ActualStateRootHash_
+  commentId: Overload:Libplanet.Blocks.InvalidBlockStateRootHashException.ActualStateRootHash
+  isSpec: "True"
+  fullName: Libplanet.Blocks.InvalidBlockStateRootHashException.ActualStateRootHash
+  nameWithType: InvalidBlockStateRootHashException.ActualStateRootHash
+- uid: Libplanet.Blocks.InvalidBlockStateRootHashException.ExpectedStateRootHash
+  name: ExpectedStateRootHash
+  href: api/Libplanet.Blocks.InvalidBlockStateRootHashException.html#Libplanet_Blocks_InvalidBlockStateRootHashException_ExpectedStateRootHash
+  commentId: P:Libplanet.Blocks.InvalidBlockStateRootHashException.ExpectedStateRootHash
+  fullName: Libplanet.Blocks.InvalidBlockStateRootHashException.ExpectedStateRootHash
+  nameWithType: InvalidBlockStateRootHashException.ExpectedStateRootHash
+- uid: Libplanet.Blocks.InvalidBlockStateRootHashException.ExpectedStateRootHash*
+  name: ExpectedStateRootHash
+  href: api/Libplanet.Blocks.InvalidBlockStateRootHashException.html#Libplanet_Blocks_InvalidBlockStateRootHashException_ExpectedStateRootHash_
+  commentId: Overload:Libplanet.Blocks.InvalidBlockStateRootHashException.ExpectedStateRootHash
+  isSpec: "True"
+  fullName: Libplanet.Blocks.InvalidBlockStateRootHashException.ExpectedStateRootHash
+  nameWithType: InvalidBlockStateRootHashException.ExpectedStateRootHash
+- uid: Libplanet.Blocks.InvalidBlockStateRootHashException.GetObjectData(SerializationInfo,StreamingContext)
+  name: GetObjectData(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Blocks.InvalidBlockStateRootHashException.html#Libplanet_Blocks_InvalidBlockStateRootHashException_GetObjectData_SerializationInfo_StreamingContext_
+  commentId: M:Libplanet.Blocks.InvalidBlockStateRootHashException.GetObjectData(SerializationInfo,StreamingContext)
+  fullName: Libplanet.Blocks.InvalidBlockStateRootHashException.GetObjectData(SerializationInfo, StreamingContext)
+  nameWithType: InvalidBlockStateRootHashException.GetObjectData(SerializationInfo, StreamingContext)
+- uid: Libplanet.Blocks.InvalidBlockStateRootHashException.GetObjectData*
+  name: GetObjectData
+  href: api/Libplanet.Blocks.InvalidBlockStateRootHashException.html#Libplanet_Blocks_InvalidBlockStateRootHashException_GetObjectData_
+  commentId: Overload:Libplanet.Blocks.InvalidBlockStateRootHashException.GetObjectData
+  isSpec: "True"
+  fullName: Libplanet.Blocks.InvalidBlockStateRootHashException.GetObjectData
+  nameWithType: InvalidBlockStateRootHashException.GetObjectData
 - uid: Libplanet.Blocks.InvalidBlockTimestampException
   name: InvalidBlockTimestampException
   href: api/Libplanet.Blocks.InvalidBlockTimestampException.html
