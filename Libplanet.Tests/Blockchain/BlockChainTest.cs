@@ -748,17 +748,8 @@ namespace Libplanet.Tests.Blockchain
         {
             var policy = new NullPolicy<DumbAction>();
             var store = new DefaultStore(null);
-            int idx = 0;
-            var blockLogs = new List<(Block<DumbAction> Old, Block<DumbAction> New, int Index)>();
-            var actionLogs = new List<(ActionEvaluation Evaluation, int Index)>();
-            IActionRenderer<DumbAction> renderer = new AnonymousActionRenderer<DumbAction>
-            {
-                BlockRenderer = (oldTip, newTip) =>
-                   blockLogs.Add((oldTip, newTip, idx++)),
-                ActionRenderer = (act, context, nextStates) =>
-                    actionLogs.Add((new ActionEvaluation(act, context, nextStates), idx++)),
-            };
-            renderer = new LoggedActionRenderer<DumbAction>(renderer, Log.Logger);
+            var recordingRenderer = new RecordingRenderer<DumbAction>();
+            var renderer = new LoggedActionRenderer<DumbAction>(recordingRenderer, Log.Logger);
             BlockChain<DumbAction> blockChain =
                 TestUtils.MakeBlockChain(policy, store, renderers: new[] { renderer });
             var privateKey = new PrivateKey();
@@ -766,18 +757,26 @@ namespace Libplanet.Tests.Blockchain
             var action = new DumbAction(default, string.Empty);
             var actions = new[] { action };
             blockChain.MakeTransaction(privateKey, actions);
-            idx = 0;
-            blockLogs.Clear();
-            actionLogs.Clear();
+            recordingRenderer.ResetRecords();
             Block<DumbAction> prevBlock = blockChain.Tip;
             Block<DumbAction> block = await blockChain.MineBlock(_fx.Address1);
 
             Assert.Equal(2, blockChain.Count);
-            Assert.Single(blockLogs);
-            Assert.Single(actionLogs);
-            Assert.Equal((prevBlock, block, 0), blockLogs[0]);
+            Assert.Empty(recordingRenderer.ReorgRecords);
+            IReadOnlyList<RenderRecord<DumbAction>.Block> blockLogs =
+                recordingRenderer.BlockRecords;
+            Assert.Equal(2, blockLogs.Count);
+            IReadOnlyList<RenderRecord<DumbAction>.ActionBase> actionLogs =
+                recordingRenderer.ActionRecords;
+            Assert.Single(actions);
+            Assert.Equal(prevBlock, blockLogs[0].OldTip);
+            Assert.Equal(block, blockLogs[0].NewTip);
+            Assert.Equal(0, blockLogs[0].Index);
             Assert.Equal(1, actionLogs[0].Index);
-            Assert.Equal(action, actionLogs[0].Evaluation.Action);
+            Assert.Equal(action, actionLogs[0].Action);
+            Assert.Equal(prevBlock, blockLogs[1].OldTip);
+            Assert.Equal(block, blockLogs[1].NewTip);
+            Assert.Equal(2, blockLogs[1].Index);
         }
 
         [Fact]
@@ -1121,7 +1120,7 @@ namespace Libplanet.Tests.Blockchain
                 );
 
                 Assert.Equal(1, renderer.ActionRecords.Count(r => r.Action is DumbAction));
-                Assert.Single(renderer.BlockRecords);
+                Assert.Equal(2, renderer.BlockRecords.Count);
                 Assert.Single(DumbAction.ExecuteRecords.Value.Where(r => !r.Rehearsal));
 
                 await blockChain.MineBlock(miner, DateTimeOffset.UtcNow);
@@ -1268,9 +1267,9 @@ namespace Libplanet.Tests.Blockchain
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public void Swap(bool render)
+        public void Swap(bool renderActions)
         {
-            Assert.Throws<ArgumentNullException>(() => _blockChain.Swap(null, render));
+            Assert.Throws<ArgumentNullException>(() => _blockChain.Swap(null, renderActions));
 
             (var addresses, Transaction<DumbAction>[] txs1) =
                 MakeFixturesForAppendTests();
@@ -1372,8 +1371,6 @@ namespace Libplanet.Tests.Blockchain
                     privateKey: privateKey),
             };
 
-            _renderer.ResetRecords();
-
             Block<DumbAction> forkTip = TestUtils.MineNext(
                 fork.Tip,
                 txsB,
@@ -1390,7 +1387,8 @@ namespace Libplanet.Tests.Blockchain
             );
 
             Guid previousChainId = _blockChain.Id;
-            _blockChain.Swap(fork, render);
+            _renderer.ResetRecords();
+            _blockChain.Swap(fork, renderActions);
 
             Assert.Empty(_blockChain.Store.IterateIndexes(previousChainId));
             if (_blockChain.StateStore is IBlockStatesStore blockStatesStore)
@@ -1400,10 +1398,27 @@ namespace Libplanet.Tests.Blockchain
 
             Assert.Empty(_blockChain.Store.ListTxNonces(previousChainId));
 
-            RenderRecord<DumbAction>.ActionBase[] renders = _renderer.ActionRecords
+            RenderRecord<DumbAction>.BlockBase[] blockLevelRenders = _renderer.Records
+                .OfType<RenderRecord<DumbAction>.BlockBase>()
+                .ToArray();
+            Assert.Equal(renderActions ? 4 : 3, blockLevelRenders.Length);
+            Assert.IsType<RenderRecord<DumbAction>.Reorg>(blockLevelRenders[0]);
+            Assert.True(blockLevelRenders[0].Begin);
+            Assert.IsType<RenderRecord<DumbAction>.Block>(blockLevelRenders[1]);
+            Assert.True(blockLevelRenders[1].Begin);
+            if (renderActions)
+            {
+                Assert.IsType<RenderRecord<DumbAction>.Block>(blockLevelRenders[2]);
+                Assert.True(blockLevelRenders[2].End);
+            }
+
+            Assert.IsType<RenderRecord<DumbAction>.Reorg>(blockLevelRenders.Last());
+            Assert.True(blockLevelRenders.Last().End);
+
+            RenderRecord<DumbAction>.ActionBase[] actionRenders = _renderer.ActionRecords
                 .Where(r => r.Action is DumbAction)
                 .ToArray();
-            DumbAction[] actions = renders.Select(r => (DumbAction)r.Action).ToArray();
+            DumbAction[] actions = actionRenders.Select(r => (DumbAction)r.Action).ToArray();
 
             int actionsCountA = txsA.Sum(
                 a => a.Sum(tx => tx.Actions.Count)
@@ -1413,11 +1428,16 @@ namespace Libplanet.Tests.Blockchain
             int totalBlockCount = (int)_blockChain[-1].Index + 1;
             int unRenderBlockCount = 2;
 
-            if (render)
+            if (renderActions)
             {
-                Assert.Equal(actionsCountB + actionsCountA, renders.Length);
-                Assert.True(renders.Take(actionsCountA).All(r => r.Unrender));
-                Assert.True(renders.Skip(actionsCountA).All(r => r.Render));
+                Assert.True(blockLevelRenders[0].Index < actionRenders[0].Index);
+                Assert.True(actionRenders.Last(r => r.Unrender).Index < blockLevelRenders[1].Index);
+                Assert.True(blockLevelRenders[1].Index < actionRenders.First(r => r.Render).Index);
+                Assert.True(actionRenders.Last().Index < blockLevelRenders[2].Index);
+
+                Assert.Equal(actionsCountB + actionsCountA, actionRenders.Length);
+                Assert.True(actionRenders.Take(actionsCountA).All(r => r.Unrender));
+                Assert.True(actionRenders.Skip(actionsCountA).All(r => r.Render));
 
                 Assert.Equal("qux", actions[0].Item);
                 Assert.Equal("baz", actions[1].Item);
@@ -1442,7 +1462,7 @@ namespace Libplanet.Tests.Blockchain
             }
             else
             {
-                Assert.Empty(renders);
+                Assert.Empty(actionRenders);
             }
         }
 
@@ -2353,10 +2373,13 @@ namespace Libplanet.Tests.Blockchain
             Assert.Empty(_renderer.BlockRecords);
             Block<DumbAction> block = await _blockChain.MineBlock(_fx.Address1);
             IReadOnlyList<RenderRecord<DumbAction>.Block> records = _renderer.BlockRecords;
-            Assert.Single(records);
-            Assert.Equal(genesis, records[0].OldTip);
-            Assert.Equal(block, records[0].NewTip);
-            Assert.Equal(1, records[0].NewTip.Index);
+            Assert.Equal(2, records.Count);
+            foreach (RenderRecord<DumbAction>.Block record in records)
+            {
+                Assert.Equal(genesis, record.OldTip);
+                Assert.Equal(block, record.NewTip);
+                Assert.Equal(1, record.NewTip.Index);
+            }
 
             _renderer.ResetRecords();
             Assert.Throws<InvalidBlockIndexException>(() => _blockChain.Append(block));
@@ -2383,10 +2406,13 @@ namespace Libplanet.Tests.Blockchain
             _blockChain.Swap(fork, false);
 
             IReadOnlyList<RenderRecord<DumbAction>.Reorg> reorgRecords = _renderer.ReorgRecords;
-            Assert.Single(reorgRecords);
-            Assert.Equal(oldTip, reorgRecords[0].OldTip);
-            Assert.Equal(newTip, reorgRecords[0].NewTip);
-            Assert.Equal(branchpoint, reorgRecords[0].Branchpoint);
+            Assert.Equal(2, reorgRecords.Count);
+            foreach (RenderRecord<DumbAction>.Reorg reorgRecord in reorgRecords)
+            {
+                Assert.Equal(oldTip, reorgRecord.OldTip);
+                Assert.Equal(newTip, reorgRecord.NewTip);
+                Assert.Equal(branchpoint, reorgRecord.Branchpoint);
+            }
         }
 
         [Fact]
@@ -2424,9 +2450,13 @@ namespace Libplanet.Tests.Blockchain
                 chain2.Append(block);
 
                 IReadOnlyList<RenderRecord<DumbAction>.Block> records = renderer2.BlockRecords;
-                Assert.Single(records);
-                Assert.Equal(genesis, records[0].OldTip);
-                Assert.Equal(block, records[0].NewTip);
+                Assert.Equal(2, records.Count);
+                foreach (RenderRecord<DumbAction>.Block record in records)
+                {
+                    Assert.Equal(genesis, record.OldTip);
+                    Assert.Equal(block, record.NewTip);
+                }
+
                 await Task.Delay(100);
                 Assert.True(miningTask.IsCanceled);
             }

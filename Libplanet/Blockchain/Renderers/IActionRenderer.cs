@@ -10,18 +10,24 @@ namespace Libplanet.Blockchain.Renderers
     /// on a <see cref="BlockChain{T}"/>.
     /// If you need more fine-grained events than <see cref="IRenderer{T}"/>,
     /// implement this interface instead.
-    /// <para>The invocation order of methods are:</para>
+    /// <para>The invocation order of methods for each <see cref="Block{T}"/> are:</para>
     /// <list type="number">
     /// <item><description><see cref="IRenderer{T}.RenderReorg(Block{T}, Block{T}, Block{T})"/>
-    /// </description></item>
+    /// (one time)</description></item>
     /// <item><description><see cref="UnrenderAction(IAction, IActionContext, IAccountStateDelta)"/>
-    /// &amp; <see cref="UnrenderActionError(IAction, IActionContext, Exception)"/></description>
+    /// &amp; <see cref="UnrenderActionError(IAction, IActionContext, Exception)"/> (zero or more
+    /// times)</description>
     /// </item>
-    /// <item><description><see cref="IRenderer{T}.RenderBlock(Block{T}, Block{T})"/>
+    /// <item><description><see cref="IRenderer{T}.RenderBlock(Block{T}, Block{T})"/> (one time)
     /// </description></item>
     /// <item><description><see cref="RenderAction(IAction, IActionContext, IAccountStateDelta)"/>
-    /// &amp; <see cref="RenderActionError(IAction, IActionContext, Exception)"/></description>
+    /// &amp; <see cref="RenderActionError(IAction, IActionContext, Exception)"/> (zero or more
+    /// times)</description>
     /// </item>
+    /// <item><description><see cref="RenderBlockEnd(Block{T}, Block{T})"/> (one time)</description>
+    /// </item>
+    /// <item><description><see cref="IRenderer{T}.RenderReorgEnd(Block{T}, Block{T}, Block{T})"/>
+    /// (one time)</description></item>
     /// </list>
     /// </summary>
     /// <typeparam name="T">An <see cref="IAction"/> type.  It should match to
@@ -127,5 +133,14 @@ namespace Libplanet.Blockchain.Renderers
         /// block actions (<see cref="Policies.IBlockPolicy{T}.BlockAction"/>) besides transaction
         /// actions (<see cref="Tx.Transaction{T}.Actions"/>).</remarks>
         void UnrenderActionError(IAction action, IActionContext context, Exception exception);
+
+        /// <summary>
+        /// Does things that should be done right all actions in a new <see cref="Block{T}"/> are
+        /// rendered.
+        /// </summary>
+        /// <remarks>It is guaranteed to be called only once for a block.</remarks>
+        /// <param name="oldTip">The previous <see cref="BlockChain{T}.Tip"/>.</param>
+        /// <param name="newTip">The current <see cref="BlockChain{T}.Tip"/>.</param>
+        void RenderBlockEnd(Block<T> oldTip, Block<T> newTip);
     }
 }

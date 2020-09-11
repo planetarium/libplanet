@@ -77,12 +77,53 @@ namespace Libplanet.Blockchain.Renderers
         public void RenderBlock(
             Block<T> oldTip,
             Block<T> newTip
+        ) =>
+            LogBlockRendering(
+                nameof(RenderBlock),
+                oldTip,
+                newTip,
+                Renderer.RenderBlock
+            );
+
+        /// <inheritdoc cref="IRenderer{T}.RenderReorg(Block{T}, Block{T}, Block{T})"/>
+        public void RenderReorg(
+            Block<T> oldTip,
+            Block<T> newTip,
+            Block<T> branchpoint
+        ) =>
+            LogReorgRendering(
+                nameof(RenderReorg),
+                oldTip,
+                newTip,
+                branchpoint,
+                Renderer.RenderReorg
+            );
+
+        /// <inheritdoc cref="IRenderer{T}.RenderReorg(Block{T}, Block{T}, Block{T})"/>
+        public void RenderReorgEnd(
+            Block<T> oldTip,
+            Block<T> newTip,
+            Block<T> branchpoint
+        ) =>
+            LogReorgRendering(
+                nameof(RenderReorgEnd),
+                oldTip,
+                newTip,
+                branchpoint,
+                Renderer.RenderReorgEnd
+            );
+
+        protected void LogBlockRendering(
+            string methodName,
+            Block<T> oldTip,
+            Block<T> newTip,
+            System.Action<Block<T>, Block<T>> callback
         )
         {
             Logger.Write(
                 Level,
                 "Invoking {MethodName}() for #{NewIndex} {NewHash} (was #{OldIndex} {OldHash})...",
-                nameof(RenderBlock),
+                methodName,
                 newTip.Index,
                 newTip.Hash,
                 oldTip.Index,
@@ -91,7 +132,7 @@ namespace Libplanet.Blockchain.Renderers
 
             try
             {
-                Renderer.RenderBlock(oldTip, newTip);
+                callback(oldTip, newTip);
             }
             catch (Exception e)
             {
@@ -101,7 +142,7 @@ namespace Libplanet.Blockchain.Renderers
                 Logger.Error(
                     e,
                     errorMessage,
-                    nameof(RenderBlock),
+                    methodName,
                     newTip.Index,
                     newTip.Hash,
                     oldTip.Index,
@@ -114,7 +155,7 @@ namespace Libplanet.Blockchain.Renderers
             Logger.Write(
                 Level,
                 "Invoked {MethodName}() for #{NewIndex} {NewHash} (was #{OldIndex} {OldHash}).",
-                nameof(RenderBlock),
+                methodName,
                 newTip.Index,
                 newTip.Hash,
                 oldTip.Index,
@@ -122,11 +163,12 @@ namespace Libplanet.Blockchain.Renderers
             );
         }
 
-        /// <inheritdoc cref="IRenderer{T}.RenderReorg(Block{T}, Block{T}, Block{T})"/>
-        public void RenderReorg(
+        private void LogReorgRendering(
+            string methodName,
             Block<T> oldTip,
             Block<T> newTip,
-            Block<T> branchpoint
+            Block<T> branchpoint,
+            System.Action<Block<T>, Block<T>, Block<T>> callback
         )
         {
             const string startMessage =
@@ -135,7 +177,7 @@ namespace Libplanet.Blockchain.Renderers
             Logger.Write(
                 Level,
                 startMessage,
-                nameof(RenderReorg),
+                methodName,
                 newTip.Index,
                 newTip.Hash,
                 oldTip.Index,
@@ -146,7 +188,7 @@ namespace Libplanet.Blockchain.Renderers
 
             try
             {
-                Renderer.RenderReorg(oldTip, newTip, branchpoint);
+                callback(oldTip, newTip, branchpoint);
             }
             catch (Exception e)
             {
@@ -157,7 +199,7 @@ namespace Libplanet.Blockchain.Renderers
                 Logger.Error(
                     e,
                     errorMessage,
-                    nameof(RenderReorg),
+                    methodName,
                     newTip.Index,
                     newTip.Hash,
                     oldTip.Index,
@@ -175,7 +217,7 @@ namespace Libplanet.Blockchain.Renderers
             Logger.Write(
                 Level,
                 endMessage,
-                nameof(RenderReorg),
+                methodName,
                 newTip.Index,
                 newTip.Hash,
                 oldTip.Index,

@@ -38,6 +38,13 @@ namespace Libplanet.Tests.Common
         {
             public Libplanet.Blocks.Block<T> OldTip;
             public Libplanet.Blocks.Block<T> NewTip;
+            public bool Begin;
+
+            public bool End
+            {
+                get => !Begin;
+                set => Begin = !value;
+            }
         }
 
         public class Block : BlockBase

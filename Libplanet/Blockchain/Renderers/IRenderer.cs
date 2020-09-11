@@ -9,6 +9,15 @@ namespace Libplanet.Blockchain.Renderers
     /// <para>Usually, implementations of this interface purpose to update the in-memory game states
     /// (if exist), or send a signal to the UI thread (usually the main thread) so that the graphics
     /// on the display is redrawn.</para>
+    /// <para>The invocation order of methods for each <see cref="Block{T}"/> are:</para>
+    /// <list type="number">
+    /// <item><description><see cref="RenderReorg(Block{T}, Block{T}, Block{T})"/> (one time)
+    /// </description></item>
+    /// <item><description><see cref="RenderBlock(Block{T}, Block{T})"/> (one time)</description>
+    /// </item>
+    /// <item><description><see cref="RenderReorgEnd(Block{T}, Block{T}, Block{T})"/> (one time)
+    /// </description></item>
+    /// </list>
     /// </summary>
     /// <typeparam name="T">An <see cref="IAction"/> type.  It should match to
     /// <see cref="BlockChain{T}"/>'s type parameter.</typeparam>
@@ -30,15 +39,30 @@ namespace Libplanet.Blockchain.Renderers
         /// Does things that should be done right before reorg happens to a <see
         /// cref="BlockChain{T}"/>.
         /// </summary>
-        /// <remarks>For every call to this method, a call to <see
-        /// cref="RenderBlock(Block{T}, Block{T})"/> method with the same <paramref name="newTip"/>
-        /// is made too.  Note that this method is guaranteed to be called before <see
-        /// cref="RenderBlock(Block{T}, Block{T})"/> method for the same <paramref name="newTip"/>.
-        /// </remarks>
+        /// <remarks>For every call to this method, calls to
+        /// <see cref="RenderBlock(Block{T}, Block{T})"/> and
+        /// <see cref="RenderReorgEnd(Block{T}, Block{T}, Block{T})" /> methods with the same
+        /// <paramref name="newTip"/> is made too.  Note that this method is guaranteed to be called
+        /// before <see cref="RenderBlock(Block{T}, Block{T})"/> method for the same
+        /// <paramref name="newTip"/>.</remarks>
         /// <param name="oldTip">The <see cref="BlockChain{T}.Tip"/> right before reorg.</param>
         /// <param name="newTip">The <see cref="BlockChain{T}.Tip"/> after reorg.</param>
         /// <param name="branchpoint">The highest common <see cref="Block{T}"/> between
         /// <paramref name="oldTip"/> and <paramref name="newTip"/>.</param>
         void RenderReorg(Block<T> oldTip, Block<T> newTip, Block<T> branchpoint);
+
+        /// <summary>
+        /// Does things that should be done right after reorg happens to a <see
+        /// cref="BlockChain{T}"/>.
+        /// </summary>
+        /// <remarks>Note that this method is guaranteed to be called after
+        /// <see cref="RenderReorg(Block{T}, Block{T}, Block{T})"/> and
+        /// <see cref="RenderBlock(Block{T}, Block{T})"/> methods for the same
+        /// <paramref name="newTip"/>.</remarks>
+        /// <param name="oldTip">The <see cref="BlockChain{T}.Tip"/> right before reorg.</param>
+        /// <param name="newTip">The <see cref="BlockChain{T}.Tip"/> after reorg.</param>
+        /// <param name="branchpoint">The highest common <see cref="Block{T}"/> between
+        /// <paramref name="oldTip"/> and <paramref name="newTip"/>.</param>
+        void RenderReorgEnd(Block<T> oldTip, Block<T> newTip, Block<T> branchpoint);
     }
 }

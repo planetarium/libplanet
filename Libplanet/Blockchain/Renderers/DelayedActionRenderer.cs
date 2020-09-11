@@ -116,6 +116,12 @@ namespace Libplanet.Blockchain.Renderers
             _eventReceivingBlock = newTip.Hash;
         }
 
+        /// <inheritdoc cref="IActionRenderer{T}.RenderBlockEnd(Block{T}, Block{T})"/>
+        public void RenderBlockEnd(Block<T> oldTip, Block<T> newTip)
+        {
+            // Unused.
+        }
+
         /// <inheritdoc cref="IRenderer{T}.RenderReorg(Block{T}, Block{T}, Block{T})"/>
         public override void RenderReorg(Block<T> oldTip, Block<T> newTip, Block<T> branchpoint)
         {
@@ -203,15 +209,20 @@ namespace Libplanet.Blockchain.Renderers
             return Iterate().Reverse().ToImmutableArray();
         }
 
-        /// <inheritdoc cref="DelayedRenderer{T}.OnTipChanged(Block{T}?, Block{T})"/>
-        protected override Block<T>? OnTipChanged(Block<T>? oldTip, Block<T> newTip)
+        /// <inheritdoc cref="DelayedRenderer{T}.OnTipChanged(Block{T}, Block{T}, Block{T}?)"/>
+        protected override void OnTipChanged(
+            Block<T> oldTip,
+            Block<T> newTip,
+            Block<T>? branchpoint
+        )
         {
-            if (oldTip is null)
+            if (branchpoint is Block<T>)
             {
-                return null;
+                Renderer.RenderReorg(oldTip, newTip, branchpoint);
             }
 
-            Block<T>? branchpoint = base.OnTipChanged(oldTip, newTip);
+            Renderer.RenderBlock(oldTip, newTip);
+
             if (branchpoint is null)
             {
                 RenderBufferedActionEvaluations(newTip.Hash, unrender: false);
@@ -231,7 +242,12 @@ namespace Libplanet.Blockchain.Renderers
                 }
             }
 
-            return branchpoint;
+            ActionRenderer.RenderBlockEnd(oldTip, newTip);
+
+            if (branchpoint is Block<T>)
+            {
+                Renderer.RenderReorgEnd(oldTip, newTip, branchpoint);
+            }
         }
 
         private void DelayRenderingAction(ActionEvaluation eval)

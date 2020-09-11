@@ -110,6 +110,16 @@ namespace Libplanet.Tests.Common
             _records.Add(new RenderRecord<T>.Block
             {
                 Index = _nextIndex++,
+                Begin = true,
+                OldTip = oldTip,
+                NewTip = newTip,
+            });
+
+        public void RenderBlockEnd(Block<T> oldTip, Block<T> newTip) =>
+            _records.Add(new RenderRecord<T>.Block
+            {
+                Index = _nextIndex++,
+                End = true,
                 OldTip = oldTip,
                 NewTip = newTip,
             });
@@ -118,6 +128,17 @@ namespace Libplanet.Tests.Common
             _records.Add(new RenderRecord<T>.Reorg
             {
                 Index = _nextIndex++,
+                Begin = true,
+                OldTip = oldTip,
+                NewTip = newTip,
+                Branchpoint = branchpoint,
+            });
+
+        public void RenderReorgEnd(Block<T> oldTip, Block<T> newTip, Block<T> branchpoint) =>
+            _records.Add(new RenderRecord<T>.Reorg
+            {
+                Index = _nextIndex++,
+                End = true,
                 OldTip = oldTip,
                 NewTip = newTip,
                 Branchpoint = branchpoint,

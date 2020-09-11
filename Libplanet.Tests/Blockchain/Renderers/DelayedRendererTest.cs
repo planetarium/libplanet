@@ -200,6 +200,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             // #5' -> no confirms
             renderer.RenderReorg(_chainA[5], _chainB[5], _branchpoint);
             renderer.RenderBlock(_chainA[5], _chainB[5]);
+            renderer.RenderReorgEnd(_chainA[5], _chainB[5], _branchpoint);
             Assert.Null(delayedRenderer.Tip);
             Assert.Empty(reorgLogs);
             Assert.Empty(blockLogs);
@@ -209,6 +210,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             // #5' -> no confirms
             renderer.RenderReorg(_chainB[5], _chainA[6], _branchpoint);
             renderer.RenderBlock(_chainB[5], _chainA[6]);
+            renderer.RenderReorgEnd(_chainB[5], _chainA[6], _branchpoint);
             Assert.Equal(_chainA[4], delayedRenderer.Tip);
             Assert.Empty(reorgLogs);
             Assert.Empty(blockLogs);
@@ -218,6 +220,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             // #5' -> 1 confirm; #6' -> no confirm
             renderer.RenderReorg(_chainA[6], _chainB[6], _branchpoint);
             renderer.RenderBlock(_chainA[6], _chainB[6]);
+            renderer.RenderReorgEnd(_chainA[6], _chainB[6], _branchpoint);
             Assert.Equal(_chainA[4], delayedRenderer.Tip);
             Assert.Empty(reorgLogs);
             Assert.Empty(blockLogs);
@@ -227,6 +230,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             // #5' -> 1 confirm;  #6' -> no confirm
             renderer.RenderReorg(_chainB[6], _chainA[7], _branchpoint);
             renderer.RenderBlock(_chainB[6], _chainA[7]);
+            renderer.RenderReorgEnd(_chainB[6], _chainA[7], _branchpoint);
             Assert.Equal(_chainA[4], delayedRenderer.Tip);
             Assert.Empty(reorgLogs);
             Assert.Empty(blockLogs);
@@ -236,6 +240,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             // #5' -> 2 confirms; #6' -> 1 confirm; #7' -> no confirm
             renderer.RenderReorg(_chainA[7], _chainB[7], _branchpoint);
             renderer.RenderBlock(_chainA[7], _chainB[7]);
+            renderer.RenderReorgEnd(_chainA[7], _chainB[7], _branchpoint);
             Assert.Equal(_chainA[4], delayedRenderer.Tip);
             Assert.Empty(reorgLogs);
             Assert.Empty(blockLogs);
@@ -245,6 +250,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             // #5' -> 2 confirms; #6' -> 1 confirm;  #7' -> no confirm
             renderer.RenderReorg(_chainB[7], _chainA[8], _branchpoint);
             renderer.RenderBlock(_chainB[7], _chainA[8]);
+            renderer.RenderReorgEnd(_chainB[7], _chainA[8], _branchpoint);
             Assert.Equal(_chainA[5], delayedRenderer.Tip);
             Assert.Empty(reorgLogs);
             Assert.Equal(new[] { (_chainA[4], _chainA[5]) }, blockLogs);
@@ -254,6 +260,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             // #5' -> 3 confirms; #6' -> 2 confirms; #7' -> 1 confirm; #8' -> no confirm
             renderer.RenderReorg(_chainA[8], _chainB[8], _branchpoint);
             renderer.RenderBlock(_chainA[8], _chainB[8]);
+            renderer.RenderReorgEnd(_chainA[8], _chainB[8], _branchpoint);
             Assert.Equal(_chainB[5], delayedRenderer.Tip);
             Assert.Equal(new[] { (_chainA[5], _chainB[5], _branchpoint) }, reorgLogs);
             Assert.Equal(new[] { (_chainA[4], _chainA[5]), (_chainA[5], _chainB[5]) }, blockLogs);

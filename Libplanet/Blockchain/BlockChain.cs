@@ -857,6 +857,7 @@ namespace Libplanet.Blockchain
 
             IReadOnlyList<ActionEvaluation> evaluations = null;
             _rwlock.EnterUpgradeableReadLock();
+            Block<T> prevTip = Tip;
             try
             {
                 InvalidBlockException e =
@@ -908,7 +909,6 @@ namespace Libplanet.Blockchain
                         evaluations = ExecuteActions(block);
                     }
 
-                    Block<T> prevTip = Tip;
                     _blocks[block.Hash] = block;
                     foreach (KeyValuePair<Address, long> pair in nonceDeltas)
                     {
@@ -961,6 +961,10 @@ namespace Libplanet.Blockchain
             if (renderActions)
             {
                 RenderBlock(evaluations, block, stateCompleters);
+                foreach (IActionRenderer<T> renderer in ActionRenderers)
+                {
+                    renderer.RenderBlockEnd(oldTip: prevTip ?? Genesis, newTip: block);
+                }
             }
         }
 
@@ -1296,6 +1300,7 @@ namespace Libplanet.Blockchain
         // FIXME it's very dangerous because replacing Id means
         // ALL blocks (referenced by MineBlock(), etc.) will be changed.
         // we need to add a synchronization mechanism to handle this correctly.
+#pragma warning disable MEN003
         internal void Swap(
             BlockChain<T> other,
             bool renderActions,
@@ -1377,7 +1382,8 @@ namespace Libplanet.Blockchain
                 topmostCommon
             );
 
-            if (renderBlocks && !Tip.Equals(topmostCommon) && !other.Tip.Equals(topmostCommon))
+            bool reorged = !Tip.Equals(topmostCommon) && !other.Tip.Equals(topmostCommon);
+            if (renderBlocks && reorged)
             {
                 foreach (IRenderer<T> renderer in Renderers)
                 {
@@ -1448,11 +1454,11 @@ namespace Libplanet.Blockchain
             ImmutableHashSet<TxId> restageTxIds = unstagedTxIds.Except(stageTxIds);
             Store.StageTransactionIds(restageTxIds);
 
+            Block<T> oldTip = Tip ?? Genesis, newTip = other.Tip ?? other.Genesis;
             try
             {
                 _rwlock.EnterWriteLock();
 
-                Block<T> oldTip = Tip ?? Genesis, newTip = other.Tip ?? other.Genesis;
                 Guid obsoleteId = Id;
                 Id = other.Id;
                 Store.SetCanonicalChainId(Id);
@@ -1486,8 +1492,22 @@ namespace Libplanet.Blockchain
 
                 int cnt = RenderBlocks(startToRenderIndex, completers);
                 _logger.Debug($"{nameof(Swap)}() completed rendering {{Actions}} actions.", cnt);
+
+                foreach (IActionRenderer<T> renderer in ActionRenderers)
+                {
+                    renderer.RenderBlockEnd(oldTip, newTip);
+                }
+            }
+
+            if (renderBlocks && reorged)
+            {
+                foreach (IRenderer<T> renderer in Renderers)
+                {
+                    renderer.RenderReorgEnd(oldTip, newTip, topmostCommon);
+                }
             }
         }
+#pragma warning restore MEN003
 
         internal IImmutableSet<TxId> GetStagedTransactionIds()
         {
