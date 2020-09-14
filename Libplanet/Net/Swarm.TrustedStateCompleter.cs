@@ -59,6 +59,9 @@ namespace Libplanet.Net
 
             IReadOnlyList<BoundPeer> trustedPeers =
                 (await DialToExistingPeers(dialTimeout, cancellationToken))
+                    .Where(pair =>
+                        !(pair.Peer is null || pair.ChainStatus is null) &&
+                        pair.ChainStatus.GenesisHash.Equals(BlockChain.Genesis.Hash))
                     .Select(pair => pair.Peer)
                     .Where(peer => trustedStateValidators.Contains(peer.Address))
                     .ToArray();

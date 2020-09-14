@@ -41,6 +41,7 @@ namespace Libplanet.Net
 
                     // This is based on the assumption that genesis block always exists.
                     var chainStatus = new ChainStatus(
+                        BlockChain.Genesis.Hash,
                         BlockChain.Tip.Index,
                         BlockChain.Tip.TotalDifficulty)
                     {

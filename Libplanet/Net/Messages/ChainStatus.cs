@@ -1,22 +1,30 @@
 using System.Collections.Generic;
 using System.Numerics;
+using System.Security.Cryptography;
 using NetMQ;
 
 namespace Libplanet.Net.Messages
 {
     internal class ChainStatus : Message
     {
-        public ChainStatus(long tipIndex, BigInteger totalDifficulty)
+        public ChainStatus(
+            HashDigest<SHA256> genesisHash,
+            long tipIndex,
+            BigInteger totalDifficulty)
         {
+            GenesisHash = genesisHash;
             TipIndex = tipIndex;
             TotalDifficulty = totalDifficulty;
         }
 
         public ChainStatus(NetMQFrame[] body)
         {
-            TipIndex = body[0].ConvertToInt64();
-            TotalDifficulty = new BigInteger(body[1].ToByteArray());
+            GenesisHash = new HashDigest<SHA256>(body[0].Buffer);
+            TipIndex = body[1].ConvertToInt64();
+            TotalDifficulty = new BigInteger(body[2].ToByteArray());
         }
+
+        public HashDigest<SHA256> GenesisHash { get; }
 
         public long TipIndex { get; }
 
@@ -28,6 +36,7 @@ namespace Libplanet.Net.Messages
         {
             get
             {
+                yield return new NetMQFrame(GenesisHash.ToByteArray());
                 yield return new NetMQFrame(
                     NetworkOrderBitsConverter.GetBytes(TipIndex));
                 yield return new NetMQFrame(TotalDifficulty.ToByteArray());

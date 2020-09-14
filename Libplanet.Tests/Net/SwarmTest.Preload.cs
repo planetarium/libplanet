@@ -1422,6 +1422,78 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact(Timeout = Timeout)]
+        public async Task PreloadIgnorePeerWithDifferentGenesisBlock()
+        {
+            var policy = new BlockPolicy<DumbAction>();
+            var genesisBlock1 = new Block<DumbAction>(
+                0,
+                0,
+                0,
+                new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 }),
+                _fx1.Address1,
+                null,
+                DateTimeOffset.MinValue,
+                Enumerable.Empty<Transaction<DumbAction>>());
+            var genesisBlock2 = new Block<DumbAction>(
+                0,
+                0,
+                0,
+                new Nonce(new byte[] { 0x02, 0x00, 0x00, 0x00 }),
+                _fx1.Address1,
+                null,
+                DateTimeOffset.MinValue,
+                Enumerable.Empty<Transaction<DumbAction>>());
+
+            BlockChain<DumbAction> MakeBlockChain(Block<DumbAction> genesisBlock) =>
+                TestUtils.MakeBlockChain(
+                    policy: policy,
+                    store: new DefaultStore(path: null),
+                    genesisBlock: genesisBlock);
+            BlockChain<DumbAction> receiverChain = MakeBlockChain(genesisBlock1);
+            BlockChain<DumbAction> validSeedChain = MakeBlockChain(genesisBlock1);
+            BlockChain<DumbAction> invalidSeedChain = MakeBlockChain(genesisBlock2);
+            Swarm<DumbAction> receiverSwarm = CreateSwarm(receiverChain);
+            Swarm<DumbAction> validSeedSwarm = CreateSwarm(validSeedChain);
+            Swarm<DumbAction> invalidSeedSwarm = CreateSwarm(invalidSeedChain);
+
+            Assert.Equal(receiverSwarm.BlockChain.Genesis, validSeedSwarm.BlockChain.Genesis);
+            Assert.NotEqual(receiverSwarm.BlockChain.Genesis, invalidSeedSwarm.BlockChain.Genesis);
+
+            for (int i = 0; i < 10; i++)
+            {
+                await validSeedChain.MineBlock(_fx1.Address1);
+            }
+
+            for (int i = 0; i < 20; i++)
+            {
+                await invalidSeedChain.MineBlock(_fx1.Address1);
+            }
+
+            try
+            {
+                await StartAsync(receiverSwarm);
+                await StartAsync(validSeedSwarm);
+                await StartAsync(invalidSeedSwarm);
+
+                await receiverSwarm.AddPeersAsync(
+                    new[] { validSeedSwarm.AsPeer, invalidSeedSwarm.AsPeer }, null);
+                await receiverSwarm.PreloadAsync();
+
+                Assert.Equal(receiverChain.Tip, validSeedChain.Tip);
+            }
+            finally
+            {
+                await StopAsync(receiverSwarm);
+                await StopAsync(validSeedSwarm);
+                await StopAsync(invalidSeedSwarm);
+
+                receiverSwarm.Dispose();
+                validSeedSwarm.Dispose();
+                invalidSeedSwarm.Dispose();
+            }
+        }
+
+        [Fact(Timeout = Timeout)]
         public async Task ReorgWhilePreloadAsync()
         {
             BlockChain<DumbAction> seedChain = _blockchains[0];

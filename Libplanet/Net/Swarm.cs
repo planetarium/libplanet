@@ -594,7 +594,7 @@ namespace Libplanet.Net
                     var peersWithHeight = await GetPeersWithHeight(
                         initialTip, dialTimeout, cancellationToken);
 
-                    if (peersWithHeight is null)
+                    if (!peersWithHeight.Any())
                     {
                         _logger.Information("There is no appropriate peer for preloading.");
                         return;
@@ -631,6 +631,8 @@ namespace Libplanet.Net
                                 // Since the intention of this behavior is to prevent mistakes
                                 // to try to connect incorrect seeds (by a user),
                                 // this behavior should be limited for only seed peers.
+                                // FIXME: ChainStatus message became to contain hash value of
+                                // the genesis block, so this exception will not be happened.
                                 var msg =
                                     $"Since the genesis block is fixed to {workspace.Genesis} " +
                                     "protocol-wise, the blockchain which does not share " +
@@ -1417,14 +1419,12 @@ namespace Libplanet.Net
             CancellationToken cancellationToken)
         {
             var peersWithHeightAndDiff = (await DialToExistingPeers(dialTimeout, cancellationToken))
-                .Where(pp => pp.Item2.TotalDifficulty > (initialTip?.TotalDifficulty ?? 0))
-                .Select(pp => (pp.Item1, pp.Item2.TipIndex, pp.Item2.TotalDifficulty))
+                .Where(pp =>
+                    !(pp.Peer is null || pp.ChainStatus is null) &&
+                    pp.ChainStatus.GenesisHash.Equals(BlockChain.Genesis.Hash) &&
+                    pp.ChainStatus.TotalDifficulty > (initialTip?.TotalDifficulty ?? 0))
+                .Select(pp => (pp.Peer, pp.ChainStatus.TipIndex, pp.ChainStatus.TotalDifficulty))
                 .ToList();
-
-            if (!peersWithHeightAndDiff.Any())
-            {
-                return null;
-            }
 
             return peersWithHeightAndDiff
                 .OrderByDescending(p => p.Item3)
