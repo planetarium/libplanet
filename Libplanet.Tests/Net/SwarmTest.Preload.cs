@@ -240,6 +240,41 @@ namespace Libplanet.Tests.Net
             }
         }
 
+        [Fact(Timeout = 5 * 1000)]
+        public async Task BlockDownloadTimeout()
+        {
+            Swarm<DumbAction> minerSwarm = _swarms[0];
+
+            var options = new SwarmOptions
+            {
+                BlockDownloadTimeout = TimeSpan.FromMilliseconds(1),
+            };
+
+            Swarm<DumbAction> receiverSwarm = CreateSwarm(_blockchains[1], options: options);
+
+            foreach (var unused in Enumerable.Range(0, 10))
+            {
+                await minerSwarm.BlockChain.MineBlock(_fx1.Address1);
+            }
+
+            try
+            {
+                await StartAsync(minerSwarm);
+
+                await receiverSwarm.AddPeersAsync(new[] { minerSwarm.AsPeer }, null);
+                Task waitTask = receiverSwarm.BlockDownloadStarted.WaitAsync();
+
+                Task preloadTask = receiverSwarm.PreloadAsync(TimeSpan.FromSeconds(15));
+                await waitTask;
+                await StopAsync(minerSwarm);
+                await Assert.ThrowsAsync<TaskCanceledException>(async () => await preloadTask);
+            }
+            finally
+            {
+                await StopAsync(minerSwarm);
+            }
+        }
+
         [Fact(Timeout = Timeout)]
         public async Task PreloadWithFailedActions()
         {

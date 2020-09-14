@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using Libplanet.Blocks;
 using Libplanet.Tx;
 
@@ -30,5 +31,10 @@ namespace Libplanet.Net
         /// The timeout used to receive recent states from other peers.
         /// </summary>
         public TimeSpan RecentStateRecvTimeout { get; set; } = TimeSpan.FromSeconds(90);
+
+        /// <summary>
+        /// The timeout used to block download in preloading.
+        /// </summary>
+        public TimeSpan BlockDownloadTimeout { get; set; } = Timeout.InfiniteTimeSpan;
     }
 }

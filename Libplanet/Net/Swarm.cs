@@ -226,6 +226,8 @@ namespace Libplanet.Net
 
         internal AsyncAutoResetEvent PreloadStarted { get; } = new AsyncAutoResetEvent();
 
+        internal AsyncAutoResetEvent BlockDownloadStarted { get; } = new AsyncAutoResetEvent();
+
         internal AsyncAutoResetEvent FillBlocksAsyncStarted { get; } = new AsyncAutoResetEvent();
 
         internal AsyncAutoResetEvent FillBlocksAsyncFailed { get; } = new AsyncAutoResetEvent();
@@ -655,7 +657,15 @@ namespace Libplanet.Net
                             blockFetcher: GetBlocksAsync,
                             cancellationToken: cancellationToken
                         );
-                    await foreach (var pair in completedBlocks)
+
+                    BlockDownloadStarted.Set();
+
+                    var blockDownloadCts = CancellationTokenSource.CreateLinkedTokenSource(
+                        new CancellationTokenSource(Options.BlockDownloadTimeout).Token,
+                        cancellationToken);
+
+                    await foreach (
+                        var pair in completedBlocks.WithCancellation(blockDownloadCts.Token))
                     {
                         pair.Deconstruct(out Block<T> block, out BoundPeer sourcePeer);
                         _logger.Verbose(
