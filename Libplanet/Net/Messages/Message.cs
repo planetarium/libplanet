@@ -80,7 +80,7 @@ namespace Libplanet.Net.Messages
             /// <summary>
             /// Message containing a single <see cref="BlockHeader"/>.
             /// </summary>
-            BlockHeaderMessage = 0x0d,
+            BlockHeaderMessage = 0x0c,
 
             /// <summary>
             /// Message containing demand block hashes with their index numbers.

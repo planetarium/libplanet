@@ -1331,7 +1331,7 @@ namespace Libplanet.Net
         private void BroadcastBlock(Address? except, Block<T> block)
         {
             _logger.Debug("Trying to broadcast blocks...");
-            var message = new BlockHeaderMessage(block.GetBlockHeader());
+            var message = new BlockHeaderMessage(BlockChain.Genesis.Hash, block.GetBlockHeader());
             BroadcastMessage(except, message);
             _logger.Debug("Block broadcasting complete.");
         }

@@ -145,6 +145,17 @@ namespace Libplanet.Net
                 return;
             }
 
+            if (!message.GenesisHash.Equals(BlockChain.Genesis.Hash))
+            {
+                _logger.Information(
+                    "BlockHeaderMessage was sent from the peer " +
+                    "{PeerAddress} with different genesis block {hash}; ignored.",
+                    message.Remote.Address,
+                    message.GenesisHash
+                );
+                return;
+            }
+
             BlockHeaderReceived.Set();
             BlockHeader header = message.Header;
 

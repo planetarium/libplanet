@@ -277,6 +277,51 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact(Timeout = Timeout)]
+        public async Task BroadcastIgnoreFromDifferentGenesisHash()
+        {
+            BlockChain<DumbAction> receiverChain = _blockchains[0];
+            Swarm<DumbAction> receiverSwarm = _swarms[0];
+            var invalidGenesisBlock = new Block<DumbAction>(
+                0,
+                0,
+                0,
+                new Nonce(new byte[] { 0x10, 0x00, 0x00, 0x00 }),
+                _fx1.Address1,
+                null,
+                DateTimeOffset.MinValue,
+                Enumerable.Empty<Transaction<DumbAction>>());
+            BlockChain<DumbAction> seedChain = TestUtils.MakeBlockChain(
+                    policy: _blockchains[0].Policy,
+                    store: new DefaultStore(path: null),
+                    genesisBlock: invalidGenesisBlock);
+            Swarm<DumbAction> seedSwarm = CreateSwarm(seedChain);
+            try
+            {
+                await StartAsync(receiverSwarm);
+                await StartAsync(seedSwarm);
+
+                await receiverSwarm.AddPeersAsync(new[] { seedSwarm.AsPeer }, null);
+                Block<DumbAction> block = await seedChain.MineBlock(_fx1.Address1);
+                seedSwarm.BroadcastBlock(block);
+                while (!((NetMQTransport)receiverSwarm.Transport).MessageHistory
+                    .Any(msg => msg is BlockHeaderMessage))
+                {
+                    await Task.Delay(100);
+                }
+
+                await Task.Delay(100);
+                Assert.NotEqual(seedChain.Tip, receiverChain.Tip);
+            }
+            finally
+            {
+                await StopAsync(seedSwarm);
+                await StopAsync(receiverSwarm);
+
+                seedSwarm.Dispose();
+            }
+        }
+
+        [Fact(Timeout = Timeout)]
         public async Task StopAsyncTest()
         {
             Swarm<DumbAction> swarm = _swarms[0];
