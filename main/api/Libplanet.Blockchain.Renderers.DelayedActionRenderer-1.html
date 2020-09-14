@@ -206,7 +206,7 @@ See also the <a class="xref" href="Libplanet.Blockchain.Renderers.DelayedRendere
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_DelayedActionRenderer_1_ActionRenderer.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.DelayedActionRenderer%601.ActionRenderer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedActionRenderer.cs/#L78">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedActionRenderer.cs/#L79">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Renderers_DelayedActionRenderer_1_ActionRenderer_" data-uid="Libplanet.Blockchain.Renderers.DelayedActionRenderer`1.ActionRenderer*"></a>
   <h4 id="Libplanet_Blockchain_Renderers_DelayedActionRenderer_1_ActionRenderer" data-uid="Libplanet.Blockchain.Renderers.DelayedActionRenderer`1.ActionRenderer">ActionRenderer</h4>
@@ -237,18 +237,18 @@ delayed events.</p>
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_DelayedActionRenderer_1_OnTipChanged_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.DelayedActionRenderer%601.OnTipChanged(Libplanet.Blocks.Block%7B%600%7D%2CLibplanet.Blocks.Block%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_DelayedActionRenderer_1_OnTipChanged_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.DelayedActionRenderer%601.OnTipChanged(Libplanet.Blocks.Block%7B%600%7D%2CLibplanet.Blocks.Block%7B%600%7D%2CLibplanet.Blocks.Block%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedActionRenderer.cs/#L207">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedActionRenderer.cs/#L247">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Renderers_DelayedActionRenderer_1_OnTipChanged_" data-uid="Libplanet.Blockchain.Renderers.DelayedActionRenderer`1.OnTipChanged*"></a>
-  <h4 id="Libplanet_Blockchain_Renderers_DelayedActionRenderer_1_OnTipChanged_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__" data-uid="Libplanet.Blockchain.Renderers.DelayedActionRenderer`1.OnTipChanged(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})">OnTipChanged(Block&lt;T&gt;, Block&lt;T&gt;)</h4>
+  <h4 id="Libplanet_Blockchain_Renderers_DelayedActionRenderer_1_OnTipChanged_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__" data-uid="Libplanet.Blockchain.Renderers.DelayedActionRenderer`1.OnTipChanged(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})">OnTipChanged(Block&lt;T&gt;, Block&lt;T&gt;, Block&lt;T&gt;)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override Block&lt;T&gt; OnTipChanged(Block&lt;T&gt; oldTip, Block&lt;T&gt; newTip)</code></pre>
+    <pre><code class="lang-csharp hljs">protected override void OnTipChanged(Block&lt;T&gt; oldTip, Block&lt;T&gt; newTip, Block&lt;T&gt; branchpoint)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -270,31 +270,21 @@ delayed events.</p>
         <td><span class="parametername">newTip</span></td>
         <td></td>
       </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
       <tr>
         <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td><span class="parametername">branchpoint</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">Libplanet.Blockchain.Renderers.DelayedRenderer&lt;T&gt;.OnTipChanged(Libplanet.Blocks.Block&lt;T&gt;, Libplanet.Blocks.Block&lt;T&gt;)</span></div>
+  <div><span class="xref">Libplanet.Blockchain.Renderers.DelayedRenderer&lt;T&gt;.OnTipChanged(Libplanet.Blocks.Block&lt;T&gt;, Libplanet.Blocks.Block&lt;T&gt;, Libplanet.Blocks.Block&lt;T&gt;)</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_DelayedActionRenderer_1_RenderAction_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.DelayedActionRenderer%601.RenderAction(Libplanet.Action.IAction%2CLibplanet.Action.IActionContext%2CLibplanet.Action.IAccountStateDelta)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedActionRenderer.cs/#L136">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedActionRenderer.cs/#L149">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Renderers_DelayedActionRenderer_1_RenderAction_" data-uid="Libplanet.Blockchain.Renderers.DelayedActionRenderer`1.RenderAction*"></a>
   <h4 id="Libplanet_Blockchain_Renderers_DelayedActionRenderer_1_RenderAction_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_" data-uid="Libplanet.Blockchain.Renderers.DelayedActionRenderer`1.RenderAction(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)">RenderAction(IAction, IActionContext, IAccountStateDelta)</h4>
@@ -336,7 +326,7 @@ delayed events.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_DelayedActionRenderer_1_RenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Exception_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.DelayedActionRenderer%601.RenderActionError(Libplanet.Action.IAction%2CLibplanet.Action.IActionContext%2CException)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedActionRenderer.cs/#L145">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedActionRenderer.cs/#L158">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Renderers_DelayedActionRenderer_1_RenderActionError_" data-uid="Libplanet.Blockchain.Renderers.DelayedActionRenderer`1.RenderActionError*"></a>
   <h4 id="Libplanet_Blockchain_Renderers_DelayedActionRenderer_1_RenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Exception_" data-uid="Libplanet.Blockchain.Renderers.DelayedActionRenderer`1.RenderActionError(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Exception)">RenderActionError(IAction, IActionContext, Exception)</h4>
@@ -378,7 +368,7 @@ delayed events.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_DelayedActionRenderer_1_RenderBlock_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.DelayedActionRenderer%601.RenderBlock(Libplanet.Blocks.Block%7B%600%7D%2CLibplanet.Blocks.Block%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedActionRenderer.cs/#L81">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedActionRenderer.cs/#L97">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Renderers_DelayedActionRenderer_1_RenderBlock_" data-uid="Libplanet.Blockchain.Renderers.DelayedActionRenderer`1.RenderBlock*"></a>
   <h4 id="Libplanet_Blockchain_Renderers_DelayedActionRenderer_1_RenderBlock_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__" data-uid="Libplanet.Blockchain.Renderers.DelayedActionRenderer`1.RenderBlock(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})">RenderBlock(Block&lt;T&gt;, Block&lt;T&gt;)</h4>
@@ -414,10 +404,47 @@ delayed events.</p>
   <div><span class="xref">Libplanet.Blockchain.Renderers.DelayedRenderer&lt;T&gt;.RenderBlock(Libplanet.Blocks.Block&lt;T&gt;, Libplanet.Blocks.Block&lt;T&gt;)</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_DelayedActionRenderer_1_RenderBlockEnd_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.DelayedActionRenderer%601.RenderBlockEnd(Libplanet.Blocks.Block%7B%600%7D%2CLibplanet.Blocks.Block%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedActionRenderer.cs/#L165">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_Renderers_DelayedActionRenderer_1_RenderBlockEnd_" data-uid="Libplanet.Blockchain.Renderers.DelayedActionRenderer`1.RenderBlockEnd*"></a>
+  <h4 id="Libplanet_Blockchain_Renderers_DelayedActionRenderer_1_RenderBlockEnd_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__" data-uid="Libplanet.Blockchain.Renderers.DelayedActionRenderer`1.RenderBlockEnd(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})">RenderBlockEnd(Block&lt;T&gt;, Block&lt;T&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RenderBlockEnd(Block&lt;T&gt; oldTip, Block&lt;T&gt; newTip)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td><span class="parametername">oldTip</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td><span class="parametername">newTip</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_DelayedActionRenderer_1_RenderReorg_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.DelayedActionRenderer%601.RenderReorg(Libplanet.Blocks.Block%7B%600%7D%2CLibplanet.Blocks.Block%7B%600%7D%2CLibplanet.Blocks.Block%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedActionRenderer.cs/#L120">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedActionRenderer.cs/#L82">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Renderers_DelayedActionRenderer_1_RenderReorg_" data-uid="Libplanet.Blockchain.Renderers.DelayedActionRenderer`1.RenderReorg*"></a>
   <h4 id="Libplanet_Blockchain_Renderers_DelayedActionRenderer_1_RenderReorg_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__" data-uid="Libplanet.Blockchain.Renderers.DelayedActionRenderer`1.RenderReorg(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})">RenderReorg(Block&lt;T&gt;, Block&lt;T&gt;, Block&lt;T&gt;)</h4>
@@ -458,10 +485,54 @@ delayed events.</p>
   <div><span class="xref">Libplanet.Blockchain.Renderers.DelayedRenderer&lt;T&gt;.RenderReorg(Libplanet.Blocks.Block&lt;T&gt;, Libplanet.Blocks.Block&lt;T&gt;, Libplanet.Blocks.Block&lt;T&gt;)</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_DelayedActionRenderer_1_RenderReorgEnd_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.DelayedActionRenderer%601.RenderReorgEnd(Libplanet.Blocks.Block%7B%600%7D%2CLibplanet.Blocks.Block%7B%600%7D%2CLibplanet.Blocks.Block%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedActionRenderer.cs/#L202">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_Renderers_DelayedActionRenderer_1_RenderReorgEnd_" data-uid="Libplanet.Blockchain.Renderers.DelayedActionRenderer`1.RenderReorgEnd*"></a>
+  <h4 id="Libplanet_Blockchain_Renderers_DelayedActionRenderer_1_RenderReorgEnd_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__" data-uid="Libplanet.Blockchain.Renderers.DelayedActionRenderer`1.RenderReorgEnd(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})">RenderReorgEnd(Block&lt;T&gt;, Block&lt;T&gt;, Block&lt;T&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void RenderReorgEnd(Block&lt;T&gt; oldTip, Block&lt;T&gt; newTip, Block&lt;T&gt; branchpoint)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td><span class="parametername">oldTip</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td><span class="parametername">newTip</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td><span class="parametername">branchpoint</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">Libplanet.Blockchain.Renderers.DelayedRenderer&lt;T&gt;.RenderReorgEnd(Libplanet.Blocks.Block&lt;T&gt;, Libplanet.Blocks.Block&lt;T&gt;, Libplanet.Blocks.Block&lt;T&gt;)</span></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_DelayedActionRenderer_1_UnrenderAction_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.DelayedActionRenderer%601.UnrenderAction(Libplanet.Action.IAction%2CLibplanet.Action.IActionContext%2CLibplanet.Action.IAccountStateDelta)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedActionRenderer.cs/#L153">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedActionRenderer.cs/#L132">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Renderers_DelayedActionRenderer_1_UnrenderAction_" data-uid="Libplanet.Blockchain.Renderers.DelayedActionRenderer`1.UnrenderAction*"></a>
   <h4 id="Libplanet_Blockchain_Renderers_DelayedActionRenderer_1_UnrenderAction_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_" data-uid="Libplanet.Blockchain.Renderers.DelayedActionRenderer`1.UnrenderAction(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)">UnrenderAction(IAction, IActionContext, IAccountStateDelta)</h4>
@@ -503,7 +574,7 @@ delayed events.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_DelayedActionRenderer_1_UnrenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Exception_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.DelayedActionRenderer%601.UnrenderActionError(Libplanet.Action.IAction%2CLibplanet.Action.IActionContext%2CException)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedActionRenderer.cs/#L162">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedActionRenderer.cs/#L141">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Renderers_DelayedActionRenderer_1_UnrenderActionError_" data-uid="Libplanet.Blockchain.Renderers.DelayedActionRenderer`1.UnrenderActionError*"></a>
   <h4 id="Libplanet_Blockchain_Renderers_DelayedActionRenderer_1_UnrenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Exception_" data-uid="Libplanet.Blockchain.Renderers.DelayedActionRenderer`1.UnrenderActionError(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Exception)">UnrenderActionError(IAction, IActionContext, Exception)</h4>

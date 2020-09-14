@@ -72,14 +72,15 @@ From now on, rendering logic needs to be <em>injected</em> from outside
 through <code>BlockChain&lt;T&gt;.Renderers</code>, rather than <code>IAction</code>s knowing
 how to render themselves.
 <code>IRenderer&lt;T&gt;</code> also unified <code>BlockChain&lt;T&gt;.TipChanged</code> event,
-and introduced new events like <code>IRenderer&lt;T&gt;.RenderActionError()</code>
-and <code>IRenderer&lt;T&gt;.RenderReorg()</code>.
+and introduced new events like <code>IActionRenderer&lt;T&gt;.RenderActionError()</code>,
+<code>IActionRenderer&lt;T&gt;.RenderBlockEnd()</code>, <code>IRenderer&lt;T&gt;.RenderReorg()</code>, and
+<code>IRenderer&lt;T&gt;.RenderReorgEnd()</code>.
 [<a href="https://github.com/planetarium/libplanet/issues/860">#860</a>, <a href="https://github.com/planetarium/libplanet/pull/875">#875</a>, <a href="https://github.com/planetarium/libplanet/issues/959">#959</a>, <a href="https://github.com/planetarium/libplanet/pull/963">#963</a>]
 <ul>
 <li>Removed <code>IAction.Render()</code> method, which was replaced by
-<code>IRenderer&lt;T&gt;.RenderAction()</code>.</li>
+<code>IActionRenderer&lt;T&gt;.RenderAction()</code>.</li>
 <li>Removed <code>IAction.Unrender()</code> method, which was replaced by
-<code>IRenderer&lt;T&gt;.UnrenderAction()</code>.</li>
+<code>IActionRenderer&lt;T&gt;.UnrenderAction()</code>.</li>
 <li>Removed <code>BlockChain&lt;T&gt;.TipChanged</code> event, which was replaced by
 <code>IRenderer&lt;T&gt;.RenderBlock()</code>.</li>
 <li>Removed <code>PolymorphicAction&lt;T&gt;.Render()</code> and <code>Unrender()</code> methods.</li>
