@@ -1,6 +1,7 @@
 #nullable enable
 using System;
 using Libplanet.Action;
+using Libplanet.Blocks;
 
 namespace Libplanet.Blockchain.Renderers
 {
@@ -13,15 +14,15 @@ namespace Libplanet.Blockchain.Renderers
     /// </summary>
     /// <example>
     /// With object initializers, you can easily make an one-use action renderer:
-    /// <code>
-    /// var actionRenderer = new AnonymousActionRenderer&lt;ExampleAction&gt;
+    /// <code><![CDATA[
+    /// var actionRenderer = new AnonymousActionRenderer<ExampleAction>
     /// {
     ///     ActionRenderer = (action, context, nextStates) =>
     ///     {
     ///         // Implement RenderAction() here.
     ///     };
     /// };
-    /// </code>
+    /// ]]></code>
     /// </example>
     /// <typeparam name="T">An <see cref="IAction"/> type.  It should match to
     /// <see cref="BlockChain{T}"/>'s type parameter.</typeparam>
@@ -52,6 +53,12 @@ namespace Libplanet.Blockchain.Renderers
         /// </summary>
         public Action<IAction, IActionContext, Exception>? ActionErrorUnrenderer { get; set; }
 
+        /// <summary>
+        /// A callback function to be invoked together with
+        /// <see cref="RenderBlockEnd(Block{T}, Block{T})"/>.
+        /// </summary>
+        public Action<Block<T>, Block<T>>? BlockEndRenderer { get; set; }
+
         /// <inheritdoc
         /// cref="IActionRenderer{T}.RenderAction(IAction, IActionContext, IAccountStateDelta)"/>
         public void RenderAction(
@@ -79,5 +86,9 @@ namespace Libplanet.Blockchain.Renderers
         /// cref="IActionRenderer{T}.UnrenderActionError(IAction, IActionContext, Exception)"/>
         public void UnrenderActionError(IAction action, IActionContext context, Exception exception)
             => ActionErrorUnrenderer?.Invoke(action, context, exception);
+
+        /// <inheritdoc cref="IActionRenderer{T}.RenderBlockEnd(Block{T}, Block{T})"/>
+        public void RenderBlockEnd(Block<T> oldTip, Block<T> newTip) =>
+            BlockEndRenderer?.Invoke(oldTip, newTip);
     }
 }

@@ -530,7 +530,7 @@ namespace Libplanet.Tests.Net
 
             BlockChain<DumbAction> minerChain = _blockchains[0];
             BlockChain<DumbAction> receiverChain = _blockchains[1];
-            DumbRenderer<DumbAction> receiverRenderer = _renderers[1];
+            RecordingRenderer<DumbAction> receiverRenderer = _renderers[1];
             PrivateKey[] signers =
                 Enumerable.Repeat(0, 10).Select(_ => new PrivateKey()).ToArray();
             Address[] targets = Enumerable.Repeat(0, signers.Length).Select(_
@@ -835,7 +835,7 @@ namespace Libplanet.Tests.Net
 
             BlockChain<DumbAction> minerChain =
                 TestUtils.MakeBlockChain(policy, fx1.Store);
-            var receiverRenderer = new DumbRenderer<DumbAction>();
+            var receiverRenderer = new RecordingRenderer<DumbAction>();
             BlockChain<DumbAction> receiverChain =
                 TestUtils.MakeBlockChain(policy, fx2.Store, renderers: new[] { receiverRenderer });
 

@@ -31,7 +31,7 @@ namespace Libplanet.Tests.Net
 
         private readonly List<BlockChain<DumbAction>> _blockchains;
         private readonly List<BlockChain<DumbAction>> _mptBlockchains;
-        private readonly List<DumbRenderer<DumbAction>> _renderers;
+        private readonly List<RecordingRenderer<DumbAction>> _renderers;
         private readonly List<Swarm<DumbAction>> _swarms;
         private readonly List<Swarm<DumbAction>> _mptSwarms;
         private readonly List<Func<Task>> _finalizers;

@@ -1,6 +1,7 @@
 #nullable enable
 using System;
 using Libplanet.Action;
+using Libplanet.Blocks;
 using Serilog;
 using Serilog.Events;
 
@@ -18,15 +19,15 @@ namespace Libplanet.Blockchain.Renderers
     /// <typeparam name="T">An <see cref="IAction"/> type.  It should match to
     /// <see cref="BlockChain{T}"/>'s type parameter.</typeparam>
     /// <example>
-    /// <code>
-    /// IActionRenderer&lt;ExampleAction&gt; actionRenderer = new SomeActionRenderer();
+    /// <code><![CDATA[
+    /// IActionRenderer<ExampleAction> actionRenderer = new SomeActionRenderer();
     /// // Wraps the action renderer with LoggedActionRenderer:
-    /// actionRenderer = new LoggedActionRenderer&lt;ExampleAction&gt;(
+    /// actionRenderer = new LoggedActionRenderer<ExampleAction>(
     ///     actionRenderer,
     ///     Log.Logger,
     ///     LogEventLevel.Information,
     /// );
-    /// </code>
+    /// ]]></code>
     /// </example>
     public class LoggedActionRenderer<T> : LoggedRenderer<T>, IActionRenderer<T>
         where T : IAction, new()
@@ -55,6 +56,18 @@ namespace Libplanet.Blockchain.Renderers
         /// The inner action renderer to forward all event messages to and actually render things.
         /// </summary>
         public IActionRenderer<T> ActionRenderer { get; }
+
+        /// <inheritdoc cref="IActionRenderer{T}.RenderBlockEnd(Block{T}, Block{T})"/>
+        public void RenderBlockEnd(
+            Block<T> oldTip,
+            Block<T> newTip
+        ) =>
+            LogBlockRendering(
+                nameof(RenderBlockEnd),
+                oldTip,
+                newTip,
+                ActionRenderer.RenderBlockEnd
+            );
 
         /// <inheritdoc
         /// cref="IActionRenderer{T}.RenderAction(IAction, IActionContext, IAccountStateDelta)"/>

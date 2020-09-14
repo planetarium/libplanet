@@ -3,24 +3,23 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Libplanet.Blockchain.Renderers;
-using Libplanet.Blocks;
 using Libplanet.Tests.Common.Action;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.TestCorrelator;
 using Xunit;
 using Constants = Serilog.Core.Constants;
+using DumbBlock = Libplanet.Blocks.Block<Libplanet.Tests.Common.Action.DumbAction>;
 
 namespace Libplanet.Tests.Blockchain.Renderers
 {
     public class LoggedRendererTest : IDisposable
     {
-        private static Block<DumbAction> _genesis =
-            TestUtils.MineGenesis<DumbAction>(default(Address));
+        private static DumbBlock _genesis = TestUtils.MineGenesis<DumbAction>(default(Address));
 
-        private static Block<DumbAction> _blockA = TestUtils.MineNext(_genesis);
+        private static DumbBlock _blockA = TestUtils.MineNext(_genesis);
 
-        private static Block<DumbAction> _blockB = TestUtils.MineNext(_genesis);
+        private static DumbBlock _blockB = TestUtils.MineNext(_genesis);
 
         private ILogger _logger;
 
@@ -152,31 +151,43 @@ namespace Libplanet.Tests.Blockchain.Renderers
         }
 
         [Theory]
-        [InlineData(false)]
-        [InlineData(true)]
-        public void RenderReorg(bool exception)
+        [InlineData(false, false)]
+        [InlineData(false, true)]
+        [InlineData(true, false)]
+        [InlineData(true, true)]
+        public void RenderReorg(bool end, bool exception)
         {
             bool called = false;
             LogEvent firstLog = null;
 
+            void Callback(DumbBlock old, DumbBlock @new, DumbBlock bp)
+            {
+                LogEvent[] logs = LogEvents.ToArray();
+                Assert.Single(logs);
+                firstLog = logs[0];
+                Assert.Equal(_blockA, old);
+                Assert.Equal(_blockB, @new);
+                Assert.Equal(_genesis, bp);
+                called = true;
+                if (exception)
+                {
+                    throw new ThrowException.SomeException(string.Empty);
+                }
+            }
+
             IRenderer<DumbAction> renderer = new AnonymousRenderer<DumbAction>
             {
-                ReorgRenderer = (oldTip, newTip, branchpoint) =>
-                {
-                    LogEvent[] logs = LogEvents.ToArray();
-                    Assert.Single(logs);
-                    firstLog = logs[0];
-                    Assert.Equal(_blockA, oldTip);
-                    Assert.Equal(_blockB, newTip);
-                    Assert.Equal(_genesis, branchpoint);
-                    called = true;
-                    if (exception)
-                    {
-                        throw new ThrowException.SomeException(string.Empty);
-                    }
-                },
+                ReorgRenderer = end ? (Action<DumbBlock, DumbBlock, DumbBlock>)null : Callback,
+                ReorgEndRenderer = end ? Callback : (Action<DumbBlock, DumbBlock, DumbBlock>)null,
             };
             renderer = new LoggedRenderer<DumbAction>(renderer, _logger, LogEventLevel.Verbose);
+            var invoke = end
+                ? (Action<DumbBlock, DumbBlock, DumbBlock>)renderer.RenderReorgEnd
+                : renderer.RenderReorg;
+            var invokeOpposite = end
+                ? (Action<DumbBlock, DumbBlock, DumbBlock>)renderer.RenderReorg
+                : renderer.RenderReorgEnd;
+            var methodName = end ? "RenderReorgEnd" : "RenderReorg";
 
             Assert.False(called);
             Assert.Empty(LogEvents);
@@ -186,15 +197,20 @@ namespace Libplanet.Tests.Blockchain.Renderers
             Assert.Equal(2, LogEvents.Count());
             ResetContext();
 
+            invokeOpposite(_blockA, _blockB, _genesis);
+            Assert.False(called);
+            Assert.Equal(2, LogEvents.Count());
+            ResetContext();
+
             if (exception)
             {
                 Assert.Throws<ThrowException.SomeException>(
-                    () => renderer.RenderReorg(_blockA, _blockB, _genesis)
+                    () => invoke(_blockA, _blockB, _genesis)
                 );
             }
             else
             {
-                renderer.RenderReorg(_blockA, _blockB, _genesis);
+                invoke(_blockA, _blockB, _genesis);
             }
 
             Assert.True(called);
@@ -207,7 +223,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 "through #{BranchpointIndex} {BranchpointHash})...",
                 firstLog.MessageTemplate.Text
             );
-            Assert.Equal("\"RenderReorg\"", firstLog.Properties["MethodName"].ToString());
+            Assert.Equal($"\"{methodName}\"", firstLog.Properties["MethodName"].ToString());
             Assert.Equal(
                 _blockB.Index.ToString(CultureInfo.InvariantCulture),
                 firstLog.Properties["NewIndex"].ToString()

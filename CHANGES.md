@@ -14,13 +14,14 @@ To be released.
     through `BlockChain<T>.Renderers`, rather than `IAction`s knowing
     how to render themselves.
     `IRenderer<T>` also unified `BlockChain<T>.TipChanged` event,
-    and introduced new events like `IRenderer<T>.RenderActionError()`
-    and `IRenderer<T>.RenderReorg()`.
+    and introduced new events like `IActionRenderer<T>.RenderActionError()`,
+    `IActionRenderer<T>.RenderBlockEnd()`, `IRenderer<T>.RenderReorg()`, and
+    `IRenderer<T>.RenderReorgEnd()`.
     [[#860], [#875], [#959], [#963]]
      -  Removed `IAction.Render()` method, which was replaced by
-        `IRenderer<T>.RenderAction()`.
+        `IActionRenderer<T>.RenderAction()`.
      -  Removed `IAction.Unrender()` method, which was replaced by
-        `IRenderer<T>.UnrenderAction()`.
+        `IActionRenderer<T>.UnrenderAction()`.
      -  Removed `BlockChain<T>.TipChanged` event, which was replaced by
         `IRenderer<T>.RenderBlock()`.
      -  Removed `PolymorphicAction<T>.Render()` and `Unrender()` methods.

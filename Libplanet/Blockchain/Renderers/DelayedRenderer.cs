@@ -153,9 +153,19 @@ namespace Libplanet.Blockchain.Renderers
                     );
                 }
 
-                if (oldTip is null || !oldTip.Equals(newTip))
+                if (oldTip is Block<T> oldTip_ && !oldTip.Equals(newTip))
                 {
-                    OnTipChanged(oldTip, newTip);
+                    Block<T>? branchpoint = null;
+                    if (!newTip.PreviousHash.Equals(oldTip_.Hash))
+                    {
+                        branchpoint = FindBranchpoint(oldTip, newTip);
+                        if (branchpoint.Equals(oldTip) || branchpoint.Equals(newTip))
+                        {
+                            branchpoint = null;
+                        }
+                    }
+
+                    OnTipChanged(oldTip, newTip, branchpoint);
                 }
             }
         }
@@ -178,37 +188,32 @@ namespace Libplanet.Blockchain.Renderers
             _confirmed.TryAdd(branchpoint.Hash, 0);
         }
 
+        /// <inheritdoc cref="IRenderer{T}.RenderReorgEnd(Block{T}, Block{T}, Block{T})"/>
+        public virtual void RenderReorgEnd(Block<T> oldTip, Block<T> newTip, Block<T> branchpoint)
+        {
+        }
+
         /// <summary>
         /// The callback method which is invoked when the new <see cref="Tip"/> is recognized and
         /// changed.
         /// </summary>
         /// <param name="oldTip">The previously recognized topmost block.</param>
         /// <param name="newTip">The topmost block recognized this time.</param>
-        /// <returns>A branchpoint between <paramref name="oldTip"/> and <paramref name="newTip"/>
-        /// if the tip change is a reorg.  Otherwise returns <c>null</c>.</returns>
-        protected virtual Block<T>? OnTipChanged(Block<T>? oldTip, Block<T> newTip)
+        /// <param name="branchpoint">A branchpoint between <paramref name="oldTip"/> and
+        /// <paramref name="newTip"/> if the tip change is a reorg.  Otherwise <c>null</c>.</param>
+        protected virtual void OnTipChanged(Block<T> oldTip, Block<T> newTip, Block<T>? branchpoint)
         {
-            if (oldTip is null)
+            if (branchpoint is Block<T>)
             {
-                return null;
-            }
-
-            Block<T>? branchpoint = null;
-            if (!newTip.PreviousHash.Equals(oldTip.Hash))
-            {
-                branchpoint = FindBranchpoint(oldTip, newTip);
-                if (!branchpoint.Equals(oldTip) && !branchpoint.Equals(newTip))
-                {
-                    Renderer.RenderReorg(oldTip, newTip, branchpoint);
-                }
-                else
-                {
-                    branchpoint = null;
-                }
+                Renderer.RenderReorg(oldTip, newTip, branchpoint);
             }
 
             Renderer.RenderBlock(oldTip, newTip);
-            return branchpoint;
+
+            if (branchpoint is Block<T>)
+            {
+                Renderer.RenderReorgEnd(oldTip, newTip, branchpoint);
+            }
         }
 
         private void DiscoverBlock(Block<T> block)

@@ -46,6 +46,8 @@ namespace Libplanet.Tests.Blockchain.Renderers
             Assert.Null(record);
             renderer.RenderReorg(_blockA, _blockB, _genesis);
             Assert.Null(record);
+            renderer.RenderReorgEnd(_blockA, _blockB, _genesis);
+            Assert.Null(record);
 
             renderer.RenderAction(_action, _actionContext, _stateDelta);
             Assert.NotNull(record);
@@ -73,6 +75,8 @@ namespace Libplanet.Tests.Blockchain.Renderers
             renderer.RenderBlock(_genesis, _blockA);
             Assert.Null(record);
             renderer.RenderReorg(_blockA, _blockB, _genesis);
+            Assert.Null(record);
+            renderer.RenderReorgEnd(_blockA, _blockB, _genesis);
             Assert.Null(record);
 
             renderer.UnrenderAction(_action, _actionContext, _stateDelta);
@@ -102,6 +106,8 @@ namespace Libplanet.Tests.Blockchain.Renderers
             Assert.Null(record);
             renderer.RenderReorg(_blockA, _blockB, _genesis);
             Assert.Null(record);
+            renderer.RenderReorgEnd(_blockA, _blockB, _genesis);
+            Assert.Null(record);
 
             renderer.RenderActionError(_action, _actionContext, _exception);
             Assert.NotNull(record);
@@ -130,6 +136,8 @@ namespace Libplanet.Tests.Blockchain.Renderers
             Assert.Null(record);
             renderer.RenderReorg(_blockA, _blockB, _genesis);
             Assert.Null(record);
+            renderer.RenderReorgEnd(_blockA, _blockB, _genesis);
+            Assert.Null(record);
 
             renderer.UnrenderActionError(_action, _actionContext, _exception);
             Assert.NotNull(record);
@@ -157,6 +165,8 @@ namespace Libplanet.Tests.Blockchain.Renderers
             Assert.Null(record);
             renderer.RenderReorg(_blockA, _blockB, _genesis);
             Assert.Null(record);
+            renderer.RenderReorgEnd(_blockA, _blockB, _genesis);
+            Assert.Null(record);
 
             renderer.RenderBlock(_genesis, _blockA);
             Assert.NotNull(record);
@@ -183,8 +193,39 @@ namespace Libplanet.Tests.Blockchain.Renderers
             Assert.Null(record);
             renderer.RenderBlock(_genesis, _blockA);
             Assert.Null(record);
+            renderer.RenderReorgEnd(_blockA, _blockB, _genesis);
+            Assert.Null(record);
 
             renderer.RenderReorg(_blockA, _blockB, _genesis);
+            Assert.NotNull(record);
+            Assert.Same(_blockA, record?.Old);
+            Assert.Same(_blockB, record?.New);
+            Assert.Same(_genesis, record?.Bp);
+        }
+
+        [Fact]
+        public void BlockReorgEnd()
+        {
+            (Block<DumbAction> Old, Block<DumbAction> New, Block<DumbAction> Bp)? record = null;
+            var renderer = new AnonymousActionRenderer<DumbAction>
+            {
+                ReorgEndRenderer = (oldTip, newTip, bp) => record = (oldTip, newTip, bp),
+            };
+
+            renderer.RenderAction(_action, _actionContext, _stateDelta);
+            Assert.Null(record);
+            renderer.UnrenderAction(_action, _actionContext, _stateDelta);
+            Assert.Null(record);
+            renderer.RenderActionError(_action, _actionContext, _exception);
+            Assert.Null(record);
+            renderer.UnrenderActionError(_action, _actionContext, _exception);
+            Assert.Null(record);
+            renderer.RenderBlock(_genesis, _blockA);
+            Assert.Null(record);
+            renderer.RenderReorg(_blockA, _blockB, _genesis);
+            Assert.Null(record);
+
+            renderer.RenderReorgEnd(_blockA, _blockB, _genesis);
             Assert.NotNull(record);
             Assert.Same(_blockA, record?.Old);
             Assert.Same(_blockB, record?.New);
