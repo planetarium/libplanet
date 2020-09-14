@@ -267,7 +267,21 @@ namespace Libplanet.Tests.Net
                 Task preloadTask = receiverSwarm.PreloadAsync(TimeSpan.FromSeconds(15));
                 await waitTask;
                 await StopAsync(minerSwarm);
-                await Assert.ThrowsAsync<TaskCanceledException>(async () => await preloadTask);
+                Exception thrown = null;
+
+                try
+                {
+                    await preloadTask;
+                }
+                catch (OperationCanceledException e)
+                {
+                    thrown = e;
+                }
+
+                Assert.True(
+                    thrown is OperationCanceledException || thrown is TaskCanceledException,
+                    $"The exception thrown is {thrown}"
+                    );
             }
             finally
             {
