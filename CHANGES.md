@@ -137,8 +137,9 @@ To be released.
  -  The existing `BlockHeaderMessage` message type (with the type number `0x0d`) was
     replaced by a new `BlockHeaderMessage` message type
     (with the type number `0x0c`).  [[#1003], [#1004]]
- -  Removed `PreloadBlockDownloadFailEventArgs` class.
+ -  Removed `PreloadBlockDownloadFailEventArgs` class.  [[#1002]]
  -  Removed `blockDownloadFailed` parameter from `Swarm<T>.PreloadAsync()` method.
+     Use `SwarmOptions.BlockDownloadTimeout` instead.  [[#1002]]
 
 ### Backward-incompatible storage format changes
 
@@ -343,6 +344,7 @@ To be released.
 [#986]: https://github.com/planetarium/libplanet/pull/986
 [#991]: https://github.com/planetarium/libplanet/pull/991
 [#996]: https://github.com/planetarium/libplanet/pull/996
+[#1002]: https://github.com/planetarium/libplanet/pull/1002
 [#1003]: https://github.com/planetarium/libplanet/issues/1003
 [#1004]: https://github.com/planetarium/libplanet/pull/1004
 [sleep mode]: https://en.wikipedia.org/wiki/Sleep_mode
