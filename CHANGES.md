@@ -129,11 +129,14 @@ To be released.
     15 seconds.  [[#922], [#925]]
  -  `Swarm<T>` became to have 5 more message types:
      -  `GetChainStatus` (`0x20`)  [[#920], [#930]]
-     -  `ChainStatus` (`0x21`)  [[#920], [#930]]
+     -  `ChainStatus` (`0x24`)  [[#920], [#930], [#1003], [#1004]]
      -  `GetBlockStates` (`0x22`)  [[#946]]
      -  `BlockStates` (`0x23`)  [[#946]]
      -  `DifferentVersion` (`0x30`)  [[#949]]
  -  Every message now contains app protocol version in its header.  [[#949]]
+ -  The existing `BlockHeaderMessage` message type (with the type number `0x0d`) was
+    replaced by a new `BlockHeaderMessage` message type
+    (with the type number `0x0c`).  [[#1003], [#1004]]
 
 ### Backward-incompatible storage format changes
 
@@ -237,6 +240,10 @@ To be released.
     rather than the genesis block when there is a branch point.  [[#991]]
  -  `BlockPolicy<T>` became to validate `Block<T>.StateRootHash` property
      of a `Block<T>`.  [[#986]]
+ -  `Swarm<T>` became not to sync `Block<T>`s from the peers with
+    different genesis block.  [[#1003], [#1004]]
+ -  `Swarm<T>` became to ignore `BlockHeaderMessage` from the peers with
+    different genesis block.  [[#1003], [#1004]]
 
 ### Bug fixes
 
@@ -328,6 +335,8 @@ To be released.
 [#986]: https://github.com/planetarium/libplanet/pull/986
 [#991]: https://github.com/planetarium/libplanet/pull/991
 [#996]: https://github.com/planetarium/libplanet/pull/996
+[#1003]: https://github.com/planetarium/libplanet/issues/1003
+[#1004]: https://github.com/planetarium/libplanet/pull/1004
 [sleep mode]: https://en.wikipedia.org/wiki/Sleep_mode
 
 
