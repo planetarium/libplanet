@@ -116,7 +116,7 @@ namespace Libplanet.Blockchain
             }
 
             return ActionEvaluation.EvaluateActionsGradually(
-                block.Hash,
+                block.PreEvaluationHash,
                 block.Index,
                 null,
                 lastStates,
