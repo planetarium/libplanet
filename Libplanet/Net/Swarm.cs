@@ -1420,9 +1420,8 @@ namespace Libplanet.Net
         {
             var peersWithHeightAndDiff = (await DialToExistingPeers(dialTimeout, cancellationToken))
                 .Where(pp =>
-                    !(pp.Peer is null || pp.ChainStatus is null) &&
-                    pp.ChainStatus.GenesisHash.Equals(BlockChain.Genesis.Hash) &&
-                    pp.ChainStatus.TotalDifficulty > (initialTip?.TotalDifficulty ?? 0))
+                    BlockChain.Genesis.Hash.Equals(pp.ChainStatus?.GenesisHash) &&
+                    pp.ChainStatus?.TotalDifficulty > initialTip?.TotalDifficulty)
                 .Select(pp => (pp.Peer, pp.ChainStatus.TipIndex, pp.ChainStatus.TotalDifficulty))
                 .ToList();
 
