@@ -36,6 +36,8 @@ namespace Libplanet.Blockchain
             _balanceGetter = balanceGetter;
         }
 
+        // FIXME: It needs to test whether to produce the same random seed in the same block.
+        //        See threads of planetarium/libplanet#1005.
         internal IReadOnlyList<ActionEvaluation> EvaluateActions(
             Block<T> block,
             StateCompleterSet<T> stateCompleters
