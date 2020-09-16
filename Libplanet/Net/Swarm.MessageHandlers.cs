@@ -41,6 +41,7 @@ namespace Libplanet.Net
 
                     // This is based on the assumption that genesis block always exists.
                     var chainStatus = new ChainStatus(
+                        BlockChain.Genesis.Hash,
                         BlockChain.Tip.Index,
                         BlockChain.Tip.TotalDifficulty)
                     {
@@ -140,6 +141,17 @@ namespace Libplanet.Net
                     "BlockHeaderMessage was sent from invalid peer " +
                     "{PeerAddress}; ignored.",
                     message.Remote.Address
+                );
+                return;
+            }
+
+            if (!message.GenesisHash.Equals(BlockChain.Genesis.Hash))
+            {
+                _logger.Information(
+                    "BlockHeaderMessage was sent from the peer " +
+                    "{PeerAddress} with different genesis block {hash}; ignored.",
+                    message.Remote.Address,
+                    message.GenesisHash
                 );
                 return;
             }

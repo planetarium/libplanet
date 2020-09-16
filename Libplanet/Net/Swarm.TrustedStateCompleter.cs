@@ -59,8 +59,9 @@ namespace Libplanet.Net
 
             IReadOnlyList<BoundPeer> trustedPeers =
                 (await DialToExistingPeers(dialTimeout, cancellationToken))
+                    .Where(pair => BlockChain.Genesis.Hash.Equals(pair.ChainStatus?.GenesisHash))
                     .Select(pair => pair.Peer)
-                    .Where(peer => trustedStateValidators.Contains(peer.Address))
+                    .Where(peer => !(peer is null) && trustedStateValidators.Contains(peer.Address))
                     .ToArray();
 
             StateCompleterSet<T> fallback = fallbackCompleterSet

@@ -277,6 +277,51 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact(Timeout = Timeout)]
+        public async Task BroadcastIgnoreFromDifferentGenesisHash()
+        {
+            BlockChain<DumbAction> receiverChain = _blockchains[0];
+            Swarm<DumbAction> receiverSwarm = _swarms[0];
+            var invalidGenesisBlock = new Block<DumbAction>(
+                0,
+                0,
+                0,
+                new Nonce(new byte[] { 0x10, 0x00, 0x00, 0x00 }),
+                _fx1.Address1,
+                null,
+                DateTimeOffset.MinValue,
+                Enumerable.Empty<Transaction<DumbAction>>());
+            BlockChain<DumbAction> seedChain = TestUtils.MakeBlockChain(
+                    policy: _blockchains[0].Policy,
+                    store: new DefaultStore(path: null),
+                    genesisBlock: invalidGenesisBlock);
+            Swarm<DumbAction> seedSwarm = CreateSwarm(seedChain);
+            try
+            {
+                await StartAsync(receiverSwarm);
+                await StartAsync(seedSwarm);
+
+                await receiverSwarm.AddPeersAsync(new[] { seedSwarm.AsPeer }, null);
+                Block<DumbAction> block = await seedChain.MineBlock(_fx1.Address1);
+                seedSwarm.BroadcastBlock(block);
+                while (!((NetMQTransport)receiverSwarm.Transport).MessageHistory
+                    .Any(msg => msg is BlockHeaderMessage))
+                {
+                    await Task.Delay(100);
+                }
+
+                await Task.Delay(100);
+                Assert.NotEqual(seedChain.Tip, receiverChain.Tip);
+            }
+            finally
+            {
+                await StopAsync(seedSwarm);
+                await StopAsync(receiverSwarm);
+
+                seedSwarm.Dispose();
+            }
+        }
+
+        [Fact(Timeout = Timeout)]
         public async Task StopAsyncTest()
         {
             Swarm<DumbAction> swarm = _swarms[0];
@@ -1912,39 +1957,6 @@ namespace Libplanet.Tests.Net
                 swarmB.Dispose();
                 swarmC.Dispose();
             }
-        }
-
-        [Fact(Timeout = Timeout)]
-        public async Task ThrowInvalidGenesisException()
-        {
-            var policy = new BlockPolicy<DumbAction>();
-            BlockChain<DumbAction> MakeBlockChain() => TestUtils.MakeBlockChain(
-                policy,
-                new DefaultStore(path: null),
-                null,
-                new PrivateKey());
-
-            var chainA = MakeBlockChain();
-            var chainB = MakeBlockChain();
-            var swarmA = CreateSwarm(chainA);
-            var swarmB = CreateSwarm(chainB);
-
-            await chainB.MineBlock(_fx1.Address1);
-
-            await StartAsync(swarmA);
-            await StartAsync(swarmB);
-
-            await swarmA.AddPeersAsync(new[] { swarmB.AsPeer }, null);
-            Assert.NotEqual(chainA.Genesis, chainB.Genesis);
-            Task t = swarmA.PreloadAsync();
-            await Assert.ThrowsAsync<AggregateException>(async () => await t);
-            var exception = t.Exception.InnerException?.InnerException;
-            Assert.IsType<InvalidGenesisBlockException>(exception);
-
-            await StopAsync(swarmA);
-            await StopAsync(swarmB);
-            swarmA.Dispose();
-            swarmB.Dispose();
         }
 
         [Fact(Timeout = Timeout)]

@@ -80,7 +80,7 @@ namespace Libplanet.Net.Messages
             /// <summary>
             /// Message containing a single <see cref="BlockHeader"/>.
             /// </summary>
-            BlockHeaderMessage = 0x0d,
+            BlockHeaderMessage = 0x0c,
 
             /// <summary>
             /// Message containing demand block hashes with their index numbers.
@@ -96,7 +96,7 @@ namespace Libplanet.Net.Messages
             /// A reply to <see cref="GetChainStatus"/>.
             /// Contains the chain status of the peer at the moment.
             /// </summary>
-            ChainStatus = 0x21,
+            ChainStatus = 0x24,
 
             /// <summary>
             /// Request a block's delta states.
