@@ -196,13 +196,16 @@ replaced by a new <code>Pong</code> message type
 <li><code>Swarm&lt;T&gt;</code> became to have 5 more message types:
 <ul>
 <li><code>GetChainStatus</code> (<code>0x20</code>)  [<a href="https://github.com/planetarium/libplanet/issues/920">#920</a>, <a href="https://github.com/planetarium/libplanet/pull/930">#930</a>]</li>
-<li><code>ChainStatus</code> (<code>0x21</code>)  [<a href="https://github.com/planetarium/libplanet/issues/920">#920</a>, <a href="https://github.com/planetarium/libplanet/pull/930">#930</a>]</li>
+<li><code>ChainStatus</code> (<code>0x24</code>)  [<a href="https://github.com/planetarium/libplanet/issues/920">#920</a>, <a href="https://github.com/planetarium/libplanet/pull/930">#930</a>, <a href="https://github.com/planetarium/libplanet/issues/1003">#1003</a>, <a href="https://github.com/planetarium/libplanet/pull/1004">#1004</a>]</li>
 <li><code>GetBlockStates</code> (<code>0x22</code>)  [<a href="https://github.com/planetarium/libplanet/pull/946">#946</a>]</li>
 <li><code>BlockStates</code> (<code>0x23</code>)  [<a href="https://github.com/planetarium/libplanet/pull/946">#946</a>]</li>
 <li><code>DifferentVersion</code> (<code>0x30</code>)  [<a href="https://github.com/planetarium/libplanet/pull/949">#949</a>]</li>
 </ul>
 </li>
 <li>Every message now contains app protocol version in its header.  [<a href="https://github.com/planetarium/libplanet/pull/949">#949</a>]</li>
+<li>The existing <code>BlockHeaderMessage</code> message type (with the type number <code>0x0d</code>) was
+replaced by a new <code>BlockHeaderMessage</code> message type
+(with the type number <code>0x0c</code>).  [<a href="https://github.com/planetarium/libplanet/issues/1003">#1003</a>, <a href="https://github.com/planetarium/libplanet/pull/1004">#1004</a>]</li>
 </ul>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <ul>
@@ -312,6 +315,10 @@ it fails to connect to all neighbors.  [<a href="https://github.com/planetarium/
 rather than the genesis block when there is a branch point.  [<a href="https://github.com/planetarium/libplanet/pull/991">#991</a>]</li>
 <li><code>BlockPolicy&lt;T&gt;</code> became to validate <code>Block&lt;T&gt;.StateRootHash</code> property
 of a <code>Block&lt;T&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/986">#986</a>]</li>
+<li><code>Swarm&lt;T&gt;</code> became not to sync <code>Block&lt;T&gt;</code>s from the peers with
+different genesis block.  [<a href="https://github.com/planetarium/libplanet/issues/1003">#1003</a>, <a href="https://github.com/planetarium/libplanet/pull/1004">#1004</a>]</li>
+<li><code>Swarm&lt;T&gt;</code> became to ignore <code>BlockHeaderMessage</code> from the peers with
+different genesis block.  [<a href="https://github.com/planetarium/libplanet/issues/1003">#1003</a>, <a href="https://github.com/planetarium/libplanet/pull/1004">#1004</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
