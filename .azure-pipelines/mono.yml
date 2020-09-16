@@ -28,17 +28,24 @@ steps:
         /p:Configuration=${{ parameters.configuration }} \
         /p:SkipSonar=true
 
+- task: Bash@3
+  displayName: List all test assemblies
+  inputs:
+    targetType: inline
+    script: |
+      echo -n '##vso[task.setvariable variable=testAssemblies]'
+      for f in *.Tests; do
+        printf '%q ' \
+          "`pwd`/$f"/bin/${{ parameters.configuration }}/net*/"$f".dll
+      done
+
 - task: CmdLine@2
   displayName: ${{ parameters.testDisplayName }}
   inputs:
     script: |
-      # Because Libplanet.RocksDBStore.Tests has Libplanet.Tests as a dependency,
-      # Libplanet.Tests is executed twice without this.
-      for f in *.Tests; do
-        ${{ parameters.testCommand }} \
-          $(pwd)/"$f"/bin/${{ parameters.configuration }}/net*/"$f".dll \
-          ${{ parameters.testArguments }}
-      done
+      ${{ parameters.testCommand }} \
+        $(testAssemblies) \
+        ${{ parameters.testArguments }}
   env:
     TURN_SERVER_URL: ${{ parameters.turnServerUrl }}
     MONO_THREADS_SUSPEND: preemptive

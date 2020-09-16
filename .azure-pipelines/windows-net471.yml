@@ -35,18 +35,25 @@ steps:
     msbuildArguments: /restore /p:SkipSonar=true
 
 - task: Bash@3
+  displayName: List all test assemblies
+  inputs:
+    targetType: inline
+    script: |
+      echo -n '##vso[task.setvariable variable=testAssemblies]'
+      for f in *.Tests; do
+        printf '%q ' \
+          "$f"/bin/${{ parameters.configuration }}/net*/"$f".dll
+      done
+
+- task: Bash@3
   displayName: xunit.console.exe *.Tests.dll
   inputs:
     targetType: inline
     script: |
-      # Because Libplanet.RocksDBStore.Tests has Libplanet.Tests as a dependency,
-      # Libplanet.Tests is executed twice without this.
-      for f in *.Tests; do
-        ${{ parameters.testPrefix }} \
-          xunit.runner.console.*/tools/net471/xunit.console.exe \
-            $(pwd)/"$f"/bin/${{ parameters.configuration }}/net*/"$f".dll \
-            ${{ parameters.testArguments }}
-      done
+      ${{ parameters.testPrefix }} \
+        xunit.runner.console.*/tools/net471/xunit.console.exe \
+          $(testAssemblies) \
+          ${{ parameters.testArguments }}
   env:
     TURN_SERVER_URL: ${{ parameters.turnServerUrl }}
     MONO_THREADS_SUSPEND: preemptive
