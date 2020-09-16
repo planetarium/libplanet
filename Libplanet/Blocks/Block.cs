@@ -382,7 +382,7 @@ namespace Libplanet.Blocks
                 );
                 IEnumerable<ActionEvaluation> evaluations =
                     tx.EvaluateActionsGradually(
-                        Hash,
+                        PreEvaluationHash,
                         Index,
                         delta,
                         Miner.Value);
