@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Cocona;
-using GetPass;
 using Libplanet.Crypto;
 using Libplanet.KeyStore;
 
