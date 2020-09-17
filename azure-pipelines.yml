@@ -19,6 +19,7 @@ jobs:
       script: dotnet tool install --global Codecov.Tool --version 1.10.0
   - template: .azure-pipelines/dotnet-core.yml
     parameters:
+      useDotnetTest: true
       configuration: Debug
       turnServerUrl: $(turnServerUrl)
       testArguments: >-
@@ -76,7 +77,7 @@ jobs:
     parameters:
       configuration: $(configuration)
       turnServerUrl: $(turnServerUrl)
-      testArguments: -stoponfail
+      testArguments: -parallel none -stoponfail
   timeoutInMinutes: 30
 
 - job: macOS_Mono
@@ -87,7 +88,7 @@ jobs:
     parameters:
       configuration: $(configuration)
       turnServerUrl: $(turnServerUrl)
-      testArguments: -stoponfail
+      testArguments: -parallel none -stoponfail
   timeoutInMinutes: 30
 
 - job: Windows_Mono
@@ -103,7 +104,7 @@ jobs:
       configuration: $(configuration)
       turnServerUrl: $(turnServerUrl)
       testPrefix: '"$PROGRAMFILES/Mono/bin/mono.exe"'
-      testArguments: -appdomains denied -stoponfail
+      testArguments: -appdomains denied -parallel none -stoponfail
   timeoutInMinutes: 30
 
 - job: macOS_Unity
@@ -127,6 +128,7 @@ jobs:
       testCommand: |-
         /tmp/StandaloneOSX.app/Contents/MacOS/StandaloneOSX
       testArguments: ""
+      publicTestResult: false
   timeoutInMinutes: 30
 
 - job: Linux_NETCore
@@ -137,6 +139,7 @@ jobs:
     parameters:
       configuration: $(configuration)
       turnServerUrl: $(turnServerUrl)
+      testArguments: -parallel none -stoponfail
   timeoutInMinutes: 30
 
 - job: macOS_NETCore
@@ -147,6 +150,7 @@ jobs:
     parameters:
       configuration: $(configuration)
       turnServerUrl: $(turnServerUrl)
+      testArguments: -parallel none -stoponfail
   timeoutInMinutes: 30
 
 - job: Windows_NETCore
@@ -157,7 +161,7 @@ jobs:
     parameters:
       configuration: $(configuration)
       turnServerUrl: $(turnServerUrl)
-      testArguments: '-v n'
+      testArguments: -parallel none -stoponfail
   timeoutInMinutes: 30
 
 # Run tests with an alternative locale configuration
@@ -169,6 +173,7 @@ jobs:
     parameters:
       configuration: $(configuration)
       turnServerUrl: $(turnServerUrl)
+      testArguments: -parallel none -stoponfail
       locale: ar_SA.UTF8
   timeoutInMinutes: 30
 
@@ -180,6 +185,7 @@ jobs:
     parameters:
       configuration: $(configuration)
       turnServerUrl: $(turnServerUrl)
+      testArguments: -parallel none -stoponfail
       locale: he_IL.UTF8
   timeoutInMinutes: 30
 
@@ -191,7 +197,7 @@ jobs:
     parameters:
       configuration: $(configuration)
       turnServerUrl: $(turnServerUrl)
-      testArguments: '-v n'
+      testArguments: -parallel none -stoponfail
       locale: fr_FR.UTF8
   timeoutInMinutes: 30
 
@@ -203,4 +209,4 @@ jobs:
     parameters:
       configuration: $(configuration)
       turnServerUrl: $(turnServerUrl)
-      testArguments: -stoponfail
+      testArguments: -parallel none -stoponfail

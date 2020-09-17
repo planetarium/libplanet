@@ -3,6 +3,7 @@ parameters:
   testArguments: ""
   locale: "en_US.UTF8"
   testTimeoutInMinutes: 12
+  useDotnetTest: false
 
 steps:
 
@@ -29,6 +30,14 @@ steps:
   inputs:
     command: restore
 
+- ${{ if eq(parameters.useDotnetTest, false) }}:
+  - task: DotNetCoreCLI@2
+    displayName: dotnet tool install xunit-cli
+    inputs:
+      command: custom
+      custom: tool
+      arguments: install --global xunit-cli --version 0.1.12
+
 - task: DotNetCoreCLI@2
   displayName: dotnet build
   inputs:
@@ -37,23 +46,51 @@ steps:
       --configuration ${{ parameters.configuration }}
       -p:SkipSonar=true
 
-- task: DotNetCoreCLI@2
-  displayName: dotnet test
-  inputs:
-    command: test
-    projects: '**/*Tests/*.csproj'
-    arguments: >-
-      --configuration ${{ parameters.configuration }}
-      -p:SkipSonar=true
-      ${{ parameters.testArguments }}
-  env:
-    TURN_SERVER_URL: ${{ parameters.turnServerUrl }}
-    LANG: ${{ parameters.locale }}
-    LANGUAGE: ${{ parameters.locale }}
-    LC_ALL: ${{ parameters.locale }}
-  timeoutInMinutes: ${{ parameters.testTimeoutInMinutes }}
+- ${{ if eq(parameters.useDotnetTest, false) }}:
+  - task: Bash@3
+    displayName: xunit *.Tests.dll
+    inputs:
+      targetType: inline
+      script: |
+        set -vx
+        declare -a assemblies
+        for f in *.Tests; do
+          path="$(find "$f" \
+            -wholename "$f/bin/${{ parameters.configuration }}/net*/"$f".dll")"
+          assemblies+=("`pwd`/$path")
+        done
+        xunit \
+          "${assemblies[@]}" \
+          ${{ parameters.testArguments }} \
+          -xml "$(Agent.TempDirectory)/xunit.xml"
+    env:
+      TURN_SERVER_URL: ${{ parameters.turnServerUrl }}
+      LANG: ${{ parameters.locale }}
+      LANGUAGE: ${{ parameters.locale }}
+      LC_ALL: ${{ parameters.locale }}
+    timeoutInMinutes: ${{ parameters.testTimeoutInMinutes }}
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: XUnit
+      testResultsFiles: '$(Agent.TempDirectory)/xunit.xml'
 
-- task: PublishTestResults@2
-  inputs:
-    testRunner: VSTest
-    testResultsFiles: '$(Agent.TempDirectory)/*.trx'
+- ${{ if eq(parameters.useDotnetTest, true) }}:
+  - task: DotNetCoreCLI@2
+    displayName: dotnet test
+    inputs:
+      command: test
+      projects: '**/*Tests/*.csproj'
+      arguments: >-
+        --configuration ${{ parameters.configuration }}
+        -p:SkipSonar=true
+        ${{ parameters.testArguments }}
+    env:
+      TURN_SERVER_URL: ${{ parameters.turnServerUrl }}
+      LANG: ${{ parameters.locale }}
+      LANGUAGE: ${{ parameters.locale }}
+      LC_ALL: ${{ parameters.locale }}
+    timeoutInMinutes: ${{ parameters.testTimeoutInMinutes }}
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '$(Agent.TempDirectory)/*.trx'

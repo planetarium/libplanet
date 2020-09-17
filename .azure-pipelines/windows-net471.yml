@@ -39,15 +39,24 @@ steps:
   inputs:
     targetType: inline
     script: |
-      # Because Libplanet.RocksDBStore.Tests has Libplanet.Tests as a dependency,
-      # Libplanet.Tests is executed twice without this.
+      set -vx
+      declare -a assemblies
       for f in *.Tests; do
-        ${{ parameters.testPrefix }} \
-          xunit.runner.console.*/tools/net471/xunit.console.exe \
-            $(pwd)/"$f"/bin/${{ parameters.configuration }}/net*/"$f".dll \
-            ${{ parameters.testArguments }}
+        path="$(find "$f" \
+          -wholename "$f/bin/${{ parameters.configuration }}/net*/"$f".dll")"
+        assemblies+=("`pwd`/$path")
       done
+      ${{ parameters.testPrefix }} \
+        xunit.runner.console.*/tools/net471/xunit.console.exe \
+          "${assemblies[@]}" \
+          ${{ parameters.testArguments }} \
+          -xml "$(Agent.TempDirectory)/xunit.xml"
   env:
     TURN_SERVER_URL: ${{ parameters.turnServerUrl }}
     MONO_THREADS_SUSPEND: preemptive
   timeoutInMinutes: ${{ parameters.testTimeoutInMinutes }}
+
+- task: PublishTestResults@2
+  inputs:
+    testRunner: XUnit
+    testResultsFiles: '$(Agent.TempDirectory)/xunit.xml'
