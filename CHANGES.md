@@ -273,8 +273,9 @@ To be released.
 
 ### CLI tools
 
- -  The `planet` command became installable using `npm`.
- -  Fixed a bug that Backspace Key not working when input Passphrase.
+ -  The `planet` command became installable using `npm`.  [[#923], [#982]]
+ -  Fixed a bug that <kbd>^H</kbd> had not removed the rightmost character
+    in passphrase prompts.  [[#983], [#984]]
 
 [#404]: https://github.com/planetarium/libplanet/issues/404
 [#459]: https://github.com/planetarium/libplanet/issues/459
@@ -303,6 +304,7 @@ To be released.
 [#919]: https://github.com/planetarium/libplanet/pull/919
 [#920]: https://github.com/planetarium/libplanet/issues/920
 [#922]: https://github.com/planetarium/libplanet/issues/922
+[#923]: https://github.com/planetarium/libplanet/pull/923
 [#925]: https://github.com/planetarium/libplanet/pull/925
 [#926]: https://github.com/planetarium/libplanet/pull/926
 [#927]: https://github.com/planetarium/libplanet/pull/927
@@ -333,6 +335,9 @@ To be released.
 [#972]: https://github.com/planetarium/libplanet/pull/972
 [#980]: https://github.com/planetarium/libplanet/pull/980
 [#981]: https://github.com/planetarium/libplanet/pull/981
+[#982]: https://github.com/planetarium/libplanet/pull/982
+[#983]: https://github.com/planetarium/libplanet/issues/983
+[#984]: https://github.com/planetarium/libplanet/pull/984
 [#986]: https://github.com/planetarium/libplanet/pull/986
 [#991]: https://github.com/planetarium/libplanet/pull/991
 [#996]: https://github.com/planetarium/libplanet/pull/996
