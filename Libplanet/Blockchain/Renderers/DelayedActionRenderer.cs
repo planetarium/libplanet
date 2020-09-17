@@ -1,9 +1,11 @@
 #nullable enable
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Threading;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Store;
@@ -40,16 +42,22 @@ namespace Libplanet.Blockchain.Renderers
     public class DelayedActionRenderer<T> : DelayedRenderer<T>, IActionRenderer<T>
         where T : IAction, new()
     {
-        private readonly Dictionary<HashDigest<SHA256>, List<ActionEvaluation>>
+        private readonly ConcurrentDictionary<HashDigest<SHA256>, List<ActionEvaluation>>
             _bufferedActionRenders;
 
-        private readonly Dictionary<HashDigest<SHA256>, List<ActionEvaluation>>
+        private readonly ConcurrentDictionary<HashDigest<SHA256>, List<ActionEvaluation>>
             _bufferedActionUnrenders;
+
+        private readonly AsyncLocal<Dictionary<HashDigest<SHA256>, List<ActionEvaluation>>>
+            _localRenderBuffer =
+                new AsyncLocal<Dictionary<HashDigest<SHA256>, List<ActionEvaluation>>>();
+
+        private readonly AsyncLocal<Dictionary<HashDigest<SHA256>, List<ActionEvaluation>>>
+            _localUnrenderBuffer =
+                new AsyncLocal<Dictionary<HashDigest<SHA256>, List<ActionEvaluation>>>();
 
         private HashDigest<SHA256>? _eventReceivingBlock;
         private Reorg? _eventReceivingReorg;
-        private Dictionary<HashDigest<SHA256>, List<ActionEvaluation>> _renderBuffer;
-        private Dictionary<HashDigest<SHA256>, List<ActionEvaluation>> _unrenderBuffer;
 
         /// <summary>
         /// Creates a new <see cref="DelayedRenderer{T}"/> instance decorating the given
@@ -65,11 +73,9 @@ namespace Libplanet.Blockchain.Renderers
         {
             ActionRenderer = renderer;
             _bufferedActionRenders =
-                new Dictionary<HashDigest<SHA256>, List<ActionEvaluation>>();
+                new ConcurrentDictionary<HashDigest<SHA256>, List<ActionEvaluation>>();
             _bufferedActionUnrenders =
-                new Dictionary<HashDigest<SHA256>, List<ActionEvaluation>>();
-            _renderBuffer = new Dictionary<HashDigest<SHA256>, List<ActionEvaluation>>();
-            _unrenderBuffer = new Dictionary<HashDigest<SHA256>, List<ActionEvaluation>>();
+                new ConcurrentDictionary<HashDigest<SHA256>, List<ActionEvaluation>>();
         }
 
         /// <summary>
@@ -90,7 +96,8 @@ namespace Libplanet.Blockchain.Renderers
                 newTip,
                 branchpoint
             );
-            _unrenderBuffer = new Dictionary<HashDigest<SHA256>, List<ActionEvaluation>>();
+            _localUnrenderBuffer.Value =
+                new Dictionary<HashDigest<SHA256>, List<ActionEvaluation>>();
         }
 
         /// <inheritdoc cref="DelayedRenderer{T}.RenderBlock(Block{T}, Block{T})"/>
@@ -101,21 +108,40 @@ namespace Libplanet.Blockchain.Renderers
                 reorg.OldTip.Equals(oldTip) &&
                 reorg.NewTip.Equals(newTip))
             {
-                foreach (HashDigest<SHA256> block in reorg.Unrendered)
+                if (_localUnrenderBuffer.Value
+                    is Dictionary<HashDigest<SHA256>, List<ActionEvaluation>> buf)
                 {
-                    if (_unrenderBuffer.TryGetValue(block, out List<ActionEvaluation>? b))
+                    foreach (HashDigest<SHA256> block in reorg.Unrendered)
                     {
-                        _bufferedActionUnrenders[block] = b;
-                    }
-                    else
-                    {
-                        _bufferedActionUnrenders.Remove(block);
+                        if (buf.TryGetValue(block, out List<ActionEvaluation>? b))
+                        {
+                            _bufferedActionUnrenders[block] = b;
+                        }
+                        else
+                        {
+                            _bufferedActionUnrenders.TryRemove(
+                                block,
+                                out List<ActionEvaluation>? removed
+                            );
+                            if (removed is List<ActionEvaluation> l)
+                            {
+                                Logger.Warning(
+                                    "The existing {Count} buffered action unrenders for " +
+                                    "the block {BlockHash} were overwritten.",
+                                    l.Count,
+                                    block
+                                );
+                            }
+                        }
+
+                        Logger.Debug(
+                            "Committed the buffered action unrenders from the block {BlockHash}.",
+                            block
+                        );
                     }
 
-                    Logger.Debug(
-                        "Committed the buffered action unrenders from the block {BlockHash}.",
-                        block
-                    );
+                    _localUnrenderBuffer.Value =
+                        new Dictionary<HashDigest<SHA256>, List<ActionEvaluation>>();
                 }
             }
             else
@@ -124,7 +150,7 @@ namespace Libplanet.Blockchain.Renderers
             }
 
             _eventReceivingBlock = newTip.Hash;
-            _renderBuffer = new Dictionary<HashDigest<SHA256>, List<ActionEvaluation>>();
+            _localRenderBuffer.Value = new Dictionary<HashDigest<SHA256>, List<ActionEvaluation>>();
         }
 
         /// <inheritdoc
@@ -164,6 +190,13 @@ namespace Libplanet.Blockchain.Renderers
         /// <inheritdoc cref="IActionRenderer{T}.RenderBlockEnd(Block{T}, Block{T})"/>
         public void RenderBlockEnd(Block<T> oldTip, Block<T> newTip)
         {
+            Dictionary<HashDigest<SHA256>, List<ActionEvaluation>>? buffer =
+                _localRenderBuffer.Value;
+            if (buffer is null)
+            {
+                return;
+            }
+
             IEnumerable<HashDigest<SHA256>> rendered;
             if (_eventReceivingReorg is Reorg reorg)
             {
@@ -175,19 +208,29 @@ namespace Libplanet.Blockchain.Renderers
             }
             else
             {
-                _renderBuffer.Clear();
+                _localRenderBuffer.Value =
+                    new Dictionary<HashDigest<SHA256>, List<ActionEvaluation>>();
                 return;
             }
 
             foreach (HashDigest<SHA256> block in rendered)
             {
-                if (_renderBuffer.TryGetValue(block, out List<ActionEvaluation>? b))
+                if (buffer.TryGetValue(block, out List<ActionEvaluation>? b))
                 {
                     _bufferedActionRenders[block] = b;
                 }
                 else
                 {
-                    _bufferedActionRenders.Remove(block);
+                    _bufferedActionRenders.TryRemove(block, out List<ActionEvaluation>? removed);
+                    if (removed is List<ActionEvaluation> l)
+                    {
+                        Logger.Warning(
+                            "The existing {Count} buffered action renders for the block " +
+                            "{BlockHash} were overwritten.",
+                            l.Count,
+                            block
+                        );
+                    }
                 }
 
                 Logger.Debug(
@@ -196,7 +239,7 @@ namespace Libplanet.Blockchain.Renderers
                 );
             }
 
-            _renderBuffer.Clear();
+            _localRenderBuffer.Value = new Dictionary<HashDigest<SHA256>, List<ActionEvaluation>>();
         }
 
         public override void RenderReorgEnd(Block<T> oldTip, Block<T> newTip, Block<T> branchpoint)
@@ -304,17 +347,19 @@ namespace Libplanet.Blockchain.Renderers
                 }
             }
 
-            if (!_renderBuffer.TryGetValue(blockHash, out List<ActionEvaluation>? buf))
+            var buffer = _localRenderBuffer.Value ?? (_localRenderBuffer.Value =
+                new Dictionary<HashDigest<SHA256>, List<ActionEvaluation>>());
+            if (!buffer.TryGetValue(blockHash, out List<ActionEvaluation>? list))
             {
-                _renderBuffer[blockHash] = buf = new List<ActionEvaluation>();
+                buffer[blockHash] = list = new List<ActionEvaluation>();
             }
 
-            buf.Add(eval);
+            list.Add(eval);
             Logger.Verbose(
                 "Delayed an action render from #{BlockIndex} {BlockHash} (buffer: {Buffer}).",
                 blockIndex,
                 blockHash,
-                buf.Count
+                list.Count
             );
         }
 
@@ -322,19 +367,21 @@ namespace Libplanet.Blockchain.Renderers
         {
             if (_eventReceivingReorg is Reorg reorg)
             {
+                var buffer = _localUnrenderBuffer.Value ?? (_localUnrenderBuffer.Value =
+                    new Dictionary<HashDigest<SHA256>, List<ActionEvaluation>>());
                 long blockIndex = eval.InputContext.BlockIndex;
                 HashDigest<SHA256> blockHash = reorg.IndexHash(blockIndex, unrender: true);
-                if (!_unrenderBuffer.TryGetValue(blockHash, out List<ActionEvaluation>? b))
+                if (!buffer.TryGetValue(blockHash, out List<ActionEvaluation>? list))
                 {
-                    _unrenderBuffer[blockHash] = b = new List<ActionEvaluation>();
+                    buffer[blockHash] = list = new List<ActionEvaluation>();
                 }
 
-                b.Add(eval);
+                list.Add(eval);
                 Logger.Verbose(
                     "Delayed an action unrender from #{BlockIndex} {BlockHash} (buffer: {Buffer}).",
                     blockIndex,
                     blockHash,
-                    b.Count
+                    list.Count
                 );
             }
             else
@@ -348,7 +395,7 @@ namespace Libplanet.Blockchain.Renderers
 
         private void RenderBufferedActionEvaluations(HashDigest<SHA256> blockHash, bool unrender)
         {
-            Dictionary<HashDigest<SHA256>, List<ActionEvaluation>> bufferMap
+            ConcurrentDictionary<HashDigest<SHA256>, List<ActionEvaluation>> bufferMap
                 = unrender
                 ? _bufferedActionUnrenders
                 : _bufferedActionRenders;
@@ -363,7 +410,7 @@ namespace Libplanet.Blockchain.Renderers
                     blockHash
                 );
                 RenderActionEvaluations(buffer, unrender);
-                bufferMap.Remove(blockHash);
+                bufferMap.TryRemove(blockHash, out _);
             }
             else
             {
