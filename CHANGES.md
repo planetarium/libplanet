@@ -274,6 +274,7 @@ To be released.
 ### CLI tools
 
  -  The `planet` command became installable using `npm`.
+ -  Fixed a bug that Backspace Key not working when input Passphrase.
 
 [#404]: https://github.com/planetarium/libplanet/issues/404
 [#459]: https://github.com/planetarium/libplanet/issues/459
