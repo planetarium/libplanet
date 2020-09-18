@@ -20,7 +20,10 @@ namespace Libplanet.Tests.Blockchain
 
         public IAction BlockAction => null;
 
-        public bool DoesTransactionFollowsPolicy(Transaction<T> transaction) => true;
+        public bool DoesTransactionFollowsPolicy(
+            Transaction<T> transaction,
+            BlockChain<T> blockChain
+        ) => true;
 
         public long GetNextBlockDifficulty(BlockChain<T> blocks) =>
             blocks.Count == 0 ? 0 : _difficulty;

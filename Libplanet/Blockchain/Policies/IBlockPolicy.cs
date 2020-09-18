@@ -23,9 +23,14 @@ namespace Libplanet.Blockchain.Policies
         /// A predicate that determines if the transaction follows the block policy.
         /// </summary>
         /// <param name="transaction">A <see cref="Transaction{T}"/> to determine.</param>
+        /// <param name="blockChain">A <see cref="BlockChain{T}" /> for given
+        /// <paramref name="transaction" />.</param>
         /// <returns><c>true</c> if <paramref name="transaction"/>is valid; otherwise, <c>false</c>.
         /// </returns>
-        bool DoesTransactionFollowsPolicy(Transaction<T> transaction);
+        bool DoesTransactionFollowsPolicy(
+            Transaction<T> transaction,
+            BlockChain<T> blockChain
+        );
 
         /// <summary>
         /// Checks if <paramref name="nextBlock"/> is invalid, and if that

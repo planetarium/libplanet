@@ -13,7 +13,7 @@ namespace Libplanet.Blockchain.Policies
     public class BlockPolicy<T> : IBlockPolicy<T>
         where T : IAction, new()
     {
-        private readonly Predicate<Transaction<T>> _doesTransactionFollowPolicy;
+        private readonly Func<Transaction<T>, BlockChain<T>, bool> _doesTransactionFollowPolicy;
 
         /// <summary>
         /// Creates a <see cref="BlockPolicy{T}"/> with configuring
@@ -39,7 +39,7 @@ namespace Libplanet.Blockchain.Policies
             int blockIntervalMilliseconds = 5000,
             long minimumDifficulty = 1024,
             int difficultyBoundDivisor = 128,
-            Predicate<Transaction<T>> doesTransactionFollowPolicy = null)
+            Func<Transaction<T>, BlockChain<T>, bool> doesTransactionFollowPolicy = null)
             : this(
                 blockAction,
                 TimeSpan.FromMilliseconds(blockIntervalMilliseconds),
@@ -70,7 +70,7 @@ namespace Libplanet.Blockchain.Policies
             TimeSpan blockInterval,
             long minimumDifficulty,
             int difficultyBoundDivisor,
-            Predicate<Transaction<T>> doesTransactionFollowPolicy = null)
+            Func<Transaction<T>, BlockChain<T>, bool> doesTransactionFollowPolicy = null)
         {
             if (blockInterval < TimeSpan.Zero)
             {
@@ -101,7 +101,7 @@ namespace Libplanet.Blockchain.Policies
             BlockInterval = blockInterval;
             MinimumDifficulty = minimumDifficulty;
             DifficultyBoundDivisor = difficultyBoundDivisor;
-            _doesTransactionFollowPolicy = doesTransactionFollowPolicy ?? (_ => true);
+            _doesTransactionFollowPolicy = doesTransactionFollowPolicy ?? ((_, __) => true);
         }
 
         /// <inheritdoc/>
@@ -121,10 +121,13 @@ namespace Libplanet.Blockchain.Policies
 
         private int DifficultyBoundDivisor { get; }
 
-        /// <inheritdoc cref="IBlockPolicy{T}.DoesTransactionFollowsPolicy(Transaction{T})"/>
-        public virtual bool DoesTransactionFollowsPolicy(Transaction<T> transaction)
+        /// <inheritdoc
+        /// cref="IBlockPolicy{T}.DoesTransactionFollowsPolicy(Transaction{T}, BlockChain{T})"/>
+        public virtual bool DoesTransactionFollowsPolicy(
+            Transaction<T> transaction,
+            BlockChain<T> blockChain)
         {
-            return _doesTransactionFollowPolicy(transaction);
+            return _doesTransactionFollowPolicy(transaction, blockChain);
         }
 
         /// <inheritdoc/>
