@@ -1,16 +1,11 @@
 using System;
-using System.Collections.Generic;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
-using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Store;
-using Libplanet.Store.Trie;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
-using Libplanet.Tests.Store.Trie;
 using Libplanet.Tx;
 using Xunit;
 using Xunit.Abstractions;
@@ -27,9 +22,6 @@ namespace Libplanet.Tests.Blockchain.Policies
         private StoreFixture _fx;
         private BlockChain<DumbAction> _chain;
         private IBlockPolicy<DumbAction> _policy;
-        private List<Transaction<DumbAction>> _emptyTransaction;
-        private Block<DumbAction> _genesis;
-        private Block<DumbAction> _validNext;
 
         public BlockPolicyTest(ITestOutputHelper output)
         {
@@ -45,16 +37,6 @@ namespace Libplanet.Tests.Blockchain.Policies
                 _fx.Store,
                 _fx.StateStore,
                 _fx.GenesisBlock);
-            _emptyTransaction = new List<Transaction<DumbAction>>();
-            _genesis = _chain.Genesis;
-            _validNext = Block<DumbAction>.Mine(
-                1,
-                1024,
-                _genesis.TotalDifficulty,
-                _genesis.Miner.Value,
-                _genesis.Hash,
-                _genesis.Timestamp.AddSeconds(1),
-                _emptyTransaction);
         }
 
         public void Dispose()
@@ -161,165 +143,6 @@ namespace Libplanet.Tests.Blockchain.Policies
                 1048,
                 _policy.GetNextBlockDifficulty(chain)
             );
-        }
-
-        [Fact]
-        public void ValidateNextBlock()
-        {
-            var validNextBlock = Block<DumbAction>.Mine(
-                1,
-                1,
-                _genesis.TotalDifficulty,
-                _genesis.Miner.Value,
-                _genesis.Hash,
-                _genesis.Timestamp.AddDays(1),
-                _emptyTransaction);
-            _policy.ValidateNextBlock(_chain, validNextBlock);
-        }
-
-        [Fact]
-        public void ValidateNextBlockInvalidIndex()
-        {
-            _chain.Append(_validNext);
-
-            var invalidIndexBlock = Block<DumbAction>.Mine(
-                1,
-                1,
-                _genesis.TotalDifficulty,
-                _genesis.Miner.Value,
-                _validNext.Hash,
-                _validNext.Timestamp.AddSeconds(1),
-                _emptyTransaction);
-            Assert.IsType<InvalidBlockIndexException>(
-                _policy.ValidateNextBlock(_chain, invalidIndexBlock));
-        }
-
-        [Fact]
-        public void ValidateNextBlockInvalidDifficulty()
-        {
-            _chain.Append(_validNext);
-
-            var invalidDifficultyBlock = Block<DumbAction>.Mine(
-                2,
-                1,
-                _validNext.TotalDifficulty,
-                _genesis.Miner.Value,
-                _validNext.Hash,
-                _validNext.Timestamp.AddSeconds(1),
-                _emptyTransaction);
-            Assert.IsType<InvalidBlockDifficultyException>(
-                _policy.ValidateNextBlock(
-                    _chain,
-                    invalidDifficultyBlock));
-        }
-
-        [Fact]
-        public void ValidateNextBlockInvalidTotalDifficulty()
-        {
-            _chain.Append(_validNext);
-
-            var invalidTotalDifficultyBlock = Block<DumbAction>.Mine(
-                2,
-                _policy.GetNextBlockDifficulty(_chain),
-                _validNext.TotalDifficulty - 1,
-                _genesis.Miner.Value,
-                _validNext.Hash,
-                _validNext.Timestamp.AddSeconds(1),
-                _emptyTransaction);
-            Assert.IsType<InvalidBlockTotalDifficultyException>(
-                _policy.ValidateNextBlock(
-                    _chain,
-                    invalidTotalDifficultyBlock));
-        }
-
-        [Fact]
-        public void ValidateNextBlockInvalidPreviousHash()
-        {
-            _chain.Append(_validNext);
-
-            var invalidPreviousHashBlock = Block<DumbAction>.Mine(
-                2,
-                1032,
-                _validNext.TotalDifficulty,
-                _genesis.Miner.Value,
-                new HashDigest<SHA256>(new byte[32]),
-                _validNext.Timestamp.AddSeconds(1),
-                _emptyTransaction);
-            Assert.IsType<InvalidBlockPreviousHashException>(
-                _policy.ValidateNextBlock(
-                    _chain,
-                    invalidPreviousHashBlock));
-        }
-
-        [Fact]
-        public void ValidateNextBlockInvalidTimestamp()
-        {
-            _chain.Append(_validNext);
-
-            var invalidPreviousTimestamp = Block<DumbAction>.Mine(
-                2,
-                1032,
-                _validNext.TotalDifficulty,
-                _genesis.Miner.Value,
-                _validNext.Hash,
-                _validNext.Timestamp.Subtract(TimeSpan.FromSeconds(1)),
-                _emptyTransaction);
-            Assert.IsType<InvalidBlockTimestampException>(
-                _policy.ValidateNextBlock(
-                    _chain,
-                    invalidPreviousTimestamp));
-        }
-
-        [Fact]
-        public void ValidateNextBlockInvalidStateRootHash()
-        {
-            IKeyValueStore stateKeyValueStore = new MemoryKeyValueStore(),
-                stateHashKeyValueStore = new MemoryKeyValueStore();
-            var stateStore = new TrieStateStore(stateKeyValueStore, stateHashKeyValueStore);
-            // FIXME: It assumes that _fx.GenesisBlock doesn't update any states with transactions.
-            //        Actually, it depends on BlockChain<T> to update states and it makes hard to
-            //        calculate state root hash. To resolve this problem,
-            //        it should be moved into StateStore.
-            var genesisBlock = TestUtils.MineGenesis<DumbAction>(
-                blockAction: _policy.BlockAction, checkStateRootHash: true);
-            var store = new DefaultStore(null);
-            var chain = new BlockChain<DumbAction>(
-                _policy,
-                store,
-                stateStore,
-                genesisBlock);
-            var validNext = Block<DumbAction>.Mine(
-                1,
-                1024,
-                genesisBlock.TotalDifficulty,
-                genesisBlock.Miner.Value,
-                genesisBlock.Hash,
-                genesisBlock.Timestamp.AddSeconds(1),
-                _emptyTransaction);
-            chain.ExecuteActions(validNext);
-            validNext =
-                new Block<DumbAction>(validNext, stateStore.GetRootHash(validNext.Hash));
-            chain.Append(validNext);
-
-            var invalidStateRootHash = Block<DumbAction>.Mine(
-                2,
-                1032,
-                validNext.TotalDifficulty,
-                genesisBlock.Miner.Value,
-                validNext.Hash,
-                validNext.Timestamp.AddSeconds(1),
-                _emptyTransaction);
-            var actionEvaluations = _chain.BlockEvaluator.EvaluateActions(
-                invalidStateRootHash,
-                StateCompleterSet<DumbAction>.Recalculate);
-            chain.SetStates(invalidStateRootHash, actionEvaluations, false);
-            invalidStateRootHash = new Block<DumbAction>(
-                invalidStateRootHash,
-                new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)));
-            Assert.IsType<InvalidBlockStateRootHashException>(
-                _policy.ValidateNextBlock(
-                    chain,
-                    invalidStateRootHash));
         }
     }
 }

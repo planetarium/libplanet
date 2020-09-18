@@ -807,11 +807,11 @@ namespace Libplanet.Tests.Store
             );
 
             var chain = TestUtils.MakeBlockChain(new NullPolicy<DumbAction>(), Fx.Store);
-            chain.Append(Fx.Block1);
+            var block = chain.MineBlock(address).Result;
 
             // Even if state references in a chain are empty it should not throw
             // ChainIdNotFoundException unless the chain in itself does not exist.
-            Fx.BlockStatesStore.ForkStateReferences(chain.Id, targetChainId, Fx.Block1);
+            Fx.BlockStatesStore.ForkStateReferences(chain.Id, targetChainId, block);
         }
 
         [SkippableFact]
