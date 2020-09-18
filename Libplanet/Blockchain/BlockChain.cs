@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Numerics;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
@@ -860,8 +861,7 @@ namespace Libplanet.Blockchain
             Block<T> prevTip = Tip;
             try
             {
-                InvalidBlockException e =
-                    Policy.ValidateNextBlock(this, block);
+                InvalidBlockException e = ValidateNextBlock(block);
 
                 if (!(e is null))
                 {
@@ -1662,6 +1662,96 @@ namespace Libplanet.Blockchain
                     _rwlock.ExitWriteLock();
                 }
             }
+        }
+
+        private InvalidBlockException ValidateNextBlock(Block<T> nextBlock)
+        {
+            InvalidBlockException e = Policy.ValidateNextBlock(this, nextBlock);
+
+            if (!(e is null))
+            {
+                return e;
+            }
+
+            long index = this.Count;
+            long difficulty = Policy.GetNextBlockDifficulty(this);
+            BigInteger totalDifficulty = index >= 1
+                    ? this[index - 1].TotalDifficulty + nextBlock.Difficulty
+                    : nextBlock.Difficulty;
+
+            Block<T> lastBlock = index >= 1 ? this[index - 1] : null;
+            HashDigest<SHA256>? prevHash = lastBlock?.Hash;
+            DateTimeOffset? prevTimestamp = lastBlock?.Timestamp;
+
+            if (nextBlock.Index != index)
+            {
+                return new InvalidBlockIndexException(
+                    $"the expected block index is {index}, but its index" +
+                    $" is {nextBlock.Index}'");
+            }
+
+            if (nextBlock.Difficulty < difficulty)
+            {
+                return new InvalidBlockDifficultyException(
+                    $"the expected difficulty of the block #{index} " +
+                    $"is {difficulty}, but its difficulty is " +
+                    $"{nextBlock.Difficulty}'");
+            }
+
+            if (nextBlock.TotalDifficulty != totalDifficulty)
+            {
+                var msg = $"The expected total difficulty of the block #{index} " +
+                          $"is {totalDifficulty}, but its difficulty is " +
+                          $"{nextBlock.TotalDifficulty}'";
+                return new InvalidBlockTotalDifficultyException(
+                    nextBlock.Difficulty,
+                    nextBlock.TotalDifficulty,
+                    msg);
+            }
+
+            if (!nextBlock.PreviousHash.Equals(prevHash))
+            {
+                if (prevHash is null)
+                {
+                    return new InvalidBlockPreviousHashException(
+                        "the genesis block must have not previous block");
+                }
+
+                return new InvalidBlockPreviousHashException(
+                    $"the block #{index} is not continuous from the " +
+                    $"block #{index - 1}; while previous block's hash is " +
+                    $"{prevHash}, the block #{index}'s pointer to " +
+                    "the previous hash refers to " +
+                    (nextBlock.PreviousHash?.ToString() ?? "nothing"));
+            }
+
+            if (nextBlock.Timestamp < prevTimestamp)
+            {
+                return new InvalidBlockTimestampException(
+                    $"the block #{index}'s timestamp " +
+                    $"({nextBlock.Timestamp}) is earlier than" +
+                    $" the block #{index - 1}'s ({prevTimestamp})");
+            }
+
+            if (StateStore is TrieStateStore trieStateStore)
+            {
+                ExecuteActions(nextBlock, StateCompleterSet<T>.Recalculate);
+                HashDigest<SHA256> rootHash =
+                    trieStateStore.GetRootHash(nextBlock.Hash);
+
+                if (!rootHash.Equals(nextBlock.StateRootHash))
+                {
+                    var message = $"the block #{index}'s state root hash is " +
+                                  $"{nextBlock.StateRootHash?.ToString()}, but the execution " +
+                                  $"result is {rootHash.ToString()}";
+                    return new InvalidBlockStateRootHashException(
+                        nextBlock.StateRootHash,
+                        rootHash,
+                        message);
+                }
+            }
+
+            return null;
         }
 
         private IValue GetRawState(

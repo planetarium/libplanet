@@ -1,9 +1,6 @@
 using System;
-using System.Numerics;
-using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Blocks;
-using Libplanet.Store;
 using Libplanet.Tx;
 
 namespace Libplanet.Blockchain.Policies
@@ -136,85 +133,6 @@ namespace Libplanet.Blockchain.Policies
             BlockChain<T> blocks,
             Block<T> nextBlock)
         {
-            long index = blocks.Count;
-            long difficulty = GetNextBlockDifficulty(blocks);
-            BigInteger totalDifficulty = index >= 1
-                    ? blocks[index - 1].TotalDifficulty + nextBlock.Difficulty
-                    : nextBlock.Difficulty;
-
-            Block<T> lastBlock = index >= 1 ? blocks[index - 1] : null;
-            HashDigest<SHA256>? prevHash = lastBlock?.Hash;
-            DateTimeOffset? prevTimestamp = lastBlock?.Timestamp;
-
-            if (nextBlock.Index != index)
-            {
-                return new InvalidBlockIndexException(
-                    $"the expected block index is {index}, but its index" +
-                    $" is {nextBlock.Index}'");
-            }
-
-            if (nextBlock.Difficulty < difficulty)
-            {
-                return new InvalidBlockDifficultyException(
-                    $"the expected difficulty of the block #{index} " +
-                    $"is {difficulty}, but its difficulty is " +
-                    $"{nextBlock.Difficulty}'");
-            }
-
-            if (nextBlock.TotalDifficulty != totalDifficulty)
-            {
-                var msg = $"The expected total difficulty of the block #{index} " +
-                          $"is {totalDifficulty}, but its difficulty is " +
-                          $"{nextBlock.TotalDifficulty}'";
-                return new InvalidBlockTotalDifficultyException(
-                    nextBlock.Difficulty,
-                    nextBlock.TotalDifficulty,
-                    msg);
-            }
-
-            if (!nextBlock.PreviousHash.Equals(prevHash))
-            {
-                if (prevHash is null)
-                {
-                    return new InvalidBlockPreviousHashException(
-                        "the genesis block must have not previous block");
-                }
-
-                return new InvalidBlockPreviousHashException(
-                    $"the block #{index} is not continuous from the " +
-                    $"block #{index - 1}; while previous block's hash is " +
-                    $"{prevHash}, the block #{index}'s pointer to " +
-                    "the previous hash refers to " +
-                    (nextBlock.PreviousHash?.ToString() ?? "nothing"));
-            }
-
-            if (nextBlock.Timestamp < prevTimestamp)
-            {
-                return new InvalidBlockTimestampException(
-                    $"the block #{index}'s timestamp " +
-                    $"({nextBlock.Timestamp}) is earlier than" +
-                    $" the block #{index - 1}'s ({prevTimestamp})");
-            }
-
-            // FIXME: receive validation conditions on the constructor and
-            //        extract type testing codes into it.
-            if (blocks.StateStore is TrieStateStore trieStateStore)
-            {
-                blocks.ExecuteActions(nextBlock, StateCompleterSet<T>.Recalculate);
-                HashDigest<SHA256> rootHash =
-                    trieStateStore.GetRootHash(nextBlock.Hash);
-                if (!rootHash.Equals(nextBlock.StateRootHash))
-                {
-                    var message = $"the block #{index}'s state root hash is " +
-                                  $"{nextBlock.StateRootHash?.ToString()}, but the execution " +
-                                  $"result is {rootHash.ToString()}";
-                    return new InvalidBlockStateRootHashException(
-                        nextBlock.StateRootHash,
-                        rootHash,
-                        message);
-                }
-            }
-
             return null;
         }
 

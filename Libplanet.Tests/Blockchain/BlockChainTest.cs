@@ -27,11 +27,14 @@ using static Libplanet.Tests.Common.Action.ThrowException;
 
 namespace Libplanet.Tests.Blockchain
 {
-    public class BlockChainTest : IDisposable
+    public partial class BlockChainTest : IDisposable
     {
         private StoreFixture _fx;
+        private BlockPolicy<DumbAction> _policy;
         private BlockChain<DumbAction> _blockChain;
         private RecordingRenderer<DumbAction> _renderer;
+        private Block<DumbAction> _validNext;
+        private List<Transaction<DumbAction>> _emptyTransaction;
 
         public BlockChainTest(ITestOutputHelper output)
         {
@@ -44,14 +47,25 @@ namespace Libplanet.Tests.Blockchain
 
             _fx = new DefaultStoreFixture(memory: true);
             _renderer = new RecordingRenderer<DumbAction>();
+            _policy = new BlockPolicy<DumbAction>(new MinerReward(1));
             _blockChain = new BlockChain<DumbAction>(
-                new BlockPolicy<DumbAction>(new MinerReward(1)),
+                _policy,
                 _fx.Store,
                 _fx.StateStore,
                 _fx.GenesisBlock,
                 renderers: new[] { new LoggedActionRenderer<DumbAction>(_renderer, Log.Logger) }
             );
             _renderer.ResetRecords();
+
+            _emptyTransaction = new List<Transaction<DumbAction>>();
+            _validNext = Block<DumbAction>.Mine(
+                1,
+                1024,
+                _fx.GenesisBlock.TotalDifficulty,
+                _fx.GenesisBlock.Miner.Value,
+                _fx.GenesisBlock.Hash,
+                _fx.GenesisBlock.Timestamp.AddSeconds(1),
+                _emptyTransaction);
         }
 
         public void Dispose()
@@ -83,12 +97,7 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public async void MineBlockWithPendingTxs()
         {
-            var keys = new[]
-            {
-                new PrivateKey(),
-                new PrivateKey(),
-                new PrivateKey(),
-            };
+            var keys = new[] { new PrivateKey(), new PrivateKey(), new PrivateKey() };
 
             var txs = new[]
             {
@@ -282,11 +291,7 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void UnstageTransaction()
         {
-            Transaction<DumbAction>[] txs = new[]
-            {
-                _fx.Transaction1,
-                _fx.Transaction2,
-            };
+            Transaction<DumbAction>[] txs = { _fx.Transaction1, _fx.Transaction2 };
             Assert.Empty(_blockChain.GetStagedTransactionIds());
 
             StageTransactions(txs);
@@ -2473,7 +2478,6 @@ namespace Libplanet.Tests.Blockchain
             var storeFixture = new DefaultStoreFixture();
             var policy = new NullPolicy<DumbAction>();
 
-            var timestamp = new DateTimeOffset(2019, 11, 20, 0, 0, 0, TimeSpan.Zero);
             var addresses = ImmutableList<Address>.Empty
                 .Add(storeFixture.Address1)
                 .Add(storeFixture.Address2)
@@ -2547,8 +2551,7 @@ namespace Libplanet.Tests.Blockchain
             var store = new DefaultStore(null);
             var stateStore = new TrieStateStore(
                 new MemoryKeyValueStore(), new MemoryKeyValueStore());
-            var genesisBlock =
-                TestUtils.MineGenesis<DumbAction>(
+            var genesisBlock = TestUtils.MineGenesis<DumbAction>(
                     blockAction: _blockChain.Policy.BlockAction, checkStateRootHash: true);
             BlockChain<DumbAction> blockChain = TestUtils.MakeBlockChain(
                 _blockChain.Policy, store, stateStore: stateStore, genesisBlock: genesisBlock);
@@ -2574,11 +2577,9 @@ namespace Libplanet.Tests.Blockchain
             {
             }
 
-            public IValue PlainValue =>
-                default(Dictionary);
+            public IValue PlainValue => default(Dictionary);
 
-            public void LoadPlainValue(
-                IValue plainValue)
+            public void LoadPlainValue(IValue plainValue)
             {
             }
 
