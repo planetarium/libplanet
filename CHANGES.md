@@ -112,6 +112,7 @@ To be released.
     `BlockHeader` constructor.  [[#986]]
  -  Added `HashDigest<SHA256>`-typed `stateRootHash` parameter to
     `Block<T>()` constructor.  [[#986]]
+ -  `BlockPolicy<T>` methods became to virtual. [[#1010]]
 
 ### Backward-incompatible network protocol changes
 
@@ -247,6 +248,8 @@ To be released.
     different genesis block.  [[#1003], [#1004]]
  -  `Swarm<T>` became to ignore `BlockHeaderMessage` from the peers with
     different genesis block.  [[#1003], [#1004]]
+ -  The code for validating the next block had been moved to `BlockChain<T>` from
+    `BlockPolicy<T>`.  [[#1010]]
 
 ### Bug fixes
 
@@ -347,6 +350,7 @@ To be released.
 [#1002]: https://github.com/planetarium/libplanet/pull/1002
 [#1003]: https://github.com/planetarium/libplanet/issues/1003
 [#1004]: https://github.com/planetarium/libplanet/pull/1004
+[#1010]: https://github.com/planetarium/libplanet/pull/1010
 [sleep mode]: https://en.wikipedia.org/wiki/Sleep_mode
 
 
