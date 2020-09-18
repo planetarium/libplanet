@@ -178,6 +178,7 @@ changed to <code>LookupStateReference(Guid, string, long)</code>.  [<a href="htt
 <code>BlockHeader</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/986">#986</a>]</li>
 <li>Added <code>HashDigest&lt;SHA256&gt;</code>-typed <code>stateRootHash</code> parameter to
 <code>Block&lt;T&gt;()</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/986">#986</a>]</li>
+<li>Methods in <code>BlockPolicy&lt;T&gt;</code> class became <code>virtual</code>. [<a href="https://github.com/planetarium/libplanet/pull/1010">#1010</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <ul>
@@ -322,6 +323,9 @@ of a <code>Block&lt;T&gt;</code>.  [<a href="https://github.com/planetarium/libp
 different genesis block.  [<a href="https://github.com/planetarium/libplanet/issues/1003">#1003</a>, <a href="https://github.com/planetarium/libplanet/pull/1004">#1004</a>]</li>
 <li><code>Swarm&lt;T&gt;</code> became to ignore <code>BlockHeaderMessage</code> from the peers with
 different genesis block.  [<a href="https://github.com/planetarium/libplanet/issues/1003">#1003</a>, <a href="https://github.com/planetarium/libplanet/pull/1004">#1004</a>]</li>
+<li><code>BlockChain&lt;T&gt;</code> instead of <code>BlockPolicy&lt;T&gt;</code> became to validate <code>Block&lt;T&gt;</code>s to append
+so that even if an empty implementation of <code>IBlockPolicy&lt;T&gt;</code> is used <code>Block&lt;T&gt;</code>s are
+unable to be appended to <code>BlockChain&lt;T&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1010">#1010</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
