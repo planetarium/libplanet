@@ -1686,23 +1686,23 @@ namespace Libplanet.Blockchain
             if (nextBlock.Index != index)
             {
                 return new InvalidBlockIndexException(
-                    $"the expected block index is {index}, but its index" +
-                    $" is {nextBlock.Index}'");
+                    $"The expected block index is #{index}, but its index " +
+                    $"is #{nextBlock.Index}.");
             }
 
             if (nextBlock.Difficulty < difficulty)
             {
                 return new InvalidBlockDifficultyException(
-                    $"the expected difficulty of the block #{index} " +
+                    $"The expected difficulty of the block #{index} " +
                     $"is {difficulty}, but its difficulty is " +
-                    $"{nextBlock.Difficulty}'");
+                    $"{nextBlock.Difficulty}.");
             }
 
             if (nextBlock.TotalDifficulty != totalDifficulty)
             {
                 var msg = $"The expected total difficulty of the block #{index} " +
                           $"is {totalDifficulty}, but its difficulty is " +
-                          $"{nextBlock.TotalDifficulty}'";
+                          $"{nextBlock.TotalDifficulty}.";
                 return new InvalidBlockTotalDifficultyException(
                     nextBlock.Difficulty,
                     nextBlock.TotalDifficulty,
@@ -1718,19 +1718,19 @@ namespace Libplanet.Blockchain
                 }
 
                 return new InvalidBlockPreviousHashException(
-                    $"the block #{index} is not continuous from the " +
+                    $"The block #{index} is not continuous from the " +
                     $"block #{index - 1}; while previous block's hash is " +
                     $"{prevHash}, the block #{index}'s pointer to " +
                     "the previous hash refers to " +
-                    (nextBlock.PreviousHash?.ToString() ?? "nothing"));
+                    (nextBlock.PreviousHash?.ToString() ?? "nothing") + ".");
             }
 
             if (nextBlock.Timestamp < prevTimestamp)
             {
                 return new InvalidBlockTimestampException(
-                    $"the block #{index}'s timestamp " +
+                    $"The block #{index}'s timestamp " +
                     $"({nextBlock.Timestamp}) is earlier than" +
-                    $" the block #{index - 1}'s ({prevTimestamp})");
+                    $" the block #{index - 1}'s ({prevTimestamp}).");
             }
 
             if (StateStore is TrieStateStore trieStateStore)
@@ -1741,9 +1741,9 @@ namespace Libplanet.Blockchain
 
                 if (!rootHash.Equals(nextBlock.StateRootHash))
                 {
-                    var message = $"the block #{index}'s state root hash is " +
+                    var message = $"The block #{index}'s state root hash is " +
                                   $"{nextBlock.StateRootHash?.ToString()}, but the execution " +
-                                  $"result is {rootHash.ToString()}";
+                                  $"result is {rootHash.ToString()}.";
                     return new InvalidBlockStateRootHashException(
                         nextBlock.StateRootHash,
                         rootHash,

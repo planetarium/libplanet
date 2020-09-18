@@ -112,7 +112,7 @@ To be released.
     `BlockHeader` constructor.  [[#986]]
  -  Added `HashDigest<SHA256>`-typed `stateRootHash` parameter to
     `Block<T>()` constructor.  [[#986]]
- -  `BlockPolicy<T>` methods became to virtual. [[#1010]]
+ -  Methods in `BlockPolicy<T>` class became `virtual`. [[#1010]]
 
 ### Backward-incompatible network protocol changes
 
@@ -248,8 +248,9 @@ To be released.
     different genesis block.  [[#1003], [#1004]]
  -  `Swarm<T>` became to ignore `BlockHeaderMessage` from the peers with
     different genesis block.  [[#1003], [#1004]]
- -  The code for validating the next block had been moved to `BlockChain<T>` from
-    `BlockPolicy<T>`.  [[#1010]]
+ -  `BlockChain<T>` instead of `BlockPolicy<T>` became to validate `Block<T>`s to append
+    so that even if an empty implementation of `IBlockPolicy<T>` is used `Block<T>`s are
+    unable to be appended to `BlockChain<T>`.  [[#1010]]
 
 ### Bug fixes
 

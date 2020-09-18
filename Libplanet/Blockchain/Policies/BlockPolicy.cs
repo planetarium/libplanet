@@ -121,6 +121,7 @@ namespace Libplanet.Blockchain.Policies
 
         private int DifficultyBoundDivisor { get; }
 
+        /// <inheritdoc cref="IBlockPolicy{T}.DoesTransactionFollowsPolicy(Transaction{T})"/>
         public virtual bool DoesTransactionFollowsPolicy(Transaction<T> transaction)
         {
             return _doesTransactionFollowPolicy(transaction);
