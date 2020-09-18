@@ -206,6 +206,9 @@ replaced by a new <code>Pong</code> message type
 <li>The existing <code>BlockHeaderMessage</code> message type (with the type number <code>0x0d</code>) was
 replaced by a new <code>BlockHeaderMessage</code> message type
 (with the type number <code>0x0c</code>).  [<a href="https://github.com/planetarium/libplanet/issues/1003">#1003</a>, <a href="https://github.com/planetarium/libplanet/pull/1004">#1004</a>]</li>
+<li>Removed <code>PreloadBlockDownloadFailEventArgs</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/1002">#1002</a>]</li>
+<li>Removed <code>blockDownloadFailed</code> parameter from <code>Swarm&lt;T&gt;.PreloadAsync()</code> method.
+Use <code>SwarmOptions.BlockDownloadTimeout</code> instead.  [<a href="https://github.com/planetarium/libplanet/pull/1002">#1002</a>]</li>
 </ul>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <ul>
