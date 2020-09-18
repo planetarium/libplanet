@@ -226,6 +226,8 @@ namespace Libplanet.Net
 
         internal AsyncAutoResetEvent PreloadStarted { get; } = new AsyncAutoResetEvent();
 
+        internal AsyncAutoResetEvent BlockDownloadStarted { get; } = new AsyncAutoResetEvent();
+
         internal AsyncAutoResetEvent FillBlocksAsyncStarted { get; } = new AsyncAutoResetEvent();
 
         internal AsyncAutoResetEvent FillBlocksAsyncFailed { get; } = new AsyncAutoResetEvent();
@@ -298,7 +300,7 @@ namespace Libplanet.Net
         /// period of time.  This can lead a game startup slow.  If you want to omit rendering of
         /// these actions in the behind blocks use <see cref=
         /// "PreloadAsync(TimeSpan?, IProgress{PreloadState}, IImmutableSet{Address},
-        /// EventHandler{PreloadBlockDownloadFailEventArgs}, CancellationToken)"
+        /// CancellationToken)"
         /// /> method too.</remarks>
         public async Task StartAsync(
             int millisecondsDialTimeout = 15000,
@@ -345,7 +347,7 @@ namespace Libplanet.Net
         /// period of time.  This can lead a game startup slow.  If you want to omit rendering of
         /// these actions in the behind blocks use <see cref=
         /// "PreloadAsync(TimeSpan?, IProgress{PreloadState}, IImmutableSet{Address},
-        /// EventHandler{PreloadBlockDownloadFailEventArgs}, CancellationToken)"
+        /// CancellationToken)"
         /// /> method too.</remarks>
         public async Task StartAsync(
             TimeSpan dialTimeout,
@@ -500,9 +502,6 @@ namespace Libplanet.Net
         /// Note that this option is intended to be exposed to end users through a feasible user
         /// interface so that they can decide whom to trust for themselves.
         /// </param>
-        /// <param name="blockDownloadFailed">
-        /// The <see cref="EventHandler" /> triggered when block downloading fails.
-        /// </param>
         /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
         /// operation should be canceled.
@@ -514,7 +513,7 @@ namespace Libplanet.Net
         /// <remarks>This does not render downloaded <see cref="IAction"/>s, but fills states only.
         /// </remarks>
         /// <exception cref="AggregateException">Thrown when the given the block downloading is
-        /// failed and if <paramref name="blockDownloadFailed "/> is <c>null</c>.</exception>
+        /// failed.</exception>
         [SuppressMessage(
             "Microsoft.StyleCop.CSharp.ReadabilityRules",
             "MEN003",
@@ -523,7 +522,6 @@ namespace Libplanet.Net
             TimeSpan? dialTimeout = null,
             IProgress<PreloadState> progress = null,
             IImmutableSet<Address> trustedStateValidators = null,
-            EventHandler<PreloadBlockDownloadFailEventArgs> blockDownloadFailed = null,
             CancellationToken cancellationToken = default(CancellationToken)
         )
         {
@@ -602,77 +600,55 @@ namespace Libplanet.Net
 
                     PreloadStarted.Set();
 
-                    try
+                    // From the second lap, as it's catching up the latest blocks made
+                    // in very short time, do not report the progress.  Even if it's reported,
+                    // it can be very confusing, because it looks like BlockHashDownloadState
+                    // recurring after later phases like BlockDownloadState.
+                    IProgress<PreloadState> demandProgress = lapCount++ < 1 ? progress : null;
+
+                    var demandBlockHashes = GetDemandBlockHashes(
+                        workspace,
+                        peersWithHeight,
+                        demandProgress,
+                        cancellationToken
+                    ).WithCancellation(cancellationToken);
+
+                    await foreach (var pair in demandBlockHashes)
                     {
-                        // From the second lap, as it's catching up the latest blocks made
-                        // in very short time, do not report the progress.  Even if it's reported,
-                        // it can be very confusing, because it looks like BlockHashDownloadState
-                        // recurring after later phases like BlockDownloadState.
-                        IProgress<PreloadState> demandProgress = lapCount++ < 1 ? progress : null;
-
-                        var demandBlockHashes = GetDemandBlockHashes(
-                            workspace,
-                            peersWithHeight,
-                            demandProgress,
-                            cancellationToken
-                        ).WithCancellation(cancellationToken);
-
-                        await foreach (var pair in demandBlockHashes)
-                        {
-                            (long index, HashDigest<SHA256> hash) = pair;
-                            cancellationToken.ThrowIfCancellationRequested();
-
-                            if (index == 0 && !hash.Equals(workspace.Genesis.Hash))
-                            {
-                                // FIXME: This behavior can unexpectedly terminate the swarm
-                                // (and the game app) if it encounters a peer having a different
-                                // blockchain, and therefore can be exploited to remotely shut
-                                // down other nodes as well.
-                                // Since the intention of this behavior is to prevent mistakes
-                                // to try to connect incorrect seeds (by a user),
-                                // this behavior should be limited for only seed peers.
-                                // FIXME: ChainStatus message became to contain hash value of
-                                // the genesis block, so this exception will not be happened.
-                                var msg =
-                                    $"Since the genesis block is fixed to {workspace.Genesis} " +
-                                    "protocol-wise, the blockchain which does not share " +
-                                    "any mutual block is not acceptable.";
-                                var e = new InvalidGenesisBlockException(
-                                    hash,
-                                    workspace.Genesis.Hash,
-                                    msg);
-                                throw new AggregateException(msg, e);
-                            }
-
-                            _logger.Verbose(
-                                "Enqueue #{BlockIndex} {BlockHash} to demands queue...",
-                                index,
-                                hash
-                            );
-                            if (blockCompletion.Demand(hash))
-                            {
-                                totalBlocksToDownload++;
-                            }
-                        }
-                    }
-                    catch (AggregateException e)
-                    {
+                        (long index, HashDigest<SHA256> hash) = pair;
                         cancellationToken.ThrowIfCancellationRequested();
 
-                        if (blockDownloadFailed is null)
+                        if (index == 0 && !hash.Equals(workspace.Genesis.Hash))
                         {
-                            throw new AggregateException(e.Message, e.InnerExceptions);
+                            // FIXME: This behavior can unexpectedly terminate the swarm
+                            // (and the game app) if it encounters a peer having a different
+                            // blockchain, and therefore can be exploited to remotely shut
+                            // down other nodes as well.
+                            // Since the intention of this behavior is to prevent mistakes
+                            // to try to connect incorrect seeds (by a user),
+                            // this behavior should be limited for only seed peers.
+                            // FIXME: ChainStatus message became to contain hash value of
+                            // the genesis block, so this exception will not be happened.
+                            var msg =
+                                $"Since the genesis block is fixed to {workspace.Genesis} " +
+                                "protocol-wise, the blockchain which does not share " +
+                                "any mutual block is not acceptable.";
+                            var e = new InvalidGenesisBlockException(
+                                hash,
+                                workspace.Genesis.Hash,
+                                msg);
+                            throw new AggregateException(msg, e);
                         }
 
-                        blockDownloadFailed.Invoke(
-                            this,
-                            new PreloadBlockDownloadFailEventArgs
-                            {
-                                InnerExceptions = e.InnerExceptions,
-                            }
+                        _logger.Verbose(
+                            "Enqueue #{BlockIndex} {BlockHash} to demands queue...",
+                            index,
+                            hash
                         );
-
-                        return;
+                        if (blockCompletion.Demand(hash))
+                        {
+                            totalBlocksToDownload++;
+                        }
                     }
 
                     IAsyncEnumerable<Tuple<Block<T>, BoundPeer>> completedBlocks =
@@ -681,7 +657,15 @@ namespace Libplanet.Net
                             blockFetcher: GetBlocksAsync,
                             cancellationToken: cancellationToken
                         );
-                    await foreach (var pair in completedBlocks)
+
+                    BlockDownloadStarted.Set();
+
+                    var blockDownloadCts = CancellationTokenSource.CreateLinkedTokenSource(
+                        new CancellationTokenSource(Options.BlockDownloadTimeout).Token,
+                        cancellationToken);
+
+                    await foreach (
+                        var pair in completedBlocks.WithCancellation(blockDownloadCts.Token))
                     {
                         pair.Deconstruct(out Block<T> block, out BoundPeer sourcePeer);
                         _logger.Verbose(

@@ -240,51 +240,48 @@ namespace Libplanet.Tests.Net
             }
         }
 
-        [Fact(Timeout = Timeout)]
-        public async Task PreloadFailed()
+        [Fact(Timeout = 5 * 1000)]
+        public async Task BlockDownloadTimeout()
         {
             Swarm<DumbAction> minerSwarm = _swarms[0];
-            Swarm<DumbAction> receiverSwarm = _swarms[1];
+
+            var options = new SwarmOptions
+            {
+                BlockDownloadTimeout = TimeSpan.FromMilliseconds(1),
+            };
+
+            Swarm<DumbAction> receiverSwarm = CreateSwarm(_blockchains[1], options: options);
 
             foreach (var unused in Enumerable.Range(0, 10))
             {
                 await minerSwarm.BlockChain.MineBlock(_fx1.Address1);
             }
 
-            receiverSwarm.Options.BlockHashRecvTimeout = TimeSpan.FromMilliseconds(10);
-
-            var isCalled = false;
-            void Handler(object sender, PreloadBlockDownloadFailEventArgs e)
-            {
-                if (e.InnerExceptions.All(ex => ex is TimeoutException))
-                {
-                    isCalled = true;
-                }
-            }
-
             try
             {
-                // SwarmException should be thrown if event handler doesn't exist.
                 await StartAsync(minerSwarm);
 
                 await receiverSwarm.AddPeersAsync(new[] { minerSwarm.AsPeer }, null);
-                Task waitTask = receiverSwarm.PreloadStarted.WaitAsync();
+                Task waitTask = receiverSwarm.BlockDownloadStarted.WaitAsync();
+
                 Task preloadTask = receiverSwarm.PreloadAsync(TimeSpan.FromSeconds(15));
                 await waitTask;
                 await StopAsync(minerSwarm);
-                await Assert.ThrowsAsync<AggregateException>(async () => await preloadTask);
+                Exception thrown = null;
 
-                // Event handler should be called if it exists.
-                await StartAsync(minerSwarm);
+                try
+                {
+                    await preloadTask;
+                }
+                catch (OperationCanceledException e)
+                {
+                    thrown = e;
+                }
 
-                waitTask = receiverSwarm.PreloadStarted.WaitAsync();
-                preloadTask = receiverSwarm.PreloadAsync(
-                    TimeSpan.FromSeconds(15),
-                    blockDownloadFailed: Handler);
-                await waitTask;
-                await StopAsync(minerSwarm);
-                await preloadTask;
-                Assert.True(isCalled);
+                Assert.True(
+                    thrown is OperationCanceledException || thrown is TaskCanceledException,
+                    $"The exception thrown is {thrown}"
+                    );
             }
             finally
             {
@@ -1165,6 +1162,10 @@ namespace Libplanet.Tests.Net
                 Log.Logger.Debug($"{nameof(receiverSwarm.PreloadAsync)}() normally finished.");
             }
             catch (OperationCanceledException)
+            {
+                Log.Logger.Debug($"{nameof(receiverSwarm.PreloadAsync)}() aborted.");
+            }
+            catch (AggregateException ae) when (ae.InnerException is TaskCanceledException)
             {
                 Log.Logger.Debug($"{nameof(receiverSwarm.PreloadAsync)}() aborted.");
             }
