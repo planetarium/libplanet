@@ -121,7 +121,7 @@ namespace Libplanet.Blockchain.Policies
 
         private int DifficultyBoundDivisor { get; }
 
-        public bool DoesTransactionFollowsPolicy(Transaction<T> transaction)
+        public virtual bool DoesTransactionFollowsPolicy(Transaction<T> transaction)
         {
             return _doesTransactionFollowPolicy(transaction);
         }
@@ -129,7 +129,7 @@ namespace Libplanet.Blockchain.Policies
         /// <inheritdoc/>
         /// <exception cref="InvalidBlockStateRootHashException">It will be thrown when the
         /// given block has incorrect <see cref="Block{T}.StateRootHash"/>.</exception>
-        public InvalidBlockException ValidateNextBlock(
+        public virtual InvalidBlockException ValidateNextBlock(
             BlockChain<T> blocks,
             Block<T> nextBlock)
         {
@@ -137,7 +137,7 @@ namespace Libplanet.Blockchain.Policies
         }
 
         /// <inheritdoc />
-        public long GetNextBlockDifficulty(BlockChain<T> blocks)
+        public virtual long GetNextBlockDifficulty(BlockChain<T> blocks)
         {
             long index = blocks.Count;
 
