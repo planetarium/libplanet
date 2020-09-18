@@ -813,5 +813,24 @@ namespace Libplanet.Tests.Blocks
             // Size of BlockHeader
             Assert.Equal(248, codec.Encode(txBlock.GetBlockHeader().ToBencodex()).Length);
         }
+
+        [Fact]
+        public void TransactionOrderIdempotent()
+        {
+            const int signerCount = 5;
+            DateTimeOffset timestamp = DateTimeOffset.UtcNow;
+            var signers = Enumerable.Range(0, signerCount).Select(_ => new PrivateKey());
+            ImmutableArray<Transaction<RandomAction>> txs = signers.Select(signer =>
+                Transaction<RandomAction>.Create(
+                    0,
+                    new PrivateKey(),
+                    null,
+                    new[] { new RandomAction(signer.ToAddress()) })).ToImmutableArray();
+            var blockA = MineGenesis(timestamp: timestamp, transactions: txs);
+            var blockB = MineGenesis(
+                timestamp: timestamp,  transactions: txs, checkStateRootHash: true);
+
+            Assert.True(blockA.Transactions.SequenceEqual(blockB.Transactions));
+        }
     }
 }
