@@ -722,8 +722,9 @@ namespace Libplanet.Tests.Net
 
             var privateKey = new PrivateKey();
             var address = privateKey.ToAddress();
+            var txCount = 10;
 
-            var txs = Enumerable.Range(0, 10).Select(_ =>
+            var txs = Enumerable.Range(0, txCount).Select(_ =>
                 chainA.MakeTransaction(new PrivateKey(), new[] { new DumbAction(address, "foo") }))
                 .ToArray();
 
@@ -747,10 +748,14 @@ namespace Libplanet.Tests.Net
                     }
                 });
 
-                await swarmC.TxReceived.WaitAsync();
+                while (chainC.Store.CountTransactions() != txCount + 1)
+                {
+                    await swarmC.TxReceived.WaitAsync();
+                }
+
                 await t;
 
-                for (var i = 0; i < 10; i++)
+                for (var i = 0; i < txCount; i++)
                 {
                     Assert.True(chainC.Store.ContainsTransaction(txs[i].Id));
                 }
