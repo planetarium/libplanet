@@ -113,8 +113,8 @@ To be released.
  -  Added `HashDigest<SHA256>`-typed `stateRootHash` parameter to
     `Block<T>()` constructor.  [[#986]]
  -  Methods in `BlockPolicy<T>` class became `virtual`.  [[#1010]]
- -  `BlockPolicy<T>.DoesTrnasactionFollowPolicy()` method and
-    `IBlockPolicy.DoesTrnasactionFollowPolicy()` method became to take
+ -  `BlockPolicy<T>.DoesTransactionFollowPolicy()` method and
+    `IBlockPolicy.DoesTransactionFollowPolicy()` method became to take
     additional `BlockChain<T>` parameter as its context.  [[#1012]]
  -  `doesTransactionFollowPolicy` parameter became 
     `Func<Transaction<T>, BlockChain<T>, bool>` on `BlockPolicy<T>()`
