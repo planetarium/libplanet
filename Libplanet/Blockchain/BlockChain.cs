@@ -693,7 +693,7 @@ namespace Libplanet.Blockchain
 
             foreach (Transaction<T> tx in stagedTransactions)
             {
-                if (!Policy.DoesTransactionFollowsPolicy(tx))
+                if (!Policy.DoesTransactionFollowsPolicy(tx, this))
                 {
                     UnstageTransaction(tx);
                 }
@@ -875,7 +875,7 @@ namespace Libplanet.Blockchain
                 // the tx nounce order when the block was created
                 foreach (Transaction<T> tx1 in block.Transactions)
                 {
-                    if (!Policy.DoesTransactionFollowsPolicy(tx1))
+                    if (!Policy.DoesTransactionFollowsPolicy(tx1, this))
                     {
                         throw new TxViolatingBlockPolicyException(
                             tx1.Id,

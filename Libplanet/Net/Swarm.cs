@@ -2040,7 +2040,7 @@ namespace Libplanet.Net
                         );
                     }
 
-                    if (!BlockChain.Policy.DoesTransactionFollowsPolicy(tx))
+                    if (!BlockChain.Policy.DoesTransactionFollowsPolicy(tx, BlockChain))
                     {
                         BlockChain.UnstageTransaction(tx);
                     }

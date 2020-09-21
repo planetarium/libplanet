@@ -112,7 +112,13 @@ To be released.
     `BlockHeader` constructor.  [[#986]]
  -  Added `HashDigest<SHA256>`-typed `stateRootHash` parameter to
     `Block<T>()` constructor.  [[#986]]
- -  Methods in `BlockPolicy<T>` class became `virtual`. [[#1010]]
+ -  Methods in `BlockPolicy<T>` class became `virtual`.  [[#1010]]
+ -  `BlockPolicy<T>.DoesTransactionFollowPolicy()` method and
+    `IBlockPolicy.DoesTransactionFollowPolicy()` method became to take
+    additional `BlockChain<T>` parameter as its context.  [[#1012]]
+ -  `doesTransactionFollowPolicy` parameter became 
+    `Func<Transaction<T>, BlockChain<T>, bool>` on `BlockPolicy<T>()`
+    constructor.  [[#1012]]
 
 ### Backward-incompatible network protocol changes
 
@@ -352,6 +358,7 @@ To be released.
 [#1003]: https://github.com/planetarium/libplanet/issues/1003
 [#1004]: https://github.com/planetarium/libplanet/pull/1004
 [#1010]: https://github.com/planetarium/libplanet/pull/1010
+[#1012]: https://github.com/planetarium/libplanet/pull/1012
 [sleep mode]: https://en.wikipedia.org/wiki/Sleep_mode
 
 

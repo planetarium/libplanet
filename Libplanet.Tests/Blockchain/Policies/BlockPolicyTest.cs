@@ -77,7 +77,7 @@ namespace Libplanet.Tests.Blockchain.Policies
         {
             var validKey = new PrivateKey();
 
-            bool IsSignerValid(Transaction<DumbAction> tx)
+            bool IsSignerValid(Transaction<DumbAction> tx, BlockChain<DumbAction> chain)
             {
                 var validAddress = validKey.PublicKey.ToAddress();
                 return tx.Signer.Equals(validAddress);
@@ -87,13 +87,13 @@ namespace Libplanet.Tests.Blockchain.Policies
 
             // Valid Transaction
             var validTx = _chain.MakeTransaction(validKey, new DumbAction[] { });
-            var expected = policy.DoesTransactionFollowsPolicy(validTx);
+            var expected = policy.DoesTransactionFollowsPolicy(validTx, _chain);
             Assert.True(expected);
 
             // Invalid Transaction
             var invalidKey = new PrivateKey();
             var invalidTx = _chain.MakeTransaction(invalidKey, new DumbAction[] { });
-            expected = policy.DoesTransactionFollowsPolicy(invalidTx);
+            expected = policy.DoesTransactionFollowsPolicy(invalidTx, _chain);
             Assert.False(expected);
         }
 

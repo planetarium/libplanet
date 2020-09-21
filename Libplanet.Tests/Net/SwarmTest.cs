@@ -1684,7 +1684,7 @@ namespace Libplanet.Tests.Net
         public async Task UnstageInvalidTransaction()
         {
             var validKey = new PrivateKey();
-            bool IsSignerValid(Transaction<DumbAction> tx)
+            bool IsSignerValid(Transaction<DumbAction> tx, BlockChain<DumbAction> chain)
             {
                 var validAddress = validKey.PublicKey.ToAddress();
                 return tx.Signer.Equals(validAddress);
@@ -1737,7 +1737,7 @@ namespace Libplanet.Tests.Net
         public async Task IgnoreTransactionFromDifferentGenesis()
         {
             var validKey = new PrivateKey();
-            bool IsSignerValid(Transaction<DumbAction> tx)
+            bool IsSignerValid(Transaction<DumbAction> tx, BlockChain<DumbAction> chain)
             {
                 var validAddress = validKey.PublicKey.ToAddress();
                 return tx.Signer.Equals(validAddress);
