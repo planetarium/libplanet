@@ -85,7 +85,7 @@ namespace Libplanet.Blocks
 
             // As the order of transactions should be unpredictable until a block is mined,
             // the sorter key should be derived from both a block hash and a txid.
-            var hashInteger = new BigInteger(Hash.ToByteArray());
+            var hashInteger = new BigInteger(PreEvaluationHash.ToByteArray());
 
             // If there are multiple transactions for the same signer these should be ordered by
             // their tx nonces.  So transactions of the same signer should have the same sort key.
