@@ -112,13 +112,13 @@ to <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>'s typ
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_System_Int32_System_Int64_System_Int32_Predicate_Libplanet_Tx_Transaction__0___.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.BlockPolicy%601.%23ctor(Libplanet.Action.IAction%2CSystem.Int32%2CSystem.Int64%2CSystem.Int32%2CPredicate%7BLibplanet.Tx.Transaction%7B%600%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_System_Int32_System_Int64_System_Int32_Func_Libplanet_Tx_Transaction__0__Libplanet_Blockchain_BlockChain__0__System_Boolean__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.BlockPolicy%601.%23ctor(Libplanet.Action.IAction%2CSystem.Int32%2CSystem.Int64%2CSystem.Int32%2CFunc%7BLibplanet.Tx.Transaction%7B%600%7D%2CLibplanet.Blockchain.BlockChain%7B%600%7D%2CSystem.Boolean%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/BlockPolicy.cs/#L37">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor*"></a>
-  <h4 id="Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_System_Int32_System_Int64_System_Int32_Predicate_Libplanet_Tx_Transaction__0___" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.Int32,System.Int64,System.Int32,Predicate{Libplanet.Tx.Transaction{`0}})">BlockPolicy(IAction, Int32, Int64, Int32, Predicate&lt;Transaction&lt;T&gt;&gt;)</h4>
+  <h4 id="Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_System_Int32_System_Int64_System_Int32_Func_Libplanet_Tx_Transaction__0__Libplanet_Blockchain_BlockChain__0__System_Boolean__" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.Int32,System.Int64,System.Int32,Func{Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0},System.Boolean})">BlockPolicy(IAction, Int32, Int64, Int32, Func&lt;Transaction&lt;T&gt;, BlockChain&lt;T&gt;, Boolean&gt;)</h4>
   <div class="markdown level1 summary"><p>Creates a <a class="xref" href="Libplanet.Blockchain.Policies.BlockPolicy-1.html">BlockPolicy&lt;T&gt;</a> with configuring
 <a class="xref" href="Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_BlockInterval">BlockInterval</a> in milliseconds,
 <span class="xref">Libplanet.Blockchain.Policies.BlockPolicy`1.MinimumDifficulty</span> and
@@ -127,7 +127,7 @@ to <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>'s typ
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BlockPolicy(IAction blockAction = null, int blockIntervalMilliseconds = 5000, long minimumDifficulty = null, int difficultyBoundDivisor = 128, Predicate&lt;Transaction&lt;T&gt;&gt; doesTransactionFollowPolicy = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public BlockPolicy(IAction blockAction = null, int blockIntervalMilliseconds = 5000, long minimumDifficulty = null, int difficultyBoundDivisor = 128, Func&lt;Transaction&lt;T&gt;, BlockChain&lt;T&gt;, bool&gt; doesTransactionFollowPolicy = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -168,7 +168,7 @@ to <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>'s typ
 </td>
       </tr>
       <tr>
-        <td><span class="xref">Predicate</span>&lt;<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction</a>&lt;T&gt;&gt;</td>
+        <td><span class="xref">Func</span>&lt;<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction</a>&lt;T&gt;, <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain</a>&lt;T&gt;, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;</td>
         <td><span class="parametername">doesTransactionFollowPolicy</span></td>
         <td><p>A predicate that determines if the transaction follows the block policy.</p>
 </td>
@@ -177,13 +177,13 @@ to <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>'s typ
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_TimeSpan_System_Int64_System_Int32_Predicate_Libplanet_Tx_Transaction__0___.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.BlockPolicy%601.%23ctor(Libplanet.Action.IAction%2CTimeSpan%2CSystem.Int64%2CSystem.Int32%2CPredicate%7BLibplanet.Tx.Transaction%7B%600%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_TimeSpan_System_Int64_System_Int32_Func_Libplanet_Tx_Transaction__0__Libplanet_Blockchain_BlockChain__0__System_Boolean__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.BlockPolicy%601.%23ctor(Libplanet.Action.IAction%2CTimeSpan%2CSystem.Int64%2CSystem.Int32%2CFunc%7BLibplanet.Tx.Transaction%7B%600%7D%2CLibplanet.Blockchain.BlockChain%7B%600%7D%2CSystem.Boolean%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/BlockPolicy.cs/#L68">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor*"></a>
-  <h4 id="Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_TimeSpan_System_Int64_System_Int32_Predicate_Libplanet_Tx_Transaction__0___" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,TimeSpan,System.Int64,System.Int32,Predicate{Libplanet.Tx.Transaction{`0}})">BlockPolicy(IAction, TimeSpan, Int64, Int32, Predicate&lt;Transaction&lt;T&gt;&gt;)</h4>
+  <h4 id="Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_TimeSpan_System_Int64_System_Int32_Func_Libplanet_Tx_Transaction__0__Libplanet_Blockchain_BlockChain__0__System_Boolean__" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,TimeSpan,System.Int64,System.Int32,Func{Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0},System.Boolean})">BlockPolicy(IAction, TimeSpan, Int64, Int32, Func&lt;Transaction&lt;T&gt;, BlockChain&lt;T&gt;, Boolean&gt;)</h4>
   <div class="markdown level1 summary"><p>Creates a <a class="xref" href="Libplanet.Blockchain.Policies.BlockPolicy-1.html">BlockPolicy&lt;T&gt;</a> with configuring
 <a class="xref" href="Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_BlockInterval">BlockInterval</a>, <span class="xref">Libplanet.Blockchain.Policies.BlockPolicy`1.MinimumDifficulty</span> and
 <span class="xref">Libplanet.Blockchain.Policies.BlockPolicy`1.DifficultyBoundDivisor</span>.</p>
@@ -191,7 +191,7 @@ to <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>'s typ
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BlockPolicy(IAction blockAction, TimeSpan blockInterval, long minimumDifficulty, int difficultyBoundDivisor, Predicate&lt;Transaction&lt;T&gt;&gt; doesTransactionFollowPolicy = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public BlockPolicy(IAction blockAction, TimeSpan blockInterval, long minimumDifficulty, int difficultyBoundDivisor, Func&lt;Transaction&lt;T&gt;, BlockChain&lt;T&gt;, bool&gt; doesTransactionFollowPolicy = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -230,7 +230,7 @@ to <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>'s typ
 </td>
       </tr>
       <tr>
-        <td><span class="xref">Predicate</span>&lt;<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction</a>&lt;T&gt;&gt;</td>
+        <td><span class="xref">Func</span>&lt;<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction</a>&lt;T&gt;, <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain</a>&lt;T&gt;, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;</td>
         <td><span class="parametername">doesTransactionFollowPolicy</span></td>
         <td><p>A predicate that determines if the transaction follows the block policy.</p>
 </td>
@@ -309,18 +309,18 @@ than this <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_B
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_BlockPolicy_1_DoesTransactionFollowsPolicy_Libplanet_Tx_Transaction__0__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.BlockPolicy%601.DoesTransactionFollowsPolicy(Libplanet.Tx.Transaction%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_BlockPolicy_1_DoesTransactionFollowsPolicy_Libplanet_Tx_Transaction__0__Libplanet_Blockchain_BlockChain__0__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.BlockPolicy%601.DoesTransactionFollowsPolicy(Libplanet.Tx.Transaction%7B%600%7D%2CLibplanet.Blockchain.BlockChain%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/BlockPolicy.cs/#L125">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/BlockPolicy.cs/#L126">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Policies_BlockPolicy_1_DoesTransactionFollowsPolicy_" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.DoesTransactionFollowsPolicy*"></a>
-  <h4 id="Libplanet_Blockchain_Policies_BlockPolicy_1_DoesTransactionFollowsPolicy_Libplanet_Tx_Transaction__0__" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.DoesTransactionFollowsPolicy(Libplanet.Tx.Transaction{`0})">DoesTransactionFollowsPolicy(Transaction&lt;T&gt;)</h4>
+  <h4 id="Libplanet_Blockchain_Policies_BlockPolicy_1_DoesTransactionFollowsPolicy_Libplanet_Tx_Transaction__0__Libplanet_Blockchain_BlockChain__0__" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.DoesTransactionFollowsPolicy(Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0})">DoesTransactionFollowsPolicy(Transaction&lt;T&gt;, BlockChain&lt;T&gt;)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual bool DoesTransactionFollowsPolicy(Transaction&lt;T&gt; transaction)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual bool DoesTransactionFollowsPolicy(Transaction&lt;T&gt; transaction, BlockChain&lt;T&gt; blockChain)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -335,6 +335,11 @@ than this <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_B
       <tr>
         <td><a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction</a>&lt;T&gt;</td>
         <td><span class="parametername">transaction</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain</a>&lt;T&gt;</td>
+        <td><span class="parametername">blockChain</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -359,7 +364,7 @@ than this <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_B
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_BlockPolicy_1_GetNextBlockDifficulty_Libplanet_Blockchain_BlockChain__0__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.BlockPolicy%601.GetNextBlockDifficulty(Libplanet.Blockchain.BlockChain%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/BlockPolicy.cs/#L141">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/BlockPolicy.cs/#L144">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Policies_BlockPolicy_1_GetNextBlockDifficulty_" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.GetNextBlockDifficulty*"></a>
   <h4 id="Libplanet_Blockchain_Policies_BlockPolicy_1_GetNextBlockDifficulty_Libplanet_Blockchain_BlockChain__0__" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.GetNextBlockDifficulty(Libplanet.Blockchain.BlockChain{`0})">GetNextBlockDifficulty(BlockChain&lt;T&gt;)</h4>
@@ -406,7 +411,7 @@ than this <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_B
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_BlockPolicy_1_ValidateNextBlock_Libplanet_Blockchain_BlockChain__0__Libplanet_Blocks_Block__0__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.BlockPolicy%601.ValidateNextBlock(Libplanet.Blockchain.BlockChain%7B%600%7D%2CLibplanet.Blocks.Block%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/BlockPolicy.cs/#L133">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/BlockPolicy.cs/#L136">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Policies_BlockPolicy_1_ValidateNextBlock_" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.ValidateNextBlock*"></a>
   <h4 id="Libplanet_Blockchain_Policies_BlockPolicy_1_ValidateNextBlock_Libplanet_Blockchain_BlockChain__0__Libplanet_Blocks_Block__0__" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.ValidateNextBlock(Libplanet.Blockchain.BlockChain{`0},Libplanet.Blocks.Block{`0})">ValidateNextBlock(BlockChain&lt;T&gt;, Block&lt;T&gt;)</h4>

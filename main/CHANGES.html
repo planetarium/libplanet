@@ -178,7 +178,13 @@ changed to <code>LookupStateReference(Guid, string, long)</code>.  [<a href="htt
 <code>BlockHeader</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/986">#986</a>]</li>
 <li>Added <code>HashDigest&lt;SHA256&gt;</code>-typed <code>stateRootHash</code> parameter to
 <code>Block&lt;T&gt;()</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/986">#986</a>]</li>
-<li>Methods in <code>BlockPolicy&lt;T&gt;</code> class became <code>virtual</code>. [<a href="https://github.com/planetarium/libplanet/pull/1010">#1010</a>]</li>
+<li>Methods in <code>BlockPolicy&lt;T&gt;</code> class became <code>virtual</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1010">#1010</a>]</li>
+<li><code>BlockPolicy&lt;T&gt;.DoesTransactionFollowPolicy()</code> method and
+<code>IBlockPolicy.DoesTransactionFollowPolicy()</code> method became to take
+additional <code>BlockChain&lt;T&gt;</code> parameter as its context.  [<a href="https://github.com/planetarium/libplanet/pull/1012">#1012</a>]</li>
+<li><code>doesTransactionFollowPolicy</code> parameter became
+<code>Func&lt;Transaction&lt;T&gt;, BlockChain&lt;T&gt;, bool&gt;</code> on <code>BlockPolicy&lt;T&gt;()</code>
+constructor.  [<a href="https://github.com/planetarium/libplanet/pull/1012">#1012</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <ul>

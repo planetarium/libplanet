@@ -2099,24 +2099,24 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T)
   nameWithType: BlockPolicy<T>
   nameWithType.vb: BlockPolicy(Of T)
-- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.Int32,System.Int64,System.Int32,Predicate{Libplanet.Tx.Transaction{`0}})
-  name: BlockPolicy(IAction, Int32, Int64, Int32, Predicate<Transaction<T>>)
-  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_System_Int32_System_Int64_System_Int32_Predicate_Libplanet_Tx_Transaction__0___
-  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.Int32,System.Int64,System.Int32,Predicate{Libplanet.Tx.Transaction{`0}})
-  name.vb: BlockPolicy(IAction, Int32, Int64, Int32, Predicate(Of Transaction(Of T)))
-  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.BlockPolicy(Libplanet.Action.IAction, System.Int32, System.Int64, System.Int32, Predicate<Libplanet.Tx.Transaction<T>>)
-  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).BlockPolicy(Libplanet.Action.IAction, System.Int32, System.Int64, System.Int32, Predicate(Of Libplanet.Tx.Transaction(Of T)))
-  nameWithType: BlockPolicy<T>.BlockPolicy(IAction, Int32, Int64, Int32, Predicate<Transaction<T>>)
-  nameWithType.vb: BlockPolicy(Of T).BlockPolicy(IAction, Int32, Int64, Int32, Predicate(Of Transaction(Of T)))
-- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,TimeSpan,System.Int64,System.Int32,Predicate{Libplanet.Tx.Transaction{`0}})
-  name: BlockPolicy(IAction, TimeSpan, Int64, Int32, Predicate<Transaction<T>>)
-  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_TimeSpan_System_Int64_System_Int32_Predicate_Libplanet_Tx_Transaction__0___
-  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,TimeSpan,System.Int64,System.Int32,Predicate{Libplanet.Tx.Transaction{`0}})
-  name.vb: BlockPolicy(IAction, TimeSpan, Int64, Int32, Predicate(Of Transaction(Of T)))
-  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.BlockPolicy(Libplanet.Action.IAction, TimeSpan, System.Int64, System.Int32, Predicate<Libplanet.Tx.Transaction<T>>)
-  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).BlockPolicy(Libplanet.Action.IAction, TimeSpan, System.Int64, System.Int32, Predicate(Of Libplanet.Tx.Transaction(Of T)))
-  nameWithType: BlockPolicy<T>.BlockPolicy(IAction, TimeSpan, Int64, Int32, Predicate<Transaction<T>>)
-  nameWithType.vb: BlockPolicy(Of T).BlockPolicy(IAction, TimeSpan, Int64, Int32, Predicate(Of Transaction(Of T)))
+- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.Int32,System.Int64,System.Int32,Func{Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0},System.Boolean})
+  name: BlockPolicy(IAction, Int32, Int64, Int32, Func<Transaction<T>, BlockChain<T>, Boolean>)
+  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_System_Int32_System_Int64_System_Int32_Func_Libplanet_Tx_Transaction__0__Libplanet_Blockchain_BlockChain__0__System_Boolean__
+  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.Int32,System.Int64,System.Int32,Func{Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0},System.Boolean})
+  name.vb: BlockPolicy(IAction, Int32, Int64, Int32, Func(Of Transaction(Of T), BlockChain(Of T), Boolean))
+  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.BlockPolicy(Libplanet.Action.IAction, System.Int32, System.Int64, System.Int32, Func<Libplanet.Tx.Transaction<T>, Libplanet.Blockchain.BlockChain<T>, System.Boolean>)
+  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).BlockPolicy(Libplanet.Action.IAction, System.Int32, System.Int64, System.Int32, Func(Of Libplanet.Tx.Transaction(Of T), Libplanet.Blockchain.BlockChain(Of T), System.Boolean))
+  nameWithType: BlockPolicy<T>.BlockPolicy(IAction, Int32, Int64, Int32, Func<Transaction<T>, BlockChain<T>, Boolean>)
+  nameWithType.vb: BlockPolicy(Of T).BlockPolicy(IAction, Int32, Int64, Int32, Func(Of Transaction(Of T), BlockChain(Of T), Boolean))
+- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,TimeSpan,System.Int64,System.Int32,Func{Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0},System.Boolean})
+  name: BlockPolicy(IAction, TimeSpan, Int64, Int32, Func<Transaction<T>, BlockChain<T>, Boolean>)
+  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_TimeSpan_System_Int64_System_Int32_Func_Libplanet_Tx_Transaction__0__Libplanet_Blockchain_BlockChain__0__System_Boolean__
+  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,TimeSpan,System.Int64,System.Int32,Func{Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0},System.Boolean})
+  name.vb: BlockPolicy(IAction, TimeSpan, Int64, Int32, Func(Of Transaction(Of T), BlockChain(Of T), Boolean))
+  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.BlockPolicy(Libplanet.Action.IAction, TimeSpan, System.Int64, System.Int32, Func<Libplanet.Tx.Transaction<T>, Libplanet.Blockchain.BlockChain<T>, System.Boolean>)
+  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).BlockPolicy(Libplanet.Action.IAction, TimeSpan, System.Int64, System.Int32, Func(Of Libplanet.Tx.Transaction(Of T), Libplanet.Blockchain.BlockChain(Of T), System.Boolean))
+  nameWithType: BlockPolicy<T>.BlockPolicy(IAction, TimeSpan, Int64, Int32, Func<Transaction<T>, BlockChain<T>, Boolean>)
+  nameWithType.vb: BlockPolicy(Of T).BlockPolicy(IAction, TimeSpan, Int64, Int32, Func(Of Transaction(Of T), BlockChain(Of T), Boolean))
 - uid: Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor*
   name: BlockPolicy
   href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_
@@ -2160,15 +2160,15 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).BlockInterval
   nameWithType: BlockPolicy<T>.BlockInterval
   nameWithType.vb: BlockPolicy(Of T).BlockInterval
-- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.DoesTransactionFollowsPolicy(Libplanet.Tx.Transaction{`0})
-  name: DoesTransactionFollowsPolicy(Transaction<T>)
-  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_DoesTransactionFollowsPolicy_Libplanet_Tx_Transaction__0__
-  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`1.DoesTransactionFollowsPolicy(Libplanet.Tx.Transaction{`0})
-  name.vb: DoesTransactionFollowsPolicy(Transaction(Of T))
-  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.DoesTransactionFollowsPolicy(Libplanet.Tx.Transaction<T>)
-  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).DoesTransactionFollowsPolicy(Libplanet.Tx.Transaction(Of T))
-  nameWithType: BlockPolicy<T>.DoesTransactionFollowsPolicy(Transaction<T>)
-  nameWithType.vb: BlockPolicy(Of T).DoesTransactionFollowsPolicy(Transaction(Of T))
+- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.DoesTransactionFollowsPolicy(Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0})
+  name: DoesTransactionFollowsPolicy(Transaction<T>, BlockChain<T>)
+  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_DoesTransactionFollowsPolicy_Libplanet_Tx_Transaction__0__Libplanet_Blockchain_BlockChain__0__
+  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`1.DoesTransactionFollowsPolicy(Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0})
+  name.vb: DoesTransactionFollowsPolicy(Transaction(Of T), BlockChain(Of T))
+  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.DoesTransactionFollowsPolicy(Libplanet.Tx.Transaction<T>, Libplanet.Blockchain.BlockChain<T>)
+  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).DoesTransactionFollowsPolicy(Libplanet.Tx.Transaction(Of T), Libplanet.Blockchain.BlockChain(Of T))
+  nameWithType: BlockPolicy<T>.DoesTransactionFollowsPolicy(Transaction<T>, BlockChain<T>)
+  nameWithType.vb: BlockPolicy(Of T).DoesTransactionFollowsPolicy(Transaction(Of T), BlockChain(Of T))
 - uid: Libplanet.Blockchain.Policies.BlockPolicy`1.DoesTransactionFollowsPolicy*
   name: DoesTransactionFollowsPolicy
   href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_DoesTransactionFollowsPolicy_
@@ -2240,15 +2240,15 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of T).BlockAction
   nameWithType: IBlockPolicy<T>.BlockAction
   nameWithType.vb: IBlockPolicy(Of T).BlockAction
-- uid: Libplanet.Blockchain.Policies.IBlockPolicy`1.DoesTransactionFollowsPolicy(Libplanet.Tx.Transaction{`0})
-  name: DoesTransactionFollowsPolicy(Transaction<T>)
-  href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_DoesTransactionFollowsPolicy_Libplanet_Tx_Transaction__0__
-  commentId: M:Libplanet.Blockchain.Policies.IBlockPolicy`1.DoesTransactionFollowsPolicy(Libplanet.Tx.Transaction{`0})
-  name.vb: DoesTransactionFollowsPolicy(Transaction(Of T))
-  fullName: Libplanet.Blockchain.Policies.IBlockPolicy<T>.DoesTransactionFollowsPolicy(Libplanet.Tx.Transaction<T>)
-  fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of T).DoesTransactionFollowsPolicy(Libplanet.Tx.Transaction(Of T))
-  nameWithType: IBlockPolicy<T>.DoesTransactionFollowsPolicy(Transaction<T>)
-  nameWithType.vb: IBlockPolicy(Of T).DoesTransactionFollowsPolicy(Transaction(Of T))
+- uid: Libplanet.Blockchain.Policies.IBlockPolicy`1.DoesTransactionFollowsPolicy(Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0})
+  name: DoesTransactionFollowsPolicy(Transaction<T>, BlockChain<T>)
+  href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_DoesTransactionFollowsPolicy_Libplanet_Tx_Transaction__0__Libplanet_Blockchain_BlockChain__0__
+  commentId: M:Libplanet.Blockchain.Policies.IBlockPolicy`1.DoesTransactionFollowsPolicy(Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0})
+  name.vb: DoesTransactionFollowsPolicy(Transaction(Of T), BlockChain(Of T))
+  fullName: Libplanet.Blockchain.Policies.IBlockPolicy<T>.DoesTransactionFollowsPolicy(Libplanet.Tx.Transaction<T>, Libplanet.Blockchain.BlockChain<T>)
+  fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of T).DoesTransactionFollowsPolicy(Libplanet.Tx.Transaction(Of T), Libplanet.Blockchain.BlockChain(Of T))
+  nameWithType: IBlockPolicy<T>.DoesTransactionFollowsPolicy(Transaction<T>, BlockChain<T>)
+  nameWithType.vb: IBlockPolicy(Of T).DoesTransactionFollowsPolicy(Transaction(Of T), BlockChain(Of T))
 - uid: Libplanet.Blockchain.Policies.IBlockPolicy`1.DoesTransactionFollowsPolicy*
   name: DoesTransactionFollowsPolicy
   href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_DoesTransactionFollowsPolicy_
