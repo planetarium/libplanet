@@ -114,5 +114,28 @@ namespace Libplanet.Tests.Store.Trie
             committedTrie = trie.Commit();
             Assert.NotEqual(MerkleTrie.EmptyRootHash, committedTrie.Hash);
         }
+
+        [Fact]
+        public void InsertSamePrefixNode()
+        {
+            IKeyValueStore keyValueStore = new MemoryKeyValueStore();
+            ITrie trie = new MerkleTrie(keyValueStore);
+
+            byte[] shortKey = { 0x01 },
+                longKey = { 0x01, 0x02 };
+            trie.Set(shortKey, default(Null));
+            trie.Set(longKey, Dictionary.Empty);
+
+            Assert.True(trie.TryGet(shortKey, out IValue shortKeyValue));
+            Assert.True(trie.TryGet(longKey, out IValue longKeyValue));
+            Assert.Equal(default(Null), shortKeyValue);
+            Assert.Equal(Dictionary.Empty, longKeyValue);
+
+            ITrie committedTrie = trie.Commit();
+            Assert.True(committedTrie.TryGet(shortKey, out shortKeyValue));
+            Assert.True(committedTrie.TryGet(longKey, out longKeyValue));
+            Assert.Equal(default(Null), shortKeyValue);
+            Assert.Equal(Dictionary.Empty, longKeyValue);
+        }
     }
 }
