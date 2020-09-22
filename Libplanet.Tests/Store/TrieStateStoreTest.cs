@@ -13,7 +13,6 @@ namespace Libplanet.Tests.Store
     {
         private readonly IKeyValueStore _stateKeyValueStore;
         private readonly IKeyValueStore _stateHashKeyValueStore;
-        private readonly TrieStateStore _stateStore;
 
         private readonly IImmutableDictionary<string, IValue> _prestoredValues;
 
@@ -31,49 +30,55 @@ namespace Libplanet.Tests.Store
                 .Add("bar", (Text)ByteUtil.Hex(TestUtils.GetRandomBytes(32)))
                 .Add("baz", (Bencodex.Types.Boolean)false)
                 .Add("qux", Bencodex.Types.Dictionary.Empty);
-
-            _stateStore = new TrieStateStore(_stateKeyValueStore, _stateHashKeyValueStore);
-            _stateStore.SetStates(_fx.GenesisBlock, _prestoredValues);
         }
 
-        [Fact]
-        public void SetStates()
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void SetStates(bool secure)
         {
+            var stateStore = MakeTrieStateStoreFixture(secure);
             // Check to set and to get.
-            Assert.Throws<KeyNotFoundException>(() => _stateStore.GetRootHash(_fx.Block1.Hash));
-            Assert.False(_stateStore.ContainsBlockStates(_fx.Block1.Hash));
+            Assert.Throws<KeyNotFoundException>(() => stateStore.GetRootHash(_fx.Block1.Hash));
+            Assert.False(stateStore.ContainsBlockStates(_fx.Block1.Hash));
             var states = ImmutableDictionary<string, IValue>.Empty
                 .Add("foo", (Text)"value");
-            _stateStore.SetStates(_fx.Block1, states);
-            Assert.Equal((Text)"value", _stateStore.GetState("foo", _fx.Block1.Hash));
-            Assert.IsType<HashDigest<SHA256>>(_stateStore.GetRootHash(_fx.Block1.Hash));
-            Assert.True(_stateStore.ContainsBlockStates(_fx.Block1.Hash));
+            stateStore.SetStates(_fx.Block1, states);
+            Assert.Equal((Text)"value", stateStore.GetState("foo", _fx.Block1.Hash));
+            Assert.IsType<HashDigest<SHA256>>(stateStore.GetRootHash(_fx.Block1.Hash));
+            Assert.True(stateStore.ContainsBlockStates(_fx.Block1.Hash));
 
-            _stateStore.SetStates(_fx.Block2, _prestoredValues);
+            stateStore.SetStates(_fx.Block2, _prestoredValues);
 
             // Check same states have same state hash.
             Assert.NotEqual(
-                _stateStore.GetRootHash(_fx.GenesisBlock.Hash),
-                _stateStore.GetRootHash(_fx.Block1.Hash));
+                stateStore.GetRootHash(_fx.GenesisBlock.Hash),
+                stateStore.GetRootHash(_fx.Block1.Hash));
             Assert.Equal(
-                _stateStore.GetRootHash(_fx.GenesisBlock.Hash),
-                _stateStore.GetRootHash(_fx.Block2.Hash));
+                stateStore.GetRootHash(_fx.GenesisBlock.Hash),
+                stateStore.GetRootHash(_fx.Block2.Hash));
         }
 
-        [Fact]
-        public void GetState()
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void GetState(bool secure)
         {
+            var stateStore = MakeTrieStateStoreFixture(secure);
             foreach (var pair in _prestoredValues)
             {
                 Assert.Equal(
                     pair.Value,
-                    _stateStore.GetState(pair.Key, _fx.GenesisBlock.Hash));
+                    stateStore.GetState(pair.Key, _fx.GenesisBlock.Hash));
             }
         }
 
-        [Fact]
-        public void ExistsBlockState()
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void ExistsBlockState(bool secure)
         {
+            var stateStore = MakeTrieStateStoreFixture(secure);
             HashDigest<SHA256> randomBlockHash;
             do
             {
@@ -82,17 +87,20 @@ namespace Libplanet.Tests.Store
             }
             while (randomBlockHash.Equals(_fx.GenesisBlock.Hash));
 
-            Assert.False(_stateStore.ContainsBlockStates(randomBlockHash));
-            Assert.True(_stateStore.ContainsBlockStates(_fx.GenesisBlock.Hash));
+            Assert.False(stateStore.ContainsBlockStates(randomBlockHash));
+            Assert.True(stateStore.ContainsBlockStates(_fx.GenesisBlock.Hash));
         }
 
-        [Fact]
-        public void PruneStates()
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void PruneStates(bool secure)
         {
+            var stateStore = MakeTrieStateStoreFixture(secure);
             int prevStateHashesCount = _stateHashKeyValueStore.ListKeys().Count(),
                 prevStatesCount = _stateKeyValueStore.ListKeys().Count();
             var nextStates = _prestoredValues.SetItem("foo", (Binary)TestUtils.GetRandomBytes(32));
-            _stateStore.SetStates(_fx.Block1, nextStates);
+            stateStore.SetStates(_fx.Block1, nextStates);
 
             // Hash of _fx.Block1
             Assert.Equal(prevStateHashesCount + 1, _stateHashKeyValueStore.ListKeys().Count());
@@ -101,11 +109,19 @@ namespace Libplanet.Tests.Store
             // updated short node + new value node
             Assert.Equal(prevStatesCount + 4, _stateKeyValueStore.ListKeys().Count());
 
-            _stateStore.PruneStates(
+            stateStore.PruneStates(
                 ImmutableHashSet<HashDigest<SHA256>>.Empty.Add(_fx.Block1.Hash));
             Assert.Single(_stateHashKeyValueStore.ListKeys());
             // It will stay at the same count of nodes.
             Assert.Equal(prevStatesCount, _stateKeyValueStore.ListKeys().Count());
+        }
+
+        private TrieStateStore MakeTrieStateStoreFixture(bool secure)
+        {
+            var stateStore = new TrieStateStore(
+                _stateKeyValueStore, _stateHashKeyValueStore, secure);
+            stateStore.SetStates(_fx.GenesisBlock, _prestoredValues);
+            return stateStore;
         }
     }
 }
