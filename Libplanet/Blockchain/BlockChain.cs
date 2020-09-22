@@ -63,6 +63,11 @@ namespace Libplanet.Blockchain
         private IDictionary<TxId, Transaction<T>> _transactions;
 
         /// <summary>
+        /// Cached genesis block.
+        /// </summary>
+        private Block<T> _genesis;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="BlockChain{T}"/> class.
         /// </summary>
         /// <param name="policy"><see cref="IBlockPolicy{T}"/> to use in the
@@ -235,7 +240,7 @@ namespace Libplanet.Blockchain
         /// <summary>
         /// The first <see cref="Block{T}"/> in the <see cref="BlockChain{T}"/>.
         /// </summary>
-        public Block<T> Genesis => this[0];
+        public Block<T> Genesis => _genesis ??= this[0];
 
         public Guid Id { get; private set; }
 

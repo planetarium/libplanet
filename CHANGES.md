@@ -257,6 +257,8 @@ To be released.
  -  `BlockChain<T>` instead of `BlockPolicy<T>` became to validate `Block<T>`s to append
     so that even if an empty implementation of `IBlockPolicy<T>` is used `Block<T>`s are
     unable to be appended to `BlockChain<T>`.  [[#1010]]
+ -  Improved performance of `BlockSet<T>[HashDigest<SHA256>]` and `BlockChain<T>.Genesis`
+    by caching.  [[#1013]]
 
 ### Bug fixes
 
@@ -359,6 +361,7 @@ To be released.
 [#1004]: https://github.com/planetarium/libplanet/pull/1004
 [#1010]: https://github.com/planetarium/libplanet/pull/1010
 [#1012]: https://github.com/planetarium/libplanet/pull/1012
+[#1013]: https://github.com/planetarium/libplanet/pull/1013
 [sleep mode]: https://en.wikipedia.org/wiki/Sleep_mode
 
 
