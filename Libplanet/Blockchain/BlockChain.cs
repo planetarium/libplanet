@@ -866,7 +866,7 @@ namespace Libplanet.Blockchain
             Block<T> prevTip = Tip;
             try
             {
-                InvalidBlockException e = ValidateNextBlock(block);
+                InvalidBlockException e = ValidateNextBlock(block, evaluateActions);
 
                 if (!(e is null))
                 {
@@ -1669,7 +1669,10 @@ namespace Libplanet.Blockchain
             }
         }
 
-        private InvalidBlockException ValidateNextBlock(Block<T> nextBlock)
+        private InvalidBlockException ValidateNextBlock(
+            Block<T> nextBlock,
+            bool validateStateRootHash
+        )
         {
             InvalidBlockException e = Policy.ValidateNextBlock(this, nextBlock);
 
@@ -1738,7 +1741,7 @@ namespace Libplanet.Blockchain
                     $" the block #{index - 1}'s ({prevTimestamp}).");
             }
 
-            if (StateStore is TrieStateStore trieStateStore)
+            if (validateStateRootHash && StateStore is TrieStateStore trieStateStore)
             {
                 ExecuteActions(nextBlock, StateCompleterSet<T>.Recalculate);
                 HashDigest<SHA256> rootHash =
