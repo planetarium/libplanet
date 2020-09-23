@@ -259,8 +259,8 @@ To be released.
  -  `BlockChain<T>` instead of `BlockPolicy<T>` became to validate `Block<T>`s to append
     so that even if an empty implementation of `IBlockPolicy<T>` is used `Block<T>`s are
     unable to be appended to `BlockChain<T>`.  [[#1010]]
- -  Improved performance of `BlockSet<T>[HashDigest<SHA256>]` and `BlockChain<T>.Genesis`
-    by caching.  [[#1013]]
+ -  `BlockSet<T>[HashDigest<SHA256>]` and `BlockChain<T>.Genesis` became cached
+    so that they become faster to get.  [[#1013]]
 
 ### Bug fixes
 
