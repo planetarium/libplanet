@@ -4,15 +4,19 @@ using System.Linq;
 using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Blocks;
+using LruCacheNet;
 
 namespace Libplanet.Store
 {
     public class BlockSet<T> : BaseIndex<HashDigest<SHA256>, Block<T>>
         where T : IAction, new()
     {
-        public BlockSet(IStore store)
+        private readonly LruCache<HashDigest<SHA256>, Block<T>> _cache;
+
+        public BlockSet(IStore store, int cacheSize = 4096)
             : base(store)
         {
+            _cache = new LruCache<HashDigest<SHA256>, Block<T>>(cacheSize);
         }
 
         public override ICollection<HashDigest<SHA256>> Keys =>
@@ -20,7 +24,7 @@ namespace Libplanet.Store
 
         public override ICollection<Block<T>> Values =>
             Store.IterateBlockHashes()
-                .Select(Store.GetBlock<T>)
+                .Select(GetBlock)
                 .ToList();
 
         public override int Count => (int)Store.CountBlocks();
@@ -31,7 +35,7 @@ namespace Libplanet.Store
         {
             get
             {
-                Block<T> block = Store.GetBlock<T>(key);
+                Block<T> block = GetBlock(key);
                 if (block is null)
                 {
                     throw new KeyNotFoundException(
@@ -58,6 +62,7 @@ namespace Libplanet.Store
 
                 value.Validate(DateTimeOffset.UtcNow);
                 Store.PutBlock(value);
+                _cache.Add(value.Hash, value);
             }
         }
 
@@ -74,7 +79,35 @@ namespace Libplanet.Store
 
         public override bool Remove(HashDigest<SHA256> key)
         {
-            return Store.DeleteBlock(key);
+            bool deleted = Store.DeleteBlock(key);
+
+            _cache.Remove(key);
+
+            return deleted;
+        }
+
+        private Block<T> GetBlock(HashDigest<SHA256> key)
+        {
+            if (_cache.TryGetValue(key, out Block<T> cached))
+            {
+                if (Store.ContainsBlock(key))
+                {
+                    return cached;
+                }
+                else
+                {
+                    // The cached block had been deleted on Store...
+                    _cache.Remove(key);
+                }
+            }
+
+            Block<T> fetched = Store.GetBlock<T>(key);
+            if (!(fetched is null))
+            {
+                _cache.Add(key, fetched);
+            }
+
+            return fetched;
         }
     }
 }
