@@ -114,5 +114,17 @@ namespace Libplanet.Tests.Store.Trie
             committedTrie = trie.Commit();
             Assert.NotEqual(MerkleTrie.EmptyRootHash, committedTrie.Hash);
         }
+
+        [Fact]
+        public void IgnoreNullState()
+        {
+            IKeyValueStore keyValueStore = new MemoryKeyValueStore();
+            ITrie trie = new MerkleTrie(keyValueStore);
+
+            trie.Set(new byte[] { 0xbe, 0xef }, null);
+            trie.Commit();
+
+            Assert.Empty(keyValueStore.ListKeys());
+        }
     }
 }
