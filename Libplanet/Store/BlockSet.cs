@@ -95,7 +95,15 @@ namespace Libplanet.Store
         {
             if (_cache.TryGetValue(key, out Block<T> cached))
             {
-                return cached;
+                if (Store.ContainsBlock(key))
+                {
+                    return cached;
+                }
+                else
+                {
+                    // The cached block had been deleted on Store...
+                    _cache.Remove(key);
+                }
             }
 
             Block<T> fetched = Store.GetBlock<T>(key);
