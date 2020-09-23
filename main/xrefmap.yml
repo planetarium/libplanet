@@ -9271,14 +9271,14 @@ references:
   fullName.vb: Libplanet.Store.BlockSet(Of T)
   nameWithType: BlockSet<T>
   nameWithType.vb: BlockSet(Of T)
-- uid: Libplanet.Store.BlockSet`1.#ctor(Libplanet.Store.IStore)
-  name: BlockSet(IStore)
-  href: api/Libplanet.Store.BlockSet-1.html#Libplanet_Store_BlockSet_1__ctor_Libplanet_Store_IStore_
-  commentId: M:Libplanet.Store.BlockSet`1.#ctor(Libplanet.Store.IStore)
-  fullName: Libplanet.Store.BlockSet<T>.BlockSet(Libplanet.Store.IStore)
-  fullName.vb: Libplanet.Store.BlockSet(Of T).BlockSet(Libplanet.Store.IStore)
-  nameWithType: BlockSet<T>.BlockSet(IStore)
-  nameWithType.vb: BlockSet(Of T).BlockSet(IStore)
+- uid: Libplanet.Store.BlockSet`1.#ctor(Libplanet.Store.IStore,System.Int32)
+  name: BlockSet(IStore, Int32)
+  href: api/Libplanet.Store.BlockSet-1.html#Libplanet_Store_BlockSet_1__ctor_Libplanet_Store_IStore_System_Int32_
+  commentId: M:Libplanet.Store.BlockSet`1.#ctor(Libplanet.Store.IStore,System.Int32)
+  fullName: Libplanet.Store.BlockSet<T>.BlockSet(Libplanet.Store.IStore, System.Int32)
+  fullName.vb: Libplanet.Store.BlockSet(Of T).BlockSet(Libplanet.Store.IStore, System.Int32)
+  nameWithType: BlockSet<T>.BlockSet(IStore, Int32)
+  nameWithType.vb: BlockSet(Of T).BlockSet(IStore, Int32)
 - uid: Libplanet.Store.BlockSet`1.#ctor*
   name: BlockSet
   href: api/Libplanet.Store.BlockSet-1.html#Libplanet_Store_BlockSet_1__ctor_
