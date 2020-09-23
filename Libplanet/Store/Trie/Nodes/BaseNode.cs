@@ -19,7 +19,7 @@ namespace Libplanet.Store.Trie.Nodes
         }
 
         // It will not support embedded node.
-        public INode? Value { get; set; }
+        public virtual INode? Value { get; }
 
         public byte[] Serialize() => _codec.Encode(ToBencodex());
 

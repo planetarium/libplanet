@@ -293,7 +293,9 @@ namespace Libplanet.Store.Trie
             }
 
             int commonPrefixLength = CommonPrefixLen(shortNode.Key, key);
-            if (commonPrefixLength == shortNode.Key.Length)
+
+            // If the node
+            if (commonPrefixLength == shortNode.Key.Length && commonPrefixLength == key.Length)
             {
                 var nn = Insert(
                     shortNode.Value,
@@ -311,13 +313,24 @@ namespace Libplanet.Store.Trie
                     prefix.AddRange(key.Take(commonPrefixLength + 1)),
                     key.Skip(commonPrefixLength + 1).ToImmutableArray(),
                     value));
-            branch = branch.SetChild(
-                shortNode.Key[commonPrefixLength],
-                Insert(
+            if (commonPrefixLength == shortNode.Key.Length)
+            {
+                branch = branch.SetValue(Insert(
                     null,
                     prefix.AddRange(shortNode.Key.Take(commonPrefixLength + 1)),
                     shortNode.Key.Skip(commonPrefixLength + 1).ToImmutableArray(),
                     shortNode.Value!));
+            }
+            else
+            {
+                branch = branch.SetChild(
+                    shortNode.Key[commonPrefixLength],
+                    Insert(
+                        null,
+                        prefix.AddRange(shortNode.Key.Take(commonPrefixLength + 1)),
+                        shortNode.Key.Skip(commonPrefixLength + 1).ToImmutableArray(),
+                        shortNode.Value!));
+            }
 
             if (commonPrefixLength == 0)
             {
@@ -359,6 +372,15 @@ namespace Libplanet.Store.Trie
                         out value);
 
                 case FullNode fullNode:
+                    if (path.Length == 0)
+                    {
+                        return TryGet(
+                            fullNode.Value,
+                            prefix,
+                            path,
+                            out value);
+                    }
+
                     INode? childNode = fullNode.Children[path[0]];
                     return TryGet(
                         childNode,

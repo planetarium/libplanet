@@ -30,9 +30,16 @@ namespace Libplanet.Store.Trie.Nodes
 
         public ImmutableArray<INode?> Children { get; }
 
+        public override INode? Value => Children[ChildrenCount - 1];
+
         public FullNode SetChild(int index, INode childNode)
         {
             return new FullNode(Children.SetItem(index, childNode));
+        }
+
+        public FullNode SetValue(INode valueNode)
+        {
+            return new FullNode(Children.SetItem(ChildrenCount - 1, valueNode));
         }
 
         bool IEquatable<FullNode>.Equals(FullNode? other)
