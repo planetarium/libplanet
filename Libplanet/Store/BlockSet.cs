@@ -83,10 +83,7 @@ namespace Libplanet.Store
         {
             bool deleted = Store.DeleteBlock(key);
 
-            if (deleted)
-            {
-                _cache.Remove(key);
-            }
+            _cache.Remove(key);
 
             return deleted;
         }
