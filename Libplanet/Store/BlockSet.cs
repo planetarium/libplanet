@@ -11,14 +11,12 @@ namespace Libplanet.Store
     public class BlockSet<T> : BaseIndex<HashDigest<SHA256>, Block<T>>
         where T : IAction, new()
     {
-        // FIXME it should be configurable
-        private const int DefaultCacheSize = 4096;
         private readonly LruCache<HashDigest<SHA256>, Block<T>> _cache;
 
-        public BlockSet(IStore store)
+        public BlockSet(IStore store, int cacheSize = 4096)
             : base(store)
         {
-            _cache = new LruCache<HashDigest<SHA256>, Block<T>>(DefaultCacheSize);
+            _cache = new LruCache<HashDigest<SHA256>, Block<T>>(cacheSize);
         }
 
         public override ICollection<HashDigest<SHA256>> Keys =>

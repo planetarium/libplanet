@@ -119,6 +119,8 @@ To be released.
  -  `doesTransactionFollowPolicy` parameter became 
     `Func<Transaction<T>, BlockChain<T>, bool>` on `BlockPolicy<T>()`
     constructor.  [[#1012]]
+ -  Added `cacheSize` optional parameter to `BlockSet<T>()` constructor.
+    [[#1013]]
 
 ### Backward-incompatible network protocol changes
 
