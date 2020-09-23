@@ -60,6 +60,11 @@ namespace Libplanet.Store.Trie
         /// <inheritdoc/>
         public void Set(byte[] key, IValue value)
         {
+            if (value is null)
+            {
+                return;
+            }
+
             Root = Insert(
                 Root,
                 ImmutableArray<byte>.Empty,
