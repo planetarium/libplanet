@@ -912,6 +912,10 @@ namespace Libplanet.Blockchain
                     if (evaluateActions)
                     {
                         evaluations = ExecuteActions(block);
+
+                        // FIXME we should refactoring ValidateNextBlock() to avoid affecting
+                        // the global state, then integrate with ThrowIfStateRootHashInvalid().
+                        ThrowIfStateRootHashInvalid(block);
                     }
 
                     _blocks[block.Hash] = block;
@@ -1738,25 +1742,27 @@ namespace Libplanet.Blockchain
                     $" the block #{index - 1}'s ({prevTimestamp}).");
             }
 
+            return null;
+        }
+
+        private void ThrowIfStateRootHashInvalid(Block<T> block)
+        {
             if (StateStore is TrieStateStore trieStateStore)
             {
-                ExecuteActions(nextBlock, StateCompleterSet<T>.Recalculate);
                 HashDigest<SHA256> rootHash =
-                    trieStateStore.GetRootHash(nextBlock.Hash);
+                    trieStateStore.GetRootHash(block.Hash);
 
-                if (!rootHash.Equals(nextBlock.StateRootHash))
+                if (!rootHash.Equals(block.StateRootHash))
                 {
-                    var message = $"The block #{index}'s state root hash is " +
-                                  $"{nextBlock.StateRootHash?.ToString()}, but the execution " +
-                                  $"result is {rootHash.ToString()}.";
-                    return new InvalidBlockStateRootHashException(
-                        nextBlock.StateRootHash,
+                    var message = $"The block #{block.Index}'s state root hash is " +
+                                    $"{block.StateRootHash?.ToString()}, but the execution " +
+                                    $"result is {rootHash.ToString()}.";
+                    throw new InvalidBlockStateRootHashException(
+                        block.StateRootHash,
                         rootHash,
                         message);
                 }
             }
-
-            return null;
         }
 
         private IValue GetRawState(
