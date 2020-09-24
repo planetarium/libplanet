@@ -135,7 +135,9 @@ namespace Libplanet.Blockchain.Renderers
                         }
 
                         Logger.Debug(
-                            "Committed the buffered action unrenders from the block {BlockHash}.",
+                            "Committed {Count} buffered action unrenders from " +
+                            "the block {BlockHash}.",
+                            b?.Count ?? 0,
                             block
                         );
                     }
@@ -234,7 +236,8 @@ namespace Libplanet.Blockchain.Renderers
                 }
 
                 Logger.Debug(
-                    "Committed the buffered action renders from the block {BlockHash}.",
+                    "Committed {Count} buffered action renders from the block {BlockHash}.",
+                    b?.Count ?? 0,
                     block
                 );
             }
