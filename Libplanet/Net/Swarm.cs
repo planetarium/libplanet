@@ -1034,10 +1034,10 @@ namespace Libplanet.Net
                 yield break;
             }
 
-            throw new InvalidMessageException(
+            string errorMessage =
                 $"The response of {nameof(GetBlockHashes)} is expected to be " +
-                $"{nameof(BlockHashes)}, not {parsedMessage.GetType().Name}: {parsedMessage}"
-            );
+                $"{nameof(BlockHashes)}, not {parsedMessage.GetType().Name}: {parsedMessage}";
+            throw new InvalidMessageException(errorMessage, parsedMessage);
         }
 
         internal async IAsyncEnumerable<Block<T>> GetBlocksAsync(
@@ -1097,11 +1097,11 @@ namespace Libplanet.Net
                 }
                 else
                 {
-                    throw new InvalidMessageException(
+                    string errorMessage =
                         $"Expected a {nameof(Blocks)} message as a response of " +
                         $"the {nameof(GetBlocks)} message, but got a {message.GetType().Name} " +
-                        $"message instead: {message}"
-                    );
+                        $"message instead: {message}";
+                    throw new InvalidMessageException(errorMessage, message);
                 }
             }
 
@@ -1146,11 +1146,11 @@ namespace Libplanet.Net
                 }
                 else
                 {
-                    throw new InvalidMessageException(
+                    string errorMessage =
                         $"Expected {nameof(Tx)} messages as response of " +
                         $"the {nameof(GetTxs)} message, but got a {message.GetType().Name} " +
-                        $"message instead: {message}"
-                    );
+                        $"message instead: {message}";
+                    throw new InvalidMessageException(errorMessage, message);
                 }
             }
         }

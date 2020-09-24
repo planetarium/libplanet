@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Runtime.Serialization;
 
@@ -27,7 +28,10 @@ namespace Libplanet.Net.Protocols
         protected PingTimeoutException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
-            Target = (BoundPeer)info.GetValue("Target", typeof(BoundPeer));
+            Target = info.GetValue(nameof(Target), typeof(BoundPeer)) is BoundPeer target
+                ? target
+                : throw new SerializationException(
+                    $"{nameof(Target)} is expected to be a non-null {nameof(BoundPeer)}.");
         }
 
         public BoundPeer Target { get; private set; }
@@ -41,7 +45,7 @@ namespace Libplanet.Net.Protocols
             }
 
             base.GetObjectData(info, context);
-            info.AddValue("Target", Target);
+            info.AddValue(nameof(Target), Target);
         }
     }
 }
