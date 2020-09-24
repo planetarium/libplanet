@@ -866,7 +866,7 @@ namespace Libplanet.Blockchain
             Block<T> prevTip = Tip;
             try
             {
-                InvalidBlockException e = ValidateNextBlock(block, evaluateActions);
+                InvalidBlockException e = ValidateNextBlock(block);
 
                 if (!(e is null))
                 {
@@ -912,6 +912,7 @@ namespace Libplanet.Blockchain
                     if (evaluateActions)
                     {
                         evaluations = ExecuteActions(block);
+                        ThrowIfStateRootHashInvalid(block);
                     }
 
                     _blocks[block.Hash] = block;
@@ -1669,10 +1670,7 @@ namespace Libplanet.Blockchain
             }
         }
 
-        private InvalidBlockException ValidateNextBlock(
-            Block<T> nextBlock,
-            bool validateStateRootHash
-        )
+        private InvalidBlockException ValidateNextBlock(Block<T> nextBlock)
         {
             InvalidBlockException e = Policy.ValidateNextBlock(this, nextBlock);
 
@@ -1741,25 +1739,27 @@ namespace Libplanet.Blockchain
                     $" the block #{index - 1}'s ({prevTimestamp}).");
             }
 
-            if (validateStateRootHash && StateStore is TrieStateStore trieStateStore)
-            {
-                ExecuteActions(nextBlock, StateCompleterSet<T>.Recalculate);
-                HashDigest<SHA256> rootHash =
-                    trieStateStore.GetRootHash(nextBlock.Hash);
+            return null;
+        }
 
-                if (!rootHash.Equals(nextBlock.StateRootHash))
+        private void ThrowIfStateRootHashInvalid(Block<T> block)
+        {
+            if (StateStore is TrieStateStore trieStateStore)
+            {
+                HashDigest<SHA256> rootHash =
+                    trieStateStore.GetRootHash(block.Hash);
+
+                if (!rootHash.Equals(block.StateRootHash))
                 {
-                    var message = $"The block #{index}'s state root hash is " +
-                                  $"{nextBlock.StateRootHash?.ToString()}, but the execution " +
-                                  $"result is {rootHash.ToString()}.";
-                    return new InvalidBlockStateRootHashException(
-                        nextBlock.StateRootHash,
+                    var message = $"The block #{block.Index}'s state root hash is " +
+                                    $"{block.StateRootHash?.ToString()}, but the execution " +
+                                    $"result is {rootHash.ToString()}.";
+                    throw new InvalidBlockStateRootHashException(
+                        block.StateRootHash,
                         rootHash,
                         message);
                 }
             }
-
-            return null;
         }
 
         private IValue GetRawState(
