@@ -423,20 +423,20 @@ namespace Libplanet.Net.Protocols
             try
             {
                 _logger.Debug("Trying to ping async to {Peer}.", target);
-                if (!(await _transport.SendMessageWithReplyAsync(
+                Message reply = await _transport.SendMessageWithReplyAsync(
                     target,
                     new Ping(),
                     timeout,
-                    cancellationToken) is Pong pong))
+                    cancellationToken
+                );
+                if (!(reply is Pong pong))
                 {
-                    throw new InvalidMessageException(
-                        "Received pong is invalid.");
+                    throw new InvalidMessageException("Received pong is invalid.", reply);
                 }
 
                 if (pong.Remote.Address.Equals(_address))
                 {
-                    throw new InvalidMessageException(
-                        "Cannot receive pong from self");
+                    throw new InvalidMessageException("Cannot receive pong from self", pong);
                 }
             }
             catch (TimeoutException)
@@ -592,13 +592,18 @@ namespace Libplanet.Net.Protocols
             var findPeer = new FindNeighbors(target);
             try
             {
-                if (!(await _transport.SendMessageWithReplyAsync(
+                Message reply = await _transport.SendMessageWithReplyAsync(
                     addressee,
                     findPeer,
                     timeout,
-                    cancellationToken) is Neighbors neighbors))
+                    cancellationToken
+                );
+                if (!(reply is Neighbors neighbors))
                 {
-                    throw new InvalidMessageException("Reply of FindNeighbors is invalid.");
+                    throw new InvalidMessageException(
+                        $"Reply to {nameof(FindNeighbors)} is invalid.",
+                        reply
+                    );
                 }
 
                 return neighbors.Found;

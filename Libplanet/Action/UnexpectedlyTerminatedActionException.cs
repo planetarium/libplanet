@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
@@ -73,14 +74,39 @@ namespace Libplanet.Action
                 TxId = new TxId(txId);
             }
 
-            if (info.TryGetValue($"{nameof(Action)}_type", out string actionType))
+            string actionKey = $"{nameof(Action)}_type";
+            if (info.TryGetValue(actionKey, out string actionType))
             {
-                var values = (Dictionary)new Codec().Decode(
-                    info.GetValue<byte[]>($"{nameof(Action)}_values")
-                );
+                string valuesKey = $"{nameof(Action)}_values";
+                if (!(info.GetValue<byte[]>(valuesKey) is byte[] valuesBytes))
+                {
+                    throw new SerializationException($"Missing the {valuesKey} field.");
+                }
 
-                Action = (IAction)Activator.CreateInstance(Type.GetType(actionType, true, true));
-                Action?.LoadPlainValue(values);
+                if (!(new Codec().Decode(valuesBytes) is Dictionary values))
+                {
+                    throw new SerializationException(
+                        $"{valuesKey} field must be a Bencodex dictionary."
+                    );
+                }
+
+                Type type = Type.GetType(actionType, true, true)
+                    ?? throw new SerializationException($"Failed to find the type: {actionType}.");
+                if (Activator.CreateInstance(type) is IAction action)
+                {
+                    Action = action;
+                    Action.LoadPlainValue(values);
+                }
+                else
+                {
+                    throw new SerializationException(
+                        $"Failed to instantiate the action: {actionType}."
+                    );
+                }
+            }
+            else
+            {
+                throw new SerializationException($"Missing the {actionKey} field.");
             }
         }
 

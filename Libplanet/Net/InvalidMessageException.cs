@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Runtime.Serialization;
 using Libplanet.Net.Messages;
@@ -7,18 +8,14 @@ namespace Libplanet.Net
     [Serializable]
     public class InvalidMessageException : Exception
     {
-        public InvalidMessageException()
-        {
-        }
-
-        public InvalidMessageException(string message)
-            : base(message)
-        {
-        }
-
-        public InvalidMessageException(string message, Exception innerException)
+        internal InvalidMessageException(
+            string message,
+            Message receivedMessage,
+            Exception innerException
+        )
             : base(message, innerException)
         {
+            ReceivedMessage = receivedMessage;
         }
 
         internal InvalidMessageException(string message, Message receivedMessage)
@@ -33,8 +30,19 @@ namespace Libplanet.Net
         )
             : base(info, context)
         {
+            ReceivedMessage = info.GetValue(nameof(ReceivedMessage), typeof(Message)) is Message m
+                ? m
+                : throw new SerializationException(
+                    $"{nameof(ReceivedMessage)} is expected to be a non-null {nameof(Message)}.");
         }
 
         internal Message ReceivedMessage { get; }
+
+        public override void GetObjectData(
+            SerializationInfo info, StreamingContext context)
+        {
+            base.GetObjectData(info, context);
+            info.AddValue(nameof(ReceivedMessage), ReceivedMessage);
+        }
     }
 }
