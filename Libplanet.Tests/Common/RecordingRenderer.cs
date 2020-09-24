@@ -76,6 +76,7 @@ namespace Libplanet.Tests.Common
                 Action = action,
                 Context = context,
                 Exception = exception,
+                Render = true,
             });
 
         public void UnrenderAction(
