@@ -68,10 +68,10 @@ namespace Libplanet.Tests.Net
 
             _renderers = new List<RecordingRenderer<DumbAction>>
             {
-                new RecordingRenderer<DumbAction>(),
-                new RecordingRenderer<DumbAction>(),
-                new RecordingRenderer<DumbAction>(),
-                new RecordingRenderer<DumbAction>(),
+                new ValidatingActionRenderer<DumbAction>(),
+                new ValidatingActionRenderer<DumbAction>(),
+                new ValidatingActionRenderer<DumbAction>(),
+                new ValidatingActionRenderer<DumbAction>(),
             };
 
             LoggedActionRenderer<DumbAction>[][] loggedRenderers = _renderers

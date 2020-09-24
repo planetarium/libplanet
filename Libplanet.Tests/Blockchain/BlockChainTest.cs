@@ -46,7 +46,7 @@ namespace Libplanet.Tests.Blockchain
                 .ForContext<BlockChainTest>();
 
             _fx = new DefaultStoreFixture(memory: true);
-            _renderer = new RecordingRenderer<DumbAction>();
+            _renderer = new ValidatingActionRenderer<DumbAction>();
             _policy = new BlockPolicy<DumbAction>(new MinerReward(1));
             _blockChain = new BlockChain<DumbAction>(
                 _policy,
@@ -1406,16 +1406,13 @@ namespace Libplanet.Tests.Blockchain
             RenderRecord<DumbAction>.BlockBase[] blockLevelRenders = _renderer.Records
                 .OfType<RenderRecord<DumbAction>.BlockBase>()
                 .ToArray();
-            Assert.Equal(renderActions ? 4 : 3, blockLevelRenders.Length);
+            Assert.Equal(4, blockLevelRenders.Length);
             Assert.IsType<RenderRecord<DumbAction>.Reorg>(blockLevelRenders[0]);
             Assert.True(blockLevelRenders[0].Begin);
             Assert.IsType<RenderRecord<DumbAction>.Block>(blockLevelRenders[1]);
             Assert.True(blockLevelRenders[1].Begin);
-            if (renderActions)
-            {
-                Assert.IsType<RenderRecord<DumbAction>.Block>(blockLevelRenders[2]);
-                Assert.True(blockLevelRenders[2].End);
-            }
+            Assert.IsType<RenderRecord<DumbAction>.Block>(blockLevelRenders[2]);
+            Assert.True(blockLevelRenders[2].End);
 
             Assert.IsType<RenderRecord<DumbAction>.Reorg>(blockLevelRenders.Last());
             Assert.True(blockLevelRenders.Last().End);
@@ -1485,22 +1482,40 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Theory]
-        [InlineData(true, true)]
-        [InlineData(true, false)]
-        [InlineData(false, true)]
-        [InlineData(false, false)]
-        public async Task SwapWithoutReorg(bool direction, bool render)
+        [InlineData(true)]
+        [InlineData(false)]
+        public async Task SwapWithoutReorg(bool render)
         {
             BlockChain<DumbAction> fork = _blockChain.Fork(_blockChain.Tip.Hash);
 
-            // When direction == true:  the higher chain goes to the lower  chain  [#N -> #N-1]
-            // When direction == false: the lower  chain goes to the higher chain  [#N -> #N+1]
-            await (direction ? _blockChain : fork).MineBlock(default);
-            var prevRecords = _renderer.ReorgRecords;
+            // The lower  chain goes to the higher chain  [#N -> #N+1]
+            await fork.MineBlock(default);
+            IReadOnlyList<RenderRecord<DumbAction>.Reorg> prevRecords = _renderer.ReorgRecords;
             _blockChain.Swap(fork, renderActions: render);
 
             // RenderReorg() should be invoked if and only if the actual reorg happens
             Assert.Equal(prevRecords, _renderer.ReorgRecords);
+        }
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public async Task TreatGoingBackwardAsReorg(bool render)
+        {
+            BlockChain<DumbAction> fork = _blockChain.Fork(_blockChain.Tip.Hash);
+
+            // The higher chain goes to the lower  chain  [#N -> #N-1]
+            await _blockChain.MineBlock(default);
+            IReadOnlyList<RenderRecord<DumbAction>.Reorg> prevRecords = _renderer.ReorgRecords;
+            _blockChain.Swap(fork, renderActions: render);
+
+            // RenderReorg() should be invoked if and only if the actual reorg happens
+            Assert.Equal(prevRecords.Count + 2, _renderer.ReorgRecords.Count);
+            Assert.Equal(prevRecords, _renderer.ReorgRecords.Take(prevRecords.Count));
+            RenderRecord<DumbAction>.Reorg begin = _renderer.ReorgRecords[prevRecords.Count];
+            Assert.True(begin.Begin);
+            RenderRecord<DumbAction>.Reorg end = _renderer.ReorgRecords[prevRecords.Count + 1];
+            Assert.True(end.End);
         }
 
         [Theory]

@@ -1575,6 +1575,14 @@ namespace Libplanet.Net
             IProgress<PreloadState> progress,
             CancellationToken cancellationToken)
         {
+            if (workspace.Renderers.Any())
+            {
+                throw new ArgumentException(
+                    "The workspace chain must not have any renderers.",
+                    nameof(workspace)
+                );
+            }
+
             long initHeight;
             if (receivedStateHeight is null)
             {
@@ -1673,7 +1681,6 @@ namespace Libplanet.Net
             IImmutableSet<Address> trustedStateValidators,
             TimeSpan dialTimeout,
             long totalBlockCount,
-            bool evaluateActions,
             CancellationToken cancellationToken
         )
         {
@@ -1705,7 +1712,7 @@ namespace Libplanet.Net
                             progress,
                             totalBlockCount,
                             receivedBlockCount,
-                            evaluateActions,
+                            true,
                             cancellationToken
                         );
                         break;
@@ -1738,7 +1745,11 @@ namespace Libplanet.Net
                 if (synced is BlockChain<T> syncedNotNull
                     && !syncedNotNull.Id.Equals(blockChain?.Id))
                 {
-                    blockChain.Swap(synced, evaluateActions, trustedStateCompleterSet);
+                    blockChain.Swap(
+                        synced,
+                        renderActions: true,
+                        stateCompleters: trustedStateCompleterSet
+                    );
                 }
             }
         }
@@ -1817,7 +1828,6 @@ namespace Libplanet.Net
                     {
                         _logger.Debug("Forking needed. Trying to fork...");
                         workspace = workspace.Fork(branchPoint);
-                        IStore workStore = workspace.Store;
                         Guid workChainId = workspace.Id;
                         scope.Add(workChainId);
                         renderActions = false;
@@ -1933,7 +1943,6 @@ namespace Libplanet.Net
                         trustedStateValidators,
                         dialTimeout,
                         0,
-                        true,
                         cancellationToken);
 
                     // FIXME: Clean up events

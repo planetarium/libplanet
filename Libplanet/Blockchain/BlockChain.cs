@@ -853,7 +853,7 @@ namespace Libplanet.Blockchain
                 );
             }
 
-            renderActions = renderActions && ActionRenderers.Any();
+            renderActions = renderActions && renderBlocks && ActionRenderers.Any();
 
             // Since rendering process requires every step's states, if required block states
             // are incomplete they are complemented anyway:
@@ -967,9 +967,13 @@ namespace Libplanet.Blockchain
                 _rwlock.ExitUpgradeableReadLock();
             }
 
-            if (renderActions)
+            if (renderBlocks && ActionRenderers.Any())
             {
-                RenderBlock(evaluations, block, stateCompleters);
+                if (renderActions)
+                {
+                    RenderBlock(evaluations, block, stateCompleters);
+                }
+
                 foreach (IActionRenderer<T> renderer in ActionRenderers)
                 {
                     renderer.RenderBlockEnd(oldTip: prevTip ?? Genesis, newTip: block);
@@ -1391,7 +1395,7 @@ namespace Libplanet.Blockchain
                 topmostCommon
             );
 
-            bool reorged = !Tip.Equals(topmostCommon) && !other.Tip.Equals(topmostCommon);
+            bool reorged = !Tip.Equals(topmostCommon);
             if (renderBlocks && reorged)
             {
                 foreach (IRenderer<T> renderer in Renderers)
@@ -1490,21 +1494,27 @@ namespace Libplanet.Blockchain
                 _rwlock.ExitWriteLock();
             }
 
-            if (renderActions && ActionRenderers.Any())
+            if (ActionRenderers.Any())
             {
-                _logger.Debug("Rendering actions in new chain.");
-
-                // Render actions that had been behind.
-                long startToRenderIndex = topmostCommon is Block<T> branchpoint
-                    ? branchpoint.Index + 1
-                    : 0;
-
-                int cnt = RenderBlocks(startToRenderIndex, completers);
-                _logger.Debug($"{nameof(Swap)}() completed rendering {{Actions}} actions.", cnt);
-
-                foreach (IActionRenderer<T> renderer in ActionRenderers)
+                if (renderActions)
                 {
-                    renderer.RenderBlockEnd(oldTip, newTip);
+                    _logger.Debug("Rendering actions in new chain.");
+
+                    // Render actions that had been behind.
+                    long startToRenderIndex = topmostCommon is Block<T> branchpoint
+                        ? branchpoint.Index + 1
+                        : 0;
+
+                    int cnt = RenderBlocks(startToRenderIndex, completers);
+                    _logger.Debug($"{nameof(Swap)}() completed rendering {{Count}} actions.", cnt);
+                }
+
+                if (renderBlocks)
+                {
+                    foreach (IActionRenderer<T> renderer in ActionRenderers)
+                    {
+                        renderer.RenderBlockEnd(oldTip, newTip);
+                    }
                 }
             }
 
