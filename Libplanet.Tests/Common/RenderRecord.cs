@@ -9,6 +9,10 @@ namespace Libplanet.Tests.Common
     {
         public long Index;
 
+        public string StackTrace;
+
+        public override string ToString() => $"{Index}.";
+
         public abstract class ActionBase : RenderRecord<T>
         {
             public IAction Action;
@@ -22,16 +26,24 @@ namespace Libplanet.Tests.Common
                 get => !Render;
                 set => Render = !value;
             }
+
+            public override string ToString() =>
+                $"{base.ToString()} #{Context.BlockIndex} " +
+                (Render ? "Render" : "Unrender") + "Action";
         }
 
         public class ActionSuccess : ActionBase
         {
             public IAccountStateDelta NextStates;
+
+            public override string ToString() => $"{base.ToString()} [success]";
         }
 
         public class ActionError : ActionBase
         {
             public Exception Exception;
+
+            public override string ToString() => $"{base.ToString()} [error]";
         }
 
         public abstract class BlockBase : RenderRecord<T>
@@ -45,15 +57,26 @@ namespace Libplanet.Tests.Common
                 get => !Begin;
                 set => Begin = !value;
             }
+
+            public override string ToString() =>
+                $"{base.ToString()} " +
+                $"#{OldTip.Index} {OldTip.Hash} -> #{NewTip.Index} {NewTip.Hash} Render..." +
+                (End ? "End" : string.Empty);
         }
 
         public class Block : BlockBase
         {
+            public override string ToString() =>
+                base.ToString().Replace("Render...", "RenderBlock");
         }
 
         public class Reorg : BlockBase
         {
             public Libplanet.Blocks.Block<T> Branchpoint;
+
+            public override string ToString() =>
+                base.ToString().Replace("Render...", "RenderReorg") +
+                $" [branchpoint: #{Branchpoint.Index} {Branchpoint.Hash}]";
         }
     }
 }

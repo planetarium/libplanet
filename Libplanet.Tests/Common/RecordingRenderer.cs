@@ -9,7 +9,7 @@ using Serilog;
 
 namespace Libplanet.Tests.Common
 {
-    public sealed class RecordingRenderer<T> : IActionRenderer<T>
+    public class RecordingRenderer<T> : IActionRenderer<T>
         where T : IAction, new()
     {
         private List<RenderRecord<T>> _records;
@@ -47,7 +47,7 @@ namespace Libplanet.Tests.Common
             Log.Logger.ForContext<RecordingRenderer<T>>().Debug("Reset records.");
         }
 
-        public void RenderAction(
+        public virtual void RenderAction(
             IAction action,
             IActionContext context,
             IAccountStateDelta nextStates
@@ -56,6 +56,7 @@ namespace Libplanet.Tests.Common
             _records.Add(new RenderRecord<T>.ActionSuccess
             {
                 Index = _nextIndex++,
+                StackTrace = RemoveFirstLine(Environment.StackTrace).TrimEnd(),
                 Action = action,
                 Context = context,
                 NextStates = nextStates,
@@ -65,7 +66,7 @@ namespace Libplanet.Tests.Common
             RenderEventHandler?.Invoke(action, action);
         }
 
-        public void RenderActionError(
+        public virtual void RenderActionError(
             IAction action,
             IActionContext context,
             Exception exception
@@ -73,12 +74,14 @@ namespace Libplanet.Tests.Common
             _records.Add(new RenderRecord<T>.ActionError
             {
                 Index = _nextIndex++,
+                StackTrace = RemoveFirstLine(Environment.StackTrace).TrimEnd(),
                 Action = action,
                 Context = context,
                 Exception = exception,
+                Render = true,
             });
 
-        public void UnrenderAction(
+        public virtual void UnrenderAction(
             IAction action,
             IActionContext context,
             IAccountStateDelta nextStates
@@ -86,13 +89,14 @@ namespace Libplanet.Tests.Common
             _records.Add(new RenderRecord<T>.ActionSuccess
             {
                 Index = _nextIndex++,
+                StackTrace = RemoveFirstLine(Environment.StackTrace).TrimEnd(),
                 Unrender = true,
                 Action = action,
                 Context = context,
                 NextStates = nextStates,
             });
 
-        public void UnrenderActionError(
+        public virtual void UnrenderActionError(
             IAction action,
             IActionContext context,
             Exception exception
@@ -100,48 +104,63 @@ namespace Libplanet.Tests.Common
             _records.Add(new RenderRecord<T>.ActionError
             {
                 Index = _nextIndex++,
+                StackTrace = RemoveFirstLine(Environment.StackTrace).TrimEnd(),
                 Unrender = true,
                 Action = action,
                 Context = context,
                 Exception = exception,
             });
 
-        public void RenderBlock(Block<T> oldTip, Block<T> newTip) =>
+        public virtual void RenderBlock(Block<T> oldTip, Block<T> newTip) =>
             _records.Add(new RenderRecord<T>.Block
             {
                 Index = _nextIndex++,
+                StackTrace = RemoveFirstLine(Environment.StackTrace).TrimEnd(),
                 Begin = true,
                 OldTip = oldTip,
                 NewTip = newTip,
             });
 
-        public void RenderBlockEnd(Block<T> oldTip, Block<T> newTip) =>
+        public virtual void RenderBlockEnd(Block<T> oldTip, Block<T> newTip) =>
             _records.Add(new RenderRecord<T>.Block
             {
                 Index = _nextIndex++,
+                StackTrace = RemoveFirstLine(Environment.StackTrace).TrimEnd(),
                 End = true,
                 OldTip = oldTip,
                 NewTip = newTip,
             });
 
-        public void RenderReorg(Block<T> oldTip, Block<T> newTip, Block<T> branchpoint) =>
+        public virtual void RenderReorg(Block<T> oldTip, Block<T> newTip, Block<T> branchpoint) =>
             _records.Add(new RenderRecord<T>.Reorg
             {
                 Index = _nextIndex++,
+                StackTrace = RemoveFirstLine(Environment.StackTrace).TrimEnd(),
                 Begin = true,
                 OldTip = oldTip,
                 NewTip = newTip,
                 Branchpoint = branchpoint,
             });
 
-        public void RenderReorgEnd(Block<T> oldTip, Block<T> newTip, Block<T> branchpoint) =>
+        public virtual void RenderReorgEnd(
+            Block<T> oldTip,
+            Block<T> newTip,
+            Block<T> branchpoint
+        ) =>
             _records.Add(new RenderRecord<T>.Reorg
             {
                 Index = _nextIndex++,
+                StackTrace = RemoveFirstLine(Environment.StackTrace).TrimEnd(),
                 End = true,
                 OldTip = oldTip,
                 NewTip = newTip,
                 Branchpoint = branchpoint,
             });
+
+        private static string RemoveFirstLine(string stackTrace)
+        {
+            int pos = stackTrace.IndexOf('\n');
+            return pos < 0 ? stackTrace : stackTrace.Substring(pos + 1);
+        }
     }
 }
