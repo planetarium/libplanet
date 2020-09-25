@@ -62,7 +62,7 @@ namespace Libplanet.Store
 
                 value.Validate(DateTimeOffset.UtcNow);
                 Store.PutBlock(value);
-                _cache.Add(value.Hash, value);
+                _cache.AddOrUpdate(value.Hash, value);
             }
         }
 
@@ -104,7 +104,7 @@ namespace Libplanet.Store
             Block<T> fetched = Store.GetBlock<T>(key);
             if (!(fetched is null))
             {
-                _cache.Add(key, fetched);
+                _cache.AddOrUpdate(key, fetched);
             }
 
             return fetched;
