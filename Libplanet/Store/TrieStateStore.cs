@@ -30,7 +30,7 @@ namespace Libplanet.Store
         /// <see cref="MerkleTrie"/> in internal.</param>
         /// <param name="stateHashKeyValueStore">The storage to store state hash corresponding to
         /// block hash.</param>
-        /// <param name="secure">A flag whether to use <see cref="MerkleTrie"/> as secure mode.
+        /// <param name="secure">Whether to use <see cref="MerkleTrie"/> in secure mode.
         /// <seealso cref="MerkleTrie(IKeyValueStore, INode?, bool)"/>.</param>
         public TrieStateStore(
             IKeyValueStore stateKeyValueStore,
