@@ -270,7 +270,7 @@ namespace Libplanet.KeyStore
                 "aes-128-ctr" => Aes128Ctr.FromJson(cipherParamsElement),
                 _ =>
                     throw new UnsupportedKeyJsonException(
-                        $"Unsupported cipher type: \"{cipherType}\".")
+                        $"Unsupported cipher type: \"{cipherType}\"."),
             };
 
             IKdf kdf;
@@ -282,7 +282,7 @@ namespace Libplanet.KeyStore
                     "scrypt" => Scrypt.FromJson(kdfParamsElement),
                     _ =>
                         throw new UnsupportedKeyJsonException(
-                            $"Unsupported cipher type: \"{kdfType}\".")
+                            $"Unsupported cipher type: \"{kdfType}\"."),
                 };
             }
             catch (ArgumentException e)

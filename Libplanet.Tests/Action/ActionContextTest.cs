@@ -12,7 +12,7 @@ namespace Libplanet.Tests.Action
         [Fact]
         public void RandomShouldBeDeterministic()
         {
-            (int seed, int expected)[] testCases =
+            (int Seed, int Expected)[] testCases =
             {
                 (0, 1559595546),
                 (1, 534011718),
@@ -60,7 +60,7 @@ namespace Libplanet.Tests.Action
                 randomSeed: 1
             );
 
-            (Guid expected, Guid diff)[] testCases =
+            (Guid Expected, Guid Diff)[] testCases =
             {
                 (
                     new Guid("6f460c1a-755d-48e4-ad67-65d5f519dbc8"),
