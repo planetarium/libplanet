@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
@@ -93,13 +94,6 @@ namespace Libplanet
         {
         }
 
-        public Address(
-            SerializationInfo info,
-            StreamingContext context)
-            : this(info.GetValue<byte[]>("address"))
-        {
-        }
-
         /// <summary>
         /// Derives the corresponding <see cref="Address"/> from a <see
         /// cref="PublicKey"/>.
@@ -135,6 +129,14 @@ namespace Libplanet
         /// >EIP 55</a>.</param>
         public Address(string hex)
             : this(DeriveAddress(hex))
+        {
+        }
+
+        private Address(
+            SerializationInfo info,
+            StreamingContext context)
+            : this(info?.GetValue<byte[]>("address") ??
+                throw new SerializationException("Missing the address field."))
         {
         }
 
@@ -223,9 +225,7 @@ namespace Libplanet
         }
 
         /// <inheritdoc />
-        public void GetObjectData(
-            SerializationInfo info,
-            StreamingContext context)
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue("address", ToByteArray());
         }
@@ -246,7 +246,7 @@ namespace Libplanet
             return 0;
         }
 
-        int IComparable.CompareTo(object obj)
+        int IComparable.CompareTo(object? obj)
         {
             if (obj is Address other)
             {
