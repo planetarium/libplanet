@@ -2011,15 +2011,15 @@ references:
   commentId: T:Libplanet.Blockchain.IncompleteBlockStatesException
   fullName: Libplanet.Blockchain.IncompleteBlockStatesException
   nameWithType: IncompleteBlockStatesException
-- uid: Libplanet.Blockchain.IncompleteBlockStatesException.#ctor(Libplanet.HashDigest{SHA256},System.String)
-  name: IncompleteBlockStatesException(HashDigest<SHA256>, String)
-  href: api/Libplanet.Blockchain.IncompleteBlockStatesException.html#Libplanet_Blockchain_IncompleteBlockStatesException__ctor_Libplanet_HashDigest_SHA256__System_String_
-  commentId: M:Libplanet.Blockchain.IncompleteBlockStatesException.#ctor(Libplanet.HashDigest{SHA256},System.String)
-  name.vb: IncompleteBlockStatesException(HashDigest(Of SHA256), String)
-  fullName: Libplanet.Blockchain.IncompleteBlockStatesException.IncompleteBlockStatesException(Libplanet.HashDigest<SHA256>, System.String)
-  fullName.vb: Libplanet.Blockchain.IncompleteBlockStatesException.IncompleteBlockStatesException(Libplanet.HashDigest(Of SHA256), System.String)
-  nameWithType: IncompleteBlockStatesException.IncompleteBlockStatesException(HashDigest<SHA256>, String)
-  nameWithType.vb: IncompleteBlockStatesException.IncompleteBlockStatesException(HashDigest(Of SHA256), String)
+- uid: Libplanet.Blockchain.IncompleteBlockStatesException.#ctor(Libplanet.HashDigest{SHA256},System.Nullable{System.String})
+  name: IncompleteBlockStatesException(HashDigest<SHA256>, Nullable<String>)
+  href: api/Libplanet.Blockchain.IncompleteBlockStatesException.html#Libplanet_Blockchain_IncompleteBlockStatesException__ctor_Libplanet_HashDigest_SHA256__System_Nullable_System_String__
+  commentId: M:Libplanet.Blockchain.IncompleteBlockStatesException.#ctor(Libplanet.HashDigest{SHA256},System.Nullable{System.String})
+  name.vb: IncompleteBlockStatesException(HashDigest(Of SHA256), Nullable(Of String))
+  fullName: Libplanet.Blockchain.IncompleteBlockStatesException.IncompleteBlockStatesException(Libplanet.HashDigest<SHA256>, System.Nullable<System.String>)
+  fullName.vb: Libplanet.Blockchain.IncompleteBlockStatesException.IncompleteBlockStatesException(Libplanet.HashDigest(Of SHA256), System.Nullable(Of System.String))
+  nameWithType: IncompleteBlockStatesException.IncompleteBlockStatesException(HashDigest<SHA256>, Nullable<String>)
+  nameWithType.vb: IncompleteBlockStatesException.IncompleteBlockStatesException(HashDigest(Of SHA256), Nullable(Of String))
 - uid: Libplanet.Blockchain.IncompleteBlockStatesException.#ctor*
   name: IncompleteBlockStatesException
   href: api/Libplanet.Blockchain.IncompleteBlockStatesException.html#Libplanet_Blockchain_IncompleteBlockStatesException__ctor_
@@ -7019,30 +7019,12 @@ references:
   commentId: T:Libplanet.Net.InvalidMessageException
   fullName: Libplanet.Net.InvalidMessageException
   nameWithType: InvalidMessageException
-- uid: Libplanet.Net.InvalidMessageException.#ctor
-  name: InvalidMessageException()
-  href: api/Libplanet.Net.InvalidMessageException.html#Libplanet_Net_InvalidMessageException__ctor
-  commentId: M:Libplanet.Net.InvalidMessageException.#ctor
-  fullName: Libplanet.Net.InvalidMessageException.InvalidMessageException()
-  nameWithType: InvalidMessageException.InvalidMessageException()
 - uid: Libplanet.Net.InvalidMessageException.#ctor(SerializationInfo,StreamingContext)
   name: InvalidMessageException(SerializationInfo, StreamingContext)
   href: api/Libplanet.Net.InvalidMessageException.html#Libplanet_Net_InvalidMessageException__ctor_SerializationInfo_StreamingContext_
   commentId: M:Libplanet.Net.InvalidMessageException.#ctor(SerializationInfo,StreamingContext)
   fullName: Libplanet.Net.InvalidMessageException.InvalidMessageException(SerializationInfo, StreamingContext)
   nameWithType: InvalidMessageException.InvalidMessageException(SerializationInfo, StreamingContext)
-- uid: Libplanet.Net.InvalidMessageException.#ctor(System.String)
-  name: InvalidMessageException(String)
-  href: api/Libplanet.Net.InvalidMessageException.html#Libplanet_Net_InvalidMessageException__ctor_System_String_
-  commentId: M:Libplanet.Net.InvalidMessageException.#ctor(System.String)
-  fullName: Libplanet.Net.InvalidMessageException.InvalidMessageException(System.String)
-  nameWithType: InvalidMessageException.InvalidMessageException(String)
-- uid: Libplanet.Net.InvalidMessageException.#ctor(System.String,Exception)
-  name: InvalidMessageException(String, Exception)
-  href: api/Libplanet.Net.InvalidMessageException.html#Libplanet_Net_InvalidMessageException__ctor_System_String_Exception_
-  commentId: M:Libplanet.Net.InvalidMessageException.#ctor(System.String,Exception)
-  fullName: Libplanet.Net.InvalidMessageException.InvalidMessageException(System.String, Exception)
-  nameWithType: InvalidMessageException.InvalidMessageException(String, Exception)
 - uid: Libplanet.Net.InvalidMessageException.#ctor*
   name: InvalidMessageException
   href: api/Libplanet.Net.InvalidMessageException.html#Libplanet_Net_InvalidMessageException__ctor_
@@ -7050,6 +7032,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.InvalidMessageException.InvalidMessageException
   nameWithType: InvalidMessageException.InvalidMessageException
+- uid: Libplanet.Net.InvalidMessageException.GetObjectData(SerializationInfo,StreamingContext)
+  name: GetObjectData(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Net.InvalidMessageException.html#Libplanet_Net_InvalidMessageException_GetObjectData_SerializationInfo_StreamingContext_
+  commentId: M:Libplanet.Net.InvalidMessageException.GetObjectData(SerializationInfo,StreamingContext)
+  fullName: Libplanet.Net.InvalidMessageException.GetObjectData(SerializationInfo, StreamingContext)
+  nameWithType: InvalidMessageException.GetObjectData(SerializationInfo, StreamingContext)
+- uid: Libplanet.Net.InvalidMessageException.GetObjectData*
+  name: GetObjectData
+  href: api/Libplanet.Net.InvalidMessageException.html#Libplanet_Net_InvalidMessageException_GetObjectData_
+  commentId: Overload:Libplanet.Net.InvalidMessageException.GetObjectData
+  isSpec: "True"
+  fullName: Libplanet.Net.InvalidMessageException.GetObjectData
+  nameWithType: InvalidMessageException.GetObjectData
 - uid: Libplanet.Net.InvalidStateTargetException
   name: InvalidStateTargetException
   href: api/Libplanet.Net.InvalidStateTargetException.html
