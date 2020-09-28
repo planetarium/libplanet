@@ -230,8 +230,10 @@ namespace Libplanet.Net.Messages
 
             if (!types.TryGetValue(rawType, out Type type))
             {
-                throw new InvalidMessageException(
-                    $"Can't determine NetMQMessage. [type: {rawType}]");
+                throw new ArgumentException(
+                    $"Can't determine NetMQMessage. [type: {rawType}]",
+                    nameof(raw)
+                );
             }
 
             var message = (Message)Activator.CreateInstance(
@@ -241,9 +243,7 @@ namespace Libplanet.Net.Messages
 
             if (!message.Remote.PublicKey.Verify(body.ToByteArray(), signature))
             {
-                throw new InvalidMessageException(
-                    "The message signature is invalid"
-                );
+                throw new InvalidMessageException("The message signature is invalid", message);
             }
 
             if (!reply)

@@ -116,11 +116,12 @@ To be released.
  -  `BlockPolicy<T>.DoesTransactionFollowPolicy()` method and
     `IBlockPolicy.DoesTransactionFollowPolicy()` method became to take
     additional `BlockChain<T>` parameter as its context.  [[#1012]]
- -  `doesTransactionFollowPolicy` parameter became 
+ -  `doesTransactionFollowPolicy` parameter became
     `Func<Transaction<T>, BlockChain<T>, bool>` on `BlockPolicy<T>()`
     constructor.  [[#1012]]
  -  Added `cacheSize` optional parameter to `BlockSet<T>()` constructor.
     [[#1013]]
+ -  Removed constructors from `InvalidMessageException` class.  [[#1021]]
 
 ### Backward-incompatible network protocol changes
 
@@ -364,6 +365,7 @@ To be released.
 [#1010]: https://github.com/planetarium/libplanet/pull/1010
 [#1012]: https://github.com/planetarium/libplanet/pull/1012
 [#1013]: https://github.com/planetarium/libplanet/pull/1013
+[#1021]: https://github.com/planetarium/libplanet/pull/1021
 [sleep mode]: https://en.wikipedia.org/wiki/Sleep_mode
 
 
