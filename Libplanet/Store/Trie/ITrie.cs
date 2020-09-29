@@ -4,7 +4,7 @@ using Bencodex.Types;
 
 namespace Libplanet.Store.Trie
 {
-    internal interface ITrie
+    public interface ITrie
     {
         /// <summary>
         /// The state root hash of the trie.

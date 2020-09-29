@@ -3,7 +3,7 @@ using Bencodex.Types;
 
 namespace Libplanet.Store.Trie.Nodes
 {
-    internal interface INode
+    public interface INode
     {
         IValue ToBencodex();
     }

@@ -12,7 +12,7 @@ namespace Libplanet.Store.Trie
 {
     // TODO: implement 'logs' for debugging.
     [Equals]
-    internal class MerkleTrie : ITrie
+    public class MerkleTrie : ITrie
     {
         public static readonly HashDigest<SHA256> EmptyRootHash;
 
@@ -103,41 +103,59 @@ namespace Libplanet.Store.Trie
 
         internal IEnumerable<HashDigest<SHA256>> IterateHashNodes()
         {
+            return IterateNodes().Where(pair => pair.Node is HashNode)
+                .Select(pair => ((HashNode)pair.Node).HashDigest);
+        }
+
+        internal IEnumerable<(INode Node, ImmutableArray<byte> Path)> IterateNodes()
+        {
             if (Root is null)
             {
                 yield break;
             }
 
-            var queue = new Queue<HashNode>();
-            if (!(Root is HashNode))
-            {
-                yield return Root.Hash();
-            }
-            else
-            {
-                queue.Enqueue((Root as HashNode)!);
-            }
+            var queue = new Queue<(INode, ImmutableArray<byte>)>();
+            queue.Enqueue((Root, ImmutableArray<byte>.Empty));
 
             while (queue.Count > 0)
             {
-                HashNode hashNode = queue.Dequeue();
-                yield return hashNode.HashDigest;
-                INode? node = GetNode(hashNode.HashDigest);
+                (INode node, ImmutableArray<byte> path) = queue.Dequeue();
+                yield return (node, path);
                 switch (node)
                 {
                     case FullNode fullNode:
                         IEnumerable<HashNode> childHashNodes = fullNode.Children.OfType<HashNode>();
-                        foreach (var childHashNode in childHashNodes)
+                        foreach (int index in Enumerable.Range(0, FullNode.ChildrenCount - 1))
                         {
-                            queue.Enqueue(childHashNode);
+                            INode? child = fullNode.Children[index];
+                            if (!(child is null))
+                            {
+                                queue.Enqueue((child, path.Add((byte)index)));
+                            }
+                        }
+
+                        if (!(fullNode.Value is null))
+                        {
+                            queue.Enqueue((fullNode.Value, path));
                         }
 
                         break;
 
                     case ShortNode shortNode:
-                        if (shortNode.Value is HashNode shortNodeValue)
+                        if (!(shortNode.Value is null))
                         {
-                            queue.Enqueue(shortNodeValue);
+                            queue.Enqueue((
+                                    shortNode.Value,
+                                    path.Concat(shortNode.Key).ToImmutableArray()));
+                        }
+
+                        break;
+
+                    case HashNode hashNode:
+                        INode? nn = GetNode(hashNode.HashDigest);
+                        if (!(nn is null))
+                        {
+                            queue.Enqueue((nn, path));
                         }
 
                         break;
