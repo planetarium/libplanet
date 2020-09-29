@@ -201,21 +201,7 @@ namespace Libplanet.Explorer.Executable
             await swarm.PreloadAsync(
                 dialTimeout: TimeSpan.FromSeconds(15),
                 trustedStateValidators: trustedPeers,
-                cancellationToken: cancellationToken,
-                blockDownloadFailed: (obj, args) =>
-                {
-                    foreach (var exception in args.InnerExceptions)
-                    {
-                        if (exception is InvalidGenesisBlockException invalidGenesisBlockException)
-                        {
-                            Log.Error(
-                                "It seems you use different genesis block with the network. " +
-                                "The hash stored was {Stored} but network was {Network}",
-                                invalidGenesisBlockException.Stored.ToString(),
-                                invalidGenesisBlockException.NetworkExpected.ToString());
-                        }
-                    }
-                }
+                cancellationToken: cancellationToken
             );
             Console.WriteLine("Finished preloading.");
 
@@ -233,9 +219,11 @@ namespace Libplanet.Explorer.Executable
 
             public IAction BlockAction => _impl.BlockAction;
 
-            public bool DoesTransactionFollowsPolicy(Transaction<AppAgnosticAction> transaction)
+            public bool DoesTransactionFollowsPolicy(
+                Transaction<AppAgnosticAction> transaction, BlockChain<AppAgnosticAction> blockChain
+            )
             {
-                return _impl.DoesTransactionFollowsPolicy(transaction);
+                return _impl.DoesTransactionFollowsPolicy(transaction, blockChain);
             }
 
             public long GetNextBlockDifficulty(BlockChain<AppAgnosticAction> blocks)
