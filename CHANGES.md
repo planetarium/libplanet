@@ -214,6 +214,8 @@ To be released.
  -  Added `IStateStore` interface.  [[#950]]
  -  Added `IBlockStatesStore` interface.  [[#950]]
  -  Added `TrieStateStore` class.  [[#939]]
+ -  Added `ITrie` interface.  [[#939], [#1023]]
+ -  Added `MerkleTrie` class.  [[#939], [#1023]]
  -  Added `IKeyValueStore` interface.  [[#939]]
  -  Added `DefaultKeyValueStore` class.  [[#939]]
  -  Added `CacheableKeyValueStore` class.  [[#939]]
@@ -223,6 +225,7 @@ To be released.
  -  Added `InvalidBlockStateRootHashException` class.  [[#986]]
  -  Added `Block<T>.StateRootHash` property.  [[#986]]
  -  Added `BlockHeader.StateRootHash` property.  [[#986]]
+ -  Added `MerkleTrieExtensions` static class.  [[#1023]]
 
 ### Behavioral changes
 
@@ -369,6 +372,7 @@ To be released.
 [#1013]: https://github.com/planetarium/libplanet/pull/1013
 [#1021]: https://github.com/planetarium/libplanet/pull/1021
 [#1022]: https://github.com/planetarium/libplanet/pull/1022
+[#1023]: https://github.com/planetarium/libplanet/pull/1023
 [sleep mode]: https://en.wikipedia.org/wiki/Sleep_mode
 
 
