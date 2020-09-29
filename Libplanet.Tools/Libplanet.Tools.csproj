@@ -38,8 +38,7 @@
     <AssemblyName>planet</AssemblyName>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(PublishSingleFile)' == 'true' And
-                             '$(RuntimeIdentifier.Substring(0, 6))' == 'linux-' ">
+  <PropertyGroup Condition=" '$(PublishSingleFile)' == 'true' And&#xA;                             '$(RuntimeIdentifier.Substring(0, 6))' == 'linux-' ">
     <InvariantGlobalization>true</InvariantGlobalization>
   </PropertyGroup>
 
@@ -58,9 +57,7 @@
     <PackageReference Include="Menees.Analyzers.2017" Version="2.0.3">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference
-      Include="Microsoft.DotNet.Analyzers.Compatibility"
-      Version="0.2.12-alpha">
+    <PackageReference Include="Microsoft.DotNet.Analyzers.Compatibility" Version="0.2.12-alpha">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>
         runtime; build; native; contentfiles; analyzers; buildtransitive
@@ -83,6 +80,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Libplanet\Libplanet.csproj" />
+    <ProjectReference Include="..\Libplanet.RocksDBStore\Libplanet.RocksDBStore.csproj" />
     <!-- FIXME: We should specify the version range when the following NuGet
     issue is addressed: <https://github.com/NuGet/Home/issues/5556>. -->
   </ItemGroup>
