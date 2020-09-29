@@ -1,8 +1,10 @@
+#nullable enable
 using System;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Numerics;
+using System.Reflection;
 using System.Security.Cryptography;
 
 namespace Libplanet
@@ -35,8 +37,9 @@ namespace Libplanet
 
         static HashDigest()
         {
-            var thunk = (T)typeof(T).GetMethod("Create", new Type[0]).Invoke(
-                null, new object[0]);
+            MethodInfo? method = typeof(T).GetMethod("Create", new Type[0]);
+            T thunk = method?.Invoke(null, new object[0]) as T
+                ?? throw new InvalidCastException($"Failed to instantiate {typeof(T).FullName}.");
             Size = thunk.HashSize / 8;
 
             _defaultByteArray = new byte[Size];
@@ -206,7 +209,7 @@ namespace Libplanet
         }
 
         [Pure]
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return obj is IEquatable<HashDigest<T>> other
                 ? other.Equals(this)

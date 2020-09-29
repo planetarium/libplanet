@@ -2248,7 +2248,7 @@ namespace Libplanet.Tests.Blockchain
         ///     10   addresses[4]       Present
         /// </code>
         /// </summary>
-        internal static (Address, Address[] addresses, BlockChain<DumbAction> chain)
+        internal static (Address, Address[] Addresses, BlockChain<DumbAction> Chain)
         MakeIncompleteBlockStates(
             IStore store,
             IBlockStatesStore blockStatesStore,
@@ -2333,7 +2333,7 @@ namespace Libplanet.Tests.Blockchain
             return (signer, addresses, chain);
         }
 
-        private (Address, Address[] addresses, BlockChain<DumbAction> chain)
+        private (Address, Address[] Addresses, BlockChain<DumbAction> Chain)
         MakeIncompleteBlockStates() =>
             MakeIncompleteBlockStates(_fx.Store, _fx.BlockStatesStore);
 

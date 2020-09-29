@@ -121,6 +121,8 @@ To be released.
     constructor.  [[#1012]]
  -  Added `cacheSize` optional parameter to `BlockSet<T>()` constructor.
     [[#1013]]
+ -  Removed `Address(SerializationInfo, StreamingContext)` constructor.
+    [[#1022]]
  -  Removed constructors from `InvalidMessageException` class.  [[#1021]]
 
 ### Backward-incompatible network protocol changes
@@ -366,6 +368,7 @@ To be released.
 [#1012]: https://github.com/planetarium/libplanet/pull/1012
 [#1013]: https://github.com/planetarium/libplanet/pull/1013
 [#1021]: https://github.com/planetarium/libplanet/pull/1021
+[#1022]: https://github.com/planetarium/libplanet/pull/1022
 [sleep mode]: https://en.wikipedia.org/wiki/Sleep_mode
 
 

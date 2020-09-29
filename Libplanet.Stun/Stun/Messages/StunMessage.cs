@@ -115,21 +115,21 @@ namespace Libplanet.Stun.Messages
                     MessageMethod.Binding => new BindingSuccessResponse(),
                     MessageMethod.CreatePermission => new CreatePermissionSuccessResponse(),
                     MessageMethod.Refresh => new RefreshSuccessResponse(),
-                    _ => rv
+                    _ => rv,
                 },
                 MessageClass.ErrorResponse => method switch
                 {
                     MessageMethod.Allocate => new AllocateErrorResponse(),
                     MessageMethod.CreatePermission => new CreatePermissionErrorResponse(),
                     MessageMethod.Refresh => new RefreshErrorResponse(),
-                    _ => rv
+                    _ => rv,
                 },
                 MessageClass.Indication => method switch
                 {
                     MessageMethod.ConnectionAttempt => new ConnectionAttempt(),
-                    _ => rv
+                    _ => rv,
                 },
-                _ => rv
+                _ => rv,
             };
 
             if (rv is null)
@@ -252,7 +252,7 @@ namespace Libplanet.Stun.Messages
                         XorRelayedAddress.Parse(payload, transactionId),
                     Attribute.AttributeType.ConnectionId => new ConnectionId(payload),
                     Attribute.AttributeType.Lifetime => new Lifetime((int)payload.ToUInt()),
-                    _ => null
+                    _ => null,
                 };
 
                 if (!(attr is null))

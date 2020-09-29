@@ -195,7 +195,7 @@ namespace Libplanet.KeyStore.Kdfs
                     throw new InvalidKeyJsonException(
                         "The \"prf\" field must not be null, but a string."),
                 _ =>
-                    throw new UnsupportedKeyJsonException($"Unsupported \"prf\" type: \"{prf}\".")
+                    throw new UnsupportedKeyJsonException($"Unsupported \"prf\" type: \"{prf}\"."),
             };
         }
     }

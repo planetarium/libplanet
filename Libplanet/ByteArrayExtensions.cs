@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Diagnostics.Contracts;
 
@@ -22,7 +23,7 @@ namespace Libplanet
         /// <paramref name="bytes"/> or <paramref name="prefix"/> is null.
         /// </exception>
         [Pure]
-        public static bool StartsWith(this byte[] bytes, byte[] prefix)
+        public static bool StartsWith(this byte[]? bytes, byte[]? prefix)
         {
             if (bytes is null)
             {

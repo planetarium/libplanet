@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
@@ -74,7 +75,6 @@ namespace Libplanet
             }
 
             string s = BitConverter.ToString(bytes);
-
             return s.Replace("-", string.Empty).ToLower(CultureInfo.InvariantCulture);
         }
 
