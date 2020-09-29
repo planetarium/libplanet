@@ -10,7 +10,7 @@ namespace Libplanet.Store.Trie.Nodes
     /// <seealso cref="ShortNode"/>
     /// <seealso cref="ValueNode"/>
     /// <seealso cref="HashNode"/>
-    public interface INode
+    internal interface INode
     {
         IValue ToBencodex();
     }
