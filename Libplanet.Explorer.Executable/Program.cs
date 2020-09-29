@@ -17,6 +17,7 @@ using Libplanet.Explorer.Interfaces;
 using Libplanet.Explorer.Store;
 using Libplanet.Net;
 using Libplanet.Store;
+using Libplanet.Tx;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using NetMQ;
@@ -48,11 +49,13 @@ namespace Libplanet.Explorer.Executable
             {
                 RichStore store = LoadStore(options);
 
-                IBlockPolicy<AppAgnosticAction> policy = new BlockPolicy<AppAgnosticAction>(
+                IBlockPolicy<AppAgnosticAction> policy = new DumbBlockPolicy(
+                    new BlockPolicy<AppAgnosticAction>(
                     null,
                     blockIntervalMilliseconds: options.BlockIntervalMilliseconds,
                     minimumDifficulty: options.MinimumDifficulty,
-                    difficultyBoundDivisor: options.DifficultyBoundDivisor);
+                    difficultyBoundDivisor: options.DifficultyBoundDivisor)
+                );
                 var blockChain =
                     new BlockChain<AppAgnosticAction>(policy, store, store, options.GenesisBlock);
                 Startup.BlockChainSingleton = blockChain;
@@ -217,6 +220,35 @@ namespace Libplanet.Explorer.Executable
             Console.WriteLine("Finished preloading.");
 
             await swarm.StartAsync(cancellationToken: cancellationToken);
+        }
+
+        internal class DumbBlockPolicy : IBlockPolicy<AppAgnosticAction>
+        {
+            private readonly IBlockPolicy<AppAgnosticAction> _impl;
+
+            public DumbBlockPolicy(BlockPolicy<AppAgnosticAction> blockPolicy)
+            {
+                _impl = blockPolicy;
+            }
+
+            public IAction BlockAction => _impl.BlockAction;
+
+            public bool DoesTransactionFollowsPolicy(Transaction<AppAgnosticAction> transaction)
+            {
+                return _impl.DoesTransactionFollowsPolicy(transaction);
+            }
+
+            public long GetNextBlockDifficulty(BlockChain<AppAgnosticAction> blocks)
+            {
+                return 0;
+            }
+
+            public InvalidBlockException ValidateNextBlock(
+                BlockChain<AppAgnosticAction> blocks, Block<AppAgnosticAction> nextBlock
+            )
+            {
+                return _impl.ValidateNextBlock(blocks, nextBlock);
+            }
         }
 
         internal class AppAgnosticAction : IAction
