@@ -10,6 +10,10 @@ using Libplanet.Store.Trie.Nodes;
 
 namespace Libplanet.Store.Trie
 {
+    /// <summary>
+    /// An <see cref="ITrie"/> implementation implemented
+    /// <see href="https://eth.wiki/fundamentals/patricia-tree">Merkle Patricia Trie</see>.
+    /// </summary>
     // TODO: implement 'logs' for debugging.
     [Equals]
     public class MerkleTrie : ITrie

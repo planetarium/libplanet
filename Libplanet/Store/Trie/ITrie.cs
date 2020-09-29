@@ -4,6 +4,10 @@ using Bencodex.Types;
 
 namespace Libplanet.Store.Trie
 {
+    /// <summary>
+    /// A interface for <see href="https://en.wikipedia.org/wiki/Merkle_tree">Merkle Tree</see>.
+    /// </summary>
+    /// <seealso cref="MerkleTrie"/>
     public interface ITrie
     {
         /// <summary>

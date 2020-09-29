@@ -9,6 +9,9 @@ using Libplanet.Store.Trie.Nodes;
 
 namespace Libplanet.Store.Trie
 {
+    /// <summary>
+    /// An extension class to provide some convenient methods to deal with <see cref="MerkleTrie"/>.
+    /// </summary>
     public static class MerkleTrieExtensions
     {
         /// <summary>
