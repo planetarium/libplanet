@@ -850,12 +850,6 @@ references:
   commentId: M:Libplanet.Address.#ctor(Libplanet.Crypto.PublicKey)
   fullName: Libplanet.Address.Address(Libplanet.Crypto.PublicKey)
   nameWithType: Address.Address(PublicKey)
-- uid: Libplanet.Address.#ctor(SerializationInfo,StreamingContext)
-  name: Address(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Address.html#Libplanet_Address__ctor_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Address.#ctor(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Address.Address(SerializationInfo, StreamingContext)
-  nameWithType: Address.Address(SerializationInfo, StreamingContext)
 - uid: Libplanet.Address.#ctor(System.Byte[])
   name: Address(Byte[])
   href: api/Libplanet.Address.html#Libplanet_Address__ctor_System_Byte___
@@ -5193,14 +5187,15 @@ references:
   fullName.vb: Libplanet.HashDigest(Of T).ByteArray
   nameWithType: HashDigest<T>.ByteArray
   nameWithType.vb: HashDigest(Of T).ByteArray
-- uid: Libplanet.HashDigest`1.Equals(System.Object)
-  name: Equals(Object)
-  href: api/Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_Equals_System_Object_
-  commentId: M:Libplanet.HashDigest`1.Equals(System.Object)
-  fullName: Libplanet.HashDigest<T>.Equals(System.Object)
-  fullName.vb: Libplanet.HashDigest(Of T).Equals(System.Object)
-  nameWithType: HashDigest<T>.Equals(Object)
-  nameWithType.vb: HashDigest(Of T).Equals(Object)
+- uid: Libplanet.HashDigest`1.Equals(System.Nullable{System.Object})
+  name: Equals(Nullable<Object>)
+  href: api/Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_Equals_System_Nullable_System_Object__
+  commentId: M:Libplanet.HashDigest`1.Equals(System.Nullable{System.Object})
+  name.vb: Equals(Nullable(Of Object))
+  fullName: Libplanet.HashDigest<T>.Equals(System.Nullable<System.Object>)
+  fullName.vb: Libplanet.HashDigest(Of T).Equals(System.Nullable(Of System.Object))
+  nameWithType: HashDigest<T>.Equals(Nullable<Object>)
+  nameWithType.vb: HashDigest(Of T).Equals(Nullable(Of Object))
 - uid: Libplanet.HashDigest`1.Equals*
   name: Equals
   href: api/Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_Equals_
