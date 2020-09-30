@@ -41,7 +41,7 @@ namespace Libplanet.Tests
             HashDigest<SHA1> actual =
                 "45a22187e2d8850bb357886958bc3e8560929ccc".ToHashDigest<SHA1>();
 
-            Assert.Equal(actual, expected);
+            Assert.Equal(expected, actual);
         }
 
         [Fact]
@@ -57,7 +57,7 @@ namespace Libplanet.Tests
             HashDigest<SHA1> actual = HashDigest<SHA1>.FromString(
                 "45a22187e2d8850bb357886958bc3e8560929ccc");
 
-            Assert.Equal(actual, expected);
+            Assert.Equal(expected, actual);
 
             Assert.Throws<ArgumentNullException>(
                 () => HashDigest<SHA1>.FromString(null)
