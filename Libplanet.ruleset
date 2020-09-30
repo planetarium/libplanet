@@ -114,9 +114,6 @@
     other handling the asynchronous code. -->
     <Rule Id="S4457" Action="None" />
 
-    <!-- Remove the field '_bucketSize' and declare it as a local variable
-    in the relevant methods. -->
-    <Rule Id="S1450" Action="None" />
     <!-- Remove the unused local variable 'x'. -->
     <Rule Id="S1481" Action="None" />
     <!-- Extract this nested ternary operation into an independent
