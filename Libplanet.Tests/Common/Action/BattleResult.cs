@@ -52,7 +52,7 @@ namespace Libplanet.Tests.Common.Action
 
         public override bool Equals(object other)
         {
-            return other != null && other is IEquatable<BattleResult> o &&
+            return other is IEquatable<BattleResult> o &&
                    o.Equals(this);
         }
 
