@@ -96,8 +96,6 @@
     <Rule Id="S2743" Action="None" />
     <!-- Make field 'readonly'. -->
     <Rule Id="S2933" Action="None" />
-    <!-- Change the visibility of this constructor to 'protected'. -->
-    <Rule Id="S3442" Action="None" />
     <!-- Fix this implementation of 'IDisposable' to conform to the dispose
     pattern. -->
     <Rule Id="S3881" Action="None" />

@@ -13,7 +13,7 @@ namespace Libplanet.Store.Trie.Nodes
             _codec = new Codec();
         }
 
-        public BaseNode(INode? value)
+        protected BaseNode(INode? value)
         {
             Value = value;
         }
