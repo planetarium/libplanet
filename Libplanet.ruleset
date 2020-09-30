@@ -114,9 +114,6 @@
 
     <!-- Remove the unused local variable 'x'. -->
     <Rule Id="S1481" Action="None" />
-    <!-- Seal class 'Transaction' or implement 'IEqualityComparer<T>'
-    instead. -->
-    <Rule Id="S4035" Action="None" />
 
     <!-- Remove this useless assignment to local variable x -->
     <Rule Id="S1854" Action="None" />

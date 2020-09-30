@@ -10,7 +10,7 @@ using Libplanet.Serialization;
 namespace Libplanet.Tests.Common.Action
 {
     [Serializable]
-    public class BattleResult : IEquatable<BattleResult>, ISerializable
+    public sealed class BattleResult : IEquatable<BattleResult>, ISerializable
     {
         public BattleResult(
             IEnumerable<string> usedWeapons,
