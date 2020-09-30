@@ -14,7 +14,7 @@ namespace Libplanet.KeyStore
         /// </summary>
         /// <param name="message">A descriptive error message for programmers.
         /// Goes to <see cref="System.Exception.Message"/>.</param>
-        public KeyStoreException(string message)
+        protected KeyStoreException(string message)
             : base(message)
         {
         }
