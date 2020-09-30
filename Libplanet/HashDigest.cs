@@ -212,8 +212,7 @@ namespace Libplanet
         public override bool Equals(object? obj)
         {
             return obj is IEquatable<HashDigest<T>> other
-                ? other.Equals(this)
-                : false;
+                && other.Equals(this);
         }
 
         [Pure]
