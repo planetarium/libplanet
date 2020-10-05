@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -116,15 +117,15 @@ namespace Libplanet.Tests.Store.Trie
         }
 
         [Fact]
-        public void IgnoreNullState()
+        public void ThrowArgumentNullExceptionWhenSettingNull()
         {
             IKeyValueStore keyValueStore = new MemoryKeyValueStore();
             ITrie trie = new MerkleTrie(keyValueStore);
 
-            trie.Set(new byte[] { 0xbe, 0xef }, null);
-            trie.Commit();
-
-            Assert.Empty(keyValueStore.ListKeys());
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                trie.Set(new byte[] { 0xbe, 0xef }, null);
+            });
         }
     }
 }

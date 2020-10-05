@@ -62,7 +62,7 @@ namespace Libplanet.Store.Trie
         {
             if (value is null)
             {
-                return;
+                throw new ArgumentNullException(nameof(value));
             }
 
             Root = Insert(

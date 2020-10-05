@@ -13,11 +13,12 @@ namespace Libplanet.Store.Trie
 
         /// <summary>
         /// Stores the <paramref name="value"/> to the
-        /// node corresponding to given <paramref name="key"/>. If <paramref name="value"/> is null,
-        /// it will not be stored.
+        /// node corresponding to given <paramref name="key"/>.
         /// </summary>
         /// <param name="key">An index to look with <see cref="TryGet"/> after.</param>
         /// <param name="value">The value to store.</param>
+        /// <exception cref="System.ArgumentNullException">Thrown when the given
+        /// <paramref name="value"/> is <c>null</c>.</exception>
         void Set(byte[] key, IValue value);
 
         /// <summary>
