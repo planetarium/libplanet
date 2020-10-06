@@ -1480,9 +1480,24 @@ namespace Libplanet.Blockchain
 
                 if (renderBlocks)
                 {
-                    foreach (IRenderer<T> renderer in Renderers)
+                    var prev = topmostCommon;
+                    for (var i = topmostCommon.Index + 1; i <= newTip.Index; i++)
                     {
-                        renderer.RenderBlock(oldTip: oldTip, newTip: newTip);
+                        var b = this[i];
+                        foreach (IRenderer<T> renderer in Renderers)
+                        {
+                            renderer.RenderBlock(oldTip: prev, newTip: b);
+
+                            if (renderActions)
+                            {
+                                RenderBlock(null, b, completers);
+                            }
+
+                            if (renderer is IActionRenderer<T> actionRenderer)
+                            {
+                                actionRenderer.RenderBlockEnd(prev, b);
+                            }
+                        }
                     }
                 }
 
@@ -1492,30 +1507,6 @@ namespace Libplanet.Blockchain
             finally
             {
                 _rwlock.ExitWriteLock();
-            }
-
-            if (ActionRenderers.Any())
-            {
-                if (renderActions)
-                {
-                    _logger.Debug("Rendering actions in new chain.");
-
-                    // Render actions that had been behind.
-                    long startToRenderIndex = topmostCommon is Block<T> branchpoint
-                        ? branchpoint.Index + 1
-                        : 0;
-
-                    int cnt = RenderBlocks(startToRenderIndex, completers);
-                    _logger.Debug($"{nameof(Swap)}() completed rendering {{Count}} actions.", cnt);
-                }
-
-                if (renderBlocks)
-                {
-                    foreach (IActionRenderer<T> renderer in ActionRenderers)
-                    {
-                        renderer.RenderBlockEnd(oldTip, newTip);
-                    }
-                }
             }
 
             if (renderBlocks && reorged)

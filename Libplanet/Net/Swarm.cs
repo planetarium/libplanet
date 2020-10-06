@@ -1876,7 +1876,7 @@ namespace Libplanet.Net
                             block,
                             DateTimeOffset.UtcNow,
                             evaluateActions: evaluateActions,
-                            renderBlocks: true,
+                            renderBlocks: renderActions,
                             renderActions: renderActions
                         );
                         receivedBlockCount++;
