@@ -38,21 +38,15 @@ namespace Libplanet.Tools
                 Description = "The type of the key-value store stored" +
                               " at the given KEY-VALUE-STORE-PATH argument. " +
                               "It should be among in 'default' or 'rocksdb'.")]
-            string kvStoreType,
-            [Option(Description = "A flag of whether to use secure mode in using MPT. " +
-                                  "If you used key-value store as a secure mode " +
-                                  "in the given key-value store, this flag must turn on.")]
-            bool secure = false)
+            string kvStoreType)
         {
             IKeyValueStore keyValueStore = LoadKeyValueStore(kvStorePath, kvStoreType);
             var trie = new MerkleTrie(
                 keyValueStore,
-                HashDigest<SHA256>.FromString(stateRootHashHex),
-                secure);
+                HashDigest<SHA256>.FromString(stateRootHashHex));
             var otherTrie = new MerkleTrie(
                 keyValueStore,
-                HashDigest<SHA256>.FromString(otherStateRootHashHex),
-                secure);
+                HashDigest<SHA256>.FromString(otherStateRootHashHex));
 
             foreach (var group in trie.DifferentNodes(otherTrie))
             {
