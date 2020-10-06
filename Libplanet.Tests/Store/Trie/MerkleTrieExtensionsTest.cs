@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
 using Bencodex.Types;
@@ -38,6 +39,43 @@ namespace Libplanet.Tests.Store.Trie
             Assert.Equal(trieB.Hash, differentNodes["01"][1].Root);
             Assert.Equal(trieA.Hash, differentNodes["03"][0].Root);
             Assert.Equal(trieB.Hash, differentNodes["04"][0].Root);
+        }
+
+        [Fact]
+        public void ListAllStates()
+        {
+            IKeyValueStore keyValueStore = new MemoryKeyValueStore();
+            MerkleTrie trie = new MerkleTrie(keyValueStore);
+
+            trie.Set(new byte[] { 0x01, }, default(Null));
+            trie.Set(new byte[] { 0x02, }, default(Null));
+            trie.Set(new byte[] { 0x03, }, default(Null));
+            trie.Set(new byte[] { 0x04, }, default(Null));
+            trie.Set(new byte[] { 0xbe, 0xef }, Dictionary.Empty);
+
+            Dictionary<ImmutableArray<byte>, IValue> states =
+                trie.ListAllStates().ToDictionary(
+                    pair => pair.Key,
+                    pair => pair.Value,
+                    new ImmutableArrayEqualityComparer<byte>());
+            Assert.Equal(5, states.Count);
+            Assert.Equal(default(Null), states[ImmutableArray<byte>.Empty.Add(0x01)]);
+            Assert.Equal(default(Null), states[ImmutableArray<byte>.Empty.Add(0x02)]);
+            Assert.Equal(default(Null), states[ImmutableArray<byte>.Empty.Add(0x03)]);
+            Assert.Equal(default(Null), states[ImmutableArray<byte>.Empty.Add(0x04)]);
+            Assert.Equal(Dictionary.Empty, states[ImmutableArray<byte>.Empty.Add(0xbe).Add(0xef)]);
+
+            trie = (MerkleTrie)trie.Commit();
+            states = trie.ListAllStates().ToDictionary(
+                pair => pair.Key,
+                pair => pair.Value,
+                new ImmutableArrayEqualityComparer<byte>());
+            Assert.Equal(5, states.Count);
+            Assert.Equal(default(Null), states[ImmutableArray<byte>.Empty.Add(0x01)]);
+            Assert.Equal(default(Null), states[ImmutableArray<byte>.Empty.Add(0x02)]);
+            Assert.Equal(default(Null), states[ImmutableArray<byte>.Empty.Add(0x03)]);
+            Assert.Equal(default(Null), states[ImmutableArray<byte>.Empty.Add(0x04)]);
+            Assert.Equal(Dictionary.Empty, states[ImmutableArray<byte>.Empty.Add(0xbe).Add(0xef)]);
         }
     }
 }
