@@ -19,7 +19,7 @@ namespace Libplanet.Store.Trie
         /// </summary>
         /// <param name="origin">A trie to compare.</param>
         /// <param name="other">An other trie to compare.</param>
-        /// <returns>A <see cref="IGrouping{TKey,TElement}"/>s,
+        /// <returns><see cref="IGrouping{TKey,TElement}"/>s,
         /// mapping path to tuple having the hash of the value is contained and the value.</returns>
         public static IEnumerable<IGrouping<string, (HashDigest<SHA256> Root, IValue Value)>>
             DifferentNodes(

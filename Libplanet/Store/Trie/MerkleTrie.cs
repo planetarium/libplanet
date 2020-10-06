@@ -36,12 +36,11 @@ namespace Libplanet.Store.Trie
         /// </summary>
         /// <param name="keyValueStore">The <see cref="IKeyValueStore"/> storage to store
         /// nodes.</param>
-        /// <param name="rootHash">The root hash of <see cref="MerkleTrie"/>.
-        /// <seealso cref="ITrie.Hash"/>.</param>
-        /// <param name="secure">The flag to determine to use <see cref="MerkleTrie"/> in secure
-        /// mode. If it is true, <see cref="MerkleTrie"/> will stores the value with the hashed
-        /// result from the given key as the key. It will hash with
-        /// <see cref="Hashcash.Hash"/>.</param>
+        /// <param name="rootHash">The root <see cref="ITrie.Hash"/> of
+        /// <see cref="MerkleTrie"/>.</param>
+        /// <param name="secure">The flag to determine to use <see cref="MerkleTrie"/> in
+        /// secure mode.  If it is turned on, <see cref="MerkleTrie"/> internally stores hashed keys
+        /// instead of bare keys.  <see cref="Hashcash.Hash" /> is used to hash them.</param>
         public MerkleTrie(
             IKeyValueStore keyValueStore,
             HashDigest<SHA256> rootHash,

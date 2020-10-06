@@ -5,7 +5,7 @@ namespace Libplanet.Tools
 {
     [HasSubCommands(typeof(Apv), Description = "App protocol version utilities.")]
     [HasSubCommands(typeof(Key), Description = "Manage private keys.")]
-    [HasSubCommands(typeof(Mpt), Description = "Merkle Trie utilities.")]
+    [HasSubCommands(typeof(Mpt), Description = "Merkle Patricia Trie utilities.")]
     public class Program
     {
         public static Task Main(string[] args) =>

@@ -1,10 +1,11 @@
 #nullable enable
 using System;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 using Cocona;
+using Cocona.Help;
 using Libplanet.RocksDBStore;
 using Libplanet.Store.Trie;
 
@@ -12,20 +13,38 @@ namespace Libplanet.Tools
 {
     public class Mpt
     {
-        [Command(Description = "Compare two ")]
+        private readonly IImmutableDictionary<string, Func<string, IKeyValueStore>>
+            _kvStoreConstructors =
+                ImmutableSortedDictionary<string, Func<string, IKeyValueStore>>.Empty
+                    .Add("default", kvStorePath => new DefaultKeyValueStore(kvStorePath))
+                    .Add("rocksdb", kvStorePath => new RocksDBKeyValueStore(kvStorePath));
+
+        [Command(Description = "Compare two trees via root hash.")]
         public void Diff(
-            [Argument(Name = "KEY-VALUE-STORE-PATH")]
-            string keyValueStorePath,
-            [Argument(Name = "STATE-ROOT-HASH")]
+            [Argument(
+                Name = "KEY-VALUE-STORE-PATH",
+                Description = "The path where IKeyValueStore implementation was used at.")]
+            string kvStorePath,
+            [Argument(
+                Name = "STATE-ROOT-HASH",
+                Description = "The state root hash to compare.")]
             string stateRootHashHex,
-            [Argument(Name = "OTHER-STATE-ROOT-HASH")]
+            [Argument(
+                Name = "OTHER-STATE-ROOT-HASH",
+                Description = "Another state root hash to compare.")]
             string otherStateRootHashHex,
-            [Option]
-            string keyValueStoreType,
-            [Option]
+            [Option(
+                't',
+                Description = "The type of the key-value store stored" +
+                              " at the given KEY-VALUE-STORE-PATH argument. " +
+                              "It should be among in 'default' or 'rocksdb'.")]
+            string kvStoreType,
+            [Option(Description = "A flag of whether to use secure mode in using MPT. " +
+                                  "If you used key-value store as a secure mode " +
+                                  "in the given key-value store, this flag must turn on.")]
             bool secure = false)
         {
-            IKeyValueStore keyValueStore = LoadKeyValueStore(keyValueStorePath, keyValueStoreType);
+            IKeyValueStore keyValueStore = LoadKeyValueStore(kvStorePath, kvStoreType);
             var trie = new MerkleTrie(
                 keyValueStore,
                 HashDigest<SHA256>.FromString(stateRootHashHex),
@@ -52,24 +71,24 @@ namespace Libplanet.Tools
         }
 
         [PrimaryCommand]
-        public Task Help() =>
-            /* FIXME: I believe there is a better way... */
-            Program.Main(new[] { "mpt", "--help" });
-
-        private IKeyValueStore LoadKeyValueStore(string keyValueStorePath, string keyValueStoreType)
+        public void Help([FromService] ICoconaHelpMessageBuilder helpMessageBuilder)
         {
-            switch (keyValueStoreType)
+            Console.Error.WriteLine(helpMessageBuilder.BuildAndRenderForCurrentContext());
+        }
+
+        private IKeyValueStore LoadKeyValueStore(string kvStorePath, string kvStoreType)
+        {
+            if (_kvStoreConstructors.TryGetValue(
+                kvStoreType,
+                out Func<string, IKeyValueStore>? constructor))
             {
-                case "rocksdb":
-                    return new RocksDBKeyValueStore(keyValueStorePath);
-                case "default":
-                    return new RocksDBKeyValueStore(keyValueStorePath);
-                default:
-                    throw new CommandExitedException(
-                        $"The given {nameof(keyValueStoreType)}," +
-                        $" {keyValueStorePath} is not supported.",
-                        -1);
+                return constructor(kvStorePath);
             }
+
+            throw new CommandExitedException(
+                $"There is no such type for -t/--kv-store-type: {kvStoreType}.  " +
+                $"Available options are: {string.Join(", ", _kvStoreConstructors.Keys)}.",
+                -1);
         }
     }
 }
