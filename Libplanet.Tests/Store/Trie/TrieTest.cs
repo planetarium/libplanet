@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -113,6 +114,18 @@ namespace Libplanet.Tests.Store.Trie
             trie.Set(default(Address).ToByteArray(), Dictionary.Empty);
             committedTrie = trie.Commit();
             Assert.NotEqual(MerkleTrie.EmptyRootHash, committedTrie.Hash);
+        }
+
+        [Fact]
+        public void ThrowArgumentNullExceptionWhenSettingNull()
+        {
+            IKeyValueStore keyValueStore = new MemoryKeyValueStore();
+            ITrie trie = new MerkleTrie(keyValueStore);
+
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                trie.Set(new byte[] { 0xbe, 0xef }, null);
+            });
         }
     }
 }

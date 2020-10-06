@@ -17,6 +17,8 @@ namespace Libplanet.Store.Trie
         /// </summary>
         /// <param name="key">An index to look with <see cref="TryGet"/> after.</param>
         /// <param name="value">The value to store.</param>
+        /// <exception cref="System.ArgumentNullException">Thrown when the given
+        /// <paramref name="value"/> is <c>null</c>.</exception>
         void Set(byte[] key, IValue value);
 
         /// <summary>
