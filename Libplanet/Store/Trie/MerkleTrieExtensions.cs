@@ -15,7 +15,7 @@ namespace Libplanet.Store.Trie
     public static class MerkleTrieExtensions
     {
         /// <summary>
-        /// Compare two given tries and get different value nodes (leaf node).
+        /// Compares two given tries and gets different value nodes (leaf node).
         /// </summary>
         /// <param name="origin">A trie to compare.</param>
         /// <param name="other">An other trie to compare.</param>
