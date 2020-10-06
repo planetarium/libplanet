@@ -150,7 +150,7 @@ namespace Libplanet.Net.Protocols
             // TODO: Add timeout parameter for this method
             try
             {
-                _logger.Debug("Refreshing table... total peers: {Count}", _routing.Peers.Count());
+                _logger.Verbose("Refreshing table... total peers: {Count}", _routing.Peers.Count());
                 List<Task> tasks = _routing.PeersToRefresh(maxAge)
                     .Select(peer =>
                         ValidateAsync(
@@ -159,7 +159,7 @@ namespace Libplanet.Net.Protocols
                             cancellationToken)
                     ).ToList();
 
-                _logger.Debug("Refresh candidates: {Count}", tasks.Count);
+                _logger.Verbose("Refresh candidates: {Count}", tasks.Count);
 
                 await Task.WhenAll(tasks);
                 cancellationToken.ThrowIfCancellationRequested();
@@ -173,7 +173,7 @@ namespace Libplanet.Net.Protocols
         {
             try
             {
-                _logger.Debug("Start to validate all peers: ({Count})", _routing.Peers.Count());
+                _logger.Verbose("Start to validate all peers: ({Count})", _routing.Peers.Count());
                 foreach (var peer in _routing.Peers)
                 {
                     await ValidateAsync(peer, timeout ?? _requestTimeout, cancellationToken);
@@ -193,7 +193,7 @@ namespace Libplanet.Net.Protocols
         /// <returns>>An awaitable task without value.</returns>
         public async Task RebuildConnectionAsync(CancellationToken cancellationToken)
         {
-            _logger.Debug("Rebuilding connection...");
+            _logger.Verbose("Rebuilding connection...");
             var buffer = new byte[20];
             var tasks = new List<Task>();
             for (int i = 0; i < _findConcurrency; i++)
@@ -235,20 +235,20 @@ namespace Libplanet.Net.Protocols
         /// <returns>>An awaitable task without value.</returns>
         public async Task CheckReplacementCacheAsync(CancellationToken cancellationToken)
         {
-            _logger.Debug("Checking replacement cache.");
+            _logger.Verbose("Checking replacement cache.");
             foreach (IEnumerable<BoundPeer> cache in _routing.CachesToCheck)
             {
                 foreach (BoundPeer replacement in cache)
                 {
                     try
                     {
-                        _logger.Debug("Check peer {Peer}.", replacement);
+                        _logger.Verbose("Check peer {Peer}.", replacement);
 
                         await PingAsync(replacement, _requestTimeout, cancellationToken);
                     }
                     catch (PingTimeoutException)
                     {
-                        _logger.Debug(
+                        _logger.Verbose(
                             "Remove stale peer {Peer} from replacement cache.",
                             replacement);
                         _routing.RemoveCache(replacement);
@@ -256,7 +256,7 @@ namespace Libplanet.Net.Protocols
                 }
             }
 
-            _logger.Debug("Replacement cache checked.");
+            _logger.Verbose("Replacement cache checked.");
         }
 
 #pragma warning disable CS4014 // To run UpdateAsync() without await.
@@ -314,7 +314,7 @@ namespace Libplanet.Net.Protocols
             TimeSpan? timeout,
             CancellationToken cancellationToken)
         {
-            _logger.Debug(
+            _logger.Verbose(
                 $"{nameof(FindSpecificPeerAsync)}() with {{Target}}. " +
                 "(depth: {Depth})",
                 target,
@@ -330,11 +330,11 @@ namespace Libplanet.Net.Protocols
                 {
                     var msg =
                         "{BoundPeer}, a target peer, is in the routing table does not respond.";
-                    _logger.Debug(msg, boundPeer);
+                    _logger.Verbose(msg, boundPeer);
                     return null;
                 }
 
-                _logger.Debug(
+                _logger.Verbose(
                     "{BoundPeer}, a target peer, is in the routing table.",
                     boundPeer);
                 return boundPeer;
@@ -422,7 +422,7 @@ namespace Libplanet.Net.Protocols
 
             try
             {
-                _logger.Debug("Trying to ping async to {Peer}.", target);
+                _logger.Verbose("Trying to ping async to {Peer}.", target);
                 Message reply = await _transport.SendMessageWithReplyAsync(
                     target,
                     new Ping(),
@@ -447,7 +447,7 @@ namespace Libplanet.Net.Protocols
             }
             catch (DifferentAppProtocolVersionException)
             {
-                _logger.Debug("Different AppProtocolVersion encountered at PingAsync.");
+                _logger.Error("Different AppProtocolVersion encountered at PingAsync.");
                 throw;
             }
         }
@@ -473,14 +473,14 @@ namespace Libplanet.Net.Protocols
         {
             try
             {
-                _logger.Debug("Start to validate a peer: {Peer}", peer);
+                _logger.Verbose("Start to validate a peer: {Peer}", peer);
                 DateTimeOffset check = DateTimeOffset.UtcNow;
                 await PingAsync(peer, timeout, cancellationToken);
                 _routing.Check(peer, check, DateTimeOffset.UtcNow);
             }
             catch (PingTimeoutException)
             {
-                _logger.Debug("Peer {Peer} is invalid, removing...", peer);
+                _logger.Verbose("Peer {Peer} is invalid, removing...", peer);
                 RemovePeer(peer);
                 throw;
             }
@@ -507,7 +507,6 @@ namespace Libplanet.Net.Protocols
 
         private void RemovePeer(BoundPeer peer)
         {
-            _logger.Debug("Removing peer {Peer} from table.", peer);
             _routing.RemovePeer(peer);
         }
 
@@ -534,7 +533,7 @@ namespace Libplanet.Net.Protocols
             TimeSpan? timeout,
             CancellationToken cancellationToken)
         {
-            _logger.Debug(
+            _logger.Verbose(
                 $"{nameof(FindPeerAsync)}() with {{Target}} to {{Peer}}. " +
                 "(depth: {Depth})",
                 target,
@@ -657,7 +656,7 @@ namespace Libplanet.Net.Protocols
 
             if (peers.Count == 0)
             {
-                _logger.Debug("No any neighbor received.");
+                _logger.Verbose("No any neighbor received.");
                 return;
             }
 

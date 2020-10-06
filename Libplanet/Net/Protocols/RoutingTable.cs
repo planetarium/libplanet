@@ -135,6 +135,7 @@ namespace Libplanet.Net.Protocols
                 throw new ArgumentException("Cannot remove self from routing table.");
             }
 
+            _logger.Debug("Removing peer {Peer} from routing table.", peer);
             return BucketOf(peer).RemovePeer(peer);
         }
 
