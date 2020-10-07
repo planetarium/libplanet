@@ -46,7 +46,7 @@ namespace Libplanet.Tests.Blockchain
                 .ForContext<BlockChainTest>();
 
             _fx = new DefaultStoreFixture(memory: true);
-            _renderer = new ValidatingActionRenderer<DumbAction>();
+            _renderer = new RecordingRenderer<DumbAction>();
             _policy = new BlockPolicy<DumbAction>(new MinerReward(1));
             _blockChain = new BlockChain<DumbAction>(
                 _policy,
