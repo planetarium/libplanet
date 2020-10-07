@@ -1,5 +1,6 @@
 #nullable enable
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
@@ -15,9 +16,11 @@ namespace Libplanet.Tools
     {
         private readonly IImmutableDictionary<string, Func<string, IKeyValueStore>>
             _kvStoreConstructors =
-                ImmutableSortedDictionary<string, Func<string, IKeyValueStore>>.Empty
-                    .Add("default", kvStorePath => new DefaultKeyValueStore(kvStorePath))
-                    .Add("rocksdb", kvStorePath => new RocksDBKeyValueStore(kvStorePath));
+                new Dictionary<string, Func<string, IKeyValueStore>>
+                {
+                    ["default"] = kvStorePath => new DefaultKeyValueStore(kvStorePath),
+                    ["rocksdb"] = kvStorePath => new RocksDBKeyValueStore(kvStorePath),
+                }.ToImmutableSortedDictionary();
 
         [Command(Description = "Compare two trees via root hash.")]
         public void Diff(
