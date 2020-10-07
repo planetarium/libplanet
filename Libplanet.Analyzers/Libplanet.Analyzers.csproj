@@ -1,12 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <PackageId>Libplanet.Tools</PackageId>
-    <Title>planet: Libplanet CLI Tools</Title>
-    <Summary>planet: Libplanet CLI Tools</Summary>
-    <Description>This CLI app is a collection of utilities for application <!--
-    --> programmers who create decentralized games powered by Libplanet <!--
-    --> (https://libplanet.io/).</Description>
-    <OutputType>Exe</OutputType>
+    <PackageId>Libplanet.Analyzers</PackageId>
+    <Title>Static analysis on Libplanet-powered apps</Title>
+    <Description>The Roslyn analyzer which checks if code has common <!--
+    --> mistakes prone to made with Libplanet-powered game apps.</Description>
     <PackageProjectUrl>https://libplanet.io/</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageIcon>icon.png</PackageIcon>
@@ -20,30 +17,18 @@
 
   <PropertyGroup>
     <LangVersion>8.0</LangVersion>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <RootNamespace>Libplanet.Tools</RootNamespace>
-    <ToolCommandName>planet</ToolCommandName>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <TargetFrameworks>netstandard2.0;netstandard2.1;netcoreapp3.1</TargetFrameworks>
+    <RootNamespace>Libplanet.Analyzers</RootNamespace>
+    <AssemblyName>Libplanet.Analyzers</AssemblyName>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Nullable>enable</Nullable>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <NoWarn>$(NoWarn);CS1591;S1118;SA1118</NoWarn>
+    <NoWarn>$(NoWarn);NU5128</NoWarn>
+    <IsPackable>true</IsPackable>
     <IsTestProject>false</IsTestProject>
     <CodeAnalysisRuleSet>..\Libplanet.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(PublishSingleFile)' != 'true' ">
-    <PackAsTool>true</PackAsTool>
-    <AssemblyName>Libplanet.Tools</AssemblyName>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(PublishSingleFile)' == 'true' ">
-    <AssemblyName>planet</AssemblyName>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(PublishSingleFile)' == 'true' And
-                             '$(RuntimeIdentifier.Substring(0, 6))' == 'linux-' ">
-    <InvariantGlobalization>true</InvariantGlobalization>
   </PropertyGroup>
 
   <ItemGroup>
@@ -57,10 +42,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Cocona.Lite" Version="1.5.*" />
-    <PackageReference Include="Menees.Analyzers.2017" Version="2.0.3">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
+    <PackageReference
+      Include="Menees.Analyzers.2017"
+      Version="2.0.3"
+      PrivateAssets="all" />
+    <PackageReference
+      Include="Microsoft.CodeAnalysis.Analyzers"
+      Version="3.3.0"
+      PrivateAssets="all" />
+    <PackageReference
+      Include="Microsoft.CodeAnalysis.CSharp.Workspaces"
+      Version="3.7.0"
+      PrivateAssets="all" />
     <PackageReference
       Include="Microsoft.DotNet.Analyzers.Compatibility"
       Version="0.2.12-alpha">
@@ -69,6 +62,7 @@
         runtime; build; native; contentfiles; analyzers; buildtransitive
       </IncludeAssets>
     </PackageReference>
+    <PackageReference Update="NETStandard.Library" PrivateAssets="all" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.164">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>
@@ -86,8 +80,20 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Libplanet\Libplanet.csproj" />
-    <ProjectReference Include="..\Libplanet.RocksDBStore\Libplanet.RocksDBStore.csproj" />
     <!-- FIXME: We should specify the version range when the following NuGet
     issue is addressed: <https://github.com/NuGet/Home/issues/5556>. -->
+  </ItemGroup>
+
+  <ItemGroup>
+    <None
+      Include="tools\*.ps1"
+      CopyToOutputDirectory="Always"
+      Pack="true"
+      PackagePath="tools" />
+    <None
+      Include="$(OutputPath)\netstandard2.0\$(AssemblyName).dll"
+      Pack="true"
+      PackagePath="analyzers/dotnet/cs"
+      Visible="false" />
   </ItemGroup>
 </Project>

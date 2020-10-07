@@ -22,7 +22,7 @@ https://docs.libplanet.io/</Description>
     <PackageProjectUrl>https://libplanet.io/</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageIcon>icon.png</PackageIcon>
-    <Authors>Hong Minhee; Swen Mun</Authors>
+    <Authors>Planetarium</Authors>
     <Company>Planetarium</Company>
     <PackageLicenseExpression>LGPL-2.1-or-later</PackageLicenseExpression>
     <RequireLicenseAcceptance>true</RequireLicenseAcceptance>
@@ -30,6 +30,9 @@ https://docs.libplanet.io/</Description>
     <PackageTags>multiplayer online game;game;blockchain</PackageTags>
     <RepositoryUrl>git://github.com/planetarium/libplanet.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <LangVersion>8.0</LangVersion>
     <RootNamespace>Libplanet</RootNamespace>
     <AssemblyName>Libplanet</AssemblyName>
