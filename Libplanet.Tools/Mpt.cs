@@ -12,22 +12,34 @@ using Libplanet.Store.Trie;
 
 namespace Libplanet.Tools
 {
+    internal enum KVStoreType
+    {
+        RocksDB,
+        Default,
+    }
+
+    internal enum SchemeType
+    {
+        // This is set to 0 for `default` value.
+        File = 0,
+    }
+
     public class Mpt
     {
-        private readonly IImmutableDictionary<string, Func<string, IKeyValueStore>>
+        private readonly IImmutableDictionary<KVStoreType, Func<string, IKeyValueStore>>
             _kvStoreConstructors =
-                new Dictionary<string, Func<string, IKeyValueStore>>
+                new Dictionary<KVStoreType, Func<string, IKeyValueStore>>
                 {
-                    ["default"] = kvStorePath => new DefaultKeyValueStore(kvStorePath),
-                    ["rocksdb"] = kvStorePath => new RocksDBKeyValueStore(kvStorePath),
+                    [KVStoreType.Default] = kvStorePath => new DefaultKeyValueStore(kvStorePath),
+                    [KVStoreType.RocksDB] = kvStorePath => new RocksDBKeyValueStore(kvStorePath),
                 }.ToImmutableSortedDictionary();
 
         [Command(Description = "Compare two trees via root hash.")]
         public void Diff(
             [Argument(
-                Name = "KEY-VALUE-STORE-PATH",
+                Name = "KEY-VALUE-STORE",
                 Description = "The path where IKeyValueStore implementation was used at.")]
-            string kvStorePath,
+            string kvStoreUri,
             [Argument(
                 Name = "STATE-ROOT-HASH",
                 Description = "The state root hash to compare.")]
@@ -36,14 +48,31 @@ namespace Libplanet.Tools
                 Name = "OTHER-STATE-ROOT-HASH",
                 Description = "Another state root hash to compare.")]
             string otherStateRootHashHex,
-            [Option(
-                't',
-                Description = "The type of the key-value store stored" +
-                              " at the given KEY-VALUE-STORE-PATH argument. " +
-                              "It should be among in 'default' or 'rocksdb'.")]
-            string kvStoreType)
+            [FromService] IConfigurationService<string, string> configurationService)
         {
-            IKeyValueStore keyValueStore = LoadKeyValueStore(kvStorePath, kvStoreType);
+            // If it is not Uri format,
+            // try to get uri from configuration service by using it as alias.
+            if (!Uri.IsWellFormedUriString(kvStoreUri, UriKind.Absolute))
+            {
+                try
+                {
+                    kvStoreUri = configurationService.Get(MPTKVStoreAliasKey(kvStoreUri));
+                }
+                catch (KeyNotFoundException)
+                {
+                    var exceptionMessage =
+                        $"The alias, '{kvStoreUri}' doesn't exist. " +
+                        $"Please pass correct uri or alias.";
+                    throw new CommandExitedException(
+                        exceptionMessage,
+                        -1);
+                }
+            }
+
+            (KVStoreType kvStoreType, _, string path) =
+                ParseKVStoreURI(kvStoreUri);
+
+            IKeyValueStore keyValueStore = LoadKeyValueStore(path, kvStoreType);
             var trie = new MerkleTrie(
                 keyValueStore,
                 HashDigest<SHA256>.FromString(stateRootHashHex));
@@ -67,13 +96,76 @@ namespace Libplanet.Tools
             }
         }
 
+        // FIXME: Now, it works like `set` not `add`. It allows override.
+        [Command(Description="Add a new mpt store alias.")]
+        public void Add(
+            [Argument] string alias,
+            [Argument] string uri,
+            [FromService] IConfigurationService<string, string> configurationService)
+        {
+            try
+            {
+                // Checks the `uri` is valid.
+                ParseKVStoreURI(uri);
+            }
+            catch (Exception e)
+            {
+                throw new CommandExitedException(
+                    $"It seems the uri is not valid. (exceptionMessage: {e.Message})", -1);
+            }
+
+            configurationService.Set(MPTKVStoreAliasKey(alias), uri);
+        }
+
+        [Command(Description="Remove the registered mpt store.")]
+        public void Remove(
+            [Argument] string alias,
+            [FromService] IConfigurationService<string, string> configurationService)
+        {
+            configurationService.Delete(MPTKVStoreAliasKey(alias));
+        }
+
         [PrimaryCommand]
         public void Help([FromService] ICoconaHelpMessageBuilder helpMessageBuilder)
         {
             Console.Error.WriteLine(helpMessageBuilder.BuildAndRenderForCurrentContext());
         }
 
-        private IKeyValueStore LoadKeyValueStore(string kvStorePath, string kvStoreType)
+        private (KVStoreType KVStoreType, SchemeType SchemeType, string Path) ParseKVStoreURI(
+            string rawUri)
+        {
+            var uri = new Uri(rawUri);
+            var scheme = uri.Scheme;
+            var splitScheme = scheme.Split("+");
+            if (splitScheme.Length <= 0 || splitScheme.Length > 2)
+            {
+                var exceptionMessage = "The scheme must be explicit and must be formatted with " +
+                                       "two methods, '<kv-store-type>' or " +
+                                       "'<kv-store-type>+<uri-scheme>'.";
+                throw new ArgumentException(exceptionMessage, nameof(rawUri));
+            }
+
+            SchemeType schemeType = SchemeType.File;
+            if (!KVStoreType.TryParse(
+                splitScheme[0], ignoreCase: true, out KVStoreType kvStoreType))
+            {
+                throw new NotSupportedException(
+                    $"There is no supported kv-store-type for '{splitScheme[0]}'");
+            }
+
+            if (splitScheme.Length == 2
+                && !SchemeType.TryParse(splitScheme[1], ignoreCase: true, out schemeType))
+            {
+                throw new NotSupportedException(
+                    $"There is no supported scheme type for '{splitScheme[1]}'");
+            }
+
+            return (kvStoreType, schemeType, uri.AbsolutePath);
+        }
+
+        private string MPTKVStoreAliasKey(string alias) => $"mpt_alias_{alias}";
+
+        private IKeyValueStore LoadKeyValueStore(string kvStorePath, KVStoreType kvStoreType)
         {
             if (_kvStoreConstructors.TryGetValue(
                 kvStoreType,
