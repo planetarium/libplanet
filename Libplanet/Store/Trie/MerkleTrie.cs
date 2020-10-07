@@ -38,7 +38,7 @@ namespace Libplanet.Store.Trie
         /// nodes.</param>
         /// <param name="rootHash">The root <see cref="ITrie.Hash"/> of
         /// <see cref="MerkleTrie"/>.</param>
-        /// <param name="secure">The flag to determine to use <see cref="MerkleTrie"/> in
+        /// <param name="secure">Whether to use <see cref="MerkleTrie"/> in
         /// secure mode.  If it is turned on, <see cref="MerkleTrie"/> internally stores hashed keys
         /// instead of bare keys.  <see cref="Hashcash.Hash" /> is used to hash them.</param>
         public MerkleTrie(
@@ -56,7 +56,7 @@ namespace Libplanet.Store.Trie
         /// nodes.</param>
         /// <param name="root">The root node of <see cref="MerkleTrie"/>. If it is <c>null</c>,
         /// it will be treated like empty trie.</param>
-        /// <param name="secure">The flag to determine to use <see cref="MerkleTrie"/> in secure
+        /// <param name="secure">Whether to use <see cref="MerkleTrie"/> in secure
         /// mode. If it is true, <see cref="MerkleTrie"/> will stores the value with the hashed
         /// result from the given key as the key. It will hash with
         /// <see cref="Hashcash.Hash"/>.</param>
