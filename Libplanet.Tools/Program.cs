@@ -13,7 +13,7 @@ namespace Libplanet.Tools
         private static readonly string FileConfigurationServiceRoot = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
             "planetarium",
-            "config.json");
+            "cli.json");
 
         public static Task Main(string[] args) =>
             CoconaLiteApp.Create()
