@@ -8,31 +8,31 @@ namespace Libplanet.Tools
 {
     public class JsonConfigurationService : IConfigurationService<ToolConfiguration>
     {
-        private const string ConfigurationFileName = "config.json";
-
         private readonly IFileSystem _fileSystem;
+        private readonly string _configurationFileName;
 
-        public JsonConfigurationService(IFileSystem fileSystem)
+        public JsonConfigurationService(IFileSystem fileSystem, string configurationFileName)
         {
             _fileSystem = fileSystem;
+            _configurationFileName = configurationFileName;
         }
 
         public ToolConfiguration Load()
         {
-            if (!File.Exists(ConfigurationFileName))
+            if (!File.Exists(_configurationFileName))
             {
                 return new ToolConfiguration();
             }
 
             return JsonSerializer.Deserialize<ToolConfiguration>(
-                _fileSystem.ReadAllText(UPath.Root / ConfigurationFileName));
+                _fileSystem.ReadAllText(UPath.Root / _configurationFileName));
         }
 
         public void Store(ToolConfiguration configuration)
         {
             Console.WriteLine(JsonSerializer.Serialize(configuration));
             _fileSystem.WriteAllText(
-                UPath.Root / ConfigurationFileName,
+                UPath.Root / _configurationFileName,
                 JsonSerializer.Serialize(configuration));
         }
     }

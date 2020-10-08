@@ -9,20 +9,23 @@ namespace Libplanet.Tools
     {
         public static void AddJsonConfigurationService(
             this ICoconaLiteServiceCollection services,
-            string jsonConfigurationRoot)
+            string jsonConfigurationPath)
         {
-            if (!Directory.Exists(jsonConfigurationRoot))
+            string jsonConfigurationDirectory = Directory.GetParent(jsonConfigurationPath).FullName;
+            if (!Directory.Exists(jsonConfigurationDirectory))
             {
-                Directory.CreateDirectory(jsonConfigurationRoot);
+                Directory.CreateDirectory(jsonConfigurationDirectory);
             }
 
             var pfs = new PhysicalFileSystem();
             var fileSystem = new SubFileSystem(
                 pfs,
-                pfs.ConvertPathFromInternal(jsonConfigurationRoot),
+                pfs.ConvertPathFromInternal(jsonConfigurationDirectory),
                 owned: true);
             services.AddTransient<IConfigurationService<ToolConfiguration>>(
-                _ => new JsonConfigurationService(fileSystem));
+                _ => new JsonConfigurationService(
+                    fileSystem,
+                    Path.GetFileName(jsonConfigurationPath)));
         }
     }
 }
