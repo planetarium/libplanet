@@ -299,6 +299,10 @@ To be released.
  -  The `planet` command became installable using `npm`.  [[#923], [#982]]
  -  Fixed a bug that <kbd>^H</kbd> had not removed the rightmost character
     in passphrase prompts.  [[#983], [#984]]
+ -  Added a new sub-command `planet mpt`.  [[#1023]]
+ -  Introduced a configuration file.  It's placed in:  [[#1023]]
+     -  Linux/macOS: *<var>$XDG_CONFIG_HOME</var>/planetarium/cli.json*
+     -  Windows: *<var>%AppData%</var>\planetarium\cli.json*
 
 [#404]: https://github.com/planetarium/libplanet/issues/404
 [#459]: https://github.com/planetarium/libplanet/issues/459
