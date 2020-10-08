@@ -139,9 +139,8 @@ namespace Libplanet.Tools
             var splitScheme = scheme.Split("+");
             if (splitScheme.Length <= 0 || splitScheme.Length > 2)
             {
-                var exceptionMessage = "The scheme must be explicit and must be formatted with " +
-                                       "two methods, '<kv-store-type>' or " +
-                                       "'<kv-store-type>+<uri-scheme>'.";
+                var exceptionMessage = "A key-value store URI must have a scheme, " +
+                                       "e.g., default://, rocksdb+file://.";
                 throw new ArgumentException(exceptionMessage, nameof(rawUri));
             }
 
@@ -150,14 +149,14 @@ namespace Libplanet.Tools
                 splitScheme[0], ignoreCase: true, out KVStoreType kvStoreType))
             {
                 throw new NotSupportedException(
-                    $"There is no supported kv-store-type for '{splitScheme[0]}'");
+                    $"No key-value store backend supports the such scheme: {splitScheme[0]}.");
             }
 
             if (splitScheme.Length == 2
                 && !SchemeType.TryParse(splitScheme[1], ignoreCase: true, out schemeType))
             {
                 throw new NotSupportedException(
-                    $"There is no supported scheme type for '{splitScheme[1]}'");
+                    $"No key-value store backend supports the such scheme: {splitScheme[1]}.");
             }
 
             return (kvStoreType, schemeType, uri.AbsolutePath);
