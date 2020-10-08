@@ -1,29 +1,28 @@
-using System;
 using System.IO;
 using Cocona.Lite;
+using Libplanet.Tools.Configuration;
 using Zio.FileSystems;
 
 namespace Libplanet.Tools
 {
     public static class ICoconaLiteServiceCollectionExtensions
     {
-        public static void AddFileConfigurationService(
+        public static void AddJsonConfigurationService(
             this ICoconaLiteServiceCollection services,
-            string fileConfigurationServiceRoot)
+            string jsonConfigurationRoot)
         {
-            if (!Directory.Exists(fileConfigurationServiceRoot))
+            if (!Directory.Exists(jsonConfigurationRoot))
             {
-                Directory.CreateDirectory(fileConfigurationServiceRoot);
+                Directory.CreateDirectory(jsonConfigurationRoot);
             }
 
             var pfs = new PhysicalFileSystem();
             var fileSystem = new SubFileSystem(
                 pfs,
-                pfs.ConvertPathFromInternal(fileConfigurationServiceRoot),
+                pfs.ConvertPathFromInternal(jsonConfigurationRoot),
                 owned: true);
-            Console.WriteLine(fileConfigurationServiceRoot);
-            services.AddTransient<IConfigurationService<string, string>>(
-                _ => new FileConfigurationService(fileSystem));
+            services.AddTransient<IConfigurationService<ToolConfiguration>>(
+                _ => new JsonConfigurationService(fileSystem));
         }
     }
 }

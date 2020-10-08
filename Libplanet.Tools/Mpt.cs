@@ -9,15 +9,10 @@ using Cocona;
 using Cocona.Help;
 using Libplanet.RocksDBStore;
 using Libplanet.Store.Trie;
+using Libplanet.Tools.Configuration;
 
 namespace Libplanet.Tools
 {
-    internal enum KVStoreType
-    {
-        RocksDB,
-        Default,
-    }
-
     internal enum SchemeType
     {
         // This is set to 0 for `default` value.
@@ -26,12 +21,12 @@ namespace Libplanet.Tools
 
     public class Mpt
     {
-        private readonly IImmutableDictionary<KVStoreType, Func<string, IKeyValueStore>>
+        private readonly IImmutableDictionary<string, Func<string, IKeyValueStore>>
             _kvStoreConstructors =
-                new Dictionary<KVStoreType, Func<string, IKeyValueStore>>
+                new Dictionary<string, Func<string, IKeyValueStore>>
                 {
-                    [KVStoreType.Default] = kvStorePath => new DefaultKeyValueStore(kvStorePath),
-                    [KVStoreType.RocksDB] = kvStorePath => new RocksDBKeyValueStore(kvStorePath),
+                    ["default"] = kvStorePath => new DefaultKeyValueStore(kvStorePath),
+                    ["rocksdb"] = kvStorePath => new RocksDBKeyValueStore(kvStorePath),
                 }.ToImmutableSortedDictionary();
 
         [Command(Description = "Compare two trees via root hash.")]
@@ -48,7 +43,7 @@ namespace Libplanet.Tools
                 Name = "OTHER-STATE-ROOT-HASH",
                 Description = "Another state root hash to compare.")]
             string otherStateRootHashHex,
-            [FromService] IConfigurationService<string, string> configurationService)
+            [FromService] IConfigurationService<ToolConfiguration> configurationService)
         {
             // If it is not Uri format,
             // try to get uri from configuration service by using it as alias.
@@ -56,7 +51,8 @@ namespace Libplanet.Tools
             {
                 try
                 {
-                    kvStoreUri = configurationService.Get(MPTKVStoreAliasKey(kvStoreUri));
+                    var configuration = configurationService.Load();
+                    kvStoreUri = configuration.Mpt.Aliases[kvStoreUri];
                 }
                 catch (KeyNotFoundException)
                 {
@@ -69,10 +65,7 @@ namespace Libplanet.Tools
                 }
             }
 
-            (KVStoreType kvStoreType, _, string path) =
-                ParseKVStoreURI(kvStoreUri);
-
-            IKeyValueStore keyValueStore = LoadKeyValueStore(path, kvStoreType);
+            IKeyValueStore keyValueStore = LoadKVStoreFromURI(kvStoreUri);
             var trie = new MerkleTrie(
                 keyValueStore,
                 HashDigest<SHA256>.FromString(stateRootHashHex));
@@ -101,12 +94,12 @@ namespace Libplanet.Tools
         public void Add(
             [Argument] string alias,
             [Argument] string uri,
-            [FromService] IConfigurationService<string, string> configurationService)
+            [FromService] IConfigurationService<ToolConfiguration> configurationService)
         {
             try
             {
                 // Checks the `uri` is valid.
-                ParseKVStoreURI(uri);
+                LoadKVStoreFromURI(uri);
             }
             catch (Exception e)
             {
@@ -114,15 +107,19 @@ namespace Libplanet.Tools
                     $"It seems the uri is not valid. (exceptionMessage: {e.Message})", -1);
             }
 
-            configurationService.Set(MPTKVStoreAliasKey(alias), uri);
+            var configuration = configurationService.Load();
+            configuration.Mpt.Aliases.Add(alias, uri);
+            configurationService.Store(configuration);
         }
 
         [Command(Description="Remove the registered mpt store.")]
         public void Remove(
             [Argument] string alias,
-            [FromService] IConfigurationService<string, string> configurationService)
+            [FromService] IConfigurationService<ToolConfiguration> configurationService)
         {
-            configurationService.Delete(MPTKVStoreAliasKey(alias));
+            var configuration = configurationService.Load();
+            configuration.Mpt.Aliases.Remove(alias);
+            configurationService.Store(configuration);
         }
 
         [PrimaryCommand]
@@ -131,8 +128,7 @@ namespace Libplanet.Tools
             Console.Error.WriteLine(helpMessageBuilder.BuildAndRenderForCurrentContext());
         }
 
-        private (KVStoreType KVStoreType, SchemeType SchemeType, string Path) ParseKVStoreURI(
-            string rawUri)
+        private IKeyValueStore LoadKVStoreFromURI(string rawUri)
         {
             var uri = new Uri(rawUri);
             var scheme = uri.Scheme;
@@ -144,39 +140,23 @@ namespace Libplanet.Tools
                 throw new ArgumentException(exceptionMessage, nameof(rawUri));
             }
 
-            SchemeType schemeType = SchemeType.File;
-            if (!KVStoreType.TryParse(
-                splitScheme[0], ignoreCase: true, out KVStoreType kvStoreType))
+            if (!_kvStoreConstructors.TryGetValue(
+                splitScheme[0],
+                out Func<string, IKeyValueStore>? constructor))
             {
                 throw new NotSupportedException(
                     $"No key-value store backend supports the such scheme: {splitScheme[0]}.");
             }
 
+            // NOTE: Actually, there is only File scheme support and it will work to check only.
             if (splitScheme.Length == 2
-                && !SchemeType.TryParse(splitScheme[1], ignoreCase: true, out schemeType))
+                && !SchemeType.TryParse(splitScheme[1], ignoreCase: true, out SchemeType _))
             {
                 throw new NotSupportedException(
                     $"No key-value store backend supports the such scheme: {splitScheme[1]}.");
             }
 
-            return (kvStoreType, schemeType, uri.AbsolutePath);
-        }
-
-        private string MPTKVStoreAliasKey(string alias) => $"mpt_alias_{alias}";
-
-        private IKeyValueStore LoadKeyValueStore(string kvStorePath, KVStoreType kvStoreType)
-        {
-            if (_kvStoreConstructors.TryGetValue(
-                kvStoreType,
-                out Func<string, IKeyValueStore>? constructor))
-            {
-                return constructor(kvStorePath);
-            }
-
-            throw new CommandExitedException(
-                $"There is no such type for -t/--kv-store-type: {kvStoreType}.  " +
-                $"Available options are: {string.Join(", ", _kvStoreConstructors.Keys)}.",
-                -1);
+            return constructor(uri.AbsolutePath);
         }
     }
 }

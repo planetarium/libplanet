@@ -19,7 +19,7 @@ namespace Libplanet.Tools
             CoconaLiteApp.Create()
                 .ConfigureServices(services =>
                 {
-                    services.AddFileConfigurationService(FileConfigurationServiceRoot);
+                    services.AddJsonConfigurationService(FileConfigurationServiceRoot);
                 })
                 .RunAsync<Program>(args, options =>
                 {
