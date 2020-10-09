@@ -88,7 +88,7 @@ namespace Libplanet.Explorer.Executable
                         return;
                     }
 
-                    Console.WriteLine("Creating Swarm.");
+                    Console.Error.WriteLine("Creating Swarm.");
 
                     var privateKey = new PrivateKey();
 
