@@ -72,7 +72,7 @@ namespace Libplanet.Explorer.Executable
                 {
                     string aggregatedSeedStrings =
                         options.SeedStrings.Aggregate(string.Empty, (s, s1) => s + s1);
-                    Console.WriteLine(
+                    Console.Error.WriteLine(
                         $"Seeds are {aggregatedSeedStrings}");
 
                     // TODO: Take privateKey as a CLI option
@@ -182,7 +182,7 @@ namespace Libplanet.Explorer.Executable
 
             try
             {
-                Console.WriteLine("Bootstrapping.");
+                Console.Error.WriteLine("Bootstrapping.");
                 await swarm.BootstrapAsync(
                     seeds,
                     5000,
@@ -197,13 +197,13 @@ namespace Libplanet.Explorer.Executable
 
             // Since explorer does not require states, turn off trustedPeer option.
             var trustedPeers = ImmutableHashSet<Address>.Empty;
-            Console.WriteLine("Starts preloading.");
+            Console.Error.WriteLine("Starts preloading.");
             await swarm.PreloadAsync(
                 dialTimeout: TimeSpan.FromSeconds(15),
                 trustedStateValidators: trustedPeers,
                 cancellationToken: cancellationToken
             );
-            Console.WriteLine("Finished preloading.");
+            Console.Error.WriteLine("Finished preloading.");
 
             await swarm.StartAsync(cancellationToken: cancellationToken);
         }
