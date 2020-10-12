@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "wSkyZp0c+cfl4SqV8DHfdw=="
+          "hash": "C7VY37KUxHujuXDBgCbnDg=="
         }
       },
       "is_incremental": false,
@@ -537,7 +537,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blocks.Block-1.html",
-          "hash": "iN+1aRHIQSfZGa2VDBr4/Q=="
+          "hash": "34oCC3Prpb3F+a05mhDzZw=="
         }
       },
       "is_incremental": false,
@@ -561,7 +561,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blocks.BlockHeader.html",
-          "hash": "HM0kb/PsokK2WHClAcV96g=="
+          "hash": "kbF+/o/wW+EefHaoiMe2Gg=="
         }
       },
       "is_incremental": false,
@@ -1589,6 +1589,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Store.Trie.ITrie.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Store.Trie.ITrie.html",
+          "hash": "TGvJfOstbQKjEq2nD1WqBw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Libplanet.Store.Trie.InvalidTrieNodeException.yml",
       "output": {
         ".html": {
@@ -1601,11 +1613,35 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Store.Trie.MerkleTrie.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Store.Trie.MerkleTrie.html",
+          "hash": "2RBkHUvaKbsuGiRtIAstGQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Store.Trie.MerkleTrieExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Store.Trie.MerkleTrieExtensions.html",
+          "hash": "GP4q0kOu4ANTM0JC2pK/kg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Libplanet.Store.Trie.yml",
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.Trie.html",
-          "hash": "ugf9VR+14BCC4OZssWBjDA=="
+          "hash": "EgUqM8PUaRWAZCSRWlqPIA=="
         }
       },
       "is_incremental": false,
@@ -1617,7 +1653,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.TrieStateStore.html",
-          "hash": "xZkHEtorSri/vCxKZnuctA=="
+          "hash": "Wqq3vq41uPrPVSP8uaIsmQ=="
         }
       },
       "is_incremental": false,
@@ -1629,7 +1665,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.html",
-          "hash": "Qsi1Ybr2BM6wxAIIANdtcA=="
+          "hash": "yKhT/E+6kGcVK63lWgCGAw=="
         }
       },
       "is_incremental": false,
@@ -1797,7 +1833,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "YJ+1uYfsSFinLOrnzhbQhA=="
+          "hash": "qtZwAPnpOIniyvW+WU1GZw=="
         }
       },
       "is_incremental": false,
@@ -1897,16 +1933,17 @@
         "full_build_reason_code": "NoAvailableBuildCache"
       },
       "processors": {
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 7,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 145,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
@@ -1916,11 +1953,10 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "TocDocumentProcessor": {
+        "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 0,
+          "total_file_count": 148,
           "skipped_file_count": 0
         }
       }

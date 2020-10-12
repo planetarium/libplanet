@@ -286,6 +286,8 @@ by <code>stateCompleter: FungibleAssetStateCompleters&lt;T&gt;.Recalculate</code
 <li>Added <code>IStateStore</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/950">#950</a>]</li>
 <li>Added <code>IBlockStatesStore</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/950">#950</a>]</li>
 <li>Added <code>TrieStateStore</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/939">#939</a>]</li>
+<li>Added <code>ITrie</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/939">#939</a>, <a href="https://github.com/planetarium/libplanet/pull/1023">#1023</a>]</li>
+<li>Added <code>MerkleTrie</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/939">#939</a>, <a href="https://github.com/planetarium/libplanet/pull/1023">#1023</a>]</li>
 <li>Added <code>IKeyValueStore</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/939">#939</a>]</li>
 <li>Added <code>DefaultKeyValueStore</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/939">#939</a>]</li>
 <li>Added <code>CacheableKeyValueStore</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/939">#939</a>]</li>
@@ -295,6 +297,7 @@ by <code>stateCompleter: FungibleAssetStateCompleters&lt;T&gt;.Recalculate</code
 <li>Added <code>InvalidBlockStateRootHashException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/986">#986</a>]</li>
 <li>Added <code>Block&lt;T&gt;.StateRootHash</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/986">#986</a>]</li>
 <li>Added <code>BlockHeader.StateRootHash</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/986">#986</a>]</li>
+<li>Added <code>MerkleTrieExtensions</code> static class.  [<a href="https://github.com/planetarium/libplanet/pull/1023">#1023</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
@@ -371,6 +374,13 @@ when reorg its chain repeatedly.  [<a href="https://github.com/planetarium/libpl
 <li>The <code>planet</code> command became installable using <code>npm</code>.  [<a href="https://github.com/planetarium/libplanet/pull/923">#923</a>, <a href="https://github.com/planetarium/libplanet/pull/982">#982</a>]</li>
 <li>Fixed a bug that <kbd>^H</kbd> had not removed the rightmost character
 in passphrase prompts.  [<a href="https://github.com/planetarium/libplanet/issues/983">#983</a>, <a href="https://github.com/planetarium/libplanet/pull/984">#984</a>]</li>
+<li>Added a new sub-command <code>planet mpt</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1023">#1023</a>]</li>
+<li>Introduced a configuration file.  It's placed in:  [<a href="https://github.com/planetarium/libplanet/pull/1023">#1023</a>]
+<ul>
+<li>Linux/macOS: <em><var>$XDG_CONFIG_HOME</var>/planetarium/cli.json</em></li>
+<li>Windows: <em><var>%AppData%</var>\planetarium\cli.json</em></li>
+</ul>
+</li>
 </ul>
 <h2 id="version-095">Version 0.9.5</h2>
 <p>Released on June 12, 2020.</p>
