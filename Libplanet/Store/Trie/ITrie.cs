@@ -4,7 +4,11 @@ using Bencodex.Types;
 
 namespace Libplanet.Store.Trie
 {
-    internal interface ITrie
+    /// <summary>
+    /// An interface for <see href="https://en.wikipedia.org/wiki/Merkle_tree">Merkle Tree</see>.
+    /// </summary>
+    /// <seealso cref="MerkleTrie"/>
+    public interface ITrie
     {
         /// <summary>
         /// The state root hash of the trie.

@@ -10,9 +10,13 @@ using Libplanet.Store.Trie.Nodes;
 
 namespace Libplanet.Store.Trie
 {
+    /// <summary>
+    /// An <see cref="ITrie"/> implementation implemented
+    /// <see href="https://eth.wiki/fundamentals/patricia-tree">Merkle Patricia Trie</see>.
+    /// </summary>
     // TODO: implement 'logs' for debugging.
     [Equals]
-    internal class MerkleTrie : ITrie
+    public class MerkleTrie : ITrie
     {
         public static readonly HashDigest<SHA256> EmptyRootHash;
 
@@ -32,13 +36,31 @@ namespace Libplanet.Store.Trie
         /// </summary>
         /// <param name="keyValueStore">The <see cref="IKeyValueStore"/> storage to store
         /// nodes.</param>
+        /// <param name="rootHash">The root <see cref="ITrie.Hash"/> of
+        /// <see cref="MerkleTrie"/>.</param>
+        /// <param name="secure">Whether to use <see cref="MerkleTrie"/> in
+        /// secure mode.  If it is turned on, <see cref="MerkleTrie"/> internally stores hashed keys
+        /// instead of bare keys.  <see cref="Hashcash.Hash" /> is used to hash them.</param>
+        public MerkleTrie(
+            IKeyValueStore keyValueStore,
+            HashDigest<SHA256> rootHash,
+            bool secure = false)
+            : this(keyValueStore, new HashNode(rootHash), secure)
+        {
+        }
+
+        /// <summary>
+        /// An <see cref="ITrie"/> implementation.
+        /// </summary>
+        /// <param name="keyValueStore">The <see cref="IKeyValueStore"/> storage to store
+        /// nodes.</param>
         /// <param name="root">The root node of <see cref="MerkleTrie"/>. If it is <c>null</c>,
         /// it will be treated like empty trie.</param>
-        /// <param name="secure">The flag to determine to use <see cref="MerkleTrie"/> in secure
+        /// <param name="secure">Whether to use <see cref="MerkleTrie"/> in secure
         /// mode. If it is true, <see cref="MerkleTrie"/> will stores the value with the hashed
         /// result from the given key as the key. It will hash with
         /// <see cref="Hashcash.Hash"/>.</param>
-        public MerkleTrie(IKeyValueStore keyValueStore, INode? root = null, bool secure = false)
+        internal MerkleTrie(IKeyValueStore keyValueStore, INode? root = null, bool secure = false)
         {
             KeyValueStore = keyValueStore;
             Root = root;
@@ -103,41 +125,58 @@ namespace Libplanet.Store.Trie
 
         internal IEnumerable<HashDigest<SHA256>> IterateHashNodes()
         {
+            return IterateNodes().Where(pair => pair.Node is HashNode)
+                .Select(pair => ((HashNode)pair.Node).HashDigest);
+        }
+
+        internal IEnumerable<(INode Node, ImmutableArray<byte> Path)> IterateNodes()
+        {
             if (Root is null)
             {
                 yield break;
             }
 
-            var queue = new Queue<HashNode>();
-            if (!(Root is HashNode))
-            {
-                yield return Root.Hash();
-            }
-            else
-            {
-                queue.Enqueue((Root as HashNode)!);
-            }
+            var queue = new Queue<(INode, ImmutableArray<byte>)>();
+            queue.Enqueue((Root, ImmutableArray<byte>.Empty));
 
             while (queue.Count > 0)
             {
-                HashNode hashNode = queue.Dequeue();
-                yield return hashNode.HashDigest;
-                INode? node = GetNode(hashNode.HashDigest);
+                (INode node, ImmutableArray<byte> path) = queue.Dequeue();
+                yield return (node, path);
                 switch (node)
                 {
                     case FullNode fullNode:
-                        IEnumerable<HashNode> childHashNodes = fullNode.Children.OfType<HashNode>();
-                        foreach (var childHashNode in childHashNodes)
+                        foreach (int index in Enumerable.Range(0, FullNode.ChildrenCount - 1))
                         {
-                            queue.Enqueue(childHashNode);
+                            INode? child = fullNode.Children[index];
+                            if (!(child is null))
+                            {
+                                queue.Enqueue((child, path.Add((byte)index)));
+                            }
+                        }
+
+                        if (!(fullNode.Value is null))
+                        {
+                            queue.Enqueue((fullNode.Value, path));
                         }
 
                         break;
 
                     case ShortNode shortNode:
-                        if (shortNode.Value is HashNode shortNodeValue)
+                        if (!(shortNode.Value is null))
                         {
-                            queue.Enqueue(shortNodeValue);
+                            queue.Enqueue((
+                                    shortNode.Value,
+                                    path.Concat(shortNode.Key).ToImmutableArray()));
+                        }
+
+                        break;
+
+                    case HashNode hashNode:
+                        INode? nn = GetNode(hashNode.HashDigest);
+                        if (!(nn is null))
+                        {
+                            queue.Enqueue((nn, path));
                         }
 
                         break;
