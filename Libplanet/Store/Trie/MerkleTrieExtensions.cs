@@ -51,12 +51,12 @@ namespace Libplanet.Store.Trie
             for (int i = 0; i < bytes.Length / 2; ++i)
             {
                 byte high = bytes[i * 2], low = bytes[i * 2 + 1];
-                if (high < 0 || high >= 16)
+                if (high >= 16)
                 {
                     throw new ArgumentOutOfRangeException(nameof(bytes));
                 }
 
-                if (low < 0 || low >= 16)
+                if (low >= 16)
                 {
                     throw new ArgumentOutOfRangeException(nameof(bytes));
                 }
