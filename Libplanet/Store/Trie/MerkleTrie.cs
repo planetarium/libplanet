@@ -146,7 +146,6 @@ namespace Libplanet.Store.Trie
                 switch (node)
                 {
                     case FullNode fullNode:
-                        IEnumerable<HashNode> childHashNodes = fullNode.Children.OfType<HashNode>();
                         foreach (int index in Enumerable.Range(0, FullNode.ChildrenCount - 1))
                         {
                             INode? child = fullNode.Children[index];
