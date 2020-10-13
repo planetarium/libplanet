@@ -11359,12 +11359,12 @@ references:
   commentId: T:Libplanet.Store.TrieStateStore
   fullName: Libplanet.Store.TrieStateStore
   nameWithType: TrieStateStore
-- uid: Libplanet.Store.TrieStateStore.#ctor(Libplanet.Store.Trie.IKeyValueStore,Libplanet.Store.Trie.IKeyValueStore)
-  name: TrieStateStore(IKeyValueStore, IKeyValueStore)
-  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore__ctor_Libplanet_Store_Trie_IKeyValueStore_Libplanet_Store_Trie_IKeyValueStore_
-  commentId: M:Libplanet.Store.TrieStateStore.#ctor(Libplanet.Store.Trie.IKeyValueStore,Libplanet.Store.Trie.IKeyValueStore)
-  fullName: Libplanet.Store.TrieStateStore.TrieStateStore(Libplanet.Store.Trie.IKeyValueStore, Libplanet.Store.Trie.IKeyValueStore)
-  nameWithType: TrieStateStore.TrieStateStore(IKeyValueStore, IKeyValueStore)
+- uid: Libplanet.Store.TrieStateStore.#ctor(Libplanet.Store.Trie.IKeyValueStore,Libplanet.Store.Trie.IKeyValueStore,System.Boolean)
+  name: TrieStateStore(IKeyValueStore, IKeyValueStore, Boolean)
+  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore__ctor_Libplanet_Store_Trie_IKeyValueStore_Libplanet_Store_Trie_IKeyValueStore_System_Boolean_
+  commentId: M:Libplanet.Store.TrieStateStore.#ctor(Libplanet.Store.Trie.IKeyValueStore,Libplanet.Store.Trie.IKeyValueStore,System.Boolean)
+  fullName: Libplanet.Store.TrieStateStore.TrieStateStore(Libplanet.Store.Trie.IKeyValueStore, Libplanet.Store.Trie.IKeyValueStore, System.Boolean)
+  nameWithType: TrieStateStore.TrieStateStore(IKeyValueStore, IKeyValueStore, Boolean)
 - uid: Libplanet.Store.TrieStateStore.#ctor*
   name: TrieStateStore
   href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore__ctor_

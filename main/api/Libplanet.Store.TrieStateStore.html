@@ -96,19 +96,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_TrieStateStore__ctor_Libplanet_Store_Trie_IKeyValueStore_Libplanet_Store_Trie_IKeyValueStore_.md&amp;value=---%0Auid%3A%20Libplanet.Store.TrieStateStore.%23ctor(Libplanet.Store.Trie.IKeyValueStore%2CLibplanet.Store.Trie.IKeyValueStore)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_TrieStateStore__ctor_Libplanet_Store_Trie_IKeyValueStore_Libplanet_Store_Trie_IKeyValueStore_System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Store.TrieStateStore.%23ctor(Libplanet.Store.Trie.IKeyValueStore%2CLibplanet.Store.Trie.IKeyValueStore%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/TrieStateStore.cs/#L32">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/TrieStateStore.cs/#L35">View Source</a>
   </span>
   <a id="Libplanet_Store_TrieStateStore__ctor_" data-uid="Libplanet.Store.TrieStateStore.#ctor*"></a>
-  <h4 id="Libplanet_Store_TrieStateStore__ctor_Libplanet_Store_Trie_IKeyValueStore_Libplanet_Store_Trie_IKeyValueStore_" data-uid="Libplanet.Store.TrieStateStore.#ctor(Libplanet.Store.Trie.IKeyValueStore,Libplanet.Store.Trie.IKeyValueStore)">TrieStateStore(IKeyValueStore, IKeyValueStore)</h4>
+  <h4 id="Libplanet_Store_TrieStateStore__ctor_Libplanet_Store_Trie_IKeyValueStore_Libplanet_Store_Trie_IKeyValueStore_System_Boolean_" data-uid="Libplanet.Store.TrieStateStore.#ctor(Libplanet.Store.Trie.IKeyValueStore,Libplanet.Store.Trie.IKeyValueStore,System.Boolean)">TrieStateStore(IKeyValueStore, IKeyValueStore, Boolean)</h4>
   <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public TrieStateStore(IKeyValueStore stateKeyValueStore, IKeyValueStore stateHashKeyValueStore)</code></pre>
+    <pre><code class="lang-csharp hljs">public TrieStateStore(IKeyValueStore stateKeyValueStore, IKeyValueStore stateHashKeyValueStore, bool secure = false)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -134,6 +134,13 @@
 block hash.</p>
 </td>
       </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">secure</span></td>
+        <td><p>Whether to use <a class="xref" href="Libplanet.Store.Trie.MerkleTrie.html">MerkleTrie</a> in secure mode.
+<span class="xref">Libplanet.Store.Trie.MerkleTrie.#ctor(Libplanet.Store.Trie.IKeyValueStore,Libplanet.Store.Trie.Nodes.INode,System.Boolean)</span>.</p>
+</td>
+      </tr>
     </tbody>
   </table>
   <h3 id="methods">Methods
@@ -143,7 +150,7 @@ block hash.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_TrieStateStore_ContainsBlockStates_Libplanet_HashDigest_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.TrieStateStore.ContainsBlockStates(Libplanet.HashDigest%7BSHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/TrieStateStore.cs/#L83">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/TrieStateStore.cs/#L89">View Source</a>
   </span>
   <a id="Libplanet_Store_TrieStateStore_ContainsBlockStates_" data-uid="Libplanet.Store.TrieStateStore.ContainsBlockStates*"></a>
   <h4 id="Libplanet_Store_TrieStateStore_ContainsBlockStates_Libplanet_HashDigest_SHA256__" data-uid="Libplanet.Store.TrieStateStore.ContainsBlockStates(Libplanet.HashDigest{SHA256})">ContainsBlockStates(HashDigest&lt;SHA256&gt;)</h4>
@@ -195,7 +202,7 @@ exist.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_TrieStateStore_Dispose.md&amp;value=---%0Auid%3A%20Libplanet.Store.TrieStateStore.Dispose%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/TrieStateStore.cs/#L170">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/TrieStateStore.cs/#L177">View Source</a>
   </span>
   <a id="Libplanet_Store_TrieStateStore_Dispose_" data-uid="Libplanet.Store.TrieStateStore.Dispose*"></a>
   <h4 id="Libplanet_Store_TrieStateStore_Dispose" data-uid="Libplanet.Store.TrieStateStore.Dispose">Dispose()</h4>
@@ -210,7 +217,7 @@ exist.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_TrieStateStore_ForkStates__1_Guid_Guid_Libplanet_Blocks_Block___0__.md&amp;value=---%0Auid%3A%20Libplanet.Store.TrieStateStore.ForkStates%60%601(Guid%2CGuid%2CLibplanet.Blocks.Block%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/TrieStateStore.cs/#L89">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/TrieStateStore.cs/#L95">View Source</a>
   </span>
   <a id="Libplanet_Store_TrieStateStore_ForkStates_" data-uid="Libplanet.Store.TrieStateStore.ForkStates*"></a>
   <h4 id="Libplanet_Store_TrieStateStore_ForkStates__1_Guid_Guid_Libplanet_Blocks_Block___0__" data-uid="Libplanet.Store.TrieStateStore.ForkStates``1(Guid,Guid,Libplanet.Blocks.Block{``0})">ForkStates&lt;T&gt;(Guid, Guid, Block&lt;T&gt;)</h4>
@@ -268,7 +275,7 @@ exist.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_TrieStateStore_GetRootHash_Libplanet_HashDigest_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.TrieStateStore.GetRootHash(Libplanet.HashDigest%7BSHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/TrieStateStore.cs/#L184">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/TrieStateStore.cs/#L191">View Source</a>
   </span>
   <a id="Libplanet_Store_TrieStateStore_GetRootHash_" data-uid="Libplanet.Store.TrieStateStore.GetRootHash*"></a>
   <h4 id="Libplanet_Store_TrieStateStore_GetRootHash_Libplanet_HashDigest_SHA256__" data-uid="Libplanet.Store.TrieStateStore.GetRootHash(Libplanet.HashDigest{SHA256})">GetRootHash(HashDigest&lt;SHA256&gt;)</h4>
@@ -319,7 +326,7 @@ it will return the state hash. If not, it will return null.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_TrieStateStore_GetState_System_String_System_Nullable_Libplanet_HashDigest_SHA256___System_Nullable_Guid__.md&amp;value=---%0Auid%3A%20Libplanet.Store.TrieStateStore.GetState(System.String%2CSystem.Nullable%7BLibplanet.HashDigest%7BSHA256%7D%7D%2CSystem.Nullable%7BGuid%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/TrieStateStore.cs/#L65">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/TrieStateStore.cs/#L71">View Source</a>
   </span>
   <a id="Libplanet_Store_TrieStateStore_GetState_" data-uid="Libplanet.Store.TrieStateStore.GetState*"></a>
   <h4 id="Libplanet_Store_TrieStateStore_GetState_System_String_System_Nullable_Libplanet_HashDigest_SHA256___System_Nullable_Guid__" data-uid="Libplanet.Store.TrieStateStore.GetState(System.String,System.Nullable{Libplanet.HashDigest{SHA256}},System.Nullable{Guid})">GetState(String, Nullable&lt;HashDigest&lt;SHA256&gt;&gt;, Nullable&lt;Guid&gt;)</h4>
@@ -376,7 +383,7 @@ it will return the state hash. If not, it will return null.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_TrieStateStore_PruneStates_ImmutableHashSet_Libplanet_HashDigest_SHA256___.md&amp;value=---%0Auid%3A%20Libplanet.Store.TrieStateStore.PruneStates(ImmutableHashSet%7BLibplanet.HashDigest%7BSHA256%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/TrieStateStore.cs/#L95">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/TrieStateStore.cs/#L101">View Source</a>
   </span>
   <a id="Libplanet_Store_TrieStateStore_PruneStates_" data-uid="Libplanet.Store.TrieStateStore.PruneStates*"></a>
   <h4 id="Libplanet_Store_TrieStateStore_PruneStates_ImmutableHashSet_Libplanet_HashDigest_SHA256___" data-uid="Libplanet.Store.TrieStateStore.PruneStates(ImmutableHashSet{Libplanet.HashDigest{SHA256}})">PruneStates(ImmutableHashSet&lt;HashDigest&lt;SHA256&gt;&gt;)</h4>
@@ -408,7 +415,7 @@ it will return the state hash. If not, it will return null.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_TrieStateStore_SetStates__1_Libplanet_Blocks_Block___0__IImmutableDictionary_System_String_IValue__.md&amp;value=---%0Auid%3A%20Libplanet.Store.TrieStateStore.SetStates%60%601(Libplanet.Blocks.Block%7B%60%600%7D%2CIImmutableDictionary%7BSystem.String%2CIValue%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/TrieStateStore.cs/#L40">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/TrieStateStore.cs/#L46">View Source</a>
   </span>
   <a id="Libplanet_Store_TrieStateStore_SetStates_" data-uid="Libplanet.Store.TrieStateStore.SetStates*"></a>
   <h4 id="Libplanet_Store_TrieStateStore_SetStates__1_Libplanet_Blocks_Block___0__IImmutableDictionary_System_String_IValue__" data-uid="Libplanet.Store.TrieStateStore.SetStates``1(Libplanet.Blocks.Block{``0},IImmutableDictionary{System.String,IValue})">SetStates&lt;T&gt;(Block&lt;T&gt;, IImmutableDictionary&lt;String, IValue&gt;)</h4>
