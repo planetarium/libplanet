@@ -103,7 +103,7 @@ namespace Libplanet.Blockchain.Renderers
         /// <inheritdoc cref="DelayedRenderer{T}.RenderBlock(Block{T}, Block{T})"/>
         public override void RenderBlock(Block<T> oldTip, Block<T> newTip)
         {
-            base.RenderBlock(oldTip, newTip);
+            Confirmed.TryAdd(oldTip.Hash, 0);
             if (_eventReceivingReorg is Reorg reorg &&
                 reorg.OldTip.Equals(oldTip) &&
                 reorg.NewTip.Equals(newTip))
@@ -243,6 +243,7 @@ namespace Libplanet.Blockchain.Renderers
             }
 
             _localRenderBuffer.Value = new Dictionary<HashDigest<SHA256>, List<ActionEvaluation>>();
+            DiscoverBlock(newTip);
         }
 
         public override void RenderReorgEnd(Block<T> oldTip, Block<T> newTip, Block<T> branchpoint)

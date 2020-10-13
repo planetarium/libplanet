@@ -1,6 +1,7 @@
 #nullable enable
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Blocks;
@@ -36,7 +37,6 @@ namespace Libplanet.Blockchain.Renderers
     public class DelayedRenderer<T> : IRenderer<T>
         where T : IAction, new()
     {
-        private ConcurrentDictionary<HashDigest<SHA256>, uint> _confirmed;
         private Block<T>? _tip;
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace Libplanet.Blockchain.Renderers
             Renderer = renderer;
             Store = store;
             Confirmations = confirmations;
-            _confirmed = new ConcurrentDictionary<HashDigest<SHA256>, uint>();
+            Confirmed = new ConcurrentDictionary<HashDigest<SHA256>, uint>();
         }
 
         /// <summary>
@@ -175,17 +175,19 @@ namespace Libplanet.Blockchain.Renderers
         /// </summary>
         protected ILogger Logger { get; }
 
+        protected ConcurrentDictionary<HashDigest<SHA256>, uint> Confirmed { get; }
+
         /// <inheritdoc cref="IRenderer{T}.RenderBlock(Block{T}, Block{T})"/>
         public virtual void RenderBlock(Block<T> oldTip, Block<T> newTip)
         {
-            _confirmed.TryAdd(oldTip.Hash, 0);
+            Confirmed.TryAdd(oldTip.Hash, 0);
             DiscoverBlock(newTip);
         }
 
         /// <inheritdoc cref="IRenderer{T}.RenderReorg(Block{T}, Block{T}, Block{T})"/>
         public virtual void RenderReorg(Block<T> oldTip, Block<T> newTip, Block<T> branchpoint)
         {
-            _confirmed.TryAdd(branchpoint.Hash, 0);
+            Confirmed.TryAdd(branchpoint.Hash, 0);
         }
 
         /// <inheritdoc cref="IRenderer{T}.RenderReorgEnd(Block{T}, Block{T}, Block{T})"/>
@@ -216,61 +218,84 @@ namespace Libplanet.Blockchain.Renderers
             }
         }
 
-        private void DiscoverBlock(Block<T> block)
+        protected void DiscoverBlock(Block<T> block)
         {
-            if (_confirmed.ContainsKey(block.Hash))
+            if (Confirmed.ContainsKey(block.Hash))
             {
                 return;
             }
 
-            _confirmed.TryAdd(block.Hash, 0);
+            Confirmed.TryAdd(block.Hash, 0U);
 
+            var blocksToRender = new Stack<(long, HashDigest<SHA256>)>();
+
+            long prevBlockIndex = block.Index - 1;
+            uint accumulatedConfirmations = 0;
             HashDigest<SHA256>? prev = block.PreviousHash;
-            do
+            while (
+                prev is HashDigest<SHA256> prevHash &&
+                Store.GetBlock<T>(prevHash) is Block<T> prevBlock)
             {
-                if (!(prev is HashDigest<SHA256> prevHash &&
-                      Store.GetBlock<T>(prevHash) is Block<T> prevBlock))
+                uint c = Confirmed.GetOrAdd(prevHash, k => 0U);
+
+                if (c >= Confirmations)
                 {
                     break;
                 }
 
-                uint c = _confirmed.AddOrUpdate(prevHash, k => 1U, (k, v) => v + 1U);
-                Logger.Verbose(
-                    "The block #{BlockIndex} {BlockHash} has {Confirmations} confirmations. " +
-                    "(The last confirmation was done by #{DiscoveredIndex} {DiscoveredHash}.)",
-                    prevBlock.Index,
-                    prevBlock.Hash,
-                    c,
-                    block.Index,
-                    block.Hash
+                accumulatedConfirmations += 1;
+                blocksToRender.Push((prevBlockIndex, prevHash));
+
+                prevBlockIndex -= 1;
+                prev = prevBlock.PreviousHash;
+            }
+
+            while (blocksToRender.Count > 0)
+            {
+                (long index, HashDigest<SHA256> hash) = blocksToRender.Pop();
+                uint ac = accumulatedConfirmations;
+                uint c = Confirmed.AddOrUpdate(hash, k => 0U, (k, v) => ac);
+
+                Logger.Debug(
+                    "The block #{BlockIndex} {BlockHash} has {Confirmations} confirmations. ",
+                    index,
+                    hash,
+                    c
                 );
+
+                if (accumulatedConfirmations > 0)
+                {
+                    accumulatedConfirmations -= 1;
+                }
 
                 if (c >= Confirmations)
                 {
+                    var confirmedBlock = Store.GetBlock<T>(hash);
+
                     if (!(Tip is Block<T> t))
                     {
                         Logger.Verbose(
                             "Promoting #{NewTipIndex} {NewTipHash} as a new tip since there is " +
                             "no tip yet...",
-                            prevBlock.Index,
-                            prevBlock.Hash
+                            confirmedBlock.Index,
+                            confirmedBlock.Hash
                         );
-                        Tip = prevBlock;
+                        Tip = confirmedBlock;
                     }
-                    else if (t.TotalDifficulty < prevBlock.TotalDifficulty)
+                    else if (t.TotalDifficulty < confirmedBlock.TotalDifficulty)
                     {
                         Logger.Verbose(
                             "Promoting #{NewTipIndex} {NewTipHash} as a new tip since its total " +
                             "difficulty is more than the previous tip #{PreviousTipIndex} " +
                             "{PreviousTipHash} ({NewDifficulty} > {PreviousDifficulty}).",
-                            prevBlock.Index,
-                            prevBlock.Hash,
+                            confirmedBlock.Index,
+                            confirmedBlock.Hash,
                             t.Index,
                             t.Hash,
-                            prevBlock.TotalDifficulty,
+                            confirmedBlock.TotalDifficulty,
                             t.TotalDifficulty
                         );
-                        Tip = prevBlock;
+                        Tip = confirmedBlock;
                     }
                     else
                     {
@@ -278,21 +303,16 @@ namespace Libplanet.Blockchain.Renderers
                             "Although #{BlockIndex} {BlockHash} has been confirmed enough," +
                             "its difficulty is less than the current tip #{TipIndex} {TipHash} " +
                             "({Difficulty} < {TipDifficulty}).",
-                            prevBlock.Index,
-                            prevBlock.Hash,
+                            confirmedBlock.Index,
+                            confirmedBlock.Hash,
                             t.Index,
                             t.Hash,
-                            prevBlock.TotalDifficulty,
+                            confirmedBlock.TotalDifficulty,
                             t.TotalDifficulty
                         );
                     }
-
-                    break;
                 }
-
-                prev = prevBlock.PreviousHash;
             }
-            while (true);
         }
 
         private Block<T> FindBranchpoint(Block<T> a, Block<T> b)
