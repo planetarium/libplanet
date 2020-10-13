@@ -162,7 +162,14 @@ namespace Libplanet.Blockchain
 
             _logger = Log.ForContext<BlockChain<T>>()
                 .ForContext("CanonicalChainId", Id);
-            BlockEvaluator = new BlockEvaluator<T>(policy.BlockAction, GetState, GetBalance);
+            Func<HashDigest<SHA256>, ITrie> trieGetter = StateStore is TrieStateStore trieStateStore
+                ? h => trieStateStore.GetTrie(h)
+                : (Func<HashDigest<SHA256>, ITrie>)null;
+            BlockEvaluator = new BlockEvaluator<T>(
+                policy.BlockAction,
+                GetState,
+                GetBalance,
+                trieGetter);
 
             if (Count == 0)
             {
@@ -373,7 +380,8 @@ namespace Libplanet.Blockchain
                 blockAction,
                 (address, digest, stateCompleter) => null,
                 (address, currency, hash, fungibleAssetStateCompleter)
-                    => new FungibleAssetValue(currency));
+                    => new FungibleAssetValue(currency),
+                null);
             var actionEvaluationResult = blockEvaluator
                 .EvaluateActions(block, StateCompleterSet<T>.Reject)
                 .GetTotalDelta(ToStateKey, ToFungibleAssetKey);

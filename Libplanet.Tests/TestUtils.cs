@@ -206,7 +206,8 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 var blockEvaluator = new BlockEvaluator<T>(
                     blockAction,
                     (address, digest, arg3) => null,
-                    (address, currency, arg3, arg4) => new FungibleAssetValue(currency));
+                    (address, currency, arg3, arg4) => new FungibleAssetValue(currency),
+                    null);
                 var actionEvaluationResult = blockEvaluator
                     .EvaluateActions(block, StateCompleterSet<T>.Reject)
                     .GetTotalDelta(ToStateKey, ToFungibleAssetKey);

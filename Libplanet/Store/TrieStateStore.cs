@@ -190,5 +190,13 @@ namespace Libplanet.Store
         /// <paramref name="blockHash"/>.</exception>
         public HashDigest<SHA256> GetRootHash(HashDigest<SHA256> blockHash)
             => new HashDigest<SHA256>(_stateHashKeyValueStore.Get(blockHash.ToByteArray()));
+
+        internal ITrie GetTrie(HashDigest<SHA256> blockHash)
+            =>
+                new MerkleTrie(
+                    _stateKeyValueStore,
+                    new HashNode(
+                        new HashDigest<SHA256>(
+                            _stateHashKeyValueStore.Get(blockHash.ToByteArray()))));
     }
 }

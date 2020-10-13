@@ -1,4 +1,6 @@
+#nullable enable
 using System.Diagnostics.Contracts;
+using System.Security.Cryptography;
 
 namespace Libplanet.Action
 {
@@ -60,6 +62,13 @@ namespace Libplanet.Action
         /// <returns>A random object that shares interface mostly equivalent
         /// to <see cref="System.Random"/>.</returns>
         IRandom Random { get; }
+
+        /// <summary>
+        /// A state root hash at the <see cref="PreviousStates"/>.  It can cause file I/O interrupt.
+        /// It will be return null if the implementation or your chain didn't support
+        /// the state root hash feature.
+        /// </summary>
+        HashDigest<SHA256>? PreviousStateRootHash { get; }
 
         /// <summary>
         /// Returns a clone of this context, except that its <see cref="Random"/> has the unconsumed

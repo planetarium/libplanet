@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using Bencodex.Types;
 using Libplanet.Assets;
+using static Libplanet.Blockchain.KeyConverters;
 
 namespace Libplanet.Action
 {
@@ -31,5 +32,18 @@ namespace Libplanet.Action
                     )
                 )
             ).ToImmutableDictionary();
+
+        internal static IImmutableDictionary<string, IValue> GetUpdatedRawStates(
+            this IAccountStateDelta delta) =>
+            delta.GetUpdatedStates()
+                .Select(pair =>
+                    new KeyValuePair<string, IValue>(
+                        ToStateKey(pair.Key),
+                        pair.Value))
+                .Union(
+                    delta.GetUpdatedBalances().Select(pair =>
+                        new KeyValuePair<string, IValue>(
+                            ToFungibleAssetKey(pair.Key),
+                            (Integer)pair.Value.RawValue))).ToImmutableDictionary();
     }
 }

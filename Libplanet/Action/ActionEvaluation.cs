@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
+using Libplanet.Store.Trie;
 using Libplanet.Tx;
 
 namespace Libplanet.Action
@@ -84,6 +85,8 @@ namespace Libplanet.Action
         /// <param name="rehearsal">Pass <c>true</c> if it is intended
         /// to be dry-run (i.e., the returned result will be never used).
         /// The default value is <c>false</c>.</param>
+        /// <param name="previousBlockStatesTrie">The trie to contain states at previous block.
+        /// </param>
         /// <returns>Enumerates <see cref="ActionEvaluation"/>s for each one in
         /// <paramref name="actions"/>.  The order is the same to the <paramref name="actions"/>.
         /// Note that each <see cref="IActionContext.Random"/> object
@@ -98,7 +101,8 @@ namespace Libplanet.Action
             Address signer,
             byte[] signature,
             IImmutableList<IAction> actions,
-            bool rehearsal = false)
+            bool rehearsal = false,
+            ITrie previousBlockStatesTrie = null)
         {
             ActionContext CreateActionContext(
                 IAccountStateDelta prevStates,
@@ -110,7 +114,8 @@ namespace Libplanet.Action
                     blockIndex: blockIndex,
                     previousStates: prevStates,
                     randomSeed: randomSeed,
-                    rehearsal: rehearsal
+                    rehearsal: rehearsal,
+                    previousBlockStatesTrie: previousBlockStatesTrie
                 );
 
             byte[] hashedSignature;
