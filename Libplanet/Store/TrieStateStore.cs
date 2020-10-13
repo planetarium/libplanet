@@ -21,6 +21,7 @@ namespace Libplanet.Store
     {
         private readonly IKeyValueStore _stateKeyValueStore;
         private readonly IKeyValueStore _stateHashKeyValueStore;
+        private readonly bool _secure;
 
         /// <summary>
         /// Creates a new <see cref="TrieStateStore"/>.
@@ -29,11 +30,16 @@ namespace Libplanet.Store
         /// <see cref="MerkleTrie"/> in internal.</param>
         /// <param name="stateHashKeyValueStore">The storage to store state hash corresponding to
         /// block hash.</param>
+        /// <param name="secure">Whether to use <see cref="MerkleTrie"/> in secure mode.
+        /// <seealso cref="MerkleTrie(IKeyValueStore, INode?, bool)"/>.</param>
         public TrieStateStore(
-            IKeyValueStore stateKeyValueStore, IKeyValueStore stateHashKeyValueStore)
+            IKeyValueStore stateKeyValueStore,
+            IKeyValueStore stateHashKeyValueStore,
+            bool secure = false)
         {
             _stateKeyValueStore = stateKeyValueStore;
             _stateHashKeyValueStore = stateHashKeyValueStore;
+            _secure = secure;
         }
 
         /// <inheritdoc/>
@@ -49,7 +55,7 @@ namespace Libplanet.Store
             var trieRoot = previousBlockStateHashBytes is null
                 ? null
                 : new HashNode(new HashDigest<SHA256>(previousBlockStateHashBytes));
-            prevStatesTrie = new MerkleTrie(_stateKeyValueStore, trieRoot);
+            prevStatesTrie = new MerkleTrie(_stateKeyValueStore, trieRoot, _secure);
 
             foreach (var pair in states)
             {
@@ -74,7 +80,7 @@ namespace Libplanet.Store
 
             var stateHash = _stateHashKeyValueStore.Get(blockHash?.ToByteArray()!);
             var stateTrie = new MerkleTrie(
-                _stateKeyValueStore, new HashNode(new HashDigest<SHA256>(stateHash)));
+                _stateKeyValueStore, new HashNode(new HashDigest<SHA256>(stateHash)), _secure);
             var key = Encoding.UTF8.GetBytes(stateKey);
             return stateTrie.TryGet(key, out IValue? value) ? value : null;
         }
@@ -107,7 +113,8 @@ namespace Libplanet.Store
                 byte[] stateRootHashBytes = _stateHashKeyValueStore.Get(blockHash.ToByteArray());
                 var stateTrie = new MerkleTrie(
                     _stateKeyValueStore,
-                    new HashNode(new HashDigest<SHA256>(stateRootHashBytes)));
+                    new HashNode(new HashDigest<SHA256>(stateRootHashBytes)),
+                    _secure);
                 Log.Debug("Started to iterate hash nodes.");
                 stopwatch.Start();
                 foreach (HashDigest<SHA256> nodeHash in stateTrie.IterateHashNodes())
