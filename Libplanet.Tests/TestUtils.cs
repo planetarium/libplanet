@@ -18,6 +18,7 @@ using Libplanet.Store.Trie;
 using Libplanet.Tests.Common;
 using Libplanet.Tx;
 using Xunit;
+using static Libplanet.Blockchain.KeyConverters;
 using Random = System.Random;
 
 namespace Libplanet.Tests
@@ -208,7 +209,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     (address, currency, arg3, arg4) => new FungibleAssetValue(currency));
                 var actionEvaluationResult = blockEvaluator
                     .EvaluateActions(block, StateCompleterSet<T>.Reject)
-                    .GetTotalDelta(BlockChain<T>.ToStateKey, BlockChain<T>.ToFungibleAssetKey);
+                    .GetTotalDelta(ToStateKey, ToFungibleAssetKey);
                 var trie = new MerkleTrie(new DefaultKeyValueStore(null));
                 foreach (var pair in actionEvaluationResult)
                 {

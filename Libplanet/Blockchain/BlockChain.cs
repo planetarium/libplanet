@@ -19,6 +19,7 @@ using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tx;
 using Serilog;
+using static Libplanet.Blockchain.KeyConverters;
 
 namespace Libplanet.Blockchain
 {
@@ -825,15 +826,6 @@ namespace Libplanet.Blockchain
                 return tx;
             }
         }
-
-        internal static string ToStateKey(Address address) => address.ToHex().ToLowerInvariant();
-
-        internal static string ToFungibleAssetKey(Address address, Currency currency) =>
-            "_" + address.ToHex().ToLowerInvariant() +
-            "_" + ByteUtil.Hex(currency.Hash.ByteArray).ToLowerInvariant();
-
-        internal static string ToFungibleAssetKey((Address, Currency) pair) =>
-            ToFungibleAssetKey(pair.Item1, pair.Item2);
 
         internal void Append(
             Block<T> block,
