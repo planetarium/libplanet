@@ -269,6 +269,7 @@ To be released.
     unable to be appended to `BlockChain<T>`.  [[#1010]]
  -  `BlockSet<T>[HashDigest<SHA256>]` and `BlockChain<T>.Genesis` became cached
     so that they become faster to get.  [[#1013]]
+ -  `Swarm<T>.PreloadAsync()` became to do not render blocks.  [[#1029]]
 
 ### Bug fixes
 
