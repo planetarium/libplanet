@@ -5,6 +5,8 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
+using Bencodex;
 using Cocona;
 using Cocona.Help;
 using Libplanet.RocksDBStore;
@@ -87,6 +89,51 @@ namespace Libplanet.Tools
 
                 Console.WriteLine();
             }
+        }
+
+        [Command(Description = "Export all states of the state root hash as JSON.")]
+        public void Export(
+            [Argument(
+                Name = "KEY-VALUE-STORE",
+                Description = "The path where IKeyValueStore implementation was used at.")]
+            string kvStoreUri,
+            [Argument(
+                Name = "STATE-ROOT-HASH",
+                Description = "The state root hash to compare.")]
+            string stateRootHashHex,
+            [FromService] IConfigurationService<ToolConfiguration> configurationService)
+        {
+            // If it is not Uri format,
+            // try to get uri from configuration service by using it as alias.
+            if (!Uri.IsWellFormedUriString(kvStoreUri, UriKind.Absolute))
+            {
+                try
+                {
+                    var configuration = configurationService.Load();
+                    kvStoreUri = configuration.Mpt.Aliases[kvStoreUri];
+                }
+                catch (KeyNotFoundException)
+                {
+                    var exceptionMessage =
+                        $"The alias, '{kvStoreUri}' doesn't exist. " +
+                        $"Please pass correct uri or alias.";
+                    throw new CommandExitedException(
+                        exceptionMessage,
+                        -1);
+                }
+            }
+
+            IKeyValueStore keyValueStore = LoadKVStoreFromURI(kvStoreUri);
+            var trie = new MerkleTrie(
+                keyValueStore,
+                HashDigest<SHA256>.FromString(stateRootHashHex));
+            var codec = new Codec();
+            ImmutableDictionary<string, byte[]> decoratedStates = trie.ListAllStates()
+                .ToImmutableDictionary(
+                    pair => Encoding.UTF8.GetString(pair.Key.ToArray()),
+                    pair => codec.Encode(pair.Value));
+
+            Console.WriteLine(JsonSerializer.Serialize(decoratedStates));
         }
 
         // FIXME: Now, it works like `set` not `add`. It allows override.

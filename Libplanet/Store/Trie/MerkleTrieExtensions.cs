@@ -40,6 +40,20 @@ namespace Libplanet.Store.Trie
                     group.Count() == 1 || !group.All(v => v.Value.Equals(group.First().Value)));
         }
 
+        /// <summary>
+        /// Lists the all states key and the all states in the given <paramref name="merkleTrie"/>.
+        /// </summary>
+        /// <param name="merkleTrie">A trie to discover.</param>
+        /// <returns>All state keys and the all states.</returns>
+        public static IEnumerable<KeyValuePair<ImmutableArray<byte>, IValue>> ListAllStates(
+            this MerkleTrie merkleTrie)
+        {
+            return merkleTrie.IterateNodes().Where(pair => pair.Node is ValueNode).Select(pair =>
+                new KeyValuePair<ImmutableArray<byte>, IValue>(
+                    FromKey(pair.Path),
+                    ((ValueNode)pair.Node).Value));
+        }
+
         private static ImmutableArray<byte> FromKey(ImmutableArray<byte> bytes)
         {
             if (bytes.Length % 2 == 1)
