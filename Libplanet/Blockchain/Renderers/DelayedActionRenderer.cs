@@ -243,7 +243,7 @@ namespace Libplanet.Blockchain.Renderers
             }
 
             _localRenderBuffer.Value = new Dictionary<HashDigest<SHA256>, List<ActionEvaluation>>();
-            DiscoverBlock(newTip);
+            DiscoverBlock(oldTip, newTip);
         }
 
         public override void RenderReorgEnd(Block<T> oldTip, Block<T> newTip, Block<T> branchpoint)

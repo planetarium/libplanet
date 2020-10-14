@@ -181,7 +181,7 @@ namespace Libplanet.Blockchain.Renderers
         public virtual void RenderBlock(Block<T> oldTip, Block<T> newTip)
         {
             Confirmed.TryAdd(oldTip.Hash, 0);
-            DiscoverBlock(newTip);
+            DiscoverBlock(oldTip, newTip);
         }
 
         /// <inheritdoc cref="IRenderer{T}.RenderReorg(Block{T}, Block{T}, Block{T})"/>
@@ -218,23 +218,29 @@ namespace Libplanet.Blockchain.Renderers
             }
         }
 
-        protected void DiscoverBlock(Block<T> block)
+        protected void DiscoverBlock(Block<T> oldTip, Block<T> newTip)
         {
-            if (Confirmed.ContainsKey(block.Hash))
+            if (Confirmed.ContainsKey(newTip.Hash))
             {
                 return;
             }
 
-            Confirmed.TryAdd(block.Hash, 0U);
+            Block<T> branchpoint = FindBranchpoint(oldTip, newTip);
+            var maxDepth = branchpoint.Index < Confirmations
+                ? 0
+                : branchpoint.Index - Confirmations;
+
+            Confirmed.TryAdd(newTip.Hash, 0U);
 
             var blocksToRender = new Stack<(long, HashDigest<SHA256>)>();
 
-            long prevBlockIndex = block.Index - 1;
+            long prevBlockIndex = newTip.Index - 1;
             uint accumulatedConfirmations = 0;
-            HashDigest<SHA256>? prev = block.PreviousHash;
+            HashDigest<SHA256>? prev = newTip.PreviousHash;
             while (
-                prev is HashDigest<SHA256> prevHash &&
-                Store.GetBlock<T>(prevHash) is Block<T> prevBlock)
+                prev is HashDigest<SHA256> prevHash
+                && Store.GetBlock<T>(prevHash) is Block<T> prevBlock
+                && prevBlock.Index >= maxDepth)
             {
                 uint c = Confirmed.GetOrAdd(prevHash, k => 0U);
 
@@ -256,7 +262,7 @@ namespace Libplanet.Blockchain.Renderers
                 uint ac = accumulatedConfirmations;
                 uint c = Confirmed.AddOrUpdate(hash, k => 0U, (k, v) => ac);
 
-                Logger.Debug(
+                Logger.Verbose(
                     "The block #{BlockIndex} {BlockHash} has {Confirmations} confirmations. ",
                     index,
                     hash,

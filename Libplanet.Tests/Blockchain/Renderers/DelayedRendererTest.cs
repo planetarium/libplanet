@@ -193,7 +193,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
             renderer.RenderBlock(_chainA[4], _chainA[5]);
             var expectedBlockLogs = new List<(Block<DumbAction> OldTip, Block<DumbAction> NewTip)>
             {
-                (_chainA[0], _chainA[1]),
                 (_chainA[1], _chainA[2]),
             };
             Assert.Equal(_chainA[2], delayedRenderer.Tip);

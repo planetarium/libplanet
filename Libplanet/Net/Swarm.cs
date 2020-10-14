@@ -790,12 +790,11 @@ namespace Libplanet.Net
                                 {
                                     cancellationToken.ThrowIfCancellationRequested();
 
-                                    // FIXME: Shouldn't we turn off renderBlocks option in IBD?
                                     workspace.Append(
                                         deltaBlock,
                                         DateTimeOffset.UtcNow,
                                         evaluateActions: false,
-                                        renderBlocks: true,
+                                        renderBlocks: false,
                                         renderActions: false
                                     );
                                     progress?.Report(new BlockVerificationState
