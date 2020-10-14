@@ -1767,7 +1767,7 @@ namespace Libplanet.Net
         {
             BlockChain<T> workspace = blockChain;
             var scope = new List<Guid>();
-            bool renderActions = evaluateActions;
+            bool render = evaluateActions;
 
             try
             {
@@ -1830,7 +1830,7 @@ namespace Libplanet.Net
                         workspace = workspace.Fork(branchPoint);
                         Guid workChainId = workspace.Id;
                         scope.Add(workChainId);
-                        renderActions = false;
+                        render = false;
                         _logger.Debug("Forking complete.");
                     }
 
@@ -1876,8 +1876,8 @@ namespace Libplanet.Net
                             block,
                             DateTimeOffset.UtcNow,
                             evaluateActions: evaluateActions,
-                            renderBlocks: true,
-                            renderActions: renderActions
+                            renderBlocks: render,
+                            renderActions: render
                         );
                         receivedBlockCount++;
                         progress?.Report(new BlockDownloadState
