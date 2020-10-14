@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Libplanet.Action;
-using Libplanet.Blockchain.Renderers;
 using Libplanet.Blocks;
 
 namespace Libplanet.Tests.Common
@@ -93,196 +92,219 @@ namespace Libplanet.Tests.Common
             Validate();
         }
 
+#pragma warning disable S2589
         private void Validate()
         {
-            var state = RenderState.Ready;
-            RenderRecord<T>.Reorg reorgState = null;
+            RenderState state = RenderState.Ready;
             RenderRecord<T>.Block blockState = null;
-            long previousActionBlockIndex = -1L;
-            var records = new List<RenderRecord<T>>(Records.Count);
+            RenderRecord<T>.Block prevBlockState = null;
+            RenderRecord<T>.Reorg reorgState = null;
 
-            Exception BadRenderExc(string message) => new InvalidRenderException(records, message);
+            Exception BadRenderExc(string message) => new InvalidRenderException(Records, message);
 
-#pragma warning disable S2589
             foreach (RenderRecord<T> record in Records)
             {
-                records.Add(record);
-                switch (state)
+                switch (record)
                 {
-                    case RenderState.Ready:
+                    case RenderRecord<T>.Block block:
                     {
-                        if (!(reorgState is null && blockState is null))
+                        if (block.Begin)
                         {
-                            throw BadRenderExc(
-                                $"Unexpected reorg/block states: {reorgState}/{blockState}."
-                            );
-                        }
-                        else if (record is RenderRecord<T>.BlockBase blockBase && blockBase.Begin)
-                        {
-                            if (blockBase is RenderRecord<T>.Reorg reorg)
-                            {
-                                reorgState = reorg;
-                                state = RenderState.Reorg;
-                                break;
-                            }
-                            else if (blockBase is RenderRecord<T>.Block block)
-                            {
-                                blockState = block;
-                                state = RenderState.Block;
-                                break;
-                            }
-                        }
-
-                        throw BadRenderExc(
-                            $"Expected {nameof(IRenderer<T>.RenderReorg)} or " +
-                            $"{nameof(IRenderer<T>.RenderBlock)}."
-                        );
-                    }
-
-                    case RenderState.Reorg:
-                    {
-                        if (reorgState is null || !(blockState is null))
-                        {
-                            throw BadRenderExc(
-                                $"Unexpected reorg/block states: {reorgState}/{blockState}."
-                            );
-                        }
-                        else if (record is RenderRecord<T>.Block block && block.Begin)
-                        {
-                            if (block.OldTip != reorgState.OldTip ||
-                                block.NewTip != reorgState.NewTip)
+                            if (state == RenderState.Block)
                             {
                                 throw BadRenderExc(
-                                    $"{nameof(IRenderer<T>.RenderReorg)} and " +
-                                    $"{nameof(IRenderer<T>.RenderBlock)} which follows it should " +
-                                    "have the same oldTip and newTip."
+                                    $"{nameof(RenderBlock)}: Should not have " +
+                                    $"{nameof(RenderState.Block)} state.  {state}"
+                                );
+                            }
+
+                            if (!(blockState is null))
+                            {
+                                throw BadRenderExc(
+                                    $"{nameof(RenderBlock)}: Should not have " +
+                                    $"{nameof(blockState)}."
+                                );
+                            }
+
+                            if (!(prevBlockState is null) &&
+                                prevBlockState.NewTip != block.OldTip)
+                            {
+                                throw BadRenderExc(
+                                    $"{nameof(RenderBlock)}: Should have same oldTip with " +
+                                    $"{nameof(prevBlockState)}'s newTip."
                                 );
                             }
 
                             blockState = block;
                             state = RenderState.Block;
-                            break;
                         }
-                        else if (record is RenderRecord<T>.ActionBase actionBase &&
-                                 actionBase.Unrender)
+                        else
                         {
-                            long idx = actionBase.Context.BlockIndex;
-                            long minIdx = reorgState.Branchpoint.Index + 1;
-                            long maxIdx = previousActionBlockIndex < 0
-                                ? reorgState.OldTip.Index
-                                : previousActionBlockIndex;
-                            if (idx < minIdx || idx > maxIdx)
+                            if (state == RenderState.Ready ||
+                                state == RenderState.Reorg ||
+                                state == RenderState.BlockEnd)
                             {
                                 throw BadRenderExc(
-                                    "An action is from a block which has an unexpected index " +
-                                    $"#{idx} (expected min: #{minIdx}; max: #{maxIdx})."
+                                    $"{nameof(RenderBlockEnd)}: Should not have " +
+                                    $"{nameof(RenderState.Ready)} or " +
+                                    $"{nameof(RenderState.Reorg)} or " +
+                                    $"{nameof(RenderState.BlockEnd)} state.  {state}"
                                 );
                             }
 
-                            previousActionBlockIndex = idx;
-                            break;
-                        }
-
-                        throw BadRenderExc(
-                            $"Expected {nameof(IRenderer<T>.RenderBlock)} or " +
-                            $"{nameof(IActionRenderer<T>.UnrenderAction)} or " +
-                            $"{nameof(IActionRenderer<T>.UnrenderActionError)}."
-                        );
-                    }
-
-                    case RenderState.Block:
-                    {
-                        if (blockState is null)
-                        {
-                            throw BadRenderExc("Unexpected block state: null.");
-                        }
-                        else if (record is RenderRecord<T>.Block block && block.End)
-                        {
-                            if (block.OldTip != blockState.OldTip ||
-                                block.NewTip != blockState.NewTip)
+                            if (blockState is null)
                             {
                                 throw BadRenderExc(
-                                    $"{nameof(IRenderer<T>.RenderBlock)} and " +
-                                    $"{nameof(IActionRenderer<T>.RenderBlockEnd)} which matches " +
-                                    "to it should have the same oldTip and newTip."
+                                    $"{nameof(RenderBlockEnd)}: Should have {nameof(blockState)}."
                                 );
                             }
 
-                            state = reorgState is null ? RenderState.Ready : RenderState.BlockEnd;
+                            if (blockState.OldTip != block.OldTip ||
+                                blockState.NewTip != block.NewTip)
+                            {
+                                throw BadRenderExc(
+                                    $"{nameof(RenderBlockEnd)}: Should match with previous " +
+                                    $"{nameof(RenderBlock)}."
+                                );
+                            }
+
+                            prevBlockState = blockState;
                             blockState = null;
-                            break;
-                        }
-                        else if (record is RenderRecord<T>.ActionBase actionBase &&
-                                 actionBase.Render)
-                        {
-                            long idx = actionBase.Context.BlockIndex;
-                            if (reorgState is RenderRecord<T>.Reorg reorg)
-                            {
-                                long minIdx = previousActionBlockIndex >= 0
-                                    ? previousActionBlockIndex
-                                    : reorg.Branchpoint.Index + 1;
-                                long maxIdx = reorg.NewTip.Index;
-                                if (idx < minIdx || idx > maxIdx)
-                                {
-                                    throw BadRenderExc(
-                                        "An action is from a block which has an unexpected index " +
-                                        $"#{idx} (expected min: #{minIdx}; max: #{maxIdx})."
-                                    );
-                                }
-                            }
-                            else if (idx != blockState.NewTip.Index)
-                            {
-                                throw BadRenderExc(
-                                    "An action is from a block which has an unexpected index " +
-                                    $"#{idx} (expected: #{blockState.NewTip.Index}."
-                                );
-                            }
-
-                            previousActionBlockIndex = idx;
-                            break;
+                            state = RenderState.BlockEnd;
                         }
 
-                        throw BadRenderExc(
-                            $"Expected {nameof(IActionRenderer<T>.RenderBlockEnd)} or " +
-                            $"{nameof(IActionRenderer<T>.RenderAction)} or " +
-                            $"{nameof(IActionRenderer<T>.RenderActionError)}"
-                        );
+                        break;
                     }
 
-                    case RenderState.BlockEnd:
+                    case RenderRecord<T>.Reorg reorg:
                     {
-                        if (reorgState is null || !(blockState is null))
+                        if (reorg.Begin)
                         {
-                            throw BadRenderExc(
-                                $"Unexpected reorg/block states: {reorgState}/{blockState}."
-                            );
-                        }
-                        else if (record is RenderRecord<T>.Reorg reorg && reorg.End)
-                        {
-                            if (reorg.OldTip != reorgState.OldTip ||
-                                reorg.NewTip != reorgState.NewTip ||
-                                reorg.Branchpoint != reorgState.Branchpoint)
+                            if (state == RenderState.Reorg ||
+                                state == RenderState.Block)
                             {
                                 throw BadRenderExc(
-                                    $"{nameof(IRenderer<T>.RenderReorgEnd)} should match to " +
-                                    $"{nameof(IActionRenderer<T>.RenderReorg)}; they should have " +
-                                    "the same oldTip, newTip, and branchpoint."
+                                    $"{nameof(RenderReorg)}: Should not have " +
+                                    $"{nameof(RenderState.Reorg)} or " +
+                                    $"{nameof(RenderState.Block)} state.  {state}"
                                 );
                             }
 
-                            state = RenderState.Ready;
+                            if (!(blockState is null))
+                            {
+                                throw BadRenderExc(
+                                    $"{nameof(RenderReorg)}: Should not have " +
+                                    $"{nameof(blockState)}."
+                                );
+                            }
+
+                            if (!(prevBlockState is null) &&
+                                prevBlockState.NewTip != reorg.OldTip)
+                            {
+                                throw BadRenderExc(
+                                    $"{nameof(RenderReorg)}: Should have same oldTip with " +
+                                    $"{nameof(prevBlockState)}'s newTip."
+                                );
+                            }
+
+                            prevBlockState = null;
+                            reorgState = reorg;
+                            state = RenderState.Reorg;
+                        }
+                        else
+                        {
+                            // FIXME: Should include RenderState.Reorg in this statement
+                            // because reorg cannot happened to shorter (easier) chain.
+                            if (state == RenderState.Ready ||
+                                state == RenderState.Block)
+                            {
+                                throw BadRenderExc(
+                                    $"{nameof(RenderReorgEnd)}: Should not have " +
+                                    $"{nameof(RenderState.Ready)} or " +
+                                    $"{nameof(RenderState.Block)} state.  {state}"
+                                );
+                            }
+
                             reorgState = null;
-                            break;
+                            state = RenderState.Ready;
                         }
 
-                        throw BadRenderExc(
-                            $"Expected {nameof(IActionRenderer<T>.RenderReorgEnd)}."
-                        );
+                        break;
                     }
+
+                    case RenderRecord<T>.ActionBase action:
+                    {
+                        if (action.Render)
+                        {
+                            if (state == RenderState.Ready ||
+                                state == RenderState.Reorg ||
+                                state == RenderState.BlockEnd)
+                            {
+                                throw BadRenderExc(
+                                    $"{nameof(RenderAction)}: Should not have " +
+                                    $"{RenderState.Ready} or " +
+                                    $"{RenderState.Reorg} or " +
+                                    $"{RenderState.BlockEnd} state.  {state}"
+                                );
+                            }
+
+                            if (blockState is null)
+                            {
+                                throw BadRenderExc(
+                                    $"{nameof(RenderAction)}: Should have {nameof(blockState)}."
+                                );
+                            }
+
+                            if (blockState.NewTip.Index != action.Context.BlockIndex)
+                            {
+                                throw BadRenderExc(
+                                    $"{nameof(RenderAction)}: Index of action context does not " +
+                                    $"match with {nameof(RenderBlock)}."
+                                );
+                            }
+                        }
+                        else
+                        {
+                            if (state == RenderState.Ready ||
+                                state == RenderState.Block ||
+                                state == RenderState.BlockEnd)
+                            {
+                                throw BadRenderExc(
+                                    $"{nameof(UnrenderAction)}: Should not have " +
+                                    $"{nameof(RenderState.Ready)} or " +
+                                    $"{nameof(RenderState.Block)} or " +
+                                    $"{nameof(RenderState.BlockEnd)} state.  {state}"
+                                );
+                            }
+
+                            if (reorgState is null)
+                            {
+                                throw BadRenderExc(
+                                    $"{nameof(UnrenderAction)}: Should have {nameof(blockState)}."
+                                );
+                            }
+
+                            var minIdx = reorgState.Branchpoint.Index + 1;
+                            var maxIdx = reorgState.OldTip.Index;
+                            var idx = action.Context.BlockIndex;
+                            if (idx > maxIdx || idx < minIdx)
+                            {
+                                throw BadRenderExc(
+                                    $"{nameof(UnrenderAction)}: Index of action context does not " +
+                                    $"match with {nameof(reorgState)}."
+                                );
+                            }
+                        }
+
+                        break;
+                    }
+
+                    default:
+                        throw BadRenderExc($"Unexpected record {record}");
                 }
             }
-#pragma warning restore S2589
         }
+#pragma warning restore S2589
 
         public class InvalidRenderException : Exception
         {
