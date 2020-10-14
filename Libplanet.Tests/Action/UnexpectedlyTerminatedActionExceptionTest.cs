@@ -20,6 +20,9 @@ namespace Libplanet.Tests.Action
             );
             long blockIndex = 100;
             var txId = new TxId(TestUtils.GetRandomBytes(TxId.Size));
+            var previousStateRootHash = new HashDigest<SHA256>(
+                TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)
+            );
             var action = new Sleep()
             {
                 ZoneId = 1,
@@ -29,6 +32,7 @@ namespace Libplanet.Tests.Action
                 blockHash,
                 blockIndex,
                 txId,
+                previousStateRootHash,
                 action,
                 "for testing",
                 innerExc
@@ -48,6 +52,7 @@ namespace Libplanet.Tests.Action
                 Assert.Equal(blockHash, deserialized.BlockHash);
                 Assert.Equal(blockIndex, deserialized.BlockIndex);
                 Assert.Equal(txId, deserialized.TxId);
+                Assert.Equal(previousStateRootHash, deserialized.PreviousStateRootHash);
 
                 Assert.IsType<Sleep>(deserialized.Action);
                 Assert.Equal(action.PlainValue, deserialized.Action.PlainValue);

@@ -68,19 +68,27 @@ namespace Libplanet.Blockchain
                 );
             }
 
+            ITrie? previousBlockStatesTrie =
+                !(_trieGetter is null) && block.PreviousHash is HashDigest<SHA256> h
+                    ? _trieGetter(h)
+                    : null;
+
             ImmutableList<ActionEvaluation> txEvaluations = block
-                .Evaluate(DateTimeOffset.UtcNow, stateGetter, balanceGetter)
+                .Evaluate(
+                    DateTimeOffset.UtcNow, stateGetter, balanceGetter, previousBlockStatesTrie)
                 .ToImmutableList();
             return _blockAction is null
                 ? txEvaluations
                 : txEvaluations.Add(
-                    EvaluateBlockAction(block, txEvaluations, stateCompleters));
+                    EvaluateBlockAction(
+                        block, txEvaluations, stateCompleters, previousBlockStatesTrie));
         }
 
         internal ActionEvaluation EvaluateBlockAction(
             Block<T> block,
             IReadOnlyList<ActionEvaluation> txActionEvaluations,
-            StateCompleterSet<T> stateCompleters
+            StateCompleterSet<T> stateCompleters,
+            ITrie? previousBlockStatesTrie
         )
         {
             if (block == null)
@@ -119,11 +127,6 @@ namespace Libplanet.Blockchain
                     miner
                 );
             }
-
-            ITrie? previousBlockStatesTrie =
-                !(_trieGetter is null) && block.PreviousHash is HashDigest<SHA256> h
-                    ? _trieGetter(h)
-                    : null;
 
             return ActionEvaluation.EvaluateActionsGradually(
                 block.PreEvaluationHash,

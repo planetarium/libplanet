@@ -10,6 +10,7 @@ using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
 using Libplanet.Crypto;
+using Libplanet.Store.Trie;
 
 namespace Libplanet.Tx
 {
@@ -520,6 +521,8 @@ namespace Libplanet.Tx
         /// <param name="rehearsal">Pass <c>true</c> if it is intended
         /// to be dry-run (i.e., the returned result will be never used).
         /// The default value is <c>false</c>.</param>
+        /// <param name="previousBlockStatesTrie">The trie to contain states at previous block.
+        /// </param>
         /// <returns>Enumerates <see cref="ActionEvaluation"/>s for each one in
         /// <see cref="Actions"/>.
         /// The order is the same to the <see cref="Actions"/>.
@@ -533,7 +536,8 @@ namespace Libplanet.Tx
             long blockIndex,
             IAccountStateDelta previousStates,
             Address minerAddress,
-            bool rehearsal = false
+            bool rehearsal = false,
+            ITrie previousBlockStatesTrie = null
         )
         {
             return ActionEvaluation.EvaluateActionsGradually(
@@ -545,7 +549,8 @@ namespace Libplanet.Tx
                 Signer,
                 Signature,
                 Actions.Cast<IAction>().ToImmutableList(),
-                rehearsal);
+                rehearsal,
+                previousBlockStatesTrie);
        }
 
         /// <summary>

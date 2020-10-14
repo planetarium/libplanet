@@ -140,31 +140,32 @@ namespace Libplanet.Action
                 }
                 catch (Exception e)
                 {
-                    string msg;
-                    if (!rehearsal)
+                    if (rehearsal)
                     {
-                        // FIXME: The below "exc" object seems never used; Hong Minhee believes
-                        // this code's behavior does not follow the intention.
-                        msg = $"The action {action} (block #{blockIndex} {blockHash}, tx {txid}) " +
-                              "threw an exception during execution.  See also this exception's " +
-                              "InnerException property.";
+                        var msg =
+                            $"The action {action} threw an exception during its " +
+                            "rehearsal.  It is probably because the logic of the " +
+                            $"action {action} is not enough generic so that it " +
+                            "can cover every case including rehearsal mode.\n" +
+                            "The IActionContext.Rehearsal property also might be " +
+                            "useful to make the action can deal with the case of " +
+                            "rehearsal mode.\n" +
+                            "See also this exception's InnerException property.";
                         exc = new UnexpectedlyTerminatedActionException(
-                            blockHash, blockIndex, txid, action, msg, e
+                            null, null, null, null, action, msg, e
                         );
                     }
-
-                    msg =
-                        $"The action {action} threw an exception during its " +
-                        "rehearsal.  It is probably because the logic of the " +
-                        $"action {action} is not enough generic so that it " +
-                        "can cover every case including rehearsal mode.\n" +
-                        "The IActionContext.Rehearsal property also might be " +
-                        "useful to make the action can deal with the case of " +
-                        "rehearsal mode.\n" +
-                        "See also this exception's InnerException property.";
-                    exc = new UnexpectedlyTerminatedActionException(
-                        null, null, null, action, msg, e
-                    );
+                    else
+                    {
+                        var stateRootHash = context.PreviousStateRootHash;
+                        var msg =
+                            $"The action {action} (block #{blockIndex} {blockHash}, tx {txid}, " +
+                            $"state root hash {stateRootHash}) threw an exception " +
+                            "during execution.  See also this exception's InnerException property.";
+                        exc = new UnexpectedlyTerminatedActionException(
+                            blockHash, blockIndex, txid, stateRootHash, action, msg, e
+                        );
+                    }
                 }
 
                 // As IActionContext.Random is stateful, we cannot reuse

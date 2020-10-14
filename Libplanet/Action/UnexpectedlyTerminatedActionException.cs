@@ -7,6 +7,8 @@ using Bencodex.Types;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Serialization;
+using Libplanet.Store;
+using Libplanet.Store.Trie;
 using Libplanet.Tx;
 
 namespace Libplanet.Action
@@ -34,6 +36,9 @@ namespace Libplanet.Action
         /// a <see cref="IBlockPolicy{T}.BlockAction"/>.
         /// </param>
         /// <param name="action">The <see cref="IAction"/> object which threw an exception.</param>
+        /// <param name="previousStateRootHash">The <see cref="ITrie.Hash"/> of states until
+        /// previous action execution.  This can be null on rehearsal mode or if the chain which
+        /// executed the action, was not using <see cref="TrieStateStore"/>.</param>
         /// <param name="message">Specifies a <see cref="Exception.Message"/>.</param>
         /// <param name="innerException">The actual exception that the <see cref="Action"/> threw.
         /// </param>
@@ -41,6 +46,7 @@ namespace Libplanet.Action
             HashDigest<SHA256>? blockHash,
             long? blockIndex,
             TxId? txid,
+            HashDigest<SHA256>? previousStateRootHash,
             IAction action,
             string message,
             Exception innerException
@@ -50,6 +56,7 @@ namespace Libplanet.Action
             BlockHash = blockHash;
             BlockIndex = blockIndex;
             TxId = txid;
+            PreviousStateRootHash = previousStateRootHash;
             Action = action;
         }
 
@@ -72,6 +79,11 @@ namespace Libplanet.Action
             if (info.TryGetValue(nameof(TxId), out byte[] txId))
             {
                 TxId = new TxId(txId);
+            }
+
+            if (info.TryGetValue(nameof(PreviousStateRootHash), out byte[] previousStateRootHash))
+            {
+                PreviousStateRootHash = new HashDigest<SHA256>(previousStateRootHash);
             }
 
             string actionKey = $"{nameof(Action)}_type";
@@ -134,6 +146,8 @@ namespace Libplanet.Action
         /// </summary>
         public IAction Action { get; }
 
+        public HashDigest<SHA256>? PreviousStateRootHash { get; }
+
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
@@ -151,6 +165,11 @@ namespace Libplanet.Action
             if (TxId is TxId txId)
             {
                 info.AddValue(nameof(TxId), txId.ToByteArray());
+            }
+
+            if (PreviousStateRootHash is HashDigest<SHA256> previousStateRootHash)
+            {
+                info.AddValue(nameof(PreviousStateRootHash), previousStateRootHash.ToByteArray());
             }
 
             if (!(Action is null))

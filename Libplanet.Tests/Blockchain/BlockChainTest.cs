@@ -2198,7 +2198,8 @@ namespace Libplanet.Tests.Blockchain
             var blockActionEvaluation = _blockChain.BlockEvaluator.EvaluateBlockAction(
                 genesis,
                 null,
-                StateCompleterSet<DumbAction>.Recalculate
+                StateCompleterSet<DumbAction>.Recalculate,
+                null
             );
             Assert.Equal(_blockChain.Policy.BlockAction, blockActionEvaluation.Action);
             Assert.Equal(
@@ -2219,7 +2220,8 @@ namespace Libplanet.Tests.Blockchain
             blockActionEvaluation = _blockChain.BlockEvaluator.EvaluateBlockAction(
                 block1,
                 txEvaluations,
-                StateCompleterSet<DumbAction>.Recalculate
+                StateCompleterSet<DumbAction>.Recalculate,
+                null
             );
 
             Assert.Equal((Integer)2, (Integer)blockActionEvaluation.OutputStates.GetState(miner));
