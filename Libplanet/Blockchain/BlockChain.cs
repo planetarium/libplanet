@@ -969,10 +969,9 @@ namespace Libplanet.Blockchain
 
             if (renderActions && ActionRenderers.Any())
             {
-                RenderBlock(evaluations, block, stateCompleters);
-
                 foreach (IActionRenderer<T> renderer in ActionRenderers)
                 {
+                    RenderBlock(evaluations, block, renderer, stateCompleters);
                     renderer.RenderBlockEnd(oldTip: prevTip ?? Genesis, newTip: block);
                 }
             }
@@ -982,10 +981,15 @@ namespace Libplanet.Blockchain
         /// Render actions from block index of <paramref name="offset"/>.
         /// </summary>
         /// <param name="offset">Index of the block to start rendering from.</param>
+        /// <param name="actionRenderer">Target <see cref="IActionRenderer{T}"/> to invoke
+        /// render events.</param>
         /// <param name="stateCompleters">The strategy to complement incomplete block states.
         /// <see cref="StateCompleterSet{T}.Recalculate"/> by default.</param>
         /// <returns>The number of actions rendered.</returns>
-        internal int RenderBlocks(long offset, StateCompleterSet<T>? stateCompleters = null)
+        internal int RenderBlocks(
+            long offset,
+            IActionRenderer<T> actionRenderer,
+            StateCompleterSet<T>? stateCompleters = null)
         {
             // Since rendering process requires every step's states, if required block states
             // are incomplete they are complemented anyway:
@@ -995,7 +999,7 @@ namespace Libplanet.Blockchain
             int cnt = 0;
             foreach (var block in IterateBlocks((int)offset))
             {
-                cnt += RenderBlock(null, block, stateCompleters);
+                cnt += RenderBlock(null, block, actionRenderer, stateCompleters);
             }
 
             return cnt;
@@ -1007,12 +1011,15 @@ namespace Libplanet.Blockchain
         /// <param name="evaluations"><see cref="ActionEvaluation"/>s of the block.  If it is
         /// <c>null</c>, evaluate actions of the <paramref name="block"/> again.</param>
         /// <param name="block"><see cref="Block{T}"/> to render actions.</param>
+        /// <param name="actionRenderer">Target <see cref="IActionRenderer{T}"/> to invoke
+        /// render events.</param>
         /// <param name="stateCompleters">The strategy to complement incomplete block states.
         /// <see cref="StateCompleterSet{T}.Recalculate"/> by default.</param>
         /// <returns>The number of actions rendered.</returns>
         internal int RenderBlock(
             IReadOnlyList<ActionEvaluation> evaluations,
             Block<T> block,
+            IActionRenderer<T> actionRenderer,
             StateCompleterSet<T>? stateCompleters = null
         )
         {
@@ -1032,25 +1039,19 @@ namespace Libplanet.Blockchain
             {
                 if (evaluation.Exception is null)
                 {
-                    foreach (IActionRenderer<T> renderer in ActionRenderers)
-                    {
-                        renderer.RenderAction(
-                            evaluation.Action,
-                            evaluation.InputContext.GetUnconsumedContext(),
-                            evaluation.OutputStates
-                        );
-                    }
+                    actionRenderer.RenderAction(
+                        evaluation.Action,
+                        evaluation.InputContext.GetUnconsumedContext(),
+                        evaluation.OutputStates
+                    );
                 }
                 else
                 {
-                    foreach (IActionRenderer<T> renderer in ActionRenderers)
-                    {
-                        renderer.RenderActionError(
-                            evaluation.Action,
-                            evaluation.InputContext.GetUnconsumedContext(),
-                            evaluation.Exception
-                        );
-                    }
+                    actionRenderer.RenderActionError(
+                        evaluation.Action,
+                        evaluation.InputContext.GetUnconsumedContext(),
+                        evaluation.Exception
+                    );
                 }
 
                 cnt++;
@@ -1485,13 +1486,13 @@ namespace Libplanet.Blockchain
                         {
                             renderer.RenderBlock(oldTip: prev, newTip: b);
 
-                            if (renderActions)
-                            {
-                                RenderBlock(null, b, completers);
-                            }
-
                             if (renderer is IActionRenderer<T> actionRenderer)
                             {
+                                if (renderActions)
+                                {
+                                    RenderBlock(null, b, actionRenderer, completers);
+                                }
+
                                 actionRenderer.RenderBlockEnd(prev, b);
                             }
                         }
