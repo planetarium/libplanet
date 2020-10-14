@@ -226,6 +226,8 @@ To be released.
  -  Added `Block<T>.StateRootHash` property.  [[#986]]
  -  Added `BlockHeader.StateRootHash` property.  [[#986]]
  -  Added `MerkleTrieExtensions` static class.  [[#1023]]
+ -  Added `IAccountStateDelta.PreviousStateRootHash` property to
+    calculate states until previous action as state root hash.  [[#1030]]
 
 ### Behavioral changes
 
@@ -378,6 +380,7 @@ To be released.
 [#1022]: https://github.com/planetarium/libplanet/pull/1022
 [#1023]: https://github.com/planetarium/libplanet/pull/1023
 [#1026]: https://github.com/planetarium/libplanet/pull/1026
+[#1030]: https://github.com/planetarium/libplanet/pull/1030
 [sleep mode]: https://en.wikipedia.org/wiki/Sleep_mode
 
 
