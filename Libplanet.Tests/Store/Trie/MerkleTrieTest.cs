@@ -35,13 +35,13 @@ namespace Libplanet.Tests.Store.Trie
             // There is nothing.
             Assert.Empty(merkleTrie.IterateNodes());
 
-            merkleTrie.Set(
+            merkleTrie = (MerkleTrie)merkleTrie.Set(
                 new byte[] { 0xbe, 0xef, },
                 Dictionary.Empty.Add(TestUtils.GetRandomBytes(32), default(Null)));
             // There are (ShortNode, ValueNode)
             Assert.Equal(2, merkleTrie.IterateNodes().Count());
 
-            merkleTrie = merkleTrie.Commit() as MerkleTrie;
+            merkleTrie = (MerkleTrie)merkleTrie.Commit();
             // There are (HashNode, ShortNode, HashNode, ValueNode)
             Assert.Equal(4, merkleTrie.IterateNodes().Count());
         }

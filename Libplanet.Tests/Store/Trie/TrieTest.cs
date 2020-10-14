@@ -45,7 +45,7 @@ namespace Libplanet.Tests.Store.Trie
             foreach (var address in addresses)
             {
                 states[address] = (Text)address.ToHex();
-                trie.Set(address.ToByteArray(), states[address]);
+                trie = trie.Set(address.ToByteArray(), states[address]);
                 CheckAddressStates();
             }
         }
@@ -71,11 +71,11 @@ namespace Libplanet.Tests.Store.Trie
                 addresses[i] = new PrivateKey().ToAddress();
                 states[i] = (Binary)TestUtils.GetRandomBytes(128);
 
-                trieA.Set(addresses[i].ToByteArray(), states[i]);
+                trieA = trieA.Set(addresses[i].ToByteArray(), states[i]);
             }
 
             byte[] path = TestUtils.GetRandomBytes(32);
-            trieA.Set(path, (Text)"foo");
+            trieA = trieA.Set(path, (Text)"foo");
             HashDigest<SHA256> rootHash = trieA.Hash;
             Assert.True(trieA.TryGet(path, out IValue stateA));
             Assert.Equal((Text)"foo", stateA);
@@ -85,7 +85,7 @@ namespace Libplanet.Tests.Store.Trie
             Assert.True(trieB.TryGet(path, out IValue stateB));
             Assert.Equal((Text)"foo", stateB);
 
-            trieB.Set(path, (Text)"bar");
+            trieB = trieB.Set(path, (Text)"bar");
 
             Assert.True(trieA.TryGet(path, out stateA));
             Assert.Equal((Text)"foo", stateA);
@@ -111,7 +111,7 @@ namespace Libplanet.Tests.Store.Trie
             var committedTrie = trie.Commit();
             Assert.Equal(MerkleTrie.EmptyRootHash, committedTrie.Hash);
 
-            trie.Set(default(Address).ToByteArray(), Dictionary.Empty);
+            trie = trie.Set(default(Address).ToByteArray(), Dictionary.Empty);
             committedTrie = trie.Commit();
             Assert.NotEqual(MerkleTrie.EmptyRootHash, committedTrie.Hash);
         }
@@ -124,7 +124,7 @@ namespace Libplanet.Tests.Store.Trie
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                trie.Set(new byte[] { 0xbe, 0xef }, null);
+                _ = trie.Set(new byte[] { 0xbe, 0xef }, null);
             });
         }
     }

@@ -42,14 +42,11 @@ namespace Libplanet.Action
 
         public IRandom Random { get; }
 
-        public HashDigest<SHA256>? PreviousStateRootHash
-        {
-            get
-            {
-                _previousBlockStatesTrie?.Set(PreviousStates.GetUpdatedRawStates());
-                return _previousBlockStatesTrie?.Commit().Hash;
-            }
-        }
+        public HashDigest<SHA256>? PreviousStateRootHash =>
+            _previousBlockStatesTrie?
+                .Set(PreviousStates.GetUpdatedRawStates())
+                .Commit()
+                .Hash;
 
         [Pure]
         public IActionContext GetUnconsumedContext() =>

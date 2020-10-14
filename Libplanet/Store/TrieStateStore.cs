@@ -48,7 +48,7 @@ namespace Libplanet.Store
             IImmutableDictionary<string, IValue> states)
             where T : IAction, new()
         {
-            MerkleTrie prevStatesTrie;
+            ITrie prevStatesTrie;
             var previousBlockStateHashBytes = block.PreviousHash is null
                 ? null
                 : _stateHashKeyValueStore.Get(block.PreviousHash.Value.ToByteArray());
@@ -59,7 +59,7 @@ namespace Libplanet.Store
 
             foreach (var pair in states)
             {
-                prevStatesTrie.Set(Encoding.UTF8.GetBytes(pair.Key), pair.Value);
+                prevStatesTrie = prevStatesTrie.Set(Encoding.UTF8.GetBytes(pair.Key), pair.Value);
             }
 
             var newStateTrie = prevStatesTrie.Commit();

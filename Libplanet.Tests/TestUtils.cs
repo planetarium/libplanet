@@ -211,10 +211,10 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 var actionEvaluationResult = blockEvaluator
                     .EvaluateActions(block, StateCompleterSet<T>.Reject)
                     .GetTotalDelta(ToStateKey, ToFungibleAssetKey);
-                var trie = new MerkleTrie(new DefaultKeyValueStore(null));
+                ITrie trie = new MerkleTrie(new DefaultKeyValueStore(null));
                 foreach (var pair in actionEvaluationResult)
                 {
-                    trie.Set(Encoding.UTF8.GetBytes(pair.Key), pair.Value);
+                    trie = trie.Set(Encoding.UTF8.GetBytes(pair.Key), pair.Value);
                 }
 
                 var stateRootHash = trie.Commit(rehearsal: true).Hash;

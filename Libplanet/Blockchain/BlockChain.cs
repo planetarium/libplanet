@@ -385,8 +385,8 @@ namespace Libplanet.Blockchain
             var actionEvaluationResult = blockEvaluator
                 .EvaluateActions(block, StateCompleterSet<T>.Reject)
                 .GetTotalDelta(ToStateKey, ToFungibleAssetKey);
-            var trie = new MerkleTrie(new DefaultKeyValueStore(null));
-            trie.Set(actionEvaluationResult);
+            ITrie trie = new MerkleTrie(new DefaultKeyValueStore(null));
+            trie = trie.Set(actionEvaluationResult);
             var stateRootHash = trie.Commit(rehearsal: true).Hash;
 
             return new Block<T>(
