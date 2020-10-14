@@ -11353,6 +11353,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.MerkleTrieExtensions.DifferentNodes
   nameWithType: MerkleTrieExtensions.DifferentNodes
+- uid: Libplanet.Store.Trie.MerkleTrieExtensions.ListAllStates(Libplanet.Store.Trie.MerkleTrie)
+  name: ListAllStates(MerkleTrie)
+  href: api/Libplanet.Store.Trie.MerkleTrieExtensions.html#Libplanet_Store_Trie_MerkleTrieExtensions_ListAllStates_Libplanet_Store_Trie_MerkleTrie_
+  commentId: M:Libplanet.Store.Trie.MerkleTrieExtensions.ListAllStates(Libplanet.Store.Trie.MerkleTrie)
+  fullName: Libplanet.Store.Trie.MerkleTrieExtensions.ListAllStates(Libplanet.Store.Trie.MerkleTrie)
+  nameWithType: MerkleTrieExtensions.ListAllStates(MerkleTrie)
+- uid: Libplanet.Store.Trie.MerkleTrieExtensions.ListAllStates*
+  name: ListAllStates
+  href: api/Libplanet.Store.Trie.MerkleTrieExtensions.html#Libplanet_Store_Trie_MerkleTrieExtensions_ListAllStates_
+  commentId: Overload:Libplanet.Store.Trie.MerkleTrieExtensions.ListAllStates
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.MerkleTrieExtensions.ListAllStates
+  nameWithType: MerkleTrieExtensions.ListAllStates
 - uid: Libplanet.Store.TrieStateStore
   name: TrieStateStore
   href: api/Libplanet.Store.TrieStateStore.html
