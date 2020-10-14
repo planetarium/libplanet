@@ -236,6 +236,8 @@ To be released.
  -  Added `MerkleTrieExtensions` static class.  [[#1023]]
  -  Added `IAccountStateDelta.PreviousStateRootHash` property to
     calculate states until previous action as state root hash.  [[#1030]]
+ -  Added `UnexpectedlyTerminatedActionException.PreviousStateRootHash`
+    property.  [[#1032]]
 
 ### Behavioral changes
 
@@ -400,6 +402,7 @@ To be released.
 [#1026]: https://github.com/planetarium/libplanet/pull/1026
 [#1029]: https://github.com/planetarium/libplanet/pull/1029
 [#1030]: https://github.com/planetarium/libplanet/pull/1030
+[#1032]: https://github.com/planetarium/libplanet/pull/1032
 [#1034]: https://github.com/planetarium/libplanet/pull/1034
 [#1037]: https://github.com/planetarium/libplanet/pull/1037
 [#1039]: https://github.com/planetarium/libplanet/pull/1039
