@@ -29,6 +29,24 @@ steps:
         /p:Configuration=${{ parameters.configuration }} \
         /p:SkipSonar=true
 
+# https://github.com/sschmid/Entitas-CSharp/issues/811#issuecomment-449182023
+# https://github.com/dotnet/docfx/issues/3389
+- task: CmdLine@2
+  inputs:
+    script: |
+      set -vx
+      tmpdir="$(mktemp -d)"
+      pushd "$tmpdir/"
+      wget --trust-server-names \
+        https://www.nuget.org/api/v2/package/SQLitePCLRaw.core/2.0.4
+      7z x sqlitepclraw.core.*.nupkg
+      popd
+      for f in *.Tests; do
+        path="$(find "$f" \
+          -wholename "$f/bin/${{ parameters.configuration }}/net*/"$f".dll")"
+        cp -v "$tmpdir"/lib/net*/SQLitePCLRaw.core.dll "$(dirname "$path")"
+      done
+
 - ${{ if eq(parameters.publicTestResult, false) }}:
   - task: CmdLine@2
     displayName: ${{ parameters.testDisplayName }}
