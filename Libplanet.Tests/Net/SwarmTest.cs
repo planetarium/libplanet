@@ -72,6 +72,9 @@ namespace Libplanet.Tests.Net
                 new ValidatingActionRenderer<DumbAction>(),
                 new ValidatingActionRenderer<DumbAction>(),
                 new ValidatingActionRenderer<DumbAction>(),
+                new ValidatingActionRenderer<DumbAction>(),
+                new ValidatingActionRenderer<DumbAction>(),
+                new ValidatingActionRenderer<DumbAction>(),
             };
 
             LoggedActionRenderer<DumbAction>[][] loggedRenderers = _renderers
@@ -95,19 +98,19 @@ namespace Libplanet.Tests.Net
                     policy,
                     _mptFx1.Store,
                     stateStore: _mptFx1.StateStore,
-                    renderers: loggedRenderers[0],
+                    renderers: loggedRenderers[4],
                     genesisBlock: genesisBlockHavingStateRoot),
                 TestUtils.MakeBlockChain(
                     policy,
                     _mptFx2.Store,
                     stateStore: _mptFx2.StateStore,
-                    renderers: loggedRenderers[1],
+                    renderers: loggedRenderers[5],
                     genesisBlock: genesisBlockHavingStateRoot),
                 TestUtils.MakeBlockChain(
                     policy,
                     _mptFx3.Store,
                     stateStore: _mptFx3.StateStore,
-                    renderers: loggedRenderers[2],
+                    renderers: loggedRenderers[6],
                     genesisBlock: genesisBlockHavingStateRoot),
             };
 
@@ -1013,11 +1016,19 @@ namespace Libplanet.Tests.Net
                 await BootstrapAsync(swarmB, swarmA.AsPeer);
                 await BootstrapAsync(swarmC, swarmA.AsPeer);
 
+                _logger.Debug("STEP1");
+
                 swarmB.BroadcastBlock(chainB[-1]);
+
+                _logger.Debug("STEP2");
 
                 // chainA ignores block header received because its index is shorter.
                 await swarmA.BlockHeaderReceived.WaitAsync();
+
+                _logger.Debug("STEP3");
                 await swarmC.BlockAppended.WaitAsync();
+
+                _logger.Debug("STEP4");
                 Assert.False(swarmA.BlockAppended.IsSet);
 
                 // chainB doesn't applied to chainA since chainB is shorter
@@ -1026,8 +1037,14 @@ namespace Libplanet.Tests.Net
 
                 swarmA.BroadcastBlock(chainA[-1]);
 
+                _logger.Debug("STEP5");
+
                 await swarmB.BlockAppended.WaitAsync();
+
+                _logger.Debug("STEP6");
                 await swarmC.BlockAppended.WaitAsync();
+
+                _logger.Debug("STEP7");
 
                 Log.Debug("Compare chainA and chainB");
                 Assert.Equal(chainA.BlockHashes, chainB.BlockHashes);
@@ -1095,13 +1112,13 @@ namespace Libplanet.Tests.Net
                     new[] { transactions[0] },
                     null,
                     policy.GetNextBlockDifficulty(blockChain));
-                blockChain.Append(block1, DateTimeOffset.MinValue.AddSeconds(3), true, true, false);
+                blockChain.Append(block1, DateTimeOffset.MinValue.AddSeconds(3), true, true, true);
                 var block2 = TestUtils.MineNext(
                     block1,
                     new[] { transactions[1] },
                     null,
                     policy.GetNextBlockDifficulty(blockChain));
-                blockChain.Append(block2, DateTimeOffset.MinValue.AddSeconds(8), true, true, false);
+                blockChain.Append(block2, DateTimeOffset.MinValue.AddSeconds(8), true, true, true);
                 Log.Debug("Ready to broadcast blocks.");
                 minerSwarm.BroadcastBlock(block2);
                 await receiverSwarm.BlockAppended.WaitAsync();

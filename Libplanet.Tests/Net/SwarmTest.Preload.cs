@@ -1258,7 +1258,7 @@ namespace Libplanet.Tests.Net
                 receiverChain.Append(block);
             }
 
-            var receiverForked = receiverChain.Fork(receiverChain[5].Hash);
+            var receiverForked = receiverChain.Fork(receiverChain[5].Hash, false);
             foreach (int i in Enumerable.Range(0, 20))
             {
                 await receiverForked.MineBlock(_fx1.Address1);
@@ -1307,7 +1307,7 @@ namespace Libplanet.Tests.Net
                 minerChain.Append(block);
             }
 
-            BlockChain<DumbAction> forked = minerChain.Fork(minerChain.Genesis.Hash);
+            BlockChain<DumbAction> forked = minerChain.Fork(minerChain.Genesis.Hash, false);
             while (forked.Count <= minerChain.Count)
             {
                 await forked.MineBlock(minerSwarm.Address);
@@ -1564,8 +1564,8 @@ namespace Libplanet.Tests.Net
 
             receiverStateStore.PruneStates(new[] { receiverChain.Tip.Hash }.ToImmutableHashSet());
 
-            var forked = seedChain.Fork(seedChain[5].Hash);
-            seedChain.Swap(forked, false);
+            var forked = seedChain.Fork(seedChain[5].Hash, false);
+            seedChain.Swap(forked, true);
             for (int i = 0; i < 10; i++)
             {
                 await seedChain.MineBlock(_fx1.Address1);

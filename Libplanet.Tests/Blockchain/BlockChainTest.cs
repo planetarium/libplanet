@@ -914,7 +914,7 @@ namespace Libplanet.Tests.Blockchain
             await _blockChain.MineBlock(_fx.Address1);
             await _blockChain.MineBlock(_fx.Address1);
 
-            BlockChain<DumbAction> forked = _blockChain.Fork(_blockChain.Genesis.Hash);
+            BlockChain<DumbAction> forked = _blockChain.Fork(_blockChain.Genesis.Hash, false);
             await forked.MineBlock(_fx.Address1);
 
             BlockLocator locator = _blockChain.GetBlockLocator();
@@ -994,7 +994,7 @@ namespace Libplanet.Tests.Blockchain
 
             Assert.Equal((Text)"foo,bar", state);
 
-            var forked = _blockChain.Fork(b1.Hash);
+            var forked = _blockChain.Fork(b1.Hash, false);
             state = forked.GetState(address);
             Assert.Equal((Text)"foo", state);
 
@@ -1052,7 +1052,7 @@ namespace Libplanet.Tests.Blockchain
             _blockChain.Append(b3);
 
             // Fork from genesis and append two empty blocks.
-            BlockChain<DumbAction> forked = _blockChain.Fork(genesis.Hash);
+            BlockChain<DumbAction> forked = _blockChain.Fork(genesis.Hash, false);
             Guid fId = forked.Id;
             Block<DumbAction> fb1 = TestUtils.MineNext(
                 genesis,
@@ -1074,7 +1074,7 @@ namespace Libplanet.Tests.Blockchain
                 _fx.BlockStatesStore.LookupStateReference(fId, stateKey2, forked.Tip.Index));
 
             // Fork from b1 and append a empty block.
-            forked = _blockChain.Fork(b1.Hash);
+            forked = _blockChain.Fork(b1.Hash, false);
             fId = forked.Id;
             fb2 = TestUtils.MineNext(b1, difficulty: b2.Difficulty);
             forked.Append(fb2);
@@ -1086,7 +1086,7 @@ namespace Libplanet.Tests.Blockchain
                 _fx.BlockStatesStore.LookupStateReference(fId, stateKey2, forked.Tip.Index));
 
             // Fork from b2.
-            forked = _blockChain.Fork(b2.Hash);
+            forked = _blockChain.Fork(b2.Hash, false);
             fId = forked.Id;
 
             Assert.Equal(
@@ -1299,7 +1299,7 @@ namespace Libplanet.Tests.Blockchain
             });
 
             BlockChain<DumbAction> fork =
-                _blockChain.Fork(_blockChain.Tip.Hash);
+                _blockChain.Fork(_blockChain.Tip.Hash, false);
 
             Transaction<DumbAction>[][] txsA =
             {
@@ -1486,7 +1486,7 @@ namespace Libplanet.Tests.Blockchain
         [InlineData(false)]
         public async Task SwapWithoutReorg(bool render)
         {
-            BlockChain<DumbAction> fork = _blockChain.Fork(_blockChain.Tip.Hash);
+            BlockChain<DumbAction> fork = _blockChain.Fork(_blockChain.Tip.Hash, false);
 
             // The lower  chain goes to the higher chain  [#N -> #N+1]
             await fork.MineBlock(default);
@@ -1497,12 +1497,12 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(prevRecords, _renderer.ReorgRecords);
         }
 
-        [Theory]
+        [Theory(Skip = "Exception should be thrown on blockchain level.")]
         [InlineData(true)]
         [InlineData(false)]
         public async Task TreatGoingBackwardAsReorg(bool render)
         {
-            BlockChain<DumbAction> fork = _blockChain.Fork(_blockChain.Tip.Hash);
+            BlockChain<DumbAction> fork = _blockChain.Fork(_blockChain.Tip.Hash, false);
 
             // The higher chain goes to the lower  chain  [#N -> #N-1]
             await _blockChain.MineBlock(default);
@@ -2413,7 +2413,7 @@ namespace Libplanet.Tests.Blockchain
         {
             _renderer.ResetRecords();
             var branchpoint = _blockChain.Tip;
-            var fork = _blockChain.Fork(_blockChain.Tip.Hash);
+            var fork = _blockChain.Fork(_blockChain.Tip.Hash, false);
             await fork.MineBlock(_fx.Address1);
             await fork.MineBlock(_fx.Address2);
             await _blockChain.MineBlock(_fx.Address3);
