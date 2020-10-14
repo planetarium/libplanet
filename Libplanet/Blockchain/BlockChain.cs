@@ -1316,7 +1316,7 @@ namespace Libplanet.Blockchain
 #pragma warning disable MEN003
         internal void Swap(
             BlockChain<T> other,
-            bool renderActions,
+            bool render,
             StateCompleterSet<T>? stateCompleters = null
         )
         {
@@ -1329,17 +1329,14 @@ namespace Libplanet.Blockchain
             // to the new/stale tip, incomplete states need to be complemented anyway...
             StateCompleterSet<T> completers = stateCompleters ?? StateCompleterSet<T>.Recalculate;
 
-            bool renderBlocks;
             if (Tip.Equals(other.Tip))
             {
                 // If it's swapped for a chain with the same tip, it means there is no state change.
                 // Hence render is unnecessary.
-                renderActions = false;
-                renderBlocks = false;
+                render = false;
             }
             else
             {
-                renderBlocks = true;
                 _logger.Debug(
                     "The blockchain was reorged from " +
                     "{OldChainId} (#{OldTipIndex} {OldTipHash}) " +
@@ -1396,7 +1393,7 @@ namespace Libplanet.Blockchain
             );
 
             bool reorged = !Tip.Equals(topmostCommon);
-            if (renderBlocks && reorged)
+            if (render && reorged)
             {
                 foreach (IRenderer<T> renderer in Renderers)
                 {
@@ -1404,7 +1401,7 @@ namespace Libplanet.Blockchain
                 }
             }
 
-            if (renderActions && ActionRenderers.Any())
+            if (render && ActionRenderers.Any())
             {
                 // Unrender stale actions.
                 _logger.Debug("Unrendering abandoned actions...");
@@ -1478,7 +1475,7 @@ namespace Libplanet.Blockchain
                 _blocks = new BlockSet<T>(Store);
                 TipChanged?.Invoke(this, (oldTip, newTip));
 
-                if (renderBlocks)
+                if (render)
                 {
                     foreach (IRenderer<T> renderer in Renderers)
                     {
@@ -1494,31 +1491,25 @@ namespace Libplanet.Blockchain
                 _rwlock.ExitWriteLock();
             }
 
-            if (ActionRenderers.Any())
+            if (render && ActionRenderers.Any())
             {
-                if (renderActions)
+                _logger.Debug("Rendering actions in new chain.");
+
+                // Render actions that had been behind.
+                long startToRenderIndex = topmostCommon is Block<T> branchpoint
+                    ? branchpoint.Index + 1
+                    : 0;
+
+                int cnt = RenderBlocks(startToRenderIndex, completers);
+                _logger.Debug($"{nameof(Swap)}() completed rendering {{Count}} actions.", cnt);
+
+                foreach (IActionRenderer<T> renderer in ActionRenderers)
                 {
-                    _logger.Debug("Rendering actions in new chain.");
-
-                    // Render actions that had been behind.
-                    long startToRenderIndex = topmostCommon is Block<T> branchpoint
-                        ? branchpoint.Index + 1
-                        : 0;
-
-                    int cnt = RenderBlocks(startToRenderIndex, completers);
-                    _logger.Debug($"{nameof(Swap)}() completed rendering {{Count}} actions.", cnt);
-                }
-
-                if (renderBlocks)
-                {
-                    foreach (IActionRenderer<T> renderer in ActionRenderers)
-                    {
-                        renderer.RenderBlockEnd(oldTip, newTip);
-                    }
+                    renderer.RenderBlockEnd(oldTip, newTip);
                 }
             }
 
-            if (renderBlocks && reorged)
+            if (render && reorged)
             {
                 foreach (IRenderer<T> renderer in Renderers)
                 {

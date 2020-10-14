@@ -904,7 +904,7 @@ namespace Libplanet.Net
                         wId,
                         workspace.Tip
                     );
-                    BlockChain.Swap(workspace, renderActions: false);
+                    BlockChain.Swap(workspace, render: false);
                 }
 
                 foreach (Guid chainId in chainIds)
@@ -1746,7 +1746,7 @@ namespace Libplanet.Net
                 {
                     blockChain.Swap(
                         synced,
-                        renderActions: true,
+                        render: true,
                         stateCompleters: trustedStateCompleterSet
                     );
                 }
