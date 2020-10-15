@@ -33,3 +33,4 @@ Rules
 | Rule                        |                                                |
 |-----------------------------|------------------------------------------------|
 | [LAA1001](rules/LAA1001.md) | SystemRandomBreaksActionDeterminism            |
+| [LAA1002](rules/LAA1002.md) | DictionariesOrSetsShouldBeOrderedToEnumerate   |

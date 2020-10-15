@@ -158,8 +158,8 @@ namespace Libplanet.Analyzers.Tests.Verifiers
             Assert.True(
                 actualSpan.Path == expected.Path || (
                     actualSpan.Path != null &&
-                    actualSpan.Path.Contains("Test0.") &&
-                    expected.Path.Contains("Test.")
+                    actualSpan.Path.Contains($"{DefaultFilePathPrefix}0.") &&
+                    expected.Path.Contains($"{DefaultFilePathPrefix}.")
                 ),
                 msg
             );
