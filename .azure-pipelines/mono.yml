@@ -4,6 +4,7 @@ parameters:
   testCommand: "mono --server xunit.runner.console.*/tools/net471/xunit.console.exe"
   testArguments: -verbose -parallel none
   testTimeoutInMinutes: 12
+  excludeTests: ""
   publicTestResult: true
 
 steps:
@@ -54,7 +55,11 @@ steps:
       script: |
         set -vx
         declare -a assemblies
+        exclude_tests="${{ parameters.excludeTests }}"
         for f in *.Tests; do
+          if [[ "$exclude_tests" != "" && "$f" = $exclude_tests ]]; then
+            continue
+          fi
           path="$(find "$f" \
             -wholename "$f/bin/${{ parameters.configuration }}/net*/"$f".dll")"
           assemblies+=("`pwd`/$path")
@@ -74,7 +79,11 @@ steps:
       script: |
         set -vx
         declare -a assemblies
+        exclude_tests="${{ parameters.excludeTests }}"
         for f in *.Tests; do
+          if [[ "$exclude_tests" != "" && "$f" = $exclude_tests ]]; then
+            continue
+          fi
           path="$(find "$f" \
             -wholename "$f/bin/${{ parameters.configuration }}/net*/"$f".dll")"
           assemblies+=("`pwd`/$path")

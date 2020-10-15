@@ -129,6 +129,7 @@ jobs:
       testCommand: |-
         /tmp/StandaloneOSX.app/Contents/MacOS/StandaloneOSX
       testArguments: ""
+      excludeTests: Libplanet.Analyzers.Tests
       publicTestResult: false
   timeoutInMinutes: 30
 
