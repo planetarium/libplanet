@@ -371,6 +371,13 @@ to receive previous blocks.  [<a href="https://github.com/planetarium/libplanet/
 <li>Fixed a bug that <code>Swarm&lt;T&gt;</code> had thrown <code>InvalidGenesisBlockException</code>
 when reorg its chain repeatedly.  [<a href="https://github.com/planetarium/libplanet/pull/996">#996</a>]</li>
 </ul>
+<h3 id="static-analyzer">Static analyzer</h3>
+<ul>
+<li>Introduced the <em>Libplanet.Analyzers</em> package, a Roslyn Analyzer, which
+checks if code has common mistakes prone to made with Libplanet-powered
+game apps, e.g., breaking determinism in <code>IAction</code> implementations.
+[<a href="https://github.com/planetarium/libplanet/pull/1034">#1034</a>]</li>
+</ul>
 <h3 id="cli-tools">CLI tools</h3>
 <ul>
 <li>The <code>planet</code> command became installable using <code>npm</code>.  [<a href="https://github.com/planetarium/libplanet/pull/923">#923</a>, <a href="https://github.com/planetarium/libplanet/pull/982">#982</a>]</li>
