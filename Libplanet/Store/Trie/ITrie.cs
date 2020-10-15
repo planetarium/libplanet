@@ -23,7 +23,8 @@ namespace Libplanet.Store.Trie
         /// <param name="value">The value to store.</param>
         /// <exception cref="System.ArgumentNullException">Thrown when the given
         /// <paramref name="value"/> is <c>null</c>.</exception>
-        void Set(byte[] key, IValue value);
+        /// <returns>Returns new updated <see cref="ITrie"/>.</returns>
+        ITrie Set(byte[] key, IValue value);
 
         /// <summary>
         /// Gets the value stored with <paramref name="key"/> in <see cref="Set"/>.

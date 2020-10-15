@@ -19,6 +19,7 @@ using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tx;
 using Serilog;
+using static Libplanet.Blockchain.KeyConverters;
 
 namespace Libplanet.Blockchain
 {
@@ -161,7 +162,14 @@ namespace Libplanet.Blockchain
 
             _logger = Log.ForContext<BlockChain<T>>()
                 .ForContext("CanonicalChainId", Id);
-            BlockEvaluator = new BlockEvaluator<T>(policy.BlockAction, GetState, GetBalance);
+            Func<HashDigest<SHA256>, ITrie> trieGetter = StateStore is TrieStateStore trieStateStore
+                ? h => trieStateStore.GetTrie(h)
+                : (Func<HashDigest<SHA256>, ITrie>)null;
+            BlockEvaluator = new BlockEvaluator<T>(
+                policy.BlockAction,
+                GetState,
+                GetBalance,
+                trieGetter);
 
             if (Count == 0)
             {
@@ -372,12 +380,13 @@ namespace Libplanet.Blockchain
                 blockAction,
                 (address, digest, stateCompleter) => null,
                 (address, currency, hash, fungibleAssetStateCompleter)
-                    => new FungibleAssetValue(currency));
+                    => new FungibleAssetValue(currency),
+                null);
             var actionEvaluationResult = blockEvaluator
                 .EvaluateActions(block, StateCompleterSet<T>.Reject)
                 .GetTotalDelta(ToStateKey, ToFungibleAssetKey);
-            var trie = new MerkleTrie(new DefaultKeyValueStore(null));
-            trie.Set(actionEvaluationResult);
+            ITrie trie = new MerkleTrie(new DefaultKeyValueStore(null));
+            trie = trie.Set(actionEvaluationResult);
             var stateRootHash = trie.Commit(rehearsal: true).Hash;
 
             return new Block<T>(
@@ -825,15 +834,6 @@ namespace Libplanet.Blockchain
                 return tx;
             }
         }
-
-        internal static string ToStateKey(Address address) => address.ToHex().ToLowerInvariant();
-
-        internal static string ToFungibleAssetKey(Address address, Currency currency) =>
-            "_" + address.ToHex().ToLowerInvariant() +
-            "_" + ByteUtil.Hex(currency.Hash.ByteArray).ToLowerInvariant();
-
-        internal static string ToFungibleAssetKey((Address, Currency) pair) =>
-            ToFungibleAssetKey(pair.Item1, pair.Item2);
 
         internal void Append(
             Block<T> block,

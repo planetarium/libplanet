@@ -18,6 +18,7 @@ using Libplanet.Store.Trie;
 using Libplanet.Tests.Common;
 using Libplanet.Tx;
 using Xunit;
+using static Libplanet.Blockchain.KeyConverters;
 using Random = System.Random;
 
 namespace Libplanet.Tests
@@ -205,14 +206,15 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 var blockEvaluator = new BlockEvaluator<T>(
                     blockAction,
                     (address, digest, arg3) => null,
-                    (address, currency, arg3, arg4) => new FungibleAssetValue(currency));
+                    (address, currency, arg3, arg4) => new FungibleAssetValue(currency),
+                    null);
                 var actionEvaluationResult = blockEvaluator
                     .EvaluateActions(block, StateCompleterSet<T>.Reject)
-                    .GetTotalDelta(BlockChain<T>.ToStateKey, BlockChain<T>.ToFungibleAssetKey);
-                var trie = new MerkleTrie(new DefaultKeyValueStore(null));
+                    .GetTotalDelta(ToStateKey, ToFungibleAssetKey);
+                ITrie trie = new MerkleTrie(new DefaultKeyValueStore(null));
                 foreach (var pair in actionEvaluationResult)
                 {
-                    trie.Set(Encoding.UTF8.GetBytes(pair.Key), pair.Value);
+                    trie = trie.Set(Encoding.UTF8.GetBytes(pair.Key), pair.Value);
                 }
 
                 var stateRootHash = trie.Commit(rehearsal: true).Hash;

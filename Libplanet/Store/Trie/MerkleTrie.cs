@@ -69,7 +69,7 @@ namespace Libplanet.Store.Trie
 
         public HashDigest<SHA256> Hash => Root?.Hash() ?? EmptyRootHash;
 
-        private INode? Root { get; set; }
+        private INode? Root { get; }
 
         private IKeyValueStore KeyValueStore { get; }
 
@@ -80,18 +80,20 @@ namespace Libplanet.Store.Trie
             Operator.Weave(left, right);
 
         /// <inheritdoc/>
-        public void Set(byte[] key, IValue value)
+        public ITrie Set(byte[] key, IValue value)
         {
             if (value is null)
             {
                 throw new ArgumentNullException(nameof(value));
             }
 
-            Root = Insert(
+            INode newRootNode = Insert(
                 Root,
                 ImmutableArray<byte>.Empty,
                 ToKey(key).ToImmutableArray(),
                 new ValueNode(value));
+
+            return new MerkleTrie(KeyValueStore, newRootNode, _secure);
         }
 
         /// <inheritdoc/>

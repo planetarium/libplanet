@@ -17,14 +17,14 @@ namespace Libplanet.Tests.Store.Trie
             MerkleTrie trieA = new MerkleTrie(keyValueStore),
                 trieB = new MerkleTrie(keyValueStore);
 
-            trieA.Set(new byte[] { 0x01, }, default(Null));
-            trieA.Set(new byte[] { 0x02, }, default(Null));
-            trieA.Set(new byte[] { 0x03, }, default(Null));
-            trieB.Set(new byte[] { 0x01, }, Dictionary.Empty);
-            trieB.Set(new byte[] { 0x02, }, default(Null));
-            trieB.Set(new byte[] { 0x04, }, default(Null));
-            trieA = (MerkleTrie)trieA.Commit();
-            trieB = (MerkleTrie)trieB.Commit();
+            trieA = (MerkleTrie)trieA.Set(new byte[] { 0x01, }, default(Null))
+                .Set(new byte[] { 0x02, }, default(Null))
+                .Set(new byte[] { 0x03, }, default(Null))
+                .Commit();
+            trieB = (MerkleTrie)trieB.Set(new byte[] { 0x01, }, Dictionary.Empty)
+                .Set(new byte[] { 0x02, }, default(Null))
+                .Set(new byte[] { 0x04, }, default(Null))
+                .Commit();
 
             Dictionary<string, (HashDigest<SHA256> Root, IValue Value)[]> differentNodes =
                 trieA.DifferentNodes(trieB).ToDictionary(
@@ -47,11 +47,11 @@ namespace Libplanet.Tests.Store.Trie
             IKeyValueStore keyValueStore = new MemoryKeyValueStore();
             MerkleTrie trie = new MerkleTrie(keyValueStore);
 
-            trie.Set(new byte[] { 0x01, }, default(Null));
-            trie.Set(new byte[] { 0x02, }, default(Null));
-            trie.Set(new byte[] { 0x03, }, default(Null));
-            trie.Set(new byte[] { 0x04, }, default(Null));
-            trie.Set(new byte[] { 0xbe, 0xef }, Dictionary.Empty);
+            trie = (MerkleTrie)trie.Set(new byte[] { 0x01, }, default(Null))
+                    .Set(new byte[] { 0x02, }, default(Null))
+                    .Set(new byte[] { 0x03, }, default(Null))
+                    .Set(new byte[] { 0x04, }, default(Null))
+                    .Set(new byte[] { 0xbe, 0xef }, Dictionary.Empty);
 
             Dictionary<ImmutableArray<byte>, IValue> states =
                 trie.ListAllStates().ToDictionary(

@@ -8,6 +8,7 @@ using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
 using Libplanet.Blocks;
+using Libplanet.Store.Trie;
 using Serilog;
 
 namespace Libplanet.Blockchain
@@ -24,16 +25,20 @@ namespace Libplanet.Blockchain
                 FungibleAssetStateCompleter<T>, FungibleAssetValue>
             _balanceGetter;
 
+        private readonly Func<HashDigest<SHA256>, ITrie>? _trieGetter;
+
         internal BlockEvaluator(
             IAction? blockAction,
             Func<Address, HashDigest<SHA256>?, StateCompleter<T>, IValue?> stateGetter,
             Func<Address, Currency, HashDigest<SHA256>?,
-                FungibleAssetStateCompleter<T>, FungibleAssetValue> balanceGetter)
+                FungibleAssetStateCompleter<T>, FungibleAssetValue> balanceGetter,
+            Func<HashDigest<SHA256>, ITrie>? trieGetter)
         {
             _logger = Log.ForContext(typeof(BlockEvaluator<T>));
             _blockAction = blockAction;
             _stateGetter = stateGetter;
             _balanceGetter = balanceGetter;
+            _trieGetter = trieGetter;
         }
 
         internal IReadOnlyList<ActionEvaluation> EvaluateActions(
@@ -115,6 +120,11 @@ namespace Libplanet.Blockchain
                 );
             }
 
+            ITrie? previousBlockStatesTrie =
+                !(_trieGetter is null) && block.PreviousHash is HashDigest<SHA256> h
+                    ? _trieGetter(h)
+                    : null;
+
             return ActionEvaluation.EvaluateActionsGradually(
                 block.PreEvaluationHash,
                 block.Index,
@@ -123,7 +133,8 @@ namespace Libplanet.Blockchain
                 miner,
                 miner,
                 Array.Empty<byte>(),
-                new[] { _blockAction }.ToImmutableList()).First();
+                new[] { _blockAction }.ToImmutableList(),
+                previousBlockStatesTrie: previousBlockStatesTrie).First();
         }
     }
 }
