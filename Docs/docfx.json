@@ -35,6 +35,14 @@
         ]
       },
       {
+        "src": "../Libplanet.Analyzers",
+        "dest": "analyzer",
+        "files": [
+          "*.md",
+          "rules/*.md"
+        ]
+      },
+      {
         "src": "../Libplanet.Tools",
         "dest": "cli",
         "files": [

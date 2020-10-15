@@ -15,6 +15,11 @@ namespace Libplanet.Analyzers
     {
         public const string IdPrefix = "LAA";
 
+#pragma warning disable S1075
+        public const string HelpLinkUriPrefix =
+            "https://github.com/planetarium/libplanet/blob/main/Libplanet.Analyzers/rules/LAA";
+#pragma warning restore S1075
+
 #pragma warning disable SA1118
         private static readonly DiagnosticDescriptor[] Diagnostics =
         {
@@ -34,7 +39,8 @@ namespace Libplanet.Analyzers
                     $"{nameof(IActionContext)}.{nameof(IActionContext.Random)} property instead.",
                 category: "Determinism",
                 defaultSeverity: DiagnosticSeverity.Warning,
-                isEnabledByDefault: true
+                isEnabledByDefault: true,
+                helpLinkUri: $"{HelpLinkUriPrefix}1001.md"
             ),
         };
 #pragma warning restore SA1118
