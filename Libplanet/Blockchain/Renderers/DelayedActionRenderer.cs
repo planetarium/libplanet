@@ -302,10 +302,9 @@ namespace Libplanet.Blockchain.Renderers
                 Renderer.RenderReorg(oldTip, newTip, branchpoint);
             }
 
-            Renderer.RenderBlock(oldTip, newTip);
-
             if (branchpoint is null)
             {
+                Renderer.RenderBlock(oldTip, newTip);
                 RenderBufferedActionEvaluations(newTip.Hash, unrender: false);
             }
             else
@@ -315,6 +314,8 @@ namespace Libplanet.Blockchain.Renderers
                 {
                     RenderBufferedActionEvaluations(hash, unrender: true);
                 }
+
+                Renderer.RenderBlock(oldTip, newTip);
 
                 var blocksToRender = LocateBlockPath(branchpoint, newTip);
                 foreach (HashDigest<SHA256> hash in blocksToRender)
