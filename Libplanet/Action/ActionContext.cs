@@ -10,6 +10,8 @@ namespace Libplanet.Action
         private readonly int _randomSeed;
         private readonly ITrie? _previousBlockStatesTrie;
 
+        private HashDigest<SHA256>? _previousStateRootHash;
+
         public ActionContext(
             Address signer,
             Address miner,
@@ -42,11 +44,16 @@ namespace Libplanet.Action
 
         public IRandom Random { get; }
 
-        public HashDigest<SHA256>? PreviousStateRootHash =>
-            _previousBlockStatesTrie?
-                .Set(PreviousStates.GetUpdatedRawStates())
-                .Commit()
-                .Hash;
+        public HashDigest<SHA256>? PreviousStateRootHash
+        {
+            get
+            {
+                return _previousStateRootHash ??= _previousBlockStatesTrie?
+                    .Set(PreviousStates.GetUpdatedRawStates())
+                    .Commit()
+                    .Hash;
+            }
+        }
 
         [Pure]
         public IActionContext GetUnconsumedContext() =>
