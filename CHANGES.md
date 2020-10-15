@@ -296,6 +296,13 @@ To be released.
  -  Fixed a bug that `Swarm<T>` had thrown `InvalidGenesisBlockException`
     when reorg its chain repeatedly.  [[#996]]
 
+### Static analyzer
+
+ -  Introduced the *Libplanet.Analyzers* package, a Roslyn Analyzer, which
+    checks if code has common mistakes prone to made with Libplanet-powered
+    game apps, e.g., breaking determinism in `IAction` implementations.
+    [[#1034]]
+
 ### CLI tools
 
  -  The `planet` command became installable using `npm`.  [[#923], [#982]]
@@ -381,6 +388,7 @@ To be released.
 [#1023]: https://github.com/planetarium/libplanet/pull/1023
 [#1026]: https://github.com/planetarium/libplanet/pull/1026
 [#1030]: https://github.com/planetarium/libplanet/pull/1030
+[#1034]: https://github.com/planetarium/libplanet/pull/1034
 [sleep mode]: https://en.wikipedia.org/wiki/Sleep_mode
 
 

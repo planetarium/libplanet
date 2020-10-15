@@ -15,6 +15,7 @@
     "indeterministic",
     "nonces",
     "parameterless",
+    "ruleset",
     "secp256k1",
     "struct",
     "unrender",

@@ -105,6 +105,7 @@ jobs:
       turnServerUrl: $(turnServerUrl)
       testPrefix: '"$PROGRAMFILES/Mono/bin/mono.exe"'
       testArguments: -appdomains denied -parallel none -stoponfail
+      copySQLitePCLRaw: true
   timeoutInMinutes: 30
 
 - job: macOS_Unity
@@ -128,6 +129,7 @@ jobs:
       testCommand: |-
         /tmp/StandaloneOSX.app/Contents/MacOS/StandaloneOSX
       testArguments: ""
+      excludeTests: Libplanet.Analyzers.Tests
       publicTestResult: false
   timeoutInMinutes: 30
 

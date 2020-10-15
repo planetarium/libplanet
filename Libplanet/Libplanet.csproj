@@ -22,7 +22,7 @@ https://docs.libplanet.io/</Description>
     <PackageProjectUrl>https://libplanet.io/</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageIcon>icon.png</PackageIcon>
-    <Authors>Hong Minhee; Swen Mun</Authors>
+    <Authors>Planetarium</Authors>
     <Company>Planetarium</Company>
     <PackageLicenseExpression>LGPL-2.1-or-later</PackageLicenseExpression>
     <RequireLicenseAcceptance>true</RequireLicenseAcceptance>
@@ -30,6 +30,9 @@ https://docs.libplanet.io/</Description>
     <PackageTags>multiplayer online game;game;blockchain</PackageTags>
     <RepositoryUrl>git://github.com/planetarium/libplanet.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <LangVersion>8.0</LangVersion>
     <RootNamespace>Libplanet</RootNamespace>
     <AssemblyName>Libplanet</AssemblyName>
@@ -89,7 +92,7 @@ https://docs.libplanet.io/</Description>
     </PackageReference>
     <PackageReference Include="System.Collections.Immutable" Version="1.7.*" />
     <PackageReference Include="System.Linq.Async" Version="4.0.*" />
-    <PackageReference Include="System.Text.Json" Version="4.6.0" />
+    <PackageReference Include="System.Text.Json" Version="4.7.2" />
     <PackageReference Include="Zio" Version="0.7.4" />
   </ItemGroup>
 

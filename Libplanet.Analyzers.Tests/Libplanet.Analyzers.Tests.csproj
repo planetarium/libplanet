@@ -11,17 +11,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <AdditionalFiles Include=".\Menees.Analyzers.Settings.xml">
+    <AdditionalFiles Include="..\Menees.Analyzers.Settings.xml">
       <Link>Menees.Analyzers.Settings.xml</Link>
     </AdditionalFiles>
     <AdditionalFiles Include="..\stylecop.json" />
   </ItemGroup>
 
-  <PropertyGroup Condition=" '$(MSBuildRuntimeType)'!='Mono' And '$(MSBuildVersion)'&gt;='16.3.0'">
+  <PropertyGroup Condition=" '$(MSBuildRuntimeType)'!='Mono' And
+                             '$(MSBuildVersion)'&gt;='16.3.0'">
     <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(MSBuildRuntimeType)'=='Mono' And '$(BuildingByReSharper)'!='true'">
+  <PropertyGroup Condition=" '$(MSBuildRuntimeType)'=='Mono' And
+                             '$(BuildingByReSharper)'!='true'">
     <TargetFramework>net47</TargetFramework>
   </PropertyGroup>
 
@@ -30,25 +32,34 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AsyncEnumerator" Version="4.0.2" />
-    <PackageReference Include="Menees.Analyzers.2017" Version="2.0.3">
+    <PackageReference
+      Include="Menees.Analyzers.2017"
+      Version="2.0.3"
+      PrivateAssets="all" />
+    <PackageReference
+      Include="Microsoft.CodeAnalysis.Analyzers"
+      Version="3.3.0" />
+    <PackageReference
+      Include="Microsoft.CodeAnalysis.CSharp.Workspaces"
+      Version="3.7.0" />
+    <PackageReference
+      Include="Microsoft.DotNet.Analyzers.Compatibility"
+      Version="0.2.12-alpha">
       <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>
+        runtime; build; native; contentfiles; analyzers; buildtransitive
+      </IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.1.0" />
-    <PackageReference Include="Serilog.Enrichers.Thread" Version="3.0.0" />
-    <PackageReference Include="Serilog.Sinks.TestCorrelator" Version="3.2.0" />
-    <PackageReference Include="Serilog.Sinks.XUnit" Version="1.0.7" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.205">
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.164">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>
         runtime; build; native; contentfiles; analyzers
       </IncludeAssets>
     </PackageReference>
-    <PackageReference Include="System.Collections.Immutable" Version="1.7.*" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.extensibility.execution" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
-    <PackageReference Include="Xunit.SkippableFact" Version="1.3.12" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(SkipSonar)' != 'true'">
@@ -58,23 +69,8 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net47' ">
-    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
-  </ItemGroup>
-
   <ItemGroup>
-    <ProjectReference Include="..\Libplanet\Libplanet.csproj" />
-    <ProjectReference Include="..\Libplanet.Stun\Libplanet.Stun.csproj" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(MSBuildRuntimeType)'=='Mono' ">
-    <!--
-    As Mono has no proper AppDomain, we prevent it on Mono.
-    This works around Xunit's fatal error on Mono.
-    -->
-    <Content Include="xunit.runner.mono.json">
-      <Link>xunit.runner.json</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <ProjectReference
+      Include="..\Libplanet.Analyzers\Libplanet.Analyzers.csproj" />
   </ItemGroup>
 </Project>

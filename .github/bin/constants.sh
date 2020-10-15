@@ -1,7 +1,12 @@
 #!/bin/bash
 
 # shellcheck disable=SC2034
-projects=("Libplanet" "Libplanet.RocksDBStore" "Libplanet.Tools")
+projects=(
+  "Libplanet"
+  "Libplanet.RocksDBStore"
+  "Libplanet.Analyzers"
+  "Libplanet.Tools"
+)
 configuration=Release
 executables=("Libplanet.Tools")
 

@@ -1,0 +1,4 @@
+These PowerShell scripts are required to enable this (Roslyn) Analyzer.
+The contents are copied from the official docs:
+
+https://docs.microsoft.com/en-us/nuget/guides/analyzers-conventions#install-and-uninstall-scripts
