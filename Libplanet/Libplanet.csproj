@@ -92,7 +92,7 @@ https://docs.libplanet.io/</Description>
     </PackageReference>
     <PackageReference Include="System.Collections.Immutable" Version="1.7.*" />
     <PackageReference Include="System.Linq.Async" Version="4.0.*" />
-    <PackageReference Include="System.Text.Json" Version="4.6.0" />
+    <PackageReference Include="System.Text.Json" Version="4.7.2" />
     <PackageReference Include="Zio" Version="0.7.4" />
   </ItemGroup>
 
