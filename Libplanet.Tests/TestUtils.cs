@@ -18,6 +18,7 @@ using Libplanet.Store.Trie;
 using Libplanet.Tests.Common;
 using Libplanet.Tx;
 using Xunit;
+using Random = System.Random;
 
 namespace Libplanet.Tests
 {
@@ -102,6 +103,8 @@ namespace Libplanet.Tests
             }),
         };
 
+        private static readonly Random _random = new Random();
+
         public static void AssertBytesEqual(byte[] expected, byte[] actual)
         {
             string msg;
@@ -166,9 +169,8 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
 
         public static byte[] GetRandomBytes(int size)
         {
-            var random = new System.Random();
             var bytes = new byte[size];
-            random.NextBytes(bytes);
+            _random.NextBytes(bytes);
 
             return bytes;
         }
