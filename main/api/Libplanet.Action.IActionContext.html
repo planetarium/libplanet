@@ -90,7 +90,7 @@ Passed to <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_I
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_IActionContext_BlockIndex.md&amp;value=---%0Auid%3A%20Libplanet.Action.IActionContext.BlockIndex%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/IActionContext.cs/#L28">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/IActionContext.cs/#L30">View Source</a>
   </span>
   <a id="Libplanet_Action_IActionContext_BlockIndex_" data-uid="Libplanet.Action.IActionContext.BlockIndex*"></a>
   <h4 id="Libplanet_Action_IActionContext_BlockIndex" data-uid="Libplanet.Action.IActionContext.BlockIndex">BlockIndex</h4>
@@ -122,7 +122,7 @@ belongs to.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_IActionContext_Miner.md&amp;value=---%0Auid%3A%20Libplanet.Action.IActionContext.Miner%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/IActionContext.cs/#L21">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/IActionContext.cs/#L23">View Source</a>
   </span>
   <a id="Libplanet_Action_IActionContext_Miner_" data-uid="Libplanet.Action.IActionContext.Miner*"></a>
   <h4 id="Libplanet_Action_IActionContext_Miner" data-uid="Libplanet.Action.IActionContext.Miner">Miner</h4>
@@ -150,10 +150,43 @@ belongs to.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_IActionContext_PreviousStateRootHash.md&amp;value=---%0Auid%3A%20Libplanet.Action.IActionContext.PreviousStateRootHash%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/IActionContext.cs/#L71">View Source</a>
+  </span>
+  <a id="Libplanet_Action_IActionContext_PreviousStateRootHash_" data-uid="Libplanet.Action.IActionContext.PreviousStateRootHash*"></a>
+  <h4 id="Libplanet_Action_IActionContext_PreviousStateRootHash" data-uid="Libplanet.Action.IActionContext.PreviousStateRootHash">PreviousStateRootHash</h4>
+  <div class="markdown level1 summary"><p>A state root hash at the <a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_PreviousStates">PreviousStates</a>.  It can cause file I/O interrupt.
+It will be return null if the implementation or your chain didn't support
+the state root hash feature.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">HashDigest&lt;SHA256&gt;? PreviousStateRootHash { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA256</span>&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_IActionContext_PreviousStates.md&amp;value=---%0Auid%3A%20Libplanet.Action.IActionContext.PreviousStates%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/IActionContext.cs/#L50">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/IActionContext.cs/#L52">View Source</a>
   </span>
   <a id="Libplanet_Action_IActionContext_PreviousStates_" data-uid="Libplanet.Action.IActionContext.PreviousStates*"></a>
   <h4 id="Libplanet_Action_IActionContext_PreviousStates" data-uid="Libplanet.Action.IActionContext.PreviousStates">PreviousStates</h4>
@@ -190,7 +223,7 @@ instances can be returned by <a class="xref" href="Libplanet.Action.IAction.html
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_IActionContext_Random.md&amp;value=---%0Auid%3A%20Libplanet.Action.IActionContext.Random%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/IActionContext.cs/#L62">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/IActionContext.cs/#L64">View Source</a>
   </span>
   <a id="Libplanet_Action_IActionContext_Random_" data-uid="Libplanet.Action.IActionContext.Random*"></a>
   <h4 id="Libplanet_Action_IActionContext_Random" data-uid="Libplanet.Action.IActionContext.Random">Random</h4>
@@ -227,7 +260,7 @@ to <see cref="!:System.Random"></see>.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_IActionContext_Rehearsal.md&amp;value=---%0Auid%3A%20Libplanet.Action.IActionContext.Rehearsal%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/IActionContext.cs/#L37">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/IActionContext.cs/#L39">View Source</a>
   </span>
   <a id="Libplanet_Action_IActionContext_Rehearsal_" data-uid="Libplanet.Action.IActionContext.Rehearsal*"></a>
   <h4 id="Libplanet_Action_IActionContext_Rehearsal" data-uid="Libplanet.Action.IActionContext.Rehearsal">Rehearsal</h4>
@@ -264,7 +297,7 @@ in <a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_Action_I
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_IActionContext_Signer.md&amp;value=---%0Auid%3A%20Libplanet.Action.IActionContext.Signer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/IActionContext.cs/#L15">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/IActionContext.cs/#L17">View Source</a>
   </span>
   <a id="Libplanet_Action_IActionContext_Signer_" data-uid="Libplanet.Action.IActionContext.Signer*"></a>
   <h4 id="Libplanet_Action_IActionContext_Signer" data-uid="Libplanet.Action.IActionContext.Signer">Signer</h4>
@@ -298,7 +331,7 @@ a transaction that an executed <a class="xref" href="Libplanet.Action.IAction.ht
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_IActionContext_GetUnconsumedContext.md&amp;value=---%0Auid%3A%20Libplanet.Action.IActionContext.GetUnconsumedContext%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/IActionContext.cs/#L72">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/IActionContext.cs/#L81">View Source</a>
   </span>
   <a id="Libplanet_Action_IActionContext_GetUnconsumedContext_" data-uid="Libplanet.Action.IActionContext.GetUnconsumedContext*"></a>
   <h4 id="Libplanet_Action_IActionContext_GetUnconsumedContext" data-uid="Libplanet.Action.IActionContext.GetUnconsumedContext">GetUnconsumedContext()</h4>
@@ -340,7 +373,7 @@ is entirely equivalent to the original's unconsumed initial state.</p>
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_IActionContext.md&amp;value=---%0Auid%3A%20Libplanet.Action.IActionContext%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/IActionContext.cs/#L9" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/IActionContext.cs/#L11" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

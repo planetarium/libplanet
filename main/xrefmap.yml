@@ -402,6 +402,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IActionContext.Miner
   nameWithType: IActionContext.Miner
+- uid: Libplanet.Action.IActionContext.PreviousStateRootHash
+  name: PreviousStateRootHash
+  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_PreviousStateRootHash
+  commentId: P:Libplanet.Action.IActionContext.PreviousStateRootHash
+  fullName: Libplanet.Action.IActionContext.PreviousStateRootHash
+  nameWithType: IActionContext.PreviousStateRootHash
+- uid: Libplanet.Action.IActionContext.PreviousStateRootHash*
+  name: PreviousStateRootHash
+  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_PreviousStateRootHash_
+  commentId: Overload:Libplanet.Action.IActionContext.PreviousStateRootHash
+  isSpec: "True"
+  fullName: Libplanet.Action.IActionContext.PreviousStateRootHash
+  nameWithType: IActionContext.PreviousStateRootHash
 - uid: Libplanet.Action.IActionContext.PreviousStates
   name: PreviousStates
   href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_PreviousStates
