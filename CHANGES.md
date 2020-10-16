@@ -203,8 +203,8 @@ To be released.
  -  Added `IActionRenderer<T>` interface.  [[#959], [#967], [#970]]
  -  Added `AnonymousRenderer<T>` class.  [[#959], [#963]]
  -  Added `AnonymousActionRenderer<T>` interface.  [[#959], [#967], [#970]]
- -  Added `DelayedRenderer<T>` class.  [[#980]]
- -  Added `DelayedActionRenderer<T>` class.  [[#980]]
+ -  Added `DelayedRenderer<T>` class.  [[#980], [#1029]]
+ -  Added `DelayedActionRenderer<T>` class.  [[#980], [#1029]]
  -  Added `LoggedRenderer<T>` class.  [[#959], [#963]]
  -  Added `LoggedActionRenderer<T>` interface.  [[#959], [#967], [#970]]
  -  Added `BlockChain<T>.Renderers` property.  [[#945], [#959], [#963]]
@@ -269,6 +269,7 @@ To be released.
     unable to be appended to `BlockChain<T>`.  [[#1010]]
  -  `BlockSet<T>[HashDigest<SHA256>]` and `BlockChain<T>.Genesis` became cached
     so that they become faster to get.  [[#1013]]
+ -  `Swarm<T>.PreloadAsync()` became to do not render blocks.  [[#1029]]
 
 ### Bug fixes
 
@@ -387,6 +388,7 @@ To be released.
 [#1022]: https://github.com/planetarium/libplanet/pull/1022
 [#1023]: https://github.com/planetarium/libplanet/pull/1023
 [#1026]: https://github.com/planetarium/libplanet/pull/1026
+[#1029]: https://github.com/planetarium/libplanet/pull/1029
 [#1030]: https://github.com/planetarium/libplanet/pull/1030
 [#1034]: https://github.com/planetarium/libplanet/pull/1034
 [sleep mode]: https://en.wikipedia.org/wiki/Sleep_mode

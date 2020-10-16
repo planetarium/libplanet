@@ -790,12 +790,11 @@ namespace Libplanet.Net
                                 {
                                     cancellationToken.ThrowIfCancellationRequested();
 
-                                    // FIXME: Shouldn't we turn off renderBlocks option in IBD?
                                     workspace.Append(
                                         deltaBlock,
                                         DateTimeOffset.UtcNow,
                                         evaluateActions: false,
-                                        renderBlocks: true,
+                                        renderBlocks: false,
                                         renderActions: false
                                     );
                                     progress?.Report(new BlockVerificationState
@@ -905,7 +904,7 @@ namespace Libplanet.Net
                         wId,
                         workspace.Tip
                     );
-                    BlockChain.Swap(workspace, renderActions: false);
+                    BlockChain.Swap(workspace, render: false);
                 }
 
                 foreach (Guid chainId in chainIds)
@@ -1747,7 +1746,7 @@ namespace Libplanet.Net
                 {
                     blockChain.Swap(
                         synced,
-                        renderActions: true,
+                        render: true,
                         stateCompleters: trustedStateCompleterSet
                     );
                 }
@@ -1768,6 +1767,7 @@ namespace Libplanet.Net
             BlockChain<T> workspace = blockChain;
             var scope = new List<Guid>();
             bool renderActions = evaluateActions;
+            bool renderBlocks = true;
 
             try
             {
@@ -1831,6 +1831,7 @@ namespace Libplanet.Net
                         Guid workChainId = workspace.Id;
                         scope.Add(workChainId);
                         renderActions = false;
+                        renderBlocks = false;
                         _logger.Debug("Forking complete.");
                     }
 
@@ -1876,7 +1877,7 @@ namespace Libplanet.Net
                             block,
                             DateTimeOffset.UtcNow,
                             evaluateActions: evaluateActions,
-                            renderBlocks: true,
+                            renderBlocks: renderBlocks,
                             renderActions: renderActions
                         );
                         receivedBlockCount++;

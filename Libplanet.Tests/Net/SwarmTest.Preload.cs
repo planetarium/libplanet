@@ -1331,7 +1331,7 @@ namespace Libplanet.Tests.Net
                         s.ReceivedBlockHashCount > minerChain.Count / 2)
                     {
                         receivedCount = s.ReceivedBlockHashCount;
-                        minerChain.Swap(forked, renderActions: false);
+                        minerChain.Swap(forked, render: false);
                     }
                 }),
                 cancellationToken: CancellationToken.None

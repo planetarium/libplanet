@@ -947,37 +947,37 @@ namespace Libplanet.Blockchain
                         .ToImmutableHashSet();
                     Store.UnstageTransactionIds(txIds);
                     TipChanged?.Invoke(this, (prevTip, block));
-                    if (renderBlocks)
-                    {
-                        foreach (IRenderer<T> renderer in Renderers)
-                        {
-                            renderer.RenderBlock(oldTip: prevTip ?? Genesis, newTip: block);
-                        }
-                    }
-
                     _logger.Debug("Block {blockIndex}: {block} is appended.", block?.Index, block);
                 }
                 finally
                 {
                     _rwlock.ExitWriteLock();
                 }
+
+                if (renderBlocks)
+                {
+                    foreach (IRenderer<T> renderer in Renderers)
+                    {
+                        renderer.RenderBlock(oldTip: prevTip ?? Genesis, newTip: block);
+                    }
+
+                    if (ActionRenderers.Any())
+                    {
+                        foreach (IActionRenderer<T> renderer in ActionRenderers)
+                        {
+                            if (renderActions)
+                            {
+                                RenderActions(evaluations, block, renderer, stateCompleters);
+                            }
+
+                            renderer.RenderBlockEnd(oldTip: prevTip ?? Genesis, newTip: block);
+                        }
+                    }
+                }
             }
             finally
             {
                 _rwlock.ExitUpgradeableReadLock();
-            }
-
-            if (renderBlocks && ActionRenderers.Any())
-            {
-                if (renderActions)
-                {
-                    RenderBlock(evaluations, block, stateCompleters);
-                }
-
-                foreach (IActionRenderer<T> renderer in ActionRenderers)
-                {
-                    renderer.RenderBlockEnd(oldTip: prevTip ?? Genesis, newTip: block);
-                }
             }
         }
 
@@ -985,10 +985,14 @@ namespace Libplanet.Blockchain
         /// Render actions from block index of <paramref name="offset"/>.
         /// </summary>
         /// <param name="offset">Index of the block to start rendering from.</param>
+        /// <param name="renderer">The renderer to render actions.</param>
         /// <param name="stateCompleters">The strategy to complement incomplete block states.
         /// <see cref="StateCompleterSet{T}.Recalculate"/> by default.</param>
         /// <returns>The number of actions rendered.</returns>
-        internal int RenderBlocks(long offset, StateCompleterSet<T>? stateCompleters = null)
+        internal int RenderActionsInBlocks(
+            long offset,
+            IActionRenderer<T> renderer,
+            StateCompleterSet<T>? stateCompleters = null)
         {
             // Since rendering process requires every step's states, if required block states
             // are incomplete they are complemented anyway:
@@ -998,7 +1002,7 @@ namespace Libplanet.Blockchain
             int cnt = 0;
             foreach (var block in IterateBlocks((int)offset))
             {
-                cnt += RenderBlock(null, block, stateCompleters);
+                cnt += RenderActions(null, block, renderer, stateCompleters);
             }
 
             return cnt;
@@ -1010,12 +1014,14 @@ namespace Libplanet.Blockchain
         /// <param name="evaluations"><see cref="ActionEvaluation"/>s of the block.  If it is
         /// <c>null</c>, evaluate actions of the <paramref name="block"/> again.</param>
         /// <param name="block"><see cref="Block{T}"/> to render actions.</param>
+        /// <param name="renderer">The renderer to render actions.</param>
         /// <param name="stateCompleters">The strategy to complement incomplete block states.
         /// <see cref="StateCompleterSet{T}.Recalculate"/> by default.</param>
         /// <returns>The number of actions rendered.</returns>
-        internal int RenderBlock(
+        internal int RenderActions(
             IReadOnlyList<ActionEvaluation> evaluations,
             Block<T> block,
+            IActionRenderer<T> renderer,
             StateCompleterSet<T>? stateCompleters = null
         )
         {
@@ -1035,25 +1041,19 @@ namespace Libplanet.Blockchain
             {
                 if (evaluation.Exception is null)
                 {
-                    foreach (IActionRenderer<T> renderer in ActionRenderers)
-                    {
-                        renderer.RenderAction(
-                            evaluation.Action,
-                            evaluation.InputContext.GetUnconsumedContext(),
-                            evaluation.OutputStates
-                        );
-                    }
+                    renderer.RenderAction(
+                        evaluation.Action,
+                        evaluation.InputContext.GetUnconsumedContext(),
+                        evaluation.OutputStates
+                    );
                 }
                 else
                 {
-                    foreach (IActionRenderer<T> renderer in ActionRenderers)
-                    {
-                        renderer.RenderActionError(
-                            evaluation.Action,
-                            evaluation.InputContext.GetUnconsumedContext(),
-                            evaluation.Exception
-                        );
-                    }
+                    renderer.RenderActionError(
+                        evaluation.Action,
+                        evaluation.InputContext.GetUnconsumedContext(),
+                        evaluation.Exception
+                    );
                 }
 
                 cnt++;
@@ -1316,7 +1316,7 @@ namespace Libplanet.Blockchain
 #pragma warning disable MEN003
         internal void Swap(
             BlockChain<T> other,
-            bool renderActions,
+            bool render,
             StateCompleterSet<T>? stateCompleters = null
         )
         {
@@ -1329,17 +1329,14 @@ namespace Libplanet.Blockchain
             // to the new/stale tip, incomplete states need to be complemented anyway...
             StateCompleterSet<T> completers = stateCompleters ?? StateCompleterSet<T>.Recalculate;
 
-            bool renderBlocks;
             if (Tip.Equals(other.Tip))
             {
                 // If it's swapped for a chain with the same tip, it means there is no state change.
                 // Hence render is unnecessary.
-                renderActions = false;
-                renderBlocks = false;
+                render = false;
             }
             else
             {
-                renderBlocks = true;
                 _logger.Debug(
                     "The blockchain was reorged from " +
                     "{OldChainId} (#{OldTipIndex} {OldTipHash}) " +
@@ -1395,108 +1392,112 @@ namespace Libplanet.Blockchain
                 topmostCommon
             );
 
-            bool reorged = !Tip.Equals(topmostCommon);
-            if (renderBlocks && reorged)
-            {
-                foreach (IRenderer<T> renderer in Renderers)
-                {
-                    renderer.RenderReorg(Tip, other.Tip, branchpoint: topmostCommon);
-                }
-            }
-
-            if (renderActions && ActionRenderers.Any())
-            {
-                // Unrender stale actions.
-                _logger.Debug("Unrendering abandoned actions...");
-                int cnt = 0;
-
-                for (
-                    Block<T> b = Tip;
-                    !(b is null) && b.Index > (topmostCommon?.Index ?? -1) &&
-                    b.PreviousHash is HashDigest<SHA256> ph;
-                    b = this[ph]
-                )
-                {
-                    List<ActionEvaluation> evaluations =
-                        BlockEvaluator.EvaluateActions(b, completers).ToList();
-                    evaluations.Reverse();
-
-                    foreach (var evaluation in evaluations)
-                    {
-                        _logger.Debug("Unrender an action: {Action}.", evaluation.Action);
-                        if (evaluation.Exception is null)
-                        {
-                            foreach (IActionRenderer<T> renderer in ActionRenderers)
-                            {
-                                renderer.UnrenderAction(
-                                    evaluation.Action,
-                                    evaluation.InputContext.GetUnconsumedContext(),
-                                    evaluation.OutputStates
-                                );
-                            }
-                        }
-                        else
-                        {
-                            foreach (IActionRenderer<T> renderer in ActionRenderers)
-                            {
-                                renderer.UnrenderActionError(
-                                    evaluation.Action,
-                                    evaluation.InputContext.GetUnconsumedContext(),
-                                    evaluation.Exception
-                                );
-                            }
-                        }
-
-                        cnt++;
-                    }
-                }
-
-                _logger.Debug($"{nameof(Swap)}() completed unrendering {{Actions}} actions.", cnt);
-            }
-
-            IEnumerable<TxId> GetTxIdsWithRange(BlockChain<T> chain, Block<T> start, Block<T> end)
-                => Enumerable
-                    .Range((int)start.Index + 1, (int)(end.Index - start.Index))
-                    .SelectMany(x => chain[x].Transactions.Select(tx => tx.Id));
-
-            // It assumes reorg is small size. If it was big, this may be heavy task.
-            ImmutableHashSet<TxId> unstagedTxIds =
-                GetTxIdsWithRange(this, topmostCommon, Tip).ToImmutableHashSet();
-            ImmutableHashSet<TxId> stageTxIds =
-                GetTxIdsWithRange(other, topmostCommon, other.Tip).ToImmutableHashSet();
-            ImmutableHashSet<TxId> restageTxIds = unstagedTxIds.Except(stageTxIds);
-            Store.StageTransactionIds(restageTxIds);
-
-            Block<T> oldTip = Tip ?? Genesis, newTip = other.Tip ?? other.Genesis;
+            _rwlock.EnterUpgradeableReadLock();
             try
             {
-                _rwlock.EnterWriteLock();
-
-                Guid obsoleteId = Id;
-                Id = other.Id;
-                Store.SetCanonicalChainId(Id);
-                _blocks = new BlockSet<T>(Store);
-                TipChanged?.Invoke(this, (oldTip, newTip));
-
-                if (renderBlocks)
+                bool reorged = !Tip.Equals(topmostCommon);
+                if (render && reorged)
                 {
                     foreach (IRenderer<T> renderer in Renderers)
                     {
-                        renderer.RenderBlock(oldTip: oldTip, newTip: newTip);
+                        renderer.RenderReorg(Tip, other.Tip, branchpoint: topmostCommon);
                     }
                 }
 
-                _transactions = new TransactionSet<T>(Store);
-                Store.DeleteChainId(obsoleteId);
-            }
-            finally
-            {
-                _rwlock.ExitWriteLock();
-            }
+                if (render && ActionRenderers.Any())
+                {
+                    // Unrender stale actions.
+                    _logger.Debug("Unrendering abandoned actions...");
+                    int cnt = 0;
 
-            if (ActionRenderers.Any())
-            {
-                if (renderActions)
+                    for (
+                        Block<T> b = Tip;
+                        !(b is null) && b.Index > (topmostCommon?.Index ?? -1) &&
+                        b.PreviousHash is HashDigest<SHA256> ph;
+                        b = this[ph]
+                    )
+                    {
+                        List<ActionEvaluation> evaluations =
+                            BlockEvaluator.EvaluateActions(b, completers).ToList();
+                        evaluations.Reverse();
+
+                        foreach (var evaluation in evaluations)
+                        {
+                            _logger.Debug("Unrender an action: {Action}.", evaluation.Action);
+                            if (evaluation.Exception is null)
+                            {
+                                foreach (IActionRenderer<T> renderer in ActionRenderers)
+                                {
+                                    renderer.UnrenderAction(
+                                        evaluation.Action,
+                                        evaluation.InputContext.GetUnconsumedContext(),
+                                        evaluation.OutputStates
+                                    );
+                                }
+                            }
+                            else
+                            {
+                                foreach (IActionRenderer<T> renderer in ActionRenderers)
+                                {
+                                    renderer.UnrenderActionError(
+                                        evaluation.Action,
+                                        evaluation.InputContext.GetUnconsumedContext(),
+                                        evaluation.Exception
+                                    );
+                                }
+                            }
+
+                            cnt++;
+                        }
+                    }
+
+                    _logger.Debug(
+                        $"{nameof(Swap)}() completed unrendering {{Actions}} actions.",
+                        cnt);
+                }
+
+                Block<T> oldTip = Tip ?? Genesis, newTip = other.Tip ?? other.Genesis;
+
+                _rwlock.EnterWriteLock();
+                try
+                {
+                    IEnumerable<TxId>
+                        GetTxIdsWithRange(BlockChain<T> chain, Block<T> start, Block<T> end)
+                        => Enumerable
+                            .Range((int)start.Index + 1, (int)(end.Index - start.Index))
+                            .SelectMany(x => chain[x].Transactions.Select(tx => tx.Id));
+
+                    // It assumes reorg is small size. If it was big, this may be heavy task.
+                    ImmutableHashSet<TxId> unstagedTxIds =
+                        GetTxIdsWithRange(this, topmostCommon, Tip).ToImmutableHashSet();
+                    ImmutableHashSet<TxId> stageTxIds =
+                        GetTxIdsWithRange(other, topmostCommon, other.Tip).ToImmutableHashSet();
+                    ImmutableHashSet<TxId> restageTxIds = unstagedTxIds.Except(stageTxIds);
+                    Store.StageTransactionIds(restageTxIds);
+
+                    Guid obsoleteId = Id;
+                    Id = other.Id;
+                    Store.SetCanonicalChainId(Id);
+                    _blocks = new BlockSet<T>(Store);
+                    TipChanged?.Invoke(this, (oldTip, newTip));
+
+                    if (render)
+                    {
+                        foreach (IRenderer<T> renderer in Renderers)
+                        {
+                            renderer.RenderBlock(oldTip: oldTip, newTip: newTip);
+                        }
+                    }
+
+                    _transactions = new TransactionSet<T>(Store);
+                    Store.DeleteChainId(obsoleteId);
+                }
+                finally
+                {
+                    _rwlock.ExitWriteLock();
+                }
+
+                if (render && ActionRenderers.Any())
                 {
                     _logger.Debug("Rendering actions in new chain.");
 
@@ -1505,25 +1506,28 @@ namespace Libplanet.Blockchain
                         ? branchpoint.Index + 1
                         : 0;
 
-                    int cnt = RenderBlocks(startToRenderIndex, completers);
-                    _logger.Debug($"{nameof(Swap)}() completed rendering {{Count}} actions.", cnt);
-                }
-
-                if (renderBlocks)
-                {
                     foreach (IActionRenderer<T> renderer in ActionRenderers)
                     {
+                        int cnt = RenderActionsInBlocks(startToRenderIndex, renderer, completers);
+                        _logger.Debug(
+                            $"{nameof(Swap)}() completed rendering {{Count}} actions.",
+                            cnt);
+
                         renderer.RenderBlockEnd(oldTip, newTip);
                     }
                 }
-            }
 
-            if (renderBlocks && reorged)
-            {
-                foreach (IRenderer<T> renderer in Renderers)
+                if (render && reorged)
                 {
-                    renderer.RenderReorgEnd(oldTip, newTip, topmostCommon);
+                    foreach (IRenderer<T> renderer in Renderers)
+                    {
+                        renderer.RenderReorgEnd(oldTip, newTip, topmostCommon);
+                    }
                 }
+            }
+            finally
+            {
+                _rwlock.ExitUpgradeableReadLock();
             }
         }
 #pragma warning restore MEN003
