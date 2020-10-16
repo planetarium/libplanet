@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Bencodex.Types;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Emit;
@@ -175,7 +176,14 @@ namespace Libplanet.Analyzers.Tests.Verifiers
             var solution = new AdhocWorkspace()
                 .CurrentSolution
                 .AddProject(projectId, TestProjectName, TestProjectName, language);
-            foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+            IEnumerable<Assembly> assemblies = GetAssemblies(
+                typeof(object),
+                typeof(Enumerable),
+                typeof(Compilation),
+                typeof(Address),
+                typeof(IValue)
+            );
+            foreach (Assembly assembly in assemblies)
             {
                 if (assembly.IsDynamic)
                 {
@@ -198,6 +206,35 @@ namespace Libplanet.Analyzers.Tests.Verifiers
             }
 
             return solution.GetProject(projectId);
+        }
+
+        private static IEnumerable<Assembly> GetAssemblies(params Type[] rootTypes)
+        {
+            var registry = new Dictionary<string, Assembly>();
+
+            void Register(Assembly assembly)
+            {
+                if (assembly.IsDynamic || registry.ContainsKey(assembly.FullName))
+                {
+                    return;
+                }
+
+                registry.Add(assembly.FullName, assembly);
+                foreach (AssemblyName @ref in assembly.GetReferencedAssemblies())
+                {
+                    if (!registry.ContainsKey(@ref.FullName))
+                    {
+                        Register(Assembly.Load(@ref));
+                    }
+                }
+            }
+
+            foreach (Type rootType in rootTypes)
+            {
+                Register(rootType.Assembly);
+            }
+
+            return registry.Values;
         }
     }
 }
