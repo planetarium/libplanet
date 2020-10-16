@@ -275,8 +275,8 @@ by <code>stateCompleter: FungibleAssetStateCompleters&lt;T&gt;.Recalculate</code
 <li>Added <code>IActionRenderer&lt;T&gt;</code> interface.  [<a href="https://github.com/planetarium/libplanet/issues/959">#959</a>, <a href="https://github.com/planetarium/libplanet/issues/967">#967</a>, <a href="https://github.com/planetarium/libplanet/pull/970">#970</a>]</li>
 <li>Added <code>AnonymousRenderer&lt;T&gt;</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/959">#959</a>, <a href="https://github.com/planetarium/libplanet/pull/963">#963</a>]</li>
 <li>Added <code>AnonymousActionRenderer&lt;T&gt;</code> interface.  [<a href="https://github.com/planetarium/libplanet/issues/959">#959</a>, <a href="https://github.com/planetarium/libplanet/issues/967">#967</a>, <a href="https://github.com/planetarium/libplanet/pull/970">#970</a>]</li>
-<li>Added <code>DelayedRenderer&lt;T&gt;</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/980">#980</a>]</li>
-<li>Added <code>DelayedActionRenderer&lt;T&gt;</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/980">#980</a>]</li>
+<li>Added <code>DelayedRenderer&lt;T&gt;</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/980">#980</a>, <a href="https://github.com/planetarium/libplanet/pull/1029">#1029</a>]</li>
+<li>Added <code>DelayedActionRenderer&lt;T&gt;</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/980">#980</a>, <a href="https://github.com/planetarium/libplanet/pull/1029">#1029</a>]</li>
 <li>Added <code>LoggedRenderer&lt;T&gt;</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/959">#959</a>, <a href="https://github.com/planetarium/libplanet/pull/963">#963</a>]</li>
 <li>Added <code>LoggedActionRenderer&lt;T&gt;</code> interface.  [<a href="https://github.com/planetarium/libplanet/issues/959">#959</a>, <a href="https://github.com/planetarium/libplanet/issues/967">#967</a>, <a href="https://github.com/planetarium/libplanet/pull/970">#970</a>]</li>
 <li>Added <code>BlockChain&lt;T&gt;.Renderers</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/945">#945</a>, <a href="https://github.com/planetarium/libplanet/issues/959">#959</a>, <a href="https://github.com/planetarium/libplanet/pull/963">#963</a>]</li>
@@ -344,6 +344,7 @@ so that even if an empty implementation of <code>IBlockPolicy&lt;T&gt;</code> is
 unable to be appended to <code>BlockChain&lt;T&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1010">#1010</a>]</li>
 <li><code>BlockSet&lt;T&gt;[HashDigest&lt;SHA256&gt;]</code> and <code>BlockChain&lt;T&gt;.Genesis</code> became cached
 so that they become faster to get.  [<a href="https://github.com/planetarium/libplanet/pull/1013">#1013</a>]</li>
+<li><code>Swarm&lt;T&gt;.PreloadAsync()</code> became to do not render blocks.  [<a href="https://github.com/planetarium/libplanet/pull/1029">#1029</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>

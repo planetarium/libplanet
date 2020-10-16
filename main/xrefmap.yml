@@ -2847,6 +2847,41 @@ references:
   fullName.vb: Libplanet.Blockchain.Renderers.DelayedRenderer(Of T).Confirmations
   nameWithType: DelayedRenderer<T>.Confirmations
   nameWithType.vb: DelayedRenderer(Of T).Confirmations
+- uid: Libplanet.Blockchain.Renderers.DelayedRenderer`1.Confirmed
+  name: Confirmed
+  href: api/Libplanet.Blockchain.Renderers.DelayedRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedRenderer_1_Confirmed
+  commentId: P:Libplanet.Blockchain.Renderers.DelayedRenderer`1.Confirmed
+  fullName: Libplanet.Blockchain.Renderers.DelayedRenderer<T>.Confirmed
+  fullName.vb: Libplanet.Blockchain.Renderers.DelayedRenderer(Of T).Confirmed
+  nameWithType: DelayedRenderer<T>.Confirmed
+  nameWithType.vb: DelayedRenderer(Of T).Confirmed
+- uid: Libplanet.Blockchain.Renderers.DelayedRenderer`1.Confirmed*
+  name: Confirmed
+  href: api/Libplanet.Blockchain.Renderers.DelayedRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedRenderer_1_Confirmed_
+  commentId: Overload:Libplanet.Blockchain.Renderers.DelayedRenderer`1.Confirmed
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.Renderers.DelayedRenderer<T>.Confirmed
+  fullName.vb: Libplanet.Blockchain.Renderers.DelayedRenderer(Of T).Confirmed
+  nameWithType: DelayedRenderer<T>.Confirmed
+  nameWithType.vb: DelayedRenderer(Of T).Confirmed
+- uid: Libplanet.Blockchain.Renderers.DelayedRenderer`1.DiscoverBlock(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})
+  name: DiscoverBlock(Block<T>, Block<T>)
+  href: api/Libplanet.Blockchain.Renderers.DelayedRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedRenderer_1_DiscoverBlock_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__
+  commentId: M:Libplanet.Blockchain.Renderers.DelayedRenderer`1.DiscoverBlock(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})
+  name.vb: DiscoverBlock(Block(Of T), Block(Of T))
+  fullName: Libplanet.Blockchain.Renderers.DelayedRenderer<T>.DiscoverBlock(Libplanet.Blocks.Block<T>, Libplanet.Blocks.Block<T>)
+  fullName.vb: Libplanet.Blockchain.Renderers.DelayedRenderer(Of T).DiscoverBlock(Libplanet.Blocks.Block(Of T), Libplanet.Blocks.Block(Of T))
+  nameWithType: DelayedRenderer<T>.DiscoverBlock(Block<T>, Block<T>)
+  nameWithType.vb: DelayedRenderer(Of T).DiscoverBlock(Block(Of T), Block(Of T))
+- uid: Libplanet.Blockchain.Renderers.DelayedRenderer`1.DiscoverBlock*
+  name: DiscoverBlock
+  href: api/Libplanet.Blockchain.Renderers.DelayedRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedRenderer_1_DiscoverBlock_
+  commentId: Overload:Libplanet.Blockchain.Renderers.DelayedRenderer`1.DiscoverBlock
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.Renderers.DelayedRenderer<T>.DiscoverBlock
+  fullName.vb: Libplanet.Blockchain.Renderers.DelayedRenderer(Of T).DiscoverBlock
+  nameWithType: DelayedRenderer<T>.DiscoverBlock
+  nameWithType.vb: DelayedRenderer(Of T).DiscoverBlock
 - uid: Libplanet.Blockchain.Renderers.DelayedRenderer`1.Logger
   name: Logger
   href: api/Libplanet.Blockchain.Renderers.DelayedRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedRenderer_1_Logger
