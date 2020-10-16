@@ -96,7 +96,7 @@ namespace Libplanet.Analyzers.Tests
                     // should pass:
                     v.ToDictionary(key => key, val => val);
                     v.ToImmutableDictionary();
-                    var newDict = new Dictionary<" + kvTypes + @">(v);
+                    var newDict = new Dict(v);
 ";
             }
 
@@ -139,6 +139,19 @@ namespace Libplanet.Analyzers.Tests
                     }
                 }
             ";
+
+            if (!(kvTypes is null))
+            {
+                test += @"
+                    public class Dict : Dictionary<" + kvTypes + @"> {
+                        public Dict(IEnumerable<" + elemType + @"> kvs) : base() {
+                            foreach (var kv in kvs) {
+                                Add(kv.Key, kv.Value);
+                            }
+                        }
+                    }
+                ";
+            }
 
             if (pass)
             {
