@@ -954,18 +954,18 @@ namespace Libplanet.Blockchain
                         {
                             renderer.RenderBlock(oldTip: prevTip ?? Genesis, newTip: block);
                         }
-                    }
 
-                    if (renderBlocks && ActionRenderers.Any())
-                    {
-                        foreach (IActionRenderer<T> renderer in ActionRenderers)
+                        if (ActionRenderers.Any())
                         {
-                            if (renderActions)
+                            foreach (IActionRenderer<T> renderer in ActionRenderers)
                             {
-                                RenderBlock(evaluations, block, renderer, stateCompleters);
-                            }
+                                if (renderActions)
+                                {
+                                    RenderBlock(evaluations, block, renderer, stateCompleters);
+                                }
 
-                            renderer.RenderBlockEnd(oldTip: prevTip ?? Genesis, newTip: block);
+                                renderer.RenderBlockEnd(oldTip: prevTip ?? Genesis, newTip: block);
+                            }
                         }
                     }
 
