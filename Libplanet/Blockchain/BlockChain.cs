@@ -947,33 +947,32 @@ namespace Libplanet.Blockchain
                         .ToImmutableHashSet();
                     Store.UnstageTransactionIds(txIds);
                     TipChanged?.Invoke(this, (prevTip, block));
-
-                    if (renderBlocks)
-                    {
-                        foreach (IRenderer<T> renderer in Renderers)
-                        {
-                            renderer.RenderBlock(oldTip: prevTip ?? Genesis, newTip: block);
-                        }
-
-                        if (ActionRenderers.Any())
-                        {
-                            foreach (IActionRenderer<T> renderer in ActionRenderers)
-                            {
-                                if (renderActions)
-                                {
-                                    RenderActions(evaluations, block, renderer, stateCompleters);
-                                }
-
-                                renderer.RenderBlockEnd(oldTip: prevTip ?? Genesis, newTip: block);
-                            }
-                        }
-                    }
-
                     _logger.Debug("Block {blockIndex}: {block} is appended.", block?.Index, block);
                 }
                 finally
                 {
                     _rwlock.ExitWriteLock();
+                }
+
+                if (renderBlocks)
+                {
+                    foreach (IRenderer<T> renderer in Renderers)
+                    {
+                        renderer.RenderBlock(oldTip: prevTip ?? Genesis, newTip: block);
+                    }
+
+                    if (ActionRenderers.Any())
+                    {
+                        foreach (IActionRenderer<T> renderer in ActionRenderers)
+                        {
+                            if (renderActions)
+                            {
+                                RenderActions(evaluations, block, renderer, stateCompleters);
+                            }
+
+                            renderer.RenderBlockEnd(oldTip: prevTip ?? Genesis, newTip: block);
+                        }
+                    }
                 }
             }
             finally
@@ -1392,10 +1391,10 @@ namespace Libplanet.Blockchain
                 topmostCommon.Index,
                 topmostCommon
             );
+
+            _rwlock.EnterUpgradeableReadLock();
             try
             {
-                _rwlock.EnterWriteLock();
-
                 bool reorged = !Tip.Equals(topmostCommon);
                 if (render && reorged)
                 {
@@ -1457,38 +1456,46 @@ namespace Libplanet.Blockchain
                         cnt);
                 }
 
-                IEnumerable<TxId>
-                    GetTxIdsWithRange(BlockChain<T> chain, Block<T> start, Block<T> end)
-                    => Enumerable
-                        .Range((int)start.Index + 1, (int)(end.Index - start.Index))
-                        .SelectMany(x => chain[x].Transactions.Select(tx => tx.Id));
-
-                // It assumes reorg is small size. If it was big, this may be heavy task.
-                ImmutableHashSet<TxId> unstagedTxIds =
-                    GetTxIdsWithRange(this, topmostCommon, Tip).ToImmutableHashSet();
-                ImmutableHashSet<TxId> stageTxIds =
-                    GetTxIdsWithRange(other, topmostCommon, other.Tip).ToImmutableHashSet();
-                ImmutableHashSet<TxId> restageTxIds = unstagedTxIds.Except(stageTxIds);
-                Store.StageTransactionIds(restageTxIds);
-
                 Block<T> oldTip = Tip ?? Genesis, newTip = other.Tip ?? other.Genesis;
 
-                Guid obsoleteId = Id;
-                Id = other.Id;
-                Store.SetCanonicalChainId(Id);
-                _blocks = new BlockSet<T>(Store);
-                TipChanged?.Invoke(this, (oldTip, newTip));
-
-                if (render)
+                _rwlock.EnterWriteLock();
+                try
                 {
-                    foreach (IRenderer<T> renderer in Renderers)
-                    {
-                        renderer.RenderBlock(oldTip: oldTip, newTip: newTip);
-                    }
-                }
+                    IEnumerable<TxId>
+                        GetTxIdsWithRange(BlockChain<T> chain, Block<T> start, Block<T> end)
+                        => Enumerable
+                            .Range((int)start.Index + 1, (int)(end.Index - start.Index))
+                            .SelectMany(x => chain[x].Transactions.Select(tx => tx.Id));
 
-                _transactions = new TransactionSet<T>(Store);
-                Store.DeleteChainId(obsoleteId);
+                    // It assumes reorg is small size. If it was big, this may be heavy task.
+                    ImmutableHashSet<TxId> unstagedTxIds =
+                        GetTxIdsWithRange(this, topmostCommon, Tip).ToImmutableHashSet();
+                    ImmutableHashSet<TxId> stageTxIds =
+                        GetTxIdsWithRange(other, topmostCommon, other.Tip).ToImmutableHashSet();
+                    ImmutableHashSet<TxId> restageTxIds = unstagedTxIds.Except(stageTxIds);
+                    Store.StageTransactionIds(restageTxIds);
+
+                    Guid obsoleteId = Id;
+                    Id = other.Id;
+                    Store.SetCanonicalChainId(Id);
+                    _blocks = new BlockSet<T>(Store);
+                    TipChanged?.Invoke(this, (oldTip, newTip));
+
+                    if (render)
+                    {
+                        foreach (IRenderer<T> renderer in Renderers)
+                        {
+                            renderer.RenderBlock(oldTip: oldTip, newTip: newTip);
+                        }
+                    }
+
+                    _transactions = new TransactionSet<T>(Store);
+                    Store.DeleteChainId(obsoleteId);
+                }
+                finally
+                {
+                    _rwlock.ExitWriteLock();
+                }
 
                 if (render && ActionRenderers.Any())
                 {
@@ -1520,7 +1527,7 @@ namespace Libplanet.Blockchain
             }
             finally
             {
-                _rwlock.ExitWriteLock();
+                _rwlock.ExitUpgradeableReadLock();
             }
         }
 #pragma warning restore MEN003
