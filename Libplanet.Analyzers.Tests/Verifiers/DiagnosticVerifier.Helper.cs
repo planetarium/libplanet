@@ -224,7 +224,17 @@ namespace Libplanet.Analyzers.Tests.Verifiers
                 {
                     if (!registry.ContainsKey(@ref.FullName))
                     {
-                        Register(Assembly.Load(@ref));
+                        Assembly dep;
+                        try
+                        {
+                            dep = Assembly.Load(@ref);
+                        }
+                        catch (FileNotFoundException)
+                        {
+                            continue;
+                        }
+
+                        Register(dep);
                     }
                 }
             }
