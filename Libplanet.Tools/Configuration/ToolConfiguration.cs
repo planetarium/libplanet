@@ -1,12 +1,12 @@
 namespace Libplanet.Tools.Configuration
 {
-    public class ToolConfiguration
+    public struct ToolConfiguration
     {
-        public ToolConfiguration(MptConfiguration? mpt = null)
+        public ToolConfiguration(MptConfiguration mpt)
         {
-            Mpt = mpt ?? new MptConfiguration();
+            Mpt = mpt;
         }
 
-        public MptConfiguration Mpt { get; }
+        public MptConfiguration Mpt { get; set; }
     }
 }

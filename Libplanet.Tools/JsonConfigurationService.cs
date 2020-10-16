@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using System.Text.Json;
 using Libplanet.Tools.Configuration;
 using Zio;
@@ -19,9 +18,9 @@ namespace Libplanet.Tools
 
         public ToolConfiguration Load()
         {
-            if (!File.Exists(_configurationFileName))
+            if (!_fileSystem.FileExists(UPath.Root / _configurationFileName))
             {
-                return new ToolConfiguration();
+                return default;
             }
 
             return JsonSerializer.Deserialize<ToolConfiguration>(
