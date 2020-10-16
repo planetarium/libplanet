@@ -47,7 +47,7 @@ namespace Libplanet.Analyzers
                 id: $"{IdPrefix}1002",
                 title: "DictionariesOrSetsShouldBeOrderedToEnumerate",
                 messageFormat: "Enumerating an instance of {0} is indeterministic since " +
-                    "the order of {0} is unspecified; explicitly sort them before enumerating.",
+                    "the order of {0} is unspecified; explicitly sort them before {1}.",
                 category: "Determinism",
                 defaultSeverity: DiagnosticSeverity.Warning,
                 isEnabledByDefault: true,
@@ -93,6 +93,7 @@ namespace Libplanet.Analyzers
         private static void LAA1002_DictionarySetEnumeration(OperationAnalysisContext context)
         {
             const string ns = "System.Collections";
+            SymbolDisplayFormat symbolFormat = SymbolDisplayFormat.CSharpErrorMessageFormat;
             Compilation comp = context.Compilation;
             SymbolEqualityComparer comparer = SymbolEqualityComparer.Default;
 
@@ -132,25 +133,59 @@ namespace Libplanet.Analyzers
                     if (conv.Parent is IArgumentOperation arg &&
                         arg.Parent is IInvocationOperation invoke &&
                         invoke.TargetMethod.IsGenericMethod &&
-                        invoke.TargetMethod.Name.StartsWith("OrderBy") &&
-                        invoke.TargetMethod.OriginalDefinition is IMethodSymbol proto &&
-                        TypeEquals(proto.ContainingType, "System.Linq.Enumerable") &&
-                        TypeEquals(
-                            proto.ReturnType.OriginalDefinition,
-                            "System.Linq.IOrderedEnumerable`1"
-                        ))
+                        invoke.TargetMethod.OriginalDefinition is IMethodSymbol proto)
                     {
-                        // Ignores Linq's .OrderBy()/OrderByDescending() methods.
+                        var method = invoke.TargetMethod.Name;
+                        if (method.StartsWith("OrderBy") &&
+                            TypeEquals(proto.ContainingType, "System.Linq.Enumerable") &&
+                            TypeEquals(
+                                proto.ReturnType.OriginalDefinition,
+                                "System.Linq.IOrderedEnumerable`1"
+                            ))
+                        {
+                            // Ignores Linq's .OrderBy()/OrderByDescending() methods.
+                            return;
+                        }
+                        else if (method.StartsWith("To") &&
+                                 (method.EndsWith("Dictionary") || method.EndsWith("Set")) &&
+                                 IsDictOrSet(proto.ReturnType))
+                        {
+                            // Ignores .ToDictionary()/ToHashSet() etc.
+                            return;
+                        }
+                    }
+
+                    if (conv.Parent is IArgumentOperation arg1 &&
+                        arg1.Parent is IObjectCreationOperation @new &&
+                        IsDictOrSet(@new.Type))
+                    {
+                        // Ignores new Dictionary()/new HashSet() etc.
                         return;
                     }
 
                     ITypeSymbol? valType = conv.Operand?.Type;
                     if (IsDictOrSet(valType))
                     {
+                        string func = "enumerating";
+                        if (conv.Parent is IArgumentOperation argConv)
+                        {
+                            func = argConv.Parent switch
+                            {
+                                IObjectCreationOperation c =>
+                                    $"passing to {c.Constructor.ToDisplayString(symbolFormat)} " +
+                                    "constructor",
+                                IInvocationOperation m =>
+                                    $"passing to {m.TargetMethod.ToDisplayString(symbolFormat)} " +
+                                    "method",
+                                _ => func,
+                            };
+                        }
+
                         Diagnostic diag = Diagnostic.Create(
                             Rules[$"{IdPrefix}1002"],
                             conv.Syntax.GetLocation(),
-                            valType!.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat)
+                            valType!.ToDisplayString(symbolFormat),
+                            func
                         );
                         context.ReportDiagnostic(diag);
                     }
@@ -167,7 +202,8 @@ namespace Libplanet.Analyzers
                         Diagnostic diag = Diagnostic.Create(
                             Rules[$"{IdPrefix}1002"],
                             collection.Syntax.GetLocation(),
-                            collType.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat)
+                            collType.ToDisplayString(symbolFormat),
+                            "iterating via foreach"
                         );
                         context.ReportDiagnostic(diag);
                     }
