@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography;
@@ -453,7 +454,10 @@ namespace Libplanet.Tests.Blocks
                 _fx.Genesis.Hash.ByteArray,
                 ImmutableArray<ImmutableArray<byte>>.Empty,
                 _fx.TxFixture.PublicKey1.Format(false).ToImmutableArray(),
-                DateTimeOffset.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.ffffffZ"),
+                DateTimeOffset.UtcNow.ToString(
+                    "yyyy-MM-ddTHH:mm:ss.ffffffZ",
+                    CultureInfo.InvariantCulture
+                ),
                 ImmutableArray<IValue>.Empty,
                 new byte[10].ToImmutableArray()
             );
@@ -478,7 +482,10 @@ namespace Libplanet.Tests.Blocks
                 _fx.Genesis.Hash.ByteArray,
                 ImmutableArray<ImmutableArray<byte>>.Empty,
                 _fx.TxFixture.PublicKey1.Format(false).ToImmutableArray(),
-                DateTimeOffset.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.ffffffZ"),
+                DateTimeOffset.UtcNow.ToString(
+                    "yyyy-MM-ddTHH:mm:ss.ffffffZ",
+                    CultureInfo.InvariantCulture
+                ),
                 ImmutableArray<IValue>.Empty,
                 ImmutableArray<byte>.Empty
             );
@@ -520,7 +527,10 @@ namespace Libplanet.Tests.Blocks
                 _fx.Genesis.Hash.ByteArray,
                 ImmutableArray<ImmutableArray<byte>>.Empty,
                 _fx.TxFixture.PublicKey1.Format(false).ToImmutableArray(),
-                DateTimeOffset.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.ffffffZ"),
+                DateTimeOffset.UtcNow.ToString(
+                    "yyyy-MM-ddTHH:mm:ss.ffffffZ",
+                    CultureInfo.InvariantCulture
+                ),
                 rawActions,
                 ImmutableArray<byte>.Empty
             );
