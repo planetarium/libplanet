@@ -961,7 +961,7 @@ namespace Libplanet.Blockchain
                             {
                                 if (renderActions)
                                 {
-                                    RenderBlock(evaluations, block, renderer, stateCompleters);
+                                    RenderActions(evaluations, block, renderer, stateCompleters);
                                 }
 
                                 renderer.RenderBlockEnd(oldTip: prevTip ?? Genesis, newTip: block);
@@ -990,7 +990,7 @@ namespace Libplanet.Blockchain
         /// <param name="stateCompleters">The strategy to complement incomplete block states.
         /// <see cref="StateCompleterSet{T}.Recalculate"/> by default.</param>
         /// <returns>The number of actions rendered.</returns>
-        internal int RenderBlocks(
+        internal int RenderActionsInBlocks(
             long offset,
             IActionRenderer<T> renderer,
             StateCompleterSet<T>? stateCompleters = null)
@@ -1003,7 +1003,7 @@ namespace Libplanet.Blockchain
             int cnt = 0;
             foreach (var block in IterateBlocks((int)offset))
             {
-                cnt += RenderBlock(null, block, renderer, stateCompleters);
+                cnt += RenderActions(null, block, renderer, stateCompleters);
             }
 
             return cnt;
@@ -1019,7 +1019,7 @@ namespace Libplanet.Blockchain
         /// <param name="stateCompleters">The strategy to complement incomplete block states.
         /// <see cref="StateCompleterSet{T}.Recalculate"/> by default.</param>
         /// <returns>The number of actions rendered.</returns>
-        internal int RenderBlock(
+        internal int RenderActions(
             IReadOnlyList<ActionEvaluation> evaluations,
             Block<T> block,
             IActionRenderer<T> renderer,
@@ -1501,7 +1501,7 @@ namespace Libplanet.Blockchain
 
                     foreach (IActionRenderer<T> renderer in ActionRenderers)
                     {
-                        int cnt = RenderBlocks(startToRenderIndex, renderer, completers);
+                        int cnt = RenderActionsInBlocks(startToRenderIndex, renderer, completers);
                         _logger.Debug(
                             $"{nameof(Swap)}() completed rendering {{Count}} actions.",
                             cnt);
