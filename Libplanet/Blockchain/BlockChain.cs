@@ -912,10 +912,6 @@ namespace Libplanet.Blockchain
                     if (evaluateActions)
                     {
                         evaluations = ExecuteActions(block);
-
-                        // FIXME we should refactoring ValidateNextBlock() to avoid affecting
-                        // the global state, then integrate with ThrowIfStateRootHashInvalid().
-                        ThrowIfStateRootHashInvalid(block);
                     }
 
                     _blocks[block.Hash] = block;
@@ -1100,6 +1096,8 @@ namespace Libplanet.Blockchain
             {
                 _rwlock.ExitWriteLock();
             }
+
+            ThrowIfStateRootHashInvalid(block);
 
             return evaluations;
         }
