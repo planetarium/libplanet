@@ -2037,6 +2037,10 @@ namespace Libplanet.Net
                     }
                 }
 
+                txs = new HashSet<Transaction<T>>(
+                    txs.Where(tx => BlockChain.Policy.DoesTransactionFollowsPolicy(tx, BlockChain))
+                );
+
                 foreach (Transaction<T> tx in txs)
                 {
                     try
@@ -2050,11 +2054,6 @@ namespace Libplanet.Net
                             "{TxId} will not be staged since it is invalid.",
                             tx.Id
                         );
-                    }
-
-                    if (!BlockChain.Policy.DoesTransactionFollowsPolicy(tx, BlockChain))
-                    {
-                        BlockChain.UnstageTransaction(tx);
                     }
                 }
 

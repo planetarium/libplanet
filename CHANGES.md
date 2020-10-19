@@ -301,6 +301,8 @@ To be released.
     to receive previous blocks.  [[#996]]
  -  Fixed a bug that `Swarm<T>` had thrown `InvalidGenesisBlockException`
     when reorg its chain repeatedly.  [[#996]]
+ -  Fixed a bug that `Swarm<T>` had propagated invalid transactions.
+    [[#1043]]
 
 ### Static analyzer
 
@@ -398,6 +400,7 @@ To be released.
 [#1034]: https://github.com/planetarium/libplanet/pull/1034
 [#1037]: https://github.com/planetarium/libplanet/pull/1037
 [#1039]: https://github.com/planetarium/libplanet/pull/1039
+[#1043]: https://github.com/planetarium/libplanet/pull/1043
 [sleep mode]: https://en.wikipedia.org/wiki/Sleep_mode
 
 

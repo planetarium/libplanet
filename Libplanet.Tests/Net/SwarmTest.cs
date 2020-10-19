@@ -1715,7 +1715,9 @@ namespace Libplanet.Tests.Net
                 await swarmB.TxReceived.WaitAsync();
 
                 Assert.Equal(swarmB.BlockChain.GetTransaction(validTx.Id), validTx);
-                Assert.Equal(swarmB.BlockChain.GetTransaction(invalidTx.Id), invalidTx);
+                Assert.Throws<KeyNotFoundException>(
+                    () => swarmB.BlockChain.GetTransaction(invalidTx.Id)
+                );
 
                 Assert.Contains(validTx.Id, swarmB.BlockChain.GetStagedTransactionIds());
                 Assert.DoesNotContain(invalidTx.Id, swarmB.BlockChain.GetStagedTransactionIds());
