@@ -735,9 +735,8 @@ namespace Libplanet.Blockchain
                          && tx.Nonce < GetNextTxNonce(tx.Signer))
                 {
                     transactionsToMine.Add(tx);
+                    txBatchSize--;
                 }
-
-                txBatchSize--;
             }
 
             CancellationTokenSource cts = new CancellationTokenSource();
