@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.IO;
 using System.Linq;
+using System.Reflection;
+using Bencodex.Types;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Emit;
 using Microsoft.CodeAnalysis.Text;
 
 namespace Libplanet.Analyzers.Tests.Verifiers
@@ -15,22 +18,10 @@ namespace Libplanet.Analyzers.Tests.Verifiers
     /// </summary>
     public abstract partial class DiagnosticVerifier
     {
-        internal static string DefaultFilePathPrefix = "Test";
-        internal static string CSharpDefaultFileExt = "cs";
-        internal static string VisualBasicDefaultExt = "vb";
-        internal static string TestProjectName = "TestProject";
-
-        private static readonly MetadataReference CorlibReference =
-            MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
-
-        private static readonly MetadataReference SystemCoreReference =
-            MetadataReference.CreateFromFile(typeof(Enumerable).Assembly.Location);
-
-        private static readonly MetadataReference CSharpSymbolsReference =
-            MetadataReference.CreateFromFile(typeof(CSharpCompilation).Assembly.Location);
-
-        private static readonly MetadataReference CodeAnalysisReference =
-            MetadataReference.CreateFromFile(typeof(Compilation).Assembly.Location);
+        internal const string DefaultFilePathPrefix = "Test";
+        internal const string CSharpDefaultFileExt = "cs";
+        internal const string VisualBasicDefaultExt = "vb";
+        internal const string TestProjectName = "TestProject";
 
         /// <summary>
         /// Given an analyzer and a document to apply it to, run the analyzer and gather an array of
@@ -55,7 +46,19 @@ namespace Libplanet.Analyzers.Tests.Verifiers
             var diagnostics = new List<Diagnostic>();
             foreach (var project in projects)
             {
-                var compilationWithAnalyzers = project.GetCompilationAsync().Result.WithAnalyzers(
+                Compilation result = project.GetCompilationAsync().Result;
+                EmitResult emitted = result.Emit(new MemoryStream());
+                if (!emitted.Success)
+                {
+                    throw new InvalidOperationException(
+                        "Failed to compile:\n" + string.Join(
+                            "\n",
+                            emitted.Diagnostics.Select(d => $"\t{d.ToString()}")
+                        )
+                    );
+                }
+
+                var compilationWithAnalyzers = result.WithAnalyzers(
                     ImmutableArray.Create(analyzer));
                 var diags = compilationWithAnalyzers.GetAnalyzerDiagnosticsAsync().Result;
                 foreach (var diag in diags)
@@ -172,11 +175,26 @@ namespace Libplanet.Analyzers.Tests.Verifiers
 
             var solution = new AdhocWorkspace()
                 .CurrentSolution
-                .AddProject(projectId, TestProjectName, TestProjectName, language)
-                .AddMetadataReference(projectId, CorlibReference)
-                .AddMetadataReference(projectId, SystemCoreReference)
-                .AddMetadataReference(projectId, CSharpSymbolsReference)
-                .AddMetadataReference(projectId, CodeAnalysisReference);
+                .AddProject(projectId, TestProjectName, TestProjectName, language);
+            IEnumerable<Assembly> assemblies = GetAssemblies(
+                typeof(object),
+                typeof(Enumerable),
+                typeof(Compilation),
+                typeof(Address),
+                typeof(IValue)
+            );
+            foreach (Assembly assembly in assemblies)
+            {
+                if (assembly.IsDynamic)
+                {
+                    continue;
+                }
+
+                solution = solution.AddMetadataReference(
+                    projectId,
+                    MetadataReference.CreateFromFile(assembly.Location)
+                );
+            }
 
             int count = 0;
             foreach (var source in sources)
@@ -188,6 +206,45 @@ namespace Libplanet.Analyzers.Tests.Verifiers
             }
 
             return solution.GetProject(projectId);
+        }
+
+        private static IEnumerable<Assembly> GetAssemblies(params Type[] rootTypes)
+        {
+            var registry = new Dictionary<string, Assembly>();
+
+            void Register(Assembly assembly)
+            {
+                if (assembly.IsDynamic || registry.ContainsKey(assembly.FullName))
+                {
+                    return;
+                }
+
+                registry.Add(assembly.FullName, assembly);
+                foreach (AssemblyName @ref in assembly.GetReferencedAssemblies())
+                {
+                    if (!registry.ContainsKey(@ref.FullName))
+                    {
+                        Assembly dep;
+                        try
+                        {
+                            dep = Assembly.Load(@ref);
+                        }
+                        catch (FileNotFoundException)
+                        {
+                            continue;
+                        }
+
+                        Register(dep);
+                    }
+                }
+            }
+
+            foreach (Type rootType in rootTypes)
+            {
+                Register(rootType.Assembly);
+            }
+
+            return registry.Values;
         }
     }
 }
