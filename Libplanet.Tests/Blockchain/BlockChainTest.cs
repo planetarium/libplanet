@@ -95,6 +95,41 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
+        public async void MineBlockWithTxBatchSize()
+        {
+            List<PrivateKey> privateKeys = Enumerable.Range(0, 3)
+                .Select(_ => new PrivateKey()).ToList();
+            Assert.Equal(1, _blockChain.Count);
+            _blockChain.MakeTransaction(privateKeys[0], new DumbAction[0]);
+            _blockChain.MakeTransaction(privateKeys[0], new DumbAction[0]);
+            _blockChain.MakeTransaction(privateKeys[0], new DumbAction[0]);
+            _blockChain.MakeTransaction(privateKeys[1], new DumbAction[0]);
+            _blockChain.MakeTransaction(privateKeys[1], new DumbAction[0]);
+            _blockChain.MakeTransaction(privateKeys[2], new DumbAction[0]);
+
+            Block<DumbAction> block =
+                await _blockChain.MineBlock(_fx.Address1, txBatchSize: 1);
+            block.Validate(DateTimeOffset.UtcNow);
+            Assert.Single(block.Transactions);
+            Assert.Equal(5, _blockChain.GetStagedTransactionIds().Count);
+
+            Block<DumbAction> block2 = await _blockChain.MineBlock(
+                _fx.Address2, DateTimeOffset.UtcNow, txBatchSize: 2);
+            block2.Validate(DateTimeOffset.UtcNow);
+            Assert.Equal(2, block2.Transactions.Count());
+            Assert.Equal(3, _blockChain.GetStagedTransactionIds().Count);
+
+            Block<DumbAction> block3 = await _blockChain.MineBlock(
+                _fx.Address3, append: false, txBatchSize: 4);
+            block3.Validate(DateTimeOffset.UtcNow);
+            Assert.Equal(3, block3.Transactions.Count());
+            Assert.Equal(3, _blockChain.GetStagedTransactionIds().Count);
+
+            _blockChain.Append(block3);
+            Assert.Equal(0, _blockChain.GetStagedTransactionIds().Count);
+        }
+
+        [Fact]
         public async void MineBlockWithPendingTxs()
         {
             var keys = new[] { new PrivateKey(), new PrivateKey(), new PrivateKey() };

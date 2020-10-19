@@ -682,6 +682,8 @@ namespace Libplanet.Blockchain
         /// <param name="currentTime">The <see cref="DateTimeOffset"/> when mining started.</param>
         /// <param name="append">Whether to <see cref="Append(Block{T}, StateCompleterSet{T}?)"/>
         /// the mined block.  Turned on by default.</param>
+        /// <param name="txBatchSize">The number to limit the count of transactions that will
+        /// be contained in the block.  <see cref="int.MaxValue"/> by default.</param>
         /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
         /// operation should be canceled.
@@ -689,24 +691,42 @@ namespace Libplanet.Blockchain
         /// <returns>An awaitable task with a <see cref="Block{T}"/> that is mined.</returns>
         /// <exception cref="OperationCanceledException">Thrown when
         /// <see cref="BlockChain{T}.Tip"/> is changed while mining.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when
+        /// <paramref name="txBatchSize"/> is negative.</exception>
         public async Task<Block<T>> MineBlock(
             Address miner,
             DateTimeOffset currentTime,
             bool append = true,
+            int txBatchSize = int.MaxValue,
             CancellationToken cancellationToken = default(CancellationToken)
         )
         {
+            if (txBatchSize < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(txBatchSize));
+            }
+
             long index = Store.CountIndex(Id);
             long difficulty = Policy.GetNextBlockDifficulty(this);
             HashDigest<SHA256>? prevHash = Store.IndexBlockHash(Id, index - 1);
+
             IEnumerable<Transaction<T>> stagedTransactions = Store
                 .IterateStagedTransactionIds()
-                .Select(Store.GetTransaction<T>);
+                .Select(Store.GetTransaction<T>)
+                .GroupBy(tx => tx.Signer)
+                .SelectMany(grp => grp.Select((tx, idx) => (tx, idx)))
+                .OrderBy(t => t.Item2)
+                .Select(t => t.Item1);
 
             var transactionsToMine = new List<Transaction<T>>();
 
             foreach (Transaction<T> tx in stagedTransactions)
             {
+                if (txBatchSize == 0)
+                {
+                    break;
+                }
+
                 if (!Policy.DoesTransactionFollowsPolicy(tx, this))
                 {
                     UnstageTransaction(tx);
@@ -715,6 +735,7 @@ namespace Libplanet.Blockchain
                          && tx.Nonce < GetNextTxNonce(tx.Signer))
                 {
                     transactionsToMine.Add(tx);
+                    txBatchSize--;
                 }
             }
 
@@ -783,6 +804,8 @@ namespace Libplanet.Blockchain
         /// <param name="miner">The <see cref="Address"/> of miner that mined the block.</param>
         /// <param name="append">Whether to <see cref="Append(Block{T}, StateCompleterSet{T}?)"/>
         /// the mined block.  Turned on by default.</param>
+        /// <param name="txBatchSize">The number to limit the count of transactions that will
+        /// be contained in the block.  <see cref="int.MaxValue"/> by default.</param>
         /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
         /// operation should be canceled.
@@ -790,12 +813,15 @@ namespace Libplanet.Blockchain
         /// <returns>An awaitable task with a <see cref="Block{T}"/> that is mined.</returns>
         /// <exception cref="OperationCanceledException">Thrown when
         /// <see cref="BlockChain{T}.Tip"/> is changed while mining.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when
+        /// <paramref name="txBatchSize"/> is negative.</exception>
         public Task<Block<T>> MineBlock(
             Address miner,
             bool append = true,
+            int txBatchSize = int.MaxValue,
             CancellationToken cancellationToken = default
         ) =>
-            MineBlock(miner, DateTimeOffset.UtcNow, append, cancellationToken);
+            MineBlock(miner, DateTimeOffset.UtcNow, append, txBatchSize, cancellationToken);
 
         /// <summary>
         /// Creates a new <see cref="Transaction{T}"/> and stage the transaction.
