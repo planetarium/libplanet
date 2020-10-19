@@ -1742,7 +1742,9 @@ namespace Libplanet.Net
             finally
             {
                 if (synced is BlockChain<T> syncedNotNull
-                    && !syncedNotNull.Id.Equals(blockChain?.Id))
+                    && !syncedNotNull.Id.Equals(blockChain?.Id)
+                    && (blockChain.Tip is null
+                        || blockChain.Tip.TotalDifficulty < syncedNotNull.Tip.TotalDifficulty))
                 {
                     blockChain.Swap(
                         synced,
