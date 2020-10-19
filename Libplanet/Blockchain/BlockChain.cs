@@ -682,7 +682,7 @@ namespace Libplanet.Blockchain
         /// <param name="currentTime">The <see cref="DateTimeOffset"/> when mining started.</param>
         /// <param name="append">Whether to <see cref="Append(Block{T}, StateCompleterSet{T}?)"/>
         /// the mined block.  Turned on by default.</param>
-        /// <param name="txBatchSize">A number to limit the count of transactions that will
+        /// <param name="txBatchSize">The number to limit the count of transactions that will
         /// be contained in the block.  <see cref="int.MaxValue"/> by default.</param>
         /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
@@ -804,7 +804,7 @@ namespace Libplanet.Blockchain
         /// <param name="miner">The <see cref="Address"/> of miner that mined the block.</param>
         /// <param name="append">Whether to <see cref="Append(Block{T}, StateCompleterSet{T}?)"/>
         /// the mined block.  Turned on by default.</param>
-        /// <param name="txBatchSize">A number to limit the count of transactions that will
+        /// <param name="txBatchSize">The number to limit the count of transactions that will
         /// be contained in the block.  <see cref="int.MaxValue"/> by default.</param>
         /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this

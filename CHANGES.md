@@ -65,11 +65,15 @@ To be released.
     `Block<T>()` constructor. [[#931], [#935]]
  -  Replaced `SerializationInfoExtensions.GetValueOrDefault<T>()` to
     `SerializationInfoExtensions.TryGetValue<T>()`.  [[#940]]
- -  Added `bool append = true` option and `int txBatchSize = int.MaxValue` option to
-    both `BlockChain<T>.MineBlock()` overloaded methods.  Although this breaks
-    ABI-level backward compatibility (i.e., you need to rebuild your assemblies),
-    still is backward-compatible at API-level as the option is turned on by default.
-    [[#946], [#1037], [#1039]]
+ -  Added `bool append = true` option to both `BlockChain<T>.MineBlock()`
+     overloaded methods.  Although this breaks ABI-level backward compatibility
+     (i.e., you need to rebuild your assemblies), still is backward-compatible at
+    API-level as the option is turned on by default.  [[#946]]
+ -  Added `int txBatchSize = int.MaxValue` option to both `BlockChain<T>.MineBlock()`
+    overloaded methods.  Although this breaks ABI-level backward compatibility
+    (i.e., you need to rebuild your assemblies), still is backward-compatible at
+    API-level as the option is turned on by default.
+    [[#1037], [#1039]]
  -  Added `StateCompleterSet<T>? stateCompleters` option to two
     `BlockChain<T>.Append()` overloaded methods.  Although this breaks ABI-level
     backward compatibility (i.e., you need to rebuild your assemblies), still
