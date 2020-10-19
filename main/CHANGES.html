@@ -133,6 +133,11 @@ constructor.  [<a href="https://github.com/planetarium/libplanet/issues/666">#66
 overloaded methods.  Although this breaks ABI-level backward compatibility
 (i.e., you need to rebuild your assemblies), still is backward-compatible at
 API-level as the option is turned on by default.  [<a href="https://github.com/planetarium/libplanet/pull/946">#946</a>]</li>
+<li>Added <code>int txBatchSize = int.MaxValue</code> option to both <code>BlockChain&lt;T&gt;.MineBlock()</code>
+overloaded methods.  Although this breaks ABI-level backward compatibility
+(i.e., you need to rebuild your assemblies), still is backward-compatible at
+API-level as the option is turned on by default.
+[<a href="https://github.com/planetarium/libplanet/pull/1037">#1037</a>, <a href="https://github.com/planetarium/libplanet/pull/1039">#1039</a>]</li>
 <li>Added <code>StateCompleterSet&lt;T&gt;? stateCompleters</code> option to two
 <code>BlockChain&lt;T&gt;.Append()</code> overloaded methods.  Although this breaks ABI-level
 backward compatibility (i.e., you need to rebuild your assemblies), still

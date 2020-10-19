@@ -1149,7 +1149,7 @@ It must match to <a class="xref" href="Libplanet.Blockchain.Policies.BlockPolicy
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_MakeTransaction_Libplanet_Crypto_PrivateKey_IEnumerable__0__IImmutableSet_Libplanet_Address__System_Nullable_DateTimeOffset__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.MakeTransaction(Libplanet.Crypto.PrivateKey%2CIEnumerable%7B%600%7D%2CIImmutableSet%7BLibplanet.Address%7D%2CSystem.Nullable%7BDateTimeOffset%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L815">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L841">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_MakeTransaction_" data-uid="Libplanet.Blockchain.BlockChain`1.MakeTransaction*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_1_MakeTransaction_Libplanet_Crypto_PrivateKey_IEnumerable__0__IImmutableSet_Libplanet_Address__System_Nullable_DateTimeOffset__" data-uid="Libplanet.Blockchain.BlockChain`1.MakeTransaction(Libplanet.Crypto.PrivateKey,IEnumerable{`0},IImmutableSet{Libplanet.Address},System.Nullable{DateTimeOffset})">MakeTransaction(PrivateKey, IEnumerable&lt;T&gt;, IImmutableSet&lt;Address&gt;, Nullable&lt;DateTimeOffset&gt;)</h4>
@@ -1223,13 +1223,13 @@ signed.</p>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_MineBlock_Libplanet_Address_DateTimeOffset_System_Boolean_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.MineBlock(Libplanet.Address%2CDateTimeOffset%2CSystem.Boolean%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_MineBlock_Libplanet_Address_DateTimeOffset_System_Boolean_System_Int32_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.MineBlock(Libplanet.Address%2CDateTimeOffset%2CSystem.Boolean%2CSystem.Int32%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L692">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L696">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_MineBlock_" data-uid="Libplanet.Blockchain.BlockChain`1.MineBlock*"></a>
-  <h4 id="Libplanet_Blockchain_BlockChain_1_MineBlock_Libplanet_Address_DateTimeOffset_System_Boolean_CancellationToken_" data-uid="Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Address,DateTimeOffset,System.Boolean,CancellationToken)">MineBlock(Address, DateTimeOffset, Boolean, CancellationToken)</h4>
+  <h4 id="Libplanet_Blockchain_BlockChain_1_MineBlock_Libplanet_Address_DateTimeOffset_System_Boolean_System_Int32_CancellationToken_" data-uid="Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Address,DateTimeOffset,System.Boolean,System.Int32,CancellationToken)">MineBlock(Address, DateTimeOffset, Boolean, Int32, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Mines a next <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> using staged <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s,
 and then <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Append_Libplanet_Blocks_Block__0__System_Nullable_Libplanet_Blockchain_StateCompleterSet__0___">Append(Block&lt;T&gt;, Nullable&lt;StateCompleterSet&lt;T&gt;&gt;)</a> it to the chain
 (unless the <code data-dev-comment-type="paramref" class="paramref">append</code> option is turned off).</p>
@@ -1237,7 +1237,7 @@ and then <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;Block&lt;T&gt;&gt; MineBlock(Address miner, DateTimeOffset currentTime, bool append = true, CancellationToken cancellationToken = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;Block&lt;T&gt;&gt; MineBlock(Address miner, DateTimeOffset currentTime, bool append = true, int txBatchSize = null, CancellationToken cancellationToken = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1269,6 +1269,13 @@ the mined block.  Turned on by default.</p>
 </td>
       </tr>
       <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">txBatchSize</span></td>
+        <td><p>The number to limit the count of transactions that will
+be contained in the block.  <see cref="!:int.MaxValue"></see> by default.</p>
+</td>
+      </tr>
+      <tr>
         <td><span class="xref">CancellationToken</span></td>
         <td><span class="parametername">cancellationToken</span></td>
         <td><p>A cancellation token used to propagate notification that this
@@ -1295,13 +1302,13 @@ operation should be canceled.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_MineBlock_Libplanet_Address_System_Boolean_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.MineBlock(Libplanet.Address%2CSystem.Boolean%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_MineBlock_Libplanet_Address_System_Boolean_System_Int32_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.MineBlock(Libplanet.Address%2CSystem.Boolean%2CSystem.Int32%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L793">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L818">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_MineBlock_" data-uid="Libplanet.Blockchain.BlockChain`1.MineBlock*"></a>
-  <h4 id="Libplanet_Blockchain_BlockChain_1_MineBlock_Libplanet_Address_System_Boolean_CancellationToken_" data-uid="Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Address,System.Boolean,CancellationToken)">MineBlock(Address, Boolean, CancellationToken)</h4>
+  <h4 id="Libplanet_Blockchain_BlockChain_1_MineBlock_Libplanet_Address_System_Boolean_System_Int32_CancellationToken_" data-uid="Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Address,System.Boolean,System.Int32,CancellationToken)">MineBlock(Address, Boolean, Int32, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Mines a next <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> using staged <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s,
 and then <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Append_Libplanet_Blocks_Block__0__System_Nullable_Libplanet_Blockchain_StateCompleterSet__0___">Append(Block&lt;T&gt;, Nullable&lt;StateCompleterSet&lt;T&gt;&gt;)</a> it to the chain
 (unless the <code data-dev-comment-type="paramref" class="paramref">append</code> option is turned off).</p>
@@ -1309,7 +1316,7 @@ and then <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;Block&lt;T&gt;&gt; MineBlock(Address miner, bool append = true, CancellationToken cancellationToken = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;Block&lt;T&gt;&gt; MineBlock(Address miner, bool append = true, int txBatchSize = null, CancellationToken cancellationToken = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1332,6 +1339,13 @@ and then <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_
         <td><span class="parametername">append</span></td>
         <td><p>Whether to <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Append_Libplanet_Blocks_Block__0__System_Nullable_Libplanet_Blockchain_StateCompleterSet__0___">Append(Block&lt;T&gt;, Nullable&lt;StateCompleterSet&lt;T&gt;&gt;)</a>
 the mined block.  Turned on by default.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">txBatchSize</span></td>
+        <td><p>The number to limit the count of transactions that will
+be contained in the block.  <see cref="!:int.MaxValue"></see> by default.</p>
 </td>
       </tr>
       <tr>

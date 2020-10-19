@@ -1866,22 +1866,22 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).MakeTransaction
   nameWithType: BlockChain<T>.MakeTransaction
   nameWithType.vb: BlockChain(Of T).MakeTransaction
-- uid: Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Address,DateTimeOffset,System.Boolean,CancellationToken)
-  name: MineBlock(Address, DateTimeOffset, Boolean, CancellationToken)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MineBlock_Libplanet_Address_DateTimeOffset_System_Boolean_CancellationToken_
-  commentId: M:Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Address,DateTimeOffset,System.Boolean,CancellationToken)
-  fullName: Libplanet.Blockchain.BlockChain<T>.MineBlock(Libplanet.Address, DateTimeOffset, System.Boolean, CancellationToken)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).MineBlock(Libplanet.Address, DateTimeOffset, System.Boolean, CancellationToken)
-  nameWithType: BlockChain<T>.MineBlock(Address, DateTimeOffset, Boolean, CancellationToken)
-  nameWithType.vb: BlockChain(Of T).MineBlock(Address, DateTimeOffset, Boolean, CancellationToken)
-- uid: Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Address,System.Boolean,CancellationToken)
-  name: MineBlock(Address, Boolean, CancellationToken)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MineBlock_Libplanet_Address_System_Boolean_CancellationToken_
-  commentId: M:Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Address,System.Boolean,CancellationToken)
-  fullName: Libplanet.Blockchain.BlockChain<T>.MineBlock(Libplanet.Address, System.Boolean, CancellationToken)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).MineBlock(Libplanet.Address, System.Boolean, CancellationToken)
-  nameWithType: BlockChain<T>.MineBlock(Address, Boolean, CancellationToken)
-  nameWithType.vb: BlockChain(Of T).MineBlock(Address, Boolean, CancellationToken)
+- uid: Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Address,DateTimeOffset,System.Boolean,System.Int32,CancellationToken)
+  name: MineBlock(Address, DateTimeOffset, Boolean, Int32, CancellationToken)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MineBlock_Libplanet_Address_DateTimeOffset_System_Boolean_System_Int32_CancellationToken_
+  commentId: M:Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Address,DateTimeOffset,System.Boolean,System.Int32,CancellationToken)
+  fullName: Libplanet.Blockchain.BlockChain<T>.MineBlock(Libplanet.Address, DateTimeOffset, System.Boolean, System.Int32, CancellationToken)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).MineBlock(Libplanet.Address, DateTimeOffset, System.Boolean, System.Int32, CancellationToken)
+  nameWithType: BlockChain<T>.MineBlock(Address, DateTimeOffset, Boolean, Int32, CancellationToken)
+  nameWithType.vb: BlockChain(Of T).MineBlock(Address, DateTimeOffset, Boolean, Int32, CancellationToken)
+- uid: Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Address,System.Boolean,System.Int32,CancellationToken)
+  name: MineBlock(Address, Boolean, Int32, CancellationToken)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MineBlock_Libplanet_Address_System_Boolean_System_Int32_CancellationToken_
+  commentId: M:Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Address,System.Boolean,System.Int32,CancellationToken)
+  fullName: Libplanet.Blockchain.BlockChain<T>.MineBlock(Libplanet.Address, System.Boolean, System.Int32, CancellationToken)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).MineBlock(Libplanet.Address, System.Boolean, System.Int32, CancellationToken)
+  nameWithType: BlockChain<T>.MineBlock(Address, Boolean, Int32, CancellationToken)
+  nameWithType.vb: BlockChain(Of T).MineBlock(Address, Boolean, Int32, CancellationToken)
 - uid: Libplanet.Blockchain.BlockChain`1.MineBlock*
   name: MineBlock
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MineBlock_
