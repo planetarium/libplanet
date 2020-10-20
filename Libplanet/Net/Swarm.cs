@@ -1957,6 +1957,13 @@ namespace Libplanet.Net
                 {
                     _logger.Debug($"Timeout occurred during {nameof(ProcessFillBlocks)}");
                 }
+                catch (InvalidBlockIndexException ibie)
+                {
+                    _logger.Warning(
+                        $"{nameof(InvalidBlockIndexException)} occurred during " +
+                        $"{nameof(ProcessFillBlocks)}: " +
+                        "{ibie}", ibie);
+                }
                 catch (Exception e)
                 {
                     var msg =

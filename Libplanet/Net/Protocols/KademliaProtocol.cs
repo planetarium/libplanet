@@ -102,7 +102,7 @@ namespace Libplanet.Net.Protocols
                 }
                 catch (PingTimeoutException)
                 {
-                    _logger.Error("A timeout exception occurred connecting to seed peer.");
+                    _logger.Warning("A timeout exception occurred connecting to seed peer.");
                     RemovePeer(peer);
                 }
                 catch (Exception e)
@@ -688,7 +688,7 @@ namespace Libplanet.Net.Protocols
                         }
                     }
 
-                    _logger.Error(
+                    _logger.Warning(
                         ae,
                         "Some responses from neighbors found unexpectedly terminated: {ae}",
                         ae
