@@ -66,9 +66,14 @@ To be released.
  -  Replaced `SerializationInfoExtensions.GetValueOrDefault<T>()` to
     `SerializationInfoExtensions.TryGetValue<T>()`.  [[#940]]
  -  Added `bool append = true` option to both `BlockChain<T>.MineBlock()`
+     overloaded methods.  Although this breaks ABI-level backward compatibility
+     (i.e., you need to rebuild your assemblies), still is backward-compatible at
+    API-level as the option is turned on by default.  [[#946]]
+ -  Added `int txBatchSize = int.MaxValue` option to both `BlockChain<T>.MineBlock()`
     overloaded methods.  Although this breaks ABI-level backward compatibility
     (i.e., you need to rebuild your assemblies), still is backward-compatible at
-    API-level as the option is turned on by default.  [[#946]]
+    API-level as the option is turned on by default.
+    [[#1037], [#1039]]
  -  Added `StateCompleterSet<T>? stateCompleters` option to two
     `BlockChain<T>.Append()` overloaded methods.  Although this breaks ABI-level
     backward compatibility (i.e., you need to rebuild your assemblies), still
@@ -203,8 +208,8 @@ To be released.
  -  Added `IActionRenderer<T>` interface.  [[#959], [#967], [#970]]
  -  Added `AnonymousRenderer<T>` class.  [[#959], [#963]]
  -  Added `AnonymousActionRenderer<T>` interface.  [[#959], [#967], [#970]]
- -  Added `DelayedRenderer<T>` class.  [[#980]]
- -  Added `DelayedActionRenderer<T>` class.  [[#980]]
+ -  Added `DelayedRenderer<T>` class.  [[#980], [#1029]]
+ -  Added `DelayedActionRenderer<T>` class.  [[#980], [#1029]]
  -  Added `LoggedRenderer<T>` class.  [[#959], [#963]]
  -  Added `LoggedActionRenderer<T>` interface.  [[#959], [#967], [#970]]
  -  Added `BlockChain<T>.Renderers` property.  [[#945], [#959], [#963]]
@@ -214,6 +219,8 @@ To be released.
  -  Added `IStateStore` interface.  [[#950]]
  -  Added `IBlockStatesStore` interface.  [[#950]]
  -  Added `TrieStateStore` class.  [[#939]]
+ -  Added `ITrie` interface.  [[#939], [#1023]]
+ -  Added `MerkleTrie` class.  [[#939], [#1023]]
  -  Added `IKeyValueStore` interface.  [[#939]]
  -  Added `DefaultKeyValueStore` class.  [[#939]]
  -  Added `CacheableKeyValueStore` class.  [[#939]]
@@ -223,6 +230,9 @@ To be released.
  -  Added `InvalidBlockStateRootHashException` class.  [[#986]]
  -  Added `Block<T>.StateRootHash` property.  [[#986]]
  -  Added `BlockHeader.StateRootHash` property.  [[#986]]
+ -  Added `MerkleTrieExtensions` static class.  [[#1023]]
+ -  Added `IAccountStateDelta.PreviousStateRootHash` property to
+    calculate states until previous action as state root hash.  [[#1030]]
 
 ### Behavioral changes
 
@@ -264,6 +274,7 @@ To be released.
     unable to be appended to `BlockChain<T>`.  [[#1010]]
  -  `BlockSet<T>[HashDigest<SHA256>]` and `BlockChain<T>.Genesis` became cached
     so that they become faster to get.  [[#1013]]
+ -  `Swarm<T>.PreloadAsync()` became to do not render blocks.  [[#1029]]
 
 ### Bug fixes
 
@@ -290,12 +301,25 @@ To be released.
     to receive previous blocks.  [[#996]]
  -  Fixed a bug that `Swarm<T>` had thrown `InvalidGenesisBlockException`
     when reorg its chain repeatedly.  [[#996]]
+ -  Fixed a bug that `Swarm<T>` had propagated invalid transactions.
+    [[#1043]]
+
+### Static analyzer
+
+ -  Introduced the *Libplanet.Analyzers* package, a Roslyn Analyzer, which
+    checks if code has common mistakes prone to made with Libplanet-powered
+    game apps, e.g., breaking determinism in `IAction` implementations.
+    [[#1034]]
 
 ### CLI tools
 
  -  The `planet` command became installable using `npm`.  [[#923], [#982]]
  -  Fixed a bug that <kbd>^H</kbd> had not removed the rightmost character
     in passphrase prompts.  [[#983], [#984]]
+ -  Added a new sub-command `planet mpt`.  [[#1023], [#1026]]
+ -  Introduced a configuration file.  It's placed in:  [[#1023], [#1026]]
+     -  Linux/macOS: *<var>$XDG_CONFIG_HOME</var>/planetarium/cli.json*
+     -  Windows: *<var>%AppData%</var>\planetarium\cli.json*
 
 [#404]: https://github.com/planetarium/libplanet/issues/404
 [#459]: https://github.com/planetarium/libplanet/issues/459
@@ -369,6 +393,14 @@ To be released.
 [#1013]: https://github.com/planetarium/libplanet/pull/1013
 [#1021]: https://github.com/planetarium/libplanet/pull/1021
 [#1022]: https://github.com/planetarium/libplanet/pull/1022
+[#1023]: https://github.com/planetarium/libplanet/pull/1023
+[#1026]: https://github.com/planetarium/libplanet/pull/1026
+[#1029]: https://github.com/planetarium/libplanet/pull/1029
+[#1030]: https://github.com/planetarium/libplanet/pull/1030
+[#1034]: https://github.com/planetarium/libplanet/pull/1034
+[#1037]: https://github.com/planetarium/libplanet/pull/1037
+[#1039]: https://github.com/planetarium/libplanet/pull/1039
+[#1043]: https://github.com/planetarium/libplanet/pull/1043
 [sleep mode]: https://en.wikipedia.org/wiki/Sleep_mode
 
 

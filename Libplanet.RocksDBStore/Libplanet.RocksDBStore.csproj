@@ -1,4 +1,4 @@
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 <PropertyGroup>
   <PackageId>Libplanet.RocksDBStore</PackageId>
   <Title>Libplanet.RocksDBStore</Title>
@@ -12,6 +12,9 @@
   <RepositoryUrl>git://github.com/planetarium/libplanet.git</RepositoryUrl>
   <RepositoryType>git</RepositoryType>
   <PackageIcon>icon.png</PackageIcon>
+</PropertyGroup>
+
+<PropertyGroup>
   <LangVersion>8.0</LangVersion>
   <TargetFramework>netstandard2.0</TargetFramework>
   <RootNamespace>Libplanet.RocksDBStore</RootNamespace>

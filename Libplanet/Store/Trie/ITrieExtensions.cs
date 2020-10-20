@@ -6,17 +6,19 @@ namespace Libplanet.Store.Trie
 {
     internal static class ITrieExtensions
     {
-        public static void Set(this ITrie trie, IImmutableDictionary<byte[], IValue> values)
+        public static ITrie Set(this ITrie trie, IImmutableDictionary<byte[], IValue> values)
         {
             foreach (var pair in values)
             {
-                trie.Set(pair.Key, pair.Value);
+                trie = trie.Set(pair.Key, pair.Value);
             }
+
+            return trie;
         }
 
-        public static void Set(this ITrie trie, IImmutableDictionary<string, IValue> values)
+        public static ITrie Set(this ITrie trie, IImmutableDictionary<string, IValue> values)
         {
-            trie.Set(values.ToImmutableDictionary(
+            return trie.Set(values.ToImmutableDictionary(
                 pair => Encoding.UTF8.GetBytes(pair.Key),
                 pair => pair.Value));
         }

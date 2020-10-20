@@ -145,7 +145,10 @@ namespace Libplanet.Tests.Blockchain
                 genesisBlock.Hash,
                 genesisBlock.Timestamp.AddSeconds(1),
                 _emptyTransaction);
-            chain.ExecuteActions(validNext);
+            var actionEvaluations = _blockChain.BlockEvaluator.EvaluateActions(
+                validNext,
+                StateCompleterSet<DumbAction>.Recalculate);
+            chain.SetStates(validNext, actionEvaluations, false);
             validNext =
                 new Block<DumbAction>(validNext, stateStore.GetRootHash(validNext.Hash));
             chain.Append(validNext);
@@ -158,7 +161,7 @@ namespace Libplanet.Tests.Blockchain
                 validNext.Hash,
                 validNext.Timestamp.AddSeconds(1),
                 _emptyTransaction);
-            var actionEvaluations = _blockChain.BlockEvaluator.EvaluateActions(
+            actionEvaluations = _blockChain.BlockEvaluator.EvaluateActions(
                 invalidStateRootHash,
                 StateCompleterSet<DumbAction>.Recalculate);
             chain.SetStates(invalidStateRootHash, actionEvaluations, false);

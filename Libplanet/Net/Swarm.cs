@@ -790,12 +790,11 @@ namespace Libplanet.Net
                                 {
                                     cancellationToken.ThrowIfCancellationRequested();
 
-                                    // FIXME: Shouldn't we turn off renderBlocks option in IBD?
                                     workspace.Append(
                                         deltaBlock,
                                         DateTimeOffset.UtcNow,
                                         evaluateActions: false,
-                                        renderBlocks: true,
+                                        renderBlocks: false,
                                         renderActions: false
                                     );
                                     progress?.Report(new BlockVerificationState
@@ -905,7 +904,7 @@ namespace Libplanet.Net
                         wId,
                         workspace.Tip
                     );
-                    BlockChain.Swap(workspace, renderActions: false);
+                    BlockChain.Swap(workspace, render: false);
                 }
 
                 foreach (Guid chainId in chainIds)
@@ -1743,11 +1742,13 @@ namespace Libplanet.Net
             finally
             {
                 if (synced is BlockChain<T> syncedNotNull
-                    && !syncedNotNull.Id.Equals(blockChain?.Id))
+                    && !syncedNotNull.Id.Equals(blockChain?.Id)
+                    && (blockChain.Tip is null
+                        || blockChain.Tip.TotalDifficulty < syncedNotNull.Tip.TotalDifficulty))
                 {
                     blockChain.Swap(
                         synced,
-                        renderActions: true,
+                        render: true,
                         stateCompleters: trustedStateCompleterSet
                     );
                 }
@@ -1768,6 +1769,7 @@ namespace Libplanet.Net
             BlockChain<T> workspace = blockChain;
             var scope = new List<Guid>();
             bool renderActions = evaluateActions;
+            bool renderBlocks = true;
 
             try
             {
@@ -1831,6 +1833,7 @@ namespace Libplanet.Net
                         Guid workChainId = workspace.Id;
                         scope.Add(workChainId);
                         renderActions = false;
+                        renderBlocks = false;
                         _logger.Debug("Forking complete.");
                     }
 
@@ -1876,7 +1879,7 @@ namespace Libplanet.Net
                             block,
                             DateTimeOffset.UtcNow,
                             evaluateActions: evaluateActions,
-                            renderBlocks: true,
+                            renderBlocks: renderBlocks,
                             renderActions: renderActions
                         );
                         receivedBlockCount++;
@@ -2034,6 +2037,10 @@ namespace Libplanet.Net
                     }
                 }
 
+                txs = new HashSet<Transaction<T>>(
+                    txs.Where(tx => BlockChain.Policy.DoesTransactionFollowsPolicy(tx, BlockChain))
+                );
+
                 foreach (Transaction<T> tx in txs)
                 {
                     try
@@ -2047,11 +2054,6 @@ namespace Libplanet.Net
                             "{TxId} will not be staged since it is invalid.",
                             tx.Id
                         );
-                    }
-
-                    if (!BlockChain.Policy.DoesTransactionFollowsPolicy(tx, BlockChain))
-                    {
-                        BlockChain.UnstageTransaction(tx);
                     }
                 }
 

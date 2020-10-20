@@ -40,7 +40,7 @@ namespace Libplanet.Tests.Blockchain
                 transactions: txs,
                 checkStateRootHash: true);
             var blockEvaluator =
-                new BlockEvaluator<RandomAction>(null, NullStateGetter, NullBalanceGetter);
+                new BlockEvaluator<RandomAction>(null, NullStateGetter, NullBalanceGetter, null);
             var generatedRandomNumbers = new List<int>();
 
             Assert.NotEqual(stateRootBlock.Hash, noStateRootBlock.Hash);

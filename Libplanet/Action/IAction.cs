@@ -229,6 +229,10 @@ namespace Libplanet.Action
         /// <para>For more on determinism in general, please read also <a
         /// href="https://tendermint.com/docs/spec/abci/abci.html#determinism"
         /// >Tendermint ABCI's docs on determinism</a>.</para>
+        /// <para>Lastly, you can conduct static analysis on your code
+        /// using <a href="https://git.io/JTmby">Libplanet.Analyzers</a>.
+        /// The analyzer can be enabled by adding its NuGet package into
+        /// your project as a dependency.</para>
         /// </remarks>
         /// <seealso cref="IActionContext"/>
         IAccountStateDelta Execute(IActionContext context);

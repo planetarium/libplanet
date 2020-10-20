@@ -4,7 +4,11 @@ using Bencodex.Types;
 
 namespace Libplanet.Store.Trie
 {
-    internal interface ITrie
+    /// <summary>
+    /// An interface for <see href="https://en.wikipedia.org/wiki/Merkle_tree">Merkle Tree</see>.
+    /// </summary>
+    /// <seealso cref="MerkleTrie"/>
+    public interface ITrie
     {
         /// <summary>
         /// The state root hash of the trie.
@@ -17,7 +21,10 @@ namespace Libplanet.Store.Trie
         /// </summary>
         /// <param name="key">An index to look with <see cref="TryGet"/> after.</param>
         /// <param name="value">The value to store.</param>
-        void Set(byte[] key, IValue value);
+        /// <exception cref="System.ArgumentNullException">Thrown when the given
+        /// <paramref name="value"/> is <c>null</c>.</exception>
+        /// <returns>Returns new updated <see cref="ITrie"/>.</returns>
+        ITrie Set(byte[] key, IValue value);
 
         /// <summary>
         /// Gets the value stored with <paramref name="key"/> in <see cref="Set"/>.

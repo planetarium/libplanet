@@ -90,7 +90,12 @@ on GitHub consists of several projects:
     As this depends on platform-dependent libraries (which is written in C/C++),
     this is distributed as a distinct NuGet package: *[Libplanet.RocksDBStore]*.
 
- -  *Libplanet.Tools*: The CLI tools for Libplanet.  See its own
+ -  *Libplanet.Analyzers*: Roslyn Analyzer (i.e., lint) for game programmers who
+    use Libplanet.  This project is distributed as a distinct NuGet package:
+    *[Libplanet.Analyzers]*.
+
+ -  *Libplanet.Tools*: The CLI tools for Libplanet.  This project is distributed
+    as a distinct NuGet package: *[Libplanet.Tools]*. See its own
     [README.md](Libplanet.Tools/README.md).
 
  -  *Libplanet.Benchmarks*: Performance benchmarks.
@@ -104,11 +109,16 @@ on GitHub consists of several projects:
  -  *Libplanet.RocksDBStore.Tests*: Unit tests of the *Libplanet.RocksDBStore*
     project.
 
+ -  *Libplanet.Analyzers.Tests*: Unit tests of the *Libplanet.Analyzers*
+    project.
+
 
 [NuGet package]: https://www.nuget.org/packages/Libplanet/
 [TURN & STUN]: https://snack.planetarium.dev/eng/2019/06/nat_traversal_2/
 [RocksDB]: https://rocksdb.org/
 [Libplanet.RocksDBStore]: https://www.nuget.org/packages/Libplanet.RocksDBStore/
+[Libplanet.Analyzers]: https://www.nuget.org/packages/Libplanet.Analyzers/
+[Libplanet.Tools]: https://www.nuget.org/packages/Libplanet.Tools/
 
 
 Tests [![Build Status](https://dev.azure.com/planetarium/libplanet/_apis/build/status/planetarium.libplanet?branchName=main)][Azure Pipelines] [![Codecov](https://codecov.io/gh/planetarium/libplanet/branch/main/graph/badge.svg)][2]

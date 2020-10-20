@@ -18,6 +18,8 @@ using Libplanet.Store.Trie;
 using Libplanet.Tests.Common;
 using Libplanet.Tx;
 using Xunit;
+using static Libplanet.Blockchain.KeyConverters;
+using Random = System.Random;
 
 namespace Libplanet.Tests
 {
@@ -102,6 +104,8 @@ namespace Libplanet.Tests
             }),
         };
 
+        private static readonly Random _random = new Random();
+
         public static void AssertBytesEqual(byte[] expected, byte[] actual)
         {
             string msg;
@@ -166,9 +170,8 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
 
         public static byte[] GetRandomBytes(int size)
         {
-            var random = new System.Random();
             var bytes = new byte[size];
-            random.NextBytes(bytes);
+            _random.NextBytes(bytes);
 
             return bytes;
         }
@@ -203,14 +206,15 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 var blockEvaluator = new BlockEvaluator<T>(
                     blockAction,
                     (address, digest, arg3) => null,
-                    (address, currency, arg3, arg4) => new FungibleAssetValue(currency));
+                    (address, currency, arg3, arg4) => new FungibleAssetValue(currency),
+                    null);
                 var actionEvaluationResult = blockEvaluator
                     .EvaluateActions(block, StateCompleterSet<T>.Reject)
-                    .GetTotalDelta(BlockChain<T>.ToStateKey, BlockChain<T>.ToFungibleAssetKey);
-                var trie = new MerkleTrie(new DefaultKeyValueStore(null));
+                    .GetTotalDelta(ToStateKey, ToFungibleAssetKey);
+                ITrie trie = new MerkleTrie(new DefaultKeyValueStore(null));
                 foreach (var pair in actionEvaluationResult)
                 {
-                    trie.Set(Encoding.UTF8.GetBytes(pair.Key), pair.Value);
+                    trie = trie.Set(Encoding.UTF8.GetBytes(pair.Key), pair.Value);
                 }
 
                 var stateRootHash = trie.Commit(rehearsal: true).Hash;
