@@ -96,8 +96,6 @@
     <Rule Id="S2743" Action="None" />
     <!-- Make field 'readonly'. -->
     <Rule Id="S2933" Action="None" />
-    <!-- Change the visibility of this constructor to 'protected'. -->
-    <Rule Id="S3442" Action="None" />
     <!-- Fix this implementation of 'IDisposable' to conform to the dispose
     pattern. -->
     <Rule Id="S3881" Action="None" />
@@ -114,19 +112,8 @@
     other handling the asynchronous code. -->
     <Rule Id="S4457" Action="None" />
 
-    <!-- Remove the unnecessary Boolean literal(s). -->
-    <Rule Id="S1125" Action="None" />
-    <!-- Remove the field '_bucketSize' and declare it as a local variable
-    in the relevant methods. -->
-    <Rule Id="S1450" Action="None" />
     <!-- Remove the unused local variable 'x'. -->
     <Rule Id="S1481" Action="None" />
-    <!-- Extract this nested ternary operation into an independent
-    statement. -->
-    <Rule Id="S3358" Action="None" />
-    <!-- Seal class 'Transaction' or implement 'IEqualityComparer<T>'
-    instead. -->
-    <Rule Id="S4035" Action="None" />
 
     <!-- Remove this useless assignment to local variable x -->
     <Rule Id="S1854" Action="None" />

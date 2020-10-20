@@ -833,7 +833,13 @@ namespace Libplanet.Store
             LiteCollection<BsonDocument> collection = _db.GetCollection<BsonDocument>(collectionId);
             var docId = new BsonValue(address.ToByteArray());
             BsonDocument doc = collection.FindById(docId);
-            return doc is null ? 0 : (doc.TryGetValue("v", out BsonValue v) ? v.AsInt64 : 0);
+
+            if (doc is null)
+            {
+                return 0;
+            }
+
+            return doc.TryGetValue("v", out BsonValue v) ? v.AsInt64 : 0;
         }
 
         /// <inheritdoc/>

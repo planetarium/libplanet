@@ -13,7 +13,7 @@ namespace Libplanet.Tests.Store
 {
     public abstract class StoreFixture : IDisposable
     {
-        public StoreFixture(IAction blockAction = null)
+        protected StoreFixture(IAction blockAction = null)
         {
             StoreChainId = Guid.NewGuid();
 

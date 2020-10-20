@@ -81,15 +81,6 @@
     <Rule Id="S1118" Action="None" />
     <!-- Remove the unused local variable 'x'. -->
     <Rule Id="S1481" Action="None" />
-    <!-- Parameters to 'Equal' have the same names but not the same order as
-    the method arguments. -->
-    <Rule Id="S2234" Action="None" />
-    <!-- Change the visibility of this constructor to 'protected'. -->
-    <Rule Id="S3442" Action="None" />
-    <!-- Seal class or implement 'IEqualityComparer<T>' instead. -->
-    <Rule Id="S4035" Action="None" />
-    <!-- Remove this unnecessary null check; 'is' returns false for nulls. -->
-    <Rule Id="S4201" Action="None" />
 
     <!-- Remove this parameter 'x', whose value is ignored in the method. -->
     <Rule Id="S1172" Action="None" />

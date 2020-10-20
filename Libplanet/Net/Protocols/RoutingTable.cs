@@ -12,8 +12,6 @@ namespace Libplanet.Net.Protocols
 
         private readonly Address _address;
         private readonly int _tableSize;
-        private readonly int _bucketSize;
-        private readonly Random _random;
         private readonly KBucket[] _buckets;
 
         private readonly ILogger _logger;
@@ -37,14 +35,12 @@ namespace Libplanet.Net.Protocols
 
             _address = address;
             _tableSize = tableSize;
-            _bucketSize = bucketSize;
-            _random = random;
             _logger = logger;
 
             _buckets = new KBucket[tableSize];
             for (int i = 0; i < _tableSize; i++)
             {
-                _buckets[i] = new KBucket(_bucketSize, _random, _logger);
+                _buckets[i] = new KBucket(bucketSize, random, _logger);
             }
         }
 

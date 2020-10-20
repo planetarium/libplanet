@@ -187,7 +187,23 @@ namespace Libplanet.Assets
         /// </list>
         /// </value>
         [Pure]
-        public int Sign => RawValue < 0 ? -1 : RawValue > 0 ? 1 : 0;
+        public int Sign
+        {
+            get
+            {
+                if (RawValue < 0)
+                {
+                    return -1;
+                }
+
+                if (RawValue == 0)
+                {
+                    return 0;
+                }
+
+                return 1;
+            }
+        }
 
         /// <summary>
         /// The major unit of the fungible asset value, i.e., digits <em>before</em> the decimal
@@ -553,15 +569,20 @@ namespace Libplanet.Assets
         /// <returns>A quantity string in decimal system.  Consists of an optional sign (minus),
         /// digits and an optional decimal separator (period).</returns>
         [Pure]
-        public string GetQuantityString(bool minorUnit = false) => minorUnit || MinorUnit > 0
-            ? string.Format(
+        public string GetQuantityString(bool minorUnit = false)
+        {
+            var signedString = Sign < 0 ? "-" : string.Empty;
+            var endCharsToTrim = minorUnit ? ' ' : '0';
+            return minorUnit || MinorUnit > 0
+                ? string.Format(
                 CultureInfo.InvariantCulture,
                 "{0}{1}.{2:d" + Currency.DecimalPlaces.ToString(CultureInfo.InvariantCulture) + "}",
-                Sign < 0 ? "-" : string.Empty,
+                signedString,
                 MajorUnit,
                 MinorUnit
-            ).TrimEnd(minorUnit ? ' ' : '0')
-            : (MajorUnit * Sign).ToString(CultureInfo.InvariantCulture);
+                ).TrimEnd(endCharsToTrim)
+                : (MajorUnit * Sign).ToString(CultureInfo.InvariantCulture);
+        }
 
         /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>
         [Pure]

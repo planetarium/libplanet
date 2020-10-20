@@ -10,7 +10,7 @@ using Libplanet.Serialization;
 namespace Libplanet.Tests.Common.Action
 {
     [Serializable]
-    public class BattleResult : IEquatable<BattleResult>, ISerializable
+    public sealed class BattleResult : IEquatable<BattleResult>, ISerializable
     {
         public BattleResult(
             IEnumerable<string> usedWeapons,
@@ -52,7 +52,7 @@ namespace Libplanet.Tests.Common.Action
 
         public override bool Equals(object other)
         {
-            return other != null && other is IEquatable<BattleResult> o &&
+            return other is IEquatable<BattleResult> o &&
                    o.Equals(this);
         }
 

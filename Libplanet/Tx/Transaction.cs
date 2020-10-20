@@ -26,7 +26,7 @@ namespace Libplanet.Tx
     /// </typeparam>
     /// <seealso cref="IAction"/>
     /// <seealso cref="PolymorphicAction{T}"/>
-    public class Transaction<T> : IEquatable<Transaction<T>>
+    public sealed class Transaction<T> : IEquatable<Transaction<T>>
         where T : IAction, new()
     {
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
