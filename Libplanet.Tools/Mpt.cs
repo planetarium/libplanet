@@ -28,7 +28,7 @@ namespace Libplanet.Tools
 
         private const string KVStoreArgumentDescription =
             "The alias name registered through `planet mpt add' command or the URI included " +
-            "the type of " + nameof(IKeyValueStore) + " implementation and the path where" +
+            "the type of " + nameof(IKeyValueStore) + " implementation and the path where " +
             "it was used at. " + KVStoreURIExample;
 
         private readonly IImmutableDictionary<string, Func<string, IKeyValueStore>>
