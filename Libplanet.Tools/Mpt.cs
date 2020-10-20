@@ -42,7 +42,7 @@ namespace Libplanet.Tools
         [Command(Description = "Compare two trees via root hash.")]
         public void Diff(
             [Argument(
-                Name = "KEY-VALUE-STORE",
+                Name = "KV-STORE",
                 Description = KVStoreArgumentDescription)]
             string kvStoreUri,
             [Argument(
@@ -102,7 +102,7 @@ namespace Libplanet.Tools
         [Command(Description = "Export all states of the state root hash as JSON.")]
         public void Export(
             [Argument(
-                Name = "KEY-VALUE-STORE",
+                Name = "KV-STORE",
                 Description = KVStoreArgumentDescription)]
             string kvStoreUri,
             [Argument(
@@ -152,7 +152,7 @@ namespace Libplanet.Tools
                 Description = "The alias to refer to the fully qualified key-value store URI.")]
             string alias,
             [Argument(
-                Name = "KEY-VALUE-STORE-URI",
+                Name = "KV-STORE-URI",
                 Description = KVStoreURIExample)]
             string uri,
             [FromService] IConfigurationService<ToolConfiguration> configurationService)
