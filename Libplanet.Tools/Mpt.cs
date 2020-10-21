@@ -23,6 +23,14 @@ namespace Libplanet.Tools
 
     public class Mpt
     {
+        private const string KVStoreURIExample =
+            "<kv-store-type>://<kv-store-path> (e.g., rocksdb:///path/to/kv-store)";
+
+        private const string KVStoreArgumentDescription =
+            "The alias name registered through `planet mpt add' command or the URI included " +
+            "the type of " + nameof(IKeyValueStore) + " implementation and the path where " +
+            "it was used at. " + KVStoreURIExample;
+
         private readonly IImmutableDictionary<string, Func<string, IKeyValueStore>>
             _kvStoreConstructors =
                 new Dictionary<string, Func<string, IKeyValueStore>>
@@ -34,8 +42,8 @@ namespace Libplanet.Tools
         [Command(Description = "Compare two trees via root hash.")]
         public void Diff(
             [Argument(
-                Name = "KEY-VALUE-STORE",
-                Description = "The path where IKeyValueStore implementation was used at.")]
+                Name = "KV-STORE",
+                Description = KVStoreArgumentDescription)]
             string kvStoreUri,
             [Argument(
                 Name = "STATE-ROOT-HASH",
@@ -94,8 +102,8 @@ namespace Libplanet.Tools
         [Command(Description = "Export all states of the state root hash as JSON.")]
         public void Export(
             [Argument(
-                Name = "KEY-VALUE-STORE",
-                Description = "The path where IKeyValueStore implementation was used at.")]
+                Name = "KV-STORE",
+                Description = KVStoreArgumentDescription)]
             string kvStoreUri,
             [Argument(
                 Name = "STATE-ROOT-HASH",
@@ -137,10 +145,16 @@ namespace Libplanet.Tools
         }
 
         // FIXME: Now, it works like `set` not `add`. It allows override.
-        [Command(Description="Add a new mpt store alias.")]
+        [Command(Description="Register an alias name to refer to a key-value store.")]
         public void Add(
-            [Argument] string alias,
-            [Argument] string uri,
+            [Argument(
+                Name = "ALIAS",
+                Description = "The alias to refer to the fully qualified key-value store URI.")]
+            string alias,
+            [Argument(
+                Name = "KV-STORE-URI",
+                Description = KVStoreURIExample)]
+            string uri,
             [FromService] IConfigurationService<ToolConfiguration> configurationService)
         {
             try
@@ -159,9 +173,12 @@ namespace Libplanet.Tools
             configurationService.Store(configuration);
         }
 
-        [Command(Description="Remove the registered mpt store.")]
+        [Command(Description="Deregister an alias to a key-value store.")]
         public void Remove(
-            [Argument] string alias,
+            [Argument(
+                Name = "ALIAS",
+                Description = "The alias name to deregister.")]
+            string alias,
             [FromService] IConfigurationService<ToolConfiguration> configurationService)
         {
             var configuration = configurationService.Load();
