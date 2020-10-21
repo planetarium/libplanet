@@ -3,7 +3,7 @@ using Libplanet.Action;
 
 namespace Libplanet.Explorer.UnitTests.Common.Action
 {
-    public class NopeAction : IAction
+    public class NoOpAction : IAction
     {
         public void LoadPlainValue(IValue plainValue)
         {

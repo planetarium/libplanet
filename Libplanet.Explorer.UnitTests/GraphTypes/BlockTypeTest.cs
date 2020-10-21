@@ -18,7 +18,7 @@ namespace Libplanet.Explorer.UnitTests.GraphTypes
         [Fact]
         public async void Query()
         {
-            var block = new Block<NopeAction>(
+            var block = new Block<NoOpAction>(
                 1,
                 1,
                 1,
@@ -26,7 +26,7 @@ namespace Libplanet.Explorer.UnitTests.GraphTypes
                 new Address(TestUtils.GetRandomBytes(Address.Size)),
                 new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
                 DateTimeOffset.UtcNow,
-                ImmutableHashSet<Transaction<NopeAction>>.Empty,
+                ImmutableHashSet<Transaction<NoOpAction>>.Empty,
                 stateRootHash: new HashDigest<SHA256>(
                     TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)));
             var query =
@@ -41,7 +41,7 @@ namespace Libplanet.Explorer.UnitTests.GraphTypes
                 }";
 
             ExecutionResult result =
-                await ExecuteQueryAsync<BlockType<NopeAction>>(query, source: block);
+                await ExecuteQueryAsync<BlockType<NoOpAction>>(query, source: block);
             Assert.Null(result.Errors);
             Assert.Equal(
                 block.Index,
