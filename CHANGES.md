@@ -180,6 +180,7 @@ To be released.
  -  Added `InsufficientBalanceException` class.  [[#861], [#900], [#954]]
  -  Added `BlockChain<T>.GetBalance()` method.  [[#861], [#900]]
  -  Added `Block<T>.TotalDifficulty` property.  [[#666], [#917]]
+ -  Added `Block<T>.BytesLength` property.  [[#201], [#1050]]
  -  Added `SwarmOptions` class.  [[#926]]
  -  Added `PeerChainState` struct.  [[#936]]
  -  Added `Swarm<T>.GetPeerChainStateAsync()` method.  [[#936]]
@@ -328,6 +329,7 @@ To be released.
      -  Linux/macOS: *<var>$XDG_CONFIG_HOME</var>/planetarium/cli.json*
      -  Windows: *<var>%AppData%</var>\planetarium\cli.json*
 
+[#201]: https://github.com/planetarium/libplanet/issues/201
 [#404]: https://github.com/planetarium/libplanet/issues/404
 [#459]: https://github.com/planetarium/libplanet/issues/459
 [#666]: https://github.com/planetarium/libplanet/issues/666
