@@ -9,12 +9,6 @@ parameters:
 
 steps:
 
-- task: Bash@3
-  displayName: hooks/check-bom
-  inputs:
-    targetType: filePath
-    filePath: hooks/check-bom
-
 - task: NuGetCommand@2
   displayName: nuget install xunit.runner.console
   inputs:

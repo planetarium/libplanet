@@ -66,14 +66,14 @@ To be released.
  -  Replaced `SerializationInfoExtensions.GetValueOrDefault<T>()` to
     `SerializationInfoExtensions.TryGetValue<T>()`.  [[#940]]
  -  Added `bool append = true` option to both `BlockChain<T>.MineBlock()`
-     overloaded methods.  Although this breaks ABI-level backward compatibility
-     (i.e., you need to rebuild your assemblies), still is backward-compatible at
-    API-level as the option is turned on by default.  [[#946]]
- -  Added `int txBatchSize = int.MaxValue` option to both `BlockChain<T>.MineBlock()`
     overloaded methods.  Although this breaks ABI-level backward compatibility
     (i.e., you need to rebuild your assemblies), still is backward-compatible at
-    API-level as the option is turned on by default.
-    [[#1037], [#1039]]
+    API-level as the option is turned on by default.  [[#946]]
+ -  Added `int txBatchSize = int.MaxValue` option to both
+    `BlockChain<T>.MineBlock()` overloaded methods.
+    Although this breaks ABI-level backward compatibility (i.e., you need to
+    rebuild your assemblies), still is backward-compatible at API-level as
+    the option is turned on by default.  [[#1037], [#1039]]
  -  Added `StateCompleterSet<T>? stateCompleters` option to two
     `BlockChain<T>.Append()` overloaded methods.  Although this breaks ABI-level
     backward compatibility (i.e., you need to rebuild your assemblies), still
@@ -86,8 +86,8 @@ To be released.
     the option has the default value.  [[#946]]
  -  Added `IImmutableSet<Address> trustedStateValidators = null` option to both
     `Swarm<T>.StartAsync()` overloaded methods.  Although this breaks ABI-level
-    backward compatibility (i.e., you need to rebuild your assemblies), still is
-    backward-compatible at API-level as the option is turned on by default.
+    backward compatibility (i.e., you need to rebuild your assemblies), still
+    is backward-compatible at API-level as the option is turned on by default.
     [[#946]]
  -  Removed `Peer.AppProtocolVersion` property.  [[#949]]
  -  Removed `Peer.IsCompatibleWith()` method.  [[#949]]
@@ -95,7 +95,8 @@ To be released.
     `Peer(PublicKey)` constructor.  [[#949]]
  -  Replaced `BoundPeer(PublicKey, DnsEndPoint, AppProtocolVersion)` constructor
     with `Peer(PublicKey, DnsEndPoint)` constructor.  [[#949]]
- -  Extracted `IStore`'s some methods dedicated to block states into `IBlockStatesStore`. [[#950]]
+ -  Extracted `IStore`'s some methods dedicated to block states into
+    `IBlockStatesStore`. [[#950]]
      -  `ListStateKeys()` method.
      -  `ListAllStateReferences()` method.
      -  `LookupStateReference()` method.
@@ -105,13 +106,14 @@ To be released.
      -  `GetBlockStates()` method.
      -  `SetBlockStates()` method.
      -  `PruneBlockStates()` method.
- -  The signature of `IStore.LookupStateReference<T>(Guid, string, Block<T>)` method was
-    changed to `LookupStateReference(Guid, string, long)`.  [[#950]]
- -  Added `IStateStore`-typed `stateStore` to `BlockChain<T>` constructor.  [[#950]]
+ -  The signature of `IStore.LookupStateReference<T>(Guid, string, Block<T>)`
+    method was changed to `LookupStateReference(Guid, string, long)`.  [[#950]]
+ -  Added `IStateStore`-typed `stateStore` to `BlockChain<T>` constructor.
+    [[#950]]
  -  Replaced `Swarm<T>.FindSpecificPeerAsync(Address, Address, int,
     BoundPeer, TimeSpan?, CancellationToken)` method with
-    `Swarm<T>.FindSpecificPeerAsync(Address, int, TimeSpan?, CancellationToken)`.
-    [[#981]]
+    `Swarm<T>.FindSpecificPeerAsync(Address, int, TimeSpan?,
+    CancellationToken)`.  [[#981]]
  -  Added `IActionContext.GetUnconsumedContext()` method.  [[#980]]
  -  Added `ImmutableArray<byte>`-typed `stateRootHash` parameter to
     `BlockHeader` constructor.  [[#986]]
@@ -134,7 +136,8 @@ To be released.
 
  -  The message field `RecentStates.StateReferences` became to
     `IImmutableDictionary<string, IImmutableList<HashDigest<SHA256>>>` from
-    `IImmutableDictionary<Address, IImmutableList<HashDigest<SHA256>>>`.  [[#912]]
+    `IImmutableDictionary<Address, IImmutableList<HashDigest<SHA256>>>`.
+    [[#912]]
  -  The existing `RecentStates` message type (with the type number `0x0f`) was
     replaced by a new `RecentStates` message type
     (with the type number `0x13`).  [[#912]]
@@ -151,12 +154,12 @@ To be released.
      -  `BlockStates` (`0x23`)  [[#946]]
      -  `DifferentVersion` (`0x30`)  [[#949]]
  -  Every message now contains app protocol version in its header.  [[#949]]
- -  The existing `BlockHeaderMessage` message type (with the type number `0x0d`) was
-    replaced by a new `BlockHeaderMessage` message type
+ -  The existing `BlockHeaderMessage` message type (with the type number `0x0d`)
+    was replaced by a new `BlockHeaderMessage` message type
     (with the type number `0x0c`).  [[#1003], [#1004]]
  -  Removed `PreloadBlockDownloadFailEventArgs` class.  [[#1002]]
- -  Removed `blockDownloadFailed` parameter from `Swarm<T>.PreloadAsync()` method.
-     Use `SwarmOptions.BlockDownloadTimeout` instead.  [[#1002]]
+ -  Removed `blockDownloadFailed` parameter from `Swarm<T>.PreloadAsync()`
+    method.  Use `SwarmOptions.BlockDownloadTimeout` instead.  [[#1002]]
 
 ### Backward-incompatible storage format changes
 
@@ -257,11 +260,11 @@ To be released.
     [[#459], [#919]]
  -  `Swarm<T>` became to promote the most difficult chain as a canonical chain
     instead of the longest chain.  [[#459], [#919]]
- -  `Swarm<T>.BootstrapAsync()` method became not to throw `TimeoutException` when
-    it fails to connect to all neighbors.  [[#933]]
- -  `Swarm<T>` became to respond to the messages with different app protocol version.
-    [[#949]]
- -  `Swarm<T>.PreloadAsync()` became to execute the actions from the branch point
+ -  `Swarm<T>.BootstrapAsync()` method became not to throw `TimeoutException`
+    when it fails to connect to all neighbors.  [[#933]]
+ -  `Swarm<T>` became to respond to the messages with different app protocol
+    version.  [[#949]]
+ -  `Swarm<T>.PreloadAsync()` became to execute the actions from the branchpoint
     rather than the genesis block when there is a branch point.  [[#991]]
  -  `BlockPolicy<T>` became to validate `Block<T>.StateRootHash` property
      of a `Block<T>`.  [[#986]]
@@ -269,9 +272,9 @@ To be released.
     different genesis block.  [[#1003], [#1004]]
  -  `Swarm<T>` became to ignore `BlockHeaderMessage` from the peers with
     different genesis block.  [[#1003], [#1004]]
- -  `BlockChain<T>` instead of `BlockPolicy<T>` became to validate `Block<T>`s to append
-    so that even if an empty implementation of `IBlockPolicy<T>` is used `Block<T>`s are
-    unable to be appended to `BlockChain<T>`.  [[#1010]]
+ -  `BlockChain<T>` instead of `BlockPolicy<T>` became to validate `Block<T>`s
+    to append so that even if an empty implementation of `IBlockPolicy<T>` is
+    used `Block<T>`s are unable to be appended to `BlockChain<T>`.  [[#1010]]
  -  `BlockSet<T>[HashDigest<SHA256>]` and `BlockChain<T>.Genesis` became cached
     so that they become faster to get.  [[#1013]]
  -  `Swarm<T>.PreloadAsync()` became to do not render blocks.  [[#1029]]
@@ -293,8 +296,8 @@ To be released.
     without read lock.  [[#927]]
  -  Fixed a bug that `Swarm<T>` had not respond to `GetRecentStates` message
     when the target block does not exist in the chain.  [[#941]]
- -  Fixed a bug that `Swarm<T>.StartAsync()` had not worked after `Swarm<T>.StopAsync()`
-    was once called.  [[#965]]
+ -  Fixed a bug that `Swarm<T>.StartAsync()` had not worked after
+    `Swarm<T>.StopAsync()` was once called.  [[#965]]
  -  Fixed a bug that `TurnClient` had thrown `InvalidOperationException` when
     reconnecting.  [[#957], [#972]]
  -  Fixed a bug that `Swarm<T>` had not received block headers after failing
@@ -409,8 +412,8 @@ Version 0.9.5
 
 Released on June 12, 2020.
 
- -  Fixed a bug that had not properly received block hashes after the chain had reorged.
-    [[#880], [#905]]
+ -  Fixed a bug that had not properly received block hashes after the chain had
+    reorged.  [[#880], [#905]]
 
 [#905]: https://github.com/planetarium/libplanet/pull/905
 
@@ -761,21 +764,24 @@ Released on February 4, 2020.
  -  `Swarm<T>.BootstrapAsync()` became to report `PeerDiscoveryException`
     instead of `SwarmException` directly. [[#604], [#726]]
  -  `BlockChain<T>.Append()` became to unstage the staged `Transaction<T>`s
-    that have lower nonce than the highest nonce of the same signer's transactions
-    in the same chain, since these virtually never become valid.  [[#721], [#728]]
+    that have lower nonce than the highest nonce of the same signer's
+    transactions in the same chain, since these virtually never become valid.
+    [[#721], [#728]]
  -  `Swarm<T>` became not to fill blocks if received block hashes are
     continuous.  [[#732]]
  -  `Swarm<T>` became to can process more requests at once by creating TURN
     relaying proxy concurrently.  [[#744]]
  -  `Swarm<T>` became to throw `InvalidGenesisBlockException` when receiving
     block from the nodes that have a different genesis block.  [[#746]]
- -  `Swarm<T>` became to distinguish the starting stages clearly.  In other words,
-    `Swarm<T>.StartAsync()` became not to call `Swarm<T>.PreloadAsync()`.  [[#735], [#760]]
+ -  `Swarm<T>` became to distinguish the starting stages clearly.
+    In other words, `Swarm<T>.StartAsync()` became not to call
+    `Swarm<T>.PreloadAsync()`.  [[#735], [#760]]
  -  The hash of `Block<T>` has changed due to the change in the method of
     serialization.  [[#762]]
  -  `Swarm<T>` became to ignore broadcasted block that has lower index than
     the current tip.  [[#764]]
- -  The way `Swarm<T>` chose peers to spread messages has changed.  [[#765], [#767]]
+ -  The way `Swarm<T>` chose peers to spread messages has changed.
+    [[#765], [#767]]
      -  If there are less than 10 peers in the routing table, select all peers.
      -  If there are more than 10 peers in the routing table,
         choose one from each bucket, and if the number is less than 10,
@@ -808,20 +814,20 @@ Released on February 4, 2020.
  -  Fixed a bug where the states became empty between the tip of the peer to
     receive the states and the tip of the downloaded block.  [[#736]]
  -  Fixed a bug where `Swarm<T>.StartAsync()` had thrown
-    `NullReferenceException` when `host` parameter is present on the outside of NAT.
-    [[#744]]
+    `NullReferenceException` when `host` parameter is present on the outside
+    of NAT.  [[#744]]
  -  Fixed a bug where `Swarm<T>` had failed to request a TURN relay when it has
     an IPv6 address.  [[#744]]
- -  Fixed a bug where `DefaultStore` had invalid state references cache after fork.
-    [[#759]]
+ -  Fixed a bug where `DefaultStore` had invalid state references cache after
+    fork.  [[#759]]
  -  Fixed a bug where `BlockChain<T>` had rendered and evaluated actions in
     the genesis block during forking.  [[#763]]
  -  Fixed a `Swam<T>`'s bug that some `Transaction<T>`s had become excluded from
     mining `Block<T>`s after reorg from α to β where a `Transaction<T>` was once
     included by a `Block<T>` (α) and not included by an other `Block<T>` (β) for
     the same `Index` due to the latency gap between nodes.  [[#775]]
- -  Fixed a bug where `TransactionSet` and `BlockSet` has halt whole process when
-    run `Trace.Assert()` [[#806], [#833]]
+ -  Fixed a bug where `TransactionSet` and `BlockSet` has halt whole process
+    when run `Trace.Assert()`.  [[#806], [#833]]
 
 [#368]: https://github.com/planetarium/libplanet/issues/368
 [#570]: https://github.com/planetarium/libplanet/issues/570
@@ -972,8 +978,8 @@ Released on November 8, 2019.
     incomplete states from the beginning if necessary.  [[#645]]
  -  `IStore.PutBlock<T>()` became to do nothing when it takes
     the `Block<T>` more than once.  [[#647]]
- -  `Swarm<T>.PreloadAsync()` became to try downloading blocks from all neighbor peers,
-    even if any peer among them is unavailable to send blocks.  [[#636]]
+ -  `Swarm<T>.PreloadAsync()` became to try downloading blocks from all neighbor
+    peers, even if any peer among them is unavailable to send blocks.  [[#636]]
 
 ### Bug fixes
 
@@ -1954,8 +1960,8 @@ Released on April 5, 2019.
     [[#120], [#123] by Yang Chun Ung, [#126], [#127], [#165], [#166]]
  -  `Swarm` became to ignore tip blocks of the same height (`Index`) that it
     already has and deal with only longer (higher) blocks.
- -  Fixed a bug that occurred when `Swarm` was handling multiple responses at the
-    same time.
+ -  Fixed a bug that occurred when `Swarm` was handling multiple responses at
+    the same time.
  -  Fixed a bug that the `Swarm` constructor had hanged in certain runtimes
     like Unity engine.
  -  Removed `AddressTransactionSet` which handles handle `Address` to

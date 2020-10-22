@@ -9,7 +9,7 @@ if ! [[ -f "$SOLUTION" ]]; then
 fi
 
 list-projects() {
-  dotnet sln "$SOLUTION" list | tail -n +3 | awk -F/ '{ print $1 }'
+  dotnet sln "$SOLUTION" list | grep '\...proj$' | awk -F/ '{ print $1 }'
 }
 
 check-project() {

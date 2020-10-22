@@ -7,12 +7,6 @@ parameters:
 
 steps:
 
-- task: Bash@3
-  displayName: hooks/check-bom
-  inputs:
-    targetType: filePath
-    filePath: hooks/check-bom
-
 - task: UseDotNet@2
   displayName: Install .NET Core SDK
   inputs:

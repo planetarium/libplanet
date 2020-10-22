@@ -53,7 +53,8 @@
         "src": "../",
         "files": [
           "CHANGES.md",
-          "CONTRIBUTING.md"
+          "CONTRIBUTING.md",
+          "RELEASE.md"
         ]
       }
     ],

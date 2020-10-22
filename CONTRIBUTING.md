@@ -271,3 +271,9 @@ As our benchmarks are based on [BenchmarkDotNet], please read their official
 docs for details.
 
 [BenchmarkDotNet]: https://benchmarkdotnet.org/
+
+
+Releasing a new version
+-----------------------
+
+Read the [Releasing guide](RELEASE.md) which dedicates to this topic.
