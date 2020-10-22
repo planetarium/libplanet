@@ -26,6 +26,9 @@ namespace Libplanet.Explorer.GraphTypes
                     : null
             );
             Field(x => x.Timestamp);
+            Field<ByteStringType>(
+                "StateRootHash",
+                resolve: ctx => ctx.Source.StateRootHash?.ToByteArray());
             Field<NonNullGraphType<ListGraphType<NonNullGraphType<TransactionType<T>>>>>(
                 "transactions"
             );
