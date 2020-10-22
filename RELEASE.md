@@ -5,12 +5,12 @@ Releasing guide
 These should be further automated.)*
 
 This document explains how to release a new version.  As the whole releasing
-process is half automated, this covers the other half humans should manually
-conduct.
+process is half automated, this covers the other half that humans should
+manually conduct.
 
 Note that there is the [quick summary](#quick-summary) to remind those who have
-already read this document of check list on the bottom.  If it is your first
-time to this, you should read the whole of it first.
+already read this document of checklist on the bottom.  If it is your first
+time to this, you should read the whole document first.
 
 
 Versioning
@@ -18,7 +18,8 @@ Versioning
 
 The Libplanet project follows [Semantic Versioning].  If you are not familiar
 with this versioning system, you should read its specification first.  We will
-use the terms Semantic Versioning defines, e.g., major/minor/patch versions.
+use the terms that Semantic Versioning defines, e.g., major/minor/patch
+versions.
 
 Note that we use two kinds of branches in the project:
 
@@ -67,7 +68,7 @@ Released on October 20, 2020.
 ...
 ~~~~
 
-Also it's recommended to double check if the changelog has any formatting
+Also, it's recommended to double-check if the changelog has any formatting
 errors or is well rendered in the web browser.
 
 The commit that contains this change should have the message like
@@ -94,8 +95,8 @@ See also the following pull requests for example:
 Tagging
 -------
 
-After the pull request (which filling up the release date on the changelog)
-being merged, you need to tag the pull request's merge commit.  The tag name
+After the pull request (which fills up the release date on the changelog)
+is merged, you need to tag the pull request's merge commit.  The tag name
 must be the version number without any prefix or suffix, e.g., *1.2.3*;
 the tag message should be like <q>Libplanet 1.2.3</q>.
 
@@ -135,7 +136,7 @@ automates the below processes:
 
 In other words, you don't have to do them by yourself.  However, you should
 check twice if all these packages and docs are successfully submitted.
-If something went wrong, start the debugging from reading the build logs on
+If something went wrong, start the debugging by reading the build logs on
 GitHub Actions.
 
 [@planetarium/cli]: https://www.npmjs.com/package/@planetarium/cli
@@ -147,7 +148,7 @@ Preparing next
 
 After a new tag is merged and all automated processes are successful,
 you need to prepare the next release.  This process is slightly tricky,
-because the process is vary depending on whether the released version
+because the process varies depending on whether the released version
 was a major/minor release, or just a patch release.
 
 
@@ -161,7 +162,7 @@ to do:
  -  Prepare the next patch release.
 
 First of all, your last release should be ported to the *main* branch.
-Switch to the *main* branch and make sure it up-to-date.
+Switch to the *main* branch and make sure it is up-to-date.
 Then, merge the tag (e.g., *1.2.3*) you made above into the *main* branch:
 
 ~~~ bash
@@ -170,9 +171,9 @@ git fetch upstream && git reset --hard upstream/main
 git merge 1.2.3
 ~~~
 
-This trying to merge will most likely have conflicts on the *CHANGES.md* file,
-because both branches (*main* and *<var>X</var>.<var>Y</var>-maintenance*) has
-their own topmost section in the changelog.  However, this can be simply
+Trying to merge like above will most likely have conflicts on the *CHANGES.md*
+file, because both branches (*main* and *<var>X</var>.<var>Y</var>-maintenance*)
+have their own topmost section in the changelog.  However, this can be simply
 resolved: leave both sections and place the *main* branch's section topmost.
 
 After successful merging, send a pull request of it to the upstream's *main*
@@ -182,7 +183,7 @@ branch.  See also the below commits for example:
  -  <https://github.com/planetarium/libplanet/commit/4d7cc983ee6111031781e50f89f07364021aedf8>
 
 You also need to prepare the next patch release.  Switch to the maintenance
-branch (e.g., *1.2-maintenance*), and make sure it up-to-date.
+branch (e.g., *1.2-maintenance*), and make sure it is up-to-date.
 
 You need to bump the patch version of the `<VersionPrefix>` field
 in the *Libplanet/Libplanet.csproj* file.  For example, if the version you have
@@ -201,7 +202,7 @@ To be released.
 ~~~~
 
 Note that the release date for this is not decided. A simple message like
-<q>Version bump</q> is enough for a commit for above changes.
+<q>Version bump</q> is enough for a commit for the above changes.
 
 Lastly, send a pull request of the commit to the upstream's
 *<var>X</var>.<var>Y</var>-maintenance* branch (e.g., *1.2-maintenance*).
@@ -217,13 +218,13 @@ And a pull request:
 
 ### Major/minor release
 
-If you what you have just released is a major or minor release, there are two
+If what you have just released is a major or minor release, there are two
 manual tasks:
 
  -  Prepare the next patch release.
  -  Prepare the next major or minor release.
 
-To prepare the next patch release, a new maintenance branch should be made.
+To prepare for the next patch release, a new maintenance branch should be made.
 Create a new branch named *<var>X</var>.<var>Y</var>-maintenance* branch and
 switch it.  The branch's *HEAD* should refer to the upstream's *main* branch.
 Suppose you have just released a minor version *1.2.0*:
@@ -257,7 +258,7 @@ To be released.
 ~~~~
 
 Note that the release date for this is not decided. A simple message like
-<q>Version bump</q> is enough for a commit for above changes.
+<q>Version bump</q> is enough for a commit for the above changes.
 
 The new maintenance branch and the added commit should be pushed to
 the upstream.
@@ -271,20 +272,20 @@ again.  Whether to release a new *major* version or a new *minor* version next
 depends on the roadmap (it should be discussed in advance).  Suppose we plan
 to release *1.3.0* next time here.
 
-Switch to the *main* branch and make sure it up-to-date:
+Switch to the *main* branch and make sure it is up-to-date:
 
 ~~~~ bash
 git switch main  # Or on Git < 2.23: git checkout main
 git fetch upstream && git reset --hard upstream/main
 ~~~~
 
-Then, in the similar manner, update *Libplanet/Libplanet.csproj*'s
+Then, in a similar manner, update *Libplanet/Libplanet.csproj*'s
 `<VersionPrefix>` to *1.3.0*, and add an empty section for *1.3.0* with
 the release date undecided to the changelog.  Make a commit with a simple
 message like <q>Version bump</q>.
 
 At this time, this change should be sent as a pull request on the upstream.
-The PR should targets at the *main* branch of course.
+The PR should target at the *main* branch of course.
 
 See also the following commit for example:
 
@@ -299,13 +300,13 @@ Quick summary
 -------------
 
 *This summary is not for first-time readers.  You should read the whole document
-at very first time.*
+at the very first time.*
 
 Note that *<var>X</var>.<var>Y</var>.<var>Z</var>* means a version to release.
 
-The check list to release a new version:
+The checklist to release a new version:
 
- 1. Make sure if you are on the right branch
+ 1. Make sure that you are on the right branch
     (*<var>X</var>.<var>Y</var>-maintenance* for a patch release,
     and *main* for a major/minor release).
  2. Fill up the released date on the changelog.
@@ -319,17 +320,17 @@ The check list to release a new version:
      - npm
      - <https://docs.libplanet.io/> (GitHub Pages)
 
-The check list to prepare the next release:
+The checklist to prepare the next release:
 
  -  If you have just released a *patch version*:
 
-     1. Switch to the *main* branch and make sure it up-to-date.
+     1. Switch to the *main* branch and make sure it is up-to-date.
      2. `git merge X.Y.Z`
      3. Resolve conflicts on the *CHANGES.md* file.  Leave all sections from
         both branches and place the *main* branch's section topmost.
      4. Send a pull request to the upstream's *main* branch.
      5. Switch to the *<var>X</var>.<var>Y</var>-maintenance* branch and
-        make sure it up-to-date.
+        make sure it is up-to-date.
      6. Bump `<VersionPrefix>`'s patch version on *Libplanet/Libplanet.csproj*.
         (For example, if you have just released *1.2.3*, bump it to *1.2.4*.)
      7. Add a new section for the next unreleased version to the changelog,
