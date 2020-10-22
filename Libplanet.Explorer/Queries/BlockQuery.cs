@@ -1,4 +1,5 @@
 using System.Security.Cryptography;
+using GraphQL;
 using GraphQL.Types;
 using Libplanet.Action;
 using Libplanet.Explorer.GraphTypes;

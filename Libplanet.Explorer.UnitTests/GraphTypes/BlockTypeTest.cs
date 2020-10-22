@@ -45,13 +45,13 @@ namespace Libplanet.Explorer.UnitTests.GraphTypes
             Assert.Null(result.Errors);
             Assert.Equal(
                 block.Index,
-                Convert.ToInt64(((Dictionary<string, object>) result.Data)["index"]));
+                ((Dictionary<string, object>) result.Data)["index"]);
             Assert.Equal(
                 ByteUtil.Hex(block.Hash.ToByteArray()),
                 ((Dictionary<string, object>) result.Data)["hash"]);
             Assert.Equal(
                 block.Difficulty,
-                Convert.ToInt64(((Dictionary<string, object>) result.Data)["difficulty"]));
+                ((Dictionary<string, object>) result.Data)["difficulty"]);
             Assert.Equal(
                 block.Miner?.ToString(),
                 ((Dictionary<string, object>) result.Data)["miner"]);
