@@ -35,6 +35,7 @@ namespace Libplanet.Explorer.UnitTests.GraphTypes
                     hash
                     nonce
                     difficulty
+                    totalDifficulty
                     miner
                     timestamp
                     stateRootHash
@@ -52,6 +53,9 @@ namespace Libplanet.Explorer.UnitTests.GraphTypes
             Assert.Equal(
                 block.Difficulty,
                 ((Dictionary<string, object>) result.Data)["difficulty"]);
+            Assert.Equal(
+                block.TotalDifficulty,
+                ((Dictionary<string, object>) result.Data)["totalDifficulty"]);
             Assert.Equal(
                 block.Miner?.ToString(),
                 ((Dictionary<string, object>) result.Data)["miner"]);
