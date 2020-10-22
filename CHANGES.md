@@ -121,11 +121,14 @@ To be released.
     `Block<T>()` constructor.  [[#986]]
  -  Added `IBlockPolicy<T>.MaxTransactionsPerBlock` property.
     [[#1037], [#1050]]
+ -  Added `IBlockPolicy<T>.GetMaxBlockBytes()` method.  [[#201], [#1050]]
  -  `IBlockPolicy<T>.DoesTransactionFollowPolicy()` method became to take
     additional `BlockChain<T>` parameter as its context.  [[#1012]]
  -  Methods in `BlockPolicy<T>` class became `virtual`.  [[#1010]]
- -  Added `maxTransactionsPerBlock` option to both `BlockPolicy<T>()` overloaded
-    constructors.  [[#1037], [#1050]]
+ -  Added `int maxTransactionsPerBlock` option to both `BlockPolicy<T>()`
+    overloaded constructors.  [[#1037], [#1050]]
+ -  Added `int maxBlockBytes` and `int maxGenesisBytes` options to both
+    `BlockPolicy<T>()` overloaded constructors.  [[#201], [#1050]]
  -  `BlockPolicy<T>()` constructor's `doesTransactionFollowPolicy` parameter
     became `Func<Transaction<T>, BlockChain<T>, bool>` on .  [[#1012]]
  -  Added `cacheSize` optional parameter to `BlockSet<T>()` constructor.
@@ -254,6 +257,9 @@ To be released.
  -  Added `Transaction<T>.GenesisHash` property.  [[#796], [#878]]
  -  Added `IAccountStateDelta.UpdatedAddresses` property contains
     asset updates besides state updates.  [[#861], [#900]]
+ -  `BlockChain<T>.MineBlock()` method became to cut off transactions to include
+    to fit into the limitation configured by `IBlockPolicy.GetMaxBlockBytes()`.
+    [[#201], [#1050]]
  -  `Swarm<T>` became to ignore received transaction with different
     genesis hash.  [[#796], [#878]]
  -  `Swarm<T>` became to ignore invalid `BlockHeader`s immediately.  [[#898]]

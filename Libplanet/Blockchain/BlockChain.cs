@@ -716,15 +716,30 @@ namespace Libplanet.Blockchain
             long difficulty = Policy.GetNextBlockDifficulty(this);
             HashDigest<SHA256>? prevHash = Store.IndexBlockHash(Id, index - 1);
 
-            IEnumerable<Transaction<T>> stagedTransactions = Store
+            Transaction<T>[] stagedTransactions = Store
                 .IterateStagedTransactionIds()
                 .Select(Store.GetTransaction<T>)
                 .GroupBy(tx => tx.Signer)
                 .SelectMany(grp => grp.Select((tx, idx) => (tx, idx)))
                 .OrderBy(t => t.Item2)
-                .Select(t => t.Item1);
+                .Select(t => t.Item1)
+                .ToArray();
 
             var transactionsToMine = new List<Transaction<T>>();
+
+            // Makes an empty block to estimate the length of bytes without transactions.
+            var estimatedBytes = new Block<T>(
+                index: index,
+                difficulty: difficulty,
+                totalDifficulty: Tip.TotalDifficulty,
+                nonce: default,
+                miner: miner,
+                previousHash: prevHash,
+                timestamp: currentTime,
+                transactions: new Transaction<T>[0]
+            ).BytesLength;
+            int maxBlockBytes = Math.Max(Policy.GetMaxBlockBytes(index), 1);
+            var skippedSigners = new HashSet<Address>();
 
             foreach (Transaction<T> tx in stagedTransactions)
             {
@@ -732,16 +747,54 @@ namespace Libplanet.Blockchain
                 {
                     UnstageTransaction(tx);
                 }
-                else if (Store.GetTxNonce(Id, tx.Signer) <= tx.Nonce
-                         && tx.Nonce < GetNextTxNonce(tx.Signer))
+                else if (!skippedSigners.Contains(tx.Signer) &&
+                         Store.GetTxNonce(Id, tx.Signer) <= tx.Nonce &&
+                         tx.Nonce < GetNextTxNonce(tx.Signer))
                 {
-                    transactionsToMine.Add(tx);
                     if (transactionsToMine.Count >= maxTransactions)
                     {
+                        _logger.Information(
+                            "Not all staged transactions will be included in a block #{Index} to " +
+                            "be mined by {Miner}, because it reaches the maximum number of " +
+                            "acceptable transactions: {MaxTransactions}",
+                            index,
+                            miner,
+                            maxTransactions
+                        );
                         break;
                     }
+
+                    int txBytes = tx.Serialize(true).Length;
+                    if (estimatedBytes + txBytes > maxBlockBytes)
+                    {
+                        // Once someone's tx is excluded from a block, their later txs are also all
+                        // excluded in the block, because later nonces become invalid.
+                        skippedSigners.Add(tx.Signer);
+                        _logger.Information(
+                            "The {Signer}'s transactions after the nonce #{Nonce} will be " +
+                            "excluded in a block #{Index} to be mined by {Miner}, because it " +
+                            "takes too long bytes.",
+                            tx.Signer,
+                            tx.Nonce,
+                            index,
+                            miner
+                        );
+                        continue;
+                    }
+
+                    transactionsToMine.Add(tx);
+                    estimatedBytes += txBytes;
                 }
             }
+
+            _logger.Verbose(
+                "A block #{Index} to be mined by {Miner} will include {Transactions} " +
+                "transactions out of {StagedTransactions} staged transactions.",
+                index,
+                miner,
+                transactionsToMine.Count,
+                stagedTransactions.Length
+            );
 
             CancellationTokenSource cts = new CancellationTokenSource();
             CancellationTokenSource cancellationTokenSource =

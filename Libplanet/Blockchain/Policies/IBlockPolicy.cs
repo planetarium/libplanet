@@ -69,5 +69,17 @@ namespace Libplanet.Blockchain.Policies
         /// <returns>A right <see cref="Block{T}.Difficulty"/>
         /// for a new <see cref="Block{T}"/> to be mined.</returns>
         long GetNextBlockDifficulty(BlockChain<T> blocks);
+
+        /// <summary>
+        /// Gets the maximum length of a <see cref="Block{T}"/> in bytes.  It can vary depending on
+        /// a given <paramref name="index"/>, but should be deterministic; for the same
+        /// <paramref name="index"/>, the same value must be returned.
+        /// </summary>
+        /// <param name="index">An <see cref="Block{T}.Index"/> of a block to mine or receive.
+        /// </param>
+        /// <returns>The maximum length of a <see cref="Block{T}"/> in bytes to accept.</returns>
+        /// <remarks>If it returns less then 1, it is treated as 1, because there is no block
+        /// taking 0 bytes or negative length of bytes.</remarks>
+        int GetMaxBlockBytes(long index);
     }
 }

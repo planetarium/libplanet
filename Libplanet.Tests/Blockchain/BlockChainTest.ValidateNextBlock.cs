@@ -118,13 +118,7 @@ namespace Libplanet.Tests.Blockchain
         {
             IKeyValueStore stateKeyValueStore = new MemoryKeyValueStore(),
                 stateHashKeyValueStore = new MemoryKeyValueStore();
-            var policy = new BlockPolicy<DumbAction>(
-                blockAction: null,
-                blockInterval: TimeSpan.FromHours(3),
-                minimumDifficulty: 1024,
-                difficultyBoundDivisor: 128,
-                maxTransactionsPerBlock: 100
-            );
+            var policy = new BlockPolicy<DumbAction>(null, 3 * 60 * 60 * 1000);
             var stateStore = new TrieStateStore(stateKeyValueStore, stateHashKeyValueStore);
             // FIXME: It assumes that _fx.GenesisBlock doesn't update any states with transactions.
             //        Actually, it depends on BlockChain<T> to update states and it makes hard to

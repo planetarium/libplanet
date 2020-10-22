@@ -32,5 +32,7 @@ namespace Libplanet.Tests.Blockchain
 
         public InvalidBlockException ValidateNextBlock(BlockChain<T> blocks, Block<T> nextBlock) =>
             _exceptionToThrow;
+
+        public int GetMaxBlockBytes(long index) => 1024 * 1024;
     }
 }

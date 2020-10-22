@@ -13,6 +13,8 @@ namespace Libplanet.Blockchain.Policies
     public class BlockPolicy<T> : IBlockPolicy<T>
         where T : IAction, new()
     {
+        private readonly int _maxBlockBytes;
+        private readonly int _maxGenesisBytes;
         private readonly Func<Transaction<T>, BlockChain<T>, bool> _doesTransactionFollowPolicy;
 
         /// <summary>
@@ -33,6 +35,10 @@ namespace Libplanet.Blockchain.Policies
         /// <see cref="DifficultyBoundDivisor"/>. 128 by default.</param>
         /// <param name="maxTransactionsPerBlock">Configures <see cref="MaxTransactionsPerBlock"/>.
         /// 100 by default.</param>
+        /// <param name="maxBlockBytes">Configures <see cref="GetMaxBlockBytes(long)"/> where
+        /// the block is not a genesis.  100 KiB by default.</param>
+        /// <param name="maxGenesisBytes">Configures <see cref="GetMaxBlockBytes(long)"/> where
+        /// the block is a genesis.  1 MiB by default.</param>
         /// <param name="doesTransactionFollowPolicy">
         /// A predicate that determines if the transaction follows the block policy.
         /// </param>
@@ -42,6 +48,8 @@ namespace Libplanet.Blockchain.Policies
             long minimumDifficulty = 1024,
             int difficultyBoundDivisor = 128,
             int maxTransactionsPerBlock = 100,
+            int maxBlockBytes = 100 * 1024,
+            int maxGenesisBytes = 1024 * 1024,
             Func<Transaction<T>, BlockChain<T>, bool> doesTransactionFollowPolicy = null)
             : this(
                 blockAction,
@@ -49,6 +57,8 @@ namespace Libplanet.Blockchain.Policies
                 minimumDifficulty,
                 difficultyBoundDivisor,
                 maxTransactionsPerBlock,
+                maxBlockBytes,
+                maxGenesisBytes,
                 doesTransactionFollowPolicy)
         {
         }
@@ -68,6 +78,10 @@ namespace Libplanet.Blockchain.Policies
         /// <see cref="DifficultyBoundDivisor"/>.</param>
         /// <param name="maxTransactionsPerBlock">Configures <see cref="MaxTransactionsPerBlock"/>.
         /// </param>
+        /// <param name="maxBlockBytes">Configures <see cref="GetMaxBlockBytes(long)"/> where
+        /// the block is not a genesis.</param>
+        /// <param name="maxGenesisBytes">Configures <see cref="GetMaxBlockBytes(long)"/> where
+        /// the block is a genesis.</param>
         /// <param name="doesTransactionFollowPolicy">
         /// A predicate that determines if the transaction follows the block policy.
         /// </param>
@@ -77,6 +91,8 @@ namespace Libplanet.Blockchain.Policies
             long minimumDifficulty,
             int difficultyBoundDivisor,
             int maxTransactionsPerBlock,
+            int maxBlockBytes,
+            int maxGenesisBytes,
             Func<Transaction<T>, BlockChain<T>, bool> doesTransactionFollowPolicy = null)
         {
             if (blockInterval < TimeSpan.Zero)
@@ -109,6 +125,8 @@ namespace Libplanet.Blockchain.Policies
             MinimumDifficulty = minimumDifficulty;
             DifficultyBoundDivisor = difficultyBoundDivisor;
             MaxTransactionsPerBlock = maxTransactionsPerBlock;
+            _maxBlockBytes = maxBlockBytes;
+            _maxGenesisBytes = maxGenesisBytes;
             _doesTransactionFollowPolicy = doesTransactionFollowPolicy ?? ((_, __) => true);
         }
 
@@ -184,5 +202,7 @@ namespace Libplanet.Blockchain.Policies
 
             return Math.Max(nextDifficulty, MinimumDifficulty);
         }
+
+        public int GetMaxBlockBytes(long index) => index > 0 ? _maxBlockBytes : _maxGenesisBytes;
     }
 }
