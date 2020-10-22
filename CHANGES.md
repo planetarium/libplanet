@@ -69,11 +69,11 @@ To be released.
     overloaded methods.  Although this breaks ABI-level backward compatibility
     (i.e., you need to rebuild your assemblies), still is backward-compatible at
     API-level as the option is turned on by default.  [[#946]]
- -  Added `int maxTransactions = int.MaxValue` option to both
-    `BlockChain<T>.MineBlock()` overloaded methods.
+ -  Added `int? maxTransactions` option to both `BlockChain<T>.MineBlock()`
+    overloaded methods.
     Although this breaks ABI-level backward compatibility (i.e., you need to
     rebuild your assemblies), still is backward-compatible at API-level as
-    the option is turned on by default.  [[#1037], [#1039]]
+    the option is turned on by default.  [[#1037], [#1039], [#1050]]
  -  Added `StateCompleterSet<T>? stateCompleters` option to two
     `BlockChain<T>.Append()` overloaded methods.  Although this breaks ABI-level
     backward compatibility (i.e., you need to rebuild your assemblies), still
@@ -119,13 +119,15 @@ To be released.
     `BlockHeader` constructor.  [[#986]]
  -  Added `HashDigest<SHA256>`-typed `stateRootHash` parameter to
     `Block<T>()` constructor.  [[#986]]
- -  Methods in `BlockPolicy<T>` class became `virtual`.  [[#1010]]
- -  `BlockPolicy<T>.DoesTransactionFollowPolicy()` method and
-    `IBlockPolicy.DoesTransactionFollowPolicy()` method became to take
+ -  Added `IBlockPolicy<T>.MaxTransactionsPerBlock` property.
+    [[#1037], [#1050]]
+ -  `IBlockPolicy<T>.DoesTransactionFollowPolicy()` method became to take
     additional `BlockChain<T>` parameter as its context.  [[#1012]]
- -  `doesTransactionFollowPolicy` parameter became
-    `Func<Transaction<T>, BlockChain<T>, bool>` on `BlockPolicy<T>()`
-    constructor.  [[#1012]]
+ -  Methods in `BlockPolicy<T>` class became `virtual`.  [[#1010]]
+ -  Added `maxTransactionsPerBlock` option to both `BlockPolicy<T>()` overloaded
+    constructors.  [[#1037], [#1050]]
+ -  `BlockPolicy<T>()` constructor's `doesTransactionFollowPolicy` parameter
+    became `Func<Transaction<T>, BlockChain<T>, bool>` on .  [[#1012]]
  -  Added `cacheSize` optional parameter to `BlockSet<T>()` constructor.
     [[#1013]]
  -  Removed `Address(SerializationInfo, StreamingContext)` constructor.
@@ -407,6 +409,7 @@ To be released.
 [#1037]: https://github.com/planetarium/libplanet/pull/1037
 [#1039]: https://github.com/planetarium/libplanet/pull/1039
 [#1043]: https://github.com/planetarium/libplanet/pull/1043
+[#1050]: https://github.com/planetarium/libplanet/pull/1050
 [sleep mode]: https://en.wikipedia.org/wiki/Sleep_mode
 
 

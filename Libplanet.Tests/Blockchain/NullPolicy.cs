@@ -20,6 +20,8 @@ namespace Libplanet.Tests.Blockchain
 
         public IAction BlockAction => null;
 
+        public int MaxTransactionsPerBlock => int.MaxValue;
+
         public bool DoesTransactionFollowsPolicy(
             Transaction<T> transaction,
             BlockChain<T> blockChain

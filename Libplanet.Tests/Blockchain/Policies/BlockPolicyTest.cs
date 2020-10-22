@@ -28,10 +28,12 @@ namespace Libplanet.Tests.Blockchain.Policies
             _fx = new DefaultStoreFixture();
             _output = output;
             _policy = new BlockPolicy<DumbAction>(
-                null,
-                TimeSpan.FromHours(3),
-                1024,
-                128);
+                blockAction: null,
+                blockInterval: TimeSpan.FromHours(3),
+                minimumDifficulty: 1024,
+                difficultyBoundDivisor: 128,
+                maxTransactionsPerBlock: 100
+            );
             _chain = new BlockChain<DumbAction>(
                 _policy,
                 _fx.Store,
@@ -48,7 +50,7 @@ namespace Libplanet.Tests.Blockchain.Policies
         public void Constructors()
         {
             var tenSec = new TimeSpan(0, 0, 10);
-            var a = new BlockPolicy<DumbAction>(null, tenSec, 1024, 128);
+            var a = new BlockPolicy<DumbAction>(null, tenSec, 1024, 128, 100);
             Assert.Equal(tenSec, a.BlockInterval);
 
             var b = new BlockPolicy<DumbAction>(null, 65000);
@@ -62,14 +64,14 @@ namespace Libplanet.Tests.Blockchain.Policies
                 c.BlockInterval);
 
             Assert.Throws<ArgumentOutOfRangeException>(
-                () => new BlockPolicy<DumbAction>(null, tenSec.Negate(), 1024, 128));
+                () => new BlockPolicy<DumbAction>(null, tenSec.Negate(), 1024, 128, 100));
             Assert.Throws<ArgumentOutOfRangeException>(
                 () => new BlockPolicy<DumbAction>(null, -5));
 
             Assert.Throws<ArgumentOutOfRangeException>(() =>
-                new BlockPolicy<DumbAction>(null, tenSec, 0, 128));
+                new BlockPolicy<DumbAction>(null, tenSec, 0, 128, 100));
             Assert.Throws<ArgumentOutOfRangeException>(() =>
-                new BlockPolicy<DumbAction>(null, tenSec, 1024, 1024));
+                new BlockPolicy<DumbAction>(null, tenSec, 1024, 1024, 100));
         }
 
         [Fact]

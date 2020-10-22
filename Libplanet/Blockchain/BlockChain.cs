@@ -683,7 +683,12 @@ namespace Libplanet.Blockchain
         /// <param name="append">Whether to <see cref="Append(Block{T}, StateCompleterSet{T}?)"/>
         /// the mined block.  Turned on by default.</param>
         /// <param name="maxTransactions">The maximum number of transactions that a block can
-        /// accept.  <see cref="int.MaxValue"/> by default.</param>
+        /// accept.  This value must be greater than 0, and less than or equal to
+        /// <see cref="Policy"/>.<see cref="IBlockPolicy{T}.MaxTransactionsPerBlock"/>.
+        /// Zero and negative values are treated as 1. If it is omitted or more than
+        /// <see cref="Policy"/>.<see cref="IBlockPolicy{T}.MaxTransactionsPerBlock"/>, it will be
+        /// treated as <see cref="Policy"/>.<see cref="IBlockPolicy{T}.MaxTransactionsPerBlock"/>.
+        /// </param>
         /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
         /// operation should be canceled.
@@ -691,20 +696,21 @@ namespace Libplanet.Blockchain
         /// <returns>An awaitable task with a <see cref="Block{T}"/> that is mined.</returns>
         /// <exception cref="OperationCanceledException">Thrown when
         /// <see cref="BlockChain{T}.Tip"/> is changed while mining.</exception>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown when
-        /// <paramref name="maxTransactions"/> is negative.</exception>
         public async Task<Block<T>> MineBlock(
             Address miner,
             DateTimeOffset currentTime,
             bool append = true,
-            int maxTransactions = int.MaxValue,
+            int? maxTransactions = null,
             CancellationToken cancellationToken = default(CancellationToken)
         )
         {
-            if (maxTransactions < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(maxTransactions));
-            }
+            maxTransactions = Math.Max(
+                Math.Min(
+                    maxTransactions ?? Policy.MaxTransactionsPerBlock,
+                    Policy.MaxTransactionsPerBlock
+                ),
+                1
+            );
 
             long index = Store.CountIndex(Id);
             long difficulty = Policy.GetNextBlockDifficulty(this);
@@ -722,11 +728,6 @@ namespace Libplanet.Blockchain
 
             foreach (Transaction<T> tx in stagedTransactions)
             {
-                if (maxTransactions < 1)
-                {
-                    break;
-                }
-
                 if (!Policy.DoesTransactionFollowsPolicy(tx, this))
                 {
                     UnstageTransaction(tx);
@@ -735,7 +736,10 @@ namespace Libplanet.Blockchain
                          && tx.Nonce < GetNextTxNonce(tx.Signer))
                 {
                     transactionsToMine.Add(tx);
-                    maxTransactions--;
+                    if (transactionsToMine.Count >= maxTransactions)
+                    {
+                        break;
+                    }
                 }
             }
 
@@ -805,7 +809,12 @@ namespace Libplanet.Blockchain
         /// <param name="append">Whether to <see cref="Append(Block{T}, StateCompleterSet{T}?)"/>
         /// the mined block.  Turned on by default.</param>
         /// <param name="maxTransactions">The maximum number of transactions that a block can
-        /// accept.  <see cref="int.MaxValue"/> by default.</param>
+        /// accept.  This value must be greater than 0, and less than or equal to
+        /// <see cref="Policy"/>.<see cref="IBlockPolicy{T}.MaxTransactionsPerBlock"/>.
+        /// Zero and negative values are treated as 1. If it is omitted or more than
+        /// <see cref="Policy"/>.<see cref="IBlockPolicy{T}.MaxTransactionsPerBlock"/>, it will be
+        /// treated as <see cref="Policy"/>.<see cref="IBlockPolicy{T}.MaxTransactionsPerBlock"/>.
+        /// </param>
         /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
         /// operation should be canceled.
@@ -813,12 +822,10 @@ namespace Libplanet.Blockchain
         /// <returns>An awaitable task with a <see cref="Block{T}"/> that is mined.</returns>
         /// <exception cref="OperationCanceledException">Thrown when
         /// <see cref="BlockChain{T}.Tip"/> is changed while mining.</exception>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown when
-        /// <paramref name="maxTransactions"/> is negative.</exception>
         public Task<Block<T>> MineBlock(
             Address miner,
             bool append = true,
-            int maxTransactions = int.MaxValue,
+            int? maxTransactions = null,
             CancellationToken cancellationToken = default
         ) =>
             MineBlock(miner, DateTimeOffset.UtcNow, append, maxTransactions, cancellationToken);

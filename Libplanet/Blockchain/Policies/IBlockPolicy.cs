@@ -1,3 +1,4 @@
+using System.Diagnostics.Contracts;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Tx;
@@ -18,6 +19,15 @@ namespace Libplanet.Blockchain.Policies
         /// A block action to execute and be rendered for every block.
         /// </summary>
         IAction BlockAction { get; }
+
+        /// <summary>
+        /// The maximum number of <see cref="Block{T}.Transactions"/> that a <see cref="Block{T}"/>
+        /// can accept.  This value must not be negative and must be deterministic (i.e., must not
+        /// change after an object is once instantiated).
+        /// </summary>
+        /// <remarks>If the value is less then 1, it's treated as 1.</remarks>
+        [Pure]
+        int MaxTransactionsPerBlock { get; }
 
         /// <summary>
         /// A predicate that determines if the transaction follows the block policy.
