@@ -48,7 +48,7 @@ namespace Libplanet.Tests.Blockchain
 
             _fx = new DefaultStoreFixture(memory: true);
             _renderer = new ValidatingActionRenderer<DumbAction>();
-            _policy = new BlockPolicy<DumbAction>(new MinerReward(1));
+            _policy = new BlockPolicy<DumbAction>(new MinerReward(1), maxBlockBytes: 50 * 1024);
             _blockChain = new BlockChain<DumbAction>(
                 _policy,
                 _fx.Store,
@@ -131,7 +131,7 @@ namespace Libplanet.Tests.Blockchain
                 getMaxBlockBytes(block4.Index)
             );
             Assert.True(block4.BytesLength <= getMaxBlockBytes(block4.Index));
-            Assert.Equal(4, block4.Transactions.Count());
+            Assert.Equal(3, block4.Transactions.Count());
         }
 
         [Fact]
@@ -627,6 +627,45 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(
                 (Integer)2,
                 (Integer)blockRenders[1].NextStates.GetState(minerAddress));
+        }
+
+        [Fact]
+        public void AppendThrowsInvalidBlockBytesLengthException()
+        {
+            DumbAction[] manyActions =
+                Enumerable.Repeat(new DumbAction(default, "_"), 200).ToArray();
+            PrivateKey signer = null;
+            int nonce = 0;
+            var heavyTxs = new List<Transaction<DumbAction>>();
+            for (int i = 0; i < 100; i++)
+            {
+                if (i % 25 == 0)
+                {
+                    nonce = 0;
+                    signer = new PrivateKey();
+                }
+
+                Transaction<DumbAction> heavyTx = _fx.MakeTransaction(
+                    manyActions,
+                    nonce: nonce,
+                    privateKey: signer);
+                heavyTxs.Add(heavyTx);
+            }
+
+            var block1 = TestUtils.MineNext(
+                _blockChain.Genesis,
+                heavyTxs,
+                difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
+                blockInterval: TimeSpan.FromSeconds(10)
+            );
+            int maxBytes = _blockChain.Policy.GetMaxBlockBytes(block1.Index);
+            Assert.True(block1.BytesLength > maxBytes);
+
+            var e = Assert.Throws<InvalidBlockBytesLengthException>(() =>
+                _blockChain.Append(block1)
+            );
+            Assert.Equal(maxBytes, e.MaxBlockBytesLength);
+            Assert.Equal(block1.BytesLength, e.BlockBytesLength);
         }
 
         [Fact]

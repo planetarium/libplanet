@@ -179,6 +179,7 @@ To be released.
  -  Added `TurnClient.BindProxies()` method. [[#756], [#868]]
  -  Added `ActionEvaluation.Exception` property.  [[#860], [[#875]]]
  -  Added `InvalidTxGenesisHashException` class.  [[#796], [#878]]
+ -  Added `InvalidBlockBytesLengthException` class.  [[#201], [#1050]]
  -  Added `CurrencyPermissionException` class.  [[#861], [#900]]
  -  Added `InsufficientBalanceException` class.  [[#861], [#900], [#954]]
  -  Added `BlockChain<T>.GetBalance()` method.  [[#861], [#900]]
@@ -257,6 +258,10 @@ To be released.
  -  Added `Transaction<T>.GenesisHash` property.  [[#796], [#878]]
  -  Added `IAccountStateDelta.UpdatedAddresses` property contains
     asset updates besides state updates.  [[#861], [#900]]
+ -  `BlockChain<T>.Append()` method became to throw
+    `InvalidBlockBytesLengthException` if the given block's serialized bytes
+    is longer than the limitation configured by
+    `IBlockPolicy.GetMaxBlockBytes()`.  [[#201], [#1050]]
  -  `BlockChain<T>.MineBlock()` method became to cut off transactions to include
     to fit into the limitation configured by `IBlockPolicy.GetMaxBlockBytes()`.
     [[#201], [#1050]]
