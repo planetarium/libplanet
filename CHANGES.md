@@ -69,7 +69,7 @@ To be released.
     overloaded methods.  Although this breaks ABI-level backward compatibility
     (i.e., you need to rebuild your assemblies), still is backward-compatible at
     API-level as the option is turned on by default.  [[#946]]
- -  Added `int txBatchSize = int.MaxValue` option to both
+ -  Added `int maxTransactions = int.MaxValue` option to both
     `BlockChain<T>.MineBlock()` overloaded methods.
     Although this breaks ABI-level backward compatibility (i.e., you need to
     rebuild your assemblies), still is backward-compatible at API-level as

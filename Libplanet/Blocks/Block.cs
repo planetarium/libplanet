@@ -317,6 +317,7 @@ namespace Libplanet.Blocks
         /// representation of a <see cref="Block{T}"/>.</param>
         /// <returns>A decoded <see cref="Block{T}"/> object.</returns>
         /// <seealso cref="Serialize()"/>
+        [Pure]
         public static Block<T> Deserialize(byte[] bytes)
         {
             IValue value = new Codec().Decode(bytes);

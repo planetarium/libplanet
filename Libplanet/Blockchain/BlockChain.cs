@@ -682,8 +682,8 @@ namespace Libplanet.Blockchain
         /// <param name="currentTime">The <see cref="DateTimeOffset"/> when mining started.</param>
         /// <param name="append">Whether to <see cref="Append(Block{T}, StateCompleterSet{T}?)"/>
         /// the mined block.  Turned on by default.</param>
-        /// <param name="txBatchSize">The number to limit the count of transactions that will
-        /// be contained in the block.  <see cref="int.MaxValue"/> by default.</param>
+        /// <param name="maxTransactions">The maximum number of transactions that a block can
+        /// accept.  <see cref="int.MaxValue"/> by default.</param>
         /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
         /// operation should be canceled.
@@ -692,18 +692,18 @@ namespace Libplanet.Blockchain
         /// <exception cref="OperationCanceledException">Thrown when
         /// <see cref="BlockChain{T}.Tip"/> is changed while mining.</exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when
-        /// <paramref name="txBatchSize"/> is negative.</exception>
+        /// <paramref name="maxTransactions"/> is negative.</exception>
         public async Task<Block<T>> MineBlock(
             Address miner,
             DateTimeOffset currentTime,
             bool append = true,
-            int txBatchSize = int.MaxValue,
+            int maxTransactions = int.MaxValue,
             CancellationToken cancellationToken = default(CancellationToken)
         )
         {
-            if (txBatchSize < 0)
+            if (maxTransactions < 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(txBatchSize));
+                throw new ArgumentOutOfRangeException(nameof(maxTransactions));
             }
 
             long index = Store.CountIndex(Id);
@@ -722,7 +722,7 @@ namespace Libplanet.Blockchain
 
             foreach (Transaction<T> tx in stagedTransactions)
             {
-                if (txBatchSize == 0)
+                if (maxTransactions < 1)
                 {
                     break;
                 }
@@ -735,7 +735,7 @@ namespace Libplanet.Blockchain
                          && tx.Nonce < GetNextTxNonce(tx.Signer))
                 {
                     transactionsToMine.Add(tx);
-                    txBatchSize--;
+                    maxTransactions--;
                 }
             }
 
@@ -804,8 +804,8 @@ namespace Libplanet.Blockchain
         /// <param name="miner">The <see cref="Address"/> of miner that mined the block.</param>
         /// <param name="append">Whether to <see cref="Append(Block{T}, StateCompleterSet{T}?)"/>
         /// the mined block.  Turned on by default.</param>
-        /// <param name="txBatchSize">The number to limit the count of transactions that will
-        /// be contained in the block.  <see cref="int.MaxValue"/> by default.</param>
+        /// <param name="maxTransactions">The maximum number of transactions that a block can
+        /// accept.  <see cref="int.MaxValue"/> by default.</param>
         /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
         /// operation should be canceled.
@@ -814,14 +814,14 @@ namespace Libplanet.Blockchain
         /// <exception cref="OperationCanceledException">Thrown when
         /// <see cref="BlockChain{T}.Tip"/> is changed while mining.</exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when
-        /// <paramref name="txBatchSize"/> is negative.</exception>
+        /// <paramref name="maxTransactions"/> is negative.</exception>
         public Task<Block<T>> MineBlock(
             Address miner,
             bool append = true,
-            int txBatchSize = int.MaxValue,
+            int maxTransactions = int.MaxValue,
             CancellationToken cancellationToken = default
         ) =>
-            MineBlock(miner, DateTimeOffset.UtcNow, append, txBatchSize, cancellationToken);
+            MineBlock(miner, DateTimeOffset.UtcNow, append, maxTransactions, cancellationToken);
 
         /// <summary>
         /// Creates a new <see cref="Transaction{T}"/> and stage the transaction.
