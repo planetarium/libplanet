@@ -43,31 +43,28 @@ namespace Libplanet.Explorer.UnitTests.GraphTypes
 
             ExecutionResult result =
                 await ExecuteQueryAsync<BlockType<NoOpAction>>(query, source: block);
+            Dictionary<string, object> resultData = (Dictionary<string, object>)result.Data;
             Assert.Null(result.Errors);
-            Assert.Equal(
-                block.Index,
-                ((Dictionary<string, object>) result.Data)["index"]);
+            Assert.Equal(block.Index, resultData["index"]);
             Assert.Equal(
                 ByteUtil.Hex(block.Hash.ToByteArray()),
-                ((Dictionary<string, object>) result.Data)["hash"]);
-            Assert.Equal(
-                block.Difficulty,
-                ((Dictionary<string, object>) result.Data)["difficulty"]);
+                resultData["hash"]);
+            Assert.Equal(block.Difficulty, resultData["difficulty"]);
             Assert.Equal(
                 block.TotalDifficulty,
-                ((Dictionary<string, object>) result.Data)["totalDifficulty"]);
+                resultData["totalDifficulty"]);
             Assert.Equal(
                 block.Miner?.ToString(),
-                ((Dictionary<string, object>) result.Data)["miner"]);
+                resultData["miner"]);
             Assert.Equal(
                 ByteUtil.Hex(block.Nonce.ToByteArray()),
-                ((Dictionary<string, object>) result.Data)["nonce"]);
+                resultData["nonce"]);
             Assert.Equal(
                 new DateTimeOffsetGraphType().Serialize(block.Timestamp),
-                ((Dictionary<string, object>) result.Data)["timestamp"]);
+                resultData["timestamp"]);
             Assert.Equal(
                 ByteUtil.Hex(block.StateRootHash?.ToByteArray()),
-                ((Dictionary<string, object>) result.Data)["stateRootHash"]);
+                resultData["stateRootHash"]);
         }
     }
 }
