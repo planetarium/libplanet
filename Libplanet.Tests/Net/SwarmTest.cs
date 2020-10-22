@@ -1386,43 +1386,34 @@ namespace Libplanet.Tests.Net
 
             int renderCount = 0;
 
-            try
-            {
-                await StartAsync(miner1);
-                await StartAsync(miner2);
+            var privKey = new PrivateKey();
+            var addr = miner1.Address;
+            var item = "foo";
 
-                await BootstrapAsync(miner2, miner1.AsPeer);
+            miner1.BlockChain.MakeTransaction(privKey, new[] { new DumbAction(addr, item) });
+            await miner1.BlockChain.MineBlock(miner1.Address);
 
-                var privKey = new PrivateKey();
-                var addr = miner1.Address;
-                var item = "foo";
+            miner2.BlockChain.MakeTransaction(privKey, new[] { new DumbAction(addr, item) });
+            await miner2.BlockChain.MineBlock(miner2.Address);
 
-                miner1.BlockChain.MakeTransaction(privKey, new[] { new DumbAction(addr, item) });
-                await miner1.BlockChain.MineBlock(miner1.Address);
+            miner2.BlockChain.MakeTransaction(privKey, new[] { new DumbAction(addr, item) });
+            var latest = await miner2.BlockChain.MineBlock(miner2.Address);
 
-                miner2.BlockChain.MakeTransaction(privKey, new[] { new DumbAction(addr, item) });
-                await miner2.BlockChain.MineBlock(miner2.Address);
+            renderer.RenderEventHandler += (_, a) =>
+                renderCount += a is DumbAction ? 1 : 0;
 
-                miner2.BlockChain.MakeTransaction(privKey, new[] { new DumbAction(addr, item) });
-                var latest = await miner2.BlockChain.MineBlock(miner2.Address);
+            await StartAsync(miner1);
+            await StartAsync(miner2);
 
-                renderer.RenderEventHandler += (_, a) => renderCount += a is DumbAction ? 1 : 0;
+            await BootstrapAsync(miner2, miner1.AsPeer);
 
-                miner2.BroadcastBlock(latest);
+            miner2.BroadcastBlock(latest);
 
-                await miner1.BlockReceived.WaitAsync();
+            await miner1.BlockReceived.WaitAsync();
 
-                Assert.Equal(miner1.BlockChain.Tip, miner2.BlockChain.Tip);
-                Assert.Equal(miner1.BlockChain.Count, miner2.BlockChain.Count);
-                Assert.Equal(2, renderCount);
-            }
-            finally
-            {
-                await StopAsync(miner1);
-                await StopAsync(miner2);
-                miner1.Dispose();
-                miner2.Dispose();
-            }
+            Assert.Equal(miner1.BlockChain.Tip, miner2.BlockChain.Tip);
+            Assert.Equal(miner1.BlockChain.Count, miner2.BlockChain.Count);
+            Assert.Equal(2, renderCount);
         }
 
         [Fact(Timeout = Timeout)]
