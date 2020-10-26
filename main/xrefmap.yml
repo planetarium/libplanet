@@ -1879,22 +1879,24 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).MakeTransaction
   nameWithType: BlockChain<T>.MakeTransaction
   nameWithType.vb: BlockChain(Of T).MakeTransaction
-- uid: Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Address,DateTimeOffset,System.Boolean,System.Int32,CancellationToken)
-  name: MineBlock(Address, DateTimeOffset, Boolean, Int32, CancellationToken)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MineBlock_Libplanet_Address_DateTimeOffset_System_Boolean_System_Int32_CancellationToken_
-  commentId: M:Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Address,DateTimeOffset,System.Boolean,System.Int32,CancellationToken)
-  fullName: Libplanet.Blockchain.BlockChain<T>.MineBlock(Libplanet.Address, DateTimeOffset, System.Boolean, System.Int32, CancellationToken)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).MineBlock(Libplanet.Address, DateTimeOffset, System.Boolean, System.Int32, CancellationToken)
-  nameWithType: BlockChain<T>.MineBlock(Address, DateTimeOffset, Boolean, Int32, CancellationToken)
-  nameWithType.vb: BlockChain(Of T).MineBlock(Address, DateTimeOffset, Boolean, Int32, CancellationToken)
-- uid: Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Address,System.Boolean,System.Int32,CancellationToken)
-  name: MineBlock(Address, Boolean, Int32, CancellationToken)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MineBlock_Libplanet_Address_System_Boolean_System_Int32_CancellationToken_
-  commentId: M:Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Address,System.Boolean,System.Int32,CancellationToken)
-  fullName: Libplanet.Blockchain.BlockChain<T>.MineBlock(Libplanet.Address, System.Boolean, System.Int32, CancellationToken)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).MineBlock(Libplanet.Address, System.Boolean, System.Int32, CancellationToken)
-  nameWithType: BlockChain<T>.MineBlock(Address, Boolean, Int32, CancellationToken)
-  nameWithType.vb: BlockChain(Of T).MineBlock(Address, Boolean, Int32, CancellationToken)
+- uid: Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Address,DateTimeOffset,System.Boolean,System.Nullable{System.Int32},CancellationToken)
+  name: MineBlock(Address, DateTimeOffset, Boolean, Nullable<Int32>, CancellationToken)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MineBlock_Libplanet_Address_DateTimeOffset_System_Boolean_System_Nullable_System_Int32__CancellationToken_
+  commentId: M:Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Address,DateTimeOffset,System.Boolean,System.Nullable{System.Int32},CancellationToken)
+  name.vb: MineBlock(Address, DateTimeOffset, Boolean, Nullable(Of Int32), CancellationToken)
+  fullName: Libplanet.Blockchain.BlockChain<T>.MineBlock(Libplanet.Address, DateTimeOffset, System.Boolean, System.Nullable<System.Int32>, CancellationToken)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).MineBlock(Libplanet.Address, DateTimeOffset, System.Boolean, System.Nullable(Of System.Int32), CancellationToken)
+  nameWithType: BlockChain<T>.MineBlock(Address, DateTimeOffset, Boolean, Nullable<Int32>, CancellationToken)
+  nameWithType.vb: BlockChain(Of T).MineBlock(Address, DateTimeOffset, Boolean, Nullable(Of Int32), CancellationToken)
+- uid: Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Address,System.Boolean,System.Nullable{System.Int32},CancellationToken)
+  name: MineBlock(Address, Boolean, Nullable<Int32>, CancellationToken)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MineBlock_Libplanet_Address_System_Boolean_System_Nullable_System_Int32__CancellationToken_
+  commentId: M:Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Address,System.Boolean,System.Nullable{System.Int32},CancellationToken)
+  name.vb: MineBlock(Address, Boolean, Nullable(Of Int32), CancellationToken)
+  fullName: Libplanet.Blockchain.BlockChain<T>.MineBlock(Libplanet.Address, System.Boolean, System.Nullable<System.Int32>, CancellationToken)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).MineBlock(Libplanet.Address, System.Boolean, System.Nullable(Of System.Int32), CancellationToken)
+  nameWithType: BlockChain<T>.MineBlock(Address, Boolean, Nullable<Int32>, CancellationToken)
+  nameWithType.vb: BlockChain(Of T).MineBlock(Address, Boolean, Nullable(Of Int32), CancellationToken)
 - uid: Libplanet.Blockchain.BlockChain`1.MineBlock*
   name: MineBlock
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MineBlock_
@@ -2119,24 +2121,24 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T)
   nameWithType: BlockPolicy<T>
   nameWithType.vb: BlockPolicy(Of T)
-- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.Int32,System.Int64,System.Int32,Func{Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0},System.Boolean})
-  name: BlockPolicy(IAction, Int32, Int64, Int32, Func<Transaction<T>, BlockChain<T>, Boolean>)
-  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_System_Int32_System_Int64_System_Int32_Func_Libplanet_Tx_Transaction__0__Libplanet_Blockchain_BlockChain__0__System_Boolean__
-  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.Int32,System.Int64,System.Int32,Func{Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0},System.Boolean})
-  name.vb: BlockPolicy(IAction, Int32, Int64, Int32, Func(Of Transaction(Of T), BlockChain(Of T), Boolean))
-  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.BlockPolicy(Libplanet.Action.IAction, System.Int32, System.Int64, System.Int32, Func<Libplanet.Tx.Transaction<T>, Libplanet.Blockchain.BlockChain<T>, System.Boolean>)
-  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).BlockPolicy(Libplanet.Action.IAction, System.Int32, System.Int64, System.Int32, Func(Of Libplanet.Tx.Transaction(Of T), Libplanet.Blockchain.BlockChain(Of T), System.Boolean))
-  nameWithType: BlockPolicy<T>.BlockPolicy(IAction, Int32, Int64, Int32, Func<Transaction<T>, BlockChain<T>, Boolean>)
-  nameWithType.vb: BlockPolicy(Of T).BlockPolicy(IAction, Int32, Int64, Int32, Func(Of Transaction(Of T), BlockChain(Of T), Boolean))
-- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,TimeSpan,System.Int64,System.Int32,Func{Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0},System.Boolean})
-  name: BlockPolicy(IAction, TimeSpan, Int64, Int32, Func<Transaction<T>, BlockChain<T>, Boolean>)
-  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_TimeSpan_System_Int64_System_Int32_Func_Libplanet_Tx_Transaction__0__Libplanet_Blockchain_BlockChain__0__System_Boolean__
-  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,TimeSpan,System.Int64,System.Int32,Func{Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0},System.Boolean})
-  name.vb: BlockPolicy(IAction, TimeSpan, Int64, Int32, Func(Of Transaction(Of T), BlockChain(Of T), Boolean))
-  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.BlockPolicy(Libplanet.Action.IAction, TimeSpan, System.Int64, System.Int32, Func<Libplanet.Tx.Transaction<T>, Libplanet.Blockchain.BlockChain<T>, System.Boolean>)
-  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).BlockPolicy(Libplanet.Action.IAction, TimeSpan, System.Int64, System.Int32, Func(Of Libplanet.Tx.Transaction(Of T), Libplanet.Blockchain.BlockChain(Of T), System.Boolean))
-  nameWithType: BlockPolicy<T>.BlockPolicy(IAction, TimeSpan, Int64, Int32, Func<Transaction<T>, BlockChain<T>, Boolean>)
-  nameWithType.vb: BlockPolicy(Of T).BlockPolicy(IAction, TimeSpan, Int64, Int32, Func(Of Transaction(Of T), BlockChain(Of T), Boolean))
+- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.Int32,System.Int64,System.Int32,System.Int32,System.Int32,System.Int32,Func{Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0},System.Boolean})
+  name: BlockPolicy(IAction, Int32, Int64, Int32, Int32, Int32, Int32, Func<Transaction<T>, BlockChain<T>, Boolean>)
+  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_System_Int32_System_Int64_System_Int32_System_Int32_System_Int32_System_Int32_Func_Libplanet_Tx_Transaction__0__Libplanet_Blockchain_BlockChain__0__System_Boolean__
+  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.Int32,System.Int64,System.Int32,System.Int32,System.Int32,System.Int32,Func{Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0},System.Boolean})
+  name.vb: BlockPolicy(IAction, Int32, Int64, Int32, Int32, Int32, Int32, Func(Of Transaction(Of T), BlockChain(Of T), Boolean))
+  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.BlockPolicy(Libplanet.Action.IAction, System.Int32, System.Int64, System.Int32, System.Int32, System.Int32, System.Int32, Func<Libplanet.Tx.Transaction<T>, Libplanet.Blockchain.BlockChain<T>, System.Boolean>)
+  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).BlockPolicy(Libplanet.Action.IAction, System.Int32, System.Int64, System.Int32, System.Int32, System.Int32, System.Int32, Func(Of Libplanet.Tx.Transaction(Of T), Libplanet.Blockchain.BlockChain(Of T), System.Boolean))
+  nameWithType: BlockPolicy<T>.BlockPolicy(IAction, Int32, Int64, Int32, Int32, Int32, Int32, Func<Transaction<T>, BlockChain<T>, Boolean>)
+  nameWithType.vb: BlockPolicy(Of T).BlockPolicy(IAction, Int32, Int64, Int32, Int32, Int32, Int32, Func(Of Transaction(Of T), BlockChain(Of T), Boolean))
+- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,TimeSpan,System.Int64,System.Int32,System.Int32,System.Int32,System.Int32,Func{Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0},System.Boolean})
+  name: BlockPolicy(IAction, TimeSpan, Int64, Int32, Int32, Int32, Int32, Func<Transaction<T>, BlockChain<T>, Boolean>)
+  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_TimeSpan_System_Int64_System_Int32_System_Int32_System_Int32_System_Int32_Func_Libplanet_Tx_Transaction__0__Libplanet_Blockchain_BlockChain__0__System_Boolean__
+  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,TimeSpan,System.Int64,System.Int32,System.Int32,System.Int32,System.Int32,Func{Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0},System.Boolean})
+  name.vb: BlockPolicy(IAction, TimeSpan, Int64, Int32, Int32, Int32, Int32, Func(Of Transaction(Of T), BlockChain(Of T), Boolean))
+  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.BlockPolicy(Libplanet.Action.IAction, TimeSpan, System.Int64, System.Int32, System.Int32, System.Int32, System.Int32, Func<Libplanet.Tx.Transaction<T>, Libplanet.Blockchain.BlockChain<T>, System.Boolean>)
+  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).BlockPolicy(Libplanet.Action.IAction, TimeSpan, System.Int64, System.Int32, System.Int32, System.Int32, System.Int32, Func(Of Libplanet.Tx.Transaction(Of T), Libplanet.Blockchain.BlockChain(Of T), System.Boolean))
+  nameWithType: BlockPolicy<T>.BlockPolicy(IAction, TimeSpan, Int64, Int32, Int32, Int32, Int32, Func<Transaction<T>, BlockChain<T>, Boolean>)
+  nameWithType.vb: BlockPolicy(Of T).BlockPolicy(IAction, TimeSpan, Int64, Int32, Int32, Int32, Int32, Func(Of Transaction(Of T), BlockChain(Of T), Boolean))
 - uid: Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor*
   name: BlockPolicy
   href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_
@@ -2198,6 +2200,23 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).DoesTransactionFollowsPolicy
   nameWithType: BlockPolicy<T>.DoesTransactionFollowsPolicy
   nameWithType.vb: BlockPolicy(Of T).DoesTransactionFollowsPolicy
+- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.GetMaxBlockBytes(System.Int64)
+  name: GetMaxBlockBytes(Int64)
+  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_GetMaxBlockBytes_System_Int64_
+  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`1.GetMaxBlockBytes(System.Int64)
+  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.GetMaxBlockBytes(System.Int64)
+  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).GetMaxBlockBytes(System.Int64)
+  nameWithType: BlockPolicy<T>.GetMaxBlockBytes(Int64)
+  nameWithType.vb: BlockPolicy(Of T).GetMaxBlockBytes(Int64)
+- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.GetMaxBlockBytes*
+  name: GetMaxBlockBytes
+  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_GetMaxBlockBytes_
+  commentId: Overload:Libplanet.Blockchain.Policies.BlockPolicy`1.GetMaxBlockBytes
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.GetMaxBlockBytes
+  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).GetMaxBlockBytes
+  nameWithType: BlockPolicy<T>.GetMaxBlockBytes
+  nameWithType.vb: BlockPolicy(Of T).GetMaxBlockBytes
 - uid: Libplanet.Blockchain.Policies.BlockPolicy`1.GetNextBlockDifficulty(Libplanet.Blockchain.BlockChain{`0})
   name: GetNextBlockDifficulty(BlockChain<T>)
   href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_GetNextBlockDifficulty_Libplanet_Blockchain_BlockChain__0__
@@ -2216,6 +2235,23 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).GetNextBlockDifficulty
   nameWithType: BlockPolicy<T>.GetNextBlockDifficulty
   nameWithType.vb: BlockPolicy(Of T).GetNextBlockDifficulty
+- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.MaxTransactionsPerBlock
+  name: MaxTransactionsPerBlock
+  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_MaxTransactionsPerBlock
+  commentId: P:Libplanet.Blockchain.Policies.BlockPolicy`1.MaxTransactionsPerBlock
+  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.MaxTransactionsPerBlock
+  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).MaxTransactionsPerBlock
+  nameWithType: BlockPolicy<T>.MaxTransactionsPerBlock
+  nameWithType.vb: BlockPolicy(Of T).MaxTransactionsPerBlock
+- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.MaxTransactionsPerBlock*
+  name: MaxTransactionsPerBlock
+  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_MaxTransactionsPerBlock_
+  commentId: Overload:Libplanet.Blockchain.Policies.BlockPolicy`1.MaxTransactionsPerBlock
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.MaxTransactionsPerBlock
+  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).MaxTransactionsPerBlock
+  nameWithType: BlockPolicy<T>.MaxTransactionsPerBlock
+  nameWithType.vb: BlockPolicy(Of T).MaxTransactionsPerBlock
 - uid: Libplanet.Blockchain.Policies.BlockPolicy`1.ValidateNextBlock(Libplanet.Blockchain.BlockChain{`0},Libplanet.Blocks.Block{`0})
   name: ValidateNextBlock(BlockChain<T>, Block<T>)
   href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_ValidateNextBlock_Libplanet_Blockchain_BlockChain__0__Libplanet_Blocks_Block__0__
@@ -2278,6 +2314,23 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of T).DoesTransactionFollowsPolicy
   nameWithType: IBlockPolicy<T>.DoesTransactionFollowsPolicy
   nameWithType.vb: IBlockPolicy(Of T).DoesTransactionFollowsPolicy
+- uid: Libplanet.Blockchain.Policies.IBlockPolicy`1.GetMaxBlockBytes(System.Int64)
+  name: GetMaxBlockBytes(Int64)
+  href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_GetMaxBlockBytes_System_Int64_
+  commentId: M:Libplanet.Blockchain.Policies.IBlockPolicy`1.GetMaxBlockBytes(System.Int64)
+  fullName: Libplanet.Blockchain.Policies.IBlockPolicy<T>.GetMaxBlockBytes(System.Int64)
+  fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of T).GetMaxBlockBytes(System.Int64)
+  nameWithType: IBlockPolicy<T>.GetMaxBlockBytes(Int64)
+  nameWithType.vb: IBlockPolicy(Of T).GetMaxBlockBytes(Int64)
+- uid: Libplanet.Blockchain.Policies.IBlockPolicy`1.GetMaxBlockBytes*
+  name: GetMaxBlockBytes
+  href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_GetMaxBlockBytes_
+  commentId: Overload:Libplanet.Blockchain.Policies.IBlockPolicy`1.GetMaxBlockBytes
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.Policies.IBlockPolicy<T>.GetMaxBlockBytes
+  fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of T).GetMaxBlockBytes
+  nameWithType: IBlockPolicy<T>.GetMaxBlockBytes
+  nameWithType.vb: IBlockPolicy(Of T).GetMaxBlockBytes
 - uid: Libplanet.Blockchain.Policies.IBlockPolicy`1.GetNextBlockDifficulty(Libplanet.Blockchain.BlockChain{`0})
   name: GetNextBlockDifficulty(BlockChain<T>)
   href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_GetNextBlockDifficulty_Libplanet_Blockchain_BlockChain__0__
@@ -2296,6 +2349,23 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of T).GetNextBlockDifficulty
   nameWithType: IBlockPolicy<T>.GetNextBlockDifficulty
   nameWithType.vb: IBlockPolicy(Of T).GetNextBlockDifficulty
+- uid: Libplanet.Blockchain.Policies.IBlockPolicy`1.MaxTransactionsPerBlock
+  name: MaxTransactionsPerBlock
+  href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_MaxTransactionsPerBlock
+  commentId: P:Libplanet.Blockchain.Policies.IBlockPolicy`1.MaxTransactionsPerBlock
+  fullName: Libplanet.Blockchain.Policies.IBlockPolicy<T>.MaxTransactionsPerBlock
+  fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of T).MaxTransactionsPerBlock
+  nameWithType: IBlockPolicy<T>.MaxTransactionsPerBlock
+  nameWithType.vb: IBlockPolicy(Of T).MaxTransactionsPerBlock
+- uid: Libplanet.Blockchain.Policies.IBlockPolicy`1.MaxTransactionsPerBlock*
+  name: MaxTransactionsPerBlock
+  href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_MaxTransactionsPerBlock_
+  commentId: Overload:Libplanet.Blockchain.Policies.IBlockPolicy`1.MaxTransactionsPerBlock
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.Policies.IBlockPolicy<T>.MaxTransactionsPerBlock
+  fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of T).MaxTransactionsPerBlock
+  nameWithType: IBlockPolicy<T>.MaxTransactionsPerBlock
+  nameWithType.vb: IBlockPolicy(Of T).MaxTransactionsPerBlock
 - uid: Libplanet.Blockchain.Policies.IBlockPolicy`1.ValidateNextBlock(Libplanet.Blockchain.BlockChain{`0},Libplanet.Blocks.Block{`0})
   name: ValidateNextBlock(BlockChain<T>, Block<T>)
   href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_ValidateNextBlock_Libplanet_Blockchain_BlockChain__0__Libplanet_Blocks_Block__0__
@@ -3616,6 +3686,23 @@ references:
   fullName.vb: Libplanet.Blocks.Block(Of T).Block
   nameWithType: Block<T>.Block
   nameWithType.vb: Block(Of T).Block
+- uid: Libplanet.Blocks.Block`1.BytesLength
+  name: BytesLength
+  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_BytesLength
+  commentId: P:Libplanet.Blocks.Block`1.BytesLength
+  fullName: Libplanet.Blocks.Block<T>.BytesLength
+  fullName.vb: Libplanet.Blocks.Block(Of T).BytesLength
+  nameWithType: Block<T>.BytesLength
+  nameWithType.vb: Block(Of T).BytesLength
+- uid: Libplanet.Blocks.Block`1.BytesLength*
+  name: BytesLength
+  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_BytesLength_
+  commentId: Overload:Libplanet.Blocks.Block`1.BytesLength
+  isSpec: "True"
+  fullName: Libplanet.Blocks.Block<T>.BytesLength
+  fullName.vb: Libplanet.Blocks.Block(Of T).BytesLength
+  nameWithType: Block<T>.BytesLength
+  nameWithType.vb: Block(Of T).BytesLength
 - uid: Libplanet.Blocks.Block`1.Deserialize(System.Byte[])
   name: Deserialize(Byte[])
   href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Deserialize_System_Byte___
@@ -4303,6 +4390,64 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.BlockHeader.TxHash
   nameWithType: BlockHeader.TxHash
+- uid: Libplanet.Blocks.InvalidBlockBytesLengthException
+  name: InvalidBlockBytesLengthException
+  href: api/Libplanet.Blocks.InvalidBlockBytesLengthException.html
+  commentId: T:Libplanet.Blocks.InvalidBlockBytesLengthException
+  fullName: Libplanet.Blocks.InvalidBlockBytesLengthException
+  nameWithType: InvalidBlockBytesLengthException
+- uid: Libplanet.Blocks.InvalidBlockBytesLengthException.#ctor(System.Int32,System.Int32,System.String)
+  name: InvalidBlockBytesLengthException(Int32, Int32, String)
+  href: api/Libplanet.Blocks.InvalidBlockBytesLengthException.html#Libplanet_Blocks_InvalidBlockBytesLengthException__ctor_System_Int32_System_Int32_System_String_
+  commentId: M:Libplanet.Blocks.InvalidBlockBytesLengthException.#ctor(System.Int32,System.Int32,System.String)
+  fullName: Libplanet.Blocks.InvalidBlockBytesLengthException.InvalidBlockBytesLengthException(System.Int32, System.Int32, System.String)
+  nameWithType: InvalidBlockBytesLengthException.InvalidBlockBytesLengthException(Int32, Int32, String)
+- uid: Libplanet.Blocks.InvalidBlockBytesLengthException.#ctor*
+  name: InvalidBlockBytesLengthException
+  href: api/Libplanet.Blocks.InvalidBlockBytesLengthException.html#Libplanet_Blocks_InvalidBlockBytesLengthException__ctor_
+  commentId: Overload:Libplanet.Blocks.InvalidBlockBytesLengthException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Blocks.InvalidBlockBytesLengthException.InvalidBlockBytesLengthException
+  nameWithType: InvalidBlockBytesLengthException.InvalidBlockBytesLengthException
+- uid: Libplanet.Blocks.InvalidBlockBytesLengthException.BlockBytesLength
+  name: BlockBytesLength
+  href: api/Libplanet.Blocks.InvalidBlockBytesLengthException.html#Libplanet_Blocks_InvalidBlockBytesLengthException_BlockBytesLength
+  commentId: P:Libplanet.Blocks.InvalidBlockBytesLengthException.BlockBytesLength
+  fullName: Libplanet.Blocks.InvalidBlockBytesLengthException.BlockBytesLength
+  nameWithType: InvalidBlockBytesLengthException.BlockBytesLength
+- uid: Libplanet.Blocks.InvalidBlockBytesLengthException.BlockBytesLength*
+  name: BlockBytesLength
+  href: api/Libplanet.Blocks.InvalidBlockBytesLengthException.html#Libplanet_Blocks_InvalidBlockBytesLengthException_BlockBytesLength_
+  commentId: Overload:Libplanet.Blocks.InvalidBlockBytesLengthException.BlockBytesLength
+  isSpec: "True"
+  fullName: Libplanet.Blocks.InvalidBlockBytesLengthException.BlockBytesLength
+  nameWithType: InvalidBlockBytesLengthException.BlockBytesLength
+- uid: Libplanet.Blocks.InvalidBlockBytesLengthException.GetObjectData(SerializationInfo,StreamingContext)
+  name: GetObjectData(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Blocks.InvalidBlockBytesLengthException.html#Libplanet_Blocks_InvalidBlockBytesLengthException_GetObjectData_SerializationInfo_StreamingContext_
+  commentId: M:Libplanet.Blocks.InvalidBlockBytesLengthException.GetObjectData(SerializationInfo,StreamingContext)
+  fullName: Libplanet.Blocks.InvalidBlockBytesLengthException.GetObjectData(SerializationInfo, StreamingContext)
+  nameWithType: InvalidBlockBytesLengthException.GetObjectData(SerializationInfo, StreamingContext)
+- uid: Libplanet.Blocks.InvalidBlockBytesLengthException.GetObjectData*
+  name: GetObjectData
+  href: api/Libplanet.Blocks.InvalidBlockBytesLengthException.html#Libplanet_Blocks_InvalidBlockBytesLengthException_GetObjectData_
+  commentId: Overload:Libplanet.Blocks.InvalidBlockBytesLengthException.GetObjectData
+  isSpec: "True"
+  fullName: Libplanet.Blocks.InvalidBlockBytesLengthException.GetObjectData
+  nameWithType: InvalidBlockBytesLengthException.GetObjectData
+- uid: Libplanet.Blocks.InvalidBlockBytesLengthException.MaxBlockBytesLength
+  name: MaxBlockBytesLength
+  href: api/Libplanet.Blocks.InvalidBlockBytesLengthException.html#Libplanet_Blocks_InvalidBlockBytesLengthException_MaxBlockBytesLength
+  commentId: P:Libplanet.Blocks.InvalidBlockBytesLengthException.MaxBlockBytesLength
+  fullName: Libplanet.Blocks.InvalidBlockBytesLengthException.MaxBlockBytesLength
+  nameWithType: InvalidBlockBytesLengthException.MaxBlockBytesLength
+- uid: Libplanet.Blocks.InvalidBlockBytesLengthException.MaxBlockBytesLength*
+  name: MaxBlockBytesLength
+  href: api/Libplanet.Blocks.InvalidBlockBytesLengthException.html#Libplanet_Blocks_InvalidBlockBytesLengthException_MaxBlockBytesLength_
+  commentId: Overload:Libplanet.Blocks.InvalidBlockBytesLengthException.MaxBlockBytesLength
+  isSpec: "True"
+  fullName: Libplanet.Blocks.InvalidBlockBytesLengthException.MaxBlockBytesLength
+  nameWithType: InvalidBlockBytesLengthException.MaxBlockBytesLength
 - uid: Libplanet.Blocks.InvalidBlockDifficultyException
   name: InvalidBlockDifficultyException
   href: api/Libplanet.Blocks.InvalidBlockDifficultyException.html
@@ -11843,6 +11988,23 @@ references:
   fullName.vb: Libplanet.Tx.Transaction(Of T).Actions
   nameWithType: Transaction<T>.Actions
   nameWithType.vb: Transaction(Of T).Actions
+- uid: Libplanet.Tx.Transaction`1.BytesLength
+  name: BytesLength
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_BytesLength
+  commentId: P:Libplanet.Tx.Transaction`1.BytesLength
+  fullName: Libplanet.Tx.Transaction<T>.BytesLength
+  fullName.vb: Libplanet.Tx.Transaction(Of T).BytesLength
+  nameWithType: Transaction<T>.BytesLength
+  nameWithType.vb: Transaction(Of T).BytesLength
+- uid: Libplanet.Tx.Transaction`1.BytesLength*
+  name: BytesLength
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_BytesLength_
+  commentId: Overload:Libplanet.Tx.Transaction`1.BytesLength
+  isSpec: "True"
+  fullName: Libplanet.Tx.Transaction<T>.BytesLength
+  fullName.vb: Libplanet.Tx.Transaction(Of T).BytesLength
+  nameWithType: Transaction<T>.BytesLength
+  nameWithType.vb: Transaction(Of T).BytesLength
 - uid: Libplanet.Tx.Transaction`1.Create(System.Int64,Libplanet.Crypto.PrivateKey,System.Nullable{Libplanet.HashDigest{SHA256}},IEnumerable{`0},IImmutableSet{Libplanet.Address},System.Nullable{DateTimeOffset})
   name: Create(Int64, PrivateKey, Nullable<HashDigest<SHA256>>, IEnumerable<T>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
   href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Create_System_Int64_Libplanet_Crypto_PrivateKey_System_Nullable_Libplanet_HashDigest_SHA256___IEnumerable__0__IImmutableSet_Libplanet_Address__System_Nullable_DateTimeOffset__

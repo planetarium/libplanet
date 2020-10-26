@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "eqX49jVG3B2qkOAT0lSCnA=="
+          "hash": "c7axfyM03+INj/99e9hiBg=="
         }
       },
       "is_incremental": false,
@@ -333,7 +333,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.BlockChain-1.html",
-          "hash": "agS4JVkD3PzfoluKOUAlXw=="
+          "hash": "MGqBoFuUWkkAOCMWgraPMA=="
         }
       },
       "is_incremental": false,
@@ -393,7 +393,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.Policies.BlockPolicy-1.html",
-          "hash": "mFS1uu+3meNEJlTfMDBB3Q=="
+          "hash": "AjLvLBT+jQz1usvowOLBUg=="
         }
       },
       "is_incremental": false,
@@ -405,7 +405,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html",
-          "hash": "rBjWpXTKY1YNrkDaGTOrSQ=="
+          "hash": "r0RH/sWzGjlWMluGIORFFg=="
         }
       },
       "is_incremental": false,
@@ -585,7 +585,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blocks.Block-1.html",
-          "hash": "zOdBts8cqvLfeb15baonQg=="
+          "hash": "/RUyBm0pL9NuFQkXvmxmlQ=="
         }
       },
       "is_incremental": false,
@@ -617,6 +617,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Blocks.InvalidBlockBytesLengthException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Blocks.InvalidBlockBytesLengthException.html",
+          "hash": "qzpg/UiKFjC3FUbWYPw7Pg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Libplanet.Blocks.InvalidBlockDifficultyException.yml",
       "output": {
         ".html": {
@@ -633,7 +645,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blocks.InvalidBlockException.html",
-          "hash": "vpeSI0mOK/CLurEKxKUQrw=="
+          "hash": "cDxvIdZOaXeCbCOy5gyjIQ=="
         }
       },
       "is_incremental": false,
@@ -741,7 +753,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blocks.html",
-          "hash": "EGxKCGUSZX/RDIyZedgsKg=="
+          "hash": "pCz5Pa31hps08BzYL0ZLMA=="
         }
       },
       "is_incremental": false,
@@ -1809,7 +1821,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Tx.Transaction-1.html",
-          "hash": "cJxx5sO0srvS5nY++E6K7w=="
+          "hash": "2ZBhpWtKbx+mkjt10NV62w=="
         }
       },
       "is_incremental": false,
@@ -1881,7 +1893,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "qtZwAPnpOIniyvW+WU1GZw=="
+          "hash": "0NLJ1zZYSPuZILo74GNUkw=="
         }
       },
       "is_incremental": false,
@@ -1981,11 +1993,10 @@
         "full_build_reason_code": "NoAvailableBuildCache"
       },
       "processors": {
-        "TocDocumentProcessor": {
+        "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 0,
+          "total_file_count": 149,
           "skipped_file_count": 0
         },
         "ConceptualDocumentProcessor": {
@@ -1994,10 +2005,11 @@
           "total_file_count": 11,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
+        "TocDocumentProcessor": {
           "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 148,
+          "total_file_count": 0,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
