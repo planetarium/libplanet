@@ -21,19 +21,9 @@ namespace Libplanet.Net
         {
             switch (message)
             {
-                case Ping ping:
-                {
-                    _logger.Debug($"Received a {nameof(Ping)} message.");
-
-                    // This case can be dealt in Transport.
-                    var pong = new Pong()
-                    {
-                        Identity = ping.Identity,
-                    };
-
-                    Transport.ReplyMessage(pong);
+                case Ping _:
+                case FindNeighbors _:
                     break;
-                }
 
                 case GetChainStatus getChainStatus:
                 {
@@ -51,10 +41,6 @@ namespace Libplanet.Net
                     Transport.ReplyMessage(chainStatus);
                     break;
                 }
-
-                case FindNeighbors _:
-                    _logger.Debug($"Received a {nameof(FindNeighbors)} message.");
-                    break;
 
                 case GetBlockHashes getBlockHashes:
                 {

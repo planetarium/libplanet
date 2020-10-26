@@ -77,7 +77,6 @@ namespace Libplanet.Net
             int? listenPort,
             IEnumerable<IceServer> iceServers,
             DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered,
-            EventHandler<Message> processMessageHandler,
             ILogger logger)
         {
             Running = false;
@@ -89,7 +88,6 @@ namespace Libplanet.Net
             _listenPort = listenPort;
             _differentAppProtocolVersionEncountered = differentAppProtocolVersionEncountered;
             _turnClientMutex = new AsyncLock();
-            ProcessMessageHandler = processMessageHandler;
 
             if (_host != null && _listenPort is int listenPortAsInt)
             {
@@ -311,6 +309,21 @@ namespace Libplanet.Net
 
                 Running = false;
             }
+        }
+
+        public void AddEventHandler(EventHandler<Message> eventHandler)
+        {
+            ProcessMessageHandler += eventHandler;
+        }
+
+        public void RemoveEventHandler(EventHandler<Message> eventHandler)
+        {
+            ProcessMessageHandler -= eventHandler;
+        }
+
+        public void RemoveAllEventHandlers()
+        {
+            ProcessMessageHandler = null;
         }
 
         public Task BootstrapAsync(
@@ -584,7 +597,6 @@ namespace Libplanet.Net
 
                     try
                     {
-                        Protocol.ReceiveMessage(message);
                         ProcessMessageHandler?.Invoke(this, message);
                     }
                     catch (Exception exc)
@@ -816,11 +828,6 @@ namespace Libplanet.Net
                     );
 
                     result.Add(reply);
-                }
-
-                if (req.ExpectedResponses > 0)
-                {
-                    Protocol.ReceiveMessage(result[0]);
                 }
 
                 tcs.TrySetResult(result);

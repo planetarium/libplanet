@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading;
 using System.Threading.Tasks;
-using Libplanet.Net.Messages;
 
 namespace Libplanet.Net.Protocols
 {
@@ -25,8 +24,6 @@ namespace Libplanet.Net.Protocols
         Task RebuildConnectionAsync(CancellationToken cancellationToken);
 
         Task CheckReplacementCacheAsync(CancellationToken cancellationToken);
-
-        void ReceiveMessage(Message message);
 
         string Trace();
     }

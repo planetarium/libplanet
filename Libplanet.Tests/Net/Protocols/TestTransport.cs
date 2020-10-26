@@ -67,6 +67,8 @@ namespace Libplanet.Tests.Net.Protocols
             );
         }
 
+        public event EventHandler<Message> ProcessMessageHandler;
+
         public AsyncAutoResetEvent MessageReceived { get; }
 
         public Address Address => _privateKey.ToAddress();
@@ -117,6 +119,21 @@ namespace Libplanet.Tests.Net.Protocols
             _logger.Debug("Stopping transport of {Peer}.", AsPeer);
             _swarmCancellationTokenSource.Cancel();
             await Task.Delay(waitFor, cancellationToken);
+        }
+
+        public void AddEventHandler(EventHandler<Message> eventHandler)
+        {
+            ProcessMessageHandler += eventHandler;
+        }
+
+        public void RemoveEventHandler(EventHandler<Message> eventHandler)
+        {
+            ProcessMessageHandler -= eventHandler;
+        }
+
+        public void RemoveAllEventHandlers()
+        {
+            ProcessMessageHandler = null;
         }
 
         public async Task BootstrapAsync(
@@ -189,10 +206,11 @@ namespace Libplanet.Tests.Net.Protocols
                     {
                         if (peer is BoundPeer boundPeer)
                         {
-                            tasks.Add(kp.PingAsync(
-                                boundPeer,
-                                timeout: timeout,
-                                cancellationToken: cancellationToken));
+                            tasks.Add(
+                                kp.PingAsync(
+                                    boundPeer,
+                                    timeout: timeout,
+                                    cancellationToken: cancellationToken));
                         }
                     }
 
@@ -343,7 +361,6 @@ namespace Libplanet.Tests.Net.Protocols
                     message.Identity);
                 LastMessageTimestamp = DateTimeOffset.UtcNow;
                 ReceivedMessages.Add(reply);
-                Protocol.ReceiveMessage(reply);
                 MessageReceived.Set();
                 return reply;
             }
@@ -457,7 +474,7 @@ namespace Libplanet.Tests.Net.Protocols
 
             LastMessageTimestamp = DateTimeOffset.UtcNow;
             ReceivedMessages.Add(message);
-            Protocol.ReceiveMessage(message);
+            ProcessMessageHandler?.Invoke(this, message);
             MessageReceived.Set();
         }
 

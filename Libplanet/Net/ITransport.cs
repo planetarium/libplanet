@@ -22,6 +22,12 @@ namespace Libplanet.Net
             TimeSpan waitFor,
             CancellationToken cancellationToken = default(CancellationToken));
 
+        void AddEventHandler(EventHandler<Message> eventHandler);
+
+        void RemoveEventHandler(EventHandler<Message> eventHandler);
+
+        void RemoveAllEventHandlers();
+
         Task BootstrapAsync(
             IEnumerable<BoundPeer> bootstrapPeers,
             TimeSpan? pingSeedTimeout,

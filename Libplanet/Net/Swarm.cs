@@ -154,8 +154,8 @@ namespace Libplanet.Net
                 listenPort,
                 iceServers,
                 differentAppProtocolVersionEncountered,
-                ProcessMessageHandler,
                 _logger);
+            Transport.AddEventHandler(ProcessMessageHandler);
 
             Options = options ?? new SwarmOptions();
         }
