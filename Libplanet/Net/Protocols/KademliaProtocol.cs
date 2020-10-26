@@ -251,6 +251,7 @@ namespace Libplanet.Net.Protocols
             _logger.Verbose("Replacement cache checked.");
         }
 
+        // FIXME: Remove this method and make RoutingTable public
         public string Trace()
         {
             var trace = $"Routing table of [{_address.ToHex()}]\n";
@@ -311,6 +312,7 @@ namespace Libplanet.Net.Protocols
                     var msg =
                         "{BoundPeer}, a target peer, is in the routing table does not respond.";
                     _logger.Verbose(msg, boundPeer);
+                    RemovePeer(boundPeer);
                     return null;
                 }
 
@@ -377,6 +379,10 @@ namespace Libplanet.Net.Protocols
                     }
                     catch (PingTimeoutException)
                     {
+                        // Ignore peer not responding
+                    }
+                    finally
+                    {
                         history.Add(found);
                     }
                 }
@@ -430,7 +436,8 @@ namespace Libplanet.Net.Protocols
             }
             catch (DifferentAppProtocolVersionException)
             {
-                _logger.Error("Different AppProtocolVersion encountered at PingAsync.");
+                _logger.Error(
+                    $"Different AppProtocolVersion encountered at {nameof(PingAsync)}().");
                 throw;
             }
         }
@@ -618,7 +625,7 @@ namespace Libplanet.Net.Protocols
             }
         }
 
-        // send pong back to remote
+        // Send pong back to remote
         private void ReceivePing(Ping ping)
         {
             if (ping.Remote.Address.Equals(_address))
