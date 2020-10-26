@@ -767,8 +767,7 @@ namespace Libplanet.Blockchain
                         break;
                     }
 
-                    int txBytes = tx.Serialize(true).Length;
-                    if (estimatedBytes + txBytes > maxBlockBytes)
+                    if (estimatedBytes + tx.BytesLength > maxBlockBytes)
                     {
                         // Once someone's tx is excluded from a block, their later txs are also all
                         // excluded in the block, because later nonces become invalid.
@@ -786,7 +785,7 @@ namespace Libplanet.Blockchain
                     }
 
                     transactionsToMine.Add(tx);
-                    estimatedBytes += txBytes;
+                    estimatedBytes += tx.BytesLength;
                 }
             }
 
