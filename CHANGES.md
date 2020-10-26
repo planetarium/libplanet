@@ -16,6 +16,9 @@ To be released.
 
 ### Added APIs
 
+ -  Added `ITransport` interface.  [[#1052]]
+ -  Added `NetMQTransport` which implements `ITransport`.  [[#1052]]
+ -  Added `Message` abstract class.  [[#1052]]
  -  Added `BlockExceedingTransactionsException` class.  [[#1104], [#1110]]
  -  Added `BlockChain<T>.GetStagedTransactionIds()` method.  [[#1089]]
  -  (Libplanet.RocksDBStore) Added `maxTotalWalSize` and `keepLogFileNum`
@@ -50,6 +53,7 @@ To be released.
 
 ### CLI tools
 
+[#1052]: https://github.com/planetarium/libplanet/pull/1052
 [#1061]: https://github.com/planetarium/libplanet/pull/1061
 [#1062]: https://github.com/planetarium/libplanet/pull/1062
 [#1065]: https://github.com/planetarium/libplanet/pull/1065
