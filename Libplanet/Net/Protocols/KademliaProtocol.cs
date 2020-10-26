@@ -5,7 +5,6 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Serilog;
 using Random = System.Random;
@@ -17,10 +16,6 @@ namespace Libplanet.Net.Protocols
         private readonly TimeSpan _requestTimeout;
         private readonly ITransport _transport;
         private readonly Address _address;
-        private readonly AppProtocolVersion _appProtocolVersion;
-        private readonly IImmutableSet<PublicKey> _trustedAppProtocolVersionSigners;
-        private readonly DifferentAppProtocolVersionEncountered
-            _differentAppProtocolVersionEncountered;
 
         private readonly Random _random;
         private readonly RoutingTable _routing;
@@ -33,9 +28,6 @@ namespace Libplanet.Net.Protocols
         public KademliaProtocol(
             ITransport transport,
             Address address,
-            AppProtocolVersion appProtocolVersion,
-            IImmutableSet<PublicKey> trustedAppProtocolVersionSigners,
-            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered,
             ILogger logger,
             int? tableSize,
             int? bucketSize,
@@ -43,9 +35,6 @@ namespace Libplanet.Net.Protocols
             TimeSpan? requestTimeout = null)
         {
             _transport = transport;
-            _appProtocolVersion = appProtocolVersion;
-            _trustedAppProtocolVersionSigners = trustedAppProtocolVersionSigners;
-            _differentAppProtocolVersionEncountered = differentAppProtocolVersionEncountered;
             _logger = logger;
 
             _address = address;

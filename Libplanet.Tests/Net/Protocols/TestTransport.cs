@@ -61,9 +61,6 @@ namespace Libplanet.Tests.Net.Protocols
             Protocol = new KademliaProtocol(
                 this,
                 Address,
-                AppProtocolVersion,
-                null,
-                null,
                 _logger,
                 tableSize,
                 bucketSize

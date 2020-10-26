@@ -154,9 +154,6 @@ namespace Libplanet.Net
             Protocol = new KademliaProtocol(
                 this,
                 _privateKey.ToAddress(),
-                _appProtocolVersion,
-                _trustedAppProtocolVersionSigners,
-                _differentAppProtocolVersionEncountered,
                 _logger,
                 tableSize,
                 bucketSize);
