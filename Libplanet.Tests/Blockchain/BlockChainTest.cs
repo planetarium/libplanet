@@ -29,6 +29,7 @@ namespace Libplanet.Tests.Blockchain
 {
     public partial class BlockChainTest : IDisposable
     {
+        private readonly ILogger _logger;
         private StoreFixture _fx;
         private BlockPolicy<DumbAction> _policy;
         private BlockChain<DumbAction> _blockChain;
@@ -38,7 +39,7 @@ namespace Libplanet.Tests.Blockchain
 
         public BlockChainTest(ITestOutputHelper output)
         {
-            Log.Logger = new LoggerConfiguration()
+            Log.Logger = _logger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
                 .Enrich.WithThreadId()
                 .WriteTo.TestOutput(output)
@@ -47,7 +48,7 @@ namespace Libplanet.Tests.Blockchain
 
             _fx = new DefaultStoreFixture(memory: true);
             _renderer = new ValidatingActionRenderer<DumbAction>();
-            _policy = new BlockPolicy<DumbAction>(new MinerReward(1));
+            _policy = new BlockPolicy<DumbAction>(new MinerReward(1), maxBlockBytes: 50 * 1024);
             _blockChain = new BlockChain<DumbAction>(
                 _policy,
                 _fx.Store,
@@ -76,22 +77,61 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public async void MineBlock()
         {
+            Func<long, int> getMaxBlockBytes = _blockChain.Policy.GetMaxBlockBytes;
             Assert.Equal(1, _blockChain.Count);
 
             Block<DumbAction> block = await _blockChain.MineBlock(_fx.Address1);
             block.Validate(DateTimeOffset.UtcNow);
             Assert.True(_blockChain.ContainsBlock(block.Hash));
             Assert.Equal(2, _blockChain.Count);
+            Assert.True(block.BytesLength <= getMaxBlockBytes(block.Index));
 
             Block<DumbAction> anotherBlock = await _blockChain.MineBlock(_fx.Address2);
             anotherBlock.Validate(DateTimeOffset.UtcNow);
             Assert.True(_blockChain.ContainsBlock(anotherBlock.Hash));
             Assert.Equal(3, _blockChain.Count);
+            Assert.True(anotherBlock.BytesLength <= getMaxBlockBytes(anotherBlock.Index));
 
             Block<DumbAction> block3 = await _blockChain.MineBlock(_fx.Address3, append: false);
             block3.Validate(DateTimeOffset.UtcNow);
             Assert.False(_blockChain.ContainsBlock(block3.Hash));
             Assert.Equal(3, _blockChain.Count);
+            Assert.True(block3.BytesLength <= getMaxBlockBytes(block3.Index));
+
+            // Tests if MineBlock() method automatically fits the number of transactions according
+            // to the right size.
+            DumbAction[] manyActions =
+                Enumerable.Repeat(new DumbAction(default, "_"), 200).ToArray();
+            PrivateKey signer = null;
+            int nonce = 0;
+            for (int i = 0; i < 100; i++)
+            {
+                if (i % 25 == 0)
+                {
+                    nonce = 0;
+                    signer = new PrivateKey();
+                }
+
+                Transaction<DumbAction> heavyTx = _fx.MakeTransaction(
+                    manyActions,
+                    nonce: nonce,
+                    privateKey: signer);
+                _blockChain.StageTransaction(heavyTx);
+            }
+
+            Block<DumbAction> block4 = await _blockChain.MineBlock(_fx.Address3, append: false);
+            block4.Validate(DateTimeOffset.UtcNow);
+            Assert.False(_blockChain.ContainsBlock(block4.Hash));
+            _logger.Debug(
+                $"{nameof(block4)}.{nameof(block4.BytesLength)} = {0}",
+                block4.BytesLength
+            );
+            _logger.Debug(
+                $"{nameof(getMaxBlockBytes)}({nameof(block4)}.{nameof(block4.Index)}) = {0}",
+                getMaxBlockBytes(block4.Index)
+            );
+            Assert.True(block4.BytesLength <= getMaxBlockBytes(block4.Index));
+            Assert.Equal(3, block4.Transactions.Count());
         }
 
         [Fact]
@@ -108,19 +148,19 @@ namespace Libplanet.Tests.Blockchain
             _blockChain.MakeTransaction(privateKeys[2], new DumbAction[0]);
 
             Block<DumbAction> block =
-                await _blockChain.MineBlock(_fx.Address1, txBatchSize: 1);
+                await _blockChain.MineBlock(_fx.Address1, maxTransactions: 1);
             block.Validate(DateTimeOffset.UtcNow);
             Assert.Single(block.Transactions);
             Assert.Equal(5, _blockChain.GetStagedTransactionIds().Count);
 
             Block<DumbAction> block2 = await _blockChain.MineBlock(
-                _fx.Address2, DateTimeOffset.UtcNow, txBatchSize: 2);
+                _fx.Address2, DateTimeOffset.UtcNow, maxTransactions: 2);
             block2.Validate(DateTimeOffset.UtcNow);
             Assert.Equal(2, block2.Transactions.Count());
             Assert.Equal(3, _blockChain.GetStagedTransactionIds().Count);
 
             Block<DumbAction> block3 = await _blockChain.MineBlock(
-                _fx.Address3, append: false, txBatchSize: 4);
+                _fx.Address3, append: false, maxTransactions: 4);
             block3.Validate(DateTimeOffset.UtcNow);
             Assert.Equal(3, block3.Transactions.Count());
             Assert.Equal(3, _blockChain.GetStagedTransactionIds().Count);
@@ -587,6 +627,45 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(
                 (Integer)2,
                 (Integer)blockRenders[1].NextStates.GetState(minerAddress));
+        }
+
+        [Fact]
+        public void AppendThrowsInvalidBlockBytesLengthException()
+        {
+            DumbAction[] manyActions =
+                Enumerable.Repeat(new DumbAction(default, "_"), 200).ToArray();
+            PrivateKey signer = null;
+            int nonce = 0;
+            var heavyTxs = new List<Transaction<DumbAction>>();
+            for (int i = 0; i < 100; i++)
+            {
+                if (i % 25 == 0)
+                {
+                    nonce = 0;
+                    signer = new PrivateKey();
+                }
+
+                Transaction<DumbAction> heavyTx = _fx.MakeTransaction(
+                    manyActions,
+                    nonce: nonce,
+                    privateKey: signer);
+                heavyTxs.Add(heavyTx);
+            }
+
+            var block1 = TestUtils.MineNext(
+                _blockChain.Genesis,
+                heavyTxs,
+                difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
+                blockInterval: TimeSpan.FromSeconds(10)
+            );
+            int maxBytes = _blockChain.Policy.GetMaxBlockBytes(block1.Index);
+            Assert.True(block1.BytesLength > maxBytes);
+
+            var e = Assert.Throws<InvalidBlockBytesLengthException>(() =>
+                _blockChain.Append(block1)
+            );
+            Assert.Equal(maxBytes, e.MaxBlockBytesLength);
+            Assert.Equal(block1.BytesLength, e.BlockBytesLength);
         }
 
         [Fact]

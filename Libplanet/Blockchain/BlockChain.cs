@@ -551,6 +551,9 @@ namespace Libplanet.Blockchain
         /// are required for action execution and rendering.
         /// <see cref="StateCompleterSet{T}.Recalculate"/> by default.
         /// </param>
+        /// <exception cref="InvalidBlockBytesLengthException">Thrown when the block to mine is
+        /// too long (according to <see cref="IBlockPolicy{T}.GetMaxBlockBytes(long)"/>) in bytes.
+        /// </exception>
         /// <exception cref="InvalidBlockException">Thrown when the given
         /// <paramref name="block"/> is invalid, in itself or according to
         /// the <see cref="Policy"/>.</exception>
@@ -682,8 +685,13 @@ namespace Libplanet.Blockchain
         /// <param name="currentTime">The <see cref="DateTimeOffset"/> when mining started.</param>
         /// <param name="append">Whether to <see cref="Append(Block{T}, StateCompleterSet{T}?)"/>
         /// the mined block.  Turned on by default.</param>
-        /// <param name="txBatchSize">The number to limit the count of transactions that will
-        /// be contained in the block.  <see cref="int.MaxValue"/> by default.</param>
+        /// <param name="maxTransactions">The maximum number of transactions that a block can
+        /// accept.  This value must be greater than 0, and less than or equal to
+        /// <see cref="Policy"/>.<see cref="IBlockPolicy{T}.MaxTransactionsPerBlock"/>.
+        /// Zero and negative values are treated as 1. If it is omitted or more than
+        /// <see cref="Policy"/>.<see cref="IBlockPolicy{T}.MaxTransactionsPerBlock"/>, it will be
+        /// treated as <see cref="Policy"/>.<see cref="IBlockPolicy{T}.MaxTransactionsPerBlock"/>.
+        /// </param>
         /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
         /// operation should be canceled.
@@ -691,53 +699,104 @@ namespace Libplanet.Blockchain
         /// <returns>An awaitable task with a <see cref="Block{T}"/> that is mined.</returns>
         /// <exception cref="OperationCanceledException">Thrown when
         /// <see cref="BlockChain{T}.Tip"/> is changed while mining.</exception>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown when
-        /// <paramref name="txBatchSize"/> is negative.</exception>
         public async Task<Block<T>> MineBlock(
             Address miner,
             DateTimeOffset currentTime,
             bool append = true,
-            int txBatchSize = int.MaxValue,
+            int? maxTransactions = null,
             CancellationToken cancellationToken = default(CancellationToken)
         )
         {
-            if (txBatchSize < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(txBatchSize));
-            }
+            maxTransactions = Math.Max(
+                Math.Min(
+                    maxTransactions ?? Policy.MaxTransactionsPerBlock,
+                    Policy.MaxTransactionsPerBlock
+                ),
+                1
+            );
 
             long index = Store.CountIndex(Id);
             long difficulty = Policy.GetNextBlockDifficulty(this);
             HashDigest<SHA256>? prevHash = Store.IndexBlockHash(Id, index - 1);
 
-            IEnumerable<Transaction<T>> stagedTransactions = Store
+            Transaction<T>[] stagedTransactions = Store
                 .IterateStagedTransactionIds()
                 .Select(Store.GetTransaction<T>)
                 .GroupBy(tx => tx.Signer)
                 .SelectMany(grp => grp.Select((tx, idx) => (tx, idx)))
                 .OrderBy(t => t.Item2)
-                .Select(t => t.Item1);
+                .Select(t => t.Item1)
+                .ToArray();
 
             var transactionsToMine = new List<Transaction<T>>();
 
+            // Makes an empty block to estimate the length of bytes without transactions.
+            var estimatedBytes = new Block<T>(
+                index: index,
+                difficulty: difficulty,
+                totalDifficulty: Tip.TotalDifficulty,
+                nonce: default,
+                miner: miner,
+                previousHash: prevHash,
+                timestamp: currentTime,
+                transactions: new Transaction<T>[0]
+            ).BytesLength;
+            int maxBlockBytes = Math.Max(Policy.GetMaxBlockBytes(index), 1);
+            var skippedSigners = new HashSet<Address>();
+
             foreach (Transaction<T> tx in stagedTransactions)
             {
-                if (txBatchSize == 0)
-                {
-                    break;
-                }
-
                 if (!Policy.DoesTransactionFollowsPolicy(tx, this))
                 {
                     UnstageTransaction(tx);
                 }
-                else if (Store.GetTxNonce(Id, tx.Signer) <= tx.Nonce
-                         && tx.Nonce < GetNextTxNonce(tx.Signer))
+                else if (!skippedSigners.Contains(tx.Signer) &&
+                         Store.GetTxNonce(Id, tx.Signer) <= tx.Nonce &&
+                         tx.Nonce < GetNextTxNonce(tx.Signer))
                 {
+                    if (transactionsToMine.Count >= maxTransactions)
+                    {
+                        _logger.Information(
+                            "Not all staged transactions will be included in a block #{Index} to " +
+                            "be mined by {Miner}, because it reaches the maximum number of " +
+                            "acceptable transactions: {MaxTransactions}",
+                            index,
+                            miner,
+                            maxTransactions
+                        );
+                        break;
+                    }
+
+                    if (estimatedBytes + tx.BytesLength > maxBlockBytes)
+                    {
+                        // Once someone's tx is excluded from a block, their later txs are also all
+                        // excluded in the block, because later nonces become invalid.
+                        skippedSigners.Add(tx.Signer);
+                        _logger.Information(
+                            "The {Signer}'s transactions after the nonce #{Nonce} will be " +
+                            "excluded in a block #{Index} to be mined by {Miner}, because it " +
+                            "takes too long bytes.",
+                            tx.Signer,
+                            tx.Nonce,
+                            index,
+                            miner
+                        );
+                        continue;
+                    }
+
                     transactionsToMine.Add(tx);
-                    txBatchSize--;
+                    estimatedBytes += tx.BytesLength;
                 }
             }
+
+            _logger.Verbose(
+                "A block #{Index} to be mined by {Miner} will include {Transactions} " +
+                "transactions out of {StagedTransactions} staged transactions.",
+                index,
+                miner,
+                transactionsToMine.Count,
+                stagedTransactions.Length
+            );
 
             CancellationTokenSource cts = new CancellationTokenSource();
             CancellationTokenSource cancellationTokenSource =
@@ -804,8 +863,13 @@ namespace Libplanet.Blockchain
         /// <param name="miner">The <see cref="Address"/> of miner that mined the block.</param>
         /// <param name="append">Whether to <see cref="Append(Block{T}, StateCompleterSet{T}?)"/>
         /// the mined block.  Turned on by default.</param>
-        /// <param name="txBatchSize">The number to limit the count of transactions that will
-        /// be contained in the block.  <see cref="int.MaxValue"/> by default.</param>
+        /// <param name="maxTransactions">The maximum number of transactions that a block can
+        /// accept.  This value must be greater than 0, and less than or equal to
+        /// <see cref="Policy"/>.<see cref="IBlockPolicy{T}.MaxTransactionsPerBlock"/>.
+        /// Zero and negative values are treated as 1. If it is omitted or more than
+        /// <see cref="Policy"/>.<see cref="IBlockPolicy{T}.MaxTransactionsPerBlock"/>, it will be
+        /// treated as <see cref="Policy"/>.<see cref="IBlockPolicy{T}.MaxTransactionsPerBlock"/>.
+        /// </param>
         /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
         /// operation should be canceled.
@@ -813,15 +877,13 @@ namespace Libplanet.Blockchain
         /// <returns>An awaitable task with a <see cref="Block{T}"/> that is mined.</returns>
         /// <exception cref="OperationCanceledException">Thrown when
         /// <see cref="BlockChain{T}.Tip"/> is changed while mining.</exception>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown when
-        /// <paramref name="txBatchSize"/> is negative.</exception>
         public Task<Block<T>> MineBlock(
             Address miner,
             bool append = true,
-            int txBatchSize = int.MaxValue,
+            int? maxTransactions = null,
             CancellationToken cancellationToken = default
         ) =>
-            MineBlock(miner, DateTimeOffset.UtcNow, append, txBatchSize, cancellationToken);
+            MineBlock(miner, DateTimeOffset.UtcNow, append, maxTransactions, cancellationToken);
 
         /// <summary>
         /// Creates a new <see cref="Transaction{T}"/> and stage the transaction.
@@ -886,6 +948,15 @@ namespace Libplanet.Blockchain
             stateCompleters ??= StateCompleterSet<T>.Recalculate;
 
             _logger.Debug("Trying to append block {blockIndex}: {block}", block?.Index, block);
+
+            if (block.BytesLength > Policy.GetMaxBlockBytes(block.Index))
+            {
+                throw new InvalidBlockBytesLengthException(
+                    block.BytesLength,
+                    Policy.GetMaxBlockBytes(block.Index),
+                    "The block to append is too long in bytes."
+                );
+            }
 
             IReadOnlyList<ActionEvaluation> evaluations = null;
             _rwlock.EnterUpgradeableReadLock();

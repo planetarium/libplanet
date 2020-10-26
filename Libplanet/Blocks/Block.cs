@@ -21,6 +21,8 @@ namespace Libplanet.Blocks
     public class Block<T>
         where T : IAction, new()
     {
+        private int _bytesLength;
+
         /// <summary>
         /// Creates a <see cref="Block{T}"/> instance by manually filling all field values.
         /// For a more automated way, see also <see cref="Mine"/> method.
@@ -220,6 +222,20 @@ namespace Libplanet.Blocks
         [IgnoreDuringEquals]
         public IEnumerable<Transaction<T>> Transactions { get; }
 
+        /// <summary>
+        /// The bytes length in its serialized format.
+        /// </summary>
+        [IgnoreDuringEquals]
+        public int BytesLength
+        {
+            get
+            {
+                // Note that Serialize() by itself caches _byteLength, so that this ByteLength
+                // property never invokes Serialize() more than once.
+                return _bytesLength > 0 ? _bytesLength : Serialize().Length;
+            }
+        }
+
         public static bool operator ==(Block<T> left, Block<T> right) =>
             Operator.Weave(left, right);
 
@@ -317,6 +333,7 @@ namespace Libplanet.Blocks
         /// representation of a <see cref="Block{T}"/>.</param>
         /// <returns>A decoded <see cref="Block{T}"/> object.</returns>
         /// <seealso cref="Serialize()"/>
+        [Pure]
         public static Block<T> Deserialize(byte[] bytes)
         {
             IValue value = new Codec().Decode(bytes);
@@ -327,13 +344,17 @@ namespace Libplanet.Blocks
                     $"{value.GetType()}");
             }
 
-            return new Block<T>(dict);
+            var block = new Block<T>(dict);
+            block._bytesLength = bytes.Length;
+            return block;
         }
 
         public byte[] Serialize()
         {
             var codec = new Codec();
-            return codec.Encode(ToBencodex());
+            byte[] serialized = codec.Encode(ToBencodex());
+            _bytesLength = serialized.Length;
+            return serialized;
         }
 
         public Bencodex.Types.Dictionary ToBencodex() => ToRawBlock().ToBencodex();

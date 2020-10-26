@@ -69,11 +69,11 @@ To be released.
     overloaded methods.  Although this breaks ABI-level backward compatibility
     (i.e., you need to rebuild your assemblies), still is backward-compatible at
     API-level as the option is turned on by default.  [[#946]]
- -  Added `int txBatchSize = int.MaxValue` option to both
-    `BlockChain<T>.MineBlock()` overloaded methods.
+ -  Added `int? maxTransactions` option to both `BlockChain<T>.MineBlock()`
+    overloaded methods.
     Although this breaks ABI-level backward compatibility (i.e., you need to
     rebuild your assemblies), still is backward-compatible at API-level as
-    the option is turned on by default.  [[#1037], [#1039]]
+    the option is turned on by default.  [[#1037], [#1039], [#1050]]
  -  Added `StateCompleterSet<T>? stateCompleters` option to two
     `BlockChain<T>.Append()` overloaded methods.  Although this breaks ABI-level
     backward compatibility (i.e., you need to rebuild your assemblies), still
@@ -119,13 +119,18 @@ To be released.
     `BlockHeader` constructor.  [[#986]]
  -  Added `HashDigest<SHA256>`-typed `stateRootHash` parameter to
     `Block<T>()` constructor.  [[#986]]
- -  Methods in `BlockPolicy<T>` class became `virtual`.  [[#1010]]
- -  `BlockPolicy<T>.DoesTransactionFollowPolicy()` method and
-    `IBlockPolicy.DoesTransactionFollowPolicy()` method became to take
+ -  Added `IBlockPolicy<T>.MaxTransactionsPerBlock` property.
+    [[#1037], [#1050]]
+ -  Added `IBlockPolicy<T>.GetMaxBlockBytes()` method.  [[#201], [#1050]]
+ -  `IBlockPolicy<T>.DoesTransactionFollowPolicy()` method became to take
     additional `BlockChain<T>` parameter as its context.  [[#1012]]
- -  `doesTransactionFollowPolicy` parameter became
-    `Func<Transaction<T>, BlockChain<T>, bool>` on `BlockPolicy<T>()`
-    constructor.  [[#1012]]
+ -  Methods in `BlockPolicy<T>` class became `virtual`.  [[#1010]]
+ -  Added `int maxTransactionsPerBlock` option to both `BlockPolicy<T>()`
+    overloaded constructors.  [[#1037], [#1050]]
+ -  Added `int maxBlockBytes` and `int maxGenesisBytes` options to both
+    `BlockPolicy<T>()` overloaded constructors.  [[#201], [#1050]]
+ -  `BlockPolicy<T>()` constructor's `doesTransactionFollowPolicy` parameter
+    became `Func<Transaction<T>, BlockChain<T>, bool>` on .  [[#1012]]
  -  Added `cacheSize` optional parameter to `BlockSet<T>()` constructor.
     [[#1013]]
  -  Removed `Address(SerializationInfo, StreamingContext)` constructor.
@@ -174,10 +179,12 @@ To be released.
  -  Added `TurnClient.BindProxies()` method. [[#756], [#868]]
  -  Added `ActionEvaluation.Exception` property.  [[#860], [[#875]]]
  -  Added `InvalidTxGenesisHashException` class.  [[#796], [#878]]
+ -  Added `InvalidBlockBytesLengthException` class.  [[#201], [#1050]]
  -  Added `CurrencyPermissionException` class.  [[#861], [#900]]
  -  Added `InsufficientBalanceException` class.  [[#861], [#900], [#954]]
  -  Added `BlockChain<T>.GetBalance()` method.  [[#861], [#900]]
  -  Added `Block<T>.TotalDifficulty` property.  [[#666], [#917]]
+ -  Added `Block<T>.BytesLength` property.  [[#201], [#1050]]
  -  Added `SwarmOptions` class.  [[#926]]
  -  Added `PeerChainState` struct.  [[#936]]
  -  Added `Swarm<T>.GetPeerChainStateAsync()` method.  [[#936]]
@@ -186,6 +193,7 @@ To be released.
  -  Added `BlockHeader.EvaluationDigest` property.  [[#931], [#935]]
  -  Added `Block<T>.PreEvaluationHash` property.  [[#931], [#935]]
  -  Added `BlockHeader.PreEvaluationHash` property.  [[#931], [#935]]
+ -  Added `Transaction<T>.BytesLength` property.  [[#201], [#1050]]
  -  Added `HashDigest(ImmutableArray<byte>)` constructor.  [[#931], [#935]]
  -  Incomplete block states became able to be handled in more flexible way.
     [[#929], [#934], [#946], [#954]]
@@ -251,6 +259,13 @@ To be released.
  -  Added `Transaction<T>.GenesisHash` property.  [[#796], [#878]]
  -  Added `IAccountStateDelta.UpdatedAddresses` property contains
     asset updates besides state updates.  [[#861], [#900]]
+ -  `BlockChain<T>.Append()` method became to throw
+    `InvalidBlockBytesLengthException` if the given block's serialized bytes
+    is longer than the limitation configured by
+    `IBlockPolicy.GetMaxBlockBytes()`.  [[#201], [#1050]]
+ -  `BlockChain<T>.MineBlock()` method became to cut off transactions to include
+    to fit into the limitation configured by `IBlockPolicy.GetMaxBlockBytes()`.
+    [[#201], [#1050]]
  -  `Swarm<T>` became to ignore received transaction with different
     genesis hash.  [[#796], [#878]]
  -  `Swarm<T>` became to ignore invalid `BlockHeader`s immediately.  [[#898]]
@@ -326,6 +341,7 @@ To be released.
      -  Linux/macOS: *<var>$XDG_CONFIG_HOME</var>/planetarium/cli.json*
      -  Windows: *<var>%AppData%</var>\planetarium\cli.json*
 
+[#201]: https://github.com/planetarium/libplanet/issues/201
 [#404]: https://github.com/planetarium/libplanet/issues/404
 [#459]: https://github.com/planetarium/libplanet/issues/459
 [#666]: https://github.com/planetarium/libplanet/issues/666
@@ -407,6 +423,7 @@ To be released.
 [#1037]: https://github.com/planetarium/libplanet/pull/1037
 [#1039]: https://github.com/planetarium/libplanet/pull/1039
 [#1043]: https://github.com/planetarium/libplanet/pull/1043
+[#1050]: https://github.com/planetarium/libplanet/pull/1050
 [sleep mode]: https://en.wikipedia.org/wiki/Sleep_mode
 
 
