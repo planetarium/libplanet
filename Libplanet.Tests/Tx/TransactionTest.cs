@@ -94,6 +94,7 @@ namespace Libplanet.Tests.Tx
                 (stateStore, "RecordRehearsal"),
                 DumbAction.RehearsalRecords.Value
             );
+            Assert.Equal(338, tx.BytesLength);
         }
 
         [Fact]
@@ -324,6 +325,7 @@ namespace Libplanet.Tests.Tx
             };
 
             AssertBytesEqual(expected, _fx.Tx.Serialize(true));
+            Assert.Equal(expected.Length, _fx.Tx.BytesLength);
         }
 
         [Fact]
@@ -363,6 +365,7 @@ namespace Libplanet.Tests.Tx
             };
 
             AssertBytesEqual(expected, _fx.TxWithActions.Serialize(true));
+            Assert.Equal(expected.Length, _fx.TxWithActions.BytesLength);
         }
 
         [Fact]
@@ -426,6 +429,7 @@ namespace Libplanet.Tests.Tx
                 ),
                 tx.Id
             );
+            Assert.Equal(tx.BytesLength, bytes.Length);
         }
 
         [Fact]
@@ -533,6 +537,7 @@ namespace Libplanet.Tests.Tx
                 }),
                 tx.Actions[1].InnerAction.PlainValue
             );
+            Assert.Equal(bytes.Length, tx.BytesLength);
         }
 
         [SuppressMessage(

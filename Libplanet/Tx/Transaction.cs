@@ -32,6 +32,7 @@ namespace Libplanet.Tx
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
 
         private byte[] _signature;
+        private int _bytesLength;
 
         /// <summary>
         /// Creates a new <see cref="Transaction{T}"/>.
@@ -278,6 +279,19 @@ namespace Libplanet.Tx
         public HashDigest<SHA256>? GenesisHash { get; }
 
         /// <summary>
+        /// The bytes length in its serialized format.
+        /// </summary>
+        public int BytesLength
+        {
+            get
+            {
+                // Note that Serialize() by itself caches _byteLength, so that this ByteLength
+                // property never invokes Serialize() more than once.
+                return _bytesLength > 0 ? _bytesLength : Serialize(true).Length;
+            }
+        }
+
+        /// <summary>
         /// Decodes a <see cref="Transaction{T}"/>'s
         /// <a href="https://bencodex.org/">Bencodex</a> representation.
         /// </summary>
@@ -295,7 +309,9 @@ namespace Libplanet.Tx
                     $"{value.GetType()}");
             }
 
-            return new Transaction<T>(dict);
+            var tx = new Transaction<T>(dict);
+            tx._bytesLength = bytes.Length;
+            return tx;
         }
 
         /// <summary>
@@ -483,7 +499,13 @@ namespace Libplanet.Tx
         public byte[] Serialize(bool sign)
         {
             var codec = new Codec();
-            return codec.Encode(ToBencodex(sign));
+            byte[] serialized = codec.Encode(ToBencodex(sign));
+            if (sign)
+            {
+                _bytesLength = serialized.Length;
+            }
+
+            return serialized;
         }
 
         /// <summary>
