@@ -352,6 +352,8 @@ namespace Libplanet.Blocks
         /// get previous account balance.
         /// A <c>null</c> value, which is default, means a constant function that returns zero.
         /// </param>
+        /// <param name="previousBlockStatesTrie">The trie to contain states at previous block.
+        /// </param>
         /// <returns>Enumerates pair of a transaction, and
         /// <see cref="ActionEvaluation"/> for each action.
         /// The order of pairs are the same to
@@ -366,7 +368,8 @@ namespace Libplanet.Blocks
         public
         IEnumerable<Tuple<Transaction<T>, ActionEvaluation>> EvaluateActionsPerTx(
             AccountStateGetter accountStateGetter = null,
-            AccountBalanceGetter accountBalanceGetter = null
+            AccountBalanceGetter accountBalanceGetter = null,
+            ITrie previousBlockStatesTrie = null
         )
         {
             accountStateGetter ??= a => null;
@@ -385,7 +388,8 @@ namespace Libplanet.Blocks
                         PreEvaluationHash,
                         Index,
                         delta,
-                        Miner.Value);
+                        Miner.Value,
+                        previousBlockStatesTrie: previousBlockStatesTrie);
                 foreach (var evaluation in evaluations)
                 {
                     yield return Tuple.Create(tx, evaluation);
@@ -419,6 +423,8 @@ namespace Libplanet.Blocks
         /// A <c>null</c> value, which is default, means a constant function that returns zero.
         /// This affects the execution of <see cref="Transaction{T}.Actions"/>.
         /// </param>
+        /// <param name="previousBlockStatesTrie">The trie to contain states at previous block.
+        /// </param>
         /// <returns>An <see cref="ActionEvaluation"/> for each
         /// <see cref="IAction"/>.</returns>
         /// <exception cref="InvalidBlockTimestampException">Thrown when
@@ -450,7 +456,8 @@ namespace Libplanet.Blocks
         public IEnumerable<ActionEvaluation> Evaluate(
             DateTimeOffset currentTime,
             AccountStateGetter accountStateGetter = null,
-            AccountBalanceGetter accountBalanceGetter = null
+            AccountBalanceGetter accountBalanceGetter = null,
+            ITrie previousBlockStatesTrie = null
         )
         {
             accountStateGetter ??= a => null;
@@ -458,7 +465,8 @@ namespace Libplanet.Blocks
 
             Validate(currentTime);
             Tuple<Transaction<T>, ActionEvaluation>[] txEvaluations =
-                EvaluateActionsPerTx(accountStateGetter, accountBalanceGetter).ToArray();
+                EvaluateActionsPerTx(
+                    accountStateGetter, accountBalanceGetter, previousBlockStatesTrie).ToArray();
 
             var txUpdatedAddressesPairs = txEvaluations
                     .GroupBy(tuple => tuple.Item1)
