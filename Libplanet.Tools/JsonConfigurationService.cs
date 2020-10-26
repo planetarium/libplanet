@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text.Json;
 using Libplanet.Tools.Configuration;
 using Zio;
@@ -20,7 +21,8 @@ namespace Libplanet.Tools
         {
             if (!_fileSystem.FileExists(UPath.Root / _configurationFileName))
             {
-                return default;
+                return new ToolConfiguration(
+                    new MptConfiguration(new Dictionary<string, string>()));
             }
 
             return JsonSerializer.Deserialize<ToolConfiguration>(
