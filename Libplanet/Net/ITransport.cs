@@ -6,7 +6,7 @@ using Libplanet.Net.Messages;
 
 namespace Libplanet.Net
 {
-    internal interface ITransport : IDisposable
+    public interface ITransport : IDisposable
     {
         Peer AsPeer { get; }
 

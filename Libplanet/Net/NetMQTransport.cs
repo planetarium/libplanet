@@ -18,7 +18,7 @@ using Serilog;
 
 namespace Libplanet.Net
 {
-    internal class NetMQTransport : ITransport
+    public class NetMQTransport : ITransport
     {
         private const int MessageHistoryCapacity = 30;
 

@@ -10,11 +10,11 @@ using NetMQ;
 
 namespace Libplanet.Net.Messages
 {
-    internal abstract class Message
+    public abstract class Message
     {
         public const int CommonFrames = 4;
 
-        internal enum MessageType : byte
+        public enum MessageType : byte
         {
             /// <summary>
             /// Check message to determine peer is alive.
