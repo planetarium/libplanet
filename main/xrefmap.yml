@@ -761,15 +761,15 @@ references:
   commentId: T:Libplanet.Action.UnexpectedlyTerminatedActionException
   fullName: Libplanet.Action.UnexpectedlyTerminatedActionException
   nameWithType: UnexpectedlyTerminatedActionException
-- uid: Libplanet.Action.UnexpectedlyTerminatedActionException.#ctor(System.Nullable{Libplanet.HashDigest{SHA256}},System.Nullable{System.Int64},System.Nullable{Libplanet.Tx.TxId},Libplanet.Action.IAction,System.String,Exception)
-  name: UnexpectedlyTerminatedActionException(Nullable<HashDigest<SHA256>>, Nullable<Int64>, Nullable<TxId>, IAction, String, Exception)
-  href: api/Libplanet.Action.UnexpectedlyTerminatedActionException.html#Libplanet_Action_UnexpectedlyTerminatedActionException__ctor_System_Nullable_Libplanet_HashDigest_SHA256___System_Nullable_System_Int64__System_Nullable_Libplanet_Tx_TxId__Libplanet_Action_IAction_System_String_Exception_
-  commentId: M:Libplanet.Action.UnexpectedlyTerminatedActionException.#ctor(System.Nullable{Libplanet.HashDigest{SHA256}},System.Nullable{System.Int64},System.Nullable{Libplanet.Tx.TxId},Libplanet.Action.IAction,System.String,Exception)
-  name.vb: UnexpectedlyTerminatedActionException(Nullable(Of HashDigest(Of SHA256)), Nullable(Of Int64), Nullable(Of TxId), IAction, String, Exception)
-  fullName: Libplanet.Action.UnexpectedlyTerminatedActionException.UnexpectedlyTerminatedActionException(System.Nullable<Libplanet.HashDigest<SHA256>>, System.Nullable<System.Int64>, System.Nullable<Libplanet.Tx.TxId>, Libplanet.Action.IAction, System.String, Exception)
-  fullName.vb: Libplanet.Action.UnexpectedlyTerminatedActionException.UnexpectedlyTerminatedActionException(System.Nullable(Of Libplanet.HashDigest(Of SHA256)), System.Nullable(Of System.Int64), System.Nullable(Of Libplanet.Tx.TxId), Libplanet.Action.IAction, System.String, Exception)
-  nameWithType: UnexpectedlyTerminatedActionException.UnexpectedlyTerminatedActionException(Nullable<HashDigest<SHA256>>, Nullable<Int64>, Nullable<TxId>, IAction, String, Exception)
-  nameWithType.vb: UnexpectedlyTerminatedActionException.UnexpectedlyTerminatedActionException(Nullable(Of HashDigest(Of SHA256)), Nullable(Of Int64), Nullable(Of TxId), IAction, String, Exception)
+- uid: Libplanet.Action.UnexpectedlyTerminatedActionException.#ctor(System.Nullable{Libplanet.HashDigest{SHA256}},System.Nullable{System.Int64},System.Nullable{Libplanet.Tx.TxId},System.Nullable{Libplanet.HashDigest{SHA256}},Libplanet.Action.IAction,System.String,Exception)
+  name: UnexpectedlyTerminatedActionException(Nullable<HashDigest<SHA256>>, Nullable<Int64>, Nullable<TxId>, Nullable<HashDigest<SHA256>>, IAction, String, Exception)
+  href: api/Libplanet.Action.UnexpectedlyTerminatedActionException.html#Libplanet_Action_UnexpectedlyTerminatedActionException__ctor_System_Nullable_Libplanet_HashDigest_SHA256___System_Nullable_System_Int64__System_Nullable_Libplanet_Tx_TxId__System_Nullable_Libplanet_HashDigest_SHA256___Libplanet_Action_IAction_System_String_Exception_
+  commentId: M:Libplanet.Action.UnexpectedlyTerminatedActionException.#ctor(System.Nullable{Libplanet.HashDigest{SHA256}},System.Nullable{System.Int64},System.Nullable{Libplanet.Tx.TxId},System.Nullable{Libplanet.HashDigest{SHA256}},Libplanet.Action.IAction,System.String,Exception)
+  name.vb: UnexpectedlyTerminatedActionException(Nullable(Of HashDigest(Of SHA256)), Nullable(Of Int64), Nullable(Of TxId), Nullable(Of HashDigest(Of SHA256)), IAction, String, Exception)
+  fullName: Libplanet.Action.UnexpectedlyTerminatedActionException.UnexpectedlyTerminatedActionException(System.Nullable<Libplanet.HashDigest<SHA256>>, System.Nullable<System.Int64>, System.Nullable<Libplanet.Tx.TxId>, System.Nullable<Libplanet.HashDigest<SHA256>>, Libplanet.Action.IAction, System.String, Exception)
+  fullName.vb: Libplanet.Action.UnexpectedlyTerminatedActionException.UnexpectedlyTerminatedActionException(System.Nullable(Of Libplanet.HashDigest(Of SHA256)), System.Nullable(Of System.Int64), System.Nullable(Of Libplanet.Tx.TxId), System.Nullable(Of Libplanet.HashDigest(Of SHA256)), Libplanet.Action.IAction, System.String, Exception)
+  nameWithType: UnexpectedlyTerminatedActionException.UnexpectedlyTerminatedActionException(Nullable<HashDigest<SHA256>>, Nullable<Int64>, Nullable<TxId>, Nullable<HashDigest<SHA256>>, IAction, String, Exception)
+  nameWithType.vb: UnexpectedlyTerminatedActionException.UnexpectedlyTerminatedActionException(Nullable(Of HashDigest(Of SHA256)), Nullable(Of Int64), Nullable(Of TxId), Nullable(Of HashDigest(Of SHA256)), IAction, String, Exception)
 - uid: Libplanet.Action.UnexpectedlyTerminatedActionException.#ctor*
   name: UnexpectedlyTerminatedActionException
   href: api/Libplanet.Action.UnexpectedlyTerminatedActionException.html#Libplanet_Action_UnexpectedlyTerminatedActionException__ctor_
@@ -829,6 +829,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.UnexpectedlyTerminatedActionException.GetObjectData
   nameWithType: UnexpectedlyTerminatedActionException.GetObjectData
+- uid: Libplanet.Action.UnexpectedlyTerminatedActionException.PreviousStateRootHash
+  name: PreviousStateRootHash
+  href: api/Libplanet.Action.UnexpectedlyTerminatedActionException.html#Libplanet_Action_UnexpectedlyTerminatedActionException_PreviousStateRootHash
+  commentId: P:Libplanet.Action.UnexpectedlyTerminatedActionException.PreviousStateRootHash
+  fullName: Libplanet.Action.UnexpectedlyTerminatedActionException.PreviousStateRootHash
+  nameWithType: UnexpectedlyTerminatedActionException.PreviousStateRootHash
+- uid: Libplanet.Action.UnexpectedlyTerminatedActionException.PreviousStateRootHash*
+  name: PreviousStateRootHash
+  href: api/Libplanet.Action.UnexpectedlyTerminatedActionException.html#Libplanet_Action_UnexpectedlyTerminatedActionException_PreviousStateRootHash_
+  commentId: Overload:Libplanet.Action.UnexpectedlyTerminatedActionException.PreviousStateRootHash
+  isSpec: "True"
+  fullName: Libplanet.Action.UnexpectedlyTerminatedActionException.PreviousStateRootHash
+  nameWithType: UnexpectedlyTerminatedActionException.PreviousStateRootHash
 - uid: Libplanet.Action.UnexpectedlyTerminatedActionException.TxId
   name: TxId
   href: api/Libplanet.Action.UnexpectedlyTerminatedActionException.html#Libplanet_Action_UnexpectedlyTerminatedActionException_TxId
@@ -3638,14 +3651,14 @@ references:
   fullName.vb: Libplanet.Blocks.Block(Of T).Difficulty
   nameWithType: Block<T>.Difficulty
   nameWithType.vb: Block(Of T).Difficulty
-- uid: Libplanet.Blocks.Block`1.Evaluate(DateTimeOffset,Libplanet.Action.AccountStateGetter,Libplanet.Action.AccountBalanceGetter)
-  name: Evaluate(DateTimeOffset, AccountStateGetter, AccountBalanceGetter)
-  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Evaluate_DateTimeOffset_Libplanet_Action_AccountStateGetter_Libplanet_Action_AccountBalanceGetter_
-  commentId: M:Libplanet.Blocks.Block`1.Evaluate(DateTimeOffset,Libplanet.Action.AccountStateGetter,Libplanet.Action.AccountBalanceGetter)
-  fullName: Libplanet.Blocks.Block<T>.Evaluate(DateTimeOffset, Libplanet.Action.AccountStateGetter, Libplanet.Action.AccountBalanceGetter)
-  fullName.vb: Libplanet.Blocks.Block(Of T).Evaluate(DateTimeOffset, Libplanet.Action.AccountStateGetter, Libplanet.Action.AccountBalanceGetter)
-  nameWithType: Block<T>.Evaluate(DateTimeOffset, AccountStateGetter, AccountBalanceGetter)
-  nameWithType.vb: Block(Of T).Evaluate(DateTimeOffset, AccountStateGetter, AccountBalanceGetter)
+- uid: Libplanet.Blocks.Block`1.Evaluate(DateTimeOffset,Libplanet.Action.AccountStateGetter,Libplanet.Action.AccountBalanceGetter,Libplanet.Store.Trie.ITrie)
+  name: Evaluate(DateTimeOffset, AccountStateGetter, AccountBalanceGetter, ITrie)
+  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Evaluate_DateTimeOffset_Libplanet_Action_AccountStateGetter_Libplanet_Action_AccountBalanceGetter_Libplanet_Store_Trie_ITrie_
+  commentId: M:Libplanet.Blocks.Block`1.Evaluate(DateTimeOffset,Libplanet.Action.AccountStateGetter,Libplanet.Action.AccountBalanceGetter,Libplanet.Store.Trie.ITrie)
+  fullName: Libplanet.Blocks.Block<T>.Evaluate(DateTimeOffset, Libplanet.Action.AccountStateGetter, Libplanet.Action.AccountBalanceGetter, Libplanet.Store.Trie.ITrie)
+  fullName.vb: Libplanet.Blocks.Block(Of T).Evaluate(DateTimeOffset, Libplanet.Action.AccountStateGetter, Libplanet.Action.AccountBalanceGetter, Libplanet.Store.Trie.ITrie)
+  nameWithType: Block<T>.Evaluate(DateTimeOffset, AccountStateGetter, AccountBalanceGetter, ITrie)
+  nameWithType.vb: Block(Of T).Evaluate(DateTimeOffset, AccountStateGetter, AccountBalanceGetter, ITrie)
 - uid: Libplanet.Blocks.Block`1.Evaluate*
   name: Evaluate
   href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Evaluate_
@@ -3655,14 +3668,14 @@ references:
   fullName.vb: Libplanet.Blocks.Block(Of T).Evaluate
   nameWithType: Block<T>.Evaluate
   nameWithType.vb: Block(Of T).Evaluate
-- uid: Libplanet.Blocks.Block`1.EvaluateActionsPerTx(Libplanet.Action.AccountStateGetter,Libplanet.Action.AccountBalanceGetter)
-  name: EvaluateActionsPerTx(AccountStateGetter, AccountBalanceGetter)
-  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_EvaluateActionsPerTx_Libplanet_Action_AccountStateGetter_Libplanet_Action_AccountBalanceGetter_
-  commentId: M:Libplanet.Blocks.Block`1.EvaluateActionsPerTx(Libplanet.Action.AccountStateGetter,Libplanet.Action.AccountBalanceGetter)
-  fullName: Libplanet.Blocks.Block<T>.EvaluateActionsPerTx(Libplanet.Action.AccountStateGetter, Libplanet.Action.AccountBalanceGetter)
-  fullName.vb: Libplanet.Blocks.Block(Of T).EvaluateActionsPerTx(Libplanet.Action.AccountStateGetter, Libplanet.Action.AccountBalanceGetter)
-  nameWithType: Block<T>.EvaluateActionsPerTx(AccountStateGetter, AccountBalanceGetter)
-  nameWithType.vb: Block(Of T).EvaluateActionsPerTx(AccountStateGetter, AccountBalanceGetter)
+- uid: Libplanet.Blocks.Block`1.EvaluateActionsPerTx(Libplanet.Action.AccountStateGetter,Libplanet.Action.AccountBalanceGetter,Libplanet.Store.Trie.ITrie)
+  name: EvaluateActionsPerTx(AccountStateGetter, AccountBalanceGetter, ITrie)
+  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_EvaluateActionsPerTx_Libplanet_Action_AccountStateGetter_Libplanet_Action_AccountBalanceGetter_Libplanet_Store_Trie_ITrie_
+  commentId: M:Libplanet.Blocks.Block`1.EvaluateActionsPerTx(Libplanet.Action.AccountStateGetter,Libplanet.Action.AccountBalanceGetter,Libplanet.Store.Trie.ITrie)
+  fullName: Libplanet.Blocks.Block<T>.EvaluateActionsPerTx(Libplanet.Action.AccountStateGetter, Libplanet.Action.AccountBalanceGetter, Libplanet.Store.Trie.ITrie)
+  fullName.vb: Libplanet.Blocks.Block(Of T).EvaluateActionsPerTx(Libplanet.Action.AccountStateGetter, Libplanet.Action.AccountBalanceGetter, Libplanet.Store.Trie.ITrie)
+  nameWithType: Block<T>.EvaluateActionsPerTx(AccountStateGetter, AccountBalanceGetter, ITrie)
+  nameWithType.vb: Block(Of T).EvaluateActionsPerTx(AccountStateGetter, AccountBalanceGetter, ITrie)
 - uid: Libplanet.Blocks.Block`1.EvaluateActionsPerTx*
   name: EvaluateActionsPerTx
   href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_EvaluateActionsPerTx_
@@ -11910,15 +11923,15 @@ references:
   fullName.vb: Libplanet.Tx.Transaction(Of T).EvaluateActions
   nameWithType: Transaction<T>.EvaluateActions
   nameWithType.vb: Transaction(Of T).EvaluateActions
-- uid: Libplanet.Tx.Transaction`1.EvaluateActionsGradually(Libplanet.HashDigest{SHA256},System.Int64,Libplanet.Action.IAccountStateDelta,Libplanet.Address,System.Boolean)
-  name: EvaluateActionsGradually(HashDigest<SHA256>, Int64, IAccountStateDelta, Address, Boolean)
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_EvaluateActionsGradually_Libplanet_HashDigest_SHA256__System_Int64_Libplanet_Action_IAccountStateDelta_Libplanet_Address_System_Boolean_
-  commentId: M:Libplanet.Tx.Transaction`1.EvaluateActionsGradually(Libplanet.HashDigest{SHA256},System.Int64,Libplanet.Action.IAccountStateDelta,Libplanet.Address,System.Boolean)
-  name.vb: EvaluateActionsGradually(HashDigest(Of SHA256), Int64, IAccountStateDelta, Address, Boolean)
-  fullName: Libplanet.Tx.Transaction<T>.EvaluateActionsGradually(Libplanet.HashDigest<SHA256>, System.Int64, Libplanet.Action.IAccountStateDelta, Libplanet.Address, System.Boolean)
-  fullName.vb: Libplanet.Tx.Transaction(Of T).EvaluateActionsGradually(Libplanet.HashDigest(Of SHA256), System.Int64, Libplanet.Action.IAccountStateDelta, Libplanet.Address, System.Boolean)
-  nameWithType: Transaction<T>.EvaluateActionsGradually(HashDigest<SHA256>, Int64, IAccountStateDelta, Address, Boolean)
-  nameWithType.vb: Transaction(Of T).EvaluateActionsGradually(HashDigest(Of SHA256), Int64, IAccountStateDelta, Address, Boolean)
+- uid: Libplanet.Tx.Transaction`1.EvaluateActionsGradually(Libplanet.HashDigest{SHA256},System.Int64,Libplanet.Action.IAccountStateDelta,Libplanet.Address,System.Boolean,Libplanet.Store.Trie.ITrie)
+  name: EvaluateActionsGradually(HashDigest<SHA256>, Int64, IAccountStateDelta, Address, Boolean, ITrie)
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_EvaluateActionsGradually_Libplanet_HashDigest_SHA256__System_Int64_Libplanet_Action_IAccountStateDelta_Libplanet_Address_System_Boolean_Libplanet_Store_Trie_ITrie_
+  commentId: M:Libplanet.Tx.Transaction`1.EvaluateActionsGradually(Libplanet.HashDigest{SHA256},System.Int64,Libplanet.Action.IAccountStateDelta,Libplanet.Address,System.Boolean,Libplanet.Store.Trie.ITrie)
+  name.vb: EvaluateActionsGradually(HashDigest(Of SHA256), Int64, IAccountStateDelta, Address, Boolean, ITrie)
+  fullName: Libplanet.Tx.Transaction<T>.EvaluateActionsGradually(Libplanet.HashDigest<SHA256>, System.Int64, Libplanet.Action.IAccountStateDelta, Libplanet.Address, System.Boolean, Libplanet.Store.Trie.ITrie)
+  fullName.vb: Libplanet.Tx.Transaction(Of T).EvaluateActionsGradually(Libplanet.HashDigest(Of SHA256), System.Int64, Libplanet.Action.IAccountStateDelta, Libplanet.Address, System.Boolean, Libplanet.Store.Trie.ITrie)
+  nameWithType: Transaction<T>.EvaluateActionsGradually(HashDigest<SHA256>, Int64, IAccountStateDelta, Address, Boolean, ITrie)
+  nameWithType.vb: Transaction(Of T).EvaluateActionsGradually(HashDigest(Of SHA256), Int64, IAccountStateDelta, Address, Boolean, ITrie)
 - uid: Libplanet.Tx.Transaction`1.EvaluateActionsGradually*
   name: EvaluateActionsGradually
   href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_EvaluateActionsGradually_
