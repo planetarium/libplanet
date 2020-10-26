@@ -977,7 +977,7 @@ namespace Libplanet.Net
                 .CreateLinkedTokenSource(cancellationToken, _cancellationToken).Token;
 
             var netMQTransport = (NetMQTransport)Transport;
-            await netMQTransport.CheckAllPeersAsync(cancellationToken, timeout);
+            await netMQTransport.CheckAllPeersAsync(timeout, cancellationToken);
         }
 
         internal async Task AddPeersAsync(

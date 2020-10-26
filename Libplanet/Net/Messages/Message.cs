@@ -10,10 +10,19 @@ using NetMQ;
 
 namespace Libplanet.Net.Messages
 {
+    /// <summary>
+    /// Abstract message class used in <see cref="ITransport"/>.
+    /// </summary>
     public abstract class Message
     {
+        /// <summary>
+        /// Number of frames that all messages commonly contains. Its value is 4.
+        /// </summary>
         public const int CommonFrames = 4;
 
+        /// <summary>
+        /// <c>Enum</c> represents the type of the <see cref="Message"/>.
+        /// </summary>
         public enum MessageType : byte
         {
             /// <summary>
@@ -140,16 +149,58 @@ namespace Libplanet.Net.Messages
             Sign = 3,
         }
 
+        /// <summary>
+        /// Identity bytearray of the message.
+        /// If a message B is the reply of the message A,
+        /// B's identity must be set to A's identity.
+        /// </summary>
         public byte[] Identity { get; set; }
 
+        /// <summary>
+        /// <see cref="AppProtocolVersion"/>-typed version of the
+        /// <see cref="Remote"/>'s transport layer.
+        /// </summary>
         public AppProtocolVersion Version { get; set; }
 
+        /// <summary>
+        /// Sender <see cref="Peer"/> of the message.
+        /// </summary>
         public Peer Remote { get; set; }
 
         protected abstract MessageType Type { get; }
 
         protected abstract IEnumerable<NetMQFrame> DataFrames { get; }
 
+        /// <summary>
+        /// Cast given <see cref="ToNetMQMessage"/>-typed <paramref name="raw"/> to
+        /// <see cref="Message"/> and check its validity.
+        /// <seealso cref="ToNetMQMessage"/>
+        /// </summary>
+        /// <param name="raw">A <see cref="NetMQMessage"/> to parse.</param>
+        /// <param name="reply">A flag to express whether the target is a reply of other message.
+        /// </param>
+        /// <param name="localVersion">The <see cref="AppProtocolVersion"/>-typed version of the
+        /// local transport layer. <seealso cref="ITransport"/></param>
+        /// <param name="trustedAppProtocolVersionSigners"><see cref="PublicKey"/>s of parties
+        /// to trust <see cref="AppProtocolVersion"/>s they signed.  To trust any party, pass
+        /// <c>null</c>.</param>
+        /// <param name="differentAppProtocolVersionEncountered">A delegate called back when a peer
+        /// with one different from <paramref name="localVersion"/>, and their version is
+        /// signed by a trusted party (i.e., <paramref name="trustedAppProtocolVersionSigners"/>).
+        /// If this callback returns <c>false</c> an encountered peer is ignored.  If this callback
+        /// is omitted all peers with different <see cref="AppProtocolVersion"/>s are ignored.
+        /// </param>
+        /// <returns>A <see cref="Message"/> made from <paramref name="raw"/>.</returns>
+        /// <exception cref="ArgumentException">Thrown when empty <paramref name="raw"/> is given.
+        /// </exception>
+        /// <exception cref="DifferentAppProtocolVersionException">Thrown when
+        /// <paramref name="localVersion"/> does not match with given <paramref name="raw"/>'s
+        /// <see cref="Version"/>, and their version is signed by a trusted party
+        /// (i.e., <paramref name="trustedAppProtocolVersionSigners"/>), and
+        /// <paramref name="differentAppProtocolVersionEncountered"/> is <c>null</c> or its
+        /// return value is <c>false</c>.</exception>
+        /// <exception cref="InvalidMessageException">Thrown when given <paramref name="raw"/>'s
+        /// signer is invalid.</exception>
         public static Message Parse(
             NetMQMessage raw,
             bool reply,
@@ -254,6 +305,19 @@ namespace Libplanet.Net.Messages
             return message;
         }
 
+        /// <summary>
+        /// Cast the message to <see cref="NetMQMessage"/> with given <paramref name="key"/>,
+        /// <paramref name="peer"/> and <paramref name="version"/>.
+        /// </summary>
+        /// <param name="key"><see cref="PrivateKey"/> to sign message.</param>
+        /// <param name="peer"><see cref="Peer"/>-typed representation of the
+        /// sender's transport layer.
+        /// <seealso cref="ITransport.AsPeer"/></param>
+        /// <param name="version"><see cref="AppProtocolVersion"/>-typed version of the
+        /// transport layer.</param>
+        /// <returns>The result of casting.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="peer"/> is
+        /// null.</exception>
         public NetMQMessage ToNetMQMessage(PrivateKey key, Peer peer, AppProtocolVersion version)
         {
             if (peer is null)

@@ -178,7 +178,16 @@ namespace Libplanet.Tests.Net.Protocols
                 Kademlia.MaxDepth,
                 cancellationToken);
         }
-#pragma warning restore S4457 // Cannot split the method since method is in interface
+
+        public Task SendMessageAsync(
+            BoundPeer peer,
+            Message message,
+            CancellationToken cancellationToken)
+            => SendMessageWithReplyAsync(
+                peer,
+                message,
+                TimeSpan.FromSeconds(3),
+                cancellationToken);
 
         public Task AddPeersAsync(
             IEnumerable<Peer> peers,
