@@ -63,7 +63,7 @@
 <h1 id="libplanet-changelog">Libplanet changelog</h1>
 
 <h2 id="version-0100">Version 0.10.0</h2>
-<p>To be released.</p>
+<p>Released on October 27, 2020.</p>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
 <ul>
 <li>Extracted rendering methods from <code>IAction</code> to <code>IRenderer&lt;T&gt;</code>,
@@ -119,10 +119,6 @@ constructor.  [<a href="https://github.com/planetarium/libplanet/issues/666">#66
 <li>Added <code>ICryptoBackend&lt;T&gt;.Sign(HashDigest&lt;T&gt;, PrivateKey)</code> method.
 [<a href="https://github.com/planetarium/libplanet/pull/932">#932</a>]</li>
 <li><code>DefaultCryptoBackend</code> became to <code>DefaultCryptoBackend&lt;T&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/932">#932</a>]</li>
-<li>Added <code>ImmutableArray&lt;byte&gt;</code>-typed <code>evaluationDigest</code> parameter to
-<code>BlockHeader</code> constructor. [<a href="https://github.com/planetarium/libplanet/issues/931">#931</a>, <a href="https://github.com/planetarium/libplanet/pull/935">#935</a>]</li>
-<li>Added <code>HashDigest&lt;SHA256&gt;</code>-typed <code>evaluationDigest</code> parameter to
-<code>Block&lt;T&gt;()</code> constructor. [<a href="https://github.com/planetarium/libplanet/issues/931">#931</a>, <a href="https://github.com/planetarium/libplanet/pull/935">#935</a>]</li>
 <li>Added <code>ImmutableArray&lt;byte&gt;</code>-typed <code>preEvaluationHash</code> parameter to
 <code>BlockHeader</code> constructor. [<a href="https://github.com/planetarium/libplanet/issues/931">#931</a>, <a href="https://github.com/planetarium/libplanet/pull/935">#935</a>]</li>
 <li>Added <code>HashDigest&lt;SHA256&gt;</code>-typed <code>preEvaluationHash</code> parameter to
@@ -257,8 +253,6 @@ method.  Use <code>SwarmOptions.BlockDownloadTimeout</code> instead.  [<a href="
 <li>Added <code>PeerChainState</code> struct.  [<a href="https://github.com/planetarium/libplanet/pull/936">#936</a>]</li>
 <li>Added <code>Swarm&lt;T&gt;.GetPeerChainStateAsync()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/936">#936</a>]</li>
 <li>Added <code>Swarm&lt;T&gt;.LastMessageTimestamp</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/964">#964</a>]</li>
-<li>Added <code>Block&lt;T&gt;.EvaluationDigest</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/931">#931</a>, <a href="https://github.com/planetarium/libplanet/pull/935">#935</a>]</li>
-<li>Added <code>BlockHeader.EvaluationDigest</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/931">#931</a>, <a href="https://github.com/planetarium/libplanet/pull/935">#935</a>]</li>
 <li>Added <code>Block&lt;T&gt;.PreEvaluationHash</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/931">#931</a>, <a href="https://github.com/planetarium/libplanet/pull/935">#935</a>]</li>
 <li>Added <code>BlockHeader.PreEvaluationHash</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/931">#931</a>, <a href="https://github.com/planetarium/libplanet/pull/935">#935</a>]</li>
 <li>Added <code>Transaction&lt;T&gt;.BytesLength</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/201">#201</a>, <a href="https://github.com/planetarium/libplanet/pull/1050">#1050</a>]</li>
