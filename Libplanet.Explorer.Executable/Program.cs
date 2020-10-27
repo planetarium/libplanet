@@ -49,6 +49,11 @@ namespace Libplanet.Explorer.Executable
             {
                 RichStore store = LoadStore(options);
 
+                var pendingTxs = store.IterateStagedTransactionIds()
+                    .ToImmutableHashSet();
+                store.UnstageTransactionIds(pendingTxs);
+                Log.Debug("Pending txs unstaged. [{PendingCount}]", pendingTxs.Count);
+
                 IBlockPolicy<AppAgnosticAction> policy = new DumbBlockPolicy(
                     new BlockPolicy<AppAgnosticAction>(
                     null,
