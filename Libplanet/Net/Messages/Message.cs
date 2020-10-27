@@ -172,7 +172,7 @@ namespace Libplanet.Net.Messages
         protected abstract IEnumerable<NetMQFrame> DataFrames { get; }
 
         /// <summary>
-        /// Cast given <see cref="ToNetMQMessage"/>-typed <paramref name="raw"/> to
+        /// Cast given <see cref="ToNetMQMessage"/> <paramref name="raw"/> to
         /// <see cref="Message"/> and check its validity.
         /// <seealso cref="ToNetMQMessage"/>
         /// </summary>

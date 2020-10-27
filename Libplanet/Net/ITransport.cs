@@ -39,7 +39,7 @@ namespace Libplanet.Net
         DateTimeOffset? LastMessageTimestamp { get; }
 
         /// <summary>
-        /// Setup transport layer.
+        /// Initiates transport layer.
         /// </summary>
         /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
@@ -96,7 +96,7 @@ namespace Libplanet.Net
             CancellationToken cancellationToken);
 
         /// <summary>
-        /// Sends a message <paramref name="message"/> to given <paramref name="peer"/>.
+        /// Sends the <paramref name="message"/> to given <paramref name="peer"/>.
         /// </summary>
         /// <param name="peer">A <see cref="Peer"/> to send message to.</param>
         /// <param name="message">A <see cref="Message"/> to send.</param>
@@ -107,7 +107,7 @@ namespace Libplanet.Net
         Task SendMessageAsync(BoundPeer peer, Message message, CancellationToken cancellationToken);
 
         /// <summary>
-        /// Sends a message <paramref name="message"/>
+        /// Sends the <paramref name="message"/>
         /// to given <paramref name="peer"/> and wait for its single reply.
         /// </summary>
         /// <param name="peer">A <see cref="Peer"/> to send message to.</param>
@@ -116,7 +116,7 @@ namespace Libplanet.Net
         /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
         /// operation should be canceled.</param>
-        /// <returns>Reply of the message <paramref name="message"/>
+        /// <returns>Reply of the <paramref name="message"/>
         /// sent from <paramref name="peer"/>.</returns>
         Task<Message> SendMessageWithReplyAsync(
             BoundPeer peer,
@@ -125,7 +125,7 @@ namespace Libplanet.Net
             CancellationToken cancellationToken);
 
         /// <summary>
-        /// Sends a message <paramref name="message"/>
+        /// Sends the <paramref name="message"/>
         /// to given <paramref name="peer"/> and wait for its multiple replies.
         /// </summary>
         /// <param name="peer">A <see cref="Peer"/> to send message to.</param>
@@ -135,7 +135,7 @@ namespace Libplanet.Net
         /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
         /// operation should be canceled.</param>
-        /// <returns>Reply of the message <paramref name="message"/>
+        /// <returns>Reply of the <paramref name="message"/>
         /// sent from <paramref name="peer"/>.</returns>
         Task<IEnumerable<Message>> SendMessageWithReplyAsync(
             BoundPeer peer,
@@ -145,7 +145,7 @@ namespace Libplanet.Net
             CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
-        /// Broadcast messages to peers selected from the routing table.
+        /// Broadcast the <paramref name="message"/> to peers selected from the routing table.
         /// </summary>
         /// <param name="except">An <see cref="Address"/> to exclude from broadcasting.
         /// If <c>null</c> is given, no peers will be excluded.</param>
@@ -153,7 +153,7 @@ namespace Libplanet.Net
         void BroadcastMessage(Address? except, Message message);
 
         /// <summary>
-        /// Method to reply message. Must set <see cref="Message.Identity"/> value made by
+        /// Method to reply message. Must set <see cref="Message.Identity"/> value made from
         /// its corresponding message.
         /// </summary>
         /// <param name="message">A <see cref="Message"/> to reply.</param>
