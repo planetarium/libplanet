@@ -9,7 +9,7 @@ namespace Libplanet.Tests.Store
     public class DefaultStoreFixture : StoreFixture, IDisposable
     {
         public DefaultStoreFixture(
-            bool memory = false, bool mpt = false, IAction blockAction = null)
+            bool memory = true, bool mpt = false, IAction blockAction = null)
             : base(blockAction)
         {
             if (memory)

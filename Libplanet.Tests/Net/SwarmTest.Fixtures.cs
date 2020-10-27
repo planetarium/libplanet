@@ -9,7 +9,6 @@ using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net;
-using Libplanet.Tests.Common;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Serilog;
@@ -20,20 +19,6 @@ namespace Libplanet.Tests.Net
     {
         private static Block<DumbAction>[] _fixtureBlocksForPreloadAsyncCancellationTest;
 
-        private readonly StoreFixture _fx1;
-        private readonly StoreFixture _fx2;
-        private readonly StoreFixture _fx3;
-        private readonly StoreFixture _fx4;
-
-        private readonly StoreFixture _mptFx1;
-        private readonly StoreFixture _mptFx2;
-        private readonly StoreFixture _mptFx3;
-
-        private readonly List<BlockChain<DumbAction>> _blockchains;
-        private readonly List<BlockChain<DumbAction>> _mptBlockchains;
-        private readonly List<RecordingRenderer<DumbAction>> _renderers;
-        private readonly List<Swarm<DumbAction>> _swarms;
-        private readonly List<Swarm<DumbAction>> _mptSwarms;
         private readonly List<Func<Task>> _finalizers;
 
         private static async Task<(Address, Block<DumbAction>[])>
@@ -79,6 +64,37 @@ namespace Libplanet.Tests.Net
             }
 
             return (blocks[1].Transactions.First().Actions.First().TargetAddress, blocks);
+        }
+
+        private Swarm<DumbAction> CreateSwarm(
+            PrivateKey privateKey = null,
+            AppProtocolVersion? appProtocolVersion = null,
+            int? tableSize = null,
+            int? bucketSize = null,
+            string host = null,
+            int? listenPort = null,
+            DateTimeOffset? createdAt = null,
+            IEnumerable<IceServer> iceServers = null,
+            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered = null,
+            IEnumerable<PublicKey> trustedAppProtocolVersionSigners = null,
+            SwarmOptions options = null)
+        {
+            var fx = new DefaultStoreFixture(memory: true);
+            var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
+            var blockchain = TestUtils.MakeBlockChain(policy, fx.Store);
+            return CreateSwarm(
+                blockchain,
+                privateKey,
+                appProtocolVersion,
+                tableSize,
+                bucketSize,
+                host,
+                listenPort,
+                createdAt,
+                iceServers,
+                differentAppProtocolVersionEncountered,
+                trustedAppProtocolVersionSigners,
+                options);
         }
 
         private Swarm<T> CreateSwarm<T>(
