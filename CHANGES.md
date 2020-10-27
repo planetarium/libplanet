@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.10.0
 --------------
 
-Released on October 26, 2020.
+Released on October 27, 2020.
 
 ### Backward-incompatible API changes
 
@@ -55,10 +55,6 @@ Released on October 26, 2020.
  -  Added `ICryptoBackend<T>.Sign(HashDigest<T>, PrivateKey)` method.
     [[#932]]
  -  `DefaultCryptoBackend` became to `DefaultCryptoBackend<T>`.  [[#932]]
- -  Added `ImmutableArray<byte>`-typed `evaluationDigest` parameter to
-    `BlockHeader` constructor. [[#931], [#935]]
- -  Added `HashDigest<SHA256>`-typed `evaluationDigest` parameter to
-    `Block<T>()` constructor. [[#931], [#935]]
  -  Added `ImmutableArray<byte>`-typed `preEvaluationHash` parameter to
     `BlockHeader` constructor. [[#931], [#935]]
  -  Added `HashDigest<SHA256>`-typed `preEvaluationHash` parameter to
@@ -189,8 +185,6 @@ Released on October 26, 2020.
  -  Added `PeerChainState` struct.  [[#936]]
  -  Added `Swarm<T>.GetPeerChainStateAsync()` method.  [[#936]]
  -  Added `Swarm<T>.LastMessageTimestamp` property.  [[#964]]
- -  Added `Block<T>.EvaluationDigest` property.  [[#931], [#935]]
- -  Added `BlockHeader.EvaluationDigest` property.  [[#931], [#935]]
  -  Added `Block<T>.PreEvaluationHash` property.  [[#931], [#935]]
  -  Added `BlockHeader.PreEvaluationHash` property.  [[#931], [#935]]
  -  Added `Transaction<T>.BytesLength` property.  [[#201], [#1050]]
