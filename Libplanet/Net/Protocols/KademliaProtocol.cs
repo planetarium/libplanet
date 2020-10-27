@@ -46,7 +46,7 @@ namespace Libplanet.Net.Protocols
             _requestTimeout =
                 requestTimeout ??
                 TimeSpan.FromMilliseconds(Kademlia.IdleRequestTimeout);
-            _transport.AddEventHandler(ProcessMessageHandler);
+            _transport.ProcessMessageHandler += ProcessMessageHandler;
         }
 
         public IEnumerable<BoundPeer> Peers => _routing.Peers;

@@ -14,6 +14,13 @@ namespace Libplanet.Net
     public interface ITransport : IDisposable
     {
         /// <summary>
+        /// The <see cref="EventHandler"/> invoked when a message that is not
+        /// a reply is received. To handle reply, please use <see cref=
+        /// "SendMessageWithReplyAsync(BoundPeer,Message,TimeSpan?,CancellationToken)"/>.
+        /// </summary>
+        event EventHandler<Message> ProcessMessageHandler;
+
+        /// <summary>
         /// <see cref="Peer"/> representation of <see cref="ITransport"/>.
         /// </summary>
         [Pure]
@@ -62,27 +69,6 @@ namespace Libplanet.Net
         Task StopAsync(
             TimeSpan waitFor,
             CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        /// Adds a <see cref="EventHandler"/> invoked when a message that is not
-        /// a reply is received. To handle reply, please use <see cref=
-        /// "SendMessageWithReplyAsync(BoundPeer,Message,TimeSpan?,CancellationToken)"/>.
-        /// </summary>
-        /// <param name="eventHandler">A handler of event when a message
-        /// that is not a reply is received.</param>
-        void AddEventHandler(EventHandler<Message> eventHandler);
-
-        /// <summary>
-        /// Removes a <see cref="EventHandler"/> registered via <see cref="AddEventHandler"/>.
-        /// </summary>
-        /// <param name="eventHandler">A handler of event when a message
-        /// that is not a reply is received.</param>
-        void RemoveEventHandler(EventHandler<Message> eventHandler);
-
-        /// <summary>
-        /// Removes all <see cref="EventHandler"/> registered via <see cref="AddEventHandler"/>.
-        /// </summary>
-        void RemoveAllEventHandlers();
 
         /// <summary>
         /// Conduct peer discovery for given <paramref name="bootstrapPeers"/>.

@@ -189,11 +189,8 @@ namespace Libplanet.Net
             _dealers = new ConcurrentDictionary<Address, DealerSocket>();
         }
 
-        /// <summary>
-        /// The <see cref="EventHandler" /> triggered when a <see cref="Message"/> is
-        /// received and needs processing.
-        /// </summary>
-        private event EventHandler<Message> ProcessMessageHandler;
+        /// <inheritdoc />
+        public event EventHandler<Message> ProcessMessageHandler;
 
         /// <inheritdoc cref="ITransport.AsPeer"/>
         public Peer AsPeer => EndPoint is null
@@ -347,24 +344,6 @@ namespace Libplanet.Net
 
                 Running = false;
             }
-        }
-
-        /// <inheritdoc />
-        public void AddEventHandler(EventHandler<Message> eventHandler)
-        {
-            ProcessMessageHandler += eventHandler;
-        }
-
-        /// <inheritdoc />
-        public void RemoveEventHandler(EventHandler<Message> eventHandler)
-        {
-            ProcessMessageHandler -= eventHandler;
-        }
-
-        /// <inheritdoc />
-        public void RemoveAllEventHandlers()
-        {
-            ProcessMessageHandler = null;
         }
 
         /// <inheritdoc />

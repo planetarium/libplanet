@@ -121,21 +121,6 @@ namespace Libplanet.Tests.Net.Protocols
             await Task.Delay(waitFor, cancellationToken);
         }
 
-        public void AddEventHandler(EventHandler<Message> eventHandler)
-        {
-            ProcessMessageHandler += eventHandler;
-        }
-
-        public void RemoveEventHandler(EventHandler<Message> eventHandler)
-        {
-            ProcessMessageHandler -= eventHandler;
-        }
-
-        public void RemoveAllEventHandlers()
-        {
-            ProcessMessageHandler = null;
-        }
-
         public async Task BootstrapAsync(
             IEnumerable<Peer> bootstrapPeers,
             TimeSpan? pingSeedTimeout = null,
