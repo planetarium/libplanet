@@ -2041,13 +2041,22 @@ namespace Libplanet.Net
                     }
                 }
 
-                TxReceived.Set();
-                _logger.Debug(
-                    "Txs staged successfully: {@txIds}",
-                    txs.Select(tx => tx.Id.ToString()));
+                if (txs.Any())
+                {
+                    TxReceived.Set();
+                    _logger.Debug(
+                        "Txs staged successfully: {@txIds}",
+                        txs.Select(tx => tx.Id.ToString()));
 
-                // FIXME: Should exclude peers of source of the transaction ids.
-                BroadcastTxs(null, txs);
+                    // FIXME: Should exclude peers of source of the transaction ids.
+                    BroadcastTxs(null, txs);
+                }
+                else
+                {
+                    _logger.Information(
+                        "Failed to get transactions to stage: {@txIds}",
+                        demandTxIds.Select(txId => txId.ToString()));
+                }
 
                 foreach (var kv in demandTxIds)
                 {
