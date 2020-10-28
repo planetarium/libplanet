@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Numerics;
@@ -710,18 +711,40 @@ namespace Libplanet.Blockchain
             long difficulty = Policy.GetNextBlockDifficulty(this);
             HashDigest<SHA256>? prevHash = Store.IndexBlockHash(Id, index - 1);
 
-            IEnumerable<Transaction<T>> stagedTransactions = Store
-                .IterateStagedTransactionIds()
-                .Select(Store.GetTransaction<T>)
-                .GroupBy(tx => tx.Signer)
-                .SelectMany(grp => grp.Select((tx, idx) => (tx, idx)))
-                .OrderBy(t => t.Item2)
-                .Select(t => t.Item1);
+            int sessionId = new System.Random().Next();
+            int procId = Process.GetCurrentProcess().Id;
+            _logger.Debug(
+                "Start to mine a block #{Index} [difficulty: {Difficulty}; prev: {prevHash}; " +
+                "session: {SessionId}; proc: {ProcessId}]... ",
+                index,
+                difficulty,
+                prevHash,
+                sessionId,
+                procId
+            );
+
+            ImmutableArray<Transaction<T>> stagedTransactions = ListStagedTransactions();
+            _logger.Debug(
+                "There are {Transactions} staged transactions.",
+                stagedTransactions.Length
+            );
 
             var transactionsToMine = new List<Transaction<T>>();
+            int i = 0;
+
+            // FIXME: The tx collection timeout should be confugurable.
+            DateTimeOffset timeout = DateTimeOffset.UtcNow + TimeSpan.FromSeconds(4);
 
             foreach (Transaction<T> tx in stagedTransactions)
             {
+                _logger.Verbose(
+                    "Preparing mining a block #{Index}; validating a tx {Index}/{Total} " +
+                    "{Transaction}...",
+                    index,
+                    ++i,
+                    stagedTransactions.Length,
+                    tx.Id
+                );
                 if (txBatchSize == 0)
                 {
                     break;
@@ -729,15 +752,51 @@ namespace Libplanet.Blockchain
 
                 if (!Policy.DoesTransactionFollowsPolicy(tx, this))
                 {
+                    _logger.Debug(
+                        "Unstage the tx {Index}/{Total} {Transaction} as it doesn't follow policy.",
+                        i,
+                        stagedTransactions.Length,
+                        tx.Id
+                    );
                     UnstageTransaction(tx);
+                    continue;
                 }
-                else if (Store.GetTxNonce(Id, tx.Signer) <= tx.Nonce
-                         && tx.Nonce < GetNextTxNonce(tx.Signer))
+
+                long storeNonce = Store.GetTxNonce(Id, tx.Signer);
+                long nextNonce = GetNextTxNonce(tx.Signer);
+                if (storeNonce <= tx.Nonce && tx.Nonce < nextNonce)
                 {
                     transactionsToMine.Add(tx);
                     txBatchSize--;
                 }
+                else
+                {
+                    _logger.Debug(
+                        "Tx {Index}/{Total} {Transaction} has an invalid nonce: {Nonce} " +
+                        "({Signer}).",
+                        i,
+                        stagedTransactions.Length,
+                        tx.Id,
+                        tx.Nonce,
+                        tx.Signer
+                    );
+                }
+
+                if (timeout < DateTimeOffset.UtcNow)
+                {
+                    _logger.Debug(
+                        "Reached the time limit to collect staged transactions; other staged " +
+                        "transactions will be mined later."
+                    );
+                    break;
+                }
             }
+
+            _logger.Debug(
+                "{Transactions} transactions will be mined with the block #{Index}.",
+                transactionsToMine.Count,
+                index
+            );
 
             CancellationTokenSource cts = new CancellationTokenSource();
             CancellationTokenSource cancellationTokenSource =
@@ -788,9 +847,29 @@ namespace Libplanet.Blockchain
                 block = new Block<T>(block, trieStateStore.GetRootHash(block.Hash));
             }
 
+            _logger.Debug(
+                "Mined a block #{Index} [difficulty: {Difficulty}; prev: {prevHash}; " +
+                "session: {SessionId}; proc: {ProcessId}].",
+                index,
+                difficulty,
+                prevHash,
+                sessionId,
+                procId
+            );
+
             if (append)
             {
                 Append(block, currentTime);
+
+                _logger.Debug(
+                    "Appended a block #{Index} [difficulty: {Difficulty}; prev: {prevHash}; " +
+                    "session: {SessionId}; proc: {ProcessId}].",
+                    index,
+                    difficulty,
+                    prevHash,
+                    sessionId,
+                    procId
+                );
             }
 
             return block;
@@ -1555,6 +1634,27 @@ namespace Libplanet.Blockchain
             }
         }
 #pragma warning restore MEN003
+
+        internal ImmutableArray<Transaction<T>> ListStagedTransactions()
+        {
+            Transaction<T>[] txs = Store
+                .IterateStagedTransactionIds()
+                .Select(Store.GetTransaction<T>)
+                .ToArray();
+
+            Dictionary<Address, LinkedList<Transaction<T>>> seats = txs
+                .GroupBy(tx => tx.Signer)
+                .Select(g => (g.Key, new LinkedList<Transaction<T>>(g.OrderBy(tx => tx.Nonce))))
+                .ToDictionary(pair => pair.Item1, pair => pair.Item2);
+
+            return txs.Select(tx =>
+            {
+                LinkedList<Transaction<T>> seat = seats[tx.Signer];
+                Transaction<T> first = seat.First.Value;
+                seat.RemoveFirst();
+                return first;
+            }).ToImmutableArray();
+        }
 
         internal IImmutableSet<TxId> GetStagedTransactionIds()
         {
