@@ -19,6 +19,7 @@ using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tx;
+using LruCacheNet;
 using Serilog;
 using static Libplanet.Blockchain.KeyConverters;
 
@@ -68,6 +69,8 @@ namespace Libplanet.Blockchain
         /// Cached genesis block.
         /// </summary>
         private Block<T> _genesis;
+
+        private LruCache<Guid, LruCache<Address, long>> _nextTxNonceCache;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BlockChain{T}"/> class.
@@ -155,6 +158,10 @@ namespace Libplanet.Blockchain
             ActionRenderers = Renderers.OfType<IActionRenderer<T>>().ToImmutableArray();
             _rwlock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
             _txLock = new object();
+            _nextTxNonceCache = new LruCache<Guid, LruCache<Address, long>>
+            {
+                [Id] = new LruCache<Address, long>(),
+            };
 
             if (Store.GetCanonicalChainId() is null)
             {
@@ -605,6 +612,7 @@ namespace Libplanet.Blockchain
                 {
                     _transactions[transaction.Id] = transaction;
                     Store.StageTransactionIds(ImmutableHashSet.Create(transaction.Id));
+                    _nextTxNonceCache[Id].Remove(transaction.Signer);
                 }
             }
             finally
@@ -628,6 +636,7 @@ namespace Libplanet.Blockchain
             try
             {
                 Store.UnstageTransactionIds(ImmutableHashSet.Create(transaction.Id));
+                _nextTxNonceCache[Id].Remove(transaction.Signer);
             }
             finally
             {
@@ -648,6 +657,11 @@ namespace Libplanet.Blockchain
 
             try
             {
+                if (_nextTxNonceCache[Id].TryGetValue(address, out long nextTxNonce))
+                {
+                    return nextTxNonce;
+                }
+
                 long nonce = Store.GetTxNonce(Id, address);
                 var prevNonce = nonce - 1;
                 var stagedTxNonces = Store.IterateStagedTransactionIds()
@@ -665,6 +679,8 @@ namespace Libplanet.Blockchain
 
                     nonce++;
                 }
+
+                _nextTxNonceCache[Id].AddOrUpdate(address, nonce);
 
                 return nonce;
             }
@@ -1023,6 +1039,7 @@ namespace Libplanet.Blockchain
                     foreach (KeyValuePair<Address, long> pair in nonceDeltas)
                     {
                         Store.IncreaseTxNonce(Id, pair.Key, pair.Value);
+                        _nextTxNonceCache[Id].Remove(pair.Key);
                     }
 
                     Store.AppendIndex(Id, block.Hash);
@@ -1579,8 +1596,10 @@ namespace Libplanet.Blockchain
                     Store.StageTransactionIds(restageTxIds);
 
                     Guid obsoleteId = Id;
+                    _nextTxNonceCache.Remove(Id);
                     Id = other.Id;
                     Store.SetCanonicalChainId(Id);
+                    _nextTxNonceCache[Id] = new LruCache<Address, long>();
                     _blocks = new BlockSet<T>(Store);
                     TipChanged?.Invoke(this, (oldTip, newTip));
 
