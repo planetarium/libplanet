@@ -11,6 +11,7 @@ using Libplanet.Blocks;
 using Libplanet.Store;
 using Libplanet.Tx;
 using LiteDB;
+using LruCacheNet;
 using FileMode = LiteDB.FileMode;
 
 namespace Libplanet.Explorer.Store
@@ -24,6 +25,7 @@ namespace Libplanet.Explorer.Store
 
         private readonly MemoryStream _memoryStream;
         private readonly LiteDatabase _db;
+        private readonly LruCache<HashDigest<SHA256>, BlockDigest> _blockCache;
 
         // FIXME we should separate it.
         private readonly BaseBlockStatesStore _store;
@@ -78,6 +80,8 @@ namespace Libplanet.Explorer.Store
                         address => address.ToByteArray(),
                         b => new Address(b.AsBinary));
                 }
+
+                _blockCache = new LruCache<HashDigest<SHA256>, BlockDigest>(capacity: 512);
             }
         }
 
@@ -89,18 +93,37 @@ namespace Libplanet.Explorer.Store
 
         public BlockDigest? GetBlockDigest(HashDigest<SHA256> blockHash)
         {
-            return _store.GetBlockDigest(blockHash);
+            if (_blockCache.TryGetValue(blockHash, out BlockDigest cachedDigest))
+            {
+                return cachedDigest;
+            }
+
+            var blockDigest = _store.GetBlockDigest(blockHash);
+
+            if (!(blockDigest is null))
+            {
+                _blockCache.AddOrUpdate(blockHash, blockDigest.Value);
+            }
+
+            return blockDigest;
         }
 
         /// <inheritdoc cref="IStore"/>
         public bool DeleteBlock(HashDigest<SHA256> blockHash)
         {
+            _blockCache.Remove(blockHash);
+
             return _store.DeleteBlock(blockHash);
         }
 
         /// <inheritdoc cref="IStore"/>
         public bool ContainsBlock(HashDigest<SHA256> blockHash)
         {
+            if (_blockCache.ContainsKey(blockHash))
+            {
+                return true;
+            }
+
             return _store.ContainsBlock(blockHash);
         }
 
@@ -210,12 +233,19 @@ namespace Libplanet.Explorer.Store
         public void PutBlock<T>(Block<T> block)
             where T : IAction, new()
         {
+            if (_blockCache.ContainsKey(block.Hash))
+            {
+                return;
+            }
+
             _store.PutBlock(block);
             foreach (var tx in block.Transactions)
             {
                 PutTransaction(tx);
                 StoreTxReferences(tx.Id, block.Hash, block.Index);
             }
+
+            _blockCache.AddOrUpdate(block.Hash, block.ToBlockDigest());
         }
 
         /// <inheritdoc cref="IStore"/>
