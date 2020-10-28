@@ -719,15 +719,7 @@ namespace Libplanet.Blockchain
             long difficulty = Policy.GetNextBlockDifficulty(this);
             HashDigest<SHA256>? prevHash = Store.IndexBlockHash(Id, index - 1);
 
-            Transaction<T>[] stagedTransactions = Store
-                .IterateStagedTransactionIds()
-                .Select(Store.GetTransaction<T>)
-                .GroupBy(tx => tx.Signer)
-                .SelectMany(grp => grp.Select((tx, idx) => (tx, idx)))
-                .OrderBy(t => t.Item2)
-                .Select(t => t.Item1)
-                .ToArray();
-
+            ImmutableArray<Transaction<T>> stagedTransactions = ListStagedTransactions();
             var transactionsToMine = new List<Transaction<T>>();
 
             // Makes an empty block to estimate the length of bytes without transactions.
@@ -1626,6 +1618,27 @@ namespace Libplanet.Blockchain
             }
         }
 #pragma warning restore MEN003
+
+        internal ImmutableArray<Transaction<T>> ListStagedTransactions()
+        {
+            Transaction<T>[] txs = Store
+                .IterateStagedTransactionIds()
+                .Select(Store.GetTransaction<T>)
+                .ToArray();
+
+            Dictionary<Address, LinkedList<Transaction<T>>> seats = txs
+                .GroupBy(tx => tx.Signer)
+                .Select(g => (g.Key, new LinkedList<Transaction<T>>(g.OrderBy(tx => tx.Nonce))))
+                .ToDictionary(pair => pair.Item1, pair => pair.Item2);
+
+            return txs.Select(tx =>
+            {
+                LinkedList<Transaction<T>> seat = seats[tx.Signer];
+                Transaction<T> first = seat.First.Value;
+                seat.RemoveFirst();
+                return first;
+            }).ToImmutableArray();
+        }
 
         internal IImmutableSet<TxId> GetStagedTransactionIds()
         {
