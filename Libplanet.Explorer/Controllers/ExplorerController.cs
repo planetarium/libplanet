@@ -1,4 +1,6 @@
-using GraphQL;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using GraphQL.SystemTextJson;
 using GraphQL.Types;
 using Libplanet.Action;
 using Libplanet.Explorer.Interfaces;
@@ -27,13 +29,17 @@ namespace Libplanet.Explorer.Controllers
         }
 
         [HttpPost("/graphql/")]
-        public IActionResult GetGraphQLResult(
+        public async Task<IActionResult> GetGraphQLResult(
             [FromBody] GraphQLBody body
         )
         {
-            var json = _schema.Execute(_ =>
+            var json = await _schema.ExecuteAsync(_ =>
             {
-                _.UserContext = _context;
+                _.UserContext = new Dictionary<string, object>
+                {
+                    [nameof(_context.Store)] = _context.Store,
+                    [nameof(_context.BlockChain)] = _context.BlockChain,
+                };
                 _.Query = body.Query;
                 _.ThrowOnUnhandledException = true;
                 if (body.Variables != null)

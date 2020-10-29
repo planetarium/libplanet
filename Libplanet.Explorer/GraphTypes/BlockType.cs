@@ -14,6 +14,7 @@ namespace Libplanet.Explorer.GraphTypes
             Field(x => x.Hash, type: typeof(NonNullGraphType<IdGraphType>));
             Field(x => x.Index);
             Field(x => x.Difficulty);
+            Field(x => x.TotalDifficulty);
             Field<NonNullGraphType<ByteStringType>>(
                 "Nonce",
                 resolve: ctx => ctx.Source.Nonce.ToByteArray()
