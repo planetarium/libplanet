@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Bencodex;
 using Bencodex.Types;
+using GraphQL;
 using GraphQL.Types;
 using Libplanet.Action;
 
@@ -12,63 +14,40 @@ namespace Libplanet.Explorer.GraphTypes
     {
         public ActionType()
         {
-            Field<NonNullGraphType<ListGraphType<NonNullGraphType<ActionArgumentType>>>>(
-                "Arguments",
+            Field<NonNullGraphType<StringGraphType>>(
+                name: "Raw",
+                arguments: new QueryArguments(
+                    new QueryArgument<StringGraphType>
+                    {
+                        DefaultValue = "hex",
+                        Name = "encode",
+                    }),
                 resolve: ctx =>
                 {
-                    object ConvertKey(IKey key)
-                    {
-                        switch (key)
-                        {
-                            case Text t:
-                                return t.Value;
-                            case Binary binary:
-                                return binary.Value;
-                            default:
-                                throw new ArgumentException(
-                                    $"Unexpected type {key.GetType()},"
-                                    + " which doesn't implement IKey");
-                        }
-                    }
+                    var codec = new Codec();
+                    var encoded = codec.Encode(ctx.Source.PlainValue);
 
-                    object ConvertValue(IValue value)
+                    var encode = ctx.GetArgument<string>("encode");
+                    switch (encode)
                     {
-                        switch (value)
-                        {
-                            case Text text:
-                                return text.Value;
-                            case Integer integer:
-                                return integer.Value;
-                            case Bencodex.Types.Boolean boolean:
-                                return boolean.Value;
-                            case Null n:
-                                return null;
-                            case Binary binary:
-                                return binary.Value;
-                            case List list:
-                                return list.Select(ConvertValue).ToList();
-                            case Dictionary dictionary:
-                                return dictionary.ToDictionary(
-                                    kv => ConvertKey(kv.Key), kv => ConvertValue(kv.Value));
-                            default:
-                                throw new ArgumentException(
-                                    $"Unexpected type {value.GetType()},"
-                                    + " which doesn't implement IValue");
-                        }
-                    }
+                        case "hex":
+                            return ByteUtil.Hex(encoded);
 
-                    List<PlainValueKeyValuePair> result = new List<PlainValueKeyValuePair>();
-                    foreach (KeyValuePair<IKey, IValue> item in (Dictionary)ctx.Source.PlainValue)
-                    {
-                        result.Add(new PlainValueKeyValuePair
-                        {
-                            Key = ConvertKey(item.Key),
-                            Value = ConvertValue(item.Value),
-                        });
-                    }
+                        case "base64":
+                            return Convert.ToBase64String(encoded);
 
-                    return result;
+                        default:
+                            var msg =
+                                "Unsupported 'encode' method came. " +
+                                "It supports only 'hex' or 'base64'.";
+                            throw new ExecutionError(msg);
+                    }
                 }
+            );
+
+            Field<NonNullGraphType<StringGraphType>>(
+                name: "Inspection",
+                resolve: ctx => ctx.Source.PlainValue.Inspection
             );
 
             Name = "Action";
