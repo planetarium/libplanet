@@ -163,7 +163,7 @@ namespace Libplanet.Explorer.Queries
 
         internal static Block<T> GetBlockByHash(HashDigest<SHA256> hash)
         {
-            return _chain[hash];
+            return _store.GetBlock<T>(hash);
         }
 
         internal static Block<T> GetBlockByIndex(long index)

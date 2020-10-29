@@ -1,8 +1,10 @@
 using System.Security.Cryptography;
+using GraphQL;
 using GraphQL.Types;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Explorer.Interfaces;
+using Libplanet.Store;
 
 namespace Libplanet.Explorer.GraphTypes
 {
@@ -23,7 +25,9 @@ namespace Libplanet.Explorer.GraphTypes
             Field<BlockType<T>>(
                 "PreviousBlock",
                 resolve: ctx => ctx.Source.PreviousHash is HashDigest<SHA256> h
-                    ? ((IBlockChainContext<T>)ctx.UserContext).BlockChain[h]
+                    ? ctx.UserContext[nameof(IBlockChainContext<T>.Store)]
+                        .As<IStore>()
+                        .GetBlock<T>(h)
                     : null
             );
             Field(x => x.Timestamp);
