@@ -33,12 +33,12 @@ namespace Libplanet.Explorer.GraphTypes
                 name: "BlockRef",
                 resolve: ctx =>
                 {
-                    var blockChainContext = (IBlockChainContext<T>)ctx.UserContext;
-                    if (blockChainContext.Store is RichStore richStore)
+                    // FIXME: use store with DI.
+                    if (ctx.UserContext[nameof(IBlockChainContext<T>.Store)] is RichStore richStore)
                     {
                         return richStore
                             .IterateTxReferences(ctx.Source.Id)
-                            .Select(r => blockChainContext.Store.GetBlock<T>(r.Item2));
+                            .Select(r => richStore.GetBlock<T>(r.Item2));
                     }
                     else
                     {
