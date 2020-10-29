@@ -38,7 +38,7 @@ namespace Libplanet.Explorer.GraphTypes
                     {
                         return richStore
                             .IterateTxReferences(ctx.Source.Id)
-                            .Select(r => blockChainContext.BlockChain[r.Item2]);
+                            .Select(r => blockChainContext.Store.GetBlock<T>(r.Item2));
                     }
                     else
                     {
