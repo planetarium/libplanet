@@ -1686,11 +1686,6 @@ namespace Libplanet.Net
             int retry = 3;
             long previousTipIndex = blockChain.Tip?.Index ?? -1;
             BlockChain<T> synced = null;
-            StateCompleterSet<T> trustedStateCompleterSet = await GetTrustedStateCompleterAsync(
-                trustedStateValidators,
-                dialTimeout,
-                cancellationToken: cancellationToken
-            );
 
             try
             {
@@ -1749,7 +1744,7 @@ namespace Libplanet.Net
                     blockChain.Swap(
                         synced,
                         render: true,
-                        stateCompleters: trustedStateCompleterSet
+                        stateCompleters: null
                     );
                 }
             }
