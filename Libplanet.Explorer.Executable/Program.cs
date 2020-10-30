@@ -49,6 +49,11 @@ namespace Libplanet.Explorer.Executable
             {
                 RichStore store = LoadStore(options);
 
+                var pendingTxs = store.IterateStagedTransactionIds()
+                    .ToImmutableHashSet();
+                store.UnstageTransactionIds(pendingTxs);
+                Log.Debug("Pending txs unstaged. [{PendingCount}]", pendingTxs.Count);
+
                 IBlockPolicy<AppAgnosticAction> policy = new DumbBlockPolicy(
                     new BlockPolicy<AppAgnosticAction>(
                     null,
@@ -93,14 +98,21 @@ namespace Libplanet.Explorer.Executable
                     var privateKey = new PrivateKey();
 
                     // FIXME: The appProtocolVersion should be fixed properly.
+                    var swarmOptions = new SwarmOptions
+                    {
+                        MaxTimeout = TimeSpan.FromSeconds(10),
+                    };
+
                     swarm = new Swarm<AppAgnosticAction>(
                         blockChain,
                         privateKey,
                         options.AppProtocolVersionToken is string t
                             ? AppProtocolVersion.FromToken(t)
                             : default(AppProtocolVersion),
+                        workers: 50,
                         differentAppProtocolVersionEncountered: (p, pv, lv) => true,
-                        iceServers: new[] { options.IceServer }
+                        iceServers: new[] { options.IceServer },
+                        options: swarmOptions
                     );
                 }
 
