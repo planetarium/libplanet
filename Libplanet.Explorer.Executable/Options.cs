@@ -43,6 +43,13 @@ namespace Libplanet.Explorer.Executable
         public int DifficultyBoundDivisor { get; set; }
 
         [Option(
+            'W',
+            "workers",
+            Default = 50,
+            HelpText = "The number of swarm workers.")]
+        public int Workers { get; set; }
+
+        [Option(
             'V',
             "app-protocol-version",
             HelpText = "An app protocol version token.")]

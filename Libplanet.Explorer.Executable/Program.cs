@@ -109,8 +109,8 @@ namespace Libplanet.Explorer.Executable
                         options.AppProtocolVersionToken is string t
                             ? AppProtocolVersion.FromToken(t)
                             : default(AppProtocolVersion),
-                        workers: 50,
                         differentAppProtocolVersionEncountered: (p, pv, lv) => true,
+                        workers: options.Workers,
                         iceServers: new[] { options.IceServer },
                         options: swarmOptions
                     );
