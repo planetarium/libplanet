@@ -1702,56 +1702,30 @@ namespace Libplanet.Net
             CancellationToken cancellationToken
         )
         {
-            int retry = 3;
             long previousTipIndex = blockChain.Tip?.Index ?? -1;
             BlockChain<T> synced = null;
 
             try
             {
-                while (true)
-                {
-                    cancellationToken.ThrowIfCancellationRequested();
+                long currentTipIndex = blockChain.Tip?.Index ?? -1;
+                long receivedBlockCount = currentTipIndex - previousTipIndex;
 
-                    try
-                    {
-                        long currentTipIndex = blockChain.Tip?.Index ?? -1;
-                        long receivedBlockCount = currentTipIndex - previousTipIndex;
-
-                        FillBlocksAsyncStarted.Set();
-                        synced = await FillBlocksAsync(
-                            peer,
-                            blockChain,
-                            stop,
-                            progress,
-                            totalBlockCount,
-                            receivedBlockCount,
-                            true,
-                            cancellationToken
-                        );
-                        break;
-                    }
-                    catch (TimeoutException e)
-                    {
-                        if (retry > 0)
-                        {
-                            _logger.Error(
-                                e,
-                                $"{nameof(FillBlocksAsync)}() failed; retrying...: {e}"
-                            );
-                            retry--;
-                        }
-                        else
-                        {
-                            FillBlocksAsyncFailed.Set();
-                            throw;
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        FillBlocksAsyncFailed.Set();
-                        throw;
-                    }
-                }
+                FillBlocksAsyncStarted.Set();
+                synced = await FillBlocksAsync(
+                    peer,
+                    blockChain,
+                    stop,
+                    progress,
+                    totalBlockCount,
+                    receivedBlockCount,
+                    true,
+                    cancellationToken
+                );
+            }
+            catch (Exception)
+            {
+                FillBlocksAsyncFailed.Set();
+                throw;
             }
             finally
             {
