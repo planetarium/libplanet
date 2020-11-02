@@ -148,7 +148,7 @@ namespace Libplanet.Blockchain.Policies
             if (index < 0)
             {
                 throw new InvalidBlockIndexException(
-                    $"index must be 0 or more, but its index is {index}.");
+                    $"Count of blocks must be 0 or more, but its value is {index}.");
             }
 
             if (index <= 1)
