@@ -235,23 +235,22 @@ namespace Libplanet.Blocks
             if (currentTime + TimestampThreshold < ts)
             {
                 throw new InvalidBlockTimestampException(
-                    $"The block #{Index}'s timestamp ({Timestamp}) is " +
-                    $"later than now ({currentTime}, " +
-                    $"threshold: {TimestampThreshold})."
+                    $"The block #{Index} [{ByteUtil.Hex(Hash)}]'s timestamp ({Timestamp}) is " +
+                    $"later than now ({currentTime}, threshold: {TimestampThreshold})."
                 );
             }
 
             if (Index < 0)
             {
                 throw new InvalidBlockIndexException(
-                    $"index must be 0 or more, but its index is {Index}."
+                    $"Block #{Index} [{ByteUtil.Hex(Hash)}]'s index must be 0 or more."
                 );
             }
 
             if (Difficulty > TotalDifficulty)
             {
-                var msg = $"A Block.Difficulty ({Difficulty}) must be less than" +
-                          $"its TotalDifficulty ({TotalDifficulty}).";
+                var msg = $"Block #{Index} [{ByteUtil.Hex(Hash)}]'s difficulty ({Difficulty}) " +
+                          $"must be less than its TotalDifficulty ({TotalDifficulty}).";
                 throw new InvalidBlockTotalDifficultyException(
                     Difficulty,
                     TotalDifficulty,
@@ -264,15 +263,16 @@ namespace Libplanet.Blocks
                 if (Difficulty != 0)
                 {
                     throw new InvalidBlockDifficultyException(
-                        "difficulty must be 0 for the genesis block, " +
+                        $"Difficulty must be 0 for the genesis block [{ByteUtil.Hex(Hash)}], " +
                         $"but its difficulty is {Difficulty}."
                     );
                 }
 
                 if (TotalDifficulty != 0)
                 {
-                    var msg = "Total difficulty must be 0 for the genesis block, " +
-                              $"but its total difficulty is {TotalDifficulty}.";
+                    var msg = "Total difficulty must be 0 for the genesis block " +
+                              $"[{ByteUtil.Hex(Hash)}], but its total difficulty is " +
+                              $"{TotalDifficulty}.";
                     throw new InvalidBlockTotalDifficultyException(
                         Difficulty,
                         TotalDifficulty,
@@ -283,7 +283,8 @@ namespace Libplanet.Blocks
                 if (!PreviousHash.IsEmpty)
                 {
                     throw new InvalidBlockPreviousHashException(
-                        "previous hash must be empty for the genesis block."
+                        $"Previous hash must be empty for the genesis block " +
+                        $"[{ByteUtil.Hex(Hash)}], but its value is [{ByteUtil.Hex(PreviousHash)}]."
                     );
                 }
             }
@@ -292,17 +293,16 @@ namespace Libplanet.Blocks
                 if (Difficulty < 1)
                 {
                     throw new InvalidBlockDifficultyException(
-                        "difficulty must be more than 0 (except of " +
-                        "the genesis block), but its difficulty is " +
-                        $"{Difficulty}."
+                        $"Block #{Index} [{ByteUtil.Hex(Hash)}]'s difficulty must be more than 0 " +
+                        $"(except of the genesis block), but its difficulty is {Difficulty}."
                     );
                 }
 
                 if (PreviousHash.IsEmpty)
                 {
                     throw new InvalidBlockPreviousHashException(
-                        "previous hash must be present except of " +
-                        "the genesis block."
+                        $"Block #{Index} [{ByteUtil.Hex(Hash)}]'s previous hash " +
+                        "must be present since it's not the genesis block."
                     );
                 }
             }
@@ -310,8 +310,9 @@ namespace Libplanet.Blocks
             if (!new HashDigest<SHA256>(PreEvaluationHash.ToArray()).Satisfies(Difficulty))
             {
                 throw new InvalidBlockNonceException(
-                    $"hash ({PreEvaluationHash}) with the nonce ({Nonce}) does not " +
-                    $"satisfy its difficulty level {Difficulty}."
+                    $"Block #{Index} [{ByteUtil.Hex(Hash)}]'s pre-evaluation hash " +
+                    $"({ByteUtil.Hex(PreEvaluationHash)}) with the nonce " +
+                    $"({ByteUtil.Hex(Nonce)}) does not satisfy its difficulty level {Difficulty}."
                 );
             }
         }
