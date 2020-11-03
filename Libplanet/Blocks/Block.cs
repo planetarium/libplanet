@@ -252,6 +252,40 @@ namespace Libplanet.Blocks
             }
         }
 
+        /// <summary>
+        /// The <see cref="BlockHeader"/> of the block.
+        /// </summary>
+        [IgnoreDuringEquals]
+        public BlockHeader Header
+        {
+            get
+            {
+                string timestampAsString = Timestamp.ToString(
+                    BlockHeader.TimestampFormat,
+                    CultureInfo.InvariantCulture
+                );
+                ImmutableArray<byte> previousHashAsArray =
+                    PreviousHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty;
+                ImmutableArray<byte> stateRootHashAsArray =
+                    StateRootHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty;
+
+                // FIXME: When hash is not assigned, should throw an exception.
+                return new BlockHeader(
+                    index: Index,
+                    timestamp: timestampAsString,
+                    nonce: Nonce.ToByteArray().ToImmutableArray(),
+                    miner: Miner?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty,
+                    difficulty: Difficulty,
+                    totalDifficulty: TotalDifficulty,
+                    previousHash: previousHashAsArray,
+                    txHash: TxHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty,
+                    hash: Hash.ToByteArray().ToImmutableArray(),
+                    preEvaluationHash: PreEvaluationHash.ToByteArray().ToImmutableArray(),
+                    stateRootHash: stateRootHashAsArray
+                );
+            }
+        }
+
         public static bool operator ==(Block<T> left, Block<T> right) =>
             Operator.Weave(left, right);
 
@@ -542,7 +576,7 @@ namespace Libplanet.Blocks
         public BlockDigest ToBlockDigest()
         {
             return new BlockDigest(
-                header: GetBlockHeader(),
+                header: Header,
                 txIds: Transactions
                     .Select(tx => tx.Id.ToByteArray().ToImmutableArray())
                     .ToImmutableArray());
@@ -553,36 +587,9 @@ namespace Libplanet.Blocks
             return Hash.ToString();
         }
 
-        internal BlockHeader GetBlockHeader()
-        {
-            string timestampAsString = Timestamp.ToString(
-                BlockHeader.TimestampFormat,
-                CultureInfo.InvariantCulture
-            );
-            ImmutableArray<byte> previousHashAsArray =
-                PreviousHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty;
-            ImmutableArray<byte> stateRootHashAsArray =
-                StateRootHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty;
-
-            // FIXME: When hash is not assigned, should throw an exception.
-            return new BlockHeader(
-                index: Index,
-                timestamp: timestampAsString,
-                nonce: Nonce.ToByteArray().ToImmutableArray(),
-                miner: Miner?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty,
-                difficulty: Difficulty,
-                totalDifficulty: TotalDifficulty,
-                previousHash: previousHashAsArray,
-                txHash: TxHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty,
-                hash: Hash.ToByteArray().ToImmutableArray(),
-                preEvaluationHash: PreEvaluationHash.ToByteArray().ToImmutableArray(),
-                stateRootHash: stateRootHashAsArray
-            );
-        }
-
         internal void Validate(DateTimeOffset currentTime)
         {
-            GetBlockHeader().Validate(currentTime);
+            Header.Validate(currentTime);
 
             foreach (Transaction<T> tx in Transactions)
             {
@@ -594,7 +601,7 @@ namespace Libplanet.Blocks
         {
             // For consistency, order transactions by its id.
             return new RawBlock(
-                header: GetBlockHeader(),
+                header: Header,
                 transactions: Transactions.OrderBy(tx => tx.Id)
                     .Select(tx => tx.Serialize(true).ToImmutableArray()).ToImmutableArray());
         }
