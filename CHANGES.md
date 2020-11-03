@@ -14,9 +14,17 @@ To be released.
     to mine if it takes longer than 4 seconds to collect and validate them.
     Those rest staged transactions are postponed until next block mining.
     [[#1057], [#1059]]
+ -  `BlockChain<T>` became not to validate genesis block during fork,
+    where the state store is not an implementation of `IBlockStatesStore`.
+    [[#1063]]
+ -  Fixed a bug where `Swarm<T>.GetPeerChainStateAsync()` has thrown
+    `NullReferenceException` when peers in table does failed to respond.
+    [[#1066]]
 
 [#1057]: https://github.com/planetarium/libplanet/pull/1057
 [#1059]: https://github.com/planetarium/libplanet/pull/1059
+[#1063]: https://github.com/planetarium/libplanet/pull/1063
+[#1066]: https://github.com/planetarium/libplanet/pull/1066
 
 
 Version 0.10.0
