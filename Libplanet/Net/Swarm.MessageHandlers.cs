@@ -11,7 +11,6 @@ using Libplanet.Blocks;
 using Libplanet.Net.Messages;
 using Libplanet.Store;
 using Libplanet.Tx;
-using Serilog;
 using Serilog.Events;
 
 namespace Libplanet.Net
@@ -185,12 +184,12 @@ namespace Libplanet.Net
             {
                 if (IsDemandNeeded(header))
                 {
-                    Log.Debug(
+                    _logger.Debug(
                         "BlockHashDemand #{index} {blockHash} from {peer}.",
                         header.Index,
                         ByteUtil.Hex(header.Hash),
                         peer);
-                    _demandBlockHash = new BlockHashDemand(header, peer);
+                    BlockDemand = new BlockDemand(header, peer);
                 }
                 else
                 {
@@ -199,7 +198,7 @@ namespace Libplanet.Net
                         "(current: {Current}, demand: {Demand}, received: {Received});" +
                         $" {nameof(BlockHeaderMessage)} is ignored.",
                         BlockChain.Tip.Index,
-                        _demandBlockHash?.Header.Index,
+                        BlockDemand?.Header.Index,
                         header.Index);
                 }
             }

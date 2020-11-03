@@ -40,8 +40,6 @@ namespace Libplanet.Net
 
         private CancellationTokenSource _workerCancellationTokenSource;
         private CancellationToken _cancellationToken;
-
-        private BlockHashDemand? _demandBlockHash;
         private ConcurrentDictionary<TxId, BoundPeer> _demandTxIds;
 
         static Swarm()
@@ -206,6 +204,13 @@ namespace Libplanet.Net
 
         public AppProtocolVersion AppProtocolVersion => _appProtocolVersion;
 
+        /// <summary>
+        /// Information of <see cref="Swarm{T}"/>'s demand for new blocks.
+        /// It is null when the <see cref="Swarm{T}"/> does not have any block to demand.
+        /// <seealso cref="BlockDemand"/>
+        /// </summary>
+        public BlockDemand? BlockDemand { get; private set; }
+
         internal ITransport Transport { get; private set; }
 
         internal IProtocol Protocol => (Transport as NetMQTransport)?.Protocol;
@@ -361,7 +366,7 @@ namespace Libplanet.Net
             _cancellationToken = CancellationTokenSource.CreateLinkedTokenSource(
                     _workerCancellationTokenSource.Token, cancellationToken
                 ).Token;
-            _demandBlockHash = null;
+            BlockDemand = null;
             _demandTxIds = new ConcurrentDictionary<TxId, BoundPeer>();
             await Transport.StartAsync(_cancellationToken);
 
@@ -1687,8 +1692,8 @@ namespace Libplanet.Net
         private bool IsDemandNeeded(BlockHeader target)
         {
             return target.TotalDifficulty > BlockChain.Tip.TotalDifficulty &&
-                   (_demandBlockHash is null ||
-                    _demandBlockHash.Value.Header.TotalDifficulty < target.TotalDifficulty);
+                   (BlockDemand is null ||
+                    BlockDemand.Value.Header.TotalDifficulty < target.TotalDifficulty);
         }
 
         private async Task SyncPreviousBlocksAsync(
@@ -1914,15 +1919,15 @@ namespace Libplanet.Net
         {
             while (!cancellationToken.IsCancellationRequested)
             {
-                if (_demandBlockHash is null ||
-                    _demandBlockHash.Value.Header.TotalDifficulty <= BlockChain.Tip.TotalDifficulty)
+                if (BlockDemand is null ||
+                    BlockDemand.Value.Header.TotalDifficulty <= BlockChain.Tip.TotalDifficulty)
                 {
                     await Task.Delay(1, cancellationToken);
                     continue;
                 }
 
-                BoundPeer peer = _demandBlockHash.Value.Peer;
-                var hash = new HashDigest<SHA256>(_demandBlockHash.Value.Header.Hash.ToArray());
+                BoundPeer peer = BlockDemand.Value.Peer;
+                var hash = new HashDigest<SHA256>(BlockDemand.Value.Header.Hash.ToArray());
 
                 try
                 {
@@ -1963,7 +1968,7 @@ namespace Libplanet.Net
                 {
                     using (await _blockSyncMutex.LockAsync(cancellationToken))
                     {
-                        _demandBlockHash = null;
+                        BlockDemand = null;
                     }
                 }
             }
