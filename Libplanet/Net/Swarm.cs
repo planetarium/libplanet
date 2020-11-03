@@ -481,7 +481,10 @@ namespace Libplanet.Net
             // FIXME: It would be better if it returns IAsyncEnumerable<PeerChainState> instead.
             return (await DialToExistingPeers(dialTimeout, cancellationToken))
                 .Select(pp =>
-                    new PeerChainState(pp.Item1, pp.Item2.TipIndex, pp.Item2.TotalDifficulty));
+                    new PeerChainState(
+                        pp.Item1,
+                        pp.Item2?.TipIndex ?? -1,
+                        pp.Item2?.TotalDifficulty ?? -1));
         }
 
         /// <summary>
@@ -1369,7 +1372,7 @@ namespace Libplanet.Net
                             }
 
                             // Mark to skip
-                            return (null, null);
+                            return (peer, null);
                         }
                         else
                         {
