@@ -813,7 +813,7 @@ namespace Libplanet.Tests.Blocks
             // Size of BlockDigest
             Assert.Equal(208, emptyBlock.ToBlockDigest().Serialize().Length);
             // Size of BlockHeader
-            Assert.Equal(203, codec.Encode(emptyBlock.GetBlockHeader().ToBencodex()).Length);
+            Assert.Equal(203, codec.Encode(emptyBlock.Header.ToBencodex()).Length);
 
             // Case of a block with txs, not contained state root.
             // Size of RawBlock
@@ -821,7 +821,7 @@ namespace Libplanet.Tests.Blocks
             // Size of BlockDigest
             Assert.Equal(293, txBlock.ToBlockDigest().Serialize().Length);
             // Size of BlockHeader
-            Assert.Equal(248, codec.Encode(txBlock.GetBlockHeader().ToBencodex()).Length);
+            Assert.Equal(248, codec.Encode(txBlock.Header.ToBencodex()).Length);
         }
 
         [Fact]
