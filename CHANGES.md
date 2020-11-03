@@ -6,6 +6,17 @@ Version 0.10.1
 
 To be released.
 
+ -  Fixed `BlockChain<T>.MineBlock()` method's bug which excludes one's
+    all transactions virtually forever after a signer's transactions once have
+    been staged without the ascending order of nonce (usually due to their
+    inconsistent propagation latency on the network).  [[#1057], [#1059]]
+ -  `BlockChain<T>.MineBlock()` method became to cut off staged transactions
+    to mine if it takes longer than 4 seconds to collect and validate them.
+    Those rest staged transactions are postponed until next block mining.
+    [[#1057], [#1059]]
+
+[#1057]: https://github.com/planetarium/libplanet/pull/1057
+[#1059]: https://github.com/planetarium/libplanet/pull/1059
 
 
 Version 0.10.0

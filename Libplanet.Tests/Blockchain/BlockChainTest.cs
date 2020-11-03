@@ -264,6 +264,42 @@ namespace Libplanet.Tests.Blockchain
             }
         }
 
+        [Theory]
+        [InlineData(3)]
+        [InlineData(2)]
+        [InlineData(1)]
+        public async void MineBlockWithReverseNonces(int maxTxs)
+        {
+            var key = new PrivateKey();
+            var txs = new[]
+            {
+                Transaction<DumbAction>.Create(
+                    2,
+                    key,
+                    _blockChain.Genesis.Hash,
+                    new DumbAction[0]
+                ),
+                Transaction<DumbAction>.Create(
+                    1,
+                    key,
+                    _blockChain.Genesis.Hash,
+                    new DumbAction[0]
+                ),
+                Transaction<DumbAction>.Create(
+                    0,
+                    key,
+                    _blockChain.Genesis.Hash,
+                    new DumbAction[0]
+                ),
+            };
+            StageTransactions(txs);
+            Block<DumbAction> block = await _blockChain.MineBlock(
+                _fx.Address1,
+                maxTransactions: maxTxs
+            );
+            Assert.Equal(maxTxs, block.Transactions.Count());
+        }
+
         [Fact]
         public async void CanFindBlockByIndex()
         {
