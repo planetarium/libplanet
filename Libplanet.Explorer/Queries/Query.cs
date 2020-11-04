@@ -48,7 +48,7 @@ namespace Libplanet.Explorer.Queries
                 yield break;
             }
 
-            Block<T> block = desc ? _chain[tipIndex - offset] : _chain[offset];
+            Block<T> block = desc ? _chain[tipIndex] : _chain[0];
 
             while (limit is null || limit > 0)
             {
@@ -57,8 +57,15 @@ namespace Libplanet.Explorer.Queries
 
                 if (isMinerValid && isTxValid)
                 {
-                    limit--;
-                    yield return block;
+                    if (offset > 0)
+                    {
+                        offset--;
+                    }
+                    else
+                    {
+                        limit--;
+                        yield return block;
+                    }
                 }
 
                 block = GetNextBlock(block, desc);
