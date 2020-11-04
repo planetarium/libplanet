@@ -36,6 +36,7 @@ namespace Libplanet.Net
         private readonly string _host;
         private readonly IList<IceServer> _iceServers;
         private readonly ILogger _logger;
+        private readonly AsyncLock _turnClientMutex;
 
         private NetMQQueue<NetMQMessage> _replyQueue;
         private NetMQQueue<(Address?, Message)> _broadcastQueue;
@@ -89,6 +90,7 @@ namespace Libplanet.Net
             _host = host;
             _listenPort = listenPort;
             _differentAppProtocolVersionEncountered = differentAppProtocolVersionEncountered;
+            _turnClientMutex = new AsyncLock();
             ProcessMessageHandler = processMessageHandler;
 
             if (_host != null && _listenPort is int listenPortAsInt)
@@ -933,14 +935,17 @@ namespace Libplanet.Net
             {
                 _logger.Error($"Unexpected error occurred during {nameof(CreatePermission)}: {e}");
 
-                if (!(_turnClient is null))
+                using (await _turnClientMutex.LockAsync(_cancellationToken))
                 {
-                    _logger.Debug("Trying to reconnect to the TURN server...");
+                    if (!(_turnClient is null))
+                    {
+                        _logger.Debug("Trying to reconnect to the TURN server...");
 
-                    _turnClient.Dispose();
-                    _turnCancellationTokenSource.Cancel();
-                    await Task.WhenAny(_turnTasks);
-                    await InitializeTurnClient();
+                        _turnClient.Dispose();
+                        _turnCancellationTokenSource.Cancel();
+                        await Task.WhenAny(_turnTasks);
+                        await InitializeTurnClient();
+                    }
                 }
             }
         }
