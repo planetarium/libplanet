@@ -18,6 +18,11 @@ namespace Libplanet.Stun
         public const int TurnDefaultPort = 3478;
         private const int AllocateRetry = 5;
         private const int StunMessageParseRetry = 3;
+
+        // TURN Permission lifetime was defined in RFC 5766
+        // see also https://tools.ietf.org/html/rfc5766#section-8
+        private static readonly TimeSpan TurnPermissionLifetime = TimeSpan.FromMinutes(5);
+        private static readonly TimeSpan TurnAllocationLifetime = TimeSpan.FromSeconds(777);
         private readonly string _host;
         private readonly int _port;
         private readonly IList<TcpClient> _relayedClients;
@@ -58,6 +63,27 @@ namespace Libplanet.Stun
         public string Realm { get; private set; }
 
         public byte[] Nonce { get; private set; }
+
+        public IPAddress PublicAddress { get; private set; }
+
+        public DnsEndPoint EndPoint { get; private set; }
+
+        public bool BehindNAT { get; private set; }
+
+        public async Task StartAsync(int listenPort, CancellationToken cancellationToken)
+        {
+            BehindNAT = await IsBehindNAT(cancellationToken);
+            PublicAddress = (await GetMappedAddressAsync(cancellationToken)).Address;
+
+            var ep = await AllocateRequestAsync(TurnAllocationLifetime, cancellationToken);
+            EndPoint = new DnsEndPoint(ep.Address.ToString(), ep.Port);
+
+            if (BehindNAT)
+            {
+                var turnTasks = BindMultipleProxies(listenPort, 3, cancellationToken);
+                turnTasks.Add(RefreshAllocate(cancellationToken));
+            }
+        }
 
         public async Task<IPEndPoint> AllocateRequestAsync(
             TimeSpan lifetime,
@@ -251,6 +277,43 @@ namespace Libplanet.Stun
                     cancellationToken
                 );
 #pragma warning restore CS4014
+            }
+        }
+
+        private List<Task> BindMultipleProxies(
+            int listenPort,
+            int count,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return Enumerable.Range(1, count)
+                .Select(x => BindProxies(listenPort, cancellationToken))
+                .ToList();
+        }
+
+        private async Task RefreshAllocate(CancellationToken cancellationToken)
+        {
+            TimeSpan lifetime = TurnAllocationLifetime;
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                try
+                {
+                    await Task.Delay(lifetime - TimeSpan.FromMinutes(1), cancellationToken);
+                    Log.Debug("Refreshing TURN allocation...");
+                    lifetime = await RefreshAllocationAsync(lifetime);
+                    cancellationToken.ThrowIfCancellationRequested();
+                }
+                catch (OperationCanceledException e)
+                {
+                    Log.Warning(e, $"{nameof(RefreshAllocate)}() is cancelled.");
+                    throw;
+                }
+                catch (Exception e)
+                {
+                    Log.Error(
+                        e,
+                        $"An unexpected exception occurred during {nameof(RefreshAllocate)}(): {e}"
+                    );
+                }
             }
         }
 
