@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Bencodex.Types;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
+using Libplanet.Blockchain.Renderers;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net;
@@ -30,15 +31,15 @@ namespace Libplanet.Tests.Net
         [Fact(Timeout = Timeout)]
         public async Task InitialBlockDownload()
         {
-            Swarm<DumbAction> minerSwarm = _swarms[0];
-            Swarm<DumbAction> receiverSwarm = _swarms[1];
+            Swarm<DumbAction> minerSwarm = CreateSwarm();
+            Swarm<DumbAction> receiverSwarm = CreateSwarm();
 
-            BlockChain<DumbAction> minerChain = _blockchains[0];
-            BlockChain<DumbAction> receiverChain = _blockchains[1];
+            BlockChain<DumbAction> minerChain = minerSwarm.BlockChain;
+            BlockChain<DumbAction> receiverChain = receiverSwarm.BlockChain;
 
             foreach (int i in Enumerable.Range(0, 10))
             {
-                await minerChain.MineBlock(_fx1.Address1);
+                await minerChain.MineBlock(minerSwarm.Address);
             }
 
             try
@@ -60,11 +61,11 @@ namespace Libplanet.Tests.Net
         [Fact(Timeout = Timeout)]
         public async Task InitialBlockDownloadStates()
         {
-            Swarm<DumbAction> minerSwarm = _swarms[0];
-            Swarm<DumbAction> receiverSwarm = _swarms[1];
+            Swarm<DumbAction> minerSwarm = CreateSwarm();
+            Swarm<DumbAction> receiverSwarm = CreateSwarm();
 
-            BlockChain<DumbAction> minerChain = _blockchains[0];
-            BlockChain<DumbAction> receiverChain = _blockchains[1];
+            BlockChain<DumbAction> minerChain = minerSwarm.BlockChain;
+            BlockChain<DumbAction> receiverChain = receiverSwarm.BlockChain;
 
             var key = new PrivateKey();
             var address1 = key.ToAddress();
@@ -76,13 +77,13 @@ namespace Libplanet.Tests.Net
                 transfer: Tuple.Create<Address, Address, BigInteger>(address1, address2, 10));
 
             minerChain.MakeTransaction(key, new[] { action });
-            await minerChain.MineBlock(_fx1.Address1);
+            await minerChain.MineBlock(minerSwarm.Address);
 
             minerChain.MakeTransaction(key, new[] { new DumbAction(address1, "bar") });
-            await minerChain.MineBlock(_fx1.Address1);
+            await minerChain.MineBlock(minerSwarm.Address);
 
             minerChain.MakeTransaction(key, new[] { new DumbAction(address1, "baz") });
-            await minerChain.MineBlock(_fx1.Address1);
+            await minerChain.MineBlock(minerSwarm.Address);
 
             try
             {
@@ -107,11 +108,11 @@ namespace Libplanet.Tests.Net
         [Fact(Timeout = Timeout)]
         public async Task Preload()
         {
-            Swarm<DumbAction> minerSwarm = _swarms[0];
-            Swarm<DumbAction> receiverSwarm = _swarms[1];
+            Swarm<DumbAction> minerSwarm = CreateSwarm();
+            Swarm<DumbAction> receiverSwarm = CreateSwarm();
 
-            BlockChain<DumbAction> minerChain = _blockchains[0];
-            BlockChain<DumbAction> receiverChain = _blockchains[1];
+            BlockChain<DumbAction> minerChain = minerSwarm.BlockChain;
+            BlockChain<DumbAction> receiverChain = receiverSwarm.BlockChain;
 
             var blocks = new List<Block<DumbAction>>();
             foreach (int i in Enumerable.Range(0, 11))
@@ -243,18 +244,17 @@ namespace Libplanet.Tests.Net
         [Fact(Timeout = 5 * 1000)]
         public async Task BlockDownloadTimeout()
         {
-            Swarm<DumbAction> minerSwarm = _swarms[0];
-
             var options = new SwarmOptions
             {
                 BlockDownloadTimeout = TimeSpan.FromMilliseconds(1),
             };
 
-            Swarm<DumbAction> receiverSwarm = CreateSwarm(_blockchains[1], options: options);
+            Swarm<DumbAction> minerSwarm = CreateSwarm();
+            Swarm<DumbAction> receiverSwarm = CreateSwarm(options: options);
 
             foreach (var unused in Enumerable.Range(0, 10))
             {
-                await minerSwarm.BlockChain.MineBlock(_fx1.Address1);
+                await minerSwarm.BlockChain.MineBlock(minerSwarm.Address);
             }
 
             try
@@ -303,7 +303,7 @@ namespace Libplanet.Tests.Net
 
             foreach (var unused in Enumerable.Range(0, 10))
             {
-                await minerSwarm.BlockChain.MineBlock(_fx1.Address1);
+                await minerSwarm.BlockChain.MineBlock(minerSwarm.Address);
             }
 
             try
@@ -346,8 +346,8 @@ namespace Libplanet.Tests.Net
         [Fact(Timeout = Timeout)]
         public async Task PreloadFromNominer()
         {
-            Swarm<DumbAction> minerSwarm = _swarms[0];
-            Swarm<DumbAction> receiverSwarm = _swarms[1];
+            Swarm<DumbAction> minerSwarm = CreateSwarm();
+            Swarm<DumbAction> receiverSwarm = CreateSwarm();
             var fxForNominers = new StoreFixture[2];
             fxForNominers[0] = new DefaultStoreFixture(memory: true);
             fxForNominers[1] = new DefaultStoreFixture(memory: true);
@@ -360,12 +360,12 @@ namespace Libplanet.Tests.Net
             var nominerSwarm0 = CreateSwarm(blockChainsForNominers[0]);
             var nominerSwarm1 = CreateSwarm(blockChainsForNominers[1]);
 
-            BlockChain<DumbAction> minerChain = _blockchains[0];
-            BlockChain<DumbAction> receiverChain = _blockchains[1];
+            BlockChain<DumbAction> minerChain = minerSwarm.BlockChain;
+            BlockChain<DumbAction> receiverChain = minerSwarm.BlockChain;
 
             foreach (int i in Enumerable.Range(0, 10))
             {
-                await minerChain.MineBlock(_fx1.Address1);
+                await minerChain.MineBlock(minerSwarm.Address);
             }
 
             var actualStates = new List<PreloadState>();
@@ -473,11 +473,11 @@ namespace Libplanet.Tests.Net
         [InlineData(32)]
         public async Task PreloadRetryWithNextPeers(int blockCount)
         {
-            Swarm<DumbAction> swarm0 = _swarms[0];
-            Swarm<DumbAction> swarm1 = _swarms[1];
-            Swarm<DumbAction> receiverSwarm = _swarms[2];
+            Swarm<DumbAction> swarm0 = CreateSwarm();
+            Swarm<DumbAction> swarm1 = CreateSwarm();
+            Swarm<DumbAction> receiverSwarm = CreateSwarm();
 
-            receiverSwarm.Options.BlockHashRecvTimeout = TimeSpan.FromMilliseconds(100);
+            receiverSwarm.Options.BlockHashRecvTimeout = TimeSpan.FromMilliseconds(1000);
 
             swarm0.FindNextHashesChunkSize = blockCount / 2;
             swarm1.FindNextHashesChunkSize = blockCount / 2;
@@ -522,12 +522,21 @@ namespace Libplanet.Tests.Net
         [InlineData(false, true)]
         public async Task PreloadWithTrustedPeers(bool trust, bool genesisWithAction)
         {
-            Swarm<DumbAction> minerSwarm = _swarms[0];
-            Swarm<DumbAction> receiverSwarm = _swarms[1];
+            var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
+            var fx = new DefaultStoreFixture();
+            var receiverRenderer = new RecordingRenderer<DumbAction>();
+            var loggedRenderer = new LoggedActionRenderer<DumbAction>(
+                receiverRenderer,
+                _logger);
+            var receiverChain = TestUtils.MakeBlockChain(
+                policy,
+                fx.Store,
+                renderers: new[] { loggedRenderer });
+            Swarm<DumbAction> receiverSwarm = CreateSwarm(receiverChain);
 
-            BlockChain<DumbAction> minerChain = _blockchains[0];
-            BlockChain<DumbAction> receiverChain = _blockchains[1];
-            RecordingRenderer<DumbAction> receiverRenderer = _renderers[1];
+            Swarm<DumbAction> minerSwarm = CreateSwarm();
+            BlockChain<DumbAction> minerChain = minerSwarm.BlockChain;
+
             PrivateKey[] signers =
                 Enumerable.Repeat(0, 10).Select(_ => new PrivateKey()).ToArray();
             Address[] targets = Enumerable.Repeat(0, signers.Length).Select(_
@@ -671,11 +680,11 @@ namespace Libplanet.Tests.Net
             // Two miners; one trusts other one.  Test if it downloads the minimum range of blocks
             // (instead of the entire chain from the genesis to the tip) when there are branches.
             // See also: https://github.com/planetarium/libplanet/issues/465#issuecomment-525682219
-            Swarm<DumbAction> senderSwarm = _swarms[0];
-            Swarm<DumbAction> receiverSwarm = _swarms[1];
+            Swarm<DumbAction> senderSwarm = CreateSwarm();
+            Swarm<DumbAction> receiverSwarm = CreateSwarm();
 
-            BlockChain<DumbAction> senderChain = _blockchains[0];
-            BlockChain<DumbAction> receiverChain = _blockchains[1];
+            BlockChain<DumbAction> senderChain = senderSwarm.BlockChain;
+            BlockChain<DumbAction> receiverChain = receiverSwarm.BlockChain;
 
             Block<DumbAction> g = senderChain.Genesis,
                 bp = TestUtils.MineNext(g, difficulty: 1024),
@@ -998,13 +1007,13 @@ namespace Libplanet.Tests.Net
         {
             var blockHashes = new List<HashDigest<SHA256>>();
 
-            Swarm<DumbAction> swarm0 = _swarms[0];
-            Swarm<DumbAction> swarm1 = _swarms[1];
-            Swarm<DumbAction> swarm2 = _swarms[2];
+            Swarm<DumbAction> swarm0 = CreateSwarm();
+            Swarm<DumbAction> swarm1 = CreateSwarm();
+            Swarm<DumbAction> swarm2 = CreateSwarm();
 
-            BlockChain<DumbAction> chain0 = _blockchains[0];
-            BlockChain<DumbAction> chain1 = _blockchains[1];
-            BlockChain<DumbAction> chain2 = _blockchains[2];
+            BlockChain<DumbAction> chain0 = swarm0.BlockChain;
+            BlockChain<DumbAction> chain1 = swarm1.BlockChain;
+            BlockChain<DumbAction> chain2 = swarm2.BlockChain;
 
             swarm0.FindNextStatesChunkSize = 4;
             swarm1.FindNextStatesChunkSize = 3;
@@ -1122,13 +1131,13 @@ namespace Libplanet.Tests.Net
         [InlineData(5000)]
         public async Task PreloadAsyncCancellation(int cancelAfter)
         {
-            Swarm<DumbAction> minerSwarm = _swarms[0];
-            Swarm<DumbAction> receiverSwarm = _swarms[1];
+            Swarm<DumbAction> minerSwarm = CreateSwarm();
+            Swarm<DumbAction> receiverSwarm = CreateSwarm();
             Log.Logger.Information("Miner:    {0}", minerSwarm.Address);
             Log.Logger.Information("Receiver: {0}", receiverSwarm.Address);
 
-            BlockChain<DumbAction> minerChain = _blockchains[0];
-            BlockChain<DumbAction> receiverChain = _blockchains[1];
+            BlockChain<DumbAction> minerChain = minerSwarm.BlockChain;
+            BlockChain<DumbAction> receiverChain = receiverSwarm.BlockChain;
 
             Guid receiverChainId = receiverChain.Id;
 
@@ -1206,13 +1215,13 @@ namespace Libplanet.Tests.Net
         [Fact(Timeout = Timeout)]
         public async Task GetDemandBlockHashes()
         {
-            Swarm<DumbAction> minerSwarm = _swarms[0];
-            Swarm<DumbAction> receiverSwarm = _swarms[1];
+            Swarm<DumbAction> minerSwarm = CreateSwarm();
+            Swarm<DumbAction> receiverSwarm = CreateSwarm();
             Log.Logger.Information("Miner:    {0}", minerSwarm.Address);
             Log.Logger.Information("Receiver: {0}", receiverSwarm.Address);
 
-            BlockChain<DumbAction> minerChain = _blockchains[0];
-            BlockChain<DumbAction> receiverChain = _blockchains[1];
+            BlockChain<DumbAction> minerChain = minerSwarm.BlockChain;
+            BlockChain<DumbAction> receiverChain = receiverSwarm.BlockChain;
 
             (_, IEnumerable<Block<DumbAction>> blocks) =
                 await MakeFixtureBlocksForPreloadAsyncCancellationTest();
@@ -1246,29 +1255,29 @@ namespace Libplanet.Tests.Net
         [Fact(Timeout = Timeout)]
         public async Task PreloadAfterReorg()
         {
-            Swarm<DumbAction> minerSwarm = _swarms[0];
-            Swarm<DumbAction> receiverSwarm = _swarms[1];
+            Swarm<DumbAction> minerSwarm = CreateSwarm();
+            Swarm<DumbAction> receiverSwarm = CreateSwarm();
 
-            BlockChain<DumbAction> minerChain = _blockchains[0];
-            BlockChain<DumbAction> receiverChain = _blockchains[1];
+            BlockChain<DumbAction> minerChain = minerSwarm.BlockChain;
+            BlockChain<DumbAction> receiverChain = receiverSwarm.BlockChain;
 
             foreach (int i in Enumerable.Range(0, 25))
             {
-                Block<DumbAction> block = await minerChain.MineBlock(_fx1.Address1);
+                Block<DumbAction> block = await minerChain.MineBlock(minerSwarm.Address);
                 receiverChain.Append(block);
             }
 
             var receiverForked = receiverChain.Fork(receiverChain[5].Hash);
             foreach (int i in Enumerable.Range(0, 20))
             {
-                await receiverForked.MineBlock(_fx1.Address1);
+                await receiverForked.MineBlock(minerSwarm.Address);
             }
 
             receiverChain.Swap(receiverForked, false);
 
             foreach (int i in Enumerable.Range(0, 1))
             {
-                await minerChain.MineBlock(_fx1.Address1);
+                await minerChain.MineBlock(minerSwarm.Address);
             }
 
             minerSwarm.FindNextHashesChunkSize = 1;
@@ -1291,13 +1300,13 @@ namespace Libplanet.Tests.Net
         [Fact(Timeout = Timeout)]
         public async Task GetDemandBlockHashesDuringReorg()
         {
-            Swarm<DumbAction> minerSwarm = _swarms[0];
-            Swarm<DumbAction> receiverSwarm = _swarms[1];
+            Swarm<DumbAction> minerSwarm = CreateSwarm();
+            Swarm<DumbAction> receiverSwarm = CreateSwarm();
             Log.Logger.Information("Miner:    {0}", minerSwarm.Address);
             Log.Logger.Information("Receiver: {0}", receiverSwarm.Address);
 
-            BlockChain<DumbAction> minerChain = _blockchains[0];
-            BlockChain<DumbAction> receiverChain = _blockchains[1];
+            BlockChain<DumbAction> minerChain = minerSwarm.BlockChain;
+            BlockChain<DumbAction> receiverChain = receiverSwarm.BlockChain;
 
             Block<DumbAction>[] blocks =
                 (await MakeFixtureBlocksForPreloadAsyncCancellationTest()).Item2;
@@ -1343,8 +1352,10 @@ namespace Libplanet.Tests.Net
         [Fact(Timeout = Timeout)]
         public async Task PreloadDeleteOnlyTempChain()
         {
-            BlockChain<DumbAction> minerChain = _blockchains[0];
-            BlockChain<DumbAction> receiverChain = _blockchains[1];
+            Swarm<DumbAction> minerSwarm = CreateSwarm();
+            Swarm<DumbAction> receiverSwarm = CreateSwarm();
+            BlockChain<DumbAction> minerChain = minerSwarm.BlockChain;
+            BlockChain<DumbAction> receiverChain = minerSwarm.BlockChain;
 
             receiverChain = receiverChain.Fork(receiverChain.Genesis.Hash);
             Block<DumbAction>[] blocks =
@@ -1355,36 +1366,35 @@ namespace Libplanet.Tests.Net
                 minerChain.Append(block);
             }
 
-            using (Swarm<DumbAction> minerSwarm = CreateSwarm(minerChain))
-            using (Swarm<DumbAction> receiverSwarm = CreateSwarm(receiverChain))
+            try
             {
-                try
-                {
-                    await StartAsync(minerSwarm);
-                    await receiverSwarm.AddPeersAsync(new[] { minerSwarm.AsPeer }, null);
-                    await receiverSwarm.PreloadAsync(
-                        trustedStateValidators: new[] { minerSwarm.Address }.ToImmutableHashSet()
-                    );
-                }
-                finally
-                {
-                    await StopAsync(minerSwarm);
-                }
-
-                // Check PreloadAsync() preserves chain that forked before preloading.
-                Assert.Equal(2, receiverChain.Store.ListChainIds().Count());
+                await StartAsync(minerSwarm);
+                await receiverSwarm.AddPeersAsync(new[] { minerSwarm.AsPeer }, null);
+                await receiverSwarm.PreloadAsync(
+                    trustedStateValidators: new[] { minerSwarm.Address }.ToImmutableHashSet()
+                );
             }
+            finally
+            {
+                await StopAsync(minerSwarm);
+            }
+
+            // Check PreloadAsync() preserves chain that forked before preloading.
+            Assert.Equal(2, receiverChain.Store.ListChainIds().Count());
         }
 
         [Fact(Timeout = Timeout)]
         public async Task PreloadFromTheMostDifficultChain()
         {
-            BlockChain<DumbAction> minerChain1 = _blockchains[0];
-            BlockChain<DumbAction> minerChain2 = _blockchains[1];
-            BlockChain<DumbAction> receiverChain = _blockchains[2];
+            Swarm<DumbAction> minerSwarm1 = CreateSwarm();
+            Swarm<DumbAction> minerSwarm2 = CreateSwarm();
+            Swarm<DumbAction> receiverSwarm = CreateSwarm();
+            BlockChain<DumbAction> minerChain1 = minerSwarm1.BlockChain;
+            BlockChain<DumbAction> minerChain2 = minerSwarm2.BlockChain;
+            BlockChain<DumbAction> receiverChain = receiverSwarm.BlockChain;
 
-            await minerChain1.MineBlock(_fx1.Address1);
-            await minerChain1.MineBlock(_fx1.Address1);
+            await minerChain1.MineBlock(minerSwarm1.Address);
+            await minerChain1.MineBlock(minerSwarm1.Address);
 
             long nextDifficulty = (long)minerChain1.Tip.TotalDifficulty +
                                   minerChain2.Policy.GetNextBlockDifficulty(minerChain2);
@@ -1394,44 +1404,40 @@ namespace Libplanet.Tests.Net
             Assert.True(minerChain1.Count > minerChain2.Count);
             Assert.True(minerChain1.Tip.TotalDifficulty < minerChain2.Tip.TotalDifficulty);
 
-            using (Swarm<DumbAction> minerSwarm1 = CreateSwarm(minerChain1))
-            using (Swarm<DumbAction> minerSwarm2 = CreateSwarm(minerChain2))
-            using (Swarm<DumbAction> receiverSwarm = CreateSwarm(receiverChain))
+            try
             {
-                try
-                {
-                    await StartAsync(minerSwarm1);
-                    await StartAsync(minerSwarm2);
-                    await receiverSwarm.AddPeersAsync(
-                        new[] { minerSwarm1.AsPeer, minerSwarm2.AsPeer },
-                        null);
-                    await receiverSwarm.PreloadAsync(
-                        trustedStateValidators: new[] { minerSwarm1.Address, minerSwarm2.Address }
-                            .ToImmutableHashSet()
-                    );
-                }
-                finally
-                {
-                    await StopAsync(minerSwarm1);
-                    await StopAsync(minerSwarm2);
-                    await StopAsync(receiverSwarm);
-                }
-
-                Assert.Equal(minerChain2.Count, receiverChain.Count);
-                Assert.Equal(minerChain2.Tip, receiverChain.Tip);
+                await StartAsync(minerSwarm1);
+                await StartAsync(minerSwarm2);
+                await receiverSwarm.AddPeersAsync(
+                    new[] { minerSwarm1.AsPeer, minerSwarm2.AsPeer },
+                    null);
+                await receiverSwarm.PreloadAsync(
+                    trustedStateValidators: new[] { minerSwarm1.Address, minerSwarm2.Address }
+                        .ToImmutableHashSet()
+                );
             }
+            finally
+            {
+                await StopAsync(minerSwarm1);
+                await StopAsync(minerSwarm2);
+                await StopAsync(receiverSwarm);
+            }
+
+            Assert.Equal(minerChain2.Count, receiverChain.Count);
+            Assert.Equal(minerChain2.Tip, receiverChain.Tip);
         }
 
         [Fact(Timeout = Timeout)]
         public async Task PreloadIgnorePeerWithDifferentGenesisBlock()
         {
+            var minerAddress = new PrivateKey().ToAddress();
             var policy = new BlockPolicy<DumbAction>();
             var genesisBlock1 = new Block<DumbAction>(
                 0,
                 0,
                 0,
                 new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 }),
-                _fx1.Address1,
+                minerAddress,
                 null,
                 DateTimeOffset.MinValue,
                 Enumerable.Empty<Transaction<DumbAction>>());
@@ -1440,7 +1446,7 @@ namespace Libplanet.Tests.Net
                 0,
                 0,
                 new Nonce(new byte[] { 0x02, 0x00, 0x00, 0x00 }),
-                _fx1.Address1,
+                minerAddress,
                 null,
                 DateTimeOffset.MinValue,
                 Enumerable.Empty<Transaction<DumbAction>>());
@@ -1462,12 +1468,12 @@ namespace Libplanet.Tests.Net
 
             for (int i = 0; i < 10; i++)
             {
-                await validSeedChain.MineBlock(_fx1.Address1);
+                await validSeedChain.MineBlock(minerAddress);
             }
 
             for (int i = 0; i < 20; i++)
             {
-                await invalidSeedChain.MineBlock(_fx1.Address1);
+                await invalidSeedChain.MineBlock(minerAddress);
             }
 
             try
@@ -1497,11 +1503,14 @@ namespace Libplanet.Tests.Net
         [Fact(Timeout = Timeout)]
         public async Task ReorgWhilePreloadAsync()
         {
-            BlockChain<DumbAction> seedChain = _blockchains[0];
-            BlockChain<DumbAction> receiverChain = _blockchains[1];
+            var seed = CreateSwarm();
+            var receiver = CreateSwarm();
+
+            BlockChain<DumbAction> seedChain = seed.BlockChain;
+            BlockChain<DumbAction> receiverChain = receiver.BlockChain;
             for (int i = 0; i < 10; i++)
             {
-                await seedChain.MineBlock(_fx1.Address1);
+                await seedChain.MineBlock(seed.Address);
             }
 
             bool reorg = true;
@@ -1516,15 +1525,13 @@ namespace Libplanet.Tests.Net
                 {
                     var forked = seedChain.Fork(seedChain[9].Hash);
                     seedChain.Swap(forked, false);
-                    seedChain.MineBlock(_fx1.Address1).Wait();
-                    seedChain.MineBlock(_fx1.Address1).Wait();
+                    seedChain.MineBlock(seed.Address).Wait();
+                    seedChain.MineBlock(seed.Address).Wait();
 
                     reorg = false;
                 }
             });
 
-            var seed = _swarms[0];
-            var receiver = _swarms[1];
             seed.Options.RecentStateRecvTimeout = TimeSpan.FromDays(1);
 
             try
@@ -1558,7 +1565,7 @@ namespace Libplanet.Tests.Net
 
             for (int i = 0; i < 10; i++)
             {
-                var block = await seedChain.MineBlock(_fx1.Address1);
+                var block = await seedChain.MineBlock(seed.Address);
                 receiverChain.Append(block);
             }
 
@@ -1568,7 +1575,7 @@ namespace Libplanet.Tests.Net
             seedChain.Swap(forked, false);
             for (int i = 0; i < 10; i++)
             {
-                await seedChain.MineBlock(_fx1.Address1);
+                await seedChain.MineBlock(seed.Address);
             }
 
             var actionExecutionCount = 0;

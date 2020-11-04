@@ -3,7 +3,7 @@ parameters:
   testDisplayName: xunit.console.exe *.Tests.dll
   testCommand: "mono --server xunit.runner.console.*/tools/net471/xunit.console.exe"
   testArguments: -verbose -parallel none
-  testTimeoutInMinutes: 12
+  testTimeoutInMinutes: 16
   excludeTests: ""
   publicTestResult: true
 

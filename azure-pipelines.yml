@@ -25,6 +25,7 @@ jobs:
       testArguments: >-
         --logger trx
         --collect "Code coverage"
+        --logger "console;verbosity=normal"
   - task: Bash@3
     displayName: codecov
     inputs:
@@ -77,7 +78,7 @@ jobs:
     parameters:
       configuration: $(configuration)
       turnServerUrl: $(turnServerUrl)
-      testArguments: -parallel none -stoponfail
+      testArguments: -parallel none -stoponfail -verbose
   timeoutInMinutes: 30
 
 - job: macOS_Mono
@@ -88,7 +89,7 @@ jobs:
     parameters:
       configuration: $(configuration)
       turnServerUrl: $(turnServerUrl)
-      testArguments: -parallel none -stoponfail
+      testArguments: -parallel none -stoponfail -verbose
   timeoutInMinutes: 30
 
 - job: Windows_Mono
@@ -104,7 +105,7 @@ jobs:
       configuration: $(configuration)
       turnServerUrl: $(turnServerUrl)
       testPrefix: '"$PROGRAMFILES/Mono/bin/mono.exe"'
-      testArguments: -appdomains denied -parallel none -stoponfail
+      testArguments: -appdomains denied -parallel none -stoponfail -verbose
       copySQLitePCLRaw: true
   timeoutInMinutes: 30
 
@@ -141,7 +142,7 @@ jobs:
     parameters:
       configuration: $(configuration)
       turnServerUrl: $(turnServerUrl)
-      testArguments: -parallel none -stoponfail
+      testArguments: -parallel none -stoponfail -verbose
   timeoutInMinutes: 30
 
 - job: macOS_NETCore
@@ -152,7 +153,7 @@ jobs:
     parameters:
       configuration: $(configuration)
       turnServerUrl: $(turnServerUrl)
-      testArguments: -parallel none -stoponfail
+      testArguments: -parallel none -stoponfail -verbose
   timeoutInMinutes: 30
 
 - job: Windows_NETCore
@@ -163,7 +164,7 @@ jobs:
     parameters:
       configuration: $(configuration)
       turnServerUrl: $(turnServerUrl)
-      testArguments: -parallel none -stoponfail
+      testArguments: -parallel none -stoponfail -verbose
   timeoutInMinutes: 30
 
 # Run tests with an alternative locale configuration
@@ -175,7 +176,7 @@ jobs:
     parameters:
       configuration: $(configuration)
       turnServerUrl: $(turnServerUrl)
-      testArguments: -parallel none -stoponfail
+      testArguments: -parallel none -stoponfail -verbose
       locale: ar_SA.UTF8
   timeoutInMinutes: 30
 
@@ -187,7 +188,7 @@ jobs:
     parameters:
       configuration: $(configuration)
       turnServerUrl: $(turnServerUrl)
-      testArguments: -parallel none -stoponfail
+      testArguments: -parallel none -stoponfail -verbose
       locale: he_IL.UTF8
   timeoutInMinutes: 30
 
@@ -199,7 +200,7 @@ jobs:
     parameters:
       configuration: $(configuration)
       turnServerUrl: $(turnServerUrl)
-      testArguments: -parallel none -stoponfail
+      testArguments: -parallel none -stoponfail -verbose
       locale: fr_FR.UTF8
   timeoutInMinutes: 30
 
@@ -211,4 +212,4 @@ jobs:
     parameters:
       configuration: $(configuration)
       turnServerUrl: $(turnServerUrl)
-      testArguments: -parallel none -stoponfail
+      testArguments: -parallel none -stoponfail -verbose
