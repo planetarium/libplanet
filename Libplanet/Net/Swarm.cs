@@ -270,6 +270,7 @@ namespace Libplanet.Net
                 await Transport.StopAsync(waitFor, cancellationToken);
             }
 
+            BlockDemand = null;
             _logger.Debug($"{nameof(Swarm<T>)} stopped.");
         }
 

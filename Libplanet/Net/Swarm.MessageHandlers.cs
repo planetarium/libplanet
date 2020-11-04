@@ -185,7 +185,7 @@ namespace Libplanet.Net
                 if (IsDemandNeeded(header))
                 {
                     _logger.Debug(
-                        "BlockHashDemand #{index} {blockHash} from {peer}.",
+                        "BlockDemand #{index} {blockHash} from {peer}.",
                         header.Index,
                         ByteUtil.Hex(header.Hash),
                         peer);
