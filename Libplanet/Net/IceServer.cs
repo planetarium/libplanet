@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Sockets;
 using System.Threading.Tasks;
 using Libplanet.Stun;
 using Serilog;
@@ -46,36 +45,23 @@ namespace Libplanet.Net
                         throw new ArgumentException($"{url} isn't valid TURN url.");
                     }
 
-                    try
-                    {
-                        int port = url.IsDefaultPort
-                            ? TurnClient.TurnDefaultPort
-                            : url.Port;
-                        var turnClient = new TurnClient(
-                            url.Host,
-                            server.Username,
-                            server.Credential,
-                            port);
+                    int port = url.IsDefaultPort
+                        ? TurnClient.TurnDefaultPort
+                        : url.Port;
+                    var turnClient = new TurnClient(
+                        url.Host,
+                        server.Username,
+                        server.Credential,
+                        port);
 
-                        // Check connectability
-                        await turnClient.GetMappedAddressAsync();
-
-                        Log.Debug($"TURN client is created: {url.Host}:{url.Port}");
-                        return turnClient;
-                    }
-                    catch (Exception e)
+                    var isConnectable = await turnClient.IsConnectable();
+                    if (!isConnectable)
                     {
-                        if (e is ArgumentException || e is SocketException)
-                        {
-                            Log.Error(
-                                "An unexpected exception occurred during" +
-                                $" {nameof(CreateTurnClient)}: {e}", e);
-                        }
-                        else
-                        {
-                            throw;
-                        }
+                        continue;
                     }
+
+                    Log.Debug($"TURN client is created: {url.Host}:{url.Port}");
+                    return turnClient;
                 }
             }
 
