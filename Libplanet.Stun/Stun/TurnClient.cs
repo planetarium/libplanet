@@ -327,6 +327,8 @@ namespace Libplanet.Stun
                     );
                 }
             }
+
+            _control?.Dispose();
         }
 
         private void EnsureConnection()
