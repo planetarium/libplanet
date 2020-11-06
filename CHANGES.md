@@ -19,6 +19,9 @@ To be released.
     to mine if it takes longer than 4 seconds to collect and validate them.
     Those rest staged transactions are postponed until next block mining.
     [[#1057], [#1059]]
+ -  `BlockChain<T>.ContainsBlock()` method was optimized so that it does not
+    needlessly load an entire block, but looks up only an index instead.
+    [[#1057], [#1059]]
  -  `BlockChain<T>` became not to validate genesis block during fork,
     where the state store is not an implementation of `IBlockStatesStore`.
     [[#1063]]

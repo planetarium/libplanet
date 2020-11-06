@@ -416,10 +416,11 @@ namespace Libplanet.Blockchain
             _rwlock.EnterReadLock();
             try
             {
-                return _blocks.ContainsKey(blockHash) &&
-                       _blocks[blockHash].Index is long branchPointIndex &&
-                       branchPointIndex <= Tip?.Index &&
-                       this[branchPointIndex].Hash.Equals(blockHash);
+                return
+                    _blocks.ContainsKey(blockHash) &&
+                    Store.GetBlockIndex(blockHash) is { } branchPointIndex &&
+                    branchPointIndex <= Tip.Index &&
+                    Store.IndexBlockHash(Id, branchPointIndex).Equals(blockHash);
             }
             finally
             {
