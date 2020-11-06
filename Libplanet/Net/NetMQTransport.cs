@@ -60,7 +60,7 @@ namespace Libplanet.Net
 
         private TaskCompletionSource<object> _runningEvent;
         private CancellationToken _cancellationToken;
-        private ConcurrentDictionary<Address, DealerSocket> _dealers;
+        private ConcurrentDictionary<string, DealerSocket> _dealers;
 
         /// <summary>
         /// The <see cref="EventHandler" /> triggered when the different version of
@@ -162,7 +162,7 @@ namespace Libplanet.Net
                 _logger,
                 tableSize,
                 bucketSize);
-            _dealers = new ConcurrentDictionary<Address, DealerSocket>();
+            _dealers = new ConcurrentDictionary<string, DealerSocket>();
         }
 
         /// <summary>
@@ -639,10 +639,10 @@ namespace Libplanet.Net
 
                 foreach (BoundPeer peer in peers)
                 {
-                    if (!_dealers.TryGetValue(peer.Address, out DealerSocket dealer))
+                    if (!_dealers.TryGetValue(peer.ToString(), out DealerSocket dealer))
                     {
                         dealer = new DealerSocket(ToNetMQAddress(peer));
-                        _dealers[peer.Address] = dealer;
+                        _dealers[peer.ToString()] = dealer;
                     }
 
                     if (!dealer.TrySendMultipartMessage(TimeSpan.FromSeconds(3), message))
@@ -654,7 +654,7 @@ namespace Libplanet.Net
                         );
 
                         dealer.Dispose();
-                        _dealers.TryRemove(peer.Address, out _);
+                        _dealers.TryRemove(peer.ToString(), out _);
                     }
                 }
             }
@@ -991,12 +991,12 @@ namespace Libplanet.Net
                     await Protocol.RefreshTableAsync(maxAge, cancellationToken);
                     await Protocol.CheckReplacementCacheAsync(cancellationToken);
 
-                    ImmutableHashSet<Address> peerAddresses =
-                        Peers.Select(p => p.Address).ToImmutableHashSet();
-                    foreach (Address address in _dealers.Keys)
+                    ImmutableHashSet<string> peerStrings =
+                        Peers.Select(p => p.ToString()).ToImmutableHashSet();
+                    foreach (string peerString in _dealers.Keys)
                     {
-                        if (!peerAddresses.Contains(address) &&
-                            _dealers.TryGetValue(address, out DealerSocket removed))
+                        if (!peerStrings.Contains(peerString) &&
+                            _dealers.TryGetValue(peerString, out DealerSocket removed))
                         {
                             removed.Dispose();
                         }

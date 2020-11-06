@@ -329,6 +329,7 @@ namespace Libplanet.Stun
                 }
             }
 
+            _control.Dispose();
             Log.Debug($"{nameof(ProcessMessage)} is ended. Connected: {_control.Connected}");
         }
 
