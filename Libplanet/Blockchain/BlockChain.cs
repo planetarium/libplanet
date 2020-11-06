@@ -849,7 +849,16 @@ namespace Libplanet.Blockchain
 
             if (StateStore is TrieStateStore trieStateStore)
             {
-                SetStates(block, actionEvaluations, false);
+                _rwlock.EnterWriteLock();
+                try
+                {
+                    SetStates(block, actionEvaluations, false);
+                }
+                finally
+                {
+                    _rwlock.ExitWriteLock();
+                }
+
                 block = new Block<T>(block, trieStateStore.GetRootHash(block.Hash));
             }
 
