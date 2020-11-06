@@ -6,6 +6,8 @@ Version 0.10.1
 
 To be released.
 
+ -  The result bytes of `Transaction<T>.Serialize()` became cached
+    under the hood.  [[#1079, #1080]]
  -  Fixed `BlockChain<T>.MineBlock()` method's bug which excludes one's
     all transactions virtually forever after a signer's transactions once have
     been staged without the ascending order of nonce (usually due to their
@@ -25,6 +27,8 @@ To be released.
 [#1059]: https://github.com/planetarium/libplanet/pull/1059
 [#1063]: https://github.com/planetarium/libplanet/pull/1063
 [#1066]: https://github.com/planetarium/libplanet/pull/1066
+[#1079]: https://github.com/planetarium/libplanet/pull/1079
+[#1080]: https://github.com/planetarium/libplanet/pull/1080
 
 
 Version 0.10.0
