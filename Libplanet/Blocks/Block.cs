@@ -72,13 +72,29 @@ namespace Libplanet.Blocks
             PreviousHash = previousHash;
             Timestamp = timestamp;
             Transactions = transactions.OrderBy(tx => tx.Id).ToArray();
-            var codec = new Codec();
-            TxHash = Transactions.Any()
-                ? Hashcash.Hash(
-                    codec.Encode(
-                        new Bencodex.Types.List(Transactions.Select(tx =>
-                            (IValue)tx.ToBencodex(true)))))
-                : (HashDigest<SHA256>?)null;
+            if (Transactions.Any())
+            {
+                byte[][] serializedTxs = Transactions.Select(tx => tx.Serialize(true)).ToArray();
+                int txHashSourceLength = serializedTxs.Select(b => b.Length).Sum() + 2;
+                var txHashSource = new byte[txHashSourceLength];
+
+                // Bencodex lists look like: l...e
+                txHashSource[0] = 0x6c;
+                txHashSource[txHashSourceLength - 1] = 0x65;
+                int offset = 1;
+                foreach (byte[] serializedTx in serializedTxs)
+                {
+                    serializedTx.CopyTo(txHashSource, offset);
+                    offset += serializedTx.Length;
+                }
+
+                TxHash = Hashcash.Hash(txHashSource);
+            }
+            else
+            {
+                TxHash = null;
+            }
+
             PreEvaluationHash = preEvaluationHash ?? Hashcash.Hash(SerializeForHash());
             StateRootHash = stateRootHash;
 
