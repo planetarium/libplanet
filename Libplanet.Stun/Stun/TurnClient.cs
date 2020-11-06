@@ -283,6 +283,7 @@ namespace Libplanet.Stun
                     try
                     {
                         message = await StunMessage.Parse(stream);
+                        Log.Debug("Stun Message is: {message}", message);
                     }
                     catch (TurnClientException e)
                     {
@@ -327,6 +328,8 @@ namespace Libplanet.Stun
                     );
                 }
             }
+
+            Log.Debug($"{nameof(ProcessMessage)} is ended. Connected: {_control.Connected}");
         }
 
         private void EnsureConnection()
