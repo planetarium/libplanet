@@ -35,6 +35,7 @@ namespace Libplanet.Tx
         // If a tx is longer than 50 KiB don't cache its bytes representation to _bytes.
         private const int BytesCacheThreshold = 50 * 1024;
 
+        private TxId? _id;
         private byte[] _signature;
         private byte[] _bytes;
         private int _bytesLength;
@@ -174,10 +175,6 @@ namespace Libplanet.Tx
             PublicKey = publicKey ??
                         throw new ArgumentNullException(nameof(publicKey));
 
-            using var hasher = SHA256.Create();
-            byte[] payload = Serialize(true);
-            Id = new TxId(hasher.ComputeHash(payload));
-
             if (validate)
             {
                 Validate();
@@ -211,7 +208,20 @@ namespace Libplanet.Tx
         /// <para>For more characteristics, see <see cref="TxId"/> type.</para>
         /// </summary>
         /// <seealso cref="TxId"/>
-        public TxId Id { get; }
+        public TxId Id
+        {
+            get
+            {
+                if (!(_id is { } nonNull))
+                {
+                    using var hasher = SHA256.Create();
+                    byte[] payload = Serialize(true);
+                    _id = nonNull = new TxId(hasher.ComputeHash(payload));
+                }
+
+                return nonNull;
+            }
+        }
 
         /// <summary>
         /// The number of previous <see cref="Transaction{T}"/>s committed by

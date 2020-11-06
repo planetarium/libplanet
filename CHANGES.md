@@ -6,6 +6,9 @@ Version 0.10.1
 
 To be released.
 
+ -  `Transaction<T>.Id` property became lazy-loaded and cached if it's once
+    loaded.  (It had been loaded when the object is instantiated.)
+    [[#1079, #1080]]
  -  The result bytes of `Transaction<T>.Serialize()` became cached
     under the hood.  [[#1079, #1080]]
  -  Fixed `BlockChain<T>.MineBlock()` method's bug which excludes one's
