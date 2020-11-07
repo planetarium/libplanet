@@ -639,9 +639,16 @@ namespace Libplanet.Net
 
                 foreach (BoundPeer peer in peers)
                 {
+                    string endpoint = ToNetMQAddress(peer);
                     if (!_dealers.TryGetValue(peer.Address, out DealerSocket dealer))
                     {
-                        dealer = new DealerSocket(ToNetMQAddress(peer));
+                        dealer = new DealerSocket(endpoint);
+                        _dealers[peer.Address] = dealer;
+                    }
+                    else if (dealer.Options.LastEndpoint != endpoint)
+                    {
+                        dealer.Dispose();
+                        dealer = new DealerSocket(endpoint);
                         _dealers[peer.Address] = dealer;
                     }
 
