@@ -31,7 +31,13 @@ namespace Libplanet.Tx
     {
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
 
+        // If a tx is longer than 50 KiB don't cache its bytes representation to _bytes.
+        private const int BytesCacheThreshold = 50 * 1024;
+
+        private TxId? _id;
         private byte[] _signature;
+        private byte[] _bytes;
+        private int _bytesLength;
 
         /// <summary>
         /// Creates a new <see cref="Transaction{T}"/>.
@@ -168,10 +174,6 @@ namespace Libplanet.Tx
             PublicKey = publicKey ??
                         throw new ArgumentNullException(nameof(publicKey));
 
-            using var hasher = SHA256.Create();
-            byte[] payload = Serialize(true);
-            Id = new TxId(hasher.ComputeHash(payload));
-
             if (validate)
             {
                 Validate();
@@ -205,7 +207,20 @@ namespace Libplanet.Tx
         /// <para>For more characteristics, see <see cref="TxId"/> type.</para>
         /// </summary>
         /// <seealso cref="TxId"/>
-        public TxId Id { get; }
+        public TxId Id
+        {
+            get
+            {
+                if (!(_id is { } nonNull))
+                {
+                    using var hasher = SHA256.Create();
+                    byte[] payload = Serialize(true);
+                    _id = nonNull = new TxId(hasher.ComputeHash(payload));
+                }
+
+                return nonNull;
+            }
+        }
 
         /// <summary>
         /// The number of previous <see cref="Transaction{T}"/>s committed by
@@ -278,6 +293,19 @@ namespace Libplanet.Tx
         public HashDigest<SHA256>? GenesisHash { get; }
 
         /// <summary>
+        /// The bytes length in its serialized format.
+        /// </summary>
+        public int BytesLength
+        {
+            get
+            {
+                // Note that Serialize() by itself caches _byteLength, so that this ByteLength
+                // property never invokes Serialize() more than once.
+                return _bytesLength > 0 ? _bytesLength : Serialize(true).Length;
+            }
+        }
+
+        /// <summary>
         /// Decodes a <see cref="Transaction{T}"/>'s
         /// <a href="https://bencodex.org/">Bencodex</a> representation.
         /// </summary>
@@ -295,7 +323,14 @@ namespace Libplanet.Tx
                     $"{value.GetType()}");
             }
 
-            return new Transaction<T>(dict);
+            var tx = new Transaction<T>(dict);
+            if (bytes.Length < BytesCacheThreshold)
+            {
+                tx._bytes = bytes;
+            }
+
+            tx._bytesLength = bytes.Length;
+            return tx;
         }
 
         /// <summary>
@@ -482,8 +517,49 @@ namespace Libplanet.Tx
         /// representation of this <see cref="Transaction{T}"/>.</returns>
         public byte[] Serialize(bool sign)
         {
-            var codec = new Codec();
-            return codec.Encode(ToBencodex(sign));
+            Codec codec = null;
+            if (_bytes is { })
+            {
+                if (sign)
+                {
+                    return _bytes;
+                }
+
+                // Poor man's way to optimize serialization without signature...
+                // FIXME: We need to rather reorganize the serialization layout
+                //        & optimize Bencodex.Codec in general.
+                if (_signature is { } && _signature.Length > 0)
+                {
+                    codec = new Codec();
+                    byte[] sigDict =
+                        codec.Encode(Dictionary.Empty.Add(RawTransaction.SignatureKey, _signature));
+                    var sigField = new byte[sigDict.Length - 1];
+                    Array.Copy(sigDict, 1, sigField, 0, sigField.Length);
+                    int sigOffset = _bytes.IndexOf(sigField);
+                    if (sigOffset > 0)
+                    {
+                        int sigEnd = sigOffset + _signature.Length;
+                        var buffer = new byte[_bytes.Length - sigField.Length];
+                        Array.Copy(_bytes, buffer, sigOffset);
+                        Array.Copy(_bytes, sigEnd, buffer, sigOffset, _bytesLength - sigEnd);
+                        return buffer;
+                    }
+                }
+            }
+
+            codec ??= new Codec();
+            byte[] serialized = codec.Encode(ToBencodex(sign));
+            if (sign)
+            {
+                if (serialized.Length < BytesCacheThreshold)
+                {
+                    _bytes = serialized;
+                }
+
+                _bytesLength = serialized.Length;
+            }
+
+            return serialized;
         }
 
         /// <summary>

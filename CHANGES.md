@@ -183,6 +183,7 @@ To be released.
  -  Added `BlockHeader.EvaluationDigest` property.  [[#931], [#935]]
  -  Added `Block<T>.PreEvaluationHash` property.  [[#931], [#935]]
  -  Added `BlockHeader.PreEvaluationHash` property.  [[#931], [#935]]
+ -  Added `Transaction<T>.BytesLength` property.  [[#201], [#1050]]
  -  Added `HashDigest(ImmutableArray<byte>)` constructor.  [[#931], [#935]]
  -  Incomplete block states became able to be handled in more flexible way.
     [[#929], [#934], [#946], [#954]]
