@@ -172,7 +172,13 @@ namespace Libplanet.Blockchain
                 GetBalance,
                 trieGetter);
 
-            if (Count == 0)
+            if (inFork && !(StateStore is IBlockStatesStore))
+            {
+                // If the store is BlockStateStore, have to fork state reference too so
+                // should use Append().
+                Store.AppendIndex(Id, genesisBlock.Hash);
+            }
+            else if (Count == 0)
             {
                 Append(
                     genesisBlock,
@@ -1899,22 +1905,21 @@ namespace Libplanet.Blockchain
             if (nextBlock.Index != index)
             {
                 return new InvalidBlockIndexException(
-                    $"The expected block index is #{index}, but its index " +
-                    $"is #{nextBlock.Index}.");
+                    $"The expected index of block {nextBlock.Hash} is #{index}, " +
+                    $"but its index is #{nextBlock.Index}.");
             }
 
             if (nextBlock.Difficulty < difficulty)
             {
                 return new InvalidBlockDifficultyException(
-                    $"The expected difficulty of the block #{index} " +
-                    $"is {difficulty}, but its difficulty is " +
-                    $"{nextBlock.Difficulty}.");
+                    $"The expected difficulty of the block #{index} {nextBlock.Hash} " +
+                    $"is {difficulty}, but its difficulty is {nextBlock.Difficulty}.");
             }
 
             if (nextBlock.TotalDifficulty != totalDifficulty)
             {
                 var msg = $"The expected total difficulty of the block #{index} " +
-                          $"is {totalDifficulty}, but its difficulty is " +
+                          $"{nextBlock.Hash} is {totalDifficulty}, but its difficulty is " +
                           $"{nextBlock.TotalDifficulty}.";
                 return new InvalidBlockTotalDifficultyException(
                     nextBlock.Difficulty,
@@ -1927,13 +1932,14 @@ namespace Libplanet.Blockchain
                 if (prevHash is null)
                 {
                     return new InvalidBlockPreviousHashException(
-                        "the genesis block must have not previous block");
+                        $"The genesis block {nextBlock.Hash} should not have previous hash, " +
+                        $"but its value is {nextBlock.PreviousHash}.");
                 }
 
                 return new InvalidBlockPreviousHashException(
-                    $"The block #{index} is not continuous from the " +
+                    $"The block #{index} {nextBlock.Hash} is not continuous from the " +
                     $"block #{index - 1}; while previous block's hash is " +
-                    $"{prevHash}, the block #{index}'s pointer to " +
+                    $"{prevHash}, the block #{index} {nextBlock.Hash}'s pointer to " +
                     "the previous hash refers to " +
                     (nextBlock.PreviousHash?.ToString() ?? "nothing") + ".");
             }
@@ -1941,9 +1947,9 @@ namespace Libplanet.Blockchain
             if (nextBlock.Timestamp < prevTimestamp)
             {
                 return new InvalidBlockTimestampException(
-                    $"The block #{index}'s timestamp " +
-                    $"({nextBlock.Timestamp}) is earlier than" +
-                    $" the block #{index - 1}'s ({prevTimestamp}).");
+                    $"The block #{index} {nextBlock.Hash}'s timestamp " +
+                    $"({nextBlock.Timestamp}) is earlier than " +
+                    $"the block #{index - 1}'s ({prevTimestamp}).");
             }
 
             return null;
@@ -1958,9 +1964,9 @@ namespace Libplanet.Blockchain
 
                 if (!rootHash.Equals(block.StateRootHash))
                 {
-                    var message = $"The block #{block.Index}'s state root hash is " +
-                                    $"{block.StateRootHash?.ToString()}, but the execution " +
-                                    $"result is {rootHash.ToString()}.";
+                    var message = $"The block #{block.Index} {block.Hash}'s state root hash " +
+                                  $"is {block.StateRootHash?.ToString()}, but the execution " +
+                                  $"result is {rootHash.ToString()}.";
                     throw new InvalidBlockStateRootHashException(
                         block.StateRootHash,
                         rootHash,

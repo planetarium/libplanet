@@ -624,34 +624,45 @@ namespace Libplanet.Net
 
         private void DoBroadcast(object sender, NetMQQueueEventArgs<(Address?, Message)> e)
         {
-            (Address? except, Message msg) = e.Queue.Dequeue();
-
-            // FIXME Should replace with PUB/SUB model.
-            List<BoundPeer> peers = Protocol.PeersToBroadcast(except).ToList();
-            _logger.Debug("Broadcasting message: {Message}", msg);
-            _logger.Debug("Peers to broadcast: {PeersCount}", peers.Count);
-
-            NetMQMessage message = msg.ToNetMQMessage(_privateKey, AsPeer, _appProtocolVersion);
-
-            foreach (BoundPeer peer in peers)
+            try
             {
-                if (!_dealers.TryGetValue(peer.Address, out DealerSocket dealer))
-                {
-                    dealer = new DealerSocket(ToNetMQAddress(peer));
-                    _dealers[peer.Address] = dealer;
-                }
+                (Address? except, Message msg) = e.Queue.Dequeue();
 
-                if (!dealer.TrySendMultipartMessage(TimeSpan.FromSeconds(3), message))
-                {
-                    _logger.Warning(
-                        "Broadcasting timed out. [Peer: {Peer}, Message: {Message}]",
-                        peer,
-                        msg
-                    );
+                // FIXME Should replace with PUB/SUB model.
+                List<BoundPeer> peers = Protocol.PeersToBroadcast(except).ToList();
+                _logger.Debug("Broadcasting message: {Message}", msg);
+                _logger.Debug("Peers to broadcast: {PeersCount}", peers.Count);
 
-                    dealer.Dispose();
-                    _dealers.TryRemove(peer.Address, out _);
+                NetMQMessage message = msg.ToNetMQMessage(_privateKey, AsPeer, _appProtocolVersion);
+
+                foreach (BoundPeer peer in peers)
+                {
+                    if (!_dealers.TryGetValue(peer.Address, out DealerSocket dealer))
+                    {
+                        dealer = new DealerSocket(ToNetMQAddress(peer));
+                        _dealers[peer.Address] = dealer;
+                    }
+
+                    if (!dealer.TrySendMultipartMessage(TimeSpan.FromSeconds(3), message))
+                    {
+                        _logger.Warning(
+                            "Broadcasting timed out. [Peer: {Peer}, Message: {Message}]",
+                            peer,
+                            msg
+                        );
+
+                        dealer.Dispose();
+                        _dealers.TryRemove(peer.Address, out _);
+                    }
                 }
+            }
+            catch (Exception exc)
+            {
+                _logger.Error(
+                    exc,
+                    $"Unexpected error occurred during {nameof(DoBroadcast)}(). {{error}}",
+                    exc);
+                throw;
             }
         }
 
