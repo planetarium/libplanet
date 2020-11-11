@@ -172,21 +172,24 @@ namespace Libplanet.Blockchain
                 GetBalance,
                 trieGetter);
 
-            if (inFork && !(StateStore is IBlockStatesStore))
+            if (Count == 0)
             {
-                // If the store is BlockStateStore, have to fork state reference too so
-                // should use Append().
-                Store.AppendIndex(Id, genesisBlock.Hash);
-            }
-            else if (Count == 0)
-            {
-                Append(
-                    genesisBlock,
-                    currentTime: genesisBlock.Timestamp,
-                    renderBlocks: !inFork,
-                    renderActions: !inFork,
-                    evaluateActions: !inFork
-                );
+                if (StateStore is TrieStateStore tss && tss.ContainsBlockStates(genesisBlock.Hash))
+                {
+                    // If the store is BlockStateStore, have to fork state reference too so
+                    // should use Append().
+                    Store.AppendIndex(Id, genesisBlock.Hash);
+                }
+                else
+                {
+                    Append(
+                        genesisBlock,
+                        currentTime: genesisBlock.Timestamp,
+                        renderBlocks: !inFork,
+                        renderActions: !inFork,
+                        evaluateActions: !inFork
+                    );
+                }
             }
             else if (!Genesis.Equals(genesisBlock))
             {
