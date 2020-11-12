@@ -1602,6 +1602,8 @@ namespace Libplanet.Net
             }
 
             int count = 0, totalCount = (int)(workspace.Count - initHeight);
+            long actionsCount = 0, txsCount = 0;
+            DateTimeOffset executionStarted = DateTimeOffset.Now;
             _logger.Debug("Starts to execute actions of {0} blocks.", totalCount);
             var blockHashes = workspace.IterateBlockHashes((int)initHeight);
             foreach (HashDigest<SHA256> hash in blockHashes)
@@ -1615,6 +1617,12 @@ namespace Libplanet.Net
                 }
 
                 workspace.ExecuteActions(block);
+                IEnumerable<Transaction<T>>
+                    transactions = block.Transactions.ToImmutableArray();
+                txsCount += transactions.Count();
+                actionsCount +=
+                    transactions.Sum(tx => tx.Actions.Count);
+
                 _logger.Debug("Executed actions in the block {0}.", block.Hash);
                 progress?.Report(new ActionExecutionState()
                 {
@@ -1625,6 +1633,14 @@ namespace Libplanet.Net
             }
 
             _logger.Debug("Finished to execute actions.");
+
+            TimeSpan spent = DateTimeOffset.Now - executionStarted;
+            _logger.Verbose(
+                "Executed totally {0} blocks, {1} txs, {2} actions during {3}",
+                totalCount,
+                actionsCount,
+                txsCount,
+                spent);
         }
 
         private async Task BroadcastTxAsync(
