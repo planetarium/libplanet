@@ -1203,15 +1203,27 @@ namespace Libplanet.Blockchain
                 block
             );
             IReadOnlyList<ActionEvaluation> evaluations = null;
+            DateTimeOffset evaluateActionStarted = DateTimeOffset.Now;
             evaluations = BlockEvaluator.EvaluateActions(
                 block,
                 stateCompleters ?? StateCompleterSet<T>.Recalculate
             );
+            _logger.Verbose(
+                $"[#{{0}} {{1}}] {nameof(BlockEvaluator.EvaluateActions)} spent {{2}} ms.",
+                block.Index,
+                block.Hash,
+                (DateTimeOffset.Now - evaluateActionStarted).TotalMilliseconds);
 
             _rwlock.EnterWriteLock();
             try
             {
+                DateTimeOffset setStatesStarted = DateTimeOffset.Now;
                 SetStates(block, evaluations, buildStateReferences: true);
+                _logger.Verbose(
+                    $"[#{{0}} {{1}}] {nameof(SetStates)} spent {{2}} ms.",
+                    block.Index,
+                    block.Hash,
+                    (DateTimeOffset.Now - setStatesStarted).TotalMilliseconds);
             }
             finally
             {
