@@ -249,5 +249,10 @@ namespace Libplanet.Action
         /// <inheritdoc/>
         public IAccountStateDelta Execute(IActionContext context) =>
             InnerAction.Execute(context);
+
+        public override string ToString()
+        {
+            return $"{GetType().Namespace}.{GetType().Name}[{_innerAction}]";
+        }
     }
 }
