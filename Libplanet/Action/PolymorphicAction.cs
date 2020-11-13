@@ -249,5 +249,12 @@ namespace Libplanet.Action
         /// <inheritdoc/>
         public IAccountStateDelta Execute(IActionContext context) =>
             InnerAction.Execute(context);
+
+        public override string ToString()
+        {
+            const string polymorphicActionFullName = nameof(Libplanet) + "." + nameof(Action) +
+                                                     "." + nameof(PolymorphicAction<T>);
+            return $"{polymorphicActionFullName}<{_innerAction}>";
+        }
     }
 }

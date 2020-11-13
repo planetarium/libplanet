@@ -7,6 +7,7 @@ using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Store.Trie;
 using Libplanet.Tx;
+using Serilog;
 
 namespace Libplanet.Action
 {
@@ -136,7 +137,11 @@ namespace Libplanet.Action
                 IAccountStateDelta nextStates = context.PreviousStates;
                 try
                 {
+                    DateTimeOffset actionExecutionStarted = DateTimeOffset.Now;
                     nextStates = action.Execute(context);
+                    TimeSpan spent = DateTimeOffset.Now - actionExecutionStarted;
+
+                    Log.Verbose($"{action} execution spent {spent.TotalMilliseconds} ms.");
                 }
                 catch (Exception e)
                 {
