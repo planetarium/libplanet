@@ -6,6 +6,11 @@ Version 0.10.1
 
 To be released.
 
+ -  `Transaction<T>.Id` property became lazy-loaded and cached if it's once
+    loaded.  (It had been loaded when the object is instantiated.)
+    [[#1079, #1080]]
+ -  The result bytes of `Transaction<T>.Serialize()` became cached
+    under the hood.  [[#1079, #1080]]
  -  Fixed `BlockChain<T>.MineBlock()` method's bug which excludes one's
     all transactions virtually forever after a signer's transactions once have
     been staged without the ascending order of nonce (usually due to their
@@ -13,6 +18,9 @@ To be released.
  -  `BlockChain<T>.MineBlock()` method became to cut off staged transactions
     to mine if it takes longer than 4 seconds to collect and validate them.
     Those rest staged transactions are postponed until next block mining.
+    [[#1057], [#1059]]
+ -  `BlockChain<T>.ContainsBlock()` method was optimized so that it does not
+    needlessly load an entire block, but looks up only an index instead.
     [[#1057], [#1059]]
  -  `BlockChain<T>` became not to validate genesis block during fork,
     where the state store is not an implementation of `IBlockStatesStore`.
@@ -25,6 +33,8 @@ To be released.
 [#1059]: https://github.com/planetarium/libplanet/pull/1059
 [#1063]: https://github.com/planetarium/libplanet/pull/1063
 [#1066]: https://github.com/planetarium/libplanet/pull/1066
+[#1079]: https://github.com/planetarium/libplanet/pull/1079
+[#1080]: https://github.com/planetarium/libplanet/pull/1080
 
 
 Version 0.10.0
