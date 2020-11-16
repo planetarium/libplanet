@@ -17,7 +17,7 @@ To be released.
 ### Added APIs
 
  -  Added `ITransport` interface.  [[#1052]]
- -  Added `NetMQTransport` which implements `ITransport`.  [[#1052]]
+ -  Added `NetMQTransport` class which implements `ITransport`.  [[#1052]]
  -  Added `Message` abstract class.  [[#1052]]
  -  Added `BlockExceedingTransactionsException` class.  [[#1104], [#1110]]
  -  Added `BlockChain<T>.GetStagedTransactionIds()` method.  [[#1089]]

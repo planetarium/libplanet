@@ -70,7 +70,7 @@ namespace Libplanet.Net
         private DifferentAppProtocolVersionEncountered _differentAppProtocolVersionEncountered;
 
         /// <summary>
-        /// Method creates <see cref="NetMQTransport"/> instance.
+        /// Creates <see cref="NetMQTransport"/> instance.
         /// </summary>
         /// <param name="privateKey"><see cref="PrivateKey"/> of the transport layer.</param>
         /// <param name="appProtocolVersion"><see cref="AppProtocolVersion"/>-typed
@@ -78,8 +78,8 @@ namespace Libplanet.Net
         /// <param name="trustedAppProtocolVersionSigners"><see cref="PublicKey"/>s of parties
         /// to trust <see cref="AppProtocolVersion"/>s they signed.  To trust any party, pass
         /// <c>null</c>.</param>
-        /// <param name="tableSize">Number of buckets in Kademlia-based routing table.</param>
-        /// <param name="bucketSize">Size of bucket in Kademlia-based routing table.</param>
+        /// <param name="tableSize">The number of buckets in Kademlia-based routing table.</param>
+        /// <param name="bucketSize">The size of bucket in Kademlia-based routing table.</param>
         /// <param name="workers">The number of background workers (i.e., threads).</param>
         /// <param name="host">A hostname to be a part of a public endpoint, that peers use when
         /// they connect to this node.  Note that this is not a hostname to listen to;
@@ -91,12 +91,12 @@ namespace Libplanet.Net
         /// <param name="differentAppProtocolVersionEncountered">A delegate called back when a peer
         /// with one different from <paramref name="appProtocolVersion"/>, and their version is
         /// signed by a trusted party (i.e., <paramref name="trustedAppProtocolVersionSigners"/>).
-        /// If this callback returns <c>false</c> an encountered peer is ignored.  If this callback
-        /// is omitted all peers with different <see cref="AppProtocolVersion"/>s are ignored.
+        /// If this callback returns <c>false</c>, an encountered peer is ignored.  If this callback
+        /// is omitted, all peers with different <see cref="AppProtocolVersion"/>s are ignored.
         /// </param>
         /// <param name="logger"><see cref="Log.Logger"/> for logging.</param>
         /// <exception cref="ArgumentException">Thrown when both <paramref name="host"/> and
-        /// <paramref name="iceServers"/> are null.</exception>
+        /// <paramref name="iceServers"/> are <c>null</c>.</exception>
         public NetMQTransport(
             PrivateKey privateKey,
             AppProtocolVersion appProtocolVersion,
@@ -364,7 +364,7 @@ namespace Libplanet.Net
         /// <summary>
         /// Adds given <paramref name="peers"/> to routing table by sending <see cref="Ping"/>.
         /// </summary>
-        /// <param name="peers"><see cref="IEnumerable{Peer}"/> of peers to add.</param>
+        /// <param name="peers">The peers to add.</param>
         /// <param name="timeout">A timeout of waiting for the reply of <see cref="Ping"/>
         /// message sent to <paramref name="peers"/>.
         /// If <c>null</c> is given, task never halts by itself
@@ -373,7 +373,8 @@ namespace Libplanet.Net
         /// A cancellation token used to propagate notification that this
         /// operation should be canceled.</param>
         /// <returns>An awaitable task without value.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when <see cref="Protocol"/> is null.
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when <see cref="Protocol"/> is <c>null</c>.
         /// </exception>
         public async Task AddPeersAsync(
             IEnumerable<Peer> peers,
@@ -444,7 +445,7 @@ namespace Libplanet.Net
         }
 
         /// <summary>
-        /// Find and returns the <see cref="Peer"/> match with given <paramref name="target"/>.
+        /// Finds a <see cref="Peer"/> whose address value matches <paramref name="target"/>.
         /// </summary>
         /// <param name="target"><see cref="Address"/> to find.</param>
         /// <param name="depth">Recursive operation depth to search the peer from network.</param>
@@ -471,9 +472,9 @@ namespace Libplanet.Net
         }
 
         /// <summary>
-        /// Method to visualize Kademlia-based routing table status.
-        /// Note: Will be outdated.
+        /// Visualizes Kademlia-based routing table status.
         /// </summary>
+        /// <remarks>Will be outdated.</remarks>
         /// <returns><see cref="string"/> representation of the routing table.</returns>
         public string Trace() => Protocol is null ? string.Empty : Protocol.Trace();
 
@@ -486,9 +487,11 @@ namespace Libplanet.Net
         }
 
         /// <summary>
-        /// Task complete when the transport is running.
+        /// Waits until this <see cref="NetMQTransport"/> instance gets started to run.
         /// </summary>
-        /// <returns>An awaitable task without value.</returns>
+        /// <seealso cref="Swarm{T}.WaitForRunningAsync()"/>
+        /// <returns>A <see cref="Task"/> completed when <see cref="Running"/>
+        /// property becomes <c>true</c>.</returns>
         public Task WaitForRunningAsync() => _runningEvent.Task;
 
         /// <inheritdoc />
@@ -638,8 +641,8 @@ namespace Libplanet.Net
         /// Refreshes all peers in routing table.
         /// </summary>
         /// <param name="timeout">A timeout of waiting for the reply of messages.
-        /// If <c>null</c> is given, task never halts by itself even the message gives
-        /// no any response.</param>
+        /// If <c>null</c> is given, the task never halts by itself
+        /// even no any response was given from the the target peer.</param>
         /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
         /// operation should be canceled.</param>
