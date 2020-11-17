@@ -36,5 +36,10 @@ namespace Libplanet.Net
         /// The timeout used to block download in preloading.
         /// </summary>
         public TimeSpan BlockDownloadTimeout { get; set; } = Timeout.InfiniteTimeSpan;
+
+        /// <summary>
+        /// The lifespan of block demand.
+        /// </summary>
+        public TimeSpan BlockDemandLifespan { get; set; } = TimeSpan.FromMinutes(1);
     }
 }
