@@ -16,10 +16,10 @@ FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
 WORKDIR /app
 COPY --from=build-env /app/out .
 
-# Install native deps
+# Install native deps & utilities for production
 RUN apt-get update \
     && apt-get install -y --allow-unauthenticated \
-        libc6-dev \
+        libc6-dev jq \
      && rm -rf /var/lib/apt/lists/*
 
 # Runtime settings
