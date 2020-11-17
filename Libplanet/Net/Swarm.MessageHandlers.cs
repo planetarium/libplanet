@@ -182,7 +182,7 @@ namespace Libplanet.Net
 
             using (await _blockSyncMutex.LockAsync(cancellationToken))
             {
-                if (IsDemandNeeded(header))
+                if (IsDemandNeeded(header, peer))
                 {
                     _logger.Debug(
                         "BlockDemand #{index} {blockHash} from {peer}.",
