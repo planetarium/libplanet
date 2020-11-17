@@ -63,6 +63,7 @@ namespace Libplanet.Explorer.Executable
                 );
                 var blockChain =
                     new BlockChain<AppAgnosticAction>(policy, store, store, options.GenesisBlock);
+                Startup.PreloadedSingleton = false;
                 Startup.BlockChainSingleton = blockChain;
                 Startup.StoreSingleton = store;
 
@@ -189,6 +190,7 @@ namespace Libplanet.Explorer.Executable
         {
             if (swarm is null)
             {
+                Startup.PreloadedSingleton = true;
                 return;
             }
 
@@ -216,6 +218,7 @@ namespace Libplanet.Explorer.Executable
                 cancellationToken: cancellationToken
             );
             Console.Error.WriteLine("Finished preloading.");
+            Startup.PreloadedSingleton = true;
 
             await swarm.StartAsync(cancellationToken: cancellationToken);
         }
@@ -293,9 +296,13 @@ namespace Libplanet.Explorer.Executable
 
         internal class Startup : IBlockChainContext<AppAgnosticAction>
         {
+            public bool Preloaded => PreloadedSingleton;
+
             public BlockChain<AppAgnosticAction> BlockChain => BlockChainSingleton;
 
             public IStore Store => StoreSingleton;
+
+            internal static bool PreloadedSingleton { get; set; }
 
             internal static BlockChain<AppAgnosticAction> BlockChainSingleton { get; set; }
 

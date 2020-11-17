@@ -6,6 +6,8 @@ using GraphQL.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
+using Libplanet.Explorer.GraphTypes;
+using Libplanet.Explorer.Interfaces;
 using Libplanet.Explorer.Store;
 using Libplanet.Store;
 using Libplanet.Tx;
@@ -18,13 +20,17 @@ namespace Libplanet.Explorer.Queries
         private static BlockChain<T> _chain;
         private static IStore _store;
 
-        public Query(BlockChain<T> chain, IStore store)
+        public Query(IBlockChainContext<T> chainContext)
         {
             Field<BlockQuery<T>>("blockQuery", resolve: context => new { });
             Field<TransactionQuery<T>>("transactionQuery", resolve: context => new { });
+            Field<NonNullGraphType<NodeStateType<T>>>(
+                "nodeState",
+                resolve: context => chainContext
+            );
 
-            _chain = chain;
-            _store = store;
+            _chain = chainContext.BlockChain;
+            _store = chainContext.Store;
             Name = "Query";
         }
 
