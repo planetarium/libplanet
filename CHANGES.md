@@ -14,12 +14,15 @@ To be released.
 
 ### Added APIs
 
+ -  Added `BlockChain<T>.GetStagedTransactionIds()` method.  [[#1089]]
+
 ### Behavioral changes
 
 ### Bug fixes
 
 ### CLI tools
 
+[#1089]: https://github.com/planetarium/libplanet/pull/1089
 
 
 Version 0.10.0
