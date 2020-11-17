@@ -11,6 +11,8 @@ namespace Libplanet.Explorer.Interfaces
     public interface IBlockChainContext<T>
         where T : IAction, new()
     {
+        bool Preloaded { get; }
+
         BlockChain<T> BlockChain { get; }
 
         IStore Store { get; }
@@ -28,7 +30,7 @@ namespace Libplanet.Explorer.Interfaces
                 context,
                 (_) =>
                 {
-                    var s = new Schema { Query = new Query<T>(context.BlockChain, context.Store) };
+                    var s = new Schema { Query = new Query<T>(context) };
                     return s;
                 }
             );
