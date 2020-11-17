@@ -2194,6 +2194,115 @@ namespace Libplanet.Tests.Net
             }
         }
 
+        [Fact(Timeout = Timeout)]
+        public async Task BlockDemand()
+        {
+            SwarmOptions swarmOptions = new SwarmOptions
+            {
+                // This value should be shorter than fillblock's timeout for testing.
+                BlockDemandLifespan = TimeSpan.FromSeconds(3),
+            };
+            var minerKey = new PrivateKey();
+            var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
+            Swarm<DumbAction> swarm = CreateSwarm(
+                privateKey: new PrivateKey(),
+                options: swarmOptions);
+            var dummy = TestUtils.MakeBlockChain(policy, new DefaultStore(path: null));
+            for (var i = 0; i < 20; i++)
+            {
+                await dummy.MineBlock(minerKey.ToAddress());
+            }
+
+            try
+            {
+                await StartAsync(swarm);
+                BoundPeer peer = swarm.AsPeer as BoundPeer;
+                Assert.NotNull(peer);
+                _logger.Debug(
+                    "{0}///{1}///{2}",
+                    peer.PublicKey,
+                    peer.EndPoint,
+                    peer.PublicIPAddress);
+
+                Block<DumbAction> lowerBlock = dummy[10];
+                Block<DumbAction> higherBlock = dummy[20];
+                Assert.True(lowerBlock.TotalDifficulty < higherBlock.TotalDifficulty);
+                var privateKey1 = new PrivateKey();
+                var privateKey2 = new PrivateKey();
+                var sender1 = new BoundPeer(
+                    privateKey1.PublicKey,
+                    new DnsEndPoint("127.0.0.1", 20000));
+                var sender2 = new BoundPeer(
+                    privateKey2.PublicKey,
+                    new DnsEndPoint("127.0.0.1", 20001));
+                _logger.Debug(
+                    "{0}///{1}///{2}",
+                    sender1.PublicKey,
+                    sender1.EndPoint,
+                    sender1.PublicIPAddress);
+                _logger.Debug("STEP1");
+
+                var netMQAddress = $"tcp://{peer.EndPoint.Host}:{peer.EndPoint.Port}";
+                using (var socket = new DealerSocket(netMQAddress))
+                {
+                    var request =
+                        new BlockHeaderMessage(swarm.BlockChain.Genesis.Hash, higherBlock.Header);
+                    socket.SendMultipartMessage(
+                        request.ToNetMQMessage(privateKey1, sender1, swarm.AppProtocolVersion)
+                    );
+                    await swarm.BlockHeaderReceived.WaitAsync();
+                    await Task.Delay(100);
+                    Assert.NotNull(swarm.BlockDemand);
+                    var timestamp = swarm.BlockDemand.Value.Timestamp;
+                    Assert.Equal(higherBlock.Index, swarm.BlockDemand.Value.Header.Index);
+
+                    request =
+                        new BlockHeaderMessage(swarm.BlockChain.Genesis.Hash, lowerBlock.Header);
+                    socket.SendMultipartMessage(
+                        request.ToNetMQMessage(privateKey2, sender2, swarm.AppProtocolVersion)
+                    );
+                    await swarm.BlockHeaderReceived.WaitAsync();
+                    // Await for context change
+                    await Task.Delay(100);
+                    Assert.NotNull(swarm.BlockDemand);
+                    // Demand will not be refreshed.
+                    Assert.Equal(higherBlock.Index, swarm.BlockDemand.Value.Header.Index);
+                    Assert.Equal(timestamp, swarm.BlockDemand.Value.Timestamp);
+
+                    await Task.Delay(
+                        swarmOptions.BlockDemandLifespan + TimeSpan.FromMilliseconds(100));
+
+                    request =
+                        new BlockHeaderMessage(swarm.BlockChain.Genesis.Hash, higherBlock.Header);
+                    socket.SendMultipartMessage(
+                        request.ToNetMQMessage(privateKey1, sender1, swarm.AppProtocolVersion)
+                    );
+                    await swarm.BlockHeaderReceived.WaitAsync();
+                    await Task.Delay(100);
+                    Assert.NotNull(swarm.BlockDemand);
+                    // Demand will not be refreshed.
+                    Assert.Equal(higherBlock.Index, swarm.BlockDemand.Value.Header.Index);
+                    Assert.Equal(timestamp, swarm.BlockDemand.Value.Timestamp);
+
+                    request =
+                        new BlockHeaderMessage(swarm.BlockChain.Genesis.Hash, lowerBlock.Header);
+                    socket.SendMultipartMessage(
+                        request.ToNetMQMessage(privateKey2, sender2, swarm.AppProtocolVersion)
+                    );
+                    await swarm.BlockHeaderReceived.WaitAsync();
+                    await Task.Delay(100);
+                    _logger.Debug("STEP5");
+                    Assert.NotNull(swarm.BlockDemand);
+                    // Demand will be replaced to lower one because it's stale.
+                    Assert.Equal(lowerBlock.Index, swarm.BlockDemand.Value.Header.Index);
+                }
+            }
+            finally
+            {
+                await StopAsync(swarm);
+            }
+        }
+
         private async Task<Task> StartAsync<T>(
             Swarm<T> swarm,
             IImmutableSet<Address> trustedStateValidators = null,
