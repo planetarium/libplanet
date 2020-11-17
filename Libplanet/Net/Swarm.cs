@@ -1971,6 +1971,8 @@ namespace Libplanet.Net
                 {
                     using (await _blockSyncMutex.LockAsync(cancellationToken))
                     {
+                        _logger.Debug(
+                            $"{nameof(ProcessFillBlocks)} finished. Reset {nameof(BlockDemand)}");
                         BlockDemand = null;
                     }
                 }
