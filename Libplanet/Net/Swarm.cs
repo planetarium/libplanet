@@ -34,6 +34,7 @@ namespace Libplanet.Net
 
         private readonly AsyncLock _blockSyncMutex;
         private readonly AsyncLock _runningMutex;
+        private readonly TimeSpan _blockDemandLifespan = TimeSpan.FromMinutes(1);
 
         private readonly ILogger _logger;
         private readonly IStore _store;
@@ -1690,11 +1691,13 @@ namespace Libplanet.Net
             BroadcastMessage(except, message);
         }
 
-        private bool IsDemandNeeded(BlockHeader target)
+        private bool IsDemandNeeded(BlockHeader target, BoundPeer peer)
         {
-            return target.TotalDifficulty > BlockChain.Tip.TotalDifficulty &&
-                   (BlockDemand is null ||
-                    BlockDemand.Value.Header.TotalDifficulty < target.TotalDifficulty);
+            return target.TotalDifficulty > BlockChain.Tip.TotalDifficulty
+                   && (BlockDemand is null
+                       || (BlockDemand.Value.Timestamp + _blockDemandLifespan <
+                           DateTimeOffset.UtcNow && !BlockDemand.Value.Peer.Equals(peer))
+                       || BlockDemand.Value.Header.TotalDifficulty < target.TotalDifficulty);
         }
 
         private async Task SyncPreviousBlocksAsync(
