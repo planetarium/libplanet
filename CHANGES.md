@@ -28,13 +28,19 @@ To be released.
  -  Fixed a bug where `Swarm<T>.GetPeerChainStateAsync()` has thrown
     `NullReferenceException` when peers in table does failed to respond.
     [[#1066]]
+ -  Fixed a bug where `BlockChain<T>` didn't lock rwlock for `SetStates()`
+    during `MineBlock()`.  [[#1077]]
+ -  `PolymorphicAction<T>` became to have more readable string representation.
+    [[#1085]]
 
 [#1057]: https://github.com/planetarium/libplanet/pull/1057
 [#1059]: https://github.com/planetarium/libplanet/pull/1059
 [#1063]: https://github.com/planetarium/libplanet/pull/1063
 [#1066]: https://github.com/planetarium/libplanet/pull/1066
+[#1077]: https://github.com/planetarium/libplanet/pull/1077
 [#1079]: https://github.com/planetarium/libplanet/pull/1079
 [#1080]: https://github.com/planetarium/libplanet/pull/1080
+[#1085]: https://github.com/planetarium/libplanet/pull/1085
 
 
 Version 0.10.0
