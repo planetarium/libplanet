@@ -189,7 +189,7 @@ namespace Libplanet.Net
                         header.Index,
                         ByteUtil.Hex(header.Hash),
                         peer);
-                    BlockDemand = new BlockDemand(header, peer);
+                    BlockDemand = new BlockDemand(header, peer, DateTimeOffset.UtcNow);
                 }
                 else
                 {

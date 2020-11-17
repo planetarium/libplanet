@@ -1,4 +1,5 @@
 #nullable enable
+using System;
 using Libplanet.Blocks;
 
 namespace Libplanet.Net
@@ -18,10 +19,17 @@ namespace Libplanet.Net
         /// </summary>
         public readonly BoundPeer Peer;
 
-        public BlockDemand(BlockHeader header, BoundPeer peer)
+        /// <summary>
+        /// The <see cref="DateTimeOffset"/> when
+        /// the corresponding block information was received.
+        /// </summary>
+        public readonly DateTimeOffset Timestamp;
+
+        public BlockDemand(BlockHeader header, BoundPeer peer, DateTimeOffset timestamp)
         {
             Header = header;
             Peer = peer;
+            Timestamp = timestamp;
         }
     }
 }
