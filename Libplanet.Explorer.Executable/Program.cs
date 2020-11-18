@@ -194,7 +194,7 @@ namespace Libplanet.Explorer.Executable
             }
             else
             {
-                return new RichStore(
+                return new LiteDBRichStore(
                     innerStore,
                     path: options.StorePath,
                     flush: false,

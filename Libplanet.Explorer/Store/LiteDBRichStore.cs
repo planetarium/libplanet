@@ -17,7 +17,7 @@ using FileMode = LiteDB.FileMode;
 namespace Libplanet.Explorer.Store
 {
     // It assumes running Explorer as online-mode.
-    public class RichStore : IRichStore
+    public class LiteDBRichStore : IRichStore
     {
         private const string TxRefCollectionName = "block_ref";
         private const string SignerRefCollectionName = "signer_ref";
@@ -30,7 +30,7 @@ namespace Libplanet.Explorer.Store
         // FIXME we should separate it.
         private readonly BaseBlockStatesStore _store;
 
-        public RichStore(
+        public LiteDBRichStore(
             BaseBlockStatesStore store,
             string path,
             bool journal = true,
