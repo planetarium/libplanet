@@ -63,7 +63,9 @@ namespace Libplanet.Store.Trie
         internal MerkleTrie(IKeyValueStore keyValueStore, INode? root = null, bool secure = false)
         {
             KeyValueStore = keyValueStore;
-            Root = root;
+            Root = root is HashNode hashNode && hashNode.HashDigest.Equals(EmptyRootHash)
+                ? null
+                : root;
             _secure = secure;
         }
 
