@@ -923,6 +923,24 @@ namespace Libplanet.Blockchain
             }
         }
 
+        /// <summary>
+        /// Lists all staged <see cref="TxId"/>s.
+        /// </summary>
+        /// <returns><see cref="IImmutableSet{TxId}"/> of staged transactions.</returns>
+        public IImmutableSet<TxId> GetStagedTransactionIds()
+        {
+            _rwlock.EnterReadLock();
+
+            try
+            {
+                return Store.IterateStagedTransactionIds().ToImmutableHashSet();
+            }
+            finally
+            {
+                _rwlock.ExitReadLock();
+            }
+        }
+
         internal void Append(
             Block<T> block,
             DateTimeOffset currentTime,
@@ -1626,20 +1644,6 @@ namespace Libplanet.Blockchain
             }
         }
 #pragma warning restore MEN003
-
-        internal IImmutableSet<TxId> GetStagedTransactionIds()
-        {
-            _rwlock.EnterReadLock();
-
-            try
-            {
-                return Store.IterateStagedTransactionIds().ToImmutableHashSet();
-            }
-            finally
-            {
-                _rwlock.ExitReadLock();
-            }
-        }
 
         internal void SetStates(
             Block<T> block,
