@@ -1755,6 +1755,23 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetNextTxNonce
   nameWithType: BlockChain<T>.GetNextTxNonce
   nameWithType.vb: BlockChain(Of T).GetNextTxNonce
+- uid: Libplanet.Blockchain.BlockChain`1.GetStagedTransactionIds
+  name: GetStagedTransactionIds()
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetStagedTransactionIds
+  commentId: M:Libplanet.Blockchain.BlockChain`1.GetStagedTransactionIds
+  fullName: Libplanet.Blockchain.BlockChain<T>.GetStagedTransactionIds()
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetStagedTransactionIds()
+  nameWithType: BlockChain<T>.GetStagedTransactionIds()
+  nameWithType.vb: BlockChain(Of T).GetStagedTransactionIds()
+- uid: Libplanet.Blockchain.BlockChain`1.GetStagedTransactionIds*
+  name: GetStagedTransactionIds
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetStagedTransactionIds_
+  commentId: Overload:Libplanet.Blockchain.BlockChain`1.GetStagedTransactionIds
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.BlockChain<T>.GetStagedTransactionIds
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetStagedTransactionIds
+  nameWithType: BlockChain<T>.GetStagedTransactionIds
+  nameWithType.vb: BlockChain(Of T).GetStagedTransactionIds
 - uid: Libplanet.Blockchain.BlockChain`1.GetState(Libplanet.Address,System.Nullable{Libplanet.HashDigest{SHA256}},Libplanet.Blockchain.StateCompleter{`0})
   name: GetState(Address, Nullable<HashDigest<SHA256>>, StateCompleter<T>)
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetState_Libplanet_Address_System_Nullable_Libplanet_HashDigest_SHA256___Libplanet_Blockchain_StateCompleter__0__
