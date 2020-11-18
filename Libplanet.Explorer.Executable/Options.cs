@@ -56,6 +56,36 @@ namespace Libplanet.Explorer.Executable
         public string AppProtocolVersionToken { get; set; }
 
         [Option(
+            "mysql-server",
+            Default = null,
+            HelpText = "A hostname of MySQL server.")]
+        public string MySQLServer { get; set; }
+
+        [Option(
+            "mysql-port",
+            Default = null,
+            HelpText = "A port of MySQL server.")]
+        public uint? MySQLPort { get; set; }
+
+        [Option(
+            "mysql-username",
+            Default = null,
+            HelpText = "The name of MySQL user.")]
+        public string MySQLUsername { get; set; }
+
+        [Option(
+            "mysql-password",
+            Default = null,
+            HelpText = "The password of MySQL user.")]
+        public string MySQLPassword { get; set; }
+
+        [Option(
+            "mysql-database",
+            Default = null,
+            HelpText = "The name of MySQL database to use.")]
+        public string MySQLDatabase { get; set; }
+
+        [Option(
             's',
             "seed",
             HelpText = @"Seed nodes to join to the network as a node. The format of each

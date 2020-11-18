@@ -34,7 +34,8 @@ namespace Libplanet.Explorer.GraphTypes
                 resolve: ctx =>
                 {
                     // FIXME: use store with DI.
-                    if (ctx.UserContext[nameof(IBlockChainContext<T>.Store)] is RichStore richStore)
+                    const string storeKey = nameof(IBlockChainContext<T>.Store);
+                    if (ctx.UserContext[storeKey] is IRichStore richStore)
                     {
                         return richStore
                             .IterateTxReferences(ctx.Source.Id)
@@ -42,9 +43,9 @@ namespace Libplanet.Explorer.GraphTypes
                     }
                     else
                     {
-                        ctx.Errors.Add(
-                            new ExecutionError(
-                                $"This feature 'BlockRef' needs{nameof(RichStore)}"));
+                        var exceptionMessage =
+                            $"This feature 'BlockRef' needs{nameof(IRichStore)} implementation";
+                        ctx.Errors.Add(new ExecutionError(exceptionMessage));
                         return null;
                     }
                 });
