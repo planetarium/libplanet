@@ -29,7 +29,8 @@ namespace Libplanet.Explorer.Store
         // FIXME we should separate it.
         private readonly BaseBlockStatesStore _store;
 
-        private readonly QueryFactory _db;
+        private readonly MySqlCompiler _compiler;
+        private readonly string _connectionString;
 
         public MySQLRichStore(BaseBlockStatesStore store, MySQLRichStoreOptions options)
         {
@@ -44,9 +45,8 @@ namespace Libplanet.Explorer.Store
                 Port = options.Port,
             };
 
-            var connection = new MySqlConnection(builder.ConnectionString);
-            var compiler = new MySqlCompiler();
-            _db = new QueryFactory(connection, compiler);
+            _connectionString = builder.ConnectionString;
+            _compiler = new MySqlCompiler();
 
             _blockCache = new LruCache<HashDigest<SHA256>, BlockDigest>(capacity: 512);
         }
@@ -364,18 +364,18 @@ namespace Libplanet.Explorer.Store
             int offset = 0,
             int limit = int.MaxValue)
         {
-            Query query = _db.Query("tx_references").Select(new[] { "tx_id", "block_hash" });
+            using QueryFactory db = OpenDB();
+            Query query = db.Query("tx_references").Select(new[] { "tx_id", "block_hash" });
             if (!(txId is null))
             {
                 query = query.Where("tx_id", txId?.ToByteArray());
             }
 
             query = desc ? query.OrderByDesc("tx_nonce") : query.OrderBy("tx_nonce");
-            return query.Offset(offset).Limit(limit).Get<byte[][]>()
-                .Select(row =>
-                    new ValueTuple<TxId, HashDigest<SHA256>>(
-                        new TxId(row[0]),
-                        new HashDigest<SHA256>(row[1])));
+            query = query.Offset(offset).Limit(limit);
+            return db.GetDictionary(query).Select(dict => new ValueTuple<TxId, HashDigest<SHA256>>(
+                new TxId((byte[])dict["tx_id"]),
+                new HashDigest<SHA256>((byte[])dict["block_hash"])));
         }
 
         public void StoreSignerReferences(TxId txId, long txNonce, Address signer)
@@ -394,7 +394,8 @@ namespace Libplanet.Explorer.Store
             int offset = 0,
             int limit = int.MaxValue)
         {
-            var query = _db.Query("signer_references").Where("signer", signer.ToByteArray())
+            using QueryFactory db = OpenDB();
+            var query = db.Query("signer_references").Where("signer", signer.ToByteArray())
                 .Offset(offset)
                 .Limit(limit)
                 .Select("tx_id");
@@ -423,7 +424,8 @@ namespace Libplanet.Explorer.Store
             int offset = 0,
             int limit = int.MaxValue)
         {
-            var query = _db.Query("updated_address_references")
+            using QueryFactory db = OpenDB();
+            var query = db.Query("updated_address_references")
                 .Where("updated_address", updatedAddress.ToByteArray())
                 .Offset(offset)
                 .Limit(limit)
@@ -451,11 +453,15 @@ namespace Libplanet.Explorer.Store
             where T : IAction, new()
             => _store.ForkStates(sourceChainId, destinationChainId, branchpoint);
 
+        private QueryFactory OpenDB() =>
+            new QueryFactory(new MySqlConnection(_connectionString), _compiler);
+
         private void Insert(string tableName, IReadOnlyDictionary<string, object> data)
         {
+            using QueryFactory db = OpenDB();
             try
             {
-                _db.Query(tableName).Insert(data);
+                db.Query(tableName).Insert(data);
             }
             catch (MySqlException e)
             {
@@ -476,9 +482,10 @@ namespace Libplanet.Explorer.Store
             string[] columns,
             IEnumerable<object[]> data)
         {
+            using QueryFactory db = OpenDB();
             try
             {
-                _db.Query(tableName).Insert(columns, data);
+                db.Query(tableName).Insert(columns, data);
             }
             catch (MySqlException e)
             {
