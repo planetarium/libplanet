@@ -28,6 +28,8 @@ To be released.
  -  Fixed a bug where `Swarm<T>.GetPeerChainStateAsync()` has thrown
     `NullReferenceException` when peers in table does failed to respond.
     [[#1066]]
+ -  Fixed a bug where `MerkleTrie` having `MerkleTrie.EmptyRootHash` as root
+    node, couldn't insert new node.  [[#1091]]
 
 [#1057]: https://github.com/planetarium/libplanet/pull/1057
 [#1059]: https://github.com/planetarium/libplanet/pull/1059
@@ -35,6 +37,7 @@ To be released.
 [#1066]: https://github.com/planetarium/libplanet/pull/1066
 [#1079]: https://github.com/planetarium/libplanet/pull/1079
 [#1080]: https://github.com/planetarium/libplanet/pull/1080
+[#1091]: https://github.com/planetarium/libplanet/pull/1091
 
 
 Version 0.10.0
