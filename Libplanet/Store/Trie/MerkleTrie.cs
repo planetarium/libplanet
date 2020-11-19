@@ -71,7 +71,7 @@ namespace Libplanet.Store.Trie
 
         public HashDigest<SHA256> Hash => Root?.Hash() ?? EmptyRootHash;
 
-        private INode? Root { get; }
+        internal INode? Root { get; }
 
         private IKeyValueStore KeyValueStore { get; }
 
