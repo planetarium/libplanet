@@ -28,13 +28,23 @@ To be released.
  -  Fixed a bug where `Swarm<T>.GetPeerChainStateAsync()` has thrown
     `NullReferenceException` when peers in table does failed to respond.
     [[#1066]]
+ -  Fixed a bug where `BlockChain<T>` had not locked readers–writer lock for
+    state changes during `MineBlock()`.  [[#1077], [#1087]]
+ -  `PolymorphicAction<T>.ToString()` became more human-readable. 
+    [[#1085], [#1087]]
+ -  Fixed a bug where `MerkleTrie` had had `MrrkleTrie.EmptyRootHash` as root
+    node, which had been unable to insert new nodes.  [[#1087], [#1091]]
 
 [#1057]: https://github.com/planetarium/libplanet/pull/1057
 [#1059]: https://github.com/planetarium/libplanet/pull/1059
 [#1063]: https://github.com/planetarium/libplanet/pull/1063
 [#1066]: https://github.com/planetarium/libplanet/pull/1066
+[#1077]: https://github.com/planetarium/libplanet/pull/1077
 [#1079]: https://github.com/planetarium/libplanet/pull/1079
 [#1080]: https://github.com/planetarium/libplanet/pull/1080
+[#1085]: https://github.com/planetarium/libplanet/pull/1085
+[#1087]: https://github.com/planetarium/libplanet/pull/1087
+[#1091]: https://github.com/planetarium/libplanet/pull/1091
 
 
 Version 0.10.0

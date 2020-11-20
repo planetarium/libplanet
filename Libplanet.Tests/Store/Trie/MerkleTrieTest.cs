@@ -16,6 +16,10 @@ namespace Libplanet.Tests.Store.Trie
                 = new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size));
             var merkleTrie = new MerkleTrie(new MemoryKeyValueStore(), hashDigest);
             Assert.Equal(hashDigest, merkleTrie.Hash);
+
+            // See https://github.com/planetarium/libplanet/pull/1091
+            merkleTrie = new MerkleTrie(new MemoryKeyValueStore(), MerkleTrie.EmptyRootHash);
+            Assert.Null(merkleTrie.Root);
         }
 
         [Fact]
