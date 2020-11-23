@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using Libplanet.Stun;
+using Serilog;
 
 namespace Libplanet.Net
 {
@@ -59,13 +60,21 @@ namespace Libplanet.Net
                         // Check connectability
                         await turnClient.GetMappedAddressAsync();
 
+                        Log.Debug($"TURN client is created: {url.Host}:{url.Port}");
                         return turnClient;
                     }
-                    catch (ArgumentException)
+                    catch (Exception e)
                     {
-                    }
-                    catch (SocketException)
-                    {
+                        if (e is ArgumentException || e is SocketException)
+                        {
+                            Log.Error(
+                                "An unexpected exception occurred during" +
+                                $" {nameof(CreateTurnClient)}: {e}", e);
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
                 }
             }
