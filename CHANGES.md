@@ -8,7 +8,7 @@ To be released.
 
  -  `Transaction<T>.Id` property became lazy-loaded and cached if it's once
     loaded.  (It had been loaded when the object is instantiated.)
-    [[#1079, #1080]]
+    [[#1079], [#1080]]
  -  The result bytes of `Transaction<T>.Serialize()` became cached
     under the hood.  [[#1079, #1080]]
  -  Fixed `BlockChain<T>.MineBlock()` method's bug which excludes one's
@@ -30,7 +30,7 @@ To be released.
     [[#1066]]
  -  Fixed a bug where `BlockChain<T>` had not locked readers–writer lock for
     state changes during `MineBlock()`.  [[#1077], [#1087]]
- -  `PolymorphicAction<T>.ToString()` became more human-readable. 
+ -  `PolymorphicAction<T>.ToString()` became more human-readable.
     [[#1085], [#1087]]
  -  Fixed a bug where `MerkleTrie` had had `MrrkleTrie.EmptyRootHash` as root
     node, which had been unable to insert new nodes.  [[#1087], [#1091]]
