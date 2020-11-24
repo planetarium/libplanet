@@ -15,14 +15,43 @@ To be released.
 ### Added APIs
 
  -  Added `BlockChain<T>.GetStagedTransactionIds()` method.  [[#1089]]
+ -  (Libplanet.RocksDBStore) Added `maxTotalWalSize` and `keepLogFileNum`
+    parameters into `RocksDBStore` constructor.  [[#1065], [#1102]]
+ -  Added `Swarm<T>.BlockDemand` property.  [[#1068], [#1102]]
+ -  Added `BlockDemand` struct.  [[#1068], [#1102]]
+ -  Added `Block<T>.Header` property.  [[#1070], [#1102]]
+ -  Added `TurnClient.PublicAddress` property.  [[#1074], [#1102]]
+ -  Added `TurnClient.EndPoint` property.  [[#1074], [#1102]]
+ -  Added `TurnClient.BehindNAT` property.  [[#1074], [#1102]]
+ -  Added `TurnClient.InitializeTurnAsync(int, CancellationToken)` method.
+    [[#1074], [#1102]]
+ -  Added `TurnClient.StartAsync(int, CancellationToken)` method.
+    [[#1074], [#1102]]
+ -  Added `TurnClient.ReconnectTurn(int, CancellationToken)` method.
+    [[#1074], [#1102]]
+ -  Added `TurnClient.IsConnectable(CancellationToken)` method.
+    [[#1074], [#1102]]
+ -  Added `TurnClient.ReconnectTurn(CancellationToken)` method.
+    [[#1074], [#1102]]
 
 ### Behavioral changes
+
+ -  `Swarm<T>` became not to receive states from trusted peers.
+    [[#1061], [#1102]]
+ -  `Swarm<T>` became not to retry when block downloading.  [[#1062], [#1102]]
 
 ### Bug fixes
 
 ### CLI tools
 
+[#1061]: https://github.com/planetarium/libplanet/pull/1061
+[#1062]: https://github.com/planetarium/libplanet/pull/1062
+[#1065]: https://github.com/planetarium/libplanet/pull/1065
+[#1068]: https://github.com/planetarium/libplanet/pull/1068
+[#1070]: https://github.com/planetarium/libplanet/pull/1070
+[#1074]: https://github.com/planetarium/libplanet/pull/1074
 [#1089]: https://github.com/planetarium/libplanet/pull/1089
+[#1102]: https://github.com/planetarium/libplanet/pull/1102
 
 
 Version 0.10.1
