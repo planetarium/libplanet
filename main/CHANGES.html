@@ -74,6 +74,38 @@
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="cli-tools">CLI tools</h3>
+<h2 id="version-0101">Version 0.10.1</h2>
+<p>Released on November 24, 2020.</p>
+<ul>
+<li><code>Transaction&lt;T&gt;.Id</code> property became lazy-loaded and cached if it's once
+loaded.  (It had been loaded when the object is instantiated.)
+[<a href="https://github.com/planetarium/libplanet/pull/1079">#1079</a>, <a href="https://github.com/planetarium/libplanet/pull/1080">#1080</a>]</li>
+<li>The result bytes of <code>Transaction&lt;T&gt;.Serialize()</code> became cached
+under the hood.  [[#1079, #1080]]</li>
+<li>Fixed <code>BlockChain&lt;T&gt;.MineBlock()</code> method's bug which excludes one's
+all transactions virtually forever after a signer's transactions once have
+been staged without the ascending order of nonce (usually due to their
+inconsistent propagation latency on the network).  [<a href="https://github.com/planetarium/libplanet/pull/1057">#1057</a>, <a href="https://github.com/planetarium/libplanet/pull/1059">#1059</a>]</li>
+<li><code>BlockChain&lt;T&gt;.MineBlock()</code> method became to cut off staged transactions
+to mine if it takes longer than 4 seconds to collect and validate them.
+Those rest staged transactions are postponed until next block mining.
+[<a href="https://github.com/planetarium/libplanet/pull/1057">#1057</a>, <a href="https://github.com/planetarium/libplanet/pull/1059">#1059</a>]</li>
+<li><code>BlockChain&lt;T&gt;.ContainsBlock()</code> method was optimized so that it does not
+needlessly load an entire block, but looks up only an index instead.
+[<a href="https://github.com/planetarium/libplanet/pull/1057">#1057</a>, <a href="https://github.com/planetarium/libplanet/pull/1059">#1059</a>]</li>
+<li><code>BlockChain&lt;T&gt;</code> became not to validate genesis block during fork,
+where the state store is not an implementation of <code>IBlockStatesStore</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/1063">#1063</a>]</li>
+<li>Fixed a bug where <code>Swarm&lt;T&gt;.GetPeerChainStateAsync()</code> has thrown
+<code>NullReferenceException</code> when peers in table does failed to respond.
+[<a href="https://github.com/planetarium/libplanet/pull/1066">#1066</a>]</li>
+<li>Fixed a bug where <code>BlockChain&lt;T&gt;</code> had not locked readers–writer lock for
+state changes during <code>MineBlock()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1077">#1077</a>, <a href="https://github.com/planetarium/libplanet/pull/1087">#1087</a>]</li>
+<li><code>PolymorphicAction&lt;T&gt;.ToString()</code> became more human-readable.
+[<a href="https://github.com/planetarium/libplanet/pull/1085">#1085</a>, <a href="https://github.com/planetarium/libplanet/pull/1087">#1087</a>]</li>
+<li>Fixed a bug where <code>MerkleTrie</code> had had <code>MrrkleTrie.EmptyRootHash</code> as root
+node, which had been unable to insert new nodes.  [<a href="https://github.com/planetarium/libplanet/pull/1087">#1087</a>, <a href="https://github.com/planetarium/libplanet/pull/1091">#1091</a>]</li>
+</ul>
 <h2 id="version-0100">Version 0.10.0</h2>
 <p>Released on October 27, 2020.</p>
 <h3 id="backward-incompatible-api-changes-1">Backward-incompatible API changes</h3>

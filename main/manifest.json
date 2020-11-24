@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "BQZj0XqiFVP8K1Gczs8FDQ=="
+          "hash": "mZo5CoOy5A802j9r+DMIYw=="
         }
       },
       "is_incremental": false,
@@ -117,7 +117,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Action.ActionEvaluation.html",
-          "hash": "x7B/nwKllt20QskejaJQFg=="
+          "hash": "eCStUHgC7A5JmkFLfWg+Tw=="
         }
       },
       "is_incremental": false,
@@ -225,7 +225,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Action.PolymorphicAction-1.html",
-          "hash": "cLAH87JnJ78zvZ8c/wbjKQ=="
+          "hash": "D4ZBF9NFGtOyXSIJvxMU3Q=="
         }
       },
       "is_incremental": false,
@@ -333,7 +333,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.BlockChain-1.html",
-          "hash": "MqQ0OBoEw5Uww58cj4SHNg=="
+          "hash": "Sp0nFvVrL8yyFFmk6GMu+A=="
         }
       },
       "is_incremental": false,
@@ -585,7 +585,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blocks.Block-1.html",
-          "hash": "/RUyBm0pL9NuFQkXvmxmlQ=="
+          "hash": "rxtwHv4l6CteefI8zik5sw=="
         }
       },
       "is_incremental": false,
@@ -1233,7 +1233,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.IceServer.html",
-          "hash": "W2bPo3/g8yT98oGFlag6Xg=="
+          "hash": "maeQ3emvKkbwHO7XYWY6fQ=="
         }
       },
       "is_incremental": false,
@@ -1401,7 +1401,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Swarm-1.html",
-          "hash": "I/bB8Dvzsl0BGoepUMJeIA=="
+          "hash": "lComJaNWKHbfErvPNXpQfg=="
         }
       },
       "is_incremental": false,
@@ -1677,7 +1677,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.Trie.MerkleTrie.html",
-          "hash": "NkFwlWD3YrORjlWPtJ8Zsg=="
+          "hash": "JCGqBrZ/NLe3yioBqEgJFQ=="
         }
       },
       "is_incremental": false,
@@ -1821,7 +1821,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Tx.Transaction-1.html",
-          "hash": "2ZBhpWtKbx+mkjt10NV62w=="
+          "hash": "C2Z42kGlYnBrT32bcBJsUA=="
         }
       },
       "is_incremental": false,
@@ -1993,10 +1993,11 @@
         "full_build_reason_code": "NoAvailableBuildCache"
       },
       "processors": {
-        "ManagedReferenceDocumentProcessor": {
+        "TocDocumentProcessor": {
           "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 149,
+          "total_file_count": 0,
           "skipped_file_count": 0
         },
         "ConceptualDocumentProcessor": {
@@ -2005,16 +2006,15 @@
           "total_file_count": 11,
           "skipped_file_count": 0
         },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 149,
+          "skipped_file_count": 0
+        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "TocDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0

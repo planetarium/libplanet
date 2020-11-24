@@ -736,6 +736,23 @@ references:
   fullName.vb: Libplanet.Action.PolymorphicAction(Of T).PlainValue
   nameWithType: PolymorphicAction<T>.PlainValue
   nameWithType.vb: PolymorphicAction(Of T).PlainValue
+- uid: Libplanet.Action.PolymorphicAction`1.ToString
+  name: ToString()
+  href: api/Libplanet.Action.PolymorphicAction-1.html#Libplanet_Action_PolymorphicAction_1_ToString
+  commentId: M:Libplanet.Action.PolymorphicAction`1.ToString
+  fullName: Libplanet.Action.PolymorphicAction<T>.ToString()
+  fullName.vb: Libplanet.Action.PolymorphicAction(Of T).ToString()
+  nameWithType: PolymorphicAction<T>.ToString()
+  nameWithType.vb: PolymorphicAction(Of T).ToString()
+- uid: Libplanet.Action.PolymorphicAction`1.ToString*
+  name: ToString
+  href: api/Libplanet.Action.PolymorphicAction-1.html#Libplanet_Action_PolymorphicAction_1_ToString_
+  commentId: Overload:Libplanet.Action.PolymorphicAction`1.ToString
+  isSpec: "True"
+  fullName: Libplanet.Action.PolymorphicAction<T>.ToString
+  fullName.vb: Libplanet.Action.PolymorphicAction(Of T).ToString
+  nameWithType: PolymorphicAction<T>.ToString
+  nameWithType.vb: PolymorphicAction(Of T).ToString
 - uid: Libplanet.Action.RandomExtensions
   name: RandomExtensions
   href: api/Libplanet.Action.RandomExtensions.html
