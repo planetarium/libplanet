@@ -47,7 +47,7 @@ namespace Libplanet.Explorer.Executable
 
             try
             {
-                RichStore store = LoadStore(options);
+                IRichStore store = LoadStore(options);
 
                 var pendingTxs = store.IterateStagedTransactionIds()
                     .ToImmutableHashSet();
@@ -149,7 +149,7 @@ namespace Libplanet.Explorer.Executable
             }
         }
 
-        private static RichStore LoadStore(Options options)
+        private static IRichStore LoadStore(Options options)
         {
             bool readOnlyMode = options.Seeds is null;
             BaseBlockStatesStore innerStore;
@@ -175,12 +175,33 @@ namespace Libplanet.Explorer.Executable
                         availableStoreTypes);
             }
 
-            return new RichStore(
-                innerStore,
-                path: options.StorePath,
-                flush: false,
-                readOnly: readOnlyMode
-            );
+            bool useMySQL = !string.IsNullOrEmpty(options.MySQLDatabase) &&
+                            !string.IsNullOrEmpty(options.MySQLPassword) &&
+                            !string.IsNullOrEmpty(options.MySQLServer) &&
+                            !string.IsNullOrEmpty(options.MySQLUsername) &&
+                            !(options.MySQLPort is null);
+            if (useMySQL)
+            {
+                var mySqlOptions = new MySQLRichStoreOptions(
+                    options.MySQLDatabase,
+                    options.MySQLServer,
+                    options.MySQLPort.Value,
+                    options.MySQLUsername,
+                    options.MySQLPassword);
+                return new MySQLRichStore(
+                    innerStore,
+                    mySqlOptions
+                );
+            }
+            else
+            {
+                return new LiteDBRichStore(
+                    innerStore,
+                    path: options.StorePath,
+                    flush: false,
+                    readOnly: readOnlyMode
+                );
+            }
         }
 
         private static async Task StartSwarmAsync(

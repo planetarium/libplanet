@@ -99,7 +99,7 @@ namespace Libplanet.Explorer.Queries
                 yield break;
             }
 
-            if (_store is RichStore richStore)
+            if (_store is IRichStore richStore)
             {
                 IEnumerable<TxId> txIds;
                 if (!(signer is null))

@@ -45,3 +45,17 @@ GraphQL Playground
 This provides a built-in GraphQL Playground.  The web root path serves it:
 
     /
+
+How to use progressive features
+-------------------------------
+
+Now, it uses `IRichStore` to improve transaction query speed
+and provide more usable features (e.g., `blockRef`).
+
+It provides some implementations like below:
+
+ - `LiteDBRichStore`
+ - `MySQLRichStore`
+
+To use `MySQLRichStore`, it needs to fill command line arguments started with `mysql-` prefix fully and correctly.
+Else, it will use `LiteDBRichStore` as default.
