@@ -36,6 +36,7 @@ namespace Libplanet.Net
         private readonly string _host;
         private readonly IList<IceServer> _iceServers;
         private readonly ILogger _logger;
+        private readonly AsyncLock _turnClientMutex;
 
         private NetMQQueue<NetMQMessage> _replyQueue;
         private NetMQQueue<(Address?, Message)> _broadcastQueue;
@@ -89,6 +90,7 @@ namespace Libplanet.Net
             _host = host;
             _listenPort = listenPort;
             _differentAppProtocolVersionEncountered = differentAppProtocolVersionEncountered;
+            _turnClientMutex = new AsyncLock();
             ProcessMessageHandler = processMessageHandler;
 
             if (_host != null && _listenPort is int listenPortAsInt)
@@ -624,34 +626,45 @@ namespace Libplanet.Net
 
         private void DoBroadcast(object sender, NetMQQueueEventArgs<(Address?, Message)> e)
         {
-            (Address? except, Message msg) = e.Queue.Dequeue();
-
-            // FIXME Should replace with PUB/SUB model.
-            List<BoundPeer> peers = Protocol.PeersToBroadcast(except).ToList();
-            _logger.Debug("Broadcasting message: {Message}", msg);
-            _logger.Debug("Peers to broadcast: {PeersCount}", peers.Count);
-
-            NetMQMessage message = msg.ToNetMQMessage(_privateKey, AsPeer, _appProtocolVersion);
-
-            foreach (BoundPeer peer in peers)
+            try
             {
-                if (!_dealers.TryGetValue(peer.Address, out DealerSocket dealer))
-                {
-                    dealer = new DealerSocket(ToNetMQAddress(peer));
-                    _dealers[peer.Address] = dealer;
-                }
+                (Address? except, Message msg) = e.Queue.Dequeue();
 
-                if (!dealer.TrySendMultipartMessage(TimeSpan.FromSeconds(3), message))
-                {
-                    _logger.Warning(
-                        "Broadcasting timed out. [Peer: {Peer}, Message: {Message}]",
-                        peer,
-                        msg
-                    );
+                // FIXME Should replace with PUB/SUB model.
+                List<BoundPeer> peers = Protocol.PeersToBroadcast(except).ToList();
+                _logger.Debug("Broadcasting message: {Message} as {AsPeer}", msg, AsPeer);
+                _logger.Debug("Peers to broadcast: {PeersCount}", peers.Count);
 
-                    dealer.Dispose();
-                    _dealers.TryRemove(peer.Address, out _);
+                NetMQMessage message = msg.ToNetMQMessage(_privateKey, AsPeer, _appProtocolVersion);
+
+                foreach (BoundPeer peer in peers)
+                {
+                    if (!_dealers.TryGetValue(peer.Address, out DealerSocket dealer))
+                    {
+                        dealer = new DealerSocket(ToNetMQAddress(peer));
+                        _dealers[peer.Address] = dealer;
+                    }
+
+                    if (!dealer.TrySendMultipartMessage(TimeSpan.FromSeconds(3), message))
+                    {
+                        _logger.Warning(
+                            "Broadcasting timed out. [Peer: {Peer}, Message: {Message}]",
+                            peer,
+                            msg
+                        );
+
+                        dealer.Dispose();
+                        _dealers.TryRemove(peer.Address, out _);
+                    }
                 }
+            }
+            catch (Exception exc)
+            {
+                _logger.Error(
+                    exc,
+                    $"Unexpected error occurred during {nameof(DoBroadcast)}(). {{error}}",
+                    exc);
+                throw;
             }
         }
 
@@ -680,6 +693,7 @@ namespace Libplanet.Net
                 try
                 {
                     await Task.Delay(lifetime - TimeSpan.FromMinutes(1), cancellationToken);
+                    _logger.Debug("Refreshing TURN allocation...");
                     lifetime = await _turnClient.RefreshAllocationAsync(lifetime);
                     cancellationToken.ThrowIfCancellationRequested();
                 }
@@ -707,6 +721,7 @@ namespace Libplanet.Net
                 try
                 {
                     await Task.Delay(lifetime - TimeSpan.FromMinutes(1), cancellationToken);
+                    _logger.Debug("Refreshing permissions...");
                     await Task.WhenAll(Protocol.Peers.Select(CreatePermission));
                     cancellationToken.ThrowIfCancellationRequested();
                 }
@@ -920,20 +935,24 @@ namespace Libplanet.Net
             {
                 _logger.Error($"Unexpected error occurred during {nameof(CreatePermission)}: {e}");
 
-                if (!(_turnClient is null))
+                using (await _turnClientMutex.LockAsync(_cancellationToken))
                 {
-                    _logger.Debug("Trying to reconnect to the TURN server...");
+                    if (!(_turnClient is null))
+                    {
+                        _logger.Debug("Trying to reconnect to the TURN server...");
 
-                    _turnClient.Dispose();
-                    _turnCancellationTokenSource.Cancel();
-                    await Task.WhenAny(_turnTasks);
-                    await InitializeTurnClient();
+                        _turnClient.Dispose();
+                        _turnCancellationTokenSource.Cancel();
+                        await Task.WhenAny(_turnTasks);
+                        await InitializeTurnClient();
+                    }
                 }
             }
         }
 
         private async Task InitializeTurnClient()
         {
+            _logger.Debug("Initializing TURN client...");
             _turnCancellationTokenSource = new CancellationTokenSource();
             _turnClient = await IceServer.CreateTurnClient(_iceServers);
 
@@ -948,12 +967,15 @@ namespace Libplanet.Net
                     _cancellationToken
                 );
                 _endPoint = new DnsEndPoint(turnEp.Address.ToString(), turnEp.Port);
+                _logger.Debug($"TURN Endpoint: {_endPoint}");
 
                 _turnTasks = BindMultipleProxies(
                     _listenPort.Value, 3, _turnCancellationTokenSource.Token);
                 _turnTasks.Add(RefreshAllocate(_turnCancellationTokenSource.Token));
                 _turnTasks.Add(RefreshPermissions(_turnCancellationTokenSource.Token));
             }
+
+            _logger.Debug("TURN client is initialized.");
         }
 
         private async Task RefreshTableAsync(

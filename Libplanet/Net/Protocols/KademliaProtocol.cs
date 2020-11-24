@@ -245,6 +245,8 @@ namespace Libplanet.Net.Protocols
                         _logger.Verbose("Check peer {Peer}.", replacement);
 
                         await PingAsync(replacement, _requestTimeout, cancellationToken);
+                        _routing.RemoveCache(replacement);
+                        UpdateAsync(replacement);
                     }
                     catch (PingTimeoutException)
                     {

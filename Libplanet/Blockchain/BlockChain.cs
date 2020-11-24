@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Numerics;
@@ -173,13 +174,22 @@ namespace Libplanet.Blockchain
 
             if (Count == 0)
             {
-                Append(
-                    genesisBlock,
-                    currentTime: genesisBlock.Timestamp,
-                    renderBlocks: !inFork,
-                    renderActions: !inFork,
-                    evaluateActions: !inFork
-                );
+                if (StateStore is TrieStateStore tss && tss.ContainsBlockStates(genesisBlock.Hash))
+                {
+                    // If the store is BlockStateStore, have to fork state reference too so
+                    // should use Append().
+                    Store.AppendIndex(Id, genesisBlock.Hash);
+                }
+                else
+                {
+                    Append(
+                        genesisBlock,
+                        currentTime: genesisBlock.Timestamp,
+                        renderBlocks: !inFork,
+                        renderActions: !inFork,
+                        evaluateActions: !inFork
+                    );
+                }
             }
             else if (!Genesis.Equals(genesisBlock))
             {
@@ -409,10 +419,11 @@ namespace Libplanet.Blockchain
             _rwlock.EnterReadLock();
             try
             {
-                return _blocks.ContainsKey(blockHash) &&
-                       _blocks[blockHash].Index is long branchPointIndex &&
-                       branchPointIndex <= Tip?.Index &&
-                       this[branchPointIndex].Hash.Equals(blockHash);
+                return
+                    _blocks.ContainsKey(blockHash) &&
+                    Store.GetBlockIndex(blockHash) is { } branchPointIndex &&
+                    branchPointIndex <= Tip.Index &&
+                    Store.IndexBlockHash(Id, branchPointIndex).Equals(blockHash);
             }
             finally
             {
@@ -676,6 +687,7 @@ namespace Libplanet.Blockchain
             }
         }
 
+#pragma warning disable MEN003
         /// <summary>
         /// Mines a next <see cref="Block{T}"/> using staged <see cref="Transaction{T}"/>s,
         /// and then <see cref="Append(Block{T}, StateCompleterSet{T}?)"/> it to the chain
@@ -719,16 +731,29 @@ namespace Libplanet.Blockchain
             long difficulty = Policy.GetNextBlockDifficulty(this);
             HashDigest<SHA256>? prevHash = Store.IndexBlockHash(Id, index - 1);
 
-            Transaction<T>[] stagedTransactions = Store
-                .IterateStagedTransactionIds()
-                .Select(Store.GetTransaction<T>)
-                .GroupBy(tx => tx.Signer)
-                .SelectMany(grp => grp.Select((tx, idx) => (tx, idx)))
-                .OrderBy(t => t.Item2)
-                .Select(t => t.Item1)
-                .ToArray();
+            int sessionId = new System.Random().Next();
+            int procId = Process.GetCurrentProcess().Id;
+            _logger.Debug(
+                "Start to mine a block #{Index} [difficulty: {Difficulty}; prev: {prevHash}; " +
+                "session: {SessionId}; proc: {ProcessId}]... ",
+                index,
+                difficulty,
+                prevHash,
+                sessionId,
+                procId
+            );
+
+            ImmutableArray<Transaction<T>> stagedTransactions = ListStagedTransactions();
+            _logger.Debug(
+                "There are {Transactions} staged transactions.",
+                stagedTransactions.Length
+            );
 
             var transactionsToMine = new List<Transaction<T>>();
+            int i = 0;
+
+            // FIXME: The tx collection timeout should be configurable.
+            DateTimeOffset timeout = DateTimeOffset.UtcNow + TimeSpan.FromSeconds(4);
 
             // Makes an empty block to estimate the length of bytes without transactions.
             var estimatedBytes = new Block<T>(
@@ -746,27 +771,44 @@ namespace Libplanet.Blockchain
 
             foreach (Transaction<T> tx in stagedTransactions)
             {
+                _logger.Verbose(
+                    "Preparing mining a block #{Index}; validating a tx {Index}/{Total} " +
+                    "{Transaction}...",
+                    index,
+                    ++i,
+                    stagedTransactions.Length,
+                    tx.Id
+                );
+
+                if (transactionsToMine.Count >= maxTransactions)
+                {
+                    _logger.Information(
+                        "Not all staged transactions will be included in a block #{Index} to " +
+                        "be mined by {Miner}, because it reaches the maximum number of " +
+                        "acceptable transactions: {MaxTransactions}",
+                        index,
+                        miner,
+                        maxTransactions
+                    );
+                    break;
+                }
+
                 if (!Policy.DoesTransactionFollowsPolicy(tx, this))
                 {
+                    _logger.Debug(
+                        "Unstage the tx {Index}/{Total} {Transaction} as it doesn't follow policy.",
+                        i,
+                        stagedTransactions.Length,
+                        tx.Id
+                    );
                     UnstageTransaction(tx);
+                    continue;
                 }
-                else if (!skippedSigners.Contains(tx.Signer) &&
-                         Store.GetTxNonce(Id, tx.Signer) <= tx.Nonce &&
-                         tx.Nonce < GetNextTxNonce(tx.Signer))
-                {
-                    if (transactionsToMine.Count >= maxTransactions)
-                    {
-                        _logger.Information(
-                            "Not all staged transactions will be included in a block #{Index} to " +
-                            "be mined by {Miner}, because it reaches the maximum number of " +
-                            "acceptable transactions: {MaxTransactions}",
-                            index,
-                            miner,
-                            maxTransactions
-                        );
-                        break;
-                    }
 
+                long storeNonce = Store.GetTxNonce(Id, tx.Signer);
+                long nextNonce = GetNextTxNonce(tx.Signer);
+                if (storeNonce <= tx.Nonce && tx.Nonce < nextNonce)
+                {
                     if (estimatedBytes + tx.BytesLength > maxBlockBytes)
                     {
                         // Once someone's tx is excluded from a block, their later txs are also all
@@ -786,6 +828,27 @@ namespace Libplanet.Blockchain
 
                     transactionsToMine.Add(tx);
                     estimatedBytes += tx.BytesLength;
+                }
+                else
+                {
+                    _logger.Debug(
+                        "Tx {Index}/{Total} {Transaction} has an invalid nonce: {Nonce} " +
+                        "({Signer}).",
+                        i,
+                        stagedTransactions.Length,
+                        tx.Id,
+                        tx.Nonce,
+                        tx.Signer
+                    );
+                }
+
+                if (timeout < DateTimeOffset.UtcNow)
+                {
+                    _logger.Debug(
+                        "Reached the time limit to collect staged transactions; other staged " +
+                        "transactions will be mined later."
+                    );
+                    break;
                 }
             }
 
@@ -843,17 +906,47 @@ namespace Libplanet.Blockchain
 
             if (StateStore is TrieStateStore trieStateStore)
             {
-                SetStates(block, actionEvaluations, false);
+                _rwlock.EnterWriteLock();
+                try
+                {
+                    SetStates(block, actionEvaluations, false);
+                }
+                finally
+                {
+                    _rwlock.ExitWriteLock();
+                }
+
                 block = new Block<T>(block, trieStateStore.GetRootHash(block.Hash));
             }
+
+            _logger.Debug(
+                "Mined a block #{Index} [difficulty: {Difficulty}; prev: {prevHash}; " +
+                "session: {SessionId}; proc: {ProcessId}].",
+                index,
+                difficulty,
+                prevHash,
+                sessionId,
+                procId
+            );
 
             if (append)
             {
                 Append(block, currentTime);
+
+                _logger.Debug(
+                    "Appended a block #{Index} [difficulty: {Difficulty}; prev: {prevHash}; " +
+                    "session: {SessionId}; proc: {ProcessId}].",
+                    index,
+                    difficulty,
+                    prevHash,
+                    sessionId,
+                    procId
+                );
             }
 
             return block;
         }
+#pragma warning restore MEN003
 
         /// <summary>
         /// Mines a next <see cref="Block{T}"/> using staged <see cref="Transaction{T}"/>s,
@@ -1197,15 +1290,27 @@ namespace Libplanet.Blockchain
                 block
             );
             IReadOnlyList<ActionEvaluation> evaluations = null;
+            DateTimeOffset evaluateActionStarted = DateTimeOffset.Now;
             evaluations = BlockEvaluator.EvaluateActions(
                 block,
                 stateCompleters ?? StateCompleterSet<T>.Recalculate
             );
+            _logger.Verbose(
+                $"[#{{0}} {{1}}] {nameof(BlockEvaluator.EvaluateActions)} spent {{2}} ms.",
+                block.Index,
+                block.Hash,
+                (DateTimeOffset.Now - evaluateActionStarted).TotalMilliseconds);
 
             _rwlock.EnterWriteLock();
             try
             {
+                DateTimeOffset setStatesStarted = DateTimeOffset.Now;
                 SetStates(block, evaluations, buildStateReferences: true);
+                _logger.Verbose(
+                    $"[#{{0}} {{1}}] {nameof(SetStates)} spent {{2}} ms.",
+                    block.Index,
+                    block.Hash,
+                    (DateTimeOffset.Now - setStatesStarted).TotalMilliseconds);
             }
             finally
             {
@@ -1645,6 +1750,27 @@ namespace Libplanet.Blockchain
         }
 #pragma warning restore MEN003
 
+        internal ImmutableArray<Transaction<T>> ListStagedTransactions()
+        {
+            Transaction<T>[] txs = Store
+                .IterateStagedTransactionIds()
+                .Select(Store.GetTransaction<T>)
+                .ToArray();
+
+            Dictionary<Address, LinkedList<Transaction<T>>> seats = txs
+                .GroupBy(tx => tx.Signer)
+                .Select(g => (g.Key, new LinkedList<Transaction<T>>(g.OrderBy(tx => tx.Nonce))))
+                .ToDictionary(pair => pair.Item1, pair => pair.Item2);
+
+            return txs.Select(tx =>
+            {
+                LinkedList<Transaction<T>> seat = seats[tx.Signer];
+                Transaction<T> first = seat.First.Value;
+                seat.RemoveFirst();
+                return first;
+            }).ToImmutableArray();
+        }
+
         internal void SetStates(
             Block<T> block,
             IReadOnlyList<ActionEvaluation> actionEvaluations,
@@ -1808,22 +1934,21 @@ namespace Libplanet.Blockchain
             if (nextBlock.Index != index)
             {
                 return new InvalidBlockIndexException(
-                    $"The expected block index is #{index}, but its index " +
-                    $"is #{nextBlock.Index}.");
+                    $"The expected index of block {nextBlock.Hash} is #{index}, " +
+                    $"but its index is #{nextBlock.Index}.");
             }
 
             if (nextBlock.Difficulty < difficulty)
             {
                 return new InvalidBlockDifficultyException(
-                    $"The expected difficulty of the block #{index} " +
-                    $"is {difficulty}, but its difficulty is " +
-                    $"{nextBlock.Difficulty}.");
+                    $"The expected difficulty of the block #{index} {nextBlock.Hash} " +
+                    $"is {difficulty}, but its difficulty is {nextBlock.Difficulty}.");
             }
 
             if (nextBlock.TotalDifficulty != totalDifficulty)
             {
                 var msg = $"The expected total difficulty of the block #{index} " +
-                          $"is {totalDifficulty}, but its difficulty is " +
+                          $"{nextBlock.Hash} is {totalDifficulty}, but its difficulty is " +
                           $"{nextBlock.TotalDifficulty}.";
                 return new InvalidBlockTotalDifficultyException(
                     nextBlock.Difficulty,
@@ -1836,13 +1961,14 @@ namespace Libplanet.Blockchain
                 if (prevHash is null)
                 {
                     return new InvalidBlockPreviousHashException(
-                        "the genesis block must have not previous block");
+                        $"The genesis block {nextBlock.Hash} should not have previous hash, " +
+                        $"but its value is {nextBlock.PreviousHash}.");
                 }
 
                 return new InvalidBlockPreviousHashException(
-                    $"The block #{index} is not continuous from the " +
+                    $"The block #{index} {nextBlock.Hash} is not continuous from the " +
                     $"block #{index - 1}; while previous block's hash is " +
-                    $"{prevHash}, the block #{index}'s pointer to " +
+                    $"{prevHash}, the block #{index} {nextBlock.Hash}'s pointer to " +
                     "the previous hash refers to " +
                     (nextBlock.PreviousHash?.ToString() ?? "nothing") + ".");
             }
@@ -1850,9 +1976,9 @@ namespace Libplanet.Blockchain
             if (nextBlock.Timestamp < prevTimestamp)
             {
                 return new InvalidBlockTimestampException(
-                    $"The block #{index}'s timestamp " +
-                    $"({nextBlock.Timestamp}) is earlier than" +
-                    $" the block #{index - 1}'s ({prevTimestamp}).");
+                    $"The block #{index} {nextBlock.Hash}'s timestamp " +
+                    $"({nextBlock.Timestamp}) is earlier than " +
+                    $"the block #{index - 1}'s ({prevTimestamp}).");
             }
 
             return null;
@@ -1867,9 +1993,9 @@ namespace Libplanet.Blockchain
 
                 if (!rootHash.Equals(block.StateRootHash))
                 {
-                    var message = $"The block #{block.Index}'s state root hash is " +
-                                    $"{block.StateRootHash?.ToString()}, but the execution " +
-                                    $"result is {rootHash.ToString()}.";
+                    var message = $"The block #{block.Index} {block.Hash}'s state root hash " +
+                                  $"is {block.StateRootHash?.ToString()}, but the execution " +
+                                  $"result is {rootHash.ToString()}.";
                     throw new InvalidBlockStateRootHashException(
                         block.StateRootHash,
                         rootHash,

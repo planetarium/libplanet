@@ -50,5 +50,40 @@ namespace Libplanet
 
             return true;
         }
+
+        [Pure]
+        internal static int IndexOf(this byte[] bytes, byte[] sub)
+        {
+            // TODO: Make this method public and write the docs.
+            if (bytes.Length < 1)
+            {
+                return sub.Length > 0 ? -1 : 0;
+            }
+            else if (bytes.Length < sub.Length)
+            {
+                return -1;
+            }
+
+            // TODO: We need to optimize this...
+            for (int i = 0; i < bytes.Length; i++)
+            {
+                bool found = true;
+                for (int j = 0; j < sub.Length; j++)
+                {
+                    if (bytes[i + j] != sub[j])
+                    {
+                        found = false;
+                        break;
+                    }
+                }
+
+                if (found)
+                {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
     }
 }
