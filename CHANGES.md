@@ -36,6 +36,9 @@ To be released.
 
 ### Behavioral changes
 
+ -  Upgraded *Bencodex* package (which is a dependency) so that Libplanet gets
+    benefits from its recent optimizations.
+    [[#1081], [#1084], [#1086], [#1101]]
  -  `Swarm<T>` became not to receive states from trusted peers.
     [[#1061], [#1102]]
  -  `Swarm<T>` became not to retry when block downloading.  [[#1062], [#1102]]
@@ -50,7 +53,11 @@ To be released.
 [#1068]: https://github.com/planetarium/libplanet/pull/1068
 [#1070]: https://github.com/planetarium/libplanet/pull/1070
 [#1074]: https://github.com/planetarium/libplanet/pull/1074
+[#1081]: https://github.com/planetarium/libplanet/pull/1081
+[#1084]: https://github.com/planetarium/libplanet/pull/1084
+[#1086]: https://github.com/planetarium/libplanet/pull/1086
 [#1089]: https://github.com/planetarium/libplanet/pull/1089
+[#1101]: https://github.com/planetarium/libplanet/pull/1101
 [#1102]: https://github.com/planetarium/libplanet/pull/1102
 
 
