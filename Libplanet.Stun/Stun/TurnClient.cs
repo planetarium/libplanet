@@ -160,6 +160,7 @@ namespace Libplanet.Stun
 
             if (response is BindingSuccessResponse success)
             {
+                Log.Debug($"Mapped address: {success.MappedAddress}");
                 return success.MappedAddress;
             }
 
@@ -204,6 +205,7 @@ namespace Libplanet.Stun
 
         public void Dispose()
         {
+            Log.Debug($"Disposing {nameof(TurnClient)}...");
             _control?.Dispose();
             foreach (TcpClient c in _relayedClients)
             {
@@ -217,6 +219,8 @@ namespace Libplanet.Stun
             catch (IOException)
             {
             }
+
+            Log.Debug($"{nameof(TurnClient)} is disposed.");
         }
 
         public async Task BindProxies(
@@ -279,11 +283,16 @@ namespace Libplanet.Stun
                     try
                     {
                         message = await StunMessage.Parse(stream);
+                        Log.Debug("Stun Message is: {message}", message);
                     }
                     catch (TurnClientException e)
                     {
                         if (retry < StunMessageParseRetry)
                         {
+                            var msg = "Unexpected exception occurred during " +
+                                      $"{nameof(StunMessage.Parse)}(): " +
+                                      "{Exception}; retry {count}...";
+                            Log.Debug(msg, e, retry);
                             retry++;
                             await Task.Delay(1000);
                             continue;
@@ -319,6 +328,8 @@ namespace Libplanet.Stun
                     );
                 }
             }
+
+            Log.Debug($"{nameof(ProcessMessage)} is ended. Connected: {_control.Connected}");
         }
 
         private void EnsureConnection()

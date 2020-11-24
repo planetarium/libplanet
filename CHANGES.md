@@ -25,6 +25,52 @@ To be released.
 [#1089]: https://github.com/planetarium/libplanet/pull/1089
 
 
+Version 0.10.1
+--------------
+
+Released on November 24, 2020.
+
+ -  `Transaction<T>.Id` property became lazy-loaded and cached if it's once
+    loaded.  (It had been loaded when the object is instantiated.)
+    [[#1079], [#1080]]
+ -  The result bytes of `Transaction<T>.Serialize()` became cached
+    under the hood.  [[#1079, #1080]]
+ -  Fixed `BlockChain<T>.MineBlock()` method's bug which excludes one's
+    all transactions virtually forever after a signer's transactions once have
+    been staged without the ascending order of nonce (usually due to their
+    inconsistent propagation latency on the network).  [[#1057], [#1059]]
+ -  `BlockChain<T>.MineBlock()` method became to cut off staged transactions
+    to mine if it takes longer than 4 seconds to collect and validate them.
+    Those rest staged transactions are postponed until next block mining.
+    [[#1057], [#1059]]
+ -  `BlockChain<T>.ContainsBlock()` method was optimized so that it does not
+    needlessly load an entire block, but looks up only an index instead.
+    [[#1057], [#1059]]
+ -  `BlockChain<T>` became not to validate genesis block during fork,
+    where the state store is not an implementation of `IBlockStatesStore`.
+    [[#1063]]
+ -  Fixed a bug where `Swarm<T>.GetPeerChainStateAsync()` has thrown
+    `NullReferenceException` when peers in table does failed to respond.
+    [[#1066]]
+ -  Fixed a bug where `BlockChain<T>` had not locked readers–writer lock for
+    state changes during `MineBlock()`.  [[#1077], [#1087]]
+ -  `PolymorphicAction<T>.ToString()` became more human-readable.
+    [[#1085], [#1087]]
+ -  Fixed a bug where `MerkleTrie` had had `MrrkleTrie.EmptyRootHash` as root
+    node, which had been unable to insert new nodes.  [[#1087], [#1091]]
+
+[#1057]: https://github.com/planetarium/libplanet/pull/1057
+[#1059]: https://github.com/planetarium/libplanet/pull/1059
+[#1063]: https://github.com/planetarium/libplanet/pull/1063
+[#1066]: https://github.com/planetarium/libplanet/pull/1066
+[#1077]: https://github.com/planetarium/libplanet/pull/1077
+[#1079]: https://github.com/planetarium/libplanet/pull/1079
+[#1080]: https://github.com/planetarium/libplanet/pull/1080
+[#1085]: https://github.com/planetarium/libplanet/pull/1085
+[#1087]: https://github.com/planetarium/libplanet/pull/1087
+[#1091]: https://github.com/planetarium/libplanet/pull/1091
+
+
 Version 0.10.0
 --------------
 

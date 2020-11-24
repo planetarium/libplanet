@@ -87,6 +87,21 @@ namespace Libplanet.Tests.Action
             );
         }
 
+        [Fact]
+        public void PolymorphicActionToString()
+        {
+            Assert.Equal(
+                "Libplanet.Action.PolymorphicAction`1[Libplanet.Tests.Common.Action.Sleep]",
+                new PolymorphicAction<BaseAction>(new Sleep()).ToString());
+            Assert.Equal(
+                "Libplanet.Action.PolymorphicAction`1[Libplanet.Tests.Common.Action.Attack]",
+                new PolymorphicAction<BaseAction>(new Attack()).ToString());
+            Assert.Equal(
+                "Libplanet.Action.PolymorphicAction`1" +
+                "[Libplanet.Tests.Common.Action.DetectRehearsal]",
+                new PolymorphicAction<BaseAction>(new DetectRehearsal()).ToString());
+        }
+
         private class ActionNotAttributeAnnotated : IAction
         {
             public ActionNotAttributeAnnotated()
