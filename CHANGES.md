@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.10.1
 --------------
 
-To be released.
+Released on November 24, 2020.
 
  -  `Transaction<T>.Id` property became lazy-loaded and cached if it's once
     loaded.  (It had been loaded when the object is instantiated.)
