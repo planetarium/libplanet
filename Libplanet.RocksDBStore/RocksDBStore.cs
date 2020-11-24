@@ -69,10 +69,10 @@ namespace Libplanet.RocksDBStore
         /// <param name="blockCacheSize">The capacity of the block cache.</param>
         /// <param name="txCacheSize">The capacity of the transaction cache.</param>
         /// <param name="statesCacheSize">The capacity of the states cache.</param>
-        /// <param name="maxTotalWalSize">The number to configure max_total_wal_size RocksDB option.
-        /// </param>
-        /// <param name="keepLogFileNum">The number to configure keep_log_file_num RocksDB option.
-        /// </param>
+        /// <param name="maxTotalWalSize">The number to configure <c>max_total_wal_size</c> RocksDB
+        /// option.</param>
+        /// <param name="keepLogFileNum">The number to configure <c>keep_log_file_num</c> RocksDB
+        /// option.</param>
         public RocksDBStore(
             string path,
             int blockCacheSize = 512,
