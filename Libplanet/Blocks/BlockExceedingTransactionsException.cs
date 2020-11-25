@@ -11,7 +11,7 @@ namespace Libplanet.Blocks
     /// <see cref="IBlockPolicy{T}.MaxTransactionsPerBlock"/>).
     /// </summary>
     [Serializable]
-    internal class BlockExceedingTransactionsException : InvalidBlockException, ISerializable
+    public class BlockExceedingTransactionsException : InvalidBlockException, ISerializable
     {
         public BlockExceedingTransactionsException(
             int actualTransactions,

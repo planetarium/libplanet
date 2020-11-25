@@ -14,6 +14,7 @@ To be released.
 
 ### Added APIs
 
+ -  Added `BlockExceedingTransactionsException` class.  [[#1104], [#1110]]
  -  Added `BlockChain<T>.GetStagedTransactionIds()` method.  [[#1089]]
  -  (Libplanet.RocksDBStore) Added `maxTotalWalSize` and `keepLogFileNum`
     parameters into `RocksDBStore` constructor.  [[#1065], [#1102]]
@@ -59,6 +60,7 @@ To be released.
 [#1089]: https://github.com/planetarium/libplanet/pull/1089
 [#1101]: https://github.com/planetarium/libplanet/pull/1101
 [#1102]: https://github.com/planetarium/libplanet/pull/1102
+[#1110]: https://github.com/planetarium/libplanet/pull/1110
 
 
 Version 0.10.2
