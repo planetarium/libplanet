@@ -539,9 +539,14 @@ namespace Libplanet.Blockchain
         /// are required for action execution and rendering.
         /// <see cref="StateCompleterSet{T}.Recalculate"/> by default.
         /// </param>
-        /// <exception cref="InvalidBlockException">Thrown when the given
-        /// <paramref name="block"/> is invalid, in itself or according to
-        /// the <see cref="Policy"/>.</exception>
+        /// <exception cref="InvalidBlockBytesLengthException">Thrown when the given <paramref
+        /// name="block"/> is too long in bytes (according to <see
+        /// cref="IBlockPolicy{T}.GetMaxBlockBytes(long)"/>).</exception>
+        /// <exception cref="BlockExceedingTransactionsException">Thrown when the given <paramref
+        /// name="block"/> has too many transactions (according to <see
+        /// cref="IBlockPolicy{T}.MaxTransactionsPerBlock"/>).</exception>
+        /// <exception cref="InvalidBlockException">Thrown when the given <paramref name="block"/>
+        /// is invalid, in itself or according to the <see cref="Policy"/>.</exception>
         /// <exception cref="InvalidTxNonceException">Thrown when the
         /// <see cref="Transaction{T}.Nonce"/> is different from
         /// <see cref="GetNextTxNonce"/> result of the
@@ -562,12 +567,14 @@ namespace Libplanet.Blockchain
         /// are required for action execution and rendering.
         /// <see cref="StateCompleterSet{T}.Recalculate"/> by default.
         /// </param>
-        /// <exception cref="InvalidBlockBytesLengthException">Thrown when the block to mine is
-        /// too long (according to <see cref="IBlockPolicy{T}.GetMaxBlockBytes(long)"/>) in bytes.
-        /// </exception>
-        /// <exception cref="InvalidBlockException">Thrown when the given
-        /// <paramref name="block"/> is invalid, in itself or according to
-        /// the <see cref="Policy"/>.</exception>
+        /// <exception cref="InvalidBlockBytesLengthException">Thrown when the given <paramref
+        /// name="block"/> is too long in bytes (according to <see
+        /// cref="IBlockPolicy{T}.GetMaxBlockBytes(long)"/>).</exception>
+        /// <exception cref="BlockExceedingTransactionsException">Thrown when the given <paramref
+        /// name="block"/> has too many transactions (according to <see
+        /// cref="IBlockPolicy{T}.MaxTransactionsPerBlock"/>).</exception>
+        /// <exception cref="InvalidBlockException">Thrown when the given <paramref name="block"/>
+        /// is invalid, in itself or according to the <see cref="Policy"/>.</exception>
         /// <exception cref="InvalidTxNonceException">Thrown when the
         /// <see cref="Transaction{T}.Nonce"/> is different from
         /// <see cref="GetNextTxNonce"/> result of the
@@ -1059,6 +1066,16 @@ namespace Libplanet.Blockchain
             stateCompleters ??= StateCompleterSet<T>.Recalculate;
 
             _logger.Debug("Trying to append block {blockIndex}: {block}", block?.Index, block);
+
+            if (block.Transactions.Count() is { } txCount &&
+                txCount > Policy.MaxTransactionsPerBlock)
+            {
+                throw new BlockExceedingTransactionsException(
+                    txCount,
+                    Policy.MaxTransactionsPerBlock,
+                    "The block to append has too many transactions."
+                );
+            }
 
             if (block.BytesLength > Policy.GetMaxBlockBytes(block.Index))
             {
