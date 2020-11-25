@@ -91,6 +91,9 @@ parameters into <code>RocksDBStore</code> constructor.  [<a href="https://github
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
+<li>Upgraded <em>Bencodex</em> package (which is a dependency) so that Libplanet gets
+benefits from its recent optimizations.
+[<a href="https://github.com/planetarium/libplanet/pull/1081">#1081</a>, <a href="https://github.com/planetarium/libplanet/pull/1084">#1084</a>, <a href="https://github.com/planetarium/libplanet/pull/1086">#1086</a>, <a href="https://github.com/planetarium/libplanet/pull/1101">#1101</a>]</li>
 <li><code>Swarm&lt;T&gt;</code> became not to receive states from trusted peers.
 [<a href="https://github.com/planetarium/libplanet/pull/1061">#1061</a>, <a href="https://github.com/planetarium/libplanet/pull/1102">#1102</a>]</li>
 <li><code>Swarm&lt;T&gt;</code> became not to retry when block downloading.  [<a href="https://github.com/planetarium/libplanet/pull/1062">#1062</a>, <a href="https://github.com/planetarium/libplanet/pull/1102">#1102</a>]</li>
