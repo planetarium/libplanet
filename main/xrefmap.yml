@@ -4228,6 +4228,70 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.BlockDigest.TxIds
   nameWithType: BlockDigest.TxIds
+- uid: Libplanet.Blocks.BlockExceedingTransactionsException
+  name: BlockExceedingTransactionsException
+  href: api/Libplanet.Blocks.BlockExceedingTransactionsException.html
+  commentId: T:Libplanet.Blocks.BlockExceedingTransactionsException
+  fullName: Libplanet.Blocks.BlockExceedingTransactionsException
+  nameWithType: BlockExceedingTransactionsException
+- uid: Libplanet.Blocks.BlockExceedingTransactionsException.#ctor(SerializationInfo,StreamingContext)
+  name: BlockExceedingTransactionsException(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Blocks.BlockExceedingTransactionsException.html#Libplanet_Blocks_BlockExceedingTransactionsException__ctor_SerializationInfo_StreamingContext_
+  commentId: M:Libplanet.Blocks.BlockExceedingTransactionsException.#ctor(SerializationInfo,StreamingContext)
+  fullName: Libplanet.Blocks.BlockExceedingTransactionsException.BlockExceedingTransactionsException(SerializationInfo, StreamingContext)
+  nameWithType: BlockExceedingTransactionsException.BlockExceedingTransactionsException(SerializationInfo, StreamingContext)
+- uid: Libplanet.Blocks.BlockExceedingTransactionsException.#ctor(System.Int32,System.Int32,System.String)
+  name: BlockExceedingTransactionsException(Int32, Int32, String)
+  href: api/Libplanet.Blocks.BlockExceedingTransactionsException.html#Libplanet_Blocks_BlockExceedingTransactionsException__ctor_System_Int32_System_Int32_System_String_
+  commentId: M:Libplanet.Blocks.BlockExceedingTransactionsException.#ctor(System.Int32,System.Int32,System.String)
+  fullName: Libplanet.Blocks.BlockExceedingTransactionsException.BlockExceedingTransactionsException(System.Int32, System.Int32, System.String)
+  nameWithType: BlockExceedingTransactionsException.BlockExceedingTransactionsException(Int32, Int32, String)
+- uid: Libplanet.Blocks.BlockExceedingTransactionsException.#ctor*
+  name: BlockExceedingTransactionsException
+  href: api/Libplanet.Blocks.BlockExceedingTransactionsException.html#Libplanet_Blocks_BlockExceedingTransactionsException__ctor_
+  commentId: Overload:Libplanet.Blocks.BlockExceedingTransactionsException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Blocks.BlockExceedingTransactionsException.BlockExceedingTransactionsException
+  nameWithType: BlockExceedingTransactionsException.BlockExceedingTransactionsException
+- uid: Libplanet.Blocks.BlockExceedingTransactionsException.ActualTransactions
+  name: ActualTransactions
+  href: api/Libplanet.Blocks.BlockExceedingTransactionsException.html#Libplanet_Blocks_BlockExceedingTransactionsException_ActualTransactions
+  commentId: P:Libplanet.Blocks.BlockExceedingTransactionsException.ActualTransactions
+  fullName: Libplanet.Blocks.BlockExceedingTransactionsException.ActualTransactions
+  nameWithType: BlockExceedingTransactionsException.ActualTransactions
+- uid: Libplanet.Blocks.BlockExceedingTransactionsException.ActualTransactions*
+  name: ActualTransactions
+  href: api/Libplanet.Blocks.BlockExceedingTransactionsException.html#Libplanet_Blocks_BlockExceedingTransactionsException_ActualTransactions_
+  commentId: Overload:Libplanet.Blocks.BlockExceedingTransactionsException.ActualTransactions
+  isSpec: "True"
+  fullName: Libplanet.Blocks.BlockExceedingTransactionsException.ActualTransactions
+  nameWithType: BlockExceedingTransactionsException.ActualTransactions
+- uid: Libplanet.Blocks.BlockExceedingTransactionsException.GetObjectData(SerializationInfo,StreamingContext)
+  name: GetObjectData(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Blocks.BlockExceedingTransactionsException.html#Libplanet_Blocks_BlockExceedingTransactionsException_GetObjectData_SerializationInfo_StreamingContext_
+  commentId: M:Libplanet.Blocks.BlockExceedingTransactionsException.GetObjectData(SerializationInfo,StreamingContext)
+  fullName: Libplanet.Blocks.BlockExceedingTransactionsException.GetObjectData(SerializationInfo, StreamingContext)
+  nameWithType: BlockExceedingTransactionsException.GetObjectData(SerializationInfo, StreamingContext)
+- uid: Libplanet.Blocks.BlockExceedingTransactionsException.GetObjectData*
+  name: GetObjectData
+  href: api/Libplanet.Blocks.BlockExceedingTransactionsException.html#Libplanet_Blocks_BlockExceedingTransactionsException_GetObjectData_
+  commentId: Overload:Libplanet.Blocks.BlockExceedingTransactionsException.GetObjectData
+  isSpec: "True"
+  fullName: Libplanet.Blocks.BlockExceedingTransactionsException.GetObjectData
+  nameWithType: BlockExceedingTransactionsException.GetObjectData
+- uid: Libplanet.Blocks.BlockExceedingTransactionsException.MaxTransactionsPerBlock
+  name: MaxTransactionsPerBlock
+  href: api/Libplanet.Blocks.BlockExceedingTransactionsException.html#Libplanet_Blocks_BlockExceedingTransactionsException_MaxTransactionsPerBlock
+  commentId: P:Libplanet.Blocks.BlockExceedingTransactionsException.MaxTransactionsPerBlock
+  fullName: Libplanet.Blocks.BlockExceedingTransactionsException.MaxTransactionsPerBlock
+  nameWithType: BlockExceedingTransactionsException.MaxTransactionsPerBlock
+- uid: Libplanet.Blocks.BlockExceedingTransactionsException.MaxTransactionsPerBlock*
+  name: MaxTransactionsPerBlock
+  href: api/Libplanet.Blocks.BlockExceedingTransactionsException.html#Libplanet_Blocks_BlockExceedingTransactionsException_MaxTransactionsPerBlock_
+  commentId: Overload:Libplanet.Blocks.BlockExceedingTransactionsException.MaxTransactionsPerBlock
+  isSpec: "True"
+  fullName: Libplanet.Blocks.BlockExceedingTransactionsException.MaxTransactionsPerBlock
+  nameWithType: BlockExceedingTransactionsException.MaxTransactionsPerBlock
 - uid: Libplanet.Blocks.BlockHeader
   name: BlockHeader
   href: api/Libplanet.Blocks.BlockHeader.html

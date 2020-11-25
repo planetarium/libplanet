@@ -69,6 +69,7 @@
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
 <ul>
+<li>Added <code>BlockExceedingTransactionsException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/1104">#1104</a>, <a href="https://github.com/planetarium/libplanet/pull/1110">#1110</a>]</li>
 <li>Added <code>BlockChain&lt;T&gt;.GetStagedTransactionIds()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1089">#1089</a>]</li>
 <li>(Libplanet.RocksDBStore) Added <code>maxTotalWalSize</code> and <code>keepLogFileNum</code>
 parameters into <code>RocksDBStore</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/1065">#1065</a>, <a href="https://github.com/planetarium/libplanet/pull/1102">#1102</a>]</li>
@@ -100,6 +101,14 @@ benefits from its recent optimizations.
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="cli-tools">CLI tools</h3>
+<h2 id="version-0102">Version 0.10.2</h2>
+<p>Released on November 25, 2020.</p>
+<ul>
+<li>Fixed <code>BlockChain&lt;T&gt;.Append()</code> method's bug that it had accepted
+a <code>Block&lt;T&gt;</code> having more <code>Transactions</code> than the number specified by
+the <code>IBlockPolicy&lt;T&gt;.MaxTransactionsPerBlock</code> property.  Now it throws
+<code>InvalidBlockException</code> instead for such case.  [<a href="https://github.com/planetarium/libplanet/pull/1104">#1104</a>]</li>
+</ul>
 <h2 id="version-0101">Version 0.10.1</h2>
 <p>Released on November 24, 2020.</p>
 <ul>
