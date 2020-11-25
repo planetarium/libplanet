@@ -40,8 +40,6 @@ namespace Libplanet.Net
 
         private CancellationTokenSource _workerCancellationTokenSource;
         private CancellationToken _cancellationToken;
-
-        private BlockHashDemand? _demandBlockHash;
         private ConcurrentDictionary<TxId, BoundPeer> _demandTxIds;
 
         static Swarm()
@@ -206,6 +204,13 @@ namespace Libplanet.Net
 
         public AppProtocolVersion AppProtocolVersion => _appProtocolVersion;
 
+        /// <summary>
+        /// Information of <see cref="Swarm{T}"/>'s demand for new blocks.
+        /// It is null when the <see cref="Swarm{T}"/> does not have any block to demand.
+        /// <seealso cref="BlockDemand"/>
+        /// </summary>
+        public BlockDemand? BlockDemand { get; private set; }
+
         internal ITransport Transport { get; private set; }
 
         internal IProtocol Protocol => (Transport as NetMQTransport)?.Protocol;
@@ -265,6 +270,7 @@ namespace Libplanet.Net
                 await Transport.StopAsync(waitFor, cancellationToken);
             }
 
+            BlockDemand = null;
             _logger.Debug($"{nameof(Swarm<T>)} stopped.");
         }
 
@@ -361,7 +367,7 @@ namespace Libplanet.Net
             _cancellationToken = CancellationTokenSource.CreateLinkedTokenSource(
                     _workerCancellationTokenSource.Token, cancellationToken
                 ).Token;
-            _demandBlockHash = null;
+            BlockDemand = null;
             _demandTxIds = new ConcurrentDictionary<TxId, BoundPeer>();
             await Transport.StartAsync(_cancellationToken);
 
@@ -1317,7 +1323,7 @@ namespace Libplanet.Net
         private void BroadcastBlock(Address? except, Block<T> block)
         {
             _logger.Debug("Trying to broadcast blocks...");
-            var message = new BlockHeaderMessage(BlockChain.Genesis.Hash, block.GetBlockHeader());
+            var message = new BlockHeaderMessage(BlockChain.Genesis.Hash, block.Header);
             BroadcastMessage(except, message);
             _logger.Debug("Block broadcasting complete.");
         }
@@ -1687,8 +1693,8 @@ namespace Libplanet.Net
         private bool IsDemandNeeded(BlockHeader target)
         {
             return target.TotalDifficulty > BlockChain.Tip.TotalDifficulty &&
-                   (_demandBlockHash is null ||
-                    _demandBlockHash.Value.Header.TotalDifficulty < target.TotalDifficulty);
+                   (BlockDemand is null ||
+                    BlockDemand.Value.Header.TotalDifficulty < target.TotalDifficulty);
         }
 
         private async Task SyncPreviousBlocksAsync(
@@ -1702,61 +1708,30 @@ namespace Libplanet.Net
             CancellationToken cancellationToken
         )
         {
-            int retry = 3;
             long previousTipIndex = blockChain.Tip?.Index ?? -1;
             BlockChain<T> synced = null;
-            StateCompleterSet<T> trustedStateCompleterSet = await GetTrustedStateCompleterAsync(
-                trustedStateValidators,
-                dialTimeout,
-                cancellationToken: cancellationToken
-            );
 
             try
             {
-                while (true)
-                {
-                    cancellationToken.ThrowIfCancellationRequested();
+                long currentTipIndex = blockChain.Tip?.Index ?? -1;
+                long receivedBlockCount = currentTipIndex - previousTipIndex;
 
-                    try
-                    {
-                        long currentTipIndex = blockChain.Tip?.Index ?? -1;
-                        long receivedBlockCount = currentTipIndex - previousTipIndex;
-
-                        FillBlocksAsyncStarted.Set();
-                        synced = await FillBlocksAsync(
-                            peer,
-                            blockChain,
-                            stop,
-                            progress,
-                            totalBlockCount,
-                            receivedBlockCount,
-                            true,
-                            cancellationToken
-                        );
-                        break;
-                    }
-                    catch (TimeoutException e)
-                    {
-                        if (retry > 0)
-                        {
-                            _logger.Error(
-                                e,
-                                $"{nameof(FillBlocksAsync)}() failed; retrying...: {e}"
-                            );
-                            retry--;
-                        }
-                        else
-                        {
-                            FillBlocksAsyncFailed.Set();
-                            throw;
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        FillBlocksAsyncFailed.Set();
-                        throw;
-                    }
-                }
+                FillBlocksAsyncStarted.Set();
+                synced = await FillBlocksAsync(
+                    peer,
+                    blockChain,
+                    stop,
+                    progress,
+                    totalBlockCount,
+                    receivedBlockCount,
+                    true,
+                    cancellationToken
+                );
+            }
+            catch (Exception)
+            {
+                FillBlocksAsyncFailed.Set();
+                throw;
             }
             finally
             {
@@ -1768,7 +1743,7 @@ namespace Libplanet.Net
                     blockChain.Swap(
                         synced,
                         render: true,
-                        stateCompleters: trustedStateCompleterSet
+                        stateCompleters: null
                     );
                 }
             }
@@ -1945,15 +1920,15 @@ namespace Libplanet.Net
         {
             while (!cancellationToken.IsCancellationRequested)
             {
-                if (_demandBlockHash is null ||
-                    _demandBlockHash.Value.Header.TotalDifficulty <= BlockChain.Tip.TotalDifficulty)
+                if (BlockDemand is null ||
+                    BlockDemand.Value.Header.TotalDifficulty <= BlockChain.Tip.TotalDifficulty)
                 {
                     await Task.Delay(1, cancellationToken);
                     continue;
                 }
 
-                BoundPeer peer = _demandBlockHash.Value.Peer;
-                var hash = new HashDigest<SHA256>(_demandBlockHash.Value.Header.Hash.ToArray());
+                BoundPeer peer = BlockDemand.Value.Peer;
+                var hash = new HashDigest<SHA256>(BlockDemand.Value.Header.Hash.ToArray());
 
                 try
                 {
@@ -1994,7 +1969,7 @@ namespace Libplanet.Net
                 {
                     using (await _blockSyncMutex.LockAsync(cancellationToken))
                     {
-                        _demandBlockHash = null;
+                        BlockDemand = null;
                     }
                 }
             }

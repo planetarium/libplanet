@@ -47,16 +47,14 @@ namespace Libplanet.Net
 
         private int? _listenPort;
         private TurnClient _turnClient;
-        private bool _behindNAT;
-        private DnsEndPoint _endPoint;
-        private IPAddress _publicIPAddress;
+        private DnsEndPoint _hostEndPoint;
 
         private AsyncCollection<MessageRequest> _requests;
         private long _requestCount;
         private CancellationTokenSource _runtimeCancellationTokenSource;
         private CancellationTokenSource _turnCancellationTokenSource;
         private Task _runtimeProcessor;
-        private List<Task> _turnTasks;
+        private Task _refreshPermissions;
 
         private TaskCompletionSource<object> _runningEvent;
         private CancellationToken _cancellationToken;
@@ -95,7 +93,7 @@ namespace Libplanet.Net
 
             if (_host != null && _listenPort is int listenPortAsInt)
             {
-                _endPoint = new DnsEndPoint(_host, listenPortAsInt);
+                _hostEndPoint = new DnsEndPoint(_host, listenPortAsInt);
             }
 
             _iceServers = iceServers?.ToList();
@@ -171,14 +169,9 @@ namespace Libplanet.Net
         /// </summary>
         private event EventHandler<Message> ProcessMessageHandler;
 
-        public Peer AsPeer => _endPoint is null
-            ? new Peer(
-                _privateKey.PublicKey,
-                _publicIPAddress)
-            : new BoundPeer(
-                _privateKey.PublicKey,
-                _endPoint,
-                _publicIPAddress);
+        public Peer AsPeer => EndPoint is null
+            ? new Peer(_privateKey.PublicKey, PublicIPAddress)
+            : new BoundPeer(_privateKey.PublicKey, EndPoint, PublicIPAddress);
 
         public IEnumerable<BoundPeer> Peers => Protocol.Peers;
 
@@ -208,6 +201,10 @@ namespace Libplanet.Net
 
         internal FixedSizedQueue<Message> MessageHistory { get; }
 
+        internal IPAddress PublicIPAddress => _turnClient?.PublicAddress;
+
+        internal DnsEndPoint EndPoint => _turnClient?.EndPoint ?? _hostEndPoint;
+
         public async Task StartAsync(CancellationToken cancellationToken)
         {
             if (Running)
@@ -231,15 +228,18 @@ namespace Libplanet.Net
 
             if (_host is null && !(_iceServers is null))
             {
-                await InitializeTurnClient();
+                _turnClient = await IceServer.CreateTurnClient(_iceServers);
+                await _turnClient.StartAsync(_listenPort.Value, _cancellationToken);
+
+                _refreshPermissions = RefreshPermissions(_cancellationToken);
             }
 
             _cancellationToken = cancellationToken;
 
-            if (!_behindNAT)
+            if (_turnClient is null || !_turnClient.BehindNAT)
             {
-                _endPoint = new DnsEndPoint(
-                    _host ?? _publicIPAddress.ToString(),
+                _hostEndPoint = new DnsEndPoint(
+                    _host ?? PublicIPAddress.ToString(),
                     _listenPort.Value);
             }
 
@@ -447,7 +447,7 @@ namespace Libplanet.Net
             CancellationToken cancellationToken = default(CancellationToken)
         )
         {
-            if (_behindNAT)
+            if (!(_turnClient is null) && _turnClient.BehindNAT)
             {
                 await CreatePermission(peer);
             }
@@ -639,9 +639,17 @@ namespace Libplanet.Net
 
                 foreach (BoundPeer peer in peers)
                 {
-                    if (!_dealers.TryGetValue(peer.Address, out DealerSocket dealer))
+                    string endpoint = ToNetMQAddress(peer);
+                    if (!_dealers.TryGetValue(peer.Address, out DealerSocket dealer) ||
+                        dealer.IsDisposed)
                     {
-                        dealer = new DealerSocket(ToNetMQAddress(peer));
+                        dealer = new DealerSocket(endpoint);
+                        _dealers[peer.Address] = dealer;
+                    }
+                    else if (dealer.Options.LastEndpoint != endpoint)
+                    {
+                        dealer.Dispose();
+                        dealer = new DealerSocket(endpoint);
                         _dealers[peer.Address] = dealer;
                     }
 
@@ -682,33 +690,6 @@ namespace Libplanet.Net
             else
             {
                 _logger.Debug("Failed to reply to {Identity}", identityHex);
-            }
-        }
-
-        private async Task RefreshAllocate(CancellationToken cancellationToken)
-        {
-            TimeSpan lifetime = TurnAllocationLifetime;
-            while (!cancellationToken.IsCancellationRequested)
-            {
-                try
-                {
-                    await Task.Delay(lifetime - TimeSpan.FromMinutes(1), cancellationToken);
-                    _logger.Debug("Refreshing TURN allocation...");
-                    lifetime = await _turnClient.RefreshAllocationAsync(lifetime);
-                    cancellationToken.ThrowIfCancellationRequested();
-                }
-                catch (OperationCanceledException e)
-                {
-                    _logger.Warning(e, $"{nameof(RefreshAllocate)}() is cancelled.");
-                    throw;
-                }
-                catch (Exception e)
-                {
-                    _logger.Error(
-                        e,
-                        $"An unexpected exception occurred during {nameof(RefreshAllocate)}(): {e}"
-                    );
-                }
             }
         }
 
@@ -931,51 +912,6 @@ namespace Libplanet.Net
                     throw;
                 }
             }
-            catch (Exception e) when (e is SocketException || e is ObjectDisposedException)
-            {
-                _logger.Error($"Unexpected error occurred during {nameof(CreatePermission)}: {e}");
-
-                using (await _turnClientMutex.LockAsync(_cancellationToken))
-                {
-                    if (!(_turnClient is null))
-                    {
-                        _logger.Debug("Trying to reconnect to the TURN server...");
-
-                        _turnClient.Dispose();
-                        _turnCancellationTokenSource.Cancel();
-                        await Task.WhenAny(_turnTasks);
-                        await InitializeTurnClient();
-                    }
-                }
-            }
-        }
-
-        private async Task InitializeTurnClient()
-        {
-            _logger.Debug("Initializing TURN client...");
-            _turnCancellationTokenSource = new CancellationTokenSource();
-            _turnClient = await IceServer.CreateTurnClient(_iceServers);
-
-            _publicIPAddress = (await _turnClient.GetMappedAddressAsync(_cancellationToken))
-                .Address;
-            _behindNAT = await _turnClient.IsBehindNAT(_cancellationToken);
-
-            if (_behindNAT)
-            {
-                IPEndPoint turnEp = await _turnClient.AllocateRequestAsync(
-                    TurnAllocationLifetime,
-                    _cancellationToken
-                );
-                _endPoint = new DnsEndPoint(turnEp.Address.ToString(), turnEp.Port);
-                _logger.Debug($"TURN Endpoint: {_endPoint}");
-
-                _turnTasks = BindMultipleProxies(
-                    _listenPort.Value, 3, _turnCancellationTokenSource.Token);
-                _turnTasks.Add(RefreshAllocate(_turnCancellationTokenSource.Token));
-                _turnTasks.Add(RefreshPermissions(_turnCancellationTokenSource.Token));
-            }
-
-            _logger.Debug("TURN client is initialized.");
         }
 
         private async Task RefreshTableAsync(
@@ -1066,16 +1002,6 @@ namespace Libplanet.Net
                 TaskCreationOptions.DenyChildAttach | TaskCreationOptions.LongRunning,
                 TaskScheduler.Default
             );
-
-        private List<Task> BindMultipleProxies(
-            int listenPort,
-            int count,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return Enumerable.Range(1, count)
-                .Select(x => _turnClient.BindProxies(listenPort, cancellationToken))
-                .ToList();
-        }
 
         private readonly struct MessageRequest
         {

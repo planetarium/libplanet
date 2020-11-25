@@ -69,11 +69,17 @@ namespace Libplanet.RocksDBStore
         /// <param name="blockCacheSize">The capacity of the block cache.</param>
         /// <param name="txCacheSize">The capacity of the transaction cache.</param>
         /// <param name="statesCacheSize">The capacity of the states cache.</param>
+        /// <param name="maxTotalWalSize">The number to configure <c>max_total_wal_size</c> RocksDB
+        /// option.</param>
+        /// <param name="keepLogFileNum">The number to configure <c>keep_log_file_num</c> RocksDB
+        /// option.</param>
         public RocksDBStore(
             string path,
             int blockCacheSize = 512,
             int txCacheSize = 1024,
-            int statesCacheSize = 10000
+            int statesCacheSize = 10000,
+            ulong? maxTotalWalSize = null,
+            ulong? keepLogFileNum = null
         )
         {
             _logger = Log.ForContext<RocksDBStore>();
@@ -101,6 +107,16 @@ namespace Libplanet.RocksDBStore
             _path = path;
             _options = new DbOptions()
                 .SetCreateIfMissing();
+
+            if (maxTotalWalSize is ulong maxTotalWalSizeValue)
+            {
+                _options = _options.SetMaxTotalWalSize(maxTotalWalSizeValue);
+            }
+
+            if (keepLogFileNum is ulong keepLogFileNumValue)
+            {
+                _options = _options.SetKeepLogFileNum(keepLogFileNumValue);
+            }
 
             _blockDb = RocksDBUtils.OpenRocksDb(_options, RocksDbPath(BlockDbName));
             _txDb = RocksDBUtils.OpenRocksDb(_options, RocksDbPath(TxDbName));

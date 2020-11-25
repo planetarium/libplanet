@@ -184,7 +184,12 @@ namespace Libplanet.Net
             {
                 if (IsDemandNeeded(header))
                 {
-                    _demandBlockHash = new BlockHashDemand(header, peer);
+                    _logger.Debug(
+                        "BlockDemand #{index} {blockHash} from {peer}.",
+                        header.Index,
+                        ByteUtil.Hex(header.Hash),
+                        peer);
+                    BlockDemand = new BlockDemand(header, peer);
                 }
                 else
                 {
@@ -193,7 +198,7 @@ namespace Libplanet.Net
                         "(current: {Current}, demand: {Demand}, received: {Received});" +
                         $" {nameof(BlockHeaderMessage)} is ignored.",
                         BlockChain.Tip.Index,
-                        _demandBlockHash?.Header.Index,
+                        BlockDemand?.Header.Index,
                         header.Index);
                 }
             }
