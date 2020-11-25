@@ -70,8 +70,31 @@
 <h3 id="added-apis">Added APIs</h3>
 <ul>
 <li>Added <code>BlockChain&lt;T&gt;.GetStagedTransactionIds()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1089">#1089</a>]</li>
+<li>(Libplanet.RocksDBStore) Added <code>maxTotalWalSize</code> and <code>keepLogFileNum</code>
+parameters into <code>RocksDBStore</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/1065">#1065</a>, <a href="https://github.com/planetarium/libplanet/pull/1102">#1102</a>]</li>
+<li>Added <code>Swarm&lt;T&gt;.BlockDemand</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/1068">#1068</a>, <a href="https://github.com/planetarium/libplanet/pull/1102">#1102</a>]</li>
+<li>Added <code>BlockDemand</code> struct.  [<a href="https://github.com/planetarium/libplanet/pull/1068">#1068</a>, <a href="https://github.com/planetarium/libplanet/pull/1102">#1102</a>]</li>
+<li>Added <code>Block&lt;T&gt;.Header</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/1070">#1070</a>, <a href="https://github.com/planetarium/libplanet/pull/1102">#1102</a>]</li>
+<li>Added <code>TurnClient.PublicAddress</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/1074">#1074</a>, <a href="https://github.com/planetarium/libplanet/pull/1102">#1102</a>]</li>
+<li>Added <code>TurnClient.EndPoint</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/1074">#1074</a>, <a href="https://github.com/planetarium/libplanet/pull/1102">#1102</a>]</li>
+<li>Added <code>TurnClient.BehindNAT</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/1074">#1074</a>, <a href="https://github.com/planetarium/libplanet/pull/1102">#1102</a>]</li>
+<li>Added <code>TurnClient.InitializeTurnAsync(int, CancellationToken)</code> method.
+[<a href="https://github.com/planetarium/libplanet/pull/1074">#1074</a>, <a href="https://github.com/planetarium/libplanet/pull/1102">#1102</a>]</li>
+<li>Added <code>TurnClient.StartAsync(int, CancellationToken)</code> method.
+[<a href="https://github.com/planetarium/libplanet/pull/1074">#1074</a>, <a href="https://github.com/planetarium/libplanet/pull/1102">#1102</a>]</li>
+<li>Added <code>TurnClient.ReconnectTurn(int, CancellationToken)</code> method.
+[<a href="https://github.com/planetarium/libplanet/pull/1074">#1074</a>, <a href="https://github.com/planetarium/libplanet/pull/1102">#1102</a>]</li>
+<li>Added <code>TurnClient.IsConnectable(CancellationToken)</code> method.
+[<a href="https://github.com/planetarium/libplanet/pull/1074">#1074</a>, <a href="https://github.com/planetarium/libplanet/pull/1102">#1102</a>]</li>
+<li>Added <code>TurnClient.ReconnectTurn(CancellationToken)</code> method.
+[<a href="https://github.com/planetarium/libplanet/pull/1074">#1074</a>, <a href="https://github.com/planetarium/libplanet/pull/1102">#1102</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
+<ul>
+<li><code>Swarm&lt;T&gt;</code> became not to receive states from trusted peers.
+[<a href="https://github.com/planetarium/libplanet/pull/1061">#1061</a>, <a href="https://github.com/planetarium/libplanet/pull/1102">#1102</a>]</li>
+<li><code>Swarm&lt;T&gt;</code> became not to retry when block downloading.  [<a href="https://github.com/planetarium/libplanet/pull/1062">#1062</a>, <a href="https://github.com/planetarium/libplanet/pull/1102">#1102</a>]</li>
+</ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="cli-tools">CLI tools</h3>
 <h2 id="version-0101">Version 0.10.1</h2>

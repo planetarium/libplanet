@@ -3823,6 +3823,23 @@ references:
   fullName.vb: Libplanet.Blocks.Block(Of T).Hash
   nameWithType: Block<T>.Hash
   nameWithType.vb: Block(Of T).Hash
+- uid: Libplanet.Blocks.Block`1.Header
+  name: Header
+  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Header
+  commentId: P:Libplanet.Blocks.Block`1.Header
+  fullName: Libplanet.Blocks.Block<T>.Header
+  fullName.vb: Libplanet.Blocks.Block(Of T).Header
+  nameWithType: Block<T>.Header
+  nameWithType.vb: Block(Of T).Header
+- uid: Libplanet.Blocks.Block`1.Header*
+  name: Header
+  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Header_
+  commentId: Overload:Libplanet.Blocks.Block`1.Header
+  isSpec: "True"
+  fullName: Libplanet.Blocks.Block<T>.Header
+  fullName.vb: Libplanet.Blocks.Block(Of T).Header
+  nameWithType: Block<T>.Header
+  nameWithType.vb: Block(Of T).Header
 - uid: Libplanet.Blocks.Block`1.Index
   name: Index
   href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Index
@@ -6804,6 +6821,37 @@ references:
   commentId: F:Libplanet.Net.AppProtocolVersion.Version
   fullName: Libplanet.Net.AppProtocolVersion.Version
   nameWithType: AppProtocolVersion.Version
+- uid: Libplanet.Net.BlockDemand
+  name: BlockDemand
+  href: api/Libplanet.Net.BlockDemand.html
+  commentId: T:Libplanet.Net.BlockDemand
+  fullName: Libplanet.Net.BlockDemand
+  nameWithType: BlockDemand
+- uid: Libplanet.Net.BlockDemand.#ctor(Libplanet.Blocks.BlockHeader,Libplanet.Net.BoundPeer)
+  name: BlockDemand(BlockHeader, BoundPeer)
+  href: api/Libplanet.Net.BlockDemand.html#Libplanet_Net_BlockDemand__ctor_Libplanet_Blocks_BlockHeader_Libplanet_Net_BoundPeer_
+  commentId: M:Libplanet.Net.BlockDemand.#ctor(Libplanet.Blocks.BlockHeader,Libplanet.Net.BoundPeer)
+  fullName: Libplanet.Net.BlockDemand.BlockDemand(Libplanet.Blocks.BlockHeader, Libplanet.Net.BoundPeer)
+  nameWithType: BlockDemand.BlockDemand(BlockHeader, BoundPeer)
+- uid: Libplanet.Net.BlockDemand.#ctor*
+  name: BlockDemand
+  href: api/Libplanet.Net.BlockDemand.html#Libplanet_Net_BlockDemand__ctor_
+  commentId: Overload:Libplanet.Net.BlockDemand.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Net.BlockDemand.BlockDemand
+  nameWithType: BlockDemand.BlockDemand
+- uid: Libplanet.Net.BlockDemand.Header
+  name: Header
+  href: api/Libplanet.Net.BlockDemand.html#Libplanet_Net_BlockDemand_Header
+  commentId: F:Libplanet.Net.BlockDemand.Header
+  fullName: Libplanet.Net.BlockDemand.Header
+  nameWithType: BlockDemand.Header
+- uid: Libplanet.Net.BlockDemand.Peer
+  name: Peer
+  href: api/Libplanet.Net.BlockDemand.html#Libplanet_Net_BlockDemand_Peer
+  commentId: F:Libplanet.Net.BlockDemand.Peer
+  fullName: Libplanet.Net.BlockDemand.Peer
+  nameWithType: BlockDemand.Peer
 - uid: Libplanet.Net.BlockDownloadState
   name: BlockDownloadState
   href: api/Libplanet.Net.BlockDownloadState.html
@@ -7933,6 +7981,23 @@ references:
   fullName.vb: Libplanet.Net.Swarm(Of T).BlockChain
   nameWithType: Swarm<T>.BlockChain
   nameWithType.vb: Swarm(Of T).BlockChain
+- uid: Libplanet.Net.Swarm`1.BlockDemand
+  name: BlockDemand
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_BlockDemand
+  commentId: P:Libplanet.Net.Swarm`1.BlockDemand
+  fullName: Libplanet.Net.Swarm<T>.BlockDemand
+  fullName.vb: Libplanet.Net.Swarm(Of T).BlockDemand
+  nameWithType: Swarm<T>.BlockDemand
+  nameWithType.vb: Swarm(Of T).BlockDemand
+- uid: Libplanet.Net.Swarm`1.BlockDemand*
+  name: BlockDemand
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_BlockDemand_
+  commentId: Overload:Libplanet.Net.Swarm`1.BlockDemand
+  isSpec: "True"
+  fullName: Libplanet.Net.Swarm<T>.BlockDemand
+  fullName.vb: Libplanet.Net.Swarm(Of T).BlockDemand
+  nameWithType: Swarm<T>.BlockDemand
+  nameWithType.vb: Swarm(Of T).BlockDemand
 - uid: Libplanet.Net.Swarm`1.BootstrapAsync(IEnumerable{Libplanet.Net.Peer},System.Double,System.Double,System.Int32,CancellationToken)
   name: BootstrapAsync(IEnumerable<Peer>, Double, Double, Int32, CancellationToken)
   href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_BootstrapAsync_IEnumerable_Libplanet_Net_Peer__System_Double_System_Double_System_Int32_CancellationToken_
