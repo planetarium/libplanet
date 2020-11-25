@@ -2,9 +2,9 @@ Libplanet changelog
 ===================
 
 Version 0.10.2
--------------
+--------------
 
-To be released.
+Released on November 25, 2020.
 
  -  Fixed `BlockChain<T>.Append()` method's bug that it had accepted
     a `Block<T>` having more `Transactions` than the number specified by
