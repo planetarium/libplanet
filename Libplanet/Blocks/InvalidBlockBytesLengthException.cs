@@ -29,8 +29,8 @@ namespace Libplanet.Blocks
         )
             : base(
                 $"{message}\n" +
-                $"Actual: #{blockBytesLength} bytes\n" +
-                $"Allowed (max): #{maxBlockBytesLength}")
+                $"Actual: {blockBytesLength} bytes\n" +
+                $"Allowed (max): {maxBlockBytesLength} bytes")
         {
             BlockBytesLength = blockBytesLength;
             MaxBlockBytesLength = maxBlockBytesLength;
