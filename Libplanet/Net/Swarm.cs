@@ -1760,6 +1760,7 @@ namespace Libplanet.Net
             CancellationToken cancellationToken
         )
         {
+            const string fname = nameof(FillBlocksAsync);
             BlockChain<T> workspace = blockChain;
             var scope = new List<Guid>();
             bool renderActions = evaluateActions;
@@ -1892,8 +1893,12 @@ namespace Libplanet.Net
                     }
                 }
             }
-            catch
+            catch (Exception e)
             {
+                _logger.Error(
+                    e,
+                    $"Unexpected error occurred during {fname}(): {{Exception}}",
+                    e);
                 if (workspace?.Id is Guid workspaceId && scope.Contains(workspaceId))
                 {
                     _store.DeleteChainId(workspaceId);
@@ -1903,6 +1908,11 @@ namespace Libplanet.Net
             }
             finally
             {
+                _logger.Debug(
+                    $"{fname}() completed (chain ID: {{ChainId}}, tip: #{{TipIndex}} {{TipHash}}).",
+                    workspace?.Id,
+                    workspace?.Tip?.Index,
+                    workspace?.Tip?.Hash);
                 foreach (var id in scope.Where(guid => guid != workspace?.Id))
                 {
                     _store.DeleteChainId(id);
