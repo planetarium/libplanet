@@ -2,11 +2,10 @@ addReviewers: true
 addAssignees: author
 
 reviewers:
-  - dahlia
-  - longfin
-  - limebell
-  - earlbread
-  - riemannulus
-  - moreal
+- dahlia
+- longfin
+- limebell
+- riemannulus
+- moreal
 
 numberOfReviewers: 0
