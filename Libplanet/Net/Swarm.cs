@@ -1897,7 +1897,7 @@ namespace Libplanet.Net
             {
                 _logger.Error(
                     e,
-                    $"Unexpected error occurred during {fname}(), {{e}}",
+                    $"Unexpected error occurred during {fname}(): {{Exception}}",
                     e);
                 if (workspace?.Id is Guid workspaceId && scope.Contains(workspaceId))
                 {
@@ -1909,7 +1909,7 @@ namespace Libplanet.Net
             finally
             {
                 _logger.Debug(
-                    $"{fname}() completed. (chainId: {{id}}, tip: #{{index}} {{hash}})",
+                    $"{fname}() completed (chain ID: {{ChainId}}, tip: #{{TipIndex}} {{TipHash}}).",
                     workspace?.Id,
                     workspace?.Tip?.Index,
                     workspace?.Tip?.Hash);
