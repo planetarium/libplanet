@@ -705,6 +705,39 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
+        public void AppendThrowsBlockExceedingTransactionsException()
+        {
+            PrivateKey signer = null;
+            int nonce = 0;
+            int maxTxs = _blockChain.Policy.MaxTransactionsPerBlock;
+            var manyTxs = new List<Transaction<DumbAction>>();
+            for (int i = 0; i <= maxTxs; i++)
+            {
+                Transaction<DumbAction> heavyTx = _fx.MakeTransaction(
+                    nonce: nonce,
+                    privateKey: signer);
+                manyTxs.Add(heavyTx);
+            }
+
+            Assert.True(manyTxs.Count > maxTxs);
+
+            var block1 = TestUtils.MineNext(
+                _blockChain.Genesis,
+                manyTxs,
+                difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
+                blockInterval: TimeSpan.FromSeconds(10)
+            );
+            Assert.Equal(manyTxs.Count, block1.Transactions.Count());
+
+            var e = Assert.Throws<BlockExceedingTransactionsException>(() =>
+                _blockChain.Append(block1)
+            );
+            Assert.IsAssignableFrom<InvalidBlockException>(e);
+            Assert.Equal(maxTxs, e.MaxTransactionsPerBlock);
+            Assert.Equal(manyTxs.Count, e.ActualTransactions);
+        }
+
+        [Fact]
         public void AppendWithoutEvaluateActions()
         {
             (_, Transaction<DumbAction>[] txs) =

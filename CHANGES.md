@@ -6,6 +6,13 @@ Version 0.10.2
 
 To be released.
 
+ -  Fixed `BlockChain<T>.Append()` method's bug that it had accepted
+    a `Block<T>` having more `Transactions` than the number specified by
+    the `IBlockPolicy<T>.MaxTransactionsPerBlock` property.  Now it throws
+    `InvalidBlockException` instead for such case.  [[#1104]]
+
+[#1104]: https://github.com/planetarium/libplanet/pull/1104
+
 
 Version 0.10.1
 --------------
