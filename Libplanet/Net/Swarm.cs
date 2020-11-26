@@ -1690,11 +1690,13 @@ namespace Libplanet.Net
             BroadcastMessage(except, message);
         }
 
-        private bool IsDemandNeeded(BlockHeader target)
+        private bool IsDemandNeeded(BlockHeader target, BoundPeer peer)
         {
-            return target.TotalDifficulty > BlockChain.Tip.TotalDifficulty &&
-                   (BlockDemand is null ||
-                    BlockDemand.Value.Header.TotalDifficulty < target.TotalDifficulty);
+            return target.TotalDifficulty > BlockChain.Tip.TotalDifficulty
+                   && (BlockDemand is null
+                       || (BlockDemand.Value.Timestamp + Options.BlockDemandLifespan <
+                           DateTimeOffset.UtcNow && !BlockDemand.Value.Peer.Equals(peer))
+                       || BlockDemand.Value.Header.TotalDifficulty < target.TotalDifficulty);
         }
 
         private async Task SyncPreviousBlocksAsync(
@@ -1979,6 +1981,10 @@ namespace Libplanet.Net
                 {
                     using (await _blockSyncMutex.LockAsync(cancellationToken))
                     {
+                        // FIXME: Should only reset when BlockDemand has not changed
+                        // from the beginning of this operation.
+                        _logger.Debug($"{nameof(ProcessFillBlocks)}() finished. " +
+                                      $"Reset {nameof(BlockDemand)}...");
                         BlockDemand = null;
                     }
                 }
