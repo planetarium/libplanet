@@ -174,7 +174,7 @@ namespace Libplanet.Blockchain
 
             if (Count == 0)
             {
-                if (StateStore is TrieStateStore tss && tss.ContainsBlockStates(genesisBlock.Hash))
+                if (inFork && StateStore is TrieStateStore)
                 {
                     // If the store is BlockStateStore, have to fork state reference too so
                     // should use Append().
