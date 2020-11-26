@@ -1897,13 +1897,16 @@ namespace Libplanet.Net
 
                     receivedBlockCount += receivedBlockCountCurrentLoop;
 
-                    // FIXME: Need test
                     if (receivedBlockCountCurrentLoop < FindNextHashesChunkSize)
                     {
                         _logger.Debug(
-                            $"Got all blocks from Peer [{peer}]",
-                            peer.Address.ToHex()
-                            );
+                            "Got all blocks from Peer [{{peer}}]. " +
+                            "(Count: {{count}}, TipIndex: #{{index}}, TipHash: {{hash}})",
+                            peer.Address.ToHex(),
+                            receivedBlockCountCurrentLoop,
+                            workspace.Tip.Index,
+                            workspace.Tip.Hash
+                        );
                         break;
                     }
                 }
