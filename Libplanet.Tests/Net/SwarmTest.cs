@@ -2001,6 +2001,51 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact(Timeout = Timeout)]
+        public async Task DoNotRetryFillWhenGetAllBlocksFromSender()
+        {
+            Swarm<DumbAction> receiver = CreateSwarm();
+            Swarm<DumbAction> sender = CreateSwarm();
+            await StartAsync(receiver);
+            await StartAsync(sender);
+
+            Block<DumbAction> b1 =
+                TestUtils.MineNext(receiver.BlockChain.Genesis, difficulty: 1024);
+            sender.BlockChain.Append(b1);
+
+            for (int i = 0; i < 1000; i++)
+            {
+                sender.BlockChain.Append(
+                    TestUtils.MineNext(sender.BlockChain.Tip, difficulty: 1024));
+            }
+
+            Log.Debug("Sender's BlockChain Tip index: #{index}", sender.BlockChain.Tip.Index);
+
+            try
+            {
+                await BootstrapAsync(sender, receiver.AsPeer);
+
+                sender.BroadcastBlock(b1);
+
+                await receiver.BlockReceived.WaitAsync();
+                Assert.Equal(
+                    2,
+                    receiver.BlockChain.Count);
+
+                sender.BroadcastBlock(sender.BlockChain.Tip);
+
+                await receiver.BlockReceived.WaitAsync();
+                Assert.Equal(
+                    1002,
+                    receiver.BlockChain.Count);
+            }
+            finally
+            {
+                await StopAsync(receiver);
+                await StopAsync(sender);
+            }
+        }
+
+        [Fact(Timeout = Timeout)]
         public async Task DoNotFillMultipleTimes()
         {
             Swarm<DumbAction> receiver = CreateSwarm();
