@@ -252,7 +252,9 @@ namespace Libplanet.Action
 
         public override string ToString()
         {
-            return $"{GetType().Namespace}.{GetType().Name}[{_innerAction}]";
+            const string polymorphicActionFullName = nameof(Libplanet) + "." + nameof(Action) +
+                                                     "." + nameof(PolymorphicAction<T>);
+            return $"{polymorphicActionFullName}<{_innerAction}>";
         }
     }
 }
