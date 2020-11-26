@@ -1862,6 +1862,7 @@ namespace Libplanet.Net
                         cancellationToken
                     );
 
+                    var receivedBlockCountCurrentLoop = 0;
                     await foreach (Block<T> block in blocks)
                     {
                         _logger.Debug(
@@ -1879,11 +1880,11 @@ namespace Libplanet.Net
                             renderBlocks: renderBlocks,
                             renderActions: renderActions
                         );
-                        receivedBlockCount++;
+                        receivedBlockCountCurrentLoop++;
                         progress?.Report(new BlockDownloadState
                         {
                             TotalBlockCount = totalBlockCount,
-                            ReceivedBlockCount = receivedBlockCount,
+                            ReceivedBlockCount = receivedBlockCount + receivedBlockCountCurrentLoop,
                             ReceivedBlockHash = block.Hash,
                             SourcePeer = peer,
                         });
@@ -1892,6 +1893,18 @@ namespace Libplanet.Net
                             block.Index,
                             block.Hash
                         );
+                    }
+
+                    receivedBlockCount += receivedBlockCountCurrentLoop;
+
+                    // FIXME: Need test
+                    if (receivedBlockCountCurrentLoop < FindNextHashesChunkSize)
+                    {
+                        _logger.Debug(
+                            $"Got all blocks from Peer [{peer}]",
+                            peer.Address.ToHex()
+                            );
+                        break;
                     }
                 }
             }

@@ -9,6 +9,8 @@ To be released.
 ### Backward-incompatible API changes
 
 ### Backward-incompatible network protocol changes
+ -   `Swarm<T>` became no longer retry when `Swarm<T>` receives
+      less than 500 blocks.  [[#1112]]
 
 ### Backward-incompatible storage format changes
 
@@ -61,6 +63,7 @@ To be released.
 [#1101]: https://github.com/planetarium/libplanet/pull/1101
 [#1102]: https://github.com/planetarium/libplanet/pull/1102
 [#1110]: https://github.com/planetarium/libplanet/pull/1110
+[#1112]: https://github.com/planetarium/libplanet/pull/1112
 
 
 Version 0.10.2
