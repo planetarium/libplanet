@@ -6891,12 +6891,12 @@ references:
   commentId: T:Libplanet.Net.BlockDemand
   fullName: Libplanet.Net.BlockDemand
   nameWithType: BlockDemand
-- uid: Libplanet.Net.BlockDemand.#ctor(Libplanet.Blocks.BlockHeader,Libplanet.Net.BoundPeer)
-  name: BlockDemand(BlockHeader, BoundPeer)
-  href: api/Libplanet.Net.BlockDemand.html#Libplanet_Net_BlockDemand__ctor_Libplanet_Blocks_BlockHeader_Libplanet_Net_BoundPeer_
-  commentId: M:Libplanet.Net.BlockDemand.#ctor(Libplanet.Blocks.BlockHeader,Libplanet.Net.BoundPeer)
-  fullName: Libplanet.Net.BlockDemand.BlockDemand(Libplanet.Blocks.BlockHeader, Libplanet.Net.BoundPeer)
-  nameWithType: BlockDemand.BlockDemand(BlockHeader, BoundPeer)
+- uid: Libplanet.Net.BlockDemand.#ctor(Libplanet.Blocks.BlockHeader,Libplanet.Net.BoundPeer,DateTimeOffset)
+  name: BlockDemand(BlockHeader, BoundPeer, DateTimeOffset)
+  href: api/Libplanet.Net.BlockDemand.html#Libplanet_Net_BlockDemand__ctor_Libplanet_Blocks_BlockHeader_Libplanet_Net_BoundPeer_DateTimeOffset_
+  commentId: M:Libplanet.Net.BlockDemand.#ctor(Libplanet.Blocks.BlockHeader,Libplanet.Net.BoundPeer,DateTimeOffset)
+  fullName: Libplanet.Net.BlockDemand.BlockDemand(Libplanet.Blocks.BlockHeader, Libplanet.Net.BoundPeer, DateTimeOffset)
+  nameWithType: BlockDemand.BlockDemand(BlockHeader, BoundPeer, DateTimeOffset)
 - uid: Libplanet.Net.BlockDemand.#ctor*
   name: BlockDemand
   href: api/Libplanet.Net.BlockDemand.html#Libplanet_Net_BlockDemand__ctor_
@@ -6916,6 +6916,12 @@ references:
   commentId: F:Libplanet.Net.BlockDemand.Peer
   fullName: Libplanet.Net.BlockDemand.Peer
   nameWithType: BlockDemand.Peer
+- uid: Libplanet.Net.BlockDemand.Timestamp
+  name: Timestamp
+  href: api/Libplanet.Net.BlockDemand.html#Libplanet_Net_BlockDemand_Timestamp
+  commentId: F:Libplanet.Net.BlockDemand.Timestamp
+  fullName: Libplanet.Net.BlockDemand.Timestamp
+  nameWithType: BlockDemand.Timestamp
 - uid: Libplanet.Net.BlockDownloadState
   name: BlockDownloadState
   href: api/Libplanet.Net.BlockDownloadState.html
@@ -8480,6 +8486,19 @@ references:
   commentId: T:Libplanet.Net.SwarmOptions
   fullName: Libplanet.Net.SwarmOptions
   nameWithType: SwarmOptions
+- uid: Libplanet.Net.SwarmOptions.BlockDemandLifespan
+  name: BlockDemandLifespan
+  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_BlockDemandLifespan
+  commentId: P:Libplanet.Net.SwarmOptions.BlockDemandLifespan
+  fullName: Libplanet.Net.SwarmOptions.BlockDemandLifespan
+  nameWithType: SwarmOptions.BlockDemandLifespan
+- uid: Libplanet.Net.SwarmOptions.BlockDemandLifespan*
+  name: BlockDemandLifespan
+  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_BlockDemandLifespan_
+  commentId: Overload:Libplanet.Net.SwarmOptions.BlockDemandLifespan
+  isSpec: "True"
+  fullName: Libplanet.Net.SwarmOptions.BlockDemandLifespan
+  nameWithType: SwarmOptions.BlockDemandLifespan
 - uid: Libplanet.Net.SwarmOptions.BlockDownloadTimeout
   name: BlockDownloadTimeout
   href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_BlockDownloadTimeout
