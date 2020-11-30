@@ -2001,18 +2001,17 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact(Timeout = Timeout)]
-        public async Task DoNotRetryFillWhenGetAllBlocksFromSender()
+        public async Task DoNotFillWhenGetAllBlockAtFirstTimeFromSender()
         {
             Swarm<DumbAction> receiver = CreateSwarm();
             Swarm<DumbAction> sender = CreateSwarm();
             await StartAsync(receiver);
             await StartAsync(sender);
 
-            Block<DumbAction> b1 =
-                TestUtils.MineNext(receiver.BlockChain.Genesis, difficulty: 1024);
-            sender.BlockChain.Append(b1);
+            receiver.FindNextHashesChunkSize = 8;
+            sender.FindNextHashesChunkSize = 8;
 
-            for (int i = 0; i < 1000; i++)
+            for (int i = 0; i < 6; i++)
             {
                 sender.BlockChain.Append(
                     TestUtils.MineNext(sender.BlockChain.Tip, difficulty: 1024));
@@ -2024,18 +2023,48 @@ namespace Libplanet.Tests.Net
             {
                 await BootstrapAsync(sender, receiver.AsPeer);
 
-                sender.BroadcastBlock(b1);
+                sender.BroadcastBlock(sender.BlockChain.Tip);
 
                 await receiver.BlockReceived.WaitAsync();
                 Assert.Equal(
-                    2,
+                    7,
                     receiver.BlockChain.Count);
+            }
+            finally
+            {
+                await StopAsync(receiver);
+                await StopAsync(sender);
+            }
+        }
+
+        [Fact(Timeout = Timeout)]
+        public async Task FillWhenGetAllBlocksFromSender()
+        {
+            Swarm<DumbAction> receiver = CreateSwarm();
+            Swarm<DumbAction> sender = CreateSwarm();
+            await StartAsync(receiver);
+            await StartAsync(sender);
+
+            receiver.FindNextHashesChunkSize = 2;
+            sender.FindNextHashesChunkSize = 2;
+
+            for (int i = 0; i < 6; i++)
+            {
+                sender.BlockChain.Append(
+                    TestUtils.MineNext(sender.BlockChain.Tip, difficulty: 1024));
+            }
+
+            Log.Debug("Sender's BlockChain Tip index: #{index}", sender.BlockChain.Tip.Index);
+
+            try
+            {
+                await BootstrapAsync(sender, receiver.AsPeer);
 
                 sender.BroadcastBlock(sender.BlockChain.Tip);
 
                 await receiver.BlockReceived.WaitAsync();
                 Assert.Equal(
-                    1002,
+                    7,
                     receiver.BlockChain.Count);
             }
             finally
