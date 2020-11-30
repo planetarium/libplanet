@@ -1907,8 +1907,8 @@ namespace Libplanet.Net
                         }
 
                         _logger.Debug(
-                            "Got all blocks from Peer [{{peer}}]. " +
-                            "(Count: {{count}}, TipIndex: #{{index}}, TipHash: {{hash}})",
+                            "Got all blocks from Peer [{Peer}]. " +
+                            "(Count: {Count}, TipIndex: #{Index}, TipHash: {Hash})",
                             peer.Address.ToHex(),
                             receivedBlockCountCurrentLoop,
                             workspace.Tip.Index,
