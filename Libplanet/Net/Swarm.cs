@@ -1896,9 +1896,16 @@ namespace Libplanet.Net
                     }
 
                     receivedBlockCount += receivedBlockCountCurrentLoop;
+                    var isEndedFirstTime = receivedBlockCount == receivedBlockCountCurrentLoop &&
+                                           receivedBlockCount < FindNextHashesChunkSize - 1;
 
                     if (receivedBlockCountCurrentLoop < FindNextHashesChunkSize)
                     {
+                        if (!isEndedFirstTime)
+                        {
+                            continue;
+                        }
+
                         _logger.Debug(
                             "Got all blocks from Peer [{{peer}}]. " +
                             "(Count: {{count}}, TipIndex: #{{index}}, TipHash: {{hash}})",
