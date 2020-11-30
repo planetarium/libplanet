@@ -1896,14 +1896,19 @@ namespace Libplanet.Net
                     }
 
                     receivedBlockCount += receivedBlockCountCurrentLoop;
+                    var isEndedFirstTime = receivedBlockCount == receivedBlockCountCurrentLoop &&
+                                           receivedBlockCount < FindNextHashesChunkSize - 1;
 
-                    // FIXME: Need test
-                    if (receivedBlockCountCurrentLoop < FindNextHashesChunkSize)
+                    if (receivedBlockCountCurrentLoop < FindNextHashesChunkSize && isEndedFirstTime)
                     {
                         _logger.Debug(
-                            $"Got all blocks from Peer [{peer}]",
-                            peer.Address.ToHex()
-                            );
+                            "Got all blocks from Peer [{Peer}]. " +
+                            "(Count: {Count}, TipIndex: #{Index}, TipHash: {Hash})",
+                            peer.Address.ToHex(),
+                            receivedBlockCountCurrentLoop,
+                            workspace.Tip.Index,
+                            workspace.Tip.Hash
+                        );
                         break;
                     }
                 }
