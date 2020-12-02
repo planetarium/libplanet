@@ -39,6 +39,20 @@ To be released.
     [[#1074], [#1102]]
  -  Added `TurnClient.ReconnectTurn(CancellationToken)` method.
     [[#1074], [#1102]]
+ -  Added `Libplanet.Blockchain.Renderers.Debug.RenderRecord<T>` abstract class
+    and its subclasses:  [[#1119]]
+     -  `RenderRecord<T>.ActionBase` abstract class
+     -  `RenderRecord<T>.ActionSuccess` class
+     -  `RenderRecord<T>.ActionError` class
+     -  `RenderRecord<T>.BlockBase` abstract class
+     -  `RenderRecord<T>.Block` class
+     -  `RenderRecord<T>.Reorg` class
+ -  Added `Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer<T>`
+    class.  [[#1119]]
+ -  Added `Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer<T>`
+    class.  [[#1119]]
+ -  Added `Libplanet.Blockchain.Renderers.Debug.InvalidRenderException<T>`
+    class.  [[#1119]]
 
 ### Behavioral changes
 
@@ -68,6 +82,7 @@ To be released.
 [#1102]: https://github.com/planetarium/libplanet/pull/1102
 [#1110]: https://github.com/planetarium/libplanet/pull/1110
 [#1112]: https://github.com/planetarium/libplanet/pull/1112
+[#1119]: https://github.com/planetarium/libplanet/pull/1119
 
 
 Version 0.10.2

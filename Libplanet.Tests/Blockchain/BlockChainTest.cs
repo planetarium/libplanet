@@ -10,11 +10,11 @@ using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers;
+using Libplanet.Blockchain.Renderers.Debug;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Tests.Action;
-using Libplanet.Tests.Common;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Libplanet.Tests.Store.Trie;
@@ -552,7 +552,7 @@ namespace Libplanet.Tests.Blockchain
                 // Stale actions shouldn't be evaluated because the "renderer" here is not an
                 // IActionRenderer<T> but a vanilla IRenderer<T> which means they don't have to
                 // be unrendered.
-                var renderer = new RecordingRenderer<DumbAction>();
+                var renderer = new RecordingActionRenderer<DumbAction>();
                 var newChain = new BlockChain<DumbAction>(
                     policy,
                     fx.Store,
@@ -782,7 +782,7 @@ namespace Libplanet.Tests.Blockchain
         {
             var policy = new NullPolicy<ThrowException>();
             var store = new DefaultStore(null);
-            var renderer = new RecordingRenderer<ThrowException>();
+            var renderer = new RecordingActionRenderer<ThrowException>();
             var blockChain = TestUtils.MakeBlockChain(policy, store, renderers: new[] { renderer });
             var privateKey = new PrivateKey();
 
@@ -937,7 +937,7 @@ namespace Libplanet.Tests.Blockchain
         {
             var policy = new NullPolicy<DumbAction>();
             var store = new DefaultStore(null);
-            var recordingRenderer = new RecordingRenderer<DumbAction>();
+            var recordingRenderer = new RecordingActionRenderer<DumbAction>();
             var renderer = new LoggedActionRenderer<DumbAction>(recordingRenderer, Log.Logger);
             BlockChain<DumbAction> blockChain =
                 TestUtils.MakeBlockChain(policy, store, renderers: new[] { renderer });
@@ -1299,7 +1299,7 @@ namespace Libplanet.Tests.Blockchain
             using (var store = new DefaultStore(null))
             {
                 store.PutBlock(genesis);
-                var renderer = new RecordingRenderer<DumbAction>();
+                var renderer = new RecordingActionRenderer<DumbAction>();
                 var blockChain = new BlockChain<DumbAction>(
                     _blockChain.Policy,
                     store,
@@ -2635,7 +2635,7 @@ namespace Libplanet.Tests.Blockchain
                 fx1.Store,
                 fx1.StateStore,
                 fx1.GenesisBlock);
-            var renderer2 = new RecordingRenderer<DumbAction>();
+            var renderer2 = new RecordingActionRenderer<DumbAction>();
             var chain2 = new BlockChain<DumbAction>(
                 policy2,
                 fx2.Store,
