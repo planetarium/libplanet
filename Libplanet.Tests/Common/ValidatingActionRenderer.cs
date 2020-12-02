@@ -1,9 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using Libplanet.Action;
+using Libplanet.Blockchain;
+using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Blocks;
+using Libplanet.Store;
 
 namespace Libplanet.Tests.Common
 {
@@ -24,6 +29,12 @@ namespace Libplanet.Tests.Common
             Block,
             BlockEnd,
         }
+
+        /// <summary>
+        /// The chain that publishes the render events.  More stricter validations are conducted
+        /// if it's configured.
+        /// </summary>
+        public BlockChain<T> BlockChain { get; set; }
 
         public override void RenderReorg(Block<T> oldTip, Block<T> newTip, Block<T> branchpoint)
         {
@@ -91,6 +102,159 @@ namespace Libplanet.Tests.Common
         {
             base.RenderReorgEnd(oldTip, newTip, branchpoint);
             Validate();
+
+            ValidateReorgEnd(oldTip, newTip, branchpoint);
+        }
+
+        private void ValidateReorgEnd(
+            Block<T> oldTip,
+            Block<T> newTip,
+            Block<T> branchpoint)
+        {
+            if (!(BlockChain is BlockChain<T> chain))
+            {
+                return;
+            }
+
+            IBlockPolicy<T> policy = chain.Policy;
+            IStore store = chain.Store;
+
+            List<IAction> expectedUnrenderedActions = new List<IAction>();
+            Block<T> block = oldTip;
+            while (!block.Equals(branchpoint))
+            {
+                if (policy.BlockAction is IAction blockAction)
+                {
+                    expectedUnrenderedActions.Add(blockAction);
+                }
+
+                expectedUnrenderedActions.AddRange(
+                    block.Transactions.SelectMany(t => t.Actions).Cast<IAction>().Reverse());
+                block = block.PreviousHash is HashDigest<SHA256> prevHash
+                    ? store.GetBlock<T>(prevHash)
+                    : throw new InvalidRenderException(
+                        Records,
+                        "Reorg occurred from the chain with different genesis.");
+            }
+
+            IEnumerable<IAction> expectedRenderedActionsBuffer = new List<IAction>();
+            block = newTip;
+            while (!block.Equals(branchpoint))
+            {
+                IEnumerable<IAction> actions =
+                    block.Transactions.SelectMany(t => t.Actions).Cast<IAction>();
+                if (policy.BlockAction is IAction blockAction)
+                {
+#if NET472 || NET471 || NET47 || NET462 || NET461
+                    // Even though .NET Framework 4.6.1 or higher supports .NET Standard 2.0,
+                    // versions lower than 4.8 lacks Enumerable.Append(IEnumerable<T>, T) method.
+                    actions = actions.Concat(new IAction[] { blockAction });
+#else
+#pragma warning disable PC002
+                    actions = actions.Append(blockAction);
+#pragma warning restore PC002
+#endif
+                }
+
+                expectedRenderedActionsBuffer = actions.Concat(expectedRenderedActionsBuffer);
+                block = block.PreviousHash is HashDigest<SHA256> prevHash
+                    ? store.GetBlock<T>(prevHash)
+                    : throw new InvalidRenderException(
+                        Records,
+                        "Reorg occurred from the chain with different genesis.");
+            }
+
+            IAction[] expectedRenderedActions = expectedRenderedActionsBuffer.ToArray();
+            List<IAction> actualRenderedActions = new List<IAction>();
+            List<IAction> actualUnrenderedActions = new List<IAction>();
+            foreach (var record in Records.Reverse())
+            {
+                if (record is RenderRecord<T>.Reorg b && b.Begin)
+                {
+                    break;
+                }
+
+                if (record is RenderRecord<T>.ActionBase a)
+                {
+                    if (a.Render)
+                    {
+                        actualRenderedActions.Add(a.Action);
+                    }
+                    else
+                    {
+                        actualUnrenderedActions.Add(a.Action);
+                    }
+                }
+            }
+
+            actualRenderedActions.Reverse();
+            actualUnrenderedActions.Reverse();
+
+            string ReprAction(IAction action)
+            {
+                if (action is null)
+                {
+                    return "[N/A]";
+                }
+
+                return action.PlainValue.Inspection
+                    .Replace(" \n ", " ")
+                    .Replace(" \n", " ")
+                    .Replace("\n ", " ")
+                    .Replace("\n", " ");
+            }
+
+            string MakeErrorMessage(string prefix, IList<IAction> expected, IList<IAction> actual)
+            {
+                int expectN = expected.Count;
+                int actualN = actual.Count;
+                if (expectN != actualN)
+                {
+                    prefix += $" (expected: {expectN} actions, actual: {actualN} actions):";
+                }
+
+                var buffer = new StringBuilder();
+                for (int i = 0, count = Math.Max(expectN, actualN); i < count; i++)
+                {
+                    IAction e = i < expectN ? expected[i] : null;
+                    IAction a = i < actualN ? actual[i] : null;
+                    if (!(e is null || a is null) && e.PlainValue.Equals(a.PlainValue))
+                    {
+                        buffer.Append($"\n\t  {ReprAction(e)}");
+                    }
+                    else
+                    {
+                        buffer.Append($"\n\tE {ReprAction(e)}");
+                        buffer.Append($"\n\tA {ReprAction(a)}");
+                    }
+                }
+
+                return $"{prefix}:{buffer}";
+            }
+
+            if (!actualUnrenderedActions.Select(a => a.PlainValue)
+                    .SequenceEqual(expectedUnrenderedActions.Select(a => a.PlainValue)))
+            {
+                const string message =
+                    "The unrender action records do not match with actions in the block when " +
+                    "reorg occurred";
+                throw new InvalidRenderException(
+                    Records,
+                    MakeErrorMessage(message, expectedUnrenderedActions, actualUnrenderedActions)
+                );
+            }
+
+            if (!actualRenderedActions.Select(a => a.PlainValue)
+                    .SequenceEqual(expectedRenderedActions.Select(a => a.PlainValue)))
+            {
+                const string message =
+                    "The render action record does not match with actions in the block when " +
+                    "reorg occurred";
+                throw new InvalidRenderException(
+                    Records,
+                    MakeErrorMessage(message, expectedRenderedActions, actualRenderedActions)
+                );
+            }
         }
 
         private void Validate()
@@ -103,7 +267,6 @@ namespace Libplanet.Tests.Common
 
             Exception BadRenderExc(string message) => new InvalidRenderException(records, message);
 
-#pragma warning disable S2589
             foreach (RenderRecord<T> record in Records)
             {
                 records.Add(record);
@@ -141,7 +304,9 @@ namespace Libplanet.Tests.Common
 
                     case RenderState.Reorg:
                     {
+#pragma warning disable S2589
                         if (reorgState is null || !(blockState is null))
+#pragma warning restore S2589
                         {
                             throw BadRenderExc(
                                 $"Unexpected reorg/block states: {reorgState}/{blockState}."
@@ -251,7 +416,9 @@ namespace Libplanet.Tests.Common
 
                     case RenderState.BlockEnd:
                     {
+#pragma warning disable S2589
                         if (reorgState is null || !(blockState is null))
+#pragma warning restore S2589
                         {
                             throw BadRenderExc(
                                 $"Unexpected reorg/block states: {reorgState}/{blockState}."
@@ -281,7 +448,6 @@ namespace Libplanet.Tests.Common
                     }
                 }
             }
-#pragma warning restore S2589
         }
 
         public class InvalidRenderException : Exception
@@ -332,7 +498,7 @@ namespace Libplanet.Tests.Common
                     int commonPostfix = 0;
                     for (int i = 0, end = Records.Min(r => r.StackTrace.Length); i < end; i++)
                     {
-                        char charInFirst = firstTrace[StackTrace.Length - (i + 1)];
+                        char charInFirst = firstTrace[firstTrace.Length - (i + 1)];
                         bool allEqual = Records.Skip(1).All(r =>
                         {
                             string stackTrace = r.StackTrace;
