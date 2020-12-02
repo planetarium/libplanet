@@ -61,14 +61,13 @@ namespace Libplanet.Tests.Net.Protocols
             Protocol = new KademliaProtocol(
                 this,
                 Address,
-                AppProtocolVersion,
-                null,
-                null,
                 _logger,
                 tableSize,
                 bucketSize
             );
         }
+
+        public event EventHandler<Message> ProcessMessageHandler;
 
         public AsyncAutoResetEvent MessageReceived { get; }
 
@@ -164,7 +163,16 @@ namespace Libplanet.Tests.Net.Protocols
                 Kademlia.MaxDepth,
                 cancellationToken);
         }
-#pragma warning restore S4457 // Cannot split the method since method is in interface
+
+        public Task SendMessageAsync(
+            BoundPeer peer,
+            Message message,
+            CancellationToken cancellationToken)
+            => SendMessageWithReplyAsync(
+                peer,
+                message,
+                TimeSpan.FromSeconds(3),
+                cancellationToken);
 
         public Task AddPeersAsync(
             IEnumerable<Peer> peers,
@@ -192,10 +200,11 @@ namespace Libplanet.Tests.Net.Protocols
                     {
                         if (peer is BoundPeer boundPeer)
                         {
-                            tasks.Add(kp.PingAsync(
-                                boundPeer,
-                                timeout: timeout,
-                                cancellationToken: cancellationToken));
+                            tasks.Add(
+                                kp.PingAsync(
+                                    boundPeer,
+                                    timeout: timeout,
+                                    cancellationToken: cancellationToken));
                         }
                     }
 
@@ -346,7 +355,6 @@ namespace Libplanet.Tests.Net.Protocols
                     message.Identity);
                 LastMessageTimestamp = DateTimeOffset.UtcNow;
                 ReceivedMessages.Add(reply);
-                Protocol.ReceiveMessage(reply);
                 MessageReceived.Set();
                 return reply;
             }
@@ -460,7 +468,7 @@ namespace Libplanet.Tests.Net.Protocols
 
             LastMessageTimestamp = DateTimeOffset.UtcNow;
             ReceivedMessages.Add(message);
-            Protocol.ReceiveMessage(message);
+            ProcessMessageHandler?.Invoke(this, message);
             MessageReceived.Set();
         }
 

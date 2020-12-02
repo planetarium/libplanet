@@ -5,7 +5,6 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Serilog;
 using Random = System.Random;
@@ -17,10 +16,6 @@ namespace Libplanet.Net.Protocols
         private readonly TimeSpan _requestTimeout;
         private readonly ITransport _transport;
         private readonly Address _address;
-        private readonly AppProtocolVersion _appProtocolVersion;
-        private readonly IImmutableSet<PublicKey> _trustedAppProtocolVersionSigners;
-        private readonly DifferentAppProtocolVersionEncountered
-            _differentAppProtocolVersionEncountered;
 
         private readonly Random _random;
         private readonly RoutingTable _routing;
@@ -33,9 +28,6 @@ namespace Libplanet.Net.Protocols
         public KademliaProtocol(
             ITransport transport,
             Address address,
-            AppProtocolVersion appProtocolVersion,
-            IImmutableSet<PublicKey> trustedAppProtocolVersionSigners,
-            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered,
             ILogger logger,
             int? tableSize,
             int? bucketSize,
@@ -43,9 +35,6 @@ namespace Libplanet.Net.Protocols
             TimeSpan? requestTimeout = null)
         {
             _transport = transport;
-            _appProtocolVersion = appProtocolVersion;
-            _trustedAppProtocolVersionSigners = trustedAppProtocolVersionSigners;
-            _differentAppProtocolVersionEncountered = differentAppProtocolVersionEncountered;
             _logger = logger;
 
             _address = address;
@@ -57,6 +46,7 @@ namespace Libplanet.Net.Protocols
             _requestTimeout =
                 requestTimeout ??
                 TimeSpan.FromMilliseconds(Kademlia.IdleRequestTimeout);
+            _transport.ProcessMessageHandler += ProcessMessageHandler;
         }
 
         public IEnumerable<BoundPeer> Peers => _routing.Peers;
@@ -246,7 +236,7 @@ namespace Libplanet.Net.Protocols
 
                         await PingAsync(replacement, _requestTimeout, cancellationToken);
                         _routing.RemoveCache(replacement);
-                        UpdateAsync(replacement);
+                        Update(replacement);
                     }
                     catch (PingTimeoutException)
                     {
@@ -261,18 +251,7 @@ namespace Libplanet.Net.Protocols
             _logger.Verbose("Replacement cache checked.");
         }
 
-#pragma warning disable CS4014 // To run UpdateAsync() without await.
-        public void ReceiveMessage(Message message)
-        {
-            if (message is FindNeighbors findPeer)
-            {
-                ReceiveFindPeer(findPeer);
-            }
-
-            UpdateAsync(message?.Remote);
-        }
-#pragma warning restore CS4014
-
+        // FIXME: Remove this method and make RoutingTable public
         public string Trace()
         {
             var trace = $"Routing table of [{_address.ToHex()}]\n";
@@ -333,6 +312,7 @@ namespace Libplanet.Net.Protocols
                     var msg =
                         "{BoundPeer}, a target peer, is in the routing table does not respond.";
                     _logger.Verbose(msg, boundPeer);
+                    RemovePeer(boundPeer);
                     return null;
                 }
 
@@ -399,6 +379,10 @@ namespace Libplanet.Net.Protocols
                     }
                     catch (PingTimeoutException)
                     {
+                        // Ignore peer not responding
+                    }
+                    finally
+                    {
                         history.Add(found);
                     }
                 }
@@ -433,13 +417,16 @@ namespace Libplanet.Net.Protocols
                 );
                 if (!(reply is Pong pong))
                 {
-                    throw new InvalidMessageException("Received pong is invalid.", reply);
+                    throw new InvalidMessageException(
+                        $"Expected pong, but received {reply}.", reply);
                 }
 
                 if (pong.Remote.Address.Equals(_address))
                 {
                     throw new InvalidMessageException("Cannot receive pong from self", pong);
                 }
+
+                Update(target);
             }
             catch (TimeoutException)
             {
@@ -449,7 +436,8 @@ namespace Libplanet.Net.Protocols
             }
             catch (DifferentAppProtocolVersionException)
             {
-                _logger.Error("Different AppProtocolVersion encountered at PingAsync.");
+                _logger.Error(
+                    $"Different AppProtocolVersion encountered at {nameof(PingAsync)}().");
                 throw;
             }
         }
@@ -457,6 +445,27 @@ namespace Libplanet.Net.Protocols
         internal void ClearTable()
         {
             _routing.Clear();
+        }
+
+        private void ProcessMessageHandler(object target, Message message)
+        {
+            switch (message)
+            {
+                case Ping ping:
+                {
+                    ReceivePing(ping);
+                    break;
+                }
+
+                case FindNeighbors findPeer:
+                {
+                    ReceiveFindPeer(findPeer);
+                    break;
+                }
+            }
+
+            // Should we update peer status for non-protocol related messages? (i.e. BlockHashes)
+            Update(message?.Remote);
         }
 
         /// <summary>
@@ -492,9 +501,9 @@ namespace Libplanet.Net.Protocols
         // if corresponding bucket for remote peer is not full, just adds remote peer.
         // otherwise check whether if the least recently used (LRU) peer
         // is alive to determine evict LRU peer or discard remote peer.
-        private void UpdateAsync(Peer rawPeer)
+        private void Update(Peer rawPeer)
         {
-            _logger.Verbose($"Try to {nameof(UpdateAsync)}() {{Peer}}.", rawPeer);
+            _logger.Verbose($"Try to {nameof(Update)}() {{Peer}}.", rawPeer);
             if (rawPeer is null)
             {
                 throw new ArgumentNullException(nameof(rawPeer));
@@ -616,7 +625,7 @@ namespace Libplanet.Net.Protocols
             }
         }
 
-        // send pong back to remote
+        // Send pong back to remote
         private void ReceivePing(Ping ping)
         {
             if (ping.Remote.Address.Equals(_address))
@@ -624,6 +633,13 @@ namespace Libplanet.Net.Protocols
                 throw new ArgumentException(
                     "Cannot receive ping from self");
             }
+
+            var pong = new Pong
+            {
+                Identity = ping.Identity,
+            };
+
+            _transport.ReplyMessage(pong);
         }
 
         /// <summary>

@@ -18,7 +18,10 @@ using Serilog;
 
 namespace Libplanet.Net
 {
-    internal class NetMQTransport : ITransport
+    /// <summary>
+    /// Implementation of <see cref="ITransport"/> interface using NetMQ.
+    /// </summary>
+    public class NetMQTransport : ITransport
     {
         private const int MessageHistoryCapacity = 30;
 
@@ -66,6 +69,34 @@ namespace Libplanet.Net
         /// </summary>
         private DifferentAppProtocolVersionEncountered _differentAppProtocolVersionEncountered;
 
+        /// <summary>
+        /// Creates <see cref="NetMQTransport"/> instance.
+        /// </summary>
+        /// <param name="privateKey"><see cref="PrivateKey"/> of the transport layer.</param>
+        /// <param name="appProtocolVersion"><see cref="AppProtocolVersion"/>-typed
+        /// version of the transport layer.</param>
+        /// <param name="trustedAppProtocolVersionSigners"><see cref="PublicKey"/>s of parties
+        /// to trust <see cref="AppProtocolVersion"/>s they signed.  To trust any party, pass
+        /// <c>null</c>.</param>
+        /// <param name="tableSize">The number of buckets in Kademlia-based routing table.</param>
+        /// <param name="bucketSize">The size of bucket in Kademlia-based routing table.</param>
+        /// <param name="workers">The number of background workers (i.e., threads).</param>
+        /// <param name="host">A hostname to be a part of a public endpoint, that peers use when
+        /// they connect to this node.  Note that this is not a hostname to listen to;
+        /// <see cref="NetMQTransport"/> always listens to 0.0.0.0 &amp; ::/0.</param>
+        /// <param name="listenPort">A port number to listen to.</param>
+        /// <param name="iceServers">
+        /// <a href="https://en.wikipedia.org/wiki/Interactive_Connectivity_Establishment">ICE</a>
+        /// servers to use for TURN/STUN.  Purposes to traverse NAT.</param>
+        /// <param name="differentAppProtocolVersionEncountered">A delegate called back when a peer
+        /// with one different from <paramref name="appProtocolVersion"/>, and their version is
+        /// signed by a trusted party (i.e., <paramref name="trustedAppProtocolVersionSigners"/>).
+        /// If this callback returns <c>false</c>, an encountered peer is ignored.  If this callback
+        /// is omitted, all peers with different <see cref="AppProtocolVersion"/>s are ignored.
+        /// </param>
+        /// <param name="logger"><see cref="Log.Logger"/> for logging.</param>
+        /// <exception cref="ArgumentException">Thrown when both <paramref name="host"/> and
+        /// <paramref name="iceServers"/> are <c>null</c>.</exception>
         public NetMQTransport(
             PrivateKey privateKey,
             AppProtocolVersion appProtocolVersion,
@@ -77,7 +108,6 @@ namespace Libplanet.Net
             int? listenPort,
             IEnumerable<IceServer> iceServers,
             DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered,
-            EventHandler<Message> processMessageHandler,
             ILogger logger)
         {
             Running = false;
@@ -89,7 +119,6 @@ namespace Libplanet.Net
             _listenPort = listenPort;
             _differentAppProtocolVersionEncountered = differentAppProtocolVersionEncountered;
             _turnClientMutex = new AsyncLock();
-            ProcessMessageHandler = processMessageHandler;
 
             if (_host != null && _listenPort is int listenPortAsInt)
             {
@@ -154,32 +183,30 @@ namespace Libplanet.Net
             Protocol = new KademliaProtocol(
                 this,
                 _privateKey.ToAddress(),
-                _appProtocolVersion,
-                _trustedAppProtocolVersionSigners,
-                _differentAppProtocolVersionEncountered,
                 _logger,
                 tableSize,
                 bucketSize);
             _dealers = new ConcurrentDictionary<Address, DealerSocket>();
         }
 
-        /// <summary>
-        /// The <see cref="EventHandler" /> triggered when a <see cref="Message"/> is
-        /// received and needs processing.
-        /// </summary>
-        private event EventHandler<Message> ProcessMessageHandler;
+        /// <inheritdoc />
+        public event EventHandler<Message> ProcessMessageHandler;
 
+        /// <inheritdoc cref="ITransport.AsPeer"/>
         public Peer AsPeer => EndPoint is null
             ? new Peer(_privateKey.PublicKey, PublicIPAddress)
             : new BoundPeer(_privateKey.PublicKey, EndPoint, PublicIPAddress);
 
+        /// <inheritdoc />
         public IEnumerable<BoundPeer> Peers => Protocol.Peers;
 
+        /// <inheritdoc cref="ITransport.LastMessageTimestamp"/>
         public DateTimeOffset? LastMessageTimestamp { get; private set; }
 
         /// <summary>
         /// Whether this <see cref="NetMQTransport"/> instance is running.
         /// </summary>
+        /// <returns>Boolean value indicates whether the instance is running.</returns>
         public bool Running
         {
             get => _runningEvent.Task.Status == TaskStatus.RanToCompletion;
@@ -205,6 +232,7 @@ namespace Libplanet.Net
 
         internal DnsEndPoint EndPoint => _turnClient?.EndPoint ?? _hostEndPoint;
 
+        /// <inheritdoc />
         public async Task StartAsync(CancellationToken cancellationToken)
         {
             if (Running)
@@ -253,6 +281,7 @@ namespace Libplanet.Net
             _broadcastQueue.ReceiveReady += DoBroadcast;
         }
 
+        /// <inheritdoc />
         public async Task RunAsync(CancellationToken cancellationToken)
         {
             if (Running)
@@ -276,6 +305,7 @@ namespace Libplanet.Net
             await await Task.WhenAny(tasks);
         }
 
+        /// <inheritdoc />
         public async Task StopAsync(
             TimeSpan waitFor,
             CancellationToken cancellationToken = default(CancellationToken)
@@ -316,6 +346,7 @@ namespace Libplanet.Net
             }
         }
 
+        /// <inheritdoc />
         public Task BootstrapAsync(
             IEnumerable<BoundPeer> bootstrapPeers,
             TimeSpan? pingSeedTimeout,
@@ -330,6 +361,21 @@ namespace Libplanet.Net
             cancellationToken
         );
 
+        /// <summary>
+        /// Adds given <paramref name="peers"/> to routing table by sending <see cref="Ping"/>.
+        /// </summary>
+        /// <param name="peers">The peers to add.</param>
+        /// <param name="timeout">A timeout of waiting for the reply of <see cref="Ping"/>
+        /// message sent to <paramref name="peers"/>.
+        /// If <c>null</c> is given, task never halts by itself
+        /// even the target peer gives no any response.</param>
+        /// <param name="cancellationToken">
+        /// A cancellation token used to propagate notification that this
+        /// operation should be canceled.</param>
+        /// <returns>An awaitable task without value.</returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when <see cref="Protocol"/> is <c>null</c>.
+        /// </exception>
         public async Task AddPeersAsync(
             IEnumerable<Peer> peers,
             TimeSpan? timeout,
@@ -398,6 +444,19 @@ namespace Libplanet.Net
             }
         }
 
+        /// <summary>
+        /// Finds a <see cref="Peer"/> whose address value matches <paramref name="target"/>.
+        /// </summary>
+        /// <param name="target"><see cref="Address"/> to find.</param>
+        /// <param name="depth">Recursive operation depth to search the peer from network.</param>
+        /// <param name="timeout">A timeout of waiting for the reply of messages.
+        /// If <c>null</c> is given, task never halts by itself even the message gives
+        /// no any response.</param>
+        /// <param name="cancellationToken">
+        /// A cancellation token used to propagate notification that this
+        /// operation should be canceled.</param>
+        /// <returns><see cref="Peer"/> match with given <paramref name="target"/> if it exists.
+        /// Otherwise, return <c>null</c> if fails to find.</returns>
         public async Task<BoundPeer> FindSpecificPeerAsync(
             Address target,
             int depth,
@@ -412,8 +471,14 @@ namespace Libplanet.Net
                 cancellationToken);
         }
 
+        /// <summary>
+        /// Visualizes Kademlia-based routing table status.
+        /// </summary>
+        /// <remarks>Will be outdated.</remarks>
+        /// <returns><see cref="string"/> representation of the routing table.</returns>
         public string Trace() => Protocol is null ? string.Empty : Protocol.Trace();
 
+        /// <inheritdoc />
         public void Dispose()
         {
             _runtimeCancellationTokenSource.Cancel();
@@ -421,11 +486,27 @@ namespace Libplanet.Net
             _runtimeProcessor.Wait();
         }
 
+        /// <summary>
+        /// Waits until this <see cref="NetMQTransport"/> instance gets started to run.
+        /// </summary>
+        /// <seealso cref="Swarm{T}.WaitForRunningAsync()"/>
+        /// <returns>A <see cref="Task"/> completed when <see cref="Running"/>
+        /// property becomes <c>true</c>.</returns>
         public Task WaitForRunningAsync() => _runningEvent.Task;
 
-        public Task SendMessageAsync(BoundPeer peer, Message message)
-            => SendMessageWithReplyAsync(peer, message, TimeSpan.FromSeconds(3), 0);
+        /// <inheritdoc />
+        public Task SendMessageAsync(
+            BoundPeer peer,
+            Message message,
+            CancellationToken cancellationToken)
+            => SendMessageWithReplyAsync(
+                peer,
+                message,
+                TimeSpan.FromSeconds(3),
+                0,
+                cancellationToken);
 
+        /// <inheritdoc />
         public async Task<Message> SendMessageWithReplyAsync(
             BoundPeer peer,
             Message message,
@@ -439,6 +520,7 @@ namespace Libplanet.Net
             return reply;
         }
 
+        /// <inheritdoc />
         public async Task<IEnumerable<Message>> SendMessageWithReplyAsync(
             BoundPeer peer,
             Message message,
@@ -541,11 +623,13 @@ namespace Libplanet.Net
             }
         }
 
+        /// <inheritdoc />
         public void BroadcastMessage(Address? except, Message message)
         {
             _broadcastQueue.Enqueue((except, message));
         }
 
+        /// <inheritdoc />
         public void ReplyMessage(Message message)
         {
             string identityHex = ByteUtil.Hex(message.Identity);
@@ -553,7 +637,17 @@ namespace Libplanet.Net
             _replyQueue.Enqueue(message.ToNetMQMessage(_privateKey, AsPeer, _appProtocolVersion));
         }
 
-        public async Task CheckAllPeersAsync(CancellationToken cancellationToken, TimeSpan? timeout)
+        /// <summary>
+        /// Refreshes all peers in routing table.
+        /// </summary>
+        /// <param name="timeout">A timeout of waiting for the reply of messages.
+        /// If <c>null</c> is given, the task never halts by itself
+        /// even no any response was given from the the target peer.</param>
+        /// <param name="cancellationToken">
+        /// A cancellation token used to propagate notification that this
+        /// operation should be canceled.</param>
+        /// <returns>An awaitable task without value.</returns>
+        public async Task CheckAllPeersAsync(TimeSpan? timeout, CancellationToken cancellationToken)
         {
             var kp = (KademliaProtocol)Protocol;
             await kp.CheckAllPeersAsync(cancellationToken, timeout);
@@ -587,7 +681,6 @@ namespace Libplanet.Net
 
                     try
                     {
-                        Protocol.ReceiveMessage(message);
                         ProcessMessageHandler?.Invoke(this, message);
                     }
                     catch (Exception exc)
@@ -819,11 +912,6 @@ namespace Libplanet.Net
                     );
 
                     result.Add(reply);
-                }
-
-                if (req.ExpectedResponses > 0)
-                {
-                    Protocol.ReceiveMessage(result[0]);
                 }
 
                 tcs.TrySetResult(result);

@@ -154,8 +154,8 @@ namespace Libplanet.Net
                 listenPort,
                 iceServers,
                 differentAppProtocolVersionEncountered,
-                ProcessMessageHandler,
                 _logger);
+            Transport.ProcessMessageHandler += ProcessMessageHandler;
 
             Options = options ?? new SwarmOptions();
         }
@@ -242,6 +242,7 @@ namespace Libplanet.Net
         /// <summary>
         /// Waits until this <see cref="Swarm{T}"/> instance gets started to run.
         /// </summary>
+        /// <seealso cref="NetMQTransport.WaitForRunningAsync()"/>
         /// <returns>A <see cref="Task"/> completed when <see cref="NetMQTransport.Running"/>
         /// property becomes <c>true</c>.</returns>
         public Task WaitForRunningAsync() => (Transport as NetMQTransport)?.WaitForRunningAsync();
@@ -977,7 +978,7 @@ namespace Libplanet.Net
                 .CreateLinkedTokenSource(cancellationToken, _cancellationToken).Token;
 
             var netMQTransport = (NetMQTransport)Transport;
-            await netMQTransport.CheckAllPeersAsync(cancellationToken, timeout);
+            await netMQTransport.CheckAllPeersAsync(timeout, cancellationToken);
         }
 
         internal async Task AddPeersAsync(
