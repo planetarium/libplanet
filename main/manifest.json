@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "OAljwT6bjLhC63V9ov5iCA=="
+          "hash": "DJXWl3hi0AGxfj3lcOWtBg=="
         }
       },
       "is_incremental": false,
@@ -1253,6 +1253,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Net.ITransport.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Net.ITransport.html",
+          "hash": "vQiMPtiSUVHKkVdCsM5fyg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Libplanet.Net.IceServer.yml",
       "output": {
         ".html": {
@@ -1294,6 +1306,54 @@
         ".html": {
           "relative_path": "api/Libplanet.Net.InvalidStateTargetException.html",
           "hash": "PdLoYjwuwMazIVlj7rt48w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Net.Messages.Message.MessageType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Net.Messages.Message.MessageType.html",
+          "hash": "z7PF9OWHjy+Ke7rRzqFlGw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Net.Messages.Message.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Net.Messages.Message.html",
+          "hash": "wCPIhEu1k2VOYfHSe7DHTg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Net.Messages.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Net.Messages.html",
+          "hash": "iewREYkMYPj9Ipo6oi7XHw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Net.NetMQTransport.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Net.NetMQTransport.html",
+          "hash": "k/LJ0NN1FMoVOw7gpM53hA=="
         }
       },
       "is_incremental": false,
@@ -1425,7 +1485,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Swarm-1.html",
-          "hash": "KEcCLmGGTXcqBgbG42dZZw=="
+          "hash": "YOHgVz+qV+vd4DX3KEEDbQ=="
         }
       },
       "is_incremental": false,
@@ -1461,7 +1521,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.html",
-          "hash": "yvsVH1JeVt1jJmRidp/+Ug=="
+          "hash": "9R8+j9mDgNGdEAF8qYFLPA=="
         }
       },
       "is_incremental": false,
@@ -1917,7 +1977,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "FxzMeZvoFkBrO9eCLJ4/Vg=="
+          "hash": "1eKE8hXdICBsymmdeOsjvQ=="
         }
       },
       "is_incremental": false,
@@ -2027,7 +2087,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 151,
+          "total_file_count": 156,
           "skipped_file_count": 0
         },
         "ConceptualDocumentProcessor": {
