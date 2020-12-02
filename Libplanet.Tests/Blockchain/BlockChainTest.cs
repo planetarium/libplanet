@@ -33,7 +33,7 @@ namespace Libplanet.Tests.Blockchain
         private StoreFixture _fx;
         private BlockPolicy<DumbAction> _policy;
         private BlockChain<DumbAction> _blockChain;
-        private RecordingRenderer<DumbAction> _renderer;
+        private ValidatingActionRenderer<DumbAction> _renderer;
         private Block<DumbAction> _validNext;
         private List<Transaction<DumbAction>> _emptyTransaction;
 
@@ -56,6 +56,7 @@ namespace Libplanet.Tests.Blockchain
                 _fx.GenesisBlock,
                 renderers: new[] { new LoggedActionRenderer<DumbAction>(_renderer, Log.Logger) }
             );
+            _renderer.BlockChain = _blockChain;
             _renderer.ResetRecords();
 
             _emptyTransaction = new List<Transaction<DumbAction>>();
