@@ -558,9 +558,6 @@ namespace Libplanet.Net
                 Block<T> tempTip = tipCandidate;
                 Block<T> branchpoint = null;
 
-                long? receivedStateHeight = null;
-                long height = 0;
-
                 var peersWithHeight = await GetPeersWithHeight(
                     initialTip, dialTimeout, cancellationToken);
 
@@ -801,17 +798,11 @@ namespace Libplanet.Net
                     }
                 }
 
-                height = workspace.Tip.Index;
-
-                if (receivedStateHeight is null || receivedStateHeight < height)
-                {
-                    PreloadExecuteActions(
-                        workspace,
-                        branchpoint,
-                        receivedStateHeight,
-                        progress,
-                        cancellationToken);
-                }
+                PreloadExecuteActions(
+                    workspace,
+                    branchpoint,
+                    progress,
+                    cancellationToken);
 
                 complete = true;
             }
@@ -1358,7 +1349,6 @@ namespace Libplanet.Net
         private void PreloadExecuteActions(
             BlockChain<T> workspace,
             Block<T> branchpoint,
-            long? receivedStateHeight,
             IProgress<PreloadState> progress,
             CancellationToken cancellationToken)
         {
@@ -1370,18 +1360,8 @@ namespace Libplanet.Net
                 );
             }
 
-            long initHeight;
-            if (receivedStateHeight is null)
-            {
-                initHeight = branchpoint?.Index + 1 ?? 0;
-            }
-            else
-            {
-                initHeight = receivedStateHeight.Value + 1;
-            }
-
+            long actionsCount = 0, txsCount = 0, initHeight = branchpoint?.Index + 1 ?? 0;
             int count = 0, totalCount = (int)(workspace.Count - initHeight);
-            long actionsCount = 0, txsCount = 0;
             DateTimeOffset executionStarted = DateTimeOffset.Now;
             _logger.Debug("Starts to execute actions of {0} blocks.", totalCount);
             var blockHashes = workspace.IterateBlockHashes((int)initHeight);
