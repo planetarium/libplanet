@@ -321,13 +321,23 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 null,
                 timestamp ?? DateTimeOffset.MinValue,
                 new[] { tx, });
-            return new BlockChain<T>(
+            ValidatingActionRenderer<T> validator = null;
+#pragma warning disable S1121
+            var chain = new BlockChain<T>(
                 policy,
                 store,
                 stateStore ?? store as IStateStore,
                 genesisBlock,
-                renderers: renderers ?? new[] { new ValidatingActionRenderer<T>() }
+                renderers: renderers ?? new[] { validator = new ValidatingActionRenderer<T>() }
             );
+#pragma warning restore S1121
+
+            if (validator != null)
+            {
+                validator.BlockChain = chain;
+            }
+
+            return chain;
         }
 
         public static HashDigest<SHA256>? ActionEvaluationsToHash(

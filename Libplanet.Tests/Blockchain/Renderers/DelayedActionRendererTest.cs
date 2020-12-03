@@ -457,8 +457,9 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 Log.Logger,
                 LogEventLevel.Verbose
             );
+            var valiator = new ValidatingActionRenderer<DumbAction>();
             var delayedValidatingActionRenderer = new DelayedActionRenderer<DumbAction>(
-                new ValidatingActionRenderer<DumbAction>(), fx.Store, 2);
+                valiator, fx.Store, 2);
 
             var chain = new BlockChain<DumbAction>(
                 policy,
@@ -467,6 +468,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 fx.GenesisBlock,
                 new IActionRenderer<DumbAction>[] { renderer, delayedValidatingActionRenderer }
             );
+            valiator.BlockChain = chain;
 
             Assert.Null(delayedRenderer.Tip);
             Assert.Empty(blockLogs);
@@ -569,8 +571,9 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 Log.Logger,
                 LogEventLevel.Verbose
             );
+            var validator = new ValidatingActionRenderer<DumbAction>();
             var delayedValidatingActionRenderer = new DelayedActionRenderer<DumbAction>(
-                new ValidatingActionRenderer<DumbAction>(), fx.Store, 2);
+                validator, fx.Store, 2);
 
             var chain = new BlockChain<DumbAction>(
                 policy,
@@ -579,6 +582,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 fx.GenesisBlock,
                 new IActionRenderer<DumbAction>[] { renderer, delayedValidatingActionRenderer }
             );
+            validator.BlockChain = chain;
 
             Assert.Null(delayedRenderer.Tip);
             Assert.Empty(blockLogs);
