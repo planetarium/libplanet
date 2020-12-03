@@ -447,76 +447,6 @@ namespace Libplanet.Tests.Blocks
         }
 
         [Fact]
-        public void EvaluateInvalidTxSignature()
-        {
-            RawTransaction rawTx = new RawTransaction(
-                0,
-                _fx.TxFixture.Address1.ByteArray,
-                _fx.Genesis.Hash.ByteArray,
-                ImmutableArray<ImmutableArray<byte>>.Empty,
-                _fx.TxFixture.PublicKey1.Format(false).ToImmutableArray(),
-                DateTimeOffset.UtcNow.ToString(
-                    "yyyy-MM-ddTHH:mm:ss.ffffffZ",
-                    CultureInfo.InvariantCulture
-                ),
-                ImmutableArray<IValue>.Empty,
-                new byte[10].ToImmutableArray()
-            );
-            var invalidTx = new Transaction<DumbAction>(rawTx);
-            Assert.Throws<InvalidTxSignatureException>(() =>
-                MineNext(
-                    MineGenesis<DumbAction>(),
-                    new List<Transaction<DumbAction>>
-                    {
-                        invalidTx,
-                    }
-                )
-            );
-        }
-
-        [Fact]
-        public void EvaluateInvalidTxPublicKey()
-        {
-            RawTransaction rawTxWithoutSig = new RawTransaction(
-                0,
-                new PrivateKey().ToAddress().ByteArray,
-                _fx.Genesis.Hash.ByteArray,
-                ImmutableArray<ImmutableArray<byte>>.Empty,
-                _fx.TxFixture.PublicKey1.Format(false).ToImmutableArray(),
-                DateTimeOffset.UtcNow.ToString(
-                    "yyyy-MM-ddTHH:mm:ss.ffffffZ",
-                    CultureInfo.InvariantCulture
-                ),
-                ImmutableArray<IValue>.Empty,
-                ImmutableArray<byte>.Empty
-            );
-            byte[] sig = _fx.TxFixture.PrivateKey1.Sign(
-                new Transaction<DumbAction>(rawTxWithoutSig).Serialize(false)
-            );
-            var invalidTx = new Transaction<DumbAction>(
-                new RawTransaction(
-                    0,
-                    rawTxWithoutSig.Signer,
-                    rawTxWithoutSig.GenesisHash,
-                    rawTxWithoutSig.UpdatedAddresses,
-                    rawTxWithoutSig.PublicKey,
-                    rawTxWithoutSig.Timestamp,
-                    rawTxWithoutSig.Actions,
-                    sig.ToImmutableArray()
-                )
-            );
-            Assert.Throws<InvalidTxPublicKeyException>(() =>
-                MineNext(
-                    MineGenesis<DumbAction>(),
-                    new List<Transaction<DumbAction>>
-                    {
-                        invalidTx,
-                    }
-                )
-            );
-        }
-
-        [Fact]
         public void EvaluateInvalidTxUpdatedAddresses()
         {
             ImmutableArray<IValue> rawActions =
@@ -858,6 +788,54 @@ namespace Libplanet.Tests.Blocks
                 transactions: new Transaction<DumbAction>[0]
             );
             Assert.Equal(140, block.BytesLength);
+        }
+
+        [Fact]
+        public void ValidateTxHash()
+        {
+            Transaction<DumbAction>[] txs = new[]
+            {
+                Transaction<DumbAction>.Create(0, new PrivateKey(), null, new DumbAction[0]),
+                Transaction<DumbAction>.Create(0, new PrivateKey(), null, new DumbAction[0]),
+                Transaction<DumbAction>.Create(0, new PrivateKey(), null, new DumbAction[0]),
+            };
+            var block = new Block<DumbAction>(
+                index: 0,
+                difficulty: 0,
+                totalDifficulty: 0,
+                nonce: new Nonce(new byte[0]),
+                miner: null,
+                previousHash: null,
+                timestamp: DateTimeOffset.UtcNow,
+                transactions: txs
+            );
+
+            block.Validate(DateTimeOffset.UtcNow);
+
+            Dictionary blockDict = block.ToBencodex();
+            var txList = (List)blockDict[RawBlock.TransactionsKey];
+
+            var abnormalTxs = new Block<DumbAction>(
+                blockDict.SetItem(
+                    RawBlock.TransactionsKey,
+                    (IValue)new List(txList.Take(2))
+                )
+            );
+
+            var exc = Assert.Throws<InvalidBlockTxHashException>(
+                () => abnormalTxs.Validate(DateTimeOffset.UtcNow)
+            );
+            Assert.Equal(abnormalTxs.TxHash, exc.BlockTxHash);
+
+            var emptyTxs = new Block<DumbAction>(
+                blockDict.SetItem(
+                    RawBlock.TransactionsKey,
+                    (IValue)default(List)
+                )
+            );
+            Assert.Throws<InvalidBlockTxHashException>(
+                 () => emptyTxs.Validate(DateTimeOffset.UtcNow)
+            );
         }
     }
 }
