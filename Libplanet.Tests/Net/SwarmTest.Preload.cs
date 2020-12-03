@@ -87,9 +87,6 @@ namespace Libplanet.Tests.Net
                 await StartAsync(minerSwarm);
                 await receiverSwarm.AddPeersAsync(new[] { minerSwarm.AsPeer }, null);
 
-                var trustedStateValidators = new[] { minerSwarm.Address }.ToImmutableHashSet();
-
-                await receiverSwarm.PreloadAsync(trustedStateValidators: trustedStateValidators);
                 await receiverSwarm.PreloadAsync();
                 var state = receiverChain.GetState(address1);
 
@@ -569,10 +566,7 @@ namespace Libplanet.Tests.Net
             bool canceled = true;
             try
             {
-                await receiverSwarm.PreloadAsync(
-                    trustedStateValidators: new[] { minerSwarm.Address }.ToImmutableHashSet(),
-                    cancellationToken: cts.Token
-                );
+                await receiverSwarm.PreloadAsync(cancellationToken: cts.Token);
                 canceled = false;
                 Log.Logger.Debug($"{nameof(receiverSwarm.PreloadAsync)}() normally finished.");
             }
@@ -691,9 +685,7 @@ namespace Libplanet.Tests.Net
             {
                 await StartAsync(minerSwarm);
                 await receiverSwarm.AddPeersAsync(new[] { minerSwarm.AsPeer }, null);
-                await receiverSwarm.PreloadAsync(
-                    trustedStateValidators: new[] { minerSwarm.Address }.ToImmutableHashSet()
-                );
+                await receiverSwarm.PreloadAsync();
             }
             finally
             {
@@ -776,9 +768,7 @@ namespace Libplanet.Tests.Net
             {
                 await StartAsync(minerSwarm);
                 await receiverSwarm.AddPeersAsync(new[] { minerSwarm.AsPeer }, null);
-                await receiverSwarm.PreloadAsync(
-                    trustedStateValidators: new[] { minerSwarm.Address }.ToImmutableHashSet()
-                );
+                await receiverSwarm.PreloadAsync();
             }
             finally
             {
@@ -819,10 +809,7 @@ namespace Libplanet.Tests.Net
                 await receiverSwarm.AddPeersAsync(
                     new[] { minerSwarm1.AsPeer, minerSwarm2.AsPeer },
                     null);
-                await receiverSwarm.PreloadAsync(
-                    trustedStateValidators: new[] { minerSwarm1.Address, minerSwarm2.Address }
-                        .ToImmutableHashSet()
-                );
+                await receiverSwarm.PreloadAsync();
             }
             finally
             {

@@ -283,13 +283,6 @@ namespace Libplanet.Net
         /// <param name="millisecondsBroadcastTxInterval">
         /// The time period of exchange of staged transactions.
         /// </param>
-        /// <param name="trustedStateValidators">
-        /// If any peer in this set is reachable, <see cref="Swarm{T}"/> receives the latest
-        /// states of the major blockchain from that trusted peer, which is also calculated by
-        /// that peer, instead of autonomously calculating the states from scratch.
-        /// Note that this option is intended to be exposed to end users through a feasible user
-        /// interface so that they can decide whom to trust for themselves.
-        /// </param>
         /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
         /// operation should be canceled.
@@ -303,19 +296,17 @@ namespace Libplanet.Net
         /// a lot of calls to methods of <see cref="BlockChain{T}.Renderers"/> in a short
         /// period of time.  This can lead a game startup slow.  If you want to omit rendering of
         /// these actions in the behind blocks use <see cref=
-        /// "PreloadAsync(TimeSpan?, IProgress{PreloadState}, IImmutableSet{Address},
+        /// "PreloadAsync(TimeSpan?, IProgress{PreloadState},
         /// CancellationToken)"
         /// /> method too.</remarks>
         public async Task StartAsync(
             int millisecondsDialTimeout = 15000,
             int millisecondsBroadcastTxInterval = 5000,
-            IImmutableSet<Address> trustedStateValidators = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             await StartAsync(
                 TimeSpan.FromMilliseconds(millisecondsDialTimeout),
                 TimeSpan.FromMilliseconds(millisecondsBroadcastTxInterval),
-                trustedStateValidators,
                 cancellationToken
             );
         }
@@ -330,13 +321,6 @@ namespace Libplanet.Net
         /// </param>
         /// <param name="broadcastTxInterval">The time period of exchange of staged transactions.
         /// </param>
-        /// <param name="trustedStateValidators">
-        /// If any peer in this set is reachable, <see cref="Swarm{T}"/> receives the latest
-        /// states of the major blockchain from that trusted peer, which is also calculated by
-        /// that peer, instead of autonomously calculating the states from scratch.
-        /// Note that this option is intended to be exposed to end users through a feasible user
-        /// interface so that they can decide whom to trust for themselves.
-        /// </param>
         /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
         /// operation should be canceled.
@@ -350,17 +334,15 @@ namespace Libplanet.Net
         /// a lot of calls to methods of <see cref="BlockChain{T}.Renderers"/> in a short
         /// period of time.  This can lead a game startup slow.  If you want to omit rendering of
         /// these actions in the behind blocks use <see cref=
-        /// "PreloadAsync(TimeSpan?, IProgress{PreloadState}, IImmutableSet{Address},
+        /// "PreloadAsync(TimeSpan?, IProgress{PreloadState},
         /// CancellationToken)"
         /// /> method too.</remarks>
         public async Task StartAsync(
             TimeSpan dialTimeout,
             TimeSpan broadcastTxInterval,
-            IImmutableSet<Address> trustedStateValidators = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             var tasks = new List<Task>();
-            trustedStateValidators ??= ImmutableHashSet<Address>.Empty;
             _workerCancellationTokenSource = new CancellationTokenSource();
             _cancellationToken = CancellationTokenSource.CreateLinkedTokenSource(
                     _workerCancellationTokenSource.Token, cancellationToken
@@ -376,9 +358,7 @@ namespace Libplanet.Net
             {
                 tasks.Add(Transport.RunAsync(_cancellationToken));
                 tasks.Add(BroadcastTxAsync(broadcastTxInterval, _cancellationToken));
-                tasks.Add(
-                    ProcessFillBlocks(dialTimeout, trustedStateValidators, _cancellationToken)
-                );
+                tasks.Add(ProcessFillBlocks(dialTimeout, _cancellationToken));
                 tasks.Add(ProcessFillTxs(_cancellationToken));
                 _logger.Debug("Swarm started.");
 
@@ -502,13 +482,6 @@ namespace Libplanet.Net
         /// <param name="progress">
         /// An instance that receives progress updates for block downloads.
         /// </param>
-        /// <param name="trustedStateValidators">
-        /// If any peer in this set is reachable, <see cref="Swarm{T}"/> receives the latest
-        /// states of the major blockchain from that trusted peer, which is also calculated by
-        /// that peer, instead of autonomously calculating the states from scratch.
-        /// Note that this option is intended to be exposed to end users through a feasible user
-        /// interface so that they can decide whom to trust for themselves.
-        /// </param>
         /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
         /// operation should be canceled.
@@ -528,15 +501,12 @@ namespace Libplanet.Net
         public async Task PreloadAsync(
             TimeSpan? dialTimeout = null,
             IProgress<PreloadState> progress = null,
-            IImmutableSet<Address> trustedStateValidators = null,
             CancellationToken cancellationToken = default(CancellationToken)
         )
         {
             cancellationToken.Register(() =>
                 _logger.Information("Preloading is requested to be cancelled.")
             );
-
-            trustedStateValidators ??= ImmutableHashSet<Address>.Empty;
 
             Block<T> initialTip = BlockChain.Tip;
             BlockLocator initialLocator = BlockChain.GetBlockLocator();
@@ -1513,7 +1483,6 @@ namespace Libplanet.Net
             BoundPeer peer,
             HashDigest<SHA256>? stop,
             IProgress<BlockDownloadState> progress,
-            IImmutableSet<Address> trustedStateValidators,
             TimeSpan dialTimeout,
             long totalBlockCount,
             CancellationToken cancellationToken
@@ -1753,7 +1722,6 @@ namespace Libplanet.Net
 
         private async Task ProcessFillBlocks(
             TimeSpan dialTimeout,
-            IImmutableSet<Address> trustedStateValidators,
             CancellationToken cancellationToken
         )
         {
@@ -1776,7 +1744,6 @@ namespace Libplanet.Net
                         peer,
                         hash,
                         null,
-                        trustedStateValidators,
                         dialTimeout,
                         0,
                         cancellationToken);
