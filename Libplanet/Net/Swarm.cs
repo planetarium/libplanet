@@ -528,7 +528,7 @@ namespace Libplanet.Net
                 : new BlockChain<T>(
                     BlockChain.Policy,
                     _store,
-                    _store as IStateStore,
+                    BlockChain.StateStore,
                     Guid.NewGuid(),
                     BlockChain.Genesis,
                     Enumerable.Empty<IRenderer<T>>());
