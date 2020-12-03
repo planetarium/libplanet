@@ -27,12 +27,6 @@ namespace Libplanet.Net
         Peer AsPeer { get; }
 
         /// <summary>
-        /// List of all <see cref="Peer"/>s in the routing table.
-        /// </summary>
-        [Pure]
-        IEnumerable<BoundPeer> Peers { get; }
-
-        /// <summary>
         /// The <see cref="DateTimeOffset"/> of the last message was received.
         /// </summary>
         [Pure]
@@ -69,31 +63,6 @@ namespace Libplanet.Net
         Task StopAsync(
             TimeSpan waitFor,
             CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        /// Conducts peer discovery for given <paramref name="bootstrapPeers"/>.
-        /// </summary>
-        /// <param name="bootstrapPeers">A <see cref="IEnumerable{T}"/> of <see cref="Peer"/>s
-        /// to bootstrap.</param>
-        /// <param name="pingSeedTimeout">A timeout of waiting for the reply of <see cref="Ping"/>
-        /// message sent to seed <see cref="Peer"/>.
-        /// If <c>null</c> is given, the task never halts by itself
-        /// even no any response was given from the the target seed.</param>
-        /// <param name="findNeighborsTimeout">A timeout of waiting for the reply of
-        /// <see cref="FindNeighbors"/> message sent to seed <see cref="Peer"/>.
-        /// If <c>null</c> is given, task never halts by itself
-        /// even the target seed gives no any response.</param>
-        /// <param name="depth">Recursive operation depth to search peers from network.</param>
-        /// <param name="cancellationToken">
-        /// A cancellation token used to propagate notification that this
-        /// operation should be canceled.</param>
-        /// <returns>An awaitable task without value.</returns>
-        Task BootstrapAsync(
-            IEnumerable<BoundPeer> bootstrapPeers,
-            TimeSpan? pingSeedTimeout,
-            TimeSpan? findNeighborsTimeout,
-            int depth,
-            CancellationToken cancellationToken);
 
         /// <summary>
         /// Sends the <paramref name="message"/> to given <paramref name="peer"/>.

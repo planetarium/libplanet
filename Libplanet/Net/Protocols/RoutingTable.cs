@@ -5,24 +5,25 @@ using Serilog;
 
 namespace Libplanet.Net.Protocols
 {
-    internal class RoutingTable
+    public class RoutingTable
     {
         // FIXME: This would be configurable.
-        private const int _minPeersToBroadcast = 10;
+        private const int MinPeersToBroadcast = 10;
 
         private readonly Address _address;
-        private readonly int _tableSize;
         private readonly KBucket[] _buckets;
 
         private readonly ILogger _logger;
 
         public RoutingTable(
             Address address,
-            int tableSize,
-            int bucketSize,
-            Random random,
+            int? tableSize,
+            int? bucketSize,
             ILogger logger)
         {
+            tableSize ??= Kademlia.TableSize;
+            bucketSize ??= Kademlia.BucketSize;
+
             if (tableSize <= 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(tableSize));
@@ -34,15 +35,21 @@ namespace Libplanet.Net.Protocols
             }
 
             _address = address;
-            _tableSize = tableSize;
+            TableSize = tableSize.Value;
+            BucketSize = bucketSize.Value;
             _logger = logger;
 
-            _buckets = new KBucket[tableSize];
-            for (int i = 0; i < _tableSize; i++)
+            var random = new Random();
+            _buckets = new KBucket[TableSize];
+            for (int i = 0; i < TableSize; i++)
             {
-                _buckets[i] = new KBucket(bucketSize, random, _logger);
+                _buckets[i] = new KBucket(BucketSize, random, _logger);
             }
         }
+
+        public int TableSize { get; }
+
+        public int BucketSize { get; }
 
         public int Count => _buckets.Sum(bucket => bucket.Count);
 
@@ -84,13 +91,13 @@ namespace Libplanet.Net.Protocols
                 .Select(bucket => bucket.GetRandomPeer(except))
                 .Where(peer => !(peer is null)).ToList();
             var count = peers.Count;
-            if (count < _minPeersToBroadcast)
+            if (count < MinPeersToBroadcast)
             {
                 peers.AddRange(Peers
                     .Where(peer =>
                         !peers.Contains(peer) &&
                         (except is null || !peer.Address.Equals(except.Value)))
-                    .Take(_minPeersToBroadcast - count));
+                    .Take(MinPeersToBroadcast - count));
             }
 
             return peers;
@@ -139,17 +146,6 @@ namespace Libplanet.Net.Protocols
         {
             KBucket bucket = BucketOf(peer);
             return bucket.ReplacementCache.TryRemove(peer, out var dateTimeOffset);
-        }
-
-        public KBucket BucketOf(BoundPeer peer)
-        {
-            int index = GetBucketIndexOf(peer);
-            return _buckets[index];
-        }
-
-        public KBucket BucketOf(int level)
-        {
-            return _buckets[level];
         }
 
         public bool Contains(BoundPeer peer)
@@ -226,10 +222,21 @@ namespace Libplanet.Net.Protocols
             BucketOf(peer).Check(peer, start, end);
         }
 
+        internal KBucket BucketOf(BoundPeer peer)
+        {
+            int index = GetBucketIndexOf(peer);
+            return _buckets[index];
+        }
+
+        internal KBucket BucketOf(int level)
+        {
+            return _buckets[level];
+        }
+
         private int GetBucketIndexOf(Peer peer)
         {
             int plength = Kademlia.CommonPrefixLength(peer.Address, _address);
-            return Math.Min(plength, _tableSize - 1);
+            return Math.Min(plength, TableSize - 1);
         }
     }
 }

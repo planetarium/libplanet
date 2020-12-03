@@ -122,7 +122,6 @@ namespace Libplanet.Tests.Net.Protocols
                 pubKey0.ToAddress(),
                 1,
                 2,
-                new System.Random(),
                 Logger.None);
             var peer1 = new BoundPeer(pubKey1, new DnsEndPoint("0.0.0.0", 1234));
             var peer2 = new BoundPeer(pubKey2, new DnsEndPoint("0.0.0.0", 1234));
@@ -147,7 +146,6 @@ namespace Libplanet.Tests.Net.Protocols
                 pubKey1.ToAddress(),
                 1,
                 2,
-                new System.Random(),
                 Logger.None);
             var peer1 = new BoundPeer(pubKey1, new DnsEndPoint("0.0.0.0", 1234));
             var peer2 = new BoundPeer(pubKey2, new DnsEndPoint("0.0.0.0", 1234));
@@ -164,7 +162,7 @@ namespace Libplanet.Tests.Net.Protocols
 
         private RoutingTable CreateTable(Address addr)
         {
-            return new RoutingTable(addr, TableSize, BucketSize, new System.Random(), Logger.None);
+            return new RoutingTable(addr, TableSize, BucketSize, Logger.None);
         }
     }
 }

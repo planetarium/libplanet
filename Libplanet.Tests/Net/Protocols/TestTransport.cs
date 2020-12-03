@@ -58,12 +58,12 @@ namespace Libplanet.Tests.Net.Protocols
             _requests = new AsyncCollection<Request>();
             _ignoreTestMessageWithData = new List<string>();
             _random = new Random();
+            Table = new RoutingTable(Address, tableSize, bucketSize, _logger);
             Protocol = new KademliaProtocol(
+                Table,
                 this,
                 Address,
-                _logger,
-                tableSize,
-                bucketSize
+                _logger
             );
         }
 
@@ -77,11 +77,13 @@ namespace Libplanet.Tests.Net.Protocols
             _privateKey.PublicKey,
             new DnsEndPoint("localhost", 1234));
 
-        public IEnumerable<BoundPeer> Peers => Protocol.Peers;
+        public IEnumerable<BoundPeer> Peers => Table.Peers;
 
         public DateTimeOffset? LastMessageTimestamp { get; private set; }
 
         internal ConcurrentBag<Message> ReceivedMessages { get; }
+
+        internal RoutingTable Table { get; }
 
         internal IProtocol Protocol { get; }
 
@@ -274,7 +276,7 @@ namespace Libplanet.Tests.Net.Protocols
 
         public void BroadcastMessage(Address? except, Message message)
         {
-            var peers = Protocol.PeersToBroadcast(except).ToList();
+            var peers = Table.PeersToBroadcast(except).ToList();
             var peersString = string.Join(", ", peers.Select(peer => peer.Address));
             _logger.Debug(
                 "Broadcasting test message {Data} to {Count} peers which are: {Peers}",

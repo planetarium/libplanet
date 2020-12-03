@@ -142,12 +142,12 @@ namespace Libplanet.Net
             _logger = Log.ForContext<Swarm<T>>()
                 .ForContext("SwarmId", loggerId);
 
+            RoutingTable = new RoutingTable(Address, tableSize, bucketSize, _logger);
             Transport = new NetMQTransport(
+                RoutingTable,
                 _privateKey,
                 _appProtocolVersion,
                 TrustedAppProtocolVersionSigners,
-                tableSize,
-                bucketSize,
                 workers,
                 host,
                 listenPort,
@@ -155,7 +155,11 @@ namespace Libplanet.Net
                 differentAppProtocolVersionEncountered,
                 _logger);
             Transport.ProcessMessageHandler += ProcessMessageHandler;
-
+            PeerDiscovery = new KademliaProtocol(
+                RoutingTable,
+                Transport,
+                Address,
+                _logger);
             Options = options ?? new SwarmOptions();
         }
 
@@ -185,13 +189,9 @@ namespace Libplanet.Net
         public DateTimeOffset? LastMessageTimestamp =>
             Running ? Transport.LastMessageTimestamp : (DateTimeOffset?)null;
 
-        public IDictionary<Peer, DateTimeOffset> LastSeenTimestamps
-        {
-            get;
-            private set;
-        }
+        public IDictionary<Peer, DateTimeOffset> LastSeenTimestamps { get; private set; }
 
-        public IEnumerable<BoundPeer> Peers => Transport.Peers;
+        public IEnumerable<BoundPeer> Peers => RoutingTable.Peers;
 
         /// <summary>
         /// The <see cref="BlockChain{T}"/> instance this <see cref="Swarm{T}"/> instance
@@ -210,9 +210,11 @@ namespace Libplanet.Net
         /// </summary>
         public BlockDemand? BlockDemand { get; private set; }
 
-        internal ITransport Transport { get; private set; }
+        internal RoutingTable RoutingTable { get; }
 
-        internal IProtocol Protocol => (Transport as NetMQTransport)?.Protocol;
+        internal IProtocol PeerDiscovery { get; }
+
+        internal ITransport Transport { get; private set; }
 
         internal AsyncAutoResetEvent TxReceived { get; }
 
@@ -356,6 +358,12 @@ namespace Libplanet.Net
 
             try
             {
+                tasks.Add(
+                    RefreshTableAsync(
+                        TimeSpan.FromSeconds(10),
+                        TimeSpan.FromSeconds(10),
+                        _cancellationToken));
+                tasks.Add(RebuildConnectionAsync(TimeSpan.FromMinutes(30), _cancellationToken));
                 tasks.Add(Transport.RunAsync(_cancellationToken));
                 tasks.Add(BroadcastTxAsync(broadcastTxInterval, _cancellationToken));
                 tasks.Add(ProcessFillBlocks(dialTimeout, _cancellationToken));
@@ -421,7 +429,7 @@ namespace Libplanet.Net
 
             IEnumerable<BoundPeer> peers = seedPeers.OfType<BoundPeer>();
 
-            await Transport.BootstrapAsync(
+            await PeerDiscovery.BootstrapAsync(
                 peers,
                 pingSeedTimeout,
                 findNeighborsTimeout,
@@ -437,11 +445,6 @@ namespace Libplanet.Net
         public void BroadcastTxs(IEnumerable<Transaction<T>> txs)
         {
             BroadcastTxs(null, txs);
-        }
-
-        public string TraceTable()
-        {
-            return Transport is null ? string.Empty : (Transport as NetMQTransport)?.Trace();
         }
 
         /// <summary>
@@ -876,8 +879,8 @@ namespace Libplanet.Net
             TimeSpan? timeout = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            NetMQTransport netMQTransport = (NetMQTransport)Transport;
-            return await netMQTransport.FindSpecificPeerAsync(
+            KademliaProtocol kademliaProtocol = (KademliaProtocol)PeerDiscovery;
+            return await kademliaProtocol.FindSpecificPeerAsync(
                 target,
                 depth,
                 timeout,
@@ -899,8 +902,8 @@ namespace Libplanet.Net
             cancellationToken = CancellationTokenSource
                 .CreateLinkedTokenSource(cancellationToken, _cancellationToken).Token;
 
-            var netMQTransport = (NetMQTransport)Transport;
-            await netMQTransport.CheckAllPeersAsync(timeout, cancellationToken);
+            var kademliaProtocol = (KademliaProtocol)PeerDiscovery;
+            await kademliaProtocol.CheckAllPeersAsync(timeout, cancellationToken);
         }
 
         internal async Task AddPeersAsync(
@@ -918,7 +921,8 @@ namespace Libplanet.Net
                 cancellationToken = _cancellationToken;
             }
 
-            await ((NetMQTransport)Transport).AddPeersAsync(peers, timeout, cancellationToken);
+            await ((KademliaProtocol)PeerDiscovery
+                ).AddPeersAsync(peers, timeout, cancellationToken);
         }
 
         // FIXME: This would be better if it's merged with GetDemandBlockHashes
@@ -1868,6 +1872,58 @@ namespace Libplanet.Net
                 foreach (var kv in demandTxIds)
                 {
                     _demandTxIds.TryRemove(kv.Key, out BoundPeer value);
+                }
+            }
+        }
+
+        private async Task RefreshTableAsync(
+            TimeSpan period,
+            TimeSpan maxAge,
+            CancellationToken cancellationToken)
+        {
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                try
+                {
+                    await Task.Delay(period, cancellationToken);
+                    await PeerDiscovery.RefreshTableAsync(maxAge, cancellationToken);
+                    await PeerDiscovery.CheckReplacementCacheAsync(cancellationToken);
+                }
+                catch (OperationCanceledException e)
+                {
+                    _logger.Warning(e, $"{nameof(RefreshTableAsync)}() is cancelled.");
+                    throw;
+                }
+                catch (Exception e)
+                {
+                    var msg = "Unexpected exception occurred during " +
+                              $"{nameof(RefreshTableAsync)}(): {{0}}";
+                    _logger.Warning(e, msg, e);
+                }
+            }
+        }
+
+        private async Task RebuildConnectionAsync(
+            TimeSpan period,
+            CancellationToken cancellationToken)
+        {
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                try
+                {
+                    await PeerDiscovery.RebuildConnectionAsync(cancellationToken);
+                    await Task.Delay(period, cancellationToken);
+                }
+                catch (OperationCanceledException e)
+                {
+                    _logger.Warning(e, $"{nameof(RebuildConnectionAsync)}() is cancelled.");
+                    throw;
+                }
+                catch (Exception e)
+                {
+                    var msg = "Unexpected exception occurred during " +
+                              $"{nameof(RebuildConnectionAsync)}(): {{0}}";
+                    _logger.Warning(e, msg, e);
                 }
             }
         }

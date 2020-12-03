@@ -63,6 +63,8 @@ namespace Libplanet.Net
         private CancellationToken _cancellationToken;
         private ConcurrentDictionary<Address, DealerSocket> _dealers;
 
+        private RoutingTable _table;
+
         /// <summary>
         /// The <see cref="EventHandler" /> triggered when the different version of
         /// <see cref="Peer" /> is discovered.
@@ -72,14 +74,16 @@ namespace Libplanet.Net
         /// <summary>
         /// Creates <see cref="NetMQTransport"/> instance.
         /// </summary>
+        /// <param name="table">
+        /// The <see cref="RoutingTable"/> that manages <see cref="Peer"/>s which are connected
+        /// with this <see cref="Peer"/>.
+        /// </param>
         /// <param name="privateKey"><see cref="PrivateKey"/> of the transport layer.</param>
         /// <param name="appProtocolVersion"><see cref="AppProtocolVersion"/>-typed
         /// version of the transport layer.</param>
         /// <param name="trustedAppProtocolVersionSigners"><see cref="PublicKey"/>s of parties
         /// to trust <see cref="AppProtocolVersion"/>s they signed.  To trust any party, pass
         /// <c>null</c>.</param>
-        /// <param name="tableSize">The number of buckets in Kademlia-based routing table.</param>
-        /// <param name="bucketSize">The size of bucket in Kademlia-based routing table.</param>
         /// <param name="workers">The number of background workers (i.e., threads).</param>
         /// <param name="host">A hostname to be a part of a public endpoint, that peers use when
         /// they connect to this node.  Note that this is not a hostname to listen to;
@@ -98,11 +102,10 @@ namespace Libplanet.Net
         /// <exception cref="ArgumentException">Thrown when both <paramref name="host"/> and
         /// <paramref name="iceServers"/> are <c>null</c>.</exception>
         public NetMQTransport(
+            RoutingTable table,
             PrivateKey privateKey,
             AppProtocolVersion appProtocolVersion,
             IImmutableSet<PublicKey> trustedAppProtocolVersionSigners,
-            int? tableSize,
-            int? bucketSize,
             int workers,
             string host,
             int? listenPort,
@@ -119,6 +122,7 @@ namespace Libplanet.Net
             _listenPort = listenPort;
             _differentAppProtocolVersionEncountered = differentAppProtocolVersionEncountered;
             _turnClientMutex = new AsyncLock();
+            _table = table;
 
             if (_host != null && _listenPort is int listenPortAsInt)
             {
@@ -180,12 +184,6 @@ namespace Libplanet.Net
             );
 
             MessageHistory = new FixedSizedQueue<Message>(MessageHistoryCapacity);
-            Protocol = new KademliaProtocol(
-                this,
-                _privateKey.ToAddress(),
-                _logger,
-                tableSize,
-                bucketSize);
             _dealers = new ConcurrentDictionary<Address, DealerSocket>();
         }
 
@@ -196,9 +194,6 @@ namespace Libplanet.Net
         public Peer AsPeer => EndPoint is null
             ? new Peer(_privateKey.PublicKey, PublicIPAddress)
             : new BoundPeer(_privateKey.PublicKey, EndPoint, PublicIPAddress);
-
-        /// <inheritdoc />
-        public IEnumerable<BoundPeer> Peers => Protocol.Peers;
 
         /// <inheritdoc cref="ITransport.LastMessageTimestamp"/>
         public DateTimeOffset? LastMessageTimestamp { get; private set; }
@@ -223,8 +218,6 @@ namespace Libplanet.Net
                 }
             }
         }
-
-        internal IProtocol Protocol { get; }
 
         internal FixedSizedQueue<Message> MessageHistory { get; }
 
@@ -293,12 +286,9 @@ namespace Libplanet.Net
 
             List<Task> tasks = new List<Task>();
 
-            tasks.Add(
-                RefreshTableAsync(
-                    TimeSpan.FromSeconds(10),
-                    TimeSpan.FromSeconds(10),
-                    _cancellationToken));
-            tasks.Add(RebuildConnectionAsync(TimeSpan.FromMinutes(30), _cancellationToken));
+            tasks.Add(DisposeUnusedDealerSockets(
+                TimeSpan.FromSeconds(10),
+                _cancellationToken));
             tasks.Add(RunPoller(_routerPoller));
             tasks.Add(RunPoller(_broadcastPoller));
 
@@ -345,138 +335,6 @@ namespace Libplanet.Net
                 Running = false;
             }
         }
-
-        /// <inheritdoc />
-        public Task BootstrapAsync(
-            IEnumerable<BoundPeer> bootstrapPeers,
-            TimeSpan? pingSeedTimeout,
-            TimeSpan? findNeighborsTimeout,
-            int depth = Kademlia.MaxDepth,
-            CancellationToken cancellationToken = default(CancellationToken)
-        ) => Protocol.BootstrapAsync(
-            bootstrapPeers.ToImmutableList(),
-            pingSeedTimeout,
-            findNeighborsTimeout,
-            depth,
-            cancellationToken
-        );
-
-        /// <summary>
-        /// Adds given <paramref name="peers"/> to routing table by sending <see cref="Ping"/>.
-        /// </summary>
-        /// <param name="peers">The peers to add.</param>
-        /// <param name="timeout">A timeout of waiting for the reply of <see cref="Ping"/>
-        /// message sent to <paramref name="peers"/>.
-        /// If <c>null</c> is given, task never halts by itself
-        /// even the target peer gives no any response.</param>
-        /// <param name="cancellationToken">
-        /// A cancellation token used to propagate notification that this
-        /// operation should be canceled.</param>
-        /// <returns>An awaitable task without value.</returns>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown when <see cref="Protocol"/> is <c>null</c>.
-        /// </exception>
-        public async Task AddPeersAsync(
-            IEnumerable<Peer> peers,
-            TimeSpan? timeout,
-            CancellationToken cancellationToken)
-        {
-            if (Protocol is null)
-            {
-                throw new ArgumentNullException(nameof(Protocol));
-            }
-
-            try
-            {
-                var kp = (KademliaProtocol)Protocol;
-
-                var tasks = new List<Task>();
-                foreach (Peer peer in peers)
-                {
-                    if (peer is BoundPeer boundPeer)
-                    {
-                        tasks.Add(kp.PingAsync(
-                            boundPeer,
-                            timeout: timeout,
-                            cancellationToken: cancellationToken));
-                    }
-                }
-
-                _logger.Verbose("Trying to ping all {PeersNumber} peers.", tasks.Count);
-                await Task.WhenAll(tasks);
-                _logger.Verbose("Update complete.");
-            }
-            catch (DifferentAppProtocolVersionException e)
-            {
-                AppProtocolVersion expected = e.ExpectedVersion, actual = e.ActualVersion;
-                _logger.Debug(
-                    $"Different version encountered during {nameof(AddPeersAsync)}().\n" +
-                    "Expected version: {ExpectedVersion} ({ExpectedVersionExtra}) " +
-                    "[{ExpectedSignature}; {ExpectedSigner}]\n" +
-                    "Actual version: {ActualVersion} ({ActualVersionExtra}) [{ActualSignature};" +
-                    "{ActualSigner}]",
-                    expected.Version,
-                    expected.Extra,
-                    ByteUtil.Hex(expected.Signature),
-                    expected.Signer.ToString(),
-                    actual.Version,
-                    actual.Extra,
-                    ByteUtil.Hex(actual.Signature),
-                    actual.Signer
-                );
-            }
-            catch (TimeoutException)
-            {
-                _logger.Debug(
-                    $"Timeout occurred during {nameof(AddPeersAsync)}() after {timeout}.");
-                throw;
-            }
-            catch (TaskCanceledException)
-            {
-                _logger.Debug($"Task is cancelled during {nameof(AddPeersAsync)}().");
-            }
-            catch (Exception e)
-            {
-                _logger.Error(
-                    e,
-                    $"Unexpected exception occurred during {nameof(AddPeersAsync)}().");
-                throw;
-            }
-        }
-
-        /// <summary>
-        /// Finds a <see cref="Peer"/> whose address value matches <paramref name="target"/>.
-        /// </summary>
-        /// <param name="target"><see cref="Address"/> to find.</param>
-        /// <param name="depth">Recursive operation depth to search the peer from network.</param>
-        /// <param name="timeout">A timeout of waiting for the reply of messages.
-        /// If <c>null</c> is given, task never halts by itself even the message gives
-        /// no any response.</param>
-        /// <param name="cancellationToken">
-        /// A cancellation token used to propagate notification that this
-        /// operation should be canceled.</param>
-        /// <returns><see cref="Peer"/> match with given <paramref name="target"/> if it exists.
-        /// Otherwise, return <c>null</c> if fails to find.</returns>
-        public async Task<BoundPeer> FindSpecificPeerAsync(
-            Address target,
-            int depth,
-            TimeSpan? timeout,
-            CancellationToken cancellationToken)
-        {
-            var kp = (KademliaProtocol)Protocol;
-            return await kp.FindSpecificPeerAsync(
-                target,
-                depth,
-                timeout,
-                cancellationToken);
-        }
-
-        /// <summary>
-        /// Visualizes Kademlia-based routing table status.
-        /// </summary>
-        /// <remarks>Will be outdated.</remarks>
-        /// <returns><see cref="string"/> representation of the routing table.</returns>
-        public string Trace() => Protocol is null ? string.Empty : Protocol.Trace();
 
         /// <inheritdoc />
         public void Dispose()
@@ -637,22 +495,6 @@ namespace Libplanet.Net
             _replyQueue.Enqueue(message.ToNetMQMessage(_privateKey, AsPeer, _appProtocolVersion));
         }
 
-        /// <summary>
-        /// Refreshes all peers in routing table.
-        /// </summary>
-        /// <param name="timeout">A timeout of waiting for the reply of messages.
-        /// If <c>null</c> is given, the task never halts by itself
-        /// even no any response was given from the the target peer.</param>
-        /// <param name="cancellationToken">
-        /// A cancellation token used to propagate notification that this
-        /// operation should be canceled.</param>
-        /// <returns>An awaitable task without value.</returns>
-        public async Task CheckAllPeersAsync(TimeSpan? timeout, CancellationToken cancellationToken)
-        {
-            var kp = (KademliaProtocol)Protocol;
-            await kp.CheckAllPeersAsync(cancellationToken, timeout);
-        }
-
         private void ReceiveMessage(object sender, NetMQSocketEventArgs e)
         {
             NetMQMessage raw = new NetMQMessage();
@@ -724,7 +566,7 @@ namespace Libplanet.Net
                 (Address? except, Message msg) = e.Queue.Dequeue();
 
                 // FIXME Should replace with PUB/SUB model.
-                List<BoundPeer> peers = Protocol.PeersToBroadcast(except).ToList();
+                List<BoundPeer> peers = _table.PeersToBroadcast(except).ToList();
                 _logger.Debug("Broadcasting message: {Message} as {AsPeer}", msg, AsPeer);
                 _logger.Debug("Peers to broadcast: {PeersCount}", peers.Count);
 
@@ -796,7 +638,7 @@ namespace Libplanet.Net
                 {
                     await Task.Delay(lifetime - TimeSpan.FromMinutes(1), cancellationToken);
                     _logger.Debug("Refreshing permissions...");
-                    await Task.WhenAll(Protocol.Peers.Select(CreatePermission));
+                    await Task.WhenAll(_table.Peers.Select(CreatePermission));
                     cancellationToken.ThrowIfCancellationRequested();
                 }
                 catch (OperationCanceledException e)
@@ -1002,9 +844,8 @@ namespace Libplanet.Net
             }
         }
 
-        private async Task RefreshTableAsync(
+        private async Task DisposeUnusedDealerSockets(
             TimeSpan period,
-            TimeSpan maxAge,
             CancellationToken cancellationToken)
         {
             while (!cancellationToken.IsCancellationRequested)
@@ -1012,11 +853,8 @@ namespace Libplanet.Net
                 try
                 {
                     await Task.Delay(period, cancellationToken);
-                    await Protocol.RefreshTableAsync(maxAge, cancellationToken);
-                    await Protocol.CheckReplacementCacheAsync(cancellationToken);
-
                     ImmutableHashSet<Address> peerAddresses =
-                        Peers.Select(p => p.Address).ToImmutableHashSet();
+                        _table.Peers.Select(p => p.Address).ToImmutableHashSet();
                     foreach (Address address in _dealers.Keys)
                     {
                         if (!peerAddresses.Contains(address) &&
@@ -1028,38 +866,13 @@ namespace Libplanet.Net
                 }
                 catch (OperationCanceledException e)
                 {
-                    _logger.Warning(e, $"{nameof(RefreshTableAsync)}() is cancelled.");
+                    _logger.Warning(e, $"{nameof(DisposeUnusedDealerSockets)}() is cancelled.");
                     throw;
                 }
                 catch (Exception e)
                 {
                     var msg = "Unexpected exception occurred during " +
-                        $"{nameof(RefreshTableAsync)}(): {{0}}";
-                    _logger.Warning(e, msg, e);
-                }
-            }
-        }
-
-        private async Task RebuildConnectionAsync(
-            TimeSpan period,
-            CancellationToken cancellationToken)
-        {
-            while (!cancellationToken.IsCancellationRequested)
-            {
-                try
-                {
-                    await Protocol.RebuildConnectionAsync(cancellationToken);
-                    await Task.Delay(period, cancellationToken);
-                }
-                catch (OperationCanceledException e)
-                {
-                    _logger.Warning(e, $"{nameof(RebuildConnectionAsync)}() is cancelled.");
-                    throw;
-                }
-                catch (Exception e)
-                {
-                    var msg = "Unexpected exception occurred during " +
-                              $"{nameof(RebuildConnectionAsync)}(): {{0}}";
+                              $"{nameof(DisposeUnusedDealerSockets)}(): {{0}}";
                     _logger.Warning(e, msg, e);
                 }
             }
