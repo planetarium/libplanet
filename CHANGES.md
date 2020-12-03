@@ -53,6 +53,7 @@ To be released.
     class.  [[#1119]]
  -  Added `Libplanet.Blockchain.Renderers.Debug.InvalidRenderException<T>`
     class.  [[#1119]]
+ -  Added `InvalidBlockTxHashException` class.  [[#1116]]
 
 ### Behavioral changes
 
@@ -62,6 +63,9 @@ To be released.
  -  `Swarm<T>` became not to receive states from trusted peers.
     [[#1061], [#1102]]
  -  `Swarm<T>` became not to retry when block downloading.  [[#1062], [#1102]]
+ -  `Block<T>.Validate()` became to validate only `Block<T>.TxHash` instead of its all transactions.  [[#1116]]
+ -  Improved performance of `BlockChain<T>.MineBlock()`.  [[#1116]]
+ -  Improved performance of `Block<T>.Deserialize()`.  [[#1116]]
 
 ### Bug fixes
 
@@ -82,6 +86,7 @@ To be released.
 [#1102]: https://github.com/planetarium/libplanet/pull/1102
 [#1110]: https://github.com/planetarium/libplanet/pull/1110
 [#1112]: https://github.com/planetarium/libplanet/pull/1112
+[#1116]: https://github.com/planetarium/libplanet/pull/1116
 [#1119]: https://github.com/planetarium/libplanet/pull/1119
 
 
