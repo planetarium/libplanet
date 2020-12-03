@@ -24,6 +24,8 @@ namespace Libplanet.Tests.Blockchain
                 _fx.GenesisBlock.Hash,
                 _fx.GenesisBlock.Timestamp.AddDays(1),
                 _emptyTransaction);
+            validNextBlock =
+                TestUtils.AttachStateRootHash(validNextBlock, _fx.StateStore, _policy.BlockAction);
             _blockChain.Append(validNextBlock);
             Assert.Equal(_blockChain.Tip, validNextBlock);
         }
@@ -41,6 +43,8 @@ namespace Libplanet.Tests.Blockchain
                 _validNext.Hash,
                 _validNext.Timestamp.AddSeconds(1),
                 _emptyTransaction);
+            invalidIndexBlock = TestUtils.AttachStateRootHash(
+                invalidIndexBlock, _fx.StateStore, _policy.BlockAction);
             Assert.Throws<InvalidBlockIndexException>(() =>
                 _blockChain.Append(invalidIndexBlock));
         }
@@ -58,6 +62,8 @@ namespace Libplanet.Tests.Blockchain
                 _validNext.Hash,
                 _validNext.Timestamp.AddSeconds(1),
                 _emptyTransaction);
+            invalidDifficultyBlock = TestUtils.AttachStateRootHash(
+                invalidDifficultyBlock, _fx.StateStore, _policy.BlockAction);
             Assert.Throws<InvalidBlockDifficultyException>(() =>
                     _blockChain.Append(invalidDifficultyBlock));
         }
@@ -75,6 +81,8 @@ namespace Libplanet.Tests.Blockchain
                 _validNext.Hash,
                 _validNext.Timestamp.AddSeconds(1),
                 _emptyTransaction);
+            invalidTotalDifficultyBlock = TestUtils.AttachStateRootHash(
+                invalidTotalDifficultyBlock, _fx.StateStore, _policy.BlockAction);
             Assert.Throws<InvalidBlockTotalDifficultyException>(() =>
                     _blockChain.Append(invalidTotalDifficultyBlock));
         }
@@ -124,13 +132,14 @@ namespace Libplanet.Tests.Blockchain
             //        Actually, it depends on BlockChain<T> to update states and it makes hard to
             //        calculate state root hash. To resolve this problem,
             //        it should be moved into StateStore.
-            var genesisBlock = TestUtils.MineGenesis<DumbAction>(
-                blockAction: policy.BlockAction, checkStateRootHash: true);
+            var genesisBlock = TestUtils.MineGenesis<DumbAction>();
+            genesisBlock =
+                TestUtils.AttachStateRootHash(genesisBlock, _fx.StateStore, policy.BlockAction);
             var store = new DefaultStore(null);
             var chain = new BlockChain<DumbAction>(
                 policy,
                 store,
-                stateStore,
+                _fx.StateStore,
                 genesisBlock);
 
             var validNext = Block<DumbAction>.Mine(
@@ -141,12 +150,11 @@ namespace Libplanet.Tests.Blockchain
                 genesisBlock.Hash,
                 genesisBlock.Timestamp.AddSeconds(1),
                 _emptyTransaction);
-            var actionEvaluations = _blockChain.BlockEvaluator.EvaluateActions(
-                validNext,
-                StateCompleterSet<DumbAction>.Recalculate);
-            chain.SetStates(validNext, actionEvaluations, false);
             validNext =
-                new Block<DumbAction>(validNext, stateStore.GetRootHash(validNext.Hash));
+                TestUtils.AttachStateRootHash(
+                    validNext,
+                    _fx.StateStore,
+                    _policy.BlockAction);
             chain.Append(validNext);
 
             var invalidStateRootHash = Block<DumbAction>.Mine(
@@ -157,10 +165,10 @@ namespace Libplanet.Tests.Blockchain
                 validNext.Hash,
                 validNext.Timestamp.AddSeconds(1),
                 _emptyTransaction);
-            actionEvaluations = _blockChain.BlockEvaluator.EvaluateActions(
+            var actionEvaluations = _blockChain.BlockEvaluator.EvaluateActions(
                 invalidStateRootHash,
                 StateCompleterSet<DumbAction>.Recalculate);
-            chain.SetStates(invalidStateRootHash, actionEvaluations, false);
+            chain.SetStates(invalidStateRootHash, actionEvaluations);
             invalidStateRootHash = new Block<DumbAction>(
                 invalidStateRootHash,
                 new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)));

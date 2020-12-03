@@ -916,13 +916,13 @@ namespace Libplanet.Blockchain
                 _rwlock.EnterWriteLock();
                 try
                 {
-                    SetStates(block, actionEvaluations, false);
+                    SetStates(block, actionEvaluations);
                     block = new Block<T>(block, trieStateStore.GetRootHash(block.Hash));
 
                     // it's needed because `block.Hash` was updated with the state root hash.
                     // FIXME: we need a method for calculating the state root hash without
                     // `.SetStates()`.
-                    SetStates(block, actionEvaluations, false);
+                    SetStates(block, actionEvaluations);
                 }
                 finally
                 {
@@ -1338,7 +1338,7 @@ namespace Libplanet.Blockchain
             try
             {
                 DateTimeOffset setStatesStarted = DateTimeOffset.Now;
-                SetStates(block, evaluations, buildStateReferences: true);
+                SetStates(block, evaluations);
                 _logger.Verbose(
                     $"[#{{0}} {{1}}] {nameof(SetStates)} spent {{2}} ms.",
                     block.Index,
@@ -1806,8 +1806,7 @@ namespace Libplanet.Blockchain
 
         internal void SetStates(
             Block<T> block,
-            IReadOnlyList<ActionEvaluation> actionEvaluations,
-            bool buildStateReferences
+            IReadOnlyList<ActionEvaluation> actionEvaluations
         )
         {
             IImmutableSet<Address> stateUpdatedAddresses = actionEvaluations
@@ -1822,18 +1821,6 @@ namespace Libplanet.Blockchain
             {
                 var totalDelta = actionEvaluations.GetTotalDelta(ToStateKey, ToFungibleAssetKey);
                 StateStore.SetStates(block, totalDelta);
-            }
-
-            if (buildStateReferences && StateStore is IBlockStatesStore blockStatesStore)
-            {
-                IImmutableSet<string> stateUpdatedKeys = stateUpdatedAddresses
-                    .Select(ToStateKey)
-                    .ToImmutableHashSet();
-                IImmutableSet<string> assetUpdatedKeys = updatedFungibleAssets
-                    .Select(ToFungibleAssetKey)
-                    .ToImmutableHashSet();
-                IImmutableSet<string> updatedKeys = stateUpdatedKeys.Union(assetUpdatedKeys);
-                blockStatesStore.StoreStateReference(Id, updatedKeys, block.Hash, block.Index);
             }
         }
 
@@ -1933,10 +1920,9 @@ namespace Libplanet.Blockchain
                 );
 
                 _rwlock.EnterWriteLock();
-
                 try
                 {
-                    SetStates(block, evaluations, buildStateReferences: false);
+                    SetStates(block, evaluations);
                 }
                 finally
                 {
@@ -2052,21 +2038,6 @@ namespace Libplanet.Blockchain
                 }
 
                 offset ??= Tip.Hash;
-
-                if (StateStore is IBlockStatesStore blockStatesStore)
-                {
-                    var stateRef = blockStatesStore.LookupStateReference(
-                        Id,
-                        key,
-                        this[offset.Value].Index);
-
-                    if (stateRef is null)
-                    {
-                        return null;
-                    }
-
-                    offset = stateRef.Item1;
-                }
 
                 return StateStore.ContainsBlockStates(offset.Value)
                     ? StateStore.GetState(key, offset, Id)
