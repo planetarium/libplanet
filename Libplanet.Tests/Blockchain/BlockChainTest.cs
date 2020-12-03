@@ -687,6 +687,7 @@ namespace Libplanet.Tests.Blockchain
                     nonce: nonce,
                     privateKey: signer);
                 heavyTxs.Add(heavyTx);
+                nonce += 1;
             }
 
             var block1 = TestUtils.MineNext(
