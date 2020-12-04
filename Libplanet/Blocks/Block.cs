@@ -526,13 +526,9 @@ namespace Libplanet.Blocks
         /// <exception cref="InvalidBlockNonceException">Thrown when
         /// the <see cref="Nonce"/> does not satisfy its
         /// <see cref="Difficulty"/> level.</exception>
-        /// <exception cref="InvalidTxSignatureException">Thrown when its
-        /// <see cref="Transaction{T}.Signature"/> is invalid or not signed by
-        /// the account who corresponds to its
-        /// <see cref="Transaction{T}.PublicKey"/>.</exception>
-        /// <exception cref="InvalidTxPublicKeyException">Thrown when its
-        /// <see cref="Transaction{T}.Signer"/> is not derived from its
-        /// <see cref="Transaction{T}.PublicKey"/>.</exception>
+        /// <exception cref="InvalidBlockTxHashException">Thrown when
+        /// the <see cref="TxHash" /> does not match with its
+        /// <see cref="Transactions"/>.</exception>
         /// <exception cref="InvalidTxUpdatedAddressesException">Thrown when
         /// any <see cref="IAction"/> of <see cref="Transactions"/> tries
         /// to update the states of <see cref="Address"/>es not included
