@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Libplanet.Net.Protocols
 {
-    internal static class Kademlia
+    public static class Kademlia
     {
         public const int BucketSize = 16;
         public const int TableSize = Address.Size * sizeof(byte) * 8;

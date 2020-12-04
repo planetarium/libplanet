@@ -9,6 +9,7 @@ using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net;
+using Libplanet.Net.Protocols;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Serilog;
@@ -69,8 +70,8 @@ namespace Libplanet.Tests.Net
         private Swarm<DumbAction> CreateSwarm(
             PrivateKey privateKey = null,
             AppProtocolVersion? appProtocolVersion = null,
-            int? tableSize = null,
-            int? bucketSize = null,
+            int tableSize = Kademlia.TableSize,
+            int bucketSize = Kademlia.BucketSize,
             string host = null,
             int? listenPort = null,
             DateTimeOffset? createdAt = null,
@@ -101,8 +102,8 @@ namespace Libplanet.Tests.Net
             BlockChain<T> blockChain,
             PrivateKey privateKey = null,
             AppProtocolVersion? appProtocolVersion = null,
-            int? tableSize = null,
-            int? bucketSize = null,
+            int tableSize = Kademlia.TableSize,
+            int bucketSize = Kademlia.BucketSize,
             string host = null,
             int? listenPort = null,
             DateTimeOffset? createdAt = null,

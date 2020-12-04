@@ -489,8 +489,8 @@ namespace Libplanet.Tests.Net.Protocols
         private TestTransport CreateTestTransport(
             PrivateKey privateKey = null,
             bool blockBroadcast = false,
-            int? tableSize = null,
-            int? bucketSize = null,
+            int tableSize = Kademlia.TableSize,
+            int bucketSize = Kademlia.BucketSize,
             TimeSpan? networkDelay = null)
         {
             return new TestTransport(

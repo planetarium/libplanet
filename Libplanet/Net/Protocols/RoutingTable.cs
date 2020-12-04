@@ -14,12 +14,9 @@ namespace Libplanet.Net.Protocols
 
         public RoutingTable(
             Address address,
-            int? tableSize,
-            int? bucketSize,
+            int tableSize = Kademlia.TableSize,
+            int bucketSize = Kademlia.BucketSize)
         {
-            tableSize ??= Kademlia.TableSize;
-            bucketSize ??= Kademlia.BucketSize;
-
             if (tableSize <= 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(tableSize));
@@ -31,8 +28,8 @@ namespace Libplanet.Net.Protocols
             }
 
             _address = address;
-            TableSize = tableSize.Value;
-            BucketSize = bucketSize.Value;
+            TableSize = tableSize;
+            BucketSize = bucketSize;
             _logger = Log.ForContext<RoutingTable>();
 
             var random = new Random();

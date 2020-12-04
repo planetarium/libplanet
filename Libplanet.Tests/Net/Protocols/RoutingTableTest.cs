@@ -154,7 +154,7 @@ namespace Libplanet.Tests.Net.Protocols
 
         private RoutingTable CreateTable(Address addr)
         {
-            return new RoutingTable(addr, TableSize, BucketSize);
+            return new RoutingTable(addr);
         }
     }
 }
