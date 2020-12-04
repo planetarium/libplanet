@@ -96,6 +96,23 @@ parameters into <code>RocksDBStore</code> constructor.  [<a href="https://github
 [<a href="https://github.com/planetarium/libplanet/pull/1074">#1074</a>, <a href="https://github.com/planetarium/libplanet/pull/1102">#1102</a>]</li>
 <li>Added <code>TurnClient.ReconnectTurn(CancellationToken)</code> method.
 [<a href="https://github.com/planetarium/libplanet/pull/1074">#1074</a>, <a href="https://github.com/planetarium/libplanet/pull/1102">#1102</a>]</li>
+<li>Added <code>Libplanet.Blockchain.Renderers.Debug.RenderRecord&lt;T&gt;</code> abstract class
+and its subclasses:  [<a href="https://github.com/planetarium/libplanet/pull/1119">#1119</a>]
+<ul>
+<li><code>RenderRecord&lt;T&gt;.ActionBase</code> abstract class</li>
+<li><code>RenderRecord&lt;T&gt;.ActionSuccess</code> class</li>
+<li><code>RenderRecord&lt;T&gt;.ActionError</code> class</li>
+<li><code>RenderRecord&lt;T&gt;.BlockBase</code> abstract class</li>
+<li><code>RenderRecord&lt;T&gt;.Block</code> class</li>
+<li><code>RenderRecord&lt;T&gt;.Reorg</code> class</li>
+</ul>
+</li>
+<li>Added <code>Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer&lt;T&gt;</code>
+class.  [<a href="https://github.com/planetarium/libplanet/pull/1119">#1119</a>]</li>
+<li>Added <code>Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer&lt;T&gt;</code>
+class.  [<a href="https://github.com/planetarium/libplanet/pull/1119">#1119</a>]</li>
+<li>Added <code>Libplanet.Blockchain.Renderers.Debug.InvalidRenderException&lt;T&gt;</code>
+class.  [<a href="https://github.com/planetarium/libplanet/pull/1119">#1119</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
