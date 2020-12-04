@@ -39,7 +39,7 @@ namespace Libplanet.Net.Protocols
             _table = table;
             _requestTimeout =
                 requestTimeout ??
-                TimeSpan.FromMilliseconds(Kademlia.IdleRequestTimeout);
+                TimeSpan.FromMilliseconds(5000);
             _transport.ProcessMessageHandler += ProcessMessageHandler;
         }
 
@@ -709,7 +709,7 @@ namespace Libplanet.Net.Protocols
                 return;
             }
 
-            peers = Kademlia.SortByDistance(peers, target);
+            peers = Kademlia.SortByDistance(peers, target).ToList();
 
             List<BoundPeer> closestCandidate =
                 _table.Neighbors(target, _table.BucketSize, false).ToList();

@@ -192,7 +192,7 @@ namespace Libplanet.Net.Protocols
                 .SelectMany(b => b.Peers)
                 .ToList();
 
-            sorted = Kademlia.SortByDistance(sorted, target);
+            sorted = Kademlia.SortByDistance(sorted, target).ToList();
 
             // Select maximum k * 2 peers excluding the target itself.
             bool containsTarget = sorted.Any(peer => peer.Address.Equals(target));
