@@ -188,6 +188,8 @@ namespace Libplanet.Net
 
         public IEnumerable<BoundPeer> Peers => RoutingTable.Peers;
 
+        public IEnumerable<PeerState> PeersStates => RoutingTable.PeerStates;
+
         /// <summary>
         /// The <see cref="BlockChain{T}"/> instance this <see cref="Swarm{T}"/> instance
         /// synchronizes with.

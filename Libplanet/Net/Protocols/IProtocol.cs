@@ -6,6 +6,9 @@ using Libplanet.Net.Messages;
 
 namespace Libplanet.Net.Protocols
 {
+    /// <summary>
+    /// An interface of protocol to discover peers from the distributed network.
+    /// </summary>
     public interface IProtocol
     {
         /// <summary>
@@ -51,10 +54,32 @@ namespace Libplanet.Net.Protocols
             TimeSpan? timeout,
             CancellationToken cancellationToken);
 
+        /// <summary>
+        /// Checks whether <see cref="Peer"/>s in <see cref="RoutingTable"/> is online by
+        /// sending <see cref="Ping"/>.
+        /// </summary>
+        /// <param name="maxAge">Maximum age of peer to validate.</param>
+        /// <param name="cancellationToken">A cancellation token used to propagate notification
+        /// that this operation should be canceled.</param>
+        /// <returns>An awaitable task without value.</returns>
         Task RefreshTableAsync(TimeSpan maxAge, CancellationToken cancellationToken);
 
+        /// <summary>
+        /// Reconstructs network connection between peers on network.
+        /// </summary>
+        /// <param name="cancellationToken">A cancellation token used to propagate notification
+        /// that this operation should be canceled.</param>
+        /// <returns>>An awaitable task without value.</returns>
         Task RebuildConnectionAsync(CancellationToken cancellationToken);
 
+        /// <summary>
+        /// Checks the <see cref="KBucket"/> in the <see cref="RoutingTable"/> and if
+        /// there is an empty <see cref="KBucket"/>, fill it with <see cref="Peer"/>s
+        /// in the <see cref="KBucket.ReplacementCache"/>.
+        /// </summary>
+        /// <param name="cancellationToken">A cancellation token used to propagate notification
+        /// that this operation should be canceled.</param>
+        /// <returns>>An awaitable task without value.</returns>
         Task CheckReplacementCacheAsync(CancellationToken cancellationToken);
     }
 }

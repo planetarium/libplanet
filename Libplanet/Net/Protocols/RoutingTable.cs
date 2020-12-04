@@ -5,6 +5,9 @@ using Serilog;
 
 namespace Libplanet.Net.Protocols
 {
+    /// <summary>
+    /// Kademlia distributed hash table.
+    /// </summary>
     public class RoutingTable
     {
         private readonly Address _address;
@@ -12,6 +15,15 @@ namespace Libplanet.Net.Protocols
 
         private readonly ILogger _logger;
 
+        /// <summary>
+        /// Creates a Kademlia distributed hash table instance.
+        /// </summary>
+        /// <param name="address"><see cref="Address"/> of this peer.</param>
+        /// <param name="tableSize">Number of buckets in the table.</param>
+        /// <param name="bucketSize">Size of single bucket.</param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Thrown when <paramref name="tableSize"/> or <paramref name="bucketSize"/> is
+        /// less then or equal to 0.</exception>
         public RoutingTable(
             Address address,
             int tableSize = Kademlia.TableSize,
@@ -40,17 +52,35 @@ namespace Libplanet.Net.Protocols
             }
         }
 
+        /// <summary>
+        /// Number of buckets in the table.
+        /// </summary>
         public int TableSize { get; }
 
+        /// <summary>
+        /// Size of single bucket.
+        /// </summary>
         public int BucketSize { get; }
 
+        /// <summary>
+        /// Number of peers in the table.
+        /// </summary>
         public int Count => _buckets.Sum(bucket => bucket.Count);
 
+        /// <summary>
+        /// <see cref="IEnumerable{T}"/> of peers in the table.
+        /// </summary>
         public IEnumerable<BoundPeer> Peers => NonEmptyBuckets
             .SelectMany((bucket, _) => bucket.Peers)
             .ToList();
 
-        public IEnumerable<IEnumerable<BoundPeer>> CachesToCheck
+        /// <summary>
+        /// <see cref="IEnumerable{T}"/> of <see cref="PeerState"/> of peers in the table.
+        /// </summary>
+        public IEnumerable<PeerState> PeerStates =>
+            NonEmptyBuckets.SelectMany(bucket => bucket.PeerStates);
+
+        internal IEnumerable<IEnumerable<BoundPeer>> CachesToCheck
         {
             get
             {
@@ -78,31 +108,14 @@ namespace Libplanet.Net.Protocols
             }
         }
 
-        public IEnumerable<BoundPeer> PeersToBroadcast(Address? except, int min = 10)
-        {
-            List<BoundPeer> peers = NonEmptyBuckets
-                .Select(bucket => bucket.GetRandomPeer(except))
-                .Where(peer => !(peer is null)).ToList();
-            var count = peers.Count;
-            if (count < min)
-            {
-                peers.AddRange(Peers
-                    .Where(peer =>
-                        !peers.Contains(peer) &&
-                        (except is null || !peer.Address.Equals(except.Value)))
-                    .Take(min - count));
-            }
-
-            return peers;
-        }
-
-        public IEnumerable<BoundPeer> PeersToRefresh(TimeSpan maxAge)
-        {
-            return NonEmptyBuckets
-                .Where(bucket => bucket.Tail.LastUpdated + maxAge < DateTimeOffset.UtcNow)
-                .Select(bucket => bucket.Tail.Peer);
-        }
-
+        /// <summary>
+        /// Adds the <paramref name="peer"/> to the table.
+        /// </summary>
+        /// <param name="peer">The <see cref="BoundPeer"/> to add.</param>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="peer"/> is
+        /// <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="peer"/>'s
+        /// <see cref="Address"/> is equal to the <see cref="Address"/> of self.</exception>
         public void AddPeer(BoundPeer peer)
         {
             if (peer is null)
@@ -135,23 +148,33 @@ namespace Libplanet.Net.Protocols
             return BucketOf(peer).RemovePeer(peer);
         }
 
-        public bool RemoveCache(BoundPeer peer)
-        {
-            KBucket bucket = BucketOf(peer);
-            return bucket.ReplacementCache.TryRemove(peer, out var dateTimeOffset);
-        }
-
+        /// <summary>
+        /// Determines whether the <see cref="RoutingTable"/> contains the specified key.
+        /// </summary>
+        /// <param name="peer">Key to locate in the <see cref="RoutingTable"/>.</param>
+        /// <returns><see langword="true"/> if the <see cref="RoutingTable" /> contains
+        /// an element with the specified key; otherwise, <see langword="false"/>.</returns>
         public bool Contains(BoundPeer peer)
         {
             return BucketOf(peer).Contains(peer);
         }
 
+        /// <summary>
+        /// Finds a <seealso cref="BoundPeer"/> whose <see cref="Address"/> matches with
+        /// the given <paramref name="addr"/> if it exits.
+        /// </summary>
+        /// <param name="addr">The <see cref="Address"/> to search.</param>
+        /// <returns>A <see cref="BoundPeer"/> whose <see cref="Address"/> matches
+        /// the given <paramref name="addr"/>.</returns>
         public BoundPeer GetPeer(Address addr) =>
             _buckets
                 .Where(b => !b.IsEmpty())
                 .SelectMany(b => b.Peers)
                 .FirstOrDefault(peer => peer.Address.Equals(addr));
 
+        /// <summary>
+        /// Removes all peers in the table.
+        /// </summary>
         public void Clear()
         {
             foreach (KBucket bucket in _buckets)
@@ -205,6 +228,14 @@ namespace Libplanet.Net.Protocols
             return peers.Take(maxCount);
         }
 
+        /// <summary>
+        /// Marks <paramref name="peer"/> checked and refreshes last checked time of the peer.
+        /// </summary>
+        /// <param name="peer">The <see cref="Peer"/> to check.</param>
+        /// <param name="start"><see cref="DateTimeOffset"/> at the beginning of the check.</param>
+        /// <param name="end"><see cref="DateTimeOffset"/> at the end of the check.</param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when <paramref name="peer"/> is <see langword="null"/>.</exception>
         public void Check(BoundPeer peer, DateTimeOffset start, DateTimeOffset end)
         {
             if (peer is null)
@@ -213,6 +244,37 @@ namespace Libplanet.Net.Protocols
             }
 
             BucketOf(peer).Check(peer, start, end);
+        }
+
+        internal IEnumerable<BoundPeer> PeersToBroadcast(Address? except, int min = 10)
+        {
+            List<BoundPeer> peers = NonEmptyBuckets
+                .Select(bucket => bucket.GetRandomPeer(except))
+                .Where(peer => !(peer is null)).ToList();
+            var count = peers.Count;
+            if (count < min)
+            {
+                peers.AddRange(Peers
+                    .Where(peer =>
+                        !peers.Contains(peer) &&
+                        (except is null || !peer.Address.Equals(except.Value)))
+                    .Take(min - count));
+            }
+
+            return peers;
+        }
+
+        internal IEnumerable<BoundPeer> PeersToRefresh(TimeSpan maxAge)
+        {
+            return NonEmptyBuckets
+                .Where(bucket => bucket.Tail.LastUpdated + maxAge < DateTimeOffset.UtcNow)
+                .Select(bucket => bucket.Tail.Peer);
+        }
+
+        internal bool RemoveCache(BoundPeer peer)
+        {
+            KBucket bucket = BucketOf(peer);
+            return bucket.ReplacementCache.TryRemove(peer, out var dateTimeOffset);
         }
 
         internal KBucket BucketOf(BoundPeer peer)

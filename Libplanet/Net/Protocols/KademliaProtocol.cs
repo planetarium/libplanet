@@ -43,7 +43,7 @@ namespace Libplanet.Net.Protocols
             _transport.ProcessMessageHandler += ProcessMessageHandler;
         }
 
-        /// <inheritdoc cref="BootstrapAsync" />
+        /// <inheritdoc />
         // FIXME: Currently bootstrap is done until it finds closest peer, but it should halt
         // when found neighbor's count is reached 2*k.
         public async Task BootstrapAsync(
@@ -117,7 +117,7 @@ namespace Libplanet.Net.Protocols
             }
         }
 
-        /// <inheritdoc cref="AddPeersAsync"/>
+        /// <inheritdoc />
         public async Task AddPeersAsync(
             IEnumerable<Peer> peers,
             TimeSpan? timeout,
@@ -179,14 +179,7 @@ namespace Libplanet.Net.Protocols
             }
         }
 
-        /// <summary>
-        /// Checks whether <see cref="Peer"/>s in <see cref="RoutingTable"/> is online by
-        /// sending <see cref="Ping"/>.
-        /// </summary>
-        /// <param name="maxAge">Maximum age of peer to validate.</param>
-        /// <param name="cancellationToken">A cancellation token used to propagate notification
-        /// that this operation should be canceled.</param>
-        /// <returns>An awaitable task without value.</returns>
+        /// <inheritdoc />
         public async Task RefreshTableAsync(TimeSpan maxAge, CancellationToken cancellationToken)
         {
             // TODO: Add timeout parameter for this method
@@ -237,12 +230,7 @@ namespace Libplanet.Net.Protocols
             }
         }
 
-        /// <summary>
-        /// Reconstructs network connection between peers on network.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token used to propagate notification
-        /// that this operation should be canceled.</param>
-        /// <returns>>An awaitable task without value.</returns>
+        /// <inheritdoc />
         public async Task RebuildConnectionAsync(CancellationToken cancellationToken)
         {
             _logger.Verbose("Rebuilding connection...");
@@ -277,14 +265,7 @@ namespace Libplanet.Net.Protocols
             }
         }
 
-        /// <summary>
-        /// Checks the <see cref="KBucket"/> in the <see cref="RoutingTable"/> and if
-        /// there is an empty <see cref="KBucket"/>, fill it with <see cref="Peer"/>s
-        /// in the <see cref="KBucket.ReplacementCache"/>.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token used to propagate notification
-        /// that this operation should be canceled.</param>
-        /// <returns>>An awaitable task without value.</returns>
+        /// <inheritdoc />
         public async Task CheckReplacementCacheAsync(CancellationToken cancellationToken)
         {
             _logger.Verbose("Checking replacement cache.");
@@ -528,10 +509,16 @@ namespace Libplanet.Net.Protocols
             }
         }
 
-        // This updates routing table when receiving a message.
-        // if corresponding bucket for remote peer is not full, just adds remote peer.
-        // otherwise check whether if the least recently used (LRU) peer
-        // is alive to determine evict LRU peer or discard remote peer.
+        /// <summary>
+        /// Updates routing table when receiving a message. If corresponding bucket
+        /// for remote peer is not full, just adds given <paramref name="rawPeer"/>.
+        /// Otherwise, checks aliveness of the least recently used (LRU) peer
+        /// and determine evict LRU peer or discard given <paramref name="rawPeer"/>.
+        /// </summary>
+        /// <param name="rawPeer"><see cref="Peer"/> to update.</param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when <paramref name="rawPeer"/> is <c>null</c>.
+        /// </exception>
         private void Update(Peer rawPeer)
         {
             _logger.Verbose($"Try to {nameof(Update)}() {{Peer}}.", rawPeer);
