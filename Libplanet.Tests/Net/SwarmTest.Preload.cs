@@ -10,12 +10,12 @@ using Bencodex.Types;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers;
+using Libplanet.Blockchain.Renderers.Debug;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net;
 using Libplanet.Store;
 using Libplanet.Tests.Blockchain;
-using Libplanet.Tests.Common;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Libplanet.Tx;
@@ -524,7 +524,7 @@ namespace Libplanet.Tests.Net
         {
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
             var fx = new DefaultStoreFixture();
-            var receiverRenderer = new RecordingRenderer<DumbAction>();
+            var receiverRenderer = new RecordingActionRenderer<DumbAction>();
             var loggedRenderer = new LoggedActionRenderer<DumbAction>(
                 receiverRenderer,
                 _logger);
@@ -841,7 +841,7 @@ namespace Libplanet.Tests.Net
 
             BlockChain<DumbAction> minerChain =
                 TestUtils.MakeBlockChain(policy, fx1.Store);
-            var receiverRenderer = new RecordingRenderer<DumbAction>();
+            var receiverRenderer = new RecordingActionRenderer<DumbAction>();
             BlockChain<DumbAction> receiverChain =
                 TestUtils.MakeBlockChain(policy, fx2.Store, renderers: new[] { receiverRenderer });
 

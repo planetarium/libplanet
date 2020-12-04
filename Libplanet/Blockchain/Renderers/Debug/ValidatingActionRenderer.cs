@@ -1,11 +1,15 @@
+#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using Libplanet.Action;
-using Libplanet.Blockchain.Renderers;
+using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
+using Libplanet.Store;
 
-namespace Libplanet.Tests.Common
+namespace Libplanet.Blockchain.Renderers.Debug
 {
     /// <summary>
     /// Validates if rendering events are in the correct order according to the documented automata
@@ -14,7 +18,7 @@ namespace Libplanet.Tests.Common
     /// </summary>
     /// <typeparam name="T">An <see cref="IAction"/> type.  It should match to
     /// <see cref="Libplanet.Blockchain.BlockChain{T}"/>'s type parameter.</typeparam>
-    public class ValidatingActionRenderer<T> : RecordingRenderer<T>
+    public class ValidatingActionRenderer<T> : RecordingActionRenderer<T>
         where T : IAction, new()
     {
         private enum RenderState
@@ -25,12 +29,21 @@ namespace Libplanet.Tests.Common
             BlockEnd,
         }
 
+        /// <summary>
+        /// The chain that publishes the render events.  More stricter validations are conducted
+        /// if it's configured.
+        /// </summary>
+        public BlockChain<T>? BlockChain { get; set; }
+
+        /// <inheritdoc cref="IRenderer{T}.RenderReorg(Block{T}, Block{T}, Block{T})"/>
         public override void RenderReorg(Block<T> oldTip, Block<T> newTip, Block<T> branchpoint)
         {
             base.RenderReorg(oldTip, newTip, branchpoint);
             Validate();
         }
 
+        /// <inheritdoc
+        /// cref="IActionRenderer{T}.UnrenderAction(IAction, IActionContext, IAccountStateDelta)"/>
         public override void UnrenderAction(
             IAction action,
             IActionContext context,
@@ -41,6 +54,8 @@ namespace Libplanet.Tests.Common
             Validate();
         }
 
+        /// <inheritdoc
+        /// cref="IActionRenderer{T}.UnrenderActionError(IAction, IActionContext, Exception)"/>
         public override void UnrenderActionError(
             IAction action,
             IActionContext context,
@@ -51,12 +66,15 @@ namespace Libplanet.Tests.Common
             Validate();
         }
 
+        /// <inheritdoc cref="IRenderer{T}.RenderBlock(Block{T}, Block{T})"/>
         public override void RenderBlock(Block<T> oldTip, Block<T> newTip)
         {
             base.RenderBlock(oldTip, newTip);
             Validate();
         }
 
+        /// <inheritdoc
+        /// cref="IActionRenderer{T}.RenderAction(IAction, IActionContext, IAccountStateDelta)"/>
         public override void RenderAction(
             IAction action,
             IActionContext context,
@@ -67,6 +85,8 @@ namespace Libplanet.Tests.Common
             Validate();
         }
 
+        /// <inheritdoc
+        /// cref="IActionRenderer{T}.RenderActionError(IAction, IActionContext, Exception)"/>
         public override void RenderActionError(
             IAction action,
             IActionContext context,
@@ -77,12 +97,14 @@ namespace Libplanet.Tests.Common
             Validate();
         }
 
+        /// <inheritdoc cref="IActionRenderer{T}.RenderBlockEnd(Block{T}, Block{T})"/>
         public override void RenderBlockEnd(Block<T> oldTip, Block<T> newTip)
         {
             base.RenderBlockEnd(oldTip, newTip);
             Validate();
         }
 
+        /// <inheritdoc cref="IRenderer{T}.RenderReorgEnd(Block{T}, Block{T}, Block{T})"/>
         public override void RenderReorgEnd(
             Block<T> oldTip,
             Block<T> newTip,
@@ -91,19 +113,171 @@ namespace Libplanet.Tests.Common
         {
             base.RenderReorgEnd(oldTip, newTip, branchpoint);
             Validate();
+
+            ValidateReorgEnd(oldTip, newTip, branchpoint);
+        }
+
+        private void ValidateReorgEnd(
+            Block<T> oldTip,
+            Block<T> newTip,
+            Block<T> branchpoint)
+        {
+            if (!(BlockChain is BlockChain<T> chain))
+            {
+                return;
+            }
+
+            IBlockPolicy<T> policy = chain.Policy;
+            IStore store = chain.Store;
+
+            List<IAction> expectedUnrenderedActions = new List<IAction>();
+            Block<T> block = oldTip;
+            while (!block.Equals(branchpoint))
+            {
+                if (policy.BlockAction is IAction blockAction)
+                {
+                    expectedUnrenderedActions.Add(blockAction);
+                }
+
+                expectedUnrenderedActions.AddRange(
+                    block.Transactions.SelectMany(t => t.Actions).Cast<IAction>().Reverse());
+                block = block.PreviousHash is HashDigest<SHA256> prevHash
+                    ? store.GetBlock<T>(prevHash)
+                    : throw new InvalidRenderException<T>(
+                        Records,
+                        "Reorg occurred from the chain with different genesis.");
+            }
+
+            IEnumerable<IAction> expectedRenderedActionsBuffer = new List<IAction>();
+            block = newTip;
+            while (!block.Equals(branchpoint))
+            {
+                IEnumerable<IAction> actions =
+                    block.Transactions.SelectMany(t => t.Actions).Cast<IAction>();
+                if (policy.BlockAction is IAction blockAction)
+                {
+#if NET472 || NET471 || NET47 || NET462 || NET461
+                    // Even though .NET Framework 4.6.1 or higher supports .NET Standard 2.0,
+                    // versions lower than 4.8 lacks Enumerable.Append(IEnumerable<T>, T) method.
+                    actions = actions.Concat(new IAction[] { blockAction });
+#else
+#pragma warning disable PC002
+                    actions = actions.Append(blockAction);
+#pragma warning restore PC002
+#endif
+                }
+
+                expectedRenderedActionsBuffer = actions.Concat(expectedRenderedActionsBuffer);
+                block = block.PreviousHash is HashDigest<SHA256> prevHash
+                    ? store.GetBlock<T>(prevHash)
+                    : throw new InvalidRenderException<T>(
+                        Records,
+                        "Reorg occurred from the chain with different genesis.");
+            }
+
+            IAction[] expectedRenderedActions = expectedRenderedActionsBuffer.ToArray();
+            List<IAction> actualRenderedActions = new List<IAction>();
+            List<IAction> actualUnrenderedActions = new List<IAction>();
+            foreach (var record in Records.Reverse())
+            {
+                if (record is RenderRecord<T>.Reorg b && b.Begin)
+                {
+                    break;
+                }
+
+                if (record is RenderRecord<T>.ActionBase a)
+                {
+                    if (a.Render)
+                    {
+                        actualRenderedActions.Add(a.Action);
+                    }
+                    else
+                    {
+                        actualUnrenderedActions.Add(a.Action);
+                    }
+                }
+            }
+
+            actualRenderedActions.Reverse();
+            actualUnrenderedActions.Reverse();
+
+            string ReprAction(IAction? action)
+            {
+                if (action is null)
+                {
+                    return "[N/A]";
+                }
+
+                return action.PlainValue.Inspection
+                    .Replace(" \n ", " ")
+                    .Replace(" \n", " ")
+                    .Replace("\n ", " ")
+                    .Replace("\n", " ");
+            }
+
+            string MakeErrorMessage(string prefix, IList<IAction> expected, IList<IAction> actual)
+            {
+                int expectN = expected.Count;
+                int actualN = actual.Count;
+                if (expectN != actualN)
+                {
+                    prefix += $" (expected: {expectN} actions, actual: {actualN} actions):";
+                }
+
+                var buffer = new StringBuilder();
+                for (int i = 0, count = Math.Max(expectN, actualN); i < count; i++)
+                {
+                    IAction? e = i < expectN ? expected[i] : null;
+                    IAction? a = i < actualN ? actual[i] : null;
+                    if (!(e is null || a is null) && e.PlainValue.Equals(a.PlainValue))
+                    {
+                        buffer.Append($"\n\t  {ReprAction(e)}");
+                    }
+                    else
+                    {
+                        buffer.Append($"\n\tE {ReprAction(e)}");
+                        buffer.Append($"\n\tA {ReprAction(a)}");
+                    }
+                }
+
+                return $"{prefix}:{buffer}";
+            }
+
+            if (!actualUnrenderedActions.Select(a => a.PlainValue)
+                    .SequenceEqual(expectedUnrenderedActions.Select(a => a.PlainValue)))
+            {
+                const string message =
+                    "The unrender action records do not match with actions in the block when " +
+                    "reorg occurred";
+                throw new InvalidRenderException<T>(
+                    Records,
+                    MakeErrorMessage(message, expectedUnrenderedActions, actualUnrenderedActions)
+                );
+            }
+
+            if (!actualRenderedActions.Select(a => a.PlainValue)
+                    .SequenceEqual(expectedRenderedActions.Select(a => a.PlainValue)))
+            {
+                const string message =
+                    "The render action record does not match with actions in the block when " +
+                    "reorg occurred";
+                throw new InvalidRenderException<T>(
+                    Records,
+                    MakeErrorMessage(message, expectedRenderedActions, actualRenderedActions)
+                );
+            }
         }
 
         private void Validate()
         {
             var state = RenderState.Ready;
-            RenderRecord<T>.Reorg reorgState = null;
-            RenderRecord<T>.Block blockState = null;
+            RenderRecord<T>.Reorg? reorgState = null;
+            RenderRecord<T>.Block? blockState = null;
             long previousActionBlockIndex = -1L;
             var records = new List<RenderRecord<T>>(Records.Count);
 
-            Exception BadRenderExc(string message) => new InvalidRenderException(records, message);
+            Exception BadRenderExc(string msg) => new InvalidRenderException<T>(records, msg);
 
-#pragma warning disable S2589
             foreach (RenderRecord<T> record in Records)
             {
                 records.Add(record);
@@ -141,7 +315,9 @@ namespace Libplanet.Tests.Common
 
                     case RenderState.Reorg:
                     {
+#pragma warning disable S2589
                         if (reorgState is null || !(blockState is null))
+#pragma warning restore S2589
                         {
                             throw BadRenderExc(
                                 $"Unexpected reorg/block states: {reorgState}/{blockState}."
@@ -208,7 +384,9 @@ namespace Libplanet.Tests.Common
                                 );
                             }
 
+#pragma warning disable S2583
                             state = reorgState is null ? RenderState.Ready : RenderState.BlockEnd;
+#pragma warning restore S2583
                             blockState = null;
                             break;
                         }
@@ -251,7 +429,9 @@ namespace Libplanet.Tests.Common
 
                     case RenderState.BlockEnd:
                     {
+#pragma warning disable S2589
                         if (reorgState is null || !(blockState is null))
+#pragma warning restore S2589
                         {
                             throw BadRenderExc(
                                 $"Unexpected reorg/block states: {reorgState}/{blockState}."
@@ -279,84 +459,6 @@ namespace Libplanet.Tests.Common
                             $"Expected {nameof(IActionRenderer<T>.RenderReorgEnd)}."
                         );
                     }
-                }
-            }
-#pragma warning restore S2589
-        }
-
-        public class InvalidRenderException : Exception
-        {
-            public InvalidRenderException(
-                IReadOnlyList<RenderRecord<T>> records,
-                string message
-            )
-                : base(message)
-            {
-                Records = records;
-            }
-
-            public IReadOnlyList<RenderRecord<T>> Records { get; }
-
-            public override string Message
-            {
-                get
-                {
-                    string MakeCompact(string stackTrace)
-                    {
-                        int pos = 0;
-                        for (int i = 0; pos >= 0 && i < 10; i++)
-                        {
-                            pos = stackTrace.IndexOf('\n', pos + 1);
-                        }
-
-                        return pos < 0
-                            ? stackTrace
-                            : stackTrace.Substring(0, pos);
-                    }
-
-                    string pre = base.Message;
-                    if (Records.Count < 1)
-                    {
-                        return pre + "\n(0 records.)";
-                    }
-
-                    RenderRecord<T> first = Records[Records.Count - 1];
-                    var firstLine = $"{pre}\n{first}";
-                    if (Records.Count < 2)
-                    {
-                        return $"{firstLine}\n{MakeCompact(first.StackTrace)}\n(1 record.)";
-                    }
-
-                    // Find common postfix
-                    string firstTrace = first.StackTrace;
-                    int commonPostfix = 0;
-                    for (int i = 0, end = Records.Min(r => r.StackTrace.Length); i < end; i++)
-                    {
-                        char charInFirst = firstTrace[StackTrace.Length - (i + 1)];
-                        bool allEqual = Records.Skip(1).All(r =>
-                        {
-                            string stackTrace = r.StackTrace;
-                            char charFromEnd = stackTrace[stackTrace.Length - (i + 1)];
-                            return charFromEnd.Equals(charInFirst);
-                        });
-
-                        if (!allEqual)
-                        {
-                            commonPostfix = i;
-                            break;
-                        }
-                    }
-
-                    firstTrace =
-                        MakeCompact(firstTrace.Substring(0, firstTrace.Length - commonPostfix));
-                    firstLine += $"\n{firstTrace}";
-                    RenderRecord<T> second = Records[Records.Count - 2];
-                    IEnumerable<RenderRecord<T>> rest = Records.Reverse().Skip(2);
-                    string secondTrace = second.StackTrace;
-                    string secondCompactTrace =
-                        MakeCompact(secondTrace.Substring(0, secondTrace.Length - commonPostfix));
-                    return $"{firstLine}\n{second}\n{secondCompactTrace}\n" +
-                           string.Join("\n", rest) + $"\n({Records.Count} records.)";
                 }
             }
         }

@@ -12,6 +12,7 @@ using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers;
+using Libplanet.Blockchain.Renderers.Debug;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net;
@@ -20,7 +21,6 @@ using Libplanet.Net.Protocols;
 using Libplanet.Store;
 using Libplanet.Stun;
 using Libplanet.Tests.Blockchain;
-using Libplanet.Tests.Common;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Libplanet.Tx;
@@ -963,7 +963,7 @@ namespace Libplanet.Tests.Net
             var privateKey = new PrivateKey();
             var minerSwarm = CreateSwarm(blockChain, privateKey);
             var fx2 = new DefaultStoreFixture(memory: true);
-            var receiverRenderer = new RecordingRenderer<DumbAction>();
+            var receiverRenderer = new RecordingActionRenderer<DumbAction>();
             var loggedRenderer = new LoggedActionRenderer<DumbAction>(
                 receiverRenderer,
                 _logger);
@@ -1375,7 +1375,7 @@ namespace Libplanet.Tests.Net
         public async Task RenderInFork()
         {
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
-            var renderer = new RecordingRenderer<DumbAction>();
+            var renderer = new RecordingActionRenderer<DumbAction>();
             var chain = TestUtils.MakeBlockChain(
                 policy,
                 new DefaultStore(null),
