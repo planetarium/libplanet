@@ -7,9 +7,6 @@ namespace Libplanet.Net.Protocols
 {
     public class RoutingTable
     {
-        // FIXME: This would be configurable.
-        private const int MinPeersToBroadcast = 10;
-
         private readonly Address _address;
         private readonly KBucket[] _buckets;
 
@@ -85,19 +82,19 @@ namespace Libplanet.Net.Protocols
             }
         }
 
-        public IEnumerable<BoundPeer> PeersToBroadcast(Address? except)
+        public IEnumerable<BoundPeer> PeersToBroadcast(Address? except, int min = 10)
         {
             List<BoundPeer> peers = NonEmptyBuckets
                 .Select(bucket => bucket.GetRandomPeer(except))
                 .Where(peer => !(peer is null)).ToList();
             var count = peers.Count;
-            if (count < MinPeersToBroadcast)
+            if (count < min)
             {
                 peers.AddRange(Peers
                     .Where(peer =>
                         !peers.Contains(peer) &&
                         (except is null || !peer.Address.Equals(except.Value)))
-                    .Take(MinPeersToBroadcast - count));
+                    .Take(min - count));
             }
 
             return peers;
