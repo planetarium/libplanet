@@ -67,6 +67,10 @@ To be released.
  -  Added `Libplanet.Blockchain.Renderers.Debug.InvalidRenderException<T>`
     class.  [[#1119]]
  -  Added `InvalidBlockTxHashException` class.  [[#1116]]
+ -  Removed `Swarm<T>.TraceTable()` method.  [[#1120]]
+ -  Added `Swarm<T>.PeerStates` property.  [[#1120]]
+ -  Added `IProtocol` interface.  [[#1120]]
+ -  Added `KademliaProtocol` class which implements `IProtocol`.  [[#1120]]
 
 ### Behavioral changes
 
@@ -107,6 +111,7 @@ To be released.
 [#1116]: https://github.com/planetarium/libplanet/pull/1116
 [#1117]: https://github.com/planetarium/libplanet/pull/1117
 [#1119]: https://github.com/planetarium/libplanet/pull/1119
+[#1120]: https://github.com/planetarium/libplanet/pull/1120
 [#1124]: https://github.com/planetarium/libplanet/pull/1124
 [#1125]: https://github.com/planetarium/libplanet/pull/1125
 [#1132]: https://github.com/planetarium/libplanet/pull/1132
