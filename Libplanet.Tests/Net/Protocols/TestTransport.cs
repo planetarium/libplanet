@@ -38,8 +38,8 @@ namespace Libplanet.Tests.Net.Protocols
             Dictionary<Address, TestTransport> transports,
             PrivateKey privateKey,
             bool blockBroadcast,
-            int? tableSize,
-            int? bucketSize,
+            int tableSize,
+            int bucketSize,
             TimeSpan? networkDelay)
         {
             _privateKey = privateKey;
@@ -58,13 +58,8 @@ namespace Libplanet.Tests.Net.Protocols
             _requests = new AsyncCollection<Request>();
             _ignoreTestMessageWithData = new List<string>();
             _random = new Random();
-            Table = new RoutingTable(Address, tableSize, bucketSize, _logger);
-            Protocol = new KademliaProtocol(
-                Table,
-                this,
-                Address,
-                _logger
-            );
+            Table = new RoutingTable(Address, tableSize, bucketSize);
+            Protocol = new KademliaProtocol(Table, this, Address);
         }
 
         public event EventHandler<Message> ProcessMessageHandler;

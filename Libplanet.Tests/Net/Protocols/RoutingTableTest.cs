@@ -118,11 +118,7 @@ namespace Libplanet.Tests.Net.Protocols
             var pubKey1 = new PrivateKey().PublicKey;
             var pubKey2 = new PrivateKey().PublicKey;
             var pubKey3 = new PrivateKey().PublicKey;
-            var table = new RoutingTable(
-                pubKey0.ToAddress(),
-                1,
-                2,
-                Logger.None);
+            var table = new RoutingTable(pubKey0.ToAddress(), 1, 2);
             var peer1 = new BoundPeer(pubKey1, new DnsEndPoint("0.0.0.0", 1234));
             var peer2 = new BoundPeer(pubKey2, new DnsEndPoint("0.0.0.0", 1234));
             var peer3 = new BoundPeer(pubKey3, new DnsEndPoint("0.0.0.0", 1234));
@@ -142,11 +138,7 @@ namespace Libplanet.Tests.Net.Protocols
         {
             var pubKey1 = new PrivateKey().PublicKey;
             var pubKey2 = new PrivateKey().PublicKey;
-            var table = new RoutingTable(
-                pubKey1.ToAddress(),
-                1,
-                2,
-                Logger.None);
+            var table = new RoutingTable(pubKey1.ToAddress(), 1, 2);
             var peer1 = new BoundPeer(pubKey1, new DnsEndPoint("0.0.0.0", 1234));
             var peer2 = new BoundPeer(pubKey2, new DnsEndPoint("0.0.0.0", 1234));
 
@@ -162,7 +154,7 @@ namespace Libplanet.Tests.Net.Protocols
 
         private RoutingTable CreateTable(Address addr)
         {
-            return new RoutingTable(addr, TableSize, BucketSize, Logger.None);
+            return new RoutingTable(addr, TableSize, BucketSize);
         }
     }
 }

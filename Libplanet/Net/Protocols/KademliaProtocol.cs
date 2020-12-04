@@ -27,12 +27,11 @@ namespace Libplanet.Net.Protocols
             RoutingTable table,
             ITransport transport,
             Address address,
-            ILogger logger,
             int findConcurrency = Kademlia.FindConcurrency,
             TimeSpan? requestTimeout = null)
         {
             _transport = transport;
-            _logger = logger;
+            _logger = Log.ForContext<KademliaProtocol>();
 
             _address = address;
             _random = new System.Random();

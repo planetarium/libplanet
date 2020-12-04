@@ -16,7 +16,6 @@ namespace Libplanet.Net.Protocols
             Address address,
             int? tableSize,
             int? bucketSize,
-            ILogger logger)
         {
             tableSize ??= Kademlia.TableSize;
             bucketSize ??= Kademlia.BucketSize;
@@ -34,7 +33,7 @@ namespace Libplanet.Net.Protocols
             _address = address;
             TableSize = tableSize.Value;
             BucketSize = bucketSize.Value;
-            _logger = logger;
+            _logger = Log.ForContext<RoutingTable>();
 
             var random = new Random();
             _buckets = new KBucket[TableSize];

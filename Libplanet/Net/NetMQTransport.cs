@@ -98,7 +98,6 @@ namespace Libplanet.Net
         /// If this callback returns <c>false</c>, an encountered peer is ignored.  If this callback
         /// is omitted, all peers with different <see cref="AppProtocolVersion"/>s are ignored.
         /// </param>
-        /// <param name="logger"><see cref="Log.Logger"/> for logging.</param>
         /// <exception cref="ArgumentException">Thrown when both <paramref name="host"/> and
         /// <paramref name="iceServers"/> are <c>null</c>.</exception>
         public NetMQTransport(
@@ -110,8 +109,7 @@ namespace Libplanet.Net
             string host,
             int? listenPort,
             IEnumerable<IceServer> iceServers,
-            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered,
-            ILogger logger)
+            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered)
         {
             Running = false;
 
@@ -138,7 +136,7 @@ namespace Libplanet.Net
                 );
             }
 
-            _logger = logger;
+            _logger = Log.ForContext<NetMQTransport>();
 
             _requests = new AsyncCollection<MessageRequest>();
             _runtimeCancellationTokenSource = new CancellationTokenSource();

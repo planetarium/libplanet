@@ -142,7 +142,7 @@ namespace Libplanet.Net
             _logger = Log.ForContext<Swarm<T>>()
                 .ForContext("SwarmId", loggerId);
 
-            RoutingTable = new RoutingTable(Address, tableSize, bucketSize, _logger);
+            RoutingTable = new RoutingTable(Address, tableSize, bucketSize);
             Transport = new NetMQTransport(
                 RoutingTable,
                 _privateKey,
@@ -152,14 +152,9 @@ namespace Libplanet.Net
                 host,
                 listenPort,
                 iceServers,
-                differentAppProtocolVersionEncountered,
-                _logger);
+                differentAppProtocolVersionEncountered);
             Transport.ProcessMessageHandler += ProcessMessageHandler;
-            PeerDiscovery = new KademliaProtocol(
-                RoutingTable,
-                Transport,
-                Address,
-                _logger);
+            PeerDiscovery = new KademliaProtocol(RoutingTable, Transport, Address);
             Options = options ?? new SwarmOptions();
         }
 
