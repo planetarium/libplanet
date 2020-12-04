@@ -33,6 +33,24 @@ namespace Libplanet.Net.Protocols
             int depth,
             CancellationToken cancellationToken);
 
+        /// <summary>
+        /// Tries to add given <paramref name="peers"/> to routing table
+        /// by sending <see cref="Ping"/>.
+        /// </summary>
+        /// <param name="peers">The peers to add.</param>
+        /// <param name="timeout">A timeout of waiting for the reply of <see cref="Ping"/>
+        /// message sent to <paramref name="peers"/>.
+        /// If <c>null</c> is given, task never halts by itself
+        /// even the target peer gives no any response.</param>
+        /// <param name="cancellationToken">
+        /// A cancellation token used to propagate notification that this
+        /// operation should be canceled.</param>
+        /// <returns>An awaitable task without value.</returns>
+        Task AddPeersAsync(
+            IEnumerable<Peer> peers,
+            TimeSpan? timeout,
+            CancellationToken cancellationToken);
+
         Task RefreshTableAsync(TimeSpan maxAge, CancellationToken cancellationToken);
 
         Task RebuildConnectionAsync(CancellationToken cancellationToken);

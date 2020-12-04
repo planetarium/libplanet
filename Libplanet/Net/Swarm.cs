@@ -921,8 +921,7 @@ namespace Libplanet.Net
                 cancellationToken = _cancellationToken;
             }
 
-            await ((KademliaProtocol)PeerDiscovery
-                ).AddPeersAsync(peers, timeout, cancellationToken);
+            await PeerDiscovery.AddPeersAsync(peers, timeout, cancellationToken);
         }
 
         // FIXME: This would be better if it's merged with GetDemandBlockHashes
