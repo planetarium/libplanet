@@ -19,8 +19,8 @@ namespace Libplanet.Net.Protocols
         /// Creates a Kademlia distributed hash table instance.
         /// </summary>
         /// <param name="address"><see cref="Address"/> of this peer.</param>
-        /// <param name="tableSize">Number of buckets in the table.</param>
-        /// <param name="bucketSize">Size of single bucket.</param>
+        /// <param name="tableSize">The number of buckets in the table.</param>
+        /// <param name="bucketSize">The size of a single bucket.</param>
         /// <exception cref="ArgumentOutOfRangeException">
         /// Thrown when <paramref name="tableSize"/> or <paramref name="bucketSize"/> is
         /// less then or equal to 0.</exception>
@@ -53,29 +53,29 @@ namespace Libplanet.Net.Protocols
         }
 
         /// <summary>
-        /// Number of buckets in the table.
+        /// The number of buckets in the table.
         /// </summary>
         public int TableSize { get; }
 
         /// <summary>
-        /// Size of single bucket.
+        /// The size of a single bucket.
         /// </summary>
         public int BucketSize { get; }
 
         /// <summary>
-        /// Number of peers in the table.
+        /// The number of peers in the table.
         /// </summary>
         public int Count => _buckets.Sum(bucket => bucket.Count);
 
         /// <summary>
-        /// <see cref="IEnumerable{T}"/> of peers in the table.
+        /// An <see cref="IEnumerable{T}"/> of peers in the table.
         /// </summary>
         public IEnumerable<BoundPeer> Peers => NonEmptyBuckets
             .SelectMany((bucket, _) => bucket.Peers)
             .ToList();
 
         /// <summary>
-        /// <see cref="IEnumerable{T}"/> of <see cref="PeerState"/> of peers in the table.
+        /// An <see cref="IEnumerable{T}"/> of <see cref="PeerState"/> of peers in the table.
         /// </summary>
         public IEnumerable<PeerState> PeerStates =>
             NonEmptyBuckets.SelectMany(bucket => bucket.PeerStates);

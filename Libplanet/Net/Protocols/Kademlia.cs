@@ -9,17 +9,17 @@ namespace Libplanet.Net.Protocols
     public static class Kademlia
     {
         /// <summary>
-        /// Size of single bucket.
+        /// The size of a single bucket.
         /// </summary>
         public const int BucketSize = 16;
 
         /// <summary>
-        /// Number of buckets in the table.
+        /// The number of buckets in the table.
         /// </summary>
         public const int TableSize = Address.Size * sizeof(byte) * 8;
 
         /// <summary>
-        /// Number of concurrency in peer discovery.
+        /// The number of concurrency in peer discovery.
         /// </summary>
         public const int FindConcurrency = 3;
 

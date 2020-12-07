@@ -69,7 +69,7 @@ namespace Libplanet.Net.Protocols
         /// </summary>
         /// <param name="cancellationToken">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
-        /// <returns>>An awaitable task without value.</returns>
+        /// <returns>An awaitable task without value.</returns>
         Task RebuildConnectionAsync(CancellationToken cancellationToken);
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace Libplanet.Net.Protocols
         /// </summary>
         /// <param name="cancellationToken">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
-        /// <returns>>An awaitable task without value.</returns>
+        /// <returns>An awaitable task without value.</returns>
         Task CheckReplacementCacheAsync(CancellationToken cancellationToken);
     }
 }
