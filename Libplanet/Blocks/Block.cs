@@ -196,6 +196,10 @@ namespace Libplanet.Blocks
             Hash = hash;
             PreEvaluationHash = preEvaluationHash ??
                 throw new ArgumentNullException(nameof(preEvaluationHash));
+
+            // See also: https://github.com/planetarium/libplanet/pull/1116#discussion_r535836480
+            // FIXME: we should convert `StateRootHash`'s type to `HashDisgest<SHA256>` after
+            // removing `IBlockStateStore`.
             StateRootHash = stateRootHash;
             TxHash = txHash;
             Transactions = transactions.ToImmutableArray();
