@@ -33,8 +33,8 @@ namespace Libplanet.RocksDBStore.Tests
 
         public override void Dispose()
         {
-            (Store as RocksDBStore)?.Dispose();
-            (StateStore as TrieStateStore)?.Dispose();
+            (Store as IDisposable)?.Dispose();
+            (StateStore as IDisposable)?.Dispose();
 
             if (!(Path is null))
             {

@@ -45,8 +45,8 @@ namespace Libplanet.Tests.Store
 
         public override void Dispose()
         {
-            (Store as DefaultStore)?.Dispose();
-            (StateStore as TrieStateStore)?.Dispose();
+            (Store as IDisposable)?.Dispose();
+            (StateStore as IDisposable)?.Dispose();
 
             if (!(Path is null))
             {
