@@ -908,7 +908,7 @@ namespace Libplanet.Blockchain
                 cts.Dispose();
             }
 
-            var actionEvaluations = BlockEvaluator.EvaluateActions(
+            IReadOnlyList<ActionEvaluation> actionEvaluations = BlockEvaluator.EvaluateActions(
                 block, StateCompleterSet<T>.Recalculate);
 
             if (StateStore is TrieStateStore trieStateStore)
@@ -917,13 +917,22 @@ namespace Libplanet.Blockchain
                 try
                 {
                     SetStates(block, actionEvaluations, false);
+                    block = new Block<T>(block, trieStateStore.GetRootHash(block.Hash));
+
+                    // it's needed because `block.Hash` was updated with the state root hash.
+                    // FIXME: we need a method for calculating the state root hash without
+                    // `.SetStates()`.
+                    SetStates(block, actionEvaluations, false);
                 }
                 finally
                 {
                     _rwlock.ExitWriteLock();
                 }
-
-                block = new Block<T>(block, trieStateStore.GetRootHash(block.Hash));
+            }
+            else
+            {
+                // We need to re-execute it.
+                actionEvaluations = null;
             }
 
             _logger.Debug(
@@ -938,7 +947,14 @@ namespace Libplanet.Blockchain
 
             if (append)
             {
-                Append(block, currentTime);
+                Append(
+                    block,
+                    currentTime,
+                    evaluateActions: true,
+                    renderBlocks: true,
+                    renderActions: true,
+                    actionEvaluations: actionEvaluations
+                );
 
                 _logger.Debug(
                     "Appended a block #{Index} [difficulty: {Difficulty}; prev: {prevHash}; " +
@@ -1047,6 +1063,7 @@ namespace Libplanet.Blockchain
             bool evaluateActions,
             bool renderBlocks,
             bool renderActions,
+            IReadOnlyList<ActionEvaluation> actionEvaluations = null,
             StateCompleterSet<T>? stateCompleters = null
         )
         {
@@ -1086,7 +1103,6 @@ namespace Libplanet.Blockchain
                 );
             }
 
-            IReadOnlyList<ActionEvaluation> evaluations = null;
             _rwlock.EnterUpgradeableReadLock();
             Block<T> prevTip = Tip;
             try
@@ -1134,9 +1150,9 @@ namespace Libplanet.Blockchain
                 _rwlock.EnterWriteLock();
                 try
                 {
-                    if (evaluateActions)
+                    if (evaluateActions && actionEvaluations is null)
                     {
-                        evaluations = ExecuteActions(block);
+                        actionEvaluations = ExecuteActions(block);
                     }
 
                     _blocks[block.Hash] = block;
@@ -1188,7 +1204,7 @@ namespace Libplanet.Blockchain
                         {
                             if (renderActions)
                             {
-                                RenderActions(evaluations, block, renderer, stateCompleters);
+                                RenderActions(actionEvaluations, block, renderer, stateCompleters);
                             }
 
                             renderer.RenderBlockEnd(oldTip: prevTip ?? Genesis, newTip: block);

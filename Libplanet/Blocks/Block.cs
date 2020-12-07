@@ -72,28 +72,7 @@ namespace Libplanet.Blocks
             PreviousHash = previousHash;
             Timestamp = timestamp;
             Transactions = transactions.OrderBy(tx => tx.Id).ToArray();
-            if (Transactions.Any())
-            {
-                byte[][] serializedTxs = Transactions.Select(tx => tx.Serialize(true)).ToArray();
-                int txHashSourceLength = serializedTxs.Select(b => b.Length).Sum() + 2;
-                var txHashSource = new byte[txHashSourceLength];
-
-                // Bencodex lists look like: l...e
-                txHashSource[0] = 0x6c;
-                txHashSource[txHashSourceLength - 1] = 0x65;
-                int offset = 1;
-                foreach (byte[] serializedTx in serializedTxs)
-                {
-                    serializedTx.CopyTo(txHashSource, offset);
-                    offset += serializedTx.Length;
-                }
-
-                TxHash = Hashcash.Hash(txHashSource);
-            }
-            else
-            {
-                TxHash = null;
-            }
+            TxHash = CalcualteTxHashes(Transactions);
 
             PreEvaluationHash = preEvaluationHash ?? Hashcash.Hash(SerializeForHash());
             StateRootHash = stateRootHash;
@@ -166,6 +145,7 @@ namespace Libplanet.Blocks
 
         private Block(RawBlock rb)
             : this(
+                new HashDigest<SHA256>(rb.Header.Hash),
                 rb.Header.Index,
                 rb.Header.Difficulty,
                 rb.Header.TotalDifficulty,
@@ -178,6 +158,9 @@ namespace Libplanet.Blocks
                     rb.Header.Timestamp,
                     BlockHeader.TimestampFormat,
                     CultureInfo.InvariantCulture).ToUniversalTime(),
+#pragma warning disable MEN002 // Line is too long
+                rb.Header.TxHash.Any() ? new HashDigest<SHA256>(rb.Header.TxHash) : (HashDigest<SHA256>?)null,
+#pragma warning restore MEN002 // Line is too long
                 rb.Transactions
                     .Select(tx => Transaction<T>.Deserialize(tx.ToArray()))
                     .ToList(),
@@ -186,6 +169,40 @@ namespace Libplanet.Blocks
                 rb.Header.StateRootHash.Any() ? new HashDigest<SHA256>(rb.Header.StateRootHash) : (HashDigest<SHA256>?)null)
 #pragma warning restore MEN002 // Line is too long
         {
+        }
+
+        private Block(
+            HashDigest<SHA256> hash,
+            long index,
+            long difficulty,
+            BigInteger totalDifficulty,
+            Nonce nonce,
+            Address? miner,
+            HashDigest<SHA256>? previousHash,
+            DateTimeOffset timestamp,
+            HashDigest<SHA256>? txHash,
+            IEnumerable<Transaction<T>> transactions,
+            HashDigest<SHA256>? preEvaluationHash,
+            HashDigest<SHA256>? stateRootHash
+        )
+        {
+            Index = index;
+            Difficulty = difficulty;
+            TotalDifficulty = totalDifficulty;
+            Nonce = nonce;
+            Miner = miner;
+            PreviousHash = previousHash;
+            Timestamp = timestamp;
+            Hash = hash;
+            PreEvaluationHash = preEvaluationHash ??
+                throw new ArgumentNullException(nameof(preEvaluationHash));
+
+            // See also: https://github.com/planetarium/libplanet/pull/1116#discussion_r535836480
+            // FIXME: we should convert `StateRootHash`'s type to `HashDisgest<SHA256>` after
+            // removing `IBlockStateStore`.
+            StateRootHash = stateRootHash;
+            TxHash = txHash;
+            Transactions = transactions.ToImmutableArray();
         }
 
         /// <summary>
@@ -513,13 +530,9 @@ namespace Libplanet.Blocks
         /// <exception cref="InvalidBlockNonceException">Thrown when
         /// the <see cref="Nonce"/> does not satisfy its
         /// <see cref="Difficulty"/> level.</exception>
-        /// <exception cref="InvalidTxSignatureException">Thrown when its
-        /// <see cref="Transaction{T}.Signature"/> is invalid or not signed by
-        /// the account who corresponds to its
-        /// <see cref="Transaction{T}.PublicKey"/>.</exception>
-        /// <exception cref="InvalidTxPublicKeyException">Thrown when its
-        /// <see cref="Transaction{T}.Signer"/> is not derived from its
-        /// <see cref="Transaction{T}.PublicKey"/>.</exception>
+        /// <exception cref="InvalidBlockTxHashException">Thrown when
+        /// the <see cref="TxHash" /> does not match with its
+        /// <see cref="Transactions"/>.</exception>
         /// <exception cref="InvalidTxUpdatedAddressesException">Thrown when
         /// any <see cref="IAction"/> of <see cref="Transactions"/> tries
         /// to update the states of <see cref="Address"/>es not included
@@ -591,19 +604,48 @@ namespace Libplanet.Blocks
         {
             Header.Validate(currentTime);
 
-            foreach (Transaction<T> tx in Transactions)
+            HashDigest<SHA256>? calculatedTxHash =
+                CalcualteTxHashes(Transactions.OrderBy(tx => tx.Id));
+            if (!calculatedTxHash.Equals(TxHash))
             {
-                tx.Validate();
+                throw new InvalidBlockTxHashException(
+                    $"Block #{Index} {Hash}'s TxHash doesn't match its content.",
+                    TxHash,
+                    calculatedTxHash
+                );
             }
         }
 
         internal RawBlock ToRawBlock()
         {
-            // For consistency, order transactions by its id.
             return new RawBlock(
                 header: Header,
-                transactions: Transactions.OrderBy(tx => tx.Id)
-                    .Select(tx => tx.Serialize(true).ToImmutableArray()).ToImmutableArray());
+                transactions: Transactions
+                .Select(tx => tx.Serialize(true).ToImmutableArray()).ToImmutableArray());
+        }
+
+        private static HashDigest<SHA256>? CalcualteTxHashes(IEnumerable<Transaction<T>> txs)
+        {
+            if (!txs.Any())
+            {
+                return null;
+            }
+
+            byte[][] serializedTxs = txs.Select(tx => tx.Serialize(true)).ToArray();
+            int txHashSourceLength = serializedTxs.Select(b => b.Length).Sum() + 2;
+            var txHashSource = new byte[txHashSourceLength];
+
+            // Bencodex lists look like: l...e
+            txHashSource[0] = 0x6c;
+            txHashSource[txHashSourceLength - 1] = 0x65;
+            int offset = 1;
+            foreach (byte[] serializedTx in serializedTxs)
+            {
+                serializedTx.CopyTo(txHashSource, offset);
+                offset += serializedTx.Length;
+            }
+
+            return Hashcash.Hash(txHashSource);
         }
 
         private byte[] SerializeForHash(HashDigest<SHA256>? stateRootHash = null)
