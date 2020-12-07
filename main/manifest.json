@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "PZvf4g3O90aY2cyRbUIbxw=="
+          "hash": "NLD05TyoYvpG+itRHkVMsw=="
         }
       },
       "is_incremental": false,
@@ -333,7 +333,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.BlockChain-1.html",
-          "hash": "+EOVLLV/ARDkjoBFaPfwRA=="
+          "hash": "/TFXJNUrgyW+8rsJCgG8cg=="
         }
       },
       "is_incremental": false,
@@ -717,7 +717,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blocks.Block-1.html",
-          "hash": "dcxNFCIuSzIvEu2Snwa5Vw=="
+          "hash": "fOr2K5gzm8pt8Uz+0aMytA=="
         }
       },
       "is_incremental": false,
@@ -789,7 +789,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blocks.InvalidBlockException.html",
-          "hash": "gnh559munIrA7zTA5Nuanw=="
+          "hash": "WYoAEKCED5p0JajgxN9KUA=="
         }
       },
       "is_incremental": false,
@@ -881,6 +881,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Blocks.InvalidBlockTxHashException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Blocks.InvalidBlockTxHashException.html",
+          "hash": "tVq7RWO4Na0YMwvJFlkbGw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Libplanet.Blocks.InvalidGenesisBlockException.yml",
       "output": {
         ".html": {
@@ -897,7 +909,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blocks.html",
-          "hash": "fG31HlYzGlZ1wnrIBUzhSw=="
+          "hash": "AxdbIroK8n1Xw52gcsxVVw=="
         }
       },
       "is_incremental": false,
@@ -2109,7 +2121,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "e72JzoaXqN6f/vmmd/Qcmw=="
+          "hash": "8S9L858t/7hMOd81YVzxJg=="
         }
       },
       "is_incremental": false,
@@ -2212,7 +2224,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 167,
+          "total_file_count": 168,
           "skipped_file_count": 0
         },
         "ConceptualDocumentProcessor": {

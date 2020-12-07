@@ -113,6 +113,7 @@ class.  [<a href="https://github.com/planetarium/libplanet/pull/1119">#1119</a>]
 class.  [<a href="https://github.com/planetarium/libplanet/pull/1119">#1119</a>]</li>
 <li>Added <code>Libplanet.Blockchain.Renderers.Debug.InvalidRenderException&lt;T&gt;</code>
 class.  [<a href="https://github.com/planetarium/libplanet/pull/1119">#1119</a>]</li>
+<li>Added <code>InvalidBlockTxHashException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/1116">#1116</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
@@ -122,6 +123,10 @@ benefits from its recent optimizations.
 <li><code>Swarm&lt;T&gt;</code> became not to receive states from trusted peers.
 [<a href="https://github.com/planetarium/libplanet/pull/1061">#1061</a>, <a href="https://github.com/planetarium/libplanet/pull/1102">#1102</a>]</li>
 <li><code>Swarm&lt;T&gt;</code> became not to retry when block downloading.  [<a href="https://github.com/planetarium/libplanet/pull/1062">#1062</a>, <a href="https://github.com/planetarium/libplanet/pull/1102">#1102</a>]</li>
+<li><code>Block&lt;T&gt;.Evaluate()</code> became to validate only <code>Block&lt;T&gt;.TxHash</code> instead of
+its all transactions.  [<a href="https://github.com/planetarium/libplanet/pull/1116">#1116</a>]</li>
+<li>Improved performance of <code>BlockChain&lt;T&gt;.MineBlock()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1116">#1116</a>]</li>
+<li>Improved performance of <code>Block&lt;T&gt;.Deserialize()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1116">#1116</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="cli-tools">CLI tools</h3>

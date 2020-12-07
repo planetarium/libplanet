@@ -5766,6 +5766,99 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.InvalidBlockTotalDifficultyException.TotalDifficulty
   nameWithType: InvalidBlockTotalDifficultyException.TotalDifficulty
+- uid: Libplanet.Blocks.InvalidBlockTxHashException
+  name: InvalidBlockTxHashException
+  href: api/Libplanet.Blocks.InvalidBlockTxHashException.html
+  commentId: T:Libplanet.Blocks.InvalidBlockTxHashException
+  fullName: Libplanet.Blocks.InvalidBlockTxHashException
+  nameWithType: InvalidBlockTxHashException
+- uid: Libplanet.Blocks.InvalidBlockTxHashException.#ctor(SerializationInfo,StreamingContext)
+  name: InvalidBlockTxHashException(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Blocks.InvalidBlockTxHashException.html#Libplanet_Blocks_InvalidBlockTxHashException__ctor_SerializationInfo_StreamingContext_
+  commentId: M:Libplanet.Blocks.InvalidBlockTxHashException.#ctor(SerializationInfo,StreamingContext)
+  fullName: Libplanet.Blocks.InvalidBlockTxHashException.InvalidBlockTxHashException(SerializationInfo, StreamingContext)
+  nameWithType: InvalidBlockTxHashException.InvalidBlockTxHashException(SerializationInfo, StreamingContext)
+- uid: Libplanet.Blocks.InvalidBlockTxHashException.#ctor(System.String,System.Nullable{Libplanet.HashDigest{SHA256}},System.Nullable{Libplanet.HashDigest{SHA256}})
+  name: InvalidBlockTxHashException(String, Nullable<HashDigest<SHA256>>, Nullable<HashDigest<SHA256>>)
+  href: api/Libplanet.Blocks.InvalidBlockTxHashException.html#Libplanet_Blocks_InvalidBlockTxHashException__ctor_System_String_System_Nullable_Libplanet_HashDigest_SHA256___System_Nullable_Libplanet_HashDigest_SHA256___
+  commentId: M:Libplanet.Blocks.InvalidBlockTxHashException.#ctor(System.String,System.Nullable{Libplanet.HashDigest{SHA256}},System.Nullable{Libplanet.HashDigest{SHA256}})
+  name.vb: InvalidBlockTxHashException(String, Nullable(Of HashDigest(Of SHA256)), Nullable(Of HashDigest(Of SHA256)))
+  fullName: Libplanet.Blocks.InvalidBlockTxHashException.InvalidBlockTxHashException(System.String, System.Nullable<Libplanet.HashDigest<SHA256>>, System.Nullable<Libplanet.HashDigest<SHA256>>)
+  fullName.vb: Libplanet.Blocks.InvalidBlockTxHashException.InvalidBlockTxHashException(System.String, System.Nullable(Of Libplanet.HashDigest(Of SHA256)), System.Nullable(Of Libplanet.HashDigest(Of SHA256)))
+  nameWithType: InvalidBlockTxHashException.InvalidBlockTxHashException(String, Nullable<HashDigest<SHA256>>, Nullable<HashDigest<SHA256>>)
+  nameWithType.vb: InvalidBlockTxHashException.InvalidBlockTxHashException(String, Nullable(Of HashDigest(Of SHA256)), Nullable(Of HashDigest(Of SHA256)))
+- uid: Libplanet.Blocks.InvalidBlockTxHashException.#ctor*
+  name: InvalidBlockTxHashException
+  href: api/Libplanet.Blocks.InvalidBlockTxHashException.html#Libplanet_Blocks_InvalidBlockTxHashException__ctor_
+  commentId: Overload:Libplanet.Blocks.InvalidBlockTxHashException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Blocks.InvalidBlockTxHashException.InvalidBlockTxHashException
+  nameWithType: InvalidBlockTxHashException.InvalidBlockTxHashException
+- uid: Libplanet.Blocks.InvalidBlockTxHashException.BlockTxHash
+  name: BlockTxHash
+  href: api/Libplanet.Blocks.InvalidBlockTxHashException.html#Libplanet_Blocks_InvalidBlockTxHashException_BlockTxHash
+  commentId: P:Libplanet.Blocks.InvalidBlockTxHashException.BlockTxHash
+  fullName: Libplanet.Blocks.InvalidBlockTxHashException.BlockTxHash
+  nameWithType: InvalidBlockTxHashException.BlockTxHash
+- uid: Libplanet.Blocks.InvalidBlockTxHashException.BlockTxHash*
+  name: BlockTxHash
+  href: api/Libplanet.Blocks.InvalidBlockTxHashException.html#Libplanet_Blocks_InvalidBlockTxHashException_BlockTxHash_
+  commentId: Overload:Libplanet.Blocks.InvalidBlockTxHashException.BlockTxHash
+  isSpec: "True"
+  fullName: Libplanet.Blocks.InvalidBlockTxHashException.BlockTxHash
+  nameWithType: InvalidBlockTxHashException.BlockTxHash
+- uid: Libplanet.Blocks.InvalidBlockTxHashException.CalculatedTxHash
+  name: CalculatedTxHash
+  href: api/Libplanet.Blocks.InvalidBlockTxHashException.html#Libplanet_Blocks_InvalidBlockTxHashException_CalculatedTxHash
+  commentId: P:Libplanet.Blocks.InvalidBlockTxHashException.CalculatedTxHash
+  fullName: Libplanet.Blocks.InvalidBlockTxHashException.CalculatedTxHash
+  nameWithType: InvalidBlockTxHashException.CalculatedTxHash
+- uid: Libplanet.Blocks.InvalidBlockTxHashException.CalculatedTxHash*
+  name: CalculatedTxHash
+  href: api/Libplanet.Blocks.InvalidBlockTxHashException.html#Libplanet_Blocks_InvalidBlockTxHashException_CalculatedTxHash_
+  commentId: Overload:Libplanet.Blocks.InvalidBlockTxHashException.CalculatedTxHash
+  isSpec: "True"
+  fullName: Libplanet.Blocks.InvalidBlockTxHashException.CalculatedTxHash
+  nameWithType: InvalidBlockTxHashException.CalculatedTxHash
+- uid: Libplanet.Blocks.InvalidBlockTxHashException.GetObjectData(SerializationInfo,StreamingContext)
+  name: GetObjectData(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Blocks.InvalidBlockTxHashException.html#Libplanet_Blocks_InvalidBlockTxHashException_GetObjectData_SerializationInfo_StreamingContext_
+  commentId: M:Libplanet.Blocks.InvalidBlockTxHashException.GetObjectData(SerializationInfo,StreamingContext)
+  fullName: Libplanet.Blocks.InvalidBlockTxHashException.GetObjectData(SerializationInfo, StreamingContext)
+  nameWithType: InvalidBlockTxHashException.GetObjectData(SerializationInfo, StreamingContext)
+- uid: Libplanet.Blocks.InvalidBlockTxHashException.GetObjectData*
+  name: GetObjectData
+  href: api/Libplanet.Blocks.InvalidBlockTxHashException.html#Libplanet_Blocks_InvalidBlockTxHashException_GetObjectData_
+  commentId: Overload:Libplanet.Blocks.InvalidBlockTxHashException.GetObjectData
+  isSpec: "True"
+  fullName: Libplanet.Blocks.InvalidBlockTxHashException.GetObjectData
+  nameWithType: InvalidBlockTxHashException.GetObjectData
+- uid: Libplanet.Blocks.InvalidBlockTxHashException.op_Equality(Libplanet.Blocks.InvalidBlockTxHashException,Libplanet.Blocks.InvalidBlockTxHashException)
+  name: Equality(InvalidBlockTxHashException, InvalidBlockTxHashException)
+  href: api/Libplanet.Blocks.InvalidBlockTxHashException.html#Libplanet_Blocks_InvalidBlockTxHashException_op_Equality_Libplanet_Blocks_InvalidBlockTxHashException_Libplanet_Blocks_InvalidBlockTxHashException_
+  commentId: M:Libplanet.Blocks.InvalidBlockTxHashException.op_Equality(Libplanet.Blocks.InvalidBlockTxHashException,Libplanet.Blocks.InvalidBlockTxHashException)
+  fullName: Libplanet.Blocks.InvalidBlockTxHashException.Equality(Libplanet.Blocks.InvalidBlockTxHashException, Libplanet.Blocks.InvalidBlockTxHashException)
+  nameWithType: InvalidBlockTxHashException.Equality(InvalidBlockTxHashException, InvalidBlockTxHashException)
+- uid: Libplanet.Blocks.InvalidBlockTxHashException.op_Equality*
+  name: Equality
+  href: api/Libplanet.Blocks.InvalidBlockTxHashException.html#Libplanet_Blocks_InvalidBlockTxHashException_op_Equality_
+  commentId: Overload:Libplanet.Blocks.InvalidBlockTxHashException.op_Equality
+  isSpec: "True"
+  fullName: Libplanet.Blocks.InvalidBlockTxHashException.Equality
+  nameWithType: InvalidBlockTxHashException.Equality
+- uid: Libplanet.Blocks.InvalidBlockTxHashException.op_Inequality(Libplanet.Blocks.InvalidBlockTxHashException,Libplanet.Blocks.InvalidBlockTxHashException)
+  name: Inequality(InvalidBlockTxHashException, InvalidBlockTxHashException)
+  href: api/Libplanet.Blocks.InvalidBlockTxHashException.html#Libplanet_Blocks_InvalidBlockTxHashException_op_Inequality_Libplanet_Blocks_InvalidBlockTxHashException_Libplanet_Blocks_InvalidBlockTxHashException_
+  commentId: M:Libplanet.Blocks.InvalidBlockTxHashException.op_Inequality(Libplanet.Blocks.InvalidBlockTxHashException,Libplanet.Blocks.InvalidBlockTxHashException)
+  fullName: Libplanet.Blocks.InvalidBlockTxHashException.Inequality(Libplanet.Blocks.InvalidBlockTxHashException, Libplanet.Blocks.InvalidBlockTxHashException)
+  nameWithType: InvalidBlockTxHashException.Inequality(InvalidBlockTxHashException, InvalidBlockTxHashException)
+- uid: Libplanet.Blocks.InvalidBlockTxHashException.op_Inequality*
+  name: Inequality
+  href: api/Libplanet.Blocks.InvalidBlockTxHashException.html#Libplanet_Blocks_InvalidBlockTxHashException_op_Inequality_
+  commentId: Overload:Libplanet.Blocks.InvalidBlockTxHashException.op_Inequality
+  isSpec: "True"
+  fullName: Libplanet.Blocks.InvalidBlockTxHashException.Inequality
+  nameWithType: InvalidBlockTxHashException.Inequality
 - uid: Libplanet.Blocks.InvalidGenesisBlockException
   name: InvalidGenesisBlockException
   href: api/Libplanet.Blocks.InvalidGenesisBlockException.html
