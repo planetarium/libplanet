@@ -73,7 +73,7 @@ namespace Libplanet.Net
         /// <summary>
         /// Conducts peer discovery for given <paramref name="bootstrapPeers"/>.
         /// </summary>
-        /// <param name="bootstrapPeers">A <see cref="IEnumerable{T}"/> of <see cref="Peer"/>s
+        /// <param name="bootstrapPeers">A list of <see cref="Peer"/>s
         /// to bootstrap.</param>
         /// <param name="pingSeedTimeout">A timeout of waiting for the reply of <see cref="Ping"/>
         /// message sent to seed <see cref="Peer"/>.
