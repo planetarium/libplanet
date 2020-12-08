@@ -23,9 +23,7 @@ namespace Libplanet.Tests.Blockchain
                 _fx.GenesisBlock.Miner.Value,
                 _fx.GenesisBlock.Hash,
                 _fx.GenesisBlock.Timestamp.AddDays(1),
-                _emptyTransaction);
-            validNextBlock =
-                TestUtils.AttachStateRootHash(validNextBlock, _fx.StateStore, _policy.BlockAction);
+                _emptyTransaction).AttachStateRootHash(_fx.StateStore, _policy.BlockAction);
             _blockChain.Append(validNextBlock);
             Assert.Equal(_blockChain.Tip, validNextBlock);
         }
@@ -42,9 +40,7 @@ namespace Libplanet.Tests.Blockchain
                 _fx.GenesisBlock.Miner.Value,
                 _validNext.Hash,
                 _validNext.Timestamp.AddSeconds(1),
-                _emptyTransaction);
-            invalidIndexBlock = TestUtils.AttachStateRootHash(
-                invalidIndexBlock, _fx.StateStore, _policy.BlockAction);
+                _emptyTransaction).AttachStateRootHash(_fx.StateStore, _policy.BlockAction);
             Assert.Throws<InvalidBlockIndexException>(() =>
                 _blockChain.Append(invalidIndexBlock));
         }
@@ -61,9 +57,7 @@ namespace Libplanet.Tests.Blockchain
                 _fx.GenesisBlock.Miner.Value,
                 _validNext.Hash,
                 _validNext.Timestamp.AddSeconds(1),
-                _emptyTransaction);
-            invalidDifficultyBlock = TestUtils.AttachStateRootHash(
-                invalidDifficultyBlock, _fx.StateStore, _policy.BlockAction);
+                _emptyTransaction).AttachStateRootHash(_fx.StateStore, _policy.BlockAction);
             Assert.Throws<InvalidBlockDifficultyException>(() =>
                     _blockChain.Append(invalidDifficultyBlock));
         }
@@ -80,9 +74,7 @@ namespace Libplanet.Tests.Blockchain
                 _fx.GenesisBlock.Miner.Value,
                 _validNext.Hash,
                 _validNext.Timestamp.AddSeconds(1),
-                _emptyTransaction);
-            invalidTotalDifficultyBlock = TestUtils.AttachStateRootHash(
-                invalidTotalDifficultyBlock, _fx.StateStore, _policy.BlockAction);
+                _emptyTransaction).AttachStateRootHash(_fx.StateStore, _policy.BlockAction);
             Assert.Throws<InvalidBlockTotalDifficultyException>(() =>
                     _blockChain.Append(invalidTotalDifficultyBlock));
         }
@@ -132,9 +124,8 @@ namespace Libplanet.Tests.Blockchain
             //        Actually, it depends on BlockChain<T> to update states and it makes hard to
             //        calculate state root hash. To resolve this problem,
             //        it should be moved into StateStore.
-            var genesisBlock = TestUtils.MineGenesis<DumbAction>();
-            genesisBlock =
-                TestUtils.AttachStateRootHash(genesisBlock, _fx.StateStore, policy.BlockAction);
+            var genesisBlock = TestUtils.MineGenesis<DumbAction>()
+                .AttachStateRootHash(_fx.StateStore, policy.BlockAction);
             var store = new DefaultStore(null);
             var chain = new BlockChain<DumbAction>(
                 policy,
@@ -149,12 +140,7 @@ namespace Libplanet.Tests.Blockchain
                 genesisBlock.Miner.Value,
                 genesisBlock.Hash,
                 genesisBlock.Timestamp.AddSeconds(1),
-                _emptyTransaction);
-            validNext =
-                TestUtils.AttachStateRootHash(
-                    validNext,
-                    _fx.StateStore,
-                    _policy.BlockAction);
+                _emptyTransaction).AttachStateRootHash(_fx.StateStore, _policy.BlockAction);
             chain.Append(validNext);
 
             var invalidStateRootHash = Block<DumbAction>.Mine(

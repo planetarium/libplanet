@@ -41,8 +41,7 @@ namespace Libplanet.Tests.Blockchain
                 transactions: txs);
             Block<RandomAction> stateRootBlock = TestUtils.MineGenesis(
                 timestamp: timestamp,
-                transactions: txs);
-            stateRootBlock = TestUtils.AttachStateRootHash(stateRootBlock, stateStore, null);
+                transactions: txs).AttachStateRootHash(stateStore, null);
             var blockEvaluator =
                 new BlockEvaluator<RandomAction>(null, NullStateGetter, NullBalanceGetter, null);
             var generatedRandomNumbers = new List<int>();

@@ -89,14 +89,11 @@ namespace Libplanet.Tests.Store
 
             var stateStore =
                 new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore());
-            GenesisBlock = TestUtils.MineGenesis<DumbAction>();
-            GenesisBlock = TestUtils.AttachStateRootHash(GenesisBlock, stateStore, blockAction);
-            Block1 = TestUtils.MineNext(GenesisBlock);
-            Block1 = TestUtils.AttachStateRootHash(Block1, stateStore, blockAction);
-            Block2 = TestUtils.MineNext(Block1);
-            Block2 = TestUtils.AttachStateRootHash(Block2, stateStore, blockAction);
-            Block3 = TestUtils.MineNext(Block2);
-            Block3 = TestUtils.AttachStateRootHash(Block3, stateStore, blockAction);
+            GenesisBlock = TestUtils.MineGenesis<DumbAction>()
+                .AttachStateRootHash(stateStore, blockAction);
+            Block1 = TestUtils.MineNext(GenesisBlock).AttachStateRootHash(stateStore, blockAction);
+            Block2 = TestUtils.MineNext(Block1).AttachStateRootHash(stateStore, blockAction);
+            Block3 = TestUtils.MineNext(Block2).AttachStateRootHash(stateStore, blockAction);
 
             Transaction1 = MakeTransaction(new List<DumbAction>(), ImmutableHashSet<Address>.Empty);
             Transaction2 = MakeTransaction(new List<DumbAction>(), ImmutableHashSet<Address>.Empty);

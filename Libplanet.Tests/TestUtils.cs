@@ -23,7 +23,7 @@ using Random = System.Random;
 
 namespace Libplanet.Tests
 {
-    public class TestUtils
+    public static class TestUtils
     {
         public static readonly Address GenesisMinerAddress =
             new Address("21744f4f08db23e044178dafb8273aeb5ebe6644");
@@ -255,7 +255,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         }
 
         public static Block<T> AttachStateRootHash<T>(
-            Block<T> block, IStateStore stateStore, IAction blockAction)
+            this Block<T> block, IStateStore stateStore, IAction blockAction)
             where T : IAction, new()
         {
             IValue StateGetter(
@@ -342,7 +342,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 null,
                 timestamp ?? DateTimeOffset.MinValue,
                 new[] { tx, });
-            genesisBlock = AttachStateRootHash(genesisBlock, stateStore, policy.BlockAction);
+            genesisBlock = genesisBlock.AttachStateRootHash(stateStore, policy.BlockAction);
             ValidatingActionRenderer<T> validator = null;
 #pragma warning disable S1121
             var chain = new BlockChain<T>(
