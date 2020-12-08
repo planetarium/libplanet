@@ -27,29 +27,19 @@ namespace Libplanet.Store
     public class DefaultStore : BaseStore
     {
         private const string IndexColPrefix = "index_";
-
-        private const string StateRefIdPrefix = "stateref_";
-
         private const string TxNonceIdPrefix = "nonce_";
 
         private static readonly UPath TxRootPath = UPath.Root / "tx";
         private static readonly UPath BlockRootPath = UPath.Root / "block";
-        private static readonly UPath StateRootPath = UPath.Root / "state";
 
         private readonly ILogger _logger;
 
         private readonly IFileSystem _root;
         private readonly SubFileSystem _txs;
         private readonly SubFileSystem _blocks;
-        private readonly SubFileSystem _states;
         private readonly bool _compress;
         private readonly LruCache<TxId, object> _txCache;
         private readonly LruCache<HashDigest<SHA256>, BlockDigest> _blockCache;
-        private readonly LruCache<HashDigest<SHA256>, IImmutableDictionary<string, IValue>>
-            _statesCache;
-
-        private readonly Dictionary<Guid, LruCache<string, Tuple<HashDigest<SHA256>, long>>>
-            _lastStateRefCaches;
 
         private readonly MemoryStream _memoryStream;
 
@@ -147,18 +137,10 @@ namespace Libplanet.Store
             _txs = new SubFileSystem(_root, TxRootPath, owned: false);
             _root.CreateDirectory(BlockRootPath);
             _blocks = new SubFileSystem(_root, BlockRootPath, owned: false);
-            _root.CreateDirectory(StateRootPath);
-            _states = new SubFileSystem(_root, StateRootPath, owned: false);
 
             _compress = compress;
             _txCache = new LruCache<TxId, object>(capacity: txCacheSize);
             _blockCache = new LruCache<HashDigest<SHA256>, BlockDigest>(capacity: blockCacheSize);
-            _statesCache = new LruCache<HashDigest<SHA256>, IImmutableDictionary<string, IValue>>(
-                capacity: statesCacheSize
-            );
-            _lastStateRefCaches =
-                new Dictionary<Guid, LruCache<string, Tuple<HashDigest<SHA256>, long>>>();
-
             _codec = new Codec();
         }
 
@@ -178,8 +160,6 @@ namespace Libplanet.Store
         {
             _db.DropCollection(IndexCollection(chainId).Name);
             _db.DropCollection(TxNonceId(chainId));
-            _db.DropCollection(StateRefId(chainId));
-            _lastStateRefCaches.Remove(chainId);
         }
 
         /// <inheritdoc />
@@ -654,16 +634,6 @@ namespace Libplanet.Store
             return UPath.Root / idHex.Substring(0, 2) / idHex.Substring(2);
         }
 
-        private UPath StatePath(HashDigest<SHA256> blockHash)
-        {
-            return BlockPath(blockHash);
-        }
-
-        private string StateRefId(Guid chainId)
-        {
-            return $"{StateRefIdPrefix}{FormatChainId(chainId)}";
-        }
-
         private string TxNonceId(Guid chainId)
         {
             return $"{TxNonceIdPrefix}{FormatChainId(chainId)}";
@@ -672,32 +642,6 @@ namespace Libplanet.Store
         private LiteCollection<HashDoc> IndexCollection(Guid chainId)
         {
             return _db.GetCollection<HashDoc>($"{IndexColPrefix}{FormatChainId(chainId)}");
-        }
-
-        internal class StateRefDoc
-        {
-            public string StateKey { get; set; }
-
-            public long BlockIndex { get; set; }
-
-            public string BlockHashString { get; set; }
-
-            [BsonId]
-            public string Id => StateKey + BlockHashString;
-
-            [BsonIgnore]
-            public HashDigest<SHA256> BlockHash
-            {
-                get
-                {
-                    return HashDigest<SHA256>.FromString(BlockHashString);
-                }
-
-                set
-                {
-                    BlockHashString = value.ToString();
-                }
-            }
         }
 
         private class HashDoc

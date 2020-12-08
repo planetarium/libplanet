@@ -76,17 +76,6 @@ namespace Libplanet.Net.Messages
             Neighbors = 0x12,
 
             /// <summary>
-            /// Request to query calculated states.
-            /// </summary>
-            GetRecentStates = 0x0b,
-
-            /// <summary>
-            /// A reply to <see cref="GetRecentStates"/>.
-            /// Contains the calculated recent states and state references.
-            /// </summary>
-            RecentStates = 0x13,
-
-            /// <summary>
             /// Message containing a single <see cref="BlockHeader"/>.
             /// </summary>
             BlockHeaderMessage = 0x0c,
@@ -106,17 +95,6 @@ namespace Libplanet.Net.Messages
             /// Contains the chain status of the peer at the moment.
             /// </summary>
             ChainStatus = 0x24,
-
-            /// <summary>
-            /// Request a block's delta states.
-            /// </summary>
-            GetBlockStates = 0x22,
-
-            /// <summary>
-            /// A reply to <see cref="GetBlockStates"/>.
-            /// Contains the delta states of the requested block.
-            /// </summary>
-            BlockStates = 0x23,
 
             /// <summary>
             /// A reply to any messages with different <see cref="AppProtocolVersion"/>.
@@ -269,13 +247,9 @@ namespace Libplanet.Net.Messages
                 { MessageType.Tx, typeof(Tx) },
                 { MessageType.FindNeighbors, typeof(FindNeighbors) },
                 { MessageType.Neighbors, typeof(Neighbors) },
-                { MessageType.GetRecentStates, typeof(GetRecentStates) },
-                { MessageType.RecentStates, typeof(RecentStates) },
                 { MessageType.BlockHeaderMessage, typeof(BlockHeaderMessage) },
                 { MessageType.GetChainStatus, typeof(GetChainStatus) },
                 { MessageType.ChainStatus, typeof(ChainStatus) },
-                { MessageType.GetBlockStates, typeof(GetBlockStates) },
-                { MessageType.BlockStates, typeof(BlockStates) },
                 { MessageType.DifferentVersion, typeof(DifferentVersion) },
             };
 

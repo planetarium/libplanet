@@ -4,7 +4,6 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
-using Bencodex.Types;
 using Libplanet.Blocks;
 using Libplanet.Store;
 using Libplanet.Tx;
@@ -23,20 +22,16 @@ namespace Libplanet.RocksDBStore
     {
         private const string BlockDbName = "block";
         private const string TxDbName = "tx";
-        private const string StateDbName = "state";
         private const string StagedTxDbName = "stagedtx";
         private const string ChainDbName = "chain";
-        private const string StateRefDbName = "stateref";
 
         private static readonly byte[] IndexKeyPrefix = { (byte)'I' };
         private static readonly byte[] BlockKeyPrefix = { (byte)'B' };
-        private static readonly byte[] BlockStateKeyPrefix = { (byte)'S' };
         private static readonly byte[] TxKeyPrefix = { (byte)'T' };
         private static readonly byte[] TxNonceKeyPrefix = { (byte)'N' };
         private static readonly byte[] StagedTxKeyPrefix = { (byte)'t' };
         private static readonly byte[] IndexCountKey = { (byte)'c' };
         private static readonly byte[] CanonicalChainIdIdKey = { (byte)'C' };
-        private static readonly byte[] StateRefKeyPrefix = { (byte)'s' };
 
         private static readonly byte[] EmptyBytes = new byte[0];
 
@@ -44,21 +39,14 @@ namespace Libplanet.RocksDBStore
 
         private readonly LruCache<TxId, object> _txCache;
         private readonly LruCache<HashDigest<SHA256>, BlockDigest> _blockCache;
-        private readonly LruCache<HashDigest<SHA256>, IImmutableDictionary<string, IValue>>
-            _statesCache;
-
-        private readonly Dictionary<Guid, LruCache<string, Tuple<HashDigest<SHA256>, long>>>
-            _lastStateRefCaches;
 
         private readonly DbOptions _options;
         private readonly string _path;
 
         private readonly RocksDb _blockDb;
         private readonly RocksDb _txDb;
-        private readonly RocksDb _stateDb;
         private readonly RocksDb _stagedTxDb;
         private readonly RocksDb _chainDb;
-        private readonly RocksDb _stateRefDb;
 
         /// <summary>
         /// Creates a new <seealso cref="RocksDBStore"/>.
@@ -76,7 +64,6 @@ namespace Libplanet.RocksDBStore
             string path,
             int blockCacheSize = 512,
             int txCacheSize = 1024,
-            int statesCacheSize = 10000,
             ulong? maxTotalWalSize = null,
             ulong? keepLogFileNum = null
         )
@@ -97,11 +84,6 @@ namespace Libplanet.RocksDBStore
 
             _txCache = new LruCache<TxId, object>(capacity: txCacheSize);
             _blockCache = new LruCache<HashDigest<SHA256>, BlockDigest>(capacity: blockCacheSize);
-            _statesCache = new LruCache<HashDigest<SHA256>, IImmutableDictionary<string, IValue>>(
-                capacity: statesCacheSize
-            );
-            _lastStateRefCaches =
-                new Dictionary<Guid, LruCache<string, Tuple<HashDigest<SHA256>, long>>>();
 
             _path = path;
             _options = new DbOptions()
@@ -119,7 +101,6 @@ namespace Libplanet.RocksDBStore
 
             _blockDb = RocksDBUtils.OpenRocksDb(_options, RocksDbPath(BlockDbName));
             _txDb = RocksDBUtils.OpenRocksDb(_options, RocksDbPath(TxDbName));
-            _stateDb = RocksDBUtils.OpenRocksDb(_options, RocksDbPath(StateDbName));
             _stagedTxDb = RocksDBUtils.OpenRocksDb(_options, RocksDbPath(StagedTxDbName));
 
             // When opening a DB in a read-write mode, you need to specify all Column Families that
@@ -127,10 +108,6 @@ namespace Libplanet.RocksDBStore
             var chainDbColumnFamilies = GetColumnFamilies(_options, ChainDbName);
             _chainDb = RocksDBUtils.OpenRocksDb(
                 _options, RocksDbPath(ChainDbName), chainDbColumnFamilies);
-
-            var stateRefDbColumnFamilies = GetColumnFamilies(_options, StateRefDbName);
-            _stateRefDb = RocksDBUtils.OpenRocksDb(
-                _options, RocksDbPath(StateRefDbName), stateRefDbColumnFamilies);
         }
 
         /// <inheritdoc/>
@@ -159,7 +136,6 @@ namespace Libplanet.RocksDBStore
         public override void DeleteChainId(Guid chainId)
         {
             _logger.Debug($"Deleting chainID: {chainId}.");
-            _lastStateRefCaches.Remove(chainId);
 
             var cfName = chainId.ToString();
             try
@@ -170,16 +146,6 @@ namespace Libplanet.RocksDBStore
             {
                 // Do nothing according to the specification: DeleteChainId() should be idempotent.
                 _logger.Debug($"No such chain ID in _chainDb: {cfName}.", cfName);
-            }
-
-            try
-            {
-                _stateRefDb.DropColumnFamily(cfName);
-            }
-            catch (KeyNotFoundException)
-            {
-                // Do nothing according to the specification: DeleteChainId() should be idempotent.
-                _logger.Debug($"No such chain ID in _stateRefDb: {cfName}.", cfName);
             }
         }
 
@@ -565,9 +531,7 @@ namespace Libplanet.RocksDBStore
         public override void Dispose()
         {
             _chainDb?.Dispose();
-            _stateRefDb?.Dispose();
             _txDb?.Dispose();
-            _stateDb?.Dispose();
             _blockDb?.Dispose();
             _stagedTxDb?.Dispose();
         }
@@ -575,11 +539,6 @@ namespace Libplanet.RocksDBStore
         private byte[] BlockKey(HashDigest<SHA256> blockHash)
         {
             return BlockKeyPrefix.Concat(blockHash.ToByteArray()).ToArray();
-        }
-
-        private byte[] BlockStateKey(HashDigest<SHA256> blockHash)
-        {
-            return BlockStateKeyPrefix.Concat(blockHash.ToByteArray()).ToArray();
         }
 
         private byte[] TxKey(TxId txId)
@@ -597,17 +556,6 @@ namespace Libplanet.RocksDBStore
         private byte[] StagedTxKey(TxId txId)
         {
             return StagedTxKeyPrefix.Concat(txId.ToByteArray()).ToArray();
-        }
-
-        private byte[] StateRefKey(string stateKey, long blockIndex)
-        {
-            byte[] stateKeyBytes = RocksDBStoreBitConverter.GetBytes(stateKey);
-            byte[] blockIndexBytes = RocksDBStoreBitConverter.GetBytes(blockIndex);
-
-            return StateRefKeyPrefix
-                .Concat(stateKeyBytes)
-                .Concat(blockIndexBytes)
-                .ToArray();
         }
 
         private IEnumerable<Iterator> IterateDb(RocksDb db, byte[] prefix, Guid? chainId = null)
@@ -666,14 +614,5 @@ namespace Libplanet.RocksDBStore
         }
 
         private string RocksDbPath(string dbName) => Path.Combine(_path, dbName);
-
-        private class StateRef
-        {
-            public string StateKey { get; set; }
-
-            public long BlockIndex { get; set; }
-
-            public HashDigest<SHA256> BlockHash { get; set; }
-        }
     }
 }

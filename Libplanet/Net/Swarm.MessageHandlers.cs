@@ -5,8 +5,6 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
-using Bencodex.Types;
-using Libplanet.Blockchain;
 using Libplanet.Blocks;
 using Libplanet.Net.Messages;
 using Libplanet.Tx;
@@ -58,10 +56,6 @@ namespace Libplanet.Net
                     break;
                 }
 
-                case GetRecentStates getRecentStates:
-                    TransferRecentStates(getRecentStates);
-                    break;
-
                 case GetBlocks getBlocks:
                     TransferBlocks(getBlocks);
                     break;
@@ -83,9 +77,6 @@ namespace Libplanet.Net
                         async () => await ProcessBlockHeader(blockHeader, _cancellationToken),
                         _cancellationToken
                     );
-                    break;
-
-                case GetBlockStates _:
                     break;
 
                 default:
@@ -283,31 +274,6 @@ namespace Libplanet.Net
             }
 
             _logger.Debug("Blocks were transferred to {Identity}.", identityHex);
-        }
-
-        private void TransferRecentStates(GetRecentStates getRecentStates)
-        {
-            BlockLocator baseLocator = getRecentStates.BaseLocator;
-            HashDigest<SHA256>? @base = BlockChain.FindBranchPoint(baseLocator);
-            HashDigest<SHA256> target = getRecentStates.TargetBlockHash;
-            IImmutableDictionary<HashDigest<SHA256>,
-                IImmutableDictionary<string, IValue>
-            > blockStates = null;
-            IImmutableDictionary<string, IImmutableList<HashDigest<SHA256>>> stateRefs = null;
-            long nextOffset = -1;
-            int iteration = 0;
-
-            var reply = new RecentStates(
-                target,
-                nextOffset,
-                iteration,
-                blockStates,
-                stateRefs?.ToImmutableDictionary())
-            {
-                Identity = getRecentStates.Identity,
-            };
-
-            Transport.ReplyMessage(reply);
         }
     }
 }
