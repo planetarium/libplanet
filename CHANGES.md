@@ -17,6 +17,12 @@ To be released.
 ### Backward-incompatible network protocol changes
  -   `Swarm<T>` became no longer retry when `Swarm<T>` receives
       less than 500 blocks.  [[#1112]]
+ -  Removed the message types depended on features of `IBlockStatesStore`
+    interface.  [[#1117]]
+     -  `GetRecentStates` message type (with the type number `0x0b`)
+     -  `RecentStates` message type (with the type number `0x13`)
+     -  `GetBlockStates` message type (with the type number `0x22`)
+     -  `BlockStates` message type (with the type number `0x23`)
 
 ### Backward-incompatible storage format changes
 
