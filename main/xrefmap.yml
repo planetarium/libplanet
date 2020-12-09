@@ -3519,6 +3519,24 @@ references:
   fullName.vb: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer(Of T)
   nameWithType: ValidatingActionRenderer<T>
   nameWithType.vb: ValidatingActionRenderer(Of T)
+- uid: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer`1.#ctor(System.Nullable{Libplanet.Action{Libplanet.Blockchain.Renderers.Debug.InvalidRenderException{`0}}})
+  name: ValidatingActionRenderer(Nullable<Action<InvalidRenderException<T>>>)
+  href: api/Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer-1.html#Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_1__ctor_System_Nullable_Libplanet_Action_Libplanet_Blockchain_Renderers_Debug_InvalidRenderException__0____
+  commentId: M:Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer`1.#ctor(System.Nullable{Libplanet.Action{Libplanet.Blockchain.Renderers.Debug.InvalidRenderException{`0}}})
+  name.vb: ValidatingActionRenderer(Nullable(Of Action(Of InvalidRenderException(Of T))))
+  fullName: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer<T>.ValidatingActionRenderer(System.Nullable<Libplanet.Action<Libplanet.Blockchain.Renderers.Debug.InvalidRenderException<T>>>)
+  fullName.vb: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer(Of T).ValidatingActionRenderer(System.Nullable(Of Libplanet.Action(Of Libplanet.Blockchain.Renderers.Debug.InvalidRenderException(Of T))))
+  nameWithType: ValidatingActionRenderer<T>.ValidatingActionRenderer(Nullable<Action<InvalidRenderException<T>>>)
+  nameWithType.vb: ValidatingActionRenderer(Of T).ValidatingActionRenderer(Nullable(Of Action(Of InvalidRenderException(Of T))))
+- uid: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer`1.#ctor*
+  name: ValidatingActionRenderer
+  href: api/Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer-1.html#Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_1__ctor_
+  commentId: Overload:Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer`1.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer<T>.ValidatingActionRenderer
+  fullName.vb: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer(Of T).ValidatingActionRenderer
+  nameWithType: ValidatingActionRenderer<T>.ValidatingActionRenderer
+  nameWithType.vb: ValidatingActionRenderer(Of T).ValidatingActionRenderer
 - uid: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer`1.BlockChain
   name: BlockChain
   href: api/Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer-1.html#Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_1_BlockChain
