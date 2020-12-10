@@ -21,6 +21,18 @@ namespace Libplanet.Blockchain.Renderers.Debug
     public class ValidatingActionRenderer<T> : RecordingActionRenderer<T>
         where T : IAction, new()
     {
+        private readonly Action<InvalidRenderException<T>>? _onError;
+
+        /// <summary>
+        /// Creates a new <see cref="ValidatingActionRenderer{T}"/> instance.
+        /// </summary>
+        /// <param name="onError">An optional event handler which is triggered when invalid
+        /// render events occur.</param>
+        public ValidatingActionRenderer(Action<InvalidRenderException<T>>? onError = null)
+        {
+            _onError = onError;
+        }
+
         private enum RenderState
         {
             Ready,
@@ -143,7 +155,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
                     block.Transactions.SelectMany(t => t.Actions).Cast<IAction>().Reverse());
                 block = block.PreviousHash is HashDigest<SHA256> prevHash
                     ? store.GetBlock<T>(prevHash)
-                    : throw new InvalidRenderException<T>(
+                    : throw Error(
                         Records,
                         "Reorg occurred from the chain with different genesis.");
             }
@@ -170,7 +182,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
                 expectedRenderedActionsBuffer = actions.Concat(expectedRenderedActionsBuffer);
                 block = block.PreviousHash is HashDigest<SHA256> prevHash
                     ? store.GetBlock<T>(prevHash)
-                    : throw new InvalidRenderException<T>(
+                    : throw Error(
                         Records,
                         "Reorg occurred from the chain with different genesis.");
             }
@@ -249,7 +261,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
                 const string message =
                     "The unrender action records do not match with actions in the block when " +
                     "reorg occurred";
-                throw new InvalidRenderException<T>(
+                throw Error(
                     Records,
                     MakeErrorMessage(message, expectedUnrenderedActions, actualUnrenderedActions)
                 );
@@ -261,7 +273,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
                 const string message =
                     "The render action record does not match with actions in the block when " +
                     "reorg occurred";
-                throw new InvalidRenderException<T>(
+                throw Error(
                     Records,
                     MakeErrorMessage(message, expectedRenderedActions, actualRenderedActions)
                 );
@@ -276,7 +288,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
             long previousActionBlockIndex = -1L;
             var records = new List<RenderRecord<T>>(Records.Count);
 
-            Exception BadRenderExc(string msg) => new InvalidRenderException<T>(records, msg);
+            Exception BadRenderExc(string msg) => Error(records, msg);
 
             foreach (RenderRecord<T> record in Records)
             {
@@ -461,6 +473,13 @@ namespace Libplanet.Blockchain.Renderers.Debug
                     }
                 }
             }
+        }
+
+        private InvalidRenderException<T> Error(IReadOnlyList<RenderRecord<T>> records, string msg)
+        {
+            var exception = new InvalidRenderException<T>(records, msg);
+            _onError?.Invoke(exception);
+            return exception;
         }
     }
 }

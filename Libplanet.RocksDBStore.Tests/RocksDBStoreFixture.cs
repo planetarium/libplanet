@@ -8,7 +8,7 @@ namespace Libplanet.RocksDBStore.Tests
 {
     public class RocksDBStoreFixture : StoreFixture
     {
-        public RocksDBStoreFixture(bool mpt = false)
+        public RocksDBStoreFixture()
         {
             Path = System.IO.Path.Combine(
                 System.IO.Path.GetTempPath(),
@@ -17,7 +17,7 @@ namespace Libplanet.RocksDBStore.Tests
 
             var store = new RocksDBStore(Path, blockCacheSize: 2, txCacheSize: 2);
             Store = store;
-            StateStore = mpt ? LoadTrieStateStore(Path) : store;
+            StateStore = LoadTrieStateStore(Path);
         }
 
         public string Path { get; }
@@ -33,7 +33,8 @@ namespace Libplanet.RocksDBStore.Tests
 
         public override void Dispose()
         {
-            (Store as RocksDBStore)?.Dispose();
+            (Store as IDisposable)?.Dispose();
+            (StateStore as IDisposable)?.Dispose();
 
             if (!(Path is null))
             {
