@@ -65,10 +65,26 @@
 <h2 id="version-0110">Version 0.11.0</h2>
 <p>To be released.</p>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
+<ul>
+<li>Removed <code>IBlockStatesStore</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/1117">#1117</a>]</li>
+<li>Removed <code>BaseBlockStatesStore</code> abstract class.  [<a href="https://github.com/planetarium/libplanet/pull/1117">#1117</a>]</li>
+<li>Removed <code>Swarm&lt;T&gt;.GetTrustedStateCompleterAsync()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1117">#1117</a>]</li>
+<li>Removed <code>trustedStateValidators</code> parameter from <code>Swarm&lt;T&gt;.PreloadAsync()</code>
+method.  [<a href="https://github.com/planetarium/libplanet/pull/1117">#1117</a>]</li>
+</ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <ul>
 <li><code>Swarm&lt;T&gt;</code> became no longer retry when <code>Swarm&lt;T&gt;</code> receives
 less than 500 blocks.  [<a href="https://github.com/planetarium/libplanet/pull/1112">#1112</a>]</li>
+<li>Removed the message types depended on features of <code>IBlockStatesStore</code>
+interface.  [<a href="https://github.com/planetarium/libplanet/pull/1117">#1117</a>]
+<ul>
+<li><code>GetRecentStates</code> message type (with the type number <code>0x0b</code>)</li>
+<li><code>RecentStates</code> message type (with the type number <code>0x13</code>)</li>
+<li><code>GetBlockStates</code> message type (with the type number <code>0x22</code>)</li>
+<li><code>BlockStates</code> message type (with the type number <code>0x23</code>)</li>
+</ul>
+</li>
 </ul>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
@@ -127,6 +143,8 @@ benefits from its recent optimizations.
 its all transactions.  [<a href="https://github.com/planetarium/libplanet/pull/1116">#1116</a>]</li>
 <li>Improved performance of <code>BlockChain&lt;T&gt;.MineBlock()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1116">#1116</a>]</li>
 <li>Improved performance of <code>Block&lt;T&gt;.Deserialize()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1116">#1116</a>]</li>
+<li><code>Swarm&lt;T&gt;</code> became not to fill states from trusted peers, because now states
+can be validated rather than trusted due to MPT.  [<a href="https://github.com/planetarium/libplanet/pull/1117">#1117</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="cli-tools">CLI tools</h3>

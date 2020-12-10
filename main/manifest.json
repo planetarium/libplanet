@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "NLD05TyoYvpG+itRHkVMsw=="
+          "hash": "65KX/AXfnJygZC8LtfKEGg=="
         }
       },
       "is_incremental": false,
@@ -1461,7 +1461,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Messages.Message.MessageType.html",
-          "hash": "z7PF9OWHjy+Ke7rRzqFlGw=="
+          "hash": "cPionw4w1o/RCnDkklRF5w=="
         }
       },
       "is_incremental": false,
@@ -1473,7 +1473,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Messages.Message.html",
-          "hash": "wCPIhEu1k2VOYfHSe7DHTg=="
+          "hash": "f/6eyQl1yUpFJrd6pa2qjA=="
         }
       },
       "is_incremental": false,
@@ -1629,7 +1629,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Swarm-1.html",
-          "hash": "YOHgVz+qV+vd4DX3KEEDbQ=="
+          "hash": "R7yoNvx59QxIdnlasINpNA=="
         }
       },
       "is_incremental": false,
@@ -1709,18 +1709,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/Libplanet.Store.BaseBlockStatesStore.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Libplanet.Store.BaseBlockStatesStore.html",
-          "hash": "pCJ4XkKV6FhVbyCMXeRKYw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/Libplanet.Store.BaseIndex-2.yml",
       "output": {
         ".html": {
@@ -1737,7 +1725,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.BaseStore.html",
-          "hash": "lE9aJWi00A9P17v6XPKNDA=="
+          "hash": "mArfUB2lKXg6oyzOJyT4wA=="
         }
       },
       "is_incremental": false,
@@ -1773,19 +1761,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.DefaultStore.html",
-          "hash": "5k5kxPCS4hcke4fYI7twYA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/Libplanet.Store.IBlockStatesStore.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Libplanet.Store.IBlockStatesStore.html",
-          "hash": "5pTfxDZuVWIhTZD48XnSsw=="
+          "hash": "3bmq/mR7+V/UX4k2xGIdSA=="
         }
       },
       "is_incremental": false,
@@ -1953,7 +1929,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.html",
-          "hash": "yKhT/E+6kGcVK63lWgCGAw=="
+          "hash": "6BUxtEI+/65nfIb/ycVPIg=="
         }
       },
       "is_incremental": false,
@@ -2121,7 +2097,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "8S9L858t/7hMOd81YVzxJg=="
+          "hash": "c1gM+LXj223ijiNuhm68yw=="
         }
       },
       "is_incremental": false,
@@ -2228,6 +2204,13 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
@@ -2237,14 +2220,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 168,
-          "skipped_file_count": 0
-        },
-        "TocDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
+          "total_file_count": 166,
           "skipped_file_count": 0
         }
       }
