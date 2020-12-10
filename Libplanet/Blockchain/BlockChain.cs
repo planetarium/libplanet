@@ -775,9 +775,25 @@ namespace Libplanet.Blockchain
             ).BytesLength;
             int maxBlockBytes = Math.Max(Policy.GetMaxBlockBytes(index), 1);
             var skippedSigners = new HashSet<Address>();
+            var storedNonces = new Dictionary<Address, long>();
+            var nextNonces = new Dictionary<Address, long>();
 
             foreach (Transaction<T> tx in stagedTransactions)
             {
+                if (!storedNonces.ContainsKey(tx.Signer))
+                {
+                    storedNonces[tx.Signer] = Store.GetTxNonce(Id, tx.Signer);
+                }
+
+                if (nextNonces.TryGetValue(tx.Signer, out long prevNonce))
+                {
+                    nextNonces[tx.Signer] = prevNonce + 1;
+                }
+                else
+                {
+                    nextNonces[tx.Signer] = storedNonces[tx.Signer] + 1;
+                }
+
                 _logger.Verbose(
                     "Preparing mining a block #{Index}; validating a tx {Index}/{Total} " +
                     "{Transaction}...",
@@ -812,9 +828,7 @@ namespace Libplanet.Blockchain
                     continue;
                 }
 
-                long storeNonce = Store.GetTxNonce(Id, tx.Signer);
-                long nextNonce = GetNextTxNonce(tx.Signer);
-                if (storeNonce <= tx.Nonce && tx.Nonce < nextNonce)
+                if (storedNonces[tx.Signer] <= tx.Nonce && tx.Nonce < nextNonces[tx.Signer])
                 {
                     if (estimatedBytes + tx.BytesLength > maxBlockBytes)
                     {
