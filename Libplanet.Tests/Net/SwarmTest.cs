@@ -1268,7 +1268,7 @@ namespace Libplanet.Tests.Net
                     try
                     {
                         await swarmA.Protocol.RefreshTableAsync(
-                            TimeSpan.FromSeconds(10), cancellationToken);
+                            TimeSpan.FromSeconds(1), cancellationToken);
                     }
                     catch (TurnClientException)
                     {
@@ -1282,7 +1282,7 @@ namespace Libplanet.Tests.Net
                 {
                     var block = await seed.BlockChain.MineBlock(seed.Address);
                     seed.BroadcastBlock(block);
-                    await Task.Delay(5000, cancellationToken);
+                    await Task.Delay(1000, cancellationToken);
                 }
             }
 
