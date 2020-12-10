@@ -1,7 +1,5 @@
 using System;
 using System.IO;
-using System.Security.Cryptography;
-using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Tests.Common.Action;
 using Xunit;
@@ -58,29 +56,6 @@ namespace Libplanet.Tests.Store
                 Fx.Transaction2,
                 identicalStore.GetTransaction<DumbAction>(Fx.Transaction2.Id)
             );
-        }
-
-        [Fact]
-        public void StateRefDocBlockHash()
-        {
-            var address = new PrivateKey().ToAddress();
-            var random = new Random();
-            var bytes = new byte[32];
-            random.NextBytes(bytes);
-            var hashDigest = new HashDigest<SHA256>(bytes);
-            var stateRef = new DefaultStore.StateRefDoc
-            {
-                StateKey = address.ToHex().ToLowerInvariant(),
-                BlockIndex = 123,
-                BlockHash = hashDigest,
-            };
-            var stateRef2 = new DefaultStore.StateRefDoc
-            {
-                StateKey = stateRef.StateKey,
-                BlockIndex = 123,
-                BlockHashString = stateRef.BlockHashString,
-            };
-            Assert.Equal(stateRef.BlockHash, stateRef2.BlockHash);
         }
     }
 }

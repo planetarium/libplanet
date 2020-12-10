@@ -5,13 +5,9 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
-using Bencodex.Types;
-using Libplanet.Blockchain;
 using Libplanet.Blocks;
 using Libplanet.Net.Messages;
-using Libplanet.Store;
 using Libplanet.Tx;
-using Serilog.Events;
 
 namespace Libplanet.Net
 {
@@ -60,10 +56,6 @@ namespace Libplanet.Net
                     break;
                 }
 
-                case GetRecentStates getRecentStates:
-                    TransferRecentStates(getRecentStates);
-                    break;
-
                 case GetBlocks getBlocks:
                     TransferBlocks(getBlocks);
                     break;
@@ -87,33 +79,11 @@ namespace Libplanet.Net
                     );
                     break;
 
-                case GetBlockStates getBlockStates:
-                    TransferBlockStates(getBlockStates);
-                    break;
-
                 default:
                     throw new InvalidMessageException(
                         $"Failed to handle message: {message}",
                         message
                     );
-            }
-        }
-
-        private void TransferBlockStates(GetBlockStates getBlockStates)
-        {
-            if (BlockChain.StateStore is IBlockStatesStore blockStatesStore)
-            {
-                IImmutableDictionary<string, IValue> states =
-                    blockStatesStore.GetBlockStates(getBlockStates.BlockHash);
-                _logger.Debug(
-                    (states is null ? "Not found" : "Found") + " the block {BlockHash}'s states.",
-                    getBlockStates.BlockHash
-                );
-                var reply = new BlockStates(getBlockStates.BlockHash, states)
-                {
-                    Identity = getBlockStates.Identity,
-                };
-                Transport.ReplyMessage(reply);
             }
         }
 
@@ -304,138 +274,6 @@ namespace Libplanet.Net
             }
 
             _logger.Debug("Blocks were transferred to {Identity}.", identityHex);
-        }
-
-        private void TransferRecentStates(GetRecentStates getRecentStates)
-        {
-            BlockLocator baseLocator = getRecentStates.BaseLocator;
-            HashDigest<SHA256>? @base = BlockChain.FindBranchPoint(baseLocator);
-            HashDigest<SHA256> target = getRecentStates.TargetBlockHash;
-            IImmutableDictionary<HashDigest<SHA256>,
-                IImmutableDictionary<string, IValue>
-            > blockStates = null;
-            IImmutableDictionary<string, IImmutableList<HashDigest<SHA256>>> stateRefs = null;
-            long nextOffset = -1;
-            int iteration = 0;
-
-            if (BlockChain.StateStore is IBlockStatesStore blockStatesStore &&
-                BlockChain.ContainsBlock(target))
-            {
-                ReaderWriterLockSlim rwlock = BlockChain._rwlock;
-                rwlock.EnterReadLock();
-                try
-                {
-                    Guid chainId = BlockChain.Id;
-
-                    _logger.Debug(
-                        "Getting state references from {Offset}",
-                        getRecentStates.Offset);
-
-                    long baseIndex =
-                        (@base is HashDigest<SHA256> bbh &&
-                         _store.GetBlockIndex(bbh) is long bbIdx)
-                            ? bbIdx
-                            : 0;
-                    long lowestIndex = baseIndex + getRecentStates.Offset;
-                    long targetIndex =
-                        (target is HashDigest<SHA256> tgt &&
-                         _store.GetBlockIndex(tgt) is long tgtIdx)
-                            ? tgtIdx
-                            : long.MaxValue;
-
-                    iteration =
-                        (int)Math.Ceiling(
-                            (double)(targetIndex - baseIndex + 1) / FindNextStatesChunkSize);
-
-                    long highestIndex = lowestIndex + FindNextStatesChunkSize - 1 > targetIndex
-                        ? targetIndex
-                        : lowestIndex + FindNextStatesChunkSize - 1;
-
-                    nextOffset = highestIndex == targetIndex
-                        ? -1
-                        : getRecentStates.Offset + FindNextStatesChunkSize;
-
-                    stateRefs = blockStatesStore.ListAllStateReferences(
-                        chainId,
-                        lowestIndex: lowestIndex,
-                        highestIndex: highestIndex
-                    );
-                    if (_logger.IsEnabled(LogEventLevel.Verbose))
-                    {
-                        _logger.Verbose(
-                            "List state references from {From} to {To}:\n{StateReferences}",
-                            lowestIndex,
-                            highestIndex,
-                            string.Join(
-                                "\n",
-                                stateRefs.Select(kv => $"{kv.Key}: {string.Join(", ", kv.Value)}")
-                            )
-                        );
-                    }
-
-                    // GetBlockStates may return null since swarm may not have deep states.
-                    blockStates = stateRefs.Values
-                        .Select(refs => refs.Last())
-                        .ToImmutableHashSet()
-                        .Select(bh => (bh, blockStatesStore.GetBlockStates(bh)))
-                        .Where(pair => !(pair.Item2 is null))
-                        .ToImmutableDictionary(
-                            pair => pair.Item1,
-                            pair => (IImmutableDictionary<string, IValue>)pair.Item2
-                                .ToImmutableDictionary(kv => kv.Key, kv => kv.Value)
-                        );
-                }
-                finally
-                {
-                    rwlock.ExitReadLock();
-                }
-
-                if (_logger.IsEnabled(LogEventLevel.Verbose))
-                {
-                    if (BlockChain.ContainsBlock(target))
-                    {
-                        var baseString = @base is HashDigest<SHA256> h
-                            ? $"{BlockChain[h].Index}:{h}"
-                            : null;
-                        var targetString = $"{BlockChain[target].Index}:{target}";
-                        _logger.Verbose(
-                            "State references to send (preload):" +
-                            " {StateReferences} ({Base}-{Target})",
-                            stateRefs.Select(kv =>
-                                (
-                                    kv.Key,
-                                    string.Join(", ", kv.Value.Select(v => v.ToString()))
-                                )
-                            ).ToArray(),
-                            baseString,
-                            targetString
-                        );
-                        _logger.Verbose(
-                            "Block states to send (preload): {BlockStates} ({Base}-{Target})",
-                            blockStates.Select(kv => (kv.Key, kv.Value)).ToArray(),
-                            baseString,
-                            targetString
-                        );
-                    }
-                    else
-                    {
-                        _logger.Verbose(
-                            "Nothing to reply because {TargetHash} doesn't exist.", target);
-                    }
-                }
-            }
-
-            var reply = new RecentStates(
-                target,
-                nextOffset,
-                iteration,
-                blockStates,
-                stateRefs?.ToImmutableDictionary())
-            {
-                Identity = getRecentStates.Identity,
-            };
-
-            Transport.ReplyMessage(reply);
         }
     }
 }

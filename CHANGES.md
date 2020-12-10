@@ -8,9 +8,21 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Removed `IBlockStatesStore` interface.  [[#1117]]
+ -  Removed `BaseBlockStatesStore` abstract class.  [[#1117]]
+ -  Removed `Swarm<T>.GetTrustedStateCompleterAsync()` method.  [[#1117]]
+ -  Removed `trustedStateValidators` parameter from `Swarm<T>.PreloadAsync()`
+    method.  [[#1117]]
+
 ### Backward-incompatible network protocol changes
  -   `Swarm<T>` became no longer retry when `Swarm<T>` receives
       less than 500 blocks.  [[#1112]]
+ -  Removed the message types depended on features of `IBlockStatesStore`
+    interface.  [[#1117]]
+     -  `GetRecentStates` message type (with the type number `0x0b`)
+     -  `RecentStates` message type (with the type number `0x13`)
+     -  `GetBlockStates` message type (with the type number `0x22`)
+     -  `BlockStates` message type (with the type number `0x23`)
 
 ### Backward-incompatible storage format changes
 
@@ -67,6 +79,8 @@ To be released.
     its all transactions.  [[#1116]]
  -  Improved performance of `BlockChain<T>.MineBlock()`.  [[#1116]]
  -  Improved performance of `Block<T>.Deserialize()`.  [[#1116]]
+ -  `Swarm<T>` became not to fill states from trusted peers, because now states
+    can be validated rather than trusted due to MPT.  [[#1117]]
 
 ### Bug fixes
 
@@ -88,6 +102,7 @@ To be released.
 [#1110]: https://github.com/planetarium/libplanet/pull/1110
 [#1112]: https://github.com/planetarium/libplanet/pull/1112
 [#1116]: https://github.com/planetarium/libplanet/pull/1116
+[#1117]: https://github.com/planetarium/libplanet/pull/1117
 [#1119]: https://github.com/planetarium/libplanet/pull/1119
 
 

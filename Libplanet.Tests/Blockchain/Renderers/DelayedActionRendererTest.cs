@@ -429,7 +429,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
         public async Task DelayedRendererInReorg()
         {
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
-            var fx = new DefaultStoreFixture();
+            var fx = new DefaultStoreFixture(blockAction: policy.BlockAction);
             var blockLogs = new List<(Block<DumbAction> OldTip, Block<DumbAction> NewTip)>();
             var reorgLogs = new List<(
                 Block<DumbAction> OldTip,
@@ -543,7 +543,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
         public async Task DelayedRendererAfterReorg()
         {
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
-            var fx = new DefaultStoreFixture();
+            var fx = new DefaultStoreFixture(blockAction: policy.BlockAction);
             var blockLogs = new List<(Block<DumbAction> OldTip, Block<DumbAction> NewTip)>();
             var reorgLogs = new List<(
                 Block<DumbAction> OldTip,

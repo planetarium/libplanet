@@ -8,8 +8,7 @@ namespace Libplanet.Tests.Store
 {
     public class DefaultStoreFixture : StoreFixture, IDisposable
     {
-        public DefaultStoreFixture(
-            bool memory = true, bool mpt = false, IAction blockAction = null)
+        public DefaultStoreFixture(bool memory = true, IAction blockAction = null)
             : base(blockAction)
         {
             if (memory)
@@ -26,7 +25,7 @@ namespace Libplanet.Tests.Store
 
             var store = new DefaultStore(Path, blockCacheSize: 2, txCacheSize: 2);
             Store = store;
-            StateStore = mpt ? LoadTrieStateStore(Path) : store;
+            StateStore = LoadTrieStateStore(Path);
         }
 
         public string Path { get; }
@@ -46,7 +45,8 @@ namespace Libplanet.Tests.Store
 
         public override void Dispose()
         {
-            (Store as DefaultStore)?.Dispose();
+            (Store as IDisposable)?.Dispose();
+            (StateStore as IDisposable)?.Dispose();
 
             if (!(Path is null))
             {

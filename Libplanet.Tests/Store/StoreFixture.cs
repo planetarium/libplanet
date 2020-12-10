@@ -6,7 +6,9 @@ using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Store;
+using Libplanet.Store.Trie;
 using Libplanet.Tests.Common.Action;
+using Libplanet.Tests.Store.Trie;
 using Libplanet.Tx;
 
 namespace Libplanet.Tests.Store
@@ -85,10 +87,13 @@ namespace Libplanet.Tests.Store
                 0x9c, 0xee,
             });
 
-            GenesisBlock = TestUtils.MineGenesis<DumbAction>(blockAction: blockAction);
-            Block1 = TestUtils.MineNext(GenesisBlock);
-            Block2 = TestUtils.MineNext(Block1);
-            Block3 = TestUtils.MineNext(Block2);
+            var stateStore =
+                new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore());
+            GenesisBlock = TestUtils.MineGenesis<DumbAction>()
+                .AttachStateRootHash(stateStore, blockAction);
+            Block1 = TestUtils.MineNext(GenesisBlock).AttachStateRootHash(stateStore, blockAction);
+            Block2 = TestUtils.MineNext(Block1).AttachStateRootHash(stateStore, blockAction);
+            Block3 = TestUtils.MineNext(Block2).AttachStateRootHash(stateStore, blockAction);
 
             Transaction1 = MakeTransaction(new List<DumbAction>(), ImmutableHashSet<Address>.Empty);
             Transaction2 = MakeTransaction(new List<DumbAction>(), ImmutableHashSet<Address>.Empty);
@@ -137,7 +142,9 @@ namespace Libplanet.Tests.Store
 
         public IStateStore StateStore { get; set; }
 
-        public IBlockStatesStore BlockStatesStore => StateStore as IBlockStatesStore;
+        public IKeyValueStore StateHashKeyValueStore { get; set; }
+
+        public IKeyValueStore StateKeyValueStore { get; set; }
 
         public abstract void Dispose();
 

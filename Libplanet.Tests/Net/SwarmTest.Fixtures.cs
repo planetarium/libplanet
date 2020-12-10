@@ -31,7 +31,7 @@ namespace Libplanet.Tests.Net
                 var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
                 using (var storeFx = new DefaultStoreFixture(memory: true))
                 {
-                    var chain = TestUtils.MakeBlockChain(policy, storeFx.Store);
+                    var chain = TestUtils.MakeBlockChain(policy, storeFx.Store, storeFx.StateStore);
                     Address miner = new PrivateKey().ToAddress();
                     var signer = new PrivateKey();
                     Address address = signer.ToAddress();
@@ -79,9 +79,9 @@ namespace Libplanet.Tests.Net
             IEnumerable<PublicKey> trustedAppProtocolVersionSigners = null,
             SwarmOptions options = null)
         {
-            var fx = new DefaultStoreFixture(memory: true);
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
-            var blockchain = TestUtils.MakeBlockChain(policy, fx.Store);
+            var fx = new DefaultStoreFixture(memory: true, blockAction: policy.BlockAction);
+            var blockchain = TestUtils.MakeBlockChain(policy, fx.Store, fx.StateStore);
             return CreateSwarm(
                 blockchain,
                 privateKey,

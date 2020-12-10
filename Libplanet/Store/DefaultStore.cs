@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
@@ -25,32 +24,22 @@ namespace Libplanet.Store
     /// for some complex indices.
     /// </summary>
     /// <seealso cref="IStore"/>
-    public class DefaultStore : BaseBlockStatesStore
+    public class DefaultStore : BaseStore
     {
         private const string IndexColPrefix = "index_";
-
-        private const string StateRefIdPrefix = "stateref_";
-
         private const string TxNonceIdPrefix = "nonce_";
 
         private static readonly UPath TxRootPath = UPath.Root / "tx";
         private static readonly UPath BlockRootPath = UPath.Root / "block";
-        private static readonly UPath StateRootPath = UPath.Root / "state";
 
         private readonly ILogger _logger;
 
         private readonly IFileSystem _root;
         private readonly SubFileSystem _txs;
         private readonly SubFileSystem _blocks;
-        private readonly SubFileSystem _states;
         private readonly bool _compress;
         private readonly LruCache<TxId, object> _txCache;
         private readonly LruCache<HashDigest<SHA256>, BlockDigest> _blockCache;
-        private readonly LruCache<HashDigest<SHA256>, IImmutableDictionary<string, IValue>>
-            _statesCache;
-
-        private readonly Dictionary<Guid, LruCache<string, Tuple<HashDigest<SHA256>, long>>>
-            _lastStateRefCaches;
 
         private readonly MemoryStream _memoryStream;
 
@@ -148,18 +137,10 @@ namespace Libplanet.Store
             _txs = new SubFileSystem(_root, TxRootPath, owned: false);
             _root.CreateDirectory(BlockRootPath);
             _blocks = new SubFileSystem(_root, BlockRootPath, owned: false);
-            _root.CreateDirectory(StateRootPath);
-            _states = new SubFileSystem(_root, StateRootPath, owned: false);
 
             _compress = compress;
             _txCache = new LruCache<TxId, object>(capacity: txCacheSize);
             _blockCache = new LruCache<HashDigest<SHA256>, BlockDigest>(capacity: blockCacheSize);
-            _statesCache = new LruCache<HashDigest<SHA256>, IImmutableDictionary<string, IValue>>(
-                capacity: statesCacheSize
-            );
-            _lastStateRefCaches =
-                new Dictionary<Guid, LruCache<string, Tuple<HashDigest<SHA256>, long>>>();
-
             _codec = new Codec();
         }
 
@@ -179,8 +160,6 @@ namespace Libplanet.Store
         {
             _db.DropCollection(IndexCollection(chainId).Name);
             _db.DropCollection(TxNonceId(chainId));
-            _db.DropCollection(StateRefId(chainId));
-            _lastStateRefCaches.Remove(chainId);
         }
 
         /// <inheritdoc />
@@ -269,41 +248,6 @@ namespace Libplanet.Store
                 .TakeWhile(i => !i.Hash.Equals(branchPoint)).Skip(1));
 
             AppendIndex(destinationChainId, branchPoint);
-        }
-
-        /// <inheritdoc/>
-        public override IEnumerable<string> ListStateKeys(Guid chainId)
-        {
-            string collId = StateRefId(chainId);
-            return _db.GetCollection<StateRefDoc>(collId)
-                .Find(Query.All(nameof(StateRefDoc.StateKey), Query.Ascending))
-                .Select(doc => doc.StateKey)
-                .ToImmutableHashSet();
-        }
-
-        /// <inheritdoc/>
-        public override IImmutableDictionary<string, IImmutableList<HashDigest<SHA256>>>
-            ListAllStateReferences(
-                Guid chainId,
-                long lowestIndex = 0,
-                long highestIndex = long.MaxValue)
-        {
-            string collId = StateRefId(chainId);
-            LiteCollection<StateRefDoc> coll = _db.GetCollection<StateRefDoc>(collId);
-
-            Query query = Query.And(
-                Query.All(nameof(StateRefDoc.BlockIndex)),
-                Query.Between(nameof(StateRefDoc.BlockIndex), lowestIndex, highestIndex)
-            );
-
-            IEnumerable<StateRefDoc> stateRefs = coll.Find(query);
-            return stateRefs
-                .GroupBy(stateRef => stateRef.StateKey)
-                .ToImmutableDictionary(
-                    g => g.Key,
-                    g => (IImmutableList<HashDigest<SHA256>>)g
-                        .Select(r => r.BlockHash).ToImmutableList()
-                );
         }
 
         /// <inheritdoc/>
@@ -550,264 +494,6 @@ namespace Libplanet.Store
             return _blocks.FileExists(blockPath);
         }
 
-        public override IImmutableDictionary<string, IValue> GetBlockStates(
-            HashDigest<SHA256> blockHash
-        )
-        {
-            if (_statesCache.TryGetValue(
-                blockHash,
-                out IImmutableDictionary<string, IValue> cached))
-            {
-                return cached;
-            }
-
-            UPath path = StatePath(blockHash);
-            if (!_states.FileExists(path))
-            {
-                return null;
-            }
-
-            using var buffer = new MemoryStream();
-            using Stream file = _states.OpenFile(path, System.IO.FileMode.Open, FileAccess.Read);
-            if (_compress)
-            {
-                using var deflate = new DeflateStream(file, CompressionMode.Decompress);
-                deflate.CopyTo(buffer);
-            }
-            else
-            {
-                file.CopyTo(buffer);
-            }
-
-            buffer.Seek(0, SeekOrigin.Begin);
-            IValue value = new Codec().Decode(buffer);
-            if (!(value is Bencodex.Types.Dictionary dict))
-            {
-                throw new DecodingException(
-                    $"Expected {typeof(Bencodex.Types.Dictionary)} but " +
-                    $"{value.GetType()}");
-            }
-
-            ImmutableDictionary<string, IValue> states = dict.ToImmutableDictionary(
-                kv => ((Text)kv.Key).Value,
-                kv => kv.Value
-            );
-            _statesCache.AddOrUpdate(blockHash, states);
-            return states;
-        }
-
-        /// <inheritdoc/>
-        public override void SetBlockStates(
-            HashDigest<SHA256> blockHash,
-            IImmutableDictionary<string, IValue> states)
-        {
-            var serialized = new Bencodex.Types.Dictionary(
-                states.ToImmutableDictionary(
-                    kv => (IKey)(Text)kv.Key,
-                    kv => kv.Value
-                )
-            );
-
-            UPath path = StatePath(blockHash);
-            UPath dirPath = path.GetDirectory();
-            CreateDirectoryRecursively(_states, dirPath);
-
-            var codec = new Codec();
-            using Stream file = _states.CreateFile(path);
-            if (_compress)
-            {
-                using var deflate = new DeflateStream(file, CompressionLevel.Fastest, true);
-                codec.Encode(serialized, deflate);
-            }
-            else
-            {
-                codec.Encode(serialized, file);
-            }
-
-            _statesCache.AddOrUpdate(blockHash, states);
-        }
-
-        /// <inheritdoc/>
-        public override void PruneBlockStates<T>(
-            Guid chainId,
-            Block<T> until)
-        {
-            string[] keys = ListStateKeys(chainId).ToArray();
-            long untilIndex = until.Index;
-            foreach (var key in keys)
-            {
-                IEnumerable<Tuple<HashDigest<SHA256>, long>> stateRefs =
-                    IterateStateReferences(chainId, key, untilIndex, null, null)
-                        .OrderByDescending(tuple => tuple.Item2);
-
-                var dict = new Dictionary<HashDigest<SHA256>, List<string>>();
-                foreach ((HashDigest<SHA256> blockHash, long index) in stateRefs.Skip(1))
-                {
-                    if (!dict.ContainsKey(blockHash))
-                    {
-                        dict.Add(blockHash, new List<string>());
-                    }
-
-                    dict[blockHash].Add(key);
-                }
-
-                foreach (var kv in dict)
-                {
-                    DeleteBlockStates(kv.Key, kv.Value);
-                }
-            }
-        }
-
-        public override Tuple<HashDigest<SHA256>, long> LookupStateReference(
-            Guid chainId,
-            string key,
-            long lookupUntilBlockIndex)
-        {
-            if (_lastStateRefCaches.TryGetValue(
-                    chainId,
-                    out LruCache<string, Tuple<HashDigest<SHA256>, long>> stateRefCache)
-                && stateRefCache.TryGetValue(
-                    key,
-                    out Tuple<HashDigest<SHA256>, long> cache))
-            {
-                long cachedIndex = cache.Item2;
-
-                if (cachedIndex <= lookupUntilBlockIndex)
-                {
-                    return cache;
-                }
-            }
-
-            Tuple<HashDigest<SHA256>, long> stateRef =
-                IterateStateReferences(chainId, key, lookupUntilBlockIndex, null, limit: 1)
-                .FirstOrDefault();
-
-            if (stateRef is null)
-            {
-                return null;
-            }
-
-            if (!_lastStateRefCaches.ContainsKey(chainId))
-            {
-                _lastStateRefCaches[chainId] =
-                    new LruCache<string, Tuple<HashDigest<SHA256>, long>>();
-            }
-
-            stateRefCache = _lastStateRefCaches[chainId];
-
-            if (!stateRefCache.TryGetValue(key, out cache) || cache.Item2 < stateRef.Item2)
-            {
-                stateRefCache[key] = new Tuple<HashDigest<SHA256>, long>(
-                    stateRef.Item1,
-                    stateRef.Item2);
-            }
-
-            return stateRef;
-        }
-
-        /// <inheritdoc/>
-        public override IEnumerable<Tuple<HashDigest<SHA256>, long>> IterateStateReferences(
-            Guid chainId,
-            string key,
-            long? highestIndex,
-            long? lowestIndex,
-            int? limit)
-        {
-            highestIndex = highestIndex ?? long.MaxValue;
-            lowestIndex = lowestIndex ?? 0;
-
-            if (highestIndex < lowestIndex)
-            {
-                var message =
-                    $"highestIndex({highestIndex}) must be greater than or equal to " +
-                    $"lowestIndex({lowestIndex})";
-                throw new ArgumentException(
-                    message,
-                    nameof(highestIndex));
-            }
-
-            string collId = StateRefId(chainId);
-            LiteCollection<StateRefDoc> coll = _db.GetCollection<StateRefDoc>(collId);
-            IEnumerable<StateRefDoc> stateRefs = coll.Find(
-                Query.And(
-                    Query.All(nameof(StateRefDoc.BlockIndex), Query.Descending),
-                    Query.EQ(nameof(StateRefDoc.StateKey), key),
-                    Query.Between(nameof(StateRefDoc.BlockIndex), lowestIndex, highestIndex)
-                ), limit: limit ?? int.MaxValue
-            );
-            return stateRefs
-                .Select(doc => new Tuple<HashDigest<SHA256>, long>(doc.BlockHash, doc.BlockIndex));
-        }
-
-        /// <inheritdoc/>
-        public override void StoreStateReference(
-            Guid chainId,
-            IImmutableSet<string> keys,
-            HashDigest<SHA256> blockHash,
-            long blockIndex)
-        {
-            string collId = StateRefId(chainId);
-            LiteCollection<StateRefDoc> coll = _db.GetCollection<StateRefDoc>(collId);
-            IEnumerable<StateRefDoc> stateRefDocs = keys
-                .Select(key => new StateRefDoc
-                {
-                    StateKey = key,
-                    BlockIndex = blockIndex,
-                    BlockHash = blockHash,
-                })
-                .Where(doc => !coll.Exists(d => d.Id == doc.Id));
-            coll.InsertBulk(stateRefDocs);
-            coll.EnsureIndex(nameof(StateRefDoc.StateKey));
-            coll.EnsureIndex(nameof(StateRefDoc.BlockIndex));
-
-            if (!_lastStateRefCaches.ContainsKey(chainId))
-            {
-                _lastStateRefCaches[chainId] =
-                    new LruCache<string, Tuple<HashDigest<SHA256>, long>>();
-            }
-
-            LruCache<string, Tuple<HashDigest<SHA256>, long>> stateRefCache =
-                _lastStateRefCaches[chainId];
-
-            foreach (string key in keys)
-            {
-                _logger.Debug($"Try to set cache {key}");
-                if (!stateRefCache.TryGetValue(key, out Tuple<HashDigest<SHA256>, long> cache)
-                    || cache.Item2 < blockIndex)
-                {
-                    stateRefCache[key] =
-                        new Tuple<HashDigest<SHA256>, long>(blockHash, blockIndex);
-                }
-            }
-        }
-
-        /// <inheritdoc/>
-        public override void ForkStateReferences<T>(
-            Guid sourceChainId,
-            Guid destinationChainId,
-            Block<T> branchPoint)
-        {
-            string srcCollId = StateRefId(sourceChainId);
-            string dstCollId = StateRefId(destinationChainId);
-            LiteCollection<StateRefDoc> srcColl = _db.GetCollection<StateRefDoc>(srcCollId),
-                                        dstColl = _db.GetCollection<StateRefDoc>(dstCollId);
-
-            dstColl.InsertBulk(srcColl.Find(Query.LTE("BlockIndex", branchPoint.Index)));
-
-            if (!dstColl.Exists(_ => true) && CountIndex(sourceChainId) < 1)
-            {
-                throw new ChainIdNotFoundException(
-                    sourceChainId,
-                    "The source chain to be forked does not exist."
-                );
-            }
-
-            dstColl.EnsureIndex(nameof(StateRefDoc.StateKey));
-            dstColl.EnsureIndex(nameof(StateRefDoc.BlockIndex));
-
-            _lastStateRefCaches.Remove(destinationChainId);
-        }
-
         /// <inheritdoc/>
         public override IEnumerable<KeyValuePair<Address, long>> ListTxNonces(Guid chainId)
         {
@@ -896,39 +582,6 @@ namespace Libplanet.Store
             }
         }
 
-        /// <summary>
-        /// Deletes the states with specified keys (i.e., <paramref name="stateKeys"/>)
-        /// updated by actions in the specified block (i.e., <paramref name="blockHash"/>).
-        /// </summary>
-        /// <param name="blockHash"><see cref="Block{T}.Hash"/> to delete states.
-        /// </param>
-        /// <param name="stateKeys">The state keys to delete which were updated by actions
-        /// in the specified block (i.e., <paramref name="blockHash"/>).
-        /// </param>
-        /// <seealso cref="GetBlockStates"/>
-        private void DeleteBlockStates(
-            HashDigest<SHA256> blockHash,
-            IEnumerable<string> stateKeys)
-        {
-            IImmutableDictionary<string, IValue> dict = GetBlockStates(blockHash);
-            if (dict is null)
-            {
-                return;
-            }
-
-            dict = dict.RemoveRange(stateKeys);
-            if (dict.Any())
-            {
-                SetBlockStates(blockHash, dict);
-            }
-            else
-            {
-                UPath path = StatePath(blockHash);
-                _states.DeleteFile(path);
-                _statesCache.Remove(blockHash);
-            }
-        }
-
         private void WriteContentAddressableFile(IFileSystem fs, UPath path, byte[] contents)
         {
             UPath dirPath = path.GetDirectory();
@@ -981,16 +634,6 @@ namespace Libplanet.Store
             return UPath.Root / idHex.Substring(0, 2) / idHex.Substring(2);
         }
 
-        private UPath StatePath(HashDigest<SHA256> blockHash)
-        {
-            return BlockPath(blockHash);
-        }
-
-        private string StateRefId(Guid chainId)
-        {
-            return $"{StateRefIdPrefix}{FormatChainId(chainId)}";
-        }
-
         private string TxNonceId(Guid chainId)
         {
             return $"{TxNonceIdPrefix}{FormatChainId(chainId)}";
@@ -999,32 +642,6 @@ namespace Libplanet.Store
         private LiteCollection<HashDoc> IndexCollection(Guid chainId)
         {
             return _db.GetCollection<HashDoc>($"{IndexColPrefix}{FormatChainId(chainId)}");
-        }
-
-        internal class StateRefDoc
-        {
-            public string StateKey { get; set; }
-
-            public long BlockIndex { get; set; }
-
-            public string BlockHashString { get; set; }
-
-            [BsonId]
-            public string Id => StateKey + BlockHashString;
-
-            [BsonIgnore]
-            public HashDigest<SHA256> BlockHash
-            {
-                get
-                {
-                    return HashDigest<SHA256>.FromString(BlockHashString);
-                }
-
-                set
-                {
-                    BlockHashString = value.ToString();
-                }
-            }
         }
 
         private class HashDoc

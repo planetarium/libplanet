@@ -768,8 +768,7 @@ namespace Libplanet.Tests.Blocks
                     null,
                     new[] { new RandomAction(signer.ToAddress()) })).ToImmutableArray();
             var blockA = MineGenesis(timestamp: timestamp, transactions: txs);
-            var blockB = MineGenesis(
-                timestamp: timestamp,  transactions: txs, checkStateRootHash: true);
+            var blockB = MineGenesis(timestamp: timestamp,  transactions: txs);
 
             Assert.True(blockA.Transactions.SequenceEqual(blockB.Transactions));
         }
