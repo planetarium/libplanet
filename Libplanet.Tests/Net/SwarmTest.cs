@@ -1270,6 +1270,9 @@ namespace Libplanet.Tests.Net
                         await swarmA.Protocol.RefreshTableAsync(
                             TimeSpan.FromSeconds(1), cancellationToken);
                     }
+                    catch (InvalidOperationException)
+                    {
+                    }
                     catch (TurnClientException)
                     {
                     }
