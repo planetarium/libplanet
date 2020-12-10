@@ -77,7 +77,7 @@ To be released.
  -  `Swarm<T>` became not to retry when block downloading.  [[#1062], [#1102]]
  -  `Block<T>.Evaluate()` became to validate only `Block<T>.TxHash` instead of
     its all transactions.  [[#1116]]
- -  Improved performance of `BlockChain<T>.MineBlock()`.  [[#1116]]
+ -  Improved performance of `BlockChain<T>.MineBlock()`.  [[#1116], [#1124]]
  -  Improved performance of `Block<T>.Deserialize()`.  [[#1116]]
  -  `Swarm<T>` became not to fill states from trusted peers, because now states
     can be validated rather than trusted due to MPT.  [[#1117]]
@@ -106,6 +106,7 @@ To be released.
 [#1116]: https://github.com/planetarium/libplanet/pull/1116
 [#1117]: https://github.com/planetarium/libplanet/pull/1117
 [#1119]: https://github.com/planetarium/libplanet/pull/1119
+[#1124]: https://github.com/planetarium/libplanet/pull/1124
 [#1125]: https://github.com/planetarium/libplanet/pull/1125
 
 
