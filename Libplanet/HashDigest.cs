@@ -5,7 +5,9 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Numerics;
 using System.Reflection;
+using System.Runtime.Serialization;
 using System.Security.Cryptography;
+using Libplanet.Serialization;
 
 namespace Libplanet
 {
@@ -18,7 +20,8 @@ namespace Libplanet
     /// <typeparam name="T">A <see cref="HashAlgorithm"/> which corresponds to
     /// a digest.  This determines <see cref="Size"/> of a digest.</typeparam>
     /// <seealso cref="HashAlgorithm"/>
-    public readonly struct HashDigest<T> : IEquatable<HashDigest<T>>
+    [Serializable]
+    public readonly struct HashDigest<T> : ISerializable, IEquatable<HashDigest<T>>
         where T : HashAlgorithm
     {
         /// <summary>
@@ -93,6 +96,13 @@ namespace Libplanet
             }
 
             _byteArray = hashDigest;
+        }
+
+        private HashDigest(
+            SerializationInfo info,
+            StreamingContext context)
+            : this(info.GetValue<byte[]>(nameof(HashDigest<T>)))
+        {
         }
 
         /// <summary>
@@ -242,6 +252,11 @@ namespace Libplanet
             }
 
             return true;
+        }
+
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue(nameof(HashDigest<T>), ToByteArray());
         }
     }
 

@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Immutable;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 using Xunit;
 
@@ -115,6 +117,31 @@ namespace Libplanet.Tests
             Assert.Throws<ArgumentOutOfRangeException>(
                 () => new HashDigest<SHA1>(bAsArray)
             );
+        }
+
+        [Fact]
+        public void SerializeAndDeserializeSHA256()
+        {
+            var b =
+                new byte[32]
+                {
+                    0x45, 0xa2, 0x21, 0x87, 0xe2, 0xd8, 0x85, 0x0b, 0xb3, 0x57,
+                    0x88, 0x69, 0x58, 0xbc, 0x3e, 0x85, 0x60, 0x92, 0x9c, 0xcc,
+                    0x45, 0xa2, 0x21, 0x87, 0xe2, 0xd8, 0x85, 0x0b, 0xb3, 0x57,
+                    0x88, 0x69,
+                };
+
+            HashDigest<SHA256> expectedHashDigest = new HashDigest<SHA256>(b);
+            HashDigest<SHA256> deserializedHashDigest;
+            BinaryFormatter formatter = new BinaryFormatter();
+            using (var memoryStream = new MemoryStream())
+            {
+                formatter.Serialize(memoryStream, expectedHashDigest);
+                memoryStream.Seek(0, SeekOrigin.Begin);
+                deserializedHashDigest = (HashDigest<SHA256>)formatter.Deserialize(memoryStream);
+            }
+
+            Assert.Equal(deserializedHashDigest, expectedHashDigest);
         }
     }
 }
