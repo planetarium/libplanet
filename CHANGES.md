@@ -87,6 +87,7 @@ To be released.
 
 ### CLI tools
 
+[#795]: https://github.com/planetarium/libplanet/issues/795
 [#1052]: https://github.com/planetarium/libplanet/pull/1052
 [#1061]: https://github.com/planetarium/libplanet/pull/1061
 [#1062]: https://github.com/planetarium/libplanet/pull/1062
@@ -105,6 +106,7 @@ To be released.
 [#1116]: https://github.com/planetarium/libplanet/pull/1116
 [#1117]: https://github.com/planetarium/libplanet/pull/1117
 [#1119]: https://github.com/planetarium/libplanet/pull/1119
+[#1125]: https://github.com/planetarium/libplanet/pull/1125
 
 
 Version 0.10.2
