@@ -780,6 +780,8 @@ namespace Libplanet.Blockchain
 
             foreach (Transaction<T> tx in stagedTransactions)
             {
+                // We don't care about nonce ordering here because `.ListStagedTransactions()`
+                // returns already ordered transactions by its nonce.
                 if (!storedNonces.ContainsKey(tx.Signer))
                 {
                     storedNonces[tx.Signer] = Store.GetTxNonce(Id, tx.Signer);
