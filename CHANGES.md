@@ -81,11 +81,13 @@ To be released.
  -  Improved performance of `Block<T>.Deserialize()`.  [[#1116]]
  -  `Swarm<T>` became not to fill states from trusted peers, because now states
     can be validated rather than trusted due to MPT.  [[#1117]]
+ -  `HashDigest<SHA256>` became serializable.  [[#795], [#1125]]
 
 ### Bug fixes
 
 ### CLI tools
 
+[#795]: https://github.com/planetarium/libplanet/issues/795
 [#1052]: https://github.com/planetarium/libplanet/pull/1052
 [#1061]: https://github.com/planetarium/libplanet/pull/1061
 [#1062]: https://github.com/planetarium/libplanet/pull/1062
@@ -104,6 +106,7 @@ To be released.
 [#1116]: https://github.com/planetarium/libplanet/pull/1116
 [#1117]: https://github.com/planetarium/libplanet/pull/1117
 [#1119]: https://github.com/planetarium/libplanet/pull/1119
+[#1125]: https://github.com/planetarium/libplanet/pull/1125
 
 
 Version 0.10.2
