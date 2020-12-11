@@ -81,6 +81,7 @@ To be released.
  -  Improved performance of `Block<T>.Deserialize()`.  [[#1116]]
  -  `Swarm<T>` became not to fill states from trusted peers, because now states
     can be validated rather than trusted due to MPT.  [[#1117]]
+ -  `HashDigest<SHA256>` became serializable.  [[#1125]]
 
 ### Bug fixes
 
