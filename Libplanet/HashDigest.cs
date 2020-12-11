@@ -101,8 +101,7 @@ namespace Libplanet
         private HashDigest(
             SerializationInfo info,
             StreamingContext context)
-            : this(info?.GetValue<byte[]>("hashDigest") ??
-                throw new SerializationException("Missing the hashDigest field."))
+            : this(info.GetValue<byte[]>(nameof(HashDigest<T>)))
         {
         }
 
@@ -257,7 +256,7 @@ namespace Libplanet
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            info.AddValue("hashDigest", ToByteArray());
+            info.AddValue(nameof(HashDigest<T>), ToByteArray());
         }
     }
 
