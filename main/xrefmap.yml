@@ -6629,6 +6629,23 @@ references:
   fullName.vb: Libplanet.HashDigest(Of T).GetHashCode
   nameWithType: HashDigest<T>.GetHashCode
   nameWithType.vb: HashDigest(Of T).GetHashCode
+- uid: Libplanet.HashDigest`1.GetObjectData(SerializationInfo,StreamingContext)
+  name: GetObjectData(SerializationInfo, StreamingContext)
+  href: api/Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_GetObjectData_SerializationInfo_StreamingContext_
+  commentId: M:Libplanet.HashDigest`1.GetObjectData(SerializationInfo,StreamingContext)
+  fullName: Libplanet.HashDigest<T>.GetObjectData(SerializationInfo, StreamingContext)
+  fullName.vb: Libplanet.HashDigest(Of T).GetObjectData(SerializationInfo, StreamingContext)
+  nameWithType: HashDigest<T>.GetObjectData(SerializationInfo, StreamingContext)
+  nameWithType.vb: HashDigest(Of T).GetObjectData(SerializationInfo, StreamingContext)
+- uid: Libplanet.HashDigest`1.GetObjectData*
+  name: GetObjectData
+  href: api/Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_GetObjectData_
+  commentId: Overload:Libplanet.HashDigest`1.GetObjectData
+  isSpec: "True"
+  fullName: Libplanet.HashDigest<T>.GetObjectData
+  fullName.vb: Libplanet.HashDigest(Of T).GetObjectData
+  nameWithType: HashDigest<T>.GetObjectData
+  nameWithType.vb: HashDigest(Of T).GetObjectData
 - uid: Libplanet.HashDigest`1.Satisfies(System.Int64)
   name: Satisfies(Int64)
   href: api/Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_Satisfies_System_Int64_
