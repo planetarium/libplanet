@@ -160,8 +160,6 @@ namespace Libplanet.Blockchain.Policies
         }
 
         /// <inheritdoc/>
-        /// <exception cref="InvalidBlockStateRootHashException">It will be thrown when the
-        /// given block has incorrect <see cref="Block{T}.StateRootHash"/>.</exception>
         public virtual InvalidBlockException ValidateNextBlock(
             BlockChain<T> blocks,
             Block<T> nextBlock)
