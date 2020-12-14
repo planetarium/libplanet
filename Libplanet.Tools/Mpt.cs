@@ -129,6 +129,14 @@ namespace Libplanet.Tools
             string uri,
             [FromService] IConfigurationService<ToolConfiguration> configurationService)
         {
+            if (Uri.IsWellFormedUriString(alias, UriKind.Absolute))
+            {
+                throw new CommandExitedException(
+                    "The alias look like a URI to prevent it being ambiguous." +
+                    "Please try to use other alias name.",
+                    -1);
+            }
+
             try
             {
                 // Checks the `uri` is valid.
