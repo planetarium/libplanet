@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Bencodex.Types;
 using Libplanet.Action;
@@ -367,6 +368,59 @@ namespace Libplanet.Tests.Blockchain
                 _fx.GenesisBlock);
             Assert.Throws<InvalidBlockDifficultyException>(
                 () => blockChain.Append(_fx.Block1));
+        }
+
+        [Fact]
+        public async Task AppendWithdrawTxsWithExpiredNoncesFromStage()
+        {
+            var signerA = new PrivateKey();
+            var signerB = new PrivateKey();
+            HashDigest<SHA256> genesis = _blockChain.Genesis.Hash;
+            DumbAction[] emptyActions = new DumbAction[0];
+            Transaction<DumbAction>
+                txA0 = Transaction<DumbAction>.Create(0, signerA, genesis, emptyActions),
+                txA1 = Transaction<DumbAction>.Create(1, signerA, genesis, emptyActions);
+            _blockChain.StageTransaction(txA0);
+            _blockChain.StageTransaction(txA1);
+            Block<DumbAction> block = await _blockChain.MineBlock(
+                signerA.ToAddress(),
+                DateTimeOffset.UtcNow,
+                append: false
+            );
+
+            Transaction<DumbAction>
+                txA2 = Transaction<DumbAction>.Create(2, signerA, genesis, emptyActions),
+                txA0_ = Transaction<DumbAction>.Create(0, signerA, genesis, emptyActions),
+                txA1_ = Transaction<DumbAction>.Create(1, signerA, genesis, emptyActions),
+                txB0 = Transaction<DumbAction>.Create(1, signerB, genesis, emptyActions),
+                txB1 = Transaction<DumbAction>.Create(1, signerB, genesis, emptyActions),
+                txB2 = Transaction<DumbAction>.Create(2, signerB, genesis, emptyActions),
+                txB0_ = Transaction<DumbAction>.Create(1, signerB, genesis, emptyActions),
+                txB1_ = Transaction<DumbAction>.Create(1, signerB, genesis, emptyActions);
+            _blockChain.StageTransaction(txA2);
+            _blockChain.StageTransaction(txA0_);
+            _blockChain.StageTransaction(txA1_);
+            _blockChain.StageTransaction(txB0);
+            _blockChain.StageTransaction(txB1);
+            _blockChain.StageTransaction(txB2);
+            _blockChain.StageTransaction(txB0_);
+            _blockChain.StageTransaction(txB1_);
+            Assert.Equal(
+                new Transaction<DumbAction>[]
+                {
+                    txA0, txA1, txA2, txA0_, txA1_, txB0, txB1, txB2, txB0_, txB1_,
+                }.Select(tx => tx.Id).ToImmutableHashSet(),
+                _blockChain.GetStagedTransactionIds()
+            );
+
+            _blockChain.Append(block);
+            Assert.Equal(
+                new Transaction<DumbAction>[]
+                {
+                    txA2, txB0, txB1, txB2, txB0_, txB1_,
+                }.Select(tx => tx.Id).ToImmutableHashSet(),
+                _blockChain.GetStagedTransactionIds()
+            );
         }
     }
 }
