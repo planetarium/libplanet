@@ -98,6 +98,8 @@ To be released.
     like `planet mpt diff STORE A B` do not work anymore,
     and these should be instead like `planet mpt diff STORE A STORE B`.
     [[#1129]]
+ -  Store aliases used by `planet mpt` became to disallow names looking like
+    URIs to disambiguate aliases from the literal store URIs.  [[#1129]]
 
 [#795]: https://github.com/planetarium/libplanet/issues/795
 [#1052]: https://github.com/planetarium/libplanet/pull/1052
