@@ -60,12 +60,15 @@ namespace Libplanet.RocksDBStore
         /// option.</param>
         /// <param name="keepLogFileNum">The number to configure <c>keep_log_file_num</c> RocksDB
         /// option.</param>
+        /// <param name="maxLogFileSize">The number to configure <c>max_log_file_size</c>
+        /// RocksDB option.</param>
         public RocksDBStore(
             string path,
             int blockCacheSize = 512,
             int txCacheSize = 1024,
             ulong? maxTotalWalSize = null,
-            ulong? keepLogFileNum = null
+            ulong? keepLogFileNum = null,
+            ulong? maxLogFileSize = null
         )
         {
             _logger = Log.ForContext<RocksDBStore>();
@@ -97,6 +100,11 @@ namespace Libplanet.RocksDBStore
             if (keepLogFileNum is ulong keepLogFileNumValue)
             {
                 _options = _options.SetKeepLogFileNum(keepLogFileNumValue);
+            }
+
+            if (maxLogFileSize is ulong maxLogFileSizeValue)
+            {
+                _options = _options.SetMaxLogFileSize(maxLogFileSizeValue);
             }
 
             _blockDb = RocksDBUtils.OpenRocksDb(_options, RocksDbPath(BlockDbName));
