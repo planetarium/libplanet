@@ -132,8 +132,8 @@ namespace Libplanet.Tools
             if (Uri.IsWellFormedUriString(alias, UriKind.Absolute))
             {
                 throw new CommandExitedException(
-                    "The alias look like a URI to prevent it being ambiguous." +
-                    "Please try to use other alias name.",
+                    "The alias should not look like a URI to prevent it" +
+                    "from being ambiguous. Please try to use other alias name.",
                     -1);
             }
 
