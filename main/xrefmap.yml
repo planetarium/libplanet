@@ -8540,22 +8540,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.ITransport.AsPeer
   nameWithType: ITransport.AsPeer
-- uid: Libplanet.Net.ITransport.BootstrapAsync(IEnumerable{Libplanet.Net.BoundPeer},System.Nullable{TimeSpan},System.Nullable{TimeSpan},System.Int32,CancellationToken)
-  name: BootstrapAsync(IEnumerable<BoundPeer>, Nullable<TimeSpan>, Nullable<TimeSpan>, Int32, CancellationToken)
-  href: api/Libplanet.Net.ITransport.html#Libplanet_Net_ITransport_BootstrapAsync_IEnumerable_Libplanet_Net_BoundPeer__System_Nullable_TimeSpan__System_Nullable_TimeSpan__System_Int32_CancellationToken_
-  commentId: M:Libplanet.Net.ITransport.BootstrapAsync(IEnumerable{Libplanet.Net.BoundPeer},System.Nullable{TimeSpan},System.Nullable{TimeSpan},System.Int32,CancellationToken)
-  name.vb: BootstrapAsync(IEnumerable(Of BoundPeer), Nullable(Of TimeSpan), Nullable(Of TimeSpan), Int32, CancellationToken)
-  fullName: Libplanet.Net.ITransport.BootstrapAsync(IEnumerable<Libplanet.Net.BoundPeer>, System.Nullable<TimeSpan>, System.Nullable<TimeSpan>, System.Int32, CancellationToken)
-  fullName.vb: Libplanet.Net.ITransport.BootstrapAsync(IEnumerable(Of Libplanet.Net.BoundPeer), System.Nullable(Of TimeSpan), System.Nullable(Of TimeSpan), System.Int32, CancellationToken)
-  nameWithType: ITransport.BootstrapAsync(IEnumerable<BoundPeer>, Nullable<TimeSpan>, Nullable<TimeSpan>, Int32, CancellationToken)
-  nameWithType.vb: ITransport.BootstrapAsync(IEnumerable(Of BoundPeer), Nullable(Of TimeSpan), Nullable(Of TimeSpan), Int32, CancellationToken)
-- uid: Libplanet.Net.ITransport.BootstrapAsync*
-  name: BootstrapAsync
-  href: api/Libplanet.Net.ITransport.html#Libplanet_Net_ITransport_BootstrapAsync_
-  commentId: Overload:Libplanet.Net.ITransport.BootstrapAsync
-  isSpec: "True"
-  fullName: Libplanet.Net.ITransport.BootstrapAsync
-  nameWithType: ITransport.BootstrapAsync
 - uid: Libplanet.Net.ITransport.BroadcastMessage(System.Nullable{Libplanet.Address},Libplanet.Net.Messages.Message)
   name: BroadcastMessage(Nullable<Address>, Message)
   href: api/Libplanet.Net.ITransport.html#Libplanet_Net_ITransport_BroadcastMessage_System_Nullable_Libplanet_Address__Libplanet_Net_Messages_Message_
@@ -8585,19 +8569,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.ITransport.LastMessageTimestamp
   nameWithType: ITransport.LastMessageTimestamp
-- uid: Libplanet.Net.ITransport.Peers
-  name: Peers
-  href: api/Libplanet.Net.ITransport.html#Libplanet_Net_ITransport_Peers
-  commentId: P:Libplanet.Net.ITransport.Peers
-  fullName: Libplanet.Net.ITransport.Peers
-  nameWithType: ITransport.Peers
-- uid: Libplanet.Net.ITransport.Peers*
-  name: Peers
-  href: api/Libplanet.Net.ITransport.html#Libplanet_Net_ITransport_Peers_
-  commentId: Overload:Libplanet.Net.ITransport.Peers
-  isSpec: "True"
-  fullName: Libplanet.Net.ITransport.Peers
-  nameWithType: ITransport.Peers
 - uid: Libplanet.Net.ITransport.ProcessMessageHandler
   name: ProcessMessageHandler
   href: api/Libplanet.Net.ITransport.html#Libplanet_Net_ITransport_ProcessMessageHandler
@@ -8937,15 +8908,15 @@ references:
   commentId: T:Libplanet.Net.NetMQTransport
   fullName: Libplanet.Net.NetMQTransport
   nameWithType: NetMQTransport
-- uid: Libplanet.Net.NetMQTransport.#ctor(Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,IImmutableSet{Libplanet.Crypto.PublicKey},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Int32,System.String,System.Nullable{System.Int32},IEnumerable{Libplanet.Net.IceServer},Libplanet.Net.DifferentAppProtocolVersionEncountered,ILogger)
-  name: NetMQTransport(PrivateKey, AppProtocolVersion, IImmutableSet<PublicKey>, Nullable<Int32>, Nullable<Int32>, Int32, String, Nullable<Int32>, IEnumerable<IceServer>, DifferentAppProtocolVersionEncountered, ILogger)
-  href: api/Libplanet.Net.NetMQTransport.html#Libplanet_Net_NetMQTransport__ctor_Libplanet_Crypto_PrivateKey_Libplanet_Net_AppProtocolVersion_IImmutableSet_Libplanet_Crypto_PublicKey__System_Nullable_System_Int32__System_Nullable_System_Int32__System_Int32_System_String_System_Nullable_System_Int32__IEnumerable_Libplanet_Net_IceServer__Libplanet_Net_DifferentAppProtocolVersionEncountered_ILogger_
-  commentId: M:Libplanet.Net.NetMQTransport.#ctor(Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,IImmutableSet{Libplanet.Crypto.PublicKey},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Int32,System.String,System.Nullable{System.Int32},IEnumerable{Libplanet.Net.IceServer},Libplanet.Net.DifferentAppProtocolVersionEncountered,ILogger)
-  name.vb: NetMQTransport(PrivateKey, AppProtocolVersion, IImmutableSet(Of PublicKey), Nullable(Of Int32), Nullable(Of Int32), Int32, String, Nullable(Of Int32), IEnumerable(Of IceServer), DifferentAppProtocolVersionEncountered, ILogger)
-  fullName: Libplanet.Net.NetMQTransport.NetMQTransport(Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersion, IImmutableSet<Libplanet.Crypto.PublicKey>, System.Nullable<System.Int32>, System.Nullable<System.Int32>, System.Int32, System.String, System.Nullable<System.Int32>, IEnumerable<Libplanet.Net.IceServer>, Libplanet.Net.DifferentAppProtocolVersionEncountered, ILogger)
-  fullName.vb: Libplanet.Net.NetMQTransport.NetMQTransport(Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersion, IImmutableSet(Of Libplanet.Crypto.PublicKey), System.Nullable(Of System.Int32), System.Nullable(Of System.Int32), System.Int32, System.String, System.Nullable(Of System.Int32), IEnumerable(Of Libplanet.Net.IceServer), Libplanet.Net.DifferentAppProtocolVersionEncountered, ILogger)
-  nameWithType: NetMQTransport.NetMQTransport(PrivateKey, AppProtocolVersion, IImmutableSet<PublicKey>, Nullable<Int32>, Nullable<Int32>, Int32, String, Nullable<Int32>, IEnumerable<IceServer>, DifferentAppProtocolVersionEncountered, ILogger)
-  nameWithType.vb: NetMQTransport.NetMQTransport(PrivateKey, AppProtocolVersion, IImmutableSet(Of PublicKey), Nullable(Of Int32), Nullable(Of Int32), Int32, String, Nullable(Of Int32), IEnumerable(Of IceServer), DifferentAppProtocolVersionEncountered, ILogger)
+- uid: Libplanet.Net.NetMQTransport.#ctor(Libplanet.Net.Protocols.RoutingTable,Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,IImmutableSet{Libplanet.Crypto.PublicKey},System.Int32,System.String,System.Nullable{System.Int32},IEnumerable{Libplanet.Net.IceServer},Libplanet.Net.DifferentAppProtocolVersionEncountered)
+  name: NetMQTransport(RoutingTable, PrivateKey, AppProtocolVersion, IImmutableSet<PublicKey>, Int32, String, Nullable<Int32>, IEnumerable<IceServer>, DifferentAppProtocolVersionEncountered)
+  href: api/Libplanet.Net.NetMQTransport.html#Libplanet_Net_NetMQTransport__ctor_Libplanet_Net_Protocols_RoutingTable_Libplanet_Crypto_PrivateKey_Libplanet_Net_AppProtocolVersion_IImmutableSet_Libplanet_Crypto_PublicKey__System_Int32_System_String_System_Nullable_System_Int32__IEnumerable_Libplanet_Net_IceServer__Libplanet_Net_DifferentAppProtocolVersionEncountered_
+  commentId: M:Libplanet.Net.NetMQTransport.#ctor(Libplanet.Net.Protocols.RoutingTable,Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,IImmutableSet{Libplanet.Crypto.PublicKey},System.Int32,System.String,System.Nullable{System.Int32},IEnumerable{Libplanet.Net.IceServer},Libplanet.Net.DifferentAppProtocolVersionEncountered)
+  name.vb: NetMQTransport(RoutingTable, PrivateKey, AppProtocolVersion, IImmutableSet(Of PublicKey), Int32, String, Nullable(Of Int32), IEnumerable(Of IceServer), DifferentAppProtocolVersionEncountered)
+  fullName: Libplanet.Net.NetMQTransport.NetMQTransport(Libplanet.Net.Protocols.RoutingTable, Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersion, IImmutableSet<Libplanet.Crypto.PublicKey>, System.Int32, System.String, System.Nullable<System.Int32>, IEnumerable<Libplanet.Net.IceServer>, Libplanet.Net.DifferentAppProtocolVersionEncountered)
+  fullName.vb: Libplanet.Net.NetMQTransport.NetMQTransport(Libplanet.Net.Protocols.RoutingTable, Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersion, IImmutableSet(Of Libplanet.Crypto.PublicKey), System.Int32, System.String, System.Nullable(Of System.Int32), IEnumerable(Of Libplanet.Net.IceServer), Libplanet.Net.DifferentAppProtocolVersionEncountered)
+  nameWithType: NetMQTransport.NetMQTransport(RoutingTable, PrivateKey, AppProtocolVersion, IImmutableSet<PublicKey>, Int32, String, Nullable<Int32>, IEnumerable<IceServer>, DifferentAppProtocolVersionEncountered)
+  nameWithType.vb: NetMQTransport.NetMQTransport(RoutingTable, PrivateKey, AppProtocolVersion, IImmutableSet(Of PublicKey), Int32, String, Nullable(Of Int32), IEnumerable(Of IceServer), DifferentAppProtocolVersionEncountered)
 - uid: Libplanet.Net.NetMQTransport.#ctor*
   name: NetMQTransport
   href: api/Libplanet.Net.NetMQTransport.html#Libplanet_Net_NetMQTransport__ctor_
@@ -8953,22 +8924,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.NetMQTransport.NetMQTransport
   nameWithType: NetMQTransport.NetMQTransport
-- uid: Libplanet.Net.NetMQTransport.AddPeersAsync(IEnumerable{Libplanet.Net.Peer},System.Nullable{TimeSpan},CancellationToken)
-  name: AddPeersAsync(IEnumerable<Peer>, Nullable<TimeSpan>, CancellationToken)
-  href: api/Libplanet.Net.NetMQTransport.html#Libplanet_Net_NetMQTransport_AddPeersAsync_IEnumerable_Libplanet_Net_Peer__System_Nullable_TimeSpan__CancellationToken_
-  commentId: M:Libplanet.Net.NetMQTransport.AddPeersAsync(IEnumerable{Libplanet.Net.Peer},System.Nullable{TimeSpan},CancellationToken)
-  name.vb: AddPeersAsync(IEnumerable(Of Peer), Nullable(Of TimeSpan), CancellationToken)
-  fullName: Libplanet.Net.NetMQTransport.AddPeersAsync(IEnumerable<Libplanet.Net.Peer>, System.Nullable<TimeSpan>, CancellationToken)
-  fullName.vb: Libplanet.Net.NetMQTransport.AddPeersAsync(IEnumerable(Of Libplanet.Net.Peer), System.Nullable(Of TimeSpan), CancellationToken)
-  nameWithType: NetMQTransport.AddPeersAsync(IEnumerable<Peer>, Nullable<TimeSpan>, CancellationToken)
-  nameWithType.vb: NetMQTransport.AddPeersAsync(IEnumerable(Of Peer), Nullable(Of TimeSpan), CancellationToken)
-- uid: Libplanet.Net.NetMQTransport.AddPeersAsync*
-  name: AddPeersAsync
-  href: api/Libplanet.Net.NetMQTransport.html#Libplanet_Net_NetMQTransport_AddPeersAsync_
-  commentId: Overload:Libplanet.Net.NetMQTransport.AddPeersAsync
-  isSpec: "True"
-  fullName: Libplanet.Net.NetMQTransport.AddPeersAsync
-  nameWithType: NetMQTransport.AddPeersAsync
 - uid: Libplanet.Net.NetMQTransport.AsPeer
   name: AsPeer
   href: api/Libplanet.Net.NetMQTransport.html#Libplanet_Net_NetMQTransport_AsPeer
@@ -8982,22 +8937,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.NetMQTransport.AsPeer
   nameWithType: NetMQTransport.AsPeer
-- uid: Libplanet.Net.NetMQTransport.BootstrapAsync(IEnumerable{Libplanet.Net.BoundPeer},System.Nullable{TimeSpan},System.Nullable{TimeSpan},System.Int32,CancellationToken)
-  name: BootstrapAsync(IEnumerable<BoundPeer>, Nullable<TimeSpan>, Nullable<TimeSpan>, Int32, CancellationToken)
-  href: api/Libplanet.Net.NetMQTransport.html#Libplanet_Net_NetMQTransport_BootstrapAsync_IEnumerable_Libplanet_Net_BoundPeer__System_Nullable_TimeSpan__System_Nullable_TimeSpan__System_Int32_CancellationToken_
-  commentId: M:Libplanet.Net.NetMQTransport.BootstrapAsync(IEnumerable{Libplanet.Net.BoundPeer},System.Nullable{TimeSpan},System.Nullable{TimeSpan},System.Int32,CancellationToken)
-  name.vb: BootstrapAsync(IEnumerable(Of BoundPeer), Nullable(Of TimeSpan), Nullable(Of TimeSpan), Int32, CancellationToken)
-  fullName: Libplanet.Net.NetMQTransport.BootstrapAsync(IEnumerable<Libplanet.Net.BoundPeer>, System.Nullable<TimeSpan>, System.Nullable<TimeSpan>, System.Int32, CancellationToken)
-  fullName.vb: Libplanet.Net.NetMQTransport.BootstrapAsync(IEnumerable(Of Libplanet.Net.BoundPeer), System.Nullable(Of TimeSpan), System.Nullable(Of TimeSpan), System.Int32, CancellationToken)
-  nameWithType: NetMQTransport.BootstrapAsync(IEnumerable<BoundPeer>, Nullable<TimeSpan>, Nullable<TimeSpan>, Int32, CancellationToken)
-  nameWithType.vb: NetMQTransport.BootstrapAsync(IEnumerable(Of BoundPeer), Nullable(Of TimeSpan), Nullable(Of TimeSpan), Int32, CancellationToken)
-- uid: Libplanet.Net.NetMQTransport.BootstrapAsync*
-  name: BootstrapAsync
-  href: api/Libplanet.Net.NetMQTransport.html#Libplanet_Net_NetMQTransport_BootstrapAsync_
-  commentId: Overload:Libplanet.Net.NetMQTransport.BootstrapAsync
-  isSpec: "True"
-  fullName: Libplanet.Net.NetMQTransport.BootstrapAsync
-  nameWithType: NetMQTransport.BootstrapAsync
 - uid: Libplanet.Net.NetMQTransport.BroadcastMessage(System.Nullable{Libplanet.Address},Libplanet.Net.Messages.Message)
   name: BroadcastMessage(Nullable<Address>, Message)
   href: api/Libplanet.Net.NetMQTransport.html#Libplanet_Net_NetMQTransport_BroadcastMessage_System_Nullable_Libplanet_Address__Libplanet_Net_Messages_Message_
@@ -9014,22 +8953,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.NetMQTransport.BroadcastMessage
   nameWithType: NetMQTransport.BroadcastMessage
-- uid: Libplanet.Net.NetMQTransport.CheckAllPeersAsync(System.Nullable{TimeSpan},CancellationToken)
-  name: CheckAllPeersAsync(Nullable<TimeSpan>, CancellationToken)
-  href: api/Libplanet.Net.NetMQTransport.html#Libplanet_Net_NetMQTransport_CheckAllPeersAsync_System_Nullable_TimeSpan__CancellationToken_
-  commentId: M:Libplanet.Net.NetMQTransport.CheckAllPeersAsync(System.Nullable{TimeSpan},CancellationToken)
-  name.vb: CheckAllPeersAsync(Nullable(Of TimeSpan), CancellationToken)
-  fullName: Libplanet.Net.NetMQTransport.CheckAllPeersAsync(System.Nullable<TimeSpan>, CancellationToken)
-  fullName.vb: Libplanet.Net.NetMQTransport.CheckAllPeersAsync(System.Nullable(Of TimeSpan), CancellationToken)
-  nameWithType: NetMQTransport.CheckAllPeersAsync(Nullable<TimeSpan>, CancellationToken)
-  nameWithType.vb: NetMQTransport.CheckAllPeersAsync(Nullable(Of TimeSpan), CancellationToken)
-- uid: Libplanet.Net.NetMQTransport.CheckAllPeersAsync*
-  name: CheckAllPeersAsync
-  href: api/Libplanet.Net.NetMQTransport.html#Libplanet_Net_NetMQTransport_CheckAllPeersAsync_
-  commentId: Overload:Libplanet.Net.NetMQTransport.CheckAllPeersAsync
-  isSpec: "True"
-  fullName: Libplanet.Net.NetMQTransport.CheckAllPeersAsync
-  nameWithType: NetMQTransport.CheckAllPeersAsync
 - uid: Libplanet.Net.NetMQTransport.Dispose
   name: Dispose()
   href: api/Libplanet.Net.NetMQTransport.html#Libplanet_Net_NetMQTransport_Dispose
@@ -9043,22 +8966,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.NetMQTransport.Dispose
   nameWithType: NetMQTransport.Dispose
-- uid: Libplanet.Net.NetMQTransport.FindSpecificPeerAsync(Libplanet.Address,System.Int32,System.Nullable{TimeSpan},CancellationToken)
-  name: FindSpecificPeerAsync(Address, Int32, Nullable<TimeSpan>, CancellationToken)
-  href: api/Libplanet.Net.NetMQTransport.html#Libplanet_Net_NetMQTransport_FindSpecificPeerAsync_Libplanet_Address_System_Int32_System_Nullable_TimeSpan__CancellationToken_
-  commentId: M:Libplanet.Net.NetMQTransport.FindSpecificPeerAsync(Libplanet.Address,System.Int32,System.Nullable{TimeSpan},CancellationToken)
-  name.vb: FindSpecificPeerAsync(Address, Int32, Nullable(Of TimeSpan), CancellationToken)
-  fullName: Libplanet.Net.NetMQTransport.FindSpecificPeerAsync(Libplanet.Address, System.Int32, System.Nullable<TimeSpan>, CancellationToken)
-  fullName.vb: Libplanet.Net.NetMQTransport.FindSpecificPeerAsync(Libplanet.Address, System.Int32, System.Nullable(Of TimeSpan), CancellationToken)
-  nameWithType: NetMQTransport.FindSpecificPeerAsync(Address, Int32, Nullable<TimeSpan>, CancellationToken)
-  nameWithType.vb: NetMQTransport.FindSpecificPeerAsync(Address, Int32, Nullable(Of TimeSpan), CancellationToken)
-- uid: Libplanet.Net.NetMQTransport.FindSpecificPeerAsync*
-  name: FindSpecificPeerAsync
-  href: api/Libplanet.Net.NetMQTransport.html#Libplanet_Net_NetMQTransport_FindSpecificPeerAsync_
-  commentId: Overload:Libplanet.Net.NetMQTransport.FindSpecificPeerAsync
-  isSpec: "True"
-  fullName: Libplanet.Net.NetMQTransport.FindSpecificPeerAsync
-  nameWithType: NetMQTransport.FindSpecificPeerAsync
 - uid: Libplanet.Net.NetMQTransport.LastMessageTimestamp
   name: LastMessageTimestamp
   href: api/Libplanet.Net.NetMQTransport.html#Libplanet_Net_NetMQTransport_LastMessageTimestamp
@@ -9072,19 +8979,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.NetMQTransport.LastMessageTimestamp
   nameWithType: NetMQTransport.LastMessageTimestamp
-- uid: Libplanet.Net.NetMQTransport.Peers
-  name: Peers
-  href: api/Libplanet.Net.NetMQTransport.html#Libplanet_Net_NetMQTransport_Peers
-  commentId: P:Libplanet.Net.NetMQTransport.Peers
-  fullName: Libplanet.Net.NetMQTransport.Peers
-  nameWithType: NetMQTransport.Peers
-- uid: Libplanet.Net.NetMQTransport.Peers*
-  name: Peers
-  href: api/Libplanet.Net.NetMQTransport.html#Libplanet_Net_NetMQTransport_Peers_
-  commentId: Overload:Libplanet.Net.NetMQTransport.Peers
-  isSpec: "True"
-  fullName: Libplanet.Net.NetMQTransport.Peers
-  nameWithType: NetMQTransport.Peers
 - uid: Libplanet.Net.NetMQTransport.ProcessMessageHandler
   name: ProcessMessageHandler
   href: api/Libplanet.Net.NetMQTransport.html#Libplanet_Net_NetMQTransport_ProcessMessageHandler
@@ -9194,19 +9088,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.NetMQTransport.StopAsync
   nameWithType: NetMQTransport.StopAsync
-- uid: Libplanet.Net.NetMQTransport.Trace
-  name: Trace()
-  href: api/Libplanet.Net.NetMQTransport.html#Libplanet_Net_NetMQTransport_Trace
-  commentId: M:Libplanet.Net.NetMQTransport.Trace
-  fullName: Libplanet.Net.NetMQTransport.Trace()
-  nameWithType: NetMQTransport.Trace()
-- uid: Libplanet.Net.NetMQTransport.Trace*
-  name: Trace
-  href: api/Libplanet.Net.NetMQTransport.html#Libplanet_Net_NetMQTransport_Trace_
-  commentId: Overload:Libplanet.Net.NetMQTransport.Trace
-  isSpec: "True"
-  fullName: Libplanet.Net.NetMQTransport.Trace
-  nameWithType: NetMQTransport.Trace
 - uid: Libplanet.Net.NetMQTransport.WaitForRunningAsync
   name: WaitForRunningAsync()
   href: api/Libplanet.Net.NetMQTransport.html#Libplanet_Net_NetMQTransport_WaitForRunningAsync
@@ -9596,6 +9477,155 @@ references:
   commentId: N:Libplanet.Net.Protocols
   fullName: Libplanet.Net.Protocols
   nameWithType: Libplanet.Net.Protocols
+- uid: Libplanet.Net.Protocols.IProtocol
+  name: IProtocol
+  href: api/Libplanet.Net.Protocols.IProtocol.html
+  commentId: T:Libplanet.Net.Protocols.IProtocol
+  fullName: Libplanet.Net.Protocols.IProtocol
+  nameWithType: IProtocol
+- uid: Libplanet.Net.Protocols.IProtocol.AddPeersAsync(IEnumerable{Libplanet.Net.Peer},System.Nullable{TimeSpan},CancellationToken)
+  name: AddPeersAsync(IEnumerable<Peer>, Nullable<TimeSpan>, CancellationToken)
+  href: api/Libplanet.Net.Protocols.IProtocol.html#Libplanet_Net_Protocols_IProtocol_AddPeersAsync_IEnumerable_Libplanet_Net_Peer__System_Nullable_TimeSpan__CancellationToken_
+  commentId: M:Libplanet.Net.Protocols.IProtocol.AddPeersAsync(IEnumerable{Libplanet.Net.Peer},System.Nullable{TimeSpan},CancellationToken)
+  name.vb: AddPeersAsync(IEnumerable(Of Peer), Nullable(Of TimeSpan), CancellationToken)
+  fullName: Libplanet.Net.Protocols.IProtocol.AddPeersAsync(IEnumerable<Libplanet.Net.Peer>, System.Nullable<TimeSpan>, CancellationToken)
+  fullName.vb: Libplanet.Net.Protocols.IProtocol.AddPeersAsync(IEnumerable(Of Libplanet.Net.Peer), System.Nullable(Of TimeSpan), CancellationToken)
+  nameWithType: IProtocol.AddPeersAsync(IEnumerable<Peer>, Nullable<TimeSpan>, CancellationToken)
+  nameWithType.vb: IProtocol.AddPeersAsync(IEnumerable(Of Peer), Nullable(Of TimeSpan), CancellationToken)
+- uid: Libplanet.Net.Protocols.IProtocol.AddPeersAsync*
+  name: AddPeersAsync
+  href: api/Libplanet.Net.Protocols.IProtocol.html#Libplanet_Net_Protocols_IProtocol_AddPeersAsync_
+  commentId: Overload:Libplanet.Net.Protocols.IProtocol.AddPeersAsync
+  isSpec: "True"
+  fullName: Libplanet.Net.Protocols.IProtocol.AddPeersAsync
+  nameWithType: IProtocol.AddPeersAsync
+- uid: Libplanet.Net.Protocols.IProtocol.BootstrapAsync(IEnumerable{Libplanet.Net.BoundPeer},System.Nullable{TimeSpan},System.Nullable{TimeSpan},System.Int32,CancellationToken)
+  name: BootstrapAsync(IEnumerable<BoundPeer>, Nullable<TimeSpan>, Nullable<TimeSpan>, Int32, CancellationToken)
+  href: api/Libplanet.Net.Protocols.IProtocol.html#Libplanet_Net_Protocols_IProtocol_BootstrapAsync_IEnumerable_Libplanet_Net_BoundPeer__System_Nullable_TimeSpan__System_Nullable_TimeSpan__System_Int32_CancellationToken_
+  commentId: M:Libplanet.Net.Protocols.IProtocol.BootstrapAsync(IEnumerable{Libplanet.Net.BoundPeer},System.Nullable{TimeSpan},System.Nullable{TimeSpan},System.Int32,CancellationToken)
+  name.vb: BootstrapAsync(IEnumerable(Of BoundPeer), Nullable(Of TimeSpan), Nullable(Of TimeSpan), Int32, CancellationToken)
+  fullName: Libplanet.Net.Protocols.IProtocol.BootstrapAsync(IEnumerable<Libplanet.Net.BoundPeer>, System.Nullable<TimeSpan>, System.Nullable<TimeSpan>, System.Int32, CancellationToken)
+  fullName.vb: Libplanet.Net.Protocols.IProtocol.BootstrapAsync(IEnumerable(Of Libplanet.Net.BoundPeer), System.Nullable(Of TimeSpan), System.Nullable(Of TimeSpan), System.Int32, CancellationToken)
+  nameWithType: IProtocol.BootstrapAsync(IEnumerable<BoundPeer>, Nullable<TimeSpan>, Nullable<TimeSpan>, Int32, CancellationToken)
+  nameWithType.vb: IProtocol.BootstrapAsync(IEnumerable(Of BoundPeer), Nullable(Of TimeSpan), Nullable(Of TimeSpan), Int32, CancellationToken)
+- uid: Libplanet.Net.Protocols.IProtocol.BootstrapAsync*
+  name: BootstrapAsync
+  href: api/Libplanet.Net.Protocols.IProtocol.html#Libplanet_Net_Protocols_IProtocol_BootstrapAsync_
+  commentId: Overload:Libplanet.Net.Protocols.IProtocol.BootstrapAsync
+  isSpec: "True"
+  fullName: Libplanet.Net.Protocols.IProtocol.BootstrapAsync
+  nameWithType: IProtocol.BootstrapAsync
+- uid: Libplanet.Net.Protocols.IProtocol.CheckReplacementCacheAsync(CancellationToken)
+  name: CheckReplacementCacheAsync(CancellationToken)
+  href: api/Libplanet.Net.Protocols.IProtocol.html#Libplanet_Net_Protocols_IProtocol_CheckReplacementCacheAsync_CancellationToken_
+  commentId: M:Libplanet.Net.Protocols.IProtocol.CheckReplacementCacheAsync(CancellationToken)
+  fullName: Libplanet.Net.Protocols.IProtocol.CheckReplacementCacheAsync(CancellationToken)
+  nameWithType: IProtocol.CheckReplacementCacheAsync(CancellationToken)
+- uid: Libplanet.Net.Protocols.IProtocol.CheckReplacementCacheAsync*
+  name: CheckReplacementCacheAsync
+  href: api/Libplanet.Net.Protocols.IProtocol.html#Libplanet_Net_Protocols_IProtocol_CheckReplacementCacheAsync_
+  commentId: Overload:Libplanet.Net.Protocols.IProtocol.CheckReplacementCacheAsync
+  isSpec: "True"
+  fullName: Libplanet.Net.Protocols.IProtocol.CheckReplacementCacheAsync
+  nameWithType: IProtocol.CheckReplacementCacheAsync
+- uid: Libplanet.Net.Protocols.IProtocol.RebuildConnectionAsync(CancellationToken)
+  name: RebuildConnectionAsync(CancellationToken)
+  href: api/Libplanet.Net.Protocols.IProtocol.html#Libplanet_Net_Protocols_IProtocol_RebuildConnectionAsync_CancellationToken_
+  commentId: M:Libplanet.Net.Protocols.IProtocol.RebuildConnectionAsync(CancellationToken)
+  fullName: Libplanet.Net.Protocols.IProtocol.RebuildConnectionAsync(CancellationToken)
+  nameWithType: IProtocol.RebuildConnectionAsync(CancellationToken)
+- uid: Libplanet.Net.Protocols.IProtocol.RebuildConnectionAsync*
+  name: RebuildConnectionAsync
+  href: api/Libplanet.Net.Protocols.IProtocol.html#Libplanet_Net_Protocols_IProtocol_RebuildConnectionAsync_
+  commentId: Overload:Libplanet.Net.Protocols.IProtocol.RebuildConnectionAsync
+  isSpec: "True"
+  fullName: Libplanet.Net.Protocols.IProtocol.RebuildConnectionAsync
+  nameWithType: IProtocol.RebuildConnectionAsync
+- uid: Libplanet.Net.Protocols.IProtocol.RefreshTableAsync(TimeSpan,CancellationToken)
+  name: RefreshTableAsync(TimeSpan, CancellationToken)
+  href: api/Libplanet.Net.Protocols.IProtocol.html#Libplanet_Net_Protocols_IProtocol_RefreshTableAsync_TimeSpan_CancellationToken_
+  commentId: M:Libplanet.Net.Protocols.IProtocol.RefreshTableAsync(TimeSpan,CancellationToken)
+  fullName: Libplanet.Net.Protocols.IProtocol.RefreshTableAsync(TimeSpan, CancellationToken)
+  nameWithType: IProtocol.RefreshTableAsync(TimeSpan, CancellationToken)
+- uid: Libplanet.Net.Protocols.IProtocol.RefreshTableAsync*
+  name: RefreshTableAsync
+  href: api/Libplanet.Net.Protocols.IProtocol.html#Libplanet_Net_Protocols_IProtocol_RefreshTableAsync_
+  commentId: Overload:Libplanet.Net.Protocols.IProtocol.RefreshTableAsync
+  isSpec: "True"
+  fullName: Libplanet.Net.Protocols.IProtocol.RefreshTableAsync
+  nameWithType: IProtocol.RefreshTableAsync
+- uid: Libplanet.Net.Protocols.Kademlia
+  name: Kademlia
+  href: api/Libplanet.Net.Protocols.Kademlia.html
+  commentId: T:Libplanet.Net.Protocols.Kademlia
+  fullName: Libplanet.Net.Protocols.Kademlia
+  nameWithType: Kademlia
+- uid: Libplanet.Net.Protocols.Kademlia.BucketSize
+  name: BucketSize
+  href: api/Libplanet.Net.Protocols.Kademlia.html#Libplanet_Net_Protocols_Kademlia_BucketSize
+  commentId: F:Libplanet.Net.Protocols.Kademlia.BucketSize
+  fullName: Libplanet.Net.Protocols.Kademlia.BucketSize
+  nameWithType: Kademlia.BucketSize
+- uid: Libplanet.Net.Protocols.Kademlia.CalculateDistance(Libplanet.Address,Libplanet.Address)
+  name: CalculateDistance(Address, Address)
+  href: api/Libplanet.Net.Protocols.Kademlia.html#Libplanet_Net_Protocols_Kademlia_CalculateDistance_Libplanet_Address_Libplanet_Address_
+  commentId: M:Libplanet.Net.Protocols.Kademlia.CalculateDistance(Libplanet.Address,Libplanet.Address)
+  fullName: Libplanet.Net.Protocols.Kademlia.CalculateDistance(Libplanet.Address, Libplanet.Address)
+  nameWithType: Kademlia.CalculateDistance(Address, Address)
+- uid: Libplanet.Net.Protocols.Kademlia.CalculateDistance*
+  name: CalculateDistance
+  href: api/Libplanet.Net.Protocols.Kademlia.html#Libplanet_Net_Protocols_Kademlia_CalculateDistance_
+  commentId: Overload:Libplanet.Net.Protocols.Kademlia.CalculateDistance
+  isSpec: "True"
+  fullName: Libplanet.Net.Protocols.Kademlia.CalculateDistance
+  nameWithType: Kademlia.CalculateDistance
+- uid: Libplanet.Net.Protocols.Kademlia.CommonPrefixLength(Libplanet.Address,Libplanet.Address)
+  name: CommonPrefixLength(Address, Address)
+  href: api/Libplanet.Net.Protocols.Kademlia.html#Libplanet_Net_Protocols_Kademlia_CommonPrefixLength_Libplanet_Address_Libplanet_Address_
+  commentId: M:Libplanet.Net.Protocols.Kademlia.CommonPrefixLength(Libplanet.Address,Libplanet.Address)
+  fullName: Libplanet.Net.Protocols.Kademlia.CommonPrefixLength(Libplanet.Address, Libplanet.Address)
+  nameWithType: Kademlia.CommonPrefixLength(Address, Address)
+- uid: Libplanet.Net.Protocols.Kademlia.CommonPrefixLength*
+  name: CommonPrefixLength
+  href: api/Libplanet.Net.Protocols.Kademlia.html#Libplanet_Net_Protocols_Kademlia_CommonPrefixLength_
+  commentId: Overload:Libplanet.Net.Protocols.Kademlia.CommonPrefixLength
+  isSpec: "True"
+  fullName: Libplanet.Net.Protocols.Kademlia.CommonPrefixLength
+  nameWithType: Kademlia.CommonPrefixLength
+- uid: Libplanet.Net.Protocols.Kademlia.FindConcurrency
+  name: FindConcurrency
+  href: api/Libplanet.Net.Protocols.Kademlia.html#Libplanet_Net_Protocols_Kademlia_FindConcurrency
+  commentId: F:Libplanet.Net.Protocols.Kademlia.FindConcurrency
+  fullName: Libplanet.Net.Protocols.Kademlia.FindConcurrency
+  nameWithType: Kademlia.FindConcurrency
+- uid: Libplanet.Net.Protocols.Kademlia.MaxDepth
+  name: MaxDepth
+  href: api/Libplanet.Net.Protocols.Kademlia.html#Libplanet_Net_Protocols_Kademlia_MaxDepth
+  commentId: F:Libplanet.Net.Protocols.Kademlia.MaxDepth
+  fullName: Libplanet.Net.Protocols.Kademlia.MaxDepth
+  nameWithType: Kademlia.MaxDepth
+- uid: Libplanet.Net.Protocols.Kademlia.SortByDistance(IEnumerable{Libplanet.Net.BoundPeer},Libplanet.Address)
+  name: SortByDistance(IEnumerable<BoundPeer>, Address)
+  href: api/Libplanet.Net.Protocols.Kademlia.html#Libplanet_Net_Protocols_Kademlia_SortByDistance_IEnumerable_Libplanet_Net_BoundPeer__Libplanet_Address_
+  commentId: M:Libplanet.Net.Protocols.Kademlia.SortByDistance(IEnumerable{Libplanet.Net.BoundPeer},Libplanet.Address)
+  name.vb: SortByDistance(IEnumerable(Of BoundPeer), Address)
+  fullName: Libplanet.Net.Protocols.Kademlia.SortByDistance(IEnumerable<Libplanet.Net.BoundPeer>, Libplanet.Address)
+  fullName.vb: Libplanet.Net.Protocols.Kademlia.SortByDistance(IEnumerable(Of Libplanet.Net.BoundPeer), Libplanet.Address)
+  nameWithType: Kademlia.SortByDistance(IEnumerable<BoundPeer>, Address)
+  nameWithType.vb: Kademlia.SortByDistance(IEnumerable(Of BoundPeer), Address)
+- uid: Libplanet.Net.Protocols.Kademlia.SortByDistance*
+  name: SortByDistance
+  href: api/Libplanet.Net.Protocols.Kademlia.html#Libplanet_Net_Protocols_Kademlia_SortByDistance_
+  commentId: Overload:Libplanet.Net.Protocols.Kademlia.SortByDistance
+  isSpec: "True"
+  fullName: Libplanet.Net.Protocols.Kademlia.SortByDistance
+  nameWithType: Kademlia.SortByDistance
+- uid: Libplanet.Net.Protocols.Kademlia.TableSize
+  name: TableSize
+  href: api/Libplanet.Net.Protocols.Kademlia.html#Libplanet_Net_Protocols_Kademlia_TableSize
+  commentId: F:Libplanet.Net.Protocols.Kademlia.TableSize
+  fullName: Libplanet.Net.Protocols.Kademlia.TableSize
+  nameWithType: Kademlia.TableSize
 - uid: Libplanet.Net.Protocols.PeerDiscoveryException
   name: PeerDiscoveryException
   href: api/Libplanet.Net.Protocols.PeerDiscoveryException.html
@@ -9696,6 +9726,187 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Protocols.PingTimeoutException.Target
   nameWithType: PingTimeoutException.Target
+- uid: Libplanet.Net.Protocols.RoutingTable
+  name: RoutingTable
+  href: api/Libplanet.Net.Protocols.RoutingTable.html
+  commentId: T:Libplanet.Net.Protocols.RoutingTable
+  fullName: Libplanet.Net.Protocols.RoutingTable
+  nameWithType: RoutingTable
+- uid: Libplanet.Net.Protocols.RoutingTable.#ctor(Libplanet.Address,System.Int32,System.Int32)
+  name: RoutingTable(Address, Int32, Int32)
+  href: api/Libplanet.Net.Protocols.RoutingTable.html#Libplanet_Net_Protocols_RoutingTable__ctor_Libplanet_Address_System_Int32_System_Int32_
+  commentId: M:Libplanet.Net.Protocols.RoutingTable.#ctor(Libplanet.Address,System.Int32,System.Int32)
+  fullName: Libplanet.Net.Protocols.RoutingTable.RoutingTable(Libplanet.Address, System.Int32, System.Int32)
+  nameWithType: RoutingTable.RoutingTable(Address, Int32, Int32)
+- uid: Libplanet.Net.Protocols.RoutingTable.#ctor*
+  name: RoutingTable
+  href: api/Libplanet.Net.Protocols.RoutingTable.html#Libplanet_Net_Protocols_RoutingTable__ctor_
+  commentId: Overload:Libplanet.Net.Protocols.RoutingTable.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Net.Protocols.RoutingTable.RoutingTable
+  nameWithType: RoutingTable.RoutingTable
+- uid: Libplanet.Net.Protocols.RoutingTable.AddPeer(Libplanet.Net.BoundPeer)
+  name: AddPeer(BoundPeer)
+  href: api/Libplanet.Net.Protocols.RoutingTable.html#Libplanet_Net_Protocols_RoutingTable_AddPeer_Libplanet_Net_BoundPeer_
+  commentId: M:Libplanet.Net.Protocols.RoutingTable.AddPeer(Libplanet.Net.BoundPeer)
+  fullName: Libplanet.Net.Protocols.RoutingTable.AddPeer(Libplanet.Net.BoundPeer)
+  nameWithType: RoutingTable.AddPeer(BoundPeer)
+- uid: Libplanet.Net.Protocols.RoutingTable.AddPeer*
+  name: AddPeer
+  href: api/Libplanet.Net.Protocols.RoutingTable.html#Libplanet_Net_Protocols_RoutingTable_AddPeer_
+  commentId: Overload:Libplanet.Net.Protocols.RoutingTable.AddPeer
+  isSpec: "True"
+  fullName: Libplanet.Net.Protocols.RoutingTable.AddPeer
+  nameWithType: RoutingTable.AddPeer
+- uid: Libplanet.Net.Protocols.RoutingTable.BucketSize
+  name: BucketSize
+  href: api/Libplanet.Net.Protocols.RoutingTable.html#Libplanet_Net_Protocols_RoutingTable_BucketSize
+  commentId: P:Libplanet.Net.Protocols.RoutingTable.BucketSize
+  fullName: Libplanet.Net.Protocols.RoutingTable.BucketSize
+  nameWithType: RoutingTable.BucketSize
+- uid: Libplanet.Net.Protocols.RoutingTable.BucketSize*
+  name: BucketSize
+  href: api/Libplanet.Net.Protocols.RoutingTable.html#Libplanet_Net_Protocols_RoutingTable_BucketSize_
+  commentId: Overload:Libplanet.Net.Protocols.RoutingTable.BucketSize
+  isSpec: "True"
+  fullName: Libplanet.Net.Protocols.RoutingTable.BucketSize
+  nameWithType: RoutingTable.BucketSize
+- uid: Libplanet.Net.Protocols.RoutingTable.Check(Libplanet.Net.BoundPeer,DateTimeOffset,DateTimeOffset)
+  name: Check(BoundPeer, DateTimeOffset, DateTimeOffset)
+  href: api/Libplanet.Net.Protocols.RoutingTable.html#Libplanet_Net_Protocols_RoutingTable_Check_Libplanet_Net_BoundPeer_DateTimeOffset_DateTimeOffset_
+  commentId: M:Libplanet.Net.Protocols.RoutingTable.Check(Libplanet.Net.BoundPeer,DateTimeOffset,DateTimeOffset)
+  fullName: Libplanet.Net.Protocols.RoutingTable.Check(Libplanet.Net.BoundPeer, DateTimeOffset, DateTimeOffset)
+  nameWithType: RoutingTable.Check(BoundPeer, DateTimeOffset, DateTimeOffset)
+- uid: Libplanet.Net.Protocols.RoutingTable.Check*
+  name: Check
+  href: api/Libplanet.Net.Protocols.RoutingTable.html#Libplanet_Net_Protocols_RoutingTable_Check_
+  commentId: Overload:Libplanet.Net.Protocols.RoutingTable.Check
+  isSpec: "True"
+  fullName: Libplanet.Net.Protocols.RoutingTable.Check
+  nameWithType: RoutingTable.Check
+- uid: Libplanet.Net.Protocols.RoutingTable.Clear
+  name: Clear()
+  href: api/Libplanet.Net.Protocols.RoutingTable.html#Libplanet_Net_Protocols_RoutingTable_Clear
+  commentId: M:Libplanet.Net.Protocols.RoutingTable.Clear
+  fullName: Libplanet.Net.Protocols.RoutingTable.Clear()
+  nameWithType: RoutingTable.Clear()
+- uid: Libplanet.Net.Protocols.RoutingTable.Clear*
+  name: Clear
+  href: api/Libplanet.Net.Protocols.RoutingTable.html#Libplanet_Net_Protocols_RoutingTable_Clear_
+  commentId: Overload:Libplanet.Net.Protocols.RoutingTable.Clear
+  isSpec: "True"
+  fullName: Libplanet.Net.Protocols.RoutingTable.Clear
+  nameWithType: RoutingTable.Clear
+- uid: Libplanet.Net.Protocols.RoutingTable.Contains(Libplanet.Net.BoundPeer)
+  name: Contains(BoundPeer)
+  href: api/Libplanet.Net.Protocols.RoutingTable.html#Libplanet_Net_Protocols_RoutingTable_Contains_Libplanet_Net_BoundPeer_
+  commentId: M:Libplanet.Net.Protocols.RoutingTable.Contains(Libplanet.Net.BoundPeer)
+  fullName: Libplanet.Net.Protocols.RoutingTable.Contains(Libplanet.Net.BoundPeer)
+  nameWithType: RoutingTable.Contains(BoundPeer)
+- uid: Libplanet.Net.Protocols.RoutingTable.Contains*
+  name: Contains
+  href: api/Libplanet.Net.Protocols.RoutingTable.html#Libplanet_Net_Protocols_RoutingTable_Contains_
+  commentId: Overload:Libplanet.Net.Protocols.RoutingTable.Contains
+  isSpec: "True"
+  fullName: Libplanet.Net.Protocols.RoutingTable.Contains
+  nameWithType: RoutingTable.Contains
+- uid: Libplanet.Net.Protocols.RoutingTable.Count
+  name: Count
+  href: api/Libplanet.Net.Protocols.RoutingTable.html#Libplanet_Net_Protocols_RoutingTable_Count
+  commentId: P:Libplanet.Net.Protocols.RoutingTable.Count
+  fullName: Libplanet.Net.Protocols.RoutingTable.Count
+  nameWithType: RoutingTable.Count
+- uid: Libplanet.Net.Protocols.RoutingTable.Count*
+  name: Count
+  href: api/Libplanet.Net.Protocols.RoutingTable.html#Libplanet_Net_Protocols_RoutingTable_Count_
+  commentId: Overload:Libplanet.Net.Protocols.RoutingTable.Count
+  isSpec: "True"
+  fullName: Libplanet.Net.Protocols.RoutingTable.Count
+  nameWithType: RoutingTable.Count
+- uid: Libplanet.Net.Protocols.RoutingTable.GetPeer(Libplanet.Address)
+  name: GetPeer(Address)
+  href: api/Libplanet.Net.Protocols.RoutingTable.html#Libplanet_Net_Protocols_RoutingTable_GetPeer_Libplanet_Address_
+  commentId: M:Libplanet.Net.Protocols.RoutingTable.GetPeer(Libplanet.Address)
+  fullName: Libplanet.Net.Protocols.RoutingTable.GetPeer(Libplanet.Address)
+  nameWithType: RoutingTable.GetPeer(Address)
+- uid: Libplanet.Net.Protocols.RoutingTable.GetPeer*
+  name: GetPeer
+  href: api/Libplanet.Net.Protocols.RoutingTable.html#Libplanet_Net_Protocols_RoutingTable_GetPeer_
+  commentId: Overload:Libplanet.Net.Protocols.RoutingTable.GetPeer
+  isSpec: "True"
+  fullName: Libplanet.Net.Protocols.RoutingTable.GetPeer
+  nameWithType: RoutingTable.GetPeer
+- uid: Libplanet.Net.Protocols.RoutingTable.Neighbors(Libplanet.Address,System.Int32,System.Boolean)
+  name: Neighbors(Address, Int32, Boolean)
+  href: api/Libplanet.Net.Protocols.RoutingTable.html#Libplanet_Net_Protocols_RoutingTable_Neighbors_Libplanet_Address_System_Int32_System_Boolean_
+  commentId: M:Libplanet.Net.Protocols.RoutingTable.Neighbors(Libplanet.Address,System.Int32,System.Boolean)
+  fullName: Libplanet.Net.Protocols.RoutingTable.Neighbors(Libplanet.Address, System.Int32, System.Boolean)
+  nameWithType: RoutingTable.Neighbors(Address, Int32, Boolean)
+- uid: Libplanet.Net.Protocols.RoutingTable.Neighbors(Libplanet.Net.Peer,System.Int32,System.Boolean)
+  name: Neighbors(Peer, Int32, Boolean)
+  href: api/Libplanet.Net.Protocols.RoutingTable.html#Libplanet_Net_Protocols_RoutingTable_Neighbors_Libplanet_Net_Peer_System_Int32_System_Boolean_
+  commentId: M:Libplanet.Net.Protocols.RoutingTable.Neighbors(Libplanet.Net.Peer,System.Int32,System.Boolean)
+  fullName: Libplanet.Net.Protocols.RoutingTable.Neighbors(Libplanet.Net.Peer, System.Int32, System.Boolean)
+  nameWithType: RoutingTable.Neighbors(Peer, Int32, Boolean)
+- uid: Libplanet.Net.Protocols.RoutingTable.Neighbors*
+  name: Neighbors
+  href: api/Libplanet.Net.Protocols.RoutingTable.html#Libplanet_Net_Protocols_RoutingTable_Neighbors_
+  commentId: Overload:Libplanet.Net.Protocols.RoutingTable.Neighbors
+  isSpec: "True"
+  fullName: Libplanet.Net.Protocols.RoutingTable.Neighbors
+  nameWithType: RoutingTable.Neighbors
+- uid: Libplanet.Net.Protocols.RoutingTable.Peers
+  name: Peers
+  href: api/Libplanet.Net.Protocols.RoutingTable.html#Libplanet_Net_Protocols_RoutingTable_Peers
+  commentId: P:Libplanet.Net.Protocols.RoutingTable.Peers
+  fullName: Libplanet.Net.Protocols.RoutingTable.Peers
+  nameWithType: RoutingTable.Peers
+- uid: Libplanet.Net.Protocols.RoutingTable.Peers*
+  name: Peers
+  href: api/Libplanet.Net.Protocols.RoutingTable.html#Libplanet_Net_Protocols_RoutingTable_Peers_
+  commentId: Overload:Libplanet.Net.Protocols.RoutingTable.Peers
+  isSpec: "True"
+  fullName: Libplanet.Net.Protocols.RoutingTable.Peers
+  nameWithType: RoutingTable.Peers
+- uid: Libplanet.Net.Protocols.RoutingTable.PeerStates
+  name: PeerStates
+  href: api/Libplanet.Net.Protocols.RoutingTable.html#Libplanet_Net_Protocols_RoutingTable_PeerStates
+  commentId: P:Libplanet.Net.Protocols.RoutingTable.PeerStates
+  fullName: Libplanet.Net.Protocols.RoutingTable.PeerStates
+  nameWithType: RoutingTable.PeerStates
+- uid: Libplanet.Net.Protocols.RoutingTable.PeerStates*
+  name: PeerStates
+  href: api/Libplanet.Net.Protocols.RoutingTable.html#Libplanet_Net_Protocols_RoutingTable_PeerStates_
+  commentId: Overload:Libplanet.Net.Protocols.RoutingTable.PeerStates
+  isSpec: "True"
+  fullName: Libplanet.Net.Protocols.RoutingTable.PeerStates
+  nameWithType: RoutingTable.PeerStates
+- uid: Libplanet.Net.Protocols.RoutingTable.RemovePeer(Libplanet.Net.BoundPeer)
+  name: RemovePeer(BoundPeer)
+  href: api/Libplanet.Net.Protocols.RoutingTable.html#Libplanet_Net_Protocols_RoutingTable_RemovePeer_Libplanet_Net_BoundPeer_
+  commentId: M:Libplanet.Net.Protocols.RoutingTable.RemovePeer(Libplanet.Net.BoundPeer)
+  fullName: Libplanet.Net.Protocols.RoutingTable.RemovePeer(Libplanet.Net.BoundPeer)
+  nameWithType: RoutingTable.RemovePeer(BoundPeer)
+- uid: Libplanet.Net.Protocols.RoutingTable.RemovePeer*
+  name: RemovePeer
+  href: api/Libplanet.Net.Protocols.RoutingTable.html#Libplanet_Net_Protocols_RoutingTable_RemovePeer_
+  commentId: Overload:Libplanet.Net.Protocols.RoutingTable.RemovePeer
+  isSpec: "True"
+  fullName: Libplanet.Net.Protocols.RoutingTable.RemovePeer
+  nameWithType: RoutingTable.RemovePeer
+- uid: Libplanet.Net.Protocols.RoutingTable.TableSize
+  name: TableSize
+  href: api/Libplanet.Net.Protocols.RoutingTable.html#Libplanet_Net_Protocols_RoutingTable_TableSize
+  commentId: P:Libplanet.Net.Protocols.RoutingTable.TableSize
+  fullName: Libplanet.Net.Protocols.RoutingTable.TableSize
+  nameWithType: RoutingTable.TableSize
+- uid: Libplanet.Net.Protocols.RoutingTable.TableSize*
+  name: TableSize
+  href: api/Libplanet.Net.Protocols.RoutingTable.html#Libplanet_Net_Protocols_RoutingTable_TableSize_
+  commentId: Overload:Libplanet.Net.Protocols.RoutingTable.TableSize
+  isSpec: "True"
+  fullName: Libplanet.Net.Protocols.RoutingTable.TableSize
+  nameWithType: RoutingTable.TableSize
 - uid: Libplanet.Net.StateDownloadState
   name: StateDownloadState
   href: api/Libplanet.Net.StateDownloadState.html
@@ -10072,6 +10283,23 @@ references:
   fullName.vb: Libplanet.Net.Swarm(Of T).Peers
   nameWithType: Swarm<T>.Peers
   nameWithType.vb: Swarm(Of T).Peers
+- uid: Libplanet.Net.Swarm`1.PeersStates
+  name: PeersStates
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_PeersStates
+  commentId: P:Libplanet.Net.Swarm`1.PeersStates
+  fullName: Libplanet.Net.Swarm<T>.PeersStates
+  fullName.vb: Libplanet.Net.Swarm(Of T).PeersStates
+  nameWithType: Swarm<T>.PeersStates
+  nameWithType.vb: Swarm(Of T).PeersStates
+- uid: Libplanet.Net.Swarm`1.PeersStates*
+  name: PeersStates
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_PeersStates_
+  commentId: Overload:Libplanet.Net.Swarm`1.PeersStates
+  isSpec: "True"
+  fullName: Libplanet.Net.Swarm<T>.PeersStates
+  fullName.vb: Libplanet.Net.Swarm(Of T).PeersStates
+  nameWithType: Swarm<T>.PeersStates
+  nameWithType.vb: Swarm(Of T).PeersStates
 - uid: Libplanet.Net.Swarm`1.PreloadAsync(System.Nullable{TimeSpan},IProgress{Libplanet.Net.PreloadState},CancellationToken)
   name: PreloadAsync(Nullable<TimeSpan>, IProgress<PreloadState>, CancellationToken)
   href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_PreloadAsync_System_Nullable_TimeSpan__IProgress_Libplanet_Net_PreloadState__CancellationToken_
@@ -10157,23 +10385,6 @@ references:
   fullName.vb: Libplanet.Net.Swarm(Of T).StopAsync
   nameWithType: Swarm<T>.StopAsync
   nameWithType.vb: Swarm(Of T).StopAsync
-- uid: Libplanet.Net.Swarm`1.TraceTable
-  name: TraceTable()
-  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_TraceTable
-  commentId: M:Libplanet.Net.Swarm`1.TraceTable
-  fullName: Libplanet.Net.Swarm<T>.TraceTable()
-  fullName.vb: Libplanet.Net.Swarm(Of T).TraceTable()
-  nameWithType: Swarm<T>.TraceTable()
-  nameWithType.vb: Swarm(Of T).TraceTable()
-- uid: Libplanet.Net.Swarm`1.TraceTable*
-  name: TraceTable
-  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_TraceTable_
-  commentId: Overload:Libplanet.Net.Swarm`1.TraceTable
-  isSpec: "True"
-  fullName: Libplanet.Net.Swarm<T>.TraceTable
-  fullName.vb: Libplanet.Net.Swarm(Of T).TraceTable
-  nameWithType: Swarm<T>.TraceTable
-  nameWithType.vb: Swarm(Of T).TraceTable
 - uid: Libplanet.Net.Swarm`1.TrustedAppProtocolVersionSigners
   name: TrustedAppProtocolVersionSigners
   href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_TrustedAppProtocolVersionSigners
