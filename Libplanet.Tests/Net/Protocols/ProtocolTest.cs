@@ -84,7 +84,7 @@ namespace Libplanet.Tests.Net.Protocols
 
                 Assert.Single(transportA.ReceivedMessages);
                 Assert.Single(transportB.ReceivedMessages);
-                Assert.Contains(transportA.AsPeer, transportB.Protocol.Peers);
+                Assert.Contains(transportA.AsPeer, transportB.Peers);
             }
             finally
             {
@@ -113,8 +113,8 @@ namespace Libplanet.Tests.Net.Protocols
 
                 Assert.Equal(2, transportA.ReceivedMessages.Count);
                 Assert.Equal(2, transportB.ReceivedMessages.Count);
-                Assert.Contains(transportA.AsPeer, transportB.Protocol.Peers);
-                Assert.Contains(transportB.AsPeer, transportA.Protocol.Peers);
+                Assert.Contains(transportA.AsPeer, transportB.Peers);
+                Assert.Contains(transportB.AsPeer, transportA.Peers);
             }
             finally
             {
@@ -136,8 +136,8 @@ namespace Libplanet.Tests.Net.Protocols
 
             await transportA.AddPeersAsync(new[] { transportB.AsPeer, transportC.AsPeer }, null);
 
-            Assert.Contains(transportB.AsPeer, transportA.Protocol.Peers);
-            Assert.Contains(transportC.AsPeer, transportA.Protocol.Peers);
+            Assert.Contains(transportB.AsPeer, transportA.Peers);
+            Assert.Contains(transportC.AsPeer, transportA.Peers);
 
             await transportC.StopAsync(TimeSpan.Zero);
             await Assert.ThrowsAsync<TimeoutException>(
@@ -146,7 +146,7 @@ namespace Libplanet.Tests.Net.Protocols
                     TimeSpan.FromSeconds(3)));
             await transportA.AddPeersAsync(new[] { transportB.AsPeer }, null);
 
-            Assert.Contains(transportB.AsPeer, transportA.Protocol.Peers);
+            Assert.Contains(transportB.AsPeer, transportA.Peers);
 
             await transportA.StopAsync(TimeSpan.Zero);
             await transportB.StopAsync(TimeSpan.Zero);
@@ -183,12 +183,12 @@ namespace Libplanet.Tests.Net.Protocols
                 await transportB.BootstrapAsync(new[] { transportA.AsPeer });
                 await transportC.BootstrapAsync(new[] { transportA.AsPeer });
 
-                Assert.Contains(transportB.AsPeer, transportC.Protocol.Peers);
-                Assert.Contains(transportC.AsPeer, transportB.Protocol.Peers);
+                Assert.Contains(transportB.AsPeer, transportC.Peers);
+                Assert.Contains(transportC.AsPeer, transportB.Peers);
 
-                ((KademliaProtocol)transportA.Protocol).ClearTable();
-                ((KademliaProtocol)transportB.Protocol).ClearTable();
-                ((KademliaProtocol)transportC.Protocol).ClearTable();
+                transportA.Table.Clear();
+                transportB.Table.Clear();
+                transportC.Table.Clear();
 
                 await transportB.AddPeersAsync(new[] { transportC.AsPeer }, null);
                 await transportC.StopAsync(TimeSpan.Zero);
@@ -214,12 +214,12 @@ namespace Libplanet.Tests.Net.Protocols
             await StartTestTransportAsync(transportB);
 
             await transportA.AddPeersAsync(new[] { transportB.AsPeer }, null);
-            Assert.Single(transportA.Protocol.Peers);
+            Assert.Single(transportA.Peers);
 
             await transportB.StopAsync(TimeSpan.Zero);
             await Task.Delay(100);
             await transportA.Protocol.RefreshTableAsync(TimeSpan.Zero, default(CancellationToken));
-            Assert.Empty(transportA.Protocol.Peers);
+            Assert.Empty(transportA.Peers);
             await transportA.StopAsync(TimeSpan.Zero);
         }
 
@@ -240,10 +240,10 @@ namespace Libplanet.Tests.Net.Protocols
             await transportB.AddPeersAsync(new[] { transport.AsPeer }, null);
             await transportC.AddPeersAsync(new[] { transport.AsPeer }, null);
 
-            Assert.Single(transportA.Protocol.Peers);
-            Assert.Contains(transportA.AsPeer, transport.Protocol.Peers);
-            Assert.DoesNotContain(transportB.AsPeer, transport.Protocol.Peers);
-            Assert.DoesNotContain(transportC.AsPeer, transport.Protocol.Peers);
+            Assert.Single(transportA.Peers);
+            Assert.Contains(transportA.AsPeer, transport.Peers);
+            Assert.DoesNotContain(transportB.AsPeer, transport.Peers);
+            Assert.DoesNotContain(transportC.AsPeer, transport.Peers);
 
             await transport.StopAsync(TimeSpan.Zero);
             await transportA.StopAsync(TimeSpan.Zero);
@@ -269,18 +269,18 @@ namespace Libplanet.Tests.Net.Protocols
             await Task.Delay(100);
             await transportC.AddPeersAsync(new[] { transport.AsPeer }, null);
 
-            Assert.Single(transportA.Protocol.Peers);
-            Assert.Contains(transportA.AsPeer, transport.Protocol.Peers);
-            Assert.DoesNotContain(transportB.AsPeer, transport.Protocol.Peers);
+            Assert.Single(transportA.Peers);
+            Assert.Contains(transportA.AsPeer, transport.Peers);
+            Assert.DoesNotContain(transportB.AsPeer, transport.Peers);
 
             await transportA.StopAsync(TimeSpan.Zero);
             await transport.Protocol.RefreshTableAsync(TimeSpan.Zero, default(CancellationToken));
             await transport.Protocol.CheckReplacementCacheAsync(default(CancellationToken));
 
-            Assert.Single(transport.Protocol.Peers);
-            Assert.DoesNotContain(transportA.AsPeer, transport.Protocol.Peers);
-            Assert.Contains(transportB.AsPeer, transport.Protocol.Peers);
-            Assert.DoesNotContain(transportC.AsPeer, transport.Protocol.Peers);
+            Assert.Single(transport.Peers);
+            Assert.DoesNotContain(transportA.AsPeer, transport.Peers);
+            Assert.Contains(transportB.AsPeer, transport.Peers);
+            Assert.DoesNotContain(transportC.AsPeer, transport.Peers);
 
             await transport.StopAsync(TimeSpan.Zero);
             await transportB.StopAsync(TimeSpan.Zero);
@@ -303,9 +303,9 @@ namespace Libplanet.Tests.Net.Protocols
             await transportA.AddPeersAsync(new[] { transport.AsPeer }, null);
             await transportB.AddPeersAsync(new[] { transport.AsPeer }, null);
 
-            Assert.Single(transport.Protocol.Peers);
-            Assert.Contains(transportA.AsPeer, transport.Protocol.Peers);
-            Assert.DoesNotContain(transportB.AsPeer, transport.Protocol.Peers);
+            Assert.Single(transport.Peers);
+            Assert.Contains(transportA.AsPeer, transport.Peers);
+            Assert.DoesNotContain(transportB.AsPeer, transport.Peers);
 
             await transportA.StopAsync(TimeSpan.Zero);
             await transportB.StopAsync(TimeSpan.Zero);
@@ -314,10 +314,10 @@ namespace Libplanet.Tests.Net.Protocols
             await transport.Protocol.RefreshTableAsync(TimeSpan.Zero, default(CancellationToken));
             await transport.Protocol.CheckReplacementCacheAsync(default(CancellationToken));
 
-            Assert.Single(transport.Protocol.Peers);
-            Assert.DoesNotContain(transportA.AsPeer, transport.Protocol.Peers);
-            Assert.DoesNotContain(transportB.AsPeer, transport.Protocol.Peers);
-            Assert.Contains(transportC.AsPeer, transport.Protocol.Peers);
+            Assert.Single(transport.Peers);
+            Assert.DoesNotContain(transportA.AsPeer, transport.Peers);
+            Assert.DoesNotContain(transportB.AsPeer, transport.Peers);
+            Assert.Contains(transportC.AsPeer, transport.Peers);
 
             await transport.StopAsync(TimeSpan.Zero);
             await transportC.StopAsync(TimeSpan.Zero);
@@ -400,8 +400,6 @@ namespace Libplanet.Tests.Net.Protocols
             {
                 await t1.BootstrapAsync(new[] { seed.AsPeer });
                 await t2.BootstrapAsync(new[] { seed.AsPeer });
-
-                Log.Debug(seed.Protocol.Trace());
 
                 Log.Debug("Bootstrap completed.");
 
@@ -491,8 +489,8 @@ namespace Libplanet.Tests.Net.Protocols
         private TestTransport CreateTestTransport(
             PrivateKey privateKey = null,
             bool blockBroadcast = false,
-            int? tableSize = null,
-            int? bucketSize = null,
+            int tableSize = Kademlia.TableSize,
+            int bucketSize = Kademlia.BucketSize,
             TimeSpan? networkDelay = null)
         {
             return new TestTransport(

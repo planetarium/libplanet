@@ -151,7 +151,9 @@ namespace Libplanet.Tests.Net
 
                 await swarmA.AddPeersAsync(new[] { seed.AsPeer }, null);
                 await StopAsync(swarmA);
-                await seed.Protocol.RefreshTableAsync(TimeSpan.Zero, default(CancellationToken));
+                await seed.PeerDiscovery.RefreshTableAsync(
+                    TimeSpan.Zero,
+                    default(CancellationToken));
 
                 Assert.DoesNotContain(swarmA.AsPeer, seed.Peers);
 
@@ -1267,7 +1269,7 @@ namespace Libplanet.Tests.Net
                     await Task.Delay(1000, cancellationToken);
                     try
                     {
-                        await swarmA.Protocol.RefreshTableAsync(
+                        await swarmA.PeerDiscovery.RefreshTableAsync(
                             TimeSpan.FromSeconds(1), cancellationToken);
                     }
                     catch (InvalidOperationException)
@@ -2015,7 +2017,7 @@ namespace Libplanet.Tests.Net
                     TimeSpan.FromMilliseconds(3000));
 
                 Assert.Equal(swarmC.AsPeer.Address, foundPeer.Address);
-                ((KademliaProtocol)swarmA.Protocol).ClearTable();
+                swarmA.RoutingTable.Clear();
                 Assert.Empty(swarmA.Peers);
                 await swarmA.AddPeersAsync(new Peer[] { swarmB.AsPeer }, null);
 
