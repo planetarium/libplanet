@@ -33,8 +33,9 @@ To be released.
  -  Added `Message` abstract class.  [[#1052]]
  -  Added `BlockExceedingTransactionsException` class.  [[#1104], [#1110]]
  -  Added `BlockChain<T>.GetStagedTransactionIds()` method.  [[#1089]]
- -  (Libplanet.RocksDBStore) Added `maxTotalWalSize` and `keepLogFileNum`
-    parameters into `RocksDBStore` constructor.  [[#1065], [#1102]]
+ -  (Libplanet.RocksDBStore) Added `maxTotalWalSize`, `keepLogFileNum` and
+    `maxLogFileSize` parameters into `RocksDBStore` constructor.
+    [[#1065], [#1102], [#1132]]
  -  Added `Swarm<T>.BlockDemand` property.  [[#1068], [#1102]]
  -  Added `BlockDemand` struct.  [[#1068], [#1102]]
  -  Added `Block<T>.Header` property.  [[#1070], [#1102]]
@@ -108,6 +109,7 @@ To be released.
 [#1119]: https://github.com/planetarium/libplanet/pull/1119
 [#1124]: https://github.com/planetarium/libplanet/pull/1124
 [#1125]: https://github.com/planetarium/libplanet/pull/1125
+[#1132]: https://github.com/planetarium/libplanet/pull/1132
 
 
 Version 0.10.2
