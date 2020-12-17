@@ -156,7 +156,11 @@ namespace Libplanet.Explorer.Executable
             switch (options.StoreType)
             {
                 case "rocksdb":
-                    innerStore = new RocksDBStore.RocksDBStore(options.StorePath);
+                    innerStore = new RocksDBStore.RocksDBStore(
+                      options.StorePath,
+                      statesCacheSize: 2,
+                      maxTotalWalSize: 16 * 1024 * 1024,
+                      keepLogFileNum: 1);
                     break;
                 case "default":
                     innerStore = new DefaultStore(
