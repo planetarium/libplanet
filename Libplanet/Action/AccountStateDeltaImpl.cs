@@ -77,9 +77,7 @@ namespace Libplanet.Action
         /// <inheritdoc/>
         [Pure]
         public FungibleAssetValue GetBalance(Address address, Currency currency) =>
-            _updatedFungibleAssets.TryGetValue((address, currency), out BigInteger balance)
-                ? FungibleAssetValue.FromRawValue(currency, balance)
-                : _accountBalanceGetter(address, currency);
+            GetBalance(address, currency, _updatedFungibleAssets);
 
         /// <inheritdoc/>
         [Pure]
@@ -136,13 +134,17 @@ namespace Libplanet.Action
                 throw new InsufficientBalanceException(sender, senderBalance, msg);
             }
 
-            _updatedFungibleAssets = _updatedFungibleAssets
+            IImmutableDictionary<(Address, Currency), BigInteger> updatedFungibleAssets =
+                _updatedFungibleAssets
                 .SetItem((sender, currency), (senderBalance - value).RawValue);
 
-            FungibleAssetValue recipientBalance = GetBalance(recipient, currency);
+            FungibleAssetValue recipientBalance = GetBalance(
+                recipient,
+                currency,
+                updatedFungibleAssets);
 
             return UpdateFungibleAssets(
-                _updatedFungibleAssets
+                updatedFungibleAssets
                     .SetItem((recipient, currency), (recipientBalance + value).RawValue)
             );
         }
@@ -182,6 +184,15 @@ namespace Libplanet.Action
                 _updatedFungibleAssets.SetItem((owner, currency), (balance - value).RawValue)
             );
         }
+
+        [Pure]
+        private FungibleAssetValue GetBalance(
+            Address address,
+            Currency currency,
+            IImmutableDictionary<(Address, Currency), BigInteger> balances) =>
+            balances.TryGetValue((address, currency), out BigInteger balance)
+                ? FungibleAssetValue.FromRawValue(currency, balance)
+                : _accountBalanceGetter(address, currency);
 
         [Pure]
         private AccountStateDeltaImpl UpdateStates(
