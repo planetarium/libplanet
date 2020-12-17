@@ -16,6 +16,7 @@ using Libplanet.Blockchain.Renderers.Debug;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Store;
+using Libplanet.Tests.Blockchain.Policies;
 using Libplanet.Tx;
 using Xunit;
 using static Libplanet.Blockchain.KeyConverters;
@@ -347,7 +348,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
 #pragma warning disable S1121
             var chain = new BlockChain<T>(
                 policy,
-                new VolatileStagePolicy<T>(),
+                new PersistentStagePolicy<T>(),
                 store,
                 stateStore,
                 genesisBlock,

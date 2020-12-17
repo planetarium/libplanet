@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
+using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Net.Messages;
 using Libplanet.Tx;
@@ -162,12 +163,15 @@ namespace Libplanet.Net
 
         private void TransferTxs(GetTxs getTxs)
         {
-            IEnumerable<Transaction<T>> txs = getTxs.TxIds
-                .Where(txId => _store.ContainsTransaction(txId))
-                .Select(BlockChain.GetTransaction);
-
-            foreach (Transaction<T> tx in txs)
+            foreach (TxId txid in getTxs.TxIds)
             {
+                Transaction<T> tx = BlockChain.GetTransaction(txid);
+
+                if (tx is null)
+                {
+                    continue;
+                }
+
                 Message response = new Messages.Tx(tx.Serialize(true))
                 {
                     Identity = getTxs.Identity,
@@ -193,9 +197,10 @@ namespace Libplanet.Net
                 message.Ids.Select(txid => txid.ToString())
             );
 
+            IStagePolicy<T> stagePolicy = BlockChain.StagePolicy;
             ImmutableHashSet<TxId> newTxIds = message.Ids
                 .Where(id => !_demandTxIds.ContainsKey(id))
-                .Where(id => !_store.ContainsTransaction(id))
+                .Where(id => !stagePolicy.HasStaged(BlockChain, id, true))
                 .ToImmutableHashSet();
 
             if (!newTxIds.Any())

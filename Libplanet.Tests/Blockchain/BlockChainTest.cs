@@ -369,14 +369,10 @@ namespace Libplanet.Tests.Blockchain
                 _fx.Transaction1,
                 _fx.Transaction2,
             };
-            Assert.Empty(txs.Where(tx => _fx.Store.ContainsTransaction(tx.Id)));
+            Assert.Empty(_blockChain.StagePolicy.Iterate(_blockChain));
 
             StageTransactions(txs);
-
-            Assert.Equal(
-                txs,
-                txs.Where(tx => _fx.Store.ContainsTransaction(tx.Id)).ToHashSet()
-            );
+            Assert.Equal(txs, _blockChain.StagePolicy.Iterate(_blockChain).ToHashSet());
         }
 
         [Fact]
@@ -1738,7 +1734,6 @@ namespace Libplanet.Tests.Blockchain
 
             List<Transaction<DumbAction>> txs = _stagePolicy
                 .Iterate(_blockChain)
-                .Select(_blockChain.Store.GetTransaction<DumbAction>)
                 .OrderBy(tx => tx.Nonce)
                 .ToList();
 
@@ -1770,9 +1765,11 @@ namespace Libplanet.Tests.Blockchain
             var txIds = _blockChain.GetStagedTransactionIds();
 
             var nonces = txIds
-                .Select(_blockChain.GetTransaction)
+                .Select(id => _stagePolicy.Get(_blockChain, id, includeUnstaged: true)
+                    ?? _blockChain.GetTransaction(id))
                 .Select(tx => tx.Nonce)
-                .OrderBy(nonce => nonce).ToArray();
+                .OrderBy(nonce => nonce)
+                .ToArray();
 
             Assert.Equal(
                 nonces,

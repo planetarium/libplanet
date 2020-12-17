@@ -456,6 +456,11 @@ namespace Libplanet.Blockchain
         /// <see cref="Transaction{T}"/> with a given <paramref name="txId"/>.</exception>
         public Transaction<T> GetTransaction(TxId txId)
         {
+            if (StagePolicy.Get(this, txId, includeUnstaged: true) is { } tx)
+            {
+                return tx;
+            }
+
             _rwlock.EnterReadLock();
             try
             {
@@ -630,21 +635,9 @@ namespace Libplanet.Blockchain
                     msg);
             }
 
-            // FIXME it's global chain lock so using it in this method can cause degrading
-            // parallelism of `BlockChain<T>`. we should re-organize locks in `BlockChain<T>`
-            _rwlock.EnterWriteLock();
-
-            try
+            if (!StagePolicy.HasStaged(this, transaction.Id, includeUnstaged: true))
             {
-                if (!_transactions.ContainsKey(transaction.Id))
-                {
-                    _transactions[transaction.Id] = transaction;
-                    StagePolicy.Stage(this, transaction.Id);
-                }
-            }
-            finally
-            {
-                _rwlock.ExitWriteLock();
+                StagePolicy.Stage(this, transaction);
             }
         }
 
@@ -679,34 +672,24 @@ namespace Libplanet.Blockchain
         /// <paramref name="address"/>.</returns>
         public long GetNextTxNonce(Address address)
         {
-            _rwlock.EnterReadLock();
+            long nonce = Store.GetTxNonce(Id, address);
+            long prevNonce = nonce - 1;
+            IOrderedEnumerable<long> stagedTxNonces = StagePolicy.Iterate(this)
+                .Where(tx => tx.Signer.Equals(address) && tx.Nonce > prevNonce)
+                .Select(tx => tx.Nonce)
+                .OrderBy(n => n);
 
-            try
+            foreach (long n in stagedTxNonces)
             {
-                long nonce = Store.GetTxNonce(Id, address);
-                var prevNonce = nonce - 1;
-                var stagedTxNonces = StagePolicy.Iterate(this)
-                    .Select(Store.GetTransaction<T>)
-                    .Where(tx => tx.Signer.Equals(address) && tx.Nonce > prevNonce)
-                    .Select(tx => tx.Nonce)
-                    .OrderBy(n => n);
-
-                foreach (long n in stagedTxNonces)
+                if (n != nonce)
                 {
-                    if (n != nonce)
-                    {
-                        break;
-                    }
-
-                    nonce++;
+                    break;
                 }
 
-                return nonce;
+                nonce++;
             }
-            finally
-            {
-                _rwlock.ExitReadLock();
-            }
+
+            return nonce;
         }
 
 #pragma warning disable MEN003
@@ -1076,16 +1059,8 @@ namespace Libplanet.Blockchain
         /// <returns><see cref="IImmutableSet{TxId}"/> of staged transactions.</returns>
         public IImmutableSet<TxId> GetStagedTransactionIds()
         {
-            _rwlock.EnterReadLock();
-
-            try
-            {
-                return StagePolicy.Iterate(this).ToImmutableHashSet();
-            }
-            finally
-            {
-                _rwlock.ExitReadLock();
-            }
+            // FIXME: How about turning this method to the StagedTransactions property?
+            return StagePolicy.Iterate(this).Select(tx => tx.Id).ToImmutableHashSet();
         }
 
         internal void Append(
@@ -1178,6 +1153,7 @@ namespace Libplanet.Blockchain
                     nonceDeltas[txSigner] = nonceDelta + 1;
                 }
 
+                ImmutableDictionary<Address, long> maxNonces;
                 _rwlock.EnterWriteLock();
                 try
                 {
@@ -1196,7 +1172,7 @@ namespace Libplanet.Blockchain
 
                     _logger.Debug("Unstaging transactions...");
 
-                    ImmutableDictionary<Address, long> maxNonces = block.Transactions
+                    maxNonces = block.Transactions
                         .GroupBy(
                             t => t.Signer,
                             t => t.Nonce,
@@ -1207,24 +1183,24 @@ namespace Libplanet.Blockchain
                             }
                         )
                         .ToImmutableDictionary(t => t.signer, t => t.maxNonce);
-                    ISet<TxId> txIds = StagePolicy.Iterate(this)
-                        .Select(Store.GetTransaction<T>)
-                        .Where(tx => maxNonces.TryGetValue(tx.Signer, out long nonce) &&
-                            tx.Nonce <= nonce)
-                        .Select(tx => tx.Id)
-                        .ToImmutableHashSet();
-                    foreach (TxId txId in txIds)
-                    {
-                        StagePolicy.Unstage(this, txId);
-                    }
-
-                    TipChanged?.Invoke(this, (prevTip, block));
-                    _logger.Debug("Block {blockIndex}: {block} is appended.", block?.Index, block);
                 }
                 finally
                 {
                     _rwlock.ExitWriteLock();
                 }
+
+                ISet<TxId> txIds = StagePolicy.Iterate(this)
+                    .Where(tx => maxNonces.TryGetValue(tx.Signer, out long nonce) &&
+                        tx.Nonce <= nonce)
+                    .Select(tx => tx.Id)
+                    .ToImmutableHashSet();
+                foreach (TxId txId in txIds)
+                {
+                    StagePolicy.Unstage(this, txId);
+                }
+
+                TipChanged?.Invoke(this, (prevTip, block));
+                _logger.Debug("Block {blockIndex}: {block} is appended.", block?.Index, block);
 
                 if (renderBlocks)
                 {
@@ -1747,21 +1723,21 @@ namespace Libplanet.Blockchain
                 _rwlock.EnterWriteLock();
                 try
                 {
-                    IEnumerable<TxId>
-                        GetTxIdsWithRange(BlockChain<T> chain, Block<T> start, Block<T> end)
+                    IEnumerable<Transaction<T>>
+                        GetTxsWithRange(BlockChain<T> chain, Block<T> start, Block<T> end)
                         => Enumerable
                             .Range((int)start.Index + 1, (int)(end.Index - start.Index))
-                            .SelectMany(x => chain[x].Transactions.Select(tx => tx.Id));
+                            .SelectMany(x => chain[x].Transactions);
 
                     // It assumes reorg is small size. If it was big, this may be heavy task.
-                    ImmutableHashSet<TxId> unstagedTxIds =
-                        GetTxIdsWithRange(this, topmostCommon, Tip).ToImmutableHashSet();
-                    ImmutableHashSet<TxId> stageTxIds =
-                        GetTxIdsWithRange(other, topmostCommon, other.Tip).ToImmutableHashSet();
-                    ImmutableHashSet<TxId> restageTxIds = unstagedTxIds.Except(stageTxIds);
-                    foreach (TxId restageId in restageTxIds)
+                    ImmutableHashSet<Transaction<T>> unstagedTxs =
+                        GetTxsWithRange(this, topmostCommon, Tip).ToImmutableHashSet();
+                    ImmutableHashSet<Transaction<T>> stageTxs =
+                        GetTxsWithRange(other, topmostCommon, other.Tip).ToImmutableHashSet();
+                    ImmutableHashSet<Transaction<T>> restageTxs = unstagedTxs.Except(stageTxs);
+                    foreach (Transaction<T> restageTx in restageTxs)
                     {
-                        StagePolicy.Stage(this, restageId);
+                        StagePolicy.Stage(this, restageTx);
                     }
 
                     Guid obsoleteId = Id;
@@ -1823,9 +1799,7 @@ namespace Libplanet.Blockchain
 
         internal ImmutableArray<Transaction<T>> ListStagedTransactions()
         {
-            Transaction<T>[] txs = StagePolicy.Iterate(this)
-                .Select(Store.GetTransaction<T>)
-                .ToArray();
+            Transaction<T>[] txs = StagePolicy.Iterate(this).ToArray();
 
             Dictionary<Address, LinkedList<Transaction<T>>> seats = txs
                 .GroupBy(tx => tx.Signer)

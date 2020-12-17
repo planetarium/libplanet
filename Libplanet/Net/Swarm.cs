@@ -1782,7 +1782,7 @@ namespace Libplanet.Net
                 var demandTxIds = _demandTxIds.ToArray();
                 var demands = new Dictionary<BoundPeer, HashSet<TxId>>();
 
-                foreach (var kv in demandTxIds)
+                foreach (KeyValuePair<TxId, BoundPeer> kv in demandTxIds)
                 {
                     if (!demands.ContainsKey(kv.Value))
                     {

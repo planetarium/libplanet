@@ -15,13 +15,14 @@ namespace Libplanet.Blockchain.Policies
         where T : IAction, new()
     {
         /// <summary>
-        /// Stages a transaction <paramref name="id"/>.
+        /// Stages a <paramref name="transaction"/>.
         /// </summary>
-        /// <param name="blockChain">The chain to stage the <paramref name="id"/>.</param>
-        /// <param name="id">The <seealso cref="Transaction{T}.Id"/> to be staged.</param>
-        /// <remarks>It does not throw any exception even if the <paramref name="id"/> has already
-        /// been staged.</remarks>
-        public void Stage(BlockChain<T> blockChain, TxId id);
+        /// <param name="blockChain">The chain to stage the <paramref name="transaction"/>.
+        /// </param>
+        /// <param name="transaction">The <seealso cref="Transaction{T}"/> to be staged.</param>
+        /// <remarks>It does not throw any exception even if the <paramref name="transaction"/> has
+        /// already been staged.</remarks>
+        public void Stage(BlockChain<T> blockChain, Transaction<T> transaction);
 
         /// <summary>
         /// Removes a transaction <paramref name="id"/> from the stage.
@@ -33,11 +34,35 @@ namespace Libplanet.Blockchain.Policies
         public void Unstage(BlockChain<T> blockChain, TxId id);
 
         /// <summary>
+        /// Checks if a transaction <paramref name="id"/> has staged.
+        /// </summary>
+        /// <param name="blockChain">The chain that the stage belongs to.</param>
+        /// <param name="id">The <see cref="Transaction{T}.Id"/> to check.</param>
+        /// <param name="includeUnstaged">Whether to include transactions that had once staged but
+        /// unstaged then.</param>
+        /// <returns><c>true</c> if a transaction is staged.  For transactions that had once staged
+        /// but unstaged then, it returns <c>true</c> iff <paramref name="includeUnstaged"/> is
+        /// turned on; otherwise it returns <c>false</c> for those cases.  For transactions
+        /// that have never staged, it returns <c>false</c>.</returns>
+        public bool HasStaged(BlockChain<T> blockChain, TxId id, bool includeUnstaged);
+
+        /// <summary>
+        /// Gets a staged <see cref="Transaction{T}"/> by its <paramref name="id"/>.
+        /// </summary>
+        /// <param name="blockChain">The chain that the stage belongs to.</param>
+        /// <param name="id">The <see cref="Transaction{T}.Id"/> to get.</param>
+        /// <param name="includeUnstaged">Whether to include transactions that had once staged but
+        /// unstaged then.</param>
+        /// <returns>A staged transaction if found.  If it had never staged <c>null</c> is
+        /// returned.</returns>
+        public Transaction<T>? Get(BlockChain<T> blockChain, TxId id, bool includeUnstaged);
+
+        /// <summary>
         /// Enumerates all staged transaction IDs.
         /// </summary>
         /// <param name="blockChain">The chain of the stage to enumerate.</param>
-        /// <returns>Staged transaction IDs.  The earliest staged transaction ID goes first,
-        /// and the latest staged transaction ID goes last.</returns>
-        public IEnumerable<TxId> Iterate(BlockChain<T> blockChain);
+        /// <returns>Staged transactions.  The earliest staged transaction goes first,
+        /// and the latest staged transaction goes last.</returns>
+        public IEnumerable<Transaction<T>> Iterate(BlockChain<T> blockChain);
     }
 }

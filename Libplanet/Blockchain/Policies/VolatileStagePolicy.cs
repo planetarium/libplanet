@@ -14,8 +14,7 @@ namespace Libplanet.Blockchain.Policies
     public class VolatileStagePolicy<T> : IStagePolicy<T>
         where T : IAction, new()
     {
-        // Use it as a set; values are unused.
-        private ConcurrentDictionary<TxId, bool> _set;
+        private ConcurrentDictionary<TxId, Transaction<T>> _set;
 
         private List<TxId> _queue;
 
@@ -24,30 +23,48 @@ namespace Libplanet.Blockchain.Policies
         /// </summary>
         public VolatileStagePolicy()
         {
-            _set = new ConcurrentDictionary<TxId, bool>();
+            _set = new ConcurrentDictionary<TxId, Transaction<T>>();
             _queue = new List<TxId>();
         }
 
-        /// <inheritdoc cref="IStagePolicy{T}.Stage(BlockChain{T}, TxId)"/>
-        public void Stage(BlockChain<T> blockChain, TxId id)
+        /// <inheritdoc cref="IStagePolicy{T}.Stage(BlockChain{T}, Transaction{T})"/>
+        public void Stage(BlockChain<T> blockChain, Transaction<T> transaction)
         {
-            if (_set.TryAdd(id, false))
+            if (_set.TryAdd(transaction.Id, transaction))
             {
-                _queue.Add(id);
+                _queue.Add(transaction.Id);
             }
         }
 
         /// <inheritdoc cref="IStagePolicy{T}.Unstage(BlockChain{T}, TxId)"/>
-        public void Unstage(BlockChain<T> blockChain, TxId id)
+        public void Unstage(BlockChain<T> blockChain, TxId id) =>
+            _queue.Remove(id);
+
+        /// <inheritdoc cref="IStagePolicy{T}.HasStaged(BlockChain{T}, TxId, bool)"/>
+        public bool HasStaged(BlockChain<T> blockChain, TxId id, bool includeUnstaged) =>
+            includeUnstaged ? _set.ContainsKey(id) : _queue.Contains(id);
+
+        /// <inheritdoc cref="IStagePolicy{T}.Get(BlockChain{T}, TxId, bool)"/>
+        public Transaction<T>? Get(BlockChain<T> blockChain, TxId id, bool includeUnstaged)
         {
-            if (_set.TryRemove(id, out _))
+            if (_set.TryGetValue(id, out Transaction<T>? tx))
             {
-                _queue.Remove(id);
+                return includeUnstaged || _queue.Contains(tx.Id) ? tx : null;
             }
+
+            return null;
         }
 
         /// <inheritdoc cref="IStagePolicy{T}.Iterate(BlockChain{T})"/>
-        public IEnumerable<TxId> Iterate(BlockChain<T> blockChain) =>
-            _queue;
+        public IEnumerable<Transaction<T>> Iterate(BlockChain<T> blockChain)
+        {
+            foreach (TxId txid in _queue)
+            {
+                if (_set.TryGetValue(txid, out Transaction<T>? tx))
+                {
+                    yield return tx;
+                }
+            }
+        }
     }
 }

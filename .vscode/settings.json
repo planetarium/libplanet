@@ -24,6 +24,7 @@
     "secp256k1",
     "struct",
     "unstage",
+    "unstaged",
     "unrender",
     "unrendered",
     "unrenderer",

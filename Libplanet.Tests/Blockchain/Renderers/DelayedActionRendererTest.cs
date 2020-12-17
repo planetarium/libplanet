@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Libplanet.Action;
 using Libplanet.Blockchain;
@@ -496,7 +495,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             Assert.Empty(renderLogs);
 
             var forked = chain.Fork(chain[0].Hash);
-            fx.Store.StageTransactionIds(new[] { tx1.Id }.ToImmutableHashSet());
+            chain.StagePolicy.Stage(chain, tx1);
             var block = await forked.MineBlock(fx.Address1, append: false);
             forked.Append(
                     block,
@@ -505,7 +504,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                     renderBlocks: false,
                     renderActions: false
                 );
-            fx.Store.StageTransactionIds(new[] { tx2.Id }.ToImmutableHashSet());
+            chain.StagePolicy.Stage(chain, tx2);
             block = await forked.MineBlock(fx.Address1, append: false);
             forked.Append(
                     block,
@@ -611,7 +610,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             Assert.Empty(renderLogs);
 
             var forked = chain.Fork(chain[1].Hash);
-            fx.Store.StageTransactionIds(new[] { tx2.Id }.ToImmutableHashSet());
+            chain.StagePolicy.Stage(chain, tx2);
             var block = await forked.MineBlock(fx.Address1, append: false);
             forked.Append(
                     block,
