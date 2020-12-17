@@ -176,6 +176,9 @@ namespace Libplanet.Tests.Action
             );
             Assert.Equal(Value(0, -1), a.GetBalance(_addr[0], _currencies[0]));
             Assert.Equal(Value(0, 6), a.GetBalance(_addr[1], _currencies[0]));
+
+            a = a.TransferAsset(_addr[1], _addr[1], Value(0, 6));
+            Assert.Equal(Value(0, 6), a.GetBalance(_addr[1], _currencies[0]));
         }
 
         [Fact]
