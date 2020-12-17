@@ -189,8 +189,8 @@ namespace Libplanet.Action
         private FungibleAssetValue GetBalance(
             Address address,
             Currency currency,
-            IImmutableDictionary<(Address, Currency), BigInteger> state) =>
-            state.TryGetValue((address, currency), out BigInteger balance)
+            IImmutableDictionary<(Address, Currency), BigInteger> balances) =>
+            balances.TryGetValue((address, currency), out BigInteger balance)
                 ? FungibleAssetValue.FromRawValue(currency, balance)
                 : _accountBalanceGetter(address, currency);
 
