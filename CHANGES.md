@@ -6,6 +6,11 @@ Version 0.10.3
 
 To be released.
 
+ -  Fixed a vulnerability that `AccountStateDeltaImpl.TransferAsset()` if
+    sender and recipient are same. [[#1134]]
+
+[#1134]: https://github.com/planetarium/libplanet/pull/1134
+
 
 Version 0.10.2
 --------------
