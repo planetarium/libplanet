@@ -128,7 +128,6 @@ namespace Libplanet.Action
 
             Currency currency = value.Currency;
             FungibleAssetValue senderBalance = GetBalance(sender, currency);
-            FungibleAssetValue recipientBalance = GetBalance(recipient, currency);
 
             if (!allowNegativeBalance && senderBalance < value)
             {
@@ -137,9 +136,13 @@ namespace Libplanet.Action
                 throw new InsufficientBalanceException(sender, senderBalance, msg);
             }
 
+            _updatedFungibleAssets = _updatedFungibleAssets
+                .SetItem((sender, currency), (senderBalance - value).RawValue);
+
+            FungibleAssetValue recipientBalance = GetBalance(recipient, currency);
+
             return UpdateFungibleAssets(
                 _updatedFungibleAssets
-                    .SetItem((sender, currency), (senderBalance - value).RawValue)
                     .SetItem((recipient, currency), (recipientBalance + value).RawValue)
             );
         }
