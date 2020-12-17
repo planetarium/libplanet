@@ -6,8 +6,12 @@ Version 0.10.3
 
 To be released.
 
- -  Fixed a vulnerability that `AccountStateDeltaImpl.TransferAsset()` if
-    sender and recipient are same. [[#1134]]
+ -  Fixed a vulnerability of the `IAccountStateDelta.TransferAsset()`'s internal
+    implementation that it had doubled the balance for transferring to themselves.
+    *Since this behavioral change breaks the protocol-level compatibility if any actions
+    in your app had used `IAccountStateDelta.TransferAsset()`, you must make the action
+    to conditionally work as it had done for the hard-coded block index before
+    this patch is applied, or you may be possible to hard-fork the network.*  [[#1134]]
 
 [#1134]: https://github.com/planetarium/libplanet/pull/1134
 
