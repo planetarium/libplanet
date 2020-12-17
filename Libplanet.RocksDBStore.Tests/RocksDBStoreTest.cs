@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using Libplanet.Blockchain;
+using Libplanet.Blockchain.Policies;
 using Libplanet.Store;
 using Libplanet.Tests.Blockchain;
 using Libplanet.Tests.Common.Action;
@@ -44,6 +45,7 @@ namespace Libplanet.RocksDBStore.Tests
                     new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore());
                 var blocks = new BlockChain<DumbAction>(
                     new NullPolicy<DumbAction>(),
+                    new VolatileStagePolicy<DumbAction>(),
                     store,
                     stateStore,
                     Fx.GenesisBlock

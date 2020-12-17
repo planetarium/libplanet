@@ -9,6 +9,7 @@ using Libplanet.Blockchain.Renderers;
 using Libplanet.Blockchain.Renderers.Debug;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
+using Libplanet.Tests.Blockchain.Policies;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Serilog;
@@ -463,6 +464,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
 
             var chain = new BlockChain<DumbAction>(
                 policy,
+                new PersistentStagePolicy<DumbAction>(),
                 fx.Store,
                 fx.StateStore,
                 fx.GenesisBlock,
@@ -577,6 +579,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
 
             var chain = new BlockChain<DumbAction>(
                 policy,
+                new PersistentStagePolicy<DumbAction>(),
                 fx.Store,
                 fx.StateStore,
                 fx.GenesisBlock,

@@ -28,9 +28,8 @@ namespace Libplanet.Blockchain
     /// A class have <see cref="Block{T}"/>s, <see cref="Transaction{T}"/>s, and the chain
     /// information.
     /// <para>In order to watch its state changes, implement <see cref="IRenderer{T}"/>
-    /// interface and pass it to the <see
-    /// cref="BlockChain{T}(IBlockPolicy{T},IStore,IStateStore,Block{T},IEnumerable{IRenderer{T}})"
-    /// /> constructor.</para>
+    /// interface and pass it to the <see cref="BlockChain{T}(IBlockPolicy{T}, IStagePolicy{T},
+    /// IStore, IStateStore, Block{T}, IEnumerable{IRenderer{T}})"/> constructor.</para>
     /// </summary>
     /// <remarks>This object is guaranteed that it has at least one block, since it takes a genesis
     /// block when it's instantiated.</remarks>
@@ -74,6 +73,7 @@ namespace Libplanet.Blockchain
         /// </summary>
         /// <param name="policy"><see cref="IBlockPolicy{T}"/> to use in the
         /// <see cref="BlockChain{T}"/>.</param>
+        /// <param name="stagePolicy">The staging policy to follow.</param>
         /// <param name="store"><see cref="IStore"/> to store <see cref="Block{T}"/>s,
         /// <see cref="Transaction{T}"/>s, and <see cref="BlockChain{T}"/> information.</param>
         /// <param name="genesisBlock">The genesis <see cref="Block{T}"/> of
@@ -90,13 +90,15 @@ namespace Libplanet.Blockchain
         /// (i.e., <paramref name="genesisBlock"/>).</exception>
         public BlockChain(
             IBlockPolicy<T> policy,
+            IStagePolicy<T> stagePolicy,
             IStore store,
             IStateStore stateStore,
             Block<T> genesisBlock,
             IEnumerable<IRenderer<T>> renderers = null
-            )
+        )
             : this(
                 policy,
+                stagePolicy,
                 store,
                 stateStore,
                 store.GetCanonicalChainId() ?? Guid.NewGuid(),
@@ -108,6 +110,7 @@ namespace Libplanet.Blockchain
 
         internal BlockChain(
             IBlockPolicy<T> policy,
+            IStagePolicy<T> stagePolicy,
             IStore store,
             IStateStore stateStore,
             Guid id,
@@ -116,6 +119,7 @@ namespace Libplanet.Blockchain
         )
             : this(
                 policy,
+                stagePolicy,
                 store,
                 stateStore,
                 id,
@@ -128,6 +132,7 @@ namespace Libplanet.Blockchain
 
         private BlockChain(
             IBlockPolicy<T> policy,
+            IStagePolicy<T> stagePolicy,
             IStore store,
             IStateStore stateStore,
             Guid id,
@@ -138,6 +143,7 @@ namespace Libplanet.Blockchain
         {
             Id = id;
             Policy = policy;
+            StagePolicy = stagePolicy;
             Store = store;
 
             // It expects store is DefaultStore or RocksDBStore.
@@ -223,7 +229,8 @@ namespace Libplanet.Blockchain
         /// <remarks>
         /// Since this value is immutable, renderers cannot be registered after once a <see
         /// cref="BlockChain{T}"/> object is instantiated; use <c>renderers</c> option of <see cref=
-        /// "BlockChain{T}(IBlockPolicy{T},IStore,IStateStore,Block{T},IEnumerable{IRenderer{T}})"/>
+        /// "BlockChain{T}(IBlockPolicy{T}, IStagePolicy{T}, IStore, IStateStore, Block{T},
+        /// IEnumerable{IRenderer{T}})"/>
         /// constructor instead.
         /// </remarks>
         public IImmutableList<IRenderer<T>> Renderers { get; }
@@ -234,7 +241,15 @@ namespace Libplanet.Blockchain
         /// </summary>
         public IImmutableList<IActionRenderer<T>> ActionRenderers { get; }
 
+        /// <summary>
+        /// The block and blockchain policy.
+        /// </summary>
         public IBlockPolicy<T> Policy { get; }
+
+        /// <summary>
+        /// The staging policy.
+        /// </summary>
+        public IStagePolicy<T> StagePolicy { get; set; }
 
         /// <summary>
         /// The topmost <see cref="Block{T}"/> of the current blockchain.
@@ -624,7 +639,7 @@ namespace Libplanet.Blockchain
                 if (!_transactions.ContainsKey(transaction.Id))
                 {
                     _transactions[transaction.Id] = transaction;
-                    Store.StageTransactionIds(ImmutableHashSet.Create(transaction.Id));
+                    StagePolicy.Stage(this, transaction.Id);
                 }
             }
             finally
@@ -647,7 +662,7 @@ namespace Libplanet.Blockchain
 
             try
             {
-                Store.UnstageTransactionIds(ImmutableHashSet.Create(transaction.Id));
+                StagePolicy.Unstage(this, transaction.Id);
             }
             finally
             {
@@ -670,7 +685,7 @@ namespace Libplanet.Blockchain
             {
                 long nonce = Store.GetTxNonce(Id, address);
                 var prevNonce = nonce - 1;
-                var stagedTxNonces = Store.IterateStagedTransactionIds()
+                var stagedTxNonces = StagePolicy.Iterate(this)
                     .Select(Store.GetTransaction<T>)
                     .Where(tx => tx.Signer.Equals(address) && tx.Nonce > prevNonce)
                     .Select(tx => tx.Nonce)
@@ -1065,7 +1080,7 @@ namespace Libplanet.Blockchain
 
             try
             {
-                return Store.IterateStagedTransactionIds().ToImmutableHashSet();
+                return StagePolicy.Iterate(this).ToImmutableHashSet();
             }
             finally
             {
@@ -1192,13 +1207,17 @@ namespace Libplanet.Blockchain
                             }
                         )
                         .ToImmutableDictionary(t => t.signer, t => t.maxNonce);
-                    ISet<TxId> txIds = Store.IterateStagedTransactionIds()
+                    ISet<TxId> txIds = StagePolicy.Iterate(this)
                         .Select(Store.GetTransaction<T>)
                         .Where(tx => maxNonces.TryGetValue(tx.Signer, out long nonce) &&
                             tx.Nonce <= nonce)
                         .Select(tx => tx.Id)
                         .ToImmutableHashSet();
-                    Store.UnstageTransactionIds(txIds);
+                    foreach (TxId txId in txIds)
+                    {
+                        StagePolicy.Unstage(this, txId);
+                    }
+
                     TipChanged?.Invoke(this, (prevTip, block));
                     _logger.Debug("Block {blockIndex}: {block} is appended.", block?.Index, block);
                 }
@@ -1489,7 +1508,7 @@ namespace Libplanet.Blockchain
                 ? Renderers
                 : Enumerable.Empty<IRenderer<T>>();
             var forked = new BlockChain<T>(
-                Policy, Store, StateStore, Guid.NewGuid(), Genesis, true, renderers);
+                Policy, StagePolicy, Store, StateStore, Guid.NewGuid(), Genesis, true, renderers);
             Guid forkedId = forked.Id;
             _logger.Debug(
                 "Trying to fork chain at {branchPoint}" +
@@ -1740,7 +1759,10 @@ namespace Libplanet.Blockchain
                     ImmutableHashSet<TxId> stageTxIds =
                         GetTxIdsWithRange(other, topmostCommon, other.Tip).ToImmutableHashSet();
                     ImmutableHashSet<TxId> restageTxIds = unstagedTxIds.Except(stageTxIds);
-                    Store.StageTransactionIds(restageTxIds);
+                    foreach (TxId restageId in restageTxIds)
+                    {
+                        StagePolicy.Stage(this, restageId);
+                    }
 
                     Guid obsoleteId = Id;
                     Id = other.Id;
@@ -1801,8 +1823,7 @@ namespace Libplanet.Blockchain
 
         internal ImmutableArray<Transaction<T>> ListStagedTransactions()
         {
-            Transaction<T>[] txs = Store
-                .IterateStagedTransactionIds()
+            Transaction<T>[] txs = StagePolicy.Iterate(this)
                 .Select(Store.GetTransaction<T>)
                 .ToArray();
 

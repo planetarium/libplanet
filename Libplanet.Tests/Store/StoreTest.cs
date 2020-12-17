@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain;
+using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Store;
@@ -573,6 +574,7 @@ namespace Libplanet.Tests.Store
 
             var blocks = new BlockChain<DumbAction>(
                 new NullPolicy<DumbAction>(),
+                new VolatileStagePolicy<DumbAction>(),
                 store,
                 Fx.StateStore,
                 Fx.GenesisBlock
@@ -584,6 +586,7 @@ namespace Libplanet.Tests.Store
 
             var forked = new BlockChain<DumbAction>(
                 new NullPolicy<DumbAction>(),
+                new VolatileStagePolicy<DumbAction>(),
                 store,
                 Fx.StateStore,
                 Guid.NewGuid(),
@@ -610,6 +613,7 @@ namespace Libplanet.Tests.Store
                 IStore s1 = fx.Store, s2 = fx2.Store;
                 var blocks = new BlockChain<DumbAction>(
                     new NullPolicy<DumbAction>(),
+                    new VolatileStagePolicy<DumbAction>(),
                     s1,
                     fx.StateStore,
                     Fx.GenesisBlock

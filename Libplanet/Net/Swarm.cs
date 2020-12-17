@@ -527,6 +527,7 @@ namespace Libplanet.Net
                 ? BlockChain.Fork(tip.Hash, inheritRenderers: false)
                 : new BlockChain<T>(
                     BlockChain.Policy,
+                    BlockChain.StagePolicy,
                     _store,
                     BlockChain.StateStore,
                     Guid.NewGuid(),

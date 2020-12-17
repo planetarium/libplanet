@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using BenchmarkDotNet.Attributes;
 using Libplanet.Blockchain;
+using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Tests.Blockchain;
@@ -19,6 +20,7 @@ namespace Libplanet.Benchmarks
             _fx = new DefaultStoreFixture();
             _blockChain = new BlockChain<DumbAction>(
                 new NullPolicy<DumbAction>(),
+                new VolatileStagePolicy<DumbAction>(),
                 _fx.Store,
                 _fx.StateStore,
                 _fx.GenesisBlock

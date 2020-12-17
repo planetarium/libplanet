@@ -833,6 +833,7 @@ namespace Libplanet.Tests.Net
                 fxs[i] = new DefaultStoreFixture(memory: true);
                 blockChains[i] = new BlockChain<DumbAction>(
                     policy,
+                    new VolatileStagePolicy<DumbAction>(),
                     fxs[i].Store,
                     fxs[i].StateStore,
                     fxs[i].GenesisBlock
@@ -1850,6 +1851,7 @@ namespace Libplanet.Tests.Net
                 IStore store, IStateStore stateStore, Block<DumbAction> genesisBlock) =>
                 new BlockChain<DumbAction>(
                     new BlockPolicy<DumbAction>(),
+                    new VolatileStagePolicy<DumbAction>(),
                     store,
                     stateStore,
                     genesisBlock);

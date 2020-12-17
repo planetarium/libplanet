@@ -276,6 +276,7 @@ namespace Libplanet.Tests.Blockchain
             {
                 var blockChain = new BlockChain<DumbAction>(
                     policy,
+                    new VolatileStagePolicy<DumbAction>(),
                     fx.Store,
                     fx.StateStore,
                     fx.GenesisBlock);
@@ -363,6 +364,7 @@ namespace Libplanet.Tests.Blockchain
             var blockChain = new BlockChain<DumbAction>(
                 new NullPolicy<DumbAction>(
                     new InvalidBlockDifficultyException(string.Empty)),
+                new VolatileStagePolicy<DumbAction>(),
                 _fx.Store,
                 _fx.StateStore,
                 _fx.GenesisBlock);
