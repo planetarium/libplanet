@@ -30,7 +30,8 @@ namespace Libplanet.Blockchain.Policies
         /// <inheritdoc cref="IStagePolicy{T}.Stage(BlockChain{T}, Transaction{T})"/>
         public void Stage(BlockChain<T> blockChain, Transaction<T> transaction)
         {
-            if (_set.TryAdd(transaction.Id, transaction))
+            if (_set.TryAdd(transaction.Id, transaction) ||
+                !_queue.Contains(transaction.Id))
             {
                 _queue.Add(transaction.Id);
             }

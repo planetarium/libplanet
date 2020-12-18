@@ -8,7 +8,6 @@ using Libplanet.Blockchain.Renderers;
 using Libplanet.Blockchain.Renderers.Debug;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
-using Libplanet.Tests.Blockchain.Policies;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Serilog;
@@ -457,19 +456,19 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 Log.Logger,
                 LogEventLevel.Verbose
             );
-            var valiator = new ValidatingActionRenderer<DumbAction>();
+            var validator = new ValidatingActionRenderer<DumbAction>();
             var delayedValidatingActionRenderer = new DelayedActionRenderer<DumbAction>(
-                valiator, fx.Store, 2);
+                validator, fx.Store, 2);
 
             var chain = new BlockChain<DumbAction>(
                 policy,
-                new PersistentStagePolicy<DumbAction>(),
+                new VolatileStagePolicy<DumbAction>(),
                 fx.Store,
                 fx.StateStore,
                 fx.GenesisBlock,
                 new IActionRenderer<DumbAction>[] { renderer, delayedValidatingActionRenderer }
             );
-            valiator.BlockChain = chain;
+            validator.BlockChain = chain;
 
             Assert.Null(delayedRenderer.Tip);
             Assert.Empty(blockLogs);
@@ -578,7 +577,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
 
             var chain = new BlockChain<DumbAction>(
                 policy,
-                new PersistentStagePolicy<DumbAction>(),
+                new VolatileStagePolicy<DumbAction>(),
                 fx.Store,
                 fx.StateStore,
                 fx.GenesisBlock,

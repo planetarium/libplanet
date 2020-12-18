@@ -751,7 +751,7 @@ namespace Libplanet.Tests.Net
                     }
                 });
 
-                while (chainC.Store.CountTransactions() != txCount + 1)
+                while (!chainC.GetStagedTransactionIds().Any())
                 {
                     await swarmC.TxReceived.WaitAsync();
                 }
@@ -760,7 +760,7 @@ namespace Libplanet.Tests.Net
 
                 for (var i = 0; i < txCount; i++)
                 {
-                    Assert.True(chainC.Store.ContainsTransaction(txs[i].Id));
+                    Assert.NotNull(chainC.GetTransaction(txs[i].Id));
                 }
             }
             finally
