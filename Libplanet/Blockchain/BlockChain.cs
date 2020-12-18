@@ -647,21 +647,8 @@ namespace Libplanet.Blockchain
         /// <param name="transaction">A <see cref="Transaction{T}"/>
         /// to remove from the pending list.</param>
         /// <seealso cref="StageTransaction"/>
-        public void UnstageTransaction(Transaction<T> transaction)
-        {
-            // FIXME it's global chain lock so using it in this method can cause degrading
-            // parallelism of `BlockChain<T>`. we should re-organize locks in `BlockChain<T>`
-            _rwlock.EnterWriteLock();
-
-            try
-            {
-                StagePolicy.Unstage(this, transaction.Id);
-            }
-            finally
-            {
-                _rwlock.ExitWriteLock();
-            }
-        }
+        public void UnstageTransaction(Transaction<T> transaction) =>
+            StagePolicy.Unstage(this, transaction.Id);
 
         /// <summary>
         /// Gets next <see cref="Transaction{T}.Nonce"/> of the address.

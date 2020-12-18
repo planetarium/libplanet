@@ -11,6 +11,7 @@ namespace Libplanet.Blockchain.Policies
     /// </summary>
     /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
     /// to <see cref="BlockChain{T}"/>'s type parameter.</typeparam>
+    /// <remarks>Every operation on an object implementing this must be thread-safe.</remarks>
     public interface IStagePolicy<T>
         where T : IAction, new()
     {

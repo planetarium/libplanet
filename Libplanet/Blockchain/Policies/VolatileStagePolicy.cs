@@ -1,6 +1,8 @@
 #nullable enable
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Threading;
 using Libplanet.Action;
 using Libplanet.Tx;
 
@@ -14,9 +16,11 @@ namespace Libplanet.Blockchain.Policies
     public class VolatileStagePolicy<T> : IStagePolicy<T>
         where T : IAction, new()
     {
-        private ConcurrentDictionary<TxId, Transaction<T>> _set;
+        private readonly ConcurrentDictionary<TxId, Transaction<T>> _set;
 
-        private List<TxId> _queue;
+        private readonly List<TxId> _queue;
+
+        private readonly ReaderWriterLockSlim _lock;
 
         /// <summary>
         /// Creates a new <see cref="VolatileStagePolicy{T}"/> instance.
@@ -25,32 +29,98 @@ namespace Libplanet.Blockchain.Policies
         {
             _set = new ConcurrentDictionary<TxId, Transaction<T>>();
             _queue = new List<TxId>();
+            _lock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
         }
 
         /// <inheritdoc cref="IStagePolicy{T}.Stage(BlockChain{T}, Transaction{T})"/>
         public void Stage(BlockChain<T> blockChain, Transaction<T> transaction)
         {
-            if (_set.TryAdd(transaction.Id, transaction) ||
-                !_queue.Contains(transaction.Id))
+            bool stageAgain = !_set.TryAdd(transaction.Id, transaction);
+            if (stageAgain)
+            {
+                bool staged;
+                _lock.EnterUpgradeableReadLock();
+                try
+                {
+                    staged = _queue.Contains(transaction.Id);
+                }
+                catch (Exception)
+                {
+                    _lock.ExitUpgradeableReadLock();
+                    throw;
+                }
+
+                if (staged)
+                {
+                    _lock.ExitUpgradeableReadLock();
+                    return;
+                }
+            }
+
+            _lock.EnterWriteLock();
+            try
             {
                 _queue.Add(transaction.Id);
+            }
+            finally
+            {
+                _lock.ExitWriteLock();
+                if (stageAgain)
+                {
+                    _lock.ExitUpgradeableReadLock();
+                }
             }
         }
 
         /// <inheritdoc cref="IStagePolicy{T}.Unstage(BlockChain{T}, TxId)"/>
-        public void Unstage(BlockChain<T> blockChain, TxId id) =>
+        public void Unstage(BlockChain<T> blockChain, TxId id)
+        {
+            _lock.EnterWriteLock();
             _queue.Remove(id);
+            _lock.ExitWriteLock();
+        }
 
         /// <inheritdoc cref="IStagePolicy{T}.HasStaged(BlockChain{T}, TxId, bool)"/>
-        public bool HasStaged(BlockChain<T> blockChain, TxId id, bool includeUnstaged) =>
-            includeUnstaged ? _set.ContainsKey(id) : _queue.Contains(id);
+        public bool HasStaged(BlockChain<T> blockChain, TxId id, bool includeUnstaged)
+        {
+            if (includeUnstaged)
+            {
+                return _set.ContainsKey(id);
+            }
+
+            _lock.EnterReadLock();
+            try
+            {
+                return _queue.Contains(id);
+            }
+            finally
+            {
+                _lock.ExitReadLock();
+            }
+        }
 
         /// <inheritdoc cref="IStagePolicy{T}.Get(BlockChain{T}, TxId, bool)"/>
         public Transaction<T>? Get(BlockChain<T> blockChain, TxId id, bool includeUnstaged)
         {
             if (_set.TryGetValue(id, out Transaction<T>? tx))
             {
-                return includeUnstaged || _queue.Contains(tx.Id) ? tx : null;
+                if (includeUnstaged)
+                {
+                    return tx;
+                }
+
+                _lock.EnterReadLock();
+                bool queued;
+                try
+                {
+                    queued = _queue.Contains(tx.Id);
+                }
+                finally
+                {
+                    _lock.ExitReadLock();
+                }
+
+                return queued ? tx : null;
             }
 
             return null;
@@ -59,7 +129,18 @@ namespace Libplanet.Blockchain.Policies
         /// <inheritdoc cref="IStagePolicy{T}.Iterate(BlockChain{T})"/>
         public IEnumerable<Transaction<T>> Iterate(BlockChain<T> blockChain)
         {
-            foreach (TxId txid in _queue)
+            _lock.EnterReadLock();
+            TxId[] queue;
+            try
+            {
+                queue = _queue.ToArray();
+            }
+            finally
+            {
+                _lock.ExitReadLock();
+            }
+
+            foreach (TxId txid in queue)
             {
                 if (_set.TryGetValue(txid, out Transaction<T>? tx))
                 {
