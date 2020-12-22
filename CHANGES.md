@@ -92,6 +92,15 @@ To be released.
 
 ### CLI tools
 
+ -  `planet mpt diff` command became to take 4 arguments (which was 3)
+    so that it can compare state root hashes from two different
+    <abbr title="key–value">KV</abbr> stores.  The existing commands
+    like `planet mpt diff STORE A B` do not work anymore,
+    and these should be instead like `planet mpt diff STORE A STORE B`.
+    [[#1129]]
+ -  Store aliases used by `planet mpt` became to disallow names looking like
+    URIs to disambiguate aliases from the literal store URIs.  [[#1129]]
+
 [#795]: https://github.com/planetarium/libplanet/issues/795
 [#1052]: https://github.com/planetarium/libplanet/pull/1052
 [#1061]: https://github.com/planetarium/libplanet/pull/1061
@@ -114,6 +123,7 @@ To be released.
 [#1120]: https://github.com/planetarium/libplanet/pull/1120
 [#1124]: https://github.com/planetarium/libplanet/pull/1124
 [#1125]: https://github.com/planetarium/libplanet/pull/1125
+[#1129]: https://github.com/planetarium/libplanet/pull/1129
 [#1132]: https://github.com/planetarium/libplanet/pull/1132
 
 

@@ -50,37 +50,26 @@ namespace Libplanet.Tools
                 Description = "The state root hash to compare.")]
             string stateRootHashHex,
             [Argument(
+                Name = "OTHER-KV-STORE",
+                Description = KVStoreArgumentDescription)]
+            string otherKvStoreUri,
+            [Argument(
                 Name = "OTHER-STATE-ROOT-HASH",
                 Description = "Another state root hash to compare.")]
             string otherStateRootHashHex,
             [FromService] IConfigurationService<ToolConfiguration> configurationService)
         {
-            // If it is not Uri format,
-            // try to get uri from configuration service by using it as alias.
-            if (!Uri.IsWellFormedUriString(kvStoreUri, UriKind.Absolute))
-            {
-                try
-                {
-                    var configuration = configurationService.Load();
-                    kvStoreUri = configuration.Mpt.Aliases[kvStoreUri];
-                }
-                catch (KeyNotFoundException)
-                {
-                    var exceptionMessage =
-                        $"The alias, '{kvStoreUri}' doesn't exist. " +
-                        $"Please pass correct uri or alias.";
-                    throw new CommandExitedException(
-                        exceptionMessage,
-                        -1);
-                }
-            }
+            ToolConfiguration toolConfiguration = configurationService.Load();
+            kvStoreUri = ConvertKVStoreUri(kvStoreUri, toolConfiguration);
+            otherKvStoreUri = ConvertKVStoreUri(otherKvStoreUri, toolConfiguration);
 
             IKeyValueStore keyValueStore = LoadKVStoreFromURI(kvStoreUri);
+            IKeyValueStore otherKeyValueStore = LoadKVStoreFromURI(otherKvStoreUri);
             var trie = new MerkleTrie(
                 keyValueStore,
                 HashDigest<SHA256>.FromString(stateRootHashHex));
             var otherTrie = new MerkleTrie(
-                keyValueStore,
+                otherKeyValueStore,
                 HashDigest<SHA256>.FromString(otherStateRootHashHex));
 
             foreach (var group in trie.DifferentNodes(otherTrie))
@@ -111,25 +100,8 @@ namespace Libplanet.Tools
             string stateRootHashHex,
             [FromService] IConfigurationService<ToolConfiguration> configurationService)
         {
-            // If it is not Uri format,
-            // try to get uri from configuration service by using it as alias.
-            if (!Uri.IsWellFormedUriString(kvStoreUri, UriKind.Absolute))
-            {
-                try
-                {
-                    var configuration = configurationService.Load();
-                    kvStoreUri = configuration.Mpt.Aliases[kvStoreUri];
-                }
-                catch (KeyNotFoundException)
-                {
-                    var exceptionMessage =
-                        $"The alias, '{kvStoreUri}' doesn't exist. " +
-                        $"Please pass correct uri or alias.";
-                    throw new CommandExitedException(
-                        exceptionMessage,
-                        -1);
-                }
-            }
+            ToolConfiguration toolConfiguration = configurationService.Load();
+            kvStoreUri = ConvertKVStoreUri(kvStoreUri, toolConfiguration);
 
             IKeyValueStore keyValueStore = LoadKVStoreFromURI(kvStoreUri);
             var trie = new MerkleTrie(
@@ -157,6 +129,14 @@ namespace Libplanet.Tools
             string uri,
             [FromService] IConfigurationService<ToolConfiguration> configurationService)
         {
+            if (Uri.IsWellFormedUriString(alias, UriKind.Absolute))
+            {
+                throw new CommandExitedException(
+                    "The alias should not look like a URI to prevent it" +
+                    "from being ambiguous. Please try to use other alias name.",
+                    -1);
+            }
+
             try
             {
                 // Checks the `uri` is valid.
@@ -221,6 +201,30 @@ namespace Libplanet.Tools
             }
 
             return constructor(uri.AbsolutePath);
+        }
+
+        private string ConvertKVStoreUri(string kvStoreUri, ToolConfiguration toolConfiguration)
+        {
+            // If it is not Uri format,
+            // try to get uri from configuration service by using it as alias.
+            if (!Uri.IsWellFormedUriString(kvStoreUri, UriKind.Absolute))
+            {
+                try
+                {
+                    kvStoreUri = toolConfiguration.Mpt.Aliases[kvStoreUri];
+                }
+                catch (KeyNotFoundException)
+                {
+                    var exceptionMessage =
+                        $"The alias, '{kvStoreUri}' doesn't exist. " +
+                        $"Please pass correct uri or alias.";
+                    throw new CommandExitedException(
+                        exceptionMessage,
+                        -1);
+                }
+            }
+
+            return kvStoreUri;
         }
     }
 }
