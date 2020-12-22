@@ -11,7 +11,10 @@ using Random = System.Random;
 
 namespace Libplanet.Net.Protocols
 {
-    internal class KademliaProtocol : IProtocol
+    /// <summary>
+    /// A Kademlia based peer discovery protocol.
+    /// </summary>
+    public class KademliaProtocol : IProtocol
     {
         private readonly TimeSpan _requestTimeout;
         private readonly ITransport _transport;
@@ -23,6 +26,19 @@ namespace Libplanet.Net.Protocols
 
         private readonly ILogger _logger;
 
+        /// <summary>
+        /// Creates a <see cref="KademliaProtocol"/> instance.
+        /// </summary>
+        /// <param name="table">
+        /// The <see cref="RoutingTable"/> where <see cref="Peer"/>s are stored.</param>
+        /// <param name="transport"><see cref="ITransport"/> to process messages.</param>
+        /// <param name="address">The <see cref="Address"/> of the <see cref="Peer"/>
+        /// to be the reference point.</param>
+        /// <param name="findConcurrency">The number of concurrency in peer discovery.</param>
+        /// <param name="requestTimeout">
+        /// A timeout of waiting for the reply of messages.
+        /// If <c>null</c> is given, will automatically be set to 5 seconds.
+        /// </param>
         public KademliaProtocol(
             RoutingTable table,
             ITransport transport,
