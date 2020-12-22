@@ -1,6 +1,8 @@
 #nullable enable
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using Libplanet.Action;
 using Libplanet.Tx;
@@ -23,17 +25,41 @@ namespace Libplanet.Blockchain.Policies
 
         /// <summary>
         /// Creates a new <see cref="VolatileStagePolicy{T}"/> instance.
+        /// <para><see cref="Lifetime"/> is configured to 3 hours.</para>
         /// </summary>
         public VolatileStagePolicy()
+            : this(TimeSpan.FromHours(3))
         {
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="VolatileStagePolicy{T}"/> instance.
+        /// </summary>
+        /// <param name="lifetime">Volatilizes staged transactions older than this <paramref
+        /// name="lifetime"/>.  See also the <see cref="Lifetime"/> property.</param>
+        public VolatileStagePolicy(TimeSpan lifetime)
+        {
+            Lifetime = lifetime;
             _set = new ConcurrentDictionary<TxId, Transaction<T>>();
             _queue = new List<TxId>();
             _lock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
         }
 
+        /// <summary>
+        /// Volatilizes staged transactions older than this <see cref="Lifetime"/>.
+        /// <para>Note that transactions older than the lifetime never cannot be staged.</para>
+        /// </summary>
+        public TimeSpan Lifetime { get; }
+
         /// <inheritdoc cref="IStagePolicy{T}.Stage(BlockChain{T}, Transaction{T})"/>
         public void Stage(BlockChain<T> blockChain, Transaction<T> transaction)
         {
+            if (DateTimeOffset.UtcNow - Lifetime > transaction.Timestamp)
+            {
+                // The transaction is already expired; don't stage it at all.
+                return;
+            }
+
             try
             {
                 if (!_set.TryAdd(transaction.Id, transaction))
@@ -73,46 +99,38 @@ namespace Libplanet.Blockchain.Policies
         }
 
         /// <inheritdoc cref="IStagePolicy{T}.HasStaged(BlockChain{T}, TxId, bool)"/>
-        public bool HasStaged(BlockChain<T> blockChain, TxId id, bool includeUnstaged)
-        {
-            if (includeUnstaged)
-            {
-                return _set.ContainsKey(id);
-            }
-
-            _lock.EnterReadLock();
-            try
-            {
-                return _queue.Contains(id);
-            }
-            finally
-            {
-                _lock.ExitReadLock();
-            }
-        }
+        public bool HasStaged(BlockChain<T> blockChain, TxId id, bool includeUnstaged) =>
+            Get(blockChain, id, includeUnstaged) is { };
 
         /// <inheritdoc cref="IStagePolicy{T}.Get(BlockChain{T}, TxId, bool)"/>
         public Transaction<T>? Get(BlockChain<T> blockChain, TxId id, bool includeUnstaged)
         {
-            if (_set.TryGetValue(id, out Transaction<T>? tx))
+            if (!_set.TryGetValue(id, out Transaction<T>? tx))
             {
-                if (includeUnstaged)
-                {
-                    return tx;
-                }
-
+                return null;
+            }
+            else if (tx.Timestamp >= DateTimeOffset.UtcNow - Lifetime)
+            {
                 _lock.EnterReadLock();
-                bool queued;
                 try
                 {
-                    queued = _queue.Contains(tx.Id);
+                    return includeUnstaged || _queue.Contains(id) ? tx : null;
                 }
                 finally
                 {
                     _lock.ExitReadLock();
                 }
+            }
 
-                return queued ? tx : null;
+            _lock.EnterWriteLock();
+            try
+            {
+                _queue.Remove(id);
+                _set.TryRemove(id, out _);
+            }
+            finally
+            {
+                _lock.ExitWriteLock();
             }
 
             return null;
@@ -132,12 +150,41 @@ namespace Libplanet.Blockchain.Policies
                 _lock.ExitReadLock();
             }
 
+            DateTimeOffset exp = DateTimeOffset.UtcNow - Lifetime;
+            var expired = new List<TxId>();
             foreach (TxId txid in queue)
             {
                 if (_set.TryGetValue(txid, out Transaction<T>? tx))
                 {
-                    yield return tx;
+                    if (tx.Timestamp > exp)
+                    {
+                        yield return tx;
+                    }
+                    else
+                    {
+                        expired.Add(tx.Id);
+                    }
                 }
+            }
+
+            if (!expired.Any())
+            {
+                yield break;
+            }
+
+            // Clean up expired transactions (if any exist).
+            _lock.EnterWriteLock();
+            try
+            {
+                foreach (TxId txid in expired)
+                {
+                    _queue.Remove(txid);
+                    _set.TryRemove(txid, out _);
+                }
+            }
+            finally
+            {
+                _lock.ExitWriteLock();
             }
         }
     }

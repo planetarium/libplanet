@@ -30,8 +30,8 @@ To be released.
 
 ### Added APIs
 
- -  Added `IStagePolicy` interface.  [[#1130], [#1131]]
- -  Added `VolatileStagePolicy` class.  [[#1130], [#1131]]
+ -  Added `IStagePolicy<T>` interface.  [[#1130], [#1131]]
+ -  Added `VolatileStagePolicy<T>` class.  [[#1130], [#1131], [#1136]]
  -  Added `ITransport` interface.  [[#1052]]
  -  Added `NetMQTransport` class which implements `ITransport`.  [[#1052]]
  -  Added `Message` abstract class.  [[#1052]]
@@ -74,7 +74,8 @@ To be released.
  -  Removed `Swarm<T>.TraceTable()` method.  [[#1120]]
  -  Added `Swarm<T>.PeerStates` property.  [[#1120]]
  -  Added `IProtocol` interface.  [[#1120]]
- -  Added `KademliaProtocol` class which implements `IProtocol`.  [[#1120]]
+ -  Added `KademliaProtocol` class which implements `IProtocol`.
+    [[#1120], [#1135]]
 
 ### Behavioral changes
 
@@ -84,7 +85,9 @@ To be released.
  -  When a `BlockChain<T>` follows `VolatileStagePolicy<T>`, which is
     Libplanet's the only built-in `IStagePolicy<T>` implementation at
     the moment, as its `StagePolicy`, its staged transactions are no longer
-    persistent but volatile instead.  [[#1130], [#1131]]
+    persistent but volatile instead.  It also automatically purges staged
+    transactions after the given `Lifetime`, which is 3 hours by default.
+    [[#1130], [#1131], [#1136]]
  -  `Swarm<T>` became not to receive states from trusted peers.
     [[#1061], [#1102]]
  -  `Swarm<T>` became not to retry when block downloading.  [[#1062], [#1102]]
@@ -135,6 +138,8 @@ To be released.
 [#1130]: https://github.com/planetarium/libplanet/issues/1130
 [#1131]: https://github.com/planetarium/libplanet/pull/1131
 [#1132]: https://github.com/planetarium/libplanet/pull/1132
+[#1135]: https://github.com/planetarium/libplanet/pull/1135
+[#1136]: https://github.com/planetarium/libplanet/pull/1136
 
 
 Version 0.10.2

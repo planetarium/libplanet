@@ -668,6 +668,11 @@ namespace Libplanet.Blockchain
 
             foreach (long n in stagedTxNonces)
             {
+                if (n < nonce)
+                {
+                    continue;
+                }
+
                 if (n != nonce)
                 {
                     break;

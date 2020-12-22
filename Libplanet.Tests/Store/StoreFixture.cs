@@ -157,8 +157,8 @@ namespace Libplanet.Tests.Store
         )
         {
             privateKey = privateKey ?? new PrivateKey();
-            timestamp = timestamp ??
-                new DateTimeOffset(2018, 11, 21, 0, 0, 0, TimeSpan.Zero);
+            timestamp = timestamp ?? DateTimeOffset.UtcNow;
+
             return Transaction<DumbAction>.Create(
                 nonce,
                 privateKey,

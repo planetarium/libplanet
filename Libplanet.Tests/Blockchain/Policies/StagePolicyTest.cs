@@ -11,10 +11,11 @@ namespace Libplanet.Tests.Blockchain.Policies
 {
     public abstract class StagePolicyTest
     {
-        private readonly BlockPolicy<DumbAction> _policy;
-        private readonly DefaultStoreFixture _fx;
-        private readonly BlockChain<DumbAction> _chain;
-        private readonly Transaction<DumbAction>[] _txs;
+        protected readonly BlockPolicy<DumbAction> _policy;
+        protected readonly DefaultStoreFixture _fx;
+        protected readonly BlockChain<DumbAction> _chain;
+        protected readonly PrivateKey _key;
+        protected readonly Transaction<DumbAction>[] _txs;
 
         protected StagePolicyTest()
         {
@@ -27,11 +28,11 @@ namespace Libplanet.Tests.Blockchain.Policies
                 _fx.StateStore,
                 _fx.GenesisBlock
             );
-            var key = new PrivateKey();
+            _key = new PrivateKey();
             _txs = Enumerable.Range(0, 5).Select(i =>
                 Transaction<DumbAction>.Create(
                     i,
-                    key,
+                    _key,
                     _fx.GenesisBlock.Hash,
                     Enumerable.Empty<DumbAction>()
                 )
