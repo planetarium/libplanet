@@ -1,5 +1,4 @@
 #nullable enable
-using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
@@ -35,37 +34,30 @@ namespace Libplanet.Blockchain.Policies
         /// <inheritdoc cref="IStagePolicy{T}.Stage(BlockChain{T}, Transaction{T})"/>
         public void Stage(BlockChain<T> blockChain, Transaction<T> transaction)
         {
-            bool stageAgain = !_set.TryAdd(transaction.Id, transaction);
-            if (stageAgain)
-            {
-                bool staged;
-                _lock.EnterUpgradeableReadLock();
-                try
-                {
-                    staged = _queue.Contains(transaction.Id);
-                }
-                catch (Exception)
-                {
-                    _lock.ExitUpgradeableReadLock();
-                    throw;
-                }
-
-                if (staged)
-                {
-                    _lock.ExitUpgradeableReadLock();
-                    return;
-                }
-            }
-
-            _lock.EnterWriteLock();
             try
             {
-                _queue.Add(transaction.Id);
+                if (!_set.TryAdd(transaction.Id, transaction))
+                {
+                    _lock.EnterUpgradeableReadLock();
+                    if (_queue.Contains(transaction.Id))
+                    {
+                        return;
+                    }
+                }
+
+                _lock.EnterWriteLock();
+                try
+                {
+                    _queue.Add(transaction.Id);
+                }
+                finally
+                {
+                    _lock.ExitWriteLock();
+                }
             }
             finally
             {
-                _lock.ExitWriteLock();
-                if (stageAgain)
+                if (_lock.IsUpgradeableReadLockHeld)
                 {
                     _lock.ExitUpgradeableReadLock();
                 }
