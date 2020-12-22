@@ -81,7 +81,7 @@
       <section><p>A class have <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>s, <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s, and the chain
 information.</p>
 <p>In order to watch its state changes, implement <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a>
-interface and pass it to the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block__0__IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__0___">BlockChain(IBlockPolicy&lt;T&gt;, IStore, IStateStore, Block&lt;T&gt;, IEnumerable&lt;IRenderer&lt;T&gt;&gt;)</a> constructor.</p>
+interface and pass it to the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block__0__IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__0___">BlockChain(IBlockPolicy&lt;T&gt;, IStagePolicy&lt;T&gt;, IStore, IStateStore, Block&lt;T&gt;, IEnumerable&lt;IRenderer&lt;T&gt;&gt;)</a> constructor.</p>
 </section>
       <h4><a class="xref" href="Libplanet.Blockchain.FungibleAssetStateCompleters-1.html">FungibleAssetStateCompleters&lt;T&gt;</a></h4>
       <section><p>Predefined built-in state completers that satisfy
