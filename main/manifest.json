@@ -1625,6 +1625,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Net.Protocols.KademliaProtocol.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Net.Protocols.KademliaProtocol.html",
+          "hash": "mQxodVkKeM8I/AcQ+Bt7eA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Libplanet.Net.Protocols.PeerDiscoveryException.yml",
       "output": {
         ".html": {
@@ -1665,7 +1677,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Protocols.html",
-          "hash": "WUv3YoK5YHwJrwTAZJtRGw=="
+          "hash": "hAcZUQe6M22LHx3/EGCyXQ=="
         }
       },
       "is_incremental": false,
@@ -2157,7 +2169,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "/+dRWrHM2U3a5eFUJauJrg=="
+          "hash": "2ZzwMZOPJgDAJKEfwk49oA=="
         }
       },
       "is_incremental": false,
@@ -2270,17 +2282,17 @@
           "total_file_count": 11,
           "skipped_file_count": 0
         },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 172,
+          "skipped_file_count": 0
+        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 171,
           "skipped_file_count": 0
         }
       }

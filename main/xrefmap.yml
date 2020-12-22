@@ -9858,6 +9858,131 @@ references:
   commentId: F:Libplanet.Net.Protocols.Kademlia.TableSize
   fullName: Libplanet.Net.Protocols.Kademlia.TableSize
   nameWithType: Kademlia.TableSize
+- uid: Libplanet.Net.Protocols.KademliaProtocol
+  name: KademliaProtocol
+  href: api/Libplanet.Net.Protocols.KademliaProtocol.html
+  commentId: T:Libplanet.Net.Protocols.KademliaProtocol
+  fullName: Libplanet.Net.Protocols.KademliaProtocol
+  nameWithType: KademliaProtocol
+- uid: Libplanet.Net.Protocols.KademliaProtocol.#ctor(Libplanet.Net.Protocols.RoutingTable,Libplanet.Net.ITransport,Libplanet.Address,System.Int32,System.Nullable{TimeSpan})
+  name: KademliaProtocol(RoutingTable, ITransport, Address, Int32, Nullable<TimeSpan>)
+  href: api/Libplanet.Net.Protocols.KademliaProtocol.html#Libplanet_Net_Protocols_KademliaProtocol__ctor_Libplanet_Net_Protocols_RoutingTable_Libplanet_Net_ITransport_Libplanet_Address_System_Int32_System_Nullable_TimeSpan__
+  commentId: M:Libplanet.Net.Protocols.KademliaProtocol.#ctor(Libplanet.Net.Protocols.RoutingTable,Libplanet.Net.ITransport,Libplanet.Address,System.Int32,System.Nullable{TimeSpan})
+  name.vb: KademliaProtocol(RoutingTable, ITransport, Address, Int32, Nullable(Of TimeSpan))
+  fullName: Libplanet.Net.Protocols.KademliaProtocol.KademliaProtocol(Libplanet.Net.Protocols.RoutingTable, Libplanet.Net.ITransport, Libplanet.Address, System.Int32, System.Nullable<TimeSpan>)
+  fullName.vb: Libplanet.Net.Protocols.KademliaProtocol.KademliaProtocol(Libplanet.Net.Protocols.RoutingTable, Libplanet.Net.ITransport, Libplanet.Address, System.Int32, System.Nullable(Of TimeSpan))
+  nameWithType: KademliaProtocol.KademliaProtocol(RoutingTable, ITransport, Address, Int32, Nullable<TimeSpan>)
+  nameWithType.vb: KademliaProtocol.KademliaProtocol(RoutingTable, ITransport, Address, Int32, Nullable(Of TimeSpan))
+- uid: Libplanet.Net.Protocols.KademliaProtocol.#ctor*
+  name: KademliaProtocol
+  href: api/Libplanet.Net.Protocols.KademliaProtocol.html#Libplanet_Net_Protocols_KademliaProtocol__ctor_
+  commentId: Overload:Libplanet.Net.Protocols.KademliaProtocol.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Net.Protocols.KademliaProtocol.KademliaProtocol
+  nameWithType: KademliaProtocol.KademliaProtocol
+- uid: Libplanet.Net.Protocols.KademliaProtocol.AddPeersAsync(IEnumerable{Libplanet.Net.Peer},System.Nullable{TimeSpan},CancellationToken)
+  name: AddPeersAsync(IEnumerable<Peer>, Nullable<TimeSpan>, CancellationToken)
+  href: api/Libplanet.Net.Protocols.KademliaProtocol.html#Libplanet_Net_Protocols_KademliaProtocol_AddPeersAsync_IEnumerable_Libplanet_Net_Peer__System_Nullable_TimeSpan__CancellationToken_
+  commentId: M:Libplanet.Net.Protocols.KademliaProtocol.AddPeersAsync(IEnumerable{Libplanet.Net.Peer},System.Nullable{TimeSpan},CancellationToken)
+  name.vb: AddPeersAsync(IEnumerable(Of Peer), Nullable(Of TimeSpan), CancellationToken)
+  fullName: Libplanet.Net.Protocols.KademliaProtocol.AddPeersAsync(IEnumerable<Libplanet.Net.Peer>, System.Nullable<TimeSpan>, CancellationToken)
+  fullName.vb: Libplanet.Net.Protocols.KademliaProtocol.AddPeersAsync(IEnumerable(Of Libplanet.Net.Peer), System.Nullable(Of TimeSpan), CancellationToken)
+  nameWithType: KademliaProtocol.AddPeersAsync(IEnumerable<Peer>, Nullable<TimeSpan>, CancellationToken)
+  nameWithType.vb: KademliaProtocol.AddPeersAsync(IEnumerable(Of Peer), Nullable(Of TimeSpan), CancellationToken)
+- uid: Libplanet.Net.Protocols.KademliaProtocol.AddPeersAsync*
+  name: AddPeersAsync
+  href: api/Libplanet.Net.Protocols.KademliaProtocol.html#Libplanet_Net_Protocols_KademliaProtocol_AddPeersAsync_
+  commentId: Overload:Libplanet.Net.Protocols.KademliaProtocol.AddPeersAsync
+  isSpec: "True"
+  fullName: Libplanet.Net.Protocols.KademliaProtocol.AddPeersAsync
+  nameWithType: KademliaProtocol.AddPeersAsync
+- uid: Libplanet.Net.Protocols.KademliaProtocol.BootstrapAsync(IEnumerable{Libplanet.Net.BoundPeer},System.Nullable{TimeSpan},System.Nullable{TimeSpan},System.Int32,CancellationToken)
+  name: BootstrapAsync(IEnumerable<BoundPeer>, Nullable<TimeSpan>, Nullable<TimeSpan>, Int32, CancellationToken)
+  href: api/Libplanet.Net.Protocols.KademliaProtocol.html#Libplanet_Net_Protocols_KademliaProtocol_BootstrapAsync_IEnumerable_Libplanet_Net_BoundPeer__System_Nullable_TimeSpan__System_Nullable_TimeSpan__System_Int32_CancellationToken_
+  commentId: M:Libplanet.Net.Protocols.KademliaProtocol.BootstrapAsync(IEnumerable{Libplanet.Net.BoundPeer},System.Nullable{TimeSpan},System.Nullable{TimeSpan},System.Int32,CancellationToken)
+  name.vb: BootstrapAsync(IEnumerable(Of BoundPeer), Nullable(Of TimeSpan), Nullable(Of TimeSpan), Int32, CancellationToken)
+  fullName: Libplanet.Net.Protocols.KademliaProtocol.BootstrapAsync(IEnumerable<Libplanet.Net.BoundPeer>, System.Nullable<TimeSpan>, System.Nullable<TimeSpan>, System.Int32, CancellationToken)
+  fullName.vb: Libplanet.Net.Protocols.KademliaProtocol.BootstrapAsync(IEnumerable(Of Libplanet.Net.BoundPeer), System.Nullable(Of TimeSpan), System.Nullable(Of TimeSpan), System.Int32, CancellationToken)
+  nameWithType: KademliaProtocol.BootstrapAsync(IEnumerable<BoundPeer>, Nullable<TimeSpan>, Nullable<TimeSpan>, Int32, CancellationToken)
+  nameWithType.vb: KademliaProtocol.BootstrapAsync(IEnumerable(Of BoundPeer), Nullable(Of TimeSpan), Nullable(Of TimeSpan), Int32, CancellationToken)
+- uid: Libplanet.Net.Protocols.KademliaProtocol.BootstrapAsync*
+  name: BootstrapAsync
+  href: api/Libplanet.Net.Protocols.KademliaProtocol.html#Libplanet_Net_Protocols_KademliaProtocol_BootstrapAsync_
+  commentId: Overload:Libplanet.Net.Protocols.KademliaProtocol.BootstrapAsync
+  isSpec: "True"
+  fullName: Libplanet.Net.Protocols.KademliaProtocol.BootstrapAsync
+  nameWithType: KademliaProtocol.BootstrapAsync
+- uid: Libplanet.Net.Protocols.KademliaProtocol.CheckAllPeersAsync(System.Nullable{TimeSpan},CancellationToken)
+  name: CheckAllPeersAsync(Nullable<TimeSpan>, CancellationToken)
+  href: api/Libplanet.Net.Protocols.KademliaProtocol.html#Libplanet_Net_Protocols_KademliaProtocol_CheckAllPeersAsync_System_Nullable_TimeSpan__CancellationToken_
+  commentId: M:Libplanet.Net.Protocols.KademliaProtocol.CheckAllPeersAsync(System.Nullable{TimeSpan},CancellationToken)
+  name.vb: CheckAllPeersAsync(Nullable(Of TimeSpan), CancellationToken)
+  fullName: Libplanet.Net.Protocols.KademliaProtocol.CheckAllPeersAsync(System.Nullable<TimeSpan>, CancellationToken)
+  fullName.vb: Libplanet.Net.Protocols.KademliaProtocol.CheckAllPeersAsync(System.Nullable(Of TimeSpan), CancellationToken)
+  nameWithType: KademliaProtocol.CheckAllPeersAsync(Nullable<TimeSpan>, CancellationToken)
+  nameWithType.vb: KademliaProtocol.CheckAllPeersAsync(Nullable(Of TimeSpan), CancellationToken)
+- uid: Libplanet.Net.Protocols.KademliaProtocol.CheckAllPeersAsync*
+  name: CheckAllPeersAsync
+  href: api/Libplanet.Net.Protocols.KademliaProtocol.html#Libplanet_Net_Protocols_KademliaProtocol_CheckAllPeersAsync_
+  commentId: Overload:Libplanet.Net.Protocols.KademliaProtocol.CheckAllPeersAsync
+  isSpec: "True"
+  fullName: Libplanet.Net.Protocols.KademliaProtocol.CheckAllPeersAsync
+  nameWithType: KademliaProtocol.CheckAllPeersAsync
+- uid: Libplanet.Net.Protocols.KademliaProtocol.CheckReplacementCacheAsync(CancellationToken)
+  name: CheckReplacementCacheAsync(CancellationToken)
+  href: api/Libplanet.Net.Protocols.KademliaProtocol.html#Libplanet_Net_Protocols_KademliaProtocol_CheckReplacementCacheAsync_CancellationToken_
+  commentId: M:Libplanet.Net.Protocols.KademliaProtocol.CheckReplacementCacheAsync(CancellationToken)
+  fullName: Libplanet.Net.Protocols.KademliaProtocol.CheckReplacementCacheAsync(CancellationToken)
+  nameWithType: KademliaProtocol.CheckReplacementCacheAsync(CancellationToken)
+- uid: Libplanet.Net.Protocols.KademliaProtocol.CheckReplacementCacheAsync*
+  name: CheckReplacementCacheAsync
+  href: api/Libplanet.Net.Protocols.KademliaProtocol.html#Libplanet_Net_Protocols_KademliaProtocol_CheckReplacementCacheAsync_
+  commentId: Overload:Libplanet.Net.Protocols.KademliaProtocol.CheckReplacementCacheAsync
+  isSpec: "True"
+  fullName: Libplanet.Net.Protocols.KademliaProtocol.CheckReplacementCacheAsync
+  nameWithType: KademliaProtocol.CheckReplacementCacheAsync
+- uid: Libplanet.Net.Protocols.KademliaProtocol.FindSpecificPeerAsync(Libplanet.Address,System.Int32,System.Nullable{TimeSpan},CancellationToken)
+  name: FindSpecificPeerAsync(Address, Int32, Nullable<TimeSpan>, CancellationToken)
+  href: api/Libplanet.Net.Protocols.KademliaProtocol.html#Libplanet_Net_Protocols_KademliaProtocol_FindSpecificPeerAsync_Libplanet_Address_System_Int32_System_Nullable_TimeSpan__CancellationToken_
+  commentId: M:Libplanet.Net.Protocols.KademliaProtocol.FindSpecificPeerAsync(Libplanet.Address,System.Int32,System.Nullable{TimeSpan},CancellationToken)
+  name.vb: FindSpecificPeerAsync(Address, Int32, Nullable(Of TimeSpan), CancellationToken)
+  fullName: Libplanet.Net.Protocols.KademliaProtocol.FindSpecificPeerAsync(Libplanet.Address, System.Int32, System.Nullable<TimeSpan>, CancellationToken)
+  fullName.vb: Libplanet.Net.Protocols.KademliaProtocol.FindSpecificPeerAsync(Libplanet.Address, System.Int32, System.Nullable(Of TimeSpan), CancellationToken)
+  nameWithType: KademliaProtocol.FindSpecificPeerAsync(Address, Int32, Nullable<TimeSpan>, CancellationToken)
+  nameWithType.vb: KademliaProtocol.FindSpecificPeerAsync(Address, Int32, Nullable(Of TimeSpan), CancellationToken)
+- uid: Libplanet.Net.Protocols.KademliaProtocol.FindSpecificPeerAsync*
+  name: FindSpecificPeerAsync
+  href: api/Libplanet.Net.Protocols.KademliaProtocol.html#Libplanet_Net_Protocols_KademliaProtocol_FindSpecificPeerAsync_
+  commentId: Overload:Libplanet.Net.Protocols.KademliaProtocol.FindSpecificPeerAsync
+  isSpec: "True"
+  fullName: Libplanet.Net.Protocols.KademliaProtocol.FindSpecificPeerAsync
+  nameWithType: KademliaProtocol.FindSpecificPeerAsync
+- uid: Libplanet.Net.Protocols.KademliaProtocol.RebuildConnectionAsync(CancellationToken)
+  name: RebuildConnectionAsync(CancellationToken)
+  href: api/Libplanet.Net.Protocols.KademliaProtocol.html#Libplanet_Net_Protocols_KademliaProtocol_RebuildConnectionAsync_CancellationToken_
+  commentId: M:Libplanet.Net.Protocols.KademliaProtocol.RebuildConnectionAsync(CancellationToken)
+  fullName: Libplanet.Net.Protocols.KademliaProtocol.RebuildConnectionAsync(CancellationToken)
+  nameWithType: KademliaProtocol.RebuildConnectionAsync(CancellationToken)
+- uid: Libplanet.Net.Protocols.KademliaProtocol.RebuildConnectionAsync*
+  name: RebuildConnectionAsync
+  href: api/Libplanet.Net.Protocols.KademliaProtocol.html#Libplanet_Net_Protocols_KademliaProtocol_RebuildConnectionAsync_
+  commentId: Overload:Libplanet.Net.Protocols.KademliaProtocol.RebuildConnectionAsync
+  isSpec: "True"
+  fullName: Libplanet.Net.Protocols.KademliaProtocol.RebuildConnectionAsync
+  nameWithType: KademliaProtocol.RebuildConnectionAsync
+- uid: Libplanet.Net.Protocols.KademliaProtocol.RefreshTableAsync(TimeSpan,CancellationToken)
+  name: RefreshTableAsync(TimeSpan, CancellationToken)
+  href: api/Libplanet.Net.Protocols.KademliaProtocol.html#Libplanet_Net_Protocols_KademliaProtocol_RefreshTableAsync_TimeSpan_CancellationToken_
+  commentId: M:Libplanet.Net.Protocols.KademliaProtocol.RefreshTableAsync(TimeSpan,CancellationToken)
+  fullName: Libplanet.Net.Protocols.KademliaProtocol.RefreshTableAsync(TimeSpan, CancellationToken)
+  nameWithType: KademliaProtocol.RefreshTableAsync(TimeSpan, CancellationToken)
+- uid: Libplanet.Net.Protocols.KademliaProtocol.RefreshTableAsync*
+  name: RefreshTableAsync
+  href: api/Libplanet.Net.Protocols.KademliaProtocol.html#Libplanet_Net_Protocols_KademliaProtocol_RefreshTableAsync_
+  commentId: Overload:Libplanet.Net.Protocols.KademliaProtocol.RefreshTableAsync
+  isSpec: "True"
+  fullName: Libplanet.Net.Protocols.KademliaProtocol.RefreshTableAsync
+  nameWithType: KademliaProtocol.RefreshTableAsync
 - uid: Libplanet.Net.Protocols.PeerDiscoveryException
   name: PeerDiscoveryException
   href: api/Libplanet.Net.Protocols.PeerDiscoveryException.html
