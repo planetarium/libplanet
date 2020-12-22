@@ -154,6 +154,16 @@ can be validated rather than trusted due to MPT.  [<a href="https://github.com/p
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="cli-tools">CLI tools</h3>
+<ul>
+<li><code>planet mpt diff</code> command became to take 4 arguments (which was 3)
+so that it can compare state root hashes from two different
+<abbr title="key–value">KV</abbr> stores.  The existing commands
+like <code>planet mpt diff STORE A B</code> do not work anymore,
+and these should be instead like <code>planet mpt diff STORE A STORE B</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/1129">#1129</a>]</li>
+<li>Store aliases used by <code>planet mpt</code> became to disallow names looking like
+URIs to disambiguate aliases from the literal store URIs.  [<a href="https://github.com/planetarium/libplanet/pull/1129">#1129</a>]</li>
+</ul>
 <h2 id="version-0102">Version 0.10.2</h2>
 <p>Released on November 25, 2020.</p>
 <ul>
