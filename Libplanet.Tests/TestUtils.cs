@@ -347,6 +347,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
 #pragma warning disable S1121
             var chain = new BlockChain<T>(
                 policy,
+                new VolatileStagePolicy<T>(),
                 store,
                 stateStore,
                 genesisBlock,

@@ -129,6 +129,7 @@ namespace Libplanet.Tests.Blockchain
             var store = new DefaultStore(null);
             var chain = new BlockChain<DumbAction>(
                 policy,
+                new VolatileStagePolicy<DumbAction>(),
                 store,
                 _fx.StateStore,
                 genesisBlock);

@@ -8,6 +8,8 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Added `stagePolicy` as the second parameter to `BlockChain<T>()`
+    constructor.  [[#1130], [#1131]]
  -  Removed `IBlockStatesStore` interface.  [[#1117]]
  -  Removed `BaseBlockStatesStore` abstract class.  [[#1117]]
  -  Removed `Swarm<T>.GetTrustedStateCompleterAsync()` method.  [[#1117]]
@@ -28,6 +30,8 @@ To be released.
 
 ### Added APIs
 
+ -  Added `IStagePolicy` interface.  [[#1130], [#1131]]
+ -  Added `VolatileStagePolicy` class.  [[#1130], [#1131]]
  -  Added `ITransport` interface.  [[#1052]]
  -  Added `NetMQTransport` class which implements `ITransport`.  [[#1052]]
  -  Added `Message` abstract class.  [[#1052]]
@@ -77,6 +81,10 @@ To be released.
  -  Upgraded *Bencodex* package (which is a dependency) so that Libplanet gets
     benefits from its recent optimizations.
     [[#1081], [#1084], [#1086], [#1101]]
+ -  When a `BlockChain<T>` follows `VolatileStagePolicy<T>`, which is
+    Libplanet's the only built-in `IStagePolicy<T>` implementation at
+    the moment, as its `StagePolicy`, its staged transactions are no longer
+    persistent but volatile instead.  [[#1130], [#1131]]
  -  `Swarm<T>` became not to receive states from trusted peers.
     [[#1061], [#1102]]
  -  `Swarm<T>` became not to retry when block downloading.  [[#1062], [#1102]]
@@ -124,6 +132,8 @@ To be released.
 [#1124]: https://github.com/planetarium/libplanet/pull/1124
 [#1125]: https://github.com/planetarium/libplanet/pull/1125
 [#1129]: https://github.com/planetarium/libplanet/pull/1129
+[#1130]: https://github.com/planetarium/libplanet/issues/1130
+[#1131]: https://github.com/planetarium/libplanet/pull/1131
 [#1132]: https://github.com/planetarium/libplanet/pull/1132
 
 

@@ -751,7 +751,7 @@ namespace Libplanet.Tests.Net
                     }
                 });
 
-                while (chainC.Store.CountTransactions() != txCount + 1)
+                while (!chainC.GetStagedTransactionIds().Any())
                 {
                     await swarmC.TxReceived.WaitAsync();
                 }
@@ -760,7 +760,7 @@ namespace Libplanet.Tests.Net
 
                 for (var i = 0; i < txCount; i++)
                 {
-                    Assert.True(chainC.Store.ContainsTransaction(txs[i].Id));
+                    Assert.NotNull(chainC.GetTransaction(txs[i].Id));
                 }
             }
             finally
@@ -833,6 +833,7 @@ namespace Libplanet.Tests.Net
                 fxs[i] = new DefaultStoreFixture(memory: true);
                 blockChains[i] = new BlockChain<DumbAction>(
                     policy,
+                    new VolatileStagePolicy<DumbAction>(),
                     fxs[i].Store,
                     fxs[i].StateStore,
                     fxs[i].GenesisBlock
@@ -1850,6 +1851,7 @@ namespace Libplanet.Tests.Net
                 IStore store, IStateStore stateStore, Block<DumbAction> genesisBlock) =>
                 new BlockChain<DumbAction>(
                     new BlockPolicy<DumbAction>(),
+                    new VolatileStagePolicy<DumbAction>(),
                     store,
                     stateStore,
                     genesisBlock);

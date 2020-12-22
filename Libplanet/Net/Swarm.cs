@@ -527,6 +527,7 @@ namespace Libplanet.Net
                 ? BlockChain.Fork(tip.Hash, inheritRenderers: false)
                 : new BlockChain<T>(
                     BlockChain.Policy,
+                    BlockChain.StagePolicy,
                     _store,
                     BlockChain.StateStore,
                     Guid.NewGuid(),
@@ -1781,7 +1782,7 @@ namespace Libplanet.Net
                 var demandTxIds = _demandTxIds.ToArray();
                 var demands = new Dictionary<BoundPeer, HashSet<TxId>>();
 
-                foreach (var kv in demandTxIds)
+                foreach (KeyValuePair<TxId, BoundPeer> kv in demandTxIds)
                 {
                     if (!demands.ContainsKey(kv.Value))
                     {

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Libplanet.Action;
 using Libplanet.Blockchain;
@@ -457,18 +456,19 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 Log.Logger,
                 LogEventLevel.Verbose
             );
-            var valiator = new ValidatingActionRenderer<DumbAction>();
+            var validator = new ValidatingActionRenderer<DumbAction>();
             var delayedValidatingActionRenderer = new DelayedActionRenderer<DumbAction>(
-                valiator, fx.Store, 2);
+                validator, fx.Store, 2);
 
             var chain = new BlockChain<DumbAction>(
                 policy,
+                new VolatileStagePolicy<DumbAction>(),
                 fx.Store,
                 fx.StateStore,
                 fx.GenesisBlock,
                 new IActionRenderer<DumbAction>[] { renderer, delayedValidatingActionRenderer }
             );
-            valiator.BlockChain = chain;
+            validator.BlockChain = chain;
 
             Assert.Null(delayedRenderer.Tip);
             Assert.Empty(blockLogs);
@@ -494,7 +494,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             Assert.Empty(renderLogs);
 
             var forked = chain.Fork(chain[0].Hash);
-            fx.Store.StageTransactionIds(new[] { tx1.Id }.ToImmutableHashSet());
+            chain.StagePolicy.Stage(chain, tx1);
             var block = await forked.MineBlock(fx.Address1, append: false);
             forked.Append(
                     block,
@@ -503,7 +503,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                     renderBlocks: false,
                     renderActions: false
                 );
-            fx.Store.StageTransactionIds(new[] { tx2.Id }.ToImmutableHashSet());
+            chain.StagePolicy.Stage(chain, tx2);
             block = await forked.MineBlock(fx.Address1, append: false);
             forked.Append(
                     block,
@@ -577,6 +577,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
 
             var chain = new BlockChain<DumbAction>(
                 policy,
+                new VolatileStagePolicy<DumbAction>(),
                 fx.Store,
                 fx.StateStore,
                 fx.GenesisBlock,
@@ -608,7 +609,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             Assert.Empty(renderLogs);
 
             var forked = chain.Fork(chain[1].Hash);
-            fx.Store.StageTransactionIds(new[] { tx2.Id }.ToImmutableHashSet());
+            chain.StagePolicy.Stage(chain, tx2);
             var block = await forked.MineBlock(fx.Address1, append: false);
             forked.Append(
                     block,

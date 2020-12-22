@@ -95,7 +95,8 @@ namespace Libplanet.Store
         /// <summary>
         /// Iterates staged <see cref="TxId"/>s.
         /// </summary>
-        /// <returns>Staged <see cref="TxId"/>s.</returns>
+        /// <returns>Staged <see cref="TxId"/>s.  The earliest staged <see cref="TxId"/> goes first,
+        /// and the latest staged <see cref="TxId"/> goes last.</returns>
         IEnumerable<TxId> IterateStagedTransactionIds();
 
         IEnumerable<TxId> IterateTransactionIds();

@@ -23,6 +23,7 @@ namespace Libplanet.Tests.Blockchain.Policies
         private StoreFixture _fx;
         private BlockChain<DumbAction> _chain;
         private IBlockPolicy<DumbAction> _policy;
+        private IStagePolicy<DumbAction> _stagePolicy;
 
         public BlockPolicyTest(ITestOutputHelper output)
         {
@@ -32,8 +33,10 @@ namespace Libplanet.Tests.Blockchain.Policies
                 blockAction: null,
                 blockIntervalMilliseconds: 3 * 60 * 60 * 1000
             );
+            _stagePolicy = new VolatileStagePolicy<DumbAction>();
             _chain = new BlockChain<DumbAction>(
                 _policy,
+                _stagePolicy,
                 _fx.Store,
                 _fx.StateStore,
                 _fx.GenesisBlock);
