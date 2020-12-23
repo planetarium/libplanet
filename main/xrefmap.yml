@@ -2551,6 +2551,14 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.VolatileStagePolicy(Of T).VolatileStagePolicy()
   nameWithType: VolatileStagePolicy<T>.VolatileStagePolicy()
   nameWithType.vb: VolatileStagePolicy(Of T).VolatileStagePolicy()
+- uid: Libplanet.Blockchain.Policies.VolatileStagePolicy`1.#ctor(TimeSpan)
+  name: VolatileStagePolicy(TimeSpan)
+  href: api/Libplanet.Blockchain.Policies.VolatileStagePolicy-1.html#Libplanet_Blockchain_Policies_VolatileStagePolicy_1__ctor_TimeSpan_
+  commentId: M:Libplanet.Blockchain.Policies.VolatileStagePolicy`1.#ctor(TimeSpan)
+  fullName: Libplanet.Blockchain.Policies.VolatileStagePolicy<T>.VolatileStagePolicy(TimeSpan)
+  fullName.vb: Libplanet.Blockchain.Policies.VolatileStagePolicy(Of T).VolatileStagePolicy(TimeSpan)
+  nameWithType: VolatileStagePolicy<T>.VolatileStagePolicy(TimeSpan)
+  nameWithType.vb: VolatileStagePolicy(Of T).VolatileStagePolicy(TimeSpan)
 - uid: Libplanet.Blockchain.Policies.VolatileStagePolicy`1.#ctor*
   name: VolatileStagePolicy
   href: api/Libplanet.Blockchain.Policies.VolatileStagePolicy-1.html#Libplanet_Blockchain_Policies_VolatileStagePolicy_1__ctor_
@@ -2614,6 +2622,23 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.VolatileStagePolicy(Of T).Iterate
   nameWithType: VolatileStagePolicy<T>.Iterate
   nameWithType.vb: VolatileStagePolicy(Of T).Iterate
+- uid: Libplanet.Blockchain.Policies.VolatileStagePolicy`1.Lifetime
+  name: Lifetime
+  href: api/Libplanet.Blockchain.Policies.VolatileStagePolicy-1.html#Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Lifetime
+  commentId: P:Libplanet.Blockchain.Policies.VolatileStagePolicy`1.Lifetime
+  fullName: Libplanet.Blockchain.Policies.VolatileStagePolicy<T>.Lifetime
+  fullName.vb: Libplanet.Blockchain.Policies.VolatileStagePolicy(Of T).Lifetime
+  nameWithType: VolatileStagePolicy<T>.Lifetime
+  nameWithType.vb: VolatileStagePolicy(Of T).Lifetime
+- uid: Libplanet.Blockchain.Policies.VolatileStagePolicy`1.Lifetime*
+  name: Lifetime
+  href: api/Libplanet.Blockchain.Policies.VolatileStagePolicy-1.html#Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Lifetime_
+  commentId: Overload:Libplanet.Blockchain.Policies.VolatileStagePolicy`1.Lifetime
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.Policies.VolatileStagePolicy<T>.Lifetime
+  fullName.vb: Libplanet.Blockchain.Policies.VolatileStagePolicy(Of T).Lifetime
+  nameWithType: VolatileStagePolicy<T>.Lifetime
+  nameWithType.vb: VolatileStagePolicy(Of T).Lifetime
 - uid: Libplanet.Blockchain.Policies.VolatileStagePolicy`1.Stage(Libplanet.Blockchain.BlockChain{`0},Libplanet.Tx.Transaction{`0})
   name: Stage(BlockChain<T>, Transaction<T>)
   href: api/Libplanet.Blockchain.Policies.VolatileStagePolicy-1.html#Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Stage_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_Transaction__0__

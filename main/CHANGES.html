@@ -91,8 +91,8 @@ interface.  [<a href="https://github.com/planetarium/libplanet/pull/1117">#1117<
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
 <ul>
-<li>Added <code>IStagePolicy</code> interface.  [<a href="https://github.com/planetarium/libplanet/issues/1130">#1130</a>, <a href="https://github.com/planetarium/libplanet/pull/1131">#1131</a>]</li>
-<li>Added <code>VolatileStagePolicy</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/1130">#1130</a>, <a href="https://github.com/planetarium/libplanet/pull/1131">#1131</a>]</li>
+<li>Added <code>IStagePolicy&lt;T&gt;</code> interface.  [<a href="https://github.com/planetarium/libplanet/issues/1130">#1130</a>, <a href="https://github.com/planetarium/libplanet/pull/1131">#1131</a>]</li>
+<li>Added <code>VolatileStagePolicy&lt;T&gt;</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/1130">#1130</a>, <a href="https://github.com/planetarium/libplanet/pull/1131">#1131</a>, <a href="https://github.com/planetarium/libplanet/pull/1136">#1136</a>]</li>
 <li>Added <code>ITransport</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/1052">#1052</a>]</li>
 <li>Added <code>NetMQTransport</code> class which implements <code>ITransport</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1052">#1052</a>]</li>
 <li>Added <code>Message</code> abstract class.  [<a href="https://github.com/planetarium/libplanet/pull/1052">#1052</a>]</li>
@@ -138,7 +138,8 @@ class.  [<a href="https://github.com/planetarium/libplanet/pull/1119">#1119</a>]
 <li>Removed <code>Swarm&lt;T&gt;.TraceTable()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1120">#1120</a>]</li>
 <li>Added <code>Swarm&lt;T&gt;.PeerStates</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/1120">#1120</a>]</li>
 <li>Added <code>IProtocol</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/1120">#1120</a>]</li>
-<li>Added <code>KademliaProtocol</code> class which implements <code>IProtocol</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1120">#1120</a>]</li>
+<li>Added <code>KademliaProtocol</code> class which implements <code>IProtocol</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/1120">#1120</a>, <a href="https://github.com/planetarium/libplanet/pull/1135">#1135</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
@@ -148,7 +149,9 @@ benefits from its recent optimizations.
 <li>When a <code>BlockChain&lt;T&gt;</code> follows <code>VolatileStagePolicy&lt;T&gt;</code>, which is
 Libplanet's the only built-in <code>IStagePolicy&lt;T&gt;</code> implementation at
 the moment, as its <code>StagePolicy</code>, its staged transactions are no longer
-persistent but volatile instead.  [<a href="https://github.com/planetarium/libplanet/issues/1130">#1130</a>, <a href="https://github.com/planetarium/libplanet/pull/1131">#1131</a>]</li>
+persistent but volatile instead.  It also automatically purges staged
+transactions after the given <code>Lifetime</code>, which is 3 hours by default.
+[<a href="https://github.com/planetarium/libplanet/issues/1130">#1130</a>, <a href="https://github.com/planetarium/libplanet/pull/1131">#1131</a>, <a href="https://github.com/planetarium/libplanet/pull/1136">#1136</a>]</li>
 <li><code>Swarm&lt;T&gt;</code> became not to receive states from trusted peers.
 [<a href="https://github.com/planetarium/libplanet/pull/1061">#1061</a>, <a href="https://github.com/planetarium/libplanet/pull/1102">#1102</a>]</li>
 <li><code>Swarm&lt;T&gt;</code> became not to retry when block downloading.  [<a href="https://github.com/planetarium/libplanet/pull/1062">#1062</a>, <a href="https://github.com/planetarium/libplanet/pull/1102">#1102</a>]</li>
