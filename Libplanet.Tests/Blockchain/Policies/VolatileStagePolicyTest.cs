@@ -33,7 +33,9 @@ namespace Libplanet.Tests.Blockchain.Policies
             Assert.Equal(tx, _stagePolicy.Get(_chain, tx.Id, false));
             Assert.Contains(tx, _stagePolicy.Iterate(_chain));
 
-            Thread.Sleep(timeBuffer * 2);
+            // On some targets TimeSpan * int does not exist:
+            Thread.Sleep(timeBuffer);
+            Thread.Sleep(timeBuffer);
 
             Assert.False(_stagePolicy.HasStaged(_chain, tx.Id, true));
             Assert.Null(_stagePolicy.Get(_chain, tx.Id, true));
