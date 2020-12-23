@@ -313,7 +313,7 @@ namespace Libplanet.Tests.Blockchain
         {
             PrivateKey privateKey = new PrivateKey();
             (Address[] addresses, Transaction<DumbAction>[] txs) =
-                MakeFixturesForAppendTests(privateKey);
+                MakeFixturesForAppendTests(privateKey, epoch: DateTimeOffset.UtcNow);
             var genesis = _blockChain.Genesis;
 
             Block<DumbAction> block1 = TestUtils.MineNext(

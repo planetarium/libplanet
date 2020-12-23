@@ -1639,6 +1639,16 @@ namespace Libplanet.Tests.Blockchain
             };
             StageTransactions(txsE);
 
+            foreach (var tx in _blockChain.StagePolicy.Iterate(_blockChain))
+            {
+                _logger.Fatal(
+                    "{Id}; {Signer}; {Nonce}; {Timestamp}",
+                    tx.Id,
+                    tx.Signer,
+                    tx.Nonce,
+                    tx.Timestamp);
+            }
+
             Assert.Equal(6, _blockChain.GetNextTxNonce(address));
         }
 
@@ -2011,8 +2021,10 @@ namespace Libplanet.Tests.Blockchain
             MakeIncompleteBlockStates() =>
             MakeIncompleteBlockStates(_fx.Store, _fx.StateStore);
 
-        private (Address[], Transaction<DumbAction>[])
-            MakeFixturesForAppendTests(PrivateKey privateKey = null)
+        private (Address[], Transaction<DumbAction>[]) MakeFixturesForAppendTests(
+            PrivateKey privateKey = null,
+            DateTimeOffset epoch = default
+        )
         {
             Address[] addresses =
             {
@@ -2039,7 +2051,7 @@ namespace Libplanet.Tests.Blockchain
                         new DumbAction(addresses[0], "foo"),
                         new DumbAction(addresses[1], "bar"),
                     },
-                    timestamp: DateTimeOffset.MinValue,
+                    timestamp: epoch,
                     nonce: 0,
                     privateKey: privateKey),
                 _fx.MakeTransaction(
@@ -2048,7 +2060,7 @@ namespace Libplanet.Tests.Blockchain
                         new DumbAction(addresses[2], "baz"),
                         new DumbAction(addresses[3], "qux"),
                     },
-                    timestamp: DateTimeOffset.MinValue.AddSeconds(5),
+                    timestamp: epoch.AddSeconds(5),
                     nonce: 1,
                     privateKey: privateKey),
             };
