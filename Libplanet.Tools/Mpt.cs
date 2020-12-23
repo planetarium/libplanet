@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using Bencodex;
+using Bencodex.Types;
 using Cocona;
 using Cocona.Help;
 using Libplanet.RocksDBStore;
@@ -185,6 +186,46 @@ namespace Libplanet.Tools
                 Console.Write($"{{0,-{maxAliasLength}}} ", pair.Key);
                 Console.Error.Write("| ");
                 Console.WriteLine($"{{0,-{maxPathLength}}}", pair.Value);
+            }
+        }
+
+        [Command(Description="Query a state of the state key at the state root hash.  It will " +
+                             "print the state as hexadecimal bytes string into stdout.  " +
+                             "If it didn't exist, it will not print anything.")]
+        public void Query(
+            [Argument(
+                Name = "KV-STORE",
+                Description = KVStoreArgumentDescription)]
+            string kvStoreUri,
+            [Argument(
+                Name = "STATE-ROOT-HASH",
+                Description = "The state root hash to compare.")]
+            string stateRootHashHex,
+            [Argument(
+                Name = "STATE-KEY",
+                Description = "The key of the state to query.")]
+            string stateKey,
+            [FromService] IConfigurationService<ToolConfiguration> configurationService)
+        {
+            ToolConfiguration toolConfiguration = configurationService.Load();
+            kvStoreUri = ConvertKVStoreUri(kvStoreUri, toolConfiguration);
+            IKeyValueStore keyValueStore = LoadKVStoreFromURI(kvStoreUri);
+            var trie = new MerkleTrie(
+                keyValueStore,
+                HashDigest<SHA256>.FromString(stateRootHashHex));
+            byte[] stateKeyBytes = Encoding.UTF8.GetBytes(stateKey);
+            if (trie.TryGet(
+                stateKeyBytes,
+                out IValue? value) && value is { })
+            {
+                var codec = new Codec();
+                Console.WriteLine(ByteUtil.Hex(codec.Encode(value)));
+            }
+            else
+            {
+                Console.Error.WriteLine(
+                    $"The state corresponded to {stateKey} at the state root hash " +
+                    $"\"{stateRootHashHex}\" in kv-store \"{kvStoreUri}\" seems not existed.");
             }
         }
 
