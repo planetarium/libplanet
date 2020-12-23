@@ -166,6 +166,28 @@ namespace Libplanet.Tools
             configurationService.Store(configuration);
         }
 
+        [Command(Description="List all aliases stored.")]
+        public void List(
+            [FromService] IConfigurationService<ToolConfiguration> configurationService)
+        {
+            ToolConfiguration configuration = configurationService.Load();
+            Dictionary<string, string> aliases = configuration.Mpt.Aliases;
+
+            int maxAliasLength = aliases.Keys.Max(alias => alias.Length),
+                maxPathLength = aliases.Values.Max(alias => alias.Length);
+            Console.Error.WriteLine(
+                $"{{0,-{maxAliasLength}}} | {{1,-{maxPathLength}}}",
+                "ALIAS",
+                "PATH");
+            Console.Error.WriteLine(new string('-', 3 + maxAliasLength + maxPathLength));
+            foreach (KeyValuePair<string, string> pair in aliases)
+            {
+                Console.Write($"{{0,-{maxAliasLength}}} ", pair.Key);
+                Console.Error.Write("| ");
+                Console.WriteLine($"{{0,-{maxPathLength}}}", pair.Value);
+            }
+        }
+
         [PrimaryCommand]
         public void Help([FromService] ICoconaHelpMessageBuilder helpMessageBuilder)
         {
