@@ -225,7 +225,7 @@ namespace Libplanet.Tools
             {
                 Console.Error.WriteLine(
                     $"The state corresponded to {stateKey} at the state root hash " +
-                    $"\"{stateRootHashHex}\" in kv-store \"{kvStoreUri}\" seems not existed.");
+                    $"\"{stateRootHashHex}\" in the KV store \"{kvStoreUri}\" seems not existed.");
             }
         }
 
