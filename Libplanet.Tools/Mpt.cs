@@ -181,11 +181,15 @@ namespace Libplanet.Tools
                 "ALIAS",
                 "PATH");
             Console.Error.WriteLine(new string('-', 3 + maxAliasLength + maxPathLength));
+            Console.Error.Flush();
             foreach (KeyValuePair<string, string> pair in aliases)
             {
                 Console.Write($"{{0,-{maxAliasLength}}} ", pair.Key);
+                Console.Out.Flush();
                 Console.Error.Write("| ");
+                Console.Error.Flush();
                 Console.WriteLine($"{{0,-{maxPathLength}}}", pair.Value);
+                Console.Out.Flush();
             }
         }
 
