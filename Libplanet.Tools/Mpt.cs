@@ -191,7 +191,7 @@ namespace Libplanet.Tools
 
         [Command(Description="Query a state of the state key at the state root hash.  It will " +
                              "print the state as hexadecimal bytes string into stdout.  " +
-                             "If it didn't exist, it will not print anything.")]
+                             "If it doesn't exist, it will not print anything.")]
         public void Query(
             [Argument(
                 Name = "KV-STORE",
