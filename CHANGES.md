@@ -114,8 +114,7 @@ To be released.
     [[#1129]]
  -  Store aliases used by `planet mpt` became to disallow names looking like
     URIs to disambiguate aliases from the literal store URIs.  [[#1129]]
- -  Added a new sub-command `planet mpt list` and `planet mpt query`.
-    [[#1137]]
+ -  Added new subcommands `planet mpt list` and `planet mpt query`.  [[#1137]]
 
 [#795]: https://github.com/planetarium/libplanet/issues/795
 [#1052]: https://github.com/planetarium/libplanet/pull/1052
