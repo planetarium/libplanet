@@ -716,6 +716,12 @@ namespace Libplanet.Blockchain
             CancellationToken cancellationToken = default(CancellationToken)
         )
         {
+            CancellationTokenSource cts = new CancellationTokenSource();
+            CancellationTokenSource cancellationTokenSource =
+                CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, cts.Token);
+            void WatchTip(object target, (Block<T> OldTip, Block<T> NewTip) tip) => cts.Cancel();
+            TipChanged += WatchTip;
+
             maxTransactions = Math.Max(
                 Math.Min(
                     maxTransactions ?? Policy.MaxTransactionsPerBlock,
@@ -874,13 +880,6 @@ namespace Libplanet.Blockchain
                 stagedTransactions.Length
             );
 
-            CancellationTokenSource cts = new CancellationTokenSource();
-            CancellationTokenSource cancellationTokenSource =
-                CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, cts.Token);
-
-            void WatchTip(object target, (Block<T> OldTip, Block<T> NewTip) tip) => cts.Cancel();
-            TipChanged += WatchTip;
-
             Block<T> block;
             try
             {
@@ -902,7 +901,7 @@ namespace Libplanet.Blockchain
                 if (cts.IsCancellationRequested)
                 {
                     throw new OperationCanceledException(
-                        "Mining canceled due to change of tip index");
+                        "Mining canceled due to change of tip index.");
                 }
 
                 throw new OperationCanceledException(cancellationToken);

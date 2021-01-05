@@ -101,6 +101,9 @@ To be released.
 
 ### Bug fixes
 
+ -  Fixed a bug where `BlockChain<T>.MineBlock()` was not automatically
+    cancelled when the tip of the chain was changed occasionally.  [[#1141]]
+
 ### CLI tools
 
  -  `planet mpt diff` command became to take 4 arguments (which was 3)
@@ -140,6 +143,7 @@ To be released.
 [#1132]: https://github.com/planetarium/libplanet/pull/1132
 [#1135]: https://github.com/planetarium/libplanet/pull/1135
 [#1136]: https://github.com/planetarium/libplanet/pull/1136
+[#1141]: https://github.com/planetarium/libplanet/pull/1141
 
 
 Version 0.10.2
