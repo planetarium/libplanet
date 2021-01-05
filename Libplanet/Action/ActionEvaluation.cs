@@ -88,7 +88,7 @@ namespace Libplanet.Action
         /// The default value is <c>false</c>.</param>
         /// <param name="previousBlockStatesTrie">The trie to contain states at previous block.
         /// </param>
-        /// <param name="isBlockAction">Pass <c>true</c> if it is
+        /// <param name="blockAction">Pass <c>true</c> if it is
         /// <see cref="IBlockPolicy{T}.BlockAction"/>.</param>
         /// <returns>Enumerates <see cref="ActionEvaluation"/>s for each one in
         /// <paramref name="actions"/>.  The order is the same to the <paramref name="actions"/>.
@@ -106,7 +106,7 @@ namespace Libplanet.Action
             IImmutableList<IAction> actions,
             bool rehearsal = false,
             ITrie previousBlockStatesTrie = null,
-            bool isBlockAction = false)
+            bool blockAction = false)
         {
             ActionContext CreateActionContext(
                 IAccountStateDelta prevStates,
@@ -120,7 +120,7 @@ namespace Libplanet.Action
                     randomSeed: randomSeed,
                     rehearsal: rehearsal,
                     previousBlockStatesTrie: previousBlockStatesTrie,
-                    isBlockAction: isBlockAction
+                    blockAction: blockAction
                 );
 
             byte[] hashedSignature;

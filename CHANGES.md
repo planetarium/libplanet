@@ -15,6 +15,7 @@ To be released.
  -  Removed `Swarm<T>.GetTrustedStateCompleterAsync()` method.  [[#1117]]
  -  Removed `trustedStateValidators` parameter from `Swarm<T>.PreloadAsync()`
     method.  [[#1117]]
+ -  Added `IActionContext.BlockAction` property. [[#1143]]
 
 ### Backward-incompatible network protocol changes
  -   `Swarm<T>` became no longer retry when `Swarm<T>` receives
@@ -146,6 +147,7 @@ To be released.
 [#1136]: https://github.com/planetarium/libplanet/pull/1136
 [#1137]: https://github.com/planetarium/libplanet/pull/1137
 [#1141]: https://github.com/planetarium/libplanet/pull/1141
+[#1143]: https://github.com/planetarium/libplanet/pull/1143
 
 
 Version 0.10.2

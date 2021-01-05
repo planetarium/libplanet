@@ -74,7 +74,7 @@ namespace Libplanet.Action
         /// Boolean flag indicating if this action was executed as a BlockAction.
         /// </summary>
         [Pure]
-        bool IsBlockAction { get; }
+        bool BlockAction { get; }
 
         /// <summary>
         /// Returns a clone of this context, except that its <see cref="Random"/> has the unconsumed

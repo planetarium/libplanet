@@ -138,7 +138,7 @@ namespace Libplanet.Blockchain
                 Array.Empty<byte>(),
                 new[] { _blockAction }.ToImmutableList(),
                 previousBlockStatesTrie: previousBlockStatesTrie,
-                isBlockAction: true).First();
+                blockAction: true).First();
         }
     }
 }

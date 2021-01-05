@@ -1854,7 +1854,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(
                 (Integer)2,
                 (Integer)blockActionEvaluation.OutputStates.GetState(miner));
-            Assert.True(blockActionEvaluation.InputContext.IsBlockAction);
+            Assert.True(blockActionEvaluation.InputContext.BlockAction);
 
             _blockChain.ExecuteActions(genesis);
             _blockChain.Append(
