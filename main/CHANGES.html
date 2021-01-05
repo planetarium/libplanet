@@ -164,6 +164,10 @@ can be validated rather than trusted due to MPT.  [<a href="https://github.com/p
 <li><code>HashDigest&lt;SHA256&gt;</code> became serializable.  [<a href="https://github.com/planetarium/libplanet/issues/795">#795</a>, <a href="https://github.com/planetarium/libplanet/pull/1125">#1125</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
+<ul>
+<li>Fixed a bug where <code>BlockChain&lt;T&gt;.MineBlock()</code> was not automatically
+cancelled when the tip of the chain was changed occasionally.  [<a href="https://github.com/planetarium/libplanet/pull/1141">#1141</a>]</li>
+</ul>
 <h3 id="cli-tools">CLI tools</h3>
 <ul>
 <li><code>planet mpt diff</code> command became to take 4 arguments (which was 3)
