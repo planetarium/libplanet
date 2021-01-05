@@ -71,6 +71,12 @@ namespace Libplanet.Action
         HashDigest<SHA256>? PreviousStateRootHash { get; }
 
         /// <summary>
+        /// Boolean flag indicating if this action was executed as a BlockAction.
+        /// </summary>
+        [Pure]
+        bool IsBlockAction { get; }
+
+        /// <summary>
         /// Returns a clone of this context, except that its <see cref="Random"/> has the unconsumed
         /// state (with the same seed).  The clone and its original are a distinct instance
         /// each other, in other words, one's state transfer must not affect the other one

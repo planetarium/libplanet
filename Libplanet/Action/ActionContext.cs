@@ -19,7 +19,8 @@ namespace Libplanet.Action
             IAccountStateDelta previousStates,
             int randomSeed,
             bool rehearsal = false,
-            ITrie? previousBlockStatesTrie = null
+            ITrie? previousBlockStatesTrie = null,
+            bool isBlockAction = false
         )
         {
             Signer = signer;
@@ -30,6 +31,7 @@ namespace Libplanet.Action
             Random = new Random(randomSeed);
             _randomSeed = randomSeed;
             _previousBlockStatesTrie = previousBlockStatesTrie;
+            IsBlockAction = isBlockAction;
         }
 
         public Address Signer { get; }
@@ -55,6 +57,8 @@ namespace Libplanet.Action
             }
         }
 
+        public bool IsBlockAction { get; }
+
         [Pure]
         public IActionContext GetUnconsumedContext() =>
             new ActionContext(
@@ -64,6 +68,7 @@ namespace Libplanet.Action
                 PreviousStates,
                 _randomSeed,
                 Rehearsal,
-                _previousBlockStatesTrie);
+                _previousBlockStatesTrie,
+                IsBlockAction);
     }
 }
