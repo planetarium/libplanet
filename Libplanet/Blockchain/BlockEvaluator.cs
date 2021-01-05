@@ -137,7 +137,8 @@ namespace Libplanet.Blockchain
                 miner,
                 Array.Empty<byte>(),
                 new[] { _blockAction }.ToImmutableList(),
-                previousBlockStatesTrie: previousBlockStatesTrie).First();
+                previousBlockStatesTrie: previousBlockStatesTrie,
+                isBlockAction: true).First();
         }
     }
 }
