@@ -259,11 +259,18 @@ namespace Libplanet.Explorer.Executable
 
             public IAction BlockAction => _impl.BlockAction;
 
+            public int MaxTransactionsPerBlock => _impl.MaxTransactionsPerBlock;
+
             public bool DoesTransactionFollowsPolicy(
                 Transaction<AppAgnosticAction> transaction, BlockChain<AppAgnosticAction> blockChain
             )
             {
                 return _impl.DoesTransactionFollowsPolicy(transaction, blockChain);
+            }
+
+            public int GetMaxBlockBytes(long index)
+            {
+                return _impl.GetMaxBlockBytes(index);
             }
 
             public long GetNextBlockDifficulty(BlockChain<AppAgnosticAction> blocks)
