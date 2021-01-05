@@ -142,7 +142,7 @@ To build and run unit tests at a time with .NET Core execute the below command:
 
     dotnet test
 
-To run unit tests with .NET Framework:
+To run unit tests with .NET Framework on Windows:
 
 ~~~~ pwsh
 nuget install xunit.runner.console -Version 2.4.1
@@ -155,9 +155,9 @@ Or with Mono:
 
 ~~~~ bash
 nuget install xunit.runner.console
-msbuild /restore /p:TestsTargetFramework=net472
-mono xunit.runner.console.*/tools/net472/xunit.console.exe \
-    *.Tests/bin/Debug/net472/*.Tests.dll
+msbuild /restore /p:TestsTargetFramework=net47
+mono xunit.runner.console.*/tools/net47/xunit.console.exe \
+    *.Tests/bin/Debug/net47/*.Tests.dll
 ~~~~
 
 [Azure Pipelines]: https://dev.azure.com/planetarium/libplanet/_build?definitionId=3&_a=summary&repositoryFilter=3&branchFilter=622%2C622%2C622%2C622

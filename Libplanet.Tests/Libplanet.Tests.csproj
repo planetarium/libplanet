@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <IsPackable>false</IsPackable>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -16,14 +16,6 @@
     </AdditionalFiles>
     <AdditionalFiles Include="..\stylecop.json" />
   </ItemGroup>
-
-  <PropertyGroup Condition=" '$(MSBuildRuntimeType)'!='Mono' And '$(MSBuildVersion)'&gt;='16.3.0'">
-    <TargetFramework>netcoreapp3.0</TargetFramework>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(MSBuildRuntimeType)'=='Mono' And '$(BuildingByReSharper)'!='true'">
-    <TargetFramework>net47</TargetFramework>
-  </PropertyGroup>
 
   <PropertyGroup Condition=" '$(TestsTargetFramework)'!='' ">
     <TargetFramework>$(TestsTargetFramework)</TargetFramework>

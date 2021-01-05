@@ -33,7 +33,7 @@ steps:
     solution: Libplanet.sln
     msbuildVersion: "16.0"
     configuration: ${{ parameters.configuration }}
-    msbuildArguments: /restore /p:SkipSonar=true
+    msbuildArguments: /restore /p:TestsTargetFramework=net471 /p:SkipSonar=true
 
 - ${{ if eq(parameters.copySQLitePCLRaw, true) }}:
   # https://github.com/sschmid/Entitas-CSharp/issues/811#issuecomment-449182023
