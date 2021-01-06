@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using Bencodex;
+using Bencodex.Types;
 using Cocona;
 using Cocona.Help;
 using Libplanet.RocksDBStore;
@@ -164,6 +165,72 @@ namespace Libplanet.Tools
             var configuration = configurationService.Load();
             configuration.Mpt.Aliases.Remove(alias);
             configurationService.Store(configuration);
+        }
+
+        [Command(Description="List all aliases stored.")]
+        public void List(
+            [FromService] IConfigurationService<ToolConfiguration> configurationService)
+        {
+            ToolConfiguration configuration = configurationService.Load();
+            Dictionary<string, string> aliases = configuration.Mpt.Aliases;
+
+            int maxAliasLength = aliases.Keys.Max(alias => alias.Length),
+                maxPathLength = aliases.Values.Max(alias => alias.Length);
+            Console.Error.WriteLine(
+                $"{{0,-{maxAliasLength}}} | {{1,-{maxPathLength}}}",
+                "ALIAS",
+                "PATH");
+            Console.Error.WriteLine(new string('-', 3 + maxAliasLength + maxPathLength));
+            Console.Error.Flush();
+            foreach (KeyValuePair<string, string> pair in aliases)
+            {
+                Console.Write($"{{0,-{maxAliasLength}}} ", pair.Key);
+                Console.Out.Flush();
+                Console.Error.Write("| ");
+                Console.Error.Flush();
+                Console.WriteLine($"{{0,-{maxPathLength}}}", pair.Value);
+                Console.Out.Flush();
+            }
+        }
+
+        [Command(Description="Query a state of the state key at the state root hash.  It will " +
+                             "print the state as hexadecimal bytes string into stdout.  " +
+                             "If it doesn't exist, it will not print anything.")]
+        public void Query(
+            [Argument(
+                Name = "KV-STORE",
+                Description = KVStoreArgumentDescription)]
+            string kvStoreUri,
+            [Argument(
+                Name = "STATE-ROOT-HASH",
+                Description = "The state root hash to compare.")]
+            string stateRootHashHex,
+            [Argument(
+                Name = "STATE-KEY",
+                Description = "The key of the state to query.")]
+            string stateKey,
+            [FromService] IConfigurationService<ToolConfiguration> configurationService)
+        {
+            ToolConfiguration toolConfiguration = configurationService.Load();
+            kvStoreUri = ConvertKVStoreUri(kvStoreUri, toolConfiguration);
+            IKeyValueStore keyValueStore = LoadKVStoreFromURI(kvStoreUri);
+            var trie = new MerkleTrie(
+                keyValueStore,
+                HashDigest<SHA256>.FromString(stateRootHashHex));
+            byte[] stateKeyBytes = Encoding.UTF8.GetBytes(stateKey);
+            if (trie.TryGet(
+                stateKeyBytes,
+                out IValue? value) && value is { })
+            {
+                var codec = new Codec();
+                Console.WriteLine(ByteUtil.Hex(codec.Encode(value)));
+            }
+            else
+            {
+                Console.Error.WriteLine(
+                    $"The state corresponded to {stateKey} at the state root hash " +
+                    $"\"{stateRootHashHex}\" in the KV store \"{kvStoreUri}\" seems not existed.");
+            }
         }
 
         [PrimaryCommand]
