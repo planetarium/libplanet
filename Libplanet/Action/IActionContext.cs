@@ -71,7 +71,8 @@ namespace Libplanet.Action
         HashDigest<SHA256>? PreviousStateRootHash { get; }
 
         /// <summary>
-        /// Boolean flag indicating if this action was executed as a BlockAction.
+        /// Whether this action is executed as a block action.
+        /// <c>false</c> if it belongs to a transaction.
         /// </summary>
         [Pure]
         bool BlockAction { get; }
