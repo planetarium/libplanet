@@ -9,13 +9,19 @@ namespace Libplanet.Tests.Blocks
 {
     public class BlockFixture
     {
+        public const int ProtocolVersion =
+            Block<PolymorphicAction<BaseAction>>.CurrentProtocolVersion;
+
         public BlockFixture()
         {
-            Genesis = TestUtils.MineGenesis<PolymorphicAction<BaseAction>>();
+            Genesis = TestUtils.MineGenesis<PolymorphicAction<BaseAction>>(
+                protocolVersion: ProtocolVersion
+            );
             TxFixture = new TxFixture(Genesis.Hash);
             Next = TestUtils.MineNext(
                 Genesis,
-                nonce: new byte[] { 0x02, 0x00, 0x00, 0x00 }
+                nonce: new byte[] { 0x02, 0x00, 0x00, 0x00 },
+                protocolVersion: ProtocolVersion
             );
             byte[] hasTxNonce =
             {
@@ -27,7 +33,8 @@ namespace Libplanet.Tests.Blocks
                 {
                     TxFixture.TxWithActions,
                 },
-                hasTxNonce
+                hasTxNonce,
+                protocolVersion: ProtocolVersion
             );
         }
 

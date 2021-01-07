@@ -179,7 +179,8 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         public static Block<T> MineGenesis<T>(
             Address? miner = null,
             IEnumerable<Transaction<T>> transactions = null,
-            DateTimeOffset? timestamp = null
+            DateTimeOffset? timestamp = null,
+            int protocolVersion = Block<T>.CurrentProtocolVersion
         )
             where T : IAction, new()
         {
@@ -196,7 +197,8 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 miner: miner ?? GenesisMinerAddress,
                 previousHash: null,
                 timestamp: timestamp ?? new DateTimeOffset(2018, 11, 29, 0, 0, 0, TimeSpan.Zero),
-                transactions: transactions
+                transactions: transactions,
+                protocolVersion: protocolVersion
             );
 
             return block;
@@ -208,7 +210,8 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             byte[] nonce = null,
             long difficulty = 1,
             Address? miner = null,
-            TimeSpan? blockInterval = null
+            TimeSpan? blockInterval = null,
+            int protocolVersion = Block<T>.CurrentProtocolVersion
         )
             where T : IAction, new()
         {
@@ -232,7 +235,8 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     miner: miner ?? previousBlock.Miner.Value,
                     previousHash: previousHash,
                     timestamp: timestamp,
-                    transactions: txs
+                    transactions: txs,
+                    protocolVersion: protocolVersion
                 );
             }
             else
@@ -245,7 +249,8 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     miner: miner ?? previousBlock.Miner.Value,
                     previousHash: previousHash,
                     timestamp: timestamp,
-                    transactions: txs
+                    transactions: txs,
+                    protocolVersion: protocolVersion
                 );
             }
 
@@ -312,7 +317,8 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             PrivateKey privateKey = null,
             DateTimeOffset? timestamp = null,
             IEnumerable<IRenderer<T>> renderers = null,
-            Block<T> genesisBlock = null
+            Block<T> genesisBlock = null,
+            int protocolVersion = Block<T>.CurrentProtocolVersion
         )
             where T : IAction, new()
         {
@@ -341,7 +347,9 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 GenesisMinerAddress,
                 null,
                 timestamp ?? DateTimeOffset.MinValue,
-                new[] { tx, });
+                new[] { tx },
+                protocolVersion: protocolVersion
+            );
             genesisBlock = genesisBlock.AttachStateRootHash(stateStore, policy.BlockAction);
             ValidatingActionRenderer<T> validator = null;
 #pragma warning disable S1121

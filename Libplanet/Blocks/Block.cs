@@ -21,6 +21,11 @@ namespace Libplanet.Blocks
     public class Block<T>
         where T : IAction, new()
     {
+        /// <summary>
+        /// The most latest protocol version.
+        /// </summary>
+        public const int CurrentProtocolVersion = 1;
+
         private int _bytesLength;
 
         /// <summary>
@@ -51,6 +56,8 @@ namespace Libplanet.Blocks
         /// Automatically determined if <c>null</c> is passed (which is default).</param>
         /// <param name="stateRootHash">The <see cref="ITrie.Hash"/> of the states on the block.
         /// </param>
+        /// <param name="protocolVersion">The protocol version. <see cref="CurrentProtocolVersion"/>
+        /// by default.</param>
         /// <seealso cref="Mine"/>
         public Block(
             long index,
@@ -62,8 +69,10 @@ namespace Libplanet.Blocks
             DateTimeOffset timestamp,
             IEnumerable<Transaction<T>> transactions,
             HashDigest<SHA256>? preEvaluationHash = null,
-            HashDigest<SHA256>? stateRootHash = null)
+            HashDigest<SHA256>? stateRootHash = null,
+            int protocolVersion = CurrentProtocolVersion)
         {
+            ProtocolVersion = protocolVersion;
             Index = index;
             Difficulty = difficulty;
             TotalDifficulty = totalDifficulty;
@@ -126,9 +135,12 @@ namespace Libplanet.Blocks
         {
         }
 
+        // FIXME: Should this necessarily be a public constructor?
+        // See also <https://github.com/planetarium/libplanet/issues/1146>.
         public Block(
             Block<T> block,
-            HashDigest<SHA256>? stateRootHash)
+            HashDigest<SHA256>? stateRootHash
+        )
             : this(
                 block.Index,
                 block.Difficulty,
@@ -139,39 +151,47 @@ namespace Libplanet.Blocks
                 block.Timestamp,
                 block.Transactions,
                 block.PreEvaluationHash,
-                stateRootHash)
+                stateRootHash,
+                protocolVersion: block.ProtocolVersion
+            )
         {
         }
 
         private Block(RawBlock rb)
             : this(
+#pragma warning disable SA1118
+                rb.Header.ProtocolVersion,
                 new HashDigest<SHA256>(rb.Header.Hash),
                 rb.Header.Index,
                 rb.Header.Difficulty,
                 rb.Header.TotalDifficulty,
                 new Nonce(rb.Header.Nonce.ToArray()),
                 rb.Header.Miner.Any() ? new Address(rb.Header.Miner) : (Address?)null,
-#pragma warning disable MEN002 // Line is too long
-                rb.Header.PreviousHash.Any() ? new HashDigest<SHA256>(rb.Header.PreviousHash) : (HashDigest<SHA256>?)null,
-#pragma warning restore MEN002 // Line is too long
+                rb.Header.PreviousHash.Any()
+                    ? new HashDigest<SHA256>(rb.Header.PreviousHash)
+                    : (HashDigest<SHA256>?)null,
                 DateTimeOffset.ParseExact(
                     rb.Header.Timestamp,
                     BlockHeader.TimestampFormat,
                     CultureInfo.InvariantCulture).ToUniversalTime(),
-#pragma warning disable MEN002 // Line is too long
-                rb.Header.TxHash.Any() ? new HashDigest<SHA256>(rb.Header.TxHash) : (HashDigest<SHA256>?)null,
-#pragma warning restore MEN002 // Line is too long
+                rb.Header.TxHash.Any()
+                    ? new HashDigest<SHA256>(rb.Header.TxHash)
+                    : (HashDigest<SHA256>?)null,
                 rb.Transactions
                     .Select(tx => Transaction<T>.Deserialize(tx.ToArray()))
                     .ToList(),
-#pragma warning disable MEN002 // Line is too long
-                rb.Header.PreEvaluationHash.Any() ? new HashDigest<SHA256>(rb.Header.PreEvaluationHash) : (HashDigest<SHA256>?)null,
-                rb.Header.StateRootHash.Any() ? new HashDigest<SHA256>(rb.Header.StateRootHash) : (HashDigest<SHA256>?)null)
-#pragma warning restore MEN002 // Line is too long
+                rb.Header.PreEvaluationHash.Any()
+                    ? new HashDigest<SHA256>(rb.Header.PreEvaluationHash)
+                    : (HashDigest<SHA256>?)null,
+                rb.Header.StateRootHash.Any()
+                    ? new HashDigest<SHA256>(rb.Header.StateRootHash)
+                    : (HashDigest<SHA256>?)null)
+#pragma warning restore SA1118
         {
         }
 
         private Block(
+            int protocolVersion,
             HashDigest<SHA256> hash,
             long index,
             long difficulty,
@@ -186,6 +206,7 @@ namespace Libplanet.Blocks
             HashDigest<SHA256>? stateRootHash
         )
         {
+            ProtocolVersion = protocolVersion;
             Index = index;
             Difficulty = difficulty;
             TotalDifficulty = totalDifficulty;
@@ -204,6 +225,12 @@ namespace Libplanet.Blocks
             TxHash = txHash;
             Transactions = transactions.ToImmutableArray();
         }
+
+        /// <summary>
+        /// The protocol version number.
+        /// </summary>
+        [IgnoreDuringEquals]
+        public int ProtocolVersion { get; }
 
         /// <summary>
         /// <see cref="Hash"/> is derived from a serialized <see cref="Block{T}"/>
@@ -288,6 +315,7 @@ namespace Libplanet.Blocks
 
                 // FIXME: When hash is not assigned, should throw an exception.
                 return new BlockHeader(
+                    protocolVersion: ProtocolVersion,
                     index: Index,
                     timestamp: timestampAsString,
                     nonce: Nonce.ToByteArray().ToImmutableArray(),
@@ -324,6 +352,7 @@ namespace Libplanet.Blocks
         /// <param name="timestamp">The <see cref="DateTimeOffset"/> when mining started.</param>
         /// <param name="transactions"><see cref="Transaction{T}"/>s that are going to be included
         /// in the block.</param>
+        /// <param name="protocolVersion">The protocol version.</param>
         /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
         /// operation should be canceled.</param>
@@ -336,6 +365,7 @@ namespace Libplanet.Blocks
             HashDigest<SHA256>? previousHash,
             DateTimeOffset timestamp,
             IEnumerable<Transaction<T>> transactions,
+            int protocolVersion = CurrentProtocolVersion,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             var txs = transactions.OrderBy(tx => tx.Id).ToImmutableArray();
@@ -347,7 +377,8 @@ namespace Libplanet.Blocks
                 miner,
                 previousHash,
                 timestamp,
-                txs);
+                txs,
+                protocolVersion: protocolVersion);
 
             // Poor man' way to optimize stamp...
             // FIXME: We need to rather reorganize the serialization layout.
@@ -657,6 +688,11 @@ namespace Libplanet.Blocks
                     Timestamp.ToString(BlockHeader.TimestampFormat, CultureInfo.InvariantCulture))
                 .Add("difficulty", Difficulty)
                 .Add("nonce", Nonce.ToByteArray());
+
+            if (ProtocolVersion != 0)
+            {
+                dict = dict.Add("protocol_version", ProtocolVersion);
+            }
 
             if (!(Miner is null))
             {

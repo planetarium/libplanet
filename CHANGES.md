@@ -8,6 +8,14 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Added the parameter `protocolVersion` to `Block<T>(long, long, BigInteger,
+    Nonce, Address?, HashDigest<SHA256>?, DateTimeOffset,
+    IEnumerable<Transaction<T>> transactions, HashDigest<SHA256>?,
+    HashDigest<SHA256>?)` constructor.  [[#1142], [#1147]]
+ -  Added the parameter to `protocolVersion` to `Block<T>.Mine()` method.
+    [[#1142], [#1147]]
+ -  Added the first parameter `protocolVersion` to `BlockHeader()` constructor.
+    [[#1142], [#1147]]
  -  Added `stagePolicy` as the second parameter to `BlockChain<T>()`
     constructor.  [[#1130], [#1131]]
  -  Removed `IBlockStatesStore` interface.  [[#1117]]
@@ -18,8 +26,9 @@ To be released.
  -  Added `IActionContext.BlockAction` property. [[#1143]]
 
 ### Backward-incompatible network protocol changes
- -   `Swarm<T>` became no longer retry when `Swarm<T>` receives
-      less than 500 blocks.  [[#1112]]
+
+ -  `Swarm<T>` became no longer retry when `Swarm<T>` receives
+    less than 500 blocks.  [[#1112]]
  -  Removed the message types depended on features of `IBlockStatesStore`
     interface.  [[#1117]]
      -  `GetRecentStates` message type (with the type number `0x0b`)
@@ -31,6 +40,10 @@ To be released.
 
 ### Added APIs
 
+ -  Added `Block<T>.CurrentProtocolVersion` constant.  [[#1142], [#1147]]
+ -  Added `Block<T>.ProtocolVersion` property.  [[#1142], [#1147]]
+ -  Added `Block<T>.Header` property.  [[#1070], [#1102]]
+ -  Added `BlockHeader.ProtocolVersion` property.  [[#1142], [#1147]]
  -  Added `IStagePolicy<T>` interface.  [[#1130], [#1131]]
  -  Added `VolatileStagePolicy<T>` class.  [[#1130], [#1131], [#1136]]
  -  Added `ITransport` interface.  [[#1052]]
@@ -39,11 +52,10 @@ To be released.
  -  Added `BlockExceedingTransactionsException` class.  [[#1104], [#1110]]
  -  Added `BlockChain<T>.GetStagedTransactionIds()` method.  [[#1089]]
  -  (Libplanet.RocksDBStore) Added `maxTotalWalSize`, `keepLogFileNum` and
-    `maxLogFileSize` parameters into `RocksDBStore` constructor.
+    `maxLogFileSize` parameters into `RocksDBStore()` constructor.
     [[#1065], [#1102], [#1132]]
  -  Added `Swarm<T>.BlockDemand` property.  [[#1068], [#1102]]
  -  Added `BlockDemand` struct.  [[#1068], [#1102]]
- -  Added `Block<T>.Header` property.  [[#1070], [#1102]]
  -  Added `TurnClient.PublicAddress` property.  [[#1074], [#1102]]
  -  Added `TurnClient.EndPoint` property.  [[#1074], [#1102]]
  -  Added `TurnClient.BehindNAT` property.  [[#1074], [#1102]]
@@ -71,6 +83,7 @@ To be released.
     class.  [[#1119]]
  -  Added `Libplanet.Blockchain.Renderers.Debug.InvalidRenderException<T>`
     class.  [[#1119]]
+ -  Added `InvalidBlockProtocolVersionException` class.  [[#1142], [#1147]]
  -  Added `InvalidBlockTxHashException` class.  [[#1116]]
  -  Removed `Swarm<T>.TraceTable()` method.  [[#1120]]
  -  Added `Swarm<T>.PeerStates` property.  [[#1120]]
@@ -83,6 +96,13 @@ To be released.
  -  Upgraded *Bencodex* package (which is a dependency) so that Libplanet gets
     benefits from its recent optimizations.
     [[#1081], [#1084], [#1086], [#1101]]
+ -  Introduced the [protocol versioning scheme][#1142].  This purposes to change
+    the protocol without breaking backward compatibility.  Even the protocol
+    is changed, the existing blocks made before the new protocol are guaranteed
+    to behave as it had done.  [[#1142], [#1147]]
+ -  Since `BlockHeader.ProtocolVersion` was added, the existing blocks are
+    considered protocol compliant with the protocol version zero.
+    [[#1142], [#1147]]
  -  When a `BlockChain<T>` follows `VolatileStagePolicy<T>`, which is
     Libplanet's the only built-in `IStagePolicy<T>` implementation at
     the moment, as its `StagePolicy`, its staged transactions are no longer
@@ -147,7 +167,9 @@ To be released.
 [#1136]: https://github.com/planetarium/libplanet/pull/1136
 [#1137]: https://github.com/planetarium/libplanet/pull/1137
 [#1141]: https://github.com/planetarium/libplanet/pull/1141
+[#1142]: https://github.com/planetarium/libplanet/issues/1142
 [#1143]: https://github.com/planetarium/libplanet/pull/1143
+[#1147]: https://github.com/planetarium/libplanet/pull/1147
 
 
 Version 0.10.2
