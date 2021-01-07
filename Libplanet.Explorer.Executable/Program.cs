@@ -59,7 +59,8 @@ namespace Libplanet.Explorer.Executable
                     null,
                     blockIntervalMilliseconds: options.BlockIntervalMilliseconds,
                     minimumDifficulty: options.MinimumDifficulty,
-                    difficultyBoundDivisor: options.DifficultyBoundDivisor)
+                    difficultyBoundDivisor: options.DifficultyBoundDivisor,
+                    maxGenesisBytes: 1024 * 1024 * 15)
                 );
                 var blockChain =
                     new BlockChain<AppAgnosticAction>(policy, store, store, options.GenesisBlock);
