@@ -1567,6 +1567,11 @@ namespace Libplanet.Tests.Blockchain
             chain.StageTransaction(tx1);
             await chain.MineBlock(_fx.Address1);
 
+            var actionEvaluation = chain.BlockEvaluator.EvaluateActions(
+                chain.Tip,
+                StateCompleterSet<TestEvaluateAction>.Recalculate);
+            Assert.False(actionEvaluation[0].InputContext.BlockAction);
+
             Assert.Equal(
                 chain.GetState(TestEvaluateAction.SignerKey),
                 (Text)fromAddress.ToHex()
@@ -1854,6 +1859,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(
                 (Integer)2,
                 (Integer)blockActionEvaluation.OutputStates.GetState(miner));
+            Assert.True(blockActionEvaluation.InputContext.BlockAction);
 
             _blockChain.ExecuteActions(genesis);
             _blockChain.Append(
