@@ -1935,6 +1935,27 @@ namespace Libplanet.Blockchain
 
         private InvalidBlockException ValidateNextBlock(Block<T> nextBlock)
         {
+            int actualProtocolVersion = nextBlock.ProtocolVersion;
+            const int currentProtocolVersion = Block<T>.CurrentProtocolVersion;
+            if (actualProtocolVersion > currentProtocolVersion)
+            {
+                string message =
+                    $"The protocol version ({actualProtocolVersion}) of the block " +
+                    $"#{nextBlock.Index} {nextBlock.Hash} is not supported by this node." +
+                    $"The highest supported protocol version is {currentProtocolVersion}.";
+                throw new InvalidBlockProtocolVersionException(
+                    actualProtocolVersion,
+                    message
+                );
+            }
+            else if (Tip is { } tip && actualProtocolVersion < tip.ProtocolVersion)
+            {
+                string message =
+                    "The protocol version is disallowed to be downgraded from the topmost block " +
+                    $"in the chain ({actualProtocolVersion} < {tip.ProtocolVersion}).";
+                throw new InvalidBlockProtocolVersionException(actualProtocolVersion, message);
+            }
+
             InvalidBlockException e = Policy.ValidateNextBlock(this, nextBlock);
 
             if (!(e is null))

@@ -264,5 +264,21 @@ namespace Libplanet.Tests.Common.Action
                 return hashCode;
             }
         }
+
+        public override string ToString()
+        {
+            const string T = "true", F = "false";
+            string transfer = Transfer is Tuple<Address, Address, BigInteger> t
+                ? $"({t.Item1}, {t.Item2}, {t.Item3})"
+                : "null";
+            return $"{nameof(DumbAction)} {{ " +
+                $"{nameof(TargetAddress)} = {TargetAddress}, " +
+                $"{nameof(Item)} = {Item ?? string.Empty}, " +
+                $"{nameof(RecordRehearsal)} = {(RecordRehearsal ? T : F)}, " +
+                $"{nameof(RecordRandom)} = {(RecordRandom ? T : F)}, " +
+                $"{nameof(Idempotent)} = {(Idempotent ? T : F)}, " +
+                $"{nameof(Transfer)} = {transfer} " +
+                "}";
+        }
     }
 }

@@ -16,16 +16,57 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void ValidateNextBlock()
         {
-            var validNextBlock = Block<DumbAction>.Mine(
+            Block<DumbAction> validNextBlock = Block<DumbAction>.Mine(
                 1,
                 1024,
                 _fx.GenesisBlock.TotalDifficulty,
                 _fx.GenesisBlock.Miner.Value,
                 _fx.GenesisBlock.Hash,
                 _fx.GenesisBlock.Timestamp.AddDays(1),
-                _emptyTransaction).AttachStateRootHash(_fx.StateStore, _policy.BlockAction);
+                _emptyTransaction
+            ).AttachStateRootHash(_fx.StateStore, _policy.BlockAction);
             _blockChain.Append(validNextBlock);
             Assert.Equal(_blockChain.Tip, validNextBlock);
+        }
+
+        [Fact]
+        private void ValidateNextBlockProtocolVersion()
+        {
+            Block<DumbAction> block1 = Block<DumbAction>.Mine(
+                1,
+                1024,
+                _fx.GenesisBlock.TotalDifficulty,
+                _fx.GenesisBlock.Miner.Value,
+                _fx.GenesisBlock.Hash,
+                _fx.GenesisBlock.Timestamp.AddDays(1),
+                _emptyTransaction,
+                protocolVersion: 1
+            ).AttachStateRootHash(_fx.StateStore, _policy.BlockAction);
+            _blockChain.Append(block1);
+
+            Block<DumbAction> block2 = Block<DumbAction>.Mine(
+                2,
+                1024,
+                block1.TotalDifficulty,
+                _fx.GenesisBlock.Miner.Value,
+                block1.Hash,
+                _fx.GenesisBlock.Timestamp.AddDays(1),
+                _emptyTransaction,
+                protocolVersion: 0
+            ).AttachStateRootHash(_fx.StateStore, _policy.BlockAction);
+            Assert.Throws<InvalidBlockProtocolVersionException>(() => _blockChain.Append(block2));
+
+            Block<DumbAction> block3 = Block<DumbAction>.Mine(
+                2,
+                1024,
+                block1.TotalDifficulty,
+                _fx.GenesisBlock.Miner.Value,
+                block1.Hash,
+                _fx.GenesisBlock.Timestamp.AddDays(1),
+                _emptyTransaction,
+                protocolVersion: Block<DumbAction>.CurrentProtocolVersion + 1
+            ).AttachStateRootHash(_fx.StateStore, _policy.BlockAction);
+            Assert.Throws<InvalidBlockProtocolVersionException>(() => _blockChain.Append(block3));
         }
 
         [Fact]
