@@ -66,6 +66,11 @@
 <p>To be released.</p>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
 <ul>
+<li>Added the parameter <code>protocolVersion</code> to <code>Block&lt;T&gt;(long, long, BigInteger, Nonce, Address?, HashDigest&lt;SHA256&gt;?, DateTimeOffset, IEnumerable&lt;Transaction&lt;T&gt;&gt; transactions, HashDigest&lt;SHA256&gt;?, HashDigest&lt;SHA256&gt;?)</code> constructor.  [<a href="https://github.com/planetarium/libplanet/issues/1142">#1142</a>, <a href="https://github.com/planetarium/libplanet/pull/1147">#1147</a>]</li>
+<li>Added the parameter to <code>protocolVersion</code> to <code>Block&lt;T&gt;.Mine()</code> method.
+[<a href="https://github.com/planetarium/libplanet/issues/1142">#1142</a>, <a href="https://github.com/planetarium/libplanet/pull/1147">#1147</a>]</li>
+<li>Added the first parameter <code>protocolVersion</code> to <code>BlockHeader()</code> constructor.
+[<a href="https://github.com/planetarium/libplanet/issues/1142">#1142</a>, <a href="https://github.com/planetarium/libplanet/pull/1147">#1147</a>]</li>
 <li>Added <code>stagePolicy</code> as the second parameter to <code>BlockChain&lt;T&gt;()</code>
 constructor.  [<a href="https://github.com/planetarium/libplanet/issues/1130">#1130</a>, <a href="https://github.com/planetarium/libplanet/pull/1131">#1131</a>]</li>
 <li>Removed <code>IBlockStatesStore</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/1117">#1117</a>]</li>
@@ -92,6 +97,10 @@ interface.  [<a href="https://github.com/planetarium/libplanet/pull/1117">#1117<
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
 <ul>
+<li>Added <code>Block&lt;T&gt;.CurrentProtocolVersion</code> constant.  [<a href="https://github.com/planetarium/libplanet/issues/1142">#1142</a>, <a href="https://github.com/planetarium/libplanet/pull/1147">#1147</a>]</li>
+<li>Added <code>Block&lt;T&gt;.ProtocolVersion</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/1142">#1142</a>, <a href="https://github.com/planetarium/libplanet/pull/1147">#1147</a>]</li>
+<li>Added <code>Block&lt;T&gt;.Header</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/1070">#1070</a>, <a href="https://github.com/planetarium/libplanet/pull/1102">#1102</a>]</li>
+<li>Added <code>BlockHeader.ProtocolVersion</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/1142">#1142</a>, <a href="https://github.com/planetarium/libplanet/pull/1147">#1147</a>]</li>
 <li>Added <code>IStagePolicy&lt;T&gt;</code> interface.  [<a href="https://github.com/planetarium/libplanet/issues/1130">#1130</a>, <a href="https://github.com/planetarium/libplanet/pull/1131">#1131</a>]</li>
 <li>Added <code>VolatileStagePolicy&lt;T&gt;</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/1130">#1130</a>, <a href="https://github.com/planetarium/libplanet/pull/1131">#1131</a>, <a href="https://github.com/planetarium/libplanet/pull/1136">#1136</a>]</li>
 <li>Added <code>ITransport</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/1052">#1052</a>]</li>
@@ -100,11 +109,10 @@ interface.  [<a href="https://github.com/planetarium/libplanet/pull/1117">#1117<
 <li>Added <code>BlockExceedingTransactionsException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/1104">#1104</a>, <a href="https://github.com/planetarium/libplanet/pull/1110">#1110</a>]</li>
 <li>Added <code>BlockChain&lt;T&gt;.GetStagedTransactionIds()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1089">#1089</a>]</li>
 <li>(Libplanet.RocksDBStore) Added <code>maxTotalWalSize</code>, <code>keepLogFileNum</code> and
-<code>maxLogFileSize</code> parameters into <code>RocksDBStore</code> constructor.
+<code>maxLogFileSize</code> parameters into <code>RocksDBStore()</code> constructor.
 [<a href="https://github.com/planetarium/libplanet/pull/1065">#1065</a>, <a href="https://github.com/planetarium/libplanet/pull/1102">#1102</a>, <a href="https://github.com/planetarium/libplanet/pull/1132">#1132</a>]</li>
 <li>Added <code>Swarm&lt;T&gt;.BlockDemand</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/1068">#1068</a>, <a href="https://github.com/planetarium/libplanet/pull/1102">#1102</a>]</li>
 <li>Added <code>BlockDemand</code> struct.  [<a href="https://github.com/planetarium/libplanet/pull/1068">#1068</a>, <a href="https://github.com/planetarium/libplanet/pull/1102">#1102</a>]</li>
-<li>Added <code>Block&lt;T&gt;.Header</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/1070">#1070</a>, <a href="https://github.com/planetarium/libplanet/pull/1102">#1102</a>]</li>
 <li>Added <code>TurnClient.PublicAddress</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/1074">#1074</a>, <a href="https://github.com/planetarium/libplanet/pull/1102">#1102</a>]</li>
 <li>Added <code>TurnClient.EndPoint</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/1074">#1074</a>, <a href="https://github.com/planetarium/libplanet/pull/1102">#1102</a>]</li>
 <li>Added <code>TurnClient.BehindNAT</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/1074">#1074</a>, <a href="https://github.com/planetarium/libplanet/pull/1102">#1102</a>]</li>
@@ -135,6 +143,7 @@ class.  [<a href="https://github.com/planetarium/libplanet/pull/1119">#1119</a>]
 class.  [<a href="https://github.com/planetarium/libplanet/pull/1119">#1119</a>]</li>
 <li>Added <code>Libplanet.Blockchain.Renderers.Debug.InvalidRenderException&lt;T&gt;</code>
 class.  [<a href="https://github.com/planetarium/libplanet/pull/1119">#1119</a>]</li>
+<li>Added <code>InvalidBlockProtocolVersionException</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/1142">#1142</a>, <a href="https://github.com/planetarium/libplanet/pull/1147">#1147</a>]</li>
 <li>Added <code>InvalidBlockTxHashException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/1116">#1116</a>]</li>
 <li>Removed <code>Swarm&lt;T&gt;.TraceTable()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1120">#1120</a>]</li>
 <li>Added <code>Swarm&lt;T&gt;.PeerStates</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/1120">#1120</a>]</li>
@@ -147,6 +156,13 @@ class.  [<a href="https://github.com/planetarium/libplanet/pull/1119">#1119</a>]
 <li>Upgraded <em>Bencodex</em> package (which is a dependency) so that Libplanet gets
 benefits from its recent optimizations.
 [<a href="https://github.com/planetarium/libplanet/pull/1081">#1081</a>, <a href="https://github.com/planetarium/libplanet/pull/1084">#1084</a>, <a href="https://github.com/planetarium/libplanet/pull/1086">#1086</a>, <a href="https://github.com/planetarium/libplanet/pull/1101">#1101</a>]</li>
+<li>Introduced the <a href="https://github.com/planetarium/libplanet/issues/1142">protocol versioning scheme</a>.  This purposes to change
+the protocol without breaking backward compatibility.  Even the protocol
+is changed, the existing blocks made before the new protocol are guaranteed
+to behave as it had done.  [<a href="https://github.com/planetarium/libplanet/issues/1142">#1142</a>, <a href="https://github.com/planetarium/libplanet/pull/1147">#1147</a>]</li>
+<li>Since <code>BlockHeader.ProtocolVersion</code> was added, the existing blocks are
+considered protocol compliant with the protocol version zero.
+[<a href="https://github.com/planetarium/libplanet/issues/1142">#1142</a>, <a href="https://github.com/planetarium/libplanet/pull/1147">#1147</a>]</li>
 <li>When a <code>BlockChain&lt;T&gt;</code> follows <code>VolatileStagePolicy&lt;T&gt;</code>, which is
 Libplanet's the only built-in <code>IStagePolicy&lt;T&gt;</code> implementation at
 the moment, as its <code>StagePolicy</code>, its staged transactions are no longer
