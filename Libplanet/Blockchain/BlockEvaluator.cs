@@ -116,16 +116,19 @@ namespace Libplanet.Blockchain
 
             if (lastStates is null)
             {
-                lastStates = new AccountStateDeltaImpl(
-                    a => _stateGetter(a, block.PreviousHash, stateCompleters.StateCompleter),
-                    (address, currency) => _balanceGetter(
+                IValue? GetState(Address a) =>
+                    _stateGetter(a, block.PreviousHash, stateCompleters.StateCompleter);
+
+                FungibleAssetValue GetBalance(Address address, Currency currency) =>
+                    _balanceGetter(
                         address,
                         currency,
                         block.PreviousHash,
                         stateCompleters.FungibleAssetStateCompleter
-                    ),
-                    miner
-                );
+                    );
+                lastStates = block.ProtocolVersion > 0
+                    ? new AccountStateDeltaImpl(GetState, GetBalance, miner)
+                    : new AccountStateDeltaImplV0(GetState, GetBalance, miner);
             }
 
             return ActionEvaluation.EvaluateActionsGradually(

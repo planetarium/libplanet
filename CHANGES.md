@@ -125,13 +125,11 @@ To be released.
  -  Fixed a bug where `BlockChain<T>.MineBlock()` was not automatically
     cancelled when the tip of the chain was changed occasionally.  [[#1141]]
  -  Fixed a vulnerability of the `IAccountStateDelta.TransferAsset()`'s
-    internal implementation that it had doubled the balance for transferring
-    to themselves. *Since this behavioral change breaks the protocol-level
-    compatibility if any actions in your app had used
-    `IAccountStateDelta.TransferAsset()`, you must make the action to
-    conditionally work as it had done for the hard-coded block index before
-    this patch is applied, or you may be possible to
-    hard-fork the network.*  [[#1134]]
+    internal implementation that it had doubled recipient's balance when
+    a sender and a recipient is the same.
+    *Since this changes the protocol, for backward compatibility, the actions
+    belonging to the existing block, which was mined before the protocol v1,
+    are guaranteed to still behave as it had done.  [[#1152]]
 
 ### CLI tools
 
@@ -171,7 +169,6 @@ To be released.
 [#1130]: https://github.com/planetarium/libplanet/issues/1130
 [#1131]: https://github.com/planetarium/libplanet/pull/1131
 [#1132]: https://github.com/planetarium/libplanet/pull/1132
-[#1134]: https://github.com/planetarium/libplanet/pull/1134
 [#1135]: https://github.com/planetarium/libplanet/pull/1135
 [#1136]: https://github.com/planetarium/libplanet/pull/1136
 [#1137]: https://github.com/planetarium/libplanet/pull/1137
@@ -179,6 +176,7 @@ To be released.
 [#1142]: https://github.com/planetarium/libplanet/issues/1142
 [#1143]: https://github.com/planetarium/libplanet/pull/1143
 [#1147]: https://github.com/planetarium/libplanet/pull/1147
+[#1152]: https://github.com/planetarium/libplanet/pull/1152
 
 
 Version 0.10.2

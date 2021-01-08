@@ -16,11 +16,13 @@ namespace Libplanet.Action
     [Pure]
     internal class AccountStateDeltaImpl : IAccountStateDelta
     {
-        private readonly AccountStateGetter _accountStateGetter;
-        private readonly AccountBalanceGetter _accountBalanceGetter;
-        private readonly Address _signer;
-        private IImmutableDictionary<Address, IValue> _updatedStates;
-        private IImmutableDictionary<(Address, Currency), BigInteger> _updatedFungibleAssets;
+#pragma warning disable SA1401
+        protected readonly AccountStateGetter _accountStateGetter;
+        protected readonly AccountBalanceGetter _accountBalanceGetter;
+        protected readonly Address _signer;
+        protected IImmutableDictionary<Address, IValue> _updatedStates;
+        protected IImmutableDictionary<(Address, Currency), BigInteger> _updatedFungibleAssets;
+#pragma warning restore SA1401
 
         /// <summary>
         /// Creates a null delta from the given <paramref name="accountStateGetter"/>.
@@ -76,12 +78,12 @@ namespace Libplanet.Action
 
         /// <inheritdoc/>
         [Pure]
-        public FungibleAssetValue GetBalance(Address address, Currency currency) =>
+        public virtual FungibleAssetValue GetBalance(Address address, Currency currency) =>
             GetBalance(address, currency, _updatedFungibleAssets);
 
         /// <inheritdoc/>
         [Pure]
-        public IAccountStateDelta MintAsset(Address recipient, FungibleAssetValue value)
+        public virtual IAccountStateDelta MintAsset(Address recipient, FungibleAssetValue value)
         {
             if (value.Sign <= 0)
             {
@@ -109,7 +111,7 @@ namespace Libplanet.Action
 
         /// <inheritdoc/>
         [Pure]
-        public IAccountStateDelta TransferAsset(
+        public virtual IAccountStateDelta TransferAsset(
             Address sender,
             Address recipient,
             FungibleAssetValue value,
@@ -151,7 +153,7 @@ namespace Libplanet.Action
 
         /// <inheritdoc/>
         [Pure]
-        public IAccountStateDelta BurnAsset(Address owner, FungibleAssetValue value)
+        public virtual IAccountStateDelta BurnAsset(Address owner, FungibleAssetValue value)
         {
             string msg;
 
@@ -186,7 +188,7 @@ namespace Libplanet.Action
         }
 
         [Pure]
-        private FungibleAssetValue GetBalance(
+        protected virtual FungibleAssetValue GetBalance(
             Address address,
             Currency currency,
             IImmutableDictionary<(Address, Currency), BigInteger> balances) =>
@@ -195,7 +197,7 @@ namespace Libplanet.Action
                 : _accountBalanceGetter(address, currency);
 
         [Pure]
-        private AccountStateDeltaImpl UpdateStates(
+        protected virtual AccountStateDeltaImpl UpdateStates(
             IImmutableDictionary<Address, IValue> updatedStates
         ) =>
             new AccountStateDeltaImpl(_accountStateGetter, _accountBalanceGetter, _signer)
@@ -205,7 +207,7 @@ namespace Libplanet.Action
             };
 
         [Pure]
-        private AccountStateDeltaImpl UpdateFungibleAssets(
+        protected virtual AccountStateDeltaImpl UpdateFungibleAssets(
             IImmutableDictionary<(Address, Currency), BigInteger> updatedFungibleAssets
         ) =>
             new AccountStateDeltaImpl(_accountStateGetter, _accountBalanceGetter, _signer)

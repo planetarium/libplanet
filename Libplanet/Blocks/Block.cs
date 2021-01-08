@@ -497,11 +497,10 @@ namespace Libplanet.Blocks
             IAccountStateDelta delta;
             foreach (Transaction<T> tx in Transactions)
             {
-                delta = new AccountStateDeltaImpl(
-                    accountStateGetter,
-                    accountBalanceGetter,
-                    tx.Signer
-                );
+                delta = ProtocolVersion > 0
+                    ? new AccountStateDeltaImpl(accountStateGetter, accountBalanceGetter, tx.Signer)
+                    : new AccountStateDeltaImplV0(
+                        accountStateGetter, accountBalanceGetter, tx.Signer);
                 IEnumerable<ActionEvaluation> evaluations =
                     tx.EvaluateActionsGradually(
                         PreEvaluationHash,

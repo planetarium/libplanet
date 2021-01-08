@@ -1,6 +1,5 @@
 using Libplanet.Action;
 using Libplanet.Blockchain;
-using Libplanet.Blocks;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tx;
 using Xunit;
@@ -8,27 +7,27 @@ using Xunit.Abstractions;
 
 namespace Libplanet.Tests.Action
 {
-    public class AccountStateDeltaImplTest : AccountStateDeltaTest
+    public class AccountStateDeltaImplV0Test : AccountStateDeltaTest
     {
-        public AccountStateDeltaImplTest(ITestOutputHelper output)
+        public AccountStateDeltaImplV0Test(ITestOutputHelper output)
             : base(output)
         {
         }
 
-        public override int ProtocolVersion { get; } = Block<DumbAction>.CurrentProtocolVersion;
+        public override int ProtocolVersion { get; } = 0;
 
         public override IAccountStateDelta CreateInstance(
             AccountStateGetter accountStateGetter,
             AccountBalanceGetter accountBalanceGetter,
             Address signer
         ) =>
-            new AccountStateDeltaImpl(accountStateGetter, accountBalanceGetter, signer);
+            new AccountStateDeltaImplV0(accountStateGetter, accountBalanceGetter, signer);
 
         [Fact]
         public override void TransferAsset()
         {
             base.TransferAsset();
-            Assert.IsType<AccountStateDeltaImpl>(_init);
+            Assert.IsType<AccountStateDeltaImplV0>(_init);
 
             IAccountStateDelta a = _init.TransferAsset(
                 _addr[0],
@@ -36,11 +35,11 @@ namespace Libplanet.Tests.Action
                 Value(0, 6),
                 allowNegativeBalance: true
             );
-            Assert.IsType<AccountStateDeltaImpl>(a);
+            Assert.IsType<AccountStateDeltaImplV0>(a);
             Assert.Equal(Value(0, 6), a.GetBalance(_addr[1], _currencies[0]));
             a = a.TransferAsset(_addr[1], _addr[1], Value(0, 5));
-            Assert.IsType<AccountStateDeltaImpl>(a);
-            Assert.Equal(Value(0, 6), a.GetBalance(_addr[1], _currencies[0]));
+            Assert.IsType<AccountStateDeltaImplV0>(a);
+            Assert.Equal(Value(0, 11), a.GetBalance(_addr[1], _currencies[0]));
         }
 
         [Fact]
@@ -63,7 +62,7 @@ namespace Libplanet.Tests.Action
                 ).AttachStateRootHash(chain.StateStore, chain.Policy.BlockAction)
             );
             Assert.Equal(
-                DumbAction.DumbCurrency * 5,
+                DumbAction.DumbCurrency * 6,
                 chain.GetBalance(_addr[0], DumbAction.DumbCurrency)
             );
 
