@@ -184,6 +184,12 @@ can be validated rather than trusted due to MPT.  [<a href="https://github.com/p
 <ul>
 <li>Fixed a bug where <code>BlockChain&lt;T&gt;.MineBlock()</code> was not automatically
 cancelled when the tip of the chain was changed occasionally.  [<a href="https://github.com/planetarium/libplanet/pull/1141">#1141</a>]</li>
+<li>Fixed a vulnerability of the <code>IAccountStateDelta.TransferAsset()</code>'s
+internal implementation that it had doubled recipient's balance when
+a sender and a recipient is the same.
+*Since this changes the protocol, for backward compatibility, the actions
+belonging to the existing block, which was mined before the protocol v1,
+are guaranteed to still behave as it had done.  [<a href="https://github.com/planetarium/libplanet/pull/1152">#1152</a>]</li>
 </ul>
 <h3 id="cli-tools">CLI tools</h3>
 <ul>
