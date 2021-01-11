@@ -27,9 +27,9 @@ namespace Libplanet.Action
 
         /// <inheritdoc/>
         public override FungibleAssetValue GetBalance(Address address, Currency currency) =>
-            _updatedFungibleAssets.TryGetValue((address, currency), out BigInteger balance)
+            UpdatedFungibles.TryGetValue((address, currency), out BigInteger balance)
                 ? FungibleAssetValue.FromRawValue(currency, balance)
-                : _accountBalanceGetter(address, currency);
+                : BalanceGetter(address, currency);
 
         /// <inheritdoc/>
         [Pure]
@@ -60,7 +60,7 @@ namespace Libplanet.Action
             }
 
             return UpdateFungibleAssets(
-                _updatedFungibleAssets
+                UpdatedFungibles
                     .SetItem((sender, currency), (senderBalance - value).RawValue)
                     .SetItem((recipient, currency), (recipientBalance + value).RawValue)
             );
@@ -70,20 +70,20 @@ namespace Libplanet.Action
         protected override AccountStateDeltaImpl UpdateStates(
             IImmutableDictionary<Address, IValue> updatedStates
         ) =>
-            new AccountStateDeltaImplV0(_accountStateGetter, _accountBalanceGetter, _signer)
+            new AccountStateDeltaImplV0(StateGetter, BalanceGetter, Signer)
             {
-                _updatedStates = updatedStates,
-                _updatedFungibleAssets = _updatedFungibleAssets,
+                UpdatedStates = updatedStates,
+                UpdatedFungibles = UpdatedFungibles,
             };
 
         [Pure]
         protected override AccountStateDeltaImpl UpdateFungibleAssets(
             IImmutableDictionary<(Address, Currency), BigInteger> updatedFungibleAssets
         ) =>
-            new AccountStateDeltaImplV0(_accountStateGetter, _accountBalanceGetter, _signer)
+            new AccountStateDeltaImplV0(StateGetter, BalanceGetter, Signer)
             {
-                _updatedStates = _updatedStates,
-                _updatedFungibleAssets = updatedFungibleAssets,
+                UpdatedStates = UpdatedStates,
+                UpdatedFungibles = updatedFungibleAssets,
             };
     }
 }

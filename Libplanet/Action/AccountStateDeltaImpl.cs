@@ -16,14 +16,6 @@ namespace Libplanet.Action
     [Pure]
     internal class AccountStateDeltaImpl : IAccountStateDelta
     {
-#pragma warning disable SA1401
-        protected readonly AccountStateGetter _accountStateGetter;
-        protected readonly AccountBalanceGetter _accountBalanceGetter;
-        protected readonly Address _signer;
-        protected IImmutableDictionary<Address, IValue> _updatedStates;
-        protected IImmutableDictionary<(Address, Currency), BigInteger> _updatedFungibleAssets;
-#pragma warning restore SA1401
-
         /// <summary>
         /// Creates a null delta from the given <paramref name="accountStateGetter"/>.
         /// </summary>
@@ -38,48 +30,62 @@ namespace Libplanet.Action
             Address signer
         )
         {
-            _accountStateGetter = accountStateGetter;
-            _accountBalanceGetter = accountBalanceGetter;
-            _updatedStates = ImmutableDictionary<Address, IValue>.Empty;
-            _updatedFungibleAssets = ImmutableDictionary<(Address, Currency), BigInteger>.Empty;
-            _signer = signer;
+            StateGetter = accountStateGetter;
+            BalanceGetter = accountBalanceGetter;
+            UpdatedStates = ImmutableDictionary<Address, IValue>.Empty;
+            UpdatedFungibles = ImmutableDictionary<(Address, Currency), BigInteger>.Empty;
+            Signer = signer;
         }
 
         /// <inheritdoc/>
         [Pure]
         IImmutableSet<Address> IAccountStateDelta.UpdatedAddresses =>
-            _updatedStates.Keys.ToImmutableHashSet().Union(
-                _updatedFungibleAssets.Select(kv => kv.Key.Item1)
+            UpdatedStates.Keys.ToImmutableHashSet().Union(
+                UpdatedFungibles.Select(kv => kv.Key.Item1)
             );
 
         /// <inheritdoc/>
         IImmutableSet<Address> IAccountStateDelta.StateUpdatedAddresses =>
-            _updatedStates.Keys.ToImmutableHashSet();
+            UpdatedStates.Keys.ToImmutableHashSet();
 
         /// <inheritdoc/>
         IImmutableDictionary<Address, IImmutableSet<Currency>>
             IAccountStateDelta.UpdatedFungibleAssets =>
-            _updatedFungibleAssets.GroupBy(kv => kv.Key.Item1).ToImmutableDictionary(
+            UpdatedFungibles.GroupBy(kv => kv.Key.Item1).ToImmutableDictionary(
                 g => g.Key,
                 g => (IImmutableSet<Currency>)g.Select(kv => kv.Key.Item2).ToImmutableHashSet()
             );
 
+        protected AccountStateGetter StateGetter { get; set; }
+
+        protected AccountBalanceGetter BalanceGetter { get; set; }
+
+        protected Address Signer { get; set; }
+
+        protected IImmutableDictionary<Address, IValue> UpdatedStates { get; set; }
+
+        protected IImmutableDictionary<(Address, Currency), BigInteger> UpdatedFungibles
+        {
+            get;
+            set;
+        }
+
         /// <inheritdoc/>
         [Pure]
         IValue? IAccountStateDelta.GetState(Address address) =>
-            _updatedStates.TryGetValue(address, out IValue? value)
+            UpdatedStates.TryGetValue(address, out IValue? value)
                 ? value
-                : _accountStateGetter(address);
+                : StateGetter(address);
 
         /// <inheritdoc/>
         [Pure]
         IAccountStateDelta IAccountStateDelta.SetState(Address address, IValue state) =>
-            UpdateStates(_updatedStates.SetItem(address, state));
+            UpdateStates(UpdatedStates.SetItem(address, state));
 
         /// <inheritdoc/>
         [Pure]
         public virtual FungibleAssetValue GetBalance(Address address, Currency currency) =>
-            GetBalance(address, currency, _updatedFungibleAssets);
+            GetBalance(address, currency, UpdatedFungibles);
 
         /// <inheritdoc/>
         [Pure]
@@ -94,18 +100,18 @@ namespace Libplanet.Action
             }
 
             Currency currency = value.Currency;
-            if (!currency.AllowsToMint(_signer))
+            if (!currency.AllowsToMint(Signer))
             {
                 throw new CurrencyPermissionException(
-                    _signer,
+                    Signer,
                     currency,
-                    $"The account {_signer} has no permission to mint the currency {currency}."
+                    $"The account {Signer} has no permission to mint the currency {currency}."
                 );
             }
 
             FungibleAssetValue balance = GetBalance(recipient, currency);
             return UpdateFungibleAssets(
-                _updatedFungibleAssets.SetItem((recipient, currency), (balance + value).RawValue)
+                UpdatedFungibles.SetItem((recipient, currency), (balance + value).RawValue)
             );
         }
 
@@ -137,7 +143,7 @@ namespace Libplanet.Action
             }
 
             IImmutableDictionary<(Address, Currency), BigInteger> updatedFungibleAssets =
-                _updatedFungibleAssets
+                UpdatedFungibles
                 .SetItem((sender, currency), (senderBalance - value).RawValue);
 
             FungibleAssetValue recipientBalance = GetBalance(
@@ -166,11 +172,11 @@ namespace Libplanet.Action
             }
 
             Currency currency = value.Currency;
-            if (!currency.AllowsToMint(_signer))
+            if (!currency.AllowsToMint(Signer))
             {
-                msg = $"The account {_signer} has no permission to burn assets of " +
+                msg = $"The account {Signer} has no permission to burn assets of " +
                       $"the currency {currency}.";
-                throw new CurrencyPermissionException(_signer, currency, msg);
+                throw new CurrencyPermissionException(Signer, currency, msg);
             }
 
             FungibleAssetValue balance = GetBalance(owner, currency);
@@ -183,7 +189,7 @@ namespace Libplanet.Action
             }
 
             return UpdateFungibleAssets(
-                _updatedFungibleAssets.SetItem((owner, currency), (balance - value).RawValue)
+                UpdatedFungibles.SetItem((owner, currency), (balance - value).RawValue)
             );
         }
 
@@ -194,26 +200,26 @@ namespace Libplanet.Action
             IImmutableDictionary<(Address, Currency), BigInteger> balances) =>
             balances.TryGetValue((address, currency), out BigInteger balance)
                 ? FungibleAssetValue.FromRawValue(currency, balance)
-                : _accountBalanceGetter(address, currency);
+                : BalanceGetter(address, currency);
 
         [Pure]
         protected virtual AccountStateDeltaImpl UpdateStates(
             IImmutableDictionary<Address, IValue> updatedStates
         ) =>
-            new AccountStateDeltaImpl(_accountStateGetter, _accountBalanceGetter, _signer)
+            new AccountStateDeltaImpl(StateGetter, BalanceGetter, Signer)
             {
-                _updatedStates = updatedStates,
-                _updatedFungibleAssets = _updatedFungibleAssets,
+                UpdatedStates = updatedStates,
+                UpdatedFungibles = UpdatedFungibles,
             };
 
         [Pure]
         protected virtual AccountStateDeltaImpl UpdateFungibleAssets(
             IImmutableDictionary<(Address, Currency), BigInteger> updatedFungibleAssets
         ) =>
-            new AccountStateDeltaImpl(_accountStateGetter, _accountBalanceGetter, _signer)
+            new AccountStateDeltaImpl(StateGetter, BalanceGetter, Signer)
             {
-                _updatedStates = _updatedStates,
-                _updatedFungibleAssets = updatedFungibleAssets,
+                UpdatedStates = UpdatedStates,
+                UpdatedFungibles = updatedFungibleAssets,
             };
     }
 }
