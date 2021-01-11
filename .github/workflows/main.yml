@@ -76,6 +76,10 @@ jobs:
       with:
         ref: ${{ github.pull_request.head.sha }}
     - run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+    - uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.x
+    - run: dotnet build -p:SkipSonar=true
     - run: mkdir -p Docs/obj/
     - run: Docs/build.ps1
       shell: pwsh
