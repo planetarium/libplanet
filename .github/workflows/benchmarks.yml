@@ -22,5 +22,5 @@ jobs:
         ref: ${{ github.pull_request.head.sha }}
     - uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.1.100
+        dotnet-version: 3.1.x
     - run: 'dotnet run -p Libplanet.Benchmarks -c Release -- -j short -f "*"'
