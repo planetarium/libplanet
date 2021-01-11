@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Delegate FungibleAssetStateCompleter&lt;T&gt;
    | Libplanet ">
-    <meta name="generator" content="docfx 2.48.1.0">
+    <meta name="generator" content="docfx 2.56.6.0">
     
     <link rel="shortcut icon" href="../images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -73,8 +73,8 @@
   
   <h1 id="Libplanet_Blockchain_FungibleAssetStateCompleter_1" data-uid="Libplanet.Blockchain.FungibleAssetStateCompleter`1" class="text-break">Delegate FungibleAssetStateCompleter&lt;T&gt;
   </h1>
-  <div class="markdown level0 summary"><p>A delegate to be called when <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetBalance_Libplanet_Address_Libplanet_Assets_Currency_System_Nullable_Libplanet_HashDigest_SHA256___Libplanet_Blockchain_FungibleAssetStateCompleter__0__">GetBalance(Address, Currency, Nullable&lt;HashDigest&lt;SHA256&gt;&gt;, FungibleAssetStateCompleter&lt;T&gt;)</a> method encounters
-a block having incomplete dirty states. <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetBalance_Libplanet_Address_Libplanet_Assets_Currency_System_Nullable_Libplanet_HashDigest_SHA256___Libplanet_Blockchain_FungibleAssetStateCompleter__0__">GetBalance(Address, Currency, Nullable&lt;HashDigest&lt;SHA256&gt;&gt;, FungibleAssetStateCompleter&lt;T&gt;)</a> method
+  <div class="markdown level0 summary"><p>A delegate to be called when <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetBalance_Libplanet_Address_Libplanet_Assets_Currency_System_Nullable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___Libplanet_Blockchain_FungibleAssetStateCompleter__0__">GetBalance(Address, Currency, Nullable&lt;HashDigest&lt;SHA256&gt;&gt;, FungibleAssetStateCompleter&lt;T&gt;)</a> method encounters
+a block having incomplete dirty states. <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetBalance_Libplanet_Address_Libplanet_Assets_Currency_System_Nullable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___Libplanet_Blockchain_FungibleAssetStateCompleter__0__">GetBalance(Address, Currency, Nullable&lt;HashDigest&lt;SHA256&gt;&gt;, FungibleAssetStateCompleter&lt;T&gt;)</a> method
 returns this delegate's return value instead for such case.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
@@ -102,7 +102,7 @@ returns this delegate's return value instead for such case.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA256</span>&gt;</td>
+        <td><a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;</td>
         <td><span class="parametername">blockHash</span></td>
         <td><p>The hash of a block to lacks its dirty states.</p>
 </td>
@@ -175,7 +175,8 @@ to <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+                <h5>In This Article</h5>
+                <div></div>
               </nav>
             </div>
           </div>

@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class RoutingTable
    | Libplanet ">
-    <meta name="generator" content="docfx 2.48.1.0">
+    <meta name="generator" content="docfx 2.56.6.0">
     
     <link rel="shortcut icon" href="../images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -81,11 +81,35 @@
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">RoutingTable</span></div>
   </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
+    </div>
+  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Net.Protocols.html">Libplanet.Net.Protocols</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
   <h5 id="Libplanet_Net_Protocols_RoutingTable_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class RoutingTable : object</code></pre>
+    <pre><code class="lang-csharp hljs">public class RoutingTable</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -103,7 +127,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public RoutingTable(Address address, int tableSize = null, int bucketSize = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public RoutingTable(Address address, int tableSize = 160, int bucketSize = 16)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -131,6 +155,23 @@
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td><span class="parametername">bucketSize</span></td>
         <td><p>The size of a single bucket.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
+        <td><p>Thrown when <code data-dev-comment-type="paramref" class="paramref">tableSize</code> or <code data-dev-comment-type="paramref" class="paramref">bucketSize</code> is
+less then or equal to 0.</p>
 </td>
       </tr>
     </tbody>
@@ -208,7 +249,7 @@
   </span>
   <a id="Libplanet_Net_Protocols_RoutingTable_Peers_" data-uid="Libplanet.Net.Protocols.RoutingTable.Peers*"></a>
   <h4 id="Libplanet_Net_Protocols_RoutingTable_Peers" data-uid="Libplanet.Net.Protocols.RoutingTable.Peers">Peers</h4>
-  <div class="markdown level1 summary"><p>An <see cref="!:IEnumerable&lt;T>"></see> of peers in the table.</p>
+  <div class="markdown level1 summary"><p>An <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable&lt;T&gt;</a> of peers in the table.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -225,7 +266,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -239,7 +280,7 @@
   </span>
   <a id="Libplanet_Net_Protocols_RoutingTable_PeerStates_" data-uid="Libplanet.Net.Protocols.RoutingTable.PeerStates*"></a>
   <h4 id="Libplanet_Net_Protocols_RoutingTable_PeerStates" data-uid="Libplanet.Net.Protocols.RoutingTable.PeerStates">PeerStates</h4>
-  <div class="markdown level1 summary"><p>An <see cref="!:IEnumerable&lt;T>"></see> of <a class="xref" href="Libplanet.Net.PeerState.html">PeerState</a> of peers in the table.</p>
+  <div class="markdown level1 summary"><p>An <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable&lt;T&gt;</a> of <a class="xref" href="Libplanet.Net.PeerState.html">PeerState</a> of peers in the table.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -256,7 +297,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Libplanet.Net.PeerState.html">PeerState</a>&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.Net.PeerState.html">PeerState</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -328,15 +369,38 @@
       </tr>
     </tbody>
   </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p>Thrown when <code data-dev-comment-type="paramref" class="paramref">peer</code> is
+<span class="xref">null</span>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>Thrown when <code data-dev-comment-type="paramref" class="paramref">peer</code>'s
+<a class="xref" href="Libplanet.Address.html">Address</a> is equal to the <a class="xref" href="Libplanet.Address.html">Address</a> of self.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Protocols_RoutingTable_Check_Libplanet_Net_BoundPeer_DateTimeOffset_DateTimeOffset_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Protocols.RoutingTable.Check(Libplanet.Net.BoundPeer%2CDateTimeOffset%2CDateTimeOffset)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Protocols_RoutingTable_Check_Libplanet_Net_BoundPeer_System_DateTimeOffset_System_DateTimeOffset_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Protocols.RoutingTable.Check(Libplanet.Net.BoundPeer%2CSystem.DateTimeOffset%2CSystem.DateTimeOffset)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Net/Protocols/RoutingTable.cs/#L239">View Source</a>
   </span>
   <a id="Libplanet_Net_Protocols_RoutingTable_Check_" data-uid="Libplanet.Net.Protocols.RoutingTable.Check*"></a>
-  <h4 id="Libplanet_Net_Protocols_RoutingTable_Check_Libplanet_Net_BoundPeer_DateTimeOffset_DateTimeOffset_" data-uid="Libplanet.Net.Protocols.RoutingTable.Check(Libplanet.Net.BoundPeer,DateTimeOffset,DateTimeOffset)">Check(BoundPeer, DateTimeOffset, DateTimeOffset)</h4>
+  <h4 id="Libplanet_Net_Protocols_RoutingTable_Check_Libplanet_Net_BoundPeer_System_DateTimeOffset_System_DateTimeOffset_" data-uid="Libplanet.Net.Protocols.RoutingTable.Check(Libplanet.Net.BoundPeer,System.DateTimeOffset,System.DateTimeOffset)">Check(BoundPeer, DateTimeOffset, DateTimeOffset)</h4>
   <div class="markdown level1 summary"><p>Marks <code data-dev-comment-type="paramref" class="paramref">peer</code> checked and refreshes last checked time of the peer.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -361,15 +425,31 @@
 </td>
       </tr>
       <tr>
-        <td><span class="xref">DateTimeOffset</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a></td>
         <td><span class="parametername">start</span></td>
-        <td><p><see cref="!:DateTimeOffset"></see> at the beginning of the check.</p>
+        <td><p><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a> at the beginning of the check.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">DateTimeOffset</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a></td>
         <td><span class="parametername">end</span></td>
-        <td><p><see cref="!:DateTimeOffset"></see> at the end of the check.</p>
+        <td><p><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a> at the end of the check.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p>Thrown when <code data-dev-comment-type="paramref" class="paramref">peer</code> is <span class="xref">null</span>.</p>
 </td>
       </tr>
     </tbody>
@@ -505,7 +585,7 @@ the given <code data-dev-comment-type="paramref" class="paramref">addr</code>.</
   <div class="markdown level1 summary"><p>Returns at most 2 * <code data-dev-comment-type="paramref" class="paramref">k</code> (2 * <code data-dev-comment-type="paramref" class="paramref">k</code> + 1 if
 <code data-dev-comment-type="paramref" class="paramref">includeTarget</code> is <code>true</code>) nearest peers to given parameter peer
 from routing table. Return value is sorted with respect to target.
-<a class="xref" href="Libplanet.Net.Protocols.Kademlia.html#Libplanet_Net_Protocols_Kademlia_SortByDistance_IEnumerable_Libplanet_Net_BoundPeer__Libplanet_Address_">SortByDistance(IEnumerable&lt;BoundPeer&gt;, Address)</a></p>
+<a class="xref" href="Libplanet.Net.Protocols.Kademlia.html#Libplanet_Net_Protocols_Kademlia_SortByDistance_System_Collections_Generic_IEnumerable_Libplanet_Net_BoundPeer__Libplanet_Address_">SortByDistance(IEnumerable&lt;BoundPeer&gt;, Address)</a></p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -553,7 +633,7 @@ from routing table. Return value is sorted with respect to target.
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>&gt;</td>
         <td><p>An enumerable of <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>.</p>
 </td>
       </tr>
@@ -617,7 +697,7 @@ Return value is already sorted with respect to target.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>&gt;</td>
         <td><p>An enumerable of <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>.</p>
 </td>
       </tr>
@@ -686,7 +766,8 @@ Return value is already sorted with respect to target.</p>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+                <h5>In This Article</h5>
+                <div></div>
               </nav>
             </div>
           </div>

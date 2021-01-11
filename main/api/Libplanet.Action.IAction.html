@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Interface IAction
    | Libplanet ">
-    <meta name="generator" content="docfx 2.48.1.0">
+    <meta name="generator" content="docfx 2.56.6.0">
     
     <link rel="shortcut icon" href="../images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -340,7 +340,7 @@ than once, the time it's called is difficult to predict.</p>
 <p>For changing in-memory game states or drawing graphics,
 implement the <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a> interface separately and
 attach it to a <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> instance.</p>
-<p>For randomness, <em>never</em> use <see cref="!:System.Random"></see>
+<p>For randomness, <em>never</em> use <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.random">Random</a>
 nor any other PRNGs provided by other than Libplanet.
 Use <a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_Random">Random</a> instead.
 <a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_Random">Random</a> guarantees the same action
@@ -353,14 +353,14 @@ could be logged multiple times.</p>
 underspecified so that it can make different results on different
 machines, platforms, runtimes, compilers, and builds</a>.</p>
 <p>Lastly, you need to be aware and keep in mind that there
-is a global state named <see cref="!:System.Globalization.CultureInfo.CurrentCulture"></see> on .NET;
+is a global state named <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.globalization.cultureinfo.currentculture#System_Globalization_CultureInfo_CurrentCulture">CurrentCulture</a> on .NET;
 if you format numbers, dates and times, currencies, or other such
 things into strings and parse these strings back these can rely on
-<see cref="!:System.Globalization.CultureInfo.CurrentCulture"></see>,
+<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.globalization.cultureinfo.currentculture#System_Globalization_CultureInfo_CurrentCulture">CurrentCulture</a>,
 so that the same action make different results on two differently
 configured systems like Thai language and French language.
 In order to make these types of conversions deterministic,
-you have to explicitly pass <see cref="!:System.Globalization.CultureInfo.InvariantCulture"></see>.</p>
+you have to explicitly pass <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.globalization.cultureinfo.invariantculture#System_Globalization_CultureInfo_InvariantCulture">InvariantCulture</a>.</p>
 <p>For more on determinism in general, please read also <a href="https://tendermint.com/docs/spec/abci/abci.html#determinism">Tendermint ABCI&apos;s docs on determinism</a>.</p>
 <p>Lastly, you can conduct static analysis on your code
 using <a href="https://git.io/JTmby">Libplanet.Analyzers</a>.
@@ -429,7 +429,8 @@ properties (or fields).</p>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+                <h5>In This Article</h5>
+                <div></div>
               </nav>
             </div>
           </div>
