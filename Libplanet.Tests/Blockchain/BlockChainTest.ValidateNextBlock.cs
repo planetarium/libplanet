@@ -74,16 +74,32 @@ namespace Libplanet.Tests.Blockchain
         {
             _blockChain.Append(_validNext);
 
-            var invalidIndexBlock = Block<DumbAction>.Mine(
+            Block<DumbAction> prev = _blockChain.Tip;
+            Block<DumbAction> blockWithAlreadyUsedIndex = Block<DumbAction>.Mine(
+                prev.Index,
                 1,
+                prev.TotalDifficulty,
+                prev.Miner.Value,
+                prev.Hash,
+                prev.Timestamp.AddSeconds(1),
+                _emptyTransaction
+            ).AttachStateRootHash(_fx.StateStore, _policy.BlockAction);
+            Assert.Throws<InvalidBlockIndexException>(
+                () => _blockChain.Append(blockWithAlreadyUsedIndex)
+            );
+
+            Block<DumbAction> blockWithIndexAfterNonexistentIndex = Block<DumbAction>.Mine(
+                prev.Index + 2,
                 1,
-                _fx.GenesisBlock.TotalDifficulty,
-                _fx.GenesisBlock.Miner.Value,
-                _validNext.Hash,
-                _validNext.Timestamp.AddSeconds(1),
-                _emptyTransaction).AttachStateRootHash(_fx.StateStore, _policy.BlockAction);
-            Assert.Throws<InvalidBlockIndexException>(() =>
-                _blockChain.Append(invalidIndexBlock));
+                prev.TotalDifficulty,
+                prev.Miner.Value,
+                prev.Hash,
+                prev.Timestamp.AddSeconds(1),
+                _emptyTransaction
+            ).AttachStateRootHash(_fx.StateStore, _policy.BlockAction);
+            Assert.Throws<InvalidBlockIndexException>(
+                () => _blockChain.Append(blockWithIndexAfterNonexistentIndex)
+            );
         }
 
         [Fact]
