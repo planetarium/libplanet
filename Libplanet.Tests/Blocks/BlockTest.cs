@@ -470,8 +470,7 @@ namespace Libplanet.Tests.Blocks
             );
             byte[] sig = _fx.TxFixture.PrivateKey1.Sign(
                 new Transaction<PolymorphicAction<BaseAction>>(
-                    rawTxWithoutSig,
-                    false
+                    rawTxWithoutSig
                 ).Serialize(false)
             );
             var invalidTx = new Transaction<PolymorphicAction<BaseAction>>(
@@ -878,7 +877,7 @@ namespace Libplanet.Tests.Blocks
                 ImmutableArray<IValue>.Empty,
                 new byte[10].ToImmutableArray()
             );
-            var invalidTx = new Transaction<DumbAction>(rawTx, false);
+            var invalidTx = new Transaction<DumbAction>(rawTx);
             Assert.Throws<InvalidTxSignatureException>(() =>
                 MineNext(
                     MineGenesis<DumbAction>(),
@@ -907,7 +906,7 @@ namespace Libplanet.Tests.Blocks
                 ImmutableArray<byte>.Empty
             );
             byte[] sig = _fx.TxFixture.PrivateKey1.Sign(
-                new Transaction<DumbAction>(rawTxWithoutSig, false).Serialize(false)
+                new Transaction<DumbAction>(rawTxWithoutSig).Serialize(false)
             );
             var invalidTx = new Transaction<DumbAction>(
                 new RawTransaction(
@@ -919,8 +918,7 @@ namespace Libplanet.Tests.Blocks
                     rawTxWithoutSig.Timestamp,
                     rawTxWithoutSig.Actions,
                     sig.ToImmutableArray()
-                ),
-                false
+                )
             );
             Assert.Throws<InvalidTxPublicKeyException>(() =>
                 MineNext(
