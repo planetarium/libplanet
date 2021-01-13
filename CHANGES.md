@@ -92,6 +92,7 @@ To be released.
     [[#1120], [#1135]]
  -  Added `reorgResistantHeight` parameters into `DelayedActionRenderer<T>()`
     constructor. [[#1163]]
+ -  Added `InvalidBlockPreEvaluationHashException` class.
 
 ### Behavioral changes
 
@@ -114,8 +115,6 @@ To be released.
  -  `Swarm<T>` became not to receive states from trusted peers.
     [[#1061], [#1102]]
  -  `Swarm<T>` became not to retry when block downloading.  [[#1062], [#1102]]
- -  `Block<T>.Evaluate()` became to validate only `Block<T>.TxHash` instead of
-    its all transactions.  [[#1116]]
  -  Improved performance of `BlockChain<T>.MineBlock()`.  [[#1116], [#1124]]
  -  Improved performance of `Block<T>.Deserialize()`.  [[#1116]]
  -  `Swarm<T>` became not to fill states from trusted peers, because now states
