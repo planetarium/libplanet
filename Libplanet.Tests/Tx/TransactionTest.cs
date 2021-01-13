@@ -775,7 +775,8 @@ namespace Libplanet.Tests.Tx
                     rawTx.Timestamp,
                     rawTx.Actions,
                     new byte[rawTx.Signature.Length].ToImmutableArray()
-                )
+                ),
+                false
             );
 
             Assert.Throws<InvalidTxSignatureException>(() => tx.Validate());

@@ -470,7 +470,8 @@ namespace Libplanet.Tests.Blocks
             );
             byte[] sig = _fx.TxFixture.PrivateKey1.Sign(
                 new Transaction<PolymorphicAction<BaseAction>>(
-                    rawTxWithoutSig
+                    rawTxWithoutSig,
+                    false
                 ).Serialize(false)
             );
             var invalidTx = new Transaction<PolymorphicAction<BaseAction>>(
@@ -859,6 +860,77 @@ namespace Libplanet.Tests.Blocks
 
             Assert.Throws<InvalidBlockPreEvaluationHashException>(() =>
                 invalidBlock.Validate(DateTimeOffset.UtcNow));
+        }
+
+        [Fact]
+        public void DetectInvalidTxSignature()
+        {
+            RawTransaction rawTx = new RawTransaction(
+                0,
+                _fx.TxFixture.Address1.ByteArray,
+                _fx.Genesis.Hash.ByteArray,
+                ImmutableArray<ImmutableArray<byte>>.Empty,
+                _fx.TxFixture.PublicKey1.Format(false).ToImmutableArray(),
+                DateTimeOffset.UtcNow.ToString(
+                    "yyyy-MM-ddTHH:mm:ss.ffffffZ",
+                    CultureInfo.InvariantCulture
+                ),
+                ImmutableArray<IValue>.Empty,
+                new byte[10].ToImmutableArray()
+            );
+            var invalidTx = new Transaction<DumbAction>(rawTx, false);
+            Assert.Throws<InvalidTxSignatureException>(() =>
+                MineNext(
+                    MineGenesis<DumbAction>(),
+                    new List<Transaction<DumbAction>>
+                    {
+                        invalidTx,
+                    }
+                )
+            );
+        }
+
+        [Fact]
+        public void DetectInvalidTxPublicKey()
+        {
+            RawTransaction rawTxWithoutSig = new RawTransaction(
+                0,
+                new PrivateKey().ToAddress().ByteArray,
+                _fx.Genesis.Hash.ByteArray,
+                ImmutableArray<ImmutableArray<byte>>.Empty,
+                _fx.TxFixture.PublicKey1.Format(false).ToImmutableArray(),
+                DateTimeOffset.UtcNow.ToString(
+                    "yyyy-MM-ddTHH:mm:ss.ffffffZ",
+                    CultureInfo.InvariantCulture
+                ),
+                ImmutableArray<IValue>.Empty,
+                ImmutableArray<byte>.Empty
+            );
+            byte[] sig = _fx.TxFixture.PrivateKey1.Sign(
+                new Transaction<DumbAction>(rawTxWithoutSig, false).Serialize(false)
+            );
+            var invalidTx = new Transaction<DumbAction>(
+                new RawTransaction(
+                    0,
+                    rawTxWithoutSig.Signer,
+                    rawTxWithoutSig.GenesisHash,
+                    rawTxWithoutSig.UpdatedAddresses,
+                    rawTxWithoutSig.PublicKey,
+                    rawTxWithoutSig.Timestamp,
+                    rawTxWithoutSig.Actions,
+                    sig.ToImmutableArray()
+                ),
+                false
+            );
+            Assert.Throws<InvalidTxPublicKeyException>(() =>
+                MineNext(
+                    MineGenesis<DumbAction>(),
+                    new List<Transaction<DumbAction>>
+                    {
+                        invalidTx,
+                    }
+                )
+            );
         }
     }
 }

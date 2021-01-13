@@ -129,7 +129,7 @@ namespace Libplanet.Tx
         }
 
 #pragma warning disable SA1118 // Parameter spans multiple line
-        internal Transaction(RawTransaction rawTx)
+        internal Transaction(RawTransaction rawTx, bool validate = true)
             : this(
                 rawTx.Nonce,
                 new Address(rawTx.Signer),
@@ -146,7 +146,7 @@ namespace Libplanet.Tx
                     CultureInfo.InvariantCulture).ToUniversalTime(),
                 rawTx.Actions.Select(ToAction).ToImmutableList(),
                 rawTx.Signature.ToArray(),
-                false)
+                validate)
 #pragma warning restore SA1118 // Parameter spans multiple line
         {
         }
