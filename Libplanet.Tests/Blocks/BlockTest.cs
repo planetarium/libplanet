@@ -842,5 +842,23 @@ namespace Libplanet.Tests.Blocks
                  () => emptyTxs.Validate(DateTimeOffset.UtcNow)
             );
         }
+
+        [Fact]
+        public void DetectInvalidPreEvaluationHash()
+        {
+            var invalidBlock = new Block<PolymorphicAction<BaseAction>>(
+                index: _fx.Next.Index,
+                difficulty: _fx.Next.Difficulty,
+                totalDifficulty: _fx.Next.TotalDifficulty * 10000, // invalid
+                preEvaluationHash: _fx.Next.PreEvaluationHash,
+                nonce: new Nonce(new byte[] { 0x00 }),
+                miner: _fx.Next.Miner,
+                previousHash: _fx.Next.PreviousHash,
+                timestamp: _fx.Next.Timestamp,
+                transactions: _fx.Next.Transactions);
+
+            Assert.Throws<InvalidBlockPreEvaluationHashException>(() =>
+                invalidBlock.Validate(DateTimeOffset.UtcNow));
+        }
     }
 }

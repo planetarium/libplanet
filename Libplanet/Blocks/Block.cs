@@ -634,6 +634,20 @@ namespace Libplanet.Blocks
         {
             Header.Validate(currentTime);
 
+            HashDigest<SHA256> expectedPreEvaluationHash =
+                Hashcash.Hash(SerializeForHash());
+            if (!expectedPreEvaluationHash.Equals(PreEvaluationHash))
+            {
+                string message =
+                    $"The expected pre evaluation hash of block {Hash} is " +
+                    $"{expectedPreEvaluationHash}, but its pre evaluation hash is " +
+                    $"{PreEvaluationHash}.";
+                throw new InvalidBlockPreEvaluationHashException(
+                    PreEvaluationHash,
+                    expectedPreEvaluationHash,
+                    message);
+            }
+
             HashDigest<SHA256>? calculatedTxHash =
                 CalcualteTxHashes(Transactions.OrderBy(tx => tx.Id));
             if (!calculatedTxHash.Equals(TxHash))
