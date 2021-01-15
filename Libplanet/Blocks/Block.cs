@@ -179,7 +179,7 @@ namespace Libplanet.Blocks
                     ? new HashDigest<SHA256>(rb.Header.TxHash)
                     : (HashDigest<SHA256>?)null,
                 rb.Transactions
-                    .Select(tx => Transaction<T>.Deserialize(tx.ToArray()))
+                    .Select(tx => Transaction<T>.Deserialize(tx.ToArray(), false))
                     .ToList(),
                 rb.Header.PreEvaluationHash.Any()
                     ? new HashDigest<SHA256>(rb.Header.PreEvaluationHash)
