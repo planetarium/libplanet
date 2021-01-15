@@ -18,6 +18,7 @@ To be released.
     [[#1142], [#1147], [#1162]]
  -  Added `stagePolicy` as the second parameter to `BlockChain<T>()`
     constructor.  [[#1130], [#1131]]
+ -  Removed `TransactionSet<T>` class.  [[#1165]]
  -  Removed `IBlockStatesStore` interface.  [[#1117]]
  -  Removed `BaseBlockStatesStore` abstract class.  [[#1117]]
  -  Removed `Swarm<T>.GetTrustedStateCompleterAsync()` method.  [[#1117]]
@@ -183,6 +184,7 @@ To be released.
 [#1152]: https://github.com/planetarium/libplanet/pull/1152
 [#1162]: https://github.com/planetarium/libplanet/pull/1162
 [#1163]: https://github.com/planetarium/libplanet/pull/1163
+[#1165]: https://github.com/planetarium/libplanet/pull/1165
 
 
 Version 0.10.2
