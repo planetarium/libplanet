@@ -11,11 +11,11 @@ To be released.
  -  Added the parameter `protocolVersion` to `Block<T>(long, long, BigInteger,
     Nonce, Address?, HashDigest<SHA256>?, DateTimeOffset,
     IEnumerable<Transaction<T>> transactions, HashDigest<SHA256>?,
-    HashDigest<SHA256>?)` constructor.  [[#1142], [#1147]]
+    HashDigest<SHA256>?)` constructor.  [[#1142], [#1147], [#1162]]
  -  Added the parameter to `protocolVersion` to `Block<T>.Mine()` method.
-    [[#1142], [#1147]]
+    [[#1142], [#1147], [#1162]]
  -  Added the first parameter `protocolVersion` to `BlockHeader()` constructor.
-    [[#1142], [#1147]]
+    [[#1142], [#1147], [#1162]]
  -  Added `stagePolicy` as the second parameter to `BlockChain<T>()`
     constructor.  [[#1130], [#1131]]
  -  Removed `IBlockStatesStore` interface.  [[#1117]]
@@ -99,10 +99,10 @@ To be released.
  -  Introduced the [protocol versioning scheme][#1142].  This purposes to change
     the protocol without breaking backward compatibility.  Even the protocol
     is changed, the existing blocks made before the new protocol are guaranteed
-    to behave as it had done.  [[#1142], [#1147]]
+    to behave as it had done.  [[#1142], [#1147], [#1162]]
  -  Since `BlockHeader.ProtocolVersion` was added, the existing blocks are
     considered protocol compliant with the protocol version zero.
-    [[#1142], [#1147]]
+    [[#1142], [#1147], [#1162]]
  -  When a `BlockChain<T>` follows `VolatileStagePolicy<T>`, which is
     Libplanet's the only built-in `IStagePolicy<T>` implementation at
     the moment, as its `StagePolicy`, its staged transactions are no longer
@@ -177,6 +177,7 @@ To be released.
 [#1143]: https://github.com/planetarium/libplanet/pull/1143
 [#1147]: https://github.com/planetarium/libplanet/pull/1147
 [#1152]: https://github.com/planetarium/libplanet/pull/1152
+[#1162]: https://github.com/planetarium/libplanet/pull/1162
 
 
 Version 0.10.2
