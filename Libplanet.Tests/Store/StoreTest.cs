@@ -646,6 +646,24 @@ namespace Libplanet.Tests.Store
             }
         }
 
+        [SkippableFact]
+        public void GetBlock()
+        {
+            using (StoreFixture fx = FxConstructor())
+            {
+                Block<DumbAction> genesisBlock = fx.GenesisBlock;
+                // NOTE: it depends on that Block<T>.CurrentProtocolVersion is not 0.
+                Block<DumbAction> block = TestUtils.MineNext(
+                    genesisBlock,
+                    protocolVersion: 0);
+
+                fx.Store.PutBlock(block);
+                Block<DumbAction> storedBlock = fx.Store.GetBlock<DumbAction>(block.Hash);
+
+                Assert.Equal(block, storedBlock);
+            }
+        }
+
         private class AtomicityTestAction : IAction
         {
             public ImmutableArray<byte> ArbitraryBytes { get; set; }

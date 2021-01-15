@@ -94,7 +94,8 @@ namespace Libplanet.Store
                     transactions: blockDigest.TxIds
                         .Select(bytes => GetTransaction<T>(new TxId(bytes.ToArray()))),
                     preEvaluationHash: preEvaluationHash,
-                    stateRootHash: stateRootHash
+                    stateRootHash: stateRootHash,
+                    protocolVersion: blockDigest.Header.ProtocolVersion
                 );
             }
 
