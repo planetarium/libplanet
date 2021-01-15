@@ -66,11 +66,11 @@
 <p>To be released.</p>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
 <ul>
-<li>Added the parameter <code>protocolVersion</code> to <code>Block&lt;T&gt;(long, long, BigInteger, Nonce, Address?, HashDigest&lt;SHA256&gt;?, DateTimeOffset, IEnumerable&lt;Transaction&lt;T&gt;&gt; transactions, HashDigest&lt;SHA256&gt;?, HashDigest&lt;SHA256&gt;?)</code> constructor.  [<a href="https://github.com/planetarium/libplanet/issues/1142">#1142</a>, <a href="https://github.com/planetarium/libplanet/pull/1147">#1147</a>]</li>
+<li>Added the parameter <code>protocolVersion</code> to <code>Block&lt;T&gt;(long, long, BigInteger, Nonce, Address?, HashDigest&lt;SHA256&gt;?, DateTimeOffset, IEnumerable&lt;Transaction&lt;T&gt;&gt; transactions, HashDigest&lt;SHA256&gt;?, HashDigest&lt;SHA256&gt;?)</code> constructor.  [<a href="https://github.com/planetarium/libplanet/issues/1142">#1142</a>, <a href="https://github.com/planetarium/libplanet/pull/1147">#1147</a>, <a href="https://github.com/planetarium/libplanet/pull/1162">#1162</a>]</li>
 <li>Added the parameter to <code>protocolVersion</code> to <code>Block&lt;T&gt;.Mine()</code> method.
-[<a href="https://github.com/planetarium/libplanet/issues/1142">#1142</a>, <a href="https://github.com/planetarium/libplanet/pull/1147">#1147</a>]</li>
+[<a href="https://github.com/planetarium/libplanet/issues/1142">#1142</a>, <a href="https://github.com/planetarium/libplanet/pull/1147">#1147</a>, <a href="https://github.com/planetarium/libplanet/pull/1162">#1162</a>]</li>
 <li>Added the first parameter <code>protocolVersion</code> to <code>BlockHeader()</code> constructor.
-[<a href="https://github.com/planetarium/libplanet/issues/1142">#1142</a>, <a href="https://github.com/planetarium/libplanet/pull/1147">#1147</a>]</li>
+[<a href="https://github.com/planetarium/libplanet/issues/1142">#1142</a>, <a href="https://github.com/planetarium/libplanet/pull/1147">#1147</a>, <a href="https://github.com/planetarium/libplanet/pull/1162">#1162</a>]</li>
 <li>Added <code>stagePolicy</code> as the second parameter to <code>BlockChain&lt;T&gt;()</code>
 constructor.  [<a href="https://github.com/planetarium/libplanet/issues/1130">#1130</a>, <a href="https://github.com/planetarium/libplanet/pull/1131">#1131</a>]</li>
 <li>Removed <code>IBlockStatesStore</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/1117">#1117</a>]</li>
@@ -159,10 +159,10 @@ benefits from its recent optimizations.
 <li>Introduced the <a href="https://github.com/planetarium/libplanet/issues/1142">protocol versioning scheme</a>.  This purposes to change
 the protocol without breaking backward compatibility.  Even the protocol
 is changed, the existing blocks made before the new protocol are guaranteed
-to behave as it had done.  [<a href="https://github.com/planetarium/libplanet/issues/1142">#1142</a>, <a href="https://github.com/planetarium/libplanet/pull/1147">#1147</a>]</li>
+to behave as it had done.  [<a href="https://github.com/planetarium/libplanet/issues/1142">#1142</a>, <a href="https://github.com/planetarium/libplanet/pull/1147">#1147</a>, <a href="https://github.com/planetarium/libplanet/pull/1162">#1162</a>]</li>
 <li>Since <code>BlockHeader.ProtocolVersion</code> was added, the existing blocks are
 considered protocol compliant with the protocol version zero.
-[<a href="https://github.com/planetarium/libplanet/issues/1142">#1142</a>, <a href="https://github.com/planetarium/libplanet/pull/1147">#1147</a>]</li>
+[<a href="https://github.com/planetarium/libplanet/issues/1142">#1142</a>, <a href="https://github.com/planetarium/libplanet/pull/1147">#1147</a>, <a href="https://github.com/planetarium/libplanet/pull/1162">#1162</a>]</li>
 <li>When a <code>BlockChain&lt;T&gt;</code> follows <code>VolatileStagePolicy&lt;T&gt;</code>, which is
 Libplanet's the only built-in <code>IStagePolicy&lt;T&gt;</code> implementation at
 the moment, as its <code>StagePolicy</code>, its staged transactions are no longer
