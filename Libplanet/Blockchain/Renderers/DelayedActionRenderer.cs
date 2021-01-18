@@ -58,6 +58,7 @@ namespace Libplanet.Blockchain.Renderers
 
         private HashDigest<SHA256>? _eventReceivingBlock;
         private Reorg? _eventReceivingReorg;
+        private long _clearBufferInterval;
 
         /// <summary>
         /// Creates a new <see cref="DelayedRenderer{T}"/> instance decorating the given
@@ -68,7 +69,13 @@ namespace Libplanet.Blockchain.Renderers
         /// <param name="store">The same store to what <see cref="BlockChain{T}"/> uses.</param>
         /// <param name="confirmations">The required number of confirmations to recognize a block.
         /// See also the <see cref="DelayedRenderer{T}.Confirmations"/> property.</param>
-        public DelayedActionRenderer(IActionRenderer<T> renderer, IStore store, int confirmations)
+        /// <param name="clearBufferInterval">The required number of interval to remove stale
+        /// <see cref="ActionEvaluation"/>s in buffered.</param>
+        public DelayedActionRenderer(
+            IActionRenderer<T> renderer,
+            IStore store,
+            int confirmations,
+            long clearBufferInterval = 0)
             : base(renderer, store, confirmations)
         {
             ActionRenderer = renderer;
@@ -76,6 +83,7 @@ namespace Libplanet.Blockchain.Renderers
                 new ConcurrentDictionary<HashDigest<SHA256>, List<ActionEvaluation>>();
             _bufferedActionUnrenders =
                 new ConcurrentDictionary<HashDigest<SHA256>, List<ActionEvaluation>>();
+            _clearBufferInterval = clearBufferInterval;
         }
 
         /// <summary>
@@ -244,6 +252,27 @@ namespace Libplanet.Blockchain.Renderers
 
             _localRenderBuffer.Value = new Dictionary<HashDigest<SHA256>, List<ActionEvaluation>>();
             DiscoverBlock(oldTip, newTip);
+
+            if (_clearBufferInterval == 0)
+            {
+                return;
+            }
+
+            var quotient = Math.DivRem(newTip.Index, _clearBufferInterval, out _);
+            if (quotient <= 0)
+            {
+                return;
+            }
+
+            Logger.Debug("ClearRenderBuffer - " +
+                         $"newTipIndex: {newTip.Index} " +
+                         $"TipIndex: {Tip?.Index}");
+            ClearRenderBuffer(
+                newTip.Index - _clearBufferInterval,
+                _bufferedActionRenders);
+            ClearRenderBuffer(
+                newTip.Index - _clearBufferInterval,
+                _bufferedActionUnrenders);
         }
 
         public override void RenderReorgEnd(Block<T> oldTip, Block<T> newTip, Block<T> branchpoint)
@@ -463,6 +492,25 @@ namespace Libplanet.Blockchain.Renderers
                         );
                     }
                 }
+            }
+        }
+
+        private void ClearRenderBuffer(
+            long targetBlockIndex,
+            ConcurrentDictionary<HashDigest<SHA256>, List<ActionEvaluation>> buffer)
+        {
+            var invalidityBlock = new List<HashDigest<SHA256>>();
+            foreach (var (hash, evaluations) in buffer.Select(x => (x.Key, x.Value)))
+            {
+                if (evaluations.First().InputContext.BlockIndex < targetBlockIndex)
+                {
+                    invalidityBlock.Add(hash);
+                }
+            }
+
+            foreach (var hash in invalidityBlock)
+            {
+                buffer.TryRemove(hash, out _);
             }
         }
 
