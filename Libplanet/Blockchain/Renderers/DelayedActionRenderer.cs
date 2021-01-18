@@ -319,6 +319,16 @@ namespace Libplanet.Blockchain.Renderers
             return Iterate().Reverse().ToImmutableArray();
         }
 
+        internal int GetBufferedActionRendererCount()
+        {
+            return _bufferedActionRenders.Count;
+        }
+
+        internal int GetBufferedActionUnRendererCount()
+        {
+            return _bufferedActionUnrenders.Count;
+        }
+
         /// <inheritdoc cref="DelayedRenderer{T}.OnTipChanged(Block{T}, Block{T}, Block{T}?)"/>
         protected override void OnTipChanged(
             Block<T> oldTip,
