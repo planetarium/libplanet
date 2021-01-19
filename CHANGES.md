@@ -90,7 +90,7 @@ To be released.
  -  Added `IProtocol` interface.  [[#1120]]
  -  Added `KademliaProtocol` class which implements `IProtocol`.
     [[#1120], [#1135]]
- -  Added `clearBufferInterval` parameters into `DelayedActionRenderer<T>()`
+ -  Added `reorgResistantHeight` parameters into `DelayedActionRenderer<T>()`
     constructor. [[#1163]]
 
 ### Behavioral changes

@@ -58,7 +58,7 @@ namespace Libplanet.Blockchain.Renderers
 
         private HashDigest<SHA256>? _eventReceivingBlock;
         private Reorg? _eventReceivingReorg;
-        private long _clearBufferInterval;
+        private long _reorgResistantHeight;
 
         /// <summary>
         /// Creates a new <see cref="DelayedRenderer{T}"/> instance decorating the given
@@ -69,13 +69,14 @@ namespace Libplanet.Blockchain.Renderers
         /// <param name="store">The same store to what <see cref="BlockChain{T}"/> uses.</param>
         /// <param name="confirmations">The required number of confirmations to recognize a block.
         /// See also the <see cref="DelayedRenderer{T}.Confirmations"/> property.</param>
-        /// <param name="clearBufferInterval">The required number of interval to remove stale
-        /// <see cref="ActionEvaluation"/>s in buffered.</param>
+        /// <param name="reorgResistantHeight">Configures the height of blocks to maintain the
+        /// <see cref="ActionEvaluation"/> buffer. Buffered <see cref="ActionEvaluation"/>s
+        /// that belong to blocks older than this height from the tip are gone.</param>
         public DelayedActionRenderer(
             IActionRenderer<T> renderer,
             IStore store,
             int confirmations,
-            long clearBufferInterval = 0)
+            long reorgResistantHeight = 0)
             : base(renderer, store, confirmations)
         {
             ActionRenderer = renderer;
@@ -83,7 +84,7 @@ namespace Libplanet.Blockchain.Renderers
                 new ConcurrentDictionary<HashDigest<SHA256>, List<ActionEvaluation>>();
             _bufferedActionUnrenders =
                 new ConcurrentDictionary<HashDigest<SHA256>, List<ActionEvaluation>>();
-            _clearBufferInterval = clearBufferInterval;
+            _reorgResistantHeight = reorgResistantHeight;
         }
 
         /// <summary>
@@ -253,12 +254,12 @@ namespace Libplanet.Blockchain.Renderers
             _localRenderBuffer.Value = new Dictionary<HashDigest<SHA256>, List<ActionEvaluation>>();
             DiscoverBlock(oldTip, newTip);
 
-            if (_clearBufferInterval == 0)
+            if (_reorgResistantHeight == 0)
             {
                 return;
             }
 
-            var quotient = Math.DivRem(newTip.Index, _clearBufferInterval, out _);
+            var quotient = Math.DivRem(newTip.Index, _reorgResistantHeight, out _);
             if (quotient <= 0)
             {
                 return;
@@ -268,10 +269,10 @@ namespace Libplanet.Blockchain.Renderers
                          $"newTipIndex: {newTip.Index} " +
                          $"TipIndex: {Tip?.Index}");
             ClearRenderBuffer(
-                newTip.Index - _clearBufferInterval,
+                newTip.Index - _reorgResistantHeight,
                 _bufferedActionRenders);
             ClearRenderBuffer(
-                newTip.Index - _clearBufferInterval,
+                newTip.Index - _reorgResistantHeight,
                 _bufferedActionUnrenders);
         }
 
