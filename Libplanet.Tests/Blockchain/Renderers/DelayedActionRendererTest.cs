@@ -474,19 +474,22 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 await fork3.MineBlock(fx.Address2);
             }
 
-            Assert.Equal(23, delayedRenderer.GetBufferedActionRendererCount());
+            Assert.Equal(17, delayedRenderer.GetBufferedActionRendererCount());
+            Assert.Equal(0, delayedRenderer.GetBufferedActionUnRendererCount());
 
             chain.Swap(fork1, true);
             chain.Swap(fork2, true);
             chain.Swap(fork3, true);
-            Assert.Equal(21, delayedRenderer.GetBufferedActionUnRendererCount());
+            Assert.Equal(17, delayedRenderer.GetBufferedActionRendererCount());
+            Assert.Equal(15, delayedRenderer.GetBufferedActionUnRendererCount());
 
             for (int i = 0; i < 5; i++)
             {
                 await chain.MineBlock(fx.Address2);
             }
 
-            Assert.Equal(8, delayedRenderer.GetBufferedActionUnRendererCount());
+            Assert.Equal(2, delayedRenderer.GetBufferedActionRendererCount());
+            Assert.Equal(0, delayedRenderer.GetBufferedActionUnRendererCount());
         }
 
         [Fact]
