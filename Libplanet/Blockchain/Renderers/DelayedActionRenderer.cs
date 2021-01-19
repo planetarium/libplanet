@@ -71,7 +71,8 @@ namespace Libplanet.Blockchain.Renderers
         /// See also the <see cref="DelayedRenderer{T}.Confirmations"/> property.</param>
         /// <param name="reorgResistantHeight">Configures the height of blocks to maintain the
         /// <see cref="ActionEvaluation"/> buffer. Buffered <see cref="ActionEvaluation"/>s
-        /// that belong to blocks older than this height from the tip are gone.</param>
+        /// that belong to blocks older than this height from the tip are gone.
+        /// If zero, which is a default value, is passed the buffer is not cleared.</param>
         public DelayedActionRenderer(
             IActionRenderer<T> renderer,
             IStore store,
