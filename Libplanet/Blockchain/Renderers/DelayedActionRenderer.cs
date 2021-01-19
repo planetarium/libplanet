@@ -510,18 +510,12 @@ namespace Libplanet.Blockchain.Renderers
             long targetBlockIndex,
             ConcurrentDictionary<HashDigest<SHA256>, List<ActionEvaluation>> buffer)
         {
-            var invalidityBlock = new List<HashDigest<SHA256>>();
-            foreach (var (hash, evaluations) in buffer.Select(x => (x.Key, x.Value)))
+            IEnumerable<HashDigest<SHA256>> invalidityBlockHashes = buffer
+                .Where(x => x.Value.First().InputContext.BlockIndex < targetBlockIndex)
+                .Select(t => t.Key);
+            foreach (HashDigest<SHA256> invalidityBlockHash in invalidityBlockHashes)
             {
-                if (evaluations.First().InputContext.BlockIndex < targetBlockIndex)
-                {
-                    invalidityBlock.Add(hash);
-                }
-            }
-
-            foreach (var hash in invalidityBlock)
-            {
-                buffer.TryRemove(hash, out _);
+                buffer.TryRemove(invalidityBlockHash, out _);
             }
         }
 
