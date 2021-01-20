@@ -679,6 +679,7 @@ namespace Libplanet.Net
                         block.Index,
                         block.Hash
                     );
+                    block.Validate(DateTimeOffset.UtcNow);
                     wStore.PutBlock(block);
                     if (tempTip is null || block.Index > tempTip.Index)
                     {
