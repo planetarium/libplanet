@@ -260,8 +260,7 @@ namespace Libplanet.Blockchain.Renderers
                 return;
             }
 
-            var quotient = Math.DivRem(newTip.Index, _reorgResistantHeight, out _);
-            if (quotient <= 0)
+            if (newTip.Index < _reorgResistantHeight)
             {
                 return;
             }
