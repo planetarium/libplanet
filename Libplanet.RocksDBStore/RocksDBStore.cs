@@ -340,7 +340,7 @@ namespace Libplanet.RocksDBStore
                 return null;
             }
 
-            Transaction<T> tx = Transaction<T>.Deserialize(bytes);
+            Transaction<T> tx = Transaction<T>.Deserialize(bytes, false);
             _txCache.AddOrUpdate(txid, tx);
             return tx;
         }
