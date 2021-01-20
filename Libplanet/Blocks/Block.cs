@@ -19,7 +19,7 @@ using Libplanet.Tx;
 namespace Libplanet.Blocks
 {
     [Equals]
-    public class Block<T>
+    public class Block<T> : IBlockExcerpt
         where T : IAction, new()
     {
         /// <summary>

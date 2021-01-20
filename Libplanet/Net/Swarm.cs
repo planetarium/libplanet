@@ -1335,10 +1335,12 @@ namespace Libplanet.Net
             TimeSpan? dialTimeout,
             CancellationToken cancellationToken)
         {
+            HashDigest<SHA256> genesisHash = BlockChain.Genesis.Hash;
+            IComparer<IBlockExcerpt> canonComparer = BlockChain.Policy.CanonicalChainComparer;
             var peersWithHeightAndDiff = (await DialToExistingPeers(dialTimeout, cancellationToken))
                 .Where(pp =>
-                    BlockChain.Genesis.Hash.Equals(pp.ChainStatus?.GenesisHash) &&
-                    pp.ChainStatus?.TotalDifficulty > initialTip?.TotalDifficulty)
+                    genesisHash.Equals(pp.ChainStatus?.GenesisHash) &&
+                    canonComparer.Compare(pp.ChainStatus, initialTip) > 0)
                 .Select(pp => (pp.Peer, pp.ChainStatus.TipIndex, pp.ChainStatus.TotalDifficulty))
                 .ToList();
 
@@ -1453,11 +1455,23 @@ namespace Libplanet.Net
 
         private bool IsDemandNeeded(BlockHeader target, BoundPeer peer)
         {
-            return target.TotalDifficulty > BlockChain.Tip.TotalDifficulty
-                   && (BlockDemand is null
-                       || (BlockDemand.Value.Timestamp + Options.BlockDemandLifespan <
-                           DateTimeOffset.UtcNow && !BlockDemand.Value.Peer.Equals(peer))
-                       || BlockDemand.Value.Header.TotalDifficulty < target.TotalDifficulty);
+            IComparer<IBlockExcerpt> canonComparer = BlockChain.Policy.CanonicalChainComparer;
+            bool needed =
+                canonComparer.Compare(target, BlockChain.Tip) > 0 &&
+                (BlockDemand is null
+                    || (BlockDemand.Value.Timestamp + Options.BlockDemandLifespan <
+                        DateTimeOffset.UtcNow && !BlockDemand.Value.Peer.Equals(peer))
+                    || canonComparer.Compare(BlockDemand?.Header, target) < 0);
+            _logger.Verbose(
+                "Determining if a demand is actually needed: {Need}\nDemand: {Demand}" +
+                "\nTip: {Tip}\nBlockDemand: {BlockDemand}\nCanonicalChainComparer: {Comparer}",
+                needed ? "Need" : "Not need",
+                target.ToExcerptString(),
+                BlockChain.Tip.ToExcerptString(),
+                BlockDemand?.Header.ToExcerptString(),
+                canonComparer
+            );
+            return needed;
         }
 
         private async Task SyncPreviousBlocksAsync(
@@ -1497,10 +1511,11 @@ namespace Libplanet.Net
             }
             finally
             {
+                IComparer<IBlockExcerpt> canonComparer = BlockChain.Policy.CanonicalChainComparer;
                 if (synced is BlockChain<T> syncedNotNull
                     && !syncedNotNull.Id.Equals(blockChain?.Id)
                     && (blockChain.Tip is null
-                        || blockChain.Tip.TotalDifficulty < syncedNotNull.Tip.TotalDifficulty))
+                        || canonComparer.Compare(blockChain.Tip, syncedNotNull.Tip) < 0))
                 {
                     blockChain.Swap(
                         synced,
@@ -1707,10 +1722,11 @@ namespace Libplanet.Net
             CancellationToken cancellationToken
         )
         {
+            IComparer<IBlockExcerpt> canonComparer = BlockChain.Policy.CanonicalChainComparer;
             while (!cancellationToken.IsCancellationRequested)
             {
                 if (BlockDemand is null ||
-                    BlockDemand.Value.Header.TotalDifficulty <= BlockChain.Tip.TotalDifficulty)
+                    canonComparer.Compare(BlockDemand?.Header, BlockChain.Tip) <= 0)
                 {
                     await Task.Delay(1, cancellationToken);
                     continue;

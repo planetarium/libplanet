@@ -36,6 +36,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             ArgumentOutOfRangeException e = Assert.Throws<ArgumentOutOfRangeException>(() =>
                 new DelayedActionRenderer<DumbAction>(
                     new AnonymousActionRenderer<DumbAction>(),
+                    _canonicalChainComparer,
                     _store,
                     confirmations: invalidConfirmations
                 )
@@ -76,7 +77,12 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 },
             };
 
-            var renderer = new DelayedActionRenderer<DumbAction>(innerRenderer, _store, 3);
+            var renderer = new DelayedActionRenderer<DumbAction>(
+                innerRenderer,
+                _canonicalChainComparer,
+                _store,
+                confirmations: 3
+            );
             Assert.Null(renderer.Tip);
             Assert.Empty(blockLogs);
             Assert.Empty(actionEvaluations);
@@ -173,7 +179,12 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 ActionErrorUnrenderer = (act, ctx, e) =>
                     renderLogs.Add((true, new ActionEvaluation(act, ctx, ctx.PreviousStates, e))),
             };
-            var delayedRenderer = new DelayedActionRenderer<DumbAction>(innerRenderer, _store, 3);
+            var delayedRenderer = new DelayedActionRenderer<DumbAction>(
+                innerRenderer,
+                _canonicalChainComparer,
+                _store,
+                confirmations: 3
+            );
             var renderer = new LoggedActionRenderer<DumbAction>(
                 delayedRenderer,
                 _logger,
@@ -409,8 +420,9 @@ namespace Libplanet.Tests.Blockchain.Renderers
         {
             var renderer = new DelayedActionRenderer<DumbAction>(
                 new AnonymousActionRenderer<DumbAction>(),
+                _canonicalChainComparer,
                 _store,
-                3
+                confirmations: 3
             );
             Assert.Equal(
                 new[] { _chainA[5].Hash, _chainA[6].Hash, _chainA[7].Hash },
@@ -450,7 +462,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                     renderLogs.Add((true, new ActionEvaluation(act, ctx, ctx.PreviousStates, e))),
             };
             var delayedRenderer = new DelayedActionRenderer<DumbAction>(
-                innerRenderer, fx.Store, 2, 4);
+                innerRenderer, _canonicalChainComparer, fx.Store, 2, 4);
 
             var chain = new BlockChain<DumbAction>(
                 policy,
@@ -518,7 +530,11 @@ namespace Libplanet.Tests.Blockchain.Renderers
                     renderLogs.Add((true, new ActionEvaluation(act, ctx, ctx.PreviousStates, e))),
             };
             var delayedRenderer = new DelayedActionRenderer<DumbAction>(
-                innerRenderer, fx.Store, 2);
+                innerRenderer,
+                _canonicalChainComparer,
+                fx.Store,
+                confirmations: 2
+            );
             var renderer = new LoggedActionRenderer<DumbAction>(
                 delayedRenderer,
                 Log.Logger,
@@ -526,7 +542,11 @@ namespace Libplanet.Tests.Blockchain.Renderers
             );
             var validator = new ValidatingActionRenderer<DumbAction>();
             var delayedValidatingActionRenderer = new DelayedActionRenderer<DumbAction>(
-                validator, fx.Store, 2);
+                validator,
+                _canonicalChainComparer,
+                fx.Store,
+                confirmations: 2
+            );
 
             var chain = new BlockChain<DumbAction>(
                 policy,
@@ -633,7 +653,11 @@ namespace Libplanet.Tests.Blockchain.Renderers
                     renderLogs.Add((true, new ActionEvaluation(act, ctx, ctx.PreviousStates, e))),
             };
             var delayedRenderer = new DelayedActionRenderer<DumbAction>(
-                innerRenderer, fx.Store, 2);
+                innerRenderer,
+                _canonicalChainComparer,
+                fx.Store,
+                confirmations: 2
+            );
             var renderer = new LoggedActionRenderer<DumbAction>(
                 delayedRenderer,
                 Log.Logger,
@@ -641,7 +665,11 @@ namespace Libplanet.Tests.Blockchain.Renderers
             );
             var validator = new ValidatingActionRenderer<DumbAction>();
             var delayedValidatingActionRenderer = new DelayedActionRenderer<DumbAction>(
-                validator, fx.Store, 2);
+                validator,
+                _canonicalChainComparer,
+                fx.Store,
+                confirmations: 2
+            );
 
             var chain = new BlockChain<DumbAction>(
                 policy,

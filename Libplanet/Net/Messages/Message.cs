@@ -94,7 +94,7 @@ namespace Libplanet.Net.Messages
             /// A reply to <see cref="GetChainStatus"/>.
             /// Contains the chain status of the peer at the moment.
             /// </summary>
-            ChainStatus = 0x24,
+            ChainStatus = 0x25,
 
             /// <summary>
             /// A reply to any messages with different <see cref="AppProtocolVersion"/>.
