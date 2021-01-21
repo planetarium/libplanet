@@ -425,6 +425,74 @@ namespace Libplanet.Tests.Blockchain.Renderers
         }
 
         [Fact]
+        public async Task ClearRenderBufferWhenItsInterval()
+        {
+            var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
+            var fx = new DefaultStoreFixture(blockAction: policy.BlockAction);
+            var blockLogs = new List<(Block<DumbAction> OldTip, Block<DumbAction> NewTip)>();
+            var reorgLogs = new List<(
+                Block<DumbAction> OldTip,
+                Block<DumbAction> NewTip,
+                Block<DumbAction> Branchpoint
+                )>();
+            var renderLogs = new List<(bool Unrender, ActionEvaluation Evaluation)>();
+            var innerRenderer = new AnonymousActionRenderer<DumbAction>
+            {
+                BlockRenderer = (oldTip, newTip) => blockLogs.Add((oldTip, newTip)),
+                ReorgRenderer = (oldTip, newTip, bp) => reorgLogs.Add((oldTip, newTip, bp)),
+                ActionRenderer = (action, context, nextStates) =>
+                    renderLogs.Add((false, new ActionEvaluation(action, context, nextStates))),
+                ActionErrorRenderer = (act, ctx, e) =>
+                    renderLogs.Add((false, new ActionEvaluation(act, ctx, ctx.PreviousStates, e))),
+                ActionUnrenderer = (action, context, nextStates) =>
+                    renderLogs.Add((true, new ActionEvaluation(action, context, nextStates))),
+                ActionErrorUnrenderer = (act, ctx, e) =>
+                    renderLogs.Add((true, new ActionEvaluation(act, ctx, ctx.PreviousStates, e))),
+            };
+            var delayedRenderer = new DelayedActionRenderer<DumbAction>(
+                innerRenderer, fx.Store, 2, 4);
+
+            var chain = new BlockChain<DumbAction>(
+                policy,
+                new VolatileStagePolicy<DumbAction>(),
+                fx.Store,
+                fx.StateStore,
+                fx.GenesisBlock,
+                new IActionRenderer<DumbAction>[] { delayedRenderer }
+            );
+            var key = new PrivateKey();
+            var fork1 = chain.Fork(chain.Tip.Hash);
+            var fork2 = chain.Fork(chain.Tip.Hash);
+            var fork3 = chain.Fork(chain.Tip.Hash);
+
+            var repeatCount = 10;
+            for (int i = 0; i < repeatCount; i++)
+            {
+                await chain.MineBlock(fx.Address2);
+                await fork1.MineBlock(fx.Address2);
+                await fork2.MineBlock(fx.Address2);
+                await fork3.MineBlock(fx.Address2);
+            }
+
+            Assert.Equal(17, delayedRenderer.GetBufferedActionRendererCount());
+            Assert.Equal(0, delayedRenderer.GetBufferedActionUnRendererCount());
+
+            chain.Swap(fork1, true);
+            chain.Swap(fork2, true);
+            chain.Swap(fork3, true);
+            Assert.Equal(17, delayedRenderer.GetBufferedActionRendererCount());
+            Assert.Equal(15, delayedRenderer.GetBufferedActionUnRendererCount());
+
+            for (int i = 0; i < 5; i++)
+            {
+                await chain.MineBlock(fx.Address2);
+            }
+
+            Assert.Equal(2, delayedRenderer.GetBufferedActionRendererCount());
+            Assert.Equal(0, delayedRenderer.GetBufferedActionUnRendererCount());
+        }
+
+        [Fact]
         public async Task DelayedRendererInReorg()
         {
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));

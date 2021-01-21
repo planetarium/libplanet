@@ -90,6 +90,8 @@ To be released.
  -  Added `IProtocol` interface.  [[#1120]]
  -  Added `KademliaProtocol` class which implements `IProtocol`.
     [[#1120], [#1135]]
+ -  Added `reorgResistantHeight` parameters into `DelayedActionRenderer<T>()`
+    constructor. [[#1163]]
 
 ### Behavioral changes
 
@@ -178,6 +180,7 @@ To be released.
 [#1147]: https://github.com/planetarium/libplanet/pull/1147
 [#1152]: https://github.com/planetarium/libplanet/pull/1152
 [#1162]: https://github.com/planetarium/libplanet/pull/1162
+[#1163]: https://github.com/planetarium/libplanet/pull/1163
 
 
 Version 0.10.2
