@@ -1732,8 +1732,9 @@ namespace Libplanet.Net
                     continue;
                 }
 
-                BoundPeer peer = BlockDemand.Value.Peer;
-                var hash = new HashDigest<SHA256>(BlockDemand.Value.Header.Hash.ToArray());
+                BlockDemand blockDemand = BlockDemand.Value;
+                BoundPeer peer = blockDemand.Peer;
+                var hash = new HashDigest<SHA256>(blockDemand.Header.Hash.ToArray());
 
                 try
                 {
@@ -1773,11 +1774,12 @@ namespace Libplanet.Net
                 {
                     using (await _blockSyncMutex.LockAsync(cancellationToken))
                     {
-                        // FIXME: Should only reset when BlockDemand has not changed
-                        // from the beginning of this operation.
-                        _logger.Debug($"{nameof(ProcessFillBlocks)}() finished. " +
-                                      $"Reset {nameof(BlockDemand)}...");
-                        BlockDemand = null;
+                        _logger.Debug($"{nameof(ProcessFillBlocks)}() finished.");
+                        if (BlockDemand.Equals(blockDemand))
+                        {
+                            _logger.Debug($"Reset {nameof(BlockDemand)}...");
+                            BlockDemand = null;
+                        }
                     }
                 }
             }
