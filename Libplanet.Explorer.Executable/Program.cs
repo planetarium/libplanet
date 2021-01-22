@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using Bencodex.Types;
@@ -48,22 +49,24 @@ namespace Libplanet.Explorer.Executable
             try
             {
                 IRichStore store = LoadStore(options);
+                IStateStore stateStore = new NoOpStateStore();
 
                 var pendingTxs = store.IterateStagedTransactionIds()
                     .ToImmutableHashSet();
                 store.UnstageTransactionIds(pendingTxs);
-                Log.Debug("Pending txs unstaged. [{PendingCount}]", pendingTxs.Count);
+                Log.Debug("Pending txs unstaged. [{PendingCount}] in store.", pendingTxs.Count);
 
-                IBlockPolicy<AppAgnosticAction> policy = new DumbBlockPolicy(
-                    new BlockPolicy<AppAgnosticAction>(
-                    null,
-                    blockIntervalMilliseconds: options.BlockIntervalMilliseconds,
-                    minimumDifficulty: options.MinimumDifficulty,
-                    difficultyBoundDivisor: options.DifficultyBoundDivisor,
-                    maxGenesisBytes: 1024 * 1024 * 15)
-                );
+                IBlockPolicy<AppAgnosticAction> policy =
+                    new DumbBlockPolicy(LoadBlockPolicy<AppAgnosticAction>(options));
+                IStagePolicy<AppAgnosticAction> stagePolicy =
+                    new VolatileStagePolicy<AppAgnosticAction>();
                 var blockChain =
-                    new BlockChain<AppAgnosticAction>(policy, store, store, options.GenesisBlock);
+                    new BlockChain<AppAgnosticAction>(
+                        policy,
+                        stagePolicy,
+                        store,
+                        stateStore,
+                        options.GenesisBlock);
                 Startup.PreloadedSingleton = false;
                 Startup.BlockChainSingleton = blockChain;
                 Startup.StoreSingleton = store;
@@ -153,13 +156,12 @@ namespace Libplanet.Explorer.Executable
         private static IRichStore LoadStore(Options options)
         {
             bool readOnlyMode = options.Seeds is null;
-            BaseBlockStatesStore innerStore;
+            IStore innerStore;
             switch (options.StoreType)
             {
                 case "rocksdb":
                     innerStore = new RocksDBStore.RocksDBStore(
                       options.StorePath,
-                      statesCacheSize: 2,
                       maxTotalWalSize: 16 * 1024 * 1024,
                       keepLogFileNum: 1);
                     break;
@@ -209,6 +211,19 @@ namespace Libplanet.Explorer.Executable
             }
         }
 
+        private static BlockPolicy<T> LoadBlockPolicy<T>(Options options)
+            where T : IAction, new()
+        {
+            return new BlockPolicy<T>(
+                null,
+                blockIntervalMilliseconds: options.BlockIntervalMilliseconds,
+                minimumDifficulty: options.MinimumDifficulty,
+                difficultyBoundDivisor: options.DifficultyBoundDivisor,
+                maxTransactionsPerBlock: options.MaxTransactionsPerBlock,
+                maxBlockBytes: options.MaxBlockBytes,
+                maxGenesisBytes: options.MaxGenesisBytes);
+        }
+
         private static async Task StartSwarmAsync(
             Swarm<AppAgnosticAction> swarm,
             IEnumerable<Peer> seeds,
@@ -235,12 +250,9 @@ namespace Libplanet.Explorer.Executable
                 Console.Error.WriteLine("No any neighbors.");
             }
 
-            // Since explorer does not require states, turn off trustedPeer option.
-            var trustedPeers = ImmutableHashSet<Address>.Empty;
             Console.Error.WriteLine("Starts preloading.");
             await swarm.PreloadAsync(
                 dialTimeout: TimeSpan.FromSeconds(15),
-                trustedStateValidators: trustedPeers,
                 cancellationToken: cancellationToken
             );
             Console.Error.WriteLine("Finished preloading.");
@@ -340,6 +352,28 @@ namespace Libplanet.Explorer.Executable
             internal static BlockChain<AppAgnosticAction> BlockChainSingleton { get; set; }
 
             internal static IStore StoreSingleton { get; set; }
+        }
+
+        private class NoOpStateStore : IStateStore
+        {
+            public void SetStates<T>(Block<T> block, IImmutableDictionary<string, IValue> states)
+                where T : IAction, new()
+            {
+            }
+
+            public IValue GetState(
+                string stateKey, HashDigest<SHA256>? blockHash = null, Guid? chainId = null)
+            {
+                return null;
+            }
+
+            public bool ContainsBlockStates(HashDigest<SHA256> blockHash) => false;
+
+            public void ForkStates<T>(
+                Guid sourceChainId, Guid destinationChainId, Block<T> branchpoint)
+                where T : IAction, new()
+            {
+            }
         }
     }
 }

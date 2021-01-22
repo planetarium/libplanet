@@ -86,6 +86,24 @@ namespace Libplanet.Explorer.Executable
         public string MySQLDatabase { get; set; }
 
         [Option(
+            "max-transactions-per-block",
+            Default = 100,
+            HelpText = "The number of maximum transactions able to be included in a block.")]
+        public int MaxTransactionsPerBlock { get; set; }
+
+        [Option(
+            "max-block-bytes",
+            Default = 100 * 1024,
+            HelpText = "The number of maximum bytes size of blocks except for genesis block.")]
+        public int MaxBlockBytes { get; set; }
+
+        [Option(
+            "max-genesis-bytes",
+            Default = 1024 * 1024,
+            HelpText = "The number of maximum bytes size of the genesis block.")]
+        public int MaxGenesisBytes { get; set; }
+
+        [Option(
             's',
             "seed",
             HelpText = @"Seed nodes to join to the network as a node. The format of each
