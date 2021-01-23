@@ -2,6 +2,7 @@ using System;
 using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
+using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Blocks;
 using Xunit;
@@ -106,6 +107,31 @@ namespace Libplanet.Tests.Blocks
         }
 
         [Fact]
+        public void ValidateHash()
+        {
+            var header = new BlockHeader(
+                protocolVersion: 0,
+                index: 0,
+                difficulty: _fx.Genesis.Difficulty,
+                totalDifficulty: _fx.Genesis.TotalDifficulty,
+                nonce: _fx.Genesis.Nonce.ByteArray,
+                miner: _fx.Genesis.Miner?.ByteArray ?? ImmutableArray<byte>.Empty,
+                hash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
+                txHash: _fx.Genesis.TxHash?.ByteArray ?? ImmutableArray<byte>.Empty,
+                previousHash: _fx.Genesis.PreviousHash?.ByteArray ?? ImmutableArray<byte>.Empty,
+                timestamp: _fx.Genesis.Timestamp.ToString(
+                    BlockHeader.TimestampFormat,
+                    CultureInfo.InvariantCulture
+                ),
+                preEvaluationHash: _fx.Genesis.PreEvaluationHash.ByteArray,
+                stateRootHash: _fx.Genesis.StateRootHash?.ByteArray ?? ImmutableArray<byte>.Empty
+            );
+
+            Assert.Throws<InvalidBlockHashException>(
+                () => { header.Validate(DateTime.UtcNow); });
+        }
+
+        [Fact]
         public void ValidateProtocolVersion()
         {
             var header = new BlockHeader(
@@ -137,7 +163,7 @@ namespace Libplanet.Tests.Blocks
             DateTimeOffset now = DateTimeOffset.UtcNow;
             string future = (now + TimeSpan.FromSeconds(16))
                 .ToString(BlockHeader.TimestampFormat, CultureInfo.InvariantCulture);
-            var header = new BlockHeader(
+            BlockHeader header = MakeBlockHeader(
                 protocolVersion: 0,
                 index: 0,
                 difficulty: 0,
@@ -145,7 +171,6 @@ namespace Libplanet.Tests.Blocks
                 nonce: ImmutableArray<byte>.Empty,
                 previousHash: ImmutableArray<byte>.Empty,
                 txHash: ImmutableArray<byte>.Empty,
-                hash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
                 miner: ImmutableArray<byte>.Empty,
                 timestamp: future,
                 preEvaluationHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
@@ -307,6 +332,49 @@ namespace Libplanet.Tests.Blocks
 
             Assert.Throws<InvalidBlockPreviousHashException>(() =>
                 genesisHeader.Validate(DateTimeOffset.UtcNow));
+        }
+
+        private BlockHeader MakeBlockHeader(
+            int protocolVersion,
+            long index,
+            long difficulty,
+            BigInteger totalDifficulty,
+            ImmutableArray<byte> nonce,
+            ImmutableArray<byte> previousHash,
+            ImmutableArray<byte> txHash,
+            ImmutableArray<byte> miner,
+            string timestamp,
+            ImmutableArray<byte> preEvaluationHash,
+            ImmutableArray<byte> stateRootHash
+        )
+        {
+            ImmutableArray<byte> hash = Hashcash.Hash(
+                BlockHeader.SerializeForHash(
+                    protocolVersion,
+                    index,
+                    timestamp,
+                    difficulty,
+                    nonce,
+                    miner,
+                    previousHash,
+                    txHash,
+                    stateRootHash
+                )
+            ).ByteArray;
+            return new BlockHeader(
+                protocolVersion,
+                index,
+                timestamp,
+                nonce,
+                miner,
+                difficulty,
+                totalDifficulty,
+                previousHash,
+                txHash,
+                hash,
+                preEvaluationHash,
+                stateRootHash
+            );
         }
     }
 }

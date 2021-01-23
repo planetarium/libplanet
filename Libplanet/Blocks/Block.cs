@@ -546,6 +546,8 @@ namespace Libplanet.Blocks
         /// </param>
         /// <returns>An <see cref="ActionEvaluation"/> for each
         /// <see cref="IAction"/>.</returns>
+        /// <exception cref="InvalidBlockHashException">Thrown when
+        /// the <see cref="Hash"/> is invalid.</exception>
         /// <exception cref="InvalidBlockTimestampException">Thrown when
         /// the <see cref="Timestamp"/> is invalid, for example, it is the far
         /// future than the given <paramref name="currentTime"/>.</exception>
