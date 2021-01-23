@@ -247,6 +247,52 @@ namespace Libplanet.Blocks
             return dict;
         }
 
+        internal static byte[] SerializeForHash(
+            int protocolVersion,
+            long index,
+            string timestamp,
+            long difficulty,
+            ImmutableArray<byte> nonce,
+            ImmutableArray<byte> miner,
+            ImmutableArray<byte> previousHash,
+            ImmutableArray<byte> txHash,
+            ImmutableArray<byte> stateRootHash
+        )
+        {
+            var dict = Bencodex.Types.Dictionary.Empty
+                .Add("index", index)
+                .Add("timestamp", timestamp)
+                .Add("difficulty", difficulty)
+                .Add("nonce", nonce.ToArray());
+
+            if (protocolVersion != 0)
+            {
+                dict = dict.Add("protocol_version", protocolVersion);
+            }
+
+            if (!miner.IsEmpty)
+            {
+                dict = dict.Add("reward_beneficiary", miner.ToArray());
+            }
+
+            if (!previousHash.IsEmpty)
+            {
+                dict = dict.Add("previous_hash", previousHash.ToArray());
+            }
+
+            if (!txHash.IsEmpty)
+            {
+                dict = dict.Add("transaction_fingerprint", txHash.ToArray());
+            }
+
+            if (!stateRootHash.IsEmpty)
+            {
+                dict = dict.Add("state_root_hash", stateRootHash.ToArray());
+            }
+
+            return new Codec().Encode(dict);
+        }
+
         internal void Validate(DateTimeOffset currentTime)
         {
             if (ProtocolVersion < 0)
@@ -347,5 +393,17 @@ namespace Libplanet.Blocks
                 );
             }
         }
+
+        internal byte[] SerializeForHash(bool includeStateRootHash = true) => SerializeForHash(
+            ProtocolVersion,
+            Index,
+            Timestamp,
+            Difficulty,
+            Nonce,
+            Miner,
+            PreviousHash,
+            TxHash,
+            includeStateRootHash ? StateRootHash : ImmutableArray<byte>.Empty
+        );
     }
 }
