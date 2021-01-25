@@ -12,6 +12,7 @@ using Bencodex;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
+using Libplanet.Crypto;
 using Libplanet.Store.Trie;
 using Libplanet.Tx;
 
@@ -178,7 +179,7 @@ namespace Libplanet.Blocks
                     ? new HashDigest<SHA256>(rb.Header.TxHash)
                     : (HashDigest<SHA256>?)null,
                 rb.Transactions
-                    .Select(tx => Transaction<T>.Deserialize(tx.ToArray()))
+                    .Select(tx => Transaction<T>.Deserialize(tx.ToArray(), false))
                     .ToList(),
                 rb.Header.PreEvaluationHash.Any()
                     ? new HashDigest<SHA256>(rb.Header.PreEvaluationHash)
@@ -567,6 +568,13 @@ namespace Libplanet.Blocks
         /// any <see cref="IAction"/> of <see cref="Transactions"/> tries
         /// to update the states of <see cref="Address"/>es not included
         /// in <see cref="Transaction{T}.UpdatedAddresses"/>.</exception>
+        /// <exception cref="InvalidTxSignatureException">Thrown when its
+        /// <see cref="Transaction{T}.Signature"/> is invalid or not signed by
+        /// the account who corresponds to its <see cref="PublicKey"/>.
+        /// </exception>
+        /// <exception cref="InvalidTxPublicKeyException">Thrown when its
+        /// <see cref="Transaction{T}.Signer"/> is not derived from its
+        /// <see cref="Transaction{T}.PublicKey"/>.</exception>
         public IEnumerable<ActionEvaluation> Evaluate(
             DateTimeOffset currentTime,
             AccountStateGetter accountStateGetter = null,
@@ -633,6 +641,25 @@ namespace Libplanet.Blocks
         internal void Validate(DateTimeOffset currentTime)
         {
             Header.Validate(currentTime);
+
+            foreach (Transaction<T> tx in Transactions)
+            {
+                tx.Validate();
+            }
+
+            HashDigest<SHA256> expectedPreEvaluationHash =
+                Hashcash.Hash(SerializeForHash());
+            if (!expectedPreEvaluationHash.Equals(PreEvaluationHash))
+            {
+                string message =
+                    $"The expected pre evaluation hash of block {Hash} is " +
+                    $"{expectedPreEvaluationHash}, but its pre evaluation hash is " +
+                    $"{PreEvaluationHash}.";
+                throw new InvalidBlockPreEvaluationHashException(
+                    PreEvaluationHash,
+                    expectedPreEvaluationHash,
+                    message);
+            }
 
             HashDigest<SHA256>? calculatedTxHash =
                 CalcualteTxHashes(Transactions.OrderBy(tx => tx.Id));

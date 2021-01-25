@@ -285,19 +285,6 @@ namespace Libplanet.Tests.Tx
                     null
                 )
             );
-
-            Assert.Throws<InvalidTxSignatureException>(() =>
-                new Transaction<DumbAction>(
-                    0,
-                    privateKey.ToAddress(),
-                    privateKey.PublicKey,
-                    null,
-                    ImmutableHashSet<Address>.Empty,
-                    timestamp,
-                    new DumbAction[0],
-                    invalidSignature
-                )
-            );
         }
 
         [Fact]
@@ -794,8 +781,7 @@ namespace Libplanet.Tests.Tx
                 ImmutableHashSet<Address>.Empty,
                 new DateTimeOffset(2018, 11, 21, 0, 0, 0, TimeSpan.Zero),
                 ImmutableArray<DumbAction>.Empty,
-                new byte[0],
-                false
+                new byte[0]
             );
             var invalidTx = new Transaction<DumbAction>(
                 tx.Nonce,
@@ -805,8 +791,7 @@ namespace Libplanet.Tests.Tx
                 tx.UpdatedAddresses,
                 tx.Timestamp,
                 tx.Actions,
-                privKey.Sign(tx.Serialize(false)),
-                false
+                privKey.Sign(tx.Serialize(false))
             );
 
             Assert.Throws<InvalidTxPublicKeyException>(() => invalidTx.Validate());
