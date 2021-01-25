@@ -2429,6 +2429,35 @@ namespace Libplanet.Tests.Net
             }
         }
 
+        [Fact]
+        public async Task ResetBlockDemandIfNotChanged()
+        {
+            var minerKey = new PrivateKey();
+            Swarm<DumbAction> sender = CreateSwarm();
+            Swarm<DumbAction> receiver = CreateSwarm();
+            for (var i = 0; i < 20; i++)
+            {
+                await sender.BlockChain.MineBlock(minerKey.ToAddress());
+            }
+
+            Block<DumbAction> lowerBlock = sender.BlockChain[19],
+                higherBlock = sender.BlockChain[20];
+
+            await StartAsync(sender);
+            await StartAsync(receiver);
+            await BootstrapAsync(sender, receiver.AsPeer);
+
+            sender.BroadcastBlock(lowerBlock);
+            await receiver.FillBlocksAsyncStarted.WaitAsync();
+            sender.BroadcastBlock(higherBlock);
+            await receiver.ProcessFillBlocksFinished.WaitAsync();
+
+            Assert.NotNull(receiver.BlockDemand);
+            Assert.Equal(
+                higherBlock.Hash,
+                new HashDigest<SHA256>(receiver.BlockDemand.Value.Header.Hash));
+        }
+
         private async Task<Task> StartAsync<T>(
             Swarm<T> swarm,
             CancellationToken cancellationToken = default

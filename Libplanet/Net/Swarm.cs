@@ -233,6 +233,8 @@ namespace Libplanet.Net
 
         internal AsyncAutoResetEvent FillBlocksAsyncFailed { get; } = new AsyncAutoResetEvent();
 
+        internal AsyncAutoResetEvent ProcessFillBlocksFinished { get; } = new AsyncAutoResetEvent();
+
         internal SwarmOptions Options { get; }
 
         /// <summary>
@@ -1780,6 +1782,8 @@ namespace Libplanet.Net
                             _logger.Debug($"Reset {nameof(BlockDemand)}...");
                             BlockDemand = null;
                         }
+
+                        ProcessFillBlocksFinished.Set();
                     }
                 }
             }
