@@ -152,6 +152,9 @@ class.  [<a href="https://github.com/planetarium/libplanet/pull/1119">#1119</a>]
 [<a href="https://github.com/planetarium/libplanet/pull/1120">#1120</a>, <a href="https://github.com/planetarium/libplanet/pull/1135">#1135</a>]</li>
 <li>Added <code>reorgResistantHeight</code> parameters into <code>DelayedActionRenderer&lt;T&gt;()</code>
 constructor. [<a href="https://github.com/planetarium/libplanet/pull/1163">#1163</a>]</li>
+<li>Added <code>InvalidBlockPreEvaluationHashException</code> class.</li>
+<li>Added the parameter <code>validate</code> which is <code>true</code> by default,
+to <code>Transaction&lt;T&gt;.Deserialize()</code>.</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
@@ -174,13 +177,12 @@ transactions after the given <code>Lifetime</code>, which is 3 hours by default.
 <li><code>Swarm&lt;T&gt;</code> became not to receive states from trusted peers.
 [<a href="https://github.com/planetarium/libplanet/pull/1061">#1061</a>, <a href="https://github.com/planetarium/libplanet/pull/1102">#1102</a>]</li>
 <li><code>Swarm&lt;T&gt;</code> became not to retry when block downloading.  [<a href="https://github.com/planetarium/libplanet/pull/1062">#1062</a>, <a href="https://github.com/planetarium/libplanet/pull/1102">#1102</a>]</li>
-<li><code>Block&lt;T&gt;.Evaluate()</code> became to validate only <code>Block&lt;T&gt;.TxHash</code> instead of
-its all transactions.  [<a href="https://github.com/planetarium/libplanet/pull/1116">#1116</a>]</li>
 <li>Improved performance of <code>BlockChain&lt;T&gt;.MineBlock()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1116">#1116</a>, <a href="https://github.com/planetarium/libplanet/pull/1124">#1124</a>]</li>
 <li>Improved performance of <code>Block&lt;T&gt;.Deserialize()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1116">#1116</a>]</li>
 <li><code>Swarm&lt;T&gt;</code> became not to fill states from trusted peers, because now states
 can be validated rather than trusted due to MPT.  [<a href="https://github.com/planetarium/libplanet/pull/1117">#1117</a>]</li>
 <li><code>HashDigest&lt;SHA256&gt;</code> became serializable.  [<a href="https://github.com/planetarium/libplanet/issues/795">#795</a>, <a href="https://github.com/planetarium/libplanet/pull/1125">#1125</a>]</li>
+<li><code>Transaction&lt;T&gt;()</code> constructors became not to validate itself.</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>

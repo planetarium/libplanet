@@ -6001,6 +6001,93 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.InvalidBlockNonceException.InvalidBlockNonceException
   nameWithType: InvalidBlockNonceException.InvalidBlockNonceException
+- uid: Libplanet.Blocks.InvalidBlockPreEvaluationHashException
+  name: InvalidBlockPreEvaluationHashException
+  href: api/Libplanet.Blocks.InvalidBlockPreEvaluationHashException.html
+  commentId: T:Libplanet.Blocks.InvalidBlockPreEvaluationHashException
+  fullName: Libplanet.Blocks.InvalidBlockPreEvaluationHashException
+  nameWithType: InvalidBlockPreEvaluationHashException
+- uid: Libplanet.Blocks.InvalidBlockPreEvaluationHashException.#ctor(Libplanet.HashDigest{System.Security.Cryptography.SHA256},Libplanet.HashDigest{System.Security.Cryptography.SHA256},System.String)
+  name: InvalidBlockPreEvaluationHashException(HashDigest<SHA256>, HashDigest<SHA256>, String)
+  href: api/Libplanet.Blocks.InvalidBlockPreEvaluationHashException.html#Libplanet_Blocks_InvalidBlockPreEvaluationHashException__ctor_Libplanet_HashDigest_System_Security_Cryptography_SHA256__Libplanet_HashDigest_System_Security_Cryptography_SHA256__System_String_
+  commentId: M:Libplanet.Blocks.InvalidBlockPreEvaluationHashException.#ctor(Libplanet.HashDigest{System.Security.Cryptography.SHA256},Libplanet.HashDigest{System.Security.Cryptography.SHA256},System.String)
+  name.vb: InvalidBlockPreEvaluationHashException(HashDigest(Of SHA256), HashDigest(Of SHA256), String)
+  fullName: Libplanet.Blocks.InvalidBlockPreEvaluationHashException.InvalidBlockPreEvaluationHashException(Libplanet.HashDigest<System.Security.Cryptography.SHA256>, Libplanet.HashDigest<System.Security.Cryptography.SHA256>, System.String)
+  fullName.vb: Libplanet.Blocks.InvalidBlockPreEvaluationHashException.InvalidBlockPreEvaluationHashException(Libplanet.HashDigest(Of System.Security.Cryptography.SHA256), Libplanet.HashDigest(Of System.Security.Cryptography.SHA256), System.String)
+  nameWithType: InvalidBlockPreEvaluationHashException.InvalidBlockPreEvaluationHashException(HashDigest<SHA256>, HashDigest<SHA256>, String)
+  nameWithType.vb: InvalidBlockPreEvaluationHashException.InvalidBlockPreEvaluationHashException(HashDigest(Of SHA256), HashDigest(Of SHA256), String)
+- uid: Libplanet.Blocks.InvalidBlockPreEvaluationHashException.#ctor*
+  name: InvalidBlockPreEvaluationHashException
+  href: api/Libplanet.Blocks.InvalidBlockPreEvaluationHashException.html#Libplanet_Blocks_InvalidBlockPreEvaluationHashException__ctor_
+  commentId: Overload:Libplanet.Blocks.InvalidBlockPreEvaluationHashException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Blocks.InvalidBlockPreEvaluationHashException.InvalidBlockPreEvaluationHashException
+  nameWithType: InvalidBlockPreEvaluationHashException.InvalidBlockPreEvaluationHashException
+- uid: Libplanet.Blocks.InvalidBlockPreEvaluationHashException.ActualPreEvaluationHash
+  name: ActualPreEvaluationHash
+  href: api/Libplanet.Blocks.InvalidBlockPreEvaluationHashException.html#Libplanet_Blocks_InvalidBlockPreEvaluationHashException_ActualPreEvaluationHash
+  commentId: P:Libplanet.Blocks.InvalidBlockPreEvaluationHashException.ActualPreEvaluationHash
+  fullName: Libplanet.Blocks.InvalidBlockPreEvaluationHashException.ActualPreEvaluationHash
+  nameWithType: InvalidBlockPreEvaluationHashException.ActualPreEvaluationHash
+- uid: Libplanet.Blocks.InvalidBlockPreEvaluationHashException.ActualPreEvaluationHash*
+  name: ActualPreEvaluationHash
+  href: api/Libplanet.Blocks.InvalidBlockPreEvaluationHashException.html#Libplanet_Blocks_InvalidBlockPreEvaluationHashException_ActualPreEvaluationHash_
+  commentId: Overload:Libplanet.Blocks.InvalidBlockPreEvaluationHashException.ActualPreEvaluationHash
+  isSpec: "True"
+  fullName: Libplanet.Blocks.InvalidBlockPreEvaluationHashException.ActualPreEvaluationHash
+  nameWithType: InvalidBlockPreEvaluationHashException.ActualPreEvaluationHash
+- uid: Libplanet.Blocks.InvalidBlockPreEvaluationHashException.ExpectedPreEvaluationHash
+  name: ExpectedPreEvaluationHash
+  href: api/Libplanet.Blocks.InvalidBlockPreEvaluationHashException.html#Libplanet_Blocks_InvalidBlockPreEvaluationHashException_ExpectedPreEvaluationHash
+  commentId: P:Libplanet.Blocks.InvalidBlockPreEvaluationHashException.ExpectedPreEvaluationHash
+  fullName: Libplanet.Blocks.InvalidBlockPreEvaluationHashException.ExpectedPreEvaluationHash
+  nameWithType: InvalidBlockPreEvaluationHashException.ExpectedPreEvaluationHash
+- uid: Libplanet.Blocks.InvalidBlockPreEvaluationHashException.ExpectedPreEvaluationHash*
+  name: ExpectedPreEvaluationHash
+  href: api/Libplanet.Blocks.InvalidBlockPreEvaluationHashException.html#Libplanet_Blocks_InvalidBlockPreEvaluationHashException_ExpectedPreEvaluationHash_
+  commentId: Overload:Libplanet.Blocks.InvalidBlockPreEvaluationHashException.ExpectedPreEvaluationHash
+  isSpec: "True"
+  fullName: Libplanet.Blocks.InvalidBlockPreEvaluationHashException.ExpectedPreEvaluationHash
+  nameWithType: InvalidBlockPreEvaluationHashException.ExpectedPreEvaluationHash
+- uid: Libplanet.Blocks.InvalidBlockPreEvaluationHashException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  name: GetObjectData(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Blocks.InvalidBlockPreEvaluationHashException.html#Libplanet_Blocks_InvalidBlockPreEvaluationHashException_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
+  commentId: M:Libplanet.Blocks.InvalidBlockPreEvaluationHashException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  fullName: Libplanet.Blocks.InvalidBlockPreEvaluationHashException.GetObjectData(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  nameWithType: InvalidBlockPreEvaluationHashException.GetObjectData(SerializationInfo, StreamingContext)
+- uid: Libplanet.Blocks.InvalidBlockPreEvaluationHashException.GetObjectData*
+  name: GetObjectData
+  href: api/Libplanet.Blocks.InvalidBlockPreEvaluationHashException.html#Libplanet_Blocks_InvalidBlockPreEvaluationHashException_GetObjectData_
+  commentId: Overload:Libplanet.Blocks.InvalidBlockPreEvaluationHashException.GetObjectData
+  isSpec: "True"
+  fullName: Libplanet.Blocks.InvalidBlockPreEvaluationHashException.GetObjectData
+  nameWithType: InvalidBlockPreEvaluationHashException.GetObjectData
+- uid: Libplanet.Blocks.InvalidBlockPreEvaluationHashException.op_Equality(Libplanet.Blocks.InvalidBlockPreEvaluationHashException,Libplanet.Blocks.InvalidBlockPreEvaluationHashException)
+  name: Equality(InvalidBlockPreEvaluationHashException, InvalidBlockPreEvaluationHashException)
+  href: api/Libplanet.Blocks.InvalidBlockPreEvaluationHashException.html#Libplanet_Blocks_InvalidBlockPreEvaluationHashException_op_Equality_Libplanet_Blocks_InvalidBlockPreEvaluationHashException_Libplanet_Blocks_InvalidBlockPreEvaluationHashException_
+  commentId: M:Libplanet.Blocks.InvalidBlockPreEvaluationHashException.op_Equality(Libplanet.Blocks.InvalidBlockPreEvaluationHashException,Libplanet.Blocks.InvalidBlockPreEvaluationHashException)
+  fullName: Libplanet.Blocks.InvalidBlockPreEvaluationHashException.Equality(Libplanet.Blocks.InvalidBlockPreEvaluationHashException, Libplanet.Blocks.InvalidBlockPreEvaluationHashException)
+  nameWithType: InvalidBlockPreEvaluationHashException.Equality(InvalidBlockPreEvaluationHashException, InvalidBlockPreEvaluationHashException)
+- uid: Libplanet.Blocks.InvalidBlockPreEvaluationHashException.op_Equality*
+  name: Equality
+  href: api/Libplanet.Blocks.InvalidBlockPreEvaluationHashException.html#Libplanet_Blocks_InvalidBlockPreEvaluationHashException_op_Equality_
+  commentId: Overload:Libplanet.Blocks.InvalidBlockPreEvaluationHashException.op_Equality
+  isSpec: "True"
+  fullName: Libplanet.Blocks.InvalidBlockPreEvaluationHashException.Equality
+  nameWithType: InvalidBlockPreEvaluationHashException.Equality
+- uid: Libplanet.Blocks.InvalidBlockPreEvaluationHashException.op_Inequality(Libplanet.Blocks.InvalidBlockPreEvaluationHashException,Libplanet.Blocks.InvalidBlockPreEvaluationHashException)
+  name: Inequality(InvalidBlockPreEvaluationHashException, InvalidBlockPreEvaluationHashException)
+  href: api/Libplanet.Blocks.InvalidBlockPreEvaluationHashException.html#Libplanet_Blocks_InvalidBlockPreEvaluationHashException_op_Inequality_Libplanet_Blocks_InvalidBlockPreEvaluationHashException_Libplanet_Blocks_InvalidBlockPreEvaluationHashException_
+  commentId: M:Libplanet.Blocks.InvalidBlockPreEvaluationHashException.op_Inequality(Libplanet.Blocks.InvalidBlockPreEvaluationHashException,Libplanet.Blocks.InvalidBlockPreEvaluationHashException)
+  fullName: Libplanet.Blocks.InvalidBlockPreEvaluationHashException.Inequality(Libplanet.Blocks.InvalidBlockPreEvaluationHashException, Libplanet.Blocks.InvalidBlockPreEvaluationHashException)
+  nameWithType: InvalidBlockPreEvaluationHashException.Inequality(InvalidBlockPreEvaluationHashException, InvalidBlockPreEvaluationHashException)
+- uid: Libplanet.Blocks.InvalidBlockPreEvaluationHashException.op_Inequality*
+  name: Inequality
+  href: api/Libplanet.Blocks.InvalidBlockPreEvaluationHashException.html#Libplanet_Blocks_InvalidBlockPreEvaluationHashException_op_Inequality_
+  commentId: Overload:Libplanet.Blocks.InvalidBlockPreEvaluationHashException.op_Inequality
+  isSpec: "True"
+  fullName: Libplanet.Blocks.InvalidBlockPreEvaluationHashException.Inequality
+  nameWithType: InvalidBlockPreEvaluationHashException.Inequality
 - uid: Libplanet.Blocks.InvalidBlockPreviousHashException
   name: InvalidBlockPreviousHashException
   href: api/Libplanet.Blocks.InvalidBlockPreviousHashException.html
@@ -14265,15 +14352,15 @@ references:
   fullName.vb: Libplanet.Tx.Transaction(Of T).Create
   nameWithType: Transaction<T>.Create
   nameWithType.vb: Transaction(Of T).Create
-- uid: Libplanet.Tx.Transaction`1.Deserialize(System.Byte[])
-  name: Deserialize(Byte[])
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Deserialize_System_Byte___
-  commentId: M:Libplanet.Tx.Transaction`1.Deserialize(System.Byte[])
-  name.vb: Deserialize(Byte())
-  fullName: Libplanet.Tx.Transaction<T>.Deserialize(System.Byte[])
-  fullName.vb: Libplanet.Tx.Transaction(Of T).Deserialize(System.Byte())
-  nameWithType: Transaction<T>.Deserialize(Byte[])
-  nameWithType.vb: Transaction(Of T).Deserialize(Byte())
+- uid: Libplanet.Tx.Transaction`1.Deserialize(System.Byte[],System.Boolean)
+  name: Deserialize(Byte[], Boolean)
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Deserialize_System_Byte___System_Boolean_
+  commentId: M:Libplanet.Tx.Transaction`1.Deserialize(System.Byte[],System.Boolean)
+  name.vb: Deserialize(Byte(), Boolean)
+  fullName: Libplanet.Tx.Transaction<T>.Deserialize(System.Byte[], System.Boolean)
+  fullName.vb: Libplanet.Tx.Transaction(Of T).Deserialize(System.Byte(), System.Boolean)
+  nameWithType: Transaction<T>.Deserialize(Byte[], Boolean)
+  nameWithType.vb: Transaction(Of T).Deserialize(Byte(), Boolean)
 - uid: Libplanet.Tx.Transaction`1.Deserialize*
   name: Deserialize
   href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Deserialize_
