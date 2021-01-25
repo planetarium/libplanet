@@ -138,7 +138,7 @@ namespace Libplanet.Blockchain.Policies
             _maxBlockBytes = maxBlockBytes;
             _maxGenesisBytes = maxGenesisBytes;
             _doesTransactionFollowPolicy = doesTransactionFollowPolicy ?? ((_, __) => true);
-            CanonicalChainComparer = canonicalChainComparer ?? new CanonicalChainComparer();
+            CanonicalChainComparer = canonicalChainComparer ?? new TotalDifficultyComparer();
         }
 
         /// <inheritdoc/>

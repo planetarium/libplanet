@@ -19,7 +19,7 @@ namespace Libplanet.Tests.Blockchain
             _difficulty = difficulty;
         }
 
-        public IComparer<IBlockExcerpt> CanonicalChainComparer => new CanonicalChainComparer();
+        public IComparer<IBlockExcerpt> CanonicalChainComparer => new TotalDifficultyComparer();
 
         public IAction BlockAction => null;
 

@@ -69,7 +69,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 _chainB
             );
 
-            _canonicalChainComparer = new CanonicalChainComparer();
+            _canonicalChainComparer = new TotalDifficultyComparer();
 
             _store = new DefaultStore(null);
             foreach (Block<DumbAction> b in _chainA.Concat(_chainB))

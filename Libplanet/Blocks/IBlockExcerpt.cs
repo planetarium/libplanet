@@ -11,7 +11,7 @@ namespace Libplanet.Blocks
     /// the canonical chain.
     /// </summary>
     /// <seealso cref="IBlockPolicy{T}.CanonicalChainComparer"/>
-    /// <seealso cref="CanonicalChainComparer"/>
+    /// <seealso cref="TotalDifficultyComparer"/>
     public interface IBlockExcerpt
     {
         public long Index { get; }

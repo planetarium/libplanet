@@ -22,7 +22,7 @@ namespace Libplanet.Blockchain.Policies
         /// The most greater one according to this comparer is considered to be the canon.
         /// </summary>
         /// <seealso cref="IBlockExcerpt"/>
-        /// <seealso cref="Blockchain.CanonicalChainComparer"/>
+        /// <seealso cref="TotalDifficultyComparer"/>
         IComparer<IBlockExcerpt> CanonicalChainComparer { get; }
 
         /// <summary>

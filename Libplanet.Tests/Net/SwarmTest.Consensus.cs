@@ -23,7 +23,7 @@ namespace Libplanet.Tests.Net
             switch (canonComparerType)
             {
                 default:
-                    canonComparer = new CanonicalChainComparer();
+                    canonComparer = new TotalDifficultyComparer();
                     break;
 
                 case 1:

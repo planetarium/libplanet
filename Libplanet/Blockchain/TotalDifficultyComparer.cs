@@ -13,7 +13,7 @@ namespace Libplanet.Blockchain
     /// </summary>
     /// <seealso cref="IBlockPolicy{T}.CanonicalChainComparer"/>
     /// <seealso cref="IBlockExcerpt"/>
-    public class CanonicalChainComparer : IComparer<IBlockExcerpt>
+    public class TotalDifficultyComparer : IComparer<IBlockExcerpt>
     {
         /// <inheritdoc cref="IComparer{T}.Compare(T, T)"/>
         public int Compare(IBlockExcerpt? x, IBlockExcerpt? y)

@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Libplanet.Tests.Blockchain
 {
-    public class CanonicalChainComparerTest
+    public class TotalDifficultyComparerTest
     {
         private static readonly BlockExcerpt[] Fixture =
         {
@@ -46,7 +46,8 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void Sort()
         {
-            BlockExcerpt[] sorted = Fixture.OrderBy(e => e, new CanonicalChainComparer()).ToArray();
+            BlockExcerpt[] sorted =
+                Fixture.OrderBy(e => e, new TotalDifficultyComparer()).ToArray();
             Assert.Equal(Fixture[3], sorted[0]);
             Assert.Equal(Fixture[2], sorted[1]);
             Assert.Equal(Fixture[1], sorted[2]);
