@@ -73,6 +73,17 @@
 [<a href="https://github.com/planetarium/libplanet/issues/1142">#1142</a>, <a href="https://github.com/planetarium/libplanet/pull/1147">#1147</a>, <a href="https://github.com/planetarium/libplanet/pull/1162">#1162</a>]</li>
 <li>Added <code>stagePolicy</code> as the second parameter to <code>BlockChain&lt;T&gt;()</code>
 constructor.  [<a href="https://github.com/planetarium/libplanet/issues/1130">#1130</a>, <a href="https://github.com/planetarium/libplanet/pull/1131">#1131</a>]</li>
+<li>Added <code>IBlockPolicy&lt;T&gt;.CanonicalChainComparer</code> property to make
+the canonical chain .  [<a href="https://github.com/planetarium/libplanet/issues/1155">#1155</a>, <a href="https://github.com/planetarium/libplanet/pull/1165">#1165</a>]</li>
+<li>Added <code>canonicalChainComparer</code> as the last parameter to <code>BlockPolicy()</code>
+constructors.  [<a href="https://github.com/planetarium/libplanet/issues/1155">#1155</a>, <a href="https://github.com/planetarium/libplanet/pull/1165">#1165</a>]</li>
+<li>Added <code>canonicalChainComparer</code> as the second parameter to
+<code>DelayedRenderer()</code> constructor.  [<a href="https://github.com/planetarium/libplanet/issues/1155">#1155</a>, <a href="https://github.com/planetarium/libplanet/pull/1165">#1165</a>]</li>
+<li>Added <code>canonicalChainComparer</code> as the second parameter to
+<code>DelayedActionRenderer()</code> constructor.  [<a href="https://github.com/planetarium/libplanet/issues/1155">#1155</a>, <a href="https://github.com/planetarium/libplanet/pull/1165">#1165</a>]</li>
+<li>Added <code>reorgResistantHeight</code> parameter into <code>DelayedActionRenderer&lt;T&gt;()</code>
+constructor. [<a href="https://github.com/planetarium/libplanet/pull/1163">#1163</a>]</li>
+<li>Removed <code>TransactionSet&lt;T&gt;</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/1165">#1165</a>]</li>
 <li>Removed <code>IBlockStatesStore</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/1117">#1117</a>]</li>
 <li>Removed <code>BaseBlockStatesStore</code> abstract class.  [<a href="https://github.com/planetarium/libplanet/pull/1117">#1117</a>]</li>
 <li>Removed <code>Swarm&lt;T&gt;.GetTrustedStateCompleterAsync()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1117">#1117</a>]</li>
@@ -84,6 +95,9 @@ method.  [<a href="https://github.com/planetarium/libplanet/pull/1117">#1117</a>
 <ul>
 <li><code>Swarm&lt;T&gt;</code> became no longer retry when <code>Swarm&lt;T&gt;</code> receives
 less than 500 blocks.  [<a href="https://github.com/planetarium/libplanet/pull/1112">#1112</a>]</li>
+<li>The existing <code>ChainStatus</code> message type (with the type number <code>0x24</code>) was
+replaced by a new <code>ChainStatus</code> message type (with the type number <code>0x25</code>).
+[<a href="https://github.com/planetarium/libplanet/issues/1155">#1155</a>, <a href="https://github.com/planetarium/libplanet/pull/1165">#1165</a>]</li>
 <li>Removed the message types depended on features of <code>IBlockStatesStore</code>
 interface.  [<a href="https://github.com/planetarium/libplanet/pull/1117">#1117</a>]
 <ul>
@@ -101,6 +115,15 @@ interface.  [<a href="https://github.com/planetarium/libplanet/pull/1117">#1117<
 <li>Added <code>Block&lt;T&gt;.ProtocolVersion</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/1142">#1142</a>, <a href="https://github.com/planetarium/libplanet/pull/1147">#1147</a>]</li>
 <li>Added <code>Block&lt;T&gt;.Header</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/1070">#1070</a>, <a href="https://github.com/planetarium/libplanet/pull/1102">#1102</a>]</li>
 <li>Added <code>BlockHeader.ProtocolVersion</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/1142">#1142</a>, <a href="https://github.com/planetarium/libplanet/pull/1147">#1147</a>]</li>
+<li>Added <code>IBlockExcerpt</code> interface.  [<a href="https://github.com/planetarium/libplanet/issues/1155">#1155</a>, <a href="https://github.com/planetarium/libplanet/pull/1165">#1165</a>]</li>
+<li>Added <code>BlockExcerpt</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/1155">#1155</a>, <a href="https://github.com/planetarium/libplanet/pull/1165">#1165</a>]</li>
+<li><code>Block&lt;T&gt;</code> became to implement <code>IBlockExceprt</code> interface.
+[<a href="https://github.com/planetarium/libplanet/issues/1155">#1155</a>, <a href="https://github.com/planetarium/libplanet/pull/1165">#1165</a>]</li>
+<li><code>BlockHeader</code> became to implement <code>IBlockExceprt</code> interface.
+[<a href="https://github.com/planetarium/libplanet/issues/1155">#1155</a>, <a href="https://github.com/planetarium/libplanet/pull/1165">#1165</a>]</li>
+<li>Added <code>DelayedRenderer&lt;T&gt;.CanonicalChainComparer</code> and
+<code>DelayedActionRenderer&lt;T&gt;.CanonicalChainComparer</code> properties.
+[<a href="https://github.com/planetarium/libplanet/issues/1155">#1155</a>, <a href="https://github.com/planetarium/libplanet/pull/1165">#1165</a>]</li>
 <li>Added <code>IStagePolicy&lt;T&gt;</code> interface.  [<a href="https://github.com/planetarium/libplanet/issues/1130">#1130</a>, <a href="https://github.com/planetarium/libplanet/pull/1131">#1131</a>]</li>
 <li>Added <code>VolatileStagePolicy&lt;T&gt;</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/1130">#1130</a>, <a href="https://github.com/planetarium/libplanet/pull/1131">#1131</a>, <a href="https://github.com/planetarium/libplanet/pull/1136">#1136</a>]</li>
 <li>Added <code>ITransport</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/1052">#1052</a>]</li>
@@ -150,8 +173,6 @@ class.  [<a href="https://github.com/planetarium/libplanet/pull/1119">#1119</a>]
 <li>Added <code>IProtocol</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/1120">#1120</a>]</li>
 <li>Added <code>KademliaProtocol</code> class which implements <code>IProtocol</code>.
 [<a href="https://github.com/planetarium/libplanet/pull/1120">#1120</a>, <a href="https://github.com/planetarium/libplanet/pull/1135">#1135</a>]</li>
-<li>Added <code>reorgResistantHeight</code> parameters into <code>DelayedActionRenderer&lt;T&gt;()</code>
-constructor. [<a href="https://github.com/planetarium/libplanet/pull/1163">#1163</a>]</li>
 <li>Added <code>InvalidBlockPreEvaluationHashException</code> class.</li>
 <li>Added the parameter <code>validate</code> which is <code>true</code> by default,
 to <code>Transaction&lt;T&gt;.Deserialize()</code>.</li>

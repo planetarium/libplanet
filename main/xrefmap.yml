@@ -2238,24 +2238,24 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T)
   nameWithType: BlockPolicy<T>
   nameWithType.vb: BlockPolicy(Of T)
-- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.Int32,System.Int64,System.Int32,System.Int32,System.Int32,System.Int32,System.Func{Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0},System.Boolean})
-  name: BlockPolicy(IAction, Int32, Int64, Int32, Int32, Int32, Int32, Func<Transaction<T>, BlockChain<T>, Boolean>)
-  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_System_Int32_System_Int64_System_Int32_System_Int32_System_Int32_System_Int32_System_Func_Libplanet_Tx_Transaction__0__Libplanet_Blockchain_BlockChain__0__System_Boolean__
-  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.Int32,System.Int64,System.Int32,System.Int32,System.Int32,System.Int32,System.Func{Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0},System.Boolean})
-  name.vb: BlockPolicy(IAction, Int32, Int64, Int32, Int32, Int32, Int32, Func(Of Transaction(Of T), BlockChain(Of T), Boolean))
-  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.BlockPolicy(Libplanet.Action.IAction, System.Int32, System.Int64, System.Int32, System.Int32, System.Int32, System.Int32, System.Func<Libplanet.Tx.Transaction<T>, Libplanet.Blockchain.BlockChain<T>, System.Boolean>)
-  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).BlockPolicy(Libplanet.Action.IAction, System.Int32, System.Int64, System.Int32, System.Int32, System.Int32, System.Int32, System.Func(Of Libplanet.Tx.Transaction(Of T), Libplanet.Blockchain.BlockChain(Of T), System.Boolean))
-  nameWithType: BlockPolicy<T>.BlockPolicy(IAction, Int32, Int64, Int32, Int32, Int32, Int32, Func<Transaction<T>, BlockChain<T>, Boolean>)
-  nameWithType.vb: BlockPolicy(Of T).BlockPolicy(IAction, Int32, Int64, Int32, Int32, Int32, Int32, Func(Of Transaction(Of T), BlockChain(Of T), Boolean))
-- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.TimeSpan,System.Int64,System.Int32,System.Int32,System.Int32,System.Int32,System.Func{Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0},System.Boolean})
-  name: BlockPolicy(IAction, TimeSpan, Int64, Int32, Int32, Int32, Int32, Func<Transaction<T>, BlockChain<T>, Boolean>)
-  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_System_TimeSpan_System_Int64_System_Int32_System_Int32_System_Int32_System_Int32_System_Func_Libplanet_Tx_Transaction__0__Libplanet_Blockchain_BlockChain__0__System_Boolean__
-  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.TimeSpan,System.Int64,System.Int32,System.Int32,System.Int32,System.Int32,System.Func{Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0},System.Boolean})
-  name.vb: BlockPolicy(IAction, TimeSpan, Int64, Int32, Int32, Int32, Int32, Func(Of Transaction(Of T), BlockChain(Of T), Boolean))
-  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.BlockPolicy(Libplanet.Action.IAction, System.TimeSpan, System.Int64, System.Int32, System.Int32, System.Int32, System.Int32, System.Func<Libplanet.Tx.Transaction<T>, Libplanet.Blockchain.BlockChain<T>, System.Boolean>)
-  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).BlockPolicy(Libplanet.Action.IAction, System.TimeSpan, System.Int64, System.Int32, System.Int32, System.Int32, System.Int32, System.Func(Of Libplanet.Tx.Transaction(Of T), Libplanet.Blockchain.BlockChain(Of T), System.Boolean))
-  nameWithType: BlockPolicy<T>.BlockPolicy(IAction, TimeSpan, Int64, Int32, Int32, Int32, Int32, Func<Transaction<T>, BlockChain<T>, Boolean>)
-  nameWithType.vb: BlockPolicy(Of T).BlockPolicy(IAction, TimeSpan, Int64, Int32, Int32, Int32, Int32, Func(Of Transaction(Of T), BlockChain(Of T), Boolean))
+- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.Int32,System.Int64,System.Int32,System.Int32,System.Int32,System.Int32,System.Func{Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0},System.Boolean},System.Collections.Generic.IComparer{Libplanet.Blocks.IBlockExcerpt})
+  name: BlockPolicy(IAction, Int32, Int64, Int32, Int32, Int32, Int32, Func<Transaction<T>, BlockChain<T>, Boolean>, IComparer<IBlockExcerpt>)
+  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_System_Int32_System_Int64_System_Int32_System_Int32_System_Int32_System_Int32_System_Func_Libplanet_Tx_Transaction__0__Libplanet_Blockchain_BlockChain__0__System_Boolean__System_Collections_Generic_IComparer_Libplanet_Blocks_IBlockExcerpt__
+  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.Int32,System.Int64,System.Int32,System.Int32,System.Int32,System.Int32,System.Func{Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0},System.Boolean},System.Collections.Generic.IComparer{Libplanet.Blocks.IBlockExcerpt})
+  name.vb: BlockPolicy(IAction, Int32, Int64, Int32, Int32, Int32, Int32, Func(Of Transaction(Of T), BlockChain(Of T), Boolean), IComparer(Of IBlockExcerpt))
+  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.BlockPolicy(Libplanet.Action.IAction, System.Int32, System.Int64, System.Int32, System.Int32, System.Int32, System.Int32, System.Func<Libplanet.Tx.Transaction<T>, Libplanet.Blockchain.BlockChain<T>, System.Boolean>, System.Collections.Generic.IComparer<Libplanet.Blocks.IBlockExcerpt>)
+  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).BlockPolicy(Libplanet.Action.IAction, System.Int32, System.Int64, System.Int32, System.Int32, System.Int32, System.Int32, System.Func(Of Libplanet.Tx.Transaction(Of T), Libplanet.Blockchain.BlockChain(Of T), System.Boolean), System.Collections.Generic.IComparer(Of Libplanet.Blocks.IBlockExcerpt))
+  nameWithType: BlockPolicy<T>.BlockPolicy(IAction, Int32, Int64, Int32, Int32, Int32, Int32, Func<Transaction<T>, BlockChain<T>, Boolean>, IComparer<IBlockExcerpt>)
+  nameWithType.vb: BlockPolicy(Of T).BlockPolicy(IAction, Int32, Int64, Int32, Int32, Int32, Int32, Func(Of Transaction(Of T), BlockChain(Of T), Boolean), IComparer(Of IBlockExcerpt))
+- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.TimeSpan,System.Int64,System.Int32,System.Int32,System.Int32,System.Int32,System.Func{Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0},System.Boolean},System.Collections.Generic.IComparer{Libplanet.Blocks.IBlockExcerpt})
+  name: BlockPolicy(IAction, TimeSpan, Int64, Int32, Int32, Int32, Int32, Func<Transaction<T>, BlockChain<T>, Boolean>, IComparer<IBlockExcerpt>)
+  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_System_TimeSpan_System_Int64_System_Int32_System_Int32_System_Int32_System_Int32_System_Func_Libplanet_Tx_Transaction__0__Libplanet_Blockchain_BlockChain__0__System_Boolean__System_Collections_Generic_IComparer_Libplanet_Blocks_IBlockExcerpt__
+  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.TimeSpan,System.Int64,System.Int32,System.Int32,System.Int32,System.Int32,System.Func{Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0},System.Boolean},System.Collections.Generic.IComparer{Libplanet.Blocks.IBlockExcerpt})
+  name.vb: BlockPolicy(IAction, TimeSpan, Int64, Int32, Int32, Int32, Int32, Func(Of Transaction(Of T), BlockChain(Of T), Boolean), IComparer(Of IBlockExcerpt))
+  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.BlockPolicy(Libplanet.Action.IAction, System.TimeSpan, System.Int64, System.Int32, System.Int32, System.Int32, System.Int32, System.Func<Libplanet.Tx.Transaction<T>, Libplanet.Blockchain.BlockChain<T>, System.Boolean>, System.Collections.Generic.IComparer<Libplanet.Blocks.IBlockExcerpt>)
+  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).BlockPolicy(Libplanet.Action.IAction, System.TimeSpan, System.Int64, System.Int32, System.Int32, System.Int32, System.Int32, System.Func(Of Libplanet.Tx.Transaction(Of T), Libplanet.Blockchain.BlockChain(Of T), System.Boolean), System.Collections.Generic.IComparer(Of Libplanet.Blocks.IBlockExcerpt))
+  nameWithType: BlockPolicy<T>.BlockPolicy(IAction, TimeSpan, Int64, Int32, Int32, Int32, Int32, Func<Transaction<T>, BlockChain<T>, Boolean>, IComparer<IBlockExcerpt>)
+  nameWithType.vb: BlockPolicy(Of T).BlockPolicy(IAction, TimeSpan, Int64, Int32, Int32, Int32, Int32, Func(Of Transaction(Of T), BlockChain(Of T), Boolean), IComparer(Of IBlockExcerpt))
 - uid: Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor*
   name: BlockPolicy
   href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_
@@ -2299,6 +2299,23 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).BlockInterval
   nameWithType: BlockPolicy<T>.BlockInterval
   nameWithType.vb: BlockPolicy(Of T).BlockInterval
+- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.CanonicalChainComparer
+  name: CanonicalChainComparer
+  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_CanonicalChainComparer
+  commentId: P:Libplanet.Blockchain.Policies.BlockPolicy`1.CanonicalChainComparer
+  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.CanonicalChainComparer
+  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).CanonicalChainComparer
+  nameWithType: BlockPolicy<T>.CanonicalChainComparer
+  nameWithType.vb: BlockPolicy(Of T).CanonicalChainComparer
+- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.CanonicalChainComparer*
+  name: CanonicalChainComparer
+  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_CanonicalChainComparer_
+  commentId: Overload:Libplanet.Blockchain.Policies.BlockPolicy`1.CanonicalChainComparer
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.CanonicalChainComparer
+  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).CanonicalChainComparer
+  nameWithType: BlockPolicy<T>.CanonicalChainComparer
+  nameWithType.vb: BlockPolicy(Of T).CanonicalChainComparer
 - uid: Libplanet.Blockchain.Policies.BlockPolicy`1.DoesTransactionFollowsPolicy(Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0})
   name: DoesTransactionFollowsPolicy(Transaction<T>, BlockChain<T>)
   href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_DoesTransactionFollowsPolicy_Libplanet_Tx_Transaction__0__Libplanet_Blockchain_BlockChain__0__
@@ -2413,6 +2430,23 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of T).BlockAction
   nameWithType: IBlockPolicy<T>.BlockAction
   nameWithType.vb: IBlockPolicy(Of T).BlockAction
+- uid: Libplanet.Blockchain.Policies.IBlockPolicy`1.CanonicalChainComparer
+  name: CanonicalChainComparer
+  href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_CanonicalChainComparer
+  commentId: P:Libplanet.Blockchain.Policies.IBlockPolicy`1.CanonicalChainComparer
+  fullName: Libplanet.Blockchain.Policies.IBlockPolicy<T>.CanonicalChainComparer
+  fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of T).CanonicalChainComparer
+  nameWithType: IBlockPolicy<T>.CanonicalChainComparer
+  nameWithType.vb: IBlockPolicy(Of T).CanonicalChainComparer
+- uid: Libplanet.Blockchain.Policies.IBlockPolicy`1.CanonicalChainComparer*
+  name: CanonicalChainComparer
+  href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_CanonicalChainComparer_
+  commentId: Overload:Libplanet.Blockchain.Policies.IBlockPolicy`1.CanonicalChainComparer
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.Policies.IBlockPolicy<T>.CanonicalChainComparer
+  fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of T).CanonicalChainComparer
+  nameWithType: IBlockPolicy<T>.CanonicalChainComparer
+  nameWithType.vb: IBlockPolicy(Of T).CanonicalChainComparer
 - uid: Libplanet.Blockchain.Policies.IBlockPolicy`1.DoesTransactionFollowsPolicy(Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0})
   name: DoesTransactionFollowsPolicy(Transaction<T>, BlockChain<T>)
   href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_DoesTransactionFollowsPolicy_Libplanet_Tx_Transaction__0__Libplanet_Blockchain_BlockChain__0__
@@ -4026,15 +4060,15 @@ references:
   fullName.vb: Libplanet.Blockchain.Renderers.DelayedActionRenderer(Of T)
   nameWithType: DelayedActionRenderer<T>
   nameWithType.vb: DelayedActionRenderer(Of T)
-- uid: Libplanet.Blockchain.Renderers.DelayedActionRenderer`1.#ctor(Libplanet.Blockchain.Renderers.IActionRenderer{`0},Libplanet.Store.IStore,System.Int32,System.Int64)
-  name: DelayedActionRenderer(IActionRenderer<T>, IStore, Int32, Int64)
-  href: api/Libplanet.Blockchain.Renderers.DelayedActionRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedActionRenderer_1__ctor_Libplanet_Blockchain_Renderers_IActionRenderer__0__Libplanet_Store_IStore_System_Int32_System_Int64_
-  commentId: M:Libplanet.Blockchain.Renderers.DelayedActionRenderer`1.#ctor(Libplanet.Blockchain.Renderers.IActionRenderer{`0},Libplanet.Store.IStore,System.Int32,System.Int64)
-  name.vb: DelayedActionRenderer(IActionRenderer(Of T), IStore, Int32, Int64)
-  fullName: Libplanet.Blockchain.Renderers.DelayedActionRenderer<T>.DelayedActionRenderer(Libplanet.Blockchain.Renderers.IActionRenderer<T>, Libplanet.Store.IStore, System.Int32, System.Int64)
-  fullName.vb: Libplanet.Blockchain.Renderers.DelayedActionRenderer(Of T).DelayedActionRenderer(Libplanet.Blockchain.Renderers.IActionRenderer(Of T), Libplanet.Store.IStore, System.Int32, System.Int64)
-  nameWithType: DelayedActionRenderer<T>.DelayedActionRenderer(IActionRenderer<T>, IStore, Int32, Int64)
-  nameWithType.vb: DelayedActionRenderer(Of T).DelayedActionRenderer(IActionRenderer(Of T), IStore, Int32, Int64)
+- uid: Libplanet.Blockchain.Renderers.DelayedActionRenderer`1.#ctor(Libplanet.Blockchain.Renderers.IActionRenderer{`0},System.Collections.Generic.IComparer{Libplanet.Blocks.IBlockExcerpt},Libplanet.Store.IStore,System.Int32,System.Int64)
+  name: DelayedActionRenderer(IActionRenderer<T>, IComparer<IBlockExcerpt>, IStore, Int32, Int64)
+  href: api/Libplanet.Blockchain.Renderers.DelayedActionRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedActionRenderer_1__ctor_Libplanet_Blockchain_Renderers_IActionRenderer__0__System_Collections_Generic_IComparer_Libplanet_Blocks_IBlockExcerpt__Libplanet_Store_IStore_System_Int32_System_Int64_
+  commentId: M:Libplanet.Blockchain.Renderers.DelayedActionRenderer`1.#ctor(Libplanet.Blockchain.Renderers.IActionRenderer{`0},System.Collections.Generic.IComparer{Libplanet.Blocks.IBlockExcerpt},Libplanet.Store.IStore,System.Int32,System.Int64)
+  name.vb: DelayedActionRenderer(IActionRenderer(Of T), IComparer(Of IBlockExcerpt), IStore, Int32, Int64)
+  fullName: Libplanet.Blockchain.Renderers.DelayedActionRenderer<T>.DelayedActionRenderer(Libplanet.Blockchain.Renderers.IActionRenderer<T>, System.Collections.Generic.IComparer<Libplanet.Blocks.IBlockExcerpt>, Libplanet.Store.IStore, System.Int32, System.Int64)
+  fullName.vb: Libplanet.Blockchain.Renderers.DelayedActionRenderer(Of T).DelayedActionRenderer(Libplanet.Blockchain.Renderers.IActionRenderer(Of T), System.Collections.Generic.IComparer(Of Libplanet.Blocks.IBlockExcerpt), Libplanet.Store.IStore, System.Int32, System.Int64)
+  nameWithType: DelayedActionRenderer<T>.DelayedActionRenderer(IActionRenderer<T>, IComparer<IBlockExcerpt>, IStore, Int32, Int64)
+  nameWithType.vb: DelayedActionRenderer(Of T).DelayedActionRenderer(IActionRenderer(Of T), IComparer(Of IBlockExcerpt), IStore, Int32, Int64)
 - uid: Libplanet.Blockchain.Renderers.DelayedActionRenderer`1.#ctor*
   name: DelayedActionRenderer
   href: api/Libplanet.Blockchain.Renderers.DelayedActionRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedActionRenderer_1__ctor_
@@ -4228,15 +4262,15 @@ references:
   fullName.vb: Libplanet.Blockchain.Renderers.DelayedRenderer(Of T)
   nameWithType: DelayedRenderer<T>
   nameWithType.vb: DelayedRenderer(Of T)
-- uid: Libplanet.Blockchain.Renderers.DelayedRenderer`1.#ctor(Libplanet.Blockchain.Renderers.IRenderer{`0},Libplanet.Store.IStore,System.Int32)
-  name: DelayedRenderer(IRenderer<T>, IStore, Int32)
-  href: api/Libplanet.Blockchain.Renderers.DelayedRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedRenderer_1__ctor_Libplanet_Blockchain_Renderers_IRenderer__0__Libplanet_Store_IStore_System_Int32_
-  commentId: M:Libplanet.Blockchain.Renderers.DelayedRenderer`1.#ctor(Libplanet.Blockchain.Renderers.IRenderer{`0},Libplanet.Store.IStore,System.Int32)
-  name.vb: DelayedRenderer(IRenderer(Of T), IStore, Int32)
-  fullName: Libplanet.Blockchain.Renderers.DelayedRenderer<T>.DelayedRenderer(Libplanet.Blockchain.Renderers.IRenderer<T>, Libplanet.Store.IStore, System.Int32)
-  fullName.vb: Libplanet.Blockchain.Renderers.DelayedRenderer(Of T).DelayedRenderer(Libplanet.Blockchain.Renderers.IRenderer(Of T), Libplanet.Store.IStore, System.Int32)
-  nameWithType: DelayedRenderer<T>.DelayedRenderer(IRenderer<T>, IStore, Int32)
-  nameWithType.vb: DelayedRenderer(Of T).DelayedRenderer(IRenderer(Of T), IStore, Int32)
+- uid: Libplanet.Blockchain.Renderers.DelayedRenderer`1.#ctor(Libplanet.Blockchain.Renderers.IRenderer{`0},System.Collections.Generic.IComparer{Libplanet.Blocks.IBlockExcerpt},Libplanet.Store.IStore,System.Int32)
+  name: DelayedRenderer(IRenderer<T>, IComparer<IBlockExcerpt>, IStore, Int32)
+  href: api/Libplanet.Blockchain.Renderers.DelayedRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedRenderer_1__ctor_Libplanet_Blockchain_Renderers_IRenderer__0__System_Collections_Generic_IComparer_Libplanet_Blocks_IBlockExcerpt__Libplanet_Store_IStore_System_Int32_
+  commentId: M:Libplanet.Blockchain.Renderers.DelayedRenderer`1.#ctor(Libplanet.Blockchain.Renderers.IRenderer{`0},System.Collections.Generic.IComparer{Libplanet.Blocks.IBlockExcerpt},Libplanet.Store.IStore,System.Int32)
+  name.vb: DelayedRenderer(IRenderer(Of T), IComparer(Of IBlockExcerpt), IStore, Int32)
+  fullName: Libplanet.Blockchain.Renderers.DelayedRenderer<T>.DelayedRenderer(Libplanet.Blockchain.Renderers.IRenderer<T>, System.Collections.Generic.IComparer<Libplanet.Blocks.IBlockExcerpt>, Libplanet.Store.IStore, System.Int32)
+  fullName.vb: Libplanet.Blockchain.Renderers.DelayedRenderer(Of T).DelayedRenderer(Libplanet.Blockchain.Renderers.IRenderer(Of T), System.Collections.Generic.IComparer(Of Libplanet.Blocks.IBlockExcerpt), Libplanet.Store.IStore, System.Int32)
+  nameWithType: DelayedRenderer<T>.DelayedRenderer(IRenderer<T>, IComparer<IBlockExcerpt>, IStore, Int32)
+  nameWithType.vb: DelayedRenderer(Of T).DelayedRenderer(IRenderer(Of T), IComparer(Of IBlockExcerpt), IStore, Int32)
 - uid: Libplanet.Blockchain.Renderers.DelayedRenderer`1.#ctor*
   name: DelayedRenderer
   href: api/Libplanet.Blockchain.Renderers.DelayedRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedRenderer_1__ctor_
@@ -4246,6 +4280,23 @@ references:
   fullName.vb: Libplanet.Blockchain.Renderers.DelayedRenderer(Of T).DelayedRenderer
   nameWithType: DelayedRenderer<T>.DelayedRenderer
   nameWithType.vb: DelayedRenderer(Of T).DelayedRenderer
+- uid: Libplanet.Blockchain.Renderers.DelayedRenderer`1.CanonicalChainComparer
+  name: CanonicalChainComparer
+  href: api/Libplanet.Blockchain.Renderers.DelayedRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedRenderer_1_CanonicalChainComparer
+  commentId: P:Libplanet.Blockchain.Renderers.DelayedRenderer`1.CanonicalChainComparer
+  fullName: Libplanet.Blockchain.Renderers.DelayedRenderer<T>.CanonicalChainComparer
+  fullName.vb: Libplanet.Blockchain.Renderers.DelayedRenderer(Of T).CanonicalChainComparer
+  nameWithType: DelayedRenderer<T>.CanonicalChainComparer
+  nameWithType.vb: DelayedRenderer(Of T).CanonicalChainComparer
+- uid: Libplanet.Blockchain.Renderers.DelayedRenderer`1.CanonicalChainComparer*
+  name: CanonicalChainComparer
+  href: api/Libplanet.Blockchain.Renderers.DelayedRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedRenderer_1_CanonicalChainComparer_
+  commentId: Overload:Libplanet.Blockchain.Renderers.DelayedRenderer`1.CanonicalChainComparer
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.Renderers.DelayedRenderer<T>.CanonicalChainComparer
+  fullName.vb: Libplanet.Blockchain.Renderers.DelayedRenderer(Of T).CanonicalChainComparer
+  nameWithType: DelayedRenderer<T>.CanonicalChainComparer
+  nameWithType.vb: DelayedRenderer(Of T).CanonicalChainComparer
 - uid: Libplanet.Blockchain.Renderers.DelayedRenderer`1.Confirmations
   name: Confirmations
   href: api/Libplanet.Blockchain.Renderers.DelayedRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedRenderer_1_Confirmations
@@ -4969,6 +5020,25 @@ references:
   fullName.vb: Libplanet.Blockchain.StateCompleterSet(Of T).StateCompleter
   nameWithType: StateCompleterSet<T>.StateCompleter
   nameWithType.vb: StateCompleterSet(Of T).StateCompleter
+- uid: Libplanet.Blockchain.TotalDifficultyComparer
+  name: TotalDifficultyComparer
+  href: api/Libplanet.Blockchain.TotalDifficultyComparer.html
+  commentId: T:Libplanet.Blockchain.TotalDifficultyComparer
+  fullName: Libplanet.Blockchain.TotalDifficultyComparer
+  nameWithType: TotalDifficultyComparer
+- uid: Libplanet.Blockchain.TotalDifficultyComparer.Compare(Libplanet.Blocks.IBlockExcerpt,Libplanet.Blocks.IBlockExcerpt)
+  name: Compare(IBlockExcerpt, IBlockExcerpt)
+  href: api/Libplanet.Blockchain.TotalDifficultyComparer.html#Libplanet_Blockchain_TotalDifficultyComparer_Compare_Libplanet_Blocks_IBlockExcerpt_Libplanet_Blocks_IBlockExcerpt_
+  commentId: M:Libplanet.Blockchain.TotalDifficultyComparer.Compare(Libplanet.Blocks.IBlockExcerpt,Libplanet.Blocks.IBlockExcerpt)
+  fullName: Libplanet.Blockchain.TotalDifficultyComparer.Compare(Libplanet.Blocks.IBlockExcerpt, Libplanet.Blocks.IBlockExcerpt)
+  nameWithType: TotalDifficultyComparer.Compare(IBlockExcerpt, IBlockExcerpt)
+- uid: Libplanet.Blockchain.TotalDifficultyComparer.Compare*
+  name: Compare
+  href: api/Libplanet.Blockchain.TotalDifficultyComparer.html#Libplanet_Blockchain_TotalDifficultyComparer_Compare_
+  commentId: Overload:Libplanet.Blockchain.TotalDifficultyComparer.Compare
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.TotalDifficultyComparer.Compare
+  nameWithType: TotalDifficultyComparer.Compare
 - uid: Libplanet.Blocks
   name: Libplanet.Blocks
   href: api/Libplanet.Blocks.html
@@ -5616,6 +5686,25 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.BlockExceedingTransactionsException.MaxTransactionsPerBlock
   nameWithType: BlockExceedingTransactionsException.MaxTransactionsPerBlock
+- uid: Libplanet.Blocks.BlockExcerpt
+  name: BlockExcerpt
+  href: api/Libplanet.Blocks.BlockExcerpt.html
+  commentId: T:Libplanet.Blocks.BlockExcerpt
+  fullName: Libplanet.Blocks.BlockExcerpt
+  nameWithType: BlockExcerpt
+- uid: Libplanet.Blocks.BlockExcerpt.ToExcerptString(Libplanet.Blocks.IBlockExcerpt)
+  name: ToExcerptString(IBlockExcerpt)
+  href: api/Libplanet.Blocks.BlockExcerpt.html#Libplanet_Blocks_BlockExcerpt_ToExcerptString_Libplanet_Blocks_IBlockExcerpt_
+  commentId: M:Libplanet.Blocks.BlockExcerpt.ToExcerptString(Libplanet.Blocks.IBlockExcerpt)
+  fullName: Libplanet.Blocks.BlockExcerpt.ToExcerptString(Libplanet.Blocks.IBlockExcerpt)
+  nameWithType: BlockExcerpt.ToExcerptString(IBlockExcerpt)
+- uid: Libplanet.Blocks.BlockExcerpt.ToExcerptString*
+  name: ToExcerptString
+  href: api/Libplanet.Blocks.BlockExcerpt.html#Libplanet_Blocks_BlockExcerpt_ToExcerptString_
+  commentId: Overload:Libplanet.Blocks.BlockExcerpt.ToExcerptString
+  isSpec: "True"
+  fullName: Libplanet.Blocks.BlockExcerpt.ToExcerptString
+  nameWithType: BlockExcerpt.ToExcerptString
 - uid: Libplanet.Blocks.BlockHeader
   name: BlockHeader
   href: api/Libplanet.Blocks.BlockHeader.html
@@ -5699,6 +5788,23 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.BlockHeader.Index
   nameWithType: BlockHeader.Index
+- uid: Libplanet.Blocks.BlockHeader.Libplanet#Blocks#IBlockExcerpt#Hash
+  name: IBlockExcerpt.Hash
+  href: api/Libplanet.Blocks.BlockHeader.html#Libplanet_Blocks_BlockHeader_Libplanet_Blocks_IBlockExcerpt_Hash
+  commentId: P:Libplanet.Blocks.BlockHeader.Libplanet#Blocks#IBlockExcerpt#Hash
+  name.vb: Libplanet.Blocks.IBlockExcerpt.Hash
+  fullName: Libplanet.Blocks.BlockHeader.Libplanet.Blocks.IBlockExcerpt.Hash
+  nameWithType: BlockHeader.IBlockExcerpt.Hash
+  nameWithType.vb: BlockHeader.Libplanet.Blocks.IBlockExcerpt.Hash
+- uid: Libplanet.Blocks.BlockHeader.Libplanet#Blocks#IBlockExcerpt#Hash*
+  name: IBlockExcerpt.Hash
+  href: api/Libplanet.Blocks.BlockHeader.html#Libplanet_Blocks_BlockHeader_Libplanet_Blocks_IBlockExcerpt_Hash_
+  commentId: Overload:Libplanet.Blocks.BlockHeader.Libplanet#Blocks#IBlockExcerpt#Hash
+  isSpec: "True"
+  name.vb: Libplanet.Blocks.IBlockExcerpt.Hash
+  fullName: Libplanet.Blocks.BlockHeader.Libplanet.Blocks.IBlockExcerpt.Hash
+  nameWithType: BlockHeader.IBlockExcerpt.Hash
+  nameWithType.vb: BlockHeader.Libplanet.Blocks.IBlockExcerpt.Hash
 - uid: Libplanet.Blocks.BlockHeader.Miner
   name: Miner
   href: api/Libplanet.Blocks.BlockHeader.html#Libplanet_Blocks_BlockHeader_Miner
@@ -5842,6 +5948,51 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.BlockHeader.TxHash
   nameWithType: BlockHeader.TxHash
+- uid: Libplanet.Blocks.IBlockExcerpt
+  name: IBlockExcerpt
+  href: api/Libplanet.Blocks.IBlockExcerpt.html
+  commentId: T:Libplanet.Blocks.IBlockExcerpt
+  fullName: Libplanet.Blocks.IBlockExcerpt
+  nameWithType: IBlockExcerpt
+- uid: Libplanet.Blocks.IBlockExcerpt.Hash
+  name: Hash
+  href: api/Libplanet.Blocks.IBlockExcerpt.html#Libplanet_Blocks_IBlockExcerpt_Hash
+  commentId: P:Libplanet.Blocks.IBlockExcerpt.Hash
+  fullName: Libplanet.Blocks.IBlockExcerpt.Hash
+  nameWithType: IBlockExcerpt.Hash
+- uid: Libplanet.Blocks.IBlockExcerpt.Hash*
+  name: Hash
+  href: api/Libplanet.Blocks.IBlockExcerpt.html#Libplanet_Blocks_IBlockExcerpt_Hash_
+  commentId: Overload:Libplanet.Blocks.IBlockExcerpt.Hash
+  isSpec: "True"
+  fullName: Libplanet.Blocks.IBlockExcerpt.Hash
+  nameWithType: IBlockExcerpt.Hash
+- uid: Libplanet.Blocks.IBlockExcerpt.Index
+  name: Index
+  href: api/Libplanet.Blocks.IBlockExcerpt.html#Libplanet_Blocks_IBlockExcerpt_Index
+  commentId: P:Libplanet.Blocks.IBlockExcerpt.Index
+  fullName: Libplanet.Blocks.IBlockExcerpt.Index
+  nameWithType: IBlockExcerpt.Index
+- uid: Libplanet.Blocks.IBlockExcerpt.Index*
+  name: Index
+  href: api/Libplanet.Blocks.IBlockExcerpt.html#Libplanet_Blocks_IBlockExcerpt_Index_
+  commentId: Overload:Libplanet.Blocks.IBlockExcerpt.Index
+  isSpec: "True"
+  fullName: Libplanet.Blocks.IBlockExcerpt.Index
+  nameWithType: IBlockExcerpt.Index
+- uid: Libplanet.Blocks.IBlockExcerpt.TotalDifficulty
+  name: TotalDifficulty
+  href: api/Libplanet.Blocks.IBlockExcerpt.html#Libplanet_Blocks_IBlockExcerpt_TotalDifficulty
+  commentId: P:Libplanet.Blocks.IBlockExcerpt.TotalDifficulty
+  fullName: Libplanet.Blocks.IBlockExcerpt.TotalDifficulty
+  nameWithType: IBlockExcerpt.TotalDifficulty
+- uid: Libplanet.Blocks.IBlockExcerpt.TotalDifficulty*
+  name: TotalDifficulty
+  href: api/Libplanet.Blocks.IBlockExcerpt.html#Libplanet_Blocks_IBlockExcerpt_TotalDifficulty_
+  commentId: Overload:Libplanet.Blocks.IBlockExcerpt.TotalDifficulty
+  isSpec: "True"
+  fullName: Libplanet.Blocks.IBlockExcerpt.TotalDifficulty
+  nameWithType: IBlockExcerpt.TotalDifficulty
 - uid: Libplanet.Blocks.InvalidBlockBytesLengthException
   name: InvalidBlockBytesLengthException
   href: api/Libplanet.Blocks.InvalidBlockBytesLengthException.html
@@ -13191,170 +13342,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.StoreExtensions.Copy
   nameWithType: StoreExtensions.Copy
-- uid: Libplanet.Store.TransactionSet`1
-  name: TransactionSet<T>
-  href: api/Libplanet.Store.TransactionSet-1.html
-  commentId: T:Libplanet.Store.TransactionSet`1
-  name.vb: TransactionSet(Of T)
-  fullName: Libplanet.Store.TransactionSet<T>
-  fullName.vb: Libplanet.Store.TransactionSet(Of T)
-  nameWithType: TransactionSet<T>
-  nameWithType.vb: TransactionSet(Of T)
-- uid: Libplanet.Store.TransactionSet`1.#ctor(Libplanet.Store.IStore)
-  name: TransactionSet(IStore)
-  href: api/Libplanet.Store.TransactionSet-1.html#Libplanet_Store_TransactionSet_1__ctor_Libplanet_Store_IStore_
-  commentId: M:Libplanet.Store.TransactionSet`1.#ctor(Libplanet.Store.IStore)
-  fullName: Libplanet.Store.TransactionSet<T>.TransactionSet(Libplanet.Store.IStore)
-  fullName.vb: Libplanet.Store.TransactionSet(Of T).TransactionSet(Libplanet.Store.IStore)
-  nameWithType: TransactionSet<T>.TransactionSet(IStore)
-  nameWithType.vb: TransactionSet(Of T).TransactionSet(IStore)
-- uid: Libplanet.Store.TransactionSet`1.#ctor*
-  name: TransactionSet
-  href: api/Libplanet.Store.TransactionSet-1.html#Libplanet_Store_TransactionSet_1__ctor_
-  commentId: Overload:Libplanet.Store.TransactionSet`1.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Store.TransactionSet<T>.TransactionSet
-  fullName.vb: Libplanet.Store.TransactionSet(Of T).TransactionSet
-  nameWithType: TransactionSet<T>.TransactionSet
-  nameWithType.vb: TransactionSet(Of T).TransactionSet
-- uid: Libplanet.Store.TransactionSet`1.Contains(System.Collections.Generic.KeyValuePair{Libplanet.Tx.TxId,Libplanet.Tx.Transaction{`0}})
-  name: Contains(KeyValuePair<TxId, Transaction<T>>)
-  href: api/Libplanet.Store.TransactionSet-1.html#Libplanet_Store_TransactionSet_1_Contains_System_Collections_Generic_KeyValuePair_Libplanet_Tx_TxId_Libplanet_Tx_Transaction__0___
-  commentId: M:Libplanet.Store.TransactionSet`1.Contains(System.Collections.Generic.KeyValuePair{Libplanet.Tx.TxId,Libplanet.Tx.Transaction{`0}})
-  name.vb: Contains(KeyValuePair(Of TxId, Transaction(Of T)))
-  fullName: Libplanet.Store.TransactionSet<T>.Contains(System.Collections.Generic.KeyValuePair<Libplanet.Tx.TxId, Libplanet.Tx.Transaction<T>>)
-  fullName.vb: Libplanet.Store.TransactionSet(Of T).Contains(System.Collections.Generic.KeyValuePair(Of Libplanet.Tx.TxId, Libplanet.Tx.Transaction(Of T)))
-  nameWithType: TransactionSet<T>.Contains(KeyValuePair<TxId, Transaction<T>>)
-  nameWithType.vb: TransactionSet(Of T).Contains(KeyValuePair(Of TxId, Transaction(Of T)))
-- uid: Libplanet.Store.TransactionSet`1.Contains*
-  name: Contains
-  href: api/Libplanet.Store.TransactionSet-1.html#Libplanet_Store_TransactionSet_1_Contains_
-  commentId: Overload:Libplanet.Store.TransactionSet`1.Contains
-  isSpec: "True"
-  fullName: Libplanet.Store.TransactionSet<T>.Contains
-  fullName.vb: Libplanet.Store.TransactionSet(Of T).Contains
-  nameWithType: TransactionSet<T>.Contains
-  nameWithType.vb: TransactionSet(Of T).Contains
-- uid: Libplanet.Store.TransactionSet`1.ContainsKey(Libplanet.Tx.TxId)
-  name: ContainsKey(TxId)
-  href: api/Libplanet.Store.TransactionSet-1.html#Libplanet_Store_TransactionSet_1_ContainsKey_Libplanet_Tx_TxId_
-  commentId: M:Libplanet.Store.TransactionSet`1.ContainsKey(Libplanet.Tx.TxId)
-  fullName: Libplanet.Store.TransactionSet<T>.ContainsKey(Libplanet.Tx.TxId)
-  fullName.vb: Libplanet.Store.TransactionSet(Of T).ContainsKey(Libplanet.Tx.TxId)
-  nameWithType: TransactionSet<T>.ContainsKey(TxId)
-  nameWithType.vb: TransactionSet(Of T).ContainsKey(TxId)
-- uid: Libplanet.Store.TransactionSet`1.ContainsKey*
-  name: ContainsKey
-  href: api/Libplanet.Store.TransactionSet-1.html#Libplanet_Store_TransactionSet_1_ContainsKey_
-  commentId: Overload:Libplanet.Store.TransactionSet`1.ContainsKey
-  isSpec: "True"
-  fullName: Libplanet.Store.TransactionSet<T>.ContainsKey
-  fullName.vb: Libplanet.Store.TransactionSet(Of T).ContainsKey
-  nameWithType: TransactionSet<T>.ContainsKey
-  nameWithType.vb: TransactionSet(Of T).ContainsKey
-- uid: Libplanet.Store.TransactionSet`1.Count
-  name: Count
-  href: api/Libplanet.Store.TransactionSet-1.html#Libplanet_Store_TransactionSet_1_Count
-  commentId: P:Libplanet.Store.TransactionSet`1.Count
-  fullName: Libplanet.Store.TransactionSet<T>.Count
-  fullName.vb: Libplanet.Store.TransactionSet(Of T).Count
-  nameWithType: TransactionSet<T>.Count
-  nameWithType.vb: TransactionSet(Of T).Count
-- uid: Libplanet.Store.TransactionSet`1.Count*
-  name: Count
-  href: api/Libplanet.Store.TransactionSet-1.html#Libplanet_Store_TransactionSet_1_Count_
-  commentId: Overload:Libplanet.Store.TransactionSet`1.Count
-  isSpec: "True"
-  fullName: Libplanet.Store.TransactionSet<T>.Count
-  fullName.vb: Libplanet.Store.TransactionSet(Of T).Count
-  nameWithType: TransactionSet<T>.Count
-  nameWithType.vb: TransactionSet(Of T).Count
-- uid: Libplanet.Store.TransactionSet`1.IsReadOnly
-  name: IsReadOnly
-  href: api/Libplanet.Store.TransactionSet-1.html#Libplanet_Store_TransactionSet_1_IsReadOnly
-  commentId: P:Libplanet.Store.TransactionSet`1.IsReadOnly
-  fullName: Libplanet.Store.TransactionSet<T>.IsReadOnly
-  fullName.vb: Libplanet.Store.TransactionSet(Of T).IsReadOnly
-  nameWithType: TransactionSet<T>.IsReadOnly
-  nameWithType.vb: TransactionSet(Of T).IsReadOnly
-- uid: Libplanet.Store.TransactionSet`1.IsReadOnly*
-  name: IsReadOnly
-  href: api/Libplanet.Store.TransactionSet-1.html#Libplanet_Store_TransactionSet_1_IsReadOnly_
-  commentId: Overload:Libplanet.Store.TransactionSet`1.IsReadOnly
-  isSpec: "True"
-  fullName: Libplanet.Store.TransactionSet<T>.IsReadOnly
-  fullName.vb: Libplanet.Store.TransactionSet(Of T).IsReadOnly
-  nameWithType: TransactionSet<T>.IsReadOnly
-  nameWithType.vb: TransactionSet(Of T).IsReadOnly
-- uid: Libplanet.Store.TransactionSet`1.Item(Libplanet.Tx.TxId)
-  name: Item[TxId]
-  href: api/Libplanet.Store.TransactionSet-1.html#Libplanet_Store_TransactionSet_1_Item_Libplanet_Tx_TxId_
-  commentId: P:Libplanet.Store.TransactionSet`1.Item(Libplanet.Tx.TxId)
-  name.vb: Item(TxId)
-  fullName: Libplanet.Store.TransactionSet<T>.Item[Libplanet.Tx.TxId]
-  fullName.vb: Libplanet.Store.TransactionSet(Of T).Item(Libplanet.Tx.TxId)
-  nameWithType: TransactionSet<T>.Item[TxId]
-  nameWithType.vb: TransactionSet(Of T).Item(TxId)
-- uid: Libplanet.Store.TransactionSet`1.Item*
-  name: Item
-  href: api/Libplanet.Store.TransactionSet-1.html#Libplanet_Store_TransactionSet_1_Item_
-  commentId: Overload:Libplanet.Store.TransactionSet`1.Item
-  isSpec: "True"
-  fullName: Libplanet.Store.TransactionSet<T>.Item
-  fullName.vb: Libplanet.Store.TransactionSet(Of T).Item
-  nameWithType: TransactionSet<T>.Item
-  nameWithType.vb: TransactionSet(Of T).Item
-- uid: Libplanet.Store.TransactionSet`1.Keys
-  name: Keys
-  href: api/Libplanet.Store.TransactionSet-1.html#Libplanet_Store_TransactionSet_1_Keys
-  commentId: P:Libplanet.Store.TransactionSet`1.Keys
-  fullName: Libplanet.Store.TransactionSet<T>.Keys
-  fullName.vb: Libplanet.Store.TransactionSet(Of T).Keys
-  nameWithType: TransactionSet<T>.Keys
-  nameWithType.vb: TransactionSet(Of T).Keys
-- uid: Libplanet.Store.TransactionSet`1.Keys*
-  name: Keys
-  href: api/Libplanet.Store.TransactionSet-1.html#Libplanet_Store_TransactionSet_1_Keys_
-  commentId: Overload:Libplanet.Store.TransactionSet`1.Keys
-  isSpec: "True"
-  fullName: Libplanet.Store.TransactionSet<T>.Keys
-  fullName.vb: Libplanet.Store.TransactionSet(Of T).Keys
-  nameWithType: TransactionSet<T>.Keys
-  nameWithType.vb: TransactionSet(Of T).Keys
-- uid: Libplanet.Store.TransactionSet`1.Remove(Libplanet.Tx.TxId)
-  name: Remove(TxId)
-  href: api/Libplanet.Store.TransactionSet-1.html#Libplanet_Store_TransactionSet_1_Remove_Libplanet_Tx_TxId_
-  commentId: M:Libplanet.Store.TransactionSet`1.Remove(Libplanet.Tx.TxId)
-  fullName: Libplanet.Store.TransactionSet<T>.Remove(Libplanet.Tx.TxId)
-  fullName.vb: Libplanet.Store.TransactionSet(Of T).Remove(Libplanet.Tx.TxId)
-  nameWithType: TransactionSet<T>.Remove(TxId)
-  nameWithType.vb: TransactionSet(Of T).Remove(TxId)
-- uid: Libplanet.Store.TransactionSet`1.Remove*
-  name: Remove
-  href: api/Libplanet.Store.TransactionSet-1.html#Libplanet_Store_TransactionSet_1_Remove_
-  commentId: Overload:Libplanet.Store.TransactionSet`1.Remove
-  isSpec: "True"
-  fullName: Libplanet.Store.TransactionSet<T>.Remove
-  fullName.vb: Libplanet.Store.TransactionSet(Of T).Remove
-  nameWithType: TransactionSet<T>.Remove
-  nameWithType.vb: TransactionSet(Of T).Remove
-- uid: Libplanet.Store.TransactionSet`1.Values
-  name: Values
-  href: api/Libplanet.Store.TransactionSet-1.html#Libplanet_Store_TransactionSet_1_Values
-  commentId: P:Libplanet.Store.TransactionSet`1.Values
-  fullName: Libplanet.Store.TransactionSet<T>.Values
-  fullName.vb: Libplanet.Store.TransactionSet(Of T).Values
-  nameWithType: TransactionSet<T>.Values
-  nameWithType.vb: TransactionSet(Of T).Values
-- uid: Libplanet.Store.TransactionSet`1.Values*
-  name: Values
-  href: api/Libplanet.Store.TransactionSet-1.html#Libplanet_Store_TransactionSet_1_Values_
-  commentId: Overload:Libplanet.Store.TransactionSet`1.Values
-  isSpec: "True"
-  fullName: Libplanet.Store.TransactionSet<T>.Values
-  fullName.vb: Libplanet.Store.TransactionSet(Of T).Values
-  nameWithType: TransactionSet<T>.Values
-  nameWithType.vb: TransactionSet(Of T).Values
 - uid: Libplanet.Store.Trie
   name: Libplanet.Store.Trie
   href: api/Libplanet.Store.Trie.html
