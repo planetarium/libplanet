@@ -114,9 +114,11 @@ To be released.
  -  Added `IProtocol` interface.  [[#1120]]
  -  Added `KademliaProtocol` class which implements `IProtocol`.
     [[#1120], [#1135]]
- -  Added `InvalidBlockPreEvaluationHashException` class.
+ -  Added `reorgResistantHeight` parameters into `DelayedActionRenderer<T>()`
+    constructor. [[#1163]]
+ -  Added `InvalidBlockPreEvaluationHashException` class.  [[#1148]]
  -  Added the parameter `validate` which is `true` by default,
-    to `Transaction<T>.Deserialize()`.
+    to `Transaction<T>.Deserialize()`.  [[#1149]]
 
 ### Behavioral changes
 
@@ -144,7 +146,7 @@ To be released.
  -  `Swarm<T>` became not to fill states from trusted peers, because now states
     can be validated rather than trusted due to MPT.  [[#1117]]
  -  `HashDigest<SHA256>` became serializable.  [[#795], [#1125]]
- -  `Transaction<T>()` constructors became not to validate itself.
+ -  `Transaction<T>()` constructors became not to validate itself.  [[#1149]]
 
 ### Bug fixes
 
@@ -203,6 +205,8 @@ To be released.
 [#1142]: https://github.com/planetarium/libplanet/issues/1142
 [#1143]: https://github.com/planetarium/libplanet/pull/1143
 [#1147]: https://github.com/planetarium/libplanet/pull/1147
+[#1148]: https://github.com/planetarium/libplanet/pull/1148
+[#1149]: https://github.com/planetarium/libplanet/pull/1149
 [#1152]: https://github.com/planetarium/libplanet/pull/1152
 [#1155]: https://github.com/planetarium/libplanet/issues/1155
 [#1162]: https://github.com/planetarium/libplanet/pull/1162
