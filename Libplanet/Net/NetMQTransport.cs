@@ -490,7 +490,11 @@ namespace Libplanet.Net
         {
             string identityHex = ByteUtil.Hex(message.Identity);
             _logger.Debug("Reply {Message} to {Identity}...", message, identityHex);
-            _replyQueue.Enqueue(message.ToNetMQMessage(_privateKey, AsPeer, _appProtocolVersion));
+            _replyQueue.Enqueue(message.ToNetMQMessage(
+                _privateKey,
+                AsPeer,
+                DateTimeOffset.UtcNow,
+                _appProtocolVersion));
         }
 
         private void ReceiveMessage(object sender, NetMQSocketEventArgs e)
@@ -568,7 +572,11 @@ namespace Libplanet.Net
                 _logger.Debug("Broadcasting message: {Message} as {AsPeer}", msg, AsPeer);
                 _logger.Debug("Peers to broadcast: {PeersCount}", peers.Count);
 
-                NetMQMessage message = msg.ToNetMQMessage(_privateKey, AsPeer, _appProtocolVersion);
+                NetMQMessage message = msg.ToNetMQMessage(
+                    _privateKey,
+                    AsPeer,
+                    DateTimeOffset.UtcNow,
+                    _appProtocolVersion);
 
                 foreach (BoundPeer peer in peers)
                 {
@@ -716,7 +724,11 @@ namespace Libplanet.Net
                 req.Message,
                 req.Peer
             );
-            var message = req.Message.ToNetMQMessage(_privateKey, AsPeer, _appProtocolVersion);
+            var message = req.Message.ToNetMQMessage(
+                _privateKey,
+                AsPeer,
+                DateTimeOffset.UtcNow,
+                _appProtocolVersion);
             var result = new List<Message>();
             TaskCompletionSource<IEnumerable<Message>> tcs = req.TaskCompletionSource;
             try

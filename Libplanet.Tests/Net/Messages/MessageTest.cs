@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Immutable;
 using Libplanet.Crypto;
 using Libplanet.Net;
@@ -25,7 +26,11 @@ namespace Libplanet.Tests.Net.Messages
                 ImmutableArray<byte>.Empty,
                 default(Address));
             var message = new Ping();
-            var netMQMessage = message.ToNetMQMessage(privateKey, peer, validAppProtocolVersion);
+            var netMQMessage = message.ToNetMQMessage(
+                privateKey,
+                peer,
+                DateTimeOffset.UtcNow,
+                validAppProtocolVersion);
 
             Assert.Throws<DifferentAppProtocolVersionException>(() =>
                 Message.Parse(
