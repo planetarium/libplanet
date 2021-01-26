@@ -18,6 +18,17 @@ To be released.
     [[#1142], [#1147], [#1162]]
  -  Added `stagePolicy` as the second parameter to `BlockChain<T>()`
     constructor.  [[#1130], [#1131]]
+ -  Added `IBlockPolicy<T>.CanonicalChainComparer` property to make
+    the canonical chain .  [[#1155], [#1165]]
+ -  Added `canonicalChainComparer` as the last parameter to `BlockPolicy()`
+    constructors.  [[#1155], [#1165]]
+ -  Added `canonicalChainComparer` as the second parameter to
+    `DelayedRenderer()` constructor.  [[#1155], [#1165]]
+ -  Added `canonicalChainComparer` as the second parameter to
+    `DelayedActionRenderer()` constructor.  [[#1155], [#1165]]
+ -  Added `reorgResistantHeight` parameter into `DelayedActionRenderer<T>()`
+    constructor. [[#1163]]
+ -  Removed `TransactionSet<T>` class.  [[#1165]]
  -  Removed `IBlockStatesStore` interface.  [[#1117]]
  -  Removed `BaseBlockStatesStore` abstract class.  [[#1117]]
  -  Removed `Swarm<T>.GetTrustedStateCompleterAsync()` method.  [[#1117]]
@@ -29,6 +40,9 @@ To be released.
 
  -  `Swarm<T>` became no longer retry when `Swarm<T>` receives
     less than 500 blocks.  [[#1112]]
+ -  The existing `ChainStatus` message type (with the type number `0x24`) was
+    replaced by a new `ChainStatus` message type (with the type number `0x25`).
+    [[#1155], [#1165]]
  -  Removed the message types depended on features of `IBlockStatesStore`
     interface.  [[#1117]]
      -  `GetRecentStates` message type (with the type number `0x0b`)
@@ -44,6 +58,15 @@ To be released.
  -  Added `Block<T>.ProtocolVersion` property.  [[#1142], [#1147]]
  -  Added `Block<T>.Header` property.  [[#1070], [#1102]]
  -  Added `BlockHeader.ProtocolVersion` property.  [[#1142], [#1147]]
+ -  Added `IBlockExcerpt` interface.  [[#1155], [#1165]]
+ -  Added `BlockExcerpt` class.  [[#1155], [#1165]]
+ -  `Block<T>` became to implement `IBlockExceprt` interface.
+    [[#1155], [#1165]]
+ -  `BlockHeader` became to implement `IBlockExceprt` interface.
+    [[#1155], [#1165]]
+ -  Added `DelayedRenderer<T>.CanonicalChainComparer` and
+    `DelayedActionRenderer<T>.CanonicalChainComparer` properties.
+    [[#1155], [#1165]]
  -  Added `IStagePolicy<T>` interface.  [[#1130], [#1131]]
  -  Added `VolatileStagePolicy<T>` class.  [[#1130], [#1131], [#1136]]
  -  Added `ITransport` interface.  [[#1052]]
@@ -90,8 +113,6 @@ To be released.
  -  Added `IProtocol` interface.  [[#1120]]
  -  Added `KademliaProtocol` class which implements `IProtocol`.
     [[#1120], [#1135]]
- -  Added `reorgResistantHeight` parameters into `DelayedActionRenderer<T>()`
-    constructor. [[#1163]]
  -  Added `InvalidBlockPreEvaluationHashException` class.
  -  Added the parameter `validate` which is `true` by default,
     to `Transaction<T>.Deserialize()`.
@@ -181,8 +202,10 @@ To be released.
 [#1143]: https://github.com/planetarium/libplanet/pull/1143
 [#1147]: https://github.com/planetarium/libplanet/pull/1147
 [#1152]: https://github.com/planetarium/libplanet/pull/1152
+[#1155]: https://github.com/planetarium/libplanet/issues/1155
 [#1162]: https://github.com/planetarium/libplanet/pull/1162
 [#1163]: https://github.com/planetarium/libplanet/pull/1163
+[#1165]: https://github.com/planetarium/libplanet/pull/1165
 
 
 Version 0.10.2

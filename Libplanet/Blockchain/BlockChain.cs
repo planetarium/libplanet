@@ -56,14 +56,6 @@ namespace Libplanet.Blockchain
         private IDictionary<HashDigest<SHA256>, Block<T>> _blocks;
 
         /// <summary>
-        /// All <see cref="Transaction{T}"/>s in the <see cref="BlockChain{T}"/>
-        /// storage, including orphan <see cref="Transaction{T}"/>s.
-        /// Keys are <see cref="Transaction{T}.Id"/>s and values are
-        /// their corresponding <see cref="Transaction{T}"/>s.
-        /// </summary>
-        private IDictionary<TxId, Transaction<T>> _transactions;
-
-        /// <summary>
         /// Cached genesis block.
         /// </summary>
         private Block<T> _genesis;
@@ -154,7 +146,6 @@ namespace Libplanet.Blockchain
             }
 
             _blocks = new BlockSet<T>(store);
-            _transactions = new TransactionSet<T>(store);
             Renderers = renderers is IEnumerable<IRenderer<T>> r
                 ? r.ToImmutableArray()
                 : ImmutableArray<IRenderer<T>>.Empty;
@@ -464,7 +455,13 @@ namespace Libplanet.Blockchain
             _rwlock.EnterReadLock();
             try
             {
-                return _transactions[txId];
+                if (Store.GetTransaction<T>(txId) is { } transaction)
+                {
+                    transaction.Validate();
+                    return transaction;
+                }
+
+                throw new KeyNotFoundException($"No such transaction: {txId}");
             }
             finally
             {
@@ -1745,7 +1742,6 @@ namespace Libplanet.Blockchain
                         }
                     }
 
-                    _transactions = new TransactionSet<T>(Store);
                     Store.DeleteChainId(obsoleteId);
                 }
                 finally

@@ -13,7 +13,7 @@ namespace Libplanet.Blocks
     /// <summary>
     /// Block header containing information about <see cref="Block{T}"/>s except transactions.
     /// </summary>
-    public readonly struct BlockHeader
+    public readonly struct BlockHeader : IBlockExcerpt
     {
         internal const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
 
@@ -43,6 +43,8 @@ namespace Libplanet.Blocks
 
         private static readonly TimeSpan TimestampThreshold =
             TimeSpan.FromSeconds(15);
+
+        private static readonly Codec Codec = new Codec();
 
         /// <summary>
         /// Creates a <see cref="BlockHeader"/> instance.
@@ -165,6 +167,8 @@ namespace Libplanet.Blocks
 
         public ImmutableArray<byte> StateRootHash { get; }
 
+        HashDigest<SHA256> IBlockExcerpt.Hash => new HashDigest<SHA256>(Hash);
+
         /// <summary>
         /// Gets <see cref="BlockHeader"/> instance from serialized <paramref name="bytes"/>.
         /// </summary>
@@ -174,7 +178,7 @@ namespace Libplanet.Blocks
         /// <see cref="Bencodex.Types.Dictionary"/> type.</exception>
         public static BlockHeader Deserialize(byte[] bytes)
         {
-            IValue value = new Codec().Decode(bytes);
+            IValue value = Codec.Decode(bytes);
             if (!(value is Bencodex.Types.Dictionary dict))
             {
                 throw new DecodingException(

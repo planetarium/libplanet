@@ -27,10 +27,13 @@ namespace Libplanet.Net
                     _logger.Debug($"Received a {nameof(GetChainStatus)} message.");
 
                     // This is based on the assumption that genesis block always exists.
+                    Block<T> tip = BlockChain.Tip;
                     var chainStatus = new ChainStatus(
                         BlockChain.Genesis.Hash,
-                        BlockChain.Tip.Index,
-                        BlockChain.Tip.TotalDifficulty)
+                        tip.Index,
+                        tip.Hash,
+                        tip.TotalDifficulty
+                    )
                     {
                         Identity = getChainStatus.Identity,
                     };

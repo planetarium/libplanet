@@ -24,17 +24,20 @@ namespace Libplanet.Blockchain.Renderers
     /// <example>
     /// <code><![CDATA[
     /// IStore store = GetStore();
+    /// IBlockPolicy<ExampleAction> policy = GetPolicy();
     /// IActionRenderer<ExampleAction> actionRenderer = new SomeActionRenderer();
     /// // Wraps the actionRenderer with DelayedActionRenderer; the SomeActionRenderer instance
     /// // becomes to receive event messages only after the relevent blocks are confirmed
     /// // by 3+ blocks.
     /// actionRenderer = new DelayedActionRenderer<ExampleAction>(
     ///    actionRenderer,
+    ///    policy,
     ///    store,
     ///    confirmations: 3);
-    /// // You must pass the same store to the BlockChain<T>() constructor:
+    /// // You must pass the same policy & store to the BlockChain<T>() constructor:
     /// var chain = new BlockChain<ExampleAction>(
     ///    ...,
+    ///    policy: policy,
     ///    store: store,
     ///    renderers: new[] { actionRenderer });
     /// ]]></code>
@@ -66,6 +69,8 @@ namespace Libplanet.Blockchain.Renderers
         /// </summary>
         /// <param name="renderer">The renderer to decorate which has the <em>actual</em>
         /// implementations and receives delayed events.</param>
+        /// <param name="canonicalChainComparer">The same canonical chain comparer to
+        /// <see cref="BlockChain{T}.Policy"/>.</param>
         /// <param name="store">The same store to what <see cref="BlockChain{T}"/> uses.</param>
         /// <param name="confirmations">The required number of confirmations to recognize a block.
         /// See also the <see cref="DelayedRenderer{T}.Confirmations"/> property.</param>
@@ -75,10 +80,11 @@ namespace Libplanet.Blockchain.Renderers
         /// If zero, which is a default value, is passed the buffer is not cleared.</param>
         public DelayedActionRenderer(
             IActionRenderer<T> renderer,
+            IComparer<IBlockExcerpt> canonicalChainComparer,
             IStore store,
             int confirmations,
             long reorgResistantHeight = 0)
-            : base(renderer, store, confirmations)
+            : base(renderer, canonicalChainComparer, store, confirmations)
         {
             ActionRenderer = renderer;
             _bufferedActionRenders =

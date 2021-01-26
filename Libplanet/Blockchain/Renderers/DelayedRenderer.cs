@@ -4,6 +4,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using Libplanet.Action;
+using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Store;
 using Serilog;
@@ -21,19 +22,24 @@ namespace Libplanet.Blockchain.Renderers
     /// <example>
     /// <code><![CDATA[
     /// IStore store = GetStore();
+    /// IBlockPolicy<ExampleAction> policy = GetPolicy();
     /// IRenderer<ExampleAction> renderer = new SomeRenderer();
     /// // Wraps the renderer with DelayedRenderer; the SomeRenderer instance becomes to receive
     /// // event messages only after the relevent blocks are confirmed by 3+ blocks.
-    /// renderer = new DelayedRenderer<ExampleAction>(renderer, store, confirmations: 3);
-    /// // You must pass the same store to the BlockChain<T>() constructor:
-    /// var chain = new BlockChain<ExampleAction>(..., store: store, renderers: new[] { renderer });
+    /// renderer = new DelayedRenderer<ExampleAction>(renderer, policy, store, confirmations: 3);
+    /// // You must pass the same policy & store to the BlockChain<T>() constructor:
+    /// var chain = new BlockChain<ExampleAction>(
+    ///     ...,
+    ///     policy: policy,
+    ///     store: store,
+    ///     renderers: new[] { renderer });
     /// ]]></code>
     /// </example>
     /// <remarks>Since <see cref="IActionRenderer{T}"/> is a subtype of <see cref="IRenderer{T}"/>,
-    /// <see cref="DelayedRenderer{T}(IRenderer{T}, IStore, int)"/> constructor can take
-    /// an <see cref="IActionRenderer{T}"/> instance as well.  However, even it takes an action
-    /// renderer, action-level fine-grained events won't hear.  For action renderers,
-    /// please use <see cref="DelayedActionRenderer{T}"/> instead.</remarks>
+    /// <see cref="DelayedRenderer{T}(IRenderer{T}, IComparer{IBlockExcerpt}, IStore, int)"/>
+    /// constructor can take an <see cref="IActionRenderer{T}"/> instance as well.
+    /// However, even it takes an action renderer, action-level fine-grained events won't hear.
+    /// For action renderers, please use <see cref="DelayedActionRenderer{T}"/> instead.</remarks>
     public class DelayedRenderer<T> : IRenderer<T>
         where T : IAction, new()
     {
@@ -45,6 +51,8 @@ namespace Libplanet.Blockchain.Renderers
         /// </summary>
         /// <param name="renderer">The renderer to decorate which has the <em>actual</em>
         /// implementations and receives delayed events.</param>
+        /// <param name="canonicalChainComparer">The same canonical chain comparer to
+        /// <see cref="BlockChain{T}.Policy"/>.</param>
         /// <param name="store">The same store to what <see cref="BlockChain{T}"/> uses.</param>
         /// <param name="confirmations">The required number of confirmations to recognize a block.
         /// It must be greater than zero (note that zero <paramref name="confirmations"/> mean
@@ -52,7 +60,12 @@ namespace Libplanet.Blockchain.Renderers
         /// See also the <see cref="Confirmations"/> property.</param>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the argument
         /// <paramref name="confirmations"/> is not greater than zero.</exception>
-        public DelayedRenderer(IRenderer<T> renderer, IStore store, int confirmations)
+        public DelayedRenderer(
+            IRenderer<T> renderer,
+            IComparer<IBlockExcerpt> canonicalChainComparer,
+            IStore store,
+            int confirmations
+        )
         {
             if (confirmations == 0)
             {
@@ -71,6 +84,7 @@ namespace Libplanet.Blockchain.Renderers
 
             Logger = Log.ForContext(GetType());
             Renderer = renderer;
+            CanonicalChainComparer = canonicalChainComparer;
             Store = store;
             Confirmations = confirmations;
             Confirmed = new ConcurrentDictionary<HashDigest<SHA256>, uint>();
@@ -81,6 +95,12 @@ namespace Libplanet.Blockchain.Renderers
         /// events.
         /// </summary>
         public IRenderer<T> Renderer { get; }
+
+        /// <summary>
+        /// The same canonical chain comparer to <see cref="BlockChain{T}.Policy"/>.
+        /// </summary>
+        /// <seealso cref="IBlockPolicy{T}.CanonicalChainComparer"/>
+        public IComparer<IBlockExcerpt> CanonicalChainComparer { get; }
 
         /// <summary>
         /// The same store to what <see cref="BlockChain{T}"/> uses.

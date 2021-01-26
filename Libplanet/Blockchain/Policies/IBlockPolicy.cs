@@ -1,3 +1,5 @@
+#nullable enable
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using Libplanet.Action;
 using Libplanet.Blocks;
@@ -15,6 +17,14 @@ namespace Libplanet.Blockchain.Policies
     public interface IBlockPolicy<T>
         where T : IAction, new()
     {
+        /// <summary>
+        /// A comparer to determine which branch is the canonical chain (i.e., best chain).
+        /// The most greater one according to this comparer is considered to be the canon.
+        /// </summary>
+        /// <seealso cref="IBlockExcerpt"/>
+        /// <seealso cref="TotalDifficultyComparer"/>
+        IComparer<IBlockExcerpt> CanonicalChainComparer { get; }
+
         /// <summary>
         /// A block action to execute and be rendered for every block.
         /// </summary>
@@ -55,9 +65,7 @@ namespace Libplanet.Blockchain.Policies
         /// <returns>The reason why the given <paramref name="blocks"/> are
         /// <em>invalid</em>, or <c>null</c> if <paramref name="blocks"/> are
         /// <em>valid</em>.</returns>
-        InvalidBlockException ValidateNextBlock(
-            BlockChain<T> blocks,
-            Block<T> nextBlock);
+        InvalidBlockException? ValidateNextBlock(BlockChain<T> blocks, Block<T> nextBlock);
 
         /// <summary>
         /// Determines a right <see cref="Block{T}.Difficulty"/>
