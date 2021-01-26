@@ -25,7 +25,7 @@ namespace Libplanet.Blocks
         /// <summary>
         /// The most latest protocol version.
         /// </summary>
-        public const int CurrentProtocolVersion = 1;
+        public const int CurrentProtocolVersion = BlockHeader.CurrentProtocolVersion;
 
         private int _bytesLength;
 

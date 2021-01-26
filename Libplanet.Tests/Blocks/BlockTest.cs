@@ -499,6 +499,35 @@ namespace Libplanet.Tests.Blocks
         }
 
         [Fact]
+        public void DetectInvalidProtocolVersion()
+        {
+            DateTimeOffset now = DateTimeOffset.UtcNow;
+            Block<DumbAction> block = Block<DumbAction>.Mine(
+                _fx.Next.Index,
+                _fx.Next.Difficulty,
+                _fx.Genesis.TotalDifficulty,
+                _fx.Next.Miner.Value,
+                _fx.Genesis.Hash,
+                now,
+                new Transaction<DumbAction>[] { },
+                protocolVersion: -1
+            );
+            Assert.Throws<InvalidBlockProtocolVersionException>(() => block.Validate(now));
+
+            block = Block<DumbAction>.Mine(
+                _fx.Next.Index,
+                _fx.Next.Difficulty,
+                _fx.Genesis.TotalDifficulty,
+                _fx.Next.Miner.Value,
+                _fx.Genesis.Hash,
+                now,
+                new Transaction<DumbAction>[] { },
+                protocolVersion: Block<DumbAction>.CurrentProtocolVersion + 1
+            );
+            Assert.Throws<InvalidBlockProtocolVersionException>(() => block.Validate(now));
+        }
+
+        [Fact]
         public void CanDetectInvalidTimestamp()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;

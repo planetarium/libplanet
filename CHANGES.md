@@ -125,7 +125,7 @@ To be released.
  -  Introduced the [protocol versioning scheme][#1142].  This purposes to change
     the protocol without breaking backward compatibility.  Even the protocol
     is changed, the existing blocks made before the new protocol are guaranteed
-    to behave as it had done.  [[#1142], [#1147], [#1162]]
+    to behave as it had done.  [[#1142], [#1147], [#1162], [#1170]]
  -  Since `BlockHeader.ProtocolVersion` was added, the existing blocks are
     considered protocol compliant with the protocol version zero.
     [[#1142], [#1147], [#1162]]
@@ -208,6 +208,7 @@ To be released.
 [#1163]: https://github.com/planetarium/libplanet/pull/1163
 [#1165]: https://github.com/planetarium/libplanet/pull/1165
 [#1168]: https://github.com/planetarium/libplanet/pull/1168
+[#1170]: https://github.com/planetarium/libplanet/pull/1170
 
 
 Version 0.10.2
