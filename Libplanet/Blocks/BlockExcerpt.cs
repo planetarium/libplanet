@@ -14,6 +14,7 @@ namespace Libplanet.Blocks
         /// <returns>Extracted members as a string.</returns>
         public static string ToExcerptString(this IBlockExcerpt excerpt) =>
             $"{excerpt.GetType().Name} {{" +
+            $" {nameof(IBlockExcerpt.ProtocolVersion)} = {excerpt.ProtocolVersion}," +
             $" {nameof(IBlockExcerpt.Index)} = {excerpt.Index}," +
             $" {nameof(IBlockExcerpt.Hash)} = {excerpt.Hash}," +
             $" {nameof(IBlockExcerpt.TotalDifficulty)} = {excerpt.TotalDifficulty}" +

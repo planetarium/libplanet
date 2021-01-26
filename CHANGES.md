@@ -58,15 +58,16 @@ To be released.
  -  Added `Block<T>.ProtocolVersion` property.  [[#1142], [#1147]]
  -  Added `Block<T>.Header` property.  [[#1070], [#1102]]
  -  Added `BlockHeader.ProtocolVersion` property.  [[#1142], [#1147]]
- -  Added `IBlockExcerpt` interface.  [[#1155], [#1165]]
- -  Added `BlockExcerpt` class.  [[#1155], [#1165]]
+ -  Added `IBlockExcerpt` interface.  [[#1155], [#1165], [#1170]]
+ -  Added `BlockExcerpt` class.  [[#1155], [#1165], [#1170]]
  -  `Block<T>` became to implement `IBlockExceprt` interface.
-    [[#1155], [#1165]]
+    [[#1155], [#1165], [#1170]]
  -  `BlockHeader` became to implement `IBlockExceprt` interface.
-    [[#1155], [#1165]]
+    [[#1155], [#1165], [#1170]]
  -  Added `DelayedRenderer<T>.CanonicalChainComparer` and
     `DelayedActionRenderer<T>.CanonicalChainComparer` properties.
     [[#1155], [#1165]]
+ -  Added `TotalDifficultyComparer` class.  [[#1155], [#1165], [#1170]]
  -  Added `IStagePolicy<T>` interface.  [[#1130], [#1131]]
  -  Added `VolatileStagePolicy<T>` class.  [[#1130], [#1131], [#1136]]
  -  Added `ITransport` interface.  [[#1052]]

@@ -11,6 +11,8 @@ namespace Libplanet.Blockchain
     /// <para>The chain which has the most <see cref="Block{T}.TotalDifficulty"/> is considered
     /// the greatest, i.e., canonical chain.</para>
     /// </summary>
+    /// <remarks>Although this compares blocks' total difficulty, if two blocks have different
+    /// protocol version, it always consider the higher version greater.</remarks>
     /// <seealso cref="IBlockPolicy{T}.CanonicalChainComparer"/>
     /// <seealso cref="IBlockExcerpt"/>
     public class TotalDifficultyComparer : IComparer<IBlockExcerpt>
@@ -27,7 +29,8 @@ namespace Libplanet.Blockchain
                 return 1;
             }
 
-            return x.TotalDifficulty.CompareTo(y.TotalDifficulty);
+            int vcmp = x.ProtocolVersion.CompareTo(y.ProtocolVersion);
+            return vcmp == 0 ? x.TotalDifficulty.CompareTo(y.TotalDifficulty) : vcmp;
         }
     }
 }

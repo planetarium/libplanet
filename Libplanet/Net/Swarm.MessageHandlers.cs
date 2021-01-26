@@ -29,6 +29,7 @@ namespace Libplanet.Net
                     // This is based on the assumption that genesis block always exists.
                     Block<T> tip = BlockChain.Tip;
                     var chainStatus = new ChainStatus(
+                        tip.ProtocolVersion,
                         BlockChain.Genesis.Hash,
                         tip.Index,
                         tip.Hash,
