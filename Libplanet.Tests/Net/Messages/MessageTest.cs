@@ -65,5 +65,25 @@ namespace Libplanet.Tests.Net.Messages
                     ImmutableHashSet<PublicKey>.Empty,
                     null));
         }
+
+        [Fact]
+        public void Parse()
+        {
+            var privateKey = new PrivateKey();
+            var peer = new Peer(privateKey.PublicKey);
+            var dateTimeOffset = DateTimeOffset.UtcNow;
+            var appProtocolVersion = new AppProtocolVersion(
+                1,
+                new Bencodex.Types.Integer(0),
+                ImmutableArray<byte>.Empty,
+                default(Address));
+            var message = new Ping();
+            NetMQMessage raw =
+                message.ToNetMQMessage(privateKey, peer, dateTimeOffset, appProtocolVersion);
+            var parsed = Message.Parse(raw, true, appProtocolVersion, null, null);
+            Assert.Equal(peer, parsed.Remote);
+            Assert.Equal(appProtocolVersion, parsed.Version);
+            Assert.Equal(dateTimeOffset, parsed.Timestamp);
+        }
     }
 }
