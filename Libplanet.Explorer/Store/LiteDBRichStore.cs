@@ -28,10 +28,10 @@ namespace Libplanet.Explorer.Store
         private readonly LruCache<HashDigest<SHA256>, BlockDigest> _blockCache;
 
         // FIXME we should separate it.
-        private readonly BaseBlockStatesStore _store;
+        private readonly IStore _store;
 
         public LiteDBRichStore(
-            BaseBlockStatesStore store,
+            IStore store,
             string path,
             bool journal = true,
             int indexCacheSize = 50000,
@@ -125,72 +125,6 @@ namespace Libplanet.Explorer.Store
             }
 
             return _store.ContainsBlock(blockHash);
-        }
-
-        /// <inheritdoc cref="IStore"/>
-        public IImmutableDictionary<string, IValue> GetBlockStates(HashDigest<SHA256> blockHash)
-        {
-            return _store.GetBlockStates(blockHash);
-        }
-
-        /// <inheritdoc cref="IStore"/>
-        public void SetBlockStates(
-            HashDigest<SHA256> blockHash,
-            IImmutableDictionary<string, IValue> states)
-        {
-            _store.SetBlockStates(blockHash, states);
-        }
-
-        public void PruneBlockStates<T>(Guid chainId, Block<T> until)
-            where T : IAction, new()
-        {
-            _store.PruneBlockStates(chainId, until);
-        }
-
-        /// <inheritdoc cref="IStore"/>
-        public Tuple<HashDigest<SHA256>, long> LookupStateReference<T>(
-            Guid chainId,
-            string key,
-            Block<T> lookupUntil)
-            where T : IAction, new()
-        {
-            return _store.LookupStateReference(chainId, key, lookupUntil.Index);
-        }
-
-        /// <inheritdoc cref="IStore"/>
-        public IEnumerable<Tuple<HashDigest<SHA256>, long>> IterateStateReferences(
-            Guid chainId,
-            string key,
-            long? highestIndex = null,
-            long? lowestIndex = null,
-            int? limit = null)
-        {
-            return _store.IterateStateReferences(
-                chainId,
-                key,
-                highestIndex,
-                lowestIndex,
-                limit);
-        }
-
-        /// <inheritdoc cref="IStore"/>
-        public void StoreStateReference(
-            Guid chainId,
-            IImmutableSet<string> keys,
-            HashDigest<SHA256> blockHash,
-            long blockIndex)
-        {
-            _store.StoreStateReference(chainId, keys, blockHash, blockIndex);
-        }
-
-        /// <inheritdoc cref="IStore"/>
-        public void ForkStateReferences<T>(
-            Guid sourceChainId,
-            Guid destinationChainId,
-            Block<T> branchPoint)
-            where T : IAction, new()
-        {
-            _store.ForkStateReferences(sourceChainId, destinationChainId, branchPoint);
         }
 
         /// <inheritdoc cref="IStore"/>
@@ -306,22 +240,6 @@ namespace Libplanet.Explorer.Store
             HashDigest<SHA256> branchPoint)
         {
             _store.ForkBlockIndexes(sourceChainId, destinationChainId, branchPoint);
-        }
-
-        /// <inheritdoc cref="IStore"/>
-        public IEnumerable<string> ListStateKeys(Guid chainId)
-        {
-            return _store.ListStateKeys(chainId);
-        }
-
-        /// <inheritdoc cref="IStore"/>
-        public IImmutableDictionary<string, IImmutableList<HashDigest<SHA256>>>
-            ListAllStateReferences(
-            Guid chainId,
-            long lowestIndex = 0,
-            long highestIndex = long.MaxValue)
-        {
-            return _store.ListAllStateReferences(chainId, lowestIndex, highestIndex);
         }
 
         /// <inheritdoc cref="IStore"/>
@@ -474,23 +392,6 @@ namespace Libplanet.Explorer.Store
             );
             return collection.Find(query, offset, limit).Select(doc => doc.TxId);
         }
-
-        public void SetStates<T>(Block<T> block, IImmutableDictionary<string, IValue> states)
-            where T : IAction, new()
-            => _store.SetStates(block, states);
-
-        public IValue GetState(
-            string stateKey,
-            HashDigest<SHA256>? blockHash = null,
-            Guid? chainId = null)
-            => _store.GetState(stateKey);
-
-        public bool ContainsBlockStates(HashDigest<SHA256> blockHash)
-            => _store.ContainsBlockStates(blockHash);
-
-        public void ForkStates<T>(Guid sourceChainId, Guid destinationChainId, Block<T> branchpoint)
-            where T : IAction, new()
-            => _store.ForkStates(sourceChainId, destinationChainId, branchpoint);
 
         private LiteCollection<TxRefDoc> TxRefCollection() =>
             _db.GetCollection<TxRefDoc>(TxRefCollectionName);
