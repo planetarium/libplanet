@@ -38,6 +38,7 @@ namespace Libplanet.Tests.Net.Messages
                     true,
                     invalidAppProtocolVersion,
                     ImmutableHashSet<PublicKey>.Empty,
+                    null,
                     null));
         }
 
@@ -63,6 +64,7 @@ namespace Libplanet.Tests.Net.Messages
                     true,
                     invalidAppProtocolVersion,
                     ImmutableHashSet<PublicKey>.Empty,
+                    null,
                     null));
         }
 
@@ -80,7 +82,7 @@ namespace Libplanet.Tests.Net.Messages
             var message = new Ping();
             NetMQMessage raw =
                 message.ToNetMQMessage(privateKey, peer, dateTimeOffset, appProtocolVersion);
-            var parsed = Message.Parse(raw, true, appProtocolVersion, null, null);
+            var parsed = Message.Parse(raw, true, appProtocolVersion, null, null, null);
             Assert.Equal(peer, parsed.Remote);
             Assert.Equal(appProtocolVersion, parsed.Version);
             Assert.Equal(dateTimeOffset, parsed.Timestamp);

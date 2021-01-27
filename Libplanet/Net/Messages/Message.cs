@@ -178,6 +178,10 @@ namespace Libplanet.Net.Messages
         /// If this callback returns <c>false</c>, an encountered peer is ignored.  If this callback
         /// is omitted, all peers with different <see cref="AppProtocolVersion"/>s are ignored.
         /// </param>
+        /// <param name="lifetime">
+        /// The lifetime of a message.
+        /// Messages generated before this value from the current time are ignored.
+        /// If <c>null</c> is given, messages will not be ignored by its timestamp.</param>
         /// <returns>A <see cref="Message"/> parsed from <paramref name="raw"/>.</returns>
         /// <exception cref="ArgumentException">Thrown when empty <paramref name="raw"/> is given.
         /// </exception>
@@ -194,7 +198,8 @@ namespace Libplanet.Net.Messages
             bool reply,
             AppProtocolVersion localVersion,
             IImmutableSet<PublicKey> trustedAppProtocolVersionSigners,
-            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered)
+            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered,
+            TimeSpan? lifetime)
         {
             if (raw.FrameCount == 0)
             {
@@ -234,6 +239,18 @@ namespace Libplanet.Net.Messages
 
             var rawType = (MessageType)remains[(int)MessageFrame.Type].ConvertToInt32();
             var ticks = remains[(int)MessageFrame.Timestamp].ConvertToInt64();
+            var timestamp = new DateTimeOffset(ticks, TimeSpan.Zero);
+
+            var currentTime = DateTimeOffset.UtcNow;
+            if (!(lifetime is null) &&
+                (currentTime < timestamp || timestamp + lifetime < currentTime))
+            {
+                var msg = $"Received message is invalid, created at {timestamp} " +
+                          $"but designated lifetime is {lifetime} and the current datetime " +
+                          $"offset is {currentTime}.";
+                throw new InvalidTimestampException(msg, timestamp, lifetime.Value, currentTime);
+            }
+
             byte[] signature = remains[(int)MessageFrame.Sign].ToByteArray();
 
             NetMQFrame[] body = remains.Skip(CommonFrames).ToArray();
@@ -275,7 +292,7 @@ namespace Libplanet.Net.Messages
                 type, new[] { body });
             message.Version = remoteVersion;
             message.Remote = remotePeer;
-            message.Timestamp = new DateTimeOffset(ticks, TimeSpan.Zero);
+            message.Timestamp = timestamp;
 
             if (!message.Remote.PublicKey.Verify(body.ToByteArray(), signature))
             {

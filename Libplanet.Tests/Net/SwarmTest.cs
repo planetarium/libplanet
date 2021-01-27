@@ -601,6 +601,7 @@ namespace Libplanet.Tests.Net
                         true,
                         swarmA.AppProtocolVersion,
                         swarmA.TrustedAppProtocolVersionSigners,
+                        null,
                         null);
                     Libplanet.Net.Messages.Blocks blockMessage =
                         (Libplanet.Net.Messages.Blocks)parsedMessage;
@@ -613,6 +614,7 @@ namespace Libplanet.Tests.Net
                         true,
                         swarmA.AppProtocolVersion,
                         swarmA.TrustedAppProtocolVersionSigners,
+                        null,
                         null);
                     blockMessage = (Libplanet.Net.Messages.Blocks)parsedMessage;
 

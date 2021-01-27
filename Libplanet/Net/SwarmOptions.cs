@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using Libplanet.Blocks;
+using Libplanet.Net.Messages;
 using Libplanet.Tx;
 
 namespace Libplanet.Net
@@ -41,5 +42,10 @@ namespace Libplanet.Net
         /// The lifespan of block demand.
         /// </summary>
         public TimeSpan BlockDemandLifespan { get; set; } = TimeSpan.FromMinutes(1);
+
+        /// <summary>
+        /// The lifespan of <see cref="Message"/>.
+        /// </summary>
+        public TimeSpan? MessageLifespan { get; set; } = null;
     }
 }
