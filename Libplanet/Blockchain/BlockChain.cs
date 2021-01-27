@@ -1352,7 +1352,10 @@ namespace Libplanet.Blockchain
             try
             {
                 DateTimeOffset setStatesStarted = DateTimeOffset.Now;
+
+                ThrowIfStateRootHashInvalid(block, evaluations);
                 SetStates(block, evaluations);
+
                 _logger.Verbose(
                     $"[#{{0}} {{1}}] {nameof(SetStates)} spent {{2}} ms.",
                     block.Index,
@@ -1363,8 +1366,6 @@ namespace Libplanet.Blockchain
             {
                 _rwlock.ExitWriteLock();
             }
-
-            ThrowIfStateRootHashInvalid(block);
 
             return evaluations;
         }
@@ -1822,19 +1823,11 @@ namespace Libplanet.Blockchain
             IReadOnlyList<ActionEvaluation> actionEvaluations
         )
         {
-            IImmutableSet<Address> stateUpdatedAddresses = actionEvaluations
-                .SelectMany(a => a.OutputStates.StateUpdatedAddresses)
-                .ToImmutableHashSet();
-            IImmutableSet<(Address, Currency)> updatedFungibleAssets = actionEvaluations
-                .SelectMany(a => a.OutputStates.UpdatedFungibleAssets
-                    .SelectMany(kv => kv.Value.Select(c => (kv.Key, c))))
-                .ToImmutableHashSet();
-
-            if (!StateStore.ContainsBlockStates(block.Hash))
-            {
-                var totalDelta = actionEvaluations.GetTotalDelta(ToStateKey, ToFungibleAssetKey);
-                StateStore.SetStates(block, totalDelta);
-            }
+           if (!StateStore.ContainsBlockStates(block.Hash))
+           {
+               var totalDelta = actionEvaluations.GetTotalDelta(ToStateKey, ToFungibleAssetKey);
+               StateStore.SetStates(block, totalDelta);
+           }
         }
 
         internal IEnumerable<Block<T>> IterateBlocks(int offset = 0, int? limit = null)
@@ -2037,12 +2030,16 @@ namespace Libplanet.Blockchain
             return null;
         }
 
-        private void ThrowIfStateRootHashInvalid(Block<T> block)
+        private void ThrowIfStateRootHashInvalid(
+            Block<T> block,
+            IReadOnlyList<ActionEvaluation> evaluations)
         {
             if (StateStore is TrieStateStore trieStateStore)
             {
+                var totalDelta =
+                    evaluations.GetTotalDelta(ToStateKey, ToFungibleAssetKey);
                 HashDigest<SHA256> rootHash =
-                    trieStateStore.GetRootHash(block.Hash);
+                    trieStateStore.EvalState(block, totalDelta, rehearsal: true);
 
                 if (!rootHash.Equals(block.StateRootHash))
                 {
