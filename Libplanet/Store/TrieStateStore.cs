@@ -207,5 +207,14 @@ namespace Libplanet.Store
                     new HashNode(
                         new HashDigest<SHA256>(
                             _stateHashKeyValueStore.Get(blockHash.ToByteArray()))));
+
+        internal void SetStates<T>(
+            Block<T> block,
+            HashDigest<SHA256> stateRootHash)
+            where T : IAction, new()
+        {
+            _stateHashKeyValueStore.Set(
+                block.Hash.ToByteArray(), stateRootHash.ToByteArray());
+        }
     }
 }

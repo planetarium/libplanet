@@ -1352,9 +1352,30 @@ namespace Libplanet.Blockchain
             try
             {
                 DateTimeOffset setStatesStarted = DateTimeOffset.Now;
+                if (StateStore is TrieStateStore trieStateStore)
+                {
+                    var totalDelta =
+                        evaluations.GetTotalDelta(ToStateKey, ToFungibleAssetKey);
+                    HashDigest<SHA256> rootHash =
+                        trieStateStore.EvalState(block, totalDelta);
 
-                ThrowIfStateRootHashInvalid(block, evaluations);
-                SetStates(block, evaluations);
+                    if (!rootHash.Equals(block.StateRootHash))
+                    {
+                        var message = $"The block #{block.Index} {block.Hash}'s state root hash " +
+                                      $"is {block.StateRootHash?.ToString()}, but the execution " +
+                                      $"result is {rootHash.ToString()}.";
+                        throw new InvalidBlockStateRootHashException(
+                            block.StateRootHash,
+                            rootHash,
+                            message);
+                    }
+
+                    trieStateStore.SetStates(block, rootHash);
+                }
+                else
+                {
+                    SetStates(block, evaluations);
+                }
 
                 _logger.Verbose(
                     $"[#{{0}} {{1}}] {nameof(SetStates)} spent {{2}} ms.",
@@ -2028,30 +2049,6 @@ namespace Libplanet.Blockchain
             }
 
             return null;
-        }
-
-        private void ThrowIfStateRootHashInvalid(
-            Block<T> block,
-            IReadOnlyList<ActionEvaluation> evaluations)
-        {
-            if (StateStore is TrieStateStore trieStateStore)
-            {
-                var totalDelta =
-                    evaluations.GetTotalDelta(ToStateKey, ToFungibleAssetKey);
-                HashDigest<SHA256> rootHash =
-                    trieStateStore.EvalState(block, totalDelta, rehearsal: true);
-
-                if (!rootHash.Equals(block.StateRootHash))
-                {
-                    var message = $"The block #{block.Index} {block.Hash}'s state root hash " +
-                                  $"is {block.StateRootHash?.ToString()}, but the execution " +
-                                  $"result is {rootHash.ToString()}.";
-                    throw new InvalidBlockStateRootHashException(
-                        block.StateRootHash,
-                        rootHash,
-                        message);
-                }
-            }
         }
 
         private IValue GetRawState(
