@@ -224,6 +224,46 @@ namespace Libplanet.Blocks
             return dict;
         }
 
+        internal static byte[] SerializeForHash(
+            long index,
+            string timestamp,
+            long difficulty,
+            ImmutableArray<byte> nonce,
+            ImmutableArray<byte> miner,
+            ImmutableArray<byte> previousHash,
+            ImmutableArray<byte> txHash,
+            ImmutableArray<byte> stateRootHash
+        )
+        {
+            var dict = Bencodex.Types.Dictionary.Empty
+                .Add("index", index)
+                .Add("timestamp", timestamp)
+                .Add("difficulty", difficulty)
+                .Add("nonce", nonce.ToArray());
+
+            if (!miner.IsEmpty)
+            {
+                dict = dict.Add("reward_beneficiary", miner.ToArray());
+            }
+
+            if (!previousHash.IsEmpty)
+            {
+                dict = dict.Add("previous_hash", previousHash.ToArray());
+            }
+
+            if (!txHash.IsEmpty)
+            {
+                dict = dict.Add("transaction_fingerprint", txHash.ToArray());
+            }
+
+            if (!stateRootHash.IsEmpty)
+            {
+                dict = dict.Add("state_root_hash", stateRootHash.ToArray());
+            }
+
+            return new Codec().Encode(dict);
+        }
+
         internal void Validate(DateTimeOffset currentTime)
         {
             DateTimeOffset ts = DateTimeOffset.ParseExact(
@@ -232,10 +272,12 @@ namespace Libplanet.Blocks
                 CultureInfo.InvariantCulture
             );
 
+            HashDigest<SHA256> hash = new HashDigest<SHA256>(Hash);
+
             if (currentTime + TimestampThreshold < ts)
             {
                 throw new InvalidBlockTimestampException(
-                    $"The block #{Index} {ByteUtil.Hex(Hash)}'s timestamp ({Timestamp}) is " +
+                    $"The block #{Index} {hash}'s timestamp ({Timestamp}) is " +
                     $"later than now ({currentTime}, threshold: {TimestampThreshold})."
                 );
             }
@@ -243,13 +285,13 @@ namespace Libplanet.Blocks
             if (Index < 0)
             {
                 throw new InvalidBlockIndexException(
-                    $"Block #{Index} {ByteUtil.Hex(Hash)}'s index must be 0 or more."
+                    $"Block #{Index} {hash}'s index must be 0 or more."
                 );
             }
 
             if (Difficulty > TotalDifficulty)
             {
-                var msg = $"Block #{Index} {ByteUtil.Hex(Hash)}'s difficulty ({Difficulty}) " +
+                var msg = $"Block #{Index} {hash}'s difficulty ({Difficulty}) " +
                           $"must be less than its TotalDifficulty ({TotalDifficulty}).";
                 throw new InvalidBlockTotalDifficultyException(
                     Difficulty,
@@ -263,7 +305,7 @@ namespace Libplanet.Blocks
                 if (Difficulty != 0)
                 {
                     throw new InvalidBlockDifficultyException(
-                        $"Difficulty must be 0 for the genesis block {ByteUtil.Hex(Hash)}, " +
+                        $"Difficulty must be 0 for the genesis block {hash}, " +
                         $"but its difficulty is {Difficulty}."
                     );
                 }
@@ -271,7 +313,7 @@ namespace Libplanet.Blocks
                 if (TotalDifficulty != 0)
                 {
                     var msg = "Total difficulty must be 0 for the genesis block " +
-                              $"{ByteUtil.Hex(Hash)}, but its total difficulty is " +
+                              $"{hash}, but its total difficulty is " +
                               $"{TotalDifficulty}.";
                     throw new InvalidBlockTotalDifficultyException(
                         Difficulty,
@@ -284,7 +326,7 @@ namespace Libplanet.Blocks
                 {
                     throw new InvalidBlockPreviousHashException(
                         $"Previous hash must be empty for the genesis block " +
-                        $"{ByteUtil.Hex(Hash)}, but its value is {ByteUtil.Hex(PreviousHash)}."
+                        $"{hash}, but its value is {ByteUtil.Hex(PreviousHash)}."
                     );
                 }
             }
@@ -293,7 +335,7 @@ namespace Libplanet.Blocks
                 if (Difficulty < 1)
                 {
                     throw new InvalidBlockDifficultyException(
-                        $"Block #{Index} {ByteUtil.Hex(Hash)}'s difficulty must be more than 0 " +
+                        $"Block #{Index} {hash}'s difficulty must be more than 0 " +
                         $"(except of the genesis block), but its difficulty is {Difficulty}."
                     );
                 }
@@ -301,7 +343,7 @@ namespace Libplanet.Blocks
                 if (PreviousHash.IsEmpty)
                 {
                     throw new InvalidBlockPreviousHashException(
-                        $"Block #{Index} {ByteUtil.Hex(Hash)}'s previous hash " +
+                        $"Block #{Index} {hash}'s previous hash " +
                         "must be present since it's not the genesis block."
                     );
                 }
@@ -310,11 +352,30 @@ namespace Libplanet.Blocks
             if (!new HashDigest<SHA256>(PreEvaluationHash.ToArray()).Satisfies(Difficulty))
             {
                 throw new InvalidBlockNonceException(
-                    $"Block #{Index} {ByteUtil.Hex(Hash)}'s pre-evaluation hash " +
+                    $"Block #{Index} {hash}'s pre-evaluation hash " +
                     $"({ByteUtil.Hex(PreEvaluationHash)}) with the nonce " +
                     $"({ByteUtil.Hex(Nonce)}) does not satisfy its difficulty level {Difficulty}."
                 );
             }
+
+            HashDigest<SHA256> calculatedHash = Hashcash.Hash(SerializeForHash());
+            if (!hash.Equals(calculatedHash))
+            {
+                throw new InvalidBlockHashException(
+                    $"The block #{Index} {hash}'s isn't matched its content, " +
+                    $"caculcated: {calculatedHash}");
+            }
         }
+
+        internal byte[] SerializeForHash(bool includeStateRootHash = true) => SerializeForHash(
+            Index,
+            Timestamp,
+            Difficulty,
+            Nonce,
+            Miner,
+            PreviousHash,
+            TxHash,
+            includeStateRootHash ? StateRootHash : ImmutableArray<byte>.Empty
+        );
     }
 }

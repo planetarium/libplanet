@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Globalization;
+using System.Numerics;
 using Libplanet.Blocks;
 using Xunit;
 
@@ -18,14 +19,13 @@ namespace Libplanet.Tests.Blocks
             DateTimeOffset now = DateTimeOffset.UtcNow;
             string future = (now + TimeSpan.FromSeconds(16))
                 .ToString(BlockHeader.TimestampFormat, CultureInfo.InvariantCulture);
-            var header = new BlockHeader(
+            BlockHeader header = MakeBlockHeader(
                 index: 0,
                 difficulty: 0,
                 totalDifficulty: 0,
                 nonce: ImmutableArray<byte>.Empty,
                 previousHash: ImmutableArray<byte>.Empty,
                 txHash: ImmutableArray<byte>.Empty,
-                hash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
                 miner: ImmutableArray<byte>.Empty,
                 timestamp: future,
                 preEvaluationHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
@@ -180,6 +180,46 @@ namespace Libplanet.Tests.Blocks
 
             Assert.Throws<InvalidBlockPreviousHashException>(() =>
                 genesisHeader.Validate(DateTimeOffset.UtcNow));
+        }
+
+        private BlockHeader MakeBlockHeader(
+            long index,
+            long difficulty,
+            BigInteger totalDifficulty,
+            ImmutableArray<byte> nonce,
+            ImmutableArray<byte> previousHash,
+            ImmutableArray<byte> txHash,
+            ImmutableArray<byte> miner,
+            string timestamp,
+            ImmutableArray<byte> preEvaluationHash,
+            ImmutableArray<byte> stateRootHash
+        )
+        {
+            ImmutableArray<byte> hash = Hashcash.Hash(
+                BlockHeader.SerializeForHash(
+                    index,
+                    timestamp,
+                    difficulty,
+                    nonce,
+                    miner,
+                    previousHash,
+                    txHash,
+                    stateRootHash
+                )
+            ).ByteArray;
+            return new BlockHeader(
+                index,
+                timestamp,
+                nonce,
+                miner,
+                difficulty,
+                totalDifficulty,
+                previousHash,
+                txHash,
+                hash,
+                preEvaluationHash,
+                stateRootHash
+            );
         }
     }
 }
