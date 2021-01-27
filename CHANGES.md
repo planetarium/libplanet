@@ -49,6 +49,9 @@ To be released.
      -  `RecentStates` message type (with the type number `0x13`)
      -  `GetBlockStates` message type (with the type number `0x22`)
      -  `BlockStates` message type (with the type number `0x23`)
+ -  `Swarm<T>` became to ignore messages more than a certain amount of time
+    since they were created, the value is `SwarmOptions.MessageLifespan`.
+    [[#1160], [#1171]]
 
 ### Backward-incompatible storage format changes
 
@@ -211,11 +214,13 @@ To be released.
 [#1149]: https://github.com/planetarium/libplanet/pull/1149
 [#1152]: https://github.com/planetarium/libplanet/pull/1152
 [#1155]: https://github.com/planetarium/libplanet/issues/1155
+[#1160]: https://github.com/planetarium/libplanet/issues/1160
 [#1162]: https://github.com/planetarium/libplanet/pull/1162
 [#1163]: https://github.com/planetarium/libplanet/pull/1163
 [#1165]: https://github.com/planetarium/libplanet/pull/1165
 [#1168]: https://github.com/planetarium/libplanet/pull/1168
 [#1170]: https://github.com/planetarium/libplanet/pull/1170
+[#1171]: https://github.com/planetarium/libplanet/pull/1171
 [#1172]: https://github.com/planetarium/libplanet/pull/1172
 
 
