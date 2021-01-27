@@ -69,6 +69,43 @@ namespace Libplanet.Tests.Net.Messages
         }
 
         [Fact]
+        public void InvalidTimestamp()
+        {
+            var privateKey = new PrivateKey();
+            var peer = new Peer(privateKey.PublicKey);
+            var futureOffset = DateTimeOffset.MaxValue;
+            var pastOffset = DateTimeOffset.MinValue;
+            var appProtocolVersion = new AppProtocolVersion(
+                1,
+                new Bencodex.Types.Integer(0),
+                ImmutableArray<byte>.Empty,
+                default(Address));
+            var message = new Ping();
+            NetMQMessage futureRaw =
+                message.ToNetMQMessage(privateKey, peer, futureOffset, appProtocolVersion);
+            // Messages from the future throws InvalidTimestampException.
+            Assert.Throws<InvalidTimestampException>(() =>
+                Message.Parse(
+                    futureRaw,
+                    true,
+                    appProtocolVersion,
+                    ImmutableHashSet<PublicKey>.Empty,
+                    null,
+                    TimeSpan.FromSeconds(1)));
+            NetMQMessage pastRaw =
+                message.ToNetMQMessage(privateKey, peer, futureOffset, appProtocolVersion);
+            // Messages from the far past throws InvalidTimestampException.
+            Assert.Throws<InvalidTimestampException>(() =>
+                Message.Parse(
+                    pastRaw,
+                    true,
+                    appProtocolVersion,
+                    ImmutableHashSet<PublicKey>.Empty,
+                    null,
+                    TimeSpan.FromSeconds(1)));
+        }
+
+        [Fact]
         public void Parse()
         {
             var privateKey = new PrivateKey();
