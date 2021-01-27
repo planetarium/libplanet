@@ -155,6 +155,7 @@ To be released.
     *Since this changes the protocol, for backward compatibility, the actions
     belonging to the existing block, which was mined before the protocol v1,
     are guaranteed to still behave as it had done.  [[#1152]]
+ -  Fixed a bug where `Block<T>.Evaluate()` hadn't validate its hash.  [[#1168]]
 
 ### CLI tools
 
@@ -206,6 +207,7 @@ To be released.
 [#1162]: https://github.com/planetarium/libplanet/pull/1162
 [#1163]: https://github.com/planetarium/libplanet/pull/1163
 [#1165]: https://github.com/planetarium/libplanet/pull/1165
+[#1168]: https://github.com/planetarium/libplanet/pull/1168
 
 
 Version 0.10.2

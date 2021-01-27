@@ -84,11 +84,11 @@ namespace Libplanet.Blocks
             Transactions = transactions.OrderBy(tx => tx.Id).ToArray();
             TxHash = CalcualteTxHashes(Transactions);
 
-            PreEvaluationHash = preEvaluationHash ?? Hashcash.Hash(SerializeForHash());
+            PreEvaluationHash = preEvaluationHash ?? Hashcash.Hash(Header.SerializeForHash());
             StateRootHash = stateRootHash;
 
             // FIXME: This does not need to be computed every time?
-            Hash = Hashcash.Hash(SerializeForHash(stateRootHash));
+            Hash = Hashcash.Hash(Header.SerializeForHash());
 
             // As the order of transactions should be unpredictable until a block is mined,
             // the sorter key should be derived from both a block hash and a txid.
@@ -383,8 +383,8 @@ namespace Libplanet.Blocks
 
             // Poor man' way to optimize stamp...
             // FIXME: We need to rather reorganize the serialization layout.
-            byte[] emptyNonce = MakeBlock(new Nonce(new byte[0])).SerializeForHash();
-            byte[] oneByteNonce = MakeBlock(new Nonce(new byte[1])).SerializeForHash();
+            byte[] emptyNonce = MakeBlock(new Nonce(new byte[0])).Header.SerializeForHash();
+            byte[] oneByteNonce = MakeBlock(new Nonce(new byte[1])).Header.SerializeForHash();
             int offset = 0;
             while (offset < emptyNonce.Length && emptyNonce[offset].Equals(oneByteNonce[offset]))
             {
@@ -546,6 +546,8 @@ namespace Libplanet.Blocks
         /// </param>
         /// <returns>An <see cref="ActionEvaluation"/> for each
         /// <see cref="IAction"/>.</returns>
+        /// <exception cref="InvalidBlockHashException">Thrown when
+        /// the <see cref="Hash"/> is invalid.</exception>
         /// <exception cref="InvalidBlockTimestampException">Thrown when
         /// the <see cref="Timestamp"/> is invalid, for example, it is the far
         /// future than the given <paramref name="currentTime"/>.</exception>
@@ -648,7 +650,7 @@ namespace Libplanet.Blocks
             }
 
             HashDigest<SHA256> expectedPreEvaluationHash =
-                Hashcash.Hash(SerializeForHash());
+                Hashcash.Hash(Header.SerializeForHash(includeStateRootHash: false));
             if (!expectedPreEvaluationHash.Equals(PreEvaluationHash))
             {
                 string message =
@@ -703,44 +705,6 @@ namespace Libplanet.Blocks
             }
 
             return Hashcash.Hash(txHashSource);
-        }
-
-        private byte[] SerializeForHash(HashDigest<SHA256>? stateRootHash = null)
-        {
-            var dict = Bencodex.Types.Dictionary.Empty
-                .Add("index", Index)
-                .Add(
-                    "timestamp",
-                    Timestamp.ToString(BlockHeader.TimestampFormat, CultureInfo.InvariantCulture))
-                .Add("difficulty", Difficulty)
-                .Add("nonce", Nonce.ToByteArray());
-
-            if (ProtocolVersion != 0)
-            {
-                dict = dict.Add("protocol_version", ProtocolVersion);
-            }
-
-            if (!(Miner is null))
-            {
-                dict = dict.Add("reward_beneficiary", Miner.Value.ToByteArray());
-            }
-
-            if (!(PreviousHash is null))
-            {
-                dict = dict.Add("previous_hash", PreviousHash.Value.ToByteArray());
-            }
-
-            if (!(TxHash is null))
-            {
-                dict = dict.Add("transaction_fingerprint", TxHash.Value.ToByteArray());
-            }
-
-            if (!(stateRootHash is null))
-            {
-                dict = dict.Add("state_root_hash", stateRootHash.Value.ToByteArray());
-            }
-
-            return new Codec().Encode(dict);
         }
 
         private readonly struct BlockSerializationContext
