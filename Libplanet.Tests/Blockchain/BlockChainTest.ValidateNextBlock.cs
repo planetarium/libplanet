@@ -201,7 +201,8 @@ namespace Libplanet.Tests.Blockchain
                 genesisBlock.Miner.Value,
                 genesisBlock.Hash,
                 genesisBlock.Timestamp.AddSeconds(1),
-                _emptyTransaction).AttachStateRootHash(_fx.StateStore, _policy.BlockAction);
+                _emptyTransaction).AttachStateRootHash(_fx.StateStore, _policy.BlockAction)
+                .AttachStateRootHash(chain.StateStore, policy.BlockAction);
             chain.Append(validNext);
 
             var invalidStateRootHash = Block<DumbAction>.Mine(
