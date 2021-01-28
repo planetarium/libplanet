@@ -9,11 +9,13 @@ namespace Libplanet.Net.Messages
     internal class ChainStatus : Message, IBlockExcerpt
     {
         public ChainStatus(
+            int protocolVersion,
             HashDigest<SHA256> genesisHash,
             long tipIndex,
             HashDigest<SHA256> tipHash,
             BigInteger totalDifficulty)
         {
+            ProtocolVersion = protocolVersion;
             GenesisHash = genesisHash;
             TipIndex = tipIndex;
             TipHash = tipHash;
@@ -22,11 +24,14 @@ namespace Libplanet.Net.Messages
 
         public ChainStatus(NetMQFrame[] body)
         {
-            GenesisHash = new HashDigest<SHA256>(body[0].Buffer);
-            TipIndex = body[1].ConvertToInt64();
-            TipHash = new HashDigest<SHA256>(body[2].Buffer);
-            TotalDifficulty = new BigInteger(body[3].ToByteArray());
+            ProtocolVersion = body[0].ConvertToInt32();
+            GenesisHash = new HashDigest<SHA256>(body[1].Buffer);
+            TipIndex = body[2].ConvertToInt64();
+            TipHash = new HashDigest<SHA256>(body[3].Buffer);
+            TotalDifficulty = new BigInteger(body[4].ToByteArray());
         }
+
+        public int ProtocolVersion { get; }
 
         public HashDigest<SHA256> GenesisHash { get; }
 
@@ -46,6 +51,7 @@ namespace Libplanet.Net.Messages
         {
             get
             {
+                yield return new NetMQFrame(NetworkOrderBitsConverter.GetBytes(ProtocolVersion));
                 yield return new NetMQFrame(GenesisHash.ToByteArray());
                 yield return new NetMQFrame(
                     NetworkOrderBitsConverter.GetBytes(TipIndex));

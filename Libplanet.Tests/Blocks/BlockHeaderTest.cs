@@ -5,6 +5,7 @@ using System.Linq;
 using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Blocks;
+using Libplanet.Tests.Common.Action;
 using Xunit;
 
 namespace Libplanet.Tests.Blocks
@@ -136,7 +137,29 @@ namespace Libplanet.Tests.Blocks
         {
             var header = new BlockHeader(
                 protocolVersion: -1,
-                index: 0,
+                index: _fx.Next.Index,
+                difficulty: _fx.Next.Difficulty,
+                totalDifficulty: _fx.Next.TotalDifficulty,
+                nonce: _fx.Next.Nonce.ByteArray,
+                miner: _fx.Next.Miner?.ByteArray ?? ImmutableArray<byte>.Empty,
+                hash: _fx.Next.Hash.ByteArray,
+                txHash: _fx.Next.TxHash?.ByteArray ?? ImmutableArray<byte>.Empty,
+                previousHash: _fx.Next.PreviousHash?.ByteArray ?? ImmutableArray<byte>.Empty,
+                timestamp: _fx.Next.Timestamp.ToString(
+                    BlockHeader.TimestampFormat,
+                    CultureInfo.InvariantCulture
+                ),
+                preEvaluationHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
+                stateRootHash: ImmutableArray<byte>.Empty
+            );
+
+            Assert.Throws<InvalidBlockProtocolVersionException>(() =>
+                header.Validate(DateTimeOffset.UtcNow)
+            );
+
+            header = new BlockHeader(
+                protocolVersion: Block<DumbAction>.CurrentProtocolVersion + 1,
+                index: _fx.Next.Index,
                 difficulty: _fx.Next.Difficulty,
                 totalDifficulty: _fx.Next.TotalDifficulty,
                 nonce: _fx.Next.Nonce.ByteArray,

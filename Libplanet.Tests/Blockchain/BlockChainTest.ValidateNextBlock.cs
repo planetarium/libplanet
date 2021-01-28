@@ -56,17 +56,20 @@ namespace Libplanet.Tests.Blockchain
             ).AttachStateRootHash(_fx.StateStore, _policy.BlockAction);
             Assert.Throws<InvalidBlockProtocolVersionException>(() => _blockChain.Append(block2));
 
-            Block<DumbAction> block3 = Block<DumbAction>.Mine(
-                2,
-                1024,
-                block1.TotalDifficulty,
-                _fx.GenesisBlock.Miner.Value,
-                block1.Hash,
-                _fx.GenesisBlock.Timestamp.AddDays(1),
-                _emptyTransaction,
-                protocolVersion: Block<DumbAction>.CurrentProtocolVersion + 1
-            ).AttachStateRootHash(_fx.StateStore, _policy.BlockAction);
-            Assert.Throws<InvalidBlockProtocolVersionException>(() => _blockChain.Append(block3));
+            Assert.Throws<InvalidBlockProtocolVersionException>(() =>
+            {
+                Block<DumbAction> block3 = Block<DumbAction>.Mine(
+                    2,
+                    1024,
+                    block1.TotalDifficulty,
+                    _fx.GenesisBlock.Miner.Value,
+                    block1.Hash,
+                    _fx.GenesisBlock.Timestamp.AddDays(1),
+                    _emptyTransaction,
+                    protocolVersion: Block<DumbAction>.CurrentProtocolVersion + 1
+                ).AttachStateRootHash(_fx.StateStore, _policy.BlockAction);
+                _blockChain.Append(block3);
+            });
         }
 
         [Fact]

@@ -15,6 +15,8 @@ namespace Libplanet.Blocks
     /// </summary>
     public readonly struct BlockHeader : IBlockExcerpt
     {
+        internal const int CurrentProtocolVersion = 1;
+
         internal const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
 
         internal static readonly byte[] ProtocolVersionKey = { 0x00 };
@@ -301,6 +303,13 @@ namespace Libplanet.Blocks
                     ProtocolVersion,
                     $"A block's protocol version cannot be less than zero: {ProtocolVersion}."
                 );
+            }
+            else if (ProtocolVersion > CurrentProtocolVersion)
+            {
+                string message =
+                    $"Unknown protocol version: {ProtocolVersion}; " +
+                    $"the highest known version is {CurrentProtocolVersion}.";
+                throw new InvalidBlockProtocolVersionException(ProtocolVersion, message);
             }
 
             DateTimeOffset ts = DateTimeOffset.ParseExact(

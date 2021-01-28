@@ -58,15 +58,16 @@ To be released.
  -  Added `Block<T>.ProtocolVersion` property.  [[#1142], [#1147]]
  -  Added `Block<T>.Header` property.  [[#1070], [#1102]]
  -  Added `BlockHeader.ProtocolVersion` property.  [[#1142], [#1147]]
- -  Added `IBlockExcerpt` interface.  [[#1155], [#1165]]
- -  Added `BlockExcerpt` class.  [[#1155], [#1165]]
+ -  Added `IBlockExcerpt` interface.  [[#1155], [#1165], [#1170]]
+ -  Added `BlockExcerpt` class.  [[#1155], [#1165], [#1170]]
  -  `Block<T>` became to implement `IBlockExceprt` interface.
-    [[#1155], [#1165]]
+    [[#1155], [#1165], [#1170]]
  -  `BlockHeader` became to implement `IBlockExceprt` interface.
-    [[#1155], [#1165]]
+    [[#1155], [#1165], [#1170]]
  -  Added `DelayedRenderer<T>.CanonicalChainComparer` and
     `DelayedActionRenderer<T>.CanonicalChainComparer` properties.
     [[#1155], [#1165]]
+ -  Added `TotalDifficultyComparer` class.  [[#1155], [#1165], [#1170]]
  -  Added `IStagePolicy<T>` interface.  [[#1130], [#1131]]
  -  Added `VolatileStagePolicy<T>` class.  [[#1130], [#1131], [#1136]]
  -  Added `ITransport` interface.  [[#1052]]
@@ -125,7 +126,7 @@ To be released.
  -  Introduced the [protocol versioning scheme][#1142].  This purposes to change
     the protocol without breaking backward compatibility.  Even the protocol
     is changed, the existing blocks made before the new protocol are guaranteed
-    to behave as it had done.  [[#1142], [#1147], [#1162]]
+    to behave as it had done.  [[#1142], [#1147], [#1162], [#1170]]
  -  Since `BlockHeader.ProtocolVersion` was added, the existing blocks are
     considered protocol compliant with the protocol version zero.
     [[#1142], [#1147], [#1162]]
@@ -208,6 +209,7 @@ To be released.
 [#1163]: https://github.com/planetarium/libplanet/pull/1163
 [#1165]: https://github.com/planetarium/libplanet/pull/1165
 [#1168]: https://github.com/planetarium/libplanet/pull/1168
+[#1170]: https://github.com/planetarium/libplanet/pull/1170
 
 
 Version 0.10.2
