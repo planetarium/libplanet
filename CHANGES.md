@@ -4,12 +4,13 @@ Libplanet changelog
 Version 0.10.3
 --------------
 
-To be released.
-
+-  `BlockChain<T>.MineBlock()` became to unstage transactions that have lower
+   nonce than exepcted.  [[#1174]]
 -  Fixed a bug where `Block<T>.Evaluate()` hadn't validate its hash.
    [[#1168], [#1175]]
 
 [#1168]: https://github.com/planetarium/libplanet/pull/1168
+[#1174]: https://github.com/planetarium/libplanet/pull/1174
 [#1175]: https://github.com/planetarium/libplanet/pull/1175
 
 

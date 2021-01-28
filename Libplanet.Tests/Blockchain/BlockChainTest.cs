@@ -302,6 +302,41 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
+        public async Task MineBlockWithLowerNonces()
+        {
+            var key = new PrivateKey();
+            StageTransactions(
+                new[]
+                {
+                    Transaction<DumbAction>.Create(
+                        0,
+                        key,
+                        _blockChain.Genesis.Hash,
+                        new DumbAction[0]
+                    ),
+                }
+            );
+            await _blockChain.MineBlock(_fx.Address1);
+
+            // Trying to mine with lower nonce (0) than expected.
+            StageTransactions(
+                new[]
+                {
+                    Transaction<DumbAction>.Create(
+                        0,
+                        key,
+                        _blockChain.Genesis.Hash,
+                        new DumbAction[0]
+                    ),
+                }
+            );
+            Block<DumbAction> block = await _blockChain.MineBlock(_fx.Address1);
+
+            Assert.Empty(block.Transactions);
+            Assert.Empty(_blockChain.ListStagedTransactions());
+        }
+
+        [Fact]
         public async void CanFindBlockByIndex()
         {
             var genesis = _blockChain.Genesis;
