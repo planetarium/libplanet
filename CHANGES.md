@@ -6,6 +6,13 @@ Version 0.10.3
 
 To be released.
 
+-  Fixed a bug where `Block<T>.Evaluate()` hadn't validate its hash.
+   [[#1168], [#1175]]
+
+[#1168]: https://github.com/planetarium/libplanet/pull/1168
+[#1175]: https://github.com/planetarium/libplanet/pull/1175
+
+
 
 Version 0.10.2
 --------------
