@@ -4,6 +4,8 @@ Libplanet changelog
 Version 0.10.3
 --------------
 
+Released on January 28, 2021.
+
 -  `BlockChain<T>.MineBlock()` became to unstage transactions that have lower
    nonce than exepcted.  [[#1174]]
 -  Fixed a bug where `Block<T>.Evaluate()` hadn't validate its hash.
