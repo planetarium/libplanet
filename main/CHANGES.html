@@ -115,15 +115,16 @@ interface.  [<a href="https://github.com/planetarium/libplanet/pull/1117">#1117<
 <li>Added <code>Block&lt;T&gt;.ProtocolVersion</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/1142">#1142</a>, <a href="https://github.com/planetarium/libplanet/pull/1147">#1147</a>]</li>
 <li>Added <code>Block&lt;T&gt;.Header</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/1070">#1070</a>, <a href="https://github.com/planetarium/libplanet/pull/1102">#1102</a>]</li>
 <li>Added <code>BlockHeader.ProtocolVersion</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/1142">#1142</a>, <a href="https://github.com/planetarium/libplanet/pull/1147">#1147</a>]</li>
-<li>Added <code>IBlockExcerpt</code> interface.  [<a href="https://github.com/planetarium/libplanet/issues/1155">#1155</a>, <a href="https://github.com/planetarium/libplanet/pull/1165">#1165</a>]</li>
-<li>Added <code>BlockExcerpt</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/1155">#1155</a>, <a href="https://github.com/planetarium/libplanet/pull/1165">#1165</a>]</li>
+<li>Added <code>IBlockExcerpt</code> interface.  [<a href="https://github.com/planetarium/libplanet/issues/1155">#1155</a>, <a href="https://github.com/planetarium/libplanet/pull/1165">#1165</a>, <a href="https://github.com/planetarium/libplanet/pull/1170">#1170</a>]</li>
+<li>Added <code>BlockExcerpt</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/1155">#1155</a>, <a href="https://github.com/planetarium/libplanet/pull/1165">#1165</a>, <a href="https://github.com/planetarium/libplanet/pull/1170">#1170</a>]</li>
 <li><code>Block&lt;T&gt;</code> became to implement <code>IBlockExceprt</code> interface.
-[<a href="https://github.com/planetarium/libplanet/issues/1155">#1155</a>, <a href="https://github.com/planetarium/libplanet/pull/1165">#1165</a>]</li>
+[<a href="https://github.com/planetarium/libplanet/issues/1155">#1155</a>, <a href="https://github.com/planetarium/libplanet/pull/1165">#1165</a>, <a href="https://github.com/planetarium/libplanet/pull/1170">#1170</a>]</li>
 <li><code>BlockHeader</code> became to implement <code>IBlockExceprt</code> interface.
-[<a href="https://github.com/planetarium/libplanet/issues/1155">#1155</a>, <a href="https://github.com/planetarium/libplanet/pull/1165">#1165</a>]</li>
+[<a href="https://github.com/planetarium/libplanet/issues/1155">#1155</a>, <a href="https://github.com/planetarium/libplanet/pull/1165">#1165</a>, <a href="https://github.com/planetarium/libplanet/pull/1170">#1170</a>]</li>
 <li>Added <code>DelayedRenderer&lt;T&gt;.CanonicalChainComparer</code> and
 <code>DelayedActionRenderer&lt;T&gt;.CanonicalChainComparer</code> properties.
 [<a href="https://github.com/planetarium/libplanet/issues/1155">#1155</a>, <a href="https://github.com/planetarium/libplanet/pull/1165">#1165</a>]</li>
+<li>Added <code>TotalDifficultyComparer</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/1155">#1155</a>, <a href="https://github.com/planetarium/libplanet/pull/1165">#1165</a>, <a href="https://github.com/planetarium/libplanet/pull/1170">#1170</a>]</li>
 <li>Added <code>IStagePolicy&lt;T&gt;</code> interface.  [<a href="https://github.com/planetarium/libplanet/issues/1130">#1130</a>, <a href="https://github.com/planetarium/libplanet/pull/1131">#1131</a>]</li>
 <li>Added <code>VolatileStagePolicy&lt;T&gt;</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/1130">#1130</a>, <a href="https://github.com/planetarium/libplanet/pull/1131">#1131</a>, <a href="https://github.com/planetarium/libplanet/pull/1136">#1136</a>]</li>
 <li>Added <code>ITransport</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/1052">#1052</a>]</li>
@@ -185,7 +186,7 @@ benefits from its recent optimizations.
 <li>Introduced the <a href="https://github.com/planetarium/libplanet/issues/1142">protocol versioning scheme</a>.  This purposes to change
 the protocol without breaking backward compatibility.  Even the protocol
 is changed, the existing blocks made before the new protocol are guaranteed
-to behave as it had done.  [<a href="https://github.com/planetarium/libplanet/issues/1142">#1142</a>, <a href="https://github.com/planetarium/libplanet/pull/1147">#1147</a>, <a href="https://github.com/planetarium/libplanet/pull/1162">#1162</a>]</li>
+to behave as it had done.  [<a href="https://github.com/planetarium/libplanet/issues/1142">#1142</a>, <a href="https://github.com/planetarium/libplanet/pull/1147">#1147</a>, <a href="https://github.com/planetarium/libplanet/pull/1162">#1162</a>, <a href="https://github.com/planetarium/libplanet/pull/1170">#1170</a>]</li>
 <li>Since <code>BlockHeader.ProtocolVersion</code> was added, the existing blocks are
 considered protocol compliant with the protocol version zero.
 [<a href="https://github.com/planetarium/libplanet/issues/1142">#1142</a>, <a href="https://github.com/planetarium/libplanet/pull/1147">#1147</a>, <a href="https://github.com/planetarium/libplanet/pull/1162">#1162</a>]</li>

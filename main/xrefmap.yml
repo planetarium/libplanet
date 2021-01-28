@@ -5980,6 +5980,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.IBlockExcerpt.Index
   nameWithType: IBlockExcerpt.Index
+- uid: Libplanet.Blocks.IBlockExcerpt.ProtocolVersion
+  name: ProtocolVersion
+  href: api/Libplanet.Blocks.IBlockExcerpt.html#Libplanet_Blocks_IBlockExcerpt_ProtocolVersion
+  commentId: P:Libplanet.Blocks.IBlockExcerpt.ProtocolVersion
+  fullName: Libplanet.Blocks.IBlockExcerpt.ProtocolVersion
+  nameWithType: IBlockExcerpt.ProtocolVersion
+- uid: Libplanet.Blocks.IBlockExcerpt.ProtocolVersion*
+  name: ProtocolVersion
+  href: api/Libplanet.Blocks.IBlockExcerpt.html#Libplanet_Blocks_IBlockExcerpt_ProtocolVersion_
+  commentId: Overload:Libplanet.Blocks.IBlockExcerpt.ProtocolVersion
+  isSpec: "True"
+  fullName: Libplanet.Blocks.IBlockExcerpt.ProtocolVersion
+  nameWithType: IBlockExcerpt.ProtocolVersion
 - uid: Libplanet.Blocks.IBlockExcerpt.TotalDifficulty
   name: TotalDifficulty
   href: api/Libplanet.Blocks.IBlockExcerpt.html#Libplanet_Blocks_IBlockExcerpt_TotalDifficulty
