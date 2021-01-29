@@ -2302,6 +2302,29 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
+        private async Task IgnoreLowerNonceTxWhenStaging()
+        {
+            var privateKey = new PrivateKey();
+            var address = privateKey.ToAddress();
+            var txsA = Enumerable.Range(0, 3)
+                .Select(nonce => _fx.MakeTransaction(
+                    nonce: nonce, privateKey: privateKey, timestamp: DateTimeOffset.Now))
+                .ToArray();
+            StageTransactions(txsA);
+            Block<DumbAction> b1 = await _blockChain.MineBlock(address);
+            Assert.Equal(txsA, b1.Transactions);
+
+            var txsB = Enumerable.Range(0, 4)
+                .Select(nonce => _fx.MakeTransaction(
+                    nonce: nonce, privateKey: privateKey, timestamp: DateTimeOffset.Now))
+                .ToArray();
+            StageTransactions(txsB);
+
+            // Stage only txs having higher or equal with nonce than expected nonce.
+            Assert.Single(_blockChain.GetStagedTransactionIds());
+        }
+
+        [Fact]
         private void ConstructBlockchainWithGenesisBlockHavingStateRootHash()
         {
             var store = new DefaultStore(null);
