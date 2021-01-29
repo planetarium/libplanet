@@ -36,7 +36,7 @@ To be released.
     method.  [[#1117]]
  -  Added `IActionContext.BlockAction` property. [[#1143]]
  -  Added nullable `TimeSpan`-typed `messageLifespan` parameter into
-    `NetMQTransport` constructor.  [[#1171]]
+    `NetMQTransport()` constructor.  [[#1171]]
 
 
 ### Backward-incompatible network protocol changes
@@ -52,8 +52,9 @@ To be released.
      -  `RecentStates` message type (with the type number `0x13`)
      -  `GetBlockStates` message type (with the type number `0x22`)
      -  `BlockStates` message type (with the type number `0x23`)
- -  `Swarm<T>` became to ignore messages made earlier than a certain amount of time,
-    which is configured by `SwarmOptions.MessageLifespan`.  [[#1160], [#1171]]
+ -  `Swarm<T>` became to ignore messages made earlier than a certain amount of
+    time, which is configured by `SwarmOptions.MessageLifespan`.
+    [[#1160], [#1171]]
 
 ### Backward-incompatible storage format changes
 
