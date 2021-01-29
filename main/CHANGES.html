@@ -90,6 +90,8 @@ constructor. [<a href="https://github.com/planetarium/libplanet/pull/1163">#1163
 <li>Removed <code>trustedStateValidators</code> parameter from <code>Swarm&lt;T&gt;.PreloadAsync()</code>
 method.  [<a href="https://github.com/planetarium/libplanet/pull/1117">#1117</a>]</li>
 <li>Added <code>IActionContext.BlockAction</code> property. [<a href="https://github.com/planetarium/libplanet/pull/1143">#1143</a>]</li>
+<li>Added nullable <code>TimeSpan</code>-typed <code>messageLifespan</code> parameter into
+<code>NetMQTransport()</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/1171">#1171</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <ul>
@@ -107,6 +109,9 @@ interface.  [<a href="https://github.com/planetarium/libplanet/pull/1117">#1117<
 <li><code>BlockStates</code> message type (with the type number <code>0x23</code>)</li>
 </ul>
 </li>
+<li><code>Swarm&lt;T&gt;</code> became to ignore messages made earlier than a certain amount of
+time, which is configured by <code>SwarmOptions.MessageLifespan</code>.
+[<a href="https://github.com/planetarium/libplanet/issues/1160">#1160</a>, <a href="https://github.com/planetarium/libplanet/pull/1171">#1171</a>]</li>
 </ul>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
@@ -179,6 +184,8 @@ constructor. [<a href="https://github.com/planetarium/libplanet/pull/1163">#1163
 <li>Added <code>InvalidBlockPreEvaluationHashException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/1148">#1148</a>]</li>
 <li>Added the parameter <code>validate</code> which is <code>true</code> by default,
 to <code>Transaction&lt;T&gt;.Deserialize()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1149">#1149</a>]</li>
+<li>Added <code>SwarmOptions.MessageLifespan</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/1171">#1171</a>]</li>
+<li>Added <code>InvalidTimestampException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/1171">#1171</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>

@@ -9196,6 +9196,38 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.InvalidStateTargetException.InvalidStateTargetException
   nameWithType: InvalidStateTargetException.InvalidStateTargetException
+- uid: Libplanet.Net.InvalidTimestampException
+  name: InvalidTimestampException
+  href: api/Libplanet.Net.InvalidTimestampException.html
+  commentId: T:Libplanet.Net.InvalidTimestampException
+  fullName: Libplanet.Net.InvalidTimestampException
+  nameWithType: InvalidTimestampException
+- uid: Libplanet.Net.InvalidTimestampException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  name: InvalidTimestampException(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Net.InvalidTimestampException.html#Libplanet_Net_InvalidTimestampException__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
+  commentId: M:Libplanet.Net.InvalidTimestampException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  fullName: Libplanet.Net.InvalidTimestampException.InvalidTimestampException(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  nameWithType: InvalidTimestampException.InvalidTimestampException(SerializationInfo, StreamingContext)
+- uid: Libplanet.Net.InvalidTimestampException.#ctor*
+  name: InvalidTimestampException
+  href: api/Libplanet.Net.InvalidTimestampException.html#Libplanet_Net_InvalidTimestampException__ctor_
+  commentId: Overload:Libplanet.Net.InvalidTimestampException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Net.InvalidTimestampException.InvalidTimestampException
+  nameWithType: InvalidTimestampException.InvalidTimestampException
+- uid: Libplanet.Net.InvalidTimestampException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  name: GetObjectData(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Net.InvalidTimestampException.html#Libplanet_Net_InvalidTimestampException_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
+  commentId: M:Libplanet.Net.InvalidTimestampException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  fullName: Libplanet.Net.InvalidTimestampException.GetObjectData(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  nameWithType: InvalidTimestampException.GetObjectData(SerializationInfo, StreamingContext)
+- uid: Libplanet.Net.InvalidTimestampException.GetObjectData*
+  name: GetObjectData
+  href: api/Libplanet.Net.InvalidTimestampException.html#Libplanet_Net_InvalidTimestampException_GetObjectData_
+  commentId: Overload:Libplanet.Net.InvalidTimestampException.GetObjectData
+  isSpec: "True"
+  fullName: Libplanet.Net.InvalidTimestampException.GetObjectData
+  nameWithType: InvalidTimestampException.GetObjectData
 - uid: Libplanet.Net.ITransport
   name: ITransport
   href: api/Libplanet.Net.ITransport.html
@@ -9496,15 +9528,15 @@ references:
   commentId: F:Libplanet.Net.Messages.Message.MessageType.TxIds
   fullName: Libplanet.Net.Messages.Message.MessageType.TxIds
   nameWithType: Message.MessageType.TxIds
-- uid: Libplanet.Net.Messages.Message.Parse(NetMQMessage,System.Boolean,Libplanet.Net.AppProtocolVersion,IImmutableSet{Libplanet.Crypto.PublicKey},Libplanet.Net.DifferentAppProtocolVersionEncountered)
-  name: Parse(NetMQMessage, Boolean, AppProtocolVersion, IImmutableSet<PublicKey>, DifferentAppProtocolVersionEncountered)
-  href: api/Libplanet.Net.Messages.Message.html#Libplanet_Net_Messages_Message_Parse_NetMQMessage_System_Boolean_Libplanet_Net_AppProtocolVersion_IImmutableSet_Libplanet_Crypto_PublicKey__Libplanet_Net_DifferentAppProtocolVersionEncountered_
-  commentId: M:Libplanet.Net.Messages.Message.Parse(NetMQMessage,System.Boolean,Libplanet.Net.AppProtocolVersion,IImmutableSet{Libplanet.Crypto.PublicKey},Libplanet.Net.DifferentAppProtocolVersionEncountered)
-  name.vb: Parse(NetMQMessage, Boolean, AppProtocolVersion, IImmutableSet(Of PublicKey), DifferentAppProtocolVersionEncountered)
-  fullName: Libplanet.Net.Messages.Message.Parse(NetMQMessage, System.Boolean, Libplanet.Net.AppProtocolVersion, IImmutableSet<Libplanet.Crypto.PublicKey>, Libplanet.Net.DifferentAppProtocolVersionEncountered)
-  fullName.vb: Libplanet.Net.Messages.Message.Parse(NetMQMessage, System.Boolean, Libplanet.Net.AppProtocolVersion, IImmutableSet(Of Libplanet.Crypto.PublicKey), Libplanet.Net.DifferentAppProtocolVersionEncountered)
-  nameWithType: Message.Parse(NetMQMessage, Boolean, AppProtocolVersion, IImmutableSet<PublicKey>, DifferentAppProtocolVersionEncountered)
-  nameWithType.vb: Message.Parse(NetMQMessage, Boolean, AppProtocolVersion, IImmutableSet(Of PublicKey), DifferentAppProtocolVersionEncountered)
+- uid: Libplanet.Net.Messages.Message.Parse(NetMQMessage,System.Boolean,Libplanet.Net.AppProtocolVersion,IImmutableSet{Libplanet.Crypto.PublicKey},Libplanet.Net.DifferentAppProtocolVersionEncountered,System.Nullable{System.TimeSpan})
+  name: Parse(NetMQMessage, Boolean, AppProtocolVersion, IImmutableSet<PublicKey>, DifferentAppProtocolVersionEncountered, Nullable<TimeSpan>)
+  href: api/Libplanet.Net.Messages.Message.html#Libplanet_Net_Messages_Message_Parse_NetMQMessage_System_Boolean_Libplanet_Net_AppProtocolVersion_IImmutableSet_Libplanet_Crypto_PublicKey__Libplanet_Net_DifferentAppProtocolVersionEncountered_System_Nullable_System_TimeSpan__
+  commentId: M:Libplanet.Net.Messages.Message.Parse(NetMQMessage,System.Boolean,Libplanet.Net.AppProtocolVersion,IImmutableSet{Libplanet.Crypto.PublicKey},Libplanet.Net.DifferentAppProtocolVersionEncountered,System.Nullable{System.TimeSpan})
+  name.vb: Parse(NetMQMessage, Boolean, AppProtocolVersion, IImmutableSet(Of PublicKey), DifferentAppProtocolVersionEncountered, Nullable(Of TimeSpan))
+  fullName: Libplanet.Net.Messages.Message.Parse(NetMQMessage, System.Boolean, Libplanet.Net.AppProtocolVersion, IImmutableSet<Libplanet.Crypto.PublicKey>, Libplanet.Net.DifferentAppProtocolVersionEncountered, System.Nullable<System.TimeSpan>)
+  fullName.vb: Libplanet.Net.Messages.Message.Parse(NetMQMessage, System.Boolean, Libplanet.Net.AppProtocolVersion, IImmutableSet(Of Libplanet.Crypto.PublicKey), Libplanet.Net.DifferentAppProtocolVersionEncountered, System.Nullable(Of System.TimeSpan))
+  nameWithType: Message.Parse(NetMQMessage, Boolean, AppProtocolVersion, IImmutableSet<PublicKey>, DifferentAppProtocolVersionEncountered, Nullable<TimeSpan>)
+  nameWithType.vb: Message.Parse(NetMQMessage, Boolean, AppProtocolVersion, IImmutableSet(Of PublicKey), DifferentAppProtocolVersionEncountered, Nullable(Of TimeSpan))
 - uid: Libplanet.Net.Messages.Message.Parse*
   name: Parse
   href: api/Libplanet.Net.Messages.Message.html#Libplanet_Net_Messages_Message_Parse_
@@ -9538,12 +9570,25 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Messages.Message.SerializePeer
   nameWithType: Message.SerializePeer
-- uid: Libplanet.Net.Messages.Message.ToNetMQMessage(Libplanet.Crypto.PrivateKey,Libplanet.Net.Peer,Libplanet.Net.AppProtocolVersion)
-  name: ToNetMQMessage(PrivateKey, Peer, AppProtocolVersion)
-  href: api/Libplanet.Net.Messages.Message.html#Libplanet_Net_Messages_Message_ToNetMQMessage_Libplanet_Crypto_PrivateKey_Libplanet_Net_Peer_Libplanet_Net_AppProtocolVersion_
-  commentId: M:Libplanet.Net.Messages.Message.ToNetMQMessage(Libplanet.Crypto.PrivateKey,Libplanet.Net.Peer,Libplanet.Net.AppProtocolVersion)
-  fullName: Libplanet.Net.Messages.Message.ToNetMQMessage(Libplanet.Crypto.PrivateKey, Libplanet.Net.Peer, Libplanet.Net.AppProtocolVersion)
-  nameWithType: Message.ToNetMQMessage(PrivateKey, Peer, AppProtocolVersion)
+- uid: Libplanet.Net.Messages.Message.Timestamp
+  name: Timestamp
+  href: api/Libplanet.Net.Messages.Message.html#Libplanet_Net_Messages_Message_Timestamp
+  commentId: P:Libplanet.Net.Messages.Message.Timestamp
+  fullName: Libplanet.Net.Messages.Message.Timestamp
+  nameWithType: Message.Timestamp
+- uid: Libplanet.Net.Messages.Message.Timestamp*
+  name: Timestamp
+  href: api/Libplanet.Net.Messages.Message.html#Libplanet_Net_Messages_Message_Timestamp_
+  commentId: Overload:Libplanet.Net.Messages.Message.Timestamp
+  isSpec: "True"
+  fullName: Libplanet.Net.Messages.Message.Timestamp
+  nameWithType: Message.Timestamp
+- uid: Libplanet.Net.Messages.Message.ToNetMQMessage(Libplanet.Crypto.PrivateKey,Libplanet.Net.Peer,System.DateTimeOffset,Libplanet.Net.AppProtocolVersion)
+  name: ToNetMQMessage(PrivateKey, Peer, DateTimeOffset, AppProtocolVersion)
+  href: api/Libplanet.Net.Messages.Message.html#Libplanet_Net_Messages_Message_ToNetMQMessage_Libplanet_Crypto_PrivateKey_Libplanet_Net_Peer_System_DateTimeOffset_Libplanet_Net_AppProtocolVersion_
+  commentId: M:Libplanet.Net.Messages.Message.ToNetMQMessage(Libplanet.Crypto.PrivateKey,Libplanet.Net.Peer,System.DateTimeOffset,Libplanet.Net.AppProtocolVersion)
+  fullName: Libplanet.Net.Messages.Message.ToNetMQMessage(Libplanet.Crypto.PrivateKey, Libplanet.Net.Peer, System.DateTimeOffset, Libplanet.Net.AppProtocolVersion)
+  nameWithType: Message.ToNetMQMessage(PrivateKey, Peer, DateTimeOffset, AppProtocolVersion)
 - uid: Libplanet.Net.Messages.Message.ToNetMQMessage*
   name: ToNetMQMessage
   href: api/Libplanet.Net.Messages.Message.html#Libplanet_Net_Messages_Message_ToNetMQMessage_
@@ -9583,15 +9628,15 @@ references:
   commentId: T:Libplanet.Net.NetMQTransport
   fullName: Libplanet.Net.NetMQTransport
   nameWithType: NetMQTransport
-- uid: Libplanet.Net.NetMQTransport.#ctor(Libplanet.Net.Protocols.RoutingTable,Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,IImmutableSet{Libplanet.Crypto.PublicKey},System.Int32,System.String,System.Nullable{System.Int32},System.Collections.Generic.IEnumerable{Libplanet.Net.IceServer},Libplanet.Net.DifferentAppProtocolVersionEncountered)
-  name: NetMQTransport(RoutingTable, PrivateKey, AppProtocolVersion, IImmutableSet<PublicKey>, Int32, String, Nullable<Int32>, IEnumerable<IceServer>, DifferentAppProtocolVersionEncountered)
-  href: api/Libplanet.Net.NetMQTransport.html#Libplanet_Net_NetMQTransport__ctor_Libplanet_Net_Protocols_RoutingTable_Libplanet_Crypto_PrivateKey_Libplanet_Net_AppProtocolVersion_IImmutableSet_Libplanet_Crypto_PublicKey__System_Int32_System_String_System_Nullable_System_Int32__System_Collections_Generic_IEnumerable_Libplanet_Net_IceServer__Libplanet_Net_DifferentAppProtocolVersionEncountered_
-  commentId: M:Libplanet.Net.NetMQTransport.#ctor(Libplanet.Net.Protocols.RoutingTable,Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,IImmutableSet{Libplanet.Crypto.PublicKey},System.Int32,System.String,System.Nullable{System.Int32},System.Collections.Generic.IEnumerable{Libplanet.Net.IceServer},Libplanet.Net.DifferentAppProtocolVersionEncountered)
-  name.vb: NetMQTransport(RoutingTable, PrivateKey, AppProtocolVersion, IImmutableSet(Of PublicKey), Int32, String, Nullable(Of Int32), IEnumerable(Of IceServer), DifferentAppProtocolVersionEncountered)
-  fullName: Libplanet.Net.NetMQTransport.NetMQTransport(Libplanet.Net.Protocols.RoutingTable, Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersion, IImmutableSet<Libplanet.Crypto.PublicKey>, System.Int32, System.String, System.Nullable<System.Int32>, System.Collections.Generic.IEnumerable<Libplanet.Net.IceServer>, Libplanet.Net.DifferentAppProtocolVersionEncountered)
-  fullName.vb: Libplanet.Net.NetMQTransport.NetMQTransport(Libplanet.Net.Protocols.RoutingTable, Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersion, IImmutableSet(Of Libplanet.Crypto.PublicKey), System.Int32, System.String, System.Nullable(Of System.Int32), System.Collections.Generic.IEnumerable(Of Libplanet.Net.IceServer), Libplanet.Net.DifferentAppProtocolVersionEncountered)
-  nameWithType: NetMQTransport.NetMQTransport(RoutingTable, PrivateKey, AppProtocolVersion, IImmutableSet<PublicKey>, Int32, String, Nullable<Int32>, IEnumerable<IceServer>, DifferentAppProtocolVersionEncountered)
-  nameWithType.vb: NetMQTransport.NetMQTransport(RoutingTable, PrivateKey, AppProtocolVersion, IImmutableSet(Of PublicKey), Int32, String, Nullable(Of Int32), IEnumerable(Of IceServer), DifferentAppProtocolVersionEncountered)
+- uid: Libplanet.Net.NetMQTransport.#ctor(Libplanet.Net.Protocols.RoutingTable,Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,IImmutableSet{Libplanet.Crypto.PublicKey},System.Int32,System.String,System.Nullable{System.Int32},System.Collections.Generic.IEnumerable{Libplanet.Net.IceServer},Libplanet.Net.DifferentAppProtocolVersionEncountered,System.Nullable{System.TimeSpan})
+  name: NetMQTransport(RoutingTable, PrivateKey, AppProtocolVersion, IImmutableSet<PublicKey>, Int32, String, Nullable<Int32>, IEnumerable<IceServer>, DifferentAppProtocolVersionEncountered, Nullable<TimeSpan>)
+  href: api/Libplanet.Net.NetMQTransport.html#Libplanet_Net_NetMQTransport__ctor_Libplanet_Net_Protocols_RoutingTable_Libplanet_Crypto_PrivateKey_Libplanet_Net_AppProtocolVersion_IImmutableSet_Libplanet_Crypto_PublicKey__System_Int32_System_String_System_Nullable_System_Int32__System_Collections_Generic_IEnumerable_Libplanet_Net_IceServer__Libplanet_Net_DifferentAppProtocolVersionEncountered_System_Nullable_System_TimeSpan__
+  commentId: M:Libplanet.Net.NetMQTransport.#ctor(Libplanet.Net.Protocols.RoutingTable,Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,IImmutableSet{Libplanet.Crypto.PublicKey},System.Int32,System.String,System.Nullable{System.Int32},System.Collections.Generic.IEnumerable{Libplanet.Net.IceServer},Libplanet.Net.DifferentAppProtocolVersionEncountered,System.Nullable{System.TimeSpan})
+  name.vb: NetMQTransport(RoutingTable, PrivateKey, AppProtocolVersion, IImmutableSet(Of PublicKey), Int32, String, Nullable(Of Int32), IEnumerable(Of IceServer), DifferentAppProtocolVersionEncountered, Nullable(Of TimeSpan))
+  fullName: Libplanet.Net.NetMQTransport.NetMQTransport(Libplanet.Net.Protocols.RoutingTable, Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersion, IImmutableSet<Libplanet.Crypto.PublicKey>, System.Int32, System.String, System.Nullable<System.Int32>, System.Collections.Generic.IEnumerable<Libplanet.Net.IceServer>, Libplanet.Net.DifferentAppProtocolVersionEncountered, System.Nullable<System.TimeSpan>)
+  fullName.vb: Libplanet.Net.NetMQTransport.NetMQTransport(Libplanet.Net.Protocols.RoutingTable, Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersion, IImmutableSet(Of Libplanet.Crypto.PublicKey), System.Int32, System.String, System.Nullable(Of System.Int32), System.Collections.Generic.IEnumerable(Of Libplanet.Net.IceServer), Libplanet.Net.DifferentAppProtocolVersionEncountered, System.Nullable(Of System.TimeSpan))
+  nameWithType: NetMQTransport.NetMQTransport(RoutingTable, PrivateKey, AppProtocolVersion, IImmutableSet<PublicKey>, Int32, String, Nullable<Int32>, IEnumerable<IceServer>, DifferentAppProtocolVersionEncountered, Nullable<TimeSpan>)
+  nameWithType.vb: NetMQTransport.NetMQTransport(RoutingTable, PrivateKey, AppProtocolVersion, IImmutableSet(Of PublicKey), Int32, String, Nullable(Of Int32), IEnumerable(Of IceServer), DifferentAppProtocolVersionEncountered, Nullable(Of TimeSpan))
 - uid: Libplanet.Net.NetMQTransport.#ctor*
   name: NetMQTransport
   href: api/Libplanet.Net.NetMQTransport.html#Libplanet_Net_NetMQTransport__ctor_
@@ -11327,6 +11372,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.SwarmOptions.MaxTimeout
   nameWithType: SwarmOptions.MaxTimeout
+- uid: Libplanet.Net.SwarmOptions.MessageLifespan
+  name: MessageLifespan
+  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_MessageLifespan
+  commentId: P:Libplanet.Net.SwarmOptions.MessageLifespan
+  fullName: Libplanet.Net.SwarmOptions.MessageLifespan
+  nameWithType: SwarmOptions.MessageLifespan
+- uid: Libplanet.Net.SwarmOptions.MessageLifespan*
+  name: MessageLifespan
+  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_MessageLifespan_
+  commentId: Overload:Libplanet.Net.SwarmOptions.MessageLifespan
+  isSpec: "True"
+  fullName: Libplanet.Net.SwarmOptions.MessageLifespan
+  nameWithType: SwarmOptions.MessageLifespan
 - uid: Libplanet.Net.SwarmOptions.RecentStateRecvTimeout
   name: RecentStateRecvTimeout
   href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_RecentStateRecvTimeout
