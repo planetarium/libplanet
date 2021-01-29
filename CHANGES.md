@@ -147,6 +147,8 @@ To be released.
     can be validated rather than trusted due to MPT.  [[#1117]]
  -  `HashDigest<SHA256>` became serializable.  [[#795], [#1125]]
  -  `Transaction<T>()` constructors became not to validate itself.  [[#1149]]
+ -  `BlockChain<T>.Append()` became to validate the given `Block<T>`
+    before storing its `StateRootHash`.  [[#1172]]
 
 ### Bug fixes
 
@@ -214,6 +216,7 @@ To be released.
 [#1165]: https://github.com/planetarium/libplanet/pull/1165
 [#1168]: https://github.com/planetarium/libplanet/pull/1168
 [#1170]: https://github.com/planetarium/libplanet/pull/1170
+[#1172]: https://github.com/planetarium/libplanet/pull/1172
 
 
 Version 0.10.3

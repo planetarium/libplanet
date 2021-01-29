@@ -292,7 +292,7 @@ namespace Libplanet.Tests.Blockchain
                     miner: miner,
                     difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
                     blockInterval: TimeSpan.FromSeconds(10)
-                ).AttachStateRootHash(fx.StateStore, _policy.BlockAction);
+                ).AttachStateRootHash(blockChain.StateStore, policy.BlockAction);
 
                 blockChain.Append(block1);
 
@@ -302,7 +302,7 @@ namespace Libplanet.Tests.Blockchain
                     miner: miner,
                     difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
                     blockInterval: TimeSpan.FromSeconds(10)
-                ).AttachStateRootHash(fx.StateStore, _policy.BlockAction);
+                ).AttachStateRootHash(blockChain.StateStore, policy.BlockAction);
 
                 Assert.Throws<TxViolatingBlockPolicyException>(() => blockChain.Append(block2));
             }

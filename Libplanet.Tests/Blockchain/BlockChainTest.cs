@@ -1881,7 +1881,7 @@ namespace Libplanet.Tests.Blockchain
                 genesis,
                 txs,
                 difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain)
-            );
+            ).AttachStateRootHash(_blockChain.StateStore, _policy.BlockAction);
 
             var miner = genesis.Miner.GetValueOrDefault();
             var blockActionEvaluation = _blockChain.BlockEvaluator.EvaluateBlockAction(
@@ -1895,8 +1895,7 @@ namespace Libplanet.Tests.Blockchain
                 (Integer)2,
                 (Integer)blockActionEvaluation.OutputStates.GetState(miner));
             Assert.True(blockActionEvaluation.InputContext.BlockAction);
-
-            _blockChain.ExecuteActions(genesis);
+            _blockChain.ExecuteActions(block1);
             _blockChain.Append(
                 block1,
                 DateTimeOffset.UtcNow,
