@@ -157,6 +157,10 @@ To be released.
  -  `Transaction<T>()` constructors became not to validate itself.  [[#1149]]
  -  `BlockChain<T>.Append()` became to validate the given `Block<T>`
     before storing its `StateRootHash`.  [[#1172]]
+ -  `Blockchain<T>` became not to stage transactions with nonce that is
+    less than or equal to the highest nonce among the transactions
+    it has in its storage for a transaction signed by a specific address.
+    [[#1173], [#1180]]
 
 ### Bug fixes
 
@@ -227,6 +231,8 @@ To be released.
 [#1170]: https://github.com/planetarium/libplanet/pull/1170
 [#1171]: https://github.com/planetarium/libplanet/pull/1171
 [#1172]: https://github.com/planetarium/libplanet/pull/1172
+[#1173]: https://github.com/planetarium/libplanet/issues/1173
+[#1180]: https://github.com/planetarium/libplanet/pull/1180
 
 
 Version 0.10.3
