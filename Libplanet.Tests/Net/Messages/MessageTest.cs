@@ -93,7 +93,7 @@ namespace Libplanet.Tests.Net.Messages
                     null,
                     TimeSpan.FromSeconds(1)));
             NetMQMessage pastRaw =
-                message.ToNetMQMessage(privateKey, peer, futureOffset, appProtocolVersion);
+                message.ToNetMQMessage(privateKey, peer, pastOffset, appProtocolVersion);
             // Messages from the far past throws InvalidTimestampException.
             Assert.Throws<InvalidTimestampException>(() =>
                 Message.Parse(
