@@ -35,6 +35,9 @@ To be released.
  -  Removed `trustedStateValidators` parameter from `Swarm<T>.PreloadAsync()`
     method.  [[#1117]]
  -  Added `IActionContext.BlockAction` property. [[#1143]]
+ -  Added nullable `TimeSpan`-typed `messageLifespan` parameter into
+    `NetMQTransport` constructor.  [[#1171]]
+
 
 ### Backward-incompatible network protocol changes
 
@@ -49,9 +52,8 @@ To be released.
      -  `RecentStates` message type (with the type number `0x13`)
      -  `GetBlockStates` message type (with the type number `0x22`)
      -  `BlockStates` message type (with the type number `0x23`)
- -  `Swarm<T>` became to ignore messages more than a certain amount of time
-    since they were created, the value is `SwarmOptions.MessageLifespan`.
-    [[#1160], [#1171]]
+ -  `Swarm<T>` became to ignore messages made earlier than a certain amount of time,
+    which is configured by `SwarmOptions.MessageLifespan`.  [[#1160], [#1171]]
 
 ### Backward-incompatible storage format changes
 
@@ -122,6 +124,8 @@ To be released.
  -  Added `InvalidBlockPreEvaluationHashException` class.  [[#1148]]
  -  Added the parameter `validate` which is `true` by default,
     to `Transaction<T>.Deserialize()`.  [[#1149]]
+ -  Added `SwarmOptions.MessageLifespan` property.  [[#1171]]
+ -  Added `InvalidTimestampException` class.  [[#1171]]
 
 ### Behavioral changes
 
