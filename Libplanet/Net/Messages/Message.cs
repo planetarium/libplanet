@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -19,6 +20,8 @@ namespace Libplanet.Net.Messages
         /// The number of frames that all messages commonly contain.
         /// </summary>
         public const int CommonFrames = 5;
+
+        internal const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
 
         /// <summary>
         /// <c>Enum</c> represents the type of the <see cref="Message"/>.
@@ -245,9 +248,11 @@ namespace Libplanet.Net.Messages
             if (!(lifetime is null) &&
                 (currentTime < timestamp || timestamp + lifetime < currentTime))
             {
-                var msg = $"Received message is invalid, created at {timestamp} " +
+                var msg = $"Received message is invalid, created at " +
+                          $"{timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture)} " +
                           $"but designated lifetime is {lifetime} and the current datetime " +
-                          $"offset is {currentTime}.";
+                          $"offset is " +
+                          $"{currentTime.ToString(TimestampFormat, CultureInfo.InvariantCulture)}.";
                 throw new InvalidTimestampException(msg, timestamp, lifetime.Value, currentTime);
             }
 
