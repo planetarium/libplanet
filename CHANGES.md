@@ -35,6 +35,9 @@ To be released.
  -  Removed `trustedStateValidators` parameter from `Swarm<T>.PreloadAsync()`
     method.  [[#1117]]
  -  Added `IActionContext.BlockAction` property. [[#1143]]
+ -  Added nullable `TimeSpan`-typed `messageLifespan` parameter into
+    `NetMQTransport()` constructor.  [[#1171]]
+
 
 ### Backward-incompatible network protocol changes
 
@@ -49,6 +52,9 @@ To be released.
      -  `RecentStates` message type (with the type number `0x13`)
      -  `GetBlockStates` message type (with the type number `0x22`)
      -  `BlockStates` message type (with the type number `0x23`)
+ -  `Swarm<T>` became to ignore messages made earlier than a certain amount of
+    time, which is configured by `SwarmOptions.MessageLifespan`.
+    [[#1160], [#1171]]
 
 ### Backward-incompatible storage format changes
 
@@ -119,6 +125,8 @@ To be released.
  -  Added `InvalidBlockPreEvaluationHashException` class.  [[#1148]]
  -  Added the parameter `validate` which is `true` by default,
     to `Transaction<T>.Deserialize()`.  [[#1149]]
+ -  Added `SwarmOptions.MessageLifespan` property.  [[#1171]]
+ -  Added `InvalidTimestampException` class.  [[#1171]]
 
 ### Behavioral changes
 
@@ -211,11 +219,13 @@ To be released.
 [#1149]: https://github.com/planetarium/libplanet/pull/1149
 [#1152]: https://github.com/planetarium/libplanet/pull/1152
 [#1155]: https://github.com/planetarium/libplanet/issues/1155
+[#1160]: https://github.com/planetarium/libplanet/issues/1160
 [#1162]: https://github.com/planetarium/libplanet/pull/1162
 [#1163]: https://github.com/planetarium/libplanet/pull/1163
 [#1165]: https://github.com/planetarium/libplanet/pull/1165
 [#1168]: https://github.com/planetarium/libplanet/pull/1168
 [#1170]: https://github.com/planetarium/libplanet/pull/1170
+[#1171]: https://github.com/planetarium/libplanet/pull/1171
 [#1172]: https://github.com/planetarium/libplanet/pull/1172
 
 

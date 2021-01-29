@@ -467,6 +467,12 @@ namespace Libplanet.Net.Protocols
                     target,
                     $"Timeout occurred during dial to {target}.");
             }
+            catch (InvalidTimestampException)
+            {
+                throw new PingTimeoutException(
+                    target,
+                    $"Received Pong from {target} has invalid timestamp.");
+            }
             catch (DifferentAppProtocolVersionException)
             {
                 _logger.Error(
@@ -651,6 +657,11 @@ namespace Libplanet.Net.Protocols
                 }
 
                 return neighbors.Found;
+            }
+            catch (InvalidTimestampException)
+            {
+                _logger.Debug($"Reply of {nameof(GetNeighbors)}'s timestamp is stale.");
+                return ImmutableArray<BoundPeer>.Empty;
             }
             catch (TimeoutException)
             {

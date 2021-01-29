@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -18,7 +19,9 @@ namespace Libplanet.Net.Messages
         /// <summary>
         /// The number of frames that all messages commonly contain.
         /// </summary>
-        public const int CommonFrames = 4;
+        public const int CommonFrames = 5;
+
+        internal const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
 
         /// <summary>
         /// <c>Enum</c> represents the type of the <see cref="Message"/>.
@@ -122,9 +125,14 @@ namespace Libplanet.Net.Messages
             Peer = 2,
 
             /// <summary>
+            /// Frame containing the datetime when the <see cref="Message"/> is created.
+            /// </summary>
+            Timestamp = 3,
+
+            /// <summary>
             /// Frame containing signature of the <see cref="Message"/>.
             /// </summary>
-            Sign = 3,
+            Sign = 4,
         }
 
         /// <summary>
@@ -139,6 +147,11 @@ namespace Libplanet.Net.Messages
         /// <see cref="Remote"/>'s transport layer.
         /// </summary>
         public AppProtocolVersion Version { get; set; }
+
+        /// <summary>
+        /// The timestamp of the message is created.
+        /// </summary>
+        public DateTimeOffset Timestamp { get; set; }
 
         /// <summary>
         /// The sender <see cref="Peer"/> of the message.
@@ -168,6 +181,10 @@ namespace Libplanet.Net.Messages
         /// If this callback returns <c>false</c>, an encountered peer is ignored.  If this callback
         /// is omitted, all peers with different <see cref="AppProtocolVersion"/>s are ignored.
         /// </param>
+        /// <param name="lifetime">
+        /// The lifetime of a message.
+        /// Messages generated before this value from the current time are ignored.
+        /// If <c>null</c> is given, messages will not be ignored by its timestamp.</param>
         /// <returns>A <see cref="Message"/> parsed from <paramref name="raw"/>.</returns>
         /// <exception cref="ArgumentException">Thrown when empty <paramref name="raw"/> is given.
         /// </exception>
@@ -184,15 +201,16 @@ namespace Libplanet.Net.Messages
             bool reply,
             AppProtocolVersion localVersion,
             IImmutableSet<PublicKey> trustedAppProtocolVersionSigners,
-            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered)
+            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered,
+            TimeSpan? lifetime)
         {
             if (raw.FrameCount == 0)
             {
                 throw new ArgumentException("Can't parse empty NetMQMessage.");
             }
 
-            // (reply == true)  [version, type, peer, sign, frames...]
-            // (reply == false) [identity, version, type, peer, sign, frames...]
+            // (reply == true)  [version, type, peer, timestamp, sign, frames...]
+            // (reply == false) [identity, version, type, peer, timestamp, sign, frames...]
             NetMQFrame[] remains = reply ? raw.ToArray() : raw.Skip(1).ToArray();
 
             var versionToken = remains[(int)MessageFrame.Version].ConvertToString();
@@ -223,7 +241,21 @@ namespace Libplanet.Net.Messages
             }
 
             var rawType = (MessageType)remains[(int)MessageFrame.Type].ConvertToInt32();
-            var peer = remains[(int)MessageFrame.Peer].ToByteArray();
+            var ticks = remains[(int)MessageFrame.Timestamp].ConvertToInt64();
+            var timestamp = new DateTimeOffset(ticks, TimeSpan.Zero);
+
+            var currentTime = DateTimeOffset.UtcNow;
+            if (!(lifetime is null) &&
+                (currentTime < timestamp || timestamp + lifetime < currentTime))
+            {
+                var msg = $"Received message is invalid, created at " +
+                          $"{timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture)} " +
+                          $"but designated lifetime is {lifetime} and the current datetime " +
+                          $"offset is " +
+                          $"{currentTime.ToString(TimestampFormat, CultureInfo.InvariantCulture)}.";
+                throw new InvalidTimestampException(msg, timestamp, lifetime.Value, currentTime);
+            }
+
             byte[] signature = remains[(int)MessageFrame.Sign].ToByteArray();
 
             NetMQFrame[] body = remains.Skip(CommonFrames).ToArray();
@@ -265,6 +297,7 @@ namespace Libplanet.Net.Messages
                 type, new[] { body });
             message.Version = remoteVersion;
             message.Remote = remotePeer;
+            message.Timestamp = timestamp;
 
             if (!message.Remote.PublicKey.Verify(body.ToByteArray(), signature))
             {
@@ -287,13 +320,19 @@ namespace Libplanet.Net.Messages
         /// <param name="peer"><see cref="Peer"/>-typed representation of the
         /// sender's transport layer.
         /// <seealso cref="ITransport.AsPeer"/></param>
+        /// <param name="timestamp">The <see cref="DateTimeOffset"/> of the message is created.
+        /// </param>
         /// <param name="version"><see cref="AppProtocolVersion"/>-typed version of the
         /// transport layer.</param>
         /// <returns>A <see cref="NetMQMessage"/> containing the signed <see cref="Message"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="peer"/> is
         /// <c>null</c>.</exception>
-        public NetMQMessage ToNetMQMessage(PrivateKey key, Peer peer, AppProtocolVersion version)
+        public NetMQMessage ToNetMQMessage(
+            PrivateKey key,
+            Peer peer,
+            DateTimeOffset timestamp,
+            AppProtocolVersion version)
         {
             if (peer is null)
             {
@@ -310,6 +349,7 @@ namespace Libplanet.Net.Messages
 
             // Write headers. (inverse order)
             message.Push(key.Sign(message.ToByteArray()));
+            message.Push(timestamp.Ticks);
             message.Push(SerializePeer(peer));
             message.Push((byte)Type);
             message.Push(version.Token);

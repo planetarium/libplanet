@@ -588,7 +588,11 @@ namespace Libplanet.Tests.Net
                 {
                     var request = new GetBlocks(hashes.Select(pair => pair.Item2), 2);
                     socket.SendMultipartMessage(
-                        request.ToNetMQMessage(privateKey, swarmB.AsPeer, swarmB.AppProtocolVersion)
+                        request.ToNetMQMessage(
+                            privateKey,
+                            swarmB.AsPeer,
+                            DateTimeOffset.UtcNow,
+                            swarmB.AppProtocolVersion)
                     );
 
                     NetMQMessage response = socket.ReceiveMultipartMessage();
@@ -597,6 +601,7 @@ namespace Libplanet.Tests.Net
                         true,
                         swarmA.AppProtocolVersion,
                         swarmA.TrustedAppProtocolVersionSigners,
+                        null,
                         null);
                     Libplanet.Net.Messages.Blocks blockMessage =
                         (Libplanet.Net.Messages.Blocks)parsedMessage;
@@ -609,6 +614,7 @@ namespace Libplanet.Tests.Net
                         true,
                         swarmA.AppProtocolVersion,
                         swarmA.TrustedAppProtocolVersionSigners,
+                        null,
                         null);
                     blockMessage = (Libplanet.Net.Messages.Blocks)parsedMessage;
 
@@ -2374,7 +2380,11 @@ namespace Libplanet.Tests.Net
                     var request =
                         new BlockHeaderMessage(swarm.BlockChain.Genesis.Hash, higherBlock.Header);
                     socket.SendMultipartMessage(
-                        request.ToNetMQMessage(privateKey1, sender1, swarm.AppProtocolVersion)
+                        request.ToNetMQMessage(
+                            privateKey1,
+                            sender1,
+                            DateTimeOffset.UtcNow,
+                            swarm.AppProtocolVersion)
                     );
                     await swarm.BlockHeaderReceived.WaitAsync();
                     await Task.Delay(100);
@@ -2385,7 +2395,11 @@ namespace Libplanet.Tests.Net
                     request =
                         new BlockHeaderMessage(swarm.BlockChain.Genesis.Hash, lowerBlock.Header);
                     socket.SendMultipartMessage(
-                        request.ToNetMQMessage(privateKey2, sender2, swarm.AppProtocolVersion)
+                        request.ToNetMQMessage(
+                            privateKey2,
+                            sender2,
+                            DateTimeOffset.UtcNow,
+                            swarm.AppProtocolVersion)
                     );
                     await swarm.BlockHeaderReceived.WaitAsync();
                     // Await for context change
@@ -2401,7 +2415,11 @@ namespace Libplanet.Tests.Net
                     request =
                         new BlockHeaderMessage(swarm.BlockChain.Genesis.Hash, higherBlock.Header);
                     socket.SendMultipartMessage(
-                        request.ToNetMQMessage(privateKey1, sender1, swarm.AppProtocolVersion)
+                        request.ToNetMQMessage(
+                            privateKey1,
+                            sender1,
+                            DateTimeOffset.UtcNow,
+                            swarm.AppProtocolVersion)
                     );
                     await swarm.BlockHeaderReceived.WaitAsync();
                     await Task.Delay(100);
@@ -2413,7 +2431,11 @@ namespace Libplanet.Tests.Net
                     request =
                         new BlockHeaderMessage(swarm.BlockChain.Genesis.Hash, lowerBlock.Header);
                     socket.SendMultipartMessage(
-                        request.ToNetMQMessage(privateKey2, sender2, swarm.AppProtocolVersion)
+                        request.ToNetMQMessage(
+                            privateKey2,
+                            sender2,
+                            DateTimeOffset.UtcNow,
+                            swarm.AppProtocolVersion)
                     );
                     await swarm.BlockHeaderReceived.WaitAsync();
                     await Task.Delay(100);

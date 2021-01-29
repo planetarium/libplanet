@@ -40,6 +40,7 @@ namespace Libplanet.Net
         private readonly IList<IceServer> _iceServers;
         private readonly ILogger _logger;
         private readonly AsyncLock _turnClientMutex;
+        private readonly TimeSpan? _messageLifespan;
 
         private NetMQQueue<NetMQMessage> _replyQueue;
         private NetMQQueue<(Address?, Message)> _broadcastQueue;
@@ -98,6 +99,10 @@ namespace Libplanet.Net
         /// If this callback returns <c>false</c>, an encountered peer is ignored.  If this callback
         /// is omitted, all peers with different <see cref="AppProtocolVersion"/>s are ignored.
         /// </param>
+        /// <param name="messageLifespan">
+        /// The lifespan of a message.
+        /// Messages generated before this value from the current time are ignored.
+        /// If <c>null</c> is given, messages will not be ignored by its timestamp.</param>
         /// <exception cref="ArgumentException">Thrown when both <paramref name="host"/> and
         /// <paramref name="iceServers"/> are <c>null</c>.</exception>
         public NetMQTransport(
@@ -109,7 +114,8 @@ namespace Libplanet.Net
             string host,
             int? listenPort,
             IEnumerable<IceServer> iceServers,
-            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered)
+            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered,
+            TimeSpan? messageLifespan = null)
         {
             Running = false;
 
@@ -121,6 +127,7 @@ namespace Libplanet.Net
             _differentAppProtocolVersionEncountered = differentAppProtocolVersionEncountered;
             _turnClientMutex = new AsyncLock();
             _table = table;
+            _messageLifespan = messageLifespan;
 
             if (_host != null && _listenPort is int listenPortAsInt)
             {
@@ -447,6 +454,20 @@ namespace Libplanet.Net
                 _logger.Error(e, logMsg, peer.Address, reqId, e.ExpectedVersion, e.ActualVersion);
                 throw;
             }
+            catch (InvalidTimestampException ite)
+            {
+                const string logMsg =
+                    "{PeerAddress} sent a reply to {RequestId} with stale timestamp; " +
+                    "(timestamp: {Timestamp}, lifespan: {Lifespan}, current: {Current})";
+                _logger.Error(
+                    logMsg,
+                    peer.Address,
+                    reqId,
+                    ite.CreatedOffset,
+                    ite.Lifespan,
+                    ite.CurrentOffset);
+                throw;
+            }
             catch (TimeoutException)
             {
                 _logger.Debug(
@@ -490,7 +511,11 @@ namespace Libplanet.Net
         {
             string identityHex = ByteUtil.Hex(message.Identity);
             _logger.Debug("Reply {Message} to {Identity}...", message, identityHex);
-            _replyQueue.Enqueue(message.ToNetMQMessage(_privateKey, AsPeer, _appProtocolVersion));
+            _replyQueue.Enqueue(message.ToNetMQMessage(
+                _privateKey,
+                AsPeer,
+                DateTimeOffset.UtcNow,
+                _appProtocolVersion));
         }
 
         private void ReceiveMessage(object sender, NetMQSocketEventArgs e)
@@ -514,8 +539,10 @@ namespace Libplanet.Net
                         false,
                         _appProtocolVersion,
                         _trustedAppProtocolVersionSigners,
-                        _differentAppProtocolVersionEncountered);
+                        _differentAppProtocolVersionEncountered,
+                        _messageLifespan);
                     _logger.Debug("A message has parsed: {0}, from {1}", message, message.Remote);
+
                     MessageHistory.Enqueue(message);
                     LastMessageTimestamp = DateTimeOffset.UtcNow;
 
@@ -540,6 +567,12 @@ namespace Libplanet.Net
                     };
                     ReplyMessage(differentVersion);
                     _logger.Debug("Message from peer with different version received.");
+                }
+                catch (InvalidTimestampException ite)
+                {
+                    const string logMsg = "The received message is stale. " +
+                              "(timestamp: {Timestamp}, lifespan: {Lifespan}, current: {Current})";
+                    _logger.Debug(logMsg, ite.CreatedOffset, ite.Lifespan, ite.CurrentOffset);
                 }
                 catch (InvalidMessageException ex)
                 {
@@ -568,7 +601,11 @@ namespace Libplanet.Net
                 _logger.Debug("Broadcasting message: {Message} as {AsPeer}", msg, AsPeer);
                 _logger.Debug("Peers to broadcast: {PeersCount}", peers.Count);
 
-                NetMQMessage message = msg.ToNetMQMessage(_privateKey, AsPeer, _appProtocolVersion);
+                NetMQMessage message = msg.ToNetMQMessage(
+                    _privateKey,
+                    AsPeer,
+                    DateTimeOffset.UtcNow,
+                    _appProtocolVersion);
 
                 foreach (BoundPeer peer in peers)
                 {
@@ -716,7 +753,11 @@ namespace Libplanet.Net
                 req.Message,
                 req.Peer
             );
-            var message = req.Message.ToNetMQMessage(_privateKey, AsPeer, _appProtocolVersion);
+            var message = req.Message.ToNetMQMessage(
+                _privateKey,
+                AsPeer,
+                DateTimeOffset.UtcNow,
+                _appProtocolVersion);
             var result = new List<Message>();
             TaskCompletionSource<IEnumerable<Message>> tcs = req.TaskCompletionSource;
             try
@@ -744,7 +785,8 @@ namespace Libplanet.Net
                         true,
                         _appProtocolVersion,
                         _trustedAppProtocolVersionSigners,
-                        _differentAppProtocolVersionEncountered);
+                        _differentAppProtocolVersionEncountered,
+                        _messageLifespan);
                     _logger.Debug(
                         "A reply has parsed: {Reply} from {ReplyRemote}",
                         reply,
@@ -759,6 +801,10 @@ namespace Libplanet.Net
             catch (DifferentAppProtocolVersionException dapve)
             {
                 tcs.TrySetException(dapve);
+            }
+            catch (InvalidTimestampException ite)
+            {
+                tcs.TrySetException(ite);
             }
             catch (TimeoutException te)
             {
