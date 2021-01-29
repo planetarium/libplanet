@@ -207,6 +207,8 @@ transactions after the given <code>Lifetime</code>, which is 3 hours by default.
 can be validated rather than trusted due to MPT.  [<a href="https://github.com/planetarium/libplanet/pull/1117">#1117</a>]</li>
 <li><code>HashDigest&lt;SHA256&gt;</code> became serializable.  [<a href="https://github.com/planetarium/libplanet/issues/795">#795</a>, <a href="https://github.com/planetarium/libplanet/pull/1125">#1125</a>]</li>
 <li><code>Transaction&lt;T&gt;()</code> constructors became not to validate itself.  [<a href="https://github.com/planetarium/libplanet/pull/1149">#1149</a>]</li>
+<li><code>BlockChain&lt;T&gt;.Append()</code> became to validate the given <code>Block&lt;T&gt;</code>
+before storing its <code>StateRootHash</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1172">#1172</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
