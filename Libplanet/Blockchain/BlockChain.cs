@@ -845,11 +845,26 @@ namespace Libplanet.Blockchain
                     transactionsToMine.Add(tx);
                     estimatedBytes += tx.BytesLength;
                 }
+                else if (tx.Nonce < storedNonces[tx.Signer])
+                {
+                    _logger.Debug(
+                        "Tx {Index}/{Total} {Transaction} has a lower nonce than expected: " +
+                        "{Nonce} ({Signer})." +
+                        "it will be discarded.",
+                        i,
+                        stagedTransactions.Length,
+                        tx.Id,
+                        tx.Nonce,
+                        tx.Signer
+                    );
+                    UnstageTransaction(tx);
+                }
                 else
                 {
                     _logger.Debug(
-                        "Tx {Index}/{Total} {Transaction} has an invalid nonce: {Nonce} " +
-                        "({Signer}).",
+                        "Tx {Index}/{Total} {Transaction} has a higher nonce than expected: " +
+                        "{Nonce} ({Signer}).  " +
+                        "It will be included by a block mined later.",
                         i,
                         stagedTransactions.Length,
                         tx.Id,
