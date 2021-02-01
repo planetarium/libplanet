@@ -216,6 +216,9 @@ can be validated rather than trusted due to MPT.  [<a href="https://github.com/p
 <li><code>Transaction&lt;T&gt;()</code> constructors became not to validate itself.  [<a href="https://github.com/planetarium/libplanet/pull/1149">#1149</a>]</li>
 <li><code>BlockChain&lt;T&gt;.Append()</code> became to validate the given <code>Block&lt;T&gt;</code>
 before storing its <code>StateRootHash</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1172">#1172</a>]</li>
+<li><code>Blockchain&lt;T&gt;</code> became not to stage transactions having nonce
+less than or equal to the nonce of the same signer's latest
+transaction in already mined blocks.  [<a href="https://github.com/planetarium/libplanet/issues/1173">#1173</a>, <a href="https://github.com/planetarium/libplanet/pull/1180">#1180</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
