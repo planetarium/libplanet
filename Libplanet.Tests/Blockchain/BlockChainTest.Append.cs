@@ -343,7 +343,7 @@ namespace Libplanet.Tests.Blockchain
             var actions = new[] { new DumbAction(addresses[0], "foobar") };
             Transaction<DumbAction>[] txs2 =
             {
-                _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 0),
+                _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 1),
             };
             StageTransactions(txs2);
             Assert.Equal(2, _blockChain.GetStagedTransactionIds().Count);
