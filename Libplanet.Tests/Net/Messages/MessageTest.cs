@@ -5,6 +5,7 @@ using System.Net;
 using Libplanet.Crypto;
 using Libplanet.Net;
 using Libplanet.Net.Messages;
+using Libplanet.Tests.Common.Action;
 using NetMQ;
 using Xunit;
 
@@ -126,6 +127,25 @@ namespace Libplanet.Tests.Net.Messages
             Assert.Equal(peer, parsed.Remote);
             Assert.Equal(appProtocolVersion, parsed.Version);
             Assert.Equal(dateTimeOffset, parsed.Timestamp);
+        }
+
+        [Fact]
+        public void BlockHeaderMessage()
+        {
+            var privateKey = new PrivateKey();
+            var peer = new Peer(privateKey.PublicKey);
+            var appProtocolVersion = new AppProtocolVersion(
+                1,
+                new Bencodex.Types.Integer(0),
+                ImmutableArray<byte>.Empty,
+                default(Address));
+            var dateTimeOffset = DateTimeOffset.UtcNow;
+            var genesis = TestUtils.MineGenesis<DumbAction>();
+            var message = new BlockHeaderMessage(genesis.Hash, genesis.Header);
+            NetMQMessage raw =
+                message.ToNetMQMessage(privateKey, peer, dateTimeOffset, appProtocolVersion);
+            var parsed = Message.Parse(raw, true, appProtocolVersion, null, null, null);
+            Assert.Equal(peer, parsed.Remote);
         }
 
         [Fact]
