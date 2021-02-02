@@ -299,7 +299,17 @@ namespace Libplanet.Net.Messages
             message.Remote = remotePeer;
             message.Timestamp = timestamp;
 
-            if (!message.Remote.PublicKey.Verify(body.ToByteArray(), signature))
+            var headerWithoutSign = new[]
+            {
+                remains[(int)MessageFrame.Version],
+                remains[(int)MessageFrame.Type],
+                remains[(int)MessageFrame.Peer],
+                remains[(int)MessageFrame.Timestamp],
+            };
+
+            var messageForVerify = headerWithoutSign.Concat(body).ToArray();
+
+            if (!message.Remote.PublicKey.Verify(messageForVerify.ToByteArray(), signature))
             {
                 throw new InvalidMessageException("The message signature is invalid", message);
             }
@@ -341,6 +351,7 @@ namespace Libplanet.Net.Messages
 
             var message = new NetMQMessage();
 
+            // Make signature
             // Write body (by concrete class)
             foreach (NetMQFrame frame in DataFrames)
             {
@@ -348,7 +359,22 @@ namespace Libplanet.Net.Messages
             }
 
             // Write headers. (inverse order)
-            message.Push(key.Sign(message.ToByteArray()));
+            message.Push(timestamp.Ticks);
+            message.Push(SerializePeer(peer));
+            message.Push((byte)Type);
+            message.Push(version.Token);
+
+            var signature = key.Sign(message.ToByteArray());
+            message.Clear();
+
+            // Make message
+            foreach (NetMQFrame frame in DataFrames)
+            {
+                message.Append(frame);
+            }
+
+            // Write headers. (inverse order)
+            message.Push(signature);
             message.Push(timestamp.Ticks);
             message.Push(SerializePeer(peer));
             message.Push((byte)Type);
