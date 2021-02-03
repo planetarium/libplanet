@@ -364,21 +364,10 @@ namespace Libplanet.Net.Messages
             message.Push((byte)Type);
             message.Push(version.Token);
 
-            var signature = key.Sign(message.ToByteArray());
-            message.Clear();
-
-            // Make message
-            foreach (NetMQFrame frame in DataFrames)
-            {
-                message.Append(frame);
-            }
-
-            // Write headers. (inverse order)
-            message.Push(signature);
-            message.Push(timestamp.Ticks);
-            message.Push(SerializePeer(peer));
-            message.Push((byte)Type);
-            message.Push(version.Token);
+            byte[] signature = key.Sign(message.ToByteArray());
+            List<NetMQFrame> frames = message.ToList();
+            frames.Insert((int)MessageFrame.Sign, new NetMQFrame(signature));
+            message = new NetMQMessage(frames);
 
             if (Identity is byte[] to)
             {
