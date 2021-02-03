@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Immutable;
+using System.Linq;
+using System.Net;
 using Libplanet.Crypto;
 using Libplanet.Net;
 using Libplanet.Net.Messages;
+using Libplanet.Tests.Common.Action;
 using NetMQ;
 using Xunit;
 
@@ -45,11 +48,12 @@ namespace Libplanet.Tests.Net.Messages
         [Fact]
         public void DifferentAppProtocolVersionWithDifferentStructure()
         {
+            PrivateKey signer = new PrivateKey();
             var validAppProtocolVersion = new AppProtocolVersion(
                 1,
                 new Bencodex.Types.Integer(0),
                 ImmutableArray<byte>.Empty,
-                default(Address));
+                signer.PublicKey.ToAddress());
             var invalidAppProtocolVersion = new AppProtocolVersion(
                 2,
                 new Bencodex.Types.Integer(0),
@@ -123,6 +127,71 @@ namespace Libplanet.Tests.Net.Messages
             Assert.Equal(peer, parsed.Remote);
             Assert.Equal(appProtocolVersion, parsed.Version);
             Assert.Equal(dateTimeOffset, parsed.Timestamp);
+        }
+
+        [Fact]
+        public void BlockHeaderMessage()
+        {
+            var privateKey = new PrivateKey();
+            var peer = new Peer(privateKey.PublicKey);
+            var appProtocolVersion = new AppProtocolVersion(
+                1,
+                new Bencodex.Types.Integer(0),
+                ImmutableArray<byte>.Empty,
+                default(Address));
+            var dateTimeOffset = DateTimeOffset.UtcNow;
+            var genesis = TestUtils.MineGenesis<DumbAction>();
+            var message = new BlockHeaderMessage(genesis.Hash, genesis.Header);
+            NetMQMessage raw =
+                message.ToNetMQMessage(privateKey, peer, dateTimeOffset, appProtocolVersion);
+            var parsed = Message.Parse(raw, true, appProtocolVersion, null, null, null);
+            Assert.Equal(peer, parsed.Remote);
+        }
+
+        [Fact]
+        public void UseInvalidSignature()
+        {
+            // Victim
+            var privateKey = new PrivateKey();
+            var peer = new Peer(privateKey.PublicKey, new IPAddress(1024L));
+            var dateTimeOffset = DateTimeOffset.UtcNow;
+            var validAppProtocolVersion = new AppProtocolVersion(
+                1,
+                new Bencodex.Types.Integer(0),
+                ImmutableArray<byte>.Empty,
+                default(Address));
+            var ping = new Ping();
+            var netMqMessage = ping
+                .ToNetMQMessage(privateKey, peer, dateTimeOffset, validAppProtocolVersion)
+                .ToArray();
+
+            // Attacker
+            var fakePeer = new Peer(privateKey.PublicKey, new IPAddress(2048L));
+            var fakeMessage = ping
+                .ToNetMQMessage(
+                    privateKey,
+                    fakePeer,
+                    dateTimeOffset,
+                    validAppProtocolVersion)
+                .ToArray();
+
+            var frames = new NetMQMessage();
+            frames.Push(netMqMessage[4]);
+            frames.Push(netMqMessage[3]);
+            frames.Push(fakeMessage[2]);
+            frames.Push(netMqMessage[1]);
+            frames.Push(netMqMessage[0]);
+
+            Assert.Throws<InvalidMessageException>(() =>
+            {
+                Message.Parse(
+                    frames,
+                    true,
+                    validAppProtocolVersion,
+                    ImmutableHashSet<PublicKey>.Empty,
+                    null,
+                    TimeSpan.FromSeconds(1));
+            });
         }
     }
 }

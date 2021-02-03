@@ -160,6 +160,7 @@ To be released.
  -  `Blockchain<T>` became not to stage transactions having nonce
     less than or equal to the nonce of the same signer's latest
     transaction in already mined blocks.  [[#1173], [#1180]]
+ -  Improved security of `Message.Parse()`.  [[#1161], [#1181]]
 
 ### Bug fixes
 
@@ -223,6 +224,7 @@ To be released.
 [#1152]: https://github.com/planetarium/libplanet/pull/1152
 [#1155]: https://github.com/planetarium/libplanet/issues/1155
 [#1160]: https://github.com/planetarium/libplanet/issues/1160
+[#1161]: https://github.com/planetarium/libplanet/issues/1161
 [#1162]: https://github.com/planetarium/libplanet/pull/1162
 [#1163]: https://github.com/planetarium/libplanet/pull/1163
 [#1165]: https://github.com/planetarium/libplanet/pull/1165
@@ -232,6 +234,7 @@ To be released.
 [#1172]: https://github.com/planetarium/libplanet/pull/1172
 [#1173]: https://github.com/planetarium/libplanet/issues/1173
 [#1180]: https://github.com/planetarium/libplanet/pull/1180
+[#1181]: https://github.com/planetarium/libplanet/pull/1181
 
 
 Version 0.10.3
