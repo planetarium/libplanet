@@ -351,7 +351,6 @@ namespace Libplanet.Net.Messages
 
             var message = new NetMQMessage();
 
-            // Make signature
             // Write body (by concrete class)
             foreach (NetMQFrame frame in DataFrames)
             {
@@ -364,6 +363,7 @@ namespace Libplanet.Net.Messages
             message.Push((byte)Type);
             message.Push(version.Token);
 
+            // Make and insert signature
             byte[] signature = key.Sign(message.ToByteArray());
             List<NetMQFrame> frames = message.ToList();
             frames.Insert((int)MessageFrame.Sign, new NetMQFrame(signature));
