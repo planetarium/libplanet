@@ -174,6 +174,8 @@ To be released.
     are guaranteed to still behave as it had done.  [[#1152]]
  -  Fixed a bug where `Block<T>.Evaluate()` hadn't validate its hash.  [[#1168]]
  -  Fixed memory leak due to undisposed `CancellationTokenSource`s.  [[#1182]]
+ -  Fixed a bug where `TurnClient` hadn't released its relay connections after
+    reconnecting.  [[#1185]]
 
 ### CLI tools
 
@@ -237,6 +239,7 @@ To be released.
 [#1180]: https://github.com/planetarium/libplanet/pull/1180
 [#1181]: https://github.com/planetarium/libplanet/pull/1181
 [#1182]: https://github.com/planetarium/libplanet/pull/1182
+[#1185]: https://github.com/planetarium/libplanet/pull/1185
 
 
 Version 0.10.3
