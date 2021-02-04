@@ -886,6 +886,10 @@ namespace Libplanet.Net
                     throw;
                 }
             }
+            finally
+            {
+                cts.Dispose();
+            }
         }
 
         private async Task DisposeUnusedDealerSockets(
