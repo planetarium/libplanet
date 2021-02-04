@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Security.Cryptography;
 using Libplanet.Blockchain;
@@ -9,7 +10,7 @@ namespace Libplanet.Tests.Blockchain
 {
     public class TotalDifficultyComparerTest
     {
-        private static readonly BlockExcerpt[] Fixture =
+        private static readonly SimpleBlockExcerpt[] BlockExcerpts =
         {
             new SimpleBlockExcerpt
             { // 0
@@ -48,16 +49,25 @@ namespace Libplanet.Tests.Blockchain
             },
         };
 
+        private static readonly BlockPerception[] BlockPerceptions =
+        {
+            new BlockPerception(BlockExcerpts[0], DateTimeOffset.FromUnixTimeSeconds(1609426800)),
+            new BlockPerception(BlockExcerpts[1], DateTimeOffset.FromUnixTimeSeconds(1609426800)),
+            new BlockPerception(BlockExcerpts[2], DateTimeOffset.FromUnixTimeSeconds(1609426800)),
+            new BlockPerception(BlockExcerpts[3], DateTimeOffset.FromUnixTimeSeconds(1609426800)),
+            new BlockPerception(BlockExcerpts[4], DateTimeOffset.FromUnixTimeSeconds(1609426800)),
+        };
+
         [Fact]
         public void Sort()
         {
-            BlockExcerpt[] sorted =
-                Fixture.OrderBy(e => e, new TotalDifficultyComparer()).ToArray();
-            Assert.Equal(Fixture[2], sorted[0]);
-            Assert.Equal(Fixture[1], sorted[1]);
-            Assert.Equal(Fixture[0], sorted[2]);
-            Assert.Equal(Fixture[4], sorted[3]);
-            Assert.Equal(Fixture[3], sorted[4]);
+            BlockPerception[] sorted =
+                BlockPerceptions.OrderBy(e => e, new TotalDifficultyComparer()).ToArray();
+            Assert.Equal(BlockPerceptions[2], sorted[0]);
+            Assert.Equal(BlockPerceptions[1], sorted[1]);
+            Assert.Equal(BlockPerceptions[0], sorted[2]);
+            Assert.Equal(BlockPerceptions[4], sorted[3]);
+            Assert.Equal(BlockPerceptions[3], sorted[4]);
         }
 
         private static HashDigest<SHA256> H(string h) => HashDigest<SHA256>.FromString(h);

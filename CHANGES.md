@@ -19,13 +19,13 @@ To be released.
  -  Added `stagePolicy` as the second parameter to `BlockChain<T>()`
     constructor.  [[#1130], [#1131]]
  -  Added `IBlockPolicy<T>.CanonicalChainComparer` property to make
-    the canonical chain .  [[#1155], [#1165]]
+    the canonical chain.  [[#1155], [#1165], [#1184]]
  -  Added `canonicalChainComparer` as the last parameter to `BlockPolicy()`
-    constructors.  [[#1155], [#1165]]
+    constructors.  [[#1155], [#1165], [#1184]]
  -  Added `canonicalChainComparer` as the second parameter to
-    `DelayedRenderer()` constructor.  [[#1155], [#1165]]
+    `DelayedRenderer()` constructor.  [[#1155], [#1165], [#1184]]
  -  Added `canonicalChainComparer` as the second parameter to
-    `DelayedActionRenderer()` constructor.  [[#1155], [#1165]]
+    `DelayedActionRenderer()` constructor.  [[#1155], [#1165], [#1184]]
  -  Added `reorgResistantHeight` parameter into `DelayedActionRenderer<T>()`
     constructor. [[#1163]]
  -  Added `IStore.SetBlockPerceivedTime()` method.  [[#1184]]
@@ -76,8 +76,8 @@ To be released.
  -  Added `BlockChain<T>.PerceiveBlock()` method.  [[#1155], [#1184]]
  -  Added `DelayedRenderer<T>.CanonicalChainComparer` and
     `DelayedActionRenderer<T>.CanonicalChainComparer` properties.
-    [[#1155], [#1165]]
- -  Added `TotalDifficultyComparer` class.  [[#1155], [#1165], [#1170]]
+    [[#1155], [#1165], [#1184]]
+ -  Added `TotalDifficultyComparer` class.  [[#1155], [#1165], [#1170], [#1184]]
  -  Added `IStagePolicy<T>` interface.  [[#1130], [#1131], [#1186]]
  -  Added `VolatileStagePolicy<T>` class.  [[#1130], [#1131], [#1136], [#1186]]
  -  Added `ITransport` interface.  [[#1052]]
@@ -140,7 +140,8 @@ To be released.
  -  Introduced the [protocol versioning scheme][#1142].  This purposes to change
     the protocol without breaking backward compatibility.  Even the protocol
     is changed, the existing blocks made before the new protocol are guaranteed
-    to behave as it had done.  [[#1142], [#1147], [#1162], [#1170]]
+    to behave as it had done.
+    [[#1142], [#1147], [#1155] [#1162], [#1170], [#1184]]
  -  Since `BlockHeader.ProtocolVersion` was added, the existing blocks are
     considered protocol compliant with the protocol version zero.
     [[#1142], [#1147], [#1162]]

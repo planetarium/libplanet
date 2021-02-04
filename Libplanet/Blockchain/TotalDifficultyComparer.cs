@@ -1,4 +1,5 @@
 #nullable enable
+using System;
 using System.Collections.Generic;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
@@ -15,22 +16,14 @@ namespace Libplanet.Blockchain
     /// protocol version, it always consider the higher version greater.</remarks>
     /// <seealso cref="IBlockPolicy{T}.CanonicalChainComparer"/>
     /// <seealso cref="IBlockExcerpt"/>
-    public class TotalDifficultyComparer : IComparer<IBlockExcerpt>
+    public class TotalDifficultyComparer : IComparer<BlockPerception>
     {
         /// <inheritdoc cref="IComparer{T}.Compare(T, T)"/>
-        public int Compare(IBlockExcerpt? x, IBlockExcerpt? y)
+        public int Compare(BlockPerception x, BlockPerception y)
         {
-            if (x is null)
-            {
-                return -1;
-            }
-            else if (y is null)
-            {
-                return 1;
-            }
-
-            int vcmp = x.ProtocolVersion.CompareTo(y.ProtocolVersion);
-            return vcmp == 0 ? x.TotalDifficulty.CompareTo(y.TotalDifficulty) : vcmp;
+            IBlockExcerpt xBlock = x.BlockExcerpt, yBlock = y.BlockExcerpt;
+            int vcmp = xBlock.ProtocolVersion.CompareTo(yBlock.ProtocolVersion);
+            return vcmp == 0 ? xBlock.TotalDifficulty.CompareTo(yBlock.TotalDifficulty) : vcmp;
         }
     }
 }

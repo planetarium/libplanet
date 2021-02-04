@@ -1339,11 +1339,21 @@ namespace Libplanet.Net
             CancellationToken cancellationToken)
         {
             HashDigest<SHA256> genesisHash = BlockChain.Genesis.Hash;
-            IComparer<IBlockExcerpt> canonComparer = BlockChain.Policy.CanonicalChainComparer;
+            IComparer<BlockPerception> canonComparer = BlockChain.Policy.CanonicalChainComparer;
+            BlockPerception tipPerception = BlockChain.PerceiveBlock(initialTip);
             var peersWithHeightAndDiff = (await DialToExistingPeers(dialTimeout, cancellationToken))
                 .Where(pp =>
-                    genesisHash.Equals(pp.ChainStatus?.GenesisHash) &&
-                    canonComparer.Compare(pp.ChainStatus, initialTip) > 0)
+                {
+                    if (!(pp.ChainStatus is ChainStatus chainStatus))
+                    {
+                        return false;
+                    }
+
+                    return genesisHash.Equals(chainStatus.GenesisHash) && canonComparer.Compare(
+                        BlockChain.PerceiveBlock(chainStatus, chainStatus.Timestamp),
+                        tipPerception
+                    ) > 0;
+                })
                 .Select(pp => (pp.Peer, pp.ChainStatus.TipIndex, pp.ChainStatus.TotalDifficulty))
                 .ToList();
 
@@ -1458,13 +1468,17 @@ namespace Libplanet.Net
 
         private bool IsDemandNeeded(BlockHeader target, BoundPeer peer)
         {
-            IComparer<IBlockExcerpt> canonComparer = BlockChain.Policy.CanonicalChainComparer;
+            IComparer<BlockPerception> canonComparer = BlockChain.Policy.CanonicalChainComparer;
+            var perception = BlockChain.PerceiveBlock(target);
             bool needed =
-                canonComparer.Compare(target, BlockChain.Tip) > 0 &&
-                (BlockDemand is null
-                    || (BlockDemand.Value.Timestamp + Options.BlockDemandLifespan <
-                        DateTimeOffset.UtcNow && !BlockDemand.Value.Peer.Equals(peer))
-                    || canonComparer.Compare(BlockDemand?.Header, target) < 0);
+                canonComparer.Compare(perception, BlockChain.PerceiveBlock(BlockChain.Tip)) > 0 &&
+                (!(BlockDemand is { } demand)
+                    || (demand.Timestamp + Options.BlockDemandLifespan <
+                        DateTimeOffset.UtcNow && !demand.Peer.Equals(peer))
+                    || canonComparer.Compare(
+                            BlockChain.PerceiveBlock(demand.Header, demand.Timestamp),
+                            perception
+                        ) < 0);
             _logger.Verbose(
                 "Determining if a demand is actually needed: {Need}\nDemand: {Demand}" +
                 "\nTip: {Tip}\nBlockDemand: {BlockDemand}\nCanonicalChainComparer: {Comparer}",
@@ -1514,11 +1528,19 @@ namespace Libplanet.Net
             }
             finally
             {
-                IComparer<IBlockExcerpt> canonComparer = BlockChain.Policy.CanonicalChainComparer;
-                if (synced is BlockChain<T> syncedNotNull
-                    && !syncedNotNull.Id.Equals(blockChain?.Id)
-                    && (blockChain.Tip is null
-                        || canonComparer.Compare(blockChain.Tip, syncedNotNull.Tip) < 0))
+                var canonComparer = BlockChain.Policy.CanonicalChainComparer;
+                if (synced is { } syncedB
+                    && !syncedB.Id.Equals(blockChain?.Id)
+                    && (!(blockChain.Tip is { } tip && syncedB.Tip is { } syncedTip)
+                        || canonComparer.Compare(
+                                blockChain.PerceiveBlock(tip),
+                                blockChain.PerceiveBlock(
+                                    syncedTip,
+                                    syncedB.PerceiveBlock(syncedTip).PerceivedTime
+                                )
+                            ) < 0
+                        )
+                    )
                 {
                     blockChain.Swap(
                         synced,
@@ -1725,11 +1747,14 @@ namespace Libplanet.Net
             CancellationToken cancellationToken
         )
         {
-            IComparer<IBlockExcerpt> canonComparer = BlockChain.Policy.CanonicalChainComparer;
+            IComparer<BlockPerception> canonComparer = BlockChain.Policy.CanonicalChainComparer;
             while (!cancellationToken.IsCancellationRequested)
             {
                 if (BlockDemand is null ||
-                    canonComparer.Compare(BlockDemand?.Header, BlockChain.Tip) <= 0)
+                    canonComparer.Compare(
+                        BlockChain.PerceiveBlock(BlockDemand?.Header),
+                        BlockChain.PerceiveBlock(BlockChain.Tip)
+                    ) <= 0)
                 {
                     await Task.Delay(1, cancellationToken);
                     continue;
