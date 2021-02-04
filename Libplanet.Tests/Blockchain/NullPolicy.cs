@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Libplanet.Action;
 using Libplanet.Blockchain;
@@ -19,7 +20,8 @@ namespace Libplanet.Tests.Blockchain
             _difficulty = difficulty;
         }
 
-        public IComparer<BlockPerception> CanonicalChainComparer => new TotalDifficultyComparer();
+        public IComparer<BlockPerception> CanonicalChainComparer =>
+            new TotalDifficultyComparer(TimeSpan.FromSeconds(3));
 
         public IAction BlockAction => null;
 

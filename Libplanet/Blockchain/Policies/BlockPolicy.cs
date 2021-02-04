@@ -92,7 +92,9 @@ namespace Libplanet.Blockchain.Policies
         /// A predicate that determines if the transaction follows the block policy.
         /// </param>
         /// <param name="canonicalChainComparer">The custom rule to determine which is the canonical
-        /// chain.  If omitted, <see cref="TotalDifficultyComparer"/> is used by default.</param>
+        /// chain.  If omitted, <see cref="TotalDifficultyComparer"/> (having
+        /// <see cref="TotalDifficultyComparer.OutdateAfter"/> configured to triple of
+        /// <paramref name="blockInterval"/>) is used by default.</param>
         public BlockPolicy(
             IAction blockAction,
             TimeSpan blockInterval,
@@ -138,7 +140,8 @@ namespace Libplanet.Blockchain.Policies
             _maxBlockBytes = maxBlockBytes;
             _maxGenesisBytes = maxGenesisBytes;
             _doesTransactionFollowPolicy = doesTransactionFollowPolicy ?? ((_, __) => true);
-            CanonicalChainComparer = canonicalChainComparer ?? new TotalDifficultyComparer();
+            CanonicalChainComparer = canonicalChainComparer
+                ?? new TotalDifficultyComparer(blockInterval + blockInterval + blockInterval);
         }
 
         /// <inheritdoc/>

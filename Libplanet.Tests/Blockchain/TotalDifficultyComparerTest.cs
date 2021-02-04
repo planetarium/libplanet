@@ -1,10 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
 using Libplanet.Tests.Blocks;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Libplanet.Tests.Blockchain
 {
@@ -52,22 +54,67 @@ namespace Libplanet.Tests.Blockchain
         private static readonly BlockPerception[] BlockPerceptions =
         {
             new BlockPerception(BlockExcerpts[0], DateTimeOffset.FromUnixTimeSeconds(1609426800)),
-            new BlockPerception(BlockExcerpts[1], DateTimeOffset.FromUnixTimeSeconds(1609426800)),
-            new BlockPerception(BlockExcerpts[2], DateTimeOffset.FromUnixTimeSeconds(1609426800)),
+            new BlockPerception(BlockExcerpts[1], DateTimeOffset.FromUnixTimeSeconds(1609426815)),
+            new BlockPerception(BlockExcerpts[2], DateTimeOffset.FromUnixTimeSeconds(1609426815)),
             new BlockPerception(BlockExcerpts[3], DateTimeOffset.FromUnixTimeSeconds(1609426800)),
             new BlockPerception(BlockExcerpts[4], DateTimeOffset.FromUnixTimeSeconds(1609426800)),
         };
 
+        private readonly ITestOutputHelper _output;
+
+        public TotalDifficultyComparerTest(ITestOutputHelper output)
+        {
+            _output = output;
+        }
+
         [Fact]
         public void Sort()
         {
-            BlockPerception[] sorted =
-                BlockPerceptions.OrderBy(e => e, new TotalDifficultyComparer()).ToArray();
-            Assert.Equal(BlockPerceptions[2], sorted[0]);
-            Assert.Equal(BlockPerceptions[1], sorted[1]);
-            Assert.Equal(BlockPerceptions[0], sorted[2]);
-            Assert.Equal(BlockPerceptions[4], sorted[3]);
-            Assert.Equal(BlockPerceptions[3], sorted[4]);
+            void PrintBlocks(IEnumerable<BlockPerception> blocks)
+            {
+                foreach (BlockPerception b in blocks)
+                {
+                    _output.WriteLine(
+                        nameof(BlockPerceptions) + "[{0}]",
+                        Array.IndexOf(BlockPerceptions, b)
+                    );
+                }
+
+                _output.WriteLine(string.Empty);
+            }
+
+            DateTimeOffset currentTime = DateTimeOffset.FromUnixTimeSeconds(1609426815);
+            TimeSpan outdateAfter = TimeSpan.FromSeconds(15);
+            var comparer = new TotalDifficultyComparer(outdateAfter, () => currentTime);
+            BlockPerception[] sorted = BlockPerceptions.OrderBy(e => e, comparer).ToArray();
+            PrintBlocks(sorted);
+            Assert.Equal(BlockPerceptions[0], sorted[0]);
+            Assert.Equal(BlockPerceptions[4], sorted[1]);
+            Assert.Equal(BlockPerceptions[3], sorted[2]);
+            Assert.Equal(BlockPerceptions[2], sorted[3]);
+            Assert.Equal(BlockPerceptions[1], sorted[4]);
+
+            sorted = BlockPerceptions
+                .Select(p => new BlockPerception(p.BlockExcerpt, currentTime))
+                .OrderBy(e => e, comparer)
+                .ToArray();
+            PrintBlocks(sorted);
+            Assert.Equal(BlockPerceptions[2].BlockExcerpt, sorted[0].BlockExcerpt);
+            Assert.Equal(BlockPerceptions[1].BlockExcerpt, sorted[1].BlockExcerpt);
+            Assert.Equal(BlockPerceptions[0].BlockExcerpt, sorted[2].BlockExcerpt);
+            Assert.Equal(BlockPerceptions[4].BlockExcerpt, sorted[3].BlockExcerpt);
+            Assert.Equal(BlockPerceptions[3].BlockExcerpt, sorted[4].BlockExcerpt);
+
+            sorted = BlockPerceptions
+                .Select(p => new BlockPerception(p.BlockExcerpt, currentTime - outdateAfter))
+                .OrderBy(e => e, comparer)
+                .ToArray();
+            PrintBlocks(sorted);
+            Assert.Equal(BlockPerceptions[2].BlockExcerpt, sorted[0].BlockExcerpt);
+            Assert.Equal(BlockPerceptions[1].BlockExcerpt, sorted[1].BlockExcerpt);
+            Assert.Equal(BlockPerceptions[0].BlockExcerpt, sorted[2].BlockExcerpt);
+            Assert.Equal(BlockPerceptions[4].BlockExcerpt, sorted[3].BlockExcerpt);
+            Assert.Equal(BlockPerceptions[3].BlockExcerpt, sorted[4].BlockExcerpt);
         }
 
         private static HashDigest<SHA256> H(string h) => HashDigest<SHA256>.FromString(h);
