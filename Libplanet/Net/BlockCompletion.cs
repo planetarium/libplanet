@@ -347,7 +347,11 @@ namespace Libplanet.Net
                     timeoutToken.Register(() =>
                         _logger.Debug("Timed out to wait a response from {Peer}.", peer)
                     );
-                    ct.Register(() => timeout.Cancel());
+                    ct.Register(() =>
+                    {
+                        timeout.Cancel();
+                        timeout.Dispose();
+                    });
 
                     try
                     {
