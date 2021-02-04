@@ -173,6 +173,7 @@ To be released.
     belonging to the existing block, which was mined before the protocol v1,
     are guaranteed to still behave as it had done.  [[#1152]]
  -  Fixed a bug where `Block<T>.Evaluate()` hadn't validate its hash.  [[#1168]]
+ -  Fixed memory leak due to undisposed `CancellationTokenSource`s.  [[#1182]]
 
 ### CLI tools
 
@@ -235,6 +236,7 @@ To be released.
 [#1173]: https://github.com/planetarium/libplanet/issues/1173
 [#1180]: https://github.com/planetarium/libplanet/pull/1180
 [#1181]: https://github.com/planetarium/libplanet/pull/1181
+[#1182]: https://github.com/planetarium/libplanet/pull/1182
 
 
 Version 0.10.3
