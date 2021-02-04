@@ -71,7 +71,6 @@ namespace Libplanet.Stun
 
         public async Task InitializeTurnAsync(CancellationToken cancellationToken)
         {
-            _control?.Dispose();
             _control = new TcpClient();
 #pragma warning disable PC001 // API not supported on all platforms
             _control.Connect(_host, _port);
@@ -115,9 +114,7 @@ namespace Libplanet.Stun
                 finally
                 {
                     Log.Debug("TURN tasks cancelled. Re-initializing TURN...");
-                    _turnTaskCts.Cancel();
-                    _turnTasks.Clear();
-
+                    ClearSession();
                     _turnTaskCts = new CancellationTokenSource();
 
                     await InitializeTurnAsync(cancellationToken);
@@ -186,6 +183,7 @@ namespace Libplanet.Stun
                 byte[] id = attempt.ConnectionId;
                 var bindRequest = new ConnectionBindRequest(id);
                 var relayedClient = new TcpClient(_host, _port);
+                _relayedClients.Add(relayedClient);
                 NetworkStream relayedStream = relayedClient.GetStream();
 
                 try
@@ -195,7 +193,6 @@ namespace Libplanet.Stun
 
                     if (bindResponse is ConnectionBindSuccessResponse)
                     {
-                        _relayedClients.Add(relayedClient);
                         return relayedStream;
                     }
 
@@ -286,12 +283,7 @@ namespace Libplanet.Stun
         public void Dispose()
         {
             Log.Debug($"Disposing {nameof(TurnClient)}...");
-            _control?.Dispose();
-            foreach (TcpClient c in _relayedClients)
-            {
-                c.Dispose();
-            }
-
+            ClearSession();
             Log.Debug($"{nameof(TurnClient)} is disposed.");
         }
 
@@ -435,6 +427,20 @@ namespace Libplanet.Stun
             _responses.Remove(transactionId);
 
             return response;
+        }
+
+        private void ClearSession()
+        {
+            _control?.Dispose();
+            _turnTaskCts.Cancel();
+            _turnTaskCts.Dispose();
+            _turnTasks.Clear();
+            _responses.Clear();
+
+            foreach (TcpClient relays in _relayedClients)
+            {
+                relays.Dispose();
+            }
         }
 
         private class ByteArrayComparer : IEqualityComparer<byte[]>
