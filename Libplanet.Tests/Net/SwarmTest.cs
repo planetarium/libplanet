@@ -625,7 +625,7 @@ namespace Libplanet.Tests.Net
             };
 
             var cts = new CancellationTokenSource();
-            var tasks = new List<Task> { TurnProxy(port, turnUrl, cts.Token) };
+            var proxyTask = TurnProxy(port, turnUrl, cts.Token);
 
             var seed = CreateSwarm(host: "localhost");
             var swarmA = CreateSwarm(iceServers: iceServers);
@@ -667,11 +667,12 @@ namespace Libplanet.Tests.Net
                 await swarmA.AddPeersAsync(new[] { seed.AsPeer }, null);
 
                 cts.Cancel();
+                await proxyTask;
                 cts = new CancellationTokenSource();
 
-                tasks.Add(TurnProxy(port, turnUrl, cts.Token));
-                tasks.Add(RefreshTableAsync(cts.Token));
-                tasks.Add(MineAndBroadcast(cts.Token));
+                proxyTask = TurnProxy(port, turnUrl, cts.Token);
+                _ = RefreshTableAsync(cts.Token);
+                _ = MineAndBroadcast(cts.Token);
 
                 await swarmA.BlockReceived.WaitAsync();
                 cts.Cancel();

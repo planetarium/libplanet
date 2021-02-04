@@ -25,9 +25,6 @@ namespace Libplanet.Net
     {
         private const int MessageHistoryCapacity = 30;
 
-        private static readonly TimeSpan TurnAllocationLifetime =
-            TimeSpan.FromSeconds(777);
-
         // TURN Permission lifetime was defined in RFC 5766
         // see also https://tools.ietf.org/html/rfc5766#section-8
         private static readonly TimeSpan TurnPermissionLifetime =
@@ -39,7 +36,6 @@ namespace Libplanet.Net
         private readonly string _host;
         private readonly IList<IceServer> _iceServers;
         private readonly ILogger _logger;
-        private readonly AsyncLock _turnClientMutex;
         private readonly TimeSpan? _messageLifespan;
 
         private NetMQQueue<NetMQMessage> _replyQueue;
@@ -58,7 +54,6 @@ namespace Libplanet.Net
         private CancellationTokenSource _runtimeCancellationTokenSource;
         private CancellationTokenSource _turnCancellationTokenSource;
         private Task _runtimeProcessor;
-        private Task _refreshPermissions;
 
         private TaskCompletionSource<object> _runningEvent;
         private CancellationToken _cancellationToken;
@@ -125,7 +120,6 @@ namespace Libplanet.Net
             _host = host;
             _listenPort = listenPort;
             _differentAppProtocolVersionEncountered = differentAppProtocolVersionEncountered;
-            _turnClientMutex = new AsyncLock();
             _table = table;
             _messageLifespan = messageLifespan;
 
@@ -257,7 +251,7 @@ namespace Libplanet.Net
                 _turnClient = await IceServer.CreateTurnClient(_iceServers);
                 await _turnClient.StartAsync(_listenPort.Value, _cancellationToken);
 
-                _refreshPermissions = RefreshPermissions(_cancellationToken);
+                _ = RefreshPermissions(_cancellationToken);
             }
 
             _cancellationToken = cancellationToken;
