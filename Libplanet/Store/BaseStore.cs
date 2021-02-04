@@ -121,6 +121,15 @@ namespace Libplanet.Store
         public abstract bool ContainsBlock(HashDigest<SHA256> blockHash);
 
         /// <inheritdoc/>
+        public abstract void SetBlockPerceivedTime(
+            HashDigest<SHA256> blockHash,
+            DateTimeOffset perceivedTime
+        );
+
+        /// <inheritdoc/>
+        public abstract DateTimeOffset? GetBlockPerceivedTime(HashDigest<SHA256> blockHash);
+
+        /// <inheritdoc/>
         public abstract IEnumerable<KeyValuePair<Address, long>> ListTxNonces(Guid chainId);
 
         /// <inheritdoc/>

@@ -31,20 +31,20 @@ namespace Libplanet.Store
 
         private static readonly UPath TxRootPath = UPath.Root / "tx";
         private static readonly UPath BlockRootPath = UPath.Root / "block";
+        private static readonly UPath BlockPerceptionRootPath = UPath.Root / "blockpercept";
 
         private readonly ILogger _logger;
 
         private readonly IFileSystem _root;
         private readonly SubFileSystem _txs;
         private readonly SubFileSystem _blocks;
-        private readonly bool _compress;
+        private readonly SubFileSystem _blockPerceptions;
         private readonly LruCache<TxId, object> _txCache;
         private readonly LruCache<HashDigest<SHA256>, BlockDigest> _blockCache;
 
         private readonly MemoryStream _memoryStream;
 
         private readonly LiteDatabase _db;
-        private readonly Codec _codec;
 
         /// <summary>
         /// Creates a new <seealso cref="DefaultStore"/>.
@@ -137,11 +137,11 @@ namespace Libplanet.Store
             _txs = new SubFileSystem(_root, TxRootPath, owned: false);
             _root.CreateDirectory(BlockRootPath);
             _blocks = new SubFileSystem(_root, BlockRootPath, owned: false);
+            _root.CreateDirectory(BlockPerceptionRootPath);
+            _blockPerceptions = new SubFileSystem(_root, BlockPerceptionRootPath, owned: false);
 
-            _compress = compress;
             _txCache = new LruCache<TxId, object>(capacity: txCacheSize);
             _blockCache = new LruCache<HashDigest<SHA256>, BlockDigest>(capacity: blockCacheSize);
-            _codec = new Codec();
         }
 
         private LiteCollection<StagedTxIdDoc> StagedTxIds =>
@@ -492,6 +492,32 @@ namespace Libplanet.Store
 
             UPath blockPath = BlockPath(blockHash);
             return _blocks.FileExists(blockPath);
+        }
+
+        /// <inheritdoc/>
+        public override void SetBlockPerceivedTime(
+            HashDigest<SHA256> blockHash,
+            DateTimeOffset perceivedTime
+        )
+        {
+            UPath path = BlockPath(blockHash);
+            if (!_blockPerceptions.FileExists(path))
+            {
+                UPath dirPath = path.GetDirectory();
+                CreateDirectoryRecursively(_blockPerceptions, dirPath);
+                _blockPerceptions.WriteAllBytes(path, new byte[0]);
+            }
+
+            _blockPerceptions.SetLastWriteTime(path, perceivedTime.LocalDateTime);
+        }
+
+        /// <inheritdoc/>
+        public override DateTimeOffset? GetBlockPerceivedTime(HashDigest<SHA256> blockHash)
+        {
+            UPath path = BlockPath(blockHash);
+            return _blockPerceptions.FileExists(path)
+                ? (DateTimeOffset?)_blockPerceptions.GetLastWriteTime(path)
+                : null;
         }
 
         /// <inheritdoc/>

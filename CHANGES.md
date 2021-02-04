@@ -28,6 +28,8 @@ To be released.
     `DelayedActionRenderer()` constructor.  [[#1155], [#1165]]
  -  Added `reorgResistantHeight` parameter into `DelayedActionRenderer<T>()`
     constructor. [[#1163]]
+ -  Added `IStore.SetBlockPerceivedTime()` method.  [[#1184]]
+ -  Added `IStore.GetBlockPerceivedTime()` method.  [[#1184]]
  -  Removed `TransactionSet<T>` class.  [[#1165]]
  -  Removed `IBlockStatesStore` interface.  [[#1117]]
  -  Removed `BaseBlockStatesStore` abstract class.  [[#1117]]
@@ -239,6 +241,7 @@ To be released.
 [#1180]: https://github.com/planetarium/libplanet/pull/1180
 [#1181]: https://github.com/planetarium/libplanet/pull/1181
 [#1182]: https://github.com/planetarium/libplanet/pull/1182
+[#1184]: https://github.com/planetarium/libplanet/pull/1184
 [#1185]: https://github.com/planetarium/libplanet/pull/1185
 [#1186]: https://github.com/planetarium/libplanet/pull/1186
 
