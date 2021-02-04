@@ -67,11 +67,13 @@ To be released.
  -  Added `Block<T>.Header` property.  [[#1070], [#1102]]
  -  Added `BlockHeader.ProtocolVersion` property.  [[#1142], [#1147]]
  -  Added `IBlockExcerpt` interface.  [[#1155], [#1165], [#1170]]
- -  Added `BlockExcerpt` class.  [[#1155], [#1165], [#1170]]
+ -  Added `BlockExcerpt` static class.  [[#1155], [#1165], [#1170], [#1184]]
  -  `Block<T>` became to implement `IBlockExceprt` interface.
     [[#1155], [#1165], [#1170]]
  -  `BlockHeader` became to implement `IBlockExceprt` interface.
     [[#1155], [#1165], [#1170]]
+ -  Added `BlockPerception` struct.  [[#1155], [#1184]]
+ -  Added `BlockChain<T>.PerceiveBlock()` method.  [[#1155], [#1184]]
  -  Added `DelayedRenderer<T>.CanonicalChainComparer` and
     `DelayedActionRenderer<T>.CanonicalChainComparer` properties.
     [[#1155], [#1165]]
