@@ -204,7 +204,7 @@ namespace Libplanet.Net
             IStagePolicy<T> stagePolicy = BlockChain.StagePolicy;
             ImmutableHashSet<TxId> newTxIds = message.Ids
                 .Where(id => !_demandTxIds.ContainsKey(id))
-                .Where(id => !stagePolicy.HasStaged(BlockChain, id, true))
+                .Where(id => !stagePolicy.HasStaged(BlockChain, id))
                 .ToImmutableHashSet();
 
             if (!newTxIds.Any())

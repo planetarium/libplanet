@@ -632,7 +632,7 @@ namespace Libplanet.Blockchain
                     msg);
             }
 
-            if (!StagePolicy.HasStaged(this, transaction.Id, includeUnstaged: true)
+            if (!StagePolicy.HasStaged(this, transaction.Id)
                 && transaction.Nonce >= Store.GetTxNonce(Id, transaction.Signer))
             {
                 StagePolicy.Stage(this, transaction);

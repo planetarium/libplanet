@@ -91,28 +91,23 @@ namespace Libplanet.Tests.Blockchain.Policies
         {
             foreach (Transaction<DumbAction> tx in _txs)
             {
-                Assert.False(StagePolicy.HasStaged(_chain, tx.Id, includeUnstaged: false));
-                Assert.False(StagePolicy.HasStaged(_chain, tx.Id, includeUnstaged: true));
+                Assert.False(StagePolicy.HasStaged(_chain, tx.Id));
             }
 
             StagePolicy.Stage(_chain, _txs[0]);
 
-            Assert.True(StagePolicy.HasStaged(_chain, _txs[0].Id, includeUnstaged: false));
-            Assert.True(StagePolicy.HasStaged(_chain, _txs[0].Id, includeUnstaged: true));
+            Assert.True(StagePolicy.HasStaged(_chain, _txs[0].Id));
             foreach (Transaction<DumbAction> tx in _txs.Skip(1))
             {
-                Assert.False(StagePolicy.HasStaged(_chain, tx.Id, includeUnstaged: false));
-                Assert.False(StagePolicy.HasStaged(_chain, tx.Id, includeUnstaged: true));
+                Assert.False(StagePolicy.HasStaged(_chain, tx.Id));
             }
 
             StagePolicy.Unstage(_chain, _txs[0].Id);
 
-            Assert.False(StagePolicy.HasStaged(_chain, _txs[0].Id, includeUnstaged: false));
-            Assert.True(StagePolicy.HasStaged(_chain, _txs[0].Id, includeUnstaged: true));
+            Assert.True(StagePolicy.HasStaged(_chain, _txs[0].Id));
             foreach (Transaction<DumbAction> tx in _txs.Skip(1))
             {
-                Assert.False(StagePolicy.HasStaged(_chain, tx.Id, includeUnstaged: false));
-                Assert.False(StagePolicy.HasStaged(_chain, tx.Id, includeUnstaged: true));
+                Assert.False(StagePolicy.HasStaged(_chain, tx.Id));
             }
         }
 
