@@ -101,7 +101,6 @@ namespace Libplanet.Tests.Blockchain.Policies
             // If a transaction is in the stage, it is not ignored.
             StagePolicy.Stage(_chain, _txs[1]);
             StagePolicy.Ignore(_chain, _txs[1].Id);
-            Assert.False(StagePolicy.Ignores(_chain, _txs[1].Id));
             Assert.Equal(_txs[1], StagePolicy.Get(_chain, _txs[1].Id, includeUnstaged: true));
         }
 

@@ -632,10 +632,18 @@ namespace Libplanet.Blockchain
                     msg);
             }
 
-            if (!StagePolicy.Ignores(this, transaction.Id)
-                && transaction.Nonce >= Store.GetTxNonce(Id, transaction.Signer))
+            if (StagePolicy.Ignores(this, transaction.Id))
+            {
+                return;
+            }
+
+            if (transaction.Nonce >= Store.GetTxNonce(Id, transaction.Signer))
             {
                 StagePolicy.Stage(this, transaction);
+            }
+            else
+            {
+                StagePolicy.Ignore(this, transaction.Id);
             }
         }
 

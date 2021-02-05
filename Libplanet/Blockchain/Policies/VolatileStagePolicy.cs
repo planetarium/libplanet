@@ -102,7 +102,8 @@ namespace Libplanet.Blockchain.Policies
 
         /// <inheritdoc cref="IStagePolicy{T}.Ignores(BlockChain{T}, TxId)"/>
         public bool Ignores(BlockChain<T> blockChain, TxId id) =>
-            Get(blockChain, id, includeUnstaged: true) is { };
+            (_set.TryGetValue(id, out Transaction<T>? tx) && tx is null)
+            || Get(blockChain, id, includeUnstaged: true) is { };
 
         /// <inheritdoc cref="IStagePolicy{T}.Get(BlockChain{T}, TxId, bool)"/>
         public Transaction<T>? Get(BlockChain<T> blockChain, TxId id, bool includeUnstaged)
