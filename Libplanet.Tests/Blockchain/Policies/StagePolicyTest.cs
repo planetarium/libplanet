@@ -87,27 +87,27 @@ namespace Libplanet.Tests.Blockchain.Policies
         }
 
         [Fact]
-        public void HasStaged()
+        public void Ignores()
         {
             foreach (Transaction<DumbAction> tx in _txs)
             {
-                Assert.False(StagePolicy.HasStaged(_chain, tx.Id));
+                Assert.False(StagePolicy.Ignores(_chain, tx.Id));
             }
 
             StagePolicy.Stage(_chain, _txs[0]);
 
-            Assert.True(StagePolicy.HasStaged(_chain, _txs[0].Id));
+            Assert.True(StagePolicy.Ignores(_chain, _txs[0].Id));
             foreach (Transaction<DumbAction> tx in _txs.Skip(1))
             {
-                Assert.False(StagePolicy.HasStaged(_chain, tx.Id));
+                Assert.False(StagePolicy.Ignores(_chain, tx.Id));
             }
 
             StagePolicy.Unstage(_chain, _txs[0].Id);
 
-            Assert.True(StagePolicy.HasStaged(_chain, _txs[0].Id));
+            Assert.True(StagePolicy.Ignores(_chain, _txs[0].Id));
             foreach (Transaction<DumbAction> tx in _txs.Skip(1))
             {
-                Assert.False(StagePolicy.HasStaged(_chain, tx.Id));
+                Assert.False(StagePolicy.Ignores(_chain, tx.Id));
             }
         }
 

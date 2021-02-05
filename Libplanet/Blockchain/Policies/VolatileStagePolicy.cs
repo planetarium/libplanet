@@ -98,8 +98,8 @@ namespace Libplanet.Blockchain.Policies
             _lock.ExitWriteLock();
         }
 
-        /// <inheritdoc cref="IStagePolicy{T}.HasStaged(BlockChain{T}, TxId)"/>
-        public bool HasStaged(BlockChain<T> blockChain, TxId id) =>
+        /// <inheritdoc cref="IStagePolicy{T}.Ignores(BlockChain{T}, TxId)"/>
+        public bool Ignores(BlockChain<T> blockChain, TxId id) =>
             Get(blockChain, id, includeUnstaged: true) is { };
 
         /// <inheritdoc cref="IStagePolicy{T}.Get(BlockChain{T}, TxId, bool)"/>

@@ -35,13 +35,14 @@ namespace Libplanet.Blockchain.Policies
         public void Unstage(BlockChain<T> blockChain, TxId id);
 
         /// <summary>
-        /// Checks if a transaction <paramref name="id"/> has been staged.
+        /// Checks if a transaction should be ignored for any reasons (for example, it is already
+        /// staged or marked as ignored).
         /// </summary>
         /// <param name="blockChain">The chain that the stage belongs to.</param>
         /// <param name="id">The <see cref="Transaction{T}.Id"/> to check.</param>
-        /// <returns><c>true</c> if a transaction has been staged.
+        /// <returns><c>true</c> if a transaction should be ignored.
         /// Otherwise, <c>false</c>.</returns>
-        public bool HasStaged(BlockChain<T> blockChain, TxId id);
+        public bool Ignores(BlockChain<T> blockChain, TxId id);
 
         /// <summary>
         /// Gets a staged <see cref="Transaction{T}"/> by its <paramref name="id"/>.
