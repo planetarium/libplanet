@@ -22,7 +22,8 @@ namespace Libplanet.Blockchain.Policies
         /// </param>
         /// <param name="transaction">The <seealso cref="Transaction{T}"/> to be staged.</param>
         /// <remarks>It does not throw any exception even if the <paramref name="transaction"/> has
-        /// already been staged.</remarks>
+        /// already been staged.  It does nothing either if the <paramref name="transaction"/> has
+        /// marked as ignored (using <see cref="Ignore(BlockChain{T}, TxId)"/> method).</remarks>
         public void Stage(BlockChain<T> blockChain, Transaction<T> transaction);
 
         /// <summary>
@@ -35,17 +36,22 @@ namespace Libplanet.Blockchain.Policies
         public void Unstage(BlockChain<T> blockChain, TxId id);
 
         /// <summary>
-        /// Checks if a transaction <paramref name="id"/> has staged.
+        /// Marks a transaction as ignored, so that it will be never staged.
+        /// </summary>
+        /// <param name="blockChain">The chain that the stage belongs to.</param>
+        /// <param name="id">The <see cref="Transaction{T}.Id"/> to ignore.</param>
+        /// <remarks>If the transaction is already in the stage, this method does nothing.</remarks>
+        public void Ignore(BlockChain<T> blockChain, TxId id);
+
+        /// <summary>
+        /// Checks if a transaction should be ignored for any reasons (for example, it is already
+        /// staged or marked as ignored).
         /// </summary>
         /// <param name="blockChain">The chain that the stage belongs to.</param>
         /// <param name="id">The <see cref="Transaction{T}.Id"/> to check.</param>
-        /// <param name="includeUnstaged">Whether to include transactions that had once staged but
-        /// unstaged then.</param>
-        /// <returns><c>true</c> if a transaction is staged.  For transactions that had once staged
-        /// but unstaged then, it returns <c>true</c> iff <paramref name="includeUnstaged"/> is
-        /// turned on; otherwise it returns <c>false</c> for those cases.  For transactions
-        /// that have never staged, it returns <c>false</c>.</returns>
-        public bool HasStaged(BlockChain<T> blockChain, TxId id, bool includeUnstaged);
+        /// <returns><c>true</c> if a transaction should be ignored.
+        /// Otherwise, <c>false</c>.</returns>
+        public bool Ignores(BlockChain<T> blockChain, TxId id);
 
         /// <summary>
         /// Gets a staged <see cref="Transaction{T}"/> by its <paramref name="id"/>.

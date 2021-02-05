@@ -64,6 +64,11 @@ namespace Libplanet.Tests.Blockchain.Policies
             Assert.Equal(_txs.Take(2), StagePolicy.Iterate(_chain));
             StagePolicy.Stage(_chain, _txs[2]);
             Assert.Equal(_txs.Take(3), StagePolicy.Iterate(_chain));
+
+            // If a transaction is marked as ignored, it cannot be staged.
+            StagePolicy.Ignore(_chain, _txs[3].Id);
+            StagePolicy.Stage(_chain, _txs[3]);
+            Assert.Null(StagePolicy.Get(_chain, _txs[3].Id, includeUnstaged: true));
         }
 
         [Fact]
@@ -87,32 +92,49 @@ namespace Libplanet.Tests.Blockchain.Policies
         }
 
         [Fact]
-        public void HasStaged()
+        public void Ignore()
+        {
+            StagePolicy.Ignore(_chain, _txs[0].Id);
+            Assert.True(StagePolicy.Ignores(_chain, _txs[0].Id));
+            Assert.Null(StagePolicy.Get(_chain, _txs[0].Id, includeUnstaged: true));
+
+            // If a transaction is in the stage, it is not ignored.
+            StagePolicy.Stage(_chain, _txs[1]);
+            StagePolicy.Ignore(_chain, _txs[1].Id);
+            Assert.Equal(_txs[1], StagePolicy.Get(_chain, _txs[1].Id, includeUnstaged: true));
+        }
+
+        [Fact]
+        public void Ignores()
         {
             foreach (Transaction<DumbAction> tx in _txs)
             {
-                Assert.False(StagePolicy.HasStaged(_chain, tx.Id, includeUnstaged: false));
-                Assert.False(StagePolicy.HasStaged(_chain, tx.Id, includeUnstaged: true));
+                Assert.False(StagePolicy.Ignores(_chain, tx.Id));
             }
 
             StagePolicy.Stage(_chain, _txs[0]);
 
-            Assert.True(StagePolicy.HasStaged(_chain, _txs[0].Id, includeUnstaged: false));
-            Assert.True(StagePolicy.HasStaged(_chain, _txs[0].Id, includeUnstaged: true));
+            Assert.True(StagePolicy.Ignores(_chain, _txs[0].Id));
             foreach (Transaction<DumbAction> tx in _txs.Skip(1))
             {
-                Assert.False(StagePolicy.HasStaged(_chain, tx.Id, includeUnstaged: false));
-                Assert.False(StagePolicy.HasStaged(_chain, tx.Id, includeUnstaged: true));
+                Assert.False(StagePolicy.Ignores(_chain, tx.Id));
             }
 
             StagePolicy.Unstage(_chain, _txs[0].Id);
 
-            Assert.False(StagePolicy.HasStaged(_chain, _txs[0].Id, includeUnstaged: false));
-            Assert.True(StagePolicy.HasStaged(_chain, _txs[0].Id, includeUnstaged: true));
+            Assert.True(StagePolicy.Ignores(_chain, _txs[0].Id));
             foreach (Transaction<DumbAction> tx in _txs.Skip(1))
             {
-                Assert.False(StagePolicy.HasStaged(_chain, tx.Id, includeUnstaged: false));
-                Assert.False(StagePolicy.HasStaged(_chain, tx.Id, includeUnstaged: true));
+                Assert.False(StagePolicy.Ignores(_chain, tx.Id));
+            }
+
+            StagePolicy.Ignore(_chain, _txs[1].Id);
+
+            Assert.True(StagePolicy.Ignores(_chain, _txs[0].Id));
+            Assert.True(StagePolicy.Ignores(_chain, _txs[1].Id));
+            foreach (Transaction<DumbAction> tx in _txs.Skip(2))
+            {
+                Assert.False(StagePolicy.Ignores(_chain, tx.Id));
             }
         }
 

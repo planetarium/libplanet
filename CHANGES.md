@@ -74,8 +74,8 @@ To be released.
     `DelayedActionRenderer<T>.CanonicalChainComparer` properties.
     [[#1155], [#1165]]
  -  Added `TotalDifficultyComparer` class.  [[#1155], [#1165], [#1170]]
- -  Added `IStagePolicy<T>` interface.  [[#1130], [#1131]]
- -  Added `VolatileStagePolicy<T>` class.  [[#1130], [#1131], [#1136]]
+ -  Added `IStagePolicy<T>` interface.  [[#1130], [#1131], [#1186]]
+ -  Added `VolatileStagePolicy<T>` class.  [[#1130], [#1131], [#1136], [#1186]]
  -  Added `ITransport` interface.  [[#1052]]
  -  Added `NetMQTransport` class which implements `ITransport`.  [[#1052]]
  -  Added `Message` abstract class.  [[#1052]]
@@ -145,7 +145,7 @@ To be released.
     the moment, as its `StagePolicy`, its staged transactions are no longer
     persistent but volatile instead.  It also automatically purges staged
     transactions after the given `Lifetime`, which is 3 hours by default.
-    [[#1130], [#1131], [#1136]]
+    [[#1130], [#1131], [#1136], [#1186]]
  -  `Swarm<T>` became not to receive states from trusted peers.
     [[#1061], [#1102]]
  -  `Swarm<T>` became not to retry when block downloading.  [[#1062], [#1102]]
@@ -159,7 +159,7 @@ To be released.
     before storing its `StateRootHash`.  [[#1172]]
  -  `Blockchain<T>` became not to stage transactions having nonce
     less than or equal to the nonce of the same signer's latest
-    transaction in already mined blocks.  [[#1173], [#1180]]
+    transaction in already mined blocks.  [[#1173], [#1180], [#1186]]
  -  Improved security of `Message.Parse()`.  [[#1161], [#1181]]
 
 ### Bug fixes
@@ -240,6 +240,7 @@ To be released.
 [#1181]: https://github.com/planetarium/libplanet/pull/1181
 [#1182]: https://github.com/planetarium/libplanet/pull/1182
 [#1185]: https://github.com/planetarium/libplanet/pull/1185
+[#1186]: https://github.com/planetarium/libplanet/pull/1186
 
 
 Version 0.10.3
