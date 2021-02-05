@@ -17,10 +17,8 @@ namespace Libplanet.Blockchain.Policies
     public class VolatileStagePolicy<T> : IStagePolicy<T>
         where T : IAction, new()
     {
-        private readonly ConcurrentDictionary<TxId, Transaction<T>> _set;
-
+        private readonly ConcurrentDictionary<TxId, Transaction<T>?> _set;
         private readonly List<TxId> _queue;
-
         private readonly ReaderWriterLockSlim _lock;
 
         /// <summary>
@@ -40,7 +38,7 @@ namespace Libplanet.Blockchain.Policies
         public VolatileStagePolicy(TimeSpan lifetime)
         {
             Lifetime = lifetime;
-            _set = new ConcurrentDictionary<TxId, Transaction<T>>();
+            _set = new ConcurrentDictionary<TxId, Transaction<T>?>();
             _queue = new List<TxId>();
             _lock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
         }
@@ -98,6 +96,10 @@ namespace Libplanet.Blockchain.Policies
             _lock.ExitWriteLock();
         }
 
+        /// <inheritdoc cref="IStagePolicy{T}.Ignore(BlockChain{T}, TxId)"/>
+        public void Ignore(BlockChain<T> blockChain, TxId id) =>
+            _set.TryAdd(id, null);
+
         /// <inheritdoc cref="IStagePolicy{T}.Ignores(BlockChain{T}, TxId)"/>
         public bool Ignores(BlockChain<T> blockChain, TxId id) =>
             Get(blockChain, id, includeUnstaged: true) is { };
@@ -105,7 +107,7 @@ namespace Libplanet.Blockchain.Policies
         /// <inheritdoc cref="IStagePolicy{T}.Get(BlockChain{T}, TxId, bool)"/>
         public Transaction<T>? Get(BlockChain<T> blockChain, TxId id, bool includeUnstaged)
         {
-            if (!_set.TryGetValue(id, out Transaction<T>? tx))
+            if (!_set.TryGetValue(id, out Transaction<T>? tx) || tx is null)
             {
                 return null;
             }
@@ -154,7 +156,7 @@ namespace Libplanet.Blockchain.Policies
             var expired = new List<TxId>();
             foreach (TxId txid in queue)
             {
-                if (_set.TryGetValue(txid, out Transaction<T>? tx))
+                if (_set.TryGetValue(txid, out Transaction<T>? tx) && !(tx is null))
                 {
                     if (tx.Timestamp > exp)
                     {
