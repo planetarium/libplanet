@@ -2562,24 +2562,42 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.IStagePolicy(Of T).Get
   nameWithType: IStagePolicy<T>.Get
   nameWithType.vb: IStagePolicy(Of T).Get
-- uid: Libplanet.Blockchain.Policies.IStagePolicy`1.HasStaged(Libplanet.Blockchain.BlockChain{`0},Libplanet.Tx.TxId,System.Boolean)
-  name: HasStaged(BlockChain<T>, TxId, Boolean)
-  href: api/Libplanet.Blockchain.Policies.IStagePolicy-1.html#Libplanet_Blockchain_Policies_IStagePolicy_1_HasStaged_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_TxId_System_Boolean_
-  commentId: M:Libplanet.Blockchain.Policies.IStagePolicy`1.HasStaged(Libplanet.Blockchain.BlockChain{`0},Libplanet.Tx.TxId,System.Boolean)
-  name.vb: HasStaged(BlockChain(Of T), TxId, Boolean)
-  fullName: Libplanet.Blockchain.Policies.IStagePolicy<T>.HasStaged(Libplanet.Blockchain.BlockChain<T>, Libplanet.Tx.TxId, System.Boolean)
-  fullName.vb: Libplanet.Blockchain.Policies.IStagePolicy(Of T).HasStaged(Libplanet.Blockchain.BlockChain(Of T), Libplanet.Tx.TxId, System.Boolean)
-  nameWithType: IStagePolicy<T>.HasStaged(BlockChain<T>, TxId, Boolean)
-  nameWithType.vb: IStagePolicy(Of T).HasStaged(BlockChain(Of T), TxId, Boolean)
-- uid: Libplanet.Blockchain.Policies.IStagePolicy`1.HasStaged*
-  name: HasStaged
-  href: api/Libplanet.Blockchain.Policies.IStagePolicy-1.html#Libplanet_Blockchain_Policies_IStagePolicy_1_HasStaged_
-  commentId: Overload:Libplanet.Blockchain.Policies.IStagePolicy`1.HasStaged
+- uid: Libplanet.Blockchain.Policies.IStagePolicy`1.Ignore(Libplanet.Blockchain.BlockChain{`0},Libplanet.Tx.TxId)
+  name: Ignore(BlockChain<T>, TxId)
+  href: api/Libplanet.Blockchain.Policies.IStagePolicy-1.html#Libplanet_Blockchain_Policies_IStagePolicy_1_Ignore_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_TxId_
+  commentId: M:Libplanet.Blockchain.Policies.IStagePolicy`1.Ignore(Libplanet.Blockchain.BlockChain{`0},Libplanet.Tx.TxId)
+  name.vb: Ignore(BlockChain(Of T), TxId)
+  fullName: Libplanet.Blockchain.Policies.IStagePolicy<T>.Ignore(Libplanet.Blockchain.BlockChain<T>, Libplanet.Tx.TxId)
+  fullName.vb: Libplanet.Blockchain.Policies.IStagePolicy(Of T).Ignore(Libplanet.Blockchain.BlockChain(Of T), Libplanet.Tx.TxId)
+  nameWithType: IStagePolicy<T>.Ignore(BlockChain<T>, TxId)
+  nameWithType.vb: IStagePolicy(Of T).Ignore(BlockChain(Of T), TxId)
+- uid: Libplanet.Blockchain.Policies.IStagePolicy`1.Ignore*
+  name: Ignore
+  href: api/Libplanet.Blockchain.Policies.IStagePolicy-1.html#Libplanet_Blockchain_Policies_IStagePolicy_1_Ignore_
+  commentId: Overload:Libplanet.Blockchain.Policies.IStagePolicy`1.Ignore
   isSpec: "True"
-  fullName: Libplanet.Blockchain.Policies.IStagePolicy<T>.HasStaged
-  fullName.vb: Libplanet.Blockchain.Policies.IStagePolicy(Of T).HasStaged
-  nameWithType: IStagePolicy<T>.HasStaged
-  nameWithType.vb: IStagePolicy(Of T).HasStaged
+  fullName: Libplanet.Blockchain.Policies.IStagePolicy<T>.Ignore
+  fullName.vb: Libplanet.Blockchain.Policies.IStagePolicy(Of T).Ignore
+  nameWithType: IStagePolicy<T>.Ignore
+  nameWithType.vb: IStagePolicy(Of T).Ignore
+- uid: Libplanet.Blockchain.Policies.IStagePolicy`1.Ignores(Libplanet.Blockchain.BlockChain{`0},Libplanet.Tx.TxId)
+  name: Ignores(BlockChain<T>, TxId)
+  href: api/Libplanet.Blockchain.Policies.IStagePolicy-1.html#Libplanet_Blockchain_Policies_IStagePolicy_1_Ignores_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_TxId_
+  commentId: M:Libplanet.Blockchain.Policies.IStagePolicy`1.Ignores(Libplanet.Blockchain.BlockChain{`0},Libplanet.Tx.TxId)
+  name.vb: Ignores(BlockChain(Of T), TxId)
+  fullName: Libplanet.Blockchain.Policies.IStagePolicy<T>.Ignores(Libplanet.Blockchain.BlockChain<T>, Libplanet.Tx.TxId)
+  fullName.vb: Libplanet.Blockchain.Policies.IStagePolicy(Of T).Ignores(Libplanet.Blockchain.BlockChain(Of T), Libplanet.Tx.TxId)
+  nameWithType: IStagePolicy<T>.Ignores(BlockChain<T>, TxId)
+  nameWithType.vb: IStagePolicy(Of T).Ignores(BlockChain(Of T), TxId)
+- uid: Libplanet.Blockchain.Policies.IStagePolicy`1.Ignores*
+  name: Ignores
+  href: api/Libplanet.Blockchain.Policies.IStagePolicy-1.html#Libplanet_Blockchain_Policies_IStagePolicy_1_Ignores_
+  commentId: Overload:Libplanet.Blockchain.Policies.IStagePolicy`1.Ignores
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.Policies.IStagePolicy<T>.Ignores
+  fullName.vb: Libplanet.Blockchain.Policies.IStagePolicy(Of T).Ignores
+  nameWithType: IStagePolicy<T>.Ignores
+  nameWithType.vb: IStagePolicy(Of T).Ignores
 - uid: Libplanet.Blockchain.Policies.IStagePolicy`1.Iterate(Libplanet.Blockchain.BlockChain{`0})
   name: Iterate(BlockChain<T>)
   href: api/Libplanet.Blockchain.Policies.IStagePolicy-1.html#Libplanet_Blockchain_Policies_IStagePolicy_1_Iterate_Libplanet_Blockchain_BlockChain__0__
@@ -2686,24 +2704,42 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.VolatileStagePolicy(Of T).Get
   nameWithType: VolatileStagePolicy<T>.Get
   nameWithType.vb: VolatileStagePolicy(Of T).Get
-- uid: Libplanet.Blockchain.Policies.VolatileStagePolicy`1.HasStaged(Libplanet.Blockchain.BlockChain{`0},Libplanet.Tx.TxId,System.Boolean)
-  name: HasStaged(BlockChain<T>, TxId, Boolean)
-  href: api/Libplanet.Blockchain.Policies.VolatileStagePolicy-1.html#Libplanet_Blockchain_Policies_VolatileStagePolicy_1_HasStaged_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_TxId_System_Boolean_
-  commentId: M:Libplanet.Blockchain.Policies.VolatileStagePolicy`1.HasStaged(Libplanet.Blockchain.BlockChain{`0},Libplanet.Tx.TxId,System.Boolean)
-  name.vb: HasStaged(BlockChain(Of T), TxId, Boolean)
-  fullName: Libplanet.Blockchain.Policies.VolatileStagePolicy<T>.HasStaged(Libplanet.Blockchain.BlockChain<T>, Libplanet.Tx.TxId, System.Boolean)
-  fullName.vb: Libplanet.Blockchain.Policies.VolatileStagePolicy(Of T).HasStaged(Libplanet.Blockchain.BlockChain(Of T), Libplanet.Tx.TxId, System.Boolean)
-  nameWithType: VolatileStagePolicy<T>.HasStaged(BlockChain<T>, TxId, Boolean)
-  nameWithType.vb: VolatileStagePolicy(Of T).HasStaged(BlockChain(Of T), TxId, Boolean)
-- uid: Libplanet.Blockchain.Policies.VolatileStagePolicy`1.HasStaged*
-  name: HasStaged
-  href: api/Libplanet.Blockchain.Policies.VolatileStagePolicy-1.html#Libplanet_Blockchain_Policies_VolatileStagePolicy_1_HasStaged_
-  commentId: Overload:Libplanet.Blockchain.Policies.VolatileStagePolicy`1.HasStaged
+- uid: Libplanet.Blockchain.Policies.VolatileStagePolicy`1.Ignore(Libplanet.Blockchain.BlockChain{`0},Libplanet.Tx.TxId)
+  name: Ignore(BlockChain<T>, TxId)
+  href: api/Libplanet.Blockchain.Policies.VolatileStagePolicy-1.html#Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Ignore_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_TxId_
+  commentId: M:Libplanet.Blockchain.Policies.VolatileStagePolicy`1.Ignore(Libplanet.Blockchain.BlockChain{`0},Libplanet.Tx.TxId)
+  name.vb: Ignore(BlockChain(Of T), TxId)
+  fullName: Libplanet.Blockchain.Policies.VolatileStagePolicy<T>.Ignore(Libplanet.Blockchain.BlockChain<T>, Libplanet.Tx.TxId)
+  fullName.vb: Libplanet.Blockchain.Policies.VolatileStagePolicy(Of T).Ignore(Libplanet.Blockchain.BlockChain(Of T), Libplanet.Tx.TxId)
+  nameWithType: VolatileStagePolicy<T>.Ignore(BlockChain<T>, TxId)
+  nameWithType.vb: VolatileStagePolicy(Of T).Ignore(BlockChain(Of T), TxId)
+- uid: Libplanet.Blockchain.Policies.VolatileStagePolicy`1.Ignore*
+  name: Ignore
+  href: api/Libplanet.Blockchain.Policies.VolatileStagePolicy-1.html#Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Ignore_
+  commentId: Overload:Libplanet.Blockchain.Policies.VolatileStagePolicy`1.Ignore
   isSpec: "True"
-  fullName: Libplanet.Blockchain.Policies.VolatileStagePolicy<T>.HasStaged
-  fullName.vb: Libplanet.Blockchain.Policies.VolatileStagePolicy(Of T).HasStaged
-  nameWithType: VolatileStagePolicy<T>.HasStaged
-  nameWithType.vb: VolatileStagePolicy(Of T).HasStaged
+  fullName: Libplanet.Blockchain.Policies.VolatileStagePolicy<T>.Ignore
+  fullName.vb: Libplanet.Blockchain.Policies.VolatileStagePolicy(Of T).Ignore
+  nameWithType: VolatileStagePolicy<T>.Ignore
+  nameWithType.vb: VolatileStagePolicy(Of T).Ignore
+- uid: Libplanet.Blockchain.Policies.VolatileStagePolicy`1.Ignores(Libplanet.Blockchain.BlockChain{`0},Libplanet.Tx.TxId)
+  name: Ignores(BlockChain<T>, TxId)
+  href: api/Libplanet.Blockchain.Policies.VolatileStagePolicy-1.html#Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Ignores_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_TxId_
+  commentId: M:Libplanet.Blockchain.Policies.VolatileStagePolicy`1.Ignores(Libplanet.Blockchain.BlockChain{`0},Libplanet.Tx.TxId)
+  name.vb: Ignores(BlockChain(Of T), TxId)
+  fullName: Libplanet.Blockchain.Policies.VolatileStagePolicy<T>.Ignores(Libplanet.Blockchain.BlockChain<T>, Libplanet.Tx.TxId)
+  fullName.vb: Libplanet.Blockchain.Policies.VolatileStagePolicy(Of T).Ignores(Libplanet.Blockchain.BlockChain(Of T), Libplanet.Tx.TxId)
+  nameWithType: VolatileStagePolicy<T>.Ignores(BlockChain<T>, TxId)
+  nameWithType.vb: VolatileStagePolicy(Of T).Ignores(BlockChain(Of T), TxId)
+- uid: Libplanet.Blockchain.Policies.VolatileStagePolicy`1.Ignores*
+  name: Ignores
+  href: api/Libplanet.Blockchain.Policies.VolatileStagePolicy-1.html#Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Ignores_
+  commentId: Overload:Libplanet.Blockchain.Policies.VolatileStagePolicy`1.Ignores
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.Policies.VolatileStagePolicy<T>.Ignores
+  fullName.vb: Libplanet.Blockchain.Policies.VolatileStagePolicy(Of T).Ignores
+  nameWithType: VolatileStagePolicy<T>.Ignores
+  nameWithType.vb: VolatileStagePolicy(Of T).Ignores
 - uid: Libplanet.Blockchain.Policies.VolatileStagePolicy`1.Iterate(Libplanet.Blockchain.BlockChain{`0})
   name: Iterate(BlockChain<T>)
   href: api/Libplanet.Blockchain.Policies.VolatileStagePolicy-1.html#Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Iterate_Libplanet_Blockchain_BlockChain__0__
