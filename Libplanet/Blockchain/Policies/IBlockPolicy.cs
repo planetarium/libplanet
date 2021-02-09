@@ -23,7 +23,7 @@ namespace Libplanet.Blockchain.Policies
         /// </summary>
         /// <seealso cref="IBlockExcerpt"/>
         /// <seealso cref="TotalDifficultyComparer"/>
-        IComparer<IBlockExcerpt> CanonicalChainComparer { get; }
+        IComparer<BlockPerception> CanonicalChainComparer { get; }
 
         /// <summary>
         /// A block action to execute and be rendered for every block.

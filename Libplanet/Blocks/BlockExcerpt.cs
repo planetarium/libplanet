@@ -12,12 +12,15 @@ namespace Libplanet.Blocks
         /// </summary>
         /// <param name="excerpt">An excerpt object to show.</param>
         /// <returns>Extracted members as a string.</returns>
-        public static string ToExcerptString(this IBlockExcerpt excerpt) =>
-            $"{excerpt.GetType().Name} {{" +
-            $" {nameof(IBlockExcerpt.ProtocolVersion)} = {excerpt.ProtocolVersion}," +
-            $" {nameof(IBlockExcerpt.Index)} = {excerpt.Index}," +
-            $" {nameof(IBlockExcerpt.Hash)} = {excerpt.Hash}," +
-            $" {nameof(IBlockExcerpt.TotalDifficulty)} = {excerpt.TotalDifficulty}" +
-            " }";
+        public static string ToExcerptString(this IBlockExcerpt excerpt)
+        {
+            return
+                $"{excerpt.GetType().Name} {{" +
+                $" {nameof(excerpt.ProtocolVersion)} = {excerpt.ProtocolVersion}," +
+                $" {nameof(excerpt.Index)} = {excerpt.Index}," +
+                $" {nameof(excerpt.Hash)} = {excerpt.Hash}," +
+                $" {nameof(excerpt.TotalDifficulty)} = {excerpt.TotalDifficulty}" +
+                " }";
+        }
     }
 }

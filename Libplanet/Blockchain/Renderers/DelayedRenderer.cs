@@ -36,7 +36,7 @@ namespace Libplanet.Blockchain.Renderers
     /// ]]></code>
     /// </example>
     /// <remarks>Since <see cref="IActionRenderer{T}"/> is a subtype of <see cref="IRenderer{T}"/>,
-    /// <see cref="DelayedRenderer{T}(IRenderer{T}, IComparer{IBlockExcerpt}, IStore, int)"/>
+    /// <see cref="DelayedRenderer{T}(IRenderer{T}, IComparer{BlockPerception}, IStore, int)"/>
     /// constructor can take an <see cref="IActionRenderer{T}"/> instance as well.
     /// However, even it takes an action renderer, action-level fine-grained events won't hear.
     /// For action renderers, please use <see cref="DelayedActionRenderer{T}"/> instead.</remarks>
@@ -62,7 +62,7 @@ namespace Libplanet.Blockchain.Renderers
         /// <paramref name="confirmations"/> is not greater than zero.</exception>
         public DelayedRenderer(
             IRenderer<T> renderer,
-            IComparer<IBlockExcerpt> canonicalChainComparer,
+            IComparer<BlockPerception> canonicalChainComparer,
             IStore store,
             int confirmations
         )
@@ -100,7 +100,7 @@ namespace Libplanet.Blockchain.Renderers
         /// The same canonical chain comparer to <see cref="BlockChain{T}.Policy"/>.
         /// </summary>
         /// <seealso cref="IBlockPolicy{T}.CanonicalChainComparer"/>
-        public IComparer<IBlockExcerpt> CanonicalChainComparer { get; }
+        public IComparer<BlockPerception> CanonicalChainComparer { get; }
 
         /// <summary>
         /// The same store to what <see cref="BlockChain{T}"/> uses.

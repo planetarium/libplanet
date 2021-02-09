@@ -44,7 +44,7 @@ namespace Libplanet.Blockchain.Policies
         /// A predicate that determines if the transaction follows the block policy.
         /// </param>
         /// <param name="canonicalChainComparer">The custom rule to determine which is the canonical
-        /// chain.  If omitted, <see cref="CanonicalChainComparer"/> is used by default.</param>
+        /// chain.  If omitted, <see cref="TotalDifficultyComparer"/> is used by default.</param>
         public BlockPolicy(
             IAction blockAction = null,
             int blockIntervalMilliseconds = 5000,
@@ -54,7 +54,7 @@ namespace Libplanet.Blockchain.Policies
             int maxBlockBytes = 100 * 1024,
             int maxGenesisBytes = 1024 * 1024,
             Func<Transaction<T>, BlockChain<T>, bool> doesTransactionFollowPolicy = null,
-            IComparer<IBlockExcerpt> canonicalChainComparer = null
+            IComparer<BlockPerception> canonicalChainComparer = null
         )
             : this(
                 blockAction,
@@ -92,7 +92,9 @@ namespace Libplanet.Blockchain.Policies
         /// A predicate that determines if the transaction follows the block policy.
         /// </param>
         /// <param name="canonicalChainComparer">The custom rule to determine which is the canonical
-        /// chain.  If omitted, <see cref="CanonicalChainComparer"/> is used by default.</param>
+        /// chain.  If omitted, <see cref="TotalDifficultyComparer"/> (having
+        /// <see cref="TotalDifficultyComparer.OutdateAfter"/> configured to triple of
+        /// <paramref name="blockInterval"/>) is used by default.</param>
         public BlockPolicy(
             IAction blockAction,
             TimeSpan blockInterval,
@@ -102,7 +104,7 @@ namespace Libplanet.Blockchain.Policies
             int maxBlockBytes,
             int maxGenesisBytes,
             Func<Transaction<T>, BlockChain<T>, bool> doesTransactionFollowPolicy = null,
-            IComparer<IBlockExcerpt> canonicalChainComparer = null
+            IComparer<BlockPerception> canonicalChainComparer = null
         )
         {
             if (blockInterval < TimeSpan.Zero)
@@ -138,7 +140,8 @@ namespace Libplanet.Blockchain.Policies
             _maxBlockBytes = maxBlockBytes;
             _maxGenesisBytes = maxGenesisBytes;
             _doesTransactionFollowPolicy = doesTransactionFollowPolicy ?? ((_, __) => true);
-            CanonicalChainComparer = canonicalChainComparer ?? new TotalDifficultyComparer();
+            CanonicalChainComparer = canonicalChainComparer
+                ?? new TotalDifficultyComparer(blockInterval + blockInterval + blockInterval);
         }
 
         /// <inheritdoc/>
@@ -158,7 +161,7 @@ namespace Libplanet.Blockchain.Policies
         public TimeSpan BlockInterval { get; }
 
         /// <inheritdoc />
-        public IComparer<IBlockExcerpt> CanonicalChainComparer { get; }
+        public IComparer<BlockPerception> CanonicalChainComparer { get; }
 
         private long MinimumDifficulty { get; }
 

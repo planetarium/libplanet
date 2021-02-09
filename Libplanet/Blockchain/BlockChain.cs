@@ -690,6 +690,36 @@ namespace Libplanet.Blockchain
             return nonce;
         }
 
+        /// <summary>
+        /// Records and queries the <paramref name="perceivedTime"/> of the given
+        /// <paramref name="blockExcerpt"/>.
+        /// <para>Although blocks have their own <see cref="Block{T}.Timestamp"/>, but these values
+        /// are untrustworthy as they are arbitrarily determined by their miners.</para>
+        /// <para>On the other hand, this method returns the subjective time according to the local
+        /// node's perception.</para>
+        /// <para>If the local node has never perceived the <paramref name="blockExcerpt"/> yet,
+        /// it is perceived at that moment and the current time is returned instead. (However, you
+        /// can replace the current time with the <paramref name="perceivedTime"/> option.)
+        /// In other words, this method is idempotent.</para>
+        /// </summary>
+        /// <param name="blockExcerpt">The perceived block.</param>
+        /// <param name="perceivedTime">The time the local node perceived the given <paramref
+        /// name="blockExcerpt"/>.  The current time by default.</param>
+        /// <returns>A pair of a block and the time it was perceived.</returns>
+        public BlockPerception PerceiveBlock(
+            IBlockExcerpt blockExcerpt,
+            DateTimeOffset? perceivedTime = null
+        )
+        {
+            if (!(Store.GetBlockPerceivedTime(blockExcerpt.Hash) is { } time))
+            {
+                time = perceivedTime ?? DateTimeOffset.UtcNow;
+                Store.SetBlockPerceivedTime(blockExcerpt.Hash, time);
+            }
+
+            return new BlockPerception(blockExcerpt, time);
+        }
+
 #pragma warning disable MEN003
         /// <summary>
         /// Mines a next <see cref="Block{T}"/> using staged <see cref="Transaction{T}"/>s,

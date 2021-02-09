@@ -8,6 +8,7 @@ using Libplanet.Blocks;
 using Libplanet.Store;
 using Libplanet.Tx;
 using LruCacheNet;
+using NetMQ;
 using RocksDbSharp;
 using Serilog;
 
@@ -21,6 +22,7 @@ namespace Libplanet.RocksDBStore
     public class RocksDBStore : BaseStore
     {
         private const string BlockDbName = "block";
+        private const string BlockPerceptionDbName = "blockpercept";
         private const string TxDbName = "tx";
         private const string StagedTxDbName = "stagedtx";
         private const string ChainDbName = "chain";
@@ -44,6 +46,7 @@ namespace Libplanet.RocksDBStore
         private readonly string _path;
 
         private readonly RocksDb _blockDb;
+        private readonly RocksDb _blockPerceptionDb;
         private readonly RocksDb _txDb;
         private readonly RocksDb _stagedTxDb;
         private readonly RocksDb _chainDb;
@@ -108,6 +111,8 @@ namespace Libplanet.RocksDBStore
             }
 
             _blockDb = RocksDBUtils.OpenRocksDb(_options, RocksDbPath(BlockDbName));
+            _blockPerceptionDb =
+                RocksDBUtils.OpenRocksDb(_options, RocksDbPath(BlockPerceptionDbName));
             _txDb = RocksDBUtils.OpenRocksDb(_options, RocksDbPath(TxDbName));
             _stagedTxDb = RocksDBUtils.OpenRocksDb(_options, RocksDbPath(StagedTxDbName));
 
@@ -485,6 +490,32 @@ namespace Libplanet.RocksDBStore
         }
 
         /// <inheritdoc/>
+        public override void SetBlockPerceivedTime(
+            HashDigest<SHA256> blockHash,
+            DateTimeOffset perceivedTime
+        )
+        {
+            byte[] key = BlockKey(blockHash);
+            _blockPerceptionDb.Put(
+                key,
+                NetworkOrderBitsConverter.GetBytes(perceivedTime.ToUnixTimeMilliseconds())
+            );
+        }
+
+        /// <inheritdoc/>
+        public override DateTimeOffset? GetBlockPerceivedTime(HashDigest<SHA256> blockHash)
+        {
+            byte[] key = BlockKey(blockHash);
+            if (_blockPerceptionDb.Get(key) is { } bytes)
+            {
+                long unixTimeMs = NetworkOrderBitsConverter.ToInt64(bytes);
+                return DateTimeOffset.FromUnixTimeMilliseconds(unixTimeMs);
+            }
+
+            return null;
+        }
+
+        /// <inheritdoc/>
         public override IEnumerable<KeyValuePair<Address, long>> ListTxNonces(Guid chainId)
         {
             byte[] prefix = TxNonceKeyPrefix;
@@ -541,6 +572,7 @@ namespace Libplanet.RocksDBStore
             _chainDb?.Dispose();
             _txDb?.Dispose();
             _blockDb?.Dispose();
+            _blockPerceptionDb?.Dispose();
             _stagedTxDb?.Dispose();
         }
 

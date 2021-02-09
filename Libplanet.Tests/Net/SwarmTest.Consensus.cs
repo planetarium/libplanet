@@ -19,18 +19,18 @@ namespace Libplanet.Tests.Net
         [InlineData(1)]
         public async Task DetermineCanonicalChain(short canonComparerType)
         {
-            IComparer<IBlockExcerpt> canonComparer;
+            IComparer<BlockPerception> canonComparer;
             switch (canonComparerType)
             {
                 default:
-                    canonComparer = new TotalDifficultyComparer();
+                    canonComparer = new TotalDifficultyComparer(TimeSpan.FromSeconds(3));
                     break;
 
                 case 1:
-                    canonComparer = new AnonymousComparer<IBlockExcerpt>((a, b) =>
+                    canonComparer = new AnonymousComparer<BlockPerception>((a, b) =>
                         string.Compare(
-                            a.Hash.ToString(),
-                            b.Hash.ToString(),
+                            a.BlockExcerpt.Hash.ToString(),
+                            b.BlockExcerpt.Hash.ToString(),
                             StringComparison.Ordinal
                         )
                     );
@@ -92,7 +92,12 @@ namespace Libplanet.Tests.Net
                     break;
             }
 
-            Assert.True(canonComparer.Compare(bestBlock, chain1.Tip) > 0);
+            Assert.True(
+                canonComparer.Compare(
+                    new BlockPerception(bestBlock),
+                    chain1.PerceiveBlock(chain1.Tip)
+                ) > 0
+            );
             chain2.Append(bestBlock);
 
             try

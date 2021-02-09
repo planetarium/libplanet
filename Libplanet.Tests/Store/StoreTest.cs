@@ -167,6 +167,29 @@ namespace Libplanet.Tests.Store
         }
 
         [SkippableFact]
+        public void BlockPerceivedTime()
+        {
+            Assert.Null(Fx.Store.GetBlockPerceivedTime(Fx.Hash1));
+            Assert.Null(Fx.Store.GetBlockPerceivedTime(Fx.Hash2));
+
+            DateTimeOffset time1 = DateTimeOffset.FromUnixTimeSeconds(1609426800);
+            DateTimeOffset time2 = DateTimeOffset.FromUnixTimeSeconds(1612254976);
+            DateTimeOffset time3 = DateTimeOffset.FromUnixTimeSeconds(1612432420);
+
+            Fx.Store.SetBlockPerceivedTime(Fx.Hash1, time1);
+            Assert.Equal(time1, Fx.Store.GetBlockPerceivedTime(Fx.Hash1));
+            Assert.Null(Fx.Store.GetBlockPerceivedTime(Fx.Hash2));
+
+            Fx.Store.SetBlockPerceivedTime(Fx.Hash1, time2);
+            Assert.Equal(time2, Fx.Store.GetBlockPerceivedTime(Fx.Hash1));
+            Assert.Null(Fx.Store.GetBlockPerceivedTime(Fx.Hash2));
+
+            Fx.Store.SetBlockPerceivedTime(Fx.Hash2, time3);
+            Assert.Equal(time2, Fx.Store.GetBlockPerceivedTime(Fx.Hash1));
+            Assert.Equal(time3, Fx.Store.GetBlockPerceivedTime(Fx.Hash2));
+        }
+
+        [SkippableFact]
         public void StoreTx()
         {
             Assert.Equal(0, Fx.Store.CountTransactions());

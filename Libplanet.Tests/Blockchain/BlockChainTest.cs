@@ -15,6 +15,7 @@ using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Tests.Action;
+using Libplanet.Tests.Blocks;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Libplanet.Tests.Store.Trie;
@@ -77,6 +78,48 @@ namespace Libplanet.Tests.Blockchain
         public void Dispose()
         {
             _fx.Dispose();
+        }
+
+        [Fact]
+        public void PerceiveBlock()
+        {
+            var blockA = new SimpleBlockExcerpt()
+            {
+                ProtocolVersion = BlockHeader.CurrentProtocolVersion,
+                Index = 604665,
+                Hash = HashDigest<SHA256>.FromString(
+                    "4f612467ed79cb854d1901f131ccfc8a40bba89651e1a9e1dcea1287dd70d8ee"),
+                TotalDifficulty = 21584091240753,
+            };
+
+            DateTimeOffset timeA = DateTimeOffset.FromUnixTimeSeconds(1609426800);
+            BlockPerception perceptionA = _blockChain.PerceiveBlock(blockA, timeA);
+            Assert.Equal(blockA, perceptionA.BlockExcerpt);
+            Assert.Equal(timeA, perceptionA.PerceivedTime);
+
+            perceptionA = _blockChain.PerceiveBlock(blockA);
+            Assert.Equal(blockA, perceptionA.BlockExcerpt);
+            Assert.Equal(timeA, perceptionA.PerceivedTime);
+
+            var blockB = new SimpleBlockExcerpt
+            {
+                ProtocolVersion = BlockHeader.CurrentProtocolVersion,
+                Index = 604664,
+                Hash = HashDigest<SHA256>.FromString(
+                    "9a87556f3198d8bd48300d2a6a5957d661c760a7fb72ef4a4b8c01c155b77e99"),
+                TotalDifficulty = 21584061959429,
+            };
+
+            DateTimeOffset timeBMin = DateTimeOffset.UtcNow;
+            BlockPerception perceptionB = _blockChain.PerceiveBlock(blockB);
+            DateTimeOffset timeBMax = DateTimeOffset.UtcNow;
+            Assert.Equal(blockB, perceptionB.BlockExcerpt);
+            Assert.InRange(perceptionB.PerceivedTime, timeBMin, timeBMax);
+
+            DateTimeOffset timeB = perceptionB.PerceivedTime;
+            perceptionB = _blockChain.PerceiveBlock(blockB);
+            Assert.Equal(blockB, perceptionB.BlockExcerpt);
+            Assert.Equal(timeB, perceptionB.PerceivedTime);
         }
 
         [Fact]
@@ -2283,23 +2326,17 @@ namespace Libplanet.Tests.Blockchain
             public static readonly Address MinerKey = new PrivateKey().ToAddress();
             public static readonly Address BlockIndexKey = new PrivateKey().ToAddress();
 
-            public TestEvaluateAction()
-            {
-            }
-
             public IValue PlainValue => default(Dictionary);
 
             public void LoadPlainValue(IValue plainValue)
             {
             }
 
-            public IAccountStateDelta Execute(IActionContext context)
-            {
-                return context.PreviousStates
+            public IAccountStateDelta Execute(IActionContext context) =>
+                context.PreviousStates
                     .SetState(SignerKey, (Text)context.Signer.ToHex())
                     .SetState(MinerKey, (Text)context.Miner.ToHex())
                     .SetState(BlockIndexKey, (Integer)context.BlockIndex);
-            }
         }
     }
 }

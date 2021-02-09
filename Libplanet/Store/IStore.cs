@@ -177,6 +177,21 @@ namespace Libplanet.Store
         bool ContainsBlock(HashDigest<SHA256> blockHash);
 
         /// <summary>
+        /// Records the perceived time of a block.  If there is already a record, it is overwritten.
+        /// </summary>
+        /// <param name="blockHash"><see cref="Block{T}.Hash"/> to record its perceived time.
+        /// </param>
+        /// <param name="perceivedTime">The perceived time to record.</param>
+        void SetBlockPerceivedTime(HashDigest<SHA256> blockHash, DateTimeOffset perceivedTime);
+
+        /// <summary>
+        /// Queries the perceived time of a block, if it has been recorded.
+        /// </summary>
+        /// <param name="blockHash"><see cref="Block{T}.Hash"/> to query.</param>
+        /// <returns>The perceived time of a block, if it exists.  Otherwise, <c>null</c>.</returns>
+        DateTimeOffset? GetBlockPerceivedTime(HashDigest<SHA256> blockHash);
+
+        /// <summary>
         /// Lists all <see cref="Address"/>es that have ever signed <see cref="Transaction{T}"/>,
         /// and their corresponding <see cref="Transaction{T}"/> nonces.
         /// </summary>

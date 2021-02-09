@@ -80,7 +80,7 @@ namespace Libplanet.Blockchain.Renderers
         /// If zero, which is a default value, is passed the buffer is not cleared.</param>
         public DelayedActionRenderer(
             IActionRenderer<T> renderer,
-            IComparer<IBlockExcerpt> canonicalChainComparer,
+            IComparer<BlockPerception> canonicalChainComparer,
             IStore store,
             int confirmations,
             long reorgResistantHeight = 0)
