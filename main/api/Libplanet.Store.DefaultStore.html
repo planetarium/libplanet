@@ -381,7 +381,7 @@ with the specified <code data-dev-comment-type="paramref" class="paramref">txId<
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore_CountBlocks.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.CountBlocks%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/DefaultStore.cs/#L553">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/DefaultStore.cs/#L579">View Source</a>
   </span>
   <a id="Libplanet_Store_DefaultStore_CountBlocks_" data-uid="Libplanet.Store.DefaultStore.CountBlocks*"></a>
   <h4 id="Libplanet_Store_DefaultStore_CountBlocks" data-uid="Libplanet.Store.DefaultStore.CountBlocks">CountBlocks()</h4>
@@ -462,7 +462,7 @@ with the specified <code data-dev-comment-type="paramref" class="paramref">txId<
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore_CountTransactions.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.CountTransactions%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/DefaultStore.cs/#L542">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/DefaultStore.cs/#L568">View Source</a>
   </span>
   <a id="Libplanet_Store_DefaultStore_CountTransactions_" data-uid="Libplanet.Store.DefaultStore.CountTransactions*"></a>
   <h4 id="Libplanet_Store_DefaultStore_CountTransactions" data-uid="Libplanet.Store.DefaultStore.CountTransactions">CountTransactions()</h4>
@@ -635,7 +635,7 @@ the <code data-dev-comment-type="paramref" class="paramref">chainId</code>, but 
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore_Dispose.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.Dispose%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/DefaultStore.cs/#L563">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/DefaultStore.cs/#L589">View Source</a>
   </span>
   <a id="Libplanet_Store_DefaultStore_Dispose_" data-uid="Libplanet.Store.DefaultStore.Dispose*"></a>
   <h4 id="Libplanet_Store_DefaultStore_Dispose" data-uid="Libplanet.Store.DefaultStore.Dispose">Dispose()</h4>
@@ -778,6 +778,58 @@ to fork.</p>
   <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetBlockDigest_Libplanet_HashDigest_System_Security_Cryptography_SHA256__">BaseStore.GetBlockDigest(HashDigest&lt;SHA256&gt;)</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore_GetBlockPerceivedTime_Libplanet_HashDigest_System_Security_Cryptography_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.GetBlockPerceivedTime(Libplanet.HashDigest%7BSystem.Security.Cryptography.SHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/DefaultStore.cs/#L515">View Source</a>
+  </span>
+  <a id="Libplanet_Store_DefaultStore_GetBlockPerceivedTime_" data-uid="Libplanet.Store.DefaultStore.GetBlockPerceivedTime*"></a>
+  <h4 id="Libplanet_Store_DefaultStore_GetBlockPerceivedTime_Libplanet_HashDigest_System_Security_Cryptography_SHA256__" data-uid="Libplanet.Store.DefaultStore.GetBlockPerceivedTime(Libplanet.HashDigest{System.Security.Cryptography.SHA256})">GetBlockPerceivedTime(HashDigest&lt;SHA256&gt;)</h4>
+  <div class="markdown level1 summary"><p>Queries the perceived time of a block, if it has been recorded.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override DateTimeOffset? GetBlockPerceivedTime(HashDigest&lt;SHA256&gt; blockHash)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;</td>
+        <td><span class="parametername">blockHash</span></td>
+        <td><p><a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Hash">Hash</a> to query.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a>&gt;</td>
+        <td><p>The perceived time of a block, if it exists.  Otherwise, <code>null</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetBlockPerceivedTime_Libplanet_HashDigest_System_Security_Cryptography_SHA256__">BaseStore.GetBlockPerceivedTime(HashDigest&lt;SHA256&gt;)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore_GetCanonicalChainId.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.GetCanonicalChainId%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
@@ -884,7 +936,7 @@ to fork.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore_GetTxNonce_System_Guid_Libplanet_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.GetTxNonce(System.Guid%2CLibplanet.Address)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/DefaultStore.cs/#L516">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/DefaultStore.cs/#L542">View Source</a>
   </span>
   <a id="Libplanet_Store_DefaultStore_GetTxNonce_" data-uid="Libplanet.Store.DefaultStore.GetTxNonce*"></a>
   <h4 id="Libplanet_Store_DefaultStore_GetTxNonce_System_Guid_Libplanet_Address_" data-uid="Libplanet.Store.DefaultStore.GetTxNonce(System.Guid,Libplanet.Address)">GetTxNonce(Guid, Address)</h4>
@@ -949,7 +1001,7 @@ previous <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore_IncreaseTxNonce_System_Guid_Libplanet_Address_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.IncreaseTxNonce(System.Guid%2CLibplanet.Address%2CSystem.Int64)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/DefaultStore.cs/#L532">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/DefaultStore.cs/#L558">View Source</a>
   </span>
   <a id="Libplanet_Store_DefaultStore_IncreaseTxNonce_" data-uid="Libplanet.Store.DefaultStore.IncreaseTxNonce*"></a>
   <h4 id="Libplanet_Store_DefaultStore_IncreaseTxNonce_System_Guid_Libplanet_Address_System_Int64_" data-uid="Libplanet.Store.DefaultStore.IncreaseTxNonce(System.Guid,Libplanet.Address,System.Int64)">IncreaseTxNonce(Guid, Address, Int64)</h4>
@@ -1250,7 +1302,7 @@ and the latest staged <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a> goe
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore_ListTxNonces_System_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.ListTxNonces(System.Guid)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/DefaultStore.cs/#L498">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/DefaultStore.cs/#L524">View Source</a>
   </span>
   <a id="Libplanet_Store_DefaultStore_ListTxNonces_" data-uid="Libplanet.Store.DefaultStore.ListTxNonces*"></a>
   <h4 id="Libplanet_Store_DefaultStore_ListTxNonces_System_Guid_" data-uid="Libplanet.Store.DefaultStore.ListTxNonces(System.Guid)">ListTxNonces(Guid)</h4>
@@ -1409,6 +1461,48 @@ If the same block already exists in the store it does nothing.</p>
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><span class="xref">Libplanet.Store.BaseStore.PutTransaction&lt;T&gt;(Libplanet.Tx.Transaction&lt;T&gt;)</span></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore_SetBlockPerceivedTime_Libplanet_HashDigest_System_Security_Cryptography_SHA256__System_DateTimeOffset_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.SetBlockPerceivedTime(Libplanet.HashDigest%7BSystem.Security.Cryptography.SHA256%7D%2CSystem.DateTimeOffset)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/DefaultStore.cs/#L498">View Source</a>
+  </span>
+  <a id="Libplanet_Store_DefaultStore_SetBlockPerceivedTime_" data-uid="Libplanet.Store.DefaultStore.SetBlockPerceivedTime*"></a>
+  <h4 id="Libplanet_Store_DefaultStore_SetBlockPerceivedTime_Libplanet_HashDigest_System_Security_Cryptography_SHA256__System_DateTimeOffset_" data-uid="Libplanet.Store.DefaultStore.SetBlockPerceivedTime(Libplanet.HashDigest{System.Security.Cryptography.SHA256},System.DateTimeOffset)">SetBlockPerceivedTime(HashDigest&lt;SHA256&gt;, DateTimeOffset)</h4>
+  <div class="markdown level1 summary"><p>Records the perceived time of a block.  If there is already a record, it is overwritten.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void SetBlockPerceivedTime(HashDigest&lt;SHA256&gt; blockHash, DateTimeOffset perceivedTime)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;</td>
+        <td><span class="parametername">blockHash</span></td>
+        <td><p><a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Hash">Hash</a> to record its perceived time.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a></td>
+        <td><span class="parametername">perceivedTime</span></td>
+        <td><p>The perceived time to record.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_SetBlockPerceivedTime_Libplanet_HashDigest_System_Security_Cryptography_SHA256__System_DateTimeOffset_">BaseStore.SetBlockPerceivedTime(HashDigest&lt;SHA256&gt;, DateTimeOffset)</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore_SetCanonicalChainId_System_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.SetCanonicalChainId(System.Guid)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>

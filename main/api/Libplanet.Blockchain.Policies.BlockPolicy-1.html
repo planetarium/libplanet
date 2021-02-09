@@ -136,13 +136,13 @@ to <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>'s typ
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_System_Int32_System_Int64_System_Int32_System_Int32_System_Int32_System_Int32_System_Func_Libplanet_Tx_Transaction__0__Libplanet_Blockchain_BlockChain__0__System_Boolean__System_Collections_Generic_IComparer_Libplanet_Blocks_IBlockExcerpt__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.BlockPolicy%601.%23ctor(Libplanet.Action.IAction%2CSystem.Int32%2CSystem.Int64%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%2CSystem.Func%7BLibplanet.Tx.Transaction%7B%600%7D%2CLibplanet.Blockchain.BlockChain%7B%600%7D%2CSystem.Boolean%7D%2CSystem.Collections.Generic.IComparer%7BLibplanet.Blocks.IBlockExcerpt%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_System_Int32_System_Int64_System_Int32_System_Int32_System_Int32_System_Int32_System_Func_Libplanet_Tx_Transaction__0__Libplanet_Blockchain_BlockChain__0__System_Boolean__System_Collections_Generic_IComparer_Libplanet_Blockchain_BlockPerception__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.BlockPolicy%601.%23ctor(Libplanet.Action.IAction%2CSystem.Int32%2CSystem.Int64%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%2CSystem.Func%7BLibplanet.Tx.Transaction%7B%600%7D%2CLibplanet.Blockchain.BlockChain%7B%600%7D%2CSystem.Boolean%7D%2CSystem.Collections.Generic.IComparer%7BLibplanet.Blockchain.BlockPerception%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/BlockPolicy.cs/#L48">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor*"></a>
-  <h4 id="Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_System_Int32_System_Int64_System_Int32_System_Int32_System_Int32_System_Int32_System_Func_Libplanet_Tx_Transaction__0__Libplanet_Blockchain_BlockChain__0__System_Boolean__System_Collections_Generic_IComparer_Libplanet_Blocks_IBlockExcerpt__" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.Int32,System.Int64,System.Int32,System.Int32,System.Int32,System.Int32,System.Func{Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0},System.Boolean},System.Collections.Generic.IComparer{Libplanet.Blocks.IBlockExcerpt})">BlockPolicy(IAction, Int32, Int64, Int32, Int32, Int32, Int32, Func&lt;Transaction&lt;T&gt;, BlockChain&lt;T&gt;, Boolean&gt;, IComparer&lt;IBlockExcerpt&gt;)</h4>
+  <h4 id="Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_System_Int32_System_Int64_System_Int32_System_Int32_System_Int32_System_Int32_System_Func_Libplanet_Tx_Transaction__0__Libplanet_Blockchain_BlockChain__0__System_Boolean__System_Collections_Generic_IComparer_Libplanet_Blockchain_BlockPerception__" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.Int32,System.Int64,System.Int32,System.Int32,System.Int32,System.Int32,System.Func{Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0},System.Boolean},System.Collections.Generic.IComparer{Libplanet.Blockchain.BlockPerception})">BlockPolicy(IAction, Int32, Int64, Int32, Int32, Int32, Int32, Func&lt;Transaction&lt;T&gt;, BlockChain&lt;T&gt;, Boolean&gt;, IComparer&lt;BlockPerception&gt;)</h4>
   <div class="markdown level1 summary"><p>Creates a <a class="xref" href="Libplanet.Blockchain.Policies.BlockPolicy-1.html">BlockPolicy&lt;T&gt;</a> with configuring
 <a class="xref" href="Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_BlockInterval">BlockInterval</a> in milliseconds,
 <span class="xref">Libplanet.Blockchain.Policies.BlockPolicy`1.MinimumDifficulty</span> and
@@ -151,7 +151,7 @@ to <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>'s typ
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BlockPolicy(IAction blockAction = null, int blockIntervalMilliseconds = 5000, long minimumDifficulty = 1024L, int difficultyBoundDivisor = 128, int maxTransactionsPerBlock = 100, int maxBlockBytes = 102400, int maxGenesisBytes = 1048576, Func&lt;Transaction&lt;T&gt;, BlockChain&lt;T&gt;, bool&gt; doesTransactionFollowPolicy = null, IComparer&lt;IBlockExcerpt&gt; canonicalChainComparer = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public BlockPolicy(IAction blockAction = null, int blockIntervalMilliseconds = 5000, long minimumDifficulty = 1024L, int difficultyBoundDivisor = 128, int maxTransactionsPerBlock = 100, int maxBlockBytes = 102400, int maxGenesisBytes = 1048576, Func&lt;Transaction&lt;T&gt;, BlockChain&lt;T&gt;, bool&gt; doesTransactionFollowPolicy = null, IComparer&lt;BlockPerception&gt; canonicalChainComparer = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -219,23 +219,23 @@ the block is a genesis.  1 MiB by default.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.icomparer-1">IComparer</a>&lt;<a class="xref" href="Libplanet.Blocks.IBlockExcerpt.html">IBlockExcerpt</a>&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.icomparer-1">IComparer</a>&lt;<a class="xref" href="Libplanet.Blockchain.BlockPerception.html">BlockPerception</a>&gt;</td>
         <td><span class="parametername">canonicalChainComparer</span></td>
         <td><p>The custom rule to determine which is the canonical
-chain.  If omitted, <a class="xref" href="Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_CanonicalChainComparer">CanonicalChainComparer</a> is used by default.</p>
+chain.  If omitted, <a class="xref" href="Libplanet.Blockchain.TotalDifficultyComparer.html">TotalDifficultyComparer</a> is used by default.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_System_TimeSpan_System_Int64_System_Int32_System_Int32_System_Int32_System_Int32_System_Func_Libplanet_Tx_Transaction__0__Libplanet_Blockchain_BlockChain__0__System_Boolean__System_Collections_Generic_IComparer_Libplanet_Blocks_IBlockExcerpt__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.BlockPolicy%601.%23ctor(Libplanet.Action.IAction%2CSystem.TimeSpan%2CSystem.Int64%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%2CSystem.Func%7BLibplanet.Tx.Transaction%7B%600%7D%2CLibplanet.Blockchain.BlockChain%7B%600%7D%2CSystem.Boolean%7D%2CSystem.Collections.Generic.IComparer%7BLibplanet.Blocks.IBlockExcerpt%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_System_TimeSpan_System_Int64_System_Int32_System_Int32_System_Int32_System_Int32_System_Func_Libplanet_Tx_Transaction__0__Libplanet_Blockchain_BlockChain__0__System_Boolean__System_Collections_Generic_IComparer_Libplanet_Blockchain_BlockPerception__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.BlockPolicy%601.%23ctor(Libplanet.Action.IAction%2CSystem.TimeSpan%2CSystem.Int64%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%2CSystem.Func%7BLibplanet.Tx.Transaction%7B%600%7D%2CLibplanet.Blockchain.BlockChain%7B%600%7D%2CSystem.Boolean%7D%2CSystem.Collections.Generic.IComparer%7BLibplanet.Blockchain.BlockPerception%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/BlockPolicy.cs/#L96">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/BlockPolicy.cs/#L98">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor*"></a>
-  <h4 id="Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_System_TimeSpan_System_Int64_System_Int32_System_Int32_System_Int32_System_Int32_System_Func_Libplanet_Tx_Transaction__0__Libplanet_Blockchain_BlockChain__0__System_Boolean__System_Collections_Generic_IComparer_Libplanet_Blocks_IBlockExcerpt__" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.TimeSpan,System.Int64,System.Int32,System.Int32,System.Int32,System.Int32,System.Func{Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0},System.Boolean},System.Collections.Generic.IComparer{Libplanet.Blocks.IBlockExcerpt})">BlockPolicy(IAction, TimeSpan, Int64, Int32, Int32, Int32, Int32, Func&lt;Transaction&lt;T&gt;, BlockChain&lt;T&gt;, Boolean&gt;, IComparer&lt;IBlockExcerpt&gt;)</h4>
+  <h4 id="Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_System_TimeSpan_System_Int64_System_Int32_System_Int32_System_Int32_System_Int32_System_Func_Libplanet_Tx_Transaction__0__Libplanet_Blockchain_BlockChain__0__System_Boolean__System_Collections_Generic_IComparer_Libplanet_Blockchain_BlockPerception__" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.TimeSpan,System.Int64,System.Int32,System.Int32,System.Int32,System.Int32,System.Func{Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0},System.Boolean},System.Collections.Generic.IComparer{Libplanet.Blockchain.BlockPerception})">BlockPolicy(IAction, TimeSpan, Int64, Int32, Int32, Int32, Int32, Func&lt;Transaction&lt;T&gt;, BlockChain&lt;T&gt;, Boolean&gt;, IComparer&lt;BlockPerception&gt;)</h4>
   <div class="markdown level1 summary"><p>Creates a <a class="xref" href="Libplanet.Blockchain.Policies.BlockPolicy-1.html">BlockPolicy&lt;T&gt;</a> with configuring
 <a class="xref" href="Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_BlockInterval">BlockInterval</a>, <span class="xref">Libplanet.Blockchain.Policies.BlockPolicy`1.MinimumDifficulty</span> and
 <span class="xref">Libplanet.Blockchain.Policies.BlockPolicy`1.DifficultyBoundDivisor</span>.</p>
@@ -243,7 +243,7 @@ chain.  If omitted, <a class="xref" href="Libplanet.Blockchain.Policies.BlockPol
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BlockPolicy(IAction blockAction, TimeSpan blockInterval, long minimumDifficulty, int difficultyBoundDivisor, int maxTransactionsPerBlock, int maxBlockBytes, int maxGenesisBytes, Func&lt;Transaction&lt;T&gt;, BlockChain&lt;T&gt;, bool&gt; doesTransactionFollowPolicy = null, IComparer&lt;IBlockExcerpt&gt; canonicalChainComparer = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public BlockPolicy(IAction blockAction, TimeSpan blockInterval, long minimumDifficulty, int difficultyBoundDivisor, int maxTransactionsPerBlock, int maxBlockBytes, int maxGenesisBytes, Func&lt;Transaction&lt;T&gt;, BlockChain&lt;T&gt;, bool&gt; doesTransactionFollowPolicy = null, IComparer&lt;BlockPerception&gt; canonicalChainComparer = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -308,10 +308,12 @@ the block is a genesis.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.icomparer-1">IComparer</a>&lt;<a class="xref" href="Libplanet.Blocks.IBlockExcerpt.html">IBlockExcerpt</a>&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.icomparer-1">IComparer</a>&lt;<a class="xref" href="Libplanet.Blockchain.BlockPerception.html">BlockPerception</a>&gt;</td>
         <td><span class="parametername">canonicalChainComparer</span></td>
         <td><p>The custom rule to determine which is the canonical
-chain.  If omitted, <a class="xref" href="Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_CanonicalChainComparer">CanonicalChainComparer</a> is used by default.</p>
+chain.  If omitted, <a class="xref" href="Libplanet.Blockchain.TotalDifficultyComparer.html">TotalDifficultyComparer</a> (having
+<a class="xref" href="Libplanet.Blockchain.TotalDifficultyComparer.html#Libplanet_Blockchain_TotalDifficultyComparer_OutdateAfter">OutdateAfter</a> configured to triple of
+<code data-dev-comment-type="paramref" class="paramref">blockInterval</code>) is used by default.</p>
 </td>
       </tr>
     </tbody>
@@ -323,7 +325,7 @@ chain.  If omitted, <a class="xref" href="Libplanet.Blockchain.Policies.BlockPol
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_BlockPolicy_1_BlockAction.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.BlockPolicy%601.BlockAction%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/BlockPolicy.cs/#L145">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/BlockPolicy.cs/#L148">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Policies_BlockPolicy_1_BlockAction_" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.BlockAction*"></a>
   <h4 id="Libplanet_Blockchain_Policies_BlockPolicy_1_BlockAction" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.BlockAction">BlockAction</h4>
@@ -354,7 +356,7 @@ chain.  If omitted, <a class="xref" href="Libplanet.Blockchain.Policies.BlockPol
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_BlockPolicy_1_BlockInterval.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.BlockPolicy%601.BlockInterval%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/BlockPolicy.cs/#L158">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/BlockPolicy.cs/#L161">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Policies_BlockPolicy_1_BlockInterval_" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.BlockInterval*"></a>
   <h4 id="Libplanet_Blockchain_Policies_BlockPolicy_1_BlockInterval" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.BlockInterval">BlockInterval</h4>
@@ -390,7 +392,7 @@ than this <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_B
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_BlockPolicy_1_CanonicalChainComparer.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.BlockPolicy%601.CanonicalChainComparer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/BlockPolicy.cs/#L161">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/BlockPolicy.cs/#L164">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Policies_BlockPolicy_1_CanonicalChainComparer_" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.CanonicalChainComparer*"></a>
   <h4 id="Libplanet_Blockchain_Policies_BlockPolicy_1_CanonicalChainComparer" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.CanonicalChainComparer">CanonicalChainComparer</h4>
@@ -400,7 +402,7 @@ The most greater one according to this comparer is considered to be the canon.</
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IComparer&lt;IBlockExcerpt&gt; CanonicalChainComparer { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public IComparer&lt;BlockPerception&gt; CanonicalChainComparer { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -412,7 +414,7 @@ The most greater one according to this comparer is considered to be the canon.</
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.icomparer-1">IComparer</a>&lt;<a class="xref" href="Libplanet.Blocks.IBlockExcerpt.html">IBlockExcerpt</a>&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.icomparer-1">IComparer</a>&lt;<a class="xref" href="Libplanet.Blockchain.BlockPerception.html">BlockPerception</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -427,7 +429,7 @@ The most greater one according to this comparer is considered to be the canon.</
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_BlockPolicy_1_MaxTransactionsPerBlock.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.BlockPolicy%601.MaxTransactionsPerBlock%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/BlockPolicy.cs/#L148">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/BlockPolicy.cs/#L151">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Policies_BlockPolicy_1_MaxTransactionsPerBlock_" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.MaxTransactionsPerBlock*"></a>
   <h4 id="Libplanet_Blockchain_Policies_BlockPolicy_1_MaxTransactionsPerBlock" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.MaxTransactionsPerBlock">MaxTransactionsPerBlock</h4>
@@ -465,7 +467,7 @@ change after an object is once instantiated).</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_BlockPolicy_1_DoesTransactionFollowsPolicy_Libplanet_Tx_Transaction__0__Libplanet_Blockchain_BlockChain__0__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.BlockPolicy%601.DoesTransactionFollowsPolicy(Libplanet.Tx.Transaction%7B%600%7D%2CLibplanet.Blockchain.BlockChain%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/BlockPolicy.cs/#L169">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/BlockPolicy.cs/#L172">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Policies_BlockPolicy_1_DoesTransactionFollowsPolicy_" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.DoesTransactionFollowsPolicy*"></a>
   <h4 id="Libplanet_Blockchain_Policies_BlockPolicy_1_DoesTransactionFollowsPolicy_Libplanet_Tx_Transaction__0__Libplanet_Blockchain_BlockChain__0__" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.DoesTransactionFollowsPolicy(Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0})">DoesTransactionFollowsPolicy(Transaction&lt;T&gt;, BlockChain&lt;T&gt;)</h4>
@@ -522,7 +524,7 @@ change after an object is once instantiated).</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_BlockPolicy_1_GetMaxBlockBytes_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.BlockPolicy%601.GetMaxBlockBytes(System.Int64)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/BlockPolicy.cs/#L219">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/BlockPolicy.cs/#L222">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Policies_BlockPolicy_1_GetMaxBlockBytes_" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.GetMaxBlockBytes*"></a>
   <h4 id="Libplanet_Blockchain_Policies_BlockPolicy_1_GetMaxBlockBytes_System_Int64_" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.GetMaxBlockBytes(System.Int64)">GetMaxBlockBytes(Int64)</h4>
@@ -578,7 +580,7 @@ taking 0 bytes or negative length of bytes.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_BlockPolicy_1_GetNextBlockDifficulty_Libplanet_Blockchain_BlockChain__0__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.BlockPolicy%601.GetNextBlockDifficulty(Libplanet.Blockchain.BlockChain%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/BlockPolicy.cs/#L185">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/BlockPolicy.cs/#L188">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Policies_BlockPolicy_1_GetNextBlockDifficulty_" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.GetNextBlockDifficulty*"></a>
   <h4 id="Libplanet_Blockchain_Policies_BlockPolicy_1_GetNextBlockDifficulty_Libplanet_Blockchain_BlockChain__0__" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.GetNextBlockDifficulty(Libplanet.Blockchain.BlockChain{`0})">GetNextBlockDifficulty(BlockChain&lt;T&gt;)</h4>
@@ -632,7 +634,7 @@ for a new <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_BlockPolicy_1_ValidateNextBlock_Libplanet_Blockchain_BlockChain__0__Libplanet_Blocks_Block__0__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.BlockPolicy%601.ValidateNextBlock(Libplanet.Blockchain.BlockChain%7B%600%7D%2CLibplanet.Blocks.Block%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/BlockPolicy.cs/#L177">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/BlockPolicy.cs/#L180">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Policies_BlockPolicy_1_ValidateNextBlock_" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.ValidateNextBlock*"></a>
   <h4 id="Libplanet_Blockchain_Policies_BlockPolicy_1_ValidateNextBlock_Libplanet_Blockchain_BlockChain__0__Libplanet_Blocks_Block__0__" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.ValidateNextBlock(Libplanet.Blockchain.BlockChain{`0},Libplanet.Blocks.Block{`0})">ValidateNextBlock(BlockChain&lt;T&gt;, Block&lt;T&gt;)</h4>

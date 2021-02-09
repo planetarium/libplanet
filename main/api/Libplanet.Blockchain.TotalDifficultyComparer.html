@@ -85,7 +85,7 @@ the greatest, i.e., canonical chain.</p>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
-    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.icomparer-1">IComparer</a>&lt;<a class="xref" href="Libplanet.Blocks.IBlockExcerpt.html">IBlockExcerpt</a>&gt;</div>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.icomparer-1">IComparer</a>&lt;<a class="xref" href="Libplanet.Blockchain.BlockPerception.html">BlockPerception</a>&gt;</div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -115,28 +115,29 @@ the greatest, i.e., canonical chain.</p>
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
   <h5 id="Libplanet_Blockchain_TotalDifficultyComparer_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class TotalDifficultyComparer : IComparer&lt;IBlockExcerpt&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">public class TotalDifficultyComparer : IComparer&lt;BlockPerception&gt;</code></pre>
   </div>
   <h5 id="Libplanet_Blockchain_TotalDifficultyComparer_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>Although this compares blocks' total difficulty, if two blocks have different
 protocol version, it always consider the higher version greater.</p>
 </div>
-  <h3 id="methods">Methods
+  <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_TotalDifficultyComparer_Compare_Libplanet_Blocks_IBlockExcerpt_Libplanet_Blocks_IBlockExcerpt_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.TotalDifficultyComparer.Compare(Libplanet.Blocks.IBlockExcerpt%2CLibplanet.Blocks.IBlockExcerpt)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_TotalDifficultyComparer__ctor_System_TimeSpan_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.TotalDifficultyComparer.%23ctor(System.TimeSpan)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/TotalDifficultyComparer.cs/#L21">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/TotalDifficultyComparer.cs/#L29">View Source</a>
   </span>
-  <a id="Libplanet_Blockchain_TotalDifficultyComparer_Compare_" data-uid="Libplanet.Blockchain.TotalDifficultyComparer.Compare*"></a>
-  <h4 id="Libplanet_Blockchain_TotalDifficultyComparer_Compare_Libplanet_Blocks_IBlockExcerpt_Libplanet_Blocks_IBlockExcerpt_" data-uid="Libplanet.Blockchain.TotalDifficultyComparer.Compare(Libplanet.Blocks.IBlockExcerpt,Libplanet.Blocks.IBlockExcerpt)">Compare(IBlockExcerpt, IBlockExcerpt)</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="Libplanet_Blockchain_TotalDifficultyComparer__ctor_" data-uid="Libplanet.Blockchain.TotalDifficultyComparer.#ctor*"></a>
+  <h4 id="Libplanet_Blockchain_TotalDifficultyComparer__ctor_System_TimeSpan_" data-uid="Libplanet.Blockchain.TotalDifficultyComparer.#ctor(System.TimeSpan)">TotalDifficultyComparer(TimeSpan)</h4>
+  <div class="markdown level1 summary"><p>Creates a <a class="xref" href="Libplanet.Blockchain.TotalDifficultyComparer.html">TotalDifficultyComparer</a> instance.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int Compare(IBlockExcerpt x, IBlockExcerpt y)</code></pre>
+    <pre><code class="lang-csharp hljs">public TotalDifficultyComparer(TimeSpan outdateAfter)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -149,12 +150,124 @@ protocol version, it always consider the higher version greater.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Blocks.IBlockExcerpt.html">IBlockExcerpt</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.timespan">TimeSpan</a></td>
+        <td><span class="parametername">outdateAfter</span></td>
+        <td><p>Blocks taken this time since they are perceived are
+considered outdated, so that chains having these blocks as their tips become stale.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_TotalDifficultyComparer__ctor_System_TimeSpan_System_Func_System_DateTimeOffset__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.TotalDifficultyComparer.%23ctor(System.TimeSpan%2CSystem.Func%7BSystem.DateTimeOffset%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/TotalDifficultyComparer.cs/#L42">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_TotalDifficultyComparer__ctor_" data-uid="Libplanet.Blockchain.TotalDifficultyComparer.#ctor*"></a>
+  <h4 id="Libplanet_Blockchain_TotalDifficultyComparer__ctor_System_TimeSpan_System_Func_System_DateTimeOffset__" data-uid="Libplanet.Blockchain.TotalDifficultyComparer.#ctor(System.TimeSpan,System.Func{System.DateTimeOffset})">TotalDifficultyComparer(TimeSpan, Func&lt;DateTimeOffset&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates a <a class="xref" href="Libplanet.Blockchain.TotalDifficultyComparer.html">TotalDifficultyComparer</a> instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TotalDifficultyComparer(TimeSpan outdateAfter, Func&lt;DateTimeOffset&gt; currentTimeGetter)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.timespan">TimeSpan</a></td>
+        <td><span class="parametername">outdateAfter</span></td>
+        <td><p>Blocks taken this time since they are perceived are
+considered outdated, so that chains having these blocks as their tips become stale.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a>&gt;</td>
+        <td><span class="parametername">currentTimeGetter</span></td>
+        <td><p>Configures the way to get the current time instead of
+<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.datetimeoffset.utcnow#System_DateTimeOffset_UtcNow">UtcNow</a> property.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_TotalDifficultyComparer_OutdateAfter.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.TotalDifficultyComparer.OutdateAfter%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/TotalDifficultyComparer.cs/#L55">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_TotalDifficultyComparer_OutdateAfter_" data-uid="Libplanet.Blockchain.TotalDifficultyComparer.OutdateAfter*"></a>
+  <h4 id="Libplanet_Blockchain_TotalDifficultyComparer_OutdateAfter" data-uid="Libplanet.Blockchain.TotalDifficultyComparer.OutdateAfter">OutdateAfter</h4>
+  <div class="markdown level1 summary"><p>Blocks taken this time since they are perceived are considered outdated, so that
+chains having these blocks as their tips become stale.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TimeSpan OutdateAfter { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.timespan">TimeSpan</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_TotalDifficultyComparer_Compare_Libplanet_Blockchain_BlockPerception_Libplanet_Blockchain_BlockPerception_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.TotalDifficultyComparer.Compare(Libplanet.Blockchain.BlockPerception%2CLibplanet.Blockchain.BlockPerception)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/TotalDifficultyComparer.cs/#L58">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_TotalDifficultyComparer_Compare_" data-uid="Libplanet.Blockchain.TotalDifficultyComparer.Compare*"></a>
+  <h4 id="Libplanet_Blockchain_TotalDifficultyComparer_Compare_Libplanet_Blockchain_BlockPerception_Libplanet_Blockchain_BlockPerception_" data-uid="Libplanet.Blockchain.TotalDifficultyComparer.Compare(Libplanet.Blockchain.BlockPerception,Libplanet.Blockchain.BlockPerception)">Compare(BlockPerception, BlockPerception)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Compare(BlockPerception x, BlockPerception y)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blockchain.BlockPerception.html">BlockPerception</a></td>
         <td><span class="parametername">x</span></td>
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="Libplanet.Blocks.IBlockExcerpt.html">IBlockExcerpt</a></td>
+        <td><a class="xref" href="Libplanet.Blockchain.BlockPerception.html">BlockPerception</a></td>
         <td><span class="parametername">y</span></td>
         <td></td>
       </tr>
@@ -195,7 +308,7 @@ protocol version, it always consider the higher version greater.</p>
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_TotalDifficultyComparer.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.TotalDifficultyComparer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/TotalDifficultyComparer.cs/#L18" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/TotalDifficultyComparer.cs/#L19" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
