@@ -274,6 +274,8 @@ namespace Libplanet.Explorer.Executable
 
             public int MaxTransactionsPerBlock => _impl.MaxTransactionsPerBlock;
 
+            public IComparer<IBlockExcerpt> CanonicalChainComparer => _impl.CanonicalChainComparer;
+
             public bool DoesTransactionFollowsPolicy(
                 Transaction<AppAgnosticAction> transaction, BlockChain<AppAgnosticAction> blockChain
             )

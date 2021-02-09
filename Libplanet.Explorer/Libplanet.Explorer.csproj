@@ -31,8 +31,8 @@
     </PackageReference>
     <PackageReference Include="GraphQL" Version="3.0.0" />
     <PackageReference Include="GraphQL.SystemTextJson" Version="3.0.0" />
-    <PackageReference Include="Libplanet" Version="0.11.0-dev.20210201112731" />
-    <PackageReference Include="Libplanet.RocksDBStore" Version="0.11.0-dev.20210201112731" />
+    <PackageReference Include="Libplanet" Version="0.11.0-dev.20210205090355" />
+    <PackageReference Include="Libplanet.RocksDBStore" Version="0.11.0-dev.20210205090355" />
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
