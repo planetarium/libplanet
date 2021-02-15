@@ -171,6 +171,7 @@ namespace Libplanet.Action
                             $"The action {action} (block #{blockIndex} {blockHash}, tx {txid}, " +
                             $"state root hash {stateRootHash}) threw an exception " +
                             "during execution.  See also this exception's InnerException property.";
+                        Log.Error("{Message}\nInnerException: {ExcMessage}", msg, e.Message);
                         exc = new UnexpectedlyTerminatedActionException(
                             blockHash, blockIndex, txid, stateRootHash, action, msg, e
                         );
