@@ -271,7 +271,9 @@ namespace Libplanet.Explorer.Store
                     }));
         }
 
-        public void SetBlockPerceivedTime(HashDigest<SHA256> blockHash, DateTimeOffset perceivedTime)
+        public void SetBlockPerceivedTime(
+            HashDigest<SHA256> blockHash,
+            DateTimeOffset perceivedTime)
         {
             _store.SetBlockPerceivedTime(blockHash, perceivedTime);
         }
