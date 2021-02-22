@@ -57,6 +57,11 @@ namespace Libplanet.Explorer.Store
             return _store.GetBlockIndex(blockHash);
         }
 
+        public DateTimeOffset? GetBlockPerceivedTime(HashDigest<SHA256> blockHash)
+        {
+            return _store.GetBlockPerceivedTime(blockHash);
+        }
+
         public BlockDigest? GetBlockDigest(HashDigest<SHA256> blockHash)
         {
             if (_blockCache.TryGetValue(blockHash, out BlockDigest cachedDigest))
@@ -264,6 +269,13 @@ namespace Libplanet.Explorer.Store
                     {
                         addr.ToByteArray(), tx.Id.ToByteArray(), tx.Nonce,
                     }));
+        }
+
+        public void SetBlockPerceivedTime(
+            HashDigest<SHA256> blockHash,
+            DateTimeOffset perceivedTime)
+        {
+            _store.SetBlockPerceivedTime(blockHash, perceivedTime);
         }
 
         public void StoreTxReferences(TxId txId, HashDigest<SHA256> blockHash,  long txNonce)
