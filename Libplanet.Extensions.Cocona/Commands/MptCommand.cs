@@ -74,20 +74,13 @@ namespace Libplanet.Extensions.Cocona.Commands
                 otherKeyValueStore,
                 HashDigest<SHA256>.FromString(otherStateRootHashHex));
 
-            foreach (var group in trie.DifferentNodes(otherTrie))
-            {
-                Console.Error.Write("Path: ");
-                Console.WriteLine(Encoding.UTF8.GetString(ByteUtil.ParseHex(group.Key)));
-                var values = group.ToArray();
-                foreach (var pair in values)
-                {
-                    Console.Error.Write("At ");
-                    Console.WriteLine(ByteUtil.Hex(pair.Root.ToByteArray()));
-                    Console.WriteLine(pair.Value.Inspection);
-                }
-
-                Console.WriteLine();
-            }
+            var codec = new Codec();
+            var dictionary = trie.DifferentNodes(otherTrie).ToDictionary(
+                group => group.Key,
+                group => group.ToDictionary(
+                    pair => ByteUtil.Hex(pair.Root.ByteArray),
+                    pair => ByteUtil.Hex(codec.Encode(pair.Value))));
+            Console.Write(JsonSerializer.Serialize(dictionary));
         }
 
         [Command(Description = "Export all states of the state root hash as JSON.")]

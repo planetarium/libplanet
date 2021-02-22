@@ -505,6 +505,9 @@ Released on March 30, 2021.
  -  Store aliases used by `planet mpt` became to disallow names looking like
     URIs to disambiguate aliases from the literal store URIs.  [[#1129]]
  -  Added new subcommands `planet mpt list` and `planet mpt query`.  [[#1137]]
+ -  `planet mpt diff` command became to print the differences between
+    other state root hashes into stdout as JSON format.
+    [[#1138], [#1191], [#1233]]
 
 [#795]: https://github.com/planetarium/libplanet/issues/795
 [#1052]: https://github.com/planetarium/libplanet/pull/1052
@@ -535,6 +538,7 @@ Released on March 30, 2021.
 [#1135]: https://github.com/planetarium/libplanet/pull/1135
 [#1136]: https://github.com/planetarium/libplanet/pull/1136
 [#1137]: https://github.com/planetarium/libplanet/pull/1137
+[#1138]: https://github.com/planetarium/libplanet/issues/1138
 [#1141]: https://github.com/planetarium/libplanet/pull/1141
 [#1142]: https://github.com/planetarium/libplanet/issues/1142
 [#1143]: https://github.com/planetarium/libplanet/pull/1143
@@ -560,6 +564,7 @@ Released on March 30, 2021.
 [#1184]: https://github.com/planetarium/libplanet/pull/1184
 [#1185]: https://github.com/planetarium/libplanet/pull/1185
 [#1186]: https://github.com/planetarium/libplanet/pull/1186
+[#1191]: https://github.com/planetarium/libplanet/pull/1191
 [#1194]: https://github.com/planetarium/libplanet/pull/1194
 [#1198]: https://github.com/planetarium/libplanet/pull/1198
 [#1202]: https://github.com/planetarium/libplanet/pull/1202
@@ -568,6 +573,7 @@ Released on March 30, 2021.
 [#1212]: https://github.com/planetarium/libplanet/pull/1212
 [#1215]: https://github.com/planetarium/libplanet/pull/1215
 [#1218]: https://github.com/planetarium/libplanet/pull/1218
+[#1233]: https://github.com/planetarium/libplanet/pull/1233
 
 
 Version 0.10.3
