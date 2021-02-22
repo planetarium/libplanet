@@ -522,7 +522,7 @@ namespace Libplanet.Tests.Net
             Assert.Equal(swarm0.BlockChain.BlockHashes, receiverSwarm.BlockChain.BlockHashes);
         }
 
-        [Theory]
+        [Theory(Timeout = Timeout)]
         [InlineData(0)]
         [InlineData(50)]
         [InlineData(100)]
