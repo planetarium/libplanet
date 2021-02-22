@@ -193,6 +193,8 @@ To be released.
  -  Store aliases used by `planet mpt` became to disallow names looking like
     URIs to disambiguate aliases from the literal store URIs.  [[#1129]]
  -  Added new subcommands `planet mpt list` and `planet mpt query`.  [[#1137]]
+ -  `planet mpt diff` command became to print the differences between
+    other state root hashes into stdout as JSON format.  [[#1138], [#1191]]
 
 [#795]: https://github.com/planetarium/libplanet/issues/795
 [#1052]: https://github.com/planetarium/libplanet/pull/1052
@@ -223,6 +225,7 @@ To be released.
 [#1135]: https://github.com/planetarium/libplanet/pull/1135
 [#1136]: https://github.com/planetarium/libplanet/pull/1136
 [#1137]: https://github.com/planetarium/libplanet/pull/1137
+[#1138]: https://github.com/planetarium/libplanet/issues/1138
 [#1141]: https://github.com/planetarium/libplanet/pull/1141
 [#1142]: https://github.com/planetarium/libplanet/issues/1142
 [#1143]: https://github.com/planetarium/libplanet/pull/1143
@@ -247,6 +250,7 @@ To be released.
 [#1184]: https://github.com/planetarium/libplanet/pull/1184
 [#1185]: https://github.com/planetarium/libplanet/pull/1185
 [#1186]: https://github.com/planetarium/libplanet/pull/1186
+[#1191]: https://github.com/planetarium/libplanet/pull/1191
 
 
 Version 0.10.3

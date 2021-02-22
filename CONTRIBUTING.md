@@ -112,6 +112,9 @@ on GitHub consists of several projects:
  -  *Libplanet.Analyzers.Tests*: Unit tests of the *Libplanet.Analyzers*
     project.
 
+ -  *Libplanet.Tools.Tests*: Unit tests of the *Libplanet.Tools*
+    project.
+
 
 [NuGet package]: https://www.nuget.org/packages/Libplanet/
 [TURN & STUN]: https://snack.planetarium.dev/eng/2019/06/nat_traversal_2/
