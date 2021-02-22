@@ -292,17 +292,14 @@ namespace Libplanet.Net.Protocols
                     try
                     {
                         _logger.Verbose("Check peer {Peer}.", replacement);
-
-                        await PingAsync(replacement, _requestTimeout, cancellationToken);
                         _table.RemoveCache(replacement);
-                        Update(replacement);
+                        await PingAsync(replacement, _requestTimeout, cancellationToken);
                     }
                     catch (PingTimeoutException)
                     {
                         _logger.Verbose(
                             "Remove stale peer {Peer} from replacement cache.",
                             replacement);
-                        _table.RemoveCache(replacement);
                     }
                 }
             }
