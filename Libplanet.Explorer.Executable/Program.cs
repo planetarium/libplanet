@@ -2,12 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Reflection;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using Bencodex.Types;
-using CommandLine;
+using Cocona;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -30,11 +29,135 @@ namespace Libplanet.Explorer.Executable
     /// <summary>
     /// The program entry point to run a web server.
     /// </summary>
-    public class Program
+    public class Program : CoconaLiteConsoleAppBase
     {
         public static async Task Main(string[] args)
         {
-            Options options = Options.Parse(args, Console.Error);
+            await CoconaLiteApp.RunAsync<Program>(args);
+        }
+
+        [Command(Description = "Run libplanet-explorer with options.")]
+        public async Task Run(
+            [Option("debug", new[] { 'd' }, Description = "Print logs for debugging as well.")]
+            bool debug = false,
+            [Option("host", new[] { 'H' }, Description = "The host address to listen.")]
+            string host = "0.0.0.0",
+            [Option("port", new[] { 'p' }, Description = "The port number to listen.")]
+            int port = 5000,
+            [Option(
+                "block-interval",
+                new[] { 'i' },
+                Description = @"An appropriate interval in milliseconds between
+consecutive blocks.")]
+            int blockIntervalMilliseconds = 5000,
+            [Option(
+                "minimum-difficulty",
+                new[] { 'm' },
+                Description = "Allowed minimum difficulty for mining blocks.")]
+            long minimumDifficulty = 1024L,
+            [Option(
+                "difficulty-bound-divisor",
+                new[] { 'D' },
+                Description = "A bound divisor to determine precision of block difficulties.")]
+            int difficultyBoundDivisor = 128,
+            [Option(
+                "workers",
+                new[] { 'W' },
+                Description = "The number of swarm workers.")]
+            int workers = 50,
+            [Option(
+                "app-protocol-version",
+                new[] { 'V' },
+                Description = "An app protocol version token.")]
+            string appProtocolVersionToken = null,
+            [Option(
+                "mysql-server",
+                Description = "A hostname of MySQL server.")]
+            string mysqlServer = null,
+            [Option(
+                "mysql-port",
+                Description = "A port of MySQL server.")]
+            uint? mysqlPort = null,
+            [Option(
+                "mysql-username",
+                Description = "The name of MySQL user.")]
+            string mysqlUsername = null,
+            [Option(
+                "mysql-password",
+                Description = "The password of MySQL user.")]
+            string mysqlPassword = null,
+            [Option(
+                "mysql-database",
+                Description = "The name of MySQL database to use.")]
+            string mysqlDatabase = null,
+            [Option(
+                "max-transactions-per-block",
+                Description = @"The number of maximum transactions able to be included
+in a block.")]
+            int maxTransactionsPerBlock = 100,
+            [Option(
+                "max-block-bytes",
+                Description = @"The number of maximum bytes size of blocks except
+for genesis block.")]
+            int maxBlockBytes = 100 * 1024,
+            [Option(
+                "max-genesis-bytes",
+                Description = "The number of maximum bytes size of the genesis block.")]
+            int maxGenesisBytes = 1024 * 1024,
+            [Option(
+                "seed",
+                new[] { 's' },
+                Description = @"Seed nodes to join to the network as a node. The format of each
+seed is a comma-separated triple of a peer's hexadecimal public key, host, and port number.
+E.g., `02ed49dbe0f2c34d9dff8335d6dd9097f7a3ef17dfb5f048382eebc7f451a50aa1,example.com,31234'.
+If omitted (default) explorer only the local blockchain store.")]
+            string[] seedStrings = null,
+            [Option(
+                "ice-server",
+                new[] { 'I' },
+                Description = "URL to ICE server (TURN/STUN) to work around NAT.")]
+            string iceServerUrl = null,
+            [Option(
+                "store-path",
+                new[] { 'P' },
+                Description = @"The path of the blockchain store. If omitted (default)
+in memory version is used.")]
+            string storePath = null,
+            [Option(
+                "store-type",
+                new[] { 'T' },
+                Description = @"The type of the blockchain store. If omitted (default)
+in DefaultStore is used.")]
+            string storeType = null,
+            [Option(
+                "genesis-block",
+                new[] { 'G' },
+                Description = "The path of the genesis block. It should be absolute or http url.")]
+            string genesisBlockPath = null
+        )
+        {
+            Options options = new Options(
+            debug,
+            host,
+            port,
+            blockIntervalMilliseconds,
+            minimumDifficulty,
+            difficultyBoundDivisor,
+            workers,
+            appProtocolVersionToken,
+            mysqlServer,
+            mysqlPort,
+            mysqlUsername,
+            mysqlPassword,
+            mysqlDatabase,
+            maxTransactionsPerBlock,
+            maxBlockBytes,
+            maxGenesisBytes,
+            seedStrings,
+            iceServerUrl,
+            storePath,
+            storeType,
+            genesisBlockPath);
 
             var loggerConfig = new LoggerConfiguration();
             loggerConfig = options.Debug
@@ -174,8 +297,7 @@ namespace Libplanet.Explorer.Executable
                 default:
                     // FIXME: give available store type as argument hint without code duplication.
                     var availableStoreTypes = new[] { "rocksdb", "default" };
-                    string longOptionName = options.GetType().GetProperty(nameof(options.StoreType))
-                        .GetCustomAttribute<OptionAttribute>().LongName;
+                    string longOptionName = "store-type";
                     throw new InvalidOptionValueException(
                         "--" + longOptionName,
                         options.StoreType,
