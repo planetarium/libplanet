@@ -26,6 +26,9 @@ namespace Libplanet.Net.Protocols
 
         private readonly ILogger _logger;
 
+        private readonly ConcurrentDictionary<Address, BoundPeer> _cache;
+        private readonly int _cacheSize;
+
         /// <summary>
         /// Creates a <see cref="KademliaProtocol"/> instance.
         /// </summary>
@@ -57,6 +60,8 @@ namespace Libplanet.Net.Protocols
                 requestTimeout ??
                 TimeSpan.FromMilliseconds(5000);
             _transport.ProcessMessageHandler += ProcessMessageHandler;
+            _cache = new ConcurrentDictionary<Address, BoundPeer>();
+            _cacheSize = int.MaxValue;
         }
 
         /// <inheritdoc />
@@ -180,7 +185,6 @@ namespace Libplanet.Net.Protocols
             {
                 _logger.Debug(
                     $"Timeout occurred during {nameof(AddPeersAsync)}() after {timeout}.");
-                throw;
             }
             catch (TaskCanceledException)
             {
@@ -439,6 +443,14 @@ namespace Libplanet.Net.Protocols
             try
             {
                 _logger.Verbose("Trying to ping async to {Peer}.", target);
+                if (_cache.ContainsKey(target.Address) || _cache.Count > _cacheSize)
+                {
+                    _logger.Verbose(
+                        "Request already in cache or cache size limit exceeded. Ping cancelled.");
+                    return;
+                }
+
+                _cache[target.Address] = target;
                 Message reply = await _transport.SendMessageWithReplyAsync(
                     target,
                     new Ping(),
@@ -456,7 +468,7 @@ namespace Libplanet.Net.Protocols
                     throw new InvalidMessageException("Cannot receive pong from self", pong);
                 }
 
-                Update(target);
+                _table.AddPeer(target);
             }
             catch (TimeoutException)
             {
@@ -475,6 +487,10 @@ namespace Libplanet.Net.Protocols
                 _logger.Error(
                     $"Different AppProtocolVersion encountered at {nameof(PingAsync)}().");
                 throw;
+            }
+            finally
+            {
+                _cache.TryRemove(target.Address, out _);
             }
         }
 
@@ -533,26 +549,32 @@ namespace Libplanet.Net.Protocols
 
         /// <summary>
         /// Updates routing table when receiving a message. If corresponding bucket
-        /// for remote peer is not full, just adds given <paramref name="rawPeer"/>.
+        /// for remote peer is not full, just adds given <paramref name="peer"/>.
         /// Otherwise, checks aliveness of the least recently used (LRU) peer
-        /// and determine evict LRU peer or discard given <paramref name="rawPeer"/>.
+        /// and determine evict LRU peer or discard given <paramref name="peer"/>.
         /// </summary>
-        /// <param name="rawPeer"><see cref="Peer"/> to update.</param>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown when <paramref name="rawPeer"/> is <c>null</c>.
+        /// <param name="peer"><see cref="Peer"/> to update.</param>
+        /// <exception cref="ArgumentException">
+        /// Thrown when <paramref name="peer"/> is <c>null</c> or it is not a
+        /// <see cref="BoundPeer"/>.
         /// </exception>
-        private void Update(Peer rawPeer)
+        private void Update(Peer peer)
         {
-            _logger.Verbose($"Try to {nameof(Update)}() {{Peer}}.", rawPeer);
-            if (rawPeer is null)
+            _logger.Verbose($"Try to {nameof(Update)}() {{Peer}}.", peer);
+            if (!(peer is BoundPeer boundPeer))
             {
-                throw new ArgumentNullException(nameof(rawPeer));
+                _logger.Verbose("Given peer {Peer} is not bounded.", peer);
+                return;
             }
 
-            if (rawPeer is BoundPeer peer)
+            // Don't update peer without endpoint or with different appProtocolVersion.
+            if (_table.Contains(boundPeer))
             {
-                // Don't update peer without endpoint or with different appProtocolVersion.
-                _table.AddPeer(peer);
+                _table.UpdatePeer(boundPeer);
+            }
+            else
+            {
+                _ = PingAsync(boundPeer, _requestTimeout, default);
             }
         }
 
@@ -673,10 +695,14 @@ namespace Libplanet.Net.Protocols
         // Send pong back to remote
         private void ReceivePing(Ping ping)
         {
+            if (ping.Remote is null)
+            {
+                throw new ArgumentNullException(nameof(ping.Remote));
+            }
+
             if (ping.Remote.Address.Equals(_address))
             {
-                throw new ArgumentException(
-                    "Cannot receive ping from self");
+                throw new ArgumentException("Cannot receive ping from self");
             }
 
             var pong = new Pong

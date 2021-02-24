@@ -73,52 +73,61 @@ namespace Libplanet.Net.Protocols
                 throw new ArgumentNullException(nameof(peer));
             }
 
-            if (_peerStates.ContainsKey(peer.Address))
+            if (Update(peer))
             {
                 _logger.Verbose("Bucket already contains peer {Peer}", peer);
+                return;
+            }
 
-                // This done because peer's other attribute except public key might be changed.
-                // (eg. public IP address, endpoint)
-                PeerState state = _peerStates[peer.Address];
-                state.Peer = peer;
-                state.LastUpdated = updated;
+            if (IsFull())
+            {
+                _logger.Verbose("Bucket is full to add peer {Peer}", peer);
+                if (ReplacementCache.TryAdd(peer, updated))
+                {
+                    _logger.Verbose(
+                        "Added {Peer} to replacement cache. (total: {Count})",
+                        peer,
+                        ReplacementCache.Count);
+                }
             }
             else
             {
-                if (IsFull())
+                _logger.Verbose("Bucket does not contains peer {Peer}", peer);
+                _lastUpdated = updated;
+                if (_peerStates.TryAdd(peer.Address, new PeerState(peer, updated)))
                 {
-                    _logger.Verbose("Bucket is full to add peer {Peer}", peer);
-                    if (ReplacementCache.TryAdd(peer, updated))
+                    _logger.Verbose("Peer {Peer} is added to bucket", peer);
+                    _lastUpdated = updated;
+
+                    if (ReplacementCache.TryRemove(peer, out var dateTimeOffset))
                     {
                         _logger.Verbose(
-                            "Added {Peer} to replacement cache. (total: {Count})",
+                            "Removed peer {Peer} from replacement cache. (total: {Count})",
                             peer,
                             ReplacementCache.Count);
                     }
                 }
                 else
                 {
-                    _logger.Verbose("Bucket does not contains peer {Peer}", peer);
-                    _lastUpdated = updated;
-                    if (_peerStates.TryAdd(peer.Address, new PeerState(peer, updated)))
-                    {
-                        _logger.Verbose("Peer {Peer} is added to bucket", peer);
-                        _lastUpdated = updated;
-
-                        if (ReplacementCache.TryRemove(peer, out var dateTimeOffset))
-                        {
-                            _logger.Verbose(
-                                "Removed peer {Peer} from replacement cache. (total: {Count})",
-                                peer,
-                                ReplacementCache.Count);
-                        }
-                    }
-                    else
-                    {
-                        _logger.Verbose("Failed to add peer {Peer} to bucket", peer);
-                    }
+                    _logger.Verbose("Failed to add peer {Peer} to bucket", peer);
                 }
             }
+        }
+
+        public bool Update(BoundPeer peer)
+        {
+            if (!Contains(peer))
+            {
+                _logger.Verbose("Bucket does not contains {Peer}. Failed to update.", peer);
+                return false;
+            }
+
+            // This done because peer's other attribute except public key might be changed.
+            // (eg. public IP address, endpoint)
+            PeerState state = _peerStates[peer.Address];
+            state.Peer = peer;
+            state.LastUpdated = DateTimeOffset.UtcNow;
+            return true;
         }
 
         public bool Contains(BoundPeer peer)

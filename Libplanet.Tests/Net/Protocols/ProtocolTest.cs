@@ -82,39 +82,9 @@ namespace Libplanet.Tests.Net.Protocols
                 await transportA.MessageReceived.WaitAsync();
                 await Task.Delay(100);
 
-                Assert.Single(transportA.ReceivedMessages);
-                Assert.Single(transportB.ReceivedMessages);
-                Assert.Contains(transportA.AsPeer, transportB.Peers);
-            }
-            finally
-            {
-                await transportA.StopAsync(TimeSpan.Zero);
-                await transportB.StopAsync(TimeSpan.Zero);
-            }
-        }
-
-        [Fact(Timeout = Timeout)]
-        public async Task PingTwice()
-        {
-            var transportA = CreateTestTransport();
-            var transportB = CreateTestTransport();
-
-            try
-            {
-                await StartTestTransportAsync(transportA);
-                await StartTestTransportAsync(transportB);
-
-                transportA.SendPing(transportB.AsPeer);
-                await transportA.MessageReceived.WaitAsync();
-                await transportB.MessageReceived.WaitAsync();
-                transportB.SendPing(transportA.AsPeer);
-                await transportA.MessageReceived.WaitAsync();
-                await transportB.MessageReceived.WaitAsync();
-
                 Assert.Equal(2, transportA.ReceivedMessages.Count);
                 Assert.Equal(2, transportB.ReceivedMessages.Count);
                 Assert.Contains(transportA.AsPeer, transportB.Peers);
-                Assert.Contains(transportB.AsPeer, transportA.Peers);
             }
             finally
             {
@@ -181,7 +151,9 @@ namespace Libplanet.Tests.Net.Protocols
                 await StartTestTransportAsync(transportC);
 
                 await transportB.BootstrapAsync(new[] { transportA.AsPeer });
+                await Task.Delay(100);
                 await transportC.BootstrapAsync(new[] { transportA.AsPeer });
+                await Task.Delay(100);
 
                 Assert.Contains(transportB.AsPeer, transportC.Peers);
                 Assert.Contains(transportC.AsPeer, transportB.Peers);

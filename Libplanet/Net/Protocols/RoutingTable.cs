@@ -118,6 +118,22 @@ namespace Libplanet.Net.Protocols
         /// <see cref="Address"/> is equal to the <see cref="Address"/> of self.</exception>
         public void AddPeer(BoundPeer peer) => AddPeer(peer, DateTimeOffset.UtcNow);
 
+        public void UpdatePeer(BoundPeer peer)
+        {
+            if (peer is null)
+            {
+                throw new ArgumentNullException(nameof(peer));
+            }
+
+            if (peer.Address.Equals(_address))
+            {
+                throw new ArgumentException("Cannot add update self.");
+            }
+
+            _logger.Debug("Updating peer {Peer} from routing table.", peer);
+            BucketOf(peer).Update(peer);
+        }
+
         public bool RemovePeer(BoundPeer peer)
         {
             if (peer is null)
