@@ -107,7 +107,7 @@ namespace Libplanet.Tests.Net
                 await StartAsync(receiverSwarm);
                 await StartAsync(seedSwarm);
 
-                await receiverSwarm.AddPeersAsync(new[] { seedSwarm.AsPeer }, null);
+                await seedSwarm.AddPeersAsync(new[] { receiverSwarm.AsPeer }, null);
                 Block<DumbAction> block = await seedChain.MineBlock(seedSwarm.Address);
                 seedSwarm.BroadcastBlock(block);
                 while (!((NetMQTransport)receiverSwarm.Transport).MessageHistory
@@ -717,7 +717,7 @@ namespace Libplanet.Tests.Net
                 await StartAsync(swarmA);
                 await StartAsync(swarmB);
 
-                await BootstrapAsync(swarmB, swarmA.AsPeer);
+                await swarmA.AddPeersAsync(new[] { swarmB.AsPeer }, null);
                 swarmA.BroadcastBlock(chainA[-1]);
                 await swarmB.BlockAppended.WaitAsync();
 

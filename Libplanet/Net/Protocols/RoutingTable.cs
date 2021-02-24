@@ -132,6 +132,22 @@ namespace Libplanet.Net.Protocols
             BucketOf(peer).AddPeer(peer);
         }
 
+        public void UpdatePeer(BoundPeer peer)
+        {
+            if (peer is null)
+            {
+                throw new ArgumentNullException(nameof(peer));
+            }
+
+            if (peer.Address.Equals(_address))
+            {
+                throw new ArgumentException("Cannot add update self.");
+            }
+
+            _logger.Debug("Updating peer {Peer} from routing table.", peer);
+            BucketOf(peer).Update(peer);
+        }
+
         public bool RemovePeer(BoundPeer peer)
         {
             if (peer is null)
