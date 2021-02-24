@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Crypto;
@@ -15,7 +16,9 @@ namespace Libplanet.Tests.Net.Protocols
     public class ProtocolTest
     {
         private const int Timeout = 60 * 1000;
-        private readonly Dictionary<Address, TestTransport> _transports;
+        private readonly Dictionary<string, TestTransport> _transports;
+
+        private int _assignedPort;
 
         public ProtocolTest(ITestOutputHelper output)
         {
@@ -28,7 +31,8 @@ namespace Libplanet.Tests.Net.Protocols
                 .CreateLogger()
                 .ForContext<ProtocolTest>();
 
-            _transports = new Dictionary<Address, TestTransport>();
+            _transports = new Dictionary<string, TestTransport>();
+            _assignedPort = 1234;
         }
 
         [Fact]
@@ -362,7 +366,7 @@ namespace Libplanet.Tests.Net.Protocols
             });
 
             var seed = CreateTestTransport(privateKey0);
-            var t1 = CreateTestTransport(privateKey1, true);
+            var t1 = CreateTestTransport(privateKey1, blockBroadcast: true);
             var t2 = CreateTestTransport(privateKey2);
             await StartTestTransportAsync(seed);
             await StartTestTransportAsync(t1);
@@ -516,6 +520,8 @@ namespace Libplanet.Tests.Net.Protocols
 
         private TestTransport CreateTestTransport(
             PrivateKey privateKey = null,
+            string host = null,
+            int? listenPort = null,
             bool blockBroadcast = false,
             int tableSize = Kademlia.TableSize,
             int bucketSize = Kademlia.BucketSize,
@@ -524,6 +530,8 @@ namespace Libplanet.Tests.Net.Protocols
             return new TestTransport(
                 _transports,
                 privateKey ?? new PrivateKey(),
+                host ?? IPAddress.Loopback.ToString(),
+                listenPort ?? _assignedPort++,
                 blockBroadcast,
                 tableSize,
                 bucketSize,
