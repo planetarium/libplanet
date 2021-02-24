@@ -10,6 +10,53 @@ namespace Libplanet.Explorer.Executable
 {
     public class Options
     {
+        public Options(
+            bool debug,
+            string host,
+            int port,
+            int blockIntervalMilliseconds,
+            long minimumDifficulty,
+            int difficultyBoundDivisor,
+            int workers,
+            string appProtocolVersionToken,
+            string mysqlServer,
+            uint? mysqlPort,
+            string mysqlUsername,
+            string mysqlPassword,
+            string mysqlDatabase,
+            int maxTransactionsPerBlock,
+            int maxBlockBytes,
+            int maxGenesisBytes,
+            IEnumerable<string> seedStrings,
+            string iceServerUrl,
+            string storePath,
+            string storeType,
+            string genesisBlockPath
+        )
+        {
+            Debug = debug;
+            Host = host;
+            Port = port;
+            BlockIntervalMilliseconds = blockIntervalMilliseconds;
+            MinimumDifficulty = minimumDifficulty;
+            DifficultyBoundDivisor = difficultyBoundDivisor;
+            Workers = workers;
+            AppProtocolVersionToken = appProtocolVersionToken;
+            MySQLServer = mysqlServer;
+            MySQLPort = mysqlPort;
+            MySQLUsername = mysqlUsername;
+            MySQLPassword = mysqlPassword;
+            MySQLDatabase = mysqlDatabase;
+            MaxTransactionsPerBlock = maxTransactionsPerBlock;
+            MaxBlockBytes = maxBlockBytes;
+            MaxGenesisBytes = maxGenesisBytes;
+            SeedStrings = seedStrings;
+            IceServerUrl = iceServerUrl;
+            StorePath = storePath;
+            StoreType = storeType;
+            GenesisBlockPath = genesisBlockPath;
+        }
+
         public bool Debug { get; set; }
 
         public string Host { get; set; }
@@ -122,53 +169,6 @@ namespace Libplanet.Explorer.Executable
                     return Block<Program.AppAgnosticAction>.Deserialize(serialized);
                 }
             }
-        }
-
-        public Options(
-            bool debug,
-            string host,
-            int port,
-            int blockIntervalMilliseconds,
-            long minimumDifficulty,
-            int difficultyBoundDivisor,
-            int workers,
-            string appProtocolVersionToken,
-            string mysqlServer,
-            uint? mysqlPort,
-            string mysqlUsername,
-            string mysqlPassword,
-            string mysqlDatabase,
-            int maxTransactionsPerBlock,
-            int maxBlockBytes,
-            int maxGenesisBytes,
-            IEnumerable<string> seedStrings,
-            string iceServerUrl,
-            string storePath,
-            string storeType,
-            string genesisBlockPath
-        )
-        {
-            Debug = debug;
-            Host = host;
-            Port = port;
-            BlockIntervalMilliseconds = blockIntervalMilliseconds;
-            MinimumDifficulty = minimumDifficulty;
-            DifficultyBoundDivisor = difficultyBoundDivisor;
-            Workers = workers;
-            AppProtocolVersionToken = appProtocolVersionToken;
-            MySQLServer = mysqlServer;
-            MySQLPort = mysqlPort;
-            MySQLUsername = mysqlUsername;
-            MySQLPassword = mysqlPassword;
-            MySQLDatabase = mysqlDatabase;
-            MaxTransactionsPerBlock = maxTransactionsPerBlock;
-            MaxBlockBytes = maxBlockBytes;
-            MaxGenesisBytes = maxGenesisBytes;
-            SeedStrings = seedStrings;
-            IceServerUrl = iceServerUrl;
-            StorePath = storePath;
-            StoreType = storeType;
-            GenesisBlockPath = genesisBlockPath;
         }
     }
 }

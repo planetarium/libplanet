@@ -38,6 +38,14 @@ namespace Libplanet.Explorer.Executable
 
         [Command(Description = "Run libplanet-explorer with options.")]
         public async Task Run(
+            [Option(
+                "seed",
+                new[] { 's' },
+                Description = @"Seed nodes to join to the network as a node. The format of each
+seed is a comma-separated triple of a peer's hexadecimal public key, host, and port number.
+E.g., `02ed49dbe0f2c34d9dff8335d6dd9097f7a3ef17dfb5f048382eebc7f451a50aa1,example.com,31234'.
+If omitted (default) explorer only the local blockchain store.")]
+            string[] seedStrings,
             [Option("debug", new[] { 'd' }, Description = "Print logs for debugging as well.")]
             bool debug = false,
             [Option("host", new[] { 'H' }, Description = "The host address to listen.")]
@@ -105,14 +113,6 @@ for genesis block.")]
                 Description = "The number of maximum bytes size of the genesis block.")]
             int maxGenesisBytes = 1024 * 1024,
             [Option(
-                "seed",
-                new[] { 's' },
-                Description = @"Seed nodes to join to the network as a node. The format of each
-seed is a comma-separated triple of a peer's hexadecimal public key, host, and port number.
-E.g., `02ed49dbe0f2c34d9dff8335d6dd9097f7a3ef17dfb5f048382eebc7f451a50aa1,example.com,31234'.
-If omitted (default) explorer only the local blockchain store.")]
-            string[] seedStrings = null,
-            [Option(
                 "ice-server",
                 new[] { 'I' },
                 Description = "URL to ICE server (TURN/STUN) to work around NAT.")]
@@ -137,27 +137,27 @@ in DefaultStore is used.")]
         )
         {
             Options options = new Options(
-            debug,
-            host,
-            port,
-            blockIntervalMilliseconds,
-            minimumDifficulty,
-            difficultyBoundDivisor,
-            workers,
-            appProtocolVersionToken,
-            mysqlServer,
-            mysqlPort,
-            mysqlUsername,
-            mysqlPassword,
-            mysqlDatabase,
-            maxTransactionsPerBlock,
-            maxBlockBytes,
-            maxGenesisBytes,
-            seedStrings,
-            iceServerUrl,
-            storePath,
-            storeType,
-            genesisBlockPath);
+                debug,
+                host,
+                port,
+                blockIntervalMilliseconds,
+                minimumDifficulty,
+                difficultyBoundDivisor,
+                workers,
+                appProtocolVersionToken,
+                mysqlServer,
+                mysqlPort,
+                mysqlUsername,
+                mysqlPassword,
+                mysqlDatabase,
+                maxTransactionsPerBlock,
+                maxBlockBytes,
+                maxGenesisBytes,
+                seedStrings,
+                iceServerUrl,
+                storePath,
+                storeType,
+                genesisBlockPath);
 
             var loggerConfig = new LoggerConfiguration();
             loggerConfig = options.Debug
@@ -297,7 +297,7 @@ in DefaultStore is used.")]
                 default:
                     // FIXME: give available store type as argument hint without code duplication.
                     var availableStoreTypes = new[] { "rocksdb", "default" };
-                    string longOptionName = "store-type";
+                    const string longOptionName = "store-type";
                     throw new InvalidOptionValueException(
                         "--" + longOptionName,
                         options.StoreType,
