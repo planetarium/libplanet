@@ -21,13 +21,15 @@ namespace Libplanet.Tests.Net.Protocols
         private static readonly AppProtocolVersion AppProtocolVersion =
             AppProtocolVersion.Sign(VersionSigner, 1);
 
-        private readonly Dictionary<Address, TestTransport> _transports;
+        private readonly Dictionary<string, TestTransport> _transports;
         private readonly ILogger _logger;
-        private readonly ConcurrentDictionary<byte[], Address> _peersToReply;
+        private readonly ConcurrentDictionary<byte[], string> _addressToReply;
         private readonly ConcurrentDictionary<byte[], Message> _replyToReceive;
         private readonly AsyncCollection<Request> _requests;
         private readonly List<string> _ignoreTestMessageWithData;
         private readonly PrivateKey _privateKey;
+        private readonly string _host;
+        private readonly int _listenPort;
         private readonly Random _random;
         private readonly bool _blockBroadcast;
 
@@ -35,25 +37,29 @@ namespace Libplanet.Tests.Net.Protocols
         private TimeSpan _networkDelay;
 
         public TestTransport(
-            Dictionary<Address, TestTransport> transports,
+            Dictionary<string, TestTransport> transports,
             PrivateKey privateKey,
+            string host,
+            int listenPort,
             bool blockBroadcast,
             int tableSize,
             int bucketSize,
             TimeSpan? networkDelay)
         {
             _privateKey = privateKey;
+            _host = host;
+            _listenPort = listenPort;
             _blockBroadcast = blockBroadcast;
             var loggerId = _privateKey.ToAddress().ToHex();
             _logger = Log.ForContext<TestTransport>()
                 .ForContext("Address", loggerId);
 
-            _peersToReply = new ConcurrentDictionary<byte[], Address>();
+            _addressToReply = new ConcurrentDictionary<byte[], string>();
             _replyToReceive = new ConcurrentDictionary<byte[], Message>();
             ReceivedMessages = new ConcurrentBag<Message>();
             MessageReceived = new AsyncAutoResetEvent();
             _transports = transports;
-            _transports[privateKey.ToAddress()] = this;
+            _transports[ToAddress(AsPeer as BoundPeer)] = this;
             _networkDelay = networkDelay ?? TimeSpan.Zero;
             _requests = new AsyncCollection<Request>();
             _ignoreTestMessageWithData = new List<string>();
@@ -70,7 +76,7 @@ namespace Libplanet.Tests.Net.Protocols
 
         public Peer AsPeer => new BoundPeer(
             _privateKey.PublicKey,
-            new DnsEndPoint("localhost", 1234));
+            new DnsEndPoint(_host, _listenPort));
 
         public IEnumerable<BoundPeer> Peers => Table.Peers;
 
@@ -390,8 +396,8 @@ namespace Libplanet.Tests.Net.Protocols
             Task.Run(async () =>
             {
                 await Task.Delay(_networkDelay);
-                _transports[_peersToReply[message.Identity]].ReceiveReply(message);
-                _peersToReply.TryRemove(message.Identity, out Address addr);
+                _transports[_addressToReply[message.Identity]].ReceiveReply(message);
+                _addressToReply.TryRemove(message.Identity, out string addr);
             });
         }
 
@@ -418,6 +424,11 @@ namespace Libplanet.Tests.Net.Protocols
             }
 
             return ReceivedMessages.OfType<TestMessage>().Any(msg => msg.Data == data);
+        }
+
+        private string ToAddress(BoundPeer peer)
+        {
+            return $"{peer.EndPoint.Host}:{peer.EndPoint.Port}";
         }
 
         private void ReceiveMessage(Message message)
@@ -451,7 +462,7 @@ namespace Libplanet.Tests.Net.Protocols
             }
             else
             {
-                _peersToReply[message.Identity] = boundPeer.Address;
+                _addressToReply[message.Identity] = ToAddress(boundPeer);
             }
 
             if (message is Ping)
@@ -487,7 +498,7 @@ namespace Libplanet.Tests.Net.Protocols
                         req.Message,
                         req.Message.Identity,
                         req.Target);
-                    _transports[req.Target.Address].ReceiveMessage(req.Message);
+                    _transports[ToAddress(req.Target)].ReceiveMessage(req.Message);
                 }
                 else
                 {
