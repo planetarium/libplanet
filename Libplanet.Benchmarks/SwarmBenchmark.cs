@@ -75,8 +75,7 @@ namespace Libplanet.Benchmarks
 
             for (int i = 0; i < SwarmNumber - 1; i++)
             {
-                _swarms[i].AddPeersAsync(new[] { _swarms[i + 1].AsPeer }, null)
-                    .Wait(WaitTimeout);
+                _swarms[i].RoutingTable.AddPeer(_swarms[i + 1].AsPeer as BoundPeer);
             }
 
             _blockChains[0].Append(_blocks[1]);

@@ -908,22 +908,27 @@ namespace Libplanet.Net
             await kademliaProtocol.CheckAllPeersAsync(timeout, cancellationToken);
         }
 
-        internal async Task AddPeersAsync(
-            IEnumerable<Peer> peers,
-            TimeSpan? timeout,
-            CancellationToken cancellationToken = default(CancellationToken))
+        /// <summary>
+        /// This methods directly adds given peer to routing table.
+        /// It is not recommended to use this method outside of testing purpose.
+        /// Use
+        /// <seealso cref="BootstrapAsync(IEnumerable{Peer},double,double,int,CancellationToken)"/>
+        /// instead to initiate network connection.
+        /// </summary>
+        /// <param name="peers">List of <see cref="Peer"/>s to add.</param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when <see cref="Swarm{T}.RoutingTable"/> is null.</exception>
+        internal void AddPeers(IEnumerable<Peer> peers)
         {
-            if (Transport is null)
+            if (RoutingTable is null)
             {
-                throw new ArgumentNullException(nameof(Transport));
+                throw new ArgumentNullException(nameof(RoutingTable));
             }
 
-            if (cancellationToken == default(CancellationToken))
+            foreach (var peer in peers.Where(p => p is BoundPeer _).Select(p => p as BoundPeer))
             {
-                cancellationToken = _cancellationToken;
+                RoutingTable.AddPeer(peer);
             }
-
-            await PeerDiscovery.AddPeersAsync(peers, timeout, cancellationToken);
         }
 
         // FIXME: This would be better if it's merged with GetDemandBlockHashes
