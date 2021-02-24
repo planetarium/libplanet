@@ -462,6 +462,41 @@ namespace Libplanet.Tests.Net.Protocols
             }
         }
 
+        [Fact(Timeout = Timeout)]
+        public async Task DoNotAddMaliciousPeerToTable()
+        {
+            var actualPrivateKey = new PrivateKey();
+            var maliciousPrivateKey = new PrivateKey();
+            const int port = 1250;
+            TestTransport transportA = CreateTestTransport();
+            TestTransport transportB =
+                CreateTestTransport(privateKey: actualPrivateKey, listenPort: port);
+
+            try
+            {
+                await StartTestTransportAsync(transportA);
+                await StartTestTransportAsync(transportB);
+
+                var bytes = new byte[10];
+                new Random().NextBytes(bytes);
+                var maliciousPeer = new BoundPeer(
+                    maliciousPrivateKey.PublicKey,
+                    (transportB.AsPeer as BoundPeer)?.EndPoint);
+                var kp = (KademliaProtocol)transportA.Protocol;
+
+                // Remote peer of Pong does not match with the target peer.
+                await Assert.ThrowsAsync<InvalidMessageException>(async () =>
+                    await kp.PingAsync(maliciousPeer, null, default));
+
+                Assert.DoesNotContain(maliciousPeer, transportA.Peers);
+            }
+            finally
+            {
+                await transportA.StopAsync(TimeSpan.Zero);
+                await transportB.StopAsync(TimeSpan.Zero);
+            }
+        }
+
         private TestTransport CreateTestTransport(
             PrivateKey privateKey = null,
             string host = null,

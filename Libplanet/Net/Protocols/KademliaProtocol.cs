@@ -468,6 +468,15 @@ namespace Libplanet.Net.Protocols
                     throw new InvalidMessageException("Cannot receive pong from self", pong);
                 }
 
+                if (!pong.Remote.Address.Equals(target.Address))
+                {
+                    // Verify sender
+                    throw new InvalidMessageException(
+                        "Remote peer of Pong does not match with the target peer. " +
+                        $"(Expected: {target.Address}, Actual: {pong.Remote.Address})",
+                        pong);
+                }
+
                 _table.AddPeer(target);
             }
             catch (TimeoutException)
