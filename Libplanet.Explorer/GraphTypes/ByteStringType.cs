@@ -1,4 +1,5 @@
 using System;
+using GraphQL.Language.AST;
 using GraphQL.Types;
 
 namespace Libplanet.Explorer.GraphTypes
@@ -26,6 +27,15 @@ namespace Libplanet.Explorer.GraphTypes
                 default:
                     throw new ArgumentException("Expected a hexadecimal string.", nameof(value));
             }
+        }
+
+        public override object ParseLiteral(IValue value)
+        {
+            return value switch
+            {
+                StringValue stringValue => ParseValue(stringValue.Value),
+                _ => null,
+            };
         }
     }
 }
