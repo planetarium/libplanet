@@ -32,11 +32,12 @@ namespace Libplanet.Tests.Net
 
                 var peers = new[] { c.AsPeer, d.AsPeer };
 
-                foreach (var peer in peers)
-                {
-                    await a.AddPeersAsync(new[] { peer }, null);
-                    await b.AddPeersAsync(new[] { peer }, null);
-                }
+                await a.BootstrapAsync(new[] { c.AsPeer }, null, null);
+                await Assert.ThrowsAsync<PeerDiscoveryException>(
+                    async () => await a.BootstrapAsync(new[] { d.AsPeer }, null, null));
+                await Assert.ThrowsAsync<PeerDiscoveryException>(
+                    async () => await b.BootstrapAsync(new[] { c.AsPeer }, null, null));
+                await b.BootstrapAsync(new[] { d.AsPeer }, null, null);
 
                 Assert.Equal(new[] { c.AsPeer }, a.Peers.ToArray());
                 Assert.Equal(new[] { d.AsPeer }, b.Peers.ToArray());
@@ -148,13 +149,20 @@ namespace Libplanet.Tests.Net
                 await StartAsync(e);
                 await StartAsync(f);
 
-                var peers = new[] { c.AsPeer, d.AsPeer, e.AsPeer, f.AsPeer };
-
-                foreach (var peer in peers)
-                {
-                    await a.AddPeersAsync(new[] { peer }, null);
-                    await b.AddPeersAsync(new[] { peer }, null);
-                }
+                await a.BootstrapAsync(new[] { c.AsPeer }, null, null);
+                await Assert.ThrowsAsync<PeerDiscoveryException>(
+                    async () => await a.BootstrapAsync(new[] { d.AsPeer }, null, null));
+                await Assert.ThrowsAsync<PeerDiscoveryException>(
+                    async () => await a.BootstrapAsync(new[] { e.AsPeer }, null, null));
+                await Assert.ThrowsAsync<PeerDiscoveryException>(
+                    async () => await a.BootstrapAsync(new[] { f.AsPeer }, null, null));
+                await Assert.ThrowsAsync<PeerDiscoveryException>(
+                    async () => await b.BootstrapAsync(new[] { c.AsPeer }, null, null));
+                await b.BootstrapAsync(new[] { d.AsPeer }, null, null);
+                await Assert.ThrowsAsync<PeerDiscoveryException>(
+                    async () => await b.BootstrapAsync(new[] { e.AsPeer }, null, null));
+                await Assert.ThrowsAsync<PeerDiscoveryException>(
+                    async () => await b.BootstrapAsync(new[] { f.AsPeer }, null, null));
 
                 Assert.Equal(new[] { c.AsPeer }, a.Peers.ToArray());
                 Assert.Equal(new[] { d.AsPeer }, b.Peers.ToArray());
