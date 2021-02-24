@@ -39,13 +39,22 @@ namespace Libplanet.Explorer.Executable
         [Command(Description = "Run libplanet-explorer with options.")]
         public async Task Run(
             [Option(
-                "seed",
-                new[] { 's' },
-                Description = @"Seed nodes to join to the network as a node. The format of each
-seed is a comma-separated triple of a peer's hexadecimal public key, host, and port number.
-E.g., `02ed49dbe0f2c34d9dff8335d6dd9097f7a3ef17dfb5f048382eebc7f451a50aa1,example.com,31234'.
-If omitted (default) explorer only the local blockchain store.")]
-            string[] seedStrings,
+                "store-path",
+                new[] { 'P' },
+                Description = @"The path of the blockchain store. If omitted (default)
+in memory version is used.")]
+            string storePath,
+            [Option(
+                "store-type",
+                new[] { 'T' },
+                Description = @"The type of the blockchain store. If omitted (default)
+in DefaultStore is used.")]
+            string storeType,
+            [Option(
+                "genesis-block",
+                new[] { 'G' },
+                Description = "The path of the genesis block. It should be absolute or http url.")]
+            string genesisBlockPath,
             [Option("debug", new[] { 'd' }, Description = "Print logs for debugging as well.")]
             bool debug = false,
             [Option("host", new[] { 'H' }, Description = "The host address to listen.")]
@@ -113,27 +122,18 @@ for genesis block.")]
                 Description = "The number of maximum bytes size of the genesis block.")]
             int maxGenesisBytes = 1024 * 1024,
             [Option(
+                "seed",
+                new[] { 's' },
+                Description = @"Seed nodes to join to the network as a node. The format of each
+seed is a comma-separated triple of a peer's hexadecimal public key, host, and port number.
+E.g., `02ed49dbe0f2c34d9dff8335d6dd9097f7a3ef17dfb5f048382eebc7f451a50aa1,example.com,31234'.
+If omitted (default) explorer only the local blockchain store.")]
+            string[] seedStrings = null,
+            [Option(
                 "ice-server",
                 new[] { 'I' },
                 Description = "URL to ICE server (TURN/STUN) to work around NAT.")]
-            string iceServerUrl = null,
-            [Option(
-                "store-path",
-                new[] { 'P' },
-                Description = @"The path of the blockchain store. If omitted (default)
-in memory version is used.")]
-            string storePath = null,
-            [Option(
-                "store-type",
-                new[] { 'T' },
-                Description = @"The type of the blockchain store. If omitted (default)
-in DefaultStore is used.")]
-            string storeType = null,
-            [Option(
-                "genesis-block",
-                new[] { 'G' },
-                Description = "The path of the genesis block. It should be absolute or http url.")]
-            string genesisBlockPath = null
+            string iceServerUrl = null
         )
         {
             Options options = new Options(
@@ -201,7 +201,7 @@ in DefaultStore is used.")]
                     .Build();
 
                 Swarm<AppAgnosticAction> swarm = null;
-                if (options.Seeds.Any())
+                if (!(options.Seeds is null))
                 {
                     string aggregatedSeedStrings =
                         options.SeedStrings.Aggregate(string.Empty, (s, s1) => s + s1);

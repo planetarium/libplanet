@@ -99,7 +99,7 @@ namespace Libplanet.Explorer.Executable
 
             set
             {
-                Seeds = value.Select(str =>
+                Seeds = value?.Select(str =>
                 {
                     string[] parts = str.Split(',');
                     if (parts.Length != 3)
