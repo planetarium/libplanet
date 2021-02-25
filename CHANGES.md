@@ -60,6 +60,13 @@ To be released.
 
 ### Backward-incompatible storage format changes
 
+ -  Now Block and Transaction will be stored in distributed database.
+    Each block and transaction is divided and saved in epoch units
+    according to the unix timestamp that you have.
+    This epoch is divided using the seconds set in
+    `txAtEachEpoch` parameter and `blockAtEachEpoch` parameter
+    from `RocksDBStore`. (The default is 86400.) [[#1183], [#1194]]
+
 ### Added APIs
 
  -  Added `Block<T>.CurrentProtocolVersion` constant.  [[#1142], [#1147]]
@@ -244,10 +251,11 @@ To be released.
 [#1180]: https://github.com/planetarium/libplanet/pull/1180
 [#1181]: https://github.com/planetarium/libplanet/pull/1181
 [#1182]: https://github.com/planetarium/libplanet/pull/1182
+[#1183]: https://github.com/planetarium/libplanet/issues/1183
 [#1184]: https://github.com/planetarium/libplanet/pull/1184
 [#1185]: https://github.com/planetarium/libplanet/pull/1185
 [#1186]: https://github.com/planetarium/libplanet/pull/1186
-
+[#1194]: https://github.com/planetarium/libplanet/pull/1194
 
 Version 0.10.3
 --------------
