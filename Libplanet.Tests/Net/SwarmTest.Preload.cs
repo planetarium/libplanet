@@ -42,7 +42,7 @@ namespace Libplanet.Tests.Net
             try
             {
                 await StartAsync(minerSwarm);
-                receiverSwarm.AddPeers(new[] { minerSwarm.AsPeer });
+                receiverSwarm.AddPeer(minerSwarm.AsPeer);
 
                 await receiverSwarm.PreloadAsync();
 
@@ -85,7 +85,7 @@ namespace Libplanet.Tests.Net
             try
             {
                 await StartAsync(minerSwarm);
-                receiverSwarm.AddPeers(new[] { minerSwarm.AsPeer });
+                receiverSwarm.AddPeer(minerSwarm.AsPeer);
 
                 await receiverSwarm.PreloadAsync();
                 var state = receiverChain.GetState(address1);
@@ -143,7 +143,7 @@ namespace Libplanet.Tests.Net
             {
                 await StartAsync(minerSwarm);
 
-                receiverSwarm.AddPeers(new[] { minerSwarm.AsPeer });
+                receiverSwarm.AddPeer(minerSwarm.AsPeer);
 
                 _logger.Verbose("Both chains before synchronization:");
                 _logger.CompareBothChains(
@@ -259,7 +259,7 @@ namespace Libplanet.Tests.Net
             {
                 await StartAsync(minerSwarm);
 
-                receiverSwarm.AddPeers(new[] { minerSwarm.AsPeer });
+                receiverSwarm.AddPeer(minerSwarm.AsPeer);
                 Task waitTask = receiverSwarm.BlockDownloadStarted.WaitAsync();
 
                 Task preloadTask = receiverSwarm.PreloadAsync(TimeSpan.FromSeconds(15));
@@ -308,7 +308,7 @@ namespace Libplanet.Tests.Net
             {
                 await StartAsync(minerSwarm);
 
-                receiverSwarm.AddPeers(new[] { minerSwarm.AsPeer });
+                receiverSwarm.AddPeer(minerSwarm.AsPeer);
                 await receiverSwarm.PreloadAsync(TimeSpan.FromSeconds(1));
 
                 var action = new ThrowException { ThrowOnExecution = true };
@@ -393,11 +393,11 @@ namespace Libplanet.Tests.Net
                 nominerSwarm0.FindNextHashesChunkSize = 2;
                 nominerSwarm1.FindNextHashesChunkSize = 2;
 
-                nominerSwarm0.AddPeers(new[] { minerSwarm.AsPeer });
+                nominerSwarm0.AddPeer(minerSwarm.AsPeer);
                 await nominerSwarm0.PreloadAsync();
-                nominerSwarm1.AddPeers(new[] { nominerSwarm0.AsPeer });
+                nominerSwarm1.AddPeer(nominerSwarm0.AsPeer);
                 await nominerSwarm1.PreloadAsync();
-                receiverSwarm.AddPeers(new[] { nominerSwarm1.AsPeer });
+                receiverSwarm.AddPeer(nominerSwarm1.AsPeer);
                 await receiverSwarm.PreloadAsync(TimeSpan.FromSeconds(15), progress);
 
                 // Await 1 second to make sure all progresses is reported.
@@ -557,7 +557,7 @@ namespace Libplanet.Tests.Net
 
             minerSwarm.FindNextHashesChunkSize = 2;
             await StartAsync(minerSwarm);
-            receiverSwarm.AddPeers(new[] { minerSwarm.AsPeer });
+            receiverSwarm.AddPeer(minerSwarm.AsPeer);
 
             CancellationTokenSource cts = new CancellationTokenSource();
             cts.CancelAfter(cancelAfter);
@@ -682,7 +682,7 @@ namespace Libplanet.Tests.Net
             try
             {
                 await StartAsync(minerSwarm);
-                receiverSwarm.AddPeers(new[] { minerSwarm.AsPeer });
+                receiverSwarm.AddPeer(minerSwarm.AsPeer);
                 await receiverSwarm.PreloadAsync();
             }
             finally
@@ -765,7 +765,7 @@ namespace Libplanet.Tests.Net
             try
             {
                 await StartAsync(minerSwarm);
-                receiverSwarm.AddPeers(new[] { minerSwarm.AsPeer });
+                receiverSwarm.AddPeer(minerSwarm.AsPeer);
                 await receiverSwarm.PreloadAsync();
             }
             finally

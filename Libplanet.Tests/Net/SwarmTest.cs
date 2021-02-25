@@ -105,9 +105,9 @@ namespace Libplanet.Tests.Net
                 await StartAsync(seed);
                 await StartAsync(swarmA);
                 await StartAsync(swarmB);
-                seed.AddPeers(new[] { swarmA.AsPeer });
+                seed.AddPeer(swarmA.AsPeer);
                 await StopAsync(swarmA);
-                seed.AddPeers(new[] { swarmB.AsPeer });
+                seed.AddPeer(swarmB.AsPeer);
 
                 Assert.Contains(swarmB.AsPeer, seed.Peers);
             }
@@ -279,7 +279,7 @@ namespace Libplanet.Tests.Net
                 await StartAsync(swarmA);
                 await StartAsync(swarmB);
 
-                swarmA.AddPeers(new[] { swarmB.AsPeer });
+                swarmA.AddPeer(swarmB.AsPeer);
 
                 (long, HashDigest<SHA256>)[] inventories1 = (
                     await swarmB.GetBlockHashes(
@@ -346,7 +346,7 @@ namespace Libplanet.Tests.Net
 
                 var peer = swarmA.AsPeer as BoundPeer;
 
-                swarmB.AddPeers(new[] { peer });
+                swarmB.AddPeer(peer);
 
                 Tuple<long, HashDigest<SHA256>>[] hashes = await swarmB.GetBlockHashes(
                     peer,
@@ -423,7 +423,7 @@ namespace Libplanet.Tests.Net
                 await StartAsync(swarmA);
                 await StartAsync(swarmB);
 
-                swarmA.AddPeers(new[] { swarmB.AsPeer });
+                swarmA.AddPeer(swarmB.AsPeer);
 
                 List<Transaction<DumbAction>> txs =
                     await swarmA.GetTxsAsync(
@@ -608,7 +608,7 @@ namespace Libplanet.Tests.Net
                 await StartAsync(seed);
                 await StartAsync(swarmA);
 
-                swarmA.AddPeers(new[] { seed.AsPeer });
+                swarmA.AddPeer(seed.AsPeer);
 
                 cts.Cancel();
                 await proxyTask;
@@ -670,7 +670,7 @@ namespace Libplanet.Tests.Net
             {
                 await StartAsync(swarm1);
                 await StartAsync(swarm2);
-                swarm2.AddPeers(new[] { swarm1.AsPeer });
+                swarm2.AddPeer(swarm1.AsPeer);
 
                 swarm2.BroadcastBlock(block3);
                 await swarm1.FillBlocksAsyncFailed.WaitAsync();
@@ -729,7 +729,7 @@ namespace Libplanet.Tests.Net
             await StartAsync(miner1);
             await StartAsync(miner2);
 
-            await BootstrapAsync(miner2, miner1.AsPeer);
+            miner2.AddPeer(miner1.AsPeer);
 
             miner2.BroadcastBlock(latest);
 
@@ -776,6 +776,7 @@ namespace Libplanet.Tests.Net
                 await StartAsync(miner2);
 
                 await BootstrapAsync(miner2, miner1.AsPeer);
+                miner2.AddPeer(miner1.AsPeer);
 
                 miner2.BroadcastBlock(block);
                 await miner1.BlockReceived.WaitAsync();
@@ -1121,7 +1122,7 @@ namespace Libplanet.Tests.Net
             {
                 await StartAsync(swarmA);
                 await StartAsync(swarmB);
-                swarmA.AddPeers(new[] { swarmB.AsPeer });
+                swarmA.AddPeer(swarmB.AsPeer);
 
                 Task task = swarmB.FillBlocksAsyncStarted.WaitAsync();
                 swarmA.BroadcastBlock(block);
@@ -1192,8 +1193,8 @@ namespace Libplanet.Tests.Net
                 await StartAsync(swarmB);
                 await StartAsync(swarmC);
 
-                swarmA.AddPeers(new[] { swarmB.AsPeer });
-                swarmA.AddPeers(new[] { swarmC.AsPeer });
+                swarmA.AddPeer(swarmB.AsPeer);
+                swarmA.AddPeer(swarmC.AsPeer);
 
                 var block = await swarmA.BlockChain.MineBlock(swarmA.Address);
 
@@ -1239,9 +1240,9 @@ namespace Libplanet.Tests.Net
                 await StartAsync(swarmC);
                 await StartAsync(swarmD);
 
-                swarmA.AddPeers(new Peer[] { swarmB.AsPeer });
-                swarmB.AddPeers(new Peer[] { swarmC.AsPeer });
-                swarmC.AddPeers(new Peer[] { swarmD.AsPeer });
+                swarmA.AddPeer(swarmB.AsPeer);
+                swarmB.AddPeer(swarmC.AsPeer);
+                swarmC.AddPeer(swarmD.AsPeer);
 
                 BoundPeer foundPeer = await swarmA.FindSpecificPeerAsync(
                     swarmB.AsPeer.Address,
@@ -1281,8 +1282,8 @@ namespace Libplanet.Tests.Net
                 await StartAsync(swarmB);
                 await StartAsync(swarmC);
 
-                swarmA.AddPeers(new Peer[] { swarmB.AsPeer });
-                swarmB.AddPeers(new Peer[] { swarmC.AsPeer });
+                swarmA.AddPeer(swarmB.AsPeer);
+                swarmB.AddPeer(swarmC.AsPeer);
 
                 await StopAsync(swarmB);
 
@@ -1323,9 +1324,9 @@ namespace Libplanet.Tests.Net
                 await StartAsync(swarmC);
                 await StartAsync(swarmD);
 
-                swarmA.AddPeers(new Peer[] { swarmB.AsPeer });
-                swarmB.AddPeers(new Peer[] { swarmC.AsPeer });
-                swarmC.AddPeers(new Peer[] { swarmD.AsPeer });
+                swarmA.AddPeer(swarmB.AsPeer);
+                swarmB.AddPeer(swarmC.AsPeer);
+                swarmC.AddPeer(swarmD.AsPeer);
 
                 BoundPeer foundPeer = await swarmA.FindSpecificPeerAsync(
                     swarmC.AsPeer.Address,
@@ -1335,7 +1336,7 @@ namespace Libplanet.Tests.Net
                 Assert.Equal(swarmC.AsPeer.Address, foundPeer.Address);
                 swarmA.RoutingTable.Clear();
                 Assert.Empty(swarmA.Peers);
-                swarmA.AddPeers(new Peer[] { swarmB.AsPeer });
+                swarmA.AddPeer(swarmB.AsPeer);
 
                 foundPeer = await swarmA.FindSpecificPeerAsync(
                     swarmD.AsPeer.Address,
