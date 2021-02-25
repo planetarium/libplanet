@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading;
@@ -37,6 +38,10 @@ namespace Libplanet.Explorer.Executable
         }
 
         [Command(Description = "Run libplanet-explorer with options.")]
+        [SuppressMessage(
+            "Microsoft.StyleCop.CSharp.ReadabilityRules",
+            "MEN003",
+            Justification = "Many lines are required for running the method.")]
         public async Task Run(
             [Option(
                 "store-path",
