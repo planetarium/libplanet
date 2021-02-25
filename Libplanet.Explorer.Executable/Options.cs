@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
-using CommandLine;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net;
@@ -12,104 +10,85 @@ namespace Libplanet.Explorer.Executable
 {
     public class Options
     {
-        [Option('d', "debug", HelpText = "Print logs for debugging as well.")]
+        public Options(
+            bool debug,
+            string host,
+            int port,
+            int blockIntervalMilliseconds,
+            long minimumDifficulty,
+            int difficultyBoundDivisor,
+            int workers,
+            string appProtocolVersionToken,
+            string mysqlServer,
+            uint? mysqlPort,
+            string mysqlUsername,
+            string mysqlPassword,
+            string mysqlDatabase,
+            int maxTransactionsPerBlock,
+            int maxBlockBytes,
+            int maxGenesisBytes,
+            IEnumerable<string> seedStrings,
+            string iceServerUrl,
+            string storePath,
+            string storeType,
+            string genesisBlockPath
+        )
+        {
+            Debug = debug;
+            Host = host;
+            Port = port;
+            BlockIntervalMilliseconds = blockIntervalMilliseconds;
+            MinimumDifficulty = minimumDifficulty;
+            DifficultyBoundDivisor = difficultyBoundDivisor;
+            Workers = workers;
+            AppProtocolVersionToken = appProtocolVersionToken;
+            MySQLServer = mysqlServer;
+            MySQLPort = mysqlPort;
+            MySQLUsername = mysqlUsername;
+            MySQLPassword = mysqlPassword;
+            MySQLDatabase = mysqlDatabase;
+            MaxTransactionsPerBlock = maxTransactionsPerBlock;
+            MaxBlockBytes = maxBlockBytes;
+            MaxGenesisBytes = maxGenesisBytes;
+            SeedStrings = seedStrings;
+            IceServerUrl = iceServerUrl;
+            StorePath = storePath;
+            StoreType = storeType;
+            GenesisBlockPath = genesisBlockPath;
+        }
+
         public bool Debug { get; set; }
 
-        [Option('H', "host", Default = "0.0.0.0", HelpText = "The host address to listen.")]
         public string Host { get; set; }
 
-        [Option('p', "port", Default = 5000, HelpText = "The port number to listen.")]
         public int Port { get; set; }
 
-        [Option(
-            'i',
-            "block-interval",
-            Default = 5000,
-            HelpText = "An appropriate interval in milliseconds between consecutive blocks.")]
         public int BlockIntervalMilliseconds { get; set; }
 
-        [Option(
-            'm',
-            "minimum-difficulty",
-            Default = 1024L,
-            HelpText = "Allowed minimum difficulty for mining blocks.")]
         public long MinimumDifficulty { get; set; }
 
-        [Option(
-            'D',
-            "difficulty-bound-divisor",
-            Default = 128,
-            HelpText = "A bound divisor to determine precision of block difficulties.")]
         public int DifficultyBoundDivisor { get; set; }
 
-        [Option(
-            'W',
-            "workers",
-            Default = 50,
-            HelpText = "The number of swarm workers.")]
         public int Workers { get; set; }
 
-        [Option(
-            'V',
-            "app-protocol-version",
-            HelpText = "An app protocol version token.")]
         public string AppProtocolVersionToken { get; set; }
 
-        [Option(
-            "mysql-server",
-            Default = null,
-            HelpText = "A hostname of MySQL server.")]
         public string MySQLServer { get; set; }
 
-        [Option(
-            "mysql-port",
-            Default = null,
-            HelpText = "A port of MySQL server.")]
         public uint? MySQLPort { get; set; }
 
-        [Option(
-            "mysql-username",
-            Default = null,
-            HelpText = "The name of MySQL user.")]
         public string MySQLUsername { get; set; }
 
-        [Option(
-            "mysql-password",
-            Default = null,
-            HelpText = "The password of MySQL user.")]
         public string MySQLPassword { get; set; }
 
-        [Option(
-            "mysql-database",
-            Default = null,
-            HelpText = "The name of MySQL database to use.")]
         public string MySQLDatabase { get; set; }
 
-        [Option(
-            "max-transactions-per-block",
-            Default = 100,
-            HelpText = "The number of maximum transactions able to be included in a block.")]
         public int MaxTransactionsPerBlock { get; set; }
 
-        [Option(
-            "max-block-bytes",
-            Default = 100 * 1024,
-            HelpText = "The number of maximum bytes size of blocks except for genesis block.")]
         public int MaxBlockBytes { get; set; }
 
-        [Option(
-            "max-genesis-bytes",
-            Default = 1024 * 1024,
-            HelpText = "The number of maximum bytes size of the genesis block.")]
         public int MaxGenesisBytes { get; set; }
 
-        [Option(
-            's',
-            "seed",
-            HelpText = @"Seed nodes to join to the network as a node. The format of each
-seed is a comma-separated triple of a peer's hexadecimal public key, host, and port number.
-E.g., `02ed49dbe0f2c34d9dff8335d6dd9097f7a3ef17dfb5f048382eebc7f451a50aa1,example.com,31234'.
-If omitted (default) explorer only the local blockchain store.")]
         public IEnumerable<string> SeedStrings
         {
             get
@@ -120,7 +99,7 @@ If omitted (default) explorer only the local blockchain store.")]
 
             set
             {
-                Seeds = value.Select(str =>
+                Seeds = value?.Select(str =>
                 {
                     string[] parts = str.Split(',');
                     if (parts.Length != 3)
@@ -139,10 +118,6 @@ If omitted (default) explorer only the local blockchain store.")]
 
         public IEnumerable<BoundPeer> Seeds { get; set; }
 
-        [Option(
-            'I',
-            "ice-server",
-            HelpText = "URL to ICE server (TURN/STUN) to work around NAT.")]
         public string IceServerUrl
         {
             get
@@ -177,27 +152,10 @@ If omitted (default) explorer only the local blockchain store.")]
 
         public IceServer IceServer { get; set; }
 
-        [Option(
-            'P',
-            "store-path",
-            Default = null,
-            HelpText = @"The path of the blockchain store. If omitted (default)
-in memory version is used.")]
         public string StorePath { get; set; }
 
-        [Option(
-            'T',
-            "store-type",
-            Default = null,
-            HelpText = @"The type of the blockchain store. If omitted (default)
-in DefaultStore is used.")]
         public string StoreType { get; set; }
 
-        [Option(
-            'G',
-            "genesis-block",
-            HelpText = "The path of the genesis block. It should be absolute or http url.",
-            Required = true)]
         public string GenesisBlockPath { get; set; }
 
         internal Block<Program.AppAgnosticAction> GenesisBlock
@@ -211,31 +169,6 @@ in DefaultStore is used.")]
                     return Block<Program.AppAgnosticAction>.Deserialize(serialized);
                 }
             }
-        }
-
-        public static Options Parse(string[] args, TextWriter errorWriter)
-        {
-            var parser = new Parser(with =>
-            {
-                with.AutoHelp = true;
-                with.EnableDashDash = true;
-                with.HelpWriter = errorWriter;
-            });
-            ParserResult<Options> result = parser.ParseArguments<Options>(args);
-
-            if (result is Parsed<Options> parsed)
-            {
-                Options options = parsed.Value;
-                return options;
-            }
-            else if (result is NotParsed<Options> notParsed)
-            {
-                System.Environment.Exit(
-                    notParsed.Errors.All(e => e.Tag is ErrorType.HelpRequestedError) ? 0 : 1
-                );
-            }
-
-            return null;
         }
     }
 }
