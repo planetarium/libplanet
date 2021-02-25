@@ -84,8 +84,8 @@ namespace Libplanet.RocksDBStore
             ulong? maxTotalWalSize = null,
             ulong? keepLogFileNum = null,
             ulong? maxLogFileSize = null,
-            int txAtEachEpoch = 10000,
-            int blockAtEachEpoch = 20000
+            int txAtEachEpoch = 86400,
+            int blockAtEachEpoch = 86400
         )
         {
             _logger = Log.ForContext<RocksDBStore>();
@@ -111,7 +111,7 @@ namespace Libplanet.RocksDBStore
                 : throw new ArgumentException(
                     $"{nameof(RocksDBStore)}.txAtEachEpoch cannot be 0 or less.");
             _blockAtEachEpoch = blockAtEachEpoch > 0
-                ? txAtEachEpoch
+                ? blockAtEachEpoch
                 : throw new ArgumentException(
                     $"{nameof(RocksDBStore)}.blockAtEachEpoch cannot be 0 or less.");
             _options = new DbOptions()
@@ -397,6 +397,9 @@ namespace Libplanet.RocksDBStore
                 return;
             }
 
+            var timestamp = tx.Timestamp.ToUnixTimeSeconds();
+            string txDbName = $"epoch{(int)timestamp / _txAtEachEpoch}";
+            RocksDBStoreEpoch epoch = new RocksDBStoreEpoch("Transaction", txDbName);
             _rwTxLock.EnterWriteLock();
             long totalCountOfTx = CountTransactions();
 
@@ -506,16 +509,15 @@ namespace Libplanet.RocksDBStore
                 return;
             }
 
-            _rwBlockLock.EnterWriteLock();
-            long totalCountOfBlock = CountBlocks();
+            var timestamp = block.Timestamp.ToUnixTimeSeconds();
 
             foreach (Transaction<T> tx in block.Transactions)
             {
                 PutTransaction(tx);
             }
 
-            string blockDbName = $"epoch{(int)totalCountOfBlock / _blockAtEachEpoch}";
-            RocksDb blockDb = RocksDBUtils.OpenRocksDb(_options, BlockDbPath(blockDbName));
+            _rwBlockLock.EnterWriteLock();
+            string blockDbName = $"epoch{timestamp / _blockAtEachEpoch}";
             RocksDBStoreEpoch epoch = new RocksDBStoreEpoch("Block", blockDbName);
 
             byte[] value = block.ToBlockDigest().Serialize();
