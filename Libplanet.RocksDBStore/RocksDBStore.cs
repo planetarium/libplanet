@@ -52,7 +52,9 @@ namespace Libplanet.RocksDBStore
 
         private readonly RocksDb _blockIndexDb;
         private readonly RocksDb _blockPerceptionDb;
+        private readonly LruCache<string, RocksDb> _blockDbCache;
         private readonly RocksDb _txIndexDb;
+        private readonly LruCache<string, RocksDb> _txDbCache;
         private readonly RocksDb _stagedTxDb;
         private readonly RocksDb _chainDb;
 
@@ -146,6 +148,19 @@ namespace Libplanet.RocksDBStore
 
             _rwTxLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
             _rwBlockLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
+
+            _blockDbCache = new LruCache<string, RocksDb>();
+            _blockDbCache.SetPreRemoveDataMethod(db =>
+            {
+                db.Dispose();
+                return true;
+            });
+            _txDbCache = new LruCache<string, RocksDb>();
+            _txDbCache.SetPreRemoveDataMethod(db =>
+            {
+                db.Dispose();
+                return true;
+            });
         }
 
         /// <inheritdoc/>
@@ -373,9 +388,13 @@ namespace Libplanet.RocksDBStore
             RocksDBStoreEpoch epoch = RocksDBStoreEpoch.Deserialize(epochBytes);
 
             _rwTxLock.EnterReadLock();
-            RocksDb txDb = RocksDBUtils.OpenRocksDb(_options, TxDbPath(epoch.DbName));
+            if (!_txDbCache.TryGetValue(epoch.DbName, out RocksDb txDb))
+            {
+                txDb = RocksDBUtils.OpenRocksDb(_options, TxDbPath(epoch.DbName));
+                _txDbCache.AddOrUpdate(epoch.DbName, txDb);
+            }
+
             byte[] txBytes = txDb.Get(key);
-            txDb.Dispose();
 
             Transaction<T> tx = Transaction<T>.Deserialize(txBytes, false);
             _txCache.AddOrUpdate(txid, tx);
@@ -401,14 +420,13 @@ namespace Libplanet.RocksDBStore
             string txDbName = $"epoch{(int)timestamp / _txAtEachEpoch}";
             RocksDBStoreEpoch epoch = new RocksDBStoreEpoch("Transaction", txDbName);
             _rwTxLock.EnterWriteLock();
-            long totalCountOfTx = CountTransactions();
-
-            string txDbName = $"epoch{(int)totalCountOfTx / _txAtEachEpoch}";
-            RocksDb txDb = RocksDBUtils.OpenRocksDb(_options, TxDbPath(txDbName));
-            RocksDBStoreEpoch epoch = new RocksDBStoreEpoch("Transaction", txDbName);
+            if (!_txDbCache.TryGetValue(epoch.DbName, out RocksDb txDb))
+            {
+                txDb = RocksDBUtils.OpenRocksDb(_options, TxDbPath(txDbName));
+                _txDbCache.AddOrUpdate(epoch.DbName, txDb);
+            }
 
             txDb.Put(key, tx.Serialize(true));
-            txDb.Dispose();
             _txIndexDb.Put(key, epoch.Serialize());
             _txCache.AddOrUpdate(tx.Id, tx);
             _rwTxLock.ExitWriteLock();
@@ -426,11 +444,15 @@ namespace Libplanet.RocksDBStore
 
             _rwTxLock.EnterWriteLock();
             RocksDBStoreEpoch epoch = RocksDBStoreEpoch.Deserialize(_txIndexDb.Get(key));
-            RocksDb txDb = RocksDBUtils.OpenRocksDb(_options, TxDbPath(epoch.DbName));
+            if (!_txDbCache.TryGetValue(epoch.DbName, out RocksDb txDb))
+            {
+                txDb = RocksDBUtils.OpenRocksDb(_options, TxDbPath(epoch.DbName));
+                _txDbCache.AddOrUpdate(epoch.DbName, txDb);
+            }
+
             _txCache.Remove(txid);
             _txIndexDb.Remove(key);
             txDb.Remove(key);
-            txDb.Dispose();
             _rwTxLock.ExitWriteLock();
 
             return true;
@@ -483,9 +505,13 @@ namespace Libplanet.RocksDBStore
             RocksDBStoreEpoch epoch = RocksDBStoreEpoch.Deserialize(epochBytes);
 
             _rwBlockLock.EnterReadLock();
-            RocksDb blockDb = RocksDBUtils.OpenRocksDb(_options, BlockDbPath(epoch.DbName));
+            if (!_blockDbCache.TryGetValue(epoch.DbName, out RocksDb blockDb))
+            {
+                blockDb = RocksDBUtils.OpenRocksDb(_options, BlockDbPath(epoch.DbName));
+                _blockDbCache.AddOrUpdate(epoch.DbName, blockDb);
+            }
+
             byte[] blockBytes = blockDb.Get(key);
-            blockDb.Dispose();
 
             BlockDigest blockDigest = BlockDigest.Deserialize(blockBytes);
 
@@ -519,10 +545,14 @@ namespace Libplanet.RocksDBStore
             _rwBlockLock.EnterWriteLock();
             string blockDbName = $"epoch{timestamp / _blockAtEachEpoch}";
             RocksDBStoreEpoch epoch = new RocksDBStoreEpoch("Block", blockDbName);
+            if (!_blockDbCache.TryGetValue(epoch.DbName, out RocksDb blockDb))
+            {
+                blockDb = RocksDBUtils.OpenRocksDb(_options, BlockDbPath(epoch.DbName));
+                _blockDbCache.AddOrUpdate(epoch.DbName, blockDb);
+            }
 
             byte[] value = block.ToBlockDigest().Serialize();
             blockDb.Put(key, value);
-            blockDb.Dispose();
             _blockIndexDb.Put(key, epoch.Serialize());
             _blockCache.AddOrUpdate(block.Hash, block.ToBlockDigest());
             _rwBlockLock.ExitWriteLock();
@@ -539,12 +569,16 @@ namespace Libplanet.RocksDBStore
             }
 
             _rwBlockLock.EnterWriteLock();
-            RocksDBStoreEpoch epoch = RocksDBStoreEpoch.Deserialize(_txIndexDb.Get(key));
-            RocksDb blockDb = RocksDBUtils.OpenRocksDb(_options, BlockDbPath(epoch.DbName));
+            RocksDBStoreEpoch epoch = RocksDBStoreEpoch.Deserialize(_blockIndexDb.Get(key));
+            if (!_blockDbCache.TryGetValue(epoch.DbName, out RocksDb blockDb))
+            {
+                blockDb = RocksDBUtils.OpenRocksDb(_options, BlockDbPath(epoch.DbName));
+                _blockDbCache.AddOrUpdate(epoch.DbName, blockDb);
+            }
+
             _blockCache.Remove(blockHash);
             _blockIndexDb.Remove(key);
             blockDb.Remove(key);
-            blockDb.Dispose();
             _rwBlockLock.ExitWriteLock();
 
             return true;
@@ -648,6 +682,19 @@ namespace Libplanet.RocksDBStore
             _blockIndexDb?.Dispose();
             _blockPerceptionDb?.Dispose();
             _stagedTxDb?.Dispose();
+            foreach (var db in _txDbCache.Values)
+            {
+                db.Dispose();
+            }
+
+            _txDbCache.Clear();
+
+            foreach (var db in _blockDbCache.Values)
+            {
+                db.Dispose();
+            }
+
+            _blockDbCache.Clear();
         }
 
         private byte[] BlockKey(HashDigest<SHA256> blockHash)
