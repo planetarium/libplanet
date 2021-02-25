@@ -69,19 +69,15 @@ namespace Libplanet
         }
 
         /// <summary>
-         /// Converts a <see cref="ImmutableArray"/> of <see cref="byte"/> array into a
-         /// <see cref="HashDigest{T}"/>.
-         /// </summary>
-         /// <param name="hashDigest">A <see cref="byte"/> array that encodes
-         /// a <see cref="HashDigest{T}"/>.  It must not be <c>null</c>,
-         /// and its <see cref="Array.Length"/> must be the same to
-         /// <see cref="Size"/>.</param>
-         /// <exception cref="ArgumentNullException">Thrown when the given
-         /// <paramref name="hashDigest"/> is <c>null</c>.</exception>
-         /// <exception cref="ArgumentOutOfRangeException">Thrown when the given
-         /// <paramref name="hashDigest"/>'s <see cref="ImmutableArray{T}.Length"/> is not
-         /// the same to the <see cref="Size"/> the hash algorithm
-         /// (i.e., <typeparamref name="T"/> requires.</exception>
+        /// Converts an immutable <see cref="byte"/> array into a <see cref="HashDigest{T}"/>.
+        /// </summary>
+        /// <param name="hashDigest">An immutable <see cref="byte"/> array that encodes
+        /// a <see cref="HashDigest{T}"/>.  It must not be <c>null</c>, and its
+        /// <see cref="Array.Length"/> must be the same to <see cref="Size"/>.</param>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when the given
+        /// <paramref name="hashDigest"/>'s <see cref="ImmutableArray{T}.Length"/> is not
+        /// the same to the <see cref="Size"/> the hash algorithm
+        /// (i.e., <typeparamref name="T"/> requires.</exception>
         public HashDigest(ImmutableArray<byte> hashDigest)
         {
             if (hashDigest.Length != Size)
@@ -254,6 +250,7 @@ namespace Libplanet
             return true;
         }
 
+        /// <inheritdoc cref="ISerializable.GetObjectData(SerializationInfo, StreamingContext)"/>
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue(nameof(HashDigest<T>), ToByteArray());

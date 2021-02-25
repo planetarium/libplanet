@@ -18,6 +18,7 @@ To be released.
 
 ### Added APIs
 
+ -  Added `BlockHash` struct.  [[#1192], [#1197]]
  -  Added `StunMessage.ParseAsync(Stream, CancellationToken)` method.
     [[#1228]]
  -  Added `Swarm<T>.AddPeersAsync()` method.  [[#1234]]
@@ -42,6 +43,8 @@ To be released.
  -  Added `planet apv query` subcommand to query app protocol version of
     specific peer. [[#1240]]
 
+[#1192]: https://github.com/planetarium/libplanet/issues/1192
+[#1197]: https://github.com/planetarium/libplanet/pull/1197
 [#1219]: https://github.com/planetarium/libplanet/pull/1219
 [#1228]: https://github.com/planetarium/libplanet/pull/1218
 [#1234]: https://github.com/planetarium/libplanet/pull/1234
