@@ -383,28 +383,31 @@ namespace Libplanet.RocksDBStore
             }
 
             byte[] key = TxKey(txid);
-            byte[] epochBytes = _txIndexDb.Get(key);
-
-            if (epochBytes is null)
+            if (!(_txIndexDb.Get(key) is byte[] txDbNameBytes))
             {
                 return null;
             }
 
-            RocksDBStoreEpoch epoch = RocksDBStoreEpoch.Deserialize(epochBytes);
-
+            string txDbName = RocksDBStoreBitConverter.GetString(txDbNameBytes);
             _rwTxLock.EnterReadLock();
-            if (!_txDbCache.TryGetValue(epoch.DbName, out RocksDb txDb))
+            try
             {
-                txDb = RocksDBUtils.OpenRocksDb(_options, TxDbPath(epoch.DbName));
-                _txDbCache.AddOrUpdate(epoch.DbName, txDb);
+                if (!_txDbCache.TryGetValue(txDbName, out RocksDb txDb))
+                {
+                    txDb = RocksDBUtils.OpenRocksDb(_options, TxDbPath(txDbName));
+                    _txDbCache.AddOrUpdate(txDbName, txDb);
+                }
+
+                byte[] txBytes = txDb.Get(key);
+
+                Transaction<T> tx = Transaction<T>.Deserialize(txBytes, false);
+                _txCache.AddOrUpdate(txid, tx);
+                return tx;
             }
-
-            byte[] txBytes = txDb.Get(key);
-
-            Transaction<T> tx = Transaction<T>.Deserialize(txBytes, false);
-            _txCache.AddOrUpdate(txid, tx);
-            _rwTxLock.ExitReadLock();
-            return tx;
+            finally
+            {
+                _rwTxLock.ExitReadLock();
+            }
         }
 
         /// <inheritdoc/>
@@ -422,19 +425,24 @@ namespace Libplanet.RocksDBStore
             }
 
             var timestamp = tx.Timestamp.ToUnixTimeSeconds();
-            string txDbName = $"epoch{(int)timestamp / _txAtEachEpoch}";
-            RocksDBStoreEpoch epoch = new RocksDBStoreEpoch("Transaction", txDbName);
+            string txDbName = $"epoch{(int)timestamp / _txEpochUnitSeconds}";
             _rwTxLock.EnterWriteLock();
-            if (!_txDbCache.TryGetValue(epoch.DbName, out RocksDb txDb))
+            try
             {
-                txDb = RocksDBUtils.OpenRocksDb(_options, TxDbPath(txDbName));
-                _txDbCache.AddOrUpdate(epoch.DbName, txDb);
-            }
+                if (!_txDbCache.TryGetValue(txDbName, out RocksDb txDb))
+                {
+                    txDb = RocksDBUtils.OpenRocksDb(_options, TxDbPath(txDbName));
+                    _txDbCache.AddOrUpdate(txDbName, txDb);
+                }
 
-            txDb.Put(key, tx.Serialize(true));
-            _txIndexDb.Put(key, epoch.Serialize());
-            _txCache.AddOrUpdate(tx.Id, tx);
-            _rwTxLock.ExitWriteLock();
+                txDb.Put(key, tx.Serialize(true));
+                _txIndexDb.Put(key, RocksDBStoreBitConverter.GetBytes(txDbName));
+                _txCache.AddOrUpdate(tx.Id, tx);
+            }
+            finally
+            {
+                _rwTxLock.ExitWriteLock();
+            }
         }
 
         /// <inheritdoc/>
@@ -442,25 +450,31 @@ namespace Libplanet.RocksDBStore
         {
             byte[] key = TxKey(txid);
 
-            if (_txIndexDb.Get(key) is null)
+            if (!(_txIndexDb.Get(key) is byte[] txDbNameBytes))
             {
                 return false;
             }
 
             _rwTxLock.EnterWriteLock();
-            RocksDBStoreEpoch epoch = RocksDBStoreEpoch.Deserialize(_txIndexDb.Get(key));
-            if (!_txDbCache.TryGetValue(epoch.DbName, out RocksDb txDb))
+            try
             {
-                txDb = RocksDBUtils.OpenRocksDb(_options, TxDbPath(epoch.DbName));
-                _txDbCache.AddOrUpdate(epoch.DbName, txDb);
+                string txDbName = RocksDBStoreBitConverter.GetString(txDbNameBytes);
+                if (!_txDbCache.TryGetValue(txDbName, out RocksDb txDb))
+                {
+                    txDb = RocksDBUtils.OpenRocksDb(_options, TxDbPath(txDbName));
+                    _txDbCache.AddOrUpdate(txDbName, txDb);
+                }
+
+                _txCache.Remove(txid);
+                _txIndexDb.Remove(key);
+                txDb.Remove(key);
+
+                return true;
             }
-
-            _txCache.Remove(txid);
-            _txIndexDb.Remove(key);
-            txDb.Remove(key);
-            _rwTxLock.ExitWriteLock();
-
-            return true;
+            finally
+            {
+                _rwTxLock.ExitWriteLock();
+            }
         }
 
         /// <inheritdoc/>
@@ -500,29 +514,32 @@ namespace Libplanet.RocksDBStore
             }
 
             byte[] key = BlockKey(blockHash);
-            byte[] epochBytes = _blockIndexDb.Get(key);
-
-            if (epochBytes is null)
+            if (!(_blockIndexDb.Get(key) is byte[] blockDbNameBytes))
             {
                 return null;
             }
 
-            RocksDBStoreEpoch epoch = RocksDBStoreEpoch.Deserialize(epochBytes);
-
             _rwBlockLock.EnterReadLock();
-            if (!_blockDbCache.TryGetValue(epoch.DbName, out RocksDb blockDb))
+            try
             {
-                blockDb = RocksDBUtils.OpenRocksDb(_options, BlockDbPath(epoch.DbName));
-                _blockDbCache.AddOrUpdate(epoch.DbName, blockDb);
+                string blockDbName = RocksDBStoreBitConverter.GetString(blockDbNameBytes);
+                if (!_blockDbCache.TryGetValue(blockDbName, out RocksDb blockDb))
+                {
+                    blockDb = RocksDBUtils.OpenRocksDb(_options, BlockDbPath(blockDbName));
+                    _blockDbCache.AddOrUpdate(blockDbName, blockDb);
+                }
+
+                byte[] blockBytes = blockDb.Get(key);
+
+                BlockDigest blockDigest = BlockDigest.Deserialize(blockBytes);
+
+                _blockCache.AddOrUpdate(blockHash, blockDigest);
+                return blockDigest;
             }
-
-            byte[] blockBytes = blockDb.Get(key);
-
-            BlockDigest blockDigest = BlockDigest.Deserialize(blockBytes);
-
-            _blockCache.AddOrUpdate(blockHash, blockDigest);
-            _rwBlockLock.ExitReadLock();
-            return blockDigest;
+            finally
+            {
+                _rwBlockLock.ExitReadLock();
+            }
         }
 
         /// <inheritdoc/>
@@ -548,19 +565,24 @@ namespace Libplanet.RocksDBStore
             }
 
             _rwBlockLock.EnterWriteLock();
-            string blockDbName = $"epoch{timestamp / _blockAtEachEpoch}";
-            RocksDBStoreEpoch epoch = new RocksDBStoreEpoch("Block", blockDbName);
-            if (!_blockDbCache.TryGetValue(epoch.DbName, out RocksDb blockDb))
+            try
             {
-                blockDb = RocksDBUtils.OpenRocksDb(_options, BlockDbPath(epoch.DbName));
-                _blockDbCache.AddOrUpdate(epoch.DbName, blockDb);
-            }
+                string blockDbName = $"epoch{timestamp / _blockEpochUnitSeconds}";
+                if (!_blockDbCache.TryGetValue(blockDbName, out RocksDb blockDb))
+                {
+                    blockDb = RocksDBUtils.OpenRocksDb(_options, BlockDbPath(blockDbName));
+                    _blockDbCache.AddOrUpdate(blockDbName, blockDb);
+                }
 
-            byte[] value = block.ToBlockDigest().Serialize();
-            blockDb.Put(key, value);
-            _blockIndexDb.Put(key, epoch.Serialize());
-            _blockCache.AddOrUpdate(block.Hash, block.ToBlockDigest());
-            _rwBlockLock.ExitWriteLock();
+                byte[] value = block.ToBlockDigest().Serialize();
+                blockDb.Put(key, value);
+                _blockIndexDb.Put(key, RocksDBStoreBitConverter.GetBytes(blockDbName));
+                _blockCache.AddOrUpdate(block.Hash, block.ToBlockDigest());
+            }
+            finally
+            {
+                _rwBlockLock.ExitWriteLock();
+            }
         }
 
         /// <inheritdoc/>
@@ -568,25 +590,30 @@ namespace Libplanet.RocksDBStore
         {
             byte[] key = BlockKey(blockHash);
 
-            if (_blockIndexDb.Get(key) is null)
+            if (!(_blockIndexDb.Get(key) is byte[] blockDbNameByte))
             {
                 return false;
             }
 
             _rwBlockLock.EnterWriteLock();
-            RocksDBStoreEpoch epoch = RocksDBStoreEpoch.Deserialize(_blockIndexDb.Get(key));
-            if (!_blockDbCache.TryGetValue(epoch.DbName, out RocksDb blockDb))
+            try
             {
-                blockDb = RocksDBUtils.OpenRocksDb(_options, BlockDbPath(epoch.DbName));
-                _blockDbCache.AddOrUpdate(epoch.DbName, blockDb);
+                string blockDbName = RocksDBStoreBitConverter.GetString(blockDbNameByte);
+                if (!_blockDbCache.TryGetValue(blockDbName, out RocksDb blockDb))
+                {
+                    blockDb = RocksDBUtils.OpenRocksDb(_options, BlockDbPath(blockDbName));
+                    _blockDbCache.AddOrUpdate(blockDbName, blockDb);
+                }
+
+                _blockCache.Remove(blockHash);
+                _blockIndexDb.Remove(key);
+                blockDb.Remove(key);
+                return true;
             }
-
-            _blockCache.Remove(blockHash);
-            _blockIndexDb.Remove(key);
-            blockDb.Remove(key);
-            _rwBlockLock.ExitWriteLock();
-
-            return true;
+            finally
+            {
+                _rwBlockLock.ExitWriteLock();
+            }
         }
 
         /// <inheritdoc/>
