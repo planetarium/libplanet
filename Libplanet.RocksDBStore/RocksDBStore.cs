@@ -47,8 +47,8 @@ namespace Libplanet.RocksDBStore
 
         private readonly DbOptions _options;
         private readonly string _path;
-        private readonly int _txAtEachEpoch;
-        private readonly int _blockAtEachEpoch;
+        private readonly int _txEpochUnitSeconds;
+        private readonly int _blockEpochUnitSeconds;
 
         private readonly RocksDb _blockIndexDb;
         private readonly RocksDb _blockPerceptionDb;
@@ -75,10 +75,12 @@ namespace Libplanet.RocksDBStore
         /// option.</param>
         /// <param name="maxLogFileSize">The number to configure <c>max_log_file_size</c>
         /// RocksDB option.</param>
-        /// <param name="blockAtEachEpoch">The number of block to store in DB
-        /// for each epoch. 10000 by default.</param>
-        /// <param name="txAtEachEpoch">The number of Transaction to store in DB
-        /// for each epoch. 10000 by default.</param>
+        /// <param name="txEpochUnitSeconds">The number of Transaction to store in DB
+        /// for each epoch. 86400 by default.</param>
+        /// <param name="blockEpochUnitSeconds">The number of block to store in DB
+        /// for each epoch. 86400 by default.</param>
+        /// <param name="dbConnectionCacheSize">The capacity of the block and transaction
+        /// RocksDB connection cache. 100 by default.</param>
         public RocksDBStore(
             string path,
             int blockCacheSize = 512,
@@ -86,8 +88,9 @@ namespace Libplanet.RocksDBStore
             ulong? maxTotalWalSize = null,
             ulong? keepLogFileNum = null,
             ulong? maxLogFileSize = null,
-            int txAtEachEpoch = 86400,
-            int blockAtEachEpoch = 86400
+            int txEpochUnitSeconds = 86400,
+            int blockEpochUnitSeconds = 86400,
+            int dbConnectionCacheSize = 100
         )
         {
             _logger = Log.ForContext<RocksDBStore>();
@@ -108,14 +111,16 @@ namespace Libplanet.RocksDBStore
             _blockCache = new LruCache<HashDigest<SHA256>, BlockDigest>(capacity: blockCacheSize);
 
             _path = path;
-            _txAtEachEpoch = txAtEachEpoch > 0
-                ? txAtEachEpoch
+            _txEpochUnitSeconds = txEpochUnitSeconds > 0
+                ? txEpochUnitSeconds
                 : throw new ArgumentException(
-                    $"{nameof(RocksDBStore)}.txAtEachEpoch cannot be 0 or less.");
-            _blockAtEachEpoch = blockAtEachEpoch > 0
-                ? blockAtEachEpoch
+                    "It must be greater than 0.",
+                    nameof(txEpochUnitSeconds));
+            _blockEpochUnitSeconds = blockEpochUnitSeconds > 0
+                ? blockEpochUnitSeconds
                 : throw new ArgumentException(
-                    $"{nameof(RocksDBStore)}.blockAtEachEpoch cannot be 0 or less.");
+                    "It must be greater than 0.",
+                    nameof(blockEpochUnitSeconds));
             _options = new DbOptions()
                 .SetCreateIfMissing();
 
