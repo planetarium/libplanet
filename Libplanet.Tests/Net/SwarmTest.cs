@@ -223,6 +223,7 @@ namespace Libplanet.Tests.Net
                 await StartAsync(swarmB);
 
                 await BootstrapAsync(swarmA, swarmB.AsPeer);
+                await Task.Delay(1000);
 
                 Assert.Contains(swarmB.AsPeer, swarmA.Peers);
                 Assert.Empty(swarmB.Peers);
@@ -780,7 +781,6 @@ namespace Libplanet.Tests.Net
                 await StartAsync(miner1);
                 await StartAsync(miner2);
 
-                await BootstrapAsync(miner2, miner1.AsPeer);
                 miner2.AddPeer(miner1.AsPeer);
 
                 miner2.BroadcastBlock(block);
@@ -831,8 +831,8 @@ namespace Libplanet.Tests.Net
                 await StartAsync(miner1);
                 await StartAsync(miner2);
 
-                await BootstrapAsync(miner2, miner1.AsPeer);
-                await BootstrapAsync(receiver, miner1.AsPeer);
+                miner1.AddPeers(new[] { receiver.AsPeer, miner2.AsPeer });
+                miner2.AddPeers(new[] { receiver.AsPeer, miner1.AsPeer });
 
                 var t = receiver.PreloadAsync();
                 await miner1.BlockChain.MineBlock(miner1.Address);
@@ -896,9 +896,9 @@ namespace Libplanet.Tests.Net
                 await StartAsync(minerA);
                 await StartAsync(minerB);
 
-                await BootstrapAsync(minerA, minerB.AsPeer);
+                minerB.AddPeer(minerA.AsPeer);
 
-                Log.Debug("Reorg occurrs.");
+                Log.Debug("Reorg occurs.");
                 minerB.BroadcastBlock(blockC);
                 await minerA.BlockAppended.WaitAsync();
 
@@ -962,7 +962,7 @@ namespace Libplanet.Tests.Net
                 await StartAsync(swarmA);
                 await StartAsync(swarmB);
 
-                await BootstrapAsync(swarmA, swarmB.AsPeer);
+                swarmA.AddPeer(swarmB.AsPeer);
 
                 swarmA.BroadcastTxs(new[] { validTx, invalidTx });
                 await swarmB.TxReceived.WaitAsync();
@@ -1025,7 +1025,7 @@ namespace Libplanet.Tests.Net
                 await StartAsync(swarmA);
                 await StartAsync(swarmB);
 
-                await BootstrapAsync(swarmA, swarmB.AsPeer);
+                swarmA.AddPeer(swarmB.AsPeer);
 
                 swarmA.BroadcastTxs(new[] { tx });
                 await swarmB.TxReceived.WaitAsync();
@@ -1072,8 +1072,8 @@ namespace Libplanet.Tests.Net
                 await StartAsync(minerSwarmB);
                 await StartAsync(receiverSwarm);
 
-                await BootstrapAsync(minerSwarmA, receiverSwarm.AsPeer);
-                await BootstrapAsync(minerSwarmB, receiverSwarm.AsPeer);
+                minerSwarmA.AddPeer(receiverSwarm.AsPeer);
+                minerSwarmB.AddPeer(receiverSwarm.AsPeer);
 
                 // Broadcast SwarmA's first block.
                 var b1 = await minerChainA.MineBlock(minerSwarmA.Address);
@@ -1382,7 +1382,7 @@ namespace Libplanet.Tests.Net
 
             try
             {
-                await BootstrapAsync(sender, receiver.AsPeer);
+                sender.AddPeer(receiver.AsPeer);
 
                 sender.BroadcastBlock(sender.BlockChain.Tip);
 
@@ -1423,7 +1423,7 @@ namespace Libplanet.Tests.Net
 
             try
             {
-                await BootstrapAsync(sender, receiver.AsPeer);
+                sender.AddPeer(receiver.AsPeer);
 
                 sender.BroadcastBlock(sender.BlockChain.Tip);
 
@@ -1458,8 +1458,8 @@ namespace Libplanet.Tests.Net
 
             try
             {
-                await BootstrapAsync(sender1, receiver.AsPeer);
-                await BootstrapAsync(sender2, receiver.AsPeer);
+                sender1.AddPeer(receiver.AsPeer);
+                sender2.AddPeer(receiver.AsPeer);
 
                 sender1.BlockChain.Append(b1);
                 sender2.BlockChain.Append(b1);
@@ -1523,7 +1523,7 @@ namespace Libplanet.Tests.Net
                 await StartAsync(swarm2);
                 await StartAsync(swarm3);
 
-                await BootstrapAsync(swarm1, swarm2.AsPeer);
+                swarm1.AddPeer(swarm2.AsPeer);
 
                 peerChainState = await swarm1.GetPeerChainStateAsync(
                     TimeSpan.FromSeconds(1), default);
@@ -1540,7 +1540,7 @@ namespace Libplanet.Tests.Net
                     peerChainState.First()
                 );
 
-                await BootstrapAsync(swarm1, swarm3.AsPeer);
+                swarm1.AddPeer(swarm3.AsPeer);
                 peerChainState = await swarm1.GetPeerChainStateAsync(
                     TimeSpan.FromSeconds(1), default);
                 Assert.Equal(
@@ -1573,6 +1573,7 @@ namespace Libplanet.Tests.Net
                 Assert.Null(swarm1.LastMessageTimestamp);
                 DateTimeOffset bootstrappedAt = DateTimeOffset.UtcNow;
                 await BootstrapAsync(swarm2, swarm1.AsPeer);
+                await Task.Delay(1000);
                 await StartAsync(swarm2);
 
                 Assert.NotNull(swarm1.LastMessageTimestamp);
@@ -1601,16 +1602,16 @@ namespace Libplanet.Tests.Net
                 // Setup
                 await StartAsync(swarm1);
                 await BootstrapAsync(swarm2, swarm1.AsPeer);
+                await Task.Delay(1000);
                 await StartAsync(swarm2);
-
                 await Task.Delay(1000);
 
                 // Restart
                 await swarm1.StopAsync();
                 Assert.False(swarm1.Running);
-                await Task.Delay(1000);
                 await StartAsync(swarm1);
                 DateTimeOffset restartedAt = DateTimeOffset.UtcNow;
+                await Task.Delay(1000);
 
                 // Check
                 await swarm1.CheckAllPeersAsync();
@@ -1619,6 +1620,8 @@ namespace Libplanet.Tests.Net
 
                 Assert.Contains(swarm1.AsPeer, swarm2.Peers);
                 Assert.Contains(swarm2.AsPeer, swarm1.Peers);
+                Assert.NotNull(swarm1.LastMessageTimestamp);
+                Assert.NotNull(swarm2.LastMessageTimestamp);
                 Assert.InRange(
                     swarm1.LastMessageTimestamp.Value,
                     restartedAt,
@@ -1781,7 +1784,7 @@ namespace Libplanet.Tests.Net
 
             await StartAsync(sender);
             await StartAsync(receiver);
-            await BootstrapAsync(sender, receiver.AsPeer);
+            sender.AddPeer(receiver.AsPeer);
 
             sender.BroadcastBlock(lowerBlock);
             await receiver.FillBlocksAsyncStarted.WaitAsync();
