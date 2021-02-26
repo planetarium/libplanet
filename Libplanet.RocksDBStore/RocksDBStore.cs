@@ -154,13 +154,13 @@ namespace Libplanet.RocksDBStore
             _rwTxLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
             _rwBlockLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
 
-            _blockDbCache = new LruCache<string, RocksDb>();
+            _blockDbCache = new LruCache<string, RocksDb>(dbConnectionCacheSize);
             _blockDbCache.SetPreRemoveDataMethod(db =>
             {
                 db.Dispose();
                 return true;
             });
-            _txDbCache = new LruCache<string, RocksDb>();
+            _txDbCache = new LruCache<string, RocksDb>(dbConnectionCacheSize);
             _txDbCache.SetPreRemoveDataMethod(db =>
             {
                 db.Dispose();
