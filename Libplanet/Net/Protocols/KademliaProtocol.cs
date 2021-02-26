@@ -554,6 +554,12 @@ namespace Libplanet.Net.Protocols
                 RemovePeer(peer);
                 throw new TimeoutException($"Timeout occurred during {nameof(ValidateAsync)}");
             }
+            catch (InvalidMessageException)
+            {
+                _logger.Verbose("Peer {Peer} is invalid, removing...", peer);
+                RemovePeer(peer);
+                throw;
+            }
         }
 
         /// <summary>

@@ -627,7 +627,7 @@ namespace Libplanet.Tests.Net
                 await StartAsync(minerSwarm);
                 await StartAsync(receiverSwarm);
 
-                await BootstrapAsync(receiverSwarm, minerSwarm.AsPeer);
+                minerSwarm.AddPeer(receiverSwarm.AsPeer);
 
                 var block1 = TestUtils.MineNext(
                         blockChain.Genesis,
@@ -673,7 +673,7 @@ namespace Libplanet.Tests.Net
                 await StartAsync(swarmA);
                 await StartAsync(swarmB);
 
-                await BootstrapAsync(swarmB, swarmA.AsPeer);
+                swarmA.AddPeer(swarmB.AsPeer);
 
                 await chainA.MineBlock(swarmA.Address);
                 swarmA.BroadcastBlock(chainA[-1]);

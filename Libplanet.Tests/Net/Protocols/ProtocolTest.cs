@@ -212,9 +212,9 @@ namespace Libplanet.Tests.Net.Protocols
             await StartTestTransportAsync(transportB);
             await StartTestTransportAsync(transportC);
 
-            await transportA.AddPeersAsync(new[] { transport.AsPeer }, null);
-            await transportB.AddPeersAsync(new[] { transport.AsPeer }, null);
-            await transportC.AddPeersAsync(new[] { transport.AsPeer }, null);
+            await transport.AddPeersAsync(new[] { transportA.AsPeer }, null);
+            await transport.AddPeersAsync(new[] { transportB.AsPeer }, null);
+            await transport.AddPeersAsync(new[] { transportC.AsPeer }, null);
 
             Assert.Single(transportA.Peers);
             Assert.Contains(transportA.AsPeer, transport.Peers);
@@ -240,10 +240,10 @@ namespace Libplanet.Tests.Net.Protocols
             await StartTestTransportAsync(transportB);
             await StartTestTransportAsync(transportC);
 
-            await transportA.AddPeersAsync(new[] { transport.AsPeer }, null);
-            await transportB.AddPeersAsync(new[] { transport.AsPeer }, null);
+            await transport.AddPeersAsync(new[] { transportA.AsPeer }, null);
+            await transport.AddPeersAsync(new[] { transportB.AsPeer }, null);
             await Task.Delay(100);
-            await transportC.AddPeersAsync(new[] { transport.AsPeer }, null);
+            await transport.AddPeersAsync(new[] { transportC.AsPeer }, null);
 
             Assert.Single(transportA.Peers);
             Assert.Contains(transportA.AsPeer, transport.Peers);
@@ -276,8 +276,8 @@ namespace Libplanet.Tests.Net.Protocols
             await StartTestTransportAsync(transportB);
             await StartTestTransportAsync(transportC);
 
-            await transportA.AddPeersAsync(new[] { transport.AsPeer }, null);
-            await transportB.AddPeersAsync(new[] { transport.AsPeer }, null);
+            await transport.AddPeersAsync(new[] { transportA.AsPeer }, null);
+            await transport.AddPeersAsync(new[] { transportB.AsPeer }, null);
 
             Assert.Single(transport.Peers);
             Assert.Contains(transportA.AsPeer, transport.Peers);
@@ -286,7 +286,7 @@ namespace Libplanet.Tests.Net.Protocols
             await transportA.StopAsync(TimeSpan.Zero);
             await transportB.StopAsync(TimeSpan.Zero);
 
-            await transportC.AddPeersAsync(new[] { transport.AsPeer }, null);
+            await transport.AddPeersAsync(new[] { transportC.AsPeer }, null);
             await transport.Protocol.RefreshTableAsync(TimeSpan.Zero, default(CancellationToken));
             await transport.Protocol.CheckReplacementCacheAsync(default(CancellationToken));
 
@@ -323,6 +323,7 @@ namespace Libplanet.Tests.Net.Protocols
                 }
 
                 Log.Debug("Bootstrap completed.");
+                await Task.Delay(1000);
 
                 var tasks =
                     transports.Select(transport => transport.WaitForTestMessageWithData("foo"));
