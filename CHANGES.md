@@ -16,9 +16,20 @@ To be released.
 
 ### Behavioral changes
 
+ -  When received a message from the peer which is not exist in the routing
+    table, `KademliaProtocol` became to validate remote peer's network address
+    by sending a ping message to the peer before adding it to the routing
+    table.  [[#1160], [#1189], [#1193]]
+ -  `KademliaProtocol` became not to send ping message to one peer if the
+    protocol is already waiting for the reply of previous ping message.
+    [[#1160], [#1189], [#1193]]
+
 ### Bug fixes
 
 ### CLI tools
+
+[#1189]: https://github.com/planetarium/libplanet/issues/1189
+[#1193]: https://github.com/planetarium/libplanet/pull/1193
 
 
 Version 0.11.0
