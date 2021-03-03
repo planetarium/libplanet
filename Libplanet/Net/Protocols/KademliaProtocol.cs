@@ -61,7 +61,7 @@ namespace Libplanet.Net.Protocols
                 TimeSpan.FromMilliseconds(5000);
             _transport.ProcessMessageHandler += ProcessMessageHandler;
             _cache = new ConcurrentDictionary<Address, BoundPeer>();
-            _cacheSize = int.MaxValue;
+            _cacheSize = _table.TableSize * _table.BucketSize;
         }
 
         /// <inheritdoc />
