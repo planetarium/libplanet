@@ -3,6 +3,7 @@ using System;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Numerics;
 using System.Reflection;
 using System.Runtime.Serialization;
@@ -34,17 +35,21 @@ namespace Libplanet
         /// </summary>
         public static readonly int Size;
 
+        private static readonly Func<T> _instantiateAlgorithm;
         private static readonly byte[] _defaultByteArray;
 
         private readonly ImmutableArray<byte> _byteArray;
 
         static HashDigest()
         {
-            MethodInfo? method = typeof(T).GetMethod("Create", new Type[0]);
-            T thunk = method?.Invoke(null, new object[0]) as T
-                ?? throw new InvalidCastException($"Failed to instantiate {typeof(T).FullName}.");
-            Size = thunk.HashSize / 8;
-
+            Type type = typeof(T);
+            MethodInfo method = type.GetMethod("Create", new Type[0])!;
+            MethodCallExpression methodCall = Expression.Call(null, method);
+            var exc = new InvalidCastException($"Failed to invoke {methodCall} static method.");
+            _instantiateAlgorithm = Expression.Lambda<Func<T>>(
+                Expression.Coalesce(methodCall, Expression.Throw(Expression.Constant(exc), type))
+            ).Compile();
+            Size = _instantiateAlgorithm().HashSize / 8;
             _defaultByteArray = new byte[Size];
         }
 
@@ -158,6 +163,20 @@ namespace Libplanet
             }
 
             return new HashDigest<T>(ByteUtil.ParseHex(hexDigest));
+        }
+
+        /// <summary>
+        /// Computes a hash digest of the algorithm <typeparamref name="T"/> from the given
+        /// <paramref name="input"/> bytes.
+        /// </summary>
+        /// <param name="input">The bytes to compute its hash.</param>
+        /// <returns>The hash digest derived from <paramref name="input"/>.</returns>
+        [Pure]
+        public static HashDigest<T> DeriveFrom(byte[] input)
+        {
+            T algorithm = _instantiateAlgorithm();
+            byte[] hash = algorithm.ComputeHash(input);
+            return new HashDigest<T>(hash);
         }
 
         /// <summary>

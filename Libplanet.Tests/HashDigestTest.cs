@@ -67,6 +67,28 @@ namespace Libplanet.Tests
         }
 
         [Fact]
+        public void DeriveFrom()
+        {
+            byte[] foo = { 0x66, 0x6f, 0x6f }, bar = { 0x62, 0x61, 0x72 };
+            Assert.Equal(
+                HashDigest<SHA1>.FromString("0beec7b5ea3f0fdbc95d0dd47f3c5bc275da8a33"),
+                HashDigest<SHA1>.DeriveFrom(foo)
+            );
+            Assert.Equal(
+                HashDigest<SHA1>.FromString("62cdb7020ff920e5aa642c3d4066950dd1f01f4d"),
+                HashDigest<SHA1>.DeriveFrom(bar)
+            );
+            Assert.Equal(
+                HashDigest<MD5>.FromString("acbd18db4cc2f85cedef654fccc4a4d8"),
+                HashDigest<MD5>.DeriveFrom(foo)
+            );
+            Assert.Equal(
+                HashDigest<MD5>.FromString("37b51d194a7513e45b56f6524f2d51f2"),
+                HashDigest<MD5>.DeriveFrom(bar)
+            );
+        }
+
+        [Fact]
         public void HashDigestDisallowsIncorrectSizedBytes()
         {
             for (int i = 0; i < 22; ++i)

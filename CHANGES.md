@@ -19,6 +19,7 @@ To be released.
 ### Added APIs
 
  -  Added `BlockHash` struct.  [[#1192], [#1197]]
+ -  Added `HashDigest<T>.DeriveFrom()` method.  [[#1197]]
  -  Added `StunMessage.ParseAsync(Stream, CancellationToken)` method.
     [[#1228]]
  -  Added `Swarm<T>.AddPeersAsync()` method.  [[#1234]]
