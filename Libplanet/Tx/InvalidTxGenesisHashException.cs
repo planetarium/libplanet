@@ -1,8 +1,8 @@
 #nullable enable
 using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Security.Cryptography;
 using Libplanet.Blockchain;
+using Libplanet.Blocks;
 
 namespace Libplanet.Tx
 {
@@ -32,8 +32,8 @@ namespace Libplanet.Tx
             Justification = "A long error message should be multiline.")]
         public InvalidTxGenesisHashException(
             TxId txid,
-            HashDigest<SHA256> expectedGenesisHash,
-            HashDigest<SHA256>? improperGenesisHash,
+            BlockHash expectedGenesisHash,
+            BlockHash? improperGenesisHash,
             string message)
             : base(
                 txid,
@@ -49,11 +49,11 @@ namespace Libplanet.Tx
         /// The <see cref="HashDigest{SHA256}"/> value of
         /// <see cref="BlockChain{T}.Genesis"/>.
         /// </summary>
-        public HashDigest<SHA256> ExpectedGenesisHash { get; }
+        public BlockHash ExpectedGenesisHash { get; }
 
         /// <summary>
         /// The actual <see cref="Transaction{T}.GenesisHash"/>, which is improper.
         /// </summary>
-        public HashDigest<SHA256>? ImproperGenesisHash { get; }
+        public BlockHash? ImproperGenesisHash { get; }
     }
 }

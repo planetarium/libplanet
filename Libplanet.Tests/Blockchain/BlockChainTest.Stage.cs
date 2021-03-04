@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
+using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tx;
@@ -42,7 +42,7 @@ namespace Libplanet.Tests.Blockchain
             Transaction<DumbAction> tx3 = Transaction<DumbAction>.Create(
                 0,
                 new PrivateKey(),
-                default(HashDigest<SHA256>),
+                default(BlockHash),
                 new List<DumbAction>());
 
             _blockChain.StageTransaction(tx1);

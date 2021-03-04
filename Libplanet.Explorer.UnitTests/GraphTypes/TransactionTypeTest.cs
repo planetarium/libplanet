@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using GraphQL;
 using GraphQL.Types;
+using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Explorer.GraphTypes;
 using Libplanet.Explorer.UnitTests.Common.Action;
@@ -23,7 +24,7 @@ namespace Libplanet.Explorer.UnitTests.GraphTypes
             var transaction = Transaction<NoOpAction>.Create(
                 0,
                 privateKey,
-                new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
+                new BlockHash(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
                 new[] { new NoOpAction(), });
             var query =
                 @"{

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
@@ -71,14 +70,14 @@ namespace Libplanet.Tests.Blockchain
 
         private IValue NullStateGetter<T>(
             Address address,
-            HashDigest<SHA256>? hashDigest,
+            BlockHash? hashDigest,
             StateCompleter<T> stateCompleter)
             where T : IAction, new() => null;
 
         private FungibleAssetValue NullBalanceGetter<T>(
             Address address,
             Currency currency,
-            HashDigest<SHA256>? hashDigest,
+            BlockHash? hashDigest,
             FungibleAssetStateCompleter<T> fungibleAssetStateCompleter)
             where T : IAction, new() => new FungibleAssetValue(currency);
     }

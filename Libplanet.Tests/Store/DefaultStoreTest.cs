@@ -18,6 +18,12 @@ namespace Libplanet.Tests.Store
             FxConstructor = () => new DefaultStoreFixture(memory: false);
         }
 
+        protected override ITestOutputHelper TestOutputHelper { get; }
+
+        protected override StoreFixture Fx { get; }
+
+        protected override Func<StoreFixture> FxConstructor { get; }
+
         public void Dispose()
         {
             _fx?.Dispose();

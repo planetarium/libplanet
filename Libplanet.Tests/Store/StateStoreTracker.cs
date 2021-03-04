@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Immutable;
-using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blocks;
@@ -26,16 +25,13 @@ namespace Libplanet.Tests.Store
             _stateStore.SetStates(blockHash, states);
         }
 
-        public IValue GetState(
-            string stateKey,
-            HashDigest<SHA256>? blockHash = null,
-            Guid? chainId = null)
+        public IValue GetState(string stateKey, BlockHash? blockHash = null, Guid? chainId = null)
         {
             Log(nameof(GetState), stateKey, blockHash, chainId);
             return _stateStore.GetState(stateKey, blockHash, chainId);
         }
 
-        public bool ContainsBlockStates(HashDigest<SHA256> blockHash)
+        public bool ContainsBlockStates(BlockHash blockHash)
         {
             Log(nameof(ContainsBlockStates), blockHash);
             return _stateStore.ContainsBlockStates(blockHash);

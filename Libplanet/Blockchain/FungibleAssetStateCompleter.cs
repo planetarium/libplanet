@@ -1,6 +1,7 @@
-using System.Security.Cryptography;
+#nullable enable
 using Libplanet.Action;
 using Libplanet.Assets;
+using Libplanet.Blocks;
 
 namespace Libplanet.Blockchain
 {
@@ -20,7 +21,7 @@ namespace Libplanet.Blockchain
     /// <seealso cref="FungibleAssetStateCompleters{T}"/>
     public delegate FungibleAssetValue FungibleAssetStateCompleter<T>(
         BlockChain<T> blockChain,
-        HashDigest<SHA256> blockHash,
+        BlockHash blockHash,
         Address address,
         Currency currency
     )

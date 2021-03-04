@@ -1,8 +1,9 @@
+#nullable enable
 using System;
-using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
+using Libplanet.Blocks;
 
 namespace Libplanet.Blockchain
 {
@@ -35,7 +36,7 @@ namespace Libplanet.Blockchain
             (chain, blockHash, address, currency) =>
                 throw new IncompleteBlockStatesException(blockHash);
 
-        internal static Func<BlockChain<T>, HashDigest<SHA256>, IValue> ToRawStateCompleter(
+        internal static Func<BlockChain<T>, BlockHash, IValue> ToRawStateCompleter(
             FungibleAssetStateCompleter<T> stateCompleter,
             Address address,
             Currency currency

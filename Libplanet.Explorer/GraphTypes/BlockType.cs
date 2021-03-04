@@ -24,7 +24,7 @@ namespace Libplanet.Explorer.GraphTypes
             Field(x => x.Miner, type: typeof(NonNullGraphType<AddressType>));
             Field<BlockType<T>>(
                 "PreviousBlock",
-                resolve: ctx => ctx.Source.PreviousHash is HashDigest<SHA256> h
+                resolve: ctx => ctx.Source.PreviousHash is BlockHash h
                     ? ctx.UserContext[nameof(IBlockChainContext<T>.Store)]
                         .As<IStore>()
                         .GetBlock<T>(h)

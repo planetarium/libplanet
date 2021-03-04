@@ -1,6 +1,6 @@
+#nullable enable
 using System;
 using System.Collections.Immutable;
-using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain;
@@ -37,10 +37,7 @@ namespace Libplanet.Store
         /// <param name="chainId">The <see cref="BlockChain{T}.Id"/> of wanted got.</param>
         /// <returns>The state queried from <paramref name="blockHash"/> and
         /// <paramref name="stateKey"/>. If it couldn't find state, returns <c>null</c>.</returns>
-        IValue GetState(
-            string stateKey,
-            HashDigest<SHA256>? blockHash = null,
-            Guid? chainId = null);
+        IValue? GetState(string stateKey, BlockHash? blockHash = null, Guid? chainId = null);
 
         /// <summary>
         /// Checks if the states corresponded to the block derived from <paramref name="blockHash"/>
@@ -51,7 +48,7 @@ namespace Libplanet.Store
         /// <returns>Whether it contains the block states corresponded to
         /// <paramref name="blockHash"/>.
         /// </returns>
-        bool ContainsBlockStates(HashDigest<SHA256> blockHash);
+        bool ContainsBlockStates(BlockHash blockHash);
 
         /// <summary>
         /// Copies metadata related to states from <paramref name="sourceChainId"/> to

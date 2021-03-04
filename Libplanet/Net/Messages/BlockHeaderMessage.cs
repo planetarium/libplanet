@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using Libplanet.Blocks;
 using NetMQ;
 
@@ -7,7 +6,7 @@ namespace Libplanet.Net.Messages
 {
     internal class BlockHeaderMessage : Message
     {
-        public BlockHeaderMessage(HashDigest<SHA256> genesisHash, BlockHeader header)
+        public BlockHeaderMessage(BlockHash genesisHash, BlockHeader header)
         {
             GenesisHash = genesisHash;
             Header = header;
@@ -15,11 +14,11 @@ namespace Libplanet.Net.Messages
 
         public BlockHeaderMessage(NetMQFrame[] frames)
         {
-            GenesisHash = new HashDigest<SHA256>(frames[0].Buffer);
+            GenesisHash = new BlockHash(frames[0].Buffer);
             Header = BlockHeader.Deserialize(frames[1].Buffer);
         }
 
-        public HashDigest<SHA256> GenesisHash { get; }
+        public BlockHash GenesisHash { get; }
 
         public BlockHeader Header { get; }
 

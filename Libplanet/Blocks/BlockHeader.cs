@@ -3,7 +3,6 @@ using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
 using System.Numerics;
-using System.Security.Cryptography;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Store.Trie;
@@ -169,7 +168,7 @@ namespace Libplanet.Blocks
 
         public ImmutableArray<byte> StateRootHash { get; }
 
-        HashDigest<SHA256> IBlockExcerpt.Hash => new HashDigest<SHA256>(Hash);
+        BlockHash IBlockExcerpt.Hash => new BlockHash(Hash);
 
         /// <summary>
         /// Gets <see cref="BlockHeader"/> instance from serialized <paramref name="bytes"/>.
@@ -318,7 +317,7 @@ namespace Libplanet.Blocks
                 CultureInfo.InvariantCulture
             );
 
-            HashDigest<SHA256> hash = new HashDigest<SHA256>(Hash);
+            BlockHash hash = new BlockHash(Hash);
 
             if (currentTime + TimestampThreshold < ts)
             {
@@ -395,7 +394,7 @@ namespace Libplanet.Blocks
                 }
             }
 
-            if (!new HashDigest<SHA256>(PreEvaluationHash.ToArray()).Satisfies(Difficulty))
+            if (!new BlockHash(PreEvaluationHash.ToArray()).Satisfies(Difficulty))
             {
                 throw new InvalidBlockNonceException(
                     $"Block #{Index} {hash}'s pre-evaluation hash " +
@@ -404,7 +403,7 @@ namespace Libplanet.Blocks
                 );
             }
 
-            HashDigest<SHA256> calculatedHash = Hashcash.Hash(SerializeForHash());
+            BlockHash calculatedHash = Hashcash.Hash(SerializeForHash());
             if (!hash.Equals(calculatedHash))
             {
                 throw new InvalidBlockHashException(

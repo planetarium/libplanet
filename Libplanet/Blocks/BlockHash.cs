@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Numerics;
 using System.Runtime.Serialization;
+using System.Security.Cryptography;
 using Libplanet.Serialization;
 
 namespace Libplanet.Blocks
@@ -53,6 +54,13 @@ namespace Libplanet.Blocks
             _byteArray.IsDefault ? ImmutableArray<byte>.Empty : _byteArray;
 
         /// <summary>
+        /// The length of the block hash in bytes.
+        /// </summary>
+        [Pure]
+        public int BytesLength =>
+            _byteArray.IsDefault ? 0 : _byteArray.Length;
+
+        /// <summary>
         /// Converts a given hexadecimal representation of a block hash into
         /// a <see cref="BlockHash"/> value.
         /// <para>This is an inverse function of <see cref="ToString()"/> method.</para>
@@ -69,6 +77,17 @@ namespace Libplanet.Blocks
         [Pure]
         public static BlockHash FromString(string hex) =>
             new BlockHash(ByteUtil.ParseHex(hex ?? throw new ArgumentNullException(nameof(hex))));
+
+        /// <summary>
+        /// Converts a given <see cref="HashDigest{T}"/> value into a <see cref="BlockHash"/> value.
+        /// </summary>
+        /// <param name="hashDigest">A hash digest.</param>
+        /// <typeparam name="T">The hash algorithm.</typeparam>
+        /// <returns>A block hash corresponding to the <paramref name="hashDigest"/>.</returns>
+        [Pure]
+        public static BlockHash FromHashDigest<T>(HashDigest<T> hashDigest)
+            where T : HashAlgorithm
+            => new BlockHash(hashDigest.ByteArray);
 
         /// <summary>
         /// Tests if a block hash is less than the target computed for the given

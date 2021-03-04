@@ -1,16 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
+using Libplanet.Blocks;
 using NetMQ;
 
 namespace Libplanet.Net.Messages
 {
     internal class GetBlocks : Message
     {
-        public GetBlocks(
-            IEnumerable<HashDigest<SHA256>> hashes,
-            int chunkSize = 100)
+        public GetBlocks(IEnumerable<BlockHash> hashes, int chunkSize = 100)
         {
             if (chunkSize <= 0)
             {
@@ -28,12 +26,12 @@ namespace Libplanet.Net.Messages
             int hashCount = frames[0].ConvertToInt32();
             BlockHashes = frames
                 .Skip(1).Take(hashCount)
-                .Select(f => f.ConvertToHashDigest<SHA256>())
+                .Select(f => f.ConvertToBlockHash())
                 .ToList();
             ChunkSize = frames[1 + hashCount].ConvertToInt32();
         }
 
-        public IEnumerable<HashDigest<SHA256>> BlockHashes { get; }
+        public IEnumerable<BlockHash> BlockHashes { get; }
 
         public int ChunkSize { get; }
 
@@ -46,7 +44,7 @@ namespace Libplanet.Net.Messages
                 yield return new NetMQFrame(
                     NetworkOrderBitsConverter.GetBytes(BlockHashes.Count()));
 
-                foreach (HashDigest<SHA256> hash in BlockHashes)
+                foreach (BlockHash hash in BlockHashes)
                 {
                     yield return new NetMQFrame(hash.ToByteArray());
                 }

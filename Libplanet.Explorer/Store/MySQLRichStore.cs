@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Security.Cryptography;
-using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Store;
@@ -24,7 +22,7 @@ namespace Libplanet.Explorer.Store
         private const string SignerRefDbName = "signer_ref";
         private const string UpdatedAddressRefDbName = "updated_address_ref";
 
-        private readonly LruCache<HashDigest<SHA256>, BlockDigest> _blockCache;
+        private readonly LruCache<BlockHash, BlockDigest> _blockCache;
 
         // FIXME we should separate it.
         private readonly IStore _store;
@@ -48,21 +46,17 @@ namespace Libplanet.Explorer.Store
             _connectionString = builder.ConnectionString;
             _compiler = new MySqlCompiler();
 
-            _blockCache = new LruCache<HashDigest<SHA256>, BlockDigest>(capacity: 512);
+            _blockCache = new LruCache<BlockHash, BlockDigest>(capacity: 512);
         }
 
-        /// <inheritdoc cref="IStore"/>
-        public long? GetBlockIndex(HashDigest<SHA256> blockHash)
-        {
-            return _store.GetBlockIndex(blockHash);
-        }
+        /// <inheritdoc cref="IStore.GetBlockIndex(BlockHash)"/>
+        public long? GetBlockIndex(BlockHash blockHash) =>
+            _store.GetBlockIndex(blockHash);
 
-        public DateTimeOffset? GetBlockPerceivedTime(HashDigest<SHA256> blockHash)
-        {
-            return _store.GetBlockPerceivedTime(blockHash);
-        }
+        public DateTimeOffset? GetBlockPerceivedTime(BlockHash blockHash) =>
+            _store.GetBlockPerceivedTime(blockHash);
 
-        public BlockDigest? GetBlockDigest(HashDigest<SHA256> blockHash)
+        public BlockDigest? GetBlockDigest(BlockHash blockHash)
         {
             if (_blockCache.TryGetValue(blockHash, out BlockDigest cachedDigest))
             {
@@ -79,16 +73,15 @@ namespace Libplanet.Explorer.Store
             return blockDigest;
         }
 
-        /// <inheritdoc cref="IStore"/>
-        public bool DeleteBlock(HashDigest<SHA256> blockHash)
+        /// <inheritdoc cref="IStore.DeleteBlock(BlockHash)"/>
+        public bool DeleteBlock(BlockHash blockHash)
         {
             _blockCache.Remove(blockHash);
-
             return _store.DeleteBlock(blockHash);
         }
 
-        /// <inheritdoc cref="IStore"/>
-        public bool ContainsBlock(HashDigest<SHA256> blockHash)
+        /// <inheritdoc cref="IStore.ContainsBlock(BlockHash)"/>
+        public bool ContainsBlock(BlockHash blockHash)
         {
             if (_blockCache.ContainsKey(blockHash))
             {
@@ -98,37 +91,37 @@ namespace Libplanet.Explorer.Store
             return _store.ContainsBlock(blockHash);
         }
 
-        /// <inheritdoc cref="IStore"/>
+        /// <inheritdoc cref="IStore.ListTxNonces(Guid)"/>
         public IEnumerable<KeyValuePair<Address, long>> ListTxNonces(Guid chainId)
         {
             return _store.ListTxNonces(chainId);
         }
 
-        /// <inheritdoc cref="IStore"/>
+        /// <inheritdoc cref="IStore.GetTxNonce(Guid, Address)"/>
         public long GetTxNonce(Guid chainId, Address address)
         {
             return _store.GetTxNonce(chainId, address);
         }
 
-        /// <inheritdoc cref="IStore"/>
+        /// <inheritdoc cref="IStore.IncreaseTxNonce(Guid, Address, long)"/>
         public void IncreaseTxNonce(Guid chainId, Address signer, long delta = 1)
         {
             _store.IncreaseTxNonce(chainId, signer, delta);
         }
 
-        /// <inheritdoc cref="IStore"/>
+        /// <inheritdoc cref="IStore.ContainsTransaction(TxId)"/>
         public bool ContainsTransaction(TxId txId)
         {
             return _store.ContainsTransaction(txId);
         }
 
-        /// <inheritdoc cref="IStore"/>
+        /// <inheritdoc cref="IStore.CountTransactions()"/>
         public long CountTransactions()
         {
             return _store.CountTransactions();
         }
 
-        /// <inheritdoc cref="IStore"/>
+        /// <inheritdoc cref="IStore.CountBlocks()"/>
         public long CountBlocks()
         {
             return _store.CountBlocks();
@@ -139,7 +132,7 @@ namespace Libplanet.Explorer.Store
             _store.ForkTxNonces(sourceChainId, destinationChainId);
         }
 
-        /// <inheritdoc cref="IStore"/>
+        /// <inheritdoc cref="IStore.PutBlock{T}(Block{T})"/>
         public void PutBlock<T>(Block<T> block)
             where T : IAction, new()
         {
@@ -151,111 +144,103 @@ namespace Libplanet.Explorer.Store
             }
         }
 
-        /// <inheritdoc cref="IStore"/>
+        /// <inheritdoc cref="IStore.ListChainIds()"/>
         public IEnumerable<Guid> ListChainIds()
         {
             return _store.ListChainIds();
         }
 
-        /// <inheritdoc cref="IStore"/>
+        /// <inheritdoc cref="IStore.DeleteChainId(Guid)"/>
         public void DeleteChainId(Guid chainId)
         {
             _store.DeleteChainId(chainId);
         }
 
-        /// <inheritdoc cref="IStore"/>
+        /// <inheritdoc cref="IStore.GetCanonicalChainId()"/>
         public Guid? GetCanonicalChainId()
         {
             return _store.GetCanonicalChainId();
         }
 
-        /// <inheritdoc cref="IStore"/>
+        /// <inheritdoc cref="IStore.SetCanonicalChainId(Guid)"/>
         public void SetCanonicalChainId(Guid chainId)
         {
             _store.SetCanonicalChainId(chainId);
         }
 
-        /// <inheritdoc cref="IStore"/>
+        /// <inheritdoc cref="IStore.CountIndex(Guid)"/>
         public long CountIndex(Guid chainId)
         {
             return _store.CountIndex(chainId);
         }
 
-        /// <inheritdoc cref="IStore"/>
-        public IEnumerable<HashDigest<SHA256>> IterateIndexes(
+        /// <inheritdoc cref="IStore.IterateIndexes(Guid, int, int)"/>
+        public IEnumerable<BlockHash> IterateIndexes(
             Guid chainId,
             int offset = 0,
-            int? limit = null)
-        {
-            return _store.IterateIndexes(chainId, offset, limit);
-        }
+            int? limit = null
+        ) =>
+            _store.IterateIndexes(chainId, offset, limit);
 
-        /// <inheritdoc cref="IStore"/>
-        public HashDigest<SHA256>? IndexBlockHash(Guid chainId, long index)
-        {
-            return _store.IndexBlockHash(chainId, index);
-        }
+        /// <inheritdoc cref="IStore.IndexBlockHash(Guid, long)"/>
+        public BlockHash? IndexBlockHash(Guid chainId, long index) =>
+            _store.IndexBlockHash(chainId, index);
 
-        /// <inheritdoc cref="IStore"/>
-        public long AppendIndex(Guid chainId, HashDigest<SHA256> hash)
-        {
-            return _store.AppendIndex(chainId, hash);
-        }
+        /// <inheritdoc cref="IStore.AppendIndex(Guid, BlockHash)"/>
+        public long AppendIndex(Guid chainId, BlockHash hash) =>
+            _store.AppendIndex(chainId, hash);
 
-        /// <inheritdoc cref="IStore"/>
+        /// <inheritdoc cref="IStore.ForkBlockIndexes(Guid, Guid, BlockHash)"/>
         public void ForkBlockIndexes(
             Guid sourceChainId,
             Guid destinationChainId,
-            HashDigest<SHA256> branchPoint)
-        {
-            _store.ForkBlockIndexes(sourceChainId, destinationChainId, branchPoint);
-        }
+            BlockHash branchpoint
+        ) =>
+            _store.ForkBlockIndexes(sourceChainId, destinationChainId, branchpoint);
 
-        /// <inheritdoc cref="IStore"/>
+        /// <inheritdoc cref="IStore.StageTransactionIds(IImmutableSet{TxId})"/>
         public void StageTransactionIds(IImmutableSet<TxId> txids)
         {
             _store.StageTransactionIds(txids);
         }
 
-        /// <inheritdoc cref="IStore"/>
+        /// <inheritdoc cref="IStore.UnstageTransactionIds(ISet{TxId})"/>
         public void UnstageTransactionIds(ISet<TxId> txids)
         {
             _store.UnstageTransactionIds(txids);
         }
 
-        /// <inheritdoc cref="IStore"/>
+        /// <inheritdoc cref="IStore.IterateStagedTransactionIds()"/>
         public IEnumerable<TxId> IterateStagedTransactionIds()
         {
             return _store.IterateStagedTransactionIds();
         }
 
-        /// <inheritdoc cref="IStore"/>
+        /// <inheritdoc cref="IStore.IterateTransactionIds()"/>
         public IEnumerable<TxId> IterateTransactionIds()
         {
             return _store.IterateTransactionIds();
         }
 
-        /// <inheritdoc cref="IStore"/>
+        /// <inheritdoc cref="IStore.GetTransaction{T}(TxId)"/>
         public Transaction<T> GetTransaction<T>(TxId txid)
             where T : IAction, new()
         {
             return _store.GetTransaction<T>(txid);
         }
 
-        /// <inheritdoc cref="IStore"/>
+        /// <inheritdoc cref="IStore.DeleteTransaction(TxId)"/>
         public bool DeleteTransaction(TxId txid)
         {
             return _store.DeleteTransaction(txid);
         }
 
-        /// <inheritdoc cref="IStore"/>
-        public IEnumerable<HashDigest<SHA256>> IterateBlockHashes()
-        {
-            return _store.IterateBlockHashes();
-        }
+        /// <inheritdoc cref="IStore.IterateBlockHashes()"/>
+        public IEnumerable<BlockHash> IterateBlockHashes() =>
+            _store.IterateBlockHashes();
 
-        /// <inheritdoc cref="IStore"/>
-        public Block<T> GetBlock<T>(HashDigest<SHA256> blockHash)
+        /// <inheritdoc cref="IStore.GetBlock{T}(BlockHash)"/>
+        public Block<T> GetBlock<T>(BlockHash blockHash)
             where T : IAction, new()
         {
             return _store.GetBlock<T>(blockHash);
@@ -277,13 +262,12 @@ namespace Libplanet.Explorer.Store
         }
 
         public void SetBlockPerceivedTime(
-            HashDigest<SHA256> blockHash,
-            DateTimeOffset perceivedTime)
-        {
+            BlockHash blockHash,
+            DateTimeOffset perceivedTime
+        ) =>
             _store.SetBlockPerceivedTime(blockHash, perceivedTime);
-        }
 
-        public void StoreTxReferences(TxId txId, HashDigest<SHA256> blockHash,  long txNonce)
+        public void StoreTxReferences(TxId txId, in BlockHash blockHash,  long txNonce)
         {
             Insert("tx_references", new Dictionary<string, object>
             {
@@ -293,7 +277,7 @@ namespace Libplanet.Explorer.Store
             });
         }
 
-        public IEnumerable<ValueTuple<TxId, HashDigest<SHA256>>> IterateTxReferences(
+        public IEnumerable<ValueTuple<TxId, BlockHash>> IterateTxReferences(
             TxId? txId = null,
             bool desc = false,
             int offset = 0,
@@ -308,9 +292,9 @@ namespace Libplanet.Explorer.Store
 
             query = desc ? query.OrderByDesc("tx_nonce") : query.OrderBy("tx_nonce");
             query = query.Offset(offset).Limit(limit);
-            return db.GetDictionary(query).Select(dict => new ValueTuple<TxId, HashDigest<SHA256>>(
+            return db.GetDictionary(query).Select(dict => new ValueTuple<TxId, BlockHash>(
                 new TxId((byte[])dict["tx_id"]),
-                new HashDigest<SHA256>((byte[])dict["block_hash"])));
+                new BlockHash((byte[])dict["block_hash"])));
         }
 
         public void StoreSignerReferences(TxId txId, long txNonce, Address signer)

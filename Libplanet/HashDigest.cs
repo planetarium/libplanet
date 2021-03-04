@@ -4,10 +4,10 @@ using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Numerics;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
+using System.Threading;
 using Libplanet.Serialization;
 
 namespace Libplanet
@@ -35,7 +35,7 @@ namespace Libplanet
         /// </summary>
         public static readonly int Size;
 
-        private static readonly Func<T> _instantiateAlgorithm;
+        private static readonly ThreadLocal<T> _algorithm;
         private static readonly byte[] _defaultByteArray;
 
         private readonly ImmutableArray<byte> _byteArray;
@@ -46,10 +46,11 @@ namespace Libplanet
             MethodInfo method = type.GetMethod("Create", new Type[0])!;
             MethodCallExpression methodCall = Expression.Call(null, method);
             var exc = new InvalidCastException($"Failed to invoke {methodCall} static method.");
-            _instantiateAlgorithm = Expression.Lambda<Func<T>>(
+            Func<T> instantiateAlgorithm = Expression.Lambda<Func<T>>(
                 Expression.Coalesce(methodCall, Expression.Throw(Expression.Constant(exc), type))
-            ).Compile();
-            Size = _instantiateAlgorithm().HashSize / 8;
+            ).Compile()!;
+            _algorithm = new ThreadLocal<T>(instantiateAlgorithm);
+            Size = _algorithm.Value!.HashSize / 8;
             _defaultByteArray = new byte[Size];
         }
 
@@ -174,37 +175,8 @@ namespace Libplanet
         [Pure]
         public static HashDigest<T> DeriveFrom(byte[] input)
         {
-            T algorithm = _instantiateAlgorithm();
-            byte[] hash = algorithm.ComputeHash(input);
+            byte[] hash = _algorithm.Value!.ComputeHash(input);
             return new HashDigest<T>(hash);
-        }
-
-        /// <summary>
-        /// Tests if a digest is less than the target computed for the given
-        /// <paramref name="difficulty"/>).
-        /// </summary>
-        /// <param name="difficulty">The difficulty to compute target number.
-        /// </param>
-        /// <returns><c>true</c> only if a digest is less than the target
-        /// computed for the given <paramref name="difficulty"/>).
-        /// If <paramref name="difficulty"/> is <c>0</c> it always returns
-        /// <c>true</c>.
-        /// </returns>
-        [Pure]
-        public bool Satisfies(long difficulty)
-        {
-            if (difficulty == 0)
-            {
-                return true;
-            }
-
-            double maxTarget = Math.Pow(2, 256);
-            var target = new BigInteger(maxTarget / difficulty);
-
-            // Add zero to convert unsigned BigInteger
-            var result = new BigInteger(ByteArray.Add(0).ToArray());
-
-            return result < target;
         }
 
         /// <summary>

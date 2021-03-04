@@ -96,7 +96,7 @@ namespace Libplanet.Action
         /// has a unconsumed state.
         /// </returns>
         internal static IEnumerable<ActionEvaluation> EvaluateActionsGradually(
-            HashDigest<SHA256> blockHash,
+            BlockHash blockHash,
             long blockIndex,
             TxId? txid,
             IAccountStateDelta previousStates,
@@ -129,8 +129,9 @@ namespace Libplanet.Action
                 hashedSignature = hasher.ComputeHash(signature);
             }
 
+            byte[] blockHashBytes = blockHash.ToByteArray();
             int seed =
-                BitConverter.ToInt32(blockHash.ToByteArray(), 0) ^
+                (blockHashBytes.Length > 0 ? BitConverter.ToInt32(blockHashBytes, 0) : 0) ^
                 (signature.Any() ? BitConverter.ToInt32(hashedSignature, 0) : 0);
 
             IAccountStateDelta states = previousStates;

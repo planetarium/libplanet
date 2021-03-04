@@ -53,7 +53,7 @@ namespace Libplanet.Blockchain
         /// Keys are <see cref="Block{T}.Hash"/>es and values are
         /// their corresponding <see cref="Block{T}"/>s.
         /// </summary>
-        private IDictionary<HashDigest<SHA256>, Block<T>> _blocks;
+        private IDictionary<BlockHash, Block<T>> _blocks;
 
         /// <summary>
         /// Cached genesis block.
@@ -160,9 +160,9 @@ namespace Libplanet.Blockchain
 
             _logger = Log.ForContext<BlockChain<T>>()
                 .ForContext("CanonicalChainId", Id);
-            Func<HashDigest<SHA256>, ITrie> trieGetter = StateStore is TrieStateStore trieStateStore
+            Func<BlockHash, ITrie> trieGetter = StateStore is TrieStateStore trieStateStore
                 ? h => trieStateStore.GetTrie(h)
-                : (Func<HashDigest<SHA256>, ITrie>)null;
+                : (Func<BlockHash, ITrie>)null;
             BlockEvaluator = new BlockEvaluator<T>(
                 policy.BlockAction,
                 GetState,
@@ -274,7 +274,7 @@ namespace Libplanet.Blockchain
         /// Returns a <see cref="long"/> integer that represents the number of elements in the
         /// <see cref="BlockChain{T}"/>.
         /// </summary>
-        public IEnumerable<HashDigest<SHA256>> BlockHashes => IterateBlockHashes();
+        public IEnumerable<BlockHash> BlockHashes => IterateBlockHashes();
 
         /// <summary>
         /// Returns a <see cref="long"/> integer that represents the number of elements in the
@@ -311,13 +311,10 @@ namespace Libplanet.Blockchain
                 _rwlock.EnterReadLock();
                 try
                 {
-                    HashDigest<SHA256>? blockHash = Store.IndexBlockHash(Id, index);
-                    if (blockHash == null)
-                    {
-                        throw new ArgumentOutOfRangeException();
-                    }
-
-                    return _blocks[blockHash.Value];
+                    BlockHash? blockHash = Store.IndexBlockHash(Id, index);
+                    return blockHash is { } bh
+                        ? _blocks[bh]
+                        : throw new ArgumentOutOfRangeException();
                 }
                 finally
                 {
@@ -333,7 +330,7 @@ namespace Libplanet.Blockchain
         /// get. </param>
         /// <exception cref="KeyNotFoundException">Thrown when there is no <see cref="Block{T}"/>
         /// with a given <paramref name="blockHash"/>.</exception>
-        public Block<T> this[HashDigest<SHA256> blockHash]
+        public Block<T> this[in BlockHash blockHash]
         {
             get
             {
@@ -420,7 +417,7 @@ namespace Libplanet.Blockchain
         /// <c>true</c> if the <see cref="BlockChain{T}"/> contains <see cref="Block{T}"/> with
         /// the specified <paramref name="blockHash"/>; otherwise, <c>false</c>.
         /// </returns>
-        public bool ContainsBlock(HashDigest<SHA256> blockHash)
+        public bool ContainsBlock(BlockHash blockHash)
         {
             _rwlock.EnterReadLock();
             try
@@ -489,7 +486,7 @@ namespace Libplanet.Blockchain
         /// if <paramref name="address"/> has no value.</returns>
         public IValue GetState(
             Address address,
-            HashDigest<SHA256>? offset = null,
+            BlockHash? offset = null,
             StateCompleter<T> stateCompleter = null
         ) =>
             GetRawState(
@@ -524,7 +521,7 @@ namespace Libplanet.Blockchain
         public FungibleAssetValue GetBalance(
             Address address,
             Currency currency,
-            HashDigest<SHA256>? offset = null,
+            BlockHash? offset = null,
             FungibleAssetStateCompleter<T> stateCompleter = null
         )
         {
@@ -768,7 +765,7 @@ namespace Libplanet.Blockchain
 
             long index = Store.CountIndex(Id);
             long difficulty = Policy.GetNextBlockDifficulty(this);
-            HashDigest<SHA256>? prevHash = Store.IndexBlockHash(Id, index - 1);
+            BlockHash? prevHash = Store.IndexBlockHash(Id, index - 1);
 
             int sessionId = new System.Random().Next();
             int procId = Process.GetCurrentProcess().Id;
@@ -1494,14 +1491,14 @@ namespace Libplanet.Blockchain
         /// <param name="locator">A block locator that contains candidate common ancestors.</param>
         /// <returns>An approximate to the topmost common ancestor.  If it failed to find anything
         /// returns <c>null</c>.</returns>
-        internal HashDigest<SHA256>? FindBranchPoint(BlockLocator locator)
+        internal BlockHash? FindBranchpoint(BlockLocator locator)
         {
             try
             {
                 _rwlock.EnterReadLock();
 
                 _logger.Debug("Finding branchpoint (locator: {Locator}).", locator);
-                foreach (HashDigest<SHA256> hash in locator)
+                foreach (BlockHash hash in locator)
                 {
                     if (_blocks.ContainsKey(hash)
                         && _blocks[hash] is Block<T> block
@@ -1525,44 +1522,38 @@ namespace Libplanet.Blockchain
             }
         }
 
-        internal Tuple<long?, IReadOnlyList<HashDigest<SHA256>>> FindNextHashes(
+        internal Tuple<long?, IReadOnlyList<BlockHash>> FindNextHashes(
             BlockLocator locator,
-            HashDigest<SHA256>? stop = null,
+            BlockHash? stop = null,
             int count = 500)
         {
             try
             {
                 _rwlock.EnterReadLock();
 
-                HashDigest<SHA256>? tip = Store.IndexBlockHash(Id, -1);
+                BlockHash? tip = Store.IndexBlockHash(Id, -1);
                 if (tip is null)
                 {
-                    return new Tuple<long?, IReadOnlyList<HashDigest<SHA256>>>(
-                        null,
-                        new HashDigest<SHA256>[0]
-                    );
+                    return new Tuple<long?, IReadOnlyList<BlockHash>>(null, new BlockHash[0]);
                 }
 
-                HashDigest<SHA256>? branchPoint = FindBranchPoint(locator);
-                var branchPointIndex = branchPoint is HashDigest<SHA256> h
-                    ? (int)_blocks[h].Index
-                    : 0;
+                BlockHash? branchpoint = FindBranchpoint(locator);
+                var branchpointIndex = branchpoint is { } h ? (int)_blocks[h].Index : 0;
 
                 // FIXME: Currently, increasing count by one to satisfy
                 // the number defined by FindNextHashesChunkSize variable
                 // when branchPointIndex didn't indicate genesis block.
                 // Since branchPointIndex is same as the latest block of
                 // requesting peer.
-                if (branchPointIndex > 0)
+                if (branchpointIndex > 0)
                 {
                     count++;
                 }
 
-                IEnumerable<HashDigest<SHA256>> hashes = Store
-                    .IterateIndexes(Id, branchPointIndex, count);
+                IEnumerable<BlockHash> hashes = Store.IterateIndexes(Id, branchpointIndex, count);
 
-                var result = new List<HashDigest<SHA256>>();
-                foreach (HashDigest<SHA256> hash in hashes)
+                var result = new List<BlockHash>();
+                foreach (BlockHash hash in hashes)
                 {
                     if (count == 0)
                     {
@@ -1579,10 +1570,7 @@ namespace Libplanet.Blockchain
                     count--;
                 }
 
-                return new Tuple<long?, IReadOnlyList<HashDigest<SHA256>>>(
-                    branchPointIndex,
-                    result
-                );
+                return new Tuple<long?, IReadOnlyList<BlockHash>>(branchpointIndex, result);
             }
             finally
             {
@@ -1590,7 +1578,7 @@ namespace Libplanet.Blockchain
             }
         }
 
-        internal BlockChain<T> Fork(HashDigest<SHA256> point, bool inheritRenderers = true)
+        internal BlockChain<T> Fork(BlockHash point, bool inheritRenderers = true)
         {
             if (!ContainsBlock(point))
             {
@@ -1628,11 +1616,9 @@ namespace Libplanet.Blockchain
                 StateStore.ForkStates(Id, forked.Id, pointBlock);
                 Store.ForkTxNonces(Id, forked.Id);
 
-                for (
-                    Block<T> block = Tip;
-                    block.PreviousHash is HashDigest<SHA256> hash
-                    && !block.Hash.Equals(point);
-                    block = _blocks[hash])
+                for (Block<T> block = Tip;
+                     block.PreviousHash is { } hash && !block.Hash.Equals(point);
+                     block = _blocks[hash])
                 {
                     IEnumerable<(Address, int)> signers = block
                         .Transactions
@@ -1726,8 +1712,7 @@ namespace Libplanet.Blockchain
                         break;
                     }
 
-                    if (t.PreviousHash is HashDigest<SHA256> tp &&
-                        o.PreviousHash is HashDigest<SHA256> op)
+                    if (t.PreviousHash is { } tp && o.PreviousHash is { } op)
                     {
                         t = this[tp];
                         o = other[op];
@@ -1774,7 +1759,7 @@ namespace Libplanet.Blockchain
                     for (
                         Block<T> b = Tip;
                         !(b is null) && b.Index > (topmostCommon?.Index ?? -1) &&
-                        b.PreviousHash is HashDigest<SHA256> ph;
+                        b.PreviousHash is { } ph;
                         b = this[ph]
                     )
                     {
@@ -1931,7 +1916,7 @@ namespace Libplanet.Blockchain
 
             try
             {
-                foreach (HashDigest<SHA256> hash in IterateBlockHashes(offset, limit))
+                foreach (BlockHash hash in IterateBlockHashes(offset, limit))
                 {
                     yield return _blocks[hash];
                 }
@@ -1942,19 +1927,18 @@ namespace Libplanet.Blockchain
             }
         }
 
-        internal IEnumerable<HashDigest<SHA256>>
-            IterateBlockHashes(int offset = 0, int? limit = null)
+        internal IEnumerable<BlockHash> IterateBlockHashes(int offset = 0, int? limit = null)
         {
             _rwlock.EnterUpgradeableReadLock();
 
             try
             {
-                IEnumerable<HashDigest<SHA256>> indices = Store.IterateIndexes(Id, offset, limit);
+                IEnumerable<BlockHash> indices = Store.IterateIndexes(Id, offset, limit);
 
                 // NOTE: The reason why this does not simply return indices, but iterates over
                 // indices and yields hashes step by step instead, is that we need to ensure
                 // the read lock held until the whole iteration completes.
-                foreach (HashDigest<SHA256> hash in indices)
+                foreach (BlockHash hash in indices)
                 {
                     yield return hash;
                 }
@@ -1965,8 +1949,7 @@ namespace Libplanet.Blockchain
             }
         }
 
-        internal HashDigest<SHA256>? ActionEvaluationsToHash(
-            IEnumerable<ActionEvaluation> actionEvaluations)
+        internal BlockHash? ActionEvaluationsToHash(IEnumerable<ActionEvaluation> actionEvaluations)
         {
             ActionEvaluation actionEvaluation;
             var evaluations = actionEvaluations.ToList();
@@ -1994,9 +1977,7 @@ namespace Libplanet.Blockchain
         /// Calculates and complements a block's incomplete states on the fly.
         /// </summary>
         /// <param name="blockHash">The hash of a block which has incomplete states.</param>
-        internal void ComplementBlockStates(
-            HashDigest<SHA256> blockHash
-        )
+        internal void ComplementBlockStates(BlockHash blockHash)
         {
             _logger.Verbose("Recalculates the block {BlockHash}'s states...", blockHash);
 
@@ -2007,7 +1988,7 @@ namespace Libplanet.Blockchain
 
             // Calculates and fills the incomplete states
             // on the fly.
-            foreach (HashDigest<SHA256> hash in BlockHashes)
+            foreach (BlockHash hash in BlockHashes)
             {
                 Block<T> block = this[hash];
                 if (StateStore.ContainsBlockStates(hash))
@@ -2069,7 +2050,7 @@ namespace Libplanet.Blockchain
                     : nextBlock.Difficulty;
 
             Block<T> lastBlock = index >= 1 ? this[index - 1] : null;
-            HashDigest<SHA256>? prevHash = lastBlock?.Hash;
+            BlockHash? prevHash = lastBlock?.Hash;
             DateTimeOffset? prevTimestamp = lastBlock?.Timestamp;
 
             if (nextBlock.Index != index)
@@ -2127,8 +2108,8 @@ namespace Libplanet.Blockchain
 
         private IValue GetRawState(
             string key,
-            HashDigest<SHA256>? offset,
-            Func<BlockChain<T>, HashDigest<SHA256>, IValue> rawStateCompleter
+            BlockHash? offset,
+            Func<BlockChain<T>, BlockHash, IValue> rawStateCompleter
         )
         {
             _rwlock.EnterUpgradeableReadLock();

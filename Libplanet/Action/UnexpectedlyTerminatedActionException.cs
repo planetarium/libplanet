@@ -43,7 +43,7 @@ namespace Libplanet.Action
         /// <param name="innerException">The actual exception that the <see cref="Action"/> threw.
         /// </param>
         public UnexpectedlyTerminatedActionException(
-            HashDigest<SHA256>? blockHash,
+            BlockHash? blockHash,
             long? blockIndex,
             TxId? txid,
             HashDigest<SHA256>? previousStateRootHash,
@@ -68,7 +68,7 @@ namespace Libplanet.Action
         {
             if (info.TryGetValue(nameof(BlockHash), out byte[] blockHash))
             {
-                BlockHash = new HashDigest<SHA256>(blockHash);
+                BlockHash = new BlockHash(blockHash);
             }
 
             if (info.TryGetValue(nameof(BlockIndex), out long blockIndex))
@@ -126,7 +126,7 @@ namespace Libplanet.Action
         /// The <see cref="Block{T}.Hash"/> of the <see cref="Block{T}"/> that <see cref="Action"/>
         /// belongs to.  This can be <c>null</c> on rehearsal mode.
         /// </summary>
-        public HashDigest<SHA256>? BlockHash { get; }
+        public BlockHash? BlockHash { get; }
 
         /// <summary>
         /// The <see cref="Block{T}.Index"/> of the <see cref="Block{T}"/> that <see cref="Action"/>
@@ -152,7 +152,7 @@ namespace Libplanet.Action
         {
             base.GetObjectData(info, context);
 
-            if (BlockHash is HashDigest<SHA256> blockHash)
+            if (BlockHash is { } blockHash)
             {
                 info.AddValue(nameof(BlockHash), blockHash.ToByteArray());
             }

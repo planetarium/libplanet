@@ -14,6 +14,8 @@ using Libplanet.Store;
 using Libplanet.Tests.Blockchain;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tx;
+using Serilog;
+using Serilog.Events;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -21,11 +23,20 @@ namespace Libplanet.Tests.Store
 {
     public abstract class StoreTest
     {
-        protected ITestOutputHelper TestOutputHelper { get; set; }
+        private ILogger _logger = null;
 
-        protected StoreFixture Fx { get; set; }
+        protected abstract ITestOutputHelper TestOutputHelper { get; }
 
-        protected Func<StoreFixture> FxConstructor { get; set; }
+        protected abstract StoreFixture Fx { get; }
+
+        protected abstract Func<StoreFixture> FxConstructor { get; }
+
+        protected ILogger Logger => _logger ?? (
+            _logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo.TestOutput(TestOutputHelper)
+                .CreateLogger()
+                .ForContext(this.GetType()));
 
         [SkippableFact]
         public void ListChainId()
@@ -105,10 +116,7 @@ namespace Libplanet.Tests.Store
             Fx.Store.PutBlock(Fx.Block1);
             Assert.Equal(1, Fx.Store.CountBlocks());
             Assert.Equal(
-                new HashSet<HashDigest<SHA256>>
-                {
-                    Fx.Block1.Hash,
-                },
+                new HashSet<BlockHash> { Fx.Block1.Hash },
                 Fx.Store.IterateBlockHashes().ToHashSet());
             Assert.Equal(
                 Fx.Block1,
@@ -125,11 +133,7 @@ namespace Libplanet.Tests.Store
             Fx.Store.PutBlock(Fx.Block2);
             Assert.Equal(2, Fx.Store.CountBlocks());
             Assert.Equal(
-                new HashSet<HashDigest<SHA256>>
-                {
-                    Fx.Block1.Hash,
-                    Fx.Block2.Hash,
-                },
+                new HashSet<BlockHash> { Fx.Block1.Hash, Fx.Block2.Hash },
                 Fx.Store.IterateBlockHashes().ToHashSet());
             Assert.Equal(
                 Fx.Block1,
@@ -148,10 +152,7 @@ namespace Libplanet.Tests.Store
             Assert.True(Fx.Store.DeleteBlock(Fx.Block1.Hash));
             Assert.Equal(1, Fx.Store.CountBlocks());
             Assert.Equal(
-                new HashSet<HashDigest<SHA256>>
-                {
-                    Fx.Block2.Hash,
-                },
+                new HashSet<BlockHash> { Fx.Block2.Hash },
                 Fx.Store.IterateBlockHashes().ToHashSet());
             Assert.Null(Fx.Store.GetBlock<DumbAction>(Fx.Block1.Hash));
             Assert.Equal(
@@ -266,10 +267,7 @@ namespace Libplanet.Tests.Store
             Assert.Equal(0, Fx.Store.AppendIndex(Fx.StoreChainId, Fx.Hash1));
             Assert.Equal(1, Fx.Store.CountIndex(Fx.StoreChainId));
             Assert.Equal(
-                new List<HashDigest<SHA256>>()
-                {
-                    Fx.Hash1,
-                },
+                new List<BlockHash> { Fx.Hash1 },
                 Fx.Store.IterateIndexes(Fx.StoreChainId));
             Assert.Equal(Fx.Hash1, Fx.Store.IndexBlockHash(Fx.StoreChainId, 0));
             Assert.Equal(Fx.Hash1, Fx.Store.IndexBlockHash(Fx.StoreChainId, -1));
@@ -277,11 +275,7 @@ namespace Libplanet.Tests.Store
             Assert.Equal(1, Fx.Store.AppendIndex(Fx.StoreChainId, Fx.Hash2));
             Assert.Equal(2, Fx.Store.CountIndex(Fx.StoreChainId));
             Assert.Equal(
-                new List<HashDigest<SHA256>>()
-                {
-                    Fx.Hash1,
-                    Fx.Hash2,
-                },
+                new List<BlockHash> { Fx.Hash1, Fx.Hash2 },
                 Fx.Store.IterateIndexes(Fx.StoreChainId));
             Assert.Equal(Fx.Hash1, Fx.Store.IndexBlockHash(Fx.StoreChainId, 0));
             Assert.Equal(Fx.Hash2, Fx.Store.IndexBlockHash(Fx.StoreChainId, 1));
@@ -309,13 +303,13 @@ namespace Libplanet.Tests.Store
             Assert.Equal(new[] { Fx.Hash3 }, indexes);
 
             indexes = store.IterateIndexes(ns, 3).ToArray();
-            Assert.Equal(new HashDigest<SHA256>[] { }, indexes);
+            Assert.Equal(new BlockHash[0], indexes);
 
             indexes = store.IterateIndexes(ns, 4).ToArray();
-            Assert.Equal(new HashDigest<SHA256>[] { }, indexes);
+            Assert.Equal(new BlockHash[0], indexes);
 
             indexes = store.IterateIndexes(ns, limit: 0).ToArray();
-            Assert.Equal(new HashDigest<SHA256>[] { }, indexes);
+            Assert.Equal(new BlockHash[0], indexes);
 
             indexes = store.IterateIndexes(ns, limit: 1).ToArray();
             Assert.Equal(new[] { Fx.Hash1 }, indexes);
@@ -616,6 +610,13 @@ namespace Libplanet.Tests.Store
                 Fx.GenesisBlock,
                 renderers: null
             );
+            Logger.CompareBothChains(
+                LogEventLevel.Debug,
+                nameof(blocks),
+                blocks,
+                nameof(forked),
+                forked
+            );
 
             store.ForkBlockIndexes(blocks.Id, forked.Id, blocks[branchPointIndex].Hash);
 
@@ -655,7 +656,7 @@ namespace Libplanet.Tests.Store
                 foreach (Guid chainId in s1.ListChainIds())
                 {
                     Assert.Equal(s1.IterateIndexes(chainId), s2.IterateIndexes(chainId));
-                    foreach (HashDigest<SHA256> blockHash in s1.IterateIndexes(chainId))
+                    foreach (BlockHash blockHash in s1.IterateIndexes(chainId))
                     {
                         Assert.Equal(
                             s1.GetBlock<DumbAction>(blockHash),

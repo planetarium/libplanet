@@ -1,6 +1,6 @@
 using System;
-using System.Security.Cryptography;
 using Libplanet.Action;
+using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tx;
@@ -9,7 +9,7 @@ namespace Libplanet.Tests.Tx
 {
     public class TxFixture
     {
-        public TxFixture(HashDigest<SHA256>? genesisHash)
+        public TxFixture(BlockHash? genesisHash)
         {
             PrivateKey1 = new PrivateKey(
                 new byte[]

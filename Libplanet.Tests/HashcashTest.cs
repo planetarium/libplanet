@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
+using Libplanet.Blocks;
 using Xunit;
 
 namespace Libplanet.Tests
@@ -54,7 +55,7 @@ namespace Libplanet.Tests
                 digest = bytes;
             }
 
-            return new HashDigest<SHA256>(digest).Satisfies(difficulty);
+            return new BlockHash(digest).Satisfies(difficulty);
         }
     }
 

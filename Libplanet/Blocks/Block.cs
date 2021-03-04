@@ -66,10 +66,10 @@ namespace Libplanet.Blocks
             BigInteger totalDifficulty,
             Nonce nonce,
             Address? miner,
-            HashDigest<SHA256>? previousHash,
+            BlockHash? previousHash,
             DateTimeOffset timestamp,
             IEnumerable<Transaction<T>> transactions,
-            HashDigest<SHA256>? preEvaluationHash = null,
+            BlockHash? preEvaluationHash = null,
             HashDigest<SHA256>? stateRootHash = null,
             int protocolVersion = CurrentProtocolVersion)
         {
@@ -162,15 +162,15 @@ namespace Libplanet.Blocks
             : this(
 #pragma warning disable SA1118
                 rb.Header.ProtocolVersion,
-                new HashDigest<SHA256>(rb.Header.Hash),
+                new BlockHash(rb.Header.Hash),
                 rb.Header.Index,
                 rb.Header.Difficulty,
                 rb.Header.TotalDifficulty,
                 new Nonce(rb.Header.Nonce.ToArray()),
                 rb.Header.Miner.Any() ? new Address(rb.Header.Miner) : (Address?)null,
                 rb.Header.PreviousHash.Any()
-                    ? new HashDigest<SHA256>(rb.Header.PreviousHash)
-                    : (HashDigest<SHA256>?)null,
+                    ? new BlockHash(rb.Header.PreviousHash)
+                    : (BlockHash?)null,
                 DateTimeOffset.ParseExact(
                     rb.Header.Timestamp,
                     BlockHeader.TimestampFormat,
@@ -182,8 +182,8 @@ namespace Libplanet.Blocks
                     .Select(tx => Transaction<T>.Deserialize(tx.ToArray(), false))
                     .ToList(),
                 rb.Header.PreEvaluationHash.Any()
-                    ? new HashDigest<SHA256>(rb.Header.PreEvaluationHash)
-                    : (HashDigest<SHA256>?)null,
+                    ? new BlockHash(rb.Header.PreEvaluationHash)
+                    : (BlockHash?)null,
                 rb.Header.StateRootHash.Any()
                     ? new HashDigest<SHA256>(rb.Header.StateRootHash)
                     : (HashDigest<SHA256>?)null)
@@ -193,17 +193,17 @@ namespace Libplanet.Blocks
 
         private Block(
             int protocolVersion,
-            HashDigest<SHA256> hash,
+            BlockHash hash,
             long index,
             long difficulty,
             BigInteger totalDifficulty,
             Nonce nonce,
             Address? miner,
-            HashDigest<SHA256>? previousHash,
+            BlockHash? previousHash,
             DateTimeOffset timestamp,
             HashDigest<SHA256>? txHash,
             IEnumerable<Transaction<T>> transactions,
-            HashDigest<SHA256>? preEvaluationHash,
+            BlockHash? preEvaluationHash,
             HashDigest<SHA256>? stateRootHash
         )
         {
@@ -239,7 +239,7 @@ namespace Libplanet.Blocks
         /// </summary>
         /// <seealso cref="PreEvaluationHash"/>
         /// <seealso cref="StateRootHash"/>
-        public HashDigest<SHA256> Hash { get; }
+        public BlockHash Hash { get; }
 
         /// <summary>
         /// The hash derived from the block <em>except of</em>
@@ -248,7 +248,7 @@ namespace Libplanet.Blocks
         /// </summary>
         /// <seealso cref="Nonce"/>
         /// <seealso cref="BlockHeader.Validate"/>
-        public HashDigest<SHA256> PreEvaluationHash { get; }
+        public BlockHash PreEvaluationHash { get; }
 
         /// <summary>
         /// The <see cref="ITrie.Hash"/> of the states on the block.
@@ -271,8 +271,12 @@ namespace Libplanet.Blocks
         [IgnoreDuringEquals]
         public Address? Miner { get; }
 
+        /// <summary>
+        /// The <see cref="Hash"/> of its previous block.
+        /// This field is mandatory except for a genesis block.
+        /// </summary>
         [IgnoreDuringEquals]
-        public HashDigest<SHA256>? PreviousHash { get; }
+        public BlockHash? PreviousHash { get; }
 
         [IgnoreDuringEquals]
         public DateTimeOffset Timestamp { get; }
@@ -363,7 +367,7 @@ namespace Libplanet.Blocks
             long difficulty,
             BigInteger previousTotalDifficulty,
             Address miner,
-            HashDigest<SHA256>? previousHash,
+            BlockHash? previousHash,
             DateTimeOffset timestamp,
             IEnumerable<Transaction<T>> transactions,
             int protocolVersion = CurrentProtocolVersion,
@@ -651,7 +655,7 @@ namespace Libplanet.Blocks
 
             if (ProtocolVersion > 0)
             {
-                HashDigest<SHA256> expectedPreEvaluationHash =
+                BlockHash expectedPreEvaluationHash =
                     Hashcash.Hash(Header.SerializeForHash(includeStateRootHash: false));
                 if (!expectedPreEvaluationHash.Equals(PreEvaluationHash))
                 {
@@ -707,7 +711,8 @@ namespace Libplanet.Blocks
                 offset += serializedTx.Length;
             }
 
-            return Hashcash.Hash(txHashSource);
+            using SHA256 hashAlgo = SHA256.Create();
+            return HashDigest<SHA256>.DeriveFrom(txHashSource);
         }
 
         private readonly struct BlockSerializationContext

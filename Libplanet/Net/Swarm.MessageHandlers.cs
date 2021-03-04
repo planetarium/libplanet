@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Blockchain.Policies;
@@ -48,7 +47,7 @@ namespace Libplanet.Net
                     const string msg =
                         "Received a " + nameof(GetBlockHashes) + " message " +
                         "(locator: {Locator}, stop: {Stop}).";
-                    HashDigest<SHA256>[] locatorArray = getBlockHashes.Locator.ToArray();
+                    BlockHash[] locatorArray = getBlockHashes.Locator.ToArray();
                     _logger.Debug(msg, locatorArray, getBlockHashes.Stop);
                     BlockChain.FindNextHashes(
                         getBlockHashes.Locator,
@@ -56,7 +55,7 @@ namespace Libplanet.Net
                         FindNextHashesChunkSize
                     ).Deconstruct(
                         out long? offset,
-                        out IReadOnlyList<HashDigest<SHA256>> hashes
+                        out IReadOnlyList<BlockHash> hashes
                     );
                     const string resultMsg =
                         "Found hashes after the branchpoint (locator: {Locator}, stop: {Stop}): " +
@@ -242,13 +241,13 @@ namespace Libplanet.Net
 
             var blocks = new List<byte[]>();
 
-            List<HashDigest<SHA256>> hashes = getData.BlockHashes.ToList();
+            List<BlockHash> hashes = getData.BlockHashes.ToList();
             int i = 1;
             int total = hashes.Count;
             const string logMsg =
                 "Fetching a block #{Index}/{Total} ({Hash}) to include to " +
                 "a reply to {Identity}...";
-            foreach (HashDigest<SHA256> hash in hashes)
+            foreach (BlockHash hash in hashes)
             {
                 _logger.Verbose(logMsg, i, total, hash, identityHex);
                 if (_store.ContainsBlock(hash))

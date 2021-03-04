@@ -55,10 +55,7 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public IValue? GetState(
-            string stateKey,
-            HashDigest<SHA256>? blockHash = null,
-            Guid? chainId = null)
+        public IValue? GetState(string stateKey, BlockHash? blockHash = null, Guid? chainId = null)
         {
             if (blockHash is null)
             {
@@ -73,7 +70,7 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public bool ContainsBlockStates(HashDigest<SHA256> blockHash)
+        public bool ContainsBlockStates(BlockHash blockHash)
         {
             return _stateHashKeyValueStore.Exists(blockHash.ToByteArray());
         }
@@ -85,7 +82,7 @@ namespace Libplanet.Store
             // Do nothing.
         }
 
-        public void PruneStates(ImmutableHashSet<HashDigest<SHA256>> excludeBlockHashes)
+        public void PruneStates(IImmutableSet<BlockHash> excludeBlockHashes)
         {
             var stopwatch = new Stopwatch();
             _logger.Verbose($"Started {nameof(PruneStates)}()");
@@ -145,7 +142,7 @@ namespace Libplanet.Store
             stopwatch.Restart();
             foreach (var stateHashKey in _stateHashKeyValueStore.ListKeys())
             {
-                if (excludeBlockHashes.Contains(new HashDigest<SHA256>(stateHashKey)))
+                if (excludeBlockHashes.Contains(new BlockHash(stateHashKey)))
                 {
                     continue;
                 }
@@ -175,7 +172,7 @@ namespace Libplanet.Store
         /// it will return the state hash. If not, it will return null.</returns>
         /// <exception cref="KeyNotFoundException">If there are no root hashes that correspond to
         /// <paramref name="blockHash"/>.</exception>
-        public HashDigest<SHA256> GetRootHash(HashDigest<SHA256> blockHash)
+        public HashDigest<SHA256> GetRootHash(BlockHash blockHash)
             => new HashDigest<SHA256>(_stateHashKeyValueStore.Get(blockHash.ToByteArray()));
 
         internal HashDigest<SHA256> EvalState<T>(
@@ -202,7 +199,7 @@ namespace Libplanet.Store
             return newStateTrie.Hash;
         }
 
-        internal ITrie GetTrie(HashDigest<SHA256> blockHash)
+        internal ITrie GetTrie(BlockHash blockHash)
             =>
                 new MerkleTrie(
                     _stateKeyValueStore,

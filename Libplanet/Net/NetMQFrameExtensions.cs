@@ -1,6 +1,8 @@
+#nullable enable
 using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
+using Libplanet.Blocks;
 using Libplanet.Tx;
 using NetMQ;
 
@@ -14,6 +16,9 @@ namespace Libplanet.Net
         {
             return new HashDigest<T>(frame.ToByteArray());
         }
+
+        public static BlockHash ConvertToBlockHash(this NetMQFrame frame) =>
+            new BlockHash(frame.ToByteArray());
 
         public static TxId ConvertToTxId(this NetMQFrame frame)
         {

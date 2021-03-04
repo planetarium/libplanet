@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Numerics;
-using System.Security.Cryptography;
 using Libplanet.Blocks;
 using NetMQ;
 
@@ -10,9 +9,9 @@ namespace Libplanet.Net.Messages
     {
         public ChainStatus(
             int protocolVersion,
-            HashDigest<SHA256> genesisHash,
+            BlockHash genesisHash,
             long tipIndex,
-            HashDigest<SHA256> tipHash,
+            BlockHash tipHash,
             BigInteger totalDifficulty)
         {
             ProtocolVersion = protocolVersion;
@@ -25,25 +24,25 @@ namespace Libplanet.Net.Messages
         public ChainStatus(NetMQFrame[] body)
         {
             ProtocolVersion = body[0].ConvertToInt32();
-            GenesisHash = new HashDigest<SHA256>(body[1].Buffer);
+            GenesisHash = new BlockHash(body[1].Buffer);
             TipIndex = body[2].ConvertToInt64();
-            TipHash = new HashDigest<SHA256>(body[3].Buffer);
+            TipHash = new BlockHash(body[3].Buffer);
             TotalDifficulty = new BigInteger(body[4].ToByteArray());
         }
 
         public int ProtocolVersion { get; }
 
-        public HashDigest<SHA256> GenesisHash { get; }
+        public BlockHash GenesisHash { get; }
 
         public long TipIndex { get; }
 
-        public HashDigest<SHA256> TipHash { get; }
+        public BlockHash TipHash { get; }
 
         public BigInteger TotalDifficulty { get; }
 
         long IBlockExcerpt.Index => TipIndex;
 
-        HashDigest<SHA256> IBlockExcerpt.Hash => TipHash;
+        BlockHash IBlockExcerpt.Hash => TipHash;
 
         protected override Message.MessageType Type => Message.MessageType.ChainStatus;
 

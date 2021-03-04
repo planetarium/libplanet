@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Security.Cryptography;
+using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net;
 using Libplanet.Net.Messages;
@@ -17,17 +17,17 @@ namespace Libplanet.Tests.Net.Messages
         public void Constructor()
         {
             Assert.Throws<ArgumentNullException>(() =>
-                new BlockHashes(null, new[] { default(HashDigest<SHA256>) })
+                new BlockHashes(null, new[] { default(BlockHash) })
             );
             Assert.Throws<ArgumentException>(() =>
-                new BlockHashes(123, new HashDigest<SHA256>[0])
+                new BlockHashes(123, new BlockHash[0])
             );
         }
 
         [Fact]
         public void DataFrames()
         {
-            HashDigest<SHA256>[] blockHashes = GenerateRandomBlockHashes(100L).ToArray();
+            BlockHash[] blockHashes = GenerateRandomBlockHashes(100L).ToArray();
             var msg = new BlockHashes(123, blockHashes);
             Assert.Equal(123, msg.StartIndex);
             Assert.Equal(blockHashes, msg.Hashes);
@@ -42,14 +42,14 @@ namespace Libplanet.Tests.Net.Messages
             Assert.Equal(msg.Hashes, restored.Hashes);
         }
 
-        private static IEnumerable<HashDigest<SHA256>> GenerateRandomBlockHashes(long count)
+        private static IEnumerable<BlockHash> GenerateRandomBlockHashes(long count)
         {
             var random = new Random();
-            var buffer = new byte[HashDigest<SHA256>.Size];
+            var buffer = new byte[32];
             for (long i = 0; i < count; i++)
             {
                 random.NextBytes(buffer);
-                yield return new HashDigest<SHA256>(buffer);
+                yield return new BlockHash(buffer);
             }
         }
     }

@@ -1,7 +1,7 @@
 using System;
-using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Blocks;
 
 namespace Libplanet.Blockchain
 {
@@ -31,7 +31,7 @@ namespace Libplanet.Blockchain
         public static readonly StateCompleter<T> Reject = (chain, blockHash, address) =>
             throw new IncompleteBlockStatesException(blockHash);
 
-        internal static Func<BlockChain<T>, HashDigest<SHA256>, IValue> ToRawStateCompleter(
+        internal static Func<BlockChain<T>, BlockHash, IValue> ToRawStateCompleter(
             StateCompleter<T> stateCompleter,
             Address address
         ) =>

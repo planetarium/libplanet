@@ -12,7 +12,7 @@ namespace Libplanet.Store.Trie.Nodes
         {
             return node is HashNode hashNode
                 ? hashNode.HashDigest
-                : Hashcash.Hash(node.Serialize());
+                : HashDigest<SHA256>.DeriveFrom(node.Serialize());
         }
 
         internal static byte[] Serialize(this INode node)

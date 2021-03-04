@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Bencodex.Types;
 using Libplanet.Action;
@@ -87,7 +86,7 @@ namespace Libplanet.Tests.Blockchain
             {
                 ProtocolVersion = BlockHeader.CurrentProtocolVersion,
                 Index = 604665,
-                Hash = HashDigest<SHA256>.FromString(
+                Hash = BlockHash.FromString(
                     "4f612467ed79cb854d1901f131ccfc8a40bba89651e1a9e1dcea1287dd70d8ee"),
                 TotalDifficulty = 21584091240753,
             };
@@ -105,7 +104,7 @@ namespace Libplanet.Tests.Blockchain
             {
                 ProtocolVersion = BlockHeader.CurrentProtocolVersion,
                 Index = 604664,
-                Hash = HashDigest<SHA256>.FromString(
+                Hash = BlockHash.FromString(
                     "9a87556f3198d8bd48300d2a6a5957d661c760a7fb72ef4a4b8c01c155b77e99"),
                 TotalDifficulty = 21584061959429,
             };
@@ -744,9 +743,9 @@ namespace Libplanet.Tests.Blockchain
         public async void FindNextHashes()
         {
             long? offsetIndex;
-            IReadOnlyList<HashDigest<SHA256>> hashes;
+            IReadOnlyList<BlockHash> hashes;
 
-            _blockChain.FindNextHashes(new BlockLocator(new HashDigest<SHA256>[] { }))
+            _blockChain.FindNextHashes(new BlockLocator(new BlockHash[] { }))
                 .Deconstruct(out offsetIndex, out hashes);
             Assert.Single(hashes);
             var block0 = _blockChain.Genesis;
@@ -787,7 +786,7 @@ namespace Libplanet.Tests.Blockchain
 
             BlockLocator locator = _blockChain.GetBlockLocator();
             forked.FindNextHashes(locator)
-                .Deconstruct(out long? offset, out IReadOnlyList<HashDigest<SHA256>> hashes);
+                .Deconstruct(out long? offset, out IReadOnlyList<BlockHash> hashes);
 
             Assert.Equal(forked[0].Index, offset);
             Assert.Equal(new[] { forked[0].Hash, forked[1].Hash }, hashes);
@@ -1472,7 +1471,7 @@ namespace Libplanet.Tests.Blockchain
                     return new Text($"{bc.Id}/{hash}/{addr}: callback called");
                 }
             );
-            HashDigest<SHA256> prevUpdate = chain.BlockHashes.Skip(addresses.Length).First();
+            BlockHash prevUpdate = chain.BlockHashes.Skip(addresses.Length).First();
             var expected = new Text($"{chain.Id}/{prevUpdate}/{addresses[4]}: callback called");
             Assert.Equal(expected, value);
         }
@@ -1522,7 +1521,7 @@ namespace Libplanet.Tests.Blockchain
 
             Assert.Equal(b1.PreviousHash, _blockChain.Genesis.Hash);
 
-            var emptyLocator = new BlockLocator(new HashDigest<SHA256>[0]);
+            var emptyLocator = new BlockLocator(new BlockHash[0]);
             var locator = new BlockLocator(new[] { b4.Hash, b3.Hash, b1.Hash });
 
             using (var emptyFx = new DefaultStoreFixture(
@@ -1547,14 +1546,14 @@ namespace Libplanet.Tests.Blockchain
                 fork.Append(b2);
                 await fork.MineBlock(_fx.Address1);
 
-                Assert.Null(emptyChain.FindBranchPoint(emptyLocator));
-                Assert.Null(emptyChain.FindBranchPoint(locator));
+                Assert.Null(emptyChain.FindBranchpoint(emptyLocator));
+                Assert.Null(emptyChain.FindBranchpoint(locator));
 
-                Assert.Null(_blockChain.FindBranchPoint(emptyLocator));
-                Assert.Equal(b4.Hash, _blockChain.FindBranchPoint(locator));
+                Assert.Null(_blockChain.FindBranchpoint(emptyLocator));
+                Assert.Equal(b4.Hash, _blockChain.FindBranchpoint(locator));
 
-                Assert.Null(fork.FindBranchPoint(emptyLocator));
-                Assert.Equal(b1.Hash, fork.FindBranchPoint(locator));
+                Assert.Null(fork.FindBranchpoint(emptyLocator));
+                Assert.Equal(b1.Hash, fork.FindBranchpoint(locator));
             }
         }
 
@@ -2034,7 +2033,7 @@ namespace Libplanet.Tests.Blockchain
 
             if (stateStore is TrieStateStore trieStateStore)
             {
-                trieStateStore.PruneStates(ImmutableHashSet<HashDigest<SHA256>>.Empty.Add(b.Hash));
+                trieStateStore.PruneStates(ImmutableHashSet<BlockHash>.Empty.Add(b.Hash));
             }
 
             return (signer, addresses, chain);

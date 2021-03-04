@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using Libplanet.Blocks;
 using Libplanet.Store;
 using Libplanet.Tests.Common.Action;
@@ -37,7 +36,7 @@ namespace Libplanet.Tests.Store
             _set[_fx.Block3.Hash] = _fx.Block3;
 
             Assert.Equal(
-                new HashSet<HashDigest<SHA256>>()
+                new HashSet<BlockHash>()
                 {
                     _fx.Block1.Hash,
                     _fx.Block2.Hash,

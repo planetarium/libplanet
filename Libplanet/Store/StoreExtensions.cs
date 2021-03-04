@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blocks;
@@ -32,7 +31,7 @@ namespace Libplanet.Store
 
             foreach (Guid chainId in from.ListChainIds().ToArray())
             {
-                foreach (HashDigest<SHA256> blockHash in from.IterateIndexes(chainId))
+                foreach (BlockHash blockHash in from.IterateIndexes(chainId))
                 {
                     Block<NullAction> block = from.GetBlock<NullAction>(blockHash);
                     to.PutBlock(block);

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Bencodex.Types;
 using Libplanet.Action;
@@ -377,7 +376,7 @@ namespace Libplanet.Tests.Blockchain
         {
             var signerA = new PrivateKey();
             var signerB = new PrivateKey();
-            HashDigest<SHA256> genesis = _blockChain.Genesis.Hash;
+            BlockHash genesis = _blockChain.Genesis.Hash;
             DumbAction[] emptyActions = new DumbAction[0];
             Transaction<DumbAction>
                 txA0 = Transaction<DumbAction>.Create(0, signerA, genesis, emptyActions),

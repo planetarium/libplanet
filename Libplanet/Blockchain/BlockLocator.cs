@@ -1,24 +1,25 @@
+#nullable enable
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Security.Cryptography;
+using Libplanet.Blocks;
 
 namespace Libplanet.Blockchain
 {
-    internal class BlockLocator : IEnumerable<HashDigest<SHA256>>
+    internal class BlockLocator : IEnumerable<BlockHash>
     {
-        private readonly IEnumerable<HashDigest<SHA256>> _impl;
+        private readonly IEnumerable<BlockHash> _impl;
 
         public BlockLocator(
-            Func<long, HashDigest<SHA256>?> indexBlockHash,
-            Func<HashDigest<SHA256>, long> indexByBlockHash,
+            Func<long, BlockHash?> indexBlockHash,
+            Func<BlockHash, long> indexByBlockHash,
             int sampleAfter = 10
         )
         {
-            HashDigest<SHA256>? current = indexBlockHash(-1);
+            BlockHash? current = indexBlockHash(-1);
             long step = 1;
-            var hashes = new List<HashDigest<SHA256>>();
-            while (current is HashDigest<SHA256> hash)
+            var hashes = new List<BlockHash>();
+            while (current is { } hash)
             {
                 hashes.Add(hash);
                 long currentBlockIndex = indexByBlockHash(hash);
@@ -40,12 +41,12 @@ namespace Libplanet.Blockchain
             _impl = hashes;
         }
 
-        public BlockLocator(IEnumerable<HashDigest<SHA256>> hashes)
+        public BlockLocator(IEnumerable<BlockHash> hashes)
         {
             _impl = hashes;
         }
 
-        public IEnumerator<HashDigest<SHA256>> GetEnumerator()
+        public IEnumerator<BlockHash> GetEnumerator()
         {
             return _impl.GetEnumerator();
         }

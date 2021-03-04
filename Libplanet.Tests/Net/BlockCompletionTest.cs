@@ -3,7 +3,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using Dasync.Collections;
@@ -118,7 +117,7 @@ namespace Libplanet.Tests.Net
                 fixture.Take(initialHeight).Select(b => b.Hash).ToImmutableHashSet().Contains,
                 window
             );
-            var logs = new ConcurrentBag<(int, ImmutableArray<HashDigest<SHA256>>)>();
+            var logs = new ConcurrentBag<(int, ImmutableArray<BlockHash>)>();
             var ev = new AsyncAutoResetEvent(false);
             var bg = Task.Run(async () =>
             {
@@ -126,7 +125,7 @@ namespace Libplanet.Tests.Net
                 int i = 0;
                 await AsyncEnumerable.ForEachAsync(bc.EnumerateChunks(), hashes =>
                 {
-                    ImmutableArray<HashDigest<SHA256>> hashesArray = hashes.ToImmutableArray();
+                    ImmutableArray<BlockHash> hashesArray = hashes.ToImmutableArray();
                     logs.Add((i, hashesArray));
                     i++;
 
@@ -152,7 +151,7 @@ namespace Libplanet.Tests.Net
             // TODO change waiting condition
             await Task.Delay(1000);
             _logger.Verbose("Demand #2-6 processed.");
-            var actual = new List<HashDigest<SHA256>>();
+            var actual = new List<BlockHash>();
             while (logs.TryTake(out var log))
             {
                 actual.AddRange(log.Item2);
@@ -175,7 +174,7 @@ namespace Libplanet.Tests.Net
             await Task.Delay(1000);
             _logger.Verbose("Demand #7-11 processed.");
 
-            actual = new List<HashDigest<SHA256>>();
+            actual = new List<BlockHash>();
             while (logs.TryTake(out var log))
             {
                 actual.AddRange(log.Item2);
@@ -197,7 +196,7 @@ namespace Libplanet.Tests.Net
             // TODO change waiting condition
             await Task.Delay(1000);
             _logger.Verbose("Demand #12-14 processed.");
-            actual = new List<HashDigest<SHA256>>();
+            actual = new List<BlockHash>();
             while (logs.TryTake(out var log))
             {
                 actual.AddRange(log.Item2);
@@ -233,7 +232,7 @@ namespace Libplanet.Tests.Net
             //   C: 2, 6, 10, 14
             //   D: 3, 7, 11
             char[] peers = { 'A', 'B', 'C', 'D' };
-            ImmutableDictionary<char, ImmutableDictionary<HashDigest<SHA256>, Block<DumbAction>>>
+            ImmutableDictionary<char, ImmutableDictionary<BlockHash, Block<DumbAction>>>
                 peerBlocks = peers.ToImmutableDictionary(
                     p => p,
                     p => fixture.Skip(p - 'A').Where((_, i) => i % 4 < 1).ToImmutableDictionary(
@@ -248,7 +247,7 @@ namespace Libplanet.Tests.Net
                 fixture.Take(initialHeight).Select(b => b.Hash).ToImmutableHashSet().Contains,
                 window
             );
-            ImmutableArray<HashDigest<SHA256>> initialDemands = fixture
+            ImmutableArray<BlockHash> initialDemands = fixture
                 .Skip(initialHeight + 10)
                 .Select(b => b.Hash)
                 .ToImmutableArray();
@@ -259,8 +258,8 @@ namespace Libplanet.Tests.Net
                 (peer, hashes, token) => new AsyncEnumerable<Block<DumbAction>>(async yield =>
                 {
                     var blocksPeerHas = peerBlocks[peer];
-                    var sent = new HashSet<HashDigest<SHA256>>();
-                    foreach (HashDigest<SHA256> hash in hashes)
+                    var sent = new HashSet<BlockHash>();
+                    foreach (BlockHash hash in hashes)
                     {
                         if (blocksPeerHas.ContainsKey(hash))
                         {
@@ -296,7 +295,7 @@ namespace Libplanet.Tests.Net
             _logger.Debug("Demand:  #{Index} {Hash}", demand.Index, demand.Hash);
             _logger.Debug("Wrong:   #{Index} {Hash}", wrong.Index, wrong.Hash);
             var bc = new BlockCompletion<char, DumbAction>(
-                ((IEquatable<HashDigest<SHA256>>)genesis.Hash).Equals,
+                ((IEquatable<BlockHash>)genesis.Hash).Equals,
                 5
             );
             bc.Demand(demand.Hash);

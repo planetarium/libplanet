@@ -1,6 +1,5 @@
 #nullable enable
 using System.Numerics;
-using System.Security.Cryptography;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 
@@ -30,7 +29,7 @@ namespace Libplanet.Blocks
         /// A block's hash.
         /// </summary>
         /// <seealso cref="Block{T}.Hash"/>
-        public HashDigest<SHA256> Hash { get; }
+        public BlockHash Hash { get; }
 
         /// <summary>
         /// The sum of a block and its all ancestors' difficulties.

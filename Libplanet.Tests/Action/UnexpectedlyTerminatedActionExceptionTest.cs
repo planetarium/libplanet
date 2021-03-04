@@ -3,6 +3,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 using Libplanet.Action;
+using Libplanet.Blocks;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tx;
 using Xunit;
@@ -15,9 +16,7 @@ namespace Libplanet.Tests.Action
         public void Serializable()
         {
             var innerExc = new Exception("inner");
-            var blockHash = new HashDigest<SHA256>(
-                TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)
-            );
+            var blockHash = new BlockHash(TestUtils.GetRandomBytes(32));
             long blockIndex = 100;
             var txId = new TxId(TestUtils.GetRandomBytes(TxId.Size));
             var previousStateRootHash = new HashDigest<SHA256>(

@@ -1,6 +1,7 @@
-using System.Security.Cryptography;
+#nullable enable
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Blocks;
 
 namespace Libplanet.Blockchain
 {
@@ -18,7 +19,7 @@ namespace Libplanet.Blockchain
     /// <seealso cref="StateCompleters{T}"/>
     public delegate IValue StateCompleter<T>(
         BlockChain<T> blockChain,
-        HashDigest<SHA256> blockHash,
+        BlockHash blockHash,
         Address address
     )
         where T : IAction, new();

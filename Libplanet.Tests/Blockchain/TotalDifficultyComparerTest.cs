@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
 using Libplanet.Tests.Blocks;
@@ -117,6 +116,6 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(BlockPerceptions[3].BlockExcerpt, sorted[4].BlockExcerpt);
         }
 
-        private static HashDigest<SHA256> H(string h) => HashDigest<SHA256>.FromString(h);
+        private static BlockHash H(string h) => BlockHash.FromString(h);
     }
 }

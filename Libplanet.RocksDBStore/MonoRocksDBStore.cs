@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
 using Libplanet.Blocks;
 using Libplanet.Store;
@@ -42,7 +41,7 @@ namespace Libplanet.RocksDBStore
         private readonly ILogger _logger;
 
         private readonly LruCache<TxId, object> _txCache;
-        private readonly LruCache<HashDigest<SHA256>, BlockDigest> _blockCache;
+        private readonly LruCache<BlockHash, BlockDigest> _blockCache;
 
         private readonly DbOptions _options;
         private readonly string _path;
@@ -91,7 +90,7 @@ namespace Libplanet.RocksDBStore
             }
 
             _txCache = new LruCache<TxId, object>(capacity: txCacheSize);
-            _blockCache = new LruCache<HashDigest<SHA256>, BlockDigest>(capacity: blockCacheSize);
+            _blockCache = new LruCache<BlockHash, BlockDigest>(capacity: blockCacheSize);
 
             _path = path;
             _options = new DbOptions()
@@ -191,11 +190,8 @@ namespace Libplanet.RocksDBStore
                 : RocksDBStoreBitConverter.ToInt64(bytes);
         }
 
-        /// <inheritdoc/>
-        public override IEnumerable<HashDigest<SHA256>> IterateIndexes(
-            Guid chainId,
-            int offset,
-            int? limit)
+        /// <inheritdoc cref="BaseStore.IterateIndexes(Guid, int, int?)"/>
+        public override IEnumerable<BlockHash> IterateIndexes(Guid chainId, int offset, int? limit)
         {
             int count = 0;
             byte[] prefix = IndexKeyPrefix;
@@ -208,14 +204,14 @@ namespace Libplanet.RocksDBStore
                 }
 
                 byte[] value = it.Value();
-                yield return new HashDigest<SHA256>(value);
+                yield return new BlockHash(value);
 
                 count += 1;
             }
         }
 
-        /// <inheritdoc/>
-        public override HashDigest<SHA256>? IndexBlockHash(Guid chainId, long index)
+        /// <inheritdoc cref="BaseStore.IndexBlockHash(Guid, long)"/>
+        public override BlockHash? IndexBlockHash(Guid chainId, long index)
         {
             if (index < 0)
             {
@@ -233,13 +229,11 @@ namespace Libplanet.RocksDBStore
 
             byte[] key = IndexKeyPrefix.Concat(indexBytes).ToArray();
             byte[] bytes = _chainDb.Get(key, cf);
-            return bytes is null
-                ? (HashDigest<SHA256>?)null
-                : new HashDigest<SHA256>(bytes);
+            return bytes is null ? (BlockHash?)null : new BlockHash(bytes);
         }
 
-        /// <inheritdoc/>
-        public override long AppendIndex(Guid chainId, HashDigest<SHA256> hash)
+        /// <inheritdoc cref="BaseStore.AppendIndex(Guid, BlockHash)"/>
+        public override long AppendIndex(Guid chainId, BlockHash hash)
         {
             long index = CountIndex(chainId);
 
@@ -258,17 +252,16 @@ namespace Libplanet.RocksDBStore
             return index;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="BaseStore.ForkBlockIndexes(Guid, Guid, BlockHash)"/>
         public override void ForkBlockIndexes(
             Guid sourceChainId,
             Guid destinationChainId,
-            HashDigest<SHA256> branchPoint)
+            BlockHash branchpoint
+        )
         {
-            HashDigest<SHA256>? genesisHash = IterateIndexes(sourceChainId, 0, 1)
-                .Cast<HashDigest<SHA256>?>()
-                .FirstOrDefault();
+            BlockHash? genesisHash = IterateIndexes(sourceChainId, 0, 1).FirstOrDefault();
 
-            if (genesisHash is null || branchPoint.Equals(genesisHash))
+            if (genesisHash is null || branchpoint.Equals(genesisHash))
             {
                 return;
             }
@@ -291,7 +284,7 @@ namespace Libplanet.RocksDBStore
                         writeBatch = new WriteBatch();
                     }
 
-                    if (branchPoint.ToByteArray().SequenceEqual(hashBytes))
+                    if (branchpoint.ByteArray.SequenceEqual(hashBytes))
                     {
                         break;
                     }
@@ -426,8 +419,8 @@ namespace Libplanet.RocksDBStore
             return !(_txDb.Get(key) is null);
         }
 
-        /// <inheritdoc/>
-        public override IEnumerable<HashDigest<SHA256>> IterateBlockHashes()
+        /// <inheritdoc cref="BaseStore.IterateBlockHashes()"/>
+        public override IEnumerable<BlockHash> IterateBlockHashes()
         {
             byte[] prefix = BlockKeyPrefix;
 
@@ -435,14 +428,12 @@ namespace Libplanet.RocksDBStore
             {
                 byte[] key = it.Key();
                 byte[] hashBytes = key.Skip(prefix.Length).ToArray();
-
-                var blockHash = new HashDigest<SHA256>(hashBytes);
-                yield return blockHash;
+                yield return new BlockHash(hashBytes);
             }
         }
 
-        /// <inheritdoc/>
-        public override BlockDigest? GetBlockDigest(HashDigest<SHA256> blockHash)
+        /// <inheritdoc cref="BaseStore.GetBlockDigest(BlockHash)"/>
+        public override BlockDigest? GetBlockDigest(BlockHash blockHash)
         {
             if (_blockCache.TryGetValue(blockHash, out BlockDigest cachedDigest))
             {
@@ -488,8 +479,8 @@ namespace Libplanet.RocksDBStore
             _blockCache.AddOrUpdate(block.Hash, block.ToBlockDigest());
         }
 
-        /// <inheritdoc/>
-        public override bool DeleteBlock(HashDigest<SHA256> blockHash)
+        /// <inheritdoc cref="BaseStore.DeleteBlock(BlockHash)"/>
+        public override bool DeleteBlock(BlockHash blockHash)
         {
             byte[] key = BlockKey(blockHash);
 
@@ -504,8 +495,8 @@ namespace Libplanet.RocksDBStore
             return true;
         }
 
-        /// <inheritdoc/>
-        public override bool ContainsBlock(HashDigest<SHA256> blockHash)
+        /// <inheritdoc cref="BaseStore.ContainsBlock(BlockHash)"/>
+        public override bool ContainsBlock(BlockHash blockHash)
         {
             if (_blockCache.ContainsKey(blockHash))
             {
@@ -517,9 +508,9 @@ namespace Libplanet.RocksDBStore
             return !(_blockDb.Get(key) is null);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="BaseStore.SetBlockPerceivedTime(BlockHash, DateTimeOffset)"/>
         public override void SetBlockPerceivedTime(
-            HashDigest<SHA256> blockHash,
+            BlockHash blockHash,
             DateTimeOffset perceivedTime
         )
         {
@@ -530,8 +521,8 @@ namespace Libplanet.RocksDBStore
             );
         }
 
-        /// <inheritdoc/>
-        public override DateTimeOffset? GetBlockPerceivedTime(HashDigest<SHA256> blockHash)
+        /// <inheritdoc cref="BaseStore.GetBlockPerceivedTime(BlockHash)"/>
+        public override DateTimeOffset? GetBlockPerceivedTime(BlockHash blockHash)
         {
             byte[] key = BlockKey(blockHash);
             if (_blockPerceptionDb.Get(key) is { } bytes)
@@ -629,27 +620,17 @@ namespace Libplanet.RocksDBStore
             _stagedTxDb?.Dispose();
         }
 
-        private byte[] BlockKey(HashDigest<SHA256> blockHash)
-        {
-            return BlockKeyPrefix.Concat(blockHash.ToByteArray()).ToArray();
-        }
+        private byte[] BlockKey(in BlockHash blockHash) =>
+            BlockKeyPrefix.Concat(blockHash.ByteArray).ToArray();
 
-        private byte[] TxKey(TxId txId)
-        {
-            return TxKeyPrefix.Concat(txId.ToByteArray()).ToArray();
-        }
+        private byte[] TxKey(in TxId txId) =>
+            TxKeyPrefix.Concat(txId.ByteArray).ToArray();
 
-        private byte[] TxNonceKey(Address address)
-        {
-            return TxNonceKeyPrefix
-                .Concat(address.ToByteArray())
-                .ToArray();
-        }
+        private byte[] TxNonceKey(in Address address) =>
+            TxNonceKeyPrefix.Concat(address.ByteArray).ToArray();
 
-        private byte[] StagedTxKey(TxId txId)
-        {
-            return StagedTxKeyPrefix.Concat(txId.ToByteArray()).ToArray();
-        }
+        private byte[] StagedTxKey(TxId txId) =>
+            StagedTxKeyPrefix.Concat(txId.ByteArray).ToArray();
 
         private IEnumerable<Iterator> IterateDb(RocksDb db, byte[] prefix, Guid? chainId = null)
         {
