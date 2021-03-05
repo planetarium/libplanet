@@ -118,7 +118,7 @@ Released on March 30, 2021.
     of the database, according to its epoch unit, which is its Unix timestamp.
     Every epoch is divided by certain seconds, configured by `RocksDBStore()`
     constructor's `txEpochUnitSeconds` and `blockEpochUnitSeconds` parameters
-    (86400 by default).   [[#1183], [#1194]]
+    (86,400 by default).   [[#1183], [#1194]]
  -  (Libplanet.RocksDBStore) Continue on partitioning of database,
     `RocksDBStore()` is manage database connection by LRU Cache.
     The max size of connection cache is configured by `RocksDBStore()`

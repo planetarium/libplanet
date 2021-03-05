@@ -16,8 +16,9 @@ using Serilog;
 namespace Libplanet.RocksDBStore
 {
     /// <summary>
-    /// The <a href="https://rocksdb.org/">RocksDB</a> <see cref="IStore"/> implementation.
-    /// This stores data in the RocksDB.
+    /// The <a href="https://rocksdb.org/">RocksDB</a> <see cref="IStore"/> implementation,
+    /// which is more production-ready than <see cref="DefaultStore"/>.
+    /// This stores data in the RocksDB with multiple partitions under the hood.
     /// </summary>
     /// <seealso cref="IStore"/>
     public class RocksDBStore : BaseStore
@@ -76,10 +77,10 @@ namespace Libplanet.RocksDBStore
         /// option.</param>
         /// <param name="maxLogFileSize">The number to configure <c>max_log_file_size</c>
         /// RocksDB option.</param>
-        /// <param name="txEpochUnitSeconds">The number of Transaction to store in DB
-        /// for each epoch. 86400 by default.</param>
-        /// <param name="blockEpochUnitSeconds">The number of block to store in DB
-        /// for each epoch. 86400 by default.</param>
+        /// <param name="txEpochUnitSeconds">The interval between epochs of DB partions containing
+        /// transactions.  86,400 seconds by default.</param>
+        /// <param name="blockEpochUnitSeconds">The interval between epochs of DB partions
+        /// containing blocks.  86,400 seconds by default.</param>
         /// <param name="dbConnectionCacheSize">The capacity of the block and transaction
         /// RocksDB connection cache. 100 by default.</param>
         public RocksDBStore(
