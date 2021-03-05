@@ -424,7 +424,7 @@ namespace Libplanet.RocksDBStore
                 return;
             }
 
-            var timestamp = tx.Timestamp.ToUnixTimeSeconds();
+            long timestamp = tx.Timestamp.ToUnixTimeSeconds();
             string txDbName = $"epoch{(int)timestamp / _txEpochUnitSeconds}";
             _rwTxLock.EnterWriteLock();
             try
@@ -557,7 +557,7 @@ namespace Libplanet.RocksDBStore
                 return;
             }
 
-            var timestamp = block.Timestamp.ToUnixTimeSeconds();
+            long timestamp = block.Timestamp.ToUnixTimeSeconds();
 
             foreach (Transaction<T> tx in block.Transactions)
             {
