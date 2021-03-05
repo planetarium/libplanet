@@ -60,6 +60,18 @@ To be released.
 
 ### Backward-incompatible storage format changes
 
+ -  (Libplanet.RocksDBStore) The blocks and transactions became stored in
+    multiple databases.  Each block and transaction belongs to a partition
+    of the database, according to its epoch unit, which is its Unix timestamp.
+    Every epoch is divided by certain seconds, configured by `RocksDBStore()`
+    constructor's `txEpochUnitSeconds` and `blockEpochUnitSeconds` parameters
+    (86400 by default).   [[#1183], [#1194]]
+ -  (Libplanet.RocksDBStore) Continue on partitioning of database,
+    `RocksDBStore()` is manage database connection by LRU Cache.
+    The max size of connection cache is configured by `RocksDBStore()`
+    constructor's `dbConnectionCacheSize` parameters (100
+    by default).   [[#1183], [#1194]]
+
 ### Added APIs
 
  -  Added `Block<T>.CurrentProtocolVersion` constant.  [[#1142], [#1147]]
@@ -244,10 +256,11 @@ To be released.
 [#1180]: https://github.com/planetarium/libplanet/pull/1180
 [#1181]: https://github.com/planetarium/libplanet/pull/1181
 [#1182]: https://github.com/planetarium/libplanet/pull/1182
+[#1183]: https://github.com/planetarium/libplanet/issues/1183
 [#1184]: https://github.com/planetarium/libplanet/pull/1184
 [#1185]: https://github.com/planetarium/libplanet/pull/1185
 [#1186]: https://github.com/planetarium/libplanet/pull/1186
-
+[#1194]: https://github.com/planetarium/libplanet/pull/1194
 
 Version 0.10.3
 --------------
