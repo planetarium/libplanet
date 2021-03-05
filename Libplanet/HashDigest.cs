@@ -43,7 +43,7 @@ namespace Libplanet
         static HashDigest()
         {
             Type type = typeof(T);
-            MethodInfo method = type.GetMethod("Create", new Type[0])!;
+            MethodInfo method = type.GetMethod(nameof(HashAlgorithm.Create), new Type[0])!;
             MethodCallExpression methodCall = Expression.Call(null, method);
             var exc = new InvalidCastException($"Failed to invoke {methodCall} static method.");
             Func<T> instantiateAlgorithm = Expression.Lambda<Func<T>>(
