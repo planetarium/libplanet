@@ -541,8 +541,7 @@ namespace Libplanet.Store
         /// <inheritdoc/>
         public override long GetTxNonce(Guid chainId, Address address)
         {
-            var collectionId = TxNonceId(chainId);
-            LiteCollection<BsonDocument> collection = _db.GetCollection<BsonDocument>(collectionId);
+            LiteCollection<BsonDocument> collection = TxNonceCollection(chainId);
             var docId = new BsonValue(address.ToByteArray());
             BsonDocument doc = collection.FindById(docId);
 
@@ -558,10 +557,18 @@ namespace Libplanet.Store
         public override void IncreaseTxNonce(Guid chainId, Address signer, long delta = 1)
         {
             long nextNonce = GetTxNonce(chainId, signer) + delta;
-            var collectionId = TxNonceId(chainId);
-            LiteCollection<BsonDocument> collection = _db.GetCollection<BsonDocument>(collectionId);
+            LiteCollection<BsonDocument> collection = TxNonceCollection(chainId);
             var docId = new BsonValue(signer.ToByteArray());
             collection.Upsert(docId, new BsonDocument() { ["v"] = new BsonValue(nextNonce) });
+        }
+
+        /// <inheritdoc/>
+        public override void ForkTxNonces(Guid sourceChainId, Guid destinationChainId)
+        {
+            LiteCollection<BsonDocument> srcColl = TxNonceCollection(sourceChainId);
+            LiteCollection<BsonDocument> destColl = TxNonceCollection(destinationChainId);
+
+            destColl.InsertBulk(srcColl.FindAll());
         }
 
         /// <inheritdoc/>
@@ -668,6 +675,11 @@ namespace Libplanet.Store
         private LiteCollection<HashDoc> IndexCollection(Guid chainId)
         {
             return _db.GetCollection<HashDoc>($"{IndexColPrefix}{FormatChainId(chainId)}");
+        }
+
+        private LiteCollection<BsonDocument> TxNonceCollection(Guid chainId)
+        {
+            return _db.GetCollection<BsonDocument>(TxNonceId(chainId));
         }
 
         private class HashDoc

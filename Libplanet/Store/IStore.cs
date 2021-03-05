@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Security.Cryptography;
 using Libplanet.Action;
+using Libplanet.Blockchain;
 using Libplanet.Blocks;
 using Libplanet.Tx;
 
@@ -244,5 +245,16 @@ namespace Libplanet.Store
         long CountTransactions();
 
         long CountBlocks();
+
+        /// <summary>
+        /// Forks <see cref="Transaction{T}"/> <see cref="Transaction{T}.Nonce"/>s from
+        /// <paramref name="sourceChainId"/> to
+        /// <paramref name="destinationChainId"/>.
+        /// </summary>
+        /// <param name="sourceChainId">The chain <see cref="BlockChain{T}.Id"/> of
+        /// <see cref="Transaction{T}"/> <see cref="Transaction{T}.Nonce"/>s to fork.</param>
+        /// <param name="destinationChainId">The chain <see cref="BlockChain{T}.Id"/> of destination
+        /// <see cref="Transaction{T}"/> <see cref="Transaction{T}.Nonce"/>s.</param>
+        void ForkTxNonces(Guid sourceChainId, Guid destinationChainId);
     }
 }

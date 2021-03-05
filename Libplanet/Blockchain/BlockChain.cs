@@ -1561,8 +1561,8 @@ namespace Libplanet.Blockchain
                 _rwlock.EnterReadLock();
 
                 Store.ForkBlockIndexes(Id, forkedId, point);
-
-                var signersToStrip = new Dictionary<Address, int>();
+                StateStore.ForkStates(Id, forked.Id, pointBlock);
+                Store.ForkTxNonces(Id, forked.Id);
 
                 for (
                     Block<T> block = Tip;
@@ -1577,37 +1577,8 @@ namespace Libplanet.Blockchain
 
                     foreach ((Address address, int txCount) in signers)
                     {
-                        int existingValue = 0;
-                        signersToStrip.TryGetValue(address, out existingValue);
-                        signersToStrip[address] = existingValue + txCount;
+                        Store.IncreaseTxNonce(forked.Id, address, -txCount);
                     }
-                }
-
-                StateStore.ForkStates(Id, forked.Id, pointBlock);
-
-                foreach (KeyValuePair<Address, long> pair in Store.ListTxNonces(Id))
-                {
-                    Address address = pair.Key;
-                    long existingNonce = pair.Value;
-                    long txNonce = existingNonce;
-                    int staleTxCount = 0;
-                    if (signersToStrip.TryGetValue(address, out staleTxCount))
-                    {
-                        txNonce -= staleTxCount;
-                    }
-
-                    if (txNonce < 0)
-                    {
-                        throw new InvalidOperationException(
-                            $"A tx nonce for {address} in the store seems broken.\n" +
-                            $"Existing tx nonce: {existingNonce}\n" +
-                            $"# of stale transactions: {staleTxCount}\n"
-                        );
-                    }
-
-                    // Note that at this point every address has tx nonce = 0
-                    // it's merely "setting" rather than "increasing."
-                    Store.IncreaseTxNonce(forkedId, address, txNonce);
                 }
             }
             finally
