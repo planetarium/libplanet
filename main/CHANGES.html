@@ -116,6 +116,19 @@ time, which is configured by <code>SwarmOptions.MessageLifespan</code>.
 [<a href="https://github.com/planetarium/libplanet/issues/1160">#1160</a>, <a href="https://github.com/planetarium/libplanet/pull/1171">#1171</a>]</li>
 </ul>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
+<ul>
+<li>(Libplanet.RocksDBStore) The blocks and transactions became stored in
+multiple databases.  Each block and transaction belongs to a partition
+of the database, according to its epoch unit, which is its Unix timestamp.
+Every epoch is divided by certain seconds, configured by <code>RocksDBStore()</code>
+constructor's <code>txEpochUnitSeconds</code> and <code>blockEpochUnitSeconds</code> parameters
+(86400 by default).   [<a href="https://github.com/planetarium/libplanet/issues/1183">#1183</a>, <a href="https://github.com/planetarium/libplanet/pull/1194">#1194</a>]</li>
+<li>(Libplanet.RocksDBStore) Continue on partitioning of database,
+<code>RocksDBStore()</code> is manage database connection by LRU Cache.
+The max size of connection cache is configured by <code>RocksDBStore()</code>
+constructor's <code>dbConnectionCacheSize</code> parameters (100
+by default).   [<a href="https://github.com/planetarium/libplanet/issues/1183">#1183</a>, <a href="https://github.com/planetarium/libplanet/pull/1194">#1194</a>]</li>
+</ul>
 <h3 id="added-apis">Added APIs</h3>
 <ul>
 <li>Added <code>Block&lt;T&gt;.CurrentProtocolVersion</code> constant.  [<a href="https://github.com/planetarium/libplanet/issues/1142">#1142</a>, <a href="https://github.com/planetarium/libplanet/pull/1147">#1147</a>]</li>
