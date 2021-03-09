@@ -72,6 +72,9 @@ To be released.
     The max size of connection cache is configured by `RocksDBStore()`
     constructor's `dbConnectionCacheSize` parameters (100
     by default).   [[#1183], [#1194]]
+ -  (Libplanet.RockDBStore) The `RocksDBStore` that was previously used
+    has been separated into a class called `MonoRocksDBStore`.
+    Please use this class if you need to migrate.   [[#1183], [#1204]]
 
 ### Added APIs
 
@@ -264,6 +267,7 @@ To be released.
 [#1186]: https://github.com/planetarium/libplanet/pull/1186
 [#1194]: https://github.com/planetarium/libplanet/pull/1194
 [#1198]: https://github.com/planetarium/libplanet/pull/1198
+[#1204]: https://github.com/planetarium/libplanet/pull/1204
 
 Version 0.10.3
 --------------
