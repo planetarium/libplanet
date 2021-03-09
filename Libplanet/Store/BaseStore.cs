@@ -156,5 +156,8 @@ namespace Libplanet.Store
 
         /// <inheritdoc/>
         public abstract void Dispose();
+
+        /// <inheritdoc/>
+        public abstract void ForkTxNonces(Guid sourceChainId, Guid destinationChainId);
     }
 }
