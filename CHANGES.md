@@ -39,6 +39,7 @@ To be released.
  -  Added `IActionContext.BlockAction` property. [[#1143]]
  -  Added nullable `TimeSpan`-typed `messageLifespan` parameter into
     `NetMQTransport()` constructor.  [[#1171]]
+ -  Added `IStore.ForkTxNonces()` method.  [[#1198]]
 
 
 ### Backward-incompatible network protocol changes
@@ -178,6 +179,7 @@ To be released.
     less than or equal to the nonce of the same signer's latest
     transaction in already mined blocks.  [[#1173], [#1180], [#1186]]
  -  Improved security of `Message.Parse()`.  [[#1161], [#1181]]
+ -  Improved performance of `BlockChain<T>.Fork()`.  [[#1198]]
 
 ### Bug fixes
 
@@ -261,6 +263,7 @@ To be released.
 [#1185]: https://github.com/planetarium/libplanet/pull/1185
 [#1186]: https://github.com/planetarium/libplanet/pull/1186
 [#1194]: https://github.com/planetarium/libplanet/pull/1194
+[#1198]: https://github.com/planetarium/libplanet/pull/1198
 
 Version 0.10.3
 --------------

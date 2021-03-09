@@ -687,6 +687,23 @@ namespace Libplanet.Tests.Store
             }
         }
 
+        [SkippableFact]
+        public void ForkTxNonces()
+        {
+            IStore store = Fx.Store;
+            Guid sourceChainId = Guid.NewGuid();
+            Guid destinationChainId = Guid.NewGuid();
+            store.IncreaseTxNonce(sourceChainId, Fx.Address1, 1);
+            store.IncreaseTxNonce(sourceChainId, Fx.Address2, 2);
+            store.IncreaseTxNonce(sourceChainId, Fx.Address3, 3);
+
+            store.ForkTxNonces(sourceChainId, destinationChainId);
+
+            Assert.Equal(1, store.GetTxNonce(destinationChainId, Fx.Address1));
+            Assert.Equal(2, store.GetTxNonce(destinationChainId, Fx.Address2));
+            Assert.Equal(3, store.GetTxNonce(destinationChainId, Fx.Address3));
+        }
+
         private class AtomicityTestAction : IAction
         {
             public ImmutableArray<byte> ArbitraryBytes { get; set; }

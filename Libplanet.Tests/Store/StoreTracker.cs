@@ -190,6 +190,12 @@ namespace Libplanet.Tests.Store
             _store.IncreaseTxNonce(chainId, address, delta);
         }
 
+        public void ForkTxNonces(Guid sourceChainId, Guid destinationChainId)
+        {
+            Log(nameof(ForkTxNonces), sourceChainId, destinationChainId);
+            _store.ForkTxNonces(sourceChainId, destinationChainId);
+        }
+
         public void StageTransactionIds(IImmutableSet<TxId> txids)
         {
             Log(nameof(StageTransactionIds), txids);
