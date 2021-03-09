@@ -5,7 +5,7 @@ if ($args.Length -lt 1) {
   $stderr.Invoke("Try ``run.ps1 --help' for more information.")
   exit 1
 } elseif ($args.Contains("--help") -or $args.Contains("-h")) {
-  dotnet run -p Libplanet.Explorer.Executable -- @args
+  dotnet run -p . -- @args
   exit $?
 }
-dotnet watch -p Libplanet.Explorer.Executable -- run -- @args
+dotnet watch -p . -- run -- @args
