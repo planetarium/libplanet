@@ -12167,6 +12167,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BaseStore.ForkBlockIndexes
   nameWithType: BaseStore.ForkBlockIndexes
+- uid: Libplanet.Store.BaseStore.ForkTxNonces(System.Guid,System.Guid)
+  name: ForkTxNonces(Guid, Guid)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ForkTxNonces_System_Guid_System_Guid_
+  commentId: M:Libplanet.Store.BaseStore.ForkTxNonces(System.Guid,System.Guid)
+  fullName: Libplanet.Store.BaseStore.ForkTxNonces(System.Guid, System.Guid)
+  nameWithType: BaseStore.ForkTxNonces(Guid, Guid)
+- uid: Libplanet.Store.BaseStore.ForkTxNonces*
+  name: ForkTxNonces
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ForkTxNonces_
+  commentId: Overload:Libplanet.Store.BaseStore.ForkTxNonces
+  isSpec: "True"
+  fullName: Libplanet.Store.BaseStore.ForkTxNonces
+  nameWithType: BaseStore.ForkTxNonces
 - uid: Libplanet.Store.BaseStore.GetBlock*
   name: GetBlock
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetBlock_
@@ -12845,6 +12858,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.DefaultStore.ForkBlockIndexes
   nameWithType: DefaultStore.ForkBlockIndexes
+- uid: Libplanet.Store.DefaultStore.ForkTxNonces(System.Guid,System.Guid)
+  name: ForkTxNonces(Guid, Guid)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_ForkTxNonces_System_Guid_System_Guid_
+  commentId: M:Libplanet.Store.DefaultStore.ForkTxNonces(System.Guid,System.Guid)
+  fullName: Libplanet.Store.DefaultStore.ForkTxNonces(System.Guid, System.Guid)
+  nameWithType: DefaultStore.ForkTxNonces(Guid, Guid)
+- uid: Libplanet.Store.DefaultStore.ForkTxNonces*
+  name: ForkTxNonces
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_ForkTxNonces_
+  commentId: Overload:Libplanet.Store.DefaultStore.ForkTxNonces
+  isSpec: "True"
+  fullName: Libplanet.Store.DefaultStore.ForkTxNonces
+  nameWithType: DefaultStore.ForkTxNonces
 - uid: Libplanet.Store.DefaultStore.GetBlockDigest(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
   name: GetBlockDigest(HashDigest<SHA256>)
   href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_GetBlockDigest_Libplanet_HashDigest_System_Security_Cryptography_SHA256__
@@ -13337,6 +13363,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStore.ForkBlockIndexes
   nameWithType: IStore.ForkBlockIndexes
+- uid: Libplanet.Store.IStore.ForkTxNonces(System.Guid,System.Guid)
+  name: ForkTxNonces(Guid, Guid)
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_ForkTxNonces_System_Guid_System_Guid_
+  commentId: M:Libplanet.Store.IStore.ForkTxNonces(System.Guid,System.Guid)
+  fullName: Libplanet.Store.IStore.ForkTxNonces(System.Guid, System.Guid)
+  nameWithType: IStore.ForkTxNonces(Guid, Guid)
+- uid: Libplanet.Store.IStore.ForkTxNonces*
+  name: ForkTxNonces
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_ForkTxNonces_
+  commentId: Overload:Libplanet.Store.IStore.ForkTxNonces
+  isSpec: "True"
+  fullName: Libplanet.Store.IStore.ForkTxNonces
+  nameWithType: IStore.ForkTxNonces
 - uid: Libplanet.Store.IStore.GetBlock*
   name: GetBlock
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_GetBlock_
