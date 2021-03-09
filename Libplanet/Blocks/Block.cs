@@ -649,18 +649,21 @@ namespace Libplanet.Blocks
                 tx.Validate();
             }
 
-            HashDigest<SHA256> expectedPreEvaluationHash =
-                Hashcash.Hash(Header.SerializeForHash(includeStateRootHash: false));
-            if (!expectedPreEvaluationHash.Equals(PreEvaluationHash))
+            if (ProtocolVersion > 0)
             {
-                string message =
-                    $"The expected pre evaluation hash of block {Hash} is " +
-                    $"{expectedPreEvaluationHash}, but its pre evaluation hash is " +
-                    $"{PreEvaluationHash}.";
-                throw new InvalidBlockPreEvaluationHashException(
-                    PreEvaluationHash,
-                    expectedPreEvaluationHash,
-                    message);
+                HashDigest<SHA256> expectedPreEvaluationHash =
+                    Hashcash.Hash(Header.SerializeForHash(includeStateRootHash: false));
+                if (!expectedPreEvaluationHash.Equals(PreEvaluationHash))
+                {
+                    string message =
+                        $"The expected pre evaluation hash of block {Hash} is " +
+                        $"{expectedPreEvaluationHash}, but its pre evaluation hash is " +
+                        $"{PreEvaluationHash}.";
+                    throw new InvalidBlockPreEvaluationHashException(
+                        PreEvaluationHash,
+                        expectedPreEvaluationHash,
+                        message);
+                }
             }
 
             HashDigest<SHA256>? calculatedTxHash =
