@@ -269,7 +269,7 @@ namespace Libplanet.Net.Protocols
                     new ConcurrentBag<BoundPeer>(),
                     _address,
                     null,
-                    -1,
+                    Kademlia.MaxDepth,
                     _requestTimeout,
                     cancellationToken));
             try
@@ -511,6 +511,9 @@ namespace Libplanet.Net.Protocols
         /// <param name="cancellationToken">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
         /// <returns>An awaitable task without value.</returns>
+        /// <exception cref="TimeoutException">
+        /// Thrown when validation fails in given <paramref name="timeout"/>.
+        /// </exception>
         private async Task ValidateAsync(
             BoundPeer peer,
             TimeSpan timeout,
@@ -527,7 +530,7 @@ namespace Libplanet.Net.Protocols
             {
                 _logger.Verbose("Peer {Peer} is invalid, removing...", peer);
                 RemovePeer(peer);
-                throw;
+                throw new TimeoutException($"Timeout occurred during {nameof(ValidateAsync)}");
             }
         }
 
@@ -742,13 +745,20 @@ namespace Libplanet.Net.Protocols
                     .Select(t => t.Exception);
                 foreach (var ae in exceptions)
                 {
+                    var isTimeout = false;
                     foreach (var ie in ae.InnerExceptions)
                     {
                         if (ie is PingTimeoutException pte)
                         {
                             peers.Remove(pte.Target);
+                            isTimeout = true;
                             break;
                         }
+                    }
+
+                    if (isTimeout)
+                    {
+                        break;
                     }
 
                     _logger.Warning(

@@ -1957,8 +1957,8 @@ namespace Libplanet.Net
             {
                 try
                 {
-                    await PeerDiscovery.RebuildConnectionAsync(cancellationToken);
                     await Task.Delay(period, cancellationToken);
+                    await PeerDiscovery.RebuildConnectionAsync(cancellationToken);
                 }
                 catch (OperationCanceledException e)
                 {
