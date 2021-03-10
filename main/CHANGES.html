@@ -129,6 +129,9 @@ constructor's <code>txEpochUnitSeconds</code> and <code>blockEpochUnitSeconds</c
 The max size of connection cache is configured by <code>RocksDBStore()</code>
 constructor's <code>dbConnectionCacheSize</code> parameters (100
 by default).   [<a href="https://github.com/planetarium/libplanet/issues/1183">#1183</a>, <a href="https://github.com/planetarium/libplanet/pull/1194">#1194</a>]</li>
+<li>(Libplanet.RockDBStore) The <code>RocksDBStore</code> that was previously used
+has been separated into a class called <code>MonoRocksDBStore</code>.
+Please use this class if you need to migrate.   [<a href="https://github.com/planetarium/libplanet/issues/1183">#1183</a>, <a href="https://github.com/planetarium/libplanet/pull/1204">#1204</a>]</li>
 </ul>
 <h3 id="added-apis">Added APIs</h3>
 <ul>
