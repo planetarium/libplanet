@@ -6,8 +6,10 @@ using System.Threading;
 using Libplanet.Crypto;
 using Libplanet.Net;
 using Libplanet.Net.Protocols;
+using Serilog;
 using Serilog.Core;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Libplanet.Tests.Net.Protocols
 {
@@ -19,6 +21,17 @@ namespace Libplanet.Tests.Net.Protocols
         private static readonly PrivateKey VersionSigner = new PrivateKey();
         private static readonly AppProtocolVersion AppProtocolVer =
             AppProtocolVersion.Sign(VersionSigner, 1);
+
+        public RoutingTableTest(ITestOutputHelper output)
+        {
+            const string outputTemplate =
+                "{Timestamp:HH:mm:ss:ffffff} - {Message}";
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo.TestOutput(output, outputTemplate: outputTemplate)
+                .CreateLogger()
+                .ForContext<RoutingTableTest>();
+        }
 
         [Fact]
         public void BucketTest()
