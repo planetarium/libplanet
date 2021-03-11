@@ -273,15 +273,41 @@ namespace Libplanet.RocksDBStore
                 return;
             }
 
-            foreach (HashDigest<SHA256> hash in IterateIndexes(sourceChainId, 1, null))
+            ColumnFamilyHandle cf = GetColumnFamily(_chainDb, destinationChainId);
+            var writeBatch = new WriteBatch();
+            long index = 0;
+            try
             {
-                AppendIndex(destinationChainId, hash);
-
-                if (hash.Equals(branchPoint))
+                foreach (Iterator it in IterateDb(_chainDb, IndexKeyPrefix, sourceChainId))
                 {
-                    break;
+                    byte[] hashBytes = it.Value();
+                    writeBatch.Put(it.Key(), hashBytes, cf);
+                    index += 1;
+
+                    if (writeBatch.Count() >= ForkWriteBatchSize)
+                    {
+                        _chainDb.Write(writeBatch);
+                        writeBatch.Dispose();
+                        writeBatch = new WriteBatch();
+                    }
+
+                    if (branchPoint.ToByteArray().SequenceEqual(hashBytes))
+                    {
+                        break;
+                    }
                 }
             }
+            finally
+            {
+                _chainDb.Write(writeBatch);
+                writeBatch.Dispose();
+            }
+
+            _chainDb.Put(
+                IndexCountKey,
+                RocksDBStoreBitConverter.GetBytes(index),
+                cf
+            );
         }
 
         /// <inheritdoc/>
