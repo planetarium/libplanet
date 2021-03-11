@@ -183,6 +183,11 @@ To be released.
     transaction in already mined blocks.  [[#1173], [#1180], [#1186]]
  -  Improved security of `Message.Parse()`.  [[#1161], [#1181]]
  -  Improved performance of `BlockChain<T>.Fork()`.  [[#1198]]
+ -  `Swarm<T>` became not to call `KademliaProtocol.RebuildConnectionAsync()`
+    right after `Swarm<T>.StartAsync()`.  If you called
+    `Swarm<T>.BootstrapAsync()` before `Swarm<T>.StartAsync()`,
+    peers in your table may not have you in their table right after
+    `Swarm<T>.StartAsync()` (which was almost guaranteed before).  [[#1208]]
 
 ### Bug fixes
 
@@ -268,6 +273,8 @@ To be released.
 [#1194]: https://github.com/planetarium/libplanet/pull/1194
 [#1198]: https://github.com/planetarium/libplanet/pull/1198
 [#1204]: https://github.com/planetarium/libplanet/pull/1204
+[#1208]: https://github.com/planetarium/libplanet/pull/1208
+
 
 Version 0.10.3
 --------------
