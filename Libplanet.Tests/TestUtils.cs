@@ -15,6 +15,7 @@ using Libplanet.Blockchain.Renderers;
 using Libplanet.Blockchain.Renderers.Debug;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
+using Libplanet.Net.Protocols;
 using Libplanet.Store;
 using Libplanet.Tx;
 using Xunit;
@@ -394,6 +395,21 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             }
 
             return Hashcash.Hash(new Codec().Encode(dict));
+        }
+
+        public static PrivateKey GeneratePrivateKeyOfBucketIndex(Address tableAddress, int target)
+        {
+            var table = new RoutingTable(tableAddress);
+            var count = 0;
+            PrivateKey privateKey;
+            do
+            {
+                count++;
+                privateKey = new PrivateKey();
+            }
+            while (table.GetBucketIndexOf(privateKey.ToAddress()) != target);
+
+            return privateKey;
         }
     }
 }
