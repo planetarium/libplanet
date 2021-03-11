@@ -1,4 +1,4 @@
-namespace Libplanet.Tools
+namespace Libplanet.Extensions.Cocona.Services
 {
     public interface IConfigurationService<TConfiguration>
     {

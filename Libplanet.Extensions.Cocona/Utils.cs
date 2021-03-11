@@ -1,11 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
+#pragma warning disable SA1200
 using Cocona;
+#pragma warning restore SA1200
 
-namespace Libplanet.Tools
+namespace Libplanet.Extensions.Cocona
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Runtime.CompilerServices;
+
     public static class Utils
     {
         public static CommandExitedException Error(string message, int exitCode = 128)

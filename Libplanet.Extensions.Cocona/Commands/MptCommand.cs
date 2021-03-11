@@ -1,28 +1,32 @@
-#nullable enable
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Text.Json;
-using Bencodex;
-using Bencodex.Types;
+#pragma warning disable SA1200
 using Cocona;
 using Cocona.Help;
-using Libplanet.RocksDBStore;
-using Libplanet.Store.Trie;
-using Libplanet.Tools.Configuration;
+#pragma warning restore SA1200
 
-namespace Libplanet.Tools
+namespace Libplanet.Extensions.Cocona.Commands
 {
+#nullable enable
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.Immutable;
+    using System.Linq;
+    using System.Security.Cryptography;
+    using System.Text;
+    using System.Text.Json;
+    using Bencodex;
+    using Bencodex.Types;
+    using Libplanet.Extensions.Cocona.Configuration;
+    using Libplanet.Extensions.Cocona.Services;
+    using Libplanet.RocksDBStore;
+    using Libplanet.Store.Trie;
+
     internal enum SchemeType
     {
         // This is set to 0 for `default` value.
         File = 0,
     }
 
-    public class Mpt
+    public class MptCommand
     {
         private const string KVStoreURIExample =
             "<kv-store-type>://<kv-store-path> (e.g., rocksdb:///path/to/kv-store)";

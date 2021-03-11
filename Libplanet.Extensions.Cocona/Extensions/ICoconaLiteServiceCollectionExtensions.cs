@@ -1,10 +1,14 @@
-using System.IO;
+#pragma warning disable SA1200
 using Cocona.Lite;
-using Libplanet.Tools.Configuration;
-using Zio.FileSystems;
+#pragma warning restore SA1200
 
-namespace Libplanet.Tools
+namespace Libplanet.Extensions.Cocona.Extensions
 {
+    using System.IO;
+    using Libplanet.Extensions.Cocona.Configuration;
+    using Libplanet.Extensions.Cocona.Services;
+    using Zio.FileSystems;
+
     public static class ICoconaLiteServiceCollectionExtensions
     {
         public static void AddJsonConfigurationService(
