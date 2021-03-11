@@ -244,8 +244,8 @@ To be released.
 [#1142]: https://github.com/planetarium/libplanet/issues/1142
 [#1143]: https://github.com/planetarium/libplanet/pull/1143
 [#1147]: https://github.com/planetarium/libplanet/pull/1147
-[#1148]: https://github.com/planetarium/libplanet/pull/1148
-[#1149]: https://github.com/planetarium/libplanet/pull/1149
+[#1148]: https://github.com/planetarium/libplanet/issues/1148
+[#1149]: https://github.com/planetarium/libplanet/issues/1149
 [#1152]: https://github.com/planetarium/libplanet/pull/1152
 [#1155]: https://github.com/planetarium/libplanet/issues/1155
 [#1160]: https://github.com/planetarium/libplanet/issues/1160
