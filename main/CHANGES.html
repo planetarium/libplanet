@@ -202,9 +202,9 @@ class.  [<a href="https://github.com/planetarium/libplanet/pull/1119">#1119</a>]
 [<a href="https://github.com/planetarium/libplanet/pull/1120">#1120</a>, <a href="https://github.com/planetarium/libplanet/pull/1135">#1135</a>]</li>
 <li>Added <code>reorgResistantHeight</code> parameters into <code>DelayedActionRenderer&lt;T&gt;()</code>
 constructor. [<a href="https://github.com/planetarium/libplanet/pull/1163">#1163</a>]</li>
-<li>Added <code>InvalidBlockPreEvaluationHashException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/1148">#1148</a>]</li>
+<li>Added <code>InvalidBlockPreEvaluationHashException</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/1148">#1148</a>]</li>
 <li>Added the parameter <code>validate</code> which is <code>true</code> by default,
-to <code>Transaction&lt;T&gt;.Deserialize()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1149">#1149</a>]</li>
+to <code>Transaction&lt;T&gt;.Deserialize()</code>.  [<a href="https://github.com/planetarium/libplanet/issues/1149">#1149</a>]</li>
 <li>Added <code>SwarmOptions.MessageLifespan</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/1171">#1171</a>]</li>
 <li>Added <code>InvalidTimestampException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/1171">#1171</a>]</li>
 </ul>
@@ -235,7 +235,7 @@ transactions after the given <code>Lifetime</code>, which is 3 hours by default.
 <li><code>Swarm&lt;T&gt;</code> became not to fill states from trusted peers, because now states
 can be validated rather than trusted due to MPT.  [<a href="https://github.com/planetarium/libplanet/pull/1117">#1117</a>]</li>
 <li><code>HashDigest&lt;SHA256&gt;</code> became serializable.  [<a href="https://github.com/planetarium/libplanet/issues/795">#795</a>, <a href="https://github.com/planetarium/libplanet/pull/1125">#1125</a>]</li>
-<li><code>Transaction&lt;T&gt;()</code> constructors became not to validate itself.  [<a href="https://github.com/planetarium/libplanet/pull/1149">#1149</a>]</li>
+<li><code>Transaction&lt;T&gt;()</code> constructors became not to validate itself.  [<a href="https://github.com/planetarium/libplanet/issues/1149">#1149</a>]</li>
 <li><code>BlockChain&lt;T&gt;.Append()</code> became to validate the given <code>Block&lt;T&gt;</code>
 before storing its <code>StateRootHash</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1172">#1172</a>]</li>
 <li><code>Blockchain&lt;T&gt;</code> became not to stage transactions having nonce
