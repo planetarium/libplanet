@@ -94,6 +94,9 @@ on GitHub consists of several projects:
     use Libplanet.  This project is distributed as a distinct NuGet package:
     *[Libplanet.Analyzers]*.
 
+ -  *Libplanet.Extensions.Cocona*: The project to provide the [Cocona] commands
+    to handle *Libplanet* structures in command line.
+
  -  *Libplanet.Tools*: The CLI tools for Libplanet.  This project is distributed
     as a distinct NuGet package: *[Libplanet.Tools]*. See its own
     [README.md](Libplanet.Tools/README.md).
@@ -119,6 +122,7 @@ on GitHub consists of several projects:
 [Libplanet.RocksDBStore]: https://www.nuget.org/packages/Libplanet.RocksDBStore/
 [Libplanet.Analyzers]: https://www.nuget.org/packages/Libplanet.Analyzers/
 [Libplanet.Tools]: https://www.nuget.org/packages/Libplanet.Tools/
+[Cocona]: https://www.nuget.org/packages/Cocona
 
 
 Tests [![Build Status](https://dev.azure.com/planetarium/libplanet/_apis/build/status/planetarium.libplanet?branchName=main)][Azure Pipelines] [![Codecov](https://codecov.io/gh/planetarium/libplanet/branch/main/graph/badge.svg)][2]
