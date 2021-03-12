@@ -1,7 +1,3 @@
-#pragma warning disable SA1200
-using Cocona;
-#pragma warning restore SA1200
-
 namespace Libplanet.Extensions.Cocona.Commands
 {
     using System;
@@ -11,6 +7,7 @@ namespace Libplanet.Extensions.Cocona.Commands
     using System.Linq;
     using Bencodex;
     using Bencodex.Types;
+    using global::Cocona;
     using Libplanet.Crypto;
     using Libplanet.KeyStore;
     using Libplanet.Net;

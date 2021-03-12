@@ -1,8 +1,3 @@
-#pragma warning disable SA1200
-using Cocona;
-using Cocona.Help;
-#pragma warning restore SA1200
-
 namespace Libplanet.Extensions.Cocona.Commands
 {
 #nullable enable
@@ -15,6 +10,8 @@ namespace Libplanet.Extensions.Cocona.Commands
     using System.Text.Json;
     using Bencodex;
     using Bencodex.Types;
+    using global::Cocona;
+    using global::Cocona.Help;
     using Libplanet.Extensions.Cocona.Configuration;
     using Libplanet.Extensions.Cocona.Services;
     using Libplanet.RocksDBStore;

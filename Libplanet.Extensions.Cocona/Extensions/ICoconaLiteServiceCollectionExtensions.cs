@@ -1,10 +1,7 @@
-#pragma warning disable SA1200
-using Cocona.Lite;
-#pragma warning restore SA1200
-
 namespace Libplanet.Extensions.Cocona.Extensions
 {
     using System.IO;
+    using global::Cocona.Lite;
     using Libplanet.Extensions.Cocona.Configuration;
     using Libplanet.Extensions.Cocona.Services;
     using Zio.FileSystems;

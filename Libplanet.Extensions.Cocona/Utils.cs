@@ -1,13 +1,10 @@
-#pragma warning disable SA1200
-using Cocona;
-#pragma warning restore SA1200
-
 namespace Libplanet.Extensions.Cocona
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Runtime.CompilerServices;
+    using global::Cocona;
 
     public static class Utils
     {
