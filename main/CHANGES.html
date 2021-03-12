@@ -243,6 +243,11 @@ less than or equal to the nonce of the same signer's latest
 transaction in already mined blocks.  [<a href="https://github.com/planetarium/libplanet/issues/1173">#1173</a>, <a href="https://github.com/planetarium/libplanet/pull/1180">#1180</a>, <a href="https://github.com/planetarium/libplanet/pull/1186">#1186</a>]</li>
 <li>Improved security of <code>Message.Parse()</code>.  [<a href="https://github.com/planetarium/libplanet/issues/1161">#1161</a>, <a href="https://github.com/planetarium/libplanet/pull/1181">#1181</a>]</li>
 <li>Improved performance of <code>BlockChain&lt;T&gt;.Fork()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1198">#1198</a>]</li>
+<li><code>Swarm&lt;T&gt;</code> became not to call <code>KademliaProtocol.RebuildConnectionAsync()</code>
+right after <code>Swarm&lt;T&gt;.StartAsync()</code>.  If you called
+<code>Swarm&lt;T&gt;.BootstrapAsync()</code> before <code>Swarm&lt;T&gt;.StartAsync()</code>,
+peers in your table may not have you in their table right after
+<code>Swarm&lt;T&gt;.StartAsync()</code> (which was almost guaranteed before).  [<a href="https://github.com/planetarium/libplanet/pull/1208">#1208</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
