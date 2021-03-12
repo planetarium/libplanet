@@ -41,6 +41,8 @@ namespace Libplanet.Net
         private CancellationToken _cancellationToken;
         private ConcurrentDictionary<TxId, BoundPeer> _demandTxIds;
 
+        private bool _disposed;
+
         static Swarm()
         {
             if (!(Type.GetType("Mono.Runtime") is null))
@@ -248,8 +250,13 @@ namespace Libplanet.Net
 
         public void Dispose()
         {
-            _workerCancellationTokenSource?.Cancel();
-            Transport.Dispose();
+            if (!_disposed)
+            {
+                _workerCancellationTokenSource?.Cancel();
+                Transport.Dispose();
+                _workerCancellationTokenSource?.Dispose();
+                _disposed = true;
+            }
         }
 
         public async Task StopAsync(
@@ -633,9 +640,11 @@ namespace Libplanet.Net
 
                 BlockDownloadStarted.Set();
 
-                var blockDownloadCts = CancellationTokenSource.CreateLinkedTokenSource(
-                    new CancellationTokenSource(Options.BlockDownloadTimeout).Token,
-                    cancellationToken);
+                using var timeoutCts = new CancellationTokenSource(Options.BlockDownloadTimeout);
+                using var blockDownloadCts = CancellationTokenSource.CreateLinkedTokenSource(
+                    timeoutCts.Token,
+                    cancellationToken
+                );
 
                 await foreach (
                     var pair in completedBlocks.WithCancellation(blockDownloadCts.Token))
@@ -901,10 +910,11 @@ namespace Libplanet.Net
             TimeSpan? timeout = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            cancellationToken = CancellationTokenSource
-                .CreateLinkedTokenSource(cancellationToken, _cancellationToken).Token;
+            using CancellationTokenSource cts = CancellationTokenSource
+                .CreateLinkedTokenSource(cancellationToken, _cancellationToken);
+            cancellationToken = cts.Token;
 
-            var kademliaProtocol = (KademliaProtocol)PeerDiscovery;
+            KademliaProtocol kademliaProtocol = (KademliaProtocol)PeerDiscovery;
             await kademliaProtocol.CheckAllPeersAsync(timeout, cancellationToken);
         }
 

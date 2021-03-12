@@ -67,6 +67,8 @@ namespace Libplanet.Net
         /// </summary>
         private DifferentAppProtocolVersionEncountered _differentAppProtocolVersionEncountered;
 
+        private bool _disposed;
+
         /// <summary>
         /// Creates <see cref="NetMQTransport"/> instance.
         /// </summary>
@@ -338,9 +340,16 @@ namespace Libplanet.Net
         /// <inheritdoc />
         public void Dispose()
         {
-            _runtimeCancellationTokenSource.Cancel();
-            _turnCancellationTokenSource.Cancel();
-            _runtimeProcessor.Wait();
+            if (!_disposed)
+            {
+                _runtimeCancellationTokenSource.Cancel();
+                _turnCancellationTokenSource.Cancel();
+                _runtimeProcessor.Wait();
+
+                _runtimeCancellationTokenSource.Dispose();
+                _turnCancellationTokenSource.Dispose();
+                _disposed = true;
+            }
         }
 
         /// <summary>
@@ -827,7 +836,7 @@ namespace Libplanet.Net
 
         private async Task CreatePermission(BoundPeer peer)
         {
-            var cts = new CancellationTokenSource();
+            using var cts = new CancellationTokenSource();
             IPAddress[] ips;
 
             // Cancellation After 2.5 sec
@@ -879,10 +888,6 @@ namespace Libplanet.Net
                 {
                     throw;
                 }
-            }
-            finally
-            {
-                cts.Dispose();
             }
         }
 

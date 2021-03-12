@@ -13,33 +13,39 @@ namespace Libplanet.Net
             TimeSpan? timeout = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            var cts = new CancellationTokenSource();
+            var timeoutCts = new CancellationTokenSource();
             if (timeout is TimeSpan timeoutNotNull)
             {
-                cts.CancelAfter(timeoutNotNull);
+                timeoutCts.CancelAfter(timeoutNotNull);
             }
 
-            var ct = CancellationTokenSource.CreateLinkedTokenSource(
+            CancellationTokenSource cts = CancellationTokenSource.CreateLinkedTokenSource(
                 cancellationToken,
-                cts.Token
+                timeoutCts.Token
             );
 
             return socket.SendMultipartMessageAsync(
                 message,
                 false,
-                cancellationToken: ct.Token
+                cancellationToken: cts.Token
             ).ContinueWith(t =>
             {
-                if (t.IsCanceled && cts.Token.IsCancellationRequested)
+                try
                 {
-                    throw new TimeoutException(
-                        $"The operation exceeded the specified time: {timeout}."
-                    );
-                }
+                    if (t.IsCanceled && timeoutCts.Token.IsCancellationRequested)
+                    {
+                        throw new TimeoutException(
+                            $"The operation exceeded the specified time: {timeout}."
+                        );
+                    }
 
-                cts.Dispose();
-                ct.Dispose();
-                return t;
+                    return t;
+                }
+                finally
+                {
+                    timeoutCts.Dispose();
+                    cts.Dispose();
+                }
             });
         }
 
@@ -48,32 +54,38 @@ namespace Libplanet.Net
             TimeSpan? timeout = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            var cts = new CancellationTokenSource();
+            var timeoutCts = new CancellationTokenSource();
             if (timeout is TimeSpan timeoutNotNull)
             {
-                cts.CancelAfter(timeoutNotNull);
+                timeoutCts.CancelAfter(timeoutNotNull);
             }
 
-            var ct = CancellationTokenSource.CreateLinkedTokenSource(
+            CancellationTokenSource cts = CancellationTokenSource.CreateLinkedTokenSource(
                 cancellationToken,
-                cts.Token
+                timeoutCts.Token
             );
 
             return socket.ReceiveMultipartMessageAsync(
                 expectedFrameCount: 4,
-                cancellationToken: ct.Token
+                cancellationToken: cts.Token
             ).ContinueWith(t =>
             {
-                if (t.IsCanceled && cts.IsCancellationRequested)
+                try
                 {
-                    throw new TimeoutException(
-                        $"The operation exceeded the specified time: {timeout}."
-                    );
-                }
+                    if (t.IsCanceled && timeoutCts.IsCancellationRequested)
+                    {
+                        throw new TimeoutException(
+                            $"The operation exceeded the specified time: {timeout}."
+                        );
+                    }
 
-                cts.Dispose();
-                ct.Dispose();
-                return t.Result;
+                    return t.Result;
+                }
+                finally
+                {
+                    timeoutCts.Dispose();
+                    cts.Dispose();
+                }
             });
         }
     }
