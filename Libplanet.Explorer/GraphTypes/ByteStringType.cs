@@ -13,7 +13,12 @@ namespace Libplanet.Explorer.GraphTypes
 
         public override object Serialize(object value)
         {
-            return value is byte[] b ? ByteUtil.Hex(b) : null;
+            return value switch
+            {
+                byte[] b => ByteUtil.Hex(b),
+                string s => s,
+                _ => null
+            };
         }
 
         public override object ParseValue(object value)

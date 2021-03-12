@@ -9,9 +9,12 @@ namespace Libplanet.Explorer.UnitTests.GraphTypes
         [Theory]
         [InlineData(new byte[0], "")]
         [InlineData(new byte[] { 0xbe, 0xef }, "beef")]
-        public void Serialize(byte[] bytes, string expected)
+        [InlineData("foo", "foo")]
+        [InlineData(1, null)]
+        [InlineData(null, null)]
+        public void Serialize(object value, string expected)
         {
-            Assert.Equal(expected, _type.Serialize(bytes));
+            Assert.Equal(expected, _type.Serialize(value));
         }
 
         [Theory]
