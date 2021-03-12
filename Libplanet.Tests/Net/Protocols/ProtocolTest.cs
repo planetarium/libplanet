@@ -486,6 +486,62 @@ namespace Libplanet.Tests.Net.Protocols
             }
         }
 
+        [Fact(Timeout = Timeout)]
+        public async Task RefreshTable()
+        {
+            const int peersCount = 10;
+            var privateKey = new PrivateKey();
+            var privateKeys = Enumerable.Range(0, peersCount).Select(
+                i => TestUtils.GeneratePrivateKeyOfBucketIndex(privateKey.ToAddress(), i / 2));
+            TestTransport transport = CreateTestTransport(privateKey);
+            TestTransport[] transports =
+                privateKeys.Select(key => CreateTestTransport(key)).ToArray();
+
+            await StartTestTransportAsync(transport);
+            foreach (var t in transports)
+            {
+                await StartTestTransportAsync(t);
+            }
+
+            try
+            {
+                foreach (var t in transports)
+                {
+                    transport.Table.AddPeer(
+                        (BoundPeer)t.AsPeer,
+                        DateTimeOffset.UtcNow - TimeSpan.FromMinutes(2));
+                }
+
+                BoundPeer[] refreshCandidates =
+                    transport.Table.PeersToRefresh(TimeSpan.FromMinutes(1)).ToArray();
+                Assert.Equal(peersCount, transport.Peers.Count());
+                Assert.Equal(peersCount / 2, refreshCandidates.Length);
+                Assert.Equal(peersCount / 2, transport.Table.NonEmptyBuckets.Count());
+
+                await transport.Protocol.RefreshTableAsync(TimeSpan.FromMinutes(1), default);
+                Assert.NotEqual(
+                    refreshCandidates.ToHashSet(),
+                    transport.Table.PeersToRefresh(TimeSpan.FromMinutes(1)).ToHashSet());
+                Assert.Equal(
+                    peersCount / 2,
+                    transport.Table.PeersToRefresh(TimeSpan.FromMinutes(1)).Count());
+                Assert.Equal(peersCount / 2, transport.Table.NonEmptyBuckets.Count());
+
+                await transport.Protocol.RefreshTableAsync(TimeSpan.FromMinutes(1), default);
+                Assert.Empty(transport.Table.PeersToRefresh(TimeSpan.FromMinutes(1)));
+            }
+            finally
+            {
+                await transport.StopAsync(TimeSpan.Zero);
+                foreach (var t in transports)
+                {
+                    await t.StopAsync(TimeSpan.Zero);
+                }
+            }
+
+            Assert.True(true);
+        }
+
         private TestTransport CreateTestTransport(
             PrivateKey privateKey = null,
             bool blockBroadcast = false,
