@@ -293,6 +293,12 @@ If omitted (default) explorer only the local blockchain store.")]
                       maxTotalWalSize: 16 * 1024 * 1024,
                       keepLogFileNum: 1);
                     break;
+                case "monorocksdb":
+                    innerStore = new RocksDBStore.MonoRocksDBStore(
+                        options.StorePath,
+                        maxTotalWalSize: 16 * 1024 * 1024,
+                        keepLogFileNum: 1);
+                    break;
                 case "default":
                     innerStore = new DefaultStore(
                         options.StorePath,

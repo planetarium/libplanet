@@ -168,6 +168,11 @@ namespace Libplanet.Explorer.Store
             return _store.CountBlocks();
         }
 
+        public void ForkTxNonces(Guid sourceChainId, Guid destinationChainId)
+        {
+            _store.ForkTxNonces(sourceChainId, destinationChainId);
+        }
+
         /// <inheritdoc cref="IStore"/>
         public void PutBlock<T>(Block<T> block)
             where T : IAction, new()
