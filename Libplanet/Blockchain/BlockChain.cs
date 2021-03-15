@@ -752,8 +752,8 @@ namespace Libplanet.Blockchain
             CancellationToken cancellationToken = default(CancellationToken)
         )
         {
-            CancellationTokenSource cts = new CancellationTokenSource();
-            CancellationTokenSource cancellationTokenSource =
+            using var cts = new CancellationTokenSource();
+            using CancellationTokenSource cancellationTokenSource =
                 CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, cts.Token);
             void WatchTip(object target, (Block<T> OldTip, Block<T> NewTip) tip) => cts.Cancel();
             TipChanged += WatchTip;
@@ -960,8 +960,6 @@ namespace Libplanet.Blockchain
             finally
             {
                 TipChanged -= WatchTip;
-                cancellationTokenSource.Dispose();
-                cts.Dispose();
             }
 
             IReadOnlyList<ActionEvaluation> actionEvaluations = BlockEvaluator.EvaluateActions(

@@ -200,7 +200,8 @@ To be released.
     belonging to the existing block, which was mined before the protocol v1,
     are guaranteed to still behave as it had done.  [[#1152]]
  -  Fixed a bug where `Block<T>.Evaluate()` hadn't validate its hash.  [[#1168]]
- -  Fixed memory leak due to undisposed `CancellationTokenSource`s.  [[#1182]]
+ -  Fixed memory leak due to undisposed `CancellationTokenSource`s.
+    [[#1182], [#1212]]
  -  Fixed a bug where `TurnClient` hadn't released its relay connections after
     reconnecting.  [[#1185]]
 
@@ -274,6 +275,7 @@ To be released.
 [#1198]: https://github.com/planetarium/libplanet/pull/1198
 [#1204]: https://github.com/planetarium/libplanet/pull/1204
 [#1208]: https://github.com/planetarium/libplanet/pull/1208
+[#1212]: https://github.com/planetarium/libplanet/pull/1212
 
 
 Version 0.10.3

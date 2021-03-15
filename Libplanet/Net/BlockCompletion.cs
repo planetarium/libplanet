@@ -342,22 +342,22 @@ namespace Libplanet.Net
                         hashDigests,
                         peer
                     );
-                    var timeout = new CancellationTokenSource(singleSessionTimeout);
+                    using var timeout = new CancellationTokenSource(singleSessionTimeout);
                     CancellationToken timeoutToken = timeout.Token;
+                    using var linkedTokenSource = CancellationTokenSource.CreateLinkedTokenSource(
+                        timeoutToken,
+                        ct
+                    );
                     timeoutToken.Register(() =>
                         _logger.Debug("Timed out to wait a response from {Peer}.", peer)
                     );
-                    ct.Register(() =>
-                    {
-                        timeout.Cancel();
-                        timeout.Dispose();
-                    });
+                    CancellationToken linkedToken = linkedTokenSource.Token;
 
                     try
                     {
                         ConfiguredCancelableAsyncEnumerable<Block<TAction>> blocks =
-                            blockFetcher(peer, hashDigests, timeoutToken)
-                                .WithCancellation(timeoutToken);
+                            blockFetcher(peer, hashDigests, linkedToken)
+                                .WithCancellation(linkedToken);
                         await foreach (Block<TAction> block in blocks)
                         {
                             _logger.Debug(
