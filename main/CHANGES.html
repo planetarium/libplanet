@@ -260,7 +260,8 @@ a sender and a recipient is the same.
 belonging to the existing block, which was mined before the protocol v1,
 are guaranteed to still behave as it had done.  [<a href="https://github.com/planetarium/libplanet/pull/1152">#1152</a>]</li>
 <li>Fixed a bug where <code>Block&lt;T&gt;.Evaluate()</code> hadn't validate its hash.  [<a href="https://github.com/planetarium/libplanet/pull/1168">#1168</a>]</li>
-<li>Fixed memory leak due to undisposed <code>CancellationTokenSource</code>s.  [<a href="https://github.com/planetarium/libplanet/pull/1182">#1182</a>]</li>
+<li>Fixed memory leak due to undisposed <code>CancellationTokenSource</code>s.
+[<a href="https://github.com/planetarium/libplanet/pull/1182">#1182</a>, <a href="https://github.com/planetarium/libplanet/pull/1212">#1212</a>]</li>
 <li>Fixed a bug where <code>TurnClient</code> hadn't released its relay connections after
 reconnecting.  [<a href="https://github.com/planetarium/libplanet/pull/1185">#1185</a>]</li>
 </ul>
