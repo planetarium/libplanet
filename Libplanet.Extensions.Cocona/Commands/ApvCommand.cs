@@ -1,18 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using Bencodex;
-using Bencodex.Types;
-using Cocona;
-using Libplanet.Crypto;
-using Libplanet.KeyStore;
-using Libplanet.Net;
-
-namespace Libplanet.Tools
+namespace Libplanet.Extensions.Cocona.Commands
 {
-    public class Apv
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using Bencodex;
+    using Bencodex.Types;
+    using global::Cocona;
+    using Libplanet.Crypto;
+    using Libplanet.KeyStore;
+    using Libplanet.Net;
+
+    public class ApvCommand
     {
         [Command(Description = "Sign a new app protocol version.")]
         public void Sign(
@@ -45,7 +45,7 @@ namespace Libplanet.Tools
             string[]? extra = null
         )
         {
-            PrivateKey key = new Key().UnprotectKey(keyId, passphrase);
+            PrivateKey key = new KeyCommand().UnprotectKey(keyId, passphrase);
             IValue? extraValue = null;
             if (extraFile is string path)
             {
@@ -159,7 +159,7 @@ namespace Libplanet.Tools
 
             if (!noKeyStore)
             {
-                Key keyInstance = new Key();
+                KeyCommand keyInstance = new KeyCommand();
                 IEnumerable<Tuple<Guid, ProtectedPrivateKey>> ppks = keyInstance.KeyStore.List()
                     .Where(pair => pair.Item2.Address.Equals(v.Signer));
                 foreach (Tuple<Guid, ProtectedPrivateKey> pair in ppks)

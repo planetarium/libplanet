@@ -1,4 +1,4 @@
-namespace Libplanet.Tools.Configuration
+namespace Libplanet.Extensions.Cocona.Configuration
 {
     public struct ToolConfiguration
     {

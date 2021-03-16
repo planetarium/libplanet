@@ -1,11 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using Cocona;
-
-namespace Libplanet.Tools
+namespace Libplanet.Extensions.Cocona
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Runtime.CompilerServices;
+    using global::Cocona;
+
     public static class Utils
     {
         public static CommandExitedException Error(string message, int exitCode = 128)

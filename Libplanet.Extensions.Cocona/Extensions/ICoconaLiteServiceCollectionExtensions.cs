@@ -1,10 +1,11 @@
-using System.IO;
-using Cocona.Lite;
-using Libplanet.Tools.Configuration;
-using Zio.FileSystems;
-
-namespace Libplanet.Tools
+namespace Libplanet.Extensions.Cocona.Extensions
 {
+    using System.IO;
+    using global::Cocona.Lite;
+    using Libplanet.Extensions.Cocona.Configuration;
+    using Libplanet.Extensions.Cocona.Services;
+    using Zio.FileSystems;
+
     public static class ICoconaLiteServiceCollectionExtensions
     {
         public static void AddJsonConfigurationService(

@@ -1,11 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Text.Json;
-using Libplanet.Tools.Configuration;
-using Zio;
-
-namespace Libplanet.Tools
+namespace Libplanet.Extensions.Cocona.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text.Json;
+    using Libplanet.Extensions.Cocona.Configuration;
+    using Zio;
+
     public class JsonConfigurationService : IConfigurationService<ToolConfiguration>
     {
         private readonly IFileSystem _fileSystem;
