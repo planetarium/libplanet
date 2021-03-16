@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using Libplanet.Blocks;
 using Libplanet.Net.Messages;
+using Libplanet.Net.Protocols;
 using Libplanet.Tx;
 
 namespace Libplanet.Net
@@ -47,5 +48,16 @@ namespace Libplanet.Net
         /// The lifespan of <see cref="Message"/>.
         /// </summary>
         public TimeSpan? MessageLifespan { get; set; } = null;
+
+        /// <summary>
+        /// The frequency of <see cref="IProtocol.RefreshTableAsync" />.
+        /// </summary>
+        public TimeSpan RefreshPeriod { get; set; } = TimeSpan.FromSeconds(10);
+
+        /// <summary>
+        /// The lifespan of <see cref="Peer"/> in routing table.
+        /// <seealso cref="IProtocol.RefreshTableAsync" />
+        /// </summary>
+        public TimeSpan RefreshLifespan { get; set; } = TimeSpan.FromSeconds(60);
     }
 }
