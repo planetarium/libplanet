@@ -193,6 +193,8 @@ To be released.
 
  -  Fixed a bug where `BlockChain<T>.MineBlock()` was not automatically
     cancelled when the tip of the chain was changed occasionally.  [[#1141]]
+ -  Fixed a bug where blocks with invalid `PreEvaluationHash` was considered
+    as a valid block.  [[#1148], [#1202]]
  -  Fixed a vulnerability of the `IAccountStateDelta.TransferAsset()`'s
     internal implementation that it had doubled recipient's balance when
     a sender and a recipient is the same.
@@ -273,9 +275,11 @@ To be released.
 [#1186]: https://github.com/planetarium/libplanet/pull/1186
 [#1194]: https://github.com/planetarium/libplanet/pull/1194
 [#1198]: https://github.com/planetarium/libplanet/pull/1198
+[#1202]: https://github.com/planetarium/libplanet/pull/1202
 [#1204]: https://github.com/planetarium/libplanet/pull/1204
 [#1208]: https://github.com/planetarium/libplanet/pull/1208
 [#1212]: https://github.com/planetarium/libplanet/pull/1212
+
 
 
 Version 0.10.3
