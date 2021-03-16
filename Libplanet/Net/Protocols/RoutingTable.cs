@@ -127,7 +127,10 @@ namespace Libplanet.Net.Protocols
 
             if (peer.Address.Equals(_address))
             {
-                throw new ArgumentException("Cannot remove self from routing table.");
+                throw new ArgumentException(
+                    "A peer is disallowed to remove itself to its routing table.",
+                    nameof(peer)
+                );
             }
 
             _logger.Debug("Removing peer {Peer} from routing table.", peer);
@@ -241,10 +244,16 @@ namespace Libplanet.Net.Protocols
 
             if (peer.Address.Equals(_address))
             {
-                throw new ArgumentException("Cannot add self to routing table.");
+                throw new ArgumentException(
+                    "A peer is disallowed to add itself to its routing table.",
+                    nameof(peer)
+                );
             }
 
-            _logger.Debug("Adding peer {Peer} to routing table.", peer);
+            _logger.Debug(
+                "Adding a peer {Peer} to peer {Address}'s routing table...",
+                peer,
+                _address);
             BucketOf(peer).AddPeer(peer, updated);
         }
 

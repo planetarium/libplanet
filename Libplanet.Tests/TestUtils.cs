@@ -400,11 +400,9 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         public static PrivateKey GeneratePrivateKeyOfBucketIndex(Address tableAddress, int target)
         {
             var table = new RoutingTable(tableAddress);
-            var count = 0;
             PrivateKey privateKey;
             do
             {
-                count++;
                 privateKey = new PrivateKey();
             }
             while (table.GetBucketIndexOf(privateKey.ToAddress()) != target);
