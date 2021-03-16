@@ -253,6 +253,8 @@ peers in your table may not have you in their table right after
 <ul>
 <li>Fixed a bug where <code>BlockChain&lt;T&gt;.MineBlock()</code> was not automatically
 cancelled when the tip of the chain was changed occasionally.  [<a href="https://github.com/planetarium/libplanet/pull/1141">#1141</a>]</li>
+<li>Fixed a bug where blocks with invalid <code>PreEvaluationHash</code> was considered
+as a valid block.  [<a href="https://github.com/planetarium/libplanet/issues/1148">#1148</a>, <a href="https://github.com/planetarium/libplanet/pull/1202">#1202</a>]</li>
 <li>Fixed a vulnerability of the <code>IAccountStateDelta.TransferAsset()</code>'s
 internal implementation that it had doubled recipient's balance when
 a sender and a recipient is the same.
