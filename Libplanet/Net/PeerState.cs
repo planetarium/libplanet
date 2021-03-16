@@ -16,9 +16,9 @@ namespace Libplanet.Net
         }
 
         /// <summary>
-        /// <see cref="Address"/> of peer.
+        /// <see cref="BoundPeer"/> of the state.
         /// </summary>
-        public Address Address => Peer.Address;
+        public BoundPeer Peer { get; set; }
 
         /// <summary>
         /// Last time messages were exchanged.
@@ -34,7 +34,5 @@ namespace Libplanet.Net
         /// Delay of verification in milliseconds.
         /// </summary>
         public TimeSpan? Latency { get; internal set; }
-
-        internal BoundPeer Peer { get; set; }
     }
 }
