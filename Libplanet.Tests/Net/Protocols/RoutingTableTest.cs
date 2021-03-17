@@ -257,13 +257,15 @@ namespace Libplanet.Tests.Net.Protocols
             const int peerCount = 10;
             BoundPeer[] peers = Enumerable.Range(0, peerCount)
                 .Select(
-                    _ => new BoundPeer(
+                    i => new BoundPeer(
                         new PrivateKey().PublicKey,
-                        new DnsEndPoint("0.0.0.0", 1234)))
+                        new DnsEndPoint("0.0.0.0", 1000 + i)))
                 .ToArray();
-            foreach (var peer in peers)
+            for (int i = 0; i < peerCount; i++)
             {
-                table.AddPeer(peer, DateTimeOffset.UtcNow - TimeSpan.FromMinutes(2));
+                table.AddPeer(
+                    peers[i],
+                    DateTimeOffset.UtcNow - TimeSpan.FromMinutes(2) + TimeSpan.FromSeconds(i));
             }
 
             Assert.Equal(peerCount, table.Peers.Count());
