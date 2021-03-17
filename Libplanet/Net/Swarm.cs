@@ -514,7 +514,7 @@ namespace Libplanet.Net
             CancellationToken cancellationToken = default(CancellationToken)
         )
         {
-            cancellationToken.Register(() =>
+            using CancellationTokenRegistration ctr = cancellationToken.Register(() =>
                 _logger.Information("Preloading is requested to be cancelled.")
             );
 

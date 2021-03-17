@@ -348,7 +348,7 @@ namespace Libplanet.Net
                         timeoutToken,
                         ct
                     );
-                    timeoutToken.Register(() =>
+                    using CancellationTokenRegistration ctr = timeoutToken.Register(() =>
                         _logger.Debug("Timed out to wait a response from {Peer}.", peer)
                     );
                     CancellationToken linkedToken = linkedTokenSource.Token;
@@ -486,10 +486,11 @@ namespace Libplanet.Net
                     if (tasks.Any())
                     {
                         var tcs = new TaskCompletionSource<object>();
-                        cancellationToken.Register(
-                            () => tcs.TrySetCanceled(),
-                            useSynchronizationContext: false
-                        );
+                        using CancellationTokenRegistration ctr =
+                            cancellationToken.Register(
+                                () => tcs.TrySetCanceled(),
+                                useSynchronizationContext: false
+                            );
                         await Task.WhenAny(Task.WhenAll(tasks), tcs.Task);
                     }
                     else
