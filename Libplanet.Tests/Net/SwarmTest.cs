@@ -1153,10 +1153,12 @@ namespace Libplanet.Tests.Net
                 await StartAsync(swarmB);
                 await BootstrapAsync(swarmA, swarmB.AsPeer);
 
+                Task task = swarmB.FillBlocksAsyncStarted.WaitAsync();
                 swarmA.BroadcastBlock(block);
-                await swarmB.FillBlocksAsyncStarted.WaitAsync();
+                await task;
+                task = swarmB.FillBlocksAsyncFailed.WaitAsync();
                 await StopAsync(swarmA);
-                await swarmB.FillBlocksAsyncFailed.WaitAsync();
+                await task;
 
                 Assert.NotNull(chainB.GetState(swarmA.Address));
             }

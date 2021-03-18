@@ -66,14 +66,12 @@ namespace Libplanet.Net.Protocols
         public ConcurrentDictionary<BoundPeer, DateTimeOffset> ReplacementCache { get; }
 
         // returns head if the bucket is full and doest not containing target.
-        public void AddPeer(BoundPeer peer)
+        public void AddPeer(BoundPeer peer, DateTimeOffset updated)
         {
             if (peer is null)
             {
                 throw new ArgumentNullException(nameof(peer));
             }
-
-            var updated = DateTimeOffset.UtcNow;
 
             if (_peerStates.ContainsKey(peer.Address))
             {

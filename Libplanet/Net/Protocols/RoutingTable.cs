@@ -92,7 +92,7 @@ namespace Libplanet.Net.Protocols
             }
         }
 
-        private IEnumerable<KBucket> NonFullBuckets
+        internal IEnumerable<KBucket> NonFullBuckets
         {
             get
             {
@@ -100,7 +100,7 @@ namespace Libplanet.Net.Protocols
             }
         }
 
-        private IEnumerable<KBucket> NonEmptyBuckets
+        internal IEnumerable<KBucket> NonEmptyBuckets
         {
             get
             {
@@ -116,21 +116,7 @@ namespace Libplanet.Net.Protocols
         /// <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException">Thrown when <paramref name="peer"/>'s
         /// <see cref="Address"/> is equal to the <see cref="Address"/> of self.</exception>
-        public void AddPeer(BoundPeer peer)
-        {
-            if (peer is null)
-            {
-                throw new ArgumentNullException(nameof(peer));
-            }
-
-            if (peer.Address.Equals(_address))
-            {
-                throw new ArgumentException("Cannot add self to routing table.");
-            }
-
-            _logger.Debug("Adding peer {Peer} to routing table.", peer);
-            BucketOf(peer).AddPeer(peer);
-        }
+        public void AddPeer(BoundPeer peer) => AddPeer(peer, DateTimeOffset.UtcNow);
 
         public bool RemovePeer(BoundPeer peer)
         {
@@ -141,7 +127,10 @@ namespace Libplanet.Net.Protocols
 
             if (peer.Address.Equals(_address))
             {
-                throw new ArgumentException("Cannot remove self from routing table.");
+                throw new ArgumentException(
+                    "A peer is disallowed to remove itself to its routing table.",
+                    nameof(peer)
+                );
             }
 
             _logger.Debug("Removing peer {Peer} from routing table.", peer);
@@ -246,6 +235,28 @@ namespace Libplanet.Net.Protocols
             BucketOf(peer).Check(peer, start, end);
         }
 
+        internal void AddPeer(BoundPeer peer, DateTimeOffset updated)
+        {
+            if (peer is null)
+            {
+                throw new ArgumentNullException(nameof(peer));
+            }
+
+            if (peer.Address.Equals(_address))
+            {
+                throw new ArgumentException(
+                    "A peer is disallowed to add itself to its routing table.",
+                    nameof(peer)
+                );
+            }
+
+            _logger.Debug(
+                "Adding a peer {Peer} to peer {Address}'s routing table...",
+                peer,
+                _address);
+            BucketOf(peer).AddPeer(peer, updated);
+        }
+
         internal IEnumerable<BoundPeer> PeersToBroadcast(Address? except, int min = 10)
         {
             List<BoundPeer> peers = NonEmptyBuckets
@@ -279,7 +290,7 @@ namespace Libplanet.Net.Protocols
 
         internal KBucket BucketOf(BoundPeer peer)
         {
-            int index = GetBucketIndexOf(peer);
+            int index = GetBucketIndexOf(peer.Address);
             return _buckets[index];
         }
 
@@ -288,9 +299,9 @@ namespace Libplanet.Net.Protocols
             return _buckets[level];
         }
 
-        private int GetBucketIndexOf(Peer peer)
+        internal int GetBucketIndexOf(Address addr)
         {
-            int plength = Kademlia.CommonPrefixLength(peer.Address, _address);
+            int plength = Kademlia.CommonPrefixLength(addr, _address);
             return Math.Min(plength, TableSize - 1);
         }
     }
