@@ -237,17 +237,38 @@ namespace Libplanet.Tests.Net
             Swarm<DumbAction> swarmA = CreateSwarm();
             Swarm<DumbAction> swarmB = CreateSwarm();
             Swarm<DumbAction> swarmC = CreateSwarm();
+            Swarm<DumbAction> swarmD = CreateSwarm();
 
             try
             {
                 await StartAsync(swarmA);
                 await StartAsync(swarmB);
+                await StartAsync(swarmD);
 
+                var bootstrappedAt = DateTimeOffset.UtcNow;
+                swarmC.RoutingTable.AddPeer((BoundPeer)swarmD.AsPeer);
                 await BootstrapAsync(swarmB, swarmA.AsPeer);
                 await BootstrapAsync(swarmC, swarmA.AsPeer);
 
                 Assert.Contains(swarmB.AsPeer, swarmC.Peers);
                 Assert.DoesNotContain(swarmC.AsPeer, swarmB.Peers);
+                foreach (PeerState state in swarmB.PeersStates)
+                {
+                    Assert.InRange(state.LastUpdated, bootstrappedAt, DateTimeOffset.UtcNow);
+                }
+
+                foreach (PeerState state in swarmC.PeersStates)
+                {
+                    if (state.Peer.Address == swarmD.AsPeer.Address)
+                    {
+                        // Peers added before bootstrap should not be marked as stale.
+                        Assert.InRange(state.LastUpdated, bootstrappedAt, DateTimeOffset.UtcNow);
+                    }
+                    else
+                    {
+                        Assert.Equal(DateTimeOffset.MinValue, state.LastUpdated);
+                    }
+                }
             }
             finally
             {

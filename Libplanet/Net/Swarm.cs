@@ -435,6 +435,7 @@ namespace Libplanet.Net
             }
 
             IEnumerable<BoundPeer> peers = seedPeers.OfType<BoundPeer>();
+            IEnumerable<BoundPeer> peersBeforeBootstrap = RoutingTable.Peers;
 
             await PeerDiscovery.BootstrapAsync(
                 peers,
@@ -442,6 +443,16 @@ namespace Libplanet.Net
                 findNeighborsTimeout,
                 depth,
                 cancellationToken);
+
+            if (!((NetMQTransport)Transport).Running)
+            {
+                // Mark added peers as stale if bootstrap is called before transport is running
+                // FIXME: Peers added before bootstrap might be updated.
+                foreach (BoundPeer peer in RoutingTable.Peers.Except(peersBeforeBootstrap))
+                {
+                    RoutingTable.AddPeer(peer, DateTimeOffset.MinValue);
+                }
+            }
         }
 
         public void BroadcastBlock(Block<T> block)
@@ -1941,9 +1952,9 @@ namespace Libplanet.Net
             {
                 try
                 {
-                    await Task.Delay(period, cancellationToken);
                     await PeerDiscovery.RefreshTableAsync(maxAge, cancellationToken);
                     await PeerDiscovery.CheckReplacementCacheAsync(cancellationToken);
+                    await Task.Delay(period, cancellationToken);
                 }
                 catch (OperationCanceledException e)
                 {
