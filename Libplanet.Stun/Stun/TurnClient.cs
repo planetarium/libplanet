@@ -304,22 +304,21 @@ namespace Libplanet.Stun
 #pragma warning restore PC001
                 NetworkStream localStream = tcpClient.GetStream();
                 NetworkStream turnStream = await AcceptRelayedStreamAsync(cancellationToken);
-#pragma warning disable CS4014
 
                 const int bufferSize = 8042;
-                Task.WhenAny(
-                    turnStream.CopyToAsync(localStream, bufferSize, cancellationToken),
-                    localStream.CopyToAsync(turnStream, bufferSize, cancellationToken)
-                ).ContinueWith(
-                    t =>
-                    {
-                        turnStream.Dispose();
-                        localStream.Dispose();
-                        tcpClient.Dispose();
-                    },
-                    cancellationToken
-                );
-#pragma warning restore CS4014
+                try
+                {
+                    await await Task.WhenAny(
+                        turnStream.CopyToAsync(localStream, bufferSize, cancellationToken),
+                        localStream.CopyToAsync(turnStream, bufferSize, cancellationToken)
+                    );
+                }
+                finally
+                {
+                    turnStream.Dispose();
+                    localStream.Dispose();
+                    tcpClient.Dispose();
+                }
             }
         }
 

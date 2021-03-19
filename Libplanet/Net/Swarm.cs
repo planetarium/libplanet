@@ -1289,69 +1289,60 @@ namespace Libplanet.Net
             Transport.BroadcastMessage(except, message);
         }
 
-        private Task<(BoundPeer Peer, ChainStatus ChainStatus)[]> DialToExistingPeers(
-            TimeSpan? dialTimeout,
-            CancellationToken cancellationToken
-        )
+        private async Task<IEnumerable<(BoundPeer Peer, ChainStatus ChainStatus)>>
+            DialToExistingPeers(
+                TimeSpan? dialTimeout,
+                CancellationToken cancellationToken
+            )
         {
-            // FIXME: It would be better if it returns IAsyncEnumerable<(BoundPeer, ChainStatus)>
-            // instead.
             IEnumerable<Task<(BoundPeer, ChainStatus)>> tasks = Peers.Select(
-                peer => Transport.SendMessageWithReplyAsync(
-                    peer, new GetChainStatus(), dialTimeout, cancellationToken
-                ).ContinueWith<(BoundPeer, ChainStatus)>(
-                    t =>
-                    {
-                        if (t.IsFaulted || t.IsCanceled || !(t.Result is ChainStatus chainStatus))
-                        {
-                            switch (t.Exception?.InnerException)
-                            {
-                                case TimeoutException te:
-                                    _logger.Debug(
-                                        $"TimeoutException occurred during dial to ({peer})."
-                                    );
-                                    break;
-                                case DifferentAppProtocolVersionException dapve:
-                                    _logger.Error(
-                                        dapve,
-                                        $"Protocol Version is different ({peer}).");
-                                    break;
-                                case Exception e:
-                                    _logger.Error(
-                                        e,
-                                        $"An unexpected exception occurred during dial to ({peer})."
-                                    );
-                                    break;
-                                default:
-                                    break;
-                            }
+                peer => DialToExistingPeer(peer, dialTimeout, cancellationToken)).ToArray();
 
-                            // Mark to skip
-                            return (peer, null);
-                        }
-                        else
-                        {
-                            return (peer, chainStatus);
-                        }
-                    },
+            await Task.WhenAll(tasks);
+            return tasks.Select(t => t.Result)
+                .Where(pair => !(pair.Item1 is null || pair.Item2 is null));
+        }
+
+        private async Task<(BoundPeer, ChainStatus)> DialToExistingPeer(
+            BoundPeer peer,
+            TimeSpan? dialTimeout,
+            CancellationToken cancellationToken)
+        {
+            try
+            {
+                Message reply = await Transport.SendMessageWithReplyAsync(
+                    peer,
+                    new GetChainStatus(),
+                    dialTimeout,
                     cancellationToken
-                )
-            );
+                );
 
-            return Task.WhenAll(tasks).ContinueWith(
-                t =>
+                if (reply is ChainStatus cs)
                 {
-                    if (t.IsFaulted)
-                    {
-                        throw t.Exception;
-                    }
+                    return (peer, cs);
+                }
+            }
+            catch (TimeoutException)
+            {
+                _logger.Debug("TimeoutException occurred during dial to ({Peer}).", peer);
+            }
+            catch (DifferentAppProtocolVersionException dapve)
+            {
+                _logger.Error(dapve, "Protocol Version is different ({Peer}).", peer);
+            }
+            catch (OperationCanceledException)
+            {
+                throw;
+            }
+            catch (Exception e)
+            {
+                _logger.Error(
+                    e,
+                    "An unexpected exception occurred during dial to ({Peer}).",
+                    peer);
+            }
 
-                    return t.Result
-                        .Where(pair => !(pair.Item1 is null || pair.Item2 is null))
-                        .ToArray();
-                },
-                cancellationToken
-            );
+            return (peer, null);
         }
 
         private async Task<List<(BoundPeer, long)>> GetPeersWithHeight(
