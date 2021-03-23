@@ -22,6 +22,7 @@ namespace Libplanet.Store
         private readonly IKeyValueStore _stateKeyValueStore;
         private readonly IKeyValueStore _stateHashKeyValueStore;
         private readonly bool _secure;
+        private readonly ILogger _logger;
 
         /// <summary>
         /// Creates a new <see cref="TrieStateStore"/>.
@@ -40,6 +41,7 @@ namespace Libplanet.Store
             _stateKeyValueStore = stateKeyValueStore;
             _stateHashKeyValueStore = stateHashKeyValueStore;
             _secure = secure;
+            _logger = Log.ForContext<TrieStateStore>();
         }
 
         /// <inheritdoc/>
@@ -86,7 +88,7 @@ namespace Libplanet.Store
         public void PruneStates(ImmutableHashSet<HashDigest<SHA256>> excludeBlockHashes)
         {
             var stopwatch = new Stopwatch();
-            Log.Verbose($"Started {nameof(PruneStates)}()");
+            _logger.Verbose($"Started {nameof(PruneStates)}()");
             var excludeNodes = new HashSet<HashDigest<SHA256>>();
             foreach (var blockHash in excludeBlockHashes)
             {
@@ -100,24 +102,24 @@ namespace Libplanet.Store
                     _stateKeyValueStore,
                     new HashNode(new HashDigest<SHA256>(stateRootHashBytes)),
                     _secure);
-                Log.Debug("Started to iterate hash nodes.");
+                _logger.Debug("Started to iterate hash nodes.");
                 stopwatch.Start();
                 foreach (HashDigest<SHA256> nodeHash in stateTrie.IterateHashNodes())
                 {
                     excludeNodes.Add(nodeHash);
                 }
 
-                Log.Debug(
+                _logger.Debug(
                     "Finished to iterate hash nodes (elapsed: {ElapsedMilliseconds} ms).",
                     stopwatch.ElapsedMilliseconds);
                 stopwatch.Stop();
             }
 
-            Log.Debug("{Count} hash nodes are excluded.", excludeNodes.Count);
+            _logger.Debug("{Count} hash nodes are excluded.", excludeNodes.Count);
 
             // Clean up nodes.
             long deleteCount = 0;
-            Log.Debug("Started to clean up states.");
+            _logger.Debug("Started to clean up states.");
             stopwatch.Restart();
             foreach (var stateKey in _stateKeyValueStore.ListKeys())
             {
@@ -130,7 +132,7 @@ namespace Libplanet.Store
                 ++deleteCount;
             }
 
-            Log.Debug(
+            _logger.Debug(
                 "Finished to clean up {DeleteCount} state hashes " +
                 "(elapsed: {ElapsedMilliseconds} ms).",
                 deleteCount,
@@ -139,7 +141,7 @@ namespace Libplanet.Store
 
             // Clean up state root hashes.
             deleteCount = 0;
-            Log.Debug("Started to clean up state hashes.");
+            _logger.Debug("Started to clean up state hashes.");
             stopwatch.Restart();
             foreach (var stateHashKey in _stateHashKeyValueStore.ListKeys())
             {
@@ -152,7 +154,7 @@ namespace Libplanet.Store
                 ++deleteCount;
             }
 
-            Log.Debug(
+            _logger.Debug(
                 "Finished to clean up {DeleteCount} states (elapsed: {ElapsedMilliseconds} ms).",
                 deleteCount,
                 stopwatch.ElapsedMilliseconds);

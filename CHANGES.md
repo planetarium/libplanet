@@ -188,6 +188,11 @@ To be released.
     `Swarm<T>.BootstrapAsync()` before `Swarm<T>.StartAsync()`,
     peers in your table may not have you in their table right after
     `Swarm<T>.StartAsync()` (which was almost guaranteed before).  [[#1208]]
+ -  Following classes became to leave log messages with its class as logging
+    context.  [[#1218]]
+     -  `TrieStateStore` class
+     -  `TurnClient` class
+     -  `ActionEvaluation` class
 
 ### Bug fixes
 
@@ -279,6 +284,7 @@ To be released.
 [#1204]: https://github.com/planetarium/libplanet/pull/1204
 [#1208]: https://github.com/planetarium/libplanet/pull/1208
 [#1212]: https://github.com/planetarium/libplanet/pull/1212
+[#1218]: https://github.com/planetarium/libplanet/pull/1218
 
 
 
