@@ -248,6 +248,14 @@ right after <code>Swarm&lt;T&gt;.StartAsync()</code>.  If you called
 <code>Swarm&lt;T&gt;.BootstrapAsync()</code> before <code>Swarm&lt;T&gt;.StartAsync()</code>,
 peers in your table may not have you in their table right after
 <code>Swarm&lt;T&gt;.StartAsync()</code> (which was almost guaranteed before).  [<a href="https://github.com/planetarium/libplanet/pull/1208">#1208</a>]</li>
+<li>Following classes became to leave log messages with its class as logging
+context.  [<a href="https://github.com/planetarium/libplanet/pull/1218">#1218</a>]
+<ul>
+<li><code>TrieStateStore</code> class</li>
+<li><code>TurnClient</code> class</li>
+<li><code>ActionEvaluation</code> class</li>
+</ul>
+</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
