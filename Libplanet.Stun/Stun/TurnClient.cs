@@ -28,6 +28,7 @@ namespace Libplanet.Stun
             _responses;
 
         private readonly AsyncProducerConsumerQueue<ConnectionAttempt> _connectionAttempts;
+        private readonly ILogger _logger;
 
         private TcpClient _control;
         private Task _processMessage;
@@ -53,6 +54,7 @@ namespace Libplanet.Stun
                     new ByteArrayComparer());
 
             _turnTaskCts = new CancellationTokenSource();
+            _logger = Log.ForContext<TurnClient>();
         }
 
         public string Username { get; }
@@ -108,12 +110,12 @@ namespace Libplanet.Stun
                 }
                 catch (Exception e)
                 {
-                    Log.Error(
+                    _logger.Error(
                         $"An unexpected exception occurred during {nameof(StartAsync)}(): {e}");
                 }
                 finally
                 {
-                    Log.Debug("TURN tasks cancelled. Re-initializing TURN...");
+                    _logger.Debug("TURN tasks cancelled. Re-initializing TURN...");
                     ClearSession();
                     _turnTaskCts = new CancellationTokenSource();
 
@@ -200,7 +202,10 @@ namespace Libplanet.Stun
                 }
                 catch (IOException e)
                 {
-                    Log.Warning(e, "The connection seems to disconnect before parsing; ignored.");
+                    _logger.Warning(
+                        e,
+                        "The connection seems to disconnect before parsing; ignored."
+                    );
                 }
             }
         }
@@ -215,7 +220,7 @@ namespace Libplanet.Stun
 
             if (response is BindingSuccessResponse success)
             {
-                Log.Debug($"Mapped address: {success.MappedAddress}");
+                _logger.Debug($"Mapped address: {success.MappedAddress}");
                 return success.MappedAddress;
             }
 
@@ -282,9 +287,9 @@ namespace Libplanet.Stun
 
         public void Dispose()
         {
-            Log.Debug($"Disposing {nameof(TurnClient)}...");
+            _logger.Debug($"Disposing {nameof(TurnClient)}...");
             ClearSession();
-            Log.Debug($"{nameof(TurnClient)} is disposed.");
+            _logger.Debug($"{nameof(TurnClient)} is disposed.");
         }
 
         public async Task BindProxies(
@@ -336,18 +341,18 @@ namespace Libplanet.Stun
                 try
                 {
                     await Task.Delay(lifetime - TimeSpan.FromMinutes(1), cancellationToken);
-                    Log.Debug("Refreshing TURN allocation...");
+                    _logger.Debug("Refreshing TURN allocation...");
                     lifetime = await RefreshAllocationAsync(lifetime);
                     cancellationToken.ThrowIfCancellationRequested();
                 }
                 catch (OperationCanceledException e)
                 {
-                    Log.Warning(e, $"{nameof(RefreshAllocate)}() is cancelled.");
+                    _logger.Warning(e, $"{nameof(RefreshAllocate)}() is cancelled.");
                     throw;
                 }
                 catch (Exception e)
                 {
-                    Log.Error(
+                    _logger.Error(
                         e,
                         $"An unexpected exception occurred during {nameof(RefreshAllocate)}(): {e}"
                     );
@@ -383,11 +388,11 @@ namespace Libplanet.Stun
                     try
                     {
                         message = await StunMessage.Parse(stream);
-                        Log.Debug("Stun Message is: {message}", message);
+                        _logger.Debug("Stun Message is: {message}", message);
                     }
                     catch (TurnClientException e)
                     {
-                        Log.Error(e, "Failed to parse StunMessage. {e}", e);
+                        _logger.Error(e, "Failed to parse StunMessage. {e}", e);
                         foreach (TaskCompletionSource<StunMessage> tcs in _responses.Values)
                         {
                             tcs.TrySetCanceled();
@@ -411,14 +416,14 @@ namespace Libplanet.Stun
                 }
                 catch (Exception e)
                 {
-                    Log.Error(
+                    _logger.Error(
                         e,
                         $"An unexpected exception occurred during {nameof(ProcessMessage)}(): {e}"
                     );
                 }
             }
 
-            Log.Debug($"{nameof(ProcessMessage)} is ended. Connected: {_control.Connected}");
+            _logger.Debug($"{nameof(ProcessMessage)} is ended. Connected: {_control.Connected}");
         }
 
         private async Task<StunMessage> ReceiveMessage(byte[] transactionId)

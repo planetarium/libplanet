@@ -135,6 +135,7 @@ namespace Libplanet.Action
 
             IAccountStateDelta states = previousStates;
             Exception exc = null;
+            ILogger logger = Log.ForContext<ActionEvaluation>();
             foreach (IAction action in actions)
             {
                 ActionContext context = CreateActionContext(states, seed);
@@ -144,8 +145,7 @@ namespace Libplanet.Action
                     DateTimeOffset actionExecutionStarted = DateTimeOffset.Now;
                     nextStates = action.Execute(context);
                     TimeSpan spent = DateTimeOffset.Now - actionExecutionStarted;
-
-                    Log.Verbose($"{action} execution spent {spent.TotalMilliseconds} ms.");
+                    logger.Verbose($"{action} execution spent {spent.TotalMilliseconds} ms.");
                 }
                 catch (Exception e)
                 {
@@ -171,7 +171,7 @@ namespace Libplanet.Action
                             $"The action {action} (block #{blockIndex} {blockHash}, tx {txid}, " +
                             $"state root hash {stateRootHash}) threw an exception " +
                             "during execution.  See also this exception's InnerException property.";
-                        Log.Error("{Message}\nInnerException: {ExcMessage}", msg, e.Message);
+                        logger.Error("{Message}\nInnerException: {ExcMessage}", msg, e.Message);
                         exc = new UnexpectedlyTerminatedActionException(
                             blockHash, blockIndex, txid, stateRootHash, action, msg, e
                         );
