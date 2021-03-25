@@ -1781,7 +1781,7 @@ namespace Libplanet.Net
             IComparer<BlockPerception> canonComparer = BlockChain.Policy.CanonicalChainComparer;
             while (!cancellationToken.IsCancellationRequested)
             {
-                if (BlockDemand is null ||
+                if (!(BlockDemand is { } blockDemand) ||
                     canonComparer.Compare(
                         BlockChain.PerceiveBlock(BlockDemand?.Header),
                         BlockChain.PerceiveBlock(BlockChain.Tip)
@@ -1791,9 +1791,12 @@ namespace Libplanet.Net
                     continue;
                 }
 
-                BlockDemand blockDemand = BlockDemand.Value;
                 BoundPeer peer = blockDemand.Peer;
                 var hash = new HashDigest<SHA256>(blockDemand.Header.Hash.ToArray());
+                const string startLogMsg =
+                    "Got a new " + nameof(BlockDemand) + " from {Peer}; started to fetch " +
+                    "the block #{BlockIndex} {BlockHash}...";
+                _logger.Debug(startLogMsg, peer, blockDemand.Header.Index, hash);
 
                 try
                 {
@@ -1806,6 +1809,11 @@ namespace Libplanet.Net
                         0,
                         cancellationToken);
 
+                    _logger.Debug(
+                        "Synced block(s) from {Peer}; broadcast them to neighbors...",
+                        peer
+                    );
+
                     // FIXME: Clean up events
                     BlockReceived.Set();
                     BlockAppended.Set();
@@ -1813,21 +1821,23 @@ namespace Libplanet.Net
                 }
                 catch (TimeoutException)
                 {
-                    _logger.Debug($"Timeout occurred during {nameof(ProcessFillBlocks)}");
+                    const string msg =
+                        "Timeout occurred during " + nameof(ProcessFillBlocks) + "() from {Peer}.";
+                    _logger.Debug(msg, peer);
                 }
                 catch (InvalidBlockIndexException ibie)
                 {
-                    _logger.Warning(
-                        $"{nameof(InvalidBlockIndexException)} occurred during " +
-                        $"{nameof(ProcessFillBlocks)}: " +
-                        "{ibie}", ibie);
+                    const string msg =
+                        nameof(InvalidBlockIndexException) + " occurred during " +
+                        nameof(ProcessFillBlocks) + "() from {Peer}: {Exception}";
+                    _logger.Warning(ibie, msg, peer, ibie);
                 }
                 catch (Exception e)
                 {
-                    var msg =
-                        $"Unexpected exception occurred during" +
-                        $" {nameof(ProcessFillBlocks)}: {{e}}";
-                    _logger.Error(e, msg, e);
+                    const string msg =
+                        "Unexpected exception occurred during " + nameof(ProcessFillBlocks) +
+                        "() from {Peer}: {Exception}";
+                    _logger.Error(e, msg, peer, e);
                 }
                 finally
                 {

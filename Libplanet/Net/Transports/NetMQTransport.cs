@@ -471,32 +471,28 @@ namespace Libplanet.Net.Transports
             }
             catch (TimeoutException)
             {
-                _logger.Debug(
+                var msg =
                     $"{nameof(NetMQTransport)}.{nameof(SendMessageWithReplyAsync)}() timed out " +
-                    "after {Timeout} of waiting a reply to {RequestId} from {PeerAddress}.",
-                    timeout,
-                    reqId,
-                    peer.Address
-                );
+                    "after {Timeout} of waiting a reply to {MessageType} ({RequestId}) from " +
+                    "{PeerAddress}.";
+                _logger.Debug(msg, timeout, message.GetType().Name, reqId, peer.Address);
                 throw;
             }
             catch (TaskCanceledException)
             {
-                _logger.Debug(
+                var msg =
                     $"{nameof(NetMQTransport)}.{nameof(SendMessageWithReplyAsync)}() was " +
-                    "cancelled to  wait a reply to {RequestId} from {PeerAddress}.",
-                    reqId,
-                    peer.Address
-                );
+                    "cancelled to wait a reply to {MessageType} ({RequestId}) from {PeerAddress}.";
+                _logger.Debug(msg, message.GetType().Name, reqId, peer.Address);
                 throw;
             }
             catch (Exception e)
             {
                 var msg =
                     $"{nameof(NetMQTransport)}.{nameof(SendMessageWithReplyAsync)}() encountered " +
-                    "an unexpected exception during sending a request {RequestId} to " +
-                    "{PeerAddress} and waiting a reply to it: {Exception}.";
-                _logger.Error(e, msg, reqId, peer.Address, e);
+                    "an unexpected exception during sending a request {MessageType} " +
+                    "({RequestId}) to {PeerAddress} and waiting a reply to it: {Exception}.";
+                _logger.Error(e, msg, message.GetType().Name, reqId, peer.Address, e);
                 throw;
             }
         }
