@@ -1979,7 +1979,9 @@ namespace Libplanet.Net
                 try
                 {
                     await Task.Delay(period, cancellationToken);
-                    await PeerDiscovery.RebuildConnectionAsync(cancellationToken);
+                    await PeerDiscovery.RebuildConnectionAsync(
+                        Kademlia.MaxDepth,
+                        cancellationToken);
                 }
                 catch (OperationCanceledException e)
                 {
