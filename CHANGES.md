@@ -252,6 +252,9 @@ Released on March 30, 2021.
      -  `TrieStateStore` class
      -  `TurnClient` class
      -  `ActionEvaluation` class
+ -  `Swarm<T>.StartAsync()` became to cancel seemingly stalled block downloads
+    if any other block header come into sight and start to download the other
+    instead.
 
 ### Bug fixes
 

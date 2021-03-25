@@ -1774,10 +1774,11 @@ namespace Libplanet.Net
         }
 
         private async Task ProcessFillBlocks(
-            TimeSpan dialTimeout,
+            TimeSpan timeout,
             CancellationToken cancellationToken
         )
         {
+            TimeSpan aSecond = TimeSpan.FromSeconds(1);
             IComparer<BlockPerception> canonComparer = BlockChain.Policy.CanonicalChainComparer;
             while (!cancellationToken.IsCancellationRequested)
             {
@@ -1791,6 +1792,7 @@ namespace Libplanet.Net
                     continue;
                 }
 
+                NewDemand:
                 BoundPeer peer = blockDemand.Peer;
                 var hash = new HashDigest<SHA256>(blockDemand.Header.Hash.ToArray());
                 const string startLogMsg =
@@ -1800,14 +1802,41 @@ namespace Libplanet.Net
 
                 try
                 {
-                    await SyncPreviousBlocksAsync(
+                    TimeSpan demandCheckInterval = timeout.Divide(2);
+                    Task task = SyncPreviousBlocksAsync(
                         BlockChain,
                         peer,
                         hash,
                         null,
-                        dialTimeout,
+                        demandCheckInterval,
                         0,
-                        cancellationToken);
+                        cancellationToken
+                    );
+                    while (!task.IsCompleted)
+                    {
+                        await Task.WhenAny(task, Task.Delay(demandCheckInterval));
+                        if (!task.IsCompleted &&
+                            BlockDemand is { } currentDemand &&
+                            !blockDemand.Equals(currentDemand) &&
+                            canonComparer.Compare(
+                                BlockChain.PerceiveBlock(BlockDemand?.Header),
+                                BlockChain.PerceiveBlock(BlockChain.Tip)
+                            ) > 0)
+                        {
+                            const string cancelLogMsg =
+                                "Cancelled to sync block(s) from {Peer}, " +
+                                "because the demand has been updated.";
+                            _logger.Debug(cancelLogMsg, peer);
+#pragma warning disable S907
+                            goto NewDemand;
+#pragma warning restore S907
+                        }
+
+                        demandCheckInterval = demandCheckInterval.Divide(2);
+                        demandCheckInterval = demandCheckInterval >= aSecond
+                            ? demandCheckInterval
+                            : aSecond;
+                    }
 
                     _logger.Debug(
                         "Synced block(s) from {Peer}; broadcast them to neighbors...",
