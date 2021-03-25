@@ -444,7 +444,7 @@ namespace Libplanet.Net
                 depth,
                 cancellationToken);
 
-            if (!((NetMQTransport)Transport).Running)
+            if (!Transport.Running)
             {
                 // Mark added peers as stale if bootstrap is called before transport is running
                 // FIXME: Peers added before bootstrap might be updated.

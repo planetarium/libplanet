@@ -33,6 +33,13 @@ namespace Libplanet.Net
         DateTimeOffset? LastMessageTimestamp { get; }
 
         /// <summary>
+        /// Whether this <see cref="ITransport"/> instance is running.
+        /// </summary>
+        /// <value>Gets the value indicates whether the instance is running.</value>
+        [Pure]
+        bool Running { get; }
+
+        /// <summary>
         /// Initiates transport layer.
         /// </summary>
         /// <param name="cancellationToken">

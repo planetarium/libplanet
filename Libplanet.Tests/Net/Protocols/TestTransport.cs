@@ -76,13 +76,13 @@ namespace Libplanet.Tests.Net.Protocols
 
         public DateTimeOffset? LastMessageTimestamp { get; private set; }
 
+        public bool Running => !(_swarmCancellationTokenSource is null);
+
         internal ConcurrentBag<Message> ReceivedMessages { get; }
 
         internal RoutingTable Table { get; }
 
         internal IProtocol Protocol { get; }
-
-        internal bool Running => !(_swarmCancellationTokenSource is null);
 
         public void Dispose()
         {
