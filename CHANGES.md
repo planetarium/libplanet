@@ -36,11 +36,15 @@ To be released.
  -  Removed `Swarm<T>.GetTrustedStateCompleterAsync()` method.  [[#1117]]
  -  Removed `trustedStateValidators` parameter from `Swarm<T>.PreloadAsync()`
     method.  [[#1117]]
+ -  Removed `Swarm<T>.TraceTable()` method.  [[#1120]]
  -  Added `IActionContext.BlockAction` property. [[#1143]]
  -  Added nullable `TimeSpan`-typed `messageLifespan` parameter into
     `NetMQTransport()` constructor.  [[#1171]]
  -  Added `IStore.ForkTxNonces()` method.  [[#1198]]
-
+ -  Removed `PeerState.Address` Property.  [[#1215]]
+ -  `IProtocol.RebuildConnectionAsync(CancellationToken)` method was
+    replaced by, `IProtocol.RebuildConnectionAsync(int, CancellationToken)`
+    method.  [[#1215]]
 
 ### Backward-incompatible network protocol changes
 
@@ -135,7 +139,6 @@ To be released.
     class.  [[#1119]]
  -  Added `InvalidBlockProtocolVersionException` class.  [[#1142], [#1147]]
  -  Added `InvalidBlockTxHashException` class.  [[#1116]]
- -  Removed `Swarm<T>.TraceTable()` method.  [[#1120]]
  -  Added `Swarm<T>.PeerStates` property.  [[#1120]]
  -  Added `IProtocol` interface.  [[#1120]]
  -  Added `KademliaProtocol` class which implements `IProtocol`.
@@ -147,6 +150,11 @@ To be released.
     to `Transaction<T>.Deserialize()`.  [[#1149]]
  -  Added `SwarmOptions.MessageLifespan` property.  [[#1171]]
  -  Added `InvalidTimestampException` class.  [[#1171]]
+ -  Added `PeerState.Peer` Property.  [[#1215]]
+ -  Added `SwarmOptions.RefreshPeriod` property,
+    which is 10 seconds by default.  [[#1215]]
+ -  Added `SwarmOptions.RefreshLifespan` property,
+    which is 60 seconds by default.  [[#1215]]
 
 ### Behavioral changes
 
@@ -188,6 +196,9 @@ To be released.
     `Swarm<T>.BootstrapAsync()` before `Swarm<T>.StartAsync()`,
     peers in your table may not have you in their table right after
     `Swarm<T>.StartAsync()` (which was almost guaranteed before).  [[#1208]]
+ -  Peers added during `Swarm<T>.BootstrapAsync()` before
+    `Swarm<T>.StartAsync()` are now marked as stale so that
+    `Swarm<T>.RefreshTableAsync()` will update.  [[#1215]]
  -  Following classes became to leave log messages with its class as logging
     context.  [[#1218]]
      -  `TrieStateStore` class
@@ -284,6 +295,7 @@ To be released.
 [#1204]: https://github.com/planetarium/libplanet/pull/1204
 [#1208]: https://github.com/planetarium/libplanet/pull/1208
 [#1212]: https://github.com/planetarium/libplanet/pull/1212
+[#1215]: https://github.com/planetarium/libplanet/pull/1215
 [#1218]: https://github.com/planetarium/libplanet/pull/1218
 
 
@@ -294,7 +306,7 @@ Version 0.10.3
 Released on January 28, 2021.
 
 -  `BlockChain<T>.MineBlock()` became to unstage transactions that have lower
-   nonce than exepcted.  [[#1174]]
+   nonce than expected.  [[#1174]]
 
 [#1174]: https://github.com/planetarium/libplanet/pull/1174
 

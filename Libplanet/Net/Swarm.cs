@@ -367,8 +367,8 @@ namespace Libplanet.Net
             {
                 tasks.Add(
                     RefreshTableAsync(
-                        TimeSpan.FromSeconds(10),
-                        TimeSpan.FromSeconds(10),
+                        Options.RefreshPeriod,
+                        Options.RefreshLifespan,
                         _cancellationToken));
                 tasks.Add(RebuildConnectionAsync(TimeSpan.FromMinutes(30), _cancellationToken));
                 tasks.Add(Transport.RunAsync(_cancellationToken));
@@ -435,6 +435,7 @@ namespace Libplanet.Net
             }
 
             IEnumerable<BoundPeer> peers = seedPeers.OfType<BoundPeer>();
+            IEnumerable<BoundPeer> peersBeforeBootstrap = RoutingTable.Peers;
 
             await PeerDiscovery.BootstrapAsync(
                 peers,
@@ -442,6 +443,16 @@ namespace Libplanet.Net
                 findNeighborsTimeout,
                 depth,
                 cancellationToken);
+
+            if (!Transport.Running)
+            {
+                // Mark added peers as stale if bootstrap is called before transport is running
+                // FIXME: Peers added before bootstrap might be updated.
+                foreach (BoundPeer peer in RoutingTable.Peers.Except(peersBeforeBootstrap))
+                {
+                    RoutingTable.AddPeer(peer, DateTimeOffset.MinValue);
+                }
+            }
         }
 
         public void BroadcastBlock(Block<T> block)
@@ -1941,9 +1952,9 @@ namespace Libplanet.Net
             {
                 try
                 {
-                    await Task.Delay(period, cancellationToken);
                     await PeerDiscovery.RefreshTableAsync(maxAge, cancellationToken);
                     await PeerDiscovery.CheckReplacementCacheAsync(cancellationToken);
+                    await Task.Delay(period, cancellationToken);
                 }
                 catch (OperationCanceledException e)
                 {
@@ -1968,7 +1979,9 @@ namespace Libplanet.Net
                 try
                 {
                     await Task.Delay(period, cancellationToken);
-                    await PeerDiscovery.RebuildConnectionAsync(cancellationToken);
+                    await PeerDiscovery.RebuildConnectionAsync(
+                        Kademlia.MaxDepth,
+                        cancellationToken);
                 }
                 catch (OperationCanceledException e)
                 {

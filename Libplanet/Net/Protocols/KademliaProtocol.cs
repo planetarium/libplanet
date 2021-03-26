@@ -247,7 +247,7 @@ namespace Libplanet.Net.Protocols
         }
 
         /// <inheritdoc />
-        public async Task RebuildConnectionAsync(CancellationToken cancellationToken)
+        public async Task RebuildConnectionAsync(int depth, CancellationToken cancellationToken)
         {
             _logger.Verbose("Rebuilding connection...");
             var buffer = new byte[20];
@@ -259,7 +259,7 @@ namespace Libplanet.Net.Protocols
                     new ConcurrentBag<BoundPeer>(),
                     new Address(buffer),
                     null,
-                    -1,
+                    depth,
                     _requestTimeout,
                     cancellationToken));
             }
@@ -269,7 +269,7 @@ namespace Libplanet.Net.Protocols
                     new ConcurrentBag<BoundPeer>(),
                     _address,
                     null,
-                    Kademlia.MaxDepth,
+                    depth,
                     _requestTimeout,
                     cancellationToken));
             try

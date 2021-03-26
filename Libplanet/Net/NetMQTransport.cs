@@ -199,10 +199,7 @@ namespace Libplanet.Net
         /// <inheritdoc cref="ITransport.LastMessageTimestamp"/>
         public DateTimeOffset? LastMessageTimestamp { get; private set; }
 
-        /// <summary>
-        /// Whether this <see cref="NetMQTransport"/> instance is running.
-        /// </summary>
-        /// <returns>Boolean value indicates whether the instance is running.</returns>
+        /// <inheritdoc cref="ITransport.Running"/>
         public bool Running
         {
             get => _runningEvent.Task.Status == TaskStatus.RanToCompletion;
