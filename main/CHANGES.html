@@ -91,10 +91,15 @@ constructor. [<a href="https://github.com/planetarium/libplanet/pull/1163">#1163
 <li>Removed <code>Swarm&lt;T&gt;.GetTrustedStateCompleterAsync()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1117">#1117</a>]</li>
 <li>Removed <code>trustedStateValidators</code> parameter from <code>Swarm&lt;T&gt;.PreloadAsync()</code>
 method.  [<a href="https://github.com/planetarium/libplanet/pull/1117">#1117</a>]</li>
+<li>Removed <code>Swarm&lt;T&gt;.TraceTable()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1120">#1120</a>]</li>
 <li>Added <code>IActionContext.BlockAction</code> property. [<a href="https://github.com/planetarium/libplanet/pull/1143">#1143</a>]</li>
 <li>Added nullable <code>TimeSpan</code>-typed <code>messageLifespan</code> parameter into
 <code>NetMQTransport()</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/1171">#1171</a>]</li>
 <li>Added <code>IStore.ForkTxNonces()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1198">#1198</a>]</li>
+<li>Removed <code>PeerState.Address</code> Property.  [<a href="https://github.com/planetarium/libplanet/pull/1215">#1215</a>]</li>
+<li><code>IProtocol.RebuildConnectionAsync(CancellationToken)</code> method was
+replaced by, <code>IProtocol.RebuildConnectionAsync(int, CancellationToken)</code>
+method.  [<a href="https://github.com/planetarium/libplanet/pull/1215">#1215</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <ul>
@@ -195,7 +200,6 @@ class.  [<a href="https://github.com/planetarium/libplanet/pull/1119">#1119</a>]
 class.  [<a href="https://github.com/planetarium/libplanet/pull/1119">#1119</a>]</li>
 <li>Added <code>InvalidBlockProtocolVersionException</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/1142">#1142</a>, <a href="https://github.com/planetarium/libplanet/pull/1147">#1147</a>]</li>
 <li>Added <code>InvalidBlockTxHashException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/1116">#1116</a>]</li>
-<li>Removed <code>Swarm&lt;T&gt;.TraceTable()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1120">#1120</a>]</li>
 <li>Added <code>Swarm&lt;T&gt;.PeerStates</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/1120">#1120</a>]</li>
 <li>Added <code>IProtocol</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/1120">#1120</a>]</li>
 <li>Added <code>KademliaProtocol</code> class which implements <code>IProtocol</code>.
@@ -207,6 +211,11 @@ constructor. [<a href="https://github.com/planetarium/libplanet/pull/1163">#1163
 to <code>Transaction&lt;T&gt;.Deserialize()</code>.  [<a href="https://github.com/planetarium/libplanet/issues/1149">#1149</a>]</li>
 <li>Added <code>SwarmOptions.MessageLifespan</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/1171">#1171</a>]</li>
 <li>Added <code>InvalidTimestampException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/1171">#1171</a>]</li>
+<li>Added <code>PeerState.Peer</code> Property.  [<a href="https://github.com/planetarium/libplanet/pull/1215">#1215</a>]</li>
+<li>Added <code>SwarmOptions.RefreshPeriod</code> property,
+which is 10 seconds by default.  [<a href="https://github.com/planetarium/libplanet/pull/1215">#1215</a>]</li>
+<li>Added <code>SwarmOptions.RefreshLifespan</code> property,
+which is 60 seconds by default.  [<a href="https://github.com/planetarium/libplanet/pull/1215">#1215</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
@@ -248,6 +257,9 @@ right after <code>Swarm&lt;T&gt;.StartAsync()</code>.  If you called
 <code>Swarm&lt;T&gt;.BootstrapAsync()</code> before <code>Swarm&lt;T&gt;.StartAsync()</code>,
 peers in your table may not have you in their table right after
 <code>Swarm&lt;T&gt;.StartAsync()</code> (which was almost guaranteed before).  [<a href="https://github.com/planetarium/libplanet/pull/1208">#1208</a>]</li>
+<li>Peers added during <code>Swarm&lt;T&gt;.BootstrapAsync()</code> before
+<code>Swarm&lt;T&gt;.StartAsync()</code> are now marked as stale so that
+<code>Swarm&lt;T&gt;.RefreshTableAsync()</code> will update.  [<a href="https://github.com/planetarium/libplanet/pull/1215">#1215</a>]</li>
 <li>Following classes became to leave log messages with its class as logging
 context.  [<a href="https://github.com/planetarium/libplanet/pull/1218">#1218</a>]
 <ul>
@@ -291,7 +303,7 @@ URIs to disambiguate aliases from the literal store URIs.  [<a href="https://git
 <p>Released on January 28, 2021.</p>
 <ul>
 <li><code>BlockChain&lt;T&gt;.MineBlock()</code> became to unstage transactions that have lower
-nonce than exepcted.  [<a href="https://github.com/planetarium/libplanet/pull/1174">#1174</a>]</li>
+nonce than expected.  [<a href="https://github.com/planetarium/libplanet/pull/1174">#1174</a>]</li>
 </ul>
 <h2 id="version-0102">Version 0.10.2</h2>
 <p>Released on November 25, 2020.</p>

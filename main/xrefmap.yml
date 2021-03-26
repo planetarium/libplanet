@@ -9461,6 +9461,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.ITransport.RunAsync
   nameWithType: ITransport.RunAsync
+- uid: Libplanet.Net.ITransport.Running
+  name: Running
+  href: api/Libplanet.Net.ITransport.html#Libplanet_Net_ITransport_Running
+  commentId: P:Libplanet.Net.ITransport.Running
+  fullName: Libplanet.Net.ITransport.Running
+  nameWithType: ITransport.Running
+- uid: Libplanet.Net.ITransport.Running*
+  name: Running
+  href: api/Libplanet.Net.ITransport.html#Libplanet_Net_ITransport_Running_
+  commentId: Overload:Libplanet.Net.ITransport.Running
+  isSpec: "True"
+  fullName: Libplanet.Net.ITransport.Running
+  nameWithType: ITransport.Running
 - uid: Libplanet.Net.ITransport.SendMessageAsync(Libplanet.Net.BoundPeer,Libplanet.Net.Messages.Message,System.Threading.CancellationToken)
   name: SendMessageAsync(BoundPeer, Message, CancellationToken)
   href: api/Libplanet.Net.ITransport.html#Libplanet_Net_ITransport_SendMessageAsync_Libplanet_Net_BoundPeer_Libplanet_Net_Messages_Message_System_Threading_CancellationToken_
@@ -10241,19 +10254,6 @@ references:
   commentId: T:Libplanet.Net.PeerState
   fullName: Libplanet.Net.PeerState
   nameWithType: PeerState
-- uid: Libplanet.Net.PeerState.Address
-  name: Address
-  href: api/Libplanet.Net.PeerState.html#Libplanet_Net_PeerState_Address
-  commentId: P:Libplanet.Net.PeerState.Address
-  fullName: Libplanet.Net.PeerState.Address
-  nameWithType: PeerState.Address
-- uid: Libplanet.Net.PeerState.Address*
-  name: Address
-  href: api/Libplanet.Net.PeerState.html#Libplanet_Net_PeerState_Address_
-  commentId: Overload:Libplanet.Net.PeerState.Address
-  isSpec: "True"
-  fullName: Libplanet.Net.PeerState.Address
-  nameWithType: PeerState.Address
 - uid: Libplanet.Net.PeerState.LastChecked
   name: LastChecked
   href: api/Libplanet.Net.PeerState.html#Libplanet_Net_PeerState_LastChecked
@@ -10293,6 +10293,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.PeerState.Latency
   nameWithType: PeerState.Latency
+- uid: Libplanet.Net.PeerState.Peer
+  name: Peer
+  href: api/Libplanet.Net.PeerState.html#Libplanet_Net_PeerState_Peer
+  commentId: P:Libplanet.Net.PeerState.Peer
+  fullName: Libplanet.Net.PeerState.Peer
+  nameWithType: PeerState.Peer
+- uid: Libplanet.Net.PeerState.Peer*
+  name: Peer
+  href: api/Libplanet.Net.PeerState.html#Libplanet_Net_PeerState_Peer_
+  commentId: Overload:Libplanet.Net.PeerState.Peer
+  isSpec: "True"
+  fullName: Libplanet.Net.PeerState.Peer
+  nameWithType: PeerState.Peer
 - uid: Libplanet.Net.PreloadState
   name: PreloadState
   href: api/Libplanet.Net.PreloadState.html
@@ -10401,12 +10414,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Protocols.IProtocol.CheckReplacementCacheAsync
   nameWithType: IProtocol.CheckReplacementCacheAsync
-- uid: Libplanet.Net.Protocols.IProtocol.RebuildConnectionAsync(System.Threading.CancellationToken)
-  name: RebuildConnectionAsync(CancellationToken)
-  href: api/Libplanet.Net.Protocols.IProtocol.html#Libplanet_Net_Protocols_IProtocol_RebuildConnectionAsync_System_Threading_CancellationToken_
-  commentId: M:Libplanet.Net.Protocols.IProtocol.RebuildConnectionAsync(System.Threading.CancellationToken)
-  fullName: Libplanet.Net.Protocols.IProtocol.RebuildConnectionAsync(System.Threading.CancellationToken)
-  nameWithType: IProtocol.RebuildConnectionAsync(CancellationToken)
+- uid: Libplanet.Net.Protocols.IProtocol.RebuildConnectionAsync(System.Int32,System.Threading.CancellationToken)
+  name: RebuildConnectionAsync(Int32, CancellationToken)
+  href: api/Libplanet.Net.Protocols.IProtocol.html#Libplanet_Net_Protocols_IProtocol_RebuildConnectionAsync_System_Int32_System_Threading_CancellationToken_
+  commentId: M:Libplanet.Net.Protocols.IProtocol.RebuildConnectionAsync(System.Int32,System.Threading.CancellationToken)
+  fullName: Libplanet.Net.Protocols.IProtocol.RebuildConnectionAsync(System.Int32, System.Threading.CancellationToken)
+  nameWithType: IProtocol.RebuildConnectionAsync(Int32, CancellationToken)
 - uid: Libplanet.Net.Protocols.IProtocol.RebuildConnectionAsync*
   name: RebuildConnectionAsync
   href: api/Libplanet.Net.Protocols.IProtocol.html#Libplanet_Net_Protocols_IProtocol_RebuildConnectionAsync_
@@ -10598,12 +10611,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Protocols.KademliaProtocol.FindSpecificPeerAsync
   nameWithType: KademliaProtocol.FindSpecificPeerAsync
-- uid: Libplanet.Net.Protocols.KademliaProtocol.RebuildConnectionAsync(System.Threading.CancellationToken)
-  name: RebuildConnectionAsync(CancellationToken)
-  href: api/Libplanet.Net.Protocols.KademliaProtocol.html#Libplanet_Net_Protocols_KademliaProtocol_RebuildConnectionAsync_System_Threading_CancellationToken_
-  commentId: M:Libplanet.Net.Protocols.KademliaProtocol.RebuildConnectionAsync(System.Threading.CancellationToken)
-  fullName: Libplanet.Net.Protocols.KademliaProtocol.RebuildConnectionAsync(System.Threading.CancellationToken)
-  nameWithType: KademliaProtocol.RebuildConnectionAsync(CancellationToken)
+- uid: Libplanet.Net.Protocols.KademliaProtocol.RebuildConnectionAsync(System.Int32,System.Threading.CancellationToken)
+  name: RebuildConnectionAsync(Int32, CancellationToken)
+  href: api/Libplanet.Net.Protocols.KademliaProtocol.html#Libplanet_Net_Protocols_KademliaProtocol_RebuildConnectionAsync_System_Int32_System_Threading_CancellationToken_
+  commentId: M:Libplanet.Net.Protocols.KademliaProtocol.RebuildConnectionAsync(System.Int32,System.Threading.CancellationToken)
+  fullName: Libplanet.Net.Protocols.KademliaProtocol.RebuildConnectionAsync(System.Int32, System.Threading.CancellationToken)
+  nameWithType: KademliaProtocol.RebuildConnectionAsync(Int32, CancellationToken)
 - uid: Libplanet.Net.Protocols.KademliaProtocol.RebuildConnectionAsync*
   name: RebuildConnectionAsync
   href: api/Libplanet.Net.Protocols.KademliaProtocol.html#Libplanet_Net_Protocols_KademliaProtocol_RebuildConnectionAsync_
@@ -11551,6 +11564,32 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.SwarmOptions.RecentStateRecvTimeout
   nameWithType: SwarmOptions.RecentStateRecvTimeout
+- uid: Libplanet.Net.SwarmOptions.RefreshLifespan
+  name: RefreshLifespan
+  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_RefreshLifespan
+  commentId: P:Libplanet.Net.SwarmOptions.RefreshLifespan
+  fullName: Libplanet.Net.SwarmOptions.RefreshLifespan
+  nameWithType: SwarmOptions.RefreshLifespan
+- uid: Libplanet.Net.SwarmOptions.RefreshLifespan*
+  name: RefreshLifespan
+  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_RefreshLifespan_
+  commentId: Overload:Libplanet.Net.SwarmOptions.RefreshLifespan
+  isSpec: "True"
+  fullName: Libplanet.Net.SwarmOptions.RefreshLifespan
+  nameWithType: SwarmOptions.RefreshLifespan
+- uid: Libplanet.Net.SwarmOptions.RefreshPeriod
+  name: RefreshPeriod
+  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_RefreshPeriod
+  commentId: P:Libplanet.Net.SwarmOptions.RefreshPeriod
+  fullName: Libplanet.Net.SwarmOptions.RefreshPeriod
+  nameWithType: SwarmOptions.RefreshPeriod
+- uid: Libplanet.Net.SwarmOptions.RefreshPeriod*
+  name: RefreshPeriod
+  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_RefreshPeriod_
+  commentId: Overload:Libplanet.Net.SwarmOptions.RefreshPeriod
+  isSpec: "True"
+  fullName: Libplanet.Net.SwarmOptions.RefreshPeriod
+  nameWithType: SwarmOptions.RefreshPeriod
 - uid: Libplanet.Net.SwarmOptions.TxRecvTimeout
   name: TxRecvTimeout
   href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_TxRecvTimeout
