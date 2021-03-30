@@ -30,6 +30,7 @@ namespace Libplanet.Net
             CancellationToken cancellationToken
         )
         {
+            var sessionRandom = new Random();
             TimeSpan aSecond = TimeSpan.FromSeconds(1);
             IComparer<BlockPerception> canonComparer = BlockChain.Policy.CanonicalChainComparer;
             while (!cancellationToken.IsCancellationRequested)
@@ -47,10 +48,11 @@ namespace Libplanet.Net
                 NewDemand:
                 BoundPeer peer = blockDemand.Peer;
                 var hash = new HashDigest<SHA256>(blockDemand.Header.Hash.ToArray());
+                int sessionId = sessionRandom.Next();
                 const string startLogMsg =
-                    "Got a new " + nameof(BlockDemand) + " from {Peer}; started to fetch " +
-                    "the block #{BlockIndex} {BlockHash}...";
-                _logger.Debug(startLogMsg, peer, blockDemand.Header.Index, hash);
+                    "{SessionId}: Got a new " + nameof(BlockDemand) + " from {Peer}; started to " +
+                    "fetch the block #{BlockIndex} {BlockHash}...";
+                _logger.Debug(startLogMsg, sessionId, peer, blockDemand.Header.Index, hash);
 
                 try
                 {
@@ -62,6 +64,7 @@ namespace Libplanet.Net
                         null,
                         demandCheckInterval,
                         0,
+                        sessionId,
                         cancellationToken
                     );
                     while (!task.IsCompleted)
@@ -76,9 +79,9 @@ namespace Libplanet.Net
                             ) > 0)
                         {
                             const string cancelLogMsg =
-                                "Cancelled to sync block(s) from {Peer}, " +
+                                "{SessionId}: Cancelled to sync block(s) from {Peer}, " +
                                 "because the demand has been updated.";
-                            _logger.Debug(cancelLogMsg, peer);
+                            _logger.Debug(cancelLogMsg, sessionId, peer);
 #pragma warning disable S907
                             goto NewDemand;
 #pragma warning restore S907
@@ -91,7 +94,8 @@ namespace Libplanet.Net
                     }
 
                     _logger.Debug(
-                        "Synced block(s) from {Peer}; broadcast them to neighbors...",
+                        "{SessionId}: Synced block(s) from {Peer}; broadcast them to neighbors...",
+                        sessionId,
                         peer
                     );
 
@@ -103,31 +107,36 @@ namespace Libplanet.Net
                 catch (TimeoutException)
                 {
                     const string msg =
-                        "Timeout occurred during " + nameof(ProcessFillBlocks) + "() from {Peer}.";
-                    _logger.Debug(msg, peer);
+                        "{SessionId}: Timeout occurred during " + nameof(ProcessFillBlocks) +
+                        "() from {Peer}.";
+                    _logger.Debug(msg, sessionId, peer);
                 }
                 catch (InvalidBlockIndexException ibie)
                 {
                     const string msg =
-                        nameof(InvalidBlockIndexException) + " occurred during " +
+                        "{SessionId}: " + nameof(InvalidBlockIndexException) + " occurred during " +
                         nameof(ProcessFillBlocks) + "() from {Peer}: {Exception}";
-                    _logger.Warning(ibie, msg, peer, ibie);
+                    _logger.Warning(ibie, msg, sessionId, peer, ibie);
                 }
                 catch (Exception e)
                 {
                     const string msg =
-                        "Unexpected exception occurred during " + nameof(ProcessFillBlocks) +
-                        "() from {Peer}: {Exception}";
-                    _logger.Error(e, msg, peer, e);
+                        "{SessionId}: Unexpected exception occurred during " +
+                        nameof(ProcessFillBlocks) + "() from {Peer}: {Exception}";
+                    _logger.Error(e, msg, sessionId, peer, e);
                 }
                 finally
                 {
                     using (await _blockSyncMutex.LockAsync(cancellationToken))
                     {
-                        _logger.Debug($"{nameof(ProcessFillBlocks)}() finished.");
+                        const string msg =
+                            "{SessionId}: " + nameof(ProcessFillBlocks) + "() finished.";
+                        _logger.Debug(msg, sessionId);
                         if (BlockDemand.Equals(blockDemand))
                         {
-                            _logger.Debug($"Reset {nameof(BlockDemand)}...");
+                            const string resetMsg =
+                                "{SessionId}: Reset " + nameof(BlockDemand) + "...";
+                            _logger.Debug(resetMsg, sessionId);
                             BlockDemand = null;
                         }
 
@@ -142,8 +151,9 @@ namespace Libplanet.Net
             BoundPeer peer,
             HashDigest<SHA256>? stop,
             IProgress<BlockDownloadState> progress,
-            TimeSpan dialTimeout,
+            TimeSpan timeout,
             long totalBlockCount,
+            int logSessionId,
             CancellationToken cancellationToken
         )
         {
@@ -155,6 +165,8 @@ namespace Libplanet.Net
                 long currentTipIndex = blockChain.Tip?.Index ?? -1;
                 long receivedBlockCount = currentTipIndex - previousTipIndex;
 
+                const string startMsg = "{SessionId}: Starts " + nameof(FillBlocksAsync) + "()...";
+                _logger.Debug(startMsg, logSessionId);
                 FillBlocksAsyncStarted.Set();
                 synced = await FillBlocksAsync(
                     peer,
@@ -164,8 +176,12 @@ namespace Libplanet.Net
                     totalBlockCount,
                     receivedBlockCount,
                     true,
+                    timeout,
+                    logSessionId,
                     cancellationToken
                 );
+                const string finishMsg = "{SessionId}: Finished " + nameof(FillBlocksAsync) + "().";
+                _logger.Debug(finishMsg, logSessionId);
             }
             catch (Exception)
             {
@@ -188,15 +204,28 @@ namespace Libplanet.Net
                     )
                 )
                 {
+                    _logger.Debug(
+                        "{SessionId}: Swap the chain {ChainIdA} for the chain {ChainIdB}...",
+                        logSessionId,
+                        blockChain.Id,
+                        synced.Id
+                    );
                     blockChain.Swap(
                         synced,
                         render: true,
                         stateCompleters: null
                     );
+                    _logger.Debug(
+                        "{SessionId}: The chain {ChainIdB} replaced {ChainIdA}",
+                        logSessionId,
+                        synced.Id,
+                        blockChain.Id
+                    );
                 }
             }
         }
 
+#pragma warning disable MEN003
         private async Task<BlockChain<T>> FillBlocksAsync(
             BoundPeer peer,
             BlockChain<T> blockChain,
@@ -205,9 +234,12 @@ namespace Libplanet.Net
             long totalBlockCount,
             long receivedBlockCount,
             bool evaluateActions,
+            TimeSpan timeout,
+            int logSessionId,
             CancellationToken cancellationToken
         )
         {
+            var sessionRandom = new Random();
             const string fname = nameof(FillBlocksAsync);
             BlockChain<T> workspace = blockChain;
             var scope = new List<Guid>();
@@ -218,20 +250,38 @@ namespace Libplanet.Net
             {
                 while (!cancellationToken.IsCancellationRequested)
                 {
+                    int subSessionId = sessionRandom.Next();
                     Block<T> tip = workspace?.Tip;
 
-                    _logger.Debug("Trying to find branchpoint...");
+                    _logger.Debug(
+                        "{SessionId}/{SubSessionId}: Trying to find branchpoint...",
+                        logSessionId,
+                        subSessionId
+                    );
                     BlockLocator locator = workspace.GetBlockLocator();
-                    _logger.Debug("Locator's count: {LocatorCount}", locator.Count());
-                    IAsyncEnumerable<Tuple<long, HashDigest<SHA256>>> hashesAsync =
-                        GetBlockHashes(peer, locator, stop, cancellationToken);
+                    _logger.Debug(
+                        "{SessionId}/{SubSessionId}: Locator's length: {LocatorLength}",
+                        logSessionId,
+                        subSessionId,
+                        locator.Count()
+                    );
+                    IAsyncEnumerable<Tuple<long, HashDigest<SHA256>>> hashesAsync = GetBlockHashes(
+                        peer: peer,
+                        locator: locator,
+                        stop: stop,
+                        timeout: timeout,
+                        logSessionIds: (logSessionId, subSessionId),
+                        cancellationToken: cancellationToken
+                    );
                     IEnumerable<Tuple<long, HashDigest<SHA256>>> hashes =
                         await hashesAsync.ToArrayAsync();
 
                     if (!hashes.Any())
                     {
                         _logger.Debug(
-                            "Peer [{0}] didn't return any hashes; ignored.",
+                            "{SessionId}/{SubSessionId}: Peer {0} returned no hashes; ignored.",
+                            logSessionId,
+                            subSessionId,
                             peer.Address.ToHex()
                         );
                         return workspace;
@@ -243,14 +293,20 @@ namespace Libplanet.Net
                     );
 
                     _logger.Debug(
-                        "Branch point is #{BranchIndex} {BranchHash}.",
+                        "{SessionId}/{SubSessionId}: Branchpoint is #{BranchIndex} {BranchHash}.",
+                        logSessionId,
+                        subSessionId,
                         branchIndex,
                         branchPoint
                     );
 
                     if (tip is null || branchPoint.Equals(tip.Hash))
                     {
-                        _logger.Debug("It doesn't need to fork.");
+                        _logger.Debug(
+                            "{SessionId}/{SubSessionId}: It doesn't need to fork.",
+                            logSessionId,
+                            subSessionId
+                        );
                     }
                     else if (!workspace.ContainsBlock(branchPoint))
                     {
@@ -271,13 +327,21 @@ namespace Libplanet.Net
                     }
                     else
                     {
-                        _logger.Debug("Forking needed. Trying to fork...");
+                        _logger.Debug(
+                            "{SessionId}/{SubSessionId}: Needs to fork; trying to fork...",
+                            logSessionId,
+                            subSessionId
+                        );
                         workspace = workspace.Fork(branchPoint);
                         Guid workChainId = workspace.Id;
                         scope.Add(workChainId);
                         renderActions = false;
                         renderBlocks = false;
-                        _logger.Debug("Forking complete.");
+                        _logger.Debug(
+                            "{SessionId}/{SubSessionId}: Fork finished.",
+                            logSessionId,
+                            subSessionId
+                        );
                     }
 
                     if (!(workspace.Tip is null))
@@ -285,7 +349,11 @@ namespace Libplanet.Net
                         hashes = hashes.Skip(1);
                     }
 
-                    _logger.Debug("Trying to fill up previous blocks...");
+                    _logger.Debug(
+                        "{SessionId}/{SubSessionId}: Trying to fill up previous blocks...",
+                        logSessionId,
+                        subSessionId
+                    );
 
                     var hashesAsArray =
                         hashes as Tuple<long, HashDigest<SHA256>>[] ?? hashes.ToArray();
@@ -296,8 +364,13 @@ namespace Libplanet.Net
 
                     int hashCount = hashesAsArray.Count();
                     _logger.Debug(
-                        $"Required hashes (count: {hashCount}). " +
-                        $"(tip: {workspace.Tip?.Hash})"
+                        "{SessionId}/{SubSessionId}: Required {Hashes} hashes " +
+                        "(tip: #{TipIndex} {TipHash}).",
+                        logSessionId,
+                        subSessionId,
+                        hashCount,
+                        workspace.Tip?.Index,
+                        workspace.Tip?.Hash
                     );
 
                     totalBlockCount = Math.Max(totalBlockCount, receivedBlockCount + hashCount);
@@ -311,8 +384,13 @@ namespace Libplanet.Net
                     var receivedBlockCountCurrentLoop = 0;
                     await foreach (Block<T> block in blocks)
                     {
+                        const string startMsg =
+                            "{SessionId}/{SubSessionId}: Try to append a block " +
+                            "#{BlockIndex} {BlockHash}...";
                         _logger.Debug(
-                            "Try to append a block #{BlockIndex} {BlockHash}...",
+                            startMsg,
+                            logSessionId,
+                            subSessionId,
                             block.Index,
                             block.Hash
                         );
@@ -334,11 +412,10 @@ namespace Libplanet.Net
                             ReceivedBlockHash = block.Hash,
                             SourcePeer = peer,
                         });
-                        _logger.Debug(
-                            "Block #{BlockIndex} {BlockHash} was appended.",
-                            block.Index,
-                            block.Hash
-                        );
+                        const string endMsg =
+                            "{SessionId}/{SubSessionId}: Block #{BlockIndex} {BlockHash} " +
+                            "was appended.";
+                        _logger.Debug(endMsg, logSessionId, subSessionId, block.Index, block.Hash);
                     }
 
                     receivedBlockCount += receivedBlockCountCurrentLoop;
@@ -348,12 +425,14 @@ namespace Libplanet.Net
                     if (receivedBlockCountCurrentLoop < FindNextHashesChunkSize && isEndedFirstTime)
                     {
                         _logger.Debug(
-                            "Got all blocks from Peer [{Peer}]. " +
-                            "(Count: {Count}, TipIndex: #{Index}, TipHash: {Hash})",
-                            peer.Address.ToHex(),
+                            "{SessionId}/{SubSessionId}: Got {Blocks} blocks from Peer {Peer} " +
+                            "(tip: #{TipIndex} {TipHash})",
+                            logSessionId,
+                            subSessionId,
                             receivedBlockCountCurrentLoop,
-                            workspace.Tip.Index,
-                            workspace.Tip.Hash
+                            peer.Address.ToHex(),
+                            workspace.Tip?.Index,
+                            workspace.Tip?.Hash
                         );
                         break;
                     }
@@ -361,10 +440,9 @@ namespace Libplanet.Net
             }
             catch (Exception e)
             {
-                _logger.Error(
-                    e,
-                    $"Unexpected error occurred during {fname}(): {{Exception}}",
-                    e);
+                const string msg =
+                    "{SessionId}: Unexpected error occurred during " + fname + "(): {Exception}";
+                _logger.Error(e, msg, logSessionId, e);
                 if (workspace?.Id is Guid workspaceId && scope.Contains(workspaceId))
                 {
                     _store.DeleteChainId(workspaceId);
@@ -374,11 +452,16 @@ namespace Libplanet.Net
             }
             finally
             {
+                const string msg =
+                    "{SessionId}: " + fname +
+                    "() completed (chain ID: {ChainId}, tip: #{TipIndex} {TipHash}).";
                 _logger.Debug(
-                    $"{fname}() completed (chain ID: {{ChainId}}, tip: #{{TipIndex}} {{TipHash}}).",
+                    msg,
+                    logSessionId,
                     workspace?.Id,
                     workspace?.Tip?.Index,
-                    workspace?.Tip?.Hash);
+                    workspace?.Tip?.Hash
+                );
                 foreach (var id in scope.Where(guid => guid != workspace?.Id))
                 {
                     _store.DeleteChainId(id);
@@ -387,5 +470,6 @@ namespace Libplanet.Net
 
             return workspace;
         }
+#pragma warning restore MEN003
     }
 }

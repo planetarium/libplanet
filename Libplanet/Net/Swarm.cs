@@ -949,15 +949,27 @@ namespace Libplanet.Net
             BoundPeer peer,
             BlockLocator locator,
             HashDigest<SHA256>? stop,
+            TimeSpan? timeout = null,
+            (int, int)? logSessionIds = null,
             [EnumeratorCancellation] CancellationToken cancellationToken = default
         )
         {
+            var sessionRandom = new System.Random();
+            int logSessionId = logSessionIds is (int i, _) ? i : sessionRandom.Next();
+            int subSessionId = logSessionIds is (_, int j) ? j : sessionRandom.Next();
             var request = new GetBlockHashes(locator, stop);
 
+            TimeSpan transportTimeout = timeout is { } t && t > Options.BlockHashRecvTimeout
+                ? t
+                : Options.BlockHashRecvTimeout;
+            const string sendMsg =
+                "{SessionId}/{SubSessionId}: Sending a " + nameof(GetBlockHashes) +
+                " message (locator: {Locator}, stop: {Stop})...";
+            _logger.Debug(sendMsg, logSessionId, subSessionId, locator, stop);
             Message parsedMessage = await Transport.SendMessageWithReplyAsync(
                 peer,
                 request,
-                timeout: Options.BlockHashRecvTimeout,
+                timeout: transportTimeout,
                 cancellationToken: cancellationToken
             );
 
@@ -1165,7 +1177,7 @@ namespace Libplanet.Net
                         );
 
                         IAsyncEnumerable<Tuple<long, HashDigest<SHA256>>> blockHashes =
-                            GetBlockHashes(peer, locator, null, cancellationToken);
+                            GetBlockHashes(peer, locator, null, null, null, cancellationToken);
 
                         if (branchIndex == -1 &&
                             await blockHashes.FirstAsync(cancellationToken) is { } t)
