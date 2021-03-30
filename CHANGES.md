@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.11.0
 --------------
 
-To be released.
+Released on March 30, 2021.
 
 ### Backward-incompatible API changes
 
