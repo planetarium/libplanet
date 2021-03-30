@@ -1,6 +1,26 @@
 Libplanet changelog
 ===================
 
+Version 0.12.0
+--------------
+
+To be released.
+
+### Backward-incompatible API changes
+
+### Backward-incompatible network protocol changes
+
+### Backward-incompatible storage format changes
+
+### Added APIs
+
+### Behavioral changes
+
+### Bug fixes
+
+### CLI tools
+
+
 Version 0.11.0
 --------------
 
