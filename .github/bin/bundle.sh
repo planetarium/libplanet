@@ -31,6 +31,12 @@ version="${BASH_REMATCH[1]}"
 package="$(basename "$nupkg" | sed -E 's/(\.[0-9]{1,}){3}.*?\.nupkg$//')"
 workdir="$(mktemp -d)"
 
+if printf '%s\n' "${executables[@]}" | grep -q -P "^$package$"; then
+  echo "Since $package is an executable project, its bundle won't be made." \
+    > /dev/stderr
+  exit 0
+fi
+
 pushd "$workdir"
   # Prepare a local NuGet repository
   mkdir repo/
