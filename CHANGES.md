@@ -8,17 +8,27 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Removed `StunMessage.Parse(Stream)` method.  [[#1228]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
 
 ### Added APIs
 
+ -  Added `StunMessage.ParseAsync(Stream, CancellationToken)` method.
+    [[#1228]]
+
 ### Behavioral changes
 
 ### Bug fixes
 
+ -  Fixed memory leak due to undisposed `CancellationTokenRegistration`s.
+    [[#1228]]
+
 ### CLI tools
+
+[#1228]: https://github.com/planetarium/libplanet/pull/1218
 
 
 Version 0.11.0
@@ -317,7 +327,6 @@ Released on March 30, 2021.
 [#1212]: https://github.com/planetarium/libplanet/pull/1212
 [#1215]: https://github.com/planetarium/libplanet/pull/1215
 [#1218]: https://github.com/planetarium/libplanet/pull/1218
-
 
 
 Version 0.10.3
