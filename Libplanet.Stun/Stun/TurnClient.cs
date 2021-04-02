@@ -135,7 +135,7 @@ namespace Libplanet.Stun
             {
                 var request = new AllocateRequest((int)lifetime.TotalSeconds);
                 await SendMessageAsync(stream, request, cancellationToken);
-                response = await ReceiveMessage(request.TransactionId);
+                response = await ReceiveMessageAsync(request.TransactionId, cancellationToken);
 
                 if (response is AllocateErrorResponse allocError)
                 {
@@ -164,7 +164,9 @@ namespace Libplanet.Stun
             NetworkStream stream = _control.GetStream();
             var request = new CreatePermissionRequest(peerAddress);
             await SendMessageAsync(stream, request, cancellationToken);
-            StunMessage response = await ReceiveMessage(request.TransactionId);
+            StunMessage response = await ReceiveMessageAsync(
+                request.TransactionId,
+                cancellationToken);
 
             if (response is CreatePermissionErrorResponse)
             {
@@ -191,7 +193,8 @@ namespace Libplanet.Stun
                 try
                 {
                     await SendMessageAsync(relayedStream, bindRequest, cancellationToken);
-                    StunMessage bindResponse = await StunMessage.Parse(relayedStream);
+                    StunMessage bindResponse =
+                        await StunMessage.ParseAsync(relayedStream, cancellationToken);
 
                     if (bindResponse is ConnectionBindSuccessResponse)
                     {
@@ -216,7 +219,9 @@ namespace Libplanet.Stun
             NetworkStream stream = _control.GetStream();
             var request = new BindingRequest();
             await SendMessageAsync(stream, request, cancellationToken);
-            StunMessage response = await ReceiveMessage(request.TransactionId);
+            StunMessage response = await ReceiveMessageAsync(
+                request.TransactionId,
+                cancellationToken);
 
             if (response is BindingSuccessResponse success)
             {
@@ -237,7 +242,9 @@ namespace Libplanet.Stun
             var request = new RefreshRequest((int)lifetime.TotalSeconds);
             await SendMessageAsync(stream, request, cancellationToken);
 
-            StunMessage response = await ReceiveMessage(request.TransactionId);
+            StunMessage response = await ReceiveMessageAsync(
+                request.TransactionId,
+                cancellationToken);
             if (response is RefreshSuccessResponse success)
             {
                 return TimeSpan.FromSeconds(success.Lifetime);
@@ -275,7 +282,7 @@ namespace Libplanet.Stun
                 var request = new BindingRequest();
                 var asBytes = request.Encode(this);
                 await stream.WriteAsync(asBytes, 0, asBytes.Length, cancellationToken);
-                await StunMessage.Parse(stream);
+                await StunMessage.ParseAsync(stream, cancellationToken);
 
                 return true;
             }
@@ -366,7 +373,6 @@ namespace Libplanet.Stun
             CancellationToken cancellationToken)
         {
             var tcs = new TaskCompletionSource<StunMessage>();
-            cancellationToken.Register(() => tcs.TrySetCanceled());
             _responses[message.TransactionId] = tcs;
             var asBytes = message.Encode(this);
             await stream.WriteAsync(
@@ -387,18 +393,13 @@ namespace Libplanet.Stun
                     StunMessage message;
                     try
                     {
-                        message = await StunMessage.Parse(stream);
+                        message = await StunMessage.ParseAsync(stream, cancellationToken);
                         _logger.Debug("Stun Message is: {message}", message);
                     }
                     catch (TurnClientException e)
                     {
                         _logger.Error(e, "Failed to parse StunMessage. {e}", e);
-                        foreach (TaskCompletionSource<StunMessage> tcs in _responses.Values)
-                        {
-                            tcs.TrySetCanceled();
-                        }
-
-                        _responses.Clear();
+                        ClearResponses();
                         break;
                     }
 
@@ -426,9 +427,14 @@ namespace Libplanet.Stun
             _logger.Debug($"{nameof(ProcessMessage)} is ended. Connected: {_control.Connected}");
         }
 
-        private async Task<StunMessage> ReceiveMessage(byte[] transactionId)
+        private async Task<StunMessage> ReceiveMessageAsync(
+            byte[] transactionId,
+            CancellationToken cancellationToken)
         {
-            StunMessage response = await _responses[transactionId].Task;
+            TaskCompletionSource<StunMessage> tcs = _responses[transactionId];
+            using CancellationTokenRegistration ctr =
+                cancellationToken.Register(() => tcs.TrySetCanceled());
+            StunMessage response = await tcs.Task;
             _responses.Remove(transactionId);
 
             return response;
@@ -440,12 +446,22 @@ namespace Libplanet.Stun
             _turnTaskCts.Cancel();
             _turnTaskCts.Dispose();
             _turnTasks.Clear();
-            _responses.Clear();
+            ClearResponses();
 
             foreach (TcpClient relays in _relayedClients)
             {
                 relays.Dispose();
             }
+        }
+
+        private void ClearResponses()
+        {
+            foreach (TaskCompletionSource<StunMessage> tcs in _responses.Values)
+            {
+                tcs.TrySetCanceled();
+            }
+
+            _responses.Clear();
         }
 
         private class ByteArrayComparer : IEqualityComparer<byte[]>

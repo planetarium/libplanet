@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Stun.Attributes;
 
@@ -80,13 +81,19 @@ namespace Libplanet.Stun.Messages
         /// Parses <see cref="StunMessage"/> from <paramref name="stream"/>.
         /// </summary>
         /// <param name="stream">A view of a sequence of STUN packet's bytes.</param>
+        /// <param name="cancellationToken">
+        /// A cancellation token used to propagate notification that this
+        /// operation should be canceled.
+        /// </param>
         /// <returns>A <see cref="StunMessage"/> derived on
         /// bytes read from <paramref name="stream"/>.
         /// </returns>
-        public static async Task<StunMessage> Parse(Stream stream)
+        public static async Task<StunMessage> ParseAsync(
+            Stream stream,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             var header = new byte[20];
-            await stream.ReadAsync(header, 0, 20);
+            await stream.ReadAsync(header, 0, 20, cancellationToken);
 
             MessageMethod method = ParseMethod(header[0], header[1]);
             MessageClass @class = ParseClass(header[0], header[1]);
@@ -98,7 +105,7 @@ namespace Libplanet.Stun.Messages
             System.Array.Copy(header, 8, transactionId, 0, 12);
 
             var body = new byte[length.ToUShort()];
-            await stream.ReadAsync(body, 0, body.Length);
+            await stream.ReadAsync(body, 0, body.Length, cancellationToken);
             IEnumerable<Attribute> attributes = ParseAttributes(
                 body,
                 transactionId

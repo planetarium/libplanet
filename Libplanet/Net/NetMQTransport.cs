@@ -411,7 +411,8 @@ namespace Libplanet.Net
                 Interlocked.Increment(ref _requestCount);
 
                 // FIXME should we also cancel tcs sender side too?
-                cancellationToken.Register(() => tcs.TrySetCanceled());
+                using CancellationTokenRegistration ctr =
+                    cancellationToken.Register(() => tcs.TrySetCanceled());
                 await _requests.AddAsync(
                     new MessageRequest(reqId, message, peer, now, timeout, expectedResponses, tcs),
                     cancellationToken
