@@ -81,19 +81,19 @@ EUR (Euro), <em>not values</em> like $100 or €100.</p>
   <div class="markdown level0 conceptual"></div>
   <div classs="implements">
     <h5>Implements</h5>
-    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="Libplanet.Assets.Currency.html">Currency</a>&gt;</div>
-    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.runtime.serialization.iserializable">ISerializable</a></div>
+    <div><span class="xref">System.IEquatable</span>&lt;<a class="xref" href="Libplanet.Assets.Currency.html">Currency</a>&gt;</div>
+    <div><span class="xref">System.Runtime.Serialization.ISerializable</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+      <span class="xref">System.Object.GetType()</span>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Assets.html">Libplanet.Assets</a></h6>
@@ -140,20 +140,20 @@ var twentyThreeBucks = 23 * USD;
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="xref">System.String</span></td>
         <td><span class="parametername">ticker</span></td>
         <td><p>The ticker symbol, e.g., <code>&quot;USD&quot;</code>.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a></td>
+        <td><span class="xref">System.Byte</span></td>
         <td><span class="parametername">decimalPlaces</span></td>
         <td><p>The number of digits to treat as <a href="https://w.wiki/ZXv#Treatment_of_minor_currency_units_(the_%22exponent%22)">minor
 units (i.e., exponent)</a>.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">IImmutableSet</span>&lt;<a class="xref" href="Libplanet.Address.html">Address</a>&gt;&gt;</td>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">IImmutableSet</span>&lt;<a class="xref" href="Libplanet.Address.html">Address</a>&gt;&gt;</td>
         <td><span class="parametername">minters</span></td>
         <td><p>The <a class="xref" href="Libplanet.Address.html">Address</a>es who can mint the currency.
 See also <a class="xref" href="Libplanet.Assets.Currency.html#Libplanet_Assets_Currency_Minters">Minters</a> field which corresponds to this.</p>
@@ -171,7 +171,7 @@ See also <a class="xref" href="Libplanet.Assets.Currency.html#Libplanet_Assets_C
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><span class="xref">System.ArgumentException</span></td>
         <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">ticker</code>
 is an empty string.</p>
 </td>
@@ -205,20 +205,20 @@ is an empty string.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="xref">System.String</span></td>
         <td><span class="parametername">ticker</span></td>
         <td><p>The ticker symbol, e.g., <code>&quot;USD&quot;</code>.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a></td>
+        <td><span class="xref">System.Byte</span></td>
         <td><span class="parametername">decimalPlaces</span></td>
         <td><p>The number of digits to treat as <a href="https://w.wiki/ZXv#Treatment_of_minor_currency_units_(the_%22exponent%22)">minor
 units (i.e., exponent)</a>.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Address.html">Address</a>&gt;</td>
+        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Libplanet.Address.html">Address</a>&gt;</td>
         <td><span class="parametername">minter</span></td>
         <td><p>The address who can mint the currency.  To specify multiple
 minters, use the <see cref="!:Currency(string,byte,IImmutableSet&lt;Address>)"></see> constructor
@@ -255,7 +255,7 @@ units (i.e., exponent)</a>.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a></td>
+        <td><span class="xref">System.Byte</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -285,7 +285,7 @@ units (i.e., exponent)</a>.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.sha1">SHA1</a>&gt;</td>
+        <td><a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">System.Security.Cryptography.SHA1</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -316,7 +316,7 @@ If this is <code>null</code> <em>anyone</em> can mint the currency.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">IImmutableSet</span>&lt;<a class="xref" href="Libplanet.Address.html">Address</a>&gt;&gt;</td>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">IImmutableSet</span>&lt;<a class="xref" href="Libplanet.Address.html">Address</a>&gt;&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -353,7 +353,7 @@ If this is <code>null</code> <em>anyone</em> can mint the currency.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="xref">System.String</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -406,7 +406,7 @@ public bool AllowsToMint(Address address)</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="xref">System.Boolean</span></td>
         <td><p><code>true</code> if and only if the given <code data-dev-comment-type="paramref" class="paramref">address</code> is allowed to
 mint or burn assets of this currency.</p>
 </td>
@@ -456,7 +456,7 @@ public bool Equals(Currency other)</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="xref">System.Boolean</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -488,7 +488,7 @@ public override bool Equals(object obj)</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="xref">System.Object</span></td>
         <td><span class="parametername">obj</span></td>
         <td></td>
       </tr>
@@ -504,13 +504,13 @@ public override bool Equals(object obj)</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="xref">System.Boolean</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.valuetype.equals#System_ValueType_Equals_System_Object_">ValueType.Equals(Object)</a></div>
+  <div><span class="xref">System.ValueType.Equals(System.Object)</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Assets_Currency_GetHashCode.md&amp;value=---%0Auid%3A%20Libplanet.Assets.Currency.GetHashCode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -537,13 +537,13 @@ public override int GetHashCode()</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="xref">System.Int32</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.valuetype.gethashcode#System_ValueType_GetHashCode">ValueType.GetHashCode()</a></div>
+  <div><span class="xref">System.ValueType.GetHashCode()</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Assets_Currency_ToString.md&amp;value=---%0Auid%3A%20Libplanet.Assets.Currency.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -570,13 +570,13 @@ public override string ToString()</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="xref">System.String</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.valuetype.tostring#System_ValueType_ToString">ValueType.ToString()</a></div>
+  <div><span class="xref">System.ValueType.ToString()</span></div>
   <h3 id="operators">Operators
   </h3>
   <span class="small pull-right mobile-hide">
@@ -614,7 +614,7 @@ public static FungibleAssetValue operator *(Currency currency, BigInteger quanti
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.numerics.biginteger">BigInteger</a></td>
+        <td><span class="xref">System.Numerics.BigInteger</span></td>
         <td><span class="parametername">quantity</span></td>
         <td><p>The major unit of the fungible asset value,
 i.e., digits <em>before</em> the decimal separator.</p>
@@ -672,7 +672,7 @@ public static FungibleAssetValue operator *(BigInteger quantity, Currency curren
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.numerics.biginteger">BigInteger</a></td>
+        <td><span class="xref">System.Numerics.BigInteger</span></td>
         <td><span class="parametername">quantity</span></td>
         <td><p>The major unit of the fungible asset value,
 i.e., digits <em>before</em> the decimal separator.</p>
@@ -735,12 +735,12 @@ specified <code data-dev-comment-type="paramref" class="paramref">currency</code
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.runtime.serialization.serializationinfo">SerializationInfo</a></td>
+        <td><span class="xref">System.Runtime.Serialization.SerializationInfo</span></td>
         <td><span class="parametername">info</span></td>
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.runtime.serialization.streamingcontext">StreamingContext</a></td>
+        <td><span class="xref">System.Runtime.Serialization.StreamingContext</span></td>
         <td><span class="parametername">context</span></td>
         <td></td>
       </tr>
@@ -748,10 +748,10 @@ specified <code data-dev-comment-type="paramref" class="paramref">currency</code
   </table>
   <h3 id="implements">Implements</h3>
   <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.iequatable-1">System.IEquatable&lt;T&gt;</a>
+      <span class="xref">System.IEquatable&lt;T&gt;</span>
   </div>
   <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.runtime.serialization.iserializable">System.Runtime.Serialization.ISerializable</a>
+      <span class="xref">System.Runtime.Serialization.ISerializable</span>
   </div>
   <h3 id="seealso">See Also</h3>
   <div class="seealso">
