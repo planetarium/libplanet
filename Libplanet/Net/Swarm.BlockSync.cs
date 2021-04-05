@@ -31,7 +31,6 @@ namespace Libplanet.Net
         )
         {
             var sessionRandom = new Random();
-            TimeSpan aSecond = TimeSpan.FromSeconds(1);
             IComparer<BlockPerception> canonComparer = BlockChain.Policy.CanonicalChainComparer;
             while (!cancellationToken.IsCancellationRequested)
             {
@@ -45,7 +44,6 @@ namespace Libplanet.Net
                     continue;
                 }
 
-                NewDemand:
                 BoundPeer peer = blockDemand.Peer;
                 var hash = new HashDigest<SHA256>(blockDemand.Header.Hash.ToArray());
                 int sessionId = sessionRandom.Next();
@@ -56,43 +54,16 @@ namespace Libplanet.Net
 
                 try
                 {
-                    TimeSpan demandCheckInterval = timeout.Divide(2);
-                    Task task = SyncPreviousBlocksAsync(
-                        BlockChain,
-                        peer,
-                        hash,
-                        null,
-                        demandCheckInterval,
-                        0,
-                        sessionId,
-                        cancellationToken
+                    await SyncPreviousBlocksAsync(
+                        blockChain: BlockChain,
+                        peer: peer,
+                        stop: hash,
+                        progress: null,
+                        timeout: timeout,
+                        totalBlockCount: 0,
+                        logSessionId: sessionId,
+                        cancellationToken: cancellationToken
                     );
-                    while (!task.IsCompleted)
-                    {
-                        await Task.WhenAny(task, Task.Delay(demandCheckInterval));
-                        if (!task.IsCompleted &&
-                            BlockDemand is { } currentDemand &&
-                            !blockDemand.Equals(currentDemand) &&
-                            canonComparer.Compare(
-                                BlockChain.PerceiveBlock(BlockDemand?.Header),
-                                BlockChain.PerceiveBlock(BlockChain.Tip)
-                            ) > 0)
-                        {
-                            const string cancelLogMsg =
-                                "{SessionId}: Cancelled to sync block(s) from {Peer}, " +
-                                "because the demand has been updated.";
-                            _logger.Debug(cancelLogMsg, sessionId, peer);
-#pragma warning disable S907
-                            goto NewDemand;
-#pragma warning restore S907
-                        }
-
-                        demandCheckInterval = demandCheckInterval.Divide(2);
-                        demandCheckInterval = demandCheckInterval >= aSecond
-                            ? demandCheckInterval
-                            : aSecond;
-                    }
-
                     _logger.Debug(
                         "{SessionId}: Synced block(s) from {Peer}; broadcast them to neighbors...",
                         sessionId,
