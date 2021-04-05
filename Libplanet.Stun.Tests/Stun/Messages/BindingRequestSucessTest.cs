@@ -22,7 +22,7 @@ namespace Libplanet.Stun.Tests.Messages
             using (var stream = new MemoryStream(bytes))
             {
                 var response =
-                    (BindingSuccessResponse)await StunMessage.Parse(stream);
+                    (BindingSuccessResponse)await StunMessage.ParseAsync(stream);
                 Assert.Equal(
                     new IPEndPoint(IPAddress.Parse("211.176.129.90"), 54141),
                     response.MappedAddress);

@@ -27,7 +27,7 @@ namespace Libplanet.Stun.Tests.Messages
             using (var stream = new MemoryStream(bytes))
             {
                 var response =
-                    (AllocateErrorResponse)await StunMessage.Parse(stream);
+                    (AllocateErrorResponse)await StunMessage.ParseAsync(stream);
                 Assert.Equal(
                     new byte[]
                     {
