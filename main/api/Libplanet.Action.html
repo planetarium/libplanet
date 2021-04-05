@@ -116,7 +116,7 @@ to deal with <a class="xref" href="Libplanet.Action.IRandom.html">IRandom</a>.</
       <h4><a class="xref" href="Libplanet.Action.UnexpectedlyTerminatedActionException.html">UnexpectedlyTerminatedActionException</a></h4>
       <section><p>The exception that is thrown during an <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> is being evaluated.</p>
 <p>The actual exception that the <a class="xref" href="Libplanet.Action.UnexpectedlyTerminatedActionException.html#Libplanet_Action_UnexpectedlyTerminatedActionException_Action">Action</a> threw
-is stored in the <span class="xref">System.Exception.InnerException</span> property.</p>
+is stored in the <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.exception.innerexception#System_Exception_InnerException">InnerException</a> property.</p>
 </section>
     <h3 id="interfaces">Interfaces
   </h3>
@@ -127,7 +127,7 @@ maintaining the set of <a class="xref" href="Libplanet.Action.IAccountStateDelta
 that every possible <a class="xref" href="Libplanet.Address.html">Address</a> exists and
 is mapped to <code>null</code>.  That means that:</p>
 <ul><li>it does not have length,</li><li>its index getter never throws
-<span class="xref">System.Collections.Generic.KeyNotFoundException</span>,
+<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.keynotfoundexception">KeyNotFoundException</a>,
 but returns <code>null</code> instead, and</li><li>filling an <a class="xref" href="Libplanet.Address.html">Address</a> with
 <code>null</code> state cannot be distinguished from
 the <a class="xref" href="Libplanet.Address.html">Address</a> having never been set to
@@ -173,7 +173,7 @@ Passed to <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_I
 </section>
       <h4><a class="xref" href="Libplanet.Action.IRandom.html">IRandom</a></h4>
       <section><p>An pseudorandom number generator interface equivalent to
-<span class="xref">System.Random</span>.</p>
+<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.random">Random</a>.</p>
 <p>Although these two types have similar shapes, they are not
 compatible (i.e., disallowed to be casted to each other).</p>
 </section>

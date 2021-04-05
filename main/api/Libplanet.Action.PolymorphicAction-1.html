@@ -84,7 +84,7 @@ compatibility issues on certain platforms, and is slightly slower.
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
-    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">PolymorphicAction&lt;T&gt;</span></div>
   </div>
   <div classs="implements">
@@ -94,22 +94,22 @@ compatibility issues on certain platforms, and is slightly slower.
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
     </div>
     <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
     </div>
     <div>
-      <span class="xref">System.Object.GetHashCode()</span>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
     </div>
     <div>
-      <span class="xref">System.Object.GetType()</span>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
     </div>
     <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
     </div>
     <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Action.html">Libplanet.Action</a></h6>
@@ -470,7 +470,7 @@ than once, the time it's called is difficult to predict.</p>
 <p>For changing in-memory game states or drawing graphics,
 implement the <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a> interface separately and
 attach it to a <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> instance.</p>
-<p>For randomness, <em>never</em> use <span class="xref">System.Random</span>
+<p>For randomness, <em>never</em> use <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.random">Random</a>
 nor any other PRNGs provided by other than Libplanet.
 Use <a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_Random">Random</a> instead.
 <a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_Random">Random</a> guarantees the same action
@@ -483,14 +483,14 @@ could be logged multiple times.</p>
 underspecified so that it can make different results on different
 machines, platforms, runtimes, compilers, and builds</a>.</p>
 <p>Lastly, you need to be aware and keep in mind that there
-is a global state named <span class="xref">System.Globalization.CultureInfo.CurrentCulture</span> on .NET;
+is a global state named <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.globalization.cultureinfo.currentculture#System_Globalization_CultureInfo_CurrentCulture">CurrentCulture</a> on .NET;
 if you format numbers, dates and times, currencies, or other such
 things into strings and parse these strings back these can rely on
-<span class="xref">System.Globalization.CultureInfo.CurrentCulture</span>,
+<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.globalization.cultureinfo.currentculture#System_Globalization_CultureInfo_CurrentCulture">CurrentCulture</a>,
 so that the same action make different results on two differently
 configured systems like Thai language and French language.
 In order to make these types of conversions deterministic,
-you have to explicitly pass <span class="xref">System.Globalization.CultureInfo.InvariantCulture</span>.</p>
+you have to explicitly pass <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.globalization.cultureinfo.invariantculture#System_Globalization_CultureInfo_InvariantCulture">InvariantCulture</a>.</p>
 <p>For more on determinism in general, please read also <a href="https://tendermint.com/docs/spec/abci/abci.html#determinism">Tendermint ABCI&apos;s docs on determinism</a>.</p>
 <p>Lastly, you can conduct static analysis on your code
 using <a href="https://git.io/JTmby">Libplanet.Analyzers</a>.
@@ -600,13 +600,13 @@ properties (or fields).</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">System.Object.ToString()</span></div>
+  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a></div>
   <h3 id="operators">Operators
   </h3>
   <span class="small pull-right mobile-hide">

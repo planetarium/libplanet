@@ -65,11 +65,22 @@
 <h2 id="version-0120">Version 0.12.0</h2>
 <p>To be released.</p>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
+<ul>
+<li>Removed <code>StunMessage.Parse(Stream)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1218">#1228</a>]</li>
+</ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
+<ul>
+<li>Added <code>StunMessage.ParseAsync(Stream, CancellationToken)</code> method.
+[<a href="https://github.com/planetarium/libplanet/pull/1218">#1228</a>]</li>
+</ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <h3 id="bug-fixes">Bug fixes</h3>
+<ul>
+<li>Fixed memory leak due to undisposed <code>CancellationTokenRegistration</code>s.
+[<a href="https://github.com/planetarium/libplanet/pull/1218">#1228</a>]</li>
+</ul>
 <h3 id="cli-tools">CLI tools</h3>
 <h2 id="version-0110">Version 0.11.0</h2>
 <p>Released on March 30, 2021.</p>
