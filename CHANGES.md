@@ -18,6 +18,7 @@ To be released.
 
  -  Added `StunMessage.ParseAsync(Stream, CancellationToken)` method.
     [[#1228]]
+ -  Added `Swarm<T>.AddPeersAsync()` method.  [[#1234]]
 
 ### Behavioral changes
 
@@ -34,6 +35,7 @@ To be released.
 
 [#1219]: https://github.com/planetarium/libplanet/pull/1219
 [#1228]: https://github.com/planetarium/libplanet/pull/1218
+[#1234]: https://github.com/planetarium/libplanet/pull/1234
 
 
 Version 0.11.0
