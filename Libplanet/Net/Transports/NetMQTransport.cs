@@ -16,7 +16,7 @@ using NetMQ.Sockets;
 using Nito.AsyncEx;
 using Serilog;
 
-namespace Libplanet.Net
+namespace Libplanet.Net.Transports
 {
     /// <summary>
     /// Implementation of <see cref="ITransport"/> interface using NetMQ.
@@ -296,7 +296,7 @@ namespace Libplanet.Net
         /// <inheritdoc />
         public async Task StopAsync(
             TimeSpan waitFor,
-            CancellationToken cancellationToken = default(CancellationToken)
+            CancellationToken cancellationToken = default
         )
         {
             if (Running)
@@ -389,7 +389,7 @@ namespace Libplanet.Net
             Message message,
             TimeSpan? timeout,
             int expectedResponses,
-            CancellationToken cancellationToken = default(CancellationToken)
+            CancellationToken cancellationToken = default
         )
         {
             if (!(_turnClient is null) && _turnClient.BehindNAT)
@@ -692,7 +692,7 @@ namespace Libplanet.Net
         }
 
         private async Task ProcessRuntime(
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             while (!cancellationToken.IsCancellationRequested)
             {

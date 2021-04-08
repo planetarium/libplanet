@@ -9,6 +9,8 @@ To be released.
 ### Backward-incompatible API changes
 
  -  Removed `StunMessage.Parse(Stream)` method.  [[#1228]]
+ -  Moved `ITransport` and `NetMQTransport` from `Libplanet.Net` to
+    `Libplanet.Net.Transports`.  [[#1235]]
 
 ### Backward-incompatible network protocol changes
 

@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Net.Messages;
 
-namespace Libplanet.Net
+namespace Libplanet.Net.Transports
 {
     /// <summary>
     /// An interface to handle peer-to-peer networking, including <see cref="Message"/> exchanging
@@ -46,7 +46,7 @@ namespace Libplanet.Net
         /// A cancellation token used to propagate notification that this
         /// operation should be canceled.</param>
         /// <returns>An awaitable task without value.</returns>
-        Task StartAsync(CancellationToken cancellationToken = default(CancellationToken));
+        Task StartAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Starts running transport layer. To <see cref="RunAsync"/>, you should call
@@ -56,7 +56,7 @@ namespace Libplanet.Net
         /// A cancellation token used to propagate notification that this
         /// operation should be canceled.</param>
         /// <returns>An awaitable task without value.</returns>
-        Task RunAsync(CancellationToken cancellationToken = default(CancellationToken));
+        Task RunAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Stops running transport layer.
@@ -69,7 +69,7 @@ namespace Libplanet.Net
         /// <returns>An awaitable task without value.</returns>
         Task StopAsync(
             TimeSpan waitFor,
-            CancellationToken cancellationToken = default(CancellationToken));
+            CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Sends the <paramref name="message"/> to given <paramref name="peer"/>.
@@ -118,7 +118,7 @@ namespace Libplanet.Net
             Message message,
             TimeSpan? timeout,
             int expectedResponses,
-            CancellationToken cancellationToken = default(CancellationToken));
+            CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Broadcasts the <paramref name="message"/> to peers selected from the routing table.

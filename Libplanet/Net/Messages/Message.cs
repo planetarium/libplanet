@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
+using Libplanet.Net.Transports;
 using NetMQ;
 
 namespace Libplanet.Net.Messages
