@@ -610,7 +610,7 @@ namespace Libplanet.Net.Transports
 
                 foreach (BoundPeer peer in peers)
                 {
-                    string endpoint = ToNetMQAddress(peer);
+                    string endpoint = peer.ToNetMQAddress();
                     if (!_dealers.TryGetValue(peer.Address, out DealerSocket dealer) ||
                         dealer.IsDisposed)
                     {
@@ -747,7 +747,7 @@ namespace Libplanet.Net.Transports
                 DateTimeOffset.UtcNow - req.RequestedTime);
             DateTimeOffset startedTime = DateTimeOffset.UtcNow;
 
-            using var dealer = new DealerSocket(ToNetMQAddress(req.Peer));
+            using var dealer = new DealerSocket(req.Peer.ToNetMQAddress());
 
             _logger.Debug(
                 "Trying to send {Message} to {Peer}...",
@@ -817,19 +817,6 @@ namespace Libplanet.Net.Transports
                 req.Message,
                 req.Id,
                 DateTimeOffset.UtcNow - startedTime);
-        }
-
-        private void CheckStarted()
-        {
-            if (!Running)
-            {
-                throw new NoSwarmContextException("Swarm hasn't started yet.");
-            }
-        }
-
-        private string ToNetMQAddress(BoundPeer peer)
-        {
-            return $"tcp://{peer.EndPoint.Host}:{peer.EndPoint.Port}";
         }
 
         private async Task CreatePermission(BoundPeer peer)
