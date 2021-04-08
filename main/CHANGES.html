@@ -67,6 +67,8 @@
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
 <ul>
 <li>Removed <code>StunMessage.Parse(Stream)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1218">#1228</a>]</li>
+<li>Moved <code>ITransport</code> and <code>NetMQTransport</code> from <code>Libplanet.Net</code> to
+<code>Libplanet.Net.Transports</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1235">#1235</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
@@ -75,6 +77,7 @@
 <li>Added <code>StunMessage.ParseAsync(Stream, CancellationToken)</code> method.
 [<a href="https://github.com/planetarium/libplanet/pull/1218">#1228</a>]</li>
 <li>Added <code>Swarm&lt;T&gt;.AddPeersAsync()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1234">#1234</a>]</li>
+<li>Added <code>NetMQTransport.QueryAppProtocolVersion()</code> static method.  [<a href="https://github.com/planetarium/libplanet/pull/1235">#1235</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <h3 id="bug-fixes">Bug fixes</h3>
