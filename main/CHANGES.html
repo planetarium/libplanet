@@ -78,6 +78,10 @@
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
+<li>Fixed a bug where <code>KademliaProtocol.BootstrapAsync()</code> has sent multiple
+<code>Ping</code> messages to other peers.  [<a href="https://github.com/planetarium/libplanet/pull/1219">#1219</a>]</li>
+<li>Fixed a bug where <code>KademliaProtocol.CheckReplacementCacheAsync()</code> has
+updated cached peers multiple times.  [<a href="https://github.com/planetarium/libplanet/pull/1219">#1219</a>]</li>
 <li>Fixed memory leak due to undisposed <code>CancellationTokenRegistration</code>s.
 [<a href="https://github.com/planetarium/libplanet/pull/1218">#1228</a>]</li>
 </ul>
