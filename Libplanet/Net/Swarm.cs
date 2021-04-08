@@ -929,7 +929,16 @@ namespace Libplanet.Net
             await kademliaProtocol.CheckAllPeersAsync(timeout, cancellationToken);
         }
 
-        internal async Task AddPeersAsync(
+        /// <summary>
+        /// Adds <paramref name="peers"/> to routing table by sending a simple message.
+        /// </summary>
+        /// <param name="peers">A list of peers to add.</param>
+        /// <param name="timeout">Timeout for this operation. If it is set to <c>null</c>,
+        /// wait infinitely until the requested operation is finished.</param>
+        /// <param name="cancellationToken">A cancellation token used to propagate notification
+        /// that this operation should be canceled.</param>
+        /// <returns>An awaitable task without value.</returns>
+        public async Task AddPeersAsync(
             IEnumerable<Peer> peers,
             TimeSpan? timeout,
             CancellationToken cancellationToken = default(CancellationToken))
