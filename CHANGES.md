@@ -23,11 +23,16 @@ To be released.
 
 ### Bug fixes
 
+ -  Fixed a bug where `KademliaProtocol.BootstrapAsync()` has sent multiple
+    `Ping` messages to other peers.  [[#1219]]
+ -  Fixed a bug where `KademliaProtocol.CheckReplacementCacheAsync()` has
+    updated cached peers multiple times.  [[#1219]]
  -  Fixed memory leak due to undisposed `CancellationTokenRegistration`s.
     [[#1228]]
 
 ### CLI tools
 
+[#1219]: https://github.com/planetarium/libplanet/pull/1219
 [#1228]: https://github.com/planetarium/libplanet/pull/1218
 
 

@@ -76,6 +76,7 @@ namespace Libplanet.Net.Protocols
 
             var findPeerTasks = new List<Task>();
             var history = new ConcurrentBag<BoundPeer>();
+            var dialHistory = new ConcurrentBag<BoundPeer>();
 
             foreach (BoundPeer peer in bootstrapPeers.Where(peer => !peer.Address.Equals(_address)))
             {
@@ -86,6 +87,7 @@ namespace Libplanet.Net.Protocols
                     findPeerTasks.Add(
                         FindPeerAsync(
                             history,
+                            dialHistory,
                             _address,
                             peer,
                             depth,
@@ -252,11 +254,14 @@ namespace Libplanet.Net.Protocols
             _logger.Verbose("Rebuilding connection...");
             var buffer = new byte[20];
             var tasks = new List<Task>();
+            var history = new ConcurrentBag<BoundPeer>();
+            var dialHistory = new ConcurrentBag<BoundPeer>();
             for (int i = 0; i < _findConcurrency; i++)
             {
                 _random.NextBytes(buffer);
                 tasks.Add(FindPeerAsync(
-                    new ConcurrentBag<BoundPeer>(),
+                    history,
+                    dialHistory,
                     new Address(buffer),
                     null,
                     depth,
@@ -266,7 +271,8 @@ namespace Libplanet.Net.Protocols
 
             tasks.Add(
                 FindPeerAsync(
-                    new ConcurrentBag<BoundPeer>(),
+                    history,
+                    dialHistory,
                     _address,
                     null,
                     depth,
@@ -293,16 +299,14 @@ namespace Libplanet.Net.Protocols
                     {
                         _logger.Verbose("Check peer {Peer}.", replacement);
 
-                        await PingAsync(replacement, _requestTimeout, cancellationToken);
                         _table.RemoveCache(replacement);
-                        Update(replacement);
+                        await PingAsync(replacement, _requestTimeout, cancellationToken);
                     }
                     catch (PingTimeoutException)
                     {
                         _logger.Verbose(
-                            "Remove stale peer {Peer} from replacement cache.",
+                            "Removed stale peer {Peer} from replacement cache.",
                             replacement);
-                        _table.RemoveCache(replacement);
                     }
                 }
             }
@@ -569,6 +573,7 @@ namespace Libplanet.Net.Protocols
         /// to find <see cref="Peer"/>s near <paramref name="target"/>.
         /// </summary>
         /// <param name="history">The <see cref="Peer"/> that searched.</param>
+        /// <param name="dialHistory">The <see cref="Peer"/> that ping was sent.</param>
         /// <param name="target">The <see cref="Address"/> to find.</param>
         /// <param name="viaPeer">The target <see cref="Peer"/> to send <see cref="FindNeighbors"/>
         /// message. If null, selects 3 <see cref="Peer"/>s from <see cref="RoutingTable"/> of
@@ -581,6 +586,7 @@ namespace Libplanet.Net.Protocols
         /// <returns>An awaitable task without value.</returns>
         private async Task FindPeerAsync(
             ConcurrentBag<BoundPeer> history,
+            ConcurrentBag<BoundPeer> dialHistory,
             Address target,
             BoundPeer viaPeer,
             int depth,
@@ -613,7 +619,14 @@ namespace Libplanet.Net.Protocols
             // target. But our implementation contains target itself for FindSpecificPeerAsync(),
             // so it should be excluded in here.
             found = found.Where(peer => !peer.Address.Equals(target));
-            await ProcessFoundAsync(history, found, target, depth, timeout, cancellationToken);
+            await ProcessFoundAsync(
+                history,
+                dialHistory,
+                found,
+                target,
+                depth,
+                timeout,
+                cancellationToken);
         }
 
         private async Task<IEnumerable<BoundPeer>> QueryNeighborsAsync(
@@ -695,6 +708,7 @@ namespace Libplanet.Net.Protocols
         /// request.
         /// </summary>
         /// <param name="history"><see cref="Peer"/>s that already searched.</param>
+        /// <param name="dialHistory"><see cref="Peer"/>s that ping sent.</param>
         /// <param name="found"><see cref="Peer"/>s that found.</param>
         /// <param name="target">The target <see cref="Address"/> to search.</param>
         /// <param name="depth">Target depth of recursive operation. If -1 is given,
@@ -708,6 +722,7 @@ namespace Libplanet.Net.Protocols
         /// not online.</exception>
         private async Task ProcessFoundAsync(
             ConcurrentBag<BoundPeer> history,
+            ConcurrentBag<BoundPeer> dialHistory,
             IEnumerable<BoundPeer> found,
             Address target,
             int depth,
@@ -731,9 +746,15 @@ namespace Libplanet.Net.Protocols
             List<BoundPeer> closestCandidate =
                 _table.Neighbors(target, _table.BucketSize, false).ToList();
 
-            Task[] awaitables = peers.Select(peer =>
-                PingAsync(peer, _requestTimeout, cancellationToken)
-            ).ToArray();
+            Task[] awaitables = peers
+                .Where(peer => !dialHistory.Contains(peer))
+                .Select(
+                    peer =>
+                    {
+                        dialHistory.Add(peer);
+                        return PingAsync(peer, _requestTimeout, cancellationToken);
+                    }
+                ).ToArray();
             try
             {
                 await Task.WhenAll(awaitables);
@@ -790,6 +811,7 @@ namespace Libplanet.Net.Protocols
 
                 findPeerTasks.Add(FindPeerAsync(
                     history,
+                    dialHistory,
                     target,
                     peer,
                     depth == -1 ? depth : depth - 1,
