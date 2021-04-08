@@ -16,7 +16,7 @@ using NetMQ.Sockets;
 using Nito.AsyncEx;
 using Serilog;
 
-namespace Libplanet.Net
+namespace Libplanet.Net.Transports
 {
     /// <summary>
     /// Implementation of <see cref="ITransport"/> interface using NetMQ.
@@ -296,7 +296,7 @@ namespace Libplanet.Net
         /// <inheritdoc />
         public async Task StopAsync(
             TimeSpan waitFor,
-            CancellationToken cancellationToken = default(CancellationToken)
+            CancellationToken cancellationToken = default
         )
         {
             if (Running)
@@ -389,7 +389,7 @@ namespace Libplanet.Net
             Message message,
             TimeSpan? timeout,
             int expectedResponses,
-            CancellationToken cancellationToken = default(CancellationToken)
+            CancellationToken cancellationToken = default
         )
         {
             if (!(_turnClient is null) && _turnClient.BehindNAT)
@@ -610,7 +610,7 @@ namespace Libplanet.Net
 
                 foreach (BoundPeer peer in peers)
                 {
-                    string endpoint = ToNetMQAddress(peer);
+                    string endpoint = peer.ToNetMQAddress();
                     if (!_dealers.TryGetValue(peer.Address, out DealerSocket dealer) ||
                         dealer.IsDisposed)
                     {
@@ -692,7 +692,7 @@ namespace Libplanet.Net
         }
 
         private async Task ProcessRuntime(
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             while (!cancellationToken.IsCancellationRequested)
             {
@@ -747,7 +747,7 @@ namespace Libplanet.Net
                 DateTimeOffset.UtcNow - req.RequestedTime);
             DateTimeOffset startedTime = DateTimeOffset.UtcNow;
 
-            using var dealer = new DealerSocket(ToNetMQAddress(req.Peer));
+            using var dealer = new DealerSocket(req.Peer.ToNetMQAddress());
 
             _logger.Debug(
                 "Trying to send {Message} to {Peer}...",
@@ -817,19 +817,6 @@ namespace Libplanet.Net
                 req.Message,
                 req.Id,
                 DateTimeOffset.UtcNow - startedTime);
-        }
-
-        private void CheckStarted()
-        {
-            if (!Running)
-            {
-                throw new NoSwarmContextException("Swarm hasn't started yet.");
-            }
-        }
-
-        private string ToNetMQAddress(BoundPeer peer)
-        {
-            return $"tcp://{peer.EndPoint.Host}:{peer.EndPoint.Port}";
         }
 
         private async Task CreatePermission(BoundPeer peer)

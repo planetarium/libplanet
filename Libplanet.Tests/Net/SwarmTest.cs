@@ -16,6 +16,7 @@ using Libplanet.Crypto;
 using Libplanet.Net;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Protocols;
+using Libplanet.Net.Transports;
 using Libplanet.Store;
 using Libplanet.Stun;
 using Libplanet.Tests.Blockchain;
