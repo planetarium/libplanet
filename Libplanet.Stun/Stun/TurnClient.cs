@@ -74,9 +74,7 @@ namespace Libplanet.Stun
         public async Task InitializeTurnAsync(CancellationToken cancellationToken)
         {
             _control = new TcpClient();
-#pragma warning disable PC001 // API not supported on all platforms
-            _control.Connect(_host, _port);
-#pragma warning restore PC001 // API not supported on all platforms
+            await _control.ConnectAsync(_host, _port);
             _processMessage = ProcessMessage(_turnTaskCts.Token);
 
             BehindNAT = await IsBehindNAT(cancellationToken);
@@ -274,9 +272,7 @@ namespace Libplanet.Stun
             try
             {
                 using var client = new TcpClient();
-#pragma warning disable PC001 // API not supported on all platforms
-                client.Connect(_host, _port);
-#pragma warning restore PC001 // API not supported on all platforms
+                await client.ConnectAsync(_host, _port);
                 NetworkStream stream = client.GetStream();
 
                 var request = new BindingRequest();
@@ -306,9 +302,7 @@ namespace Libplanet.Stun
             while (!cancellationToken.IsCancellationRequested)
             {
                 var tcpClient = new TcpClient();
-#pragma warning disable PC001  // API not supported on all platforms
-                tcpClient.Connect(new IPEndPoint(IPAddress.Loopback, listenPort));
-#pragma warning restore PC001
+                await tcpClient.ConnectAsync(IPAddress.Loopback, listenPort);
                 NetworkStream localStream = tcpClient.GetStream();
                 NetworkStream turnStream = await AcceptRelayedStreamAsync(cancellationToken);
 #pragma warning disable CS4014
