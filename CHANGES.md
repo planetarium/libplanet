@@ -22,6 +22,7 @@ To be released.
     [[#1228]]
  -  Added `Swarm<T>.AddPeersAsync()` method.  [[#1234]]
  -  Added `NetMQTransport.QueryAppProtocolVersion()` static method.  [[#1235]]
+ -  Added `BoundPeer.Parse()` static method.  [[#1240]]
 
 ### Behavioral changes
 
@@ -36,8 +37,10 @@ To be released.
 
 ### CLI tools
 
- -  Added the flag `--json` to `planet apv analyze` comamnd to print result as
-    JSON format.  [[#1240]]
+ -  Added the option `--json` to `planet apv analyze` command to print result
+    as JSON format.  [[#1240]]
+ -  Added `planet apv query` subcommand to query app protocol version of
+    specific peer. [[#1240]]
 
 [#1219]: https://github.com/planetarium/libplanet/pull/1219
 [#1228]: https://github.com/planetarium/libplanet/pull/1218
