@@ -5,6 +5,7 @@ namespace Libplanet.Extensions.Cocona.Commands
     using System.Globalization;
     using System.IO;
     using System.Linq;
+    using System.Text.Json;
     using Bencodex;
     using Bencodex.Types;
     using global::Cocona;
@@ -192,7 +193,9 @@ namespace Libplanet.Extensions.Cocona.Commands
                 Description = "An app protocol version token to analyze.  " +
                     "Read from the standard input if omitted."
             )]
-            string? token = null
+            string? token = null,
+            [Option(Description = "Print information of given token as JSON.")]
+            bool json = false
         )
         {
             AppProtocolVersion v = ParseAppProtocolVersionToken(token);
@@ -263,7 +266,14 @@ namespace Libplanet.Extensions.Cocona.Commands
                 TreeIntoTable(v.Extra, data, "extra");
             }
 
-            Utils.PrintTable(("Field", "Value"), data);
+            if (json)
+            {
+                Console.WriteLine(JsonSerializer.Serialize(data.ToDictionary(e => e.Item1, e => e.Item2)));
+            }
+            else
+            {
+                Utils.PrintTable(("Field", "Value"), data);
+            }
         }
 
         private AppProtocolVersion ParseAppProtocolVersionToken(string? token)

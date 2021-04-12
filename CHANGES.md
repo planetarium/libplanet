@@ -36,10 +36,14 @@ To be released.
 
 ### CLI tools
 
+ -  Added the flag `--json` to `planet apv analyze` comamnd to print result as
+    JSON format.  [[#1240]]
+
 [#1219]: https://github.com/planetarium/libplanet/pull/1219
 [#1228]: https://github.com/planetarium/libplanet/pull/1218
 [#1234]: https://github.com/planetarium/libplanet/pull/1234
 [#1235]: https://github.com/planetarium/libplanet/pull/1235
+[#1240]: https://github.com/planetarium/libplanet/pull/1240
 
 
 Version 0.11.0
