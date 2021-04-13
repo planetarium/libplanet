@@ -179,21 +179,23 @@ namespace Libplanet.Net.Protocols
                     actual.Signer
                 );
             }
-            catch (TimeoutException)
+            catch (TimeoutException e)
             {
-                _logger.Debug(
-                    $"Timeout occurred during {nameof(AddPeersAsync)}() after {timeout}.");
+                const string msg =
+                    "Timeout occurred during " + nameof(AddPeersAsync) + "() after {Timeout}.";
+                _logger.Debug(e, msg, timeout);
                 throw;
             }
-            catch (TaskCanceledException)
+            catch (TaskCanceledException e)
             {
-                _logger.Debug($"Task is cancelled during {nameof(AddPeersAsync)}().");
+                const string msg = "Task is cancelled during " + nameof(AddPeersAsync) + "().";
+                _logger.Debug(e, msg);
             }
             catch (Exception e)
             {
-                _logger.Error(
-                    e,
-                    $"Unexpected exception occurred during {nameof(AddPeersAsync)}().");
+                const string msg = "Unexpected exception occurred during " +
+                                   nameof(AddPeersAsync) + "(): {Exception}";
+                _logger.Error(e, msg, e);
                 throw;
             }
         }

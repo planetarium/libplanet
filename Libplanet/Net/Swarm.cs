@@ -978,12 +978,10 @@ namespace Libplanet.Net
                 if (blockHashes.StartIndex is long idx)
                 {
                     HashDigest<SHA256>[] hashes = blockHashes.Hashes.ToArray();
-                    _logger.Debug(
-                        $"Received a {nameof(BlockHashes)} message with an offset index " +
-                        "{OffsetIndex} (total {HashesLength} hashes).",
-                        idx,
-                        hashes.LongLength
-                    );
+                    const string msg =
+                        "{SessionId}/{SubSessionId}: Received a " + nameof(BlockHashes) +
+                        " message with an offset index {OffsetIndex} (total {Length} hashes).";
+                    _logger.Debug(msg, logSessionId, subSessionId, idx, hashes.LongLength);
                     foreach (HashDigest<SHA256> hash in hashes)
                     {
                         yield return new Tuple<long, HashDigest<SHA256>>(idx, hash);
@@ -992,9 +990,10 @@ namespace Libplanet.Net
                 }
                 else
                 {
-                    _logger.Debug(
-                        $"Received a {nameof(BlockHashes)} message, but it has zero hashes."
-                    );
+                    const string msg =
+                        "{SessionId}/{SubSessionId}: Received a " + nameof(BlockHashes) +
+                        " message, but it has zero hashes.";
+                    _logger.Debug(msg, logSessionId, subSessionId);
                 }
 
                 yield break;
@@ -1012,13 +1011,12 @@ namespace Libplanet.Net
             [EnumeratorCancellation] CancellationToken cancellationToken
         )
         {
-            _logger.Information(
-                "Try to download blocks from {EndPoint}@{Address}...",
-                peer.EndPoint,
-                peer.Address.ToHex()
-            );
-
             var blockHashesAsArray = blockHashes as HashDigest<SHA256>[] ?? blockHashes.ToArray();
+            _logger.Debug(
+                "Try to download {BlockHashes} block(s) from {Peer}...",
+                blockHashesAsArray.Length,
+                peer
+            );
             var request = new GetBlocks(blockHashesAsArray);
             int hashCount = blockHashesAsArray.Count();
 
@@ -1042,6 +1040,9 @@ namespace Libplanet.Net
                 cancellationToken
             );
 
+            _logger.Debug("Received replies from {Peer}.", peer);
+            int count = 0;
+
             foreach (Message message in replies)
             {
                 cancellationToken.ThrowIfCancellationRequested();
@@ -1059,6 +1060,7 @@ namespace Libplanet.Net
                         Block<T> block = Block<T>.Deserialize(payload);
 
                         yield return block;
+                        count++;
                     }
                 }
                 else
@@ -1071,11 +1073,7 @@ namespace Libplanet.Net
                 }
             }
 
-            _logger.Information(
-                "Downloaded blocks from {EndPoint}@{Address}.",
-                peer.EndPoint,
-                peer.Address.ToHex()
-            );
+            _logger.Debug("Downloaded {Blocks} block(s) from {Peer}.", count, peer);
         }
 
         internal async IAsyncEnumerable<Transaction<T>> GetTxsAsync(

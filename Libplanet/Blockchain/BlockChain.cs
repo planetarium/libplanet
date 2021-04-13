@@ -1103,6 +1103,7 @@ namespace Libplanet.Blockchain
             return StagePolicy.Iterate(this).Select(tx => tx.Id).ToImmutableHashSet();
         }
 
+#pragma warning disable MEN003
         internal void Append(
             Block<T> block,
             DateTimeOffset currentTime,
@@ -1199,7 +1200,17 @@ namespace Libplanet.Blockchain
                 {
                     if (evaluateActions && actionEvaluations is null)
                     {
+                        _logger.Debug(
+                            "Executing actions in the block #{BlockIndex} {BlockHash}...",
+                            block.Index,
+                            block.Hash
+                        );
                         actionEvaluations = ExecuteActions(block);
+                        _logger.Debug(
+                            "Executed actions in the block #{BlockIndex} {BlockHash}.",
+                            block.Index,
+                            block.Hash
+                        );
                     }
 
                     _blocks[block.Hash] = block;
@@ -1210,7 +1221,15 @@ namespace Libplanet.Blockchain
 
                     Store.AppendIndex(Id, block.Hash);
 
-                    _logger.Debug("Unstaging transactions...");
+                    const string unstageStartMsg =
+                        "Unstaging {Txs} transaction(s) which belong to the block " +
+                        "#{BlockIndex} {BlockHash}...";
+                    _logger.Debug(
+                        unstageStartMsg,
+                        block.Transactions.Count(),
+                        block.Index,
+                        block.Hash
+                    );
 
                     maxNonces = block.Transactions
                         .GroupBy(
@@ -1239,11 +1258,30 @@ namespace Libplanet.Blockchain
                     StagePolicy.Unstage(this, txId);
                 }
 
+                const string unstageEndMsg =
+                    "Unstaged {Txs} transaction(s), which belong to the block " +
+                    "#{BlockIndex} {BlockHash}...";
+                _logger.Debug(unstageEndMsg, txIds.Count, block.Index, block.Hash);
+
                 TipChanged?.Invoke(this, (prevTip, block));
-                _logger.Debug("Block {blockIndex}: {block} is appended.", block?.Index, block);
+                _logger.Debug(
+                    "Appended the block #{BlockIndex} {BlockHash}.",
+                    block.Index,
+                    block.Hash
+                );
 
                 if (renderBlocks)
                 {
+                    const string startMsg =
+                        "Invoking renderers for #{BlockIndex} {BlockHash}... " +
+                        "({Renderers} renderer(s), {ActionRenderers} action renderer(s))";
+                    _logger.Debug(
+                        startMsg,
+                        block.Index,
+                        block.Hash,
+                        Renderers.Count,
+                        ActionRenderers.Count
+                    );
                     foreach (IRenderer<T> renderer in Renderers)
                     {
                         renderer.RenderBlock(oldTip: prevTip ?? Genesis, newTip: block);
@@ -1261,6 +1299,17 @@ namespace Libplanet.Blockchain
                             renderer.RenderBlockEnd(oldTip: prevTip ?? Genesis, newTip: block);
                         }
                     }
+
+                    const string endMsg =
+                        "Invoked renderers for #{BlockIndex} {BlockHash}... " +
+                        "({Renderers} renderer(s), {ActionRenderers} action renderer(s))";
+                    _logger.Debug(
+                        endMsg,
+                        block.Index,
+                        block.Hash,
+                        Renderers.Count,
+                        ActionRenderers.Count
+                    );
                 }
             }
             finally
@@ -1268,6 +1317,7 @@ namespace Libplanet.Blockchain
                 _rwlock.ExitUpgradeableReadLock();
             }
         }
+#pragma warning restore MEN003
 
         /// <summary>
         /// Render actions from block index of <paramref name="offset"/>.
@@ -1369,9 +1419,9 @@ namespace Libplanet.Blockchain
         )
         {
             _logger.Debug(
-                "Execute actions in the block #{BlockIndex} {Block}.",
+                "Evaluating actions in the block #{BlockIndex} {BlockHash}...",
                 block.Index,
-                block
+                block.Hash
             );
             IReadOnlyList<ActionEvaluation> evaluations = null;
             DateTimeOffset evaluateActionStarted = DateTimeOffset.Now;
@@ -1379,11 +1429,11 @@ namespace Libplanet.Blockchain
                 block,
                 stateCompleters ?? StateCompleterSet<T>.Recalculate
             );
-            _logger.Verbose(
-                $"[#{{0}} {{1}}] {nameof(BlockEvaluator.EvaluateActions)} spent {{2}} ms.",
-                block.Index,
-                block.Hash,
-                (DateTimeOffset.Now - evaluateActionStarted).TotalMilliseconds);
+            const string evalEndMsg =
+                "Evaluated actions in the block #{BlockIndex} {BlockHash} " +
+                "(duration: {DurationMs}ms).";
+            double evalDuration = (DateTimeOffset.Now - evaluateActionStarted).TotalMilliseconds;
+            _logger.Debug(evalEndMsg, block.Index, block.Hash, evalDuration);
 
             _rwlock.EnterWriteLock();
             try
@@ -1393,8 +1443,17 @@ namespace Libplanet.Blockchain
                 {
                     var totalDelta =
                         evaluations.GetTotalDelta(ToStateKey, ToFungibleAssetKey);
+                    const string deltaMsg =
+                        "Summarized the states delta made by the block #{BlockIndex} {BlockHash}." +
+                        "  Total {Keys} key(s) changed.";
+                    _logger.Debug(deltaMsg, block.Index, block.Hash, totalDelta.Count);
+
                     HashDigest<SHA256> rootHash =
                         trieStateStore.EvalState(block, totalDelta);
+                    const string rootHashMsg =
+                        "Calculated the root hash of the states made by the block #{BlockIndex} " +
+                        "{BlockHash} for " + nameof(TrieStateStore) + ": {StateRootHash}.";
+                    _logger.Debug(rootHashMsg, block.Index, block.Hash, rootHash);
 
                     if (!rootHash.Equals(block.StateRootHash))
                     {
@@ -1414,11 +1473,11 @@ namespace Libplanet.Blockchain
                     SetStates(block, evaluations);
                 }
 
-                _logger.Verbose(
-                    $"[#{{0}} {{1}}] {nameof(SetStates)} spent {{2}} ms.",
-                    block.Index,
-                    block.Hash,
-                    (DateTimeOffset.Now - setStatesStarted).TotalMilliseconds);
+                const string endMsg =
+                    "Finished to update states affected by the block #{BlockIndex} {BlockHash} " +
+                    "(duration: {DurationMs}ms).";
+                double duration = (DateTimeOffset.Now - setStatesStarted).TotalMilliseconds;
+                _logger.Debug(endMsg, block.Index, block.Hash, duration);
             }
             finally
             {
@@ -1441,16 +1500,23 @@ namespace Libplanet.Blockchain
             {
                 _rwlock.EnterReadLock();
 
+                _logger.Debug("Finding branchpoint (locator: {Locator}).", locator);
                 foreach (HashDigest<SHA256> hash in locator)
                 {
                     if (_blocks.ContainsKey(hash)
                         && _blocks[hash] is Block<T> block
                         && hash.Equals(Store.IndexBlockHash(Id, block.Index)))
                     {
+                        _logger.Debug(
+                            "Found the branchpoint (locator: {Locator}): {Hash}.",
+                            locator,
+                            hash
+                        );
                         return hash;
                     }
                 }
 
+                _logger.Debug("Failed to find the branchpoint (locator: {Locator}).", locator);
                 return null;
             }
             finally

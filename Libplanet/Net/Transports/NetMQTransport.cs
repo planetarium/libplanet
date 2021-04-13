@@ -402,9 +402,9 @@ namespace Libplanet.Net.Transports
             {
                 DateTimeOffset now = DateTimeOffset.UtcNow;
                 _logger.Verbose(
-                    "Enqueue a request {RequestId} to {PeerAddress}: {Message}.",
+                    "Enqueue a request {RequestId} to {Peer}: {@Message}.",
                     reqId,
-                    peer.Address,
+                    peer,
                     message
                 );
                 var tcs = new TaskCompletionSource<IEnumerable<Message>>();
@@ -418,10 +418,10 @@ namespace Libplanet.Net.Transports
                     cancellationToken
                 );
                 _logger.Verbose(
-                    "Enqueued a request {RequestId} to {PeerAddress}: {Message}; " +
+                    "Enqueued a request {RequestId} to the peer {Peer}: {@Message}; " +
                     "{LeftRequests} left.",
                     reqId,
-                    peer.Address,
+                    peer,
                     message,
                     Interlocked.Read(ref _requestCount)
                 );
@@ -436,8 +436,8 @@ namespace Libplanet.Net.Transports
 
                     const string logMsg =
                         "Received {ReplyMessageCount} reply messages to {RequestId} " +
-                        "from {PeerAddress}: {ReplyMessages}.";
-                    _logger.Debug(logMsg, reply.Count, reqId, peer.Address, reply);
+                        "from the {Peer}: {@ReplyMessages}.";
+                    _logger.Debug(logMsg, reply.Count, reqId, peer, reply);
 
                     return reply;
                 }
@@ -694,10 +694,8 @@ namespace Libplanet.Net.Transports
             {
                 _logger.Verbose("Waiting for a new request...");
                 MessageRequest req = await _requests.TakeAsync(cancellationToken);
-                Interlocked.Decrement(ref _requestCount);
-                _logger.Debug(
-                    "Request taken. {Count} requests are left.",
-                    Interlocked.Read(ref _requestCount));
+                long left = Interlocked.Decrement(ref _requestCount);
+                _logger.Debug("Request taken. {Count} requests are left.", left);
 
                 try
                 {
@@ -737,16 +735,17 @@ namespace Libplanet.Net.Transports
         private async Task ProcessRequest(MessageRequest req, CancellationToken cancellationToken)
         {
             _logger.Verbose(
-                "Request {Message}({RequestId}) is ready to be processed in {TimeSpan}.",
-                req.Message,
+                "A request {RequestId} is ready to be processed in {TimeSpan}: {@Message}.",
                 req.Id,
-                DateTimeOffset.UtcNow - req.RequestedTime);
+                DateTimeOffset.UtcNow - req.RequestedTime,
+                req.Message
+            );
             DateTimeOffset startedTime = DateTimeOffset.UtcNow;
 
             using var dealer = new DealerSocket(req.Peer.ToNetMQAddress());
 
             _logger.Debug(
-                "Trying to send {Message} to {Peer}...",
+                "Trying to send a request {RequestId} to {Peer}...: {Message}.",
                 req.Message,
                 req.Peer
             );
@@ -765,7 +764,12 @@ namespace Libplanet.Net.Transports
                     cancellationToken: cancellationToken
                 );
 
-                _logger.Debug("A message {Message} sent.", req.Message);
+                _logger.Debug(
+                    "A request {RequestId} sent to {Peer}: {Message}.",
+                    req.Id,
+                    req.Peer,
+                    req.Message
+                );
 
                 foreach (var i in Enumerable.Range(0, req.ExpectedResponses))
                 {
@@ -773,9 +777,14 @@ namespace Libplanet.Net.Transports
                         timeout: req.Timeout,
                         cancellationToken: cancellationToken
                     );
+                    const string rcvMsg =
+                        "Received a raw message ({FrameCount} frames), which replies to " +
+                        "the request {RequestId}, from {Peer}.";
                     _logger.Verbose(
-                        "A raw message ({FrameCount} frames) has replied.",
-                        raw.FrameCount
+                        rcvMsg,
+                        raw.FrameCount,
+                        req.Id,
+                        req.Peer
                     );
                     Message reply = Message.Parse(
                         raw,
@@ -785,7 +794,8 @@ namespace Libplanet.Net.Transports
                         _differentAppProtocolVersionEncountered,
                         _messageLifespan);
                     _logger.Debug(
-                        "A reply has parsed: {Reply} from {ReplyRemote}",
+                        "A reply to the request {RequestId} has parsed: {Reply} from {Peer}.",
+                        req.Id,
                         reply,
                         reply.Remote
                     );
