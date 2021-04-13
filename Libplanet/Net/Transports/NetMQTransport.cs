@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
@@ -13,7 +14,6 @@ using Libplanet.Net.Protocols;
 using Libplanet.Stun;
 using NetMQ;
 using NetMQ.Sockets;
-using Nito.AsyncEx;
 using Serilog;
 
 namespace Libplanet.Net.Transports
@@ -49,7 +49,7 @@ namespace Libplanet.Net.Transports
         private TurnClient _turnClient;
         private DnsEndPoint _hostEndPoint;
 
-        private AsyncCollection<MessageRequest> _requests;
+        private Channel<MessageRequest> _requests;
         private long _requestCount;
         private CancellationTokenSource _runtimeCancellationTokenSource;
         private CancellationTokenSource _turnCancellationTokenSource;
@@ -141,7 +141,7 @@ namespace Libplanet.Net.Transports
 
             _logger = Log.ForContext<NetMQTransport>();
 
-            _requests = new AsyncCollection<MessageRequest>();
+            _requests = Channel.CreateUnbounded<MessageRequest>();
             _runtimeCancellationTokenSource = new CancellationTokenSource();
             _turnCancellationTokenSource = new CancellationTokenSource();
             _requestCount = 0;
@@ -339,6 +339,7 @@ namespace Libplanet.Net.Transports
         {
             if (!_disposed)
             {
+                _requests.Writer.Complete();
                 _runtimeCancellationTokenSource.Cancel();
                 _turnCancellationTokenSource.Cancel();
                 _runtimeProcessor.Wait();
@@ -413,7 +414,7 @@ namespace Libplanet.Net.Transports
                 // FIXME should we also cancel tcs sender side too?
                 using CancellationTokenRegistration ctr =
                     cancellationToken.Register(() => tcs.TrySetCanceled());
-                await _requests.AddAsync(
+                await _requests.Writer.WriteAsync(
                     new MessageRequest(reqId, message, peer, now, timeout, expectedResponses, tcs),
                     cancellationToken
                 );
@@ -690,10 +691,17 @@ namespace Libplanet.Net.Transports
         private async Task ProcessRuntime(
             CancellationToken cancellationToken = default)
         {
+            const string waitMsg = "Waiting for a new request...";
+#if NETCOREAPP3_0 || NETCOREAPP3_1 || NET
+            _logger.Verbose(waitMsg);
+            await foreach (MessageRequest req in _requests.Reader.ReadAllAsync(cancellationToken))
+            {
+#else
             while (!cancellationToken.IsCancellationRequested)
             {
-                _logger.Verbose("Waiting for a new request...");
-                MessageRequest req = await _requests.TakeAsync(cancellationToken);
+                _logger.Verbose(waitMsg);
+                MessageRequest req = await _requests.Reader.ReadAsync(cancellationToken);
+#endif
                 long left = Interlocked.Decrement(ref _requestCount);
                 _logger.Debug("Request taken. {Count} requests are left.", left);
 
@@ -721,7 +729,7 @@ namespace Libplanet.Net.Transports
                             retryAfter
                         );
                         Interlocked.Increment(ref _requestCount);
-                        await _requests.AddAsync(req.Retry(), cancellationToken);
+                        _requests.Writer.TryWrite(req.Retry());
                         await Task.Delay(retryAfter, cancellationToken);
                     }
                     else
@@ -729,6 +737,10 @@ namespace Libplanet.Net.Transports
                         _logger.Error("Failed to process request[{req}]; discard it.", req);
                     }
                 }
+
+#if NETCOREAPP3_0 || NETCOREAPP3_1 || NET
+                _logger.Verbose(waitMsg);
+#endif
             }
         }
 
