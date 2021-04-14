@@ -9172,6 +9172,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.BoundPeer.Inequality
   nameWithType: BoundPeer.Inequality
+- uid: Libplanet.Net.BoundPeer.ParsePeer(System.String)
+  name: ParsePeer(String)
+  href: api/Libplanet.Net.BoundPeer.html#Libplanet_Net_BoundPeer_ParsePeer_System_String_
+  commentId: M:Libplanet.Net.BoundPeer.ParsePeer(System.String)
+  fullName: Libplanet.Net.BoundPeer.ParsePeer(System.String)
+  nameWithType: BoundPeer.ParsePeer(String)
+- uid: Libplanet.Net.BoundPeer.ParsePeer*
+  name: ParsePeer
+  href: api/Libplanet.Net.BoundPeer.html#Libplanet_Net_BoundPeer_ParsePeer_
+  commentId: Overload:Libplanet.Net.BoundPeer.ParsePeer
+  isSpec: "True"
+  fullName: Libplanet.Net.BoundPeer.ParsePeer
+  nameWithType: BoundPeer.ParsePeer
 - uid: Libplanet.Net.BoundPeer.ToString
   name: ToString()
   href: api/Libplanet.Net.BoundPeer.html#Libplanet_Net_BoundPeer_ToString

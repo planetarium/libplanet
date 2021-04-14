@@ -78,6 +78,7 @@
 [<a href="https://github.com/planetarium/libplanet/pull/1218">#1228</a>]</li>
 <li>Added <code>Swarm&lt;T&gt;.AddPeersAsync()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1234">#1234</a>]</li>
 <li>Added <code>NetMQTransport.QueryAppProtocolVersion()</code> static method.  [<a href="https://github.com/planetarium/libplanet/pull/1235">#1235</a>]</li>
+<li>Added <code>BoundPeer.Parse()</code> static method.  [<a href="https://github.com/planetarium/libplanet/pull/1240">#1240</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <h3 id="bug-fixes">Bug fixes</h3>
@@ -90,6 +91,12 @@ updated cached peers multiple times.  [<a href="https://github.com/planetarium/l
 [<a href="https://github.com/planetarium/libplanet/pull/1218">#1228</a>]</li>
 </ul>
 <h3 id="cli-tools">CLI tools</h3>
+<ul>
+<li>Added the option <code>--json</code> to <code>planet apv analyze</code> command to print result
+as JSON format.  [<a href="https://github.com/planetarium/libplanet/pull/1240">#1240</a>]</li>
+<li>Added <code>planet apv query</code> subcommand to query app protocol version of
+specific peer. [<a href="https://github.com/planetarium/libplanet/pull/1240">#1240</a>]</li>
+</ul>
 <h2 id="version-0110">Version 0.11.0</h2>
 <p>Released on March 30, 2021.</p>
 <h3 id="backward-incompatible-api-changes-1">Backward-incompatible API changes</h3>
