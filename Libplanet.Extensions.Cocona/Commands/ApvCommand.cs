@@ -5,12 +5,14 @@ namespace Libplanet.Extensions.Cocona.Commands
     using System.Globalization;
     using System.IO;
     using System.Linq;
+    using System.Text.Json;
     using Bencodex;
     using Bencodex.Types;
     using global::Cocona;
     using Libplanet.Crypto;
     using Libplanet.KeyStore;
     using Libplanet.Net;
+    using Libplanet.Net.Transports;
 
     public class ApvCommand
     {
@@ -192,7 +194,9 @@ namespace Libplanet.Extensions.Cocona.Commands
                 Description = "An app protocol version token to analyze.  " +
                     "Read from the standard input if omitted."
             )]
-            string? token = null
+            string? token = null,
+            [Option(Description = "Print information of given token as JSON.")]
+            bool json = false
         )
         {
             AppProtocolVersion v = ParseAppProtocolVersionToken(token);
@@ -263,7 +267,47 @@ namespace Libplanet.Extensions.Cocona.Commands
                 TreeIntoTable(v.Extra, data, "extra");
             }
 
-            Utils.PrintTable(("Field", "Value"), data);
+            if (json)
+            {
+                Console.WriteLine(JsonSerializer.Serialize(data.ToDictionary(e => e.Item1, e => e.Item2)));
+            }
+            else
+            {
+                Utils.PrintTable(("Field", "Value"), data);
+            }
+        }
+
+        [Command(Description = "Query app protocol version (a.k.a. APV) of target node.")]
+        public void Query(
+            [Argument(
+                Name = "TARGET",
+#pragma warning disable MEN002 // Line is too long
+                Description = "Comma seperated peer information({pubkey},{host},{port}) of target node. (e.g. 027bd36895d68681290e570692ad3736750ceaab37be402442ffb203967f98f7b6,9c.planetarium.dev,31236)")]
+#pragma warning restore MEN002 // Line is too long
+            string peerInfo)
+        {
+            BoundPeer peer;
+            AppProtocolVersion apv;
+
+            try
+            {
+                peer = BoundPeer.ParsePeer(peerInfo);
+            }
+            catch
+            {
+                throw Utils.Error($"Failed to parse peer. Please check the input. [{peerInfo}]");
+            }
+
+            try
+            {
+                apv = peer.QueryAppProtocolVersion();
+            }
+            catch
+            {
+                throw Utils.Error($"Failed to query app protocol version.");
+            }
+
+            Console.WriteLine(apv.Token);
         }
 
         private AppProtocolVersion ParseAppProtocolVersionToken(string? token)
