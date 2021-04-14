@@ -18,7 +18,12 @@ To be released.
 
 ### Bug fixes
 
+ -  Fixed memory leak due to undisposed TCP relay clients.  [[#1236]]
+
 ### CLI tools
+
+[#1236]: https://github.com/planetarium/libplanet/pull/1236
+
 
 Version 0.12.0
 --------------
