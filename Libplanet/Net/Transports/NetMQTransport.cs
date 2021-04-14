@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
@@ -13,7 +14,6 @@ using Libplanet.Net.Protocols;
 using Libplanet.Stun;
 using NetMQ;
 using NetMQ.Sockets;
-using Nito.AsyncEx;
 using Serilog;
 
 namespace Libplanet.Net.Transports
@@ -49,7 +49,7 @@ namespace Libplanet.Net.Transports
         private TurnClient _turnClient;
         private DnsEndPoint _hostEndPoint;
 
-        private AsyncCollection<MessageRequest> _requests;
+        private Channel<MessageRequest> _requests;
         private long _requestCount;
         private CancellationTokenSource _runtimeCancellationTokenSource;
         private CancellationTokenSource _turnCancellationTokenSource;
@@ -141,7 +141,7 @@ namespace Libplanet.Net.Transports
 
             _logger = Log.ForContext<NetMQTransport>();
 
-            _requests = new AsyncCollection<MessageRequest>();
+            _requests = Channel.CreateUnbounded<MessageRequest>();
             _runtimeCancellationTokenSource = new CancellationTokenSource();
             _turnCancellationTokenSource = new CancellationTokenSource();
             _requestCount = 0;
@@ -339,6 +339,7 @@ namespace Libplanet.Net.Transports
         {
             if (!_disposed)
             {
+                _requests.Writer.Complete();
                 _runtimeCancellationTokenSource.Cancel();
                 _turnCancellationTokenSource.Cancel();
                 _runtimeProcessor.Wait();
@@ -402,9 +403,9 @@ namespace Libplanet.Net.Transports
             {
                 DateTimeOffset now = DateTimeOffset.UtcNow;
                 _logger.Verbose(
-                    "Enqueue a request {RequestId} to {PeerAddress}: {Message}.",
+                    "Enqueue a request {RequestId} to {Peer}: {@Message}.",
                     reqId,
-                    peer.Address,
+                    peer,
                     message
                 );
                 var tcs = new TaskCompletionSource<IEnumerable<Message>>();
@@ -413,15 +414,15 @@ namespace Libplanet.Net.Transports
                 // FIXME should we also cancel tcs sender side too?
                 using CancellationTokenRegistration ctr =
                     cancellationToken.Register(() => tcs.TrySetCanceled());
-                await _requests.AddAsync(
+                await _requests.Writer.WriteAsync(
                     new MessageRequest(reqId, message, peer, now, timeout, expectedResponses, tcs),
                     cancellationToken
                 );
                 _logger.Verbose(
-                    "Enqueued a request {RequestId} to {PeerAddress}: {Message}; " +
+                    "Enqueued a request {RequestId} to the peer {Peer}: {@Message}; " +
                     "{LeftRequests} left.",
                     reqId,
-                    peer.Address,
+                    peer,
                     message,
                     Interlocked.Read(ref _requestCount)
                 );
@@ -436,8 +437,8 @@ namespace Libplanet.Net.Transports
 
                     const string logMsg =
                         "Received {ReplyMessageCount} reply messages to {RequestId} " +
-                        "from {PeerAddress}: {ReplyMessages}.";
-                    _logger.Debug(logMsg, reply.Count, reqId, peer.Address, reply);
+                        "from the {Peer}: {@ReplyMessages}.";
+                    _logger.Debug(logMsg, reply.Count, reqId, peer, reply);
 
                     return reply;
                 }
@@ -471,32 +472,28 @@ namespace Libplanet.Net.Transports
             }
             catch (TimeoutException)
             {
-                _logger.Debug(
+                var msg =
                     $"{nameof(NetMQTransport)}.{nameof(SendMessageWithReplyAsync)}() timed out " +
-                    "after {Timeout} of waiting a reply to {RequestId} from {PeerAddress}.",
-                    timeout,
-                    reqId,
-                    peer.Address
-                );
+                    "after {Timeout} of waiting a reply to {MessageType} ({RequestId}) from " +
+                    "{PeerAddress}.";
+                _logger.Debug(msg, timeout, message.GetType().Name, reqId, peer.Address);
                 throw;
             }
             catch (TaskCanceledException)
             {
-                _logger.Debug(
+                var msg =
                     $"{nameof(NetMQTransport)}.{nameof(SendMessageWithReplyAsync)}() was " +
-                    "cancelled to  wait a reply to {RequestId} from {PeerAddress}.",
-                    reqId,
-                    peer.Address
-                );
+                    "cancelled to wait a reply to {MessageType} ({RequestId}) from {PeerAddress}.";
+                _logger.Debug(msg, message.GetType().Name, reqId, peer.Address);
                 throw;
             }
             catch (Exception e)
             {
                 var msg =
                     $"{nameof(NetMQTransport)}.{nameof(SendMessageWithReplyAsync)}() encountered " +
-                    "an unexpected exception during sending a request {RequestId} to " +
-                    "{PeerAddress} and waiting a reply to it: {Exception}.";
-                _logger.Error(e, msg, reqId, peer.Address, e);
+                    "an unexpected exception during sending a request {MessageType} " +
+                    "({RequestId}) to {PeerAddress} and waiting a reply to it: {Exception}.";
+                _logger.Error(e, msg, message.GetType().Name, reqId, peer.Address, e);
                 throw;
             }
         }
@@ -694,14 +691,19 @@ namespace Libplanet.Net.Transports
         private async Task ProcessRuntime(
             CancellationToken cancellationToken = default)
         {
+            const string waitMsg = "Waiting for a new request...";
+#if NETCOREAPP3_0 || NETCOREAPP3_1 || NET
+            _logger.Verbose(waitMsg);
+            await foreach (MessageRequest req in _requests.Reader.ReadAllAsync(cancellationToken))
+            {
+#else
             while (!cancellationToken.IsCancellationRequested)
             {
-                _logger.Verbose("Waiting for a new request...");
-                MessageRequest req = await _requests.TakeAsync(cancellationToken);
-                Interlocked.Decrement(ref _requestCount);
-                _logger.Debug(
-                    "Request taken. {Count} requests are left.",
-                    Interlocked.Read(ref _requestCount));
+                _logger.Verbose(waitMsg);
+                MessageRequest req = await _requests.Reader.ReadAsync(cancellationToken);
+#endif
+                long left = Interlocked.Decrement(ref _requestCount);
+                _logger.Debug("Request taken. {Count} requests are left.", left);
 
                 try
                 {
@@ -727,7 +729,7 @@ namespace Libplanet.Net.Transports
                             retryAfter
                         );
                         Interlocked.Increment(ref _requestCount);
-                        await _requests.AddAsync(req.Retry(), cancellationToken);
+                        _requests.Writer.TryWrite(req.Retry());
                         await Task.Delay(retryAfter, cancellationToken);
                     }
                     else
@@ -735,22 +737,27 @@ namespace Libplanet.Net.Transports
                         _logger.Error("Failed to process request[{req}]; discard it.", req);
                     }
                 }
+
+#if NETCOREAPP3_0 || NETCOREAPP3_1 || NET
+                _logger.Verbose(waitMsg);
+#endif
             }
         }
 
         private async Task ProcessRequest(MessageRequest req, CancellationToken cancellationToken)
         {
             _logger.Verbose(
-                "Request {Message}({RequestId}) is ready to be processed in {TimeSpan}.",
-                req.Message,
+                "A request {RequestId} is ready to be processed in {TimeSpan}: {@Message}.",
                 req.Id,
-                DateTimeOffset.UtcNow - req.RequestedTime);
+                DateTimeOffset.UtcNow - req.RequestedTime,
+                req.Message
+            );
             DateTimeOffset startedTime = DateTimeOffset.UtcNow;
 
             using var dealer = new DealerSocket(req.Peer.ToNetMQAddress());
 
             _logger.Debug(
-                "Trying to send {Message} to {Peer}...",
+                "Trying to send a request {RequestId} to {Peer}...: {Message}.",
                 req.Message,
                 req.Peer
             );
@@ -769,7 +776,12 @@ namespace Libplanet.Net.Transports
                     cancellationToken: cancellationToken
                 );
 
-                _logger.Debug("A message {Message} sent.", req.Message);
+                _logger.Debug(
+                    "A request {RequestId} sent to {Peer}: {Message}.",
+                    req.Id,
+                    req.Peer,
+                    req.Message
+                );
 
                 foreach (var i in Enumerable.Range(0, req.ExpectedResponses))
                 {
@@ -777,9 +789,14 @@ namespace Libplanet.Net.Transports
                         timeout: req.Timeout,
                         cancellationToken: cancellationToken
                     );
+                    const string rcvMsg =
+                        "Received a raw message ({FrameCount} frames), which replies to " +
+                        "the request {RequestId}, from {Peer}.";
                     _logger.Verbose(
-                        "A raw message ({FrameCount} frames) has replied.",
-                        raw.FrameCount
+                        rcvMsg,
+                        raw.FrameCount,
+                        req.Id,
+                        req.Peer
                     );
                     Message reply = Message.Parse(
                         raw,
@@ -789,7 +806,8 @@ namespace Libplanet.Net.Transports
                         _differentAppProtocolVersionEncountered,
                         _messageLifespan);
                     _logger.Debug(
-                        "A reply has parsed: {Reply} from {ReplyRemote}",
+                        "A reply to the request {RequestId} has parsed: {Reply} from {Peer}.",
+                        req.Id,
                         reply,
                         reply.Remote
                     );

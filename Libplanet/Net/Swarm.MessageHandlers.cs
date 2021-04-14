@@ -45,6 +45,11 @@ namespace Libplanet.Net
 
                 case GetBlockHashes getBlockHashes:
                 {
+                    const string msg =
+                        "Received a " + nameof(GetBlockHashes) + " message " +
+                        "(locator: {Locator}, stop: {Stop}).";
+                    HashDigest<SHA256>[] locatorArray = getBlockHashes.Locator.ToArray();
+                    _logger.Debug(msg, locatorArray, getBlockHashes.Stop);
                     BlockChain.FindNextHashes(
                         getBlockHashes.Locator,
                         getBlockHashes.Stop,
@@ -53,6 +58,10 @@ namespace Libplanet.Net
                         out long? offset,
                         out IReadOnlyList<HashDigest<SHA256>> hashes
                     );
+                    const string resultMsg =
+                        "Found hashes after the branchpoint (locator: {Locator}, stop: {Stop}): " +
+                        "{Hashes} (offset: {Offset}.";
+                    _logger.Debug(resultMsg, locatorArray, getBlockHashes.Stop, hashes, offset);
                     var reply = new BlockHashes(offset, hashes)
                     {
                         Identity = getBlockHashes.Identity,
