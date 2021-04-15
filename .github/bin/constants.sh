@@ -6,9 +6,14 @@ projects=(
   "Libplanet.RocksDBStore"
   "Libplanet.Analyzers"
   "Libplanet.Tools"
+  "Libplanet.Explorer"
+  "Libplanet.Explorer.Executable"
 )
 configuration=Release
-executables=("Libplanet.Tools")
+executables=(
+  "Libplanet.Tools"
+  "Libplanet.Explorer.Executable"
+)
 
 # https://docs.microsoft.com/en-us/dotnet/core/rid-catalog
 rids=(linux-x64 osx-x64 win-x64)
