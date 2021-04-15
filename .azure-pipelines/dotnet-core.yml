@@ -58,7 +58,7 @@ steps:
           ${{ parameters.testArguments }} \
           -xml "$(Agent.TempDirectory)/xunit.xml"
     env:
-      TURN_SERVER_URL: ${{ parameters.turnServerUrl }}
+      TURN_SERVER_URLS: ${{ parameters.turnServerUrls }}
       LANG: ${{ parameters.locale }}
       LANGUAGE: ${{ parameters.locale }}
       LC_ALL: ${{ parameters.locale }}
@@ -79,7 +79,7 @@ steps:
         -p:SkipSonar=true
         ${{ parameters.testArguments }}
     env:
-      TURN_SERVER_URL: ${{ parameters.turnServerUrl }}
+      TURN_SERVER_URLS: ${{ parameters.turnServerUrls }}
       LANG: ${{ parameters.locale }}
       LANGUAGE: ${{ parameters.locale }}
       LC_ALL: ${{ parameters.locale }}

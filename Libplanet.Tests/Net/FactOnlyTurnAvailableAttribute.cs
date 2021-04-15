@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Libplanet.Net;
 using Xunit;
 
@@ -6,48 +8,63 @@ namespace Libplanet.Tests.Net
 {
     public sealed class FactOnlyTurnAvailableAttribute : FactAttribute
     {
-        public const string TurnUrlVarName = "TURN_SERVER_URL";
+        public const string TurnUrlsVarName = "TURN_SERVER_URLS";
 
-        static FactOnlyTurnAvailableAttribute()
-        {
-            string turnUrlStr =
-                Environment.GetEnvironmentVariable(TurnUrlVarName);
+        public static readonly IReadOnlyList<Uri> TurnUris =
+            (Environment.GetEnvironmentVariable(TurnUrlsVarName) ?? string.Empty)
+                .Split(' ', '\t', '\r', '\n')
+                .Where(s => s.Trim().Any()).Select(s => new Uri(s)).ToArray();
 
-            try
+        private static readonly Random _random = new Random();
+
+        private static readonly IceServer[] _iceServers = TurnUris
+            .Select(turnUri =>
             {
-                TurnUri = new Uri(turnUrlStr);
-                string[] userInfo = TurnUri.UserInfo.Split(':');
-
-                Username = userInfo[0];
-                Password = userInfo[1];
-
-                IceServers = new[]
+                try
                 {
-                    new IceServer(
-                        urls: new[] { TurnUri },
-                        username: Username,
-                        credential: Password),
-                };
-            }
-            catch (ArgumentNullException)
-            {
-            }
-        }
+                    string[] userInfo = turnUri.UserInfo.Split(':');
+                    return new IceServer(
+                        urls: new[] { turnUri },
+                        username: userInfo[0],
+                        credential: userInfo[1]
+                    );
+                }
+                catch (ArgumentNullException)
+                {
+                    return null;
+                }
+            })
+            .Where(s => !(s is null))
+            .ToArray();
 
         public FactOnlyTurnAvailableAttribute()
         {
-            if (TurnUri == null)
+            if (!GetIceServers().Any())
             {
-                Skip = "Available only when TURN server is running";
+                Skip = "Available only when any TURN server is running.";
             }
         }
 
-        public static Uri TurnUri { get; }
+        public static Uri GetTurnUri() =>
+            TurnUris[_random.Next(TurnUris.Count)];
 
-        public static string Username { get; }
+        public static IReadOnlyList<IceServer> GetIceServers()
+        {
+            var list = new IceServer[_iceServers.Length];
+            Array.Copy(_iceServers, list, list.Length);
 
-        public static string Password { get; }
+            // Fisher–Yates shuffle
+            int n = list.Length;
+            while (n > 1)
+            {
+                n--;
+                int k = _random.Next(n + 1);
+                IceServer value = list[k];
+                list[k] = list[n];
+                list[n] = value;
+            }
 
-        public static IceServer[] IceServers { get; }
+            return list;
+        }
     }
 }

@@ -13,9 +13,7 @@ namespace Libplanet.Tests.Net
         [FactOnlyTurnAvailable(Timeout = Timeout)]
         public async Task CreateTurnClient()
         {
-            var turnUri = new Uri(
-                Environment.GetEnvironmentVariable(
-                    FactOnlyTurnAvailableAttribute.TurnUrlVarName));
+            var turnUri = FactOnlyTurnAvailableAttribute.GetTurnUri();
             var userInfo = turnUri.UserInfo.Split(':');
             await Assert.ThrowsAsync<ArgumentException>(
                 async () =>
