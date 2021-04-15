@@ -169,11 +169,15 @@ mono xunit.runner.console.*/tools/net47/xunit.console.exe \
 [Xunit]: https://xunit.github.io/
 
 
-### `TURN_SERVER_URL`
+### `TURN_SERVER_URLS`
 
-Some tests depend on a TURN server.  If `TURN_SERVER_URL` environment variable
-is set (the value looks like `turn://user:password@host:3478/`)
-these tests also run.  Otherwise, these tests are skipped.
+Some tests depend on a TURN server.  If `TURN_SERVER_URLS` environment variable
+is present, these tests also run.  Otherwise, these tests are skipped.
+
+As the name implies, `TURN_SERVER_URLS` can have more than one TURN server URL.
+URLs are separated by whitespaces like `turn://user:password@host:3478/
+turn://user:password@host2:3478/`.  If multiple TURN servers are provided,
+each test case pick a random one to use so that loads are balanced.
 
 FYI there are several TURN implementations like [Coturn] and [gortc/turn],
 or cloud offers like [Xirsys].

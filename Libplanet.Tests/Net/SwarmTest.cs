@@ -559,7 +559,7 @@ namespace Libplanet.Tests.Net
         [FactOnlyTurnAvailable(Timeout = Timeout)]
         public async Task ExchangeWithIceServer()
         {
-            var iceServers = FactOnlyTurnAvailableAttribute.IceServers;
+            var iceServers = FactOnlyTurnAvailableAttribute.GetIceServers();
             var seed = CreateSwarm(host: "localhost");
             var swarmA = CreateSwarm(iceServers: iceServers);
             var swarmB = CreateSwarm(iceServers: iceServers);
@@ -610,9 +610,10 @@ namespace Libplanet.Tests.Net
                 port = ((IPEndPoint)socket.LocalEndPoint).Port;
             }
 
-            Uri turnUrl = FactOnlyTurnAvailableAttribute.TurnUri;
-            string username = FactOnlyTurnAvailableAttribute.Username;
-            string password = FactOnlyTurnAvailableAttribute.Password;
+            Uri turnUrl = FactOnlyTurnAvailableAttribute.GetTurnUri();
+            string[] userInfo = turnUrl.UserInfo.Split(':');
+            string username = userInfo[0];
+            string password = userInfo[1];
             var proxyUri = new Uri($"turn://{username}:{password}@localhost:{port}/");
 
             IEnumerable<IceServer> iceServers = new[]

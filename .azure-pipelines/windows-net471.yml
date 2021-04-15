@@ -77,7 +77,7 @@ steps:
           ${{ parameters.testArguments }} \
           -xml "$(Agent.TempDirectory)/xunit.xml"
   env:
-    TURN_SERVER_URL: ${{ parameters.turnServerUrl }}
+    TURN_SERVER_URLS: ${{ parameters.turnServerUrls }}
     MONO_THREADS_SUSPEND: preemptive
   timeoutInMinutes: ${{ parameters.testTimeoutInMinutes }}
 
