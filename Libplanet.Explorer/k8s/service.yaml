@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: block-explorer
+spec:
+  ports:
+  - port: 31234
+    nodePort: 31234
+    targetPort: 31234
+  selector:
+    app: block-explorer
+  type: LoadBalancer
+  loadBalancerIP: <BLOCK_EXPLORER_IP>
