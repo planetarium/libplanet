@@ -38,9 +38,14 @@
     </PackageReference>
     <PackageReference Include="GraphQL" Version="3.0.0" />
     <PackageReference Include="GraphQL.SystemTextJson" Version="3.0.0" />
-    <PackageReference Include="Libplanet" Version="0.11.0-dev.20210311071650" />
-    <PackageReference Include="Libplanet.RocksDBStore" Version="0.11.0-dev.20210311071650" />
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Libplanet\Libplanet.csproj" />
+    <ProjectReference Include="..\Libplanet.RocksDBStore\Libplanet.RocksDBStore.csproj" />
+    <!-- FIXME: We should specify the version range when the following NuGet
+    issue is addressed: <https://github.com/NuGet/Home/issues/5556>. -->
   </ItemGroup>
 
   <ItemGroup>
