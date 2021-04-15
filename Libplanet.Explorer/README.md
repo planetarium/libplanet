@@ -7,27 +7,28 @@ distributed games.  For the frontend, see also [libplanet-explorer-frontend].
 [libplanet-explorer-frontend]: https://github.com/planetarium/libplanet-explorer-frontend
 
 
-How to build and run
---------------------
+How to build and develop
+------------------------
 
-You need to install [.NET Core] 2.0 or higher, and [PowerShell].  Both work
-on Linux, macOS, and Windows.  After you install them, execute the *run.ps1*
-script on the command-line:
+You need to install [.NET Core] 3.1 or higher.  It works on Linux, macOS,
+and Windows.  After you install them, execute the following command to run
+a development server:
 
 ~~~~ bash
-./run.ps1 --store-path BLOCKCHAIN_STORE_PATH
+dotnet watch -p Libplanet.Explorer.Executable run -- \
+  --store-path BLOCKCHAIN_STORE_PATH
 ~~~~
 
 `BLOCKCHAIN_STORE_PATH` refers to a directory or a file made by
 a Libplanet-powered game.  If you need a sample data file please contact us
 on [our Discord chat][1]!
 
-If you omit `--store-path` switch in online mode, explorer will use memory to store
-blockchain instead of storage.
+If you omit `--store-path` switch in online mode, explorer will use memory to
+store blockchain instead of storage.
 
 [.NET Core]: https://dotnet.microsoft.com/
 [PowerShell]: https://microsoft.com/PowerShell
-[1]: https://discord.gg/ue9fgc3
+[1]: https://discord.gg/planetarium
 
 
 GraphQL
@@ -57,5 +58,6 @@ It provides some implementations like below:
  - `LiteDBRichStore`
  - `MySQLRichStore`
 
-To use `MySQLRichStore`, it needs to fill command line arguments started with `mysql-` prefix fully and correctly.
+To use `MySQLRichStore`, it needs to fill command line arguments started with
+`mysql-` prefix fully and correctly.
 Else, it will use `LiteDBRichStore` as default.

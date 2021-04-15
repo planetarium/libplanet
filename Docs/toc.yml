@@ -12,6 +12,9 @@
   homepage: ../Libplanet.Analyzers/README.md
 - name: CLI Tools
   href: ../Libplanet.Tools/README.md
+- name: Explorer
+  href: ../Libplanet.Explorer/
+  homepage: ../Libplanet.Explorer/README.md
 - name: Changelog
   href: ../CHANGES.md
 - name: Contribute

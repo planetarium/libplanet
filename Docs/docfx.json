@@ -50,6 +50,13 @@
         ]
       },
       {
+        "src": "../Libplanet.Explorer",
+        "dest": "explorer",
+        "files": [
+          "*.md"
+        ]
+      },
+      {
         "src": "../",
         "files": [
           "CHANGES.md",
