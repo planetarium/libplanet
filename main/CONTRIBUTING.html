@@ -174,10 +174,12 @@ msbuild /restore /p:TestsTargetFramework=net47
 mono xunit.runner.console.*/tools/net47/xunit.console.exe \
     *.Tests/bin/Debug/net47/*.Tests.dll
 </code></pre>
-<h3 id="turn_server_url"><code>TURN_SERVER_URL</code></h3>
-<p>Some tests depend on a TURN server.  If <code>TURN_SERVER_URL</code> environment variable
-is set (the value looks like <code>turn://user:password@host:3478/</code>)
-these tests also run.  Otherwise, these tests are skipped.</p>
+<h3 id="turn_server_urls"><code>TURN_SERVER_URLS</code></h3>
+<p>Some tests depend on a TURN server.  If <code>TURN_SERVER_URLS</code> environment variable
+is present, these tests also run.  Otherwise, these tests are skipped.</p>
+<p>As the name implies, <code>TURN_SERVER_URLS</code> can have more than one TURN server URL.
+URLs are separated by whitespaces like <code>turn://user:password@host:3478/ turn://user:password@host2:3478/</code>.  If multiple TURN servers are provided,
+each test case pick a random one to use so that loads are balanced.</p>
 <p>FYI there are several TURN implementations like <a href="https://github.com/coturn/coturn">Coturn</a> and <a href="https://github.com/gortc/turn">gortc/turn</a>,
 or cloud offers like <a href="https://xirsys.com/">Xirsys</a>.</p>
 <h3 id="xunit-unity-runner"><a href="https://github.com/planetarium/xunit-unity-runner">xunit-unity-runner</a></h3>
