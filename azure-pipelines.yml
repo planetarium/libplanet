@@ -6,6 +6,7 @@
 # Template files are placed in the .azure-pipelines/ directory.
 variables:
   configuration: Release
+  NUGET_PACKAGES: $(Pipeline.Workspace)/.nuget/packages
 
 jobs:
 

@@ -1,0 +1,62 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <PackageId>Libplanet.Explorer</PackageId>
+    <LangVersion>8</LangVersion>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>Libplanet.Explorer</RootNamespace>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <PackageProjectUrl>https://github.com/planetarium/libplanet-explorer</PackageProjectUrl>
+    <RepositoryUrl>git://github.com/planetarium/libplanet-explorer.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <Company>Planetarium</Company>
+    <Authors>Planetarium</Authors>
+    <VersionPrefix>0.1.0</VersionPrefix>
+    <NoWarn>NU1701</NoWarn>
+    <CodeAnalysisRuleSet>..\Libplanet.Explorer.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="..\Menees.Analyzers.Settings.xml">
+      <Link>Menees.Analyzers.Settings.xml</Link>
+    </AdditionalFiles>
+    <AdditionalFiles Include="..\stylecop.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Menees.Analyzers.2017" Version="2.0.3">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.6" />
+    <PackageReference Include="MySqlConnector" Version="1.1.0" />
+    <PackageReference Include="SqlKata" Version="2.2.0" />
+    <PackageReference Include="SqlKata.Execution" Version="2.2.0" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.1-beta.61">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>
+        runtime; build; native; contentfiles; analyzers
+      </IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="GraphQL" Version="3.0.0" />
+    <PackageReference Include="GraphQL.SystemTextJson" Version="3.0.0" />
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Libplanet\Libplanet.csproj" />
+    <ProjectReference Include="..\Libplanet.RocksDBStore\Libplanet.RocksDBStore.csproj" />
+    <!-- FIXME: We should specify the version range when the following NuGet
+    issue is addressed: <https://github.com/NuGet/Home/issues/5556>. -->
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Views\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Store\RocksDBStoreBitConverter.cs" />
+  </ItemGroup>
+</Project>

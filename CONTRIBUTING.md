@@ -101,6 +101,16 @@ on GitHub consists of several projects:
     as a distinct NuGet package: *[Libplanet.Tools]*. See its own
     [README.md](Libplanet.Tools/README.md).
 
+ -  *Libplanet.Explorer*: Libplanet Explorer, a web server that exposes
+    a Libplanet blockchain as a [GraphQL] endpoint.  There is the official
+    web front-end depending on this too: [libplanet-explorer-frontend].
+    Note that this project in itself is a library, and packaging it as
+    an executable is done by a below project named
+    *Libplanet.Explorer.Executable*.
+
+ -  *Libplanet.Explorer.Executable*: Turns Libplanet Explorer into a single
+    executable binary so that it is easy to distribute.
+
  -  *Libplanet.Benchmarks*: Performance benchmarks.
     See the [*Benchmarks*](#benchmarks) section below.
 
@@ -115,14 +125,19 @@ on GitHub consists of several projects:
  -  *Libplanet.Analyzers.Tests*: Unit tests of the *Libplanet.Analyzers*
     project.
 
+ -  *Libplanet.Explorer.UnitTests*: Unit tests of the *Libplanet.Explorer*
+    project.
+
 
 [NuGet package]: https://www.nuget.org/packages/Libplanet/
 [TURN & STUN]: https://snack.planetarium.dev/eng/2019/06/nat_traversal_2/
 [RocksDB]: https://rocksdb.org/
 [Libplanet.RocksDBStore]: https://www.nuget.org/packages/Libplanet.RocksDBStore/
 [Libplanet.Analyzers]: https://www.nuget.org/packages/Libplanet.Analyzers/
-[Libplanet.Tools]: https://www.nuget.org/packages/Libplanet.Tools/
 [Cocona]: https://www.nuget.org/packages/Cocona
+[Libplanet.Tools]: https://www.nuget.org/packages/Libplanet.Tools/
+[GraphQL]: https://graphql.org/
+[libplanet-explorer-frontend]: https://github.com/planetarium/libplanet-explorer-frontend
 
 
 Tests [![Build Status](https://dev.azure.com/planetarium/libplanet/_apis/build/status/planetarium.libplanet?branchName=main)][Azure Pipelines] [![Codecov](https://codecov.io/gh/planetarium/libplanet/branch/main/graph/badge.svg)][2]

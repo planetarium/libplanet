@@ -1,0 +1,42 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: block-explorer
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: block-explorer
+    spec:
+      nodeSelector:
+        "beta.kubernetes.io/os": linux
+      containers:
+      - name: block-explorer
+        image: planetariumtest.azurecr.io/<IMAGE_NAME>
+        command:
+          - "dotnet"
+          - "./Libplanet.Explorer.Executable/out/Libplanet.Explorer.dll"
+          - "--port 31234"
+          - "<STORAGE_PATH>"
+        livenessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 120
+          periodSeconds: 5
+          successThreshold: 1
+          tcpSocket:
+            port: 31234
+          timeoutSeconds: 1
+        resources:
+          requests:
+            cpu: 1
+        ports:
+        - containerPort: 31234
+          name: block-explorer
+        volumeMounts:
+          - name: volume
+            mountPath: /data
+      volumes:
+        - name: volume
+          persistentVolumeClaim:
+            claimName: azurefile
