@@ -132,6 +132,16 @@ to handle <em>Libplanet</em> structures in command line.</p>
 as a distinct NuGet package: <em><a href="https://www.nuget.org/packages/Libplanet.Tools/">Libplanet.Tools</a></em>. See its own
 <a href="cli/README.html">README.md</a>.</p>
 </li>
+<li><p><em>Libplanet.Explorer</em>: Libplanet Explorer, a web server that exposes
+a Libplanet blockchain as a <a href="https://graphql.org/">GraphQL</a> endpoint.  There is the official
+web front-end depending on this too: <a href="https://github.com/planetarium/libplanet-explorer-frontend">libplanet-explorer-frontend</a>.
+Note that this project in itself is a library, and packaging it as
+an executable is done by a below project named
+<em>Libplanet.Explorer.Executable</em>.</p>
+</li>
+<li><p><em>Libplanet.Explorer.Executable</em>: Turns Libplanet Explorer into a single
+executable binary so that it is easy to distribute.</p>
+</li>
 <li><p><em>Libplanet.Benchmarks</em>: Performance benchmarks.
 See the <a href="#benchmarks"><em>Benchmarks</em></a> section below.</p>
 </li>
@@ -144,6 +154,9 @@ section below.</p>
 project.</p>
 </li>
 <li><p><em>Libplanet.Analyzers.Tests</em>: Unit tests of the <em>Libplanet.Analyzers</em>
+project.</p>
+</li>
+<li><p><em>Libplanet.Explorer.UnitTests</em>: Unit tests of the <em>Libplanet.Explorer</em>
 project.</p>
 </li>
 </ul>

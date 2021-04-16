@@ -21,7 +21,7 @@
       "output": {
         ".html": {
           "relative_path": "CONTRIBUTING.html",
-          "hash": "lqYuvVqODmtG7pEStTiIQA=="
+          "hash": "gG7N2XAXKdx71fMYlw2oUA=="
         }
       },
       "is_incremental": false,
@@ -58,6 +58,18 @@
         ".html": {
           "relative_path": "analyzer/rules/LAA1002.html",
           "hash": "K+tZe27YzeMkCRZNuzBX+w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "../Libplanet.Explorer/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "explorer/README.html",
+          "hash": "cpAc6/YtVWwK2bsX77T2/w=="
         }
       },
       "is_incremental": false,
@@ -2347,7 +2359,7 @@
       "output": {
         ".html": {
           "relative_path": "toc.html",
-          "hash": "16wLqoahPBAbxvJLYy6gcg=="
+          "hash": "hE13xI+5bdIbl3fwuP0DCQ=="
         }
       },
       "is_incremental": false,
@@ -2368,7 +2380,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 11,
+          "total_file_count": 12,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {
