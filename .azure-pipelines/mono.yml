@@ -9,6 +9,13 @@ parameters:
 
 steps:
 
+- task: Cache@2
+  displayName: Cache NuGet packages
+  inputs:
+    key: 'nuget | "$(Agent.OS)" | **/*.csproj'
+    restoreKeys: 'nuget | "$(Agent.OS)"'
+    path: $(NUGET_PACKAGES)
+
 - task: NuGetCommand@2
   displayName: nuget install xunit.runner.console
   inputs:
