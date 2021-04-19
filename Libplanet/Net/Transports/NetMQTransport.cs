@@ -770,11 +770,17 @@ namespace Libplanet.Net.Transports
             TaskCompletionSource<IEnumerable<Message>> tcs = req.TaskCompletionSource;
             try
             {
-                await dealer.SendMultipartMessageAsync(
-                    message,
-                    timeout: req.Timeout,
-                    cancellationToken: cancellationToken
-                );
+                if (req.Timeout is { } timeoutNotNull)
+                {
+                    dealer.TrySendMultipartMessage(
+                        timeoutNotNull,
+                        message
+                    );
+                }
+                else
+                {
+                    dealer.TrySendMultipartMessage(message);
+                }
 
                 _logger.Debug(
                     "A request {RequestId} sent to {Peer}: {Message}.",
