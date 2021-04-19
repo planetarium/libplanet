@@ -785,15 +785,15 @@ references:
   commentId: T:Libplanet.Action.UnexpectedlyTerminatedActionException
   fullName: Libplanet.Action.UnexpectedlyTerminatedActionException
   nameWithType: UnexpectedlyTerminatedActionException
-- uid: Libplanet.Action.UnexpectedlyTerminatedActionException.#ctor(System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},System.Nullable{System.Int64},System.Nullable{Libplanet.Tx.TxId},System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},Libplanet.Action.IAction,System.String,System.Exception)
-  name: UnexpectedlyTerminatedActionException(Nullable<HashDigest<SHA256>>, Nullable<Int64>, Nullable<TxId>, Nullable<HashDigest<SHA256>>, IAction, String, Exception)
-  href: api/Libplanet.Action.UnexpectedlyTerminatedActionException.html#Libplanet_Action_UnexpectedlyTerminatedActionException__ctor_System_Nullable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___System_Nullable_System_Int64__System_Nullable_Libplanet_Tx_TxId__System_Nullable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___Libplanet_Action_IAction_System_String_System_Exception_
-  commentId: M:Libplanet.Action.UnexpectedlyTerminatedActionException.#ctor(System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},System.Nullable{System.Int64},System.Nullable{Libplanet.Tx.TxId},System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},Libplanet.Action.IAction,System.String,System.Exception)
-  name.vb: UnexpectedlyTerminatedActionException(Nullable(Of HashDigest(Of SHA256)), Nullable(Of Int64), Nullable(Of TxId), Nullable(Of HashDigest(Of SHA256)), IAction, String, Exception)
-  fullName: Libplanet.Action.UnexpectedlyTerminatedActionException.UnexpectedlyTerminatedActionException(System.Nullable<Libplanet.HashDigest<System.Security.Cryptography.SHA256>>, System.Nullable<System.Int64>, System.Nullable<Libplanet.Tx.TxId>, System.Nullable<Libplanet.HashDigest<System.Security.Cryptography.SHA256>>, Libplanet.Action.IAction, System.String, System.Exception)
-  fullName.vb: Libplanet.Action.UnexpectedlyTerminatedActionException.UnexpectedlyTerminatedActionException(System.Nullable(Of Libplanet.HashDigest(Of System.Security.Cryptography.SHA256)), System.Nullable(Of System.Int64), System.Nullable(Of Libplanet.Tx.TxId), System.Nullable(Of Libplanet.HashDigest(Of System.Security.Cryptography.SHA256)), Libplanet.Action.IAction, System.String, System.Exception)
-  nameWithType: UnexpectedlyTerminatedActionException.UnexpectedlyTerminatedActionException(Nullable<HashDigest<SHA256>>, Nullable<Int64>, Nullable<TxId>, Nullable<HashDigest<SHA256>>, IAction, String, Exception)
-  nameWithType.vb: UnexpectedlyTerminatedActionException.UnexpectedlyTerminatedActionException(Nullable(Of HashDigest(Of SHA256)), Nullable(Of Int64), Nullable(Of TxId), Nullable(Of HashDigest(Of SHA256)), IAction, String, Exception)
+- uid: Libplanet.Action.UnexpectedlyTerminatedActionException.#ctor(System.Nullable{Libplanet.Blocks.BlockHash},System.Nullable{System.Int64},System.Nullable{Libplanet.Tx.TxId},System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},Libplanet.Action.IAction,System.String,System.Exception)
+  name: UnexpectedlyTerminatedActionException(Nullable<BlockHash>, Nullable<Int64>, Nullable<TxId>, Nullable<HashDigest<SHA256>>, IAction, String, Exception)
+  href: api/Libplanet.Action.UnexpectedlyTerminatedActionException.html#Libplanet_Action_UnexpectedlyTerminatedActionException__ctor_System_Nullable_Libplanet_Blocks_BlockHash__System_Nullable_System_Int64__System_Nullable_Libplanet_Tx_TxId__System_Nullable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___Libplanet_Action_IAction_System_String_System_Exception_
+  commentId: M:Libplanet.Action.UnexpectedlyTerminatedActionException.#ctor(System.Nullable{Libplanet.Blocks.BlockHash},System.Nullable{System.Int64},System.Nullable{Libplanet.Tx.TxId},System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},Libplanet.Action.IAction,System.String,System.Exception)
+  name.vb: UnexpectedlyTerminatedActionException(Nullable(Of BlockHash), Nullable(Of Int64), Nullable(Of TxId), Nullable(Of HashDigest(Of SHA256)), IAction, String, Exception)
+  fullName: Libplanet.Action.UnexpectedlyTerminatedActionException.UnexpectedlyTerminatedActionException(System.Nullable<Libplanet.Blocks.BlockHash>, System.Nullable<System.Int64>, System.Nullable<Libplanet.Tx.TxId>, System.Nullable<Libplanet.HashDigest<System.Security.Cryptography.SHA256>>, Libplanet.Action.IAction, System.String, System.Exception)
+  fullName.vb: Libplanet.Action.UnexpectedlyTerminatedActionException.UnexpectedlyTerminatedActionException(System.Nullable(Of Libplanet.Blocks.BlockHash), System.Nullable(Of System.Int64), System.Nullable(Of Libplanet.Tx.TxId), System.Nullable(Of Libplanet.HashDigest(Of System.Security.Cryptography.SHA256)), Libplanet.Action.IAction, System.String, System.Exception)
+  nameWithType: UnexpectedlyTerminatedActionException.UnexpectedlyTerminatedActionException(Nullable<BlockHash>, Nullable<Int64>, Nullable<TxId>, Nullable<HashDigest<SHA256>>, IAction, String, Exception)
+  nameWithType.vb: UnexpectedlyTerminatedActionException.UnexpectedlyTerminatedActionException(Nullable(Of BlockHash), Nullable(Of Int64), Nullable(Of TxId), Nullable(Of HashDigest(Of SHA256)), IAction, String, Exception)
 - uid: Libplanet.Action.UnexpectedlyTerminatedActionException.#ctor*
   name: UnexpectedlyTerminatedActionException
   href: api/Libplanet.Action.UnexpectedlyTerminatedActionException.html#Libplanet_Action_UnexpectedlyTerminatedActionException__ctor_
@@ -1734,15 +1734,14 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).BlockHashes
   nameWithType: BlockChain<T>.BlockHashes
   nameWithType.vb: BlockChain(Of T).BlockHashes
-- uid: Libplanet.Blockchain.BlockChain`1.ContainsBlock(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name: ContainsBlock(HashDigest<SHA256>)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_ContainsBlock_Libplanet_HashDigest_System_Security_Cryptography_SHA256__
-  commentId: M:Libplanet.Blockchain.BlockChain`1.ContainsBlock(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name.vb: ContainsBlock(HashDigest(Of SHA256))
-  fullName: Libplanet.Blockchain.BlockChain<T>.ContainsBlock(Libplanet.HashDigest<System.Security.Cryptography.SHA256>)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).ContainsBlock(Libplanet.HashDigest(Of System.Security.Cryptography.SHA256))
-  nameWithType: BlockChain<T>.ContainsBlock(HashDigest<SHA256>)
-  nameWithType.vb: BlockChain(Of T).ContainsBlock(HashDigest(Of SHA256))
+- uid: Libplanet.Blockchain.BlockChain`1.ContainsBlock(Libplanet.Blocks.BlockHash)
+  name: ContainsBlock(BlockHash)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_ContainsBlock_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Blockchain.BlockChain`1.ContainsBlock(Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.Blockchain.BlockChain<T>.ContainsBlock(Libplanet.Blocks.BlockHash)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).ContainsBlock(Libplanet.Blocks.BlockHash)
+  nameWithType: BlockChain<T>.ContainsBlock(BlockHash)
+  nameWithType.vb: BlockChain(Of T).ContainsBlock(BlockHash)
 - uid: Libplanet.Blockchain.BlockChain`1.ContainsBlock*
   name: ContainsBlock
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_ContainsBlock_
@@ -1803,15 +1802,15 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Genesis
   nameWithType: BlockChain<T>.Genesis
   nameWithType.vb: BlockChain(Of T).Genesis
-- uid: Libplanet.Blockchain.BlockChain`1.GetBalance(Libplanet.Address,Libplanet.Assets.Currency,System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},Libplanet.Blockchain.FungibleAssetStateCompleter{`0})
-  name: GetBalance(Address, Currency, Nullable<HashDigest<SHA256>>, FungibleAssetStateCompleter<T>)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetBalance_Libplanet_Address_Libplanet_Assets_Currency_System_Nullable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___Libplanet_Blockchain_FungibleAssetStateCompleter__0__
-  commentId: M:Libplanet.Blockchain.BlockChain`1.GetBalance(Libplanet.Address,Libplanet.Assets.Currency,System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},Libplanet.Blockchain.FungibleAssetStateCompleter{`0})
-  name.vb: GetBalance(Address, Currency, Nullable(Of HashDigest(Of SHA256)), FungibleAssetStateCompleter(Of T))
-  fullName: Libplanet.Blockchain.BlockChain<T>.GetBalance(Libplanet.Address, Libplanet.Assets.Currency, System.Nullable<Libplanet.HashDigest<System.Security.Cryptography.SHA256>>, Libplanet.Blockchain.FungibleAssetStateCompleter<T>)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetBalance(Libplanet.Address, Libplanet.Assets.Currency, System.Nullable(Of Libplanet.HashDigest(Of System.Security.Cryptography.SHA256)), Libplanet.Blockchain.FungibleAssetStateCompleter(Of T))
-  nameWithType: BlockChain<T>.GetBalance(Address, Currency, Nullable<HashDigest<SHA256>>, FungibleAssetStateCompleter<T>)
-  nameWithType.vb: BlockChain(Of T).GetBalance(Address, Currency, Nullable(Of HashDigest(Of SHA256)), FungibleAssetStateCompleter(Of T))
+- uid: Libplanet.Blockchain.BlockChain`1.GetBalance(Libplanet.Address,Libplanet.Assets.Currency,System.Nullable{Libplanet.Blocks.BlockHash},Libplanet.Blockchain.FungibleAssetStateCompleter{`0})
+  name: GetBalance(Address, Currency, Nullable<BlockHash>, FungibleAssetStateCompleter<T>)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetBalance_Libplanet_Address_Libplanet_Assets_Currency_System_Nullable_Libplanet_Blocks_BlockHash__Libplanet_Blockchain_FungibleAssetStateCompleter__0__
+  commentId: M:Libplanet.Blockchain.BlockChain`1.GetBalance(Libplanet.Address,Libplanet.Assets.Currency,System.Nullable{Libplanet.Blocks.BlockHash},Libplanet.Blockchain.FungibleAssetStateCompleter{`0})
+  name.vb: GetBalance(Address, Currency, Nullable(Of BlockHash), FungibleAssetStateCompleter(Of T))
+  fullName: Libplanet.Blockchain.BlockChain<T>.GetBalance(Libplanet.Address, Libplanet.Assets.Currency, System.Nullable<Libplanet.Blocks.BlockHash>, Libplanet.Blockchain.FungibleAssetStateCompleter<T>)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetBalance(Libplanet.Address, Libplanet.Assets.Currency, System.Nullable(Of Libplanet.Blocks.BlockHash), Libplanet.Blockchain.FungibleAssetStateCompleter(Of T))
+  nameWithType: BlockChain<T>.GetBalance(Address, Currency, Nullable<BlockHash>, FungibleAssetStateCompleter<T>)
+  nameWithType.vb: BlockChain(Of T).GetBalance(Address, Currency, Nullable(Of BlockHash), FungibleAssetStateCompleter(Of T))
 - uid: Libplanet.Blockchain.BlockChain`1.GetBalance*
   name: GetBalance
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetBalance_
@@ -1855,15 +1854,15 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetStagedTransactionIds
   nameWithType: BlockChain<T>.GetStagedTransactionIds
   nameWithType.vb: BlockChain(Of T).GetStagedTransactionIds
-- uid: Libplanet.Blockchain.BlockChain`1.GetState(Libplanet.Address,System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},Libplanet.Blockchain.StateCompleter{`0})
-  name: GetState(Address, Nullable<HashDigest<SHA256>>, StateCompleter<T>)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetState_Libplanet_Address_System_Nullable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___Libplanet_Blockchain_StateCompleter__0__
-  commentId: M:Libplanet.Blockchain.BlockChain`1.GetState(Libplanet.Address,System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},Libplanet.Blockchain.StateCompleter{`0})
-  name.vb: GetState(Address, Nullable(Of HashDigest(Of SHA256)), StateCompleter(Of T))
-  fullName: Libplanet.Blockchain.BlockChain<T>.GetState(Libplanet.Address, System.Nullable<Libplanet.HashDigest<System.Security.Cryptography.SHA256>>, Libplanet.Blockchain.StateCompleter<T>)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetState(Libplanet.Address, System.Nullable(Of Libplanet.HashDigest(Of System.Security.Cryptography.SHA256)), Libplanet.Blockchain.StateCompleter(Of T))
-  nameWithType: BlockChain<T>.GetState(Address, Nullable<HashDigest<SHA256>>, StateCompleter<T>)
-  nameWithType.vb: BlockChain(Of T).GetState(Address, Nullable(Of HashDigest(Of SHA256)), StateCompleter(Of T))
+- uid: Libplanet.Blockchain.BlockChain`1.GetState(Libplanet.Address,System.Nullable{Libplanet.Blocks.BlockHash},Libplanet.Blockchain.StateCompleter{`0})
+  name: GetState(Address, Nullable<BlockHash>, StateCompleter<T>)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetState_Libplanet_Address_System_Nullable_Libplanet_Blocks_BlockHash__Libplanet_Blockchain_StateCompleter__0__
+  commentId: M:Libplanet.Blockchain.BlockChain`1.GetState(Libplanet.Address,System.Nullable{Libplanet.Blocks.BlockHash},Libplanet.Blockchain.StateCompleter{`0})
+  name.vb: GetState(Address, Nullable(Of BlockHash), StateCompleter(Of T))
+  fullName: Libplanet.Blockchain.BlockChain<T>.GetState(Libplanet.Address, System.Nullable<Libplanet.Blocks.BlockHash>, Libplanet.Blockchain.StateCompleter<T>)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetState(Libplanet.Address, System.Nullable(Of Libplanet.Blocks.BlockHash), Libplanet.Blockchain.StateCompleter(Of T))
+  nameWithType: BlockChain<T>.GetState(Address, Nullable<BlockHash>, StateCompleter<T>)
+  nameWithType.vb: BlockChain(Of T).GetState(Address, Nullable(Of BlockHash), StateCompleter(Of T))
 - uid: Libplanet.Blockchain.BlockChain`1.GetState*
   name: GetState
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetState_
@@ -1907,15 +1906,15 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Id
   nameWithType: BlockChain<T>.Id
   nameWithType.vb: BlockChain(Of T).Id
-- uid: Libplanet.Blockchain.BlockChain`1.Item(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name: Item[HashDigest<SHA256>]
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Item_Libplanet_HashDigest_System_Security_Cryptography_SHA256__
-  commentId: P:Libplanet.Blockchain.BlockChain`1.Item(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name.vb: Item(HashDigest(Of SHA256))
-  fullName: Libplanet.Blockchain.BlockChain<T>.Item[Libplanet.HashDigest<System.Security.Cryptography.SHA256>]
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Item(Libplanet.HashDigest(Of System.Security.Cryptography.SHA256))
-  nameWithType: BlockChain<T>.Item[HashDigest<SHA256>]
-  nameWithType.vb: BlockChain(Of T).Item(HashDigest(Of SHA256))
+- uid: Libplanet.Blockchain.BlockChain`1.Item(Libplanet.Blocks.BlockHash@)
+  name: Item[BlockHash]
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Item_Libplanet_Blocks_BlockHash__
+  commentId: P:Libplanet.Blockchain.BlockChain`1.Item(Libplanet.Blocks.BlockHash@)
+  name.vb: Item(ByRef BlockHash)
+  fullName: Libplanet.Blockchain.BlockChain<T>.Item[Libplanet.Blocks.BlockHash]
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Item(ByRef Libplanet.Blocks.BlockHash)
+  nameWithType: BlockChain<T>.Item[BlockHash]
+  nameWithType.vb: BlockChain(Of T).Item(ByRef BlockHash)
 - uid: Libplanet.Blockchain.BlockChain`1.Item(System.Int32)
   name: Item[Int32]
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Item_System_Int32_
@@ -2232,15 +2231,12 @@ references:
   commentId: T:Libplanet.Blockchain.IncompleteBlockStatesException
   fullName: Libplanet.Blockchain.IncompleteBlockStatesException
   nameWithType: IncompleteBlockStatesException
-- uid: Libplanet.Blockchain.IncompleteBlockStatesException.#ctor(Libplanet.HashDigest{System.Security.Cryptography.SHA256},System.String)
-  name: IncompleteBlockStatesException(HashDigest<SHA256>, String)
-  href: api/Libplanet.Blockchain.IncompleteBlockStatesException.html#Libplanet_Blockchain_IncompleteBlockStatesException__ctor_Libplanet_HashDigest_System_Security_Cryptography_SHA256__System_String_
-  commentId: M:Libplanet.Blockchain.IncompleteBlockStatesException.#ctor(Libplanet.HashDigest{System.Security.Cryptography.SHA256},System.String)
-  name.vb: IncompleteBlockStatesException(HashDigest(Of SHA256), String)
-  fullName: Libplanet.Blockchain.IncompleteBlockStatesException.IncompleteBlockStatesException(Libplanet.HashDigest<System.Security.Cryptography.SHA256>, System.String)
-  fullName.vb: Libplanet.Blockchain.IncompleteBlockStatesException.IncompleteBlockStatesException(Libplanet.HashDigest(Of System.Security.Cryptography.SHA256), System.String)
-  nameWithType: IncompleteBlockStatesException.IncompleteBlockStatesException(HashDigest<SHA256>, String)
-  nameWithType.vb: IncompleteBlockStatesException.IncompleteBlockStatesException(HashDigest(Of SHA256), String)
+- uid: Libplanet.Blockchain.IncompleteBlockStatesException.#ctor(Libplanet.Blocks.BlockHash,System.String)
+  name: IncompleteBlockStatesException(BlockHash, String)
+  href: api/Libplanet.Blockchain.IncompleteBlockStatesException.html#Libplanet_Blockchain_IncompleteBlockStatesException__ctor_Libplanet_Blocks_BlockHash_System_String_
+  commentId: M:Libplanet.Blockchain.IncompleteBlockStatesException.#ctor(Libplanet.Blocks.BlockHash,System.String)
+  fullName: Libplanet.Blockchain.IncompleteBlockStatesException.IncompleteBlockStatesException(Libplanet.Blocks.BlockHash, System.String)
+  nameWithType: IncompleteBlockStatesException.IncompleteBlockStatesException(BlockHash, String)
 - uid: Libplanet.Blockchain.IncompleteBlockStatesException.#ctor*
   name: IncompleteBlockStatesException
   href: api/Libplanet.Blockchain.IncompleteBlockStatesException.html#Libplanet_Blockchain_IncompleteBlockStatesException__ctor_
@@ -5224,15 +5220,15 @@ references:
   fullName.vb: Libplanet.Blocks.Block(Of T).Block(Libplanet.Blocks.Block(Of T), System.Nullable(Of Libplanet.HashDigest(Of System.Security.Cryptography.SHA256)))
   nameWithType: Block<T>.Block(Block<T>, Nullable<HashDigest<SHA256>>)
   nameWithType.vb: Block(Of T).Block(Block(Of T), Nullable(Of HashDigest(Of SHA256)))
-- uid: Libplanet.Blocks.Block`1.#ctor(System.Int64,System.Int64,System.Numerics.BigInteger,Libplanet.Nonce,System.Nullable{Libplanet.Address},System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},System.DateTimeOffset,System.Collections.Generic.IEnumerable{Libplanet.Tx.Transaction{`0}},System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},System.Int32)
-  name: Block(Int64, Int64, BigInteger, Nonce, Nullable<Address>, Nullable<HashDigest<SHA256>>, DateTimeOffset, IEnumerable<Transaction<T>>, Nullable<HashDigest<SHA256>>, Nullable<HashDigest<SHA256>>, Int32)
-  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1__ctor_System_Int64_System_Int64_System_Numerics_BigInteger_Libplanet_Nonce_System_Nullable_Libplanet_Address__System_Nullable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___System_DateTimeOffset_System_Collections_Generic_IEnumerable_Libplanet_Tx_Transaction__0___System_Nullable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___System_Nullable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___System_Int32_
-  commentId: M:Libplanet.Blocks.Block`1.#ctor(System.Int64,System.Int64,System.Numerics.BigInteger,Libplanet.Nonce,System.Nullable{Libplanet.Address},System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},System.DateTimeOffset,System.Collections.Generic.IEnumerable{Libplanet.Tx.Transaction{`0}},System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},System.Int32)
-  name.vb: Block(Int64, Int64, BigInteger, Nonce, Nullable(Of Address), Nullable(Of HashDigest(Of SHA256)), DateTimeOffset, IEnumerable(Of Transaction(Of T)), Nullable(Of HashDigest(Of SHA256)), Nullable(Of HashDigest(Of SHA256)), Int32)
-  fullName: Libplanet.Blocks.Block<T>.Block(System.Int64, System.Int64, System.Numerics.BigInteger, Libplanet.Nonce, System.Nullable<Libplanet.Address>, System.Nullable<Libplanet.HashDigest<System.Security.Cryptography.SHA256>>, System.DateTimeOffset, System.Collections.Generic.IEnumerable<Libplanet.Tx.Transaction<T>>, System.Nullable<Libplanet.HashDigest<System.Security.Cryptography.SHA256>>, System.Nullable<Libplanet.HashDigest<System.Security.Cryptography.SHA256>>, System.Int32)
-  fullName.vb: Libplanet.Blocks.Block(Of T).Block(System.Int64, System.Int64, System.Numerics.BigInteger, Libplanet.Nonce, System.Nullable(Of Libplanet.Address), System.Nullable(Of Libplanet.HashDigest(Of System.Security.Cryptography.SHA256)), System.DateTimeOffset, System.Collections.Generic.IEnumerable(Of Libplanet.Tx.Transaction(Of T)), System.Nullable(Of Libplanet.HashDigest(Of System.Security.Cryptography.SHA256)), System.Nullable(Of Libplanet.HashDigest(Of System.Security.Cryptography.SHA256)), System.Int32)
-  nameWithType: Block<T>.Block(Int64, Int64, BigInteger, Nonce, Nullable<Address>, Nullable<HashDigest<SHA256>>, DateTimeOffset, IEnumerable<Transaction<T>>, Nullable<HashDigest<SHA256>>, Nullable<HashDigest<SHA256>>, Int32)
-  nameWithType.vb: Block(Of T).Block(Int64, Int64, BigInteger, Nonce, Nullable(Of Address), Nullable(Of HashDigest(Of SHA256)), DateTimeOffset, IEnumerable(Of Transaction(Of T)), Nullable(Of HashDigest(Of SHA256)), Nullable(Of HashDigest(Of SHA256)), Int32)
+- uid: Libplanet.Blocks.Block`1.#ctor(System.Int64,System.Int64,System.Numerics.BigInteger,Libplanet.Nonce,System.Nullable{Libplanet.Address},System.Nullable{Libplanet.Blocks.BlockHash},System.DateTimeOffset,System.Collections.Generic.IEnumerable{Libplanet.Tx.Transaction{`0}},System.Nullable{Libplanet.Blocks.BlockHash},System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},System.Int32)
+  name: Block(Int64, Int64, BigInteger, Nonce, Nullable<Address>, Nullable<BlockHash>, DateTimeOffset, IEnumerable<Transaction<T>>, Nullable<BlockHash>, Nullable<HashDigest<SHA256>>, Int32)
+  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1__ctor_System_Int64_System_Int64_System_Numerics_BigInteger_Libplanet_Nonce_System_Nullable_Libplanet_Address__System_Nullable_Libplanet_Blocks_BlockHash__System_DateTimeOffset_System_Collections_Generic_IEnumerable_Libplanet_Tx_Transaction__0___System_Nullable_Libplanet_Blocks_BlockHash__System_Nullable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___System_Int32_
+  commentId: M:Libplanet.Blocks.Block`1.#ctor(System.Int64,System.Int64,System.Numerics.BigInteger,Libplanet.Nonce,System.Nullable{Libplanet.Address},System.Nullable{Libplanet.Blocks.BlockHash},System.DateTimeOffset,System.Collections.Generic.IEnumerable{Libplanet.Tx.Transaction{`0}},System.Nullable{Libplanet.Blocks.BlockHash},System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},System.Int32)
+  name.vb: Block(Int64, Int64, BigInteger, Nonce, Nullable(Of Address), Nullable(Of BlockHash), DateTimeOffset, IEnumerable(Of Transaction(Of T)), Nullable(Of BlockHash), Nullable(Of HashDigest(Of SHA256)), Int32)
+  fullName: Libplanet.Blocks.Block<T>.Block(System.Int64, System.Int64, System.Numerics.BigInteger, Libplanet.Nonce, System.Nullable<Libplanet.Address>, System.Nullable<Libplanet.Blocks.BlockHash>, System.DateTimeOffset, System.Collections.Generic.IEnumerable<Libplanet.Tx.Transaction<T>>, System.Nullable<Libplanet.Blocks.BlockHash>, System.Nullable<Libplanet.HashDigest<System.Security.Cryptography.SHA256>>, System.Int32)
+  fullName.vb: Libplanet.Blocks.Block(Of T).Block(System.Int64, System.Int64, System.Numerics.BigInteger, Libplanet.Nonce, System.Nullable(Of Libplanet.Address), System.Nullable(Of Libplanet.Blocks.BlockHash), System.DateTimeOffset, System.Collections.Generic.IEnumerable(Of Libplanet.Tx.Transaction(Of T)), System.Nullable(Of Libplanet.Blocks.BlockHash), System.Nullable(Of Libplanet.HashDigest(Of System.Security.Cryptography.SHA256)), System.Int32)
+  nameWithType: Block<T>.Block(Int64, Int64, BigInteger, Nonce, Nullable<Address>, Nullable<BlockHash>, DateTimeOffset, IEnumerable<Transaction<T>>, Nullable<BlockHash>, Nullable<HashDigest<SHA256>>, Int32)
+  nameWithType.vb: Block(Of T).Block(Int64, Int64, BigInteger, Nonce, Nullable(Of Address), Nullable(Of BlockHash), DateTimeOffset, IEnumerable(Of Transaction(Of T)), Nullable(Of BlockHash), Nullable(Of HashDigest(Of SHA256)), Int32)
 - uid: Libplanet.Blocks.Block`1.#ctor*
   name: Block
   href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1__ctor_
@@ -5387,15 +5383,15 @@ references:
   fullName.vb: Libplanet.Blocks.Block(Of T).Index
   nameWithType: Block<T>.Index
   nameWithType.vb: Block(Of T).Index
-- uid: Libplanet.Blocks.Block`1.Mine(System.Int64,System.Int64,System.Numerics.BigInteger,Libplanet.Address,System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},System.DateTimeOffset,System.Collections.Generic.IEnumerable{Libplanet.Tx.Transaction{`0}},System.Int32,System.Threading.CancellationToken)
-  name: Mine(Int64, Int64, BigInteger, Address, Nullable<HashDigest<SHA256>>, DateTimeOffset, IEnumerable<Transaction<T>>, Int32, CancellationToken)
-  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Mine_System_Int64_System_Int64_System_Numerics_BigInteger_Libplanet_Address_System_Nullable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___System_DateTimeOffset_System_Collections_Generic_IEnumerable_Libplanet_Tx_Transaction__0___System_Int32_System_Threading_CancellationToken_
-  commentId: M:Libplanet.Blocks.Block`1.Mine(System.Int64,System.Int64,System.Numerics.BigInteger,Libplanet.Address,System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},System.DateTimeOffset,System.Collections.Generic.IEnumerable{Libplanet.Tx.Transaction{`0}},System.Int32,System.Threading.CancellationToken)
-  name.vb: Mine(Int64, Int64, BigInteger, Address, Nullable(Of HashDigest(Of SHA256)), DateTimeOffset, IEnumerable(Of Transaction(Of T)), Int32, CancellationToken)
-  fullName: Libplanet.Blocks.Block<T>.Mine(System.Int64, System.Int64, System.Numerics.BigInteger, Libplanet.Address, System.Nullable<Libplanet.HashDigest<System.Security.Cryptography.SHA256>>, System.DateTimeOffset, System.Collections.Generic.IEnumerable<Libplanet.Tx.Transaction<T>>, System.Int32, System.Threading.CancellationToken)
-  fullName.vb: Libplanet.Blocks.Block(Of T).Mine(System.Int64, System.Int64, System.Numerics.BigInteger, Libplanet.Address, System.Nullable(Of Libplanet.HashDigest(Of System.Security.Cryptography.SHA256)), System.DateTimeOffset, System.Collections.Generic.IEnumerable(Of Libplanet.Tx.Transaction(Of T)), System.Int32, System.Threading.CancellationToken)
-  nameWithType: Block<T>.Mine(Int64, Int64, BigInteger, Address, Nullable<HashDigest<SHA256>>, DateTimeOffset, IEnumerable<Transaction<T>>, Int32, CancellationToken)
-  nameWithType.vb: Block(Of T).Mine(Int64, Int64, BigInteger, Address, Nullable(Of HashDigest(Of SHA256)), DateTimeOffset, IEnumerable(Of Transaction(Of T)), Int32, CancellationToken)
+- uid: Libplanet.Blocks.Block`1.Mine(System.Int64,System.Int64,System.Numerics.BigInteger,Libplanet.Address,System.Nullable{Libplanet.Blocks.BlockHash},System.DateTimeOffset,System.Collections.Generic.IEnumerable{Libplanet.Tx.Transaction{`0}},System.Int32,System.Threading.CancellationToken)
+  name: Mine(Int64, Int64, BigInteger, Address, Nullable<BlockHash>, DateTimeOffset, IEnumerable<Transaction<T>>, Int32, CancellationToken)
+  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Mine_System_Int64_System_Int64_System_Numerics_BigInteger_Libplanet_Address_System_Nullable_Libplanet_Blocks_BlockHash__System_DateTimeOffset_System_Collections_Generic_IEnumerable_Libplanet_Tx_Transaction__0___System_Int32_System_Threading_CancellationToken_
+  commentId: M:Libplanet.Blocks.Block`1.Mine(System.Int64,System.Int64,System.Numerics.BigInteger,Libplanet.Address,System.Nullable{Libplanet.Blocks.BlockHash},System.DateTimeOffset,System.Collections.Generic.IEnumerable{Libplanet.Tx.Transaction{`0}},System.Int32,System.Threading.CancellationToken)
+  name.vb: Mine(Int64, Int64, BigInteger, Address, Nullable(Of BlockHash), DateTimeOffset, IEnumerable(Of Transaction(Of T)), Int32, CancellationToken)
+  fullName: Libplanet.Blocks.Block<T>.Mine(System.Int64, System.Int64, System.Numerics.BigInteger, Libplanet.Address, System.Nullable<Libplanet.Blocks.BlockHash>, System.DateTimeOffset, System.Collections.Generic.IEnumerable<Libplanet.Tx.Transaction<T>>, System.Int32, System.Threading.CancellationToken)
+  fullName.vb: Libplanet.Blocks.Block(Of T).Mine(System.Int64, System.Int64, System.Numerics.BigInteger, Libplanet.Address, System.Nullable(Of Libplanet.Blocks.BlockHash), System.DateTimeOffset, System.Collections.Generic.IEnumerable(Of Libplanet.Tx.Transaction(Of T)), System.Int32, System.Threading.CancellationToken)
+  nameWithType: Block<T>.Mine(Int64, Int64, BigInteger, Address, Nullable<BlockHash>, DateTimeOffset, IEnumerable<Transaction<T>>, Int32, CancellationToken)
+  nameWithType.vb: Block(Of T).Mine(Int64, Int64, BigInteger, Address, Nullable(Of BlockHash), DateTimeOffset, IEnumerable(Of Transaction(Of T)), Int32, CancellationToken)
 - uid: Libplanet.Blocks.Block`1.Mine*
   name: Mine
   href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Mine_
@@ -5858,6 +5854,176 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.BlockExcerpt.ToExcerptString
   nameWithType: BlockExcerpt.ToExcerptString
+- uid: Libplanet.Blocks.BlockHash
+  name: BlockHash
+  href: api/Libplanet.Blocks.BlockHash.html
+  commentId: T:Libplanet.Blocks.BlockHash
+  fullName: Libplanet.Blocks.BlockHash
+  nameWithType: BlockHash
+- uid: Libplanet.Blocks.BlockHash.#ctor(ImmutableArray{System.Byte})
+  name: BlockHash(ImmutableArray<Byte>)
+  href: api/Libplanet.Blocks.BlockHash.html#Libplanet_Blocks_BlockHash__ctor_ImmutableArray_System_Byte__
+  commentId: M:Libplanet.Blocks.BlockHash.#ctor(ImmutableArray{System.Byte})
+  name.vb: BlockHash(ImmutableArray(Of Byte))
+  fullName: Libplanet.Blocks.BlockHash.BlockHash(ImmutableArray<System.Byte>)
+  fullName.vb: Libplanet.Blocks.BlockHash.BlockHash(ImmutableArray(Of System.Byte))
+  nameWithType: BlockHash.BlockHash(ImmutableArray<Byte>)
+  nameWithType.vb: BlockHash.BlockHash(ImmutableArray(Of Byte))
+- uid: Libplanet.Blocks.BlockHash.#ctor(System.Byte[])
+  name: BlockHash(Byte[])
+  href: api/Libplanet.Blocks.BlockHash.html#Libplanet_Blocks_BlockHash__ctor_System_Byte___
+  commentId: M:Libplanet.Blocks.BlockHash.#ctor(System.Byte[])
+  name.vb: BlockHash(Byte())
+  fullName: Libplanet.Blocks.BlockHash.BlockHash(System.Byte[])
+  fullName.vb: Libplanet.Blocks.BlockHash.BlockHash(System.Byte())
+  nameWithType: BlockHash.BlockHash(Byte[])
+  nameWithType.vb: BlockHash.BlockHash(Byte())
+- uid: Libplanet.Blocks.BlockHash.#ctor*
+  name: BlockHash
+  href: api/Libplanet.Blocks.BlockHash.html#Libplanet_Blocks_BlockHash__ctor_
+  commentId: Overload:Libplanet.Blocks.BlockHash.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Blocks.BlockHash.BlockHash
+  nameWithType: BlockHash.BlockHash
+- uid: Libplanet.Blocks.BlockHash.ByteArray
+  name: ByteArray
+  href: api/Libplanet.Blocks.BlockHash.html#Libplanet_Blocks_BlockHash_ByteArray
+  commentId: P:Libplanet.Blocks.BlockHash.ByteArray
+  fullName: Libplanet.Blocks.BlockHash.ByteArray
+  nameWithType: BlockHash.ByteArray
+- uid: Libplanet.Blocks.BlockHash.ByteArray*
+  name: ByteArray
+  href: api/Libplanet.Blocks.BlockHash.html#Libplanet_Blocks_BlockHash_ByteArray_
+  commentId: Overload:Libplanet.Blocks.BlockHash.ByteArray
+  isSpec: "True"
+  fullName: Libplanet.Blocks.BlockHash.ByteArray
+  nameWithType: BlockHash.ByteArray
+- uid: Libplanet.Blocks.BlockHash.BytesLength
+  name: BytesLength
+  href: api/Libplanet.Blocks.BlockHash.html#Libplanet_Blocks_BlockHash_BytesLength
+  commentId: P:Libplanet.Blocks.BlockHash.BytesLength
+  fullName: Libplanet.Blocks.BlockHash.BytesLength
+  nameWithType: BlockHash.BytesLength
+- uid: Libplanet.Blocks.BlockHash.BytesLength*
+  name: BytesLength
+  href: api/Libplanet.Blocks.BlockHash.html#Libplanet_Blocks_BlockHash_BytesLength_
+  commentId: Overload:Libplanet.Blocks.BlockHash.BytesLength
+  isSpec: "True"
+  fullName: Libplanet.Blocks.BlockHash.BytesLength
+  nameWithType: BlockHash.BytesLength
+- uid: Libplanet.Blocks.BlockHash.Equals(Libplanet.Blocks.BlockHash)
+  name: Equals(BlockHash)
+  href: api/Libplanet.Blocks.BlockHash.html#Libplanet_Blocks_BlockHash_Equals_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Blocks.BlockHash.Equals(Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.Blocks.BlockHash.Equals(Libplanet.Blocks.BlockHash)
+  nameWithType: BlockHash.Equals(BlockHash)
+- uid: Libplanet.Blocks.BlockHash.Equals(System.Object)
+  name: Equals(Object)
+  href: api/Libplanet.Blocks.BlockHash.html#Libplanet_Blocks_BlockHash_Equals_System_Object_
+  commentId: M:Libplanet.Blocks.BlockHash.Equals(System.Object)
+  fullName: Libplanet.Blocks.BlockHash.Equals(System.Object)
+  nameWithType: BlockHash.Equals(Object)
+- uid: Libplanet.Blocks.BlockHash.Equals*
+  name: Equals
+  href: api/Libplanet.Blocks.BlockHash.html#Libplanet_Blocks_BlockHash_Equals_
+  commentId: Overload:Libplanet.Blocks.BlockHash.Equals
+  isSpec: "True"
+  fullName: Libplanet.Blocks.BlockHash.Equals
+  nameWithType: BlockHash.Equals
+- uid: Libplanet.Blocks.BlockHash.FromHashDigest*
+  name: FromHashDigest
+  href: api/Libplanet.Blocks.BlockHash.html#Libplanet_Blocks_BlockHash_FromHashDigest_
+  commentId: Overload:Libplanet.Blocks.BlockHash.FromHashDigest
+  isSpec: "True"
+  fullName: Libplanet.Blocks.BlockHash.FromHashDigest
+  nameWithType: BlockHash.FromHashDigest
+- uid: Libplanet.Blocks.BlockHash.FromHashDigest``1(Libplanet.HashDigest{``0})
+  name: FromHashDigest<T>(HashDigest<T>)
+  href: api/Libplanet.Blocks.BlockHash.html#Libplanet_Blocks_BlockHash_FromHashDigest__1_Libplanet_HashDigest___0__
+  commentId: M:Libplanet.Blocks.BlockHash.FromHashDigest``1(Libplanet.HashDigest{``0})
+  name.vb: FromHashDigest(Of T)(HashDigest(Of T))
+  fullName: Libplanet.Blocks.BlockHash.FromHashDigest<T>(Libplanet.HashDigest<T>)
+  fullName.vb: Libplanet.Blocks.BlockHash.FromHashDigest(Of T)(Libplanet.HashDigest(Of T))
+  nameWithType: BlockHash.FromHashDigest<T>(HashDigest<T>)
+  nameWithType.vb: BlockHash.FromHashDigest(Of T)(HashDigest(Of T))
+- uid: Libplanet.Blocks.BlockHash.FromString(System.String)
+  name: FromString(String)
+  href: api/Libplanet.Blocks.BlockHash.html#Libplanet_Blocks_BlockHash_FromString_System_String_
+  commentId: M:Libplanet.Blocks.BlockHash.FromString(System.String)
+  fullName: Libplanet.Blocks.BlockHash.FromString(System.String)
+  nameWithType: BlockHash.FromString(String)
+- uid: Libplanet.Blocks.BlockHash.FromString*
+  name: FromString
+  href: api/Libplanet.Blocks.BlockHash.html#Libplanet_Blocks_BlockHash_FromString_
+  commentId: Overload:Libplanet.Blocks.BlockHash.FromString
+  isSpec: "True"
+  fullName: Libplanet.Blocks.BlockHash.FromString
+  nameWithType: BlockHash.FromString
+- uid: Libplanet.Blocks.BlockHash.GetHashCode
+  name: GetHashCode()
+  href: api/Libplanet.Blocks.BlockHash.html#Libplanet_Blocks_BlockHash_GetHashCode
+  commentId: M:Libplanet.Blocks.BlockHash.GetHashCode
+  fullName: Libplanet.Blocks.BlockHash.GetHashCode()
+  nameWithType: BlockHash.GetHashCode()
+- uid: Libplanet.Blocks.BlockHash.GetHashCode*
+  name: GetHashCode
+  href: api/Libplanet.Blocks.BlockHash.html#Libplanet_Blocks_BlockHash_GetHashCode_
+  commentId: Overload:Libplanet.Blocks.BlockHash.GetHashCode
+  isSpec: "True"
+  fullName: Libplanet.Blocks.BlockHash.GetHashCode
+  nameWithType: BlockHash.GetHashCode
+- uid: Libplanet.Blocks.BlockHash.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  name: GetObjectData(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Blocks.BlockHash.html#Libplanet_Blocks_BlockHash_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
+  commentId: M:Libplanet.Blocks.BlockHash.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  fullName: Libplanet.Blocks.BlockHash.GetObjectData(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  nameWithType: BlockHash.GetObjectData(SerializationInfo, StreamingContext)
+- uid: Libplanet.Blocks.BlockHash.GetObjectData*
+  name: GetObjectData
+  href: api/Libplanet.Blocks.BlockHash.html#Libplanet_Blocks_BlockHash_GetObjectData_
+  commentId: Overload:Libplanet.Blocks.BlockHash.GetObjectData
+  isSpec: "True"
+  fullName: Libplanet.Blocks.BlockHash.GetObjectData
+  nameWithType: BlockHash.GetObjectData
+- uid: Libplanet.Blocks.BlockHash.Satisfies(System.Int64)
+  name: Satisfies(Int64)
+  href: api/Libplanet.Blocks.BlockHash.html#Libplanet_Blocks_BlockHash_Satisfies_System_Int64_
+  commentId: M:Libplanet.Blocks.BlockHash.Satisfies(System.Int64)
+  fullName: Libplanet.Blocks.BlockHash.Satisfies(System.Int64)
+  nameWithType: BlockHash.Satisfies(Int64)
+- uid: Libplanet.Blocks.BlockHash.Satisfies*
+  name: Satisfies
+  href: api/Libplanet.Blocks.BlockHash.html#Libplanet_Blocks_BlockHash_Satisfies_
+  commentId: Overload:Libplanet.Blocks.BlockHash.Satisfies
+  isSpec: "True"
+  fullName: Libplanet.Blocks.BlockHash.Satisfies
+  nameWithType: BlockHash.Satisfies
+- uid: Libplanet.Blocks.BlockHash.ToByteArray
+  name: ToByteArray()
+  href: api/Libplanet.Blocks.BlockHash.html#Libplanet_Blocks_BlockHash_ToByteArray
+  commentId: M:Libplanet.Blocks.BlockHash.ToByteArray
+  fullName: Libplanet.Blocks.BlockHash.ToByteArray()
+  nameWithType: BlockHash.ToByteArray()
+- uid: Libplanet.Blocks.BlockHash.ToByteArray*
+  name: ToByteArray
+  href: api/Libplanet.Blocks.BlockHash.html#Libplanet_Blocks_BlockHash_ToByteArray_
+  commentId: Overload:Libplanet.Blocks.BlockHash.ToByteArray
+  isSpec: "True"
+  fullName: Libplanet.Blocks.BlockHash.ToByteArray
+  nameWithType: BlockHash.ToByteArray
+- uid: Libplanet.Blocks.BlockHash.ToString
+  name: ToString()
+  href: api/Libplanet.Blocks.BlockHash.html#Libplanet_Blocks_BlockHash_ToString
+  commentId: M:Libplanet.Blocks.BlockHash.ToString
+  fullName: Libplanet.Blocks.BlockHash.ToString()
+  nameWithType: BlockHash.ToString()
+- uid: Libplanet.Blocks.BlockHash.ToString*
+  name: ToString
+  href: api/Libplanet.Blocks.BlockHash.html#Libplanet_Blocks_BlockHash_ToString_
+  commentId: Overload:Libplanet.Blocks.BlockHash.ToString
+  isSpec: "True"
+  fullName: Libplanet.Blocks.BlockHash.ToString
+  nameWithType: BlockHash.ToString
 - uid: Libplanet.Blocks.BlockHeader
   name: BlockHeader
   href: api/Libplanet.Blocks.BlockHeader.html
@@ -6324,15 +6490,12 @@ references:
   commentId: T:Libplanet.Blocks.InvalidBlockPreEvaluationHashException
   fullName: Libplanet.Blocks.InvalidBlockPreEvaluationHashException
   nameWithType: InvalidBlockPreEvaluationHashException
-- uid: Libplanet.Blocks.InvalidBlockPreEvaluationHashException.#ctor(Libplanet.HashDigest{System.Security.Cryptography.SHA256},Libplanet.HashDigest{System.Security.Cryptography.SHA256},System.String)
-  name: InvalidBlockPreEvaluationHashException(HashDigest<SHA256>, HashDigest<SHA256>, String)
-  href: api/Libplanet.Blocks.InvalidBlockPreEvaluationHashException.html#Libplanet_Blocks_InvalidBlockPreEvaluationHashException__ctor_Libplanet_HashDigest_System_Security_Cryptography_SHA256__Libplanet_HashDigest_System_Security_Cryptography_SHA256__System_String_
-  commentId: M:Libplanet.Blocks.InvalidBlockPreEvaluationHashException.#ctor(Libplanet.HashDigest{System.Security.Cryptography.SHA256},Libplanet.HashDigest{System.Security.Cryptography.SHA256},System.String)
-  name.vb: InvalidBlockPreEvaluationHashException(HashDigest(Of SHA256), HashDigest(Of SHA256), String)
-  fullName: Libplanet.Blocks.InvalidBlockPreEvaluationHashException.InvalidBlockPreEvaluationHashException(Libplanet.HashDigest<System.Security.Cryptography.SHA256>, Libplanet.HashDigest<System.Security.Cryptography.SHA256>, System.String)
-  fullName.vb: Libplanet.Blocks.InvalidBlockPreEvaluationHashException.InvalidBlockPreEvaluationHashException(Libplanet.HashDigest(Of System.Security.Cryptography.SHA256), Libplanet.HashDigest(Of System.Security.Cryptography.SHA256), System.String)
-  nameWithType: InvalidBlockPreEvaluationHashException.InvalidBlockPreEvaluationHashException(HashDigest<SHA256>, HashDigest<SHA256>, String)
-  nameWithType.vb: InvalidBlockPreEvaluationHashException.InvalidBlockPreEvaluationHashException(HashDigest(Of SHA256), HashDigest(Of SHA256), String)
+- uid: Libplanet.Blocks.InvalidBlockPreEvaluationHashException.#ctor(Libplanet.Blocks.BlockHash,Libplanet.Blocks.BlockHash,System.String)
+  name: InvalidBlockPreEvaluationHashException(BlockHash, BlockHash, String)
+  href: api/Libplanet.Blocks.InvalidBlockPreEvaluationHashException.html#Libplanet_Blocks_InvalidBlockPreEvaluationHashException__ctor_Libplanet_Blocks_BlockHash_Libplanet_Blocks_BlockHash_System_String_
+  commentId: M:Libplanet.Blocks.InvalidBlockPreEvaluationHashException.#ctor(Libplanet.Blocks.BlockHash,Libplanet.Blocks.BlockHash,System.String)
+  fullName: Libplanet.Blocks.InvalidBlockPreEvaluationHashException.InvalidBlockPreEvaluationHashException(Libplanet.Blocks.BlockHash, Libplanet.Blocks.BlockHash, System.String)
+  nameWithType: InvalidBlockPreEvaluationHashException.InvalidBlockPreEvaluationHashException(BlockHash, BlockHash, String)
 - uid: Libplanet.Blocks.InvalidBlockPreEvaluationHashException.#ctor*
   name: InvalidBlockPreEvaluationHashException
   href: api/Libplanet.Blocks.InvalidBlockPreEvaluationHashException.html#Libplanet_Blocks_InvalidBlockPreEvaluationHashException__ctor_
@@ -6693,15 +6856,12 @@ references:
   commentId: T:Libplanet.Blocks.InvalidGenesisBlockException
   fullName: Libplanet.Blocks.InvalidGenesisBlockException
   nameWithType: InvalidGenesisBlockException
-- uid: Libplanet.Blocks.InvalidGenesisBlockException.#ctor(Libplanet.HashDigest{System.Security.Cryptography.SHA256},Libplanet.HashDigest{System.Security.Cryptography.SHA256},System.String)
-  name: InvalidGenesisBlockException(HashDigest<SHA256>, HashDigest<SHA256>, String)
-  href: api/Libplanet.Blocks.InvalidGenesisBlockException.html#Libplanet_Blocks_InvalidGenesisBlockException__ctor_Libplanet_HashDigest_System_Security_Cryptography_SHA256__Libplanet_HashDigest_System_Security_Cryptography_SHA256__System_String_
-  commentId: M:Libplanet.Blocks.InvalidGenesisBlockException.#ctor(Libplanet.HashDigest{System.Security.Cryptography.SHA256},Libplanet.HashDigest{System.Security.Cryptography.SHA256},System.String)
-  name.vb: InvalidGenesisBlockException(HashDigest(Of SHA256), HashDigest(Of SHA256), String)
-  fullName: Libplanet.Blocks.InvalidGenesisBlockException.InvalidGenesisBlockException(Libplanet.HashDigest<System.Security.Cryptography.SHA256>, Libplanet.HashDigest<System.Security.Cryptography.SHA256>, System.String)
-  fullName.vb: Libplanet.Blocks.InvalidGenesisBlockException.InvalidGenesisBlockException(Libplanet.HashDigest(Of System.Security.Cryptography.SHA256), Libplanet.HashDigest(Of System.Security.Cryptography.SHA256), System.String)
-  nameWithType: InvalidGenesisBlockException.InvalidGenesisBlockException(HashDigest<SHA256>, HashDigest<SHA256>, String)
-  nameWithType.vb: InvalidGenesisBlockException.InvalidGenesisBlockException(HashDigest(Of SHA256), HashDigest(Of SHA256), String)
+- uid: Libplanet.Blocks.InvalidGenesisBlockException.#ctor(Libplanet.Blocks.BlockHash,Libplanet.Blocks.BlockHash,System.String)
+  name: InvalidGenesisBlockException(BlockHash, BlockHash, String)
+  href: api/Libplanet.Blocks.InvalidGenesisBlockException.html#Libplanet_Blocks_InvalidGenesisBlockException__ctor_Libplanet_Blocks_BlockHash_Libplanet_Blocks_BlockHash_System_String_
+  commentId: M:Libplanet.Blocks.InvalidGenesisBlockException.#ctor(Libplanet.Blocks.BlockHash,Libplanet.Blocks.BlockHash,System.String)
+  fullName: Libplanet.Blocks.InvalidGenesisBlockException.InvalidGenesisBlockException(Libplanet.Blocks.BlockHash, Libplanet.Blocks.BlockHash, System.String)
+  nameWithType: InvalidGenesisBlockException.InvalidGenesisBlockException(BlockHash, BlockHash, String)
 - uid: Libplanet.Blocks.InvalidGenesisBlockException.#ctor*
   name: InvalidGenesisBlockException
   href: api/Libplanet.Blocks.InvalidGenesisBlockException.html#Libplanet_Blocks_InvalidGenesisBlockException__ctor_
@@ -7387,6 +7547,24 @@ references:
   fullName.vb: Libplanet.HashDigest(Of T).ByteArray
   nameWithType: HashDigest<T>.ByteArray
   nameWithType.vb: HashDigest(Of T).ByteArray
+- uid: Libplanet.HashDigest`1.DeriveFrom(System.Byte[])
+  name: DeriveFrom(Byte[])
+  href: api/Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_DeriveFrom_System_Byte___
+  commentId: M:Libplanet.HashDigest`1.DeriveFrom(System.Byte[])
+  name.vb: DeriveFrom(Byte())
+  fullName: Libplanet.HashDigest<T>.DeriveFrom(System.Byte[])
+  fullName.vb: Libplanet.HashDigest(Of T).DeriveFrom(System.Byte())
+  nameWithType: HashDigest<T>.DeriveFrom(Byte[])
+  nameWithType.vb: HashDigest(Of T).DeriveFrom(Byte())
+- uid: Libplanet.HashDigest`1.DeriveFrom*
+  name: DeriveFrom
+  href: api/Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_DeriveFrom_
+  commentId: Overload:Libplanet.HashDigest`1.DeriveFrom
+  isSpec: "True"
+  fullName: Libplanet.HashDigest<T>.DeriveFrom
+  fullName.vb: Libplanet.HashDigest(Of T).DeriveFrom
+  nameWithType: HashDigest<T>.DeriveFrom
+  nameWithType.vb: HashDigest(Of T).DeriveFrom
 - uid: Libplanet.HashDigest`1.Equals(System.Object)
   name: Equals(Object)
   href: api/Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_Equals_System_Object_
@@ -7455,23 +7633,6 @@ references:
   fullName.vb: Libplanet.HashDigest(Of T).GetObjectData
   nameWithType: HashDigest<T>.GetObjectData
   nameWithType.vb: HashDigest(Of T).GetObjectData
-- uid: Libplanet.HashDigest`1.Satisfies(System.Int64)
-  name: Satisfies(Int64)
-  href: api/Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_Satisfies_System_Int64_
-  commentId: M:Libplanet.HashDigest`1.Satisfies(System.Int64)
-  fullName: Libplanet.HashDigest<T>.Satisfies(System.Int64)
-  fullName.vb: Libplanet.HashDigest(Of T).Satisfies(System.Int64)
-  nameWithType: HashDigest<T>.Satisfies(Int64)
-  nameWithType.vb: HashDigest(Of T).Satisfies(Int64)
-- uid: Libplanet.HashDigest`1.Satisfies*
-  name: Satisfies
-  href: api/Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_Satisfies_
-  commentId: Overload:Libplanet.HashDigest`1.Satisfies
-  isSpec: "True"
-  fullName: Libplanet.HashDigest<T>.Satisfies
-  fullName.vb: Libplanet.HashDigest(Of T).Satisfies
-  nameWithType: HashDigest<T>.Satisfies
-  nameWithType.vb: HashDigest(Of T).Satisfies
 - uid: Libplanet.HashDigest`1.Size
   name: Size
   href: api/Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_Size
@@ -12110,15 +12271,12 @@ references:
   commentId: T:Libplanet.Store.BaseStore
   fullName: Libplanet.Store.BaseStore
   nameWithType: BaseStore
-- uid: Libplanet.Store.BaseStore.AppendIndex(System.Guid,Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name: AppendIndex(Guid, HashDigest<SHA256>)
-  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_AppendIndex_System_Guid_Libplanet_HashDigest_System_Security_Cryptography_SHA256__
-  commentId: M:Libplanet.Store.BaseStore.AppendIndex(System.Guid,Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name.vb: AppendIndex(Guid, HashDigest(Of SHA256))
-  fullName: Libplanet.Store.BaseStore.AppendIndex(System.Guid, Libplanet.HashDigest<System.Security.Cryptography.SHA256>)
-  fullName.vb: Libplanet.Store.BaseStore.AppendIndex(System.Guid, Libplanet.HashDigest(Of System.Security.Cryptography.SHA256))
-  nameWithType: BaseStore.AppendIndex(Guid, HashDigest<SHA256>)
-  nameWithType.vb: BaseStore.AppendIndex(Guid, HashDigest(Of SHA256))
+- uid: Libplanet.Store.BaseStore.AppendIndex(System.Guid,Libplanet.Blocks.BlockHash)
+  name: AppendIndex(Guid, BlockHash)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_AppendIndex_System_Guid_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Store.BaseStore.AppendIndex(System.Guid,Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.Store.BaseStore.AppendIndex(System.Guid, Libplanet.Blocks.BlockHash)
+  nameWithType: BaseStore.AppendIndex(Guid, BlockHash)
 - uid: Libplanet.Store.BaseStore.AppendIndex*
   name: AppendIndex
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_AppendIndex_
@@ -12126,15 +12284,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BaseStore.AppendIndex
   nameWithType: BaseStore.AppendIndex
-- uid: Libplanet.Store.BaseStore.ContainsBlock(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name: ContainsBlock(HashDigest<SHA256>)
-  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ContainsBlock_Libplanet_HashDigest_System_Security_Cryptography_SHA256__
-  commentId: M:Libplanet.Store.BaseStore.ContainsBlock(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name.vb: ContainsBlock(HashDigest(Of SHA256))
-  fullName: Libplanet.Store.BaseStore.ContainsBlock(Libplanet.HashDigest<System.Security.Cryptography.SHA256>)
-  fullName.vb: Libplanet.Store.BaseStore.ContainsBlock(Libplanet.HashDigest(Of System.Security.Cryptography.SHA256))
-  nameWithType: BaseStore.ContainsBlock(HashDigest<SHA256>)
-  nameWithType.vb: BaseStore.ContainsBlock(HashDigest(Of SHA256))
+- uid: Libplanet.Store.BaseStore.ContainsBlock(Libplanet.Blocks.BlockHash)
+  name: ContainsBlock(BlockHash)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ContainsBlock_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Store.BaseStore.ContainsBlock(Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.Store.BaseStore.ContainsBlock(Libplanet.Blocks.BlockHash)
+  nameWithType: BaseStore.ContainsBlock(BlockHash)
 - uid: Libplanet.Store.BaseStore.ContainsBlock*
   name: ContainsBlock
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ContainsBlock_
@@ -12194,15 +12349,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BaseStore.CountTransactions
   nameWithType: BaseStore.CountTransactions
-- uid: Libplanet.Store.BaseStore.DeleteBlock(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name: DeleteBlock(HashDigest<SHA256>)
-  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_DeleteBlock_Libplanet_HashDigest_System_Security_Cryptography_SHA256__
-  commentId: M:Libplanet.Store.BaseStore.DeleteBlock(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name.vb: DeleteBlock(HashDigest(Of SHA256))
-  fullName: Libplanet.Store.BaseStore.DeleteBlock(Libplanet.HashDigest<System.Security.Cryptography.SHA256>)
-  fullName.vb: Libplanet.Store.BaseStore.DeleteBlock(Libplanet.HashDigest(Of System.Security.Cryptography.SHA256))
-  nameWithType: BaseStore.DeleteBlock(HashDigest<SHA256>)
-  nameWithType.vb: BaseStore.DeleteBlock(HashDigest(Of SHA256))
+- uid: Libplanet.Store.BaseStore.DeleteBlock(Libplanet.Blocks.BlockHash)
+  name: DeleteBlock(BlockHash)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_DeleteBlock_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Store.BaseStore.DeleteBlock(Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.Store.BaseStore.DeleteBlock(Libplanet.Blocks.BlockHash)
+  nameWithType: BaseStore.DeleteBlock(BlockHash)
 - uid: Libplanet.Store.BaseStore.DeleteBlock*
   name: DeleteBlock
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_DeleteBlock_
@@ -12249,15 +12401,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BaseStore.Dispose
   nameWithType: BaseStore.Dispose
-- uid: Libplanet.Store.BaseStore.ForkBlockIndexes(System.Guid,System.Guid,Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name: ForkBlockIndexes(Guid, Guid, HashDigest<SHA256>)
-  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ForkBlockIndexes_System_Guid_System_Guid_Libplanet_HashDigest_System_Security_Cryptography_SHA256__
-  commentId: M:Libplanet.Store.BaseStore.ForkBlockIndexes(System.Guid,System.Guid,Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name.vb: ForkBlockIndexes(Guid, Guid, HashDigest(Of SHA256))
-  fullName: Libplanet.Store.BaseStore.ForkBlockIndexes(System.Guid, System.Guid, Libplanet.HashDigest<System.Security.Cryptography.SHA256>)
-  fullName.vb: Libplanet.Store.BaseStore.ForkBlockIndexes(System.Guid, System.Guid, Libplanet.HashDigest(Of System.Security.Cryptography.SHA256))
-  nameWithType: BaseStore.ForkBlockIndexes(Guid, Guid, HashDigest<SHA256>)
-  nameWithType.vb: BaseStore.ForkBlockIndexes(Guid, Guid, HashDigest(Of SHA256))
+- uid: Libplanet.Store.BaseStore.ForkBlockIndexes(System.Guid,System.Guid,Libplanet.Blocks.BlockHash)
+  name: ForkBlockIndexes(Guid, Guid, BlockHash)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ForkBlockIndexes_System_Guid_System_Guid_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Store.BaseStore.ForkBlockIndexes(System.Guid,System.Guid,Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.Store.BaseStore.ForkBlockIndexes(System.Guid, System.Guid, Libplanet.Blocks.BlockHash)
+  nameWithType: BaseStore.ForkBlockIndexes(Guid, Guid, BlockHash)
 - uid: Libplanet.Store.BaseStore.ForkBlockIndexes*
   name: ForkBlockIndexes
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ForkBlockIndexes_
@@ -12285,24 +12434,21 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BaseStore.GetBlock
   nameWithType: BaseStore.GetBlock
-- uid: Libplanet.Store.BaseStore.GetBlock``1(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name: GetBlock<T>(HashDigest<SHA256>)
-  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetBlock__1_Libplanet_HashDigest_System_Security_Cryptography_SHA256__
-  commentId: M:Libplanet.Store.BaseStore.GetBlock``1(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name.vb: GetBlock(Of T)(HashDigest(Of SHA256))
-  fullName: Libplanet.Store.BaseStore.GetBlock<T>(Libplanet.HashDigest<System.Security.Cryptography.SHA256>)
-  fullName.vb: Libplanet.Store.BaseStore.GetBlock(Of T)(Libplanet.HashDigest(Of System.Security.Cryptography.SHA256))
-  nameWithType: BaseStore.GetBlock<T>(HashDigest<SHA256>)
-  nameWithType.vb: BaseStore.GetBlock(Of T)(HashDigest(Of SHA256))
-- uid: Libplanet.Store.BaseStore.GetBlockDigest(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name: GetBlockDigest(HashDigest<SHA256>)
-  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetBlockDigest_Libplanet_HashDigest_System_Security_Cryptography_SHA256__
-  commentId: M:Libplanet.Store.BaseStore.GetBlockDigest(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name.vb: GetBlockDigest(HashDigest(Of SHA256))
-  fullName: Libplanet.Store.BaseStore.GetBlockDigest(Libplanet.HashDigest<System.Security.Cryptography.SHA256>)
-  fullName.vb: Libplanet.Store.BaseStore.GetBlockDigest(Libplanet.HashDigest(Of System.Security.Cryptography.SHA256))
-  nameWithType: BaseStore.GetBlockDigest(HashDigest<SHA256>)
-  nameWithType.vb: BaseStore.GetBlockDigest(HashDigest(Of SHA256))
+- uid: Libplanet.Store.BaseStore.GetBlock``1(Libplanet.Blocks.BlockHash)
+  name: GetBlock<T>(BlockHash)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetBlock__1_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Store.BaseStore.GetBlock``1(Libplanet.Blocks.BlockHash)
+  name.vb: GetBlock(Of T)(BlockHash)
+  fullName: Libplanet.Store.BaseStore.GetBlock<T>(Libplanet.Blocks.BlockHash)
+  fullName.vb: Libplanet.Store.BaseStore.GetBlock(Of T)(Libplanet.Blocks.BlockHash)
+  nameWithType: BaseStore.GetBlock<T>(BlockHash)
+  nameWithType.vb: BaseStore.GetBlock(Of T)(BlockHash)
+- uid: Libplanet.Store.BaseStore.GetBlockDigest(Libplanet.Blocks.BlockHash)
+  name: GetBlockDigest(BlockHash)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetBlockDigest_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Store.BaseStore.GetBlockDigest(Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.Store.BaseStore.GetBlockDigest(Libplanet.Blocks.BlockHash)
+  nameWithType: BaseStore.GetBlockDigest(BlockHash)
 - uid: Libplanet.Store.BaseStore.GetBlockDigest*
   name: GetBlockDigest
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetBlockDigest_
@@ -12310,15 +12456,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BaseStore.GetBlockDigest
   nameWithType: BaseStore.GetBlockDigest
-- uid: Libplanet.Store.BaseStore.GetBlockIndex(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name: GetBlockIndex(HashDigest<SHA256>)
-  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetBlockIndex_Libplanet_HashDigest_System_Security_Cryptography_SHA256__
-  commentId: M:Libplanet.Store.BaseStore.GetBlockIndex(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name.vb: GetBlockIndex(HashDigest(Of SHA256))
-  fullName: Libplanet.Store.BaseStore.GetBlockIndex(Libplanet.HashDigest<System.Security.Cryptography.SHA256>)
-  fullName.vb: Libplanet.Store.BaseStore.GetBlockIndex(Libplanet.HashDigest(Of System.Security.Cryptography.SHA256))
-  nameWithType: BaseStore.GetBlockIndex(HashDigest<SHA256>)
-  nameWithType.vb: BaseStore.GetBlockIndex(HashDigest(Of SHA256))
+- uid: Libplanet.Store.BaseStore.GetBlockIndex(Libplanet.Blocks.BlockHash)
+  name: GetBlockIndex(BlockHash)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetBlockIndex_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Store.BaseStore.GetBlockIndex(Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.Store.BaseStore.GetBlockIndex(Libplanet.Blocks.BlockHash)
+  nameWithType: BaseStore.GetBlockIndex(BlockHash)
 - uid: Libplanet.Store.BaseStore.GetBlockIndex*
   name: GetBlockIndex
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetBlockIndex_
@@ -12326,15 +12469,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BaseStore.GetBlockIndex
   nameWithType: BaseStore.GetBlockIndex
-- uid: Libplanet.Store.BaseStore.GetBlockPerceivedTime(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name: GetBlockPerceivedTime(HashDigest<SHA256>)
-  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetBlockPerceivedTime_Libplanet_HashDigest_System_Security_Cryptography_SHA256__
-  commentId: M:Libplanet.Store.BaseStore.GetBlockPerceivedTime(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name.vb: GetBlockPerceivedTime(HashDigest(Of SHA256))
-  fullName: Libplanet.Store.BaseStore.GetBlockPerceivedTime(Libplanet.HashDigest<System.Security.Cryptography.SHA256>)
-  fullName.vb: Libplanet.Store.BaseStore.GetBlockPerceivedTime(Libplanet.HashDigest(Of System.Security.Cryptography.SHA256))
-  nameWithType: BaseStore.GetBlockPerceivedTime(HashDigest<SHA256>)
-  nameWithType.vb: BaseStore.GetBlockPerceivedTime(HashDigest(Of SHA256))
+- uid: Libplanet.Store.BaseStore.GetBlockPerceivedTime(Libplanet.Blocks.BlockHash)
+  name: GetBlockPerceivedTime(BlockHash)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetBlockPerceivedTime_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Store.BaseStore.GetBlockPerceivedTime(Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.Store.BaseStore.GetBlockPerceivedTime(Libplanet.Blocks.BlockHash)
+  nameWithType: BaseStore.GetBlockPerceivedTime(BlockHash)
 - uid: Libplanet.Store.BaseStore.GetBlockPerceivedTime*
   name: GetBlockPerceivedTime
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetBlockPerceivedTime_
@@ -12523,15 +12663,12 @@ references:
   fullName.vb: Libplanet.Store.BaseStore.PutTransaction(Of T)(Libplanet.Tx.Transaction(Of T))
   nameWithType: BaseStore.PutTransaction<T>(Transaction<T>)
   nameWithType.vb: BaseStore.PutTransaction(Of T)(Transaction(Of T))
-- uid: Libplanet.Store.BaseStore.SetBlockPerceivedTime(Libplanet.HashDigest{System.Security.Cryptography.SHA256},System.DateTimeOffset)
-  name: SetBlockPerceivedTime(HashDigest<SHA256>, DateTimeOffset)
-  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_SetBlockPerceivedTime_Libplanet_HashDigest_System_Security_Cryptography_SHA256__System_DateTimeOffset_
-  commentId: M:Libplanet.Store.BaseStore.SetBlockPerceivedTime(Libplanet.HashDigest{System.Security.Cryptography.SHA256},System.DateTimeOffset)
-  name.vb: SetBlockPerceivedTime(HashDigest(Of SHA256), DateTimeOffset)
-  fullName: Libplanet.Store.BaseStore.SetBlockPerceivedTime(Libplanet.HashDigest<System.Security.Cryptography.SHA256>, System.DateTimeOffset)
-  fullName.vb: Libplanet.Store.BaseStore.SetBlockPerceivedTime(Libplanet.HashDigest(Of System.Security.Cryptography.SHA256), System.DateTimeOffset)
-  nameWithType: BaseStore.SetBlockPerceivedTime(HashDigest<SHA256>, DateTimeOffset)
-  nameWithType.vb: BaseStore.SetBlockPerceivedTime(HashDigest(Of SHA256), DateTimeOffset)
+- uid: Libplanet.Store.BaseStore.SetBlockPerceivedTime(Libplanet.Blocks.BlockHash,System.DateTimeOffset)
+  name: SetBlockPerceivedTime(BlockHash, DateTimeOffset)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_SetBlockPerceivedTime_Libplanet_Blocks_BlockHash_System_DateTimeOffset_
+  commentId: M:Libplanet.Store.BaseStore.SetBlockPerceivedTime(Libplanet.Blocks.BlockHash,System.DateTimeOffset)
+  fullName: Libplanet.Store.BaseStore.SetBlockPerceivedTime(Libplanet.Blocks.BlockHash, System.DateTimeOffset)
+  nameWithType: BaseStore.SetBlockPerceivedTime(BlockHash, DateTimeOffset)
 - uid: Libplanet.Store.BaseStore.SetBlockPerceivedTime*
   name: SetBlockPerceivedTime
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_SetBlockPerceivedTime_
@@ -12610,15 +12747,15 @@ references:
   fullName.vb: Libplanet.Store.BlockSet(Of T).BlockSet
   nameWithType: BlockSet<T>.BlockSet
   nameWithType.vb: BlockSet(Of T).BlockSet
-- uid: Libplanet.Store.BlockSet`1.Contains(System.Collections.Generic.KeyValuePair{Libplanet.HashDigest{System.Security.Cryptography.SHA256},Libplanet.Blocks.Block{`0}})
-  name: Contains(KeyValuePair<HashDigest<SHA256>, Block<T>>)
-  href: api/Libplanet.Store.BlockSet-1.html#Libplanet_Store_BlockSet_1_Contains_System_Collections_Generic_KeyValuePair_Libplanet_HashDigest_System_Security_Cryptography_SHA256__Libplanet_Blocks_Block__0___
-  commentId: M:Libplanet.Store.BlockSet`1.Contains(System.Collections.Generic.KeyValuePair{Libplanet.HashDigest{System.Security.Cryptography.SHA256},Libplanet.Blocks.Block{`0}})
-  name.vb: Contains(KeyValuePair(Of HashDigest(Of SHA256), Block(Of T)))
-  fullName: Libplanet.Store.BlockSet<T>.Contains(System.Collections.Generic.KeyValuePair<Libplanet.HashDigest<System.Security.Cryptography.SHA256>, Libplanet.Blocks.Block<T>>)
-  fullName.vb: Libplanet.Store.BlockSet(Of T).Contains(System.Collections.Generic.KeyValuePair(Of Libplanet.HashDigest(Of System.Security.Cryptography.SHA256), Libplanet.Blocks.Block(Of T)))
-  nameWithType: BlockSet<T>.Contains(KeyValuePair<HashDigest<SHA256>, Block<T>>)
-  nameWithType.vb: BlockSet(Of T).Contains(KeyValuePair(Of HashDigest(Of SHA256), Block(Of T)))
+- uid: Libplanet.Store.BlockSet`1.Contains(System.Collections.Generic.KeyValuePair{Libplanet.Blocks.BlockHash,Libplanet.Blocks.Block{`0}})
+  name: Contains(KeyValuePair<BlockHash, Block<T>>)
+  href: api/Libplanet.Store.BlockSet-1.html#Libplanet_Store_BlockSet_1_Contains_System_Collections_Generic_KeyValuePair_Libplanet_Blocks_BlockHash_Libplanet_Blocks_Block__0___
+  commentId: M:Libplanet.Store.BlockSet`1.Contains(System.Collections.Generic.KeyValuePair{Libplanet.Blocks.BlockHash,Libplanet.Blocks.Block{`0}})
+  name.vb: Contains(KeyValuePair(Of BlockHash, Block(Of T)))
+  fullName: Libplanet.Store.BlockSet<T>.Contains(System.Collections.Generic.KeyValuePair<Libplanet.Blocks.BlockHash, Libplanet.Blocks.Block<T>>)
+  fullName.vb: Libplanet.Store.BlockSet(Of T).Contains(System.Collections.Generic.KeyValuePair(Of Libplanet.Blocks.BlockHash, Libplanet.Blocks.Block(Of T)))
+  nameWithType: BlockSet<T>.Contains(KeyValuePair<BlockHash, Block<T>>)
+  nameWithType.vb: BlockSet(Of T).Contains(KeyValuePair(Of BlockHash, Block(Of T)))
 - uid: Libplanet.Store.BlockSet`1.Contains*
   name: Contains
   href: api/Libplanet.Store.BlockSet-1.html#Libplanet_Store_BlockSet_1_Contains_
@@ -12628,15 +12765,14 @@ references:
   fullName.vb: Libplanet.Store.BlockSet(Of T).Contains
   nameWithType: BlockSet<T>.Contains
   nameWithType.vb: BlockSet(Of T).Contains
-- uid: Libplanet.Store.BlockSet`1.ContainsKey(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name: ContainsKey(HashDigest<SHA256>)
-  href: api/Libplanet.Store.BlockSet-1.html#Libplanet_Store_BlockSet_1_ContainsKey_Libplanet_HashDigest_System_Security_Cryptography_SHA256__
-  commentId: M:Libplanet.Store.BlockSet`1.ContainsKey(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name.vb: ContainsKey(HashDigest(Of SHA256))
-  fullName: Libplanet.Store.BlockSet<T>.ContainsKey(Libplanet.HashDigest<System.Security.Cryptography.SHA256>)
-  fullName.vb: Libplanet.Store.BlockSet(Of T).ContainsKey(Libplanet.HashDigest(Of System.Security.Cryptography.SHA256))
-  nameWithType: BlockSet<T>.ContainsKey(HashDigest<SHA256>)
-  nameWithType.vb: BlockSet(Of T).ContainsKey(HashDigest(Of SHA256))
+- uid: Libplanet.Store.BlockSet`1.ContainsKey(Libplanet.Blocks.BlockHash)
+  name: ContainsKey(BlockHash)
+  href: api/Libplanet.Store.BlockSet-1.html#Libplanet_Store_BlockSet_1_ContainsKey_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Store.BlockSet`1.ContainsKey(Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.Store.BlockSet<T>.ContainsKey(Libplanet.Blocks.BlockHash)
+  fullName.vb: Libplanet.Store.BlockSet(Of T).ContainsKey(Libplanet.Blocks.BlockHash)
+  nameWithType: BlockSet<T>.ContainsKey(BlockHash)
+  nameWithType.vb: BlockSet(Of T).ContainsKey(BlockHash)
 - uid: Libplanet.Store.BlockSet`1.ContainsKey*
   name: ContainsKey
   href: api/Libplanet.Store.BlockSet-1.html#Libplanet_Store_BlockSet_1_ContainsKey_
@@ -12680,15 +12816,15 @@ references:
   fullName.vb: Libplanet.Store.BlockSet(Of T).IsReadOnly
   nameWithType: BlockSet<T>.IsReadOnly
   nameWithType.vb: BlockSet(Of T).IsReadOnly
-- uid: Libplanet.Store.BlockSet`1.Item(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name: Item[HashDigest<SHA256>]
-  href: api/Libplanet.Store.BlockSet-1.html#Libplanet_Store_BlockSet_1_Item_Libplanet_HashDigest_System_Security_Cryptography_SHA256__
-  commentId: P:Libplanet.Store.BlockSet`1.Item(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name.vb: Item(HashDigest(Of SHA256))
-  fullName: Libplanet.Store.BlockSet<T>.Item[Libplanet.HashDigest<System.Security.Cryptography.SHA256>]
-  fullName.vb: Libplanet.Store.BlockSet(Of T).Item(Libplanet.HashDigest(Of System.Security.Cryptography.SHA256))
-  nameWithType: BlockSet<T>.Item[HashDigest<SHA256>]
-  nameWithType.vb: BlockSet(Of T).Item(HashDigest(Of SHA256))
+- uid: Libplanet.Store.BlockSet`1.Item(Libplanet.Blocks.BlockHash)
+  name: Item[BlockHash]
+  href: api/Libplanet.Store.BlockSet-1.html#Libplanet_Store_BlockSet_1_Item_Libplanet_Blocks_BlockHash_
+  commentId: P:Libplanet.Store.BlockSet`1.Item(Libplanet.Blocks.BlockHash)
+  name.vb: Item(BlockHash)
+  fullName: Libplanet.Store.BlockSet<T>.Item[Libplanet.Blocks.BlockHash]
+  fullName.vb: Libplanet.Store.BlockSet(Of T).Item(Libplanet.Blocks.BlockHash)
+  nameWithType: BlockSet<T>.Item[BlockHash]
+  nameWithType.vb: BlockSet(Of T).Item(BlockHash)
 - uid: Libplanet.Store.BlockSet`1.Item*
   name: Item
   href: api/Libplanet.Store.BlockSet-1.html#Libplanet_Store_BlockSet_1_Item_
@@ -12715,15 +12851,14 @@ references:
   fullName.vb: Libplanet.Store.BlockSet(Of T).Keys
   nameWithType: BlockSet<T>.Keys
   nameWithType.vb: BlockSet(Of T).Keys
-- uid: Libplanet.Store.BlockSet`1.Remove(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name: Remove(HashDigest<SHA256>)
-  href: api/Libplanet.Store.BlockSet-1.html#Libplanet_Store_BlockSet_1_Remove_Libplanet_HashDigest_System_Security_Cryptography_SHA256__
-  commentId: M:Libplanet.Store.BlockSet`1.Remove(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name.vb: Remove(HashDigest(Of SHA256))
-  fullName: Libplanet.Store.BlockSet<T>.Remove(Libplanet.HashDigest<System.Security.Cryptography.SHA256>)
-  fullName.vb: Libplanet.Store.BlockSet(Of T).Remove(Libplanet.HashDigest(Of System.Security.Cryptography.SHA256))
-  nameWithType: BlockSet<T>.Remove(HashDigest<SHA256>)
-  nameWithType.vb: BlockSet(Of T).Remove(HashDigest(Of SHA256))
+- uid: Libplanet.Store.BlockSet`1.Remove(Libplanet.Blocks.BlockHash)
+  name: Remove(BlockHash)
+  href: api/Libplanet.Store.BlockSet-1.html#Libplanet_Store_BlockSet_1_Remove_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Store.BlockSet`1.Remove(Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.Store.BlockSet<T>.Remove(Libplanet.Blocks.BlockHash)
+  fullName.vb: Libplanet.Store.BlockSet(Of T).Remove(Libplanet.Blocks.BlockHash)
+  nameWithType: BlockSet<T>.Remove(BlockHash)
+  nameWithType.vb: BlockSet(Of T).Remove(BlockHash)
 - uid: Libplanet.Store.BlockSet`1.Remove*
   name: Remove
   href: api/Libplanet.Store.BlockSet-1.html#Libplanet_Store_BlockSet_1_Remove_
@@ -12801,15 +12936,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.DefaultStore.DefaultStore
   nameWithType: DefaultStore.DefaultStore
-- uid: Libplanet.Store.DefaultStore.AppendIndex(System.Guid,Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name: AppendIndex(Guid, HashDigest<SHA256>)
-  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_AppendIndex_System_Guid_Libplanet_HashDigest_System_Security_Cryptography_SHA256__
-  commentId: M:Libplanet.Store.DefaultStore.AppendIndex(System.Guid,Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name.vb: AppendIndex(Guid, HashDigest(Of SHA256))
-  fullName: Libplanet.Store.DefaultStore.AppendIndex(System.Guid, Libplanet.HashDigest<System.Security.Cryptography.SHA256>)
-  fullName.vb: Libplanet.Store.DefaultStore.AppendIndex(System.Guid, Libplanet.HashDigest(Of System.Security.Cryptography.SHA256))
-  nameWithType: DefaultStore.AppendIndex(Guid, HashDigest<SHA256>)
-  nameWithType.vb: DefaultStore.AppendIndex(Guid, HashDigest(Of SHA256))
+- uid: Libplanet.Store.DefaultStore.AppendIndex(System.Guid,Libplanet.Blocks.BlockHash)
+  name: AppendIndex(Guid, BlockHash)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_AppendIndex_System_Guid_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Store.DefaultStore.AppendIndex(System.Guid,Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.Store.DefaultStore.AppendIndex(System.Guid, Libplanet.Blocks.BlockHash)
+  nameWithType: DefaultStore.AppendIndex(Guid, BlockHash)
 - uid: Libplanet.Store.DefaultStore.AppendIndex*
   name: AppendIndex
   href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_AppendIndex_
@@ -12817,15 +12949,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.DefaultStore.AppendIndex
   nameWithType: DefaultStore.AppendIndex
-- uid: Libplanet.Store.DefaultStore.ContainsBlock(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name: ContainsBlock(HashDigest<SHA256>)
-  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_ContainsBlock_Libplanet_HashDigest_System_Security_Cryptography_SHA256__
-  commentId: M:Libplanet.Store.DefaultStore.ContainsBlock(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name.vb: ContainsBlock(HashDigest(Of SHA256))
-  fullName: Libplanet.Store.DefaultStore.ContainsBlock(Libplanet.HashDigest<System.Security.Cryptography.SHA256>)
-  fullName.vb: Libplanet.Store.DefaultStore.ContainsBlock(Libplanet.HashDigest(Of System.Security.Cryptography.SHA256))
-  nameWithType: DefaultStore.ContainsBlock(HashDigest<SHA256>)
-  nameWithType.vb: DefaultStore.ContainsBlock(HashDigest(Of SHA256))
+- uid: Libplanet.Store.DefaultStore.ContainsBlock(Libplanet.Blocks.BlockHash)
+  name: ContainsBlock(BlockHash)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_ContainsBlock_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Store.DefaultStore.ContainsBlock(Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.Store.DefaultStore.ContainsBlock(Libplanet.Blocks.BlockHash)
+  nameWithType: DefaultStore.ContainsBlock(BlockHash)
 - uid: Libplanet.Store.DefaultStore.ContainsBlock*
   name: ContainsBlock
   href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_ContainsBlock_
@@ -12885,15 +13014,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.DefaultStore.CountTransactions
   nameWithType: DefaultStore.CountTransactions
-- uid: Libplanet.Store.DefaultStore.DeleteBlock(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name: DeleteBlock(HashDigest<SHA256>)
-  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_DeleteBlock_Libplanet_HashDigest_System_Security_Cryptography_SHA256__
-  commentId: M:Libplanet.Store.DefaultStore.DeleteBlock(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name.vb: DeleteBlock(HashDigest(Of SHA256))
-  fullName: Libplanet.Store.DefaultStore.DeleteBlock(Libplanet.HashDigest<System.Security.Cryptography.SHA256>)
-  fullName.vb: Libplanet.Store.DefaultStore.DeleteBlock(Libplanet.HashDigest(Of System.Security.Cryptography.SHA256))
-  nameWithType: DefaultStore.DeleteBlock(HashDigest<SHA256>)
-  nameWithType.vb: DefaultStore.DeleteBlock(HashDigest(Of SHA256))
+- uid: Libplanet.Store.DefaultStore.DeleteBlock(Libplanet.Blocks.BlockHash)
+  name: DeleteBlock(BlockHash)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_DeleteBlock_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Store.DefaultStore.DeleteBlock(Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.Store.DefaultStore.DeleteBlock(Libplanet.Blocks.BlockHash)
+  nameWithType: DefaultStore.DeleteBlock(BlockHash)
 - uid: Libplanet.Store.DefaultStore.DeleteBlock*
   name: DeleteBlock
   href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_DeleteBlock_
@@ -12940,15 +13066,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.DefaultStore.Dispose
   nameWithType: DefaultStore.Dispose
-- uid: Libplanet.Store.DefaultStore.ForkBlockIndexes(System.Guid,System.Guid,Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name: ForkBlockIndexes(Guid, Guid, HashDigest<SHA256>)
-  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_ForkBlockIndexes_System_Guid_System_Guid_Libplanet_HashDigest_System_Security_Cryptography_SHA256__
-  commentId: M:Libplanet.Store.DefaultStore.ForkBlockIndexes(System.Guid,System.Guid,Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name.vb: ForkBlockIndexes(Guid, Guid, HashDigest(Of SHA256))
-  fullName: Libplanet.Store.DefaultStore.ForkBlockIndexes(System.Guid, System.Guid, Libplanet.HashDigest<System.Security.Cryptography.SHA256>)
-  fullName.vb: Libplanet.Store.DefaultStore.ForkBlockIndexes(System.Guid, System.Guid, Libplanet.HashDigest(Of System.Security.Cryptography.SHA256))
-  nameWithType: DefaultStore.ForkBlockIndexes(Guid, Guid, HashDigest<SHA256>)
-  nameWithType.vb: DefaultStore.ForkBlockIndexes(Guid, Guid, HashDigest(Of SHA256))
+- uid: Libplanet.Store.DefaultStore.ForkBlockIndexes(System.Guid,System.Guid,Libplanet.Blocks.BlockHash)
+  name: ForkBlockIndexes(Guid, Guid, BlockHash)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_ForkBlockIndexes_System_Guid_System_Guid_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Store.DefaultStore.ForkBlockIndexes(System.Guid,System.Guid,Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.Store.DefaultStore.ForkBlockIndexes(System.Guid, System.Guid, Libplanet.Blocks.BlockHash)
+  nameWithType: DefaultStore.ForkBlockIndexes(Guid, Guid, BlockHash)
 - uid: Libplanet.Store.DefaultStore.ForkBlockIndexes*
   name: ForkBlockIndexes
   href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_ForkBlockIndexes_
@@ -12969,15 +13092,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.DefaultStore.ForkTxNonces
   nameWithType: DefaultStore.ForkTxNonces
-- uid: Libplanet.Store.DefaultStore.GetBlockDigest(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name: GetBlockDigest(HashDigest<SHA256>)
-  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_GetBlockDigest_Libplanet_HashDigest_System_Security_Cryptography_SHA256__
-  commentId: M:Libplanet.Store.DefaultStore.GetBlockDigest(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name.vb: GetBlockDigest(HashDigest(Of SHA256))
-  fullName: Libplanet.Store.DefaultStore.GetBlockDigest(Libplanet.HashDigest<System.Security.Cryptography.SHA256>)
-  fullName.vb: Libplanet.Store.DefaultStore.GetBlockDigest(Libplanet.HashDigest(Of System.Security.Cryptography.SHA256))
-  nameWithType: DefaultStore.GetBlockDigest(HashDigest<SHA256>)
-  nameWithType.vb: DefaultStore.GetBlockDigest(HashDigest(Of SHA256))
+- uid: Libplanet.Store.DefaultStore.GetBlockDigest(Libplanet.Blocks.BlockHash)
+  name: GetBlockDigest(BlockHash)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_GetBlockDigest_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Store.DefaultStore.GetBlockDigest(Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.Store.DefaultStore.GetBlockDigest(Libplanet.Blocks.BlockHash)
+  nameWithType: DefaultStore.GetBlockDigest(BlockHash)
 - uid: Libplanet.Store.DefaultStore.GetBlockDigest*
   name: GetBlockDigest
   href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_GetBlockDigest_
@@ -12985,15 +13105,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.DefaultStore.GetBlockDigest
   nameWithType: DefaultStore.GetBlockDigest
-- uid: Libplanet.Store.DefaultStore.GetBlockPerceivedTime(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name: GetBlockPerceivedTime(HashDigest<SHA256>)
-  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_GetBlockPerceivedTime_Libplanet_HashDigest_System_Security_Cryptography_SHA256__
-  commentId: M:Libplanet.Store.DefaultStore.GetBlockPerceivedTime(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name.vb: GetBlockPerceivedTime(HashDigest(Of SHA256))
-  fullName: Libplanet.Store.DefaultStore.GetBlockPerceivedTime(Libplanet.HashDigest<System.Security.Cryptography.SHA256>)
-  fullName.vb: Libplanet.Store.DefaultStore.GetBlockPerceivedTime(Libplanet.HashDigest(Of System.Security.Cryptography.SHA256))
-  nameWithType: DefaultStore.GetBlockPerceivedTime(HashDigest<SHA256>)
-  nameWithType.vb: DefaultStore.GetBlockPerceivedTime(HashDigest(Of SHA256))
+- uid: Libplanet.Store.DefaultStore.GetBlockPerceivedTime(Libplanet.Blocks.BlockHash)
+  name: GetBlockPerceivedTime(BlockHash)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_GetBlockPerceivedTime_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Store.DefaultStore.GetBlockPerceivedTime(Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.Store.DefaultStore.GetBlockPerceivedTime(Libplanet.Blocks.BlockHash)
+  nameWithType: DefaultStore.GetBlockPerceivedTime(BlockHash)
 - uid: Libplanet.Store.DefaultStore.GetBlockPerceivedTime*
   name: GetBlockPerceivedTime
   href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_GetBlockPerceivedTime_
@@ -13182,15 +13299,12 @@ references:
   fullName.vb: Libplanet.Store.DefaultStore.PutTransaction(Of T)(Libplanet.Tx.Transaction(Of T))
   nameWithType: DefaultStore.PutTransaction<T>(Transaction<T>)
   nameWithType.vb: DefaultStore.PutTransaction(Of T)(Transaction(Of T))
-- uid: Libplanet.Store.DefaultStore.SetBlockPerceivedTime(Libplanet.HashDigest{System.Security.Cryptography.SHA256},System.DateTimeOffset)
-  name: SetBlockPerceivedTime(HashDigest<SHA256>, DateTimeOffset)
-  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_SetBlockPerceivedTime_Libplanet_HashDigest_System_Security_Cryptography_SHA256__System_DateTimeOffset_
-  commentId: M:Libplanet.Store.DefaultStore.SetBlockPerceivedTime(Libplanet.HashDigest{System.Security.Cryptography.SHA256},System.DateTimeOffset)
-  name.vb: SetBlockPerceivedTime(HashDigest(Of SHA256), DateTimeOffset)
-  fullName: Libplanet.Store.DefaultStore.SetBlockPerceivedTime(Libplanet.HashDigest<System.Security.Cryptography.SHA256>, System.DateTimeOffset)
-  fullName.vb: Libplanet.Store.DefaultStore.SetBlockPerceivedTime(Libplanet.HashDigest(Of System.Security.Cryptography.SHA256), System.DateTimeOffset)
-  nameWithType: DefaultStore.SetBlockPerceivedTime(HashDigest<SHA256>, DateTimeOffset)
-  nameWithType.vb: DefaultStore.SetBlockPerceivedTime(HashDigest(Of SHA256), DateTimeOffset)
+- uid: Libplanet.Store.DefaultStore.SetBlockPerceivedTime(Libplanet.Blocks.BlockHash,System.DateTimeOffset)
+  name: SetBlockPerceivedTime(BlockHash, DateTimeOffset)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_SetBlockPerceivedTime_Libplanet_Blocks_BlockHash_System_DateTimeOffset_
+  commentId: M:Libplanet.Store.DefaultStore.SetBlockPerceivedTime(Libplanet.Blocks.BlockHash,System.DateTimeOffset)
+  fullName: Libplanet.Store.DefaultStore.SetBlockPerceivedTime(Libplanet.Blocks.BlockHash, System.DateTimeOffset)
+  nameWithType: DefaultStore.SetBlockPerceivedTime(BlockHash, DateTimeOffset)
 - uid: Libplanet.Store.DefaultStore.SetBlockPerceivedTime*
   name: SetBlockPerceivedTime
   href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_SetBlockPerceivedTime_
@@ -13249,15 +13363,12 @@ references:
   commentId: T:Libplanet.Store.IStateStore
   fullName: Libplanet.Store.IStateStore
   nameWithType: IStateStore
-- uid: Libplanet.Store.IStateStore.ContainsBlockStates(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name: ContainsBlockStates(HashDigest<SHA256>)
-  href: api/Libplanet.Store.IStateStore.html#Libplanet_Store_IStateStore_ContainsBlockStates_Libplanet_HashDigest_System_Security_Cryptography_SHA256__
-  commentId: M:Libplanet.Store.IStateStore.ContainsBlockStates(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name.vb: ContainsBlockStates(HashDigest(Of SHA256))
-  fullName: Libplanet.Store.IStateStore.ContainsBlockStates(Libplanet.HashDigest<System.Security.Cryptography.SHA256>)
-  fullName.vb: Libplanet.Store.IStateStore.ContainsBlockStates(Libplanet.HashDigest(Of System.Security.Cryptography.SHA256))
-  nameWithType: IStateStore.ContainsBlockStates(HashDigest<SHA256>)
-  nameWithType.vb: IStateStore.ContainsBlockStates(HashDigest(Of SHA256))
+- uid: Libplanet.Store.IStateStore.ContainsBlockStates(Libplanet.Blocks.BlockHash)
+  name: ContainsBlockStates(BlockHash)
+  href: api/Libplanet.Store.IStateStore.html#Libplanet_Store_IStateStore_ContainsBlockStates_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Store.IStateStore.ContainsBlockStates(Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.Store.IStateStore.ContainsBlockStates(Libplanet.Blocks.BlockHash)
+  nameWithType: IStateStore.ContainsBlockStates(BlockHash)
 - uid: Libplanet.Store.IStateStore.ContainsBlockStates*
   name: ContainsBlockStates
   href: api/Libplanet.Store.IStateStore.html#Libplanet_Store_IStateStore_ContainsBlockStates_
@@ -13281,15 +13392,15 @@ references:
   fullName.vb: Libplanet.Store.IStateStore.ForkStates(Of T)(System.Guid, System.Guid, Libplanet.Blocks.Block(Of T))
   nameWithType: IStateStore.ForkStates<T>(Guid, Guid, Block<T>)
   nameWithType.vb: IStateStore.ForkStates(Of T)(Guid, Guid, Block(Of T))
-- uid: Libplanet.Store.IStateStore.GetState(System.String,System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},System.Nullable{System.Guid})
-  name: GetState(String, Nullable<HashDigest<SHA256>>, Nullable<Guid>)
-  href: api/Libplanet.Store.IStateStore.html#Libplanet_Store_IStateStore_GetState_System_String_System_Nullable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___System_Nullable_System_Guid__
-  commentId: M:Libplanet.Store.IStateStore.GetState(System.String,System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},System.Nullable{System.Guid})
-  name.vb: GetState(String, Nullable(Of HashDigest(Of SHA256)), Nullable(Of Guid))
-  fullName: Libplanet.Store.IStateStore.GetState(System.String, System.Nullable<Libplanet.HashDigest<System.Security.Cryptography.SHA256>>, System.Nullable<System.Guid>)
-  fullName.vb: Libplanet.Store.IStateStore.GetState(System.String, System.Nullable(Of Libplanet.HashDigest(Of System.Security.Cryptography.SHA256)), System.Nullable(Of System.Guid))
-  nameWithType: IStateStore.GetState(String, Nullable<HashDigest<SHA256>>, Nullable<Guid>)
-  nameWithType.vb: IStateStore.GetState(String, Nullable(Of HashDigest(Of SHA256)), Nullable(Of Guid))
+- uid: Libplanet.Store.IStateStore.GetState(System.String,System.Nullable{Libplanet.Blocks.BlockHash},System.Nullable{System.Guid})
+  name: GetState(String, Nullable<BlockHash>, Nullable<Guid>)
+  href: api/Libplanet.Store.IStateStore.html#Libplanet_Store_IStateStore_GetState_System_String_System_Nullable_Libplanet_Blocks_BlockHash__System_Nullable_System_Guid__
+  commentId: M:Libplanet.Store.IStateStore.GetState(System.String,System.Nullable{Libplanet.Blocks.BlockHash},System.Nullable{System.Guid})
+  name.vb: GetState(String, Nullable(Of BlockHash), Nullable(Of Guid))
+  fullName: Libplanet.Store.IStateStore.GetState(System.String, System.Nullable<Libplanet.Blocks.BlockHash>, System.Nullable<System.Guid>)
+  fullName.vb: Libplanet.Store.IStateStore.GetState(System.String, System.Nullable(Of Libplanet.Blocks.BlockHash), System.Nullable(Of System.Guid))
+  nameWithType: IStateStore.GetState(String, Nullable<BlockHash>, Nullable<Guid>)
+  nameWithType.vb: IStateStore.GetState(String, Nullable(Of BlockHash), Nullable(Of Guid))
 - uid: Libplanet.Store.IStateStore.GetState*
   name: GetState
   href: api/Libplanet.Store.IStateStore.html#Libplanet_Store_IStateStore_GetState_
@@ -13319,15 +13430,12 @@ references:
   commentId: T:Libplanet.Store.IStore
   fullName: Libplanet.Store.IStore
   nameWithType: IStore
-- uid: Libplanet.Store.IStore.AppendIndex(System.Guid,Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name: AppendIndex(Guid, HashDigest<SHA256>)
-  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_AppendIndex_System_Guid_Libplanet_HashDigest_System_Security_Cryptography_SHA256__
-  commentId: M:Libplanet.Store.IStore.AppendIndex(System.Guid,Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name.vb: AppendIndex(Guid, HashDigest(Of SHA256))
-  fullName: Libplanet.Store.IStore.AppendIndex(System.Guid, Libplanet.HashDigest<System.Security.Cryptography.SHA256>)
-  fullName.vb: Libplanet.Store.IStore.AppendIndex(System.Guid, Libplanet.HashDigest(Of System.Security.Cryptography.SHA256))
-  nameWithType: IStore.AppendIndex(Guid, HashDigest<SHA256>)
-  nameWithType.vb: IStore.AppendIndex(Guid, HashDigest(Of SHA256))
+- uid: Libplanet.Store.IStore.AppendIndex(System.Guid,Libplanet.Blocks.BlockHash)
+  name: AppendIndex(Guid, BlockHash)
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_AppendIndex_System_Guid_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Store.IStore.AppendIndex(System.Guid,Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.Store.IStore.AppendIndex(System.Guid, Libplanet.Blocks.BlockHash)
+  nameWithType: IStore.AppendIndex(Guid, BlockHash)
 - uid: Libplanet.Store.IStore.AppendIndex*
   name: AppendIndex
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_AppendIndex_
@@ -13335,15 +13443,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStore.AppendIndex
   nameWithType: IStore.AppendIndex
-- uid: Libplanet.Store.IStore.ContainsBlock(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name: ContainsBlock(HashDigest<SHA256>)
-  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_ContainsBlock_Libplanet_HashDigest_System_Security_Cryptography_SHA256__
-  commentId: M:Libplanet.Store.IStore.ContainsBlock(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name.vb: ContainsBlock(HashDigest(Of SHA256))
-  fullName: Libplanet.Store.IStore.ContainsBlock(Libplanet.HashDigest<System.Security.Cryptography.SHA256>)
-  fullName.vb: Libplanet.Store.IStore.ContainsBlock(Libplanet.HashDigest(Of System.Security.Cryptography.SHA256))
-  nameWithType: IStore.ContainsBlock(HashDigest<SHA256>)
-  nameWithType.vb: IStore.ContainsBlock(HashDigest(Of SHA256))
+- uid: Libplanet.Store.IStore.ContainsBlock(Libplanet.Blocks.BlockHash)
+  name: ContainsBlock(BlockHash)
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_ContainsBlock_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Store.IStore.ContainsBlock(Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.Store.IStore.ContainsBlock(Libplanet.Blocks.BlockHash)
+  nameWithType: IStore.ContainsBlock(BlockHash)
 - uid: Libplanet.Store.IStore.ContainsBlock*
   name: ContainsBlock
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_ContainsBlock_
@@ -13403,15 +13508,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStore.CountTransactions
   nameWithType: IStore.CountTransactions
-- uid: Libplanet.Store.IStore.DeleteBlock(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name: DeleteBlock(HashDigest<SHA256>)
-  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_DeleteBlock_Libplanet_HashDigest_System_Security_Cryptography_SHA256__
-  commentId: M:Libplanet.Store.IStore.DeleteBlock(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name.vb: DeleteBlock(HashDigest(Of SHA256))
-  fullName: Libplanet.Store.IStore.DeleteBlock(Libplanet.HashDigest<System.Security.Cryptography.SHA256>)
-  fullName.vb: Libplanet.Store.IStore.DeleteBlock(Libplanet.HashDigest(Of System.Security.Cryptography.SHA256))
-  nameWithType: IStore.DeleteBlock(HashDigest<SHA256>)
-  nameWithType.vb: IStore.DeleteBlock(HashDigest(Of SHA256))
+- uid: Libplanet.Store.IStore.DeleteBlock(Libplanet.Blocks.BlockHash)
+  name: DeleteBlock(BlockHash)
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_DeleteBlock_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Store.IStore.DeleteBlock(Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.Store.IStore.DeleteBlock(Libplanet.Blocks.BlockHash)
+  nameWithType: IStore.DeleteBlock(BlockHash)
 - uid: Libplanet.Store.IStore.DeleteBlock*
   name: DeleteBlock
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_DeleteBlock_
@@ -13445,15 +13547,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStore.DeleteTransaction
   nameWithType: IStore.DeleteTransaction
-- uid: Libplanet.Store.IStore.ForkBlockIndexes(System.Guid,System.Guid,Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name: ForkBlockIndexes(Guid, Guid, HashDigest<SHA256>)
-  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_ForkBlockIndexes_System_Guid_System_Guid_Libplanet_HashDigest_System_Security_Cryptography_SHA256__
-  commentId: M:Libplanet.Store.IStore.ForkBlockIndexes(System.Guid,System.Guid,Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name.vb: ForkBlockIndexes(Guid, Guid, HashDigest(Of SHA256))
-  fullName: Libplanet.Store.IStore.ForkBlockIndexes(System.Guid, System.Guid, Libplanet.HashDigest<System.Security.Cryptography.SHA256>)
-  fullName.vb: Libplanet.Store.IStore.ForkBlockIndexes(System.Guid, System.Guid, Libplanet.HashDigest(Of System.Security.Cryptography.SHA256))
-  nameWithType: IStore.ForkBlockIndexes(Guid, Guid, HashDigest<SHA256>)
-  nameWithType.vb: IStore.ForkBlockIndexes(Guid, Guid, HashDigest(Of SHA256))
+- uid: Libplanet.Store.IStore.ForkBlockIndexes(System.Guid,System.Guid,Libplanet.Blocks.BlockHash)
+  name: ForkBlockIndexes(Guid, Guid, BlockHash)
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_ForkBlockIndexes_System_Guid_System_Guid_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Store.IStore.ForkBlockIndexes(System.Guid,System.Guid,Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.Store.IStore.ForkBlockIndexes(System.Guid, System.Guid, Libplanet.Blocks.BlockHash)
+  nameWithType: IStore.ForkBlockIndexes(Guid, Guid, BlockHash)
 - uid: Libplanet.Store.IStore.ForkBlockIndexes*
   name: ForkBlockIndexes
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_ForkBlockIndexes_
@@ -13481,24 +13580,21 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStore.GetBlock
   nameWithType: IStore.GetBlock
-- uid: Libplanet.Store.IStore.GetBlock``1(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name: GetBlock<T>(HashDigest<SHA256>)
-  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_GetBlock__1_Libplanet_HashDigest_System_Security_Cryptography_SHA256__
-  commentId: M:Libplanet.Store.IStore.GetBlock``1(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name.vb: GetBlock(Of T)(HashDigest(Of SHA256))
-  fullName: Libplanet.Store.IStore.GetBlock<T>(Libplanet.HashDigest<System.Security.Cryptography.SHA256>)
-  fullName.vb: Libplanet.Store.IStore.GetBlock(Of T)(Libplanet.HashDigest(Of System.Security.Cryptography.SHA256))
-  nameWithType: IStore.GetBlock<T>(HashDigest<SHA256>)
-  nameWithType.vb: IStore.GetBlock(Of T)(HashDigest(Of SHA256))
-- uid: Libplanet.Store.IStore.GetBlockDigest(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name: GetBlockDigest(HashDigest<SHA256>)
-  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_GetBlockDigest_Libplanet_HashDigest_System_Security_Cryptography_SHA256__
-  commentId: M:Libplanet.Store.IStore.GetBlockDigest(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name.vb: GetBlockDigest(HashDigest(Of SHA256))
-  fullName: Libplanet.Store.IStore.GetBlockDigest(Libplanet.HashDigest<System.Security.Cryptography.SHA256>)
-  fullName.vb: Libplanet.Store.IStore.GetBlockDigest(Libplanet.HashDigest(Of System.Security.Cryptography.SHA256))
-  nameWithType: IStore.GetBlockDigest(HashDigest<SHA256>)
-  nameWithType.vb: IStore.GetBlockDigest(HashDigest(Of SHA256))
+- uid: Libplanet.Store.IStore.GetBlock``1(Libplanet.Blocks.BlockHash)
+  name: GetBlock<T>(BlockHash)
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_GetBlock__1_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Store.IStore.GetBlock``1(Libplanet.Blocks.BlockHash)
+  name.vb: GetBlock(Of T)(BlockHash)
+  fullName: Libplanet.Store.IStore.GetBlock<T>(Libplanet.Blocks.BlockHash)
+  fullName.vb: Libplanet.Store.IStore.GetBlock(Of T)(Libplanet.Blocks.BlockHash)
+  nameWithType: IStore.GetBlock<T>(BlockHash)
+  nameWithType.vb: IStore.GetBlock(Of T)(BlockHash)
+- uid: Libplanet.Store.IStore.GetBlockDigest(Libplanet.Blocks.BlockHash)
+  name: GetBlockDigest(BlockHash)
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_GetBlockDigest_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Store.IStore.GetBlockDigest(Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.Store.IStore.GetBlockDigest(Libplanet.Blocks.BlockHash)
+  nameWithType: IStore.GetBlockDigest(BlockHash)
 - uid: Libplanet.Store.IStore.GetBlockDigest*
   name: GetBlockDigest
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_GetBlockDigest_
@@ -13506,15 +13602,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStore.GetBlockDigest
   nameWithType: IStore.GetBlockDigest
-- uid: Libplanet.Store.IStore.GetBlockIndex(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name: GetBlockIndex(HashDigest<SHA256>)
-  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_GetBlockIndex_Libplanet_HashDigest_System_Security_Cryptography_SHA256__
-  commentId: M:Libplanet.Store.IStore.GetBlockIndex(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name.vb: GetBlockIndex(HashDigest(Of SHA256))
-  fullName: Libplanet.Store.IStore.GetBlockIndex(Libplanet.HashDigest<System.Security.Cryptography.SHA256>)
-  fullName.vb: Libplanet.Store.IStore.GetBlockIndex(Libplanet.HashDigest(Of System.Security.Cryptography.SHA256))
-  nameWithType: IStore.GetBlockIndex(HashDigest<SHA256>)
-  nameWithType.vb: IStore.GetBlockIndex(HashDigest(Of SHA256))
+- uid: Libplanet.Store.IStore.GetBlockIndex(Libplanet.Blocks.BlockHash)
+  name: GetBlockIndex(BlockHash)
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_GetBlockIndex_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Store.IStore.GetBlockIndex(Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.Store.IStore.GetBlockIndex(Libplanet.Blocks.BlockHash)
+  nameWithType: IStore.GetBlockIndex(BlockHash)
 - uid: Libplanet.Store.IStore.GetBlockIndex*
   name: GetBlockIndex
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_GetBlockIndex_
@@ -13522,15 +13615,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStore.GetBlockIndex
   nameWithType: IStore.GetBlockIndex
-- uid: Libplanet.Store.IStore.GetBlockPerceivedTime(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name: GetBlockPerceivedTime(HashDigest<SHA256>)
-  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_GetBlockPerceivedTime_Libplanet_HashDigest_System_Security_Cryptography_SHA256__
-  commentId: M:Libplanet.Store.IStore.GetBlockPerceivedTime(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name.vb: GetBlockPerceivedTime(HashDigest(Of SHA256))
-  fullName: Libplanet.Store.IStore.GetBlockPerceivedTime(Libplanet.HashDigest<System.Security.Cryptography.SHA256>)
-  fullName.vb: Libplanet.Store.IStore.GetBlockPerceivedTime(Libplanet.HashDigest(Of System.Security.Cryptography.SHA256))
-  nameWithType: IStore.GetBlockPerceivedTime(HashDigest<SHA256>)
-  nameWithType.vb: IStore.GetBlockPerceivedTime(HashDigest(Of SHA256))
+- uid: Libplanet.Store.IStore.GetBlockPerceivedTime(Libplanet.Blocks.BlockHash)
+  name: GetBlockPerceivedTime(BlockHash)
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_GetBlockPerceivedTime_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Store.IStore.GetBlockPerceivedTime(Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.Store.IStore.GetBlockPerceivedTime(Libplanet.Blocks.BlockHash)
+  nameWithType: IStore.GetBlockPerceivedTime(BlockHash)
 - uid: Libplanet.Store.IStore.GetBlockPerceivedTime*
   name: GetBlockPerceivedTime
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_GetBlockPerceivedTime_
@@ -13719,15 +13809,12 @@ references:
   fullName.vb: Libplanet.Store.IStore.PutTransaction(Of T)(Libplanet.Tx.Transaction(Of T))
   nameWithType: IStore.PutTransaction<T>(Transaction<T>)
   nameWithType.vb: IStore.PutTransaction(Of T)(Transaction(Of T))
-- uid: Libplanet.Store.IStore.SetBlockPerceivedTime(Libplanet.HashDigest{System.Security.Cryptography.SHA256},System.DateTimeOffset)
-  name: SetBlockPerceivedTime(HashDigest<SHA256>, DateTimeOffset)
-  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_SetBlockPerceivedTime_Libplanet_HashDigest_System_Security_Cryptography_SHA256__System_DateTimeOffset_
-  commentId: M:Libplanet.Store.IStore.SetBlockPerceivedTime(Libplanet.HashDigest{System.Security.Cryptography.SHA256},System.DateTimeOffset)
-  name.vb: SetBlockPerceivedTime(HashDigest(Of SHA256), DateTimeOffset)
-  fullName: Libplanet.Store.IStore.SetBlockPerceivedTime(Libplanet.HashDigest<System.Security.Cryptography.SHA256>, System.DateTimeOffset)
-  fullName.vb: Libplanet.Store.IStore.SetBlockPerceivedTime(Libplanet.HashDigest(Of System.Security.Cryptography.SHA256), System.DateTimeOffset)
-  nameWithType: IStore.SetBlockPerceivedTime(HashDigest<SHA256>, DateTimeOffset)
-  nameWithType.vb: IStore.SetBlockPerceivedTime(HashDigest(Of SHA256), DateTimeOffset)
+- uid: Libplanet.Store.IStore.SetBlockPerceivedTime(Libplanet.Blocks.BlockHash,System.DateTimeOffset)
+  name: SetBlockPerceivedTime(BlockHash, DateTimeOffset)
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_SetBlockPerceivedTime_Libplanet_Blocks_BlockHash_System_DateTimeOffset_
+  commentId: M:Libplanet.Store.IStore.SetBlockPerceivedTime(Libplanet.Blocks.BlockHash,System.DateTimeOffset)
+  fullName: Libplanet.Store.IStore.SetBlockPerceivedTime(Libplanet.Blocks.BlockHash, System.DateTimeOffset)
+  nameWithType: IStore.SetBlockPerceivedTime(BlockHash, DateTimeOffset)
 - uid: Libplanet.Store.IStore.SetBlockPerceivedTime*
   name: SetBlockPerceivedTime
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_SetBlockPerceivedTime_
@@ -14364,15 +14451,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.TrieStateStore.TrieStateStore
   nameWithType: TrieStateStore.TrieStateStore
-- uid: Libplanet.Store.TrieStateStore.ContainsBlockStates(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name: ContainsBlockStates(HashDigest<SHA256>)
-  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_ContainsBlockStates_Libplanet_HashDigest_System_Security_Cryptography_SHA256__
-  commentId: M:Libplanet.Store.TrieStateStore.ContainsBlockStates(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name.vb: ContainsBlockStates(HashDigest(Of SHA256))
-  fullName: Libplanet.Store.TrieStateStore.ContainsBlockStates(Libplanet.HashDigest<System.Security.Cryptography.SHA256>)
-  fullName.vb: Libplanet.Store.TrieStateStore.ContainsBlockStates(Libplanet.HashDigest(Of System.Security.Cryptography.SHA256))
-  nameWithType: TrieStateStore.ContainsBlockStates(HashDigest<SHA256>)
-  nameWithType.vb: TrieStateStore.ContainsBlockStates(HashDigest(Of SHA256))
+- uid: Libplanet.Store.TrieStateStore.ContainsBlockStates(Libplanet.Blocks.BlockHash)
+  name: ContainsBlockStates(BlockHash)
+  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_ContainsBlockStates_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Store.TrieStateStore.ContainsBlockStates(Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.Store.TrieStateStore.ContainsBlockStates(Libplanet.Blocks.BlockHash)
+  nameWithType: TrieStateStore.ContainsBlockStates(BlockHash)
 - uid: Libplanet.Store.TrieStateStore.ContainsBlockStates*
   name: ContainsBlockStates
   href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_ContainsBlockStates_
@@ -14409,15 +14493,12 @@ references:
   fullName.vb: Libplanet.Store.TrieStateStore.ForkStates(Of T)(System.Guid, System.Guid, Libplanet.Blocks.Block(Of T))
   nameWithType: TrieStateStore.ForkStates<T>(Guid, Guid, Block<T>)
   nameWithType.vb: TrieStateStore.ForkStates(Of T)(Guid, Guid, Block(Of T))
-- uid: Libplanet.Store.TrieStateStore.GetRootHash(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name: GetRootHash(HashDigest<SHA256>)
-  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_GetRootHash_Libplanet_HashDigest_System_Security_Cryptography_SHA256__
-  commentId: M:Libplanet.Store.TrieStateStore.GetRootHash(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name.vb: GetRootHash(HashDigest(Of SHA256))
-  fullName: Libplanet.Store.TrieStateStore.GetRootHash(Libplanet.HashDigest<System.Security.Cryptography.SHA256>)
-  fullName.vb: Libplanet.Store.TrieStateStore.GetRootHash(Libplanet.HashDigest(Of System.Security.Cryptography.SHA256))
-  nameWithType: TrieStateStore.GetRootHash(HashDigest<SHA256>)
-  nameWithType.vb: TrieStateStore.GetRootHash(HashDigest(Of SHA256))
+- uid: Libplanet.Store.TrieStateStore.GetRootHash(Libplanet.Blocks.BlockHash)
+  name: GetRootHash(BlockHash)
+  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_GetRootHash_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Store.TrieStateStore.GetRootHash(Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.Store.TrieStateStore.GetRootHash(Libplanet.Blocks.BlockHash)
+  nameWithType: TrieStateStore.GetRootHash(BlockHash)
 - uid: Libplanet.Store.TrieStateStore.GetRootHash*
   name: GetRootHash
   href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_GetRootHash_
@@ -14425,15 +14506,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.TrieStateStore.GetRootHash
   nameWithType: TrieStateStore.GetRootHash
-- uid: Libplanet.Store.TrieStateStore.GetState(System.String,System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},System.Nullable{System.Guid})
-  name: GetState(String, Nullable<HashDigest<SHA256>>, Nullable<Guid>)
-  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_GetState_System_String_System_Nullable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___System_Nullable_System_Guid__
-  commentId: M:Libplanet.Store.TrieStateStore.GetState(System.String,System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},System.Nullable{System.Guid})
-  name.vb: GetState(String, Nullable(Of HashDigest(Of SHA256)), Nullable(Of Guid))
-  fullName: Libplanet.Store.TrieStateStore.GetState(System.String, System.Nullable<Libplanet.HashDigest<System.Security.Cryptography.SHA256>>, System.Nullable<System.Guid>)
-  fullName.vb: Libplanet.Store.TrieStateStore.GetState(System.String, System.Nullable(Of Libplanet.HashDigest(Of System.Security.Cryptography.SHA256)), System.Nullable(Of System.Guid))
-  nameWithType: TrieStateStore.GetState(String, Nullable<HashDigest<SHA256>>, Nullable<Guid>)
-  nameWithType.vb: TrieStateStore.GetState(String, Nullable(Of HashDigest(Of SHA256)), Nullable(Of Guid))
+- uid: Libplanet.Store.TrieStateStore.GetState(System.String,System.Nullable{Libplanet.Blocks.BlockHash},System.Nullable{System.Guid})
+  name: GetState(String, Nullable<BlockHash>, Nullable<Guid>)
+  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_GetState_System_String_System_Nullable_Libplanet_Blocks_BlockHash__System_Nullable_System_Guid__
+  commentId: M:Libplanet.Store.TrieStateStore.GetState(System.String,System.Nullable{Libplanet.Blocks.BlockHash},System.Nullable{System.Guid})
+  name.vb: GetState(String, Nullable(Of BlockHash), Nullable(Of Guid))
+  fullName: Libplanet.Store.TrieStateStore.GetState(System.String, System.Nullable<Libplanet.Blocks.BlockHash>, System.Nullable<System.Guid>)
+  fullName.vb: Libplanet.Store.TrieStateStore.GetState(System.String, System.Nullable(Of Libplanet.Blocks.BlockHash), System.Nullable(Of System.Guid))
+  nameWithType: TrieStateStore.GetState(String, Nullable<BlockHash>, Nullable<Guid>)
+  nameWithType.vb: TrieStateStore.GetState(String, Nullable(Of BlockHash), Nullable(Of Guid))
 - uid: Libplanet.Store.TrieStateStore.GetState*
   name: GetState
   href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_GetState_
@@ -14441,15 +14522,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.TrieStateStore.GetState
   nameWithType: TrieStateStore.GetState
-- uid: Libplanet.Store.TrieStateStore.PruneStates(ImmutableHashSet{Libplanet.HashDigest{System.Security.Cryptography.SHA256}})
-  name: PruneStates(ImmutableHashSet<HashDigest<SHA256>>)
-  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_PruneStates_ImmutableHashSet_Libplanet_HashDigest_System_Security_Cryptography_SHA256___
-  commentId: M:Libplanet.Store.TrieStateStore.PruneStates(ImmutableHashSet{Libplanet.HashDigest{System.Security.Cryptography.SHA256}})
-  name.vb: PruneStates(ImmutableHashSet(Of HashDigest(Of SHA256)))
-  fullName: Libplanet.Store.TrieStateStore.PruneStates(ImmutableHashSet<Libplanet.HashDigest<System.Security.Cryptography.SHA256>>)
-  fullName.vb: Libplanet.Store.TrieStateStore.PruneStates(ImmutableHashSet(Of Libplanet.HashDigest(Of System.Security.Cryptography.SHA256)))
-  nameWithType: TrieStateStore.PruneStates(ImmutableHashSet<HashDigest<SHA256>>)
-  nameWithType.vb: TrieStateStore.PruneStates(ImmutableHashSet(Of HashDigest(Of SHA256)))
+- uid: Libplanet.Store.TrieStateStore.PruneStates(IImmutableSet{Libplanet.Blocks.BlockHash})
+  name: PruneStates(IImmutableSet<BlockHash>)
+  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_PruneStates_IImmutableSet_Libplanet_Blocks_BlockHash__
+  commentId: M:Libplanet.Store.TrieStateStore.PruneStates(IImmutableSet{Libplanet.Blocks.BlockHash})
+  name.vb: PruneStates(IImmutableSet(Of BlockHash))
+  fullName: Libplanet.Store.TrieStateStore.PruneStates(IImmutableSet<Libplanet.Blocks.BlockHash>)
+  fullName.vb: Libplanet.Store.TrieStateStore.PruneStates(IImmutableSet(Of Libplanet.Blocks.BlockHash))
+  nameWithType: TrieStateStore.PruneStates(IImmutableSet<BlockHash>)
+  nameWithType.vb: TrieStateStore.PruneStates(IImmutableSet(Of BlockHash))
 - uid: Libplanet.Store.TrieStateStore.PruneStates*
   name: PruneStates
   href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_PruneStates_
@@ -14517,15 +14598,15 @@ references:
   commentId: T:Libplanet.Tx.InvalidTxGenesisHashException
   fullName: Libplanet.Tx.InvalidTxGenesisHashException
   nameWithType: InvalidTxGenesisHashException
-- uid: Libplanet.Tx.InvalidTxGenesisHashException.#ctor(Libplanet.Tx.TxId,Libplanet.HashDigest{System.Security.Cryptography.SHA256},System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},System.String)
-  name: InvalidTxGenesisHashException(TxId, HashDigest<SHA256>, Nullable<HashDigest<SHA256>>, String)
-  href: api/Libplanet.Tx.InvalidTxGenesisHashException.html#Libplanet_Tx_InvalidTxGenesisHashException__ctor_Libplanet_Tx_TxId_Libplanet_HashDigest_System_Security_Cryptography_SHA256__System_Nullable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___System_String_
-  commentId: M:Libplanet.Tx.InvalidTxGenesisHashException.#ctor(Libplanet.Tx.TxId,Libplanet.HashDigest{System.Security.Cryptography.SHA256},System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},System.String)
-  name.vb: InvalidTxGenesisHashException(TxId, HashDigest(Of SHA256), Nullable(Of HashDigest(Of SHA256)), String)
-  fullName: Libplanet.Tx.InvalidTxGenesisHashException.InvalidTxGenesisHashException(Libplanet.Tx.TxId, Libplanet.HashDigest<System.Security.Cryptography.SHA256>, System.Nullable<Libplanet.HashDigest<System.Security.Cryptography.SHA256>>, System.String)
-  fullName.vb: Libplanet.Tx.InvalidTxGenesisHashException.InvalidTxGenesisHashException(Libplanet.Tx.TxId, Libplanet.HashDigest(Of System.Security.Cryptography.SHA256), System.Nullable(Of Libplanet.HashDigest(Of System.Security.Cryptography.SHA256)), System.String)
-  nameWithType: InvalidTxGenesisHashException.InvalidTxGenesisHashException(TxId, HashDigest<SHA256>, Nullable<HashDigest<SHA256>>, String)
-  nameWithType.vb: InvalidTxGenesisHashException.InvalidTxGenesisHashException(TxId, HashDigest(Of SHA256), Nullable(Of HashDigest(Of SHA256)), String)
+- uid: Libplanet.Tx.InvalidTxGenesisHashException.#ctor(Libplanet.Tx.TxId,Libplanet.Blocks.BlockHash,System.Nullable{Libplanet.Blocks.BlockHash},System.String)
+  name: InvalidTxGenesisHashException(TxId, BlockHash, Nullable<BlockHash>, String)
+  href: api/Libplanet.Tx.InvalidTxGenesisHashException.html#Libplanet_Tx_InvalidTxGenesisHashException__ctor_Libplanet_Tx_TxId_Libplanet_Blocks_BlockHash_System_Nullable_Libplanet_Blocks_BlockHash__System_String_
+  commentId: M:Libplanet.Tx.InvalidTxGenesisHashException.#ctor(Libplanet.Tx.TxId,Libplanet.Blocks.BlockHash,System.Nullable{Libplanet.Blocks.BlockHash},System.String)
+  name.vb: InvalidTxGenesisHashException(TxId, BlockHash, Nullable(Of BlockHash), String)
+  fullName: Libplanet.Tx.InvalidTxGenesisHashException.InvalidTxGenesisHashException(Libplanet.Tx.TxId, Libplanet.Blocks.BlockHash, System.Nullable<Libplanet.Blocks.BlockHash>, System.String)
+  fullName.vb: Libplanet.Tx.InvalidTxGenesisHashException.InvalidTxGenesisHashException(Libplanet.Tx.TxId, Libplanet.Blocks.BlockHash, System.Nullable(Of Libplanet.Blocks.BlockHash), System.String)
+  nameWithType: InvalidTxGenesisHashException.InvalidTxGenesisHashException(TxId, BlockHash, Nullable<BlockHash>, String)
+  nameWithType.vb: InvalidTxGenesisHashException.InvalidTxGenesisHashException(TxId, BlockHash, Nullable(Of BlockHash), String)
 - uid: Libplanet.Tx.InvalidTxGenesisHashException.#ctor*
   name: InvalidTxGenesisHashException
   href: api/Libplanet.Tx.InvalidTxGenesisHashException.html#Libplanet_Tx_InvalidTxGenesisHashException__ctor_
@@ -14726,15 +14807,15 @@ references:
   fullName.vb: Libplanet.Tx.Transaction(Of T).Transaction(Bencodex.Types.Dictionary)
   nameWithType: Transaction<T>.Transaction(Bencodex.Types.Dictionary)
   nameWithType.vb: Transaction(Of T).Transaction(Bencodex.Types.Dictionary)
-- uid: Libplanet.Tx.Transaction`1.#ctor(System.Int64,Libplanet.Address,Libplanet.Crypto.PublicKey,System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},IImmutableSet{Libplanet.Address},System.DateTimeOffset,System.Collections.Generic.IEnumerable{`0},System.Byte[])
-  name: Transaction(Int64, Address, PublicKey, Nullable<HashDigest<SHA256>>, IImmutableSet<Address>, DateTimeOffset, IEnumerable<T>, Byte[])
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1__ctor_System_Int64_Libplanet_Address_Libplanet_Crypto_PublicKey_System_Nullable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___IImmutableSet_Libplanet_Address__System_DateTimeOffset_System_Collections_Generic_IEnumerable__0__System_Byte___
-  commentId: M:Libplanet.Tx.Transaction`1.#ctor(System.Int64,Libplanet.Address,Libplanet.Crypto.PublicKey,System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},IImmutableSet{Libplanet.Address},System.DateTimeOffset,System.Collections.Generic.IEnumerable{`0},System.Byte[])
-  name.vb: Transaction(Int64, Address, PublicKey, Nullable(Of HashDigest(Of SHA256)), IImmutableSet(Of Address), DateTimeOffset, IEnumerable(Of T), Byte())
-  fullName: Libplanet.Tx.Transaction<T>.Transaction(System.Int64, Libplanet.Address, Libplanet.Crypto.PublicKey, System.Nullable<Libplanet.HashDigest<System.Security.Cryptography.SHA256>>, IImmutableSet<Libplanet.Address>, System.DateTimeOffset, System.Collections.Generic.IEnumerable<T>, System.Byte[])
-  fullName.vb: Libplanet.Tx.Transaction(Of T).Transaction(System.Int64, Libplanet.Address, Libplanet.Crypto.PublicKey, System.Nullable(Of Libplanet.HashDigest(Of System.Security.Cryptography.SHA256)), IImmutableSet(Of Libplanet.Address), System.DateTimeOffset, System.Collections.Generic.IEnumerable(Of T), System.Byte())
-  nameWithType: Transaction<T>.Transaction(Int64, Address, PublicKey, Nullable<HashDigest<SHA256>>, IImmutableSet<Address>, DateTimeOffset, IEnumerable<T>, Byte[])
-  nameWithType.vb: Transaction(Of T).Transaction(Int64, Address, PublicKey, Nullable(Of HashDigest(Of SHA256)), IImmutableSet(Of Address), DateTimeOffset, IEnumerable(Of T), Byte())
+- uid: Libplanet.Tx.Transaction`1.#ctor(System.Int64,Libplanet.Address,Libplanet.Crypto.PublicKey,System.Nullable{Libplanet.Blocks.BlockHash},IImmutableSet{Libplanet.Address},System.DateTimeOffset,System.Collections.Generic.IEnumerable{`0},System.Byte[])
+  name: Transaction(Int64, Address, PublicKey, Nullable<BlockHash>, IImmutableSet<Address>, DateTimeOffset, IEnumerable<T>, Byte[])
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1__ctor_System_Int64_Libplanet_Address_Libplanet_Crypto_PublicKey_System_Nullable_Libplanet_Blocks_BlockHash__IImmutableSet_Libplanet_Address__System_DateTimeOffset_System_Collections_Generic_IEnumerable__0__System_Byte___
+  commentId: M:Libplanet.Tx.Transaction`1.#ctor(System.Int64,Libplanet.Address,Libplanet.Crypto.PublicKey,System.Nullable{Libplanet.Blocks.BlockHash},IImmutableSet{Libplanet.Address},System.DateTimeOffset,System.Collections.Generic.IEnumerable{`0},System.Byte[])
+  name.vb: Transaction(Int64, Address, PublicKey, Nullable(Of BlockHash), IImmutableSet(Of Address), DateTimeOffset, IEnumerable(Of T), Byte())
+  fullName: Libplanet.Tx.Transaction<T>.Transaction(System.Int64, Libplanet.Address, Libplanet.Crypto.PublicKey, System.Nullable<Libplanet.Blocks.BlockHash>, IImmutableSet<Libplanet.Address>, System.DateTimeOffset, System.Collections.Generic.IEnumerable<T>, System.Byte[])
+  fullName.vb: Libplanet.Tx.Transaction(Of T).Transaction(System.Int64, Libplanet.Address, Libplanet.Crypto.PublicKey, System.Nullable(Of Libplanet.Blocks.BlockHash), IImmutableSet(Of Libplanet.Address), System.DateTimeOffset, System.Collections.Generic.IEnumerable(Of T), System.Byte())
+  nameWithType: Transaction<T>.Transaction(Int64, Address, PublicKey, Nullable<BlockHash>, IImmutableSet<Address>, DateTimeOffset, IEnumerable<T>, Byte[])
+  nameWithType.vb: Transaction(Of T).Transaction(Int64, Address, PublicKey, Nullable(Of BlockHash), IImmutableSet(Of Address), DateTimeOffset, IEnumerable(Of T), Byte())
 - uid: Libplanet.Tx.Transaction`1.#ctor*
   name: Transaction
   href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1__ctor_
@@ -14778,15 +14859,15 @@ references:
   fullName.vb: Libplanet.Tx.Transaction(Of T).BytesLength
   nameWithType: Transaction<T>.BytesLength
   nameWithType.vb: Transaction(Of T).BytesLength
-- uid: Libplanet.Tx.Transaction`1.Create(System.Int64,Libplanet.Crypto.PrivateKey,System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},System.Collections.Generic.IEnumerable{`0},IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})
-  name: Create(Int64, PrivateKey, Nullable<HashDigest<SHA256>>, IEnumerable<T>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Create_System_Int64_Libplanet_Crypto_PrivateKey_System_Nullable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___System_Collections_Generic_IEnumerable__0__IImmutableSet_Libplanet_Address__System_Nullable_System_DateTimeOffset__
-  commentId: M:Libplanet.Tx.Transaction`1.Create(System.Int64,Libplanet.Crypto.PrivateKey,System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},System.Collections.Generic.IEnumerable{`0},IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})
-  name.vb: Create(Int64, PrivateKey, Nullable(Of HashDigest(Of SHA256)), IEnumerable(Of T), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
-  fullName: Libplanet.Tx.Transaction<T>.Create(System.Int64, Libplanet.Crypto.PrivateKey, System.Nullable<Libplanet.HashDigest<System.Security.Cryptography.SHA256>>, System.Collections.Generic.IEnumerable<T>, IImmutableSet<Libplanet.Address>, System.Nullable<System.DateTimeOffset>)
-  fullName.vb: Libplanet.Tx.Transaction(Of T).Create(System.Int64, Libplanet.Crypto.PrivateKey, System.Nullable(Of Libplanet.HashDigest(Of System.Security.Cryptography.SHA256)), System.Collections.Generic.IEnumerable(Of T), IImmutableSet(Of Libplanet.Address), System.Nullable(Of System.DateTimeOffset))
-  nameWithType: Transaction<T>.Create(Int64, PrivateKey, Nullable<HashDigest<SHA256>>, IEnumerable<T>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
-  nameWithType.vb: Transaction(Of T).Create(Int64, PrivateKey, Nullable(Of HashDigest(Of SHA256)), IEnumerable(Of T), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
+- uid: Libplanet.Tx.Transaction`1.Create(System.Int64,Libplanet.Crypto.PrivateKey,System.Nullable{Libplanet.Blocks.BlockHash},System.Collections.Generic.IEnumerable{`0},IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})
+  name: Create(Int64, PrivateKey, Nullable<BlockHash>, IEnumerable<T>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Create_System_Int64_Libplanet_Crypto_PrivateKey_System_Nullable_Libplanet_Blocks_BlockHash__System_Collections_Generic_IEnumerable__0__IImmutableSet_Libplanet_Address__System_Nullable_System_DateTimeOffset__
+  commentId: M:Libplanet.Tx.Transaction`1.Create(System.Int64,Libplanet.Crypto.PrivateKey,System.Nullable{Libplanet.Blocks.BlockHash},System.Collections.Generic.IEnumerable{`0},IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})
+  name.vb: Create(Int64, PrivateKey, Nullable(Of BlockHash), IEnumerable(Of T), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
+  fullName: Libplanet.Tx.Transaction<T>.Create(System.Int64, Libplanet.Crypto.PrivateKey, System.Nullable<Libplanet.Blocks.BlockHash>, System.Collections.Generic.IEnumerable<T>, IImmutableSet<Libplanet.Address>, System.Nullable<System.DateTimeOffset>)
+  fullName.vb: Libplanet.Tx.Transaction(Of T).Create(System.Int64, Libplanet.Crypto.PrivateKey, System.Nullable(Of Libplanet.Blocks.BlockHash), System.Collections.Generic.IEnumerable(Of T), IImmutableSet(Of Libplanet.Address), System.Nullable(Of System.DateTimeOffset))
+  nameWithType: Transaction<T>.Create(Int64, PrivateKey, Nullable<BlockHash>, IEnumerable<T>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
+  nameWithType.vb: Transaction(Of T).Create(Int64, PrivateKey, Nullable(Of BlockHash), IEnumerable(Of T), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
 - uid: Libplanet.Tx.Transaction`1.Create*
   name: Create
   href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Create_
@@ -14840,15 +14921,14 @@ references:
   fullName.vb: Libplanet.Tx.Transaction(Of T).Equals
   nameWithType: Transaction<T>.Equals
   nameWithType.vb: Transaction(Of T).Equals
-- uid: Libplanet.Tx.Transaction`1.EvaluateActions(Libplanet.HashDigest{System.Security.Cryptography.SHA256},System.Int64,Libplanet.Action.IAccountStateDelta,Libplanet.Address,System.Boolean)
-  name: EvaluateActions(HashDigest<SHA256>, Int64, IAccountStateDelta, Address, Boolean)
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_EvaluateActions_Libplanet_HashDigest_System_Security_Cryptography_SHA256__System_Int64_Libplanet_Action_IAccountStateDelta_Libplanet_Address_System_Boolean_
-  commentId: M:Libplanet.Tx.Transaction`1.EvaluateActions(Libplanet.HashDigest{System.Security.Cryptography.SHA256},System.Int64,Libplanet.Action.IAccountStateDelta,Libplanet.Address,System.Boolean)
-  name.vb: EvaluateActions(HashDigest(Of SHA256), Int64, IAccountStateDelta, Address, Boolean)
-  fullName: Libplanet.Tx.Transaction<T>.EvaluateActions(Libplanet.HashDigest<System.Security.Cryptography.SHA256>, System.Int64, Libplanet.Action.IAccountStateDelta, Libplanet.Address, System.Boolean)
-  fullName.vb: Libplanet.Tx.Transaction(Of T).EvaluateActions(Libplanet.HashDigest(Of System.Security.Cryptography.SHA256), System.Int64, Libplanet.Action.IAccountStateDelta, Libplanet.Address, System.Boolean)
-  nameWithType: Transaction<T>.EvaluateActions(HashDigest<SHA256>, Int64, IAccountStateDelta, Address, Boolean)
-  nameWithType.vb: Transaction(Of T).EvaluateActions(HashDigest(Of SHA256), Int64, IAccountStateDelta, Address, Boolean)
+- uid: Libplanet.Tx.Transaction`1.EvaluateActions(Libplanet.Blocks.BlockHash,System.Int64,Libplanet.Action.IAccountStateDelta,Libplanet.Address,System.Boolean)
+  name: EvaluateActions(BlockHash, Int64, IAccountStateDelta, Address, Boolean)
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_EvaluateActions_Libplanet_Blocks_BlockHash_System_Int64_Libplanet_Action_IAccountStateDelta_Libplanet_Address_System_Boolean_
+  commentId: M:Libplanet.Tx.Transaction`1.EvaluateActions(Libplanet.Blocks.BlockHash,System.Int64,Libplanet.Action.IAccountStateDelta,Libplanet.Address,System.Boolean)
+  fullName: Libplanet.Tx.Transaction<T>.EvaluateActions(Libplanet.Blocks.BlockHash, System.Int64, Libplanet.Action.IAccountStateDelta, Libplanet.Address, System.Boolean)
+  fullName.vb: Libplanet.Tx.Transaction(Of T).EvaluateActions(Libplanet.Blocks.BlockHash, System.Int64, Libplanet.Action.IAccountStateDelta, Libplanet.Address, System.Boolean)
+  nameWithType: Transaction<T>.EvaluateActions(BlockHash, Int64, IAccountStateDelta, Address, Boolean)
+  nameWithType.vb: Transaction(Of T).EvaluateActions(BlockHash, Int64, IAccountStateDelta, Address, Boolean)
 - uid: Libplanet.Tx.Transaction`1.EvaluateActions*
   name: EvaluateActions
   href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_EvaluateActions_
@@ -14858,15 +14938,14 @@ references:
   fullName.vb: Libplanet.Tx.Transaction(Of T).EvaluateActions
   nameWithType: Transaction<T>.EvaluateActions
   nameWithType.vb: Transaction(Of T).EvaluateActions
-- uid: Libplanet.Tx.Transaction`1.EvaluateActionsGradually(Libplanet.HashDigest{System.Security.Cryptography.SHA256},System.Int64,Libplanet.Action.IAccountStateDelta,Libplanet.Address,System.Boolean,Libplanet.Store.Trie.ITrie)
-  name: EvaluateActionsGradually(HashDigest<SHA256>, Int64, IAccountStateDelta, Address, Boolean, ITrie)
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_EvaluateActionsGradually_Libplanet_HashDigest_System_Security_Cryptography_SHA256__System_Int64_Libplanet_Action_IAccountStateDelta_Libplanet_Address_System_Boolean_Libplanet_Store_Trie_ITrie_
-  commentId: M:Libplanet.Tx.Transaction`1.EvaluateActionsGradually(Libplanet.HashDigest{System.Security.Cryptography.SHA256},System.Int64,Libplanet.Action.IAccountStateDelta,Libplanet.Address,System.Boolean,Libplanet.Store.Trie.ITrie)
-  name.vb: EvaluateActionsGradually(HashDigest(Of SHA256), Int64, IAccountStateDelta, Address, Boolean, ITrie)
-  fullName: Libplanet.Tx.Transaction<T>.EvaluateActionsGradually(Libplanet.HashDigest<System.Security.Cryptography.SHA256>, System.Int64, Libplanet.Action.IAccountStateDelta, Libplanet.Address, System.Boolean, Libplanet.Store.Trie.ITrie)
-  fullName.vb: Libplanet.Tx.Transaction(Of T).EvaluateActionsGradually(Libplanet.HashDigest(Of System.Security.Cryptography.SHA256), System.Int64, Libplanet.Action.IAccountStateDelta, Libplanet.Address, System.Boolean, Libplanet.Store.Trie.ITrie)
-  nameWithType: Transaction<T>.EvaluateActionsGradually(HashDigest<SHA256>, Int64, IAccountStateDelta, Address, Boolean, ITrie)
-  nameWithType.vb: Transaction(Of T).EvaluateActionsGradually(HashDigest(Of SHA256), Int64, IAccountStateDelta, Address, Boolean, ITrie)
+- uid: Libplanet.Tx.Transaction`1.EvaluateActionsGradually(Libplanet.Blocks.BlockHash,System.Int64,Libplanet.Action.IAccountStateDelta,Libplanet.Address,System.Boolean,Libplanet.Store.Trie.ITrie)
+  name: EvaluateActionsGradually(BlockHash, Int64, IAccountStateDelta, Address, Boolean, ITrie)
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_EvaluateActionsGradually_Libplanet_Blocks_BlockHash_System_Int64_Libplanet_Action_IAccountStateDelta_Libplanet_Address_System_Boolean_Libplanet_Store_Trie_ITrie_
+  commentId: M:Libplanet.Tx.Transaction`1.EvaluateActionsGradually(Libplanet.Blocks.BlockHash,System.Int64,Libplanet.Action.IAccountStateDelta,Libplanet.Address,System.Boolean,Libplanet.Store.Trie.ITrie)
+  fullName: Libplanet.Tx.Transaction<T>.EvaluateActionsGradually(Libplanet.Blocks.BlockHash, System.Int64, Libplanet.Action.IAccountStateDelta, Libplanet.Address, System.Boolean, Libplanet.Store.Trie.ITrie)
+  fullName.vb: Libplanet.Tx.Transaction(Of T).EvaluateActionsGradually(Libplanet.Blocks.BlockHash, System.Int64, Libplanet.Action.IAccountStateDelta, Libplanet.Address, System.Boolean, Libplanet.Store.Trie.ITrie)
+  nameWithType: Transaction<T>.EvaluateActionsGradually(BlockHash, Int64, IAccountStateDelta, Address, Boolean, ITrie)
+  nameWithType.vb: Transaction(Of T).EvaluateActionsGradually(BlockHash, Int64, IAccountStateDelta, Address, Boolean, ITrie)
 - uid: Libplanet.Tx.Transaction`1.EvaluateActionsGradually*
   name: EvaluateActionsGradually
   href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_EvaluateActionsGradually_
