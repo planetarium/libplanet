@@ -1,5 +1,4 @@
 using System.Numerics;
-using System.Security.Cryptography;
 using Libplanet.Blocks;
 
 namespace Libplanet.Tests.Blocks
@@ -9,7 +8,7 @@ namespace Libplanet.Tests.Blocks
         public SimpleBlockExcerpt(
             int protocolVersion,
             long index,
-            HashDigest<SHA256> hash,
+            BlockHash hash,
             BigInteger totalDifficulty
         )
         {
@@ -23,7 +22,7 @@ namespace Libplanet.Tests.Blocks
 
         public long Index { get; set; }
 
-        public HashDigest<SHA256> Hash { get; set; }
+        public BlockHash Hash { get; set; }
 
         public BigInteger TotalDifficulty { get; set; }
 

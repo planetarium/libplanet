@@ -5,7 +5,6 @@ using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Action;
@@ -20,44 +19,41 @@ namespace Libplanet.Net
         where TAction : IAction, new()
     {
         private readonly ILogger _logger;
-        private readonly Func<HashDigest<SHA256>, bool> _completionPredicate;
+        private readonly Func<BlockHash, bool> _completionPredicate;
         private readonly int _window;
-        private readonly ConcurrentDictionary<HashDigest<SHA256>, bool> _satisfiedBlocks;
-        private readonly ConcurrentQueue<HashDigest<SHA256>> _demands;
+        private readonly ConcurrentDictionary<BlockHash, bool> _satisfiedBlocks;
+        private readonly ConcurrentQueue<BlockHash> _demands;
         private readonly SemaphoreSlim _demandEnqueued;
         private bool _started;
 
-        public BlockCompletion(
-            Func<HashDigest<SHA256>, bool> completionPredicate = null,
-            int window = 100
-        )
+        public BlockCompletion(Func<BlockHash, bool> completionPredicate = null, int window = 100)
         {
             _logger = Log.ForContext<BlockCompletion<TPeer, TAction>>();
             _completionPredicate = completionPredicate;
             _window = window;
-            _satisfiedBlocks = new ConcurrentDictionary<HashDigest<SHA256>, bool>();
+            _satisfiedBlocks = new ConcurrentDictionary<BlockHash, bool>();
             _started = false;
-            _demands = new ConcurrentQueue<HashDigest<SHA256>>();
+            _demands = new ConcurrentQueue<BlockHash>();
             _demandEnqueued = new SemaphoreSlim(0);
         }
 
         public delegate IAsyncEnumerable<Block<TAction>> BlockFetcher(
             TPeer peer,
-            IEnumerable<HashDigest<SHA256>> blockHashes,
+            IEnumerable<BlockHash> blockHashes,
             CancellationToken cancellationToken
         );
 
-        public bool Demand(HashDigest<SHA256> blockHash) =>
+        public bool Demand(BlockHash blockHash) =>
             Demand(blockHash, retry: false);
 
-        public int Demand(IEnumerable<HashDigest<SHA256>> blockHashes) =>
+        public int Demand(IEnumerable<BlockHash> blockHashes) =>
             Demand(blockHashes, retry: false);
 
-        public async IAsyncEnumerable<IEnumerable<HashDigest<SHA256>>> EnumerateChunks(
+        public async IAsyncEnumerable<IEnumerable<BlockHash>> EnumerateChunks(
             [EnumeratorCancellation] CancellationToken cancellationToken = default
         )
         {
-            var chunk = new List<HashDigest<SHA256>>(capacity: _window);
+            var chunk = new List<BlockHash>(capacity: _window);
             while (!(cancellationToken.IsCancellationRequested ||
                      QueuedDemandCompleted()))
             {
@@ -74,7 +70,7 @@ namespace Libplanet.Net
                 }
 
                 await _demandEnqueued.WaitAsync(100, cancellationToken);
-                if (_demands.TryDequeue(out HashDigest<SHA256> demand))
+                if (_demands.TryDequeue(out BlockHash demand))
                 {
                     chunk.Add(demand);
                 }
@@ -116,7 +112,7 @@ namespace Libplanet.Net
         }
 
         [Pure]
-        public bool Satisfies(HashDigest<SHA256> blockHash, bool ignoreTransientCompletions = false)
+        public bool Satisfies(BlockHash blockHash, bool ignoreTransientCompletions = false)
         {
             return (!ignoreTransientCompletions && _satisfiedBlocks.ContainsKey(blockHash)) ||
                    (!(_completionPredicate is null) && _completionPredicate(blockHash));
@@ -129,7 +125,7 @@ namespace Libplanet.Net
                 throw new ArgumentNullException(nameof(block));
             }
 
-            if (block.PreviousHash is HashDigest<SHA256> prevHash)
+            if (block.PreviousHash is { } prevHash)
             {
                 _logger.Verbose(
                     "The block #{BlockIndex} {BlockHash}'s previous block #{PreviousIndex} " +
@@ -212,13 +208,13 @@ namespace Libplanet.Net
                     await foreach (var hashes in EnumerateChunks(cancellationToken))
                     {
                         cancellationToken.ThrowIfCancellationRequested();
-                        IList<HashDigest<SHA256>> hashDigests =
-                            hashes is IList<HashDigest<SHA256>> l ? l : hashes.ToList();
+                        IList<BlockHash> blockHashes =
+                            hashes is IList<BlockHash> l ? l : hashes.ToList();
 
                         cancellationToken.ThrowIfCancellationRequested();
                         await pool.SpawnAsync(
                             CreateEnqueuing(
-                                hashDigests,
+                                blockHashes,
                                 blockFetcher,
                                 singleSessionTimeout,
                                 cancellationToken,
@@ -288,7 +284,7 @@ namespace Libplanet.Net
                 cancellationToken
             );
 
-        private bool Demand(HashDigest<SHA256> blockHash, bool retry)
+        private bool Demand(BlockHash blockHash, bool retry)
         {
             if (Satisfies(blockHash, ignoreTransientCompletions: retry))
             {
@@ -307,10 +303,10 @@ namespace Libplanet.Net
             return false;
         }
 
-        private int Demand(IEnumerable<HashDigest<SHA256>> blockHashes, bool retry)
+        private int Demand(IEnumerable<BlockHash> blockHashes, bool retry)
         {
             int sum = 0;
-            foreach (HashDigest<SHA256> hash in blockHashes)
+            foreach (BlockHash hash in blockHashes)
             {
                 if (Demand(hash, retry))
                 {
@@ -325,7 +321,7 @@ namespace Libplanet.Net
                         _started && _demands.IsEmpty && _satisfiedBlocks.All(kv => kv.Value);
 
         private Func<TPeer, CancellationToken, Task> CreateEnqueuing(
-            IList<HashDigest<SHA256>> hashDigests,
+            IList<BlockHash> blockHashes,
             BlockFetcher blockFetcher,
             TimeSpan singleSessionTimeout,
             CancellationToken cancellationToken,
@@ -334,12 +330,12 @@ namespace Libplanet.Net
             async (peer, ct) =>
             {
                 ct.ThrowIfCancellationRequested();
-                var demands = new HashSet<HashDigest<SHA256>>(hashDigests);
+                var demands = new HashSet<BlockHash>(blockHashes);
                 try
                 {
                     _logger.Debug(
                         "Request blocks {BlockHashes} to {Peer}...",
-                        hashDigests,
+                        blockHashes,
                         peer
                     );
                     using var timeout = new CancellationTokenSource(singleSessionTimeout);
@@ -356,7 +352,7 @@ namespace Libplanet.Net
                     try
                     {
                         ConfiguredCancelableAsyncEnumerable<Block<TAction>> blocks =
-                            blockFetcher(peer, hashDigests, linkedToken)
+                            blockFetcher(peer, blockHashes, linkedToken)
                                 .WithCancellation(linkedToken);
                         await foreach (Block<TAction> block in blocks)
                         {

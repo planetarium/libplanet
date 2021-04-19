@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Blockchain;
@@ -45,7 +44,7 @@ namespace Libplanet.Net
                 }
 
                 BoundPeer peer = blockDemand.Peer;
-                var hash = new HashDigest<SHA256>(blockDemand.Header.Hash.ToArray());
+                var hash = new BlockHash(blockDemand.Header.Hash);
                 int sessionId = sessionRandom.Next();
                 const string startLogMsg =
                     "{SessionId}: Got a new " + nameof(BlockDemand) + " from {Peer}; started to " +
@@ -120,7 +119,7 @@ namespace Libplanet.Net
         private async Task SyncPreviousBlocksAsync(
             BlockChain<T> blockChain,
             BoundPeer peer,
-            HashDigest<SHA256>? stop,
+            BlockHash? stop,
             IProgress<BlockDownloadState> progress,
             TimeSpan timeout,
             long totalBlockCount,
@@ -200,7 +199,7 @@ namespace Libplanet.Net
         private async Task<BlockChain<T>> FillBlocksAsync(
             BoundPeer peer,
             BlockChain<T> blockChain,
-            HashDigest<SHA256>? stop,
+            BlockHash? stop,
             IProgress<BlockDownloadState> progress,
             long totalBlockCount,
             long receivedBlockCount,
@@ -236,7 +235,7 @@ namespace Libplanet.Net
                         subSessionId,
                         locator.Count()
                     );
-                    IAsyncEnumerable<Tuple<long, HashDigest<SHA256>>> hashesAsync = GetBlockHashes(
+                    IAsyncEnumerable<Tuple<long, BlockHash>> hashesAsync = GetBlockHashes(
                         peer: peer,
                         locator: locator,
                         stop: stop,
@@ -244,8 +243,7 @@ namespace Libplanet.Net
                         logSessionIds: (logSessionId, subSessionId),
                         cancellationToken: cancellationToken
                     );
-                    IEnumerable<Tuple<long, HashDigest<SHA256>>> hashes =
-                        await hashesAsync.ToArrayAsync();
+                    IEnumerable<Tuple<long, BlockHash>> hashes = await hashesAsync.ToArrayAsync();
 
                     if (!hashes.Any())
                     {
@@ -260,7 +258,7 @@ namespace Libplanet.Net
 
                     hashes.First().Deconstruct(
                         out long branchIndex,
-                        out HashDigest<SHA256> branchPoint
+                        out BlockHash branchpoint
                     );
 
                     _logger.Debug(
@@ -268,10 +266,10 @@ namespace Libplanet.Net
                         logSessionId,
                         subSessionId,
                         branchIndex,
-                        branchPoint
+                        branchpoint
                     );
 
-                    if (tip is null || branchPoint.Equals(tip.Hash))
+                    if (tip is null || branchpoint.Equals(tip.Hash))
                     {
                         _logger.Debug(
                             "{SessionId}/{SubSessionId}: It doesn't need to fork.",
@@ -279,7 +277,7 @@ namespace Libplanet.Net
                             subSessionId
                         );
                     }
-                    else if (!workspace.ContainsBlock(branchPoint))
+                    else if (!workspace.ContainsBlock(branchpoint))
                     {
                         // FIXME: This behavior can unexpectedly terminate the swarm (and the game
                         // app) if it encounters a peer having a different blockchain, and therefore
@@ -292,7 +290,7 @@ namespace Libplanet.Net
                             "protocol-wise, the blockchain which does not share " +
                             "any mutual block is not acceptable.";
                         throw new InvalidGenesisBlockException(
-                            branchPoint,
+                            branchpoint,
                             workspace.Genesis.Hash,
                             msg);
                     }
@@ -303,7 +301,7 @@ namespace Libplanet.Net
                             logSessionId,
                             subSessionId
                         );
-                        workspace = workspace.Fork(branchPoint);
+                        workspace = workspace.Fork(branchpoint);
                         Guid workChainId = workspace.Id;
                         scope.Add(workChainId);
                         renderActions = false;
@@ -326,8 +324,7 @@ namespace Libplanet.Net
                         subSessionId
                     );
 
-                    var hashesAsArray =
-                        hashes as Tuple<long, HashDigest<SHA256>>[] ?? hashes.ToArray();
+                    var hashesAsArray = hashes as Tuple<long, BlockHash>[] ?? hashes.ToArray();
                     if (!hashesAsArray.Any())
                     {
                         break;

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Numerics;
-using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using Bencodex.Types;
@@ -637,14 +636,14 @@ namespace Libplanet.Tests.Net
                 ((BoundPeer)minerSwarm.AsPeer, minerChain.Count - 1),
             };
 
-            (long, HashDigest<SHA256>)[] demands = await receiverSwarm.GetDemandBlockHashes(
+            (long, BlockHash)[] demands = await receiverSwarm.GetDemandBlockHashes(
                 receiverChain,
                 peers,
                 progress: null,
                 cancellationToken: CancellationToken.None
             ).ToArrayAsync();
 
-            IEnumerable<(long, HashDigest<SHA256>)> expectedBlocks = minerChain.IterateBlocks()
+            IEnumerable<(long, BlockHash)> expectedBlocks = minerChain.IterateBlocks()
                 .Where(b => b.Index >= receiverChain.Count)
                 .Select(b => (b.Index, b.Hash));
             Assert.Equal(expectedBlocks, demands);
@@ -727,7 +726,7 @@ namespace Libplanet.Tests.Net
             };
 
             long receivedCount = 0;
-            (long, HashDigest<SHA256>)[] demands = await receiverSwarm.GetDemandBlockHashes(
+            (long, BlockHash)[] demands = await receiverSwarm.GetDemandBlockHashes(
                 receiverChain,
                 peers,
                 progress: new ActionProgress<PreloadState>(state =>

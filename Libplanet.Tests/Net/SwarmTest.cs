@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using Bencodex.Types;
@@ -327,7 +326,7 @@ namespace Libplanet.Tests.Net
 
                 await swarmA.AddPeersAsync(new[] { swarmB.AsPeer }, null);
 
-                (long, HashDigest<SHA256>)[] inventories1 = (
+                (long, BlockHash)[] inventories1 = (
                     await swarmB.GetBlockHashes(
                         swarmA.AsPeer as BoundPeer,
                         new BlockLocator(new[] { genesis.Hash }),
@@ -343,7 +342,7 @@ namespace Libplanet.Tests.Net
                     },
                     inventories1);
 
-                (long, HashDigest<SHA256>)[] inventories2 = (
+                (long, BlockHash)[] inventories2 = (
                     await swarmB.GetBlockHashes(
                         swarmA.AsPeer as BoundPeer,
                         new BlockLocator(new[] { genesis.Hash }),
@@ -394,7 +393,7 @@ namespace Libplanet.Tests.Net
 
                 await swarmB.AddPeersAsync(new[] { peer }, null);
 
-                Tuple<long, HashDigest<SHA256>>[] hashes = await swarmB.GetBlockHashes(
+                Tuple<long, BlockHash>[] hashes = await swarmB.GetBlockHashes(
                     peer,
                     new BlockLocator(new[] { genesis.Hash }),
                     null
@@ -1792,7 +1791,7 @@ namespace Libplanet.Tests.Net
             Assert.NotNull(receiver.BlockDemand);
             Assert.Equal(
                 higherBlock.Hash,
-                new HashDigest<SHA256>(receiver.BlockDemand.Value.Header.Hash));
+                new BlockHash(receiver.BlockDemand.Value.Header.Hash));
         }
 
         private async Task<Task> StartAsync<T>(

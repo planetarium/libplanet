@@ -12,8 +12,8 @@ namespace Libplanet.Tests.Store.Trie.Nodes
         [Fact]
         public void DecodeValidFullNode()
         {
-            var hashA = Hashcash.Hash(TestUtils.GetRandomBytes(128));
-            var hashB = Hashcash.Hash(TestUtils.GetRandomBytes(128));
+            var hashA = HashDigest<SHA256>.DeriveFrom(TestUtils.GetRandomBytes(128));
+            var hashB = HashDigest<SHA256>.DeriveFrom(TestUtils.GetRandomBytes(128));
             var list = new List(new IValue[]
             {
                 (Binary)hashA.ToByteArray(),

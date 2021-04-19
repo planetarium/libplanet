@@ -498,12 +498,12 @@ If omitted (default) explorer only the local blockchain store.")]
             }
 
             public IValue GetState(
-                string stateKey, HashDigest<SHA256>? blockHash = null, Guid? chainId = null)
+                string stateKey, BlockHash? blockHash = null, Guid? chainId = null)
             {
                 return null;
             }
 
-            public bool ContainsBlockStates(HashDigest<SHA256> blockHash) => false;
+            public bool ContainsBlockStates(BlockHash blockHash) => false;
 
             public void ForkStates<T>(
                 Guid sourceChainId, Guid destinationChainId, Block<T> branchpoint)

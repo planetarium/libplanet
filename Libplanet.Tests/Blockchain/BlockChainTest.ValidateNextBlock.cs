@@ -149,7 +149,7 @@ namespace Libplanet.Tests.Blockchain
                 1032,
                 _validNext.TotalDifficulty,
                 _fx.GenesisBlock.Miner.Value,
-                new HashDigest<SHA256>(new byte[32]),
+                new BlockHash(new byte[32]),
                 _validNext.Timestamp.AddSeconds(1),
                 _emptyTransaction);
             Assert.Throws<InvalidBlockPreviousHashException>(() =>

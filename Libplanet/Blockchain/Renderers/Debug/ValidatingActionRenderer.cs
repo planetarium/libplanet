@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
 using Libplanet.Action;
 using Libplanet.Blockchain.Policies;
@@ -153,11 +152,8 @@ namespace Libplanet.Blockchain.Renderers.Debug
 
                 expectedUnrenderedActions.AddRange(
                     block.Transactions.SelectMany(t => t.Actions).Cast<IAction>().Reverse());
-                block = block.PreviousHash is HashDigest<SHA256> prevHash
-                    ? store.GetBlock<T>(prevHash)
-                    : throw Error(
-                        Records,
-                        "Reorg occurred from the chain with different genesis.");
+                block = store.GetBlock<T>(block.PreviousHash ??
+                    throw Error(Records, "Reorg occurred from the chain with different genesis."));
             }
 
             IEnumerable<IAction> expectedRenderedActionsBuffer = new List<IAction>();
@@ -180,11 +176,8 @@ namespace Libplanet.Blockchain.Renderers.Debug
                 }
 
                 expectedRenderedActionsBuffer = actions.Concat(expectedRenderedActionsBuffer);
-                block = block.PreviousHash is HashDigest<SHA256> prevHash
-                    ? store.GetBlock<T>(prevHash)
-                    : throw Error(
-                        Records,
-                        "Reorg occurred from the chain with different genesis.");
+                block = store.GetBlock<T>(block.PreviousHash ??
+                    throw Error(Records, "Reorg occurred from the chain with different genesis."));
             }
 
             IAction[] expectedRenderedActions = expectedRenderedActionsBuffer.ToArray();

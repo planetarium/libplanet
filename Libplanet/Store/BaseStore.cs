@@ -23,23 +23,21 @@ namespace Libplanet.Store
 
         public abstract long CountIndex(Guid chainId);
 
-        public abstract IEnumerable<HashDigest<SHA256>> IterateIndexes(
-            Guid chainId,
-            int offset,
-            int? limit);
+        /// <inheritdoc cref="IStore.IterateIndexes(Guid, int, int?)"/>
+        public abstract IEnumerable<BlockHash> IterateIndexes(Guid chainId, int offset, int? limit);
 
-        public abstract HashDigest<SHA256>? IndexBlockHash(Guid chainId, long index);
+        /// <inheritdoc cref="IStore.IndexBlockHash(Guid, long)"/>
+        public abstract BlockHash? IndexBlockHash(Guid chainId, long index);
 
-        public abstract long AppendIndex(
-            Guid chainId,
-            HashDigest<SHA256> hash
-        );
+        /// <inheritdoc cref="IStore.AppendIndex(Guid, BlockHash)"/>
+        public abstract long AppendIndex(Guid chainId, BlockHash hash);
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IStore.ForkBlockIndexes(Guid, Guid, BlockHash)"/>
         public abstract void ForkBlockIndexes(
             Guid sourceChainId,
             Guid destinationChainId,
-            HashDigest<SHA256> branchPoint);
+            BlockHash branchpoint
+        );
 
         /// <inheritdoc />
         public abstract void StageTransactionIds(IImmutableSet<TxId> txids);
@@ -61,20 +59,21 @@ namespace Libplanet.Store
 
         public abstract bool DeleteTransaction(TxId txid);
 
-        public abstract IEnumerable<HashDigest<SHA256>> IterateBlockHashes();
+        /// <inheritdoc cref="IStore.IterateBlockHashes()"/>
+        public abstract IEnumerable<BlockHash> IterateBlockHashes();
 
-        /// <inheritdoc/>
-        public Block<T> GetBlock<T>(HashDigest<SHA256> blockHash)
+        /// <inheritdoc cref="IStore.GetBlock{T}(BlockHash)"/>
+        public Block<T> GetBlock<T>(BlockHash blockHash)
             where T : IAction, new()
         {
             if (GetBlockDigest(blockHash) is BlockDigest blockDigest)
             {
-                HashDigest<SHA256>? prevHash = blockDigest.Header.PreviousHash.Any()
-                    ? new HashDigest<SHA256>(blockDigest.Header.PreviousHash)
-                    : (HashDigest<SHA256>?)null;
-                HashDigest<SHA256>? preEvaluationHash = blockDigest.Header.PreEvaluationHash.Any()
-                    ? new HashDigest<SHA256>(blockDigest.Header.PreEvaluationHash)
-                    : (HashDigest<SHA256>?)null;
+                BlockHash? prevHash = blockDigest.Header.PreviousHash.Any()
+                    ? new BlockHash(blockDigest.Header.PreviousHash)
+                    : (BlockHash?)null;
+                BlockHash? preEvaluationHash = blockDigest.Header.PreEvaluationHash.Any()
+                    ? new BlockHash(blockDigest.Header.PreEvaluationHash)
+                    : (BlockHash?)null;
                 HashDigest<SHA256>? stateRootHash = blockDigest.Header.StateRootHash.Any()
                     ? new HashDigest<SHA256>(blockDigest.Header.StateRootHash)
                     : (HashDigest<SHA256>?)null;
@@ -102,32 +101,33 @@ namespace Libplanet.Store
             return null;
         }
 
-        /// <inheritdoc/>
-        public long? GetBlockIndex(HashDigest<SHA256> blockHash)
+        /// <inheritdoc cref="IStore.GetBlockIndex(BlockHash)"/>
+        public long? GetBlockIndex(BlockHash blockHash)
         {
             return GetBlockDigest(blockHash)?.Header.Index;
         }
 
-        /// <inheritdoc/>
-        public abstract BlockDigest? GetBlockDigest(HashDigest<SHA256> blockHash);
+        /// <inheritdoc cref="IStore.GetBlockDigest(BlockHash)"/>
+        public abstract BlockDigest? GetBlockDigest(BlockHash blockHash);
 
         /// <inheritdoc />
         public abstract void PutBlock<T>(Block<T> block)
             where T : IAction, new();
 
-        public abstract bool DeleteBlock(HashDigest<SHA256> blockHash);
+        /// <inheritdoc cref="IStore.DeleteBlock(BlockHash)"/>
+        public abstract bool DeleteBlock(BlockHash blockHash);
 
-        /// <inheritdoc />
-        public abstract bool ContainsBlock(HashDigest<SHA256> blockHash);
+        /// <inheritdoc cref="IStore.ContainsBlock(BlockHash)"/>
+        public abstract bool ContainsBlock(BlockHash blockHash);
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IStore.SetBlockPerceivedTime(BlockHash, DateTimeOffset)"/>
         public abstract void SetBlockPerceivedTime(
-            HashDigest<SHA256> blockHash,
+            BlockHash blockHash,
             DateTimeOffset perceivedTime
         );
 
-        /// <inheritdoc/>
-        public abstract DateTimeOffset? GetBlockPerceivedTime(HashDigest<SHA256> blockHash);
+        /// <inheritdoc cref="IStore.GetBlockPerceivedTime(BlockHash)"/>
+        public abstract DateTimeOffset? GetBlockPerceivedTime(BlockHash blockHash);
 
         /// <inheritdoc/>
         public abstract IEnumerable<KeyValuePair<Address, long>> ListTxNonces(Guid chainId);

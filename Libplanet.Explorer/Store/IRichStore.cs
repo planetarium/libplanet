@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
+using Libplanet.Blocks;
 using Libplanet.Store;
 using Libplanet.Tx;
 
@@ -8,9 +8,9 @@ namespace Libplanet.Explorer.Store
 {
     public interface IRichStore : IStore
     {
-        void StoreTxReferences(TxId txId, HashDigest<SHA256> blockHash, long blockIndex);
+        void StoreTxReferences(TxId txId, in BlockHash blockHash, long blockIndex);
 
-        IEnumerable<ValueTuple<TxId, HashDigest<SHA256>>> IterateTxReferences(
+        IEnumerable<ValueTuple<TxId, BlockHash>> IterateTxReferences(
             TxId? txId = null,
             bool desc = false,
             int offset = 0,

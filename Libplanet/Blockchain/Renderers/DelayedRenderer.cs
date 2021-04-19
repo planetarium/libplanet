@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
@@ -87,7 +86,7 @@ namespace Libplanet.Blockchain.Renderers
             CanonicalChainComparer = canonicalChainComparer;
             Store = store;
             Confirmations = confirmations;
-            Confirmed = new ConcurrentDictionary<HashDigest<SHA256>, uint>();
+            Confirmed = new ConcurrentDictionary<BlockHash, uint>();
         }
 
         /// <summary>
@@ -195,7 +194,7 @@ namespace Libplanet.Blockchain.Renderers
         /// </summary>
         protected ILogger Logger { get; }
 
-        protected ConcurrentDictionary<HashDigest<SHA256>, uint> Confirmed { get; }
+        protected ConcurrentDictionary<BlockHash, uint> Confirmed { get; }
 
         /// <inheritdoc cref="IRenderer{T}.RenderBlock(Block{T}, Block{T})"/>
         public virtual void RenderBlock(Block<T> oldTip, Block<T> newTip)
@@ -252,13 +251,13 @@ namespace Libplanet.Blockchain.Renderers
 
             Confirmed.TryAdd(newTip.Hash, 0U);
 
-            var blocksToRender = new Stack<(long, HashDigest<SHA256>)>();
+            var blocksToRender = new Stack<(long, BlockHash)>();
 
             long prevBlockIndex = newTip.Index - 1;
             uint accumulatedConfirmations = 0;
-            HashDigest<SHA256>? prev = newTip.PreviousHash;
+            BlockHash? prev = newTip.PreviousHash;
             while (
-                prev is HashDigest<SHA256> prevHash
+                prev is { } prevHash
                 && Store.GetBlock<T>(prevHash) is Block<T> prevBlock
                 && prevBlock.Index >= maxDepth)
             {
@@ -278,7 +277,7 @@ namespace Libplanet.Blockchain.Renderers
 
             while (blocksToRender.Count > 0)
             {
-                (long index, HashDigest<SHA256> hash) = blocksToRender.Pop();
+                (long index, BlockHash hash) = blocksToRender.Pop();
                 uint ac = accumulatedConfirmations;
                 uint c = Confirmed.AddOrUpdate(hash, k => 0U, (k, v) => ac);
 
@@ -343,12 +342,12 @@ namespace Libplanet.Blockchain.Renderers
 
         private Block<T> FindBranchpoint(Block<T> a, Block<T> b)
         {
-            while (a is Block<T> && a.Index > b.Index && a.PreviousHash is HashDigest<SHA256> aPrev)
+            while (a is Block<T> && a.Index > b.Index && a.PreviousHash is { } aPrev)
             {
                 a = Store.GetBlock<T>(aPrev);
             }
 
-            while (b is Block<T> && b.Index > a.Index && b.PreviousHash is HashDigest<SHA256> bPrev)
+            while (b is Block<T> && b.Index > a.Index && b.PreviousHash is { } bPrev)
             {
                 b = Store.GetBlock<T>(bPrev);
             }
@@ -368,8 +367,8 @@ namespace Libplanet.Blockchain.Renderers
                     return a;
                 }
 
-                if (a.PreviousHash is HashDigest<SHA256> aPrev &&
-                    b.PreviousHash is HashDigest<SHA256> bPrev)
+                if (a.PreviousHash is { } aPrev &&
+                    b.PreviousHash is { } bPrev)
                 {
                     a = Store.GetBlock<T>(aPrev);
                     b = Store.GetBlock<T>(bPrev);

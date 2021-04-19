@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
@@ -18,21 +17,20 @@ namespace Libplanet.Blockchain
     {
         private readonly ILogger _logger;
         private readonly IAction? _blockAction;
-        private readonly Func<Address, HashDigest<SHA256>?, StateCompleter<T>, IValue?>
-            _stateGetter;
+        private readonly Func<Address, BlockHash?, StateCompleter<T>, IValue?> _stateGetter;
 
-        private readonly Func<Address, Currency, HashDigest<SHA256>?,
+        private readonly Func<Address, Currency, BlockHash?,
                 FungibleAssetStateCompleter<T>, FungibleAssetValue>
             _balanceGetter;
 
-        private readonly Func<HashDigest<SHA256>, ITrie>? _trieGetter;
+        private readonly Func<BlockHash, ITrie>? _trieGetter;
 
         internal BlockEvaluator(
             IAction? blockAction,
-            Func<Address, HashDigest<SHA256>?, StateCompleter<T>, IValue?> stateGetter,
-            Func<Address, Currency, HashDigest<SHA256>?,
+            Func<Address, BlockHash?, StateCompleter<T>, IValue?> stateGetter,
+            Func<Address, Currency, BlockHash?,
                 FungibleAssetStateCompleter<T>, FungibleAssetValue> balanceGetter,
-            Func<HashDigest<SHA256>, ITrie>? trieGetter)
+            Func<BlockHash, ITrie>? trieGetter)
         {
             _logger = Log.ForContext(typeof(BlockEvaluator<T>));
             _blockAction = blockAction;
@@ -69,7 +67,7 @@ namespace Libplanet.Blockchain
             }
 
             ITrie? previousBlockStatesTrie =
-                !(_trieGetter is null) && block.PreviousHash is HashDigest<SHA256> h
+                !(_trieGetter is null) && block.PreviousHash is { } h
                     ? _trieGetter(h)
                     : null;
 

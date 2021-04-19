@@ -8,6 +8,7 @@ using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Libplanet.Tests.Store.Trie;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Libplanet.RocksDBStore.Tests
 {
@@ -15,10 +16,11 @@ namespace Libplanet.RocksDBStore.Tests
     {
         private readonly RocksDBStoreFixture _fx;
 
-        public RocksDBStoreTest()
+        public RocksDBStoreTest(ITestOutputHelper testOutputHelper)
         {
             try
             {
+                TestOutputHelper = testOutputHelper;
                 Fx = _fx = new RocksDBStoreFixture();
                 FxConstructor = () => new RocksDBStoreFixture();
             }
@@ -27,6 +29,12 @@ namespace Libplanet.RocksDBStore.Tests
                 throw new SkipException("RocksDB is not available.");
             }
         }
+
+        protected override ITestOutputHelper TestOutputHelper { get; }
+
+        protected override StoreFixture Fx { get; }
+
+        protected override Func<StoreFixture> FxConstructor { get; }
 
         public void Dispose()
         {

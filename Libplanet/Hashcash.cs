@@ -2,6 +2,7 @@
 using System;
 using System.Security.Cryptography;
 using System.Threading;
+using Libplanet.Blocks;
 
 namespace Libplanet
 {
@@ -80,10 +81,7 @@ namespace Libplanet
         /// its hash digest.</param>
         /// <returns>A deterministic digest of the given
         /// <paramref name="bytes"/>.</returns>
-        public static HashDigest<SHA256> Hash(byte[] bytes)
-        {
-            using SHA256 hashAlgo = SHA256.Create();
-            return new HashDigest<SHA256>(hashAlgo.ComputeHash(bytes));
-        }
+        public static BlockHash Hash(byte[] bytes) =>
+            BlockHash.FromHashDigest(HashDigest<SHA256>.DeriveFrom(bytes));
     }
 }

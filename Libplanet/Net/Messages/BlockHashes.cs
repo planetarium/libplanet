@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
+using Libplanet.Blocks;
 using NetMQ;
 
 namespace Libplanet.Net.Messages
 {
     internal class BlockHashes : Message
     {
-        public BlockHashes(long? startIndex, IEnumerable<HashDigest<SHA256>> hashes)
+        public BlockHashes(long? startIndex, IEnumerable<BlockHash> hashes)
         {
             StartIndex = startIndex;
             Hashes = hashes.ToList();
@@ -32,13 +32,13 @@ namespace Libplanet.Net.Messages
         public BlockHashes(NetMQFrame[] frames)
         {
             int hashCount = frames[0].ConvertToInt32();
-            var hashes = new List<HashDigest<SHA256>>(hashCount);
+            var hashes = new List<BlockHash>(hashCount);
             if (hashCount > 0)
             {
                 StartIndex = frames[1].ConvertToInt64();
                 for (int i = 2, end = hashCount + 2; i < end; i++)
                 {
-                    hashes.Add(frames[i].ConvertToHashDigest<SHA256>());
+                    hashes.Add(frames[i].ConvertToBlockHash());
                 }
             }
 
@@ -54,7 +54,7 @@ namespace Libplanet.Net.Messages
         /// <summary>
         /// The continuous block hashes, from the lowest index to the highest index.
         /// </summary>
-        public IEnumerable<HashDigest<SHA256>> Hashes { get; }
+        public IEnumerable<BlockHash> Hashes { get; }
 
         protected override MessageType Type => MessageType.BlockHashes;
 
@@ -69,7 +69,7 @@ namespace Libplanet.Net.Messages
                     yield return new NetMQFrame(
                         NetworkOrderBitsConverter.GetBytes(offset));
 
-                    foreach (HashDigest<SHA256> hash in Hashes)
+                    foreach (BlockHash hash in Hashes)
                     {
                         yield return new NetMQFrame(hash.ToByteArray());
                     }

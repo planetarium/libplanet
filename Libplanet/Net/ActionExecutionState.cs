@@ -1,4 +1,5 @@
-using System.Security.Cryptography;
+#nullable enable
+using Libplanet.Blocks;
 
 namespace Libplanet.Net
 {
@@ -21,7 +22,7 @@ namespace Libplanet.Net
         /// <summary>
         /// The hash digest of the block just executed.
         /// </summary>
-        public HashDigest<SHA256> ExecutedBlockHash { get; internal set; }
+        public BlockHash ExecutedBlockHash { get; internal set; }
 
         /// <inheritdoc />
         public override int CurrentPhase => 5;

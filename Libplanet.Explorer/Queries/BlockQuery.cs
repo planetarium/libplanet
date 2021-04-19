@@ -1,7 +1,7 @@
-using System.Security.Cryptography;
 using GraphQL;
 using GraphQL.Types;
 using Libplanet.Action;
+using Libplanet.Blocks;
 using Libplanet.Explorer.GraphTypes;
 
 namespace Libplanet.Explorer.Queries
@@ -63,7 +63,7 @@ namespace Libplanet.Explorer.Queries
 
                     if (hash is string hashNotNull)
                     {
-                        return Query<T>.GetBlockByHash(HashDigest<SHA256>.FromString(hashNotNull));
+                        return Query<T>.GetBlockByHash(BlockHash.FromString(hashNotNull));
                     }
 
                     if (index is long indexNotNull)

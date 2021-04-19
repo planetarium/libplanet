@@ -1,4 +1,4 @@
-using System.Security.Cryptography;
+using Libplanet.Blocks;
 using Libplanet.Tx;
 using LiteDB;
 
@@ -9,7 +9,7 @@ namespace Libplanet.Explorer.Store
         [BsonId]
         public string Id => TxId + "_" + BlockHash;
 
-        public HashDigest<SHA256> BlockHash { get; set; }
+        public BlockHash BlockHash { get; set; }
 
         public long BlockIndex { get; set; }
 

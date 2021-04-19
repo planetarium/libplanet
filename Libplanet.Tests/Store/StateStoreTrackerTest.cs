@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Immutable;
-using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blocks;
@@ -27,7 +26,7 @@ namespace Libplanet.Tests.Store
         [Fact]
         public void MethodCallsAreLogged()
         {
-            var blockHash = default(HashDigest<SHA256>);
+            var blockHash = default(BlockHash);
             var chainId = default(Guid);
             _tracker.GetState("stateKey", blockHash, chainId);
             StoreTrackLog storeTrackLog = StoreTrackLog.Create(
@@ -37,10 +36,9 @@ namespace Libplanet.Tests.Store
                 storeTrackLog,
                 _tracker.Logs[0]);
 
-            var hashDigest =
-                new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size));
-            _tracker.ContainsBlockStates(hashDigest);
-            storeTrackLog = StoreTrackLog.Create(nameof(_tracker.ContainsBlockStates), hashDigest);
+            var randomHash = new BlockHash(TestUtils.GetRandomBytes(32));
+            _tracker.ContainsBlockStates(randomHash);
+            storeTrackLog = StoreTrackLog.Create(nameof(_tracker.ContainsBlockStates), randomHash);
             Assert.Equal(2, _tracker.Logs.Count);
             Assert.Equal(
                 storeTrackLog,
@@ -50,12 +48,11 @@ namespace Libplanet.Tests.Store
         [Fact]
         public void ClearLogs()
         {
-            var blockHash = default(HashDigest<SHA256>);
+            var blockHash = default(BlockHash);
             var chainId = default(Guid);
             _tracker.GetState("stateKey", blockHash, chainId);
-            var hashDigest =
-                new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size));
-            _tracker.ContainsBlockStates(hashDigest);
+            var randomHash = new BlockHash(TestUtils.GetRandomBytes(32));
+            _tracker.ContainsBlockStates(randomHash);
             Assert.Equal(2, _tracker.Logs.Count);
 
             _tracker.ClearLogs();
@@ -70,12 +67,12 @@ namespace Libplanet.Tests.Store
             }
 
             public IValue GetState(
-                string stateKey, HashDigest<SHA256>? blockHash = null, Guid? chainId = null)
+                string stateKey, BlockHash? blockHash = null, Guid? chainId = null)
             {
                 return null;
             }
 
-            public bool ContainsBlockStates(HashDigest<SHA256> blockHash) => false;
+            public bool ContainsBlockStates(BlockHash blockHash) => false;
 
             public void ForkStates<T>(
                 Guid sourceChainId, Guid destinationChainId, Block<T> branchpoint)

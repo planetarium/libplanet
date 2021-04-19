@@ -9,6 +9,7 @@ using Bencodex;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
+using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Store.Trie;
 
@@ -48,7 +49,7 @@ namespace Libplanet.Tx
         /// this constructor is only useful when all details of
         /// a <see cref="Transaction{T}"/> need to be manually adjusted.
         /// For the most cases, the fa&#xe7;ade factory <see
-        /// cref="Create(long, PrivateKey, HashDigest{SHA256}?, IEnumerable{T},
+        /// cref="Create(long, PrivateKey, BlockHash?, IEnumerable{T},
         /// IImmutableSet{Address}, DateTimeOffset?)"/> is more useful.</para>
         /// </summary>
         /// <param name="nonce">The number of previous
@@ -92,7 +93,7 @@ namespace Libplanet.Tx
             long nonce,
             Address signer,
             PublicKey publicKey,
-            HashDigest<SHA256>? genesisHash,
+            BlockHash? genesisHash,
             IImmutableSet<Address> updatedAddresses,
             DateTimeOffset timestamp,
             IEnumerable<T> actions,
@@ -130,8 +131,8 @@ namespace Libplanet.Tx
                 new Address(rawTx.Signer),
                 new PublicKey(rawTx.PublicKey.ToArray()),
                 rawTx.GenesisHash != ImmutableArray<byte>.Empty
-                    ? new HashDigest<SHA256>(rawTx.GenesisHash.ToArray())
-                    : (HashDigest<SHA256>?)null,
+                    ? new BlockHash(rawTx.GenesisHash.ToArray())
+                    : (BlockHash?)null,
                 rawTx.UpdatedAddresses.Select(
                     a => new Address(a)
                 ).ToImmutableHashSet(),
@@ -149,7 +150,7 @@ namespace Libplanet.Tx
             long nonce,
             Address signer,
             PublicKey publicKey,
-            HashDigest<SHA256>? genesisHash,
+            BlockHash? genesisHash,
             IImmutableSet<Address> updatedAddresses,
             DateTimeOffset timestamp,
             IEnumerable<T> actions)
@@ -254,7 +255,7 @@ namespace Libplanet.Tx
         /// This can be <c>null</c> iff the transaction is contained
         /// in the genesis block.
         /// </summary>
-        public HashDigest<SHA256>? GenesisHash { get; }
+        public BlockHash? GenesisHash { get; }
 
         /// <summary>
         /// The bytes length in its serialized format.
@@ -312,7 +313,7 @@ namespace Libplanet.Tx
 
         /// <summary>
         /// A fa&#xe7;ade factory to create a new <see cref="Transaction{T}"/>.
-        /// Unlike the <see cref="Transaction(long, Address, PublicKey, HashDigest{SHA256}?,
+        /// Unlike the <see cref="Transaction(long, Address, PublicKey, BlockHash?,
         /// IImmutableSet{Address}, DateTimeOffset, IEnumerable{T}, byte[])"/>
         /// constructor, it automatically fills the following values from:
         /// <list type="table">
@@ -403,7 +404,7 @@ namespace Libplanet.Tx
         public static Transaction<T> Create(
             long nonce,
             PrivateKey privateKey,
-            HashDigest<SHA256>? genesisHash,
+            BlockHash? genesisHash,
             IEnumerable<T> actions,
             IImmutableSet<Address> updatedAddresses = null,
             DateTimeOffset? timestamp = null
@@ -437,6 +438,10 @@ namespace Libplanet.Tx
 
             if (!actionsArray.IsEmpty)
             {
+                // FIXME: Although we are assuming all block hashes are SHA256 digest, we should
+                // parametrize this in the future.
+                BlockHash emptyBlockHash = BlockHash.FromHashDigest(default(HashDigest<SHA256>));
+
                 IAccountStateDelta delta = new Transaction<T>(
                     nonce,
                     signer,
@@ -446,7 +451,7 @@ namespace Libplanet.Tx
                     ts,
                     actionsArray
                 ).EvaluateActions(
-                    default(HashDigest<SHA256>),
+                    emptyBlockHash,
                     0,
                     new AccountStateDeltaImpl(
                         _ => null,
@@ -584,7 +589,7 @@ namespace Libplanet.Tx
         [Pure]
         public IEnumerable<ActionEvaluation>
         EvaluateActionsGradually(
-            HashDigest<SHA256> blockHash,
+            BlockHash blockHash,
             long blockIndex,
             IAccountStateDelta previousStates,
             Address minerAddress,
@@ -630,7 +635,7 @@ namespace Libplanet.Tx
         /// <paramref name="previousStates"/> as well.</returns>
         [Pure]
         public IAccountStateDelta EvaluateActions(
-            HashDigest<SHA256> blockHash,
+            BlockHash blockHash,
             long blockIndex,
             IAccountStateDelta previousStates,
             Address minerAddress,

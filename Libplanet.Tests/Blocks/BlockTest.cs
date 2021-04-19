@@ -5,7 +5,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Numerics;
-using System.Security.Cryptography;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Action;
@@ -87,7 +86,7 @@ namespace Libplanet.Tests.Blocks
                 _fx.Genesis.Miner);
             Assert.Equal(new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 }), _fx.Genesis.Nonce);
             AssertBytesEqual(
-                new HashDigest<SHA256>(
+                new BlockHash(
                     new byte[]
                     {
                         0xd6, 0x93, 0xda, 0x38, 0x66, 0xa3, 0x4d, 0x65, 0x9e, 0x01, 0x4f, 0x97,
@@ -638,7 +637,7 @@ namespace Libplanet.Tests.Blocks
                 totalDifficulty: _fx.Genesis.TotalDifficulty,
                 nonce: _fx.Genesis.Nonce,
                 miner: _fx.Genesis.Miner,
-                previousHash: new HashDigest<SHA256>(GetRandomBytes(32)), // invalid
+                previousHash: new BlockHash(GetRandomBytes(32)), // invalid
                 timestamp: _fx.Genesis.Timestamp,
                 transactions: MineGenesis<DumbAction>().Transactions
             );

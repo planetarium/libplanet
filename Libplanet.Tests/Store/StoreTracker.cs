@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Store;
@@ -18,7 +17,7 @@ namespace Libplanet.Tests.Store
             _store = store;
         }
 
-        public long AppendIndex(Guid chainId, HashDigest<SHA256> hash)
+        public long AppendIndex(Guid chainId, BlockHash hash)
         {
             Log(nameof(AppendIndex), chainId, hash);
             return _store.AppendIndex(chainId, hash);
@@ -42,28 +41,25 @@ namespace Libplanet.Tests.Store
             return _store.CountTransactions();
         }
 
-        public bool DeleteBlock(HashDigest<SHA256> blockHash)
+        public bool DeleteBlock(BlockHash blockHash)
         {
             Log(nameof(DeleteBlock), blockHash);
             return _store.DeleteBlock(blockHash);
         }
 
-        public bool ContainsBlock(HashDigest<SHA256> blockHash)
+        public bool ContainsBlock(BlockHash blockHash)
         {
             Log(nameof(ContainsBlock), blockHash);
             return _store.ContainsBlock(blockHash);
         }
 
-        public void SetBlockPerceivedTime(
-            HashDigest<SHA256> blockHash,
-            DateTimeOffset perceivedTime
-        )
+        public void SetBlockPerceivedTime(BlockHash blockHash, DateTimeOffset perceivedTime)
         {
             Log(nameof(SetBlockPerceivedTime), blockHash, perceivedTime);
             _store.SetBlockPerceivedTime(blockHash, perceivedTime);
         }
 
-        public DateTimeOffset? GetBlockPerceivedTime(HashDigest<SHA256> blockHash)
+        public DateTimeOffset? GetBlockPerceivedTime(BlockHash blockHash)
         {
             Log(nameof(GetBlockPerceivedTime), blockHash);
             return _store.GetBlockPerceivedTime(blockHash);
@@ -81,20 +77,20 @@ namespace Libplanet.Tests.Store
             return _store.DeleteTransaction(txid);
         }
 
-        public Block<T> GetBlock<T>(HashDigest<SHA256> blockHash)
+        public Block<T> GetBlock<T>(BlockHash blockHash)
             where T : IAction, new()
         {
             Log(nameof(GetBlock), blockHash);
             return _store.GetBlock<T>(blockHash);
         }
 
-        public long? GetBlockIndex(HashDigest<SHA256> blockHash)
+        public long? GetBlockIndex(BlockHash blockHash)
         {
             Log(nameof(GetBlockIndex), blockHash);
             return _store.GetBlockIndex(blockHash);
         }
 
-        public BlockDigest? GetBlockDigest(HashDigest<SHA256> blockHash)
+        public BlockDigest? GetBlockDigest(BlockHash blockHash)
         {
             Log(nameof(GetBlockDigest), blockHash);
             return _store.GetBlockDigest(blockHash);
@@ -107,19 +103,19 @@ namespace Libplanet.Tests.Store
             return _store.GetTransaction<T>(txid);
         }
 
-        public HashDigest<SHA256>? IndexBlockHash(Guid chainId, long index)
+        public BlockHash? IndexBlockHash(Guid chainId, long index)
         {
             Log(nameof(IndexBlockHash), chainId, index);
             return _store.IndexBlockHash(chainId, index);
         }
 
-        public IEnumerable<HashDigest<SHA256>> IterateBlockHashes()
+        public IEnumerable<BlockHash> IterateBlockHashes()
         {
             Log(nameof(IterateBlockHashes));
             return _store.IterateBlockHashes();
         }
 
-        public IEnumerable<HashDigest<SHA256>> IterateIndexes(Guid chainId, int offset, int? limit)
+        public IEnumerable<BlockHash> IterateIndexes(Guid chainId, int offset, int? limit)
         {
              Log(nameof(IterateIndexes), chainId, offset, limit);
              return _store.IterateIndexes(chainId, offset, limit);
@@ -166,7 +162,7 @@ namespace Libplanet.Tests.Store
         public void ForkBlockIndexes(
             Guid sourceChainId,
             Guid destinationChainId,
-            HashDigest<SHA256> branchPoint)
+            BlockHash branchPoint)
         {
             Log(nameof(ForkBlockIndexes), sourceChainId, destinationChainId, branchPoint);
             _store.ForkBlockIndexes(sourceChainId, destinationChainId, branchPoint);

@@ -24,7 +24,7 @@ namespace Libplanet.Explorer.UnitTests.GraphTypes
                 1,
                 new Nonce(new byte[] {0x01, 0x23, 0x45, 0x56}),
                 new Address(TestUtils.GetRandomBytes(Address.Size)),
-                new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
+                new BlockHash(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
                 DateTimeOffset.UtcNow,
                 ImmutableHashSet<Transaction<NoOpAction>>.Empty,
                 stateRootHash: new HashDigest<SHA256>(

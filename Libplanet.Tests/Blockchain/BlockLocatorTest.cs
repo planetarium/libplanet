@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Security.Cryptography;
 using Libplanet.Blockchain;
+using Libplanet.Blocks;
 using NetMQ;
 using Xunit;
 using Xunit.Abstractions;
@@ -23,12 +23,12 @@ namespace Libplanet.Tests.Blockchain
         {
             // Generate fixture block hashes looks like 0x000...1, 0x000...2, 0x000...3, and so on,
             // for the sake of easier debugging.
-            ImmutableArray<HashDigest<SHA256>> blocks = Enumerable.Range(0, 0x10).Select(i =>
+            ImmutableArray<BlockHash> blocks = Enumerable.Range(0, 0x10).Select(i =>
             {
                 byte[] bytes = NetworkOrderBitsConverter.GetBytes(i);
-                var buffer = new byte[HashDigest<SHA256>.Size];
+                var buffer = new byte[32];
                 bytes.CopyTo(buffer, buffer.Length - bytes.Length);
-                return new HashDigest<SHA256>(buffer);
+                return new BlockHash(buffer);
             }).ToImmutableArray();
 
             var locator = new BlockLocator(
@@ -37,7 +37,7 @@ namespace Libplanet.Tests.Blockchain
                 sampleAfter: 5
             );
 
-            foreach (HashDigest<SHA256> hash in locator)
+            foreach (BlockHash hash in locator)
             {
                 _output.WriteLine(hash.ToString());
             }

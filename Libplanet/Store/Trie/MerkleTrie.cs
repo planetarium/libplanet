@@ -27,8 +27,8 @@ namespace Libplanet.Store.Trie
         static MerkleTrie()
         {
             _codec = new Codec();
-            EmptyRootHash = Hashcash.Hash(
-                _codec.Encode(default(Null)!));
+            var bxNull = _codec.Encode(default(Null)!);
+            EmptyRootHash = HashDigest<SHA256>.DeriveFrom(bxNull);
         }
 
         /// <summary>

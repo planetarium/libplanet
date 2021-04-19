@@ -1,4 +1,5 @@
-using System.Security.Cryptography;
+#nullable enable
+using Libplanet.Blocks;
 
 namespace Libplanet.Net
 {
@@ -21,7 +22,7 @@ namespace Libplanet.Net
         /// <summary>
         /// The hash digest of the block just received.
         /// </summary>
-        public HashDigest<SHA256> ReceivedBlockHash { get; internal set; }
+        public BlockHash ReceivedBlockHash { get; internal set; }
 
         /// <inheritdoc />
         public override int CurrentPhase => 2;
@@ -29,7 +30,7 @@ namespace Libplanet.Net
         /// <summary>
         /// The peer which sent the block.
         /// </summary>
-        public BoundPeer SourcePeer { get; internal set; }
+        public BoundPeer? SourcePeer { get; internal set; }
 
         public static bool operator ==(BlockDownloadState left, BlockDownloadState right) =>
             Operator.Weave(left, right);

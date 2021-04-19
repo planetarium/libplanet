@@ -1,4 +1,5 @@
 using System;
+using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Store.Trie.Nodes;
 using Xunit;
@@ -13,7 +14,7 @@ namespace Libplanet.Tests.Store.Trie.Nodes
             var buf = new byte[128];
             var random = new Random();
             random.NextBytes(buf);
-            var hashDigest = Hashcash.Hash(buf);
+            var hashDigest = HashDigest<SHA256>.DeriveFrom(buf);
 
             var valueNode = new HashNode(hashDigest);
             Assert.Equal((Binary)hashDigest.ToByteArray(), valueNode.ToBencodex());

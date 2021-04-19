@@ -4,10 +4,10 @@ using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Numerics;
-using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
+using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tx;
@@ -708,7 +708,7 @@ namespace Libplanet.Tests.Tx
                 ImmutableHashSet<Address>.Empty,
                 DateTimeOffset.UtcNow
             );
-            var hash = new HashDigest<SHA256>(GetRandomBytes(HashDigest<SHA256>.Size));
+            var hash = new BlockHash(GetRandomBytes(32));
             var nextStates = tx.EvaluateActions(
                 blockHash: hash,
                 blockIndex: 123,

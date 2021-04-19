@@ -1,6 +1,5 @@
 #nullable enable
 using System.Diagnostics.Contracts;
-using System.Security.Cryptography;
 using Libplanet.Blockchain;
 using Libplanet.Store;
 
@@ -24,9 +23,10 @@ namespace Libplanet.Blocks
         /// </param>
         /// <param name="message">The message that describes the error.</param>
         public InvalidGenesisBlockException(
-            HashDigest<SHA256> networkExpected,
-            HashDigest<SHA256> stored,
-            string message)
+            BlockHash networkExpected,
+            BlockHash stored,
+            string message
+        )
             : base(message)
         {
             NetworkExpected = networkExpected;
@@ -37,12 +37,12 @@ namespace Libplanet.Blocks
         /// The genesis block that the network expects.
         /// </summary>
         [Pure]
-        public HashDigest<SHA256> NetworkExpected { get; }
+        public BlockHash NetworkExpected { get; }
 
         /// <summary>
         /// The genesis block that a local <see cref="IStore"/> contains.
         /// </summary>
         [Pure]
-        public HashDigest<SHA256> Stored { get; }
+        public BlockHash Stored { get; }
     }
 }

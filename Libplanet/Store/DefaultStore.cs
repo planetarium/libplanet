@@ -40,7 +40,7 @@ namespace Libplanet.Store
         private readonly SubFileSystem _blocks;
         private readonly SubFileSystem _blockPerceptions;
         private readonly LruCache<TxId, object> _txCache;
-        private readonly LruCache<HashDigest<SHA256>, BlockDigest> _blockCache;
+        private readonly LruCache<BlockHash, BlockDigest> _blockCache;
 
         private readonly MemoryStream _memoryStream;
 
@@ -124,6 +124,9 @@ namespace Libplanet.Store
             {
                 _db.Mapper.RegisterType(
                     hash => hash.ToByteArray(),
+                    b => new BlockHash(b));
+                _db.Mapper.RegisterType(
+                    hash => hash.ToByteArray(),
                     b => new HashDigest<SHA256>(b));
                 _db.Mapper.RegisterType(
                     txid => txid.ToByteArray(),
@@ -141,7 +144,7 @@ namespace Libplanet.Store
             _blockPerceptions = new SubFileSystem(_root, BlockPerceptionRootPath, owned: false);
 
             _txCache = new LruCache<TxId, object>(capacity: txCacheSize);
-            _blockCache = new LruCache<HashDigest<SHA256>, BlockDigest>(capacity: blockCacheSize);
+            _blockCache = new LruCache<BlockHash, BlockDigest>(capacity: blockCacheSize);
         }
 
         private LiteCollection<StagedTxIdDoc> StagedTxIds =>
@@ -193,19 +196,16 @@ namespace Libplanet.Store
             return IndexCollection(chainId).Count();
         }
 
-        /// <inheritdoc/>
-        public override IEnumerable<HashDigest<SHA256>> IterateIndexes(
-            Guid chainId,
-            int offset,
-            int? limit)
+        /// <inheritdoc cref="BaseStore.IterateIndexes(Guid, int, int?)"/>
+        public override IEnumerable<BlockHash> IterateIndexes(Guid chainId, int offset, int? limit)
         {
             return IndexCollection(chainId)
                 .Find(Query.All(), offset, limit ?? int.MaxValue)
                 .Select(i => i.Hash);
         }
 
-        /// <inheritdoc/>
-        public override HashDigest<SHA256>? IndexBlockHash(Guid chainId, long index)
+        /// <inheritdoc cref="BaseStore.IndexBlockHash(Guid, long)"/>
+        public override BlockHash? IndexBlockHash(Guid chainId, long index)
         {
             if (index < 0)
             {
@@ -217,37 +217,39 @@ namespace Libplanet.Store
                 }
             }
 
-            return IndexCollection(chainId).FindById(index + 1)?.Hash;
+            HashDoc doc = IndexCollection(chainId).FindById(index + 1);
+            BlockHash? hash = doc is { } d ? d.Hash : (BlockHash?)null;
+            return hash;
         }
 
-        /// <inheritdoc/>
-        public override long AppendIndex(Guid chainId, HashDigest<SHA256> hash)
+        /// <inheritdoc cref="BaseStore.AppendIndex(Guid, BlockHash)"/>
+        public override long AppendIndex(Guid chainId, BlockHash hash)
         {
             return IndexCollection(chainId).Insert(new HashDoc { Hash = hash }) - 1;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="BaseStore.ForkBlockIndexes(Guid, Guid, BlockHash)"/>
         public override void ForkBlockIndexes(
             Guid sourceChainId,
             Guid destinationChainId,
-            HashDigest<SHA256> branchPoint)
+            BlockHash branchpoint)
         {
             LiteCollection<HashDoc> srcColl = IndexCollection(sourceChainId);
             LiteCollection<HashDoc> destColl = IndexCollection(destinationChainId);
 
-            HashDigest<SHA256>? genesisHash = IterateIndexes(sourceChainId, 0, 1)
-                .Cast<HashDigest<SHA256>?>()
+            BlockHash? genesisHash = IterateIndexes(sourceChainId, 0, 1)
+                .Cast<BlockHash?>()
                 .FirstOrDefault();
 
-            if (genesisHash is null || branchPoint.Equals(genesisHash))
+            if (genesisHash is null || branchpoint.Equals(genesisHash))
             {
                 return;
             }
 
             destColl.InsertBulk(srcColl.FindAll()
-                .TakeWhile(i => !i.Hash.Equals(branchPoint)).Skip(1));
+                .TakeWhile(i => !i.Hash.Equals(branchpoint)).Skip(1));
 
-            AppendIndex(destinationChainId, branchPoint);
+            AppendIndex(destinationChainId, branchpoint);
         }
 
         /// <inheritdoc/>
@@ -373,8 +375,8 @@ namespace Libplanet.Store
             return _txs.FileExists(TxPath(txId));
         }
 
-        /// <inheritdoc/>
-        public override IEnumerable<HashDigest<SHA256>> IterateBlockHashes()
+        /// <inheritdoc cref="BaseStore.IterateBlockHashes()"/>
+        public override IEnumerable<BlockHash> IterateBlockHashes()
         {
             foreach (UPath path in _blocks.EnumerateDirectories(UPath.Root))
             {
@@ -387,16 +389,11 @@ namespace Libplanet.Store
                 foreach (UPath subPath in _blocks.EnumerateFiles(path))
                 {
                     string lower = subPath.GetName();
-                    if (lower.Length != 62)
-                    {
-                        continue;
-                    }
-
                     string name = upper + lower;
-                    HashDigest<SHA256> blockHash;
+                    BlockHash blockHash;
                     try
                     {
-                        blockHash = new HashDigest<SHA256>(ByteUtil.ParseHex(name));
+                        blockHash = BlockHash.FromString(name);
                     }
                     catch (Exception)
                     {
@@ -409,8 +406,8 @@ namespace Libplanet.Store
             }
         }
 
-        /// <inheritdoc/>
-        public override BlockDigest? GetBlockDigest(HashDigest<SHA256> blockHash)
+        /// <inheritdoc cref="BaseStore.GetBlockDigest(BlockHash)"/>
+        public override BlockDigest? GetBlockDigest(BlockHash blockHash)
         {
             if (_blockCache.TryGetValue(blockHash, out BlockDigest cachedDigest))
             {
@@ -468,8 +465,8 @@ namespace Libplanet.Store
             _blockCache.AddOrUpdate(block.Hash, block.ToBlockDigest());
         }
 
-        /// <inheritdoc/>
-        public override bool DeleteBlock(HashDigest<SHA256> blockHash)
+        /// <inheritdoc cref="BaseStore.DeleteBlock(BlockHash)"/>
+        public override bool DeleteBlock(BlockHash blockHash)
         {
             var path = BlockPath(blockHash);
             if (_blocks.FileExists(path))
@@ -482,8 +479,8 @@ namespace Libplanet.Store
             return false;
         }
 
-        /// <inheritdoc/>
-        public override bool ContainsBlock(HashDigest<SHA256> blockHash)
+        /// <inheritdoc cref="BaseStore.ContainsBlock(BlockHash)"/>
+        public override bool ContainsBlock(BlockHash blockHash)
         {
             if (_blockCache.ContainsKey(blockHash))
             {
@@ -494,9 +491,9 @@ namespace Libplanet.Store
             return _blocks.FileExists(blockPath);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="BaseStore.SetBlockPerceivedTime(BlockHash, DateTimeOffset)"/>
         public override void SetBlockPerceivedTime(
-            HashDigest<SHA256> blockHash,
+            BlockHash blockHash,
             DateTimeOffset perceivedTime
         )
         {
@@ -511,8 +508,8 @@ namespace Libplanet.Store
             _blockPerceptions.SetLastWriteTime(path, perceivedTime.LocalDateTime);
         }
 
-        /// <inheritdoc/>
-        public override DateTimeOffset? GetBlockPerceivedTime(HashDigest<SHA256> blockHash)
+        /// <inheritdoc cref="BaseStore.GetBlockPerceivedTime(BlockHash)"/>
+        public override DateTimeOffset? GetBlockPerceivedTime(BlockHash blockHash)
         {
             UPath path = BlockPath(blockHash);
             return _blockPerceptions.FileExists(path)
@@ -655,24 +652,32 @@ namespace Libplanet.Store
             }
         }
 
-        private UPath BlockPath(HashDigest<SHA256> blockHash)
+        private UPath BlockPath(in BlockHash blockHash)
         {
             string idHex = ByteUtil.Hex(blockHash.ByteArray);
+            if (idHex.Length < 3)
+            {
+                throw new ArgumentException(
+                    $"Too short block hash: \"{idHex}\".",
+                    nameof(blockHash)
+                );
+            }
+
             return UPath.Root / idHex.Substring(0, 2) / idHex.Substring(2);
         }
 
-        private UPath TxPath(TxId txid)
+        private UPath TxPath(in TxId txid)
         {
             string idHex = txid.ToHex();
             return UPath.Root / idHex.Substring(0, 2) / idHex.Substring(2);
         }
 
-        private string TxNonceId(Guid chainId)
+        private string TxNonceId(in Guid chainId)
         {
             return $"{TxNonceIdPrefix}{FormatChainId(chainId)}";
         }
 
-        private LiteCollection<HashDoc> IndexCollection(Guid chainId)
+        private LiteCollection<HashDoc> IndexCollection(in Guid chainId)
         {
             return _db.GetCollection<HashDoc>($"{IndexColPrefix}{FormatChainId(chainId)}");
         }
@@ -686,7 +691,7 @@ namespace Libplanet.Store
         {
             public long Id { get; set; }
 
-            public HashDigest<SHA256> Hash { get; set; }
+            public BlockHash Hash { get; set; }
         }
 
         private class StagedTxIdDoc

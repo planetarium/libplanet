@@ -3,6 +3,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
 using Bencodex.Types;
+using Libplanet.Blocks;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Xunit;
@@ -79,11 +80,10 @@ namespace Libplanet.Tests.Store
         public void ExistsBlockState(bool secure)
         {
             var stateStore = MakeTrieStateStoreFixture(secure);
-            HashDigest<SHA256> randomBlockHash;
+            BlockHash randomBlockHash;
             do
             {
-                randomBlockHash =
-                    new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size));
+                randomBlockHash = new BlockHash(TestUtils.GetRandomBytes(32));
             }
             while (randomBlockHash.Equals(_fx.GenesisBlock.Hash));
 
@@ -109,8 +109,7 @@ namespace Libplanet.Tests.Store
             // updated short node + new value node
             Assert.Equal(prevStatesCount + 4, _stateKeyValueStore.ListKeys().Count());
 
-            stateStore.PruneStates(
-                ImmutableHashSet<HashDigest<SHA256>>.Empty.Add(_fx.Block1.Hash));
+            stateStore.PruneStates(ImmutableHashSet<BlockHash>.Empty.Add(_fx.Block1.Hash));
             Assert.Single(_stateHashKeyValueStore.ListKeys());
             // It will stay at the same count of nodes.
             Assert.Equal(prevStatesCount, _stateKeyValueStore.ListKeys().Count());

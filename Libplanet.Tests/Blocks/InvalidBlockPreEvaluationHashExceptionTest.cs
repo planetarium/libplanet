@@ -1,6 +1,5 @@
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Security.Cryptography;
 using Libplanet.Blocks;
 using Xunit;
 
@@ -11,12 +10,8 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void Serialize()
         {
-            var actual = new HashDigest<SHA256>(
-                TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)
-            );
-            var expected = new HashDigest<SHA256>(
-                TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)
-            );
+            var actual = new BlockHash(TestUtils.GetRandomBytes(32));
+            var expected = new BlockHash(TestUtils.GetRandomBytes(32));
             var exc = new InvalidBlockPreEvaluationHashException(
                 actual,
                 expected,

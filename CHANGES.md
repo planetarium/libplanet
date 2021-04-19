@@ -8,6 +8,116 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Block hashes are now represented as `BlockHash`, which was introduced in
+    this release, which has been done as `HashDigest<SHA256>`.
+    [[#1192], [#1197]]
+     -  Removed `HashDigest<T>.Satisfies()` method.  This was replaced by
+        `BlockHash.Satisfies()` method instead.
+     -  The type of `Block<T>.Hash` property became `BlockHash`
+        (was `HashDigest<SHA256>`).
+     -  The type of `Block<T>.PreviousHash` property became `BlockHash?`
+        (was `HashDigest<SHA256>?`).
+     -  The type of `Block<T>.PreEvaluationHash` property became `BlockHash?`
+        (was `HashDigest<SHA256>?`).
+     -  The types of `Block<T>()` constructors' `hash` parameter became
+        `BlockHash` (were `HashDigest<SHA256>`).
+     -  The types of `Block<T>()` constructors' `previousHash` parameter became
+        `BlockHash?` (were `HashDigest<SHA256>?`).
+     -  The types of `Block<T>()` constructors' `preEvaluationHash` parameter
+        became `BlockHash?` (were `HashDigest<SHA256>?`).
+     -  The type of `Block<T>.Mine()` method's `previousHash` parameter became
+        `BlockHash?` (was `HashDigest<SHA256>?`).
+     -  The return type of `HashCash.Hash()` method became `BlockHash`
+        (was `HashDigest<SHA256>`).
+     -  The type of `Transaction<T>()` constructor's `genesisHash` parameter
+        became `BlockHash?` (was `HashDigest<SHA256>?`).
+     -  The type of `Transaction<T>.Create()` method's `genesisHash` parameter
+        became `BlockHash?` (was `HashDigest<SHA256>?`).
+     -  The type of `Transaction<T>.GenesisHash` property became `BlockHash?`
+        (was `HashDigest<SHA256>?`).
+     -  The type of `Transaction<T>.EvaluateActionsGradually()` method's
+        `blockHash` parameter became `BlockHash` (was `HashDigest<SHA256>`).
+     -  The type of `Transaction<T>.EvaluateActions()` method's `blockHash`
+        parameter became `BlockHash` (was `HashDigest<SHA256>`).
+     -  The type of `BlockChain[]` indexer's parameter became `BlockHash`
+        (was `HashDigest<SHA256>`).
+     -  The type of `BlockChain.BlockHashes` property became
+        `IEnumerable<BlockHash>` (was `IEnumerable<HashDigest<SHA256>>`).
+     -  The type of `BlockChain.ContainsBlock()` method's `blockHash` parameter
+        became `BlockHash` (was `HashDigest<SHA256>`).
+     -  The type of `BlockChain.GetState()` method's `offset` parameter
+        became `BlockHash?` (was `HashDigest<SHA256>?`).
+     -  The type of `BlockChain.GetBalance()` method's `offset` parameter
+        became `BlockHash?` (was `HashDigest<SHA256>?`).
+     -  The type of `StateCompleter<T>` delegate's `blockHash` parameter
+        became `BlockHash` (was `HashDigest<SHA256>`).
+     -  The type of `FungibleAssetStateCompleter<T>` delegate's `blockHash`
+        parameter became `BlockHash` (was `HashDigest<SHA256>`).
+     -  `BlockSet<T>` no more implements
+        `IDictionary<HashDigest<SHA256>, Block<T>>`, but now implements
+        `IDictionary<BlockHash, Block<T>>`.
+     -  The type of `ActionExecutionState.ExecutedBlockHash` property became
+        `BlockHash` (was `HashDigest<SHA256>`).
+     -  The type of `BlockDownloadState.ReceivedBlockHash` property became
+        `BlockHash` (was `HashDigest<SHA256>`).
+     -  The type of `BlockVerificationState.VerifiedBlockHash` property became
+        `BlockHash` (was `HashDigest<SHA256>`).
+     -  The type of `ActionEvaluation.EvaluateActionsGradually()` method's
+        `blockHash` parameter became `BlockHash` (was `HashDigest<SHA256>`).
+     -  The type of `UnexpectedlyTerminatedActionException()` constructor's
+        `blockHash` parameter became `BlockHash?` (was `HashDigest<SHA256>?`).
+     -  The type of `UnexpectedlyTerminatedActionException.BlockHash` property
+        became `BlockHash?` (was `HashDigest<SHA256>?`).
+     -  The type of `IncompleteBlockStatesException()` constructor's
+        `blockHash` parameter became `BlockHash` (was `HashDigest<SHA256>`).
+     -  The type of `IncompleteBlockStatesException.BlockHash` property
+        became `BlockHash` (was `HashDigest<SHA256>`).
+     -  The types of `InvalidGenesisBlockException()` constructor's
+        `networkExpected` and `stored` parameters became `BlockHash`
+        (were `HashDigest<SHA256>`).
+     -  The type of `InvalidGenesisBlockException.NetworkExpected` property
+        became `BlockHash` (was `HashDigest<SHA256>`).
+     -  The type of `InvalidGenesisBlockException.Stored` property
+        became `BlockHash` (was `HashDigest<SHA256>`).
+     -  The type of `InvalidTxGenesisHashException()` constructor's
+        `expectedGenesisHash` parameter became `BlockHash`
+        (was `HashDigest<SHA256>`).
+     -  The type of `InvalidTxGenesisHashException()` constructor's
+        `improperGenesisHash` parameter became `BlockHash?`
+        (was `HashDigest<SHA256>?`).
+     -  The type of `InvalidTxGenesisHashException.ExpectedGenesisHash` property
+        became `BlockHash` (was `HashDigest<SHA256>`).
+     -  The type of `InvalidTxGenesisHashException.ImproperGenesisHash` property
+        became `BlockHash?` (was `HashDigest<SHA256>?`).
+     -  The return type of `IStore.IndexBlockHash()` method became `BlockHash?`
+        (was `HashDigest<SHA256>?`).
+     -  The type of `IStore.AppendIndex()` method's `hash` parameter became
+        `BlockHash` (was `HashDigest<SHA256>`).
+     -  Replaced `IStore.ForkBlockIndexes()` method's
+        `HashDigest<SHA256> branchPoint` parameter with `BlockHash branchpoint`.
+     -  The return type of `IStore.IterateIndexes()` method became
+        `IEnumerable<BlockHash>` (was `IEnumerable<HashDigest<SHA256>>`).
+     -  The return type of `IStore.IterateBlockHashes()` method became
+        `IEnumerable<BlockHash>` (was `IEnumerable<HashDigest<SHA256>>`).
+     -  The type of `IStore.GetBlock<T>()` method's `blockHash` parameter
+        became `BlockHash` (was `HashDigest<SHA256>`).
+     -  The type of `IStore.GetBlockIndex()` method's `blockHash` parameter
+        became `BlockHash` (was `HashDigest<SHA256>`).
+     -  The type of `IStore.GetBlockDigest()` method's `blockHash` parameter
+        became `BlockHash` (was `HashDigest<SHA256>`).
+     -  The type of `IStore.DeleteBlock()` method's `blockHash` parameter
+        became `BlockHash` (was `HashDigest<SHA256>`).
+     -  The type of `IStore.ContainsBlock()` method's `blockHash` parameter
+        became `BlockHash` (was `HashDigest<SHA256>`).
+     -  The type of `IStateStore.GetState()` method's `blockHash` parameter
+        became `BlockHash` (was `HashDigest<SHA256>`).
+     -  The type of `IStateStore.ContainsBlockStates()` method's `blockHash`
+        parameter became `BlockHash` (was `HashDigest<SHA256>`).
+     -  The type of `TrieStateStore.GetRootHash()` method's `blockHash`
+        parameter became `BlockHash` (was `HashDigest<SHA256>`).
+     -  The type of `TrieStateStore.PruneStates()` method's `excludeBlockHashes`
+        parameter became `IImmutableSet<BlockHash>`
+        (was `ImmutableHashSet<HashDigest<SHA256>>`).
  -  Removed `StunMessage.Parse(Stream)` method.  [[#1228]]
  -  Moved `ITransport` and `NetMQTransport` from `Libplanet.Net` to
     `Libplanet.Net.Transports`.  [[#1235]]
@@ -18,6 +128,8 @@ To be released.
 
 ### Added APIs
 
+ -  Added `BlockHash` struct.  [[#1192], [#1197]]
+ -  Added `HashDigest<T>.DeriveFrom()` method.  [[#1197]]
  -  Added `StunMessage.ParseAsync(Stream, CancellationToken)` method.
     [[#1228]]
  -  Added `Swarm<T>.AddPeersAsync()` method.  [[#1234]]
@@ -42,6 +154,8 @@ To be released.
  -  Added `planet apv query` subcommand to query app protocol version of
     specific peer. [[#1240]]
 
+[#1192]: https://github.com/planetarium/libplanet/issues/1192
+[#1197]: https://github.com/planetarium/libplanet/pull/1197
 [#1219]: https://github.com/planetarium/libplanet/pull/1219
 [#1228]: https://github.com/planetarium/libplanet/pull/1218
 [#1234]: https://github.com/planetarium/libplanet/pull/1234
@@ -118,7 +232,7 @@ Released on March 30, 2021.
     of the database, according to its epoch unit, which is its Unix timestamp.
     Every epoch is divided by certain seconds, configured by `RocksDBStore()`
     constructor's `txEpochUnitSeconds` and `blockEpochUnitSeconds` parameters
-    (86400 by default).   [[#1183], [#1194]]
+    (86,400 by default).   [[#1183], [#1194]]
  -  (Libplanet.RocksDBStore) Continue on partitioning of database,
     `RocksDBStore()` is manage database connection by LRU Cache.
     The max size of connection cache is configured by `RocksDBStore()`

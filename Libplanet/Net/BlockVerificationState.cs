@@ -1,4 +1,5 @@
-using System.Security.Cryptography;
+#nullable enable
+using Libplanet.Blocks;
 
 namespace Libplanet.Net
 {
@@ -21,7 +22,7 @@ namespace Libplanet.Net
         /// <summary>
         /// The hash digest of the block just verified.
         /// </summary>
-        public HashDigest<SHA256> VerifiedBlockHash { get; internal set; }
+        public BlockHash VerifiedBlockHash { get; internal set; }
 
         /// <inheritdoc />
         public override int CurrentPhase => 3;

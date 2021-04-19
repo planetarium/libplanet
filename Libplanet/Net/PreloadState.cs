@@ -1,3 +1,4 @@
+#nullable enable
 namespace Libplanet.Net
 {
     // <summary>

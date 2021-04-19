@@ -173,10 +173,8 @@ namespace Libplanet.Explorer.Queries
             return stagedTxs;
         }
 
-        internal static Block<T> GetBlockByHash(HashDigest<SHA256> hash)
-        {
-            return _store.GetBlock<T>(hash);
-        }
+        internal static Block<T> GetBlockByHash(BlockHash hash) =>
+            _store.GetBlock<T>(hash);
 
         internal static Block<T> GetBlockByIndex(long index)
         {
@@ -190,7 +188,7 @@ namespace Libplanet.Explorer.Queries
 
         private static Block<T> GetNextBlock(Block<T> block, bool desc)
         {
-            if (desc && block.PreviousHash is HashDigest<SHA256> prev)
+            if (desc && block.PreviousHash is { } prev)
             {
                 return _chain[prev];
             }

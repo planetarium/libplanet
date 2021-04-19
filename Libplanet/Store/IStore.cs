@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
@@ -54,14 +53,25 @@ namespace Libplanet.Store
         /// <param name="limit">The maximum number of block hashes to get.</param>
         /// <returns>Block hashes in the index of the <paramref name="chainId"/>, in ascending
         /// order; the genesis block goes first, and the tip block goes last.</returns>
-        IEnumerable<HashDigest<SHA256>> IterateIndexes(
-            Guid chainId,
-            int offset = 0,
-            int? limit = null);
+        IEnumerable<BlockHash> IterateIndexes(Guid chainId, int offset = 0, int? limit = null);
 
-        HashDigest<SHA256>? IndexBlockHash(Guid chainId, long index);
+        /// <summary>
+        /// Determines the block hash by its <paramref name="index"/>.
+        /// </summary>
+        /// <param name="chainId">The chain ID of the index that contains the block.</param>
+        /// <param name="index">The index of the block to query its hash.</param>
+        /// <returns>The block hash of the index in the chain.  If there is no such index,
+        /// it returns <c>null</c>.</returns>
+        BlockHash? IndexBlockHash(Guid chainId, long index);
 
-        long AppendIndex(Guid chainId, HashDigest<SHA256> hash);
+        /// <summary>
+        /// Appends a block to a chain.
+        /// </summary>
+        /// <param name="chainId">The ID of a chain to append a block to.</param>
+        /// <param name="hash">The hash of a block to append.  Assumes the block is already put
+        /// into the store.</param>
+        /// <returns>The index of the appended block.</returns>
+        long AppendIndex(Guid chainId, BlockHash hash);
 
         /// <summary>
         /// Forks block indexes from
@@ -72,16 +82,12 @@ namespace Libplanet.Store
         /// fork.</param>
         /// <param name="destinationChainId">The chain ID of destination
         /// block indexes.</param>
-        /// <param name="branchPoint">The branch point <see cref="Block{T}"/>
-        /// to fork.</param>
+        /// <param name="branchpoint">The branchpoint <see cref="Block{T}"/> to fork.</param>
         /// <exception cref="ChainIdNotFoundException">Thrown when the given
         /// <paramref name="sourceChainId"/> does not exist.</exception>
         /// <seealso cref="IterateIndexes(Guid, int, int?)"/>
-        /// <seealso cref="AppendIndex(Guid, HashDigest{SHA256})"/>
-        void ForkBlockIndexes(
-            Guid sourceChainId,
-            Guid destinationChainId,
-            HashDigest<SHA256> branchPoint);
+        /// <seealso cref="AppendIndex(Guid, BlockHash)"/>
+        void ForkBlockIndexes(Guid sourceChainId, Guid destinationChainId, BlockHash branchpoint);
 
         /// <summary>
         /// Adds <see cref="TxId"/>s to the pending list so that
@@ -117,7 +123,11 @@ namespace Libplanet.Store
 
         bool DeleteTransaction(TxId txid);
 
-        IEnumerable<HashDigest<SHA256>> IterateBlockHashes();
+        /// <summary>
+        /// Lists all block hashes in the store, regardless of their belonging chains.
+        /// </summary>
+        /// <returns>All block hashes in the store.</returns>
+        IEnumerable<BlockHash> IterateBlockHashes();
 
         /// <summary>
         /// Gets the corresponding stored <see cref="Block{T}"/> to the given
@@ -128,7 +138,7 @@ namespace Libplanet.Store
         /// <paramref name="blockHash"/> is stored.</returns>
         /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
         /// to <see cref="Block{T}"/>'s type parameter.</typeparam>
-        Block<T> GetBlock<T>(HashDigest<SHA256> blockHash)
+        Block<T> GetBlock<T>(BlockHash blockHash)
             where T : IAction, new();
 
         /// <summary>
@@ -137,11 +147,11 @@ namespace Libplanet.Store
         /// <param name="blockHash"><see cref="Block{T}.Hash"/> to find.</param>
         /// <remarks>
         /// It provides only limited information, but can be called without any type parameter
-        /// unlike <see cref="GetBlock{T}(HashDigest{SHA256})"/>.
+        /// unlike <see cref="GetBlock{T}(BlockHash)"/>.
         /// </remarks>
         /// <returns>A found block's <see cref="Block{T}.Index"/>, or <c>null</c> if no block having
         /// such <paramref name="blockHash"/> is stored.</returns>
-        long? GetBlockIndex(HashDigest<SHA256> blockHash);
+        long? GetBlockIndex(BlockHash blockHash);
 
         /// <summary>
         /// Gets the corresponding stored <see cref="BlockDigest"/> to the given
@@ -150,7 +160,7 @@ namespace Libplanet.Store
         /// <param name="blockHash"><see cref="Block{T}.Hash"/> to find.</param>
         /// <returns>A found <see cref="BlockDigest"/>, or <c>null</c> if no block having such
         /// <paramref name="blockHash"/> is stored.</returns>
-        BlockDigest? GetBlockDigest(HashDigest<SHA256> blockHash);
+        BlockDigest? GetBlockDigest(BlockHash blockHash);
 
         /// <summary>
         /// Puts the given <paramref name="block"/> in to the store.
@@ -163,7 +173,12 @@ namespace Libplanet.Store
         void PutBlock<T>(Block<T> block)
             where T : IAction, new();
 
-        bool DeleteBlock(HashDigest<SHA256> blockHash);
+        /// <summary>
+        /// Removes a block from the store.
+        /// </summary>
+        /// <param name="blockHash">The hash of a block to remove.</param>
+        /// <returns><c>false</c> if such block does not exist. Otherwise <c>true</c>.</returns>
+        bool DeleteBlock(BlockHash blockHash);
 
         /// <summary>
         /// Determines whether the <see cref="IStore"/> contains <see cref="Block{T}"/>
@@ -175,7 +190,7 @@ namespace Libplanet.Store
         /// <c>true</c> if the <see cref="IStore"/> contains <see cref="Block{T}"/> with
         /// the specified <paramref name="blockHash"/>; otherwise, <c>false</c>.
         /// </returns>
-        bool ContainsBlock(HashDigest<SHA256> blockHash);
+        bool ContainsBlock(BlockHash blockHash);
 
         /// <summary>
         /// Records the perceived time of a block.  If there is already a record, it is overwritten.
@@ -183,14 +198,14 @@ namespace Libplanet.Store
         /// <param name="blockHash"><see cref="Block{T}.Hash"/> to record its perceived time.
         /// </param>
         /// <param name="perceivedTime">The perceived time to record.</param>
-        void SetBlockPerceivedTime(HashDigest<SHA256> blockHash, DateTimeOffset perceivedTime);
+        void SetBlockPerceivedTime(BlockHash blockHash, DateTimeOffset perceivedTime);
 
         /// <summary>
         /// Queries the perceived time of a block, if it has been recorded.
         /// </summary>
         /// <param name="blockHash"><see cref="Block{T}.Hash"/> to query.</param>
         /// <returns>The perceived time of a block, if it exists.  Otherwise, <c>null</c>.</returns>
-        DateTimeOffset? GetBlockPerceivedTime(HashDigest<SHA256> blockHash);
+        DateTimeOffset? GetBlockPerceivedTime(BlockHash blockHash);
 
         /// <summary>
         /// Lists all <see cref="Address"/>es that have ever signed <see cref="Transaction{T}"/>,
