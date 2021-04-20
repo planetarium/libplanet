@@ -1771,22 +1771,24 @@ namespace Libplanet.Net
             IComparer<BlockPerception> canonComparer = BlockChain.Policy.CanonicalChainComparer;
             while (!cancellationToken.IsCancellationRequested)
             {
-                if (BlockDemand is null ||
+                BlockDemand blockDemand = default;
+
+                try
+                {
+                    if (BlockDemand is null ||
                     canonComparer.Compare(
                         BlockChain.PerceiveBlock(BlockDemand?.Header),
                         BlockChain.PerceiveBlock(BlockChain.Tip)
                     ) <= 0)
-                {
-                    await Task.Delay(1, cancellationToken);
-                    continue;
-                }
+                    {
+                        await Task.Delay(1, cancellationToken);
+                        continue;
+                    }
 
-                BlockDemand blockDemand = BlockDemand.Value;
-                BoundPeer peer = blockDemand.Peer;
-                var hash = new HashDigest<SHA256>(blockDemand.Header.Hash.ToArray());
+                    blockDemand = BlockDemand.Value;
+                    BoundPeer peer = blockDemand.Peer;
+                    var hash = new HashDigest<SHA256>(blockDemand.Header.Hash.ToArray());
 
-                try
-                {
                     await SyncPreviousBlocksAsync(
                         BlockChain,
                         peer,
@@ -1800,6 +1802,8 @@ namespace Libplanet.Net
                     BlockReceived.Set();
                     BlockAppended.Set();
                     BroadcastBlock(peer.Address, BlockChain.Tip);
+
+                    ProcessFillBlocksFinished.Set();
                 }
                 catch (TimeoutException)
                 {
@@ -1811,6 +1815,10 @@ namespace Libplanet.Net
                         $"{nameof(InvalidBlockIndexException)} occurred during " +
                         $"{nameof(ProcessFillBlocks)}: " +
                         "{ibie}", ibie);
+                }
+                catch (OperationCanceledException)
+                {
+                    throw;
                 }
                 catch (Exception e)
                 {
@@ -1829,8 +1837,6 @@ namespace Libplanet.Net
                             _logger.Debug($"Reset {nameof(BlockDemand)}...");
                             BlockDemand = null;
                         }
-
-                        ProcessFillBlocksFinished.Set();
                     }
                 }
             }
