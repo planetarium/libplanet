@@ -2,14 +2,21 @@ FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-env
 WORKDIR /app
 
 # Copy csproj and restore as distinct layers
-COPY ./Libplanet.Explorer/Libplanet.Explorer.csproj ./Libplanet.Explorer/
+# Note that it's ordered by the least frequently changed
+COPY ./Libplanet.Stun/Libplanet.Stun.csproj ./Libplanet.Stun/
+RUN dotnet restore Libplanet.Stun
+COPY ./Libplanet.RocksDBStore/Libplanet.RocksDBStore.csproj ./Libplanet.RocksDBStore/
+RUN dotnet restore Libplanet.RocksDBStore
 COPY ./Libplanet.Explorer.Executable/Libplanet.Explorer.Executable.csproj ./Libplanet.Explorer.Executable/
-RUN dotnet restore Libplanet.Explorer
 RUN dotnet restore Libplanet.Explorer.Executable
+COPY ./Libplanet.Explorer/Libplanet.Explorer.csproj ./Libplanet.Explorer/
+RUN dotnet restore Libplanet.Explorer
+COPY ./Libplanet/Libplanet.csproj ./Libplanet/
+RUN dotnet restore Libplanet
 
 # Copy everything else and build
 COPY . ./
-RUN dotnet publish -c Release -r linux-x64 -o out
+RUN dotnet publish -c Release -r linux-x64 -o out Libplanet.Explorer.Executable
 
 # Build runtime image
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
