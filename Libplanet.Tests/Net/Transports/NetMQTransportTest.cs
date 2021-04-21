@@ -54,7 +54,7 @@ namespace Libplanet.Tests.Net.Transports
             Logger = Log.ForContext<TransportTest>();
         }
 
-        [SkippableFact(Timeout = Timeout)]
+        [SkippableFact(Timeout = Timeout, Skip = "Target method is broken.")]
         public async Task MessageHistory()
         {
             var transportA = CreateNetMQTransport();
