@@ -210,7 +210,7 @@ namespace Libplanet.Assets
 #pragma warning disable SA1129  // See also: https://github.com/planetarium/bencodex.net/issues/20
             IValue minters = Minters is ImmutableHashSet<Address> a
                 ? new List(a.OrderBy(m => m).Select(m => (IValue)new Binary(m.ToByteArray())))
-                : (IValue)new Null();
+                : (IValue)default(Null);
 #pragma warning restore SA1129
             IValue serialized = Dictionary.Empty
                 .Add("ticker", Ticker)
