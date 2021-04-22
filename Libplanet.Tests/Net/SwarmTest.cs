@@ -17,6 +17,7 @@ using Libplanet.Crypto;
 using Libplanet.Net;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Protocols;
+using Libplanet.Net.Transports;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Stun;
@@ -24,8 +25,6 @@ using Libplanet.Tests.Blockchain;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Libplanet.Tx;
-using NetMQ;
-using NetMQ.Sockets;
 using Serilog;
 using xRetry;
 using Xunit;
@@ -71,9 +70,6 @@ namespace Libplanet.Tests.Net
             }
 
             Log.Logger.Debug("Finished to finalize {Resources} resources.", _finalizers.Count);
-
-            NetMQConfig.Cleanup(false);
-            Log.Logger.Debug($"Finished to clean up the {nameof(NetMQConfig)} singleton.");
         }
 
         [Fact(Timeout = Timeout)]
@@ -100,8 +96,9 @@ namespace Libplanet.Tests.Net
         {
             Swarm<DumbAction> seed = CreateSwarm();
 
-            Swarm<DumbAction> swarmA = CreateSwarm();
-            Swarm<DumbAction> swarmB = CreateSwarm();
+            var privateKey = new PrivateKey();
+            Swarm<DumbAction> swarmA = CreateSwarm(privateKey: privateKey);
+            Swarm<DumbAction> swarmB = CreateSwarm(privateKey: privateKey);
 
             try
             {
@@ -467,38 +464,24 @@ namespace Libplanet.Tests.Net
                     null
                 ).ToArrayAsync();
 
-                var netMQAddress = $"tcp://{peer.EndPoint.Host}:{peer.EndPoint.Port}";
-                var codec = new NetMQMessageCodec();
-                using (var socket = new DealerSocket(netMQAddress))
-                {
-                    var request = new GetBlocks(hashes.Select(pair => pair.Item2), 2);
-                    socket.SendMultipartMessage(
-                        codec.Encode(
-                            request,
-                            keyB,
-                            swarmB.AsPeer,
-                            DateTimeOffset.UtcNow,
-                            swarmB.AppProtocolVersion)
-                    );
+                ITransport transport = swarmB.Transport;
 
-                    NetMQMessage response = socket.ReceiveMultipartMessage();
-                    var blockMessage = (Libplanet.Net.Messages.Blocks)codec.Decode(
-                        response,
-                        true,
-                        (i, p, v) => { },
-                        null);
+                var request = new GetBlocks(hashes.Select(pair => pair.Item2), 2);
+                Message[] responses = (await transport.SendMessageWithReplyAsync(
+                    (BoundPeer)swarmA.AsPeer,
+                    request,
+                    null,
+                    2,
+                    false,
+                    default)).ToArray();
+                var blockMessage = (Libplanet.Net.Messages.Blocks)responses[0];
 
-                    Assert.Equal(2, blockMessage.Payloads.Count);
+                Assert.Equal(2, responses.Length);
+                Assert.Equal(2, blockMessage.Payloads.Count);
 
-                    response = socket.ReceiveMultipartMessage();
-                    blockMessage = (Libplanet.Net.Messages.Blocks)codec.Decode(
-                        response,
-                        true,
-                        (i, p, v) => { },
-                        null);
+                blockMessage = (Libplanet.Net.Messages.Blocks)responses[1];
 
-                    Assert.Single(blockMessage.Payloads);
-                }
+                Assert.Single(blockMessage.Payloads);
             }
             finally
             {

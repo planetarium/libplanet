@@ -131,13 +131,13 @@ namespace Libplanet.Net
             }
         }
 
-        public bool Running => Transport.Running;
+        public bool Running => Transport?.Running ?? false;
 
         public DnsEndPoint EndPoint => AsPeer is BoundPeer boundPeer ? boundPeer.EndPoint : null;
 
         public Address Address => _privateKey.ToAddress();
 
-        public Peer AsPeer => Transport.AsPeer;
+        public Peer AsPeer => Transport?.AsPeer;
 
         /// <summary>
         /// The last time when any message was arrived.
@@ -313,13 +313,9 @@ namespace Libplanet.Net
                     _workerCancellationTokenSource.Token, cancellationToken
                 ).Token;
             BlockDemandTable = new BlockDemandTable<T>(Options.BlockDemandLifespan);
-            try
+            if (Transport.Running)
             {
-                await Transport.StartAsync(_cancellationToken);
-            }
-            catch (TransportException te)
-            {
-                throw new SwarmException("Swarm is already running.", innerException: te);
+                throw new SwarmException("Swarm is already running.");
             }
 
             _logger.Debug("Starting swarm...");

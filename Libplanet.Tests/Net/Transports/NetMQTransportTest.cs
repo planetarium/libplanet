@@ -9,7 +9,6 @@ using Libplanet.Net;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Protocols;
 using Libplanet.Net.Transports;
-using NetMQ;
 using Nito.AsyncEx;
 using Serilog;
 using Xunit;
@@ -56,11 +55,6 @@ namespace Libplanet.Tests.Net.Transports
                 .CreateLogger()
                 .ForContext<NetMQTransportTest>();
             Logger = Log.ForContext<NetMQTransportTest>();
-        }
-
-        public void Dispose()
-        {
-            NetMQConfig.Cleanup(false);
         }
 
         [SkippableFact(Timeout = Timeout, Skip = "Target method is broken.")]

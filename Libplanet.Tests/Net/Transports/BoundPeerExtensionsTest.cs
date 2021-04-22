@@ -10,6 +10,7 @@ using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using NetMQ;
 using Xunit;
+using Xunit.Sdk;
 
 namespace Libplanet.Tests.Net.Transports
 {
@@ -21,7 +22,7 @@ namespace Libplanet.Tests.Net.Transports
             NetMQConfig.Cleanup(false);
         }
 
-        [Fact]
+        [Fact(Timeout = 60 * 1000)]
         public async Task QueryAppProtocolVersion()
         {
             var fx = new MemoryStoreFixture();
@@ -50,7 +51,21 @@ namespace Libplanet.Tests.Net.Transports
                 _ = swarm.StartAsync();
                 try
                 {
-                    AppProtocolVersion receivedAPV = peer.QueryAppProtocolVersion();
+                    AppProtocolVersion receivedAPV = default;
+                    if (swarm.Transport is NetMQTransport)
+                    {
+                        receivedAPV = peer.QueryAppProtocolVersion();
+                    }
+                    else if (swarm.Transport is TcpTransport)
+                    {
+                        receivedAPV = await peer.QueryAppProtocolVersionTcp();
+                    }
+                    else
+                    {
+                        throw new XunitException(
+                            "Each type of transport must have corresponding test case.");
+                    }
+
                     Assert.Equal(apv, receivedAPV);
                 }
                 finally

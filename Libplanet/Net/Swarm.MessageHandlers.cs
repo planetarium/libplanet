@@ -164,7 +164,7 @@ namespace Libplanet.Net
                     header.Index,
                     header.Hash,
                     peer,
-                    BlockChain.Tip,
+                    BlockChain.Tip.Index,
                     BlockChain.Tip.Hash);
                 return;
             }
