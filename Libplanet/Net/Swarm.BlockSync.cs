@@ -33,26 +33,35 @@ namespace Libplanet.Net
             IComparer<BlockPerception> canonComparer = BlockChain.Policy.CanonicalChainComparer;
             while (!cancellationToken.IsCancellationRequested)
             {
-                if (!(BlockDemand is { } blockDemand) ||
-                    canonComparer.Compare(
-                        BlockChain.PerceiveBlock(BlockDemand?.Header),
-                        BlockChain.PerceiveBlock(BlockChain.Tip)
-                    ) <= 0)
+                int sessionId = sessionRandom.Next();
+
+                if (!(BlockDemand is { } blockDemand))
                 {
                     await Task.Delay(1, cancellationToken);
                     continue;
                 }
 
                 BoundPeer peer = blockDemand.Peer;
-                var hash = new BlockHash(blockDemand.Header.Hash);
-                int sessionId = sessionRandom.Next();
-                const string startLogMsg =
-                    "{SessionId}: Got a new " + nameof(BlockDemand) + " from {Peer}; started to " +
-                    "fetch the block #{BlockIndex} {BlockHash}...";
-                _logger.Debug(startLogMsg, sessionId, peer, blockDemand.Header.Index, hash);
 
                 try
                 {
+                    if (canonComparer.Compare(
+                            BlockChain.PerceiveBlock(BlockDemand?.Header),
+                            BlockChain.PerceiveBlock(BlockChain.Tip)
+                        ) <= 0)
+                    {
+                        using (await _blockSyncMutex.LockAsync(cancellationToken))
+                        {
+                            BlockDemand = null;
+                            continue;
+                        }
+                    }
+
+                    var hash = new BlockHash(blockDemand.Header.Hash);
+                    const string startLogMsg =
+                        "{SessionId}: Got a new " + nameof(BlockDemand) + " from {Peer}; started " +
+                        "to fetch the block #{BlockIndex} {BlockHash}...";
+                    _logger.Debug(startLogMsg, sessionId, peer, blockDemand.Header.Index, hash);
                     await SyncPreviousBlocksAsync(
                         blockChain: BlockChain,
                         peer: peer,
@@ -73,6 +82,8 @@ namespace Libplanet.Net
                     BlockReceived.Set();
                     BlockAppended.Set();
                     BroadcastBlock(peer.Address, BlockChain.Tip);
+
+                    ProcessFillBlocksFinished.Set();
                 }
                 catch (TimeoutException)
                 {
@@ -109,8 +120,6 @@ namespace Libplanet.Net
                             _logger.Debug(resetMsg, sessionId);
                             BlockDemand = null;
                         }
-
-                        ProcessFillBlocksFinished.Set();
                     }
                 }
             }
