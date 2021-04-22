@@ -1771,22 +1771,23 @@ namespace Libplanet.Net
             IComparer<BlockPerception> canonComparer = BlockChain.Policy.CanonicalChainComparer;
             while (!cancellationToken.IsCancellationRequested)
             {
-                if (BlockDemand is null ||
-                    canonComparer.Compare(
-                        BlockChain.PerceiveBlock(BlockDemand?.Header),
-                        BlockChain.PerceiveBlock(BlockChain.Tip)
-                    ) <= 0)
-                {
-                    await Task.Delay(1, cancellationToken);
-                    continue;
-                }
-
-                BlockDemand blockDemand = BlockDemand.Value;
-                BoundPeer peer = blockDemand.Peer;
-                var hash = new HashDigest<SHA256>(blockDemand.Header.Hash.ToArray());
-
+                BlockDemand? currentDemand = null;
                 try
                 {
+                    if (!(BlockDemand is { } blockDemandNotNull &&
+                        canonComparer.Compare(
+                            BlockChain.PerceiveBlock(blockDemandNotNull.Header),
+                            BlockChain.PerceiveBlock(BlockChain.Tip)
+                        ) > 0))
+                    {
+                        await Task.Delay(1, cancellationToken);
+                        continue;
+                    }
+
+                    currentDemand = BlockDemand;
+                    BoundPeer peer = blockDemandNotNull.Peer;
+                    var hash = new HashDigest<SHA256>(blockDemandNotNull.Header.Hash.ToArray());
+
                     await SyncPreviousBlocksAsync(
                         BlockChain,
                         peer,
@@ -1800,6 +1801,8 @@ namespace Libplanet.Net
                     BlockReceived.Set();
                     BlockAppended.Set();
                     BroadcastBlock(peer.Address, BlockChain.Tip);
+
+                    ProcessFillBlocksFinished.Set();
                 }
                 catch (TimeoutException)
                 {
@@ -1812,6 +1815,10 @@ namespace Libplanet.Net
                         $"{nameof(ProcessFillBlocks)}: " +
                         "{ibie}", ibie);
                 }
+                catch (OperationCanceledException)
+                {
+                    throw;
+                }
                 catch (Exception e)
                 {
                     var msg =
@@ -1821,16 +1828,18 @@ namespace Libplanet.Net
                 }
                 finally
                 {
-                    using (await _blockSyncMutex.LockAsync(cancellationToken))
+                    // Check before .LockAsync() because it's too often called...
+                    if (currentDemand is { })
                     {
-                        _logger.Debug($"{nameof(ProcessFillBlocks)}() finished.");
-                        if (BlockDemand.Equals(blockDemand))
+                        using (await _blockSyncMutex.LockAsync(cancellationToken))
                         {
-                            _logger.Debug($"Reset {nameof(BlockDemand)}...");
-                            BlockDemand = null;
+                            _logger.Debug($"{nameof(ProcessFillBlocks)}() finished.");
+                            if (BlockDemand.Equals(currentDemand))
+                            {
+                                _logger.Debug($"Reset {nameof(BlockDemand)}...");
+                                BlockDemand = null;
+                            }
                         }
-
-                        ProcessFillBlocksFinished.Set();
                     }
                 }
             }

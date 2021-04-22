@@ -18,8 +18,12 @@ To be released.
 
 ### Bug fixes
 
+ -  Fixed a bug where block synchronization had stopped due to internal
+    errors. [[#1259]]
+
 ### CLI tools
 
+[#1259]: https://github.com/planetarium/libplanet/pull/1259
 
 Version 0.11.0
 --------------
