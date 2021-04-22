@@ -163,6 +163,16 @@ To be released.
 [#1240]: https://github.com/planetarium/libplanet/pull/1240
 
 
+Version 0.11.1
+-------------
+
+Released on April 22th, 2021.
+
+ -  Fixed a bug where block synchronization had stopped due to internal
+    errors. [[#1259]]
+
+[#1259]: https://github.com/planetarium/libplanet/pull/1259
+
 Version 0.11.0
 --------------
 
