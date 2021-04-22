@@ -25,22 +25,8 @@ Version 0.11.1
 
 Released on April 22th, 2021.
 
-### Backward-incompatible API changes
-
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
-### Added APIs
-
-### Behavioral changes
-
-### Bug fixes
-
  -  Fixed a bug where block synchronization had stopped due to internal
     errors. [[#1259]]
-
-### CLI tools
 
 [#1259]: https://github.com/planetarium/libplanet/pull/1259
 
