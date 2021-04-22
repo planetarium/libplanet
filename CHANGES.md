@@ -1,10 +1,10 @@
 Libplanet changelog
 ===================
 
-Version 0.11.1
+Version 0.11.2
 -------------
 
-Released on April 22th, 2021.
+To be released.
 
 ### Backward-incompatible API changes
 
@@ -18,10 +18,15 @@ Released on April 22th, 2021.
 
 ### Bug fixes
 
+### CLI tools
+
+Version 0.11.1
+-------------
+
+Released on April 22th, 2021.
+
  -  Fixed a bug where block synchronization had stopped due to internal
     errors. [[#1259]]
-
-### CLI tools
 
 [#1259]: https://github.com/planetarium/libplanet/pull/1259
 
