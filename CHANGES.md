@@ -153,14 +153,18 @@ To be released.
     as JSON format.  [[#1240]]
  -  Added `planet apv query` subcommand to query app protocol version of
     specific peer. [[#1240]]
+ -  Added the option `--no-passphrase` to `planet key remove` command to remove
+    key without asking passphrase.  [[#1213], [#1265]]
 
 [#1192]: https://github.com/planetarium/libplanet/issues/1192
 [#1197]: https://github.com/planetarium/libplanet/pull/1197
+[#1213]: https://github.com/planetarium/libplanet/issues/1213
 [#1219]: https://github.com/planetarium/libplanet/pull/1219
 [#1228]: https://github.com/planetarium/libplanet/pull/1218
 [#1234]: https://github.com/planetarium/libplanet/pull/1234
 [#1235]: https://github.com/planetarium/libplanet/pull/1235
 [#1240]: https://github.com/planetarium/libplanet/pull/1240
+[#1265]: https://github.com/planetarium/libplanet/pull/1265
 
 
 Version 0.11.1
