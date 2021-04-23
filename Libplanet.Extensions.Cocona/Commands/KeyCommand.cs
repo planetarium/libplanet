@@ -47,12 +47,18 @@ namespace Libplanet.Extensions.Cocona.Commands
                 ValueName = "PASSPHRASE",
                 Description = "Take passphrase through this option instead of prompt."
             )]
-            string? passphrase = null
+            string? passphrase = null,
+            [Option(Description = "Remove without asking passphrase.")]
+            bool noPassphrase = false
         )
         {
             try
             {
-                UnprotectKey(keyId, passphrase);
+                if (!noPassphrase)
+                {
+                    UnprotectKey(keyId, passphrase);
+                }
+
                 KeyStore.Remove(keyId);
             }
             catch (NoKeyException)
