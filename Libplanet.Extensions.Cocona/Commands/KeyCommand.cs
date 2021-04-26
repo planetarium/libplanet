@@ -4,10 +4,12 @@ using System.IO;
 using System.Linq;
 using global::Cocona;
 using Libplanet.Crypto;
+using Libplanet.Extensions.Cocona.Commands.Key;
 using Libplanet.KeyStore;
 
 namespace Libplanet.Extensions.Cocona.Commands
 {
+    [HasSubCommands(typeof(ConversionCommand), "convert", Description = "Convert private key into address or public key.")]
     public class KeyCommand
     {
         public KeyCommand()
