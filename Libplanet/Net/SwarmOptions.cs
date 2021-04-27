@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Immutable;
 using System.Threading;
 using Libplanet.Blocks;
 using Libplanet.Net.Messages;
@@ -59,5 +60,12 @@ namespace Libplanet.Net
         /// <seealso cref="IProtocol.RefreshTableAsync" />
         /// </summary>
         public TimeSpan RefreshLifespan { get; set; } = TimeSpan.FromSeconds(60);
+
+        /// <summary>
+        /// The list of <see cref="Peer"/>s to keep in routing table permanently.
+        /// The <see cref="Peer"/>s in the list won't be removed in any cases.
+        /// </summary>
+        public IImmutableSet<BoundPeer> StaticPeers { get; set; } =
+            ImmutableHashSet<BoundPeer>.Empty;
     }
 }

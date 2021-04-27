@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
 using System.Threading;
@@ -276,6 +277,37 @@ namespace Libplanet.Tests.Net.Protocols
             }
 
             Assert.Empty(table.PeersToRefresh(TimeSpan.FromMinutes(1)));
+        }
+
+        [Fact]
+        public void StaticPeer()
+        {
+            var publicKey = new PrivateKey().PublicKey;
+            ImmutableHashSet<BoundPeer> staticPeers = Enumerable.Range(0, 2)
+                .Select(
+                    i => new BoundPeer(
+                        TestUtils.GeneratePrivateKeyOfBucketIndex(publicKey.ToAddress(), i)
+                            .PublicKey,
+                        new DnsEndPoint("0.0.0.0", 1000 + i))).ToImmutableHashSet();
+            var table = new RoutingTable(publicKey.ToAddress(), staticPeers: staticPeers);
+
+            Assert.Equal(2, table.Count);
+            Assert.Equal(staticPeers.ToHashSet(), table.Peers.ToHashSet());
+            Assert.Equal(staticPeers.ToHashSet(), table.PeersToBroadcast(null, 0).ToHashSet());
+
+            BoundPeer[] normalPeers = Enumerable.Range(0, 10)
+                .Select(
+                    i => new BoundPeer(
+                        TestUtils.GeneratePrivateKeyOfBucketIndex(publicKey.ToAddress(), i / 2)
+                            .PublicKey,
+                        new DnsEndPoint("0.0.0.0", 2000 + i))).ToArray();
+            foreach (var peer in normalPeers)
+            {
+                table.AddPeer(peer);
+            }
+
+            Assert.Equal(12, table.Count);
+            Assert.Equal(staticPeers.Union(normalPeers).ToHashSet(), table.Peers.ToHashSet());
         }
 
         private (PublicKey, PublicKey[]) GeneratePeersDifferentBuckets()

@@ -136,7 +136,7 @@ namespace Libplanet.Net
                 .ForContext("SwarmId", loggerId);
 
             Options = options ?? new SwarmOptions();
-            RoutingTable = new RoutingTable(Address, tableSize, bucketSize);
+            RoutingTable = new RoutingTable(Address, tableSize, bucketSize, Options.StaticPeers);
             Transport = new NetMQTransport(
                 RoutingTable,
                 _privateKey,
