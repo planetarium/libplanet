@@ -115,6 +115,21 @@ namespace Libplanet.Tests.Store
             Assert.Equal(prevStatesCount, _stateKeyValueStore.ListKeys().Count());
         }
 
+        [Fact]
+#pragma warning disable S2699 // Tests should include assertions
+        public void IdempotentDispose()
+#pragma warning restore S2699 // Tests should include assertions
+        {
+            var stateStore = new TrieStateStore(
+                _stateKeyValueStore,
+                _stateHashKeyValueStore
+            );
+            stateStore.Dispose();
+#pragma warning disable S3966 // Objects should not be disposed more than once
+            stateStore.Dispose();
+#pragma warning restore S3966 // Objects should not be disposed more than once
+        }
+
         private TrieStateStore MakeTrieStateStoreFixture(bool secure)
         {
             var stateStore = new TrieStateStore(
