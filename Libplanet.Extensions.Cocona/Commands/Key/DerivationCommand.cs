@@ -4,7 +4,7 @@ namespace Libplanet.Extensions.Cocona.Commands.Key
     using global::Cocona;
     using Libplanet.Crypto;
 
-    public class ConversionCommand
+    public class DerivationCommand
     {
         public void PrivateKey(
             [Argument("PRIVATE-KEY")]
