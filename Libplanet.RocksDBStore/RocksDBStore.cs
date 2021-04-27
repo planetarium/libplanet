@@ -61,6 +61,7 @@ namespace Libplanet.RocksDBStore
 
         private readonly ReaderWriterLockSlim _rwTxLock;
         private readonly ReaderWriterLockSlim _rwBlockLock;
+        private bool _disposed = false;
 
         /// <summary>
         /// Creates a new <seealso cref="RocksDBStore"/>.
@@ -728,24 +729,28 @@ namespace Libplanet.RocksDBStore
 
         public override void Dispose()
         {
-            _chainDb?.Dispose();
-            _txIndexDb?.Dispose();
-            _blockIndexDb?.Dispose();
-            _blockPerceptionDb?.Dispose();
-            _stagedTxDb?.Dispose();
-            foreach (var db in _txDbCache.Values)
+            if (!_disposed)
             {
-                db.Dispose();
+                _chainDb?.Dispose();
+                _txIndexDb?.Dispose();
+                _blockIndexDb?.Dispose();
+                _blockPerceptionDb?.Dispose();
+                _stagedTxDb?.Dispose();
+                foreach (var db in _txDbCache.Values)
+                {
+                    db.Dispose();
+                }
+
+                _txDbCache.Clear();
+
+                foreach (var db in _blockDbCache.Values)
+                {
+                    db.Dispose();
+                }
+
+                _blockDbCache.Clear();
+                _disposed = true;
             }
-
-            _txDbCache.Clear();
-
-            foreach (var db in _blockDbCache.Values)
-            {
-                db.Dispose();
-            }
-
-            _blockDbCache.Clear();
         }
 
         /// <inheritdoc/>
