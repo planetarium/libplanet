@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Libplanet.Tests.Blocks
 {
-    public class InvalidBlocckTxHashExceptionTest
+    public class InvalidBlockTxHashExceptionTest
     {
         [Fact]
         public void Serialize()
