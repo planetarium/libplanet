@@ -13,6 +13,7 @@ namespace Libplanet.RocksDBStore
     public class RocksDBKeyValueStore : IKeyValueStore, IDisposable
     {
         private readonly RocksDb _keyValueDb;
+        private bool _disposed = false;
 
         /// <summary>
         /// Creates a new <see cref="RocksDBKeyValueStore"/>.
@@ -44,7 +45,11 @@ namespace Libplanet.RocksDBStore
 
         public void Dispose()
         {
-            _keyValueDb.Dispose();
+            if (!_disposed)
+            {
+                _keyValueDb.Dispose();
+                _disposed = true;
+            }
         }
 
         /// <inheritdoc/>

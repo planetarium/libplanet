@@ -156,8 +156,8 @@ To be released.
     updated cached peers multiple times.  [[#1219]]
  -  Fixed memory leak due to undisposed `CancellationTokenRegistration`s.
     [[#1228]]
- -  (Libplanet.RocksDBStore) Fixed a bug where `RocksDBStore.Dispose()` hadn't
-    worked idempotently.  [[#1272]]
+ -  (Libplanet.RocksDBStore) Fixed a bug where `RocksDBStore.Dispose()` and
+    `RocksDBKeyValueStore.Dispose()` hadn't worked idempotently.  [[#1272]]
 
 ### CLI tools
 
