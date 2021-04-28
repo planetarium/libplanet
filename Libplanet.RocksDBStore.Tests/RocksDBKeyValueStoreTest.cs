@@ -24,23 +24,6 @@ namespace Libplanet.RocksDBStore.Tests
             }
         }
 
-        [Fact]
-#pragma warning disable S2699 // Tests should include assertions
-        public void IdempotentDispose()
-#pragma warning restore S2699 // Tests should include assertions
-        {
-            var store = new RocksDBKeyValueStore(
-                Path.Combine(
-                    Path.GetTempPath(),
-                    $"rocksdb_key_value_test_{Guid.NewGuid()}"
-                )
-            );
-            store.Dispose();
-#pragma warning disable S3966 // Objects should not be disposed more than once
-            store.Dispose();
-#pragma warning restore S3966 // Objects should not be disposed more than once
-        }
-
         public void Dispose()
         {
             _rocksDbKeyValueStore.Dispose();
