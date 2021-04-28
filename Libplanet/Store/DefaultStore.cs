@@ -46,6 +46,8 @@ namespace Libplanet.Store
 
         private readonly LiteDatabase _db;
 
+        private bool _disposed = false;
+
         /// <summary>
         /// Creates a new <seealso cref="DefaultStore"/>.
         /// </summary>
@@ -592,9 +594,13 @@ namespace Libplanet.Store
 
         public override void Dispose()
         {
-            _db?.Dispose();
-            _memoryStream?.Dispose();
-            _root.Dispose();
+            if (!_disposed)
+            {
+                _db?.Dispose();
+                _memoryStream?.Dispose();
+                _root.Dispose();
+                _disposed = true;
+            }
         }
 
         internal static Guid ParseChainId(string chainIdString) =>
