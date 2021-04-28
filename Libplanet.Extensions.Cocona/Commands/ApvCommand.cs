@@ -1,19 +1,19 @@
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Text.Json;
+using Bencodex;
+using Bencodex.Types;
+using global::Cocona;
+using Libplanet.Crypto;
+using Libplanet.KeyStore;
+using Libplanet.Net;
+using Libplanet.Net.Transports;
+
 namespace Libplanet.Extensions.Cocona.Commands
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.IO;
-    using System.Linq;
-    using System.Text.Json;
-    using Bencodex;
-    using Bencodex.Types;
-    using global::Cocona;
-    using Libplanet.Crypto;
-    using Libplanet.KeyStore;
-    using Libplanet.Net;
-    using Libplanet.Net.Transports;
-
     public class ApvCommand
     {
         [Command(Description = "Sign a new app protocol version.")]
@@ -269,7 +269,9 @@ namespace Libplanet.Extensions.Cocona.Commands
 
             if (json)
             {
-                Console.WriteLine(JsonSerializer.Serialize(data.ToDictionary(e => e.Item1, e => e.Item2)));
+                Console.WriteLine(
+                    JsonSerializer.Serialize(
+                        data.ToDictionary(e => e.Item1, e => e.Item2)));
             }
             else
             {

@@ -1,22 +1,22 @@
+#nullable enable
+using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.Json;
+using Bencodex;
+using Bencodex.Types;
+using global::Cocona;
+using global::Cocona.Help;
+using Libplanet.Extensions.Cocona.Configuration;
+using Libplanet.Extensions.Cocona.Services;
+using Libplanet.RocksDBStore;
+using Libplanet.Store.Trie;
+
 namespace Libplanet.Extensions.Cocona.Commands
 {
-#nullable enable
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.Immutable;
-    using System.Linq;
-    using System.Security.Cryptography;
-    using System.Text;
-    using System.Text.Json;
-    using Bencodex;
-    using Bencodex.Types;
-    using global::Cocona;
-    using global::Cocona.Help;
-    using Libplanet.Extensions.Cocona.Configuration;
-    using Libplanet.Extensions.Cocona.Services;
-    using Libplanet.RocksDBStore;
-    using Libplanet.Store.Trie;
-
     internal enum SchemeType
     {
         // This is set to 0 for `default` value.

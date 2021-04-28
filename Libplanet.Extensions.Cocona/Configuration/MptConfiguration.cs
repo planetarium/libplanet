@@ -1,7 +1,7 @@
+using System.Collections.Generic;
+
 namespace Libplanet.Extensions.Cocona.Configuration
 {
-    using System.Collections.Generic;
-
     public struct MptConfiguration
     {
         public MptConfiguration(Dictionary<string, string> aliases)
