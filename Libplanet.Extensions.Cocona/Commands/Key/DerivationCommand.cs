@@ -1,9 +1,9 @@
+using System;
+using global::Cocona;
+using Libplanet.Crypto;
+
 namespace Libplanet.Extensions.Cocona.Commands.Key
 {
-    using System;
-    using global::Cocona;
-    using Libplanet.Crypto;
-
     public class DerivationCommand
     {
         public void PrivateKey(
