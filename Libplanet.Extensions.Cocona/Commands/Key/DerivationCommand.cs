@@ -35,7 +35,7 @@ namespace Libplanet.Extensions.Cocona.Commands.Key
             var privateKey = new PrivateKey(ByteUtil.ParseHex(privateKeyHex));
             if (address)
             {
-                Console.Out.WriteLine(privateKey.ToAddress().ToHex());
+                Console.Out.WriteLine(privateKey.ToAddress());
             }
 
             if (publicKey)
