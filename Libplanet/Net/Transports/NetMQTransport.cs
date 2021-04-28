@@ -524,7 +524,6 @@ namespace Libplanet.Net.Transports
 
         private void ReceiveMessage(object sender, NetMQSocketEventArgs e)
         {
-            _logger.Verbose("ReceiveMessage started. {@E}", e);
             NetMQMessage raw = new NetMQMessage();
             while (e.Socket.TryReceiveMultipartMessage(ref raw))
             {
@@ -593,8 +592,6 @@ namespace Libplanet.Net.Transports
                     );
                 }
             }
-
-            _logger.Verbose("ReceiveMessage ended. {@E}", e);
         }
 
         private void DoBroadcast(object sender, NetMQQueueEventArgs<(Address?, Message)> e)
