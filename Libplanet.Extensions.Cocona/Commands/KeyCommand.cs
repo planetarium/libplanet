@@ -9,7 +9,11 @@ using Libplanet.KeyStore;
 
 namespace Libplanet.Extensions.Cocona.Commands
 {
-    [HasSubCommands(typeof(DerivationCommand), "derive", Description = "Derive the address or public key from private key.")]
+    [HasSubCommands(
+        typeof(DerivationCommand),
+        "derive",
+        Description = "Derive the address or public key from private key."
+    )]
     public class KeyCommand
     {
         public KeyCommand()
