@@ -7,11 +7,14 @@ namespace Libplanet.Extensions.Cocona.Commands.Key
     public class DerivationCommand
     {
         public void PrivateKey(
-            [Argument("PRIVATE-KEY")]
+            [Argument(
+                "PRIVATE-KEY",
+                Description = "A private key that the address/public key are derived from."
+            )]
             string privateKeyHex,
-            [Option]
+            [Option('p', Description = "Derives the public key.")]
             bool publicKey = false,
-            [Option]
+            [Option('a', Description = "Derives the address.")]
             bool address = false)
         {
             if (!(publicKey ^ address))
