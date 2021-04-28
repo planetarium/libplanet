@@ -1,13 +1,13 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using global::Cocona;
+using Libplanet.Crypto;
+using Libplanet.KeyStore;
+
 namespace Libplanet.Extensions.Cocona.Commands
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using global::Cocona;
-    using Libplanet.Crypto;
-    using Libplanet.KeyStore;
-
     public class KeyCommand
     {
         public KeyCommand()

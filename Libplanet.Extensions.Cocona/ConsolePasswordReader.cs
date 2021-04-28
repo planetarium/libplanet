@@ -1,8 +1,8 @@
+using System;
+using System.Text;
+
 namespace Libplanet.Extensions.Cocona
 {
-    using System;
-    using System.Text;
-
     public class ConsolePasswordReader
     {
         public static string Read(string prompt)
