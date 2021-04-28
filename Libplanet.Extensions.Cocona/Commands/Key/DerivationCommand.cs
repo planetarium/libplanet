@@ -17,9 +17,19 @@ namespace Libplanet.Extensions.Cocona.Commands.Key
             [Option('a', Description = "Derives the address.")]
             bool address = false)
         {
-            if (!(publicKey ^ address))
+            if (publicKey && address)
             {
-                throw new CommandExitedException($"Only one flag should be used between {nameof(publicKey)} and {nameof(address)}", -1);
+                throw new CommandExitedException(
+                   "--public-key and --address are mutually exclusive; turn on one at a time.",
+                   -1
+                );
+            }
+            else if (!publicKey && !address)
+            {
+                 throw new CommandExitedException(
+                    "One of --public-key and --address should be turned on.",
+                    -1
+                 );
             }
 
             var privateKey = new PrivateKey(ByteUtil.ParseHex(privateKeyHex));
