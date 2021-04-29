@@ -831,7 +831,7 @@ namespace Libplanet.Tests.Net
                 minerAddress,
                 null,
                 DateTimeOffset.MinValue,
-                Enumerable.Empty<Transaction<DumbAction>>());
+                ImmutableArray<Transaction<DumbAction>>.Empty);
             var genesisBlock2 = new Block<DumbAction>(
                 0,
                 0,
@@ -840,7 +840,7 @@ namespace Libplanet.Tests.Net
                 minerAddress,
                 null,
                 DateTimeOffset.MinValue,
-                Enumerable.Empty<Transaction<DumbAction>>());
+                ImmutableArray<Transaction<DumbAction>>.Empty);
 
             BlockChain<DumbAction> MakeBlockChain(Block<DumbAction> genesisBlock) =>
                 TestUtils.MakeBlockChain(

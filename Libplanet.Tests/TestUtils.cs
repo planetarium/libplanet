@@ -182,7 +182,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
 
         public static Block<T> MineGenesis<T>(
             Address? miner = null,
-            IEnumerable<Transaction<T>> transactions = null,
+            IReadOnlyList<Transaction<T>> transactions = null,
             DateTimeOffset? timestamp = null,
             int protocolVersion = Block<T>.CurrentProtocolVersion
         )
@@ -210,7 +210,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
 
         public static Block<T> MineNext<T>(
             Block<T> previousBlock,
-            IEnumerable<Transaction<T>> txs = null,
+            IReadOnlyList<Transaction<T>> txs = null,
             byte[] nonce = null,
             long difficulty = 1,
             Address? miner = null,

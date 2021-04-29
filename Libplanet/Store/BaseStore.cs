@@ -91,7 +91,8 @@ namespace Libplanet.Store
                         CultureInfo.InvariantCulture
                     ).ToUniversalTime(),
                     transactions: blockDigest.TxIds
-                        .Select(bytes => GetTransaction<T>(new TxId(bytes.ToArray()))),
+                        .Select(bytes => GetTransaction<T>(new TxId(bytes.ToArray())))
+                        .ToImmutableArray(),
                     preEvaluationHash: preEvaluationHash,
                     stateRootHash: stateRootHash,
                     protocolVersion: blockDigest.Header.ProtocolVersion

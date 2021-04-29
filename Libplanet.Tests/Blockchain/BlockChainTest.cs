@@ -1714,7 +1714,7 @@ namespace Libplanet.Tests.Blockchain
 
             var genesis = _blockChain.Genesis;
 
-            Block<T> MineNext<T>(Block<T> block, IEnumerable<Transaction<T>> txs)
+            Block<T> MineNext<T>(Block<T> block, IReadOnlyList<Transaction<T>> txs)
                 where T : IAction, new() => TestUtils.MineNext(
                     block,
                     txs,

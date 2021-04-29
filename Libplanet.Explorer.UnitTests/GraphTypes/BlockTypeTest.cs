@@ -26,7 +26,7 @@ namespace Libplanet.Explorer.UnitTests.GraphTypes
                 new Address(TestUtils.GetRandomBytes(Address.Size)),
                 new BlockHash(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
                 DateTimeOffset.UtcNow,
-                ImmutableHashSet<Transaction<NoOpAction>>.Empty,
+                ImmutableArray<Transaction<NoOpAction>>.Empty,
                 stateRootHash: new HashDigest<SHA256>(
                     TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)));
             var query =
