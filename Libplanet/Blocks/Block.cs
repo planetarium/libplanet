@@ -285,7 +285,7 @@ namespace Libplanet.Blocks
         public HashDigest<SHA256>? TxHash { get; }
 
         [IgnoreDuringEquals]
-        public IEnumerable<Transaction<T>> Transactions { get; }
+        public IReadOnlyList<Transaction<T>> Transactions { get; }
 
         /// <summary>
         /// The bytes length in its serialized format.
