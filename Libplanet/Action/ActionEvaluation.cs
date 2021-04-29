@@ -114,6 +114,7 @@ namespace Libplanet.Action
             ) =>
                 new ActionContext(
                     signer: signer,
+                    txid: txid,
                     miner: minerAddress,
                     blockIndex: blockIndex,
                     previousStates: prevStates,

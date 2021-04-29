@@ -6,6 +6,7 @@ using Libplanet.Action;
 using Libplanet.Assets;
 using Libplanet.Store.Trie;
 using Libplanet.Tests.Store.Trie;
+using Libplanet.Tx;
 using Xunit;
 
 namespace Libplanet.Tests.Action
@@ -21,10 +22,17 @@ namespace Libplanet.Tests.Action
                 (1, 534011718),
             };
             var address = new Address("21744f4f08db23e044178dafb8273aeb5ebe6644");
+            var txid = new TxId(new byte[]
+            {
+                0xd8, 0x35, 0x6c, 0x35, 0xb8, 0x6e, 0x49, 0xf0, 0x84, 0x3c, 0x9c,
+                0xe8, 0x26, 0xe1, 0xda, 0x01, 0x4f, 0x7a, 0x1b, 0xa8, 0x28, 0x32,
+                0x8f, 0x8c, 0x12, 0x32, 0x72, 0x84, 0x00, 0xfc, 0x74, 0x89,
+            });
             foreach (var (seed, expected) in testCases)
             {
                 var context = new ActionContext(
                     signer: address,
+                    txid: txid,
                     miner: address,
                     blockIndex: 1,
                     previousStates: new DumbAccountStateDelta(),
@@ -39,8 +47,16 @@ namespace Libplanet.Tests.Action
         public void GuidShouldBeDeterministic()
         {
             var address = new Address("21744f4f08db23e044178dafb8273aeb5ebe6644");
+            var txid = new TxId(new byte[]
+            {
+                0xd8, 0x35, 0x6c, 0x35, 0xb8, 0x6e, 0x49, 0xf0, 0x84, 0x3c, 0x9c,
+                0xe8, 0x26, 0xe1, 0xda, 0x01, 0x4f, 0x7a, 0x1b, 0xa8, 0x28, 0x32,
+                0x8f, 0x8c, 0x12, 0x32, 0x72, 0x84, 0x00, 0xfc, 0x74, 0x89,
+            });
+
             var context1 = new ActionContext(
                 signer: address,
+                txid: txid,
                 miner: address,
                 blockIndex: 1,
                 previousStates: new DumbAccountStateDelta(),
@@ -49,6 +65,7 @@ namespace Libplanet.Tests.Action
 
             var context2 = new ActionContext(
                 signer: address,
+                txid: txid,
                 miner: address,
                 blockIndex: 1,
                 previousStates: new DumbAccountStateDelta(),
@@ -57,6 +74,7 @@ namespace Libplanet.Tests.Action
 
             var context3 = new ActionContext(
                 signer: address,
+                txid: txid,
                 miner: address,
                 blockIndex: 1,
                 previousStates: new DumbAccountStateDelta(),
@@ -87,16 +105,23 @@ namespace Libplanet.Tests.Action
         public void GuidVersionAndVariant()
         {
             var address = new Address("21744f4f08db23e044178dafb8273aeb5ebe6644");
+            var txid = new TxId(new byte[]
+            {
+                0xd8, 0x35, 0x6c, 0x35, 0xb8, 0x6e, 0x49, 0xf0, 0x84, 0x3c, 0x9c,
+                0xe8, 0x26, 0xe1, 0xda, 0x01, 0x4f, 0x7a, 0x1b, 0xa8, 0x28, 0x32,
+                0x8f, 0x8c, 0x12, 0x32, 0x72, 0x84, 0x00, 0xfc, 0x74, 0x89,
+            });
 
             for (var i = 0; i < 100; i++)
             {
                 var context = new ActionContext(
-                        signer: address,
-                        miner: address,
-                        blockIndex: 1,
-                        previousStates: new DumbAccountStateDelta(),
-                        randomSeed: i
-                    );
+                    signer: address,
+                    txid: txid,
+                    miner: address,
+                    blockIndex: 1,
+                    previousStates: new DumbAccountStateDelta(),
+                    randomSeed: i
+                );
                 var guid = context.Random.GenerateRandomGuid().ToString();
 
                 Assert.Equal('4', guid[14]);
@@ -110,6 +135,7 @@ namespace Libplanet.Tests.Action
             var random = new System.Random();
             var original = new ActionContext(
                 signer: random.NextAddress(),
+                txid: random.NextTxId(),
                 miner: random.NextAddress(),
                 blockIndex: 1,
                 previousStates: new DumbAccountStateDelta(),
@@ -142,6 +168,7 @@ namespace Libplanet.Tests.Action
             var random = new System.Random();
             var actionContext = new ActionContext(
                 signer: random.NextAddress(),
+                txid: random.NextTxId(),
                 miner: random.NextAddress(),
                 blockIndex: 1,
                 previousStates: new DumbAccountStateDelta(),

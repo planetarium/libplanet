@@ -118,6 +118,7 @@ To be released.
      -  The type of `TrieStateStore.PruneStates()` method's `excludeBlockHashes`
         parameter became `IImmutableSet<BlockHash>`
         (was `ImmutableHashSet<HashDigest<SHA256>>`).
+ -  Added `IActionContext.TxId` property.  [[#1275]]
  -  Removed `StunMessage.Parse(Stream)` method.  [[#1228]]
  -  Moved `ITransport` and `NetMQTransport` from `Libplanet.Net` to
     `Libplanet.Net.Transports`.  [[#1235]]
@@ -195,6 +196,7 @@ To be released.
 [#1268]: https://github.com/planetarium/libplanet/pull/1268
 [#1272]: https://github.com/planetarium/libplanet/pull/1272
 [#1274]: https://github.com/planetarium/libplanet/pull/1274
+[#1275]: https://github.com/planetarium/libplanet/pull/1275
 [#1278]: https://github.com/planetarium/libplanet/pull/1278
 
 

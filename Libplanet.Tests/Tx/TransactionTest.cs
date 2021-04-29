@@ -610,6 +610,7 @@ namespace Libplanet.Tests.Tx
                     ActionEvaluation eval = evaluations[i];
                     Assert.Equal(actions[i], eval.Action);
                     Assert.Equal(_fx.Address1, eval.InputContext.Signer);
+                    Assert.Equal(tx.Id, eval.InputContext.TxId);
                     Assert.Equal(addresses[0], eval.InputContext.Miner);
                     Assert.Equal(1, eval.InputContext.BlockIndex);
                     Assert.Equal(rehearsal, eval.InputContext.Rehearsal);

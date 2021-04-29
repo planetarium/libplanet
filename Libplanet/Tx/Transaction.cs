@@ -587,8 +587,7 @@ namespace Libplanet.Tx
         /// a unconsumed state.
         /// </returns>
         [Pure]
-        public IEnumerable<ActionEvaluation>
-        EvaluateActionsGradually(
+        public IEnumerable<ActionEvaluation> EvaluateActionsGradually(
             BlockHash blockHash,
             long blockIndex,
             IAccountStateDelta previousStates,

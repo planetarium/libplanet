@@ -12,11 +12,13 @@ namespace Libplanet.Tests.Action
         [Fact]
         public void Constructor()
         {
+            var txid = new System.Random().NextTxId();
             Address address = new PrivateKey().ToAddress();
             var evaluation = new ActionEvaluation(
                 new DumbAction(address, "item"),
                 new ActionContext(
                     address,
+                    txid,
                     address,
                     1,
                     new AccountStateDeltaImpl(
@@ -38,6 +40,7 @@ namespace Libplanet.Tests.Action
             Assert.Equal(address, action.TargetAddress);
             Assert.Equal("item", action.Item);
             Assert.Equal(address, evaluation.InputContext.Signer);
+            Assert.Equal(txid, evaluation.InputContext.TxId);
             Assert.Equal(address, evaluation.InputContext.Miner);
             Assert.Equal(1, evaluation.InputContext.BlockIndex);
             Assert.Null(
