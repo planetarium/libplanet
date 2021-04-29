@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "/NRuupyo9nHVMVdMudlKqQ=="
+          "hash": "Wun+QchmyEXpeZf6mszrLA=="
         }
       },
       "is_incremental": false,
@@ -1785,7 +1785,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Swarm-1.html",
-          "hash": "AzoXRlxYb/ULXijly74kaQ=="
+          "hash": "qjVKimpeoY1liJpjzNLuhQ=="
         }
       },
       "is_incremental": false,
@@ -1845,7 +1845,19 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Transports.NetMQTransport.html",
-          "hash": "VZya8M1yqnKFBjNZX52TXg=="
+          "hash": "FC5gLpIyoj5pPSTDCNa+oQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Net.Transports.TransportException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Net.Transports.TransportException.html",
+          "hash": "6jGOA5A4DCFkExkz/7BrWw=="
         }
       },
       "is_incremental": false,
@@ -1857,7 +1869,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Transports.html",
-          "hash": "9p5ypzlxRgBaEnqWiJStcg=="
+          "hash": "sJxXqARl0fTQM8OzPaE7PQ=="
         }
       },
       "is_incremental": false,
@@ -2289,7 +2301,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "PGmOz5xkCUdU0t6/GPV0vw=="
+          "hash": "aMbvvghorlY3zSuH1d8PWg=="
         }
       },
       "is_incremental": false,
@@ -2398,7 +2410,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 181,
+          "total_file_count": 182,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {

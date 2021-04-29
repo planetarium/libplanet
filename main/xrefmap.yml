@@ -11823,6 +11823,43 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Transports.NetMQTransport.WaitForRunningAsync
   nameWithType: NetMQTransport.WaitForRunningAsync
+- uid: Libplanet.Net.Transports.TransportException
+  name: TransportException
+  href: api/Libplanet.Net.Transports.TransportException.html
+  commentId: T:Libplanet.Net.Transports.TransportException
+  fullName: Libplanet.Net.Transports.TransportException
+  nameWithType: TransportException
+- uid: Libplanet.Net.Transports.TransportException.#ctor
+  name: TransportException()
+  href: api/Libplanet.Net.Transports.TransportException.html#Libplanet_Net_Transports_TransportException__ctor
+  commentId: M:Libplanet.Net.Transports.TransportException.#ctor
+  fullName: Libplanet.Net.Transports.TransportException.TransportException()
+  nameWithType: TransportException.TransportException()
+- uid: Libplanet.Net.Transports.TransportException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  name: TransportException(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Net.Transports.TransportException.html#Libplanet_Net_Transports_TransportException__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
+  commentId: M:Libplanet.Net.Transports.TransportException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  fullName: Libplanet.Net.Transports.TransportException.TransportException(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  nameWithType: TransportException.TransportException(SerializationInfo, StreamingContext)
+- uid: Libplanet.Net.Transports.TransportException.#ctor(System.String)
+  name: TransportException(String)
+  href: api/Libplanet.Net.Transports.TransportException.html#Libplanet_Net_Transports_TransportException__ctor_System_String_
+  commentId: M:Libplanet.Net.Transports.TransportException.#ctor(System.String)
+  fullName: Libplanet.Net.Transports.TransportException.TransportException(System.String)
+  nameWithType: TransportException.TransportException(String)
+- uid: Libplanet.Net.Transports.TransportException.#ctor(System.String,System.Exception)
+  name: TransportException(String, Exception)
+  href: api/Libplanet.Net.Transports.TransportException.html#Libplanet_Net_Transports_TransportException__ctor_System_String_System_Exception_
+  commentId: M:Libplanet.Net.Transports.TransportException.#ctor(System.String,System.Exception)
+  fullName: Libplanet.Net.Transports.TransportException.TransportException(System.String, System.Exception)
+  nameWithType: TransportException.TransportException(String, Exception)
+- uid: Libplanet.Net.Transports.TransportException.#ctor*
+  name: TransportException
+  href: api/Libplanet.Net.Transports.TransportException.html#Libplanet_Net_Transports_TransportException__ctor_
+  commentId: Overload:Libplanet.Net.Transports.TransportException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Net.Transports.TransportException.TransportException
+  nameWithType: TransportException.TransportException
 - uid: Libplanet.Nonce
   name: Nonce
   href: api/Libplanet.Nonce.html
