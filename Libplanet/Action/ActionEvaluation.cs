@@ -136,10 +136,10 @@ namespace Libplanet.Action
                 (signature.Any() ? BitConverter.ToInt32(hashedSignature, 0) : 0);
 
             IAccountStateDelta states = previousStates;
-            Exception exc = null;
             ILogger logger = Log.ForContext<ActionEvaluation>();
             foreach (IAction action in actions)
             {
+                Exception exc = null;
                 ActionContext context = CreateActionContext(states, seed);
                 IAccountStateDelta nextStates = context.PreviousStates;
                 try
@@ -190,6 +190,11 @@ namespace Libplanet.Action
                     nextStates,
                     exc
                 );
+
+                if (exc is { })
+                {
+                    yield break;
+                }
 
                 states = nextStates;
                 unchecked

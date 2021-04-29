@@ -2,6 +2,8 @@
 using System;
 using Libplanet.Action;
 using Libplanet.Blocks;
+using Libplanet.Store;
+using Libplanet.Tx;
 
 namespace Libplanet.Blockchain.Renderers
 {
@@ -30,6 +32,15 @@ namespace Libplanet.Blockchain.Renderers
     /// (one time)</description></item>
     /// </list>
     /// </summary>
+    /// <remarks>Although <see cref="Transaction{T}"/>s affect the states in
+    /// the <see cref="IStateStore"/> all or nothing at all (i.e., atomically),
+    /// <see cref="IActionRenderer{T}"/> receives all action-related events
+    /// (<see cref="RenderAction"/>/<see cref="RenderActionError"/>/<see cref="UnrenderAction"
+    /// />/<see cref="UnrenderActionError"/>) <em>immediately</em> without buffering,
+    /// which means actions are rendered <em>even before</em> whether there are any actions throwing
+    /// an exception in the same transaction is determined.  In other words, for <see
+    /// cref="IActionRenderer{T}"/>s, it is not guaranteed that actions in a transaction are atomic.
+    /// </remarks>
     /// <typeparam name="T">An <see cref="IAction"/> type.  It should match to
     /// <see cref="BlockChain{T}"/>'s type parameter.</typeparam>
     public interface IActionRenderer<T> : IRenderer<T>

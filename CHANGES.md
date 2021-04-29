@@ -159,6 +159,21 @@ To be released.
 
 ### Bug fixes
 
+ -  Fixed a bug where executing `Transaction<T>.Actions` had not been atomic.
+    `Actions` in a `Transaction<T>` now became executed all or nothing at all.
+    [[#1267], [#1275]]
+     -  `Transaction<T>.EvaluateActions()` method became atomic.
+     -  `Transaction<T>.EvaluateActionsGradually()` method had returned
+        the same number of `ActionEvaluation`s to `Transaction<T>.Actions`,
+        but now became to omit the evaluations after the first action throwing
+        an exception.  If no action throws any exception, it still returns
+        the same number of `ActionEvaluation`s to `Transaction<T>.Actions`.
+     -  State-wise, `Transaction<T>`s having any exception-throwing action
+        now do not commit any changes at all to `IStateStore`.
+     -  Rendering-wise, for actions following the first exception-throwing
+        action, action rendering methods in `IActionRenderer<T>`
+        (`RenderAction()`, `RenderActionError()`, `UnrenderAction()`, and
+        `UnrenderActionError()`) became not invoked.
  -  Fixed a bug where `KademliaProtocol.BootstrapAsync()` has sent multiple
     `Ping` messages to other peers.  [[#1219]]
  -  Fixed a bug where `KademliaProtocol.CheckReplacementCacheAsync()` has
@@ -193,6 +208,7 @@ To be released.
 [#1240]: https://github.com/planetarium/libplanet/pull/1240
 [#1242]: https://github.com/planetarium/libplanet/pull/1242
 [#1265]: https://github.com/planetarium/libplanet/pull/1265
+[#1267]: https://github.com/planetarium/libplanet/issues/1267
 [#1268]: https://github.com/planetarium/libplanet/pull/1268
 [#1272]: https://github.com/planetarium/libplanet/pull/1272
 [#1274]: https://github.com/planetarium/libplanet/pull/1274
