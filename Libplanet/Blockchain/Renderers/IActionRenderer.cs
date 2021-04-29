@@ -40,6 +40,9 @@ namespace Libplanet.Blockchain.Renderers
     /// which means actions are rendered <em>even before</em> whether there are any actions throwing
     /// an exception in the same transaction is determined.  In other words, for <see
     /// cref="IActionRenderer{T}"/>s, it is not guaranteed that actions in a transaction are atomic.
+    /// <para>If your action renderer expects to receive only render events about actions belonging
+    /// successful transactions, wrap your action renderer with
+    /// <see cref="AtomicActionRenderer{T}"/>.</para>
     /// </remarks>
     /// <typeparam name="T">An <see cref="IAction"/> type.  It should match to
     /// <see cref="BlockChain{T}"/>'s type parameter.</typeparam>

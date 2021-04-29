@@ -274,6 +274,7 @@ namespace Libplanet.Blockchain.Renderers
                 _bufferedActionUnrenders);
         }
 
+        /// <inheritdoc cref="IRenderer{T}.RenderReorgEnd(Block{T}, Block{T}, Block{T})"/>
         public override void RenderReorgEnd(Block<T> oldTip, Block<T> newTip, Block<T> branchpoint)
         {
             base.RenderReorgEnd(oldTip, newTip, branchpoint);

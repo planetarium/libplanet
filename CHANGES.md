@@ -143,6 +143,7 @@ To be released.
  -  Added `NetMQTransport.QueryAppProtocolVersion()` static method.  [[#1235]]
  -  Added `BoundPeer.Parse()` static method.  [[#1240]]
  -  Added `TransportException` class.  [[#1242]]
+ -  Added `AtomicActionRenderer<T>` class.  [[#1267], [#1275]]
 
 ### Behavioral changes
 
@@ -174,6 +175,8 @@ To be released.
         action, action rendering methods in `IActionRenderer<T>`
         (`RenderAction()`, `RenderActionError()`, `UnrenderAction()`, and
         `UnrenderActionError()`) became not invoked.
+        If you want to dismiss all actions in unsuccessful transactions at all,
+        wrap your action renderer with `AtomicActionRenderer<T>`.
  -  Fixed a bug where `KademliaProtocol.BootstrapAsync()` has sent multiple
     `Ping` messages to other peers.  [[#1219]]
  -  Fixed a bug where `KademliaProtocol.CheckReplacementCacheAsync()` has

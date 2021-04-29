@@ -76,7 +76,8 @@ namespace Libplanet.Blockchain
         /// be used for that.</param>
         /// <param name="renderers">Listens state changes on the created chain.  Listens nothing
         /// by default or if it is <c>null</c>.  Note that action renderers receive events made
-        /// by unsuccessful transactions too.</param>
+        /// by unsuccessful transactions too; see also <see cref="AtomicActionRenderer{T}"/> for
+        /// workaround.</param>
         /// <param name="stateStore"><see cref="IStateStore"/> to store states.</param>
         /// <exception cref="InvalidGenesisBlockException">Thrown when the <paramref name="store"/>
         /// has a genesis block and it does not match to what the network expects
