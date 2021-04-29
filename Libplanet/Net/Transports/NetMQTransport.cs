@@ -228,7 +228,7 @@ namespace Libplanet.Net.Transports
         {
             if (Running)
             {
-                throw new SwarmException("Swarm is already running.");
+                throw new TransportException("Transport is already running.");
             }
 
             _router = new RouterSocket();
@@ -248,9 +248,9 @@ namespace Libplanet.Net.Transports
             if (_host is null && !(_iceServers is null))
             {
                 _turnClient = await IceServer.CreateTurnClient(_iceServers);
-                await _turnClient.StartAsync(_listenPort.Value, _cancellationToken);
+                await _turnClient.StartAsync(_listenPort.Value, cancellationToken);
 
-                _ = RefreshPermissions(_cancellationToken);
+                _ = RefreshPermissions(cancellationToken);
             }
 
             _cancellationToken = cancellationToken;
@@ -277,10 +277,14 @@ namespace Libplanet.Net.Transports
         {
             if (Running)
             {
-                throw new SwarmException("Swarm is already running.");
+                throw new TransportException("Transport is already running.");
             }
 
-            Running = true;
+            if (_router is null)
+            {
+                throw new TransportException(
+                    $"Transport needs to be started before {nameof(RunAsync)}().");
+            }
 
             List<Task> tasks = new List<Task>();
 
@@ -289,6 +293,8 @@ namespace Libplanet.Net.Transports
                 _cancellationToken));
             tasks.Add(RunPoller(_routerPoller));
             tasks.Add(RunPoller(_broadcastPoller));
+
+            Running = true;
 
             await await Task.WhenAny(tasks);
         }
@@ -758,8 +764,9 @@ namespace Libplanet.Net.Transports
 
             _logger.Debug(
                 "Trying to send a request {RequestId} to {Peer}...: {Message}.",
-                req.Message,
-                req.Peer
+                req.Id,
+                req.Peer,
+                req.Message
             );
             var message = req.Message.ToNetMQMessage(
                 _privateKey,

@@ -343,7 +343,14 @@ namespace Libplanet.Net
                 ).Token;
             BlockDemand = null;
             _demandTxIds = new ConcurrentDictionary<TxId, BoundPeer>();
-            await Transport.StartAsync(_cancellationToken);
+            try
+            {
+                await Transport.StartAsync(_cancellationToken);
+            }
+            catch (TransportException te)
+            {
+                throw new SwarmException("Swarm is already running.", innerException: te);
+            }
 
             _logger.Debug("Starting swarm...");
             _logger.Debug("Peer information : {Peer}", AsPeer);
