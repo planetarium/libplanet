@@ -330,7 +330,7 @@ namespace Libplanet.Tests.Blockchain
 
             Block<DumbAction> block2 = TestUtils.MineNext(
                 block1,
-                ImmutableHashSet<Transaction<DumbAction>>.Empty.Add(txs[0]),
+                ImmutableArray<Transaction<DumbAction>>.Empty.Add(txs[0]),
                 difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
                 blockInterval: TimeSpan.FromSeconds(10)
             ).AttachStateRootHash(_fx.StateStore, _policy.BlockAction);
@@ -349,7 +349,7 @@ namespace Libplanet.Tests.Blockchain
 
             Block<DumbAction> block3 = TestUtils.MineNext(
                 block2,
-                ImmutableHashSet<Transaction<DumbAction>>.Empty.Add(txs[1]),
+                ImmutableArray<Transaction<DumbAction>>.Empty.Add(txs[1]),
                 difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
                 blockInterval: TimeSpan.FromSeconds(10)
             ).AttachStateRootHash(_fx.StateStore, _policy.BlockAction);

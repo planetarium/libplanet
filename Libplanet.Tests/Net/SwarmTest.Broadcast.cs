@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -96,7 +97,7 @@ namespace Libplanet.Tests.Net
                 receiverSwarm.Address,
                 null,
                 DateTimeOffset.MinValue,
-                Enumerable.Empty<Transaction<DumbAction>>());
+                ImmutableArray<Transaction<DumbAction>>.Empty);
             BlockChain<DumbAction> seedChain = TestUtils.MakeBlockChain(
                 receiverChain.Policy,
                 new DefaultStore(path: null),

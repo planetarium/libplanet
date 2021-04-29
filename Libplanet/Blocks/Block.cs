@@ -68,7 +68,7 @@ namespace Libplanet.Blocks
             Address? miner,
             BlockHash? previousHash,
             DateTimeOffset timestamp,
-            IEnumerable<Transaction<T>> transactions,
+            IReadOnlyList<Transaction<T>> transactions,
             BlockHash? preEvaluationHash = null,
             HashDigest<SHA256>? stateRootHash = null,
             int protocolVersion = CurrentProtocolVersion)
@@ -202,7 +202,7 @@ namespace Libplanet.Blocks
             BlockHash? previousHash,
             DateTimeOffset timestamp,
             HashDigest<SHA256>? txHash,
-            IEnumerable<Transaction<T>> transactions,
+            IReadOnlyList<Transaction<T>> transactions,
             BlockHash? preEvaluationHash,
             HashDigest<SHA256>? stateRootHash
         )
@@ -285,7 +285,7 @@ namespace Libplanet.Blocks
         public HashDigest<SHA256>? TxHash { get; }
 
         [IgnoreDuringEquals]
-        public IEnumerable<Transaction<T>> Transactions { get; }
+        public IReadOnlyList<Transaction<T>> Transactions { get; }
 
         /// <summary>
         /// The bytes length in its serialized format.
