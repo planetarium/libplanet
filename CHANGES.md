@@ -155,6 +155,8 @@ To be released.
     specific peer. [[#1240]]
  -  Added the option `--no-passphrase` to `planet key remove` command to remove
     key without asking passphrase.  [[#1213], [#1265]]
+ -  Added `planet key derive` subcommand to derive the address or
+    public key from a private.  [[#1268]]
 
 [#1192]: https://github.com/planetarium/libplanet/issues/1192
 [#1197]: https://github.com/planetarium/libplanet/pull/1197
@@ -165,6 +167,7 @@ To be released.
 [#1235]: https://github.com/planetarium/libplanet/pull/1235
 [#1240]: https://github.com/planetarium/libplanet/pull/1240
 [#1265]: https://github.com/planetarium/libplanet/pull/1265
+[#1268]: https://github.com/planetarium/libplanet/pull/1268
 
 
 Version 0.11.1
