@@ -121,11 +121,11 @@ To be released.
  -  Removed `StunMessage.Parse(Stream)` method.  [[#1228]]
  -  Moved `ITransport` and `NetMQTransport` from `Libplanet.Net` to
     `Libplanet.Net.Transports`.  [[#1235]]
- -  `Block` now enforces a collection of `Transaction`s to be less mutable.
+ -  `Block<T>` now enforces a collection of `Transaction<T>`s to be less mutable.
     [[#1274]]
-     -  The type of `Block` constructor's `transactions` parameter became
+     -  The type of `Block<T>()` constructor's `transactions` parameter became
         `IReadOnlyList<T>` (was `IEnumerable<T>`).
-     -  The type of `Transactions` proberty of `Block` became `IReadOnlyList<T>`
+     -  The type of `Transactions` property of `Block<T>` became `IReadOnlyList<T>`
         (was `IEnumerable<T>`).
 
 ### Backward-incompatible network protocol changes
