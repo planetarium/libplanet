@@ -182,6 +182,15 @@ parameter became <code>IImmutableSet&lt;BlockHash&gt;</code>
 <li>Removed <code>StunMessage.Parse(Stream)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1218">#1228</a>]</li>
 <li>Moved <code>ITransport</code> and <code>NetMQTransport</code> from <code>Libplanet.Net</code> to
 <code>Libplanet.Net.Transports</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1235">#1235</a>]</li>
+<li><code>Block&lt;T&gt;</code> now enforces a collection of <code>Transaction&lt;T&gt;</code>s to be less
+mutable.  [<a href="https://github.com/planetarium/libplanet/pull/1274">#1274</a>]
+<ul>
+<li>The type of <code>Block&lt;T&gt;()</code> constructor's <code>transactions</code> parameter became
+<code>IReadOnlyList&lt;T&gt;</code> (was <code>IEnumerable&lt;T&gt;</code>).</li>
+<li>The type of <code>Transactions</code> property of <code>Block&lt;T&gt;</code> became
+<code>IReadOnlyList&lt;T&gt;</code> (was <code>IEnumerable&lt;T&gt;</code>).</li>
+</ul>
+</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
