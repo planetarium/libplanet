@@ -293,7 +293,28 @@ namespace Libplanet.Tests.Net.Protocols
 
             Assert.Equal(2, table.Count);
             Assert.Equal(staticPeers.ToHashSet(), table.Peers.ToHashSet());
+            Assert.Equal(staticPeers.ToHashSet(), table.StaticPeers.ToHashSet());
+            Assert.Empty(table.NonStaticPeers);
             Assert.Equal(staticPeers.ToHashSet(), table.PeersToBroadcast(null, 0).ToHashSet());
+
+            // Adding peer already in static peer does not add peer to table, only updates.
+            var timestamp = DateTimeOffset.UtcNow;
+            var staticPeer = staticPeers.First();
+            table.AddPeer(staticPeer, timestamp);
+            Assert.Equal(2, table.Count);
+            Assert.Equal(staticPeers.ToHashSet(), table.Peers.ToHashSet());
+            Assert.Equal(staticPeers.ToHashSet(), table.StaticPeers.ToHashSet());
+            Assert.Empty(table.NonStaticPeers);
+            Assert.Contains(
+                table.PeerStates,
+                state => state.Peer.Address.Equals(staticPeer.Address));
+            Assert.Contains(
+                table.StaticPeerStates,
+                state => state.Peer.Address.Equals(staticPeer.Address));
+            DateTimeOffset? actual = table.PeerStates
+                .FirstOrDefault(state => state.Peer.Address.Equals(staticPeer.Address))
+                ?.LastUpdated;
+            Assert.Equal(timestamp, actual);
 
             BoundPeer[] normalPeers = Enumerable.Range(0, 10)
                 .Select(

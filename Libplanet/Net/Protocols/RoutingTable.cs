@@ -120,6 +120,9 @@ namespace Libplanet.Net.Protocols
             .Union(NonEmptyBuckets.SelectMany(bucket => bucket.PeerStates))
             .ToArray();
 
+        // For unit tests
+        internal IEnumerable<BoundPeer> NonStaticPeers =>
+            NonEmptyBuckets.SelectMany(bucket => bucket.Peers).ToArray();
 
         internal IEnumerable<IEnumerable<BoundPeer>> CachesToCheck
         {
