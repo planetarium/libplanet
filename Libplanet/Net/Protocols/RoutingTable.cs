@@ -104,8 +104,7 @@ namespace Libplanet.Net.Protocols
         /// <summary>
         /// An <see cref="IEnumerable{T}"/> of peers in the table.
         /// </summary>
-        public IEnumerable<BoundPeer> Peers => _staticPeerStates.Values
-            .Select(state => state.Peer)
+        public IEnumerable<BoundPeer> Peers => StaticPeers
             .Union(NonEmptyBuckets.SelectMany(bucket => bucket.Peers))
             .ToArray();
 
@@ -117,10 +116,10 @@ namespace Libplanet.Net.Protocols
         /// <summary>
         /// An <see cref="IEnumerable{T}"/> of <see cref="PeerState"/> of peers in the table.
         /// </summary>
-        public IEnumerable<PeerState> PeerStates =>
-            NonEmptyBuckets
-                .SelectMany(bucket => bucket.PeerStates)
-                .ToArray();
+        public IEnumerable<PeerState> PeerStates => StaticPeerStates
+            .Union(NonEmptyBuckets.SelectMany(bucket => bucket.PeerStates))
+            .ToArray();
+
 
         internal IEnumerable<IEnumerable<BoundPeer>> CachesToCheck
         {
