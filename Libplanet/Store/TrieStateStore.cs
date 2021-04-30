@@ -23,6 +23,7 @@ namespace Libplanet.Store
         private readonly IKeyValueStore _stateHashKeyValueStore;
         private readonly bool _secure;
         private readonly ILogger _logger;
+        private bool _disposed = false;
 
         /// <summary>
         /// Creates a new <see cref="TrieStateStore"/>.
@@ -160,8 +161,12 @@ namespace Libplanet.Store
 
         public void Dispose()
         {
-            (_stateKeyValueStore as IDisposable)?.Dispose();
-            (_stateHashKeyValueStore as IDisposable)?.Dispose();
+            if (!_disposed)
+            {
+                (_stateKeyValueStore as IDisposable)?.Dispose();
+                (_stateHashKeyValueStore as IDisposable)?.Dispose();
+                _disposed = true;
+            }
         }
 
         /// <summary>

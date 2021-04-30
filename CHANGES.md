@@ -156,6 +156,10 @@ To be released.
     updated cached peers multiple times.  [[#1219]]
  -  Fixed memory leak due to undisposed `CancellationTokenRegistration`s.
     [[#1228]]
+ -  Fixed a bug where `DefaultStore.Dispose()` and `TrieStateStore.Dispose()`
+    hadn't worked idempotently.  [[#1272]]
+ -  (Libplanet.RocksDBStore) Fixed a bug where `RocksDBStore.Dispose()` and
+    `RocksDBKeyValueStore.Dispose()` hadn't worked idempotently.  [[#1272]]
 
 ### CLI tools
 
@@ -179,7 +183,9 @@ To be released.
 [#1242]: https://github.com/planetarium/libplanet/pull/1242
 [#1265]: https://github.com/planetarium/libplanet/pull/1265
 [#1268]: https://github.com/planetarium/libplanet/pull/1268
+[#1272]: https://github.com/planetarium/libplanet/pull/1272
 [#1274]: https://github.com/planetarium/libplanet/pull/1274
+
 
 Version 0.11.1
 -------------
