@@ -218,6 +218,10 @@ mutable.  [<a href="https://github.com/planetarium/libplanet/pull/1274">#1274</a
 updated cached peers multiple times.  [<a href="https://github.com/planetarium/libplanet/pull/1219">#1219</a>]</li>
 <li>Fixed memory leak due to undisposed <code>CancellationTokenRegistration</code>s.
 [<a href="https://github.com/planetarium/libplanet/pull/1218">#1228</a>]</li>
+<li>Fixed a bug where <code>DefaultStore.Dispose()</code> and <code>TrieStateStore.Dispose()</code>
+hadn't worked idempotently.  [<a href="https://github.com/planetarium/libplanet/pull/1272">#1272</a>]</li>
+<li>(Libplanet.RocksDBStore) Fixed a bug where <code>RocksDBStore.Dispose()</code> and
+<code>RocksDBKeyValueStore.Dispose()</code> hadn't worked idempotently.  [<a href="https://github.com/planetarium/libplanet/pull/1272">#1272</a>]</li>
 </ul>
 <h3 id="cli-tools">CLI tools</h3>
 <ul>
