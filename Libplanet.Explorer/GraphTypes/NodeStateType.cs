@@ -1,3 +1,4 @@
+#nullable enable
 using GraphQL.Types;
 using Libplanet.Action;
 using Libplanet.Explorer.Interfaces;

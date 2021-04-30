@@ -1,3 +1,4 @@
+#nullable enable
 using System.Runtime.CompilerServices;
 using GraphQL.Types;
 using Libplanet.Action;

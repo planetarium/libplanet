@@ -1,3 +1,4 @@
+#nullable enable
 using System.Security.Cryptography;
 
 namespace Libplanet.Crypto

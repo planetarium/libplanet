@@ -1,3 +1,4 @@
+#nullable enable
 namespace Libplanet.Action
 {
     internal class Random : System.Random, IRandom

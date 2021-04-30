@@ -1,3 +1,4 @@
+#nullable enable
 using Libplanet.Action;
 using Libplanet.Blocks;
 

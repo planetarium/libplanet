@@ -1,3 +1,4 @@
+#nullable enable
 using Libplanet.Blocks;
 using Libplanet.Tx;
 using LiteDB;

@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;

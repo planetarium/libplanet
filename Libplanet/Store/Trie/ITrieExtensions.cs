@@ -1,3 +1,4 @@
+#nullable enable
 using System.Collections.Immutable;
 using System.Text;
 using Bencodex.Types;

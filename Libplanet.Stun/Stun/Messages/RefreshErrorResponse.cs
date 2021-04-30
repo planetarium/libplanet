@@ -1,3 +1,4 @@
+#nullable enable
 using Libplanet.Stun.Attributes;
 
 namespace Libplanet.Stun.Messages

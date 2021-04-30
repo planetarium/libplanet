@@ -1,3 +1,4 @@
+#nullable enable
 namespace Libplanet.Explorer.Store
 {
     public readonly struct MySQLRichStoreOptions

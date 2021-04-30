@@ -1,3 +1,4 @@
+#nullable enable
 namespace Libplanet.Stun.Attributes
 {
     public class RequestedTransport : Attribute

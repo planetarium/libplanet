@@ -1,3 +1,4 @@
+#nullable enable
 using GraphQL.Language.AST;
 using Libplanet.Explorer.GraphTypes;
 using Xunit;

@@ -1,3 +1,4 @@
+#nullable enable
 using Libplanet.Action;
 
 namespace Libplanet.Blockchain

@@ -1,3 +1,4 @@
+#nullable enable
 using System.IO;
 using System.Security.Cryptography;
 using Org.BouncyCastle.Asn1;

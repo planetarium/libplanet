@@ -1,3 +1,4 @@
+#nullable enable
 using GraphQL.Types;
 
 namespace Libplanet.Explorer.UnitTests.GraphTypes

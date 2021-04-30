@@ -1,3 +1,4 @@
+#nullable enable
 using Bencodex.Types;
 using Libplanet.Action;
 
