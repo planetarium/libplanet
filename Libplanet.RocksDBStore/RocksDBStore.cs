@@ -965,24 +965,28 @@ namespace Libplanet.RocksDBStore
         {
             try
             {
-                _chainDb?.Dispose();
-                _txIndexDb?.Dispose();
-                _blockIndexDb?.Dispose();
-                _blockPerceptionDb?.Dispose();
-                _stagedTxDb?.Dispose();
-                foreach (var db in _txDbCache.Values)
+                if (!_disposed)
                 {
-                    db.Dispose();
+                    _chainDb?.Dispose();
+                    _txIndexDb?.Dispose();
+                    _blockIndexDb?.Dispose();
+                    _blockPerceptionDb?.Dispose();
+                    _stagedTxDb?.Dispose();
+                    foreach (var db in _txDbCache.Values)
+                    {
+                        db.Dispose();
+                    }
+
+                    _txDbCache.Clear();
+
+                    foreach (var db in _blockDbCache.Values)
+                    {
+                        db.Dispose();
+                    }
+
+                    _blockDbCache.Clear();
+                    _disposed = true;
                 }
-
-                _txDbCache.Clear();
-
-                foreach (var db in _blockDbCache.Values)
-                {
-                    db.Dispose();
-                }
-
-                _blockDbCache.Clear();
             }
             catch (Exception e)
             {
