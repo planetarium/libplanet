@@ -179,6 +179,7 @@ parameter became <code>IImmutableSet&lt;BlockHash&gt;</code>
 (was <code>ImmutableHashSet&lt;HashDigest&lt;SHA256&gt;&gt;</code>).</li>
 </ul>
 </li>
+<li>Added <code>IActionContext.TxId</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/1275">#1275</a>]</li>
 <li>Removed <code>StunMessage.Parse(Stream)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1218">#1228</a>]</li>
 <li>Moved <code>ITransport</code> and <code>NetMQTransport</code> from <code>Libplanet.Net</code> to
 <code>Libplanet.Net.Transports</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1235">#1235</a>]</li>
@@ -204,6 +205,7 @@ mutable.  [<a href="https://github.com/planetarium/libplanet/pull/1274">#1274</a
 <li>Added <code>NetMQTransport.QueryAppProtocolVersion()</code> static method.  [<a href="https://github.com/planetarium/libplanet/pull/1235">#1235</a>]</li>
 <li>Added <code>BoundPeer.Parse()</code> static method.  [<a href="https://github.com/planetarium/libplanet/pull/1240">#1240</a>]</li>
 <li>Added <code>TransportException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/1242">#1242</a>]</li>
+<li>Added <code>AtomicActionRenderer&lt;T&gt;</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/1267">#1267</a>, <a href="https://github.com/planetarium/libplanet/pull/1275">#1275</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
@@ -220,6 +222,26 @@ from it, this became done by <code>NetMQTransport</code> instead of <code>Swarm&
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
+<li>Fixed a bug where executing <code>Transaction&lt;T&gt;.Actions</code> had not been atomic.
+<code>Actions</code> in a <code>Transaction&lt;T&gt;</code> now became executed all or nothing at all.
+[<a href="https://github.com/planetarium/libplanet/issues/1267">#1267</a>, <a href="https://github.com/planetarium/libplanet/pull/1275">#1275</a>]
+<ul>
+<li><code>Transaction&lt;T&gt;.EvaluateActions()</code> method became atomic.</li>
+<li><code>Transaction&lt;T&gt;.EvaluateActionsGradually()</code> method had returned
+the same number of <code>ActionEvaluation</code>s to <code>Transaction&lt;T&gt;.Actions</code>,
+but now became to omit the evaluations after the first action throwing
+an exception.  If no action throws any exception, it still returns
+the same number of <code>ActionEvaluation</code>s to <code>Transaction&lt;T&gt;.Actions</code>.</li>
+<li>State-wise, <code>Transaction&lt;T&gt;</code>s having any exception-throwing action
+now do not commit any changes at all to <code>IStateStore</code>.</li>
+<li>Rendering-wise, for actions following the first exception-throwing
+action, action rendering methods in <code>IActionRenderer&lt;T&gt;</code>
+(<code>RenderAction()</code>, <code>RenderActionError()</code>, <code>UnrenderAction()</code>, and
+<code>UnrenderActionError()</code>) became not invoked.
+If you want to dismiss all actions in unsuccessful transactions at all,
+wrap your action renderer with <code>AtomicActionRenderer&lt;T&gt;</code>.</li>
+</ul>
+</li>
 <li>Fixed a bug where <code>KademliaProtocol.BootstrapAsync()</code> has sent multiple
 <code>Ping</code> messages to other peers.  [<a href="https://github.com/planetarium/libplanet/pull/1219">#1219</a>]</li>
 <li>Fixed a bug where <code>KademliaProtocol.CheckReplacementCacheAsync()</code> has
