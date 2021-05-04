@@ -128,6 +128,14 @@ To be released.
         `IReadOnlyList<T>` (was `IEnumerable<T>`).
      -  The type of `Transactions` property of `Block<T>` became
         `IReadOnlyList<T>` (was `IEnumerable<T>`).
+ -  Types of following properties became `IReadOnlyList<T>`
+    (was `IEnumerable<T>`).  [[#1230], [#1271]]
+     -  `RoutingTable.Peers`
+     -  `RoutingTable.PeerStates`
+     -  `Swarm<T>.Peers`
+     -  `Swarm<T>.PeerStates`
+ -  Return type of `RoutingTable.Neighbors()` became `IReadOnlyList<BoundPeer>`
+    (was `IEnumerable<BoundPeer>`).  [[#1230], [#1271]]
 
 ### Backward-incompatible network protocol changes
 
