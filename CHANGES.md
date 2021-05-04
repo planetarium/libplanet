@@ -118,6 +118,7 @@ To be released.
      -  The type of `TrieStateStore.PruneStates()` method's `excludeBlockHashes`
         parameter became `IImmutableSet<BlockHash>`
         (was `ImmutableHashSet<HashDigest<SHA256>>`).
+ -  Added `IActionContext.TxId` property.  [[#1275]]
  -  Removed `StunMessage.Parse(Stream)` method.  [[#1228]]
  -  Moved `ITransport` and `NetMQTransport` from `Libplanet.Net` to
     `Libplanet.Net.Transports`.  [[#1235]]
@@ -142,6 +143,7 @@ To be released.
  -  Added `NetMQTransport.QueryAppProtocolVersion()` static method.  [[#1235]]
  -  Added `BoundPeer.Parse()` static method.  [[#1240]]
  -  Added `TransportException` class.  [[#1242]]
+ -  Added `AtomicActionRenderer<T>` class.  [[#1267], [#1275]]
 
 ### Behavioral changes
 
@@ -158,6 +160,23 @@ To be released.
 
 ### Bug fixes
 
+ -  Fixed a bug where executing `Transaction<T>.Actions` had not been atomic.
+    `Actions` in a `Transaction<T>` now became executed all or nothing at all.
+    [[#1267], [#1275]]
+     -  `Transaction<T>.EvaluateActions()` method became atomic.
+     -  `Transaction<T>.EvaluateActionsGradually()` method had returned
+        the same number of `ActionEvaluation`s to `Transaction<T>.Actions`,
+        but now became to omit the evaluations after the first action throwing
+        an exception.  If no action throws any exception, it still returns
+        the same number of `ActionEvaluation`s to `Transaction<T>.Actions`.
+     -  State-wise, `Transaction<T>`s having any exception-throwing action
+        now do not commit any changes at all to `IStateStore`.
+     -  Rendering-wise, for actions following the first exception-throwing
+        action, action rendering methods in `IActionRenderer<T>`
+        (`RenderAction()`, `RenderActionError()`, `UnrenderAction()`, and
+        `UnrenderActionError()`) became not invoked.
+        If you want to dismiss all actions in unsuccessful transactions at all,
+        wrap your action renderer with `AtomicActionRenderer<T>`.
  -  Fixed a bug where `KademliaProtocol.BootstrapAsync()` has sent multiple
     `Ping` messages to other peers.  [[#1219]]
  -  Fixed a bug where `KademliaProtocol.CheckReplacementCacheAsync()` has
@@ -192,9 +211,11 @@ To be released.
 [#1240]: https://github.com/planetarium/libplanet/pull/1240
 [#1242]: https://github.com/planetarium/libplanet/pull/1242
 [#1265]: https://github.com/planetarium/libplanet/pull/1265
+[#1267]: https://github.com/planetarium/libplanet/issues/1267
 [#1268]: https://github.com/planetarium/libplanet/pull/1268
 [#1272]: https://github.com/planetarium/libplanet/pull/1272
 [#1274]: https://github.com/planetarium/libplanet/pull/1274
+[#1275]: https://github.com/planetarium/libplanet/pull/1275
 [#1278]: https://github.com/planetarium/libplanet/pull/1278
 
 

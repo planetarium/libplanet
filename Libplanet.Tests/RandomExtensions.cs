@@ -1,5 +1,6 @@
 using System;
 using System.Security.Cryptography;
+using Libplanet.Tx;
 
 namespace Libplanet.Tests
 {
@@ -11,6 +12,9 @@ namespace Libplanet.Tests
             random.NextBytes(buffer);
             return buffer;
         }
+
+        public static TxId NextTxId(this Random random) =>
+            new TxId(random.NextBytes(TxId.Size));
 
         public static Address NextAddress(this Random random) =>
             new Address(random.NextBytes(Address.Size));

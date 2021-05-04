@@ -15,7 +15,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             new AccountStateDeltaImpl(_ => null, (_, __) => default, default);
 
         private static IActionContext _actionContext =
-            new ActionContext(default, default, default, _stateDelta, default);
+            new ActionContext(default, default, default, default, _stateDelta, default);
 
         private static Exception _exception = new Exception();
 

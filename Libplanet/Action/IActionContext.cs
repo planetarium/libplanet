@@ -1,6 +1,7 @@
 #nullable enable
 using System.Diagnostics.Contracts;
 using System.Security.Cryptography;
+using Libplanet.Tx;
 
 namespace Libplanet.Action
 {
@@ -16,6 +17,13 @@ namespace Libplanet.Action
         /// </summary>
         [Pure]
         Address Signer { get; }
+
+        /// <summary>
+        /// <see cref="Transaction{T}.Id"/> of a transaction that an executed <see cref="IAction"/>
+        /// belongs to.  This is <c>null</c> iff <see cref="BlockAction"/> is <c>true</c>.
+        /// </summary>
+        [Pure]
+        TxId? TxId { get; }
 
         /// <summary>
         /// <see cref="Address"/> of a block miner account.

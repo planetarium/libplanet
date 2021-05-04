@@ -738,6 +738,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
         }
 
         private IActionContext FakeContext(long blockIndex = 1) =>
-            new ActionContext(default, default, blockIndex, _emptyStates, 0);
+            new ActionContext(default, default, default, blockIndex, _emptyStates, 0);
     }
 }

@@ -2,6 +2,7 @@
 using System.Diagnostics.Contracts;
 using System.Security.Cryptography;
 using Libplanet.Store.Trie;
+using Libplanet.Tx;
 
 namespace Libplanet.Action
 {
@@ -14,6 +15,7 @@ namespace Libplanet.Action
 
         public ActionContext(
             Address signer,
+            TxId? txid,
             Address miner,
             long blockIndex,
             IAccountStateDelta previousStates,
@@ -24,6 +26,7 @@ namespace Libplanet.Action
         )
         {
             Signer = signer;
+            TxId = txid;
             Miner = miner;
             BlockIndex = blockIndex;
             Rehearsal = rehearsal;
@@ -35,6 +38,8 @@ namespace Libplanet.Action
         }
 
         public Address Signer { get; }
+
+        public TxId? TxId { get; }
 
         public Address Miner { get; }
 
@@ -63,6 +68,7 @@ namespace Libplanet.Action
         public IActionContext GetUnconsumedContext() =>
             new ActionContext(
                 Signer,
+                TxId,
                 Miner,
                 BlockIndex,
                 PreviousStates,
