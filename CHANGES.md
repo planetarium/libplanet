@@ -147,8 +147,13 @@ To be released.
 
  -  `ITransport.StartAsync()` and `ITransport.RunAsync()` became to throw
     `TransportException` instead of `SwarmException`.  [[#1242]]
- -  `NetMQTransport` became to enforce `ForceDotNet.Force()` in [AsyncIO]
-    while it's running on Mono runtime instead of `Swarm<T>`.
+ -  `NetMQTransport` became to enforce NetMQ/[AsyncIO] to use its pure .NET
+    implementation instead of Windows'
+    <abbr title="input/output completion port">IOCP</abbr> when it is running
+    on Mono, which powers Unity engine, since Unity does not properly
+    implement the IOCP even on Windows.
+    It had been done by `Swarm<T>`, but as the `ITransport` is now separated
+    from it, this became done by `NetMQTransport` instead of `Swarm<T>`.
     [[#247], [#1278]]
 
 ### Bug fixes
