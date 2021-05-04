@@ -79,36 +79,37 @@ namespace Libplanet.Net.Protocols
         public int Count => _buckets.Sum(bucket => bucket.Count) + _staticPeerStates.Length;
 
         /// <summary>
-        /// An <see cref="IEnumerable{T}"/> of static peers in the table.
+        /// An <see cref="IReadOnlyList{T}"/> of static peers in the table.
         /// </summary>
-        public IEnumerable<BoundPeer> StaticPeers => _staticPeerStates
+        public IReadOnlyList<BoundPeer> StaticPeers => _staticPeerStates
             .Select(state => state.Peer)
             .ToArray();
 
         /// <summary>
-        /// An <see cref="IEnumerable{T}"/> of peers in the table.
+        /// An <see cref="IReadOnlyList{T}"/> of peers in the table.
         /// </summary>
-        public IEnumerable<BoundPeer> Peers => StaticPeers
+        public IReadOnlyList<BoundPeer> Peers => StaticPeers
             .Union(NonEmptyBuckets.SelectMany(bucket => bucket.Peers))
             .ToArray();
 
         /// <summary>
-        /// An <see cref="IEnumerable{T}"/> of <see cref="PeerState"/> of static peers in the table.
+        /// An <see cref="IReadOnlyList{T}"/> of <see cref="PeerState"/> of
+        /// static peers in the table.
         /// </summary>
-        public IEnumerable<PeerState> StaticPeerStates => _staticPeerStates.ToArray();
+        public IReadOnlyList<PeerState> StaticPeerStates => _staticPeerStates.ToArray();
 
         /// <summary>
-        /// An <see cref="IEnumerable{T}"/> of <see cref="PeerState"/> of peers in the table.
+        /// An <see cref="IReadOnlyList{T}"/> of <see cref="PeerState"/> of peers in the table.
         /// </summary>
-        public IEnumerable<PeerState> PeerStates => StaticPeerStates
+        public IReadOnlyList<PeerState> PeerStates => StaticPeerStates
             .Union(NonEmptyBuckets.SelectMany(bucket => bucket.PeerStates))
             .ToArray();
 
         // For unit tests
-        internal IEnumerable<BoundPeer> NonStaticPeers =>
+        internal IReadOnlyList<BoundPeer> NonStaticPeers =>
             NonEmptyBuckets.SelectMany(bucket => bucket.Peers).ToArray();
 
-        internal IEnumerable<IEnumerable<BoundPeer>> CachesToCheck
+        internal IReadOnlyList<IReadOnlyList<BoundPeer>> CachesToCheck
         {
             get
             {
@@ -116,23 +117,24 @@ namespace Libplanet.Net.Protocols
                     bucket => bucket.ReplacementCache
                         .OrderBy(kv => kv.Value)
                         .Select(kv => kv.Key)
-                );
+                        .ToArray()
+                ).ToArray();
             }
         }
 
-        internal IEnumerable<KBucket> NonFullBuckets
+        internal IReadOnlyList<KBucket> NonFullBuckets
         {
             get
             {
-                return _buckets.Where(bucket => !bucket.IsFull());
+                return _buckets.Where(bucket => !bucket.IsFull()).ToArray();
             }
         }
 
-        internal IEnumerable<KBucket> NonEmptyBuckets
+        internal IReadOnlyList<KBucket> NonEmptyBuckets
         {
             get
             {
-                return _buckets.Where(bucket => !bucket.IsEmpty());
+                return _buckets.Where(bucket => !bucket.IsEmpty()).ToArray();
             }
         }
 
@@ -207,7 +209,7 @@ namespace Libplanet.Net.Protocols
         /// <param name="includeTarget">A boolean value indicates to include a peer with
         /// <see cref="Address"/> of <paramref name="target"/> in return value or not.</param>
         /// <returns>An enumerable of <see cref="BoundPeer"/>.</returns>
-        public IEnumerable<BoundPeer> Neighbors(Peer target, int k, bool includeTarget)
+        public IReadOnlyList<BoundPeer> Neighbors(Peer target, int k, bool includeTarget)
         {
             return Neighbors(target.Address, k, includeTarget);
         }
@@ -223,7 +225,7 @@ namespace Libplanet.Net.Protocols
         /// <param name="includeTarget">A boolean value indicates to include a peer with
         /// <see cref="Address"/> of <paramref name="target"/> in return value or not.</param>
         /// <returns>An enumerable of <see cref="BoundPeer"/>.</returns>
-        public IEnumerable<BoundPeer> Neighbors(Address target, int k, bool includeTarget)
+        public IReadOnlyList<BoundPeer> Neighbors(Address target, int k, bool includeTarget)
         {
             // TODO: Should include static peers?
             var sorted = _buckets
@@ -241,7 +243,7 @@ namespace Libplanet.Net.Protocols
                 ? sorted
                 : sorted.Where(peer => !peer.Address.Equals(target));
 
-            return peers.Take(maxCount);
+            return peers.Take(maxCount).ToArray();
         }
 
         /// <summary>
@@ -308,7 +310,7 @@ namespace Libplanet.Net.Protocols
             }
         }
 
-        internal IEnumerable<BoundPeer> PeersToBroadcast(Address? except, int min = 10)
+        internal IReadOnlyList<BoundPeer> PeersToBroadcast(Address? except, int min = 10)
         {
             List<BoundPeer> peers = NonEmptyBuckets
                 .Select(bucket => bucket.GetRandomPeer(except))
@@ -344,13 +346,14 @@ namespace Libplanet.Net.Protocols
             return peers;
         }
 
-        internal IEnumerable<BoundPeer> PeersToRefresh(TimeSpan maxAge) => NonEmptyBuckets
+        internal IReadOnlyList<BoundPeer> PeersToRefresh(TimeSpan maxAge) => NonEmptyBuckets
             .Where(bucket => bucket.Tail.LastUpdated + maxAge < DateTimeOffset.UtcNow)
             .Select(bucket => bucket.Tail.Peer)
             .Union(
                 _staticPeerStates
                     .Where(state => state.LastUpdated + maxAge < DateTimeOffset.UtcNow)
-                    .Select(state => state.Peer).Take(1));
+                    .Select(state => state.Peer).Take(1))
+            .ToArray();
 
         internal bool RemoveCache(BoundPeer peer)
         {

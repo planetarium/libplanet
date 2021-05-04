@@ -211,15 +211,15 @@ namespace Libplanet.Tests.Net.Protocols
                 Assert.Equal(i / 2, table.GetBucketIndexOf(peer.Address));
             }
 
-            var broadcastCandidate = table.PeersToBroadcast(null, 0).ToArray();
-            Assert.Equal(5, broadcastCandidate.Length);
+            var broadcastCandidate = table.PeersToBroadcast(null, 0);
+            Assert.Equal(5, broadcastCandidate.Count);
             Assert.Equal(
                 new HashSet<int> { 0, 1, 2, 3, 4 },
                 broadcastCandidate.Select(peer => table.GetBucketIndexOf(peer.Address))
                     .ToHashSet());
 
-            broadcastCandidate = table.PeersToBroadcast(null, 10).ToArray();
-            Assert.Equal(10, broadcastCandidate.Length);
+            broadcastCandidate = table.PeersToBroadcast(null, 10);
+            Assert.Equal(10, broadcastCandidate.Count);
             Assert.Equal(peers.ToHashSet(), broadcastCandidate.ToHashSet());
         }
 
@@ -242,7 +242,7 @@ namespace Libplanet.Tests.Net.Protocols
                     DateTimeOffset.UtcNow - (i % 2 == 0 ? TimeSpan.Zero : TimeSpan.FromMinutes(2)));
             }
 
-            Assert.Equal(peerCount, table.Peers.Count());
+            Assert.Equal(peerCount, table.Peers.Count);
             Assert.Equal(
                 Enumerable
                     .Range(0, peerCount / 2)
@@ -269,7 +269,7 @@ namespace Libplanet.Tests.Net.Protocols
                     DateTimeOffset.UtcNow - TimeSpan.FromMinutes(2) + TimeSpan.FromSeconds(i));
             }
 
-            Assert.Equal(peerCount, table.Peers.Count());
+            Assert.Equal(peerCount, table.Peers.Count);
             for (int i = 0; i < peerCount; i++)
             {
                 Assert.Equal(peers[i], table.PeersToRefresh(TimeSpan.FromMinutes(1)).First());
@@ -331,7 +331,7 @@ namespace Libplanet.Tests.Net.Protocols
 
             Assert.Equal(12, table.Count);
             Assert.Equal(staticPeers.Union(normalPeers).ToHashSet(), table.Peers.ToHashSet());
-            BoundPeer[] peersToBroadcast = table.PeersToBroadcast(null, 0).ToArray();
+            IReadOnlyList<BoundPeer> peersToBroadcast = table.PeersToBroadcast(null, 0);
 
             // Must contain at least one static peer
             Assert.True(

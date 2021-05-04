@@ -73,7 +73,7 @@ namespace Libplanet.Tests.Net.Protocols
             _privateKey.PublicKey,
             new DnsEndPoint("localhost", 1234));
 
-        public IEnumerable<BoundPeer> Peers => Table.Peers;
+        public IReadOnlyList<BoundPeer> Peers => Table.Peers;
 
         public DateTimeOffset? LastMessageTimestamp { get; private set; }
 
@@ -272,7 +272,7 @@ namespace Libplanet.Tests.Net.Protocols
 
         public void BroadcastMessage(Address? except, Message message)
         {
-            var peers = Table.PeersToBroadcast(except).ToList();
+            var peers = Table.PeersToBroadcast(except);
             var peersString = string.Join(", ", peers.Select(peer => peer.Address));
             _logger.Debug(
                 "Broadcasting test message {Data} to {Count} peers which are: {Peers}",

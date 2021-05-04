@@ -206,7 +206,7 @@ namespace Libplanet.Net.Protocols
             // TODO: Add timeout parameter for this method
             try
             {
-                _logger.Verbose("Refreshing table... total peers: {Count}", _table.Peers.Count());
+                _logger.Verbose("Refreshing table... total peers: {Count}", _table.Peers.Count);
                 List<Task> tasks = _table.PeersToRefresh(maxAge)
                     .Select(peer =>
                         ValidateAsync(
@@ -239,7 +239,7 @@ namespace Libplanet.Net.Protocols
         {
             try
             {
-                _logger.Verbose("Start to validate all peers: ({Count})", _table.Peers.Count());
+                _logger.Verbose("Start to validate all peers: ({Count})", _table.Peers.Count);
                 foreach (var peer in _table.Peers)
                 {
                     await ValidateAsync(peer, timeout ?? _requestTimeout, cancellationToken);
@@ -746,8 +746,8 @@ namespace Libplanet.Net.Protocols
 
             peers = Kademlia.SortByDistance(peers, target).ToList();
 
-            List<BoundPeer> closestCandidate =
-                _table.Neighbors(target, _table.BucketSize, false).ToList();
+            IReadOnlyList<BoundPeer> closestCandidate =
+                _table.Neighbors(target, _table.BucketSize, false);
 
             Task[] awaitables = peers
                 .Where(peer => !dialHistory.Contains(peer))
