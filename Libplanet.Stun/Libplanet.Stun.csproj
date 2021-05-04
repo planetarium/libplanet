@@ -2,8 +2,8 @@
   <PropertyGroup>
     <PackageId>Libplanet.Stun</PackageId>
     <Title>Libplanet.Stun</Title>
-    <Summary>A STUN/TURN server implementation for Libplanet.</Summary>
-    <Description>A STUN/TURN server implementation for Libplanet.</Description>
+    <Summary>A STUN/TURN client implementation for Libplanet.</Summary>
+    <Description>A STUN/TURN client implementation for Libplanet.</Description>
     <PackageProjectUrl>https://libplanet.io/</PackageProjectUrl>
     <Authors>Planetarium</Authors>
     <Company>Planetarium</Company>
