@@ -22,7 +22,6 @@ namespace Libplanet.RocksDBStore
     /// <seealso cref="IStore"/>
     public class RocksDBStore : BaseStore
     {
-        #pragma warning disable MEN002 // Line is too long
         private const string BlockDbRootPathName = "block";
         private const string BlockIndexDbName = "blockindex";
         private const string BlockPerceptionDbName = "blockpercept";
@@ -190,11 +189,7 @@ namespace Libplanet.RocksDBStore
                 }
                 catch (Exception e)
                 {
-                    _logger.Error(
-                        e,
-                        $"An unexpected exception occurred on {nameof(ListChainIds)}: {{Message}}",
-                        e.Message
-                    );
+                    LogUnexpectedException(nameof(ListChainIds), e);
                     continue;
                 }
 
@@ -219,11 +214,7 @@ namespace Libplanet.RocksDBStore
             }
             catch (Exception e)
             {
-                _logger.Error(
-                    e,
-                    $"An unexpected exception occurred on {nameof(DeleteChainId)}: {{Message}}",
-                    e.Message
-                );
+                LogUnexpectedException(nameof(DeleteChainId), e);
             }
         }
 
@@ -240,11 +231,7 @@ namespace Libplanet.RocksDBStore
             }
             catch (Exception e)
             {
-                _logger.Error(
-                    e,
-                    $"An unexpected exception occurred on {nameof(GetCanonicalChainId)}: {{Message}}",
-                    e.Message
-                );
+                LogUnexpectedException(nameof(GetCanonicalChainId), e);
             }
 
             return (Guid?)null;
@@ -260,11 +247,7 @@ namespace Libplanet.RocksDBStore
             }
             catch (Exception e)
             {
-                _logger.Error(
-                    e,
-                    $"An unexpected exception occurred on {nameof(SetCanonicalChainId)}: {{Message}}",
-                    e.Message
-                );
+                LogUnexpectedException(nameof(SetCanonicalChainId), e);
             }
         }
 
@@ -281,11 +264,7 @@ namespace Libplanet.RocksDBStore
             }
             catch (Exception e)
             {
-                _logger.Error(
-                    e,
-                    $"An unexpected exception occurred on {nameof(CountIndex)}: {{Message}}",
-                    e.Message
-                );
+                LogUnexpectedException(nameof(CountIndex), e);
             }
 
             return 0;
@@ -336,11 +315,7 @@ namespace Libplanet.RocksDBStore
             }
             catch (Exception e)
             {
-                _logger.Error(
-                    e,
-                    $"An unexpected exception occurred on {nameof(IndexBlockHash)}: {{Message}}",
-                    e.Message
-                );
+                LogUnexpectedException(nameof(IndexBlockHash), e);
             }
 
             return null;
@@ -366,11 +341,7 @@ namespace Libplanet.RocksDBStore
             }
             catch (Exception e)
             {
-                _logger.Error(
-                    e,
-                    $"An unexpected exception occurred on {nameof(AppendIndex)}: {{Message}}",
-                    e.Message
-                );
+                LogUnexpectedException(nameof(AppendIndex), e);
             }
 
             return index;
@@ -416,11 +387,7 @@ namespace Libplanet.RocksDBStore
             }
             catch (Exception e)
             {
-                _logger.Error(
-                    e,
-                    $"An unexpected exception occurred on {nameof(ForkBlockIndexes)}: {{Message}}",
-                    e.Message
-                );
+                LogUnexpectedException(nameof(ForkBlockIndexes), e);
             }
             finally
             {
@@ -448,11 +415,7 @@ namespace Libplanet.RocksDBStore
             }
             catch (Exception e)
             {
-                _logger.Error(
-                    e,
-                    $"An unexpected exception occurred on {nameof(StageTransactionIds)}: {{Message}}",
-                    e.Message
-                );
+                LogUnexpectedException(nameof(StageTransactionIds), e);
             }
         }
 
@@ -469,11 +432,7 @@ namespace Libplanet.RocksDBStore
             }
             catch (Exception e)
             {
-                _logger.Error(
-                    e,
-                    $"An unexpected exception occurred on {nameof(UnstageTransactionIds)}: {{Message}}",
-                    e.Message
-                );
+                LogUnexpectedException(nameof(UnstageTransactionIds), e);
             }
         }
 
@@ -536,11 +495,7 @@ namespace Libplanet.RocksDBStore
             }
             catch (Exception e)
             {
-                _logger.Error(
-                    e,
-                    $"An unexpected exception occurred on {nameof(GetTransaction)}: {{Message}}",
-                    e.Message
-                );
+                LogUnexpectedException(nameof(GetTransaction), e);
                 return null;
             }
             finally
@@ -580,11 +535,7 @@ namespace Libplanet.RocksDBStore
             }
             catch (Exception e)
             {
-                _logger.Error(
-                    e,
-                    $"An unexpected exception occurred on {nameof(PutTransaction)}: {{Message}}",
-                    e.Message
-                );
+                LogUnexpectedException(nameof(PutTransaction), e);
             }
             finally
             {
@@ -620,11 +571,7 @@ namespace Libplanet.RocksDBStore
             }
             catch (Exception e)
             {
-                _logger.Error(
-                    e,
-                    $"An unexpected exception occurred on {nameof(DeleteTransaction)}: {{Message}}",
-                    e.Message
-                );
+                LogUnexpectedException(nameof(DeleteTransaction), e);
             }
             finally
             {
@@ -650,11 +597,7 @@ namespace Libplanet.RocksDBStore
             }
             catch (Exception e)
             {
-                _logger.Error(
-                    e,
-                    $"An unexpected exception occurred on {nameof(ContainsTransaction)}: {{Message}}",
-                    e.Message
-                );
+                LogUnexpectedException(nameof(ContainsTransaction), e);
             }
 
             return false;
@@ -706,11 +649,7 @@ namespace Libplanet.RocksDBStore
             }
             catch (Exception e)
             {
-                _logger.Error(
-                    e,
-                    $"An unexpected exception occurred on {nameof(GetBlockDigest)}: {{Message}}",
-                    e.Message
-                );
+                LogUnexpectedException(nameof(GetBlockDigest), e);
             }
             finally
             {
@@ -759,11 +698,7 @@ namespace Libplanet.RocksDBStore
             }
             catch (Exception e)
             {
-                _logger.Error(
-                    e,
-                    $"An unexpected exception occurred on {nameof(PutBlock)}: {{Message}}",
-                    e.Message
-                );
+                LogUnexpectedException(nameof(PutBlock), e);
             }
             finally
             {
@@ -798,11 +733,7 @@ namespace Libplanet.RocksDBStore
             }
             catch (Exception e)
             {
-                _logger.Error(
-                    e,
-                    $"An unexpected exception occurred on {nameof(DeleteBlock)}: {{Message}}",
-                    e.Message
-                );
+                LogUnexpectedException(nameof(DeleteBlock), e);
             }
             finally
             {
@@ -828,11 +759,7 @@ namespace Libplanet.RocksDBStore
             }
             catch (Exception e)
             {
-                _logger.Error(
-                    e,
-                    $"An unexpected exception occurred on {nameof(ContainsBlock)}: {{Message}}",
-                    e.Message
-                );
+                LogUnexpectedException(nameof(ContainsBlock), e);
             }
 
             return false;
@@ -854,11 +781,7 @@ namespace Libplanet.RocksDBStore
             }
             catch (Exception e)
             {
-                _logger.Error(
-                    e,
-                    $"An unexpected exception occurred on {nameof(SetBlockPerceivedTime)}: {{Message}}",
-                    e.Message
-                );
+                LogUnexpectedException(nameof(SetBlockPerceivedTime), e);
             }
         }
 
@@ -876,11 +799,7 @@ namespace Libplanet.RocksDBStore
             }
             catch (Exception e)
             {
-                _logger.Error(
-                    e,
-                    $"An unexpected exception occurred on {nameof(GetBlockPerceivedTime)}: {{Message}}",
-                    e.Message
-                );
+                LogUnexpectedException(nameof(GetBlockPerceivedTime), e);
             }
 
             return null;
@@ -916,11 +835,7 @@ namespace Libplanet.RocksDBStore
             }
             catch (Exception e)
             {
-                _logger.Error(
-                    e,
-                    $"An unexpected exception occurred on {nameof(GetTxNonce)}: {{Message}}",
-                    e.Message
-                );
+                LogUnexpectedException(nameof(GetTxNonce), e);
             }
 
             return 0;
@@ -941,11 +856,7 @@ namespace Libplanet.RocksDBStore
             }
             catch (Exception e)
             {
-                _logger.Error(
-                    e,
-                    $"An unexpected exception occurred on {nameof(IncreaseTxNonce)}: {{Message}}",
-                    e.Message
-                );
+                LogUnexpectedException(nameof(IncreaseTxNonce), e);
             }
         }
 
@@ -990,11 +901,7 @@ namespace Libplanet.RocksDBStore
             }
             catch (Exception e)
             {
-                _logger.Error(
-                    e,
-                    $"An unexpected exception occurred on {nameof(Dispose)}: {{Message}}",
-                    e.Message
-                );
+                LogUnexpectedException(nameof(Dispose), e);
             }
         }
 
@@ -1019,11 +926,7 @@ namespace Libplanet.RocksDBStore
             }
             catch (Exception e)
             {
-                _logger.Error(
-                    e,
-                    $"An unexpected exception occurred on {nameof(ForkTxNonces)}: {{Message}}",
-                    e.Message
-                );
+                LogUnexpectedException(nameof(ForkTxNonces), e);
             }
             finally
             {
@@ -1076,11 +979,7 @@ namespace Libplanet.RocksDBStore
             }
             catch (Exception e)
             {
-                _logger.Error(
-                    e,
-                    $"An unexpected exception occurred on {nameof(GetColumnFamily)}: {{Message}}",
-                    e.Message
-                );
+                LogUnexpectedException(nameof(GetColumnFamily), e);
                 cf = db.CreateColumnFamily(_options, cfName);
             }
 
@@ -1111,11 +1010,7 @@ namespace Libplanet.RocksDBStore
             }
             catch (Exception e)
             {
-                _logger.Error(
-                    e,
-                    $"An unexpected exception occurred on {nameof(GetColumnFamilies)}: {{Message}}",
-                    e.Message
-                );
+                LogUnexpectedException(nameof(GetColumnFamilies), e);
             }
 
             return columnFamilies;
@@ -1128,5 +1023,11 @@ namespace Libplanet.RocksDBStore
             Path.Combine(RocksDbPath(BlockDbRootPathName), dbName);
 
         private string RocksDbPath(string dbName) => Path.Combine(_path, dbName);
+
+        private void LogUnexpectedException(string methodName, Exception e)
+        {
+            string msg = $"An unexpected exception occurred on {methodName}: {{Message}}";
+            _logger.Error(e, msg, e.Message);
+        }
     }
 }
