@@ -8,7 +8,6 @@ using System.Net;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
-using AsyncIO;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Renderers;
@@ -42,14 +41,6 @@ namespace Libplanet.Net
         private ConcurrentDictionary<TxId, BoundPeer> _demandTxIds;
 
         private bool _disposed;
-
-        static Swarm()
-        {
-            if (!(Type.GetType("Mono.Runtime") is null))
-            {
-                ForceDotNet.Force();
-            }
-        }
 
         /// <summary>
         /// Creates a <see cref="Swarm{T}"/>.  This constructor in only itself does not start

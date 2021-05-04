@@ -8,6 +8,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
+using AsyncIO;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Protocols;
@@ -68,6 +69,14 @@ namespace Libplanet.Net.Transports
         private DifferentAppProtocolVersionEncountered _differentAppProtocolVersionEncountered;
 
         private bool _disposed;
+
+        static NetMQTransport()
+        {
+            if (!(Type.GetType("Mono.Runtime") is null))
+            {
+                ForceDotNet.Force();
+            }
+        }
 
         /// <summary>
         /// Creates <see cref="NetMQTransport"/> instance.

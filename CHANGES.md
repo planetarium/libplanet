@@ -147,6 +147,14 @@ To be released.
 
  -  `ITransport.StartAsync()` and `ITransport.RunAsync()` became to throw
     `TransportException` instead of `SwarmException`.  [[#1242]]
+ -  `NetMQTransport` became to enforce NetMQ/[AsyncIO] to use its pure .NET
+    implementation instead of Windows'
+    <abbr title="input/output completion port">IOCP</abbr> when it is running
+    on Mono, which powers Unity engine, since Unity does not properly
+    implement the IOCP even on Windows.
+    It had been done by `Swarm<T>`, but as the `ITransport` is now separated
+    from it, this became done by `NetMQTransport` instead of `Swarm<T>`.
+    [[#247], [#1278]]
 
 ### Bug fixes
 
@@ -160,6 +168,8 @@ To be released.
     hadn't worked idempotently.  [[#1272]]
  -  (Libplanet.RocksDBStore) Fixed a bug where `RocksDBStore.Dispose()` and
     `RocksDBKeyValueStore.Dispose()` hadn't worked idempotently.  [[#1272]]
+ -  Fixed a bug where `NetMQTransport` had hung forever within Mono runtime.
+    [[#1278]]
 
 ### CLI tools
 
@@ -185,6 +195,7 @@ To be released.
 [#1268]: https://github.com/planetarium/libplanet/pull/1268
 [#1272]: https://github.com/planetarium/libplanet/pull/1272
 [#1274]: https://github.com/planetarium/libplanet/pull/1274
+[#1278]: https://github.com/planetarium/libplanet/pull/1278
 
 
 Version 0.11.1
