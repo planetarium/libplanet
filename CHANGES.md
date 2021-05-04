@@ -152,6 +152,9 @@ To be released.
 
  -  `ITransport.StartAsync()` and `ITransport.RunAsync()` became to throw
     `TransportException` instead of `SwarmException`.  [[#1242]]
+ -  When selecting peers for `ITransport.BroadcastMessage()`,
+    peers are selected from static peers in addition to peers selected
+    according to existing selection methods.  [[#1230], [#1271]]
  -  `NetMQTransport` became to enforce NetMQ/[AsyncIO] to use its pure .NET
     implementation instead of Windows'
     <abbr title="input/output completion port">IOCP</abbr> when it is running
