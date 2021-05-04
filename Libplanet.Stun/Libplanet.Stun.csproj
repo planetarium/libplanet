@@ -1,5 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <PackageId>Libplanet.Stun</PackageId>
+    <Title>Libplanet.Stun</Title>
+    <Summary>A STUN/TURN server implementation for Libplanet.</Summary>
+    <Description>A STUN/TURN server implementation for Libplanet.</Description>
+    <PackageProjectUrl>https://libplanet.io/</PackageProjectUrl>
+    <Authors>Planetarium</Authors>
+    <Company>Planetarium</Company>
+    <PackageLicenseExpression>LGPL-2.1-or-later</PackageLicenseExpression>
+    <RequireLicenseAcceptance>true</RequireLicenseAcceptance>
+    <RepositoryUrl>git://github.com/planetarium/libplanet.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageIcon>icon.png</PackageIcon>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <LangVersion>8.0</LangVersion>
     <TargetFrameworks>netstandard2.0;netstandard2.1;netcoreapp3.1</TargetFrameworks>
     <RootNamespace>Libplanet.Stun</RootNamespace>
@@ -12,6 +27,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="..\LICENSE" Pack="true" PackagePath="LICENSE.txt" />
+    <None Include="..\icon.png" Pack="true" PackagePath="icon.png" />
     <AdditionalFiles Include="..\Menees.Analyzers.Settings.xml">
       <Link>Menees.Analyzers.Settings.xml</Link>
     </AdditionalFiles>
