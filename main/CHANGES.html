@@ -209,6 +209,14 @@ mutable.  [<a href="https://github.com/planetarium/libplanet/pull/1274">#1274</a
 <ul>
 <li><code>ITransport.StartAsync()</code> and <code>ITransport.RunAsync()</code> became to throw
 <code>TransportException</code> instead of <code>SwarmException</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1242">#1242</a>]</li>
+<li><code>NetMQTransport</code> became to enforce NetMQ/<a href="https://github.com/somdoron/AsyncIO">AsyncIO</a> to use its pure .NET
+implementation instead of Windows'
+<abbr title="input/output completion port">IOCP</abbr> when it is running
+on Mono, which powers Unity engine, since Unity does not properly
+implement the IOCP even on Windows.
+It had been done by <code>Swarm&lt;T&gt;</code>, but as the <code>ITransport</code> is now separated
+from it, this became done by <code>NetMQTransport</code> instead of <code>Swarm&lt;T&gt;</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/247">#247</a>, <a href="https://github.com/planetarium/libplanet/pull/1278">#1278</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
@@ -222,6 +230,8 @@ updated cached peers multiple times.  [<a href="https://github.com/planetarium/l
 hadn't worked idempotently.  [<a href="https://github.com/planetarium/libplanet/pull/1272">#1272</a>]</li>
 <li>(Libplanet.RocksDBStore) Fixed a bug where <code>RocksDBStore.Dispose()</code> and
 <code>RocksDBKeyValueStore.Dispose()</code> hadn't worked idempotently.  [<a href="https://github.com/planetarium/libplanet/pull/1272">#1272</a>]</li>
+<li>Fixed a bug where <code>NetMQTransport</code> had hung forever within Mono runtime.
+[<a href="https://github.com/planetarium/libplanet/pull/1278">#1278</a>]</li>
 </ul>
 <h3 id="cli-tools">CLI tools</h3>
 <ul>
