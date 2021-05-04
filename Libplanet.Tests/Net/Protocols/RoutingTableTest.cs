@@ -283,19 +283,21 @@ namespace Libplanet.Tests.Net.Protocols
         public void StaticPeer()
         {
             var publicKey = new PrivateKey().PublicKey;
-            ImmutableHashSet<BoundPeer> staticPeers = Enumerable.Range(0, 2)
+            BoundPeer[] staticPeers = Enumerable.Range(0, 2)
                 .Select(
                     i => new BoundPeer(
                         TestUtils.GeneratePrivateKeyOfBucketIndex(publicKey.ToAddress(), i)
                             .PublicKey,
-                        new DnsEndPoint("0.0.0.0", 1000 + i))).ToImmutableHashSet();
-            var table = new RoutingTable(publicKey.ToAddress(), staticPeers: staticPeers);
+                        new DnsEndPoint("0.0.0.0", 1000 + i))).ToArray();
+            var table = new RoutingTable(
+                publicKey.ToAddress(),
+                staticPeers: staticPeers.ToImmutableHashSet());
 
             Assert.Equal(2, table.Count);
             Assert.Equal(staticPeers.ToHashSet(), table.Peers.ToHashSet());
             Assert.Equal(staticPeers.ToHashSet(), table.StaticPeers.ToHashSet());
             Assert.Empty(table.NonStaticPeers);
-            Assert.Equal(staticPeers.ToHashSet(), table.PeersToBroadcast(null, 0).ToHashSet());
+            Assert.Single(table.PeersToBroadcast(null, 0));
 
             // Adding peer already in static peer does not add peer to table, only updates.
             var timestamp = DateTimeOffset.UtcNow;
@@ -329,6 +331,12 @@ namespace Libplanet.Tests.Net.Protocols
 
             Assert.Equal(12, table.Count);
             Assert.Equal(staticPeers.Union(normalPeers).ToHashSet(), table.Peers.ToHashSet());
+            BoundPeer[] peersToBroadcast = table.PeersToBroadcast(null, 0).ToArray();
+
+            // Must contain at least one static peer
+            Assert.True(
+                peersToBroadcast.Contains(staticPeers[0]) ||
+                peersToBroadcast.Contains(staticPeers[1]));
         }
 
         private (PublicKey, PublicKey[]) GeneratePeersDifferentBuckets()
