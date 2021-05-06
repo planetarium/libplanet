@@ -8,6 +8,7 @@ projects=(
   "Libplanet.Tools"
   "Libplanet.Explorer"
   "Libplanet.Explorer.Executable"
+  "Libplanet.Stun"
 )
 configuration=Release
 executables=(
