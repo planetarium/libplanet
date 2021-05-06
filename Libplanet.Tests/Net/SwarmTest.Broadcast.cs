@@ -141,7 +141,7 @@ namespace Libplanet.Tests.Net
                 await receiverSwarm.AddPeersAsync(new[] { seedSwarm.AsPeer }, null);
                 Block<DumbAction> block = await seedChain.MineBlock(seedMiner);
                 seedSwarm.BroadcastBlock(block);
-                while (!((NetMQTransport)receiverSwarm.Transport).MessageHistory
+                while (receiverSwarm.Transport.MessageHistory
                     .Any(msg => msg is BlockHeaderMessage))
                 {
                     await Task.Delay(100);
