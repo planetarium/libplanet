@@ -187,11 +187,6 @@ namespace Libplanet.RocksDBStore
                 {
                     continue;
                 }
-                catch (Exception e)
-                {
-                    LogUnexpectedException(nameof(ListChainIds), e);
-                    continue;
-                }
 
                 yield return guid;
             }
@@ -977,11 +972,6 @@ namespace Libplanet.RocksDBStore
             {
                 cf = db.CreateColumnFamily(_options, cfName);
             }
-            catch (Exception e)
-            {
-                LogUnexpectedException(nameof(GetColumnFamily), e);
-                cf = db.CreateColumnFamily(_options, cfName);
-            }
 
             return cf;
         }
@@ -1001,16 +991,9 @@ namespace Libplanet.RocksDBStore
                 listColumnFamilies = new List<string>();
             }
 
-            try
+            foreach (string name in listColumnFamilies)
             {
-                foreach (string name in listColumnFamilies)
-                {
-                    columnFamilies.Add(name, _options);
-                }
-            }
-            catch (Exception e)
-            {
-                LogUnexpectedException(nameof(GetColumnFamilies), e);
+                columnFamilies.Add(name, _options);
             }
 
             return columnFamilies;
