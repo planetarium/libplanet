@@ -155,6 +155,9 @@ To be released.
  -  Added `StaticPeers` as the last parameter to
     `RoutingTable(Address, int, int)` constructor.  [[#1230], [#1271]]
  -  Added `AtomicActionRenderer<T>` class.  [[#1267], [#1275]]
+ -  Added `TxExecution` abstract class.  [[#1156], [#1289]]
+ -  Added `TxSuccess` class.  [[#1156], [#1289]]
+ -  Added `TxFailure` class.  [[#1156], [#1289]]
  -  Added `IExtractableException` interface.  [[#1156], [#1289]]
  -  Added `ExtractableException` static class.  [[#1156], [#1289]]
 
