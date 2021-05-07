@@ -119,6 +119,9 @@ To be released.
         parameter became `IImmutableSet<BlockHash>`
         (was `ImmutableHashSet<HashDigest<SHA256>>`).
  -  Added `IActionContext.TxId` property.  [[#1275]]
+ -  Removed `compress` parameter from `DefaultStore()` constructor.  [[#1289]]
+ -  Removed `statesCacheSize` parameter from `DefaultStore()` constructor.
+    [[#1289]]
  -  Removed `StunMessage.Parse(Stream)` method.  [[#1228]]
  -  Moved `ITransport` and `NetMQTransport` from `Libplanet.Net` to
     `Libplanet.Net.Transports`.  [[#1235]]

@@ -70,7 +70,6 @@ namespace Libplanet.RocksDBStore
         /// </param>
         /// <param name="blockCacheSize">The capacity of the block cache.</param>
         /// <param name="txCacheSize">The capacity of the transaction cache.</param>
-        /// <param name="statesCacheSize">The capacity of the states cache.</param>
         /// <param name="maxTotalWalSize">The number to configure <c>max_total_wal_size</c> RocksDB
         /// option.</param>
         /// <param name="keepLogFileNum">The number to configure <c>keep_log_file_num</c> RocksDB

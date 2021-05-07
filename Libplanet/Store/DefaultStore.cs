@@ -53,25 +53,21 @@ namespace Libplanet.Store
         /// </summary>
         /// <param name="path">The path of the directory where the storage files will be saved.
         /// If the path is <c>null</c>, the database is created in memory.</param>
-        /// <param name="compress">Whether to compress data.  Does not compress by default.</param>
         /// <param name="journal">
         /// Enables or disables double write check to ensure durability.
         /// </param>
         /// <param name="indexCacheSize">Max number of pages in the index cache.</param>
         /// <param name="blockCacheSize">The capacity of the block cache.</param>
         /// <param name="txCacheSize">The capacity of the transaction cache.</param>
-        /// <param name="statesCacheSize">The capacity of the states cache.</param>
         /// <param name="flush">Writes data direct to disk avoiding OS cache.  Turned on by default.
         /// </param>
         /// <param name="readOnly">Opens database readonly mode. Turned off by default.</param>
         public DefaultStore(
             string path,
-            bool compress = false,
             bool journal = true,
             int indexCacheSize = 50000,
             int blockCacheSize = 512,
             int txCacheSize = 1024,
-            int statesCacheSize = 10000,
             bool flush = true,
             bool readOnly = false
         )
