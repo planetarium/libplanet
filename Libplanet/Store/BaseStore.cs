@@ -4,12 +4,18 @@ using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
+using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Assets;
 using Libplanet.Blocks;
 using Libplanet.Tx;
+using Serilog;
 
 namespace Libplanet.Store
 {
+    /// <summary>
+    /// Common code for several <see cref="IStore"/> implementations.
+    /// </summary>
     public abstract class BaseStore : IStore, IDisposable
     {
         /// <inheritdoc />
@@ -121,6 +127,15 @@ namespace Libplanet.Store
         /// <inheritdoc cref="IStore.ContainsBlock(BlockHash)"/>
         public abstract bool ContainsBlock(BlockHash blockHash);
 
+        /// <inheritdoc cref="IStore.PutTxExecution(Libplanet.Tx.TxSuccess)"/>
+        public abstract void PutTxExecution(TxSuccess txSuccess);
+
+        /// <inheritdoc cref="IStore.PutTxExecution(Libplanet.Tx.TxFailure)"/>
+        public abstract void PutTxExecution(TxFailure txFailure);
+
+        /// <inheritdoc cref="IStore.GetTxExecution(BlockHash, TxId)"/>
+        public abstract TxExecution GetTxExecution(BlockHash blockHash, TxId txid);
+
         /// <inheritdoc cref="IStore.SetBlockPerceivedTime(BlockHash, DateTimeOffset)"/>
         public abstract void SetBlockPerceivedTime(
             BlockHash blockHash,
@@ -160,5 +175,84 @@ namespace Libplanet.Store
 
         /// <inheritdoc/>
         public abstract void ForkTxNonces(Guid sourceChainId, Guid destinationChainId);
+
+        protected static IValue SerializeTxExecution(TxSuccess txSuccess)
+        {
+            IEnumerable<IValue> sDelta = txSuccess.StateUpdatedAddresses
+                .Select(a => (IValue)(Binary)a.ToByteArray());
+            var aDelta = txSuccess.UpdatedFungibleAssets.Select(kv =>
+                new KeyValuePair<IKey, IValue>(
+                    (Binary)kv.Key.ToByteArray(),
+                    new List(kv.Value.Select(c => c.Serialize()))
+                )
+            );
+            return (Dictionary)Dictionary.Empty
+                .Add("fail", false)
+                .Add("sRoot", txSuccess.StateRootHash.ToByteArray())
+                .Add("sDelta", sDelta)
+                .Add((IKey)(Text)"aDelta", new Dictionary(aDelta));
+        }
+
+        protected static IValue SerializeTxExecution(TxFailure txFailure)
+        {
+            Dictionary d = Dictionary.Empty
+                .Add("fail", true)
+                .Add("exc", txFailure.ExceptionName);
+            return txFailure.ExceptionMetadata is { } v ? d.Add("excMeta", v) : d;
+        }
+
+        protected static TxExecution DeserializeTxExecution(
+            BlockHash blockHash,
+            TxId txid,
+            IValue decoded,
+            ILogger logger
+        )
+        {
+            if (!(decoded is Bencodex.Types.Dictionary d))
+            {
+                const string msg = nameof(TxExecution) +
+                    " must be serialized as a Bencodex dictionary, not {ActualValue}.";
+                logger?.Error(msg, decoded.Inspection);
+                return null;
+            }
+
+            try
+            {
+                bool fail = (Bencodex.Types.Boolean)d["fail"];
+                if (fail)
+                {
+                    string excName = (Text)d["exc"];
+                    IValue excMetadata = d.ContainsKey("excMeta") ? d["excMeta"] : null;
+                    return new TxFailure(blockHash, txid, excName, excMetadata);
+                }
+
+                var stateRootHash = new HashDigest<SHA256>((Binary)d["sRoot"]);
+                ImmutableHashSet<Address> stateUpdatedAddresses = ((List)d["sDelta"])
+                    .Select(v => new Address((Binary)v))
+                    .ToImmutableHashSet();
+                ImmutableDictionary<Address, IImmutableSet<Currency>> updatedFungibleAssets =
+                    ((Dictionary)d["aDelta"]).Select(kv =>
+                        new KeyValuePair<Address, IImmutableSet<Currency>>(
+                            new Address((Binary)kv.Key),
+                            ((List)kv.Value).Select(v => new Currency(v)).ToImmutableHashSet()
+                        )
+                    ).ToImmutableDictionary();
+                return new TxSuccess(
+                    blockHash,
+                    txid,
+                    stateRootHash,
+                    stateUpdatedAddresses,
+                    updatedFungibleAssets
+                );
+            }
+            catch (Exception e)
+            {
+                const string msg =
+                    "Uncaught exception during deserializing a " + nameof(TxExecution) +
+                    ": {Exception}";
+                logger?.Error(e, msg, e);
+                return null;
+            }
+        }
     }
 }

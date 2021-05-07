@@ -53,6 +53,24 @@ namespace Libplanet.Tests.Store
             return _store.ContainsBlock(blockHash);
         }
 
+        public void PutTxExecution(TxSuccess txSuccess)
+        {
+            Log(nameof(PutTxExecution), txSuccess);
+            _store.PutTxExecution(txSuccess);
+        }
+
+        public void PutTxExecution(TxFailure txFailure)
+        {
+            Log(nameof(PutTxExecution), txFailure);
+            _store.PutTxExecution(txFailure);
+        }
+
+        public TxExecution GetTxExecution(BlockHash blockHash, TxId txid)
+        {
+            Log(nameof(GetTxExecution), blockHash, txid);
+            return _store.GetTxExecution(blockHash, txid);
+        }
+
         public void SetBlockPerceivedTime(BlockHash blockHash, DateTimeOffset perceivedTime)
         {
             Log(nameof(SetBlockPerceivedTime), blockHash, perceivedTime);

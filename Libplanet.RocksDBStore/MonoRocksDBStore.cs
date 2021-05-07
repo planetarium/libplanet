@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Bencodex;
 using Libplanet.Blocks;
 using Libplanet.Store;
 using Libplanet.Tx;
@@ -25,6 +26,7 @@ namespace Libplanet.RocksDBStore
         private const string BlockPerceptionDbName = "blockpercept";
         private const string TxDbName = "tx";
         private const string StagedTxDbName = "stagedtx";
+        private const string TxExecutionDbName = "txexec";
         private const string ChainDbName = "chain";
         private const int ForkWriteBatchSize = 100000;
 
@@ -33,10 +35,13 @@ namespace Libplanet.RocksDBStore
         private static readonly byte[] TxKeyPrefix = { (byte)'T' };
         private static readonly byte[] TxNonceKeyPrefix = { (byte)'N' };
         private static readonly byte[] StagedTxKeyPrefix = { (byte)'t' };
+        private static readonly byte[] TxExecutionKeyPrefix = { (byte)'e' };
         private static readonly byte[] IndexCountKey = { (byte)'c' };
         private static readonly byte[] CanonicalChainIdIdKey = { (byte)'C' };
 
         private static readonly byte[] EmptyBytes = new byte[0];
+
+        private static readonly Codec Codec = new Codec();
 
         private readonly ILogger _logger;
 
@@ -50,6 +55,7 @@ namespace Libplanet.RocksDBStore
         private readonly RocksDb _blockPerceptionDb;
         private readonly RocksDb _txDb;
         private readonly RocksDb _stagedTxDb;
+        private readonly RocksDb _txExecutionDb;
         private readonly RocksDb _chainDb;
         private bool _disposed = false;
 
@@ -117,6 +123,8 @@ namespace Libplanet.RocksDBStore
                 RocksDBUtils.OpenRocksDb(_options, RocksDbPath(BlockPerceptionDbName));
             _txDb = RocksDBUtils.OpenRocksDb(_options, RocksDbPath(TxDbName));
             _stagedTxDb = RocksDBUtils.OpenRocksDb(_options, RocksDbPath(StagedTxDbName));
+            _txExecutionDb =
+                RocksDBUtils.OpenRocksDb(_options, RocksDbPath(TxExecutionDbName));
 
             // When opening a DB in a read-write mode, you need to specify all Column Families that
             // currently exist in a DB. https://github.com/facebook/rocksdb/wiki/Column-Families
@@ -509,6 +517,32 @@ namespace Libplanet.RocksDBStore
             return !(_blockDb.Get(key) is null);
         }
 
+        /// <inheritdoc cref="BaseStore.PutTxExecution(Libplanet.Tx.TxSuccess)"/>
+        public override void PutTxExecution(TxSuccess txSuccess) =>
+            _txExecutionDb.Put(
+                TxExecutionKey(txSuccess),
+                Codec.Encode(SerializeTxExecution(txSuccess))
+            );
+
+        /// <inheritdoc cref="BaseStore.PutTxExecution(Libplanet.Tx.TxFailure)"/>
+        public override void PutTxExecution(TxFailure txFailure) =>
+            _txExecutionDb.Put(
+                TxExecutionKey(txFailure),
+                Codec.Encode(SerializeTxExecution(txFailure))
+            );
+
+        /// <inheritdoc cref="BaseStore.GetTxExecution(BlockHash, TxId)"/>
+        public override TxExecution GetTxExecution(BlockHash blockHash, TxId txid)
+        {
+            byte[] key = TxExecutionKey(blockHash, txid);
+            if (_txExecutionDb.Get(key) is { } bytes)
+            {
+                return DeserializeTxExecution(blockHash, txid, Codec.Decode(bytes), _logger);
+            }
+
+            return null;
+        }
+
         /// <inheritdoc cref="BaseStore.SetBlockPerceivedTime(BlockHash, DateTimeOffset)"/>
         public override void SetBlockPerceivedTime(
             BlockHash blockHash,
@@ -635,8 +669,16 @@ namespace Libplanet.RocksDBStore
         private byte[] TxNonceKey(in Address address) =>
             TxNonceKeyPrefix.Concat(address.ByteArray).ToArray();
 
-        private byte[] StagedTxKey(TxId txId) =>
+        private byte[] StagedTxKey(in TxId txId) =>
             StagedTxKeyPrefix.Concat(txId.ByteArray).ToArray();
+
+        private byte[] TxExecutionKey(in BlockHash blockHash, in TxId txId) =>
+
+            // As BlockHash is not fixed size, place TxId first.
+            TxExecutionKeyPrefix.Concat(txId.ByteArray).Concat(blockHash.ByteArray).ToArray();
+
+        private byte[] TxExecutionKey(TxExecution txExecution) =>
+            TxExecutionKey(txExecution.BlockHash, txExecution.TxId);
 
         private IEnumerable<Iterator> IterateDb(RocksDb db, byte[] prefix, Guid? chainId = null)
         {

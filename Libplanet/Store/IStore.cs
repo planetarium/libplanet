@@ -193,6 +193,41 @@ namespace Libplanet.Store
         bool ContainsBlock(BlockHash blockHash);
 
         /// <summary>
+        /// Records the given <paramref name="txSuccess"/>.
+        /// </summary>
+        /// <param name="txSuccess">The successful transaction execution summary to record.
+        /// Must not be <c>null</c>.</param>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="txSuccess"/> is
+        /// <c>null</c>.</exception>
+        /// <seealso cref="PutTxExecution(Libplanet.Tx.TxFailure)"/>
+        /// <seealso cref="GetTxExecution(BlockHash, TxId)"/>
+        void PutTxExecution(TxSuccess txSuccess);
+
+        /// <summary>
+        /// Records the given <paramref name="txFailure"/>.
+        /// </summary>
+        /// <param name="txFailure">The failed transaction execution summary to record.
+        /// Must not be <c>null</c>.</param>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="txFailure"/> is
+        /// <c>null</c>.</exception>
+        /// <seealso cref="PutTxExecution(Libplanet.Tx.TxSuccess)"/>
+        /// <seealso cref="GetTxExecution(BlockHash, TxId)"/>
+        void PutTxExecution(TxFailure txFailure);
+
+        /// <summary>
+        /// Retrieves the recorded transaction execution summary.
+        /// </summary>
+        /// <param name="blockHash">The <see cref="Block{T}.Hash"/> of the recorded transaction
+        /// execution to retrieve.</param>
+        /// <param name="txid">The <see cref="Transaction{T}.Id"/> of the recorded transaction
+        /// execution to retrieve.</param>
+        /// <returns>The recorded transaction execution summary.  If it has been never recorded
+        /// <c>null</c> is returned instead.</returns>
+        /// <seealso cref="PutTxExecution(Libplanet.Tx.TxFailure)"/>
+        /// <seealso cref="PutTxExecution(Libplanet.Tx.TxSuccess)"/>
+        TxExecution GetTxExecution(BlockHash blockHash, TxId txid);
+
+        /// <summary>
         /// Records the perceived time of a block.  If there is already a record, it is overwritten.
         /// </summary>
         /// <param name="blockHash"><see cref="Block{T}.Hash"/> to record its perceived time.

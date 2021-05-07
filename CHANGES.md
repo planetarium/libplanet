@@ -119,6 +119,9 @@ To be released.
         parameter became `IImmutableSet<BlockHash>`
         (was `ImmutableHashSet<HashDigest<SHA256>>`).
  -  Added `IActionContext.TxId` property.  [[#1275]]
+ -  Added `IStore.PutTxExecution(TxSuccess)` method.  [[#1156], [#1289]]
+ -  Added `IStore.PutTxExecution(TxFailure)` method.  [[#1156], [#1289]]
+ -  Added `IStore.GetTxExecution()` method.  [[#1156], [#1289]]
  -  Removed `compress` parameter from `DefaultStore()` constructor.  [[#1289]]
  -  Removed `statesCacheSize` parameter from `DefaultStore()` constructor.
     [[#1289]]

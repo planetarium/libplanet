@@ -31,13 +31,16 @@ namespace Libplanet.Store
 
         private static readonly UPath TxRootPath = UPath.Root / "tx";
         private static readonly UPath BlockRootPath = UPath.Root / "block";
+        private static readonly UPath TxExecutionRootPath = UPath.Root / "txexec";
         private static readonly UPath BlockPerceptionRootPath = UPath.Root / "blockpercept";
+        private static readonly Codec Codec = new Codec();
 
         private readonly ILogger _logger;
 
         private readonly IFileSystem _root;
         private readonly SubFileSystem _txs;
         private readonly SubFileSystem _blocks;
+        private readonly SubFileSystem _txExecutions;
         private readonly SubFileSystem _blockPerceptions;
         private readonly LruCache<TxId, object> _txCache;
         private readonly LruCache<BlockHash, BlockDigest> _blockCache;
@@ -138,6 +141,8 @@ namespace Libplanet.Store
             _txs = new SubFileSystem(_root, TxRootPath, owned: false);
             _root.CreateDirectory(BlockRootPath);
             _blocks = new SubFileSystem(_root, BlockRootPath, owned: false);
+            _root.CreateDirectory(TxExecutionRootPath);
+            _txExecutions = new SubFileSystem(_root, TxExecutionRootPath, owned: false);
             _root.CreateDirectory(BlockPerceptionRootPath);
             _blockPerceptions = new SubFileSystem(_root, BlockPerceptionRootPath, owned: false);
 
@@ -421,7 +426,7 @@ namespace Libplanet.Store
             BlockDigest blockDigest;
             try
             {
-                IValue value = new Codec().Decode(_blocks.ReadAllBytes(path));
+                IValue value = Codec.Decode(_blocks.ReadAllBytes(path));
                 if (!(value is Bencodex.Types.Dictionary dict))
                 {
                     throw new DecodingException(
@@ -487,6 +492,57 @@ namespace Libplanet.Store
 
             UPath blockPath = BlockPath(blockHash);
             return _blocks.FileExists(blockPath);
+        }
+
+        /// <inheritdoc cref="BaseStore.PutTxExecution(Libplanet.Tx.TxSuccess)"/>
+        public override void PutTxExecution(TxSuccess txSuccess)
+        {
+            UPath path = TxExecutionPath(txSuccess);
+            UPath dirPath = path.GetDirectory();
+            CreateDirectoryRecursively(_txExecutions, dirPath);
+            using Stream f =
+                _txExecutions.OpenFile(path, System.IO.FileMode.OpenOrCreate, FileAccess.Write);
+            Codec.Encode(SerializeTxExecution(txSuccess), f);
+        }
+
+        /// <inheritdoc cref="BaseStore.PutTxExecution(Libplanet.Tx.TxFailure)"/>
+        public override void PutTxExecution(TxFailure txFailure)
+        {
+            UPath path = TxExecutionPath(txFailure);
+            UPath dirPath = path.GetDirectory();
+            CreateDirectoryRecursively(_txExecutions, dirPath);
+            using Stream f =
+                _txExecutions.OpenFile(path, System.IO.FileMode.OpenOrCreate, FileAccess.Write);
+            Codec.Encode(SerializeTxExecution(txFailure), f);
+        }
+
+        /// <inheritdoc cref="BaseStore.GetTxExecution(BlockHash, TxId)"/>
+        public override TxExecution GetTxExecution(BlockHash blockHash, TxId txid)
+        {
+            UPath path = TxExecutionPath(blockHash, txid);
+            if (_txExecutions.FileExists(path))
+            {
+                IValue decoded;
+                using (Stream f = _txExecutions.OpenFile(
+                    path, System.IO.FileMode.Open, FileAccess.Read))
+                {
+                    try
+                    {
+                        decoded = Codec.Decode(f);
+                    }
+                    catch (DecodingException e)
+                    {
+                        const string msg =
+                            "Uncaught exception during " + nameof(GetTxExecution) + ": {Exception}";
+                        _logger.Error(e, msg, e);
+                        return null;
+                    }
+                }
+
+                return DeserializeTxExecution(blockHash, txid, decoded, _logger);
+            }
+
+            return null;
         }
 
         /// <inheritdoc cref="BaseStore.SetBlockPerceivedTime(BlockHash, DateTimeOffset)"/>
@@ -673,6 +729,12 @@ namespace Libplanet.Store
             string idHex = txid.ToHex();
             return UPath.Root / idHex.Substring(0, 2) / idHex.Substring(2);
         }
+
+        private UPath TxExecutionPath(in BlockHash blockHash, in TxId txid) =>
+            BlockPath(blockHash) / txid.ToHex();
+
+        private UPath TxExecutionPath(TxExecution txExecution) =>
+            TxExecutionPath(txExecution.BlockHash, txExecution.TxId);
 
         private string TxNonceId(in Guid chainId)
         {
