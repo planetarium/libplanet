@@ -208,9 +208,10 @@ To be released.
  -  Fixed memory leak due to undisposed `CancellationTokenRegistration`s.
     [[#1228]]
  -  Fixed a bug where `DefaultStore.Dispose()` and `TrieStateStore.Dispose()`
-    hadn't worked idempotently.  [[#1272]]
- -  (Libplanet.RocksDBStore) Fixed a bug where `RocksDBStore.Dispose()` and
-    `RocksDBKeyValueStore.Dispose()` hadn't worked idempotently.  [[#1272]]
+    had not been idempotent.  [[#1272]]
+ -  (Libplanet.RocksDBStore) Fixed a bug where `RocksDBStore.Dispose()`,
+    `MonoRocksDBStore.Dispose()`, and `RocksDBKeyValueStore.Dispose()` had not
+    been idempotent.  [[#1272], [#1289]]
  -  Fixed a bug where `NetMQTransport` had hung forever within Mono runtime.
     [[#1278]]
 

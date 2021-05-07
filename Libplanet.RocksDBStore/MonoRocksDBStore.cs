@@ -51,6 +51,7 @@ namespace Libplanet.RocksDBStore
         private readonly RocksDb _txDb;
         private readonly RocksDb _stagedTxDb;
         private readonly RocksDb _chainDb;
+        private bool _disposed = false;
 
         /// <summary>
         /// Creates a new <seealso cref="RocksDBStore"/>.
@@ -613,11 +614,16 @@ namespace Libplanet.RocksDBStore
 
         public override void Dispose()
         {
-            _chainDb?.Dispose();
-            _txDb?.Dispose();
-            _blockDb?.Dispose();
-            _blockPerceptionDb?.Dispose();
-            _stagedTxDb?.Dispose();
+            if (!_disposed)
+            {
+                _chainDb?.Dispose();
+                _txDb?.Dispose();
+                _blockDb?.Dispose();
+                _blockPerceptionDb?.Dispose();
+                _txExecutionDb?.Dispose();
+                _stagedTxDb?.Dispose();
+                _disposed = true;
+            }
         }
 
         private byte[] BlockKey(in BlockHash blockHash) =>
