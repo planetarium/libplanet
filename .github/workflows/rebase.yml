@@ -11,6 +11,7 @@ jobs:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0
+        token: ${{ secrets.AUTO_REBASE_TOKEN }}
     - name: Automatic Rebase
       uses: cirrus-actions/rebase@1.4
       env:
