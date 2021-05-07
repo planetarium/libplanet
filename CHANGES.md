@@ -155,6 +155,8 @@ To be released.
  -  Added `StaticPeers` as the last parameter to
     `RoutingTable(Address, int, int)` constructor.  [[#1230], [#1271]]
  -  Added `AtomicActionRenderer<T>` class.  [[#1267], [#1275]]
+ -  Added `IExtractableException` interface.  [[#1156], [#1289]]
+ -  Added `ExtractableException` static class.  [[#1156], [#1289]]
 
 ### Behavioral changes
 
@@ -215,6 +217,7 @@ To be released.
  -  Added `planet key derive` subcommand to derive the address or
     public key from a private.  [[#1268]]
 
+[#1156]: https://github.com/planetarium/libplanet/issues/1156
 [#1192]: https://github.com/planetarium/libplanet/issues/1192
 [#1197]: https://github.com/planetarium/libplanet/pull/1197
 [#1213]: https://github.com/planetarium/libplanet/issues/1213
@@ -233,6 +236,7 @@ To be released.
 [#1274]: https://github.com/planetarium/libplanet/pull/1274
 [#1275]: https://github.com/planetarium/libplanet/pull/1275
 [#1278]: https://github.com/planetarium/libplanet/pull/1278
+[#1289]: https://github.com/planetarium/libplanet/pull/1289
 
 
 Version 0.11.1
