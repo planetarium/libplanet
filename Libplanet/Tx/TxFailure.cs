@@ -19,12 +19,45 @@ namespace Libplanet.Tx
     {
         private static readonly Codec _codec = new Codec();
 
-        internal TxFailure(BlockHash blockHash, TxId txId, Exception exception)
+        /// <summary>
+        /// Creates a <see cref="TxFailure"/> instance.
+        /// </summary>
+        /// <param name="blockHash">The <see cref="Block{T}.Hash"/> of the <see cref="Block{T}"/>
+        /// that the <see cref="Transaction{T}"/> is executed within.</param>
+        /// <param name="txId">The executed <see cref="Transaction{T}"/>'s <see
+        /// cref="Transaction{T}.Id"/>.</param>
+        /// <param name="exceptionName">The name of the exception type,
+        /// e.g., <c>System.ArgumentException</c>.</param>
+        /// <param name="exceptionMetadata">Optional metadata about the exception.</param>
+        public TxFailure(
+            BlockHash blockHash,
+            TxId txId,
+            string exceptionName,
+            IValue? exceptionMetadata
+        )
             : base(blockHash, txId)
         {
-            Type excType = exception.GetType();
-            ExceptionName = excType.FullName ?? string.Empty;
-            ExceptionMetadata = exception.ExtractMetadata();
+            ExceptionName = exceptionName;
+            ExceptionMetadata = exceptionMetadata;
+        }
+
+        /// <summary>
+        /// Creates a <see cref="TxFailure"/> instance.
+        /// </summary>
+        /// <param name="blockHash">The <see cref="Block{T}.Hash"/> of the <see cref="Block{T}"/>
+        /// that the <see cref="Transaction{T}"/> is executed within.</param>
+        /// <param name="txId">The executed <see cref="Transaction{T}"/>'s <see
+        /// cref="Transaction{T}.Id"/>.</param>
+        /// <param name="exception">The uncaught exception thrown by an action in the transaction.
+        /// </param>
+        public TxFailure(BlockHash blockHash, TxId txId, Exception exception)
+            : this(
+                blockHash,
+                txId,
+                exception.GetType().FullName ?? string.Empty,
+                exception.ExtractMetadata()
+            )
+        {
         }
 
         private TxFailure(SerializationInfo info, StreamingContext context)
@@ -38,7 +71,7 @@ namespace Libplanet.Tx
         }
 
         /// <summary>
-        /// The name of the exception type, e.g., <c>ArgumentException</c>.
+        /// The name of the exception type, e.g., <c>System.ArgumentException</c>.
         /// </summary>
         [Pure]
         public string ExceptionName { get; }

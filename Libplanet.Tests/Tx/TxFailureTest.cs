@@ -30,12 +30,22 @@ namespace Libplanet.Tests.Tx
         }
 
         [Fact]
-        public void Constructor()
+        public void ConstructorWithExceptionObject()
         {
             Assert.Equal(_blockHash, _fx.BlockHash);
             Assert.Equal(_txid, _fx.TxId);
             Assert.Equal($"{nameof(System)}.{nameof(ArgumentNullException)}", _fx.ExceptionName);
             Assert.Equal(Dictionary.Empty.Add("parameterName", "foo"), _fx.ExceptionMetadata);
+        }
+
+        [Fact]
+        public void Constructor()
+        {
+            var f = new TxFailure(_blockHash, _txid, nameof(ArgumentNullException), (Text)"foo");
+            Assert.Equal(_blockHash, f.BlockHash);
+            Assert.Equal(_txid, f.TxId);
+            Assert.Equal(nameof(ArgumentNullException), f.ExceptionName);
+            Assert.Equal((Text)"foo", f.ExceptionMetadata);
         }
 
         [Fact]

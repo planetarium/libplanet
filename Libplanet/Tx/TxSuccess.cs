@@ -18,7 +18,21 @@ namespace Libplanet.Tx
     [Serializable]
     public sealed class TxSuccess : TxExecution, ISerializable
     {
-        internal TxSuccess(
+        /// <summary>
+        /// Creates a <see cref="TxSuccess"/> instance.
+        /// </summary>
+        /// <param name="blockHash">The <see cref="Block{T}.Hash"/> of the <see cref="Block{T}"/>
+        /// that the <see cref="Transaction{T}"/> is executed within.</param>
+        /// <param name="txId">The executed <see cref="Transaction{T}"/>'s <see
+        /// cref="Transaction{T}.Id"/>.</param>
+        /// <param name="stateRootHash">The state root hash of the immediately after the transaction
+        /// is executed.</param>
+        /// <param name="stateUpdatedAddresses">The keys of the states updated by the actions in
+        /// the transaction within the block.</param>
+        /// <param name="updatedFungibleAssets"><see cref="Address"/>es and sets of
+        /// <see cref="Currency"/> whose fungible assets have been updated by the actions in
+        /// the transaction within the block.</param>
+        public TxSuccess(
             BlockHash blockHash,
             TxId txId,
             HashDigest<SHA256> stateRootHash,
