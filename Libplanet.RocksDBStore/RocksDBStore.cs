@@ -207,33 +207,62 @@ namespace Libplanet.RocksDBStore
                 // Do nothing according to the specification: DeleteChainId() should be idempotent.
                 _logger.Debug($"No such chain ID in _chainDb: {cfName}.", cfName);
             }
+            catch (Exception e)
+            {
+                LogUnexpectedException(nameof(DeleteChainId), e);
+            }
         }
 
         /// <inheritdoc />
         public override Guid? GetCanonicalChainId()
         {
-            byte[] bytes = _chainDb.Get(CanonicalChainIdIdKey);
+            try
+            {
+                byte[] bytes = _chainDb.Get(CanonicalChainIdIdKey);
 
-            return bytes is null
-                ? (Guid?)null
-                : new Guid(bytes);
+                return bytes is null
+                    ? (Guid?)null
+                    : new Guid(bytes);
+            }
+            catch (Exception e)
+            {
+                LogUnexpectedException(nameof(GetCanonicalChainId), e);
+            }
+
+            return (Guid?)null;
         }
 
         /// <inheritdoc />
         public override void SetCanonicalChainId(Guid chainId)
         {
-            byte[] bytes = chainId.ToByteArray();
-            _chainDb.Put(CanonicalChainIdIdKey, bytes);
+            try
+            {
+                byte[] bytes = chainId.ToByteArray();
+                _chainDb.Put(CanonicalChainIdIdKey, bytes);
+            }
+            catch (Exception e)
+            {
+                LogUnexpectedException(nameof(SetCanonicalChainId), e);
+            }
         }
 
         /// <inheritdoc/>
         public override long CountIndex(Guid chainId)
         {
-            ColumnFamilyHandle cf = GetColumnFamily(_chainDb, chainId);
-            byte[] bytes = _chainDb.Get(IndexCountKey, cf);
-            return bytes is null
-                ? 0
-                : RocksDBStoreBitConverter.ToInt64(bytes);
+            try
+            {
+                ColumnFamilyHandle cf = GetColumnFamily(_chainDb, chainId);
+                byte[] bytes = _chainDb.Get(IndexCountKey, cf);
+                return bytes is null
+                    ? 0
+                    : RocksDBStoreBitConverter.ToInt64(bytes);
+            }
+            catch (Exception e)
+            {
+                LogUnexpectedException(nameof(CountIndex), e);
+            }
+
+            return 0;
         }
 
         /// <inheritdoc cref="BaseStore.IterateIndexes(Guid, int, int?)"/>
@@ -259,41 +288,56 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc cref="BaseStore.IndexBlockHash(Guid, long)"/>
         public override BlockHash? IndexBlockHash(Guid chainId, long index)
         {
-            if (index < 0)
+            try
             {
-                index += CountIndex(chainId);
-
                 if (index < 0)
                 {
-                    return null;
+                    index += CountIndex(chainId);
+
+                    if (index < 0)
+                    {
+                        return null;
+                    }
                 }
+
+                ColumnFamilyHandle cf = GetColumnFamily(_chainDb, chainId);
+
+                byte[] indexBytes = RocksDBStoreBitConverter.GetBytes(index);
+
+                byte[] key = IndexKeyPrefix.Concat(indexBytes).ToArray();
+                byte[] bytes = _chainDb.Get(key, cf);
+                return bytes is null ? (BlockHash?)null : new BlockHash(bytes);
+            }
+            catch (Exception e)
+            {
+                LogUnexpectedException(nameof(IndexBlockHash), e);
             }
 
-            ColumnFamilyHandle cf = GetColumnFamily(_chainDb, chainId);
-
-            byte[] indexBytes = RocksDBStoreBitConverter.GetBytes(index);
-
-            byte[] key = IndexKeyPrefix.Concat(indexBytes).ToArray();
-            byte[] bytes = _chainDb.Get(key, cf);
-            return bytes is null ? (BlockHash?)null : new BlockHash(bytes);
+            return null;
         }
 
         /// <inheritdoc cref="BaseStore.AppendIndex(Guid, BlockHash)"/>
         public override long AppendIndex(Guid chainId, BlockHash hash)
         {
             long index = CountIndex(chainId);
+            try
+            {
+                byte[] indexBytes = RocksDBStoreBitConverter.GetBytes(index);
 
-            byte[] indexBytes = RocksDBStoreBitConverter.GetBytes(index);
+                byte[] key = IndexKeyPrefix.Concat(indexBytes).ToArray();
+                ColumnFamilyHandle cf = GetColumnFamily(_chainDb, chainId);
 
-            byte[] key = IndexKeyPrefix.Concat(indexBytes).ToArray();
-            ColumnFamilyHandle cf = GetColumnFamily(_chainDb, chainId);
+                using var writeBatch = new WriteBatch();
 
-            using var writeBatch = new WriteBatch();
+                writeBatch.Put(key, hash.ToByteArray(), cf);
+                writeBatch.Put(IndexCountKey, RocksDBStoreBitConverter.GetBytes(index + 1), cf);
 
-            writeBatch.Put(key, hash.ToByteArray(), cf);
-            writeBatch.Put(IndexCountKey, RocksDBStoreBitConverter.GetBytes(index + 1), cf);
-
-            _chainDb.Write(writeBatch);
+                _chainDb.Write(writeBatch);
+            }
+            catch (Exception e)
+            {
+                LogUnexpectedException(nameof(AppendIndex), e);
+            }
 
             return index;
         }
@@ -336,6 +380,10 @@ namespace Libplanet.RocksDBStore
                     }
                 }
             }
+            catch (Exception e)
+            {
+                LogUnexpectedException(nameof(ForkBlockIndexes), e);
+            }
             finally
             {
                 _chainDb.Write(writeBatch);
@@ -352,20 +400,34 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override void StageTransactionIds(IImmutableSet<TxId> txids)
         {
-            foreach (TxId txId in txids)
+            try
             {
-                byte[] key = StagedTxKey(txId);
-                _stagedTxDb.Put(key, EmptyBytes);
+                foreach (TxId txId in txids)
+                {
+                    byte[] key = StagedTxKey(txId);
+                    _stagedTxDb.Put(key, EmptyBytes);
+                }
+            }
+            catch (Exception e)
+            {
+                LogUnexpectedException(nameof(StageTransactionIds), e);
             }
         }
 
         /// <inheritdoc/>
         public override void UnstageTransactionIds(ISet<TxId> txids)
         {
-            foreach (TxId txId in txids)
+            try
             {
-                byte[] key = StagedTxKey(txId);
-                _stagedTxDb.Remove(key);
+                foreach (TxId txId in txids)
+                {
+                    byte[] key = StagedTxKey(txId);
+                    _stagedTxDb.Remove(key);
+                }
+            }
+            catch (Exception e)
+            {
+                LogUnexpectedException(nameof(UnstageTransactionIds), e);
             }
         }
 
@@ -426,6 +488,11 @@ namespace Libplanet.RocksDBStore
                 _txCache.AddOrUpdate(txid, tx);
                 return tx;
             }
+            catch (Exception e)
+            {
+                LogUnexpectedException(nameof(GetTransaction), e);
+                return null;
+            }
             finally
             {
                 _rwTxLock.ExitReadLock();
@@ -461,6 +528,10 @@ namespace Libplanet.RocksDBStore
                 _txIndexDb.Put(key, RocksDBStoreBitConverter.GetBytes(txDbName));
                 _txCache.AddOrUpdate(tx.Id, tx);
             }
+            catch (Exception e)
+            {
+                LogUnexpectedException(nameof(PutTransaction), e);
+            }
             finally
             {
                 _rwTxLock.ExitWriteLock();
@@ -493,23 +564,38 @@ namespace Libplanet.RocksDBStore
 
                 return true;
             }
+            catch (Exception e)
+            {
+                LogUnexpectedException(nameof(DeleteTransaction), e);
+            }
             finally
             {
                 _rwTxLock.ExitWriteLock();
             }
+
+            return false;
         }
 
         /// <inheritdoc/>
         public override bool ContainsTransaction(TxId txId)
         {
-            if (_txCache.ContainsKey(txId))
+            try
             {
-                return true;
+                if (_txCache.ContainsKey(txId))
+                {
+                    return true;
+                }
+
+                byte[] key = TxKey(txId);
+
+                return !(_txIndexDb.Get(key) is null);
+            }
+            catch (Exception e)
+            {
+                LogUnexpectedException(nameof(ContainsTransaction), e);
             }
 
-            byte[] key = TxKey(txId);
-
-            return !(_txIndexDb.Get(key) is null);
+            return false;
         }
 
         /// <inheritdoc cref="BaseStore.IterateBlockHashes()"/>
@@ -556,10 +642,16 @@ namespace Libplanet.RocksDBStore
                 _blockCache.AddOrUpdate(blockHash, blockDigest);
                 return blockDigest;
             }
+            catch (Exception e)
+            {
+                LogUnexpectedException(nameof(GetBlockDigest), e);
+            }
             finally
             {
                 _rwBlockLock.ExitReadLock();
             }
+
+            return null;
         }
 
         /// <inheritdoc/>
@@ -599,6 +691,10 @@ namespace Libplanet.RocksDBStore
                 _blockIndexDb.Put(key, RocksDBStoreBitConverter.GetBytes(blockDbName));
                 _blockCache.AddOrUpdate(block.Hash, block.ToBlockDigest());
             }
+            catch (Exception e)
+            {
+                LogUnexpectedException(nameof(PutBlock), e);
+            }
             finally
             {
                 _rwBlockLock.ExitWriteLock();
@@ -630,23 +726,38 @@ namespace Libplanet.RocksDBStore
                 blockDb.Remove(key);
                 return true;
             }
+            catch (Exception e)
+            {
+                LogUnexpectedException(nameof(DeleteBlock), e);
+            }
             finally
             {
                 _rwBlockLock.ExitWriteLock();
             }
+
+            return false;
         }
 
         /// <inheritdoc cref="BaseStore.ContainsBlock(BlockHash)"/>
         public override bool ContainsBlock(BlockHash blockHash)
         {
-            if (_blockCache.ContainsKey(blockHash))
+            try
             {
-                return true;
+                if (_blockCache.ContainsKey(blockHash))
+                {
+                    return true;
+                }
+
+                byte[] key = BlockKey(blockHash);
+
+                return !(_blockIndexDb.Get(key) is null);
+            }
+            catch (Exception e)
+            {
+                LogUnexpectedException(nameof(ContainsBlock), e);
             }
 
-            byte[] key = BlockKey(blockHash);
-
-            return !(_blockIndexDb.Get(key) is null);
+            return false;
         }
 
         /// <inheritdoc cref="BaseStore.SetBlockPerceivedTime(BlockHash, DateTimeOffset)"/>
@@ -655,21 +766,35 @@ namespace Libplanet.RocksDBStore
             DateTimeOffset perceivedTime
         )
         {
-            byte[] key = BlockKey(blockHash);
-            _blockPerceptionDb.Put(
-                key,
-                NetworkOrderBitsConverter.GetBytes(perceivedTime.ToUnixTimeMilliseconds())
-            );
+            try
+            {
+                byte[] key = BlockKey(blockHash);
+                _blockPerceptionDb.Put(
+                    key,
+                    NetworkOrderBitsConverter.GetBytes(perceivedTime.ToUnixTimeMilliseconds())
+                );
+            }
+            catch (Exception e)
+            {
+                LogUnexpectedException(nameof(SetBlockPerceivedTime), e);
+            }
         }
 
         /// <inheritdoc cref="BaseStore.GetBlockPerceivedTime(BlockHash)"/>
         public override DateTimeOffset? GetBlockPerceivedTime(BlockHash blockHash)
         {
-            byte[] key = BlockKey(blockHash);
-            if (_blockPerceptionDb.Get(key) is { } bytes)
+            try
             {
-                long unixTimeMs = NetworkOrderBitsConverter.ToInt64(bytes);
-                return DateTimeOffset.FromUnixTimeMilliseconds(unixTimeMs);
+                byte[] key = BlockKey(blockHash);
+                if (_blockPerceptionDb.Get(key) is { } bytes)
+                {
+                    long unixTimeMs = NetworkOrderBitsConverter.ToInt64(bytes);
+                    return DateTimeOffset.FromUnixTimeMilliseconds(unixTimeMs);
+                }
+            }
+            catch (Exception e)
+            {
+                LogUnexpectedException(nameof(GetBlockPerceivedTime), e);
             }
 
             return null;
@@ -694,25 +819,40 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override long GetTxNonce(Guid chainId, Address address)
         {
-            ColumnFamilyHandle cf = GetColumnFamily(_chainDb, chainId);
-            byte[] key = TxNonceKey(address);
-            byte[] bytes = _chainDb.Get(key, cf);
+            try
+            {
+                ColumnFamilyHandle cf = GetColumnFamily(_chainDb, chainId);
+                byte[] key = TxNonceKey(address);
+                byte[] bytes = _chainDb.Get(key, cf);
+                return bytes is null
+                    ? 0
+                    : RocksDBStoreBitConverter.ToInt64(bytes);
+            }
+            catch (Exception e)
+            {
+                LogUnexpectedException(nameof(GetTxNonce), e);
+            }
 
-            return bytes is null
-                ? 0
-                : RocksDBStoreBitConverter.ToInt64(bytes);
+            return 0;
         }
 
         /// <inheritdoc/>
         public override void IncreaseTxNonce(Guid chainId, Address signer, long delta = 1)
         {
-            ColumnFamilyHandle cf = GetColumnFamily(_chainDb, chainId);
-            long nextNonce = GetTxNonce(chainId, signer) + delta;
+            try
+            {
+                ColumnFamilyHandle cf = GetColumnFamily(_chainDb, chainId);
+                long nextNonce = GetTxNonce(chainId, signer) + delta;
 
-            byte[] key = TxNonceKey(signer);
-            byte[] bytes = RocksDBStoreBitConverter.GetBytes(nextNonce);
+                byte[] key = TxNonceKey(signer);
+                byte[] bytes = RocksDBStoreBitConverter.GetBytes(nextNonce);
 
-            _chainDb.Put(key, bytes, cf);
+                _chainDb.Put(key, bytes, cf);
+            }
+            catch (Exception e)
+            {
+                LogUnexpectedException(nameof(IncreaseTxNonce), e);
+            }
         }
 
         /// <inheritdoc/>
@@ -729,27 +869,34 @@ namespace Libplanet.RocksDBStore
 
         public override void Dispose()
         {
-            if (!_disposed)
+            try
             {
-                _chainDb?.Dispose();
-                _txIndexDb?.Dispose();
-                _blockIndexDb?.Dispose();
-                _blockPerceptionDb?.Dispose();
-                _stagedTxDb?.Dispose();
-                foreach (var db in _txDbCache.Values)
+                if (!_disposed)
                 {
-                    db.Dispose();
+                    _chainDb?.Dispose();
+                    _txIndexDb?.Dispose();
+                    _blockIndexDb?.Dispose();
+                    _blockPerceptionDb?.Dispose();
+                    _stagedTxDb?.Dispose();
+                    foreach (var db in _txDbCache.Values)
+                    {
+                        db.Dispose();
+                    }
+
+                    _txDbCache.Clear();
+
+                    foreach (var db in _blockDbCache.Values)
+                    {
+                        db.Dispose();
+                    }
+
+                    _blockDbCache.Clear();
+                    _disposed = true;
                 }
-
-                _txDbCache.Clear();
-
-                foreach (var db in _blockDbCache.Values)
-                {
-                    db.Dispose();
-                }
-
-                _blockDbCache.Clear();
-                _disposed = true;
+            }
+            catch (Exception e)
+            {
+                LogUnexpectedException(nameof(Dispose), e);
             }
         }
 
@@ -771,6 +918,10 @@ namespace Libplanet.RocksDBStore
                         writeBatch = new WriteBatch();
                     }
                 }
+            }
+            catch (Exception e)
+            {
+                LogUnexpectedException(nameof(ForkTxNonces), e);
             }
             finally
             {
@@ -855,5 +1006,11 @@ namespace Libplanet.RocksDBStore
             Path.Combine(RocksDbPath(BlockDbRootPathName), dbName);
 
         private string RocksDbPath(string dbName) => Path.Combine(_path, dbName);
+
+        private void LogUnexpectedException(string methodName, Exception e)
+        {
+            string msg = $"An unexpected exception occurred on {methodName}: {{Message}}";
+            _logger.Error(e, msg, e.Message);
+        }
     }
 }
