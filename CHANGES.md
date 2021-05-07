@@ -163,6 +163,8 @@ To be released.
  -  Added `TxFailure` class.  [[#1156], [#1289]]
  -  Added `IExtractableException` interface.  [[#1156], [#1289]]
  -  Added `ExtractableException` static class.  [[#1156], [#1289]]
+ -  Added `Currency(IValue)` overloaded constructor.  [[#1289]]
+ -  Added `Currency.Serialize()` method.  [[#1289]]
 
 ### Behavioral changes
 

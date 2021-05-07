@@ -3,6 +3,7 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
+using Bencodex.Types;
 using Libplanet.Assets;
 using Libplanet.Crypto;
 using Xunit;
@@ -161,6 +162,34 @@ namespace Libplanet.Tests.Assets
             var foo = new Currency(ticker: "FOO", decimalPlaces: 0, minter: null);
             Assert.Equal(new FungibleAssetValue(foo, 123, 0), 123 * foo);
             Assert.Equal(new FungibleAssetValue(foo, -123, 0), foo * -123);
+        }
+
+        [Fact]
+        public void Serialize()
+        {
+            var foo = new Currency("FOO", 2, minters: null);
+            var bar = new Currency("BAR", 0, ImmutableHashSet.Create(AddressA, AddressB));
+
+            Assert.Equal(
+                Dictionary.Empty
+                    .Add("ticker", "FOO")
+                    .Add("decimals", 2)
+                    .Add("minters", Null.Value),
+                foo.Serialize()
+            );
+            Assert.Equal(
+                Dictionary.Empty
+                    .Add("ticker", "BAR")
+                    .Add("decimals", 0)
+                    .Add(
+                        "minters",
+                        (IValue)List.Empty.Add(AddressB.ToByteArray()).Add(AddressA.ToByteArray())
+                    ),
+                bar.Serialize()
+            );
+
+            Assert.Equal(foo, new Currency(foo.Serialize()));
+            Assert.Equal(bar, new Currency(bar.Serialize()));
         }
     }
 }
