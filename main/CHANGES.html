@@ -192,6 +192,17 @@ mutable.  [<a href="https://github.com/planetarium/libplanet/pull/1274">#1274</a
 <code>IReadOnlyList&lt;T&gt;</code> (was <code>IEnumerable&lt;T&gt;</code>).</li>
 </ul>
 </li>
+<li>Types of following properties became <code>IReadOnlyList&lt;T&gt;</code>
+(was <code>IEnumerable&lt;T&gt;</code>).  [<a href="https://github.com/planetarium/libplanet/issues/1230">#1230</a>, <a href="https://github.com/planetarium/libplanet/pull/1271">#1271</a>]
+<ul>
+<li><code>RoutingTable.Peers</code></li>
+<li><code>RoutingTable.PeerStates</code></li>
+<li><code>Swarm&lt;T&gt;.Peers</code></li>
+<li><code>Swarm&lt;T&gt;.PeerStates</code></li>
+</ul>
+</li>
+<li>Return type of <code>RoutingTable.Neighbors()</code> became <code>IReadOnlyList&lt;BoundPeer&gt;</code>
+(was <code>IEnumerable&lt;BoundPeer&gt;</code>).  [<a href="https://github.com/planetarium/libplanet/issues/1230">#1230</a>, <a href="https://github.com/planetarium/libplanet/pull/1271">#1271</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
@@ -205,12 +216,18 @@ mutable.  [<a href="https://github.com/planetarium/libplanet/pull/1274">#1274</a
 <li>Added <code>NetMQTransport.QueryAppProtocolVersion()</code> static method.  [<a href="https://github.com/planetarium/libplanet/pull/1235">#1235</a>]</li>
 <li>Added <code>BoundPeer.Parse()</code> static method.  [<a href="https://github.com/planetarium/libplanet/pull/1240">#1240</a>]</li>
 <li>Added <code>TransportException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/1242">#1242</a>]</li>
+<li>Added <code>SwarmOptions.StaticPeers</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/1230">#1230</a>, <a href="https://github.com/planetarium/libplanet/pull/1271">#1271</a>]</li>
+<li>Added <code>StaticPeers</code> as the last parameter to
+<code>RoutingTable(Address, int, int)</code> constructor.  [<a href="https://github.com/planetarium/libplanet/issues/1230">#1230</a>, <a href="https://github.com/planetarium/libplanet/pull/1271">#1271</a>]</li>
 <li>Added <code>AtomicActionRenderer&lt;T&gt;</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/1267">#1267</a>, <a href="https://github.com/planetarium/libplanet/pull/1275">#1275</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
 <li><code>ITransport.StartAsync()</code> and <code>ITransport.RunAsync()</code> became to throw
 <code>TransportException</code> instead of <code>SwarmException</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1242">#1242</a>]</li>
+<li>When selecting peers for <code>ITransport.BroadcastMessage()</code>,
+peers are selected from static peers in addition to peers selected
+according to existing selection methods.  [<a href="https://github.com/planetarium/libplanet/issues/1230">#1230</a>, <a href="https://github.com/planetarium/libplanet/pull/1271">#1271</a>]</li>
 <li><code>NetMQTransport</code> became to enforce NetMQ/<a href="https://github.com/somdoron/AsyncIO">AsyncIO</a> to use its pure .NET
 implementation instead of Windows'
 <abbr title="input/output completion port">IOCP</abbr> when it is running
