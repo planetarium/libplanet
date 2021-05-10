@@ -10,42 +10,43 @@ using Libplanet.Serialization;
 namespace Libplanet.Blocks
 {
     /// <summary>
-    /// A value type to represent block hash bytes which is derived <see cref="Block{T}"/> data.
+    /// A value type to represent block draft hash bytes which is derived
+    /// <see cref="BlockDraft{T}"/> data.
     /// </summary>
-    /// <seealso cref="Block{T}.Hash"/>
+    /// <seealso cref="BlockDraft{T}.Hash"/>
     [Serializable]
     public readonly struct BlockDraftHash : ISerializable, IEquatable<BlockDraftHash>
     {
         private readonly ImmutableArray<byte> _byteArray;
 
         /// <summary>
-        /// Converts an immutable <see cref="byte"/> array into a <see cref="BlockHash"/>.
+        /// Converts an immutable <see cref="byte"/> array into a <see cref="BlockDraftHash"/>.
         /// </summary>
-        /// <param name="blockHash">An immutable <see cref="byte"/> array that encodes
-        /// a <see cref="BlockHash"/>.</param>
-        public BlockDraftHash(ImmutableArray<byte> blockHash) =>
-            _byteArray = blockHash;
+        /// <param name="blockDraftHash">An immutable <see cref="byte"/> array that encodes
+        /// a <see cref="BlockDraftHash"/>.</param>
+        public BlockDraftHash(ImmutableArray<byte> blockDraftHash) =>
+            _byteArray = blockDraftHash;
 
         /// <summary>
-        /// Converts a <see cref="byte"/> array into a <see cref="BlockHash"/>.
+        /// Converts a <see cref="byte"/> array into a <see cref="BlockDraftHash"/>.
         /// </summary>
-        /// <param name="blockHash">A <see cref="byte"/> array that encodes
-        /// a <see cref="BlockHash"/>.</param>
+        /// <param name="blockDraftHash">A <see cref="byte"/> array that encodes
+        /// a <see cref="BlockDraftHash"/>.</param>
         /// <exception cref="ArgumentNullException">Thrown when the given
-        /// <paramref name="blockHash"/> is <c>null</c>.</exception>
-        public BlockDraftHash(byte[] blockHash)
-            : this((blockHash ?? throw new ArgumentNullException(nameof(blockHash)))
+        /// <paramref name="blockDraftHash"/> is <c>null</c>.</exception>
+        public BlockDraftHash(byte[] blockDraftHash)
+            : this((blockDraftHash ?? throw new ArgumentNullException(nameof(blockDraftHash)))
                 .ToImmutableArray())
         {
         }
 
         private BlockDraftHash(SerializationInfo info, StreamingContext context)
-            : this(info.GetValue<byte[]>(nameof(BlockHash)))
+            : this(info.GetValue<byte[]>(nameof(BlockDraftHash)))
         {
         }
 
         /// <summary>
-        /// A bare immutable <see cref="byte"/> array of the block hash.
+        /// A bare immutable <see cref="byte"/> array of the block draft hash.
         /// </summary>
         /// <remarks>It is immutable.  For a mutable array, use <see cref="ToByteArray()"/> method
         /// instead.</remarks>
@@ -54,7 +55,7 @@ namespace Libplanet.Blocks
             _byteArray.IsDefault ? ImmutableArray<byte>.Empty : _byteArray;
 
         /// <summary>
-        /// The length of the block hash in bytes.
+        /// The length of the block draft hash in bytes.
         /// </summary>
         [Pure]
         public int BytesLength =>
@@ -62,11 +63,11 @@ namespace Libplanet.Blocks
 
         /// <summary>
         /// Converts a given hexadecimal representation of a block hash into
-        /// a <see cref="BlockHash"/> value.
+        /// a <see cref="BlockDraftHash"/> value.
         /// <para>This is an inverse function of <see cref="ToString()"/> method.</para>
         /// </summary>
-        /// <param name="hex">A hexadecimal representation of a <see cref="BlockHash"/>.</param>
-        /// <returns>A corresponding <see cref="BlockHash"/> value.</returns>
+        /// <param name="hex">A hexadecimal representation of a <see cref="BlockDraftHash"/>.</param>
+        /// <returns>A corresponding <see cref="BlockDraftHash"/> value.</returns>
         /// <exception cref="ArgumentNullException">Thrown when the given <paramref name="hex"/> is
         /// <c>null</c>.</exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the length of the given
@@ -75,22 +76,25 @@ namespace Libplanet.Blocks
         /// is not a valid hexadecimal string.</exception>
         /// <seealso cref="ToString()"/>
         [Pure]
-        public static BlockHash FromString(string hex) =>
-            new BlockHash(ByteUtil.ParseHex(hex ?? throw new ArgumentNullException(nameof(hex))));
+        public static BlockDraftHash FromString(string hex) =>
+            new BlockDraftHash(ByteUtil.ParseHex(
+                hex ?? throw new ArgumentNullException(nameof(hex))));
 
         /// <summary>
-        /// Converts a given <see cref="HashDigest{T}"/> value into a <see cref="BlockHash"/> value.
+        /// Converts a given <see cref="HashDigest{T}"/> value into a
+        /// <see cref="BlockDraftHash"/> value.
         /// </summary>
         /// <param name="hashDigest">A hash digest.</param>
         /// <typeparam name="T">The hash algorithm.</typeparam>
-        /// <returns>A block hash corresponding to the <paramref name="hashDigest"/>.</returns>
+        /// <returns>A block draft hash corresponding to the
+        /// <paramref name="hashDigest"/>.</returns>
         [Pure]
-        public static BlockHash FromHashDigest<T>(HashDigest<T> hashDigest)
+        public static BlockDraftHash FromHashDigest<T>(HashDigest<T> hashDigest)
             where T : HashAlgorithm
-            => new BlockHash(hashDigest.ByteArray);
+            => new BlockDraftHash(hashDigest.ByteArray);
 
         /// <summary>
-        /// Tests if a block hash is less than the target computed for the given
+        /// Tests if a block draft hash is less than the target computed for the given
         /// <paramref name="difficulty"/>).
         /// </summary>
         /// <param name="difficulty">The difficulty to compute target number.</param>
@@ -121,11 +125,11 @@ namespace Libplanet.Blocks
         }
 
         /// <summary>
-        /// Gets a bare mutable <see cref="byte"/> array of the block hash.
+        /// Gets a bare mutable <see cref="byte"/> array of the block draft hash.
         /// </summary>
-        /// <returns>A new mutable <see cref="byte"/> array of the block hash.
+        /// <returns>A new mutable <see cref="byte"/> array of the block draft hash.
         /// Since a returned array is created every time the method is called,
-        /// any mutations on that array does not affect to the block hash object.
+        /// any mutations on that array does not affect to the block draft hash object.
         /// </returns>
         /// <seealso cref="ByteArray"/>
         [Pure]
@@ -159,7 +163,7 @@ namespace Libplanet.Blocks
         /// <inheritdoc cref="object.Equals(object)"/>
         [Pure]
         public override bool Equals(object? obj) =>
-            obj is BlockHash h && Equals(h);
+            obj is BlockDraftHash h && Equals(h);
 
         /// <inheritdoc cref="object.GetHashCode()"/>
         [Pure]
@@ -179,7 +183,7 @@ namespace Libplanet.Blocks
 
         /// <inheritdoc cref="ISerializable.GetObjectData(SerializationInfo, StreamingContext)"/>
         public void GetObjectData(SerializationInfo info, StreamingContext context) =>
-            info.AddValue(nameof(BlockHash), ToByteArray());
+            info.AddValue(nameof(BlockDraftHash), ToByteArray());
 
         /// <inheritdoc cref="object.ToString()"/>
         [Pure]
