@@ -10,7 +10,7 @@ using Libplanet.Store.Trie;
 namespace Libplanet.Blocks
 {
     /// <summary>
-    /// Block header containing information about <see cref="Block{T}"/>s except transactions.
+    /// Block header containing information about <see cref="BlockDraft{T}"/>s except transactions.
     /// </summary>
     public readonly struct BlockDraftHeader : IBlockExcerpt
     {
@@ -36,10 +36,6 @@ namespace Libplanet.Blocks
 
         internal static readonly byte[] TxHashKey = { 0x78 }; // 'x'
 
-        internal static readonly byte[] HashKey = { 0x68 }; // 'h'
-
-        internal static readonly byte[] StateRootHashKey = { 0x73 }; // 's'
-
         internal static readonly byte[] PreEvaluationHashKey = { 0x63 }; // 'c'
 
         private static readonly TimeSpan TimestampThreshold =
@@ -48,7 +44,7 @@ namespace Libplanet.Blocks
         private static readonly Codec Codec = new Codec();
 
         /// <summary>
-        /// Creates a <see cref="BlockHeader"/> instance.
+        /// Creates a <see cref="BlockDraftHeader"/> instance.
         /// </summary>
         /// <param name="protocolVersion">The protocol version.  Goes to the <see
         /// cref="ProtocolVersion"/>.</param>
@@ -69,13 +65,8 @@ namespace Libplanet.Blocks
         /// Goes to the <see cref="PreviousHash"/>.</param>
         /// <param name="txHash">The result of hashing the transactions the block has.
         /// Goes to the <see cref="TxHash"/>.</param>
-        /// <param name="hash">The hash of the <see cref="Block{T}"/>.
-        /// Goes to the <see cref="Hash"/>.</param>
-        /// <param name="preEvaluationHash">The hash derived from the block <em>except of</em>
-        /// <paramref name="stateRootHash"/> (i.e., without action evaluation).
+        /// <param name="preEvaluationHash">The hash derived from the block draft.
         /// Used for <see cref="Validate"/> checking <paramref name="nonce"/>.
-        /// </param>
-        /// <param name="stateRootHash">The <see cref="ITrie.Hash"/> of the states on the block.
         /// </param>
         public BlockDraftHeader(
             int protocolVersion,
@@ -87,9 +78,7 @@ namespace Libplanet.Blocks
             BigInteger totalDifficulty,
             ImmutableArray<byte> previousHash,
             ImmutableArray<byte> txHash,
-            ImmutableArray<byte> hash,
-            ImmutableArray<byte> preEvaluationHash,
-            ImmutableArray<byte> stateRootHash)
+            ImmutableArray<byte> preEvaluationHash)
         {
             ProtocolVersion = protocolVersion;
             Index = index;
@@ -100,9 +89,7 @@ namespace Libplanet.Blocks
             TotalDifficulty = totalDifficulty;
             PreviousHash = previousHash;
             TxHash = txHash;
-            Hash = hash;
             PreEvaluationHash = preEvaluationHash;
-            StateRootHash = stateRootHash;
         }
 
         public BlockDraftHeader(Bencodex.Types.Dictionary dict)
@@ -128,16 +115,8 @@ namespace Libplanet.Blocks
                 ? dict.GetValue<Binary>(TxHashKey).ToImmutableArray()
                 : ImmutableArray<byte>.Empty;
 
-            Hash = dict.ContainsKey((IKey)(Binary)HashKey)
-                ? dict.GetValue<Binary>(HashKey).ToImmutableArray()
-                : ImmutableArray<byte>.Empty;
-
             PreEvaluationHash = dict.ContainsKey((IKey)(Binary)PreEvaluationHashKey)
                 ? dict.GetValue<Binary>(PreEvaluationHashKey).ToImmutableArray()
-                : ImmutableArray<byte>.Empty;
-
-            StateRootHash = dict.ContainsKey((IKey)(Binary)StateRootHashKey)
-                ? dict.GetValue<Binary>(StateRootHashKey).ToImmutableArray()
                 : ImmutableArray<byte>.Empty;
         }
 
@@ -166,15 +145,13 @@ namespace Libplanet.Blocks
 
         public ImmutableArray<byte> PreEvaluationHash { get; }
 
-        public ImmutableArray<byte> StateRootHash { get; }
-
         BlockHash IBlockExcerpt.Hash => new BlockHash(Hash);
 
         /// <summary>
-        /// Gets <see cref="BlockHeader"/> instance from serialized <paramref name="bytes"/>.
+        /// Gets <see cref="BlockDraftHeader"/> instance from serialized <paramref name="bytes"/>.
         /// </summary>
-        /// <param name="bytes">Serialized <see cref="BlockHeader"/>.</param>
-        /// <returns>Deserialized <see cref="BlockHeader"/>.</returns>
+        /// <param name="bytes">Serialized <see cref="BlockDraftHeader"/>.</param>
+        /// <returns>Deserialized <see cref="BlockDraftHeader"/>.</returns>
         /// <exception cref="DecodingException">Thrown when decoded value is not
         /// <see cref="Bencodex.Types.Dictionary"/> type.</exception>
         public static BlockDraftHeader Deserialize(byte[] bytes)
@@ -191,9 +168,9 @@ namespace Libplanet.Blocks
         }
 
         /// <summary>
-        /// Gets serialized byte array of the <see cref="BlockHeader"/>.
+        /// Gets serialized byte array of the <see cref="BlockDraftHeader"/>.
         /// </summary>
-        /// <returns>Serialized byte array of <see cref="BlockHeader"/>.</returns>
+        /// <returns>Serialized byte array of <see cref="BlockDraftHeader"/>.</returns>
         public byte[] Serialize()
         {
             return new Codec().Encode(ToBencodex());
@@ -201,10 +178,10 @@ namespace Libplanet.Blocks
 
         /// <summary>
         /// Gets <see cref="Bencodex.Types.Dictionary"/> representation of
-        /// <see cref="BlockHeader"/>.
+        /// <see cref="BlockDraftHeader"/>.
         /// </summary>
         /// <returns><see cref="Bencodex.Types.Dictionary"/> representation of
-        /// <see cref="BlockHeader"/>.</returns>
+        /// <see cref="BlockDraftHeader"/>.</returns>
         public Bencodex.Types.Dictionary ToBencodex()
         {
             var dict = Bencodex.Types.Dictionary.Empty
@@ -212,8 +189,7 @@ namespace Libplanet.Blocks
                 .Add(TimestampKey, Timestamp)
                 .Add(DifficultyKey, Difficulty)
                 .Add(TotalDifficultyKey, (IValue)(Bencodex.Types.Integer)TotalDifficulty)
-                .Add(NonceKey, Nonce.ToArray())
-                .Add(HashKey, Hash.ToArray());
+                .Add(NonceKey, Nonce.ToArray());
 
             if (ProtocolVersion != 0)
             {
@@ -240,11 +216,6 @@ namespace Libplanet.Blocks
                 dict = dict.Add(PreEvaluationHashKey, PreEvaluationHash.ToArray());
             }
 
-            if (StateRootHash.Any())
-            {
-                dict = dict.Add(StateRootHashKey, StateRootHash.ToArray());
-            }
-
             return dict;
         }
 
@@ -256,8 +227,7 @@ namespace Libplanet.Blocks
             ImmutableArray<byte> nonce,
             ImmutableArray<byte> miner,
             ImmutableArray<byte> previousHash,
-            ImmutableArray<byte> txHash,
-            ImmutableArray<byte> stateRootHash
+            ImmutableArray<byte> txHash
         )
         {
             var dict = Bencodex.Types.Dictionary.Empty
@@ -284,11 +254,6 @@ namespace Libplanet.Blocks
             if (!txHash.IsEmpty)
             {
                 dict = dict.Add("transaction_fingerprint", txHash.ToArray());
-            }
-
-            if (!stateRootHash.IsEmpty)
-            {
-                dict = dict.Add("state_root_hash", stateRootHash.ToArray());
             }
 
             return new Codec().Encode(dict);
@@ -402,26 +367,6 @@ namespace Libplanet.Blocks
                     $"({ByteUtil.Hex(Nonce)}) does not satisfy its difficulty level {Difficulty}."
                 );
             }
-
-            BlockHash calculatedHash = Hashcash.Hash(SerializeForHash());
-            if (!hash.Equals(calculatedHash))
-            {
-                throw new InvalidBlockHashException(
-                    $"The block #{Index} {hash}'s isn't matched its content, " +
-                    $"caculcated: {calculatedHash}");
-            }
         }
-
-        internal byte[] SerializeForHash(bool includeStateRootHash = true) => SerializeForHash(
-            ProtocolVersion,
-            Index,
-            Timestamp,
-            Difficulty,
-            Nonce,
-            Miner,
-            PreviousHash,
-            TxHash,
-            includeStateRootHash ? StateRootHash : ImmutableArray<byte>.Empty
-        );
     }
 }
