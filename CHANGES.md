@@ -122,6 +122,8 @@ To be released.
  -  Added `IStore.PutTxExecution(TxSuccess)` method.  [[#1156], [#1289]]
  -  Added `IStore.PutTxExecution(TxFailure)` method.  [[#1156], [#1289]]
  -  Added `IStore.GetTxExecution()` method.  [[#1156], [#1289]]
+ -  Removed the optional parameter `Guid? chainId = null` from
+    `IStateStore.GetState()` method.  [[#1289]]
  -  Removed `compress` parameter from `DefaultStore()` constructor.  [[#1289]]
  -  Removed `statesCacheSize` parameter from `DefaultStore()` constructor.
     [[#1289]]

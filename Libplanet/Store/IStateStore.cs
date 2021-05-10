@@ -34,10 +34,9 @@ namespace Libplanet.Store
         /// <param name="stateKey">The key to query state.</param>
         /// <param name="blockHash">The <see cref="Block{T}.Hash"/> which the point to query by
         /// <paramref name="stateKey"/> at.</param>
-        /// <param name="chainId">The <see cref="BlockChain{T}.Id"/> of wanted got.</param>
         /// <returns>The state queried from <paramref name="blockHash"/> and
         /// <paramref name="stateKey"/>. If it couldn't find state, returns <c>null</c>.</returns>
-        IValue? GetState(string stateKey, BlockHash? blockHash = null, Guid? chainId = null);
+        IValue? GetState(string stateKey, BlockHash? blockHash = null);
 
         /// <summary>
         /// Checks if the states corresponded to the block derived from <paramref name="blockHash"/>

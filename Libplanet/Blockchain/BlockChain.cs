@@ -2125,7 +2125,7 @@ namespace Libplanet.Blockchain
                 offset ??= Tip.Hash;
 
                 return StateStore.ContainsBlockStates(offset.Value)
-                    ? StateStore.GetState(key, offset, Id)
+                    ? StateStore.GetState(key, offset)
                     : rawStateCompleter(this, offset.Value);
             }
             finally
