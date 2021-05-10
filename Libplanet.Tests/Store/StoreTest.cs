@@ -16,7 +16,6 @@ using Libplanet.Tests.Blockchain;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tx;
 using Serilog;
-using Serilog.Events;
 using Xunit;
 using Xunit.Abstractions;
 using FAV = Libplanet.Assets.FungibleAssetValue;
@@ -61,6 +60,29 @@ namespace Libplanet.Tests.Store
         }
 
         [SkippableFact]
+        public void ListChainIdAfterForkAndDelete()
+        {
+            var chainA = Guid.NewGuid();
+            var chainB = Guid.NewGuid();
+
+            Fx.Store.PutBlock(Fx.GenesisBlock);
+            Fx.Store.PutBlock(Fx.Block1);
+            Fx.Store.PutBlock(Fx.Block2);
+
+            Fx.Store.AppendIndex(chainA, Fx.GenesisBlock.Hash);
+            Fx.Store.AppendIndex(chainA, Fx.Block1.Hash);
+            Fx.Store.ForkBlockIndexes(chainA, chainB, Fx.Block1.Hash);
+            Fx.Store.AppendIndex(chainB, Fx.Block2.Hash);
+
+            Fx.Store.DeleteChainId(chainA);
+
+            Assert.Equal(
+                new[] { chainB }.ToImmutableHashSet(),
+                Fx.Store.ListChainIds().ToImmutableHashSet()
+            );
+        }
+
+        [SkippableFact]
         public void DeleteChainId()
         {
             Block<DumbAction> block1 = TestUtils.MineNext(
@@ -86,6 +108,169 @@ namespace Libplanet.Tests.Store
             Assert.Empty(Fx.Store.ListChainIds());
             Fx.Store.DeleteChainId(Guid.NewGuid());
             Assert.Empty(Fx.Store.ListChainIds());
+        }
+
+        [SkippableFact]
+        public void DeleteChainIdWithForks()
+        {
+            IStore store = Fx.Store;
+            Guid chainA = Guid.NewGuid();
+            Guid chainB = Guid.NewGuid();
+            Guid chainC = Guid.NewGuid();
+
+            // We need `Block<T>`s because `IStore` can't retrive index(long) by block hash without
+            // actual block...
+            store.PutBlock(Fx.GenesisBlock);
+            store.PutBlock(Fx.Block1);
+            store.PutBlock(Fx.Block2);
+            store.PutBlock(Fx.Block3);
+
+            store.AppendIndex(chainA, Fx.GenesisBlock.Hash);
+            store.AppendIndex(chainB, Fx.GenesisBlock.Hash);
+            store.AppendIndex(chainC, Fx.GenesisBlock.Hash);
+
+            store.AppendIndex(chainA, Fx.Block1.Hash);
+            store.ForkBlockIndexes(chainA, chainB, Fx.Block1.Hash);
+            store.AppendIndex(chainB, Fx.Block2.Hash);
+            store.ForkBlockIndexes(chainB, chainC, Fx.Block2.Hash);
+            store.AppendIndex(chainC, Fx.Block3.Hash);
+
+            // Deleting chainA doesn't effect chainB, chainC
+            store.DeleteChainId(chainA);
+
+            Assert.Empty(store.IterateIndexes(chainA));
+            Assert.Null(store.IndexBlockHash(chainA, 0));
+            Assert.Null(store.IndexBlockHash(chainA, 1));
+
+            Assert.Equal(
+                new[]
+                {
+                    Fx.GenesisBlock.Hash,
+                    Fx.Block1.Hash,
+                    Fx.Block2.Hash,
+                },
+                store.IterateIndexes(chainB)
+            );
+            Assert.Equal(Fx.GenesisBlock.Hash, store.IndexBlockHash(chainB, 0));
+            Assert.Equal(Fx.Block1.Hash, store.IndexBlockHash(chainB, 1));
+            Assert.Equal(Fx.Block2.Hash, store.IndexBlockHash(chainB, 2));
+
+            Assert.Equal(
+                new[]
+                {
+                    Fx.GenesisBlock.Hash,
+                    Fx.Block1.Hash,
+                    Fx.Block2.Hash,
+                    Fx.Block3.Hash,
+                },
+                store.IterateIndexes(chainC)
+            );
+            Assert.Equal(Fx.GenesisBlock.Hash, store.IndexBlockHash(chainC, 0));
+            Assert.Equal(Fx.Block1.Hash, store.IndexBlockHash(chainC, 1));
+            Assert.Equal(Fx.Block2.Hash, store.IndexBlockHash(chainC, 2));
+            Assert.Equal(Fx.Block3.Hash, store.IndexBlockHash(chainC, 3));
+
+            // Deleting chainB doesn't effect chainC
+            store.DeleteChainId(chainB);
+
+            Assert.Empty(store.IterateIndexes(chainA));
+            Assert.Null(store.IndexBlockHash(chainA, 0));
+            Assert.Null(store.IndexBlockHash(chainA, 1));
+
+            Assert.Empty(store.IterateIndexes(chainB));
+            Assert.Null(store.IndexBlockHash(chainB, 0));
+            Assert.Null(store.IndexBlockHash(chainB, 1));
+            Assert.Null(store.IndexBlockHash(chainB, 2));
+
+            Assert.Equal(
+                new[]
+                {
+                    Fx.GenesisBlock.Hash,
+                    Fx.Block1.Hash,
+                    Fx.Block2.Hash,
+                    Fx.Block3.Hash,
+                },
+                store.IterateIndexes(chainC)
+            );
+            Assert.Equal(Fx.GenesisBlock.Hash, store.IndexBlockHash(chainC, 0));
+            Assert.Equal(Fx.Block1.Hash, store.IndexBlockHash(chainC, 1));
+            Assert.Equal(Fx.Block2.Hash, store.IndexBlockHash(chainC, 2));
+            Assert.Equal(Fx.Block3.Hash, store.IndexBlockHash(chainC, 3));
+
+            store.DeleteChainId(chainC);
+
+            Assert.Empty(store.IterateIndexes(chainA));
+            Assert.Empty(store.IterateIndexes(chainB));
+            Assert.Empty(store.IterateIndexes(chainC));
+            Assert.Null(store.IndexBlockHash(chainC, 0));
+            Assert.Null(store.IndexBlockHash(chainC, 1));
+            Assert.Null(store.IndexBlockHash(chainC, 2));
+            Assert.Null(store.IndexBlockHash(chainC, 3));
+        }
+
+        [SkippableFact]
+        public void DeleteChainIdWithForksReverse()
+        {
+            IStore store = Fx.Store;
+            Guid chainA = Guid.NewGuid();
+            Guid chainB = Guid.NewGuid();
+            Guid chainC = Guid.NewGuid();
+
+            // We need `Block<T>`s because `IStore` can't retrive index(long) by block hash without
+            // actual block...
+            store.PutBlock(Fx.GenesisBlock);
+            store.PutBlock(Fx.Block1);
+            store.PutBlock(Fx.Block2);
+            store.PutBlock(Fx.Block3);
+
+            store.AppendIndex(chainA, Fx.GenesisBlock.Hash);
+            store.AppendIndex(chainB, Fx.GenesisBlock.Hash);
+            store.AppendIndex(chainC, Fx.GenesisBlock.Hash);
+
+            store.AppendIndex(chainA, Fx.Block1.Hash);
+            store.ForkBlockIndexes(chainA, chainB, Fx.Block1.Hash);
+            store.AppendIndex(chainB, Fx.Block2.Hash);
+            store.ForkBlockIndexes(chainB, chainC, Fx.Block2.Hash);
+            store.AppendIndex(chainC, Fx.Block3.Hash);
+
+            store.DeleteChainId(chainC);
+
+            Assert.Equal(
+                new[]
+                {
+                    Fx.GenesisBlock.Hash,
+                    Fx.Block1.Hash,
+                },
+                store.IterateIndexes(chainA)
+            );
+            Assert.Equal(
+                new[]
+                {
+                    Fx.GenesisBlock.Hash,
+                    Fx.Block1.Hash,
+                    Fx.Block2.Hash,
+                },
+                store.IterateIndexes(chainB)
+            );
+            Assert.Empty(store.IterateIndexes(chainC));
+
+            store.DeleteChainId(chainB);
+
+            Assert.Equal(
+                new[]
+                {
+                    Fx.GenesisBlock.Hash,
+                    Fx.Block1.Hash,
+                },
+                store.IterateIndexes(chainA)
+            );
+            Assert.Empty(store.IterateIndexes(chainB));
+            Assert.Empty(store.IterateIndexes(chainC));
+
+            store.DeleteChainId(chainA);
+            Assert.Empty(store.IterateIndexes(chainA));
+            Assert.Empty(store.IterateIndexes(chainB));
+            Assert.Empty(store.IterateIndexes(chainC));
         }
 
         [SkippableFact]
@@ -671,51 +856,84 @@ namespace Libplanet.Tests.Store
             }
         }
 
-        [InlineData(0)]
-        [InlineData(1)]
-        [InlineData(2)]
-        [SkippableTheory]
-        public void ForkBlockIndex(int branchPointIndex)
+        [SkippableFact]
+        public void ForkBlockIndex()
         {
-            var store = Fx.Store;
+            IStore store = Fx.Store;
+            Guid chainA = Guid.NewGuid();
+            Guid chainB = Guid.NewGuid();
+            Guid chainC = Guid.NewGuid();
 
-            var blocks = new BlockChain<DumbAction>(
-                new NullPolicy<DumbAction>(),
-                new VolatileStagePolicy<DumbAction>(),
-                store,
-                Fx.StateStore,
-                Fx.GenesisBlock
-            );
+            // We need `Block<T>`s because `IStore` can't retrive index(long) by block hash without
+            // actual block...
+            store.PutBlock(Fx.GenesisBlock);
+            store.PutBlock(Fx.Block1);
+            store.PutBlock(Fx.Block2);
+            store.PutBlock(Fx.Block3);
 
-            blocks.Append(Fx.Block1);
-            blocks.Append(Fx.Block2);
-            blocks.Append(Fx.Block3);
+            store.AppendIndex(chainA, Fx.GenesisBlock.Hash);
+            store.AppendIndex(chainB, Fx.GenesisBlock.Hash);
+            store.AppendIndex(chainC, Fx.GenesisBlock.Hash);
 
-            var forked = new BlockChain<DumbAction>(
-                new NullPolicy<DumbAction>(),
-                new VolatileStagePolicy<DumbAction>(),
-                store,
-                Fx.StateStore,
-                Guid.NewGuid(),
-                Fx.GenesisBlock,
-                renderers: null
-            );
-            Logger.CompareBothChains(
-                LogEventLevel.Debug,
-                nameof(blocks),
-                blocks,
-                nameof(forked),
-                forked
-            );
-
-            store.ForkBlockIndexes(blocks.Id, forked.Id, blocks[branchPointIndex].Hash);
+            store.AppendIndex(chainA, Fx.Block1.Hash);
+            store.ForkBlockIndexes(chainA, chainB, Fx.Block1.Hash);
+            store.AppendIndex(chainB, Fx.Block2.Hash);
 
             Assert.Equal(
-                store.IterateIndexes(blocks.Id, 0, branchPointIndex + 1).ToList(),
-                store.IterateIndexes(forked.Id).ToList()
+                new[]
+                {
+                    Fx.GenesisBlock.Hash,
+                    Fx.Block1.Hash,
+                },
+                store.IterateIndexes(chainA)
+            );
+            Assert.Equal(
+                new[]
+                {
+                    Fx.GenesisBlock.Hash,
+                    Fx.Block1.Hash,
+                    Fx.Block2.Hash,
+                },
+                store.IterateIndexes(chainB)
             );
 
-            Assert.Equal(branchPointIndex + 1, store.CountIndex(forked.Id));
+            store.ForkBlockIndexes(chainB, chainC, Fx.Block2.Hash);
+            store.AppendIndex(chainC, Fx.Block3.Hash);
+
+            Assert.Equal(
+                new[]
+                {
+                    Fx.GenesisBlock.Hash,
+                    Fx.Block1.Hash,
+                },
+                store.IterateIndexes(chainA)
+            );
+            Assert.Equal(
+                new[]
+                {
+                    Fx.GenesisBlock.Hash,
+                    Fx.Block1.Hash,
+                    Fx.Block2.Hash,
+                },
+                store.IterateIndexes(chainB)
+            );
+            Assert.Equal(
+                new[]
+                {
+                    Fx.GenesisBlock.Hash,
+                    Fx.Block1.Hash,
+                    Fx.Block2.Hash,
+                    Fx.Block3.Hash,
+                },
+                store.IterateIndexes(chainC)
+            );
+
+            Assert.Equal(Fx.Block1.Hash, store.IndexBlockHash(chainA, 1));
+            Assert.Equal(Fx.Block1.Hash, store.IndexBlockHash(chainB, 1));
+            Assert.Equal(Fx.Block1.Hash, store.IndexBlockHash(chainC, 1));
+            Assert.Equal(Fx.Block2.Hash, store.IndexBlockHash(chainB, 2));
+            Assert.Equal(Fx.Block2.Hash, store.IndexBlockHash(chainC, 2));
+            Assert.Equal(Fx.Block3.Hash, store.IndexBlockHash(chainC, 3));
         }
 
         [SkippableFact]

@@ -192,6 +192,9 @@ To be released.
     It had been done by `Swarm<T>`, but as the `ITransport` is now separated
     from it, this became done by `NetMQTransport` instead of `Swarm<T>`.
     [[#247], [#1278]]
+ -  (Libplanet.RocksDBStore) `RocksDBStore.ForkBlockIndexes()` became to share
+    common ancestors between forks rather than duplicating them so that much
+    less space is used.  [[#1280], [#1287]]
 
 ### Bug fixes
 
@@ -258,8 +261,10 @@ To be released.
 [#1274]: https://github.com/planetarium/libplanet/pull/1274
 [#1275]: https://github.com/planetarium/libplanet/pull/1275
 [#1278]: https://github.com/planetarium/libplanet/pull/1278
+[#1280]: https://github.com/planetarium/libplanet/issues/1280
 [#1284]: https://github.com/planetarium/libplanet/issues/1284
 [#1285]: https://github.com/planetarium/libplanet/issues/1285
+[#1287]: https://github.com/planetarium/libplanet/pull/1287
 [#1289]: https://github.com/planetarium/libplanet/pull/1289
 [#1298]: https://github.com/planetarium/libplanet/pull/1298
 
