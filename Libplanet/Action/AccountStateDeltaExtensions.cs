@@ -8,7 +8,7 @@ using static Libplanet.Blockchain.KeyConverters;
 
 namespace Libplanet.Action
 {
-    internal static class IAccountStateDeltaExtensions
+    internal static class AccountStateDeltaExtensions
     {
         internal static IImmutableDictionary<Address, IValue> GetUpdatedStates(
             this IAccountStateDelta delta
