@@ -5,7 +5,6 @@ using System.Linq;
 using System.Numerics;
 using Bencodex;
 using Bencodex.Types;
-using Libplanet.Store.Trie;
 
 namespace Libplanet.Blocks
 {
