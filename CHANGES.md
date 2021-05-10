@@ -128,6 +128,14 @@ To be released.
         `IReadOnlyList<T>` (was `IEnumerable<T>`).
      -  The type of `Transactions` property of `Block<T>` became
         `IReadOnlyList<T>` (was `IEnumerable<T>`).
+ -  Types of following properties became `IReadOnlyList<T>`
+    (was `IEnumerable<T>`).  [[#1230], [#1271]]
+     -  `RoutingTable.Peers`
+     -  `RoutingTable.PeerStates`
+     -  `Swarm<T>.Peers`
+     -  `Swarm<T>.PeerStates`
+ -  Return type of `RoutingTable.Neighbors()` became `IReadOnlyList<BoundPeer>`
+    (was `IEnumerable<BoundPeer>`).  [[#1230], [#1271]]
 
 ### Backward-incompatible network protocol changes
 
@@ -143,12 +151,18 @@ To be released.
  -  Added `NetMQTransport.QueryAppProtocolVersion()` static method.  [[#1235]]
  -  Added `BoundPeer.Parse()` static method.  [[#1240]]
  -  Added `TransportException` class.  [[#1242]]
+ -  Added `SwarmOptions.StaticPeers` property.  [[#1230], [#1271]]
+ -  Added `StaticPeers` as the last parameter to
+    `RoutingTable(Address, int, int)` constructor.  [[#1230], [#1271]]
  -  Added `AtomicActionRenderer<T>` class.  [[#1267], [#1275]]
 
 ### Behavioral changes
 
  -  `ITransport.StartAsync()` and `ITransport.RunAsync()` became to throw
     `TransportException` instead of `SwarmException`.  [[#1242]]
+ -  When selecting peers for `ITransport.BroadcastMessage()`,
+    peers are selected from static peers in addition to peers selected
+    according to existing selection methods.  [[#1230], [#1271]]
  -  `NetMQTransport` became to enforce NetMQ/[AsyncIO] to use its pure .NET
     implementation instead of Windows'
     <abbr title="input/output completion port">IOCP</abbr> when it is running
@@ -206,6 +220,7 @@ To be released.
 [#1213]: https://github.com/planetarium/libplanet/issues/1213
 [#1219]: https://github.com/planetarium/libplanet/pull/1219
 [#1228]: https://github.com/planetarium/libplanet/pull/1218
+[#1230]: https://github.com/planetarium/libplanet/issues/1230
 [#1234]: https://github.com/planetarium/libplanet/pull/1234
 [#1235]: https://github.com/planetarium/libplanet/pull/1235
 [#1240]: https://github.com/planetarium/libplanet/pull/1240
@@ -213,6 +228,7 @@ To be released.
 [#1265]: https://github.com/planetarium/libplanet/pull/1265
 [#1267]: https://github.com/planetarium/libplanet/issues/1267
 [#1268]: https://github.com/planetarium/libplanet/pull/1268
+[#1271]: https://github.com/planetarium/libplanet/pull/1271
 [#1272]: https://github.com/planetarium/libplanet/pull/1272
 [#1274]: https://github.com/planetarium/libplanet/pull/1274
 [#1275]: https://github.com/planetarium/libplanet/pull/1275

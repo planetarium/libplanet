@@ -610,7 +610,7 @@ namespace Libplanet.Net.Transports
                 (Address? except, Message msg) = e.Queue.Dequeue();
 
                 // FIXME Should replace with PUB/SUB model.
-                List<BoundPeer> peers = _table.PeersToBroadcast(except).ToList();
+                IReadOnlyList<BoundPeer> peers = _table.PeersToBroadcast(except);
                 _logger.Debug("Broadcasting message: {Message} as {AsPeer}", msg, AsPeer);
                 _logger.Debug("Peers to broadcast: {PeersCount}", peers.Count);
 

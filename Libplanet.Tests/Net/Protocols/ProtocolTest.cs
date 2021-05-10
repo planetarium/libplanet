@@ -512,10 +512,10 @@ namespace Libplanet.Tests.Net.Protocols
                         DateTimeOffset.UtcNow - TimeSpan.FromMinutes(2));
                 }
 
-                BoundPeer[] refreshCandidates =
-                    transport.Table.PeersToRefresh(TimeSpan.FromMinutes(1)).ToArray();
+                IReadOnlyList<BoundPeer> refreshCandidates =
+                    transport.Table.PeersToRefresh(TimeSpan.FromMinutes(1));
                 Assert.Equal(peersCount, transport.Peers.Count());
-                Assert.Equal(peersCount / 2, refreshCandidates.Length);
+                Assert.Equal(peersCount / 2, refreshCandidates.Count);
                 Assert.Equal(peersCount / 2, transport.Table.NonEmptyBuckets.Count());
 
                 await transport.Protocol.RefreshTableAsync(TimeSpan.FromMinutes(1), default);

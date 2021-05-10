@@ -136,7 +136,7 @@ namespace Libplanet.Net
                 .ForContext("SwarmId", loggerId);
 
             Options = options ?? new SwarmOptions();
-            RoutingTable = new RoutingTable(Address, tableSize, bucketSize);
+            RoutingTable = new RoutingTable(Address, tableSize, bucketSize, Options.StaticPeers);
             Transport = new NetMQTransport(
                 RoutingTable,
                 _privateKey,
@@ -180,9 +180,9 @@ namespace Libplanet.Net
 
         public IDictionary<Peer, DateTimeOffset> LastSeenTimestamps { get; private set; }
 
-        public IEnumerable<BoundPeer> Peers => RoutingTable.Peers;
+        public IReadOnlyList<BoundPeer> Peers => RoutingTable.Peers;
 
-        public IEnumerable<PeerState> PeersStates => RoutingTable.PeerStates;
+        public IReadOnlyList<PeerState> PeersStates => RoutingTable.PeerStates;
 
         /// <summary>
         /// The <see cref="BlockChain{T}"/> instance this <see cref="Swarm{T}"/> instance
@@ -418,7 +418,7 @@ namespace Libplanet.Net
             }
 
             IEnumerable<BoundPeer> peers = seedPeers.OfType<BoundPeer>();
-            IEnumerable<BoundPeer> peersBeforeBootstrap = RoutingTable.Peers;
+            IReadOnlyList<BoundPeer> peersBeforeBootstrap = RoutingTable.Peers;
 
             await PeerDiscovery.BootstrapAsync(
                 peers,
