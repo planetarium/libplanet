@@ -10,9 +10,11 @@ using Libplanet.Serialization;
 namespace Libplanet.Blocks
 {
     /// <summary>
-    /// A value type to represent block hash bytes which is derived <see cref="Block{T}"/> data.
+    /// A value type to represent a block hash or a block draft hash bytes which is derived from
+    /// <see cref="Block{T}"/> or <see cref="BlockDraft{T}"/> data.
     /// </summary>
     /// <seealso cref="Block{T}.Hash"/>
+    /// <seealso cref="BlockDraft{T}.PreEvaluationHash"/>
     [Serializable]
     public readonly struct BlockHash : ISerializable, IEquatable<BlockHash>
     {
@@ -45,7 +47,7 @@ namespace Libplanet.Blocks
         }
 
         /// <summary>
-        /// A bare immutable <see cref="byte"/> array of the block hash.
+        /// A bare immutable <see cref="byte"/> array of the block or the block draft hash.
         /// </summary>
         /// <remarks>It is immutable.  For a mutable array, use <see cref="ToByteArray()"/> method
         /// instead.</remarks>
@@ -54,14 +56,14 @@ namespace Libplanet.Blocks
             _byteArray.IsDefault ? ImmutableArray<byte>.Empty : _byteArray;
 
         /// <summary>
-        /// The length of the block hash in bytes.
+        /// The length of the block or block draft hash in bytes.
         /// </summary>
         [Pure]
         public int BytesLength =>
             _byteArray.IsDefault ? 0 : _byteArray.Length;
 
         /// <summary>
-        /// Converts a given hexadecimal representation of a block hash into
+        /// Converts a given hexadecimal representation of a block hash or a block draft hash into
         /// a <see cref="BlockHash"/> value.
         /// <para>This is an inverse function of <see cref="ToString()"/> method.</para>
         /// </summary>
