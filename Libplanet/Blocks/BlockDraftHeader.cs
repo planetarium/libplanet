@@ -368,5 +368,16 @@ namespace Libplanet.Blocks
                 );
             }
         }
+
+        internal byte[] SerializeForHash() => SerializeForHash(
+            ProtocolVersion,
+            Index,
+            Timestamp,
+            Difficulty,
+            Nonce,
+            Miner,
+            PreviousHash,
+            TxHash
+        );
     }
 }
