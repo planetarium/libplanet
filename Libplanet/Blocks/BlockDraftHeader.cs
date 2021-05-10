@@ -12,7 +12,7 @@ namespace Libplanet.Blocks
     /// <summary>
     /// Block header containing information about <see cref="BlockDraft{T}"/>s except transactions.
     /// </summary>
-    public readonly struct BlockDraftHeader : IBlockExcerpt
+    public readonly struct BlockDraftHeader
     {
         internal const int CurrentProtocolVersion = 1;
 
@@ -60,8 +60,8 @@ namespace Libplanet.Blocks
         /// has to satisfy.  Goes to the <see cref="Difficulty"/>.</param>
         /// <param name="totalDifficulty">The total mining difficulty until this block.
         /// See also <see cref="Difficulty"/>.</param>
-        /// <param name="previousHash">The previous block's <see cref="Hash"/>.  If it's a genesis
-        /// block (i.e., <paramref name="index"/> is 0) this should be <c>null</c>.
+        /// <param name="previousHash">The previous block's <see cref="Block{T}.Hash"/>.  If it is
+        /// a genesis block (i.e., <paramref name="index"/> is 0) this should be <c>null</c>.
         /// Goes to the <see cref="PreviousHash"/>.</param>
         /// <param name="txHash">The result of hashing the transactions the block has.
         /// Goes to the <see cref="TxHash"/>.</param>
@@ -141,11 +141,7 @@ namespace Libplanet.Blocks
 
         public ImmutableArray<byte> TxHash { get; }
 
-        public ImmutableArray<byte> Hash { get; }
-
         public ImmutableArray<byte> PreEvaluationHash { get; }
-
-        BlockHash IBlockExcerpt.Hash => new BlockHash(Hash);
 
         /// <summary>
         /// Gets <see cref="BlockDraftHeader"/> instance from serialized <paramref name="bytes"/>.
@@ -282,12 +278,12 @@ namespace Libplanet.Blocks
                 CultureInfo.InvariantCulture
             );
 
-            BlockHash hash = new BlockHash(Hash);
+            BlockDraftHash hash = new BlockDraftHash(PreEvaluationHash);
 
             if (currentTime + TimestampThreshold < ts)
             {
                 throw new InvalidBlockTimestampException(
-                    $"The block #{Index} {hash}'s timestamp ({Timestamp}) is " +
+                    $"The block draft #{Index} {hash}'s timestamp ({Timestamp}) is " +
                     $"later than now ({currentTime}, threshold: {TimestampThreshold})."
                 );
             }
@@ -295,13 +291,13 @@ namespace Libplanet.Blocks
             if (Index < 0)
             {
                 throw new InvalidBlockIndexException(
-                    $"Block #{Index} {hash}'s index must be 0 or more."
+                    $"Block draft #{Index} {hash}'s index must be 0 or more."
                 );
             }
 
             if (Difficulty > TotalDifficulty)
             {
-                var msg = $"Block #{Index} {hash}'s difficulty ({Difficulty}) " +
+                var msg = $"Block draft #{Index} {hash}'s difficulty ({Difficulty}) " +
                           $"must be less than its TotalDifficulty ({TotalDifficulty}).";
                 throw new InvalidBlockTotalDifficultyException(
                     Difficulty,
@@ -315,14 +311,14 @@ namespace Libplanet.Blocks
                 if (Difficulty != 0)
                 {
                     throw new InvalidBlockDifficultyException(
-                        $"Difficulty must be 0 for the genesis block {hash}, " +
+                        $"Difficulty must be 0 for the genesis block draft {hash}, " +
                         $"but its difficulty is {Difficulty}."
                     );
                 }
 
                 if (TotalDifficulty != 0)
                 {
-                    var msg = "Total difficulty must be 0 for the genesis block " +
+                    var msg = "Total difficulty must be 0 for the genesis block draft " +
                               $"{hash}, but its total difficulty is " +
                               $"{TotalDifficulty}.";
                     throw new InvalidBlockTotalDifficultyException(
@@ -335,7 +331,7 @@ namespace Libplanet.Blocks
                 if (!PreviousHash.IsEmpty)
                 {
                     throw new InvalidBlockPreviousHashException(
-                        $"Previous hash must be empty for the genesis block " +
+                        $"Previous hash must be empty for the genesis block draft " +
                         $"{hash}, but its value is {ByteUtil.Hex(PreviousHash)}."
                     );
                 }
@@ -345,24 +341,24 @@ namespace Libplanet.Blocks
                 if (Difficulty < 1)
                 {
                     throw new InvalidBlockDifficultyException(
-                        $"Block #{Index} {hash}'s difficulty must be more than 0 " +
-                        $"(except of the genesis block), but its difficulty is {Difficulty}."
+                        $"Block draft #{Index} {hash}'s difficulty must be more than 0 " +
+                        $"(except for the genesis block draft), but its difficulty is {Difficulty}."
                     );
                 }
 
                 if (PreviousHash.IsEmpty)
                 {
                     throw new InvalidBlockPreviousHashException(
-                        $"Block #{Index} {hash}'s previous hash " +
-                        "must be present since it's not the genesis block."
+                        $"Block draft #{Index} {hash}'s previous hash " +
+                        "must be present since it's not the genesis block draft."
                     );
                 }
             }
 
-            if (!new BlockHash(PreEvaluationHash.ToArray()).Satisfies(Difficulty))
+            if (!new BlockDraftHash(PreEvaluationHash.ToArray()).Satisfies(Difficulty))
             {
                 throw new InvalidBlockNonceException(
-                    $"Block #{Index} {hash}'s pre-evaluation hash " +
+                    $"Block draft #{Index} {hash}'s pre-evaluation hash " +
                     $"({ByteUtil.Hex(PreEvaluationHash)}) with the nonce " +
                     $"({ByteUtil.Hex(Nonce)}) does not satisfy its difficulty level {Difficulty}."
                 );
