@@ -277,7 +277,7 @@ namespace Libplanet.Blocks
                 CultureInfo.InvariantCulture
             );
 
-            BlockDraftHash hash = new BlockDraftHash(PreEvaluationHash);
+            BlockHash hash = new BlockHash(PreEvaluationHash);
 
             if (currentTime + TimestampThreshold < ts)
             {
@@ -354,7 +354,7 @@ namespace Libplanet.Blocks
                 }
             }
 
-            if (!new BlockDraftHash(PreEvaluationHash.ToArray()).Satisfies(Difficulty))
+            if (!new BlockHash(PreEvaluationHash.ToArray()).Satisfies(Difficulty))
             {
                 throw new InvalidBlockNonceException(
                     $"Block draft #{Index} {hash}'s pre-evaluation hash " +
