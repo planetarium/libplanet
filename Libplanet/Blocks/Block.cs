@@ -507,8 +507,7 @@ namespace Libplanet.Blocks
         /// a unconsumed state.
         /// </returns>
         [Pure]
-        public
-        IEnumerable<Tuple<Transaction<T>, ActionEvaluation>> EvaluateActionsPerTx(
+        public IEnumerable<Tuple<Transaction<T>, ActionEvaluation>> EvaluateActionsPerTx(
             AccountStateGetter accountStateGetter = null,
             AccountBalanceGetter accountBalanceGetter = null,
             ITrie previousBlockStatesTrie = null
