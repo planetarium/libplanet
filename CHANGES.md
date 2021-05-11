@@ -153,6 +153,7 @@ To be released.
 
  -  Added `BlockHash` struct.  [[#1192], [#1197]]
  -  Added `HashDigest<T>.DeriveFrom()` method.  [[#1197]]
+ -  Added `BlockChain<T>.GetTxExecution()` method.  [[#1156], [#1289]]
  -  Added `StunMessage.ParseAsync(Stream, CancellationToken)` method.
     [[#1228]]
  -  Added `Swarm<T>.AddPeersAsync()` method.  [[#1234]]

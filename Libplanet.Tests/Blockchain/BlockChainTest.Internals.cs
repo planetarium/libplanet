@@ -117,9 +117,16 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(expected, actual);
         }
 
-        [Fact]
-        public void ExecuteActions()
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void ExecuteActions(bool getTxExecutionViaStore)
         {
+            Func<BlockHash, TxId, TxExecution> getTxExecution
+                = getTxExecutionViaStore
+                ? (Func<BlockHash, TxId, TxExecution>)_blockChain.Store.GetTxExecution
+                : _blockChain.GetTxExecution;
+
             (var addresses, Transaction<DumbAction>[] txs) =
                 MakeFixturesForAppendTests();
             var genesis = _blockChain.Genesis;
@@ -138,12 +145,11 @@ namespace Libplanet.Tests.Blockchain
                 renderActions: false
             );
 
-            IStore store = _blockChain.Store;
             foreach (Transaction<DumbAction> tx in txs)
             {
-                Assert.Null(store.GetTxExecution(block1.Hash, tx.Id));
-                Assert.Null(store.GetTxExecution(genesis.Hash, tx.Id));
-                Assert.Null(store.GetTxExecution(_fx.Hash3, tx.Id));
+                Assert.Null(getTxExecution(block1.Hash, tx.Id));
+                Assert.Null(getTxExecution(genesis.Hash, tx.Id));
+                Assert.Null(getTxExecution(_fx.Hash3, tx.Id));
             }
 
             var minerAddress = genesis.Miner.GetValueOrDefault();
@@ -168,7 +174,7 @@ namespace Libplanet.Tests.Blockchain
 
             foreach (Transaction<DumbAction> tx in txs)
             {
-                var e = store.GetTxExecution(block1.Hash, tx.Id);
+                var e = getTxExecution(block1.Hash, tx.Id);
                 Assert.IsType<TxSuccess>(e);
                 var s = (TxSuccess)e;
                 Assert.Equal(block1.Hash, s.BlockHash);
@@ -184,8 +190,8 @@ namespace Libplanet.Tests.Blockchain
                 Assert.Empty(s.FungibleAssetsDelta);
                 Assert.Empty(s.UpdatedFungibleAssets);
 
-                Assert.Null(store.GetTxExecution(genesis.Hash, tx.Id));
-                Assert.Null(store.GetTxExecution(_fx.Hash3, tx.Id));
+                Assert.Null(getTxExecution(genesis.Hash, tx.Id));
+                Assert.Null(getTxExecution(_fx.Hash3, tx.Id));
             }
 
             var pk = new PrivateKey();
@@ -222,7 +228,7 @@ namespace Libplanet.Tests.Blockchain
                 difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain)
             ).AttachStateRootHash(_fx.StateStore, _policy.BlockAction);
             _blockChain.ExecuteActions(block2);
-            var txExecution1 = store.GetTxExecution(block2.Hash, tx1Transfer.Id);
+            var txExecution1 = getTxExecution(block2.Hash, tx1Transfer.Id);
             Assert.IsType<TxSuccess>(txExecution1);
             var txSuccess1 = (TxSuccess)txExecution1;
             Assert.Equal(
@@ -258,7 +264,7 @@ namespace Libplanet.Tests.Blockchain
                 txSuccess1.FungibleAssetsDelta,
                 txSuccess1.UpdatedFungibleAssets
             );
-            var txExecution2 = store.GetTxExecution(block2.Hash, tx2Error.Id);
+            var txExecution2 = getTxExecution(block2.Hash, tx2Error.Id);
             Assert.IsType<TxFailure>(txExecution2);
             var txFailure = (TxFailure)txExecution2;
             Assert.Equal(block2.Hash, txFailure.BlockHash);
@@ -271,7 +277,7 @@ namespace Libplanet.Tests.Blockchain
                 Dictionary.Empty.Add("parameterName", "value"),
                 txFailure.ExceptionMetadata
             );
-            var txExecution3 = store.GetTxExecution(block2.Hash, tx3Transfer.Id);
+            var txExecution3 = getTxExecution(block2.Hash, tx3Transfer.Id);
             Assert.IsType<TxSuccess>(txExecution3);
             var txSuccess3 = (TxSuccess)txExecution3;
             Assert.Equal(

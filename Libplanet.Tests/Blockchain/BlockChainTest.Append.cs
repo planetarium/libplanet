@@ -21,13 +21,19 @@ namespace Libplanet.Tests.Blockchain
 {
     public partial class BlockChainTest
     {
-        [Fact]
-        public void Append()
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void Append(bool getTxExecutionViaStore)
         {
+            Func<BlockHash, TxId, TxExecution> getTxExecution
+                = getTxExecutionViaStore
+                ? (Func<BlockHash, TxId, TxExecution>)_blockChain.Store.GetTxExecution
+                : _blockChain.GetTxExecution;
+
             (Address[] addresses, Transaction<DumbAction>[] txs) =
                 MakeFixturesForAppendTests();
             var genesis = _blockChain.Genesis;
-            IStore store = _blockChain.Store;
 
             Assert.Equal(1, _blockChain.Count);
             Assert.Empty(_renderer.ActionRecords);
@@ -47,9 +53,9 @@ namespace Libplanet.Tests.Blockchain
             ).AttachStateRootHash(_fx.StateStore, _policy.BlockAction);
             foreach (Transaction<DumbAction> tx in txs)
             {
-                Assert.Null(store.GetTxExecution(genesis.Hash, tx.Id));
-                Assert.Null(store.GetTxExecution(block1.Hash, tx.Id));
-                Assert.Null(store.GetTxExecution(block2.Hash, tx.Id));
+                Assert.Null(getTxExecution(genesis.Hash, tx.Id));
+                Assert.Null(getTxExecution(block1.Hash, tx.Id));
+                Assert.Null(getTxExecution(block2.Hash, tx.Id));
             }
 
             _blockChain.Append(block2);
@@ -132,10 +138,10 @@ namespace Libplanet.Tests.Blockchain
 
             foreach (Transaction<DumbAction> tx in txs)
             {
-                Assert.Null(store.GetTxExecution(genesis.Hash, tx.Id));
-                Assert.Null(store.GetTxExecution(block1.Hash, tx.Id));
+                Assert.Null(getTxExecution(genesis.Hash, tx.Id));
+                Assert.Null(getTxExecution(block1.Hash, tx.Id));
 
-                TxExecution e = store.GetTxExecution(block2.Hash, tx.Id);
+                TxExecution e = getTxExecution(block2.Hash, tx.Id);
                 Assert.IsType<TxSuccess>(e);
                 var s = (TxSuccess)e;
                 Assert.Equal(block2.Hash, s.BlockHash);

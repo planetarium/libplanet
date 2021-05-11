@@ -544,6 +544,19 @@ namespace Libplanet.Blockchain
         }
 
         /// <summary>
+        /// Queries the recorded <see cref="TxExecution"/> for a successful or failed
+        /// <see cref="Transaction{T}"/> within a <see cref="Block{T}"/>.
+        /// </summary>
+        /// <param name="blockHash">The <see cref="Block{T}.Hash"/> of the <see cref="Block{T}"/>
+        /// that the <see cref="Transaction{T}"/> is executed within.</param>
+        /// <param name="txid">The executed <see cref="Transaction{T}"/>'s
+        /// <see cref="Transaction{T}.Id"/>.</param>
+        /// <returns>The recorded <see cref="TxExecution"/>.  If the transaction has never been
+        /// executed within the block, it returns <c>null</c> instead.</returns>
+        public TxExecution GetTxExecution(BlockHash blockHash, TxId txid) =>
+            Store.GetTxExecution(blockHash, txid);
+
+        /// <summary>
         /// Adds a <paramref name="block"/> to the end of this chain.
         /// <para><see cref="Block{T}.Transactions"/> in the <paramref name="block"/> updates
         /// states and balances in the blockchain, and <see cref="TxExecution"/>s for
