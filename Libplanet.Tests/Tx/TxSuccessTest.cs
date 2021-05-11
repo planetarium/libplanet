@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Assets;
@@ -21,6 +23,10 @@ namespace Libplanet.Tests.Tx
         private readonly BlockHash _blockHash;
         private readonly TxId _txid;
         private readonly ImmutableDictionary<Address, IValue> _updatedStates;
+
+        private readonly ImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>>
+            _fungibleAssetsDelta;
+
         private readonly ImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>>
             _updatedFungibleAssets;
 
@@ -53,10 +59,16 @@ namespace Libplanet.Tests.Tx
                         c => c * random.Next()
                     )
             );
+            _fungibleAssetsDelta = _updatedFungibleAssets.SelectWithinValues(favs =>
+                (IImmutableDictionary<Currency, FAV>)favs.SelectWithinValues(
+                    fav => fav.Currency * random.Next(1, int.MaxValue)
+                ).ToImmutableDictionary()
+            ).ToImmutableDictionary();
             _fx = new TxSuccess(
                 _blockHash,
                 _txid,
                 _updatedStates,
+                _fungibleAssetsDelta,
                 _updatedFungibleAssets
             );
         }
@@ -67,7 +79,25 @@ namespace Libplanet.Tests.Tx
             Assert.Equal(_blockHash, _fx.BlockHash);
             Assert.Equal(_txid, _fx.TxId);
             Assert.Equal(_updatedStates, _fx.UpdatedStates);
+            Assert.Equal(_fungibleAssetsDelta, _fx.FungibleAssetsDelta);
             Assert.Equal(_updatedFungibleAssets, _fx.UpdatedFungibleAssets);
+        }
+
+        [Fact]
+        public void Serialization()
+        {
+            var formatter = new BinaryFormatter();
+            var stream = new MemoryStream();
+            formatter.Serialize(stream, _fx);
+            stream.Seek(0, SeekOrigin.Begin);
+            object deserialized = formatter.Deserialize(stream);
+            Assert.IsType<TxSuccess>(deserialized);
+            var s = (TxSuccess)deserialized;
+            Assert.Equal(_blockHash, s.BlockHash);
+            Assert.Equal(_txid, s.TxId);
+            Assert.Equal(_fx.UpdatedStates, s.UpdatedStates);
+            Assert.Equal(_fx.FungibleAssetsDelta, s.FungibleAssetsDelta);
+            Assert.Equal(_fx.UpdatedFungibleAssets, s.UpdatedFungibleAssets);
         }
     }
 }

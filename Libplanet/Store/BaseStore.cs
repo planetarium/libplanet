@@ -188,20 +188,13 @@ namespace Libplanet.Store
                     )
                 )
             );
-            var aDelta = txSuccess.UpdatedFungibleAssets.Select(pair =>
-                new KeyValuePair<IKey, IValue>(
-                    new Binary(pair.Key.ByteArray),
-                    new List(
-                        pair.Value.Select(
-                            kv => (IValue)List.Empty.Add(kv.Key.Serialize()).Add(kv.Value.RawValue)
-                        )
-                    )
-                )
-            );
+            var favDelta = SerializeGroupedFAVs(txSuccess.FungibleAssetsDelta);
+            var updatedFAVs = SerializeGroupedFAVs(txSuccess.UpdatedFungibleAssets);
             return (Dictionary)Dictionary.Empty
                 .Add("fail", false)
                 .Add("sDelta", sDelta)
-                .Add((IKey)(Text)"aDelta", new Dictionary(aDelta));
+                .Add((IKey)(Text)"favDelta", new Dictionary(favDelta))
+                .Add((IKey)(Text)"updatedFAVs", new Dictionary(updatedFAVs));
         }
 
         protected static IValue SerializeTxExecution(TxFailure txFailure)
@@ -242,25 +235,16 @@ namespace Libplanet.Store
                         kv => new Address((Binary)kv.Key),
                         kv => kv.Value is List l && l.Any() ? l[0] : null
                     );
-                ImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>>
-                    updatedFungibleAssets = d.GetValue<Dictionary>("aDelta").ToImmutableDictionary(
-                        kv => new Address((Binary)kv.Key),
-                        kv => (IImmutableDictionary<Currency, FAV>)((List)kv.Value).Select(pList =>
-                        {
-                            var pair = (List)pList;
-                            var currency = new Currency(pair[0]);
-                            BigInteger rawValue = (Bencodex.Types.Integer)pair[1];
-                            return new KeyValuePair<Currency, FAV>(
-                                currency,
-                                FAV.FromRawValue(currency, rawValue)
-                            );
-                        }).ToImmutableDictionary()
-                    );
+                IImmutableDictionary<Address, IImmutableDictionary<Currency, FungibleAssetValue>>
+                    favDelta = DeserializeGroupedFAVs(d.GetValue<Dictionary>("favDelta"));
+                IImmutableDictionary<Address, IImmutableDictionary<Currency, FungibleAssetValue>>
+                    updatedFAVs = DeserializeGroupedFAVs(d.GetValue<Dictionary>("updatedFAVs"));
                 return new TxSuccess(
                     blockHash,
                     txid,
                     sDelta,
-                    updatedFungibleAssets
+                    favDelta,
+                    updatedFAVs
                 );
             }
             catch (Exception e)
@@ -272,5 +256,47 @@ namespace Libplanet.Store
                 return null;
             }
         }
+
+        private static Bencodex.Types.Dictionary SerializeGroupedFAVs(
+            IImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>> balanceDelta
+        ) =>
+            new Dictionary(
+                balanceDelta.Select(pair =>
+                    new KeyValuePair<IKey, IValue>(
+                        new Binary(pair.Key.ByteArray),
+                        SerializeFAVs(pair.Value)
+                    )
+                )
+            );
+
+        private static IImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>>
+        DeserializeGroupedFAVs(Bencodex.Types.Dictionary serialized) =>
+            serialized.ToImmutableDictionary(
+                kv => new Address((Binary)kv.Key),
+                kv => DeserializeFAVs((List)kv.Value)
+            );
+
+        private static Bencodex.Types.List SerializeFAVs(
+            IImmutableDictionary<Currency, FungibleAssetValue> favs
+        ) =>
+            new List(
+                favs.Select(
+                    kv => (IValue)List.Empty.Add(kv.Key.Serialize()).Add(kv.Value.RawValue)
+                )
+            );
+
+        private static IImmutableDictionary<Currency, FungibleAssetValue> DeserializeFAVs(
+            List serialized
+        ) =>
+            serialized.Select(pList =>
+            {
+                var pair = (List)pList;
+                var currency = new Currency(pair[0]);
+                BigInteger rawValue = (Bencodex.Types.Integer)pair[1];
+                return new KeyValuePair<Currency, FAV>(
+                    currency,
+                    FAV.FromRawValue(currency, rawValue)
+                );
+            }).ToImmutableDictionary();
     }
 }
