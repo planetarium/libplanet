@@ -218,22 +218,22 @@ namespace Libplanet.Store
 
             try
             {
-                bool fail = (Bencodex.Types.Boolean)d["fail"];
+                bool fail = d.GetValue<Bencodex.Types.Boolean>("fail");
                 if (fail)
                 {
-                    string excName = (Text)d["exc"];
+                    string excName = d.GetValue<Text>("exc");
                     IValue excMetadata = d.ContainsKey("excMeta") ? d["excMeta"] : null;
                     return new TxFailure(blockHash, txid, excName, excMetadata);
                 }
 
-                var stateRootHash = new HashDigest<SHA256>((Binary)d["sRoot"]);
+                var stateRootHash = new HashDigest<SHA256>(((Binary)d["sRoot"]).ByteArray);
                 ImmutableHashSet<Address> stateUpdatedAddresses = ((List)d["sDelta"])
-                    .Select(v => new Address((Binary)v))
+                    .Select(v => new Address(((Binary)v).ByteArray))
                     .ToImmutableHashSet();
                 ImmutableDictionary<Address, IImmutableSet<Currency>> updatedFungibleAssets =
-                    ((Dictionary)d["aDelta"]).Select(kv =>
+                    d.GetValue<Dictionary>("aDelta").Select(kv =>
                         new KeyValuePair<Address, IImmutableSet<Currency>>(
-                            new Address((Binary)kv.Key),
+                            new Address(((Binary)kv.Key).ByteArray),
                             ((List)kv.Value).Select(v => new Currency(v)).ToImmutableHashSet()
                         )
                     ).ToImmutableDictionary();

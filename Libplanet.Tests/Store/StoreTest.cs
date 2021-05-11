@@ -802,8 +802,8 @@ namespace Libplanet.Tests.Store
             public IValue PlainValue =>
                 new Bencodex.Types.Dictionary(new Dictionary<IKey, IValue>
                 {
-                    { (Text)"bytes", new Binary(ArbitraryBytes.ToArray()) },
-                    { (Text)"md5", new Binary(Md5Digest.ToArray()) },
+                    { (Text)"bytes", new Binary(ArbitraryBytes) },
+                    { (Text)"md5", new Binary(Md5Digest) },
                 });
 
             public void LoadPlainValue(IValue plainValue)
@@ -813,8 +813,8 @@ namespace Libplanet.Tests.Store
 
             public void LoadPlainValue(Dictionary plainValue)
             {
-                ArbitraryBytes = plainValue.GetValue<Binary>("bytes").ToImmutableArray();
-                Md5Digest = plainValue.GetValue<Binary>("md5").ToImmutableArray();
+                ArbitraryBytes = plainValue.GetValue<Binary>("bytes").ByteArray;
+                Md5Digest = plainValue.GetValue<Binary>("md5").ByteArray;
             }
 
             public IAccountStateDelta Execute(IActionContext context)

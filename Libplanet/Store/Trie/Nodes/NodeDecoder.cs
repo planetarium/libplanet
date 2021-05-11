@@ -65,7 +65,7 @@ namespace Libplanet.Store.Trie.Nodes
             // Get referenced node corresponding.
             var refNode = DecodeRef(list[1]);
 
-            return new ShortNode(path, refNode);
+            return new ShortNode(path.ByteArray, refNode);
         }
 
         private static INode? DecodeRef(IValue value)
@@ -81,9 +81,9 @@ namespace Libplanet.Store.Trie.Nodes
                     return Decode(list);
 
                 case Binary binary:
-                    if (binary.Value.Length == HashDigest<SHA256>.Size)
+                    if (binary.ByteArray.Length == HashDigest<SHA256>.Size)
                     {
-                        var hashDigest = new HashDigest<SHA256>(binary.Value);
+                        var hashDigest = new HashDigest<SHA256>(binary.ByteArray);
 
                         // Get referenced node corresponding.
                         return new HashNode(hashDigest);

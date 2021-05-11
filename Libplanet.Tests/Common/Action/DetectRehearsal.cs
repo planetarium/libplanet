@@ -10,7 +10,7 @@ namespace Libplanet.Tests.Common.Action
         public override IValue PlainValue =>
             new Bencodex.Types.Dictionary(new Dictionary<IKey, IValue>
             {
-                { (Text)"target_address", new Binary(TargetAddress.ToByteArray()) },
+                { (Text)"target_address", new Binary(TargetAddress.ByteArray) },
             });
 
         public bool ResultState { get; set; }
@@ -25,7 +25,7 @@ namespace Libplanet.Tests.Common.Action
 
         public void LoadPlainValue(Bencodex.Types.Dictionary plainValue)
         {
-            TargetAddress = new Address(plainValue.GetValue<Binary>("target_address"));
+            TargetAddress = new Address(plainValue.GetValue<Binary>("target_address").ByteArray);
         }
 
         public override IAccountStateDelta Execute(IActionContext context)

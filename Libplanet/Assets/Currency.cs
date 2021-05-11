@@ -157,7 +157,7 @@ namespace Libplanet.Assets
             {
                 Minters = l.Select(
                     m => m is Binary b
-                        ? new Address(b)
+                        ? new Address(b.ByteArray)
                         : throw new ArgumentException(
                             "Expected \"minters\" to be a list of binary arrays.",
                             nameof(serialized))
@@ -268,7 +268,7 @@ namespace Libplanet.Assets
         public IValue Serialize()
         {
             IValue minters = Minters is ImmutableHashSet<Address> a
-                ? new List(a.OrderBy(m => m).Select(m => (IValue)new Binary(m.ToByteArray())))
+                ? new List(a.OrderBy(m => m).Select(m => (IValue)new Binary(m.ByteArray)))
                 : (IValue)Null.Value;
             return Dictionary.Empty
                 .Add("ticker", Ticker)

@@ -61,7 +61,7 @@ https://docs.libplanet.io/</Description>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Bencodex" Version="0.3.0-dev.bfb071c07728e25c3f2d8bd7cbee8f7ddf5d33eb" />
+    <PackageReference Include="Bencodex" Version="0.3.0-dev.d6bdbb581c5d9cd024c0b428e1c9404cdf671b75" />
     <PackageReference Include="BouncyCastle.NetCore" Version="1.8.6" />
     <PackageReference Include="Equals.Fody" Version="4.0.1" />
     <PackageReference Include="Fody" Version="6.1.1">

@@ -87,7 +87,7 @@ namespace Libplanet.Tests.Common.Action
                 var plainValue = new Bencodex.Types.Dictionary(new Dictionary<IKey, IValue>
                 {
                     [(Text)"item"] = (Text)Item,
-                    [(Text)"target_address"] = new Binary(TargetAddress.ToByteArray()),
+                    [(Text)"target_address"] = new Binary(TargetAddress.ByteArray),
                     [(Text)"record_rehearsal"] = new Bencodex.Types.Boolean(RecordRehearsal),
                 });
                 if (RecordRandom)
@@ -105,8 +105,8 @@ namespace Libplanet.Tests.Common.Action
                 if (!(Transfer is null))
                 {
                     plainValue = plainValue
-                        .Add("transfer_from", Transfer.Item1.ToByteArray())
-                        .Add("transfer_to", Transfer.Item2.ToByteArray())
+                        .Add("transfer_from", Transfer.Item1.ByteArray)
+                        .Add("transfer_to", Transfer.Item2.ByteArray)
                         .Add("transfer_amount", (IValue)new Bencodex.Types.Integer(Transfer.Item3));
                 }
 
@@ -207,7 +207,7 @@ namespace Libplanet.Tests.Common.Action
         )
         {
             Item = plainValue.GetValue<Text>("item");
-            TargetAddress = new Address(plainValue.GetValue<Binary>("target_address").Value);
+            TargetAddress = new Address(plainValue.GetValue<Binary>("target_address").ByteArray);
             RecordRehearsal = plainValue.GetValue<Boolean>("record_rehearsal").Value;
             RecordRandom =
                 plainValue.ContainsKey((IKey)(Text)"record_random") &&
@@ -227,8 +227,8 @@ namespace Libplanet.Tests.Common.Action
                 a is Integer amount)
             {
                 Transfer = Tuple.Create(
-                    new Address(from.Value),
-                    new Address(to.Value),
+                    new Address(from.ByteArray),
+                    new Address(to.ByteArray),
                     amount.Value
                 );
             }

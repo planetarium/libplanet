@@ -29,7 +29,7 @@ namespace Libplanet.Tests.Action
                     {
                         [(Text)"weapon"] = (Text)"frying pan",
                         [(Text)"target"] = (Text)"mosquito",
-                        [(Text)"target_address"] = new Binary(addr.ToByteArray()),
+                        [(Text)"target_address"] = new Binary(addr.ByteArray),
                     }),
                 }),
                 pa.PlainValue
@@ -51,7 +51,7 @@ namespace Libplanet.Tests.Action
                     {
                         [(Text)"weapon"] = (Text)"frying pan",
                         [(Text)"target"] = (Text)"mosquito",
-                        [(Text)"target_address"] = new Binary(addr.ToByteArray()),
+                        [(Text)"target_address"] = new Binary(addr.ByteArray),
                     }),
                 })
             );
