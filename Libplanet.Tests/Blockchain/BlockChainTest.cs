@@ -698,48 +698,6 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public void ExecuteActions()
-        {
-            (var addresses, Transaction<DumbAction>[] txs) =
-                MakeFixturesForAppendTests();
-            var genesis = _blockChain.Genesis;
-
-            Block<DumbAction> block1 = TestUtils.MineNext(
-                genesis,
-                txs,
-                difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain)
-            ).AttachStateRootHash(_fx.StateStore, _policy.BlockAction);
-
-            _blockChain.Append(
-                block1,
-                DateTimeOffset.UtcNow,
-                evaluateActions: false,
-                renderBlocks: true,
-                renderActions: false
-            );
-
-            var minerAddress = genesis.Miner.GetValueOrDefault();
-
-            var expectedStates = new Dictionary<Address, IValue>
-            {
-                { addresses[0], (Text)"foo" },
-                { addresses[1], (Text)"bar" },
-                { addresses[2], (Text)"baz" },
-                { addresses[3], (Text)"qux" },
-                { minerAddress, (Integer)2 },
-                { MinerReward.RewardRecordAddress, (Text)$"{minerAddress},{minerAddress}" },
-            };
-
-            _blockChain.ExecuteActions(block1);
-            foreach (KeyValuePair<Address, IValue> pair in expectedStates)
-            {
-                Assert.Equal(
-                    pair.Value,
-                    _fx.StateStore.GetState(KeyConverters.ToStateKey(pair.Key), block1.Hash));
-            }
-        }
-
-        [Fact]
         public async void FindNextHashes()
         {
             long? offsetIndex;

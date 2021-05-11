@@ -27,6 +27,7 @@ namespace Libplanet.Tests.Blockchain
             (Address[] addresses, Transaction<DumbAction>[] txs) =
                 MakeFixturesForAppendTests();
             var genesis = _blockChain.Genesis;
+            IStore store = _blockChain.Store;
 
             Assert.Equal(1, _blockChain.Count);
             Assert.Empty(_renderer.ActionRecords);
@@ -44,6 +45,13 @@ namespace Libplanet.Tests.Blockchain
                 difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
                 blockInterval: TimeSpan.FromSeconds(10)
             ).AttachStateRootHash(_fx.StateStore, _policy.BlockAction);
+            foreach (Transaction<DumbAction> tx in txs)
+            {
+                Assert.Null(store.GetTxExecution(genesis.Hash, tx.Id));
+                Assert.Null(store.GetTxExecution(block1.Hash, tx.Id));
+                Assert.Null(store.GetTxExecution(block2.Hash, tx.Id));
+            }
+
             _blockChain.Append(block2);
 
             Assert.True(_blockChain.ContainsBlock(block2.Hash));
@@ -121,6 +129,28 @@ namespace Libplanet.Tests.Blockchain
                 (Integer)2,
                 (Integer)blockRenders[1].NextStates.GetState(minerAddress)
             );
+
+            foreach (Transaction<DumbAction> tx in txs)
+            {
+                Assert.Null(store.GetTxExecution(genesis.Hash, tx.Id));
+                Assert.Null(store.GetTxExecution(block1.Hash, tx.Id));
+
+                TxExecution e = store.GetTxExecution(block2.Hash, tx.Id);
+                Assert.IsType<TxSuccess>(e);
+                var s = (TxSuccess)e;
+                Assert.Equal(block2.Hash, s.BlockHash);
+                Assert.Equal(tx.Id, s.TxId);
+                Assert.Equal(tx.UpdatedAddresses, s.UpdatedAddresses);
+                Assert.Equal(
+                    tx.UpdatedAddresses.ToImmutableDictionary(
+                        address => address,
+                        address => _blockChain.GetState(address)
+                    ),
+                    s.UpdatedStates
+                );
+                Assert.Empty(s.FungibleAssetsDelta);
+                Assert.Empty(s.UpdatedFungibleAssets);
+            }
         }
 
         [Fact]

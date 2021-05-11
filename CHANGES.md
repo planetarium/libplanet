@@ -174,6 +174,10 @@ To be released.
 
 ### Behavioral changes
 
+ -  `BlockChain<T>.Append()` now records a `TxExecution` for every single
+    transaction in the appended `Block<T>`, whether a transaction is successful
+    (`TxSuccess` is recorded for this case) or not (`TxFailure` is recorded
+    for this case).  [[#1156], [#1289]]
  -  `ITransport.StartAsync()` and `ITransport.RunAsync()` became to throw
     `TransportException` instead of `SwarmException`.  [[#1242]]
  -  When selecting peers for `ITransport.BroadcastMessage()`,

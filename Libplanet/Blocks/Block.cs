@@ -485,8 +485,12 @@ namespace Libplanet.Blocks
         /// <see cref="Transaction{T}.Actions"/> (e.g., tx&#xb9;-act&#xb9;,
         /// tx&#xb9;-act&#xb2;, tx&#xb2;-act&#xb9;, tx&#xb2;-act&#xb2;,
         /// &#x2026;).
-        /// Note that each <see cref="IActionContext.Random"/> object has
-        /// a unconsumed state.
+        /// <para>If a <see cref="Transaction{T}"/> has multiple
+        /// <see cref="Transaction{T}.Actions"/>, each <see cref="ActionEvaluation"/> includes
+        /// all previous <see cref="ActionEvaluation"/>s' delta in the same
+        /// <see cref="Transaction{T}"/> besides its own delta.</para>
+        /// <para>Note that each <see cref="IActionContext.Random"/> object has a unconsumed state.
+        /// </para>
         /// </returns>
         [Pure]
         public

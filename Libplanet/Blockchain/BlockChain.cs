@@ -545,6 +545,9 @@ namespace Libplanet.Blockchain
 
         /// <summary>
         /// Adds a <paramref name="block"/> to the end of this chain.
+        /// <para><see cref="Block{T}.Transactions"/> in the <paramref name="block"/> updates
+        /// states and balances in the blockchain, and <see cref="TxExecution"/>s for
+        /// transactions are recorded.</para>
         /// <para>Note that <see cref="Renderers"/> receive events right after the <paramref
         /// name="block"/> is confirmed (and thus all states reflect changes in the <paramref
         /// name="block"/>).</para>
@@ -572,6 +575,9 @@ namespace Libplanet.Blockchain
 
         /// <summary>
         /// Adds a <paramref name="block"/> to the end of this chain.
+        /// <para><see cref="Block{T}.Transactions"/> in the <paramref name="block"/> updates
+        /// states and balances in the blockchain, and <see cref="TxExecution"/>s for
+        /// transactions are recorded.</para>
         /// <para>Note that <see cref="Renderers"/> receive events right after the <paramref
         /// name="block"/> is confirmed (and thus all states reflect changes in the <paramref
         /// name="block"/>).</para>
@@ -1434,9 +1440,55 @@ namespace Libplanet.Blockchain
             double evalDuration = (DateTimeOffset.Now - evaluateActionStarted).TotalMilliseconds;
             _logger.Debug(evalEndMsg, block.Index, block.Hash, evalDuration);
 
+            // Prepare TxExecutions
+            var txExecutions = new List<TxExecution>();
+            IEnumerable<IGrouping<TxId, ActionEvaluation>> evaluationsPerTxs = evaluations
+                .Where(e => e.InputContext.TxId is { })
+                .GroupBy(e => e.InputContext.TxId.Value);
+            foreach (IGrouping<TxId, ActionEvaluation> txEvals in evaluationsPerTxs)
+            {
+                TxId txid = txEvals.Key;
+                IAccountStateDelta prevStates = txEvals.First().InputContext.PreviousStates;
+                ActionEvaluation evalSum = txEvals.Last();
+                TxExecution txExecution;
+                if (evalSum.Exception is { } e)
+                {
+                    txExecution = new TxFailure(block.Hash, txid, e.InnerException ?? e);
+                }
+                else
+                {
+                    IAccountStateDelta outputStates = evalSum.OutputStates;
+                    txExecution = new TxSuccess(
+                        block.Hash,
+                        txid,
+                        outputStates.GetUpdatedStates(),
+                        outputStates.UpdatedFungibleAssets.ToImmutableDictionary(
+                            kv => kv.Key,
+                            kv => (IImmutableDictionary<Currency, FungibleAssetValue>)kv.Value
+                                .ToImmutableDictionary(
+                                    currency => currency,
+                                    currency => outputStates.GetBalance(kv.Key, currency) -
+                                        prevStates.GetBalance(kv.Key, currency)
+                                )
+                        ),
+                        outputStates.UpdatedFungibleAssets.ToImmutableDictionary(
+                            kv => kv.Key,
+                            kv => (IImmutableDictionary<Currency, FungibleAssetValue>)kv.Value
+                                .ToImmutableDictionary(
+                                    currency => currency,
+                                    currency => outputStates.GetBalance(kv.Key, currency)
+                                )
+                        )
+                    );
+                }
+
+                txExecutions.Add(txExecution);
+            }
+
             _rwlock.EnterWriteLock();
             try
             {
+                // Update states
                 DateTimeOffset setStatesStarted = DateTimeOffset.Now;
                 if (StateStore is TrieStateStore trieStateStore)
                 {
@@ -1477,6 +1529,23 @@ namespace Libplanet.Blockchain
                     "(duration: {DurationMs}ms).";
                 double duration = (DateTimeOffset.Now - setStatesStarted).TotalMilliseconds;
                 _logger.Debug(endMsg, block.Index, block.Hash, duration);
+
+                // Update TxExecutions
+                foreach (TxExecution txExecution in txExecutions)
+                {
+                    // Note that there are two overloaded methods of the same name PutTxExecution()
+                    // in IStore.  As those two have different signatures, run-time polymorphism
+                    // does not work.  Instead, we need the following hard-coded branch:
+                    switch (txExecution)
+                    {
+                        case TxSuccess s:
+                            Store.PutTxExecution(s);  // IStore.PutTxExecution(TxSuccess)
+                            break;
+                        case TxFailure f:
+                            Store.PutTxExecution(f);  // IStore.PutTxExecution(TxFailure)
+                            break;
+                    }
+                }
             }
             finally
             {

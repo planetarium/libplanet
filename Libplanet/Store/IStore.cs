@@ -195,6 +195,8 @@ namespace Libplanet.Store
         /// <summary>
         /// Records the given <paramref name="txSuccess"/>.
         /// </summary>
+        /// <remarks>If there is already the record for the same <see cref="TxExecution.BlockHash"/>
+        /// and <see cref="TxExecution.TxId"/>, the record is silently overwritten.</remarks>
         /// <param name="txSuccess">The successful transaction execution summary to record.
         /// Must not be <c>null</c>.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="txSuccess"/> is
@@ -206,6 +208,8 @@ namespace Libplanet.Store
         /// <summary>
         /// Records the given <paramref name="txFailure"/>.
         /// </summary>
+        /// <remarks>If there is already the record for the same <see cref="TxExecution.BlockHash"/>
+        /// and <see cref="TxExecution.TxId"/>, the record is silently overwritten.</remarks>
         /// <param name="txFailure">The failed transaction execution summary to record.
         /// Must not be <c>null</c>.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="txFailure"/> is
