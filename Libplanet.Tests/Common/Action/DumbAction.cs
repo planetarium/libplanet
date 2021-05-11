@@ -207,7 +207,7 @@ namespace Libplanet.Tests.Common.Action
         )
         {
             Item = plainValue.GetValue<Text>("item");
-            TargetAddress = new Address(plainValue.GetValue<Binary>("target_address").ByteArray);
+            TargetAddress = new Address(plainValue.GetValue<Binary>("target_address"));
             RecordRehearsal = plainValue.GetValue<Boolean>("record_rehearsal").Value;
             RecordRandom =
                 plainValue.ContainsKey((IKey)(Text)"record_random") &&
@@ -226,11 +226,7 @@ namespace Libplanet.Tests.Common.Action
                 plainValue.TryGetValue((Text)"transfer_amount", out IValue a) &&
                 a is Integer amount)
             {
-                Transfer = Tuple.Create(
-                    new Address(from.ByteArray),
-                    new Address(to.ByteArray),
-                    amount.Value
-                );
+                Transfer = Tuple.Create(new Address(from), new Address(to), amount.Value);
             }
         }
 

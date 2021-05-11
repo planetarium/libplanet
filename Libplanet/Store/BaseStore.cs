@@ -239,12 +239,12 @@ namespace Libplanet.Store
 
                 ImmutableDictionary<Address, IValue> sDelta = d.GetValue<Dictionary>("sDelta")
                     .ToImmutableDictionary(
-                        kv => new Address(((Binary)kv.Key).ByteArray),
+                        kv => new Address((Binary)kv.Key),
                         kv => kv.Value is List l && l.Any() ? l[0] : null
                     );
                 ImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>>
                     updatedFungibleAssets = d.GetValue<Dictionary>("aDelta").ToImmutableDictionary(
-                        kv => new Address(((Binary)kv.Key).ByteArray),
+                        kv => new Address((Binary)kv.Key),
                         kv => (IImmutableDictionary<Currency, FAV>)((List)kv.Value).Select(pList =>
                         {
                             var pair = (List)pList;

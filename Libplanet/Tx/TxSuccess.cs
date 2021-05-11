@@ -50,7 +50,7 @@ namespace Libplanet.Tx
             var updatedStates =
                 (Dictionary)Codec.Decode(info.GetValue<byte[]>(nameof(UpdatedAddresses)));
             UpdatedStates = updatedStates.ToImmutableDictionary(
-                kv => new Address(((Binary)kv.Key).ByteArray),
+                kv => new Address((Binary)kv.Key),
                 kv => kv.Value is List l && l.Any() ? l[0] : null
             );
             UpdatedFungibleAssets = info
