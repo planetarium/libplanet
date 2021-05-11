@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
+using System.Numerics;
 using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
@@ -10,6 +11,7 @@ using Libplanet.Assets;
 using Libplanet.Blocks;
 using Libplanet.Tx;
 using Serilog;
+using FAV = Libplanet.Assets.FungibleAssetValue;
 
 namespace Libplanet.Store
 {
@@ -178,17 +180,26 @@ namespace Libplanet.Store
 
         protected static IValue SerializeTxExecution(TxSuccess txSuccess)
         {
-            IEnumerable<IValue> sDelta = txSuccess.StateUpdatedAddresses
-                .Select(a => (IValue)(Binary)a.ToByteArray());
-            var aDelta = txSuccess.UpdatedFungibleAssets.Select(kv =>
+            var sDelta = new Dictionary(
+                txSuccess.UpdatedStates.Select(kv =>
+                    new KeyValuePair<IKey, IValue>(
+                        new Binary(kv.Key.ByteArray),
+                        kv.Value is { } v ? List.Empty.Add(v) : List.Empty
+                    )
+                )
+            );
+            var aDelta = txSuccess.UpdatedFungibleAssets.Select(pair =>
                 new KeyValuePair<IKey, IValue>(
-                    (Binary)kv.Key.ToByteArray(),
-                    new List(kv.Value.Select(c => c.Serialize()))
+                    new Binary(pair.Key.ByteArray),
+                    new List(
+                        pair.Value.Select(
+                            kv => (IValue)List.Empty.Add(kv.Key.Serialize()).Add(kv.Value.RawValue)
+                        )
+                    )
                 )
             );
             return (Dictionary)Dictionary.Empty
                 .Add("fail", false)
-                .Add("sRoot", txSuccess.StateRootHash.ToByteArray())
                 .Add("sDelta", sDelta)
                 .Add((IKey)(Text)"aDelta", new Dictionary(aDelta));
         }
@@ -226,22 +237,29 @@ namespace Libplanet.Store
                     return new TxFailure(blockHash, txid, excName, excMetadata);
                 }
 
-                var stateRootHash = new HashDigest<SHA256>(((Binary)d["sRoot"]).ByteArray);
-                ImmutableHashSet<Address> stateUpdatedAddresses = ((List)d["sDelta"])
-                    .Select(v => new Address(((Binary)v).ByteArray))
-                    .ToImmutableHashSet();
-                ImmutableDictionary<Address, IImmutableSet<Currency>> updatedFungibleAssets =
-                    d.GetValue<Dictionary>("aDelta").Select(kv =>
-                        new KeyValuePair<Address, IImmutableSet<Currency>>(
-                            new Address(((Binary)kv.Key).ByteArray),
-                            ((List)kv.Value).Select(v => new Currency(v)).ToImmutableHashSet()
-                        )
-                    ).ToImmutableDictionary();
+                ImmutableDictionary<Address, IValue> sDelta = d.GetValue<Dictionary>("sDelta")
+                    .ToImmutableDictionary(
+                        kv => new Address(((Binary)kv.Key).ByteArray),
+                        kv => kv.Value is List l && l.Any() ? l[0] : null
+                    );
+                ImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>>
+                    updatedFungibleAssets = d.GetValue<Dictionary>("aDelta").ToImmutableDictionary(
+                        kv => new Address(((Binary)kv.Key).ByteArray),
+                        kv => (IImmutableDictionary<Currency, FAV>)((List)kv.Value).Select(pList =>
+                        {
+                            var pair = (List)pList;
+                            var currency = new Currency(pair[0]);
+                            BigInteger rawValue = (Bencodex.Types.Integer)pair[1];
+                            return new KeyValuePair<Currency, FAV>(
+                                currency,
+                                FAV.FromRawValue(currency, rawValue)
+                            );
+                        }).ToImmutableDictionary()
+                    );
                 return new TxSuccess(
                     blockHash,
                     txid,
-                    stateRootHash,
-                    stateUpdatedAddresses,
+                    sDelta,
                     updatedFungibleAssets
                 );
             }

@@ -1,6 +1,7 @@
 #nullable enable
 using System.Diagnostics.Contracts;
 using System.Runtime.Serialization;
+using Bencodex;
 using Libplanet.Blocks;
 using Libplanet.Serialization;
 
@@ -16,6 +17,8 @@ namespace Libplanet.Tx
     /// <seealso cref="TxFailure"/>
     public abstract class TxExecution : ISerializable
     {
+        protected static readonly Codec Codec = new Codec();
+
         protected TxExecution(SerializationInfo info, StreamingContext context)
             : this(info.GetValue<BlockHash>(nameof(BlockHash)), info.GetValue<TxId>(nameof(TxId)))
         {

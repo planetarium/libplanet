@@ -19,6 +19,7 @@ using Serilog;
 using Serilog.Events;
 using Xunit;
 using Xunit.Abstractions;
+using FAV = Libplanet.Assets.FungibleAssetValue;
 
 namespace Libplanet.Tests.Store
 {
@@ -177,8 +178,7 @@ namespace Libplanet.Tests.Store
                 var success = (TxSuccess)actual;
                 Assert.Equal(expected.TxId, success.TxId);
                 Assert.Equal(expected.BlockHash, success.BlockHash);
-                Assert.Equal(expected.StateRootHash, success.StateRootHash);
-                Assert.Equal(expected.StateUpdatedAddresses, success.StateUpdatedAddresses);
+                Assert.Equal(expected.UpdatedStates, success.UpdatedStates);
                 Assert.Equal(expected.UpdatedFungibleAssets, success.UpdatedFungibleAssets);
             }
 
@@ -201,12 +201,17 @@ namespace Libplanet.Tests.Store
             var inputA = new TxSuccess(
                 Fx.Hash1,
                 Fx.TxId1,
-                random.NextHashDigest<SHA256>(),
-                ImmutableHashSet<Address>.Empty.Add(random.NextAddress()),
-                ImmutableDictionary<Address, IImmutableSet<Currency>>.Empty
+                ImmutableDictionary<Address, IValue>.Empty.Add(
+                    random.NextAddress(),
+                    (Text)"state value"
+                ),
+                ImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>>.Empty
                     .Add(
                         random.NextAddress(),
-                        ImmutableHashSet<Currency>.Empty.Add(DumbAction.DumbCurrency)
+                        ImmutableDictionary<Currency, FAV>.Empty.Add(
+                            DumbAction.DumbCurrency,
+                            DumbAction.DumbCurrency * 10
+                        )
                     )
             );
             Fx.Store.PutTxExecution(inputA);

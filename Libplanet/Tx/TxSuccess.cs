@@ -5,10 +5,11 @@ using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Security.Cryptography;
+using Bencodex.Types;
 using Libplanet.Assets;
 using Libplanet.Blocks;
 using Libplanet.Serialization;
+using FAV = Libplanet.Assets.FungibleAssetValue;
 
 namespace Libplanet.Tx
 {
@@ -25,58 +26,56 @@ namespace Libplanet.Tx
         /// that the <see cref="Transaction{T}"/> is executed within.</param>
         /// <param name="txId">The executed <see cref="Transaction{T}"/>'s <see
         /// cref="Transaction{T}.Id"/>.</param>
-        /// <param name="stateRootHash">The state root hash of the immediately after the transaction
-        /// is executed.</param>
-        /// <param name="stateUpdatedAddresses">The keys of the states updated by the actions in
+        /// <param name="updatedStates">The states delta made by the actions in
         /// the transaction within the block.</param>
         /// <param name="updatedFungibleAssets"><see cref="Address"/>es and sets of
         /// <see cref="Currency"/> whose fungible assets have been updated by the actions in
-        /// the transaction within the block.</param>
+        /// the transaction within the block.  Included <see cref="FungibleAssetValue"/>s are
+        /// the final balances right after the transaction is executed.</param>
         public TxSuccess(
             BlockHash blockHash,
             TxId txId,
-            HashDigest<SHA256> stateRootHash,
-            IImmutableSet<Address> stateUpdatedAddresses,
-            IImmutableDictionary<Address, IImmutableSet<Currency>> updatedFungibleAssets
+            IImmutableDictionary<Address, IValue?> updatedStates,
+            IImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>> updatedFungibleAssets
         )
             : base(blockHash, txId)
         {
-            StateRootHash = stateRootHash;
-            StateUpdatedAddresses = stateUpdatedAddresses;
+            UpdatedStates = updatedStates;
             UpdatedFungibleAssets = updatedFungibleAssets;
         }
 
         private TxSuccess(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
-            StateRootHash = info.GetValue<HashDigest<SHA256>>(nameof(StateRootHash));
-            StateUpdatedAddresses = info
-                .GetValue<HashSet<Address>>(nameof(UpdatedAddresses))
-                .ToImmutableHashSet();
+            var updatedStates =
+                (Dictionary)Codec.Decode(info.GetValue<byte[]>(nameof(UpdatedAddresses)));
+            UpdatedStates = updatedStates.ToImmutableDictionary(
+                kv => new Address(((Binary)kv.Key).ByteArray),
+                kv => kv.Value is List l && l.Any() ? l[0] : null
+            );
             UpdatedFungibleAssets = info
-                .GetValue<Dictionary<Address, HashSet<Currency>>>(nameof(UpdatedFungibleAssets))
-                .SelectWithinValues(c => (IImmutableSet<Currency>)c.ToImmutableHashSet())
+                .GetValue<Dictionary<Address, Dictionary<Currency, FAV>>>(
+                    nameof(UpdatedFungibleAssets))
+                .SelectWithinValues(c =>
+                    (IImmutableDictionary<Currency, FAV>)c.ToImmutableDictionary())
                 .ToImmutableDictionary();
         }
 
         /// <summary>
-        /// The state root hash of the immediately after the transaction is executed.
+        /// The states delta made by the actions in the transaction within the block.
         /// </summary>
         [Pure]
-        public HashDigest<SHA256> StateRootHash { get; }
-
-        /// <summary>
-        /// The keys of the states updated by the actions in the transaction within the block.
-        /// </summary>
-        [Pure]
-        public IImmutableSet<Address> StateUpdatedAddresses { get; }
+        public IImmutableDictionary<Address, IValue?> UpdatedStates { get; }
 
         /// <summary>
         /// <see cref="Address"/>es and sets of <see cref="Currency"/> whose fungible assets have
-        /// been updated by the actions in the transaction within the block.
+        /// been updated by the actions in the transaction within the block.  Included
+        /// <see cref="FungibleAssetValue"/>s are the final balances right after the transaction is
+        /// executed.
         /// </summary>
         [Pure]
-        public IImmutableDictionary<Address, IImmutableSet<Currency>> UpdatedFungibleAssets { get; }
+        public IImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>>
+            UpdatedFungibleAssets { get; }
 
         /// <summary>
         /// All <seealso cref="Address"/>es of the accounts that have been updated by the actions
@@ -84,19 +83,30 @@ namespace Libplanet.Tx
         /// </summary>
         [Pure]
         public IImmutableSet<Address> UpdatedAddresses =>
-            StateUpdatedAddresses.Union(UpdatedFungibleAssets.Keys);
+            UpdatedStates.Keys.ToImmutableHashSet().Union(UpdatedFungibleAssets.Keys);
 
         /// <inheritdoc cref="ISerializable.GetObjectData(SerializationInfo, StreamingContext)"/>
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
-            info.AddValue(nameof(StateRootHash), StateRootHash.ToByteArray());
-            info.AddValue(nameof(StateUpdatedAddresses), StateUpdatedAddresses.ToList());
+            info.AddValue(
+                nameof(UpdatedStates),
+                Codec.Encode(
+                    new Dictionary(
+                        UpdatedStates.Select(kv =>
+                            new KeyValuePair<IKey, IValue>(
+                                new Binary(kv.Key.ToByteArray()),
+                                kv.Value is { } v ? List.Empty.Add(v) : List.Empty
+                            )
+                        )
+                    )
+                )
+            );
             info.AddValue(
                 nameof(UpdatedFungibleAssets),
                 UpdatedFungibleAssets.ToDictionary(
                     kv => kv.Key,
-                    kv => new HashSet<Currency>(kv.Value)
+                    kv => kv.Value.ToDictionary(kv => kv.Key, kv => kv.Value)
                 )
             );
         }
