@@ -227,6 +227,24 @@ namespace Libplanet.Blocks
             Transactions = transactions.ToImmutableArray();
         }
 
+        public Block(
+            BlockDraft<T> blockDraft,
+            HashDigest<SHA256> stateRootHash,
+            BlockHash hash)
+        {
+            ProtocolVersion = blockDraft.ProtocolVersion;
+            Index = blockDraft.Index;
+            Difficulty = blockDraft.Difficulty;
+            TotalDifficulty = blockDraft.TotalDifficulty;
+            Nonce = blockDraft.Nonce;
+            Miner = blockDraft.Miner;
+            PreviousHash = blockDraft.PreviousHash;
+            Timestamp = blockDraft.Timestamp;
+            PreEvaluationHash = blockDraft.PreEvaluationHash;
+            StateRootHash = stateRootHash;
+            Hash = hash;
+        }
+
         /// <summary>
         /// The protocol version number.
         /// </summary>
