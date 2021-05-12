@@ -17,11 +17,9 @@ namespace Libplanet.Explorer.Queries
     public class Query<T> : ObjectGraphType
         where T : IAction, new()
     {
-        private static BlockChain<T> _chain;
-        private static IStore _store;
-
         public Query(IBlockChainContext<T> chainContext)
         {
+            ChainContext = chainContext;
             Field<BlockQuery<T>>("blockQuery", resolve: context => new { });
             Field<TransactionQuery<T>>("transactionQuery", resolve: context => new { });
             Field<NonNullGraphType<NodeStateType<T>>>(
@@ -29,10 +27,14 @@ namespace Libplanet.Explorer.Queries
                 resolve: context => chainContext
             );
 
-            _chain = chainContext.BlockChain;
-            _store = chainContext.Store;
             Name = "Query";
         }
+
+        private static IBlockChainContext<T> ChainContext { get; set; }
+
+        private static BlockChain<T> Chain => ChainContext.BlockChain;
+
+        private static IStore Store => ChainContext.Store;
 
         internal static IEnumerable<Block<T>> ListBlocks(
             bool desc,
@@ -41,7 +43,7 @@ namespace Libplanet.Explorer.Queries
             bool excludeEmptyTxs,
             Address? miner)
         {
-            Block<T> tip = _chain.Tip;
+            Block<T> tip = Chain.Tip;
             long tipIndex = tip.Index;
 
             if (offset < 0)
@@ -54,7 +56,7 @@ namespace Libplanet.Explorer.Queries
                 yield break;
             }
 
-            Block<T> block = desc ? _chain[tipIndex] : _chain[0];
+            Block<T> block = desc ? Chain[tipIndex] : Chain[0];
 
             while (limit is null || limit > 0)
             {
@@ -86,7 +88,7 @@ namespace Libplanet.Explorer.Queries
         internal static IEnumerable<Transaction<T>> ListTransactions(
             Address? signer, Address? involved, bool desc, long offset, int? limit)
         {
-            Block<T> tip = _chain.Tip;
+            Block<T> tip = Chain.Tip;
             long tipIndex = tip?.Index ?? -1;
 
             if (offset < 0)
@@ -99,7 +101,7 @@ namespace Libplanet.Explorer.Queries
                 yield break;
             }
 
-            if (_store is IRichStore richStore)
+            if (Store is IRichStore richStore)
             {
                 IEnumerable<TxId> txIds;
                 if (!(signer is null))
@@ -121,7 +123,7 @@ namespace Libplanet.Explorer.Queries
                         .Select(r => r.Item1);
                 }
 
-                var txs = txIds.Select(txId => _chain.GetTransaction(txId));
+                var txs = txIds.Select(txId => Chain.GetTransaction(txId));
                 foreach (var tx in txs)
                 {
                     yield return tx;
@@ -130,7 +132,7 @@ namespace Libplanet.Explorer.Queries
                 yield break;
             }
 
-            Block<T> block = _chain[desc ? tipIndex - offset : offset];
+            Block<T> block = Chain[desc ? tipIndex - offset : offset];
 
             while (!(block is null) && (limit is null || limit > 0))
             {
@@ -161,7 +163,7 @@ namespace Libplanet.Explorer.Queries
                     $"{nameof(ListStagedTransactions)} doesn't support negative offset.");
             }
 
-            var stagedTxs = _chain.StagePolicy.Iterate(_chain)
+            var stagedTxs = Chain.StagePolicy.Iterate(Chain)
                 .Where(tx => IsValidTransacion(tx, signer, involved))
                 .Skip(offset);
 
@@ -174,27 +176,27 @@ namespace Libplanet.Explorer.Queries
         }
 
         internal static Block<T> GetBlockByHash(BlockHash hash) =>
-            _store.GetBlock<T>(hash);
+            Store.GetBlock<T>(hash);
 
         internal static Block<T> GetBlockByIndex(long index)
         {
-            return _chain[index];
+            return Chain[index];
         }
 
         internal static Transaction<T> GetTransaction(TxId id)
         {
-            return _chain.GetTransaction(id);
+            return Chain.GetTransaction(id);
         }
 
         private static Block<T> GetNextBlock(Block<T> block, bool desc)
         {
             if (desc && block.PreviousHash is { } prev)
             {
-                return _chain[prev];
+                return Chain[prev];
             }
-            else if (!desc && block != _chain.Tip)
+            else if (!desc && block != Chain.Tip)
             {
-                return _chain[block.Index + 1];
+                return Chain[block.Index + 1];
             }
 
             return null;
