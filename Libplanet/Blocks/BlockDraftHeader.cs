@@ -61,11 +61,12 @@ namespace Libplanet.Blocks
         /// <param name="totalDifficulty">The total mining difficulty until this block.
         /// See also <see cref="Difficulty"/>.</param>
         /// <param name="previousHash">The previous block's <see cref="Block{T}.Hash"/>.  If it is
-        /// a genesis block (i.e., <paramref name="index"/> is 0) this should be <c>null</c>.
+        /// a genesis block (i.e., <paramref name="index"/> is 0) this should be <c>Empty</c>.
         /// Goes to the <see cref="PreviousHash"/>.</param>
         /// <param name="txHash">The result of hashing the transactions the block has.
         /// Goes to the <see cref="TxHash"/>.</param>
         /// <param name="preEvaluationHash">The hash derived from the block draft.
+        /// Automatically determined if <c>Empty</c> is passed.
         /// Used for <see cref="Validate"/> checking <paramref name="nonce"/>.
         /// </param>
         public BlockDraftHeader(
