@@ -49,8 +49,8 @@ namespace Libplanet.Blocks
         /// <param name="timestamp">The time this block is created.  Goes to
         /// the <see cref="Timestamp"/>.</param>
         /// <param name="transactions">The transactions to be mined together with this block.
-        /// Transactions become sorted in an unpredicted-before-mined order and then go to
-        /// the <see cref="Transactions"/> property.
+        /// Transactions is sorted by its <see cref="Transaction{T}.Id"/> for calculating
+        /// <see cref="PreEvaluationHash"/> before going to the <see cref="Transactions"/> property.
         /// </param>
         /// <param name="protocolVersion">The protocol version. <see cref="CurrentProtocolVersion"/>
         /// by default.</param>
