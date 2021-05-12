@@ -74,7 +74,7 @@ namespace Libplanet.Blocks
             Miner = miner;
             PreviousHash = previousHash;
             Timestamp = timestamp;
-            Transactions = transactions.OrderBy(tx => tx.Id).ToArray();
+            Transactions = transactions.OrderBy(tx => tx.Id).ToImmutableArray();
             TxHash = CalcualteTxHashes(Transactions);
 
             Header = new BlockDraftHeader(
@@ -152,10 +152,9 @@ namespace Libplanet.Blocks
             Miner = miner;
             PreviousHash = previousHash;
             Timestamp = timestamp;
-            PreEvaluationHash = preEvaluationHash;
-
             TxHash = txHash;
-            Transactions = transactions.ToImmutableArray();
+            Transactions = transactions.OrderBy(tx => tx.Id).ToImmutableArray();
+            PreEvaluationHash = preEvaluationHash;
 
             Header = new BlockDraftHeader(
                 protocolVersion: ProtocolVersion,
@@ -214,6 +213,10 @@ namespace Libplanet.Blocks
         [IgnoreDuringEquals]
         public HashDigest<SHA256>? TxHash { get; }
 
+        /// <summary>
+        /// Read only list of <see cref="Transaction{T}"/>s ordered by
+        /// <see cref="Transaction{T}.Id"/>s.
+        /// </summary>
         [IgnoreDuringEquals]
         public IReadOnlyList<Transaction<T>> Transactions { get; }
 
