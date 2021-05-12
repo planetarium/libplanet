@@ -80,7 +80,21 @@ namespace Libplanet.Blocks
             Transactions = transactions.OrderBy(tx => tx.Id).ToArray();
             TxHash = CalcualteTxHashes(Transactions);
 
-            PreEvaluationHash = preEvaluationHash ?? Hashcash.Hash(Header.SerializeForHash());
+            Header = new BlockDraftHeader(
+                protocolVersion: ProtocolVersion,
+                index: Index,
+                timestamp: Timestamp.ToString(
+                    BlockDraftHeader.TimestampFormat,
+                    CultureInfo.InvariantCulture),
+                nonce: Nonce.ToByteArray().ToImmutableArray(),
+                miner: Miner?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty,
+                difficulty: Difficulty,
+                totalDifficulty: TotalDifficulty,
+                previousHash: PreviousHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty,
+                txHash: TxHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty,
+                preEvaluationHash: preEvaluationHash?.ToByteArray().ToImmutableArray()
+                    ?? ImmutableArray<byte>.Empty);
+            PreEvaluationHash = preEvaluationHash ?? new BlockHash(Header.PreEvaluationHash);
         }
 
         /// <summary>
@@ -146,6 +160,20 @@ namespace Libplanet.Blocks
 
             TxHash = txHash;
             Transactions = transactions.ToImmutableArray();
+
+            Header = new BlockDraftHeader(
+                protocolVersion: ProtocolVersion,
+                index: Index,
+                timestamp: Timestamp.ToString(
+                    BlockDraftHeader.TimestampFormat,
+                    CultureInfo.InvariantCulture),
+                nonce: Nonce.ToByteArray().ToImmutableArray(),
+                miner: Miner?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty,
+                difficulty: Difficulty,
+                totalDifficulty: TotalDifficulty,
+                previousHash: PreviousHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty,
+                txHash: TxHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty,
+                preEvaluationHash: PreEvaluationHash.ToByteArray().ToImmutableArray());
         }
 
         /// <summary>
@@ -211,31 +239,7 @@ namespace Libplanet.Blocks
         /// The <see cref="BlockDraftHeader"/> of the block.
         /// </summary>
         [IgnoreDuringEquals]
-        public BlockDraftHeader Header
-        {
-            get
-            {
-                string timestampAsString = Timestamp.ToString(
-                    BlockDraftHeader.TimestampFormat,
-                    CultureInfo.InvariantCulture
-                );
-                ImmutableArray<byte> previousHashAsArray =
-                    PreviousHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty;
-
-                return new BlockDraftHeader(
-                    protocolVersion: ProtocolVersion,
-                    index: Index,
-                    timestamp: timestampAsString,
-                    nonce: Nonce.ToByteArray().ToImmutableArray(),
-                    miner: Miner?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty,
-                    difficulty: Difficulty,
-                    totalDifficulty: TotalDifficulty,
-                    previousHash: previousHashAsArray,
-                    txHash: TxHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty,
-                    preEvaluationHash: PreEvaluationHash.ToByteArray().ToImmutableArray()
-                );
-            }
-        }
+        public BlockDraftHeader Header { get; }
 
         public static bool operator ==(BlockDraft<T> left, BlockDraft<T> right) =>
             Operator.Weave(left, right);
@@ -497,9 +501,7 @@ namespace Libplanet.Blocks
                     .Select(
                         grp => (
                             grp.Key,
-                            grp.Last().Item2.OutputStates.UpdatedAddresses
-                        )
-                    );
+                            grp.Last().Item2.OutputStates.UpdatedAddresses));
             foreach (
                 (Transaction<T> tx, IImmutableSet<Address> updatedAddresses)
                 in txUpdatedAddressesPairs)
