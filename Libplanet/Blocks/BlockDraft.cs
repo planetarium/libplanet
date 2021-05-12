@@ -52,8 +52,6 @@ namespace Libplanet.Blocks
         /// Transactions become sorted in an unpredicted-before-mined order and then go to
         /// the <see cref="Transactions"/> property.
         /// </param>
-        /// <param name="preEvaluationHash">The hash derived from the block draft.
-        /// Automatically determined if <c>null</c> is passed (which is default).</param>
         /// <param name="protocolVersion">The protocol version. <see cref="CurrentProtocolVersion"/>
         /// by default.</param>
         /// <seealso cref="Mine"/>
@@ -66,7 +64,6 @@ namespace Libplanet.Blocks
             BlockHash? previousHash,
             DateTimeOffset timestamp,
             IReadOnlyList<Transaction<T>> transactions,
-            BlockHash? preEvaluationHash = null,
             int protocolVersion = CurrentProtocolVersion)
         {
             ProtocolVersion = protocolVersion;
@@ -92,9 +89,8 @@ namespace Libplanet.Blocks
                 totalDifficulty: TotalDifficulty,
                 previousHash: PreviousHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty,
                 txHash: TxHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty,
-                preEvaluationHash: preEvaluationHash?.ToByteArray().ToImmutableArray()
-                    ?? ImmutableArray<byte>.Empty);
-            PreEvaluationHash = preEvaluationHash ?? new BlockHash(Header.PreEvaluationHash);
+                preEvaluationHash: ImmutableArray<byte>.Empty);
+            PreEvaluationHash = new BlockHash(Header.PreEvaluationHash);
         }
 
         /// <summary>
