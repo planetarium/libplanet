@@ -88,7 +88,9 @@ namespace Libplanet.Blocks
             TotalDifficulty = totalDifficulty;
             PreviousHash = previousHash;
             TxHash = txHash;
-            PreEvaluationHash = preEvaluationHash;
+
+            PreEvaluationHash = preEvaluationHash.IsEmpty ? preEvaluationHash
+                : Hashcash.Hash(SerializeForHash()).ToByteArray().ToImmutableArray();
         }
 
         public BlockDraftHeader(Bencodex.Types.Dictionary dict)
