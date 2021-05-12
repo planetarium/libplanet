@@ -150,9 +150,7 @@ namespace Libplanet.Blocks
                 rb.Transactions
                     .Select(tx => Transaction<T>.Deserialize(tx.ToArray(), false))
                     .ToList(),
-                rb.Header.PreEvaluationHash.Any()
-                    ? new BlockHash(rb.Header.PreEvaluationHash)
-                    : (BlockHash?)null)
+                new BlockHash(rb.Header.PreEvaluationHash))
 #pragma warning restore SA1118
         {
         }
@@ -168,8 +166,7 @@ namespace Libplanet.Blocks
             DateTimeOffset timestamp,
             HashDigest<SHA256>? txHash,
             IReadOnlyList<Transaction<T>> transactions,
-            BlockHash? preEvaluationHash
-        )
+            BlockHash preEvaluationHash)
         {
             ProtocolVersion = protocolVersion;
             Index = index;
@@ -179,8 +176,7 @@ namespace Libplanet.Blocks
             Miner = miner;
             PreviousHash = previousHash;
             Timestamp = timestamp;
-            PreEvaluationHash = preEvaluationHash ??
-                throw new ArgumentNullException(nameof(preEvaluationHash));
+            PreEvaluationHash = preEvaluationHash;
 
             TxHash = txHash;
             Transactions = transactions.ToImmutableArray();
