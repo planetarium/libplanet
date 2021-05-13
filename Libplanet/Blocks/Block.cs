@@ -449,19 +449,18 @@ namespace Libplanet.Blocks
         public Bencodex.Types.Dictionary ToBencodex() => ToRawBlock().ToBencodex();
 
         /// <summary>
-        /// Sorts <see cref="Transaction{T}"/>s using the associated <see cref="PreEvaluationHash"/>
-        /// as a randomizing seed.
+        /// Sorts <see cref="Transaction{T}"/>s using given seed randomizing seed.
         /// </summary>
-        /// <param name="preEvaluationHash"></param>
+        /// <param name="seed">Seed to use for randomization.</param>
         /// <param name="txs">A list of <see cref="Transaction{T}"/>s to be randomized.</param>
         /// <returns></returns>
         private static IReadOnlyList<Transaction<T>> RandomizeTxsForEvaluation(
-            BlockHash preEvaluationHash,
+            BlockHash seed,
             IReadOnlyList<Transaction<T>> txs)
         {
             // As the order of transactions should be unpredictable until a block is mined,
             // the sorter key should be derived from both a block hash and a txid.
-            var hashInteger = new BigInteger(preEvaluationHash.ToByteArray());
+            var hashInteger = new BigInteger(seed.ToByteArray());
 
             // If there are multiple transactions for the same signer these should be ordered by
             // their tx nonces.  So transactions of the same signer should have the same sort key.
