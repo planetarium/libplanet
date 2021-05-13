@@ -11,9 +11,6 @@ using System.Threading;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Action;
-using Libplanet.Assets;
-using Libplanet.Crypto;
-using Libplanet.Store.Trie;
 using Libplanet.Tx;
 
 namespace Libplanet.Blocks
@@ -77,6 +74,7 @@ namespace Libplanet.Blocks
             Transactions = transactions.OrderBy(tx => tx.Id).ToImmutableArray();
             TxHash = CalcualteTxHashes(Transactions);
 
+#pragma warning disable SA1118
             Header = new BlockDraftHeader(
                 protocolVersion: ProtocolVersion,
                 index: Index,
@@ -91,6 +89,7 @@ namespace Libplanet.Blocks
                     ?? ImmutableArray<byte>.Empty,
                 txHash: TxHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty,
                 preEvaluationHash: ImmutableArray<byte>.Empty);
+#pragma warning restore SA1118
             PreEvaluationHash = new BlockHash(Header.PreEvaluationHash);
         }
 
@@ -157,6 +156,7 @@ namespace Libplanet.Blocks
             Transactions = transactions.OrderBy(tx => tx.Id).ToImmutableArray();
             PreEvaluationHash = preEvaluationHash;
 
+#pragma warning disable SA1118
             Header = new BlockDraftHeader(
                 protocolVersion: ProtocolVersion,
                 index: Index,
@@ -171,6 +171,7 @@ namespace Libplanet.Blocks
                     ?? ImmutableArray<byte>.Empty,
                 txHash: TxHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty,
                 preEvaluationHash: PreEvaluationHash.ToByteArray().ToImmutableArray());
+#pragma warning restore SA1118
         }
 
         /// <summary>
@@ -367,7 +368,6 @@ namespace Libplanet.Blocks
         }
 
         public Bencodex.Types.Dictionary ToBencodex() => ToRawBlockDraft().ToBencodex();
-
 
         public override string ToString()
         {

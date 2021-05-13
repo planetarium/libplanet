@@ -93,6 +93,24 @@ namespace Libplanet.Blocks
             Transactions = RandomizeTxsForEvaluation(PreEvaluationHash, Transactions);
         }
 
+        public Block(
+            BlockDraft<T> blockDraft,
+            HashDigest<SHA256> stateRootHash,
+            BlockHash hash)
+        {
+            ProtocolVersion = blockDraft.ProtocolVersion;
+            Index = blockDraft.Index;
+            Difficulty = blockDraft.Difficulty;
+            TotalDifficulty = blockDraft.TotalDifficulty;
+            Nonce = blockDraft.Nonce;
+            Miner = blockDraft.Miner;
+            PreviousHash = blockDraft.PreviousHash;
+            Timestamp = blockDraft.Timestamp;
+            PreEvaluationHash = blockDraft.PreEvaluationHash;
+            StateRootHash = stateRootHash;
+            Hash = hash;
+        }
+
         /// <summary>
         /// Creates a <see cref="Block{T}"/> instance from its serialization.
         /// </summary>
@@ -193,24 +211,6 @@ namespace Libplanet.Blocks
             StateRootHash = stateRootHash;
             TxHash = txHash;
             Transactions = transactions.ToImmutableArray();
-        }
-
-        public Block(
-            BlockDraft<T> blockDraft,
-            HashDigest<SHA256> stateRootHash,
-            BlockHash hash)
-        {
-            ProtocolVersion = blockDraft.ProtocolVersion;
-            Index = blockDraft.Index;
-            Difficulty = blockDraft.Difficulty;
-            TotalDifficulty = blockDraft.TotalDifficulty;
-            Nonce = blockDraft.Nonce;
-            Miner = blockDraft.Miner;
-            PreviousHash = blockDraft.PreviousHash;
-            Timestamp = blockDraft.Timestamp;
-            PreEvaluationHash = blockDraft.PreEvaluationHash;
-            StateRootHash = stateRootHash;
-            Hash = hash;
         }
 
         /// <summary>
@@ -449,51 +449,6 @@ namespace Libplanet.Blocks
         public Bencodex.Types.Dictionary ToBencodex() => ToRawBlock().ToBencodex();
 
         /// <summary>
-        /// Sorts <see cref="Transaction{T}"/>s using given seed randomizing seed.
-        /// </summary>
-        /// <param name="seed">Seed to use for randomization.</param>
-        /// <param name="txs">A list of <see cref="Transaction{T}"/>s to be randomized.</param>
-        /// <returns></returns>
-        private static IReadOnlyList<Transaction<T>> RandomizeTxsForEvaluation(
-            BlockHash seed,
-            IReadOnlyList<Transaction<T>> txs)
-        {
-            // As the order of transactions should be unpredictable until a block is mined,
-            // the sorter key should be derived from both a block hash and a txid.
-            var hashInteger = new BigInteger(seed.ToByteArray());
-
-            // If there are multiple transactions for the same signer these should be ordered by
-            // their tx nonces.  So transactions of the same signer should have the same sort key.
-            // The following logic "flattens" multiple tx ids having the same signer into a single
-            // txid by applying XOR between them.
-            IImmutableDictionary<Address, IImmutableSet<Transaction<T>>> signerTxs = txs
-                .GroupBy(tx => tx.Signer)
-                .ToImmutableDictionary(
-                    g => g.Key,
-                    g => (IImmutableSet<Transaction<T>>)g.ToImmutableHashSet()
-                );
-            IImmutableDictionary<Address, BigInteger> signerTxIds = signerTxs
-                .ToImmutableDictionary(
-                    pair => pair.Key,
-                    pair => pair.Value
-                        .Select(tx => new BigInteger(tx.Id.ToByteArray()))
-                        .OrderBy(txid => txid)
-                        .Aggregate((a, b) => a ^ b)
-                );
-
-            // Order signers by values derivied from both block hash and their "flatten" txid:
-            IImmutableList<Address> signers = signerTxIds
-                .OrderBy(pair => pair.Value ^ hashInteger)
-                .Select(pair => pair.Key)
-                .ToImmutableArray();
-
-            // Order transactions for each signer by their tx nonces:
-            return signers
-                .SelectMany(signer => signerTxs[signer].OrderBy(tx => tx.Nonce))
-                .ToImmutableArray();
-        }
-
-        /// <summary>
         /// Executes every <see cref="IAction"/> in the
         /// <see cref="Transactions"/> step by step, and emits a pair of
         /// a transaction, and an <see cref="ActionEvaluation"/>
@@ -718,6 +673,52 @@ namespace Libplanet.Blocks
                 header: Header,
                 transactions: Transactions
                 .Select(tx => tx.Serialize(true).ToImmutableArray()).ToImmutableArray());
+        }
+
+        /// <summary>
+        /// Sorts <see cref="Transaction{T}"/>s using given seed randomizing seed.
+        /// </summary>
+        /// <param name="seed">Seed to use for randomization.</param>
+        /// <param name="txs">A list of <see cref="Transaction{T}"/>s to be randomized.</param>
+        /// <returns>A randomized <see cref="IReadOnlyList{T}"/> of <see cref="Transaction{T}"/>s.
+        /// </returns>
+        private static IReadOnlyList<Transaction<T>> RandomizeTxsForEvaluation(
+            BlockHash seed,
+            IReadOnlyList<Transaction<T>> txs)
+        {
+            // As the order of transactions should be unpredictable until a block is mined,
+            // the sorter key should be derived from both a block hash and a txid.
+            var hashInteger = new BigInteger(seed.ToByteArray());
+
+            // If there are multiple transactions for the same signer these should be ordered by
+            // their tx nonces.  So transactions of the same signer should have the same sort key.
+            // The following logic "flattens" multiple tx ids having the same signer into a single
+            // txid by applying XOR between them.
+            IImmutableDictionary<Address, IImmutableSet<Transaction<T>>> signerTxs = txs
+                .GroupBy(tx => tx.Signer)
+                .ToImmutableDictionary(
+                    g => g.Key,
+                    g => (IImmutableSet<Transaction<T>>)g.ToImmutableHashSet()
+                );
+            IImmutableDictionary<Address, BigInteger> signerTxIds = signerTxs
+                .ToImmutableDictionary(
+                    pair => pair.Key,
+                    pair => pair.Value
+                        .Select(tx => new BigInteger(tx.Id.ToByteArray()))
+                        .OrderBy(txid => txid)
+                        .Aggregate((a, b) => a ^ b)
+                );
+
+            // Order signers by values derivied from both block hash and their "flatten" txid:
+            IImmutableList<Address> signers = signerTxIds
+                .OrderBy(pair => pair.Value ^ hashInteger)
+                .Select(pair => pair.Key)
+                .ToImmutableArray();
+
+            // Order transactions for each signer by their tx nonces:
+            return signers
+                .SelectMany(signer => signerTxs[signer].OrderBy(tx => tx.Nonce))
+                .ToImmutableArray();
         }
 
         private static HashDigest<SHA256>? CalcualteTxHashes(IEnumerable<Transaction<T>> txs)
