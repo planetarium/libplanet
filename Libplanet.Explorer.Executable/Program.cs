@@ -497,11 +497,7 @@ If omitted (default) explorer only the local blockchain store.")]
             {
             }
 
-            public IValue GetState(
-                string stateKey, BlockHash? blockHash = null, Guid? chainId = null)
-            {
-                return null;
-            }
+            public IValue GetState(string stateKey, BlockHash? blockHash = null) => null;
 
             public bool ContainsBlockStates(BlockHash blockHash) => false;
 

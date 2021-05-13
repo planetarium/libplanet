@@ -10,7 +10,7 @@ namespace Libplanet.Tests.Common.Action
         public override IValue PlainValue =>
             new Bencodex.Types.Dictionary(new Dictionary<IKey, IValue>
             {
-                { (Text)"target_address", new Binary(TargetAddress.ToByteArray()) },
+                { (Text)"target_address", new Binary(TargetAddress.ByteArray) },
             });
 
         public bool ResultState { get; set; }

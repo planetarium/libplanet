@@ -13,7 +13,7 @@ namespace Libplanet.Tests.Common.Action
             {
                 [(Text)"weapon"] = (Text)Weapon,
                 [(Text)"target"] = (Text)Target,
-                [(Text)"target_address"] = new Binary(TargetAddress.ToByteArray()),
+                [(Text)"target_address"] = new Binary(TargetAddress.ByteArray),
             });
 
         public string Weapon { get; set; }
@@ -32,7 +32,7 @@ namespace Libplanet.Tests.Common.Action
         {
             Weapon = (Text)plainValue["weapon"];
             Target = (Text)plainValue["target"];
-            TargetAddress = new Address((Binary)plainValue["target_address"]);
+            TargetAddress = new Address(plainValue.GetValue<Binary>("target_address"));
         }
 
         public override IAccountStateDelta Execute(IActionContext context)

@@ -56,7 +56,7 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public IValue? GetState(string stateKey, BlockHash? blockHash = null, Guid? chainId = null)
+        public IValue? GetState(string stateKey, BlockHash? blockHash = null)
         {
             if (blockHash is null)
             {

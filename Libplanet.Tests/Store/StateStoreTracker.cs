@@ -25,10 +25,10 @@ namespace Libplanet.Tests.Store
             _stateStore.SetStates(blockHash, states);
         }
 
-        public IValue GetState(string stateKey, BlockHash? blockHash = null, Guid? chainId = null)
+        public IValue GetState(string stateKey, BlockHash? blockHash = null)
         {
-            Log(nameof(GetState), stateKey, blockHash, chainId);
-            return _stateStore.GetState(stateKey, blockHash, chainId);
+            Log(nameof(GetState), stateKey, blockHash);
+            return _stateStore.GetState(stateKey, blockHash);
         }
 
         public bool ContainsBlockStates(BlockHash blockHash)

@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
+using Bencodex.Types;
 using Libplanet.Crypto;
 using Libplanet.Serialization;
 using Org.BouncyCastle.Crypto.Digests;
@@ -129,6 +130,20 @@ namespace Libplanet
         /// >EIP 55</a>.</param>
         public Address(string hex)
             : this(DeriveAddress(hex))
+        {
+        }
+
+        /// <summary>
+        /// Creates an <see cref="Address"/> instance from the given Bencodex <see cref="Binary"/>
+        /// (i.e., <paramref name="address"/>).
+        /// </summary>
+        /// <param name="address">A Bencodex <see cref="Binary"/> of 20 <see cref="byte"/>s which
+        /// represents an <see cref="Address"/>.
+        /// </param>
+        /// <exception cref="ArgumentException">Thrown when the given <paramref name="address"/>
+        /// did not lengthen 20 bytes.</exception>
+        public Address(Binary address)
+            : this(address.ByteArray)
         {
         }
 

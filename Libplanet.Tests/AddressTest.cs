@@ -3,6 +3,7 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
+using Bencodex.Types;
 using Libplanet.Crypto;
 using Xunit;
 
@@ -137,6 +138,25 @@ namespace Libplanet.Tests
                     new Address(addressBytes)
                 );
             }
+        }
+
+        [Fact]
+        public void ConstructWithBinary()
+        {
+            byte[] addr =
+            {
+                0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef, 0xab,
+                0xcd, 0xef, 0xab, 0xcd, 0xef, 0xab, 0xcd, 0xef, 0xab,
+                0xcd, 0xef,
+            };
+
+            Assert.Equal(
+                new Address("0123456789ABcdefABcdEfABcdEFabcDEFabCDEF"),
+                new Address((Binary)addr)
+            );
+
+            var invalidAddr = new byte[19];
+            Assert.Throws<ArgumentException>(() => new Address((Binary)invalidAddr));
         }
 
         [Fact]

@@ -1,5 +1,6 @@
 using System;
 using System.Security.Cryptography;
+using Libplanet.Blocks;
 using Libplanet.Tx;
 
 namespace Libplanet.Tests
@@ -23,5 +24,8 @@ namespace Libplanet.Tests
             where T : HashAlgorithm
         =>
             new HashDigest<T>(random.NextBytes(HashDigest<T>.Size));
+
+        public static BlockHash NextBlockHash(this Random random, int size) =>
+            new BlockHash(random.NextBytes(size));
     }
 }

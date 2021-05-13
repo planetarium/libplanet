@@ -119,6 +119,14 @@ To be released.
         parameter became `IImmutableSet<BlockHash>`
         (was `ImmutableHashSet<HashDigest<SHA256>>`).
  -  Added `IActionContext.TxId` property.  [[#1275]]
+ -  Added `IStore.PutTxExecution(TxSuccess)` method.  [[#1156], [#1289]]
+ -  Added `IStore.PutTxExecution(TxFailure)` method.  [[#1156], [#1289]]
+ -  Added `IStore.GetTxExecution()` method.  [[#1156], [#1289]]
+ -  Removed the optional parameter `Guid? chainId = null` from
+    `IStateStore.GetState()` method.  [[#1289]]
+ -  Removed `compress` parameter from `DefaultStore()` constructor.  [[#1289]]
+ -  Removed `statesCacheSize` parameter from `DefaultStore()` constructor.
+    [[#1289]]
  -  Removed `StunMessage.Parse(Stream)` method.  [[#1228]]
  -  Moved `ITransport` and `NetMQTransport` from `Libplanet.Net` to
     `Libplanet.Net.Transports`.  [[#1235]]
@@ -145,6 +153,7 @@ To be released.
 
  -  Added `BlockHash` struct.  [[#1192], [#1197]]
  -  Added `HashDigest<T>.DeriveFrom()` method.  [[#1197]]
+ -  Added `BlockChain<T>.GetTxExecution()` method.  [[#1156], [#1289]]
  -  Added `StunMessage.ParseAsync(Stream, CancellationToken)` method.
     [[#1228]]
  -  Added `Swarm<T>.AddPeersAsync()` method.  [[#1234]]
@@ -155,9 +164,21 @@ To be released.
  -  Added `StaticPeers` as the last parameter to
     `RoutingTable(Address, int, int)` constructor.  [[#1230], [#1271]]
  -  Added `AtomicActionRenderer<T>` class.  [[#1267], [#1275]]
+ -  Added `TxExecution` abstract class.  [[#1156], [#1289]]
+ -  Added `TxSuccess` class.  [[#1156], [#1289]]
+ -  Added `TxFailure` class.  [[#1156], [#1289]]
+ -  Added `IExtractableException` interface.  [[#1156], [#1289]]
+ -  Added `ExtractableException` static class.  [[#1156], [#1289]]
+ -  Added `Address(Binary)` overloaded constructor.  [[#1289]]
+ -  Added `Currency(IValue)` overloaded constructor.  [[#1289]]
+ -  Added `Currency.Serialize()` method.  [[#1289]]
 
 ### Behavioral changes
 
+ -  `BlockChain<T>.Append()` now records a `TxExecution` for every single
+    transaction in the appended `Block<T>`, whether a transaction is successful
+    (`TxSuccess` is recorded for this case) or not (`TxFailure` is recorded
+    for this case).  [[#1156], [#1289]]
  -  `ITransport.StartAsync()` and `ITransport.RunAsync()` became to throw
     `TransportException` instead of `SwarmException`.  [[#1242]]
  -  When selecting peers for `ITransport.BroadcastMessage()`,
@@ -198,9 +219,10 @@ To be released.
  -  Fixed memory leak due to undisposed `CancellationTokenRegistration`s.
     [[#1228]]
  -  Fixed a bug where `DefaultStore.Dispose()` and `TrieStateStore.Dispose()`
-    hadn't worked idempotently.  [[#1272]]
- -  (Libplanet.RocksDBStore) Fixed a bug where `RocksDBStore.Dispose()` and
-    `RocksDBKeyValueStore.Dispose()` hadn't worked idempotently.  [[#1272]]
+    had not been idempotent.  [[#1272]]
+ -  (Libplanet.RocksDBStore) Fixed a bug where `RocksDBStore.Dispose()`,
+    `MonoRocksDBStore.Dispose()`, and `RocksDBKeyValueStore.Dispose()` had not
+    been idempotent.  [[#1272], [#1289]]
  -  Fixed a bug where `NetMQTransport` had hung forever within Mono runtime.
     [[#1278]]
 
@@ -215,6 +237,7 @@ To be released.
  -  Added `planet key derive` subcommand to derive the address or
     public key from a private.  [[#1268]]
 
+[#1156]: https://github.com/planetarium/libplanet/issues/1156
 [#1192]: https://github.com/planetarium/libplanet/issues/1192
 [#1197]: https://github.com/planetarium/libplanet/pull/1197
 [#1213]: https://github.com/planetarium/libplanet/issues/1213
@@ -233,6 +256,7 @@ To be released.
 [#1274]: https://github.com/planetarium/libplanet/pull/1274
 [#1275]: https://github.com/planetarium/libplanet/pull/1275
 [#1278]: https://github.com/planetarium/libplanet/pull/1278
+[#1289]: https://github.com/planetarium/libplanet/pull/1289
 
 
 Version 0.11.1

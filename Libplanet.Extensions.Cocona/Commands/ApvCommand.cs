@@ -223,7 +223,7 @@ namespace Libplanet.Extensions.Cocona.Commands
                             return;
 
                         case Binary bin:
-                            table.Add((key, ByteUtil.Hex(bin.Value)));
+                            table.Add((key, ByteUtil.Hex(bin.ByteArray)));
                             return;
 
                         case Text t:

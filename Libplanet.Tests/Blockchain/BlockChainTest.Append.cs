@@ -21,9 +21,16 @@ namespace Libplanet.Tests.Blockchain
 {
     public partial class BlockChainTest
     {
-        [Fact]
-        public void Append()
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void Append(bool getTxExecutionViaStore)
         {
+            Func<BlockHash, TxId, TxExecution> getTxExecution
+                = getTxExecutionViaStore
+                ? (Func<BlockHash, TxId, TxExecution>)_blockChain.Store.GetTxExecution
+                : _blockChain.GetTxExecution;
+
             (Address[] addresses, Transaction<DumbAction>[] txs) =
                 MakeFixturesForAppendTests();
             var genesis = _blockChain.Genesis;
@@ -44,6 +51,13 @@ namespace Libplanet.Tests.Blockchain
                 difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
                 blockInterval: TimeSpan.FromSeconds(10)
             ).AttachStateRootHash(_fx.StateStore, _policy.BlockAction);
+            foreach (Transaction<DumbAction> tx in txs)
+            {
+                Assert.Null(getTxExecution(genesis.Hash, tx.Id));
+                Assert.Null(getTxExecution(block1.Hash, tx.Id));
+                Assert.Null(getTxExecution(block2.Hash, tx.Id));
+            }
+
             _blockChain.Append(block2);
 
             Assert.True(_blockChain.ContainsBlock(block2.Hash));
@@ -121,6 +135,28 @@ namespace Libplanet.Tests.Blockchain
                 (Integer)2,
                 (Integer)blockRenders[1].NextStates.GetState(minerAddress)
             );
+
+            foreach (Transaction<DumbAction> tx in txs)
+            {
+                Assert.Null(getTxExecution(genesis.Hash, tx.Id));
+                Assert.Null(getTxExecution(block1.Hash, tx.Id));
+
+                TxExecution e = getTxExecution(block2.Hash, tx.Id);
+                Assert.IsType<TxSuccess>(e);
+                var s = (TxSuccess)e;
+                Assert.Equal(block2.Hash, s.BlockHash);
+                Assert.Equal(tx.Id, s.TxId);
+                Assert.Equal(tx.UpdatedAddresses, s.UpdatedAddresses);
+                Assert.Equal(
+                    tx.UpdatedAddresses.ToImmutableDictionary(
+                        address => address,
+                        address => _blockChain.GetState(address)
+                    ),
+                    s.UpdatedStates
+                );
+                Assert.Empty(s.FungibleAssetsDelta);
+                Assert.Empty(s.UpdatedFungibleAssets);
+            }
         }
 
         [Fact]
