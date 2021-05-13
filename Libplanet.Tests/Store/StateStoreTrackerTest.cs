@@ -27,10 +27,9 @@ namespace Libplanet.Tests.Store
         public void MethodCallsAreLogged()
         {
             var blockHash = default(BlockHash);
-            var chainId = default(Guid);
-            _tracker.GetState("stateKey", blockHash, chainId);
+            _tracker.GetState("stateKey", blockHash);
             StoreTrackLog storeTrackLog = StoreTrackLog.Create(
-                nameof(_tracker.GetState), "stateKey", blockHash, chainId);
+                nameof(_tracker.GetState), "stateKey", blockHash);
             Assert.Equal(1, _tracker.Logs.Count);
             Assert.Equal(
                 storeTrackLog,
@@ -49,8 +48,7 @@ namespace Libplanet.Tests.Store
         public void ClearLogs()
         {
             var blockHash = default(BlockHash);
-            var chainId = default(Guid);
-            _tracker.GetState("stateKey", blockHash, chainId);
+            _tracker.GetState("stateKey", blockHash);
             var randomHash = new BlockHash(TestUtils.GetRandomBytes(32));
             _tracker.ContainsBlockStates(randomHash);
             Assert.Equal(2, _tracker.Logs.Count);
@@ -66,11 +64,7 @@ namespace Libplanet.Tests.Store
             {
             }
 
-            public IValue GetState(
-                string stateKey, BlockHash? blockHash = null, Guid? chainId = null)
-            {
-                return null;
-            }
+            public IValue GetState(string stateKey, BlockHash? blockHash = null) => null;
 
             public bool ContainsBlockStates(BlockHash blockHash) => false;
 

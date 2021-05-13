@@ -502,9 +502,9 @@ namespace Libplanet.Tests.Tx
 
             var targetAddress =
                 ((Bencodex.Types.Dictionary)tx.Actions[0].InnerAction.PlainValue)
-                    .GetValue<Binary>("target_address").Value;
+                    .GetValue<Binary>("target_address").ByteArray;
             AssertBytesEqual(
-                new Address(publicKey).ToByteArray(),
+                new Address(publicKey).ByteArray,
                 targetAddress
             );
             Assert.Equal(

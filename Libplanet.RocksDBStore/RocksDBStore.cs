@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using Bencodex;
 using Libplanet.Blocks;
 using Libplanet.Store;
 using Libplanet.Tx;
@@ -28,6 +29,7 @@ namespace Libplanet.RocksDBStore
         private const string TxDbRootPathName = "tx";
         private const string TxIndexDbName = "txindex";
         private const string StagedTxDbName = "stagedtx";
+        private const string TxExecutionDbName = "txexec";
         private const string ChainDbName = "chain";
         private const int ForkWriteBatchSize = 100000;
 
@@ -36,10 +38,13 @@ namespace Libplanet.RocksDBStore
         private static readonly byte[] TxKeyPrefix = { (byte)'T' };
         private static readonly byte[] TxNonceKeyPrefix = { (byte)'N' };
         private static readonly byte[] StagedTxKeyPrefix = { (byte)'t' };
+        private static readonly byte[] TxExecutionKeyPrefix = { (byte)'e' };
         private static readonly byte[] IndexCountKey = { (byte)'c' };
         private static readonly byte[] CanonicalChainIdIdKey = { (byte)'C' };
 
         private static readonly byte[] EmptyBytes = new byte[0];
+
+        private static readonly Codec Codec = new Codec();
 
         private readonly ILogger _logger;
 
@@ -57,6 +62,7 @@ namespace Libplanet.RocksDBStore
         private readonly RocksDb _txIndexDb;
         private readonly LruCache<string, RocksDb> _txDbCache;
         private readonly RocksDb _stagedTxDb;
+        private readonly RocksDb _txExecutionDb;
         private readonly RocksDb _chainDb;
 
         private readonly ReaderWriterLockSlim _rwTxLock;
@@ -70,7 +76,6 @@ namespace Libplanet.RocksDBStore
         /// </param>
         /// <param name="blockCacheSize">The capacity of the block cache.</param>
         /// <param name="txCacheSize">The capacity of the transaction cache.</param>
-        /// <param name="statesCacheSize">The capacity of the states cache.</param>
         /// <param name="maxTotalWalSize">The number to configure <c>max_total_wal_size</c> RocksDB
         /// option.</param>
         /// <param name="keepLogFileNum">The number to configure <c>keep_log_file_num</c> RocksDB
@@ -146,6 +151,8 @@ namespace Libplanet.RocksDBStore
                 RocksDBUtils.OpenRocksDb(_options, RocksDbPath(BlockPerceptionDbName));
             _txIndexDb = RocksDBUtils.OpenRocksDb(_options, TxDbPath(TxIndexDbName));
             _stagedTxDb = RocksDBUtils.OpenRocksDb(_options, RocksDbPath(StagedTxDbName));
+            _txExecutionDb =
+                RocksDBUtils.OpenRocksDb(_options, RocksDbPath(TxExecutionDbName));
 
             // When opening a DB in a read-write mode, you need to specify all Column Families that
             // currently exist in a DB. https://github.com/facebook/rocksdb/wiki/Column-Families
@@ -760,6 +767,32 @@ namespace Libplanet.RocksDBStore
             return false;
         }
 
+        /// <inheritdoc cref="BaseStore.PutTxExecution(Libplanet.Tx.TxSuccess)"/>
+        public override void PutTxExecution(TxSuccess txSuccess) =>
+            _txExecutionDb.Put(
+                TxExecutionKey(txSuccess),
+                Codec.Encode(SerializeTxExecution(txSuccess))
+            );
+
+        /// <inheritdoc cref="BaseStore.PutTxExecution(Libplanet.Tx.TxFailure)"/>
+        public override void PutTxExecution(TxFailure txFailure) =>
+            _txExecutionDb.Put(
+                TxExecutionKey(txFailure),
+                Codec.Encode(SerializeTxExecution(txFailure))
+            );
+
+        /// <inheritdoc cref="BaseStore.GetTxExecution(BlockHash, TxId)"/>
+        public override TxExecution GetTxExecution(BlockHash blockHash, TxId txid)
+        {
+            byte[] key = TxExecutionKey(blockHash, txid);
+            if (_txExecutionDb.Get(key) is { } bytes)
+            {
+                return DeserializeTxExecution(blockHash, txid, Codec.Decode(bytes), _logger);
+            }
+
+            return null;
+        }
+
         /// <inheritdoc cref="BaseStore.SetBlockPerceivedTime(BlockHash, DateTimeOffset)"/>
         public override void SetBlockPerceivedTime(
             BlockHash blockHash,
@@ -878,6 +911,7 @@ namespace Libplanet.RocksDBStore
                     _blockIndexDb?.Dispose();
                     _blockPerceptionDb?.Dispose();
                     _stagedTxDb?.Dispose();
+                    _txExecutionDb?.Dispose();
                     foreach (var db in _txDbCache.Values)
                     {
                         db.Dispose();
@@ -939,10 +973,16 @@ namespace Libplanet.RocksDBStore
         private byte[] TxNonceKey(in Address address) =>
             TxNonceKeyPrefix.Concat(address.ByteArray).ToArray();
 
-        private byte[] StagedTxKey(in TxId txId)
-        {
-            return StagedTxKeyPrefix.Concat(txId.ToByteArray()).ToArray();
-        }
+        private byte[] StagedTxKey(in TxId txId) =>
+            StagedTxKeyPrefix.Concat(txId.ToByteArray()).ToArray();
+
+        private byte[] TxExecutionKey(in BlockHash blockHash, in TxId txId) =>
+
+            // As BlockHash is not fixed size, place TxId first.
+            TxExecutionKeyPrefix.Concat(txId.ByteArray).Concat(blockHash.ByteArray).ToArray();
+
+        private byte[] TxExecutionKey(TxExecution txExecution) =>
+            TxExecutionKey(txExecution.BlockHash, txExecution.TxId);
 
         private IEnumerable<Iterator> IterateDb(RocksDb db, byte[] prefix, Guid? chainId = null)
         {

@@ -22,8 +22,8 @@ steps:
 - task: Cache@2
   displayName: Cache NuGet packages
   inputs:
-    key: 'nuget | "$(Agent.OS)" | **/*.csproj'
-    restoreKeys: 'nuget | "$(Agent.OS)"'
+    key: 'nuget | "$(Agent.OS)" | "${{ parameters.locale }}" | **/*.csproj'
+    restoreKeys: 'nuget | "$(Agent.OS)" | "${{ parameters.locale }}"'
     path: $(NUGET_PACKAGES)
 
 - task: DotNetCoreCLI@2

@@ -53,6 +53,18 @@ namespace Libplanet.Explorer.Store
         public long? GetBlockIndex(BlockHash blockHash) =>
             _store.GetBlockIndex(blockHash);
 
+        /// <inheritdoc cref="IStore.PutTxExecution(Libplanet.Tx.TxSuccess)"/>
+        public void PutTxExecution(TxSuccess txSuccess) =>
+            _store.PutTxExecution(txSuccess);
+
+        /// <inheritdoc cref="IStore.PutTxExecution(Libplanet.Tx.TxFailure)"/>
+        public void PutTxExecution(TxFailure txFailure) =>
+            _store.PutTxExecution(txFailure);
+
+        /// <inheritdoc cref="IStore.GetTxExecution(BlockHash, TxId)"/>
+        public TxExecution GetTxExecution(BlockHash blockHash, TxId txid) =>
+            _store.GetTxExecution(blockHash, txid);
+
         public DateTimeOffset? GetBlockPerceivedTime(BlockHash blockHash) =>
             _store.GetBlockPerceivedTime(blockHash);
 

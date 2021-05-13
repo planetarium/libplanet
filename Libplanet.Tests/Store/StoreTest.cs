@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
@@ -18,6 +19,7 @@ using Serilog;
 using Serilog.Events;
 using Xunit;
 using Xunit.Abstractions;
+using FAV = Libplanet.Assets.FungibleAssetValue;
 
 namespace Libplanet.Tests.Store
 {
@@ -165,6 +167,94 @@ namespace Libplanet.Tests.Store
             Assert.False(Fx.Store.ContainsBlock(Fx.Block1.Hash));
             Assert.True(Fx.Store.ContainsBlock(Fx.Block2.Hash));
             Assert.False(Fx.Store.ContainsBlock(Fx.Block3.Hash));
+        }
+
+        [SkippableFact]
+        public void TxExecution()
+        {
+            void AssertTxSuccessesEqual(TxSuccess expected, TxExecution actual)
+            {
+                Assert.IsType<TxSuccess>(actual);
+                var success = (TxSuccess)actual;
+                Assert.Equal(expected.TxId, success.TxId);
+                Assert.Equal(expected.BlockHash, success.BlockHash);
+                Assert.Equal(expected.UpdatedStates, success.UpdatedStates);
+                Assert.Equal(expected.FungibleAssetsDelta, success.FungibleAssetsDelta);
+                Assert.Equal(expected.UpdatedFungibleAssets, success.UpdatedFungibleAssets);
+            }
+
+            void AssertTxFailuresEqual(TxFailure expected, TxExecution actual)
+            {
+                Assert.IsType<TxFailure>(actual);
+                var failure = (TxFailure)actual;
+                Assert.Equal(expected.TxId, failure.TxId);
+                Assert.Equal(expected.BlockHash, failure.BlockHash);
+                Assert.Equal(expected.ExceptionName, failure.ExceptionName);
+                Assert.Equal(expected.ExceptionMetadata, failure.ExceptionMetadata);
+            }
+
+            Assert.Null(Fx.Store.GetTxExecution(Fx.Hash1, Fx.TxId1));
+            Assert.Null(Fx.Store.GetTxExecution(Fx.Hash1, Fx.TxId2));
+            Assert.Null(Fx.Store.GetTxExecution(Fx.Hash2, Fx.TxId1));
+            Assert.Null(Fx.Store.GetTxExecution(Fx.Hash2, Fx.TxId2));
+
+            var random = new System.Random();
+            var inputA = new TxSuccess(
+                Fx.Hash1,
+                Fx.TxId1,
+                ImmutableDictionary<Address, IValue>.Empty.Add(
+                    random.NextAddress(),
+                    (Text)"state value"
+                ),
+                ImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>>.Empty
+                    .Add(
+                        random.NextAddress(),
+                        ImmutableDictionary<Currency, FAV>.Empty.Add(
+                            DumbAction.DumbCurrency,
+                            DumbAction.DumbCurrency * 5
+                        )
+                    ),
+                ImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>>.Empty
+                    .Add(
+                        random.NextAddress(),
+                        ImmutableDictionary<Currency, FAV>.Empty.Add(
+                            DumbAction.DumbCurrency,
+                            DumbAction.DumbCurrency * 10
+                        )
+                    )
+            );
+            Fx.Store.PutTxExecution(inputA);
+
+            AssertTxSuccessesEqual(inputA, Fx.Store.GetTxExecution(Fx.Hash1, Fx.TxId1));
+            Assert.Null(Fx.Store.GetTxExecution(Fx.Hash1, Fx.TxId2));
+            Assert.Null(Fx.Store.GetTxExecution(Fx.Hash2, Fx.TxId1));
+            Assert.Null(Fx.Store.GetTxExecution(Fx.Hash2, Fx.TxId2));
+
+            var inputB = new TxFailure(
+                Fx.Hash1,
+                Fx.TxId2,
+                "AnExceptionName",
+                Dictionary.Empty.Add("foo", 1).Add("bar", "baz")
+            );
+            Fx.Store.PutTxExecution(inputB);
+
+            AssertTxSuccessesEqual(inputA, Fx.Store.GetTxExecution(Fx.Hash1, Fx.TxId1));
+            AssertTxFailuresEqual(inputB, Fx.Store.GetTxExecution(Fx.Hash1, Fx.TxId2));
+            Assert.Null(Fx.Store.GetTxExecution(Fx.Hash2, Fx.TxId1));
+            Assert.Null(Fx.Store.GetTxExecution(Fx.Hash2, Fx.TxId2));
+
+            var inputC = new TxFailure(
+                Fx.Hash2,
+                Fx.TxId1,
+                "AnotherExceptionName",
+                null
+            );
+            Fx.Store.PutTxExecution(inputC);
+
+            AssertTxSuccessesEqual(inputA, Fx.Store.GetTxExecution(Fx.Hash1, Fx.TxId1));
+            AssertTxFailuresEqual(inputB, Fx.Store.GetTxExecution(Fx.Hash1, Fx.TxId2));
+            AssertTxFailuresEqual(inputC, Fx.Store.GetTxExecution(Fx.Hash2, Fx.TxId1));
+            Assert.Null(Fx.Store.GetTxExecution(Fx.Hash2, Fx.TxId2));
         }
 
         [SkippableFact]
@@ -726,8 +816,8 @@ namespace Libplanet.Tests.Store
             public IValue PlainValue =>
                 new Bencodex.Types.Dictionary(new Dictionary<IKey, IValue>
                 {
-                    { (Text)"bytes", new Binary(ArbitraryBytes.ToArray()) },
-                    { (Text)"md5", new Binary(Md5Digest.ToArray()) },
+                    { (Text)"bytes", new Binary(ArbitraryBytes) },
+                    { (Text)"md5", new Binary(Md5Digest) },
                 });
 
             public void LoadPlainValue(IValue plainValue)
@@ -737,8 +827,8 @@ namespace Libplanet.Tests.Store
 
             public void LoadPlainValue(Dictionary plainValue)
             {
-                ArbitraryBytes = plainValue.GetValue<Binary>("bytes").ToImmutableArray();
-                Md5Digest = plainValue.GetValue<Binary>("md5").ToImmutableArray();
+                ArbitraryBytes = plainValue.GetValue<Binary>("bytes").ByteArray;
+                Md5Digest = plainValue.GetValue<Binary>("md5").ByteArray;
             }
 
             public IAccountStateDelta Execute(IActionContext context)

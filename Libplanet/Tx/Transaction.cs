@@ -582,9 +582,11 @@ namespace Libplanet.Tx
         /// </param>
         /// <returns>Enumerates <see cref="ActionEvaluation"/>s for each one in
         /// <see cref="Actions"/>.
-        /// The order is the same to the <see cref="Actions"/>.
-        /// Note that each <see cref="IActionContext.Random"/> object has
-        /// a unconsumed state.
+        /// <para>The order is the same to the <see cref="Actions"/>.</para>
+        /// <para>Each <see cref="ActionEvaluation"/> includes its previous
+        /// <see cref="ActionEvaluation"/>s' delta besides its own delta.</para>
+        /// <para>Note that each <see cref="IActionContext.Random"/> object has a unconsumed state.
+        /// </para>
         /// </returns>
         [Pure]
         public IEnumerable<ActionEvaluation> EvaluateActionsGradually(

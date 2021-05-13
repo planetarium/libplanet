@@ -111,6 +111,66 @@ namespace Libplanet.Assets
         {
         }
 
+        /// <summary>
+        /// Deserializes a <see cref="Currency"/> type from a Bencodex value.
+        /// </summary>
+        /// <param name="serialized">The Bencodex value serialized by <see cref="Serialize()"/>
+        /// method.</param>
+        /// <seealso cref="Serialize()"/>
+        public Currency(IValue serialized)
+        {
+            if (!(serialized is Dictionary d))
+            {
+                throw new ArgumentException("Expected a Bencodex dictionary.", nameof(serialized));
+            }
+
+            if (!(d.ContainsKey("ticker") && d["ticker"] is Text ticker))
+            {
+                throw new ArgumentException(
+                    "Expected a text field named \"ticker\".",
+                    nameof(serialized)
+                );
+            }
+
+            if (!(d.ContainsKey("decimals") && d["decimals"] is Integer decimals))
+            {
+                throw new ArgumentException(
+                    "Expected an integer field named \"decimals\".",
+                    nameof(serialized)
+                );
+            }
+
+            if (!d.ContainsKey("minters") ||
+                !(d["minters"] is { } minters) ||
+                !(minters is Null || minters is List))
+            {
+                throw new ArgumentException(
+                    "Expected a nullable list field named \"minters\".",
+                    nameof(serialized)
+                );
+            }
+
+            Ticker = ticker;
+            DecimalPlaces = (byte)(long)decimals;
+
+            if (minters is List l)
+            {
+                Minters = l.Select(
+                    m => m is Binary b
+                        ? new Address(b.ByteArray)
+                        : throw new ArgumentException(
+                            "Expected \"minters\" to be a list of binary arrays.",
+                            nameof(serialized))
+                ).ToImmutableHashSet();
+            }
+            else
+            {
+                Minters = null;
+            }
+
+            Hash = GetHash();
+        }
+
         private Currency(SerializationInfo info, StreamingContext context)
         {
             Ticker = info.GetValue<string>(nameof(Ticker));
@@ -200,6 +260,22 @@ namespace Libplanet.Assets
         public bool Equals(Currency other) =>
             Hash.Equals(other.Hash);
 
+        /// <summary>
+        /// Serializes the currency into a Bencodex value.
+        /// </summary>
+        /// <returns>The serialized Bencodex value.</returns>
+        [Pure]
+        public IValue Serialize()
+        {
+            IValue minters = Minters is ImmutableHashSet<Address> a
+                ? new List(a.OrderBy(m => m).Select(m => (IValue)new Binary(m.ByteArray)))
+                : (IValue)Null.Value;
+            return Dictionary.Empty
+                .Add("ticker", Ticker)
+                .Add("decimals", DecimalPlaces)
+                .Add("minters", minters);
+        }
+
         [Pure]
         private HashDigest<SHA1> GetHash()
         {
@@ -207,16 +283,7 @@ namespace Libplanet.Assets
             using var sha1 = new SHA1CryptoServiceProvider();
             using var stream = new CryptoStream(buffer, sha1, CryptoStreamMode.Write);
             var codec = new Codec();
-#pragma warning disable SA1129  // See also: https://github.com/planetarium/bencodex.net/issues/20
-            IValue minters = Minters is ImmutableHashSet<Address> a
-                ? new List(a.OrderBy(m => m).Select(m => (IValue)new Binary(m.ToByteArray())))
-                : (IValue)new Null();
-#pragma warning restore SA1129
-            IValue serialized = Dictionary.Empty
-                .Add("ticker", Ticker)
-                .Add("decimals", DecimalPlaces)
-                .Add("minters", minters);
-            codec.Encode(serialized, stream);
+            codec.Encode(Serialize(), stream);
             stream.FlushFinalBlock();
             return new HashDigest<SHA1>(sha1.Hash);
         }

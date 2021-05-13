@@ -142,7 +142,7 @@ namespace Libplanet.Action
     ///         var dictionary = (Bencodex.Types.Dictionary)plainValue;
     ///         Type = (ActType)(int)dictionary.GetValue<Integer>("type");
     ///         TargetAddress =
-    ///             new Address(dictionary.GetValue<Binary>("target_address").Value);
+    ///             new Address(dictionary.GetValue<Binary>("target_address"));
     ///     }
     /// }
     /// ]]></code>
