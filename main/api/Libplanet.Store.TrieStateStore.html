@@ -373,20 +373,20 @@ it will return the state hash. If not, it will return null.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_TrieStateStore_GetState_System_String_System_Nullable_Libplanet_Blocks_BlockHash__System_Nullable_System_Guid__.md&amp;value=---%0Auid%3A%20Libplanet.Store.TrieStateStore.GetState(System.String%2CSystem.Nullable%7BLibplanet.Blocks.BlockHash%7D%2CSystem.Nullable%7BSystem.Guid%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_TrieStateStore_GetState_System_String_System_Nullable_Libplanet_Blocks_BlockHash__.md&amp;value=---%0Auid%3A%20Libplanet.Store.TrieStateStore.GetState(System.String%2CSystem.Nullable%7BLibplanet.Blocks.BlockHash%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/TrieStateStore.cs/#L59">View Source</a>
   </span>
   <a id="Libplanet_Store_TrieStateStore_GetState_" data-uid="Libplanet.Store.TrieStateStore.GetState*"></a>
-  <h4 id="Libplanet_Store_TrieStateStore_GetState_System_String_System_Nullable_Libplanet_Blocks_BlockHash__System_Nullable_System_Guid__" data-uid="Libplanet.Store.TrieStateStore.GetState(System.String,System.Nullable{Libplanet.Blocks.BlockHash},System.Nullable{System.Guid})">GetState(String, Nullable&lt;BlockHash&gt;, Nullable&lt;Guid&gt;)</h4>
+  <h4 id="Libplanet_Store_TrieStateStore_GetState_System_String_System_Nullable_Libplanet_Blocks_BlockHash__" data-uid="Libplanet.Store.TrieStateStore.GetState(System.String,System.Nullable{Libplanet.Blocks.BlockHash})">GetState(String, Nullable&lt;BlockHash&gt;)</h4>
   <div class="markdown level1 summary"><p>Gets state queried by <code data-dev-comment-type="paramref" class="paramref">stateKey</code> in the point,
 <code data-dev-comment-type="paramref" class="paramref">blockHash</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IValue? GetState(string stateKey, BlockHash? blockHash = default(BlockHash? ), Guid? chainId = default(Guid? ))</code></pre>
+    <pre><code class="lang-csharp hljs">public IValue? GetState(string stateKey, BlockHash? blockHash = default(BlockHash? ))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -409,12 +409,6 @@ it will return the state hash. If not, it will return null.</p>
         <td><span class="parametername">blockHash</span></td>
         <td><p>The <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Hash">Hash</a> which the point to query by
 <code data-dev-comment-type="paramref" class="paramref">stateKey</code> at.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.guid">Guid</a>&gt;</td>
-        <td><span class="parametername">chainId</span></td>
-        <td><p>The <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Id">Id</a> of wanted got.</p>
 </td>
       </tr>
     </tbody>
@@ -478,7 +472,7 @@ it will return the state hash. If not, it will return null.</p>
   <a id="Libplanet_Store_TrieStateStore_SetStates_" data-uid="Libplanet.Store.TrieStateStore.SetStates*"></a>
   <h4 id="Libplanet_Store_TrieStateStore_SetStates__1_Libplanet_Blocks_Block___0__IImmutableDictionary_System_String_IValue__" data-uid="Libplanet.Store.TrieStateStore.SetStates``1(Libplanet.Blocks.Block{``0},IImmutableDictionary{System.String,IValue})">SetStates&lt;T&gt;(Block&lt;T&gt;, IImmutableDictionary&lt;String, IValue&gt;)</h4>
   <div class="markdown level1 summary"><p>Sets states mapped as relation <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Hash">Hash</a> → states.
-It guarantees <a class="xref" href="Libplanet.Store.IStateStore.html#Libplanet_Store_IStateStore_GetState_System_String_System_Nullable_Libplanet_Blocks_BlockHash__System_Nullable_System_Guid__">GetState(String, Nullable&lt;BlockHash&gt;, Nullable&lt;Guid&gt;)</a> will return the same state if you passed same
+It guarantees <a class="xref" href="Libplanet.Store.IStateStore.html#Libplanet_Store_IStateStore_GetState_System_String_System_Nullable_Libplanet_Blocks_BlockHash__">GetState(String, Nullable&lt;BlockHash&gt;)</a> will return the same state if you passed same
 <code data-dev-comment-type="paramref" class="paramref">block</code> unless it has overwritten.</p>
 </div>
   <div class="markdown level1 conceptual"></div>

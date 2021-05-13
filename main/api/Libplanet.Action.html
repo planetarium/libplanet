@@ -91,6 +91,10 @@ serialization and deserialization.</p>
       <section><p>The exception that is thrown when a <a class="xref" href="Libplanet.Action.CurrencyPermissionException.html#Libplanet_Action_CurrencyPermissionException_TransactionSigner">TransactionSigner</a> has no rights
 to mint a <a class="xref" href="Libplanet.Action.CurrencyPermissionException.html#Libplanet_Action_CurrencyPermissionException_Currency">Currency</a> or burn assets of a <a class="xref" href="Libplanet.Action.CurrencyPermissionException.html#Libplanet_Action_CurrencyPermissionException_Currency">Currency</a>.</p>
 </section>
+      <h4><a class="xref" href="Libplanet.Action.ExtractableException.html">ExtractableException</a></h4>
+      <section><p>Extension methods for <a class="xref" href="Libplanet.Action.IExtractableException.html">IExtractableException</a> and other <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.exception">Exception</a>s
+that do not implement <a class="xref" href="Libplanet.Action.IExtractableException.html">IExtractableException</a>.</p>
+</section>
       <h4><a class="xref" href="Libplanet.Action.InsufficientBalanceException.html">InsufficientBalanceException</a></h4>
       <section><p>The exception that is thrown when a sender has less <a class="xref" href="Libplanet.Action.InsufficientBalanceException.html#Libplanet_Action_InsufficientBalanceException_Balance">Balance</a> than amount to
 transfer or an owner has less <a class="xref" href="Libplanet.Action.InsufficientBalanceException.html#Libplanet_Action_InsufficientBalanceException_Balance">Balance</a> than amount to burn.</p>
@@ -170,6 +174,10 @@ not code of an action.</p>
       <h4><a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a></h4>
       <section><p>Contextual data determined by a transaction and a block.
 Passed to <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext_">Execute(IActionContext)</a> method.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Action.IExtractableException.html">IExtractableException</a></h4>
+      <section><p>Marks an exception type as able to extract its metadata, so that these metadata can be
+stored as a part of <a class="xref" href="Libplanet.Tx.TxFailure.html">TxFailure</a>.</p>
 </section>
       <h4><a class="xref" href="Libplanet.Action.IRandom.html">IRandom</a></h4>
       <section><p>An pseudorandom number generator interface equivalent to

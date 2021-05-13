@@ -217,7 +217,7 @@ public class MyAction : IAction
         var dictionary = (Bencodex.Types.Dictionary)plainValue;
         Type = (ActType)(int)dictionary.GetValue&lt;Integer>(&quot;type&quot;);
         TargetAddress =
-            new Address(dictionary.GetValue&lt;Binary>(&quot;target_address&quot;).Value);
+            new Address(dictionary.GetValue&lt;Binary>(&quot;target_address&quot;));
     }
 }</code></pre>
 <p>Note that the above example has several bad practices.

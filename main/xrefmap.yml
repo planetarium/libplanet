@@ -186,6 +186,25 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.CurrencyPermissionException.TransactionSigner
   nameWithType: CurrencyPermissionException.TransactionSigner
+- uid: Libplanet.Action.ExtractableException
+  name: ExtractableException
+  href: api/Libplanet.Action.ExtractableException.html
+  commentId: T:Libplanet.Action.ExtractableException
+  fullName: Libplanet.Action.ExtractableException
+  nameWithType: ExtractableException
+- uid: Libplanet.Action.ExtractableException.ExtractMetadata(System.Exception)
+  name: ExtractMetadata(Exception)
+  href: api/Libplanet.Action.ExtractableException.html#Libplanet_Action_ExtractableException_ExtractMetadata_System_Exception_
+  commentId: M:Libplanet.Action.ExtractableException.ExtractMetadata(System.Exception)
+  fullName: Libplanet.Action.ExtractableException.ExtractMetadata(System.Exception)
+  nameWithType: ExtractableException.ExtractMetadata(Exception)
+- uid: Libplanet.Action.ExtractableException.ExtractMetadata*
+  name: ExtractMetadata
+  href: api/Libplanet.Action.ExtractableException.html#Libplanet_Action_ExtractableException_ExtractMetadata_
+  commentId: Overload:Libplanet.Action.ExtractableException.ExtractMetadata
+  isSpec: "True"
+  fullName: Libplanet.Action.ExtractableException.ExtractMetadata
+  nameWithType: ExtractableException.ExtractMetadata
 - uid: Libplanet.Action.IAccountStateDelta
   name: IAccountStateDelta
   href: api/Libplanet.Action.IAccountStateDelta.html
@@ -490,6 +509,25 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IActionContext.TxId
   nameWithType: IActionContext.TxId
+- uid: Libplanet.Action.IExtractableException
+  name: IExtractableException
+  href: api/Libplanet.Action.IExtractableException.html
+  commentId: T:Libplanet.Action.IExtractableException
+  fullName: Libplanet.Action.IExtractableException
+  nameWithType: IExtractableException
+- uid: Libplanet.Action.IExtractableException.Metadata
+  name: Metadata
+  href: api/Libplanet.Action.IExtractableException.html#Libplanet_Action_IExtractableException_Metadata
+  commentId: P:Libplanet.Action.IExtractableException.Metadata
+  fullName: Libplanet.Action.IExtractableException.Metadata
+  nameWithType: IExtractableException.Metadata
+- uid: Libplanet.Action.IExtractableException.Metadata*
+  name: Metadata
+  href: api/Libplanet.Action.IExtractableException.html#Libplanet_Action_IExtractableException_Metadata_
+  commentId: Overload:Libplanet.Action.IExtractableException.Metadata
+  isSpec: "True"
+  fullName: Libplanet.Action.IExtractableException.Metadata
+  nameWithType: IExtractableException.Metadata
 - uid: Libplanet.Action.InsufficientBalanceException
   name: InsufficientBalanceException
   href: api/Libplanet.Action.InsufficientBalanceException.html
@@ -898,6 +936,12 @@ references:
   commentId: T:Libplanet.Address
   fullName: Libplanet.Address
   nameWithType: Address
+- uid: Libplanet.Address.#ctor(Binary)
+  name: Address(Binary)
+  href: api/Libplanet.Address.html#Libplanet_Address__ctor_Binary_
+  commentId: M:Libplanet.Address.#ctor(Binary)
+  fullName: Libplanet.Address.Address(Binary)
+  nameWithType: Address.Address(Binary)
 - uid: Libplanet.Address.#ctor(ImmutableArray{System.Byte})
   name: Address(ImmutableArray<Byte>)
   href: api/Libplanet.Address.html#Libplanet_Address__ctor_ImmutableArray_System_Byte__
@@ -1103,6 +1147,12 @@ references:
   commentId: T:Libplanet.Assets.Currency
   fullName: Libplanet.Assets.Currency
   nameWithType: Currency
+- uid: Libplanet.Assets.Currency.#ctor(IValue)
+  name: Currency(IValue)
+  href: api/Libplanet.Assets.Currency.html#Libplanet_Assets_Currency__ctor_IValue_
+  commentId: M:Libplanet.Assets.Currency.#ctor(IValue)
+  fullName: Libplanet.Assets.Currency.Currency(IValue)
+  nameWithType: Currency.Currency(IValue)
 - uid: Libplanet.Assets.Currency.#ctor(System.String,System.Byte,System.Nullable{IImmutableSet{Libplanet.Address}})
   name: Currency(String, Byte, Nullable<IImmutableSet<Address>>)
   href: api/Libplanet.Assets.Currency.html#Libplanet_Assets_Currency__ctor_System_String_System_Byte_System_Nullable_IImmutableSet_Libplanet_Address___
@@ -1210,6 +1260,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Assets.Currency.Multiply
   nameWithType: Currency.Multiply
+- uid: Libplanet.Assets.Currency.Serialize
+  name: Serialize()
+  href: api/Libplanet.Assets.Currency.html#Libplanet_Assets_Currency_Serialize
+  commentId: M:Libplanet.Assets.Currency.Serialize
+  fullName: Libplanet.Assets.Currency.Serialize()
+  nameWithType: Currency.Serialize()
+- uid: Libplanet.Assets.Currency.Serialize*
+  name: Serialize
+  href: api/Libplanet.Assets.Currency.html#Libplanet_Assets_Currency_Serialize_
+  commentId: Overload:Libplanet.Assets.Currency.Serialize
+  isSpec: "True"
+  fullName: Libplanet.Assets.Currency.Serialize
+  nameWithType: Currency.Serialize
 - uid: Libplanet.Assets.Currency.System#Runtime#Serialization#ISerializable#GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
   name: ISerializable.GetObjectData(SerializationInfo, StreamingContext)
   href: api/Libplanet.Assets.Currency.html#Libplanet_Assets_Currency_System_Runtime_Serialization_ISerializable_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
@@ -1902,6 +1965,23 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetTransaction
   nameWithType: BlockChain<T>.GetTransaction
   nameWithType.vb: BlockChain(Of T).GetTransaction
+- uid: Libplanet.Blockchain.BlockChain`1.GetTxExecution(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId)
+  name: GetTxExecution(BlockHash, TxId)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetTxExecution_Libplanet_Blocks_BlockHash_Libplanet_Tx_TxId_
+  commentId: M:Libplanet.Blockchain.BlockChain`1.GetTxExecution(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId)
+  fullName: Libplanet.Blockchain.BlockChain<T>.GetTxExecution(Libplanet.Blocks.BlockHash, Libplanet.Tx.TxId)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetTxExecution(Libplanet.Blocks.BlockHash, Libplanet.Tx.TxId)
+  nameWithType: BlockChain<T>.GetTxExecution(BlockHash, TxId)
+  nameWithType.vb: BlockChain(Of T).GetTxExecution(BlockHash, TxId)
+- uid: Libplanet.Blockchain.BlockChain`1.GetTxExecution*
+  name: GetTxExecution
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetTxExecution_
+  commentId: Overload:Libplanet.Blockchain.BlockChain`1.GetTxExecution
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.BlockChain<T>.GetTxExecution
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetTxExecution
+  nameWithType: BlockChain<T>.GetTxExecution
+  nameWithType.vb: BlockChain(Of T).GetTxExecution
 - uid: Libplanet.Blockchain.BlockChain`1.Id
   name: Id
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Id
@@ -12664,6 +12744,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BaseStore.DeleteTransaction
   nameWithType: BaseStore.DeleteTransaction
+- uid: Libplanet.Store.BaseStore.DeserializeTxExecution(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId,IValue,ILogger)
+  name: DeserializeTxExecution(BlockHash, TxId, IValue, ILogger)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_DeserializeTxExecution_Libplanet_Blocks_BlockHash_Libplanet_Tx_TxId_IValue_ILogger_
+  commentId: M:Libplanet.Store.BaseStore.DeserializeTxExecution(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId,IValue,ILogger)
+  fullName: Libplanet.Store.BaseStore.DeserializeTxExecution(Libplanet.Blocks.BlockHash, Libplanet.Tx.TxId, IValue, ILogger)
+  nameWithType: BaseStore.DeserializeTxExecution(BlockHash, TxId, IValue, ILogger)
+- uid: Libplanet.Store.BaseStore.DeserializeTxExecution*
+  name: DeserializeTxExecution
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_DeserializeTxExecution_
+  commentId: Overload:Libplanet.Store.BaseStore.DeserializeTxExecution
+  isSpec: "True"
+  fullName: Libplanet.Store.BaseStore.DeserializeTxExecution
+  nameWithType: BaseStore.DeserializeTxExecution
 - uid: Libplanet.Store.BaseStore.Dispose
   name: Dispose()
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_Dispose
@@ -12787,6 +12880,19 @@ references:
   fullName.vb: Libplanet.Store.BaseStore.GetTransaction(Of T)(Libplanet.Tx.TxId)
   nameWithType: BaseStore.GetTransaction<T>(TxId)
   nameWithType.vb: BaseStore.GetTransaction(Of T)(TxId)
+- uid: Libplanet.Store.BaseStore.GetTxExecution(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId)
+  name: GetTxExecution(BlockHash, TxId)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetTxExecution_Libplanet_Blocks_BlockHash_Libplanet_Tx_TxId_
+  commentId: M:Libplanet.Store.BaseStore.GetTxExecution(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId)
+  fullName: Libplanet.Store.BaseStore.GetTxExecution(Libplanet.Blocks.BlockHash, Libplanet.Tx.TxId)
+  nameWithType: BaseStore.GetTxExecution(BlockHash, TxId)
+- uid: Libplanet.Store.BaseStore.GetTxExecution*
+  name: GetTxExecution
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetTxExecution_
+  commentId: Overload:Libplanet.Store.BaseStore.GetTxExecution
+  isSpec: "True"
+  fullName: Libplanet.Store.BaseStore.GetTxExecution
+  nameWithType: BaseStore.GetTxExecution
 - uid: Libplanet.Store.BaseStore.GetTxNonce(System.Guid,Libplanet.Address)
   name: GetTxNonce(Guid, Address)
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetTxNonce_System_Guid_Libplanet_Address_
@@ -12939,6 +13045,44 @@ references:
   fullName.vb: Libplanet.Store.BaseStore.PutTransaction(Of T)(Libplanet.Tx.Transaction(Of T))
   nameWithType: BaseStore.PutTransaction<T>(Transaction<T>)
   nameWithType.vb: BaseStore.PutTransaction(Of T)(Transaction(Of T))
+- uid: Libplanet.Store.BaseStore.PutTxExecution(Libplanet.Tx.TxFailure)
+  name: PutTxExecution(TxFailure)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_PutTxExecution_Libplanet_Tx_TxFailure_
+  commentId: M:Libplanet.Store.BaseStore.PutTxExecution(Libplanet.Tx.TxFailure)
+  fullName: Libplanet.Store.BaseStore.PutTxExecution(Libplanet.Tx.TxFailure)
+  nameWithType: BaseStore.PutTxExecution(TxFailure)
+- uid: Libplanet.Store.BaseStore.PutTxExecution(Libplanet.Tx.TxSuccess)
+  name: PutTxExecution(TxSuccess)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_PutTxExecution_Libplanet_Tx_TxSuccess_
+  commentId: M:Libplanet.Store.BaseStore.PutTxExecution(Libplanet.Tx.TxSuccess)
+  fullName: Libplanet.Store.BaseStore.PutTxExecution(Libplanet.Tx.TxSuccess)
+  nameWithType: BaseStore.PutTxExecution(TxSuccess)
+- uid: Libplanet.Store.BaseStore.PutTxExecution*
+  name: PutTxExecution
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_PutTxExecution_
+  commentId: Overload:Libplanet.Store.BaseStore.PutTxExecution
+  isSpec: "True"
+  fullName: Libplanet.Store.BaseStore.PutTxExecution
+  nameWithType: BaseStore.PutTxExecution
+- uid: Libplanet.Store.BaseStore.SerializeTxExecution(Libplanet.Tx.TxFailure)
+  name: SerializeTxExecution(TxFailure)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_SerializeTxExecution_Libplanet_Tx_TxFailure_
+  commentId: M:Libplanet.Store.BaseStore.SerializeTxExecution(Libplanet.Tx.TxFailure)
+  fullName: Libplanet.Store.BaseStore.SerializeTxExecution(Libplanet.Tx.TxFailure)
+  nameWithType: BaseStore.SerializeTxExecution(TxFailure)
+- uid: Libplanet.Store.BaseStore.SerializeTxExecution(Libplanet.Tx.TxSuccess)
+  name: SerializeTxExecution(TxSuccess)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_SerializeTxExecution_Libplanet_Tx_TxSuccess_
+  commentId: M:Libplanet.Store.BaseStore.SerializeTxExecution(Libplanet.Tx.TxSuccess)
+  fullName: Libplanet.Store.BaseStore.SerializeTxExecution(Libplanet.Tx.TxSuccess)
+  nameWithType: BaseStore.SerializeTxExecution(TxSuccess)
+- uid: Libplanet.Store.BaseStore.SerializeTxExecution*
+  name: SerializeTxExecution
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_SerializeTxExecution_
+  commentId: Overload:Libplanet.Store.BaseStore.SerializeTxExecution
+  isSpec: "True"
+  fullName: Libplanet.Store.BaseStore.SerializeTxExecution
+  nameWithType: BaseStore.SerializeTxExecution
 - uid: Libplanet.Store.BaseStore.SetBlockPerceivedTime(Libplanet.Blocks.BlockHash,System.DateTimeOffset)
   name: SetBlockPerceivedTime(BlockHash, DateTimeOffset)
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_SetBlockPerceivedTime_Libplanet_Blocks_BlockHash_System_DateTimeOffset_
@@ -13199,12 +13343,12 @@ references:
   commentId: T:Libplanet.Store.DefaultStore
   fullName: Libplanet.Store.DefaultStore
   nameWithType: DefaultStore
-- uid: Libplanet.Store.DefaultStore.#ctor(System.String,System.Boolean,System.Boolean,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean,System.Boolean)
-  name: DefaultStore(String, Boolean, Boolean, Int32, Int32, Int32, Int32, Boolean, Boolean)
-  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Boolean_System_Int32_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_
-  commentId: M:Libplanet.Store.DefaultStore.#ctor(System.String,System.Boolean,System.Boolean,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean,System.Boolean)
-  fullName: Libplanet.Store.DefaultStore.DefaultStore(System.String, System.Boolean, System.Boolean, System.Int32, System.Int32, System.Int32, System.Int32, System.Boolean, System.Boolean)
-  nameWithType: DefaultStore.DefaultStore(String, Boolean, Boolean, Int32, Int32, Int32, Int32, Boolean, Boolean)
+- uid: Libplanet.Store.DefaultStore.#ctor(System.String,System.Boolean,System.Int32,System.Int32,System.Int32,System.Boolean,System.Boolean)
+  name: DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_
+  commentId: M:Libplanet.Store.DefaultStore.#ctor(System.String,System.Boolean,System.Int32,System.Int32,System.Int32,System.Boolean,System.Boolean)
+  fullName: Libplanet.Store.DefaultStore.DefaultStore(System.String, System.Boolean, System.Int32, System.Int32, System.Int32, System.Boolean, System.Boolean)
+  nameWithType: DefaultStore.DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)
 - uid: Libplanet.Store.DefaultStore.#ctor*
   name: DefaultStore
   href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_
@@ -13423,6 +13567,19 @@ references:
   fullName.vb: Libplanet.Store.DefaultStore.GetTransaction(Of T)(Libplanet.Tx.TxId)
   nameWithType: DefaultStore.GetTransaction<T>(TxId)
   nameWithType.vb: DefaultStore.GetTransaction(Of T)(TxId)
+- uid: Libplanet.Store.DefaultStore.GetTxExecution(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId)
+  name: GetTxExecution(BlockHash, TxId)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_GetTxExecution_Libplanet_Blocks_BlockHash_Libplanet_Tx_TxId_
+  commentId: M:Libplanet.Store.DefaultStore.GetTxExecution(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId)
+  fullName: Libplanet.Store.DefaultStore.GetTxExecution(Libplanet.Blocks.BlockHash, Libplanet.Tx.TxId)
+  nameWithType: DefaultStore.GetTxExecution(BlockHash, TxId)
+- uid: Libplanet.Store.DefaultStore.GetTxExecution*
+  name: GetTxExecution
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_GetTxExecution_
+  commentId: Overload:Libplanet.Store.DefaultStore.GetTxExecution
+  isSpec: "True"
+  fullName: Libplanet.Store.DefaultStore.GetTxExecution
+  nameWithType: DefaultStore.GetTxExecution
 - uid: Libplanet.Store.DefaultStore.GetTxNonce(System.Guid,Libplanet.Address)
   name: GetTxNonce(Guid, Address)
   href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_GetTxNonce_System_Guid_Libplanet_Address_
@@ -13575,6 +13732,25 @@ references:
   fullName.vb: Libplanet.Store.DefaultStore.PutTransaction(Of T)(Libplanet.Tx.Transaction(Of T))
   nameWithType: DefaultStore.PutTransaction<T>(Transaction<T>)
   nameWithType.vb: DefaultStore.PutTransaction(Of T)(Transaction(Of T))
+- uid: Libplanet.Store.DefaultStore.PutTxExecution(Libplanet.Tx.TxFailure)
+  name: PutTxExecution(TxFailure)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_PutTxExecution_Libplanet_Tx_TxFailure_
+  commentId: M:Libplanet.Store.DefaultStore.PutTxExecution(Libplanet.Tx.TxFailure)
+  fullName: Libplanet.Store.DefaultStore.PutTxExecution(Libplanet.Tx.TxFailure)
+  nameWithType: DefaultStore.PutTxExecution(TxFailure)
+- uid: Libplanet.Store.DefaultStore.PutTxExecution(Libplanet.Tx.TxSuccess)
+  name: PutTxExecution(TxSuccess)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_PutTxExecution_Libplanet_Tx_TxSuccess_
+  commentId: M:Libplanet.Store.DefaultStore.PutTxExecution(Libplanet.Tx.TxSuccess)
+  fullName: Libplanet.Store.DefaultStore.PutTxExecution(Libplanet.Tx.TxSuccess)
+  nameWithType: DefaultStore.PutTxExecution(TxSuccess)
+- uid: Libplanet.Store.DefaultStore.PutTxExecution*
+  name: PutTxExecution
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_PutTxExecution_
+  commentId: Overload:Libplanet.Store.DefaultStore.PutTxExecution
+  isSpec: "True"
+  fullName: Libplanet.Store.DefaultStore.PutTxExecution
+  nameWithType: DefaultStore.PutTxExecution
 - uid: Libplanet.Store.DefaultStore.SetBlockPerceivedTime(Libplanet.Blocks.BlockHash,System.DateTimeOffset)
   name: SetBlockPerceivedTime(BlockHash, DateTimeOffset)
   href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_SetBlockPerceivedTime_Libplanet_Blocks_BlockHash_System_DateTimeOffset_
@@ -13668,15 +13844,15 @@ references:
   fullName.vb: Libplanet.Store.IStateStore.ForkStates(Of T)(System.Guid, System.Guid, Libplanet.Blocks.Block(Of T))
   nameWithType: IStateStore.ForkStates<T>(Guid, Guid, Block<T>)
   nameWithType.vb: IStateStore.ForkStates(Of T)(Guid, Guid, Block(Of T))
-- uid: Libplanet.Store.IStateStore.GetState(System.String,System.Nullable{Libplanet.Blocks.BlockHash},System.Nullable{System.Guid})
-  name: GetState(String, Nullable<BlockHash>, Nullable<Guid>)
-  href: api/Libplanet.Store.IStateStore.html#Libplanet_Store_IStateStore_GetState_System_String_System_Nullable_Libplanet_Blocks_BlockHash__System_Nullable_System_Guid__
-  commentId: M:Libplanet.Store.IStateStore.GetState(System.String,System.Nullable{Libplanet.Blocks.BlockHash},System.Nullable{System.Guid})
-  name.vb: GetState(String, Nullable(Of BlockHash), Nullable(Of Guid))
-  fullName: Libplanet.Store.IStateStore.GetState(System.String, System.Nullable<Libplanet.Blocks.BlockHash>, System.Nullable<System.Guid>)
-  fullName.vb: Libplanet.Store.IStateStore.GetState(System.String, System.Nullable(Of Libplanet.Blocks.BlockHash), System.Nullable(Of System.Guid))
-  nameWithType: IStateStore.GetState(String, Nullable<BlockHash>, Nullable<Guid>)
-  nameWithType.vb: IStateStore.GetState(String, Nullable(Of BlockHash), Nullable(Of Guid))
+- uid: Libplanet.Store.IStateStore.GetState(System.String,System.Nullable{Libplanet.Blocks.BlockHash})
+  name: GetState(String, Nullable<BlockHash>)
+  href: api/Libplanet.Store.IStateStore.html#Libplanet_Store_IStateStore_GetState_System_String_System_Nullable_Libplanet_Blocks_BlockHash__
+  commentId: M:Libplanet.Store.IStateStore.GetState(System.String,System.Nullable{Libplanet.Blocks.BlockHash})
+  name.vb: GetState(String, Nullable(Of BlockHash))
+  fullName: Libplanet.Store.IStateStore.GetState(System.String, System.Nullable<Libplanet.Blocks.BlockHash>)
+  fullName.vb: Libplanet.Store.IStateStore.GetState(System.String, System.Nullable(Of Libplanet.Blocks.BlockHash))
+  nameWithType: IStateStore.GetState(String, Nullable<BlockHash>)
+  nameWithType.vb: IStateStore.GetState(String, Nullable(Of BlockHash))
 - uid: Libplanet.Store.IStateStore.GetState*
   name: GetState
   href: api/Libplanet.Store.IStateStore.html#Libplanet_Store_IStateStore_GetState_
@@ -13933,6 +14109,19 @@ references:
   fullName.vb: Libplanet.Store.IStore.GetTransaction(Of T)(Libplanet.Tx.TxId)
   nameWithType: IStore.GetTransaction<T>(TxId)
   nameWithType.vb: IStore.GetTransaction(Of T)(TxId)
+- uid: Libplanet.Store.IStore.GetTxExecution(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId)
+  name: GetTxExecution(BlockHash, TxId)
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_GetTxExecution_Libplanet_Blocks_BlockHash_Libplanet_Tx_TxId_
+  commentId: M:Libplanet.Store.IStore.GetTxExecution(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId)
+  fullName: Libplanet.Store.IStore.GetTxExecution(Libplanet.Blocks.BlockHash, Libplanet.Tx.TxId)
+  nameWithType: IStore.GetTxExecution(BlockHash, TxId)
+- uid: Libplanet.Store.IStore.GetTxExecution*
+  name: GetTxExecution
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_GetTxExecution_
+  commentId: Overload:Libplanet.Store.IStore.GetTxExecution
+  isSpec: "True"
+  fullName: Libplanet.Store.IStore.GetTxExecution
+  nameWithType: IStore.GetTxExecution
 - uid: Libplanet.Store.IStore.GetTxNonce(System.Guid,Libplanet.Address)
   name: GetTxNonce(Guid, Address)
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_GetTxNonce_System_Guid_Libplanet_Address_
@@ -14085,6 +14274,25 @@ references:
   fullName.vb: Libplanet.Store.IStore.PutTransaction(Of T)(Libplanet.Tx.Transaction(Of T))
   nameWithType: IStore.PutTransaction<T>(Transaction<T>)
   nameWithType.vb: IStore.PutTransaction(Of T)(Transaction(Of T))
+- uid: Libplanet.Store.IStore.PutTxExecution(Libplanet.Tx.TxFailure)
+  name: PutTxExecution(TxFailure)
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_PutTxExecution_Libplanet_Tx_TxFailure_
+  commentId: M:Libplanet.Store.IStore.PutTxExecution(Libplanet.Tx.TxFailure)
+  fullName: Libplanet.Store.IStore.PutTxExecution(Libplanet.Tx.TxFailure)
+  nameWithType: IStore.PutTxExecution(TxFailure)
+- uid: Libplanet.Store.IStore.PutTxExecution(Libplanet.Tx.TxSuccess)
+  name: PutTxExecution(TxSuccess)
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_PutTxExecution_Libplanet_Tx_TxSuccess_
+  commentId: M:Libplanet.Store.IStore.PutTxExecution(Libplanet.Tx.TxSuccess)
+  fullName: Libplanet.Store.IStore.PutTxExecution(Libplanet.Tx.TxSuccess)
+  nameWithType: IStore.PutTxExecution(TxSuccess)
+- uid: Libplanet.Store.IStore.PutTxExecution*
+  name: PutTxExecution
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_PutTxExecution_
+  commentId: Overload:Libplanet.Store.IStore.PutTxExecution
+  isSpec: "True"
+  fullName: Libplanet.Store.IStore.PutTxExecution
+  nameWithType: IStore.PutTxExecution
 - uid: Libplanet.Store.IStore.SetBlockPerceivedTime(Libplanet.Blocks.BlockHash,System.DateTimeOffset)
   name: SetBlockPerceivedTime(BlockHash, DateTimeOffset)
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_SetBlockPerceivedTime_Libplanet_Blocks_BlockHash_System_DateTimeOffset_
@@ -14782,15 +14990,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.TrieStateStore.GetRootHash
   nameWithType: TrieStateStore.GetRootHash
-- uid: Libplanet.Store.TrieStateStore.GetState(System.String,System.Nullable{Libplanet.Blocks.BlockHash},System.Nullable{System.Guid})
-  name: GetState(String, Nullable<BlockHash>, Nullable<Guid>)
-  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_GetState_System_String_System_Nullable_Libplanet_Blocks_BlockHash__System_Nullable_System_Guid__
-  commentId: M:Libplanet.Store.TrieStateStore.GetState(System.String,System.Nullable{Libplanet.Blocks.BlockHash},System.Nullable{System.Guid})
-  name.vb: GetState(String, Nullable(Of BlockHash), Nullable(Of Guid))
-  fullName: Libplanet.Store.TrieStateStore.GetState(System.String, System.Nullable<Libplanet.Blocks.BlockHash>, System.Nullable<System.Guid>)
-  fullName.vb: Libplanet.Store.TrieStateStore.GetState(System.String, System.Nullable(Of Libplanet.Blocks.BlockHash), System.Nullable(Of System.Guid))
-  nameWithType: TrieStateStore.GetState(String, Nullable<BlockHash>, Nullable<Guid>)
-  nameWithType.vb: TrieStateStore.GetState(String, Nullable(Of BlockHash), Nullable(Of Guid))
+- uid: Libplanet.Store.TrieStateStore.GetState(System.String,System.Nullable{Libplanet.Blocks.BlockHash})
+  name: GetState(String, Nullable<BlockHash>)
+  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_GetState_System_String_System_Nullable_Libplanet_Blocks_BlockHash__
+  commentId: M:Libplanet.Store.TrieStateStore.GetState(System.String,System.Nullable{Libplanet.Blocks.BlockHash})
+  name.vb: GetState(String, Nullable(Of BlockHash))
+  fullName: Libplanet.Store.TrieStateStore.GetState(System.String, System.Nullable<Libplanet.Blocks.BlockHash>)
+  fullName.vb: Libplanet.Store.TrieStateStore.GetState(System.String, System.Nullable(Of Libplanet.Blocks.BlockHash))
+  nameWithType: TrieStateStore.GetState(String, Nullable<BlockHash>)
+  nameWithType.vb: TrieStateStore.GetState(String, Nullable(Of BlockHash))
 - uid: Libplanet.Store.TrieStateStore.GetState*
   name: GetState
   href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_GetState_
@@ -15435,6 +15643,137 @@ references:
   fullName.vb: Libplanet.Tx.Transaction(Of T).Validate
   nameWithType: Transaction<T>.Validate
   nameWithType.vb: Transaction(Of T).Validate
+- uid: Libplanet.Tx.TxExecution
+  name: TxExecution
+  href: api/Libplanet.Tx.TxExecution.html
+  commentId: T:Libplanet.Tx.TxExecution
+  fullName: Libplanet.Tx.TxExecution
+  nameWithType: TxExecution
+- uid: Libplanet.Tx.TxExecution.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  name: TxExecution(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Tx.TxExecution.html#Libplanet_Tx_TxExecution__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
+  commentId: M:Libplanet.Tx.TxExecution.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  fullName: Libplanet.Tx.TxExecution.TxExecution(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  nameWithType: TxExecution.TxExecution(SerializationInfo, StreamingContext)
+- uid: Libplanet.Tx.TxExecution.#ctor*
+  name: TxExecution
+  href: api/Libplanet.Tx.TxExecution.html#Libplanet_Tx_TxExecution__ctor_
+  commentId: Overload:Libplanet.Tx.TxExecution.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxExecution.TxExecution
+  nameWithType: TxExecution.TxExecution
+- uid: Libplanet.Tx.TxExecution.BlockHash
+  name: BlockHash
+  href: api/Libplanet.Tx.TxExecution.html#Libplanet_Tx_TxExecution_BlockHash
+  commentId: P:Libplanet.Tx.TxExecution.BlockHash
+  fullName: Libplanet.Tx.TxExecution.BlockHash
+  nameWithType: TxExecution.BlockHash
+- uid: Libplanet.Tx.TxExecution.BlockHash*
+  name: BlockHash
+  href: api/Libplanet.Tx.TxExecution.html#Libplanet_Tx_TxExecution_BlockHash_
+  commentId: Overload:Libplanet.Tx.TxExecution.BlockHash
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxExecution.BlockHash
+  nameWithType: TxExecution.BlockHash
+- uid: Libplanet.Tx.TxExecution.Codec
+  name: Codec
+  href: api/Libplanet.Tx.TxExecution.html#Libplanet_Tx_TxExecution_Codec
+  commentId: F:Libplanet.Tx.TxExecution.Codec
+  fullName: Libplanet.Tx.TxExecution.Codec
+  nameWithType: TxExecution.Codec
+- uid: Libplanet.Tx.TxExecution.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  name: GetObjectData(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Tx.TxExecution.html#Libplanet_Tx_TxExecution_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
+  commentId: M:Libplanet.Tx.TxExecution.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  fullName: Libplanet.Tx.TxExecution.GetObjectData(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  nameWithType: TxExecution.GetObjectData(SerializationInfo, StreamingContext)
+- uid: Libplanet.Tx.TxExecution.GetObjectData*
+  name: GetObjectData
+  href: api/Libplanet.Tx.TxExecution.html#Libplanet_Tx_TxExecution_GetObjectData_
+  commentId: Overload:Libplanet.Tx.TxExecution.GetObjectData
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxExecution.GetObjectData
+  nameWithType: TxExecution.GetObjectData
+- uid: Libplanet.Tx.TxExecution.TxId
+  name: TxId
+  href: api/Libplanet.Tx.TxExecution.html#Libplanet_Tx_TxExecution_TxId
+  commentId: P:Libplanet.Tx.TxExecution.TxId
+  fullName: Libplanet.Tx.TxExecution.TxId
+  nameWithType: TxExecution.TxId
+- uid: Libplanet.Tx.TxExecution.TxId*
+  name: TxId
+  href: api/Libplanet.Tx.TxExecution.html#Libplanet_Tx_TxExecution_TxId_
+  commentId: Overload:Libplanet.Tx.TxExecution.TxId
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxExecution.TxId
+  nameWithType: TxExecution.TxId
+- uid: Libplanet.Tx.TxFailure
+  name: TxFailure
+  href: api/Libplanet.Tx.TxFailure.html
+  commentId: T:Libplanet.Tx.TxFailure
+  fullName: Libplanet.Tx.TxFailure
+  nameWithType: TxFailure
+- uid: Libplanet.Tx.TxFailure.#ctor(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId,System.Exception)
+  name: TxFailure(BlockHash, TxId, Exception)
+  href: api/Libplanet.Tx.TxFailure.html#Libplanet_Tx_TxFailure__ctor_Libplanet_Blocks_BlockHash_Libplanet_Tx_TxId_System_Exception_
+  commentId: M:Libplanet.Tx.TxFailure.#ctor(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId,System.Exception)
+  fullName: Libplanet.Tx.TxFailure.TxFailure(Libplanet.Blocks.BlockHash, Libplanet.Tx.TxId, System.Exception)
+  nameWithType: TxFailure.TxFailure(BlockHash, TxId, Exception)
+- uid: Libplanet.Tx.TxFailure.#ctor(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId,System.String,System.Nullable{IValue})
+  name: TxFailure(BlockHash, TxId, String, Nullable<IValue>)
+  href: api/Libplanet.Tx.TxFailure.html#Libplanet_Tx_TxFailure__ctor_Libplanet_Blocks_BlockHash_Libplanet_Tx_TxId_System_String_System_Nullable_IValue__
+  commentId: M:Libplanet.Tx.TxFailure.#ctor(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId,System.String,System.Nullable{IValue})
+  name.vb: TxFailure(BlockHash, TxId, String, Nullable(Of IValue))
+  fullName: Libplanet.Tx.TxFailure.TxFailure(Libplanet.Blocks.BlockHash, Libplanet.Tx.TxId, System.String, System.Nullable<IValue>)
+  fullName.vb: Libplanet.Tx.TxFailure.TxFailure(Libplanet.Blocks.BlockHash, Libplanet.Tx.TxId, System.String, System.Nullable(Of IValue))
+  nameWithType: TxFailure.TxFailure(BlockHash, TxId, String, Nullable<IValue>)
+  nameWithType.vb: TxFailure.TxFailure(BlockHash, TxId, String, Nullable(Of IValue))
+- uid: Libplanet.Tx.TxFailure.#ctor*
+  name: TxFailure
+  href: api/Libplanet.Tx.TxFailure.html#Libplanet_Tx_TxFailure__ctor_
+  commentId: Overload:Libplanet.Tx.TxFailure.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxFailure.TxFailure
+  nameWithType: TxFailure.TxFailure
+- uid: Libplanet.Tx.TxFailure.ExceptionMetadata
+  name: ExceptionMetadata
+  href: api/Libplanet.Tx.TxFailure.html#Libplanet_Tx_TxFailure_ExceptionMetadata
+  commentId: P:Libplanet.Tx.TxFailure.ExceptionMetadata
+  fullName: Libplanet.Tx.TxFailure.ExceptionMetadata
+  nameWithType: TxFailure.ExceptionMetadata
+- uid: Libplanet.Tx.TxFailure.ExceptionMetadata*
+  name: ExceptionMetadata
+  href: api/Libplanet.Tx.TxFailure.html#Libplanet_Tx_TxFailure_ExceptionMetadata_
+  commentId: Overload:Libplanet.Tx.TxFailure.ExceptionMetadata
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxFailure.ExceptionMetadata
+  nameWithType: TxFailure.ExceptionMetadata
+- uid: Libplanet.Tx.TxFailure.ExceptionName
+  name: ExceptionName
+  href: api/Libplanet.Tx.TxFailure.html#Libplanet_Tx_TxFailure_ExceptionName
+  commentId: P:Libplanet.Tx.TxFailure.ExceptionName
+  fullName: Libplanet.Tx.TxFailure.ExceptionName
+  nameWithType: TxFailure.ExceptionName
+- uid: Libplanet.Tx.TxFailure.ExceptionName*
+  name: ExceptionName
+  href: api/Libplanet.Tx.TxFailure.html#Libplanet_Tx_TxFailure_ExceptionName_
+  commentId: Overload:Libplanet.Tx.TxFailure.ExceptionName
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxFailure.ExceptionName
+  nameWithType: TxFailure.ExceptionName
+- uid: Libplanet.Tx.TxFailure.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  name: GetObjectData(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Tx.TxFailure.html#Libplanet_Tx_TxFailure_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
+  commentId: M:Libplanet.Tx.TxFailure.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  fullName: Libplanet.Tx.TxFailure.GetObjectData(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  nameWithType: TxFailure.GetObjectData(SerializationInfo, StreamingContext)
+- uid: Libplanet.Tx.TxFailure.GetObjectData*
+  name: GetObjectData
+  href: api/Libplanet.Tx.TxFailure.html#Libplanet_Tx_TxFailure_GetObjectData_
+  commentId: Overload:Libplanet.Tx.TxFailure.GetObjectData
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxFailure.GetObjectData
+  nameWithType: TxFailure.GetObjectData
 - uid: Libplanet.Tx.TxId
   name: TxId
   href: api/Libplanet.Tx.TxId.html
@@ -15579,6 +15918,93 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.TxId.ToString
   nameWithType: TxId.ToString
+- uid: Libplanet.Tx.TxSuccess
+  name: TxSuccess
+  href: api/Libplanet.Tx.TxSuccess.html
+  commentId: T:Libplanet.Tx.TxSuccess
+  fullName: Libplanet.Tx.TxSuccess
+  nameWithType: TxSuccess
+- uid: Libplanet.Tx.TxSuccess.#ctor(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId,IImmutableDictionary{Libplanet.Address,System.Nullable{IValue}},IImmutableDictionary{Libplanet.Address,IImmutableDictionary{Libplanet.Assets.Currency,Libplanet.Assets.FungibleAssetValue}},IImmutableDictionary{Libplanet.Address,IImmutableDictionary{Libplanet.Assets.Currency,Libplanet.Assets.FungibleAssetValue}})
+  name: TxSuccess(BlockHash, TxId, IImmutableDictionary<Address, Nullable<IValue>>, IImmutableDictionary<Address, IImmutableDictionary<Currency, FungibleAssetValue>>, IImmutableDictionary<Address, IImmutableDictionary<Currency, FungibleAssetValue>>)
+  href: api/Libplanet.Tx.TxSuccess.html#Libplanet_Tx_TxSuccess__ctor_Libplanet_Blocks_BlockHash_Libplanet_Tx_TxId_IImmutableDictionary_Libplanet_Address_System_Nullable_IValue___IImmutableDictionary_Libplanet_Address_IImmutableDictionary_Libplanet_Assets_Currency_Libplanet_Assets_FungibleAssetValue___IImmutableDictionary_Libplanet_Address_IImmutableDictionary_Libplanet_Assets_Currency_Libplanet_Assets_FungibleAssetValue___
+  commentId: M:Libplanet.Tx.TxSuccess.#ctor(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId,IImmutableDictionary{Libplanet.Address,System.Nullable{IValue}},IImmutableDictionary{Libplanet.Address,IImmutableDictionary{Libplanet.Assets.Currency,Libplanet.Assets.FungibleAssetValue}},IImmutableDictionary{Libplanet.Address,IImmutableDictionary{Libplanet.Assets.Currency,Libplanet.Assets.FungibleAssetValue}})
+  name.vb: TxSuccess(BlockHash, TxId, IImmutableDictionary(Of Address, Nullable(Of IValue)), IImmutableDictionary(Of Address, IImmutableDictionary(Of Currency, FungibleAssetValue)), IImmutableDictionary(Of Address, IImmutableDictionary(Of Currency, FungibleAssetValue)))
+  fullName: Libplanet.Tx.TxSuccess.TxSuccess(Libplanet.Blocks.BlockHash, Libplanet.Tx.TxId, IImmutableDictionary<Libplanet.Address, System.Nullable<IValue>>, IImmutableDictionary<Libplanet.Address, IImmutableDictionary<Libplanet.Assets.Currency, Libplanet.Assets.FungibleAssetValue>>, IImmutableDictionary<Libplanet.Address, IImmutableDictionary<Libplanet.Assets.Currency, Libplanet.Assets.FungibleAssetValue>>)
+  fullName.vb: Libplanet.Tx.TxSuccess.TxSuccess(Libplanet.Blocks.BlockHash, Libplanet.Tx.TxId, IImmutableDictionary(Of Libplanet.Address, System.Nullable(Of IValue)), IImmutableDictionary(Of Libplanet.Address, IImmutableDictionary(Of Libplanet.Assets.Currency, Libplanet.Assets.FungibleAssetValue)), IImmutableDictionary(Of Libplanet.Address, IImmutableDictionary(Of Libplanet.Assets.Currency, Libplanet.Assets.FungibleAssetValue)))
+  nameWithType: TxSuccess.TxSuccess(BlockHash, TxId, IImmutableDictionary<Address, Nullable<IValue>>, IImmutableDictionary<Address, IImmutableDictionary<Currency, FungibleAssetValue>>, IImmutableDictionary<Address, IImmutableDictionary<Currency, FungibleAssetValue>>)
+  nameWithType.vb: TxSuccess.TxSuccess(BlockHash, TxId, IImmutableDictionary(Of Address, Nullable(Of IValue)), IImmutableDictionary(Of Address, IImmutableDictionary(Of Currency, FungibleAssetValue)), IImmutableDictionary(Of Address, IImmutableDictionary(Of Currency, FungibleAssetValue)))
+- uid: Libplanet.Tx.TxSuccess.#ctor*
+  name: TxSuccess
+  href: api/Libplanet.Tx.TxSuccess.html#Libplanet_Tx_TxSuccess__ctor_
+  commentId: Overload:Libplanet.Tx.TxSuccess.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxSuccess.TxSuccess
+  nameWithType: TxSuccess.TxSuccess
+- uid: Libplanet.Tx.TxSuccess.FungibleAssetsDelta
+  name: FungibleAssetsDelta
+  href: api/Libplanet.Tx.TxSuccess.html#Libplanet_Tx_TxSuccess_FungibleAssetsDelta
+  commentId: P:Libplanet.Tx.TxSuccess.FungibleAssetsDelta
+  fullName: Libplanet.Tx.TxSuccess.FungibleAssetsDelta
+  nameWithType: TxSuccess.FungibleAssetsDelta
+- uid: Libplanet.Tx.TxSuccess.FungibleAssetsDelta*
+  name: FungibleAssetsDelta
+  href: api/Libplanet.Tx.TxSuccess.html#Libplanet_Tx_TxSuccess_FungibleAssetsDelta_
+  commentId: Overload:Libplanet.Tx.TxSuccess.FungibleAssetsDelta
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxSuccess.FungibleAssetsDelta
+  nameWithType: TxSuccess.FungibleAssetsDelta
+- uid: Libplanet.Tx.TxSuccess.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  name: GetObjectData(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Tx.TxSuccess.html#Libplanet_Tx_TxSuccess_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
+  commentId: M:Libplanet.Tx.TxSuccess.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  fullName: Libplanet.Tx.TxSuccess.GetObjectData(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  nameWithType: TxSuccess.GetObjectData(SerializationInfo, StreamingContext)
+- uid: Libplanet.Tx.TxSuccess.GetObjectData*
+  name: GetObjectData
+  href: api/Libplanet.Tx.TxSuccess.html#Libplanet_Tx_TxSuccess_GetObjectData_
+  commentId: Overload:Libplanet.Tx.TxSuccess.GetObjectData
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxSuccess.GetObjectData
+  nameWithType: TxSuccess.GetObjectData
+- uid: Libplanet.Tx.TxSuccess.UpdatedAddresses
+  name: UpdatedAddresses
+  href: api/Libplanet.Tx.TxSuccess.html#Libplanet_Tx_TxSuccess_UpdatedAddresses
+  commentId: P:Libplanet.Tx.TxSuccess.UpdatedAddresses
+  fullName: Libplanet.Tx.TxSuccess.UpdatedAddresses
+  nameWithType: TxSuccess.UpdatedAddresses
+- uid: Libplanet.Tx.TxSuccess.UpdatedAddresses*
+  name: UpdatedAddresses
+  href: api/Libplanet.Tx.TxSuccess.html#Libplanet_Tx_TxSuccess_UpdatedAddresses_
+  commentId: Overload:Libplanet.Tx.TxSuccess.UpdatedAddresses
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxSuccess.UpdatedAddresses
+  nameWithType: TxSuccess.UpdatedAddresses
+- uid: Libplanet.Tx.TxSuccess.UpdatedFungibleAssets
+  name: UpdatedFungibleAssets
+  href: api/Libplanet.Tx.TxSuccess.html#Libplanet_Tx_TxSuccess_UpdatedFungibleAssets
+  commentId: P:Libplanet.Tx.TxSuccess.UpdatedFungibleAssets
+  fullName: Libplanet.Tx.TxSuccess.UpdatedFungibleAssets
+  nameWithType: TxSuccess.UpdatedFungibleAssets
+- uid: Libplanet.Tx.TxSuccess.UpdatedFungibleAssets*
+  name: UpdatedFungibleAssets
+  href: api/Libplanet.Tx.TxSuccess.html#Libplanet_Tx_TxSuccess_UpdatedFungibleAssets_
+  commentId: Overload:Libplanet.Tx.TxSuccess.UpdatedFungibleAssets
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxSuccess.UpdatedFungibleAssets
+  nameWithType: TxSuccess.UpdatedFungibleAssets
+- uid: Libplanet.Tx.TxSuccess.UpdatedStates
+  name: UpdatedStates
+  href: api/Libplanet.Tx.TxSuccess.html#Libplanet_Tx_TxSuccess_UpdatedStates
+  commentId: P:Libplanet.Tx.TxSuccess.UpdatedStates
+  fullName: Libplanet.Tx.TxSuccess.UpdatedStates
+  nameWithType: TxSuccess.UpdatedStates
+- uid: Libplanet.Tx.TxSuccess.UpdatedStates*
+  name: UpdatedStates
+  href: api/Libplanet.Tx.TxSuccess.html#Libplanet_Tx_TxSuccess_UpdatedStates_
+  commentId: Overload:Libplanet.Tx.TxSuccess.UpdatedStates
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxSuccess.UpdatedStates
+  nameWithType: TxSuccess.UpdatedStates
 - uid: Libplanet.Tx.TxViolatingBlockPolicyException
   name: TxViolatingBlockPolicyException
   href: api/Libplanet.Tx.TxViolatingBlockPolicyException.html

@@ -117,6 +117,19 @@ The exception that is thrown when a <a class="xref" href="Libplanet.Tx.Transacti
       <section><p>Consists of <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> and is signed to be included in
 a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> and transmitted over the network.</p>
 </section>
+      <h4><a class="xref" href="Libplanet.Tx.TxExecution.html">TxExecution</a></h4>
+      <section><p>Summarizes an execution result of a <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>.</p>
+<p>Note that <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s cannot be executed without belonging to
+a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>, and even if it&apos;s the same <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> its
+result can vary depending on <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> that it is executed within.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Tx.TxFailure.html">TxFailure</a></h4>
+      <section><p>Summarizes an execution result of a <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> with any exception-throwing
+actions.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Tx.TxSuccess.html">TxSuccess</a></h4>
+      <section><p>Summarizes an execution result of a successful <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>.</p>
+</section>
       <h4><a class="xref" href="Libplanet.Tx.TxViolatingBlockPolicyException.html">TxViolatingBlockPolicyException</a></h4>
       <section><p>The exception that is thrown when a <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> does not follow the
 block policy.</p>

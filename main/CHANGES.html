@@ -180,6 +180,14 @@ parameter became <code>IImmutableSet&lt;BlockHash&gt;</code>
 </ul>
 </li>
 <li>Added <code>IActionContext.TxId</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/1275">#1275</a>]</li>
+<li>Added <code>IStore.PutTxExecution(TxSuccess)</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/1156">#1156</a>, <a href="https://github.com/planetarium/libplanet/pull/1289">#1289</a>]</li>
+<li>Added <code>IStore.PutTxExecution(TxFailure)</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/1156">#1156</a>, <a href="https://github.com/planetarium/libplanet/pull/1289">#1289</a>]</li>
+<li>Added <code>IStore.GetTxExecution()</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/1156">#1156</a>, <a href="https://github.com/planetarium/libplanet/pull/1289">#1289</a>]</li>
+<li>Removed the optional parameter <code>Guid? chainId = null</code> from
+<code>IStateStore.GetState()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1289">#1289</a>]</li>
+<li>Removed <code>compress</code> parameter from <code>DefaultStore()</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/1289">#1289</a>]</li>
+<li>Removed <code>statesCacheSize</code> parameter from <code>DefaultStore()</code> constructor.
+[<a href="https://github.com/planetarium/libplanet/pull/1289">#1289</a>]</li>
 <li>Removed <code>StunMessage.Parse(Stream)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1218">#1228</a>]</li>
 <li>Moved <code>ITransport</code> and <code>NetMQTransport</code> from <code>Libplanet.Net</code> to
 <code>Libplanet.Net.Transports</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1235">#1235</a>]</li>
@@ -210,6 +218,7 @@ mutable.  [<a href="https://github.com/planetarium/libplanet/pull/1274">#1274</a
 <ul>
 <li>Added <code>BlockHash</code> struct.  [<a href="https://github.com/planetarium/libplanet/issues/1192">#1192</a>, <a href="https://github.com/planetarium/libplanet/pull/1197">#1197</a>]</li>
 <li>Added <code>HashDigest&lt;T&gt;.DeriveFrom()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1197">#1197</a>]</li>
+<li>Added <code>BlockChain&lt;T&gt;.GetTxExecution()</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/1156">#1156</a>, <a href="https://github.com/planetarium/libplanet/pull/1289">#1289</a>]</li>
 <li>Added <code>StunMessage.ParseAsync(Stream, CancellationToken)</code> method.
 [<a href="https://github.com/planetarium/libplanet/pull/1218">#1228</a>]</li>
 <li>Added <code>Swarm&lt;T&gt;.AddPeersAsync()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1234">#1234</a>]</li>
@@ -220,9 +229,21 @@ mutable.  [<a href="https://github.com/planetarium/libplanet/pull/1274">#1274</a
 <li>Added <code>StaticPeers</code> as the last parameter to
 <code>RoutingTable(Address, int, int)</code> constructor.  [<a href="https://github.com/planetarium/libplanet/issues/1230">#1230</a>, <a href="https://github.com/planetarium/libplanet/pull/1271">#1271</a>]</li>
 <li>Added <code>AtomicActionRenderer&lt;T&gt;</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/1267">#1267</a>, <a href="https://github.com/planetarium/libplanet/pull/1275">#1275</a>]</li>
+<li>Added <code>TxExecution</code> abstract class.  [<a href="https://github.com/planetarium/libplanet/issues/1156">#1156</a>, <a href="https://github.com/planetarium/libplanet/pull/1289">#1289</a>]</li>
+<li>Added <code>TxSuccess</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/1156">#1156</a>, <a href="https://github.com/planetarium/libplanet/pull/1289">#1289</a>]</li>
+<li>Added <code>TxFailure</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/1156">#1156</a>, <a href="https://github.com/planetarium/libplanet/pull/1289">#1289</a>]</li>
+<li>Added <code>IExtractableException</code> interface.  [<a href="https://github.com/planetarium/libplanet/issues/1156">#1156</a>, <a href="https://github.com/planetarium/libplanet/pull/1289">#1289</a>]</li>
+<li>Added <code>ExtractableException</code> static class.  [<a href="https://github.com/planetarium/libplanet/issues/1156">#1156</a>, <a href="https://github.com/planetarium/libplanet/pull/1289">#1289</a>]</li>
+<li>Added <code>Address(Binary)</code> overloaded constructor.  [<a href="https://github.com/planetarium/libplanet/pull/1289">#1289</a>]</li>
+<li>Added <code>Currency(IValue)</code> overloaded constructor.  [<a href="https://github.com/planetarium/libplanet/pull/1289">#1289</a>]</li>
+<li>Added <code>Currency.Serialize()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1289">#1289</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
+<li><code>BlockChain&lt;T&gt;.Append()</code> now records a <code>TxExecution</code> for every single
+transaction in the appended <code>Block&lt;T&gt;</code>, whether a transaction is successful
+(<code>TxSuccess</code> is recorded for this case) or not (<code>TxFailure</code> is recorded
+for this case).  [<a href="https://github.com/planetarium/libplanet/issues/1156">#1156</a>, <a href="https://github.com/planetarium/libplanet/pull/1289">#1289</a>]</li>
 <li><code>ITransport.StartAsync()</code> and <code>ITransport.RunAsync()</code> became to throw
 <code>TransportException</code> instead of <code>SwarmException</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1242">#1242</a>]</li>
 <li>When selecting peers for <code>ITransport.BroadcastMessage()</code>,
@@ -266,9 +287,10 @@ updated cached peers multiple times.  [<a href="https://github.com/planetarium/l
 <li>Fixed memory leak due to undisposed <code>CancellationTokenRegistration</code>s.
 [<a href="https://github.com/planetarium/libplanet/pull/1218">#1228</a>]</li>
 <li>Fixed a bug where <code>DefaultStore.Dispose()</code> and <code>TrieStateStore.Dispose()</code>
-hadn't worked idempotently.  [<a href="https://github.com/planetarium/libplanet/pull/1272">#1272</a>]</li>
-<li>(Libplanet.RocksDBStore) Fixed a bug where <code>RocksDBStore.Dispose()</code> and
-<code>RocksDBKeyValueStore.Dispose()</code> hadn't worked idempotently.  [<a href="https://github.com/planetarium/libplanet/pull/1272">#1272</a>]</li>
+had not been idempotent.  [<a href="https://github.com/planetarium/libplanet/pull/1272">#1272</a>]</li>
+<li>(Libplanet.RocksDBStore) Fixed a bug where <code>RocksDBStore.Dispose()</code>,
+<code>MonoRocksDBStore.Dispose()</code>, and <code>RocksDBKeyValueStore.Dispose()</code> had not
+been idempotent.  [<a href="https://github.com/planetarium/libplanet/pull/1272">#1272</a>, <a href="https://github.com/planetarium/libplanet/pull/1289">#1289</a>]</li>
 <li>Fixed a bug where <code>NetMQTransport</code> had hung forever within Mono runtime.
 [<a href="https://github.com/planetarium/libplanet/pull/1278">#1278</a>]</li>
 </ul>
