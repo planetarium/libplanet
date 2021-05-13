@@ -39,7 +39,7 @@ namespace Libplanet.Explorer.Queries
                     int? limit = context.GetArgument<int?>("limit", null);
                     bool excludeEmptyTxs = context.GetArgument<bool>("excludeEmptyTxs");
                     Address? miner = context.GetArgument<Address?>("miner", null);
-                    return Query<T>.ListBlocks(desc, offset, limit, excludeEmptyTxs, miner);
+                    return ExplorerQuery<T>.ListBlocks(desc, offset, limit, excludeEmptyTxs, miner);
                 }
             );
 
@@ -63,12 +63,12 @@ namespace Libplanet.Explorer.Queries
 
                     if (hash is string hashNotNull)
                     {
-                        return Query<T>.GetBlockByHash(BlockHash.FromString(hashNotNull));
+                        return ExplorerQuery<T>.GetBlockByHash(BlockHash.FromString(hashNotNull));
                     }
 
                     if (index is long indexNotNull)
                     {
-                        return Query<T>.GetBlockByIndex(indexNotNull);
+                        return ExplorerQuery<T>.GetBlockByIndex(indexNotNull);
                     }
 
                     throw new GraphQL.ExecutionError("Unexpected block query");

@@ -45,7 +45,7 @@ namespace Libplanet.Explorer.Queries
                     long offset = context.GetArgument<long>("offset");
                     int? limit = context.GetArgument<int?>("limit", null);
 
-                    return Query<T>.ListTransactions(signer, involved, desc, offset, limit);
+                    return ExplorerQuery<T>.ListTransactions(signer, involved, desc, offset, limit);
                 }
             );
 
@@ -82,7 +82,13 @@ namespace Libplanet.Explorer.Queries
                     int offset = context.GetArgument<int>("offset");
                     int? limit = context.GetArgument<int?>("limit", null);
 
-                    return Query<T>.ListStagedTransactions(signer, involved, desc, offset, limit);
+                    return ExplorerQuery<T>.ListStagedTransactions(
+                        signer,
+                        involved,
+                        desc,
+                        offset,
+                        limit
+                    );
                 }
             );
 
@@ -96,7 +102,7 @@ namespace Libplanet.Explorer.Queries
                     var id = new TxId(
                         ByteUtil.ParseHex(context.GetArgument<string>("id"))
                     );
-                    return Query<T>.GetTransaction(id);
+                    return ExplorerQuery<T>.GetTransaction(id);
                 }
             );
 
