@@ -87,7 +87,8 @@ namespace Libplanet.Blocks
                 miner: Miner?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty,
                 difficulty: Difficulty,
                 totalDifficulty: TotalDifficulty,
-                previousHash: PreviousHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty,
+                previousHash: PreviousHash?.ToByteArray().ToImmutableArray()
+                    ?? ImmutableArray<byte>.Empty,
                 txHash: TxHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty,
                 preEvaluationHash: ImmutableArray<byte>.Empty);
             PreEvaluationHash = new BlockHash(Header.PreEvaluationHash);
@@ -166,7 +167,8 @@ namespace Libplanet.Blocks
                 miner: Miner?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty,
                 difficulty: Difficulty,
                 totalDifficulty: TotalDifficulty,
-                previousHash: PreviousHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty,
+                previousHash: PreviousHash?.ToByteArray().ToImmutableArray()
+                    ?? ImmutableArray<byte>.Empty,
                 txHash: TxHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty,
                 preEvaluationHash: PreEvaluationHash.ToByteArray().ToImmutableArray());
         }
