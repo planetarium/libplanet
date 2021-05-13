@@ -8,17 +8,37 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Removed `ITransport.RunAsync()` method.
+    `ITransport.StartAsync()` now conducts operation that
+    `ITransport.RunAsync()` used to conduct.  [[#1288]]
+ -  Removed `ITransport.ReplyMessage()` method which was non-blocking.
+    Instead, added `ITransport.ReplyMessageAsync()` asynchronous method
+    which is awaited until the reply message is sent.  [[#1288]]
+ -  The type of `ITransport.ProcessMessageHandler` became
+    `AsyncDelegate<T>` (which was `EventHandler`).  [[#1288]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
 
 ### Added APIs
 
+ -  Added `ITransport.MessageHistory` property.  [[#1288]]
+ -  Added `ITransport.WaitForRunning()` method.  [[#1288]]
+ -  Added `TcpTransport` class which implements `ITransport` interface.
+    [[#1288]]
+ -  Added `SwarmOptions.Type` property.  [[#1288]]
+ -  Added `SwarmOptions.TransportType` enum.  [[#1288]]
+ -  Added `AsyncDelegate<T>` class.  [[#1288]]
+ -  Added `InvalidMagicCookieException` class.  [[#1288]]
+
 ### Behavioral changes
 
 ### Bug fixes
 
 ### CLI tools
+
+[#1288]: https://github.com/planetarium/libplanet/pull/1288
 
 
 Version 0.13.0
