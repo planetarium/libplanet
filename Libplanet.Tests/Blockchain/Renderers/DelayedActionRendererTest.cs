@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Libplanet.Action;
 using Libplanet.Blockchain;
@@ -738,6 +739,14 @@ namespace Libplanet.Tests.Blockchain.Renderers
         }
 
         private IActionContext FakeContext(long blockIndex = 1) =>
-            new ActionContext(default, default, default, blockIndex, _emptyStates, 0);
+            new ActionContext(
+                signer: default,
+                txid: default,
+                miner: default,
+                blockHash: new BlockHash(new byte[HashDigest<SHA256>.Size]),
+                blockIndex: blockIndex,
+                previousStates: _emptyStates,
+                randomSeed: 0
+            );
     }
 }

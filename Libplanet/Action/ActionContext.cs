@@ -1,6 +1,7 @@
 #nullable enable
 using System.Diagnostics.Contracts;
 using System.Security.Cryptography;
+using Libplanet.Blocks;
 using Libplanet.Store.Trie;
 using Libplanet.Tx;
 
@@ -17,6 +18,7 @@ namespace Libplanet.Action
             Address signer,
             TxId? txid,
             Address miner,
+            BlockHash blockHash,
             long blockIndex,
             IAccountStateDelta previousStates,
             int randomSeed,
@@ -28,6 +30,7 @@ namespace Libplanet.Action
             Signer = signer;
             TxId = txid;
             Miner = miner;
+            BlockHash = blockHash;
             BlockIndex = blockIndex;
             Rehearsal = rehearsal;
             PreviousStates = previousStates;
@@ -42,6 +45,8 @@ namespace Libplanet.Action
         public TxId? TxId { get; }
 
         public Address Miner { get; }
+
+        public BlockHash BlockHash { get; }
 
         public long BlockIndex { get; }
 
@@ -70,6 +75,7 @@ namespace Libplanet.Action
                 Signer,
                 TxId,
                 Miner,
+                BlockHash,
                 BlockIndex,
                 PreviousStates,
                 _randomSeed,

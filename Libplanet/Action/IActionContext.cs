@@ -1,6 +1,7 @@
 #nullable enable
 using System.Diagnostics.Contracts;
 using System.Security.Cryptography;
+using Libplanet.Blocks;
 using Libplanet.Tx;
 
 namespace Libplanet.Action
@@ -32,8 +33,15 @@ namespace Libplanet.Action
         Address Miner { get; }
 
         /// <summary>
-        /// Block index of a transaction that an executed <see cref="IAction"/>
-        /// belongs to.
+        /// <see cref="Block{T}"/>.<see cref="Block{T}.Hash"/> of a transaction that an executed
+        /// <see cref="IAction"/> belongs to.
+        /// </summary>
+        [Pure]
+        BlockHash BlockHash { get; }
+
+        /// <summary>
+        /// <see cref="Block{T}"/>.<see cref="Block{T}.Index"/> of a transaction that an executed
+        /// <see cref="IAction"/> belongs to.
         /// </summary>
         [Pure]
         long BlockIndex { get; }
