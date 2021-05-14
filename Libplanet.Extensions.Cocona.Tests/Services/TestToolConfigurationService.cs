@@ -1,16 +1,16 @@
 using Libplanet.Extensions.Cocona.Configuration;
 using Libplanet.Extensions.Cocona.Services;
 
-namespace Libplanet.Tools.Tests.Services
+namespace Libplanet.Extensions.Cocona.Tests.Services
 {
     public class TestToolConfigurationService : IConfigurationService<ToolConfiguration>
     {
-        private ToolConfiguration Configuration { get; set; }
-
         public TestToolConfigurationService(ToolConfiguration configuration)
         {
             Configuration = configuration;
         }
+
+        private ToolConfiguration Configuration { get; set; }
 
         public ToolConfiguration Load()
         {

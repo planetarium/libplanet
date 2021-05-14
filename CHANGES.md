@@ -236,6 +236,8 @@ To be released.
     key without asking passphrase.  [[#1213], [#1265]]
  -  Added `planet key derive` subcommand to derive the address or
     public key from a private.  [[#1268]]
+ -  Added `planet query [block-by-hash|block-by-index|tx-by-id]` commands
+    to retrieve the data from the store [[#1284], [#1285], [#1298]]
 
 [#1156]: https://github.com/planetarium/libplanet/issues/1156
 [#1192]: https://github.com/planetarium/libplanet/issues/1192
@@ -256,7 +258,10 @@ To be released.
 [#1274]: https://github.com/planetarium/libplanet/pull/1274
 [#1275]: https://github.com/planetarium/libplanet/pull/1275
 [#1278]: https://github.com/planetarium/libplanet/pull/1278
+[#1284]: https://github.com/planetarium/libplanet/issues/1284
+[#1285]: https://github.com/planetarium/libplanet/issues/1285
 [#1289]: https://github.com/planetarium/libplanet/pull/1289
+[#1298]: https://github.com/planetarium/libplanet/pull/1298
 
 
 Version 0.11.1
