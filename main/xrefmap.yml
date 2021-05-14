@@ -392,6 +392,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IActionContext.BlockAction
   nameWithType: IActionContext.BlockAction
+- uid: Libplanet.Action.IActionContext.BlockHash
+  name: BlockHash
+  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_BlockHash
+  commentId: P:Libplanet.Action.IActionContext.BlockHash
+  fullName: Libplanet.Action.IActionContext.BlockHash
+  nameWithType: IActionContext.BlockHash
+- uid: Libplanet.Action.IActionContext.BlockHash*
+  name: BlockHash
+  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_BlockHash_
+  commentId: Overload:Libplanet.Action.IActionContext.BlockHash
+  isSpec: "True"
+  fullName: Libplanet.Action.IActionContext.BlockHash
+  nameWithType: IActionContext.BlockHash
 - uid: Libplanet.Action.IActionContext.BlockIndex
   name: BlockIndex
   href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_BlockIndex
