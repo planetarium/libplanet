@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Bencodex.Types;
 using Libplanet.Action;
@@ -33,14 +34,17 @@ namespace Libplanet.Tests.Action
         [Fact]
         public void Constructor()
         {
-            var txid = new System.Random().NextTxId();
+            var random = new System.Random();
+            var txid = random.NextTxId();
             Address address = new PrivateKey().ToAddress();
+            var blockHash = new BlockHash(random.NextBytes(HashDigest<SHA256>.Size));
             var evaluation = new ActionEvaluation(
                 new DumbAction(address, "item"),
                 new ActionContext(
                     address,
                     txid,
                     address,
+                    blockHash,
                     1,
                     new AccountStateDeltaImpl(
                         _ => null,
@@ -63,6 +67,7 @@ namespace Libplanet.Tests.Action
             Assert.Equal(address, evaluation.InputContext.Signer);
             Assert.Equal(txid, evaluation.InputContext.TxId);
             Assert.Equal(address, evaluation.InputContext.Miner);
+            Assert.Equal(blockHash, evaluation.InputContext.BlockHash);
             Assert.Equal(1, evaluation.InputContext.BlockIndex);
             Assert.Null(
                 evaluation.InputContext.PreviousStates.GetState(address)
@@ -111,7 +116,9 @@ namespace Libplanet.Tests.Action
                 _logger.Debug("a.Actions[{0}] = {1}", i, a.Actions[i]);
                 Assert.Equal(a.Actions[i], eval.Action);
                 IActionContext context = eval.InputContext;
+                Assert.Equal(a.Id, context.TxId);
                 Assert.Equal(blockA.Miner, context.Miner);
+                Assert.Equal(blockA.Hash, context.BlockHash);
                 Assert.Equal(blockA.Index, context.BlockIndex);
                 Assert.Equal(
                     deltaA[i].RootHash,
@@ -164,7 +171,9 @@ namespace Libplanet.Tests.Action
                 _logger.Debug("b.Actions[{0}] = {@1}", i, b.Actions[i]);
                 Assert.Equal(b.Actions[i], eval.Action);
                 IActionContext context = eval.InputContext;
+                Assert.Equal(b.Id, context.TxId);
                 Assert.Equal(blockB.Miner, context.Miner);
+                Assert.Equal(blockB.Hash, context.BlockHash);
                 Assert.Equal(blockB.Index, context.BlockIndex);
                 Assert.Equal(
                     deltaB[i].RootHash,
