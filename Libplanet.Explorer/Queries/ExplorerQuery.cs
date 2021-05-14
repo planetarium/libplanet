@@ -14,10 +14,10 @@ using Libplanet.Tx;
 
 namespace Libplanet.Explorer.Queries
 {
-    public class Query<T> : ObjectGraphType
+    public class ExplorerQuery<T> : ObjectGraphType
         where T : IAction, new()
     {
-        public Query(IBlockChainContext<T> chainContext)
+        public ExplorerQuery(IBlockChainContext<T> chainContext)
         {
             ChainContext = chainContext;
             Field<BlockQuery<T>>("blockQuery", resolve: context => new { });
@@ -27,7 +27,7 @@ namespace Libplanet.Explorer.Queries
                 resolve: context => chainContext
             );
 
-            Name = "Query";
+            Name = "ExplorerQuery";
         }
 
         private static IBlockChainContext<T> ChainContext { get; set; }
