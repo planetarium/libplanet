@@ -78,36 +78,36 @@
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
-    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">NetMQTransport</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="Libplanet.Net.Transports.ITransport.html">ITransport</a></div>
-    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+    <div><span class="xref">System.IDisposable</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+      <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+      <span class="xref">System.Object.GetHashCode()</span>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+      <span class="xref">System.Object.GetType()</span>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+      <span class="xref">System.Object.MemberwiseClone()</span>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
+      <span class="xref">System.Object.ToString()</span>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Net.Transports.html">Libplanet.Net.Transports</a></h6>
@@ -173,13 +173,13 @@ to trust <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtoco
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="xref">System.Int32</span></td>
         <td><span class="parametername">workers</span></td>
         <td><p>The number of background workers (i.e., threads).</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="xref">System.String</span></td>
         <td><span class="parametername">host</span></td>
         <td><p>A hostname to be a part of a public endpoint, that peers use when
 they connect to this node.  Note that this is not a hostname to listen to;
@@ -187,13 +187,13 @@ they connect to this node.  Note that this is not a hostname to listen to;
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a>&gt;</td>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
         <td><span class="parametername">listenPort</span></td>
         <td><p>A port number to listen to.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.Net.IceServer.html">IceServer</a>&gt;</td>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Libplanet.Net.IceServer.html">IceServer</a>&gt;</td>
         <td><span class="parametername">iceServers</span></td>
         <td><p><a href="https://en.wikipedia.org/wiki/Interactive_Connectivity_Establishment">ICE</a>
 servers to use for TURN/STUN.  Purposes to traverse NAT.</p>
@@ -210,7 +210,7 @@ is omitted, all peers with different <a class="xref" href="Libplanet.Net.AppProt
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.timespan">TimeSpan</a>&gt;</td>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.TimeSpan</span>&gt;</td>
         <td><span class="parametername">messageLifespan</span></td>
         <td><p>The lifespan of a message.
 Messages generated before this value from the current time are ignored.
@@ -229,7 +229,7 @@ If <code>null</code> is given, messages will not be ignored by its timestamp.</p
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><span class="xref">System.ArgumentException</span></td>
         <td><p>Thrown when both <code data-dev-comment-type="paramref" class="paramref">host</code> and
 <code data-dev-comment-type="paramref" class="paramref">iceServers</code> are <code>null</code>.</p>
 </td>
@@ -278,7 +278,7 @@ If <code>null</code> is given, messages will not be ignored by its timestamp.</p
   </span>
   <a id="Libplanet_Net_Transports_NetMQTransport_LastMessageTimestamp_" data-uid="Libplanet.Net.Transports.NetMQTransport.LastMessageTimestamp*"></a>
   <h4 id="Libplanet_Net_Transports_NetMQTransport_LastMessageTimestamp" data-uid="Libplanet.Net.Transports.NetMQTransport.LastMessageTimestamp">LastMessageTimestamp</h4>
-  <div class="markdown level1 summary"><p>The <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a> of the last message was received.</p>
+  <div class="markdown level1 summary"><p>The <span class="xref">System.DateTimeOffset</span> of the last message was received.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -295,7 +295,7 @@ If <code>null</code> is given, messages will not be ignored by its timestamp.</p
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a>&gt;</td>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.DateTimeOffset</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -326,7 +326,7 @@ If <code>null</code> is given, messages will not be ignored by its timestamp.</p
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="xref">System.Boolean</span></td>
         <td><p>Gets the value indicates whether the instance is running.</p>
 </td>
       </tr>
@@ -361,7 +361,7 @@ If <code>null</code> is given, messages will not be ignored by its timestamp.</p
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Address.html">Address</a>&gt;</td>
+        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Libplanet.Address.html">Address</a>&gt;</td>
         <td><span class="parametername">except</span></td>
         <td><p>An <a class="xref" href="Libplanet.Address.html">Address</a> to exclude from broadcasting.
 If <code>null</code> is given, no peers will be excluded.</p>
@@ -457,7 +457,7 @@ matched to <a class="xref" href="Libplanet.Net.Messages.Message.html#Libplanet_N
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
         <td><span class="parametername">cancellationToken</span></td>
         <td><p>A cancellation token used to propagate notification that this
 operation should be canceled.</p>
@@ -475,7 +475,7 @@ operation should be canceled.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
         <td><p>An awaitable task without value.</p>
 </td>
       </tr>
@@ -520,7 +520,7 @@ operation should be canceled.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
         <td><span class="parametername">cancellationToken</span></td>
         <td><p>A cancellation token used to propagate notification that this
 operation should be canceled.</p>
@@ -538,7 +538,7 @@ operation should be canceled.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
         <td><p>An awaitable task without value.</p>
 </td>
       </tr>
@@ -584,19 +584,19 @@ to given <code data-dev-comment-type="paramref" class="paramref">peer</code> and
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.timespan">TimeSpan</a>&gt;</td>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.TimeSpan</span>&gt;</td>
         <td><span class="parametername">timeout</span></td>
         <td><p>A timeout of waiting for the reply of the message.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="xref">System.Int32</span></td>
         <td><span class="parametername">expectedResponses</span></td>
         <td><p>The number of expected replies for the message.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
         <td><span class="parametername">cancellationToken</span></td>
         <td><p>A cancellation token used to propagate notification that this
 operation should be canceled.</p>
@@ -614,7 +614,7 @@ operation should be canceled.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>&gt;&gt;</td>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>&gt;&gt;</td>
         <td><p>The replies of the <code data-dev-comment-type="paramref" class="paramref">message</code>
 sent by <code data-dev-comment-type="paramref" class="paramref">peer</code>.</p>
 </td>
@@ -661,13 +661,13 @@ to given <code data-dev-comment-type="paramref" class="paramref">peer</code> and
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.timespan">TimeSpan</a>&gt;</td>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.TimeSpan</span>&gt;</td>
         <td><span class="parametername">timeout</span></td>
         <td><p>A timeout of waiting for the reply of the message.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
         <td><span class="parametername">cancellationToken</span></td>
         <td><p>A cancellation token used to propagate notification that this
 operation should be canceled.</p>
@@ -685,7 +685,7 @@ operation should be canceled.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>&gt;</td>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>&gt;</td>
         <td><p>The replies of the <code data-dev-comment-type="paramref" class="paramref">message</code>
 sent by <code data-dev-comment-type="paramref" class="paramref">peer</code>.</p>
 </td>
@@ -719,7 +719,7 @@ sent by <code data-dev-comment-type="paramref" class="paramref">peer</code>.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
         <td><span class="parametername">cancellationToken</span></td>
         <td><p>A cancellation token used to propagate notification that this
 operation should be canceled.</p>
@@ -737,7 +737,7 @@ operation should be canceled.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
         <td><p>An awaitable task without value.</p>
 </td>
       </tr>
@@ -770,14 +770,14 @@ operation should be canceled.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.timespan">TimeSpan</a></td>
+        <td><span class="xref">System.TimeSpan</span></td>
         <td><span class="parametername">waitFor</span></td>
-        <td><p>The <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.timespan">TimeSpan</a> of delay
+        <td><p>The <span class="xref">System.TimeSpan</span> of delay
 before actual stopping.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
         <td><span class="parametername">cancellationToken</span></td>
         <td><p>A cancellation token used to propagate notification that this
 operation should be canceled.</p>
@@ -795,7 +795,7 @@ operation should be canceled.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
         <td><p>An awaitable task without value.</p>
 </td>
       </tr>
@@ -827,8 +827,8 @@ operation should be canceled.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
-        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a> completed when <a class="xref" href="Libplanet.Net.Transports.NetMQTransport.html#Libplanet_Net_Transports_NetMQTransport_Running">Running</a>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td><p>A <span class="xref">System.Threading.Tasks.Task</span> completed when <a class="xref" href="Libplanet.Net.Transports.NetMQTransport.html#Libplanet_Net_Transports_NetMQTransport_Running">Running</a>
 property becomes <code>true</code>.</p>
 </td>
       </tr>
@@ -848,7 +848,7 @@ property becomes <code>true</code>.</p>
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Net/Transports/NetMQTransport.cs/#L201">View Source</a>
   </span>
   <h4 id="Libplanet_Net_Transports_NetMQTransport_ProcessMessageHandler" data-uid="Libplanet.Net.Transports.NetMQTransport.ProcessMessageHandler">ProcessMessageHandler</h4>
-  <div class="markdown level1 summary"><p>The <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.eventhandler">EventHandler</a> invoked when a message that is not
+  <div class="markdown level1 summary"><p>The <span class="xref">System.EventHandler</span> invoked when a message that is not
 a reply is received. To handle reply, please use <a class="xref" href="Libplanet.Net.Transports.ITransport.html#Libplanet_Net_Transports_ITransport_SendMessageWithReplyAsync_Libplanet_Net_BoundPeer_Libplanet_Net_Messages_Message_System_Nullable_System_TimeSpan__System_Threading_CancellationToken_">SendMessageWithReplyAsync(BoundPeer, Message, Nullable&lt;TimeSpan&gt;, CancellationToken)</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -866,7 +866,7 @@ a reply is received. To handle reply, please use <a class="xref" href="Libplanet
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>&gt;</td>
+        <td><span class="xref">System.EventHandler</span>&lt;<a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -876,7 +876,7 @@ a reply is received. To handle reply, please use <a class="xref" href="Libplanet
       <a class="xref" href="Libplanet.Net.Transports.ITransport.html">ITransport</a>
   </div>
   <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">System.IDisposable</a>
+      <span class="xref">System.IDisposable</span>
   </div>
 </article>
           </div>
