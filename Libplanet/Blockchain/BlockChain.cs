@@ -165,7 +165,7 @@ namespace Libplanet.Blockchain
             Func<BlockHash, ITrie> trieGetter = StateStore is TrieStateStore trieStateStore
                 ? h => trieStateStore.GetTrie(h)
                 : (Func<BlockHash, ITrie>)null;
-            BlockEvaluator = new BlockEvaluator<T>(
+            ActionEvaluator = new ActionEvaluator<T>(
                 policy.BlockAction,
                 GetState,
                 GetBalance,
@@ -290,7 +290,7 @@ namespace Libplanet.Blockchain
 
         internal IStateStore StateStore { get; }
 
-        internal BlockEvaluator<T> BlockEvaluator { get; }
+        internal ActionEvaluator<T> ActionEvaluator { get; }
 
         /// <summary>
         /// Gets the block corresponding to the <paramref name="index"/>.
@@ -391,13 +391,13 @@ namespace Libplanet.Blockchain
                 timestamp ?? DateTimeOffset.UtcNow,
                 transactions);
 
-            var blockEvaluator = new BlockEvaluator<T>(
+            var actionEvaluator = new ActionEvaluator<T>(
                 blockAction,
                 (address, digest, stateCompleter) => null,
                 (address, currency, hash, fungibleAssetStateCompleter)
                     => new FungibleAssetValue(currency),
                 null);
-            var actionEvaluationResult = blockEvaluator
+            var actionEvaluationResult = actionEvaluator
                 .EvaluateActions(block, StateCompleterSet<T>.Reject)
                 .GetTotalDelta(ToStateKey, ToFungibleAssetKey);
             ITrie trie = new MerkleTrie(new DefaultKeyValueStore(null));
@@ -980,7 +980,7 @@ namespace Libplanet.Blockchain
                 TipChanged -= WatchTip;
             }
 
-            IReadOnlyList<ActionEvaluation> actionEvaluations = BlockEvaluator.EvaluateActions(
+            IReadOnlyList<ActionEvaluation> actionEvaluations = ActionEvaluator.EvaluateActions(
                 block, StateCompleterSet<T>.Recalculate);
 
             if (StateStore is TrieStateStore trieStateStore)
@@ -1395,7 +1395,7 @@ namespace Libplanet.Blockchain
 
             if (evaluations is null)
             {
-                evaluations = BlockEvaluator.EvaluateActions(block, stateCompleters.Value);
+                evaluations = ActionEvaluator.EvaluateActions(block, stateCompleters.Value);
             }
 
             int cnt = 0;
@@ -1449,7 +1449,7 @@ namespace Libplanet.Blockchain
             );
             IReadOnlyList<ActionEvaluation> evaluations = null;
             DateTimeOffset evaluateActionStarted = DateTimeOffset.Now;
-            evaluations = BlockEvaluator.EvaluateActions(
+            evaluations = ActionEvaluator.EvaluateActions(
                 block,
                 stateCompleters ?? StateCompleterSet<T>.Recalculate
             );
@@ -1792,7 +1792,7 @@ namespace Libplanet.Blockchain
                     )
                     {
                         List<ActionEvaluation> evaluations =
-                            BlockEvaluator.EvaluateActions(b, completers).ToList();
+                            ActionEvaluator.EvaluateActions(b, completers).ToList();
                         evaluations.Reverse();
 
                         foreach (var evaluation in evaluations)
@@ -2024,7 +2024,7 @@ namespace Libplanet.Blockchain
                     continue;
                 }
 
-                IReadOnlyList<ActionEvaluation> evaluations = BlockEvaluator.EvaluateActions(
+                IReadOnlyList<ActionEvaluation> evaluations = ActionEvaluator.EvaluateActions(
                     block,
                     stateCompleters
                 );

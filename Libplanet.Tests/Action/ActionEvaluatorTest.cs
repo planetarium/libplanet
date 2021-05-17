@@ -12,9 +12,9 @@ using Libplanet.Tests.Store.Trie;
 using Libplanet.Tx;
 using Xunit;
 
-namespace Libplanet.Tests.Blockchain
+namespace Libplanet.Tests.Action
 {
-    public class BlockEvaluatorTest
+    public class ActionEvaluatorTest
     {
         [Fact]
         public void Idempotent()
@@ -41,8 +41,8 @@ namespace Libplanet.Tests.Blockchain
             Block<RandomAction> stateRootBlock = TestUtils.MineGenesis(
                 timestamp: timestamp,
                 transactions: txs).AttachStateRootHash(stateStore, null);
-            var blockEvaluator =
-                new BlockEvaluator<RandomAction>(null, NullStateGetter, NullBalanceGetter, null);
+            var actionEvaluator =
+                new ActionEvaluator<RandomAction>(null, NullStateGetter, NullBalanceGetter, null);
             var generatedRandomNumbers = new List<int>();
 
             Assert.NotEqual(stateRootBlock.Hash, noStateRootBlock.Hash);
@@ -50,12 +50,12 @@ namespace Libplanet.Tests.Blockchain
 
             for (int i = 0; i < repeatCount; ++i)
             {
-                var actionEvaluations = blockEvaluator.EvaluateActions(
+                var actionEvaluations = actionEvaluator.EvaluateActions(
                     noStateRootBlock,
                     StateCompleterSet<RandomAction>.Reject);
                 generatedRandomNumbers.Add(
                     (Integer)actionEvaluations[0].OutputStates.GetState(address));
-                actionEvaluations = blockEvaluator.EvaluateActions(
+                actionEvaluations = actionEvaluator.EvaluateActions(
                     stateRootBlock,
                     StateCompleterSet<RandomAction>.Reject);
                 generatedRandomNumbers.Add(

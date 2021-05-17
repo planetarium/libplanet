@@ -1280,7 +1280,7 @@ namespace Libplanet.Tests.Blockchain
             chain.StageTransaction(tx1);
             await chain.MineBlock(_fx.Address1);
 
-            var actionEvaluation = chain.BlockEvaluator.EvaluateActions(
+            var actionEvaluation = chain.ActionEvaluator.EvaluateActions(
                 chain.Tip,
                 StateCompleterSet<TestEvaluateAction>.Recalculate);
             Assert.False(actionEvaluation[0].InputContext.BlockAction);
@@ -1520,7 +1520,7 @@ namespace Libplanet.Tests.Blockchain
             ).AttachStateRootHash(_blockChain.StateStore, _policy.BlockAction);
 
             var miner = genesis.Miner.GetValueOrDefault();
-            var blockActionEvaluation = _blockChain.BlockEvaluator.EvaluateBlockAction(
+            var blockActionEvaluation = _blockChain.ActionEvaluator.EvaluateBlockAction(
                 genesis,
                 null,
                 StateCompleterSet<DumbAction>.Recalculate,
@@ -1542,7 +1542,7 @@ namespace Libplanet.Tests.Blockchain
             var txEvaluations = block1.EvaluateActionsPerTx(a =>
                     _blockChain.GetState(a, block1.PreviousHash))
                 .Select(te => te.Item2).ToList();
-            blockActionEvaluation = _blockChain.BlockEvaluator.EvaluateBlockAction(
+            blockActionEvaluation = _blockChain.ActionEvaluator.EvaluateBlockAction(
                 block1,
                 txEvaluations,
                 StateCompleterSet<DumbAction>.Recalculate,
