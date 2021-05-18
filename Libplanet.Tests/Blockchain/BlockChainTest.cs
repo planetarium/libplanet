@@ -126,24 +126,37 @@ namespace Libplanet.Tests.Blockchain
         {
             Func<long, int> getMaxBlockBytes = _blockChain.Policy.GetMaxBlockBytes;
             Assert.Equal(1, _blockChain.Count);
+            Assert.Equal((Text)$"{TestUtils.GenesisMinerAddress}", _blockChain.GetState(default));
 
             Block<DumbAction> block = await _blockChain.MineBlock(_fx.Address1);
             block.Validate(DateTimeOffset.UtcNow);
             Assert.True(_blockChain.ContainsBlock(block.Hash));
             Assert.Equal(2, _blockChain.Count);
             Assert.True(block.BytesLength <= getMaxBlockBytes(block.Index));
+            Assert.Equal(
+                (Text)$"{TestUtils.GenesisMinerAddress},{_fx.Address1}",
+                _blockChain.GetState(default)
+            );
 
             Block<DumbAction> anotherBlock = await _blockChain.MineBlock(_fx.Address2);
             anotherBlock.Validate(DateTimeOffset.UtcNow);
             Assert.True(_blockChain.ContainsBlock(anotherBlock.Hash));
             Assert.Equal(3, _blockChain.Count);
             Assert.True(anotherBlock.BytesLength <= getMaxBlockBytes(anotherBlock.Index));
+            Assert.Equal(
+                (Text)$"{TestUtils.GenesisMinerAddress},{_fx.Address1},{_fx.Address2}",
+                _blockChain.GetState(default)
+            );
 
             Block<DumbAction> block3 = await _blockChain.MineBlock(_fx.Address3, append: false);
             block3.Validate(DateTimeOffset.UtcNow);
             Assert.False(_blockChain.ContainsBlock(block3.Hash));
             Assert.Equal(3, _blockChain.Count);
             Assert.True(block3.BytesLength <= getMaxBlockBytes(block3.Index));
+            Assert.Equal(
+                (Text)$"{TestUtils.GenesisMinerAddress},{_fx.Address1},{_fx.Address2}",
+                _blockChain.GetState(default)
+            );
 
             // Tests if MineBlock() method automatically fits the number of transactions according
             // to the right size.
@@ -179,6 +192,10 @@ namespace Libplanet.Tests.Blockchain
             );
             Assert.True(block4.BytesLength <= getMaxBlockBytes(block4.Index));
             Assert.Equal(3, block4.Transactions.Count());
+            Assert.Equal(
+                (Text)$"{TestUtils.GenesisMinerAddress},{_fx.Address1},{_fx.Address2}",
+                _blockChain.GetState(default)
+            );
         }
 
         [Fact]
@@ -227,39 +244,51 @@ namespace Libplanet.Tests.Blockchain
                     0,
                     keys[0],
                     _blockChain.Genesis.Hash,
-                    new DumbAction[] { }),
+                    new[] { new DumbAction(_fx.Address1, "1a"), new DumbAction(_fx.Address2, "1b") }
+                ),
                 Transaction<DumbAction>.Create(
                     1,
                     keys[0],
                     _blockChain.Genesis.Hash,
-                    new DumbAction[] { }),
+                    new[] { new DumbAction(_fx.Address3, "2a"), new DumbAction(_fx.Address4, "2b") }
+                ),
 
                 // pending txs1
                 Transaction<DumbAction>.Create(
                     1,
                     keys[1],
                     _blockChain.Genesis.Hash,
-                    new DumbAction[] { }),
+                    new[] { new DumbAction(_fx.Address5, "3a"), new DumbAction(_fx.Address1, "3b") }
+                ),
                 Transaction<DumbAction>.Create(
                     2,
                     keys[1],
                     _blockChain.Genesis.Hash,
-                    new DumbAction[] { }),
+                    new[] { new DumbAction(_fx.Address2, "4a"), new DumbAction(_fx.Address3, "4b") }
+                ),
 
                 // pending txs2
                 Transaction<DumbAction>.Create(
                     0,
                     keys[2],
                     _blockChain.Genesis.Hash,
-                    new DumbAction[] { }),
+                    new[] { new DumbAction(_fx.Address4, "5a"), new DumbAction(_fx.Address5, "5b") }
+                ),
                 Transaction<DumbAction>.Create(
                     2,
                     keys[2],
                     _blockChain.Genesis.Hash,
-                    new DumbAction[] { }),
+                    new[] { new DumbAction(_fx.Address1, "6a"), new DumbAction(_fx.Address2, "6b") }
+                ),
             };
 
             StageTransactions(txs);
+
+            Assert.Null(_blockChain.GetState(_fx.Address1));
+            Assert.Null(_blockChain.GetState(_fx.Address2));
+            Assert.Null(_blockChain.GetState(_fx.Address3));
+            Assert.Null(_blockChain.GetState(_fx.Address4));
+            Assert.Null(_blockChain.GetState(_fx.Address5));
 
             Block<DumbAction> block = await _blockChain.MineBlock(_fx.Address1);
 
@@ -273,6 +302,16 @@ namespace Libplanet.Tests.Blockchain
             IImmutableSet<TxId> txIds = _blockChain.GetStagedTransactionIds();
             Assert.Contains(txs[2].Id, txIds);
             Assert.Contains(txs[3].Id, txIds);
+
+            Assert.Equal(new Integer(1), _blockChain.GetState(_fx.Address1));
+            Assert.Equal(new Text("1b"), _blockChain.GetState(_fx.Address2));
+            Assert.Equal(new Text("2a"), _blockChain.GetState(_fx.Address3));
+            Assert.IsType<Text>(_blockChain.GetState(_fx.Address4));
+            Assert.Equal(
+                new HashSet<string> { "2b", "5a" },
+                ((string)(Text)_blockChain.GetState(_fx.Address4)).Split(",").ToHashSet()
+            );
+            Assert.Equal(new Text("5b"), _blockChain.GetState(_fx.Address5));
         }
 
         [Fact]
