@@ -139,18 +139,14 @@ namespace Libplanet.Action
                     ? new AccountStateDeltaImpl(accountStateGetter, accountBalanceGetter, tx.Signer)
                     : new AccountStateDeltaImplV0(
                         accountStateGetter, accountBalanceGetter, tx.Signer);
-                IEnumerable<ActionEvaluation> evaluations =
-                    ActionEvaluation.EvaluateActionsGradually(
-                        blockHash: block.PreEvaluationHash,
-                        blockIndex: block.Index,
-                        txid: tx.Id,
-                        previousStates: delta,
-                        minerAddress: block.Miner!.Value,
-                        signer: tx.Signer,
-                        signature: tx.Signature,
-                        actions: tx.Actions.Cast<IAction>().ToImmutableList(),
-                        rehearsal: false,
-                        previousBlockStatesTrie: previousBlockStatesTrie);
+                IEnumerable<ActionEvaluation> evaluations = EvaluateTransaction(
+                    tx: tx,
+                    blockIndex: block.Index,
+                    preEvaluationHash: block.PreEvaluationHash,
+                    previousStates: delta,
+                    minerAddress: block.Miner!.Value,
+                    rehearsal: false,
+                    previousBlockStatesTrie: previousBlockStatesTrie);
                 foreach (var evaluation in evaluations)
                 {
                     yield return Tuple.Create(tx, evaluation);
@@ -197,7 +193,7 @@ namespace Libplanet.Action
             }
 
             _logger.Debug(
-                "Evaluating block action in block {blockIndex}: {block}", block?.Index, block);
+                $"Evaluating block action in block {block.Index}: {block.Hash}");
 
             IAccountStateDelta? lastStates = null;
 
