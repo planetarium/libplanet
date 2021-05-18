@@ -694,7 +694,7 @@ namespace Libplanet.Blocks
                 .Select(tx => tx.Serialize(true).ToImmutableArray()).ToImmutableArray());
         }
 
-        private static HashDigest<SHA256>? CalcualteTxHashes(IEnumerable<Transaction<T>> txs)
+        private static HashDigest<SHA256>? CalculateTxHashes(IEnumerable<Transaction<T>> txs)
         {
             if (!txs.Any())
             {
