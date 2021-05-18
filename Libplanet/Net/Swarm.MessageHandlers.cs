@@ -38,7 +38,7 @@ namespace Libplanet.Net
                         Identity = getChainStatus.Identity,
                     };
 
-                    Transport.ReplyMessage(chainStatus);
+                    _ = Transport.ReplyMessageAsync(chainStatus, default);
                     break;
                 }
 
@@ -65,7 +65,7 @@ namespace Libplanet.Net
                     {
                         Identity = getBlockHashes.Identity,
                     };
-                    Transport.ReplyMessage(reply);
+                    _ = Transport.ReplyMessageAsync(reply, default);
                     break;
                 }
 
@@ -189,7 +189,7 @@ namespace Libplanet.Net
                 {
                     Identity = getTxs.Identity,
                 };
-                Transport.ReplyMessage(response);
+                _ = Transport.ReplyMessageAsync(response, default);
             }
         }
 
@@ -269,7 +269,7 @@ namespace Libplanet.Net
                         i,
                         total
                     );
-                    Transport.ReplyMessage(response);
+                    _ = Transport.ReplyMessageAsync(response, default);
                     blocks.Clear();
                 }
 
@@ -288,7 +288,7 @@ namespace Libplanet.Net
                     total,
                     identityHex
                 );
-                Transport.ReplyMessage(response);
+                _ = Transport.ReplyMessageAsync(response, default);
             }
 
             _logger.Debug("Blocks were transferred to {Identity}.", identityHex);
