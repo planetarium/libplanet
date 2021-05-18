@@ -2,12 +2,15 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Assets;
 using Libplanet.Blockchain;
+using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
+using Libplanet.Crypto;
 using Libplanet.Store.Trie;
 using Libplanet.Tx;
 using Serilog;
@@ -18,7 +21,7 @@ namespace Libplanet.Action
         where T : IAction, new()
     {
         private readonly ILogger _logger;
-        private readonly IAction? _blockAction;
+        private readonly IAction? _policyBlockAction;
         private readonly Func<Address, BlockHash?, StateCompleter<T>, IValue?> _stateGetter;
 
         private readonly Func<Address, Currency, BlockHash?,
@@ -27,19 +30,51 @@ namespace Libplanet.Action
         private readonly Func<BlockHash, ITrie>? _trieGetter;
 
         internal ActionEvaluator(
-            IAction? blockAction,
+            IAction? policyBlockAction,
             Func<Address, BlockHash?, StateCompleter<T>, IValue?> stateGetter,
             Func<Address, Currency, BlockHash?,
                 FungibleAssetStateCompleter<T>, FungibleAssetValue> balanceGetter,
             Func<BlockHash, ITrie>? trieGetter)
         {
             _logger = Log.ForContext(typeof(ActionEvaluator<T>));
-            _blockAction = blockAction;
+            _policyBlockAction = policyBlockAction;
             _stateGetter = stateGetter;
             _balanceGetter = balanceGetter;
             _trieGetter = trieGetter;
         }
 
+        /// <summary>
+        /// Executes the <paramref name="actions"/> step by step, and emits
+        /// <see cref="ActionEvaluation"/> for each step.
+        /// </summary>
+        /// <param name="blockHash">The <see cref="Block{T}.Hash"/> of <see cref="Block{T}"/> that
+        /// <paramref name="actions"/> belongs to.</param>
+        /// <param name="blockIndex">The <see cref="Block{T}.Index"/> of <see cref="Block{T}"/> that
+        /// <paramref name="actions"/> belongs to.</param>
+        /// <param name="txid">The <see cref="Transaction{T}.Id"/> of <see cref="Transaction{T}"/>
+        /// that <paramref name="actions"/> belongs to.  This can be <c>null</c> on rehearsal mode
+        /// or if an action is a <see cref="IBlockPolicy{T}.BlockAction"/>.</param>
+        /// <param name="previousStates">The states immediately before <paramref name="actions"/>
+        /// being executed.  Note that its <see cref="IAccountStateDelta.UpdatedAddresses"/> are
+        /// remained to the returned next states.</param>
+        /// <param name="minerAddress">An address of block miner.</param>
+        /// <param name="signer">Signer of the <paramref name="actions"/>.</param>
+        /// <param name="signature"><see cref="Transaction{T}"/> signature used to generate random
+        /// seeds.</param>
+        /// <param name="actions">Actions to evaluate.</param>
+        /// <param name="rehearsal">Pass <c>true</c> if it is intended
+        /// to be dry-run (i.e., the returned result will be never used).
+        /// The default value is <c>false</c>.</param>
+        /// <param name="previousBlockStatesTrie">The trie to contain states at previous block.
+        /// </param>
+        /// <param name="blockAction">Pass <c>true</c> if it is
+        /// <see cref="IBlockPolicy{T}.BlockAction"/>.</param>
+        /// <returns>Enumerates <see cref="ActionEvaluation"/>s for each one in
+        /// <paramref name="actions"/>.  The order is the same to the <paramref name="actions"/>.
+        /// Note that each <see cref="IActionContext.Random"/> object
+        /// has a unconsumed state.
+        /// </returns>
+        [Pure]
         internal static IEnumerable<ActionEvaluation> EvaluateActionsGradually(
             BlockHash blockHash,
             long blockIndex,
@@ -182,13 +217,72 @@ namespace Libplanet.Action
                 stateGetter,
                 balanceGetter,
                 previousBlockStatesTrie);
-            return _blockAction is null
+            return _policyBlockAction is null
                 ? txEvaluations
                 : txEvaluations.Add(
-                    EvaluateBlockAction(
+                    EvaluatePolicyBlockAction(
                         block, txEvaluations, stateCompleters, previousBlockStatesTrie));
         }
 
+        /// <summary>
+        /// Executes every <see cref="IAction"/> in the
+        /// <see cref="Block{T}.Transactions"/> and gets result states of each step of
+        /// every <see cref="Transaction{T}"/>.
+        /// <para>It throws an <see cref="InvalidBlockException"/> or
+        /// an <see cref="InvalidTxException"/> if there is any
+        /// integrity error.</para>
+        /// <para>Otherwise it enumerates an <see cref="ActionEvaluation"/>
+        /// for each <see cref="IAction"/>.</para>
+        /// </summary>
+        /// <param name="block">A <see cref="Block{T}"/> instance to evaluate.</param>
+        /// <param name="currentTime">The current time to validate
+        /// time-wise conditions.</param>
+        /// <param name="accountStateGetter">An <see cref="AccountStateGetter"/> delegate to get
+        /// a previous state.  A <c>null</c> value, which is default, means a constant function
+        /// that returns <c>null</c>.
+        /// This affects the execution of <see cref="Transaction{T}.Actions"/>.
+        /// </param>
+        /// <param name="accountBalanceGetter">An <see cref="AccountBalanceGetter"/> delegate to
+        /// get previous account balance.
+        /// A <c>null</c> value, which is default, means a constant function that returns zero.
+        /// This affects the execution of <see cref="Transaction{T}.Actions"/>.
+        /// </param>
+        /// <param name="previousBlockStatesTrie">The trie to contain states at previous block.
+        /// </param>
+        /// <returns>An <see cref="ActionEvaluation"/> for each
+        /// <see cref="IAction"/>.</returns>
+        /// <exception cref="InvalidBlockHashException">Thrown when
+        /// the <paramref name="block.Hash"/> is invalid.</exception>
+        /// <exception cref="InvalidBlockTimestampException">Thrown when
+        /// the <paramref name="block.Timestamp"/> is invalid, for example, it is the far
+        /// future than the given <paramref name="currentTime"/>.</exception>
+        /// <exception cref="InvalidBlockIndexException">Thrown when
+        /// the <paramref name="block.Index"/>is invalid, for example, it is a negative
+        /// integer.</exception>
+        /// <exception cref="InvalidBlockDifficultyException">Thrown when
+        /// the <paramref name="block.Difficulty"/> is not properly configured,
+        /// for example, it is too easy.</exception>
+        /// <exception cref="InvalidBlockPreviousHashException">Thrown when
+        /// <paramref name="block.PreviousHash"/> is invalid so that
+        /// the <see cref="Block{T}"/>s are not continuous.</exception>
+        /// <exception cref="InvalidBlockNonceException">Thrown when
+        /// the <paramref name="block.Nonce"/> does not satisfy its
+        /// <paramref name="block.Difficulty"/> level.</exception>
+        /// <exception cref="InvalidBlockTxHashException">Thrown when
+        /// the <paramref name="block.TxHash" /> does not match with its
+        /// <paramref name="block.Transactions"/>.</exception>
+        /// <exception cref="InvalidTxUpdatedAddressesException">Thrown when
+        /// any <see cref="IAction"/> of <paramref name="block.Transactions"/> tries
+        /// to update the states of <see cref="Address"/>es not included
+        /// in <see cref="Transaction{T}.UpdatedAddresses"/>.</exception>
+        /// <exception cref="InvalidTxSignatureException">Thrown when its
+        /// <see cref="Transaction{T}.Signature"/> is invalid or not signed by
+        /// the account who corresponds to its <see cref="PublicKey"/>.
+        /// </exception>
+        /// <exception cref="InvalidTxPublicKeyException">Thrown when its
+        /// <see cref="Transaction{T}.Signer"/> is not derived from its
+        /// <see cref="Transaction{T}.PublicKey"/>.</exception>
+        [Pure]
         internal ImmutableList<ActionEvaluation> EvaluateBlock(
             Block<T> block,
             DateTimeOffset currentTime,
@@ -231,6 +325,35 @@ namespace Libplanet.Action
             return txEvaluations.Select(te => te.Item2).ToImmutableList();
         }
 
+        /// <summary>
+        /// Executes every <see cref="IAction"/> in a given
+        /// <see cref="Block{T}.Transactions"/> step by step, and emits a pair of
+        /// a transaction, and an <see cref="ActionEvaluation"/> for each step.
+        /// </summary>
+        /// <param name="block">A <see cref="Block{T}"/> instance to evaluate.</param>
+        /// <param name="accountStateGetter">An <see cref="AccountStateGetter"/>
+        /// delegate to get a previous state.
+        /// A <c>null</c> value, which is default, means a constant function that returns
+        /// <c>null</c>.</param>
+        /// <param name="accountBalanceGetter">An <see cref="AccountBalanceGetter"/> delegate to
+        /// get previous account balance.
+        /// A <c>null</c> value, which is default, means a constant function that returns zero.
+        /// </param>
+        /// <param name="previousBlockStatesTrie">The trie to contain states at previous block.
+        /// </param>
+        /// <returns>Enumerates pair of a transaction, and <see cref="ActionEvaluation"/>
+        /// for each action.  The order of pairs are the same to
+        /// the <paramref name="block.Transactions"/> and their <see cref="Transaction{T}.Actions"/>
+        /// (e.g., tx&#xb9;-act&#xb9;, tx&#xb9;-act&#xb2;, tx&#xb2;-act&#xb9;, tx&#xb2;-act&#xb2;,
+        /// &#x2026;).
+        /// <para>If a <see cref="Transaction{T}"/> has multiple
+        /// <see cref="Transaction{T}.Actions"/>, each <see cref="ActionEvaluation"/> includes
+        /// all previous <see cref="ActionEvaluation"/>s' delta in the same
+        /// <see cref="Transaction{T}"/> besides its own delta.</para>
+        /// <para>Note that each <see cref="IActionContext.Random"/> object has a unconsumed state.
+        /// </para>
+        /// </returns>
+        [Pure]
         internal IEnumerable<Tuple<Transaction<T>, ActionEvaluation>> EvaluateActionsPerTx(
             Block<T> block,
             AccountStateGetter? accountStateGetter = null,
@@ -288,13 +411,13 @@ namespace Libplanet.Action
                 previousBlockStatesTrie: previousBlockStatesTrie);
         }
 
-        internal ActionEvaluation EvaluateBlockAction(
+        internal ActionEvaluation EvaluatePolicyBlockAction(
             Block<T> block,
             IReadOnlyList<ActionEvaluation> txActionEvaluations,
             StateCompleterSet<T> stateCompleters,
             ITrie? previousBlockStatesTrie)
         {
-            if (_blockAction is null)
+            if (_policyBlockAction is null)
             {
                 var message = "To evaluate block action, Policy.BlockAction must not be null.";
                 throw new InvalidOperationException(message);
@@ -310,7 +433,7 @@ namespace Libplanet.Action
                 lastStates = txActionEvaluations[txActionEvaluations.Count - 1].OutputStates;
             }
 
-            Address miner = block!.Miner.GetValueOrDefault();
+            Address miner = block.Miner.GetValueOrDefault();
 
             if (lastStates is null)
             {
@@ -336,7 +459,7 @@ namespace Libplanet.Action
                 minerAddress: miner,
                 signer: miner,
                 signature: Array.Empty<byte>(),
-                actions: new[] { _blockAction }.ToImmutableList(),
+                actions: new[] { _policyBlockAction }.ToImmutableList(),
                 rehearsal: false,
                 previousBlockStatesTrie: previousBlockStatesTrie,
                 blockAction: true).First();
