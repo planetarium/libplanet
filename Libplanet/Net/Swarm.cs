@@ -684,35 +684,53 @@ namespace Libplanet.Net
                             )
                         );
                     }
-
-                    _logger.Verbose(
-                        "Add a block #{BlockIndex} {BlockHash}...",
-                        block.Index,
-                        block.Hash
-                    );
-                    block.Validate(DateTimeOffset.UtcNow);
-                    wStore.PutBlock(block);
-                    if (tempTip is null || block.Index > tempTip.Index)
+                    if (lightNode)
                     {
-                        tempTip = block;
+                        _logger.Verbose(
+                            "Add a blockHeader of block #{BlockIndex} {BlockHash}...",
+                            block.Index,
+                            block.Hash
+                        );
+                        wStore.PutBlockHeader(block.Header);
+                        _logger.Debug(
+                            "Stored a blockHeader of block #{BlockIndex} {BlockHash} " +
+                            "into the store.",
+                            block.Index,
+                            block.Hash
+                        );
+                        return;
                     }
-
-                    receivedBlockCount++;
-                    progress?.Report(new BlockDownloadState
+                    else 
                     {
-                        TotalBlockCount = Math.Max(
-                            totalBlocksToDownload,
-                            receivedBlockCount),
-                        ReceivedBlockCount = receivedBlockCount,
-                        ReceivedBlockHash = block.Hash,
-                        SourcePeer = sourcePeer,
-                    });
-                    _logger.Debug(
-                        "Appended a block #{BlockIndex} {BlockHash} " +
-                        "to the workspace chain.",
-                        block.Index,
-                        block.Hash
-                    );
+                        _logger.Verbose(
+                            "Add a block #{BlockIndex} {BlockHash}...",
+                            block.Index,
+                            block.Hash
+                        );
+                        block.Validate(DateTimeOffset.UtcNow);
+                        wStore.PutBlock(block);
+                        if (tempTip is null || block.Index > tempTip.Index)
+                        {
+                            tempTip = block;
+                        }
+
+                        receivedBlockCount++;
+                        progress?.Report(new BlockDownloadState
+                        {
+                            TotalBlockCount = Math.Max(
+                                totalBlocksToDownload,
+                                receivedBlockCount),
+                            ReceivedBlockCount = receivedBlockCount,
+                            ReceivedBlockHash = block.Hash,
+                            SourcePeer = sourcePeer,
+                        });
+                        _logger.Debug(
+                            "Appended a block #{BlockIndex} {BlockHash} " +
+                            "to the workspace chain.",
+                            block.Index,
+                            block.Hash
+                        );                        
+                    }                    
                 }
 
                 tipCandidate = tempTip;
