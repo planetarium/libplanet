@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Assets;
 using Libplanet.Blockchain;
@@ -37,6 +38,113 @@ namespace Libplanet.Action
             _stateGetter = stateGetter;
             _balanceGetter = balanceGetter;
             _trieGetter = trieGetter;
+        }
+
+        internal static IEnumerable<ActionEvaluation> EvaluateActionsGradually(
+            BlockHash blockHash,
+            long blockIndex,
+            TxId? txid,
+            IAccountStateDelta previousStates,
+            Address minerAddress,
+            Address signer,
+            byte[] signature,
+            IImmutableList<IAction> actions,
+            bool rehearsal = false,
+            ITrie? previousBlockStatesTrie = null,
+            bool blockAction = false)
+        {
+            ActionContext CreateActionContext(
+                IAccountStateDelta prevStates,
+                int randomSeed
+            ) =>
+                new ActionContext(
+                    signer: signer,
+                    txid: txid,
+                    miner: minerAddress,
+                    blockHash: blockHash,
+                    blockIndex: blockIndex,
+                    previousStates: prevStates,
+                    randomSeed: randomSeed,
+                    rehearsal: rehearsal,
+                    previousBlockStatesTrie: previousBlockStatesTrie,
+                    blockAction: blockAction);
+
+            byte[] hashedSignature;
+            using (var hasher = SHA1.Create())
+            {
+                hashedSignature = hasher.ComputeHash(signature);
+            }
+
+            byte[] blockHashBytes = blockHash.ToByteArray();
+            int seed =
+                (blockHashBytes.Length > 0 ? BitConverter.ToInt32(blockHashBytes, 0) : 0) ^
+                (signature.Any() ? BitConverter.ToInt32(hashedSignature, 0) : 0);
+
+            IAccountStateDelta states = previousStates;
+            ILogger logger = Log.ForContext<ActionEvaluation>();
+            foreach (IAction action in actions)
+            {
+                Exception? exc = null;
+                ActionContext context = CreateActionContext(states, seed);
+                IAccountStateDelta nextStates = context.PreviousStates;
+                try
+                {
+                    DateTimeOffset actionExecutionStarted = DateTimeOffset.Now;
+                    nextStates = action.Execute(context);
+                    TimeSpan spent = DateTimeOffset.Now - actionExecutionStarted;
+                    logger.Verbose($"{action} execution spent {spent.TotalMilliseconds} ms.");
+                }
+                catch (Exception e)
+                {
+                    if (rehearsal)
+                    {
+                        var msg =
+                            $"The action {action} threw an exception during its " +
+                            "rehearsal.  It is probably because the logic of the " +
+                            $"action {action} is not enough generic so that it " +
+                            "can cover every case including rehearsal mode.\n" +
+                            "The IActionContext.Rehearsal property also might be " +
+                            "useful to make the action can deal with the case of " +
+                            "rehearsal mode.\n" +
+                            "See also this exception's InnerException property.";
+                        exc = new UnexpectedlyTerminatedActionException(
+                            null, null, null, null, action, msg, e);
+                    }
+                    else
+                    {
+                        var stateRootHash = context.PreviousStateRootHash;
+                        var msg =
+                            $"The action {action} (block #{blockIndex} {blockHash}, tx {txid}, " +
+                            $"state root hash {stateRootHash}) threw an exception " +
+                            "during execution.  See also this exception's InnerException property.";
+                        logger.Error("{Message}\nInnerException: {ExcMessage}", msg, e.Message);
+                        exc = new UnexpectedlyTerminatedActionException(
+                            blockHash, blockIndex, txid, stateRootHash, action, msg, e);
+                    }
+                }
+
+                // As IActionContext.Random is stateful, we cannot reuse
+                // the context which is once consumed by Execute().
+                ActionContext equivalentContext = CreateActionContext(states, seed);
+
+                yield return new ActionEvaluation(
+                    action,
+                    equivalentContext,
+                    nextStates,
+                    exc
+                );
+
+                if (exc is { })
+                {
+                    yield break;
+                }
+
+                states = nextStates;
+                unchecked
+                {
+                    seed++;
+                }
+            }
         }
 
         internal IReadOnlyList<ActionEvaluation> EvaluateActions(
@@ -167,7 +275,7 @@ namespace Libplanet.Action
             bool rehearsal = false,
             ITrie? previousBlockStatesTrie = null)
         {
-            return ActionEvaluation.EvaluateActionsGradually(
+            return EvaluateActionsGradually(
                 blockHash: preEvaluationHash,
                 blockIndex: blockIndex,
                 txid: tx.Id,
@@ -220,7 +328,7 @@ namespace Libplanet.Action
                     : new AccountStateDeltaImplV0(GetState, GetBalance, miner);
             }
 
-            return ActionEvaluation.EvaluateActionsGradually(
+            return EvaluateActionsGradually(
                 blockHash: block.PreEvaluationHash,
                 blockIndex: block.Index,
                 txid: null,
