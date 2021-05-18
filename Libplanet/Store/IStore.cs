@@ -174,6 +174,12 @@ namespace Libplanet.Store
             where T : IAction, new();
 
         /// <summary>
+        /// Puts the given <paramref name="blockHeader"/> in to the store.
+        /// </summary>
+        /// <param name="blockHeader">A <see cref="BlockHeader"/> to put into the store.</param>
+        void PutBlockHeader(BlockHeader blockHeader);
+
+        /// <summary>
         /// Removes a block from the store.
         /// </summary>
         /// <param name="blockHash">The hash of a block to remove.</param>
