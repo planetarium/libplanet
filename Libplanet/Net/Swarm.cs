@@ -490,6 +490,10 @@ namespace Libplanet.Net
         /// A cancellation token used to propagate notification that this
         /// operation should be canceled.
         /// </param>
+        /// <param name="lightNode">
+        /// A boolean instance that checks whether this is light node or not.
+        /// If it were true, You'll get only block headers while preloading.
+        /// </param>
         /// <returns>
         /// A task without value.
         /// You only can <c>await</c> until the method is completed.
@@ -505,7 +509,8 @@ namespace Libplanet.Net
         public async Task PreloadAsync(
             TimeSpan? dialTimeout = null,
             IProgress<PreloadState> progress = null,
-            CancellationToken cancellationToken = default(CancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken),
+            bool lightNode = default(bool)
         )
         {
             using CancellationTokenRegistration ctr = cancellationToken.Register(() =>
