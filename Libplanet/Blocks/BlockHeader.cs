@@ -248,6 +248,25 @@ namespace Libplanet.Blocks
             return dict;
         }
 
+        /// <summary>
+        /// Convert <see cref="string"/> type of
+        /// <param name="timeStamp"></param> to <see cref="DateTimeOffset"/>.
+        /// </summary>
+        /// <returns><see cref="DateTimeOffset"/> representation of
+        /// <see cref="BlockHeader.Timestamp"/>.</returns>
+        public DateTimeOffset ParseDateTimeOffset(string timeStamp)
+        {
+            if (timeStamp == "0000-00-00" ||
+                DateTimeOffset.TryParse(timeStamp, out DateTimeOffset output))
+            {
+                return DateTimeOffset.Now;
+            }
+            else
+            {
+                return output;
+            }
+        }
+
         internal static byte[] SerializeForHash(
             int protocolVersion,
             long index,
