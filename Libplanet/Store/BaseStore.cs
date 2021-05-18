@@ -123,6 +123,9 @@ namespace Libplanet.Store
         public abstract void PutBlock<T>(Block<T> block)
             where T : IAction, new();
 
+        /// <inheritdoc />
+        public abstract void PutBlockHeader(BlockHeader blockHeader);
+
         /// <inheritdoc cref="IStore.DeleteBlock(BlockHash)"/>
         public abstract bool DeleteBlock(BlockHash blockHash);
 
