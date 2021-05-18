@@ -156,6 +156,12 @@ namespace Libplanet.Explorer.Store
             }
         }
 
+        /// <inheritdoc cref="IStore.PutBlockHeader(BlockHeader)"/>
+        public void PutBlockHeader(BlockHeader blockHeader)
+        {
+            throw new NotSupportedException();
+        }
+
         /// <inheritdoc cref="IStore.ListChainIds()"/>
         public IEnumerable<Guid> ListChainIds()
         {

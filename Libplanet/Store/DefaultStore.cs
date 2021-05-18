@@ -468,6 +468,12 @@ namespace Libplanet.Store
             _blockCache.AddOrUpdate(block.Hash, block.ToBlockDigest());
         }
 
+        /// <inheritdoc/>
+        public override void PutBlockHeader(BlockHeader blockHeader)
+        {
+            throw new NotSupportedException();
+        }
+
         /// <inheritdoc cref="BaseStore.DeleteBlock(BlockHash)"/>
         public override bool DeleteBlock(BlockHash blockHash)
         {
