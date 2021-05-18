@@ -82,7 +82,7 @@ namespace Libplanet.Blocks
             PreviousHash = previousHash;
             Timestamp = timestamp;
             Transactions = transactions.OrderBy(tx => tx.Id).ToArray();
-            TxHash = CalcualteTxHashes(Transactions);
+            TxHash = CalculateTxHashes(Transactions);
 
             PreEvaluationHash = preEvaluationHash ?? Hashcash.Hash(Header.SerializeForHash());
             StateRootHash = stateRootHash;
@@ -675,7 +675,7 @@ namespace Libplanet.Blocks
             }
 
             HashDigest<SHA256>? calculatedTxHash =
-                CalcualteTxHashes(Transactions.OrderBy(tx => tx.Id));
+                CalculateTxHashes(Transactions.OrderBy(tx => tx.Id));
             if (!calculatedTxHash.Equals(TxHash))
             {
                 throw new InvalidBlockTxHashException(
