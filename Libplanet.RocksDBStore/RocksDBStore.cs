@@ -23,6 +23,7 @@ namespace Libplanet.RocksDBStore
     /// <seealso cref="IStore"/>
     public class RocksDBStore : BaseStore
     {
+        private const string BlockHeaderDbPathName = "blockheader";
         private const string BlockDbRootPathName = "block";
         private const string BlockIndexDbName = "blockindex";
         private const string BlockPerceptionDbName = "blockpercept";
