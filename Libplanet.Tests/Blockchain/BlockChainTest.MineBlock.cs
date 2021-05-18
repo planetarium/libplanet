@@ -187,6 +187,11 @@ namespace Libplanet.Tests.Blockchain
             Assert.Null(_blockChain.GetState(_fx.Address4));
             Assert.Null(_blockChain.GetState(_fx.Address5));
 
+            foreach (Transaction<DumbAction> tx in txs)
+            {
+                Assert.Null(_blockChain.GetTxExecution(_blockChain.Genesis.Hash, tx.Id));
+            }
+
             Block<DumbAction> block = await _blockChain.MineBlock(_fx.Address1);
 
             Assert.True(_blockChain.ContainsBlock(block.Hash));
@@ -209,6 +214,21 @@ namespace Libplanet.Tests.Blockchain
                 ((string)(Text)_blockChain.GetState(_fx.Address4)).Split(new[] { ',' }).ToHashSet()
             );
             Assert.Equal(new Text("5b"), _blockChain.GetState(_fx.Address5));
+
+            foreach (Transaction<DumbAction> tx in new[] { txs[0], txs[1], txs[4] })
+            {
+                TxExecution txx = _blockChain.GetTxExecution(block.Hash, tx.Id);
+                _logger.Debug(
+                    nameof(_blockChain.GetTxExecution) + "({Hash}, {Id}) = {TxExecution}",
+                    block.Hash,
+                    tx.Id,
+                    txx
+                );
+                Assert.IsType<TxSuccess>(txx);
+                Assert.Equal(block.Hash, txx.BlockHash);
+                Assert.Equal(tx.Id, txx.TxId);
+                Assert.Null(_blockChain.GetTxExecution(_blockChain.Genesis.Hash, tx.Id));
+            }
         }
 
         [Fact]
