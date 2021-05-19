@@ -164,7 +164,7 @@ namespace Libplanet.Explorer.Queries
             }
 
             var stagedTxs = Chain.StagePolicy.Iterate(Chain)
-                .Where(tx => IsValidTransacion(tx, signer, involved))
+                .Where(tx => IsValidTransaction(tx, signer, involved))
                 .Skip(offset);
 
             stagedTxs = desc ? stagedTxs.OrderByDescending(tx => tx.Timestamp)
