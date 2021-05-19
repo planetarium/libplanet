@@ -202,7 +202,7 @@ namespace Libplanet.Explorer.Queries
             return null;
         }
 
-        private static bool IsValidTransacion(
+        private static bool IsValidTransaction(
             Transaction<T> tx,
             Address? signer,
             Address? involved)
