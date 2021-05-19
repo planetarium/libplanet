@@ -71,7 +71,8 @@ namespace Libplanet.Tools.Tests
 
         private static string NewTempPath() =>
             Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString())
-                .Replace("\\", "/");
+                .Replace("\\", "/")
+                .Replace("C:", "");
 
         public void Dispose()
         {
