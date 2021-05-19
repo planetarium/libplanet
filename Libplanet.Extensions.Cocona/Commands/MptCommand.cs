@@ -237,7 +237,7 @@ namespace Libplanet.Extensions.Cocona.Commands
         {
             var uri = new Uri(rawUri);
             var scheme = uri.Scheme;
-            var splitScheme = scheme.Split("+");
+            var splitScheme = scheme.Split('+');
             if (splitScheme.Length <= 0 || splitScheme.Length > 2)
             {
                 var exceptionMessage = "A key-value store URI must have a scheme, " +
