@@ -138,7 +138,7 @@ namespace Libplanet.Explorer.Queries
             {
                 foreach (var tx in desc ? block.Transactions.Reverse() : block.Transactions)
                 {
-                    if (IsValidTransacion(tx, signer, involved))
+                    if (IsValidTransaction(tx, signer, involved))
                     {
                         yield return tx;
                         limit--;
