@@ -29,8 +29,8 @@ namespace Libplanet.Action
 
         private readonly Func<BlockHash, ITrie>? _trieGetter;
 
-        private static AccountStateGetter _defaultStateGetter = address => null;
-        private static AccountBalanceGetter _defaultBalanceGetter =
+        private readonly AccountStateGetter _defaultAccountStateGetter = address => null;
+        private readonly AccountBalanceGetter _defaultAccountBalanceGetter =
             (address, currency) => new FungibleAssetValue(currency);
 
         internal ActionEvaluator(
@@ -171,8 +171,7 @@ namespace Libplanet.Action
                     action,
                     equivalentContext,
                     nextStates,
-                    exc
-                );
+                    exc);
 
                 if (exc is { })
                 {
@@ -191,20 +190,20 @@ namespace Libplanet.Action
             Block<T> block,
             StateCompleterSet<T> stateCompleters)
         {
-            AccountStateGetter stateGetter;
-            AccountBalanceGetter balanceGetter;
+            AccountStateGetter accountStateGetter;
+            AccountBalanceGetter accountBalanceGetter;
             if (block.PreviousHash is null)
             {
-                stateGetter = _defaultStateGetter;
-                balanceGetter = _defaultBalanceGetter;
+                accountStateGetter = _defaultAccountStateGetter;
+                accountBalanceGetter = _defaultAccountBalanceGetter;
             }
             else
             {
-                stateGetter = address => _stateGetter(
+                accountStateGetter = address => _stateGetter(
                     address,
                     block.PreviousHash,
                     stateCompleters.StateCompleter);
-                balanceGetter = (address, currency) => _balanceGetter(
+                accountBalanceGetter = (address, currency) => _balanceGetter(
                     address,
                     currency,
                     block.PreviousHash,
@@ -219,8 +218,8 @@ namespace Libplanet.Action
             ImmutableList<ActionEvaluation> txEvaluations = EvaluateBlock(
                 block,
                 DateTimeOffset.UtcNow,
-                stateGetter,
-                balanceGetter,
+                accountStateGetter,
+                accountBalanceGetter,
                 previousBlockStatesTrie);
             return _policyBlockAction is null
                 ? txEvaluations
@@ -294,8 +293,8 @@ namespace Libplanet.Action
             AccountBalanceGetter? accountBalanceGetter = null,
             ITrie? previousBlockStatesTrie = null)
         {
-            accountStateGetter ??= _defaultStateGetter;
-            accountBalanceGetter ??= _defaultBalanceGetter;
+            accountStateGetter ??= _defaultAccountStateGetter;
+            accountBalanceGetter ??= _defaultAccountBalanceGetter;
 
             // FIXME: Probably not the best place to have Validate().
             block.Validate(currentTime);
@@ -364,8 +363,8 @@ namespace Libplanet.Action
             AccountBalanceGetter? accountBalanceGetter = null,
             ITrie? previousBlockStatesTrie = null)
         {
-            accountStateGetter ??= address => null;
-            accountBalanceGetter ??= (address, currency) => new FungibleAssetValue(currency);
+            accountStateGetter ??= _defaultAccountStateGetter;
+            accountBalanceGetter ??= _defaultAccountBalanceGetter;
 
             IAccountStateDelta delta;
             foreach (Transaction<T> tx in block.Transactions)
@@ -431,27 +430,26 @@ namespace Libplanet.Action
                 $"Evaluating block action in block {block.Index}: {block.Hash}");
 
             IAccountStateDelta? lastStates = null;
+            Address miner = block.Miner.GetValueOrDefault();
 
             if (txActionEvaluations.Count > 0)
             {
                 lastStates = txActionEvaluations[txActionEvaluations.Count - 1].OutputStates;
             }
 
-            Address miner = block.Miner.GetValueOrDefault();
-
             if (lastStates is null)
             {
-                AccountStateGetter stateGetter = address =>
+                AccountStateGetter accountStateGetter = address =>
                     _stateGetter(address, block.PreviousHash, stateCompleters.StateCompleter);
-                AccountBalanceGetter balanceGetter = (address, currency) =>
+                AccountBalanceGetter accountBalanceGetter = (address, currency) =>
                     _balanceGetter(
                         address,
                         currency,
                         block.PreviousHash,
                         stateCompleters.FungibleAssetStateCompleter);
                 lastStates = block.ProtocolVersion > 0
-                    ? new AccountStateDeltaImpl(stateGetter, balanceGetter, miner)
-                    : new AccountStateDeltaImplV0(stateGetter, balanceGetter, miner);
+                    ? new AccountStateDeltaImpl(accountStateGetter, accountBalanceGetter, miner)
+                    : new AccountStateDeltaImplV0(accountStateGetter, accountBalanceGetter, miner);
             }
 
             return EvaluateActionsGradually(
