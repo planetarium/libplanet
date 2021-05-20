@@ -47,8 +47,8 @@ namespace Libplanet.Action
         /// Executes the <paramref name="actions"/> step by step, and emits
         /// <see cref="ActionEvaluation"/> for each step.
         /// </summary>
-        /// <param name="blockHash">The <see cref="Block{T}.Hash"/> of <see cref="Block{T}"/> that
-        /// <paramref name="actions"/> belongs to.</param>
+        /// <param name="preEvaluationHash">The <see cref="Block{T}.PreEvaluationHash"/> of
+        /// <see cref="Block{T}"/> that <paramref name="actions"/> belongs to.</param>
         /// <param name="blockIndex">The <see cref="Block{T}.Index"/> of <see cref="Block{T}"/> that
         /// <paramref name="actions"/> belongs to.</param>
         /// <param name="txid">The <see cref="Transaction{T}.Id"/> of <see cref="Transaction{T}"/>
@@ -76,7 +76,7 @@ namespace Libplanet.Action
         /// </returns>
         [Pure]
         internal static IEnumerable<ActionEvaluation> EvaluateActionsGradually(
-            BlockHash blockHash,
+            BlockHash preEvaluationHash,
             long blockIndex,
             TxId? txid,
             IAccountStateDelta previousStates,
@@ -96,7 +96,7 @@ namespace Libplanet.Action
                     signer: signer,
                     txid: txid,
                     miner: minerAddress,
-                    blockHash: blockHash,
+                    blockHash: preEvaluationHash,
                     blockIndex: blockIndex,
                     previousStates: prevStates,
                     randomSeed: randomSeed,
@@ -110,7 +110,7 @@ namespace Libplanet.Action
                 hashedSignature = hasher.ComputeHash(signature);
             }
 
-            byte[] blockHashBytes = blockHash.ToByteArray();
+            byte[] blockHashBytes = preEvaluationHash.ToByteArray();
             int seed =
                 (blockHashBytes.Length > 0 ? BitConverter.ToInt32(blockHashBytes, 0) : 0) ^
                 (signature.Any() ? BitConverter.ToInt32(hashedSignature, 0) : 0);
@@ -149,12 +149,13 @@ namespace Libplanet.Action
                     {
                         var stateRootHash = context.PreviousStateRootHash;
                         var msg =
-                            $"The action {action} (block #{blockIndex} {blockHash}, tx {txid}, " +
-                            $"state root hash {stateRootHash}) threw an exception " +
+                            $"The action {action} (block #{blockIndex} " +
+                            $"pre-evaluation hash {preEvaluationHash}, " +
+                            $"tx {txid}, state root hash {stateRootHash}) threw an exception " +
                             "during execution.  See also this exception's InnerException property.";
                         logger.Error("{Message}\nInnerException: {ExcMessage}", msg, e.Message);
                         exc = new UnexpectedlyTerminatedActionException(
-                            blockHash, blockIndex, txid, stateRootHash, action, msg, e);
+                            preEvaluationHash, blockIndex, txid, stateRootHash, action, msg, e);
                     }
                 }
 
@@ -399,7 +400,7 @@ namespace Libplanet.Action
             ITrie? previousBlockStatesTrie = null)
         {
             return EvaluateActionsGradually(
-                blockHash: preEvaluationHash,
+                preEvaluationHash: preEvaluationHash,
                 blockIndex: blockIndex,
                 txid: tx.Id,
                 previousStates: previousStates,
@@ -452,7 +453,7 @@ namespace Libplanet.Action
             }
 
             return EvaluateActionsGradually(
-                blockHash: block.PreEvaluationHash,
+                preEvaluationHash: block.PreEvaluationHash,
                 blockIndex: block.Index,
                 txid: null,
                 previousStates: lastStates,
