@@ -23,12 +23,10 @@ namespace Libplanet.Action
         private readonly ILogger _logger;
         private readonly IAction? _policyBlockAction;
         private readonly Func<Address, BlockHash?, StateCompleter<T>, IValue?> _stateGetter;
-
         private readonly Func<Address, Currency, BlockHash?,
             FungibleAssetStateCompleter<T>, FungibleAssetValue> _balanceGetter;
 
         private readonly Func<BlockHash, ITrie>? _trieGetter;
-
         private readonly AccountStateGetter _defaultAccountStateGetter = address => null;
         private readonly AccountBalanceGetter _defaultAccountBalanceGetter =
             (address, currency) => new FungibleAssetValue(currency);
@@ -114,10 +112,11 @@ namespace Libplanet.Action
                 hashedSignature = hasher.ComputeHash(signature);
             }
 
-            byte[] blockHashBytes = preEvaluationHash.ToByteArray();
+            byte[] preEvaluationHashBytes = preEvaluationHash.ToByteArray();
             int seed =
-                (blockHashBytes.Length > 0 ? BitConverter.ToInt32(blockHashBytes, 0) : 0) ^
-                (signature.Any() ? BitConverter.ToInt32(hashedSignature, 0) : 0);
+                (preEvaluationHashBytes.Length > 0
+                    ? BitConverter.ToInt32(preEvaluationHashBytes, 0) : 0)
+                ^ (signature.Any() ? BitConverter.ToInt32(hashedSignature, 0) : 0);
 
             IAccountStateDelta states = previousStates;
             ILogger logger = Log.ForContext<ActionEvaluation>();
@@ -216,11 +215,11 @@ namespace Libplanet.Action
                     : null;
 
             ImmutableList<ActionEvaluation> txEvaluations = EvaluateBlock(
-                block,
-                DateTimeOffset.UtcNow,
-                accountStateGetter,
-                accountBalanceGetter,
-                previousBlockStatesTrie);
+                block: block,
+                currentTime: DateTimeOffset.UtcNow,
+                accountStateGetter: accountStateGetter,
+                accountBalanceGetter: accountBalanceGetter,
+                previousBlockStatesTrie: previousBlockStatesTrie);
             return _policyBlockAction is null
                 ? txEvaluations
                 : txEvaluations.Add(
@@ -300,7 +299,7 @@ namespace Libplanet.Action
             block.Validate(currentTime);
 
             IEnumerable<Tuple<Transaction<T>, ActionEvaluation>> txEvaluations =
-                EvaluateActionsPerTx(
+                EvaluateTransactions(
                     block, accountStateGetter, accountBalanceGetter, previousBlockStatesTrie);
             var updatedTxAddressPairs = txEvaluations
                     .GroupBy(tuple => tuple.Item1)
@@ -357,7 +356,7 @@ namespace Libplanet.Action
         /// </para>
         /// </returns>
         [Pure]
-        internal IEnumerable<Tuple<Transaction<T>, ActionEvaluation>> EvaluateActionsPerTx(
+        internal IEnumerable<Tuple<Transaction<T>, ActionEvaluation>> EvaluateTransactions(
             Block<T> block,
             AccountStateGetter? accountStateGetter = null,
             AccountBalanceGetter? accountBalanceGetter = null,
@@ -375,8 +374,8 @@ namespace Libplanet.Action
                         accountStateGetter, accountBalanceGetter, tx.Signer);
                 IEnumerable<ActionEvaluation> evaluations = EvaluateTransaction(
                     tx: tx,
-                    blockIndex: block.Index,
                     preEvaluationHash: block.PreEvaluationHash,
+                    blockIndex: block.Index,
                     previousStates: delta,
                     minerAddress: block.Miner!.Value,
                     rehearsal: false,
@@ -392,10 +391,11 @@ namespace Libplanet.Action
             }
         }
 
+        [Pure]
         internal IEnumerable<ActionEvaluation> EvaluateTransaction(
             Transaction<T> tx,
-            long blockIndex,
             BlockHash preEvaluationHash,
+            long blockIndex,
             IAccountStateDelta previousStates,
             Address minerAddress,
             bool rehearsal = false,
@@ -414,6 +414,7 @@ namespace Libplanet.Action
                 previousBlockStatesTrie: previousBlockStatesTrie);
         }
 
+        [Pure]
         internal ActionEvaluation EvaluatePolicyBlockAction(
             Block<T> block,
             IReadOnlyList<ActionEvaluation> txActionEvaluations,
@@ -422,7 +423,9 @@ namespace Libplanet.Action
         {
             if (_policyBlockAction is null)
             {
-                var message = "To evaluate block action, Policy.BlockAction must not be null.";
+                var message =
+                    "To evaluate policy block action, " +
+                    "Policy.BlockAction must not be null.";
                 throw new InvalidOperationException(message);
             }
 
@@ -436,8 +439,7 @@ namespace Libplanet.Action
             {
                 lastStates = txActionEvaluations[txActionEvaluations.Count - 1].OutputStates;
             }
-
-            if (lastStates is null)
+            else
             {
                 AccountStateGetter accountStateGetter = address =>
                     _stateGetter(address, block.PreviousHash, stateCompleters.StateCompleter);
