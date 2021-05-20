@@ -29,6 +29,10 @@ namespace Libplanet.Action
 
         private readonly Func<BlockHash, ITrie>? _trieGetter;
 
+        private static AccountStateGetter _defaultStateGetter = address => null;
+        private static AccountBalanceGetter _defaultBalanceGetter =
+            (address, currency) => new FungibleAssetValue(currency);
+
         internal ActionEvaluator(
             IAction? policyBlockAction,
             Func<Address, BlockHash?, StateCompleter<T>, IValue?> stateGetter,
@@ -191,8 +195,8 @@ namespace Libplanet.Action
             AccountBalanceGetter balanceGetter;
             if (block.PreviousHash is null)
             {
-                stateGetter = address => null;
-                balanceGetter = (address, currency) => new FungibleAssetValue(currency);
+                stateGetter = _defaultStateGetter;
+                balanceGetter = _defaultBalanceGetter;
             }
             else
             {
@@ -226,9 +230,8 @@ namespace Libplanet.Action
         }
 
         /// <summary>
-        /// Executes every <see cref="IAction"/> in the
-        /// <see cref="Block{T}.Transactions"/> and gets result states of each step of
-        /// every <see cref="Transaction{T}"/>.
+        /// Executes every <see cref="IAction"/> in the <see cref="Block{T}.Transactions"/>
+        /// and gets result states of each step of every <see cref="Transaction{T}"/>.
         /// <para>It throws an <see cref="InvalidBlockException"/> or
         /// an <see cref="InvalidTxException"/> if there is any
         /// integrity error.</para>
@@ -291,8 +294,8 @@ namespace Libplanet.Action
             AccountBalanceGetter? accountBalanceGetter = null,
             ITrie? previousBlockStatesTrie = null)
         {
-            accountStateGetter ??= address => null;
-            accountBalanceGetter ??= (address, currency) => new FungibleAssetValue(currency);
+            accountStateGetter ??= _defaultStateGetter;
+            accountBalanceGetter ??= _defaultBalanceGetter;
 
             // FIXME: Probably not the best place to have Validate().
             block.Validate(currentTime);
@@ -438,18 +441,17 @@ namespace Libplanet.Action
 
             if (lastStates is null)
             {
-                IValue? GetState(Address address) =>
+                AccountStateGetter stateGetter = address =>
                     _stateGetter(address, block.PreviousHash, stateCompleters.StateCompleter);
-
-                FungibleAssetValue GetBalance(Address address, Currency currency) =>
+                AccountBalanceGetter balanceGetter = (address, currency) =>
                     _balanceGetter(
                         address,
                         currency,
                         block.PreviousHash,
                         stateCompleters.FungibleAssetStateCompleter);
                 lastStates = block.ProtocolVersion > 0
-                    ? new AccountStateDeltaImpl(GetState, GetBalance, miner)
-                    : new AccountStateDeltaImplV0(GetState, GetBalance, miner);
+                    ? new AccountStateDeltaImpl(stateGetter, balanceGetter, miner)
+                    : new AccountStateDeltaImplV0(stateGetter, balanceGetter, miner);
             }
 
             return EvaluateActionsGradually(
