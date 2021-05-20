@@ -1000,20 +1000,6 @@ namespace Libplanet.Blockchain
                 {
                     _rwlock.ExitWriteLock();
                 }
-
-                // Prepare TxExecutions.  Note that these should be realized into an actual array
-                // before _rwlock.EnterWriteLock(), because the following function tries to access
-                // to the current states.
-                TxExecution[] txExecutions = MakeTxExecutions(block, actionEvaluations).ToArray();
-                _rwlock.EnterWriteLock();
-                try
-                {
-                    UpdateTxExecutions(txExecutions);
-                }
-                finally
-                {
-                    _rwlock.ExitWriteLock();
-                }
             }
             else
             {
@@ -1245,6 +1231,12 @@ namespace Libplanet.Blockchain
                         );
                     }
 
+                    if (actionEvaluations is { } evals)
+                    {
+                        IEnumerable<TxExecution> txExecutions = MakeTxExecutions(block, evals);
+                        UpdateTxExecutions(txExecutions);
+                    }
+
                     _blocks[block.Hash] = block;
                     foreach (KeyValuePair<Address, long> pair in nonceDeltas)
                     {
@@ -1467,11 +1459,6 @@ namespace Libplanet.Blockchain
             double evalDuration = (DateTimeOffset.Now - evaluateActionStarted).TotalMilliseconds;
             _logger.Debug(evalEndMsg, block.Index, block.Hash, evalDuration);
 
-            // Prepare TxExecutions.  Note that these should be realized into an actual array
-            // before _rwlock.EnterWriteLock(), because the following function tries to access to
-            // the current states.
-            TxExecution[] txExecutions = MakeTxExecutions(block, evaluations).ToArray();
-
             _rwlock.EnterWriteLock();
             try
             {
@@ -1516,8 +1503,6 @@ namespace Libplanet.Blockchain
                     "(duration: {DurationMs}ms).";
                 double duration = (DateTimeOffset.Now - setStatesStarted).TotalMilliseconds;
                 _logger.Debug(endMsg, block.Index, block.Hash, duration);
-
-                UpdateTxExecutions(txExecutions);
             }
             finally
             {

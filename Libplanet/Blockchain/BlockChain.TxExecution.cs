@@ -17,7 +17,7 @@ namespace Libplanet.Blockchain
         /// <param name="block">The block that evaluated actions belong to.</param>
         /// <param name="evaluations">The result of evaluated actions.</param>
         /// <returns>The corresponding <see cref="TxExecution"/>s.</returns>
-        private IEnumerable<TxExecution> MakeTxExecutions(
+        internal IEnumerable<TxExecution> MakeTxExecutions(
             Block<T> block,
             IReadOnlyList<ActionEvaluation> evaluations
         )
@@ -76,7 +76,7 @@ namespace Libplanet.Blockchain
             );
         }
 
-        private void UpdateTxExecutions(IEnumerable<TxExecution> txExecutions)
+        internal void UpdateTxExecutions(IEnumerable<TxExecution> txExecutions)
         {
             int count = 0;
             foreach (TxExecution txExecution in txExecutions)

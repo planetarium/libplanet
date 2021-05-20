@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers.Debug;
@@ -16,6 +17,7 @@ using Libplanet.Tests.Store;
 using Libplanet.Tests.Store.Trie;
 using Libplanet.Tx;
 using Xunit;
+using FAV = Libplanet.Assets.FungibleAssetValue;
 
 namespace Libplanet.Tests.Blockchain
 {
@@ -157,6 +159,124 @@ namespace Libplanet.Tests.Blockchain
                 Assert.Empty(s.FungibleAssetsDelta);
                 Assert.Empty(s.UpdatedFungibleAssets);
             }
+
+            var pk = new PrivateKey();
+            Transaction<DumbAction> tx1Transfer = _fx.MakeTransaction(
+                new[]
+                {
+                    new DumbAction(pk.ToAddress(), "foo", pk.ToAddress(), addresses[1], 10),
+                    new DumbAction(addresses[0], "bar", pk.ToAddress(), addresses[2], 20),
+                },
+                nonce: 0,
+                privateKey: pk
+            );
+            Transaction<DumbAction> tx2Error = _fx.MakeTransaction(
+                new[]
+                {
+                    // As it tries to transfer a negative value, it throws
+                    // ArgumentOutOfRangeException:
+                    new DumbAction(pk.ToAddress(), "foo", addresses[0], addresses[1], -5),
+                },
+                nonce: 1,
+                privateKey: pk
+            );
+            Transaction<DumbAction> tx3Transfer = _fx.MakeTransaction(
+                new[]
+                {
+                    new DumbAction(pk.ToAddress(), "foo", pk.ToAddress(), addresses[1], 5),
+                },
+                nonce: 2,
+                privateKey: pk
+            );
+            Block<DumbAction> block3 = TestUtils.MineNext(
+                block2,
+                new[] { tx1Transfer, tx2Error, tx3Transfer },
+                difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain)
+            ).AttachStateRootHash(_fx.StateStore, _policy.BlockAction);
+            _blockChain.Append(block3);
+            var txExecution1 = getTxExecution(block3.Hash, tx1Transfer.Id);
+            _logger.Verbose(nameof(txExecution1) + " = {@TxExecution}", txExecution1);
+            Assert.IsType<TxSuccess>(txExecution1);
+            var txSuccess1 = (TxSuccess)txExecution1;
+            Assert.Equal(
+                addresses.Take(3).Append(pk.ToAddress()).ToImmutableHashSet(),
+                txSuccess1.UpdatedAddresses
+            );
+            Assert.Equal(
+                ImmutableDictionary<Address, IValue>.Empty
+                    .Add(pk.ToAddress(), (Text)"foo")
+                    .Add(addresses[0], (Text)"foo,bar"),
+                txSuccess1.UpdatedStates
+            );
+            Assert.Equal(
+                ImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>>.Empty
+                    .Add(
+                        pk.ToAddress(),
+                        ImmutableDictionary<Currency, FAV>.Empty
+                            .Add(DumbAction.DumbCurrency, DumbAction.DumbCurrency * -30)
+                    )
+                    .Add(
+                        addresses[1],
+                        ImmutableDictionary<Currency, FAV>.Empty
+                            .Add(DumbAction.DumbCurrency, DumbAction.DumbCurrency * 10)
+                    )
+                    .Add(
+                        addresses[2],
+                        ImmutableDictionary<Currency, FAV>.Empty
+                            .Add(DumbAction.DumbCurrency, DumbAction.DumbCurrency * 20)
+                    ),
+                txSuccess1.UpdatedFungibleAssets
+            );
+            Assert.Equal(
+                txSuccess1.FungibleAssetsDelta,
+                txSuccess1.UpdatedFungibleAssets
+            );
+            var txExecution2 = getTxExecution(block3.Hash, tx2Error.Id);
+            _logger.Verbose(nameof(txExecution2) + " = {@TxExecution}", txExecution2);
+            Assert.IsType<TxFailure>(txExecution2);
+            var txFailure = (TxFailure)txExecution2;
+            Assert.Equal(block3.Hash, txFailure.BlockHash);
+            Assert.Equal(tx2Error.Id, txFailure.TxId);
+            Assert.Equal(
+                $"{nameof(System)}.{nameof(ArgumentOutOfRangeException)}",
+                txFailure.ExceptionName
+            );
+            Assert.Equal(
+                Dictionary.Empty.Add("parameterName", "value"),
+                txFailure.ExceptionMetadata
+            );
+            var txExecution3 = getTxExecution(block3.Hash, tx3Transfer.Id);
+            _logger.Verbose(nameof(txExecution3) + " = {@TxExecution}", txExecution3);
+            Assert.IsType<TxSuccess>(txExecution3);
+            var txSuccess3 = (TxSuccess)txExecution3;
+            Assert.Equal(
+                ImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>>.Empty
+                    .Add(
+                        pk.ToAddress(),
+                        ImmutableDictionary<Currency, FAV>.Empty
+                            .Add(DumbAction.DumbCurrency, DumbAction.DumbCurrency * -5)
+                    )
+                    .Add(
+                        addresses[1],
+                        ImmutableDictionary<Currency, FAV>.Empty
+                            .Add(DumbAction.DumbCurrency, DumbAction.DumbCurrency * 5)
+                    ),
+                txSuccess3.FungibleAssetsDelta
+            );
+            Assert.Equal(
+                ImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>>.Empty
+                    .Add(
+                        pk.ToAddress(),
+                        ImmutableDictionary<Currency, FAV>.Empty
+                            .Add(DumbAction.DumbCurrency, DumbAction.DumbCurrency * -35)
+                    )
+                    .Add(
+                        addresses[1],
+                        ImmutableDictionary<Currency, FAV>.Empty
+                            .Add(DumbAction.DumbCurrency, DumbAction.DumbCurrency * 15)
+                    ),
+                txSuccess3.UpdatedFungibleAssets
+            );
         }
 
         [Fact]
