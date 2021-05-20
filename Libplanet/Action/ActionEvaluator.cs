@@ -180,7 +180,7 @@ namespace Libplanet.Action
                     ? new AccountStateDeltaImpl(accountStateGetter, accountBalanceGetter, tx.Signer)
                     : new AccountStateDeltaImplV0(
                         accountStateGetter, accountBalanceGetter, tx.Signer);
-                IEnumerable<ActionEvaluation> evaluations = EvaluateTransaction(
+                IEnumerable<ActionEvaluation> evaluations = EvaluateTransactionGradually(
                     tx: tx,
                     preEvaluationHash: block.PreEvaluationHash,
                     blockIndex: block.Index,
@@ -199,8 +199,37 @@ namespace Libplanet.Action
             }
         }
 
+        /// <summary>
+        /// Executes the <see cref="Transaction{T}.Actions"/> of given <see cref="Transaction{T}"/>
+        /// instance step by step, and emits <see cref="ActionEvaluation"/> for each step.
+        /// <para>If the needed value is only the final states,
+        /// use <see cref="EvaluateTransactionResult"/> method instead.</para>
+        /// </summary>
+        /// <param name="tx">A <see cref="Transaction{T}"/> instance to evaluate.</param>
+        /// <param name="preEvaluationHash">The <see cref="Block{T}.PreEvaluationHash"/> of
+        /// <see cref="Block{T}"/> that <paramref name="tx"/> will belong to.</param>
+        /// <param name="blockIndex">The <see cref="Block{T}.Index"/> of
+        /// <see cref="Block{T}"/> that <paramref name="tx"/> will belong to.</param>
+        /// <param name="previousStates">The states immediately before
+        /// <paramref name="tx.Actions"/> being executed.  Note that its
+        /// <see cref="IAccountStateDelta.UpdatedAddresses"/> are remained
+        /// to the returned next states.</param>
+        /// <param name="minerAddress">An address of block miner.</param>
+        /// <param name="rehearsal">Pass <c>true</c> if it is intended
+        /// to be dry-run (i.e., the returned result will be never used).
+        /// The default value is <c>false</c>.</param>
+        /// <param name="previousBlockStatesTrie">The trie to contain states at previous block.
+        /// </param>
+        /// <returns>Enumerates <see cref="ActionEvaluation"/>s for each one in
+        /// <paramref name="tx.Actions"/>.
+        /// <para>The order is the same to the <paramref name="tx.Actions"/>.</para>
+        /// <para>Each <see cref="ActionEvaluation"/> includes its previous
+        /// <see cref="ActionEvaluation"/>s' delta besides its own delta.</para>
+        /// <para>Note that each <see cref="IActionContext.Random"/> object has a unconsumed state.
+        /// </para>
+        /// </returns>
         [Pure]
-        internal static IEnumerable<ActionEvaluation> EvaluateTransaction(
+        internal static IEnumerable<ActionEvaluation> EvaluateTransactionGradually(
             Transaction<T> tx,
             BlockHash preEvaluationHash,
             long blockIndex,
@@ -220,6 +249,60 @@ namespace Libplanet.Action
                 actions: tx.Actions.Cast<IAction>().ToImmutableList(),
                 rehearsal: rehearsal,
                 previousBlockStatesTrie: previousBlockStatesTrie);
+        }
+
+        /// <summary>
+        /// Executes the <see cref="Transaction{T}.Actions"/> of given <see cref="Transaction{T}"/>
+        /// and gets the result states.
+        /// </summary>
+        /// <param name="tx">A <see cref="Transaction{T}"/> instance to evaluate.</param>
+        /// <param name="preEvaluationHash">The <see cref="Block{T}.PreEvaluationHash"/> of
+        /// <see cref="Block{T}"/> that <paramref name="tx"/> will belong to.</param>
+        /// <param name="blockIndex">The <see cref="Block{T}.Index"/> of
+        /// <see cref="Block{T}"/> that <paramref name="tx"/> will belong to.</param>
+        /// <param name="previousStates">The states immediately before
+        /// <paramref name="tx.Actions"/> being executed.  Note that its
+        /// <see cref="IAccountStateDelta.UpdatedAddresses"/> are remained
+        /// to the returned next states.</param>
+        /// <param name="minerAddress">An address of block miner.</param>
+        /// <param name="rehearsal">Pass <c>true</c> if it is intended
+        /// to be dry-run (i.e., the returned result will be never used).
+        /// The default value is <c>false</c>.</param>
+        /// <returns>The states immediately after <paramref name="tx"/>
+        /// being executed.  Note that it maintains
+        /// <see cref="IAccountStateDelta.UpdatedAddresses"/> of the given
+        /// <paramref name="previousStates"/> as well.</returns>
+        [Pure]
+        internal static IAccountStateDelta EvaluateTransactionResult(
+            Transaction<T> tx,
+            BlockHash preEvaluationHash,
+            long blockIndex,
+            IAccountStateDelta previousStates,
+            Address minerAddress,
+            bool rehearsal = false
+        )
+        {
+            var evaluations = ActionEvaluator<T>.EvaluateTransactionGradually(
+                tx,
+                preEvaluationHash,
+                blockIndex,
+                previousStates,
+                minerAddress,
+                rehearsal: rehearsal
+            );
+
+            ActionEvaluation lastEvaluation;
+            try
+            {
+                lastEvaluation = evaluations.Last();
+            }
+            catch (InvalidOperationException)
+            {
+                // If "evaluations" is empty:
+                return previousStates;
+            }
+
+            return lastEvaluation.OutputStates;
         }
 
         /// <summary>
