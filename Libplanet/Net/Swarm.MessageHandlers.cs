@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Libplanet.Blocks;
 using Libplanet.Net.Messages;
 using Libplanet.Tx;
@@ -9,7 +10,7 @@ namespace Libplanet.Net
 {
     public partial class Swarm<T>
     {
-        private void ProcessMessageHandler(object target, Message message)
+        private async Task ProcessMessageHandlerAsync(Message message)
         {
             switch (message)
             {
@@ -34,7 +35,7 @@ namespace Libplanet.Net
                         Identity = getChainStatus.Identity,
                     };
 
-                    _ = Transport.ReplyMessageAsync(chainStatus, default);
+                    await Transport.ReplyMessageAsync(chainStatus, default);
                     break;
                 }
 
@@ -62,16 +63,16 @@ namespace Libplanet.Net
                         Identity = getBlockHashes.Identity,
                     };
 
-                    _ = Transport.ReplyMessageAsync(reply, default);
+                    await Transport.ReplyMessageAsync(reply, default);
                     break;
                 }
 
                 case GetBlocks getBlocks:
-                    TransferBlocks(getBlocks);
+                    await TransferBlocksAsync(getBlocks);
                     break;
 
                 case GetTxs getTxs:
-                    TransferTxs(getTxs);
+                    await TransferTxsAsync(getTxs);
                     break;
 
                 case TxIds txIds:
@@ -181,7 +182,7 @@ namespace Libplanet.Net
                 new BlockDemand(header, peer, DateTimeOffset.UtcNow));
         }
 
-        private void TransferTxs(GetTxs getTxs)
+        private async Task TransferTxsAsync(GetTxs getTxs)
         {
             foreach (TxId txid in getTxs.TxIds)
             {
@@ -198,7 +199,7 @@ namespace Libplanet.Net
                     {
                         Identity = getTxs.Identity,
                     };
-                    _ = Transport.ReplyMessageAsync(response, default);
+                    await Transport.ReplyMessageAsync(response, default);
                 }
                 catch (KeyNotFoundException)
                 {
@@ -227,7 +228,7 @@ namespace Libplanet.Net
             TxCompletion.Demand(peer, message.Ids);
         }
 
-        private void TransferBlocks(GetBlocks getData)
+        private async Task TransferBlocksAsync(GetBlocks getData)
         {
             string identityHex = ByteUtil.Hex(getData.Identity);
             _logger.Verbose(
@@ -263,7 +264,7 @@ namespace Libplanet.Net
                         i,
                         total
                     );
-                    _ = Transport.ReplyMessageAsync(response, default);
+                    await Transport.ReplyMessageAsync(response, default);
                     blocks.Clear();
                 }
 
@@ -282,7 +283,7 @@ namespace Libplanet.Net
                     total,
                     identityHex
                 );
-                _ = Transport.ReplyMessageAsync(response, default);
+                await Transport.ReplyMessageAsync(response, default);
             }
 
             _logger.Debug("Blocks were transferred to {Identity}.", identityHex);

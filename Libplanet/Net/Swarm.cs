@@ -116,7 +116,7 @@ namespace Libplanet.Net
                 differentAppProtocolVersionEncountered,
                 Options.MinimumBroadcastTarget,
                 Options.MessageLifespan);
-            Transport.ProcessMessageHandler += ProcessMessageHandler;
+            Transport.ProcessMessageHandler.Register(ProcessMessageHandlerAsync);
             PeerDiscovery = new KademliaProtocol(RoutingTable, Transport, Address);
         }
 

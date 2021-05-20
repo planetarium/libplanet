@@ -107,10 +107,12 @@ namespace Libplanet.Net.Transports
             _logger = Log.ForContext<TcpTransport>();
             _runtimeCancellationTokenSource = new CancellationTokenSource();
             _turnCancellationTokenSource = new CancellationTokenSource();
+            ProcessMessageHandler = new AsyncDelegate<Message>();
             MessageHistory = new FixedSizedQueue<Message>(MessageHistoryCapacity);
         }
 
-        public event EventHandler<Message> ProcessMessageHandler = null!;
+        /// <inheritdoc cref="ITransport.ProcessMessageHandler"/>
+        public AsyncDelegate<Message> ProcessMessageHandler { get; }
 
         /// <inheritdoc cref="ITransport.AsPeer"/>
         public Peer AsPeer => EndPoint is null
@@ -703,8 +705,7 @@ namespace Libplanet.Net.Transports
 
                 var id = new Guid(message.Identity);
                 await TryAddStreamAsync(id, client, cancellationToken);
-
-                ProcessMessageHandler?.Invoke(this, message);
+                await ProcessMessageHandler.InvokeAsync(message);
             }
             catch (DifferentAppProtocolVersionException dapve)
             {
