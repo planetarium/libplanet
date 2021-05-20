@@ -185,6 +185,17 @@ namespace Libplanet.Action
             }
         }
 
+        /// <summary>
+        /// Executes every <see cref="IAction"/> in <see cref="Block{T}.Transactions"/>
+        /// and <see cref="IBlockPolicy{T}.BlockAction"/>.  Mainly calls <see cref="EvaluateBlock"/>
+        /// and appends the result of <see cref="EvaluatePolicyBlockAction"/> at the end.
+        /// </summary>
+        /// <param name="block">A <see cref="Block{T}"/> instance to evaluate.</param>
+        /// <param name="stateCompleters">A <see cref="StateCompleterSet{T}"/> to use.</param>
+        /// <returns>A list of <see cref="ActionEvaluation"/>s for every <see cref="IAction"/>
+        /// related to given <paramref name="block"/>.</returns>
+        /// <seealso cref="EvaluateBlock"/>
+        /// <seealso cref="EvaluatePolicyBlockAction"/>
         internal IReadOnlyList<ActionEvaluation> EvaluateActions(
             Block<T> block,
             StateCompleterSet<T> stateCompleters)
@@ -228,7 +239,7 @@ namespace Libplanet.Action
         }
 
         /// <summary>
-        /// Executes every <see cref="IAction"/> in the <see cref="Block{T}.Transactions"/>
+        /// Executes every <see cref="IAction"/> in <see cref="Block{T}.Transactions"/>
         /// and gets result states of each step of every <see cref="Transaction{T}"/>.
         /// <para>It throws an <see cref="InvalidBlockException"/> or
         /// an <see cref="InvalidTxException"/> if there is any
@@ -240,14 +251,11 @@ namespace Libplanet.Action
         /// <param name="currentTime">The current time to validate
         /// time-wise conditions.</param>
         /// <param name="accountStateGetter">An <see cref="AccountStateGetter"/> delegate to get
-        /// a previous state.  A <c>null</c> value, which is default, means a constant function
-        /// that returns <c>null</c>.
-        /// This affects the execution of <see cref="Transaction{T}.Actions"/>.
+        /// a previous state. This affects the execution of <see cref="Transaction{T}.Actions"/>.
         /// </param>
         /// <param name="accountBalanceGetter">An <see cref="AccountBalanceGetter"/> delegate to
-        /// get previous account balance.
-        /// A <c>null</c> value, which is default, means a constant function that returns zero.
-        /// This affects the execution of <see cref="Transaction{T}.Actions"/>.
+        /// get previous account balance. This affects the execution of
+        /// <see cref="Transaction{T}.Actions"/>.
         /// </param>
         /// <param name="previousBlockStatesTrie">The trie to contain states at previous block.
         /// </param>
@@ -288,13 +296,10 @@ namespace Libplanet.Action
         internal ImmutableList<ActionEvaluation> EvaluateBlock(
             Block<T> block,
             DateTimeOffset currentTime,
-            AccountStateGetter? accountStateGetter = null,
-            AccountBalanceGetter? accountBalanceGetter = null,
+            AccountStateGetter accountStateGetter,
+            AccountBalanceGetter accountBalanceGetter,
             ITrie? previousBlockStatesTrie = null)
         {
-            accountStateGetter ??= _defaultAccountStateGetter;
-            accountBalanceGetter ??= _defaultAccountBalanceGetter;
-
             // FIXME: Probably not the best place to have Validate().
             block.Validate(currentTime);
 
@@ -329,18 +334,15 @@ namespace Libplanet.Action
 
         /// <summary>
         /// Executes every <see cref="IAction"/> in a given
-        /// <see cref="Block{T}.Transactions"/> step by step, and emits a pair of
-        /// a transaction, and an <see cref="ActionEvaluation"/> for each step.
+        /// <see cref="Block{T}.Transactions"/> step by step, and emits a
+        /// <see cref="Transaction{T}"/> and an <see cref="ActionEvaluation"/> as a pair
+        /// for each step.
         /// </summary>
         /// <param name="block">A <see cref="Block{T}"/> instance to evaluate.</param>
         /// <param name="accountStateGetter">An <see cref="AccountStateGetter"/>
-        /// delegate to get a previous state.
-        /// A <c>null</c> value, which is default, means a constant function that returns
-        /// <c>null</c>.</param>
+        /// delegate to get a previous state.</param>
         /// <param name="accountBalanceGetter">An <see cref="AccountBalanceGetter"/> delegate to
-        /// get previous account balance.
-        /// A <c>null</c> value, which is default, means a constant function that returns zero.
-        /// </param>
+        /// get previous account balance.</param>
         /// <param name="previousBlockStatesTrie">The trie to contain states at previous block.
         /// </param>
         /// <returns>Enumerates pair of a transaction, and <see cref="ActionEvaluation"/>
@@ -358,13 +360,10 @@ namespace Libplanet.Action
         [Pure]
         internal IEnumerable<Tuple<Transaction<T>, ActionEvaluation>> EvaluateTransactions(
             Block<T> block,
-            AccountStateGetter? accountStateGetter = null,
-            AccountBalanceGetter? accountBalanceGetter = null,
+            AccountStateGetter accountStateGetter,
+            AccountBalanceGetter accountBalanceGetter,
             ITrie? previousBlockStatesTrie = null)
         {
-            accountStateGetter ??= _defaultAccountStateGetter;
-            accountBalanceGetter ??= _defaultAccountBalanceGetter;
-
             IAccountStateDelta delta;
             foreach (Transaction<T> tx in block.Transactions)
             {
@@ -425,19 +424,27 @@ namespace Libplanet.Action
             {
                 var message =
                     "To evaluate policy block action, " +
-                    "Policy.BlockAction must not be null.";
+                    "_policyBlockAction must not be null.";
                 throw new InvalidOperationException(message);
             }
 
             _logger.Debug(
                 $"Evaluating block action in block {block.Index}: {block.Hash}");
 
-            IAccountStateDelta? lastStates = null;
+            IAccountStateDelta lastStates;
             Address miner = block.Miner.GetValueOrDefault();
 
             if (txActionEvaluations.Count > 0)
             {
                 lastStates = txActionEvaluations[txActionEvaluations.Count - 1].OutputStates;
+            }
+            else if (block.PreviousHash is null)
+            {
+                lastStates = block.ProtocolVersion > 0
+                    ? new AccountStateDeltaImpl(
+                        _defaultAccountStateGetter, _defaultAccountBalanceGetter, miner)
+                    : new AccountStateDeltaImplV0(
+                        _defaultAccountStateGetter, _defaultAccountBalanceGetter, miner);
             }
             else
             {
