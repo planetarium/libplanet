@@ -151,6 +151,8 @@ To be released.
      -  Removed `Block<T>.EvaluateActionsPerTx()` method.
      -  Removed `Transaction<T>.EvaluateActionsGradually()` method.
      -  Removed `Transaction<T>.EvaluateActions()` method.
+ -  Parameters `action`, `inputContext`, and `outputStates` for
+    `ActionEvaluation()` constructor can no longer be `null`.  [[#1305]]
 
 ### Backward-incompatible network protocol changes
 
