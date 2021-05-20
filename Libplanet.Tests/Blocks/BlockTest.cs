@@ -229,7 +229,11 @@ namespace Libplanet.Tests.Blocks
                 );
 
             Block<DumbAction> genesis = MineGenesis<DumbAction>();
-            Assert.Empty(genesis.EvaluateActionsPerTx());
+            Assert.Empty(
+                ActionEvaluator<DumbAction>.EvaluateTransactions(
+                    genesis,
+                    ActionEvaluator<DumbAction>.DefaultAccountStateGetter,
+                    ActionEvaluator<DumbAction>.DefaultAccountBalanceGetter));
 
             Transaction<DumbAction>[] blockIdx1Txs =
             {
@@ -266,9 +270,10 @@ namespace Libplanet.Tests.Blocks
             }
 
             Block<DumbAction> blockIdx1 = MineNext(genesis, blockIdx1Txs, new byte[] { });
-            var pairs = blockIdx1
-                .EvaluateActionsPerTx()
-                .ToImmutableArray();
+            var pairs = ActionEvaluator<DumbAction>.EvaluateTransactions(
+                blockIdx1,
+                ActionEvaluator<DumbAction>.DefaultAccountStateGetter,
+                ActionEvaluator<DumbAction>.DefaultAccountBalanceGetter).ToImmutableArray();
             int randomValue = 0;
             (int, int, string[], Address)[] expectations =
             {
@@ -301,12 +306,11 @@ namespace Libplanet.Tests.Blocks
                         .Select(x => x is Text t ? t.Value : null));
             }
 
-            ActionEvaluation[] evals1 = blockIdx1
-                .Evaluate(
-                    DateTimeOffset.UtcNow,
-                    address => null,
-                    (address, currency) => new FungibleAssetValue(currency))
-                .ToArray();
+            ActionEvaluation[] evals1 = ActionEvaluator<DumbAction>.EvaluateBlock(
+                blockIdx1,
+                DateTimeOffset.UtcNow,
+                ActionEvaluator<DumbAction>.DefaultAccountStateGetter,
+                ActionEvaluator<DumbAction>.DefaultAccountBalanceGetter).ToArray();
             IImmutableDictionary<Address, IValue> dirty1 = evals1.GetDirtyStates();
             IImmutableDictionary<(Address, Currency), FungibleAssetValue> balances1 =
                 evals1.GetDirtyBalances();
@@ -380,13 +384,12 @@ namespace Libplanet.Tests.Blocks
             }
 
             Block<DumbAction> blockIdx2 = MineNext(blockIdx1, blockIdx2Txs, new byte[] { });
-            pairs = blockIdx2
-                .EvaluateActionsPerTx(
-                    dirty1.GetValueOrDefault,
-                    (a, c) => balances1.TryGetValue((a, c), out FungibleAssetValue v)
-                        ? v
-                        : new FungibleAssetValue(c))
-                .ToImmutableArray();
+            pairs = ActionEvaluator<DumbAction>.EvaluateTransactions(
+                blockIdx2,
+                dirty1.GetValueOrDefault,
+                (a, c) => balances1.TryGetValue((a, c), out FungibleAssetValue v)
+                    ? v
+                    : new FungibleAssetValue(c)).ToImmutableArray();
             expectations = new[]
             {
                 (0, 0, new[] { "A,D", "B", "C", null, null }, _fx.TxFixture.Address1),
@@ -426,13 +429,13 @@ namespace Libplanet.Tests.Blocks
                 );
             }
 
-            var evals2 = blockIdx2.Evaluate(
+            var evals2 = ActionEvaluator<DumbAction>.EvaluateBlock(
+                blockIdx2,
                 DateTimeOffset.UtcNow,
                 dirty1.GetValueOrDefault,
                 (a, c) => balances1.TryGetValue((a, c), out FungibleAssetValue v)
                     ? v
-                    : new FungibleAssetValue(c)
-            ).ToArray();
+                    : new FungibleAssetValue(c)).ToArray();
             IImmutableDictionary<Address, IValue> dirty2 = evals2.GetDirtyStates();
             IImmutableDictionary<(Address, Currency), FungibleAssetValue> balances2 =
                 evals2.GetDirtyBalances();
@@ -492,8 +495,11 @@ namespace Libplanet.Tests.Blocks
                 }
             );
             Assert.Throws<InvalidTxUpdatedAddressesException>(() =>
-                invalidBlock.Evaluate(
-                    DateTimeOffset.UtcNow, _ => null, (a, c) => new FungibleAssetValue(c))
+                ActionEvaluator<PolymorphicAction<BaseAction>>.EvaluateBlock(
+                    invalidBlock,
+                    DateTimeOffset.UtcNow,
+                    ActionEvaluator<PolymorphicAction<BaseAction>>.DefaultAccountStateGetter,
+                    ActionEvaluator<PolymorphicAction<BaseAction>>.DefaultAccountBalanceGetter)
             );
         }
 

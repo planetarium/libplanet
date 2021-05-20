@@ -574,7 +574,8 @@ namespace Libplanet.Tests.Tx
             {
                 DumbAction.RehearsalRecords.Value =
                     ImmutableList<(Address, string)>.Empty;
-                var evaluations = tx.EvaluateActionsGradually(
+                var evaluations = ActionEvaluator<DumbAction>.EvaluateTransactionGradually(
+                    tx,
                     default,
                     1,
                     new AccountStateDeltaImpl(
@@ -583,8 +584,7 @@ namespace Libplanet.Tests.Tx
                         tx.Signer
                     ),
                     addresses[0],
-                    rehearsal: rehearsal
-                ).ToImmutableArray();
+                    rehearsal: rehearsal).ToImmutableArray();
 
                 Assert.Equal(actions.Length, evaluations.Length);
                 string[][] expectedStates =
@@ -664,17 +664,16 @@ namespace Libplanet.Tests.Tx
 
                 DumbAction.RehearsalRecords.Value =
                     ImmutableList<(Address, string)>.Empty;
-                IAccountStateDelta delta = tx.EvaluateActions(
+                IAccountStateDelta delta = ActionEvaluator<DumbAction>.EvaluateTransactionResult(
+                    tx,
                     default,
                     1,
                     new AccountStateDeltaImpl(
-                        address => null,
-                        (a, c) => new FungibleAssetValue(c),
-                        tx.Signer
-                    ),
+                        ActionEvaluator<DumbAction>.DefaultAccountStateGetter,
+                        ActionEvaluator<DumbAction>.DefaultAccountBalanceGetter,
+                        tx.Signer),
                     addresses[0],
-                    rehearsal: rehearsal
-                );
+                    rehearsal: rehearsal);
                 Assert.Equal(
                     evaluations[3].OutputStates.GetUpdatedStates(),
                     delta.GetUpdatedStates()
@@ -710,17 +709,16 @@ namespace Libplanet.Tests.Tx
                 DateTimeOffset.UtcNow
             );
             var hash = new BlockHash(GetRandomBytes(32));
-            var nextStates = tx.EvaluateActions(
-                blockHash: hash,
+            var nextStates = ActionEvaluator<ThrowException>.EvaluateTransactionResult(
+                tx,
+                preEvaluationHash: hash,
                 blockIndex: 123,
                 previousStates: new AccountStateDeltaImpl(
-                    _ => null,
-                    (_, c) => new FungibleAssetValue(c),
-                    tx.Signer
-                ),
+                    ActionEvaluator<ThrowException>.DefaultAccountStateGetter,
+                    ActionEvaluator<ThrowException>.DefaultAccountBalanceGetter,
+                    tx.Signer),
                 minerAddress: GenesisMinerAddress,
-                rehearsal: false
-            );
+                rehearsal: false);
 
             Assert.Empty(nextStates.GetUpdatedStates());
         }

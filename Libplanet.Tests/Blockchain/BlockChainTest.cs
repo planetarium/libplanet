@@ -1538,9 +1538,10 @@ namespace Libplanet.Tests.Blockchain
                 evaluateActions: false,
                 renderBlocks: true,
                 renderActions: false);
-
-            var txEvaluations = block1.EvaluateActionsPerTx(a =>
-                    _blockChain.GetState(a, block1.PreviousHash))
+            var txEvaluations = ActionEvaluator<DumbAction>.EvaluateTransactions(
+                block1,
+                address => _blockChain.GetState(address, block1.PreviousHash),
+                ActionEvaluator<DumbAction>.DefaultAccountBalanceGetter)
                 .Select(te => te.Item2).ToList();
             blockActionEvaluation = _blockChain.ActionEvaluator.EvaluatePolicyBlockAction(
                 block1,
@@ -1645,11 +1646,11 @@ namespace Libplanet.Tests.Blockchain
 
             // Build the store has incomplete states
             Block<DumbAction> b = chain.Genesis;
-            ActionEvaluation[] evals = b.Evaluate(
+            ActionEvaluation[] evals = ActionEvaluator<DumbAction>.EvaluateBlock(
+                b,
                 DateTimeOffset.UtcNow,
-                _ => null,
-                (a, c) => new FungibleAssetValue(c)
-            ).ToArray();
+                ActionEvaluator<DumbAction>.DefaultAccountStateGetter,
+                ActionEvaluator<DumbAction>.DefaultAccountBalanceGetter).ToArray();
             IImmutableDictionary<Address, IValue> dirty = evals.GetDirtyStates();
             IImmutableDictionary<(Address, Currency), FungibleAssetValue> balances =
                 evals.GetDirtyBalances();
@@ -1673,10 +1674,11 @@ namespace Libplanet.Tests.Blockchain
                             new[] { tx },
                             blockInterval: TimeSpan.FromSeconds(10))
                         .AttachStateRootHash(stateStore, blockPolicy.BlockAction);
-                    dirty = b.Evaluate(
+                    dirty = ActionEvaluator<DumbAction>.EvaluateBlock(
+                        b,
                         DateTimeOffset.UtcNow,
                         dirty.GetValueOrDefault,
-                        (a, c) => balances.GetValueOrDefault((a, c))
+                        (address, currency) => balances.GetValueOrDefault((address, currency))
                     ).GetDirtyStates();
                     Assert.NotEmpty(dirty);
                     store.PutBlock(b);
