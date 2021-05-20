@@ -432,7 +432,7 @@ namespace Libplanet.Action
 
             IAccountStateDelta? lastStates = null;
 
-            if (!(txActionEvaluations is null) && txActionEvaluations.Count > 0)
+            if (txActionEvaluations.Count > 0)
             {
                 lastStates = txActionEvaluations[txActionEvaluations.Count - 1].OutputStates;
             }
