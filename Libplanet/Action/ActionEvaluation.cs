@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -32,8 +33,7 @@ namespace Libplanet.Action
             IAction action,
             IActionContext inputContext,
             IAccountStateDelta outputStates,
-            Exception exception = null
-        )
+            Exception? exception = null)
         {
             Action = action;
             InputContext = inputContext;
@@ -62,7 +62,7 @@ namespace Libplanet.Action
         /// <summary>
         /// An exception that had risen during evaluation.
         /// </summary>
-        public Exception Exception { get; }
+        public Exception? Exception { get; }
 
         /// <summary>
         /// Executes the <paramref name="actions"/> step by step, and emits
@@ -105,7 +105,7 @@ namespace Libplanet.Action
             byte[] signature,
             IImmutableList<IAction> actions,
             bool rehearsal = false,
-            ITrie previousBlockStatesTrie = null,
+            ITrie? previousBlockStatesTrie = null,
             bool blockAction = false)
         {
             ActionContext CreateActionContext(
@@ -139,7 +139,7 @@ namespace Libplanet.Action
             ILogger logger = Log.ForContext<ActionEvaluation>();
             foreach (IAction action in actions)
             {
-                Exception exc = null;
+                Exception? exc = null;
                 ActionContext context = CreateActionContext(states, seed);
                 IAccountStateDelta nextStates = context.PreviousStates;
                 try
