@@ -267,6 +267,77 @@ namespace Libplanet.Blocks
             }
         }
 
+        public override bool Equals(object obj)
+        {
+            if ((obj is null) || !(obj is BlockHeader))
+            {
+                return false;
+            }
+
+            BlockHeader blockHeader = (BlockHeader)obj;
+            if (!this.ProtocolVersion.Equals(blockHeader.ProtocolVersion))
+            {
+                return false;
+            }
+
+            if (!this.Index.Equals(blockHeader.Index))
+            {
+                return false;
+            }
+
+            if (!this.Timestamp.Equals(blockHeader.Timestamp))
+            {
+                return false;
+            }
+
+            if (!this.Nonce.SequenceEqual(blockHeader.Nonce))
+            {
+                return false;
+            }
+
+            if (!this.Miner.SequenceEqual(blockHeader.Miner))
+            {
+                return false;
+            }
+
+            if (!this.Difficulty.Equals(blockHeader.Difficulty))
+            {
+                return false;
+            }
+
+            if (!this.TotalDifficulty.Equals(blockHeader.TotalDifficulty))
+            {
+                return false;
+            }
+
+            if (!this.PreviousHash.SequenceEqual(blockHeader.PreviousHash))
+            {
+                return false;
+            }
+
+            if (!this.TxHash.SequenceEqual(blockHeader.TxHash))
+            {
+                return false;
+            }
+
+            if (!this.Hash.SequenceEqual(blockHeader.Hash))
+            {
+                return false;
+            }
+
+            if (!this.PreEvaluationHash.SequenceEqual(blockHeader.PreEvaluationHash))
+            {
+                return false;
+            }
+
+            if (!this.StateRootHash.SequenceEqual(blockHeader.StateRootHash))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         internal static byte[] SerializeForHash(
             int protocolVersion,
             long index,
