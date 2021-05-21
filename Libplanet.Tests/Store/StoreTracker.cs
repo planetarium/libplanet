@@ -233,5 +233,41 @@ namespace Libplanet.Tests.Store
             Log(nameof(SetCanonicalChainId), chainId);
             _store.SetCanonicalChainId(chainId);
         }
+
+        public IEnumerable<BlockHash> IterateBlockHeaderHashes()
+        {
+            Log(nameof(IterateBlockHeaderHashes));
+            return _store.IterateBlockHeaderHashes();
+        }
+
+        public BlockHeader? GetBlockHeader(BlockHash blockHeaderHash)
+        {
+            Log(nameof(GetBlockHeader));
+            return _store.GetBlockHeader(blockHeaderHash);
+        }
+
+        public void PutBlockHeader(BlockHeader blockHeader)
+        {
+            Log(nameof(PutBlockHeader));
+            _store.PutBlockHeader(blockHeader);
+        }
+
+        public bool DeleteBlockHeader(BlockHash blockHeaderHash)
+        {
+            Log(nameof(DeleteBlockHeader));
+            return _store.DeleteBlockHeader(blockHeaderHash);
+        }
+
+        public bool ContainsBlockHeader(BlockHash blockHeaderHash)
+        {
+            Log(nameof(ContainsBlockHeader));
+            return _store.ContainsBlockHeader(blockHeaderHash);
+        }
+
+        public long CountBlockHeaders()
+        {
+            Log(nameof(CountBlockHeaders));
+            return _store.CountBlockHeaders();
+        }
     }
 }

@@ -373,6 +373,31 @@ namespace Libplanet.Explorer.Store
                 .Select(bytes => new TxId(bytes));
         }
 
+        public IEnumerable<byte[]> IterateBlockHeaderHashes()
+        {
+            throw new NotSupportedException();
+        }
+
+        public BlockHeader? GetBlockHeader(ImmutableArray<byte> blockHeaderHash)
+        {
+            throw new NotSupportedException();
+        }
+
+        public bool DeleteBlockHeader(ImmutableArray<byte> blockHeaderHash)
+        {
+            throw new NotSupportedException();
+        }
+
+        public bool ContainsBlockHeader(ImmutableArray<byte> blockHeaderHash)
+        {
+            throw new NotSupportedException();
+        }
+
+        public long CountBlockHeaders()
+        {
+            throw new NotSupportedException();
+        }
+
         private QueryFactory OpenDB() =>
             new QueryFactory(new MySqlConnection(_connectionString), _compiler);
 

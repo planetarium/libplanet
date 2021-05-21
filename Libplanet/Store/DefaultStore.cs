@@ -30,6 +30,7 @@ namespace Libplanet.Store
         private const string TxNonceIdPrefix = "nonce_";
 
         private static readonly UPath TxRootPath = UPath.Root / "tx";
+        private static readonly UPath BlockHeaderRootPath = UPath.Root / "blockheader";
         private static readonly UPath BlockRootPath = UPath.Root / "block";
         private static readonly UPath TxExecutionRootPath = UPath.Root / "txexec";
         private static readonly UPath BlockPerceptionRootPath = UPath.Root / "blockpercept";
@@ -39,6 +40,7 @@ namespace Libplanet.Store
 
         private readonly IFileSystem _root;
         private readonly SubFileSystem _txs;
+        private readonly SubFileSystem _blockHeaders;
         private readonly SubFileSystem _blocks;
         private readonly SubFileSystem _txExecutions;
         private readonly SubFileSystem _blockPerceptions;
@@ -139,6 +141,8 @@ namespace Libplanet.Store
 
             _root.CreateDirectory(TxRootPath);
             _txs = new SubFileSystem(_root, TxRootPath, owned: false);
+            _root.CreateDirectory(BlockHeaderRootPath);
+            _blockHeaders = new SubFileSystem(_root, BlockHeaderRootPath, owned: false);
             _root.CreateDirectory(BlockRootPath);
             _blocks = new SubFileSystem(_root, BlockRootPath, owned: false);
             _root.CreateDirectory(TxExecutionRootPath);
@@ -409,6 +413,50 @@ namespace Libplanet.Store
             }
         }
 
+        /// <inheritdoc cref="BaseStore.IterateBlockHeaderHashes()"/>
+        public override IEnumerable<BlockHash> IterateBlockHeaderHashes()
+        {
+            foreach (UPath path in _blockHeaders.EnumerateDirectories(UPath.Root))
+            {
+                string upper = path.GetName();
+                if (upper.Length != 2)
+                {
+                    continue;
+                }
+
+                foreach (UPath subPath in _blockHeaders.EnumerateFiles(path))
+                {
+                    string lower = subPath.GetName();
+                    string name = upper + lower;
+                    BlockHash blockHash;
+                    try
+                    {
+                        blockHash = BlockHash.FromString(name);
+                    }
+                    catch (Exception)
+                    {
+                        // Skip if a filename does not match to the format.
+                        continue;
+                    }
+
+                    yield return blockHash;
+                }
+            }
+        }
+
+        /// <inheritdoc cref="BaseStore.GetBlockHeader(BlockHash)"/>
+        public override BlockHeader? GetBlockHeader(BlockHash blockHash)
+        {
+            var path = BlockHeaderPath(blockHash);
+            if (_blockHeaders.FileExists(path))
+            {
+                byte[] serializedHeader = _blockHeaders.ReadAllBytes(path);
+                return BlockHeader.Deserialize(serializedHeader);
+            }
+
+            return null;
+        }
+
         /// <inheritdoc cref="BaseStore.GetBlockDigest(BlockHash)"/>
         public override BlockDigest? GetBlockDigest(BlockHash blockHash)
         {
@@ -468,10 +516,16 @@ namespace Libplanet.Store
             _blockCache.AddOrUpdate(block.Hash, block.ToBlockDigest());
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="BaseStore.PutBlockHeader(BlockHeader)"/>
         public override void PutBlockHeader(BlockHeader blockHeader)
         {
-            throw new NotSupportedException();
+            UPath path = BlockHeaderPath(new BlockHash(blockHeader.Hash));
+            if (_blocks.FileExists(path))
+            {
+                return;
+            }
+
+            WriteContentAddressableFile(_blockHeaders, path, blockHeader.Serialize());
         }
 
         /// <inheritdoc cref="BaseStore.DeleteBlock(BlockHash)"/>
@@ -488,6 +542,19 @@ namespace Libplanet.Store
             return false;
         }
 
+        /// <inheritdoc cref="BaseStore.DeleteBlockHeader(BlockHash)"/>
+        public override bool DeleteBlockHeader(BlockHash blockHash)
+        {
+            var path = BlockHeaderPath(blockHash);
+            if (_blockHeaders.FileExists(path))
+            {
+                _blockHeaders.DeleteFile(path);
+                return true;
+            }
+
+            return false;
+        }
+
         /// <inheritdoc cref="BaseStore.ContainsBlock(BlockHash)"/>
         public override bool ContainsBlock(BlockHash blockHash)
         {
@@ -498,6 +565,13 @@ namespace Libplanet.Store
 
             UPath blockPath = BlockPath(blockHash);
             return _blocks.FileExists(blockPath);
+        }
+
+        /// <inheritdoc cref="BaseStore.ContainsBlockHeader(BlockHash)"/>
+        public override bool ContainsBlockHeader(BlockHash blockHash)
+        {
+            UPath path = BlockHeaderPath(blockHash);
+            return _blockHeaders.FileExists(path);
         }
 
         /// <inheritdoc cref="BaseStore.PutTxExecution(Libplanet.Tx.TxSuccess)"/>
@@ -714,6 +788,20 @@ namespace Libplanet.Store
                     fs.DeleteFile(tmpPath);
                 }
             }
+        }
+
+        private UPath BlockHeaderPath(in BlockHash blockHash)
+        {
+            string idHex = ByteUtil.Hex(blockHash.ToByteArray());
+            if (idHex.Length < 3)
+            {
+                throw new ArgumentException(
+                    $"Too short block header hash: \"{idHex}\".",
+                    nameof(blockHash)
+                );
+            }
+
+            return UPath.Root / idHex.Substring(0, 2) / idHex.Substring(2);
         }
 
         private UPath BlockPath(in BlockHash blockHash)

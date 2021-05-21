@@ -409,6 +409,31 @@ namespace Libplanet.Explorer.Store
             return collection.Find(query, offset, limit).Select(doc => doc.TxId);
         }
 
+        public IEnumerable<byte[]> IterateBlockHeaderHashes()
+        {
+            throw new NotSupportedException();
+        }
+
+        public BlockHeader? GetBlockHeader(ImmutableArray<byte> blockHeaderHash)
+        {
+            throw new NotSupportedException();
+        }
+
+        public bool DeleteBlockHeader(ImmutableArray<byte> blockHeaderHash)
+        {
+            throw new NotSupportedException();
+        }
+
+        public bool ContainsBlockHeader(ImmutableArray<byte> blockHeaderHash)
+        {
+            throw new NotSupportedException();
+        }
+
+        public long CountBlockHeaders()
+        {
+            throw new NotSupportedException();
+        }
+
         private LiteCollection<TxRefDoc> TxRefCollection() =>
             _db.GetCollection<TxRefDoc>(TxRefCollectionName);
 

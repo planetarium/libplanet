@@ -70,6 +70,9 @@ namespace Libplanet.Store
         /// <inheritdoc cref="IStore.IterateBlockHashes()"/>
         public abstract IEnumerable<BlockHash> IterateBlockHashes();
 
+        /// <inheritdoc cref="IStore.IterateBlockHeaderHashes()"/>
+        public abstract IEnumerable<BlockHash> IterateBlockHeaderHashes();
+
         /// <inheritdoc cref="IStore.GetBlock{T}(BlockHash)"/>
         public Block<T> GetBlock<T>(BlockHash blockHash)
             where T : IAction, new()
@@ -110,6 +113,9 @@ namespace Libplanet.Store
             return null;
         }
 
+        /// <inheritdoc cref="IStore.GetBlockHeader(BlockHash)"/>
+        public abstract BlockHeader? GetBlockHeader(BlockHash blockHash);
+
         /// <inheritdoc cref="IStore.GetBlockIndex(BlockHash)"/>
         public long? GetBlockIndex(BlockHash blockHash)
         {
@@ -129,8 +135,14 @@ namespace Libplanet.Store
         /// <inheritdoc cref="IStore.DeleteBlock(BlockHash)"/>
         public abstract bool DeleteBlock(BlockHash blockHash);
 
+        /// <inheritdoc cref="IStore.DeleteBlockHeader(BlockHash)"/>
+        public abstract bool DeleteBlockHeader(BlockHash blockHash);
+
         /// <inheritdoc cref="IStore.ContainsBlock(BlockHash)"/>
         public abstract bool ContainsBlock(BlockHash blockHash);
+
+        /// <inheritdoc cref="IStore.ContainsBlockHeader(BlockHash)"/>
+        public abstract bool ContainsBlockHeader(BlockHash blockHash);
 
         /// <inheritdoc cref="IStore.PutTxExecution(Libplanet.Tx.TxSuccess)"/>
         public abstract void PutTxExecution(TxSuccess txSuccess);
@@ -167,6 +179,11 @@ namespace Libplanet.Store
         public virtual long CountBlocks()
         {
             return IterateBlockHashes().LongCount();
+        }
+
+        public virtual long CountBlockHeaders()
+        {
+            return IterateBlockHeaderHashes().LongCount();
         }
 
         /// <inheritdoc />

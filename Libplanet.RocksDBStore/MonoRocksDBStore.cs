@@ -441,6 +441,18 @@ namespace Libplanet.RocksDBStore
             }
         }
 
+        /// <inheritdoc cref="BaseStore.IterateBlockHeaderHashes()"/>
+        public override IEnumerable<BlockHash> IterateBlockHeaderHashes()
+        {
+            throw new NotSupportedException();
+        }
+
+        /// <inheritdoc cref="BaseStore.GetBlockHeader(BlockHash)"/>
+        public override BlockHeader? GetBlockHeader(BlockHash blockHash)
+        {
+            throw new NotSupportedException();
+        }
+
         /// <inheritdoc cref="BaseStore.GetBlockDigest(BlockHash)"/>
         public override BlockDigest? GetBlockDigest(BlockHash blockHash)
         {
@@ -510,6 +522,12 @@ namespace Libplanet.RocksDBStore
             return true;
         }
 
+        /// <inheritdoc cref="BaseStore.DeleteBlockHeader(BlockHash)"/>
+        public override bool DeleteBlockHeader(BlockHash blockHash)
+        {
+            throw new NotSupportedException();
+        }
+
         /// <inheritdoc cref="BaseStore.ContainsBlock(BlockHash)"/>
         public override bool ContainsBlock(BlockHash blockHash)
         {
@@ -521,6 +539,12 @@ namespace Libplanet.RocksDBStore
             byte[] key = BlockKey(blockHash);
 
             return !(_blockDb.Get(key) is null);
+        }
+
+        /// <inheritdoc cref="BaseStore.ContainsBlockHeader(BlockHash)"/>
+        public override bool ContainsBlockHeader(BlockHash blockHash)
+        {
+            throw new NotSupportedException();
         }
 
         /// <inheritdoc cref="BaseStore.PutTxExecution(Libplanet.Tx.TxSuccess)"/>
