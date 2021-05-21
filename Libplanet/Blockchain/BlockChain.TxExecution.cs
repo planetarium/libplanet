@@ -1,6 +1,8 @@
 #nullable enable
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using Libplanet.Action;
 using Libplanet.Assets;
@@ -102,6 +104,16 @@ namespace Libplanet.Blockchain
                             " for the tx {TxId} within the block {BlockIndex} {BlockHash}.",
                             f.TxId,
                             f.BlockHash
+                        );
+                        break;
+                    default:
+                        // In theory, this case must not happen.  The following case is for just in
+                        // case.  (For example, we might add a new subtype for TxExecution.)
+                        const string msg = "Unexpected subtype of " + nameof(TxExecution) + ": {0}";
+                        _logger.Fatal(msg, txExecution);
+                        Trace.Assert(
+                            false,
+                            string.Format(CultureInfo.InvariantCulture, msg, txExecution)
                         );
                         break;
                 }
