@@ -130,6 +130,12 @@ namespace Libplanet.Store
         IEnumerable<BlockHash> IterateBlockHashes();
 
         /// <summary>
+        /// Lists all block hashes which all block headers have in the store.
+        /// </summary>
+        /// <returns>All block hashes which all block headers have in the store.</returns>
+        IEnumerable<BlockHash> IterateBlockHeaderHashes();
+
+        /// <summary>
         /// Gets the corresponding stored <see cref="Block{T}"/> to the given
         /// <paramref name="blockHash"/>.
         /// </summary>
@@ -140,6 +146,16 @@ namespace Libplanet.Store
         /// to <see cref="Block{T}"/>'s type parameter.</typeparam>
         Block<T> GetBlock<T>(BlockHash blockHash)
             where T : IAction, new();
+
+        /// <summary>
+        /// Gets the corresponding stored <see cref="BlockHeader"/> to the given
+        /// <paramref name="blockHash"/>.
+        /// </summary>
+        /// <param name="blockHash"><see cref="BlockHash"/>
+        /// version of <see cref="BlockHeader.Hash"/> to find.</param>
+        /// <returns>A found block header, or <c>null</c> if no block header having such
+        /// <paramref name="blockHash"/> is stored.</returns>
+        BlockHeader? GetBlockHeader(BlockHash blockHash);
 
         /// <summary>
         /// Gets a stored block's <see cref="Block{T}.Index"/> by its <see cref="Block{T}.Hash"/>.
@@ -187,7 +203,15 @@ namespace Libplanet.Store
         bool DeleteBlock(BlockHash blockHash);
 
         /// <summary>
-        /// Determines whether the <see cref="IStore"/> contains <see cref="Block{T}"/>
+        /// Removes a blockheader from the store.
+        /// </summary>
+        /// <param name="blockHash">The hash that the block header to remove has.</param>
+        /// <returns><c>false</c> if such blockheader does not exist.
+        /// Otherwise <c>true</c>.</returns>
+        bool DeleteBlockHeader(BlockHash blockHash);
+
+        /// <summary>
+        /// Determines whether the <see cref="IStore"/> contains <see cref="BlockHeader"/>
         /// the specified <paramref name="blockHash"/>.
         /// </summary>
         /// <param name="blockHash">The <see cref="HashDigest{T}"/> of the <see cref="Block{T}"/> to
@@ -197,6 +221,18 @@ namespace Libplanet.Store
         /// the specified <paramref name="blockHash"/>; otherwise, <c>false</c>.
         /// </returns>
         bool ContainsBlock(BlockHash blockHash);
+
+        /// <summary>
+        /// Determines whether the <see cref="IStore"/> contains <see cref="BlockHeader"/>
+        /// the specified <paramref name="blockHash"/>.
+        /// </summary>
+        /// <param name="blockHash">the hash that the <see cref="BlockHeader"/> to
+        /// check if it is in the <see cref="IStore"/> has.</param>
+        /// <returns>
+        /// <c>true</c> if the <see cref="IStore"/> contains <see cref="BlockHeader"/> with
+        /// the specified <paramref name="blockHash"/>; otherwise, <c>false</c>.
+        /// </returns>
+        bool ContainsBlockHeader(BlockHash blockHash);
 
         /// <summary>
         /// Records the given <paramref name="txSuccess"/>.
@@ -305,6 +341,8 @@ namespace Libplanet.Store
         long CountTransactions();
 
         long CountBlocks();
+
+        long CountBlockHeaders();
 
         /// <summary>
         /// Forks <see cref="Transaction{T}"/> <see cref="Transaction{T}.Nonce"/>s from
