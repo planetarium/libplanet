@@ -250,8 +250,10 @@ namespace Libplanet.Blocks
 
         /// <summary>
         /// Convert <see cref="string"/> type of
-        /// <param name="timeStamp"></param> to <see cref="DateTimeOffset"/>.
+        /// timeStamp to <see cref="DateTimeOffset"/>.
         /// </summary>
+        /// <param name="timeStamp"> the time
+        /// when block header was created.</param>
         /// <returns><see cref="DateTimeOffset"/> representation of
         /// <see cref="BlockHeader.Timestamp"/>.</returns>
         public DateTimeOffset ParseDateTimeOffset(string timeStamp)
