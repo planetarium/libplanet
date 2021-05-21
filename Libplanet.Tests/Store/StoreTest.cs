@@ -169,6 +169,71 @@ namespace Libplanet.Tests.Store
             Assert.False(Fx.Store.ContainsBlock(Fx.Block3.Hash));
         }
 
+        [Fact]
+        public void StoreBlockHeader()
+        {
+            Assert.Empty(Fx.Store.IterateBlockHashes());
+            Assert.Null(Fx.Store.GetBlockHeader(new BlockHash(Fx.Block1.Header.Hash)));
+            Assert.Null(Fx.Store.GetBlockHeader(new BlockHash(Fx.Block2.Header.Hash)));
+            Assert.Null(Fx.Store.GetBlockHeader(new BlockHash(Fx.Block3.Header.Hash)));
+            Assert.False(Fx.Store.DeleteBlockHeader(new BlockHash(Fx.Block1.Header.Hash)));
+            Assert.False(Fx.Store.ContainsBlockHeader(new BlockHash(Fx.Block1.Header.Hash)));
+            Assert.False(Fx.Store.ContainsBlockHeader(new BlockHash(Fx.Block2.Header.Hash)));
+            Assert.False(Fx.Store.ContainsBlockHeader(new BlockHash(Fx.Block3.Header.Hash)));
+
+            Fx.Store.PutBlockHeader(Fx.Block1.Header);
+            Assert.Equal(1, Fx.Store.CountBlockHeaders());
+            Assert.Equal(
+                new HashSet<BlockHash> { new BlockHash(Fx.Block1.Header.Hash) },
+                Fx.Store.IterateBlockHeaderHashes().ToHashSet());
+            Assert.True(
+                Fx.Block1.Header.Equals(
+                    Fx.Store.GetBlockHeader(new BlockHash(Fx.Block1.Header.Hash)))
+                );
+            Assert.Null(Fx.Store.GetBlockHeader(new BlockHash(Fx.Block2.Header.Hash)));
+            Assert.Null(Fx.Store.GetBlockHeader(new BlockHash(Fx.Block3.Header.Hash)));
+            Assert.True(Fx.Store.ContainsBlockHeader(new BlockHash(Fx.Block1.Header.Hash)));
+            Assert.False(Fx.Store.ContainsBlockHeader(new BlockHash(Fx.Block2.Header.Hash)));
+            Assert.False(Fx.Store.ContainsBlockHeader(new BlockHash(Fx.Block3.Header.Hash)));
+
+            Fx.Store.PutBlockHeader(Fx.Block2.Header);
+            Assert.Equal(2, Fx.Store.CountBlockHeaders());
+            Assert.Equal(
+                new HashSet<BlockHash>
+                {
+                    new BlockHash(Fx.Block1.Header.Hash),
+                    new BlockHash(Fx.Block2.Header.Hash),
+                },
+                Fx.Store.IterateBlockHeaderHashes().ToHashSet());
+            Assert.True(
+                Fx.Block1.Header.Equals(
+                    Fx.Store.GetBlockHeader(new BlockHash(Fx.Block1.Header.Hash)))
+                );
+            Assert.True(
+                Fx.Block2.Header.Equals(
+                    Fx.Store.GetBlockHeader(new BlockHash(Fx.Block2.Header.Hash)))
+                );
+            Assert.Null(Fx.Store.GetBlockHeader(new BlockHash(Fx.Block3.Header.Hash)));
+            Assert.True(Fx.Store.ContainsBlockHeader(new BlockHash(Fx.Block1.Header.Hash)));
+            Assert.True(Fx.Store.ContainsBlockHeader(new BlockHash(Fx.Block2.Header.Hash)));
+            Assert.False(Fx.Store.ContainsBlockHeader(new BlockHash(Fx.Block3.Header.Hash)));
+
+            Assert.True(Fx.Store.DeleteBlockHeader(new BlockHash(Fx.Block1.Header.Hash)));
+            Assert.Equal(1, Fx.Store.CountBlockHeaders());
+            Assert.Equal(
+                new HashSet<BlockHash> { new BlockHash(Fx.Block2.Header.Hash) },
+                Fx.Store.IterateBlockHeaderHashes().ToHashSet());
+            Assert.Null(Fx.Store.GetBlockHeader(new BlockHash(Fx.Block1.Header.Hash)));
+            Assert.True(
+                Fx.Block2.Header.Equals(
+                    Fx.Store.GetBlockHeader(new BlockHash(Fx.Block2.Header.Hash)))
+                );
+            Assert.Null(Fx.Store.GetBlockHeader(new BlockHash(Fx.Block3.Header.Hash)));
+            Assert.False(Fx.Store.ContainsBlockHeader(new BlockHash(Fx.Block1.Header.Hash)));
+            Assert.True(Fx.Store.ContainsBlockHeader(new BlockHash(Fx.Block2.Header.Hash)));
+            Assert.False(Fx.Store.ContainsBlockHeader(new BlockHash(Fx.Block3.Header.Hash)));
+        }
+
         [SkippableFact]
         public void TxExecution()
         {
