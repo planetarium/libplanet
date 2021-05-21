@@ -213,7 +213,7 @@ namespace Libplanet.Tests.Blockchain
                 validNext.Hash,
                 validNext.Timestamp.AddSeconds(1),
                 _emptyTransaction);
-            var actionEvaluations = _blockChain.ActionEvaluator.EvaluateActions(
+            var actionEvaluations = _blockChain.ActionEvaluator.Evaluate(
                 invalidStateRootHash,
                 StateCompleterSet<DumbAction>.Recalculate);
             chain.SetStates(invalidStateRootHash, actionEvaluations);

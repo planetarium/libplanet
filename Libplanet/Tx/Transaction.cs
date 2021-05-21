@@ -451,8 +451,8 @@ namespace Libplanet.Tx
                     preEvaluationHash: emptyBlockHash,
                     blockIndex: 0,
                     previousStates: new AccountStateDeltaImpl(
-                        ActionEvaluator<T>.DefaultAccountStateGetter,
-                        ActionEvaluator<T>.DefaultAccountBalanceGetter,
+                        ActionEvaluator<T>.NullAccountStateGetter,
+                        ActionEvaluator<T>.NullAccountBalanceGetter,
                         signer),
                     minerAddress: signer,
                     rehearsal: true);

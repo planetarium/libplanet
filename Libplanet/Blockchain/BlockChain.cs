@@ -398,7 +398,7 @@ namespace Libplanet.Blockchain
                     => new FungibleAssetValue(currency),
                 null);
             var actionEvaluationResult = actionEvaluator
-                .EvaluateActions(block, StateCompleterSet<T>.Reject)
+                .Evaluate(block, StateCompleterSet<T>.Reject)
                 .GetTotalDelta(ToStateKey, ToFungibleAssetKey);
             ITrie trie = new MerkleTrie(new DefaultKeyValueStore(null));
             trie = trie.Set(actionEvaluationResult);
@@ -980,7 +980,7 @@ namespace Libplanet.Blockchain
                 TipChanged -= WatchTip;
             }
 
-            IReadOnlyList<ActionEvaluation> actionEvaluations = ActionEvaluator.EvaluateActions(
+            IReadOnlyList<ActionEvaluation> actionEvaluations = ActionEvaluator.Evaluate(
                 block, StateCompleterSet<T>.Recalculate);
 
             if (StateStore is TrieStateStore trieStateStore)
@@ -1395,7 +1395,7 @@ namespace Libplanet.Blockchain
 
             if (evaluations is null)
             {
-                evaluations = ActionEvaluator.EvaluateActions(block, stateCompleters.Value);
+                evaluations = ActionEvaluator.Evaluate(block, stateCompleters.Value);
             }
 
             int cnt = 0;
@@ -1449,7 +1449,7 @@ namespace Libplanet.Blockchain
             );
             IReadOnlyList<ActionEvaluation> evaluations = null;
             DateTimeOffset evaluateActionStarted = DateTimeOffset.Now;
-            evaluations = ActionEvaluator.EvaluateActions(
+            evaluations = ActionEvaluator.Evaluate(
                 block,
                 stateCompleters ?? StateCompleterSet<T>.Recalculate
             );
@@ -1792,7 +1792,7 @@ namespace Libplanet.Blockchain
                     )
                     {
                         List<ActionEvaluation> evaluations =
-                            ActionEvaluator.EvaluateActions(b, completers).ToList();
+                            ActionEvaluator.Evaluate(b, completers).ToList();
                         evaluations.Reverse();
 
                         foreach (var evaluation in evaluations)
@@ -2024,7 +2024,7 @@ namespace Libplanet.Blockchain
                     continue;
                 }
 
-                IReadOnlyList<ActionEvaluation> evaluations = ActionEvaluator.EvaluateActions(
+                IReadOnlyList<ActionEvaluation> evaluations = ActionEvaluator.Evaluate(
                     block,
                     stateCompleters
                 );

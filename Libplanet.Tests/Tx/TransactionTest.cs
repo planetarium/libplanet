@@ -669,8 +669,8 @@ namespace Libplanet.Tests.Tx
                     default,
                     1,
                     new AccountStateDeltaImpl(
-                        ActionEvaluator<DumbAction>.DefaultAccountStateGetter,
-                        ActionEvaluator<DumbAction>.DefaultAccountBalanceGetter,
+                        ActionEvaluator<DumbAction>.NullAccountStateGetter,
+                        ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
                         tx.Signer),
                     addresses[0],
                     rehearsal: rehearsal);
@@ -714,8 +714,8 @@ namespace Libplanet.Tests.Tx
                 preEvaluationHash: hash,
                 blockIndex: 123,
                 previousStates: new AccountStateDeltaImpl(
-                    ActionEvaluator<ThrowException>.DefaultAccountStateGetter,
-                    ActionEvaluator<ThrowException>.DefaultAccountBalanceGetter,
+                    ActionEvaluator<ThrowException>.NullAccountStateGetter,
+                    ActionEvaluator<ThrowException>.NullAccountBalanceGetter,
                     tx.Signer),
                 minerAddress: GenesisMinerAddress,
                 rehearsal: false);

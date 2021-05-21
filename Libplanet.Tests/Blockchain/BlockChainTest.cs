@@ -1280,7 +1280,7 @@ namespace Libplanet.Tests.Blockchain
             chain.StageTransaction(tx1);
             await chain.MineBlock(_fx.Address1);
 
-            var actionEvaluation = chain.ActionEvaluator.EvaluateActions(
+            var actionEvaluation = chain.ActionEvaluator.Evaluate(
                 chain.Tip,
                 StateCompleterSet<TestEvaluateAction>.Recalculate);
             Assert.False(actionEvaluation[0].InputContext.BlockAction);
@@ -1541,7 +1541,7 @@ namespace Libplanet.Tests.Blockchain
             var txEvaluations = ActionEvaluator<DumbAction>.EvaluateTransactions(
                 block1,
                 address => _blockChain.GetState(address, block1.PreviousHash),
-                ActionEvaluator<DumbAction>.DefaultAccountBalanceGetter)
+                ActionEvaluator<DumbAction>.NullAccountBalanceGetter)
                 .Select(te => te.Item2).ToList();
             policyBlockActionEvaluation = _blockChain.ActionEvaluator.EvaluatePolicyBlockAction(
                 block1,
@@ -1651,8 +1651,8 @@ namespace Libplanet.Tests.Blockchain
             ActionEvaluation[] evals = ActionEvaluator<DumbAction>.EvaluateBlock(
                 b,
                 DateTimeOffset.UtcNow,
-                ActionEvaluator<DumbAction>.DefaultAccountStateGetter,
-                ActionEvaluator<DumbAction>.DefaultAccountBalanceGetter).ToArray();
+                ActionEvaluator<DumbAction>.NullAccountStateGetter,
+                ActionEvaluator<DumbAction>.NullAccountBalanceGetter).ToArray();
             IImmutableDictionary<Address, IValue> dirty = evals.GetDirtyStates();
             IImmutableDictionary<(Address, Currency), FungibleAssetValue> balances =
                 evals.GetDirtyBalances();

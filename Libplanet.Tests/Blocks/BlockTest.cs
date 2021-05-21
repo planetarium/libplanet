@@ -232,8 +232,8 @@ namespace Libplanet.Tests.Blocks
             Assert.Empty(
                 ActionEvaluator<DumbAction>.EvaluateTransactions(
                     genesis,
-                    ActionEvaluator<DumbAction>.DefaultAccountStateGetter,
-                    ActionEvaluator<DumbAction>.DefaultAccountBalanceGetter));
+                    ActionEvaluator<DumbAction>.NullAccountStateGetter,
+                    ActionEvaluator<DumbAction>.NullAccountBalanceGetter));
 
             Transaction<DumbAction>[] blockIdx1Txs =
             {
@@ -272,8 +272,8 @@ namespace Libplanet.Tests.Blocks
             Block<DumbAction> blockIdx1 = MineNext(genesis, blockIdx1Txs, new byte[] { });
             var pairs = ActionEvaluator<DumbAction>.EvaluateTransactions(
                 blockIdx1,
-                ActionEvaluator<DumbAction>.DefaultAccountStateGetter,
-                ActionEvaluator<DumbAction>.DefaultAccountBalanceGetter).ToImmutableArray();
+                ActionEvaluator<DumbAction>.NullAccountStateGetter,
+                ActionEvaluator<DumbAction>.NullAccountBalanceGetter).ToImmutableArray();
             int randomValue = 0;
             (int, int, string[], Address)[] expectations =
             {
@@ -309,8 +309,8 @@ namespace Libplanet.Tests.Blocks
             ActionEvaluation[] evals1 = ActionEvaluator<DumbAction>.EvaluateBlock(
                 blockIdx1,
                 DateTimeOffset.UtcNow,
-                ActionEvaluator<DumbAction>.DefaultAccountStateGetter,
-                ActionEvaluator<DumbAction>.DefaultAccountBalanceGetter).ToArray();
+                ActionEvaluator<DumbAction>.NullAccountStateGetter,
+                ActionEvaluator<DumbAction>.NullAccountBalanceGetter).ToArray();
             IImmutableDictionary<Address, IValue> dirty1 = evals1.GetDirtyStates();
             IImmutableDictionary<(Address, Currency), FungibleAssetValue> balances1 =
                 evals1.GetDirtyBalances();
@@ -498,8 +498,8 @@ namespace Libplanet.Tests.Blocks
                 ActionEvaluator<PolymorphicAction<BaseAction>>.EvaluateBlock(
                     invalidBlock,
                     DateTimeOffset.UtcNow,
-                    ActionEvaluator<PolymorphicAction<BaseAction>>.DefaultAccountStateGetter,
-                    ActionEvaluator<PolymorphicAction<BaseAction>>.DefaultAccountBalanceGetter)
+                    ActionEvaluator<PolymorphicAction<BaseAction>>.NullAccountStateGetter,
+                    ActionEvaluator<PolymorphicAction<BaseAction>>.NullAccountBalanceGetter)
             );
         }
 

@@ -50,12 +50,12 @@ namespace Libplanet.Tests.Action
 
             for (int i = 0; i < repeatCount; ++i)
             {
-                var actionEvaluations = actionEvaluator.EvaluateActions(
+                var actionEvaluations = actionEvaluator.Evaluate(
                     noStateRootBlock,
                     StateCompleterSet<RandomAction>.Reject);
                 generatedRandomNumbers.Add(
                     (Integer)actionEvaluations[0].OutputStates.GetState(address));
-                actionEvaluations = actionEvaluator.EvaluateActions(
+                actionEvaluations = actionEvaluator.Evaluate(
                     stateRootBlock,
                     StateCompleterSet<RandomAction>.Reject);
                 generatedRandomNumbers.Add(
