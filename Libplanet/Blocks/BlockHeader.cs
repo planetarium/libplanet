@@ -338,6 +338,14 @@ namespace Libplanet.Blocks
             return true;
         }
 
+        public override int GetHashCode()
+        {
+            return PreviousHash.GetHashCode() ^
+                TxHash.GetHashCode() ^
+                Hash.GetHashCode() ^
+                StateRootHash.GetHashCode();
+        }
+
         internal static byte[] SerializeForHash(
             int protocolVersion,
             long index,
