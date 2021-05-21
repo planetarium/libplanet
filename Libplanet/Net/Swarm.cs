@@ -684,6 +684,7 @@ namespace Libplanet.Net
                             )
                         );
                     }
+
                     if (lightNode)
                     {
                         _logger.Verbose(
@@ -700,7 +701,7 @@ namespace Libplanet.Net
                         );
                         return;
                     }
-                    else 
+                    else
                     {
                         _logger.Verbose(
                             "Add a block #{BlockIndex} {BlockHash}...",
@@ -729,8 +730,8 @@ namespace Libplanet.Net
                             "to the workspace chain.",
                             block.Index,
                             block.Hash
-                        );                        
-                    }                    
+                        );
+                    }
                 }
 
                 tipCandidate = tempTip;
