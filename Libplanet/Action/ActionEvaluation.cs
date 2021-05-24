@@ -116,7 +116,6 @@ namespace Libplanet.Action
                     signer: signer,
                     txid: txid,
                     miner: minerAddress,
-                    blockHash: blockHash,
                     blockIndex: blockIndex,
                     previousStates: prevStates,
                     randomSeed: randomSeed,

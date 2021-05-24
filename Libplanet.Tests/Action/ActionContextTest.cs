@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
-using Libplanet.Blocks;
 using Libplanet.Store.Trie;
 using Libplanet.Tests.Store.Trie;
 using Libplanet.Tx;
@@ -18,14 +16,12 @@ namespace Libplanet.Tests.Action
         private readonly System.Random _random;
         private readonly Address _address;
         private readonly TxId _txid;
-        private readonly BlockHash _blockHash;
 
         public ActionContextTest()
         {
             _random = new System.Random();
             _address = _random.NextAddress();
             _txid = _random.NextTxId();
-            _blockHash = new BlockHash(_random.NextBytes(HashDigest<SHA256>.Size));
         }
 
         [Fact]
@@ -42,7 +38,6 @@ namespace Libplanet.Tests.Action
                     signer: _address,
                     txid: _txid,
                     miner: _address,
-                    blockHash: _blockHash,
                     blockIndex: 1,
                     previousStates: new DumbAccountStateDelta(),
                     randomSeed: seed
@@ -59,7 +54,6 @@ namespace Libplanet.Tests.Action
                 signer: _address,
                 txid: _txid,
                 miner: _address,
-                blockHash: _blockHash,
                 blockIndex: 1,
                 previousStates: new DumbAccountStateDelta(),
                 randomSeed: 0
@@ -69,7 +63,6 @@ namespace Libplanet.Tests.Action
                 signer: _address,
                 txid: _txid,
                 miner: _address,
-                blockHash: _blockHash,
                 blockIndex: 1,
                 previousStates: new DumbAccountStateDelta(),
                 randomSeed: 0
@@ -79,7 +72,6 @@ namespace Libplanet.Tests.Action
                 signer: _address,
                 txid: _txid,
                 miner: _address,
-                blockHash: _blockHash,
                 blockIndex: 1,
                 previousStates: new DumbAccountStateDelta(),
                 randomSeed: 1
@@ -114,7 +106,6 @@ namespace Libplanet.Tests.Action
                     signer: _address,
                     txid: _txid,
                     miner: _address,
-                    blockHash: _blockHash,
                     blockIndex: 1,
                     previousStates: new DumbAccountStateDelta(),
                     randomSeed: i
@@ -133,7 +124,6 @@ namespace Libplanet.Tests.Action
                 signer: _address,
                 txid: _txid,
                 miner: _address,
-                blockHash: _blockHash,
                 blockIndex: 1,
                 previousStates: new DumbAccountStateDelta(),
                 randomSeed: _random.Next()
@@ -166,7 +156,6 @@ namespace Libplanet.Tests.Action
                 signer: _address,
                 txid: _txid,
                 miner: _address,
-                blockHash: _blockHash,
                 blockIndex: 1,
                 previousStates: new DumbAccountStateDelta(),
                 randomSeed: _random.Next(),
