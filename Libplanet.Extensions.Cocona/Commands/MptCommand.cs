@@ -75,11 +75,12 @@ namespace Libplanet.Extensions.Cocona.Commands
                 HashDigest<SHA256>.FromString(otherStateRootHashHex));
 
             var codec = new Codec();
-            var dictionary = trie.DifferentNodes(otherTrie).ToDictionary(
-                group => group.Key,
-                group => group.ToDictionary(
-                    pair => ByteUtil.Hex(pair.Root.ByteArray),
-                    pair => ByteUtil.Hex(codec.Encode(pair.Value))));
+            Dictionary<string, Dictionary<string, string>> dictionary =
+                trie.DifferentNodes(otherTrie).ToDictionary(
+                    group => group.Key,
+                    group => group.ToDictionary(
+                        pair => ByteUtil.Hex(pair.Root.ByteArray),
+                        pair => ByteUtil.Hex(codec.Encode(pair.Value))));
             Console.Write(JsonSerializer.Serialize(dictionary));
         }
 
