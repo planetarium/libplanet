@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using global::Cocona;
+using Cocona;
 
 namespace Libplanet.Extensions.Cocona
 {
@@ -15,19 +14,74 @@ namespace Libplanet.Extensions.Cocona
             return new CommandExitedException(exitCode);
         }
 
-        public static void PrintTable<T>(T header, IEnumerable<T> rows)
-            where T : ITuple
+        public static void
+            PrintTable<T1>(ValueTuple<T1> header, IEnumerable<ValueTuple<T1>> rows)
+            where T1 : notnull
         {
-            IEnumerable<(int, string)> RowToStrings(T tuple)
+            PrintTable(
+                new object[]
+                {
+                    header.Item1,
+                },
+                rows.Select(row => new object[]
+                {
+                    row.Item1,
+                }));
+        }
+
+        public static void
+            PrintTable<T1, T2>((T1, T2) header, IEnumerable<(T1, T2)> rows)
+            where T1 : notnull
+            where T2 : notnull
+        {
+            PrintTable(
+                new object[]
+                {
+                    header.Item1,
+                    header.Item2,
+                },
+                rows.Select(row => new object[]
+                {
+                    row.Item1,
+                    row.Item2,
+                }));
+        }
+
+        public static void
+            PrintTable<T1, T2, T3>(
+                (T1, T2, T3) header,
+                IEnumerable<(T1, T2, T3)> rows)
+            where T1 : notnull
+            where T2 : notnull
+            where T3 : notnull
+        {
+            PrintTable(
+                new object[]
+                {
+                    header.Item1,
+                    header.Item2,
+                    header.Item3,
+                },
+                rows.Select(row => new object[]
+                {
+                    row.Item1,
+                    row.Item2,
+                    row.Item3,
+                }));
+        }
+
+        private static void PrintTable(object[] header, IEnumerable<object[]> rows)
+        {
+            IEnumerable<(int, string)> RowToStrings(object[] row)
             {
-                return Enumerable.Range(0, tuple.Length)
-                    .Select(i => (i, tuple[i]?.ToString()?.Normalize() ?? string.Empty));
+                return Enumerable.Range(0, row.Length)
+                    .Select(i => (i, row[i]?.ToString()?.Normalize() ?? string.Empty));
             }
 
             // Calculates the column lengths:
-            T[] rowsArray = rows.ToArray();
+            object[][] rowsArray = rows.ToArray();
             int[] columnLengths = RowToStrings(header).Select(pair => pair.Item2.Length).ToArray();
-            foreach (T row in rowsArray)
+            foreach (object[] row in rowsArray)
             {
                 foreach ((int i, string col) in RowToStrings(row))
                 {
@@ -58,7 +112,7 @@ namespace Libplanet.Extensions.Cocona
             Console.Error.Flush();
 
             // Print rows:
-            foreach (T row in rowsArray)
+            foreach (object[] row in rowsArray)
             {
                 foreach ((int i, string col) in RowToStrings(row))
                 {
