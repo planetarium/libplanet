@@ -1,5 +1,7 @@
 #nullable enable
 using Libplanet.Assets;
+using Libplanet.Blockchain;
+using Libplanet.Blocks;
 
 namespace Libplanet.Action
 {
@@ -16,4 +18,11 @@ namespace Libplanet.Action
     /// The <paramref name="address"/>'s balance of the <paramref name="currency"/>.
     /// </returns>
     public delegate FungibleAssetValue AccountBalanceGetter(Address address, Currency currency);
+
+    public delegate FungibleAssetValue BalanceGetter<T>(
+        Address address,
+        Currency currency,
+        BlockHash? hashDigest,
+        FungibleAssetStateCompleter<T> fungibleAssetStateCompleter)
+            where T : IAction, new();
 }

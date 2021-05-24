@@ -1538,7 +1538,7 @@ namespace Libplanet.Tests.Blockchain
                 evaluateActions: false,
                 renderBlocks: true,
                 renderActions: false);
-            var txEvaluations = ActionEvaluator<DumbAction>.EvaluateTransactions(
+            var txEvaluations = ActionEvaluator<DumbAction>.EvaluateTxsGradually(
                 block1,
                 address => _blockChain.GetState(address, block1.PreviousHash),
                 ActionEvaluator<DumbAction>.NullAccountBalanceGetter)

@@ -230,7 +230,7 @@ namespace Libplanet.Tests.Blocks
 
             Block<DumbAction> genesis = MineGenesis<DumbAction>();
             Assert.Empty(
-                ActionEvaluator<DumbAction>.EvaluateTransactions(
+                ActionEvaluator<DumbAction>.EvaluateTxsGradually(
                     genesis,
                     ActionEvaluator<DumbAction>.NullAccountStateGetter,
                     ActionEvaluator<DumbAction>.NullAccountBalanceGetter));
@@ -270,7 +270,7 @@ namespace Libplanet.Tests.Blocks
             }
 
             Block<DumbAction> blockIdx1 = MineNext(genesis, blockIdx1Txs, new byte[] { });
-            var pairs = ActionEvaluator<DumbAction>.EvaluateTransactions(
+            var pairs = ActionEvaluator<DumbAction>.EvaluateTxsGradually(
                 blockIdx1,
                 ActionEvaluator<DumbAction>.NullAccountStateGetter,
                 ActionEvaluator<DumbAction>.NullAccountBalanceGetter).ToImmutableArray();
@@ -384,7 +384,7 @@ namespace Libplanet.Tests.Blocks
             }
 
             Block<DumbAction> blockIdx2 = MineNext(blockIdx1, blockIdx2Txs, new byte[] { });
-            pairs = ActionEvaluator<DumbAction>.EvaluateTransactions(
+            pairs = ActionEvaluator<DumbAction>.EvaluateTxsGradually(
                 blockIdx2,
                 dirty1.GetValueOrDefault,
                 (a, c) => balances1.TryGetValue((a, c), out FungibleAssetValue v)

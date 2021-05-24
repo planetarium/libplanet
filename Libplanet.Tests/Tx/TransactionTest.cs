@@ -574,7 +574,7 @@ namespace Libplanet.Tests.Tx
             {
                 DumbAction.RehearsalRecords.Value =
                     ImmutableList<(Address, string)>.Empty;
-                var evaluations = ActionEvaluator<DumbAction>.EvaluateTransactionGradually(
+                var evaluations = ActionEvaluator<DumbAction>.EvaluateTxGradually(
                     tx,
                     default,
                     1,
@@ -664,7 +664,7 @@ namespace Libplanet.Tests.Tx
 
                 DumbAction.RehearsalRecords.Value =
                     ImmutableList<(Address, string)>.Empty;
-                IAccountStateDelta delta = ActionEvaluator<DumbAction>.EvaluateTransactionResult(
+                IAccountStateDelta delta = ActionEvaluator<DumbAction>.EvaluateTxResult(
                     tx,
                     default,
                     1,
@@ -709,7 +709,7 @@ namespace Libplanet.Tests.Tx
                 DateTimeOffset.UtcNow
             );
             var hash = new BlockHash(GetRandomBytes(32));
-            var nextStates = ActionEvaluator<ThrowException>.EvaluateTransactionResult(
+            var nextStates = ActionEvaluator<ThrowException>.EvaluateTxResult(
                 tx,
                 preEvaluationHash: hash,
                 blockIndex: 123,

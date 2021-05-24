@@ -439,7 +439,7 @@ namespace Libplanet.Tx
                 // parametrize this in the future.
                 BlockHash emptyBlockHash = BlockHash.FromHashDigest(default(HashDigest<SHA256>));
 
-                IAccountStateDelta delta = ActionEvaluator<T>.EvaluateTransactionResult(
+                IAccountStateDelta delta = ActionEvaluator<T>.EvaluateTxResult(
                     tx: new Transaction<T>(
                         nonce,
                         signer,
