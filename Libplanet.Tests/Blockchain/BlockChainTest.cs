@@ -1520,17 +1520,17 @@ namespace Libplanet.Tests.Blockchain
             ).AttachStateRootHash(_blockChain.StateStore, _policy.BlockAction);
 
             var miner = genesis.Miner.GetValueOrDefault();
-            var blockActionEvaluation = _blockChain.ActionEvaluator.EvaluatePolicyBlockAction(
-                genesis,
-                null,
+            var policyBlockActionEvaluation = _blockChain.ActionEvaluator.EvaluatePolicyBlockAction(
+                block1,
+                ImmutableList<ActionEvaluation>.Empty,
                 StateCompleterSet<DumbAction>.Recalculate,
                 null
             );
-            Assert.Equal(_blockChain.Policy.BlockAction, blockActionEvaluation.Action);
+            Assert.Equal(_blockChain.Policy.BlockAction, policyBlockActionEvaluation.Action);
             Assert.Equal(
                 (Integer)2,
-                (Integer)blockActionEvaluation.OutputStates.GetState(miner));
-            Assert.True(blockActionEvaluation.InputContext.BlockAction);
+                (Integer)policyBlockActionEvaluation.OutputStates.GetState(miner));
+            Assert.True(policyBlockActionEvaluation.InputContext.BlockAction);
             _blockChain.ExecuteActions(block1);
             _blockChain.Append(
                 block1,
@@ -1543,14 +1543,16 @@ namespace Libplanet.Tests.Blockchain
                 address => _blockChain.GetState(address, block1.PreviousHash),
                 ActionEvaluator<DumbAction>.DefaultAccountBalanceGetter)
                 .Select(te => te.Item2).ToList();
-            blockActionEvaluation = _blockChain.ActionEvaluator.EvaluatePolicyBlockAction(
+            policyBlockActionEvaluation = _blockChain.ActionEvaluator.EvaluatePolicyBlockAction(
                 block1,
                 txEvaluations,
                 StateCompleterSet<DumbAction>.Recalculate,
                 null
             );
 
-            Assert.Equal((Integer)2, (Integer)blockActionEvaluation.OutputStates.GetState(miner));
+            Assert.Equal(
+                (Integer)2,
+                (Integer)policyBlockActionEvaluation.OutputStates.GetState(miner));
         }
 
         [Fact]
