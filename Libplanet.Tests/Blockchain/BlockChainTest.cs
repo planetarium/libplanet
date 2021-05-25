@@ -1546,7 +1546,7 @@ namespace Libplanet.Tests.Blockchain
                 evaluateActions: false,
                 renderBlocks: true,
                 renderActions: false);
-            var txEvaluations = ActionEvaluator<DumbAction>.EvaluateTxsGradually(
+            var txEvaluations = _blockChain.ActionEvaluator.EvaluateTxsGradually(
                 block1,
                 address => _blockChain.GetState(address, block1.PreviousHash),
                 ActionEvaluator<DumbAction>.NullAccountBalanceGetter)
@@ -1662,7 +1662,7 @@ namespace Libplanet.Tests.Blockchain
 
             // Build the store has incomplete states
             Block<DumbAction> b = chain.Genesis;
-            ActionEvaluation[] evals = ActionEvaluator<DumbAction>.EvaluateBlock(
+            ActionEvaluation[] evals = chain.ActionEvaluator.EvaluateBlock(
                 b,
                 DateTimeOffset.UtcNow,
                 ActionEvaluator<DumbAction>.NullAccountStateGetter,
@@ -1690,7 +1690,7 @@ namespace Libplanet.Tests.Blockchain
                             new[] { tx },
                             blockInterval: TimeSpan.FromSeconds(10))
                         .AttachStateRootHash(stateStore, blockPolicy.BlockAction);
-                    dirty = ActionEvaluator<DumbAction>.EvaluateBlock(
+                    dirty = chain.ActionEvaluator.EvaluateBlock(
                         b,
                         DateTimeOffset.UtcNow,
                         dirty.GetValueOrDefault,

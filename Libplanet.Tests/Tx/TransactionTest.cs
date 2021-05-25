@@ -548,41 +548,43 @@ namespace Libplanet.Tests.Tx
                     transferFrom: addresses[0],
                     transferTo: addresses[1],
                     transferAmount: 5,
-                    recordRandom: true
-                ),
+                    recordRandom: true),
                 new DumbAction(
                     targetAddress: addresses[1],
                     item: "1",
                     transferFrom: addresses[2],
                     transferTo: addresses[1],
                     transferAmount: 10,
-                    recordRandom: true
-                ),
+                    recordRandom: true),
                 new DumbAction(
                     targetAddress: addresses[0],
                     item: "2",
                     transferFrom: addresses[1],
                     transferTo: addresses[0],
                     transferAmount: 10,
-                    recordRandom: true
-                ),
+                    recordRandom: true),
                 new DumbAction(addresses[2], "R", true, recordRandom: true),
             };
+            ActionEvaluator<DumbAction> actionEvaluator = new ActionEvaluator<DumbAction>(
+                policyBlockAction: null,
+                stateGetter: ActionEvaluator<DumbAction>.NullStateGetter,
+                balanceGetter: ActionEvaluator<DumbAction>.NullBalanceGetter,
+                trieGetter: null);
+
             Transaction<DumbAction> tx =
                 Transaction<DumbAction>.Create(0, _fx.PrivateKey1, null, actions);
             foreach (bool rehearsal in new[] { false, true })
             {
                 DumbAction.RehearsalRecords.Value =
                     ImmutableList<(Address, string)>.Empty;
-                var evaluations = ActionEvaluator<DumbAction>.EvaluateTxGradually(
+                var evaluations = actionEvaluator.EvaluateTxGradually(
                     tx,
                     default,
                     1,
                     new AccountStateDeltaImpl(
                         address => null,
                         (a, c) => new FungibleAssetValue(c),
-                        tx.Signer
-                    ),
+                        tx.Signer),
                     addresses[0],
                     rehearsal: rehearsal).ToImmutableArray();
 
@@ -616,55 +618,47 @@ namespace Libplanet.Tests.Tx
                     Assert.Equal(rehearsal, eval.InputContext.Rehearsal);
                     Assert.Equal(
                         (Integer)eval.OutputStates.GetState(
-                            DumbAction.RandomRecordsAddress
-                        ),
-                        (Integer)eval.InputContext.Random.Next()
-                    );
+                            DumbAction.RandomRecordsAddress),
+                        (Integer)eval.InputContext.Random.Next());
                     ActionEvaluation prevEval = i > 0 ? evaluations[i - 1] : null;
                     Assert.Equal(
                         prevEval is null
                             ? initStates
                             : addresses.Select(prevEval.OutputStates.GetState),
-                        addresses.Select(eval.InputContext.PreviousStates.GetState)
-                    );
+                        addresses.Select(eval.InputContext.PreviousStates.GetState));
                     Assert.Equal(
                         expectedStates[i],
                         addresses.Select(eval.OutputStates.GetState)
-                            .Select(x => x is Text t ? t.Value : null)
-                    );
+                            .Select(x => x is Text t ? t.Value : null));
                     Assert.Equal(
                         prevEval is null
                             ? initBalances
                             : addresses.Select(a =>
                                 prevEval.OutputStates.GetBalance(a, currency).RawValue),
                         addresses.Select(
-                            a => eval.InputContext.PreviousStates.GetBalance(a, currency).RawValue
-                        )
-                    );
+                            a => eval.InputContext.PreviousStates
+                                    .GetBalance(a, currency).RawValue));
                     Assert.Equal(
                         expectedBalances[i],
-                        addresses.Select(a => eval.OutputStates.GetBalance(a, currency).RawValue)
-                    );
+                        addresses.Select(a => eval.OutputStates.GetBalance(a, currency).RawValue));
                 }
 
                 if (rehearsal)
                 {
                     Assert.Contains(
                         (addresses[2], "R"),
-                        DumbAction.RehearsalRecords.Value
-                    );
+                        DumbAction.RehearsalRecords.Value);
                 }
                 else
                 {
                     Assert.DoesNotContain(
                         (addresses[2], "R"),
-                        DumbAction.RehearsalRecords.Value
-                    );
+                        DumbAction.RehearsalRecords.Value);
                 }
 
                 DumbAction.RehearsalRecords.Value =
                     ImmutableList<(Address, string)>.Empty;
-                IAccountStateDelta delta = ActionEvaluator<DumbAction>.EvaluateTxResult(
+                IAccountStateDelta delta = actionEvaluator.EvaluateTxResult(
                     tx,
                     default,
                     1,
@@ -676,22 +670,19 @@ namespace Libplanet.Tests.Tx
                     rehearsal: rehearsal);
                 Assert.Equal(
                     evaluations[3].OutputStates.GetUpdatedStates(),
-                    delta.GetUpdatedStates()
-                );
+                    delta.GetUpdatedStates());
 
                 if (rehearsal)
                 {
                     Assert.Contains(
                         (addresses[2], "R"),
-                        DumbAction.RehearsalRecords.Value
-                    );
+                        DumbAction.RehearsalRecords.Value);
                 }
                 else
                 {
                     Assert.DoesNotContain(
                         (addresses[2], "R"),
-                        DumbAction.RehearsalRecords.Value
-                    );
+                        DumbAction.RehearsalRecords.Value);
                 }
             }
         }
@@ -709,7 +700,12 @@ namespace Libplanet.Tests.Tx
                 DateTimeOffset.UtcNow
             );
             var hash = new BlockHash(GetRandomBytes(32));
-            var nextStates = ActionEvaluator<ThrowException>.EvaluateTxResult(
+            var actionEvaluator = new ActionEvaluator<ThrowException>(
+                policyBlockAction: null,
+                stateGetter: ActionEvaluator<ThrowException>.NullStateGetter,
+                balanceGetter: ActionEvaluator<ThrowException>.NullBalanceGetter,
+                trieGetter: null);
+            var nextStates = actionEvaluator.EvaluateTxResult(
                 tx,
                 preEvaluationHash: hash,
                 blockIndex: 123,

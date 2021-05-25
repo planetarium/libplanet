@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Bencodex.Types;
 using Libplanet.Action;
-using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
@@ -60,7 +59,11 @@ namespace Libplanet.Tests.Action
                 timestamp: timestamp,
                 transactions: txs).AttachStateRootHash(stateStore, null);
             var actionEvaluator =
-                new ActionEvaluator<RandomAction>(null, NullStateGetter, NullBalanceGetter, null);
+                new ActionEvaluator<RandomAction>(
+                    policyBlockAction: null,
+                    stateGetter: ActionEvaluator<RandomAction>.NullStateGetter,
+                    balanceGetter: ActionEvaluator<RandomAction>.NullBalanceGetter,
+                    trieGetter: null);
             var generatedRandomNumbers = new List<int>();
 
             Assert.NotEqual(stateRootBlock.Hash, noStateRootBlock.Hash);
@@ -210,18 +213,5 @@ namespace Libplanet.Tests.Action
                 }
             }
         }
-
-        private IValue NullStateGetter<T>(
-            Address address,
-            BlockHash? hashDigest,
-            StateCompleter<T> stateCompleter)
-            where T : IAction, new() => null;
-
-        private FungibleAssetValue NullBalanceGetter<T>(
-            Address address,
-            Currency currency,
-            BlockHash? hashDigest,
-            FungibleAssetStateCompleter<T> fungibleAssetStateCompleter)
-            where T : IAction, new() => new FungibleAssetValue(currency);
     }
 }

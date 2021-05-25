@@ -430,8 +430,7 @@ namespace Libplanet.Tx
                 genesisHash,
                 updatedAddresses,
                 ts,
-                actionsArray
-            ).Serialize(false);
+                actionsArray).Serialize(false);
 
             if (!actionsArray.IsEmpty)
             {
@@ -439,27 +438,18 @@ namespace Libplanet.Tx
                 // parametrize this in the future.
                 BlockHash emptyBlockHash = BlockHash.FromHashDigest(default(HashDigest<SHA256>));
 
-                IAccountStateDelta delta = ActionEvaluator<T>.EvaluateTxResult(
-                    tx: new Transaction<T>(
+                var evalUpdatedAddresses = ActionEvaluator<T>.GetUpdatedAddresses(
+                    new Transaction<T>(
                         nonce,
                         signer,
                         publicKey,
                         genesisHash,
                         updatedAddresses,
                         ts,
-                        actionsArray),
-                    preEvaluationHash: emptyBlockHash,
-                    blockIndex: 0,
-                    previousStates: new AccountStateDeltaImpl(
-                        ActionEvaluator<T>.NullAccountStateGetter,
-                        ActionEvaluator<T>.NullAccountBalanceGetter,
-                        signer),
-                    minerAddress: signer,
-                    rehearsal: true);
-                if (!updatedAddresses.IsSupersetOf(delta.UpdatedAddresses))
+                        actionsArray));
+                if (!updatedAddresses.IsSupersetOf(evalUpdatedAddresses))
                 {
-                    updatedAddresses =
-                        updatedAddresses.Union(delta.UpdatedAddresses);
+                    updatedAddresses = updatedAddresses.Union(evalUpdatedAddresses);
                     payload = new Transaction<T>(
                         nonce,
                         signer,
@@ -467,8 +457,7 @@ namespace Libplanet.Tx
                         genesisHash,
                         updatedAddresses,
                         ts,
-                        actionsArray
-                    ).Serialize(false);
+                        actionsArray).Serialize(false);
                 }
             }
 
@@ -481,8 +470,7 @@ namespace Libplanet.Tx
                 updatedAddresses,
                 ts,
                 actionsArray,
-                sig
-            );
+                sig);
         }
 
         /// <summary>

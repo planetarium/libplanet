@@ -216,7 +216,6 @@ namespace Libplanet.Tests.Blocks
                 _fx.TxFixture.Address4,
                 _fx.TxFixture.Address5,
             };
-
             DumbAction MakeAction(Address address, char identifier, Address? transferTo = null) =>
                 new DumbAction(
                     targetAddress: address,
@@ -225,12 +224,15 @@ namespace Libplanet.Tests.Blocks
                     recordRandom: true,
                     transfer: transferTo is Address to
                         ? Tuple.Create<Address, Address, BigInteger>(address, to, 5)
-                        : null
-                );
-
+                        : null);
             Block<DumbAction> genesis = MineGenesis<DumbAction>();
+            ActionEvaluator<DumbAction> actionEvaluator = new ActionEvaluator<DumbAction>(
+                policyBlockAction: null,
+                stateGetter: ActionEvaluator<DumbAction>.NullStateGetter,
+                balanceGetter: ActionEvaluator<DumbAction>.NullBalanceGetter,
+                trieGetter: null);
             Assert.Empty(
-                ActionEvaluator<DumbAction>.EvaluateTxsGradually(
+                actionEvaluator.EvaluateTxsGradually(
                     genesis,
                     ActionEvaluator<DumbAction>.NullAccountStateGetter,
                     ActionEvaluator<DumbAction>.NullAccountBalanceGetter));
@@ -246,22 +248,19 @@ namespace Libplanet.Tests.Blocks
                         MakeAction(addresses[0], 'A', addresses[1]),
                         MakeAction(addresses[1], 'B', addresses[2]),
                     },
-                    timestamp: DateTimeOffset.MinValue.AddSeconds(1)
-                ),
+                    timestamp: DateTimeOffset.MinValue.AddSeconds(1)),
                 Transaction<DumbAction>.Create(
                     0,
                     _fx.TxFixture.PrivateKey2,
                     _fx.Genesis.Hash,
                     new[] { MakeAction(addresses[2], 'C', addresses[3]) },
-                    timestamp: DateTimeOffset.MinValue.AddSeconds(2)
-                ),
+                    timestamp: DateTimeOffset.MinValue.AddSeconds(2)),
                 Transaction<DumbAction>.Create(
                     0,
                     _fx.TxFixture.PrivateKey3,
                     _fx.Genesis.Hash,
                     new DumbAction[0],
-                    timestamp: DateTimeOffset.MinValue.AddSeconds(8)
-                ),
+                    timestamp: DateTimeOffset.MinValue.AddSeconds(8)),
             };
             int i = 0;
             foreach (Transaction<DumbAction> tx in blockIdx1Txs)
@@ -270,7 +269,7 @@ namespace Libplanet.Tests.Blocks
             }
 
             Block<DumbAction> blockIdx1 = MineNext(genesis, blockIdx1Txs, new byte[] { });
-            var pairs = ActionEvaluator<DumbAction>.EvaluateTxsGradually(
+            var pairs = actionEvaluator.EvaluateTxsGradually(
                 blockIdx1,
                 ActionEvaluator<DumbAction>.NullAccountStateGetter,
                 ActionEvaluator<DumbAction>.NullAccountBalanceGetter).ToImmutableArray();
@@ -282,9 +281,7 @@ namespace Libplanet.Tests.Blocks
                 (0, 1, new[] { "A", "B", "C", null, null }, _fx.TxFixture.Address1),
             };
             Assert.Equal(expectations.Length, pairs.Length);
-            foreach (
-                var (expect, pair) in expectations.Zip(pairs, ValueTuple.Create)
-            )
+            foreach (var (expect, pair) in expectations.Zip(pairs, ValueTuple.Create))
             {
                 ActionEvaluation eval = pair.Item2;
                 Assert.Equal(blockIdx1Txs[expect.Item1], pair.Item1);
@@ -296,17 +293,15 @@ namespace Libplanet.Tests.Blocks
                 randomValue = eval.InputContext.Random.Next();
                 Assert.Equal(
                     (Integer)eval.OutputStates.GetState(
-                        DumbAction.RandomRecordsAddress
-                    ),
-                    (Integer)randomValue
-                );
+                        DumbAction.RandomRecordsAddress),
+                    (Integer)randomValue);
                 Assert.Equal(
                     expect.Item3,
                     addresses.Select(eval.OutputStates.GetState)
                         .Select(x => x is Text t ? t.Value : null));
             }
 
-            ActionEvaluation[] evals1 = ActionEvaluator<DumbAction>.EvaluateBlock(
+            ActionEvaluation[] evals1 = actionEvaluator.EvaluateBlock(
                 blockIdx1,
                 DateTimeOffset.UtcNow,
                 ActionEvaluator<DumbAction>.NullAccountStateGetter,
@@ -322,8 +317,7 @@ namespace Libplanet.Tests.Blocks
                     [addresses[2]] = (Text)"C",
                     [DumbAction.RandomRecordsAddress] = (Integer)randomValue,
                 }.ToImmutableDictionary(),
-                dirty1
-            );
+                dirty1);
             Assert.Equal(
                 new Dictionary<(Address, Currency), FungibleAssetValue>
                 {
@@ -336,8 +330,7 @@ namespace Libplanet.Tests.Blocks
                     [(addresses[3], DumbAction.DumbCurrency)] =
                         new FungibleAssetValue(DumbAction.DumbCurrency, 5, 0),
                 }.ToImmutableDictionary(),
-                balances1
-            );
+                balances1);
 
             Transaction<DumbAction>[] blockIdx2Txs =
             {
@@ -349,15 +342,13 @@ namespace Libplanet.Tests.Blocks
                     _fx.TxFixture.PrivateKey1,
                     _fx.Genesis.Hash,
                     new[] { MakeAction(addresses[0], 'D') },
-                    timestamp: DateTimeOffset.MinValue.AddSeconds(1)
-                ),
+                    timestamp: DateTimeOffset.MinValue.AddSeconds(1)),
                 Transaction<DumbAction>.Create(
                     0,
                     _fx.TxFixture.PrivateKey2,
                     _fx.Genesis.Hash,
                     new[] { MakeAction(addresses[3], 'E') },
-                    timestamp: DateTimeOffset.MinValue.AddSeconds(3)
-                ),
+                    timestamp: DateTimeOffset.MinValue.AddSeconds(3)),
                 Transaction<DumbAction>.Create(
                     0,
                     _fx.TxFixture.PrivateKey3,
@@ -371,11 +362,9 @@ namespace Libplanet.Tests.Blocks
                             transferTo: addresses[4],
                             transferAmount: 8,
                             recordRehearsal: true,
-                            recordRandom: true
-                        ),
+                            recordRandom: true),
                     },
-                    timestamp: DateTimeOffset.MinValue.AddSeconds(5)
-                ),
+                    timestamp: DateTimeOffset.MinValue.AddSeconds(5)),
             };
             i = 0;
             foreach (Transaction<DumbAction> tx in blockIdx2Txs)
@@ -384,7 +373,7 @@ namespace Libplanet.Tests.Blocks
             }
 
             Block<DumbAction> blockIdx2 = MineNext(blockIdx1, blockIdx2Txs, new byte[] { });
-            pairs = ActionEvaluator<DumbAction>.EvaluateTxsGradually(
+            pairs = actionEvaluator.EvaluateTxsGradually(
                 blockIdx2,
                 dirty1.GetValueOrDefault,
                 (a, c) => balances1.TryGetValue((a, c), out FungibleAssetValue v)
@@ -408,8 +397,7 @@ namespace Libplanet.Tests.Blocks
                 Assert.Equal(blockIdx2Txs[expect.Item1], pair.Item1);
                 Assert.Equal(
                     blockIdx2Txs[expect.Item1].Actions[expect.Item2],
-                    eval.Action
-                );
+                    eval.Action);
                 Assert.Equal(expect.Item4, eval.InputContext.Signer);
                 Assert.Equal(GenesisMinerAddress, eval.InputContext.Miner);
                 Assert.Equal(blockIdx2.Index, eval.InputContext.BlockIndex);
@@ -423,13 +411,11 @@ namespace Libplanet.Tests.Blocks
                 randomValue = eval.InputContext.Random.Next();
                 Assert.Equal(
                     eval.OutputStates.GetState(
-                        DumbAction.RandomRecordsAddress
-                    ),
-                    (Integer)randomValue
-                );
+                        DumbAction.RandomRecordsAddress),
+                    (Integer)randomValue);
             }
 
-            var evals2 = ActionEvaluator<DumbAction>.EvaluateBlock(
+            var evals2 = actionEvaluator.EvaluateBlock(
                 blockIdx2,
                 DateTimeOffset.UtcNow,
                 dirty1.GetValueOrDefault,
@@ -447,8 +433,7 @@ namespace Libplanet.Tests.Blocks
                     [addresses[4]] = (Text)"RecordRehearsal:False",
                     [DumbAction.RandomRecordsAddress] = (Integer)randomValue,
                 }.ToImmutableDictionary(),
-                dirty2
-            );
+                dirty2);
         }
 
         [Fact]
@@ -494,13 +479,17 @@ namespace Libplanet.Tests.Blocks
                     invalidTx,
                 }
             );
+            var actionEvaluator = new ActionEvaluator<PolymorphicAction<BaseAction>>(
+                policyBlockAction: null,
+                stateGetter: ActionEvaluator<PolymorphicAction<BaseAction>>.NullStateGetter,
+                balanceGetter: ActionEvaluator<PolymorphicAction<BaseAction>>.NullBalanceGetter,
+                trieGetter: null);
             Assert.Throws<InvalidTxUpdatedAddressesException>(() =>
-                ActionEvaluator<PolymorphicAction<BaseAction>>.EvaluateBlock(
+                actionEvaluator.EvaluateBlock(
                     invalidBlock,
                     DateTimeOffset.UtcNow,
                     ActionEvaluator<PolymorphicAction<BaseAction>>.NullAccountStateGetter,
-                    ActionEvaluator<PolymorphicAction<BaseAction>>.NullAccountBalanceGetter)
-            );
+                    ActionEvaluator<PolymorphicAction<BaseAction>>.NullAccountBalanceGetter));
         }
 
         [Fact]
