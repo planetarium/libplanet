@@ -42,7 +42,7 @@ namespace Libplanet.Action
         private readonly BalanceGetter<T> _balanceGetter;
         private readonly Func<BlockHash, ITrie>? _trieGetter;
 
-        internal ActionEvaluator(
+        public ActionEvaluator(
             IAction? policyBlockAction,
             StateGetter<T> stateGetter,
             BalanceGetter<T> balanceGetter,
@@ -56,99 +56,52 @@ namespace Libplanet.Action
         }
 
         /// <summary>
-        /// Executes every <see cref="IAction"/> in <see cref="Block{T}.Transactions"/>
-        /// and gets result states of each step of every <see cref="Transaction{T}"/>.
-        /// <para>It throws an <see cref="InvalidBlockException"/> or
-        /// an <see cref="InvalidTxException"/> if there is any
-        /// integrity error.</para>
-        /// <para>Otherwise it enumerates an <see cref="ActionEvaluation"/>
-        /// for each <see cref="IAction"/>.</para>
+        /// Main entry point for evaluating a <see cref="Block{T}"/> instance.
+        /// <para>Executes every <see cref="IAction"/> in <see cref="Block{T}.Transactions"/>
+        /// and <see cref="IBlockPolicy{T}.BlockAction"/>.</para>
+        /// <para>Mainly calls <see cref="EvaluateBlock"/>
+        /// and appends the result of <see cref="EvaluatePolicyBlockAction"/> at the end.</para>
         /// </summary>
-        /// <param name="block">A <see cref="Block{T}"/> instance to evaluate.</param>
-        /// <param name="currentTime">The current time to validate
-        /// time-wise conditions.</param>
-        /// <param name="accountStateGetter">An <see cref="AccountStateGetter"/> delegate to get
-        /// a previous state. This affects the execution of <see cref="Transaction{T}.Actions"/>.
-        /// </param>
-        /// <param name="accountBalanceGetter">An <see cref="AccountBalanceGetter"/> delegate to
-        /// get previous account balance. This affects the execution of
-        /// <see cref="Transaction{T}.Actions"/>.
-        /// </param>
-        /// <param name="previousBlockStatesTrie">The trie to contain states at previous block.
-        /// </param>
-        /// <returns>An <see cref="ActionEvaluation"/> for each
-        /// <see cref="IAction"/>.</returns>
-        /// <exception cref="InvalidBlockHashException">Thrown when
-        /// the <paramref name="block.Hash"/> is invalid.</exception>
-        /// <exception cref="InvalidBlockTimestampException">Thrown when
-        /// the <paramref name="block.Timestamp"/> is invalid, for example, it is the far
-        /// future than the given <paramref name="currentTime"/>.</exception>
-        /// <exception cref="InvalidBlockIndexException">Thrown when
-        /// the <paramref name="block.Index"/>is invalid, for example, it is a negative
-        /// integer.</exception>
-        /// <exception cref="InvalidBlockDifficultyException">Thrown when
-        /// the <paramref name="block.Difficulty"/> is not properly configured,
-        /// for example, it is too easy.</exception>
-        /// <exception cref="InvalidBlockPreviousHashException">Thrown when
-        /// <paramref name="block.PreviousHash"/> is invalid so that
-        /// the <see cref="Block{T}"/>s are not continuous.</exception>
-        /// <exception cref="InvalidBlockNonceException">Thrown when
-        /// the <paramref name="block.Nonce"/> does not satisfy its
-        /// <paramref name="block.Difficulty"/> level.</exception>
-        /// <exception cref="InvalidBlockTxHashException">Thrown when
-        /// the <paramref name="block.TxHash" /> does not match with its
-        /// <paramref name="block.Transactions"/>.</exception>
-        /// <exception cref="InvalidTxUpdatedAddressesException">Thrown when
-        /// any <see cref="IAction"/> of <paramref name="block.Transactions"/> tries
-        /// to update the states of <see cref="Address"/>es not included
-        /// in <see cref="Transaction{T}.UpdatedAddresses"/>.</exception>
-        /// <exception cref="InvalidTxSignatureException">Thrown when its
-        /// <see cref="Transaction{T}.Signature"/> is invalid or not signed by
-        /// the account who corresponds to its <see cref="PublicKey"/>.
-        /// </exception>
-        /// <exception cref="InvalidTxPublicKeyException">Thrown when its
-        /// <see cref="Transaction{T}.Signer"/> is not derived from its
-        /// <see cref="Transaction{T}.PublicKey"/>.</exception>
-        /// <remarks>Publicly exposed for benchmarking.</remarks>
+        /// <param name="block">The <see cref="Block{T}"/> instance to evaluate.</param>
+        /// <param name="stateCompleterSet">The <see cref="StateCompleterSet{T}"/> to use.</param>
+        /// <returns>A list of <see cref="ActionEvaluation"/>s for every <see cref="IAction"/>
+        /// related to given <paramref name="block"/>.</returns>
+        /// <seealso cref="EvaluateBlock"/>
+        /// <seealso cref="EvaluatePolicyBlockAction"/>
         [Pure]
-        public IEnumerable<ActionEvaluation> EvaluateBlock(
+        public IReadOnlyList<ActionEvaluation> Evaluate(
             Block<T> block,
-            DateTimeOffset currentTime,
-            AccountStateGetter accountStateGetter,
-            AccountBalanceGetter accountBalanceGetter,
-            ITrie? previousBlockStatesTrie = null)
+            StateCompleterSet<T> stateCompleterSet)
         {
-            // FIXME: Probably not the best place to have Validate().
-            block.Validate(currentTime);
+            var (accountStateGetter, accountBalanceGetter) = GetAccountGettersPair(
+                block: block,
+                stateCompleterSet: stateCompleterSet);
+            ITrie? previousBlockStatesTrie =
+                !(_trieGetter is null) && block.PreviousHash is { } h
+                    ? _trieGetter(h)
+                    : null;
 
-            IEnumerable<Tuple<Transaction<T>, ActionEvaluation>> txEvaluationPairs =
-                EvaluateTxsGradually(
-                    block, accountStateGetter, accountBalanceGetter, previousBlockStatesTrie)
-                    .ToArray();
-            var updatedTxAddressPairs = txEvaluationPairs
-                    .GroupBy(tuple => tuple.Item1)
-                    .Select(
-                        grp => (
-                            grp.Key,
-                            grp.Last().Item2.OutputStates.UpdatedAddresses));
-            foreach (
-                (Transaction<T> tx, IImmutableSet<Address> updatedAddresses)
-                in updatedTxAddressPairs)
+            ImmutableList<ActionEvaluation> evaluations = EvaluateBlock(
+                block: block,
+                currentTime: DateTimeOffset.UtcNow,
+                accountStateGetter: accountStateGetter,
+                accountBalanceGetter: accountBalanceGetter,
+                previousBlockStatesTrie: previousBlockStatesTrie).ToImmutableList();
+
+            if (_policyBlockAction is null)
             {
-                if (!tx.UpdatedAddresses.IsSupersetOf(updatedAddresses))
-                {
-                    const string msg =
-                        "Actions in the transaction try to update " +
-                        "the addresses not granted.";
-                    throw new InvalidTxUpdatedAddressesException(
-                        tx.Id,
-                        tx.UpdatedAddresses,
-                        updatedAddresses,
-                        msg);
-                }
+                return evaluations;
             }
-
-            return txEvaluationPairs.Select(te => te.Item2);
+            else
+            {
+                return evaluations.Add(
+                    EvaluatePolicyBlockAction(
+                        block: block,
+                        evaluations: evaluations,
+                        accountStateGetter: accountStateGetter,
+                        accountBalanceGetter: accountBalanceGetter,
+                        previousBlockStatesTrie: previousBlockStatesTrie));
+            }
         }
 
         internal static IImmutableSet<Address> GetUpdatedAddresses(Transaction<T> tx)
@@ -161,7 +114,7 @@ namespace Libplanet.Action
                     ActionEvaluator<T>.NullAccountStateGetter,
                     ActionEvaluator<T>.NullAccountBalanceGetter,
                     tx.Signer),
-                minerAddress: tx.Signer,
+                miner: tx.Signer,
                 rehearsal: true).UpdatedAddresses;
         }
 
@@ -179,7 +132,7 @@ namespace Libplanet.Action
         /// <param name="previousStates">The states immediately before <paramref name="actions"/>
         /// being executed.  Note that its <see cref="IAccountStateDelta.UpdatedAddresses"/> are
         /// remained to the returned next states.</param>
-        /// <param name="minerAddress">An address of block miner.</param>
+        /// <param name="miner">An address of block miner.</param>
         /// <param name="signer">Signer of the <paramref name="actions"/>.</param>
         /// <param name="signature"><see cref="Transaction{T}"/> signature used to generate random
         /// seeds.</param>
@@ -202,7 +155,7 @@ namespace Libplanet.Action
             long blockIndex,
             TxId? txid,
             IAccountStateDelta previousStates,
-            Address minerAddress,
+            Address miner,
             Address signer,
             byte[] signature,
             IImmutableList<IAction> actions,
@@ -217,7 +170,7 @@ namespace Libplanet.Action
                 new ActionContext(
                     signer: signer,
                     txid: txid,
-                    miner: minerAddress,
+                    miner: miner,
                     blockIndex: blockIndex,
                     previousStates: prevStates,
                     randomSeed: randomSeed,
@@ -320,57 +273,99 @@ namespace Libplanet.Action
         }
 
         /// <summary>
-        /// Main entry point for evaluating a <see cref="Block{T}"/> instance.
-        /// <para>Executes every <see cref="IAction"/> in <see cref="Block{T}.Transactions"/>
-        /// and <see cref="IBlockPolicy{T}.BlockAction"/>.</para>
-        /// <para>Mainly calls <see cref="EvaluateBlock"/>
-        /// and appends the result of <see cref="EvaluatePolicyBlockAction"/> at the end.</para>
+        /// Executes every <see cref="IAction"/> in <see cref="Block{T}.Transactions"/>
+        /// and gets result states of each step of every <see cref="Transaction{T}"/>.
+        /// <para>It throws an <see cref="InvalidBlockException"/> or
+        /// an <see cref="InvalidTxException"/> if there is any
+        /// integrity error.</para>
+        /// <para>Otherwise it enumerates an <see cref="ActionEvaluation"/>
+        /// for each <see cref="IAction"/>.</para>
         /// </summary>
-        /// <param name="block">The <see cref="Block{T}"/> instance to evaluate.</param>
-        /// <param name="stateCompleterSet">The <see cref="StateCompleterSet{T}"/> to use.</param>
-        /// <returns>A list of <see cref="ActionEvaluation"/>s for every <see cref="IAction"/>
-        /// related to given <paramref name="block"/>.</returns>
-        /// <seealso cref="EvaluateBlock"/>
-        /// <seealso cref="EvaluatePolicyBlockAction"/>
+        /// <param name="block">A <see cref="Block{T}"/> instance to evaluate.</param>
+        /// <param name="currentTime">The current time to validate
+        /// time-wise conditions.</param>
+        /// <param name="accountStateGetter">An <see cref="AccountStateGetter"/> delegate to get
+        /// a previous state. This affects the execution of <see cref="Transaction{T}.Actions"/>.
+        /// </param>
+        /// <param name="accountBalanceGetter">An <see cref="AccountBalanceGetter"/> delegate to
+        /// get previous account balance. This affects the execution of
+        /// <see cref="Transaction{T}.Actions"/>.
+        /// </param>
+        /// <param name="previousBlockStatesTrie">The trie to contain states at previous block.
+        /// </param>
+        /// <returns>An <see cref="ActionEvaluation"/> for each
+        /// <see cref="IAction"/>.</returns>
+        /// <exception cref="InvalidBlockHashException">Thrown when
+        /// the <paramref name="block.Hash"/> is invalid.</exception>
+        /// <exception cref="InvalidBlockTimestampException">Thrown when
+        /// the <paramref name="block.Timestamp"/> is invalid, for example, it is the far
+        /// future than the given <paramref name="currentTime"/>.</exception>
+        /// <exception cref="InvalidBlockIndexException">Thrown when
+        /// the <paramref name="block.Index"/>is invalid, for example, it is a negative
+        /// integer.</exception>
+        /// <exception cref="InvalidBlockDifficultyException">Thrown when
+        /// the <paramref name="block.Difficulty"/> is not properly configured,
+        /// for example, it is too easy.</exception>
+        /// <exception cref="InvalidBlockPreviousHashException">Thrown when
+        /// <paramref name="block.PreviousHash"/> is invalid so that
+        /// the <see cref="Block{T}"/>s are not continuous.</exception>
+        /// <exception cref="InvalidBlockNonceException">Thrown when
+        /// the <paramref name="block.Nonce"/> does not satisfy its
+        /// <paramref name="block.Difficulty"/> level.</exception>
+        /// <exception cref="InvalidBlockTxHashException">Thrown when
+        /// the <paramref name="block.TxHash" /> does not match with its
+        /// <paramref name="block.Transactions"/>.</exception>
+        /// <exception cref="InvalidTxUpdatedAddressesException">Thrown when
+        /// any <see cref="IAction"/> of <paramref name="block.Transactions"/> tries
+        /// to update the states of <see cref="Address"/>es not included
+        /// in <see cref="Transaction{T}.UpdatedAddresses"/>.</exception>
+        /// <exception cref="InvalidTxSignatureException">Thrown when its
+        /// <see cref="Transaction{T}.Signature"/> is invalid or not signed by
+        /// the account who corresponds to its <see cref="PublicKey"/>.
+        /// </exception>
+        /// <exception cref="InvalidTxPublicKeyException">Thrown when its
+        /// <see cref="Transaction{T}.Signer"/> is not derived from its
+        /// <see cref="Transaction{T}.PublicKey"/>.</exception>
+        /// <remarks>Publicly exposed for benchmarking.</remarks>
         [Pure]
-        internal IReadOnlyList<ActionEvaluation> Evaluate(
+        internal IEnumerable<ActionEvaluation> EvaluateBlock(
             Block<T> block,
-            StateCompleterSet<T> stateCompleterSet)
+            DateTimeOffset currentTime,
+            AccountStateGetter accountStateGetter,
+            AccountBalanceGetter accountBalanceGetter,
+            ITrie? previousBlockStatesTrie = null)
         {
-            var (accountStateGetter, accountBalanceGetter) = GetAccountGettersPair(
-                block: block,
-                evaluations: ImmutableArray<ActionEvaluation>.Empty,
-                stateCompleterSet: stateCompleterSet);
-            ITrie? previousBlockStatesTrie =
-                !(_trieGetter is null) && block.PreviousHash is { } h
-                    ? _trieGetter(h)
-                    : null;
+            // FIXME: Probably not the best place to have Validate().
+            block.Validate(currentTime);
 
-            ImmutableList<ActionEvaluation> evaluations = EvaluateBlock(
-                block: block,
-                currentTime: DateTimeOffset.UtcNow,
-                accountStateGetter: accountStateGetter,
-                accountBalanceGetter: accountBalanceGetter,
-                previousBlockStatesTrie: previousBlockStatesTrie).ToImmutableList();
+            IEnumerable<Tuple<Transaction<T>, ActionEvaluation>> txEvaluationPairs =
+                EvaluateTxsGradually(
+                    block, accountStateGetter, accountBalanceGetter, previousBlockStatesTrie)
+                    .ToArray();
+            var updatedTxAddressPairs = txEvaluationPairs
+                    .GroupBy(tuple => tuple.Item1)
+                    .Select(
+                        grp => (
+                            grp.Key,
+                            grp.Last().Item2.OutputStates.UpdatedAddresses));
+            foreach (
+                (Transaction<T> tx, IImmutableSet<Address> updatedAddresses)
+                in updatedTxAddressPairs)
+            {
+                if (!tx.UpdatedAddresses.IsSupersetOf(updatedAddresses))
+                {
+                    const string msg =
+                        "Actions in the transaction try to update " +
+                        "the addresses not granted.";
+                    throw new InvalidTxUpdatedAddressesException(
+                        tx.Id,
+                        tx.UpdatedAddresses,
+                        updatedAddresses,
+                        msg);
+                }
+            }
 
-            if (_policyBlockAction is null)
-            {
-                return evaluations;
-            }
-            else
-            {
-                (accountStateGetter, accountBalanceGetter) = GetAccountGettersPair(
-                    block: block,
-                    evaluations: evaluations,
-                    stateCompleterSet: stateCompleterSet);
-                return evaluations.Add(
-                    EvaluatePolicyBlockAction(
-                        block: block,
-                        evaluations: evaluations,
-                        accountStateGetter: accountStateGetter,
-                        accountBalanceGetter: accountBalanceGetter,
-                        previousBlockStatesTrie: previousBlockStatesTrie));
-            }
+            return txEvaluationPairs.Select(te => te.Item2);
         }
 
         /// <summary>
@@ -417,7 +412,7 @@ namespace Libplanet.Action
                     preEvaluationHash: block.PreEvaluationHash,
                     blockIndex: block.Index,
                     previousStates: delta,
-                    minerAddress: block.Miner!.Value,
+                    miner: block.Miner!.Value,
                     rehearsal: false,
                     previousBlockStatesTrie: previousBlockStatesTrie);
                 foreach (var evaluation in evaluations)
@@ -446,7 +441,7 @@ namespace Libplanet.Action
         /// <paramref name="tx.Actions"/> being executed.  Note that its
         /// <see cref="IAccountStateDelta.UpdatedAddresses"/> are remained
         /// to the returned next states.</param>
-        /// <param name="minerAddress">An address of block miner.</param>
+        /// <param name="miner">An address of block miner.</param>
         /// <param name="rehearsal">Pass <c>true</c> if it is intended
         /// to be dry-run (i.e., the returned result will be never used).
         /// The default value is <c>false</c>.</param>
@@ -466,7 +461,7 @@ namespace Libplanet.Action
             BlockHash preEvaluationHash,
             long blockIndex,
             IAccountStateDelta previousStates,
-            Address minerAddress,
+            Address miner,
             bool rehearsal = false,
             ITrie? previousBlockStatesTrie = null)
         {
@@ -475,7 +470,7 @@ namespace Libplanet.Action
                 blockIndex: blockIndex,
                 txid: tx.Id,
                 previousStates: previousStates,
-                minerAddress: minerAddress,
+                miner: miner,
                 signer: tx.Signer,
                 signature: tx.Signature,
                 actions: tx.Actions.Cast<IAction>().ToImmutableList(),
@@ -496,7 +491,7 @@ namespace Libplanet.Action
         /// <paramref name="tx.Actions"/> being executed.  Note that its
         /// <see cref="IAccountStateDelta.UpdatedAddresses"/> are remained
         /// to the returned next states.</param>
-        /// <param name="minerAddress">An address of block miner.</param>
+        /// <param name="miner">An address of block miner.</param>
         /// <param name="rehearsal">Pass <c>true</c> if it is intended
         /// to be dry-run (i.e., the returned result will be never used).
         /// The default value is <c>false</c>.</param>
@@ -510,16 +505,15 @@ namespace Libplanet.Action
             BlockHash preEvaluationHash,
             long blockIndex,
             IAccountStateDelta previousStates,
-            Address minerAddress,
-            bool rehearsal = false
-        )
+            Address miner,
+            bool rehearsal = false)
         {
             var evaluations = EvaluateTxGradually(
                 tx,
                 preEvaluationHash,
                 blockIndex,
                 previousStates,
-                minerAddress,
+                miner,
                 rehearsal: rehearsal).ToImmutableList();
 
             if (evaluations.Count > 0)
@@ -579,7 +573,7 @@ namespace Libplanet.Action
                 blockIndex: block.Index,
                 txid: null,
                 previousStates: previousStates,
-                minerAddress: miner,
+                miner: miner,
                 signer: miner,
                 signature: Array.Empty<byte>(),
                 actions: new[] { _policyBlockAction }.ToImmutableList(),
@@ -593,8 +587,8 @@ namespace Libplanet.Action
         /// </summary>
         /// <param name="block">The <see cref="Block{T}"/> instance to reference in case
         /// <paramref name="evaluations"/> is <c>Empty</c>.</param>
-        /// <param name="evaluations">The list of evaluations for <paramref name="block"/>
-        /// made up to this point.</param>
+        /// <param name="evaluations">The list of evaluations for <paramref name="block"/> made
+        /// to this point.</param>
         /// <param name="accountStateGetter">The <see cref="AccountStateGetter"/> delegate to get
         /// the previous state.</param>
         /// <param name="accountBalanceGetter">The <see cref="AccountBalanceGetter"/> delegate to
@@ -623,13 +617,17 @@ namespace Libplanet.Action
 
         private Tuple<AccountStateGetter, AccountBalanceGetter> GetAccountGettersPair(
             Block<T> block,
-            IReadOnlyList<ActionEvaluation> evaluations,
             StateCompleterSet<T> stateCompleterSet)
         {
             AccountStateGetter accountStateGetter;
             AccountBalanceGetter accountBalanceGetter;
 
-            if (evaluations.Count > 0 || !(block.PreviousHash is null))
+            if (block.PreviousHash is null)
+            {
+                accountStateGetter = NullAccountStateGetter;
+                accountBalanceGetter = NullAccountBalanceGetter;
+            }
+            else
             {
                 accountStateGetter = address => _stateGetter(
                     address,
@@ -640,11 +638,6 @@ namespace Libplanet.Action
                     currency,
                     block.PreviousHash,
                     stateCompleterSet.FungibleAssetStateCompleter);
-            }
-            else
-            {
-                accountStateGetter = NullAccountStateGetter;
-                accountBalanceGetter = NullAccountBalanceGetter;
             }
 
             return Tuple.Create(accountStateGetter, accountBalanceGetter);

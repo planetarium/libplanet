@@ -713,7 +713,7 @@ namespace Libplanet.Tests.Tx
                     ActionEvaluator<ThrowException>.NullAccountStateGetter,
                     ActionEvaluator<ThrowException>.NullAccountBalanceGetter,
                     tx.Signer),
-                minerAddress: GenesisMinerAddress,
+                miner: GenesisMinerAddress,
                 rehearsal: false);
 
             Assert.Empty(nextStates.GetUpdatedStates());

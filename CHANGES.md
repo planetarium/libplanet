@@ -147,7 +147,7 @@ To be released.
  -  All methods pertaining to evaluating `IAction`s are moved
     to a new `ActionEvaluator` class.  [[#1301], [#1305]]
      -  Removed `Block<T>.Evaluate()` method.
-        Use `ActionEvaluator.EvaluateBlock()` method instead.
+        Use `ActionEvaluator.Evaluate()` method instead.
      -  Removed `Block<T>.EvaluateActionsPerTx()` method.
      -  Removed `Transaction<T>.EvaluateActionsGradually()` method.
      -  Removed `Transaction<T>.EvaluateActions()` method.

@@ -92,7 +92,7 @@ namespace Libplanet.Tests.Action
         [Theory]
         [InlineData(false)]
         [InlineData(true)]
-        public async Task EvaluateActionsGradually(bool rehearsal)
+        public async Task EvaluateGradually(bool rehearsal)
         {
             var fx = new IntegerSet(new[] { 5, 10 });
 
@@ -110,7 +110,7 @@ namespace Libplanet.Tests.Action
                 blockIndex: blockA.Index,
                 txid: a.Id,
                 previousStates: fx.CreateAccountStateDelta(0, blockA.PreviousHash),
-                minerAddress: blockA.Miner ?? default,
+                miner: blockA.Miner ?? default,
                 signer: a.Signer,
                 signature: a.Signature,
                 actions: a.Actions.ToImmutableArray<IAction>(),
@@ -132,16 +132,14 @@ namespace Libplanet.Tests.Action
                 Assert.Equal(blockA.Index, context.BlockIndex);
                 Assert.Equal(
                     deltaA[i].RootHash,
-                    context.PreviousStateRootHash
-                );
+                    context.PreviousStateRootHash);
                 Assert.Equal(a.Signer, context.Signer);
                 Assert.False(context.BlockAction);
                 Assert.Equal(rehearsal, context.Rehearsal);
                 IAccountStateDelta prevStates = context.PreviousStates;
                 Assert.Equal(
                     i > 0 ? new[] { a.Signer } : new Address[0],
-                    prevStates.UpdatedAddresses
-                );
+                    prevStates.UpdatedAddresses);
                 Assert.Equal((Integer)deltaA[i].Value, prevStates.GetState(a.Signer));
                 IAccountStateDelta outputStates = eval.OutputStates;
                 Assert.Equal(new[] { a.Signer }, outputStates.UpdatedAddresses);
@@ -155,8 +153,7 @@ namespace Libplanet.Tests.Action
                 1,
                 Arithmetic.Sub(3),
                 new Arithmetic(),
-                Arithmetic.Add(-1)
-            );
+                Arithmetic.Add(-1));
 
             Block<Arithmetic> blockB = await fx.Mine();
             ActionEvaluation[] evalsB = ActionEvaluator<DumbAction>.EvaluateGradually(
@@ -164,7 +161,7 @@ namespace Libplanet.Tests.Action
                 blockIndex: blockB.Index,
                 txid: b.Id,
                 previousStates: fx.CreateAccountStateDelta(0, blockB.PreviousHash),
-                minerAddress: blockB.Miner ?? default,
+                miner: blockB.Miner ?? default,
                 signer: b.Signer,
                 signature: b.Signature,
                 actions: b.Actions.ToImmutableArray<IAction>(),
@@ -186,16 +183,14 @@ namespace Libplanet.Tests.Action
                 Assert.Equal(blockB.Index, context.BlockIndex);
                 Assert.Equal(
                     deltaB[i].RootHash,
-                    context.PreviousStateRootHash
-                );
+                    context.PreviousStateRootHash);
                 Assert.Equal(b.Signer, context.Signer);
                 Assert.False(context.BlockAction);
                 Assert.Equal(rehearsal, context.Rehearsal);
                 IAccountStateDelta prevStates = context.PreviousStates;
                 Assert.Equal(
                     i > 0 ? new[] { b.Signer } : new Address[0],
-                    prevStates.UpdatedAddresses
-                );
+                    prevStates.UpdatedAddresses);
                 Assert.Equal((Integer)deltaB[i].Value, prevStates.GetState(b.Signer));
                 IAccountStateDelta outputStates = eval.OutputStates;
                 Assert.Equal(new[] { b.Signer }, outputStates.UpdatedAddresses);
