@@ -1,5 +1,6 @@
 {
   "editor.rulers": [80, 100],
+  "csharp.semanticHighlighting.enabled": true,
   "cSpell.words": [
     "Bencodex",
     "Bitcoin",
