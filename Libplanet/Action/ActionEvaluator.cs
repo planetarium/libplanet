@@ -218,7 +218,6 @@ namespace Libplanet.Action
                     signer: signer,
                     txid: txid,
                     miner: minerAddress,
-                    blockHash: preEvaluationHash,
                     blockIndex: blockIndex,
                     previousStates: prevStates,
                     randomSeed: randomSeed,
@@ -271,11 +270,26 @@ namespace Libplanet.Action
                     else
                     {
                         var stateRootHash = context.PreviousStateRootHash;
+                        const string logMsg =
+                            "The action {Action} (block #{BlockIndex}, pre-evaluation hash " +
+                            "{PreEvaluationHash}, tx {TxId}, previous state root hash " +
+                            "{StateRootHash}) threw an exception during execution:\n" +
+                            "{InnerException}";
+                        logger.Error(
+                            e,
+                            logMsg,
+                            action,
+                            blockIndex,
+                            preEvaluationHash,
+                            txid,
+                            stateRootHash,
+                            e);
                         var msg =
-                            $"The action {action} (block #{blockIndex} " +
-                            $"pre-evaluation hash {preEvaluationHash}, " +
-                            $"tx {txid}, state root hash {stateRootHash}) threw an exception " +
-                            "during execution.  See also this exception's InnerException property.";
+                            $"The action {action} (block #{blockIndex}, " +
+                            $"pre-evaluation hash {preEvaluationHash}, tx {txid}, " +
+                            $"previous state root hash {stateRootHash}) threw " +
+                            "an exception during execution.  " +
+                            "See also this exception's InnerException property.";
                         logger.Error("{Message}\nInnerException: {ExcMessage}", msg, e.Message);
                         exc = new UnexpectedlyTerminatedActionException(
                             preEvaluationHash, blockIndex, txid, stateRootHash, action, msg, e);

@@ -129,7 +129,6 @@ namespace Libplanet.Tests.Action
                 IActionContext context = eval.InputContext;
                 Assert.Equal(a.Id, context.TxId);
                 Assert.Equal(blockA.Miner, context.Miner);
-                Assert.Equal(blockA.Hash, context.BlockHash);
                 Assert.Equal(blockA.Index, context.BlockIndex);
                 Assert.Equal(
                     deltaA[i].RootHash,
@@ -184,7 +183,6 @@ namespace Libplanet.Tests.Action
                 IActionContext context = eval.InputContext;
                 Assert.Equal(b.Id, context.TxId);
                 Assert.Equal(blockB.Miner, context.Miner);
-                Assert.Equal(blockB.Hash, context.BlockHash);
                 Assert.Equal(blockB.Index, context.BlockIndex);
                 Assert.Equal(
                     deltaB[i].RootHash,
