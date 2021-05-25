@@ -119,7 +119,6 @@ To be released.
         parameter became `IImmutableSet<BlockHash>`
         (was `ImmutableHashSet<HashDigest<SHA256>>`).
  -  Added `IActionContext.TxId` property.  [[#1275]]
- -  Added `IActionContext.BlockHash` property.  [[#1295], [#1296]]
  -  Added `IStore.PutTxExecution(TxSuccess)` method.  [[#1156], [#1289]]
  -  Added `IStore.PutTxExecution(TxFailure)` method.  [[#1156], [#1289]]
  -  Added `IStore.GetTxExecution()` method.  [[#1156], [#1289]]
@@ -258,8 +257,6 @@ To be released.
 [#1275]: https://github.com/planetarium/libplanet/pull/1275
 [#1278]: https://github.com/planetarium/libplanet/pull/1278
 [#1289]: https://github.com/planetarium/libplanet/pull/1289
-[#1295]: https://github.com/planetarium/libplanet/issues/1295
-[#1296]: https://github.com/planetarium/libplanet/pull/1296
 
 
 Version 0.11.1

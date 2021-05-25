@@ -1,5 +1,4 @@
 using System;
-using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Blocks;
@@ -16,15 +15,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             new AccountStateDeltaImpl(_ => null, (_, __) => default, default);
 
         private static IActionContext _actionContext =
-            new ActionContext(
-                signer: default,
-                txid: default,
-                miner: default,
-                blockHash: new BlockHash(new byte[HashDigest<SHA256>.Size]),
-                blockIndex: default,
-                previousStates: _stateDelta,
-                randomSeed: default
-            );
+            new ActionContext(default, default, default, default, _stateDelta, default);
 
         private static Exception _exception = new Exception();
 
