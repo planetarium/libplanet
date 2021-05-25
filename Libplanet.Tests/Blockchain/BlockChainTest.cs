@@ -1510,7 +1510,6 @@ namespace Libplanet.Tests.Blockchain
         {
             (var addresses, Transaction<DumbAction>[] txs) =
                 MakeFixturesForAppendTests();
-
             var genesis = _blockChain.Genesis;
 
             Block<DumbAction> block1 = TestUtils.MineNext(
@@ -1520,17 +1519,26 @@ namespace Libplanet.Tests.Blockchain
             ).AttachStateRootHash(_blockChain.StateStore, _policy.BlockAction);
 
             var miner = genesis.Miner.GetValueOrDefault();
+            var stateCompleterSet = StateCompleterSet<DumbAction>.Recalculate;
             var policyBlockActionEvaluation = _blockChain.ActionEvaluator.EvaluatePolicyBlockAction(
                 block1,
                 ImmutableList<ActionEvaluation>.Empty,
-                StateCompleterSet<DumbAction>.Recalculate,
-                null
-            );
+                address => _blockChain.GetState(
+                    address,
+                    block1.PreviousHash,
+                    stateCompleterSet.StateCompleter),
+                (address, currency) => _blockChain.GetBalance(
+                    address,
+                    currency,
+                    block1.PreviousHash,
+                    stateCompleterSet.FungibleAssetStateCompleter),
+                null);
             Assert.Equal(_blockChain.Policy.BlockAction, policyBlockActionEvaluation.Action);
             Assert.Equal(
                 (Integer)2,
                 (Integer)policyBlockActionEvaluation.OutputStates.GetState(miner));
             Assert.True(policyBlockActionEvaluation.InputContext.BlockAction);
+
             _blockChain.ExecuteActions(block1);
             _blockChain.Append(
                 block1,
@@ -1546,10 +1554,16 @@ namespace Libplanet.Tests.Blockchain
             policyBlockActionEvaluation = _blockChain.ActionEvaluator.EvaluatePolicyBlockAction(
                 block1,
                 txEvaluations,
-                StateCompleterSet<DumbAction>.Recalculate,
-                null
-            );
-
+                address => _blockChain.GetState(
+                    address,
+                    block1.PreviousHash,
+                    stateCompleterSet.StateCompleter),
+                (address, currency) => _blockChain.GetBalance(
+                    address,
+                    currency,
+                    block1.PreviousHash,
+                    stateCompleterSet.FungibleAssetStateCompleter),
+                null);
             Assert.Equal(
                 (Integer)2,
                 (Integer)policyBlockActionEvaluation.OutputStates.GetState(miner));

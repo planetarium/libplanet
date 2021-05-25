@@ -490,9 +490,17 @@ namespace Libplanet.Action
             }
             else
             {
+                (accountStateGetter, accountBalanceGetter) = GetAccountGettersPair(
+                    block: block,
+                    evaluations: evaluations,
+                    stateCompleterSet: stateCompleterSet);
                 return evaluations.Add(
                     EvaluatePolicyBlockAction(
-                        block, evaluations, stateCompleterSet, previousBlockStatesTrie));
+                        block: block,
+                        evaluations: evaluations,
+                        accountStateGetter: accountStateGetter,
+                        accountBalanceGetter: accountBalanceGetter,
+                        previousBlockStatesTrie: previousBlockStatesTrie));
             }
         }
 
@@ -503,7 +511,10 @@ namespace Libplanet.Action
         /// <param name="block">The <see cref="Block{T}"/> instance to evaluate.</param>
         /// <param name="evaluations">The list of evaluations for <paramref name="block"/>
         /// made up to this point.</param>
-        /// <param name="stateCompleterSet">The <see cref="StateCompleterSet{T}"/> to use.</param>
+        /// <param name="accountStateGetter">The <see cref="AccountStateGetter"/> delegate to get
+        /// the previous state.</param>
+        /// <param name="accountBalanceGetter">The <see cref="AccountBalanceGetter"/> delegate to
+        /// get the previous account balance.</param>
         /// <param name="previousBlockStatesTrie">The trie to contain states at previous block.
         /// </param>
         /// <returns>The <see cref="ActionEvaluation"/> of evaluating the
@@ -512,7 +523,8 @@ namespace Libplanet.Action
         internal ActionEvaluation EvaluatePolicyBlockAction(
             Block<T> block,
             IReadOnlyList<ActionEvaluation> evaluations,
-            StateCompleterSet<T> stateCompleterSet,
+            AccountStateGetter accountStateGetter,
+            AccountBalanceGetter accountBalanceGetter,
             ITrie? previousBlockStatesTrie)
         {
             if (_policyBlockAction is null)
@@ -531,7 +543,8 @@ namespace Libplanet.Action
             IAccountStateDelta previousStates = GetPreviousStates(
                 block: block,
                 evaluations: evaluations,
-                stateCompleterSet: stateCompleterSet);
+                accountStateGetter: accountStateGetter,
+                accountBalanceGetter: accountBalanceGetter);
 
             return EvaluateGradually(
                 preEvaluationHash: block.PreEvaluationHash,
@@ -554,13 +567,17 @@ namespace Libplanet.Action
         /// <paramref name="evaluations"/> is <c>Empty</c>.</param>
         /// <param name="evaluations">The list of evaluations for <paramref name="block"/>
         /// made up to this point.</param>
-        /// <param name="stateCompleterSet">The <see cref="StateCompleterSet{T}"/> to use.</param>
+        /// <param name="accountStateGetter">The <see cref="AccountStateGetter"/> delegate to get
+        /// the previous state.</param>
+        /// <param name="accountBalanceGetter">The <see cref="AccountBalanceGetter"/> delegate to
+        /// get the previous account balance.</param>
         /// <returns>The last previous <see cref="IAccountStateDelta"/> for the given arguments.
         /// </returns>
         private IAccountStateDelta GetPreviousStates(
             Block<T> block,
             IReadOnlyList<ActionEvaluation> evaluations,
-            StateCompleterSet<T> stateCompleterSet)
+            AccountStateGetter accountStateGetter,
+            AccountBalanceGetter accountBalanceGetter)
         {
             if (evaluations.Count > 0)
             {
@@ -568,10 +585,6 @@ namespace Libplanet.Action
             }
             else
             {
-                var (accountStateGetter, accountBalanceGetter) = GetAccountGettersPair(
-                    block: block,
-                    evaluations: evaluations,
-                    stateCompleterSet: stateCompleterSet);
                 Address miner = block.Miner.GetValueOrDefault();
 
                 return block.ProtocolVersion > 0
