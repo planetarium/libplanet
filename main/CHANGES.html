@@ -180,7 +180,6 @@ parameter became <code>IImmutableSet&lt;BlockHash&gt;</code>
 </ul>
 </li>
 <li>Added <code>IActionContext.TxId</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/1275">#1275</a>]</li>
-<li>Added <code>IActionContext.BlockHash</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/1295">#1295</a>, <a href="https://github.com/planetarium/libplanet/pull/1296">#1296</a>]</li>
 <li>Added <code>IStore.PutTxExecution(TxSuccess)</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/1156">#1156</a>, <a href="https://github.com/planetarium/libplanet/pull/1289">#1289</a>]</li>
 <li>Added <code>IStore.PutTxExecution(TxFailure)</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/1156">#1156</a>, <a href="https://github.com/planetarium/libplanet/pull/1289">#1289</a>]</li>
 <li>Added <code>IStore.GetTxExecution()</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/1156">#1156</a>, <a href="https://github.com/planetarium/libplanet/pull/1289">#1289</a>]</li>
@@ -548,6 +547,9 @@ and these should be instead like <code>planet mpt diff STORE A STORE B</code>.
 <li>Store aliases used by <code>planet mpt</code> became to disallow names looking like
 URIs to disambiguate aliases from the literal store URIs.  [<a href="https://github.com/planetarium/libplanet/pull/1129">#1129</a>]</li>
 <li>Added new subcommands <code>planet mpt list</code> and <code>planet mpt query</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1137">#1137</a>]</li>
+<li><code>planet mpt diff</code> command became to print the differences between
+other state root hashes into stdout as JSON format.
+[<a href="https://github.com/planetarium/libplanet/issues/1138">#1138</a>, <a href="https://github.com/planetarium/libplanet/pull/1191">#1191</a>, <a href="https://github.com/planetarium/libplanet/pull/1233">#1233</a>]</li>
 </ul>
 <h2 id="version-0103">Version 0.10.3</h2>
 <p>Released on January 28, 2021.</p>
