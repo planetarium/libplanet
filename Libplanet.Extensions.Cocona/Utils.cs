@@ -201,7 +201,11 @@ namespace Libplanet.Extensions.Cocona
                 JsonSerializerOptions options)
             {
                 var jsonString = reader.GetString();
-                return DateTimeOffset.Parse(jsonString, CultureInfo.InvariantCulture);
+                return DateTimeOffset.ParseExact(
+                    jsonString,
+                    "yyyy-MM-ddTHH:mm:ss.ffffffZ",
+                    CultureInfo.InvariantCulture
+                );
             }
 
             public override void Write(
