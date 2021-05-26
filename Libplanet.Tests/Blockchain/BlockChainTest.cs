@@ -1254,49 +1254,6 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async void EvaluateActions()
-        {
-            PrivateKey fromPrivateKey = new PrivateKey();
-            Address fromAddress = fromPrivateKey.ToAddress();
-            long blockIndex = 1;
-
-            TestEvaluateAction action = new TestEvaluateAction();
-
-            var store = new DefaultStore(null);
-            var stateStore =
-                new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore());
-            var chain = TestUtils.MakeBlockChain<TestEvaluateAction>(
-                new BlockPolicy<TestEvaluateAction>(),
-                store,
-                stateStore
-            );
-            var tx1 = Transaction<TestEvaluateAction>.Create(
-                0,
-                fromPrivateKey,
-                chain.Genesis.Hash,
-                new[] { action }
-            );
-
-            chain.StageTransaction(tx1);
-            await chain.MineBlock(_fx.Address1);
-
-            var actionEvaluation = chain.ActionEvaluator.Evaluate(
-                chain.Tip,
-                StateCompleterSet<TestEvaluateAction>.Recalculate);
-            Assert.False(actionEvaluation[0].InputContext.BlockAction);
-
-            Assert.Equal(
-                chain.GetState(TestEvaluateAction.SignerKey),
-                (Text)fromAddress.ToHex()
-            );
-            Assert.Equal(
-                chain.GetState(TestEvaluateAction.MinerKey),
-                (Text)_fx.Address1.ToHex());
-            var state = chain.GetState(TestEvaluateAction.BlockIndexKey);
-            Assert.Equal((long)(Integer)state, blockIndex);
-        }
-
-        [Fact]
         public void GetNextTxNonce()
         {
             var privateKey = new PrivateKey();
@@ -1913,25 +1870,6 @@ namespace Libplanet.Tests.Blockchain
                 _blockChain.Policy, store, stateStore, genesisBlock: genesisBlock);
 
             Assert.NotNull(blockChain[0].StateRootHash);
-        }
-
-        private sealed class TestEvaluateAction : IAction
-        {
-            public static readonly Address SignerKey = new PrivateKey().ToAddress();
-            public static readonly Address MinerKey = new PrivateKey().ToAddress();
-            public static readonly Address BlockIndexKey = new PrivateKey().ToAddress();
-
-            public IValue PlainValue => default(Dictionary);
-
-            public void LoadPlainValue(IValue plainValue)
-            {
-            }
-
-            public IAccountStateDelta Execute(IActionContext context) =>
-                context.PreviousStates
-                    .SetState(SignerKey, (Text)context.Signer.ToHex())
-                    .SetState(MinerKey, (Text)context.Miner.ToHex())
-                    .SetState(BlockIndexKey, (Integer)context.BlockIndex);
         }
     }
 }
