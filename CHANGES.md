@@ -237,7 +237,7 @@ To be released.
  -  Added `planet key derive` subcommand to derive the address or
     public key from a private.  [[#1268]]
  -  Added `planet query [block-by-hash|block-by-index|tx-by-id]` commands
-    to retrieve the data from the store [[#1284], [#1285], [#1298]]
+    to retrieve the data from the store.  [[#1284], [#1285], [#1298]]
 
 [#1156]: https://github.com/planetarium/libplanet/issues/1156
 [#1192]: https://github.com/planetarium/libplanet/issues/1192

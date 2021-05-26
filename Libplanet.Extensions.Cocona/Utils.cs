@@ -92,7 +92,7 @@ namespace Libplanet.Extensions.Cocona
                 }
             );
 
-        public static T DeSerializeHumanReadable<T>(string target) => JsonSerializer.Deserialize<T>(
+        public static T DeserializeHumanReadable<T>(string target) => JsonSerializer.Deserialize<T>(
             target, new JsonSerializerOptions
             {
                 Converters =
