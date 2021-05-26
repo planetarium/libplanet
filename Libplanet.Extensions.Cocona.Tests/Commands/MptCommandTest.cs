@@ -5,11 +5,11 @@ using System.IO;
 using Bencodex.Types;
 using Libplanet.Extensions.Cocona.Commands;
 using Libplanet.Extensions.Cocona.Configuration;
-using Libplanet.Extensions.Cocona.Tests.Services;
 using Libplanet.Store.Trie;
+using Libplanet.Tools.Tests.Services;
 using Xunit;
 
-namespace Libplanet.Extensions.Cocona.Tests.Commands
+namespace Libplanet.Tools.Tests
 {
     public class MptCommandTest : IDisposable
     {
@@ -40,7 +40,7 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
         [Fact]
         public void Diff_PrintsAsJson()
         {
-            using StringWriter stringWriter = new StringWriter { NewLine = "\n" };
+            using StringWriter stringWriter = new StringWriter {NewLine = "\n"};
             var originalOutWriter = Console.Out;
             try
             {
@@ -60,10 +60,7 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
                     new TestToolConfigurationService(configuration));
 
                 Assert.Equal(
-                    $@"{{""636f6d6d6f6e"":{{""{stateRootHashHex}"":""75363a6265666f7265""," +
-                    $@"""{otherStateRootHashHex}"":""75353a6166746572""}},""64656c65746564""" +
-                    $@":{{""{stateRootHashHex}"":""6e""}},""63726561746564"":{{""" +
-                    $@"{otherStateRootHashHex}"":""6e""}}}}",
+                    $@"{{""636f6d6d6f6e"":{{""{stateRootHashHex}"":""75363a6265666f7265"",""{otherStateRootHashHex}"":""75353a6166746572""}},""64656c65746564"":{{""{stateRootHashHex}"":""6e""}},""63726561746564"":{{""{otherStateRootHashHex}"":""6e""}}}}",
                     stringWriter.ToString());
             }
             finally
@@ -71,6 +68,11 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
                 Console.SetOut(originalOutWriter);
             }
         }
+
+        private static string NewTempPath() =>
+            Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString())
+                .Replace("\\", "/")
+                .Replace("C:", "");
 
         public void Dispose()
         {
@@ -84,10 +86,5 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
                 Directory.Delete(_pathB, true);
             }
         }
-
-        private static string NewTempPath() =>
-            Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString())
-                .Replace("\\", "/")
-                .Replace("C:", string.Empty);
     }
 }

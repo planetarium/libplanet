@@ -113,7 +113,7 @@ namespace Libplanet.Extensions.Cocona.Commands
         }
 
         // FIXME: Now, it works like `set` not `add`. It allows override.
-        [Command(Description = "Register an alias name to refer to a key-value store.")]
+        [Command(Description="Register an alias name to refer to a key-value store.")]
         public void Add(
             [Argument(
                 Name = "ALIAS",
@@ -149,7 +149,7 @@ namespace Libplanet.Extensions.Cocona.Commands
             configurationService.Store(configuration);
         }
 
-        [Command(Description = "Deregister an alias to a key-value store.")]
+        [Command(Description="Deregister an alias to a key-value store.")]
         public void Remove(
             [Argument(
                 Name = "ALIAS",
@@ -162,7 +162,7 @@ namespace Libplanet.Extensions.Cocona.Commands
             configurationService.Store(configuration);
         }
 
-        [Command(Description = "List all aliases stored.")]
+        [Command(Description="List all aliases stored.")]
         public void List(
             [FromService] IConfigurationService<ToolConfiguration> configurationService)
         {
@@ -188,9 +188,9 @@ namespace Libplanet.Extensions.Cocona.Commands
             }
         }
 
-        [Command(Description = "Query a state of the state key at the state root hash.  It will " +
-                               "print the state as hexadecimal bytes string into stdout.  " +
-                               "If it doesn't exist, it will not print anything.")]
+        [Command(Description="Query a state of the state key at the state root hash.  It will " +
+                             "print the state as hexadecimal bytes string into stdout.  " +
+                             "If it doesn't exist, it will not print anything.")]
         public void Query(
             [Argument(
                 Name = "KV-STORE",

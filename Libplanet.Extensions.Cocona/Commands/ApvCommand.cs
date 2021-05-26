@@ -1,4 +1,3 @@
-#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -33,17 +32,17 @@ namespace Libplanet.Extensions.Cocona.Commands
                 'E',
                 ValueName = "FILE",
                 Description = "Bencodex file to use for extra data.  " +
-                              "For standard input, use a hyphen (`-').  " +
-                              "For an actual file named a hyphen, prepend `./', i.e., `./-'."
+                    "For standard input, use a hyphen (`-').  " +
+                    "For an actual file named a hyphen, prepend `./', i.e., `./-'."
             )]
             string? extraFile = null,
             [Option(
                 'e',
                 ValueName = "KEY=VALUE",
                 Description = "Set a value to a key on extra Bencodex dictionary.  " +
-                              "Can be applied multiple times (e.g., `-e foo=1 -e bar=baz').  " +
-                              "This option implies the extra data to be a Bencodex dictionary, " +
-                              "hence cannot be used together with -E/--extra-file option."
+                    "Can be applied multiple times (e.g., `-e foo=1 -e bar=baz').  " +
+                    "This option implies the extra data to be a Bencodex dictionary, " +
+                    "hence cannot be used together with -E/--extra-file option."
             )]
             string[]? extra = null
         )
@@ -109,20 +108,20 @@ namespace Libplanet.Extensions.Cocona.Commands
             [Argument(
                 Name = "APV-TOKEN",
                 Description = "An app protocol version token to verify.  " +
-                              "Read from the standard input if omitted."
+                    "Read from the standard input if omitted."
             )]
             string? token = null,
             [Option(
                 'p',
                 ValueName = "PUBLIC-KEY",
                 Description = "Public key(s) to be used for verification.  " +
-                              "Can be applied multiple times."
+                    "Can be applied multiple times."
             )]
             string[]? publicKey = null,
             [Option(
                 'K',
                 Description = "Do not use any keys in the key store, " +
-                              "but only -p/--public-key options."
+                    "but only -p/--public-key options."
             )]
             bool noKeyStore = false
         )
@@ -193,7 +192,7 @@ namespace Libplanet.Extensions.Cocona.Commands
             [Argument(
                 Name = "APV-TOKEN",
                 Description = "An app protocol version token to analyze.  " +
-                              "Read from the standard input if omitted."
+                    "Read from the standard input if omitted."
             )]
             string? token = null,
             [Option(Description = "Print information of given token as JSON.")]
@@ -285,8 +284,7 @@ namespace Libplanet.Extensions.Cocona.Commands
             [Argument(
                 Name = "TARGET",
 #pragma warning disable MEN002 // Line is too long
-                Description =
-                    "Comma seperated peer information({pubkey},{host},{port}) of target node. (e.g. 027bd36895d68681290e570692ad3736750ceaab37be402442ffb203967f98f7b6,9c.planetarium.dev,31236)")]
+                Description = "Comma seperated peer information({pubkey},{host},{port}) of target node. (e.g. 027bd36895d68681290e570692ad3736750ceaab37be402442ffb203967f98f7b6,9c.planetarium.dev,31236)")]
 #pragma warning restore MEN002 // Line is too long
             string peerInfo)
         {
