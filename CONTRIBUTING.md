@@ -78,9 +78,9 @@ Projects
 The [planetarium/libplanet](https://github.com/planetarium/libplanet) repository
 on GitHub consists of several projects:
 
--  *Libplanet*: The main project, which contains the most of implementation
-   code.  When this is  built into a [NuGet package], it consists of two
-   assemblies: *Libplanet*, and *Libplanet.Stun*, explained below.
+ -  *Libplanet*: The main project, which contains the most of implementation
+    code.  When this is  built into a [NuGet package], it consists of two
+    assemblies: *Libplanet*, and *Libplanet.Stun*, explained below.
 
  -  *Libplanet.Stun*: The project dedicated to implement [TURN & STUN].
     Note that the assembly built from this project is included by
