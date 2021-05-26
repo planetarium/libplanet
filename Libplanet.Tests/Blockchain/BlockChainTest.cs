@@ -1463,7 +1463,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public void EvaluateBlockAction()
+        public void EvaluatePolicyBlockAction()
         {
             (var addresses, Transaction<DumbAction>[] txs) =
                 MakeFixturesForAppendTests();
@@ -1477,18 +1477,25 @@ namespace Libplanet.Tests.Blockchain
 
             var miner = genesis.Miner.GetValueOrDefault();
             var stateCompleterSet = StateCompleterSet<DumbAction>.Recalculate;
-            var policyBlockActionEvaluation = _blockChain.ActionEvaluator.EvaluatePolicyBlockAction(
-                block1,
-                ImmutableList<ActionEvaluation>.Empty,
-                address => _blockChain.GetState(
-                    address,
-                    block1.PreviousHash,
-                    stateCompleterSet.StateCompleter),
+            AccountStateGetter accountStateGetter = address => _blockChain.GetState(
+                address,
+                block1.PreviousHash,
+                stateCompleterSet.StateCompleter);
+            AccountBalanceGetter accountBalanceGetter =
                 (address, currency) => _blockChain.GetBalance(
                     address,
                     currency,
                     block1.PreviousHash,
-                    stateCompleterSet.FungibleAssetStateCompleter),
+                    stateCompleterSet.FungibleAssetStateCompleter);
+            IAccountStateDelta previousStates = block1.ProtocolVersion > 0
+                    ? new AccountStateDeltaImpl(
+                        accountStateGetter, accountBalanceGetter, block1.Miner.GetValueOrDefault())
+                    : new AccountStateDeltaImplV0(
+                        accountStateGetter, accountBalanceGetter, block1.Miner.GetValueOrDefault());
+
+            var policyBlockActionEvaluation = _blockChain.ActionEvaluator.EvaluatePolicyBlockAction(
+                block1,
+                previousStates,
                 null);
             Assert.Equal(_blockChain.Policy.BlockAction, policyBlockActionEvaluation.Action);
             Assert.Equal(
@@ -1503,23 +1510,22 @@ namespace Libplanet.Tests.Blockchain
                 evaluateActions: false,
                 renderBlocks: true,
                 renderActions: false);
+            previousStates = block1.ProtocolVersion > 0
+                ? new AccountStateDeltaImpl(
+                    address => _blockChain.GetState(address, block1.PreviousHash),
+                    ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
+                    block1.Miner.GetValueOrDefault())
+                : new AccountStateDeltaImplV0(
+                    address => _blockChain.GetState(address, block1.PreviousHash),
+                    ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
+                    block1.Miner.GetValueOrDefault());
             var txEvaluations = _blockChain.ActionEvaluator.EvaluateTxsGradually(
                 block1,
-                address => _blockChain.GetState(address, block1.PreviousHash),
-                ActionEvaluator<DumbAction>.NullAccountBalanceGetter)
-                .Select(te => te.Item2).ToList();
+                previousStates).Select(te => te.Item2).ToList();
+            previousStates = txEvaluations.Last().OutputStates;
             policyBlockActionEvaluation = _blockChain.ActionEvaluator.EvaluatePolicyBlockAction(
                 block1,
-                txEvaluations,
-                address => _blockChain.GetState(
-                    address,
-                    block1.PreviousHash,
-                    stateCompleterSet.StateCompleter),
-                (address, currency) => _blockChain.GetBalance(
-                    address,
-                    currency,
-                    block1.PreviousHash,
-                    stateCompleterSet.FungibleAssetStateCompleter),
+                previousStates,
                 null);
             Assert.Equal(
                 (Integer)2,
@@ -1619,11 +1625,19 @@ namespace Libplanet.Tests.Blockchain
 
             // Build the store has incomplete states
             Block<DumbAction> b = chain.Genesis;
+            IAccountStateDelta previousStates = b.ProtocolVersion > 0
+                ? new AccountStateDeltaImpl(
+                    ActionEvaluator<DumbAction>.NullAccountStateGetter,
+                    ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
+                    b.Miner.GetValueOrDefault())
+                : new AccountStateDeltaImplV0(
+                    ActionEvaluator<DumbAction>.NullAccountStateGetter,
+                    ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
+                    b.Miner.GetValueOrDefault());
             ActionEvaluation[] evals = chain.ActionEvaluator.EvaluateBlock(
                 b,
                 DateTimeOffset.UtcNow,
-                ActionEvaluator<DumbAction>.NullAccountStateGetter,
-                ActionEvaluator<DumbAction>.NullAccountBalanceGetter).ToArray();
+                previousStates).ToArray();
             IImmutableDictionary<Address, IValue> dirty = evals.GetDirtyStates();
             IImmutableDictionary<(Address, Currency), FungibleAssetValue> balances =
                 evals.GetDirtyBalances();
@@ -1647,12 +1661,20 @@ namespace Libplanet.Tests.Blockchain
                             new[] { tx },
                             blockInterval: TimeSpan.FromSeconds(10))
                         .AttachStateRootHash(stateStore, blockPolicy.BlockAction);
+                    previousStates = b.ProtocolVersion > 0
+                        ? new AccountStateDeltaImpl(
+                            dirty.GetValueOrDefault,
+                            (address, currency) => balances.GetValueOrDefault((address, currency)),
+                            b.Miner.GetValueOrDefault())
+                        : new AccountStateDeltaImplV0(
+                            dirty.GetValueOrDefault,
+                            (address, currency) => balances.GetValueOrDefault((address, currency)),
+                            b.Miner.GetValueOrDefault());
+
                     dirty = chain.ActionEvaluator.EvaluateBlock(
                         b,
                         DateTimeOffset.UtcNow,
-                        dirty.GetValueOrDefault,
-                        (address, currency) => balances.GetValueOrDefault((address, currency))
-                    ).GetDirtyStates();
+                        previousStates).GetDirtyStates();
                     Assert.NotEmpty(dirty);
                     store.PutBlock(b);
                     BuildIndex(chainId, b);

@@ -54,7 +54,7 @@ namespace Libplanet.Tests.Action
             // the action results in pre-evaluation step and in evaluation step are equal.
             const int repeatCount = 2;
             var signer = new PrivateKey();
-            Address address = signer.ToAddress();
+            var address = signer.ToAddress();
             var timestamp = DateTimeOffset.UtcNow;
             var txs = new[]
             {
@@ -66,10 +66,10 @@ namespace Libplanet.Tests.Action
             };
             var stateStore =
                 new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore());
-            Block<RandomAction> noStateRootBlock = TestUtils.MineGenesis(
+            var noStateRootBlock = TestUtils.MineGenesis(
                 timestamp: timestamp,
                 transactions: txs);
-            Block<RandomAction> stateRootBlock = TestUtils.MineGenesis(
+            var stateRootBlock = TestUtils.MineGenesis(
                 timestamp: timestamp,
                 transactions: txs).AttachStateRootHash(stateStore, null);
             var actionEvaluator =
@@ -106,8 +106,8 @@ namespace Libplanet.Tests.Action
         [Fact]
         public async void Evaluate()
         {
-            PrivateKey fromPrivateKey = new PrivateKey();
-            Address fromAddress = fromPrivateKey.ToAddress();
+            var privateKey = new PrivateKey();
+            var address = privateKey.ToAddress();
             long blockIndex = 1;
 
             TestEvaluateAction action = new TestEvaluateAction();
@@ -118,16 +118,14 @@ namespace Libplanet.Tests.Action
             var chain = TestUtils.MakeBlockChain<TestEvaluateAction>(
                 new BlockPolicy<TestEvaluateAction>(),
                 store,
-                stateStore
-            );
-            var tx1 = Transaction<TestEvaluateAction>.Create(
+                stateStore);
+            var tx = Transaction<TestEvaluateAction>.Create(
                 0,
-                fromPrivateKey,
+                privateKey,
                 chain.Genesis.Hash,
-                new[] { action }
-            );
+                new[] { action });
 
-            chain.StageTransaction(tx1);
+            chain.StageTransaction(tx);
             await chain.MineBlock(_storeFx.Address1);
 
             var actionEvaluation = chain.ActionEvaluator.Evaluate(
@@ -137,8 +135,7 @@ namespace Libplanet.Tests.Action
 
             Assert.Equal(
                 chain.GetState(TestEvaluateAction.SignerKey),
-                (Text)fromAddress.ToHex()
-            );
+                (Text)address.ToHex());
             Assert.Equal(
                 chain.GetState(TestEvaluateAction.MinerKey),
                 (Text)_storeFx.Address1.ToHex());
@@ -180,27 +177,34 @@ namespace Libplanet.Tests.Action
                     recordRandom: true),
                 new DumbAction(addresses[2], "R", true, recordRandom: true),
             };
-            ActionEvaluator<DumbAction> actionEvaluator = new ActionEvaluator<DumbAction>(
+            var tx =
+                Transaction<DumbAction>.Create(0, _txFx.PrivateKey1, null, actions);
+            var block = new Block<DumbAction>(
+                index: 1,
+                difficulty: 0,
+                totalDifficulty: 0,
+                nonce: new Nonce(new byte[0]),
+                miner: addresses[0],
+                previousHash: null,
+                timestamp: DateTimeOffset.UtcNow,
+                transactions: ImmutableArray.Create(tx));
+            var actionEvaluator = new ActionEvaluator<DumbAction>(
                 policyBlockAction: null,
                 stateGetter: ActionEvaluator<DumbAction>.NullStateGetter,
                 balanceGetter: ActionEvaluator<DumbAction>.NullBalanceGetter,
                 trieGetter: null);
 
-            Transaction<DumbAction> tx =
-                Transaction<DumbAction>.Create(0, _txFx.PrivateKey1, null, actions);
             foreach (bool rehearsal in new[] { false, true })
             {
                 DumbAction.RehearsalRecords.Value =
                     ImmutableList<(Address, string)>.Empty;
                 var evaluations = actionEvaluator.EvaluateTxGradually(
-                    tx,
-                    default,
-                    1,
-                    new AccountStateDeltaImpl(
-                        address => null,
-                        (a, c) => new FungibleAssetValue(c),
+                    block: block,
+                    tx: tx,
+                    previousStates: new AccountStateDeltaImpl(
+                        ActionEvaluator<DumbAction>.NullAccountStateGetter,
+                        ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
                         tx.Signer),
-                    addresses[0],
                     rehearsal: rehearsal).ToImmutableArray();
 
                 Assert.Equal(actions.Length, evaluations.Length);
@@ -274,14 +278,12 @@ namespace Libplanet.Tests.Action
                 DumbAction.RehearsalRecords.Value =
                     ImmutableList<(Address, string)>.Empty;
                 IAccountStateDelta delta = actionEvaluator.EvaluateTxResult(
-                    tx,
-                    default,
-                    1,
-                    new AccountStateDeltaImpl(
+                    block: block,
+                    tx: tx,
+                    previousStates: new AccountStateDeltaImpl(
                         ActionEvaluator<DumbAction>.NullAccountStateGetter,
                         ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
                         tx.Signer),
-                    addresses[0],
                     rehearsal: rehearsal);
                 Assert.Equal(
                     evaluations[3].OutputStates.GetUpdatedStates(),
@@ -319,15 +321,22 @@ namespace Libplanet.Tests.Action
                 stateGetter: ActionEvaluator<ThrowException>.NullStateGetter,
                 balanceGetter: ActionEvaluator<ThrowException>.NullBalanceGetter,
                 trieGetter: null);
+            var block = new Block<ThrowException>(
+                index: 123,
+                difficulty: 0,
+                totalDifficulty: 0,
+                nonce: new Nonce(new byte[0]),
+                miner: GenesisMinerAddress,
+                previousHash: null,
+                timestamp: DateTimeOffset.UtcNow,
+                transactions: ImmutableArray.Create(tx));
             var nextStates = actionEvaluator.EvaluateTxResult(
-                tx,
-                preEvaluationHash: hash,
-                blockIndex: 123,
+                block: block,
+                tx: tx,
                 previousStates: new AccountStateDeltaImpl(
                     ActionEvaluator<ThrowException>.NullAccountStateGetter,
                     ActionEvaluator<ThrowException>.NullAccountBalanceGetter,
                     tx.Signer),
-                miner: GenesisMinerAddress,
                 rehearsal: false);
 
             Assert.Empty(nextStates.GetUpdatedStates());

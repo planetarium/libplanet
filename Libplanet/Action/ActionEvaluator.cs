@@ -36,6 +36,17 @@ namespace Libplanet.Action
             balanceGetter: NullBalanceGetter,
             trieGetter: null);
 
+        // FIXME: Although used for dummy context, this can be confusing.
+        private static readonly Block<T> _nullBlock = new Block<T>(
+            index: 0,
+            difficulty: 0,
+            totalDifficulty: 0,
+            nonce: new Nonce(new byte[0]),
+            miner: null,
+            previousHash: null,
+            timestamp: DateTimeOffset.UtcNow,
+            transactions: ImmutableArray<Transaction<T>>.Empty);
+
         private readonly ILogger _logger;
         private readonly IAction? _policyBlockAction;
         private readonly StateGetter<T> _stateGetter;
@@ -73,19 +84,16 @@ namespace Libplanet.Action
             Block<T> block,
             StateCompleterSet<T> stateCompleterSet)
         {
-            var (accountStateGetter, accountBalanceGetter) = GetAccountGettersPair(
-                block: block,
-                stateCompleterSet: stateCompleterSet);
             ITrie? previousBlockStatesTrie =
                 !(_trieGetter is null) && block.PreviousHash is { } h
                     ? _trieGetter(h)
                     : null;
+            var previousStates = GetPreviousBlockOutputStates(block, stateCompleterSet);
 
             ImmutableList<ActionEvaluation> evaluations = EvaluateBlock(
                 block: block,
                 currentTime: DateTimeOffset.UtcNow,
-                accountStateGetter: accountStateGetter,
-                accountBalanceGetter: accountBalanceGetter,
+                previousStates: previousStates,
                 previousBlockStatesTrie: previousBlockStatesTrie).ToImmutableList();
 
             if (_policyBlockAction is null)
@@ -94,12 +102,13 @@ namespace Libplanet.Action
             }
             else
             {
+                previousStates = evaluations.Count > 0
+                    ? evaluations.Last().OutputStates
+                    : previousStates;
                 return evaluations.Add(
                     EvaluatePolicyBlockAction(
                         block: block,
-                        evaluations: evaluations,
-                        accountStateGetter: accountStateGetter,
-                        accountBalanceGetter: accountBalanceGetter,
+                        previousStates: previousStates,
                         previousBlockStatesTrie: previousBlockStatesTrie));
             }
         }
@@ -107,14 +116,12 @@ namespace Libplanet.Action
         internal static IImmutableSet<Address> GetUpdatedAddresses(Transaction<T> tx)
         {
             return _nullActionEvaluator.EvaluateTxResult(
-                tx,
-                preEvaluationHash: BlockHash.FromHashDigest(default(HashDigest<SHA256>)),
-                blockIndex: 0,
+                block: _nullBlock,
+                tx: tx,
                 previousStates: new AccountStateDeltaImpl(
                     ActionEvaluator<T>.NullAccountStateGetter,
                     ActionEvaluator<T>.NullAccountBalanceGetter,
                     tx.Signer),
-                miner: tx.Signer,
                 rehearsal: true).UpdatedAddresses;
         }
 
@@ -284,13 +291,9 @@ namespace Libplanet.Action
         /// <param name="block">A <see cref="Block{T}"/> instance to evaluate.</param>
         /// <param name="currentTime">The current time to validate
         /// time-wise conditions.</param>
-        /// <param name="accountStateGetter">An <see cref="AccountStateGetter"/> delegate to get
-        /// a previous state. This affects the execution of <see cref="Transaction{T}.Actions"/>.
-        /// </param>
-        /// <param name="accountBalanceGetter">An <see cref="AccountBalanceGetter"/> delegate to
-        /// get previous account balance. This affects the execution of
-        /// <see cref="Transaction{T}.Actions"/>.
-        /// </param>
+        /// <param name="previousStates">The states immediately before any <see cref="IAction"/>s
+        /// being executed.  Note that its <see cref="IAccountStateDelta.UpdatedAddresses"/>
+        /// are remained to the returned next states.</param>
         /// <param name="previousBlockStatesTrie">The trie to contain states at previous block.
         /// </param>
         /// <returns>An <see cref="ActionEvaluation"/> for each
@@ -331,8 +334,7 @@ namespace Libplanet.Action
         internal IEnumerable<ActionEvaluation> EvaluateBlock(
             Block<T> block,
             DateTimeOffset currentTime,
-            AccountStateGetter accountStateGetter,
-            AccountBalanceGetter accountBalanceGetter,
+            IAccountStateDelta previousStates,
             ITrie? previousBlockStatesTrie = null)
         {
             // FIXME: Probably not the best place to have Validate().
@@ -340,8 +342,9 @@ namespace Libplanet.Action
 
             IEnumerable<Tuple<Transaction<T>, ActionEvaluation>> txEvaluationPairs =
                 EvaluateTxsGradually(
-                    block, accountStateGetter, accountBalanceGetter, previousBlockStatesTrie)
-                    .ToArray();
+                    block,
+                    previousStates,
+                    previousBlockStatesTrie).ToArray();
             var updatedTxAddressPairs = txEvaluationPairs
                     .GroupBy(tuple => tuple.Item1)
                     .Select(
@@ -374,11 +377,10 @@ namespace Libplanet.Action
         /// <see cref="Transaction{T}"/> and an <see cref="ActionEvaluation"/> as a pair
         /// for each step.
         /// </summary>
-        /// <param name="block">A <see cref="Block{T}"/> instance to evaluate.</param>
-        /// <param name="accountStateGetter">An <see cref="AccountStateGetter"/>
-        /// delegate to get a previous state.</param>
-        /// <param name="accountBalanceGetter">An <see cref="AccountBalanceGetter"/> delegate to
-        /// get previous account balance.</param>
+        /// <param name="block">The <see cref="Block{T}"/> instance to evaluate.</param>
+        /// <param name="previousStates">The states immediately before any <see cref="IAction"/>s
+        /// being evaluated.  Note that its <see cref="IAccountStateDelta.UpdatedAddresses"/>
+        /// are remained to the returned next states.</param>
         /// <param name="previousBlockStatesTrie">The trie to contain states at previous block.
         /// </param>
         /// <returns>Enumerates pair of a transaction, and <see cref="ActionEvaluation"/>
@@ -396,23 +398,21 @@ namespace Libplanet.Action
         [Pure]
         internal IEnumerable<Tuple<Transaction<T>, ActionEvaluation>> EvaluateTxsGradually(
             Block<T> block,
-            AccountStateGetter accountStateGetter,
-            AccountBalanceGetter accountBalanceGetter,
+            IAccountStateDelta previousStates,
             ITrie? previousBlockStatesTrie = null)
         {
-            IAccountStateDelta delta;
+            IAccountStateDelta delta = previousStates;
             foreach (Transaction<T> tx in block.Transactions)
             {
                 delta = block.ProtocolVersion > 0
-                    ? new AccountStateDeltaImpl(accountStateGetter, accountBalanceGetter, tx.Signer)
+                    ? new AccountStateDeltaImpl(
+                        delta.GetState, delta.GetBalance, tx.Signer)
                     : new AccountStateDeltaImplV0(
-                        accountStateGetter, accountBalanceGetter, tx.Signer);
+                        delta.GetState, delta.GetBalance, tx.Signer);
                 IEnumerable<ActionEvaluation> evaluations = EvaluateTxGradually(
+                    block: block,
                     tx: tx,
-                    preEvaluationHash: block.PreEvaluationHash,
-                    blockIndex: block.Index,
                     previousStates: delta,
-                    miner: block.Miner!.Value,
                     rehearsal: false,
                     previousBlockStatesTrie: previousBlockStatesTrie);
                 foreach (var evaluation in evaluations)
@@ -420,9 +420,6 @@ namespace Libplanet.Action
                     yield return Tuple.Create(tx, evaluation);
                     delta = evaluation.OutputStates;
                 }
-
-                accountStateGetter = delta.GetState;
-                accountBalanceGetter = delta.GetBalance;
             }
         }
 
@@ -432,16 +429,13 @@ namespace Libplanet.Action
         /// <para>If the needed value is only the final states,
         /// use <see cref="EvaluateTxResult"/> method instead.</para>
         /// </summary>
+        /// <param name="block">The <see cref="Block{T}"/> instance that <paramref name="tx"/>
+        /// belongs to.</param>
         /// <param name="tx">A <see cref="Transaction{T}"/> instance to evaluate.</param>
-        /// <param name="preEvaluationHash">The <see cref="Block{T}.PreEvaluationHash"/> of
-        /// <see cref="Block{T}"/> that <paramref name="tx"/> will belong to.</param>
-        /// <param name="blockIndex">The <see cref="Block{T}.Index"/> of
-        /// <see cref="Block{T}"/> that <paramref name="tx"/> will belong to.</param>
         /// <param name="previousStates">The states immediately before
         /// <paramref name="tx.Actions"/> being executed.  Note that its
         /// <see cref="IAccountStateDelta.UpdatedAddresses"/> are remained
         /// to the returned next states.</param>
-        /// <param name="miner">An address of block miner.</param>
         /// <param name="rehearsal">Pass <c>true</c> if it is intended
         /// to be dry-run (i.e., the returned result will be never used).
         /// The default value is <c>false</c>.</param>
@@ -457,20 +451,18 @@ namespace Libplanet.Action
         /// </returns>
         [Pure]
         internal IEnumerable<ActionEvaluation> EvaluateTxGradually(
+            Block<T> block,
             Transaction<T> tx,
-            BlockHash preEvaluationHash,
-            long blockIndex,
             IAccountStateDelta previousStates,
-            Address miner,
             bool rehearsal = false,
             ITrie? previousBlockStatesTrie = null)
         {
             return EvaluateGradually(
-                preEvaluationHash: preEvaluationHash,
-                blockIndex: blockIndex,
+                preEvaluationHash: block.PreEvaluationHash,
+                blockIndex: block.Index,
                 txid: tx.Id,
                 previousStates: previousStates,
-                miner: miner,
+                miner: block.Miner.GetValueOrDefault(),
                 signer: tx.Signer,
                 signature: tx.Signature,
                 actions: tx.Actions.Cast<IAction>().ToImmutableList(),
@@ -482,16 +474,13 @@ namespace Libplanet.Action
         /// Executes the <see cref="Transaction{T}.Actions"/> of given <see cref="Transaction{T}"/>
         /// and gets the result states.
         /// </summary>
+        /// <param name="block">The <see cref="Block{T}"/> instance that <paramref name="tx"/>
+        /// belongs to.</param>
         /// <param name="tx">A <see cref="Transaction{T}"/> instance to evaluate.</param>
-        /// <param name="preEvaluationHash">The <see cref="Block{T}.PreEvaluationHash"/> of
-        /// <see cref="Block{T}"/> that <paramref name="tx"/> will belong to.</param>
-        /// <param name="blockIndex">The <see cref="Block{T}.Index"/> of
-        /// <see cref="Block{T}"/> that <paramref name="tx"/> will belong to.</param>
         /// <param name="previousStates">The states immediately before
         /// <paramref name="tx.Actions"/> being executed.  Note that its
         /// <see cref="IAccountStateDelta.UpdatedAddresses"/> are remained
         /// to the returned next states.</param>
-        /// <param name="miner">An address of block miner.</param>
         /// <param name="rehearsal">Pass <c>true</c> if it is intended
         /// to be dry-run (i.e., the returned result will be never used).
         /// The default value is <c>false</c>.</param>
@@ -501,19 +490,15 @@ namespace Libplanet.Action
         /// <paramref name="previousStates"/> as well.</returns>
         [Pure]
         internal IAccountStateDelta EvaluateTxResult(
+            Block<T> block,
             Transaction<T> tx,
-            BlockHash preEvaluationHash,
-            long blockIndex,
             IAccountStateDelta previousStates,
-            Address miner,
             bool rehearsal = false)
         {
             var evaluations = EvaluateTxGradually(
+                block: block,
                 tx,
-                preEvaluationHash,
-                blockIndex,
                 previousStates,
-                miner,
                 rehearsal: rehearsal).ToImmutableList();
 
             if (evaluations.Count > 0)
@@ -531,12 +516,8 @@ namespace Libplanet.Action
         /// the given <see cref="Block{T}"/> object.
         /// </summary>
         /// <param name="block">The <see cref="Block{T}"/> instance to evaluate.</param>
-        /// <param name="evaluations">The list of evaluations for <paramref name="block"/>
-        /// made up to this point.</param>
-        /// <param name="accountStateGetter">The <see cref="AccountStateGetter"/> delegate to get
-        /// the previous state.</param>
-        /// <param name="accountBalanceGetter">The <see cref="AccountBalanceGetter"/> delegate to
-        /// get the previous account balance.</param>
+        /// <param name="previousStates">The states immediately before the evaluation of
+        /// <see cref="IBlockPolicy{T}.BlockAction"/>.</param>
         /// <param name="previousBlockStatesTrie">The trie to contain states at previous block.
         /// </param>
         /// <returns>The <see cref="ActionEvaluation"/> of evaluating the
@@ -544,9 +525,7 @@ namespace Libplanet.Action
         [Pure]
         internal ActionEvaluation EvaluatePolicyBlockAction(
             Block<T> block,
-            IReadOnlyList<ActionEvaluation> evaluations,
-            AccountStateGetter accountStateGetter,
-            AccountBalanceGetter accountBalanceGetter,
+            IAccountStateDelta previousStates,
             ITrie? previousBlockStatesTrie)
         {
             if (_policyBlockAction is null)
@@ -561,20 +540,13 @@ namespace Libplanet.Action
                 $"Evaluating policy block action for block #{block.Index} " +
                 $"{block.PreEvaluationHash}");
 
-            Address miner = block.Miner.GetValueOrDefault();
-            IAccountStateDelta previousStates = GetPreviousStates(
-                block: block,
-                evaluations: evaluations,
-                accountStateGetter: accountStateGetter,
-                accountBalanceGetter: accountBalanceGetter);
-
             return EvaluateGradually(
                 preEvaluationHash: block.PreEvaluationHash,
                 blockIndex: block.Index,
                 txid: null,
                 previousStates: previousStates,
-                miner: miner,
-                signer: miner,
+                miner: block.Miner.GetValueOrDefault(),
+                signer: block.Miner.GetValueOrDefault(),
                 signature: Array.Empty<byte>(),
                 actions: new[] { _policyBlockAction }.ToImmutableList(),
                 rehearsal: false,
@@ -583,39 +555,26 @@ namespace Libplanet.Action
         }
 
         /// <summary>
-        /// Retrieves the last previous states of an evaluation.
+        /// Retrieves the last previous states for the previous block of <paramref name="block"/>.
         /// </summary>
-        /// <param name="block">The <see cref="Block{T}"/> instance to reference in case
-        /// <paramref name="evaluations"/> is <c>Empty</c>.</param>
-        /// <param name="evaluations">The list of evaluations for <paramref name="block"/> made
-        /// to this point.</param>
-        /// <param name="accountStateGetter">The <see cref="AccountStateGetter"/> delegate to get
-        /// the previous state.</param>
-        /// <param name="accountBalanceGetter">The <see cref="AccountBalanceGetter"/> delegate to
-        /// get the previous account balance.</param>
+        /// <param name="block">The <see cref="Block{T}"/> instance to consider.</param>
+        /// <param name="stateCompleterSet">The <see cref="StateCompleterSet{T}"/> to use.</param>
         /// <returns>The last previous <see cref="IAccountStateDelta"/> for the given arguments.
         /// </returns>
-        private IAccountStateDelta GetPreviousStates(
+        private IAccountStateDelta GetPreviousBlockOutputStates(
             Block<T> block,
-            IReadOnlyList<ActionEvaluation> evaluations,
-            AccountStateGetter accountStateGetter,
-            AccountBalanceGetter accountBalanceGetter)
+            StateCompleterSet<T> stateCompleterSet)
         {
-            if (evaluations.Count > 0)
-            {
-                return evaluations[evaluations.Count - 1].OutputStates;
-            }
-            else
-            {
-                Address miner = block.Miner.GetValueOrDefault();
+            var (accountStateGetter, accountBalanceGetter) =
+                InitializeAccountGettersPair(block, stateCompleterSet);
+            Address miner = block.Miner.GetValueOrDefault();
 
-                return block.ProtocolVersion > 0
-                    ? new AccountStateDeltaImpl(accountStateGetter, accountBalanceGetter, miner)
-                    : new AccountStateDeltaImplV0(accountStateGetter, accountBalanceGetter, miner);
-            }
+            return block.ProtocolVersion > 0
+                ? new AccountStateDeltaImpl(accountStateGetter, accountBalanceGetter, miner)
+                : new AccountStateDeltaImplV0(accountStateGetter, accountBalanceGetter, miner);
         }
 
-        private Tuple<AccountStateGetter, AccountBalanceGetter> GetAccountGettersPair(
+        private Tuple<AccountStateGetter, AccountBalanceGetter> InitializeAccountGettersPair(
             Block<T> block,
             StateCompleterSet<T> stateCompleterSet)
         {
