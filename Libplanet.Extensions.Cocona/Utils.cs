@@ -13,6 +13,8 @@ namespace Libplanet.Extensions.Cocona
 {
     public static class Utils
     {
+        public static readonly string DateTimeOffsetFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
+
         public static CommandExitedException Error(string message, int exitCode = 128)
         {
             Console.Error.WriteLine("Error: {0}", message);
@@ -203,7 +205,7 @@ namespace Libplanet.Extensions.Cocona
                 var jsonString = reader.GetString();
                 return DateTimeOffset.ParseExact(
                     jsonString,
-                    "yyyy-MM-ddTHH:mm:ss.ffffffZ",
+                    DateTimeOffsetFormat,
                     CultureInfo.InvariantCulture
                 );
             }
@@ -215,7 +217,7 @@ namespace Libplanet.Extensions.Cocona
             {
                 writer.WriteStringValue(
                     value.ToString(
-                        "yyyy-MM-ddTHH:mm:ss.ffffffZ",
+                        DateTimeOffsetFormat,
                         CultureInfo.InvariantCulture
                     ));
             }

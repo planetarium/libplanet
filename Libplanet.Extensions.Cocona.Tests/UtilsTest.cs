@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Immutable;
+using System.Globalization;
 using System.Linq;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace Libplanet.Extensions.Cocona.Tests
 {
     public class UtilsTest
     {
+
         [Fact]
         public void TestHumanReadable()
         {
@@ -17,7 +18,12 @@ namespace Libplanet.Extensions.Cocona.Tests
                 0x88, 0x69, 0x58, 0xbc, 0x3e, 0x85, 0x60, 0x92, 0x9c, 0xcc,
                 0x9c, 0xcc
             );
-            var dateTimeOffset = DateTimeOffset.UtcNow;
+            var dateTimeOffset = DateTimeOffset.ParseExact(
+                DateTimeOffset.UtcNow.ToString(
+                    Utils.DateTimeOffsetFormat,
+                    CultureInfo.InvariantCulture
+                ), Utils.DateTimeOffsetFormat,
+                CultureInfo.InvariantCulture);
             var dummyClass = new DummyClass(byteArray, dateTimeOffset);
 
             var serialized = Utils.SerializeHumanReadable(dummyClass);
