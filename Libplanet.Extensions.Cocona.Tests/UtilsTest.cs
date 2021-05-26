@@ -27,7 +27,7 @@ namespace Libplanet.Extensions.Cocona.Tests
             var dummyClass = new DummyClass(byteArray, dateTimeOffset);
 
             var serialized = Utils.SerializeHumanReadable(dummyClass);
-            var dummyClass2 = Utils.DeSerializeHumanReadable<DummyClass>(serialized);
+            var dummyClass2 = Utils.DeserializeHumanReadable<DummyClass>(serialized);
             Assert.True(dummyClass.SampleByteArray.SequenceEqual(dummyClass2.SampleByteArray));
             Assert.Equal(dummyClass.SampleDateTimeOffset, dummyClass2.SampleDateTimeOffset);
         }
