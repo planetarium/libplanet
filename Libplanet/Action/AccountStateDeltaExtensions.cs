@@ -10,14 +10,14 @@ namespace Libplanet.Action
 {
     internal static class AccountStateDeltaExtensions
     {
-        internal static IImmutableDictionary<Address, IValue> GetUpdatedStates(
+        internal static IImmutableDictionary<Address, IValue?> GetUpdatedStates(
             this IAccountStateDelta delta
         )
         {
             return delta.StateUpdatedAddresses.Select(address =>
-                new KeyValuePair<Address, IValue>(
+                new KeyValuePair<Address, IValue?>(
                     address,
-                    delta.GetState(address)!
+                    delta.GetState(address)
                 )
             ).ToImmutableDictionary();
         }
@@ -33,16 +33,16 @@ namespace Libplanet.Action
                 )
             ).ToImmutableDictionary();
 
-        internal static IImmutableDictionary<string, IValue> GetUpdatedRawStates(
+        internal static IImmutableDictionary<string, IValue?> GetUpdatedRawStates(
             this IAccountStateDelta delta) =>
             delta.GetUpdatedStates()
                 .Select(pair =>
-                    new KeyValuePair<string, IValue>(
+                    new KeyValuePair<string, IValue?>(
                         ToStateKey(pair.Key),
                         pair.Value))
                 .Union(
                     delta.GetUpdatedBalances().Select(pair =>
-                        new KeyValuePair<string, IValue>(
+                        new KeyValuePair<string, IValue?>(
                             ToFungibleAssetKey(pair.Key),
                             (Integer)pair.Value.RawValue))).ToImmutableDictionary();
     }

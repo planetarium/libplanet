@@ -128,6 +128,9 @@ on GitHub consists of several projects:
  -  *Libplanet.Explorer.UnitTests*: Unit tests of the *Libplanet.Explorer*
     project.
 
+ -  *Libplanet.Extensions.Cocona.Tests*: Unit tests of the
+    *Libplanet.Extensions.Cocona* project.
+
 
 [NuGet package]: https://www.nuget.org/packages/Libplanet/
 [TURN & STUN]: https://snack.planetarium.dev/eng/2019/06/nat_traversal_2/

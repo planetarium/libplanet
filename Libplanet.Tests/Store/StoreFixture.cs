@@ -16,6 +16,10 @@ namespace Libplanet.Tests.Store
     {
         protected StoreFixture(IAction blockAction = null)
         {
+            Path = null;
+
+            Scheme = string.Empty;
+
             StoreChainId = Guid.NewGuid();
 
             Address1 = new Address(new byte[]
@@ -98,6 +102,10 @@ namespace Libplanet.Tests.Store
             Transaction2 = MakeTransaction(new List<DumbAction>(), ImmutableHashSet<Address>.Empty);
             Transaction3 = MakeTransaction(new List<DumbAction>(), ImmutableHashSet<Address>.Empty);
         }
+
+        public string Path { get; set; }
+
+        public string Scheme { get; set; }
 
         public Guid StoreChainId { get; }
 

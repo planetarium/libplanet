@@ -2,10 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Blockchain.Renderers;
-using Libplanet.Blocks;
 using Libplanet.Tests.Common.Action;
 using Serilog;
 using Serilog.Events;
@@ -73,16 +71,8 @@ namespace Libplanet.Tests.Blockchain.Renderers
         {
             bool called = false;
             LogEvent firstLog = null;
-            IActionContext actionContext = new ActionContext(
-                signer: default,
-                txid: default,
-                miner: default,
-                blockHash: new BlockHash(new byte[HashDigest<SHA256>.Size]),
-                blockIndex: 123,
-                previousStates: _stateDelta,
-                randomSeed: default,
-                rehearsal: rehearsal
-            );
+            IActionContext actionContext =
+                new ActionContext(default, default, default, 123, _stateDelta, default, rehearsal);
             Exception actionError = new Exception();
             IActionRenderer<DumbAction> actionRenderer;
             if (error)

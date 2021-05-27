@@ -139,7 +139,7 @@ namespace Libplanet.Extensions.Cocona.Commands
             if (bytes)
             {
                 using Stream stdout = Console.OpenStandardOutput();
-                stdout.Write(rawKey);
+                stdout.Write(rawKey, 0, rawKey.Length);
             }
             else
             {

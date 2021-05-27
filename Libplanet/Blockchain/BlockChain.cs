@@ -35,7 +35,7 @@ namespace Libplanet.Blockchain
     /// block when it's instantiated.</remarks>
     /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
     /// to <see cref="Block{T}"/>'s type parameter.</typeparam>
-    public class BlockChain<T>
+    public partial class BlockChain<T>
         where T : IAction, new()
     {
         // FIXME: The _rwlock field should be private.
@@ -1231,6 +1231,12 @@ namespace Libplanet.Blockchain
                         );
                     }
 
+                    if (actionEvaluations is { } evals)
+                    {
+                        IEnumerable<TxExecution> txExecutions = MakeTxExecutions(block, evals);
+                        UpdateTxExecutions(txExecutions);
+                    }
+
                     _blocks[block.Hash] = block;
                     foreach (KeyValuePair<Address, long> pair in nonceDeltas)
                     {
@@ -1453,51 +1459,6 @@ namespace Libplanet.Blockchain
             double evalDuration = (DateTimeOffset.Now - evaluateActionStarted).TotalMilliseconds;
             _logger.Debug(evalEndMsg, block.Index, block.Hash, evalDuration);
 
-            // Prepare TxExecutions
-            var txExecutions = new List<TxExecution>();
-            IEnumerable<IGrouping<TxId, ActionEvaluation>> evaluationsPerTxs = evaluations
-                .Where(e => e.InputContext.TxId is { })
-                .GroupBy(e => e.InputContext.TxId.Value);
-            foreach (IGrouping<TxId, ActionEvaluation> txEvals in evaluationsPerTxs)
-            {
-                TxId txid = txEvals.Key;
-                IAccountStateDelta prevStates = txEvals.First().InputContext.PreviousStates;
-                ActionEvaluation evalSum = txEvals.Last();
-                TxExecution txExecution;
-                if (evalSum.Exception is { } e)
-                {
-                    txExecution = new TxFailure(block.Hash, txid, e.InnerException ?? e);
-                }
-                else
-                {
-                    IAccountStateDelta outputStates = evalSum.OutputStates;
-                    txExecution = new TxSuccess(
-                        block.Hash,
-                        txid,
-                        outputStates.GetUpdatedStates(),
-                        outputStates.UpdatedFungibleAssets.ToImmutableDictionary(
-                            kv => kv.Key,
-                            kv => (IImmutableDictionary<Currency, FungibleAssetValue>)kv.Value
-                                .ToImmutableDictionary(
-                                    currency => currency,
-                                    currency => outputStates.GetBalance(kv.Key, currency) -
-                                        prevStates.GetBalance(kv.Key, currency)
-                                )
-                        ),
-                        outputStates.UpdatedFungibleAssets.ToImmutableDictionary(
-                            kv => kv.Key,
-                            kv => (IImmutableDictionary<Currency, FungibleAssetValue>)kv.Value
-                                .ToImmutableDictionary(
-                                    currency => currency,
-                                    currency => outputStates.GetBalance(kv.Key, currency)
-                                )
-                        )
-                    );
-                }
-
-                txExecutions.Add(txExecution);
-            }
-
             _rwlock.EnterWriteLock();
             try
             {
@@ -1542,23 +1503,6 @@ namespace Libplanet.Blockchain
                     "(duration: {DurationMs}ms).";
                 double duration = (DateTimeOffset.Now - setStatesStarted).TotalMilliseconds;
                 _logger.Debug(endMsg, block.Index, block.Hash, duration);
-
-                // Update TxExecutions
-                foreach (TxExecution txExecution in txExecutions)
-                {
-                    // Note that there are two overloaded methods of the same name PutTxExecution()
-                    // in IStore.  As those two have different signatures, run-time polymorphism
-                    // does not work.  Instead, we need the following hard-coded branch:
-                    switch (txExecution)
-                    {
-                        case TxSuccess s:
-                            Store.PutTxExecution(s);  // IStore.PutTxExecution(TxSuccess)
-                            break;
-                        case TxFailure f:
-                            Store.PutTxExecution(f);  // IStore.PutTxExecution(TxFailure)
-                            break;
-                    }
-                }
             }
             finally
             {

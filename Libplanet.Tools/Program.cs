@@ -10,6 +10,7 @@ namespace Libplanet.Tools
     [HasSubCommands(typeof(ApvCommand), "apv", Description = "App protocol version utilities.")]
     [HasSubCommands(typeof(KeyCommand), "key", Description = "Manage private keys.")]
     [HasSubCommands(typeof(MptCommand), "mpt", Description = "Merkle Patricia Trie utilities.")]
+    [HasSubCommands(typeof(StoreCommand), "store", Description = "Store utilities.")]
     public class Program
     {
         private static readonly string FileConfigurationServiceRoot = Path.Combine(
