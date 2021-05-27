@@ -1,12 +1,20 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Globalization;
 using System.Linq;
-using Cocona;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using Bencodex.Types;
+using global::Cocona;
+using Libplanet.Action;
 
 namespace Libplanet.Extensions.Cocona
 {
     public static class Utils
     {
+        public static readonly string DateTimeOffsetFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
+
         public static CommandExitedException Error(string message, int exitCode = 128)
         {
             Console.Error.WriteLine("Error: {0}", message);
@@ -70,6 +78,30 @@ namespace Libplanet.Extensions.Cocona
                 }));
         }
 
+        public static string SerializeHumanReadable<T>(T target) =>
+            JsonSerializer.Serialize(
+                target,
+                new JsonSerializerOptions
+                {
+                    WriteIndented = true,
+                    Converters =
+                    {
+                        new ByteArrayStringJsonConverter(),
+                        new DateTimeOffsetJsonConverter(),
+                    },
+                }
+            );
+
+        public static T DeserializeHumanReadable<T>(string target) => JsonSerializer.Deserialize<T>(
+            target, new JsonSerializerOptions
+            {
+                Converters =
+                {
+                    new ByteArrayStringJsonConverter(),
+                    new DateTimeOffsetJsonConverter(),
+                },
+            });
+
         private static void PrintTable(object[] header, IEnumerable<object[]> rows)
         {
             IEnumerable<(int, string)> RowToStrings(object[] row)
@@ -121,6 +153,73 @@ namespace Libplanet.Extensions.Cocona
                 }
 
                 Console.WriteLine();
+            }
+        }
+
+        public class DummyAction : IAction
+        {
+            public DummyAction()
+            {
+                PlainValue = Null.Value;
+            }
+
+            /// <inheritdoc/>
+            public IValue PlainValue { get; private set; }
+
+            /// <inheritdoc/>
+            public IAccountStateDelta Execute(IActionContext context) =>
+                context.PreviousStates;
+
+            /// <inheritdoc/>
+            public void LoadPlainValue(IValue plainValue)
+            {
+                PlainValue = plainValue;
+            }
+        }
+
+        private class ByteArrayStringJsonConverter : JsonConverter<ImmutableArray<byte>>
+        {
+            public override ImmutableArray<byte> Read(
+                ref Utf8JsonReader reader,
+                Type typeToConvert,
+                JsonSerializerOptions options)
+            {
+                var hexString = reader.GetString();
+                return ImmutableArray.Create(ByteUtil.ParseHex(hexString));
+            }
+
+            public override void Write(
+                Utf8JsonWriter writer, ImmutableArray<byte> value, JsonSerializerOptions options)
+            {
+                writer.WriteStringValue(ByteUtil.Hex(value));
+            }
+        }
+
+        private class DateTimeOffsetJsonConverter : JsonConverter<DateTimeOffset>
+        {
+            public override DateTimeOffset Read(
+                ref Utf8JsonReader reader,
+                Type typeToConvert,
+                JsonSerializerOptions options)
+            {
+                var jsonString = reader.GetString();
+                return DateTimeOffset.ParseExact(
+                    jsonString,
+                    DateTimeOffsetFormat,
+                    CultureInfo.InvariantCulture
+                );
+            }
+
+            public override void Write(
+                Utf8JsonWriter writer,
+                DateTimeOffset value,
+                JsonSerializerOptions options)
+            {
+                writer.WriteStringValue(
+                    value.ToString(
+                        DateTimeOffsetFormat,
+                        CultureInfo.InvariantCulture
+                    ));
             }
         }
     }

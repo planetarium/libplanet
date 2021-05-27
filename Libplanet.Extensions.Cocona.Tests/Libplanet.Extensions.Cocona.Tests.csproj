@@ -58,6 +58,9 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Libplanet.Extensions.Cocona\Libplanet.Extensions.Cocona.csproj" />
+        <ProjectReference Include="..\Libplanet.RocksDBStore.Tests\Libplanet.RocksDBStore.Tests.csproj" />
+        <ProjectReference Include="..\Libplanet.Tests\Libplanet.Tests.csproj" />
     </ItemGroup>
 
 </Project>
+
