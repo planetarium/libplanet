@@ -15,12 +15,12 @@ namespace Libplanet.RocksDBStore.Tests
                 $"rocksdb_test_{Guid.NewGuid()}"
             );
 
+            Scheme = "monorocksdb://";
+
             var store = new MonoRocksDBStore(Path, blockCacheSize: 2, txCacheSize: 2);
             Store = store;
             StateStore = LoadTrieStateStore(Path);
         }
-
-        public string Path { get; }
 
         public IStateStore LoadTrieStateStore(string path)
         {

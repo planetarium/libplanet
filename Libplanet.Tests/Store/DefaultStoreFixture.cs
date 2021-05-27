@@ -23,12 +23,12 @@ namespace Libplanet.Tests.Store
                 );
             }
 
+            Scheme = "default://";
+
             var store = new DefaultStore(Path, blockCacheSize: 2, txCacheSize: 2);
             Store = store;
             StateStore = LoadTrieStateStore(Path);
         }
-
-        public string Path { get; }
 
         public IStateStore LoadTrieStateStore(string path)
         {

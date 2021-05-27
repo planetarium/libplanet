@@ -119,7 +119,6 @@ To be released.
         parameter became `IImmutableSet<BlockHash>`
         (was `ImmutableHashSet<HashDigest<SHA256>>`).
  -  Added `IActionContext.TxId` property.  [[#1275]]
- -  Added `IActionContext.BlockHash` property.  [[#1295], [#1296]]
  -  Added `IStore.PutTxExecution(TxSuccess)` method.  [[#1156], [#1289]]
  -  Added `IStore.PutTxExecution(TxFailure)` method.  [[#1156], [#1289]]
  -  Added `IStore.GetTxExecution()` method.  [[#1156], [#1289]]
@@ -237,6 +236,8 @@ To be released.
     key without asking passphrase.  [[#1213], [#1265]]
  -  Added `planet key derive` subcommand to derive the address or
     public key from a private.  [[#1268]]
+ -  Added `planet query [block-by-hash|block-by-index|tx-by-id]` commands
+    to retrieve the data from the store.  [[#1284], [#1285], [#1298]]
 
 [#1156]: https://github.com/planetarium/libplanet/issues/1156
 [#1192]: https://github.com/planetarium/libplanet/issues/1192
@@ -257,9 +258,10 @@ To be released.
 [#1274]: https://github.com/planetarium/libplanet/pull/1274
 [#1275]: https://github.com/planetarium/libplanet/pull/1275
 [#1278]: https://github.com/planetarium/libplanet/pull/1278
+[#1284]: https://github.com/planetarium/libplanet/issues/1284
+[#1285]: https://github.com/planetarium/libplanet/issues/1285
 [#1289]: https://github.com/planetarium/libplanet/pull/1289
-[#1295]: https://github.com/planetarium/libplanet/issues/1295
-[#1296]: https://github.com/planetarium/libplanet/pull/1296
+[#1298]: https://github.com/planetarium/libplanet/pull/1298
 
 
 Version 0.11.1
@@ -505,6 +507,9 @@ Released on March 30, 2021.
  -  Store aliases used by `planet mpt` became to disallow names looking like
     URIs to disambiguate aliases from the literal store URIs.  [[#1129]]
  -  Added new subcommands `planet mpt list` and `planet mpt query`.  [[#1137]]
+ -  `planet mpt diff` command became to print the differences between
+    other state root hashes into stdout as JSON format.
+    [[#1138], [#1191], [#1233]]
 
 [#795]: https://github.com/planetarium/libplanet/issues/795
 [#1052]: https://github.com/planetarium/libplanet/pull/1052
@@ -535,6 +540,7 @@ Released on March 30, 2021.
 [#1135]: https://github.com/planetarium/libplanet/pull/1135
 [#1136]: https://github.com/planetarium/libplanet/pull/1136
 [#1137]: https://github.com/planetarium/libplanet/pull/1137
+[#1138]: https://github.com/planetarium/libplanet/issues/1138
 [#1141]: https://github.com/planetarium/libplanet/pull/1141
 [#1142]: https://github.com/planetarium/libplanet/issues/1142
 [#1143]: https://github.com/planetarium/libplanet/pull/1143
@@ -560,6 +566,7 @@ Released on March 30, 2021.
 [#1184]: https://github.com/planetarium/libplanet/pull/1184
 [#1185]: https://github.com/planetarium/libplanet/pull/1185
 [#1186]: https://github.com/planetarium/libplanet/pull/1186
+[#1191]: https://github.com/planetarium/libplanet/pull/1191
 [#1194]: https://github.com/planetarium/libplanet/pull/1194
 [#1198]: https://github.com/planetarium/libplanet/pull/1198
 [#1202]: https://github.com/planetarium/libplanet/pull/1202
@@ -568,6 +575,7 @@ Released on March 30, 2021.
 [#1212]: https://github.com/planetarium/libplanet/pull/1212
 [#1215]: https://github.com/planetarium/libplanet/pull/1215
 [#1218]: https://github.com/planetarium/libplanet/pull/1218
+[#1233]: https://github.com/planetarium/libplanet/pull/1233
 
 
 Version 0.10.3
