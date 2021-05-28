@@ -1553,16 +1553,19 @@ namespace Libplanet.Tests.Blockchain
                 store.AppendIndex(id, block.Hash);
             }
 
-            // Build the store has incomplete states
+            // Build a store with incomplete states
             Block<DumbAction> b = chain.Genesis;
+            AccountStateGetter nullAccountStateGetter = (address) => null;
+            AccountBalanceGetter nullAccountBalanceGetter =
+                (address, currency) => new FungibleAssetValue(currency);
             IAccountStateDelta previousStates = b.ProtocolVersion > 0
                 ? new AccountStateDeltaImpl(
-                    ActionEvaluator<DumbAction>.NullAccountStateGetter,
-                    ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
+                    nullAccountStateGetter,
+                    nullAccountBalanceGetter,
                     b.Miner.GetValueOrDefault())
                 : new AccountStateDeltaImplV0(
-                    ActionEvaluator<DumbAction>.NullAccountStateGetter,
-                    ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
+                    nullAccountStateGetter,
+                    nullAccountBalanceGetter,
                     b.Miner.GetValueOrDefault());
             ActionEvaluation[] evals = chain.ActionEvaluator.EvaluateBlock(
                 b,

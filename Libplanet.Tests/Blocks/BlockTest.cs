@@ -6,6 +6,7 @@ using System.Linq;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Assets;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Tests.Common.Action;
@@ -235,24 +236,29 @@ namespace Libplanet.Tests.Blocks
             );
             Block<PolymorphicAction<BaseAction>> invalidBlock = MineNext(
                 _fx.Genesis,
-                new List<Transaction<PolymorphicAction<BaseAction>>>
-                {
-                    invalidTx,
-                }
-            );
+                new List<Transaction<PolymorphicAction<BaseAction>>> { invalidTx });
+
+            StateGetter<PolymorphicAction<BaseAction>> nullStateGetter =
+                (address, hashDigest, stateCompleter) => null;
+            BalanceGetter<PolymorphicAction<BaseAction>> nullBalanceGetter =
+                (address, currency, hashDigest, fungibleAssetStateCompleter)
+                    => new FungibleAssetValue(currency);
             var actionEvaluator = new ActionEvaluator<PolymorphicAction<BaseAction>>(
                 policyBlockAction: null,
-                stateGetter: ActionEvaluator<PolymorphicAction<BaseAction>>.NullStateGetter,
-                balanceGetter: ActionEvaluator<PolymorphicAction<BaseAction>>.NullBalanceGetter,
+                stateGetter: nullStateGetter,
+                balanceGetter: nullBalanceGetter,
                 trieGetter: null);
+            AccountStateGetter nullAccountStateGetter = (address) => null;
+            AccountBalanceGetter nullAccountBalanceGetter =
+                (address, currency) => new FungibleAssetValue(currency);
             IAccountStateDelta previousStates = invalidBlock.ProtocolVersion > 0
                 ? new AccountStateDeltaImpl(
-                    ActionEvaluator<PolymorphicAction<BaseAction>>.NullAccountStateGetter,
-                    ActionEvaluator<PolymorphicAction<BaseAction>>.NullAccountBalanceGetter,
+                    nullAccountStateGetter,
+                    nullAccountBalanceGetter,
                     invalidBlock.Miner.GetValueOrDefault())
                 : new AccountStateDeltaImplV0(
-                    ActionEvaluator<PolymorphicAction<BaseAction>>.NullAccountStateGetter,
-                    ActionEvaluator<PolymorphicAction<BaseAction>>.NullAccountBalanceGetter,
+                    nullAccountStateGetter,
+                    nullAccountBalanceGetter,
                     invalidBlock.Miner.GetValueOrDefault());
             Assert.Throws<InvalidTxUpdatedAddressesException>(() =>
                 actionEvaluator.EvaluateBlock(

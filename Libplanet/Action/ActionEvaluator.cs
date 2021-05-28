@@ -19,21 +19,21 @@ namespace Libplanet.Action
     public class ActionEvaluator<T>
         where T : IAction, new()
     {
-        public static readonly StateGetter<T> NullStateGetter =
+        private static readonly StateGetter<T> _nullStateGetter =
             (address, hashDigest, stateCompleter) => null;
 
-        public static readonly BalanceGetter<T> NullBalanceGetter =
+        private static readonly BalanceGetter<T> _nullBalanceGetter =
             (address, currency, hashDigest, fungibleAssetStateCompleter)
-            => new FungibleAssetValue(currency);
+                => new FungibleAssetValue(currency);
 
-        public static readonly AccountStateGetter NullAccountStateGetter = address => null;
-        public static readonly AccountBalanceGetter NullAccountBalanceGetter =
+        private static readonly AccountStateGetter _nullAccountStateGetter = address => null;
+        private static readonly AccountBalanceGetter _nullAccountBalanceGetter =
             (address, currency) => new FungibleAssetValue(currency);
 
         private static readonly ActionEvaluator<T> _nullActionEvaluator = new ActionEvaluator<T>(
             policyBlockAction: null,
-            stateGetter: NullStateGetter,
-            balanceGetter: NullBalanceGetter,
+            stateGetter: _nullStateGetter,
+            balanceGetter: _nullBalanceGetter,
             trieGetter: null);
 
         // FIXME: Although used for dummy context, this can be confusing.
@@ -84,10 +84,9 @@ namespace Libplanet.Action
             Block<T> block,
             StateCompleterSet<T> stateCompleterSet)
         {
-            ITrie? previousBlockStatesTrie =
-                !(_trieGetter is null) && block.PreviousHash is { } h
-                    ? _trieGetter(h)
-                    : null;
+            ITrie? previousBlockStatesTrie = !(_trieGetter is null) && block.PreviousHash is { } h
+                ? _trieGetter(h)
+                : null;
             IAccountStateDelta previousStates =
                 GetPreviousBlockOutputStates(block, stateCompleterSet);
 
@@ -120,8 +119,8 @@ namespace Libplanet.Action
                 block: _nullBlock,
                 tx: tx,
                 previousStates: new AccountStateDeltaImpl(
-                    ActionEvaluator<T>.NullAccountStateGetter,
-                    ActionEvaluator<T>.NullAccountBalanceGetter,
+                    _nullAccountStateGetter,
+                    _nullAccountBalanceGetter,
                     tx.Signer),
                 rehearsal: true).UpdatedAddresses;
         }
@@ -342,9 +341,9 @@ namespace Libplanet.Action
 
             IEnumerable<(Transaction<T>, ActionEvaluation)> txEvaluationPairs =
                 EvaluateTxsGradually(
-                    block,
-                    previousStates,
-                    previousBlockStatesTrie).ToArray();
+                    block: block,
+                    previousStates: previousStates,
+                    previousBlockStatesTrie: previousBlockStatesTrie).ToArray();
             var updatedTxAddressPairs = txEvaluationPairs
                 .GroupBy(tuple => tuple.Item1)
                 .Select(grp => (grp.Key, grp.Last().Item2.OutputStates.UpdatedAddresses));
@@ -397,10 +396,8 @@ namespace Libplanet.Action
             foreach (Transaction<T> tx in block.Transactions)
             {
                 delta = block.ProtocolVersion > 0
-                    ? new AccountStateDeltaImpl(
-                        delta.GetState, delta.GetBalance, tx.Signer)
-                    : new AccountStateDeltaImplV0(
-                        delta.GetState, delta.GetBalance, tx.Signer);
+                    ? new AccountStateDeltaImpl(delta.GetState, delta.GetBalance, tx.Signer)
+                    : new AccountStateDeltaImplV0(delta.GetState, delta.GetBalance, tx.Signer);
                 IEnumerable<ActionEvaluation> evaluations = EvaluateTxGradually(
                     block: block,
                     tx: tx,
@@ -489,8 +486,8 @@ namespace Libplanet.Action
         {
             var evaluations = EvaluateTxGradually(
                 block: block,
-                tx,
-                previousStates,
+                tx: tx,
+                previousStates: previousStates,
                 rehearsal: rehearsal).ToImmutableList();
 
             if (evaluations.Count > 0)
@@ -575,8 +572,8 @@ namespace Libplanet.Action
 
             if (block.PreviousHash is null)
             {
-                accountStateGetter = NullAccountStateGetter;
-                accountBalanceGetter = NullAccountBalanceGetter;
+                accountStateGetter = _nullAccountStateGetter;
+                accountBalanceGetter = _nullAccountBalanceGetter;
             }
             else
             {
