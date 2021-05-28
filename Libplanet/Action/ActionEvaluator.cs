@@ -88,7 +88,8 @@ namespace Libplanet.Action
                 !(_trieGetter is null) && block.PreviousHash is { } h
                     ? _trieGetter(h)
                     : null;
-            var previousStates = GetPreviousBlockOutputStates(block, stateCompleterSet);
+            IAccountStateDelta previousStates =
+                GetPreviousBlockOutputStates(block, stateCompleterSet);
 
             ImmutableList<ActionEvaluation> evaluations = EvaluateBlock(
                 block: block,
@@ -170,11 +171,9 @@ namespace Libplanet.Action
             ITrie? previousBlockStatesTrie = null,
             bool blockAction = false)
         {
-            ActionContext CreateActionContext(
-                IAccountStateDelta prevStates,
-                int randomSeed
-            ) =>
-                new ActionContext(
+            ActionContext CreateActionContext(IAccountStateDelta prevStates, int randomSeed)
+            {
+                return new ActionContext(
                     signer: signer,
                     txid: txid,
                     miner: miner,
@@ -184,6 +183,7 @@ namespace Libplanet.Action
                     rehearsal: rehearsal,
                     previousBlockStatesTrie: previousBlockStatesTrie,
                     blockAction: blockAction);
+            }
 
             byte[] hashedSignature;
             using (var hasher = SHA1.Create())
@@ -261,10 +261,10 @@ namespace Libplanet.Action
                 ActionContext equivalentContext = CreateActionContext(states, seed);
 
                 yield return new ActionEvaluation(
-                    action,
-                    equivalentContext,
-                    nextStates,
-                    exc);
+                    action: action,
+                    inputContext: equivalentContext,
+                    outputStates: nextStates,
+                    exception: exc);
 
                 if (exc is { })
                 {
@@ -340,20 +340,15 @@ namespace Libplanet.Action
             // FIXME: Probably not the best place to have Validate().
             block.Validate(currentTime);
 
-            IEnumerable<Tuple<Transaction<T>, ActionEvaluation>> txEvaluationPairs =
+            IEnumerable<(Transaction<T>, ActionEvaluation)> txEvaluationPairs =
                 EvaluateTxsGradually(
                     block,
                     previousStates,
                     previousBlockStatesTrie).ToArray();
             var updatedTxAddressPairs = txEvaluationPairs
-                    .GroupBy(tuple => tuple.Item1)
-                    .Select(
-                        grp => (
-                            grp.Key,
-                            grp.Last().Item2.OutputStates.UpdatedAddresses));
-            foreach (
-                (Transaction<T> tx, IImmutableSet<Address> updatedAddresses)
-                in updatedTxAddressPairs)
+                .GroupBy(tuple => tuple.Item1)
+                .Select(grp => (grp.Key, grp.Last().Item2.OutputStates.UpdatedAddresses));
+            foreach ((var tx, var updatedAddresses) in updatedTxAddressPairs)
             {
                 if (!tx.UpdatedAddresses.IsSupersetOf(updatedAddresses))
                 {
@@ -361,10 +356,7 @@ namespace Libplanet.Action
                         "Actions in the transaction try to update " +
                         "the addresses not granted.";
                     throw new InvalidTxUpdatedAddressesException(
-                        tx.Id,
-                        tx.UpdatedAddresses,
-                        updatedAddresses,
-                        msg);
+                        tx.Id, tx.UpdatedAddresses, updatedAddresses, msg);
                 }
             }
 
@@ -396,7 +388,7 @@ namespace Libplanet.Action
         /// </para>
         /// </returns>
         [Pure]
-        internal IEnumerable<Tuple<Transaction<T>, ActionEvaluation>> EvaluateTxsGradually(
+        internal IEnumerable<(Transaction<T>, ActionEvaluation)> EvaluateTxsGradually(
             Block<T> block,
             IAccountStateDelta previousStates,
             ITrie? previousBlockStatesTrie = null)
@@ -417,7 +409,7 @@ namespace Libplanet.Action
                     previousBlockStatesTrie: previousBlockStatesTrie);
                 foreach (var evaluation in evaluations)
                 {
-                    yield return Tuple.Create(tx, evaluation);
+                    yield return (tx, evaluation);
                     delta = evaluation.OutputStates;
                 }
             }
@@ -565,7 +557,7 @@ namespace Libplanet.Action
             Block<T> block,
             StateCompleterSet<T> stateCompleterSet)
         {
-            var (accountStateGetter, accountBalanceGetter) =
+            (AccountStateGetter accountStateGetter, AccountBalanceGetter accountBalanceGetter) =
                 InitializeAccountGettersPair(block, stateCompleterSet);
             Address miner = block.Miner.GetValueOrDefault();
 
@@ -574,7 +566,7 @@ namespace Libplanet.Action
                 : new AccountStateDeltaImplV0(accountStateGetter, accountBalanceGetter, miner);
         }
 
-        private Tuple<AccountStateGetter, AccountBalanceGetter> InitializeAccountGettersPair(
+        private (AccountStateGetter, AccountBalanceGetter) InitializeAccountGettersPair(
             Block<T> block,
             StateCompleterSet<T> stateCompleterSet)
         {
@@ -599,7 +591,7 @@ namespace Libplanet.Action
                     stateCompleterSet.FungibleAssetStateCompleter);
             }
 
-            return Tuple.Create(accountStateGetter, accountBalanceGetter);
+            return (accountStateGetter, accountBalanceGetter);
         }
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
@@ -141,6 +142,287 @@ namespace Libplanet.Tests.Action
                 (Text)_storeFx.Address1.ToHex());
             var state = chain.GetState(TestEvaluateAction.BlockIndexKey);
             Assert.Equal((long)(Integer)state, blockIndex);
+        }
+
+        [SuppressMessage(
+            "Microsoft.StyleCop.CSharp.ReadabilityRules",
+            "SA1118",
+            Justification = "Long array literals should be multiline.")]
+        [Fact]
+        public void EvaluateTxsGradually()
+        {
+            Address[] addresses =
+            {
+                _txFx.Address1,
+                _txFx.Address2,
+                _txFx.Address3,
+                _txFx.Address4,
+                _txFx.Address5,
+            };
+            DumbAction MakeAction(Address address, char identifier, Address? transferTo = null) =>
+                new DumbAction(
+                    targetAddress: address,
+                    item: identifier.ToString(),
+                    recordRehearsal: false,
+                    recordRandom: true,
+                    transfer: transferTo is Address to
+                        ? Tuple.Create<Address, Address, BigInteger>(address, to, 5)
+                        : null);
+            Block<DumbAction> genesis = MineGenesis<DumbAction>();
+            ActionEvaluator<DumbAction> actionEvaluator = new ActionEvaluator<DumbAction>(
+                policyBlockAction: null,
+                stateGetter: ActionEvaluator<DumbAction>.NullStateGetter,
+                balanceGetter: ActionEvaluator<DumbAction>.NullBalanceGetter,
+                trieGetter: null);
+            IAccountStateDelta previousStates = genesis.ProtocolVersion > 0
+                ? new AccountStateDeltaImpl(
+                    ActionEvaluator<DumbAction>.NullAccountStateGetter,
+                    ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
+                    genesis.Miner.GetValueOrDefault())
+                : new AccountStateDeltaImplV0(
+                    ActionEvaluator<DumbAction>.NullAccountStateGetter,
+                    ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
+                    genesis.Miner.GetValueOrDefault());
+            Assert.Empty(
+                actionEvaluator.EvaluateTxsGradually(
+                    block: genesis,
+                    previousStates: previousStates));
+
+            Transaction<DumbAction>[] blockIdx1Txs =
+            {
+                Transaction<DumbAction>.Create(
+                    0,
+                    _txFx.PrivateKey1,
+                    genesis.Hash,
+                    new[]
+                    {
+                        MakeAction(addresses[0], 'A', addresses[1]),
+                        MakeAction(addresses[1], 'B', addresses[2]),
+                    },
+                    timestamp: DateTimeOffset.MinValue.AddSeconds(1)),
+                Transaction<DumbAction>.Create(
+                    0,
+                    _txFx.PrivateKey2,
+                    genesis.Hash,
+                    new[] { MakeAction(addresses[2], 'C', addresses[3]) },
+                    timestamp: DateTimeOffset.MinValue.AddSeconds(2)),
+                Transaction<DumbAction>.Create(
+                    0,
+                    _txFx.PrivateKey3,
+                    genesis.Hash,
+                    new DumbAction[0],
+                    timestamp: DateTimeOffset.MinValue.AddSeconds(8)),
+            };
+            int i = 0;
+            foreach (Transaction<DumbAction> tx in blockIdx1Txs)
+            {
+                _logger.Debug("{0}[{1}] = {2}", nameof(blockIdx1Txs), i, tx.Id);
+            }
+
+            Block<DumbAction> blockIdx1 = MineNext(genesis, blockIdx1Txs, new byte[] { });
+            previousStates = blockIdx1.ProtocolVersion > 0
+                ? new AccountStateDeltaImpl(
+                    ActionEvaluator<DumbAction>.NullAccountStateGetter,
+                    ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
+                    blockIdx1.Miner.GetValueOrDefault())
+                : new AccountStateDeltaImplV0(
+                    ActionEvaluator<DumbAction>.NullAccountStateGetter,
+                    ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
+                    blockIdx1.Miner.GetValueOrDefault());
+            var pairs = actionEvaluator.EvaluateTxsGradually(
+                blockIdx1,
+                previousStates).ToImmutableArray();
+            int randomValue = 0;
+            (int, int, string[], Address)[] expectations =
+            {
+                (1, 0, new[] { null, null, "C", null, null }, _txFx.Address2),
+                (0, 0, new[] { "A", null, "C", null, null }, _txFx.Address1),
+                (0, 1, new[] { "A", "B", "C", null, null }, _txFx.Address1),
+            };
+            Assert.Equal(expectations.Length, pairs.Length);
+            foreach (var (expect, pair) in expectations.Zip(pairs, ValueTuple.Create))
+            {
+                ActionEvaluation eval = pair.Item2;
+                Assert.Equal(blockIdx1Txs[expect.Item1], pair.Item1);
+                Assert.Equal(blockIdx1Txs[expect.Item1].Actions[expect.Item2], eval.Action);
+                Assert.Equal(expect.Item4, eval.InputContext.Signer);
+                Assert.Equal(GenesisMinerAddress, eval.InputContext.Miner);
+                Assert.Equal(blockIdx1.Index, eval.InputContext.BlockIndex);
+                Assert.False(eval.InputContext.Rehearsal);
+                randomValue = eval.InputContext.Random.Next();
+                Assert.Equal(
+                    (Integer)eval.OutputStates.GetState(
+                        DumbAction.RandomRecordsAddress),
+                    (Integer)randomValue);
+                Assert.Equal(
+                    expect.Item3,
+                    addresses.Select(eval.OutputStates.GetState)
+                        .Select(x => x is Text t ? t.Value : null));
+            }
+
+            previousStates = blockIdx1.ProtocolVersion > 0
+                ? new AccountStateDeltaImpl(
+                    ActionEvaluator<DumbAction>.NullAccountStateGetter,
+                    ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
+                    blockIdx1.Miner.GetValueOrDefault())
+                : new AccountStateDeltaImplV0(
+                    ActionEvaluator<DumbAction>.NullAccountStateGetter,
+                    ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
+                    blockIdx1.Miner.GetValueOrDefault());
+            ActionEvaluation[] evals1 = actionEvaluator.EvaluateBlock(
+                blockIdx1,
+                DateTimeOffset.UtcNow,
+                previousStates).ToArray();
+            IImmutableDictionary<Address, IValue> dirty1 = evals1.GetDirtyStates();
+            IImmutableDictionary<(Address, Currency), FungibleAssetValue> balances1 =
+                evals1.GetDirtyBalances();
+            Assert.Equal(
+                new Dictionary<Address, IValue>
+                {
+                    [addresses[0]] = (Text)"A",
+                    [addresses[1]] = (Text)"B",
+                    [addresses[2]] = (Text)"C",
+                    [DumbAction.RandomRecordsAddress] = (Integer)randomValue,
+                }.ToImmutableDictionary(),
+                dirty1);
+            Assert.Equal(
+                new Dictionary<(Address, Currency), FungibleAssetValue>
+                {
+                    [(addresses[0], DumbAction.DumbCurrency)] =
+                        new FungibleAssetValue(DumbAction.DumbCurrency, -5, 0),
+                    [(addresses[1], DumbAction.DumbCurrency)] =
+                        new FungibleAssetValue(DumbAction.DumbCurrency),
+                    [(addresses[2], DumbAction.DumbCurrency)] =
+                        new FungibleAssetValue(DumbAction.DumbCurrency),
+                    [(addresses[3], DumbAction.DumbCurrency)] =
+                        new FungibleAssetValue(DumbAction.DumbCurrency, 5, 0),
+                }.ToImmutableDictionary(),
+                balances1);
+
+            Transaction<DumbAction>[] blockIdx2Txs =
+            {
+                // Note that these timestamps in themselves does not have any meanings but are
+                // only arbitrary.  These purpose to make their evaluation order in a block
+                // equal to the order we (the test) intend:
+                Transaction<DumbAction>.Create(
+                    0,
+                    _txFx.PrivateKey1,
+                    genesis.Hash,
+                    new[] { MakeAction(addresses[0], 'D') },
+                    timestamp: DateTimeOffset.MinValue.AddSeconds(1)),
+                Transaction<DumbAction>.Create(
+                    0,
+                    _txFx.PrivateKey2,
+                    genesis.Hash,
+                    new[] { MakeAction(addresses[3], 'E') },
+                    timestamp: DateTimeOffset.MinValue.AddSeconds(3)),
+                Transaction<DumbAction>.Create(
+                    0,
+                    _txFx.PrivateKey3,
+                    genesis.Hash,
+                    new[]
+                    {
+                        new DumbAction(
+                            addresses[4],
+                            "RecordRehearsal",
+                            transferFrom: addresses[0],
+                            transferTo: addresses[4],
+                            transferAmount: 8,
+                            recordRehearsal: true,
+                            recordRandom: true),
+                    },
+                    timestamp: DateTimeOffset.MinValue.AddSeconds(5)),
+            };
+            i = 0;
+            foreach (Transaction<DumbAction> tx in blockIdx2Txs)
+            {
+                _logger.Debug("{0}[{1}] = {2}", nameof(blockIdx2Txs), i, tx.Id);
+            }
+
+            Block<DumbAction> blockIdx2 = MineNext(blockIdx1, blockIdx2Txs, new byte[] { });
+            AccountStateGetter accountStateGetter = dirty1.GetValueOrDefault;
+            AccountBalanceGetter accountBalanceGetter = (address, currency)
+                => balances1.TryGetValue((address, currency), out FungibleAssetValue v)
+                    ? v
+                    : new FungibleAssetValue(currency);
+            previousStates = blockIdx2.ProtocolVersion > 0
+                ? new AccountStateDeltaImpl(
+                    accountStateGetter,
+                    accountBalanceGetter,
+                    blockIdx2.Miner.GetValueOrDefault())
+                : new AccountStateDeltaImplV0(
+                    accountStateGetter,
+                    accountBalanceGetter,
+                    blockIdx2.Miner.GetValueOrDefault());
+            pairs = actionEvaluator.EvaluateTxsGradually(
+                blockIdx2,
+                previousStates).ToImmutableArray();
+            expectations = new[]
+            {
+                (0, 0, new[] { "A,D", "B", "C", null, null }, _txFx.Address1),
+                (1, 0, new[] { "A,D", "B", "C", "E", null }, _txFx.Address2),
+                (
+                    2,
+                    0,
+                    new[] { "A,D", "B", "C", "E", "RecordRehearsal:False" },
+                    _txFx.Address3
+                ),
+            };
+            Assert.Equal(expectations.Length, pairs.Length);
+            foreach (var (expect, pair) in expectations.Zip(pairs, ValueTuple.Create))
+            {
+                ActionEvaluation eval = pair.Item2;
+                Assert.Equal(blockIdx2Txs[expect.Item1], pair.Item1);
+                Assert.Equal(
+                    blockIdx2Txs[expect.Item1].Actions[expect.Item2],
+                    eval.Action);
+                Assert.Equal(expect.Item4, eval.InputContext.Signer);
+                Assert.Equal(GenesisMinerAddress, eval.InputContext.Miner);
+                Assert.Equal(blockIdx2.Index, eval.InputContext.BlockIndex);
+                Assert.False(eval.InputContext.Rehearsal);
+                Assert.Null(eval.Exception);
+                Assert.Equal(
+                    expect.Item3,
+                    addresses
+                        .Select(eval.OutputStates.GetState)
+                        .Select(x => x is Text t ? t.Value : null));
+                randomValue = eval.InputContext.Random.Next();
+                Assert.Equal(
+                    eval.OutputStates.GetState(
+                        DumbAction.RandomRecordsAddress),
+                    (Integer)randomValue);
+            }
+
+            accountStateGetter = dirty1.GetValueOrDefault;
+            accountBalanceGetter = (address, currency) => balances1.TryGetValue(
+                (address, currency), out FungibleAssetValue value)
+                    ? value
+                    : new FungibleAssetValue(currency);
+            previousStates = blockIdx2.ProtocolVersion > 0
+                ? new AccountStateDeltaImpl(
+                    accountStateGetter,
+                    accountBalanceGetter,
+                    blockIdx2.Miner.GetValueOrDefault())
+                : new AccountStateDeltaImplV0(
+                    accountStateGetter,
+                    accountBalanceGetter,
+                    blockIdx2.Miner.GetValueOrDefault());
+            var evals2 = actionEvaluator.EvaluateBlock(
+                blockIdx2,
+                DateTimeOffset.UtcNow,
+                previousStates).ToArray();
+            IImmutableDictionary<Address, IValue> dirty2 = evals2.GetDirtyStates();
+            IImmutableDictionary<(Address, Currency), FungibleAssetValue> balances2 =
+                evals2.GetDirtyBalances();
+            Assert.Equal(
+                new Dictionary<Address, IValue>
+                {
+                    [addresses[0]] = (Text)"A,D",
+                    [addresses[3]] = (Text)"E",
+                    [addresses[4]] = (Text)"RecordRehearsal:False",
+                    [DumbAction.RandomRecordsAddress] = (Integer)randomValue,
+                }.ToImmutableDictionary(),
+                dirty2);
         }
 
         [Fact]
@@ -456,6 +738,150 @@ namespace Libplanet.Tests.Action
                     Assert.Null(eval.Exception);
                 }
             }
+        }
+
+        [Fact]
+        public void EvaluatePolicyBlockAction()
+        {
+            var store = new DefaultStore(null);
+            var stateStore =
+                new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore());
+            var chain = TestUtils.MakeBlockChain<DumbAction>(
+                policy: _policy,
+                store: _storeFx.Store,
+                stateStore: _storeFx.StateStore,
+                genesisBlock: _storeFx.GenesisBlock);
+            (var addresses, Transaction<DumbAction>[] txs) =
+                MakeFixturesForAppendTests();
+            var genesis = chain.Genesis;
+            var block = TestUtils.MineNext(
+                genesis,
+                txs,
+                difficulty: chain.Policy.GetNextBlockDifficulty(chain)).AttachStateRootHash(
+                    chain.StateStore,
+                    _policy.BlockAction);
+            var stateCompleterSet = StateCompleterSet<DumbAction>.Recalculate;
+
+            AccountStateGetter accountStateGetter = address => null;
+            AccountBalanceGetter accountBalanceGetter =
+                (address, currency) => new FungibleAssetValue(currency);
+            IAccountStateDelta previousStates = block.ProtocolVersion > 0
+                ? new AccountStateDeltaImpl(
+                    accountStateGetter,
+                    accountBalanceGetter,
+                    genesis.Miner.GetValueOrDefault())
+                : new AccountStateDeltaImplV0(
+                    accountStateGetter,
+                    accountBalanceGetter,
+                    genesis.Miner.GetValueOrDefault());
+            var evaluation = chain.ActionEvaluator.EvaluatePolicyBlockAction(
+                genesis,
+                previousStates,
+                null);
+            Assert.Equal(chain.Policy.BlockAction, evaluation.Action);
+            Assert.Equal(
+                (Integer)1,
+                (Integer)evaluation.OutputStates.GetState(genesis.Miner.GetValueOrDefault()));
+            Assert.True(evaluation.InputContext.BlockAction);
+
+            accountStateGetter = address => chain.GetState(
+                address,
+                block.PreviousHash,
+                stateCompleterSet.StateCompleter);
+            accountBalanceGetter =
+                (address, currency) => chain.GetBalance(
+                    address,
+                    currency,
+                    block.PreviousHash,
+                    stateCompleterSet.FungibleAssetStateCompleter);
+            previousStates = block.ProtocolVersion > 0
+                ? new AccountStateDeltaImpl(
+                    accountStateGetter, accountBalanceGetter, block.Miner.GetValueOrDefault())
+                : new AccountStateDeltaImplV0(
+                    accountStateGetter, accountBalanceGetter, block.Miner.GetValueOrDefault());
+            evaluation = chain.ActionEvaluator.EvaluatePolicyBlockAction(
+                block,
+                previousStates,
+                null);
+            Assert.Equal(chain.Policy.BlockAction, evaluation.Action);
+            Assert.Equal(
+                (Integer)2,
+                (Integer)evaluation.OutputStates.GetState(block.Miner.GetValueOrDefault()));
+            Assert.True(evaluation.InputContext.BlockAction);
+
+            chain.ExecuteActions(block);
+            chain.Append(
+                block,
+                DateTimeOffset.UtcNow,
+                evaluateActions: false,
+                renderBlocks: true,
+                renderActions: false);
+            previousStates = block.ProtocolVersion > 0
+                ? new AccountStateDeltaImpl(
+                    address => chain.GetState(address, block.PreviousHash),
+                    ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
+                    block.Miner.GetValueOrDefault())
+                : new AccountStateDeltaImplV0(
+                    address => chain.GetState(address, block.PreviousHash),
+                    ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
+                    block.Miner.GetValueOrDefault());
+            var txEvaluations = chain.ActionEvaluator.EvaluateTxsGradually(
+                block,
+                previousStates).Select(te => te.Item2).ToList();
+            previousStates = txEvaluations.Last().OutputStates;
+            evaluation = chain.ActionEvaluator.EvaluatePolicyBlockAction(
+                block,
+                previousStates,
+                null);
+            Assert.Equal(
+                (Integer)2,
+                (Integer)evaluation.OutputStates.GetState(block.Miner.GetValueOrDefault()));
+        }
+
+        private (Address[], Transaction<DumbAction>[]) MakeFixturesForAppendTests(
+            PrivateKey privateKey = null,
+            DateTimeOffset epoch = default)
+        {
+            Address[] addresses =
+            {
+                _storeFx.Address1,
+                _storeFx.Address2,
+                _storeFx.Address3,
+                _storeFx.Address4,
+                _storeFx.Address5,
+            };
+
+            privateKey = privateKey ?? new PrivateKey(new byte[]
+            {
+                0xa8, 0x21, 0xc7, 0xc2, 0x08, 0xa9, 0x1e, 0x53, 0xbb, 0xb2,
+                0x71, 0x15, 0xf4, 0x23, 0x5d, 0x82, 0x33, 0x44, 0xd1, 0x16,
+                0x82, 0x04, 0x13, 0xb6, 0x30, 0xe7, 0x96, 0x4f, 0x22, 0xe0,
+                0xec, 0xe0,
+            });
+
+            Transaction<DumbAction>[] txs =
+            {
+                _storeFx.MakeTransaction(
+                    new[]
+                    {
+                        new DumbAction(addresses[0], "foo"),
+                        new DumbAction(addresses[1], "bar"),
+                    },
+                    timestamp: epoch,
+                    nonce: 0,
+                    privateKey: privateKey),
+                _storeFx.MakeTransaction(
+                    new[]
+                    {
+                        new DumbAction(addresses[2], "baz"),
+                        new DumbAction(addresses[3], "qux"),
+                    },
+                    timestamp: epoch.AddSeconds(5),
+                    nonce: 1,
+                    privateKey: privateKey),
+            };
+
+            return (addresses, txs);
         }
 
         private sealed class TestEvaluateAction : IAction
