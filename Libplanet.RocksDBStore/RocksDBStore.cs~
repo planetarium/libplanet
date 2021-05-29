@@ -40,8 +40,12 @@ namespace Libplanet.RocksDBStore
         private static readonly byte[] TxNonceKeyPrefix = { (byte)'N' };
         private static readonly byte[] StagedTxKeyPrefix = { (byte)'t' };
         private static readonly byte[] TxExecutionKeyPrefix = { (byte)'e' };
+<<<<<<< HEAD
         private static readonly byte[] TxIdBlockHashIndexPrefix = { (byte)'i' };
+        private static readonly byte[] IndexCountKey = { (byte)'c' };
+=======
         private static readonly byte[] IndexCountKeyPrefix = { (byte)'c' };
+>>>>>>> 8dd69e0b (Replace ColumnFamily to prefix)
         private static readonly byte[] CanonicalChainIdIdKey = { (byte)'C' };
         private static readonly byte[] PreviousChainIdKeyPrefix = { (byte)'P' };
         private static readonly byte[] PreviousChainIndexKeyPrefix = { (byte)'p' };
@@ -1040,16 +1044,21 @@ namespace Libplanet.RocksDBStore
         private byte[] TxExecutionKey(TxExecution txExecution) =>
             TxExecutionKey(txExecution.BlockHash, txExecution.TxId);
 
+<<<<<<< HEAD
         private byte[] TxIdBlockHashIndexKey(in TxId txId, in BlockHash blockHash) =>
             TxIdBlockHashIndexTxIdKey(txId).Concat(blockHash.ByteArray).ToArray();
 
         private byte[] TxIdBlockHashIndexTxIdKey(in TxId txId) =>
             TxIdBlockHashIndexPrefix.Concat(txId.ByteArray).ToArray();
 
+        private byte[] ForkedChainsKey(Guid guid) =>
+            ForkedChainsKeyPrefix.Concat(guid.ToByteArray()).ToArray();
+=======
         private byte[] ForkedChainsKey(Guid chainId, Guid forkedChainId) =>
             ForkedChainsKeyPrefix
             .Concat(chainId.ToByteArray())
             .Concat(forkedChainId.ToByteArray()).ToArray();
+>>>>>>> 8dd69e0b (Replace ColumnFamily to prefix)
 
         private IEnumerable<Iterator> IterateDb(RocksDb db, byte[] prefix)
         {
