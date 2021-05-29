@@ -353,23 +353,12 @@ namespace Libplanet.Action
                 EvaluateTxsGradually(
                     block: block,
                     previousStates: previousStates,
-                    previousBlockStatesTrie: previousBlockStatesTrie).ToArray();
-            var updatedTxAddressPairs = txEvaluationPairs
-                .GroupBy(tuple => tuple.Item1)
-                .Select(grp => (grp.Key, grp.Last().Item2.OutputStates.UpdatedAddresses));
-            foreach ((var tx, var updatedAddresses) in updatedTxAddressPairs)
-            {
-                if (!tx.UpdatedAddresses.IsSupersetOf(updatedAddresses))
-                {
-                    const string msg =
-                        "Actions in the transaction try to update " +
-                        "the addresses not granted.";
-                    throw new InvalidTxUpdatedAddressesException(
-                        tx.Id, tx.UpdatedAddresses, updatedAddresses, msg);
-                }
-            }
+                    previousBlockStatesTrie: previousBlockStatesTrie);
 
-            return txEvaluationPairs.Select(te => te.Item2);
+            foreach (var pair in txEvaluationPairs)
+            {
+                yield return pair.Item2;
+            }
         }
 
         /// <summary>
@@ -456,7 +445,7 @@ namespace Libplanet.Action
             bool rehearsal = false,
             ITrie? previousBlockStatesTrie = null)
         {
-            return EvaluateGradually(
+            IEnumerable<ActionEvaluation> evaluations = EvaluateGradually(
                 preEvaluationHash: block.PreEvaluationHash,
                 blockIndex: block.Index,
                 txid: tx.Id,
@@ -467,6 +456,19 @@ namespace Libplanet.Action
                 actions: tx.Actions.Cast<IAction>().ToImmutableList(),
                 rehearsal: rehearsal,
                 previousBlockStatesTrie: previousBlockStatesTrie);
+            foreach (var evaluation in evaluations)
+            {
+                if (!tx.UpdatedAddresses.IsSupersetOf(evaluation.OutputStates.UpdatedAddresses))
+                {
+                    const string msg =
+                        "Actions in the transaction try to update " +
+                        "the addresses not granted.";
+                    throw new InvalidTxUpdatedAddressesException(
+                        tx.Id, tx.UpdatedAddresses, evaluation.OutputStates.UpdatedAddresses, msg);
+                }
+
+                yield return evaluation;
+            }
         }
 
         /// <summary>

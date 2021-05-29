@@ -264,7 +264,7 @@ namespace Libplanet.Tests.Blocks
                 actionEvaluator.EvaluateBlock(
                     invalidBlock,
                     DateTimeOffset.UtcNow,
-                    previousStates));
+                    previousStates).ToList());
         }
 
         [Fact]
