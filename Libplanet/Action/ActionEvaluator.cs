@@ -30,12 +30,6 @@ namespace Libplanet.Action
         private static readonly AccountBalanceGetter _nullAccountBalanceGetter =
             (address, currency) => new FungibleAssetValue(currency);
 
-        private static readonly ActionEvaluator<T> _nullActionEvaluator = new ActionEvaluator<T>(
-            policyBlockAction: null,
-            stateGetter: _nullStateGetter,
-            balanceGetter: _nullBalanceGetter,
-            trieGetter: null);
-
         // FIXME: Although used for dummy context, this can be confusing.
         private static readonly Block<T> _nullBlock = new Block<T>(
             index: 0,
@@ -115,14 +109,30 @@ namespace Libplanet.Action
 
         internal static IImmutableSet<Address> GetUpdatedAddresses(Transaction<T> tx)
         {
-            return _nullActionEvaluator.EvaluateTxResult(
-                block: _nullBlock,
-                tx: tx,
-                previousStates: new AccountStateDeltaImpl(
-                    _nullAccountStateGetter,
-                    _nullAccountBalanceGetter,
-                    tx.Signer),
-                rehearsal: true).UpdatedAddresses;
+            IAccountStateDelta previousStates = new AccountStateDeltaImpl(
+                _nullAccountStateGetter,
+                _nullAccountBalanceGetter,
+                tx.Signer);
+            IEnumerable<ActionEvaluation> evaluations = ActionEvaluator<T>.EvaluateGradually(
+                preEvaluationHash: _nullBlock.PreEvaluationHash,
+                blockIndex: _nullBlock.Index,
+                txid: tx.Id,
+                previousStates: previousStates,
+                miner: _nullBlock.Miner.GetValueOrDefault(),
+                signer: tx.Signer,
+                signature: tx.Signature,
+                actions: tx.Actions.Cast<IAction>().ToImmutableList(),
+                rehearsal: true,
+                previousBlockStatesTrie: null);
+
+            if (evaluations.Any())
+            {
+                return evaluations.Last().OutputStates.UpdatedAddresses;
+            }
+            else
+            {
+                return previousStates.UpdatedAddresses;
+            }
         }
 
         /// <summary>
