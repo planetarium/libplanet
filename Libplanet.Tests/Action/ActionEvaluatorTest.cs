@@ -158,7 +158,7 @@ namespace Libplanet.Tests.Action
             "SA1118",
             Justification = "Long array literals should be multiline.")]
         [Fact]
-        public void EvaluateTxsGradually()
+        public void EvaluateTxs()
         {
             DumbAction MakeAction(Address address, char identifier, Address? transferTo = null)
             {
@@ -201,7 +201,7 @@ namespace Libplanet.Tests.Action
                     _nullAccountBalanceGetter,
                     genesis.Miner.GetValueOrDefault());
             Assert.Empty(
-                actionEvaluator.EvaluateTxsGradually(
+                actionEvaluator.EvaluateTxs(
                     block: genesis,
                     previousStates: previousStates));
 
@@ -246,7 +246,7 @@ namespace Libplanet.Tests.Action
                     _nullAccountStateGetter,
                     _nullAccountBalanceGetter,
                     block1.Miner.GetValueOrDefault());
-            var pairs = actionEvaluator.EvaluateTxsGradually(
+            var evals = actionEvaluator.EvaluateTxs(
                 block1,
                 previousStates).ToImmutableArray();
             int randomValue = 0;
@@ -256,11 +256,10 @@ namespace Libplanet.Tests.Action
                 (0, 0, new[] { "A", null, "C", null, null }, _txFx.Address1),
                 (0, 1, new[] { "A", "B", "C", null, null }, _txFx.Address1),
             };
-            Assert.Equal(expectations.Length, pairs.Length);
-            foreach (var (expect, pair) in expectations.Zip(pairs, ValueTuple.Create))
+            Assert.Equal(expectations.Length, evals.Length);
+            foreach (var (expect, eval) in expectations.Zip(evals))
             {
-                ActionEvaluation eval = pair.Item2;
-                Assert.Equal(block1Txs[expect.Item1], pair.Item1);
+                Assert.Equal(block1Txs[expect.Item1].Id, eval.InputContext.TxId);
                 Assert.Equal(block1Txs[expect.Item1].Actions[expect.Item2], eval.Action);
                 Assert.Equal(expect.Item4, eval.InputContext.Signer);
                 Assert.Equal(GenesisMinerAddress, eval.InputContext.Miner);
@@ -371,7 +370,7 @@ namespace Libplanet.Tests.Action
                     accountStateGetter,
                     accountBalanceGetter,
                     block2.Miner.GetValueOrDefault());
-            pairs = actionEvaluator.EvaluateTxsGradually(
+            evals = actionEvaluator.EvaluateTxs(
                 block2,
                 previousStates).ToImmutableArray();
             expectations = new[]
@@ -385,14 +384,11 @@ namespace Libplanet.Tests.Action
                     _txFx.Address3
                 ),
             };
-            Assert.Equal(expectations.Length, pairs.Length);
-            foreach (var (expect, pair) in expectations.Zip(pairs, ValueTuple.Create))
+            Assert.Equal(expectations.Length, evals.Length);
+            foreach (var (expect, eval) in expectations.Zip(evals))
             {
-                ActionEvaluation eval = pair.Item2;
-                Assert.Equal(block2Txs[expect.Item1], pair.Item1);
-                Assert.Equal(
-                    block2Txs[expect.Item1].Actions[expect.Item2],
-                    eval.Action);
+                Assert.Equal(block2Txs[expect.Item1].Id, eval.InputContext.TxId);
+                Assert.Equal(block2Txs[expect.Item1].Actions[expect.Item2], eval.Action);
                 Assert.Equal(expect.Item4, eval.InputContext.Signer);
                 Assert.Equal(GenesisMinerAddress, eval.InputContext.Miner);
                 Assert.Equal(block2.Index, eval.InputContext.BlockIndex);
@@ -443,7 +439,7 @@ namespace Libplanet.Tests.Action
         }
 
         [Fact]
-        public void EvaluateTxGradually()
+        public void EvaluateTx()
         {
             Address[] addresses =
             {
@@ -502,7 +498,7 @@ namespace Libplanet.Tests.Action
             {
                 DumbAction.RehearsalRecords.Value =
                     ImmutableList<(Address, string)>.Empty;
-                var evaluations = actionEvaluator.EvaluateTxGradually(
+                var evaluations = actionEvaluator.EvaluateTx(
                     block: block,
                     tx: tx,
                     previousStates: new AccountStateDeltaImpl(
@@ -624,16 +620,12 @@ namespace Libplanet.Tests.Action
                 _txFx.PublicKey1.Format(false).ToImmutableArray(),
                 DateTimeOffset.UtcNow.ToString(
                     "yyyy-MM-ddTHH:mm:ss.ffffffZ",
-                    CultureInfo.InvariantCulture
-                ),
+                    CultureInfo.InvariantCulture),
                 rawActions,
-                ImmutableArray<byte>.Empty
-            );
+                ImmutableArray<byte>.Empty);
             byte[] sig = _txFx.PrivateKey1.Sign(
                 new Transaction<PolymorphicAction<BaseAction>>(
-                    rawTxWithoutSig
-                ).Serialize(false)
-            );
+                    rawTxWithoutSig).Serialize(false));
             var invalidTx = new Transaction<PolymorphicAction<BaseAction>>(
                 new RawTransaction(
                     0,
@@ -643,9 +635,7 @@ namespace Libplanet.Tests.Action
                     rawTxWithoutSig.PublicKey,
                     rawTxWithoutSig.Timestamp,
                     rawTxWithoutSig.Actions,
-                    sig.ToImmutableArray()
-                )
-            );
+                    sig.ToImmutableArray()));
             Block<PolymorphicAction<BaseAction>> invalidBlock = TestUtils.MineNext(
                 previousBlock: genesis,
                 txs: new List<Transaction<PolymorphicAction<BaseAction>>> { invalidTx });
@@ -672,6 +662,7 @@ namespace Libplanet.Tests.Action
                     nullAccountStateGetter,
                     nullAccountBalanceGetter,
                     invalidBlock.Miner.GetValueOrDefault());
+
             Assert.Throws<InvalidTxUpdatedAddressesException>(() =>
                 actionEvaluator.EvaluateBlock(
                     invalidBlock,
@@ -725,28 +716,27 @@ namespace Libplanet.Tests.Action
         [Theory]
         [InlineData(false)]
         [InlineData(true)]
-        public async Task EvaluateGradually(bool rehearsal)
+        public async Task EvaluateActions(bool rehearsal)
         {
-            var fx = new IntegerSet(new[] { 5, 10 });
+            IntegerSet fx = new IntegerSet(new[] { 5, 10 });
 
-            // a: ((5 + 1) * 2) + 3 = 15
-            (Transaction<Arithmetic> a, var deltaA) = fx.Sign(
+            // txA: ((5 + 1) * 2) + 3 = 15
+            (Transaction<Arithmetic> txA, var deltaA) = fx.Sign(
                 0,
                 Arithmetic.Add(1),
                 Arithmetic.Mul(2),
-                Arithmetic.Add(3)
-            );
+                Arithmetic.Add(3));
 
             Block<Arithmetic> blockA = await fx.Mine();
-            ActionEvaluation[] evalsA = ActionEvaluator<DumbAction>.EvaluateGradually(
+            ActionEvaluation[] evalsA = ActionEvaluator<DumbAction>.EvaluateActions(
                 blockA.Hash,
                 blockIndex: blockA.Index,
-                txid: a.Id,
+                txid: txA.Id,
                 previousStates: fx.CreateAccountStateDelta(0, blockA.PreviousHash),
                 miner: blockA.Miner ?? default,
-                signer: a.Signer,
-                signature: a.Signature,
-                actions: a.Actions.ToImmutableArray<IAction>(),
+                signer: txA.Signer,
+                signature: txA.Signature,
+                actions: txA.Actions.ToImmutableArray<IAction>(),
                 rehearsal: rehearsal,
                 previousBlockStatesTrie: fx.GetTrie(blockA.PreviousHash),
                 blockAction: false).ToArray();
@@ -755,77 +745,77 @@ namespace Libplanet.Tests.Action
             for (int i = 0; i < evalsA.Length; i++)
             {
                 ActionEvaluation eval = evalsA[i];
-                _logger.Debug("evalsA[{0}] = {1}", i, eval);
-                _logger.Debug("a.Actions[{0}] = {1}", i, a.Actions[i]);
-                Assert.Equal(a.Actions[i], eval.Action);
                 IActionContext context = eval.InputContext;
-                Assert.Equal(a.Id, context.TxId);
+                IAccountStateDelta prevStates = context.PreviousStates;
+                IAccountStateDelta outputStates = eval.OutputStates;
+                _logger.Debug("evalsA[{0}] = {1}", i, eval);
+                _logger.Debug("txA.Actions[{0}] = {1}", i, txA.Actions[i]);
+
+                Assert.Equal(txA.Actions[i], eval.Action);
+                Assert.Equal(txA.Id, context.TxId);
                 Assert.Equal(blockA.Miner, context.Miner);
                 Assert.Equal(blockA.Index, context.BlockIndex);
-                Assert.Equal(
-                    deltaA[i].RootHash,
-                    context.PreviousStateRootHash);
-                Assert.Equal(a.Signer, context.Signer);
+                Assert.Equal(deltaA[i].RootHash, context.PreviousStateRootHash);
+                Assert.Equal(txA.Signer, context.Signer);
                 Assert.False(context.BlockAction);
                 Assert.Equal(rehearsal, context.Rehearsal);
-                IAccountStateDelta prevStates = context.PreviousStates;
                 Assert.Equal(
-                    i > 0 ? new[] { a.Signer } : new Address[0],
+                    i > 0 ? new[] { txA.Signer } : new Address[0],
                     prevStates.UpdatedAddresses);
-                Assert.Equal((Integer)deltaA[i].Value, prevStates.GetState(a.Signer));
-                IAccountStateDelta outputStates = eval.OutputStates;
-                Assert.Equal(new[] { a.Signer }, outputStates.UpdatedAddresses);
-                Assert.Equal((Integer)deltaA[i + 1].Value, outputStates.GetState(a.Signer));
+                Assert.Equal((Integer)deltaA[i].Value, prevStates.GetState(txA.Signer));
+                Assert.Equal(new[] { txA.Signer }, outputStates.UpdatedAddresses);
+                Assert.Equal((Integer)deltaA[i + 1].Value, outputStates.GetState(txA.Signer));
                 Assert.Null(eval.Exception);
             }
 
-            // b: error(10 - 3) + -3 =
-            //         (10 - 3)      = 7  (only input of error() is left)
-            (Transaction<Arithmetic> b, var deltaB) = fx.Sign(
+            // txB: error(10 - 3) + -3 =
+            //           (10 - 3)      = 7  (only input of error() is left)
+            (Transaction<Arithmetic> txB, var deltaB) = fx.Sign(
                 1,
                 Arithmetic.Sub(3),
                 new Arithmetic(),
                 Arithmetic.Add(-1));
 
             Block<Arithmetic> blockB = await fx.Mine();
-            ActionEvaluation[] evalsB = ActionEvaluator<DumbAction>.EvaluateGradually(
+            ActionEvaluation[] evalsB = ActionEvaluator<DumbAction>.EvaluateActions(
                 blockB.Hash,
                 blockIndex: blockB.Index,
-                txid: b.Id,
+                txid: txB.Id,
                 previousStates: fx.CreateAccountStateDelta(0, blockB.PreviousHash),
                 miner: blockB.Miner ?? default,
-                signer: b.Signer,
-                signature: b.Signature,
-                actions: b.Actions.ToImmutableArray<IAction>(),
+                signer: txB.Signer,
+                signature: txB.Signature,
+                actions: txB.Actions.ToImmutableArray<IAction>(),
                 rehearsal: rehearsal,
                 previousBlockStatesTrie: fx.GetTrie(blockB.PreviousHash),
                 blockAction: false).ToArray();
 
             Assert.Equal(evalsB.Length, deltaB.Count - 1);
+
             for (int i = 0; i < evalsB.Length; i++)
             {
                 ActionEvaluation eval = evalsB[i];
-                _logger.Debug("evalsB[{0}] = {@1}", i, eval);
-                _logger.Debug("b.Actions[{0}] = {@1}", i, b.Actions[i]);
-                Assert.Equal(b.Actions[i], eval.Action);
                 IActionContext context = eval.InputContext;
-                Assert.Equal(b.Id, context.TxId);
+                IAccountStateDelta prevStates = context.PreviousStates;
+                IAccountStateDelta outputStates = eval.OutputStates;
+
+                _logger.Debug("evalsB[{0}] = {@1}", i, eval);
+                _logger.Debug("txB.Actions[{0}] = {@1}", i, txB.Actions[i]);
+
+                Assert.Equal(txB.Actions[i], eval.Action);
+                Assert.Equal(txB.Id, context.TxId);
                 Assert.Equal(blockB.Miner, context.Miner);
                 Assert.Equal(blockB.Index, context.BlockIndex);
-                Assert.Equal(
-                    deltaB[i].RootHash,
-                    context.PreviousStateRootHash);
-                Assert.Equal(b.Signer, context.Signer);
+                Assert.Equal(deltaB[i].RootHash, context.PreviousStateRootHash);
+                Assert.Equal(txB.Signer, context.Signer);
                 Assert.False(context.BlockAction);
                 Assert.Equal(rehearsal, context.Rehearsal);
-                IAccountStateDelta prevStates = context.PreviousStates;
                 Assert.Equal(
-                    i > 0 ? new[] { b.Signer } : new Address[0],
+                    i > 0 ? new[] { txB.Signer } : new Address[0],
                     prevStates.UpdatedAddresses);
-                Assert.Equal((Integer)deltaB[i].Value, prevStates.GetState(b.Signer));
-                IAccountStateDelta outputStates = eval.OutputStates;
-                Assert.Equal(new[] { b.Signer }, outputStates.UpdatedAddresses);
-                Assert.Equal((Integer)deltaB[i + 1].Value, outputStates.GetState(b.Signer));
+                Assert.Equal((Integer)deltaB[i].Value, prevStates.GetState(txB.Signer));
+                Assert.Equal(new[] { txB.Signer }, outputStates.UpdatedAddresses);
+                Assert.Equal((Integer)deltaB[i + 1].Value, outputStates.GetState(txB.Signer));
                 if (i == 1)
                 {
                     Assert.IsType<UnexpectedlyTerminatedActionException>(eval.Exception);
@@ -876,6 +866,7 @@ namespace Libplanet.Tests.Action
                 genesis,
                 previousStates,
                 null);
+
             Assert.Equal(chain.Policy.BlockAction, evaluation.Action);
             Assert.Equal(
                 (Integer)1,
@@ -901,6 +892,7 @@ namespace Libplanet.Tests.Action
                 block,
                 previousStates,
                 null);
+
             Assert.Equal(chain.Policy.BlockAction, evaluation.Action);
             Assert.Equal(
                 (Integer)2,
@@ -923,14 +915,15 @@ namespace Libplanet.Tests.Action
                     address => chain.GetState(address, block.PreviousHash),
                     _nullAccountBalanceGetter,
                     block.Miner.GetValueOrDefault());
-            var txEvaluations = chain.ActionEvaluator.EvaluateTxsGradually(
+            var txEvaluations = chain.ActionEvaluator.EvaluateTxs(
                 block,
-                previousStates).Select(te => te.Item2).ToList();
+                previousStates).ToList();
             previousStates = txEvaluations.Last().OutputStates;
             evaluation = chain.ActionEvaluator.EvaluatePolicyBlockAction(
                 block,
                 previousStates,
                 null);
+
             Assert.Equal(
                 (Integer)2,
                 (Integer)evaluation.OutputStates.GetState(block.Miner.GetValueOrDefault()));

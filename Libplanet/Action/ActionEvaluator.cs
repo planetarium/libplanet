@@ -9,7 +9,6 @@ using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
-using Libplanet.Crypto;
 using Libplanet.Store.Trie;
 using Libplanet.Tx;
 using Serilog;
@@ -61,16 +60,19 @@ namespace Libplanet.Action
         }
 
         /// <summary>
-        /// Main entry point for evaluating a <see cref="Block{T}"/> instance.
-        /// <para>Executes every <see cref="IAction"/> in <see cref="Block{T}.Transactions"/>
-        /// and <see cref="IBlockPolicy{T}.BlockAction"/>.</para>
-        /// <para>Mainly calls <see cref="EvaluateBlock"/>
-        /// and appends the result of <see cref="EvaluatePolicyBlockAction"/> at the end.</para>
+        /// The main entry point for evaluating a <see cref="Block{T}"/>.
         /// </summary>
-        /// <param name="block">The <see cref="Block{T}"/> instance to evaluate.</param>
+        /// <param name="block">The <see cref="Block{T}"/> to evaluate.</param>
         /// <param name="stateCompleterSet">The <see cref="StateCompleterSet{T}"/> to use.</param>
-        /// <returns>A list of <see cref="ActionEvaluation"/>s for every <see cref="IAction"/>
-        /// related to given <paramref name="block"/>.</returns>
+        /// <returns> The result of evaluating every <see cref="IAction"/> related to
+        /// <paramref name="block"/> as an <see cref="IReadOnlyList{T}"/> of
+        /// <see cref="ActionEvaluation"/>s.</returns>
+        /// <remarks>
+        /// <para>Publicly exposed for benchmarking.</para>
+        /// <para>First evaluates all <see cref="IAction"/>s in <see cref="Block{T}.Transactions"/>
+        /// of <paramref name="block"/> and appends the evaluation of
+        /// <see cref="_policyBlockAction"/> at the end.</para>
+        /// </remarks>
         /// <seealso cref="EvaluateBlock"/>
         /// <seealso cref="EvaluatePolicyBlockAction"/>
         [Pure]
@@ -107,13 +109,26 @@ namespace Libplanet.Action
             }
         }
 
+        /// <summary>
+        /// Retrieves the set of <see cref="Address"/>es that will be updated when
+        /// a given <see cref="Transaction{T}"/> is evaluated.
+        /// </summary>
+        /// <param name="tx">The <see cref="Transaction{T}"/> to evaluate.</param>
+        /// <returns>An <see cref="IImmutableSet{T}"/> of updated <see cref="Address"/>es.
+        /// </returns>
+        /// <remarks>
+        /// A mock evaluation is performed on <paramref name="tx"/> using a mock
+        /// <see cref="Block{T}"/> for its evaluation context and a mock
+        /// <see cref="IAccountStateDelta"/> as its previous state to obtain the
+        /// <see cref="IImmutableSet{T}"/> of updated <see cref="Address"/>es.
+        /// </remarks>
         internal static IImmutableSet<Address> GetUpdatedAddresses(Transaction<T> tx)
         {
             IAccountStateDelta previousStates = new AccountStateDeltaImpl(
                 _nullAccountStateGetter,
                 _nullAccountBalanceGetter,
                 tx.Signer);
-            IEnumerable<ActionEvaluation> evaluations = ActionEvaluator<T>.EvaluateGradually(
+            IEnumerable<ActionEvaluation> evaluations = ActionEvaluator<T>.EvaluateActions(
                 preEvaluationHash: _nullBlock.PreEvaluationHash,
                 blockIndex: _nullBlock.Index,
                 txid: tx.Id,
@@ -136,19 +151,19 @@ namespace Libplanet.Action
         }
 
         /// <summary>
-        /// Executes the <paramref name="actions"/> step by step, and emits
-        /// <see cref="ActionEvaluation"/> for each step.
+        /// Executes <see cref="IAction"/>s in <paramref name="actions"/>.
         /// </summary>
         /// <param name="preEvaluationHash">The <see cref="Block{T}.PreEvaluationHash"/> of
-        /// <see cref="Block{T}"/> that <paramref name="actions"/> belongs to.</param>
-        /// <param name="blockIndex">The <see cref="Block{T}.Index"/> of <see cref="Block{T}"/> that
-        /// <paramref name="actions"/> belongs to.</param>
-        /// <param name="txid">The <see cref="Transaction{T}.Id"/> of <see cref="Transaction{T}"/>
-        /// that <paramref name="actions"/> belongs to.  This can be <c>null</c> on rehearsal mode
-        /// or if an action is a <see cref="IBlockPolicy{T}.BlockAction"/>.</param>
+        /// the <see cref="Block{T}"/> that <paramref name="actions"/> belong to.</param>
+        /// <param name="blockIndex">The <see cref="Block{T}.Index"/> of the <see cref="Block{T}"/>
+        /// that <paramref name="actions"/> belong to.</param>
+        /// <param name="txid">The <see cref="Transaction{T}.Id"/> of the
+        /// <see cref="Transaction{T}"/> that <paramref name="actions"/> belong to.
+        /// This can be <c>null</c> on rehearsal mode or if an <see cref="IAction"/> is a
+        /// <see cref="IBlockPolicy{T}.BlockAction"/>.</param>
         /// <param name="previousStates">The states immediately before <paramref name="actions"/>
-        /// being executed.  Note that its <see cref="IAccountStateDelta.UpdatedAddresses"/> are
-        /// remained to the returned next states.</param>
+        /// being executed.  Note that <see cref="IAccountStateDelta.UpdatedAddresses"/> of
+        /// <paramref name="previousStates"/> are remained to the returned next states.</param>
         /// <param name="miner">An address of block miner.</param>
         /// <param name="signer">Signer of the <paramref name="actions"/>.</param>
         /// <param name="signature"><see cref="Transaction{T}"/> signature used to generate random
@@ -167,7 +182,7 @@ namespace Libplanet.Action
         /// has a unconsumed state.
         /// </returns>
         [Pure]
-        internal static IEnumerable<ActionEvaluation> EvaluateGradually(
+        internal static IEnumerable<ActionEvaluation> EvaluateActions(
             BlockHash preEvaluationHash,
             long blockIndex,
             TxId? txid,
@@ -289,56 +304,30 @@ namespace Libplanet.Action
         }
 
         /// <summary>
-        /// Executes every <see cref="IAction"/> in <see cref="Block{T}.Transactions"/>
-        /// and gets result states of each step of every <see cref="Transaction{T}"/>.
-        /// <para>It throws an <see cref="InvalidBlockException"/> or
-        /// an <see cref="InvalidTxException"/> if there is any
-        /// integrity error.</para>
-        /// <para>Otherwise it enumerates an <see cref="ActionEvaluation"/>
-        /// for each <see cref="IAction"/>.</para>
+        /// Evaluates <see cref="IAction"/>s in <see cref="Block{T}.Transactions"/>
+        /// of a given <see cref="Block{T}"/>.
         /// </summary>
-        /// <param name="block">A <see cref="Block{T}"/> instance to evaluate.</param>
-        /// <param name="currentTime">The current time to validate
-        /// time-wise conditions.</param>
-        /// <param name="previousStates">The states immediately before any <see cref="IAction"/>s
-        /// being executed.  Note that its <see cref="IAccountStateDelta.UpdatedAddresses"/>
+        /// <param name="block">The <see cref="Block{T}"/> to evaluate.</param>
+        /// <param name="currentTime">The current time to validate time-wise conditions.</param>
+        /// <param name="previousStates">The states immediately before an execution of any
+        /// <see cref="IAction"/>s.  Note that its <see cref="IAccountStateDelta.UpdatedAddresses"/>
         /// are remained to the returned next states.</param>
-        /// <param name="previousBlockStatesTrie">The trie to contain states at previous block.
-        /// </param>
-        /// <returns>An <see cref="ActionEvaluation"/> for each
-        /// <see cref="IAction"/>.</returns>
-        /// <exception cref="InvalidBlockHashException">Thrown when
-        /// the <paramref name="block.Hash"/> is invalid.</exception>
-        /// <exception cref="InvalidBlockTimestampException">Thrown when
-        /// the <paramref name="block.Timestamp"/> is invalid, for example, it is the far
-        /// future than the given <paramref name="currentTime"/>.</exception>
-        /// <exception cref="InvalidBlockIndexException">Thrown when
-        /// the <paramref name="block.Index"/>is invalid, for example, it is a negative
-        /// integer.</exception>
-        /// <exception cref="InvalidBlockDifficultyException">Thrown when
-        /// the <paramref name="block.Difficulty"/> is not properly configured,
-        /// for example, it is too easy.</exception>
-        /// <exception cref="InvalidBlockPreviousHashException">Thrown when
-        /// <paramref name="block.PreviousHash"/> is invalid so that
-        /// the <see cref="Block{T}"/>s are not continuous.</exception>
-        /// <exception cref="InvalidBlockNonceException">Thrown when
-        /// the <paramref name="block.Nonce"/> does not satisfy its
-        /// <paramref name="block.Difficulty"/> level.</exception>
-        /// <exception cref="InvalidBlockTxHashException">Thrown when
-        /// the <paramref name="block.TxHash" /> does not match with its
-        /// <paramref name="block.Transactions"/>.</exception>
-        /// <exception cref="InvalidTxUpdatedAddressesException">Thrown when
-        /// any <see cref="IAction"/> of <paramref name="block.Transactions"/> tries
-        /// to update the states of <see cref="Address"/>es not included
-        /// in <see cref="Transaction{T}.UpdatedAddresses"/>.</exception>
-        /// <exception cref="InvalidTxSignatureException">Thrown when its
-        /// <see cref="Transaction{T}.Signature"/> is invalid or not signed by
-        /// the account who corresponds to its <see cref="PublicKey"/>.
-        /// </exception>
-        /// <exception cref="InvalidTxPublicKeyException">Thrown when its
-        /// <see cref="Transaction{T}.Signer"/> is not derived from its
-        /// <see cref="Transaction{T}.PublicKey"/>.</exception>
-        /// <remarks>Publicly exposed for benchmarking.</remarks>
+        /// <param name="previousBlockStatesTrie">The <see cref="ITrie"/> containing the states
+        /// at the previous block of <paramref name="block"/>.</param>
+        /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="ActionEvaluation"/>s
+        /// where each <see cref="ActionEvaluation"/> is the evaluation of an <see cref="IAction"/>.
+        /// </returns>
+        /// <remarks>
+        /// This passes on an <see cref="InvalidBlockException"/> or an
+        /// <see cref="InvalidTxException"/> thrown by a call to <see cref="Block{T}.Validate"/>
+        /// of <paramref name="block"/>.
+        /// </remarks>
+        /// <exception cref="InvalidTxUpdatedAddressesException">Thrown when any
+        /// <see cref="IAction"/> in <see cref="Block{T}.Transactions"/> of <paramref name="block"/>
+        /// tries to update the states of <see cref="Address"/>es not included in
+        /// <see cref="Transaction{T}.UpdatedAddresses"/>.</exception>
+        /// <seealso cref="Block{T}.Validate"/>
+        /// <seealso cref="EvaluateTxs"/>
         [Pure]
         internal IEnumerable<ActionEvaluation> EvaluateBlock(
             Block<T> block,
@@ -349,23 +338,15 @@ namespace Libplanet.Action
             // FIXME: Probably not the best place to have Validate().
             block.Validate(currentTime);
 
-            IEnumerable<(Transaction<T>, ActionEvaluation)> txEvaluationPairs =
-                EvaluateTxsGradually(
-                    block: block,
-                    previousStates: previousStates,
-                    previousBlockStatesTrie: previousBlockStatesTrie);
-
-            foreach (var pair in txEvaluationPairs)
-            {
-                yield return pair.Item2;
-            }
+            return EvaluateTxs(
+                block: block,
+                previousStates: previousStates,
+                previousBlockStatesTrie: previousBlockStatesTrie);
         }
 
         /// <summary>
-        /// Executes every <see cref="IAction"/> in a given
-        /// <see cref="Block{T}.Transactions"/> step by step, and emits a
-        /// <see cref="Transaction{T}"/> and an <see cref="ActionEvaluation"/> as a pair
-        /// for each step.
+        /// Evaluates every <see cref="IAction"/> in <see cref="Block{T}.Transactions"/> of
+        /// a given <see cref="Block{T}"/>.
         /// </summary>
         /// <param name="block">The <see cref="Block{T}"/> instance to evaluate.</param>
         /// <param name="previousStates">The states immediately before any <see cref="IAction"/>s
@@ -373,20 +354,12 @@ namespace Libplanet.Action
         /// are remained to the returned next states.</param>
         /// <param name="previousBlockStatesTrie">The trie to contain states at previous block.
         /// </param>
-        /// <returns>Enumerates pair of a transaction, and <see cref="ActionEvaluation"/>
-        /// for each action.  The order of pairs are the same to
-        /// the <paramref name="block.Transactions"/> and their <see cref="Transaction{T}.Actions"/>
-        /// (e.g., tx&#xb9;-act&#xb9;, tx&#xb9;-act&#xb2;, tx&#xb2;-act&#xb9;, tx&#xb2;-act&#xb2;,
-        /// &#x2026;).
-        /// <para>If a <see cref="Transaction{T}"/> has multiple
-        /// <see cref="Transaction{T}.Actions"/>, each <see cref="ActionEvaluation"/> includes
-        /// all previous <see cref="ActionEvaluation"/>s' delta in the same
-        /// <see cref="Transaction{T}"/> besides its own delta.</para>
-        /// <para>Note that each <see cref="IActionContext.Random"/> object has a unconsumed state.
-        /// </para>
+        /// <returns>Enumerates an <see cref="ActionEvaluation"/> for each action where
+        /// the order is determined by <see cref="Block{T}.Transactions"/> of
+        /// <paramref name="block"/> and each respective <see cref="Transaction{T}.Actions"/>.
         /// </returns>
         [Pure]
-        internal IEnumerable<(Transaction<T>, ActionEvaluation)> EvaluateTxsGradually(
+        internal IEnumerable<ActionEvaluation> EvaluateTxs(
             Block<T> block,
             IAccountStateDelta previousStates,
             ITrie? previousBlockStatesTrie = null)
@@ -397,7 +370,7 @@ namespace Libplanet.Action
                 delta = block.ProtocolVersion > 0
                     ? new AccountStateDeltaImpl(delta.GetState, delta.GetBalance, tx.Signer)
                     : new AccountStateDeltaImplV0(delta.GetState, delta.GetBalance, tx.Signer);
-                IEnumerable<ActionEvaluation> evaluations = EvaluateTxGradually(
+                IEnumerable<ActionEvaluation> evaluations = EvaluateTx(
                     block: block,
                     tx: tx,
                     previousStates: delta,
@@ -405,47 +378,48 @@ namespace Libplanet.Action
                     previousBlockStatesTrie: previousBlockStatesTrie);
                 foreach (var evaluation in evaluations)
                 {
-                    yield return (tx, evaluation);
+                    yield return evaluation;
                     delta = evaluation.OutputStates;
                 }
             }
         }
 
         /// <summary>
-        /// Executes the <see cref="Transaction{T}.Actions"/> of given <see cref="Transaction{T}"/>
-        /// instance step by step, and emits <see cref="ActionEvaluation"/> for each step.
-        /// <para>If the needed value is only the final states,
-        /// use <see cref="EvaluateTxResult"/> method instead.</para>
+        /// Evaluates <see cref="Transaction{T}.Actions"/> of a given <see cref="Transaction{T}"/>.
         /// </summary>
         /// <param name="block">The <see cref="Block{T}"/> instance that <paramref name="tx"/>
         /// belongs to.</param>
         /// <param name="tx">A <see cref="Transaction{T}"/> instance to evaluate.</param>
         /// <param name="previousStates">The states immediately before
-        /// <paramref name="tx.Actions"/> being executed.  Note that its
-        /// <see cref="IAccountStateDelta.UpdatedAddresses"/> are remained
+        /// <see cref="Transaction{T}.Actions"/> of <paramref name="tx"/> being executed.
+        /// Note that its <see cref="IAccountStateDelta.UpdatedAddresses"/> are remained
         /// to the returned next states.</param>
         /// <param name="rehearsal">Pass <c>true</c> if it is intended
         /// to be dry-run (i.e., the returned result will be never used).
         /// The default value is <c>false</c>.</param>
         /// <param name="previousBlockStatesTrie">The trie to contain states at previous block.
         /// </param>
-        /// <returns>Enumerates <see cref="ActionEvaluation"/>s for each one in
-        /// <paramref name="tx.Actions"/>.
-        /// <para>The order is the same to the <paramref name="tx.Actions"/>.</para>
-        /// <para>Each <see cref="ActionEvaluation"/> includes its previous
-        /// <see cref="ActionEvaluation"/>s' delta besides its own delta.</para>
-        /// <para>Note that each <see cref="IActionContext.Random"/> object has a unconsumed state.
+        /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="ActionEvaluation"/>s for each
+        /// <see cref="IAction"/> in <see cref="Transaction{T}.Actions"/> of <paramref name="tx"/>
+        /// where the order of <see cref="ActionEvaluation"/>s is the same as the corresponding
+        /// <see cref="Transaction{T}.Actions"/>.</returns>
+        /// <remarks>
+        /// <para>If only the final states are needed, use <see cref="EvaluateTxResult"/> instead.
         /// </para>
-        /// </returns>
+        /// <para>If a <see cref="Transaction{T}.Actions"/> of <paramref name="tx"/> has more than
+        /// one <see cref="IAction"/>s, each <see cref="ActionEvaluation"/> includes all previous
+        /// <see cref="ActionEvaluation"/>s' delta besides its own delta.</para>
+        /// </remarks>
+        /// <seealso cref="EvaluateTxResult"/>
         [Pure]
-        internal IEnumerable<ActionEvaluation> EvaluateTxGradually(
+        internal IEnumerable<ActionEvaluation> EvaluateTx(
             Block<T> block,
             Transaction<T> tx,
             IAccountStateDelta previousStates,
             bool rehearsal = false,
             ITrie? previousBlockStatesTrie = null)
         {
-            IEnumerable<ActionEvaluation> evaluations = EvaluateGradually(
+            IEnumerable<ActionEvaluation> evaluations = EvaluateActions(
                 preEvaluationHash: block.PreEvaluationHash,
                 blockIndex: block.Index,
                 txid: tx.Id,
@@ -472,21 +446,20 @@ namespace Libplanet.Action
         }
 
         /// <summary>
-        /// Executes the <see cref="Transaction{T}.Actions"/> of given <see cref="Transaction{T}"/>
-        /// and gets the result states.
+        /// Evaluates <see cref="Transaction{T}.Actions"/> of a given
+        /// <see cref="Transaction{T}"/> and gets the resulting states.
         /// </summary>
-        /// <param name="block">The <see cref="Block{T}"/> instance that <paramref name="tx"/>
+        /// <param name="block">The <see cref="Block{T}"/> that <paramref name="tx"/>
         /// belongs to.</param>
-        /// <param name="tx">A <see cref="Transaction{T}"/> instance to evaluate.</param>
-        /// <param name="previousStates">The states immediately before
-        /// <paramref name="tx.Actions"/> being executed.  Note that its
-        /// <see cref="IAccountStateDelta.UpdatedAddresses"/> are remained
-        /// to the returned next states.</param>
+        /// <param name="tx">The <see cref="Transaction{T}"/> to evaluate.</param>
+        /// <param name="previousStates">The states immediately before evaluating
+        /// <paramref name="tx"/>.  Note that its <see cref="IAccountStateDelta.UpdatedAddresses"/>
+        /// are remained to the returned next states.</param>
         /// <param name="rehearsal">Pass <c>true</c> if it is intended
-        /// to be dry-run (i.e., the returned result will be never used).
+        /// to be a dry-run (i.e., the returned result will be never used).
         /// The default value is <c>false</c>.</param>
-        /// <returns>The states immediately after <paramref name="tx"/>
-        /// being executed.  Note that it maintains
+        /// <returns>The resulting states of evaluating the <see cref="IAction"/>s in
+        /// <see cref="Transaction{T}.Actions"/> of <paramref name="tx"/>.  Note that it maintains
         /// <see cref="IAccountStateDelta.UpdatedAddresses"/> of the given
         /// <paramref name="previousStates"/> as well.</returns>
         [Pure]
@@ -496,7 +469,7 @@ namespace Libplanet.Action
             IAccountStateDelta previousStates,
             bool rehearsal = false)
         {
-            var evaluations = EvaluateTxGradually(
+            var evaluations = EvaluateTx(
                 block: block,
                 tx: tx,
                 previousStates: previousStates,
@@ -513,16 +486,17 @@ namespace Libplanet.Action
         }
 
         /// <summary>
-        /// Evaluates the <see cref="IBlockPolicy{T}.BlockAction"/> set by the policy for
-        /// the given <see cref="Block{T}"/> object.
+        /// Evaluates the <see cref="IBlockPolicy{T}.BlockAction"/> set by the policy when
+        /// this <see cref="ActionEvaluator{T}"/> was instantiated for a given
+        /// <see cref="Block{T}"/>.
         /// </summary>
         /// <param name="block">The <see cref="Block{T}"/> instance to evaluate.</param>
         /// <param name="previousStates">The states immediately before the evaluation of
-        /// <see cref="IBlockPolicy{T}.BlockAction"/>.</param>
+        /// <see cref="_policyBlockAction"/>.</param>
         /// <param name="previousBlockStatesTrie">The trie to contain states at previous block.
         /// </param>
-        /// <returns>The <see cref="ActionEvaluation"/> of evaluating the
-        /// <see cref="IBlockPolicy{T}.BlockAction"/> for the <paramref name="block"/>.</returns>
+        /// <returns>The <see cref="ActionEvaluation"/> of evaluating
+        /// <see cref="_policyBlockAction"/> for the <paramref name="block"/>.</returns>
         [Pure]
         internal ActionEvaluation EvaluatePolicyBlockAction(
             Block<T> block,
@@ -541,7 +515,7 @@ namespace Libplanet.Action
                 $"Evaluating policy block action for block #{block.Index} " +
                 $"{block.PreEvaluationHash}");
 
-            return EvaluateGradually(
+            return EvaluateActions(
                 preEvaluationHash: block.PreEvaluationHash,
                 blockIndex: block.Index,
                 txid: null,
@@ -558,9 +532,10 @@ namespace Libplanet.Action
         /// <summary>
         /// Retrieves the last previous states for the previous block of <paramref name="block"/>.
         /// </summary>
-        /// <param name="block">The <see cref="Block{T}"/> instance to consider.</param>
+        /// <param name="block">The <see cref="Block{T}"/> instance to reference.</param>
         /// <param name="stateCompleterSet">The <see cref="StateCompleterSet{T}"/> to use.</param>
-        /// <returns>The last previous <see cref="IAccountStateDelta"/> for the given arguments.
+        /// <returns>The last previous <see cref="IAccountStateDelta"/> for the previous
+        /// <see cref="Block{T}"/>.
         /// </returns>
         private IAccountStateDelta GetPreviousBlockOutputStates(
             Block<T> block,

@@ -479,6 +479,29 @@ namespace Libplanet.Blocks
             return Hash.ToString();
         }
 
+        /// <summary>
+        /// Validates this <see cref="Block{T}"/> and throws an appropriate exception
+        /// if not valid.
+        /// </summary>
+        /// <param name="currentTime">The current time to validate time-wise conditions.</param>
+        /// <exception cref="InvalidBlockHashException">Thrown when <see cref="Hash"/>
+        /// is invalid.</exception>
+        /// <exception cref="InvalidBlockTimestampException">Thrown when <see cref="Timestamp"/>
+        /// is invalid.  For example, if <see cref="Timestamp"/> is too far in the future
+        /// compared to <paramref name="currentTime"/>.</exception>
+        /// <exception cref="InvalidBlockIndexException">Thrown when <see cref="Index"/>
+        /// is invalid.  For example, if it is a negative integer.
+        /// </exception>
+        /// <exception cref="InvalidBlockDifficultyException">Thrown when <see cref="Difficulty"/>
+        /// is not properly configured.  For example, if it is too easy.</exception>
+        /// <exception cref="InvalidBlockPreviousHashException">Thrown when
+        /// <see cref="PreviousHash"/> is invalid so that the <see cref="Block{T}"/>s are not
+        /// continuous.</exception>
+        /// <exception cref="InvalidBlockNonceException">Thrown when
+        /// <see cref="Nonce"/> does not satisfy the <see cref="Difficulty"/> level.</exception>
+        /// <exception cref="InvalidBlockTxHashException">Thrown when the value of
+        /// <see cref="TxHash"/> is not consistent with <see cref="Transactions"/>.
+        /// </exception>
         internal void Validate(DateTimeOffset currentTime)
         {
             Header.Validate(currentTime);

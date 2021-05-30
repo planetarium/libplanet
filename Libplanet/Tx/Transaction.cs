@@ -540,8 +540,8 @@ namespace Libplanet.Tx
             ToRawTransaction(sign).ToBencodex();
 
         /// <summary>
-        /// Validates this <see cref="Transaction{T}"/>.  If there is something
-        /// invalid it throws an exception.  If valid it does nothing.
+        /// Validates this <see cref="Transaction{T}"/> and throws an appropriate exception
+        /// if not valid.
         /// </summary>
         /// <exception cref="InvalidTxSignatureException">Thrown when its
         /// <see cref="Transaction{T}.Signature"/> is invalid or not signed by
