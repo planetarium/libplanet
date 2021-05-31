@@ -257,6 +257,9 @@ implement the IOCP even on Windows.
 It had been done by <code>Swarm&lt;T&gt;</code>, but as the <code>ITransport</code> is now separated
 from it, this became done by <code>NetMQTransport</code> instead of <code>Swarm&lt;T&gt;</code>.
 [<a href="https://github.com/planetarium/libplanet/pull/247">#247</a>, <a href="https://github.com/planetarium/libplanet/pull/1278">#1278</a>]</li>
+<li>(Libplanet.RocksDBStore) <code>RocksDBStore.ForkBlockIndexes()</code> became to share
+common ancestors between forks rather than duplicating them so that much
+less space is used.  [<a href="https://github.com/planetarium/libplanet/issues/1280">#1280</a>, <a href="https://github.com/planetarium/libplanet/pull/1287">#1287</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
