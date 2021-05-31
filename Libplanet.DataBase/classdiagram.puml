@@ -1,0 +1,78 @@
+@startuml
+'https://plantuml.com/class-diagram
+interface DataBase {
+    Get()
+    Has()
+    Set()
+    Delete()
+    Iterator()
+}
+
+class RocksDB
+class LevelDB
+class BoltDB
+class MemDB
+
+DataBase <|-- RocksDB
+DataBase <|-- LevelDB
+DataBase <|-- BoltDB
+DataBase <|-- MemDB
+
+abstract class MultiDataBase {
+    DataBase Tx
+    DataBase Block
+}
+
+interface IStore {
+    DataBase db
+    GetBlock()
+    SetBlock()
+    IterateBlock()
+}
+
+class MyNewStore{
+}
+
+class ConcreteRocksDB
+class ConcreteLevelDB
+
+RocksDB *-- ConcreteRocksDB
+LevelDB *-- ConcreteLevelDB
+
+MultiDataBase "1" *-- "1..2" DataBase
+IStore <|-- MyNewStore
+MyNewStore *-- MultiDataBase
+IStore <|-- RocksDBStore
+RocksDBStore *-- ConcreteRocksDB
+IStore <|-- DefaultStore
+
+
+'interface IStore
+'class RocksDBStore
+'class MonoRocksDBStore
+
+
+'abstract class AbstractList
+'abstract AbstractCollection
+'interface List
+'interface Collection
+'
+'List <|-- AbstractList
+'Collection <|-- AbstractCollection
+'
+'Collection <|- List
+'AbstractCollection <|- AbstractList
+'AbstractList <|-- ArrayList
+'
+'class ArrayList {
+'Object[] elementData
+'size()
+'}
+'
+'enum TimeUnit {
+'DAYS
+'HOURS
+'MINUTES
+'}
+
+@enduml
