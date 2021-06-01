@@ -963,6 +963,27 @@ namespace Libplanet.Net
             await PeerDiscovery.AddPeersAsync(peers, timeout, cancellationToken);
         }
 
+        public IEnumerable<Transaction<T>> GetTxs(
+            IEnumerable<BlockHash> blockHashes,
+            CancellationToken cancellationToken
+        )
+        {
+            IAsyncEnumerable<Block<T>> blocks = null;
+
+            foreach (BoundPeer peer in RoutingTable.Peers)
+            {
+                blocks = GetBlocksAsync(peer, blockHashes, cancellationToken);
+                if (blocks.CountAsync().IsCompletedSuccessfully && blocks.CountAsync().Result <= 0)
+                {
+                    continue;
+                }
+
+                break;
+            }
+
+            return GetBlock(blocks, blockHashes.First()).Result.Transactions;
+        }
+
         // FIXME: This would be better if it's merged with GetDemandBlockHashes
         internal async IAsyncEnumerable<Tuple<long, BlockHash>> GetBlockHashes(
             BoundPeer peer,
