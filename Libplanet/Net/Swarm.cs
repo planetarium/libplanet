@@ -1720,5 +1720,11 @@ namespace Libplanet.Net
                 }
             }
         }
+
+        private ValueTask<Block<T>> GetBlock(
+            IAsyncEnumerable<Block<T>> blocks, BlockHash blockHash)
+        {
+            return blocks.FirstAsync(c => c.Hash.Equals(blockHash));
+        }
     }
 }
