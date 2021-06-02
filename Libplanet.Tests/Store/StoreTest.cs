@@ -937,6 +937,48 @@ namespace Libplanet.Tests.Store
         }
 
         [SkippableFact]
+        public void ForkWithBranch()
+        {
+            IStore store = Fx.Store;
+            Guid chainA = Guid.NewGuid();
+            Guid chainB = Guid.NewGuid();
+
+            // We need `Block<T>`s because `IStore` can't retrive index(long) by block hash without
+            // actual block...
+            Block<DumbAction> anotherBlock3 = TestUtils.MineNext(Fx.Block2);
+            store.PutBlock(Fx.GenesisBlock);
+            store.PutBlock(Fx.Block1);
+            store.PutBlock(Fx.Block2);
+            store.PutBlock(Fx.Block3);
+            store.PutBlock(anotherBlock3);
+
+            store.AppendIndex(chainA, Fx.GenesisBlock.Hash);
+            store.AppendIndex(chainA, Fx.Block1.Hash);
+            store.AppendIndex(chainA, Fx.Block2.Hash);
+            store.AppendIndex(chainA, Fx.Block3.Hash);
+
+            store.ForkBlockIndexes(chainA, chainB, Fx.Block2.Hash);
+            store.AppendIndex(chainB, anotherBlock3.Hash);
+
+            Assert.Equal(
+                new[]
+                {
+                    Fx.Block2.Hash,
+                    anotherBlock3.Hash,
+                },
+                store.IterateIndexes(chainB, 2, 2)
+            );
+
+            Assert.Equal(
+                new[]
+                {
+                    anotherBlock3.Hash,
+                },
+                store.IterateIndexes(chainB, 3, 1)
+            );
+        }
+
+        [SkippableFact]
         public void Copy()
         {
             using (StoreFixture fx = FxConstructor())

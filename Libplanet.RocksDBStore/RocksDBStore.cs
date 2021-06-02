@@ -1076,8 +1076,17 @@ namespace Libplanet.RocksDBStore
 
             if (GetPreviousChainInfo(cf) is { } chainInfo)
             {
+                Guid prevId = chainInfo.Item1;
                 long pi = chainInfo.Item2;
-                foreach (BlockHash hash in IterateIndexes(chainInfo.Item1, offset, null, true))
+
+                int? expectedCount = null;
+
+                if (limit is { } limitNotNull)
+                {
+                    expectedCount = (int)Math.Min(limitNotNull, pi - offset + 1);
+                }
+
+                foreach (BlockHash hash in IterateIndexes(prevId, offset, expectedCount, true))
                 {
                     if (count >= limit)
                     {
@@ -1086,14 +1095,9 @@ namespace Libplanet.RocksDBStore
 
                     yield return hash;
                     count += 1;
-
-                    if (offset + count > pi)
-                    {
-                        break;
-                    }
                 }
 
-                offset = (int)Math.Max(0, offset - pi);
+                offset = (int)Math.Max(0, offset - pi - 1);
             }
 
             byte[] prefix = IndexKeyPrefix;
