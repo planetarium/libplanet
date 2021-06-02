@@ -257,7 +257,7 @@ namespace Libplanet.Tests.Action
                 (0, 1, new[] { "A", "B", "C", null, null }, _txFx.Address1),
             };
             Assert.Equal(expectations.Length, evals.Length);
-            foreach (var (expect, eval) in expectations.Zip(evals))
+            foreach (var (expect, eval) in expectations.Zip(evals, (x, y) => (x, y)))
             {
                 Assert.Equal(block1Txs[expect.Item1].Id, eval.InputContext.TxId);
                 Assert.Equal(block1Txs[expect.Item1].Actions[expect.Item2], eval.Action);
@@ -385,7 +385,7 @@ namespace Libplanet.Tests.Action
                 ),
             };
             Assert.Equal(expectations.Length, evals.Length);
-            foreach (var (expect, eval) in expectations.Zip(evals))
+            foreach (var (expect, eval) in expectations.Zip(evals, (x, y) => (x, y)))
             {
                 Assert.Equal(block2Txs[expect.Item1].Id, eval.InputContext.TxId);
                 Assert.Equal(block2Txs[expect.Item1].Actions[expect.Item2], eval.Action);
