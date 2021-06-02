@@ -249,8 +249,8 @@ namespace Libplanet.Store
                 return;
             }
 
-            destColl.InsertBulk(srcColl.FindAll()
-                .TakeWhile(i => !i.Hash.Equals(branchpoint)).Skip(1));
+            destColl.Delete(Query.All());
+            destColl.InsertBulk(srcColl.FindAll().TakeWhile(i => !i.Hash.Equals(branchpoint)));
 
             AppendIndex(destinationChainId, branchpoint);
         }
