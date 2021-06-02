@@ -968,6 +968,14 @@ namespace Libplanet.Tests.Store
                 },
                 store.IterateIndexes(chainB, 2, 2)
             );
+            Assert.Equal(
+                new[]
+                {
+                    Fx.Block2.Hash,
+                    anotherBlock3.Hash,
+                },
+                store.IterateIndexes(chainB, 2)
+            );
 
             Assert.Equal(
                 new[]
@@ -975,6 +983,14 @@ namespace Libplanet.Tests.Store
                     anotherBlock3.Hash,
                 },
                 store.IterateIndexes(chainB, 3, 1)
+            );
+
+            Assert.Equal(
+                new[]
+                {
+                    anotherBlock3.Hash,
+                },
+                store.IterateIndexes(chainB, 3)
             );
         }
 

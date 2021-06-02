@@ -1079,11 +1079,10 @@ namespace Libplanet.RocksDBStore
                 Guid prevId = chainInfo.Item1;
                 long pi = chainInfo.Item2;
 
-                int? expectedCount = null;
-
-                if (limit is { } limitNotNull)
+                int expectedCount = (int)(pi - offset + 1);
+                if (limit is { } limitNotNull && limitNotNull < expectedCount)
                 {
-                    expectedCount = (int)Math.Min(limitNotNull, pi - offset + 1);
+                    expectedCount = limitNotNull;
                 }
 
                 foreach (BlockHash hash in IterateIndexes(prevId, offset, expectedCount, true))
