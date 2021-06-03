@@ -557,22 +557,22 @@ namespace Libplanet.Action
             AccountStateGetter accountStateGetter;
             AccountBalanceGetter accountBalanceGetter;
 
-            if (block.PreviousHash is null)
-            {
-                accountStateGetter = _nullAccountStateGetter;
-                accountBalanceGetter = _nullAccountBalanceGetter;
-            }
-            else
+            if (block.PreviousHash is { } previousHash)
             {
                 accountStateGetter = address => _stateGetter(
                     address,
-                    block.PreviousHash,
+                    previousHash,
                     stateCompleterSet.StateCompleter);
                 accountBalanceGetter = (address, currency) => _balanceGetter(
                     address,
                     currency,
-                    block.PreviousHash,
+                    previousHash,
                     stateCompleterSet.FungibleAssetStateCompleter);
+            }
+            else
+            {
+                accountStateGetter = _nullAccountStateGetter;
+                accountBalanceGetter = _nullAccountBalanceGetter;
             }
 
             return (accountStateGetter, accountBalanceGetter);
