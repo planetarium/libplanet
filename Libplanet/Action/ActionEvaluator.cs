@@ -526,7 +526,7 @@ namespace Libplanet.Action
                 actions: new[] { _policyBlockAction }.ToImmutableList(),
                 rehearsal: false,
                 previousBlockStatesTrie: previousBlockStatesTrie,
-                blockAction: true).First();
+                blockAction: true).Single();
         }
 
         /// <summary>
