@@ -27,6 +27,7 @@ namespace Libplanet.Store
     public class DefaultStore : BaseStore
     {
         private const string IndexColPrefix = "index_";
+        private const string TxIdBlockIndexPrefix = "txblockindex_";
         private const string TxNonceIdPrefix = "nonce_";
 
         private static readonly UPath TxRootPath = UPath.Root / "tx";
@@ -545,6 +546,49 @@ namespace Libplanet.Store
             return null;
         }
 
+        /// <inheritdoc cref="BaseStore.PutTxIdBlockHashIndex(Guid, TxId, BlockHash)"/>
+        public override void PutTxIdBlockHashIndex(Guid chainId, TxId txId, BlockHash blockHash)
+        {
+            var collection = TxIdBlockIndexCollection(chainId);
+
+            var doc = collection
+                .FindOne(Query.EQ("TxId", new BsonValue(txId.ToByteArray())));
+            if (doc != null)
+            {
+                collection.Update(
+                    doc.Id,
+                    new TxIdBlockHashDoc
+                    {
+                        TxId = txId,
+                        BlockHash = blockHash,
+                    });
+            }
+            else
+            {
+                collection.Insert(
+                    new TxIdBlockHashDoc
+                    {
+                        TxId = txId,
+                        BlockHash = blockHash,
+                    });
+            }
+        }
+
+        /// <inheritdoc cref="BaseStore.GetTxIdBlockHashIndex(Guid, TxId)"/>
+        public override BlockHash? GetTxIdBlockHashIndex(Guid chainId, TxId txId)
+        {
+            var doc = TxIdBlockIndexCollection(chainId)
+                .FindOne(Query.EQ("TxId", new BsonValue(txId.ToByteArray())));
+            return doc is { } d ? d.BlockHash : (BlockHash?)null;
+        }
+
+        /// <inheritdoc cref="BaseStore.DeleteTxIdBlockHashIndex(Guid, TxId)"/>
+        public override void DeleteTxIdBlockHashIndex(Guid chainId, TxId txId)
+        {
+            TxIdBlockIndexCollection(chainId)
+                .Delete(Query.EQ("TxId", new BsonValue(txId.ToByteArray())));
+        }
+
         /// <inheritdoc cref="BaseStore.SetBlockPerceivedTime(BlockHash, DateTimeOffset)"/>
         public override void SetBlockPerceivedTime(
             BlockHash blockHash,
@@ -736,6 +780,9 @@ namespace Libplanet.Store
         private UPath TxExecutionPath(TxExecution txExecution) =>
             TxExecutionPath(txExecution.BlockHash, txExecution.TxId);
 
+        private UPath TxIdBlockHashIndexPath(in TxId txid, in BlockHash blockHash) =>
+            BlockPath(blockHash) / txid.ToHex();
+
         private string TxNonceId(in Guid chainId)
         {
             return $"{TxNonceIdPrefix}{FormatChainId(chainId)}";
@@ -746,9 +793,25 @@ namespace Libplanet.Store
             return _db.GetCollection<HashDoc>($"{IndexColPrefix}{FormatChainId(chainId)}");
         }
 
+        private LiteCollection<TxIdBlockHashDoc> TxIdBlockIndexCollection(in Guid chainId)
+        {
+            return _db.GetCollection<TxIdBlockHashDoc>(
+                $"{TxIdBlockIndexPrefix}{FormatChainId(chainId)}");
+        }
+
         private LiteCollection<BsonDocument> TxNonceCollection(Guid chainId)
         {
             return _db.GetCollection<BsonDocument>(TxNonceId(chainId));
+        }
+
+        private class TxIdBlockHashDoc
+        {
+            [BsonId]
+            public long Id { get; set; }
+
+            public TxId TxId { get; set; }
+
+            public BlockHash BlockHash { get; set; }
         }
 
         private class HashDoc

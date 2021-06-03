@@ -39,6 +39,7 @@ namespace Libplanet.RocksDBStore
         private static readonly byte[] TxNonceKeyPrefix = { (byte)'N' };
         private static readonly byte[] StagedTxKeyPrefix = { (byte)'t' };
         private static readonly byte[] TxExecutionKeyPrefix = { (byte)'e' };
+        private static readonly byte[] TxIdBlockHashIndexPrefix = { (byte)'i' };
         private static readonly byte[] IndexCountKey = { (byte)'c' };
         private static readonly byte[] CanonicalChainIdIdKey = { (byte)'C' };
         private static readonly byte[] PreviousChainIdKey = { (byte)'P' };
@@ -759,6 +760,39 @@ namespace Libplanet.RocksDBStore
             return false;
         }
 
+        /// <inheritdoc cref="BaseStore.PutTxIdBlockHashIndex(Guid, TxId, BlockHash)"/>
+        public override void PutTxIdBlockHashIndex(Guid chainId, TxId txId, BlockHash blockHash)
+        {
+            var cf = GetColumnFamily(_chainDb, chainId);
+            _chainDb.Put(
+                TxIdIndexKey(txId),
+                blockHash.ToByteArray(),
+                cf
+                );
+        }
+
+        /// <inheritdoc cref="BaseStore.GetTxIdBlockHashIndex(Guid, TxId)"/>
+        public override BlockHash? GetTxIdBlockHashIndex(Guid chainId, TxId txId)
+        {
+            var cf = GetColumnFamily(_chainDb, chainId);
+            if (!(_chainDb.Get(TxIdIndexKey(txId), cf) is { } blockHashByte))
+            {
+                return null;
+            }
+
+            return new BlockHash(blockHashByte);
+        }
+
+        /// <inheritdoc cref="BaseStore.DeleteTxIdBlockHashIndex(Guid, TxId)"/>
+        public override void DeleteTxIdBlockHashIndex(Guid chainId, TxId txId)
+        {
+            var cf = GetColumnFamily(_chainDb, chainId);
+            _chainDb.Remove(
+                TxIdIndexKey(txId),
+                cf
+            );
+        }
+
         /// <inheritdoc cref="BaseStore.PutTxExecution(Libplanet.Tx.TxSuccess)"/>
         public override void PutTxExecution(TxSuccess txSuccess) =>
             _txExecutionDb.Put(
@@ -975,6 +1009,10 @@ namespace Libplanet.RocksDBStore
 
         private byte[] TxExecutionKey(TxExecution txExecution) =>
             TxExecutionKey(txExecution.BlockHash, txExecution.TxId);
+
+        private byte[] TxIdIndexKey(in TxId txId) =>
+
+            TxIdBlockHashIndexPrefix.Concat(txId.ByteArray).ToArray();
 
         private byte[] ForkedChainsKey(Guid guid) =>
             ForkedChainsKeyPrefix.Concat(guid.ToByteArray()).ToArray();

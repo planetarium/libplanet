@@ -36,6 +36,7 @@ namespace Libplanet.RocksDBStore
         private static readonly byte[] TxNonceKeyPrefix = { (byte)'N' };
         private static readonly byte[] StagedTxKeyPrefix = { (byte)'t' };
         private static readonly byte[] TxExecutionKeyPrefix = { (byte)'e' };
+        private static readonly byte[] TxIdBlockHashIndexPrefix = { (byte)'i' };
         private static readonly byte[] IndexCountKey = { (byte)'c' };
         private static readonly byte[] CanonicalChainIdIdKey = { (byte)'C' };
 
@@ -543,6 +544,39 @@ namespace Libplanet.RocksDBStore
             return null;
         }
 
+        /// <inheritdoc cref="BaseStore.PutTxIdBlockHashIndex(Guid, TxId, BlockHash)"/>
+        public override void PutTxIdBlockHashIndex(Guid chainId, TxId txId, BlockHash blockHash)
+        {
+            var cf = GetColumnFamily(_chainDb, chainId);
+            _chainDb.Put(
+                TxIdIndexKey(txId),
+                blockHash.ToByteArray(),
+                cf
+                );
+        }
+
+        /// <inheritdoc cref="BaseStore.GetTxIdBlockHashIndex(Guid, TxId)"/>
+        public override BlockHash? GetTxIdBlockHashIndex(Guid chainId, TxId txId)
+        {
+            var cf = GetColumnFamily(_chainDb, chainId);
+            if (!(_chainDb.Get(TxIdIndexKey(txId), cf) is { } blockHashByte))
+            {
+                return null;
+            }
+
+            return new BlockHash(blockHashByte);
+        }
+
+        /// <inheritdoc cref="BaseStore.DeleteTxIdBlockHashIndex(Guid, TxId)"/>
+        public override void DeleteTxIdBlockHashIndex(Guid chainId, TxId txId)
+        {
+            var cf = GetColumnFamily(_chainDb, chainId);
+            _chainDb.Remove(
+                TxIdIndexKey(txId),
+                cf
+            );
+        }
+
         /// <inheritdoc cref="BaseStore.SetBlockPerceivedTime(BlockHash, DateTimeOffset)"/>
         public override void SetBlockPerceivedTime(
             BlockHash blockHash,
@@ -679,6 +713,10 @@ namespace Libplanet.RocksDBStore
 
         private byte[] TxExecutionKey(TxExecution txExecution) =>
             TxExecutionKey(txExecution.BlockHash, txExecution.TxId);
+
+        private byte[] TxIdIndexKey(in TxId txId) =>
+
+            TxIdBlockHashIndexPrefix.Concat(txId.ByteArray).ToArray();
 
         private IEnumerable<Iterator> IterateDb(RocksDb db, byte[] prefix, Guid? chainId = null)
         {
