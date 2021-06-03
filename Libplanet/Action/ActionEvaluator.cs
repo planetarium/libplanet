@@ -52,7 +52,7 @@ namespace Libplanet.Action
             BalanceGetter<T> balanceGetter,
             Func<BlockHash, ITrie>? trieGetter)
         {
-            _logger = Log.ForContext(typeof(ActionEvaluator<T>));
+            _logger = Log.ForContext<ActionEvaluator<T>>();
             _policyBlockAction = policyBlockAction;
             _stateGetter = stateGetter;
             _balanceGetter = balanceGetter;
