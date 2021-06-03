@@ -469,7 +469,7 @@ namespace Libplanet.Action
             IAccountStateDelta previousStates,
             bool rehearsal = false)
         {
-            var evaluations = EvaluateTx(
+            ImutableList<ActionEvaluation> evaluations = EvaluateTx(
                 block: block,
                 tx: tx,
                 previousStates: previousStates,
