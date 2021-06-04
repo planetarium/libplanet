@@ -6,7 +6,7 @@ using Libplanet.Blocks;
 namespace Libplanet.Action
 {
     /// <summary>
-    /// An intermediary delegate for <see cref="AccountStateGetter"/>.
+    /// An intermediary delegate for <see cref="AccountBalanceGetter"/>.
     /// </summary>
     /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
     /// to <see cref="BlockChain{T}"/>'s type parameter.</typeparam>
