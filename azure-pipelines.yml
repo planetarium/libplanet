@@ -67,7 +67,7 @@ jobs:
 
 - job: Linux_Mono
   pool:
-    vmImage: ubuntu-16.04
+    vmImage: ubuntu-20.04
   steps:
   - task: UseDotNet@2
     displayName: Stick with .NET Core SDK version compatible to Mono toolchain
@@ -137,7 +137,7 @@ jobs:
 
 - job: Linux_NETCore
   pool:
-    vmImage: 'ubuntu-16.04'
+    vmImage: ubuntu-20.04
   steps:
   - template: .azure-pipelines/dotnet-core.yml
     parameters:
@@ -160,7 +160,7 @@ jobs:
 # Run tests with an alternative locale configuration
 - job: Linux_NETCore_ar_SA
   pool:
-    vmImage: 'ubuntu-16.04'
+    vmImage: ubuntu-20.04
   steps:
   - template: .azure-pipelines/dotnet-core.yml
     parameters:
