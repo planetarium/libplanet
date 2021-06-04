@@ -4,9 +4,21 @@ coverage:
     project:
       default:
         target: auto
-        threshold: "1"
+        threshold: 1
         base: auto
+
+parsers:
+  gcov:
+    branch_detection:
+      conditional: yes
+      loop: yes
+      method: no
+      macro: no
 
 comment:
   require_changes: true
   layout: "diff, files"
+
+ignore:
+  - "*Tests/*"
+  - "*Benchmarks/*"
