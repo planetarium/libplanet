@@ -1,7 +1,5 @@
 #nullable enable
 using Bencodex.Types;
-using Libplanet.Blockchain;
-using Libplanet.Blocks;
 
 namespace Libplanet.Action
 {
@@ -18,10 +16,4 @@ namespace Libplanet.Action
     /// <returns>The account state if exists.  Otherwise <c>null</c>.
     /// </returns>
     public delegate IValue? AccountStateGetter(Address address);
-
-    public delegate IValue? StateGetter<T>(
-        Address address,
-        BlockHash? hashDigest,
-        StateCompleter<T> stateCompleter)
-            where T : IAction, new();
 }
