@@ -280,6 +280,7 @@ To be released.
 [#1289]: https://github.com/planetarium/libplanet/pull/1289
 [#1298]: https://github.com/planetarium/libplanet/pull/1298
 [#1301]: https://github.com/planetarium/libplanet/issues/1301
+[#1305]: https://github.com/planetarium/libplanet/pull/1305
 [#1325]: https://github.com/planetarium/libplanet/pull/1325
 
 
