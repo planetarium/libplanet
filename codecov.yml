@@ -6,6 +6,15 @@ coverage:
         target: auto
         threshold: 1
         base: auto
+    changes: false
+
+parsers:
+  gcov:
+    branch_detection:
+      conditional: yes
+      loop: yes
+      method: no
+      macro: no
 
 parsers:
   gcov:
