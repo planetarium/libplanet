@@ -40,7 +40,7 @@ namespace Libplanet.Action
             timestamp: DateTimeOffset.UtcNow,
             transactions: ImmutableArray<Transaction<T>>.Empty);
 
-        private readonly ILogger _logger;
+        private static readonly ILogger _logger = Log.ForContext<ActionEvaluator<T>>();
         private readonly IAction? _policyBlockAction;
         private readonly StateGetter<T> _stateGetter;
         private readonly BalanceGetter<T> _balanceGetter;
@@ -52,7 +52,6 @@ namespace Libplanet.Action
             BalanceGetter<T> balanceGetter,
             Func<BlockHash, ITrie>? trieGetter)
         {
-            _logger = Log.ForContext<ActionEvaluator<T>>();
             _policyBlockAction = policyBlockAction;
             _stateGetter = stateGetter;
             _balanceGetter = balanceGetter;
@@ -222,7 +221,6 @@ namespace Libplanet.Action
                 ^ (signature.Any() ? BitConverter.ToInt32(hashedSignature, 0) : 0);
 
             IAccountStateDelta states = previousStates;
-            ILogger logger = Log.ForContext<ActionEvaluation>();
             foreach (IAction action in actions)
             {
                 Exception? exc = null;
@@ -233,7 +231,7 @@ namespace Libplanet.Action
                     DateTimeOffset actionExecutionStarted = DateTimeOffset.Now;
                     nextStates = action.Execute(context);
                     TimeSpan spent = DateTimeOffset.Now - actionExecutionStarted;
-                    logger.Verbose($"{action} execution spent {spent.TotalMilliseconds} ms.");
+                    _logger.Verbose($"{action} execution spent {spent.TotalMilliseconds} ms.");
                 }
                 catch (Exception e)
                 {
@@ -259,7 +257,7 @@ namespace Libplanet.Action
                             "{PreEvaluationHash}, tx {TxId}, previous state root hash " +
                             "{StateRootHash}) threw an exception during execution:\n" +
                             "{InnerException}";
-                        logger.Error(
+                        _logger.Error(
                             e,
                             logMsg,
                             action,
@@ -274,7 +272,7 @@ namespace Libplanet.Action
                             $"previous state root hash {stateRootHash}) threw " +
                             "an exception during execution.  " +
                             "See also this exception's InnerException property.";
-                        logger.Error("{Message}\nInnerException: {ExcMessage}", msg, e.Message);
+                        _logger.Error("{Message}\nInnerException: {ExcMessage}", msg, e.Message);
                         exc = new UnexpectedlyTerminatedActionException(
                             preEvaluationHash, blockIndex, txid, stateRootHash, action, msg, e);
                     }
