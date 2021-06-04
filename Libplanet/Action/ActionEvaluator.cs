@@ -165,7 +165,8 @@ namespace Libplanet.Action
         }
 
         /// <summary>
-        /// Executes <see cref="IAction"/>s in <paramref name="actions"/>.
+        /// Executes <see cref="IAction"/>s in <paramref name="actions"/>.  All other evaluation
+        /// calls resolve to this method.
         /// </summary>
         /// <param name="preEvaluationHash">The <see cref="Block{T}.PreEvaluationHash"/> of
         /// the <see cref="Block{T}"/> that <paramref name="actions"/> belong to.</param>
@@ -337,8 +338,7 @@ namespace Libplanet.Action
         /// <param name="block">The <see cref="Block{T}"/> to evaluate.</param>
         /// <param name="currentTime">The current time to validate time-wise conditions.</param>
         /// <param name="previousStates">The states immediately before an execution of any
-        /// <see cref="IAction"/>s.  Note that its <see cref="IAccountStateDelta.UpdatedAddresses"/>
-        /// are remained to the returned next states.</param>
+        /// <see cref="IAction"/>s.</param>
         /// <param name="previousBlockStatesTrie">The <see cref="ITrie"/> containing the states
         /// at the previous block of <paramref name="block"/>.</param>
         /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="ActionEvaluation"/>s
@@ -377,8 +377,7 @@ namespace Libplanet.Action
         /// </summary>
         /// <param name="block">The <see cref="Block{T}"/> instance to evaluate.</param>
         /// <param name="previousStates">The states immediately before any <see cref="IAction"/>s
-        /// being evaluated.  Note that its <see cref="IAccountStateDelta.UpdatedAddresses"/>
-        /// are remained to the returned next states.</param>
+        /// being evaluated.</param>
         /// <param name="previousBlockStatesTrie">The trie to contain states at previous block.
         /// </param>
         /// <returns>Enumerates an <see cref="ActionEvaluation"/> for each action where
@@ -418,9 +417,7 @@ namespace Libplanet.Action
         /// belongs to.</param>
         /// <param name="tx">A <see cref="Transaction{T}"/> instance to evaluate.</param>
         /// <param name="previousStates">The states immediately before
-        /// <see cref="Transaction{T}.Actions"/> of <paramref name="tx"/> being executed.
-        /// Note that its <see cref="IAccountStateDelta.UpdatedAddresses"/> are remained
-        /// to the returned next states.</param>
+        /// <see cref="Transaction{T}.Actions"/> of <paramref name="tx"/> being executed.</param>
         /// <param name="rehearsal">Pass <c>true</c> if it is intended
         /// to be dry-run (i.e., the returned result will be never used).
         /// The default value is <c>false</c>.</param>
@@ -480,8 +477,7 @@ namespace Libplanet.Action
         /// belongs to.</param>
         /// <param name="tx">The <see cref="Transaction{T}"/> to evaluate.</param>
         /// <param name="previousStates">The states immediately before evaluating
-        /// <paramref name="tx"/>.  Note that its <see cref="IAccountStateDelta.UpdatedAddresses"/>
-        /// are remained to the returned next states.</param>
+        /// <paramref name="tx"/>.</param>
         /// <param name="rehearsal">Pass <c>true</c> if it is intended
         /// to be a dry-run (i.e., the returned result will be never used).
         /// The default value is <c>false</c>.</param>
