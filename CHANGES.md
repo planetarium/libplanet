@@ -144,6 +144,13 @@ To be released.
      -  `Swarm<T>.PeerStates`
  -  Return type of `RoutingTable.Neighbors()` became `IReadOnlyList<BoundPeer>`
     (was `IEnumerable<BoundPeer>`).  [[#1230], [#1271]]
+ -  All methods pertaining to evaluating `IAction`s are moved
+    to a new `ActionEvaluator` class.  [[#1301], [#1305]]
+     -  Removed `Block<T>.Evaluate()` method.
+        Use `ActionEvaluator.EvaluateBlock()` method instead.
+     -  Removed `Block<T>.EvaluateActionsPerTx()` method.
+     -  Removed `Transaction<T>.EvaluateActionsGradually()` method.
+     -  Removed `Transaction<T>.EvaluateActions()` method.
 
 ### Backward-incompatible network protocol changes
 
@@ -151,6 +158,7 @@ To be released.
 
 ### Added APIs
 
+ -  Added `ActionEvaluator` class.  [[#1301], [#1305]]
  -  Added `BlockHash` struct.  [[#1192], [#1197]]
  -  Added `HashDigest<T>.DeriveFrom()` method.  [[#1197]]
  -  Added `BlockChain<T>.GetTxExecution()` method.  [[#1156], [#1289]]
@@ -269,6 +277,7 @@ To be released.
 [#1287]: https://github.com/planetarium/libplanet/pull/1287
 [#1289]: https://github.com/planetarium/libplanet/pull/1289
 [#1298]: https://github.com/planetarium/libplanet/pull/1298
+[#1301]: https://github.com/planetarium/libplanet/issues/1301
 [#1325]: https://github.com/planetarium/libplanet/pull/1325
 
 
