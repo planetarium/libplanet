@@ -15,6 +15,11 @@ using Serilog;
 
 namespace Libplanet.Action
 {
+    /// <summary>
+    /// Class responsible for handling of <see cref="IAction"/> evaluations.
+    /// </summary>
+    /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
+    /// the <see cref="Block{T}"/>'s type parameter.</typeparam>
     public class ActionEvaluator<T>
         where T : IAction, new()
     {
@@ -46,6 +51,18 @@ namespace Libplanet.Action
         private readonly BalanceGetter<T> _balanceGetter;
         private readonly Func<BlockHash, ITrie>? _trieGetter;
 
+        /// <summary>
+        /// Creates a new <see cref="ActionEvaluator{T}"/>.
+        /// </summary>
+        /// <param name="policyBlockAction">The <see cref="IAction"/> provided by
+        /// <see cref="IBlockPolicy{T}.BlockAction"/> to evaluate at the end for each
+        /// <see cref="Block{T}"/> that gets evaluated.</param>
+        /// <param name="stateGetter">The <see cref="StateGetter{T}"/> to use to retreive
+        /// the states for a provided <see cref="Address"/>.</param>
+        /// <param name="balanceGetter">The <see cref="BalanceGetter{T}"/> to use to retreive
+        /// the balance for a provided <see cref="Address"/>.</param>
+        /// <param name="trieGetter">The function to retrieve a trie for
+        /// a provided <see cref="BlockHash"/>.</param>
         public ActionEvaluator(
             IAction? policyBlockAction,
             StateGetter<T> stateGetter,
@@ -70,10 +87,8 @@ namespace Libplanet.Action
         /// <para>Publicly exposed for benchmarking.</para>
         /// <para>First evaluates all <see cref="IAction"/>s in <see cref="Block{T}.Transactions"/>
         /// of <paramref name="block"/> and appends the evaluation of
-        /// <see cref="_policyBlockAction"/> at the end.</para>
+        /// the <see cref="IBlockPolicy{T}.BlockAction"/> held by the instance at the end.</para>
         /// </remarks>
-        /// <seealso cref="EvaluateBlock"/>
-        /// <seealso cref="EvaluatePolicyBlockAction"/>
         [Pure]
         public IReadOnlyList<ActionEvaluation> Evaluate(
             Block<T> block,
@@ -161,8 +176,7 @@ namespace Libplanet.Action
         /// This can be <c>null</c> on rehearsal mode or if an <see cref="IAction"/> is a
         /// <see cref="IBlockPolicy{T}.BlockAction"/>.</param>
         /// <param name="previousStates">The states immediately before <paramref name="actions"/>
-        /// being executed.  Note that <see cref="IAccountStateDelta.UpdatedAddresses"/> of
-        /// <paramref name="previousStates"/> are remained to the returned next states.</param>
+        /// being executed.</param>
         /// <param name="miner">An address of block miner.</param>
         /// <param name="signer">Signer of the <paramref name="actions"/>.</param>
         /// <param name="signature"><see cref="Transaction{T}"/> signature used to generate random
@@ -175,11 +189,26 @@ namespace Libplanet.Action
         /// </param>
         /// <param name="blockAction">Pass <c>true</c> if it is
         /// <see cref="IBlockPolicy{T}.BlockAction"/>.</param>
-        /// <returns>Enumerates <see cref="ActionEvaluation"/>s for each one in
-        /// <paramref name="actions"/>.  The order is the same to the <paramref name="actions"/>.
-        /// Note that each <see cref="IActionContext.Random"/> object
-        /// has a unconsumed state.
+        /// <returns>An enumeration of <see cref="ActionEvaluation"/>s for each
+        /// <see cref="IAction"/> in <paramref name="actions"/>.
         /// </returns>
+        /// <remarks>
+        /// <para>Each <see cref="IActionContext.Random"/> object has an unconsumed state.</para>
+        /// <para>
+        /// The returned enumeration has the following properties:
+        /// <list type="bullet">
+        /// <item><description>The first <see cref="ActionEvaluation"/> in the enumerated result,
+        /// if any, has <see cref="ActionEvaluation.OutputStates"/> with
+        /// <see cref="IAccountStateDelta.UpdatedAddresses"/> that is a
+        /// superset of <paramref name="previousStates"/>'s
+        /// <see cref="IAccountStateDelta.UpdatedAddresses"/>.</description></item>
+        /// <item><description>Each <see cref="ActionEvaluation"/> in the enumerated result
+        /// has <see cref="ActionEvaluation.OutputStates"/> with
+        /// <see cref="IAccountStateDelta.UpdatedAddresses"/> that is a super set
+        /// of the previous one, if any.</description></item>
+        /// </list>
+        /// </para>
+        /// </remarks>
         [Pure]
         internal static IEnumerable<ActionEvaluation> EvaluateActions(
             BlockHash preEvaluationHash,
@@ -490,11 +519,12 @@ namespace Libplanet.Action
         /// </summary>
         /// <param name="block">The <see cref="Block{T}"/> instance to evaluate.</param>
         /// <param name="previousStates">The states immediately before the evaluation of
-        /// <see cref="_policyBlockAction"/>.</param>
+        /// the <see cref="IBlockPolicy{T}.BlockAction"/> held by the instance.</param>
         /// <param name="previousBlockStatesTrie">The trie to contain states at previous block.
         /// </param>
         /// <returns>The <see cref="ActionEvaluation"/> of evaluating
-        /// <see cref="_policyBlockAction"/> for the <paramref name="block"/>.</returns>
+        /// the <see cref="IBlockPolicy{T}.BlockAction"/> held by the instance
+        /// for the <paramref name="block"/>.</returns>
         [Pure]
         internal ActionEvaluation EvaluatePolicyBlockAction(
             Block<T> block,
