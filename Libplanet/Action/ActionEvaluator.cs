@@ -18,12 +18,19 @@ namespace Libplanet.Action
     public class ActionEvaluator<T>
         where T : IAction, new()
     {
-        private static readonly AccountStateGetter _nullAccountStateGetter = address => null;
-        private static readonly AccountBalanceGetter _nullAccountBalanceGetter =
+        internal static readonly StateGetter<T> NullStateGetter =
+            (address, hashDigest, stateCompleter) => null;
+
+        internal static readonly BalanceGetter<T> NullBalanceGetter =
+            (address, currency, hashDigest, fungibleAssetStateCompleter)
+                => new FungibleAssetValue(currency);
+
+        internal static readonly AccountStateGetter NullAccountStateGetter = address => null;
+        internal static readonly AccountBalanceGetter NullAccountBalanceGetter =
             (address, currency) => new FungibleAssetValue(currency);
 
         // FIXME: Although used for dummy context, this can be confusing.
-        private static readonly Block<T> _nullBlock = new Block<T>(
+        internal static readonly Block<T> NullBlock = new Block<T>(
             index: 0,
             difficulty: 0,
             totalDifficulty: 0,
@@ -118,15 +125,15 @@ namespace Libplanet.Action
         internal static IImmutableSet<Address> GetUpdatedAddresses(Transaction<T> tx)
         {
             IAccountStateDelta previousStates = new AccountStateDeltaImpl(
-                _nullAccountStateGetter,
-                _nullAccountBalanceGetter,
+                NullAccountStateGetter,
+                NullAccountBalanceGetter,
                 tx.Signer);
             IEnumerable<ActionEvaluation> evaluations = ActionEvaluator<T>.EvaluateActions(
-                preEvaluationHash: _nullBlock.PreEvaluationHash,
-                blockIndex: _nullBlock.Index,
+                preEvaluationHash: NullBlock.PreEvaluationHash,
+                blockIndex: NullBlock.Index,
                 txid: tx.Id,
                 previousStates: previousStates,
-                miner: _nullBlock.Miner.GetValueOrDefault(),
+                miner: NullBlock.Miner.GetValueOrDefault(),
                 signer: tx.Signer,
                 signature: tx.Signature,
                 actions: tx.Actions.Cast<IAction>().ToImmutableList(),
@@ -564,8 +571,8 @@ namespace Libplanet.Action
             }
             else
             {
-                accountStateGetter = _nullAccountStateGetter;
-                accountBalanceGetter = _nullAccountBalanceGetter;
+                accountStateGetter = NullAccountStateGetter;
+                accountBalanceGetter = NullAccountBalanceGetter;
             }
 
             return (accountStateGetter, accountBalanceGetter);

@@ -29,10 +29,6 @@ namespace Libplanet.Tests.Action
 {
     public class ActionEvaluatorTest
     {
-        private static readonly AccountStateGetter _nullAccountStateGetter = address => null;
-        private static readonly AccountBalanceGetter _nullAccountBalanceGetter =
-            (address, currency) => new FungibleAssetValue(currency);
-
         private readonly ILogger _logger;
         private readonly BlockPolicy<DumbAction> _policy;
         private readonly StoreFixture _storeFx;
@@ -77,16 +73,11 @@ namespace Libplanet.Tests.Action
             var stateRootBlock = TestUtils.MineGenesis(
                 timestamp: timestamp,
                 transactions: txs).AttachStateRootHash(stateStore, null);
-            StateGetter<RandomAction> nullStateGetter =
-                (address, hashDigest, stateCompleter) => null;
-            BalanceGetter<RandomAction> nullBalanceGetter =
-                (address, currency, hashDigest, fungibleAssetStateCompleter)
-                    => new FungibleAssetValue(currency);
             var actionEvaluator =
                 new ActionEvaluator<RandomAction>(
                     policyBlockAction: null,
-                    stateGetter: nullStateGetter,
-                    balanceGetter: nullBalanceGetter,
+                    stateGetter: ActionEvaluator<RandomAction>.NullStateGetter,
+                    balanceGetter: ActionEvaluator<RandomAction>.NullBalanceGetter,
                     trieGetter: null);
             var generatedRandomNumbers = new List<int>();
 
@@ -181,24 +172,19 @@ namespace Libplanet.Tests.Action
                 _txFx.Address5,
             };
             Block<DumbAction> genesis = MineGenesis<DumbAction>();
-            StateGetter<DumbAction> nullStateGetter =
-                (address, hashDigest, stateCompleter) => null;
-            BalanceGetter<DumbAction> nullBalanceGetter =
-                (address, currency, hashDigest, fungibleAssetStateCompleter)
-                    => new FungibleAssetValue(currency);
             ActionEvaluator<DumbAction> actionEvaluator = new ActionEvaluator<DumbAction>(
                 policyBlockAction: null,
-                stateGetter: nullStateGetter,
-                balanceGetter: nullBalanceGetter,
+                stateGetter: ActionEvaluator<DumbAction>.NullStateGetter,
+                balanceGetter: ActionEvaluator<DumbAction>.NullBalanceGetter,
                 trieGetter: null);
             IAccountStateDelta previousStates = genesis.ProtocolVersion > 0
                 ? new AccountStateDeltaImpl(
-                    _nullAccountStateGetter,
-                    _nullAccountBalanceGetter,
+                    ActionEvaluator<DumbAction>.NullAccountStateGetter,
+                    ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
                     genesis.Miner.GetValueOrDefault())
                 : new AccountStateDeltaImplV0(
-                    _nullAccountStateGetter,
-                    _nullAccountBalanceGetter,
+                    ActionEvaluator<DumbAction>.NullAccountStateGetter,
+                    ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
                     genesis.Miner.GetValueOrDefault());
             Assert.Empty(
                 actionEvaluator.EvaluateTxs(
@@ -239,12 +225,12 @@ namespace Libplanet.Tests.Action
             Block<DumbAction> block1 = MineNext(genesis, block1Txs, new byte[] { });
             previousStates = block1.ProtocolVersion > 0
                 ? new AccountStateDeltaImpl(
-                    _nullAccountStateGetter,
-                    _nullAccountBalanceGetter,
+                    ActionEvaluator<DumbAction>.NullAccountStateGetter,
+                    ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
                     block1.Miner.GetValueOrDefault())
                 : new AccountStateDeltaImplV0(
-                    _nullAccountStateGetter,
-                    _nullAccountBalanceGetter,
+                    ActionEvaluator<DumbAction>.NullAccountStateGetter,
+                    ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
                     block1.Miner.GetValueOrDefault());
             var evals = actionEvaluator.EvaluateTxs(
                 block1,
@@ -278,12 +264,12 @@ namespace Libplanet.Tests.Action
 
             previousStates = block1.ProtocolVersion > 0
                 ? new AccountStateDeltaImpl(
-                    _nullAccountStateGetter,
-                    _nullAccountBalanceGetter,
+                    ActionEvaluator<DumbAction>.NullAccountStateGetter,
+                    ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
                     block1.Miner.GetValueOrDefault())
                 : new AccountStateDeltaImplV0(
-                    _nullAccountStateGetter,
-                    _nullAccountBalanceGetter,
+                    ActionEvaluator<DumbAction>.NullAccountStateGetter,
+                    ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
                     block1.Miner.GetValueOrDefault());
             ActionEvaluation[] evals1 = actionEvaluator.EvaluateBlock(
                 block1,
@@ -483,15 +469,10 @@ namespace Libplanet.Tests.Action
                 previousHash: null,
                 timestamp: DateTimeOffset.UtcNow,
                 transactions: ImmutableArray.Create(tx));
-            StateGetter<DumbAction> nullStateGetter =
-                (address, hashDigest, stateCompleter) => null;
-            BalanceGetter<DumbAction> nullBalanceGetter =
-                (address, currency, hashDigest, fungibleAssetStateCompleter)
-                    => new FungibleAssetValue(currency);
             var actionEvaluator = new ActionEvaluator<DumbAction>(
                 policyBlockAction: null,
-                stateGetter: nullStateGetter,
-                balanceGetter: nullBalanceGetter,
+                stateGetter: ActionEvaluator<DumbAction>.NullStateGetter,
+                balanceGetter: ActionEvaluator<DumbAction>.NullBalanceGetter,
                 trieGetter: null);
 
             foreach (bool rehearsal in new[] { false, true })
@@ -502,8 +483,8 @@ namespace Libplanet.Tests.Action
                     block: block,
                     tx: tx,
                     previousStates: new AccountStateDeltaImpl(
-                        _nullAccountStateGetter,
-                        _nullAccountBalanceGetter,
+                        ActionEvaluator<DumbAction>.NullAccountStateGetter,
+                        ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
                         tx.Signer),
                     rehearsal: rehearsal).ToImmutableArray();
 
@@ -581,8 +562,8 @@ namespace Libplanet.Tests.Action
                     block: block,
                     tx: tx,
                     previousStates: new AccountStateDeltaImpl(
-                        _nullAccountStateGetter,
-                        _nullAccountBalanceGetter,
+                        ActionEvaluator<DumbAction>.NullAccountStateGetter,
+                        ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
                         tx.Signer),
                     rehearsal: rehearsal);
                 Assert.Equal(
@@ -640,15 +621,10 @@ namespace Libplanet.Tests.Action
                 previousBlock: genesis,
                 txs: new List<Transaction<PolymorphicAction<BaseAction>>> { invalidTx });
 
-            StateGetter<PolymorphicAction<BaseAction>> nullStateGetter =
-                (address, hashDigest, stateCompleter) => null;
-            BalanceGetter<PolymorphicAction<BaseAction>> nullBalanceGetter =
-                (address, currency, hashDigest, fungibleAssetStateCompleter)
-                    => new FungibleAssetValue(currency);
             var actionEvaluator = new ActionEvaluator<PolymorphicAction<BaseAction>>(
                 policyBlockAction: null,
-                stateGetter: nullStateGetter,
-                balanceGetter: nullBalanceGetter,
+                stateGetter: ActionEvaluator<PolymorphicAction<BaseAction>>.NullStateGetter,
+                balanceGetter: ActionEvaluator<PolymorphicAction<BaseAction>>.NullBalanceGetter,
                 trieGetter: null);
             AccountStateGetter nullAccountStateGetter = (address) => null;
             AccountBalanceGetter nullAccountBalanceGetter =
@@ -682,15 +658,10 @@ namespace Libplanet.Tests.Action
                 ImmutableHashSet<Address>.Empty,
                 DateTimeOffset.UtcNow);
             var hash = new BlockHash(GetRandomBytes(32));
-            StateGetter<ThrowException> nullStateGetter =
-                (address, hashDigest, stateCompleter) => null;
-            BalanceGetter<ThrowException> nullBalanceGetter =
-                (address, currency, hashDigest, fungibleAssetStateCompleter)
-                    => new FungibleAssetValue(currency);
             var actionEvaluator = new ActionEvaluator<ThrowException>(
                 policyBlockAction: null,
-                stateGetter: nullStateGetter,
-                balanceGetter: nullBalanceGetter,
+                stateGetter: ActionEvaluator<ThrowException>.NullStateGetter,
+                balanceGetter: ActionEvaluator<ThrowException>.NullBalanceGetter,
                 trieGetter: null);
             var block = new Block<ThrowException>(
                 index: 123,
@@ -705,8 +676,8 @@ namespace Libplanet.Tests.Action
                 block: block,
                 tx: tx,
                 previousStates: new AccountStateDeltaImpl(
-                    _nullAccountStateGetter,
-                    _nullAccountBalanceGetter,
+                    ActionEvaluator<DumbAction>.NullAccountStateGetter,
+                    ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
                     tx.Signer),
                 rehearsal: false);
 
@@ -850,9 +821,10 @@ namespace Libplanet.Tests.Action
                     _policy.BlockAction);
             var stateCompleterSet = StateCompleterSet<DumbAction>.Recalculate;
 
-            AccountStateGetter accountStateGetter = address => null;
+            AccountStateGetter accountStateGetter =
+                ActionEvaluator<DumbAction>.NullAccountStateGetter;
             AccountBalanceGetter accountBalanceGetter =
-                (address, currency) => new FungibleAssetValue(currency);
+                ActionEvaluator<DumbAction>.NullAccountBalanceGetter;
             IAccountStateDelta previousStates = block.ProtocolVersion > 0
                 ? new AccountStateDeltaImpl(
                     accountStateGetter,
@@ -909,11 +881,11 @@ namespace Libplanet.Tests.Action
             previousStates = block.ProtocolVersion > 0
                 ? new AccountStateDeltaImpl(
                     address => chain.GetState(address, block.PreviousHash),
-                    _nullAccountBalanceGetter,
+                    ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
                     block.Miner.GetValueOrDefault())
                 : new AccountStateDeltaImplV0(
                     address => chain.GetState(address, block.PreviousHash),
-                    _nullAccountBalanceGetter,
+                    ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
                     block.Miner.GetValueOrDefault());
             var txEvaluations = chain.ActionEvaluator.EvaluateTxs(
                 block,
