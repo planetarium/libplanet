@@ -6,7 +6,6 @@ coverage:
         target: auto
         threshold: 1
         base: auto
-    changes: false
 
 parsers:
   gcov:
