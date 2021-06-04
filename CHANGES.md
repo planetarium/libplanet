@@ -228,6 +228,8 @@ To be released.
     been idempotent.  [[#1272], [#1289]]
  -  Fixed a bug where `NetMQTransport` had hung forever within Mono runtime.
     [[#1278]]
+ -  Fixed a bug where `DefaultStore.ForkBlockIndexes()` hadn't copied genesis
+    block.  [[#1325]]
 
 ### CLI tools
 
@@ -267,6 +269,7 @@ To be released.
 [#1287]: https://github.com/planetarium/libplanet/pull/1287
 [#1289]: https://github.com/planetarium/libplanet/pull/1289
 [#1298]: https://github.com/planetarium/libplanet/pull/1298
+[#1325]: https://github.com/planetarium/libplanet/pull/1325
 
 
 Version 0.11.1
