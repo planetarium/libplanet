@@ -18,13 +18,6 @@ namespace Libplanet.Action
     public class ActionEvaluator<T>
         where T : IAction, new()
     {
-        private static readonly StateGetter<T> _nullStateGetter =
-            (address, hashDigest, stateCompleter) => null;
-
-        private static readonly BalanceGetter<T> _nullBalanceGetter =
-            (address, currency, hashDigest, fungibleAssetStateCompleter)
-                => new FungibleAssetValue(currency);
-
         private static readonly AccountStateGetter _nullAccountStateGetter = address => null;
         private static readonly AccountBalanceGetter _nullAccountBalanceGetter =
             (address, currency) => new FungibleAssetValue(currency);
