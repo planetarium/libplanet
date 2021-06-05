@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics.Contracts;
 using System.Net;
 using System.Runtime.Serialization;
+using Destructurama.Attributed;
 using Libplanet.Crypto;
 using Libplanet.Serialization;
 
@@ -43,6 +44,7 @@ namespace Libplanet.Net
         /// The corresponding <see cref="Libplanet.Crypto.PublicKey"/> of
         /// this peer.
         /// </summary>
+        [LogAsScalar]
         [Pure]
         public PublicKey PublicKey { get; }
 
@@ -50,10 +52,12 @@ namespace Libplanet.Net
         /// its <see cref="PublicKey"/>.
         /// </summary>
         /// <seealso cref="PublicKey"/>
+        [LogAsScalar]
         [IgnoreDuringEquals]
         [Pure]
         public Address Address => new Address(PublicKey);
 
+        [LogAsScalar]
         [Pure]
         public IPAddress PublicIPAddress { get; }
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Destructurama.Attributed;
 using Libplanet.Blocks;
 using NetMQ;
 
@@ -54,6 +55,7 @@ namespace Libplanet.Net.Messages
         /// <summary>
         /// The continuous block hashes, from the lowest index to the highest index.
         /// </summary>
+        [LogAsScalar]
         public IEnumerable<BlockHash> Hashes { get; }
 
         protected override MessageType Type => MessageType.BlockHashes;
