@@ -33,6 +33,7 @@ namespace Libplanet.Store
         private static readonly UPath TxRootPath = UPath.Root / "tx";
         private static readonly UPath BlockRootPath = UPath.Root / "block";
         private static readonly UPath TxExecutionRootPath = UPath.Root / "txexec";
+        private static readonly UPath TxIdBlockHashRootPath = UPath.Root / "txbindex";
         private static readonly UPath BlockPerceptionRootPath = UPath.Root / "blockpercept";
         private static readonly Codec Codec = new Codec();
 
@@ -42,6 +43,7 @@ namespace Libplanet.Store
         private readonly SubFileSystem _txs;
         private readonly SubFileSystem _blocks;
         private readonly SubFileSystem _txExecutions;
+        private readonly SubFileSystem _txIdBlockHashIndex;
         private readonly SubFileSystem _blockPerceptions;
         private readonly LruCache<TxId, object> _txCache;
         private readonly LruCache<BlockHash, BlockDigest> _blockCache;
@@ -144,6 +146,8 @@ namespace Libplanet.Store
             _blocks = new SubFileSystem(_root, BlockRootPath, owned: false);
             _root.CreateDirectory(TxExecutionRootPath);
             _txExecutions = new SubFileSystem(_root, TxExecutionRootPath, owned: false);
+            _root.CreateDirectory(TxIdBlockHashRootPath);
+            _txIdBlockHashIndex = new SubFileSystem(_root, TxIdBlockHashRootPath, owned: false);
             _root.CreateDirectory(BlockPerceptionRootPath);
             _blockPerceptions = new SubFileSystem(_root, BlockPerceptionRootPath, owned: false);
 
@@ -546,47 +550,42 @@ namespace Libplanet.Store
             return null;
         }
 
-        /// <inheritdoc cref="BaseStore.PutTxIdBlockHashIndex(Guid, TxId, BlockHash)"/>
-        public override void PutTxIdBlockHashIndex(Guid chainId, TxId txId, BlockHash blockHash)
+        /// <inheritdoc cref="BaseStore.PutTxIdBlockHashIndex(TxId, BlockHash)"/>
+        public override void PutTxIdBlockHashIndex(TxId txId, BlockHash blockHash)
         {
-            var collection = TxIdBlockIndexCollection(chainId);
+            var path = TxPath(txId);
+            var dirPath = path.GetDirectory();
+            CreateDirectoryRecursively(_txIdBlockHashIndex, dirPath);
+            _txIdBlockHashIndex.WriteAllBytes(path, blockHash.ToByteArray());
+        }
 
-            var doc = collection
-                .FindOne(Query.EQ("TxId", new BsonValue(txId.ToByteArray())));
-            if (doc != null)
+        /// <inheritdoc cref="BaseStore.GetTxIdBlockHashIndex(TxId)"/>
+        public override BlockHash? GetTxIdBlockHashIndex(TxId txId)
+        {
+            var path = TxPath(txId);
+            if (!_txIdBlockHashIndex.FileExists(path))
             {
-                collection.Update(
-                    doc.Id,
-                    new TxIdBlockHashDoc
-                    {
-                        TxId = txId,
-                        BlockHash = blockHash,
-                    });
+                return null;
             }
-            else
+
+            try
             {
-                collection.Insert(
-                    new TxIdBlockHashDoc
-                    {
-                        TxId = txId,
-                        BlockHash = blockHash,
-                    });
+                return new BlockHash(_txIdBlockHashIndex.ReadAllBytes(path));
+            }
+            catch (FileNotFoundException)
+            {
+                return null;
             }
         }
 
-        /// <inheritdoc cref="BaseStore.GetTxIdBlockHashIndex(Guid, TxId)"/>
-        public override BlockHash? GetTxIdBlockHashIndex(Guid chainId, TxId txId)
+        /// <inheritdoc cref="BaseStore.DeleteTxIdBlockHashIndex(TxId)"/>
+        public override void DeleteTxIdBlockHashIndex(TxId txId)
         {
-            var doc = TxIdBlockIndexCollection(chainId)
-                .FindOne(Query.EQ("TxId", new BsonValue(txId.ToByteArray())));
-            return doc is { } d ? d.BlockHash : (BlockHash?)null;
-        }
-
-        /// <inheritdoc cref="BaseStore.DeleteTxIdBlockHashIndex(Guid, TxId)"/>
-        public override void DeleteTxIdBlockHashIndex(Guid chainId, TxId txId)
-        {
-            TxIdBlockIndexCollection(chainId)
-                .Delete(Query.EQ("TxId", new BsonValue(txId.ToByteArray())));
+            var path = TxPath(txId);
+            if (_txIdBlockHashIndex.FileExists(path))
+            {
+                _txIdBlockHashIndex.DeleteFile(path);
+            }
         }
 
         /// <inheritdoc cref="BaseStore.SetBlockPerceivedTime(BlockHash, DateTimeOffset)"/>
@@ -779,9 +778,6 @@ namespace Libplanet.Store
 
         private UPath TxExecutionPath(TxExecution txExecution) =>
             TxExecutionPath(txExecution.BlockHash, txExecution.TxId);
-
-        private UPath TxIdBlockHashIndexPath(in TxId txid, in BlockHash blockHash) =>
-            BlockPath(blockHash) / txid.ToHex();
 
         private string TxNonceId(in Guid chainId)
         {

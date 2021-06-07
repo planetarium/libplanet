@@ -544,22 +544,19 @@ namespace Libplanet.RocksDBStore
             return null;
         }
 
-        /// <inheritdoc cref="BaseStore.PutTxIdBlockHashIndex(Guid, TxId, BlockHash)"/>
-        public override void PutTxIdBlockHashIndex(Guid chainId, TxId txId, BlockHash blockHash)
+        /// <inheritdoc cref="BaseStore.PutTxIdBlockHashIndex(TxId, BlockHash)"/>
+        public override void PutTxIdBlockHashIndex(TxId txId, BlockHash blockHash)
         {
-            var cf = GetColumnFamily(_chainDb, chainId);
-            _chainDb.Put(
+            _txExecutionDb.Put(
                 TxIdIndexKey(txId),
-                blockHash.ToByteArray(),
-                cf
+                blockHash.ToByteArray()
                 );
         }
 
-        /// <inheritdoc cref="BaseStore.GetTxIdBlockHashIndex(Guid, TxId)"/>
-        public override BlockHash? GetTxIdBlockHashIndex(Guid chainId, TxId txId)
+        /// <inheritdoc cref="BaseStore.GetTxIdBlockHashIndex(TxId)"/>
+        public override BlockHash? GetTxIdBlockHashIndex(TxId txId)
         {
-            var cf = GetColumnFamily(_chainDb, chainId);
-            if (!(_chainDb.Get(TxIdIndexKey(txId), cf) is { } blockHashByte))
+            if (!(_txExecutionDb.Get(TxIdIndexKey(txId)) is { } blockHashByte))
             {
                 return null;
             }
@@ -567,13 +564,11 @@ namespace Libplanet.RocksDBStore
             return new BlockHash(blockHashByte);
         }
 
-        /// <inheritdoc cref="BaseStore.DeleteTxIdBlockHashIndex(Guid, TxId)"/>
-        public override void DeleteTxIdBlockHashIndex(Guid chainId, TxId txId)
+        /// <inheritdoc cref="BaseStore.DeleteTxIdBlockHashIndex(TxId)"/>
+        public override void DeleteTxIdBlockHashIndex(TxId txId)
         {
-            var cf = GetColumnFamily(_chainDb, chainId);
-            _chainDb.Remove(
-                TxIdIndexKey(txId),
-                cf
+            _txExecutionDb.Remove(
+                TxIdIndexKey(txId)
             );
         }
 

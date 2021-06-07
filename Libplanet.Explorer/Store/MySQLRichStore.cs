@@ -65,17 +65,17 @@ namespace Libplanet.Explorer.Store
         public TxExecution GetTxExecution(BlockHash blockHash, TxId txid) =>
             _store.GetTxExecution(blockHash, txid);
 
-        public void PutTxIdBlockHashIndex(Guid chainId, TxId txId, BlockHash blockHash) =>
-            _store.PutTxIdBlockHashIndex(chainId, txId, blockHash);
+        public void PutTxIdBlockHashIndex(TxId txId, BlockHash blockHash) =>
+            _store.PutTxIdBlockHashIndex(txId, blockHash);
 
-        public bool HasTxIdBlockHashIndex(Guid chainId, TxId txId) =>
-            _store.HasTxIdBlockHashIndex(chainId, txId);
+        public bool HasTxIdBlockHashIndex(TxId txId) =>
+            _store.HasTxIdBlockHashIndex(txId);
 
-        public BlockHash? GetTxIdBlockHashIndex(Guid chainId, TxId txId) =>
-            _store.GetTxIdBlockHashIndex(chainId, txId);
+        public BlockHash? GetTxIdBlockHashIndex(TxId txId) =>
+            _store.GetTxIdBlockHashIndex(txId);
 
-        public void DeleteTxIdBlockHashIndex(Guid chainId, TxId txId) =>
-            _store.DeleteTxIdBlockHashIndex(chainId, txId);
+        public void DeleteTxIdBlockHashIndex(TxId txId) =>
+            _store.DeleteTxIdBlockHashIndex(txId);
 
         public DateTimeOffset? GetBlockPerceivedTime(BlockHash blockHash) =>
             _store.GetBlockPerceivedTime(blockHash);

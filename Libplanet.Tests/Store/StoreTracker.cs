@@ -71,28 +71,28 @@ namespace Libplanet.Tests.Store
             return _store.GetTxExecution(blockHash, txid);
         }
 
-        public void PutTxIdBlockHashIndex(Guid chainId, TxId txId, BlockHash blockHash)
+        public void PutTxIdBlockHashIndex(TxId txId, BlockHash blockHash)
         {
-            Log(nameof(PutTxIdBlockHashIndex), chainId, txId, blockHash);
-            _store.PutTxIdBlockHashIndex(chainId, txId, blockHash);
+            Log(nameof(PutTxIdBlockHashIndex), txId, blockHash);
+            _store.PutTxIdBlockHashIndex(txId, blockHash);
         }
 
-        public bool HasTxIdBlockHashIndex(Guid chainId, TxId txId)
+        public bool HasTxIdBlockHashIndex(TxId txId)
         {
-            Log(nameof(HasTxIdBlockHashIndex), chainId, txId);
-            return _store.HasTxIdBlockHashIndex(chainId, txId);
+            Log(nameof(HasTxIdBlockHashIndex), txId);
+            return _store.HasTxIdBlockHashIndex(txId);
         }
 
-        public BlockHash? GetTxIdBlockHashIndex(Guid chainId, TxId txId)
+        public BlockHash? GetTxIdBlockHashIndex(TxId txId)
         {
-            Log(nameof(GetTxIdBlockHashIndex), chainId, txId);
-            return _store.GetTxIdBlockHashIndex(chainId, txId);
+            Log(nameof(GetTxIdBlockHashIndex), txId);
+            return _store.GetTxIdBlockHashIndex(txId);
         }
 
-        public void DeleteTxIdBlockHashIndex(Guid chainId, TxId txId)
+        public void DeleteTxIdBlockHashIndex(TxId txId)
         {
-            Log(nameof(DeleteTxIdBlockHashIndex), chainId, txId);
-            _store.DeleteTxIdBlockHashIndex(chainId, txId);
+            Log(nameof(DeleteTxIdBlockHashIndex), txId);
+            _store.DeleteTxIdBlockHashIndex(txId);
         }
 
         public void SetBlockPerceivedTime(BlockHash blockHash, DateTimeOffset perceivedTime)
