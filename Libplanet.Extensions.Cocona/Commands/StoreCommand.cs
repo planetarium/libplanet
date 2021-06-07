@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using Cocona;
 using Libplanet.Action;
 using Libplanet.Blocks;
@@ -26,7 +27,43 @@ namespace Libplanet.Extensions.Cocona.Commands
                     ["monorocksdb"] = storePath => new MonoRocksDBStore(storePath),
                 }.ToImmutableSortedDictionary();
 
-        [Command(Description = "Query a block by index")]
+        [Command(Description = "Build an index for transaction id and block hash.")]
+        public void BuildIndexTxBlock(
+            [Argument("STORE", Description = StoreArgumentDescription)]
+            string home,
+            [Argument("OFFSET", Description = "block index")]
+            int offset,
+            [Argument("LIMIT", Description = "block index")]
+            int limit
+        )
+        {
+            var store = LoadStoreFromUri(home);
+            var prev = DateTime.UtcNow;
+            foreach (var index in BuildTxIdBlockHashIndex(store, offset, limit))
+            {
+                Console.WriteLine($"processing {index}/{offset + limit}...");
+            }
+
+            Console.WriteLine($"It taken {DateTime.UtcNow - prev}");
+            (store as IDisposable)?.Dispose();
+        }
+
+        [Command(Description = "Query a block by transaction id.")]
+        public void BlockByTxId(
+            [Argument("STORE", Description = StoreArgumentDescription)]
+            string home,
+            [Argument("TX-ID", Description = "tx id")]
+            string strTxId
+        )
+        {
+            var store = LoadStoreFromUri(home);
+            var blockHash = GetBlockHash(store, new TxId(ByteUtil.ParseHex(strTxId)));
+            var block = GetBlock<Utils.DummyAction>(store, blockHash);
+            Console.WriteLine(Utils.SerializeHumanReadable(block));
+            (store as IDisposable)?.Dispose();
+        }
+
+        [Command(Description = "Query a block by index.")]
         public void BlockByIndex(
             [Argument("STORE", Description = StoreArgumentDescription)]
             string home,
@@ -38,9 +75,10 @@ namespace Libplanet.Extensions.Cocona.Commands
             var blockHash = GetBlockHash(store, blockIndex);
             var block = GetBlock<Utils.DummyAction>(store, blockHash);
             Console.WriteLine(Utils.SerializeHumanReadable(block));
+            (store as IDisposable)?.Dispose();
         }
 
-        [Command(Description = "Query a block by hash")]
+        [Command(Description = "Query a block by hash.")]
         public void BlockByHash(
             [Argument("STORE", Description = StoreArgumentDescription)]
             string home,
@@ -51,9 +89,10 @@ namespace Libplanet.Extensions.Cocona.Commands
             var store = LoadStoreFromUri(home);
             var block = GetBlock<Utils.DummyAction>(store, BlockHash.FromString(blockHash));
             Console.WriteLine(Utils.SerializeHumanReadable(block));
+            (store as IDisposable)?.Dispose();
         }
 
-        [Command(Description = "Query a transaction by tx id")]
+        [Command(Description = "Query a transaction by tx id.")]
         public void TxById(
             [Argument("STORE", Description = StoreArgumentDescription)]
             string home,
@@ -64,6 +103,7 @@ namespace Libplanet.Extensions.Cocona.Commands
             var store = LoadStoreFromUri(home);
             var tx = GetTransaction<Utils.DummyAction>(store, new TxId(ByteUtil.ParseHex(strTxId)));
             Console.WriteLine(Utils.SerializeHumanReadable(tx));
+            (store as IDisposable)?.Dispose();
         }
 
         private static Block<T> GetBlock<T>(IStore store, BlockHash blockHash)
@@ -95,6 +135,21 @@ namespace Libplanet.Extensions.Cocona.Commands
             return blockHash;
         }
 
+        private static BlockHash GetBlockHash(IStore store, TxId txId)
+        {
+            if (!(store.GetFirstTxIdBlockHashIndex(txId) is { } blockHash))
+            {
+                throw Utils.Error($"cannot find the block with the TxId[{txId.ToString()}]");
+            }
+
+            if (store.IterateTxIdBlockHashIndex(txId).Count() > 1)
+            {
+                throw Utils.Error($"multiple BlockHashes found for TxId[{txId.ToString()}]");
+            }
+
+            return blockHash;
+        }
+
         private static Transaction<T> GetTransaction<T>(IStore store, TxId txId)
             where T : IAction, new()
         {
@@ -104,6 +159,31 @@ namespace Libplanet.Extensions.Cocona.Commands
             }
 
             return tx;
+        }
+
+        private static IEnumerable<int> BuildTxIdBlockHashIndex(IStore store, int offset, int limit)
+        {
+            if (!(store.GetCanonicalChainId() is { } chainId))
+            {
+                throw Utils.Error("Cannot find the main branch of the blockchain.");
+            }
+
+            var index = offset;
+            foreach (var blockHash in store.IterateIndexes(chainId, offset, limit))
+            {
+                yield return index++;
+                if (!(store.GetBlockDigest(blockHash) is { } blockDigest))
+                {
+                    throw Utils.Error(
+                        $"Block is missing for BlockHash: {blockHash} index: {index}.");
+                }
+
+                foreach (var txId in blockDigest.TxIds.Select(bytes => new TxId(bytes.ToArray()))
+                    .ToImmutableArray())
+                {
+                    store.PutTxIdBlockHashIndex(txId, blockHash);
+                }
+            }
         }
 
         private IStore LoadStoreFromUri(string rawUri)

@@ -1,10 +1,17 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using Cocona;
+using Libplanet.Blockchain.Renderers.Debug;
+using Libplanet.Blocks;
+using Libplanet.Crypto;
 using Libplanet.Extensions.Cocona.Commands;
 using Libplanet.RocksDBStore.Tests;
+using Libplanet.Tests;
+using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
+using Libplanet.Tx;
 using Xunit;
 
 namespace Libplanet.Extensions.Cocona.Tests.Commands
@@ -12,13 +19,20 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
     public class StoreCommandTest : IDisposable
     {
         private readonly ImmutableArray<StoreFixture> _storeFixtures;
-        private readonly StoreCommand _command;
         private readonly TextWriter _originalWriter;
+        private readonly Block<Utils.DummyAction> _genesisBlock;
+        private readonly Block<Utils.DummyAction> _block1;
+        private readonly Block<Utils.DummyAction> _block2;
+        private readonly Block<Utils.DummyAction> _block3;
+        private readonly Block<Utils.DummyAction> _block4;
+        private readonly Transaction<Utils.DummyAction> _transaction1;
+        private readonly Transaction<Utils.DummyAction> _transaction2;
+        private readonly Transaction<Utils.DummyAction> _transaction3;
 
         public StoreCommandTest()
         {
-            _command = new StoreCommand();
             _originalWriter = Console.Out;
+
             try
             {
                 _storeFixtures = ImmutableArray.Create<StoreFixture>(
@@ -32,13 +46,37 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
                 throw new SkipException("RocksDB is not available.");
             }
 
+            {
+                _genesisBlock = TestUtils.MineGenesis<Utils.DummyAction>();
+                _transaction1 = DummyTransaction();
+                _transaction2 = DummyTransaction();
+                _transaction3 = DummyTransaction();
+
+                _block1 = TestUtils.MineNext(_genesisBlock, new[] {_transaction1});
+                _block2 = TestUtils.MineNext(_block1, new[] {_transaction2});
+                _block3 = TestUtils.MineNext(_block2, new[] {_transaction3});
+                _block4 = TestUtils.MineNext(_block3);
+            }
+
+            var guid = Guid.NewGuid();
             foreach (var v in _storeFixtures)
             {
-                var guid = Guid.NewGuid();
                 v.Store.SetCanonicalChainId(guid);
-                v.Store.PutBlock(v.Block1);
-                v.Store.AppendIndex(guid, v.Block1.Hash);
-                v.Store.PutTransaction(v.Transaction1);
+                v.Store.PutBlock(_genesisBlock);
+                v.Store.AppendIndex(guid, _genesisBlock.Hash);
+
+                v.Store.PutBlock(_block1);
+                v.Store.AppendIndex(guid, _block1.Hash);
+                v.Store.PutTransaction(_transaction1);
+
+                v.Store.PutBlock(_block2);
+                v.Store.AppendIndex(guid, _block2.Hash);
+                v.Store.PutTransaction(_transaction2);
+
+                v.Store.PutBlock(_block3);
+                v.Store.AppendIndex(guid, _block3.Hash);
+                v.Store.PutTransaction(_transaction3);
+
                 (v.Store as IDisposable)?.Dispose();
                 (v.StateStore as IDisposable)?.Dispose();
             }
@@ -48,20 +86,55 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
         public void TestInvalidArguments()
         {
             Assert.Throws<ArgumentException>(() =>
-                _command.BlockByHash(
+                new StoreCommand().BlockByHash(
                     "rocksdb+file+file://" + "/blah",
                     "dummy"
                 ));
             Assert.Throws<NotSupportedException>(() =>
-                _command.BlockByHash(
+                new StoreCommand().BlockByHash(
                     "rocksdb+memory://" + "/blah",
                     "dummy"
                 ));
             Assert.Throws<NotSupportedException>(() =>
-                _command.BlockByHash(
+                new StoreCommand().BlockByHash(
                     "leveldb://" + "/blah",
                     "dummy"
                 ));
+        }
+
+        [SkippableFact]
+        public void TestTxIdBlockHashIndex()
+        {
+            foreach (var fx in _storeFixtures)
+            {
+                new StoreCommand().BuildIndexTxBlock(
+                    fx.Scheme + fx.Path,
+                    0,
+                    10);
+            }
+
+            foreach (var fx in _storeFixtures)
+            {
+                void AssertTxBlockIndex(
+                    Transaction<Utils.DummyAction> tx,
+                    Block<Utils.DummyAction> block
+                )
+                {
+                    using var sw = new StringWriter();
+                    Console.SetOut(sw);
+                    new StoreCommand().BlockByTxId(
+                        fx.Scheme + fx.Path,
+                        tx.Id.ToString()
+                    );
+                    var actual = sw.ToString();
+                    var expected = Utils.SerializeHumanReadable(block);
+                    Assert.Equal(expected.TrimEnd(), actual.TrimEnd());
+                }
+
+                AssertTxBlockIndex(_transaction1, _block1);
+                AssertTxBlockIndex(_transaction2, _block2);
+                AssertTxBlockIndex(_transaction3, _block3);
+            }
         }
 
         [SkippableFact]
@@ -70,9 +143,9 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
             foreach (var fx in _storeFixtures)
             {
                 Assert.Throws<CommandExitedException>(() =>
-                    _command.BlockByHash(
+                    new StoreCommand().BlockByHash(
                         fx.Scheme + fx.Path,
-                        fx.Block2.Hash.ToString())
+                        _block4.Hash.ToString())
                 );
             }
         }
@@ -84,11 +157,11 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
             {
                 using var sw = new StringWriter();
                 Console.SetOut(sw);
-                _command.BlockByHash(
+                new StoreCommand().BlockByHash(
                     fx.Scheme + fx.Path,
-                    fx.Block1.Hash.ToString());
+                    _block1.Hash.ToString());
                 var actual = sw.ToString();
-                var expected = Utils.SerializeHumanReadable(fx.Block1);
+                var expected = Utils.SerializeHumanReadable(_block1);
                 Assert.Equal(expected.TrimEnd(), actual.TrimEnd());
             }
         }
@@ -99,7 +172,7 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
             foreach (var fx in _storeFixtures)
             {
                 Assert.Throws<CommandExitedException>(() =>
-                    _command.BlockByIndex(
+                    new StoreCommand().BlockByIndex(
                         fx.Scheme + fx.Path,
                         9999999 * 100
                     )
@@ -114,9 +187,9 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
             {
                 using var sw = new StringWriter();
                 Console.SetOut(sw);
-                _command.BlockByIndex(fx.Scheme + fx.Path, 0);
+                new StoreCommand().BlockByIndex(fx.Scheme + fx.Path, 0);
                 var actual = sw.ToString();
-                var expected = Utils.SerializeHumanReadable(fx.Block1);
+                var expected = Utils.SerializeHumanReadable(_genesisBlock);
                 Assert.Equal(expected.TrimEnd(), actual.TrimEnd());
             }
         }
@@ -127,7 +200,7 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
             foreach (var fx in _storeFixtures)
             {
                 Assert.Throws<CommandExitedException>(() =>
-                    _command.TxById(
+                    new StoreCommand().TxById(
                         fx.Scheme + fx.Path,
                         fx.Transaction2.Id.ToString())
                 );
@@ -141,11 +214,11 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
             {
                 using var sw = new StringWriter();
                 Console.SetOut(sw);
-                _command.TxById(
+                new StoreCommand().TxById(
                     fx.Scheme + fx.Path,
-                    fx.Transaction1.Id.ToString());
+                    _transaction1.Id.ToString());
                 var actual = sw.ToString();
-                var expected = Utils.SerializeHumanReadable(fx.Transaction1);
+                var expected = Utils.SerializeHumanReadable(_transaction1);
                 Assert.Equal(expected.TrimEnd(), actual.TrimEnd());
             }
         }
@@ -153,6 +226,18 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
         public void Dispose()
         {
             Console.SetOut(_originalWriter);
+        }
+
+        private Transaction<Utils.DummyAction> DummyTransaction()
+        {
+            return Transaction<Utils.DummyAction>.Create(
+                0,
+                new PrivateKey(),
+                _genesisBlock.Hash,
+                new[] {new Utils.DummyAction()},
+                null,
+                DateTimeOffset.UtcNow
+            );
         }
     }
 }
