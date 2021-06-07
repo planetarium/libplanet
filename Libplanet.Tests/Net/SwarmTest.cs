@@ -26,6 +26,7 @@ using Libplanet.Tx;
 using NetMQ;
 using NetMQ.Sockets;
 using Serilog;
+using xRetry;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -599,7 +600,7 @@ namespace Libplanet.Tests.Net
             }
         }
 
-        [FactOnlyTurnAvailable(Timeout = Timeout)]
+        [FactOnlyTurnAvailable(10, 5000, Timeout = Timeout)]
         public async Task ReconnectToTurn()
         {
             int port;
@@ -1153,7 +1154,7 @@ namespace Libplanet.Tests.Net
             }
         }
 
-        [Fact(Timeout = Timeout)]
+        [RetryFact(10, Timeout = Timeout)]
         public async Task DoNotDeleteCanonicalChainWhenBlockDownloadFailed()
         {
             var swarmA = CreateSwarm();
@@ -1555,7 +1556,7 @@ namespace Libplanet.Tests.Net
             }
         }
 
-        [Fact(Timeout = Timeout)]
+        [RetryFact(10, Timeout = Timeout)]
         public async Task GetPeerChainStateAsync()
         {
             Swarm<DumbAction> swarm1 = CreateSwarm();

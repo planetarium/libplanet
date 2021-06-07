@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Libplanet.Net;
-using Xunit;
+using xRetry;
 
 namespace Libplanet.Tests.Net
 {
-    public sealed class FactOnlyTurnAvailableAttribute : FactAttribute
+    public sealed class FactOnlyTurnAvailableAttribute : RetryFactAttribute
     {
         public const string TurnUrlsVarName = "TURN_SERVER_URLS";
 
@@ -37,7 +37,8 @@ namespace Libplanet.Tests.Net
             .Where(s => !(s is null))
             .ToArray();
 
-        public FactOnlyTurnAvailableAttribute()
+        public FactOnlyTurnAvailableAttribute(int maxRetries = 1, int delayBetweenRetriesMs = 0)
+            : base(maxRetries, delayBetweenRetriesMs)
         {
             if (!GetIceServers().Any())
             {

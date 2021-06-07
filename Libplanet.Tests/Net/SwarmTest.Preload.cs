@@ -18,6 +18,7 @@ using Libplanet.Tests.Store.Trie;
 using Libplanet.Tx;
 using Serilog;
 using Serilog.Events;
+using xRetry;
 using Xunit;
 
 namespace Libplanet.Tests.Net
@@ -521,7 +522,7 @@ namespace Libplanet.Tests.Net
             Assert.Equal(swarm0.BlockChain.BlockHashes, receiverSwarm.BlockChain.BlockHashes);
         }
 
-        [Theory]
+        [RetryTheory(10, Timeout = Timeout)]
         [InlineData(0)]
         [InlineData(50)]
         [InlineData(100)]

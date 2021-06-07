@@ -20,6 +20,7 @@ using Libplanet.Tests.Store.Trie;
 using Libplanet.Tx;
 using Serilog;
 using Serilog.Events;
+using xRetry;
 using Xunit;
 
 namespace Libplanet.Tests.Net
@@ -130,7 +131,7 @@ namespace Libplanet.Tests.Net
             }
         }
 
-        [Fact(Timeout = Timeout)]
+        [RetryFact(10, Timeout = Timeout)]
         public async Task BroadcastWhileMining()
         {
             Swarm<DumbAction> a = CreateSwarm();
