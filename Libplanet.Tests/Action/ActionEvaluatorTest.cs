@@ -111,16 +111,16 @@ namespace Libplanet.Tests.Action
             var address = privateKey.ToAddress();
             long blockIndex = 1;
 
-            TestEvaluateAction action = new TestEvaluateAction();
+            var action = new EvaluateTestAction();
 
             var store = new DefaultStore(null);
             var stateStore =
                 new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore());
-            var chain = TestUtils.MakeBlockChain<TestEvaluateAction>(
-                policy: new BlockPolicy<TestEvaluateAction>(),
+            var chain = TestUtils.MakeBlockChain<EvaluateTestAction>(
+                policy: new BlockPolicy<EvaluateTestAction>(),
                 store: store,
                 stateStore: stateStore);
-            var tx = Transaction<TestEvaluateAction>.Create(
+            var tx = Transaction<EvaluateTestAction>.Create(
                 nonce: 0,
                 privateKey: privateKey,
                 genesisHash: chain.Genesis.Hash,
@@ -129,19 +129,49 @@ namespace Libplanet.Tests.Action
             chain.StageTransaction(tx);
             await chain.MineBlock(_storeFx.Address1);
 
-            var actionEvaluation = chain.ActionEvaluator.Evaluate(
+            var evaluations = chain.ActionEvaluator.Evaluate(
                 chain.Tip,
-                StateCompleterSet<TestEvaluateAction>.Recalculate);
-            Assert.False(actionEvaluation[0].InputContext.BlockAction);
+                StateCompleterSet<EvaluateTestAction>.Recalculate);
 
-            Assert.Equal(
-                chain.GetState(TestEvaluateAction.SignerKey),
-                (Text)address.ToHex());
-            Assert.Equal(
-                chain.GetState(TestEvaluateAction.MinerKey),
-                (Text)_storeFx.Address1.ToHex());
-            var state = chain.GetState(TestEvaluateAction.BlockIndexKey);
+            Assert.False(evaluations[0].InputContext.BlockAction);
+            Assert.Single(evaluations);
+            Assert.Null(evaluations.Single().Exception);
+            Assert.Equal(chain.GetState(action.SignerKey), (Text)address.ToHex());
+            Assert.Equal(chain.GetState(action.MinerKey), (Text)_storeFx.Address1.ToHex());
+            var state = chain.GetState(action.BlockIndexKey);
             Assert.Equal((long)(Integer)state, blockIndex);
+        }
+
+        [Fact]
+        public async void EvaluateWithException()
+        {
+            var privateKey = new PrivateKey();
+            var address = privateKey.ToAddress();
+
+            var action = new ThrowException { ThrowOnRehearsal = false, ThrowOnExecution = true };
+
+            var store = new DefaultStore(null);
+            var stateStore =
+                new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore());
+            var chain = TestUtils.MakeBlockChain<ThrowException>(
+                policy: new BlockPolicy<ThrowException>(),
+                store: store,
+                stateStore: stateStore);
+            var tx = Transaction<ThrowException>.Create(
+                nonce: 0,
+                privateKey: privateKey,
+                genesisHash: chain.Genesis.Hash,
+                actions: new[] { action });
+
+            chain.StageTransaction(tx);
+            await chain.MineBlock(_storeFx.Address1);
+            var evaluations = chain.ActionEvaluator.Evaluate(
+                chain.Tip,
+                StateCompleterSet<ThrowException>.Recalculate);
+
+            Assert.False(evaluations[0].InputContext.BlockAction);
+            Assert.Single(evaluations);
+            Assert.NotNull(evaluations.Single().Exception);
         }
 
         [SuppressMessage(
@@ -947,11 +977,11 @@ namespace Libplanet.Tests.Action
             return (addresses, txs);
         }
 
-        private sealed class TestEvaluateAction : IAction
+        private sealed class EvaluateTestAction : IAction
         {
-            public static readonly Address SignerKey = new PrivateKey().ToAddress();
-            public static readonly Address MinerKey = new PrivateKey().ToAddress();
-            public static readonly Address BlockIndexKey = new PrivateKey().ToAddress();
+            public readonly Address SignerKey = new PrivateKey().ToAddress();
+            public readonly Address MinerKey = new PrivateKey().ToAddress();
+            public readonly Address BlockIndexKey = new PrivateKey().ToAddress();
 
             public IValue PlainValue => default(Dictionary);
 
