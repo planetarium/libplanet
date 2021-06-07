@@ -96,6 +96,51 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.ActionEvaluation.OutputStates
   nameWithType: ActionEvaluation.OutputStates
+- uid: Libplanet.Action.ActionEvaluator`1
+  name: ActionEvaluator<T>
+  href: api/Libplanet.Action.ActionEvaluator-1.html
+  commentId: T:Libplanet.Action.ActionEvaluator`1
+  name.vb: ActionEvaluator(Of T)
+  fullName: Libplanet.Action.ActionEvaluator<T>
+  fullName.vb: Libplanet.Action.ActionEvaluator(Of T)
+  nameWithType: ActionEvaluator<T>
+  nameWithType.vb: ActionEvaluator(Of T)
+- uid: Libplanet.Action.ActionEvaluator`1.#ctor(Libplanet.Action.IAction,Libplanet.Action.StateGetter{`0},Libplanet.Action.BalanceGetter{`0},System.Func{Libplanet.Blocks.BlockHash,Libplanet.Store.Trie.ITrie})
+  name: ActionEvaluator(IAction, StateGetter<T>, BalanceGetter<T>, Func<BlockHash, ITrie>)
+  href: api/Libplanet.Action.ActionEvaluator-1.html#Libplanet_Action_ActionEvaluator_1__ctor_Libplanet_Action_IAction_Libplanet_Action_StateGetter__0__Libplanet_Action_BalanceGetter__0__System_Func_Libplanet_Blocks_BlockHash_Libplanet_Store_Trie_ITrie__
+  commentId: M:Libplanet.Action.ActionEvaluator`1.#ctor(Libplanet.Action.IAction,Libplanet.Action.StateGetter{`0},Libplanet.Action.BalanceGetter{`0},System.Func{Libplanet.Blocks.BlockHash,Libplanet.Store.Trie.ITrie})
+  name.vb: ActionEvaluator(IAction, StateGetter(Of T), BalanceGetter(Of T), Func(Of BlockHash, ITrie))
+  fullName: Libplanet.Action.ActionEvaluator<T>.ActionEvaluator(Libplanet.Action.IAction, Libplanet.Action.StateGetter<T>, Libplanet.Action.BalanceGetter<T>, System.Func<Libplanet.Blocks.BlockHash, Libplanet.Store.Trie.ITrie>)
+  fullName.vb: Libplanet.Action.ActionEvaluator(Of T).ActionEvaluator(Libplanet.Action.IAction, Libplanet.Action.StateGetter(Of T), Libplanet.Action.BalanceGetter(Of T), System.Func(Of Libplanet.Blocks.BlockHash, Libplanet.Store.Trie.ITrie))
+  nameWithType: ActionEvaluator<T>.ActionEvaluator(IAction, StateGetter<T>, BalanceGetter<T>, Func<BlockHash, ITrie>)
+  nameWithType.vb: ActionEvaluator(Of T).ActionEvaluator(IAction, StateGetter(Of T), BalanceGetter(Of T), Func(Of BlockHash, ITrie))
+- uid: Libplanet.Action.ActionEvaluator`1.#ctor*
+  name: ActionEvaluator
+  href: api/Libplanet.Action.ActionEvaluator-1.html#Libplanet_Action_ActionEvaluator_1__ctor_
+  commentId: Overload:Libplanet.Action.ActionEvaluator`1.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Action.ActionEvaluator<T>.ActionEvaluator
+  fullName.vb: Libplanet.Action.ActionEvaluator(Of T).ActionEvaluator
+  nameWithType: ActionEvaluator<T>.ActionEvaluator
+  nameWithType.vb: ActionEvaluator(Of T).ActionEvaluator
+- uid: Libplanet.Action.ActionEvaluator`1.Evaluate(Libplanet.Blocks.Block{`0},Libplanet.Blockchain.StateCompleterSet{`0})
+  name: Evaluate(Block<T>, StateCompleterSet<T>)
+  href: api/Libplanet.Action.ActionEvaluator-1.html#Libplanet_Action_ActionEvaluator_1_Evaluate_Libplanet_Blocks_Block__0__Libplanet_Blockchain_StateCompleterSet__0__
+  commentId: M:Libplanet.Action.ActionEvaluator`1.Evaluate(Libplanet.Blocks.Block{`0},Libplanet.Blockchain.StateCompleterSet{`0})
+  name.vb: Evaluate(Block(Of T), StateCompleterSet(Of T))
+  fullName: Libplanet.Action.ActionEvaluator<T>.Evaluate(Libplanet.Blocks.Block<T>, Libplanet.Blockchain.StateCompleterSet<T>)
+  fullName.vb: Libplanet.Action.ActionEvaluator(Of T).Evaluate(Libplanet.Blocks.Block(Of T), Libplanet.Blockchain.StateCompleterSet(Of T))
+  nameWithType: ActionEvaluator<T>.Evaluate(Block<T>, StateCompleterSet<T>)
+  nameWithType.vb: ActionEvaluator(Of T).Evaluate(Block(Of T), StateCompleterSet(Of T))
+- uid: Libplanet.Action.ActionEvaluator`1.Evaluate*
+  name: Evaluate
+  href: api/Libplanet.Action.ActionEvaluator-1.html#Libplanet_Action_ActionEvaluator_1_Evaluate_
+  commentId: Overload:Libplanet.Action.ActionEvaluator`1.Evaluate
+  isSpec: "True"
+  fullName: Libplanet.Action.ActionEvaluator<T>.Evaluate
+  fullName.vb: Libplanet.Action.ActionEvaluator(Of T).Evaluate
+  nameWithType: ActionEvaluator<T>.Evaluate
+  nameWithType.vb: ActionEvaluator(Of T).Evaluate
 - uid: Libplanet.Action.ActionTypeAttribute
   name: ActionTypeAttribute
   href: api/Libplanet.Action.ActionTypeAttribute.html
@@ -141,6 +186,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.ActionTypeAttribute.ValueOf
   nameWithType: ActionTypeAttribute.ValueOf
+- uid: Libplanet.Action.BalanceGetter`1
+  name: BalanceGetter<T>
+  href: api/Libplanet.Action.BalanceGetter-1.html
+  commentId: T:Libplanet.Action.BalanceGetter`1
+  name.vb: BalanceGetter(Of T)
+  fullName: Libplanet.Action.BalanceGetter<T>
+  fullName.vb: Libplanet.Action.BalanceGetter(Of T)
+  nameWithType: BalanceGetter<T>
+  nameWithType.vb: BalanceGetter(Of T)
 - uid: Libplanet.Action.CurrencyPermissionException
   name: CurrencyPermissionException
   href: api/Libplanet.Action.CurrencyPermissionException.html
@@ -830,6 +884,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.RandomExtensions.GenerateRandomGuid
   nameWithType: RandomExtensions.GenerateRandomGuid
+- uid: Libplanet.Action.StateGetter`1
+  name: StateGetter<T>
+  href: api/Libplanet.Action.StateGetter-1.html
+  commentId: T:Libplanet.Action.StateGetter`1
+  name.vb: StateGetter(Of T)
+  fullName: Libplanet.Action.StateGetter<T>
+  fullName.vb: Libplanet.Action.StateGetter(Of T)
+  nameWithType: StateGetter<T>
+  nameWithType.vb: StateGetter(Of T)
 - uid: Libplanet.Action.UnexpectedlyTerminatedActionException
   name: UnexpectedlyTerminatedActionException
   href: api/Libplanet.Action.UnexpectedlyTerminatedActionException.html
@@ -5575,40 +5638,6 @@ references:
   fullName.vb: Libplanet.Blocks.Block(Of T).Difficulty
   nameWithType: Block<T>.Difficulty
   nameWithType.vb: Block(Of T).Difficulty
-- uid: Libplanet.Blocks.Block`1.Evaluate(System.DateTimeOffset,Libplanet.Action.AccountStateGetter,Libplanet.Action.AccountBalanceGetter,Libplanet.Store.Trie.ITrie)
-  name: Evaluate(DateTimeOffset, AccountStateGetter, AccountBalanceGetter, ITrie)
-  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Evaluate_System_DateTimeOffset_Libplanet_Action_AccountStateGetter_Libplanet_Action_AccountBalanceGetter_Libplanet_Store_Trie_ITrie_
-  commentId: M:Libplanet.Blocks.Block`1.Evaluate(System.DateTimeOffset,Libplanet.Action.AccountStateGetter,Libplanet.Action.AccountBalanceGetter,Libplanet.Store.Trie.ITrie)
-  fullName: Libplanet.Blocks.Block<T>.Evaluate(System.DateTimeOffset, Libplanet.Action.AccountStateGetter, Libplanet.Action.AccountBalanceGetter, Libplanet.Store.Trie.ITrie)
-  fullName.vb: Libplanet.Blocks.Block(Of T).Evaluate(System.DateTimeOffset, Libplanet.Action.AccountStateGetter, Libplanet.Action.AccountBalanceGetter, Libplanet.Store.Trie.ITrie)
-  nameWithType: Block<T>.Evaluate(DateTimeOffset, AccountStateGetter, AccountBalanceGetter, ITrie)
-  nameWithType.vb: Block(Of T).Evaluate(DateTimeOffset, AccountStateGetter, AccountBalanceGetter, ITrie)
-- uid: Libplanet.Blocks.Block`1.Evaluate*
-  name: Evaluate
-  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Evaluate_
-  commentId: Overload:Libplanet.Blocks.Block`1.Evaluate
-  isSpec: "True"
-  fullName: Libplanet.Blocks.Block<T>.Evaluate
-  fullName.vb: Libplanet.Blocks.Block(Of T).Evaluate
-  nameWithType: Block<T>.Evaluate
-  nameWithType.vb: Block(Of T).Evaluate
-- uid: Libplanet.Blocks.Block`1.EvaluateActionsPerTx(Libplanet.Action.AccountStateGetter,Libplanet.Action.AccountBalanceGetter,Libplanet.Store.Trie.ITrie)
-  name: EvaluateActionsPerTx(AccountStateGetter, AccountBalanceGetter, ITrie)
-  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_EvaluateActionsPerTx_Libplanet_Action_AccountStateGetter_Libplanet_Action_AccountBalanceGetter_Libplanet_Store_Trie_ITrie_
-  commentId: M:Libplanet.Blocks.Block`1.EvaluateActionsPerTx(Libplanet.Action.AccountStateGetter,Libplanet.Action.AccountBalanceGetter,Libplanet.Store.Trie.ITrie)
-  fullName: Libplanet.Blocks.Block<T>.EvaluateActionsPerTx(Libplanet.Action.AccountStateGetter, Libplanet.Action.AccountBalanceGetter, Libplanet.Store.Trie.ITrie)
-  fullName.vb: Libplanet.Blocks.Block(Of T).EvaluateActionsPerTx(Libplanet.Action.AccountStateGetter, Libplanet.Action.AccountBalanceGetter, Libplanet.Store.Trie.ITrie)
-  nameWithType: Block<T>.EvaluateActionsPerTx(AccountStateGetter, AccountBalanceGetter, ITrie)
-  nameWithType.vb: Block(Of T).EvaluateActionsPerTx(AccountStateGetter, AccountBalanceGetter, ITrie)
-- uid: Libplanet.Blocks.Block`1.EvaluateActionsPerTx*
-  name: EvaluateActionsPerTx
-  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_EvaluateActionsPerTx_
-  commentId: Overload:Libplanet.Blocks.Block`1.EvaluateActionsPerTx
-  isSpec: "True"
-  fullName: Libplanet.Blocks.Block<T>.EvaluateActionsPerTx
-  fullName.vb: Libplanet.Blocks.Block(Of T).EvaluateActionsPerTx
-  nameWithType: Block<T>.EvaluateActionsPerTx
-  nameWithType.vb: Block(Of T).EvaluateActionsPerTx
 - uid: Libplanet.Blocks.Block`1.Hash
   name: Hash
   href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Hash
@@ -15405,40 +15434,6 @@ references:
   fullName.vb: Libplanet.Tx.Transaction(Of T).Equals
   nameWithType: Transaction<T>.Equals
   nameWithType.vb: Transaction(Of T).Equals
-- uid: Libplanet.Tx.Transaction`1.EvaluateActions(Libplanet.Blocks.BlockHash,System.Int64,Libplanet.Action.IAccountStateDelta,Libplanet.Address,System.Boolean)
-  name: EvaluateActions(BlockHash, Int64, IAccountStateDelta, Address, Boolean)
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_EvaluateActions_Libplanet_Blocks_BlockHash_System_Int64_Libplanet_Action_IAccountStateDelta_Libplanet_Address_System_Boolean_
-  commentId: M:Libplanet.Tx.Transaction`1.EvaluateActions(Libplanet.Blocks.BlockHash,System.Int64,Libplanet.Action.IAccountStateDelta,Libplanet.Address,System.Boolean)
-  fullName: Libplanet.Tx.Transaction<T>.EvaluateActions(Libplanet.Blocks.BlockHash, System.Int64, Libplanet.Action.IAccountStateDelta, Libplanet.Address, System.Boolean)
-  fullName.vb: Libplanet.Tx.Transaction(Of T).EvaluateActions(Libplanet.Blocks.BlockHash, System.Int64, Libplanet.Action.IAccountStateDelta, Libplanet.Address, System.Boolean)
-  nameWithType: Transaction<T>.EvaluateActions(BlockHash, Int64, IAccountStateDelta, Address, Boolean)
-  nameWithType.vb: Transaction(Of T).EvaluateActions(BlockHash, Int64, IAccountStateDelta, Address, Boolean)
-- uid: Libplanet.Tx.Transaction`1.EvaluateActions*
-  name: EvaluateActions
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_EvaluateActions_
-  commentId: Overload:Libplanet.Tx.Transaction`1.EvaluateActions
-  isSpec: "True"
-  fullName: Libplanet.Tx.Transaction<T>.EvaluateActions
-  fullName.vb: Libplanet.Tx.Transaction(Of T).EvaluateActions
-  nameWithType: Transaction<T>.EvaluateActions
-  nameWithType.vb: Transaction(Of T).EvaluateActions
-- uid: Libplanet.Tx.Transaction`1.EvaluateActionsGradually(Libplanet.Blocks.BlockHash,System.Int64,Libplanet.Action.IAccountStateDelta,Libplanet.Address,System.Boolean,Libplanet.Store.Trie.ITrie)
-  name: EvaluateActionsGradually(BlockHash, Int64, IAccountStateDelta, Address, Boolean, ITrie)
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_EvaluateActionsGradually_Libplanet_Blocks_BlockHash_System_Int64_Libplanet_Action_IAccountStateDelta_Libplanet_Address_System_Boolean_Libplanet_Store_Trie_ITrie_
-  commentId: M:Libplanet.Tx.Transaction`1.EvaluateActionsGradually(Libplanet.Blocks.BlockHash,System.Int64,Libplanet.Action.IAccountStateDelta,Libplanet.Address,System.Boolean,Libplanet.Store.Trie.ITrie)
-  fullName: Libplanet.Tx.Transaction<T>.EvaluateActionsGradually(Libplanet.Blocks.BlockHash, System.Int64, Libplanet.Action.IAccountStateDelta, Libplanet.Address, System.Boolean, Libplanet.Store.Trie.ITrie)
-  fullName.vb: Libplanet.Tx.Transaction(Of T).EvaluateActionsGradually(Libplanet.Blocks.BlockHash, System.Int64, Libplanet.Action.IAccountStateDelta, Libplanet.Address, System.Boolean, Libplanet.Store.Trie.ITrie)
-  nameWithType: Transaction<T>.EvaluateActionsGradually(BlockHash, Int64, IAccountStateDelta, Address, Boolean, ITrie)
-  nameWithType.vb: Transaction(Of T).EvaluateActionsGradually(BlockHash, Int64, IAccountStateDelta, Address, Boolean, ITrie)
-- uid: Libplanet.Tx.Transaction`1.EvaluateActionsGradually*
-  name: EvaluateActionsGradually
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_EvaluateActionsGradually_
-  commentId: Overload:Libplanet.Tx.Transaction`1.EvaluateActionsGradually
-  isSpec: "True"
-  fullName: Libplanet.Tx.Transaction<T>.EvaluateActionsGradually
-  fullName.vb: Libplanet.Tx.Transaction(Of T).EvaluateActionsGradually
-  nameWithType: Transaction<T>.EvaluateActionsGradually
-  nameWithType.vb: Transaction(Of T).EvaluateActionsGradually
 - uid: Libplanet.Tx.Transaction`1.GenesisHash
   name: GenesisHash
   href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_GenesisHash

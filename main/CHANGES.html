@@ -211,11 +211,24 @@ mutable.  [<a href="https://github.com/planetarium/libplanet/pull/1274">#1274</a
 </li>
 <li>Return type of <code>RoutingTable.Neighbors()</code> became <code>IReadOnlyList&lt;BoundPeer&gt;</code>
 (was <code>IEnumerable&lt;BoundPeer&gt;</code>).  [<a href="https://github.com/planetarium/libplanet/issues/1230">#1230</a>, <a href="https://github.com/planetarium/libplanet/pull/1271">#1271</a>]</li>
+<li>All methods pertaining to evaluating <code>IAction</code>s are moved
+to a new <code>ActionEvaluator</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/1301">#1301</a>, <a href="https://github.com/planetarium/libplanet/pull/1305">#1305</a>]
+<ul>
+<li>Removed <code>Block&lt;T&gt;.Evaluate()</code> method.
+Use <code>ActionEvaluator.Evaluate()</code> method instead.</li>
+<li>Removed <code>Block&lt;T&gt;.EvaluateActionsPerTx()</code> method.</li>
+<li>Removed <code>Transaction&lt;T&gt;.EvaluateActionsGradually()</code> method.</li>
+<li>Removed <code>Transaction&lt;T&gt;.EvaluateActions()</code> method.</li>
+</ul>
+</li>
+<li>Parameters <code>action</code>, <code>inputContext</code>, and <code>outputStates</code> for
+<code>ActionEvaluation()</code> constructor can no longer be <code>null</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1305">#1305</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
 <ul>
+<li>Added <code>ActionEvaluator</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/1301">#1301</a>, <a href="https://github.com/planetarium/libplanet/pull/1305">#1305</a>]</li>
 <li>Added <code>BlockHash</code> struct.  [<a href="https://github.com/planetarium/libplanet/issues/1192">#1192</a>, <a href="https://github.com/planetarium/libplanet/pull/1197">#1197</a>]</li>
 <li>Added <code>HashDigest&lt;T&gt;.DeriveFrom()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1197">#1197</a>]</li>
 <li>Added <code>BlockChain&lt;T&gt;.GetTxExecution()</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/1156">#1156</a>, <a href="https://github.com/planetarium/libplanet/pull/1289">#1289</a>]</li>
