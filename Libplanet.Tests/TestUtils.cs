@@ -291,10 +291,10 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     value is Bencodex.Types.Integer i ? i.Value : 0);
             }
 
-            var blockEvaluator = new BlockEvaluator<T>(
+            var actionEvaluator = new ActionEvaluator<T>(
                 blockAction, StateGetter, FungibleAssetValueGetter, null);
-            var actionEvaluationResult = blockEvaluator
-                .EvaluateActions(block, StateCompleterSet<T>.Reject)
+            var actionEvaluationResult = actionEvaluator
+                .Evaluate(block, StateCompleterSet<T>.Reject)
                 .GetTotalDelta(ToStateKey, ToFungibleAssetKey);
             stateStore.SetStates(block, actionEvaluationResult);
             if (stateStore is TrieStateStore trieStateStore)

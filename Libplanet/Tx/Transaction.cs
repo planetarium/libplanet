@@ -1,17 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Action;
-using Libplanet.Assets;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
-using Libplanet.Store.Trie;
 
 namespace Libplanet.Tx
 {
@@ -433,8 +430,7 @@ namespace Libplanet.Tx
                 genesisHash,
                 updatedAddresses,
                 ts,
-                actionsArray
-            ).Serialize(false);
+                actionsArray).Serialize(false);
 
             if (!actionsArray.IsEmpty)
             {
@@ -442,29 +438,18 @@ namespace Libplanet.Tx
                 // parametrize this in the future.
                 BlockHash emptyBlockHash = BlockHash.FromHashDigest(default(HashDigest<SHA256>));
 
-                IAccountStateDelta delta = new Transaction<T>(
-                    nonce,
-                    signer,
-                    publicKey,
-                    genesisHash,
-                    updatedAddresses,
-                    ts,
-                    actionsArray
-                ).EvaluateActions(
-                    emptyBlockHash,
-                    0,
-                    new AccountStateDeltaImpl(
-                        _ => null,
-                        (_, c) => new FungibleAssetValue(c),
-                        signer
-                    ),
-                    signer,
-                    rehearsal: true
-                );
-                if (!updatedAddresses.IsSupersetOf(delta.UpdatedAddresses))
+                var evalUpdatedAddresses = ActionEvaluator<T>.GetUpdatedAddresses(
+                    new Transaction<T>(
+                        nonce,
+                        signer,
+                        publicKey,
+                        genesisHash,
+                        updatedAddresses,
+                        ts,
+                        actionsArray));
+                if (!updatedAddresses.IsSupersetOf(evalUpdatedAddresses))
                 {
-                    updatedAddresses =
-                        updatedAddresses.Union(delta.UpdatedAddresses);
+                    updatedAddresses = updatedAddresses.Union(evalUpdatedAddresses);
                     payload = new Transaction<T>(
                         nonce,
                         signer,
@@ -472,8 +457,7 @@ namespace Libplanet.Tx
                         genesisHash,
                         updatedAddresses,
                         ts,
-                        actionsArray
-                    ).Serialize(false);
+                        actionsArray).Serialize(false);
                 }
             }
 
@@ -486,8 +470,7 @@ namespace Libplanet.Tx
                 updatedAddresses,
                 ts,
                 actionsArray,
-                sig
-            );
+                sig);
         }
 
         /// <summary>
@@ -557,117 +540,8 @@ namespace Libplanet.Tx
             ToRawTransaction(sign).ToBencodex();
 
         /// <summary>
-        /// Executes the <see cref="Actions"/> step by step, and emits
-        /// <see cref="ActionEvaluation"/> for each step.
-        /// <para>If the needed value is only the final states,
-        /// use <see cref="EvaluateActions"/> method instead.</para>
-        /// </summary>
-        /// <param name="blockHash">The <see
-        /// cref="Libplanet.Blocks.Block{T}.Hash"/> of
-        /// <see cref="Libplanet.Blocks.Block{T}"/> that this
-        /// <see cref="Transaction{T}"/> will belong to.</param>
-        /// <param name="blockIndex">The <see
-        /// cref="Libplanet.Blocks.Block{T}.Index"/> of
-        /// <see cref="Libplanet.Blocks.Block{T}"/> that this
-        /// <see cref="Transaction{T}"/> will belong to.</param>
-        /// <param name="previousStates">The states immediately before
-        /// <see cref="Actions"/> being executed.  Note that its
-        /// <see cref="IAccountStateDelta.UpdatedAddresses"/> are remained
-        /// to the returned next states.</param>
-        /// <param name="minerAddress">An address of block miner.</param>
-        /// <param name="rehearsal">Pass <c>true</c> if it is intended
-        /// to be dry-run (i.e., the returned result will be never used).
-        /// The default value is <c>false</c>.</param>
-        /// <param name="previousBlockStatesTrie">The trie to contain states at previous block.
-        /// </param>
-        /// <returns>Enumerates <see cref="ActionEvaluation"/>s for each one in
-        /// <see cref="Actions"/>.
-        /// <para>The order is the same to the <see cref="Actions"/>.</para>
-        /// <para>Each <see cref="ActionEvaluation"/> includes its previous
-        /// <see cref="ActionEvaluation"/>s' delta besides its own delta.</para>
-        /// <para>Note that each <see cref="IActionContext.Random"/> object has a unconsumed state.
-        /// </para>
-        /// </returns>
-        [Pure]
-        public IEnumerable<ActionEvaluation> EvaluateActionsGradually(
-            BlockHash blockHash,
-            long blockIndex,
-            IAccountStateDelta previousStates,
-            Address minerAddress,
-            bool rehearsal = false,
-            ITrie previousBlockStatesTrie = null
-        )
-        {
-            return ActionEvaluation.EvaluateActionsGradually(
-                blockHash,
-                blockIndex,
-                Id,
-                previousStates,
-                minerAddress,
-                Signer,
-                Signature,
-                Actions.Cast<IAction>().ToImmutableList(),
-                rehearsal,
-                previousBlockStatesTrie);
-       }
-
-        /// <summary>
-        /// Executes the <see cref="Actions"/> and gets the result states.
-        /// </summary>
-        /// <param name="blockHash">The <see
-        /// cref="Libplanet.Blocks.Block{T}.Hash"/> of
-        /// <see cref="Libplanet.Blocks.Block{T}"/> that this
-        /// <see cref="Transaction{T}"/> will belong to.</param>
-        /// <param name="blockIndex">The <see
-        /// cref="Libplanet.Blocks.Block{T}.Index"/> of
-        /// <see cref="Libplanet.Blocks.Block{T}"/> that this
-        /// <see cref="Transaction{T}"/> will belong to.</param>
-        /// <param name="previousStates">The states immediately before
-        /// <see cref="Actions"/> being executed.  Note that its
-        /// <see cref="IAccountStateDelta.UpdatedAddresses"/> are remained
-        /// to the returned next states.</param>
-        /// <param name="minerAddress">An address of block miner.</param>
-        /// <param name="rehearsal">Pass <c>true</c> if it is intended
-        /// to be dry-run (i.e., the returned result will be never used).
-        /// The default value is <c>false</c>.</param>
-        /// <returns>The states immediately after <see cref="Actions"/>
-        /// being executed.  Note that it maintains
-        /// <see cref="IAccountStateDelta.UpdatedAddresses"/> of the given
-        /// <paramref name="previousStates"/> as well.</returns>
-        [Pure]
-        public IAccountStateDelta EvaluateActions(
-            BlockHash blockHash,
-            long blockIndex,
-            IAccountStateDelta previousStates,
-            Address minerAddress,
-            bool rehearsal = false
-        )
-        {
-            var evaluations = EvaluateActionsGradually(
-                blockHash,
-                blockIndex,
-                previousStates,
-                minerAddress,
-                rehearsal: rehearsal
-            );
-
-            ActionEvaluation lastEvaluation;
-            try
-            {
-                lastEvaluation = evaluations.Last();
-            }
-            catch (InvalidOperationException)
-            {
-                // If "evaluations" is empty:
-                return previousStates;
-            }
-
-            return lastEvaluation.OutputStates;
-        }
-
-        /// <summary>
-        /// Validates this <see cref="Transaction{T}"/>.  If there is something
-        /// invalid it throws an exception.  If valid it does nothing.
+        /// Validates this <see cref="Transaction{T}"/> and throws an appropriate exception
+        /// if not valid.
         /// </summary>
         /// <exception cref="InvalidTxSignatureException">Thrown when its
         /// <see cref="Transaction{T}.Signature"/> is invalid or not signed by
