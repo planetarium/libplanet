@@ -104,14 +104,14 @@ namespace Libplanet.Explorer.Store
         public void PutTxIdBlockHashIndex(TxId txId, BlockHash blockHash) =>
             _store.PutTxIdBlockHashIndex(txId, blockHash);
 
-        public bool HasTxIdBlockHashIndex(TxId txId) =>
-            _store.HasTxIdBlockHashIndex(txId);
+        public BlockHash? GetFirstTxIdBlockHashIndex(TxId txId) =>
+            _store.GetFirstTxIdBlockHashIndex(txId);
 
-        public BlockHash? GetTxIdBlockHashIndex(TxId txId) =>
-            _store.GetTxIdBlockHashIndex(txId);
+        public IEnumerable<BlockHash> IterateTxIdBlockHashIndex(TxId txId) =>
+            _store.IterateTxIdBlockHashIndex(txId);
 
-        public void DeleteTxIdBlockHashIndex(TxId txId) =>
-            _store.DeleteTxIdBlockHashIndex(txId);
+        public void DeleteTxIdBlockHashIndex(TxId txId, BlockHash blockHash) =>
+            _store.DeleteTxIdBlockHashIndex(txId, blockHash);
 
         public DateTimeOffset? GetBlockPerceivedTime(BlockHash blockHash)
         {

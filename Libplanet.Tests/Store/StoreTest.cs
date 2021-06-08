@@ -445,46 +445,51 @@ namespace Libplanet.Tests.Store
         [SkippableFact]
         public void TxIdBlockHashIndex()
         {
-            Assert.Null(Fx.Store.GetTxIdBlockHashIndex(Fx.TxId1));
-            Assert.Null(Fx.Store.GetTxIdBlockHashIndex(Fx.TxId2));
-            Assert.Null(Fx.Store.GetTxIdBlockHashIndex(Fx.TxId3));
-            Assert.False(Fx.Store.HasTxIdBlockHashIndex(Fx.TxId1));
-            Assert.False(Fx.Store.HasTxIdBlockHashIndex(Fx.TxId2));
-            Assert.False(Fx.Store.HasTxIdBlockHashIndex(Fx.TxId3));
+            Assert.Null(Fx.Store.GetFirstTxIdBlockHashIndex(Fx.TxId1));
+            Assert.Null(Fx.Store.GetFirstTxIdBlockHashIndex(Fx.TxId2));
+            Assert.Null(Fx.Store.GetFirstTxIdBlockHashIndex(Fx.TxId3));
 
             Fx.Store.PutTxIdBlockHashIndex(Fx.TxId1, Fx.Hash1);
-            Assert.Null(Fx.Store.GetTxIdBlockHashIndex(Fx.TxId2));
-            Assert.Null(Fx.Store.GetTxIdBlockHashIndex(Fx.TxId3));
-            Assert.False(Fx.Store.HasTxIdBlockHashIndex(Fx.TxId2));
-            Assert.False(Fx.Store.HasTxIdBlockHashIndex(Fx.TxId3));
+            Assert.Null(Fx.Store.GetFirstTxIdBlockHashIndex(Fx.TxId2));
+            Assert.Null(Fx.Store.GetFirstTxIdBlockHashIndex(Fx.TxId3));
 
             Fx.Store.PutTxIdBlockHashIndex(Fx.TxId2, Fx.Hash2);
             Fx.Store.PutTxIdBlockHashIndex(Fx.TxId3, Fx.Hash3);
 
-            Assert.True(Fx.Store.GetTxIdBlockHashIndex(Fx.TxId1)?.Equals(Fx.Hash1));
-            Assert.True(Fx.Store.GetTxIdBlockHashIndex(Fx.TxId2)?.Equals(Fx.Hash2));
-            Assert.True(Fx.Store.GetTxIdBlockHashIndex(Fx.TxId3)?.Equals(Fx.Hash3));
-            Assert.True(Fx.Store.HasTxIdBlockHashIndex(Fx.TxId1));
-            Assert.True(Fx.Store.HasTxIdBlockHashIndex(Fx.TxId2));
-            Assert.True(Fx.Store.HasTxIdBlockHashIndex(Fx.TxId3));
+            Assert.True(Fx.Store.GetFirstTxIdBlockHashIndex(Fx.TxId1)?.Equals(Fx.Hash1));
+            Assert.True(Fx.Store.GetFirstTxIdBlockHashIndex(Fx.TxId2)?.Equals(Fx.Hash2));
+            Assert.True(Fx.Store.GetFirstTxIdBlockHashIndex(Fx.TxId3)?.Equals(Fx.Hash3));
 
             Fx.Store.PutTxIdBlockHashIndex(Fx.TxId1, Fx.Hash3);
             Fx.Store.PutTxIdBlockHashIndex(Fx.TxId2, Fx.Hash3);
             Fx.Store.PutTxIdBlockHashIndex(Fx.TxId3, Fx.Hash1);
-            Assert.True(Fx.Store.GetTxIdBlockHashIndex(Fx.TxId1)?.Equals(Fx.Hash3));
-            Assert.True(Fx.Store.GetTxIdBlockHashIndex(Fx.TxId2)?.Equals(Fx.Hash3));
-            Assert.True(Fx.Store.GetTxIdBlockHashIndex(Fx.TxId3)?.Equals(Fx.Hash1));
+            Assert.Equal(2, Fx.Store.IterateTxIdBlockHashIndex(Fx.TxId1).Count());
+            Assert.Equal(2, Fx.Store.IterateTxIdBlockHashIndex(Fx.TxId2).Count());
+            Assert.Equal(2, Fx.Store.IterateTxIdBlockHashIndex(Fx.TxId3).Count());
 
-            Fx.Store.DeleteTxIdBlockHashIndex(Fx.TxId1);
-            Fx.Store.DeleteTxIdBlockHashIndex(Fx.TxId2);
-            Fx.Store.DeleteTxIdBlockHashIndex(Fx.TxId3);
+            Fx.Store.DeleteTxIdBlockHashIndex(Fx.TxId1, Fx.Hash1);
+            Fx.Store.DeleteTxIdBlockHashIndex(Fx.TxId2, Fx.Hash2);
+            Fx.Store.DeleteTxIdBlockHashIndex(Fx.TxId3, Fx.Hash3);
 
-            Assert.Null(Fx.Store.GetTxIdBlockHashIndex(Fx.TxId1));
-            Assert.Null(Fx.Store.GetTxIdBlockHashIndex(Fx.TxId2));
-            Assert.Null(Fx.Store.GetTxIdBlockHashIndex(Fx.TxId3));
-            Assert.False(Fx.Store.HasTxIdBlockHashIndex(Fx.TxId1));
-            Assert.False(Fx.Store.HasTxIdBlockHashIndex(Fx.TxId2));
-            Assert.False(Fx.Store.HasTxIdBlockHashIndex(Fx.TxId3));
+            Assert.True(Fx.Store.GetFirstTxIdBlockHashIndex(Fx.TxId1)?.Equals(Fx.Hash3));
+            Assert.True(Fx.Store.GetFirstTxIdBlockHashIndex(Fx.TxId2)?.Equals(Fx.Hash3));
+            Assert.True(Fx.Store.GetFirstTxIdBlockHashIndex(Fx.TxId3)?.Equals(Fx.Hash1));
+
+            Assert.Single(Fx.Store.IterateTxIdBlockHashIndex(Fx.TxId1));
+            Assert.Single(Fx.Store.IterateTxIdBlockHashIndex(Fx.TxId2));
+            Assert.Single(Fx.Store.IterateTxIdBlockHashIndex(Fx.TxId3));
+
+            Fx.Store.DeleteTxIdBlockHashIndex(Fx.TxId1, Fx.Hash1);
+            Fx.Store.DeleteTxIdBlockHashIndex(Fx.TxId2, Fx.Hash2);
+            Fx.Store.DeleteTxIdBlockHashIndex(Fx.TxId3, Fx.Hash3);
+
+            Fx.Store.DeleteTxIdBlockHashIndex(Fx.TxId1, Fx.Hash3);
+            Fx.Store.DeleteTxIdBlockHashIndex(Fx.TxId2, Fx.Hash3);
+            Fx.Store.DeleteTxIdBlockHashIndex(Fx.TxId3, Fx.Hash1);
+
+            Assert.Null(Fx.Store.GetFirstTxIdBlockHashIndex(Fx.TxId1));
+            Assert.Null(Fx.Store.GetFirstTxIdBlockHashIndex(Fx.TxId2));
+            Assert.Null(Fx.Store.GetFirstTxIdBlockHashIndex(Fx.TxId3));
         }
 
         [SkippableFact]

@@ -77,22 +77,22 @@ namespace Libplanet.Tests.Store
             _store.PutTxIdBlockHashIndex(txId, blockHash);
         }
 
-        public bool HasTxIdBlockHashIndex(TxId txId)
+        public BlockHash? GetFirstTxIdBlockHashIndex(TxId txId)
         {
-            Log(nameof(HasTxIdBlockHashIndex), txId);
-            return _store.HasTxIdBlockHashIndex(txId);
+            Log(nameof(GetFirstTxIdBlockHashIndex), txId);
+            return _store.GetFirstTxIdBlockHashIndex(txId);
         }
 
-        public BlockHash? GetTxIdBlockHashIndex(TxId txId)
+        public IEnumerable<BlockHash> IterateTxIdBlockHashIndex(TxId txId)
         {
-            Log(nameof(GetTxIdBlockHashIndex), txId);
-            return _store.GetTxIdBlockHashIndex(txId);
+            Log(nameof(IterateTxIdBlockHashIndex), txId);
+            return _store.IterateTxIdBlockHashIndex(txId);
         }
 
-        public void DeleteTxIdBlockHashIndex(TxId txId)
+        public void DeleteTxIdBlockHashIndex(TxId txId, BlockHash blockHash)
         {
-            Log(nameof(DeleteTxIdBlockHashIndex), txId);
-            _store.DeleteTxIdBlockHashIndex(txId);
+            Log(nameof(DeleteTxIdBlockHashIndex), txId, blockHash);
+            _store.DeleteTxIdBlockHashIndex(txId, blockHash);
         }
 
         public void SetBlockPerceivedTime(BlockHash blockHash, DateTimeOffset perceivedTime)

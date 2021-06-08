@@ -764,28 +764,27 @@ namespace Libplanet.RocksDBStore
         public override void PutTxIdBlockHashIndex(TxId txId, BlockHash blockHash)
         {
             _txExecutionDb.Put(
-                TxIdIndexKey(txId),
+                TxIdBlockHashIndexKey(txId, blockHash),
                 blockHash.ToByteArray()
                 );
         }
 
-        /// <inheritdoc cref="BaseStore.GetTxIdBlockHashIndex(TxId)"/>
-        public override BlockHash? GetTxIdBlockHashIndex(TxId txId)
-        {
-            if (!(_txExecutionDb.Get(TxIdIndexKey(txId)) is { } blockHashByte))
-            {
-                return null;
-            }
-
-            return new BlockHash(blockHashByte);
-        }
-
-        /// <inheritdoc cref="BaseStore.DeleteTxIdBlockHashIndex(TxId)"/>
-        public override void DeleteTxIdBlockHashIndex(TxId txId)
+        /// <inheritdoc cref="BaseStore.DeleteTxIdBlockHashIndex(TxId, BlockHash)"/>
+        public override void DeleteTxIdBlockHashIndex(TxId txId, BlockHash blockHash)
         {
             _txExecutionDb.Remove(
-                TxIdIndexKey(txId)
+                TxIdBlockHashIndexKey(txId, blockHash)
             );
+        }
+
+        /// <inheritdoc cref="BaseStore.IterateTxIdBlockHashIndex(TxId)"/>
+        public override IEnumerable<BlockHash> IterateTxIdBlockHashIndex(TxId txId)
+        {
+            var prefix = TxIdBlockHashIndexTxIdKey(txId);
+            foreach (var it in IterateDb(_txExecutionDb, prefix, null))
+            {
+                yield return new BlockHash(it.Value());
+            }
         }
 
         /// <inheritdoc cref="BaseStore.PutTxExecution(Libplanet.Tx.TxSuccess)"/>
@@ -1005,8 +1004,10 @@ namespace Libplanet.RocksDBStore
         private byte[] TxExecutionKey(TxExecution txExecution) =>
             TxExecutionKey(txExecution.BlockHash, txExecution.TxId);
 
-        private byte[] TxIdIndexKey(in TxId txId) =>
+        private byte[] TxIdBlockHashIndexKey(in TxId txId, in BlockHash blockHash) =>
+            TxIdBlockHashIndexTxIdKey(txId).Concat(blockHash.ByteArray).ToArray();
 
+        private byte[] TxIdBlockHashIndexTxIdKey(in TxId txId) =>
             TxIdBlockHashIndexPrefix.Concat(txId.ByteArray).ToArray();
 
         private byte[] ForkedChainsKey(Guid guid) =>

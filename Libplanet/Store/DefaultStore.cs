@@ -553,35 +553,40 @@ namespace Libplanet.Store
         /// <inheritdoc cref="BaseStore.PutTxIdBlockHashIndex(TxId, BlockHash)"/>
         public override void PutTxIdBlockHashIndex(TxId txId, BlockHash blockHash)
         {
-            var path = TxPath(txId);
+            var path = TxIdBlockHashIndexPath(txId, blockHash);
             var dirPath = path.GetDirectory();
             CreateDirectoryRecursively(_txIdBlockHashIndex, dirPath);
             _txIdBlockHashIndex.WriteAllBytes(path, blockHash.ToByteArray());
         }
 
-        /// <inheritdoc cref="BaseStore.GetTxIdBlockHashIndex(TxId)"/>
-        public override BlockHash? GetTxIdBlockHashIndex(TxId txId)
+        public override IEnumerable<BlockHash> IterateTxIdBlockHashIndex(TxId txId)
         {
-            var path = TxPath(txId);
-            if (!_txIdBlockHashIndex.FileExists(path))
+            var txPath = TxPath(txId);
+            if (!_txIdBlockHashIndex.DirectoryExists(txPath))
             {
-                return null;
+                yield break;
             }
 
-            try
+            foreach (var path in _txIdBlockHashIndex.EnumerateFiles(txPath))
             {
-                return new BlockHash(_txIdBlockHashIndex.ReadAllBytes(path));
-            }
-            catch (FileNotFoundException)
-            {
-                return null;
+                BlockHash blockHash;
+                try
+                {
+                    blockHash = new BlockHash(ByteUtil.ParseHex(path.GetName()));
+                }
+                catch (Exception)
+                {
+                    continue;
+                }
+
+                yield return blockHash;
             }
         }
 
-        /// <inheritdoc cref="BaseStore.DeleteTxIdBlockHashIndex(TxId)"/>
-        public override void DeleteTxIdBlockHashIndex(TxId txId)
+        /// <inheritdoc cref="BaseStore.DeleteTxIdBlockHashIndex(TxId, BlockHash)"/>
+        public override void DeleteTxIdBlockHashIndex(TxId txId, BlockHash blockHash)
         {
-            var path = TxPath(txId);
+            var path = TxIdBlockHashIndexPath(txId, blockHash);
             if (_txIdBlockHashIndex.FileExists(path))
             {
                 _txIdBlockHashIndex.DeleteFile(path);
@@ -778,6 +783,9 @@ namespace Libplanet.Store
 
         private UPath TxExecutionPath(TxExecution txExecution) =>
             TxExecutionPath(txExecution.BlockHash, txExecution.TxId);
+
+        private UPath TxIdBlockHashIndexPath(in TxId txid, in BlockHash blockHash) =>
+            TxPath(txid) / blockHash.ToString();
 
         private string TxNonceId(in Guid chainId)
         {

@@ -242,26 +242,26 @@ namespace Libplanet.Store
         void PutTxIdBlockHashIndex(TxId txId, BlockHash blockHash);
 
         /// <summary>
-        /// Determines whether the <see cref="IStore"/> contains index to <see cref="BlockHash"/>
-        /// with given <paramref name="txId"/>.
-        /// </summary>
-        /// <param name="txId">The <see cref="TxId"/> of the <see cref="Transaction{T}"/>.</param>
-        /// <returns><c>true</c> if the index with given <paramref name="txId"/> is exists.
-        /// Otherwise, <c>false</c>.</returns>
-        bool HasTxIdBlockHashIndex(TxId txId);
-
-        /// <summary>
         /// Retrieves the <see cref="BlockHash"/> indexed by the <paramref name="txId"/>.
         /// </summary>
         /// <param name="txId">The <see cref="TxId"/> of the <see cref="Transaction{T}"/>.</param>
         /// <returns><see cref="BlockHash"/> if the index exists. Otherwise <c>null</c>.</returns>
-        BlockHash? GetTxIdBlockHashIndex(TxId txId);
+        BlockHash? GetFirstTxIdBlockHashIndex(TxId txId);
 
         /// <summary>
-        /// Deletes the index for the <paramref name="txId"/>.
+        /// Retrieves <see cref="BlockHash"/>es indexed by the <paramref name="txId"/>.
         /// </summary>
         /// <param name="txId">The <see cref="TxId"/> of the <see cref="Transaction{T}"/>.</param>
-        void DeleteTxIdBlockHashIndex(TxId txId);
+        /// <returns><see cref="BlockHash"/>es if the index exists.</returns>
+        IEnumerable<BlockHash> IterateTxIdBlockHashIndex(TxId txId);
+
+        /// <summary>
+        /// Deletes the index for the <paramref name="txId"/> and <paramref name="blockHash"/>.
+        /// </summary>
+        /// <param name="txId">The <see cref="TxId"/> of the <see cref="Transaction{T}"/>.</param>
+        /// <param name="blockHash">The <see cref="BlockHash"/>
+        /// of the <see cref="Block{T}"/>.</param>.
+        void DeleteTxIdBlockHashIndex(TxId txId, BlockHash blockHash);
 
         /// <summary>
         /// Records the perceived time of a block.  If there is already a record, it is overwritten.
