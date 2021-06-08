@@ -569,17 +569,7 @@ namespace Libplanet.Store
 
             foreach (var path in _txIdBlockHashIndex.EnumerateFiles(txPath))
             {
-                BlockHash blockHash;
-                try
-                {
-                    blockHash = new BlockHash(ByteUtil.ParseHex(path.GetName()));
-                }
-                catch (Exception)
-                {
-                    continue;
-                }
-
-                yield return blockHash;
+                yield return new BlockHash(ByteUtil.ParseHex(path.GetName()));
             }
         }
 
@@ -797,25 +787,9 @@ namespace Libplanet.Store
             return _db.GetCollection<HashDoc>($"{IndexColPrefix}{FormatChainId(chainId)}");
         }
 
-        private LiteCollection<TxIdBlockHashDoc> TxIdBlockIndexCollection(in Guid chainId)
-        {
-            return _db.GetCollection<TxIdBlockHashDoc>(
-                $"{TxIdBlockIndexPrefix}{FormatChainId(chainId)}");
-        }
-
         private LiteCollection<BsonDocument> TxNonceCollection(Guid chainId)
         {
             return _db.GetCollection<BsonDocument>(TxNonceId(chainId));
-        }
-
-        private class TxIdBlockHashDoc
-        {
-            [BsonId]
-            public long Id { get; set; }
-
-            public TxId TxId { get; set; }
-
-            public BlockHash BlockHash { get; set; }
         }
 
         private class HashDoc
