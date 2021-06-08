@@ -153,13 +153,13 @@ To be released.
      -  Removed `Transaction<T>.EvaluateActions()` method.
  -  Parameters `action`, `inputContext`, and `outputStates` for
     `ActionEvaluation()` constructor can no longer be `null`.  [[#1305]]
- -  Added `IStore.PutTxIdBlockHashIndex(Guid, TxId, BlockHash)` method.
+ -  Added `IStore.PutTxIdBlockHashIndex(TxId, BlockHash)` method.
     [[#1294], [#1328]]
- -  Added `IStore.HasTxIdBlockHashIndex(Guid, TxId)` method.
+ -  Added `IStore.GetFirstTxIdBlockHashIndex(TxId)` method.
     [[#1294], [#1328]]
- -  Added `IStore.GetTxIdBlockHashIndex(Guid, TxId)` method.
+ -  Added `IStore.DeleteTxIdBlockHashIndex(TxId, BlockHash)` method.
     [[#1294], [#1328]]
- -  Added `IStore.DeleteTxIdBlockHashIndex(Guid, TxId)` method.
+-  Added `IStore.IterateTxIdBlockHashIndex(TxId)` method.
     [[#1294], [#1328]]
 
 ### Backward-incompatible network protocol changes
