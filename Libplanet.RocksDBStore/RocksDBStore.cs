@@ -30,6 +30,7 @@ namespace Libplanet.RocksDBStore
         private const string TxIndexDbName = "txindex";
         private const string StagedTxDbName = "stagedtx";
         private const string TxExecutionDbName = "txexec";
+        private const string TxIdBlockHashIndexDbName = "txbindex";
         private const string ChainDbName = "chain";
         private const int ForkWriteBatchSize = 100000;
 
@@ -68,6 +69,7 @@ namespace Libplanet.RocksDBStore
         private readonly LruCache<string, RocksDb> _txDbCache;
         private readonly RocksDb _stagedTxDb;
         private readonly RocksDb _txExecutionDb;
+        private readonly RocksDb _txIdBlockHashIndexDb;
         private readonly RocksDb _chainDb;
 
         private readonly ReaderWriterLockSlim _rwTxLock;
@@ -159,6 +161,8 @@ namespace Libplanet.RocksDBStore
             _stagedTxDb = RocksDBUtils.OpenRocksDb(_options, RocksDbPath(StagedTxDbName));
             _txExecutionDb =
                 RocksDBUtils.OpenRocksDb(_options, RocksDbPath(TxExecutionDbName));
+            _txIdBlockHashIndexDb =
+                RocksDBUtils.OpenRocksDb(_options, RocksDbPath(TxIdBlockHashIndexDbName));
 
             // When opening a DB in a read-write mode, you need to specify all Column Families that
             // currently exist in a DB. https://github.com/facebook/rocksdb/wiki/Column-Families
@@ -763,7 +767,7 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc cref="BaseStore.PutTxIdBlockHashIndex(TxId, BlockHash)"/>
         public override void PutTxIdBlockHashIndex(TxId txId, BlockHash blockHash)
         {
-            _txExecutionDb.Put(
+            _txIdBlockHashIndexDb.Put(
                 TxIdBlockHashIndexKey(txId, blockHash),
                 blockHash.ToByteArray()
                 );
@@ -772,7 +776,7 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc cref="BaseStore.DeleteTxIdBlockHashIndex(TxId, BlockHash)"/>
         public override void DeleteTxIdBlockHashIndex(TxId txId, BlockHash blockHash)
         {
-            _txExecutionDb.Remove(
+            _txIdBlockHashIndexDb.Remove(
                 TxIdBlockHashIndexKey(txId, blockHash)
             );
         }
@@ -781,7 +785,7 @@ namespace Libplanet.RocksDBStore
         public override IEnumerable<BlockHash> IterateTxIdBlockHashIndex(TxId txId)
         {
             var prefix = TxIdBlockHashIndexTxIdKey(txId);
-            foreach (var it in IterateDb(_txExecutionDb, prefix, null))
+            foreach (var it in IterateDb(_txIdBlockHashIndexDb, prefix, null))
             {
                 yield return new BlockHash(it.Value());
             }
@@ -932,6 +936,7 @@ namespace Libplanet.RocksDBStore
                     _blockPerceptionDb?.Dispose();
                     _stagedTxDb?.Dispose();
                     _txExecutionDb?.Dispose();
+                    _txIdBlockHashIndexDb?.Dispose();
                     foreach (var db in _txDbCache.Values)
                     {
                         db.Dispose();
