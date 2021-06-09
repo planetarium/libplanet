@@ -20,5 +20,5 @@ comment:
   layout: "diff, files"
 
 ignore:
-  - "*Tests/*"
-  - "*Benchmarks/*"
+  - "*Tests/**/*"
+  - "*Benchmarks/**/*"
