@@ -172,6 +172,10 @@ namespace Libplanet.Tests.Action
             Assert.False(evaluations[0].InputContext.BlockAction);
             Assert.Single(evaluations);
             Assert.NotNull(evaluations.Single().Exception);
+            Assert.IsType<UnexpectedlyTerminatedActionException>(
+                evaluations.Single().Exception);
+            Assert.IsType<ThrowException.SomeException>(
+                evaluations.Single().Exception.InnerException);
         }
 
         [SuppressMessage(
