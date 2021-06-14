@@ -72,6 +72,7 @@ namespace Libplanet.RocksDBStore
         private readonly RocksDb _stagedTxDb;
         private readonly RocksDb _txExecutionDb;
         private readonly RocksDb _chainDb;
+        private readonly LruCache<string, RocksDb> _blockHeaderDbCache;
 
         private readonly ReaderWriterLockSlim _rwTxLock;
         private readonly ReaderWriterLockSlim _rwBlockLock;
@@ -182,6 +183,12 @@ namespace Libplanet.RocksDBStore
             });
             _txDbCache = new LruCache<string, RocksDb>(dbConnectionCacheSize);
             _txDbCache.SetPreRemoveDataMethod(db =>
+            {
+                db.Dispose();
+                return true;
+            });
+            _blockHeaderDbCache = new LruCache<string, RocksDb>(dbConnectionCacheSize);
+            _blockHeaderDbCache.SetPreRemoveDataMethod(db =>
             {
                 db.Dispose();
                 return true;
@@ -642,9 +649,13 @@ namespace Libplanet.RocksDBStore
             {
                 string blockHeaderDbName =
                     RocksDBStoreBitConverter.GetString(blockHeaderDbNameByte);
-                RocksDb blockHeaderDb =
-                    RocksDBUtils.OpenRocksDb(_options, BlockHeaderDbPath(blockHeaderDbName));
-                _blockHeaderIndexDb.Remove(key);
+                if (!_blockHeaderDbCache.TryGetValue(blockHeaderDbName, out RocksDb blockHeaderDb))
+                {
+                    blockHeaderDb =
+                        RocksDBUtils.OpenRocksDb(_options, BlockHeaderDbPath(blockHeaderDbName));
+                    _blockHeaderDbCache.AddOrUpdate(blockHeaderDbName, blockHeaderDb);
+                }
+
                 byte[] serializedHeader = blockHeaderDb.Get(key);
 
                 return BlockHeader.Deserialize(serializedHeader);
@@ -764,8 +775,13 @@ namespace Libplanet.RocksDBStore
             try
             {
                 string blockHeaderDbName = $"epoch{timestamp / _blockEpochUnitSeconds}";
-                RocksDb blockHeaderDb =
-                    RocksDBUtils.OpenRocksDb(_options, BlockHeaderDbPath(blockHeaderDbName));
+                if (!_blockHeaderDbCache.TryGetValue(blockHeaderDbName, out RocksDb blockHeaderDb))
+                {
+                    blockHeaderDb =
+                        RocksDBUtils.OpenRocksDb(_options, BlockHeaderDbPath(blockHeaderDbName));
+                    _blockHeaderDbCache.AddOrUpdate(blockHeaderDbName, blockHeaderDb);
+                }
+
                 byte[] value = blockHeader.Serialize();
                 blockHeaderDb.Put(key, value);
                 _blockHeaderIndexDb.Put(key, RocksDBStoreBitConverter.GetBytes(blockHeaderDbName));
@@ -828,8 +844,13 @@ namespace Libplanet.RocksDBStore
             {
                 string blockHeaderDbName =
                     RocksDBStoreBitConverter.GetString(blockHeaderDbNameByte);
-                RocksDb blockHeaderDb =
-                    RocksDBUtils.OpenRocksDb(_options, BlockHeaderDbPath(blockHeaderDbName));
+                if (!_blockHeaderDbCache.TryGetValue(blockHeaderDbName, out RocksDb blockHeaderDb))
+                {
+                    blockHeaderDb =
+                        RocksDBUtils.OpenRocksDb(_options, BlockHeaderDbPath(blockHeaderDbName));
+                    _blockHeaderDbCache.AddOrUpdate(blockHeaderDbName, blockHeaderDb);
+                }
+
                 _blockHeaderIndexDb.Remove(key);
                 blockHeaderDb.Remove(key);
 
@@ -1043,7 +1064,13 @@ namespace Libplanet.RocksDBStore
                         db.Dispose();
                     }
 
+                    foreach (var db in _blockHeaderDbCache.Values)
+                    {
+                        db.Dispose();
+                    }
+
                     _blockDbCache.Clear();
+                    _blockHeaderDbCache.Clear();
                     _disposed = true;
                 }
             }
