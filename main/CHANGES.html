@@ -311,6 +311,9 @@ been idempotent.  [<a href="https://github.com/planetarium/libplanet/pull/1272">
 [<a href="https://github.com/planetarium/libplanet/pull/1278">#1278</a>]</li>
 <li>Fixed a bug where <code>DefaultStore.ForkBlockIndexes()</code> hadn't copied genesis
 block.  [<a href="https://github.com/planetarium/libplanet/pull/1325">#1325</a>]</li>
+<li>(Libplanet.RocksDBStore) Fixed a bug where <code>RocksDBStore.GetBlock&lt;T&gt;()</code>
+and <code>RocksDBStore.GetTransaction&lt;T&gt;()</code> handn't returned expected values
+in multithreading environment.  [<a href="https://github.com/planetarium/libplanet/issues/1339">#1339</a>, <a href="https://github.com/planetarium/libplanet/pull/1342">#1342</a>]</li>
 </ul>
 <h3 id="cli-tools">CLI tools</h3>
 <ul>
