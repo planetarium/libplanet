@@ -272,8 +272,12 @@ To be released.
     key without asking passphrase.  [[#1213], [#1265]]
  -  Added `planet key derive` subcommand to derive the address or
     public key from a private.  [[#1268]]
- -  Added `planet query [block-by-hash|block-by-index|tx-by-id]` commands
+ -  Added `planet store [block-by-hash|block-by-index|tx-by-id]` commands
     to retrieve the data from the store.  [[#1284], [#1285], [#1298]]
+ -  Added `planet store block-by-tx-id` commands
+    to retrieve the data from the store.  [[#1316], [#1340]]
+ -  Added `planet store build-index-tx-block` commands
+    to build index from TxId to BlockHash.  [[#1316], [#1340]]
 
 [#1156]: https://github.com/planetarium/libplanet/issues/1156
 [#1192]: https://github.com/planetarium/libplanet/issues/1192
@@ -304,12 +308,14 @@ To be released.
 [#1301]: https://github.com/planetarium/libplanet/issues/1301
 [#1305]: https://github.com/planetarium/libplanet/pull/1305
 [#1315]: https://github.com/planetarium/libplanet/issues/1315
+[#1316]: https://github.com/planetarium/libplanet/issues/1316
 [#1320]: https://github.com/planetarium/libplanet/issues/1320
 [#1325]: https://github.com/planetarium/libplanet/pull/1325
 [#1328]: https://github.com/planetarium/libplanet/pull/1328
 [#1329]: https://github.com/planetarium/libplanet/pull/1329
 [#1334]: https://github.com/planetarium/libplanet/pull/1334
 [#1339]: https://github.com/planetarium/libplanet/issues/1339
+[#1340]: https://github.com/planetarium/libplanet/pull/1340
 [#1342]: https://github.com/planetarium/libplanet/pull/1342
 [#1343]: https://github.com/planetarium/libplanet/pull/1343
 [#1348]: https://github.com/planetarium/libplanet/pull/1348
