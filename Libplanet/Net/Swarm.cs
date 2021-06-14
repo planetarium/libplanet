@@ -516,13 +516,39 @@ namespace Libplanet.Net
             using CancellationTokenRegistration ctr = cancellationToken.Register(() =>
                 _logger.Information("Preloading is requested to be cancelled.")
             );
-
             Block<T> initialTip = BlockChain.Tip;
+            if (lightNode && _store.CountBlockHeaders() > 0)
+            {
+                var blockHeader = _store.GetLatestBlockHeader();
+                if (initialTip.Index < blockHeader.Index)
+                {
+                    var blockHashList = new List<BlockHash>();
+                    IAsyncEnumerable<Block<T>> blocks = null;
+
+                    blockHashList.Add(new BlockHash(blockHeader.Hash));
+                    foreach (BoundPeer peer in RoutingTable.Peers)
+                    {
+                        blocks =
+                            GetBlocksAsync(peer, blockHashList.ToArray(), CancellationToken.None);
+                        if (blocks.CountAsync().IsCompletedSuccessfully
+                            && blocks.CountAsync().Result <= 0)
+                        {
+                            continue;
+                        }
+
+                        break;
+                    }
+
+                    initialTip = GetBlock(blocks, blockHashList.First()).Result;
+                }
+            }
+
             BlockLocator initialLocator = BlockChain.GetBlockLocator();
             _logger.Debug(
-                "The tip before preloading begins: #{TipIndex} {TipHash}",
-                BlockChain.Tip.Index,
-                BlockChain.Tip.Hash
+                "The tip before preloading begins: #{TipIndex} {TipHash} {bool}",
+                initialTip.Index,
+                initialTip.Hash,
+                initialTip.Equals(BlockChain.Tip)
             );
 
             // As preloading takes long, the blockchain data can corrupt if a program suddenly
@@ -693,13 +719,22 @@ namespace Libplanet.Net
                             block.Hash
                         );
                         wStore.PutBlockHeader(block.Header);
+                        receivedBlockCount++;
+                        progress?.Report(new BlockDownloadState
+                        {
+                            TotalBlockCount = Math.Max(
+                                totalBlocksToDownload,
+                                receivedBlockCount),
+                            ReceivedBlockCount = receivedBlockCount,
+                            ReceivedBlockHash = block.Hash,
+                            SourcePeer = sourcePeer,
+                        });
                         _logger.Debug(
-                            "Stored a blockHeader of block #{BlockIndex} {BlockHash} " +
+                            "Appended a blockHeader of block #{BlockIndex} {BlockHash} " +
                             "into the store.",
                             block.Index,
                             block.Hash
                         );
-                        return;
                     }
                     else
                     {
