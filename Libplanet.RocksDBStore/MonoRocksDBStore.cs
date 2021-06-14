@@ -23,6 +23,7 @@ namespace Libplanet.RocksDBStore
     public class MonoRocksDBStore : BaseStore
     {
         private const string BlockDbName = "block";
+        private const string BlockHeaderDbName = "blockheader";
         private const string BlockPerceptionDbName = "blockpercept";
         private const string TxDbName = "tx";
         private const string StagedTxDbName = "stagedtx";
@@ -32,6 +33,7 @@ namespace Libplanet.RocksDBStore
 
         private static readonly byte[] IndexKeyPrefix = { (byte)'I' };
         private static readonly byte[] BlockKeyPrefix = { (byte)'B' };
+        private static readonly byte[] BlockHeaderKeyPrefix = { (byte)'H' };
         private static readonly byte[] TxKeyPrefix = { (byte)'T' };
         private static readonly byte[] TxNonceKeyPrefix = { (byte)'N' };
         private static readonly byte[] StagedTxKeyPrefix = { (byte)'t' };
@@ -52,6 +54,7 @@ namespace Libplanet.RocksDBStore
         private readonly string _path;
 
         private readonly RocksDb _blockDb;
+        private readonly RocksDb _blockHeaderDb;
         private readonly RocksDb _blockPerceptionDb;
         private readonly RocksDb _txDb;
         private readonly RocksDb _stagedTxDb;
@@ -119,6 +122,7 @@ namespace Libplanet.RocksDBStore
             }
 
             _blockDb = RocksDBUtils.OpenRocksDb(_options, RocksDbPath(BlockDbName));
+            _blockHeaderDb = RocksDBUtils.OpenRocksDb(_options, RocksDbPath(BlockHeaderDbName));
             _blockPerceptionDb =
                 RocksDBUtils.OpenRocksDb(_options, RocksDbPath(BlockPerceptionDbName));
             _txDb = RocksDBUtils.OpenRocksDb(_options, RocksDbPath(TxDbName));
@@ -444,13 +448,28 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc cref="BaseStore.IterateBlockHeaderHashes()"/>
         public override IEnumerable<BlockHash> IterateBlockHeaderHashes()
         {
-            throw new NotSupportedException();
+            byte[] prefix = BlockHeaderKeyPrefix;
+
+            foreach (Iterator it in IterateDb(_blockHeaderDb, prefix))
+            {
+                byte[] key = it.Key();
+                byte[] hashBytes = key.Skip(prefix.Length).ToArray();
+                yield return new BlockHash(hashBytes);
+            }
         }
 
         /// <inheritdoc cref="BaseStore.GetBlockHeader(BlockHash)"/>
         public override BlockHeader? GetBlockHeader(BlockHash blockHash)
         {
-            throw new NotSupportedException();
+            byte[] key = BlockHeaderKey(blockHash);
+            byte[] bytes = _blockHeaderDb.Get(key);
+
+            if (bytes is null)
+            {
+                return null;
+            }
+
+            return BlockHeader.Deserialize(bytes);
         }
 
         /// <inheritdoc cref="BaseStore.GetBlockDigest(BlockHash)"/>
@@ -503,7 +522,15 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override void PutBlockHeader(BlockHeader blockHeader)
         {
-            throw new NotSupportedException();
+            byte[] key = BlockHeaderKey(new BlockHash(blockHeader.Hash));
+
+            if (!(_blockHeaderDb.Get(key) is null))
+            {
+                return;
+            }
+
+            byte[] value = blockHeader.Serialize();
+            _blockHeaderDb.Put(key, value);
         }
 
         /// <inheritdoc cref="BaseStore.DeleteBlock(BlockHash)"/>
@@ -525,7 +552,16 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc cref="BaseStore.DeleteBlockHeader(BlockHash)"/>
         public override bool DeleteBlockHeader(BlockHash blockHash)
         {
-            throw new NotSupportedException();
+            byte[] key = BlockHeaderKey(blockHash);
+
+            if (_blockHeaderDb.Get(key) is null)
+            {
+                return false;
+            }
+
+            _blockHeaderDb.Remove(key);
+
+            return true;
         }
 
         /// <inheritdoc cref="BaseStore.ContainsBlock(BlockHash)"/>
@@ -544,7 +580,9 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc cref="BaseStore.ContainsBlockHeader(BlockHash)"/>
         public override bool ContainsBlockHeader(BlockHash blockHash)
         {
-            throw new NotSupportedException();
+            byte[] key = BlockHeaderKey(blockHash);
+
+            return !(_blockHeaderDb.Get(key) is null);
         }
 
         /// <inheritdoc cref="BaseStore.PutTxExecution(Libplanet.Tx.TxSuccess)"/>
@@ -692,6 +730,9 @@ namespace Libplanet.RocksDBStore
 
         private byte[] BlockKey(in BlockHash blockHash) =>
             BlockKeyPrefix.Concat(blockHash.ByteArray).ToArray();
+
+        private byte[] BlockHeaderKey(in BlockHash blockHash) =>
+            BlockHeaderKeyPrefix.Concat(blockHash.ByteArray).ToArray();
 
         private byte[] TxKey(in TxId txId) =>
             TxKeyPrefix.Concat(txId.ByteArray).ToArray();
