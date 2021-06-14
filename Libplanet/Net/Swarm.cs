@@ -771,7 +771,7 @@ namespace Libplanet.Net
 
                 tipCandidate = tempTip;
 
-                if (tipCandidate is null)
+                if (tipCandidate is null || lightNode)
                 {
                     // If there is no blocks in the network (or no consensus at least)
                     // it doesn't need to receive states from other peers at all.
