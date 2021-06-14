@@ -178,6 +178,75 @@ namespace Libplanet.Tests.Action
                 evaluations.Single().Exception.InnerException);
         }
 
+        [Fact]
+        public void EvaluateWithCriticalException()
+        {
+            var privateKey = new PrivateKey();
+            var address = privateKey.ToAddress();
+
+            var action = new ThrowException
+            {
+                ThrowOnRehearsal = false,
+                ThrowOnExecution = true,
+                ExceptionTypeToThrow = typeof(OutOfMemoryException),
+            };
+
+            var store = new DefaultStore(null);
+            var stateStore =
+                new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore());
+            var chain = TestUtils.MakeBlockChain<ThrowException>(
+                policy: new BlockPolicy<ThrowException>(),
+                store: store,
+                stateStore: stateStore);
+            var genesis = chain.Genesis;
+            // Evaluation is run with rehearsal true to get updated addresses on tx creation.
+            var tx = Transaction<ThrowException>.Create(
+                nonce: 0,
+                privateKey: privateKey,
+                genesisHash: genesis.Hash,
+                actions: new[] { action });
+            var block = new Block<ThrowException>(
+                index: 1,
+                difficulty: 0,
+                totalDifficulty: 0,
+                nonce: new Nonce(new byte[0]),
+                miner: _storeFx.Address1,
+                previousHash: null,
+                timestamp: DateTimeOffset.UtcNow,
+                transactions: ImmutableArray.Create(tx));
+            var actionEvaluator = new ActionEvaluator<ThrowException>(
+                policyBlockAction: null,
+                stateGetter: ActionEvaluator<ThrowException>.NullStateGetter,
+                balanceGetter: ActionEvaluator<ThrowException>.NullBalanceGetter,
+                trieGetter: null);
+            IAccountStateDelta previousStates = genesis.ProtocolVersion > 0
+                ? new AccountStateDeltaImpl(
+                    ActionEvaluator<DumbAction>.NullAccountStateGetter,
+                    ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
+                    genesis.Miner.GetValueOrDefault())
+                : new AccountStateDeltaImplV0(
+                    ActionEvaluator<DumbAction>.NullAccountStateGetter,
+                    ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
+                    genesis.Miner.GetValueOrDefault());
+
+            // FIXME: Cannot call Evaluate() on a block due to Validate() call inside Evaluate.
+            // Moreover, mining a block is also not easily possible since evaluation, hence
+            // also validation, is performed inside Block<T>.Mine().
+
+            // ToList() is required for realization.
+            actionEvaluator.EvaluateTx(
+                block: block,
+                tx: tx,
+                previousStates: previousStates,
+                rehearsal: true).ToList();
+            Assert.Throws<OutOfMemoryException>(
+                () => actionEvaluator.EvaluateTx(
+                    block: block,
+                    tx: tx,
+                    previousStates: previousStates,
+                    rehearsal: false).ToList());
+        }
+
         [SuppressMessage(
             "Microsoft.StyleCop.CSharp.ReadabilityRules",
             "SA1118",

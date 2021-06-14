@@ -265,9 +265,20 @@ namespace Libplanet.Action
                 }
                 catch (Exception e)
                 {
+                    if (e is OutOfMemoryException)
+                    {
+                        var message =
+                            $"The action {action} (block #{blockIndex}, pre-evaluation hash " +
+                            $"{preEvaluationHash}, tx {txid}) threw an exception " +
+                            "during execution:\n" +
+                            $"{e}";
+                        _logger.Error(e, message);
+                        throw;
+                    }
+
                     if (rehearsal)
                     {
-                        var msg =
+                        var message =
                             $"The action {action} threw an exception during its " +
                             "rehearsal.  It is probably because the logic of the " +
                             $"action {action} is not enough generic so that it " +
@@ -277,34 +288,41 @@ namespace Libplanet.Action
                             "rehearsal mode.\n" +
                             "See also this exception's InnerException property.";
                         exc = new UnexpectedlyTerminatedActionException(
-                            null, null, null, null, action, msg, e);
+                            null, null, null, null, action, message, e);
                     }
                     else
                     {
                         var stateRootHash = context.PreviousStateRootHash;
-                        const string logMsg =
+                        var message =
                             "The action {Action} (block #{BlockIndex}, pre-evaluation hash " +
                             "{PreEvaluationHash}, tx {TxId}, previous state root hash " +
                             "{StateRootHash}) threw an exception during execution:\n" +
                             "{InnerException}";
                         _logger.Error(
                             e,
-                            logMsg,
+                            message,
                             action,
                             blockIndex,
                             preEvaluationHash,
                             txid,
                             stateRootHash,
                             e);
-                        var msg =
+                        var innerMessage =
                             $"The action {action} (block #{blockIndex}, " +
                             $"pre-evaluation hash {preEvaluationHash}, tx {txid}, " +
                             $"previous state root hash {stateRootHash}) threw " +
                             "an exception during execution.  " +
                             "See also this exception's InnerException property.";
-                        _logger.Error("{Message}\nInnerException: {ExcMessage}", msg, e.Message);
+                        _logger.Error(
+                            "{Message}\nInnerException: {ExcMessage}", innerMessage, e.Message);
                         exc = new UnexpectedlyTerminatedActionException(
-                            preEvaluationHash, blockIndex, txid, stateRootHash, action, msg, e);
+                            preEvaluationHash,
+                            blockIndex,
+                            txid,
+                            stateRootHash,
+                            action,
+                            innerMessage,
+                            e);
                     }
                 }
 
