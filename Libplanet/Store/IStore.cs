@@ -232,6 +232,38 @@ namespace Libplanet.Store
         TxExecution GetTxExecution(BlockHash blockHash, TxId txid);
 
         /// <summary>
+        /// Records a index for given pair <paramref name="txId"/> and <paramref name="blockHash"/>.
+        /// If there exist a record for <paramref name="txId"/> already,
+        /// it overwrites the record silently.
+        /// </summary>
+        /// <param name="txId">The <see cref="TxId"/> of the <see cref="Transaction{T}"/>.</param>
+        /// <param name="blockHash">The <see cref="BlockHash"/> of the <see cref="Block{T}"/>.
+        /// </param>
+        void PutTxIdBlockHashIndex(TxId txId, BlockHash blockHash);
+
+        /// <summary>
+        /// Retrieves the <see cref="BlockHash"/> indexed by the <paramref name="txId"/>.
+        /// </summary>
+        /// <param name="txId">The <see cref="TxId"/> of the <see cref="Transaction{T}"/>.</param>
+        /// <returns><see cref="BlockHash"/> if the index exists. Otherwise <c>null</c>.</returns>
+        BlockHash? GetFirstTxIdBlockHashIndex(TxId txId);
+
+        /// <summary>
+        /// Retrieves <see cref="BlockHash"/>es indexed by the <paramref name="txId"/>.
+        /// </summary>
+        /// <param name="txId">The <see cref="TxId"/> of the <see cref="Transaction{T}"/>.</param>
+        /// <returns><see cref="BlockHash"/>es if the index exists.</returns>
+        IEnumerable<BlockHash> IterateTxIdBlockHashIndex(TxId txId);
+
+        /// <summary>
+        /// Deletes the index for the <paramref name="txId"/> and <paramref name="blockHash"/>.
+        /// </summary>
+        /// <param name="txId">The <see cref="TxId"/> of the <see cref="Transaction{T}"/>.</param>
+        /// <param name="blockHash">The <see cref="BlockHash"/>
+        /// of the <see cref="Block{T}"/>.</param>.
+        void DeleteTxIdBlockHashIndex(TxId txId, BlockHash blockHash);
+
+        /// <summary>
         /// Records the perceived time of a block.  If there is already a record, it is overwritten.
         /// </summary>
         /// <param name="blockHash"><see cref="Block{T}.Hash"/> to record its perceived time.

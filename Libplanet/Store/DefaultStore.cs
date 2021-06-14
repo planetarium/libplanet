@@ -27,11 +27,13 @@ namespace Libplanet.Store
     public class DefaultStore : BaseStore
     {
         private const string IndexColPrefix = "index_";
+        private const string TxIdBlockIndexPrefix = "txblockindex_";
         private const string TxNonceIdPrefix = "nonce_";
 
         private static readonly UPath TxRootPath = UPath.Root / "tx";
         private static readonly UPath BlockRootPath = UPath.Root / "block";
         private static readonly UPath TxExecutionRootPath = UPath.Root / "txexec";
+        private static readonly UPath TxIdBlockHashRootPath = UPath.Root / "txbindex";
         private static readonly UPath BlockPerceptionRootPath = UPath.Root / "blockpercept";
         private static readonly Codec Codec = new Codec();
 
@@ -41,6 +43,7 @@ namespace Libplanet.Store
         private readonly SubFileSystem _txs;
         private readonly SubFileSystem _blocks;
         private readonly SubFileSystem _txExecutions;
+        private readonly SubFileSystem _txIdBlockHashIndex;
         private readonly SubFileSystem _blockPerceptions;
         private readonly LruCache<TxId, object> _txCache;
         private readonly LruCache<BlockHash, BlockDigest> _blockCache;
@@ -143,6 +146,8 @@ namespace Libplanet.Store
             _blocks = new SubFileSystem(_root, BlockRootPath, owned: false);
             _root.CreateDirectory(TxExecutionRootPath);
             _txExecutions = new SubFileSystem(_root, TxExecutionRootPath, owned: false);
+            _root.CreateDirectory(TxIdBlockHashRootPath);
+            _txIdBlockHashIndex = new SubFileSystem(_root, TxIdBlockHashRootPath, owned: false);
             _root.CreateDirectory(BlockPerceptionRootPath);
             _blockPerceptions = new SubFileSystem(_root, BlockPerceptionRootPath, owned: false);
 
@@ -545,6 +550,39 @@ namespace Libplanet.Store
             return null;
         }
 
+        /// <inheritdoc cref="BaseStore.PutTxIdBlockHashIndex(TxId, BlockHash)"/>
+        public override void PutTxIdBlockHashIndex(TxId txId, BlockHash blockHash)
+        {
+            var path = TxIdBlockHashIndexPath(txId, blockHash);
+            var dirPath = path.GetDirectory();
+            CreateDirectoryRecursively(_txIdBlockHashIndex, dirPath);
+            _txIdBlockHashIndex.WriteAllBytes(path, blockHash.ToByteArray());
+        }
+
+        public override IEnumerable<BlockHash> IterateTxIdBlockHashIndex(TxId txId)
+        {
+            var txPath = TxPath(txId);
+            if (!_txIdBlockHashIndex.DirectoryExists(txPath))
+            {
+                yield break;
+            }
+
+            foreach (var path in _txIdBlockHashIndex.EnumerateFiles(txPath))
+            {
+                yield return new BlockHash(ByteUtil.ParseHex(path.GetName()));
+            }
+        }
+
+        /// <inheritdoc cref="BaseStore.DeleteTxIdBlockHashIndex(TxId, BlockHash)"/>
+        public override void DeleteTxIdBlockHashIndex(TxId txId, BlockHash blockHash)
+        {
+            var path = TxIdBlockHashIndexPath(txId, blockHash);
+            if (_txIdBlockHashIndex.FileExists(path))
+            {
+                _txIdBlockHashIndex.DeleteFile(path);
+            }
+        }
+
         /// <inheritdoc cref="BaseStore.SetBlockPerceivedTime(BlockHash, DateTimeOffset)"/>
         public override void SetBlockPerceivedTime(
             BlockHash blockHash,
@@ -735,6 +773,9 @@ namespace Libplanet.Store
 
         private UPath TxExecutionPath(TxExecution txExecution) =>
             TxExecutionPath(txExecution.BlockHash, txExecution.TxId);
+
+        private UPath TxIdBlockHashIndexPath(in TxId txid, in BlockHash blockHash) =>
+            TxPath(txid) / blockHash.ToString();
 
         private string TxNonceId(in Guid chainId)
         {

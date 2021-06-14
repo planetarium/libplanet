@@ -27,6 +27,7 @@ namespace Libplanet.RocksDBStore
         private const string TxDbName = "tx";
         private const string StagedTxDbName = "stagedtx";
         private const string TxExecutionDbName = "txexec";
+        private const string TxIdBlockHashIndexDbName = "txbindex";
         private const string ChainDbName = "chain";
         private const int ForkWriteBatchSize = 100000;
 
@@ -36,6 +37,7 @@ namespace Libplanet.RocksDBStore
         private static readonly byte[] TxNonceKeyPrefix = { (byte)'N' };
         private static readonly byte[] StagedTxKeyPrefix = { (byte)'t' };
         private static readonly byte[] TxExecutionKeyPrefix = { (byte)'e' };
+        private static readonly byte[] TxIdBlockHashIndexPrefix = { (byte)'i' };
         private static readonly byte[] IndexCountKey = { (byte)'c' };
         private static readonly byte[] CanonicalChainIdIdKey = { (byte)'C' };
 
@@ -56,6 +58,7 @@ namespace Libplanet.RocksDBStore
         private readonly RocksDb _txDb;
         private readonly RocksDb _stagedTxDb;
         private readonly RocksDb _txExecutionDb;
+        private readonly RocksDb _txIdBlockHashIndexDb;
         private readonly RocksDb _chainDb;
         private bool _disposed = false;
 
@@ -125,6 +128,8 @@ namespace Libplanet.RocksDBStore
             _stagedTxDb = RocksDBUtils.OpenRocksDb(_options, RocksDbPath(StagedTxDbName));
             _txExecutionDb =
                 RocksDBUtils.OpenRocksDb(_options, RocksDbPath(TxExecutionDbName));
+            _txIdBlockHashIndexDb =
+                RocksDBUtils.OpenRocksDb(_options, RocksDbPath(TxIdBlockHashIndexDbName));
 
             // When opening a DB in a read-write mode, you need to specify all Column Families that
             // currently exist in a DB. https://github.com/facebook/rocksdb/wiki/Column-Families
@@ -543,6 +548,33 @@ namespace Libplanet.RocksDBStore
             return null;
         }
 
+        /// <inheritdoc cref="BaseStore.PutTxIdBlockHashIndex(TxId, BlockHash)"/>
+        public override void PutTxIdBlockHashIndex(TxId txId, BlockHash blockHash)
+        {
+            _txIdBlockHashIndexDb.Put(
+                TxIdBlockHashIndexKey(txId, blockHash),
+                blockHash.ToByteArray()
+            );
+        }
+
+        /// <inheritdoc cref="BaseStore.DeleteTxIdBlockHashIndex(TxId, BlockHash)"/>
+        public override void DeleteTxIdBlockHashIndex(TxId txId, BlockHash blockHash)
+        {
+            _txIdBlockHashIndexDb.Remove(
+                TxIdBlockHashIndexKey(txId, blockHash)
+            );
+        }
+
+        /// <inheritdoc cref="BaseStore.IterateTxIdBlockHashIndex(TxId)"/>
+        public override IEnumerable<BlockHash> IterateTxIdBlockHashIndex(TxId txId)
+        {
+            var prefix = TxIdBlockHashIndexTxIdKey(txId);
+            foreach (var it in IterateDb(_txIdBlockHashIndexDb, prefix, null))
+            {
+                yield return new BlockHash(it.Value());
+            }
+        }
+
         /// <inheritdoc cref="BaseStore.SetBlockPerceivedTime(BlockHash, DateTimeOffset)"/>
         public override void SetBlockPerceivedTime(
             BlockHash blockHash,
@@ -655,6 +687,7 @@ namespace Libplanet.RocksDBStore
                 _blockDb?.Dispose();
                 _blockPerceptionDb?.Dispose();
                 _txExecutionDb?.Dispose();
+                _txIdBlockHashIndexDb?.Dispose();
                 _stagedTxDb?.Dispose();
                 _disposed = true;
             }
@@ -679,6 +712,12 @@ namespace Libplanet.RocksDBStore
 
         private byte[] TxExecutionKey(TxExecution txExecution) =>
             TxExecutionKey(txExecution.BlockHash, txExecution.TxId);
+
+        private byte[] TxIdBlockHashIndexKey(in TxId txId, in BlockHash blockHash) =>
+            TxIdBlockHashIndexTxIdKey(txId).Concat(blockHash.ByteArray).ToArray();
+
+        private byte[] TxIdBlockHashIndexTxIdKey(in TxId txId) =>
+            TxIdBlockHashIndexPrefix.Concat(txId.ByteArray).ToArray();
 
         private IEnumerable<Iterator> IterateDb(RocksDb db, byte[] prefix, Guid? chainId = null)
         {

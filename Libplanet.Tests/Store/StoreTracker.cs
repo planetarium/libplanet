@@ -71,6 +71,30 @@ namespace Libplanet.Tests.Store
             return _store.GetTxExecution(blockHash, txid);
         }
 
+        public void PutTxIdBlockHashIndex(TxId txId, BlockHash blockHash)
+        {
+            Log(nameof(PutTxIdBlockHashIndex), txId, blockHash);
+            _store.PutTxIdBlockHashIndex(txId, blockHash);
+        }
+
+        public BlockHash? GetFirstTxIdBlockHashIndex(TxId txId)
+        {
+            Log(nameof(GetFirstTxIdBlockHashIndex), txId);
+            return _store.GetFirstTxIdBlockHashIndex(txId);
+        }
+
+        public IEnumerable<BlockHash> IterateTxIdBlockHashIndex(TxId txId)
+        {
+            Log(nameof(IterateTxIdBlockHashIndex), txId);
+            return _store.IterateTxIdBlockHashIndex(txId);
+        }
+
+        public void DeleteTxIdBlockHashIndex(TxId txId, BlockHash blockHash)
+        {
+            Log(nameof(DeleteTxIdBlockHashIndex), txId, blockHash);
+            _store.DeleteTxIdBlockHashIndex(txId, blockHash);
+        }
+
         public void SetBlockPerceivedTime(BlockHash blockHash, DateTimeOffset perceivedTime)
         {
             Log(nameof(SetBlockPerceivedTime), blockHash, perceivedTime);

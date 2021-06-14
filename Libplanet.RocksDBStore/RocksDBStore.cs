@@ -30,6 +30,7 @@ namespace Libplanet.RocksDBStore
         private const string TxIndexDbName = "txindex";
         private const string StagedTxDbName = "stagedtx";
         private const string TxExecutionDbName = "txexec";
+        private const string TxIdBlockHashIndexDbName = "txbindex";
         private const string ChainDbName = "chain";
         private const int ForkWriteBatchSize = 100000;
 
@@ -39,6 +40,7 @@ namespace Libplanet.RocksDBStore
         private static readonly byte[] TxNonceKeyPrefix = { (byte)'N' };
         private static readonly byte[] StagedTxKeyPrefix = { (byte)'t' };
         private static readonly byte[] TxExecutionKeyPrefix = { (byte)'e' };
+        private static readonly byte[] TxIdBlockHashIndexPrefix = { (byte)'i' };
         private static readonly byte[] IndexCountKey = { (byte)'c' };
         private static readonly byte[] CanonicalChainIdIdKey = { (byte)'C' };
         private static readonly byte[] PreviousChainIdKey = { (byte)'P' };
@@ -67,6 +69,7 @@ namespace Libplanet.RocksDBStore
         private readonly LruCache<string, RocksDb> _txDbCache;
         private readonly RocksDb _stagedTxDb;
         private readonly RocksDb _txExecutionDb;
+        private readonly RocksDb _txIdBlockHashIndexDb;
         private readonly RocksDb _chainDb;
 
         private readonly ReaderWriterLockSlim _rwTxLock;
@@ -158,6 +161,8 @@ namespace Libplanet.RocksDBStore
             _stagedTxDb = RocksDBUtils.OpenRocksDb(_options, RocksDbPath(StagedTxDbName));
             _txExecutionDb =
                 RocksDBUtils.OpenRocksDb(_options, RocksDbPath(TxExecutionDbName));
+            _txIdBlockHashIndexDb =
+                RocksDBUtils.OpenRocksDb(_options, RocksDbPath(TxIdBlockHashIndexDbName));
 
             // When opening a DB in a read-write mode, you need to specify all Column Families that
             // currently exist in a DB. https://github.com/facebook/rocksdb/wiki/Column-Families
@@ -783,6 +788,33 @@ namespace Libplanet.RocksDBStore
             return false;
         }
 
+        /// <inheritdoc cref="BaseStore.PutTxIdBlockHashIndex(TxId, BlockHash)"/>
+        public override void PutTxIdBlockHashIndex(TxId txId, BlockHash blockHash)
+        {
+            _txIdBlockHashIndexDb.Put(
+                TxIdBlockHashIndexKey(txId, blockHash),
+                blockHash.ToByteArray()
+                );
+        }
+
+        /// <inheritdoc cref="BaseStore.DeleteTxIdBlockHashIndex(TxId, BlockHash)"/>
+        public override void DeleteTxIdBlockHashIndex(TxId txId, BlockHash blockHash)
+        {
+            _txIdBlockHashIndexDb.Remove(
+                TxIdBlockHashIndexKey(txId, blockHash)
+            );
+        }
+
+        /// <inheritdoc cref="BaseStore.IterateTxIdBlockHashIndex(TxId)"/>
+        public override IEnumerable<BlockHash> IterateTxIdBlockHashIndex(TxId txId)
+        {
+            var prefix = TxIdBlockHashIndexTxIdKey(txId);
+            foreach (var it in IterateDb(_txIdBlockHashIndexDb, prefix, null))
+            {
+                yield return new BlockHash(it.Value());
+            }
+        }
+
         /// <inheritdoc cref="BaseStore.PutTxExecution(Libplanet.Tx.TxSuccess)"/>
         public override void PutTxExecution(TxSuccess txSuccess) =>
             _txExecutionDb.Put(
@@ -928,6 +960,7 @@ namespace Libplanet.RocksDBStore
                     _blockPerceptionDb?.Dispose();
                     _stagedTxDb?.Dispose();
                     _txExecutionDb?.Dispose();
+                    _txIdBlockHashIndexDb?.Dispose();
                     foreach (var db in _txDbCache.Values)
                     {
                         db.Dispose();
@@ -999,6 +1032,12 @@ namespace Libplanet.RocksDBStore
 
         private byte[] TxExecutionKey(TxExecution txExecution) =>
             TxExecutionKey(txExecution.BlockHash, txExecution.TxId);
+
+        private byte[] TxIdBlockHashIndexKey(in TxId txId, in BlockHash blockHash) =>
+            TxIdBlockHashIndexTxIdKey(txId).Concat(blockHash.ByteArray).ToArray();
+
+        private byte[] TxIdBlockHashIndexTxIdKey(in TxId txId) =>
+            TxIdBlockHashIndexPrefix.Concat(txId.ByteArray).ToArray();
 
         private byte[] ForkedChainsKey(Guid guid) =>
             ForkedChainsKeyPrefix.Concat(guid.ToByteArray()).ToArray();

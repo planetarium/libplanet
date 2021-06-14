@@ -65,6 +65,18 @@ namespace Libplanet.Explorer.Store
         public TxExecution GetTxExecution(BlockHash blockHash, TxId txid) =>
             _store.GetTxExecution(blockHash, txid);
 
+        public void PutTxIdBlockHashIndex(TxId txId, BlockHash blockHash) =>
+            _store.PutTxIdBlockHashIndex(txId, blockHash);
+
+        public BlockHash? GetFirstTxIdBlockHashIndex(TxId txId) =>
+            _store.GetFirstTxIdBlockHashIndex(txId);
+
+        public IEnumerable<BlockHash> IterateTxIdBlockHashIndex(TxId txId) =>
+            _store.IterateTxIdBlockHashIndex(txId);
+
+        public void DeleteTxIdBlockHashIndex(TxId txId, BlockHash blockHash) =>
+            _store.DeleteTxIdBlockHashIndex(txId, blockHash);
+
         public DateTimeOffset? GetBlockPerceivedTime(BlockHash blockHash) =>
             _store.GetBlockPerceivedTime(blockHash);
 

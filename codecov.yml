@@ -21,4 +21,6 @@ comment:
 
 ignore:
   - "*Tests/*"
+  - "*Tests/**/*"
   - "*Benchmarks/*"
+  - "*Benchmarks/**/*"

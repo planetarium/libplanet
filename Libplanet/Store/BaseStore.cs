@@ -138,6 +138,30 @@ namespace Libplanet.Store
         /// <inheritdoc cref="IStore.GetTxExecution(BlockHash, TxId)"/>
         public abstract TxExecution GetTxExecution(BlockHash blockHash, TxId txid);
 
+        /// <inheritdoc cref="IStore.PutTxIdBlockHashIndex(TxId, BlockHash)"/>
+        public abstract void PutTxIdBlockHashIndex(TxId txId, BlockHash blockHash);
+
+        public BlockHash? GetFirstTxIdBlockHashIndex(TxId txId)
+        {
+            BlockHash? blockHash;
+            try
+            {
+                blockHash = IterateTxIdBlockHashIndex(txId).First();
+            }
+            catch (InvalidOperationException)
+            {
+                blockHash = null;
+            }
+
+            return blockHash;
+        }
+
+        /// <inheritdoc cref="IStore.IterateTxIdBlockHashIndex(TxId)"/>
+        public abstract IEnumerable<BlockHash> IterateTxIdBlockHashIndex(TxId txId);
+
+        /// <inheritdoc cref="IStore.DeleteTxIdBlockHashIndex(TxId, BlockHash)"/>
+        public abstract void DeleteTxIdBlockHashIndex(TxId txId, BlockHash blockHash);
+
         /// <inheritdoc cref="IStore.SetBlockPerceivedTime(BlockHash, DateTimeOffset)"/>
         public abstract void SetBlockPerceivedTime(
             BlockHash blockHash,
