@@ -230,6 +230,9 @@ To be released.
     [[#1278]]
  -  Fixed a bug where `DefaultStore.ForkBlockIndexes()` hadn't copied genesis
     block.  [[#1325]]
+ -  (Libplanet.RocksDBStore) Fixed a bug where `RocksDBStore.GetBlock<T>()`
+    and `RocksDBStore.GetTransaction<T>()` handn't returned expected values
+    in multithreading environment.  [[#1339], [#1342]]
 
 ### CLI tools
 
@@ -270,6 +273,8 @@ To be released.
 [#1289]: https://github.com/planetarium/libplanet/pull/1289
 [#1298]: https://github.com/planetarium/libplanet/pull/1298
 [#1325]: https://github.com/planetarium/libplanet/pull/1325
+[#1339]: https://github.com/planetarium/libplanet/issues/1339
+[#1342]: https://github.com/planetarium/libplanet/pull/1342
 
 
 Version 0.11.1
