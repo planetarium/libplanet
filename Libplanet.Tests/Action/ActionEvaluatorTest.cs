@@ -205,20 +205,14 @@ namespace Libplanet.Tests.Action
                 privateKey: privateKey,
                 genesisHash: genesis.Hash,
                 actions: new[] { action });
-            var block = new Block<ThrowException>(
+            var block = Block<ThrowException>.Mine(
                 index: 1,
-                difficulty: 0,
-                totalDifficulty: 0,
-                nonce: new Nonce(new byte[0]),
+                difficulty: 1,
+                previousTotalDifficulty: genesis.TotalDifficulty,
                 miner: _storeFx.Address1,
-                previousHash: null,
+                previousHash: genesis.Hash,
                 timestamp: DateTimeOffset.UtcNow,
                 transactions: ImmutableArray.Create(tx));
-            var actionEvaluator = new ActionEvaluator<ThrowException>(
-                policyBlockAction: null,
-                stateGetter: ActionEvaluator<ThrowException>.NullStateGetter,
-                balanceGetter: ActionEvaluator<ThrowException>.NullBalanceGetter,
-                trieGetter: null);
             IAccountStateDelta previousStates = genesis.ProtocolVersion > 0
                 ? new AccountStateDeltaImpl(
                     ActionEvaluator<DumbAction>.NullAccountStateGetter,
@@ -229,22 +223,22 @@ namespace Libplanet.Tests.Action
                     ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
                     genesis.Miner.GetValueOrDefault());
 
-            // FIXME: Cannot call Evaluate() on a block due to Validate() call inside Evaluate.
-            // Moreover, mining a block is also not easily possible since evaluation, hence
-            // also validation, is performed inside Block<T>.Mine().
-
             // ToList() is required for realization.
-            actionEvaluator.EvaluateTx(
+            chain.ActionEvaluator.EvaluateTx(
                 block: block,
                 tx: tx,
                 previousStates: previousStates,
                 rehearsal: true).ToList();
             Assert.Throws<OutOfMemoryException>(
-                () => actionEvaluator.EvaluateTx(
+                () => chain.ActionEvaluator.EvaluateTx(
                     block: block,
                     tx: tx,
                     previousStates: previousStates,
                     rehearsal: false).ToList());
+            Assert.Throws<OutOfMemoryException>(
+                () => chain.ActionEvaluator.Evaluate(
+                    block: block,
+                    stateCompleterSet: StateCompleterSet<ThrowException>.Recalculate).ToList());
         }
 
         [SuppressMessage(
