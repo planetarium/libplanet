@@ -1247,7 +1247,7 @@ namespace Libplanet.Blockchain
 
                     foreach (var tx in block.Transactions)
                     {
-                        Store.PutTxIdBlockHashIndex(Id, tx.Id, block.Hash);
+                        Store.PutTxIdBlockHashIndex(tx.Id, block.Hash);
                     }
 
                     const string unstageStartMsg =
