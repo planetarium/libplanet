@@ -12773,6 +12773,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BaseStore.DeleteTransaction
   nameWithType: BaseStore.DeleteTransaction
+- uid: Libplanet.Store.BaseStore.DeleteTxIdBlockHashIndex(Libplanet.Tx.TxId,Libplanet.Blocks.BlockHash)
+  name: DeleteTxIdBlockHashIndex(TxId, BlockHash)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_DeleteTxIdBlockHashIndex_Libplanet_Tx_TxId_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Store.BaseStore.DeleteTxIdBlockHashIndex(Libplanet.Tx.TxId,Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.Store.BaseStore.DeleteTxIdBlockHashIndex(Libplanet.Tx.TxId, Libplanet.Blocks.BlockHash)
+  nameWithType: BaseStore.DeleteTxIdBlockHashIndex(TxId, BlockHash)
+- uid: Libplanet.Store.BaseStore.DeleteTxIdBlockHashIndex*
+  name: DeleteTxIdBlockHashIndex
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_DeleteTxIdBlockHashIndex_
+  commentId: Overload:Libplanet.Store.BaseStore.DeleteTxIdBlockHashIndex
+  isSpec: "True"
+  fullName: Libplanet.Store.BaseStore.DeleteTxIdBlockHashIndex
+  nameWithType: BaseStore.DeleteTxIdBlockHashIndex
 - uid: Libplanet.Store.BaseStore.DeserializeTxExecution(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId,IValue,ILogger)
   name: DeserializeTxExecution(BlockHash, TxId, IValue, ILogger)
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_DeserializeTxExecution_Libplanet_Blocks_BlockHash_Libplanet_Tx_TxId_IValue_ILogger_
@@ -12893,6 +12906,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BaseStore.GetCanonicalChainId
   nameWithType: BaseStore.GetCanonicalChainId
+- uid: Libplanet.Store.BaseStore.GetFirstTxIdBlockHashIndex(Libplanet.Tx.TxId)
+  name: GetFirstTxIdBlockHashIndex(TxId)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetFirstTxIdBlockHashIndex_Libplanet_Tx_TxId_
+  commentId: M:Libplanet.Store.BaseStore.GetFirstTxIdBlockHashIndex(Libplanet.Tx.TxId)
+  fullName: Libplanet.Store.BaseStore.GetFirstTxIdBlockHashIndex(Libplanet.Tx.TxId)
+  nameWithType: BaseStore.GetFirstTxIdBlockHashIndex(TxId)
+- uid: Libplanet.Store.BaseStore.GetFirstTxIdBlockHashIndex*
+  name: GetFirstTxIdBlockHashIndex
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetFirstTxIdBlockHashIndex_
+  commentId: Overload:Libplanet.Store.BaseStore.GetFirstTxIdBlockHashIndex
+  isSpec: "True"
+  fullName: Libplanet.Store.BaseStore.GetFirstTxIdBlockHashIndex
+  nameWithType: BaseStore.GetFirstTxIdBlockHashIndex
 - uid: Libplanet.Store.BaseStore.GetTransaction*
   name: GetTransaction
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetTransaction_
@@ -13016,6 +13042,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BaseStore.IterateTransactionIds
   nameWithType: BaseStore.IterateTransactionIds
+- uid: Libplanet.Store.BaseStore.IterateTxIdBlockHashIndex(Libplanet.Tx.TxId)
+  name: IterateTxIdBlockHashIndex(TxId)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_IterateTxIdBlockHashIndex_Libplanet_Tx_TxId_
+  commentId: M:Libplanet.Store.BaseStore.IterateTxIdBlockHashIndex(Libplanet.Tx.TxId)
+  fullName: Libplanet.Store.BaseStore.IterateTxIdBlockHashIndex(Libplanet.Tx.TxId)
+  nameWithType: BaseStore.IterateTxIdBlockHashIndex(TxId)
+- uid: Libplanet.Store.BaseStore.IterateTxIdBlockHashIndex*
+  name: IterateTxIdBlockHashIndex
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_IterateTxIdBlockHashIndex_
+  commentId: Overload:Libplanet.Store.BaseStore.IterateTxIdBlockHashIndex
+  isSpec: "True"
+  fullName: Libplanet.Store.BaseStore.IterateTxIdBlockHashIndex
+  nameWithType: BaseStore.IterateTxIdBlockHashIndex
 - uid: Libplanet.Store.BaseStore.ListChainIds
   name: ListChainIds()
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ListChainIds
@@ -13093,6 +13132,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BaseStore.PutTxExecution
   nameWithType: BaseStore.PutTxExecution
+- uid: Libplanet.Store.BaseStore.PutTxIdBlockHashIndex(Libplanet.Tx.TxId,Libplanet.Blocks.BlockHash)
+  name: PutTxIdBlockHashIndex(TxId, BlockHash)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_PutTxIdBlockHashIndex_Libplanet_Tx_TxId_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Store.BaseStore.PutTxIdBlockHashIndex(Libplanet.Tx.TxId,Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.Store.BaseStore.PutTxIdBlockHashIndex(Libplanet.Tx.TxId, Libplanet.Blocks.BlockHash)
+  nameWithType: BaseStore.PutTxIdBlockHashIndex(TxId, BlockHash)
+- uid: Libplanet.Store.BaseStore.PutTxIdBlockHashIndex*
+  name: PutTxIdBlockHashIndex
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_PutTxIdBlockHashIndex_
+  commentId: Overload:Libplanet.Store.BaseStore.PutTxIdBlockHashIndex
+  isSpec: "True"
+  fullName: Libplanet.Store.BaseStore.PutTxIdBlockHashIndex
+  nameWithType: BaseStore.PutTxIdBlockHashIndex
 - uid: Libplanet.Store.BaseStore.SerializeTxExecution(Libplanet.Tx.TxFailure)
   name: SerializeTxExecution(TxFailure)
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_SerializeTxExecution_Libplanet_Tx_TxFailure_
@@ -13502,6 +13554,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.DefaultStore.DeleteTransaction
   nameWithType: DefaultStore.DeleteTransaction
+- uid: Libplanet.Store.DefaultStore.DeleteTxIdBlockHashIndex(Libplanet.Tx.TxId,Libplanet.Blocks.BlockHash)
+  name: DeleteTxIdBlockHashIndex(TxId, BlockHash)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_DeleteTxIdBlockHashIndex_Libplanet_Tx_TxId_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Store.DefaultStore.DeleteTxIdBlockHashIndex(Libplanet.Tx.TxId,Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.Store.DefaultStore.DeleteTxIdBlockHashIndex(Libplanet.Tx.TxId, Libplanet.Blocks.BlockHash)
+  nameWithType: DefaultStore.DeleteTxIdBlockHashIndex(TxId, BlockHash)
+- uid: Libplanet.Store.DefaultStore.DeleteTxIdBlockHashIndex*
+  name: DeleteTxIdBlockHashIndex
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_DeleteTxIdBlockHashIndex_
+  commentId: Overload:Libplanet.Store.DefaultStore.DeleteTxIdBlockHashIndex
+  isSpec: "True"
+  fullName: Libplanet.Store.DefaultStore.DeleteTxIdBlockHashIndex
+  nameWithType: DefaultStore.DeleteTxIdBlockHashIndex
 - uid: Libplanet.Store.DefaultStore.Dispose
   name: Dispose()
   href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_Dispose
@@ -13703,6 +13768,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.DefaultStore.IterateTransactionIds
   nameWithType: DefaultStore.IterateTransactionIds
+- uid: Libplanet.Store.DefaultStore.IterateTxIdBlockHashIndex(Libplanet.Tx.TxId)
+  name: IterateTxIdBlockHashIndex(TxId)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_IterateTxIdBlockHashIndex_Libplanet_Tx_TxId_
+  commentId: M:Libplanet.Store.DefaultStore.IterateTxIdBlockHashIndex(Libplanet.Tx.TxId)
+  fullName: Libplanet.Store.DefaultStore.IterateTxIdBlockHashIndex(Libplanet.Tx.TxId)
+  nameWithType: DefaultStore.IterateTxIdBlockHashIndex(TxId)
+- uid: Libplanet.Store.DefaultStore.IterateTxIdBlockHashIndex*
+  name: IterateTxIdBlockHashIndex
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_IterateTxIdBlockHashIndex_
+  commentId: Overload:Libplanet.Store.DefaultStore.IterateTxIdBlockHashIndex
+  isSpec: "True"
+  fullName: Libplanet.Store.DefaultStore.IterateTxIdBlockHashIndex
+  nameWithType: DefaultStore.IterateTxIdBlockHashIndex
 - uid: Libplanet.Store.DefaultStore.ListChainIds
   name: ListChainIds()
   href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_ListChainIds
@@ -13780,6 +13858,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.DefaultStore.PutTxExecution
   nameWithType: DefaultStore.PutTxExecution
+- uid: Libplanet.Store.DefaultStore.PutTxIdBlockHashIndex(Libplanet.Tx.TxId,Libplanet.Blocks.BlockHash)
+  name: PutTxIdBlockHashIndex(TxId, BlockHash)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_PutTxIdBlockHashIndex_Libplanet_Tx_TxId_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Store.DefaultStore.PutTxIdBlockHashIndex(Libplanet.Tx.TxId,Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.Store.DefaultStore.PutTxIdBlockHashIndex(Libplanet.Tx.TxId, Libplanet.Blocks.BlockHash)
+  nameWithType: DefaultStore.PutTxIdBlockHashIndex(TxId, BlockHash)
+- uid: Libplanet.Store.DefaultStore.PutTxIdBlockHashIndex*
+  name: PutTxIdBlockHashIndex
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_PutTxIdBlockHashIndex_
+  commentId: Overload:Libplanet.Store.DefaultStore.PutTxIdBlockHashIndex
+  isSpec: "True"
+  fullName: Libplanet.Store.DefaultStore.PutTxIdBlockHashIndex
+  nameWithType: DefaultStore.PutTxIdBlockHashIndex
 - uid: Libplanet.Store.DefaultStore.SetBlockPerceivedTime(Libplanet.Blocks.BlockHash,System.DateTimeOffset)
   name: SetBlockPerceivedTime(BlockHash, DateTimeOffset)
   href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_SetBlockPerceivedTime_Libplanet_Blocks_BlockHash_System_DateTimeOffset_
@@ -14028,6 +14119,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStore.DeleteTransaction
   nameWithType: IStore.DeleteTransaction
+- uid: Libplanet.Store.IStore.DeleteTxIdBlockHashIndex(Libplanet.Tx.TxId,Libplanet.Blocks.BlockHash)
+  name: DeleteTxIdBlockHashIndex(TxId, BlockHash)
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_DeleteTxIdBlockHashIndex_Libplanet_Tx_TxId_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Store.IStore.DeleteTxIdBlockHashIndex(Libplanet.Tx.TxId,Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.Store.IStore.DeleteTxIdBlockHashIndex(Libplanet.Tx.TxId, Libplanet.Blocks.BlockHash)
+  nameWithType: IStore.DeleteTxIdBlockHashIndex(TxId, BlockHash)
+- uid: Libplanet.Store.IStore.DeleteTxIdBlockHashIndex*
+  name: DeleteTxIdBlockHashIndex
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_DeleteTxIdBlockHashIndex_
+  commentId: Overload:Libplanet.Store.IStore.DeleteTxIdBlockHashIndex
+  isSpec: "True"
+  fullName: Libplanet.Store.IStore.DeleteTxIdBlockHashIndex
+  nameWithType: IStore.DeleteTxIdBlockHashIndex
 - uid: Libplanet.Store.IStore.ForkBlockIndexes(System.Guid,System.Guid,Libplanet.Blocks.BlockHash)
   name: ForkBlockIndexes(Guid, Guid, BlockHash)
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_ForkBlockIndexes_System_Guid_System_Guid_Libplanet_Blocks_BlockHash_
@@ -14122,6 +14226,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStore.GetCanonicalChainId
   nameWithType: IStore.GetCanonicalChainId
+- uid: Libplanet.Store.IStore.GetFirstTxIdBlockHashIndex(Libplanet.Tx.TxId)
+  name: GetFirstTxIdBlockHashIndex(TxId)
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_GetFirstTxIdBlockHashIndex_Libplanet_Tx_TxId_
+  commentId: M:Libplanet.Store.IStore.GetFirstTxIdBlockHashIndex(Libplanet.Tx.TxId)
+  fullName: Libplanet.Store.IStore.GetFirstTxIdBlockHashIndex(Libplanet.Tx.TxId)
+  nameWithType: IStore.GetFirstTxIdBlockHashIndex(TxId)
+- uid: Libplanet.Store.IStore.GetFirstTxIdBlockHashIndex*
+  name: GetFirstTxIdBlockHashIndex
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_GetFirstTxIdBlockHashIndex_
+  commentId: Overload:Libplanet.Store.IStore.GetFirstTxIdBlockHashIndex
+  isSpec: "True"
+  fullName: Libplanet.Store.IStore.GetFirstTxIdBlockHashIndex
+  nameWithType: IStore.GetFirstTxIdBlockHashIndex
 - uid: Libplanet.Store.IStore.GetTransaction*
   name: GetTransaction
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_GetTransaction_
@@ -14245,6 +14362,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStore.IterateTransactionIds
   nameWithType: IStore.IterateTransactionIds
+- uid: Libplanet.Store.IStore.IterateTxIdBlockHashIndex(Libplanet.Tx.TxId)
+  name: IterateTxIdBlockHashIndex(TxId)
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_IterateTxIdBlockHashIndex_Libplanet_Tx_TxId_
+  commentId: M:Libplanet.Store.IStore.IterateTxIdBlockHashIndex(Libplanet.Tx.TxId)
+  fullName: Libplanet.Store.IStore.IterateTxIdBlockHashIndex(Libplanet.Tx.TxId)
+  nameWithType: IStore.IterateTxIdBlockHashIndex(TxId)
+- uid: Libplanet.Store.IStore.IterateTxIdBlockHashIndex*
+  name: IterateTxIdBlockHashIndex
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_IterateTxIdBlockHashIndex_
+  commentId: Overload:Libplanet.Store.IStore.IterateTxIdBlockHashIndex
+  isSpec: "True"
+  fullName: Libplanet.Store.IStore.IterateTxIdBlockHashIndex
+  nameWithType: IStore.IterateTxIdBlockHashIndex
 - uid: Libplanet.Store.IStore.ListChainIds
   name: ListChainIds()
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_ListChainIds
@@ -14322,6 +14452,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStore.PutTxExecution
   nameWithType: IStore.PutTxExecution
+- uid: Libplanet.Store.IStore.PutTxIdBlockHashIndex(Libplanet.Tx.TxId,Libplanet.Blocks.BlockHash)
+  name: PutTxIdBlockHashIndex(TxId, BlockHash)
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_PutTxIdBlockHashIndex_Libplanet_Tx_TxId_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Store.IStore.PutTxIdBlockHashIndex(Libplanet.Tx.TxId,Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.Store.IStore.PutTxIdBlockHashIndex(Libplanet.Tx.TxId, Libplanet.Blocks.BlockHash)
+  nameWithType: IStore.PutTxIdBlockHashIndex(TxId, BlockHash)
+- uid: Libplanet.Store.IStore.PutTxIdBlockHashIndex*
+  name: PutTxIdBlockHashIndex
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_PutTxIdBlockHashIndex_
+  commentId: Overload:Libplanet.Store.IStore.PutTxIdBlockHashIndex
+  isSpec: "True"
+  fullName: Libplanet.Store.IStore.PutTxIdBlockHashIndex
+  nameWithType: IStore.PutTxIdBlockHashIndex
 - uid: Libplanet.Store.IStore.SetBlockPerceivedTime(Libplanet.Blocks.BlockHash,System.DateTimeOffset)
   name: SetBlockPerceivedTime(BlockHash, DateTimeOffset)
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_SetBlockPerceivedTime_Libplanet_Blocks_BlockHash_System_DateTimeOffset_

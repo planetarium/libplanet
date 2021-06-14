@@ -223,6 +223,14 @@ Use <code>ActionEvaluator.Evaluate()</code> method instead.</li>
 </li>
 <li>Parameters <code>action</code>, <code>inputContext</code>, and <code>outputStates</code> for
 <code>ActionEvaluation()</code> constructor can no longer be <code>null</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1305">#1305</a>]</li>
+<li>Added <code>IStore.PutTxIdBlockHashIndex(TxId, BlockHash)</code> method.
+[<a href="https://github.com/planetarium/libplanet/issues/1294">#1294</a>, <a href="https://github.com/planetarium/libplanet/pull/1328">#1328</a>]</li>
+<li>Added <code>IStore.GetFirstTxIdBlockHashIndex(TxId)</code> method.
+[<a href="https://github.com/planetarium/libplanet/issues/1294">#1294</a>, <a href="https://github.com/planetarium/libplanet/pull/1328">#1328</a>]</li>
+<li>Added <code>IStore.DeleteTxIdBlockHashIndex(TxId, BlockHash)</code> method.
+[<a href="https://github.com/planetarium/libplanet/issues/1294">#1294</a>, <a href="https://github.com/planetarium/libplanet/pull/1328">#1328</a>]</li>
+<li>Added <code>IStore.IterateTxIdBlockHashIndex(TxId)</code> method.
+[<a href="https://github.com/planetarium/libplanet/issues/1294">#1294</a>, <a href="https://github.com/planetarium/libplanet/pull/1328">#1328</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
