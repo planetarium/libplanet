@@ -157,6 +157,11 @@ namespace Libplanet.Explorer.Store
             return _store.CountBlockHeaders();
         }
 
+        public BlockHeader GetLatestBlockHeader()
+        {
+            return _store.GetLatestBlockHeader();
+        }
+
         public void ForkTxNonces(Guid sourceChainId, Guid destinationChainId)
         {
             _store.ForkTxNonces(sourceChainId, destinationChainId);

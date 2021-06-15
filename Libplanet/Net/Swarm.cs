@@ -516,13 +516,39 @@ namespace Libplanet.Net
             using CancellationTokenRegistration ctr = cancellationToken.Register(() =>
                 _logger.Information("Preloading is requested to be cancelled.")
             );
-
             Block<T> initialTip = BlockChain.Tip;
+            if (lightNode && _store.CountBlockHeaders() > 0)
+            {
+                var blockHeader = _store.GetLatestBlockHeader();
+                if (initialTip.Index < blockHeader.Index)
+                {
+                    var blockHashList = new List<BlockHash>();
+                    IAsyncEnumerable<Block<T>> blocks = null;
+
+                    blockHashList.Add(new BlockHash(blockHeader.Hash));
+                    foreach (BoundPeer peer in RoutingTable.Peers)
+                    {
+                        blocks =
+                            GetBlocksAsync(peer, blockHashList.ToArray(), CancellationToken.None);
+                        if (blocks.CountAsync().IsCompletedSuccessfully
+                            && blocks.CountAsync().Result <= 0)
+                        {
+                            continue;
+                        }
+
+                        break;
+                    }
+
+                    initialTip = GetBlock(blocks, blockHashList.First()).Result;
+                }
+            }
+
             BlockLocator initialLocator = BlockChain.GetBlockLocator();
             _logger.Debug(
-                "The tip before preloading begins: #{TipIndex} {TipHash}",
-                BlockChain.Tip.Index,
-                BlockChain.Tip.Hash
+                "The tip before preloading begins: #{TipIndex} {TipHash} {bool}",
+                initialTip.Index,
+                initialTip.Hash,
+                initialTip.Equals(BlockChain.Tip)
             );
 
             // As preloading takes long, the blockchain data can corrupt if a program suddenly
@@ -693,13 +719,22 @@ namespace Libplanet.Net
                             block.Hash
                         );
                         wStore.PutBlockHeader(block.Header);
+                        receivedBlockCount++;
+                        progress?.Report(new BlockDownloadState
+                        {
+                            TotalBlockCount = Math.Max(
+                                totalBlocksToDownload,
+                                receivedBlockCount),
+                            ReceivedBlockCount = receivedBlockCount,
+                            ReceivedBlockHash = block.Hash,
+                            SourcePeer = sourcePeer,
+                        });
                         _logger.Debug(
-                            "Stored a blockHeader of block #{BlockIndex} {BlockHash} " +
+                            "Appended a blockHeader of block #{BlockIndex} {BlockHash} " +
                             "into the store.",
                             block.Index,
                             block.Hash
                         );
-                        return;
                     }
                     else
                     {
@@ -736,7 +771,7 @@ namespace Libplanet.Net
 
                 tipCandidate = tempTip;
 
-                if (tipCandidate is null)
+                if (tipCandidate is null || lightNode)
                 {
                     // If there is no blocks in the network (or no consensus at least)
                     // it doesn't need to receive states from other peers at all.
@@ -961,6 +996,27 @@ namespace Libplanet.Net
             }
 
             await PeerDiscovery.AddPeersAsync(peers, timeout, cancellationToken);
+        }
+
+        public IEnumerable<Transaction<T>> GetTxs(
+            IEnumerable<BlockHash> blockHashes,
+            CancellationToken cancellationToken
+        )
+        {
+            IAsyncEnumerable<Block<T>> blocks = null;
+
+            foreach (BoundPeer peer in RoutingTable.Peers)
+            {
+                blocks = GetBlocksAsync(peer, blockHashes, cancellationToken);
+                if (blocks.CountAsync().IsCompletedSuccessfully && blocks.CountAsync().Result <= 0)
+                {
+                    continue;
+                }
+
+                break;
+            }
+
+            return GetBlock(blocks, blockHashes.First()).Result.Transactions;
         }
 
         // FIXME: This would be better if it's merged with GetDemandBlockHashes
@@ -1698,6 +1754,12 @@ namespace Libplanet.Net
                     _logger.Warning(e, msg, e);
                 }
             }
+        }
+
+        private ValueTask<Block<T>> GetBlock(
+            IAsyncEnumerable<Block<T>> blocks, BlockHash blockHash)
+        {
+            return blocks.FirstAsync(c => c.Hash.Equals(blockHash));
         }
     }
 }

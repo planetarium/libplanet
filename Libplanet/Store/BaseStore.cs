@@ -186,6 +186,31 @@ namespace Libplanet.Store
             return IterateBlockHeaderHashes().LongCount();
         }
 
+        public BlockHeader GetLatestBlockHeader()
+        {
+            var latestHeader = default(BlockHeader);
+            var blockHeaderHashes = IterateBlockHeaderHashes().ToList();
+
+            foreach (BlockHash blockHash in blockHeaderHashes)
+            {
+                var blockHeader = GetBlockHeader(blockHash);
+                if (blockHeader.HasValue)
+                {
+                    var headerIndex = blockHeader.Value.Index;
+                    if (latestHeader.Index < 1)
+                    {
+                        latestHeader = blockHeader.Value;
+                        continue;
+                    }
+
+                    latestHeader = latestHeader.Index < headerIndex ?
+                    blockHeader.Value : latestHeader;
+                }
+            }
+
+            return latestHeader;
+        }
+
         /// <inheritdoc />
         public abstract bool ContainsTransaction(TxId txId);
 
