@@ -25,9 +25,11 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
         private readonly Block<Utils.DummyAction> _block2;
         private readonly Block<Utils.DummyAction> _block3;
         private readonly Block<Utils.DummyAction> _block4;
+        private readonly Block<Utils.DummyAction> _block5;
         private readonly Transaction<Utils.DummyAction> _transaction1;
         private readonly Transaction<Utils.DummyAction> _transaction2;
         private readonly Transaction<Utils.DummyAction> _transaction3;
+        private readonly Transaction<Utils.DummyAction> _transaction4;
 
         public StoreCommandTest()
         {
@@ -51,11 +53,13 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
                 _transaction1 = DummyTransaction();
                 _transaction2 = DummyTransaction();
                 _transaction3 = DummyTransaction();
+                _transaction4 = DummyTransaction();
 
-                _block1 = TestUtils.MineNext(_genesisBlock, new[] {_transaction1});
-                _block2 = TestUtils.MineNext(_block1, new[] {_transaction2});
-                _block3 = TestUtils.MineNext(_block2, new[] {_transaction3});
-                _block4 = TestUtils.MineNext(_block3);
+                _block1 = TestUtils.MineNext(_genesisBlock, new[] { _transaction1 });
+                _block2 = TestUtils.MineNext(_block1, new[] { _transaction2 });
+                _block3 = TestUtils.MineNext(_block2, new[] { _transaction3 });
+                _block4 = TestUtils.MineNext(_block3, new[] { _transaction3 });
+                _block5 = TestUtils.MineNext(_block4);
             }
 
             var guid = Guid.NewGuid();
@@ -76,6 +80,9 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
                 v.Store.PutBlock(_block3);
                 v.Store.AppendIndex(guid, _block3.Hash);
                 v.Store.PutTransaction(_transaction3);
+
+                v.Store.PutBlock(_block4);
+                v.Store.AppendIndex(guid, _block4.Hash);
 
                 (v.Store as IDisposable)?.Dispose();
                 (v.StateStore as IDisposable)?.Dispose();
@@ -103,7 +110,74 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
         }
 
         [SkippableFact]
-        public void TestTxIdBlockHashIndex()
+        public void TestBlockByTxIdNotExist()
+        {
+            foreach (var fx in _storeFixtures)
+            {
+                new StoreCommand().BuildIndexTxBlock(
+                    fx.Scheme + fx.Path,
+                    0,
+                    10);
+            }
+
+            foreach (var fx in _storeFixtures)
+            {
+                Assert.Throws<CommandExitedException>(() =>
+                    new StoreCommand().BlockByTxId(
+                        fx.Scheme + fx.Path,
+                        _transaction4.Id.ToString()
+                    ));
+            }
+        }
+
+        [SkippableFact]
+        public void TestBlockByTxIdTwo()
+        {
+            foreach (var fx in _storeFixtures)
+            {
+                new StoreCommand().BuildIndexTxBlock(
+                    fx.Scheme + fx.Path,
+                    0,
+                    10);
+            }
+
+            foreach (var fx in _storeFixtures)
+            {
+                Assert.Throws<CommandExitedException>(() =>
+                    new StoreCommand().BlockByTxId(
+                        fx.Scheme + fx.Path,
+                        _transaction3.Id.ToString()
+                    ));
+            }
+        }
+
+        [SkippableFact]
+        public void TestBlockHashesByTxId()
+        {
+            foreach (var fx in _storeFixtures)
+            {
+                new StoreCommand().BuildIndexTxBlock(
+                    fx.Scheme + fx.Path,
+                    0,
+                    10);
+            }
+
+            foreach (var fx in _storeFixtures)
+            {
+                using var sw = new StringWriter();
+                Console.SetOut(sw);
+                new StoreCommand().BlockHashesByTxId(
+                    fx.Scheme + fx.Path,
+                    _transaction3.Id.ToString()
+                );
+                var actual = sw.ToString();
+                var expected = Utils.SerializeHumanReadable(new[] { _block3.Hash, _block4.Hash });
+                Assert.Equal(expected.TrimEnd(), actual.TrimEnd());
+            }
+        }
+
+        [SkippableFact]
+        public void TestBuildIndexTxBlockBlockByTxId()
         {
             foreach (var fx in _storeFixtures)
             {
@@ -133,7 +207,6 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
 
                 AssertTxBlockIndex(_transaction1, _block1);
                 AssertTxBlockIndex(_transaction2, _block2);
-                AssertTxBlockIndex(_transaction3, _block3);
             }
         }
 
@@ -145,7 +218,7 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
                 Assert.Throws<CommandExitedException>(() =>
                     new StoreCommand().BlockByHash(
                         fx.Scheme + fx.Path,
-                        _block4.Hash.ToString())
+                        _block5.Hash.ToString())
                 );
             }
         }
@@ -234,7 +307,7 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
                 0,
                 new PrivateKey(),
                 _genesisBlock.Hash,
-                new[] {new Utils.DummyAction()},
+                new[] { new Utils.DummyAction() },
                 null,
                 DateTimeOffset.UtcNow
             );

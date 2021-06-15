@@ -48,6 +48,21 @@ namespace Libplanet.Extensions.Cocona.Commands
             (store as IDisposable)?.Dispose();
         }
 
+        [Command(Description = "Query block hashes by transaction id.")]
+        public void BlockHashesByTxId(
+            [Argument("STORE", Description = StoreArgumentDescription)]
+            string home,
+            [Argument("TX-ID", Description = "tx id")]
+            string strTxId
+        )
+        {
+            var store = LoadStoreFromUri(home);
+            var blockHashes = store.IterateTxIdBlockHashIndex(new TxId(ByteUtil.ParseHex(strTxId)))
+                .ToImmutableArray();
+            Console.WriteLine(Utils.SerializeHumanReadable(blockHashes));
+            (store as IDisposable)?.Dispose();
+        }
+
         [Command(Description = "Query a block by transaction id.")]
         public void BlockByTxId(
             [Argument("STORE", Description = StoreArgumentDescription)]
