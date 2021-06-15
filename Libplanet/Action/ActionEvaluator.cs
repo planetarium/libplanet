@@ -263,18 +263,20 @@ namespace Libplanet.Action
                     TimeSpan spent = DateTimeOffset.Now - actionExecutionStarted;
                     _logger.Verbose($"{action} execution spent {spent.TotalMilliseconds} ms.");
                 }
+                catch (OutOfMemoryException e)
+                {
+                    // Because OutOfMemory is thrown non-deterministically depending on the state
+                    // of the node, we should throw without further handling. 
+                    var message = 
+                        $"The action {action} (block #{blockIndex}, pre-evaluation hash " +
+                        $"{preEvaluationHash}, tx {txid}) threw an exception " +
+                        "during execution:\n" +
+                        $"{e}";
+                    _logger.Error(e, message);
+                    throw;
+                }
                 catch (Exception e)
                 {
-                    if (e is OutOfMemoryException)
-                    {
-                        var message =
-                            $"The action {action} (block #{blockIndex}, pre-evaluation hash " +
-                            $"{preEvaluationHash}, tx {txid}) threw an exception " +
-                            "during execution:\n" +
-                            $"{e}";
-                        _logger.Error(e, message);
-                        throw;
-                    }
 
                     if (rehearsal)
                     {
