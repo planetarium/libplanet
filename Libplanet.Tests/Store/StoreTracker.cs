@@ -269,5 +269,11 @@ namespace Libplanet.Tests.Store
             Log(nameof(CountBlockHeaders));
             return _store.CountBlockHeaders();
         }
+
+        public BlockHeader GetLatestBlockHeader()
+        {
+            Log(nameof(GetLatestBlockHeader));
+            return _store.GetLatestBlockHeader();
+        }
     }
 }

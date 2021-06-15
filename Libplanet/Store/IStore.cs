@@ -344,6 +344,8 @@ namespace Libplanet.Store
 
         long CountBlockHeaders();
 
+        BlockHeader GetLatestBlockHeader();
+
         /// <summary>
         /// Forks <see cref="Transaction{T}"/> <see cref="Transaction{T}.Nonce"/>s from
         /// <paramref name="sourceChainId"/> to
