@@ -266,8 +266,8 @@ namespace Libplanet.Action
                 catch (OutOfMemoryException e)
                 {
                     // Because OutOfMemory is thrown non-deterministically depending on the state
-                    // of the node, we should throw without further handling. 
-                    var message = 
+                    // of the node, we should throw without further handling.
+                    var message =
                         $"The action {action} (block #{blockIndex}, pre-evaluation hash " +
                         $"{preEvaluationHash}, tx {txid}) threw an exception " +
                         "during execution:\n" +
@@ -277,7 +277,6 @@ namespace Libplanet.Action
                 }
                 catch (Exception e)
                 {
-
                     if (rehearsal)
                     {
                         var message =
