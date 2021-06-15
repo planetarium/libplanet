@@ -354,7 +354,7 @@ namespace Libplanet.Tests.Store
             Assert.False(Fx.Store.ContainsBlock(Fx.Block3.Hash));
         }
 
-        [Fact]
+        [SkippableFact]
         public void StoreBlockHeader()
         {
             Assert.Empty(Fx.Store.IterateBlockHashes());
@@ -417,6 +417,14 @@ namespace Libplanet.Tests.Store
             Assert.False(Fx.Store.ContainsBlockHeader(new BlockHash(Fx.Block1.Header.Hash)));
             Assert.True(Fx.Store.ContainsBlockHeader(new BlockHash(Fx.Block2.Header.Hash)));
             Assert.False(Fx.Store.ContainsBlockHeader(new BlockHash(Fx.Block3.Header.Hash)));
+        }
+
+        [SkippableFact]
+        public void GetLatestHeader()
+        {
+            Fx.Store.PutBlockHeader(Fx.Block1.Header);
+            Fx.Store.PutBlockHeader(Fx.Block2.Header);
+            Assert.True(Fx.Store.GetLatestBlockHeader().Hash.SequenceEqual(Fx.Block2.Header.Hash));
         }
 
         [SkippableFact]
