@@ -460,7 +460,7 @@ namespace Libplanet.RocksDBStore
         {
             byte[] prefix = TxKeyPrefix;
 
-            foreach (Iterator it in IterateDb(_txIndexDb, prefix) )
+            foreach (Iterator it in IterateDb(_txIndexDb, prefix))
             {
                 byte[] key = it.Key();
                 byte[] txIdBytes = key.Skip(prefix.Length).ToArray();
@@ -629,7 +629,7 @@ namespace Libplanet.RocksDBStore
             foreach (Iterator it in IterateDb(_blockHeaderIndexDb, BlockHeaderKeyPrefix))
             {
                 byte[] key = it.Key();
-                byte[] hashBytes = key.ToArray();
+                byte[] hashBytes = key.Skip(BlockHeaderKeyPrefix.Length).ToArray();
                 yield return new BlockHash(hashBytes);
             }
         }
@@ -644,7 +644,7 @@ namespace Libplanet.RocksDBStore
                 return null;
             }
 
-            _rwBlockLock.EnterWriteLock();
+            _rwBlockLock.EnterReadLock();
             try
             {
                 string blockHeaderDbName =
@@ -666,7 +666,7 @@ namespace Libplanet.RocksDBStore
             }
             finally
             {
-                _rwBlockLock.ExitWriteLock();
+                _rwBlockLock.ExitReadLock();
             }
 
             return null;
@@ -786,9 +786,9 @@ namespace Libplanet.RocksDBStore
                 blockHeaderDb.Put(key, value);
                 _blockHeaderIndexDb.Put(key, RocksDBStoreBitConverter.GetBytes(blockHeaderDbName));
             }
-            finally
+            catch (Exception e)
             {
-                _rwBlockLock.ExitWriteLock();
+                LogUnexpectedException(nameof(PutBlockHeader), e);
             }
         }
 
@@ -1111,7 +1111,7 @@ namespace Libplanet.RocksDBStore
         }
 
         private byte[] BlockHeaderKey(in BlockHash blockHash) =>
-            BlockHeaderKeyPrefix.Concat(blockHash.ToByteArray()).ToArray();
+            BlockHeaderKeyPrefix.Concat(blockHash.ByteArray).ToArray();
 
         private byte[] BlockKey(in BlockHash blockHash) =>
             BlockKeyPrefix.Concat(blockHash.ByteArray).ToArray();
