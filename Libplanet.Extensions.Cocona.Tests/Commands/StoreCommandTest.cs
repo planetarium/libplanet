@@ -1,15 +1,13 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
+using Bencodex.Misc;
 using Cocona;
-using Libplanet.Blockchain.Renderers.Debug;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Extensions.Cocona.Commands;
 using Libplanet.RocksDBStore.Tests;
 using Libplanet.Tests;
-using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Libplanet.Tx;
 using Xunit;
@@ -48,19 +46,17 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
                 throw new SkipException("RocksDB is not available.");
             }
 
-            {
-                _genesisBlock = TestUtils.MineGenesis<Utils.DummyAction>();
-                _transaction1 = DummyTransaction();
-                _transaction2 = DummyTransaction();
-                _transaction3 = DummyTransaction();
-                _transaction4 = DummyTransaction();
+            _genesisBlock = TestUtils.MineGenesis<Utils.DummyAction>();
+            _transaction1 = DummyTransaction();
+            _transaction2 = DummyTransaction();
+            _transaction3 = DummyTransaction();
+            _transaction4 = DummyTransaction();
 
-                _block1 = TestUtils.MineNext(_genesisBlock, new[] { _transaction1 });
-                _block2 = TestUtils.MineNext(_block1, new[] { _transaction2 });
-                _block3 = TestUtils.MineNext(_block2, new[] { _transaction3 });
-                _block4 = TestUtils.MineNext(_block3, new[] { _transaction3 });
-                _block5 = TestUtils.MineNext(_block4);
-            }
+            _block1 = TestUtils.MineNext(_genesisBlock, new[] { _transaction1 });
+            _block2 = TestUtils.MineNext(_block1, new[] { _transaction2 });
+            _block3 = TestUtils.MineNext(_block2, new[] { _transaction3 });
+            _block4 = TestUtils.MineNext(_block3, new[] { _transaction3 });
+            _block5 = TestUtils.MineNext(_block4);
 
             var guid = Guid.NewGuid();
             foreach (var v in _storeFixtures)
@@ -172,6 +168,13 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
                 );
                 var actual = sw.ToString();
                 var expected = Utils.SerializeHumanReadable(new[] { _block3.Hash, _block4.Hash });
+                if (default(ByteArrayComparer).Compare(
+                    _block3.Hash.ByteArray,
+                    _block4.Hash.ByteArray) > 0)
+                {
+                    expected = Utils.SerializeHumanReadable(new[] { _block4.Hash, _block3.Hash });
+                }
+
                 Assert.Equal(expected.TrimEnd(), actual.TrimEnd());
             }
         }
