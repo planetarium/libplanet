@@ -191,7 +191,7 @@ namespace Libplanet.Tests.Net.Messages
                     validAppProtocolVersion,
                     ImmutableHashSet<PublicKey>.Empty,
                     null,
-                    TimeSpan.FromSeconds(1));
+                    TimeSpan.FromSeconds(5));
             });
         }
 
