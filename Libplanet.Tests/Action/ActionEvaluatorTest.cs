@@ -172,6 +172,73 @@ namespace Libplanet.Tests.Action
             Assert.False(evaluations[0].InputContext.BlockAction);
             Assert.Single(evaluations);
             Assert.NotNull(evaluations.Single().Exception);
+            Assert.IsType<UnexpectedlyTerminatedActionException>(
+                evaluations.Single().Exception);
+            Assert.IsType<ThrowException.SomeException>(
+                evaluations.Single().Exception.InnerException);
+        }
+
+        [Fact]
+        public void EvaluateWithCriticalException()
+        {
+            var privateKey = new PrivateKey();
+            var address = privateKey.ToAddress();
+
+            var action = new ThrowException
+            {
+                ThrowOnRehearsal = false,
+                ThrowOnExecution = true,
+                ExceptionTypeToThrow = typeof(OutOfMemoryException),
+            };
+
+            var store = new DefaultStore(null);
+            var stateStore =
+                new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore());
+            var chain = TestUtils.MakeBlockChain<ThrowException>(
+                policy: new BlockPolicy<ThrowException>(),
+                store: store,
+                stateStore: stateStore);
+            var genesis = chain.Genesis;
+            // Evaluation is run with rehearsal true to get updated addresses on tx creation.
+            var tx = Transaction<ThrowException>.Create(
+                nonce: 0,
+                privateKey: privateKey,
+                genesisHash: genesis.Hash,
+                actions: new[] { action });
+            var block = Block<ThrowException>.Mine(
+                index: 1,
+                difficulty: 1,
+                previousTotalDifficulty: genesis.TotalDifficulty,
+                miner: _storeFx.Address1,
+                previousHash: genesis.Hash,
+                timestamp: DateTimeOffset.UtcNow,
+                transactions: ImmutableArray.Create(tx));
+            IAccountStateDelta previousStates = genesis.ProtocolVersion > 0
+                ? new AccountStateDeltaImpl(
+                    ActionEvaluator<DumbAction>.NullAccountStateGetter,
+                    ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
+                    genesis.Miner.GetValueOrDefault())
+                : new AccountStateDeltaImplV0(
+                    ActionEvaluator<DumbAction>.NullAccountStateGetter,
+                    ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
+                    genesis.Miner.GetValueOrDefault());
+
+            // ToList() is required for realization.
+            chain.ActionEvaluator.EvaluateTx(
+                block: block,
+                tx: tx,
+                previousStates: previousStates,
+                rehearsal: true).ToList();
+            Assert.Throws<OutOfMemoryException>(
+                () => chain.ActionEvaluator.EvaluateTx(
+                    block: block,
+                    tx: tx,
+                    previousStates: previousStates,
+                    rehearsal: false).ToList());
+            Assert.Throws<OutOfMemoryException>(
+                () => chain.ActionEvaluator.Evaluate(
+                    block: block,
+                    stateCompleterSet: StateCompleterSet<ThrowException>.Recalculate).ToList());
         }
 
         [SuppressMessage(

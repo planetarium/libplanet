@@ -213,6 +213,9 @@ To be released.
  -  (Libplanet.RocksDBStore) `RocksDBStore.ForkBlockIndexes()` became to share
     common ancestors between forks rather than duplicating them so that much
     less space is used.  [[#1280], [#1287]]
+ -  `ActionEvaluator<T>.EvaluateActions()` now throws an unmanaged exception
+    if `OutOfMemoryException` is caught from `IAction.Execute()`.
+    [[#1320], [#1343]]
 
 ### Bug fixes
 
@@ -293,10 +296,12 @@ To be released.
 [#1298]: https://github.com/planetarium/libplanet/pull/1298
 [#1301]: https://github.com/planetarium/libplanet/issues/1301
 [#1305]: https://github.com/planetarium/libplanet/pull/1305
+[#1320]: https://github.com/planetarium/libplanet/issues/1320
 [#1325]: https://github.com/planetarium/libplanet/pull/1325
 [#1328]: https://github.com/planetarium/libplanet/pull/1328
 [#1339]: https://github.com/planetarium/libplanet/issues/1339
 [#1342]: https://github.com/planetarium/libplanet/pull/1342
+[#1343]: https://github.com/planetarium/libplanet/pull/1343
 
 
 Version 0.11.1

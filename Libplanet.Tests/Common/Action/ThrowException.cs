@@ -16,6 +16,8 @@ namespace Libplanet.Tests.Common.Action
 
         public bool ThrowOnExecution { get; set; }
 
+        public Type ExceptionTypeToThrow { get; set; } = typeof(SomeException);
+
         public IValue PlainValue =>
             new Bencodex.Types.Dictionary(new Dictionary<IKey, IValue>
             {
@@ -38,7 +40,8 @@ namespace Libplanet.Tests.Common.Action
         {
             if (context.Rehearsal ? ThrowOnRehearsal : ThrowOnExecution)
             {
-                throw new SomeException("An expected exception.");
+                throw (Exception)Activator.CreateInstance(
+                    ExceptionTypeToThrow, "An expected exception.");
             }
 
             return context.PreviousStates;
