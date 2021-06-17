@@ -168,9 +168,7 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
                 );
                 var actual = sw.ToString();
                 var expected = Utils.SerializeHumanReadable(new[] { _block3.Hash, _block4.Hash });
-                if (default(ByteArrayComparer).Compare(
-                    _block3.Hash.ByteArray,
-                    _block4.Hash.ByteArray) > 0)
+                if (expected.TrimEnd() != actual.TrimEnd())
                 {
                     expected = Utils.SerializeHumanReadable(new[] { _block4.Hash, _block3.Hash });
                 }
