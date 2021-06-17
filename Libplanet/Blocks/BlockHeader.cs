@@ -175,6 +175,9 @@ namespace Libplanet.Blocks
             ImmutableArray<byte> preEvaluationHash,
             ImmutableArray<byte> stateRootHash)
         {
+            // FIXME: Basic sanity check to prevent improper usage should be present.
+            // For the same reason as Block<T>() constructor comment, should be added in
+            // on furter refactoring.
             ProtocolVersion = protocolVersion;
             Index = index;
             Timestamp = timestamp;
@@ -400,6 +403,8 @@ namespace Libplanet.Blocks
                 );
             }
 
+            // PreEvaluationHash comparison between the actual and the expected was not
+            // implemented in ProtocolVersion == 0.
             if (ProtocolVersion > 0)
             {
                 byte[] expectedPreEvaluationHash =
