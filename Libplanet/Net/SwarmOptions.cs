@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Threading;
+using Libplanet.Blockchain;
 using Libplanet.Blocks;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Protocols;
@@ -67,5 +68,12 @@ namespace Libplanet.Net
         /// </summary>
         public IImmutableSet<BoundPeer> StaticPeers { get; set; } =
             ImmutableHashSet<BoundPeer>.Empty;
+
+        /// <summary>
+        /// The threshold for detecting branchpoint when block synchronization.
+        /// If the branch point is outside threshold from the <see cref="BlockChain{T}.Tip" />,
+        /// using an approximated value.
+        /// </summary>
+        public int BranchpointThreshold { get; set; } = 10;
     }
 }
