@@ -173,6 +173,7 @@ To be released.
  -  Added `ActionEvaluator` class.  [[#1301], [#1305]]
  -  Added `BlockHash` struct.  [[#1192], [#1197]]
  -  Added `HashDigest<T>.DeriveFrom()` method.  [[#1197]]
+ -  Added `HashAlgorithmType` class.  [[#1314], [#1352]]
  -  Added `BlockChain<T>.GetTxExecution()` method.  [[#1156], [#1289]]
  -  Added `StunMessage.ParseAsync(Stream, CancellationToken)` method.
     [[#1228]]
@@ -313,6 +314,7 @@ To be released.
 [#1298]: https://github.com/planetarium/libplanet/pull/1298
 [#1301]: https://github.com/planetarium/libplanet/issues/1301
 [#1305]: https://github.com/planetarium/libplanet/pull/1305
+[#1314]: https://github.com/planetarium/libplanet/issues/1314
 [#1315]: https://github.com/planetarium/libplanet/issues/1315
 [#1316]: https://github.com/planetarium/libplanet/issues/1316
 [#1320]: https://github.com/planetarium/libplanet/issues/1320
@@ -328,6 +330,7 @@ To be released.
 [#1349]: https://github.com/planetarium/libplanet/issues/1349
 [#1350]: https://github.com/planetarium/libplanet/pull/1350
 [#1351]: https://github.com/planetarium/libplanet/pull/1351
+[#1352]: https://github.com/planetarium/libplanet/pull/1352
 [#1353]: https://github.com/planetarium/libplanet/pull/1353
 [#1360]: https://github.com/planetarium/libplanet/pull/1360
 
