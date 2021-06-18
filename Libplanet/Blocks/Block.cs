@@ -82,15 +82,13 @@ namespace Libplanet.Blocks
             Transactions = transactions.OrderBy(tx => tx.Id).ToArray();
             TxHash = CalculateTxHashes(Transactions);
 
-#pragma warning disable CS0612
-            PreEvaluationHash = preEvaluationHash ?? Hashcash.Hash(Header.SerializeForHash());
-#pragma warning restore CS0612
+            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
+            PreEvaluationHash = preEvaluationHash ??
+                new BlockHash(hashAlgorithm.Digest(Header.SerializeForHash()));
             StateRootHash = stateRootHash;
 
             // FIXME: This does not need to be computed every time?
-#pragma warning disable CS0612
-            Hash = Hashcash.Hash(Header.SerializeForHash());
-#pragma warning restore CS0612
+            Hash = new BlockHash(hashAlgorithm.Digest(Header.SerializeForHash()));
 
             // As the order of transactions should be unpredictable until a block is mined,
             // the sorter key should be derived from both a block hash and a txid.
@@ -519,11 +517,12 @@ namespace Libplanet.Blocks
 
             if (ProtocolVersion > 0)
             {
-                BlockHash expectedPreEvaluationHash =
-#pragma warning disable CS0612
-                    Hashcash.Hash(Header.SerializeForHash(includeStateRootHash: false));
-#pragma warning restore CS0612
-                if (!expectedPreEvaluationHash.Equals(PreEvaluationHash))
+                HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
+                byte[] expectedPreEvaluationHash =
+                    hashAlgorithm.Digest(Header.SerializeForHash(includeStateRootHash: false));
+                if (!ByteUtil.TimingSafelyCompare(
+                        expectedPreEvaluationHash,
+                        PreEvaluationHash.ByteArray))
                 {
                     string message =
                         $"The expected pre evaluation hash of block {Hash} is " +
@@ -531,7 +530,7 @@ namespace Libplanet.Blocks
                         $"{PreEvaluationHash}.";
                     throw new InvalidBlockPreEvaluationHashException(
                         PreEvaluationHash,
-                        expectedPreEvaluationHash,
+                        new BlockHash(expectedPreEvaluationHash),
                         message);
                 }
             }

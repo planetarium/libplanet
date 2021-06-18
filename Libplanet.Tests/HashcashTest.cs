@@ -25,9 +25,9 @@ namespace Libplanet.Tests
             );
 #pragma warning disable CS0612
             Nonce answer2 = Hashcash.Answer(Stamp, difficulty);
-            BlockHash digest2 = Hashcash.Hash(Stamp(answer2));
 #pragma warning restore CS0612
-            Assert.True(digest2.Satisfies(difficulty));
+            byte[] digest2 = SHA256.Create().ComputeHash(Stamp(answer2));
+            Assert.True(Satisfies(digest2, difficulty));
         }
 
         [Fact]

@@ -3,6 +3,7 @@ using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
 using System.Numerics;
+using System.Security.Cryptography;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Store.Trie;
@@ -403,9 +404,8 @@ namespace Libplanet.Blocks
                 );
             }
 
-#pragma warning disable CS0612
-            BlockHash calculatedHash = Hashcash.Hash(SerializeForHash());
-#pragma warning restore CS0612
+            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
+            BlockHash calculatedHash = new BlockHash(hashAlgorithm.Digest(SerializeForHash()));
             if (!hash.Equals(calculatedHash))
             {
                 throw new InvalidBlockHashException(

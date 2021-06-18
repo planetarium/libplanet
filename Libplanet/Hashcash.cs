@@ -107,16 +107,5 @@ namespace Libplanet
             CancellationToken cancellationToken = default
         ) =>
             Answer(stamp, HashAlgorithmType.Of<SHA256>(), difficulty, cancellationToken).Nonce;
-
-        /// <summary>
-        /// Calculates a SHA-256 digest from the given <paramref name="bytes"/>.
-        /// </summary>
-        /// <param name="bytes">A <see cref="byte"/> array to calculate
-        /// its hash digest.</param>
-        /// <returns>A deterministic digest of the given
-        /// <paramref name="bytes"/>.</returns>
-        [Obsolete]
-        public static BlockHash Hash(byte[] bytes) =>
-            BlockHash.FromHashDigest(HashDigest<SHA256>.DeriveFrom(bytes));
     }
 }

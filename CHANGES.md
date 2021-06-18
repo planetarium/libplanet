@@ -159,10 +159,10 @@ To be released.
     [[#1294], [#1328]]
  -  Added `IStore.DeleteTxIdBlockHashIndex(TxId, BlockHash)` method.
     [[#1294], [#1328]]
- -  Added `IStore.IterateTxIdBlockHashIndex(TxId)` method.
-    [[#1294], [#1328]]
+ -  Added `IStore.IterateTxIdBlockHashIndex(TxId)` method.  [[#1294], [#1328]]
  -  `Swarm<T>.StartAsync()` method became to receive `broadcastBlockInterval`
     (or `millisecondsBroadcastBlockInterval`) parameter.  [[#1351]]
+ -  Removed `Hashcash.Hash()` method.  [[#1314], [#1352]]
 
 ### Backward-incompatible network protocol changes
 

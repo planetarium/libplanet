@@ -3,6 +3,7 @@ using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
 using System.Numerics;
+using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Blocks;
 using Libplanet.Tests.Common.Action;
@@ -371,9 +372,7 @@ namespace Libplanet.Tests.Blocks
             ImmutableArray<byte> stateRootHash
         )
         {
-#pragma warning disable CS0612
-            ImmutableArray<byte> hash = Hashcash.Hash(
-#pragma warning restore CS0612
+            ImmutableArray<byte> hash = HashAlgorithmType.Of<SHA256>().Digest(
                 BlockHeader.SerializeForHash(
                     protocolVersion,
                     index,
@@ -385,7 +384,7 @@ namespace Libplanet.Tests.Blocks
                     txHash,
                     stateRootHash
                 )
-            ).ByteArray;
+            ).ToImmutableArray();
             return new BlockHeader(
                 protocolVersion,
                 index,
