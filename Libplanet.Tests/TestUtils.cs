@@ -5,7 +5,6 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using Bencodex;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
@@ -373,31 +372,6 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             }
 
             return chain;
-        }
-
-        public static HashDigest<SHA256>? ActionEvaluationsToHash(
-            IEnumerable<ActionEvaluation> actionEvaluations)
-        {
-            ActionEvaluation actionEvaluation;
-            var evaluations = actionEvaluations.ToList();
-            if (evaluations.Any())
-            {
-                actionEvaluation = evaluations.Last();
-            }
-            else
-            {
-                return (HashDigest<SHA256>?)null;
-            }
-
-            IImmutableSet<Address> updatedAddresses =
-                actionEvaluation.OutputStates.UpdatedAddresses;
-            var dict = Bencodex.Types.Dictionary.Empty;
-            foreach (Address address in updatedAddresses)
-            {
-                dict.Add(address.ToHex(), actionEvaluation.OutputStates.GetState(address));
-            }
-
-            return HashDigest<SHA256>.DeriveFrom(new Codec().Encode(dict));
         }
 
         public static PrivateKey GeneratePrivateKeyOfBucketIndex(Address tableAddress, int target)

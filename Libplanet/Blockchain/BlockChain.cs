@@ -1982,32 +1982,6 @@ namespace Libplanet.Blockchain
             }
         }
 
-        internal BlockHash? ActionEvaluationsToHash(IEnumerable<ActionEvaluation> actionEvaluations)
-        {
-            ActionEvaluation actionEvaluation;
-            var evaluations = actionEvaluations.ToList();
-            if (evaluations.Any())
-            {
-                actionEvaluation = evaluations.Last();
-            }
-            else
-            {
-                return null;
-            }
-
-            IImmutableSet<Address> updatedAddresses =
-                actionEvaluation.OutputStates.UpdatedAddresses;
-            var dict = Bencodex.Types.Dictionary.Empty;
-            foreach (Address address in updatedAddresses)
-            {
-                dict.Add(address.ToHex(), actionEvaluation.OutputStates.GetState(address));
-            }
-
-#pragma warning disable CS0612
-            return Hashcash.Hash(new Codec().Encode(dict));
-#pragma warning restore CS0612
-        }
-
         /// <summary>
         /// Calculates and complements a block's incomplete states on the fly.
         /// </summary>
