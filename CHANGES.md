@@ -162,6 +162,9 @@ To be released.
  -  Added `IStore.IterateTxIdBlockHashIndex(TxId)` method.  [[#1294], [#1328]]
  -  `Swarm<T>.StartAsync()` method became to receive `broadcastBlockInterval`
     (or `millisecondsBroadcastBlockInterval`) parameter.  [[#1351]]
+ -  Replaced `Hashcash.Answer(Stamp, long, CancellationToken)` method with
+    `Hashcash.Answer<T>(Stamp, HashAlgorithm, long, CancellationToken)` method.
+    [[#1314], [#1352]]
  -  Removed `Hashcash.Hash()` method.  [[#1314], [#1352]]
 
 ### Backward-incompatible network protocol changes
@@ -195,8 +198,6 @@ To be released.
  -  Added `Currency(IValue)` overloaded constructor.  [[#1289]]
  -  Added `Currency.Serialize()` method.  [[#1289]]
  -  Added `ByteUtil.TimingSafelyCompare()` method.  [[#1314], [#1352]]
- -  Added `Hashcash.Answer(Stamp, HashAlgorithm, long, CancellationToken)`
-    overloaded method.  [[#1314], [#1352]]
 
 ### Behavioral changes
 

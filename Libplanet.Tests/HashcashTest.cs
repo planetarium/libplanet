@@ -23,11 +23,6 @@ namespace Libplanet.Tests
                 digest.ToArray(),
                 SHA256.Create().ComputeHash(Stamp(answer))
             );
-#pragma warning disable CS0612
-            Nonce answer2 = Hashcash.Answer(Stamp, difficulty);
-#pragma warning restore CS0612
-            byte[] digest2 = SHA256.Create().ComputeHash(Stamp(answer2));
-            Assert.True(Satisfies(digest2, difficulty));
         }
 
         [Fact]

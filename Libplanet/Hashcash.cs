@@ -1,7 +1,6 @@
 #nullable enable
 using System;
 using System.Collections.Immutable;
-using System.Security.Cryptography;
 using System.Threading;
 using Libplanet.Blocks;
 
@@ -80,32 +79,5 @@ namespace Libplanet
 
             throw new OperationCanceledException(cancellationToken);
         }
-
-        /// <summary>
-        /// Finds a <see cref="Nonce"/> that satisfies the given
-        /// <paramref name="difficulty"/>.  This process is so-called
-        /// &#x0201c;<a
-        /// href="https://en.wikipedia.org/wiki/Cryptocurrency#Mining"
-        /// >mining</a>&#x0201d;.
-        /// </summary>
-        /// <param name="stamp">A callback to get a &#x0201c;stamp&#x0201d;
-        /// which is a <see cref="byte"/> array determined from a given
-        /// <see cref="Nonce"/> value.</param>
-        /// <param name="difficulty">A number to calculate the target number
-        /// for which the returned answer should be less than.</param>
-        /// <param name="cancellationToken">
-        /// A cancellation token used to propagate notification that this
-        /// operation should be canceled.
-        /// </param>
-        /// <returns>A <see cref="Nonce"/> value which satisfies the given
-        /// <paramref name="difficulty"/>.</returns>
-        /// <seealso cref="Stamp"/>
-        [Obsolete]
-        public static Nonce Answer(
-            Stamp stamp,
-            long difficulty,
-            CancellationToken cancellationToken = default
-        ) =>
-            Answer(stamp, HashAlgorithmType.Of<SHA256>(), difficulty, cancellationToken).Nonce;
     }
 }

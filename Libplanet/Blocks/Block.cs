@@ -401,9 +401,8 @@ namespace Libplanet.Blocks
             byte[] stampSuffix = new byte[emptyNonce.Length - offset - nonceLength];
             Array.Copy(emptyNonce, offset + nonceLength, stampSuffix, 0, stampSuffix.Length);
 
-#pragma warning disable CS0612
-            Nonce nonce = Hashcash.Answer(
-#pragma warning restore CS0612
+            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
+            (Nonce nonce, _) = Hashcash.Answer(
                 n =>
                 {
                     int nLen = n.ByteArray.Length;
@@ -423,6 +422,7 @@ namespace Libplanet.Blocks
                     Array.Copy(stampSuffix, 0, stamp, pos, stampSuffix.Length);
                     return stamp;
                 },
+                hashAlgorithm,
                 difficulty,
                 cancellationToken
             );
