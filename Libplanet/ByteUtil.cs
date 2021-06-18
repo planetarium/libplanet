@@ -1,5 +1,6 @@
 #nullable enable
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Globalization;
@@ -117,6 +118,26 @@ namespace Libplanet
                 0,
                 (current, t) => unchecked(current * (bytes.Length + 1) + t)
             );
+        }
+
+        /// <summary>
+        /// Timing safe comparision of two byte arrays.
+        /// </summary>
+        /// <remarks>In case of two byte arrays do not have the same length, it tries to keep
+        /// the timing dependent on the length of the shorter one.</remarks>
+        /// <param name="left">A byte array.</param>
+        /// <param name="right">Another byte array.</param>
+        /// <returns><c>true</c> iff two byte arrays have the exactly same contents.</returns>
+        [Pure]
+        public static bool TimingSafelyCompare(IReadOnlyList<byte> left, IReadOnlyList<byte> right)
+        {
+            bool differ = left.Count != right.Count;
+            for (int i = 0, len = Math.Min(left.Count, right.Count); i < len; i++)
+            {
+                differ = differ || (left[i] ^ right[i]) != 0;
+            }
+
+            return !differ;
         }
     }
 }

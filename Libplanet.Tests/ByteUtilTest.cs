@@ -60,5 +60,22 @@ namespace Libplanet.Tests
                 ByteUtil.CalculateHashCode(otherBytes)
             );
         }
+
+        [Fact]
+        public void TimingSafelyCompare()
+        {
+            Assert.True(ByteUtil.TimingSafelyCompare(new byte[0], new byte[0]));
+            Assert.False(ByteUtil.TimingSafelyCompare(new byte[] { 0 }, new byte[] { 1 }));
+            Assert.True(ByteUtil.TimingSafelyCompare(new byte[] { 1 }, new byte[] { 1 }));
+            Assert.True(
+                ByteUtil.TimingSafelyCompare(new byte[] { 1, 2, 3, 4 }, new byte[] { 1, 2, 3, 4 })
+            );
+            Assert.False(
+                ByteUtil.TimingSafelyCompare(new byte[] { 1, 2, 3, 4 }, new byte[] { 1, 2, 3, 5 })
+            );
+            Assert.False(
+                ByteUtil.TimingSafelyCompare(new byte[] { 1, 2, 3, 4 }, new byte[] { 1, 2, 3 })
+            );
+        }
     }
 }

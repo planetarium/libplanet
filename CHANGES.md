@@ -194,6 +194,7 @@ To be released.
  -  Added `Address(Binary)` overloaded constructor.  [[#1289]]
  -  Added `Currency(IValue)` overloaded constructor.  [[#1289]]
  -  Added `Currency.Serialize()` method.  [[#1289]]
+ -  Added `ByteUtil.TimingSafelyCompare()` method.  [[#1314], [#1352]]
 
 ### Behavioral changes
 
