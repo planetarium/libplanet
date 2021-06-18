@@ -82,11 +82,15 @@ namespace Libplanet.Blocks
             Transactions = transactions.OrderBy(tx => tx.Id).ToArray();
             TxHash = CalculateTxHashes(Transactions);
 
+#pragma warning disable CS0612
             PreEvaluationHash = preEvaluationHash ?? Hashcash.Hash(Header.SerializeForHash());
+#pragma warning restore CS0612
             StateRootHash = stateRootHash;
 
             // FIXME: This does not need to be computed every time?
+#pragma warning disable CS0612
             Hash = Hashcash.Hash(Header.SerializeForHash());
+#pragma warning restore CS0612
 
             // As the order of transactions should be unpredictable until a block is mined,
             // the sorter key should be derived from both a block hash and a txid.
@@ -399,7 +403,9 @@ namespace Libplanet.Blocks
             byte[] stampSuffix = new byte[emptyNonce.Length - offset - nonceLength];
             Array.Copy(emptyNonce, offset + nonceLength, stampSuffix, 0, stampSuffix.Length);
 
+#pragma warning disable CS0612
             Nonce nonce = Hashcash.Answer(
+#pragma warning restore CS0612
                 n =>
                 {
                     int nLen = n.ByteArray.Length;
@@ -514,7 +520,9 @@ namespace Libplanet.Blocks
             if (ProtocolVersion > 0)
             {
                 BlockHash expectedPreEvaluationHash =
+#pragma warning disable CS0612
                     Hashcash.Hash(Header.SerializeForHash(includeStateRootHash: false));
+#pragma warning restore CS0612
                 if (!expectedPreEvaluationHash.Equals(PreEvaluationHash))
                 {
                     string message =

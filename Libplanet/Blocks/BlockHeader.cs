@@ -403,7 +403,9 @@ namespace Libplanet.Blocks
                 );
             }
 
+#pragma warning disable CS0612
             BlockHash calculatedHash = Hashcash.Hash(SerializeForHash());
+#pragma warning restore CS0612
             if (!hash.Equals(calculatedHash))
             {
                 throw new InvalidBlockHashException(

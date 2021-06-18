@@ -448,7 +448,9 @@ namespace Libplanet.Store.Trie
         {
             if (_secure)
             {
+#pragma warning disable CS0612
                 key = Hashcash.Hash(key).ToByteArray();
+#pragma warning restore CS0612
             }
 
             var res = new byte[key.Length * 2];

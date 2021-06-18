@@ -371,7 +371,9 @@ namespace Libplanet.Tests.Blocks
             ImmutableArray<byte> stateRootHash
         )
         {
+#pragma warning disable CS0612
             ImmutableArray<byte> hash = Hashcash.Hash(
+#pragma warning restore CS0612
                 BlockHeader.SerializeForHash(
                     protocolVersion,
                     index,

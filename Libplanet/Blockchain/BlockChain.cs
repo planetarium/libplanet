@@ -2003,7 +2003,9 @@ namespace Libplanet.Blockchain
                 dict.Add(address.ToHex(), actionEvaluation.OutputStates.GetState(address));
             }
 
+#pragma warning disable CS0612
             return Hashcash.Hash(new Codec().Encode(dict));
+#pragma warning restore CS0612
         }
 
         /// <summary>
