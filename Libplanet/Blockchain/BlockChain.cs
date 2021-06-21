@@ -384,6 +384,7 @@ namespace Libplanet.Blockchain
 
             Block<T> block = Block<T>.Mine(
                 0,
+                HashAlgorithmType.Of<SHA256>(),
                 0,
                 0,
                 privateKey.ToAddress(),
@@ -949,12 +950,14 @@ namespace Libplanet.Blockchain
                 stagedTransactions.Length
             );
 
+            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             Block<T> block;
             try
             {
                 block = await Task.Run(
                     () => Block<T>.Mine(
                         index: index,
+                        hashAlgorithm: hashAlgorithm,
                         difficulty: difficulty,
                         previousTotalDifficulty: Tip.TotalDifficulty,
                         miner: miner,

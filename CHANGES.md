@@ -118,6 +118,8 @@ To be released.
      -  The type of `TrieStateStore.PruneStates()` method's `excludeBlockHashes`
         parameter became `IImmutableSet<BlockHash>`
         (was `ImmutableHashSet<HashDigest<SHA256>>`).
+ -  Added `HashAlgorithmType hashAlgorithm` parameter to `Block<T>.MineBlock()`
+    method.  [[#1314], [#1352]]
  -  Added `IActionContext.TxId` property.  [[#1275]]
  -  Added `IStore.PutTxExecution(TxSuccess)` method.  [[#1156], [#1289]]
  -  Added `IStore.PutTxExecution(TxFailure)` method.  [[#1156], [#1289]]

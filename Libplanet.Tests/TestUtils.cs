@@ -228,11 +228,13 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             DateTimeOffset timestamp =
                 previousBlock.Timestamp.Add(blockInterval ?? TimeSpan.FromSeconds(15));
 
+            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             Block<T> block;
             if (nonce == null)
             {
                 block = Block<T>.Mine(
                     index: index,
+                    hashAlgorithm: hashAlgorithm,
                     difficulty: difficulty,
                     previousTotalDifficulty: previousBlock.TotalDifficulty,
                     miner: miner ?? previousBlock.Miner.Value,

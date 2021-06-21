@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Numerics;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Bencodex.Types;
 using Libplanet.Action;
@@ -207,6 +208,7 @@ namespace Libplanet.Tests.Action
                 actions: new[] { action });
             var block = Block<ThrowException>.Mine(
                 index: 1,
+                hashAlgorithm: HashAlgorithmType.Of<SHA256>(),
                 difficulty: 1,
                 previousTotalDifficulty: genesis.TotalDifficulty,
                 miner: _storeFx.Address1,

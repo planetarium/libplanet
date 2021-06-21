@@ -66,7 +66,8 @@ namespace Libplanet.Tests.Fixtures
             Store = new DefaultStore(null);
             KVStore = new MemoryKeyValueStore();
             StateStore = new TrieStateStore(KVStore, KVStore);
-            Genesis = Block<Arithmetic>.Mine(0, 0, 0, Miner, null, DateTimeOffset.UtcNow, Txs)
+            HashAlgorithmType algo = HashAlgorithmType.Of<SHA256>();
+            Genesis = Block<Arithmetic>.Mine(0, algo, 0, 0, Miner, null, DateTimeOffset.UtcNow, Txs)
                 .AttachStateRootHash(StateStore, policy.BlockAction);
             Chain = new BlockChain<Arithmetic>(
                 policy,

@@ -18,6 +18,7 @@ namespace Libplanet.Tests.Blockchain
         {
             Block<DumbAction> validNextBlock = Block<DumbAction>.Mine(
                 1,
+                HashAlgorithmType.Of<SHA256>(),
                 1024,
                 _fx.GenesisBlock.TotalDifficulty,
                 _fx.GenesisBlock.Miner.Value,
@@ -34,6 +35,7 @@ namespace Libplanet.Tests.Blockchain
         {
             Block<DumbAction> block1 = Block<DumbAction>.Mine(
                 1,
+                HashAlgorithmType.Of<SHA256>(),
                 1024,
                 _fx.GenesisBlock.TotalDifficulty,
                 _fx.GenesisBlock.Miner.Value,
@@ -46,6 +48,7 @@ namespace Libplanet.Tests.Blockchain
 
             Block<DumbAction> block2 = Block<DumbAction>.Mine(
                 2,
+                HashAlgorithmType.Of<SHA256>(),
                 1024,
                 block1.TotalDifficulty,
                 _fx.GenesisBlock.Miner.Value,
@@ -60,6 +63,7 @@ namespace Libplanet.Tests.Blockchain
             {
                 Block<DumbAction> block3 = Block<DumbAction>.Mine(
                     2,
+                    HashAlgorithmType.Of<SHA256>(),
                     1024,
                     block1.TotalDifficulty,
                     _fx.GenesisBlock.Miner.Value,
@@ -80,6 +84,7 @@ namespace Libplanet.Tests.Blockchain
             Block<DumbAction> prev = _blockChain.Tip;
             Block<DumbAction> blockWithAlreadyUsedIndex = Block<DumbAction>.Mine(
                 prev.Index,
+                HashAlgorithmType.Of<SHA256>(),
                 1,
                 prev.TotalDifficulty,
                 prev.Miner.Value,
@@ -93,6 +98,7 @@ namespace Libplanet.Tests.Blockchain
 
             Block<DumbAction> blockWithIndexAfterNonexistentIndex = Block<DumbAction>.Mine(
                 prev.Index + 2,
+                HashAlgorithmType.Of<SHA256>(),
                 1,
                 prev.TotalDifficulty,
                 prev.Miner.Value,
@@ -112,6 +118,7 @@ namespace Libplanet.Tests.Blockchain
 
             var invalidDifficultyBlock = Block<DumbAction>.Mine(
                 2,
+                HashAlgorithmType.Of<SHA256>(),
                 1,
                 _validNext.TotalDifficulty,
                 _fx.GenesisBlock.Miner.Value,
@@ -129,6 +136,7 @@ namespace Libplanet.Tests.Blockchain
 
             var invalidTotalDifficultyBlock = Block<DumbAction>.Mine(
                 2,
+                HashAlgorithmType.Of<SHA256>(),
                 _policy.GetNextBlockDifficulty(_blockChain),
                 _validNext.TotalDifficulty - 1,
                 _fx.GenesisBlock.Miner.Value,
@@ -146,6 +154,7 @@ namespace Libplanet.Tests.Blockchain
 
             var invalidPreviousHashBlock = Block<DumbAction>.Mine(
                 2,
+                HashAlgorithmType.Of<SHA256>(),
                 1032,
                 _validNext.TotalDifficulty,
                 _fx.GenesisBlock.Miner.Value,
@@ -163,6 +172,7 @@ namespace Libplanet.Tests.Blockchain
 
             var invalidPreviousTimestamp = Block<DumbAction>.Mine(
                 2,
+                HashAlgorithmType.Of<SHA256>(),
                 1032,
                 _validNext.TotalDifficulty,
                 _fx.GenesisBlock.Miner.Value,
@@ -196,6 +206,7 @@ namespace Libplanet.Tests.Blockchain
 
             var validNext = Block<DumbAction>.Mine(
                 1,
+                HashAlgorithmType.Of<SHA256>(),
                 1024,
                 genesisBlock.TotalDifficulty,
                 genesisBlock.Miner.Value,
@@ -207,6 +218,7 @@ namespace Libplanet.Tests.Blockchain
 
             var invalidStateRootHash = Block<DumbAction>.Mine(
                 2,
+                HashAlgorithmType.Of<SHA256>(),
                 1032,
                 validNext.TotalDifficulty,
                 genesisBlock.Miner.Value,

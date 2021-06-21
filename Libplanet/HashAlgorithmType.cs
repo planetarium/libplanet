@@ -71,7 +71,8 @@ namespace Libplanet
         /// Creates a <see cref="HashAlgorithmType"/> which refers to <typeparamref name="T"/>.
         /// </summary>
         /// <param name="objectToInferType">An optional object to make the compiler infers the
-        /// type parameter <typeparamref name="T"/> from this.</param>
+        /// type parameter <typeparamref name="T"/> from this.  Note that the value in itself is
+        /// never used at runtime.</param>
         /// <typeparam name="T">A subclass of <see cref="HashAlgorithm"/>.</typeparam>
         /// <returns>A <see cref="HashAlgorithmType"/> which refers to <typeparamref name="T"/>.
         /// </returns>

@@ -346,6 +346,8 @@ namespace Libplanet.Blocks
         /// Generate a block with given <paramref name="transactions"/>.
         /// </summary>
         /// <param name="index">Index of the block.</param>
+        /// <param name="hashAlgorithm">The hash algorithm to use for calculating
+        /// <see cref="Block{T}.PreEvaluationHash"/>.</param>
         /// <param name="difficulty">Difficulty to find the <see cref="Block{T}"/>
         /// <see cref="Nonce"/>.</param>
         /// <param name="previousTotalDifficulty">The total difficulty until the previous
@@ -364,6 +366,7 @@ namespace Libplanet.Blocks
         /// <returns>A <see cref="Block{T}"/> that mined.</returns>
         public static Block<T> Mine(
             long index,
+            HashAlgorithmType hashAlgorithm,
             long difficulty,
             BigInteger previousTotalDifficulty,
             Address miner,
@@ -401,7 +404,6 @@ namespace Libplanet.Blocks
             byte[] stampSuffix = new byte[emptyNonce.Length - offset - nonceLength];
             Array.Copy(emptyNonce, offset + nonceLength, stampSuffix, 0, stampSuffix.Length);
 
-            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             (Nonce nonce, _) = Hashcash.Answer(
                 n =>
                 {

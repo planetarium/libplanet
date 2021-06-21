@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
+using System.Security.Cryptography;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Action;
@@ -203,6 +204,7 @@ namespace Libplanet.Tests.Blocks
             DateTimeOffset now = DateTimeOffset.UtcNow;
             Block<DumbAction> block = Block<DumbAction>.Mine(
                 _fx.Next.Index,
+                HashAlgorithmType.Of<SHA256>(),
                 _fx.Next.Difficulty,
                 _fx.Genesis.TotalDifficulty,
                 _fx.Next.Miner.Value,
@@ -215,6 +217,7 @@ namespace Libplanet.Tests.Blocks
 
             block = Block<DumbAction>.Mine(
                 _fx.Next.Index,
+                HashAlgorithmType.Of<SHA256>(),
                 _fx.Next.Difficulty,
                 _fx.Genesis.TotalDifficulty,
                 _fx.Next.Miner.Value,
@@ -232,6 +235,7 @@ namespace Libplanet.Tests.Blocks
             DateTimeOffset now = DateTimeOffset.UtcNow;
             var block = Block<DumbAction>.Mine(
                 _fx.Next.Index,
+                HashAlgorithmType.Of<SHA256>(),
                 _fx.Next.Difficulty,
                 _fx.Genesis.TotalDifficulty,
                 _fx.Next.Miner.Value,
