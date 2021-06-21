@@ -179,6 +179,7 @@ To be released.
  -  Added `BoundPeer.Parse()` static method.  [[#1240]]
  -  Added `TransportException` class.  [[#1242]]
  -  Added `SwarmOptions.StaticPeers` property.  [[#1230], [#1271]]
+ -  Added `SwarmOptions.BranchpointThreshold` property.  [[#1348]]
  -  Added `StaticPeers` as the last parameter to
     `RoutingTable(Address, int, int)` constructor.  [[#1230], [#1271]]
  -  Added `AtomicActionRenderer<T>` class.  [[#1267], [#1275]]
@@ -304,6 +305,7 @@ To be released.
 [#1339]: https://github.com/planetarium/libplanet/issues/1339
 [#1342]: https://github.com/planetarium/libplanet/pull/1342
 [#1343]: https://github.com/planetarium/libplanet/pull/1343
+[#1348]: https://github.com/planetarium/libplanet/pull/1348
 
 
 Version 0.11.1
