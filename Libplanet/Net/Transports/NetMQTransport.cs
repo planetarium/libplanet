@@ -620,7 +620,7 @@ namespace Libplanet.Net.Transports
                     DateTimeOffset.UtcNow,
                     _appProtocolVersion);
 
-                foreach (BoundPeer peer in peers)
+                peers.AsParallel().ForAll(peer =>
                 {
                     string endpoint = peer.ToNetMQAddress();
                     if (!_dealers.TryGetValue(peer.Address, out DealerSocket dealer) ||
@@ -647,7 +647,7 @@ namespace Libplanet.Net.Transports
                         dealer.Dispose();
                         _dealers.TryRemove(peer.Address, out _);
                     }
-                }
+                });
             }
             catch (Exception exc)
             {

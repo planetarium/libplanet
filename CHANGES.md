@@ -216,6 +216,7 @@ To be released.
  -  `ActionEvaluator<T>.EvaluateActions()` now throws an unmanaged exception
     if `OutOfMemoryException` is caught from `IAction.Execute()`.
     [[#1320], [#1343]]
+ -  Improved performance of broadcasting using `Swarm<T>`.  [[#1334]]
 
 ### Bug fixes
 
@@ -299,6 +300,7 @@ To be released.
 [#1320]: https://github.com/planetarium/libplanet/issues/1320
 [#1325]: https://github.com/planetarium/libplanet/pull/1325
 [#1328]: https://github.com/planetarium/libplanet/pull/1328
+[#1334]: https://github.com/planetarium/libplanet/pull/1334
 [#1339]: https://github.com/planetarium/libplanet/issues/1339
 [#1342]: https://github.com/planetarium/libplanet/pull/1342
 [#1343]: https://github.com/planetarium/libplanet/pull/1343
