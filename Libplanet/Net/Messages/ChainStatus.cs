@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Numerics;
+using Destructurama.Attributed;
 using Libplanet.Blocks;
 using NetMQ;
 
@@ -32,16 +33,19 @@ namespace Libplanet.Net.Messages
 
         public int ProtocolVersion { get; }
 
+        [LogAsScalar]
         public BlockHash GenesisHash { get; }
 
         public long TipIndex { get; }
 
+        [LogAsScalar]
         public BlockHash TipHash { get; }
 
         public BigInteger TotalDifficulty { get; }
 
         long IBlockExcerpt.Index => TipIndex;
 
+        [LogAsScalar]
         BlockHash IBlockExcerpt.Hash => TipHash;
 
         protected override Message.MessageType Type => Message.MessageType.ChainStatus;

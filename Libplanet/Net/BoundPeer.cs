@@ -3,6 +3,7 @@ using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Net;
 using System.Runtime.Serialization;
+using Destructurama.Attributed;
 using Libplanet.Crypto;
 
 namespace Libplanet.Net
@@ -45,6 +46,7 @@ namespace Libplanet.Net
         /// <summary>
         /// The corresponding <see cref="DnsEndPoint"/> of this peer.
         /// </summary>
+        [LogAsScalar]
         [Pure]
         public DnsEndPoint EndPoint { get; }
 
