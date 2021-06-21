@@ -11696,6 +11696,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.SwarmOptions.BlockRecvTimeout
   nameWithType: SwarmOptions.BlockRecvTimeout
+- uid: Libplanet.Net.SwarmOptions.BranchpointThreshold
+  name: BranchpointThreshold
+  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_BranchpointThreshold
+  commentId: P:Libplanet.Net.SwarmOptions.BranchpointThreshold
+  fullName: Libplanet.Net.SwarmOptions.BranchpointThreshold
+  nameWithType: SwarmOptions.BranchpointThreshold
+- uid: Libplanet.Net.SwarmOptions.BranchpointThreshold*
+  name: BranchpointThreshold
+  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_BranchpointThreshold_
+  commentId: Overload:Libplanet.Net.SwarmOptions.BranchpointThreshold
+  isSpec: "True"
+  fullName: Libplanet.Net.SwarmOptions.BranchpointThreshold
+  nameWithType: SwarmOptions.BranchpointThreshold
 - uid: Libplanet.Net.SwarmOptions.MaxTimeout
   name: MaxTimeout
   href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_MaxTimeout
