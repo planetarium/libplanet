@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using Destructurama.Attributed;
 using NetMQ;
 
 namespace Libplanet.Net.Messages
@@ -20,6 +21,7 @@ namespace Libplanet.Net.Messages
                 .ToImmutableList();
         }
 
+        [LogAsScalar]
         public IImmutableList<BoundPeer> Found { get; }
 
         protected override MessageType Type => MessageType.Neighbors;
