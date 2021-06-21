@@ -1569,7 +1569,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.BoundPeer.html",
-          "hash": "PRX9pN8ShjxnuvADYM3F3w=="
+          "hash": "4MBcZxGVq/or00kybUQwRA=="
         }
       },
       "is_incremental": false,
@@ -1653,7 +1653,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Messages.Message.MessageType.html",
-          "hash": "KOdu6z4aKA023VkZHEvjoQ=="
+          "hash": "1qGZ/8LLU7y5GPVvUsOaCQ=="
         }
       },
       "is_incremental": false,
@@ -1665,7 +1665,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Messages.Message.html",
-          "hash": "ubEjgqT/5FQCjh+Pe/Gz6A=="
+          "hash": "TUI7kVjYcbQymJQcIKgDiw=="
         }
       },
       "is_incremental": false,
@@ -1701,7 +1701,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Peer.html",
-          "hash": "NjPNVtdeVf6iVqNnmZkTMw=="
+          "hash": "O1+Ngn97sEVrH+MTL91KtA=="
         }
       },
       "is_incremental": false,
