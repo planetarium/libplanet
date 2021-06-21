@@ -237,7 +237,7 @@ namespace Libplanet.Net
                         logSessionId,
                         subSessionId
                     );
-                    BlockLocator locator = workspace.GetBlockLocator();
+                    BlockLocator locator = workspace.GetBlockLocator(Options.BranchpointThreshold);
                     _logger.Debug(
                         "{SessionId}/{SubSessionId}: Locator's length: {LocatorLength}",
                         logSessionId,

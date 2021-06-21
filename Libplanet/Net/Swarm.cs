@@ -513,7 +513,7 @@ namespace Libplanet.Net
             );
 
             Block<T> initialTip = BlockChain.Tip;
-            BlockLocator initialLocator = BlockChain.GetBlockLocator();
+            BlockLocator initialLocator = BlockChain.GetBlockLocator(Options.BranchpointThreshold);
             _logger.Debug(
                 "The tip before preloading begins: #{TipIndex} {TipHash}",
                 BlockChain.Tip.Index,
@@ -1123,7 +1123,7 @@ namespace Libplanet.Net
         )
         {
             long currentTipIndex = blockChain.Tip?.Index ?? -1;
-            BlockLocator locator = blockChain.GetBlockLocator();
+            BlockLocator locator = blockChain.GetBlockLocator(Options.BranchpointThreshold);
             int peersCount = peersWithHeight.Count;
             int i = 0;
             var exceptions = new List<Exception>();
