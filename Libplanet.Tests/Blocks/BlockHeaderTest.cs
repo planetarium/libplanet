@@ -34,7 +34,7 @@ namespace Libplanet.Tests.Blocks
                     BlockHeader.TimestampFormat,
                     CultureInfo.InvariantCulture
                 ),
-                preEvaluationHash: _fx.Genesis.PreEvaluationHash.ByteArray,
+                preEvaluationHash: _fx.Genesis.PreEvaluationHash,
                 stateRootHash: _fx.Genesis.StateRootHash?.ByteArray ?? ImmutableArray<byte>.Empty
             );
             Bencodex.Types.Dictionary expected = Bencodex.Types.Dictionary.Empty
@@ -54,7 +54,7 @@ namespace Libplanet.Tests.Blocks
                 .Add(BlockHeader.NonceKey, _fx.Genesis.Nonce.ToByteArray())
                 .Add(BlockHeader.HashKey, _fx.Genesis.Hash.ToByteArray())
                 .Add(BlockHeader.MinerKey, _fx.Genesis.Miner?.ToByteArray() ?? new byte[0])
-                .Add(BlockHeader.PreEvaluationHashKey, _fx.Genesis.PreEvaluationHash.ToByteArray());
+                .Add(BlockHeader.PreEvaluationHashKey, _fx.Genesis.PreEvaluationHash.ToArray());
             Assert.Equal(expected, header.ToBencodex());
             Assert.Equal(expected, new BlockHeader(expected).ToBencodex());
 
@@ -125,7 +125,7 @@ namespace Libplanet.Tests.Blocks
                     BlockHeader.TimestampFormat,
                     CultureInfo.InvariantCulture
                 ),
-                preEvaluationHash: _fx.Genesis.PreEvaluationHash.ByteArray,
+                preEvaluationHash: _fx.Genesis.PreEvaluationHash,
                 stateRootHash: _fx.Genesis.StateRootHash?.ByteArray ?? ImmutableArray<byte>.Empty
             );
 

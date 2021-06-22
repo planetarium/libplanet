@@ -212,7 +212,7 @@ namespace Libplanet.Action
         /// </remarks>
         [Pure]
         internal static IEnumerable<ActionEvaluation> EvaluateActions(
-            BlockHash preEvaluationHash,
+            ImmutableArray<byte> preEvaluationHash,
             long blockIndex,
             TxId? txid,
             IAccountStateDelta previousStates,
@@ -244,7 +244,7 @@ namespace Libplanet.Action
                 hashedSignature = hasher.ComputeHash(signature);
             }
 
-            byte[] preEvaluationHashBytes = preEvaluationHash.ToByteArray();
+            byte[] preEvaluationHashBytes = preEvaluationHash.ToBuilder().ToArray();
             int seed =
                 (preEvaluationHashBytes.Length > 0
                     ? BitConverter.ToInt32(preEvaluationHashBytes, 0) : 0)

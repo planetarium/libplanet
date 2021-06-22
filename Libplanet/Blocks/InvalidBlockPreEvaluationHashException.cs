@@ -1,6 +1,8 @@
 #nullable enable
 using System;
+using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using System.Runtime.Serialization;
 using Libplanet.Serialization;
 
@@ -24,8 +26,8 @@ namespace Libplanet.Blocks
         /// <see cref="Block{T}.StateRootHash"/>.</param>
         /// <param name="message">The message that describes the error.</param>
         public InvalidBlockPreEvaluationHashException(
-            BlockHash actualPreEvaluationHash,
-            BlockHash expectedPreEvaluationHash,
+            ImmutableArray<byte> actualPreEvaluationHash,
+            ImmutableArray<byte> expectedPreEvaluationHash,
             string message)
             : base(message)
         {
@@ -37,21 +39,23 @@ namespace Libplanet.Blocks
             SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
-            ActualPreEvaluationHash = info.GetValue<BlockHash>(nameof(ActualPreEvaluationHash));
-            ExpectedPreEvaluationHash = info.GetValue<BlockHash>(nameof(ExpectedPreEvaluationHash));
+            ActualPreEvaluationHash =
+                info.GetValue<byte[]>(nameof(ActualPreEvaluationHash)).ToImmutableArray();
+            ExpectedPreEvaluationHash =
+                info.GetValue<byte[]>(nameof(ExpectedPreEvaluationHash)).ToImmutableArray();
         }
 
         /// <summary>
         /// The hash calculated from the block except <see cref="Block{T}.StateRootHash"/>.
         /// </summary>
         [Pure]
-        public BlockHash ActualPreEvaluationHash { get; }
+        public ImmutableArray<byte> ActualPreEvaluationHash { get; }
 
         /// <summary>
         /// The hash recorded as <see cref="Block{T}.PreEvaluationHash"/>.
         /// </summary>
         [Pure]
-        public BlockHash ExpectedPreEvaluationHash { get; }
+        public ImmutableArray<byte> ExpectedPreEvaluationHash { get; }
 
         public static bool operator ==(
             InvalidBlockPreEvaluationHashException left,
@@ -67,8 +71,8 @@ namespace Libplanet.Blocks
         {
             base.GetObjectData(info, context);
 
-            info.AddValue(nameof(ActualPreEvaluationHash), ActualPreEvaluationHash);
-            info.AddValue(nameof(ExpectedPreEvaluationHash), ExpectedPreEvaluationHash);
+            info.AddValue(nameof(ActualPreEvaluationHash), ActualPreEvaluationHash.ToArray());
+            info.AddValue(nameof(ExpectedPreEvaluationHash), ExpectedPreEvaluationHash.ToArray());
         }
     }
 }

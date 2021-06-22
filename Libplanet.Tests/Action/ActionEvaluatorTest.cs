@@ -83,7 +83,7 @@ namespace Libplanet.Tests.Action
             var generatedRandomNumbers = new List<int>();
 
             Assert.NotEqual(stateRootBlock.Hash, noStateRootBlock.Hash);
-            Assert.Equal(stateRootBlock.PreEvaluationHash, noStateRootBlock.PreEvaluationHash);
+            AssertBytesEqual(stateRootBlock.PreEvaluationHash, noStateRootBlock.PreEvaluationHash);
 
             for (int i = 0; i < repeatCount; ++i)
             {
@@ -799,7 +799,7 @@ namespace Libplanet.Tests.Action
 
             Block<Arithmetic> blockA = await fx.Mine();
             ActionEvaluation[] evalsA = ActionEvaluator<DumbAction>.EvaluateActions(
-                blockA.Hash,
+                blockA.PreEvaluationHash,
                 blockIndex: blockA.Index,
                 txid: txA.Id,
                 previousStates: fx.CreateAccountStateDelta(0, blockA.PreviousHash),
@@ -848,7 +848,7 @@ namespace Libplanet.Tests.Action
 
             Block<Arithmetic> blockB = await fx.Mine();
             ActionEvaluation[] evalsB = ActionEvaluator<DumbAction>.EvaluateActions(
-                blockB.Hash,
+                blockB.PreEvaluationHash,
                 blockIndex: blockB.Index,
                 txid: txB.Id,
                 previousStates: fx.CreateAccountStateDelta(0, blockB.PreviousHash),

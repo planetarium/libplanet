@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using Libplanet.Blocks;
@@ -10,8 +11,8 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void Serialize()
         {
-            var actual = new BlockHash(TestUtils.GetRandomBytes(32));
-            var expected = new BlockHash(TestUtils.GetRandomBytes(32));
+            var actual = TestUtils.GetRandomBytes(32).ToImmutableArray();
+            var expected = TestUtils.GetRandomBytes(32).ToImmutableArray();
             var exc = new InvalidBlockPreEvaluationHashException(
                 actual,
                 expected,

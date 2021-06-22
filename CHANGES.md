@@ -15,14 +15,10 @@ To be released.
         (was `HashDigest<SHA256>`).
      -  The type of `Block<T>.PreviousHash` property became `BlockHash?`
         (was `HashDigest<SHA256>?`).
-     -  The type of `Block<T>.PreEvaluationHash` property became `BlockHash?`
-        (was `HashDigest<SHA256>?`).
      -  The types of `Block<T>()` constructors' `hash` parameter became
         `BlockHash` (were `HashDigest<SHA256>`).
      -  The types of `Block<T>()` constructors' `previousHash` parameter became
         `BlockHash?` (were `HashDigest<SHA256>?`).
-     -  The types of `Block<T>()` constructors' `preEvaluationHash` parameter
-        became `BlockHash?` (were `HashDigest<SHA256>?`).
      -  The type of `Block<T>.Mine()` method's `previousHash` parameter became
         `BlockHash?` (was `HashDigest<SHA256>?`).
      -  The return type of `HashCash.Hash()` method became `BlockHash`
@@ -60,12 +56,6 @@ To be released.
         `BlockHash` (was `HashDigest<SHA256>`).
      -  The type of `BlockVerificationState.VerifiedBlockHash` property became
         `BlockHash` (was `HashDigest<SHA256>`).
-     -  The type of `ActionEvaluation.EvaluateActionsGradually()` method's
-        `blockHash` parameter became `BlockHash` (was `HashDigest<SHA256>`).
-     -  The type of `UnexpectedlyTerminatedActionException()` constructor's
-        `blockHash` parameter became `BlockHash?` (was `HashDigest<SHA256>?`).
-     -  The type of `UnexpectedlyTerminatedActionException.BlockHash` property
-        became `BlockHash?` (was `HashDigest<SHA256>?`).
      -  The type of `IncompleteBlockStatesException()` constructor's
         `blockHash` parameter became `BlockHash` (was `HashDigest<SHA256>`).
      -  The type of `IncompleteBlockStatesException.BlockHash` property
@@ -162,6 +152,25 @@ To be released.
  -  Added `IStore.IterateTxIdBlockHashIndex(TxId)` method.  [[#1294], [#1328]]
  -  `Swarm<T>.StartAsync()` method became to receive `broadcastBlockInterval`
     (or `millisecondsBroadcastBlockInterval`) parameter.  [[#1351]]
+ -  The type of `Block<T>.PreEvaluationHash` property became
+    `ImmutableArray<byte>?` (was `HashDigest<SHA256>?`).
+    [[#1192], [#1197], [#1314], [#1352]]
+ -  The types of `Block<T>()` constructors' `preEvaluationHash` parameter
+    became `ImmutableArray<byte>?` (were `HashDigest<SHA256>?`).
+    [[#1192], [#1197], [#1314], [#1352]]
+ -  The type of `InvalidBlockPreEvaluationHashException.ActualPreEvaluationHash`
+    and `ExpectedPreEvaluationHash` properties became `ImmutableArray<byte>`
+    (were `HashDigest<SHA256>`).  [[#1192], [#1197], [#1314], [#1352]]
+ -  The type of `InvalidBlockPreEvaluationHashException()` constructor's
+    `actualPreEvaluationHash` and and `expectedPreEvaluationHash` parameters
+    became `ImmutableArray<byte>` (were `HashDigest<SHA256>`).
+    [[#1192], [#1197], [#1314], [#1352]]
+ -  Replaced `UnexpectedlyTerminatedActionException()` constructor's
+    `HashDigest<SHA256>? blockHash` parameter with
+    `ImmutableArray<byte>? preEvaluationHash`.
+    [[#1192], [#1197], [#1314], [#1352]]
+ -  Replaced `UnexpectedlyTerminatedActionException.BlockHash` property with
+    `PreEvaluationHash.`  [[#1192], [#1197], [#1314], [#1352]]
  -  Replaced `Hashcash.Answer(Stamp, long, CancellationToken)` method with
     `Hashcash.Answer<T>(Stamp, HashAlgorithm, long, CancellationToken)` method.
     [[#1314], [#1352]]

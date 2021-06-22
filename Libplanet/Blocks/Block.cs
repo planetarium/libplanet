@@ -67,7 +67,7 @@ namespace Libplanet.Blocks
             BlockHash? previousHash,
             DateTimeOffset timestamp,
             IReadOnlyList<Transaction<T>> transactions,
-            BlockHash? preEvaluationHash = null,
+            ImmutableArray<byte>? preEvaluationHash = null,
             HashDigest<SHA256>? stateRootHash = null,
             int protocolVersion = CurrentProtocolVersion)
         {
@@ -84,7 +84,7 @@ namespace Libplanet.Blocks
 
             HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             PreEvaluationHash = preEvaluationHash ??
-                new BlockHash(hashAlgorithm.Digest(Header.SerializeForHash()));
+                hashAlgorithm.Digest(Header.SerializeForHash()).ToImmutableArray();
             StateRootHash = stateRootHash;
 
             // FIXME: This does not need to be computed every time?
@@ -92,7 +92,7 @@ namespace Libplanet.Blocks
 
             // As the order of transactions should be unpredictable until a block is mined,
             // the sorter key should be derived from both a block hash and a txid.
-            var hashInteger = new BigInteger(PreEvaluationHash.ToByteArray());
+            var hashInteger = new BigInteger(PreEvaluationHash.ToBuilder().ToArray());
 
             // If there are multiple transactions for the same signer these should be ordered by
             // their tx nonces.  So transactions of the same signer should have the same sort key.
@@ -182,8 +182,8 @@ namespace Libplanet.Blocks
                     .Select(tx => Transaction<T>.Deserialize(tx.ToArray(), false))
                     .ToList(),
                 rb.Header.PreEvaluationHash.Any()
-                    ? new BlockHash(rb.Header.PreEvaluationHash)
-                    : (BlockHash?)null,
+                    ? rb.Header.PreEvaluationHash
+                    : (ImmutableArray<byte>?)null,
                 rb.Header.StateRootHash.Any()
                     ? new HashDigest<SHA256>(rb.Header.StateRootHash)
                     : (HashDigest<SHA256>?)null)
@@ -203,7 +203,7 @@ namespace Libplanet.Blocks
             DateTimeOffset timestamp,
             HashDigest<SHA256>? txHash,
             IReadOnlyList<Transaction<T>> transactions,
-            BlockHash? preEvaluationHash,
+            ImmutableArray<byte>? preEvaluationHash,
             HashDigest<SHA256>? stateRootHash
         )
         {
@@ -248,7 +248,7 @@ namespace Libplanet.Blocks
         /// </summary>
         /// <seealso cref="Nonce"/>
         /// <seealso cref="BlockHeader.Validate"/>
-        public BlockHash PreEvaluationHash { get; }
+        public ImmutableArray<byte> PreEvaluationHash { get; }
 
         /// <summary>
         /// The <see cref="ITrie.Hash"/> of the states on the block.
@@ -330,7 +330,7 @@ namespace Libplanet.Blocks
                     previousHash: previousHashAsArray,
                     txHash: TxHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty,
                     hash: Hash.ToByteArray().ToImmutableArray(),
-                    preEvaluationHash: PreEvaluationHash.ToByteArray().ToImmutableArray(),
+                    preEvaluationHash: PreEvaluationHash,
                     stateRootHash: stateRootHashAsArray
                 );
             }
@@ -522,9 +522,7 @@ namespace Libplanet.Blocks
                 HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
                 byte[] expectedPreEvaluationHash =
                     hashAlgorithm.Digest(Header.SerializeForHash(includeStateRootHash: false));
-                if (!ByteUtil.TimingSafelyCompare(
-                        expectedPreEvaluationHash,
-                        PreEvaluationHash.ByteArray))
+                if (!ByteUtil.TimingSafelyCompare(expectedPreEvaluationHash, PreEvaluationHash))
                 {
                     string message =
                         $"The expected pre evaluation hash of block {Hash} is " +
@@ -532,8 +530,9 @@ namespace Libplanet.Blocks
                         $"{PreEvaluationHash}.";
                     throw new InvalidBlockPreEvaluationHashException(
                         PreEvaluationHash,
-                        new BlockHash(expectedPreEvaluationHash),
-                        message);
+                        expectedPreEvaluationHash.ToImmutableArray(),
+                        message
+                    );
                 }
             }
 

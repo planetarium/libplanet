@@ -1,9 +1,9 @@
 using System;
+using System.Collections.Immutable;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 using Libplanet.Action;
-using Libplanet.Blocks;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tx;
 using Xunit;
@@ -16,7 +16,8 @@ namespace Libplanet.Tests.Action
         public void Serializable()
         {
             var innerExc = new Exception("inner");
-            var blockHash = new BlockHash(TestUtils.GetRandomBytes(32));
+            ImmutableArray<byte> preEvaluationHash =
+                TestUtils.GetRandomBytes(32).ToImmutableArray();
             long blockIndex = 100;
             var txId = new TxId(TestUtils.GetRandomBytes(TxId.Size));
             var previousStateRootHash = new HashDigest<SHA256>(
@@ -28,7 +29,7 @@ namespace Libplanet.Tests.Action
             };
 
             var exc = new UnexpectedlyTerminatedActionException(
-                blockHash,
+                preEvaluationHash,
                 blockIndex,
                 txId,
                 previousStateRootHash,
@@ -48,7 +49,7 @@ namespace Libplanet.Tests.Action
                 Assert.IsType<Exception>(deserialized.InnerException);
                 Assert.Equal(innerExc.Message, deserialized.InnerException.Message);
 
-                Assert.Equal(blockHash, deserialized.BlockHash);
+                Assert.Equal(preEvaluationHash, deserialized.PreEvaluationHash);
                 Assert.Equal(blockIndex, deserialized.BlockIndex);
                 Assert.Equal(txId, deserialized.TxId);
                 Assert.Equal(previousStateRootHash, deserialized.PreviousStateRootHash);

@@ -1,5 +1,6 @@
 #nullable enable
 using System;
+using System.Collections.Immutable;
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using Bencodex;
@@ -24,9 +25,9 @@ namespace Libplanet.Action
         /// <summary>
         /// Creates a new <see cref="UnexpectedlyTerminatedActionException"/> object.
         /// </summary>
-        /// <param name="blockHash">The <see cref="Block{T}.Hash"/> of the <see cref="Block{T}"/>
-        /// that <paramref name="action"/> belongs to.  This can be <c>null</c> on rehearsal mode.
-        /// </param>
+        /// <param name="preEvaluationHash">The <see cref="Block{T}.PreEvaluationHash"/> of the
+        /// <see cref="Block{T}"/> that <paramref name="action"/> belongs to.
+        /// This can be <c>null</c> on rehearsal mode.</param>
         /// <param name="blockIndex">The <see cref="Block{T}.Index"/> of the <see cref="Block{T}"/>
         /// that <paramref name="action"/> belongs to.  This can be <c>null</c> on rehearsal mode.
         /// </param>
@@ -43,7 +44,7 @@ namespace Libplanet.Action
         /// <param name="innerException">The actual exception that the <see cref="Action"/> threw.
         /// </param>
         public UnexpectedlyTerminatedActionException(
-            BlockHash? blockHash,
+            ImmutableArray<byte>? preEvaluationHash,
             long? blockIndex,
             TxId? txid,
             HashDigest<SHA256>? previousStateRootHash,
@@ -53,7 +54,7 @@ namespace Libplanet.Action
         )
             : base(message, innerException)
         {
-            BlockHash = blockHash;
+            PreEvaluationHash = preEvaluationHash;
             BlockIndex = blockIndex;
             TxId = txid;
             PreviousStateRootHash = previousStateRootHash;
@@ -66,9 +67,9 @@ namespace Libplanet.Action
         )
             : base(info, context)
         {
-            if (info.TryGetValue(nameof(BlockHash), out byte[] blockHash))
+            if (info.TryGetValue(nameof(PreEvaluationHash), out byte[] blockHash))
             {
-                BlockHash = new BlockHash(blockHash);
+                PreEvaluationHash = blockHash.ToImmutableArray();
             }
 
             if (info.TryGetValue(nameof(BlockIndex), out long blockIndex))
@@ -123,10 +124,10 @@ namespace Libplanet.Action
         }
 
         /// <summary>
-        /// The <see cref="Block{T}.Hash"/> of the <see cref="Block{T}"/> that <see cref="Action"/>
-        /// belongs to.  This can be <c>null</c> on rehearsal mode.
+        /// The <see cref="Block{T}.PreEvaluationHash"/> of the <see cref="Block{T}"/> that
+        /// <see cref="Action"/> belongs to.  This can be <c>null</c> on rehearsal mode.
         /// </summary>
-        public BlockHash? BlockHash { get; }
+        public ImmutableArray<byte>? PreEvaluationHash { get; }
 
         /// <summary>
         /// The <see cref="Block{T}.Index"/> of the <see cref="Block{T}"/> that <see cref="Action"/>
@@ -152,9 +153,9 @@ namespace Libplanet.Action
         {
             base.GetObjectData(info, context);
 
-            if (BlockHash is { } blockHash)
+            if (PreEvaluationHash is { } preEvaluationHash)
             {
-                info.AddValue(nameof(BlockHash), blockHash.ToByteArray());
+                info.AddValue(nameof(PreEvaluationHash), preEvaluationHash.ToBuilder().ToArray());
             }
 
             if (BlockIndex is long blockIndex)
