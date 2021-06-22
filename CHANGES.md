@@ -11,8 +11,6 @@ To be released.
  -  Block hashes are now represented as `BlockHash`, which was introduced in
     this release, which has been done as `HashDigest<SHA256>`.
     [[#1192], [#1197]]
-     -  Removed `HashDigest<T>.Satisfies()` method.  This was replaced by
-        `BlockHash.Satisfies()` method instead.
      -  The type of `Block<T>.Hash` property became `BlockHash`
         (was `HashDigest<SHA256>`).
      -  The type of `Block<T>.PreviousHash` property became `BlockHash?`
@@ -168,6 +166,8 @@ To be released.
     `Hashcash.Answer<T>(Stamp, HashAlgorithm, long, CancellationToken)` method.
     [[#1314], [#1352]]
  -  Removed `Hashcash.Hash()` method.  [[#1314], [#1352]]
+ -  Removed `HashDigest<T>.Satisfies()` method.  This was replaced by
+    `ByteUtil.Satisfies()` method instead.  [[#1192], [#1197], [#1314], [#1352]]
 
 ### Backward-incompatible network protocol changes
 

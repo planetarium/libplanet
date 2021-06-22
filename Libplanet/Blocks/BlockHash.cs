@@ -89,29 +89,6 @@ namespace Libplanet.Blocks
             => new BlockHash(hashDigest.ByteArray);
 
         /// <summary>
-        /// Tests if a block hash is less than the target computed for the given
-        /// <paramref name="difficulty"/>).
-        /// </summary>
-        /// <param name="difficulty">The difficulty to compute target number.</param>
-        /// <returns><c>true</c> only if a digest is less than the target computed for the given
-        /// <paramref name="difficulty"/>).  If <paramref name="difficulty"/> is <c>0</c> it always
-        /// returns <c>true</c>.</returns>
-        [Pure]
-        public bool Satisfies(long difficulty)
-        {
-            if (difficulty == 0)
-            {
-                return true;
-            }
-            else if (_byteArray.IsDefaultOrEmpty)
-            {
-                return false;
-            }
-
-            return ByteUtil.Satisfies(this._byteArray, difficulty);
-        }
-
-        /// <summary>
         /// Gets a bare mutable <see cref="byte"/> array of the block hash.
         /// </summary>
         /// <returns>A new mutable <see cref="byte"/> array of the block hash.

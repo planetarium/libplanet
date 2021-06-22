@@ -94,53 +94,6 @@ namespace Libplanet.Tests.Blocks
         }
 
         [Fact]
-        public void Satisfies()
-        {
-            Func<string, BlockHash> hash = BlockHash.FromString;
-            var def = default(BlockHash);
-            var emp = new BlockHash(new byte[0]);
-            var dl1 = hash("8ec2f5285c8fc2f5285c8fc2f5285c8fc2f5285c8fc2f5285c8fc2f5285c8f00");
-            var dl2 = hash("e94a399c4fd6d508f022bbee8781a9c44754408bb92ca5b509fa824b00000000");
-            var dl4 = hash("a85f4662e531e44d161346dcaa256af7923c87291b5408b109fa820000000000");
-
-            Assert.True(def.Satisfies(0));
-            Assert.True(emp.Satisfies(0));
-            Assert.True(dl1.Satisfies(0));
-            Assert.True(dl2.Satisfies(0));
-            Assert.True(dl4.Satisfies(0));
-
-            Assert.False(def.Satisfies(1));
-            Assert.False(emp.Satisfies(1));
-            Assert.True(dl1.Satisfies(1));
-            Assert.True(dl2.Satisfies(1));
-            Assert.True(dl4.Satisfies(1));
-
-            Assert.False(def.Satisfies(457));
-            Assert.False(emp.Satisfies(457));
-            Assert.True(dl1.Satisfies(457));
-            Assert.True(dl2.Satisfies(457));
-            Assert.True(dl4.Satisfies(457));
-
-            Assert.False(def.Satisfies(458));
-            Assert.False(emp.Satisfies(458));
-            Assert.False(dl1.Satisfies(458));
-            Assert.True(dl2.Satisfies(458));
-            Assert.True(dl4.Satisfies(458));
-
-            Assert.False(def.Satisfies(14560825400));
-            Assert.False(emp.Satisfies(14560825400));
-            Assert.False(dl1.Satisfies(14560825400));
-            Assert.True(dl2.Satisfies(14560825400));
-            Assert.True(dl4.Satisfies(14560825400));
-
-            Assert.False(def.Satisfies(14560825401));
-            Assert.False(emp.Satisfies(14560825401));
-            Assert.False(dl1.Satisfies(14560825401));
-            Assert.False(dl2.Satisfies(14560825401));
-            Assert.True(dl4.Satisfies(14560825401));
-        }
-
-        [Fact]
         public void SerializeAndDeserialize()
         {
             byte[] b =
