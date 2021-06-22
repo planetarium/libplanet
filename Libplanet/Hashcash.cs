@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Immutable;
 using System.Threading;
-using Libplanet.Blocks;
 
 namespace Libplanet
 {
@@ -69,11 +68,10 @@ namespace Libplanet
                 random.NextBytes(nonceBytes);
                 var nonce = new Nonce(nonceBytes);
 
-                // FIXME: .Satisfies() method should be moved to other class.
-                var digest = new BlockHash(hashAlgorithmType.Digest(stamp(nonce)));
-                if (digest.Satisfies(difficulty))
+                var digest = hashAlgorithmType.Digest(stamp(nonce));
+                if (ByteUtil.Satisfies(digest, difficulty))
                 {
-                    return (nonce, digest.ByteArray);
+                    return (nonce, ImmutableArray.Create(digest));
                 }
             }
 

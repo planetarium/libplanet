@@ -200,6 +200,7 @@ To be released.
  -  Added `Currency(IValue)` overloaded constructor.  [[#1289]]
  -  Added `Currency.Serialize()` method.  [[#1289]]
  -  Added `ByteUtil.TimingSafelyCompare()` method.  [[#1314], [#1352]]
+ -  Added `ByteUtil.Satisfies()` method.  [[#1314], [#1352]]
 
 ### Behavioral changes
 

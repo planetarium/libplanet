@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
-using System.Numerics;
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using Libplanet.Serialization;
@@ -109,15 +108,7 @@ namespace Libplanet.Blocks
                 return false;
             }
 
-            var maxTargetBytes = new byte[_byteArray.Length + 1];
-            maxTargetBytes[_byteArray.Length] = 0x01;
-            var maxTarget = new BigInteger(maxTargetBytes);
-            BigInteger target = maxTarget / difficulty;
-
-            // Add zero to convert unsigned BigInteger
-            var result = new BigInteger(_byteArray.Add(0).ToBuilder().ToArray());
-
-            return result < target;
+            return ByteUtil.Satisfies(this._byteArray, difficulty);
         }
 
         /// <summary>

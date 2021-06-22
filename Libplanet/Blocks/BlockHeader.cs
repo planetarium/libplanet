@@ -395,7 +395,7 @@ namespace Libplanet.Blocks
                 }
             }
 
-            if (!new BlockHash(PreEvaluationHash.ToArray()).Satisfies(Difficulty))
+            if (!ByteUtil.Satisfies(PreEvaluationHash, Difficulty))
             {
                 throw new InvalidBlockNonceException(
                     $"Block #{Index} {hash}'s pre-evaluation hash " +

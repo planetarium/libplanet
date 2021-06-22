@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
-using Libplanet.Blocks;
 using Xunit;
 
 namespace Libplanet.Tests
@@ -60,7 +59,7 @@ namespace Libplanet.Tests
                 digest = bytes;
             }
 
-            return new BlockHash(digest).Satisfies(difficulty);
+            return ByteUtil.Satisfies(digest, difficulty);
         }
     }
 
