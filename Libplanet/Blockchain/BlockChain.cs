@@ -166,6 +166,7 @@ namespace Libplanet.Blockchain
                 ? h => trieStateStore.GetTrie(h)
                 : (Func<BlockHash, ITrie>)null;
             ActionEvaluator = new ActionEvaluator<T>(
+                _ => HashAlgorithmType.Of<SHA256>(),
                 policy.BlockAction,
                 GetState,
                 GetBalance,
@@ -393,6 +394,7 @@ namespace Libplanet.Blockchain
                 transactions);
 
             var actionEvaluator = new ActionEvaluator<T>(
+                _ => HashAlgorithmType.Of<SHA256>(),
                 blockAction,
                 (address, digest, stateCompleter) => null,
                 (address, currency, hash, fungibleAssetStateCompleter)

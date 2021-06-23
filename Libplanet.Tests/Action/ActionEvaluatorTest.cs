@@ -76,6 +76,7 @@ namespace Libplanet.Tests.Action
                 transactions: txs).AttachStateRootHash(stateStore, null);
             var actionEvaluator =
                 new ActionEvaluator<RandomAction>(
+                    hashAlgorithmGetter: _ => HashAlgorithmType.Of<SHA256>(),
                     policyBlockAction: null,
                     stateGetter: ActionEvaluator<RandomAction>.NullStateGetter,
                     balanceGetter: ActionEvaluator<RandomAction>.NullBalanceGetter,
@@ -272,6 +273,7 @@ namespace Libplanet.Tests.Action
             };
             Block<DumbAction> genesis = MineGenesis<DumbAction>();
             ActionEvaluator<DumbAction> actionEvaluator = new ActionEvaluator<DumbAction>(
+                hashAlgorithmGetter: _ => HashAlgorithmType.Of<SHA256>(),
                 policyBlockAction: null,
                 stateGetter: ActionEvaluator<DumbAction>.NullStateGetter,
                 balanceGetter: ActionEvaluator<DumbAction>.NullBalanceGetter,
@@ -569,6 +571,7 @@ namespace Libplanet.Tests.Action
                 timestamp: DateTimeOffset.UtcNow,
                 transactions: ImmutableArray.Create(tx));
             var actionEvaluator = new ActionEvaluator<DumbAction>(
+                hashAlgorithmGetter: _ => HashAlgorithmType.Of<SHA256>(),
                 policyBlockAction: null,
                 stateGetter: ActionEvaluator<DumbAction>.NullStateGetter,
                 balanceGetter: ActionEvaluator<DumbAction>.NullBalanceGetter,
@@ -721,6 +724,7 @@ namespace Libplanet.Tests.Action
                 txs: new List<Transaction<PolymorphicAction<BaseAction>>> { invalidTx });
 
             var actionEvaluator = new ActionEvaluator<PolymorphicAction<BaseAction>>(
+                hashAlgorithmGetter: _ => HashAlgorithmType.Of<SHA256>(),
                 policyBlockAction: null,
                 stateGetter: ActionEvaluator<PolymorphicAction<BaseAction>>.NullStateGetter,
                 balanceGetter: ActionEvaluator<PolymorphicAction<BaseAction>>.NullBalanceGetter,
@@ -758,6 +762,7 @@ namespace Libplanet.Tests.Action
                 DateTimeOffset.UtcNow);
             var hash = new BlockHash(GetRandomBytes(32));
             var actionEvaluator = new ActionEvaluator<ThrowException>(
+                hashAlgorithmGetter: _ => HashAlgorithmType.Of<SHA256>(),
                 policyBlockAction: null,
                 stateGetter: ActionEvaluator<ThrowException>.NullStateGetter,
                 balanceGetter: ActionEvaluator<ThrowException>.NullBalanceGetter,

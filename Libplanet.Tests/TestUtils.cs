@@ -293,7 +293,12 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             }
 
             var actionEvaluator = new ActionEvaluator<T>(
-                blockAction, StateGetter, FungibleAssetValueGetter, null);
+                hashAlgorithmGetter: _ => HashAlgorithmType.Of<SHA256>(),
+                policyBlockAction: blockAction,
+                stateGetter: StateGetter,
+                balanceGetter: FungibleAssetValueGetter,
+                trieGetter: null
+            );
             var actionEvaluationResult = actionEvaluator
                 .Evaluate(block, StateCompleterSet<T>.Reject)
                 .GetTotalDelta(ToStateKey, ToFungibleAssetKey);
