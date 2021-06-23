@@ -159,8 +159,10 @@ To be released.
     [[#1294], [#1328]]
  -  Added `IStore.DeleteTxIdBlockHashIndex(TxId, BlockHash)` method.
     [[#1294], [#1328]]
--  Added `IStore.IterateTxIdBlockHashIndex(TxId)` method.
+ -  Added `IStore.IterateTxIdBlockHashIndex(TxId)` method.
     [[#1294], [#1328]]
+ -  `Swarm<T>.StartAsync()` method became to receive `broadcastBlockInterval`
+    (or `millisecondsBroadcastBlockInterval`) parameter.  [[#1351]]
 
 ### Backward-incompatible network protocol changes
 
@@ -311,6 +313,7 @@ To be released.
 [#1342]: https://github.com/planetarium/libplanet/pull/1342
 [#1343]: https://github.com/planetarium/libplanet/pull/1343
 [#1348]: https://github.com/planetarium/libplanet/pull/1348
+[#1351]: https://github.com/planetarium/libplanet/pull/1351
 
 
 Version 0.11.1

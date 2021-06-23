@@ -267,6 +267,9 @@ namespace Libplanet.Net
         /// the dial-up is cancelled after this timeout, and it tries another peer.
         /// If <c>null</c> is given it never gives up dial-ups.
         /// </param>
+        /// <param name="millisecondsBroadcastBlockInterval">
+        /// The time period of broadcasting chain tip.
+        /// </param>
         /// <param name="millisecondsBroadcastTxInterval">
         /// The time period of exchange of staged transactions.
         /// </param>
@@ -287,11 +290,13 @@ namespace Libplanet.Net
         /// /> method too.</remarks>
         public async Task StartAsync(
             int millisecondsDialTimeout = 15000,
+            int millisecondsBroadcastBlockInterval = 15000,
             int millisecondsBroadcastTxInterval = 5000,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             await StartAsync(
                 TimeSpan.FromMilliseconds(millisecondsDialTimeout),
+                TimeSpan.FromMilliseconds(millisecondsBroadcastBlockInterval),
                 TimeSpan.FromMilliseconds(millisecondsBroadcastTxInterval),
                 cancellationToken
             );
@@ -304,6 +309,8 @@ namespace Libplanet.Net
         /// When the <see cref="Swarm{T}"/> tries to dial each peer in <see cref="Peers"/>,
         /// the dial-up is cancelled after this timeout, and it tries another peer.
         /// If <c>null</c> is given it never gives up dial-ups.
+        /// </param>
+        /// <param name="broadcastBlockInterval">The time period of broadcasting chain tip.
         /// </param>
         /// <param name="broadcastTxInterval">The time period of exchange of staged transactions.
         /// </param>
@@ -324,6 +331,7 @@ namespace Libplanet.Net
         /// /> method too.</remarks>
         public async Task StartAsync(
             TimeSpan dialTimeout,
+            TimeSpan broadcastBlockInterval,
             TimeSpan broadcastTxInterval,
             CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -355,6 +363,7 @@ namespace Libplanet.Net
                         _cancellationToken));
                 tasks.Add(RebuildConnectionAsync(TimeSpan.FromMinutes(30), _cancellationToken));
                 tasks.Add(Transport.RunAsync(_cancellationToken));
+                tasks.Add(BroadcastBlockAsync(broadcastBlockInterval, _cancellationToken));
                 tasks.Add(BroadcastTxAsync(broadcastTxInterval, _cancellationToken));
                 tasks.Add(ProcessFillBlocks(dialTimeout, _cancellationToken));
                 tasks.Add(ProcessFillTxs(_cancellationToken));
@@ -1441,6 +1450,36 @@ namespace Libplanet.Net
                 actionsCount,
                 txsCount,
                 spent);
+        }
+
+        private async Task BroadcastBlockAsync(
+            TimeSpan broadcastBlockInterval,
+            CancellationToken cancellationToken)
+        {
+            const string fname = nameof(BroadcastBlockAsync);
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                try
+                {
+                    await Task.Delay(broadcastBlockInterval, cancellationToken);
+                    if (BlockChain.Tip is { } tip)
+                    {
+                        BroadcastBlock(tip);
+                    }
+                }
+                catch (OperationCanceledException e)
+                {
+                    _logger.Warning(e, $"{fname}() is canceled.");
+                    throw;
+                }
+                catch (Exception e)
+                {
+                    _logger.Error(
+                        e,
+                        $"An unexpected exception occurred during {fname}(): {e}"
+                    );
+                }
+            }
         }
 
         private async Task BroadcastTxAsync(
