@@ -209,6 +209,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
 
         public static Block<T> MineNext<T>(
             Block<T> previousBlock,
+            HashAlgorithmType hashAlgorithm,
             IReadOnlyList<Transaction<T>> txs = null,
             byte[] nonce = null,
             long difficulty = 1,
@@ -228,7 +229,6 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             DateTimeOffset timestamp =
                 previousBlock.Timestamp.Add(blockInterval ?? TimeSpan.FromSeconds(15));
 
-            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             Block<T> block;
             if (nonce == null)
             {
@@ -265,7 +265,11 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         }
 
         public static Block<T> AttachStateRootHash<T>(
-            this Block<T> block, IStateStore stateStore, IAction blockAction)
+            this Block<T> block,
+            HashAlgorithmType hashAlgorithm,
+            IStateStore stateStore,
+            IAction blockAction
+        )
             where T : IAction, new()
         {
             IValue StateGetter(
@@ -293,7 +297,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             }
 
             var actionEvaluator = new ActionEvaluator<T>(
-                hashAlgorithmGetter: _ => HashAlgorithmType.Of<SHA256>(),
+                hashAlgorithmGetter: _ => hashAlgorithm,
                 policyBlockAction: blockAction,
                 stateGetter: StateGetter,
                 balanceGetter: FungibleAssetValueGetter,
@@ -343,6 +347,8 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 }
             );
 
+            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
+
             var tx = Transaction<T>.Create(
                 0,
                 privateKey,
@@ -360,7 +366,11 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 new[] { tx },
                 protocolVersion: protocolVersion
             );
-            genesisBlock = genesisBlock.AttachStateRootHash(stateStore, policy.BlockAction);
+            genesisBlock = genesisBlock.AttachStateRootHash(
+                hashAlgorithm,
+                stateStore,
+                policy.BlockAction
+            );
             ValidatingActionRenderer<T> validator = null;
 #pragma warning disable S1121
             var chain = new BlockChain<T>(

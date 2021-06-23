@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Security.Cryptography;
 using BenchmarkDotNet.Attributes;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
@@ -36,7 +37,7 @@ namespace Libplanet.Benchmarks
                 {
                     blockTxs.Add(Transaction<DumbAction>.Create(nonce++, key, genesis.Hash, new DumbAction[0]));
                 }
-                block = TestUtils.MineNext(block, blockTxs);
+                block = TestUtils.MineNext(block, HashAlgorithmType.Of<SHA256>(), blockTxs);
                 blocks.Add(block);
                 txs.AddRange(blockTxs);
             }

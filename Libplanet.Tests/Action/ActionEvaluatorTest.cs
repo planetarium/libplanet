@@ -68,12 +68,13 @@ namespace Libplanet.Tests.Action
             };
             var stateStore =
                 new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore());
+            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             var noStateRootBlock = TestUtils.MineGenesis(
                 timestamp: timestamp,
                 transactions: txs);
             var stateRootBlock = TestUtils.MineGenesis(
                 timestamp: timestamp,
-                transactions: txs).AttachStateRootHash(stateStore, null);
+                transactions: txs).AttachStateRootHash(hashAlgorithm, stateStore, null);
             var actionEvaluator =
                 new ActionEvaluator<RandomAction>(
                     hashAlgorithmGetter: _ => HashAlgorithmType.Of<SHA256>(),
@@ -271,6 +272,7 @@ namespace Libplanet.Tests.Action
                 _txFx.Address4,
                 _txFx.Address5,
             };
+            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             Block<DumbAction> genesis = MineGenesis<DumbAction>();
             ActionEvaluator<DumbAction> actionEvaluator = new ActionEvaluator<DumbAction>(
                 hashAlgorithmGetter: _ => HashAlgorithmType.Of<SHA256>(),
@@ -323,7 +325,7 @@ namespace Libplanet.Tests.Action
                 _logger.Debug("{0}[{1}] = {2}", nameof(block1Txs), i, tx.Id);
             }
 
-            Block<DumbAction> block1 = MineNext(genesis, block1Txs, new byte[] { });
+            Block<DumbAction> block1 = MineNext(genesis, hashAlgorithm, block1Txs, new byte[] { });
             previousStates = block1.ProtocolVersion > 0
                 ? new AccountStateDeltaImpl(
                     ActionEvaluator<DumbAction>.NullAccountStateGetter,
@@ -442,7 +444,7 @@ namespace Libplanet.Tests.Action
                 _logger.Debug("{0}[{1}] = {2}", nameof(block2Txs), i, tx.Id);
             }
 
-            Block<DumbAction> block2 = MineNext(block1, block2Txs, new byte[] { });
+            Block<DumbAction> block2 = MineNext(block1, hashAlgorithm, block2Txs, new byte[] { });
             AccountStateGetter accountStateGetter = dirty1.GetValueOrDefault;
             AccountBalanceGetter accountBalanceGetter = (address, currency)
                 => balances1.TryGetValue((address, currency), out FungibleAssetValue v)
@@ -690,6 +692,7 @@ namespace Libplanet.Tests.Action
         [Fact]
         public void EvaluateBlockWithInvalidTxUpdatedAddresses()
         {
+            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             ImmutableArray<IValue> rawActions =
                 _txFx.TxWithActions
                     .ToRawTransaction(false).Actions.ToImmutableArray();
@@ -721,6 +724,7 @@ namespace Libplanet.Tests.Action
                     sig.ToImmutableArray()));
             Block<PolymorphicAction<BaseAction>> invalidBlock = TestUtils.MineNext(
                 previousBlock: genesis,
+                hashAlgorithm: hashAlgorithm,
                 txs: new List<Transaction<PolymorphicAction<BaseAction>>> { invalidTx });
 
             var actionEvaluator = new ActionEvaluator<PolymorphicAction<BaseAction>>(
@@ -914,15 +918,16 @@ namespace Libplanet.Tests.Action
                 store: _storeFx.Store,
                 stateStore: _storeFx.StateStore,
                 genesisBlock: _storeFx.GenesisBlock);
+            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             (var addresses, Transaction<DumbAction>[] txs) =
                 MakeFixturesForAppendTests();
             var genesis = chain.Genesis;
             var block = TestUtils.MineNext(
                 genesis,
+                hashAlgorithm,
                 txs,
-                difficulty: chain.Policy.GetNextBlockDifficulty(chain)).AttachStateRootHash(
-                    chain.StateStore,
-                    _policy.BlockAction);
+                difficulty: chain.Policy.GetNextBlockDifficulty(chain)
+            ).AttachStateRootHash(hashAlgorithm, chain.StateStore, _policy.BlockAction);
             var stateCompleterSet = StateCompleterSet<DumbAction>.Recalculate;
 
             AccountStateGetter accountStateGetter =

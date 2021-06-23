@@ -94,7 +94,7 @@ namespace Libplanet.Tests.Blocks
                 _fx.Genesis.Hash
             );
 
-            Block<PolymorphicAction<BaseAction>> next = MineNext(_fx.Genesis);
+            Block<PolymorphicAction<BaseAction>> next = MineNext(_fx.Genesis, _fx.HashAlgorithm);
 
             Assert.Equal(1, _fx.Next.Index);
             Assert.Equal(1, _fx.Next.Difficulty);
@@ -618,6 +618,7 @@ namespace Libplanet.Tests.Blocks
             Assert.Throws<InvalidTxSignatureException>(() =>
                 MineNext(
                     MineGenesis<DumbAction>(),
+                    HashAlgorithmType.Of<SHA256>(),
                     new List<Transaction<DumbAction>>
                     {
                         invalidTx,
@@ -660,6 +661,7 @@ namespace Libplanet.Tests.Blocks
             Assert.Throws<InvalidTxPublicKeyException>(() =>
                 MineNext(
                     MineGenesis<DumbAction>(),
+                    HashAlgorithmType.Of<SHA256>(),
                     new List<Transaction<DumbAction>>
                     {
                         invalidTx,

@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using Dasync.Collections;
@@ -288,9 +289,10 @@ namespace Libplanet.Tests.Net
         [Fact(Timeout = Timeout)]
         public async Task CompleteWithBlockFetcherGivingWrongBlocks()
         {
+            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             Block<DumbAction> genesis = TestUtils.MineGenesis<DumbAction>(),
-                demand = TestUtils.MineNext(genesis),
-                wrong = TestUtils.MineNext(genesis);
+                demand = TestUtils.MineNext(genesis, hashAlgorithm),
+                wrong = TestUtils.MineNext(genesis, hashAlgorithm);
             _logger.Debug("Genesis: #{Index} {Hash}", genesis.Index, genesis.Hash);
             _logger.Debug("Demand:  #{Index} {Hash}", demand.Index, demand.Hash);
             _logger.Debug("Wrong:   #{Index} {Hash}", wrong.Index, wrong.Hash);
@@ -395,12 +397,13 @@ namespace Libplanet.Tests.Net
         {
             if (count >= 1)
             {
+                HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
                 Block<T> block = TestUtils.MineGenesis<T>();
                 yield return block;
 
                 for (int i = 1; i < count; i++)
                 {
-                    block = TestUtils.MineNext(block);
+                    block = TestUtils.MineNext(block, hashAlgorithm);
                     yield return block;
                 }
             }

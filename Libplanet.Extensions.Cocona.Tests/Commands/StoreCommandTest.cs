@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Immutable;
 using System.IO;
+using System.Security.Cryptography;
 using Cocona;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
@@ -17,6 +18,7 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
     {
         private readonly ImmutableArray<StoreFixture> _storeFixtures;
         private readonly TextWriter _originalWriter;
+        private readonly HashAlgorithmType _hashAlgorithm;
         private readonly Block<Utils.DummyAction> _genesisBlock;
         private readonly Block<Utils.DummyAction> _block1;
         private readonly Block<Utils.DummyAction> _block2;
@@ -51,11 +53,12 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
             _transaction3 = DummyTransaction();
             _transaction4 = DummyTransaction();
 
-            _block1 = TestUtils.MineNext(_genesisBlock, new[] { _transaction1 });
-            _block2 = TestUtils.MineNext(_block1, new[] { _transaction2 });
-            _block3 = TestUtils.MineNext(_block2, new[] { _transaction3 });
-            _block4 = TestUtils.MineNext(_block3, new[] { _transaction3 });
-            _block5 = TestUtils.MineNext(_block4);
+            _hashAlgorithm = HashAlgorithmType.Of<SHA256>();
+            _block1 = TestUtils.MineNext(_genesisBlock, _hashAlgorithm, new[] { _transaction1 });
+            _block2 = TestUtils.MineNext(_block1, _hashAlgorithm, new[] { _transaction2 });
+            _block3 = TestUtils.MineNext(_block2, _hashAlgorithm, new[] { _transaction3 });
+            _block4 = TestUtils.MineNext(_block3, _hashAlgorithm, new[] { _transaction3 });
+            _block5 = TestUtils.MineNext(_block4, _hashAlgorithm);
 
             var guid = Guid.NewGuid();
             foreach (var v in _storeFixtures)

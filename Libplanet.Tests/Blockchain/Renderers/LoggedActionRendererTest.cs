@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Tests.Common.Action;
@@ -23,11 +24,13 @@ namespace Libplanet.Tests.Blockchain.Renderers
 
         private static Exception _exception = new Exception();
 
+        private static HashAlgorithmType _hashAlgorithm = HashAlgorithmType.Of<SHA256>();
+
         private static DumbBlock _genesis = TestUtils.MineGenesis<DumbAction>(default(Address));
 
-        private static DumbBlock _blockA = TestUtils.MineNext(_genesis);
+        private static DumbBlock _blockA = TestUtils.MineNext(_genesis, _hashAlgorithm);
 
-        private static DumbBlock _blockB = TestUtils.MineNext(_genesis);
+        private static DumbBlock _blockB = TestUtils.MineNext(_genesis, _hashAlgorithm);
 
         private ILogger _logger;
 

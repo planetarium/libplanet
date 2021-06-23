@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using Bencodex.Types;
@@ -713,11 +714,13 @@ namespace Libplanet.Tests.Net
             await chain2.MineBlock(swarm2.Address);
 
             // Creates a block that will make chain 2's total difficulty is higher than chain 1's.
+            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             var block3 = TestUtils.MineNext(
                     chain2.Tip,
+                    hashAlgorithm,
                     difficulty: (long)chain1.Tip.TotalDifficulty + 1,
                     blockInterval: TimeSpan.FromMilliseconds(1))
-                .AttachStateRootHash(chain2.StateStore, chain2.Policy.BlockAction);
+                .AttachStateRootHash(hashAlgorithm, chain2.StateStore, chain2.Policy.BlockAction);
             chain2.Append(block3);
             try
             {
@@ -813,11 +816,13 @@ namespace Libplanet.Tests.Net
             await chain1.MineBlock(miner2.Address);
             long nextDifficulty =
                 (long)chain1.Tip.TotalDifficulty + policy.GetNextBlockDifficulty(chain2);
+            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             var block = TestUtils.MineNext(
                     chain2.Tip,
+                    hashAlgorithm,
                     difficulty: nextDifficulty,
                     blockInterval: TimeSpan.FromMilliseconds(1))
-                .AttachStateRootHash(chain2.StateStore, policy.BlockAction);
+                .AttachStateRootHash(hashAlgorithm, chain2.StateStore, policy.BlockAction);
             chain2.Append(block);
 
             Assert.True(chain1.Tip.Index > chain2.Tip.Index);
@@ -1419,9 +1424,11 @@ namespace Libplanet.Tests.Net
 
             for (int i = 0; i < 6; i++)
             {
+                HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
                 Block<DumbAction> block =
-                    TestUtils.MineNext(sender.BlockChain.Tip, difficulty: 1024)
+                    TestUtils.MineNext(sender.BlockChain.Tip, hashAlgorithm, difficulty: 1024)
                         .AttachStateRootHash(
+                            hashAlgorithm,
                             sender.BlockChain.StateStore,
                             sender.BlockChain.Policy.BlockAction);
                 sender.BlockChain.Append(block);
@@ -1460,9 +1467,11 @@ namespace Libplanet.Tests.Net
 
             for (int i = 0; i < 6; i++)
             {
+                HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
                 Block<DumbAction> block =
-                    TestUtils.MineNext(sender.BlockChain.Tip, difficulty: 1024)
+                    TestUtils.MineNext(sender.BlockChain.Tip, hashAlgorithm, difficulty: 1024)
                         .AttachStateRootHash(
+                            hashAlgorithm,
                             sender.BlockChain.StateStore,
                             sender.BlockChain.Policy.BlockAction);
                 sender.BlockChain.Append(block);
@@ -1499,9 +1508,11 @@ namespace Libplanet.Tests.Net
             await StartAsync(sender1);
             await StartAsync(sender2);
 
+            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             Block<DumbAction> b1 =
-                TestUtils.MineNext(receiver.BlockChain.Genesis, difficulty: 1024)
+                TestUtils.MineNext(receiver.BlockChain.Genesis, hashAlgorithm, difficulty: 1024)
                     .AttachStateRootHash(
+                        hashAlgorithm,
                         sender1.BlockChain.StateStore,
                         sender1.BlockChain.Policy.BlockAction);
 

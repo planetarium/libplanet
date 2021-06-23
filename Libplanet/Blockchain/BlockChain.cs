@@ -147,7 +147,7 @@ namespace Libplanet.Blockchain
                 throw new ArgumentNullException(nameof(stateStore));
             }
 
-            _blocks = new BlockSet<T>(store);
+            _blocks = new BlockSet<T>(_ => HashAlgorithmType.Of<SHA256>(), store);
             Renderers = renderers is IEnumerable<IRenderer<T>> r
                 ? r.ToImmutableArray()
                 : ImmutableArray<IRenderer<T>>.Empty;
@@ -1865,7 +1865,7 @@ namespace Libplanet.Blockchain
                     Guid obsoleteId = Id;
                     Id = other.Id;
                     Store.SetCanonicalChainId(Id);
-                    _blocks = new BlockSet<T>(Store);
+                    _blocks = new BlockSet<T>(_ => HashAlgorithmType.Of<SHA256>(), Store);
                     TipChanged?.Invoke(this, (oldTip, newTip));
 
                     if (render)

@@ -22,6 +22,7 @@ namespace Libplanet.Tests.Blocks
             TxFixture = new TxFixture(Genesis.Hash);
             Next = TestUtils.MineNext(
                 Genesis,
+                HashAlgorithm,
                 nonce: new byte[] { 0x02, 0x00, 0x00, 0x00 },
                 protocolVersion: ProtocolVersion
             );
@@ -31,6 +32,7 @@ namespace Libplanet.Tests.Blocks
             };
             HasTx = TestUtils.MineNext(
                 Next,
+                HashAlgorithm,
                 new List<Transaction<PolymorphicAction<BaseAction>>>
                 {
                     TxFixture.TxWithActions,

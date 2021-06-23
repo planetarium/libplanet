@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Assets;
 using Libplanet.Blockchain;
@@ -123,11 +124,13 @@ namespace Libplanet.Tests.Blockchain
                 MakeFixturesForAppendTests();
             var genesis = _blockChain.Genesis;
 
+            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             Block<DumbAction> block1 = TestUtils.MineNext(
                 genesis,
+                hashAlgorithm,
                 txs,
                 difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain)
-            ).AttachStateRootHash(_fx.StateStore, _policy.BlockAction);
+            ).AttachStateRootHash(hashAlgorithm, _fx.StateStore, _policy.BlockAction);
 
             _blockChain.Append(
                 block1,

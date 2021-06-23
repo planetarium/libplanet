@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Net;
+using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using BenchmarkDotNet.Attributes;
@@ -27,6 +28,7 @@ namespace Libplanet.Benchmarks
         private readonly IStagePolicy<DumbAction> _stagePolicy;
         private readonly List<Block<DumbAction>> _blocks;
         private readonly AppProtocolVersion _appProtocolVersion;
+        private readonly HashAlgorithmType _hashAlgorithm;
         private PrivateKey[] _keys;
         private DefaultStoreFixture[] _fxs;
         private BlockChain<DumbAction>[] _blockChains;
@@ -41,10 +43,11 @@ namespace Libplanet.Benchmarks
                 TestUtils.MineGenesis<DumbAction>(),
             };
             _appProtocolVersion = AppProtocolVersion.Sign(new PrivateKey(), 1);
-            _blocks.Add(TestUtils.MineNext(_blocks[0]));
-            _blocks.Add(TestUtils.MineNext(_blocks[1]));
-            _blocks.Add(TestUtils.MineNext(_blocks[2]));
-            _blocks.Add(TestUtils.MineNext(_blocks[3]));
+            _hashAlgorithm = HashAlgorithmType.Of<SHA256>();
+            _blocks.Add(TestUtils.MineNext(_blocks[0], _hashAlgorithm));
+            _blocks.Add(TestUtils.MineNext(_blocks[1], _hashAlgorithm));
+            _blocks.Add(TestUtils.MineNext(_blocks[2], _hashAlgorithm));
+            _blocks.Add(TestUtils.MineNext(_blocks[3], _hashAlgorithm));
         }
 
         [IterationSetup(Targets = new[] {"BroadcastBlock", "BroadcastBlockWithoutFill"})]

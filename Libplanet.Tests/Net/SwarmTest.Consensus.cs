@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -58,17 +59,20 @@ namespace Libplanet.Tests.Net
             await chain1.MineBlock(miner1.Address);
             await chain1.MineBlock(miner2.Address);
 
+            HashAlgorithmType hashAlgorithm;
             Block<DumbAction> bestBlock;
             switch (canonComparerType)
             {
                 default:
                     long nextDifficulty =
                         (long)chain1.Tip.TotalDifficulty + policy.GetNextBlockDifficulty(chain2);
+                    hashAlgorithm = HashAlgorithmType.Of<SHA256>();
                     bestBlock = TestUtils.MineNext(
                         chain2.Tip,
+                        hashAlgorithm,
                         difficulty: nextDifficulty,
                         blockInterval: TimeSpan.FromMilliseconds(1)
-                    ).AttachStateRootHash(chain2.StateStore, policy.BlockAction);
+                    ).AttachStateRootHash(hashAlgorithm, chain2.StateStore, policy.BlockAction);
                     _output.WriteLine("chain1's total difficulty: {0}", chain1.Tip.TotalDifficulty);
                     _output.WriteLine("chain2's total difficulty: {0}", bestBlock.TotalDifficulty);
                     break;
@@ -78,11 +82,13 @@ namespace Libplanet.Tests.Net
                     string hashStr;
                     do
                     {
+                        hashAlgorithm = HashAlgorithmType.Of<SHA256>();
                         bestBlock = TestUtils.MineNext(
                             chain2.Tip,
+                            hashAlgorithm,
                             difficulty: policy.GetNextBlockDifficulty(chain2),
                             blockInterval: TimeSpan.FromMilliseconds(1)
-                        ).AttachStateRootHash(chain2.StateStore, policy.BlockAction);
+                        ).AttachStateRootHash(hashAlgorithm, chain2.StateStore, policy.BlockAction);
                         hashStr = bestBlock.Hash.ToString();
                         _output.WriteLine("chain1's tip hash: {0}", chain1.Tip.Hash);
                         _output.WriteLine("chain2's tip hash: {0}", bestBlock.Hash);

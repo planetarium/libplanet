@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Tests.Common.Action;
@@ -54,12 +55,14 @@ namespace Libplanet.Tests.Action
                 chain.Genesis.Hash,
                 new[] { action }
             );
+            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             chain.Append(
                 TestUtils.MineNext(
                     chain.Tip,
+                    hashAlgorithm,
                     new[] { tx },
                     protocolVersion: ProtocolVersion
-                ).AttachStateRootHash(chain.StateStore, chain.Policy.BlockAction)
+                ).AttachStateRootHash(hashAlgorithm, chain.StateStore, chain.Policy.BlockAction)
             );
             Assert.Equal(
                 DumbAction.DumbCurrency * 6,
