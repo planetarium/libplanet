@@ -106,8 +106,36 @@ To be released.
      -  The type of `TrieStateStore.PruneStates()` method's `excludeBlockHashes`
         parameter became `IImmutableSet<BlockHash>`
         (was `ImmutableHashSet<HashDigest<SHA256>>`).
- -  Added `HashAlgorithmType hashAlgorithm` parameter to `Block<T>.MineBlock()`
-    method.  [[#1314], [#1352]]
+ -  Hash algorithm for <abbr title="proof-of-work">PoW</abbr> (Hashcash) became
+    configurable.  [#1314], [#1352]
+     -  Added `HashAlgorithmType hashAlgorithm` parameter to
+        `Block<T>.MineBlock()` method.
+     -  The type of `Block<T>.PreEvaluationHash` property became
+        `ImmutableArray<byte>?` (was `HashDigest<SHA256>?`).
+        [[#1192], [#1197]]
+     -  The types of `Block<T>()` constructors' `preEvaluationHash` parameter
+        became `ImmutableArray<byte>?` (were `HashDigest<SHA256>?`).
+        [[#1192], [#1197]]
+     -  The type of
+        `InvalidBlockPreEvaluationHashException.ActualPreEvaluationHash` and
+        `ExpectedPreEvaluationHash` properties became `ImmutableArray<byte>`
+        (were `HashDigest<SHA256>`).  [[#1192], [#1197]]
+     -  The type of `InvalidBlockPreEvaluationHashException()` constructor's
+        `actualPreEvaluationHash` and and `expectedPreEvaluationHash` parameters
+        became `ImmutableArray<byte>` (were `HashDigest<SHA256>`).
+        [[#1192], [#1197]]
+     -  Replaced `UnexpectedlyTerminatedActionException()` constructor's
+        `HashDigest<SHA256>? blockHash` parameter with
+        `ImmutableArray<byte>? preEvaluationHash`.
+        [[#1192], [#1197]]
+     -  Replaced `UnexpectedlyTerminatedActionException.BlockHash` property with
+        `PreEvaluationHash.`  [[#1192], [#1197]]
+     -  Replaced `Hashcash.Answer(Stamp, long, CancellationToken)` method with
+        `Hashcash.Answer<T>(Stamp, HashAlgorithm, long, CancellationToken)`
+        method.
+     -  Removed `Hashcash.Hash()` method.
+     -  Removed `HashDigest<T>.Satisfies()` method.  This was replaced by
+        `ByteUtil.Satisfies()` method instead.  [[#1192], [#1197]]
  -  Added `IActionContext.TxId` property.  [[#1275]]
  -  Added `IStore.PutTxExecution(TxSuccess)` method.  [[#1156], [#1289]]
  -  Added `IStore.PutTxExecution(TxFailure)` method.  [[#1156], [#1289]]
@@ -152,31 +180,6 @@ To be released.
  -  Added `IStore.IterateTxIdBlockHashIndex(TxId)` method.  [[#1294], [#1328]]
  -  `Swarm<T>.StartAsync()` method became to receive `broadcastBlockInterval`
     (or `millisecondsBroadcastBlockInterval`) parameter.  [[#1351]]
- -  The type of `Block<T>.PreEvaluationHash` property became
-    `ImmutableArray<byte>?` (was `HashDigest<SHA256>?`).
-    [[#1192], [#1197], [#1314], [#1352]]
- -  The types of `Block<T>()` constructors' `preEvaluationHash` parameter
-    became `ImmutableArray<byte>?` (were `HashDigest<SHA256>?`).
-    [[#1192], [#1197], [#1314], [#1352]]
- -  The type of `InvalidBlockPreEvaluationHashException.ActualPreEvaluationHash`
-    and `ExpectedPreEvaluationHash` properties became `ImmutableArray<byte>`
-    (were `HashDigest<SHA256>`).  [[#1192], [#1197], [#1314], [#1352]]
- -  The type of `InvalidBlockPreEvaluationHashException()` constructor's
-    `actualPreEvaluationHash` and and `expectedPreEvaluationHash` parameters
-    became `ImmutableArray<byte>` (were `HashDigest<SHA256>`).
-    [[#1192], [#1197], [#1314], [#1352]]
- -  Replaced `UnexpectedlyTerminatedActionException()` constructor's
-    `HashDigest<SHA256>? blockHash` parameter with
-    `ImmutableArray<byte>? preEvaluationHash`.
-    [[#1192], [#1197], [#1314], [#1352]]
- -  Replaced `UnexpectedlyTerminatedActionException.BlockHash` property with
-    `PreEvaluationHash.`  [[#1192], [#1197], [#1314], [#1352]]
- -  Replaced `Hashcash.Answer(Stamp, long, CancellationToken)` method with
-    `Hashcash.Answer<T>(Stamp, HashAlgorithm, long, CancellationToken)` method.
-    [[#1314], [#1352]]
- -  Removed `Hashcash.Hash()` method.  [[#1314], [#1352]]
- -  Removed `HashDigest<T>.Satisfies()` method.  This was replaced by
-    `ByteUtil.Satisfies()` method instead.  [[#1192], [#1197], [#1314], [#1352]]
 
 ### Backward-incompatible network protocol changes
 

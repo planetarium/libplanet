@@ -104,8 +104,8 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void ValidateValidHeader()
         {
-            _fx.Genesis.Header.Validate(DateTimeOffset.UtcNow);
-            _fx.Next.Header.Validate(DateTimeOffset.UtcNow);
+            _fx.Genesis.Header.Validate(_fx.HashAlgorithm, DateTimeOffset.UtcNow);
+            _fx.Next.Header.Validate(_fx.HashAlgorithm, DateTimeOffset.UtcNow);
         }
 
         [Fact]
@@ -130,7 +130,7 @@ namespace Libplanet.Tests.Blocks
             );
 
             Assert.Throws<InvalidBlockHashException>(
-                () => { header.Validate(DateTime.UtcNow); });
+                () => { header.Validate(_fx.HashAlgorithm, DateTime.UtcNow); });
         }
 
         [Fact]
@@ -155,7 +155,7 @@ namespace Libplanet.Tests.Blocks
             );
 
             Assert.Throws<InvalidBlockProtocolVersionException>(() =>
-                header.Validate(DateTimeOffset.UtcNow)
+                header.Validate(_fx.HashAlgorithm, DateTimeOffset.UtcNow)
             );
 
             header = new BlockHeader(
@@ -177,7 +177,7 @@ namespace Libplanet.Tests.Blocks
             );
 
             Assert.Throws<InvalidBlockProtocolVersionException>(() =>
-                header.Validate(DateTimeOffset.UtcNow)
+                header.Validate(_fx.HashAlgorithm, DateTimeOffset.UtcNow)
             );
         }
 
@@ -187,7 +187,9 @@ namespace Libplanet.Tests.Blocks
             DateTimeOffset now = DateTimeOffset.UtcNow;
             string future = (now + TimeSpan.FromSeconds(16))
                 .ToString(BlockHeader.TimestampFormat, CultureInfo.InvariantCulture);
+            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             BlockHeader header = MakeBlockHeader(
+                hashAlgorithm: hashAlgorithm,
                 protocolVersion: 0,
                 index: 0,
                 difficulty: 0,
@@ -202,10 +204,10 @@ namespace Libplanet.Tests.Blocks
             );
 
             Assert.Throws<InvalidBlockTimestampException>(
-                () => { header.Validate(now); });
+                () => { header.Validate(hashAlgorithm, now); });
 
             // it's okay because 2 seconds later.
-            header.Validate(now + TimeSpan.FromSeconds(2));
+            header.Validate(hashAlgorithm, now + TimeSpan.FromSeconds(2));
         }
 
         [Fact]
@@ -230,7 +232,7 @@ namespace Libplanet.Tests.Blocks
             );
 
             Assert.Throws<InvalidBlockNonceException>(() =>
-                header.Validate(DateTimeOffset.UtcNow));
+                header.Validate(_fx.HashAlgorithm, DateTimeOffset.UtcNow));
         }
 
         [Fact]
@@ -255,7 +257,7 @@ namespace Libplanet.Tests.Blocks
             );
 
             Assert.Throws<InvalidBlockIndexException>(() =>
-                header.Validate(DateTimeOffset.UtcNow));
+                header.Validate(_fx.HashAlgorithm, DateTimeOffset.UtcNow));
         }
 
         [Fact]
@@ -278,7 +280,7 @@ namespace Libplanet.Tests.Blocks
             );
 
             Assert.Throws<InvalidBlockDifficultyException>(() =>
-                genesisHeader.Validate(DateTimeOffset.UtcNow));
+                genesisHeader.Validate(_fx.HashAlgorithm, DateTimeOffset.UtcNow));
 
             var header1 = new BlockHeader(
                 protocolVersion: 0,
@@ -296,7 +298,7 @@ namespace Libplanet.Tests.Blocks
             );
 
             Assert.Throws<InvalidBlockDifficultyException>(() =>
-                header1.Validate(DateTimeOffset.UtcNow));
+                header1.Validate(_fx.HashAlgorithm, DateTimeOffset.UtcNow));
 
             var header2 = new BlockHeader(
                 protocolVersion: 0,
@@ -314,7 +316,7 @@ namespace Libplanet.Tests.Blocks
             );
 
             Assert.Throws<InvalidBlockTotalDifficultyException>(() =>
-                header2.Validate(DateTimeOffset.UtcNow));
+                header2.Validate(_fx.HashAlgorithm, DateTimeOffset.UtcNow));
         }
 
         [Fact]
@@ -337,7 +339,7 @@ namespace Libplanet.Tests.Blocks
             );
 
             Assert.Throws<InvalidBlockPreviousHashException>(() =>
-                genesisHeader.Validate(DateTimeOffset.UtcNow));
+                genesisHeader.Validate(HashAlgorithmType.Of<SHA256>(), DateTimeOffset.UtcNow));
 
             var header = new BlockHeader(
                 protocolVersion: 0,
@@ -355,10 +357,11 @@ namespace Libplanet.Tests.Blocks
             );
 
             Assert.Throws<InvalidBlockPreviousHashException>(() =>
-                genesisHeader.Validate(DateTimeOffset.UtcNow));
+                genesisHeader.Validate(HashAlgorithmType.Of<SHA256>(), DateTimeOffset.UtcNow));
         }
 
         private BlockHeader MakeBlockHeader(
+            HashAlgorithmType hashAlgorithm,
             int protocolVersion,
             long index,
             long difficulty,
@@ -372,7 +375,7 @@ namespace Libplanet.Tests.Blocks
             ImmutableArray<byte> stateRootHash
         )
         {
-            ImmutableArray<byte> hash = HashAlgorithmType.Of<SHA256>().Digest(
+            ImmutableArray<byte> hash = hashAlgorithm.Digest(
                 BlockHeader.SerializeForHash(
                     protocolVersion,
                     index,

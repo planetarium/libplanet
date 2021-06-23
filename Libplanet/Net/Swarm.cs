@@ -6,6 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Action;
@@ -692,7 +693,8 @@ namespace Libplanet.Net
                         block.Index,
                         block.Hash
                     );
-                    block.Validate(DateTimeOffset.UtcNow);
+                    HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
+                    block.Validate(hashAlgorithm, DateTimeOffset.UtcNow);
                     wStore.PutBlock(block);
                     if (tempTip is null || block.Index > tempTip.Index)
                     {

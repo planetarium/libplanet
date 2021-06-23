@@ -489,6 +489,8 @@ namespace Libplanet.Blocks
         /// Validates this <see cref="Block{T}"/> and throws an appropriate exception
         /// if not valid.
         /// </summary>
+        /// <param name="hashAlgorithm">The hash algorithm used to calculate
+        /// the <see cref="PreEvaluationHash"/>.</param>
         /// <param name="currentTime">The current time to validate time-wise conditions.</param>
         /// <exception cref="InvalidBlockHashException">Thrown when <see cref="Hash"/>
         /// is invalid.</exception>
@@ -508,9 +510,9 @@ namespace Libplanet.Blocks
         /// <exception cref="InvalidBlockTxHashException">Thrown when the value of
         /// <see cref="TxHash"/> is not consistent with <see cref="Transactions"/>.
         /// </exception>
-        internal void Validate(DateTimeOffset currentTime)
+        internal void Validate(HashAlgorithmType hashAlgorithm, DateTimeOffset currentTime)
         {
-            Header.Validate(currentTime);
+            Header.Validate(hashAlgorithm, currentTime);
 
             foreach (Transaction<T> tx in Transactions)
             {
@@ -519,7 +521,6 @@ namespace Libplanet.Blocks
 
             if (ProtocolVersion > 0)
             {
-                HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
                 byte[] expectedPreEvaluationHash =
                     hashAlgorithm.Digest(Header.SerializeForHash(includeStateRootHash: false));
                 if (!ByteUtil.TimingSafelyCompare(expectedPreEvaluationHash, PreEvaluationHash))

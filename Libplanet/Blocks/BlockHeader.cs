@@ -3,7 +3,6 @@ using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
 using System.Numerics;
-using System.Security.Cryptography;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Store.Trie;
@@ -295,7 +294,7 @@ namespace Libplanet.Blocks
             return new Codec().Encode(dict);
         }
 
-        internal void Validate(DateTimeOffset currentTime)
+        internal void Validate(HashAlgorithmType hashAlgorithm, DateTimeOffset currentTime)
         {
             if (ProtocolVersion < 0)
             {
@@ -404,7 +403,6 @@ namespace Libplanet.Blocks
                 );
             }
 
-            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             BlockHash calculatedHash = new BlockHash(hashAlgorithm.Digest(SerializeForHash()));
             if (!hash.Equals(calculatedHash))
             {

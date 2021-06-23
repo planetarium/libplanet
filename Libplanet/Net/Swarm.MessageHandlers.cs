@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Blockchain.Policies;
@@ -134,9 +135,10 @@ namespace Libplanet.Net
                 ByteUtil.Hex(header.Hash)
             );
 
+            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             try
             {
-                header.Validate(DateTimeOffset.UtcNow);
+                header.Validate(hashAlgorithm, DateTimeOffset.UtcNow);
             }
             catch (InvalidBlockException ibe)
             {

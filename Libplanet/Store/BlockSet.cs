@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using LruCacheNet;
@@ -62,7 +63,8 @@ namespace Libplanet.Store
                         $"{value}.hash does not match to {key}");
                 }
 
-                value.Validate(DateTimeOffset.UtcNow);
+                HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
+                value.Validate(hashAlgorithm, DateTimeOffset.UtcNow);
                 Store.PutBlock(value);
                 _cache.AddOrUpdate(value.Hash, value);
             }

@@ -381,8 +381,10 @@ namespace Libplanet.Action
             IAccountStateDelta previousStates,
             ITrie? previousBlockStatesTrie = null)
         {
+            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
+
             // FIXME: Probably not the best place to have Validate().
-            block.Validate(currentTime);
+            block.Validate(hashAlgorithm, currentTime);
 
             return EvaluateTxs(
                 block: block,

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Bencodex.Types;
 using Libplanet.Blockchain;
@@ -22,11 +23,12 @@ namespace Libplanet.Tests.Blockchain
         public async void MineBlock()
         {
             Func<long, int> getMaxBlockBytes = _blockChain.Policy.GetMaxBlockBytes;
+            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             Assert.Equal(1, _blockChain.Count);
             Assert.Equal((Text)$"{TestUtils.GenesisMinerAddress}", _blockChain.GetState(default));
 
             Block<DumbAction> block = await _blockChain.MineBlock(_fx.Address1);
-            block.Validate(DateTimeOffset.UtcNow);
+            block.Validate(hashAlgorithm, DateTimeOffset.UtcNow);
             Assert.True(_blockChain.ContainsBlock(block.Hash));
             Assert.Equal(2, _blockChain.Count);
             Assert.True(block.BytesLength <= getMaxBlockBytes(block.Index));
@@ -36,7 +38,7 @@ namespace Libplanet.Tests.Blockchain
             );
 
             Block<DumbAction> anotherBlock = await _blockChain.MineBlock(_fx.Address2);
-            anotherBlock.Validate(DateTimeOffset.UtcNow);
+            anotherBlock.Validate(hashAlgorithm, DateTimeOffset.UtcNow);
             Assert.True(_blockChain.ContainsBlock(anotherBlock.Hash));
             Assert.Equal(3, _blockChain.Count);
             Assert.True(anotherBlock.BytesLength <= getMaxBlockBytes(anotherBlock.Index));
@@ -46,7 +48,7 @@ namespace Libplanet.Tests.Blockchain
             );
 
             Block<DumbAction> block3 = await _blockChain.MineBlock(_fx.Address3, append: false);
-            block3.Validate(DateTimeOffset.UtcNow);
+            block3.Validate(hashAlgorithm, DateTimeOffset.UtcNow);
             Assert.False(_blockChain.ContainsBlock(block3.Hash));
             Assert.Equal(3, _blockChain.Count);
             Assert.True(block3.BytesLength <= getMaxBlockBytes(block3.Index));
@@ -77,7 +79,7 @@ namespace Libplanet.Tests.Blockchain
             }
 
             Block<DumbAction> block4 = await _blockChain.MineBlock(_fx.Address3, append: false);
-            block4.Validate(DateTimeOffset.UtcNow);
+            block4.Validate(hashAlgorithm, DateTimeOffset.UtcNow);
             Assert.False(_blockChain.ContainsBlock(block4.Hash));
             _logger.Debug(
                 $"{nameof(block4)}.{nameof(block4.BytesLength)} = {0}",
@@ -108,21 +110,22 @@ namespace Libplanet.Tests.Blockchain
             _blockChain.MakeTransaction(privateKeys[1], new DumbAction[0]);
             _blockChain.MakeTransaction(privateKeys[2], new DumbAction[0]);
 
+            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             Block<DumbAction> block =
                 await _blockChain.MineBlock(_fx.Address1, maxTransactions: 1);
-            block.Validate(DateTimeOffset.UtcNow);
+            block.Validate(hashAlgorithm, DateTimeOffset.UtcNow);
             Assert.Single(block.Transactions);
             Assert.Equal(5, _blockChain.GetStagedTransactionIds().Count);
 
             Block<DumbAction> block2 = await _blockChain.MineBlock(
                 _fx.Address2, DateTimeOffset.UtcNow, maxTransactions: 2);
-            block2.Validate(DateTimeOffset.UtcNow);
+            block2.Validate(hashAlgorithm, DateTimeOffset.UtcNow);
             Assert.Equal(2, block2.Transactions.Count());
             Assert.Equal(3, _blockChain.GetStagedTransactionIds().Count);
 
             Block<DumbAction> block3 = await _blockChain.MineBlock(
                 _fx.Address3, append: false, maxTransactions: 4);
-            block3.Validate(DateTimeOffset.UtcNow);
+            block3.Validate(hashAlgorithm, DateTimeOffset.UtcNow);
             Assert.Equal(3, block3.Transactions.Count());
             Assert.Equal(3, _blockChain.GetStagedTransactionIds().Count);
 

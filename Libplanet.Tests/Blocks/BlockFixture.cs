@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Tests.Common.Action;
@@ -14,6 +15,7 @@ namespace Libplanet.Tests.Blocks
 
         public BlockFixture()
         {
+            HashAlgorithm = HashAlgorithmType.Of<SHA256>();
             Genesis = TestUtils.MineGenesis<PolymorphicAction<BaseAction>>(
                 protocolVersion: ProtocolVersion
             );
@@ -37,6 +39,8 @@ namespace Libplanet.Tests.Blocks
                 protocolVersion: ProtocolVersion
             );
         }
+
+        internal HashAlgorithmType HashAlgorithm { get; }
 
         internal TxFixture TxFixture { get; }
 

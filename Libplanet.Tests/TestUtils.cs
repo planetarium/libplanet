@@ -259,7 +259,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 );
             }
 
-            block.Validate(DateTimeOffset.Now);
+            block.Validate(hashAlgorithm, DateTimeOffset.Now);
 
             return block;
         }

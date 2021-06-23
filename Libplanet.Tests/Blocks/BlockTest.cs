@@ -213,7 +213,9 @@ namespace Libplanet.Tests.Blocks
                 new Transaction<DumbAction>[] { },
                 protocolVersion: -1
             );
-            Assert.Throws<InvalidBlockProtocolVersionException>(() => block.Validate(now));
+            Assert.Throws<InvalidBlockProtocolVersionException>(
+                () => block.Validate(_fx.HashAlgorithm, now)
+            );
 
             block = Block<DumbAction>.Mine(
                 _fx.Next.Index,
@@ -226,11 +228,13 @@ namespace Libplanet.Tests.Blocks
                 new Transaction<DumbAction>[] { },
                 protocolVersion: Block<DumbAction>.CurrentProtocolVersion + 1
             );
-            Assert.Throws<InvalidBlockProtocolVersionException>(() => block.Validate(now));
+            Assert.Throws<InvalidBlockProtocolVersionException>(
+                () => block.Validate(_fx.HashAlgorithm, now)
+            );
         }
 
         [Fact]
-        public void CanDetectInvalidTimestamp()
+        public void DetectInvalidTimestamp()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             var block = Block<DumbAction>.Mine(
@@ -245,10 +249,10 @@ namespace Libplanet.Tests.Blocks
             );
 
             Assert.Throws<InvalidBlockTimestampException>(
-                () => { block.Validate(now); });
+                () => { block.Validate(_fx.HashAlgorithm, now); });
 
             // it's okay because 2 seconds later.
-            block.Validate(now + TimeSpan.FromSeconds(2));
+            block.Validate(_fx.HashAlgorithm, now + TimeSpan.FromSeconds(2));
         }
 
         [Fact]
@@ -269,7 +273,7 @@ namespace Libplanet.Tests.Blocks
             );
 
             Assert.Throws<InvalidBlockNonceException>(() =>
-                invalidBlock.Validate(DateTimeOffset.UtcNow));
+                invalidBlock.Validate(_fx.HashAlgorithm, DateTimeOffset.UtcNow));
         }
 
         [Fact]
@@ -286,7 +290,7 @@ namespace Libplanet.Tests.Blocks
                 transactions: MineGenesis<DumbAction>().Transactions
             );
             Assert.Throws<InvalidBlockDifficultyException>(() =>
-                invalidDifficultyGenesis.Validate(DateTimeOffset.UtcNow)
+                invalidDifficultyGenesis.Validate(_fx.HashAlgorithm, DateTimeOffset.UtcNow)
             );
 
             var invalidTotalDifficultyGenesis = new Block<DumbAction>(
@@ -300,7 +304,7 @@ namespace Libplanet.Tests.Blocks
                 transactions: MineGenesis<DumbAction>().Transactions
             );
             Assert.Throws<InvalidBlockTotalDifficultyException>(() =>
-                invalidTotalDifficultyGenesis.Validate(DateTimeOffset.UtcNow)
+                invalidTotalDifficultyGenesis.Validate(_fx.HashAlgorithm, DateTimeOffset.UtcNow)
             );
 
             var invalidDifficultyNext = new Block<PolymorphicAction<BaseAction>>(
@@ -314,7 +318,7 @@ namespace Libplanet.Tests.Blocks
                 transactions: _fx.Next.Transactions
             );
             Assert.Throws<InvalidBlockDifficultyException>(() =>
-                invalidDifficultyNext.Validate(DateTimeOffset.UtcNow)
+                invalidDifficultyNext.Validate(_fx.HashAlgorithm, DateTimeOffset.UtcNow)
             );
 
             var invalidTotalDifficultyNext = new Block<PolymorphicAction<BaseAction>>(
@@ -328,7 +332,7 @@ namespace Libplanet.Tests.Blocks
                 transactions: _fx.Next.Transactions
             );
             Assert.Throws<InvalidBlockTotalDifficultyException>(() =>
-                invalidTotalDifficultyNext.Validate(DateTimeOffset.UtcNow)
+                invalidTotalDifficultyNext.Validate(_fx.HashAlgorithm, DateTimeOffset.UtcNow)
             );
         }
 
@@ -347,7 +351,7 @@ namespace Libplanet.Tests.Blocks
             );
 
             Assert.Throws<InvalidBlockPreviousHashException>(() =>
-                invalidGenesis.Validate(DateTimeOffset.UtcNow)
+                invalidGenesis.Validate(_fx.HashAlgorithm, DateTimeOffset.UtcNow)
             );
 
             var invalidNext = new Block<PolymorphicAction<BaseAction>>(
@@ -362,7 +366,7 @@ namespace Libplanet.Tests.Blocks
             );
 
             Assert.Throws<InvalidBlockPreviousHashException>(() =>
-                invalidNext.Validate(DateTimeOffset.UtcNow)
+                invalidNext.Validate(_fx.HashAlgorithm, DateTimeOffset.UtcNow)
             );
         }
 
@@ -536,6 +540,7 @@ namespace Libplanet.Tests.Blocks
                 Transaction<DumbAction>.Create(0, new PrivateKey(), null, new DumbAction[0]),
                 Transaction<DumbAction>.Create(0, new PrivateKey(), null, new DumbAction[0]),
             };
+            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             var block = new Block<DumbAction>(
                 index: 0,
                 difficulty: 0,
@@ -547,7 +552,7 @@ namespace Libplanet.Tests.Blocks
                 transactions: txs
             );
 
-            block.Validate(DateTimeOffset.UtcNow);
+            block.Validate(hashAlgorithm, DateTimeOffset.UtcNow);
 
             Dictionary blockDict = block.ToBencodex();
             var txList = (List)blockDict[RawBlock.TransactionsKey];
@@ -560,7 +565,7 @@ namespace Libplanet.Tests.Blocks
             );
 
             var exc = Assert.Throws<InvalidBlockTxHashException>(
-                () => abnormalTxs.Validate(DateTimeOffset.UtcNow)
+                () => abnormalTxs.Validate(hashAlgorithm, DateTimeOffset.UtcNow)
             );
             Assert.Equal(abnormalTxs.TxHash, exc.BlockTxHash);
 
@@ -571,7 +576,7 @@ namespace Libplanet.Tests.Blocks
                 )
             );
             Assert.Throws<InvalidBlockTxHashException>(
-                 () => emptyTxs.Validate(DateTimeOffset.UtcNow)
+                 () => emptyTxs.Validate(hashAlgorithm, DateTimeOffset.UtcNow)
             );
         }
 
@@ -590,7 +595,7 @@ namespace Libplanet.Tests.Blocks
                 transactions: _fx.Next.Transactions);
 
             Assert.Throws<InvalidBlockPreEvaluationHashException>(() =>
-                invalidBlock.Validate(DateTimeOffset.UtcNow));
+                invalidBlock.Validate(_fx.HashAlgorithm, DateTimeOffset.UtcNow));
         }
 
         [Fact]
