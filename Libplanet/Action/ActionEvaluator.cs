@@ -46,7 +46,7 @@ namespace Libplanet.Action
             transactions: ImmutableArray<Transaction<T>>.Empty);
 
         private static readonly ILogger _logger = Log.ForContext<ActionEvaluator<T>>();
-        private readonly Func<long, HashAlgorithmType> _hashAlgorithmGetter;
+        private readonly HashAlgorithmGetter _hashAlgorithmGetter;
         private readonly IAction? _policyBlockAction;
         private readonly StateGetter<T> _stateGetter;
         private readonly BalanceGetter<T> _balanceGetter;
@@ -67,7 +67,7 @@ namespace Libplanet.Action
         /// <param name="trieGetter">The function to retrieve a trie for
         /// a provided <see cref="BlockHash"/>.</param>
         public ActionEvaluator(
-            Func<long, HashAlgorithmType> hashAlgorithmGetter,
+            HashAlgorithmGetter hashAlgorithmGetter,
             IAction? policyBlockAction,
             StateGetter<T> stateGetter,
             BalanceGetter<T> balanceGetter,
