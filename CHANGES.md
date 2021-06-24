@@ -109,7 +109,7 @@ To be released.
  -  Hash algorithm for <abbr title="proof-of-work">PoW</abbr> (Hashcash) became
     configurable.  [#1314], [#1352]
      -  Added `IBlockPolicy<T>.GetHashAlgorithm()` method.
-     -  Added optional `HashAlgorithmType? hashAlgorithm` parameter to
+     -  Added an optional `HashAlgorithmType? hashAlgorithm` parameter to
         `Block<T>(long, long, BigInteger, Nonce, Address?, BlockHash?,
         DateTimeOffset, IReadOnlyList<Transaction<T>>, ImmutableArray<byte>?,
         HashDigest<SHA256>?, int protocolVersion)` constructor.
@@ -144,6 +144,8 @@ To be released.
      -  Added `hashAlgorithmGetter` parameter to `BlockSet<T>()` constructor.
      -  Added `hashAlgorithm` parameter to `BlockChain<T>.MakeGenesisBlock()`
         method.
+     -  Added an optional `hashAlgorithmGetter` parameter to `BlockPolicy<T>()`
+        constructor.
  -  Added `IActionContext.TxId` property.  [[#1275]]
  -  Added `IStore.PutTxExecution(TxSuccess)` method.  [[#1156], [#1289]]
  -  Added `IStore.PutTxExecution(TxFailure)` method.  [[#1156], [#1289]]
