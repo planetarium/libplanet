@@ -15,15 +15,14 @@ namespace Libplanet.Tests.Blocks
 
         public BlockFixture()
         {
-            HashAlgorithm = HashAlgorithmType.Of<SHA256>();
             Genesis = TestUtils.MineGenesis<PolymorphicAction<BaseAction>>(
-                hashAlgorithm: HashAlgorithm,
+                hashAlgorithmGetter: GetHashAlgorithm,
                 protocolVersion: ProtocolVersion
             );
             TxFixture = new TxFixture(Genesis.Hash);
             Next = TestUtils.MineNext(
                 Genesis,
-                HashAlgorithm,
+                hashAlgorithmGetter: GetHashAlgorithm,
                 nonce: new byte[] { 0x02, 0x00, 0x00, 0x00 },
                 protocolVersion: ProtocolVersion
             );
@@ -33,17 +32,15 @@ namespace Libplanet.Tests.Blocks
             };
             HasTx = TestUtils.MineNext(
                 Next,
-                HashAlgorithm,
-                new List<Transaction<PolymorphicAction<BaseAction>>>
+                hashAlgorithmGetter: GetHashAlgorithm,
+                txs: new List<Transaction<PolymorphicAction<BaseAction>>>
                 {
                     TxFixture.TxWithActions,
                 },
-                hasTxNonce,
+                nonce: hasTxNonce,
                 protocolVersion: ProtocolVersion
             );
         }
-
-        internal HashAlgorithmType HashAlgorithm { get; }
 
         internal TxFixture TxFixture { get; }
 
@@ -52,5 +49,7 @@ namespace Libplanet.Tests.Blocks
         internal Block<PolymorphicAction<BaseAction>> Next { get; }
 
         internal Block<PolymorphicAction<BaseAction>> HasTx { get; }
+
+        internal HashAlgorithmType GetHashAlgorithm(long index) => HashAlgorithmType.Of<SHA256>();
     }
 }

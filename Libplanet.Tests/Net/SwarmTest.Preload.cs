@@ -112,13 +112,12 @@ namespace Libplanet.Tests.Net
             var blocks = new List<Block<DumbAction>>();
             foreach (int i in Enumerable.Range(0, 11))
             {
-                HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
                 Block<DumbAction> block = TestUtils.MineNext(
                         previousBlock: i == 0 ? minerChain.Genesis : blocks[i - 1],
-                        hashAlgorithm: hashAlgorithm,
+                        hashAlgorithmGetter: minerChain.Policy.GetHashAlgorithm,
                         difficulty: 1024)
                     .AttachStateRootHash(
-                        hashAlgorithm,
+                        minerChain.Policy.GetHashAlgorithm,
                         minerChain.StateStore,
                         minerChain.Policy.BlockAction);
                 blocks.Add(block);
@@ -327,15 +326,14 @@ namespace Libplanet.Tests.Net
                     DateTimeOffset.UtcNow
                 );
 
-                HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
                 var block = TestUtils.MineNext(
                         minerChain.Tip,
-                        hashAlgorithm,
+                        minerChain.Policy.GetHashAlgorithm,
                         new[] { tx },
                         difficulty: policy.GetNextBlockDifficulty(minerChain),
                         blockInterval: TimeSpan.FromSeconds(1)
                 ).AttachStateRootHash(
-                    hashAlgorithm,
+                    minerChain.Policy.GetHashAlgorithm,
                     minerChain.StateStore,
                     minerChain.Policy.BlockAction
                 );
@@ -800,15 +798,14 @@ namespace Libplanet.Tests.Net
             await minerChain1.MineBlock(minerSwarm1.Address);
             await minerChain1.MineBlock(minerSwarm1.Address);
 
-            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             long nextDifficulty = (long)minerChain1.Tip.TotalDifficulty +
                                   minerChain2.Policy.GetNextBlockDifficulty(minerChain2);
             var block = TestUtils.MineNext(
                 minerChain2.Tip,
-                hashAlgorithm,
+                minerChain2.Policy.GetHashAlgorithm,
                 difficulty: nextDifficulty
             ).AttachStateRootHash(
-                hashAlgorithm,
+                minerChain2.Policy.GetHashAlgorithm,
                 minerChain2.StateStore,
                 minerChain2.Policy.BlockAction
             );

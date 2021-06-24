@@ -104,8 +104,8 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void ValidateValidHeader()
         {
-            _fx.Genesis.Header.Validate(_fx.HashAlgorithm, DateTimeOffset.UtcNow);
-            _fx.Next.Header.Validate(_fx.HashAlgorithm, DateTimeOffset.UtcNow);
+            _fx.Genesis.Header.Validate(_fx.GetHashAlgorithm(0), DateTimeOffset.UtcNow);
+            _fx.Next.Header.Validate(_fx.GetHashAlgorithm(1), DateTimeOffset.UtcNow);
         }
 
         [Fact]
@@ -130,7 +130,7 @@ namespace Libplanet.Tests.Blocks
             );
 
             Assert.Throws<InvalidBlockHashException>(
-                () => { header.Validate(_fx.HashAlgorithm, DateTime.UtcNow); });
+                () => { header.Validate(_fx.GetHashAlgorithm(0), DateTime.UtcNow); });
         }
 
         [Fact]
@@ -155,7 +155,7 @@ namespace Libplanet.Tests.Blocks
             );
 
             Assert.Throws<InvalidBlockProtocolVersionException>(() =>
-                header.Validate(_fx.HashAlgorithm, DateTimeOffset.UtcNow)
+                header.Validate(_fx.GetHashAlgorithm(_fx.Next.Index), DateTimeOffset.UtcNow)
             );
 
             header = new BlockHeader(
@@ -177,7 +177,7 @@ namespace Libplanet.Tests.Blocks
             );
 
             Assert.Throws<InvalidBlockProtocolVersionException>(() =>
-                header.Validate(_fx.HashAlgorithm, DateTimeOffset.UtcNow)
+                header.Validate(_fx.GetHashAlgorithm(_fx.Next.Index), DateTimeOffset.UtcNow)
             );
         }
 
@@ -232,7 +232,7 @@ namespace Libplanet.Tests.Blocks
             );
 
             Assert.Throws<InvalidBlockNonceException>(() =>
-                header.Validate(_fx.HashAlgorithm, DateTimeOffset.UtcNow));
+                header.Validate(_fx.GetHashAlgorithm(_fx.Next.Index), DateTimeOffset.UtcNow));
         }
 
         [Fact]
@@ -257,7 +257,7 @@ namespace Libplanet.Tests.Blocks
             );
 
             Assert.Throws<InvalidBlockIndexException>(() =>
-                header.Validate(_fx.HashAlgorithm, DateTimeOffset.UtcNow));
+                header.Validate(_fx.GetHashAlgorithm(-1), DateTimeOffset.UtcNow));
         }
 
         [Fact]
@@ -280,7 +280,7 @@ namespace Libplanet.Tests.Blocks
             );
 
             Assert.Throws<InvalidBlockDifficultyException>(() =>
-                genesisHeader.Validate(_fx.HashAlgorithm, DateTimeOffset.UtcNow));
+                genesisHeader.Validate(_fx.GetHashAlgorithm(0), DateTimeOffset.UtcNow));
 
             var header1 = new BlockHeader(
                 protocolVersion: 0,
@@ -298,7 +298,7 @@ namespace Libplanet.Tests.Blocks
             );
 
             Assert.Throws<InvalidBlockDifficultyException>(() =>
-                header1.Validate(_fx.HashAlgorithm, DateTimeOffset.UtcNow));
+                header1.Validate(_fx.GetHashAlgorithm(10), DateTimeOffset.UtcNow));
 
             var header2 = new BlockHeader(
                 protocolVersion: 0,
@@ -316,7 +316,7 @@ namespace Libplanet.Tests.Blocks
             );
 
             Assert.Throws<InvalidBlockTotalDifficultyException>(() =>
-                header2.Validate(_fx.HashAlgorithm, DateTimeOffset.UtcNow));
+                header2.Validate(_fx.GetHashAlgorithm(10), DateTimeOffset.UtcNow));
         }
 
         [Fact]

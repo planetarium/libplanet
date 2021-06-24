@@ -95,7 +95,7 @@ namespace Libplanet.Tests.Blocks
                 _fx.Genesis.Hash
             );
 
-            Block<PolymorphicAction<BaseAction>> next = MineNext(_fx.Genesis, _fx.HashAlgorithm);
+            Block<PolymorphicAction<BaseAction>> next = MineNext(_fx.Genesis, _fx.GetHashAlgorithm);
 
             Assert.Equal(1, _fx.Next.Index);
             Assert.Equal(1, _fx.Next.Difficulty);
@@ -205,7 +205,7 @@ namespace Libplanet.Tests.Blocks
             DateTimeOffset now = DateTimeOffset.UtcNow;
             Block<DumbAction> block = Block<DumbAction>.Mine(
                 _fx.Next.Index,
-                _fx.HashAlgorithm,
+                _fx.GetHashAlgorithm(_fx.Next.Index),
                 _fx.Next.Difficulty,
                 _fx.Genesis.TotalDifficulty,
                 _fx.Next.Miner.Value,
@@ -215,12 +215,12 @@ namespace Libplanet.Tests.Blocks
                 protocolVersion: -1
             );
             Assert.Throws<InvalidBlockProtocolVersionException>(
-                () => block.Validate(_fx.HashAlgorithm, now)
+                () => block.Validate(_fx.GetHashAlgorithm(_fx.Next.Index), now)
             );
 
             block = Block<DumbAction>.Mine(
                 _fx.Next.Index,
-                _fx.HashAlgorithm,
+                _fx.GetHashAlgorithm(_fx.Next.Index),
                 _fx.Next.Difficulty,
                 _fx.Genesis.TotalDifficulty,
                 _fx.Next.Miner.Value,
@@ -230,7 +230,7 @@ namespace Libplanet.Tests.Blocks
                 protocolVersion: Block<DumbAction>.CurrentProtocolVersion + 1
             );
             Assert.Throws<InvalidBlockProtocolVersionException>(
-                () => block.Validate(_fx.HashAlgorithm, now)
+                () => block.Validate(_fx.GetHashAlgorithm(_fx.Next.Index), now)
             );
         }
 
@@ -238,9 +238,10 @@ namespace Libplanet.Tests.Blocks
         public void DetectInvalidTimestamp()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
+            HashAlgorithmType hashAlgo = _fx.GetHashAlgorithm(_fx.Next.Index);
             var block = Block<DumbAction>.Mine(
                 _fx.Next.Index,
-                HashAlgorithmType.Of<SHA256>(),
+                hashAlgo,
                 _fx.Next.Difficulty,
                 _fx.Genesis.TotalDifficulty,
                 _fx.Next.Miner.Value,
@@ -250,10 +251,10 @@ namespace Libplanet.Tests.Blocks
             );
 
             Assert.Throws<InvalidBlockTimestampException>(
-                () => { block.Validate(_fx.HashAlgorithm, now); });
+                () => { block.Validate(hashAlgo, now); });
 
             // it's okay because 2 seconds later.
-            block.Validate(_fx.HashAlgorithm, now + TimeSpan.FromSeconds(2));
+            block.Validate(hashAlgo, now + TimeSpan.FromSeconds(2));
         }
 
         [Fact]
@@ -274,12 +275,13 @@ namespace Libplanet.Tests.Blocks
             );
 
             Assert.Throws<InvalidBlockNonceException>(() =>
-                invalidBlock.Validate(_fx.HashAlgorithm, DateTimeOffset.UtcNow));
+                invalidBlock.Validate(_fx.GetHashAlgorithm(_fx.Next.Index), DateTimeOffset.UtcNow));
         }
 
         [Fact]
         public void DetectInvalidDifficulty()
         {
+            HashAlgorithmType hashAlgo = _fx.GetHashAlgorithm(_fx.Genesis.Index);
             var invalidDifficultyGenesis = new Block<DumbAction>(
                 index: _fx.Genesis.Index,
                 difficulty: 1, // invalid
@@ -288,11 +290,11 @@ namespace Libplanet.Tests.Blocks
                 miner: _fx.Genesis.Miner,
                 previousHash: _fx.Genesis.PreviousHash,
                 timestamp: _fx.Genesis.Timestamp,
-                transactions: MineGenesis<DumbAction>(_fx.HashAlgorithm).Transactions,
-                hashAlgorithm: _fx.HashAlgorithm
+                transactions: MineGenesis<DumbAction>(_fx.GetHashAlgorithm).Transactions,
+                hashAlgorithm: hashAlgo
             );
             Assert.Throws<InvalidBlockDifficultyException>(() =>
-                invalidDifficultyGenesis.Validate(_fx.HashAlgorithm, DateTimeOffset.UtcNow)
+                invalidDifficultyGenesis.Validate(hashAlgo, DateTimeOffset.UtcNow)
             );
 
             var invalidTotalDifficultyGenesis = new Block<DumbAction>(
@@ -303,13 +305,14 @@ namespace Libplanet.Tests.Blocks
                 miner: _fx.Genesis.Miner,
                 previousHash: _fx.Genesis.PreviousHash,
                 timestamp: _fx.Genesis.Timestamp,
-                transactions: MineGenesis<DumbAction>(_fx.HashAlgorithm).Transactions,
-                hashAlgorithm: _fx.HashAlgorithm
+                transactions: MineGenesis<DumbAction>(_fx.GetHashAlgorithm).Transactions,
+                hashAlgorithm: hashAlgo
             );
             Assert.Throws<InvalidBlockTotalDifficultyException>(() =>
-                invalidTotalDifficultyGenesis.Validate(_fx.HashAlgorithm, DateTimeOffset.UtcNow)
+                invalidTotalDifficultyGenesis.Validate(hashAlgo, DateTimeOffset.UtcNow)
             );
 
+            HashAlgorithmType hashAlgoNext = _fx.GetHashAlgorithm(_fx.Next.Index);
             var invalidDifficultyNext = new Block<PolymorphicAction<BaseAction>>(
                 index: _fx.Next.Index,
                 difficulty: 0, // invalid,
@@ -319,10 +322,10 @@ namespace Libplanet.Tests.Blocks
                 previousHash: _fx.Next.PreviousHash,
                 timestamp: _fx.Next.Timestamp,
                 transactions: _fx.Next.Transactions,
-                hashAlgorithm: _fx.HashAlgorithm
+                hashAlgorithm: hashAlgoNext
             );
             Assert.Throws<InvalidBlockDifficultyException>(() =>
-                invalidDifficultyNext.Validate(_fx.HashAlgorithm, DateTimeOffset.UtcNow)
+                invalidDifficultyNext.Validate(hashAlgoNext, DateTimeOffset.UtcNow)
             );
 
             var invalidTotalDifficultyNext = new Block<PolymorphicAction<BaseAction>>(
@@ -334,16 +337,17 @@ namespace Libplanet.Tests.Blocks
                 previousHash: _fx.Next.PreviousHash,
                 timestamp: _fx.Next.Timestamp,
                 transactions: _fx.Next.Transactions,
-                hashAlgorithm: _fx.HashAlgorithm
+                hashAlgorithm: hashAlgoNext
             );
             Assert.Throws<InvalidBlockTotalDifficultyException>(() =>
-                invalidTotalDifficultyNext.Validate(_fx.HashAlgorithm, DateTimeOffset.UtcNow)
+                invalidTotalDifficultyNext.Validate(hashAlgoNext, DateTimeOffset.UtcNow)
             );
         }
 
         [Fact]
         public void DetectInvalidPreviousHash()
         {
+            HashAlgorithmType hashAlgo = _fx.GetHashAlgorithm(_fx.Genesis.Index);
             var invalidGenesis = new Block<DumbAction>(
                 index: _fx.Genesis.Index,
                 difficulty: _fx.Genesis.Difficulty,
@@ -352,14 +356,15 @@ namespace Libplanet.Tests.Blocks
                 miner: _fx.Genesis.Miner,
                 previousHash: new BlockHash(GetRandomBytes(32)), // invalid
                 timestamp: _fx.Genesis.Timestamp,
-                transactions: MineGenesis<DumbAction>(_fx.HashAlgorithm).Transactions,
-                hashAlgorithm: _fx.HashAlgorithm
+                transactions: MineGenesis<DumbAction>(_fx.GetHashAlgorithm).Transactions,
+                hashAlgorithm: hashAlgo
             );
 
             Assert.Throws<InvalidBlockPreviousHashException>(() =>
-                invalidGenesis.Validate(_fx.HashAlgorithm, DateTimeOffset.UtcNow)
+                invalidGenesis.Validate(hashAlgo, DateTimeOffset.UtcNow)
             );
 
+            HashAlgorithmType hashAlgoNext = _fx.GetHashAlgorithm(_fx.Next.Index);
             var invalidNext = new Block<PolymorphicAction<BaseAction>>(
                 index: _fx.Next.Index,
                 difficulty: _fx.Next.Difficulty,
@@ -369,11 +374,11 @@ namespace Libplanet.Tests.Blocks
                 previousHash: null,
                 timestamp: _fx.Next.Timestamp,
                 transactions: _fx.Next.Transactions,
-                hashAlgorithm: _fx.HashAlgorithm
+                hashAlgorithm: hashAlgoNext
             );
 
             Assert.Throws<InvalidBlockPreviousHashException>(() =>
-                invalidNext.Validate(_fx.HashAlgorithm, DateTimeOffset.UtcNow)
+                invalidNext.Validate(hashAlgoNext, DateTimeOffset.UtcNow)
             );
         }
 
@@ -471,7 +476,7 @@ namespace Libplanet.Tests.Blocks
                 previousHash: null,
                 timestamp: sameBlock1.Timestamp,
                 transactions: sameBlock1.Transactions,
-                hashAlgorithm: _fx.HashAlgorithm
+                hashAlgorithm: _fx.GetHashAlgorithm(sameBlock1.Index)
             );
             Block<PolymorphicAction<BaseAction>> differentBlock = _fx.Next;
 
@@ -517,9 +522,9 @@ namespace Libplanet.Tests.Blocks
                     new PrivateKey(),
                     null,
                     new[] { new RandomAction(signer.ToAddress()) })).ToImmutableArray();
-            HashAlgorithmType algo = HashAlgorithmType.Of<SHA256>();
-            var blockA = MineGenesis(algo, timestamp: timestamp, transactions: txs);
-            var blockB = MineGenesis(algo, timestamp: timestamp,  transactions: txs);
+            HashAlgorithmGetter algoGetter = _ => HashAlgorithmType.Of<SHA256>();
+            var blockA = MineGenesis(algoGetter, timestamp: timestamp, transactions: txs);
+            var blockB = MineGenesis(algoGetter, timestamp: timestamp,  transactions: txs);
 
             Assert.True(blockA.Transactions.SequenceEqual(blockB.Transactions));
         }
@@ -606,7 +611,7 @@ namespace Libplanet.Tests.Blocks
                 transactions: _fx.Next.Transactions);
 
             Assert.Throws<InvalidBlockPreEvaluationHashException>(() =>
-                invalidBlock.Validate(_fx.HashAlgorithm, DateTimeOffset.UtcNow));
+                invalidBlock.Validate(_fx.GetHashAlgorithm(_fx.Next.Index), DateTimeOffset.UtcNow));
         }
 
         [Fact]
@@ -628,8 +633,8 @@ namespace Libplanet.Tests.Blocks
             var invalidTx = new Transaction<DumbAction>(rawTx);
             Assert.Throws<InvalidTxSignatureException>(() =>
                 MineNext(
-                    MineGenesis<DumbAction>(_fx.HashAlgorithm),
-                    HashAlgorithmType.Of<SHA256>(),
+                    MineGenesis<DumbAction>(_fx.GetHashAlgorithm),
+                    _fx.GetHashAlgorithm,
                     new List<Transaction<DumbAction>>
                     {
                         invalidTx,
@@ -671,12 +676,9 @@ namespace Libplanet.Tests.Blocks
             );
             Assert.Throws<InvalidTxPublicKeyException>(() =>
                 MineNext(
-                    MineGenesis<DumbAction>(_fx.HashAlgorithm),
-                    HashAlgorithmType.Of<SHA256>(),
-                    new List<Transaction<DumbAction>>
-                    {
-                        invalidTx,
-                    }
+                    MineGenesis<DumbAction>(_fx.GetHashAlgorithm),
+                    _fx.GetHashAlgorithm,
+                    new List<Transaction<DumbAction>> { invalidTx }
                 )
             );
         }

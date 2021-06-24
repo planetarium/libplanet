@@ -141,7 +141,7 @@ namespace Libplanet.Tests.Net.Messages
                 ImmutableArray<byte>.Empty,
                 default(Address));
             var dateTimeOffset = DateTimeOffset.UtcNow;
-            var genesis = TestUtils.MineGenesis<DumbAction>(HashAlgorithmType.Of<SHA256>());
+            var genesis = TestUtils.MineGenesis<DumbAction>(_ => HashAlgorithmType.Of<SHA256>());
             var message = new BlockHeaderMessage(genesis.Hash, genesis.Header);
             NetMQMessage raw =
                 message.ToNetMQMessage(privateKey, peer, dateTimeOffset, appProtocolVersion);

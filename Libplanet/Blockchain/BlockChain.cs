@@ -147,7 +147,7 @@ namespace Libplanet.Blockchain
                 throw new ArgumentNullException(nameof(stateStore));
             }
 
-            _blocks = new BlockSet<T>(_ => HashAlgorithmType.Of<SHA256>(), store);
+            _blocks = new BlockSet<T>(Policy.GetHashAlgorithm, store);
             Renderers = renderers is IEnumerable<IRenderer<T>> r
                 ? r.ToImmutableArray()
                 : ImmutableArray<IRenderer<T>>.Empty;
@@ -166,8 +166,8 @@ namespace Libplanet.Blockchain
                 ? h => trieStateStore.GetTrie(h)
                 : (Func<BlockHash, ITrie>)null;
             ActionEvaluator = new ActionEvaluator<T>(
-                _ => HashAlgorithmType.Of<SHA256>(),
-                policy.BlockAction,
+                Policy.GetHashAlgorithm,
+                Policy.BlockAction,
                 GetState,
                 GetBalance,
                 trieGetter);
@@ -805,7 +805,7 @@ namespace Libplanet.Blockchain
                 procId
             );
 
-            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
+            HashAlgorithmType hashAlgorithm = Policy.GetHashAlgorithm(index);
 
             ImmutableArray<Transaction<T>> stagedTransactions = ListStagedTransactions();
             _logger.Debug(
@@ -1869,7 +1869,7 @@ namespace Libplanet.Blockchain
                     Guid obsoleteId = Id;
                     Id = other.Id;
                     Store.SetCanonicalChainId(Id);
-                    _blocks = new BlockSet<T>(_ => HashAlgorithmType.Of<SHA256>(), Store);
+                    _blocks = new BlockSet<T>(Policy.GetHashAlgorithm, Store);
                     TipChanged?.Invoke(this, (oldTip, newTip));
 
                     if (render)

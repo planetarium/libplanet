@@ -563,8 +563,8 @@ namespace Libplanet.Blocks
                 {
                     string message =
                         $"The expected pre evaluation hash of block {Hash} is " +
-                        $"{expectedPreEvaluationHash}, but its pre evaluation hash is " +
-                        $"{PreEvaluationHash}.";
+                        $"{ByteUtil.Hex(expectedPreEvaluationHash)}, but its pre evaluation hash " +
+                        $"is {ByteUtil.Hex(PreEvaluationHash)}.";
                     throw new InvalidBlockPreEvaluationHashException(
                         PreEvaluationHash,
                         expectedPreEvaluationHash.ToImmutableArray(),

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Tx;
@@ -220,5 +221,9 @@ namespace Libplanet.Blockchain.Policies
 
         /// <inheritdoc />
         public int GetMaxBlockBytes(long index) => index > 0 ? _maxBlockBytes : _maxGenesisBytes;
+
+        /// <inheritdoc cref="IBlockPolicy{T}.GetHashAlgorithm(long)"/>
+        public HashAlgorithmType GetHashAlgorithm(long index) =>
+            HashAlgorithmType.Of<SHA256>();
     }
 }

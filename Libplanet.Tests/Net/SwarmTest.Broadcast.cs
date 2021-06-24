@@ -634,23 +634,29 @@ namespace Libplanet.Tests.Net
 
                 await BootstrapAsync(receiverSwarm, minerSwarm.AsPeer);
 
-                HashAlgorithmType hashAlgo1 = HashAlgorithmType.Of<SHA256>();
                 var block1 = TestUtils.MineNext(
                         blockChain.Genesis,
-                        hashAlgo1,
+                        policy.GetHashAlgorithm,
                         new[] { transactions[0] },
                         null,
                         policy.GetNextBlockDifficulty(blockChain))
-                    .AttachStateRootHash(hashAlgo1, blockChain.StateStore, policy.BlockAction);
+                    .AttachStateRootHash(
+                        policy.GetHashAlgorithm,
+                        blockChain.StateStore,
+                        policy.BlockAction
+                    );
                 blockChain.Append(block1, DateTimeOffset.MinValue.AddSeconds(3), true, true, false);
-                HashAlgorithmType hashAlgo2 = HashAlgorithmType.Of<SHA256>();
                 var block2 = TestUtils.MineNext(
-                        block1,
-                        hashAlgo2,
-                        new[] { transactions[1] },
-                        null,
-                        policy.GetNextBlockDifficulty(blockChain))
-                    .AttachStateRootHash(hashAlgo2, blockChain.StateStore, policy.BlockAction);
+                    block1,
+                    policy.GetHashAlgorithm,
+                    new[] { transactions[1] },
+                    null,
+                    policy.GetNextBlockDifficulty(blockChain)
+                ).AttachStateRootHash(
+                    policy.GetHashAlgorithm,
+                    blockChain.StateStore,
+                    policy.BlockAction
+                );
                 blockChain.Append(block2, DateTimeOffset.MinValue.AddSeconds(8), true, true, false);
                 Log.Debug("Ready to broadcast blocks.");
                 minerSwarm.BroadcastBlock(block2);

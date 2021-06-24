@@ -66,9 +66,16 @@ namespace Libplanet.Tests.Fixtures
             Store = new DefaultStore(null);
             KVStore = new MemoryKeyValueStore();
             StateStore = new TrieStateStore(KVStore, KVStore);
-            HashAlgorithmType algo = HashAlgorithmType.Of<SHA256>();
-            Genesis = Block<Arithmetic>.Mine(0, algo, 0, 0, Miner, null, DateTimeOffset.UtcNow, Txs)
-                .AttachStateRootHash(algo, StateStore, policy.BlockAction);
+            Genesis = Block<Arithmetic>.Mine(
+                index: 0,
+                hashAlgorithm: policy.GetHashAlgorithm(0),
+                difficulty: 0,
+                previousTotalDifficulty: 0,
+                miner: Miner,
+                previousHash: null,
+                timestamp: DateTimeOffset.UtcNow,
+                transactions: Txs
+            ).AttachStateRootHash(policy.GetHashAlgorithm, StateStore, policy.BlockAction);
             Chain = new BlockChain<Arithmetic>(
                 policy,
                 new VolatileStagePolicy<Arithmetic>(),
@@ -142,13 +149,16 @@ namespace Libplanet.Tests.Fixtures
 
         public async Task<Block<Arithmetic>> Mine(CancellationToken cancellationToken = default)
         {
-            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             Block<Arithmetic> draft = await Chain.MineBlock(
                 Miner,
                 DateTimeOffset.UtcNow,
                 cancellationToken: cancellationToken
             );
-            return draft.AttachStateRootHash(hashAlgorithm, StateStore, Policy.BlockAction);
+            return draft.AttachStateRootHash(
+                Chain.Policy.GetHashAlgorithm,
+                StateStore,
+                Policy.BlockAction
+            );
         }
 
         public IAccountStateDelta CreateAccountStateDelta(Address signer, BlockHash? offset = null)

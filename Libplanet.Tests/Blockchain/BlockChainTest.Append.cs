@@ -34,8 +34,6 @@ namespace Libplanet.Tests.Blockchain
                 ? (Func<BlockHash, TxId, TxExecution>)_blockChain.Store.GetTxExecution
                 : _blockChain.GetTxExecution;
 
-            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
-
             (Address[] addresses, Transaction<DumbAction>[] txs) =
                 MakeFixturesForAppendTests();
             var genesis = _blockChain.Genesis;
@@ -44,20 +42,28 @@ namespace Libplanet.Tests.Blockchain
             Assert.Empty(_renderer.ActionRecords);
             Assert.Empty(_renderer.BlockRecords);
             var block1 = TestUtils.MineNext(
-                    genesis,
-                    hashAlgorithm,
-                    miner: addresses[4],
-                    difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
-                    blockInterval: TimeSpan.FromSeconds(10))
-                .AttachStateRootHash(hashAlgorithm, _fx.StateStore, _policy.BlockAction);
+                genesis,
+                _blockChain.Policy.GetHashAlgorithm,
+                miner: addresses[4],
+                difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
+                blockInterval: TimeSpan.FromSeconds(10)
+            ).AttachStateRootHash(
+                _blockChain.Policy.GetHashAlgorithm,
+                _fx.StateStore,
+                _policy.BlockAction
+            );
             _blockChain.Append(block1);
             Block<DumbAction> block2 = TestUtils.MineNext(
                 block1,
-                hashAlgorithm,
+                _blockChain.Policy.GetHashAlgorithm,
                 txs,
                 difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
                 blockInterval: TimeSpan.FromSeconds(10)
-            ).AttachStateRootHash(hashAlgorithm, _fx.StateStore, _policy.BlockAction);
+            ).AttachStateRootHash(
+                _blockChain.Policy.GetHashAlgorithm,
+                _fx.StateStore,
+                _policy.BlockAction
+            );
             foreach (Transaction<DumbAction> tx in txs)
             {
                 Assert.Null(getTxExecution(genesis.Hash, tx.Id));
@@ -205,10 +211,14 @@ namespace Libplanet.Tests.Blockchain
             );
             Block<DumbAction> block3 = TestUtils.MineNext(
                 block2,
-                hashAlgorithm,
+                _blockChain.Policy.GetHashAlgorithm,
                 new[] { tx1Transfer, tx2Error, tx3Transfer },
                 difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain)
-            ).AttachStateRootHash(hashAlgorithm, _fx.StateStore, _policy.BlockAction);
+            ).AttachStateRootHash(
+                _blockChain.Policy.GetHashAlgorithm,
+                _fx.StateStore,
+                _policy.BlockAction
+            );
             _blockChain.Append(block3);
             var txExecution1 = getTxExecution(block3.Hash, tx1Transfer.Id);
             _logger.Verbose(nameof(txExecution1) + " = {@TxExecution}", txExecution1);
@@ -322,7 +332,7 @@ namespace Libplanet.Tests.Blockchain
 
             var block1 = TestUtils.MineNext(
                 _blockChain.Genesis,
-                hashAlgorithm,
+                _blockChain.Policy.GetHashAlgorithm,
                 heavyTxs,
                 difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
                 blockInterval: TimeSpan.FromSeconds(10)
@@ -357,7 +367,7 @@ namespace Libplanet.Tests.Blockchain
 
             var block1 = TestUtils.MineNext(
                 _blockChain.Genesis,
-                hashAlgorithm,
+                _blockChain.Policy.GetHashAlgorithm,
                 manyTxs,
                 difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
                 blockInterval: TimeSpan.FromSeconds(10)
@@ -377,12 +387,11 @@ namespace Libplanet.Tests.Blockchain
         {
             (_, Transaction<DumbAction>[] txs) =
                 MakeFixturesForAppendTests();
-            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             var genesis = _blockChain.Genesis;
 
             var block = TestUtils.MineNext(
                 genesis,
-                hashAlgorithm,
+                _blockChain.Policy.GetHashAlgorithm,
                 difficulty: 1024,
                 blockInterval: TimeSpan.FromSeconds(10));
             Assert.Throws<ArgumentException>(() =>
@@ -451,7 +460,6 @@ namespace Libplanet.Tests.Blockchain
             var policy = new BlockPolicy<DumbAction>(doesTransactionFollowPolicy: IsSignerValid);
             using (var fx = new DefaultStoreFixture())
             {
-                HashAlgorithmType hashAlgorithm = fx.HashAlgorithm;
                 var blockChain = new BlockChain<DumbAction>(
                     policy,
                     new VolatileStagePolicy<DumbAction>(),
@@ -466,23 +474,31 @@ namespace Libplanet.Tests.Blockchain
 
                 Block<DumbAction> block1 = TestUtils.MineNext(
                     fx.GenesisBlock,
-                    hashAlgorithm,
+                    policy.GetHashAlgorithm,
                     new[] { validTx },
                     miner: miner,
                     difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
                     blockInterval: TimeSpan.FromSeconds(10)
-                ).AttachStateRootHash(hashAlgorithm, blockChain.StateStore, policy.BlockAction);
+                ).AttachStateRootHash(
+                    policy.GetHashAlgorithm,
+                    blockChain.StateStore,
+                    policy.BlockAction
+                );
 
                 blockChain.Append(block1);
 
                 Block<DumbAction> block2 = TestUtils.MineNext(
                     block1,
-                    hashAlgorithm,
+                    policy.GetHashAlgorithm,
                     new[] { invalidTx },
                     miner: miner,
                     difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
                     blockInterval: TimeSpan.FromSeconds(10)
-                ).AttachStateRootHash(hashAlgorithm, blockChain.StateStore, policy.BlockAction);
+                ).AttachStateRootHash(
+                    policy.GetHashAlgorithm,
+                    blockChain.StateStore,
+                    policy.BlockAction
+                );
 
                 Assert.Throws<TxViolatingBlockPolicyException>(() => blockChain.Append(block2));
             }
@@ -494,16 +510,19 @@ namespace Libplanet.Tests.Blockchain
             PrivateKey privateKey = new PrivateKey();
             (Address[] addresses, Transaction<DumbAction>[] txs) =
                 MakeFixturesForAppendTests(privateKey, epoch: DateTimeOffset.UtcNow);
-            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             var genesis = _blockChain.Genesis;
 
             Block<DumbAction> block1 = TestUtils.MineNext(
-                    genesis,
-                    hashAlgorithm,
-                    miner: addresses[4],
-                    difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
-                    blockInterval: TimeSpan.FromSeconds(10))
-                .AttachStateRootHash(hashAlgorithm, _fx.StateStore, _policy.BlockAction);
+                genesis,
+                _blockChain.Policy.GetHashAlgorithm,
+                miner: addresses[4],
+                difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
+                blockInterval: TimeSpan.FromSeconds(10))
+            .AttachStateRootHash(
+                _blockChain.Policy.GetHashAlgorithm,
+                _fx.StateStore,
+                _policy.BlockAction
+            );
             _blockChain.Append(block1);
             Assert.Empty(_blockChain.GetStagedTransactionIds());
 
@@ -513,11 +532,15 @@ namespace Libplanet.Tests.Blockchain
 
             Block<DumbAction> block2 = TestUtils.MineNext(
                 block1,
-                hashAlgorithm,
+                _blockChain.Policy.GetHashAlgorithm,
                 ImmutableArray<Transaction<DumbAction>>.Empty.Add(txs[0]),
                 difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
                 blockInterval: TimeSpan.FromSeconds(10)
-            ).AttachStateRootHash(hashAlgorithm, _fx.StateStore, _policy.BlockAction);
+            ).AttachStateRootHash(
+                _blockChain.Policy.GetHashAlgorithm,
+                _fx.StateStore,
+                _policy.BlockAction
+            );
             _blockChain.Append(block2);
             Assert.Equal(1, _blockChain.GetStagedTransactionIds().Count);
             StageTransactions(txs);
@@ -533,11 +556,15 @@ namespace Libplanet.Tests.Blockchain
 
             Block<DumbAction> block3 = TestUtils.MineNext(
                 block2,
-                hashAlgorithm,
+                _blockChain.Policy.GetHashAlgorithm,
                 ImmutableArray<Transaction<DumbAction>>.Empty.Add(txs[1]),
                 difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
                 blockInterval: TimeSpan.FromSeconds(10)
-            ).AttachStateRootHash(hashAlgorithm, _fx.StateStore, _policy.BlockAction);
+            ).AttachStateRootHash(
+                _blockChain.Policy.GetHashAlgorithm,
+                _fx.StateStore,
+                _policy.BlockAction
+            );
             _blockChain.Append(block3);
             Assert.Empty(_blockChain.GetStagedTransactionIds());
         }

@@ -180,7 +180,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         }
 
         public static Block<T> MineGenesis<T>(
-            HashAlgorithmType hashAlgorithm,
+            HashAlgorithmGetter hashAlgorithmGetter,
             Address? miner = null,
             IReadOnlyList<Transaction<T>> transactions = null,
             DateTimeOffset? timestamp = null,
@@ -202,7 +202,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 previousHash: null,
                 timestamp: timestamp ?? new DateTimeOffset(2018, 11, 29, 0, 0, 0, TimeSpan.Zero),
                 transactions: transactions,
-                hashAlgorithm: hashAlgorithm,
+                hashAlgorithm: hashAlgorithmGetter(0),
                 protocolVersion: protocolVersion
             );
 
@@ -211,7 +211,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
 
         public static Block<T> MineNext<T>(
             Block<T> previousBlock,
-            HashAlgorithmType hashAlgorithm,
+            HashAlgorithmGetter hashAlgorithmGetter,
             IReadOnlyList<Transaction<T>> txs = null,
             byte[] nonce = null,
             long difficulty = 1,
@@ -236,7 +236,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             {
                 block = Block<T>.Mine(
                     index: index,
-                    hashAlgorithm: hashAlgorithm,
+                    hashAlgorithm: hashAlgorithmGetter(index),
                     difficulty: difficulty,
                     previousTotalDifficulty: previousBlock.TotalDifficulty,
                     miner: miner ?? previousBlock.Miner.Value,
@@ -257,19 +257,19 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     previousHash: previousHash,
                     timestamp: timestamp,
                     transactions: txs,
-                    hashAlgorithm: hashAlgorithm,
+                    hashAlgorithm: hashAlgorithmGetter(index),
                     protocolVersion: protocolVersion
                 );
             }
 
-            block.Validate(hashAlgorithm, DateTimeOffset.Now);
+            block.Validate(hashAlgorithmGetter(index), DateTimeOffset.Now);
 
             return block;
         }
 
         public static Block<T> AttachStateRootHash<T>(
             this Block<T> block,
-            HashAlgorithmType hashAlgorithm,
+            HashAlgorithmGetter hashAlgorithmGetter,
             IStateStore stateStore,
             IAction blockAction
         )
@@ -300,7 +300,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             }
 
             var actionEvaluator = new ActionEvaluator<T>(
-                hashAlgorithmGetter: _ => hashAlgorithm,
+                hashAlgorithmGetter: hashAlgorithmGetter,
                 policyBlockAction: blockAction,
                 stateGetter: StateGetter,
                 balanceGetter: FungibleAssetValueGetter,
@@ -350,8 +350,6 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 }
             );
 
-            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
-
             var tx = Transaction<T>.Create(
                 0,
                 privateKey,
@@ -367,11 +365,11 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 null,
                 timestamp ?? DateTimeOffset.MinValue,
                 new[] { tx },
-                hashAlgorithm: hashAlgorithm,
+                hashAlgorithm: policy.GetHashAlgorithm(0),
                 protocolVersion: protocolVersion
             );
             genesisBlock = genesisBlock.AttachStateRootHash(
-                hashAlgorithm,
+                policy.GetHashAlgorithm,
                 stateStore,
                 policy.BlockAction
             );

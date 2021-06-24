@@ -28,7 +28,6 @@ namespace Libplanet.Benchmarks
         private readonly IStagePolicy<DumbAction> _stagePolicy;
         private readonly List<Block<DumbAction>> _blocks;
         private readonly AppProtocolVersion _appProtocolVersion;
-        private readonly HashAlgorithmType _hashAlgorithm;
         private PrivateKey[] _keys;
         private DefaultStoreFixture[] _fxs;
         private BlockChain<DumbAction>[] _blockChains;
@@ -38,16 +37,15 @@ namespace Libplanet.Benchmarks
         {
             _policy = new NullPolicy<DumbAction>();
             _stagePolicy = new VolatileStagePolicy<DumbAction>();
-            _hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             _blocks = new List<Block<DumbAction>>
             {
-                TestUtils.MineGenesis<DumbAction>(_hashAlgorithm),
+                TestUtils.MineGenesis<DumbAction>(_policy.GetHashAlgorithm),
             };
             _appProtocolVersion = AppProtocolVersion.Sign(new PrivateKey(), 1);
-            _blocks.Add(TestUtils.MineNext(_blocks[0], _hashAlgorithm));
-            _blocks.Add(TestUtils.MineNext(_blocks[1], _hashAlgorithm));
-            _blocks.Add(TestUtils.MineNext(_blocks[2], _hashAlgorithm));
-            _blocks.Add(TestUtils.MineNext(_blocks[3], _hashAlgorithm));
+            _blocks.Add(TestUtils.MineNext(_blocks[0], _policy.GetHashAlgorithm));
+            _blocks.Add(TestUtils.MineNext(_blocks[1], _policy.GetHashAlgorithm));
+            _blocks.Add(TestUtils.MineNext(_blocks[2], _policy.GetHashAlgorithm));
+            _blocks.Add(TestUtils.MineNext(_blocks[3], _policy.GetHashAlgorithm));
         }
 
         [IterationSetup(Targets = new[] {"BroadcastBlock", "BroadcastBlockWithoutFill"})]
@@ -58,7 +56,9 @@ namespace Libplanet.Benchmarks
             _blockChains = new BlockChain<DumbAction>[SwarmNumber];
             _swarms = new Swarm<DumbAction>[SwarmNumber];
 
-            var genesisBlock = BlockChain<DumbAction>.MakeGenesisBlock(_hashAlgorithm);
+            var genesisBlock = BlockChain<DumbAction>.MakeGenesisBlock(
+                _blockChains[SwarmNumber].Policy.GetHashAlgorithm(0)
+            );
             var tasks = new List<Task>();
             for (int i = 0; i < SwarmNumber; i++)
             {

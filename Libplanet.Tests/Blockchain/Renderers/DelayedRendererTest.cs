@@ -27,22 +27,23 @@ namespace Libplanet.Tests.Blockchain.Renderers
         static DelayedRendererTest()
         {
             HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
+            HashAlgorithmGetter hashAlgorithmGetter = _ => hashAlgorithm;
             var chainA = new Block<DumbAction>[10];
             var chainB = new Block<DumbAction>[chainA.Length];
-            chainA[0] = chainB[0] = TestUtils.MineGenesis<DumbAction>(hashAlgorithm);
+            chainA[0] = chainB[0] = TestUtils.MineGenesis<DumbAction>(hashAlgorithmGetter);
             for (int i = 1; i < chainA.Length / 2; i++)
             {
                 _branchpoint = chainA[i] = chainB[i] =
-                    TestUtils.MineNext(chainA[i - 1], hashAlgorithm);
+                    TestUtils.MineNext(chainA[i - 1], hashAlgorithmGetter);
             }
 
             int extraDifficulty = 1;
             for (int i = chainA.Length / 2; i < chainA.Length; i++)
             {
-                chainA[i] = TestUtils.MineNext(chainA[i - 1], hashAlgorithm, difficulty: 2);
+                chainA[i] = TestUtils.MineNext(chainA[i - 1], hashAlgorithmGetter, difficulty: 2);
                 chainB[i] = TestUtils.MineNext(
                     chainB[i - 1],
-                    hashAlgorithm,
+                    hashAlgorithmGetter,
                     difficulty: 2 + extraDifficulty
                 );
 

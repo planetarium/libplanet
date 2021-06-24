@@ -93,15 +93,14 @@ namespace Libplanet.Tests.Store
 
             var stateStore =
                 new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore());
-            HashAlgorithm = HashAlgorithmType.Of<SHA256>();
-            GenesisBlock = TestUtils.MineGenesis<DumbAction>(HashAlgorithm)
-                .AttachStateRootHash(HashAlgorithm, stateStore, blockAction);
-            Block1 = TestUtils.MineNext(GenesisBlock, HashAlgorithm)
-                .AttachStateRootHash(HashAlgorithm, stateStore, blockAction);
-            Block2 = TestUtils.MineNext(Block1, HashAlgorithm)
-                .AttachStateRootHash(HashAlgorithm, stateStore, blockAction);
-            Block3 = TestUtils.MineNext(Block2, HashAlgorithm)
-                .AttachStateRootHash(HashAlgorithm, stateStore, blockAction);
+            GenesisBlock = TestUtils.MineGenesis<DumbAction>(GetHashAlgorithm)
+                .AttachStateRootHash(GetHashAlgorithm, stateStore, blockAction);
+            Block1 = TestUtils.MineNext(GenesisBlock, GetHashAlgorithm)
+                .AttachStateRootHash(GetHashAlgorithm, stateStore, blockAction);
+            Block2 = TestUtils.MineNext(Block1, GetHashAlgorithm)
+                .AttachStateRootHash(GetHashAlgorithm, stateStore, blockAction);
+            Block3 = TestUtils.MineNext(Block2, GetHashAlgorithm)
+                .AttachStateRootHash(GetHashAlgorithm, stateStore, blockAction);
 
             Transaction1 = MakeTransaction(new List<DumbAction>(), ImmutableHashSet<Address>.Empty);
             Transaction2 = MakeTransaction(new List<DumbAction>(), ImmutableHashSet<Address>.Empty);
@@ -135,8 +134,6 @@ namespace Libplanet.Tests.Store
         public BlockHash Hash2 { get; }
 
         public BlockHash Hash3 { get; }
-
-        public HashAlgorithmType HashAlgorithm { get; set; }
 
         public Block<DumbAction> GenesisBlock { get; }
 
@@ -182,5 +179,7 @@ namespace Libplanet.Tests.Store
                 timestamp
             );
         }
+
+        public HashAlgorithmType GetHashAlgorithm(long index) => HashAlgorithmType.Of<SHA256>();
     }
 }

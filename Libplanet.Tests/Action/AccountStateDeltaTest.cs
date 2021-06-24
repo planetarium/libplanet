@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Numerics;
-using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
@@ -209,7 +208,6 @@ namespace Libplanet.Tests.Action
                 protocolVersion: ProtocolVersion
             );
 
-            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             DumbAction action = new DumbAction(_addr[0], "a", _addr[1], _addr[0], 5);
             Transaction<DumbAction> tx = Transaction<DumbAction>.Create(
                 0,
@@ -220,10 +218,14 @@ namespace Libplanet.Tests.Action
             chain.Append(
                 TestUtils.MineNext(
                     chain.Tip,
-                    hashAlgorithm,
+                    chain.Policy.GetHashAlgorithm,
                     new[] { tx },
                     protocolVersion: ProtocolVersion
-                ).AttachStateRootHash(hashAlgorithm, stateStore, chain.Policy.BlockAction)
+                ).AttachStateRootHash(
+                    chain.Policy.GetHashAlgorithm,
+                    stateStore,
+                    chain.Policy.BlockAction
+                )
             );
             Assert.Equal(
                 DumbAction.DumbCurrency * 5,

@@ -289,10 +289,10 @@ namespace Libplanet.Tests.Net
         [Fact(Timeout = Timeout)]
         public async Task CompleteWithBlockFetcherGivingWrongBlocks()
         {
-            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
-            Block<DumbAction> genesis = TestUtils.MineGenesis<DumbAction>(hashAlgorithm),
-                demand = TestUtils.MineNext(genesis, hashAlgorithm),
-                wrong = TestUtils.MineNext(genesis, hashAlgorithm);
+            HashAlgorithmGetter hashAlgoGetter = _ => HashAlgorithmType.Of<SHA256>();
+            Block<DumbAction> genesis = TestUtils.MineGenesis<DumbAction>(hashAlgoGetter),
+                demand = TestUtils.MineNext(genesis, hashAlgoGetter),
+                wrong = TestUtils.MineNext(genesis, hashAlgoGetter);
             _logger.Debug("Genesis: #{Index} {Hash}", genesis.Index, genesis.Hash);
             _logger.Debug("Demand:  #{Index} {Hash}", demand.Index, demand.Hash);
             _logger.Debug("Wrong:   #{Index} {Hash}", wrong.Index, wrong.Hash);
@@ -392,18 +392,21 @@ namespace Libplanet.Tests.Net
             );
         }
 
-        private IEnumerable<Block<T>> GenerateBlocks<T>(int count)
+        private IEnumerable<Block<T>> GenerateBlocks<T>(
+            int count,
+            HashAlgorithmGetter hashAlgorithmGetter = null
+        )
             where T : IAction, new()
         {
+            hashAlgorithmGetter = hashAlgorithmGetter ?? (_ => HashAlgorithmType.Of<SHA256>());
             if (count >= 1)
             {
-                HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
-                Block<T> block = TestUtils.MineGenesis<T>(hashAlgorithm);
+                Block<T> block = TestUtils.MineGenesis<T>(hashAlgorithmGetter);
                 yield return block;
 
                 for (int i = 1; i < count; i++)
                 {
-                    block = TestUtils.MineNext(block, hashAlgorithm);
+                    block = TestUtils.MineNext(block, hashAlgorithmGetter);
                     yield return block;
                 }
             }

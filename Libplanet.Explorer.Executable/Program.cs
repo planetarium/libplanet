@@ -433,6 +433,9 @@ If omitted (default) explorer only the local blockchain store.")]
             {
                 return _impl.ValidateNextBlock(blocks, nextBlock);
             }
+
+            public HashAlgorithmType GetHashAlgorithm(long index) =>
+                _impl.GetHashAlgorithm(index);
         }
 
         internal class AppAgnosticAction : IAction
