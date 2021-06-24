@@ -269,55 +269,20 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
 
         public static Block<T> AttachStateRootHash<T>(
             this Block<T> block,
-            HashAlgorithmGetter hashAlgorithmGetter,
+            IStateStore stateStore,
+            IBlockPolicy<T> policy
+        )
+            where T : IAction, new() =>
+                AttachStateRootHash(block, policy.GetHashAlgorithm, stateStore, policy.BlockAction);
+
+        public static Block<T> AttachStateRootHash<T>(
+            this Block<T> block,
+            HashAlgorithmType hashAlgorithm,
             IStateStore stateStore,
             IAction blockAction
         )
-            where T : IAction, new()
-        {
-            IValue StateGetter(
-                Address address, BlockHash? blockHash, StateCompleter<T> stateCompleter) =>
-                blockHash is null
-                    ? null
-                    : stateStore.GetState(ToStateKey(address), blockHash.Value);
-
-            FungibleAssetValue FungibleAssetValueGetter(
-                Address address,
-                Currency currency,
-                BlockHash? blockHash,
-                FungibleAssetStateCompleter<T> stateCompleter)
-            {
-                if (blockHash is null)
-                {
-                    return FungibleAssetValue.FromRawValue(currency, 0);
-                }
-
-                IValue value = stateStore.GetState(
-                    ToFungibleAssetKey(address, currency), blockHash.Value);
-                return FungibleAssetValue.FromRawValue(
-                    currency,
-                    value is Bencodex.Types.Integer i ? i.Value : 0);
-            }
-
-            var actionEvaluator = new ActionEvaluator<T>(
-                hashAlgorithmGetter: hashAlgorithmGetter,
-                policyBlockAction: blockAction,
-                stateGetter: StateGetter,
-                balanceGetter: FungibleAssetValueGetter,
-                trieGetter: null
-            );
-            var actionEvaluationResult = actionEvaluator
-                .Evaluate(block, StateCompleterSet<T>.Reject)
-                .GetTotalDelta(ToStateKey, ToFungibleAssetKey);
-            stateStore.SetStates(block, actionEvaluationResult);
-            if (stateStore is TrieStateStore trieStateStore)
-            {
-                block = new Block<T>(block, trieStateStore.GetRootHash(block.Hash));
-                stateStore.SetStates(block, actionEvaluationResult);
-            }
-
-            return block;
-        }
+            where T : IAction, new() =>
+                AttachStateRootHash(block, _ => hashAlgorithm, stateStore, blockAction);
 
         public static string ToString(BitArray bitArray)
         {
@@ -404,6 +369,58 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             while (table.GetBucketIndexOf(privateKey.ToAddress()) != target);
 
             return privateKey;
+        }
+
+        private static Block<T> AttachStateRootHash<T>(
+            this Block<T> block,
+            HashAlgorithmGetter hashAlgorithmGetter,
+            IStateStore stateStore,
+            IAction blockAction
+        )
+            where T : IAction, new()
+        {
+            IValue StateGetter(
+                Address address, BlockHash? blockHash, StateCompleter<T> stateCompleter) =>
+                blockHash is null
+                    ? null
+                    : stateStore.GetState(ToStateKey(address), blockHash.Value);
+
+            FungibleAssetValue FungibleAssetValueGetter(
+                Address address,
+                Currency currency,
+                BlockHash? blockHash,
+                FungibleAssetStateCompleter<T> stateCompleter)
+            {
+                if (blockHash is null)
+                {
+                    return FungibleAssetValue.FromRawValue(currency, 0);
+                }
+
+                IValue value = stateStore.GetState(
+                    ToFungibleAssetKey(address, currency), blockHash.Value);
+                return FungibleAssetValue.FromRawValue(
+                    currency,
+                    value is Bencodex.Types.Integer i ? i.Value : 0);
+            }
+
+            var actionEvaluator = new ActionEvaluator<T>(
+                hashAlgorithmGetter: hashAlgorithmGetter,
+                policyBlockAction: blockAction,
+                stateGetter: StateGetter,
+                balanceGetter: FungibleAssetValueGetter,
+                trieGetter: null
+            );
+            var actionEvaluationResult = actionEvaluator
+                .Evaluate(block, StateCompleterSet<T>.Reject)
+                .GetTotalDelta(ToStateKey, ToFungibleAssetKey);
+            stateStore.SetStates(block, actionEvaluationResult);
+            if (stateStore is TrieStateStore trieStateStore)
+            {
+                block = new Block<T>(block, trieStateStore.GetRootHash(block.Hash));
+                stateStore.SetStates(block, actionEvaluationResult);
+            }
+
+            return block;
         }
     }
 }

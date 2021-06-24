@@ -640,11 +640,7 @@ namespace Libplanet.Tests.Net
                         new[] { transactions[0] },
                         null,
                         policy.GetNextBlockDifficulty(blockChain))
-                    .AttachStateRootHash(
-                        policy.GetHashAlgorithm,
-                        blockChain.StateStore,
-                        policy.BlockAction
-                    );
+                    .AttachStateRootHash(blockChain.StateStore, policy);
                 blockChain.Append(block1, DateTimeOffset.MinValue.AddSeconds(3), true, true, false);
                 var block2 = TestUtils.MineNext(
                     block1,
@@ -652,11 +648,7 @@ namespace Libplanet.Tests.Net
                     new[] { transactions[1] },
                     null,
                     policy.GetNextBlockDifficulty(blockChain)
-                ).AttachStateRootHash(
-                    policy.GetHashAlgorithm,
-                    blockChain.StateStore,
-                    policy.BlockAction
-                );
+                ).AttachStateRootHash(blockChain.StateStore, policy);
                 blockChain.Append(block2, DateTimeOffset.MinValue.AddSeconds(8), true, true, false);
                 Log.Debug("Ready to broadcast blocks.");
                 minerSwarm.BroadcastBlock(block2);

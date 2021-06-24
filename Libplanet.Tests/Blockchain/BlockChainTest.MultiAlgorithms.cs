@@ -43,13 +43,13 @@ namespace Libplanet.Tests.Blockchain
                     fx.StateStore,
                     new DumbAction[0]
                 );
-                HashAlgorithmGetter invalidAlgoGetter = _ => HashAlgorithmType.Of<SHA1>();
-                Block<DumbAction> invalid1 = TestUtils.MineNext(chain.Genesis, invalidAlgoGetter)
-                    .AttachStateRootHash(invalidAlgoGetter, fx.StateStore, policy.BlockAction);
+                HashAlgorithmType invalidAlgo = HashAlgorithmType.Of<SHA1>();
+                Block<DumbAction> invalid1 = TestUtils.MineNext(chain.Genesis, _ => invalidAlgo)
+                    .AttachStateRootHash(invalidAlgo, fx.StateStore, policy.BlockAction);
                 Assert.Throws<InvalidBlockPreEvaluationHashException>(() => chain.Append(invalid1));
-                HashAlgorithmGetter validAlgoGetter = _ => HashAlgorithmType.Of<MD5>();
-                Block<DumbAction> valid1 = TestUtils.MineNext(chain.Genesis, validAlgoGetter)
-                    .AttachStateRootHash(validAlgoGetter, fx.StateStore, policy.BlockAction);
+                HashAlgorithmType validAlgo = HashAlgorithmType.Of<MD5>();
+                Block<DumbAction> valid1 = TestUtils.MineNext(chain.Genesis, _ => validAlgo)
+                    .AttachStateRootHash(validAlgo, fx.StateStore, policy.BlockAction);
                 chain.Append(valid1);
             }
         }

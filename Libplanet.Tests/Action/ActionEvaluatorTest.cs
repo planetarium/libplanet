@@ -76,10 +76,10 @@ namespace Libplanet.Tests.Action
             var stateRootBlock = TestUtils.MineGenesis(
                 hashAlgorithmGetter: hashAlgorithmGetter,
                 timestamp: timestamp,
-                transactions: txs).AttachStateRootHash(hashAlgorithmGetter, stateStore, null);
+                transactions: txs).AttachStateRootHash(hashAlgorithmGetter(0), stateStore, null);
             var actionEvaluator =
                 new ActionEvaluator<RandomAction>(
-                    hashAlgorithmGetter: _ => HashAlgorithmType.Of<SHA256>(),
+                    hashAlgorithmGetter: hashAlgorithmGetter,
                     policyBlockAction: null,
                     stateGetter: ActionEvaluator<RandomAction>.NullStateGetter,
                     balanceGetter: ActionEvaluator<RandomAction>.NullBalanceGetter,
@@ -933,7 +933,7 @@ namespace Libplanet.Tests.Action
                 _policy.GetHashAlgorithm,
                 txs,
                 difficulty: chain.Policy.GetNextBlockDifficulty(chain)
-            ).AttachStateRootHash(_policy.GetHashAlgorithm, chain.StateStore, _policy.BlockAction);
+            ).AttachStateRootHash(chain.StateStore, _policy);
             var stateCompleterSet = StateCompleterSet<DumbAction>.Recalculate;
 
             AccountStateGetter accountStateGetter =

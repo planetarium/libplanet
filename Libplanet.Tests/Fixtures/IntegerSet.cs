@@ -75,7 +75,7 @@ namespace Libplanet.Tests.Fixtures
                 previousHash: null,
                 timestamp: DateTimeOffset.UtcNow,
                 transactions: Txs
-            ).AttachStateRootHash(policy.GetHashAlgorithm, StateStore, policy.BlockAction);
+            ).AttachStateRootHash(StateStore, policy);
             Chain = new BlockChain<Arithmetic>(
                 policy,
                 new VolatileStagePolicy<Arithmetic>(),
@@ -154,11 +154,7 @@ namespace Libplanet.Tests.Fixtures
                 DateTimeOffset.UtcNow,
                 cancellationToken: cancellationToken
             );
-            return draft.AttachStateRootHash(
-                Chain.Policy.GetHashAlgorithm,
-                StateStore,
-                Policy.BlockAction
-            );
+            return draft.AttachStateRootHash(StateStore, Policy);
         }
 
         public IAccountStateDelta CreateAccountStateDelta(Address signer, BlockHash? offset = null)

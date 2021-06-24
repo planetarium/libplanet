@@ -94,13 +94,13 @@ namespace Libplanet.Tests.Store
             var stateStore =
                 new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore());
             GenesisBlock = TestUtils.MineGenesis<DumbAction>(GetHashAlgorithm)
-                .AttachStateRootHash(GetHashAlgorithm, stateStore, blockAction);
+                .AttachStateRootHash(GetHashAlgorithm(0), stateStore, blockAction);
             Block1 = TestUtils.MineNext(GenesisBlock, GetHashAlgorithm)
-                .AttachStateRootHash(GetHashAlgorithm, stateStore, blockAction);
+                .AttachStateRootHash(GetHashAlgorithm(1), stateStore, blockAction);
             Block2 = TestUtils.MineNext(Block1, GetHashAlgorithm)
-                .AttachStateRootHash(GetHashAlgorithm, stateStore, blockAction);
+                .AttachStateRootHash(GetHashAlgorithm(2), stateStore, blockAction);
             Block3 = TestUtils.MineNext(Block2, GetHashAlgorithm)
-                .AttachStateRootHash(GetHashAlgorithm, stateStore, blockAction);
+                .AttachStateRootHash(GetHashAlgorithm(3), stateStore, blockAction);
 
             Transaction1 = MakeTransaction(new List<DumbAction>(), ImmutableHashSet<Address>.Empty);
             Transaction2 = MakeTransaction(new List<DumbAction>(), ImmutableHashSet<Address>.Empty);

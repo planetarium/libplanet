@@ -25,7 +25,7 @@ namespace Libplanet.Tests.Blockchain
                 _fx.GenesisBlock.Hash,
                 _fx.GenesisBlock.Timestamp.AddDays(1),
                 _emptyTransaction
-            ).AttachStateRootHash(_fx.GetHashAlgorithm, _fx.StateStore, _policy.BlockAction);
+            ).AttachStateRootHash(_fx.StateStore, _policy);
             _blockChain.Append(validNextBlock);
             Assert.Equal(_blockChain.Tip, validNextBlock);
         }
@@ -43,7 +43,7 @@ namespace Libplanet.Tests.Blockchain
                 _fx.GenesisBlock.Timestamp.AddDays(1),
                 _emptyTransaction,
                 protocolVersion: 1
-            ).AttachStateRootHash(_fx.GetHashAlgorithm, _fx.StateStore, _policy.BlockAction);
+            ).AttachStateRootHash(_fx.StateStore, _policy);
             _blockChain.Append(block1);
 
             Block<DumbAction> block2 = Block<DumbAction>.Mine(
@@ -56,7 +56,7 @@ namespace Libplanet.Tests.Blockchain
                 _fx.GenesisBlock.Timestamp.AddDays(1),
                 _emptyTransaction,
                 protocolVersion: 0
-            ).AttachStateRootHash(_fx.GetHashAlgorithm, _fx.StateStore, _policy.BlockAction);
+            ).AttachStateRootHash(_fx.StateStore, _policy);
             Assert.Throws<InvalidBlockProtocolVersionException>(() => _blockChain.Append(block2));
 
             Assert.Throws<InvalidBlockProtocolVersionException>(() =>
@@ -71,7 +71,7 @@ namespace Libplanet.Tests.Blockchain
                     _fx.GenesisBlock.Timestamp.AddDays(1),
                     _emptyTransaction,
                     protocolVersion: Block<DumbAction>.CurrentProtocolVersion + 1
-                ).AttachStateRootHash(_fx.GetHashAlgorithm, _fx.StateStore, _policy.BlockAction);
+                ).AttachStateRootHash(_fx.StateStore, _policy);
                 _blockChain.Append(block3);
             });
         }
@@ -91,7 +91,7 @@ namespace Libplanet.Tests.Blockchain
                 prev.Hash,
                 prev.Timestamp.AddSeconds(1),
                 _emptyTransaction
-            ).AttachStateRootHash(_fx.GetHashAlgorithm, _fx.StateStore, _policy.BlockAction);
+            ).AttachStateRootHash(_fx.StateStore, _policy);
             Assert.Throws<InvalidBlockIndexException>(
                 () => _blockChain.Append(blockWithAlreadyUsedIndex)
             );
@@ -105,7 +105,7 @@ namespace Libplanet.Tests.Blockchain
                 prev.Hash,
                 prev.Timestamp.AddSeconds(1),
                 _emptyTransaction
-            ).AttachStateRootHash(_fx.GetHashAlgorithm, _fx.StateStore, _policy.BlockAction);
+            ).AttachStateRootHash(_fx.StateStore, _policy);
             Assert.Throws<InvalidBlockIndexException>(
                 () => _blockChain.Append(blockWithIndexAfterNonexistentIndex)
             );
@@ -125,7 +125,7 @@ namespace Libplanet.Tests.Blockchain
                 _validNext.Hash,
                 _validNext.Timestamp.AddSeconds(1),
                 _emptyTransaction
-            ).AttachStateRootHash(_fx.GetHashAlgorithm, _fx.StateStore, _policy.BlockAction);
+            ).AttachStateRootHash(_fx.StateStore, _policy);
             Assert.Throws<InvalidBlockDifficultyException>(() =>
                     _blockChain.Append(invalidDifficultyBlock));
         }
@@ -144,7 +144,7 @@ namespace Libplanet.Tests.Blockchain
                 _validNext.Hash,
                 _validNext.Timestamp.AddSeconds(1),
                 _emptyTransaction
-            ).AttachStateRootHash(_fx.GetHashAlgorithm, _fx.StateStore, _policy.BlockAction);
+            ).AttachStateRootHash(_fx.StateStore, _policy);
             Assert.Throws<InvalidBlockTotalDifficultyException>(() =>
                     _blockChain.Append(invalidTotalDifficultyBlock));
         }
@@ -197,7 +197,7 @@ namespace Libplanet.Tests.Blockchain
             //        calculate state root hash. To resolve this problem,
             //        it should be moved into StateStore.
             var genesisBlock = TestUtils.MineGenesis<DumbAction>(_fx.GetHashAlgorithm)
-                .AttachStateRootHash(_fx.GetHashAlgorithm, _fx.StateStore, policy.BlockAction);
+                .AttachStateRootHash(_fx.StateStore, policy);
             var store = new DefaultStore(null);
             var chain = new BlockChain<DumbAction>(
                 policy,
@@ -216,8 +216,8 @@ namespace Libplanet.Tests.Blockchain
                 genesisBlock.Timestamp.AddSeconds(1),
                 _emptyTransaction
             )
-                .AttachStateRootHash(_policy.GetHashAlgorithm, _fx.StateStore, _policy.BlockAction)
-                .AttachStateRootHash(policy.GetHashAlgorithm, chain.StateStore, policy.BlockAction);
+                .AttachStateRootHash(_fx.StateStore, _policy)
+                .AttachStateRootHash(chain.StateStore, policy);
             chain.Append(validNext);
 
             var invalidStateRootHash = Block<DumbAction>.Mine(

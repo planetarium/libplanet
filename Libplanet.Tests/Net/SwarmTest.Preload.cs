@@ -116,10 +116,7 @@ namespace Libplanet.Tests.Net
                         previousBlock: i == 0 ? minerChain.Genesis : blocks[i - 1],
                         hashAlgorithmGetter: minerChain.Policy.GetHashAlgorithm,
                         difficulty: 1024)
-                    .AttachStateRootHash(
-                        minerChain.Policy.GetHashAlgorithm,
-                        minerChain.StateStore,
-                        minerChain.Policy.BlockAction);
+                    .AttachStateRootHash(minerChain.StateStore, minerChain.Policy);
                 blocks.Add(block);
                 if (i != 10)
                 {
@@ -332,11 +329,7 @@ namespace Libplanet.Tests.Net
                         new[] { tx },
                         difficulty: policy.GetNextBlockDifficulty(minerChain),
                         blockInterval: TimeSpan.FromSeconds(1)
-                ).AttachStateRootHash(
-                    minerChain.Policy.GetHashAlgorithm,
-                    minerChain.StateStore,
-                    minerChain.Policy.BlockAction
-                );
+                ).AttachStateRootHash(minerChain.StateStore, minerChain.Policy);
                 minerSwarm.BlockChain.Append(block, DateTimeOffset.UtcNow, false, true, false);
 
                 await receiverSwarm.PreloadAsync(TimeSpan.FromSeconds(1));
@@ -804,11 +797,7 @@ namespace Libplanet.Tests.Net
                 minerChain2.Tip,
                 minerChain2.Policy.GetHashAlgorithm,
                 difficulty: nextDifficulty
-            ).AttachStateRootHash(
-                minerChain2.Policy.GetHashAlgorithm,
-                minerChain2.StateStore,
-                minerChain2.Policy.BlockAction
-            );
+            ).AttachStateRootHash(minerChain2.StateStore, minerChain2.Policy);
             minerChain2.Append(block);
 
             Assert.True(minerChain1.Count > minerChain2.Count);

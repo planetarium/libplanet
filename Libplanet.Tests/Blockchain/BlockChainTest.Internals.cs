@@ -128,7 +128,7 @@ namespace Libplanet.Tests.Blockchain
                 _policy.GetHashAlgorithm,
                 txs,
                 difficulty: _policy.GetNextBlockDifficulty(_blockChain)
-            ).AttachStateRootHash(_policy.GetHashAlgorithm, _fx.StateStore, _policy.BlockAction);
+            ).AttachStateRootHash(_fx.StateStore, _policy);
 
             _blockChain.Append(
                 block1,

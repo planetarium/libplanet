@@ -719,11 +719,7 @@ namespace Libplanet.Tests.Net
                 policy2.GetHashAlgorithm,
                 difficulty: (long)chain1.Tip.TotalDifficulty + 1,
                 blockInterval: TimeSpan.FromMilliseconds(1)
-            ).AttachStateRootHash(
-                policy2.GetHashAlgorithm,
-                chain2.StateStore,
-                chain2.Policy.BlockAction
-            );
+            ).AttachStateRootHash(chain2.StateStore, policy2);
             chain2.Append(block3);
             try
             {
@@ -824,7 +820,7 @@ namespace Libplanet.Tests.Net
                 policy.GetHashAlgorithm,
                 difficulty: nextDifficulty,
                 blockInterval: TimeSpan.FromMilliseconds(1)
-            ).AttachStateRootHash(policy.GetHashAlgorithm, chain2.StateStore, policy.BlockAction);
+            ).AttachStateRootHash(chain2.StateStore, policy);
             chain2.Append(block);
 
             Assert.True(chain1.Tip.Index > chain2.Tip.Index);
@@ -1430,10 +1426,7 @@ namespace Libplanet.Tests.Net
             {
                 Block<DumbAction> block =
                     TestUtils.MineNext(chain.Tip, chain.Policy.GetHashAlgorithm, difficulty: 1024)
-                        .AttachStateRootHash(
-                            chain.Policy.GetHashAlgorithm,
-                            chain.StateStore,
-                            chain.Policy.BlockAction);
+                        .AttachStateRootHash(chain.StateStore, chain.Policy);
                 chain.Append(block);
             }
 
@@ -1473,10 +1466,7 @@ namespace Libplanet.Tests.Net
             {
                 Block<DumbAction> block =
                     TestUtils.MineNext(chain.Tip, chain.Policy.GetHashAlgorithm, difficulty: 1024)
-                        .AttachStateRootHash(
-                            chain.Policy.GetHashAlgorithm,
-                            chain.StateStore,
-                            chain.Policy.BlockAction);
+                        .AttachStateRootHash(chain.StateStore, chain.Policy);
                 chain.Append(block);
             }
 
@@ -1514,10 +1504,7 @@ namespace Libplanet.Tests.Net
             BlockChain<DumbAction> chain = receiver.BlockChain;
             Block<DumbAction> b1 =
                 TestUtils.MineNext(chain.Genesis, chain.Policy.GetHashAlgorithm, difficulty: 1024)
-                    .AttachStateRootHash(
-                        chain.Policy.GetHashAlgorithm,
-                        sender1.BlockChain.StateStore,
-                        sender1.BlockChain.Policy.BlockAction);
+                    .AttachStateRootHash(sender1.BlockChain.StateStore, chain.Policy);
 
             try
             {
