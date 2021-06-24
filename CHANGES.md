@@ -140,7 +140,9 @@ To be released.
      -  Removed `Hashcash.Hash()` method.
      -  Removed `HashDigest<T>.Satisfies()` method.  This was replaced by
         `ByteUtil.Satisfies()` method instead.  [[#1192], [#1197]]
-     -  Added `hashAlgorithmGetter` parameter to `BlockSet()` constructor.
+     -  Added `hashAlgorithmGetter` parameter to `BlockSet<T>()` constructor.
+     -  Added `hashAlgorithm` parameter to `BlockChain<T>.MakeGenesisBlock()`
+        method.
  -  Added `IActionContext.TxId` property.  [[#1275]]
  -  Added `IStore.PutTxExecution(TxSuccess)` method.  [[#1156], [#1289]]
  -  Added `IStore.PutTxExecution(TxFailure)` method.  [[#1156], [#1289]]

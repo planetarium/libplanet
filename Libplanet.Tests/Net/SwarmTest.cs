@@ -1216,8 +1216,9 @@ namespace Libplanet.Tests.Net
             var actionsA = new[] { new DumbAction(signerAddress, "1") };
             var actionsB = new[] { new DumbAction(signerAddress, "2") };
 
-            var genesisBlockA = BlockChain<DumbAction>.MakeGenesisBlock(actionsA, privateKeyA);
-            var genesisBlockB = BlockChain<DumbAction>.MakeGenesisBlock(actionsB, privateKeyB);
+            HashAlgorithmType alg = HashAlgorithmType.Of<SHA256>();
+            var genesisBlockA = BlockChain<DumbAction>.MakeGenesisBlock(alg, actionsA, privateKeyA);
+            var genesisBlockB = BlockChain<DumbAction>.MakeGenesisBlock(alg, actionsB, privateKeyB);
 
             BlockChain<DumbAction> MakeGenesisChain(
                 IStore store, IStateStore stateStore, Block<DumbAction> genesisBlock) =>

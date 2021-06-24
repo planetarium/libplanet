@@ -181,7 +181,9 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public async void ProcessActions()
         {
-            var genesisBlock = BlockChain<PolymorphicAction<BaseAction>>.MakeGenesisBlock();
+            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
+            Block<PolymorphicAction<BaseAction>> genesisBlock =
+                BlockChain<PolymorphicAction<BaseAction>>.MakeGenesisBlock(hashAlgorithm);
             var store = new DefaultStore(path: null);
             var stateStore =
                 new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore());
@@ -1136,11 +1138,11 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public async void GetStateReturnsValidStateAfterFork()
         {
-            var genesisBlock = BlockChain<DumbAction>.MakeGenesisBlock(
-                new[]
-                {
-                    new DumbAction(_fx.Address1, "item0.0", idempotent: true),
-                });
+            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
+            Block<DumbAction> genesisBlock = BlockChain<DumbAction>.MakeGenesisBlock(
+                hashAlgorithm,
+                new[] { new DumbAction(_fx.Address1, "item0.0", idempotent: true) }
+            );
             var privateKey = new PrivateKey();
             var store = new DefaultStore(path: null);
             var stateStore =
@@ -1226,6 +1228,7 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public async void FindBranchPoint()
         {
+            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             Block<DumbAction> b1 = await _blockChain.MineBlock(_fx.Address1);
             Block<DumbAction> b2 = await _blockChain.MineBlock(_fx.Address1);
             Block<DumbAction> b3 = await _blockChain.MineBlock(_fx.Address1);
@@ -1241,7 +1244,7 @@ namespace Libplanet.Tests.Blockchain
             using (var forkFx = new DefaultStoreFixture(
                 memory: true, blockAction: _policy.BlockAction))
             {
-                var genesisBlock = BlockChain<DumbAction>.MakeGenesisBlock();
+                var genesisBlock = BlockChain<DumbAction>.MakeGenesisBlock(hashAlgorithm);
                 var emptyChain = new BlockChain<DumbAction>(
                     _blockChain.Policy,
                     new VolatileStagePolicy<DumbAction>(),
@@ -1754,6 +1757,7 @@ namespace Libplanet.Tests.Blockchain
         {
             var storeFixture = new DefaultStoreFixture();
             var policy = new NullPolicy<DumbAction>();
+            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
 
             var addresses = ImmutableList<Address>.Empty
                 .Add(storeFixture.Address1)
@@ -1770,7 +1774,7 @@ namespace Libplanet.Tests.Blockchain
                     new VolatileStagePolicy<DumbAction>(),
                     storeFixture.Store,
                     storeFixture.StateStore,
-                    BlockChain<DumbAction>.MakeGenesisBlock(actions));
+                    BlockChain<DumbAction>.MakeGenesisBlock(hashAlgorithm, actions));
 
             Assert.Equal(addresses, blockChain.Genesis.Transactions.First().UpdatedAddresses);
 
@@ -1786,12 +1790,13 @@ namespace Libplanet.Tests.Blockchain
         private void ConstructWithUnexpectedGenesisBlock()
         {
             var policy = new NullPolicy<DumbAction>();
+            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             var stagePolicy = new VolatileStagePolicy<DumbAction>();
             var store = new DefaultStore(null);
             var stateStore =
                 new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore());
-            var genesisBlockA = BlockChain<DumbAction>.MakeGenesisBlock();
-            var genesisBlockB = BlockChain<DumbAction>.MakeGenesisBlock();
+            var genesisBlockA = BlockChain<DumbAction>.MakeGenesisBlock(hashAlgorithm);
+            var genesisBlockB = BlockChain<DumbAction>.MakeGenesisBlock(hashAlgorithm);
 
             var blockChain = new BlockChain<DumbAction>(
                 policy,

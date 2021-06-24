@@ -359,6 +359,8 @@ namespace Libplanet.Blockchain
         /// <summary>
         /// Mine the genesis block of the blockchain.
         /// </summary>
+        /// <param name="hashAlgorithm">The hash algorithm for proof-of-work on the genesis block.
+        /// </param>
         /// <param name="actions">List of actions will be included in the genesis block.
         /// If it's null, it will be replaced with <see cref="ImmutableArray{T}.Empty"/>
         /// as default.</param>
@@ -371,6 +373,7 @@ namespace Libplanet.Blockchain
         /// </param>
         /// <returns>The genesis block mined with parameters.</returns>
         public static Block<T> MakeGenesisBlock(
+            HashAlgorithmType hashAlgorithm,
             IEnumerable<T> actions = null,
             PrivateKey privateKey = null,
             DateTimeOffset? timestamp = null,
@@ -384,17 +387,18 @@ namespace Libplanet.Blockchain
             };
 
             Block<T> block = Block<T>.Mine(
-                0,
-                HashAlgorithmType.Of<SHA256>(),
-                0,
-                0,
-                privateKey.ToAddress(),
-                null,
-                timestamp ?? DateTimeOffset.UtcNow,
-                transactions);
+                index: 0,
+                hashAlgorithm: hashAlgorithm,
+                difficulty: 0,
+                previousTotalDifficulty: 0,
+                miner: privateKey.ToAddress(),
+                previousHash: null,
+                timestamp: timestamp ?? DateTimeOffset.UtcNow,
+                transactions: transactions
+            );
 
             var actionEvaluator = new ActionEvaluator<T>(
-                _ => HashAlgorithmType.Of<SHA256>(),
+                _ => hashAlgorithm,
                 blockAction,
                 (address, digest, stateCompleter) => null,
                 (address, currency, hash, fungibleAssetStateCompleter)
@@ -407,9 +411,7 @@ namespace Libplanet.Blockchain
             trie = trie.Set(actionEvaluationResult);
             var stateRootHash = trie.Commit(rehearsal: true).Hash;
 
-            return new Block<T>(
-                block,
-                stateRootHash);
+            return new Block<T>(block, stateRootHash);
         }
 
         /// <summary>
