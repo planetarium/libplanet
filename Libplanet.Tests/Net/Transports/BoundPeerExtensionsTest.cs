@@ -52,9 +52,21 @@ namespace Libplanet.Tests.Net.Transports
             {
                 var peer = new BoundPeer(swarmKey.PublicKey, new DnsEndPoint(host, port));
                 // Before swarm starting...
-                Assert.Throws<TimeoutException>(() =>
+                await Assert.ThrowsAsync<TimeoutException>(async () =>
                 {
-                    peer.QueryAppProtocolVersion(timeout: TimeSpan.FromSeconds(1));
+                    if (swarm.Transport is NetMQTransport)
+                    {
+                        peer.QueryAppProtocolVersion(timeout: TimeSpan.FromSeconds(1));
+                    }
+                    else if (swarm.Transport is TcpTransport)
+                    {
+                        await peer.QueryAppProtocolVersionTcp(timeout: TimeSpan.FromSeconds(1));
+                    }
+                    else
+                    {
+                        throw new XunitException(
+                            "Each type of transport must have corresponding test case.");
+                    }
                 });
                 _ = swarm.StartAsync();
                 try
@@ -80,6 +92,11 @@ namespace Libplanet.Tests.Net.Transports
                 {
                     await swarm.StopAsync();
                 }
+            }
+
+            if (transportType == SwarmOptions.TransportType.NetMQTransport)
+            {
+                NetMQConfig.Cleanup(false);
             }
         }
 
