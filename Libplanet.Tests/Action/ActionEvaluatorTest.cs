@@ -70,9 +70,11 @@ namespace Libplanet.Tests.Action
                 new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore());
             HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             var noStateRootBlock = TestUtils.MineGenesis(
+                hashAlgorithm: hashAlgorithm,
                 timestamp: timestamp,
                 transactions: txs);
             var stateRootBlock = TestUtils.MineGenesis(
+                hashAlgorithm: hashAlgorithm,
                 timestamp: timestamp,
                 transactions: txs).AttachStateRootHash(hashAlgorithm, stateStore, null);
             var actionEvaluator =
@@ -273,7 +275,7 @@ namespace Libplanet.Tests.Action
                 _txFx.Address5,
             };
             HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
-            Block<DumbAction> genesis = MineGenesis<DumbAction>();
+            Block<DumbAction> genesis = MineGenesis<DumbAction>(hashAlgorithm);
             ActionEvaluator<DumbAction> actionEvaluator = new ActionEvaluator<DumbAction>(
                 hashAlgorithmGetter: _ => HashAlgorithmType.Of<SHA256>(),
                 policyBlockAction: null,
@@ -571,7 +573,9 @@ namespace Libplanet.Tests.Action
                 miner: addresses[0],
                 previousHash: null,
                 timestamp: DateTimeOffset.UtcNow,
-                transactions: ImmutableArray.Create(tx));
+                transactions: ImmutableArray.Create(tx),
+                hashAlgorithm: HashAlgorithmType.Of<SHA256>()
+            );
             var actionEvaluator = new ActionEvaluator<DumbAction>(
                 hashAlgorithmGetter: _ => HashAlgorithmType.Of<SHA256>(),
                 policyBlockAction: null,
@@ -697,7 +701,7 @@ namespace Libplanet.Tests.Action
                 _txFx.TxWithActions
                     .ToRawTransaction(false).Actions.ToImmutableArray();
             Block<PolymorphicAction<BaseAction>> genesis =
-                TestUtils.MineGenesis<PolymorphicAction<BaseAction>>();
+                TestUtils.MineGenesis<PolymorphicAction<BaseAction>>(hashAlgorithm);
             RawTransaction rawTxWithoutSig = new RawTransaction(
                 0,
                 _txFx.Address1.ByteArray,
@@ -779,7 +783,9 @@ namespace Libplanet.Tests.Action
                 miner: GenesisMinerAddress,
                 previousHash: null,
                 timestamp: DateTimeOffset.UtcNow,
-                transactions: ImmutableArray.Create(tx));
+                transactions: ImmutableArray.Create(tx),
+                hashAlgorithm: HashAlgorithmType.Of<SHA256>()
+            );
             var nextStates = actionEvaluator.EvaluateTxResult(
                 block: block,
                 tx: tx,

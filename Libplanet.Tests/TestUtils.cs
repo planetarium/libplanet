@@ -180,6 +180,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         }
 
         public static Block<T> MineGenesis<T>(
+            HashAlgorithmType hashAlgorithm,
             Address? miner = null,
             IReadOnlyList<Transaction<T>> transactions = null,
             DateTimeOffset? timestamp = null,
@@ -201,6 +202,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 previousHash: null,
                 timestamp: timestamp ?? new DateTimeOffset(2018, 11, 29, 0, 0, 0, TimeSpan.Zero),
                 transactions: transactions,
+                hashAlgorithm: hashAlgorithm,
                 protocolVersion: protocolVersion
             );
 
@@ -255,6 +257,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     previousHash: previousHash,
                     timestamp: timestamp,
                     transactions: txs,
+                    hashAlgorithm: hashAlgorithm,
                     protocolVersion: protocolVersion
                 );
             }
@@ -364,6 +367,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 null,
                 timestamp ?? DateTimeOffset.MinValue,
                 new[] { tx },
+                hashAlgorithm: hashAlgorithm,
                 protocolVersion: protocolVersion
             );
             genesisBlock = genesisBlock.AttachStateRootHash(

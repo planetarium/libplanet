@@ -43,7 +43,9 @@ namespace Libplanet.Action
             miner: null,
             previousHash: null,
             timestamp: DateTimeOffset.UtcNow,
-            transactions: ImmutableArray<Transaction<T>>.Empty);
+            transactions: ImmutableArray<Transaction<T>>.Empty,
+            hashAlgorithm: HashAlgorithmType.Of<SHA256>()
+        );
 
         private static readonly ILogger _logger = Log.ForContext<ActionEvaluator<T>>();
         private readonly HashAlgorithmGetter _hashAlgorithmGetter;

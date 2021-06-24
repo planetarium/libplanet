@@ -583,12 +583,8 @@ namespace Libplanet.Tests.Blockchain
                 new MemoryKeyValueStore(), new MemoryKeyValueStore()))
             {
                 var genesis = TestUtils.MineGenesis(
-                    transactions: new[]
-                    {
-                        _fx.MakeTransaction(
-                            new[] { action }
-                        ),
-                    }
+                    hashAlgorithm,
+                    transactions: new[] { _fx.MakeTransaction(new[] { action }) }
                 ).AttachStateRootHash(hashAlgorithm, stateStore, _policy.BlockAction);
                 store.PutBlock(genesis);
                 var renderer = new RecordingActionRenderer<DumbAction>();
@@ -1016,9 +1012,10 @@ namespace Libplanet.Tests.Blockchain
                 memory: true, blockAction: _policy.BlockAction))
             {
                 HashAlgorithmType hashAlgorithm = fx2.HashAlgorithm;
-                Block<DumbAction> genesis2 =
-                    TestUtils.MineGenesis<DumbAction>(timestamp: DateTimeOffset.UtcNow)
-                        .AttachStateRootHash(hashAlgorithm, fx2.StateStore, _policy.BlockAction);
+                Block<DumbAction> genesis2 = TestUtils.MineGenesis<DumbAction>(
+                    hashAlgorithm,
+                    timestamp: DateTimeOffset.UtcNow
+                ).AttachStateRootHash(hashAlgorithm, fx2.StateStore, _policy.BlockAction);
                 var chain2 = new BlockChain<DumbAction>(
                     _blockChain.Policy,
                     _blockChain.StagePolicy,
@@ -1553,7 +1550,7 @@ namespace Libplanet.Tests.Blockchain
             HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             store = new StoreTracker(store);
             Guid chainId = Guid.NewGuid();
-            Block<DumbAction> genesisBlock = TestUtils.MineGenesis<DumbAction>()
+            Block<DumbAction> genesisBlock = TestUtils.MineGenesis<DumbAction>(hashAlgorithm)
                 .AttachStateRootHash(hashAlgorithm, stateStore, blockPolicy.BlockAction);
             var chain = new BlockChain<DumbAction>(
                 blockPolicy,
@@ -1845,7 +1842,7 @@ namespace Libplanet.Tests.Blockchain
             var store = new DefaultStore(null);
             var stateStore = new TrieStateStore(
                 new MemoryKeyValueStore(), new MemoryKeyValueStore());
-            var genesisBlock = TestUtils.MineGenesis<DumbAction>();
+            var genesisBlock = TestUtils.MineGenesis<DumbAction>(HashAlgorithmType.Of<SHA256>());
             BlockChain<DumbAction> blockChain = TestUtils.MakeBlockChain(
                 _blockChain.Policy, store, stateStore, genesisBlock: genesisBlock);
 

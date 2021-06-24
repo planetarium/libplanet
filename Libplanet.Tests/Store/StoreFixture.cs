@@ -94,7 +94,7 @@ namespace Libplanet.Tests.Store
             var stateStore =
                 new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore());
             HashAlgorithm = HashAlgorithmType.Of<SHA256>();
-            GenesisBlock = TestUtils.MineGenesis<DumbAction>()
+            GenesisBlock = TestUtils.MineGenesis<DumbAction>(HashAlgorithm)
                 .AttachStateRootHash(HashAlgorithm, stateStore, blockAction);
             Block1 = TestUtils.MineNext(GenesisBlock, HashAlgorithm)
                 .AttachStateRootHash(HashAlgorithm, stateStore, blockAction);

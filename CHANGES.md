@@ -108,6 +108,10 @@ To be released.
         (was `ImmutableHashSet<HashDigest<SHA256>>`).
  -  Hash algorithm for <abbr title="proof-of-work">PoW</abbr> (Hashcash) became
     configurable.  [#1314], [#1352]
+     -  Added optional `HashAlgorithmType? hashAlgorithm` parameter to
+        `Block<T>(long, long, BigInteger, Nonce, Address?, BlockHash?,
+        DateTimeOffset, IReadOnlyList<Transaction<T>>, ImmutableArray<byte>?,
+        HashDigest<SHA256>?, int protocolVersion)` constructor.
      -  Added `HashAlgorithmType hashAlgorithm` parameter to
         `Block<T>.MineBlock()` method.
      -  The type of `Block<T>.PreEvaluationHash` property became

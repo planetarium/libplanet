@@ -99,7 +99,9 @@ namespace Libplanet.Tests.Net
                 receiverSwarm.Address,
                 null,
                 DateTimeOffset.MinValue,
-                ImmutableArray<Transaction<DumbAction>>.Empty);
+                ImmutableArray<Transaction<DumbAction>>.Empty,
+                HashAlgorithmType.Of<SHA256>()
+            );
             BlockChain<DumbAction> seedChain = TestUtils.MakeBlockChain(
                 receiverChain.Policy,
                 new DefaultStore(path: null),

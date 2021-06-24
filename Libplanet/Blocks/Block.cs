@@ -50,13 +50,22 @@ namespace Libplanet.Blocks
         /// Transactions become sorted in an unpredicted-before-mined order and then go to
         /// the <see cref="Transactions"/> property.
         /// </param>
+        /// <param name="hashAlgorithm">The hash algorithm for proof-of-work, if and only if
+        /// <paramref name="preEvaluationHash"/> is omitted.</param>
         /// <param name="preEvaluationHash">The hash derived from the block <em>except of</em>
         /// <paramref name="stateRootHash"/> (i.e., without action evaluation).
-        /// Automatically determined if <c>null</c> is passed (which is default).</param>
+        /// Automatically determined if <c>null</c> is passed, but <paramref name="hashAlgorithm"/>
+        /// is needed in that case.</param>
         /// <param name="stateRootHash">The <see cref="ITrie.Hash"/> of the states on the block.
         /// </param>
         /// <param name="protocolVersion">The protocol version. <see cref="CurrentProtocolVersion"/>
         /// by default.</param>
+        /// <exception cref="ArgumentNullException">Thrown when both
+        /// <paramref name="hashAlgorithm"/> and <paramref name="preEvaluationHash"/> are omitted.
+        /// </exception>
+        /// <exception cref="ArgumentException">Thrown when both <paramref name="hashAlgorithm"/>
+        /// and <paramref name="preEvaluationHash"/>, which are mutually exclusive, are present.
+        /// </exception>
         /// <seealso cref="Mine"/>
         public Block(
             long index,
@@ -67,6 +76,7 @@ namespace Libplanet.Blocks
             BlockHash? previousHash,
             DateTimeOffset timestamp,
             IReadOnlyList<Transaction<T>> transactions,
+            HashAlgorithmType hashAlgorithm = null,
             ImmutableArray<byte>? preEvaluationHash = null,
             HashDigest<SHA256>? stateRootHash = null,
             int protocolVersion = CurrentProtocolVersion)
@@ -82,9 +92,34 @@ namespace Libplanet.Blocks
             Transactions = transactions.OrderBy(tx => tx.Id).ToArray();
             TxHash = CalculateTxHashes(Transactions);
 
-            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
-            PreEvaluationHash = preEvaluationHash ??
-                hashAlgorithm.Digest(Header.SerializeForHash()).ToImmutableArray();
+            // FIXME: This constructor needs to be separated into two overloads, which are one
+            // taking only hashAlgorithm and other one taking only preEvaluationHash, so that
+            // the compiler can check whether two parameters are both omitted or both passed
+            // if any chance.
+            if (preEvaluationHash is { } hash)
+            {
+                if (hashAlgorithm is { })
+                {
+                    throw new ArgumentException(
+                        $"The parameters {nameof(hashAlgorithm)} and {nameof(preEvaluationHash)} " +
+                        "are mutually exclusive.",
+                        paramName: nameof(preEvaluationHash)
+                    );
+                }
+
+                PreEvaluationHash = hash;
+            }
+            else if (hashAlgorithm is { } algo)
+            {
+                PreEvaluationHash = algo.Digest(Header.SerializeForHash()).ToImmutableArray();
+            }
+            else
+            {
+                string message = $"Either {nameof(hashAlgorithm)} or {nameof(preEvaluationHash)} " +
+                    "must to be passed.";
+                throw new ArgumentNullException(nameof(preEvaluationHash), message);
+            }
+
             StateRootHash = stateRootHash;
 
             Hash = BlockHash.DeriveFrom(Header.SerializeForHash());
@@ -150,8 +185,9 @@ namespace Libplanet.Blocks
                 block.PreviousHash,
                 block.Timestamp,
                 block.Transactions,
-                block.PreEvaluationHash,
-                stateRootHash,
+                hashAlgorithm: null,
+                preEvaluationHash: block.PreEvaluationHash,
+                stateRootHash: stateRootHash,
                 protocolVersion: block.ProtocolVersion
             )
         {
@@ -385,6 +421,7 @@ namespace Libplanet.Blocks
                 previousHash,
                 timestamp,
                 txs,
+                hashAlgorithm: hashAlgorithm,
                 protocolVersion: protocolVersion);
 
             // Poor man' way to optimize stamp...

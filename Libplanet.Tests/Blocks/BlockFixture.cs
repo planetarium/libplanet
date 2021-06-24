@@ -17,6 +17,7 @@ namespace Libplanet.Tests.Blocks
         {
             HashAlgorithm = HashAlgorithmType.Of<SHA256>();
             Genesis = TestUtils.MineGenesis<PolymorphicAction<BaseAction>>(
+                hashAlgorithm: HashAlgorithm,
                 protocolVersion: ProtocolVersion
             );
             TxFixture = new TxFixture(Genesis.Hash);

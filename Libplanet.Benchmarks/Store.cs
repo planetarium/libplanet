@@ -14,6 +14,7 @@ namespace Libplanet.Benchmarks
 {
     public class Store
     {
+        private readonly HashAlgorithmType HashAlgorithmType = HashAlgorithmType.Of<SHA256>();
         private readonly ImmutableArray<Block<DumbAction>> Blocks = default;
         private readonly int BlocksCount = default;
         private readonly ImmutableArray<Transaction<DumbAction>> Txs = default;
@@ -25,7 +26,7 @@ namespace Libplanet.Benchmarks
         {
             var blocks = new List<Block<DumbAction>>();
             var txs = new List<Transaction<DumbAction>>();
-            Block<DumbAction> genesis = TestUtils.MineGenesis<DumbAction>();
+            Block<DumbAction> genesis = TestUtils.MineGenesis<DumbAction>(HashAlgorithmType);
             blocks.Add(genesis);
             Block<DumbAction> block = genesis;
             var key = new PrivateKey();

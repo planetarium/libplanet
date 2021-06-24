@@ -803,6 +803,8 @@ namespace Libplanet.Blockchain
                 procId
             );
 
+            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
+
             ImmutableArray<Transaction<T>> stagedTransactions = ListStagedTransactions();
             _logger.Debug(
                 "There are {Transactions} staged transactions.",
@@ -824,7 +826,8 @@ namespace Libplanet.Blockchain
                 miner: miner,
                 previousHash: prevHash,
                 timestamp: currentTime,
-                transactions: new Transaction<T>[0]
+                transactions: new Transaction<T>[0],
+                hashAlgorithm: hashAlgorithm
             ).BytesLength;
             int maxBlockBytes = Math.Max(Policy.GetMaxBlockBytes(index), 1);
             var skippedSigners = new HashSet<Address>();
@@ -952,7 +955,6 @@ namespace Libplanet.Blockchain
                 stagedTransactions.Length
             );
 
-            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             Block<T> block;
             try
             {

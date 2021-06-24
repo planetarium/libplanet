@@ -842,6 +842,7 @@ namespace Libplanet.Tests.Net
         {
             var minerAddress = new PrivateKey().ToAddress();
             var policy = new BlockPolicy<DumbAction>();
+            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             var genesisBlock1 = new Block<DumbAction>(
                 0,
                 0,
@@ -850,7 +851,9 @@ namespace Libplanet.Tests.Net
                 minerAddress,
                 null,
                 DateTimeOffset.MinValue,
-                ImmutableArray<Transaction<DumbAction>>.Empty);
+                ImmutableArray<Transaction<DumbAction>>.Empty,
+                hashAlgorithm
+            );
             var genesisBlock2 = new Block<DumbAction>(
                 0,
                 0,
@@ -859,7 +862,9 @@ namespace Libplanet.Tests.Net
                 minerAddress,
                 null,
                 DateTimeOffset.MinValue,
-                ImmutableArray<Transaction<DumbAction>>.Empty);
+                ImmutableArray<Transaction<DumbAction>>.Empty,
+                hashAlgorithm
+            );
 
             BlockChain<DumbAction> MakeBlockChain(Block<DumbAction> genesisBlock) =>
                 TestUtils.MakeBlockChain(

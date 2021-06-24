@@ -86,7 +86,7 @@ namespace Libplanet.Tests.Store
         public void DeleteChainId()
         {
             Block<DumbAction> block1 = TestUtils.MineNext(
-                TestUtils.MineGenesis<DumbAction>(),
+                TestUtils.MineGenesis<DumbAction>(Fx.HashAlgorithm),
                 Fx.HashAlgorithm,
                 new[] { Fx.Transaction1 });
             Fx.Store.AppendIndex(Fx.StoreChainId, block1.Hash);

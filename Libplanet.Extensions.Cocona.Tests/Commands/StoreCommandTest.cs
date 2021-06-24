@@ -47,13 +47,13 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
                 throw new SkipException("RocksDB is not available.");
             }
 
-            _genesisBlock = TestUtils.MineGenesis<Utils.DummyAction>();
+            _hashAlgorithm = HashAlgorithmType.Of<SHA256>();
+            _genesisBlock = TestUtils.MineGenesis<Utils.DummyAction>(_hashAlgorithm);
             _transaction1 = DummyTransaction();
             _transaction2 = DummyTransaction();
             _transaction3 = DummyTransaction();
             _transaction4 = DummyTransaction();
 
-            _hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             _block1 = TestUtils.MineNext(_genesisBlock, _hashAlgorithm, new[] { _transaction1 });
             _block2 = TestUtils.MineNext(_block1, _hashAlgorithm, new[] { _transaction2 });
             _block3 = TestUtils.MineNext(_block2, _hashAlgorithm, new[] { _transaction3 });

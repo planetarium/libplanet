@@ -196,7 +196,7 @@ namespace Libplanet.Tests.Blockchain
             //        Actually, it depends on BlockChain<T> to update states and it makes hard to
             //        calculate state root hash. To resolve this problem,
             //        it should be moved into StateStore.
-            var genesisBlock = TestUtils.MineGenesis<DumbAction>()
+            var genesisBlock = TestUtils.MineGenesis<DumbAction>(_fx.HashAlgorithm)
                 .AttachStateRootHash(_fx.HashAlgorithm, _fx.StateStore, policy.BlockAction);
             var store = new DefaultStore(null);
             var chain = new BlockChain<DumbAction>(

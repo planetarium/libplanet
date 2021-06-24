@@ -38,12 +38,12 @@ namespace Libplanet.Benchmarks
         {
             _policy = new NullPolicy<DumbAction>();
             _stagePolicy = new VolatileStagePolicy<DumbAction>();
+            _hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             _blocks = new List<Block<DumbAction>>
             {
-                TestUtils.MineGenesis<DumbAction>(),
+                TestUtils.MineGenesis<DumbAction>(_hashAlgorithm),
             };
             _appProtocolVersion = AppProtocolVersion.Sign(new PrivateKey(), 1);
-            _hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             _blocks.Add(TestUtils.MineNext(_blocks[0], _hashAlgorithm));
             _blocks.Add(TestUtils.MineNext(_blocks[1], _hashAlgorithm));
             _blocks.Add(TestUtils.MineNext(_blocks[2], _hashAlgorithm));
