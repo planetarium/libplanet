@@ -53,9 +53,8 @@ namespace Libplanet.Net.Transports
         private CancellationTokenSource _runtimeCancellationTokenSource;
         private CancellationTokenSource _turnCancellationTokenSource;
 
-        private int _listenPort;
         private DnsEndPoint? _hostEndPoint;
-        private TcpListener? _listener;
+        private TcpListener _listener;
         private TurnClient? _turnClient;
 
         private bool _disposed;
@@ -80,7 +79,6 @@ namespace Libplanet.Net.Transports
             _appProtocolVersion = appProtocolVersion;
             _trustedAppProtocolVersionSigners = trustedAppProtocolVersionSigners;
             _host = host;
-            _listenPort = listenPort ?? 0;
             _differentAppProtocolVersionEncountered = differentAppProtocolVersionEncountered;
             _iceServers = iceServers?.ToList();
             _minimumBroadcastTarget = minimumBroadcastTarget;
@@ -103,6 +101,7 @@ namespace Libplanet.Net.Transports
             _logger = Log.ForContext<TcpTransport>();
             _runtimeCancellationTokenSource = new CancellationTokenSource();
             _turnCancellationTokenSource = new CancellationTokenSource();
+            _listener = new TcpListener(new IPEndPoint(IPAddress.Any, listenPort ?? 0));
             ProcessMessageHandler = new AsyncDelegate<Message>();
             MessageHistory = new FixedSizedQueue<Message>(MessageHistoryCapacity);
         }
@@ -145,7 +144,7 @@ namespace Libplanet.Net.Transports
         {
             if (!_disposed)
             {
-                _listener?.Stop();
+                _listener.Stop();
                 _runtimeCancellationTokenSource.Cancel();
                 _turnCancellationTokenSource.Cancel();
 
@@ -169,13 +168,10 @@ namespace Libplanet.Net.Transports
                 throw new TransportException("Transport is already running.");
             }
 
-            _listener = new TcpListener(new IPEndPoint(IPAddress.Any, _listenPort));
             _listener.Start(ListenerBacklog);
+            int listenPort = ((IPEndPoint)_listener.LocalEndpoint).Port;
 
-            // _listenPort might be 0, which is any, so it should be re-set.
-            _listenPort = ((IPEndPoint)_listener.LocalEndpoint).Port;
-
-            _logger.Information("Listen on {Port}", _listenPort);
+            _logger.Information("Listen on {Port}", listenPort);
             _runtimeCancellationTokenSource =
                 CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
             _turnCancellationTokenSource =
@@ -184,7 +180,7 @@ namespace Libplanet.Net.Transports
             if (_host is null && !(_iceServers is null))
             {
                 _turnClient = await IceServer.CreateTurnClient(_iceServers);
-                await _turnClient.StartAsync(_listenPort, cancellationToken);
+                await _turnClient.StartAsync(listenPort, cancellationToken);
 
                 _ = RefreshPermissions(_runtimeCancellationTokenSource.Token);
             }
@@ -197,7 +193,7 @@ namespace Libplanet.Net.Transports
                     throw new TransportException("Host is null.");
                 }
 
-                _hostEndPoint = new DnsEndPoint(host, _listenPort);
+                _hostEndPoint = new DnsEndPoint(host, listenPort);
             }
 
             List<Task> tasks = new List<Task>();
@@ -221,7 +217,7 @@ namespace Libplanet.Net.Transports
             if (Running)
             {
                 await Task.Delay(waitFor, cancellationToken);
-                _listener?.Stop();
+                _listener.Stop();
                 _runtimeCancellationTokenSource.Cancel();
                 StopAllStreams();
                 Running = false;
@@ -606,7 +602,7 @@ namespace Libplanet.Net.Transports
 
         private async Task ReceiveMessageAsync(CancellationToken cancellationToken)
         {
-            while (!(cancellationToken.IsCancellationRequested || _listener is null))
+            while (!cancellationToken.IsCancellationRequested)
             {
                 try
                 {
