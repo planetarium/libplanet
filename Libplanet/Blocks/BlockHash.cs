@@ -1,7 +1,9 @@
 #nullable enable
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using Libplanet.Serialization;
@@ -103,6 +105,19 @@ namespace Libplanet.Blocks
         [Pure]
         public static BlockHash FromHashDigest(HashDigest<SHA256> hashDigest)
             => new BlockHash(hashDigest.ByteArray);
+
+        /// <summary>
+        /// Computes a SHA-256 digest from the given <paramref name="blockBytes"/>.
+        /// </summary>
+        /// <param name="blockBytes">The bytes serializing a block to compute its hash.</param>
+        /// <returns>The SHA-256 hash digest derived from <paramref name="blockBytes"/>.</returns>
+        [Pure]
+        public static BlockHash DeriveFrom(IReadOnlyList<byte> blockBytes)
+        {
+            SHA256 sha256 = SHA256.Create();
+            byte[] digest = sha256.ComputeHash(blockBytes is byte[] b ? b : blockBytes.ToArray());
+            return new BlockHash(digest);
+        }
 
         /// <summary>
         /// Gets a bare mutable <see cref="byte"/> array of the block hash.

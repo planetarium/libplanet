@@ -403,7 +403,7 @@ namespace Libplanet.Blocks
                 );
             }
 
-            BlockHash calculatedHash = new BlockHash(hashAlgorithm.Digest(SerializeForHash()));
+            BlockHash calculatedHash = BlockHash.DeriveFrom(SerializeForHash());
             if (!hash.Equals(calculatedHash))
             {
                 throw new InvalidBlockHashException(

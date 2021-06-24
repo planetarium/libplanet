@@ -87,8 +87,7 @@ namespace Libplanet.Blocks
                 hashAlgorithm.Digest(Header.SerializeForHash()).ToImmutableArray();
             StateRootHash = stateRootHash;
 
-            // FIXME: This does not need to be computed every time?
-            Hash = new BlockHash(hashAlgorithm.Digest(Header.SerializeForHash()));
+            Hash = BlockHash.DeriveFrom(Header.SerializeForHash());
 
             // As the order of transactions should be unpredictable until a block is mined,
             // the sorter key should be derived from both a block hash and a txid.
