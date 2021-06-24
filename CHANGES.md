@@ -202,6 +202,7 @@ To be released.
  -  Added `HashDigest<T>.DeriveFrom()` method.  [[#1197]]
  -  Added `HashAlgorithmType` class.  [[#1314], [#1352]]
  -  Added `HashAlgorithmGetter` delegate.  [[#1314], [#1352]]
+ -  Added `HashAlgorithmTable` static class.  [[#1314], [#1352]]
  -  Added `BlockChain<T>.GetTxExecution()` method.  [[#1156], [#1289]]
  -  Added `StunMessage.ParseAsync(Stream, CancellationToken)` method.
     [[#1228]]
