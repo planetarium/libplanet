@@ -63,7 +63,7 @@ namespace Libplanet.Extensions.Cocona.Commands
             (store as IDisposable)?.Dispose();
         }
 
-        [Command(Description = "Query a block by transaction id.")]
+        [Command(Description = "Query a list of blocks by transaction id.")]
         public void BlocksByTxId(
             [Argument("STORE", Description = StoreArgumentDescription)]
             string home,
