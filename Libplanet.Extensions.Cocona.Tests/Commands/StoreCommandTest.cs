@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Immutable;
 using System.IO;
-using Bencodex.Misc;
 using Cocona;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
