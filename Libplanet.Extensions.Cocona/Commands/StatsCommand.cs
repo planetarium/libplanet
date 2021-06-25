@@ -74,7 +74,7 @@ namespace Libplanet.Extensions.Cocona.Commands
 
             if (header)
             {
-                Console.WriteLine("index,hash,miner,txCount,timestamp,perceivedTime");
+                Console.WriteLine("index,hash,difficulty,miner,txCount,timestamp,perceivedTime");
             }
 
             foreach (var hash in hashes)
@@ -85,6 +85,7 @@ namespace Libplanet.Extensions.Cocona.Commands
                 Console.WriteLine(
                     $"{block.Index}," +
                     $"{block.Hash}," +
+                    $"{block.Difficulty}," +
                     $"{block.Miner}," +
                     $"{block.Transactions.Count}," +
                     $"{block.Timestamp.ToUnixTimeMilliseconds()}," +
