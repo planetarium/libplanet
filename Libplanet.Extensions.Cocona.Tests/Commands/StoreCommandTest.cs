@@ -119,7 +119,7 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
             foreach (var fx in _storeFixtures)
             {
                 Assert.Throws<CommandExitedException>(() =>
-                    new StoreCommand().BlockByTxId(
+                    new StoreCommand().BlocksByTxId(
                         fx.Scheme + fx.Path,
                         _transaction4.Id.ToString()
                     ));
@@ -139,11 +139,20 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
 
             foreach (var fx in _storeFixtures)
             {
-                Assert.Throws<CommandExitedException>(() =>
-                    new StoreCommand().BlockByTxId(
-                        fx.Scheme + fx.Path,
-                        _transaction3.Id.ToString()
-                    ));
+                using var sw = new StringWriter();
+                Console.SetOut(sw);
+                new StoreCommand().BlocksByTxId(
+                    fx.Scheme + fx.Path,
+                    _transaction3.Id.ToString()
+                );
+                var actual = sw.ToString();
+                var expected = Utils.SerializeHumanReadable(new[] { _block3, _block4 });
+                if (expected.TrimEnd() != actual.TrimEnd())
+                {
+                    expected = Utils.SerializeHumanReadable(new[] { _block4, _block3 });
+                }
+
+                Assert.Equal(expected.TrimEnd(), actual.TrimEnd());
             }
         }
 
@@ -197,12 +206,12 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
                 {
                     using var sw = new StringWriter();
                     Console.SetOut(sw);
-                    new StoreCommand().BlockByTxId(
+                    new StoreCommand().BlocksByTxId(
                         fx.Scheme + fx.Path,
                         tx.Id.ToString()
                     );
                     var actual = sw.ToString();
-                    var expected = Utils.SerializeHumanReadable(block);
+                    var expected = Utils.SerializeHumanReadable(new[] { block });
                     Assert.Equal(expected.TrimEnd(), actual.TrimEnd());
                 }
 
