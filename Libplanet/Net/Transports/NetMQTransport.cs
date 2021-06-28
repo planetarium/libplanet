@@ -533,73 +533,71 @@ namespace Libplanet.Net.Transports
 
         private void ReceiveMessage(object sender, NetMQSocketEventArgs e)
         {
-            NetMQMessage raw = new NetMQMessage();
-            while (e.Socket.TryReceiveMultipartMessage(ref raw))
+            try
             {
+                NetMQMessage raw = e.Socket.ReceiveMultipartMessage();
+                _logger.Verbose(
+                    "A raw message [frame count: {0}] has received.",
+                    raw.FrameCount
+                );
+
+                if (_cancellationToken.IsCancellationRequested)
+                {
+                    return;
+                }
+
+                Message message = Message.Parse(
+                    raw,
+                    false,
+                    _appProtocolVersion,
+                    _trustedAppProtocolVersionSigners,
+                    _differentAppProtocolVersionEncountered,
+                    _messageLifespan);
+                _logger.Debug("A message has parsed: {0}, from {1}", message, message.Remote);
+
+                MessageHistory.Enqueue(message);
+                LastMessageTimestamp = DateTimeOffset.UtcNow;
+
                 try
                 {
-                    if (_cancellationToken.IsCancellationRequested)
-                    {
-                        return;
-                    }
-
-                    _logger.Verbose(
-                        "A raw message [frame count: {0}] has received.",
-                        raw.FrameCount
-                    );
-                    Message message = Message.Parse(
-                        raw,
-                        false,
-                        _appProtocolVersion,
-                        _trustedAppProtocolVersionSigners,
-                        _differentAppProtocolVersionEncountered,
-                        _messageLifespan);
-                    _logger.Debug("A message has parsed: {0}, from {1}", message, message.Remote);
-
-                    MessageHistory.Enqueue(message);
-                    LastMessageTimestamp = DateTimeOffset.UtcNow;
-
-                    try
-                    {
-                        ProcessMessageHandler?.Invoke(this, message);
-                    }
-                    catch (Exception exc)
-                    {
-                        _logger.Error(
-                            exc,
-                            "Something went wrong during message parsing: {0}",
-                            exc);
-                        throw;
-                    }
+                    ProcessMessageHandler?.Invoke(this, message);
                 }
-                catch (DifferentAppProtocolVersionException dapve)
+                catch (Exception exc)
                 {
-                    var differentVersion = new DifferentVersion()
-                    {
-                        Identity = dapve.Identity,
-                    };
-                    ReplyMessage(differentVersion);
-                    _logger.Debug("Message from peer with different version received.");
-                }
-                catch (InvalidTimestampException ite)
-                {
-                    const string logMsg = "The received message is stale. " +
-                              "(timestamp: {Timestamp}, lifespan: {Lifespan}, current: {Current})";
-                    _logger.Debug(logMsg, ite.CreatedOffset, ite.Lifespan, ite.CurrentOffset);
-                }
-                catch (InvalidMessageException ex)
-                {
-                    _logger.Error(ex, $"Could not parse NetMQMessage properly; ignore: {{0}}", ex);
-                }
-                catch (Exception ex)
-                {
-                    const string mname = nameof(ReceiveMessage);
                     _logger.Error(
-                        ex,
-                        $"An unexpected exception occurred during {mname}(): {{0}}",
-                        ex
-                    );
+                        exc,
+                        "Something went wrong during message parsing: {0}",
+                        exc);
+                    throw;
                 }
+            }
+            catch (DifferentAppProtocolVersionException dapve)
+            {
+                var differentVersion = new DifferentVersion()
+                {
+                    Identity = dapve.Identity,
+                };
+                ReplyMessage(differentVersion);
+                _logger.Debug("Message from peer with different version received.");
+            }
+            catch (InvalidTimestampException ite)
+            {
+                const string logMsg = "The received message is stale. " +
+                            "(timestamp: {Timestamp}, lifespan: {Lifespan}, current: {Current})";
+                _logger.Debug(logMsg, ite.CreatedOffset, ite.Lifespan, ite.CurrentOffset);
+            }
+            catch (InvalidMessageException ex)
+            {
+                _logger.Error(ex, $"Could not parse NetMQMessage properly; ignore: {{0}}", ex);
+            }
+            catch (Exception ex)
+            {
+                const string mname = nameof(ReceiveMessage);
+                _logger.Error(
+                    ex,
+                    $"An unexpected exception occurred during {mname}(): {{0}}",
+                    ex
+                );
             }
         }
 
@@ -663,6 +661,8 @@ namespace Libplanet.Net.Transports
         {
             NetMQMessage msg = e.Queue.Dequeue();
             string identityHex = ByteUtil.Hex(msg[0].Buffer);
+
+            _logger.Debug("Dequeued message. ({identity})", identityHex);
 
             // FIXME The current timeout value(1 sec) is arbitrary.
             // We should make this configurable or fix it to an unneeded structure.
