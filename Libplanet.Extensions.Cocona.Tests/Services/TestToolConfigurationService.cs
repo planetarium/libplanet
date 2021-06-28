@@ -5,12 +5,12 @@ namespace Libplanet.Tools.Tests.Services
 {
     public class TestToolConfigurationService : IConfigurationService<ToolConfiguration>
     {
-        private ToolConfiguration Configuration { get; set; }
-
         public TestToolConfigurationService(ToolConfiguration configuration)
         {
             Configuration = configuration;
         }
+
+        private ToolConfiguration Configuration { get; set; }
 
         public ToolConfiguration Load()
         {
