@@ -162,8 +162,7 @@ namespace Libplanet.Extensions.Cocona.Commands
         {
             foreach (var blockHash in store.IterateTxIdBlockHashIndex(txId))
             {
-                var block = GetBlock<T>(store, blockHash);
-                yield return block;
+                yield return GetBlock<T>(store, blockHash);
             }
         }
 
@@ -186,7 +185,7 @@ namespace Libplanet.Extensions.Cocona.Commands
             }
 
             var index = offset;
-            foreach (var blockHash in store.IterateIndexes(chainId, offset, limit))
+            foreach (BlockHash blockHash in store.IterateIndexes(chainId, offset, limit))
             {
                 yield return index++;
                 if (!(store.GetBlockDigest(blockHash) is { } blockDigest))
@@ -195,8 +194,7 @@ namespace Libplanet.Extensions.Cocona.Commands
                         $"Block is missing for BlockHash: {blockHash} index: {index}.");
                 }
 
-                foreach (var txId in blockDigest.TxIds.Select(bytes => new TxId(bytes.ToArray()))
-                    .ToImmutableArray())
+                foreach (TxId txId in blockDigest.TxIds.Select(bytes => new TxId(bytes.ToArray())))
                 {
                     store.PutTxIdBlockHashIndex(txId, blockHash);
                 }
