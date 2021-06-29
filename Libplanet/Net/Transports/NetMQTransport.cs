@@ -662,7 +662,7 @@ namespace Libplanet.Net.Transports
             NetMQMessage msg = e.Queue.Dequeue();
             string identityHex = ByteUtil.Hex(msg[0].Buffer);
 
-            _logger.Debug("Dequeued message. ({identity})", identityHex);
+            _logger.Verbose("Dequeued message. ({identity})", identityHex);
 
             // FIXME The current timeout value(1 sec) is arbitrary.
             // We should make this configurable or fix it to an unneeded structure.
