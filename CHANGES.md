@@ -144,6 +144,25 @@ To be released.
      -  `Swarm<T>.PeerStates`
  -  Return type of `RoutingTable.Neighbors()` became `IReadOnlyList<BoundPeer>`
     (was `IEnumerable<BoundPeer>`).  [[#1230], [#1271]]
+ -  All methods pertaining to evaluating `IAction`s are moved
+    to a new `ActionEvaluator` class.  [[#1301], [#1305]]
+     -  Removed `Block<T>.Evaluate()` method.
+        Use `ActionEvaluator.Evaluate()` method instead.
+     -  Removed `Block<T>.EvaluateActionsPerTx()` method.
+     -  Removed `Transaction<T>.EvaluateActionsGradually()` method.
+     -  Removed `Transaction<T>.EvaluateActions()` method.
+ -  Parameters `action`, `inputContext`, and `outputStates` for
+    `ActionEvaluation()` constructor can no longer be `null`.  [[#1305]]
+ -  Added `IStore.PutTxIdBlockHashIndex(TxId, BlockHash)` method.
+    [[#1294], [#1328]]
+ -  Added `IStore.GetFirstTxIdBlockHashIndex(TxId)` method.
+    [[#1294], [#1328]]
+ -  Added `IStore.DeleteTxIdBlockHashIndex(TxId, BlockHash)` method.
+    [[#1294], [#1328]]
+ -  Added `IStore.IterateTxIdBlockHashIndex(TxId)` method.
+    [[#1294], [#1328]]
+ -  `Swarm<T>.StartAsync()` method became to receive `broadcastBlockInterval`
+    (or `millisecondsBroadcastBlockInterval`) parameter.  [[#1351]]
 
 ### Backward-incompatible network protocol changes
 
@@ -275,6 +294,12 @@ To be released.
 [#1325]: https://github.com/planetarium/libplanet/pull/1325
 [#1339]: https://github.com/planetarium/libplanet/issues/1339
 [#1342]: https://github.com/planetarium/libplanet/pull/1342
+<<<<<<< HEAD
+=======
+[#1343]: https://github.com/planetarium/libplanet/pull/1343
+[#1348]: https://github.com/planetarium/libplanet/pull/1348
+[#1351]: https://github.com/planetarium/libplanet/pull/1351
+>>>>>>> 301f6160... Merge pull request #1351 from longfin/feature/block-broadcaster
 
 
 Version 0.11.1
