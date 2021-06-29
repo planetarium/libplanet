@@ -74,26 +74,26 @@
   <h1 id="Libplanet_HashDigest_1" data-uid="Libplanet.HashDigest`1" class="text-break">Struct HashDigest&lt;T&gt;
   </h1>
   <div class="markdown level0 summary"><p>A value type to represent digest bytes determined by a
-<span class="xref">System.Security.Cryptography.HashAlgorithm</span>.  For more type safety, it takes
+<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.hashalgorithm">HashAlgorithm</a>.  For more type safety, it takes
 a type parameter <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> of
-<span class="xref">System.Security.Cryptography.HashAlgorithm</span>.</p>
+<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.hashalgorithm">HashAlgorithm</a>.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div classs="implements">
     <h5>Implements</h5>
-    <div><span class="xref">System.Runtime.Serialization.ISerializable</span></div>
-    <div><span class="xref">System.IEquatable</span>&lt;<a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;T&gt;&gt;</div>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.runtime.serialization.iserializable">ISerializable</a></div>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;T&gt;&gt;</div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
     </div>
     <div>
-      <span class="xref">System.Object.GetType()</span>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
     </div>
     <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.html">Libplanet</a></h6>
@@ -114,7 +114,7 @@ public struct HashDigest&lt;T&gt; : ISerializable, IEquatable&lt;HashDigest&lt;T
     <tbody>
       <tr>
         <td><span class="parametername">T</span></td>
-        <td><p>A <span class="xref">System.Security.Cryptography.HashAlgorithm</span> which corresponds to
+        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.hashalgorithm">HashAlgorithm</a> which corresponds to
 a digest.  This determines <a class="xref" href="Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_Size">Size</a> of a digest.</p>
 </td>
       </tr>
@@ -131,7 +131,7 @@ a digest.  This determines <a class="xref" href="Libplanet.HashDigest-1.html#Lib
   </span>
   <a id="Libplanet_HashDigest_1__ctor_" data-uid="Libplanet.HashDigest`1.#ctor*"></a>
   <h4 id="Libplanet_HashDigest_1__ctor_ImmutableArray_System_Byte__" data-uid="Libplanet.HashDigest`1.#ctor(ImmutableArray{System.Byte})">HashDigest(ImmutableArray&lt;Byte&gt;)</h4>
-  <div class="markdown level1 summary"><p>Converts an immutable <span class="xref">System.Byte</span> array into a <a class="xref" href="Libplanet.HashDigest-1.html">HashDigest&lt;T&gt;</a>.</p>
+  <div class="markdown level1 summary"><p>Converts an immutable <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array into a <a class="xref" href="Libplanet.HashDigest-1.html">HashDigest&lt;T&gt;</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -149,11 +149,11 @@ a digest.  This determines <a class="xref" href="Libplanet.HashDigest-1.html#Lib
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">ImmutableArray</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="xref">ImmutableArray</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
         <td><span class="parametername">hashDigest</span></td>
-        <td><p>An immutable <span class="xref">System.Byte</span> array that encodes
+        <td><p>An immutable <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array that encodes
 a <a class="xref" href="Libplanet.HashDigest-1.html">HashDigest&lt;T&gt;</a>.  It must not be <code>null</code>, and its
-<span class="xref">System.Array.Length</span> must be the same to <a class="xref" href="Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_Size">Size</a>.</p>
+<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.array.length#System_Array_Length">Length</a> must be the same to <a class="xref" href="Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_Size">Size</a>.</p>
 </td>
       </tr>
     </tbody>
@@ -168,7 +168,7 @@ a <a class="xref" href="Libplanet.HashDigest-1.html">HashDigest&lt;T&gt;</a>.  I
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
         <td><p>Thrown when the given
 <code data-dev-comment-type="paramref" class="paramref">hashDigest</code>'s <see cref="!:ImmutableArray&lt;T>.Length"></see> is not
 the same to the <a class="xref" href="Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_Size">Size</a> the hash algorithm
@@ -186,7 +186,7 @@ the same to the <a class="xref" href="Libplanet.HashDigest-1.html#Libplanet_Hash
   </span>
   <a id="Libplanet_HashDigest_1__ctor_" data-uid="Libplanet.HashDigest`1.#ctor*"></a>
   <h4 id="Libplanet_HashDigest_1__ctor_System_Byte___" data-uid="Libplanet.HashDigest`1.#ctor(System.Byte[])">HashDigest(Byte[])</h4>
-  <div class="markdown level1 summary"><p>Converts a <span class="xref">System.Byte</span> array into a
+  <div class="markdown level1 summary"><p>Converts a <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array into a
 <a class="xref" href="Libplanet.HashDigest-1.html">HashDigest&lt;T&gt;</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -205,11 +205,11 @@ the same to the <a class="xref" href="Libplanet.HashDigest-1.html#Libplanet_Hash
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Byte</span>[]</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
         <td><span class="parametername">hashDigest</span></td>
-        <td><p>A <span class="xref">System.Byte</span> array that encodes
+        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array that encodes
 a <a class="xref" href="Libplanet.HashDigest-1.html">HashDigest&lt;T&gt;</a>.  It must not be <code>null</code>,
-and its <span class="xref">System.Array.Length</span> must be the same to
+and its <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.array.length#System_Array_Length">Length</a> must be the same to
 <a class="xref" href="Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_Size">Size</a>.</p>
 </td>
       </tr>
@@ -225,15 +225,15 @@ and its <span class="xref">System.Array.Length</span> must be the same to
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
         <td><p>Thrown when the given
 <code data-dev-comment-type="paramref" class="paramref">hashDigest</code> is <code>null</code>.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
         <td><p>Thrown when the given
-<code data-dev-comment-type="paramref" class="paramref">hashDigest</code>'s <span class="xref">System.Array.Length</span> is not
+<code data-dev-comment-type="paramref" class="paramref">hashDigest</code>'s <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.array.length#System_Array_Length">Length</a> is not
 the same to the <a class="xref" href="Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_Size">Size</a> the hash algorithm
 (i.e., <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> requires.</p>
 </td>
@@ -250,11 +250,11 @@ the same to the <a class="xref" href="Libplanet.HashDigest-1.html#Libplanet_Hash
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/HashDigest.cs/#L36">View Source</a>
   </span>
   <h4 id="Libplanet_HashDigest_1_Size" data-uid="Libplanet.HashDigest`1.Size">Size</h4>
-  <div class="markdown level1 summary"><p>The fixed, and valid <span class="xref">System.Array.Length</span> of
-a <span class="xref">System.Byte</span> array of every digest.</p>
-<p>This varies depending upon what <span class="xref">System.Security.Cryptography.HashAlgorithm</span> is
-used for <code data-dev-comment-type="typeparamref" class="typeparamref">T</code>.  For example, if <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> is <span class="xref">System.Security.Cryptography.SHA1</span> <a class="xref" href="Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_Size">Size</a> is <code>20</code>,
-and if <span class="xref">System.Security.Cryptography.SHA256</span> it is <code>32</code>.</p>
+  <div class="markdown level1 summary"><p>The fixed, and valid <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.array.length#System_Array_Length">Length</a> of
+a <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array of every digest.</p>
+<p>This varies depending upon what <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.hashalgorithm">HashAlgorithm</a> is
+used for <code data-dev-comment-type="typeparamref" class="typeparamref">T</code>.  For example, if <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> is <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.sha1">SHA1</a> <a class="xref" href="Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_Size">Size</a> is <code>20</code>,
+and if <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a> it is <code>32</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -271,7 +271,7 @@ and if <span class="xref">System.Security.Cryptography.SHA256</span> it is <code
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Int32</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -287,7 +287,7 @@ and if <span class="xref">System.Security.Cryptography.SHA256</span> it is <code
   </span>
   <a id="Libplanet_HashDigest_1_ByteArray_" data-uid="Libplanet.HashDigest`1.ByteArray*"></a>
   <h4 id="Libplanet_HashDigest_1_ByteArray" data-uid="Libplanet.HashDigest`1.ByteArray">ByteArray</h4>
-  <div class="markdown level1 summary"><p>A bare immutable <span class="xref">System.Byte</span> array of the digest.</p>
+  <div class="markdown level1 summary"><p>A bare immutable <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array of the digest.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -304,7 +304,7 @@ and if <span class="xref">System.Security.Cryptography.SHA256</span> it is <code
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">ImmutableArray</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="xref">ImmutableArray</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -348,7 +348,7 @@ public static HashDigest&lt;T&gt; DeriveFrom(byte[] input)</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Byte</span>[]</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
         <td><span class="parametername">input</span></td>
         <td><p>The bytes to compute its hash.</p>
 </td>
@@ -398,7 +398,7 @@ public override bool Equals(object obj)</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Object</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
         <td><span class="parametername">obj</span></td>
         <td></td>
       </tr>
@@ -414,13 +414,13 @@ public override bool Equals(object obj)</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Boolean</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">System.ValueType.Equals(System.Object)</span></div>
+  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.valuetype.equals#System_ValueType_Equals_System_Object_">ValueType.Equals(Object)</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_HashDigest_1_FromString_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.HashDigest%601.FromString(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -452,7 +452,7 @@ public static HashDigest&lt;T&gt; FromString(string hexDigest)</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">hexDigest</span></td>
         <td><p>A hexadecimal representation of
 a <a class="xref" href="Libplanet.HashDigest-1.html">HashDigest&lt;T&gt;</a>.</p>
@@ -486,13 +486,13 @@ a <a class="xref" href="Libplanet.HashDigest-1.html">HashDigest&lt;T&gt;</a>.</p
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
         <td><p>Thrown when the given
 <code data-dev-comment-type="paramref" class="paramref">hexDigest</code> is <code>null</code>.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
         <td><p>Thrown when the given
 <code data-dev-comment-type="paramref" class="paramref">hexDigest</code>'s length is not the double of
 the <a class="xref" href="Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_Size">Size</a>, the hash algorithm
@@ -532,13 +532,13 @@ public override int GetHashCode()</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Int32</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">System.ValueType.GetHashCode()</span></div>
+  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.valuetype.gethashcode#System_ValueType_GetHashCode">ValueType.GetHashCode()</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_HashDigest_1_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.HashDigest%601.GetObjectData(System.Runtime.Serialization.SerializationInfo%2CSystem.Runtime.Serialization.StreamingContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -565,12 +565,12 @@ public override int GetHashCode()</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Runtime.Serialization.SerializationInfo</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.runtime.serialization.serializationinfo">SerializationInfo</a></td>
         <td><span class="parametername">info</span></td>
         <td></td>
       </tr>
       <tr>
-        <td><span class="xref">System.Runtime.Serialization.StreamingContext</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.runtime.serialization.streamingcontext">StreamingContext</a></td>
         <td><span class="parametername">context</span></td>
         <td></td>
       </tr>
@@ -585,7 +585,7 @@ public override int GetHashCode()</code></pre>
   </span>
   <a id="Libplanet_HashDigest_1_ToByteArray_" data-uid="Libplanet.HashDigest`1.ToByteArray*"></a>
   <h4 id="Libplanet_HashDigest_1_ToByteArray" data-uid="Libplanet.HashDigest`1.ToByteArray">ToByteArray()</h4>
-  <div class="markdown level1 summary"><p>Gets a bare mutable <span class="xref">System.Byte</span> array of the digest.</p>
+  <div class="markdown level1 summary"><p>Gets a bare mutable <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array of the digest.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -603,8 +603,8 @@ public byte[] ToByteArray()</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Byte</span>[]</td>
-        <td><p>A new mutable <span class="xref">System.Byte</span> array of the digest.
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
+        <td><p>A new mutable <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array of the digest.
 Since a returned array is created every time the method is called,
 any mutations on that array does not affect to the digest object.</p>
 </td>
@@ -644,14 +644,14 @@ public override string ToString()</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><p>A hexadecimal representation of a digest.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">System.ValueType.ToString()</span></div>
+  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.valuetype.tostring#System_ValueType_ToString">ValueType.ToString()</a></div>
   <h5 id="Libplanet_HashDigest_1_ToString_seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_FromString_System_String_">FromString(String)</a></div>
@@ -701,21 +701,21 @@ bool IEquatable&lt;HashDigest&lt;T&gt;&gt;.Equals(HashDigest&lt;T&gt; other)</co
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Boolean</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h3 id="implements">Implements</h3>
   <div>
-      <span class="xref">System.Runtime.Serialization.ISerializable</span>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.runtime.serialization.iserializable">System.Runtime.Serialization.ISerializable</a>
   </div>
   <div>
-      <span class="xref">System.IEquatable&lt;T&gt;</span>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.iequatable-1">System.IEquatable&lt;T&gt;</a>
   </div>
   <h3 id="seealso">See Also</h3>
   <div class="seealso">
-      <div><span class="xref">System.Security.Cryptography.HashAlgorithm</span></div>
+      <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.hashalgorithm">HashAlgorithm</a></div>
   </div>
 </article>
           </div>
