@@ -1245,6 +1245,11 @@ namespace Libplanet.Blockchain
 
                     Store.AppendIndex(Id, block.Hash);
 
+                    foreach (var tx in block.Transactions)
+                    {
+                        Store.PutTxIdBlockHashIndex(tx.Id, block.Hash);
+                    }
+
                     const string unstageStartMsg =
                         "Unstaging {Txs} transaction(s) which belong to the block " +
                         "#{BlockIndex} {BlockHash}...";
