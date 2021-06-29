@@ -310,10 +310,10 @@ namespace Libplanet.Net
         /// the dial-up is cancelled after this timeout, and it tries another peer.
         /// If <c>null</c> is given it never gives up dial-ups.
         /// </param>
-        /// <param name="broadcastBlockInterval">The time period of broadcasting chain tip.
-        /// </param>
-        /// <param name="broadcastTxInterval">The time period of exchange of staged transactions.
-        /// </param>
+        /// <param name="broadcastBlockInterval">Time interval between each broadcast of
+        /// chain tip.</param>
+        /// <param name="broadcastTxInterval">Time interval between each broadcast of staged
+        /// transactions.</param>
         /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
         /// operation should be canceled.
