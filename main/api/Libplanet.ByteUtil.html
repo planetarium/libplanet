@@ -73,36 +73,36 @@
   
   <h1 id="Libplanet_ByteUtil" data-uid="Libplanet.ByteUtil" class="text-break">Class ByteUtil
   </h1>
-  <div class="markdown level0 summary"><p>Utility methods to deal with <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> arrays.</p>
+  <div class="markdown level0 summary"><p>Utility methods to deal with <span class="xref">System.Byte</span> arrays.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
-    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">ByteUtil</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+      <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+      <span class="xref">System.Object.GetHashCode()</span>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+      <span class="xref">System.Object.GetType()</span>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+      <span class="xref">System.Object.MemberwiseClone()</span>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
+      <span class="xref">System.Object.ToString()</span>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.html">Libplanet</a></h6>
@@ -124,7 +124,7 @@
   <h4 id="Libplanet_ByteUtil_CalculateHashCode_System_Byte___" data-uid="Libplanet.ByteUtil.CalculateHashCode(System.Byte[])">CalculateHashCode(Byte[])</h4>
   <div class="markdown level1 summary"><p>Calculates a deterministic hash code from a given
 <code data-dev-comment-type="paramref" class="paramref">bytes</code>.  It is mostly used to implement
-<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">GetHashCode()</a> method.</p>
+<span class="xref">System.Object.GetHashCode()</span> method.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -143,9 +143,9 @@ public static int CalculateHashCode(byte[] bytes)</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
+        <td><span class="xref">System.Byte</span>[]</td>
         <td><span class="parametername">bytes</span></td>
-        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array, which completely
+        <td><p>A <span class="xref">System.Byte</span> array, which completely
 determines (or encodes) an object, to calculate a hash code.</p>
 </td>
       </tr>
@@ -161,7 +161,7 @@ determines (or encodes) an object, to calculate a hash code.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="xref">System.Int32</span></td>
         <td><p>A hash code determined from the given
 <code data-dev-comment-type="paramref" class="paramref">bytes</code>.  For equivalent <code data-dev-comment-type="paramref" class="paramref">bytes</code>,
 the same hash code is returned.  It must not be <code>null</code>.</p>
@@ -179,7 +179,7 @@ the same hash code is returned.  It must not be <code>null</code>.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><span class="xref">System.ArgumentNullException</span></td>
         <td><p>Thrown when the given
 <code data-dev-comment-type="paramref" class="paramref">bytes</code> is <code>null</code>.</p>
 </td>
@@ -195,7 +195,7 @@ the same hash code is returned.  It must not be <code>null</code>.</p>
   </span>
   <a id="Libplanet_ByteUtil_Hex_" data-uid="Libplanet.ByteUtil.Hex*"></a>
   <h4 id="Libplanet_ByteUtil_Hex_ImmutableArray_System_Byte___" data-uid="Libplanet.ByteUtil.Hex(ImmutableArray{System.Byte}@)">Hex(ImmutableArray&lt;Byte&gt;)</h4>
-  <div class="markdown level1 summary"><p>Renders a hexadecimal string from a <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array.</p>
+  <div class="markdown level1 summary"><p>Renders a hexadecimal string from a <span class="xref">System.Byte</span> array.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -214,9 +214,9 @@ public static string Hex(in ImmutableArray&lt;byte&gt; bytes)</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">ImmutableArray</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
+        <td><span class="xref">ImmutableArray</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
         <td><span class="parametername">bytes</span></td>
-        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array to renders
+        <td><p>A <span class="xref">System.Byte</span> array to renders
 the corresponding hexadecimal string.  It must not be <code>null</code>.</p>
 </td>
       </tr>
@@ -232,7 +232,7 @@ the corresponding hexadecimal string.  It must not be <code>null</code>.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="xref">System.String</span></td>
         <td><p>A hexadecimal string which encodes the given
 <code data-dev-comment-type="paramref" class="paramref">bytes</code>.</p>
 </td>
@@ -249,7 +249,7 @@ the corresponding hexadecimal string.  It must not be <code>null</code>.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><span class="xref">System.ArgumentNullException</span></td>
         <td><p>Thrown when the given
 <code data-dev-comment-type="paramref" class="paramref">bytes</code> is <code>null</code>.</p>
 </td>
@@ -265,7 +265,7 @@ the corresponding hexadecimal string.  It must not be <code>null</code>.</p>
   </span>
   <a id="Libplanet_ByteUtil_Hex_" data-uid="Libplanet.ByteUtil.Hex*"></a>
   <h4 id="Libplanet_ByteUtil_Hex_System_Byte___" data-uid="Libplanet.ByteUtil.Hex(System.Byte[])">Hex(Byte[])</h4>
-  <div class="markdown level1 summary"><p>Renders a hexadecimal string from a <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array.</p>
+  <div class="markdown level1 summary"><p>Renders a hexadecimal string from a <span class="xref">System.Byte</span> array.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -284,9 +284,9 @@ public static string Hex(byte[] bytes)</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
+        <td><span class="xref">System.Byte</span>[]</td>
         <td><span class="parametername">bytes</span></td>
-        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array to renders
+        <td><p>A <span class="xref">System.Byte</span> array to renders
 the corresponding hexadecimal string.  It must not be <code>null</code>.</p>
 </td>
       </tr>
@@ -302,7 +302,7 @@ the corresponding hexadecimal string.  It must not be <code>null</code>.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="xref">System.String</span></td>
         <td><p>A hexadecimal string which encodes the given
 <code data-dev-comment-type="paramref" class="paramref">bytes</code>.</p>
 </td>
@@ -319,7 +319,7 @@ the corresponding hexadecimal string.  It must not be <code>null</code>.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><span class="xref">System.ArgumentNullException</span></td>
         <td><p>Thrown when the given
 <code data-dev-comment-type="paramref" class="paramref">bytes</code> is <code>null</code>.</p>
 </td>
@@ -335,7 +335,7 @@ the corresponding hexadecimal string.  It must not be <code>null</code>.</p>
   </span>
   <a id="Libplanet_ByteUtil_ParseHex_" data-uid="Libplanet.ByteUtil.ParseHex*"></a>
   <h4 id="Libplanet_ByteUtil_ParseHex_System_String_" data-uid="Libplanet.ByteUtil.ParseHex(System.String)">ParseHex(String)</h4>
-  <div class="markdown level1 summary"><p>Converts a hexadecimal string to a <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array.</p>
+  <div class="markdown level1 summary"><p>Converts a hexadecimal string to a <span class="xref">System.Byte</span> array.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -354,10 +354,10 @@ public static byte[] ParseHex(string hex)</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="xref">System.String</span></td>
         <td><span class="parametername">hex</span></td>
-        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> which encodes
-<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>s in hexadecimal.  Its length must be zero or
+        <td><p>A <span class="xref">System.String</span> which encodes
+<span class="xref">System.Byte</span>s in hexadecimal.  Its length must be zero or
 an even number.  It must not be <code>null</code>.</p>
 </td>
       </tr>
@@ -373,8 +373,8 @@ an even number.  It must not be <code>null</code>.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
-        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array that the given
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><p>A <span class="xref">System.Byte</span> array that the given
 <code data-dev-comment-type="paramref" class="paramref">hex</code> string represented in hexadecimal.
 It lengthens the half of the given <code data-dev-comment-type="paramref" class="paramref">hex</code> string.</p>
 </td>
@@ -391,19 +391,19 @@ It lengthens the half of the given <code data-dev-comment-type="paramref" class=
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><span class="xref">System.ArgumentNullException</span></td>
         <td><p>Thrown when the given
 <code data-dev-comment-type="paramref" class="paramref">hex</code> string is <code>null</code>.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
+        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
         <td><p>Thrown when the length
 of the given <code data-dev-comment-type="paramref" class="paramref">hex</code> string is an odd number.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.formatexception">FormatException</a></td>
+        <td><span class="xref">System.FormatException</span></td>
         <td><p>Thrown when the given
 <code data-dev-comment-type="paramref" class="paramref">hex</code> string is not a valid hexadecimal string.</p>
 </td>

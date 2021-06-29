@@ -79,7 +79,7 @@ maintaining the set of <a class="xref" href="Libplanet.Action.IAccountStateDelta
 that every possible <a class="xref" href="Libplanet.Address.html">Address</a> exists and
 is mapped to <code>null</code>.  That means that:</p>
 <ul><li>it does not have length,</li><li>its index getter never throws
-<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.keynotfoundexception">KeyNotFoundException</a>,
+<span class="xref">System.Collections.Generic.KeyNotFoundException</span>,
 but returns <code>null</code> instead, and</li><li>filling an <a class="xref" href="Libplanet.Address.html">Address</a> with
 <code>null</code> state cannot be distinguished from
 the <a class="xref" href="Libplanet.Address.html">Address</a> having never been set to
@@ -270,7 +270,7 @@ IAccountStateDelta BurnAsset(Address owner, FungibleAssetValue value)</code></pr
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
+        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
         <td><p>Thrown when the <code data-dev-comment-type="paramref" class="paramref">value</code>
 is less than or equal to zero.</p>
 </td>
@@ -392,7 +392,7 @@ the account to get its state.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">IValue</span>&gt;</td>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">IValue</span>&gt;</td>
         <td><p>The account state of the given <code data-dev-comment-type="paramref" class="paramref">address</code>.
 If it has never been set to any state it returns <code>null</code>
 instead.</p>
@@ -468,7 +468,7 @@ IAccountStateDelta MintAsset(Address recipient, FungibleAssetValue value)</code>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
+        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
         <td><p>Thrown when the <code data-dev-comment-type="paramref" class="paramref">value</code>
 is less than or equal to 0.</p>
 </td>
@@ -597,7 +597,7 @@ the <code data-dev-comment-type="paramref" class="paramref">sender</code>.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="xref">System.Boolean</span></td>
         <td><span class="parametername">allowNegativeBalance</span></td>
         <td><p>Turn on to allow <code data-dev-comment-type="paramref" class="paramref">sender</code>'s balance
 less than zero.  Turned off by default.</p>
@@ -632,7 +632,7 @@ less than zero.  Turned off by default.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
+        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
         <td><p>Thrown when the <code data-dev-comment-type="paramref" class="paramref">value</code>
 is less than or equal to zero.</p>
 </td>
