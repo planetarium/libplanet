@@ -282,6 +282,9 @@ from it, this became done by <code>NetMQTransport</code> instead of <code>Swarm&
 <li>(Libplanet.RocksDBStore) <code>RocksDBStore.ForkBlockIndexes()</code> became to share
 common ancestors between forks rather than duplicating them so that much
 less space is used.  [<a href="https://github.com/planetarium/libplanet/issues/1280">#1280</a>, <a href="https://github.com/planetarium/libplanet/pull/1287">#1287</a>]</li>
+<li><code>BlockChain&lt;T&gt;.Append()</code> cumulates indexes for pairs (TxId and BlockHash).
+A transaction inclusion for a block is retrievable by using this index.
+[<a href="https://github.com/planetarium/libplanet/issues/1315">#1315</a>, <a href="https://github.com/planetarium/libplanet/pull/1329">#1329</a>]</li>
 <li><code>ActionEvaluator&lt;T&gt;.EvaluateActions()</code> now throws an unmanaged exception
 if <code>OutOfMemoryException</code> is caught from <code>IAction.Execute()</code>.
 [<a href="https://github.com/planetarium/libplanet/issues/1320">#1320</a>, <a href="https://github.com/planetarium/libplanet/pull/1343">#1343</a>]</li>
