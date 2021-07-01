@@ -294,7 +294,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             var actionEvaluator = new ActionEvaluator<T>(
                 blockAction, StateGetter, FungibleAssetValueGetter, null);
             var actionEvaluationResult = actionEvaluator
-                .Evaluate(block, StateCompleterSet<T>.Reject)
+                .Evaluate(block, false)
                 .GetTotalDelta(ToStateKey, ToFungibleAssetKey);
             stateStore.SetStates(block, actionEvaluationResult);
             if (stateStore is TrieStateStore trieStateStore)

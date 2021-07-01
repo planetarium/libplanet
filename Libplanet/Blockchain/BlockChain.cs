@@ -398,7 +398,7 @@ namespace Libplanet.Blockchain
                     => new FungibleAssetValue(currency),
                 null);
             var actionEvaluationResult = actionEvaluator
-                .Evaluate(block, StateCompleterSet<T>.Reject)
+                .Evaluate(block, false)
                 .GetTotalDelta(ToStateKey, ToFungibleAssetKey);
             ITrie trie = new MerkleTrie(new DefaultKeyValueStore(null));
             trie = trie.Set(actionEvaluationResult);
@@ -981,7 +981,7 @@ namespace Libplanet.Blockchain
             }
 
             IReadOnlyList<ActionEvaluation> actionEvaluations = ActionEvaluator.Evaluate(
-                block, StateCompleterSet<T>.Recalculate);
+                block, true);
 
             if (StateStore is TrieStateStore trieStateStore)
             {
@@ -1145,7 +1145,7 @@ namespace Libplanet.Blockchain
 
             // Since rendering process requires every step's states, if required block states
             // are incomplete they are complemented anyway:
-            stateCompleters ??= StateCompleterSet<T>.Recalculate;
+            bool recalculate = stateCompleters?.RecalculateFlag ?? true;
 
             _logger.Debug("Trying to append block {blockIndex}: {block}", block?.Index, block);
 
@@ -1322,7 +1322,7 @@ namespace Libplanet.Blockchain
                         {
                             if (renderActions)
                             {
-                                RenderActions(actionEvaluations, block, renderer, stateCompleters);
+                                RenderActions(actionEvaluations, block, renderer, recalculate);
                             }
 
                             renderer.RenderBlockEnd(oldTip: prevTip ?? Genesis, newTip: block);
@@ -1353,23 +1353,19 @@ namespace Libplanet.Blockchain
         /// </summary>
         /// <param name="offset">Index of the block to start rendering from.</param>
         /// <param name="renderer">The renderer to render actions.</param>
-        /// <param name="stateCompleters">The strategy to complement incomplete block states.
-        /// <see cref="StateCompleterSet{T}.Recalculate"/> by default.</param>
+        /// <param name="recalculate">Whether to recalculate the necessary previous states
+        /// if not found in the chain.</param>
         /// <returns>The number of actions rendered.</returns>
         internal int RenderActionsInBlocks(
             long offset,
             IActionRenderer<T> renderer,
-            StateCompleterSet<T>? stateCompleters = null)
+            bool recalculate = true)
         {
-            // Since rendering process requires every step's states, if required block states
-            // are incomplete they are complemented anyway:
-            stateCompleters ??= StateCompleterSet<T>.Recalculate;
-
             // FIXME: We should consider the case where block count is larger than int.MaxSize.
             int cnt = 0;
             foreach (var block in IterateBlocks((int)offset))
             {
-                cnt += RenderActions(null, block, renderer, stateCompleters);
+                cnt += RenderActions(null, block, renderer, recalculate);
             }
 
             return cnt;
@@ -1382,25 +1378,20 @@ namespace Libplanet.Blockchain
         /// <c>null</c>, evaluate actions of the <paramref name="block"/> again.</param>
         /// <param name="block"><see cref="Block{T}"/> to render actions.</param>
         /// <param name="renderer">The renderer to render actions.</param>
-        /// <param name="stateCompleters">The strategy to complement incomplete block states.
-        /// <see cref="StateCompleterSet{T}.Recalculate"/> by default.</param>
+        /// <param name="recalculate">Whether to recalculate the necessary previous states
+        /// if not found in the chain.</param>
         /// <returns>The number of actions rendered.</returns>
         internal int RenderActions(
             IReadOnlyList<ActionEvaluation> evaluations,
             Block<T> block,
             IActionRenderer<T> renderer,
-            StateCompleterSet<T>? stateCompleters = null
-        )
+            bool recalculate = true)
         {
             _logger.Debug("Render actions in block {blockIndex}: {block}", block?.Index, block);
 
-            // Since rendering process requires every step's states, if required block states
-            // are incomplete they are complemented anyway:
-            stateCompleters ??= StateCompleterSet<T>.Recalculate;
-
             if (evaluations is null)
             {
-                evaluations = ActionEvaluator.Evaluate(block, stateCompleters.Value);
+                evaluations = ActionEvaluator.Evaluate(block, recalculate);
             }
 
             int cnt = 0;
@@ -1434,9 +1425,8 @@ namespace Libplanet.Blockchain
         /// results.
         /// </summary>
         /// <param name="block">A block to execute.</param>
-        /// <param name="stateCompleters">The strategy to complement incomplete previous block
-        /// states.  <see cref="StateCompleterSet{T}.Recalculate"/> by default.
-        /// </param>
+        /// <param name="recalculate">Whether to recalculate the necessary previous states
+        /// if not found in the chain.</param>
         /// <returns>The result of action evaluations of the given <paramref name="block"/>.
         /// </returns>
         /// <remarks>This method is idempotent (except for rendering).  If the given
@@ -1444,7 +1434,7 @@ namespace Libplanet.Blockchain
         /// </remarks>
         internal IReadOnlyList<ActionEvaluation> ExecuteActions(
             Block<T> block,
-            StateCompleterSet<T>? stateCompleters = null
+            bool recalculate = true
         )
         {
             _logger.Debug(
@@ -1454,10 +1444,7 @@ namespace Libplanet.Blockchain
             );
             IReadOnlyList<ActionEvaluation> evaluations = null;
             DateTimeOffset evaluateActionStarted = DateTimeOffset.Now;
-            evaluations = ActionEvaluator.Evaluate(
-                block,
-                stateCompleters ?? StateCompleterSet<T>.Recalculate
-            );
+            evaluations = ActionEvaluator.Evaluate(block, recalculate);
             const string evalEndMsg =
                 "Evaluated actions in the block #{BlockIndex} {BlockHash} " +
                 "(duration: {DurationMs}ms).";
@@ -1707,7 +1694,7 @@ namespace Libplanet.Blockchain
 
             // As render/unrender processing requires every step's states from the branchpoint
             // to the new/stale tip, incomplete states need to be complemented anyway...
-            StateCompleterSet<T> completers = stateCompleters ?? StateCompleterSet<T>.Recalculate;
+            bool recalculate = stateCompleters?.RecalculateFlag ?? true;
 
             if (Tip.Equals(other.Tip))
             {
@@ -1797,7 +1784,7 @@ namespace Libplanet.Blockchain
                     )
                     {
                         List<ActionEvaluation> evaluations =
-                            ActionEvaluator.Evaluate(b, completers).ToList();
+                            ActionEvaluator.Evaluate(b, recalculate).ToList();
                         evaluations.Reverse();
 
                         foreach (var evaluation in evaluations)
@@ -1889,7 +1876,7 @@ namespace Libplanet.Blockchain
 
                     foreach (IActionRenderer<T> renderer in ActionRenderers)
                     {
-                        int cnt = RenderActionsInBlocks(startToRenderIndex, renderer, completers);
+                        int cnt = RenderActionsInBlocks(startToRenderIndex, renderer, recalculate);
                         _logger.Debug(
                             $"{nameof(Swap)}() completed rendering {{Count}} actions.",
                             cnt);
@@ -2014,11 +2001,6 @@ namespace Libplanet.Blockchain
         {
             _logger.Verbose("Recalculates the block {BlockHash}'s states...", blockHash);
 
-            // Prevent recursive trial to recalculate & complement incomplete block states by
-            // mistake; if the below code works as intended, these state completers must never
-            // be invoked.
-            StateCompleterSet<T> stateCompleters = StateCompleterSet<T>.Reject;
-
             // Calculates and fills the incomplete states
             // on the fly.
             foreach (BlockHash hash in BlockHashes)
@@ -2029,10 +2011,12 @@ namespace Libplanet.Blockchain
                     continue;
                 }
 
+                // Prevent recursive trial to recalculate & complement incomplete block states by
+                // mistake; if the below code works as intended, these state completers must never
+                // be invoked.
                 IReadOnlyList<ActionEvaluation> evaluations = ActionEvaluator.Evaluate(
-                    block,
-                    stateCompleters
-                );
+                    block: block,
+                    recalculate: false);
 
                 _rwlock.EnterWriteLock();
                 try

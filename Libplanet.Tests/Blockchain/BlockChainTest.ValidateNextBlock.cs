@@ -215,7 +215,7 @@ namespace Libplanet.Tests.Blockchain
                 _emptyTransaction);
             var actionEvaluations = _blockChain.ActionEvaluator.Evaluate(
                 invalidStateRootHash,
-                StateCompleterSet<DumbAction>.Recalculate);
+                true);
             chain.SetStates(invalidStateRootHash, actionEvaluations);
             invalidStateRootHash = new Block<DumbAction>(
                 invalidStateRootHash,

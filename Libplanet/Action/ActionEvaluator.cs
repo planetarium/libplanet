@@ -79,7 +79,8 @@ namespace Libplanet.Action
         /// The main entry point for evaluating a <see cref="Block{T}"/>.
         /// </summary>
         /// <param name="block">The <see cref="Block{T}"/> to evaluate.</param>
-        /// <param name="stateCompleterSet">The <see cref="StateCompleterSet{T}"/> to use.</param>
+        /// <param name="recalculate">Whether to recalculate the necessary previous states
+        /// if not found in the chain.</param>
         /// <returns> The result of evaluating every <see cref="IAction"/> related to
         /// <paramref name="block"/> as an <see cref="IReadOnlyList{T}"/> of
         /// <see cref="ActionEvaluation"/>s.</returns>
@@ -92,13 +93,13 @@ namespace Libplanet.Action
         [Pure]
         public IReadOnlyList<ActionEvaluation> Evaluate(
             Block<T> block,
-            StateCompleterSet<T> stateCompleterSet)
+            bool recalculate)
         {
             ITrie? previousBlockStatesTrie = !(_trieGetter is null) && block.PreviousHash is { } h
                 ? _trieGetter(h)
                 : null;
             IAccountStateDelta previousStates =
-                GetPreviousBlockOutputStates(block, stateCompleterSet);
+                GetPreviousBlockOutputStates(block, recalculate);
 
             ImmutableList<ActionEvaluation> evaluations = EvaluateBlock(
                 block: block,
@@ -576,16 +577,22 @@ namespace Libplanet.Action
         /// Retrieves the last previous states for the previous block of <paramref name="block"/>.
         /// </summary>
         /// <param name="block">The <see cref="Block{T}"/> instance to reference.</param>
-        /// <param name="stateCompleterSet">The <see cref="StateCompleterSet{T}"/> to use.</param>
+        /// <param name="recalculate">Whether to recalculate the necessary previous states
+        /// if not found in the chain.</param>
         /// <returns>The last previous <see cref="IAccountStateDelta"/> for the previous
         /// <see cref="Block{T}"/>.
         /// </returns>
         private IAccountStateDelta GetPreviousBlockOutputStates(
             Block<T> block,
-            StateCompleterSet<T> stateCompleterSet)
+            bool recalculate)
         {
+            StateCompleterSet<T> stateCompleterSet = recalculate
+                ? StateCompleterSet<T>.Recalculate
+                : StateCompleterSet<T>.Reject;
             (AccountStateGetter accountStateGetter, AccountBalanceGetter accountBalanceGetter) =
-                InitializeAccountGettersPair(block, stateCompleterSet);
+                InitializeAccountGettersPair(
+                    block,
+                    stateCompleterSet);
             Address miner = block.Miner.GetValueOrDefault();
 
             return block.ProtocolVersion > 0

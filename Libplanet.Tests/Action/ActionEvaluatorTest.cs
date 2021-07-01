@@ -87,13 +87,13 @@ namespace Libplanet.Tests.Action
             for (int i = 0; i < repeatCount; ++i)
             {
                 var actionEvaluations = actionEvaluator.Evaluate(
-                    noStateRootBlock,
-                    StateCompleterSet<RandomAction>.Reject);
+                    block: noStateRootBlock,
+                    recalculate: false);
                 generatedRandomNumbers.Add(
                     (Integer)actionEvaluations[0].OutputStates.GetState(txAddress));
                 actionEvaluations = actionEvaluator.Evaluate(
-                    stateRootBlock,
-                    StateCompleterSet<RandomAction>.Reject);
+                    block: stateRootBlock,
+                    recalculate: false);
                 generatedRandomNumbers.Add(
                     (Integer)actionEvaluations[0].OutputStates.GetState(txAddress));
             }
@@ -130,8 +130,8 @@ namespace Libplanet.Tests.Action
             await chain.MineBlock(_storeFx.Address1);
 
             var evaluations = chain.ActionEvaluator.Evaluate(
-                chain.Tip,
-                StateCompleterSet<EvaluateTestAction>.Recalculate);
+                block: chain.Tip,
+                recalculate: true);
 
             Assert.False(evaluations[0].InputContext.BlockAction);
             Assert.Single(evaluations);
@@ -166,8 +166,8 @@ namespace Libplanet.Tests.Action
             chain.StageTransaction(tx);
             await chain.MineBlock(_storeFx.Address1);
             var evaluations = chain.ActionEvaluator.Evaluate(
-                chain.Tip,
-                StateCompleterSet<ThrowException>.Recalculate);
+                block: chain.Tip,
+                recalculate: true);
 
             Assert.False(evaluations[0].InputContext.BlockAction);
             Assert.Single(evaluations);
@@ -238,7 +238,7 @@ namespace Libplanet.Tests.Action
             Assert.Throws<OutOfMemoryException>(
                 () => chain.ActionEvaluator.Evaluate(
                     block: block,
-                    stateCompleterSet: StateCompleterSet<ThrowException>.Recalculate).ToList());
+                    recalculate: true).ToList());
         }
 
         [SuppressMessage(

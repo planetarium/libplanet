@@ -17,6 +17,7 @@ namespace Libplanet.Blockchain
         /// </summary>
         public static readonly StateCompleterSet<T> Recalculate = new StateCompleterSet<T>
         {
+            RecalculateFlag = true,
             StateCompleter = StateCompleters<T>.Recalculate,
             FungibleAssetStateCompleter = FungibleAssetStateCompleters<T>.Recalculate,
         };
@@ -27,6 +28,7 @@ namespace Libplanet.Blockchain
         /// </summary>
         public static readonly StateCompleterSet<T> Reject = new StateCompleterSet<T>
         {
+            RecalculateFlag = false,
             StateCompleter = StateCompleters<T>.Reject,
             FungibleAssetStateCompleter = FungibleAssetStateCompleters<T>.Reject,
         };
@@ -35,6 +37,8 @@ namespace Libplanet.Blockchain
         /// Holds a <see cref="StateCompleter{T}"/>.
         /// </summary>
         public StateCompleter<T> StateCompleter { get; set; }
+
+        public bool RecalculateFlag { get; set; }
 
         /// <summary>
         /// Holds a <see cref="FungibleAssetStateCompleter{T}"/>.
