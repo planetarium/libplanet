@@ -38,6 +38,9 @@ namespace Libplanet.Blockchain
         /// </summary>
         public StateCompleter<T> StateCompleter { get; set; }
 
+        // FIXME: Temporary workaround to determine the StateCompleter "type".
+        // Should be removed upon further refactoring when StateCompleter type parameters
+        // are removed from public APIs.
         public bool RecalculateFlag { get; set; }
 
         /// <summary>

@@ -163,6 +163,8 @@ To be released.
     [[#1294], [#1328]]
  -  `Swarm<T>.StartAsync()` method became to receive `broadcastBlockInterval`
     (or `millisecondsBroadcastBlockInterval`) parameter.  [[#1351]]
+ -  `ActionEvaluator<T>.Evaluate()` now takes `bool` instead of
+    `StateCompleterSet<T>` to determine whether to recalculate states.
 
 ### Backward-incompatible network protocol changes
 
@@ -314,6 +316,7 @@ To be released.
 [#1343]: https://github.com/planetarium/libplanet/pull/1343
 [#1348]: https://github.com/planetarium/libplanet/pull/1348
 [#1351]: https://github.com/planetarium/libplanet/pull/1351
+[#1364]: https://github.com/planetarium/libplanet/pull/1364
 
 
 Version 0.11.1
