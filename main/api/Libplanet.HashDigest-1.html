@@ -87,13 +87,13 @@ a type parameter <code data-dev-comment-type="typeparamref" class="typeparamref"
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.html">Libplanet</a></h6>
@@ -153,7 +153,7 @@ a digest.  This determines <a class="xref" href="Libplanet.HashDigest-1.html#Lib
         <td><span class="parametername">hashDigest</span></td>
         <td><p>An immutable <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array that encodes
 a <a class="xref" href="Libplanet.HashDigest-1.html">HashDigest&lt;T&gt;</a>.  It must not be <code>null</code>, and its
-<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.array.length#System_Array_Length">Length</a> must be the same to <a class="xref" href="Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_Size">Size</a>.</p>
+<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.array.length#system-array-length">Length</a> must be the same to <a class="xref" href="Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_Size">Size</a>.</p>
 </td>
       </tr>
     </tbody>
@@ -209,7 +209,7 @@ the same to the <a class="xref" href="Libplanet.HashDigest-1.html#Libplanet_Hash
         <td><span class="parametername">hashDigest</span></td>
         <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array that encodes
 a <a class="xref" href="Libplanet.HashDigest-1.html">HashDigest&lt;T&gt;</a>.  It must not be <code>null</code>,
-and its <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.array.length#System_Array_Length">Length</a> must be the same to
+and its <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.array.length#system-array-length">Length</a> must be the same to
 <a class="xref" href="Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_Size">Size</a>.</p>
 </td>
       </tr>
@@ -233,7 +233,7 @@ and its <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.array
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
         <td><p>Thrown when the given
-<code data-dev-comment-type="paramref" class="paramref">hashDigest</code>'s <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.array.length#System_Array_Length">Length</a> is not
+<code data-dev-comment-type="paramref" class="paramref">hashDigest</code>'s <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.array.length#system-array-length">Length</a> is not
 the same to the <a class="xref" href="Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_Size">Size</a> the hash algorithm
 (i.e., <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> requires.</p>
 </td>
@@ -250,7 +250,7 @@ the same to the <a class="xref" href="Libplanet.HashDigest-1.html#Libplanet_Hash
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/HashDigest.cs/#L36">View Source</a>
   </span>
   <h4 id="Libplanet_HashDigest_1_Size" data-uid="Libplanet.HashDigest`1.Size">Size</h4>
-  <div class="markdown level1 summary"><p>The fixed, and valid <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.array.length#System_Array_Length">Length</a> of
+  <div class="markdown level1 summary"><p>The fixed, and valid <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.array.length#system-array-length">Length</a> of
 a <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array of every digest.</p>
 <p>This varies depending upon what <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.hashalgorithm">HashAlgorithm</a> is
 used for <code data-dev-comment-type="typeparamref" class="typeparamref">T</code>.  For example, if <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> is <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.sha1">SHA1</a> <a class="xref" href="Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_Size">Size</a> is <code>20</code>,
@@ -420,7 +420,7 @@ public override bool Equals(object obj)</code></pre>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.valuetype.equals#System_ValueType_Equals_System_Object_">ValueType.Equals(Object)</a></div>
+  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.valuetype.equals#system-valuetype-equals(system-object)">ValueType.Equals(Object)</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_HashDigest_1_FromString_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.HashDigest%601.FromString(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -538,7 +538,7 @@ public override int GetHashCode()</code></pre>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.valuetype.gethashcode#System_ValueType_GetHashCode">ValueType.GetHashCode()</a></div>
+  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.valuetype.gethashcode#system-valuetype-gethashcode">ValueType.GetHashCode()</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_HashDigest_1_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.HashDigest%601.GetObjectData(System.Runtime.Serialization.SerializationInfo%2CSystem.Runtime.Serialization.StreamingContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -651,7 +651,7 @@ public override string ToString()</code></pre>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.valuetype.tostring#System_ValueType_ToString">ValueType.ToString()</a></div>
+  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.valuetype.tostring#system-valuetype-tostring">ValueType.ToString()</a></div>
   <h5 id="Libplanet_HashDigest_1_ToString_seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_FromString_System_String_">FromString(String)</a></div>

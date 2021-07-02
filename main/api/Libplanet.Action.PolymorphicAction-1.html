@@ -94,22 +94,22 @@ compatibility issues on certain platforms, and is slightly slower.
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">Object.Equals(Object)</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Action.html">Libplanet.Action</a></h6>
@@ -483,14 +483,14 @@ could be logged multiple times.</p>
 underspecified so that it can make different results on different
 machines, platforms, runtimes, compilers, and builds</a>.</p>
 <p>Lastly, you need to be aware and keep in mind that there
-is a global state named <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.globalization.cultureinfo.currentculture#System_Globalization_CultureInfo_CurrentCulture">CurrentCulture</a> on .NET;
+is a global state named <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.globalization.cultureinfo.currentculture#system-globalization-cultureinfo-currentculture">CurrentCulture</a> on .NET;
 if you format numbers, dates and times, currencies, or other such
 things into strings and parse these strings back these can rely on
-<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.globalization.cultureinfo.currentculture#System_Globalization_CultureInfo_CurrentCulture">CurrentCulture</a>,
+<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.globalization.cultureinfo.currentculture#system-globalization-cultureinfo-currentculture">CurrentCulture</a>,
 so that the same action make different results on two differently
 configured systems like Thai language and French language.
 In order to make these types of conversions deterministic,
-you have to explicitly pass <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.globalization.cultureinfo.invariantculture#System_Globalization_CultureInfo_InvariantCulture">InvariantCulture</a>.</p>
+you have to explicitly pass <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.globalization.cultureinfo.invariantculture#system-globalization-cultureinfo-invariantculture">InvariantCulture</a>.</p>
 <p>For more on determinism in general, please read also <a href="https://tendermint.com/docs/spec/abci/abci.html#determinism">Tendermint ABCI&apos;s docs on determinism</a>.</p>
 <p>Lastly, you can conduct static analysis on your code
 using <a href="https://git.io/JTmby">Libplanet.Analyzers</a>.
@@ -606,7 +606,7 @@ properties (or fields).</p>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a></div>
+  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#system-object-tostring">Object.ToString()</a></div>
   <h3 id="operators">Operators
   </h3>
   <span class="small pull-right mobile-hide">
