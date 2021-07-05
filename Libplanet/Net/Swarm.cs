@@ -1222,6 +1222,7 @@ namespace Libplanet.Net
                         locator = new BlockLocator(
                             idx =>
                             {
+                                long arg = idx;
                                 if (idx < 0)
                                 {
                                     idx = currentTipIndex + downloaded.Count + 1 + idx;
@@ -1233,7 +1234,20 @@ namespace Libplanet.Net
                                 }
 
                                 int relIdx = (int)(idx - currentTipIndex - 1);
-                                return downloaded[relIdx];
+
+                                try
+                                {
+                                    return downloaded[relIdx];
+                                }
+                                catch (ArgumentOutOfRangeException e)
+                                {
+                                    const string msg =
+                                        "Failed to look up a block hash by its index {Index} " +
+                                        "(current tip index: {CurrentTipIndex}; " +
+                                        "downloaded: {Downloaded}).";
+                                    _logger.Error(e, msg, arg, currentTipIndex, downloaded.Count);
+                                    return null;
+                                }
                             },
                             hash => blockChain.Store.GetBlock<T>(hash) is Block<T> b
                                 ? b.Index
