@@ -18,7 +18,13 @@ To be released.
 
 ### Bug fixes
 
+ -  `Swarm<T>.PreloadAsync()` now checks the existence of blocks in the storage
+    (was in the blockchain).  [[#1324]]
+
 ### CLI tools
+
+[#1324]: https://github.com/planetarium/libplanet/pull/1324
+
 
 Version 0.12.0
 --------------
