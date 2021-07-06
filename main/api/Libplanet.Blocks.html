@@ -87,6 +87,8 @@
       <h4><a class="xref" href="Libplanet.Blocks.BlockExcerpt.html">BlockExcerpt</a></h4>
       <section><p>The extension methods for <a class="xref" href="Libplanet.Blocks.IBlockExcerpt.html">IBlockExcerpt</a>.</p>
 </section>
+      <h4><a class="xref" href="Libplanet.Blocks.HashAlgorithmTable.html">HashAlgorithmTable</a></h4>
+      <section></section>
       <h4><a class="xref" href="Libplanet.Blocks.InvalidBlockBytesLengthException.html">InvalidBlockBytesLengthException</a></h4>
       <section><p>The exception that is thrown when a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>'s
 <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_BytesLength">BytesLength</a> (i.e., the length of bytes in its serialized format)
@@ -139,7 +141,7 @@ the genesis block in other network.</p>
 <a class="xref" href="Libplanet.Blocks.BlockHeader.html">BlockHeader</a>, and list of <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a>s.</p>
 </section>
       <h4><a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a></h4>
-      <section><p>A value type to represent block hash bytes which is derived <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> data.</p>
+      <section><p>A value type to represent SHA-256 digest of <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> data.</p>
 </section>
       <h4><a class="xref" href="Libplanet.Blocks.BlockHeader.html">BlockHeader</a></h4>
       <section><p>Block header containing information about <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>s except transactions.</p>
@@ -149,6 +151,11 @@ the genesis block in other network.</p>
       <h4><a class="xref" href="Libplanet.Blocks.IBlockExcerpt.html">IBlockExcerpt</a></h4>
       <section><p>The very essential metadata extracted from a block.  This purposes to determine
 the canonical chain.</p>
+</section>
+    <h3 id="delegates">Delegates
+  </h3>
+      <h4><a class="xref" href="Libplanet.Blocks.HashAlgorithmGetter.html">HashAlgorithmGetter</a></h4>
+      <section><p>The delegate to determine a hash algorithm to use for a <code data-dev-comment-type="paramref" class="paramref">blockIndex</code>.</p>
 </section>
 </article>
           </div>

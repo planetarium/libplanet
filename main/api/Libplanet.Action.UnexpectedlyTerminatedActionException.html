@@ -153,19 +153,19 @@ public sealed class UnexpectedlyTerminatedActionException : Exception, ISerializ
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_UnexpectedlyTerminatedActionException__ctor_System_Nullable_Libplanet_Blocks_BlockHash__System_Nullable_System_Int64__System_Nullable_Libplanet_Tx_TxId__System_Nullable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___Libplanet_Action_IAction_System_String_System_Exception_.md&amp;value=---%0Auid%3A%20Libplanet.Action.UnexpectedlyTerminatedActionException.%23ctor(System.Nullable%7BLibplanet.Blocks.BlockHash%7D%2CSystem.Nullable%7BSystem.Int64%7D%2CSystem.Nullable%7BLibplanet.Tx.TxId%7D%2CSystem.Nullable%7BLibplanet.HashDigest%7BSystem.Security.Cryptography.SHA256%7D%7D%2CLibplanet.Action.IAction%2CSystem.String%2CSystem.Exception)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_UnexpectedlyTerminatedActionException__ctor_System_Nullable_ImmutableArray_System_Byte___System_Nullable_System_Int64__System_Nullable_Libplanet_Tx_TxId__System_Nullable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___Libplanet_Action_IAction_System_String_System_Exception_.md&amp;value=---%0Auid%3A%20Libplanet.Action.UnexpectedlyTerminatedActionException.%23ctor(System.Nullable%7BImmutableArray%7BSystem.Byte%7D%7D%2CSystem.Nullable%7BSystem.Int64%7D%2CSystem.Nullable%7BLibplanet.Tx.TxId%7D%2CSystem.Nullable%7BLibplanet.HashDigest%7BSystem.Security.Cryptography.SHA256%7D%7D%2CLibplanet.Action.IAction%2CSystem.String%2CSystem.Exception)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/UnexpectedlyTerminatedActionException.cs/#L45">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/UnexpectedlyTerminatedActionException.cs/#L46">View Source</a>
   </span>
   <a id="Libplanet_Action_UnexpectedlyTerminatedActionException__ctor_" data-uid="Libplanet.Action.UnexpectedlyTerminatedActionException.#ctor*"></a>
-  <h4 id="Libplanet_Action_UnexpectedlyTerminatedActionException__ctor_System_Nullable_Libplanet_Blocks_BlockHash__System_Nullable_System_Int64__System_Nullable_Libplanet_Tx_TxId__System_Nullable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___Libplanet_Action_IAction_System_String_System_Exception_" data-uid="Libplanet.Action.UnexpectedlyTerminatedActionException.#ctor(System.Nullable{Libplanet.Blocks.BlockHash},System.Nullable{System.Int64},System.Nullable{Libplanet.Tx.TxId},System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},Libplanet.Action.IAction,System.String,System.Exception)">UnexpectedlyTerminatedActionException(Nullable&lt;BlockHash&gt;, Nullable&lt;Int64&gt;, Nullable&lt;TxId&gt;, Nullable&lt;HashDigest&lt;SHA256&gt;&gt;, IAction, String, Exception)</h4>
+  <h4 id="Libplanet_Action_UnexpectedlyTerminatedActionException__ctor_System_Nullable_ImmutableArray_System_Byte___System_Nullable_System_Int64__System_Nullable_Libplanet_Tx_TxId__System_Nullable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___Libplanet_Action_IAction_System_String_System_Exception_" data-uid="Libplanet.Action.UnexpectedlyTerminatedActionException.#ctor(System.Nullable{ImmutableArray{System.Byte}},System.Nullable{System.Int64},System.Nullable{Libplanet.Tx.TxId},System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},Libplanet.Action.IAction,System.String,System.Exception)">UnexpectedlyTerminatedActionException(Nullable&lt;ImmutableArray&lt;Byte&gt;&gt;, Nullable&lt;Int64&gt;, Nullable&lt;TxId&gt;, Nullable&lt;HashDigest&lt;SHA256&gt;&gt;, IAction, String, Exception)</h4>
   <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Action.UnexpectedlyTerminatedActionException.html">UnexpectedlyTerminatedActionException</a> object.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public UnexpectedlyTerminatedActionException(BlockHash? blockHash, long? blockIndex, TxId? txid, HashDigest&lt;SHA256&gt;? previousStateRootHash, IAction action, string message, Exception innerException)</code></pre>
+    <pre><code class="lang-csharp hljs">public UnexpectedlyTerminatedActionException(ImmutableArray&lt;byte&gt;? preEvaluationHash, long? blockIndex, TxId? txid, HashDigest&lt;SHA256&gt;? previousStateRootHash, IAction action, string message, Exception innerException)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -178,10 +178,11 @@ public sealed class UnexpectedlyTerminatedActionException : Exception, ISerializ
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
-        <td><span class="parametername">blockHash</span></td>
-        <td><p>The <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Hash">Hash</a> of the <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>
-that <code data-dev-comment-type="paramref" class="paramref">action</code> belongs to.  This can be <code>null</code> on rehearsal mode.</p>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">ImmutableArray</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;&gt;</td>
+        <td><span class="parametername">preEvaluationHash</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_PreEvaluationHash">PreEvaluationHash</a> of the
+<a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> that <code data-dev-comment-type="paramref" class="paramref">action</code> belongs to.
+This can be <code>null</code> on rehearsal mode.</p>
 </td>
       </tr>
       <tr>
@@ -235,7 +236,7 @@ executed the action, was not using <a class="xref" href="Libplanet.Store.TrieSta
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_UnexpectedlyTerminatedActionException_Action.md&amp;value=---%0Auid%3A%20Libplanet.Action.UnexpectedlyTerminatedActionException.Action%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/UnexpectedlyTerminatedActionException.cs/#L147">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/UnexpectedlyTerminatedActionException.cs/#L148">View Source</a>
   </span>
   <a id="Libplanet_Action_UnexpectedlyTerminatedActionException_Action_" data-uid="Libplanet.Action.UnexpectedlyTerminatedActionException.Action*"></a>
   <h4 id="Libplanet_Action_UnexpectedlyTerminatedActionException_Action" data-uid="Libplanet.Action.UnexpectedlyTerminatedActionException.Action">Action</h4>
@@ -263,42 +264,10 @@ executed the action, was not using <a class="xref" href="Libplanet.Store.TrieSta
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_UnexpectedlyTerminatedActionException_BlockHash.md&amp;value=---%0Auid%3A%20Libplanet.Action.UnexpectedlyTerminatedActionException.BlockHash%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/UnexpectedlyTerminatedActionException.cs/#L129">View Source</a>
-  </span>
-  <a id="Libplanet_Action_UnexpectedlyTerminatedActionException_BlockHash_" data-uid="Libplanet.Action.UnexpectedlyTerminatedActionException.BlockHash*"></a>
-  <h4 id="Libplanet_Action_UnexpectedlyTerminatedActionException_BlockHash" data-uid="Libplanet.Action.UnexpectedlyTerminatedActionException.BlockHash">BlockHash</h4>
-  <div class="markdown level1 summary"><p>The <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Hash">Hash</a> of the <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> that <a class="xref" href="Libplanet.Action.UnexpectedlyTerminatedActionException.html#Libplanet_Action_UnexpectedlyTerminatedActionException_Action">Action</a>
-belongs to.  This can be <code>null</code> on rehearsal mode.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BlockHash? BlockHash { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_UnexpectedlyTerminatedActionException_BlockIndex.md&amp;value=---%0Auid%3A%20Libplanet.Action.UnexpectedlyTerminatedActionException.BlockIndex%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/UnexpectedlyTerminatedActionException.cs/#L135">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/UnexpectedlyTerminatedActionException.cs/#L136">View Source</a>
   </span>
   <a id="Libplanet_Action_UnexpectedlyTerminatedActionException_BlockIndex_" data-uid="Libplanet.Action.UnexpectedlyTerminatedActionException.BlockIndex*"></a>
   <h4 id="Libplanet_Action_UnexpectedlyTerminatedActionException_BlockIndex" data-uid="Libplanet.Action.UnexpectedlyTerminatedActionException.BlockIndex">BlockIndex</h4>
@@ -327,10 +296,42 @@ belongs to.  This can be <code>null</code> on rehearsal mode.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_UnexpectedlyTerminatedActionException_PreEvaluationHash.md&amp;value=---%0Auid%3A%20Libplanet.Action.UnexpectedlyTerminatedActionException.PreEvaluationHash%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/UnexpectedlyTerminatedActionException.cs/#L130">View Source</a>
+  </span>
+  <a id="Libplanet_Action_UnexpectedlyTerminatedActionException_PreEvaluationHash_" data-uid="Libplanet.Action.UnexpectedlyTerminatedActionException.PreEvaluationHash*"></a>
+  <h4 id="Libplanet_Action_UnexpectedlyTerminatedActionException_PreEvaluationHash" data-uid="Libplanet.Action.UnexpectedlyTerminatedActionException.PreEvaluationHash">PreEvaluationHash</h4>
+  <div class="markdown level1 summary"><p>The <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_PreEvaluationHash">PreEvaluationHash</a> of the <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> that
+<a class="xref" href="Libplanet.Action.UnexpectedlyTerminatedActionException.html#Libplanet_Action_UnexpectedlyTerminatedActionException_Action">Action</a> belongs to.  This can be <code>null</code> on rehearsal mode.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ImmutableArray&lt;byte&gt;? PreEvaluationHash { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">ImmutableArray</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_UnexpectedlyTerminatedActionException_PreviousStateRootHash.md&amp;value=---%0Auid%3A%20Libplanet.Action.UnexpectedlyTerminatedActionException.PreviousStateRootHash%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/UnexpectedlyTerminatedActionException.cs/#L149">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/UnexpectedlyTerminatedActionException.cs/#L150">View Source</a>
   </span>
   <a id="Libplanet_Action_UnexpectedlyTerminatedActionException_PreviousStateRootHash_" data-uid="Libplanet.Action.UnexpectedlyTerminatedActionException.PreviousStateRootHash*"></a>
   <h4 id="Libplanet_Action_UnexpectedlyTerminatedActionException_PreviousStateRootHash" data-uid="Libplanet.Action.UnexpectedlyTerminatedActionException.PreviousStateRootHash">PreviousStateRootHash</h4>
@@ -360,7 +361,7 @@ belongs to.  This can be <code>null</code> on rehearsal mode.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_UnexpectedlyTerminatedActionException_TxId.md&amp;value=---%0Auid%3A%20Libplanet.Action.UnexpectedlyTerminatedActionException.TxId%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/UnexpectedlyTerminatedActionException.cs/#L142">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/UnexpectedlyTerminatedActionException.cs/#L143">View Source</a>
   </span>
   <a id="Libplanet_Action_UnexpectedlyTerminatedActionException_TxId_" data-uid="Libplanet.Action.UnexpectedlyTerminatedActionException.TxId*"></a>
   <h4 id="Libplanet_Action_UnexpectedlyTerminatedActionException_TxId" data-uid="Libplanet.Action.UnexpectedlyTerminatedActionException.TxId">TxId</h4>
@@ -395,7 +396,7 @@ if <a class="xref" href="Libplanet.Action.UnexpectedlyTerminatedActionException.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_UnexpectedlyTerminatedActionException_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.Action.UnexpectedlyTerminatedActionException.GetObjectData(System.Runtime.Serialization.SerializationInfo%2CSystem.Runtime.Serialization.StreamingContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/UnexpectedlyTerminatedActionException.cs/#L151">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/UnexpectedlyTerminatedActionException.cs/#L152">View Source</a>
   </span>
   <a id="Libplanet_Action_UnexpectedlyTerminatedActionException_GetObjectData_" data-uid="Libplanet.Action.UnexpectedlyTerminatedActionException.GetObjectData*"></a>
   <h4 id="Libplanet_Action_UnexpectedlyTerminatedActionException_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_" data-uid="Libplanet.Action.UnexpectedlyTerminatedActionException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">GetObjectData(SerializationInfo, StreamingContext)</h4>
@@ -448,7 +449,7 @@ if <a class="xref" href="Libplanet.Action.UnexpectedlyTerminatedActionException.
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_UnexpectedlyTerminatedActionException.md&amp;value=---%0Auid%3A%20Libplanet.Action.UnexpectedlyTerminatedActionException%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/UnexpectedlyTerminatedActionException.cs/#L21" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/UnexpectedlyTerminatedActionException.cs/#L22" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

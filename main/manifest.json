@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "dIKrBaLM5WANNTOOmqsAcQ=="
+          "hash": "5XY4f5Ftry5Ye9bnG9T6IQ=="
         }
       },
       "is_incremental": false,
@@ -141,7 +141,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Action.ActionEvaluator-1.html",
-          "hash": "j+hgBp0aABL1VL5yKohr+A=="
+          "hash": "ZdHc602C3NrC3PG6gKFuYQ=="
         }
       },
       "is_incremental": false,
@@ -321,7 +321,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Action.UnexpectedlyTerminatedActionException.html",
-          "hash": "V9/iJ6m5cWOnsw/T4/Hwjw=="
+          "hash": "9UO3fCy/yioNocENodIEug=="
         }
       },
       "is_incremental": false,
@@ -405,7 +405,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.BlockChain-1.html",
-          "hash": "UHGluB2ueTBRLZDX6rXc7A=="
+          "hash": "V1c2cTAaSru8BQhELKNIBQ=="
         }
       },
       "is_incremental": false,
@@ -477,7 +477,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.Policies.BlockPolicy-1.html",
-          "hash": "bkHVx89wUXtyGTCEJP7oHw=="
+          "hash": "5odpydLwne47xHIcNUtGjQ=="
         }
       },
       "is_incremental": false,
@@ -489,7 +489,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html",
-          "hash": "29kjtq+a1Q1aKb3dPB0qJA=="
+          "hash": "IRe85fxpzotzmJP+z+vbsw=="
         }
       },
       "is_incremental": false,
@@ -849,7 +849,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blocks.Block-1.html",
-          "hash": "ZO3mHvwjoG7xQJBcMTvIZA=="
+          "hash": "i134CrIfs0vDYLfR8nL3aA=="
         }
       },
       "is_incremental": false,
@@ -897,7 +897,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blocks.BlockHash.html",
-          "hash": "1f3ZVXptRxhF3LbXBGX/Gg=="
+          "hash": "4lNjV/i4iv7NHj2m514rgg=="
         }
       },
       "is_incremental": false,
@@ -909,7 +909,31 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blocks.BlockHeader.html",
-          "hash": "p58/jCFdwOqyontE/R851g=="
+          "hash": "YSxRzak8QdEjhdBNRmk+BA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Blocks.HashAlgorithmGetter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Blocks.HashAlgorithmGetter.html",
+          "hash": "9+b2f6j8YA91Mq/8vmyHmQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Blocks.HashAlgorithmTable.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Blocks.HashAlgorithmTable.html",
+          "hash": "BaQzZLRIjMlbA5giLc28wg=="
         }
       },
       "is_incremental": false,
@@ -1005,7 +1029,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blocks.InvalidBlockPreEvaluationHashException.html",
-          "hash": "p/4alhime2GJnTPddDOSig=="
+          "hash": "8jIjwP297Z4D/sadIgt3YQ=="
         }
       },
       "is_incremental": false,
@@ -1101,7 +1125,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blocks.html",
-          "hash": "WzHam7mWvpyhglMZGQJf5g=="
+          "hash": "rP1gc4k+IFcI/BqTcS9+YA=="
         }
       },
       "is_incremental": false,
@@ -1125,7 +1149,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.ByteUtil.html",
-          "hash": "HXvWyWlBKrlyDKs7p5buLw=="
+          "hash": "qWg5rNSSfWvFdp4ixhclkg=="
         }
       },
       "is_incremental": false,
@@ -1229,6 +1253,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.HashAlgorithmType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.HashAlgorithmType.html",
+          "hash": "KcnyZc6657al5hogHWt/vA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Libplanet.HashDigest-1.yml",
       "output": {
         ".html": {
@@ -1257,7 +1293,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Hashcash.Stamp.html",
-          "hash": "xtVc58GcWN5UfzZRP2MqwQ=="
+          "hash": "xx9QoWgxFtp6AvczreTHpA=="
         }
       },
       "is_incremental": false,
@@ -1269,7 +1305,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Hashcash.html",
-          "hash": "HOopdlz8N+hHrBZBOAI3Xg=="
+          "hash": "FKejGihCOv1Rsg4CsIPdWQ=="
         }
       },
       "is_incremental": false,
@@ -1857,7 +1893,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Swarm-1.html",
-          "hash": "jlfuSdMWHuSGbYZ5YoRjtg=="
+          "hash": "DkTRXs6VV+sPDGGerYybWQ=="
         }
       },
       "is_incremental": false,
@@ -2025,7 +2061,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.BlockSet-1.html",
-          "hash": "fs+p7VxEd6gjA+iukk3GxQ=="
+          "hash": "HaGS9xP5H2D0UJDBW0ZkbQ=="
         }
       },
       "is_incremental": false,
@@ -2157,7 +2193,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.Trie.MerkleTrie.html",
-          "hash": "yiYgy7bt8XM++JfV+WyHAw=="
+          "hash": "F3C7oQtlSfxaxFDcI84thg=="
         }
       },
       "is_incremental": false,
@@ -2385,7 +2421,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.html",
-          "hash": "LRg3hBBBnJWKIXYcz/OxwQ=="
+          "hash": "gLRq+VYcEfiWT/VENVZFQQ=="
         }
       },
       "is_incremental": false,
@@ -2409,7 +2445,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "UhMEuQtsYh8Om9bTuPzxtw=="
+          "hash": "icJ7uzql0Y3KJCNh/zXYFw=="
         }
       },
       "is_incremental": false,
@@ -2518,7 +2554,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 191,
+          "total_file_count": 194,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {

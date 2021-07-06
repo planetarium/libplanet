@@ -70,20 +70,14 @@
 this release, which has been done as <code>HashDigest&lt;SHA256&gt;</code>.
 [<a href="https://github.com/planetarium/libplanet/issues/1192">#1192</a>, <a href="https://github.com/planetarium/libplanet/pull/1197">#1197</a>]
 <ul>
-<li>Removed <code>HashDigest&lt;T&gt;.Satisfies()</code> method.  This was replaced by
-<code>BlockHash.Satisfies()</code> method instead.</li>
 <li>The type of <code>Block&lt;T&gt;.Hash</code> property became <code>BlockHash</code>
 (was <code>HashDigest&lt;SHA256&gt;</code>).</li>
 <li>The type of <code>Block&lt;T&gt;.PreviousHash</code> property became <code>BlockHash?</code>
-(was <code>HashDigest&lt;SHA256&gt;?</code>).</li>
-<li>The type of <code>Block&lt;T&gt;.PreEvaluationHash</code> property became <code>BlockHash?</code>
 (was <code>HashDigest&lt;SHA256&gt;?</code>).</li>
 <li>The types of <code>Block&lt;T&gt;()</code> constructors' <code>hash</code> parameter became
 <code>BlockHash</code> (were <code>HashDigest&lt;SHA256&gt;</code>).</li>
 <li>The types of <code>Block&lt;T&gt;()</code> constructors' <code>previousHash</code> parameter became
 <code>BlockHash?</code> (were <code>HashDigest&lt;SHA256&gt;?</code>).</li>
-<li>The types of <code>Block&lt;T&gt;()</code> constructors' <code>preEvaluationHash</code> parameter
-became <code>BlockHash?</code> (were <code>HashDigest&lt;SHA256&gt;?</code>).</li>
 <li>The type of <code>Block&lt;T&gt;.Mine()</code> method's <code>previousHash</code> parameter became
 <code>BlockHash?</code> (was <code>HashDigest&lt;SHA256&gt;?</code>).</li>
 <li>The return type of <code>HashCash.Hash()</code> method became <code>BlockHash</code>
@@ -121,12 +115,6 @@ parameter became <code>BlockHash</code> (was <code>HashDigest&lt;SHA256&gt;</cod
 <code>BlockHash</code> (was <code>HashDigest&lt;SHA256&gt;</code>).</li>
 <li>The type of <code>BlockVerificationState.VerifiedBlockHash</code> property became
 <code>BlockHash</code> (was <code>HashDigest&lt;SHA256&gt;</code>).</li>
-<li>The type of <code>ActionEvaluation.EvaluateActionsGradually()</code> method's
-<code>blockHash</code> parameter became <code>BlockHash</code> (was <code>HashDigest&lt;SHA256&gt;</code>).</li>
-<li>The type of <code>UnexpectedlyTerminatedActionException()</code> constructor's
-<code>blockHash</code> parameter became <code>BlockHash?</code> (was <code>HashDigest&lt;SHA256&gt;?</code>).</li>
-<li>The type of <code>UnexpectedlyTerminatedActionException.BlockHash</code> property
-became <code>BlockHash?</code> (was <code>HashDigest&lt;SHA256&gt;?</code>).</li>
 <li>The type of <code>IncompleteBlockStatesException()</code> constructor's
 <code>blockHash</code> parameter became <code>BlockHash</code> (was <code>HashDigest&lt;SHA256&gt;</code>).</li>
 <li>The type of <code>IncompleteBlockStatesException.BlockHash</code> property
@@ -179,6 +167,47 @@ parameter became <code>IImmutableSet&lt;BlockHash&gt;</code>
 (was <code>ImmutableHashSet&lt;HashDigest&lt;SHA256&gt;&gt;</code>).</li>
 </ul>
 </li>
+<li>Hash algorithm for <abbr title="proof-of-work">PoW</abbr> (Hashcash) became
+configurable.  <a href="https://github.com/planetarium/libplanet/issues/1314">#1314</a>, <a href="https://github.com/planetarium/libplanet/pull/1352">#1352</a>
+<ul>
+<li>Added <code>IBlockPolicy&lt;T&gt;.GetHashAlgorithm()</code> method.</li>
+<li>Added an optional <code>HashAlgorithmType? hashAlgorithm</code> parameter to
+<code>Block&lt;T&gt;(long, long, BigInteger, Nonce, Address?, BlockHash?, DateTimeOffset, IReadOnlyList&lt;Transaction&lt;T&gt;&gt;, ImmutableArray&lt;byte&gt;?, HashDigest&lt;SHA256&gt;?, int protocolVersion)</code> constructor.</li>
+<li>Added <code>HashAlgorithmType hashAlgorithm</code> parameter to
+<code>Block&lt;T&gt;.MineBlock()</code> method.</li>
+<li>The type of <code>Block&lt;T&gt;.PreEvaluationHash</code> property became
+<code>ImmutableArray&lt;byte&gt;?</code> (was <code>HashDigest&lt;SHA256&gt;?</code>).
+[<a href="https://github.com/planetarium/libplanet/issues/1192">#1192</a>, <a href="https://github.com/planetarium/libplanet/pull/1197">#1197</a>]</li>
+<li>The types of <code>Block&lt;T&gt;()</code> constructors' <code>preEvaluationHash</code> parameter
+became <code>ImmutableArray&lt;byte&gt;?</code> (were <code>HashDigest&lt;SHA256&gt;?</code>).
+[<a href="https://github.com/planetarium/libplanet/issues/1192">#1192</a>, <a href="https://github.com/planetarium/libplanet/pull/1197">#1197</a>]</li>
+<li>The type of
+<code>InvalidBlockPreEvaluationHashException.ActualPreEvaluationHash</code> and
+<code>ExpectedPreEvaluationHash</code> properties became <code>ImmutableArray&lt;byte&gt;</code>
+(were <code>HashDigest&lt;SHA256&gt;</code>).  [<a href="https://github.com/planetarium/libplanet/issues/1192">#1192</a>, <a href="https://github.com/planetarium/libplanet/pull/1197">#1197</a>]</li>
+<li>The type of <code>InvalidBlockPreEvaluationHashException()</code> constructor's
+<code>actualPreEvaluationHash</code> and and <code>expectedPreEvaluationHash</code> parameters
+became <code>ImmutableArray&lt;byte&gt;</code> (were <code>HashDigest&lt;SHA256&gt;</code>).
+[<a href="https://github.com/planetarium/libplanet/issues/1192">#1192</a>, <a href="https://github.com/planetarium/libplanet/pull/1197">#1197</a>]</li>
+<li>Replaced <code>UnexpectedlyTerminatedActionException()</code> constructor's
+<code>HashDigest&lt;SHA256&gt;? blockHash</code> parameter with
+<code>ImmutableArray&lt;byte&gt;? preEvaluationHash</code>.
+[<a href="https://github.com/planetarium/libplanet/issues/1192">#1192</a>, <a href="https://github.com/planetarium/libplanet/pull/1197">#1197</a>]</li>
+<li>Replaced <code>UnexpectedlyTerminatedActionException.BlockHash</code> property with
+<code>PreEvaluationHash.</code>  [<a href="https://github.com/planetarium/libplanet/issues/1192">#1192</a>, <a href="https://github.com/planetarium/libplanet/pull/1197">#1197</a>]</li>
+<li>Replaced <code>Hashcash.Answer(Stamp, long, CancellationToken)</code> method with
+<code>Hashcash.Answer&lt;T&gt;(Stamp, HashAlgorithm, long, CancellationToken)</code>
+method.</li>
+<li>Removed <code>Hashcash.Hash()</code> method.</li>
+<li>Removed <code>HashDigest&lt;T&gt;.Satisfies()</code> method.  This was replaced by
+<code>ByteUtil.Satisfies()</code> method instead.  [<a href="https://github.com/planetarium/libplanet/issues/1192">#1192</a>, <a href="https://github.com/planetarium/libplanet/pull/1197">#1197</a>]</li>
+<li>Added <code>hashAlgorithmGetter</code> parameter to <code>BlockSet&lt;T&gt;()</code> constructor.</li>
+<li>Added <code>hashAlgorithm</code> parameter to <code>BlockChain&lt;T&gt;.MakeGenesisBlock()</code>
+method.</li>
+<li>Added an optional <code>hashAlgorithmGetter</code> parameter to <code>BlockPolicy&lt;T&gt;()</code>
+constructor.</li>
+</ul>
+</li>
 <li>Added <code>IActionContext.TxId</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/1275">#1275</a>]</li>
 <li>Added <code>IStore.PutTxExecution(TxSuccess)</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/1156">#1156</a>, <a href="https://github.com/planetarium/libplanet/pull/1289">#1289</a>]</li>
 <li>Added <code>IStore.PutTxExecution(TxFailure)</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/1156">#1156</a>, <a href="https://github.com/planetarium/libplanet/pull/1289">#1289</a>]</li>
@@ -229,8 +258,7 @@ Use <code>ActionEvaluator.Evaluate()</code> method instead.</li>
 [<a href="https://github.com/planetarium/libplanet/issues/1294">#1294</a>, <a href="https://github.com/planetarium/libplanet/pull/1328">#1328</a>]</li>
 <li>Added <code>IStore.DeleteTxIdBlockHashIndex(TxId, BlockHash)</code> method.
 [<a href="https://github.com/planetarium/libplanet/issues/1294">#1294</a>, <a href="https://github.com/planetarium/libplanet/pull/1328">#1328</a>]</li>
-<li>Added <code>IStore.IterateTxIdBlockHashIndex(TxId)</code> method.
-[<a href="https://github.com/planetarium/libplanet/issues/1294">#1294</a>, <a href="https://github.com/planetarium/libplanet/pull/1328">#1328</a>]</li>
+<li>Added <code>IStore.IterateTxIdBlockHashIndex(TxId)</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/1294">#1294</a>, <a href="https://github.com/planetarium/libplanet/pull/1328">#1328</a>]</li>
 <li><code>Swarm&lt;T&gt;.StartAsync()</code> method became to receive <code>broadcastBlockInterval</code>
 (or <code>millisecondsBroadcastBlockInterval</code>) parameter.  [<a href="https://github.com/planetarium/libplanet/pull/1351">#1351</a>]</li>
 </ul>
@@ -241,6 +269,9 @@ Use <code>ActionEvaluator.Evaluate()</code> method instead.</li>
 <li>Added <code>ActionEvaluator</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/1301">#1301</a>, <a href="https://github.com/planetarium/libplanet/pull/1305">#1305</a>]</li>
 <li>Added <code>BlockHash</code> struct.  [<a href="https://github.com/planetarium/libplanet/issues/1192">#1192</a>, <a href="https://github.com/planetarium/libplanet/pull/1197">#1197</a>]</li>
 <li>Added <code>HashDigest&lt;T&gt;.DeriveFrom()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1197">#1197</a>]</li>
+<li>Added <code>HashAlgorithmType</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/1314">#1314</a>, <a href="https://github.com/planetarium/libplanet/pull/1352">#1352</a>]</li>
+<li>Added <code>HashAlgorithmGetter</code> delegate.  [<a href="https://github.com/planetarium/libplanet/issues/1314">#1314</a>, <a href="https://github.com/planetarium/libplanet/pull/1352">#1352</a>]</li>
+<li>Added <code>HashAlgorithmTable</code> static class.  [<a href="https://github.com/planetarium/libplanet/issues/1314">#1314</a>, <a href="https://github.com/planetarium/libplanet/pull/1352">#1352</a>]</li>
 <li>Added <code>BlockChain&lt;T&gt;.GetTxExecution()</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/1156">#1156</a>, <a href="https://github.com/planetarium/libplanet/pull/1289">#1289</a>]</li>
 <li>Added <code>StunMessage.ParseAsync(Stream, CancellationToken)</code> method.
 [<a href="https://github.com/planetarium/libplanet/pull/1218">#1228</a>]</li>
@@ -261,6 +292,8 @@ Use <code>ActionEvaluator.Evaluate()</code> method instead.</li>
 <li>Added <code>Address(Binary)</code> overloaded constructor.  [<a href="https://github.com/planetarium/libplanet/pull/1289">#1289</a>]</li>
 <li>Added <code>Currency(IValue)</code> overloaded constructor.  [<a href="https://github.com/planetarium/libplanet/pull/1289">#1289</a>]</li>
 <li>Added <code>Currency.Serialize()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1289">#1289</a>]</li>
+<li>Added <code>ByteUtil.TimingSafelyCompare()</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/1314">#1314</a>, <a href="https://github.com/planetarium/libplanet/pull/1352">#1352</a>]</li>
+<li>Added <code>ByteUtil.Satisfies()</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/1314">#1314</a>, <a href="https://github.com/planetarium/libplanet/pull/1352">#1352</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
