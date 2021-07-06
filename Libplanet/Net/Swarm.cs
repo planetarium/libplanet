@@ -692,7 +692,9 @@ namespace Libplanet.Net
                         block.Index,
                         block.Hash
                     );
-                    block.Validate(DateTimeOffset.UtcNow);
+                    HashAlgorithmType hashAlgorithm =
+                        workspace.Policy.GetHashAlgorithm(block.Index);
+                    block.Validate(hashAlgorithm, DateTimeOffset.UtcNow);
                     wStore.PutBlock(block);
                     if (tempTip is null || block.Index > tempTip.Index)
                     {

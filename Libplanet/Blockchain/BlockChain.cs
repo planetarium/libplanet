@@ -147,7 +147,7 @@ namespace Libplanet.Blockchain
                 throw new ArgumentNullException(nameof(stateStore));
             }
 
-            _blocks = new BlockSet<T>(store);
+            _blocks = new BlockSet<T>(Policy.GetHashAlgorithm, store);
             Renderers = renderers is IEnumerable<IRenderer<T>> r
                 ? r.ToImmutableArray()
                 : ImmutableArray<IRenderer<T>>.Empty;
@@ -166,7 +166,8 @@ namespace Libplanet.Blockchain
                 ? h => trieStateStore.GetTrie(h)
                 : (Func<BlockHash, ITrie>)null;
             ActionEvaluator = new ActionEvaluator<T>(
-                policy.BlockAction,
+                Policy.GetHashAlgorithm,
+                Policy.BlockAction,
                 GetState,
                 GetBalance,
                 trieGetter);
@@ -358,6 +359,8 @@ namespace Libplanet.Blockchain
         /// <summary>
         /// Mine the genesis block of the blockchain.
         /// </summary>
+        /// <param name="hashAlgorithm">The hash algorithm for proof-of-work on the genesis block.
+        /// </param>
         /// <param name="actions">List of actions will be included in the genesis block.
         /// If it's null, it will be replaced with <see cref="ImmutableArray{T}.Empty"/>
         /// as default.</param>
@@ -370,6 +373,7 @@ namespace Libplanet.Blockchain
         /// </param>
         /// <returns>The genesis block mined with parameters.</returns>
         public static Block<T> MakeGenesisBlock(
+            HashAlgorithmType hashAlgorithm,
             IEnumerable<T> actions = null,
             PrivateKey privateKey = null,
             DateTimeOffset? timestamp = null,
@@ -383,15 +387,18 @@ namespace Libplanet.Blockchain
             };
 
             Block<T> block = Block<T>.Mine(
-                0,
-                0,
-                0,
-                privateKey.ToAddress(),
-                null,
-                timestamp ?? DateTimeOffset.UtcNow,
-                transactions);
+                index: 0,
+                hashAlgorithm: hashAlgorithm,
+                difficulty: 0,
+                previousTotalDifficulty: 0,
+                miner: privateKey.ToAddress(),
+                previousHash: null,
+                timestamp: timestamp ?? DateTimeOffset.UtcNow,
+                transactions: transactions
+            );
 
             var actionEvaluator = new ActionEvaluator<T>(
+                _ => hashAlgorithm,
                 blockAction,
                 (address, digest, stateCompleter) => null,
                 (address, currency, hash, fungibleAssetStateCompleter)
@@ -404,9 +411,7 @@ namespace Libplanet.Blockchain
             trie = trie.Set(actionEvaluationResult);
             var stateRootHash = trie.Commit(rehearsal: true).Hash;
 
-            return new Block<T>(
-                block,
-                stateRootHash);
+            return new Block<T>(block, stateRootHash);
         }
 
         /// <summary>
@@ -800,6 +805,8 @@ namespace Libplanet.Blockchain
                 procId
             );
 
+            HashAlgorithmType hashAlgorithm = Policy.GetHashAlgorithm(index);
+
             ImmutableArray<Transaction<T>> stagedTransactions = ListStagedTransactions();
             _logger.Debug(
                 "There are {Transactions} staged transactions.",
@@ -821,7 +828,8 @@ namespace Libplanet.Blockchain
                 miner: miner,
                 previousHash: prevHash,
                 timestamp: currentTime,
-                transactions: new Transaction<T>[0]
+                transactions: new Transaction<T>[0],
+                hashAlgorithm: hashAlgorithm
             ).BytesLength;
             int maxBlockBytes = Math.Max(Policy.GetMaxBlockBytes(index), 1);
             var skippedSigners = new HashSet<Address>();
@@ -955,6 +963,7 @@ namespace Libplanet.Blockchain
                 block = await Task.Run(
                     () => Block<T>.Mine(
                         index: index,
+                        hashAlgorithm: hashAlgorithm,
                         difficulty: difficulty,
                         previousTotalDifficulty: Tip.TotalDifficulty,
                         miner: miner,
@@ -1860,7 +1869,7 @@ namespace Libplanet.Blockchain
                     Guid obsoleteId = Id;
                     Id = other.Id;
                     Store.SetCanonicalChainId(Id);
-                    _blocks = new BlockSet<T>(Store);
+                    _blocks = new BlockSet<T>(Policy.GetHashAlgorithm, Store);
                     TipChanged?.Invoke(this, (oldTip, newTip));
 
                     if (render)
@@ -1980,30 +1989,6 @@ namespace Libplanet.Blockchain
             {
                 _rwlock.ExitUpgradeableReadLock();
             }
-        }
-
-        internal BlockHash? ActionEvaluationsToHash(IEnumerable<ActionEvaluation> actionEvaluations)
-        {
-            ActionEvaluation actionEvaluation;
-            var evaluations = actionEvaluations.ToList();
-            if (evaluations.Any())
-            {
-                actionEvaluation = evaluations.Last();
-            }
-            else
-            {
-                return null;
-            }
-
-            IImmutableSet<Address> updatedAddresses =
-                actionEvaluation.OutputStates.UpdatedAddresses;
-            var dict = Bencodex.Types.Dictionary.Empty;
-            foreach (Address address in updatedAddresses)
-            {
-                dict.Add(address.ToHex(), actionEvaluation.OutputStates.GetState(address));
-            }
-
-            return Hashcash.Hash(new Codec().Encode(dict));
         }
 
         /// <summary>

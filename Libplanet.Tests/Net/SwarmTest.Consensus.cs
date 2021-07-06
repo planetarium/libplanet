@@ -66,9 +66,10 @@ namespace Libplanet.Tests.Net
                         (long)chain1.Tip.TotalDifficulty + policy.GetNextBlockDifficulty(chain2);
                     bestBlock = TestUtils.MineNext(
                         chain2.Tip,
+                        policy.GetHashAlgorithm,
                         difficulty: nextDifficulty,
                         blockInterval: TimeSpan.FromMilliseconds(1)
-                    ).AttachStateRootHash(chain2.StateStore, policy.BlockAction);
+                    ).AttachStateRootHash(chain2.StateStore, policy);
                     _output.WriteLine("chain1's total difficulty: {0}", chain1.Tip.TotalDifficulty);
                     _output.WriteLine("chain2's total difficulty: {0}", bestBlock.TotalDifficulty);
                     break;
@@ -80,9 +81,10 @@ namespace Libplanet.Tests.Net
                     {
                         bestBlock = TestUtils.MineNext(
                             chain2.Tip,
+                            policy.GetHashAlgorithm,
                             difficulty: policy.GetNextBlockDifficulty(chain2),
                             blockInterval: TimeSpan.FromMilliseconds(1)
-                        ).AttachStateRootHash(chain2.StateStore, policy.BlockAction);
+                        ).AttachStateRootHash(chain2.StateStore, policy);
                         hashStr = bestBlock.Hash.ToString();
                         _output.WriteLine("chain1's tip hash: {0}", chain1.Tip.Hash);
                         _output.WriteLine("chain2's tip hash: {0}", bestBlock.Hash);

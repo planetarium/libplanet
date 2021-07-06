@@ -134,9 +134,10 @@ namespace Libplanet.Net
                 ByteUtil.Hex(header.Hash)
             );
 
+            HashAlgorithmType hashAlgorithm = BlockChain.Policy.GetHashAlgorithm(header.Index);
             try
             {
-                header.Validate(DateTimeOffset.UtcNow);
+                header.Validate(hashAlgorithm, DateTimeOffset.UtcNow);
             }
             catch (InvalidBlockException ibe)
             {

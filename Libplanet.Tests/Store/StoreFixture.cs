@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
@@ -92,11 +93,14 @@ namespace Libplanet.Tests.Store
 
             var stateStore =
                 new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore());
-            GenesisBlock = TestUtils.MineGenesis<DumbAction>()
-                .AttachStateRootHash(stateStore, blockAction);
-            Block1 = TestUtils.MineNext(GenesisBlock).AttachStateRootHash(stateStore, blockAction);
-            Block2 = TestUtils.MineNext(Block1).AttachStateRootHash(stateStore, blockAction);
-            Block3 = TestUtils.MineNext(Block2).AttachStateRootHash(stateStore, blockAction);
+            GenesisBlock = TestUtils.MineGenesis<DumbAction>(GetHashAlgorithm)
+                .AttachStateRootHash(GetHashAlgorithm(0), stateStore, blockAction);
+            Block1 = TestUtils.MineNext(GenesisBlock, GetHashAlgorithm)
+                .AttachStateRootHash(GetHashAlgorithm(1), stateStore, blockAction);
+            Block2 = TestUtils.MineNext(Block1, GetHashAlgorithm)
+                .AttachStateRootHash(GetHashAlgorithm(2), stateStore, blockAction);
+            Block3 = TestUtils.MineNext(Block2, GetHashAlgorithm)
+                .AttachStateRootHash(GetHashAlgorithm(3), stateStore, blockAction);
 
             Transaction1 = MakeTransaction(new List<DumbAction>(), ImmutableHashSet<Address>.Empty);
             Transaction2 = MakeTransaction(new List<DumbAction>(), ImmutableHashSet<Address>.Empty);
@@ -175,5 +179,7 @@ namespace Libplanet.Tests.Store
                 timestamp
             );
         }
+
+        public HashAlgorithmType GetHashAlgorithm(long index) => HashAlgorithmType.Of<SHA256>();
     }
 }

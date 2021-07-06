@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Immutable;
 using System.IO;
+using System.Security.Cryptography;
 using Cocona;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
@@ -45,17 +46,17 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
                 throw new SkipException("RocksDB is not available.");
             }
 
-            _genesisBlock = TestUtils.MineGenesis<Utils.DummyAction>();
+            _genesisBlock = TestUtils.MineGenesis<Utils.DummyAction>(GetHashAlgorithm);
             _transaction1 = DummyTransaction();
             _transaction2 = DummyTransaction();
             _transaction3 = DummyTransaction();
             _transaction4 = DummyTransaction();
 
-            _block1 = TestUtils.MineNext(_genesisBlock, new[] { _transaction1 });
-            _block2 = TestUtils.MineNext(_block1, new[] { _transaction2 });
-            _block3 = TestUtils.MineNext(_block2, new[] { _transaction3 });
-            _block4 = TestUtils.MineNext(_block3, new[] { _transaction3 });
-            _block5 = TestUtils.MineNext(_block4);
+            _block1 = TestUtils.MineNext(_genesisBlock, GetHashAlgorithm, new[] { _transaction1 });
+            _block2 = TestUtils.MineNext(_block1, GetHashAlgorithm, new[] { _transaction2 });
+            _block3 = TestUtils.MineNext(_block2, GetHashAlgorithm, new[] { _transaction3 });
+            _block4 = TestUtils.MineNext(_block3, GetHashAlgorithm, new[] { _transaction3 });
+            _block5 = TestUtils.MineNext(_block4, GetHashAlgorithm);
 
             var guid = Guid.NewGuid();
             foreach (var v in _storeFixtures)
@@ -309,6 +310,9 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
         {
             Console.SetOut(_originalWriter);
         }
+
+        private HashAlgorithmType GetHashAlgorithm(long blockIndex) =>
+            HashAlgorithmType.Of<SHA256>();
 
         private Transaction<Utils.DummyAction> DummyTransaction()
         {

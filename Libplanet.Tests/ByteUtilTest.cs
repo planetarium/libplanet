@@ -60,5 +60,62 @@ namespace Libplanet.Tests
                 ByteUtil.CalculateHashCode(otherBytes)
             );
         }
+
+        [Fact]
+        public void TimingSafelyCompare()
+        {
+            Assert.True(ByteUtil.TimingSafelyCompare(new byte[0], new byte[0]));
+            Assert.False(ByteUtil.TimingSafelyCompare(new byte[] { 0 }, new byte[] { 1 }));
+            Assert.True(ByteUtil.TimingSafelyCompare(new byte[] { 1 }, new byte[] { 1 }));
+            Assert.True(
+                ByteUtil.TimingSafelyCompare(new byte[] { 1, 2, 3, 4 }, new byte[] { 1, 2, 3, 4 })
+            );
+            Assert.False(
+                ByteUtil.TimingSafelyCompare(new byte[] { 1, 2, 3, 4 }, new byte[] { 1, 2, 3, 5 })
+            );
+            Assert.False(
+                ByteUtil.TimingSafelyCompare(new byte[] { 1, 2, 3, 4 }, new byte[] { 1, 2, 3 })
+            );
+        }
+
+        [Fact]
+        public void Satisfies()
+        {
+            Func<string, byte[]> hash = ByteUtil.ParseHex;
+            var emp = new byte[0];
+            var dl1 = hash("8ec2f5285c8fc2f5285c8fc2f5285c8fc2f5285c8fc2f5285c8fc2f5285c8f00");
+            var dl2 = hash("e94a399c4fd6d508f022bbee8781a9c44754408bb92ca5b509fa824b00000000");
+            var dl4 = hash("a85f4662e531e44d161346dcaa256af7923c87291b5408b109fa820000000000");
+
+            Assert.True(ByteUtil.Satisfies(emp, 0));
+            Assert.True(ByteUtil.Satisfies(dl1, 0));
+            Assert.True(ByteUtil.Satisfies(dl2, 0));
+            Assert.True(ByteUtil.Satisfies(dl4, 0));
+
+            Assert.False(ByteUtil.Satisfies(emp, 1));
+            Assert.True(ByteUtil.Satisfies(dl1, 1));
+            Assert.True(ByteUtil.Satisfies(dl2, 1));
+            Assert.True(ByteUtil.Satisfies(dl4, 1));
+
+            Assert.False(ByteUtil.Satisfies(emp, 457));
+            Assert.True(ByteUtil.Satisfies(dl1, 457));
+            Assert.True(ByteUtil.Satisfies(dl2, 457));
+            Assert.True(ByteUtil.Satisfies(dl4, 457));
+
+            Assert.False(ByteUtil.Satisfies(emp, 458));
+            Assert.False(ByteUtil.Satisfies(dl1, 458));
+            Assert.True(ByteUtil.Satisfies(dl2, 458));
+            Assert.True(ByteUtil.Satisfies(dl4, 458));
+
+            Assert.False(ByteUtil.Satisfies(emp, 14560825400));
+            Assert.False(ByteUtil.Satisfies(dl1, 14560825400));
+            Assert.True(ByteUtil.Satisfies(dl2, 14560825400));
+            Assert.True(ByteUtil.Satisfies(dl4, 14560825400));
+
+            Assert.False(ByteUtil.Satisfies(emp, 14560825401));
+            Assert.False(ByteUtil.Satisfies(dl1, 14560825401));
+            Assert.False(ByteUtil.Satisfies(dl2, 14560825401));
+            Assert.True(ByteUtil.Satisfies(dl4, 14560825401));
+        }
     }
 }

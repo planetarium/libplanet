@@ -2,6 +2,7 @@ using System;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
 using Libplanet.Crypto;
 using Libplanet.Net;
 using Libplanet.Net.Messages;
@@ -140,7 +141,7 @@ namespace Libplanet.Tests.Net.Messages
                 ImmutableArray<byte>.Empty,
                 default(Address));
             var dateTimeOffset = DateTimeOffset.UtcNow;
-            var genesis = TestUtils.MineGenesis<DumbAction>();
+            var genesis = TestUtils.MineGenesis<DumbAction>(_ => HashAlgorithmType.Of<SHA256>());
             var message = new BlockHeaderMessage(genesis.Hash, genesis.Header);
             NetMQMessage raw =
                 message.ToNetMQMessage(privateKey, peer, dateTimeOffset, appProtocolVersion);

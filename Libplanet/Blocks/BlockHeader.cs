@@ -294,7 +294,7 @@ namespace Libplanet.Blocks
             return new Codec().Encode(dict);
         }
 
-        internal void Validate(DateTimeOffset currentTime)
+        internal void Validate(HashAlgorithmType hashAlgorithm, DateTimeOffset currentTime)
         {
             if (ProtocolVersion < 0)
             {
@@ -394,7 +394,7 @@ namespace Libplanet.Blocks
                 }
             }
 
-            if (!new BlockHash(PreEvaluationHash.ToArray()).Satisfies(Difficulty))
+            if (!ByteUtil.Satisfies(PreEvaluationHash, Difficulty))
             {
                 throw new InvalidBlockNonceException(
                     $"Block #{Index} {hash}'s pre-evaluation hash " +
@@ -403,7 +403,7 @@ namespace Libplanet.Blocks
                 );
             }
 
-            BlockHash calculatedHash = Hashcash.Hash(SerializeForHash());
+            BlockHash calculatedHash = BlockHash.DeriveFrom(SerializeForHash());
             if (!hash.Equals(calculatedHash))
             {
                 throw new InvalidBlockHashException(

@@ -79,9 +79,9 @@ namespace Libplanet.Store
                 BlockHash? prevHash = blockDigest.Header.PreviousHash.Any()
                     ? new BlockHash(blockDigest.Header.PreviousHash)
                     : (BlockHash?)null;
-                BlockHash? preEvaluationHash = blockDigest.Header.PreEvaluationHash.Any()
-                    ? new BlockHash(blockDigest.Header.PreEvaluationHash)
-                    : (BlockHash?)null;
+                ImmutableArray<byte>? preEvaluationHash = blockDigest.Header.PreEvaluationHash.Any()
+                    ? blockDigest.Header.PreEvaluationHash
+                    : (ImmutableArray<byte>?)null;
                 HashDigest<SHA256>? stateRootHash = blockDigest.Header.StateRootHash.Any()
                     ? new HashDigest<SHA256>(blockDigest.Header.StateRootHash)
                     : (HashDigest<SHA256>?)null;

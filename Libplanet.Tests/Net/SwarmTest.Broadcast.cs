@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Blockchain;
@@ -98,7 +99,9 @@ namespace Libplanet.Tests.Net
                 receiverSwarm.Address,
                 null,
                 DateTimeOffset.MinValue,
-                ImmutableArray<Transaction<DumbAction>>.Empty);
+                ImmutableArray<Transaction<DumbAction>>.Empty,
+                HashAlgorithmType.Of<SHA256>()
+            );
             BlockChain<DumbAction> seedChain = TestUtils.MakeBlockChain(
                 receiverChain.Policy,
                 new DefaultStore(path: null),
@@ -633,17 +636,19 @@ namespace Libplanet.Tests.Net
 
                 var block1 = TestUtils.MineNext(
                         blockChain.Genesis,
+                        policy.GetHashAlgorithm,
                         new[] { transactions[0] },
                         null,
                         policy.GetNextBlockDifficulty(blockChain))
-                    .AttachStateRootHash(blockChain.StateStore, policy.BlockAction);
+                    .AttachStateRootHash(blockChain.StateStore, policy);
                 blockChain.Append(block1, DateTimeOffset.MinValue.AddSeconds(3), true, true, false);
                 var block2 = TestUtils.MineNext(
-                        block1,
-                        new[] { transactions[1] },
-                        null,
-                        policy.GetNextBlockDifficulty(blockChain))
-                    .AttachStateRootHash(blockChain.StateStore, policy.BlockAction);
+                    block1,
+                    policy.GetHashAlgorithm,
+                    new[] { transactions[1] },
+                    null,
+                    policy.GetNextBlockDifficulty(blockChain)
+                ).AttachStateRootHash(blockChain.StateStore, policy);
                 blockChain.Append(block2, DateTimeOffset.MinValue.AddSeconds(8), true, true, false);
                 Log.Debug("Ready to broadcast blocks.");
                 minerSwarm.BroadcastBlock(block2);

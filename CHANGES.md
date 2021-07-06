@@ -11,20 +11,14 @@ To be released.
  -  Block hashes are now represented as `BlockHash`, which was introduced in
     this release, which has been done as `HashDigest<SHA256>`.
     [[#1192], [#1197]]
-     -  Removed `HashDigest<T>.Satisfies()` method.  This was replaced by
-        `BlockHash.Satisfies()` method instead.
      -  The type of `Block<T>.Hash` property became `BlockHash`
         (was `HashDigest<SHA256>`).
      -  The type of `Block<T>.PreviousHash` property became `BlockHash?`
-        (was `HashDigest<SHA256>?`).
-     -  The type of `Block<T>.PreEvaluationHash` property became `BlockHash?`
         (was `HashDigest<SHA256>?`).
      -  The types of `Block<T>()` constructors' `hash` parameter became
         `BlockHash` (were `HashDigest<SHA256>`).
      -  The types of `Block<T>()` constructors' `previousHash` parameter became
         `BlockHash?` (were `HashDigest<SHA256>?`).
-     -  The types of `Block<T>()` constructors' `preEvaluationHash` parameter
-        became `BlockHash?` (were `HashDigest<SHA256>?`).
      -  The type of `Block<T>.Mine()` method's `previousHash` parameter became
         `BlockHash?` (was `HashDigest<SHA256>?`).
      -  The return type of `HashCash.Hash()` method became `BlockHash`
@@ -62,12 +56,6 @@ To be released.
         `BlockHash` (was `HashDigest<SHA256>`).
      -  The type of `BlockVerificationState.VerifiedBlockHash` property became
         `BlockHash` (was `HashDigest<SHA256>`).
-     -  The type of `ActionEvaluation.EvaluateActionsGradually()` method's
-        `blockHash` parameter became `BlockHash` (was `HashDigest<SHA256>`).
-     -  The type of `UnexpectedlyTerminatedActionException()` constructor's
-        `blockHash` parameter became `BlockHash?` (was `HashDigest<SHA256>?`).
-     -  The type of `UnexpectedlyTerminatedActionException.BlockHash` property
-        became `BlockHash?` (was `HashDigest<SHA256>?`).
      -  The type of `IncompleteBlockStatesException()` constructor's
         `blockHash` parameter became `BlockHash` (was `HashDigest<SHA256>`).
      -  The type of `IncompleteBlockStatesException.BlockHash` property
@@ -118,6 +106,46 @@ To be released.
      -  The type of `TrieStateStore.PruneStates()` method's `excludeBlockHashes`
         parameter became `IImmutableSet<BlockHash>`
         (was `ImmutableHashSet<HashDigest<SHA256>>`).
+ -  Hash algorithm for <abbr title="proof-of-work">PoW</abbr> (Hashcash) became
+    configurable.  [#1314], [#1352]
+     -  Added `IBlockPolicy<T>.GetHashAlgorithm()` method.
+     -  Added an optional `HashAlgorithmType? hashAlgorithm` parameter to
+        `Block<T>(long, long, BigInteger, Nonce, Address?, BlockHash?,
+        DateTimeOffset, IReadOnlyList<Transaction<T>>, ImmutableArray<byte>?,
+        HashDigest<SHA256>?, int protocolVersion)` constructor.
+     -  Added `HashAlgorithmType hashAlgorithm` parameter to
+        `Block<T>.MineBlock()` method.
+     -  The type of `Block<T>.PreEvaluationHash` property became
+        `ImmutableArray<byte>?` (was `HashDigest<SHA256>?`).
+        [[#1192], [#1197]]
+     -  The types of `Block<T>()` constructors' `preEvaluationHash` parameter
+        became `ImmutableArray<byte>?` (were `HashDigest<SHA256>?`).
+        [[#1192], [#1197]]
+     -  The type of
+        `InvalidBlockPreEvaluationHashException.ActualPreEvaluationHash` and
+        `ExpectedPreEvaluationHash` properties became `ImmutableArray<byte>`
+        (were `HashDigest<SHA256>`).  [[#1192], [#1197]]
+     -  The type of `InvalidBlockPreEvaluationHashException()` constructor's
+        `actualPreEvaluationHash` and and `expectedPreEvaluationHash` parameters
+        became `ImmutableArray<byte>` (were `HashDigest<SHA256>`).
+        [[#1192], [#1197]]
+     -  Replaced `UnexpectedlyTerminatedActionException()` constructor's
+        `HashDigest<SHA256>? blockHash` parameter with
+        `ImmutableArray<byte>? preEvaluationHash`.
+        [[#1192], [#1197]]
+     -  Replaced `UnexpectedlyTerminatedActionException.BlockHash` property with
+        `PreEvaluationHash.`  [[#1192], [#1197]]
+     -  Replaced `Hashcash.Answer(Stamp, long, CancellationToken)` method with
+        `Hashcash.Answer<T>(Stamp, HashAlgorithm, long, CancellationToken)`
+        method.
+     -  Removed `Hashcash.Hash()` method.
+     -  Removed `HashDigest<T>.Satisfies()` method.  This was replaced by
+        `ByteUtil.Satisfies()` method instead.  [[#1192], [#1197]]
+     -  Added `hashAlgorithmGetter` parameter to `BlockSet<T>()` constructor.
+     -  Added `hashAlgorithm` parameter to `BlockChain<T>.MakeGenesisBlock()`
+        method.
+     -  Added an optional `hashAlgorithmGetter` parameter to `BlockPolicy<T>()`
+        constructor.
  -  Added `IActionContext.TxId` property.  [[#1275]]
  -  Added `IStore.PutTxExecution(TxSuccess)` method.  [[#1156], [#1289]]
  -  Added `IStore.PutTxExecution(TxFailure)` method.  [[#1156], [#1289]]
@@ -159,8 +187,7 @@ To be released.
     [[#1294], [#1328]]
  -  Added `IStore.DeleteTxIdBlockHashIndex(TxId, BlockHash)` method.
     [[#1294], [#1328]]
- -  Added `IStore.IterateTxIdBlockHashIndex(TxId)` method.
-    [[#1294], [#1328]]
+ -  Added `IStore.IterateTxIdBlockHashIndex(TxId)` method.  [[#1294], [#1328]]
  -  `Swarm<T>.StartAsync()` method became to receive `broadcastBlockInterval`
     (or `millisecondsBroadcastBlockInterval`) parameter.  [[#1351]]
 
@@ -173,6 +200,9 @@ To be released.
  -  Added `ActionEvaluator` class.  [[#1301], [#1305]]
  -  Added `BlockHash` struct.  [[#1192], [#1197]]
  -  Added `HashDigest<T>.DeriveFrom()` method.  [[#1197]]
+ -  Added `HashAlgorithmType` class.  [[#1314], [#1352]]
+ -  Added `HashAlgorithmGetter` delegate.  [[#1314], [#1352]]
+ -  Added `HashAlgorithmTable` static class.  [[#1314], [#1352]]
  -  Added `BlockChain<T>.GetTxExecution()` method.  [[#1156], [#1289]]
  -  Added `StunMessage.ParseAsync(Stream, CancellationToken)` method.
     [[#1228]]
@@ -193,6 +223,8 @@ To be released.
  -  Added `Address(Binary)` overloaded constructor.  [[#1289]]
  -  Added `Currency(IValue)` overloaded constructor.  [[#1289]]
  -  Added `Currency.Serialize()` method.  [[#1289]]
+ -  Added `ByteUtil.TimingSafelyCompare()` method.  [[#1314], [#1352]]
+ -  Added `ByteUtil.Satisfies()` method.  [[#1314], [#1352]]
 
 ### Behavioral changes
 
@@ -313,6 +345,7 @@ To be released.
 [#1298]: https://github.com/planetarium/libplanet/pull/1298
 [#1301]: https://github.com/planetarium/libplanet/issues/1301
 [#1305]: https://github.com/planetarium/libplanet/pull/1305
+[#1314]: https://github.com/planetarium/libplanet/issues/1314
 [#1315]: https://github.com/planetarium/libplanet/issues/1315
 [#1316]: https://github.com/planetarium/libplanet/issues/1316
 [#1320]: https://github.com/planetarium/libplanet/issues/1320
@@ -328,6 +361,7 @@ To be released.
 [#1349]: https://github.com/planetarium/libplanet/issues/1349
 [#1350]: https://github.com/planetarium/libplanet/pull/1350
 [#1351]: https://github.com/planetarium/libplanet/pull/1351
+[#1352]: https://github.com/planetarium/libplanet/pull/1352
 [#1353]: https://github.com/planetarium/libplanet/pull/1353
 [#1360]: https://github.com/planetarium/libplanet/pull/1360
 

@@ -40,7 +40,7 @@ namespace Libplanet.Store.Trie
         /// <see cref="MerkleTrie"/>.</param>
         /// <param name="secure">Whether to use <see cref="MerkleTrie"/> in
         /// secure mode.  If it is turned on, <see cref="MerkleTrie"/> internally stores hashed keys
-        /// instead of bare keys.  <see cref="Hashcash.Hash" /> is used to hash them.</param>
+        /// instead of bare keys.  Keys will be hashed with SHA-256.</param>
         public MerkleTrie(
             IKeyValueStore keyValueStore,
             HashDigest<SHA256> rootHash,
@@ -58,8 +58,7 @@ namespace Libplanet.Store.Trie
         /// it will be treated like empty trie.</param>
         /// <param name="secure">Whether to use <see cref="MerkleTrie"/> in secure
         /// mode. If it is true, <see cref="MerkleTrie"/> will stores the value with the hashed
-        /// result from the given key as the key. It will hash with
-        /// <see cref="Hashcash.Hash"/>.</param>
+        /// result from the given key as the key. Keys will be hashed with SHA-256.</param>
         internal MerkleTrie(IKeyValueStore keyValueStore, INode? root = null, bool secure = false)
         {
             KeyValueStore = keyValueStore;
@@ -448,7 +447,8 @@ namespace Libplanet.Store.Trie
         {
             if (_secure)
             {
-                key = Hashcash.Hash(key).ToByteArray();
+                SHA256 hasher = SHA256.Create();
+                key = hasher.ComputeHash(key);
             }
 
             var res = new byte[key.Length * 2];

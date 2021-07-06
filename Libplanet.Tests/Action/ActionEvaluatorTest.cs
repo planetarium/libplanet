@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Numerics;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Bencodex.Types;
 using Libplanet.Action;
@@ -67,14 +68,18 @@ namespace Libplanet.Tests.Action
             };
             var stateStore =
                 new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore());
+            HashAlgorithmGetter hashAlgorithmGetter = _ => HashAlgorithmType.Of<SHA256>();
             var noStateRootBlock = TestUtils.MineGenesis(
+                hashAlgorithmGetter: hashAlgorithmGetter,
                 timestamp: timestamp,
                 transactions: txs);
             var stateRootBlock = TestUtils.MineGenesis(
+                hashAlgorithmGetter: hashAlgorithmGetter,
                 timestamp: timestamp,
-                transactions: txs).AttachStateRootHash(stateStore, null);
+                transactions: txs).AttachStateRootHash(hashAlgorithmGetter(0), stateStore, null);
             var actionEvaluator =
                 new ActionEvaluator<RandomAction>(
+                    hashAlgorithmGetter: hashAlgorithmGetter,
                     policyBlockAction: null,
                     stateGetter: ActionEvaluator<RandomAction>.NullStateGetter,
                     balanceGetter: ActionEvaluator<RandomAction>.NullBalanceGetter,
@@ -82,7 +87,7 @@ namespace Libplanet.Tests.Action
             var generatedRandomNumbers = new List<int>();
 
             Assert.NotEqual(stateRootBlock.Hash, noStateRootBlock.Hash);
-            Assert.Equal(stateRootBlock.PreEvaluationHash, noStateRootBlock.PreEvaluationHash);
+            AssertBytesEqual(stateRootBlock.PreEvaluationHash, noStateRootBlock.PreEvaluationHash);
 
             for (int i = 0; i < repeatCount; ++i)
             {
@@ -207,6 +212,7 @@ namespace Libplanet.Tests.Action
                 actions: new[] { action });
             var block = Block<ThrowException>.Mine(
                 index: 1,
+                hashAlgorithm: HashAlgorithmType.Of<SHA256>(),
                 difficulty: 1,
                 previousTotalDifficulty: genesis.TotalDifficulty,
                 miner: _storeFx.Address1,
@@ -268,8 +274,11 @@ namespace Libplanet.Tests.Action
                 _txFx.Address4,
                 _txFx.Address5,
             };
-            Block<DumbAction> genesis = MineGenesis<DumbAction>();
+            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
+            HashAlgorithmGetter hashAlgoGetter = _ => hashAlgorithm;
+            Block<DumbAction> genesis = MineGenesis<DumbAction>(hashAlgoGetter);
             ActionEvaluator<DumbAction> actionEvaluator = new ActionEvaluator<DumbAction>(
+                hashAlgorithmGetter: _ => HashAlgorithmType.Of<SHA256>(),
                 policyBlockAction: null,
                 stateGetter: ActionEvaluator<DumbAction>.NullStateGetter,
                 balanceGetter: ActionEvaluator<DumbAction>.NullBalanceGetter,
@@ -319,7 +328,7 @@ namespace Libplanet.Tests.Action
                 _logger.Debug("{0}[{1}] = {2}", nameof(block1Txs), i, tx.Id);
             }
 
-            Block<DumbAction> block1 = MineNext(genesis, block1Txs, new byte[] { });
+            Block<DumbAction> block1 = MineNext(genesis, hashAlgoGetter, block1Txs, new byte[] { });
             previousStates = block1.ProtocolVersion > 0
                 ? new AccountStateDeltaImpl(
                     ActionEvaluator<DumbAction>.NullAccountStateGetter,
@@ -438,7 +447,7 @@ namespace Libplanet.Tests.Action
                 _logger.Debug("{0}[{1}] = {2}", nameof(block2Txs), i, tx.Id);
             }
 
-            Block<DumbAction> block2 = MineNext(block1, block2Txs, new byte[] { });
+            Block<DumbAction> block2 = MineNext(block1, hashAlgoGetter, block2Txs, new byte[] { });
             AccountStateGetter accountStateGetter = dirty1.GetValueOrDefault;
             AccountBalanceGetter accountBalanceGetter = (address, currency)
                 => balances1.TryGetValue((address, currency), out FungibleAssetValue v)
@@ -565,8 +574,11 @@ namespace Libplanet.Tests.Action
                 miner: addresses[0],
                 previousHash: null,
                 timestamp: DateTimeOffset.UtcNow,
-                transactions: ImmutableArray.Create(tx));
+                transactions: ImmutableArray.Create(tx),
+                hashAlgorithm: HashAlgorithmType.Of<SHA256>()
+            );
             var actionEvaluator = new ActionEvaluator<DumbAction>(
+                hashAlgorithmGetter: _ => HashAlgorithmType.Of<SHA256>(),
                 policyBlockAction: null,
                 stateGetter: ActionEvaluator<DumbAction>.NullStateGetter,
                 balanceGetter: ActionEvaluator<DumbAction>.NullBalanceGetter,
@@ -685,11 +697,12 @@ namespace Libplanet.Tests.Action
         [Fact]
         public void EvaluateBlockWithInvalidTxUpdatedAddresses()
         {
+            HashAlgorithmGetter hashAlgorithmGetter = _ => HashAlgorithmType.Of<SHA256>();
             ImmutableArray<IValue> rawActions =
                 _txFx.TxWithActions
                     .ToRawTransaction(false).Actions.ToImmutableArray();
             Block<PolymorphicAction<BaseAction>> genesis =
-                TestUtils.MineGenesis<PolymorphicAction<BaseAction>>();
+                TestUtils.MineGenesis<PolymorphicAction<BaseAction>>(hashAlgorithmGetter);
             RawTransaction rawTxWithoutSig = new RawTransaction(
                 0,
                 _txFx.Address1.ByteArray,
@@ -716,9 +729,11 @@ namespace Libplanet.Tests.Action
                     sig.ToImmutableArray()));
             Block<PolymorphicAction<BaseAction>> invalidBlock = TestUtils.MineNext(
                 previousBlock: genesis,
+                hashAlgorithmGetter: hashAlgorithmGetter,
                 txs: new List<Transaction<PolymorphicAction<BaseAction>>> { invalidTx });
 
             var actionEvaluator = new ActionEvaluator<PolymorphicAction<BaseAction>>(
+                hashAlgorithmGetter: _ => HashAlgorithmType.Of<SHA256>(),
                 policyBlockAction: null,
                 stateGetter: ActionEvaluator<PolymorphicAction<BaseAction>>.NullStateGetter,
                 balanceGetter: ActionEvaluator<PolymorphicAction<BaseAction>>.NullBalanceGetter,
@@ -756,6 +771,7 @@ namespace Libplanet.Tests.Action
                 DateTimeOffset.UtcNow);
             var hash = new BlockHash(GetRandomBytes(32));
             var actionEvaluator = new ActionEvaluator<ThrowException>(
+                hashAlgorithmGetter: _ => HashAlgorithmType.Of<SHA256>(),
                 policyBlockAction: null,
                 stateGetter: ActionEvaluator<ThrowException>.NullStateGetter,
                 balanceGetter: ActionEvaluator<ThrowException>.NullBalanceGetter,
@@ -768,7 +784,9 @@ namespace Libplanet.Tests.Action
                 miner: GenesisMinerAddress,
                 previousHash: null,
                 timestamp: DateTimeOffset.UtcNow,
-                transactions: ImmutableArray.Create(tx));
+                transactions: ImmutableArray.Create(tx),
+                hashAlgorithm: HashAlgorithmType.Of<SHA256>()
+            );
             var nextStates = actionEvaluator.EvaluateTxResult(
                 block: block,
                 tx: tx,
@@ -797,7 +815,7 @@ namespace Libplanet.Tests.Action
 
             Block<Arithmetic> blockA = await fx.Mine();
             ActionEvaluation[] evalsA = ActionEvaluator<DumbAction>.EvaluateActions(
-                blockA.Hash,
+                blockA.PreEvaluationHash,
                 blockIndex: blockA.Index,
                 txid: txA.Id,
                 previousStates: fx.CreateAccountStateDelta(0, blockA.PreviousHash),
@@ -846,7 +864,7 @@ namespace Libplanet.Tests.Action
 
             Block<Arithmetic> blockB = await fx.Mine();
             ActionEvaluation[] evalsB = ActionEvaluator<DumbAction>.EvaluateActions(
-                blockB.Hash,
+                blockB.PreEvaluationHash,
                 blockIndex: blockB.Index,
                 txid: txB.Id,
                 previousStates: fx.CreateAccountStateDelta(0, blockB.PreviousHash),
@@ -912,10 +930,10 @@ namespace Libplanet.Tests.Action
             var genesis = chain.Genesis;
             var block = TestUtils.MineNext(
                 genesis,
+                _policy.GetHashAlgorithm,
                 txs,
-                difficulty: chain.Policy.GetNextBlockDifficulty(chain)).AttachStateRootHash(
-                    chain.StateStore,
-                    _policy.BlockAction);
+                difficulty: chain.Policy.GetNextBlockDifficulty(chain)
+            ).AttachStateRootHash(chain.StateStore, _policy);
             var stateCompleterSet = StateCompleterSet<DumbAction>.Recalculate;
 
             AccountStateGetter accountStateGetter =

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Security.Cryptography;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Tests.Common.Action;
 using Serilog;
@@ -15,11 +16,14 @@ namespace Libplanet.Tests.Blockchain.Renderers
 {
     public class LoggedRendererTest : IDisposable
     {
-        private static DumbBlock _genesis = TestUtils.MineGenesis<DumbAction>(default(Address));
+        private static HashAlgorithmType _hashAlgorithmType = HashAlgorithmType.Of<SHA256>();
 
-        private static DumbBlock _blockA = TestUtils.MineNext(_genesis);
+        private static DumbBlock _genesis =
+            TestUtils.MineGenesis<DumbAction>(_ => _hashAlgorithmType, default(Address));
 
-        private static DumbBlock _blockB = TestUtils.MineNext(_genesis);
+        private static DumbBlock _blockA = TestUtils.MineNext(_genesis, _ => _hashAlgorithmType);
+
+        private static DumbBlock _blockB = TestUtils.MineNext(_genesis, _ => _hashAlgorithmType);
 
         private ILogger _logger;
 

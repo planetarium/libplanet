@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Blocks;
 using Libplanet.Tests.Common.Action;
@@ -7,12 +8,16 @@ namespace Libplanet.Tests.Blockchain.Renderers
 {
     public class AnonymousRendererTest
     {
+        private static HashAlgorithmType _hashAlgorithm = HashAlgorithmType.Of<SHA256>();
+
         private static Block<DumbAction> _genesis =
-            TestUtils.MineGenesis<DumbAction>(default(Address));
+            TestUtils.MineGenesis<DumbAction>(_ => _hashAlgorithm, default(Address));
 
-        private static Block<DumbAction> _blockA = TestUtils.MineNext(_genesis);
+        private static Block<DumbAction> _blockA =
+            TestUtils.MineNext(_genesis, _ => _hashAlgorithm);
 
-        private static Block<DumbAction> _blockB = TestUtils.MineNext(_genesis);
+        private static Block<DumbAction> _blockB =
+            TestUtils.MineNext(_genesis, _ => _hashAlgorithm);
 
         [Fact]
         public void BlockRenderer()

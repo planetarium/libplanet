@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Tx;
@@ -17,6 +18,7 @@ namespace Libplanet.Blockchain.Policies
         private readonly int _maxBlockBytes;
         private readonly int _maxGenesisBytes;
         private readonly Func<Transaction<T>, BlockChain<T>, bool> _doesTransactionFollowPolicy;
+        private readonly HashAlgorithmGetter _hashAlgorithmGetter;
 
         /// <summary>
         /// Creates a <see cref="BlockPolicy{T}"/> with configuring
@@ -45,6 +47,8 @@ namespace Libplanet.Blockchain.Policies
         /// </param>
         /// <param name="canonicalChainComparer">The custom rule to determine which is the canonical
         /// chain.  If omitted, <see cref="TotalDifficultyComparer"/> is used by default.</param>
+        /// <param name="hashAlgorithmGetter">Configures <see cref="GetHashAlgorithm(long)"/>.
+        /// If omitted, SHA-256 is used for every block.</param>
         public BlockPolicy(
             IAction blockAction = null,
             int blockIntervalMilliseconds = 5000,
@@ -54,7 +58,8 @@ namespace Libplanet.Blockchain.Policies
             int maxBlockBytes = 100 * 1024,
             int maxGenesisBytes = 1024 * 1024,
             Func<Transaction<T>, BlockChain<T>, bool> doesTransactionFollowPolicy = null,
-            IComparer<BlockPerception> canonicalChainComparer = null
+            IComparer<BlockPerception> canonicalChainComparer = null,
+            HashAlgorithmGetter hashAlgorithmGetter = null
         )
             : this(
                 blockAction,
@@ -65,7 +70,8 @@ namespace Libplanet.Blockchain.Policies
                 maxBlockBytes,
                 maxGenesisBytes,
                 doesTransactionFollowPolicy,
-                canonicalChainComparer)
+                canonicalChainComparer,
+                hashAlgorithmGetter)
         {
         }
 
@@ -95,6 +101,8 @@ namespace Libplanet.Blockchain.Policies
         /// chain.  If omitted, <see cref="TotalDifficultyComparer"/> (having
         /// <see cref="TotalDifficultyComparer.OutdateAfter"/> configured to triple of
         /// <paramref name="blockInterval"/>) is used by default.</param>
+        /// <param name="hashAlgorithmGetter">Configures <see cref="GetHashAlgorithm(long)"/>.
+        /// If omitted, SHA-256 is used for every block.</param>
         public BlockPolicy(
             IAction blockAction,
             TimeSpan blockInterval,
@@ -104,7 +112,8 @@ namespace Libplanet.Blockchain.Policies
             int maxBlockBytes,
             int maxGenesisBytes,
             Func<Transaction<T>, BlockChain<T>, bool> doesTransactionFollowPolicy = null,
-            IComparer<BlockPerception> canonicalChainComparer = null
+            IComparer<BlockPerception> canonicalChainComparer = null,
+            HashAlgorithmGetter hashAlgorithmGetter = null
         )
         {
             if (blockInterval < TimeSpan.Zero)
@@ -142,6 +151,7 @@ namespace Libplanet.Blockchain.Policies
             _doesTransactionFollowPolicy = doesTransactionFollowPolicy ?? ((_, __) => true);
             CanonicalChainComparer = canonicalChainComparer
                 ?? new TotalDifficultyComparer(blockInterval + blockInterval + blockInterval);
+            _hashAlgorithmGetter = hashAlgorithmGetter ?? (_ => HashAlgorithmType.Of<SHA256>());
         }
 
         /// <inheritdoc/>
@@ -220,5 +230,9 @@ namespace Libplanet.Blockchain.Policies
 
         /// <inheritdoc />
         public int GetMaxBlockBytes(long index) => index > 0 ? _maxBlockBytes : _maxGenesisBytes;
+
+        /// <inheritdoc cref="IBlockPolicy{T}.GetHashAlgorithm(long)"/>
+        public HashAlgorithmType GetHashAlgorithm(long index) =>
+            _hashAlgorithmGetter(index);
     }
 }

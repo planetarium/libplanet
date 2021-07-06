@@ -1,9 +1,11 @@
 #nullable enable
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
+using System.Numerics;
 
 namespace Libplanet
 {
@@ -117,6 +119,67 @@ namespace Libplanet
                 0,
                 (current, t) => unchecked(current * (bytes.Length + 1) + t)
             );
+        }
+
+        /// <summary>
+        /// Timing safe comparision of two byte arrays.
+        /// </summary>
+        /// <remarks>In case of two byte arrays do not have the same length, it tries to keep
+        /// the timing dependent on the length of the shorter one.</remarks>
+        /// <param name="left">A byte array.</param>
+        /// <param name="right">Another byte array.</param>
+        /// <returns><c>true</c> iff two byte arrays have the exactly same contents.</returns>
+        [Pure]
+        public static bool TimingSafelyCompare(IReadOnlyList<byte> left, IReadOnlyList<byte> right)
+        {
+            bool differ = left.Count != right.Count;
+            for (int i = 0, len = Math.Min(left.Count, right.Count); i < len; i++)
+            {
+                differ = differ || (left[i] ^ right[i]) != 0;
+            }
+
+            return !differ;
+        }
+
+        /// <summary>
+        /// Tests if a hash digest is less than the target computed for the given
+        /// <paramref name="difficulty"/>).
+        /// </summary>
+        /// <param name="hashDigest">A hash digest to test.</param>
+        /// <param name="difficulty">The difficulty to compute target number.</param>
+        /// <returns><c>true</c> only if a digest is less than the target computed for the given
+        /// <paramref name="difficulty"/>).  If <paramref name="difficulty"/> is <c>0</c> it always
+        /// returns <c>true</c>.</returns>
+        [Pure]
+        public static bool Satisfies(IReadOnlyList<byte> hashDigest, long difficulty)
+        {
+            if (difficulty == 0)
+            {
+                return true;
+            }
+            else if (!hashDigest.Any())
+            {
+                return false;
+            }
+
+            var maxTargetBytes = new byte[hashDigest.Count + 1];
+            maxTargetBytes[hashDigest.Count] = 0x01;
+            var maxTarget = new BigInteger(maxTargetBytes);
+            BigInteger target = maxTarget / difficulty;
+
+            var digestArray = new byte[hashDigest.Count + 1];
+            int i = 0;
+            foreach (byte b in hashDigest)
+            {
+                digestArray[i++] = b;
+            }
+
+            // Append zero to convert unsigned BigInteger.  Note that BigInteger(byte[]) assumes
+            // the input bytes are in little-endian order.
+            digestArray[i] = 0;
+
+            var result = new BigInteger(digestArray);
+            return result < target;
         }
     }
 }

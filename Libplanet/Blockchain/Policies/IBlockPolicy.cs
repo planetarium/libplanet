@@ -89,5 +89,13 @@ namespace Libplanet.Blockchain.Policies
         /// <remarks>If it returns less then 1, it is treated as 1, because there is no block
         /// taking 0 bytes or negative length of bytes.</remarks>
         int GetMaxBlockBytes(long index);
+
+        /// <summary>
+        /// Gets the <see cref="HashAlgorithmType"/> to use for block's proof-of-work.
+        /// </summary>
+        /// <param name="index">The <see cref="Block{T}.Index"/> of the <see cref="Block{T}"/> to
+        /// do proof-of-work.</param>
+        /// <returns>The <see cref="HashAlgorithmType"/> to use.</returns>
+        HashAlgorithmType GetHashAlgorithm(long index);
     }
 }

@@ -11,11 +11,13 @@ namespace Libplanet.Store
     public class BlockSet<T> : BaseIndex<BlockHash, Block<T>>
         where T : IAction, new()
     {
+        private readonly HashAlgorithmGetter _hashAlgorithmGetter;
         private readonly LruCache<BlockHash, Block<T>> _cache;
 
-        public BlockSet(IStore store, int cacheSize = 4096)
+        public BlockSet(HashAlgorithmGetter hashAlgorithmGetter, IStore store, int cacheSize = 4096)
             : base(store)
         {
+            _hashAlgorithmGetter = hashAlgorithmGetter;
             _cache = new LruCache<BlockHash, Block<T>>(cacheSize);
         }
 
@@ -62,7 +64,8 @@ namespace Libplanet.Store
                         $"{value}.hash does not match to {key}");
                 }
 
-                value.Validate(DateTimeOffset.UtcNow);
+                HashAlgorithmType hashAlgorithm = _hashAlgorithmGetter(value.Index);
+                value.Validate(hashAlgorithm, DateTimeOffset.UtcNow);
                 Store.PutBlock(value);
                 _cache.AddOrUpdate(value.Hash, value);
             }

@@ -1,4 +1,5 @@
 using System;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -184,6 +185,25 @@ namespace Libplanet.Tests.Blockchain.Policies
                 1048,
                 _policy.GetNextBlockDifficulty(chain)
             );
+        }
+
+        [Fact]
+        public void GetHashAlgorithm()
+        {
+            Assert.Equal(HashAlgorithmType.Of<SHA256>(), _policy.GetHashAlgorithm(0));
+            Assert.Equal(HashAlgorithmType.Of<SHA256>(), _policy.GetHashAlgorithm(1));
+            Assert.Equal(HashAlgorithmType.Of<SHA256>(), _policy.GetHashAlgorithm(2));
+            Assert.Equal(HashAlgorithmType.Of<SHA256>(), _policy.GetHashAlgorithm(10));
+            Assert.Equal(HashAlgorithmType.Of<SHA256>(), _policy.GetHashAlgorithm(15));
+
+            var p = new BlockPolicy<DumbAction>(hashAlgorithmGetter: i =>
+                i % 2 == 0 ? HashAlgorithmType.Of<MD5>() : HashAlgorithmType.Of<SHA1>()
+            );
+            Assert.Equal(HashAlgorithmType.Of<MD5>(), p.GetHashAlgorithm(0));
+            Assert.Equal(HashAlgorithmType.Of<SHA1>(), p.GetHashAlgorithm(1));
+            Assert.Equal(HashAlgorithmType.Of<MD5>(), p.GetHashAlgorithm(2));
+            Assert.Equal(HashAlgorithmType.Of<MD5>(), p.GetHashAlgorithm(10));
+            Assert.Equal(HashAlgorithmType.Of<SHA1>(), p.GetHashAlgorithm(15));
         }
     }
 }

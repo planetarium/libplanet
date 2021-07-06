@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Blocks;
@@ -25,20 +26,26 @@ namespace Libplanet.Tests.Blockchain.Renderers
 #pragma warning disable S3963
         static DelayedRendererTest()
         {
+            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
+            HashAlgorithmGetter hashAlgorithmGetter = _ => hashAlgorithm;
             var chainA = new Block<DumbAction>[10];
             var chainB = new Block<DumbAction>[chainA.Length];
-            chainA[0] = chainB[0] = TestUtils.MineGenesis<DumbAction>();
+            chainA[0] = chainB[0] = TestUtils.MineGenesis<DumbAction>(hashAlgorithmGetter);
             for (int i = 1; i < chainA.Length / 2; i++)
             {
                 _branchpoint = chainA[i] = chainB[i] =
-                    TestUtils.MineNext(chainA[i - 1]);
+                    TestUtils.MineNext(chainA[i - 1], hashAlgorithmGetter);
             }
 
             int extraDifficulty = 1;
             for (int i = chainA.Length / 2; i < chainA.Length; i++)
             {
-                chainA[i] = TestUtils.MineNext(chainA[i - 1], difficulty: 2);
-                chainB[i] = TestUtils.MineNext(chainB[i - 1], difficulty: 2 + extraDifficulty);
+                chainA[i] = TestUtils.MineNext(chainA[i - 1], hashAlgorithmGetter, difficulty: 2);
+                chainB[i] = TestUtils.MineNext(
+                    chainB[i - 1],
+                    hashAlgorithmGetter,
+                    difficulty: 2 + extraDifficulty
+                );
 
                 // The block right next the branchpoint in the chainB has 1 more difficulty than
                 // the block with the same index in the chainA, and then rest blocks have the

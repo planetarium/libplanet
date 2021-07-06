@@ -125,9 +125,10 @@ namespace Libplanet.Tests.Blockchain
 
             Block<DumbAction> block1 = TestUtils.MineNext(
                 genesis,
+                _policy.GetHashAlgorithm,
                 txs,
-                difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain)
-            ).AttachStateRootHash(_fx.StateStore, _policy.BlockAction);
+                difficulty: _policy.GetNextBlockDifficulty(_blockChain)
+            ).AttachStateRootHash(_fx.StateStore, _policy);
 
             _blockChain.Append(
                 block1,

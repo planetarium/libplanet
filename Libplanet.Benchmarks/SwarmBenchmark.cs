@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Net;
+using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using BenchmarkDotNet.Attributes;
@@ -38,13 +39,13 @@ namespace Libplanet.Benchmarks
             _stagePolicy = new VolatileStagePolicy<DumbAction>();
             _blocks = new List<Block<DumbAction>>
             {
-                TestUtils.MineGenesis<DumbAction>(),
+                TestUtils.MineGenesis<DumbAction>(_policy.GetHashAlgorithm),
             };
             _appProtocolVersion = AppProtocolVersion.Sign(new PrivateKey(), 1);
-            _blocks.Add(TestUtils.MineNext(_blocks[0]));
-            _blocks.Add(TestUtils.MineNext(_blocks[1]));
-            _blocks.Add(TestUtils.MineNext(_blocks[2]));
-            _blocks.Add(TestUtils.MineNext(_blocks[3]));
+            _blocks.Add(TestUtils.MineNext(_blocks[0], _policy.GetHashAlgorithm));
+            _blocks.Add(TestUtils.MineNext(_blocks[1], _policy.GetHashAlgorithm));
+            _blocks.Add(TestUtils.MineNext(_blocks[2], _policy.GetHashAlgorithm));
+            _blocks.Add(TestUtils.MineNext(_blocks[3], _policy.GetHashAlgorithm));
         }
 
         [IterationSetup(Targets = new[] {"BroadcastBlock", "BroadcastBlockWithoutFill"})]
@@ -55,7 +56,9 @@ namespace Libplanet.Benchmarks
             _blockChains = new BlockChain<DumbAction>[SwarmNumber];
             _swarms = new Swarm<DumbAction>[SwarmNumber];
 
-            var genesisBlock = BlockChain<DumbAction>.MakeGenesisBlock();
+            var genesisBlock = BlockChain<DumbAction>.MakeGenesisBlock(
+                _blockChains[SwarmNumber].Policy.GetHashAlgorithm(0)
+            );
             var tasks = new List<Task>();
             for (int i = 0; i < SwarmNumber; i++)
             {

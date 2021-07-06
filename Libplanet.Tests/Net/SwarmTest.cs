@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using Bencodex.Types;
@@ -714,10 +715,11 @@ namespace Libplanet.Tests.Net
 
             // Creates a block that will make chain 2's total difficulty is higher than chain 1's.
             var block3 = TestUtils.MineNext(
-                    chain2.Tip,
-                    difficulty: (long)chain1.Tip.TotalDifficulty + 1,
-                    blockInterval: TimeSpan.FromMilliseconds(1))
-                .AttachStateRootHash(chain2.StateStore, chain2.Policy.BlockAction);
+                chain2.Tip,
+                policy2.GetHashAlgorithm,
+                difficulty: (long)chain1.Tip.TotalDifficulty + 1,
+                blockInterval: TimeSpan.FromMilliseconds(1)
+            ).AttachStateRootHash(chain2.StateStore, policy2);
             chain2.Append(block3);
             try
             {
@@ -814,10 +816,11 @@ namespace Libplanet.Tests.Net
             long nextDifficulty =
                 (long)chain1.Tip.TotalDifficulty + policy.GetNextBlockDifficulty(chain2);
             var block = TestUtils.MineNext(
-                    chain2.Tip,
-                    difficulty: nextDifficulty,
-                    blockInterval: TimeSpan.FromMilliseconds(1))
-                .AttachStateRootHash(chain2.StateStore, policy.BlockAction);
+                chain2.Tip,
+                policy.GetHashAlgorithm,
+                difficulty: nextDifficulty,
+                blockInterval: TimeSpan.FromMilliseconds(1)
+            ).AttachStateRootHash(chain2.StateStore, policy);
             chain2.Append(block);
 
             Assert.True(chain1.Tip.Index > chain2.Tip.Index);
@@ -1211,8 +1214,9 @@ namespace Libplanet.Tests.Net
             var actionsA = new[] { new DumbAction(signerAddress, "1") };
             var actionsB = new[] { new DumbAction(signerAddress, "2") };
 
-            var genesisBlockA = BlockChain<DumbAction>.MakeGenesisBlock(actionsA, privateKeyA);
-            var genesisBlockB = BlockChain<DumbAction>.MakeGenesisBlock(actionsB, privateKeyB);
+            HashAlgorithmType alg = HashAlgorithmType.Of<SHA256>();
+            var genesisBlockA = BlockChain<DumbAction>.MakeGenesisBlock(alg, actionsA, privateKeyA);
+            var genesisBlockB = BlockChain<DumbAction>.MakeGenesisBlock(alg, actionsB, privateKeyB);
 
             BlockChain<DumbAction> MakeGenesisChain(
                 IStore store, IStateStore stateStore, Block<DumbAction> genesisBlock) =>
@@ -1416,15 +1420,14 @@ namespace Libplanet.Tests.Net
 
             receiver.FindNextHashesChunkSize = 8;
             sender.FindNextHashesChunkSize = 8;
+            BlockChain<DumbAction> chain = sender.BlockChain;
 
             for (int i = 0; i < 6; i++)
             {
                 Block<DumbAction> block =
-                    TestUtils.MineNext(sender.BlockChain.Tip, difficulty: 1024)
-                        .AttachStateRootHash(
-                            sender.BlockChain.StateStore,
-                            sender.BlockChain.Policy.BlockAction);
-                sender.BlockChain.Append(block);
+                    TestUtils.MineNext(chain.Tip, chain.Policy.GetHashAlgorithm, difficulty: 1024)
+                        .AttachStateRootHash(chain.StateStore, chain.Policy);
+                chain.Append(block);
             }
 
             Log.Debug("Sender's BlockChain Tip index: #{index}", sender.BlockChain.Tip.Index);
@@ -1457,15 +1460,14 @@ namespace Libplanet.Tests.Net
 
             receiver.FindNextHashesChunkSize = 2;
             sender.FindNextHashesChunkSize = 2;
+            BlockChain<DumbAction> chain = sender.BlockChain;
 
             for (int i = 0; i < 6; i++)
             {
                 Block<DumbAction> block =
-                    TestUtils.MineNext(sender.BlockChain.Tip, difficulty: 1024)
-                        .AttachStateRootHash(
-                            sender.BlockChain.StateStore,
-                            sender.BlockChain.Policy.BlockAction);
-                sender.BlockChain.Append(block);
+                    TestUtils.MineNext(chain.Tip, chain.Policy.GetHashAlgorithm, difficulty: 1024)
+                        .AttachStateRootHash(chain.StateStore, chain.Policy);
+                chain.Append(block);
             }
 
             Log.Debug("Sender's BlockChain Tip index: #{index}", sender.BlockChain.Tip.Index);
@@ -1499,11 +1501,10 @@ namespace Libplanet.Tests.Net
             await StartAsync(sender1);
             await StartAsync(sender2);
 
+            BlockChain<DumbAction> chain = receiver.BlockChain;
             Block<DumbAction> b1 =
-                TestUtils.MineNext(receiver.BlockChain.Genesis, difficulty: 1024)
-                    .AttachStateRootHash(
-                        sender1.BlockChain.StateStore,
-                        sender1.BlockChain.Policy.BlockAction);
+                TestUtils.MineNext(chain.Genesis, chain.Policy.GetHashAlgorithm, difficulty: 1024)
+                    .AttachStateRootHash(sender1.BlockChain.StateStore, chain.Policy);
 
             try
             {

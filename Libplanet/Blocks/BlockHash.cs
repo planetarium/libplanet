@@ -1,8 +1,9 @@
 #nullable enable
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
-using System.Numerics;
+using System.Linq;
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using Libplanet.Serialization;
@@ -10,21 +11,41 @@ using Libplanet.Serialization;
 namespace Libplanet.Blocks
 {
     /// <summary>
-    /// A value type to represent block hash bytes which is derived <see cref="Block{T}"/> data.
+    /// A value type to represent SHA-256 digest of <see cref="Block{T}"/> data.
     /// </summary>
     /// <seealso cref="Block{T}.Hash"/>
     [Serializable]
     public readonly struct BlockHash : ISerializable, IEquatable<BlockHash>
     {
+        /// <summary>
+        /// The size of bytes that each <see cref="BlockHash"/> consists of.
+        /// </summary>
+        public const int Size = 32;
+
+        private static readonly ImmutableArray<byte> _defaultByteArray =
+            new byte[32].ToImmutableArray();
+
         private readonly ImmutableArray<byte> _byteArray;
 
         /// <summary>
         /// Converts an immutable <see cref="byte"/> array into a <see cref="BlockHash"/>.
         /// </summary>
         /// <param name="blockHash">An immutable <see cref="byte"/> array that encodes
-        /// a <see cref="BlockHash"/>.</param>
-        public BlockHash(ImmutableArray<byte> blockHash) =>
+        /// a SHA-256 digest of a <see cref="Block{T}"/>.</param>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when the given
+        /// <paramref name="blockHash"/>'s <see cref="ImmutableArray{T}.Length"/> is not 32.
+        /// </exception>
+        public BlockHash(ImmutableArray<byte> blockHash)
+        {
+            if (blockHash.Length != Size)
+            {
+                string message =
+                    $"{nameof(BlockHash)} must be {Size} bytes, but {blockHash.Length} was given.";
+                throw new ArgumentOutOfRangeException(nameof(blockHash), message);
+            }
+
             _byteArray = blockHash;
+        }
 
         /// <summary>
         /// Converts a <see cref="byte"/> array into a <see cref="BlockHash"/>.
@@ -33,6 +54,9 @@ namespace Libplanet.Blocks
         /// a <see cref="BlockHash"/>.</param>
         /// <exception cref="ArgumentNullException">Thrown when the given
         /// <paramref name="blockHash"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when the given
+        /// <paramref name="blockHash"/>'s <see cref="ImmutableArray{T}.Length"/> is not 32.
+        /// </exception>
         public BlockHash(byte[] blockHash)
             : this((blockHash ?? throw new ArgumentNullException(nameof(blockHash)))
                 .ToImmutableArray())
@@ -51,14 +75,7 @@ namespace Libplanet.Blocks
         /// instead.</remarks>
         /// <seealso cref="ToByteArray()"/>
         public ImmutableArray<byte> ByteArray =>
-            _byteArray.IsDefault ? ImmutableArray<byte>.Empty : _byteArray;
-
-        /// <summary>
-        /// The length of the block hash in bytes.
-        /// </summary>
-        [Pure]
-        public int BytesLength =>
-            _byteArray.IsDefault ? 0 : _byteArray.Length;
+            _byteArray.IsDefault ? _defaultByteArray : _byteArray;
 
         /// <summary>
         /// Converts a given hexadecimal representation of a block hash into
@@ -73,51 +90,33 @@ namespace Libplanet.Blocks
         /// <paramref name="hex"/> string is an odd number.</exception>
         /// <exception cref="FormatException">Thrown when the given <paramref name="hex"/> string
         /// is not a valid hexadecimal string.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when the given
+        /// <paramref name="hex"/>'s length is not 64.</exception>
         /// <seealso cref="ToString()"/>
         [Pure]
         public static BlockHash FromString(string hex) =>
             new BlockHash(ByteUtil.ParseHex(hex ?? throw new ArgumentNullException(nameof(hex))));
 
         /// <summary>
-        /// Converts a given <see cref="HashDigest{T}"/> value into a <see cref="BlockHash"/> value.
+        /// Converts a given <see cref="HashDigest{SHA256}"/> into a <see cref="BlockHash"/> value.
         /// </summary>
-        /// <param name="hashDigest">A hash digest.</param>
-        /// <typeparam name="T">The hash algorithm.</typeparam>
+        /// <param name="hashDigest">A SHA-256 digest.</param>
         /// <returns>A block hash corresponding to the <paramref name="hashDigest"/>.</returns>
         [Pure]
-        public static BlockHash FromHashDigest<T>(HashDigest<T> hashDigest)
-            where T : HashAlgorithm
+        public static BlockHash FromHashDigest(HashDigest<SHA256> hashDigest)
             => new BlockHash(hashDigest.ByteArray);
 
         /// <summary>
-        /// Tests if a block hash is less than the target computed for the given
-        /// <paramref name="difficulty"/>).
+        /// Computes a SHA-256 digest from the given <paramref name="blockBytes"/>.
         /// </summary>
-        /// <param name="difficulty">The difficulty to compute target number.</param>
-        /// <returns><c>true</c> only if a digest is less than the target computed for the given
-        /// <paramref name="difficulty"/>).  If <paramref name="difficulty"/> is <c>0</c> it always
-        /// returns <c>true</c>.</returns>
+        /// <param name="blockBytes">The bytes serializing a block to compute its hash.</param>
+        /// <returns>The SHA-256 hash digest derived from <paramref name="blockBytes"/>.</returns>
         [Pure]
-        public bool Satisfies(long difficulty)
+        public static BlockHash DeriveFrom(IReadOnlyList<byte> blockBytes)
         {
-            if (difficulty == 0)
-            {
-                return true;
-            }
-            else if (_byteArray.IsDefaultOrEmpty)
-            {
-                return false;
-            }
-
-            var maxTargetBytes = new byte[_byteArray.Length + 1];
-            maxTargetBytes[_byteArray.Length] = 0x01;
-            var maxTarget = new BigInteger(maxTargetBytes);
-            BigInteger target = maxTarget / difficulty;
-
-            // Add zero to convert unsigned BigInteger
-            var result = new BigInteger(_byteArray.Add(0).ToBuilder().ToArray());
-
-            return result < target;
+            SHA256 sha256 = SHA256.Create();
+            byte[] digest = sha256.ComputeHash(blockBytes is byte[] b ? b : blockBytes.ToArray());
+            return new BlockHash(digest);
         }
 
         /// <summary>

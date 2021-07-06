@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Numerics;
+using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using Bencodex.Types;
@@ -113,10 +114,9 @@ namespace Libplanet.Tests.Net
             {
                 Block<DumbAction> block = TestUtils.MineNext(
                         previousBlock: i == 0 ? minerChain.Genesis : blocks[i - 1],
+                        hashAlgorithmGetter: minerChain.Policy.GetHashAlgorithm,
                         difficulty: 1024)
-                    .AttachStateRootHash(
-                        minerChain.StateStore,
-                        minerChain.Policy.BlockAction);
+                    .AttachStateRootHash(minerChain.StateStore, minerChain.Policy);
                 blocks.Add(block);
                 if (i != 10)
                 {
@@ -325,10 +325,11 @@ namespace Libplanet.Tests.Net
 
                 var block = TestUtils.MineNext(
                         minerChain.Tip,
+                        minerChain.Policy.GetHashAlgorithm,
                         new[] { tx },
                         difficulty: policy.GetNextBlockDifficulty(minerChain),
-                        blockInterval: TimeSpan.FromSeconds(1))
-                    .AttachStateRootHash(minerChain.StateStore, minerChain.Policy.BlockAction);
+                        blockInterval: TimeSpan.FromSeconds(1)
+                ).AttachStateRootHash(minerChain.StateStore, minerChain.Policy);
                 minerSwarm.BlockChain.Append(block, DateTimeOffset.UtcNow, false, true, false);
 
                 await receiverSwarm.PreloadAsync(TimeSpan.FromSeconds(1));
@@ -792,8 +793,11 @@ namespace Libplanet.Tests.Net
 
             long nextDifficulty = (long)minerChain1.Tip.TotalDifficulty +
                                   minerChain2.Policy.GetNextBlockDifficulty(minerChain2);
-            var block = TestUtils.MineNext(minerChain2.Tip, difficulty: nextDifficulty)
-                .AttachStateRootHash(minerChain2.StateStore, minerChain2.Policy.BlockAction);
+            var block = TestUtils.MineNext(
+                minerChain2.Tip,
+                minerChain2.Policy.GetHashAlgorithm,
+                difficulty: nextDifficulty
+            ).AttachStateRootHash(minerChain2.StateStore, minerChain2.Policy);
             minerChain2.Append(block);
 
             Assert.True(minerChain1.Count > minerChain2.Count);
@@ -824,6 +828,7 @@ namespace Libplanet.Tests.Net
         {
             var minerAddress = new PrivateKey().ToAddress();
             var policy = new BlockPolicy<DumbAction>();
+            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             var genesisBlock1 = new Block<DumbAction>(
                 0,
                 0,
@@ -832,7 +837,9 @@ namespace Libplanet.Tests.Net
                 minerAddress,
                 null,
                 DateTimeOffset.MinValue,
-                ImmutableArray<Transaction<DumbAction>>.Empty);
+                ImmutableArray<Transaction<DumbAction>>.Empty,
+                hashAlgorithm
+            );
             var genesisBlock2 = new Block<DumbAction>(
                 0,
                 0,
@@ -841,7 +848,9 @@ namespace Libplanet.Tests.Net
                 minerAddress,
                 null,
                 DateTimeOffset.MinValue,
-                ImmutableArray<Transaction<DumbAction>>.Empty);
+                ImmutableArray<Transaction<DumbAction>>.Empty,
+                hashAlgorithm
+            );
 
             BlockChain<DumbAction> MakeBlockChain(Block<DumbAction> genesisBlock) =>
                 TestUtils.MakeBlockChain(

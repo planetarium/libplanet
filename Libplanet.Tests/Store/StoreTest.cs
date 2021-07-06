@@ -86,7 +86,8 @@ namespace Libplanet.Tests.Store
         public void DeleteChainId()
         {
             Block<DumbAction> block1 = TestUtils.MineNext(
-                TestUtils.MineGenesis<DumbAction>(),
+                TestUtils.MineGenesis<DumbAction>(Fx.GetHashAlgorithm),
+                Fx.GetHashAlgorithm,
                 new[] { Fx.Transaction1 });
             Fx.Store.AppendIndex(Fx.StoreChainId, block1.Hash);
             Guid arbitraryChainId = Guid.NewGuid();
@@ -995,7 +996,7 @@ namespace Libplanet.Tests.Store
 
             // We need `Block<T>`s because `IStore` can't retrive index(long) by block hash without
             // actual block...
-            Block<DumbAction> anotherBlock3 = TestUtils.MineNext(Fx.Block2);
+            Block<DumbAction> anotherBlock3 = TestUtils.MineNext(Fx.Block2, Fx.GetHashAlgorithm);
             store.PutBlock(Fx.GenesisBlock);
             store.PutBlock(Fx.Block1);
             store.PutBlock(Fx.Block2);
@@ -1095,6 +1096,7 @@ namespace Libplanet.Tests.Store
                 // NOTE: it depends on that Block<T>.CurrentProtocolVersion is not 0.
                 Block<DumbAction> block = TestUtils.MineNext(
                     genesisBlock,
+                    fx.GetHashAlgorithm,
                     protocolVersion: 0);
 
                 fx.Store.PutBlock(block);
