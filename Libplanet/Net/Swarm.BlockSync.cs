@@ -172,14 +172,9 @@ namespace Libplanet.Net
                 var canonComparer = BlockChain.Policy.CanonicalChainComparer;
                 if (synced is { } syncedB
                     && !syncedB.Id.Equals(blockChain?.Id)
-                    && (!(blockChain.Tip is { } tip && syncedB.Tip is { } syncedTip)
-                        || canonComparer.Compare(
-                            blockChain.PerceiveBlock(tip),
-                            blockChain.PerceiveBlock(
-                                syncedTip,
-                                syncedB.PerceiveBlock(syncedTip).PerceivedTime
-                            )
-                        ) < 0
+                    && (canonComparer.Compare(
+                        blockChain.PerceiveBlock(blockChain.Tip),
+                        blockChain.PerceiveBlock(syncedB.Tip)) < 0
                     )
                 )
                 {

@@ -261,6 +261,8 @@ To be released.
  -  (Libplanet.RocksDBStore) Fixed a bug where `RocksDBStore.GetBlock<T>()`
     and `RocksDBStore.GetTransaction<T>()` handn't returned expected values
     in multithreading environment.  [[#1339], [#1342]]
+ -  Fixed a bug where chain synchronization had been incorrectly updated with
+    an improper chain.  [[#1349], [#1350]]
  -  Fixed a bug where `Swarm<T>` hadn't respond immediately under load.
     [[#1360]]
 
@@ -321,6 +323,8 @@ To be released.
 [#1342]: https://github.com/planetarium/libplanet/pull/1342
 [#1343]: https://github.com/planetarium/libplanet/pull/1343
 [#1348]: https://github.com/planetarium/libplanet/pull/1348
+[#1349]: https://github.com/planetarium/libplanet/issues/1349
+[#1350]: https://github.com/planetarium/libplanet/pull/1350
 [#1351]: https://github.com/planetarium/libplanet/pull/1351
 [#1360]: https://github.com/planetarium/libplanet/pull/1360
 
