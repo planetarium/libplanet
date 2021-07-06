@@ -282,6 +282,8 @@ To be released.
     to retrieve the data from the store.  [[#1316], [#1340]]
  -  Added `planet store build-index-tx-block` commands
     to build index from TxId to BlockHash.  [[#1316], [#1340]]
+ -  Added `planet stats summary` command to retrieve a state summary of a
+    stored chain in a CSV format.  [[#1353]]
 
 [#1156]: https://github.com/planetarium/libplanet/issues/1156
 [#1192]: https://github.com/planetarium/libplanet/issues/1192
@@ -326,6 +328,7 @@ To be released.
 [#1349]: https://github.com/planetarium/libplanet/issues/1349
 [#1350]: https://github.com/planetarium/libplanet/pull/1350
 [#1351]: https://github.com/planetarium/libplanet/pull/1351
+[#1353]: https://github.com/planetarium/libplanet/pull/1353
 [#1360]: https://github.com/planetarium/libplanet/pull/1360
 
 

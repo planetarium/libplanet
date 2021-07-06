@@ -11,6 +11,7 @@ namespace Libplanet.Tools
     [HasSubCommands(typeof(KeyCommand), "key", Description = "Manage private keys.")]
     [HasSubCommands(typeof(MptCommand), "mpt", Description = "Merkle Patricia Trie utilities.")]
     [HasSubCommands(typeof(StoreCommand), "store", Description = "Store utilities.")]
+    [HasSubCommands(typeof(StatsCommand), "stats", Description = "Stats utilities.")]
     public class Program
     {
         private static readonly string FileConfigurationServiceRoot = Path.Combine(
