@@ -14,11 +14,19 @@ To be released.
 
 ### Added APIs
 
+ -  Added `Transaction<T>.CreateUnsigned()` method.  [[#1378]]
+
 ### Behavioral changes
+
+ -  `Transaction<T>.Validate()` became to throw `InvalidTxSignatureException`
+    if the transaction was not signed.  [[#1378]]
 
 ### Bug fixes
 
 ### CLI tools
+
+[#1378]: https://github.com/planetarium/libplanet/pull/1378
+
 
 Version 0.12.0
 --------------
