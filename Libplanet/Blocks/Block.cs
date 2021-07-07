@@ -523,8 +523,8 @@ namespace Libplanet.Blocks
             ImmutableArray<byte> preEvaluationHash)
         {
             return protocolVersion > 1
-                ? OrderTxsForEvaluationV2(protocolVersion, txs, preEvaluationHash)
-                : OrderTxsForEvaluationV0(protocolVersion, txs, preEvaluationHash);
+                ? OrderTxsForEvaluationV2(txs, preEvaluationHash)
+                : OrderTxsForEvaluationV0(txs, preEvaluationHash);
         }
 
         /// <summary>
@@ -607,7 +607,6 @@ namespace Libplanet.Blocks
         }
 
         private static IEnumerable<Transaction<T>> OrderTxsForEvaluationV0(
-            int protocolVersion,
             IEnumerable<Transaction<T>> txs,
             ImmutableArray<byte> preEvaluationHash)
         {
@@ -629,16 +628,21 @@ namespace Libplanet.Blocks
         }
 
         private static IEnumerable<Transaction<T>> OrderTxsForEvaluationV2(
-            int protocolVersion,
             IEnumerable<Transaction<T>> txs,
             ImmutableArray<byte> preEvaluationHash)
         {
             using SHA256 sha256 = SHA256.Create();
-            var mask = new BigInteger(sha256.ComputeHash(preEvaluationHash.ToBuilder().ToArray()));
-            var numShiftBits = sizeof(long) * 8;
+            var maskInteger = new BigInteger(
+                sha256.ComputeHash(preEvaluationHash.ToBuilder().ToArray()));
 
-            return txs.OrderBy(tx =>
-                ((new BigInteger(tx.Signer.ToByteArray()) ^ mask) << numShiftBits) + tx.Nonce);
+            // Transactions with the same signers are grouped first and the ordering of the groups
+            // is determined by the signer's address with XOR bitmask applied using
+            // the pre-evaluation hash provided.  Then within each group, transactions
+            // are ordered by nonce.
+            return txs
+                .GroupBy(tx => tx.Signer)
+                .OrderBy(group => maskInteger ^ new BigInteger(group.Key.ToByteArray()))
+                .SelectMany(group => group.OrderBy(tx => tx.Nonce));
         }
 
         private readonly struct BlockSerializationContext
