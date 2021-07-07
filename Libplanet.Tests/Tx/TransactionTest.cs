@@ -94,6 +94,22 @@ namespace Libplanet.Tests.Tx
         }
 
         [Fact]
+        public void CreateUnsigned()
+        {
+            var tx =
+                Transaction<PolymorphicAction<BaseAction>>.CreateUnsigned(
+                    0,
+                    _fx.PublicKey1,
+                    null,
+                    _fx.TxWithActions.Actions);
+            Assert.Empty(tx.Signature);
+            Assert.Equal(
+                new[] { _fx.Address1 }.ToImmutableHashSet(),
+                tx.UpdatedAddresses
+            );
+        }
+
+        [Fact]
         public void CreateWithDefaultUpdatedAddresses()
         {
             Transaction<DumbAction> emptyTx = Transaction<DumbAction>.Create(
