@@ -39,8 +39,8 @@ namespace Libplanet.Blocks
         /// See also <see cref="Difficulty"/>.</param>
         /// <param name="nonce">The nonce which satisfy the given <paramref name="difficulty"/> with
         /// any other field values.  Goes to the <see cref="Nonce"/>.</param>
-        /// <param name="miner">An optional address refers to who mines this block.
-        /// Goes to the <see cref="Miner"/>.</param>
+        /// <param name="miner">The <see cref="Address"/> of the miner of this block. Goes to the
+        /// <see cref="Miner"/>.</param>
         /// <param name="previousHash">The previous block's <see cref="Hash"/>.  If it's a genesis
         /// block (i.e., <paramref name="index"/> is 0) this should be <c>null</c>.
         /// Goes to the <see cref="PreviousHash"/>.</param>
@@ -387,7 +387,7 @@ namespace Libplanet.Blocks
         /// <see cref="Nonce"/>.</param>
         /// <param name="previousTotalDifficulty">The total difficulty until the previous
         /// <see cref="Block{T}"/>.</param>
-        /// <param name="miner">The <see cref="Address"/> of miner that mined the block.</param>
+        /// <param name="miner">The <see cref="Address"/> of miner that mines the block.</param>
         /// <param name="previousHash">
         /// The <see cref="HashDigest{SHA256}"/> of previous block.
         /// </param>

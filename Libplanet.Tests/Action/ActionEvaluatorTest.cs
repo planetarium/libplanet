@@ -223,11 +223,11 @@ namespace Libplanet.Tests.Action
                 ? new AccountStateDeltaImpl(
                     ActionEvaluator<DumbAction>.NullAccountStateGetter,
                     ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
-                    genesis.Miner.GetValueOrDefault())
+                    genesis.Miner)
                 : new AccountStateDeltaImplV0(
                     ActionEvaluator<DumbAction>.NullAccountStateGetter,
                     ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
-                    genesis.Miner.GetValueOrDefault());
+                    genesis.Miner);
 
             // ToList() is required for realization.
             chain.ActionEvaluator.EvaluateTx(
