@@ -29,6 +29,7 @@ namespace Libplanet.Tests.Net.Transports
                     listenPort,
                     iceServers,
                     differentAppProtocolVersionEncountered,
+                    minimumBroadcastTarget,
                     messageLifespan
                 )
                 => CreateNetMQTransport(
@@ -41,6 +42,7 @@ namespace Libplanet.Tests.Net.Transports
                     listenPort,
                     iceServers,
                     differentAppProtocolVersionEncountered,
+                    minimumBroadcastTarget,
                     messageLifespan);
 
             const string outputTemplate =
@@ -103,6 +105,7 @@ namespace Libplanet.Tests.Net.Transports
             int? listenPort = null,
             IEnumerable<IceServer> iceServers = null,
             DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered = null,
+            int minimumBroadcastTarget = 10,
             TimeSpan? messageLifespan = null
         )
         {
@@ -120,6 +123,7 @@ namespace Libplanet.Tests.Net.Transports
                 listenPort,
                 iceServers,
                 differentAppProtocolVersionEncountered,
+                minimumBroadcastTarget,
                 messageLifespan);
         }
 
@@ -133,6 +137,7 @@ namespace Libplanet.Tests.Net.Transports
             int? listenPort,
             IEnumerable<IceServer> iceServers,
             DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered,
+            int minimumBroadcastTarget,
             TimeSpan? messageLifespan
         )
         {
@@ -146,6 +151,7 @@ namespace Libplanet.Tests.Net.Transports
                 listenPort,
                 iceServers,
                 differentAppProtocolVersionEncountered,
+                minimumBroadcastTarget,
                 messageLifespan);
         }
     }
