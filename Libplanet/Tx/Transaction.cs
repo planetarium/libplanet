@@ -648,7 +648,7 @@ namespace Libplanet.Tx
         /// <see cref="Transaction{T}.PublicKey"/>.</exception>
         public void Validate()
         {
-            if (!PublicKey.Verify(Serialize(false), Signature))
+            if (Signature.Length == 0 || !PublicKey.Verify(Serialize(false), Signature))
             {
                 string message =
                     $"The signature ({ByteUtil.Hex(Signature)}) is failed " +

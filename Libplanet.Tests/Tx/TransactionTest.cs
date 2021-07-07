@@ -564,6 +564,18 @@ namespace Libplanet.Tests.Tx
         }
 
         [Fact]
+        public void DetectUnsignedTransaction()
+        {
+            Transaction<DumbAction> tx = Transaction<DumbAction>.CreateUnsigned(
+                0,
+                _fx.PublicKey1,
+                null,
+                new DumbAction[0]);
+
+            Assert.Throws<InvalidTxSignatureException>(() => tx.Validate());
+        }
+
+        [Fact]
         public void DetectBadSignature()
         {
             var rawTx = _fx.Tx.ToRawTransaction(true);
