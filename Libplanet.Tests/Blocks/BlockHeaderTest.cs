@@ -26,7 +26,7 @@ namespace Libplanet.Tests.Blocks
                 difficulty: _fx.Genesis.Difficulty,
                 totalDifficulty: _fx.Genesis.TotalDifficulty,
                 nonce: _fx.Genesis.Nonce.ByteArray,
-                miner: _fx.Genesis.Miner?.ByteArray ?? ImmutableArray<byte>.Empty,
+                miner: _fx.Genesis.Miner.ByteArray,
                 hash: _fx.Genesis.Hash.ByteArray,
                 txHash: _fx.Genesis.TxHash?.ByteArray ?? ImmutableArray<byte>.Empty,
                 previousHash: _fx.Genesis.PreviousHash?.ByteArray ?? ImmutableArray<byte>.Empty,
@@ -53,7 +53,7 @@ namespace Libplanet.Tests.Blocks
                 )
                 .Add(BlockHeader.NonceKey, _fx.Genesis.Nonce.ToByteArray())
                 .Add(BlockHeader.HashKey, _fx.Genesis.Hash.ToByteArray())
-                .Add(BlockHeader.MinerKey, _fx.Genesis.Miner?.ToByteArray() ?? new byte[0])
+                .Add(BlockHeader.MinerKey, _fx.Genesis.Miner.ToByteArray())
                 .Add(BlockHeader.PreEvaluationHashKey, _fx.Genesis.PreEvaluationHash.ToArray());
             Assert.Equal(expected, header.ToBencodex());
             Assert.Equal(expected, new BlockHeader(expected).ToBencodex());
@@ -66,7 +66,7 @@ namespace Libplanet.Tests.Blocks
                 difficulty: _fx.Next.Difficulty,
                 totalDifficulty: _fx.Next.TotalDifficulty,
                 nonce: _fx.Next.Nonce.ByteArray,
-                miner: ImmutableArray<byte>.Empty,
+                miner: _fx.Next.Miner.ByteArray,
                 hash: _fx.Next.Hash.ByteArray,
                 txHash: randomHash,
                 previousHash: _fx.Genesis.Hash.ByteArray,
@@ -93,6 +93,7 @@ namespace Libplanet.Tests.Blocks
                     (IValue)new Bencodex.Types.Integer(_fx.Next.TotalDifficulty)
                 )
                 .Add(BlockHeader.NonceKey, _fx.Next.Nonce.ToByteArray())
+                .Add(BlockHeader.MinerKey, _fx.Next.Miner.ToByteArray())
                 .Add(BlockHeader.HashKey, _fx.Next.Hash.ToByteArray())
                 .Add(BlockHeader.PreviousHashKey, _fx.Genesis.Hash.ToByteArray())
                 .Add(BlockHeader.TxHashKey, randomHash.ToArray())
@@ -117,7 +118,7 @@ namespace Libplanet.Tests.Blocks
                 difficulty: _fx.Genesis.Difficulty,
                 totalDifficulty: _fx.Genesis.TotalDifficulty,
                 nonce: _fx.Genesis.Nonce.ByteArray,
-                miner: _fx.Genesis.Miner?.ByteArray ?? ImmutableArray<byte>.Empty,
+                miner: _fx.Genesis.Miner.ByteArray,
                 hash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
                 txHash: _fx.Genesis.TxHash?.ByteArray ?? ImmutableArray<byte>.Empty,
                 previousHash: _fx.Genesis.PreviousHash?.ByteArray ?? ImmutableArray<byte>.Empty,
@@ -142,7 +143,7 @@ namespace Libplanet.Tests.Blocks
                 difficulty: _fx.Next.Difficulty,
                 totalDifficulty: _fx.Next.TotalDifficulty,
                 nonce: _fx.Next.Nonce.ByteArray,
-                miner: _fx.Next.Miner?.ByteArray ?? ImmutableArray<byte>.Empty,
+                miner: _fx.Next.Miner.ByteArray,
                 hash: _fx.Next.Hash.ByteArray,
                 txHash: _fx.Next.TxHash?.ByteArray ?? ImmutableArray<byte>.Empty,
                 previousHash: _fx.Next.PreviousHash?.ByteArray ?? ImmutableArray<byte>.Empty,
@@ -164,7 +165,7 @@ namespace Libplanet.Tests.Blocks
                 difficulty: _fx.Next.Difficulty,
                 totalDifficulty: _fx.Next.TotalDifficulty,
                 nonce: _fx.Next.Nonce.ByteArray,
-                miner: _fx.Next.Miner?.ByteArray ?? ImmutableArray<byte>.Empty,
+                miner: _fx.Next.Miner.ByteArray,
                 hash: _fx.Next.Hash.ByteArray,
                 txHash: _fx.Next.TxHash?.ByteArray ?? ImmutableArray<byte>.Empty,
                 previousHash: _fx.Next.PreviousHash?.ByteArray ?? ImmutableArray<byte>.Empty,
@@ -219,7 +220,7 @@ namespace Libplanet.Tests.Blocks
                 difficulty: long.MaxValue,
                 totalDifficulty: _fx.Genesis.TotalDifficulty + long.MaxValue,
                 nonce: _fx.Next.Nonce.ByteArray,
-                miner: _fx.Next.Miner?.ByteArray ?? ImmutableArray<byte>.Empty,
+                miner: _fx.Next.Miner.ByteArray,
                 hash: _fx.Next.Hash.ByteArray,
                 txHash: _fx.Next.TxHash?.ByteArray ?? ImmutableArray<byte>.Empty,
                 previousHash: _fx.Next.PreviousHash?.ByteArray ?? ImmutableArray<byte>.Empty,
@@ -244,7 +245,7 @@ namespace Libplanet.Tests.Blocks
                 difficulty: _fx.Next.Difficulty,
                 totalDifficulty: _fx.Next.TotalDifficulty,
                 nonce: _fx.Next.Nonce.ByteArray,
-                miner: _fx.Next.Miner?.ByteArray ?? ImmutableArray<byte>.Empty,
+                miner: _fx.Next.Miner.ByteArray,
                 hash: _fx.Next.Hash.ByteArray,
                 txHash: _fx.Next.TxHash?.ByteArray ?? ImmutableArray<byte>.Empty,
                 previousHash: _fx.Next.PreviousHash?.ByteArray ?? ImmutableArray<byte>.Empty,

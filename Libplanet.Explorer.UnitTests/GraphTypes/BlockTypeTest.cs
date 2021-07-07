@@ -55,7 +55,7 @@ namespace Libplanet.Explorer.UnitTests.GraphTypes
                 block.TotalDifficulty,
                 resultData["totalDifficulty"]);
             Assert.Equal(
-                block.Miner?.ToString(),
+                block.Miner.ToString(),
                 resultData["miner"]);
             Assert.Equal(
                 ByteUtil.Hex(block.Nonce.ToByteArray()),

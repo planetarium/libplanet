@@ -138,7 +138,7 @@ namespace Libplanet.Tests.Blockchain
                 renderActions: false
             );
 
-            var minerAddress = genesis.Miner.GetValueOrDefault();
+            var minerAddress = genesis.Miner;
 
             var expectedStates = new Dictionary<Address, IValue>
             {

@@ -21,7 +21,7 @@ namespace Libplanet.Tests.Blockchain
                 _fx.GetHashAlgorithm(1),
                 1024,
                 _fx.GenesisBlock.TotalDifficulty,
-                _fx.GenesisBlock.Miner.Value,
+                _fx.GenesisBlock.Miner,
                 _fx.GenesisBlock.Hash,
                 _fx.GenesisBlock.Timestamp.AddDays(1),
                 _emptyTransaction
@@ -38,7 +38,7 @@ namespace Libplanet.Tests.Blockchain
                 _fx.GetHashAlgorithm(1),
                 1024,
                 _fx.GenesisBlock.TotalDifficulty,
-                _fx.GenesisBlock.Miner.Value,
+                _fx.GenesisBlock.Miner,
                 _fx.GenesisBlock.Hash,
                 _fx.GenesisBlock.Timestamp.AddDays(1),
                 _emptyTransaction,
@@ -51,7 +51,7 @@ namespace Libplanet.Tests.Blockchain
                 _fx.GetHashAlgorithm(2),
                 1024,
                 block1.TotalDifficulty,
-                _fx.GenesisBlock.Miner.Value,
+                _fx.GenesisBlock.Miner,
                 block1.Hash,
                 _fx.GenesisBlock.Timestamp.AddDays(1),
                 _emptyTransaction,
@@ -66,7 +66,7 @@ namespace Libplanet.Tests.Blockchain
                     _fx.GetHashAlgorithm(2),
                     1024,
                     block1.TotalDifficulty,
-                    _fx.GenesisBlock.Miner.Value,
+                    _fx.GenesisBlock.Miner,
                     block1.Hash,
                     _fx.GenesisBlock.Timestamp.AddDays(1),
                     _emptyTransaction,
@@ -87,7 +87,7 @@ namespace Libplanet.Tests.Blockchain
                 _fx.GetHashAlgorithm(prev.Index),
                 1,
                 prev.TotalDifficulty,
-                prev.Miner.Value,
+                prev.Miner,
                 prev.Hash,
                 prev.Timestamp.AddSeconds(1),
                 _emptyTransaction
@@ -101,7 +101,7 @@ namespace Libplanet.Tests.Blockchain
                 _fx.GetHashAlgorithm(prev.Index + 2),
                 1,
                 prev.TotalDifficulty,
-                prev.Miner.Value,
+                prev.Miner,
                 prev.Hash,
                 prev.Timestamp.AddSeconds(1),
                 _emptyTransaction
@@ -121,7 +121,7 @@ namespace Libplanet.Tests.Blockchain
                 _fx.GetHashAlgorithm(2),
                 1,
                 _validNext.TotalDifficulty,
-                _fx.GenesisBlock.Miner.Value,
+                _fx.GenesisBlock.Miner,
                 _validNext.Hash,
                 _validNext.Timestamp.AddSeconds(1),
                 _emptyTransaction
@@ -140,7 +140,7 @@ namespace Libplanet.Tests.Blockchain
                 _fx.GetHashAlgorithm(2),
                 _policy.GetNextBlockDifficulty(_blockChain),
                 _validNext.TotalDifficulty - 1,
-                _fx.GenesisBlock.Miner.Value,
+                _fx.GenesisBlock.Miner,
                 _validNext.Hash,
                 _validNext.Timestamp.AddSeconds(1),
                 _emptyTransaction
@@ -159,7 +159,7 @@ namespace Libplanet.Tests.Blockchain
                 _fx.GetHashAlgorithm(2),
                 1032,
                 _validNext.TotalDifficulty,
-                _fx.GenesisBlock.Miner.Value,
+                _fx.GenesisBlock.Miner,
                 new BlockHash(new byte[32]),
                 _validNext.Timestamp.AddSeconds(1),
                 _emptyTransaction);
@@ -177,7 +177,7 @@ namespace Libplanet.Tests.Blockchain
                 _fx.GetHashAlgorithm(2),
                 1032,
                 _validNext.TotalDifficulty,
-                _fx.GenesisBlock.Miner.Value,
+                _fx.GenesisBlock.Miner,
                 _validNext.Hash,
                 _validNext.Timestamp.Subtract(TimeSpan.FromSeconds(1)),
                 _emptyTransaction);
@@ -211,7 +211,7 @@ namespace Libplanet.Tests.Blockchain
                 policy.GetHashAlgorithm(1),
                 1024,
                 genesisBlock.TotalDifficulty,
-                genesisBlock.Miner.Value,
+                genesisBlock.Miner,
                 genesisBlock.Hash,
                 genesisBlock.Timestamp.AddSeconds(1),
                 _emptyTransaction
@@ -225,7 +225,7 @@ namespace Libplanet.Tests.Blockchain
                 policy.GetHashAlgorithm(2),
                 1032,
                 validNext.TotalDifficulty,
-                genesisBlock.Miner.Value,
+                genesisBlock.Miner,
                 validNext.Hash,
                 validNext.Timestamp.AddSeconds(1),
                 _emptyTransaction);

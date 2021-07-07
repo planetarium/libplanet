@@ -72,7 +72,7 @@ namespace Libplanet.Blocks
             long difficulty,
             BigInteger totalDifficulty,
             Nonce nonce,
-            Address? miner,
+            Address miner,
             BlockHash? previousHash,
             DateTimeOffset timestamp,
             IReadOnlyList<Transaction<T>> transactions,
@@ -202,7 +202,7 @@ namespace Libplanet.Blocks
                 rb.Header.Difficulty,
                 rb.Header.TotalDifficulty,
                 new Nonce(rb.Header.Nonce.ToArray()),
-                rb.Header.Miner.Any() ? new Address(rb.Header.Miner) : (Address?)null,
+                new Address(rb.Header.Miner),
                 rb.Header.PreviousHash.Any()
                     ? new BlockHash(rb.Header.PreviousHash)
                     : (BlockHash?)null,
@@ -233,7 +233,7 @@ namespace Libplanet.Blocks
             long difficulty,
             BigInteger totalDifficulty,
             Nonce nonce,
-            Address? miner,
+            Address miner,
             BlockHash? previousHash,
             DateTimeOffset timestamp,
             HashDigest<SHA256>? txHash,
@@ -304,7 +304,7 @@ namespace Libplanet.Blocks
         public Nonce Nonce { get; }
 
         [IgnoreDuringEquals]
-        public Address? Miner { get; }
+        public Address Miner { get; }
 
         /// <summary>
         /// The <see cref="Hash"/> of its previous block.
@@ -359,7 +359,7 @@ namespace Libplanet.Blocks
                     index: Index,
                     timestamp: timestampAsString,
                     nonce: Nonce.ToByteArray().ToImmutableArray(),
-                    miner: Miner?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty,
+                    miner: Miner.ToByteArray().ToImmutableArray(),
                     difficulty: Difficulty,
                     totalDifficulty: TotalDifficulty,
                     previousHash: previousHashAsArray,
