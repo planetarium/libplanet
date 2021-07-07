@@ -513,6 +513,7 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void OrderTxsForEvaluation()
         {
+            const int protocolVersion = 1;
             const int numSigners = 5;
             const int numTxsPerSigner = 3;
 
@@ -558,6 +559,7 @@ namespace Libplanet.Tests.Blocks
             BlockHash blockHash = new BlockHash(preEvaluationHashBytes);
 
             var orderedTxs = Block<RandomAction>.OrderTxsForEvaluation(
+                protocolVersion: protocolVersion,
                 txs: txs,
                 preEvaluationHash: blockHash).ToImmutableArray();
 
