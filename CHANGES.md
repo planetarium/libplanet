@@ -294,12 +294,9 @@ To be released.
 [#1325]: https://github.com/planetarium/libplanet/pull/1325
 [#1339]: https://github.com/planetarium/libplanet/issues/1339
 [#1342]: https://github.com/planetarium/libplanet/pull/1342
-<<<<<<< HEAD
-=======
 [#1343]: https://github.com/planetarium/libplanet/pull/1343
 [#1348]: https://github.com/planetarium/libplanet/pull/1348
 [#1351]: https://github.com/planetarium/libplanet/pull/1351
->>>>>>> 301f6160... Merge pull request #1351 from longfin/feature/block-broadcaster
 
 
 Version 0.11.1
