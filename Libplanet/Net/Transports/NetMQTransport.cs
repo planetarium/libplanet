@@ -38,6 +38,7 @@ namespace Libplanet.Net.Transports
         private readonly IList<IceServer> _iceServers;
         private readonly ILogger _logger;
         private readonly TimeSpan? _messageLifespan;
+        private readonly int _minimumBroadcastTarget;
 
         private NetMQQueue<NetMQMessage> _replyQueue;
         private NetMQQueue<(Address?, Message)> _broadcastQueue;
@@ -105,6 +106,9 @@ namespace Libplanet.Net.Transports
         /// If this callback returns <c>false</c>, an encountered peer is ignored.  If this callback
         /// is omitted, all peers with different <see cref="AppProtocolVersion"/>s are ignored.
         /// </param>
+        /// <param name="minimumBroadcastTarget">
+        /// The number of minimum peers to broadcast messages.
+        /// </param>
         /// <param name="messageLifespan">
         /// The lifespan of a message.
         /// Messages generated before this value from the current time are ignored.
@@ -121,6 +125,7 @@ namespace Libplanet.Net.Transports
             int? listenPort,
             IEnumerable<IceServer> iceServers,
             DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered,
+            int minimumBroadcastTarget,
             TimeSpan? messageLifespan = null)
         {
             Running = false;
@@ -132,6 +137,7 @@ namespace Libplanet.Net.Transports
             _listenPort = listenPort;
             _differentAppProtocolVersionEncountered = differentAppProtocolVersionEncountered;
             _table = table;
+            _minimumBroadcastTarget = minimumBroadcastTarget;
             _messageLifespan = messageLifespan;
 
             if (_host != null && _listenPort is int listenPortAsInt)
@@ -608,7 +614,8 @@ namespace Libplanet.Net.Transports
                 (Address? except, Message msg) = e.Queue.Dequeue();
 
                 // FIXME Should replace with PUB/SUB model.
-                IReadOnlyList<BoundPeer> peers = _table.PeersToBroadcast(except);
+                IReadOnlyList<BoundPeer> peers =
+                    _table.PeersToBroadcast(except, _minimumBroadcastTarget);
                 _logger.Debug("Broadcasting message: {Message} as {AsPeer}", msg, AsPeer);
                 _logger.Debug("Peers to broadcast: {PeersCount}", peers.Count);
 

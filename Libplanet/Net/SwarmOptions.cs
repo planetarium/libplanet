@@ -75,5 +75,11 @@ namespace Libplanet.Net
         /// using an approximated value.
         /// </summary>
         public int BranchpointThreshold { get; set; } = 10;
+
+        /// <summary>
+        /// The minimum number to select from routing table when broadcast messages.
+        /// It is 10 by default.
+        /// </summary>
+        public int MinimumBroadcastTarget { get; set; } = 10;
     }
 }
