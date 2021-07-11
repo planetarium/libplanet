@@ -189,7 +189,7 @@ To be released.
     [[#1294], [#1328]]
  -  Added `IStore.IterateTxIdBlockHashIndex(TxId)` method.  [[#1294], [#1328]]
  -  Parameter `miner` for `Block<T>()` and `Block<T>.Mine()` can no longer be
-    `null`.  [[1341]]
+    `null`.  [[#1341]]
  -  `Swarm<T>.StartAsync()` method became to receive `broadcastBlockInterval`
     (or `millisecondsBroadcastBlockInterval`) parameter.  [[#1351]]
  -  Added the parameter `minimumBroadcastTarget` to `NetMQTransport()`
