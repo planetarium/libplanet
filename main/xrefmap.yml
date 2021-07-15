@@ -11956,6 +11956,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.SwarmOptions.MessageLifespan
   nameWithType: SwarmOptions.MessageLifespan
+- uid: Libplanet.Net.SwarmOptions.MinimumBroadcastTarget
+  name: MinimumBroadcastTarget
+  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_MinimumBroadcastTarget
+  commentId: P:Libplanet.Net.SwarmOptions.MinimumBroadcastTarget
+  fullName: Libplanet.Net.SwarmOptions.MinimumBroadcastTarget
+  nameWithType: SwarmOptions.MinimumBroadcastTarget
+- uid: Libplanet.Net.SwarmOptions.MinimumBroadcastTarget*
+  name: MinimumBroadcastTarget
+  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_MinimumBroadcastTarget_
+  commentId: Overload:Libplanet.Net.SwarmOptions.MinimumBroadcastTarget
+  isSpec: "True"
+  fullName: Libplanet.Net.SwarmOptions.MinimumBroadcastTarget
+  nameWithType: SwarmOptions.MinimumBroadcastTarget
 - uid: Libplanet.Net.SwarmOptions.RecentStateRecvTimeout
   name: RecentStateRecvTimeout
   href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_RecentStateRecvTimeout
@@ -12212,15 +12225,15 @@ references:
   commentId: T:Libplanet.Net.Transports.NetMQTransport
   fullName: Libplanet.Net.Transports.NetMQTransport
   nameWithType: NetMQTransport
-- uid: Libplanet.Net.Transports.NetMQTransport.#ctor(Libplanet.Net.Protocols.RoutingTable,Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,IImmutableSet{Libplanet.Crypto.PublicKey},System.Int32,System.String,System.Nullable{System.Int32},System.Collections.Generic.IEnumerable{Libplanet.Net.IceServer},Libplanet.Net.DifferentAppProtocolVersionEncountered,System.Nullable{System.TimeSpan})
-  name: NetMQTransport(RoutingTable, PrivateKey, AppProtocolVersion, IImmutableSet<PublicKey>, Int32, String, Nullable<Int32>, IEnumerable<IceServer>, DifferentAppProtocolVersionEncountered, Nullable<TimeSpan>)
-  href: api/Libplanet.Net.Transports.NetMQTransport.html#Libplanet_Net_Transports_NetMQTransport__ctor_Libplanet_Net_Protocols_RoutingTable_Libplanet_Crypto_PrivateKey_Libplanet_Net_AppProtocolVersion_IImmutableSet_Libplanet_Crypto_PublicKey__System_Int32_System_String_System_Nullable_System_Int32__System_Collections_Generic_IEnumerable_Libplanet_Net_IceServer__Libplanet_Net_DifferentAppProtocolVersionEncountered_System_Nullable_System_TimeSpan__
-  commentId: M:Libplanet.Net.Transports.NetMQTransport.#ctor(Libplanet.Net.Protocols.RoutingTable,Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,IImmutableSet{Libplanet.Crypto.PublicKey},System.Int32,System.String,System.Nullable{System.Int32},System.Collections.Generic.IEnumerable{Libplanet.Net.IceServer},Libplanet.Net.DifferentAppProtocolVersionEncountered,System.Nullable{System.TimeSpan})
-  name.vb: NetMQTransport(RoutingTable, PrivateKey, AppProtocolVersion, IImmutableSet(Of PublicKey), Int32, String, Nullable(Of Int32), IEnumerable(Of IceServer), DifferentAppProtocolVersionEncountered, Nullable(Of TimeSpan))
-  fullName: Libplanet.Net.Transports.NetMQTransport.NetMQTransport(Libplanet.Net.Protocols.RoutingTable, Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersion, IImmutableSet<Libplanet.Crypto.PublicKey>, System.Int32, System.String, System.Nullable<System.Int32>, System.Collections.Generic.IEnumerable<Libplanet.Net.IceServer>, Libplanet.Net.DifferentAppProtocolVersionEncountered, System.Nullable<System.TimeSpan>)
-  fullName.vb: Libplanet.Net.Transports.NetMQTransport.NetMQTransport(Libplanet.Net.Protocols.RoutingTable, Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersion, IImmutableSet(Of Libplanet.Crypto.PublicKey), System.Int32, System.String, System.Nullable(Of System.Int32), System.Collections.Generic.IEnumerable(Of Libplanet.Net.IceServer), Libplanet.Net.DifferentAppProtocolVersionEncountered, System.Nullable(Of System.TimeSpan))
-  nameWithType: NetMQTransport.NetMQTransport(RoutingTable, PrivateKey, AppProtocolVersion, IImmutableSet<PublicKey>, Int32, String, Nullable<Int32>, IEnumerable<IceServer>, DifferentAppProtocolVersionEncountered, Nullable<TimeSpan>)
-  nameWithType.vb: NetMQTransport.NetMQTransport(RoutingTable, PrivateKey, AppProtocolVersion, IImmutableSet(Of PublicKey), Int32, String, Nullable(Of Int32), IEnumerable(Of IceServer), DifferentAppProtocolVersionEncountered, Nullable(Of TimeSpan))
+- uid: Libplanet.Net.Transports.NetMQTransport.#ctor(Libplanet.Net.Protocols.RoutingTable,Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,IImmutableSet{Libplanet.Crypto.PublicKey},System.Int32,System.String,System.Nullable{System.Int32},System.Collections.Generic.IEnumerable{Libplanet.Net.IceServer},Libplanet.Net.DifferentAppProtocolVersionEncountered,System.Int32,System.Nullable{System.TimeSpan})
+  name: NetMQTransport(RoutingTable, PrivateKey, AppProtocolVersion, IImmutableSet<PublicKey>, Int32, String, Nullable<Int32>, IEnumerable<IceServer>, DifferentAppProtocolVersionEncountered, Int32, Nullable<TimeSpan>)
+  href: api/Libplanet.Net.Transports.NetMQTransport.html#Libplanet_Net_Transports_NetMQTransport__ctor_Libplanet_Net_Protocols_RoutingTable_Libplanet_Crypto_PrivateKey_Libplanet_Net_AppProtocolVersion_IImmutableSet_Libplanet_Crypto_PublicKey__System_Int32_System_String_System_Nullable_System_Int32__System_Collections_Generic_IEnumerable_Libplanet_Net_IceServer__Libplanet_Net_DifferentAppProtocolVersionEncountered_System_Int32_System_Nullable_System_TimeSpan__
+  commentId: M:Libplanet.Net.Transports.NetMQTransport.#ctor(Libplanet.Net.Protocols.RoutingTable,Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,IImmutableSet{Libplanet.Crypto.PublicKey},System.Int32,System.String,System.Nullable{System.Int32},System.Collections.Generic.IEnumerable{Libplanet.Net.IceServer},Libplanet.Net.DifferentAppProtocolVersionEncountered,System.Int32,System.Nullable{System.TimeSpan})
+  name.vb: NetMQTransport(RoutingTable, PrivateKey, AppProtocolVersion, IImmutableSet(Of PublicKey), Int32, String, Nullable(Of Int32), IEnumerable(Of IceServer), DifferentAppProtocolVersionEncountered, Int32, Nullable(Of TimeSpan))
+  fullName: Libplanet.Net.Transports.NetMQTransport.NetMQTransport(Libplanet.Net.Protocols.RoutingTable, Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersion, IImmutableSet<Libplanet.Crypto.PublicKey>, System.Int32, System.String, System.Nullable<System.Int32>, System.Collections.Generic.IEnumerable<Libplanet.Net.IceServer>, Libplanet.Net.DifferentAppProtocolVersionEncountered, System.Int32, System.Nullable<System.TimeSpan>)
+  fullName.vb: Libplanet.Net.Transports.NetMQTransport.NetMQTransport(Libplanet.Net.Protocols.RoutingTable, Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersion, IImmutableSet(Of Libplanet.Crypto.PublicKey), System.Int32, System.String, System.Nullable(Of System.Int32), System.Collections.Generic.IEnumerable(Of Libplanet.Net.IceServer), Libplanet.Net.DifferentAppProtocolVersionEncountered, System.Int32, System.Nullable(Of System.TimeSpan))
+  nameWithType: NetMQTransport.NetMQTransport(RoutingTable, PrivateKey, AppProtocolVersion, IImmutableSet<PublicKey>, Int32, String, Nullable<Int32>, IEnumerable<IceServer>, DifferentAppProtocolVersionEncountered, Int32, Nullable<TimeSpan>)
+  nameWithType.vb: NetMQTransport.NetMQTransport(RoutingTable, PrivateKey, AppProtocolVersion, IImmutableSet(Of PublicKey), Int32, String, Nullable(Of Int32), IEnumerable(Of IceServer), DifferentAppProtocolVersionEncountered, Int32, Nullable(Of TimeSpan))
 - uid: Libplanet.Net.Transports.NetMQTransport.#ctor*
   name: NetMQTransport
   href: api/Libplanet.Net.Transports.NetMQTransport.html#Libplanet_Net_Transports_NetMQTransport__ctor_
