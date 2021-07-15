@@ -147,6 +147,7 @@ namespace Libplanet.Net
                 listenPort,
                 iceServers,
                 differentAppProtocolVersionEncountered,
+                Options.MinimumBroadcastTarget,
                 Options.MessageLifespan);
             Transport.ProcessMessageHandler += ProcessMessageHandler;
             PeerDiscovery = new KademliaProtocol(RoutingTable, Transport, Address);

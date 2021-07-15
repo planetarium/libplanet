@@ -24,7 +24,7 @@ namespace Libplanet.Tests.Net.Transports
 
         protected Func<RoutingTable, PrivateKey, AppProtocolVersion, IImmutableSet<PublicKey>,
             string, int?, IEnumerable<IceServer>, DifferentAppProtocolVersionEncountered,
-            TimeSpan?, ITransport>
+            int, TimeSpan?, ITransport>
             TransportConstructor { get; set; }
 
         [SkippableFact(Timeout = Timeout)]
@@ -256,6 +256,7 @@ namespace Libplanet.Tests.Net.Transports
             int? listenPort = null,
             IEnumerable<IceServer> iceServers = null,
             DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered = null,
+            int minimumBroadcastTarget = 10,
             TimeSpan? messageLifespan = null
         )
         {
@@ -277,6 +278,7 @@ namespace Libplanet.Tests.Net.Transports
                 listenPort,
                 iceServers ?? Enumerable.Empty<IceServer>(),
                 differentAppProtocolVersionEncountered,
+                minimumBroadcastTarget,
                 messageLifespan);
         }
 
@@ -289,6 +291,7 @@ namespace Libplanet.Tests.Net.Transports
             int? listenPort = null,
             IEnumerable<IceServer> iceServers = null,
             DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered = null,
+            int minimumBroadcastTarget = 10,
             TimeSpan? messageLifespan = null
         )
         {
@@ -309,6 +312,7 @@ namespace Libplanet.Tests.Net.Transports
                 listenPort,
                 iceServers ?? Enumerable.Empty<IceServer>(),
                 differentAppProtocolVersionEncountered,
+                minimumBroadcastTarget,
                 messageLifespan);
         }
     }

@@ -190,6 +190,8 @@ To be released.
  -  Added `IStore.IterateTxIdBlockHashIndex(TxId)` method.  [[#1294], [#1328]]
  -  `Swarm<T>.StartAsync()` method became to receive `broadcastBlockInterval`
     (or `millisecondsBroadcastBlockInterval`) parameter.  [[#1351]]
+ -  Added the parameter `minimumBroadcastTarget` to `NetMQTransport()`
+    constructor.  [[#1379]]
 
 ### Backward-incompatible network protocol changes
 
@@ -225,6 +227,7 @@ To be released.
  -  Added `Currency.Serialize()` method.  [[#1289]]
  -  Added `ByteUtil.TimingSafelyCompare()` method.  [[#1314], [#1352]]
  -  Added `ByteUtil.Satisfies()` method.  [[#1314], [#1352]]
+ -  Added `SwarmOptions.MinimumBroadcastTarget` property.  [[#1379]]
 
 ### Behavioral changes
 
@@ -364,6 +367,7 @@ To be released.
 [#1352]: https://github.com/planetarium/libplanet/pull/1352
 [#1353]: https://github.com/planetarium/libplanet/pull/1353
 [#1360]: https://github.com/planetarium/libplanet/pull/1360
+[#1379]: https://github.com/planetarium/libplanet/pull/1379
 
 
 Version 0.11.1
