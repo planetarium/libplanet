@@ -396,7 +396,7 @@ namespace Libplanet.Tx
         /// the given <paramref name="privateKey"/>.</returns>
         /// <exception cref="ArgumentNullException">Thrown when <c>null</c>
         /// is passed to <paramref name="privateKey"/> or
-        /// or <paramref name="actions"/>.
+        /// <paramref name="actions"/>.
         /// </exception>
         public static Transaction<T> Create(
             long nonce,
