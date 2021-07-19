@@ -227,6 +227,7 @@ To be released.
  -  Added `Currency.Serialize()` method.  [[#1289]]
  -  Added `ByteUtil.TimingSafelyCompare()` method.  [[#1314], [#1352]]
  -  Added `ByteUtil.Satisfies()` method.  [[#1314], [#1352]]
+ -  Added `BlockChain<T>.ExecuteActions()` method.  [[#1368]]
  -  Added `SwarmOptions.MinimumBroadcastTarget` property.  [[#1379]]
 
 ### Behavioral changes
@@ -367,6 +368,7 @@ To be released.
 [#1352]: https://github.com/planetarium/libplanet/pull/1352
 [#1353]: https://github.com/planetarium/libplanet/pull/1353
 [#1360]: https://github.com/planetarium/libplanet/pull/1360
+[#1368]: https://github.com/planetarium/libplanet/pull/1368
 [#1379]: https://github.com/planetarium/libplanet/pull/1379
 
 

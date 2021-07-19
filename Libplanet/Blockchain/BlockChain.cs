@@ -1130,6 +1130,95 @@ namespace Libplanet.Blockchain
             return StagePolicy.Iterate(this).Select(tx => tx.Id).ToImmutableHashSet();
         }
 
+        /// <summary>
+        /// Evaluates actions in the given <paramref name="block"/> and fills states with the
+        /// results.
+        /// </summary>
+        /// <param name="block">A block to execute.</param>
+        /// <param name="stateCompleters">The strategy to complement incomplete previous block
+        /// states.  <see cref="StateCompleterSet{T}.Recalculate"/> by default.
+        /// </param>
+        /// <returns>The result of action evaluations of the given <paramref name="block"/>.
+        /// </returns>
+        /// <remarks>This method is idempotent (except for rendering).  If the given
+        /// <paramref name="block"/> has executed before, it does not execute it nor mutate states.
+        /// Exposed as public for benchmarking.
+        /// </remarks>
+        public IReadOnlyList<ActionEvaluation> ExecuteActions(
+            Block<T> block,
+            StateCompleterSet<T>? stateCompleters = null
+        )
+        {
+            _logger.Debug(
+                "Evaluating actions in the block #{BlockIndex} {BlockHash}...",
+                block.Index,
+                block.Hash
+            );
+            IReadOnlyList<ActionEvaluation> evaluations = null;
+            DateTimeOffset evaluateActionStarted = DateTimeOffset.Now;
+            evaluations = ActionEvaluator.Evaluate(
+                block,
+                stateCompleters ?? StateCompleterSet<T>.Recalculate
+            );
+            const string evalEndMsg =
+                "Evaluated actions in the block #{BlockIndex} {BlockHash} " +
+                "(duration: {DurationMs}ms).";
+            double evalDuration = (DateTimeOffset.Now - evaluateActionStarted).TotalMilliseconds;
+            _logger.Debug(evalEndMsg, block.Index, block.Hash, evalDuration);
+
+            _rwlock.EnterWriteLock();
+            try
+            {
+                // Update states
+                DateTimeOffset setStatesStarted = DateTimeOffset.Now;
+                if (StateStore is TrieStateStore trieStateStore)
+                {
+                    var totalDelta =
+                        evaluations.GetTotalDelta(ToStateKey, ToFungibleAssetKey);
+                    const string deltaMsg =
+                        "Summarized the states delta made by the block #{BlockIndex} {BlockHash}." +
+                        "  Total {Keys} key(s) changed.";
+                    _logger.Debug(deltaMsg, block.Index, block.Hash, totalDelta.Count);
+
+                    HashDigest<SHA256> rootHash =
+                        trieStateStore.EvalState(block, totalDelta);
+                    const string rootHashMsg =
+                        "Calculated the root hash of the states made by the block #{BlockIndex} " +
+                        "{BlockHash} for " + nameof(TrieStateStore) + ": {StateRootHash}.";
+                    _logger.Debug(rootHashMsg, block.Index, block.Hash, rootHash);
+
+                    if (!rootHash.Equals(block.StateRootHash))
+                    {
+                        var message = $"The block #{block.Index} {block.Hash}'s state root hash " +
+                                      $"is {block.StateRootHash?.ToString()}, but the execution " +
+                                      $"result is {rootHash.ToString()}.";
+                        throw new InvalidBlockStateRootHashException(
+                            block.StateRootHash,
+                            rootHash,
+                            message);
+                    }
+
+                    trieStateStore.SetStates(block, rootHash);
+                }
+                else
+                {
+                    SetStates(block, evaluations);
+                }
+
+                const string endMsg =
+                    "Finished to update states affected by the block #{BlockIndex} {BlockHash} " +
+                    "(duration: {DurationMs}ms).";
+                double duration = (DateTimeOffset.Now - setStatesStarted).TotalMilliseconds;
+                _logger.Debug(endMsg, block.Index, block.Hash, duration);
+            }
+            finally
+            {
+                _rwlock.ExitWriteLock();
+            }
+
+            return evaluations;
+        }
+
 #pragma warning disable MEN003
         internal void Append(
             Block<T> block,
@@ -1436,94 +1525,6 @@ namespace Libplanet.Blockchain
             }
 
             return cnt;
-        }
-
-        /// <summary>
-        /// Evaluates actions in the given <paramref name="block"/> and fills states with the
-        /// results.
-        /// </summary>
-        /// <param name="block">A block to execute.</param>
-        /// <param name="stateCompleters">The strategy to complement incomplete previous block
-        /// states.  <see cref="StateCompleterSet{T}.Recalculate"/> by default.
-        /// </param>
-        /// <returns>The result of action evaluations of the given <paramref name="block"/>.
-        /// </returns>
-        /// <remarks>This method is idempotent (except for rendering).  If the given
-        /// <paramref name="block"/> has executed before, it does not execute it nor mutate states.
-        /// </remarks>
-        internal IReadOnlyList<ActionEvaluation> ExecuteActions(
-            Block<T> block,
-            StateCompleterSet<T>? stateCompleters = null
-        )
-        {
-            _logger.Debug(
-                "Evaluating actions in the block #{BlockIndex} {BlockHash}...",
-                block.Index,
-                block.Hash
-            );
-            IReadOnlyList<ActionEvaluation> evaluations = null;
-            DateTimeOffset evaluateActionStarted = DateTimeOffset.Now;
-            evaluations = ActionEvaluator.Evaluate(
-                block,
-                stateCompleters ?? StateCompleterSet<T>.Recalculate
-            );
-            const string evalEndMsg =
-                "Evaluated actions in the block #{BlockIndex} {BlockHash} " +
-                "(duration: {DurationMs}ms).";
-            double evalDuration = (DateTimeOffset.Now - evaluateActionStarted).TotalMilliseconds;
-            _logger.Debug(evalEndMsg, block.Index, block.Hash, evalDuration);
-
-            _rwlock.EnterWriteLock();
-            try
-            {
-                // Update states
-                DateTimeOffset setStatesStarted = DateTimeOffset.Now;
-                if (StateStore is TrieStateStore trieStateStore)
-                {
-                    var totalDelta =
-                        evaluations.GetTotalDelta(ToStateKey, ToFungibleAssetKey);
-                    const string deltaMsg =
-                        "Summarized the states delta made by the block #{BlockIndex} {BlockHash}." +
-                        "  Total {Keys} key(s) changed.";
-                    _logger.Debug(deltaMsg, block.Index, block.Hash, totalDelta.Count);
-
-                    HashDigest<SHA256> rootHash =
-                        trieStateStore.EvalState(block, totalDelta);
-                    const string rootHashMsg =
-                        "Calculated the root hash of the states made by the block #{BlockIndex} " +
-                        "{BlockHash} for " + nameof(TrieStateStore) + ": {StateRootHash}.";
-                    _logger.Debug(rootHashMsg, block.Index, block.Hash, rootHash);
-
-                    if (!rootHash.Equals(block.StateRootHash))
-                    {
-                        var message = $"The block #{block.Index} {block.Hash}'s state root hash " +
-                                      $"is {block.StateRootHash?.ToString()}, but the execution " +
-                                      $"result is {rootHash.ToString()}.";
-                        throw new InvalidBlockStateRootHashException(
-                            block.StateRootHash,
-                            rootHash,
-                            message);
-                    }
-
-                    trieStateStore.SetStates(block, rootHash);
-                }
-                else
-                {
-                    SetStates(block, evaluations);
-                }
-
-                const string endMsg =
-                    "Finished to update states affected by the block #{BlockIndex} {BlockHash} " +
-                    "(duration: {DurationMs}ms).";
-                double duration = (DateTimeOffset.Now - setStatesStarted).TotalMilliseconds;
-                _logger.Debug(endMsg, block.Index, block.Hash, duration);
-            }
-            finally
-            {
-                _rwlock.ExitWriteLock();
-            }
-
-            return evaluations;
         }
 
         /// <summary>
