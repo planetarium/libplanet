@@ -1179,7 +1179,7 @@ namespace Libplanet.Tests.Blockchain
                 chain.BlockHashes.Skip(addresses.Length).First(),
                 (bc, hash, addr) =>
                 {
-                    bc.ComplementBlockStates(hash);
+                    bc.RecalculateBlockStates(hash);
                     return new Text($"{bc.Id}/{hash}/{addr}: callback called");
                 }
             );
