@@ -1907,6 +1907,24 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Count
   nameWithType: BlockChain<T>.Count
   nameWithType.vb: BlockChain(Of T).Count
+- uid: Libplanet.Blockchain.BlockChain`1.ExecuteActions(Libplanet.Blocks.Block{`0},System.Nullable{Libplanet.Blockchain.StateCompleterSet{`0}})
+  name: ExecuteActions(Block<T>, Nullable<StateCompleterSet<T>>)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_ExecuteActions_Libplanet_Blocks_Block__0__System_Nullable_Libplanet_Blockchain_StateCompleterSet__0___
+  commentId: M:Libplanet.Blockchain.BlockChain`1.ExecuteActions(Libplanet.Blocks.Block{`0},System.Nullable{Libplanet.Blockchain.StateCompleterSet{`0}})
+  name.vb: ExecuteActions(Block(Of T), Nullable(Of StateCompleterSet(Of T)))
+  fullName: Libplanet.Blockchain.BlockChain<T>.ExecuteActions(Libplanet.Blocks.Block<T>, System.Nullable<Libplanet.Blockchain.StateCompleterSet<T>>)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).ExecuteActions(Libplanet.Blocks.Block(Of T), System.Nullable(Of Libplanet.Blockchain.StateCompleterSet(Of T)))
+  nameWithType: BlockChain<T>.ExecuteActions(Block<T>, Nullable<StateCompleterSet<T>>)
+  nameWithType.vb: BlockChain(Of T).ExecuteActions(Block(Of T), Nullable(Of StateCompleterSet(Of T)))
+- uid: Libplanet.Blockchain.BlockChain`1.ExecuteActions*
+  name: ExecuteActions
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_ExecuteActions_
+  commentId: Overload:Libplanet.Blockchain.BlockChain`1.ExecuteActions
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.BlockChain<T>.ExecuteActions
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).ExecuteActions
+  nameWithType: BlockChain<T>.ExecuteActions
+  nameWithType.vb: BlockChain(Of T).ExecuteActions
 - uid: Libplanet.Blockchain.BlockChain`1.Finalize
   name: Finalize()
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Finalize
