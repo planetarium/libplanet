@@ -26,6 +26,9 @@ namespace Libplanet.Blocks
         public const int CurrentProtocolVersion = BlockHeader.CurrentProtocolVersion;
 
         private int? _bytesLength = null;
+        private BlockHeader? _header = null;
+        private ImmutableArray<byte>? _preEvaluationHash = null;
+        private BlockHash? _hash = null;
 
         /// <summary>
         /// Creates a <see cref="Block{T}"/> instance by manually filling field values.
@@ -120,16 +123,16 @@ namespace Libplanet.Blocks
 
             if (preEvaluationHash is { })
             {
-                PreEvaluationHash = peh;
+                _preEvaluationHash = peh;
                 StateRootHash = srh;
-                Hash = BlockHash.DeriveFrom(Header.SerializeForHash());
+                _hash = BlockHash.DeriveFrom(Header.SerializeForHash());
             }
             else
             {
                 // FIXME: This only works due to sanity constraint on usage.
-                PreEvaluationHash = Header.PreEvaluationHash;
-                StateRootHash = srh;
-                Hash = BlockHash.DeriveFrom(Header.SerializeForHash());
+                _preEvaluationHash = Header.PreEvaluationHash;
+                StateRootHash = stateRootHash;
+                _hash = BlockHash.DeriveFrom(Header.SerializeForHash());
             }
 
             // As the order of transactions should be unpredictable until a block is mined,
@@ -213,27 +216,30 @@ namespace Libplanet.Blocks
                 ? new BlockHash(rawBlock.Header.PreviousHash)
                 : (BlockHash?)null;
             Timestamp = DateTimeOffset.ParseExact(
-                rawBlock.Header.Timestamp,
+                Header.Timestamp,
                 BlockHeader.TimestampFormat,
                 CultureInfo.InvariantCulture).ToUniversalTime();
-            TxHash = rawBlock.Header.TxHash.Any()
+            TxHash = Header.TxHash.Any()
                 ? new HashDigest<SHA256>(rawBlock.Header.TxHash)
                 : (HashDigest<SHA256>?)null;
+
+            // FIXME: Transactions should be re-ordered to properly validate StateRootHash.
+            // See also <https://github.com/planetarium/libplanet/issues/1299>.
             Transactions = rawBlock.Transactions
                 .Select(tx => Transaction<T>.Deserialize(tx.ToArray(), false))
                 .ToImmutableList();
 
-            PreEvaluationHash = rawBlock.Header.PreEvaluationHash.Any()
+            _preEvaluationHash = rawBlock.Header.PreEvaluationHash.Any()
                 ? rawBlock.Header.PreEvaluationHash
-                : throw new ArgumentNullException(nameof(Header.PreEvaluationHash));
+                : throw new ArgumentException(nameof(rawBlock.Header));
 
-            // See also: https://github.com/planetarium/libplanet/pull/1116#discussion_r535836480
             // FIXME: we should convert `StateRootHash`'s type to `HashDisgest<SHA256>` after
             // removing `IBlockStateStore`.
+            // See also <https://github.com/planetarium/libplanet/pull/1116#discussion_r535836480>.
             StateRootHash = rawBlock.Header.StateRootHash.Any()
                 ? new HashDigest<SHA256>(rawBlock.Header.StateRootHash)
                 : (HashDigest<SHA256>?)null;
-            Hash = new BlockHash(rawBlock.Header.Hash);
+            _hash = new BlockHash(rawBlock.Header.Hash);
         }
 
         /// <summary>
@@ -248,7 +254,14 @@ namespace Libplanet.Blocks
         /// </summary>
         /// <seealso cref="PreEvaluationHash"/>
         /// <seealso cref="StateRootHash"/>
-        public BlockHash Hash { get; }
+        public BlockHash Hash
+        {
+            get
+            {
+                return _hash
+                    ?? throw new InvalidOperationException("Hash is not set.");
+            }
+        }
 
         /// <summary>
         /// The hash derived from the block <em>except of</em>
@@ -257,7 +270,8 @@ namespace Libplanet.Blocks
         /// </summary>
         /// <seealso cref="Nonce"/>
         /// <seealso cref="BlockHeader.Validate"/>
-        public ImmutableArray<byte> PreEvaluationHash { get; }
+        public ImmutableArray<byte> PreEvaluationHash => _preEvaluationHash
+            ?? throw new InvalidOperationException("PreEvaluationHash is not set.");
 
         /// <summary>
         /// The <see cref="ITrie.Hash"/> of the states on the block.
@@ -314,32 +328,48 @@ namespace Libplanet.Blocks
         [IgnoreDuringEquals]
         public BlockHeader Header
         {
+            // FIXME: Even though old implicit logic in the constructor is made slightly more
+            // explicit, this is still hard to understand and problematic.  Should be
+            // refactored further.
+            // See also <https://github.com/planetarium/libplanet/issues/1164>.
             get
             {
-                string timestampAsString = Timestamp.ToString(
-                    BlockHeader.TimestampFormat,
-                    CultureInfo.InvariantCulture
-                );
-                ImmutableArray<byte> previousHashAsArray =
-                    PreviousHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty;
-                ImmutableArray<byte> stateRootHashAsArray =
-                    StateRootHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty;
-
+#pragma warning disable SA1118
                 // FIXME: When hash is not assigned, should throw an exception.
-                return new BlockHeader(
-                    protocolVersion: ProtocolVersion,
-                    index: Index,
-                    timestamp: timestampAsString,
-                    nonce: Nonce.ToByteArray().ToImmutableArray(),
-                    miner: Miner.ToByteArray().ToImmutableArray(),
-                    difficulty: Difficulty,
-                    totalDifficulty: TotalDifficulty,
-                    previousHash: previousHashAsArray,
-                    txHash: TxHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty,
-                    hash: Hash.ToByteArray().ToImmutableArray(),
-                    preEvaluationHash: PreEvaluationHash,
-                    stateRootHash: stateRootHashAsArray
-                );
+                return _header
+                    ?? (_preEvaluationHash is null
+                        ? (BlockHeader)(_header = new BlockHeader(
+                            protocolVersion: ProtocolVersion,
+                            index: Index,
+                            timestamp: Timestamp.ToString(
+                                BlockHeader.TimestampFormat,
+                                CultureInfo.InvariantCulture),
+                            nonce: Nonce.ToByteArray().ToImmutableArray(),
+                            miner: Miner.ToByteArray().ToImmutableArray(),
+                            difficulty: Difficulty,
+                            totalDifficulty: TotalDifficulty,
+                            previousHash: PreviousHash?.ToByteArray().ToImmutableArray()
+                                ?? ImmutableArray<byte>.Empty,
+                            txHash: TxHash?.ToByteArray().ToImmutableArray()
+                                ?? ImmutableArray<byte>.Empty))
+                        : (BlockHeader)(_header = new BlockHeader(
+                            protocolVersion: ProtocolVersion,
+                            index: Index,
+                            timestamp: Timestamp.ToString(
+                                BlockHeader.TimestampFormat,
+                                CultureInfo.InvariantCulture),
+                            nonce: Nonce.ToByteArray().ToImmutableArray(),
+                            miner: Miner.ToByteArray().ToImmutableArray(),
+                            difficulty: Difficulty,
+                            totalDifficulty: TotalDifficulty,
+                            previousHash: PreviousHash?.ToByteArray().ToImmutableArray()
+                                ?? ImmutableArray<byte>.Empty,
+                            txHash: TxHash?.ToByteArray().ToImmutableArray()
+                                ?? ImmutableArray<byte>.Empty,
+                            preEvaluationHash: PreEvaluationHash,
+                            stateRootHash: StateRootHash?.ToByteArray().ToImmutableArray()
+                                ?? ImmutableArray<byte>.Empty)));
+#pragma warning restore SA1118
             }
         }
 
