@@ -28,8 +28,8 @@ namespace Libplanet.Blocks
         private int? _bytesLength = null;
 
         /// <summary>
-        /// Creates a <see cref="Block{T}"/> instance by manually filling all field values.
-        /// For a more automated way, see also <see cref="Mine"/> method.
+        /// Creates a <see cref="Block{T}"/> instance by manually filling field values.
+        /// For a more automated way, see also the <see cref="Mine"/> method.
         /// </summary>
         /// <param name="index">The height of the block to create.  Goes to the <see cref="Index"/>.
         /// </param>
@@ -60,12 +60,17 @@ namespace Libplanet.Blocks
         /// </param>
         /// <param name="protocolVersion">The protocol version. <see cref="CurrentProtocolVersion"/>
         /// by default.</param>
-        /// <exception cref="ArgumentNullException">Thrown when both
-        /// <paramref name="hashAlgorithm"/> and <paramref name="preEvaluationHash"/> are omitted.
+        /// <exception cref="ArgumentException">Thrown when either both
+        /// <paramref name="hashAlgorithm"/> and <paramref name="preEvaluationHash"/> are present
+        /// or both are missing.
+        /// <exception cref="ArgumentException">Thrown when the null-ness of
+        /// <paramref name="preEvaluationHash"/> and <paramref name="stateRootHash"/> do not match.
         /// </exception>
-        /// <exception cref="ArgumentException">Thrown when both <paramref name="hashAlgorithm"/>
-        /// and <paramref name="preEvaluationHash"/>, which are mutually exclusive, are present.
         /// </exception>
+        /// <remarks>
+        /// Due to historic reasons, there is non-trivial implicit logic embedded inside this
+        /// constructor.  It is strongly recommended to use <see cref="Mine"/> instead.
+        /// </remarks>
         /// <seealso cref="Mine"/>
         public Block(
             long index,
@@ -92,7 +97,7 @@ namespace Libplanet.Blocks
             {
                 throw new ArgumentException(
                     $"Exactly one of {nameof(hashAlgorithm)} " +
-                    $"and {nameof(preEvaluationHash)} must be null.");
+                    $"and {nameof(preEvaluationHash)} should be provided as non-null.");
             }
 
             if (preEvaluationHash is { } ^ stateRootHash is { } srh)
@@ -196,74 +201,39 @@ namespace Libplanet.Blocks
         {
         }
 
-        private Block(RawBlock rb)
-            : this(
-#pragma warning disable SA1118
-                rb.Header.ProtocolVersion,
-                new BlockHash(rb.Header.Hash),
-                rb.Header.Index,
-                rb.Header.Difficulty,
-                rb.Header.TotalDifficulty,
-                new Nonce(rb.Header.Nonce.ToArray()),
-                new Address(rb.Header.Miner),
-                rb.Header.PreviousHash.Any()
-                    ? new BlockHash(rb.Header.PreviousHash)
-                    : (BlockHash?)null,
-                DateTimeOffset.ParseExact(
-                    rb.Header.Timestamp,
-                    BlockHeader.TimestampFormat,
-                    CultureInfo.InvariantCulture).ToUniversalTime(),
-                rb.Header.TxHash.Any()
-                    ? new HashDigest<SHA256>(rb.Header.TxHash)
-                    : (HashDigest<SHA256>?)null,
-                rb.Transactions
-                    .Select(tx => Transaction<T>.Deserialize(tx.ToArray(), false))
-                    .ToList(),
-                rb.Header.PreEvaluationHash.Any()
-                    ? rb.Header.PreEvaluationHash
-                    : (ImmutableArray<byte>?)null,
-                rb.Header.StateRootHash.Any()
-                    ? new HashDigest<SHA256>(rb.Header.StateRootHash)
-                    : (HashDigest<SHA256>?)null)
-#pragma warning restore SA1118
+        private Block(RawBlock rawBlock)
         {
-        }
+            ProtocolVersion = rawBlock.Header.ProtocolVersion;
+            Index = rawBlock.Header.Index;
+            Difficulty = rawBlock.Header.Difficulty;
+            TotalDifficulty = rawBlock.Header.TotalDifficulty;
+            Nonce = new Nonce(rawBlock.Header.Nonce.ToArray());
+            Miner = new Address(rawBlock.Header.Miner);
+            PreviousHash = rawBlock.Header.PreviousHash.Any()
+                ? new BlockHash(rawBlock.Header.PreviousHash)
+                : (BlockHash?)null;
+            Timestamp = DateTimeOffset.ParseExact(
+                rawBlock.Header.Timestamp,
+                BlockHeader.TimestampFormat,
+                CultureInfo.InvariantCulture).ToUniversalTime();
+            TxHash = rawBlock.Header.TxHash.Any()
+                ? new HashDigest<SHA256>(rawBlock.Header.TxHash)
+                : (HashDigest<SHA256>?)null;
+            Transactions = rawBlock.Transactions
+                .Select(tx => Transaction<T>.Deserialize(tx.ToArray(), false))
+                .ToImmutableList();
 
-        private Block(
-            int protocolVersion,
-            BlockHash hash,
-            long index,
-            long difficulty,
-            BigInteger totalDifficulty,
-            Nonce nonce,
-            Address miner,
-            BlockHash? previousHash,
-            DateTimeOffset timestamp,
-            HashDigest<SHA256>? txHash,
-            IReadOnlyList<Transaction<T>> transactions,
-            ImmutableArray<byte>? preEvaluationHash,
-            HashDigest<SHA256>? stateRootHash
-        )
-        {
-            ProtocolVersion = protocolVersion;
-            Index = index;
-            Difficulty = difficulty;
-            TotalDifficulty = totalDifficulty;
-            Nonce = nonce;
-            Miner = miner;
-            PreviousHash = previousHash;
-            Timestamp = timestamp;
-            Hash = hash;
-            PreEvaluationHash = preEvaluationHash ??
-                throw new ArgumentNullException(nameof(preEvaluationHash));
+            PreEvaluationHash = rawBlock.Header.PreEvaluationHash.Any()
+                ? rawBlock.Header.PreEvaluationHash
+                : throw new ArgumentNullException(nameof(Header.PreEvaluationHash));
 
             // See also: https://github.com/planetarium/libplanet/pull/1116#discussion_r535836480
             // FIXME: we should convert `StateRootHash`'s type to `HashDisgest<SHA256>` after
             // removing `IBlockStateStore`.
-            StateRootHash = stateRootHash;
-
-            TxHash = txHash;
-            Transactions = transactions.ToImmutableArray();
+            StateRootHash = rawBlock.Header.StateRootHash.Any()
+                ? new HashDigest<SHA256>(rawBlock.Header.StateRootHash)
+                : (HashDigest<SHA256>?)null;
+            Hash = new BlockHash(rawBlock.Header.Hash);
         }
 
         /// <summary>
