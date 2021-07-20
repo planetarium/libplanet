@@ -62,10 +62,10 @@ namespace Libplanet.Blocks
         /// <param name="miner">The miner of the block.  Goes to <see cref="Miner"/>.</param>
         /// <param name="difficulty">The mining difficulty that <paramref name="nonce"/>
         /// has to satisfy.  Goes to <see cref="Difficulty"/>.</param>
-        /// <param name="totalDifficulty">The total mining difficulty since the genesis
+        /// <param name="totalDifficulty">The total mining difficulty since the genesis,
         /// including the block's difficulty.  See also <see cref="Difficulty"/>.</param>
         /// <param name="previousHash">The previous block's <see cref="Hash"/>.  If it's a genesis
-        /// block (i.e., its <see cref="Block{T}.Index"/> is 0) this should be <c>null</c>.
+        /// block (i.e., its <see cref="Block{T}.Index"/> is 0) this should be empty.
         /// Goes to <see cref="PreviousHash"/>.</param>
         /// <param name="txHash">The result of hashing the transactions the block has.
         /// Goes to <see cref="TxHash"/>.</param>
@@ -165,7 +165,7 @@ namespace Libplanet.Blocks
         /// <param name="totalDifficulty">The total mining difficulty since the genesis
         /// including the block's difficulty.  See also <see cref="Difficulty"/>.</param>
         /// <param name="previousHash">The previous block's <see cref="Hash"/>.  If it's a genesis
-        /// block (i.e., its <see cref="Block{T}.Index"/> is 0) this should be <c>null</c>.
+        /// block (i.e., its <see cref="Block{T}.Index"/> is 0) this should be empty.
         /// Goes to <see cref="PreviousHash"/>.</param>
         /// <param name="txHash">The result of hashing the transactions the block has.
         /// Goes to <see cref="TxHash"/>.</param>
@@ -215,7 +215,7 @@ namespace Libplanet.Blocks
         /// <param name="totalDifficulty">The total mining difficulty since the genesis
         /// including the block's difficulty.  See also <see cref="Difficulty"/>.</param>
         /// <param name="previousHash">The previous block's <see cref="Hash"/>.  If it's a genesis
-        /// block (i.e., its <see cref="Block{T}.Index"/> is 0) this should be <c>null</c>.
+        /// block (i.e., its <see cref="Block{T}.Index"/> is 0) this should be empty.
         /// Goes to <see cref="PreviousHash"/>.</param>
         /// <param name="txHash">The result of hashing the transactions the block has.
         /// Goes to <see cref="TxHash"/>.</param>
@@ -499,16 +499,12 @@ namespace Libplanet.Blocks
                 .Add("index", Index)
                 .Add("timestamp", Timestamp)
                 .Add("difficulty", Difficulty)
-                .Add("nonce", Nonce.ToArray());
+                .Add("nonce", Nonce.ToArray())
+                .Add("reward_beneficiary", Miner.ToArray());
 
             if (ProtocolVersion != 0)
             {
                 dict = dict.Add("protocol_version", ProtocolVersion);
-            }
-
-            if (!Miner.IsEmpty)
-            {
-                dict = dict.Add("reward_beneficiary", Miner.ToArray());
             }
 
             if (!PreviousHash.IsEmpty)
