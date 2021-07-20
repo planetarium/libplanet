@@ -8,6 +8,8 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Added `StateCompleterSet<T>.ComplementAll` property.  [[#1358], [#1386]]
+ -  Added `StateCompleterSet<T>.ComplementLatest` property.  [[#1358], [#1386]]
  -  `BlockPerception` now implements `IBlockExcerpt` interface.  [[#1440]]
      -  `BlockPerception.Excerpt` property removed.
  -  `TotalDifficultyComparer` now implements `IComparer<IBlockExcerpt>`
@@ -57,6 +59,9 @@ To be released.
 
 ### Behavioral changes
 
+ -  `StateCompleterSet<T>.Recalculate` now evaluates states even for those
+    already in `IStateStore`.  Moreover, it also terminates early if possible
+    after reaching the `BlockHash` provided with a call.  [[#1358], [#1386]]
  -  `TotalDifficultyComparer` no longer considers perceived time when comparing
     `IBlockExcerpt`s.  [[#1442]]
  -  General logic for determining the canonical chain has been updated.
@@ -78,6 +83,8 @@ To be released.
 
 ### CLI tools
 
+[#1358]: https://github.com/planetarium/libplanet/issues/1358
+[#1386]: https://github.com/planetarium/libplanet/pull/1386
 [#1435]: https://github.com/planetarium/libplanet/issues/1435
 [#1440]: https://github.com/planetarium/libplanet/pull/1440
 [#1442]: https://github.com/planetarium/libplanet/pull/1442
@@ -487,8 +494,6 @@ Released on July 23, 2021.
  -  Added `ByteUtil.Satisfies()` method.  [[#1314], [#1352]]
  -  Added `BlockChain<T>.ExecuteActions()` method.  [[#1368]]
  -  Added `SwarmOptions.MinimumBroadcastTarget` property.  [[#1379]]
- -  Added `StateCompleterSet<T>.ComplementAll` property.  [[#1386]]
- -  Added `StateCompleterSet<T>.ComplementLatest` property.  [[#1386]]
 
 ### Behavioral changes
 
@@ -524,9 +529,6 @@ Released on July 23, 2021.
     call. [[#1347]]
  -  `BlockChain<T>.ExecuteActions()` became no longer throw
     `InvalidTxUpdatedAddressesException`.  [[#368], [#1389]]
- -  `StateCompleterSet<T>.Recalculate` now evaluates states even for those
-    already in `IStateStore`.  Moreover, it also terminates early if possible
-    after reaching the `BlockHash` provided with a call.  [[#1386]]
 
 ### Bug fixes
 
@@ -645,7 +647,6 @@ Released on July 23, 2021.
 [#1368]: https://github.com/planetarium/libplanet/pull/1368
 [#1379]: https://github.com/planetarium/libplanet/pull/1379
 [#1389]: https://github.com/planetarium/libplanet/pull/1389
-[#1386]: https://github.com/planetarium/libplanet/pull/1386
 
 
 Version 0.11.1
