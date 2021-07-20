@@ -134,16 +134,16 @@ namespace Libplanet.Blocks
                 ? dict.GetValue<Binary>(TxHashKey).ToImmutableArray()
                 : ImmutableArray<byte>.Empty;
 
-            Hash = dict.ContainsKey((IKey)(Binary)HashKey)
-                ? dict.GetValue<Binary>(HashKey).ToImmutableArray()
-                : ImmutableArray<byte>.Empty;
-
             PreEvaluationHash = dict.ContainsKey((IKey)(Binary)PreEvaluationHashKey)
                 ? dict.GetValue<Binary>(PreEvaluationHashKey).ToImmutableArray()
                 : ImmutableArray<byte>.Empty;
 
             StateRootHash = dict.ContainsKey((IKey)(Binary)StateRootHashKey)
                 ? dict.GetValue<Binary>(StateRootHashKey).ToImmutableArray()
+                : ImmutableArray<byte>.Empty;
+
+            Hash = dict.ContainsKey((IKey)(Binary)HashKey)
+                ? dict.GetValue<Binary>(HashKey).ToImmutableArray()
                 : ImmutableArray<byte>.Empty;
         }
 
@@ -192,10 +192,10 @@ namespace Libplanet.Blocks
             PreviousHash = previousHash;
             TxHash = txHash;
 
-            PreEvaluationHash =
-                hashAlgorithm.Digest(SerializeForPreEvaluationHash()).ToImmutableArray();
+            byte[] serialized = SerializeForPreEvaluationHash();
+            PreEvaluationHash = hashAlgorithm.Digest(serialized).ToImmutableArray();
             StateRootHash = ImmutableArray<byte>.Empty;
-            Hash = hashAlgorithm.Digest(SerializeForHash()).ToImmutableArray();
+            Hash = BlockHash.DeriveFrom(serialized).ByteArray;
         }
 
         /// <summary>

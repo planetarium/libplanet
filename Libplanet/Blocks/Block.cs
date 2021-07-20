@@ -94,6 +94,8 @@ namespace Libplanet.Blocks
             // hashAlgorithm, preEvaluationHash, and stateRootHash respectively.
             // Despite its summary, currently accepted only use cases are:
             //  - (true, false, false): Called when preEvaluationHash needs to be calculated.
+            //  - (false, true, false): Allowed purely for testing.  Normal code path should not
+            //    lead to this combination.
             //  - (false, true, true): Called when stateRootHash needs to be attached.
             // All other combinations are rejected.
             if (!(hashAlgorithm is { } ^ preEvaluationHash is { }))
@@ -102,11 +104,11 @@ namespace Libplanet.Blocks
                     $"Exactly one of {nameof(hashAlgorithm)} " +
                     $"and {nameof(preEvaluationHash)} should be provided as non-null.");
             }
-            else if (preEvaluationHash is { } ^ stateRootHash is { })
+            else if (!(preEvaluationHash is { }) && stateRootHash is { })
             {
                 throw new ArgumentException(
-                    $"Either both {nameof(preEvaluationHash)} and {nameof(stateRootHash)} " +
-                    $"should be null or both should be non-null.");
+                    $"Parameter {nameof(stateRootHash)} cannot be non-null while" +
+                    $"{nameof(preEvaluationHash)} is null.");
             }
 
             ProtocolVersion = protocolVersion;
@@ -148,9 +150,6 @@ namespace Libplanet.Blocks
                 ImmutableArray<byte> peh = preEvaluationHash
                     ?? throw new NullReferenceException(
                         $"Parameter {nameof(preEvaluationHash)} cannot be null.");
-                HashDigest<SHA256> srh = stateRootHash
-                    ?? throw new NullReferenceException(
-                        $"Parameter {nameof(stateRootHash)} cannot be null.");
 
                 _header = new BlockHeader(
                     protocolVersion: ProtocolVersion,
@@ -167,7 +166,8 @@ namespace Libplanet.Blocks
                     txHash: TxHash?.ToByteArray().ToImmutableArray()
                         ?? ImmutableArray<byte>.Empty,
                     preEvaluationHash: peh,
-                    stateRootHash: srh.ToByteArray().ToImmutableArray());
+                    stateRootHash: stateRootHash?.ToByteArray().ToImmutableArray()
+                        ?? ImmutableArray<byte>.Empty);
 
                 _preEvaluationHash = Header.PreEvaluationHash;
                 StateRootHash = stateRootHash;
@@ -283,13 +283,14 @@ namespace Libplanet.Blocks
                 : throw new ArgumentException(
                     $"PreEvaluationHash of {nameof(rawBlock.Header)} cannot be empty.");
 
-            // FIXME: we should convert `StateRootHash`'s type to `HashDisgest<SHA256>` after
+            // FIXME: We should convert `StateRootHash`'s type to `HashDisgest<SHA256>` after
             // removing `IBlockStateStore`.
             // See also <https://github.com/planetarium/libplanet/pull/1116#discussion_r535836480>.
+            // FIXME: Normal path should not lead to StateRootHash being null.  Should be
+            // refactored to throw an exception.
             StateRootHash = rawBlock.Header.StateRootHash.Any()
                 ? new HashDigest<SHA256>(rawBlock.Header.StateRootHash)
-                : throw new ArgumentException(
-                    $"StateRootHash of {nameof(rawBlock.Header)} cannot be empty.");
+                : (HashDigest<SHA256>?)null;
             _hash = new BlockHash(rawBlock.Header.Hash);
         }
 
@@ -305,14 +306,8 @@ namespace Libplanet.Blocks
         /// </summary>
         /// <seealso cref="PreEvaluationHash"/>
         /// <seealso cref="StateRootHash"/>
-        public BlockHash Hash
-        {
-            get
-            {
-                return _hash
-                    ?? throw new InvalidOperationException("Hash has not been set.");
-            }
-        }
+        public BlockHash Hash => _hash
+            ?? throw new InvalidOperationException("Hash has not been set.");
 
         /// <summary>
         /// The hash derived from the block <em>except of</em>
