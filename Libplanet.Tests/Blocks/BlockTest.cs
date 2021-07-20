@@ -52,7 +52,7 @@ namespace Libplanet.Tests.Blocks
                 difficulty: 0,
                 totalDifficulty: 0,
                 nonce: new Nonce(new byte[0]),
-                miner: null,
+                miner: new Address(new byte[Address.Size]),
                 previousHash: null,
                 timestamp: DateTimeOffset.UtcNow,
                 transactions: txs,
@@ -208,7 +208,7 @@ namespace Libplanet.Tests.Blocks
                 _fx.GetHashAlgorithm(_fx.Next.Index),
                 _fx.Next.Difficulty,
                 _fx.Genesis.TotalDifficulty,
-                _fx.Next.Miner.Value,
+                _fx.Next.Miner,
                 _fx.Genesis.Hash,
                 now,
                 new Transaction<DumbAction>[] { },
@@ -223,7 +223,7 @@ namespace Libplanet.Tests.Blocks
                 _fx.GetHashAlgorithm(_fx.Next.Index),
                 _fx.Next.Difficulty,
                 _fx.Genesis.TotalDifficulty,
-                _fx.Next.Miner.Value,
+                _fx.Next.Miner,
                 _fx.Genesis.Hash,
                 now,
                 new Transaction<DumbAction>[] { },
@@ -244,7 +244,7 @@ namespace Libplanet.Tests.Blocks
                 hashAlgo,
                 _fx.Next.Difficulty,
                 _fx.Genesis.TotalDifficulty,
-                _fx.Next.Miner.Value,
+                _fx.Next.Miner,
                 _fx.Genesis.Hash,
                 now + TimeSpan.FromSeconds(16),
                 new Transaction<DumbAction>[] { }
@@ -537,13 +537,13 @@ namespace Libplanet.Tests.Blocks
                 difficulty: 0,
                 totalDifficulty: 0,
                 nonce: new Nonce(new byte[0]),
-                miner: null,
+                miner: new Address(new byte[Address.Size]),
                 previousHash: null,
                 timestamp: DateTimeOffset.UtcNow,
                 transactions: new Transaction<DumbAction>[0],
                 hashAlgorithm: HashAlgorithmType.Of<SHA256>()
             );
-            Assert.Equal(146, block.BytesLength);
+            Assert.Equal(172, block.BytesLength);
         }
 
         [Fact]
@@ -561,7 +561,7 @@ namespace Libplanet.Tests.Blocks
                 difficulty: 0,
                 totalDifficulty: 0,
                 nonce: new Nonce(new byte[0]),
-                miner: null,
+                miner: new Address(new byte[Address.Size]),
                 previousHash: null,
                 timestamp: DateTimeOffset.UtcNow,
                 transactions: txs,

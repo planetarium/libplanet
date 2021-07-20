@@ -40,7 +40,7 @@ namespace Libplanet.Action
             difficulty: 0,
             totalDifficulty: 0,
             nonce: new Nonce(new byte[0]),
-            miner: null,
+            miner: new Address(new byte[Address.Size]),
             previousHash: null,
             timestamp: DateTimeOffset.UtcNow,
             transactions: ImmutableArray<Transaction<T>>.Empty,
@@ -154,7 +154,7 @@ namespace Libplanet.Action
                 blockIndex: NullBlock.Index,
                 txid: tx.Id,
                 previousStates: previousStates,
-                miner: NullBlock.Miner.GetValueOrDefault(),
+                miner: NullBlock.Miner,
                 signer: tx.Signer,
                 signature: tx.Signature,
                 actions: tx.Actions.Cast<IAction>().ToImmutableList(),
@@ -476,7 +476,7 @@ namespace Libplanet.Action
                 blockIndex: block.Index,
                 txid: tx.Id,
                 previousStates: previousStates,
-                miner: block.Miner.GetValueOrDefault(),
+                miner: block.Miner,
                 signer: tx.Signer,
                 signature: tx.Signature,
                 actions: tx.Actions.Cast<IAction>().ToImmutableList(),
@@ -572,8 +572,8 @@ namespace Libplanet.Action
                 blockIndex: block.Index,
                 txid: null,
                 previousStates: previousStates,
-                miner: block.Miner.GetValueOrDefault(),
-                signer: block.Miner.GetValueOrDefault(),
+                miner: block.Miner,
+                signer: block.Miner,
                 signature: Array.Empty<byte>(),
                 actions: new[] { _policyBlockAction }.ToImmutableList(),
                 rehearsal: false,
@@ -595,7 +595,7 @@ namespace Libplanet.Action
         {
             (AccountStateGetter accountStateGetter, AccountBalanceGetter accountBalanceGetter) =
                 InitializeAccountGettersPair(block, stateCompleterSet);
-            Address miner = block.Miner.GetValueOrDefault();
+            Address miner = block.Miner;
 
             return block.ProtocolVersion > 0
                 ? new AccountStateDeltaImpl(accountStateGetter, accountBalanceGetter, miner)

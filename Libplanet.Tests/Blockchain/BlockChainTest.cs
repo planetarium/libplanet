@@ -69,7 +69,7 @@ namespace Libplanet.Tests.Blockchain
                 _policy.GetHashAlgorithm(1),
                 1024,
                 _fx.GenesisBlock.TotalDifficulty,
-                _fx.GenesisBlock.Miner.Value,
+                _fx.GenesisBlock.Miner,
                 _fx.GenesisBlock.Hash,
                 _fx.GenesisBlock.Timestamp.AddSeconds(1),
                 _emptyTransaction
@@ -1586,11 +1586,11 @@ namespace Libplanet.Tests.Blockchain
                 ? new AccountStateDeltaImpl(
                     nullAccountStateGetter,
                     nullAccountBalanceGetter,
-                    b.Miner.GetValueOrDefault())
+                    b.Miner)
                 : new AccountStateDeltaImplV0(
                     nullAccountStateGetter,
                     nullAccountBalanceGetter,
-                    b.Miner.GetValueOrDefault());
+                    b.Miner);
             ActionEvaluation[] evals = chain.ActionEvaluator.EvaluateBlock(
                 b,
                 DateTimeOffset.UtcNow,
@@ -1623,11 +1623,11 @@ namespace Libplanet.Tests.Blockchain
                         ? new AccountStateDeltaImpl(
                             dirty.GetValueOrDefault,
                             (address, currency) => balances.GetValueOrDefault((address, currency)),
-                            b.Miner.GetValueOrDefault())
+                            b.Miner)
                         : new AccountStateDeltaImplV0(
                             dirty.GetValueOrDefault,
                             (address, currency) => balances.GetValueOrDefault((address, currency)),
-                            b.Miner.GetValueOrDefault());
+                            b.Miner);
 
                     dirty = chain.ActionEvaluator.EvaluateBlock(
                         b,

@@ -39,8 +39,8 @@ namespace Libplanet.Blocks
         /// See also <see cref="Difficulty"/>.</param>
         /// <param name="nonce">The nonce which satisfy the given <paramref name="difficulty"/> with
         /// any other field values.  Goes to the <see cref="Nonce"/>.</param>
-        /// <param name="miner">An optional address refers to who mines this block.
-        /// Goes to the <see cref="Miner"/>.</param>
+        /// <param name="miner">The <see cref="Address"/> of the miner of this block. Goes to the
+        /// <see cref="Miner"/>.</param>
         /// <param name="previousHash">The previous block's <see cref="Hash"/>.  If it's a genesis
         /// block (i.e., <paramref name="index"/> is 0) this should be <c>null</c>.
         /// Goes to the <see cref="PreviousHash"/>.</param>
@@ -72,7 +72,7 @@ namespace Libplanet.Blocks
             long difficulty,
             BigInteger totalDifficulty,
             Nonce nonce,
-            Address? miner,
+            Address miner,
             BlockHash? previousHash,
             DateTimeOffset timestamp,
             IReadOnlyList<Transaction<T>> transactions,
@@ -202,7 +202,7 @@ namespace Libplanet.Blocks
                 rb.Header.Difficulty,
                 rb.Header.TotalDifficulty,
                 new Nonce(rb.Header.Nonce.ToArray()),
-                rb.Header.Miner.Any() ? new Address(rb.Header.Miner) : (Address?)null,
+                new Address(rb.Header.Miner),
                 rb.Header.PreviousHash.Any()
                     ? new BlockHash(rb.Header.PreviousHash)
                     : (BlockHash?)null,
@@ -233,7 +233,7 @@ namespace Libplanet.Blocks
             long difficulty,
             BigInteger totalDifficulty,
             Nonce nonce,
-            Address? miner,
+            Address miner,
             BlockHash? previousHash,
             DateTimeOffset timestamp,
             HashDigest<SHA256>? txHash,
@@ -304,7 +304,7 @@ namespace Libplanet.Blocks
         public Nonce Nonce { get; }
 
         [IgnoreDuringEquals]
-        public Address? Miner { get; }
+        public Address Miner { get; }
 
         /// <summary>
         /// The <see cref="Hash"/> of its previous block.
@@ -359,7 +359,7 @@ namespace Libplanet.Blocks
                     index: Index,
                     timestamp: timestampAsString,
                     nonce: Nonce.ToByteArray().ToImmutableArray(),
-                    miner: Miner?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty,
+                    miner: Miner.ToByteArray().ToImmutableArray(),
                     difficulty: Difficulty,
                     totalDifficulty: TotalDifficulty,
                     previousHash: previousHashAsArray,
@@ -387,7 +387,7 @@ namespace Libplanet.Blocks
         /// <see cref="Nonce"/>.</param>
         /// <param name="previousTotalDifficulty">The total difficulty until the previous
         /// <see cref="Block{T}"/>.</param>
-        /// <param name="miner">The <see cref="Address"/> of miner that mined the block.</param>
+        /// <param name="miner">The <see cref="Address"/> of miner that mines the block.</param>
         /// <param name="previousHash">
         /// The <see cref="HashDigest{SHA256}"/> of previous block.
         /// </param>

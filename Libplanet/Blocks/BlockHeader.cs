@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Collections.Immutable;
 using System.Globalization;
@@ -115,10 +116,7 @@ namespace Libplanet.Blocks
             Difficulty = dict.GetValue<Integer>(DifficultyKey);
             TotalDifficulty = dict.GetValue<Integer>(TotalDifficultyKey);
             Nonce = dict.GetValue<Binary>(NonceKey).ToImmutableArray();
-
-            Miner = dict.ContainsKey((IKey)(Binary)MinerKey)
-                ? dict.GetValue<Binary>(MinerKey).ToImmutableArray()
-                : ImmutableArray<byte>.Empty;
+            Miner = dict.GetValue<Binary>(MinerKey).ToImmutableArray();
 
             PreviousHash = dict.ContainsKey((IKey)(Binary)PreviousHashKey)
                 ? dict.GetValue<Binary>(PreviousHashKey).ToImmutableArray()
@@ -213,16 +211,12 @@ namespace Libplanet.Blocks
                 .Add(DifficultyKey, Difficulty)
                 .Add(TotalDifficultyKey, (IValue)(Bencodex.Types.Integer)TotalDifficulty)
                 .Add(NonceKey, Nonce.ToArray())
+                .Add(MinerKey, Miner.ToArray())
                 .Add(HashKey, Hash.ToArray());
 
             if (ProtocolVersion != 0)
             {
                 dict = dict.Add(ProtocolVersionKey, ProtocolVersion);
-            }
-
-            if (Miner.Any())
-            {
-                dict = dict.Add(MinerKey, Miner.ToArray());
             }
 
             if (PreviousHash.Any())

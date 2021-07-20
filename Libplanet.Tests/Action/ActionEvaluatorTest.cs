@@ -223,11 +223,11 @@ namespace Libplanet.Tests.Action
                 ? new AccountStateDeltaImpl(
                     ActionEvaluator<DumbAction>.NullAccountStateGetter,
                     ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
-                    genesis.Miner.GetValueOrDefault())
+                    genesis.Miner)
                 : new AccountStateDeltaImplV0(
                     ActionEvaluator<DumbAction>.NullAccountStateGetter,
                     ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
-                    genesis.Miner.GetValueOrDefault());
+                    genesis.Miner);
 
             // ToList() is required for realization.
             chain.ActionEvaluator.EvaluateTx(
@@ -287,11 +287,11 @@ namespace Libplanet.Tests.Action
                 ? new AccountStateDeltaImpl(
                     ActionEvaluator<DumbAction>.NullAccountStateGetter,
                     ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
-                    genesis.Miner.GetValueOrDefault())
+                    genesis.Miner)
                 : new AccountStateDeltaImplV0(
                     ActionEvaluator<DumbAction>.NullAccountStateGetter,
                     ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
-                    genesis.Miner.GetValueOrDefault());
+                    genesis.Miner);
             Assert.Empty(
                 actionEvaluator.EvaluateTxs(
                     block: genesis,
@@ -333,11 +333,11 @@ namespace Libplanet.Tests.Action
                 ? new AccountStateDeltaImpl(
                     ActionEvaluator<DumbAction>.NullAccountStateGetter,
                     ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
-                    block1.Miner.GetValueOrDefault())
+                    block1.Miner)
                 : new AccountStateDeltaImplV0(
                     ActionEvaluator<DumbAction>.NullAccountStateGetter,
                     ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
-                    block1.Miner.GetValueOrDefault());
+                    block1.Miner);
             var evals = actionEvaluator.EvaluateTxs(
                 block1,
                 previousStates).ToImmutableArray();
@@ -372,11 +372,11 @@ namespace Libplanet.Tests.Action
                 ? new AccountStateDeltaImpl(
                     ActionEvaluator<DumbAction>.NullAccountStateGetter,
                     ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
-                    block1.Miner.GetValueOrDefault())
+                    block1.Miner)
                 : new AccountStateDeltaImplV0(
                     ActionEvaluator<DumbAction>.NullAccountStateGetter,
                     ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
-                    block1.Miner.GetValueOrDefault());
+                    block1.Miner);
             ActionEvaluation[] evals1 = actionEvaluator.EvaluateBlock(
                 block1,
                 DateTimeOffset.UtcNow,
@@ -457,11 +457,11 @@ namespace Libplanet.Tests.Action
                 ? new AccountStateDeltaImpl(
                     accountStateGetter,
                     accountBalanceGetter,
-                    block2.Miner.GetValueOrDefault())
+                    block2.Miner)
                 : new AccountStateDeltaImplV0(
                     accountStateGetter,
                     accountBalanceGetter,
-                    block2.Miner.GetValueOrDefault());
+                    block2.Miner);
             evals = actionEvaluator.EvaluateTxs(
                 block2,
                 previousStates).ToImmutableArray();
@@ -507,11 +507,11 @@ namespace Libplanet.Tests.Action
                 ? new AccountStateDeltaImpl(
                     accountStateGetter,
                     accountBalanceGetter,
-                    block2.Miner.GetValueOrDefault())
+                    block2.Miner)
                 : new AccountStateDeltaImplV0(
                     accountStateGetter,
                     accountBalanceGetter,
-                    block2.Miner.GetValueOrDefault());
+                    block2.Miner);
             var evals2 = actionEvaluator.EvaluateBlock(
                 block2,
                 DateTimeOffset.UtcNow,
@@ -745,11 +745,11 @@ namespace Libplanet.Tests.Action
                 ? new AccountStateDeltaImpl(
                     nullAccountStateGetter,
                     nullAccountBalanceGetter,
-                    invalidBlock.Miner.GetValueOrDefault())
+                    invalidBlock.Miner)
                 : new AccountStateDeltaImplV0(
                     nullAccountStateGetter,
                     nullAccountBalanceGetter,
-                    invalidBlock.Miner.GetValueOrDefault());
+                    invalidBlock.Miner);
 
             Assert.Throws<InvalidTxUpdatedAddressesException>(() =>
                 actionEvaluator.EvaluateBlock(
@@ -819,7 +819,7 @@ namespace Libplanet.Tests.Action
                 blockIndex: blockA.Index,
                 txid: txA.Id,
                 previousStates: fx.CreateAccountStateDelta(0, blockA.PreviousHash),
-                miner: blockA.Miner ?? default,
+                miner: blockA.Miner,
                 signer: txA.Signer,
                 signature: txA.Signature,
                 actions: txA.Actions.ToImmutableArray<IAction>(),
@@ -868,7 +868,7 @@ namespace Libplanet.Tests.Action
                 blockIndex: blockB.Index,
                 txid: txB.Id,
                 previousStates: fx.CreateAccountStateDelta(0, blockB.PreviousHash),
-                miner: blockB.Miner ?? default,
+                miner: blockB.Miner,
                 signer: txB.Signer,
                 signature: txB.Signature,
                 actions: txB.Actions.ToImmutableArray<IAction>(),
@@ -944,11 +944,11 @@ namespace Libplanet.Tests.Action
                 ? new AccountStateDeltaImpl(
                     accountStateGetter,
                     accountBalanceGetter,
-                    genesis.Miner.GetValueOrDefault())
+                    genesis.Miner)
                 : new AccountStateDeltaImplV0(
                     accountStateGetter,
                     accountBalanceGetter,
-                    genesis.Miner.GetValueOrDefault());
+                    genesis.Miner);
             var evaluation = chain.ActionEvaluator.EvaluatePolicyBlockAction(
                 genesis,
                 previousStates,
@@ -957,7 +957,7 @@ namespace Libplanet.Tests.Action
             Assert.Equal(chain.Policy.BlockAction, evaluation.Action);
             Assert.Equal(
                 (Integer)1,
-                (Integer)evaluation.OutputStates.GetState(genesis.Miner.GetValueOrDefault()));
+                (Integer)evaluation.OutputStates.GetState(genesis.Miner));
             Assert.True(evaluation.InputContext.BlockAction);
 
             accountStateGetter = address => chain.GetState(
@@ -972,9 +972,9 @@ namespace Libplanet.Tests.Action
                     stateCompleterSet.FungibleAssetStateCompleter);
             previousStates = block.ProtocolVersion > 0
                 ? new AccountStateDeltaImpl(
-                    accountStateGetter, accountBalanceGetter, block.Miner.GetValueOrDefault())
+                    accountStateGetter, accountBalanceGetter, block.Miner)
                 : new AccountStateDeltaImplV0(
-                    accountStateGetter, accountBalanceGetter, block.Miner.GetValueOrDefault());
+                    accountStateGetter, accountBalanceGetter, block.Miner);
             evaluation = chain.ActionEvaluator.EvaluatePolicyBlockAction(
                 block,
                 previousStates,
@@ -983,7 +983,7 @@ namespace Libplanet.Tests.Action
             Assert.Equal(chain.Policy.BlockAction, evaluation.Action);
             Assert.Equal(
                 (Integer)2,
-                (Integer)evaluation.OutputStates.GetState(block.Miner.GetValueOrDefault()));
+                (Integer)evaluation.OutputStates.GetState(block.Miner));
             Assert.True(evaluation.InputContext.BlockAction);
 
             chain.ExecuteActions(block);
@@ -997,11 +997,11 @@ namespace Libplanet.Tests.Action
                 ? new AccountStateDeltaImpl(
                     address => chain.GetState(address, block.PreviousHash),
                     ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
-                    block.Miner.GetValueOrDefault())
+                    block.Miner)
                 : new AccountStateDeltaImplV0(
                     address => chain.GetState(address, block.PreviousHash),
                     ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
-                    block.Miner.GetValueOrDefault());
+                    block.Miner);
             var txEvaluations = chain.ActionEvaluator.EvaluateTxs(
                 block,
                 previousStates).ToList();
@@ -1013,7 +1013,7 @@ namespace Libplanet.Tests.Action
 
             Assert.Equal(
                 (Integer)2,
-                (Integer)evaluation.OutputStates.GetState(block.Miner.GetValueOrDefault()));
+                (Integer)evaluation.OutputStates.GetState(block.Miner));
         }
 
         private (Address[], Transaction<DumbAction>[]) MakeFixturesForAppendTests(
