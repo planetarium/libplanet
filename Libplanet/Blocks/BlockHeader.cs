@@ -76,6 +76,10 @@ namespace Libplanet.Blocks
         /// Used for checking <paramref name="nonce"/>.  See also <see cref="Validate"/>.</param>
         /// <param name="stateRootHash">The <see cref="ITrie.Hash"/> of the states on the block.
         /// </param>
+        /// <remarks>
+        /// This is only exposed for testing. Should not be used as an entry point to create
+        /// a <see cref="BlockHeader"/> instance under normal circumstances.
+        /// </remarks>
         public BlockHeader(
             int protocolVersion,
             long index,
@@ -104,6 +108,12 @@ namespace Libplanet.Blocks
             StateRootHash = stateRootHash;
         }
 
+        /// <summary>
+        /// Creates a <see cref="BlockHeader"/> instance from its serialization.
+        /// </summary>
+        /// <param name="dict">The <see cref="Bencodex.Types.Dictionary"/>
+        /// representation of <see cref="BlockHeader"/> instance.
+        /// </param>
         public BlockHeader(Bencodex.Types.Dictionary dict)
         {
             ProtocolVersion = dict.ContainsKey(ProtocolVersionKey)
@@ -137,6 +147,29 @@ namespace Libplanet.Blocks
                 : ImmutableArray<byte>.Empty;
         }
 
+        /// <summary>
+        /// Creates a <see cref="BlockHeader"/> instance for a <see cref="Block{T}"/> instance with
+        /// missing <see cref="Block{T}.StateRootHash"/>.
+        /// </summary>
+        /// <param name="protocolVersion">The protocol version.  Goes to
+        /// <see cref="ProtocolVersion"/>.</param>
+        /// <param name="index">The height of the block.  Goes to <see cref="Index"/>.
+        /// </param>
+        /// <param name="timestamp">The time the block is created.
+        /// Goes to <see cref="Timestamp"/>.</param>
+        /// <param name="nonce">The nonce which satisfies given <paramref name="difficulty"/>.
+        /// Goes to <see cref="Nonce"/>.</param>
+        /// <param name="miner">The miner of the block.  Goes to <see cref="Miner"/>.</param>
+        /// <param name="difficulty">The mining difficulty that <paramref name="nonce"/>
+        /// has to satisfy.  Goes to <see cref="Difficulty"/>.</param>
+        /// <param name="totalDifficulty">The total mining difficulty since the genesis
+        /// including the block's difficulty.  See also <see cref="Difficulty"/>.</param>
+        /// <param name="previousHash">The previous block's <see cref="Hash"/>.  If it's a genesis
+        /// block (i.e., its <see cref="Block{T}.Index"/> is 0) this should be <c>null</c>.
+        /// Goes to <see cref="PreviousHash"/>.</param>
+        /// <param name="txHash">The result of hashing the transactions the block has.
+        /// Goes to <see cref="TxHash"/>.</param>
+        /// <param name="hashAlgorithm">The proof-of-work hash algorithm.</param>
         internal BlockHeader(
             int protocolVersion,
             long index,
@@ -146,7 +179,8 @@ namespace Libplanet.Blocks
             long difficulty,
             BigInteger totalDifficulty,
             ImmutableArray<byte> previousHash,
-            ImmutableArray<byte> txHash)
+            ImmutableArray<byte> txHash,
+            HashAlgorithmType hashAlgorithm)
         {
             ProtocolVersion = protocolVersion;
             Index = index;
@@ -157,11 +191,39 @@ namespace Libplanet.Blocks
             TotalDifficulty = totalDifficulty;
             PreviousHash = previousHash;
             TxHash = txHash;
-            PreEvaluationHash = BlockHash.DeriveFrom(SerializeForPreEvaluationHash()).ByteArray;
+
+            PreEvaluationHash =
+                hashAlgorithm.Digest(SerializeForPreEvaluationHash()).ToImmutableArray();
             StateRootHash = ImmutableArray<byte>.Empty;
-            Hash = PreEvaluationHash;
+            Hash = hashAlgorithm.Digest(SerializeForHash()).ToImmutableArray();
         }
 
+        /// <summary>
+        /// Creates a <see cref="BlockHeader"/> instance for a <see cref="Block{T}"/>.
+        /// </summary>
+        /// <param name="protocolVersion">The protocol version.  Goes to
+        /// <see cref="ProtocolVersion"/>.</param>
+        /// <param name="index">The height of the block.  Goes to <see cref="Index"/>.
+        /// </param>
+        /// <param name="timestamp">The time the block is created.
+        /// Goes to <see cref="Timestamp"/>.</param>
+        /// <param name="nonce">The nonce which satisfies given <paramref name="difficulty"/>.
+        /// Goes to <see cref="Nonce"/>.</param>
+        /// <param name="miner">The miner of the block.  Goes to <see cref="Miner"/>.</param>
+        /// <param name="difficulty">The mining difficulty that <paramref name="nonce"/>
+        /// has to satisfy.  Goes to <see cref="Difficulty"/>.</param>
+        /// <param name="totalDifficulty">The total mining difficulty since the genesis
+        /// including the block's difficulty.  See also <see cref="Difficulty"/>.</param>
+        /// <param name="previousHash">The previous block's <see cref="Hash"/>.  If it's a genesis
+        /// block (i.e., its <see cref="Block{T}.Index"/> is 0) this should be <c>null</c>.
+        /// Goes to <see cref="PreviousHash"/>.</param>
+        /// <param name="txHash">The result of hashing the transactions the block has.
+        /// Goes to <see cref="TxHash"/>.</param>
+        /// <param name="preEvaluationHash">The hash derived from the block <em>excluding</em>
+        /// <paramref name="stateRootHash"/> (i.e., without action evaluation).
+        /// Used for checking <paramref name="nonce"/>.  See also <see cref="Validate"/>.</param>
+        /// <param name="stateRootHash">The <see cref="ITrie.Hash"/> of the states on the block.
+        /// </param>
         internal BlockHeader(
             int protocolVersion,
             long index,
@@ -175,9 +237,9 @@ namespace Libplanet.Blocks
             ImmutableArray<byte> preEvaluationHash,
             ImmutableArray<byte> stateRootHash)
         {
-            // FIXME: Basic sanity check to prevent improper usage should be present.
-            // For the same reason as Block<T>() constructor comment, should be added in
-            // on furter refactoring.
+            // FIXME: Basic sanity check, such as whether stateRootHash is empty or not,
+            // to prevent improper usage should be present. For the same reason as
+            // a comment in Block<T>(), should be added in on furter refactoring.
             ProtocolVersion = protocolVersion;
             Index = index;
             Timestamp = timestamp;
