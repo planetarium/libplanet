@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Xunit;
 
-namespace Libplanet.Explorer.UnitTests.Controllers
+namespace Libplanet.Explorer.Tests.Controllers
 {
     public class GenericControllerFeatureProviderTests
     {

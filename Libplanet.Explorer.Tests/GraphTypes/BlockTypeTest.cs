@@ -9,9 +9,9 @@ using Libplanet.Blocks;
 using Libplanet.Explorer.GraphTypes;
 using Libplanet.Tx;
 using Xunit;
-using static Libplanet.Explorer.UnitTests.GraphQLTestUtils;
+using static Libplanet.Explorer.Tests.GraphQLTestUtils;
 
-namespace Libplanet.Explorer.UnitTests.GraphTypes
+namespace Libplanet.Explorer.Tests.GraphTypes
 {
     public class BlockTypeTest
     {
