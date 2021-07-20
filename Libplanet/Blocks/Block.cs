@@ -81,6 +81,27 @@ namespace Libplanet.Blocks
             HashDigest<SHA256>? stateRootHash = null,
             int protocolVersion = CurrentProtocolVersion)
         {
+            // FIXME: This constructor needs to be separated into several overloads.
+            // Let (bool h, bool p, bool s) represent non-null arguments provided for
+            // hashAlgorithm, preEvaluationHash, and stateRootHash respectively.
+            // Currently accepted use cases are:
+            //  - (true, false, false): Called when preEvaluationHash needs to be calculated.
+            //  - (false, true, true): Called when stateRootHash needs to be attached.
+            // All other combinations are rejected.
+            if (!(hashAlgorithm is { } ha ^ preEvaluationHash is { } peh))
+            {
+                throw new ArgumentException(
+                    $"Exactly one of {nameof(hashAlgorithm)} " +
+                    $"and {nameof(preEvaluationHash)} must be null.");
+            }
+
+            if (preEvaluationHash is { } ^ stateRootHash is { } srh)
+            {
+                throw new ArgumentException(
+                    $"Either both {nameof(preEvaluationHash)} and {nameof(stateRootHash)} " +
+                    $"should be null or both should be non-null.");
+            }
+
             ProtocolVersion = protocolVersion;
             Index = index;
             Difficulty = difficulty;
@@ -92,37 +113,19 @@ namespace Libplanet.Blocks
             Transactions = transactions.OrderBy(tx => tx.Id).ToArray();
             TxHash = CalculateTxHashes(Transactions);
 
-            // FIXME: This constructor needs to be separated into two overloads, which are one
-            // taking only hashAlgorithm and other one taking only preEvaluationHash, so that
-            // the compiler can check whether two parameters are both omitted or both passed
-            // if any chance.
-            if (preEvaluationHash is { } hash)
+            if (preEvaluationHash is { })
             {
-                if (hashAlgorithm is { })
-                {
-                    throw new ArgumentException(
-                        $"The parameters {nameof(hashAlgorithm)} and {nameof(preEvaluationHash)} " +
-                        "are mutually exclusive.",
-                        paramName: nameof(preEvaluationHash)
-                    );
-                }
-
-                PreEvaluationHash = hash;
-            }
-            else if (hashAlgorithm is { } algo)
-            {
-                PreEvaluationHash = algo.Digest(Header.SerializeForHash()).ToImmutableArray();
+                PreEvaluationHash = peh;
+                StateRootHash = srh;
+                Hash = BlockHash.DeriveFrom(Header.SerializeForHash());
             }
             else
             {
-                string message = $"Either {nameof(hashAlgorithm)} or {nameof(preEvaluationHash)} " +
-                    "must to be passed.";
-                throw new ArgumentNullException(nameof(preEvaluationHash), message);
+                // FIXME: This only works due to sanity constraint on usage.
+                PreEvaluationHash = Header.PreEvaluationHash;
+                StateRootHash = srh;
+                Hash = BlockHash.DeriveFrom(Header.SerializeForHash());
             }
-
-            StateRootHash = stateRootHash;
-
-            Hash = BlockHash.DeriveFrom(Header.SerializeForHash());
 
             // As the order of transactions should be unpredictable until a block is mined,
             // the sorter key should be derived from both a block hash and a txid.
@@ -258,6 +261,7 @@ namespace Libplanet.Blocks
             // FIXME: we should convert `StateRootHash`'s type to `HashDisgest<SHA256>` after
             // removing `IBlockStateStore`.
             StateRootHash = stateRootHash;
+
             TxHash = txHash;
             Transactions = transactions.ToImmutableArray();
         }
