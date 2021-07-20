@@ -55,27 +55,25 @@ namespace Libplanet.Blocks
         /// <see cref="ProtocolVersion"/>.</param>
         /// <param name="index">The height of the block.  Goes to <see cref="Index"/>.
         /// </param>
-        /// <param name="timestamp">The time this block is created.
+        /// <param name="timestamp">The time the block is created.
         /// Goes to <see cref="Timestamp"/>.</param>
-        /// <param name="nonce">The nonce which satisfy the given <paramref name="difficulty"/>
-        /// with any other field values.  Goes to <see cref="Nonce"/>.</param>
-        /// <param name="miner">An optional address refers to who mines this block.
-        /// Goes to <see cref="Miner"/>.</param>
+        /// <param name="nonce">The nonce which satisfies given <paramref name="difficulty"/>.
+        /// Goes to <see cref="Nonce"/>.</param>
+        /// <param name="miner">The miner of the block.  Goes to <see cref="Miner"/>.</param>
         /// <param name="difficulty">The mining difficulty that <paramref name="nonce"/>
         /// has to satisfy.  Goes to <see cref="Difficulty"/>.</param>
-        /// <param name="totalDifficulty">The total mining difficulty until this block.
-        /// See also <see cref="Difficulty"/>.</param>
+        /// <param name="totalDifficulty">The total mining difficulty since the genesis
+        /// including the block's difficulty.  See also <see cref="Difficulty"/>.</param>
         /// <param name="previousHash">The previous block's <see cref="Hash"/>.  If it's a genesis
-        /// block (i.e., <paramref name="index"/> is 0) this should be <c>null</c>.
+        /// block (i.e., its <see cref="Block{T}.Index"/> is 0) this should be <c>null</c>.
         /// Goes to <see cref="PreviousHash"/>.</param>
         /// <param name="txHash">The result of hashing the transactions the block has.
         /// Goes to <see cref="TxHash"/>.</param>
         /// <param name="hash">The hash of the <see cref="Block{T}"/>.
         /// Goes to <see cref="Hash"/>.</param>
-        /// <param name="preEvaluationHash">The hash derived from the block <em>except of</em>
+        /// <param name="preEvaluationHash">The hash derived from the block <em>excluding</em>
         /// <paramref name="stateRootHash"/> (i.e., without action evaluation).
-        /// Used for <see cref="Validate"/> checking <paramref name="nonce"/>.
-        /// </param>
+        /// Used for checking <paramref name="nonce"/>.  See also <see cref="Validate"/>.</param>
         /// <param name="stateRootHash">The <see cref="ITrie.Hash"/> of the states on the block.
         /// </param>
         public BlockHeader(
@@ -305,52 +303,6 @@ namespace Libplanet.Blocks
             return dict;
         }
 
-        internal static byte[] SerializeForHash(
-            int protocolVersion,
-            long index,
-            string timestamp,
-            long difficulty,
-            ImmutableArray<byte> nonce,
-            ImmutableArray<byte> miner,
-            ImmutableArray<byte> previousHash,
-            ImmutableArray<byte> txHash,
-            ImmutableArray<byte> stateRootHash
-        )
-        {
-            var dict = Bencodex.Types.Dictionary.Empty
-                .Add("index", index)
-                .Add("timestamp", timestamp)
-                .Add("difficulty", difficulty)
-                .Add("nonce", nonce.ToArray());
-
-            if (protocolVersion != 0)
-            {
-                dict = dict.Add("protocol_version", protocolVersion);
-            }
-
-            if (!miner.IsEmpty)
-            {
-                dict = dict.Add("reward_beneficiary", miner.ToArray());
-            }
-
-            if (!previousHash.IsEmpty)
-            {
-                dict = dict.Add("previous_hash", previousHash.ToArray());
-            }
-
-            if (!txHash.IsEmpty)
-            {
-                dict = dict.Add("transaction_fingerprint", txHash.ToArray());
-            }
-
-            if (!stateRootHash.IsEmpty)
-            {
-                dict = dict.Add("state_root_hash", stateRootHash.ToArray());
-            }
-
-            return new Codec().Encode(dict);
-        }
-
         internal void Validate(HashAlgorithmType hashAlgorithm, DateTimeOffset currentTime)
         {
             if (ProtocolVersion < 0)
@@ -368,13 +320,11 @@ namespace Libplanet.Blocks
                 throw new InvalidBlockProtocolVersionException(ProtocolVersion, message);
             }
 
+            BlockHash hash = new BlockHash(Hash);
             DateTimeOffset ts = DateTimeOffset.ParseExact(
                 Timestamp,
                 TimestampFormat,
-                CultureInfo.InvariantCulture
-            );
-
-            BlockHash hash = new BlockHash(Hash);
+                CultureInfo.InvariantCulture);
 
             if (currentTime + TimestampThreshold < ts)
             {
@@ -455,17 +405,34 @@ namespace Libplanet.Blocks
             {
                 throw new InvalidBlockNonceException(
                     $"Block #{Index} {hash}'s pre-evaluation hash " +
-                    $"({ByteUtil.Hex(PreEvaluationHash)}) with the nonce " +
+                    $"({ByteUtil.Hex(PreEvaluationHash)}) with nonce " +
                     $"({ByteUtil.Hex(Nonce)}) does not satisfy its difficulty level {Difficulty}."
                 );
             }
 
-            BlockHash calculatedHash = BlockHash.DeriveFrom(SerializeForHash());
-            if (!hash.Equals(calculatedHash))
+            if (ProtocolVersion > 0)
+            {
+                byte[] expectedPreEvaluationHash =
+                    hashAlgorithm.Digest(SerializeForPreEvaluationHash());
+                if (!ByteUtil.TimingSafelyCompare(expectedPreEvaluationHash, PreEvaluationHash))
+                {
+                    string message =
+                        $"The expected pre-evaluation hash of block #{Index} " +
+                        $"{ByteUtil.Hex(Hash)} is {ByteUtil.Hex(expectedPreEvaluationHash)}, " +
+                        $"but its pre-evaluation hash is {ByteUtil.Hex(PreEvaluationHash)}.";
+                    throw new InvalidBlockPreEvaluationHashException(
+                        PreEvaluationHash,
+                        expectedPreEvaluationHash.ToImmutableArray(),
+                        message);
+                }
+            }
+
+            BlockHash expectedHash = BlockHash.DeriveFrom(SerializeForHash());
+            if (!hash.Equals(expectedHash))
             {
                 throw new InvalidBlockHashException(
-                    $"The block #{Index} {hash}'s isn't matched its content, " +
-                    $"caculcated: {calculatedHash}");
+                    $"The expected hash {expectedHash} of block #{Index} {hash} does not match " +
+                    "the hash provided by the block.");
             }
         }
 
@@ -515,11 +482,7 @@ namespace Libplanet.Blocks
         internal byte[] SerializeForPreEvaluationHash()
             => new Codec().Encode(ToBencodexForPreEvaluationHash());
 
-        internal byte[] SerializeForHash(bool includeStateRootHash = true)
-        {
-            return includeStateRootHash
-                ? new Codec().Encode(ToBencodexForHash())
-                : new Codec().Encode(ToBencodexForPreEvaluationHash());
-        }
+        internal byte[] SerializeForHash()
+            => new Codec().Encode(ToBencodexForHash());
     }
 }

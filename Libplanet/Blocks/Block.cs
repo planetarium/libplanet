@@ -555,24 +555,6 @@ namespace Libplanet.Blocks
                 tx.Validate();
             }
 
-            if (ProtocolVersion > 0)
-            {
-                byte[] expectedPreEvaluationHash =
-                    hashAlgorithm.Digest(Header.SerializeForHash(includeStateRootHash: false));
-                if (!ByteUtil.TimingSafelyCompare(expectedPreEvaluationHash, PreEvaluationHash))
-                {
-                    string message =
-                        $"The expected pre evaluation hash of block {Hash} is " +
-                        $"{ByteUtil.Hex(expectedPreEvaluationHash)}, but its pre evaluation hash " +
-                        $"is {ByteUtil.Hex(PreEvaluationHash)}.";
-                    throw new InvalidBlockPreEvaluationHashException(
-                        PreEvaluationHash,
-                        expectedPreEvaluationHash.ToImmutableArray(),
-                        message
-                    );
-                }
-            }
-
             HashDigest<SHA256>? calculatedTxHash =
                 CalculateTxHashes(Transactions.OrderBy(tx => tx.Id));
             if (!calculatedTxHash.Equals(TxHash))
