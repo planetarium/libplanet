@@ -259,6 +259,8 @@ Use <code>ActionEvaluator.Evaluate()</code> method instead.</li>
 <li>Added <code>IStore.DeleteTxIdBlockHashIndex(TxId, BlockHash)</code> method.
 [<a href="https://github.com/planetarium/libplanet/issues/1294">#1294</a>, <a href="https://github.com/planetarium/libplanet/pull/1328">#1328</a>]</li>
 <li>Added <code>IStore.IterateTxIdBlockHashIndex(TxId)</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/1294">#1294</a>, <a href="https://github.com/planetarium/libplanet/pull/1328">#1328</a>]</li>
+<li>Parameter <code>miner</code> for <code>Block&lt;T&gt;()</code> and <code>Block&lt;T&gt;.Mine()</code> can no longer be
+<code>null</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1341">#1341</a>]</li>
 <li><code>Swarm&lt;T&gt;.StartAsync()</code> method became to receive <code>broadcastBlockInterval</code>
 (or <code>millisecondsBroadcastBlockInterval</code>) parameter.  [<a href="https://github.com/planetarium/libplanet/pull/1351">#1351</a>]</li>
 <li>Added the parameter <code>minimumBroadcastTarget</code> to <code>NetMQTransport()</code>

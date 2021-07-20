@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "wpNP08cGpEJW2Xc8fTJ+bg=="
+          "hash": "rS34wy++k1f7Ordtu+nbZg=="
         }
       },
       "is_incremental": false,
@@ -849,7 +849,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blocks.Block-1.html",
-          "hash": "XtEBQMj4++5vyRPwubvonw=="
+          "hash": "BuLYKrsN0Ga5zLv0FtFgQQ=="
         }
       },
       "is_incremental": false,
@@ -909,7 +909,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blocks.BlockHeader.html",
-          "hash": "Qrd+rK0BGja29mmqGApwEQ=="
+          "hash": "ia1fFl7cWU3k32x/5bWGow=="
         }
       },
       "is_incremental": false,
