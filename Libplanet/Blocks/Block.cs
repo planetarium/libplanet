@@ -66,8 +66,8 @@ namespace Libplanet.Blocks
         /// <exception cref="ArgumentException">Thrown when either both
         /// <paramref name="hashAlgorithm"/> and <paramref name="preEvaluationHash"/> are present
         /// or both are missing.
-        /// <exception cref="ArgumentException">Thrown when the null-ness of
-        /// <paramref name="preEvaluationHash"/> and <paramref name="stateRootHash"/> do not match.
+        /// <exception cref="ArgumentException">Thrown when <paramref name="stateRootHash"/>
+        /// is null while <paramref name="preEvaluationHash"/> is not null.
         /// </exception>
         /// </exception>
         /// <remarks>
