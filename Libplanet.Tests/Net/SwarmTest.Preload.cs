@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Bencodex.Types;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
+using Libplanet.Blockchain.Renderers.Debug;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net;
@@ -237,6 +238,65 @@ namespace Libplanet.Tests.Net
                 await StopAsync(minerSwarm);
                 await StopAsync(receiverSwarm);
             }
+        }
+
+        [Fact(Timeout = Timeout)]
+        public async Task RenderInPreload()
+        {
+            var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
+            var renderer1 = new RecordingActionRenderer<DumbAction>();
+            var renderer2 = new RecordingActionRenderer<DumbAction>();
+            var chain1 = TestUtils.MakeBlockChain(
+                policy,
+                new DefaultStore(null),
+                new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore()),
+                renderers: new[] { renderer1 }
+            );
+            var chain2 = TestUtils.MakeBlockChain(
+                policy,
+                new DefaultStore(null),
+                new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore()),
+                renderers: new[] { renderer2 }
+            );
+            var receiver1 = CreateSwarm(chain1);
+            var receiver2 = CreateSwarm(chain2);
+            var sender = CreateSwarm(TestUtils.MakeBlockChain(
+                policy,
+                new DefaultStore(null),
+                new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore())));
+
+            int renderCount1 = 0, renderCount2 = 0;
+
+            var privKey = new PrivateKey();
+            var addr = sender.Address;
+            var item = "foo";
+
+            const int iteration = 3;
+            for (var i = 0; i < iteration; i++)
+            {
+                sender.BlockChain.MakeTransaction(privKey, new[] { new DumbAction(addr, item) });
+                await sender.BlockChain.MineBlock(sender.Address);
+            }
+
+            renderer1.RenderEventHandler += (_, a) =>
+                renderCount1 += a is DumbAction ? 1 : 0;
+            renderer2.RenderEventHandler += (_, a) =>
+                renderCount2 += a is DumbAction ? 1 : 0;
+
+            await StartAsync(receiver1);
+            await StartAsync(sender);
+
+            await BootstrapAsync(receiver1, sender.AsPeer);
+            await BootstrapAsync(receiver2, sender.AsPeer);
+            await receiver1.PreloadAsync(render: false);
+            await receiver2.PreloadAsync(render: true);
+
+            Assert.Equal(sender.BlockChain.Tip, receiver1.BlockChain.Tip);
+            Assert.Equal(sender.BlockChain.Count, receiver1.BlockChain.Count);
+            Assert.Equal(sender.BlockChain.Count, receiver2.BlockChain.Count);
+            Assert.Equal(sender.BlockChain.Count, receiver2.BlockChain.Count);
+            Assert.Equal(0, renderCount1);
+            Assert.Equal(1, renderCount2);
         }
 
         [Fact(Timeout = 5 * 1000)]
