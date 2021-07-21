@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
 using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography;
@@ -692,70 +691,6 @@ namespace Libplanet.Tests.Action
                         DumbAction.RehearsalRecords.Value);
                 }
             }
-        }
-
-        [Fact]
-        public void EvaluateBlockWithInvalidTxUpdatedAddresses()
-        {
-            HashAlgorithmGetter hashAlgorithmGetter = _ => HashAlgorithmType.Of<SHA256>();
-            ImmutableArray<IValue> rawActions =
-                _txFx.TxWithActions
-                    .ToRawTransaction(false).Actions.ToImmutableArray();
-            Block<PolymorphicAction<BaseAction>> genesis =
-                TestUtils.MineGenesis<PolymorphicAction<BaseAction>>(hashAlgorithmGetter);
-            RawTransaction rawTxWithoutSig = new RawTransaction(
-                0,
-                _txFx.Address1.ByteArray,
-                genesis.Hash.ByteArray,
-                ImmutableArray<ImmutableArray<byte>>.Empty,
-                _txFx.PublicKey1.Format(false).ToImmutableArray(),
-                DateTimeOffset.UtcNow.ToString(
-                    "yyyy-MM-ddTHH:mm:ss.ffffffZ",
-                    CultureInfo.InvariantCulture),
-                rawActions,
-                ImmutableArray<byte>.Empty);
-            byte[] sig = _txFx.PrivateKey1.Sign(
-                new Transaction<PolymorphicAction<BaseAction>>(
-                    rawTxWithoutSig).Serialize(false));
-            var invalidTx = new Transaction<PolymorphicAction<BaseAction>>(
-                new RawTransaction(
-                    0,
-                    rawTxWithoutSig.Signer,
-                    rawTxWithoutSig.GenesisHash,
-                    rawTxWithoutSig.UpdatedAddresses,
-                    rawTxWithoutSig.PublicKey,
-                    rawTxWithoutSig.Timestamp,
-                    rawTxWithoutSig.Actions,
-                    sig.ToImmutableArray()));
-            Block<PolymorphicAction<BaseAction>> invalidBlock = TestUtils.MineNext(
-                previousBlock: genesis,
-                hashAlgorithmGetter: hashAlgorithmGetter,
-                txs: new List<Transaction<PolymorphicAction<BaseAction>>> { invalidTx });
-
-            var actionEvaluator = new ActionEvaluator<PolymorphicAction<BaseAction>>(
-                hashAlgorithmGetter: _ => HashAlgorithmType.Of<SHA256>(),
-                policyBlockAction: null,
-                stateGetter: ActionEvaluator<PolymorphicAction<BaseAction>>.NullStateGetter,
-                balanceGetter: ActionEvaluator<PolymorphicAction<BaseAction>>.NullBalanceGetter,
-                trieGetter: null);
-            AccountStateGetter nullAccountStateGetter = (address) => null;
-            AccountBalanceGetter nullAccountBalanceGetter =
-                (address, currency) => new FungibleAssetValue(currency);
-            IAccountStateDelta previousStates = invalidBlock.ProtocolVersion > 0
-                ? new AccountStateDeltaImpl(
-                    nullAccountStateGetter,
-                    nullAccountBalanceGetter,
-                    invalidBlock.Miner)
-                : new AccountStateDeltaImplV0(
-                    nullAccountStateGetter,
-                    nullAccountBalanceGetter,
-                    invalidBlock.Miner);
-
-            Assert.Throws<InvalidTxUpdatedAddressesException>(() =>
-                actionEvaluator.EvaluateBlock(
-                    invalidBlock,
-                    DateTimeOffset.UtcNow,
-                    previousStates).ToList());
         }
 
         [Fact]
