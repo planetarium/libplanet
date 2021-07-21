@@ -194,6 +194,7 @@ To be released.
     (or `millisecondsBroadcastBlockInterval`) parameter.  [[#1351]]
  -  Added the parameter `minimumBroadcastTarget` to `NetMQTransport()`
     constructor.  [[#1379]]
+ -  Removed `InvalidTxUpdatedAddressesException`.  [[#368], [#1389]]
 
 ### Backward-incompatible network protocol changes
 
@@ -263,6 +264,8 @@ To be released.
  -  Improved performance of broadcasting using `Swarm<T>`.  [[#1334]]
  -  `Block<T>.Header` is now cached instead of creating a new instance every
     call. [[#1347]]
+ -  `BlockChain<T>.ExecuteActions()` became no longer throw
+    `InvalidTxUpdatedAddressesException`.  [[#368], [#1389]]
 
 ### Bug fixes
 
@@ -376,6 +379,7 @@ To be released.
 [#1360]: https://github.com/planetarium/libplanet/pull/1360
 [#1368]: https://github.com/planetarium/libplanet/pull/1368
 [#1379]: https://github.com/planetarium/libplanet/pull/1379
+[#1389]: https://github.com/planetarium/libplanet/pull/1389
 
 
 Version 0.11.1

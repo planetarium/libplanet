@@ -200,6 +200,8 @@ namespace Libplanet.Tx
         /// <see cref="Address"/>es whose states affected by
         /// <see cref="Actions"/>.
         /// </summary>
+        // TODO: We should remove this property.
+        // See also https://github.com/planetarium/libplanet/issues/368
         public IImmutableSet<Address> UpdatedAddresses { get; }
 
         /// <summary>

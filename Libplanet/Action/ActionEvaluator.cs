@@ -375,10 +375,6 @@ namespace Libplanet.Action
         /// <see cref="InvalidTxException"/> thrown by a call to <see cref="Block{T}.Validate"/>
         /// of <paramref name="block"/>.
         /// </remarks>
-        /// <exception cref="InvalidTxUpdatedAddressesException">Thrown when any
-        /// <see cref="IAction"/> in <see cref="Block{T}.Transactions"/> of <paramref name="block"/>
-        /// tries to update the states of <see cref="Address"/>es not included in
-        /// <see cref="Transaction{T}.UpdatedAddresses"/>.</exception>
         /// <seealso cref="Block{T}.Validate"/>
         /// <seealso cref="EvaluateTxs"/>
         [Pure]
@@ -469,9 +465,7 @@ namespace Libplanet.Action
             Transaction<T> tx,
             IAccountStateDelta previousStates,
             bool rehearsal = false,
-            ITrie? previousBlockStatesTrie = null)
-        {
-            IEnumerable<ActionEvaluation> evaluations = EvaluateActions(
+            ITrie? previousBlockStatesTrie = null) => EvaluateActions(
                 preEvaluationHash: block.PreEvaluationHash,
                 blockIndex: block.Index,
                 txid: tx.Id,
@@ -482,20 +476,6 @@ namespace Libplanet.Action
                 actions: tx.Actions.Cast<IAction>().ToImmutableList(),
                 rehearsal: rehearsal,
                 previousBlockStatesTrie: previousBlockStatesTrie);
-            foreach (var evaluation in evaluations)
-            {
-                if (!tx.UpdatedAddresses.IsSupersetOf(evaluation.OutputStates.UpdatedAddresses))
-                {
-                    const string msg =
-                        "Actions in the transaction try to update " +
-                        "the addresses not granted.";
-                    throw new InvalidTxUpdatedAddressesException(
-                        tx.Id, tx.UpdatedAddresses, evaluation.OutputStates.UpdatedAddresses, msg);
-                }
-
-                yield return evaluation;
-            }
-        }
 
         /// <summary>
         /// Evaluates <see cref="Transaction{T}.Actions"/> of a given
