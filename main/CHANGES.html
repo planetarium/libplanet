@@ -265,6 +265,7 @@ Use <code>ActionEvaluator.Evaluate()</code> method instead.</li>
 (or <code>millisecondsBroadcastBlockInterval</code>) parameter.  [<a href="https://github.com/planetarium/libplanet/pull/1351">#1351</a>]</li>
 <li>Added the parameter <code>minimumBroadcastTarget</code> to <code>NetMQTransport()</code>
 constructor.  [<a href="https://github.com/planetarium/libplanet/pull/1379">#1379</a>]</li>
+<li>Removed <code>InvalidTxUpdatedAddressesException</code>.  [<a href="https://github.com/planetarium/libplanet/issues/368">#368</a>, <a href="https://github.com/planetarium/libplanet/pull/1389">#1389</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
@@ -332,6 +333,8 @@ if <code>OutOfMemoryException</code> is caught from <code>IAction.Execute()</cod
 <li>Improved performance of broadcasting using <code>Swarm&lt;T&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1334">#1334</a>]</li>
 <li><code>Block&lt;T&gt;.Header</code> is now cached instead of creating a new instance every
 call. [<a href="https://github.com/planetarium/libplanet/pull/1347">#1347</a>]</li>
+<li><code>BlockChain&lt;T&gt;.ExecuteActions()</code> became no longer throw
+<code>InvalidTxUpdatedAddressesException</code>.  [<a href="https://github.com/planetarium/libplanet/issues/368">#368</a>, <a href="https://github.com/planetarium/libplanet/pull/1389">#1389</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>

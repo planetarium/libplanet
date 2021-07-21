@@ -15663,54 +15663,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.InvalidTxSignatureException.InvalidTxSignatureException
   nameWithType: InvalidTxSignatureException.InvalidTxSignatureException
-- uid: Libplanet.Tx.InvalidTxUpdatedAddressesException
-  name: InvalidTxUpdatedAddressesException
-  href: api/Libplanet.Tx.InvalidTxUpdatedAddressesException.html
-  commentId: T:Libplanet.Tx.InvalidTxUpdatedAddressesException
-  fullName: Libplanet.Tx.InvalidTxUpdatedAddressesException
-  nameWithType: InvalidTxUpdatedAddressesException
-- uid: Libplanet.Tx.InvalidTxUpdatedAddressesException.#ctor(Libplanet.Tx.TxId,IImmutableSet{Libplanet.Address},IImmutableSet{Libplanet.Address},System.String)
-  name: InvalidTxUpdatedAddressesException(TxId, IImmutableSet<Address>, IImmutableSet<Address>, String)
-  href: api/Libplanet.Tx.InvalidTxUpdatedAddressesException.html#Libplanet_Tx_InvalidTxUpdatedAddressesException__ctor_Libplanet_Tx_TxId_IImmutableSet_Libplanet_Address__IImmutableSet_Libplanet_Address__System_String_
-  commentId: M:Libplanet.Tx.InvalidTxUpdatedAddressesException.#ctor(Libplanet.Tx.TxId,IImmutableSet{Libplanet.Address},IImmutableSet{Libplanet.Address},System.String)
-  name.vb: InvalidTxUpdatedAddressesException(TxId, IImmutableSet(Of Address), IImmutableSet(Of Address), String)
-  fullName: Libplanet.Tx.InvalidTxUpdatedAddressesException.InvalidTxUpdatedAddressesException(Libplanet.Tx.TxId, IImmutableSet<Libplanet.Address>, IImmutableSet<Libplanet.Address>, System.String)
-  fullName.vb: Libplanet.Tx.InvalidTxUpdatedAddressesException.InvalidTxUpdatedAddressesException(Libplanet.Tx.TxId, IImmutableSet(Of Libplanet.Address), IImmutableSet(Of Libplanet.Address), System.String)
-  nameWithType: InvalidTxUpdatedAddressesException.InvalidTxUpdatedAddressesException(TxId, IImmutableSet<Address>, IImmutableSet<Address>, String)
-  nameWithType.vb: InvalidTxUpdatedAddressesException.InvalidTxUpdatedAddressesException(TxId, IImmutableSet(Of Address), IImmutableSet(Of Address), String)
-- uid: Libplanet.Tx.InvalidTxUpdatedAddressesException.#ctor*
-  name: InvalidTxUpdatedAddressesException
-  href: api/Libplanet.Tx.InvalidTxUpdatedAddressesException.html#Libplanet_Tx_InvalidTxUpdatedAddressesException__ctor_
-  commentId: Overload:Libplanet.Tx.InvalidTxUpdatedAddressesException.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Tx.InvalidTxUpdatedAddressesException.InvalidTxUpdatedAddressesException
-  nameWithType: InvalidTxUpdatedAddressesException.InvalidTxUpdatedAddressesException
-- uid: Libplanet.Tx.InvalidTxUpdatedAddressesException.UpdatableAddresses
-  name: UpdatableAddresses
-  href: api/Libplanet.Tx.InvalidTxUpdatedAddressesException.html#Libplanet_Tx_InvalidTxUpdatedAddressesException_UpdatableAddresses
-  commentId: P:Libplanet.Tx.InvalidTxUpdatedAddressesException.UpdatableAddresses
-  fullName: Libplanet.Tx.InvalidTxUpdatedAddressesException.UpdatableAddresses
-  nameWithType: InvalidTxUpdatedAddressesException.UpdatableAddresses
-- uid: Libplanet.Tx.InvalidTxUpdatedAddressesException.UpdatableAddresses*
-  name: UpdatableAddresses
-  href: api/Libplanet.Tx.InvalidTxUpdatedAddressesException.html#Libplanet_Tx_InvalidTxUpdatedAddressesException_UpdatableAddresses_
-  commentId: Overload:Libplanet.Tx.InvalidTxUpdatedAddressesException.UpdatableAddresses
-  isSpec: "True"
-  fullName: Libplanet.Tx.InvalidTxUpdatedAddressesException.UpdatableAddresses
-  nameWithType: InvalidTxUpdatedAddressesException.UpdatableAddresses
-- uid: Libplanet.Tx.InvalidTxUpdatedAddressesException.UpdatedAddresses
-  name: UpdatedAddresses
-  href: api/Libplanet.Tx.InvalidTxUpdatedAddressesException.html#Libplanet_Tx_InvalidTxUpdatedAddressesException_UpdatedAddresses
-  commentId: P:Libplanet.Tx.InvalidTxUpdatedAddressesException.UpdatedAddresses
-  fullName: Libplanet.Tx.InvalidTxUpdatedAddressesException.UpdatedAddresses
-  nameWithType: InvalidTxUpdatedAddressesException.UpdatedAddresses
-- uid: Libplanet.Tx.InvalidTxUpdatedAddressesException.UpdatedAddresses*
-  name: UpdatedAddresses
-  href: api/Libplanet.Tx.InvalidTxUpdatedAddressesException.html#Libplanet_Tx_InvalidTxUpdatedAddressesException_UpdatedAddresses_
-  commentId: Overload:Libplanet.Tx.InvalidTxUpdatedAddressesException.UpdatedAddresses
-  isSpec: "True"
-  fullName: Libplanet.Tx.InvalidTxUpdatedAddressesException.UpdatedAddresses
-  nameWithType: InvalidTxUpdatedAddressesException.UpdatedAddresses
 - uid: Libplanet.Tx.Transaction`1
   name: Transaction<T>
   href: api/Libplanet.Tx.Transaction-1.html

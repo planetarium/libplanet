@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "QqDFhWQPswtV1ex470CHxg=="
+          "hash": "msbduRVh6viTskuxwvW+JQ=="
         }
       },
       "is_incremental": false,
@@ -2253,7 +2253,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Tx.InvalidTxException.html",
-          "hash": "TvSPjy2IOxiVgGYiRxSfUA=="
+          "hash": "rGC2SSjxqLoG2tNGhq0sRA=="
         }
       },
       "is_incremental": false,
@@ -2321,23 +2321,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/Libplanet.Tx.InvalidTxUpdatedAddressesException.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Libplanet.Tx.InvalidTxUpdatedAddressesException.html",
-          "hash": "Cv4Cm6ER0hfDewG8tdmn+A=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/Libplanet.Tx.Transaction-1.yml",
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Tx.Transaction-1.html",
-          "hash": "KDyuXY0xsdLeZU40mXLAJg=="
+          "hash": "nFk+lCcYjTDZyCUKJeObCQ=="
         }
       },
       "is_incremental": false,
@@ -2409,7 +2397,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Tx.html",
-          "hash": "uIxuiJUGEJ0BsPBQStNaEw=="
+          "hash": "02Blz2DH1yJxXRzLavNruA=="
         }
       },
       "is_incremental": false,
@@ -2445,7 +2433,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "icJ7uzql0Y3KJCNh/zXYFw=="
+          "hash": "oBGaDhKEpV11JD/rpnuyjQ=="
         }
       },
       "is_incremental": false,
@@ -2554,7 +2542,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 194,
+          "total_file_count": 193,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
