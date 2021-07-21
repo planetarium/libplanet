@@ -1,3 +1,4 @@
+#nullable enable
 using Bencodex.Types;
 
 namespace Libplanet.Action
@@ -10,7 +11,7 @@ namespace Libplanet.Action
     {
         public NullAction()
         {
-            PlainValue = default(Null);
+            PlainValue = Null.Value;
         }
 
         public IValue PlainValue
@@ -19,8 +20,7 @@ namespace Libplanet.Action
             private set;
         }
 
-        public void LoadPlainValue(
-            IValue plainValue)
+        public void LoadPlainValue(IValue plainValue)
         {
             PlainValue = plainValue;
         }
