@@ -22,14 +22,15 @@ namespace Libplanet.Explorer.UnitTests.GraphTypes
                 1,
                 1,
                 1,
-                new Nonce(new byte[] {0x01, 0x23, 0x45, 0x56}),
+                new Nonce(new byte[] { 0x01, 0x23, 0x45, 0x56 }),
                 new Address(TestUtils.GetRandomBytes(Address.Size)),
                 new BlockHash(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
                 DateTimeOffset.UtcNow,
                 ImmutableArray<Transaction<NoOpAction>>.Empty,
-                HashAlgorithmType.Of<SHA256>(),
-                stateRootHash: new HashDigest<SHA256>(
-                    TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)));
+                hashAlgorithm: HashAlgorithmType.Of<SHA256>());
+            block = new Block<NoOpAction>(
+                block,
+                new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)));
             var query =
                 @"{
                     index
