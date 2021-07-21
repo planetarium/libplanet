@@ -330,6 +330,8 @@ A transaction inclusion for a block is retrievable by using this index.
 if <code>OutOfMemoryException</code> is caught from <code>IAction.Execute()</code>.
 [<a href="https://github.com/planetarium/libplanet/issues/1320">#1320</a>, <a href="https://github.com/planetarium/libplanet/pull/1343">#1343</a>]</li>
 <li>Improved performance of broadcasting using <code>Swarm&lt;T&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1334">#1334</a>]</li>
+<li><code>Block&lt;T&gt;.Header</code> is now cached instead of creating a new instance every
+call. [<a href="https://github.com/planetarium/libplanet/pull/1347">#1347</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
