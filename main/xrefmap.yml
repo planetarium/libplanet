@@ -719,6 +719,64 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.MissingActionTypeException.ActionType
   nameWithType: MissingActionTypeException.ActionType
+- uid: Libplanet.Action.NullAction
+  name: NullAction
+  href: api/Libplanet.Action.NullAction.html
+  commentId: T:Libplanet.Action.NullAction
+  fullName: Libplanet.Action.NullAction
+  nameWithType: NullAction
+- uid: Libplanet.Action.NullAction.#ctor
+  name: NullAction()
+  href: api/Libplanet.Action.NullAction.html#Libplanet_Action_NullAction__ctor
+  commentId: M:Libplanet.Action.NullAction.#ctor
+  fullName: Libplanet.Action.NullAction.NullAction()
+  nameWithType: NullAction.NullAction()
+- uid: Libplanet.Action.NullAction.#ctor*
+  name: NullAction
+  href: api/Libplanet.Action.NullAction.html#Libplanet_Action_NullAction__ctor_
+  commentId: Overload:Libplanet.Action.NullAction.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Action.NullAction.NullAction
+  nameWithType: NullAction.NullAction
+- uid: Libplanet.Action.NullAction.Execute(Libplanet.Action.IActionContext)
+  name: Execute(IActionContext)
+  href: api/Libplanet.Action.NullAction.html#Libplanet_Action_NullAction_Execute_Libplanet_Action_IActionContext_
+  commentId: M:Libplanet.Action.NullAction.Execute(Libplanet.Action.IActionContext)
+  fullName: Libplanet.Action.NullAction.Execute(Libplanet.Action.IActionContext)
+  nameWithType: NullAction.Execute(IActionContext)
+- uid: Libplanet.Action.NullAction.Execute*
+  name: Execute
+  href: api/Libplanet.Action.NullAction.html#Libplanet_Action_NullAction_Execute_
+  commentId: Overload:Libplanet.Action.NullAction.Execute
+  isSpec: "True"
+  fullName: Libplanet.Action.NullAction.Execute
+  nameWithType: NullAction.Execute
+- uid: Libplanet.Action.NullAction.LoadPlainValue(IValue)
+  name: LoadPlainValue(IValue)
+  href: api/Libplanet.Action.NullAction.html#Libplanet_Action_NullAction_LoadPlainValue_IValue_
+  commentId: M:Libplanet.Action.NullAction.LoadPlainValue(IValue)
+  fullName: Libplanet.Action.NullAction.LoadPlainValue(IValue)
+  nameWithType: NullAction.LoadPlainValue(IValue)
+- uid: Libplanet.Action.NullAction.LoadPlainValue*
+  name: LoadPlainValue
+  href: api/Libplanet.Action.NullAction.html#Libplanet_Action_NullAction_LoadPlainValue_
+  commentId: Overload:Libplanet.Action.NullAction.LoadPlainValue
+  isSpec: "True"
+  fullName: Libplanet.Action.NullAction.LoadPlainValue
+  nameWithType: NullAction.LoadPlainValue
+- uid: Libplanet.Action.NullAction.PlainValue
+  name: PlainValue
+  href: api/Libplanet.Action.NullAction.html#Libplanet_Action_NullAction_PlainValue
+  commentId: P:Libplanet.Action.NullAction.PlainValue
+  fullName: Libplanet.Action.NullAction.PlainValue
+  nameWithType: NullAction.PlainValue
+- uid: Libplanet.Action.NullAction.PlainValue*
+  name: PlainValue
+  href: api/Libplanet.Action.NullAction.html#Libplanet_Action_NullAction_PlainValue_
+  commentId: Overload:Libplanet.Action.NullAction.PlainValue
+  isSpec: "True"
+  fullName: Libplanet.Action.NullAction.PlainValue
+  nameWithType: NullAction.PlainValue
 - uid: Libplanet.Action.PolymorphicAction`1
   name: PolymorphicAction<T>
   href: api/Libplanet.Action.PolymorphicAction-1.html

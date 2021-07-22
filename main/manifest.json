@@ -281,6 +281,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Action.NullAction.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Action.NullAction.html",
+          "hash": "cuMpXeyLielv3U1oYfKnsQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Libplanet.Action.PolymorphicAction-1.yml",
       "output": {
         ".html": {
@@ -333,7 +345,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Action.html",
-          "hash": "oyB297326LuHOWLdQ85Seg=="
+          "hash": "EGlnzBHQ3s+TQfyca+zgRQ=="
         }
       },
       "is_incremental": false,
@@ -405,7 +417,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.BlockChain-1.html",
-          "hash": "xttOGZF9TZPQbL4jIxxTeg=="
+          "hash": "87lmCaZKHr+fsA3cXzsJMw=="
         }
       },
       "is_incremental": false,
@@ -2121,7 +2133,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.StoreExtensions.html",
-          "hash": "p+r1HPf5fQIBUMk83+azpg=="
+          "hash": "7vO05KW88oq57PmGJyMrbw=="
         }
       },
       "is_incremental": false,
@@ -2433,7 +2445,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "oBGaDhKEpV11JD/rpnuyjQ=="
+          "hash": "1+NOBXCetKphPxwSByJ4mA=="
         }
       },
       "is_incremental": false,
@@ -2542,7 +2554,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 193,
+          "total_file_count": 194,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
