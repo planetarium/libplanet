@@ -164,15 +164,9 @@ namespace Libplanet.Blockchain.Renderers.Debug
                     block.Transactions.SelectMany(t => t.Actions).Cast<IAction>();
                 if (policy.BlockAction is IAction blockAction)
                 {
-#if NET472 || NET471 || NET47 || NET462 || NET461
-                    // Even though .NET Framework 4.6.1 or higher supports .NET Standard 2.0,
-                    // versions lower than 4.8 lacks Enumerable.Append(IEnumerable<T>, T) method.
-                    actions = actions.Concat(new IAction[] { blockAction });
-#else
 #pragma warning disable PC002
                     actions = actions.Append(blockAction);
 #pragma warning restore PC002
-#endif
                 }
 
                 expectedRenderedActionsBuffer = actions.Concat(expectedRenderedActionsBuffer);

@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <LangVersion>7.2</LangVersion>
+    <LangVersion>8.0</LangVersion>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>

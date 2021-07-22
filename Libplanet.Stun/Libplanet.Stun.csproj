@@ -16,7 +16,7 @@
 
   <PropertyGroup>
     <LangVersion>8.0</LangVersion>
-    <TargetFrameworks>netstandard2.0;netstandard2.1;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>netstandard2.1;netcoreapp3.1</TargetFrameworks>
     <RootNamespace>Libplanet.Stun</RootNamespace>
     <AssemblyName>Libplanet.Stun</AssemblyName>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>

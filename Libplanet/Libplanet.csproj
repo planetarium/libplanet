@@ -39,7 +39,7 @@ https://docs.libplanet.io/</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-    <TargetFrameworks>netstandard2.0;netstandard2.1;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>netstandard2.1;netcoreapp3.1</TargetFrameworks>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <NoWarn>$(NoWarn);CS0660;CS0661;S3875;CS1591;NU5104;MEN001</NoWarn>
@@ -97,8 +97,7 @@ https://docs.libplanet.io/</Description>
     <PackageReference Include="Zio" Version="0.7.4" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' or
-                         '$(TargetFramework)' == 'netstandard2.1'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
     <PackageReference Include="System.Threading.Channels" Version="5.0.0" />
   </ItemGroup>
 

@@ -6,7 +6,7 @@
     <IsPackable>false</IsPackable>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <LangVersion>7.1</LangVersion>
+    <LangVersion>8.0</LangVersion>
     <CodeAnalysisRuleSet>..\Libplanet.Tests.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
