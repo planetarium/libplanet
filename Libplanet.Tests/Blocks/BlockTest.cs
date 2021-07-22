@@ -618,7 +618,7 @@ namespace Libplanet.Tests.Blocks
                     new[] { new RandomAction(signer.ToAddress()) })).ToImmutableArray();
             HashAlgorithmGetter algoGetter = _ => HashAlgorithmType.Of<SHA256>();
             var blockA = MineGenesis(algoGetter, timestamp: timestamp, transactions: txs);
-            var blockB = MineGenesis(algoGetter, timestamp: timestamp,  transactions: txs);
+            var blockB = MineGenesis(algoGetter, timestamp: timestamp, transactions: txs);
 
             Assert.True(blockA.Transactions.SequenceEqual(blockB.Transactions));
         }
