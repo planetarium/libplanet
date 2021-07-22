@@ -323,6 +323,8 @@ less space is used.  [<a href="https://github.com/planetarium/libplanet/issues/1
 <li><code>BlockChain&lt;T&gt;.Append()</code> cumulates indexes for pairs (TxId and BlockHash).
 A transaction inclusion for a block is retrievable by using this index.
 [<a href="https://github.com/planetarium/libplanet/issues/1315">#1315</a>, <a href="https://github.com/planetarium/libplanet/pull/1329">#1329</a>]</li>
+<li><code>Block&lt;T&gt;.Transactions</code> will be ordered using a different scheme once
+the protocol version is bumped to <code>2</code>.  [<a href="https://github.com/planetarium/libplanet/issues/1322">#1322</a>, <a href="https://github.com/planetarium/libplanet/issues/1323">#1323</a>, <a href="https://github.com/planetarium/libplanet/pull/1326">#1326</a>]</li>
 <li><code>ActionEvaluator&lt;T&gt;.EvaluateActions()</code> now throws an unmanaged exception
 if <code>OutOfMemoryException</code> is caught from <code>IAction.Execute()</code>.
 [<a href="https://github.com/planetarium/libplanet/issues/1320">#1320</a>, <a href="https://github.com/planetarium/libplanet/pull/1343">#1343</a>]</li>
