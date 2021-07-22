@@ -195,6 +195,7 @@ To be released.
  -  Added the parameter `minimumBroadcastTarget` to `NetMQTransport()`
     constructor.  [[#1379]]
  -  Removed `InvalidTxUpdatedAddressesException`.  [[#368], [#1389]]
+ - Drop support for .net standard [[#1266]]
 
 ### Backward-incompatible network protocol changes
 
