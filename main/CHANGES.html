@@ -285,9 +285,8 @@ constructor.  [<a href="https://github.com/planetarium/libplanet/pull/1379">#137
 <li>Added <code>BoundPeer.Parse()</code> static method.  [<a href="https://github.com/planetarium/libplanet/pull/1240">#1240</a>]</li>
 <li>Added <code>TransportException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/1242">#1242</a>]</li>
 <li>Added <code>SwarmOptions.StaticPeers</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/1230">#1230</a>, <a href="https://github.com/planetarium/libplanet/pull/1271">#1271</a>]</li>
+<li>Added <code>SwarmOptions.StaticPeersMaintainPeriod</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/1230">#1230</a>, <a href="https://github.com/planetarium/libplanet/pull/1367">#1367</a>]</li>
 <li>Added <code>SwarmOptions.BranchpointThreshold</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/1348">#1348</a>]</li>
-<li>Added <code>StaticPeers</code> as the last parameter to
-<code>RoutingTable(Address, int, int)</code> constructor.  [<a href="https://github.com/planetarium/libplanet/issues/1230">#1230</a>, <a href="https://github.com/planetarium/libplanet/pull/1271">#1271</a>]</li>
 <li>Added <code>AtomicActionRenderer&lt;T&gt;</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/1267">#1267</a>, <a href="https://github.com/planetarium/libplanet/pull/1275">#1275</a>]</li>
 <li>Added <code>TxExecution</code> abstract class.  [<a href="https://github.com/planetarium/libplanet/issues/1156">#1156</a>, <a href="https://github.com/planetarium/libplanet/pull/1289">#1289</a>]</li>
 <li>Added <code>TxSuccess</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/1156">#1156</a>, <a href="https://github.com/planetarium/libplanet/pull/1289">#1289</a>]</li>
@@ -310,9 +309,6 @@ transaction in the appended <code>Block&lt;T&gt;</code>, whether a transaction i
 for this case).  [<a href="https://github.com/planetarium/libplanet/issues/1156">#1156</a>, <a href="https://github.com/planetarium/libplanet/pull/1289">#1289</a>]</li>
 <li><code>ITransport.StartAsync()</code> and <code>ITransport.RunAsync()</code> became to throw
 <code>TransportException</code> instead of <code>SwarmException</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1242">#1242</a>]</li>
-<li>When selecting peers for <code>ITransport.BroadcastMessage()</code>,
-peers are selected from static peers in addition to peers selected
-according to existing selection methods.  [<a href="https://github.com/planetarium/libplanet/issues/1230">#1230</a>, <a href="https://github.com/planetarium/libplanet/pull/1271">#1271</a>]</li>
 <li><code>NetMQTransport</code> became to enforce NetMQ/<a href="https://github.com/somdoron/AsyncIO">AsyncIO</a> to use its pure .NET
 implementation instead of Windows'
 <abbr title="input/output completion port">IOCP</abbr> when it is running
@@ -331,6 +327,8 @@ A transaction inclusion for a block is retrievable by using this index.
 if <code>OutOfMemoryException</code> is caught from <code>IAction.Execute()</code>.
 [<a href="https://github.com/planetarium/libplanet/issues/1320">#1320</a>, <a href="https://github.com/planetarium/libplanet/pull/1343">#1343</a>]</li>
 <li>Improved performance of broadcasting using <code>Swarm&lt;T&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1334">#1334</a>]</li>
+<li><code>Swarm&lt;T&gt;</code> now maintains static peers provided via
+<code>SwarmOptions.StaticPeers</code> periodically.  [<a href="https://github.com/planetarium/libplanet/issues/1230">#1230</a>, <a href="https://github.com/planetarium/libplanet/pull/1367">#1367</a>]</li>
 <li><code>Block&lt;T&gt;.Header</code> is now cached instead of creating a new instance every
 call. [<a href="https://github.com/planetarium/libplanet/pull/1347">#1347</a>]</li>
 <li><code>BlockChain&lt;T&gt;.ExecuteActions()</code> became no longer throw

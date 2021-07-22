@@ -11164,15 +11164,12 @@ references:
   commentId: T:Libplanet.Net.Protocols.RoutingTable
   fullName: Libplanet.Net.Protocols.RoutingTable
   nameWithType: RoutingTable
-- uid: Libplanet.Net.Protocols.RoutingTable.#ctor(Libplanet.Address,System.Int32,System.Int32,IImmutableSet{Libplanet.Net.BoundPeer})
-  name: RoutingTable(Address, Int32, Int32, IImmutableSet<BoundPeer>)
-  href: api/Libplanet.Net.Protocols.RoutingTable.html#Libplanet_Net_Protocols_RoutingTable__ctor_Libplanet_Address_System_Int32_System_Int32_IImmutableSet_Libplanet_Net_BoundPeer__
-  commentId: M:Libplanet.Net.Protocols.RoutingTable.#ctor(Libplanet.Address,System.Int32,System.Int32,IImmutableSet{Libplanet.Net.BoundPeer})
-  name.vb: RoutingTable(Address, Int32, Int32, IImmutableSet(Of BoundPeer))
-  fullName: Libplanet.Net.Protocols.RoutingTable.RoutingTable(Libplanet.Address, System.Int32, System.Int32, IImmutableSet<Libplanet.Net.BoundPeer>)
-  fullName.vb: Libplanet.Net.Protocols.RoutingTable.RoutingTable(Libplanet.Address, System.Int32, System.Int32, IImmutableSet(Of Libplanet.Net.BoundPeer))
-  nameWithType: RoutingTable.RoutingTable(Address, Int32, Int32, IImmutableSet<BoundPeer>)
-  nameWithType.vb: RoutingTable.RoutingTable(Address, Int32, Int32, IImmutableSet(Of BoundPeer))
+- uid: Libplanet.Net.Protocols.RoutingTable.#ctor(Libplanet.Address,System.Int32,System.Int32)
+  name: RoutingTable(Address, Int32, Int32)
+  href: api/Libplanet.Net.Protocols.RoutingTable.html#Libplanet_Net_Protocols_RoutingTable__ctor_Libplanet_Address_System_Int32_System_Int32_
+  commentId: M:Libplanet.Net.Protocols.RoutingTable.#ctor(Libplanet.Address,System.Int32,System.Int32)
+  fullName: Libplanet.Net.Protocols.RoutingTable.RoutingTable(Libplanet.Address, System.Int32, System.Int32)
+  nameWithType: RoutingTable.RoutingTable(Address, Int32, Int32)
 - uid: Libplanet.Net.Protocols.RoutingTable.#ctor*
   name: RoutingTable
   href: api/Libplanet.Net.Protocols.RoutingTable.html#Libplanet_Net_Protocols_RoutingTable__ctor_
@@ -11329,32 +11326,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Protocols.RoutingTable.RemovePeer
   nameWithType: RoutingTable.RemovePeer
-- uid: Libplanet.Net.Protocols.RoutingTable.StaticPeers
-  name: StaticPeers
-  href: api/Libplanet.Net.Protocols.RoutingTable.html#Libplanet_Net_Protocols_RoutingTable_StaticPeers
-  commentId: P:Libplanet.Net.Protocols.RoutingTable.StaticPeers
-  fullName: Libplanet.Net.Protocols.RoutingTable.StaticPeers
-  nameWithType: RoutingTable.StaticPeers
-- uid: Libplanet.Net.Protocols.RoutingTable.StaticPeers*
-  name: StaticPeers
-  href: api/Libplanet.Net.Protocols.RoutingTable.html#Libplanet_Net_Protocols_RoutingTable_StaticPeers_
-  commentId: Overload:Libplanet.Net.Protocols.RoutingTable.StaticPeers
-  isSpec: "True"
-  fullName: Libplanet.Net.Protocols.RoutingTable.StaticPeers
-  nameWithType: RoutingTable.StaticPeers
-- uid: Libplanet.Net.Protocols.RoutingTable.StaticPeerStates
-  name: StaticPeerStates
-  href: api/Libplanet.Net.Protocols.RoutingTable.html#Libplanet_Net_Protocols_RoutingTable_StaticPeerStates
-  commentId: P:Libplanet.Net.Protocols.RoutingTable.StaticPeerStates
-  fullName: Libplanet.Net.Protocols.RoutingTable.StaticPeerStates
-  nameWithType: RoutingTable.StaticPeerStates
-- uid: Libplanet.Net.Protocols.RoutingTable.StaticPeerStates*
-  name: StaticPeerStates
-  href: api/Libplanet.Net.Protocols.RoutingTable.html#Libplanet_Net_Protocols_RoutingTable_StaticPeerStates_
-  commentId: Overload:Libplanet.Net.Protocols.RoutingTable.StaticPeerStates
-  isSpec: "True"
-  fullName: Libplanet.Net.Protocols.RoutingTable.StaticPeerStates
-  nameWithType: RoutingTable.StaticPeerStates
 - uid: Libplanet.Net.Protocols.RoutingTable.TableSize
   name: TableSize
   href: api/Libplanet.Net.Protocols.RoutingTable.html#Libplanet_Net_Protocols_RoutingTable_TableSize
@@ -12097,6 +12068,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.SwarmOptions.StaticPeers
   nameWithType: SwarmOptions.StaticPeers
+- uid: Libplanet.Net.SwarmOptions.StaticPeersMaintainPeriod
+  name: StaticPeersMaintainPeriod
+  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_StaticPeersMaintainPeriod
+  commentId: P:Libplanet.Net.SwarmOptions.StaticPeersMaintainPeriod
+  fullName: Libplanet.Net.SwarmOptions.StaticPeersMaintainPeriod
+  nameWithType: SwarmOptions.StaticPeersMaintainPeriod
+- uid: Libplanet.Net.SwarmOptions.StaticPeersMaintainPeriod*
+  name: StaticPeersMaintainPeriod
+  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_StaticPeersMaintainPeriod_
+  commentId: Overload:Libplanet.Net.SwarmOptions.StaticPeersMaintainPeriod
+  isSpec: "True"
+  fullName: Libplanet.Net.SwarmOptions.StaticPeersMaintainPeriod
+  nameWithType: SwarmOptions.StaticPeersMaintainPeriod
 - uid: Libplanet.Net.SwarmOptions.TxRecvTimeout
   name: TxRecvTimeout
   href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_TxRecvTimeout

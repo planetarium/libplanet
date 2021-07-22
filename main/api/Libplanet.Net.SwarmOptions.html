@@ -241,7 +241,7 @@
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_SwarmOptions_BranchpointThreshold.md&amp;value=---%0Auid%3A%20Libplanet.Net.SwarmOptions.BranchpointThreshold%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Net/SwarmOptions.cs/#L77">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Net/SwarmOptions.cs/#L84">View Source</a>
   </span>
   <a id="Libplanet_Net_SwarmOptions_BranchpointThreshold_" data-uid="Libplanet.Net.SwarmOptions.BranchpointThreshold*"></a>
   <h4 id="Libplanet_Net_SwarmOptions_BranchpointThreshold" data-uid="Libplanet.Net.SwarmOptions.BranchpointThreshold">BranchpointThreshold</h4>
@@ -336,7 +336,7 @@ using an approximated value.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_SwarmOptions_MinimumBroadcastTarget.md&amp;value=---%0Auid%3A%20Libplanet.Net.SwarmOptions.MinimumBroadcastTarget%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Net/SwarmOptions.cs/#L83">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Net/SwarmOptions.cs/#L90">View Source</a>
   </span>
   <a id="Libplanet_Net_SwarmOptions_MinimumBroadcastTarget_" data-uid="Libplanet.Net.SwarmOptions.MinimumBroadcastTarget*"></a>
   <h4 id="Libplanet_Net_SwarmOptions_MinimumBroadcastTarget" data-uid="Libplanet.Net.SwarmOptions.MinimumBroadcastTarget">MinimumBroadcastTarget</h4>
@@ -462,12 +462,13 @@ It is 10 by default.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_SwarmOptions_StaticPeers.md&amp;value=---%0Auid%3A%20Libplanet.Net.SwarmOptions.StaticPeers%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Net/SwarmOptions.cs/#L69">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Net/SwarmOptions.cs/#L70">View Source</a>
   </span>
   <a id="Libplanet_Net_SwarmOptions_StaticPeers_" data-uid="Libplanet.Net.SwarmOptions.StaticPeers*"></a>
   <h4 id="Libplanet_Net_SwarmOptions_StaticPeers" data-uid="Libplanet.Net.SwarmOptions.StaticPeers">StaticPeers</h4>
   <div class="markdown level1 summary"><p>The list of <a class="xref" href="Libplanet.Net.Peer.html">Peer</a>s to keep in routing table permanently.
-The <a class="xref" href="Libplanet.Net.Peer.html">Peer</a>s in the list won't be removed in any cases.</p>
+The <a class="xref" href="Libplanet.Net.Peer.html">Peer</a>s in the list will be maintained periodically within
+<a class="xref" href="Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_StaticPeersMaintainPeriod">StaticPeersMaintainPeriod</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -489,6 +490,41 @@ The <a class="xref" href="Libplanet.Net.Peer.html">Peer</a>s in the list won't b
       </tr>
     </tbody>
   </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_SwarmOptions_StaticPeersMaintainPeriod.md&amp;value=---%0Auid%3A%20Libplanet.Net.SwarmOptions.StaticPeersMaintainPeriod%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Net/SwarmOptions.cs/#L77">View Source</a>
+  </span>
+  <a id="Libplanet_Net_SwarmOptions_StaticPeersMaintainPeriod_" data-uid="Libplanet.Net.SwarmOptions.StaticPeersMaintainPeriod*"></a>
+  <h4 id="Libplanet_Net_SwarmOptions_StaticPeersMaintainPeriod" data-uid="Libplanet.Net.SwarmOptions.StaticPeersMaintainPeriod">StaticPeersMaintainPeriod</h4>
+  <div class="markdown level1 summary"><p>The period of <code>Task</code> maintains static peer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TimeSpan StaticPeersMaintainPeriod { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.timespan">TimeSpan</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Net_SwarmOptions_StaticPeersMaintainPeriod_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_StaticPeers">StaticPeers</a></div>
+  </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_SwarmOptions_TxRecvTimeout.md&amp;value=---%0Auid%3A%20Libplanet.Net.SwarmOptions.TxRecvTimeout%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
