@@ -79,37 +79,6 @@ namespace Libplanet.Net
             DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered = null,
             IEnumerable<PublicKey> trustedAppProtocolVersionSigners = null,
             SwarmOptions options = null)
-            : this(
-                blockChain,
-                privateKey,
-                appProtocolVersion,
-                Kademlia.TableSize,
-                Kademlia.BucketSize,
-                workers,
-                host,
-                listenPort,
-                null,
-                iceServers,
-                differentAppProtocolVersionEncountered,
-                trustedAppProtocolVersionSigners,
-                options)
-        {
-        }
-
-        internal Swarm(
-            BlockChain<T> blockChain,
-            PrivateKey privateKey,
-            AppProtocolVersion appProtocolVersion,
-            int tableSize,
-            int bucketSize,
-            int workers = 5,
-            string host = null,
-            int? listenPort = null,
-            DateTimeOffset? createdAt = null,
-            IEnumerable<IceServer> iceServers = null,
-            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered = null,
-            IEnumerable<PublicKey> trustedAppProtocolVersionSigners = null,
-            SwarmOptions options = null)
         {
             BlockChain = blockChain ?? throw new ArgumentNullException(nameof(blockChain));
             _store = BlockChain.Store;
@@ -117,8 +86,6 @@ namespace Libplanet.Net
             LastSeenTimestamps =
                 new ConcurrentDictionary<Peer, DateTimeOffset>();
 
-            DateTimeOffset now = createdAt.GetValueOrDefault(
-                DateTimeOffset.UtcNow);
             TxReceived = new AsyncAutoResetEvent();
             BlockHeaderReceived = new AsyncAutoResetEvent();
             BlockAppended = new AsyncAutoResetEvent();
@@ -136,7 +103,7 @@ namespace Libplanet.Net
                 .ForContext("SwarmId", loggerId);
 
             Options = options ?? new SwarmOptions();
-            RoutingTable = new RoutingTable(Address, tableSize, bucketSize);
+            RoutingTable = new RoutingTable(Address, Options.TableSize, Options.BucketSize);
             Transport = new NetMQTransport(
                 RoutingTable,
                 _privateKey,

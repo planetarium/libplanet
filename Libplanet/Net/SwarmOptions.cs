@@ -88,5 +88,17 @@ namespace Libplanet.Net
         /// It is 10 by default.
         /// </summary>
         public int MinimumBroadcastTarget { get; set; } = 10;
+
+        /// <summary>
+        /// The number of buckets of the Kademlia based routing table.
+        /// </summary>
+        /// <seealso cref="RoutingTable"/>
+        public int TableSize { get; set; } = Kademlia.TableSize;
+
+        /// <summary>
+        /// The size of each bucket of the Kademlia based routing table.
+        /// </summary>
+        /// <seealso cref="RoutingTable"/>
+        public int BucketSize { get; set; } = Kademlia.BucketSize;
     }
 }
