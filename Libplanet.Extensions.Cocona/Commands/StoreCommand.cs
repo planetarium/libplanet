@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.IO;
 using System.Linq;
 using Cocona;
 using Libplanet.Action;
@@ -25,7 +26,57 @@ namespace Libplanet.Extensions.Cocona.Commands
                     ["default"] = storePath => new DefaultStore(storePath),
                     ["rocksdb"] = storePath => new RocksDBStore.RocksDBStore(storePath),
                     ["monorocksdb"] = storePath => new MonoRocksDBStore(storePath),
+                    ["rocksdbold"] = storePath => new RocksDBStoreOld(storePath),
                 }.ToImmutableSortedDictionary();
+
+        [Command(Description = "Migrate Column Family to Prefix")]
+        public void MigrateCfPrefix(
+            [Argument("STORE", Description = StoreArgumentDescription)]
+            string from
+        )
+        {
+            var oldStorePath = Path.Combine(
+                Path.GetTempPath(), Guid.NewGuid().ToString().Substring(0, 8));
+            var uri = ParseUri(from);
+
+            DirectoryCopy(uri.AbsolutePath, oldStorePath, true);
+            IStore oldStore = LoadStoreFromUri("rocksdbold://" + oldStorePath);
+            if (oldStore.ListChainIds().Count() > 1)
+            {
+                throw Utils.Error("Only uni-chainid supported");
+            }
+
+            var chainId = oldStore.ListChainIds().First();
+            if (oldStore.GetCanonicalChainId() is { } canonId && !chainId.Equals(canonId))
+            {
+                throw Utils.Error("The uni-chainid should be equal to the canonical chain id");
+            }
+
+            DeleteDirectory(Path.Combine(uri.AbsolutePath, "chain"));
+            IStore newStore = LoadStoreFromUri(from);
+            if (newStore.ListChainIds().Any())
+            {
+                throw Utils.Error("Chain db should be removed");
+            }
+
+            var total = oldStore.IterateIndexes(chainId).Count();
+            foreach (BlockHash blockHash in oldStore.IterateIndexes(chainId))
+            {
+                newStore.AppendIndex(chainId, blockHash);
+                Console.WriteLine($"{newStore.CountIndex(chainId)}/{total}");
+            }
+
+            foreach (KeyValuePair<Address, long> kv in oldStore.ListTxNonces(chainId))
+            {
+                newStore.IncreaseTxNonce(chainId, kv.Key, kv.Value);
+            }
+
+            newStore.SetCanonicalChainId(canonId);
+
+            (oldStore as IDisposable)?.Dispose();
+            (newStore as IDisposable)?.Dispose();
+            DeleteDirectory(oldStorePath);
+        }
 
         [Command(Description = "Build an index for transaction id and block hash.")]
         public void BuildIndexTxBlock(
@@ -128,6 +179,62 @@ namespace Libplanet.Extensions.Cocona.Commands
             (store as IDisposable)?.Dispose();
         }
 
+        private static void DeleteDirectory(string targetDir)
+        {
+            string[] files = Directory.GetFiles(targetDir);
+            string[] dirs = Directory.GetDirectories(targetDir);
+
+            foreach (string file in files)
+            {
+                File.SetAttributes(file, FileAttributes.Normal);
+                File.Delete(file);
+            }
+
+            foreach (string dir in dirs)
+            {
+                DeleteDirectory(dir);
+            }
+
+            Directory.Delete(targetDir, false);
+        }
+
+        private static void DirectoryCopy(
+            string sourceDirName, string destDirName, bool copySubDirs)
+        {
+            // Get the subdirectories for the specified directory.
+            DirectoryInfo dir = new DirectoryInfo(sourceDirName);
+
+            if (!dir.Exists)
+            {
+                throw new DirectoryNotFoundException(
+                    "Source directory does not exist or could not be found: "
+                    + sourceDirName);
+            }
+
+            DirectoryInfo[] dirs = dir.GetDirectories();
+
+            // If the destination directory doesn't exist, create it.
+            Directory.CreateDirectory(destDirName);
+
+            // Get the files in the directory and copy them to the new location.
+            FileInfo[] files = dir.GetFiles();
+            foreach (FileInfo file in files)
+            {
+                string tempPath = Path.Combine(destDirName, file.Name);
+                file.CopyTo(tempPath, false);
+            }
+
+            // If copying subdirectories, copy them and their contents to new location.
+            if (copySubDirs)
+            {
+                foreach (DirectoryInfo subdir in dirs)
+                {
+                    string tempPath = Path.Combine(destDirName, subdir.Name);
+                    DirectoryCopy(subdir.FullName, tempPath, copySubDirs);
+                }
+            }
+        }
+
         private static Block<T> GetBlock<T>(IStore store, BlockHash blockHash)
             where T : IAction, new()
         {
@@ -203,6 +310,22 @@ namespace Libplanet.Extensions.Cocona.Commands
 
         private IStore LoadStoreFromUri(string rawUri)
         {
+            Uri uri = ParseUri(rawUri);
+            var scheme = uri.Scheme;
+            var splitScheme = scheme.Split('+');
+            if (!_storeConstructors.TryGetValue(
+                splitScheme[0],
+                out var constructor))
+            {
+                throw new NotSupportedException(
+                    $"No store backend supports the such scheme: {splitScheme[0]}.");
+            }
+
+            return constructor(uri.AbsolutePath);
+        }
+
+        private Uri ParseUri(string rawUri)
+        {
             var uri = new Uri(rawUri);
             var scheme = uri.Scheme;
             var splitScheme = scheme.Split('+');
@@ -213,14 +336,6 @@ namespace Libplanet.Extensions.Cocona.Commands
                 throw new ArgumentException(exceptionMessage, nameof(rawUri));
             }
 
-            if (!_storeConstructors.TryGetValue(
-                splitScheme[0],
-                out var constructor))
-            {
-                throw new NotSupportedException(
-                    $"No store backend supports the such scheme: {splitScheme[0]}.");
-            }
-
             // NOTE: Actually, there is only File scheme support and it will work to check only.
             if (splitScheme.Length == 2
                 && !Enum.TryParse<SchemeType>(splitScheme[1], ignoreCase: true, out _))
@@ -229,7 +344,7 @@ namespace Libplanet.Extensions.Cocona.Commands
                     $"No store backend supports the such scheme: {splitScheme[1]}.");
             }
 
-            return constructor(uri.AbsolutePath);
+            return uri;
         }
     }
 }

@@ -21,7 +21,7 @@ namespace Libplanet.RocksDBStore
     /// This stores data in the RocksDB with multiple partitions under the hood.
     /// </summary>
     /// <seealso cref="IStore"/>
-    public class RocksDBStore : BaseStore
+    public class RocksDBStoreOld : BaseStore
     {
         private const string BlockDbRootPathName = "block";
         private const string BlockIndexDbName = "blockindex";
@@ -40,18 +40,13 @@ namespace Libplanet.RocksDBStore
         private static readonly byte[] TxNonceKeyPrefix = { (byte)'N' };
         private static readonly byte[] StagedTxKeyPrefix = { (byte)'t' };
         private static readonly byte[] TxExecutionKeyPrefix = { (byte)'e' };
-<<<<<<< HEAD
         private static readonly byte[] TxIdBlockHashIndexPrefix = { (byte)'i' };
         private static readonly byte[] IndexCountKey = { (byte)'c' };
-=======
-        private static readonly byte[] IndexCountKeyPrefix = { (byte)'c' };
->>>>>>> 8dd69e0b (Replace ColumnFamily to prefix)
         private static readonly byte[] CanonicalChainIdIdKey = { (byte)'C' };
-        private static readonly byte[] PreviousChainIdKeyPrefix = { (byte)'P' };
-        private static readonly byte[] PreviousChainIndexKeyPrefix = { (byte)'p' };
+        private static readonly byte[] PreviousChainIdKey = { (byte)'P' };
+        private static readonly byte[] PreviousChainIndexKey = { (byte)'p' };
         private static readonly byte[] ForkedChainsKeyPrefix = { (byte)'f' };
-        private static readonly byte[] DeletedKeyPrefix = { (byte)'d' };
-        private static readonly byte[] ChainIdKeyPrefix = { (byte)'h' };
+        private static readonly byte[] DeletedKey = { (byte)'d' };
 
         private static readonly byte[] EmptyBytes = new byte[0];
 
@@ -101,7 +96,7 @@ namespace Libplanet.RocksDBStore
         /// containing blocks.  86,400 seconds by default.</param>
         /// <param name="dbConnectionCacheSize">The capacity of the block and transaction
         /// RocksDB connection cache. 100 by default.</param>
-        public RocksDBStore(
+        public RocksDBStoreOld(
             string path,
             int blockCacheSize = 512,
             int txCacheSize = 1024,
@@ -195,10 +190,22 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override IEnumerable<Guid> ListChainIds()
         {
-            foreach (var it in IterateDb(_chainDb, ChainIdKeyPrefix))
+            string path = Path.Combine(_path, ChainDbName);
+
+            foreach (string name in RocksDb.ListColumnFamilies(_options, path))
             {
-                var guid = new Guid(it.Value());
-                if (IsDeletionMarked(guid) && HasFork(guid))
+                Guid guid;
+
+                try
+                {
+                    guid = Guid.Parse(name);
+                    ColumnFamilyHandle cf = GetColumnFamily(_chainDb, guid);
+                    if (IsDeletionMarked(cf) && HasFork(guid))
+                    {
+                        continue;
+                    }
+                }
+                catch (FormatException)
                 {
                     continue;
                 }
@@ -210,18 +217,18 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override void DeleteChainId(Guid chainId)
         {
+            ColumnFamilyHandle cf = GetColumnFamily(_chainDb, chainId);
             if (HasFork(chainId))
             {
-                _chainDb.Put(DeletedChainKey(chainId), new byte[0]);
+                _chainDb.Put(DeletedKey, new byte[0], cf);
 
                 // We need only chain indexes, not tx nonces at this time because they already had
                 // been copied on .ForkTxNonces().
                 // FIXME: We should remove this code after adjusting .ForkTxNonces().
                 using var batch = new WriteBatch();
-                byte[] prefix = TxNonceKey(chainId);
-                foreach (Iterator k in IterateDb(_chainDb, prefix))
+                foreach (Iterator k in IterateDb(_chainDb, TxNonceKeyPrefix, chainId))
                 {
-                    batch.Delete(k.Key());
+                    batch.Delete(k.Key(), cf);
                 }
 
                 _chainDb.Write(batch);
@@ -229,29 +236,12 @@ namespace Libplanet.RocksDBStore
             }
 
             _logger.Debug($"Deleting chainID: {chainId}.");
-            Guid? prevChain = GetPreviousChainInfo(chainId)?.Item1;
+            Guid? prevChain = GetPreviousChainInfo(cf)?.Item1;
 
             string cfName = chainId.ToString();
             try
             {
-                using var batch = new WriteBatch();
-                foreach (Iterator it in IterateDb(_chainDb, IndexKey(chainId)))
-                {
-                    batch.Delete(it.Key());
-                }
-
-                foreach (Iterator it in IterateDb(_chainDb, TxNonceKey(chainId)))
-                {
-                    batch.Delete(it.Key());
-                }
-
-                batch.Delete(DeletedChainKey(chainId));
-                batch.Delete(PreviousChainIdKey(chainId));
-                batch.Delete(PreviousChainIndexKey(chainId));
-                batch.Delete(IndexCountKey(chainId));
-                batch.Delete(ChainIdKey(chainId));
-
-                _chainDb.Write(batch);
+                _chainDb.DropColumnFamily(cfName);
 
                 if (prevChain is { } prevChainNotNull)
                 {
@@ -259,9 +249,10 @@ namespace Libplanet.RocksDBStore
                     {
                         if (HasFork(prevChainNotNull))
                         {
-                            RemoveFork(prevChainNotNull, chainId);
+                            ColumnFamilyHandle prevCf = GetColumnFamily(_chainDb, prevChainNotNull);
+                            RemoveFork(prevCf, chainId);
 
-                            if (IsDeletionMarked(prevChainNotNull))
+                            if (IsDeletionMarked(prevCf))
                             {
                                 DeleteChainId(prevChainNotNull);
                             }
@@ -318,7 +309,8 @@ namespace Libplanet.RocksDBStore
         {
             try
             {
-                byte[] bytes = _chainDb.Get(IndexCountKey(chainId));
+                ColumnFamilyHandle cf = GetColumnFamily(_chainDb, chainId);
+                byte[] bytes = _chainDb.Get(IndexCountKey, cf);
                 return bytes is null
                     ? 0
                     : RocksDBStoreBitConverter.ToInt64(bytes);
@@ -347,16 +339,13 @@ namespace Libplanet.RocksDBStore
             {
                 byte[] indexBytes = RocksDBStoreBitConverter.GetBytes(index);
 
-                byte[] key = IndexKey(chainId, indexBytes);
+                byte[] key = IndexKeyPrefix.Concat(indexBytes).ToArray();
+                ColumnFamilyHandle cf = GetColumnFamily(_chainDb, chainId);
 
                 using var writeBatch = new WriteBatch();
 
-                writeBatch.Put(key, hash.ToByteArray());
-                writeBatch.Put(
-                    IndexCountKey(chainId),
-                    RocksDBStoreBitConverter.GetBytes(index + 1)
-                );
-                writeBatch.Put(ChainIdKey(chainId), chainId.ToByteArray());
+                writeBatch.Put(key, hash.ToByteArray(), cf);
+                writeBatch.Put(IndexCountKey, RocksDBStoreBitConverter.GetBytes(index + 1), cf);
 
                 _chainDb.Write(writeBatch);
             }
@@ -382,33 +371,34 @@ namespace Libplanet.RocksDBStore
                 return;
             }
 
-            using var batch = new WriteBatch();
-            foreach (Iterator k in IterateDb(_chainDb, IndexKey(destinationChainId)))
+            ColumnFamilyHandle srcCf = GetColumnFamily(_chainDb, sourceChainId);
+            ColumnFamilyHandle destCf = GetColumnFamily(_chainDb, destinationChainId);
+            foreach (Iterator k in IterateDb(_chainDb, IndexKeyPrefix, destinationChainId))
             {
-                batch.Delete(k.Key());
+                _chainDb.Remove(k.Key(), destCf);
             }
-
-            _chainDb.Write(batch);
 
             long bpIndex = GetBlockIndex(branchpoint).Value;
 
-            if (GetPreviousChainInfo(sourceChainId) is { } chainInfo &&
+            if (GetPreviousChainInfo(srcCf) is { } chainInfo &&
                 chainInfo.Item2 == bpIndex)
             {
                 ForkBlockIndexes(chainInfo.Item1, destinationChainId, branchpoint);
                 return;
             }
 
-            _chainDb.Put(PreviousChainIdKey(destinationChainId), sourceChainId.ToByteArray());
+            _chainDb.Put(PreviousChainIdKey, sourceChainId.ToByteArray(), destCf);
             _chainDb.Put(
-                PreviousChainIndexKey(destinationChainId),
-                RocksDBStoreBitConverter.GetBytes(bpIndex)
+                PreviousChainIndexKey,
+                RocksDBStoreBitConverter.GetBytes(bpIndex),
+                destCf
             );
             _chainDb.Put(
-                IndexCountKey(destinationChainId),
-                RocksDBStoreBitConverter.GetBytes(bpIndex + 1)
+                IndexCountKey,
+                RocksDBStoreBitConverter.GetBytes(bpIndex + 1),
+                destCf
             );
-            AddFork(sourceChainId, destinationChainId);
+            AddFork(srcCf, destinationChainId);
         }
 
         /// <inheritdoc/>
@@ -894,8 +884,9 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override IEnumerable<KeyValuePair<Address, long>> ListTxNonces(Guid chainId)
         {
-            byte[] prefix = TxNonceKey(chainId);
-            foreach (Iterator it in IterateDb(_chainDb, prefix))
+            byte[] prefix = TxNonceKeyPrefix;
+
+            foreach (Iterator it in IterateDb(_chainDb, prefix, chainId))
             {
                 byte[] addressBytes = it.Key()
                     .Skip(prefix.Length)
@@ -911,8 +902,9 @@ namespace Libplanet.RocksDBStore
         {
             try
             {
-                byte[] key = TxNonceKey(chainId, address);
-                byte[] bytes = _chainDb.Get(key);
+                ColumnFamilyHandle cf = GetColumnFamily(_chainDb, chainId);
+                byte[] key = TxNonceKey(address);
+                byte[] bytes = _chainDb.Get(key, cf);
                 return bytes is null
                     ? 0
                     : RocksDBStoreBitConverter.ToInt64(bytes);
@@ -930,13 +922,13 @@ namespace Libplanet.RocksDBStore
         {
             try
             {
+                ColumnFamilyHandle cf = GetColumnFamily(_chainDb, chainId);
                 long nextNonce = GetTxNonce(chainId, signer) + delta;
 
-                byte[] key = TxNonceKey(chainId, signer);
+                byte[] key = TxNonceKey(signer);
                 byte[] bytes = RocksDBStoreBitConverter.GetBytes(nextNonce);
 
-                _chainDb.Put(key, bytes);
-                _chainDb.Put(ChainIdKey(chainId), chainId.ToByteArray());
+                _chainDb.Put(key, bytes, cf);
             }
             catch (Exception e)
             {
@@ -994,14 +986,14 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override void ForkTxNonces(Guid sourceChainId, Guid destinationChainId)
         {
+            byte[] prefix = TxNonceKeyPrefix;
+            ColumnFamilyHandle cf = GetColumnFamily(_chainDb, destinationChainId);
             var writeBatch = new WriteBatch();
             try
             {
-                byte[] prefix = TxNonceKey(sourceChainId);
-                foreach (Iterator it in IterateDb(_chainDb, prefix))
+                foreach (Iterator it in IterateDb(_chainDb, prefix, sourceChainId))
                 {
-                    Address address = new Address(it.Key().Skip(prefix.Length).ToArray());
-                    writeBatch.Put(TxNonceKey(destinationChainId, address), it.Value());
+                    writeBatch.Put(it.Key(), it.Value(), cf);
                     if (writeBatch.Count() >= ForkWriteBatchSize)
                     {
                         _chainDb.Write(writeBatch);
@@ -1027,11 +1019,8 @@ namespace Libplanet.RocksDBStore
         private byte[] TxKey(in TxId txId) =>
             TxKeyPrefix.Concat(txId.ByteArray).ToArray();
 
-        private byte[] TxNonceKey(Guid chainId)
-            => TxNonceKeyPrefix.Concat(chainId.ToByteArray()).ToArray();
-
-        private byte[] TxNonceKey(Guid chainId, Address address)
-            => TxNonceKey(chainId).Concat(address.ToByteArray()).ToArray();
+        private byte[] TxNonceKey(in Address address) =>
+            TxNonceKeyPrefix.Concat(address.ByteArray).ToArray();
 
         private byte[] StagedTxKey(in TxId txId) =>
             StagedTxKeyPrefix.Concat(txId.ToByteArray()).ToArray();
@@ -1044,7 +1033,6 @@ namespace Libplanet.RocksDBStore
         private byte[] TxExecutionKey(TxExecution txExecution) =>
             TxExecutionKey(txExecution.BlockHash, txExecution.TxId);
 
-<<<<<<< HEAD
         private byte[] TxIdBlockHashIndexKey(in TxId txId, in BlockHash blockHash) =>
             TxIdBlockHashIndexTxIdKey(txId).Concat(blockHash.ByteArray).ToArray();
 
@@ -1053,20 +1041,37 @@ namespace Libplanet.RocksDBStore
 
         private byte[] ForkedChainsKey(Guid guid) =>
             ForkedChainsKeyPrefix.Concat(guid.ToByteArray()).ToArray();
-=======
-        private byte[] ForkedChainsKey(Guid chainId, Guid forkedChainId) =>
-            ForkedChainsKeyPrefix
-            .Concat(chainId.ToByteArray())
-            .Concat(forkedChainId.ToByteArray()).ToArray();
->>>>>>> 8dd69e0b (Replace ColumnFamily to prefix)
 
-        private IEnumerable<Iterator> IterateDb(RocksDb db, byte[] prefix)
+        private IEnumerable<Iterator> IterateDb(RocksDb db, byte[] prefix, Guid? chainId = null)
         {
-            using Iterator it = db.NewIterator();
+            ColumnFamilyHandle cf = GetColumnFamily(db, chainId);
+            using Iterator it = db.NewIterator(cf);
             for (it.Seek(prefix); it.Valid() && it.Key().StartsWith(prefix); it.Next())
             {
                 yield return it;
             }
+        }
+
+        private ColumnFamilyHandle GetColumnFamily(RocksDb db, Guid? chainId = null)
+        {
+            if (chainId is null)
+            {
+                return null;
+            }
+
+            var cfName = chainId.ToString();
+
+            ColumnFamilyHandle cf;
+            try
+            {
+                cf = db.GetColumnFamily(cfName);
+            }
+            catch (KeyNotFoundException)
+            {
+                cf = db.CreateColumnFamily(_options, cfName);
+            }
+
+            return cf;
         }
 
         private ColumnFamilies GetColumnFamilies(DbOptions options, string dbName)
@@ -1106,10 +1111,10 @@ namespace Libplanet.RocksDBStore
             _logger.Error(e, msg, e.Message);
         }
 
-        private (Guid, long)? GetPreviousChainInfo(Guid chainId)
+        private (Guid, long)? GetPreviousChainInfo(ColumnFamilyHandle cf)
         {
-            if (_chainDb.Get(PreviousChainIdKey(chainId)) is { } prevChainId &&
-                _chainDb.Get(PreviousChainIndexKey(chainId)) is { } prevChainIndex)
+            if (_chainDb.Get(PreviousChainIdKey, cf) is { } prevChainId &&
+                _chainDb.Get(PreviousChainIndexKey, cf) is { } prevChainIndex)
             {
                 return (new Guid(prevChainId), RocksDBStoreBitConverter.ToInt64(prevChainIndex));
             }
@@ -1124,14 +1129,15 @@ namespace Libplanet.RocksDBStore
             bool includeDeleted
         )
         {
-            if (!includeDeleted && IsDeletionMarked(chainId))
+            ColumnFamilyHandle cf = GetColumnFamily(_chainDb, chainId);
+            if (!includeDeleted && IsDeletionMarked(cf))
             {
                 yield break;
             }
 
             long count = 0;
 
-            if (GetPreviousChainInfo(chainId) is { } chainInfo)
+            if (GetPreviousChainInfo(cf) is { } chainInfo)
             {
                 Guid prevId = chainInfo.Item1;
                 long pi = chainInfo.Item2;
@@ -1156,8 +1162,9 @@ namespace Libplanet.RocksDBStore
                 offset = (int)Math.Max(0, offset - pi - 1);
             }
 
-            byte[] prefix = IndexKeyPrefix.Concat(chainId.ToByteArray()).ToArray();
-            foreach (Iterator it in IterateDb(_chainDb, prefix).Skip(offset))
+            byte[] prefix = IndexKeyPrefix;
+
+            foreach (Iterator it in IterateDb(_chainDb, prefix, chainId).Skip(offset))
             {
                 if (count >= limit)
                 {
@@ -1185,19 +1192,23 @@ namespace Libplanet.RocksDBStore
                     }
                 }
 
-                if (!includeDeleted && IsDeletionMarked(chainId))
+                ColumnFamilyHandle cf = GetColumnFamily(_chainDb, chainId);
+
+                if (!includeDeleted && IsDeletionMarked(cf))
                 {
                     return null;
                 }
 
-                if (GetPreviousChainInfo(chainId) is { } chainInfo &&
+                if (GetPreviousChainInfo(cf) is { } chainInfo &&
                     chainInfo.Item2 >= index)
                 {
                     return IndexBlockHash(chainInfo.Item1, index, true);
                 }
 
                 byte[] indexBytes = RocksDBStoreBitConverter.GetBytes(index);
-                byte[] bytes = _chainDb.Get(IndexKey(chainId, indexBytes));
+
+                byte[] key = IndexKeyPrefix.Concat(indexBytes).ToArray();
+                byte[] bytes = _chainDb.Get(key, cf);
                 return bytes is null ? (BlockHash?)null : new BlockHash(bytes);
             }
             catch (Exception e)
@@ -1208,44 +1219,22 @@ namespace Libplanet.RocksDBStore
             return null;
         }
 
-        private void AddFork(Guid chainId, Guid forkedChainId)
+        private void AddFork(ColumnFamilyHandle cf, Guid chainId)
         {
-            _chainDb.Put(ForkedChainsKey(chainId, forkedChainId), new byte[0]);
+            _chainDb.Put(ForkedChainsKey(chainId), new byte[0], cf);
         }
 
-        private void RemoveFork(Guid chainId, Guid forkedChainId)
+        private void RemoveFork(ColumnFamilyHandle cf, Guid chainId)
         {
-            _chainDb.Remove(ForkedChainsKey(chainId, forkedChainId));
+            _chainDb.Remove(ForkedChainsKey(chainId), cf);
         }
 
         private bool HasFork(Guid chainId)
         {
-            byte[] prefix = ForkedChainsKeyPrefix.Concat(chainId.ToByteArray()).ToArray();
-            return IterateDb(_chainDb, prefix).Any();
+            return IterateDb(_chainDb, ForkedChainsKeyPrefix, chainId).Any();
         }
 
-        private bool IsDeletionMarked(Guid chainId)
-            => _chainDb.Get(DeletedChainKey(chainId)) is { };
-
-        private byte[] DeletedChainKey(Guid chainId)
-            => DeletedKeyPrefix.Concat(chainId.ToByteArray()).ToArray();
-
-        private byte[] PreviousChainIndexKey(Guid chainId)
-            => PreviousChainIndexKeyPrefix.Concat(chainId.ToByteArray()).ToArray();
-
-        private byte[] PreviousChainIdKey(Guid chainId)
-            => PreviousChainIdKeyPrefix.Concat(chainId.ToByteArray()).ToArray();
-
-        private byte[] IndexKey(Guid chainId)
-            => IndexKeyPrefix.Concat(chainId.ToByteArray()).ToArray();
-
-        private byte[] IndexKey(Guid chainId, byte[] indexBytes)
-            => IndexKey(chainId).Concat(indexBytes).ToArray();
-
-        private byte[] IndexCountKey(Guid chainId)
-            => IndexCountKeyPrefix.Concat(chainId.ToByteArray()).ToArray();
-
-        private byte[] ChainIdKey(Guid chainId)
-            => ChainIdKeyPrefix.Concat(chainId.ToByteArray()).ToArray();
+        private bool IsDeletionMarked(ColumnFamilyHandle cf)
+            => _chainDb.Get(DeletedKey, cf) is { };
     }
 }
