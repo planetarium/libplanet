@@ -11,6 +11,8 @@ To be released.
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
+ -  (Libplanet.RocksDBStore) Column family is replaced by 
+    the prefix for the key to distinguish chains. [[#1392]]
 
 ### Added APIs
 
@@ -19,6 +21,9 @@ To be released.
 ### Bug fixes
 
 ### CLI tools
+
+[#1392]: https://github.com/planetarium/libplanet/pull/1392
+
 
 Version 0.12.0
 --------------
