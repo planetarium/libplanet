@@ -19,6 +19,8 @@ To be released.
 ### Added APIs
 
  -  Added `Transaction<T>.CreateUnsigned()` method.  [[#1378]]
+ -  Added `SwarmOptions.TableSize` property.  [[#1401]]
+ -  Added `SwarmOptions.BucketSize` property.  [[#1401]]
 
 ### Behavioral changes
 
@@ -36,6 +38,7 @@ To be released.
 [#1365]: https://github.com/planetarium/libplanet/pull/1365
 [#1378]: https://github.com/planetarium/libplanet/pull/1378
 [#1391]: https://github.com/planetarium/libplanet/pull/1391
+[#1401]: https://github.com/planetarium/libplanet/pull/1401
 
 
 Version 0.12.0
