@@ -69,8 +69,13 @@ namespace Libplanet.Blockchain
             _rwlock.EnterUpgradeableReadLock();
             try
             {
+                ImmutableList<Block<T>> rewindPath =
+                    GetRewindPath(this, topCommon.Hash);
+                ImmutableList<Block<T>> fastForwardPath =
+                    GetFastForwardPath(other, topCommon.Hash);
+
                 // Fast forwarding is not considered a reorg.
-                bool fastForward = Tip.Equals(topCommon);
+                bool fastForward = rewindPath.Count == 0;
 
                 if (render && !fastForward)
                 {
@@ -84,49 +89,23 @@ namespace Libplanet.Blockchain
                 {
                     // Unrender stale actions.
                     _logger.Debug("Unrendering abandoned actions...");
-                    ImmutableList<Block<T>> rewindPath = GetRewindPath(this, topCommon.Hash);
 
-                    int cnt = 0;
+                    long count = 0;
 
-                    foreach (Block<T> b in rewindPath)
+                    foreach (Block<T> block in rewindPath)
                     {
-                        List<ActionEvaluation> evaluations =
-                            ActionEvaluator.Evaluate(b, completers).ToList();
-                        evaluations.Reverse();
+                        ImmutableList<ActionEvaluation> evaluations =
+                            ActionEvaluator.Evaluate(block, completers)
+                                .ToImmutableList().Reverse();
 
-                        foreach (var evaluation in evaluations)
-                        {
-                            _logger.Debug("Unrender an action: {Action}.", evaluation.Action);
-                            if (evaluation.Exception is null)
-                            {
-                                foreach (IActionRenderer<T> renderer in ActionRenderers)
-                                {
-                                    renderer.UnrenderAction(
-                                        evaluation.Action,
-                                        evaluation.InputContext.GetUnconsumedContext(),
-                                        evaluation.OutputStates
-                                    );
-                                }
-                            }
-                            else
-                            {
-                                foreach (IActionRenderer<T> renderer in ActionRenderers)
-                                {
-                                    renderer.UnrenderActionError(
-                                        evaluation.Action,
-                                        evaluation.InputContext.GetUnconsumedContext(),
-                                        evaluation.Exception
-                                    );
-                                }
-                            }
-
-                            cnt++;
-                        }
+                        count += UnrenderActions(
+                            evaluations: evaluations,
+                            block: block);
                     }
 
                     _logger.Debug(
                         $"{nameof(Swap)}() completed unrendering {{Actions}} actions.",
-                        cnt);
+                        count);
                 }
 
                 Block<T> oldTip = Tip ?? Genesis, newTip = other.Tip ?? other.Genesis;
@@ -176,18 +155,23 @@ namespace Libplanet.Blockchain
                 {
                     _logger.Debug("Rendering actions in new chain.");
 
-                    // Render actions that had been behind.
-                    long startToRenderIndex = topCommon is Block<T> branchpoint
-                        ? branchpoint.Index + 1
-                        : 0;
+                    long count = 0;
+                    foreach (Block<T> block in fastForwardPath)
+                    {
+                        ImmutableList<ActionEvaluation> evaluations =
+                            ActionEvaluator.Evaluate(block, completers).ToImmutableList();
+
+                        count += RenderActions(
+                            evaluations: evaluations,
+                            block: block);
+                    }
+
+                    _logger.Debug(
+                        $"{nameof(Swap)}() completed rendering {{Count}} actions.",
+                        count);
 
                     foreach (IActionRenderer<T> renderer in ActionRenderers)
                     {
-                        int cnt = RenderActionsInBlocks(startToRenderIndex, renderer, completers);
-                        _logger.Debug(
-                            $"{nameof(Swap)}() completed rendering {{Count}} actions.",
-                            cnt);
-
                         renderer.RenderBlockEnd(oldTip, newTip);
                     }
                 }
@@ -204,6 +188,103 @@ namespace Libplanet.Blockchain
             {
                 _rwlock.ExitUpgradeableReadLock();
             }
+        }
+
+        /// <summary>
+        /// Render actions of the given <paramref name="block"/>.
+        /// </summary>
+        /// <param name="evaluations"><see cref="ActionEvaluation"/>s of the block.  If it is
+        /// <c>null</c>, evaluate actions of the <paramref name="block"/> again.</param>
+        /// <param name="block"><see cref="Block{T}"/> to render actions.</param>
+        /// <param name="stateCompleters">The strategy to complement incomplete block states.
+        /// <see cref="StateCompleterSet{T}.Recalculate"/> by default.</param>
+        /// <returns>The number of actions rendered.</returns>
+        internal long RenderActions(
+            IReadOnlyList<ActionEvaluation> evaluations,
+            Block<T> block,
+            StateCompleterSet<T>? stateCompleters = null)
+        {
+            _logger.Debug("Render actions in block {blockIndex}: {block}", block?.Index, block);
+
+            // Since rendering process requires every step's states, if required block states
+            // are incomplete they are complemented anyway:
+            stateCompleters ??= StateCompleterSet<T>.Recalculate;
+
+            if (evaluations is null)
+            {
+                evaluations = ActionEvaluator.Evaluate(block, stateCompleters.Value);
+            }
+
+            long count = 0;
+            foreach (var evaluation in evaluations)
+            {
+                foreach (IActionRenderer<T> renderer in ActionRenderers)
+                {
+                    if (evaluation.Exception is null)
+                    {
+                        renderer.RenderAction(
+                            evaluation.Action,
+                            evaluation.InputContext.GetUnconsumedContext(),
+                            evaluation.OutputStates);
+                    }
+                    else
+                    {
+                        renderer.RenderActionError(
+                            evaluation.Action,
+                            evaluation.InputContext.GetUnconsumedContext(),
+                            evaluation.Exception);
+                    }
+
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
+        internal long UnrenderActions(
+            IReadOnlyList<ActionEvaluation> evaluations,
+            Block<T> block,
+            StateCompleterSet<T>? stateCompleters = null)
+        {
+            _logger.Debug("Unender actions in block {blockIndex}: {block}", block?.Index, block);
+
+            // Since rendering process requires every step's states, if required block states
+            // are incomplete they are complemented anyway:
+            stateCompleters ??= StateCompleterSet<T>.Recalculate;
+
+            if (evaluations is null)
+            {
+                evaluations =
+                    ActionEvaluator.Evaluate(block, stateCompleters.Value)
+                        .Reverse().ToImmutableList();
+            }
+
+            long count = 0;
+            foreach (ActionEvaluation evaluation in evaluations)
+            {
+                foreach (IActionRenderer<T> renderer in ActionRenderers)
+                {
+                    if (evaluation.Exception is null)
+                    {
+                        renderer.UnrenderAction(
+                            evaluation.Action,
+                            evaluation.InputContext.GetUnconsumedContext(),
+                            evaluation.OutputStates);
+                    }
+                    else
+                    {
+                        renderer.UnrenderActionError(
+                            evaluation.Action,
+                            evaluation.InputContext.GetUnconsumedContext(),
+                            evaluation.Exception);
+                    }
+                }
+
+                count++;
+            }
+
+            return count;
         }
 
         /// <summary>
@@ -276,6 +357,17 @@ namespace Libplanet.Blockchain
             return GetRewindPath(chain, originHash).Reverse();
         }
 
+        /// <summary>
+        /// Finds the top most common <see cref="Block{T}"/> between chains <paramref name="c1"/>
+        /// and <paramref name="c2"/>.
+        /// </summary>
+        /// <param name="c1">The first <see cref="BlockChain{T}"/> to compare.</param>
+        /// <param name="c2">The second <see cref="BlockChain{T}"/> to compare.</param>
+        /// <returns>
+        /// The top most common <see cref="Block{T}"/> between chains <paramref name="c1"/>
+        /// and <paramref name="c2"/>. If there is no such <see cref="Block{T}"/>,
+        /// returns <c>null</c> instead.
+        /// </returns>
         private static Block<T> FindTopCommon(BlockChain<T> c1, BlockChain<T> c2)
         {
             if (!(c1.Tip is null))

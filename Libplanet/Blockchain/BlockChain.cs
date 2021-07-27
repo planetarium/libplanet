@@ -1415,13 +1415,13 @@ namespace Libplanet.Blockchain
 
                     if (ActionRenderers.Any())
                     {
+                        if (renderActions)
+                        {
+                            RenderActions(actionEvaluations, block, stateCompleters);
+                        }
+
                         foreach (IActionRenderer<T> renderer in ActionRenderers)
                         {
-                            if (renderActions)
-                            {
-                                RenderActions(actionEvaluations, block, renderer, stateCompleters);
-                            }
-
                             renderer.RenderBlockEnd(oldTip: prevTip ?? Genesis, newTip: block);
                         }
                     }
@@ -1444,87 +1444,6 @@ namespace Libplanet.Blockchain
             }
         }
 #pragma warning restore MEN003
-
-        /// <summary>
-        /// Render actions from block index of <paramref name="offset"/>.
-        /// </summary>
-        /// <param name="offset">Index of the block to start rendering from.</param>
-        /// <param name="renderer">The renderer to render actions.</param>
-        /// <param name="stateCompleters">The strategy to complement incomplete block states.
-        /// <see cref="StateCompleterSet{T}.Recalculate"/> by default.</param>
-        /// <returns>The number of actions rendered.</returns>
-        internal int RenderActionsInBlocks(
-            long offset,
-            IActionRenderer<T> renderer,
-            StateCompleterSet<T>? stateCompleters = null)
-        {
-            // Since rendering process requires every step's states, if required block states
-            // are incomplete they are complemented anyway:
-            stateCompleters ??= StateCompleterSet<T>.Recalculate;
-
-            // FIXME: We should consider the case where block count is larger than int.MaxSize.
-            int cnt = 0;
-            foreach (var block in IterateBlocks((int)offset))
-            {
-                cnt += RenderActions(null, block, renderer, stateCompleters);
-            }
-
-            return cnt;
-        }
-
-        /// <summary>
-        /// Render actions of the given <paramref name="block"/>.
-        /// </summary>
-        /// <param name="evaluations"><see cref="ActionEvaluation"/>s of the block.  If it is
-        /// <c>null</c>, evaluate actions of the <paramref name="block"/> again.</param>
-        /// <param name="block"><see cref="Block{T}"/> to render actions.</param>
-        /// <param name="renderer">The renderer to render actions.</param>
-        /// <param name="stateCompleters">The strategy to complement incomplete block states.
-        /// <see cref="StateCompleterSet{T}.Recalculate"/> by default.</param>
-        /// <returns>The number of actions rendered.</returns>
-        internal int RenderActions(
-            IReadOnlyList<ActionEvaluation> evaluations,
-            Block<T> block,
-            IActionRenderer<T> renderer,
-            StateCompleterSet<T>? stateCompleters = null
-        )
-        {
-            _logger.Debug("Render actions in block {blockIndex}: {block}", block?.Index, block);
-
-            // Since rendering process requires every step's states, if required block states
-            // are incomplete they are complemented anyway:
-            stateCompleters ??= StateCompleterSet<T>.Recalculate;
-
-            if (evaluations is null)
-            {
-                evaluations = ActionEvaluator.Evaluate(block, stateCompleters.Value);
-            }
-
-            int cnt = 0;
-            foreach (var evaluation in evaluations)
-            {
-                if (evaluation.Exception is null)
-                {
-                    renderer.RenderAction(
-                        evaluation.Action,
-                        evaluation.InputContext.GetUnconsumedContext(),
-                        evaluation.OutputStates
-                    );
-                }
-                else
-                {
-                    renderer.RenderActionError(
-                        evaluation.Action,
-                        evaluation.InputContext.GetUnconsumedContext(),
-                        evaluation.Exception
-                    );
-                }
-
-                cnt++;
-            }
-
-            return cnt;
-        }
 
         /// <summary>
         /// Find an approximate to the topmost common ancestor between this
