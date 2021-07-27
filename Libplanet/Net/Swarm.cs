@@ -572,7 +572,7 @@ namespace Libplanet.Net
                 FillBlocksAsyncStarted.Set();
 
                 var blockCompletion = new BlockCompletion<BoundPeer, T>(
-                    completionPredicate: workspace.ContainsBlock,
+                    completionPredicate: wStore.ContainsBlock,
                     window: InitialBlockDownloadWindow
                 );
 
