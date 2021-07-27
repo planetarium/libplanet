@@ -18,8 +18,7 @@ namespace Libplanet.Blockchain
         internal void Swap(
             BlockChain<T> other,
             bool render,
-            StateCompleterSet<T>? stateCompleters = null
-        )
+            StateCompleterSet<T>? stateCompleters = null)
         {
             if (other is null)
             {
@@ -70,8 +69,10 @@ namespace Libplanet.Blockchain
             _rwlock.EnterUpgradeableReadLock();
             try
             {
-                bool reorged = !Tip.Equals(topCommon);
-                if (render && reorged)
+                // Fast forwarding is not considered a reorg.
+                bool fastForward = Tip.Equals(topCommon);
+
+                if (render && !fastForward)
                 {
                     foreach (IRenderer<T> renderer in Renderers)
                     {
@@ -83,14 +84,11 @@ namespace Libplanet.Blockchain
                 {
                     // Unrender stale actions.
                     _logger.Debug("Unrendering abandoned actions...");
+                    ImmutableList<Block<T>> rewindPath = GetRewindPath(this, topCommon.Hash);
+
                     int cnt = 0;
 
-                    for (
-                        Block<T> b = Tip;
-                        !(b is null) && b.Index > (topCommon?.Index ?? -1) &&
-                        b.PreviousHash is { } ph;
-                        b = this[ph]
-                    )
+                    foreach (Block<T> b in rewindPath)
                     {
                         List<ActionEvaluation> evaluations =
                             ActionEvaluator.Evaluate(b, completers).ToList();
@@ -194,7 +192,7 @@ namespace Libplanet.Blockchain
                     }
                 }
 
-                if (render && reorged)
+                if (render && !fastForward)
                 {
                     foreach (IRenderer<T> renderer in Renderers)
                     {
@@ -206,6 +204,76 @@ namespace Libplanet.Blockchain
             {
                 _rwlock.ExitUpgradeableReadLock();
             }
+        }
+
+        /// <summary>
+        /// Generates a list of <see cref="Block{T}"/>s to traverse starting from
+        /// the tip of <paramref name="chain"/> to reach <paramref name="targetHash"/>.
+        /// </summary>
+        /// <param name="chain">The <see cref="BlockChain{T}"/> to traverse.</param>
+        /// <param name="targetHash">The target <see cref="BlockHash"/> to reach.</param>
+        /// <returns>
+        /// An <see cref="ImmutableList"/> of <see cref="Block{T}"/>s to traverse from
+        /// the tip of <paramref name="chain"/> to reach <paramref name="targetHash"/> excluding
+        /// the <see cref="Block{T}"/> with <paramref name="targetHash"/> as its hash.
+        /// </returns>
+        /// <remarks>
+        /// <para>
+        /// This is a reverse of <see cref="GetFastForwardPath"/>.
+        /// </para>
+        /// <para>
+        /// As the genesis is always fixed, returned results never include the genesis.
+        /// </para>
+        /// </remarks>
+        private static ImmutableList<Block<T>> GetRewindPath(
+            BlockChain<T> chain,
+            BlockHash targetHash)
+        {
+            if (!chain.ContainsBlock(targetHash))
+            {
+                throw new KeyNotFoundException(
+                    $"Given chain {chain.Id} must contain target hash {targetHash}");
+            }
+
+            Block<T> target = chain[targetHash];
+            List<Block<T>> path = new List<Block<T>>();
+
+            for (
+                Block<T> current = chain.Tip;
+                current.Index > target.Index && current.PreviousHash is { } ph;
+                current = chain[ph])
+            {
+                path.Add(current);
+            }
+
+            return path.ToImmutableList();
+        }
+
+        /// <summary>
+        /// Generates a list of <see cref="Block{T}"/>s to traverse starting from
+        /// <paramref name="originHash"/> to reach the tip of <paramref name="chain"/>.
+        /// </summary>
+        /// <param name="chain">The <see cref="BlockChain{T}"/> to traverse.</param>
+        /// <param name="originHash">The <see cref="BlockHash"/> to start from.</param>
+        /// <returns>
+        /// An <see cref="ImmutableList"/> of <see cref="Block{T}"/>s to traverse
+        /// to reach the tip of <paramref name="chain"/> from <paramref name="originHash"/>
+        /// excluding the <see cref="Block{T}"/> with <paramref name="originHash"/> as its hash.
+        /// </returns>
+        /// <remarks>
+        /// This is a reverse of <see cref="GetRewindPath"/>.
+        /// </remarks>
+        private static ImmutableList<Block<T>> GetFastForwardPath(
+            BlockChain<T> chain,
+            BlockHash originHash)
+        {
+            if (!chain.ContainsBlock(originHash))
+            {
+                throw new KeyNotFoundException(
+                    $"Given chain {chain.Id} must contain origin hash {originHash}");
+            }
+
+            return GetRewindPath(chain, originHash).Reverse();
         }
 
         private static Block<T> FindTopCommon(BlockChain<T> c1, BlockChain<T> c2)
