@@ -15,7 +15,6 @@ namespace Libplanet.Blockchain
         // FIXME it's very dangerous because replacing Id means
         // ALL blocks (referenced by MineBlock(), etc.) will be changed.
         // we need to add a synchronization mechanism to handle this correctly.
-#pragma warning disable MEN003
         internal void Swap(
             BlockChain<T> other,
             bool render,
@@ -52,56 +51,31 @@ namespace Libplanet.Blockchain
             }
 
             // Finds the branch point.
-            Block<T> topmostCommon = null;
-            if (!(Tip is null))
-            {
-                long shorterHeight =
-                    Math.Min(Count, other.Count) - 1;
-                Block<T> t = this[shorterHeight], o = other[shorterHeight];
+            Block<T> topCommon = FindTopCommon(this, other);
 
-                while (true)
-                {
-                    if (t.Equals(o))
-                    {
-                        topmostCommon = t;
-                        break;
-                    }
-
-                    if (t.PreviousHash is { } tp && o.PreviousHash is { } op)
-                    {
-                        t = this[tp];
-                        o = other[op];
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-            }
-
-            if (topmostCommon is null)
+            if (topCommon is null)
             {
                 const string msg =
-                    "A chain cannot be reorged into a heterogeneous chain which has " +
-                    "no common genesis at all.";
+                    "A chain cannot be reorged into a heterogeneous chain with a " +
+                    "different genesis.";
                 throw new InvalidGenesisBlockException(Genesis.Hash, other.Genesis.Hash, msg);
             }
 
             _logger.Debug(
                 "The branchpoint is #{BranchpointIndex} {BranchpointHash}.",
-                topmostCommon.Index,
-                topmostCommon
+                topCommon.Index,
+                topCommon
             );
 
             _rwlock.EnterUpgradeableReadLock();
             try
             {
-                bool reorged = !Tip.Equals(topmostCommon);
+                bool reorged = !Tip.Equals(topCommon);
                 if (render && reorged)
                 {
                     foreach (IRenderer<T> renderer in Renderers)
                     {
-                        renderer.RenderReorg(Tip, other.Tip, branchpoint: topmostCommon);
+                        renderer.RenderReorg(Tip, other.Tip, branchpoint: topCommon);
                     }
                 }
 
@@ -113,7 +87,7 @@ namespace Libplanet.Blockchain
 
                     for (
                         Block<T> b = Tip;
-                        !(b is null) && b.Index > (topmostCommon?.Index ?? -1) &&
+                        !(b is null) && b.Index > (topCommon?.Index ?? -1) &&
                         b.PreviousHash is { } ph;
                         b = this[ph]
                     )
@@ -170,9 +144,9 @@ namespace Libplanet.Blockchain
 
                     // It assumes reorg is small size. If it was big, this may be heavy task.
                     ImmutableHashSet<Transaction<T>> unstagedTxs =
-                        GetTxsWithRange(this, topmostCommon, Tip).ToImmutableHashSet();
+                        GetTxsWithRange(this, topCommon, Tip).ToImmutableHashSet();
                     ImmutableHashSet<Transaction<T>> stageTxs =
-                        GetTxsWithRange(other, topmostCommon, other.Tip).ToImmutableHashSet();
+                        GetTxsWithRange(other, topCommon, other.Tip).ToImmutableHashSet();
                     ImmutableHashSet<Transaction<T>> restageTxs = unstagedTxs.Except(stageTxs);
                     foreach (Transaction<T> restageTx in restageTxs)
                     {
@@ -205,7 +179,7 @@ namespace Libplanet.Blockchain
                     _logger.Debug("Rendering actions in new chain.");
 
                     // Render actions that had been behind.
-                    long startToRenderIndex = topmostCommon is Block<T> branchpoint
+                    long startToRenderIndex = topCommon is Block<T> branchpoint
                         ? branchpoint.Index + 1
                         : 0;
 
@@ -224,7 +198,7 @@ namespace Libplanet.Blockchain
                 {
                     foreach (IRenderer<T> renderer in Renderers)
                     {
-                        renderer.RenderReorgEnd(oldTip, newTip, topmostCommon);
+                        renderer.RenderReorgEnd(oldTip, newTip, topCommon);
                     }
                 }
             }
@@ -233,6 +207,34 @@ namespace Libplanet.Blockchain
                 _rwlock.ExitUpgradeableReadLock();
             }
         }
-#pragma warning restore MEN003
+
+        private static Block<T> FindTopCommon(BlockChain<T> c1, BlockChain<T> c2)
+        {
+            if (!(c1.Tip is null))
+            {
+                long shorterHeight = Math.Min(c1.Count, c2.Count) - 1;
+                Block<T> b1 = c1[shorterHeight], b2 = c2[shorterHeight];
+
+                while (true)
+                {
+                    if (b1.Equals(b2))
+                    {
+                        return b1;
+                    }
+
+                    if (b1.PreviousHash is { } b1ph && b2.PreviousHash is { } b2ph)
+                    {
+                        b1 = c1[b1ph];
+                        b2 = c2[b2ph];
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+
+            return null;
+        }
     }
 }
