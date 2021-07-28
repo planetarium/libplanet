@@ -77,6 +77,10 @@
 if the transaction was not signed.  [<a href="https://github.com/planetarium/libplanet/pull/1378">#1378</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
+<ul>
+<li>Fixed a bug where <code>Swarm&lt;T&gt;</code> had stopped when <code>ObjectDisposedException</code>
+is thrown during <code>NetMQTransport.DoBroadcast()</code>.  [<a href="https://github.com/planetarium/libplanet/issues/1362">#1362</a>, <a href="https://github.com/planetarium/libplanet/pull/1365">#1365</a>]</li>
+</ul>
 <h3 id="cli-tools">CLI tools</h3>
 <h2 id="version-0120">Version 0.12.0</h2>
 <p>Released on July 23th, 2021.</p>
