@@ -69,6 +69,8 @@ namespace Libplanet.Blockchain
             _rwlock.EnterUpgradeableReadLock();
             try
             {
+                Block<T> oldTip = Tip ?? Genesis, newTip = other.Tip ?? other.Genesis;
+
                 ImmutableList<Block<T>> rewindPath =
                     GetRewindPath(this, topCommon.Hash);
                 ImmutableList<Block<T>> fastForwardPath =
@@ -107,8 +109,6 @@ namespace Libplanet.Blockchain
                         $"{nameof(Swap)}() completed unrendering {{Actions}} actions.",
                         count);
                 }
-
-                Block<T> oldTip = Tip ?? Genesis, newTip = other.Tip ?? other.Genesis;
 
                 _rwlock.EnterWriteLock();
                 try
@@ -187,6 +187,93 @@ namespace Libplanet.Blockchain
             finally
             {
                 _rwlock.ExitUpgradeableReadLock();
+            }
+        }
+
+        internal void RenderSwap(
+            bool render,
+            Block<T> oldTip,
+            Block<T> newTip,
+            Block<T> branchpoint,
+            IReadOnlyList<Block<T>> rewindPath,
+            IReadOnlyList<Block<T>> fastForwardPath,
+            StateCompleterSet<T>? stateCompleters = null)
+        {
+            // As render/unrender processing requires every step's states from the branchpoint
+            // to the new/stale tip, incomplete states need to be complemented anyway...
+            StateCompleterSet<T> completers = stateCompleters ?? StateCompleterSet<T>.Recalculate;
+
+            // If there is no rewind, it is not considered as a reorg.
+            bool reorg = rewindPath.Count > 0;
+
+            if (render && reorg)
+            {
+                foreach (IRenderer<T> renderer in Renderers)
+                {
+                    renderer.RenderReorg(
+                        oldTip: oldTip,
+                        newTip: newTip,
+                        branchpoint: branchpoint);
+                }
+            }
+
+            if (render && ActionRenderers.Any())
+            {
+                // Unrender stale actions.
+                _logger.Debug("Unrendering abandoned actions...");
+
+                long count = 0;
+
+                foreach (Block<T> block in rewindPath)
+                {
+                    ImmutableList<ActionEvaluation> evaluations =
+                        ActionEvaluator.Evaluate(block, completers)
+                            .ToImmutableList().Reverse();
+
+                    count += UnrenderActions(
+                        evaluations: evaluations,
+                        block: block);
+                }
+
+                _logger.Debug(
+                    $"{nameof(Swap)}() completed unrendering {{Actions}} actions.",
+                    count);
+            }
+
+            if (render && ActionRenderers.Any())
+            {
+                _logger.Debug("Rendering actions in new chain.");
+
+                long count = 0;
+                foreach (Block<T> block in fastForwardPath)
+                {
+                    ImmutableList<ActionEvaluation> evaluations =
+                        ActionEvaluator.Evaluate(block, completers).ToImmutableList();
+
+                    count += RenderActions(
+                        evaluations: evaluations,
+                        block: block);
+                }
+
+                _logger.Debug(
+                    $"{nameof(Swap)}() completed rendering {{Count}} actions.",
+                    count);
+
+                foreach (IActionRenderer<T> renderer in ActionRenderers)
+                {
+                    renderer.RenderBlockEnd(oldTip, newTip);
+                }
+            }
+
+            if (render && reorg)
+            {
+                foreach (IRenderer<T> renderer in Renderers)
+                {
+                    renderer.RenderReorgEnd(
+                        oldTip: oldTip,
+                        newTip: newTip,
+                        branchpoint: branchpoint);
+                }
             }
         }
 
