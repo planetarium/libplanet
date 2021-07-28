@@ -11977,6 +11977,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.SwarmOptions.BranchpointThreshold
   nameWithType: SwarmOptions.BranchpointThreshold
+- uid: Libplanet.Net.SwarmOptions.BucketSize
+  name: BucketSize
+  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_BucketSize
+  commentId: P:Libplanet.Net.SwarmOptions.BucketSize
+  fullName: Libplanet.Net.SwarmOptions.BucketSize
+  nameWithType: SwarmOptions.BucketSize
+- uid: Libplanet.Net.SwarmOptions.BucketSize*
+  name: BucketSize
+  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_BucketSize_
+  commentId: Overload:Libplanet.Net.SwarmOptions.BucketSize
+  isSpec: "True"
+  fullName: Libplanet.Net.SwarmOptions.BucketSize
+  nameWithType: SwarmOptions.BucketSize
 - uid: Libplanet.Net.SwarmOptions.MaxTimeout
   name: MaxTimeout
   href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_MaxTimeout
@@ -12081,6 +12094,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.SwarmOptions.StaticPeersMaintainPeriod
   nameWithType: SwarmOptions.StaticPeersMaintainPeriod
+- uid: Libplanet.Net.SwarmOptions.TableSize
+  name: TableSize
+  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_TableSize
+  commentId: P:Libplanet.Net.SwarmOptions.TableSize
+  fullName: Libplanet.Net.SwarmOptions.TableSize
+  nameWithType: SwarmOptions.TableSize
+- uid: Libplanet.Net.SwarmOptions.TableSize*
+  name: TableSize
+  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_TableSize_
+  commentId: Overload:Libplanet.Net.SwarmOptions.TableSize
+  isSpec: "True"
+  fullName: Libplanet.Net.SwarmOptions.TableSize
+  nameWithType: SwarmOptions.TableSize
 - uid: Libplanet.Net.SwarmOptions.TxRecvTimeout
   name: TxRecvTimeout
   href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_TxRecvTimeout
