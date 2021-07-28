@@ -63,7 +63,7 @@
 <h1 id="libplanet-changelog">Libplanet changelog</h1>
 
 <h2 id="version-0130">Version 0.13.0</h2>
-<p>To be released.</p>
+<p>Released on July 28, 2021.</p>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
 <ul>
 <li>Added <code>bool render = false</code> option to <code>Swarm&lt;T&gt;.PreloadAsync()</code>.
@@ -89,8 +89,14 @@ if the transaction was not signed.  [<a href="https://github.com/planetarium/lib
 is thrown during <code>NetMQTransport.DoBroadcast()</code>.  [<a href="https://github.com/planetarium/libplanet/issues/1362">#1362</a>, <a href="https://github.com/planetarium/libplanet/pull/1365">#1365</a>]</li>
 </ul>
 <h3 id="cli-tools">CLI tools</h3>
+<h2 id="version-0121">Version 0.12.1</h2>
+<p>Released on July 28, 2021.</p>
+<ul>
+<li><code>Swarm&lt;T&gt;.PreloadAsync()</code> now checks the existence of blocks in the storage
+(was in the blockchain).  [<a href="https://github.com/planetarium/libplanet/pull/1324">#1324</a>]</li>
+</ul>
 <h2 id="version-0120">Version 0.12.0</h2>
-<p>Released on July 23th, 2021.</p>
+<p>Released on July 23, 2021.</p>
 <h3 id="backward-incompatible-api-changes-1">Backward-incompatible API changes</h3>
 <ul>
 <li>Block hashes are now represented as <code>BlockHash</code>, which was introduced in
@@ -294,8 +300,6 @@ Use <code>ActionEvaluator.Evaluate()</code> method instead.</li>
 constructor.  [<a href="https://github.com/planetarium/libplanet/pull/1379">#1379</a>]</li>
 <li>Removed <code>InvalidTxUpdatedAddressesException</code>.  [<a href="https://github.com/planetarium/libplanet/issues/368">#368</a>, <a href="https://github.com/planetarium/libplanet/pull/1389">#1389</a>]</li>
 </ul>
-<h3 id="backward-incompatible-network-protocol-changes-1">Backward-incompatible network protocol changes</h3>
-<h3 id="backward-incompatible-storage-format-changes-1">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis-1">Added APIs</h3>
 <ul>
 <li>Added <code>ActionEvaluator</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/1301">#1301</a>, <a href="https://github.com/planetarium/libplanet/pull/1305">#1305</a>]</li>
@@ -428,7 +432,7 @@ to build index from TxId to BlockHash.  [<a href="https://github.com/planetarium
 stored chain in a CSV format.  [<a href="https://github.com/planetarium/libplanet/pull/1353">#1353</a>]</li>
 </ul>
 <h2 id="version-0111">Version 0.11.1</h2>
-<p>Released on April 22th, 2021.</p>
+<p>Released on April 22, 2021.</p>
 <ul>
 <li>Fixed a bug where block synchronization had stopped due to internal
 errors. [<a href="https://github.com/planetarium/libplanet/pull/1259">#1259</a>]</li>
@@ -472,7 +476,7 @@ method.  [<a href="https://github.com/planetarium/libplanet/pull/1117">#1117</a>
 replaced by, <code>IProtocol.RebuildConnectionAsync(int, CancellationToken)</code>
 method.  [<a href="https://github.com/planetarium/libplanet/pull/1215">#1215</a>]</li>
 </ul>
-<h3 id="backward-incompatible-network-protocol-changes-2">Backward-incompatible network protocol changes</h3>
+<h3 id="backward-incompatible-network-protocol-changes-1">Backward-incompatible network protocol changes</h3>
 <ul>
 <li><code>Swarm&lt;T&gt;</code> became no longer retry when <code>Swarm&lt;T&gt;</code> receives
 less than 500 blocks.  [<a href="https://github.com/planetarium/libplanet/pull/1112">#1112</a>]</li>
@@ -492,7 +496,7 @@ interface.  [<a href="https://github.com/planetarium/libplanet/pull/1117">#1117<
 time, which is configured by <code>SwarmOptions.MessageLifespan</code>.
 [<a href="https://github.com/planetarium/libplanet/issues/1160">#1160</a>, <a href="https://github.com/planetarium/libplanet/pull/1171">#1171</a>]</li>
 </ul>
-<h3 id="backward-incompatible-storage-format-changes-2">Backward-incompatible storage format changes</h3>
+<h3 id="backward-incompatible-storage-format-changes-1">Backward-incompatible storage format changes</h3>
 <ul>
 <li>(Libplanet.RocksDBStore) The blocks and transactions became stored in
 multiple databases.  Each block and transaction belongs to a partition
@@ -855,7 +859,7 @@ became <code>Func&lt;Transaction&lt;T&gt;, BlockChain&lt;T&gt;, bool&gt;</code> 
 [<a href="https://github.com/planetarium/libplanet/pull/1022">#1022</a>]</li>
 <li>Removed constructors from <code>InvalidMessageException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/1021">#1021</a>]</li>
 </ul>
-<h3 id="backward-incompatible-network-protocol-changes-3">Backward-incompatible network protocol changes</h3>
+<h3 id="backward-incompatible-network-protocol-changes-2">Backward-incompatible network protocol changes</h3>
 <ul>
 <li>The message field <code>RecentStates.StateReferences</code> became to
 <code>IImmutableDictionary&lt;string, IImmutableList&lt;HashDigest&lt;SHA256&gt;&gt;&gt;</code> from
@@ -887,7 +891,7 @@ was replaced by a new <code>BlockHeaderMessage</code> message type
 <li>Removed <code>blockDownloadFailed</code> parameter from <code>Swarm&lt;T&gt;.PreloadAsync()</code>
 method.  Use <code>SwarmOptions.BlockDownloadTimeout</code> instead.  [<a href="https://github.com/planetarium/libplanet/pull/1002">#1002</a>]</li>
 </ul>
-<h3 id="backward-incompatible-storage-format-changes-3">Backward-incompatible storage format changes</h3>
+<h3 id="backward-incompatible-storage-format-changes-2">Backward-incompatible storage format changes</h3>
 <ul>
 <li>Added <code>RawTransaction&lt;T&gt;.GenesisHash</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/796">#796</a>, <a href="https://github.com/planetarium/libplanet/pull/878">#878</a>]</li>
 <li>Added <code>BlockHeader.TotalDifficulty</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/666">#666</a>, <a href="https://github.com/planetarium/libplanet/pull/917">#917</a>]</li>
@@ -1156,7 +1160,7 @@ that receives only one transaction.  [<a href="https://github.com/planetarium/li
 <li>Added <code>IBlockPolicy.DoesTransactionFollowPolicy()</code> method which is a method
 to determine if a transaction follows the block policy.  [<a href="https://github.com/planetarium/libplanet/pull/827">#827</a>]</li>
 </ul>
-<h3 id="backward-incompatible-network-protocol-changes-4">Backward-incompatible network protocol changes</h3>
+<h3 id="backward-incompatible-network-protocol-changes-3">Backward-incompatible network protocol changes</h3>
 <ul>
 <li>The existing <code>BlockHashes</code> message type (with the type number <code>0x05</code>) was
 replaced by a new <code>BlockHashes</code> message type (with type number <code>0x0e</code>)
@@ -1306,7 +1310,7 @@ from <code>Swarm&lt;T&gt;</code>.  [<a href="https://github.com/planetarium/libp
 <li><code>StoreExtension.LookupStateReference&lt;T&gt;()</code> method was replaced by
 <code>IStore.LookupStateReference&lt;T&gt;()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/722">#722</a>, <a href="https://github.com/planetarium/libplanet/pull/774">#774</a>]</li>
 </ul>
-<h3 id="backward-incompatible-network-protocol-changes-5">Backward-incompatible network protocol changes</h3>
+<h3 id="backward-incompatible-network-protocol-changes-4">Backward-incompatible network protocol changes</h3>
 <ul>
 <li>Added <code>long</code>-typed <code>offset</code> parameter to <code>RecentStates</code> and
 <code>GetRecentStates</code> messages.  [<a href="https://github.com/planetarium/libplanet/pull/703">#703</a>]</li>
@@ -1314,7 +1318,7 @@ from <code>Swarm&lt;T&gt;</code>.  [<a href="https://github.com/planetarium/libp
 [<a href="https://github.com/planetarium/libplanet/pull/703">#703</a>]</li>
 <li>Added <code>BlockHeaderMessage</code> message.  [<a href="https://github.com/planetarium/libplanet/pull/764">#764</a>]</li>
 </ul>
-<h3 id="backward-incompatible-storage-format-changes-4">Backward-incompatible storage format changes</h3>
+<h3 id="backward-incompatible-storage-format-changes-3">Backward-incompatible storage format changes</h3>
 <ul>
 <li>The introduced <code>DefaultStore</code> is incompatible at the file-level with
 the <code>LiteDBStore</code> which had existed.  <code>DefaultStore</code> became to take
