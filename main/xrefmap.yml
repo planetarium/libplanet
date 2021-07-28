@@ -15792,6 +15792,24 @@ references:
   fullName.vb: Libplanet.Tx.Transaction(Of T).Create
   nameWithType: Transaction<T>.Create
   nameWithType.vb: Transaction(Of T).Create
+- uid: Libplanet.Tx.Transaction`1.CreateUnsigned(System.Int64,Libplanet.Crypto.PublicKey,System.Nullable{Libplanet.Blocks.BlockHash},System.Collections.Generic.IEnumerable{`0},IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})
+  name: CreateUnsigned(Int64, PublicKey, Nullable<BlockHash>, IEnumerable<T>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_CreateUnsigned_System_Int64_Libplanet_Crypto_PublicKey_System_Nullable_Libplanet_Blocks_BlockHash__System_Collections_Generic_IEnumerable__0__IImmutableSet_Libplanet_Address__System_Nullable_System_DateTimeOffset__
+  commentId: M:Libplanet.Tx.Transaction`1.CreateUnsigned(System.Int64,Libplanet.Crypto.PublicKey,System.Nullable{Libplanet.Blocks.BlockHash},System.Collections.Generic.IEnumerable{`0},IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})
+  name.vb: CreateUnsigned(Int64, PublicKey, Nullable(Of BlockHash), IEnumerable(Of T), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
+  fullName: Libplanet.Tx.Transaction<T>.CreateUnsigned(System.Int64, Libplanet.Crypto.PublicKey, System.Nullable<Libplanet.Blocks.BlockHash>, System.Collections.Generic.IEnumerable<T>, IImmutableSet<Libplanet.Address>, System.Nullable<System.DateTimeOffset>)
+  fullName.vb: Libplanet.Tx.Transaction(Of T).CreateUnsigned(System.Int64, Libplanet.Crypto.PublicKey, System.Nullable(Of Libplanet.Blocks.BlockHash), System.Collections.Generic.IEnumerable(Of T), IImmutableSet(Of Libplanet.Address), System.Nullable(Of System.DateTimeOffset))
+  nameWithType: Transaction<T>.CreateUnsigned(Int64, PublicKey, Nullable<BlockHash>, IEnumerable<T>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
+  nameWithType.vb: Transaction(Of T).CreateUnsigned(Int64, PublicKey, Nullable(Of BlockHash), IEnumerable(Of T), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
+- uid: Libplanet.Tx.Transaction`1.CreateUnsigned*
+  name: CreateUnsigned
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_CreateUnsigned_
+  commentId: Overload:Libplanet.Tx.Transaction`1.CreateUnsigned
+  isSpec: "True"
+  fullName: Libplanet.Tx.Transaction<T>.CreateUnsigned
+  fullName.vb: Libplanet.Tx.Transaction(Of T).CreateUnsigned
+  nameWithType: Transaction<T>.CreateUnsigned
+  nameWithType.vb: Transaction(Of T).CreateUnsigned
 - uid: Libplanet.Tx.Transaction`1.Deserialize(System.Byte[],System.Boolean)
   name: Deserialize(Byte[], Boolean)
   href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Deserialize_System_Byte___System_Boolean_

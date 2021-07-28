@@ -68,7 +68,14 @@
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
+<ul>
+<li>Added <code>Transaction&lt;T&gt;.CreateUnsigned()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1378">#1378</a>]</li>
+</ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
+<ul>
+<li><code>Transaction&lt;T&gt;.Validate()</code> became to throw <code>InvalidTxSignatureException</code>
+if the transaction was not signed.  [<a href="https://github.com/planetarium/libplanet/pull/1378">#1378</a>]</li>
+</ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="cli-tools">CLI tools</h3>
 <h2 id="version-0120">Version 0.12.0</h2>
