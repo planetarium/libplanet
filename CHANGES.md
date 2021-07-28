@@ -4,24 +4,10 @@ Libplanet changelog
 Version 0.12.1
 --------------
 
-To be released.
-
-### Backward-incompatible API changes
-
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
-### Added APIs
-
-### Behavioral changes
-
-### Bug fixes
+Released on July 28, 2021.
 
  -  `Swarm<T>.PreloadAsync()` now checks the existence of blocks in the storage
     (was in the blockchain).  [[#1324]]
-
-### CLI tools
 
 [#1324]: https://github.com/planetarium/libplanet/pull/1324
 
@@ -29,7 +15,7 @@ To be released.
 Version 0.12.0
 --------------
 
-Released on July 23th, 2021.
+Released on July 23, 2021.
 
 ### Backward-incompatible API changes
 
@@ -221,10 +207,6 @@ Released on July 23th, 2021.
     constructor.  [[#1379]]
  -  Removed `InvalidTxUpdatedAddressesException`.  [[#368], [#1389]]
 
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
 ### Added APIs
 
  -  Added `ActionEvaluator` class.  [[#1301], [#1305]]
@@ -414,12 +396,13 @@ Released on July 23th, 2021.
 Version 0.11.1
 -------------
 
-Released on April 22th, 2021.
+Released on April 22, 2021.
 
  -  Fixed a bug where block synchronization had stopped due to internal
     errors. [[#1259]]
 
 [#1259]: https://github.com/planetarium/libplanet/pull/1259
+
 
 Version 0.11.0
 --------------
