@@ -8,6 +8,10 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Added `bool render = false` option to `Swarm<T>.PreloadAsync()`.
+    Blocks and actions in preloaded blocks will be rendered if the switch
+    is set to `true`.  [[#1391]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -31,6 +35,7 @@ To be released.
 [#1362]: https://github.com/planetarium/libplanet/issues/1362
 [#1365]: https://github.com/planetarium/libplanet/pull/1365
 [#1378]: https://github.com/planetarium/libplanet/pull/1378
+[#1391]: https://github.com/planetarium/libplanet/pull/1391
 
 
 Version 0.12.0
