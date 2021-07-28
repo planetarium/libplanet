@@ -23,8 +23,13 @@ To be released.
 
 ### Bug fixes
 
+ -  Fixed a bug where `Swarm<T>` had stopped when `ObjectDisposedException`
+    is thrown during `NetMQTransport.DoBroadcast()`.  [[#1362], [#1365]]
+
 ### CLI tools
 
+[#1362]: https://github.com/planetarium/libplanet/issues/1362
+[#1365]: https://github.com/planetarium/libplanet/pull/1365
 [#1378]: https://github.com/planetarium/libplanet/pull/1378
 
 
