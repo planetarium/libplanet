@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Reflection;
 using System.Security.Cryptography;
+using System.Threading;
 
 namespace Libplanet
 {
@@ -19,7 +20,9 @@ namespace Libplanet
         private static readonly ConcurrentDictionary<Type, HashAlgorithmType> _internedObjects
             = new ConcurrentDictionary<Type, HashAlgorithmType>();
 
-        private readonly HashAlgorithm _instance;
+        private readonly MethodInfo? _instanceCtor;
+
+        private readonly ThreadLocal<HashAlgorithm> _instance;
 
         private HashAlgorithmType(Type type)
         {
@@ -27,8 +30,14 @@ namespace Libplanet
             MethodInfo method = type.GetMethod(nameof(HashAlgorithm.Create), new Type[0])!;
             string excMsg =
                 $"Failed to invoke {type.FullName}.{nameof(HashAlgorithm.Create)}() static method.";
-            _instance = method?.Invoke(null, new object[0]) as HashAlgorithm
-                ?? throw new InvalidCastException(excMsg);
+            _instanceCtor = method;
+            _instance = new ThreadLocal<HashAlgorithm>(() =>
+                _instanceCtor?.Invoke(null, new object[0]) as HashAlgorithm
+                    ?? throw new InvalidCastException(excMsg)
+            );
+
+            // Immediately create an instance to check if the constructor works well:
+            HashAlgorithm unused = _instance.Value!;
         }
 
         /// <summary>
@@ -42,7 +51,7 @@ namespace Libplanet
         /// The length of bytes of every digest that the <see cref="HashAlgorithmType"/> makes.
         /// </summary>
         [Pure]
-        public int DigestSize => _instance.HashSize / 8;
+        public int DigestSize => _instance.Value!.HashSize / 8;
 
         /// <summary>
         /// Checks if two <see cref="HashAlgorithmType"/>s refers to the same
@@ -89,7 +98,7 @@ namespace Libplanet
         /// <returns>The hash digest derived from <paramref name="input"/>.</returns>
         [Pure]
         public byte[] Digest(byte[] input) =>
-            _instance.ComputeHash(input);
+            _instance.Value!.ComputeHash(input);
 
         /// <summary>
         /// Computes a hash digest of the hash algorithm from the given
