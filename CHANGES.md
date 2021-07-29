@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.13.1
 --------------
 
-To be released.
+Released on July 29, 2021.
 
  -  Fixed `HashAlgorithmType.Digest()` method's bug that it returns an incorrect
     digest bytes when it is called by multiple threads at a time.  [[#1411]]
