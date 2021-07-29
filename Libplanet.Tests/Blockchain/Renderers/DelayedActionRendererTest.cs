@@ -489,9 +489,9 @@ namespace Libplanet.Tests.Blockchain.Renderers
             Assert.Equal(17, delayedRenderer.GetBufferedActionRendererCount());
             Assert.Equal(0, delayedRenderer.GetBufferedActionUnRendererCount());
 
-            chain.Swap(fork1, true);
-            chain.Swap(fork2, true);
-            chain.Swap(fork3, true);
+            chain.Swap(fork1, true)();
+            chain.Swap(fork2, true)();
+            chain.Swap(fork3, true)();
             Assert.Equal(17, delayedRenderer.GetBufferedActionRendererCount());
             Assert.Equal(15, delayedRenderer.GetBufferedActionUnRendererCount());
 
@@ -619,7 +619,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                     renderActions: false
                 );
 
-            chain.Swap(forked, true);
+            chain.Swap(forked, true)();
 
             Assert.Equal(chain[2], delayedRenderer.Tip);
             Assert.Empty(reorgLogs);
@@ -723,7 +723,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                     renderActions: false
                 );
 
-            chain.Swap(forked, true);
+            chain.Swap(forked, true)();
 
             Assert.Equal(chain[1], delayedRenderer.Tip);
             Assert.Empty(reorgLogs);

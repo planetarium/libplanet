@@ -15,7 +15,7 @@ namespace Libplanet.Blockchain
         // FIXME it's very dangerous because replacing Id means
         // ALL blocks (referenced by MineBlock(), etc.) will be changed.
         // we need to add a synchronization mechanism to handle this correctly.
-        internal void Swap(
+        internal System.Action Swap(
             BlockChain<T> other,
             bool render,
             StateCompleterSet<T>? stateCompleters = null)
@@ -48,6 +48,8 @@ namespace Libplanet.Blockchain
                     other.Tip.Index,
                     other.Tip.Hash);
             }
+
+            System.Action renderSwap = () => { };
 
             // Finds the branch point.
             Block<T> branchpoint = FindTopCommon(this, other);
@@ -112,7 +114,7 @@ namespace Libplanet.Blockchain
                     _rwlock.ExitWriteLock();
                 }
 
-                RenderSwap(
+                renderSwap = () => RenderSwap(
                     render: render,
                     oldTip: oldTip,
                     newTip: newTip,
@@ -125,6 +127,8 @@ namespace Libplanet.Blockchain
             {
                 _rwlock.ExitUpgradeableReadLock();
             }
+
+            return renderSwap;
         }
 
         internal void RenderSwap(

@@ -329,7 +329,7 @@ namespace Libplanet.Tests.Blockchain
                     fx.GenesisBlock,
                     renderers: new[] { renderer }
                 );
-                chain.Swap(newChain, true);
+                chain.Swap(newChain, true)();
                 Assert.Empty(renderer.ActionRecords);
                 Assert.Empty(NonRehearsalExecutions());
             }
@@ -760,7 +760,7 @@ namespace Libplanet.Tests.Blockchain
         [InlineData(false)]
         public void Swap(bool render)
         {
-            Assert.Throws<ArgumentNullException>(() => _blockChain.Swap(null, render));
+            Assert.Throws<ArgumentNullException>(() => _blockChain.Swap(null, render)());
 
             (var addresses, Transaction<DumbAction>[] txs1) =
                 MakeFixturesForAppendTests();
@@ -882,7 +882,7 @@ namespace Libplanet.Tests.Blockchain
 
             Guid previousChainId = _blockChain.Id;
             _renderer.ResetRecords();
-            _blockChain.Swap(fork, render);
+            _blockChain.Swap(fork, render)();
 
             Assert.Empty(_blockChain.Store.IterateIndexes(previousChainId));
             Assert.Empty(_blockChain.Store.ListTxNonces(previousChainId));
@@ -960,7 +960,7 @@ namespace Libplanet.Tests.Blockchain
         {
             BlockChain<DumbAction> fork = _blockChain.Fork(_blockChain.Tip.Hash);
             IReadOnlyList<RenderRecord<DumbAction>> prevRecords = _renderer.Records;
-            _blockChain.Swap(fork, render: render);
+            _blockChain.Swap(fork, render: render)();
 
             // Render methods should be invoked if and only if the tip changes
             Assert.Equal(prevRecords, _renderer.Records);
@@ -976,7 +976,7 @@ namespace Libplanet.Tests.Blockchain
             // The lower  chain goes to the higher chain  [#N -> #N+1]
             await fork.MineBlock(default);
             IReadOnlyList<RenderRecord<DumbAction>.Reorg> prevRecords = _renderer.ReorgRecords;
-            _blockChain.Swap(fork, render: render);
+            _blockChain.Swap(fork, render: render)();
 
             // RenderReorg() should be invoked if and only if the actual reorg happens
             Assert.Equal(prevRecords, _renderer.ReorgRecords);
@@ -990,7 +990,7 @@ namespace Libplanet.Tests.Blockchain
             // The higher chain goes to the lower  chain  [#N -> #N-1]
             await _blockChain.MineBlock(default);
             IReadOnlyList<RenderRecord<DumbAction>.Reorg> prevRecords = _renderer.ReorgRecords;
-            _blockChain.Swap(fork, render: true);
+            _blockChain.Swap(fork, render: true)();
 
             // RenderReorg() should be invoked if and only if the actual reorg happens
             Assert.Equal(prevRecords.Count + 2, _renderer.ReorgRecords.Count);
@@ -1035,7 +1035,7 @@ namespace Libplanet.Tests.Blockchain
                 );
 
                 Assert.Throws<InvalidGenesisBlockException>(() =>
-                    _blockChain.Swap(chain2, render)
+                    _blockChain.Swap(chain2, render)()
                 );
             }
         }
@@ -1740,7 +1740,7 @@ namespace Libplanet.Tests.Blockchain
 
             Assert.Empty(_renderer.ReorgRecords);
 
-            _blockChain.Swap(fork, true);
+            _blockChain.Swap(fork, true)();
 
             IReadOnlyList<RenderRecord<DumbAction>.Reorg> reorgRecords = _renderer.ReorgRecords;
             Assert.Equal(2, reorgRecords.Count);

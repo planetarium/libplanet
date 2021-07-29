@@ -71,7 +71,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             BlockChain<Arithmetic> @base = _fx.Chain.Fork(_fx.Genesis.Hash);
             await _fx.Mine();
             _record.ResetRecords();
-            _fx.Chain.Swap(@base, true);
+            _fx.Chain.Swap(@base, true)();
             IReadOnlyList<RenderRecord<Arithmetic>> records = _record.Records;
             Assert.Equal(7, records.Count);
             AssertTypeAnd<RenderRecord<Arithmetic>.Reorg>(records[0], r => Assert.True(r.Begin));

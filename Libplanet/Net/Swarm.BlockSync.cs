@@ -184,11 +184,11 @@ namespace Libplanet.Net
                         blockChain.Id,
                         synced.Id
                     );
-                    blockChain.Swap(
+                    System.Action renderSwap = blockChain.Swap(
                         synced,
                         render: true,
-                        stateCompleters: null
-                    );
+                        stateCompleters: null);
+                    renderSwap();
                     _logger.Debug(
                         "{SessionId}: The chain {ChainIdB} replaced {ChainIdA}",
                         logSessionId,
