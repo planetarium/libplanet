@@ -1,0 +1,1583 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class Swarm&lt;T&gt;
+   | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class Swarm&lt;T&gt;
+   | Libplanet ">
+    <meta name="generator" content="docfx 2.56.6.0">
+    
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Net.Swarm`1">
+  
+  
+  <h1 id="Libplanet_Net_Swarm_1" data-uid="Libplanet.Net.Swarm`1" class="text-break">Class Swarm&lt;T&gt;
+  </h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">Swarm&lt;T&gt;</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Net.html">Libplanet.Net</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.dll</h6>
+  <h5 id="Libplanet_Net_Swarm_1_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class Swarm&lt;T&gt; : IDisposable where T : IAction, new()</code></pre>
+  </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/a82c57e23add1cc3572684126641d1f5627b7a7c/apiSpec/new?filename=Libplanet_Net_Swarm_1__ctor_Libplanet_Blockchain_BlockChain__0__Libplanet_Crypto_PrivateKey_Libplanet_Net_AppProtocolVersion_System_Int32_System_String_System_Nullable_System_Int32__System_Collections_Generic_IEnumerable_Libplanet_Net_IceServer__Libplanet_Net_DifferentAppProtocolVersionEncountered_System_Collections_Generic_IEnumerable_Libplanet_Crypto_PublicKey__Libplanet_Net_SwarmOptions_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.%23ctor(Libplanet.Blockchain.BlockChain%7B%600%7D%2CLibplanet.Crypto.PrivateKey%2CLibplanet.Net.AppProtocolVersion%2CSystem.Int32%2CSystem.String%2CSystem.Nullable%7BSystem.Int32%7D%2CSystem.Collections.Generic.IEnumerable%7BLibplanet.Net.IceServer%7D%2CLibplanet.Net.DifferentAppProtocolVersionEncountered%2CSystem.Collections.Generic.IEnumerable%7BLibplanet.Crypto.PublicKey%7D%2CLibplanet.Net.SwarmOptions)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/a82c57e23add1cc3572684126641d1f5627b7a7c/Libplanet/Net/Swarm.cs/#L71">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Swarm_1__ctor_" data-uid="Libplanet.Net.Swarm`1.#ctor*"></a>
+  <h4 id="Libplanet_Net_Swarm_1__ctor_Libplanet_Blockchain_BlockChain__0__Libplanet_Crypto_PrivateKey_Libplanet_Net_AppProtocolVersion_System_Int32_System_String_System_Nullable_System_Int32__System_Collections_Generic_IEnumerable_Libplanet_Net_IceServer__Libplanet_Net_DifferentAppProtocolVersionEncountered_System_Collections_Generic_IEnumerable_Libplanet_Crypto_PublicKey__Libplanet_Net_SwarmOptions_" data-uid="Libplanet.Net.Swarm`1.#ctor(Libplanet.Blockchain.BlockChain{`0},Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,System.Int32,System.String,System.Nullable{System.Int32},System.Collections.Generic.IEnumerable{Libplanet.Net.IceServer},Libplanet.Net.DifferentAppProtocolVersionEncountered,System.Collections.Generic.IEnumerable{Libplanet.Crypto.PublicKey},Libplanet.Net.SwarmOptions)">Swarm(BlockChain&lt;T&gt;, PrivateKey, AppProtocolVersion, Int32, String, Nullable&lt;Int32&gt;, IEnumerable&lt;IceServer&gt;, DifferentAppProtocolVersionEncountered, IEnumerable&lt;PublicKey&gt;, SwarmOptions)</h4>
+  <div class="markdown level1 summary"><p>Creates a <a class="xref" href="Libplanet.Net.Swarm-1.html">Swarm&lt;T&gt;</a>.  This constructor in only itself does not start
+any communication with the network.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Swarm(BlockChain&lt;T&gt; blockChain, PrivateKey privateKey, AppProtocolVersion appProtocolVersion, int workers = 5, string host = null, int? listenPort = default(int? ), IEnumerable&lt;IceServer&gt; iceServers = null, DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered = null, IEnumerable&lt;PublicKey&gt; trustedAppProtocolVersionSigners = null, SwarmOptions options = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain</a>&lt;T&gt;</td>
+        <td><span class="parametername">blockChain</span></td>
+        <td><p>A blockchain to publicize on the network.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a></td>
+        <td><span class="parametername">privateKey</span></td>
+        <td><p>A private key to sign messages.  The public part of
+this key become a part of its end address for being pointed by peers.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a></td>
+        <td><span class="parametername">appProtocolVersion</span></td>
+        <td><p>An app protocol to comply.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">workers</span></td>
+        <td><p>The number of background workers (i.e., threads).</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">host</span></td>
+        <td><p>A hostname to be a part of a public endpoint, that peers use when
+they connect to this node.  Note that this is not a hostname to listen to;
+<a class="xref" href="Libplanet.Net.Swarm-1.html">Swarm&lt;T&gt;</a> always listens to 0.0.0.0 &amp; ::/0.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a>&gt;</td>
+        <td><span class="parametername">listenPort</span></td>
+        <td><p>A port number to listen to.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.Net.IceServer.html">IceServer</a>&gt;</td>
+        <td><span class="parametername">iceServers</span></td>
+        <td><p><a href="https://en.wikipedia.org/wiki/Interactive_Connectivity_Establishment">ICE</a>
+servers to use for TURN/STUN.  Purposes to traverse NAT.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.DifferentAppProtocolVersionEncountered.html">DifferentAppProtocolVersionEncountered</a></td>
+        <td><span class="parametername">differentAppProtocolVersionEncountered</span></td>
+        <td><p>A delegate called back when a peer
+with one different from <code data-dev-comment-type="paramref" class="paramref">appProtocolVersion</code>, and their version is
+signed by a trusted party (i.e., <code data-dev-comment-type="paramref" class="paramref">trustedAppProtocolVersionSigners</code>).
+If this callback returns <code>false</code> an encountered peer is ignored.  If this callback
+is omitted all peers with different <a class="xref" href="Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_AppProtocolVersion">AppProtocolVersion</a>s are ignored.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a>&gt;</td>
+        <td><span class="parametername">trustedAppProtocolVersionSigners</span></td>
+        <td><p><a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a>s of parties
+to trust <a class="xref" href="Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_AppProtocolVersion">AppProtocolVersion</a>s they signed.  To trust any party, pass
+<code>null</code>, which is default.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.SwarmOptions.html">SwarmOptions</a></td>
+        <td><span class="parametername">options</span></td>
+        <td><p>Options for <a class="xref" href="Libplanet.Net.Swarm-1.html">Swarm&lt;T&gt;</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/a82c57e23add1cc3572684126641d1f5627b7a7c/apiSpec/new?filename=Libplanet_Net_Swarm_1_Address.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.Address%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/a82c57e23add1cc3572684126641d1f5627b7a7c/Libplanet/Net/Swarm.cs/#L138">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Swarm_1_Address_" data-uid="Libplanet.Net.Swarm`1.Address*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_Address" data-uid="Libplanet.Net.Swarm`1.Address">Address</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Address Address { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/a82c57e23add1cc3572684126641d1f5627b7a7c/apiSpec/new?filename=Libplanet_Net_Swarm_1_AppProtocolVersion.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.AppProtocolVersion%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/a82c57e23add1cc3572684126641d1f5627b7a7c/Libplanet/Net/Swarm.cs/#L163">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Swarm_1_AppProtocolVersion_" data-uid="Libplanet.Net.Swarm`1.AppProtocolVersion*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_AppProtocolVersion" data-uid="Libplanet.Net.Swarm`1.AppProtocolVersion">AppProtocolVersion</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public AppProtocolVersion AppProtocolVersion { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/a82c57e23add1cc3572684126641d1f5627b7a7c/apiSpec/new?filename=Libplanet_Net_Swarm_1_AsPeer.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.AsPeer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/a82c57e23add1cc3572684126641d1f5627b7a7c/Libplanet/Net/Swarm.cs/#L140">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Swarm_1_AsPeer_" data-uid="Libplanet.Net.Swarm`1.AsPeer*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_AsPeer" data-uid="Libplanet.Net.Swarm`1.AsPeer">AsPeer</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Peer AsPeer { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.Peer.html">Peer</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/a82c57e23add1cc3572684126641d1f5627b7a7c/apiSpec/new?filename=Libplanet_Net_Swarm_1_BlockChain.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.BlockChain%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/a82c57e23add1cc3572684126641d1f5627b7a7c/Libplanet/Net/Swarm.cs/#L159">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Swarm_1_BlockChain_" data-uid="Libplanet.Net.Swarm`1.BlockChain*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_BlockChain" data-uid="Libplanet.Net.Swarm`1.BlockChain">BlockChain</h4>
+  <div class="markdown level1 summary"><p>The <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> instance this <a class="xref" href="Libplanet.Net.Swarm-1.html">Swarm&lt;T&gt;</a> instance
+synchronizes with.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BlockChain&lt;T&gt; BlockChain { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/a82c57e23add1cc3572684126641d1f5627b7a7c/apiSpec/new?filename=Libplanet_Net_Swarm_1_BlockDemand.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.BlockDemand%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/a82c57e23add1cc3572684126641d1f5627b7a7c/Libplanet/Net/Swarm.BlockSync.cs/#L19">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Swarm_1_BlockDemand_" data-uid="Libplanet.Net.Swarm`1.BlockDemand*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_BlockDemand" data-uid="Libplanet.Net.Swarm`1.BlockDemand">BlockDemand</h4>
+  <div class="markdown level1 summary"><p>Information of <a class="xref" href="Libplanet.Net.Swarm-1.html">Swarm&lt;T&gt;</a>'s demand for new blocks.
+It is null when the <a class="xref" href="Libplanet.Net.Swarm-1.html">Swarm&lt;T&gt;</a> does not have any block to demand.
+<a class="xref" href="Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_BlockDemand">BlockDemand</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BlockDemand? BlockDemand { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Net.BlockDemand.html">BlockDemand</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/a82c57e23add1cc3572684126641d1f5627b7a7c/apiSpec/new?filename=Libplanet_Net_Swarm_1_EndPoint.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.EndPoint%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/a82c57e23add1cc3572684126641d1f5627b7a7c/Libplanet/Net/Swarm.cs/#L136">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Swarm_1_EndPoint_" data-uid="Libplanet.Net.Swarm`1.EndPoint*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_EndPoint" data-uid="Libplanet.Net.Swarm`1.EndPoint">EndPoint</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DnsEndPoint EndPoint { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.net.dnsendpoint">DnsEndPoint</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/a82c57e23add1cc3572684126641d1f5627b7a7c/apiSpec/new?filename=Libplanet_Net_Swarm_1_LastMessageTimestamp.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.LastMessageTimestamp%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/a82c57e23add1cc3572684126641d1f5627b7a7c/Libplanet/Net/Swarm.cs/#L146">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Swarm_1_LastMessageTimestamp_" data-uid="Libplanet.Net.Swarm`1.LastMessageTimestamp*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_LastMessageTimestamp" data-uid="Libplanet.Net.Swarm`1.LastMessageTimestamp">LastMessageTimestamp</h4>
+  <div class="markdown level1 summary"><p>The last time when any message was arrived.
+It can be <code>null</code> if no message has been arrived yet.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DateTimeOffset? LastMessageTimestamp { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/a82c57e23add1cc3572684126641d1f5627b7a7c/apiSpec/new?filename=Libplanet_Net_Swarm_1_LastSeenTimestamps.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.LastSeenTimestamps%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/a82c57e23add1cc3572684126641d1f5627b7a7c/Libplanet/Net/Swarm.cs/#L149">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Swarm_1_LastSeenTimestamps_" data-uid="Libplanet.Net.Swarm`1.LastSeenTimestamps*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_LastSeenTimestamps" data-uid="Libplanet.Net.Swarm`1.LastSeenTimestamps">LastSeenTimestamps</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IDictionary&lt;Peer, DateTimeOffset&gt; LastSeenTimestamps { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.idictionary-2">IDictionary</a>&lt;<a class="xref" href="Libplanet.Net.Peer.html">Peer</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/a82c57e23add1cc3572684126641d1f5627b7a7c/apiSpec/new?filename=Libplanet_Net_Swarm_1_Peers.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.Peers%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/a82c57e23add1cc3572684126641d1f5627b7a7c/Libplanet/Net/Swarm.cs/#L151">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Swarm_1_Peers_" data-uid="Libplanet.Net.Swarm`1.Peers*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_Peers" data-uid="Libplanet.Net.Swarm`1.Peers">Peers</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IReadOnlyList&lt;BoundPeer&gt; Peers { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/a82c57e23add1cc3572684126641d1f5627b7a7c/apiSpec/new?filename=Libplanet_Net_Swarm_1_PeersStates.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.PeersStates%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/a82c57e23add1cc3572684126641d1f5627b7a7c/Libplanet/Net/Swarm.cs/#L153">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Swarm_1_PeersStates_" data-uid="Libplanet.Net.Swarm`1.PeersStates*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_PeersStates" data-uid="Libplanet.Net.Swarm`1.PeersStates">PeersStates</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IReadOnlyList&lt;PeerState&gt; PeersStates { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="Libplanet.Net.PeerState.html">PeerState</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/a82c57e23add1cc3572684126641d1f5627b7a7c/apiSpec/new?filename=Libplanet_Net_Swarm_1_Running.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.Running%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/a82c57e23add1cc3572684126641d1f5627b7a7c/Libplanet/Net/Swarm.cs/#L134">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Swarm_1_Running_" data-uid="Libplanet.Net.Swarm`1.Running*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_Running" data-uid="Libplanet.Net.Swarm`1.Running">Running</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Running { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/a82c57e23add1cc3572684126641d1f5627b7a7c/apiSpec/new?filename=Libplanet_Net_Swarm_1_TrustedAppProtocolVersionSigners.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.TrustedAppProtocolVersionSigners%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/a82c57e23add1cc3572684126641d1f5627b7a7c/Libplanet/Net/Swarm.cs/#L161">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Swarm_1_TrustedAppProtocolVersionSigners_" data-uid="Libplanet.Net.Swarm`1.TrustedAppProtocolVersionSigners*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_TrustedAppProtocolVersionSigners" data-uid="Libplanet.Net.Swarm`1.TrustedAppProtocolVersionSigners">TrustedAppProtocolVersionSigners</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IImmutableSet&lt;PublicKey&gt; TrustedAppProtocolVersionSigners { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IImmutableSet</span>&lt;<a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/a82c57e23add1cc3572684126641d1f5627b7a7c/apiSpec/new?filename=Libplanet_Net_Swarm_1_AddPeersAsync_System_Collections_Generic_IEnumerable_Libplanet_Net_Peer__System_Nullable_System_TimeSpan__System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.AddPeersAsync(System.Collections.Generic.IEnumerable%7BLibplanet.Net.Peer%7D%2CSystem.Nullable%7BSystem.TimeSpan%7D%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/a82c57e23add1cc3572684126641d1f5627b7a7c/Libplanet/Net/Swarm.cs/#L917">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Swarm_1_AddPeersAsync_" data-uid="Libplanet.Net.Swarm`1.AddPeersAsync*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_AddPeersAsync_System_Collections_Generic_IEnumerable_Libplanet_Net_Peer__System_Nullable_System_TimeSpan__System_Threading_CancellationToken_" data-uid="Libplanet.Net.Swarm`1.AddPeersAsync(System.Collections.Generic.IEnumerable{Libplanet.Net.Peer},System.Nullable{System.TimeSpan},System.Threading.CancellationToken)">AddPeersAsync(IEnumerable&lt;Peer&gt;, Nullable&lt;TimeSpan&gt;, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Adds <code data-dev-comment-type="paramref" class="paramref">peers</code> to routing table by sending a simple message.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task AddPeersAsync(IEnumerable&lt;Peer&gt; peers, TimeSpan? timeout, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.Net.Peer.html">Peer</a>&gt;</td>
+        <td><span class="parametername">peers</span></td>
+        <td><p>A list of peers to add.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.timespan">TimeSpan</a>&gt;</td>
+        <td><span class="parametername">timeout</span></td>
+        <td><p>Timeout for this operation. If it is set to <code>null</code>,
+wait infinitely until the requested operation is finished.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>A cancellation token used to propagate notification
+that this operation should be canceled.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td><p>An awaitable task without value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/a82c57e23add1cc3572684126641d1f5627b7a7c/apiSpec/new?filename=Libplanet_Net_Swarm_1_BootstrapAsync_System_Collections_Generic_IEnumerable_Libplanet_Net_Peer__System_Double_System_Double_System_Int32_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.BootstrapAsync(System.Collections.Generic.IEnumerable%7BLibplanet.Net.Peer%7D%2CSystem.Double%2CSystem.Double%2CSystem.Int32%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/a82c57e23add1cc3572684126641d1f5627b7a7c/Libplanet/Net/Swarm.cs/#L363">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Swarm_1_BootstrapAsync_" data-uid="Libplanet.Net.Swarm`1.BootstrapAsync*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_BootstrapAsync_System_Collections_Generic_IEnumerable_Libplanet_Net_Peer__System_Double_System_Double_System_Int32_System_Threading_CancellationToken_" data-uid="Libplanet.Net.Swarm`1.BootstrapAsync(System.Collections.Generic.IEnumerable{Libplanet.Net.Peer},System.Double,System.Double,System.Int32,System.Threading.CancellationToken)">BootstrapAsync(IEnumerable&lt;Peer&gt;, Double, Double, Int32, CancellationToken)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task BootstrapAsync(IEnumerable&lt;Peer&gt; seedPeers, double pingSeedTimeout, double findPeerTimeout, int depth = 3, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.Net.Peer.html">Peer</a>&gt;</td>
+        <td><span class="parametername">seedPeers</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">pingSeedTimeout</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">findPeerTimeout</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">depth</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/a82c57e23add1cc3572684126641d1f5627b7a7c/apiSpec/new?filename=Libplanet_Net_Swarm_1_BootstrapAsync_System_Collections_Generic_IEnumerable_Libplanet_Net_Peer__System_Nullable_System_TimeSpan__System_Nullable_System_TimeSpan__System_Int32_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.BootstrapAsync(System.Collections.Generic.IEnumerable%7BLibplanet.Net.Peer%7D%2CSystem.Nullable%7BSystem.TimeSpan%7D%2CSystem.Nullable%7BSystem.TimeSpan%7D%2CSystem.Int32%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/a82c57e23add1cc3572684126641d1f5627b7a7c/Libplanet/Net/Swarm.cs/#L391">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Swarm_1_BootstrapAsync_" data-uid="Libplanet.Net.Swarm`1.BootstrapAsync*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_BootstrapAsync_System_Collections_Generic_IEnumerable_Libplanet_Net_Peer__System_Nullable_System_TimeSpan__System_Nullable_System_TimeSpan__System_Int32_System_Threading_CancellationToken_" data-uid="Libplanet.Net.Swarm`1.BootstrapAsync(System.Collections.Generic.IEnumerable{Libplanet.Net.Peer},System.Nullable{System.TimeSpan},System.Nullable{System.TimeSpan},System.Int32,System.Threading.CancellationToken)">BootstrapAsync(IEnumerable&lt;Peer&gt;, Nullable&lt;TimeSpan&gt;, Nullable&lt;TimeSpan&gt;, Int32, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Join to the peer-to-peer network using seed peers.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task BootstrapAsync(IEnumerable&lt;Peer&gt; seedPeers, TimeSpan? pingSeedTimeout, TimeSpan? findNeighborsTimeout, int depth = 3, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.Net.Peer.html">Peer</a>&gt;</td>
+        <td><span class="parametername">seedPeers</span></td>
+        <td><p>List of seed peers.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.timespan">TimeSpan</a>&gt;</td>
+        <td><span class="parametername">pingSeedTimeout</span></td>
+        <td><p>Timeout for connecting to seed peers.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.timespan">TimeSpan</a>&gt;</td>
+        <td><span class="parametername">findNeighborsTimeout</span></td>
+        <td><p>Timeout for requesting neighbors.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">depth</span></td>
+        <td><p>Depth to find neighbors of current <a class="xref" href="Libplanet.Net.Peer.html">Peer</a>
+from seed peers.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>A cancellation token used to propagate notification
+that this operation should be canceled.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td><p>An awaitable task without value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.SwarmException.html">SwarmException</a></td>
+        <td><p>Thrown when this <a class="xref" href="Libplanet.Net.Swarm-1.html">Swarm&lt;T&gt;</a> instance is
+not <a class="xref" href="Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_Running">Running</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/a82c57e23add1cc3572684126641d1f5627b7a7c/apiSpec/new?filename=Libplanet_Net_Swarm_1_BroadcastBlock_Libplanet_Blocks_Block__0__.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.BroadcastBlock(Libplanet.Blocks.Block%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/a82c57e23add1cc3572684126641d1f5627b7a7c/Libplanet/Net/Swarm.cs/#L429">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Swarm_1_BroadcastBlock_" data-uid="Libplanet.Net.Swarm`1.BroadcastBlock*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_BroadcastBlock_Libplanet_Blocks_Block__0__" data-uid="Libplanet.Net.Swarm`1.BroadcastBlock(Libplanet.Blocks.Block{`0})">BroadcastBlock(Block&lt;T&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void BroadcastBlock(Block&lt;T&gt; block)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td><span class="parametername">block</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/a82c57e23add1cc3572684126641d1f5627b7a7c/apiSpec/new?filename=Libplanet_Net_Swarm_1_BroadcastTxs_System_Collections_Generic_IEnumerable_Libplanet_Tx_Transaction__0___.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.BroadcastTxs(System.Collections.Generic.IEnumerable%7BLibplanet.Tx.Transaction%7B%600%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/a82c57e23add1cc3572684126641d1f5627b7a7c/Libplanet/Net/Swarm.cs/#L434">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Swarm_1_BroadcastTxs_" data-uid="Libplanet.Net.Swarm`1.BroadcastTxs*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_BroadcastTxs_System_Collections_Generic_IEnumerable_Libplanet_Tx_Transaction__0___" data-uid="Libplanet.Net.Swarm`1.BroadcastTxs(System.Collections.Generic.IEnumerable{Libplanet.Tx.Transaction{`0}})">BroadcastTxs(IEnumerable&lt;Transaction&lt;T&gt;&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void BroadcastTxs(IEnumerable&lt;Transaction&lt;T&gt;&gt; txs)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction</a>&lt;T&gt;&gt;</td>
+        <td><span class="parametername">txs</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/a82c57e23add1cc3572684126641d1f5627b7a7c/apiSpec/new?filename=Libplanet_Net_Swarm_1_CheckAllPeersAsync_System_Nullable_System_TimeSpan__System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.CheckAllPeersAsync(System.Nullable%7BSystem.TimeSpan%7D%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/a82c57e23add1cc3572684126641d1f5627b7a7c/Libplanet/Net/Swarm.cs/#L896">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Swarm_1_CheckAllPeersAsync_" data-uid="Libplanet.Net.Swarm`1.CheckAllPeersAsync*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_CheckAllPeersAsync_System_Nullable_System_TimeSpan__System_Threading_CancellationToken_" data-uid="Libplanet.Net.Swarm`1.CheckAllPeersAsync(System.Nullable{System.TimeSpan},System.Threading.CancellationToken)">CheckAllPeersAsync(Nullable&lt;TimeSpan&gt;, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Validates all <a class="xref" href="Libplanet.Net.Peer.html">Peer</a>s in the routing table by sending a simple message.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task CheckAllPeersAsync(TimeSpan? timeout = default(TimeSpan? ), CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.timespan">TimeSpan</a>&gt;</td>
+        <td><span class="parametername">timeout</span></td>
+        <td><p>Timeout for this operation. If it is set to <code>null</code>,
+wait infinitely until the requested operation is finished.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>A cancellation token used to propagate notification
+that this operation should be canceled.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td><p>An awaitable task without value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/a82c57e23add1cc3572684126641d1f5627b7a7c/apiSpec/new?filename=Libplanet_Net_Swarm_1_Dispose.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.Dispose%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/a82c57e23add1cc3572684126641d1f5627b7a7c/Libplanet/Net/Swarm.cs/#L197">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Swarm_1_Dispose_" data-uid="Libplanet.Net.Swarm`1.Dispose*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_Dispose" data-uid="Libplanet.Net.Swarm`1.Dispose">Dispose()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Dispose()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/a82c57e23add1cc3572684126641d1f5627b7a7c/apiSpec/new?filename=Libplanet_Net_Swarm_1_Finalize.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.Finalize%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/a82c57e23add1cc3572684126641d1f5627b7a7c/Libplanet/Net/Swarm.cs/#L123">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Swarm_1_Finalize_" data-uid="Libplanet.Net.Swarm`1.Finalize*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_Finalize" data-uid="Libplanet.Net.Swarm`1.Finalize">Finalize()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void Finalize()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/a82c57e23add1cc3572684126641d1f5627b7a7c/apiSpec/new?filename=Libplanet_Net_Swarm_1_FindSpecificPeerAsync_Libplanet_Address_System_Int32_System_Nullable_System_TimeSpan__System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.FindSpecificPeerAsync(Libplanet.Address%2CSystem.Int32%2CSystem.Nullable%7BSystem.TimeSpan%7D%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/a82c57e23add1cc3572684126641d1f5627b7a7c/Libplanet/Net/Swarm.cs/#L874">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Swarm_1_FindSpecificPeerAsync_" data-uid="Libplanet.Net.Swarm`1.FindSpecificPeerAsync*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_FindSpecificPeerAsync_Libplanet_Address_System_Int32_System_Nullable_System_TimeSpan__System_Threading_CancellationToken_" data-uid="Libplanet.Net.Swarm`1.FindSpecificPeerAsync(Libplanet.Address,System.Int32,System.Nullable{System.TimeSpan},System.Threading.CancellationToken)">FindSpecificPeerAsync(Address, Int32, Nullable&lt;TimeSpan&gt;, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Use <span class="xref">Libplanet.Net.Messages.FindNeighbors</span> messages to to find a <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a> with
+<a class="xref" href="Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_Address">Address</a> of <code data-dev-comment-type="paramref" class="paramref">target</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;BoundPeer&gt; FindSpecificPeerAsync(Address target, int depth = 3, TimeSpan? timeout = default(TimeSpan? ), CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
+        <td><span class="parametername">target</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_Address">Address</a> to find.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">depth</span></td>
+        <td><p>Target depth of recursive operation. If -1 is given,
+will recursive until the closest <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a> to the
+<code data-dev-comment-type="paramref" class="paramref">target</code> is found.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.timespan">TimeSpan</a>&gt;</td>
+        <td><span class="parametername">timeout</span></td>
+        <td><p><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.timespan">TimeSpan</a> for waiting reply of <span class="xref">Libplanet.Net.Messages.FindNeighbors</span>.
+If <code>null</code> is given, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.timeoutexception">TimeoutException</a> will not be thrown.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>A cancellation token used to propagate notification
+that this operation should be canceled.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>&gt;</td>
+        <td><p>A <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a> with <a class="xref" href="Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_Address">Address</a> of <code data-dev-comment-type="paramref" class="paramref">target</code>.
+Returns <code>null</code> if the peer with address does not exist.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/a82c57e23add1cc3572684126641d1f5627b7a7c/apiSpec/new?filename=Libplanet_Net_Swarm_1_GetPeerChainStateAsync_System_Nullable_System_TimeSpan__System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.GetPeerChainStateAsync(System.Nullable%7BSystem.TimeSpan%7D%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/a82c57e23add1cc3572684126641d1f5627b7a7c/Libplanet/Net/Swarm.cs/#L452">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Swarm_1_GetPeerChainStateAsync_" data-uid="Libplanet.Net.Swarm`1.GetPeerChainStateAsync*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_GetPeerChainStateAsync_System_Nullable_System_TimeSpan__System_Threading_CancellationToken_" data-uid="Libplanet.Net.Swarm`1.GetPeerChainStateAsync(System.Nullable{System.TimeSpan},System.Threading.CancellationToken)">GetPeerChainStateAsync(Nullable&lt;TimeSpan&gt;, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="Libplanet.Net.PeerChainState.html">PeerChainState</a> of the connected <a class="xref" href="Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_Peers">Peers</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;IEnumerable&lt;PeerChainState&gt;&gt; GetPeerChainStateAsync(TimeSpan? dialTimeout, CancellationToken cancellationToken)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.timespan">TimeSpan</a>&gt;</td>
+        <td><span class="parametername">dialTimeout</span></td>
+        <td><p>When the <a class="xref" href="Libplanet.Net.Swarm-1.html">Swarm&lt;T&gt;</a> tries to dial each peer in <a class="xref" href="Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_Peers">Peers</a>,
+the dial-up is cancelled after this timeout, and it tries another peer.
+If <code>null</code> is given it never gives up dial-ups.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>A cancellation token used to propagate notification that this
+operation should be canceled.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.Net.PeerChainState.html">PeerChainState</a>&gt;&gt;</td>
+        <td><p><a class="xref" href="Libplanet.Net.PeerChainState.html">PeerChainState</a> of the connected <a class="xref" href="Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_Peers">Peers</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/a82c57e23add1cc3572684126641d1f5627b7a7c/apiSpec/new?filename=Libplanet_Net_Swarm_1_PreloadAsync_System_Nullable_System_TimeSpan__System_IProgress_Libplanet_Net_PreloadState__System_Boolean_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.PreloadAsync(System.Nullable%7BSystem.TimeSpan%7D%2CSystem.IProgress%7BLibplanet.Net.PreloadState%7D%2CSystem.Boolean%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/a82c57e23add1cc3572684126641d1f5627b7a7c/Libplanet/Net/Swarm.cs/#L491">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Swarm_1_PreloadAsync_" data-uid="Libplanet.Net.Swarm`1.PreloadAsync*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_PreloadAsync_System_Nullable_System_TimeSpan__System_IProgress_Libplanet_Net_PreloadState__System_Boolean_System_Threading_CancellationToken_" data-uid="Libplanet.Net.Swarm`1.PreloadAsync(System.Nullable{System.TimeSpan},System.IProgress{Libplanet.Net.PreloadState},System.Boolean,System.Threading.CancellationToken)">PreloadAsync(Nullable&lt;TimeSpan&gt;, IProgress&lt;PreloadState&gt;, Boolean, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Preemptively downloads blocks from registered <a class="xref" href="Libplanet.Net.Peer.html">Peer</a>s.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task PreloadAsync(TimeSpan? dialTimeout = default(TimeSpan? ), IProgress&lt;PreloadState&gt; progress = null, bool render = false, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.timespan">TimeSpan</a>&gt;</td>
+        <td><span class="parametername">dialTimeout</span></td>
+        <td><p>When the <a class="xref" href="Libplanet.Net.Swarm-1.html">Swarm&lt;T&gt;</a> tries to dial each peer in <a class="xref" href="Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_Peers">Peers</a>,
+the dial-up is cancelled after this timeout, and it tries another peer.
+If <code>null</code> is given it never gives up dial-ups.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.iprogress-1">IProgress</a>&lt;<a class="xref" href="Libplanet.Net.PreloadState.html">PreloadState</a>&gt;</td>
+        <td><span class="parametername">progress</span></td>
+        <td><p>An instance that receives progress updates for block downloads.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">render</span></td>
+        <td><p>The value indicates whether to render blocks and actions while preloading.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>A cancellation token used to propagate notification that this
+operation should be canceled.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td><p>A task without value.
+You only can <code>await</code> until the method is completed.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Net_Swarm_1_PreloadAsync_System_Nullable_System_TimeSpan__System_IProgress_Libplanet_Net_PreloadState__System_Boolean_System_Threading_CancellationToken__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This does not render downloaded <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>s, but fills states only.</p>
+</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.aggregateexception">AggregateException</a></td>
+        <td><p>Thrown when the given the block downloading is
+failed.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/a82c57e23add1cc3572684126641d1f5627b7a7c/apiSpec/new?filename=Libplanet_Net_Swarm_1_StartAsync_System_Int32_System_Int32_System_Int32_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.StartAsync(System.Int32%2CSystem.Int32%2CSystem.Int32%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/a82c57e23add1cc3572684126641d1f5627b7a7c/Libplanet/Net/Swarm.cs/#L257">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Swarm_1_StartAsync_" data-uid="Libplanet.Net.Swarm`1.StartAsync*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_StartAsync_System_Int32_System_Int32_System_Int32_System_Threading_CancellationToken_" data-uid="Libplanet.Net.Swarm`1.StartAsync(System.Int32,System.Int32,System.Int32,System.Threading.CancellationToken)">StartAsync(Int32, Int32, Int32, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Starts to periodically synchronize the <a class="xref" href="Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_BlockChain">BlockChain</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task StartAsync(int millisecondsDialTimeout = 15000, int millisecondsBroadcastBlockInterval = 15000, int millisecondsBroadcastTxInterval = 5000, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">millisecondsDialTimeout</span></td>
+        <td><p>When the <a class="xref" href="Libplanet.Net.Swarm-1.html">Swarm&lt;T&gt;</a> tries to dial each peer in <a class="xref" href="Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_Peers">Peers</a>,
+the dial-up is cancelled after this timeout, and it tries another peer.
+If <code>null</code> is given it never gives up dial-ups.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">millisecondsBroadcastBlockInterval</span></td>
+        <td><p>Time interval between each broadcast
+of chain tip.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">millisecondsBroadcastTxInterval</span></td>
+        <td><p>Time interval between each broadcast
+of staged transactions.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>A cancellation token used to propagate notification that this
+operation should be canceled.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td><p>An awaitable task without value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Net_Swarm_1_StartAsync_System_Int32_System_Int32_System_Int32_System_Threading_CancellationToken__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>If the <a class="xref" href="Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_BlockChain">BlockChain</a> has no blocks at all or there are long behind
+blocks to caught in the network this method could lead to unexpected behaviors, because
+this tries to render <em>all</em> actions in the behind blocks so that there are
+a lot of calls to methods of <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Renderers">Renderers</a> in a short
+period of time.  This can lead a game startup slow.  If you want to omit rendering of
+these actions in the behind blocks use <a class="xref" href="Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_PreloadAsync_System_Nullable_System_TimeSpan__System_IProgress_Libplanet_Net_PreloadState__System_Boolean_System_Threading_CancellationToken_">PreloadAsync(Nullable&lt;TimeSpan&gt;, IProgress&lt;PreloadState&gt;, Boolean, CancellationToken)</a> method too.</p>
+</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.SwarmException.html">SwarmException</a></td>
+        <td><p>Thrown when this <a class="xref" href="Libplanet.Net.Swarm-1.html">Swarm&lt;T&gt;</a> instance is
+already <a class="xref" href="Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_Running">Running</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/a82c57e23add1cc3572684126641d1f5627b7a7c/apiSpec/new?filename=Libplanet_Net_Swarm_1_StartAsync_System_TimeSpan_System_TimeSpan_System_TimeSpan_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.StartAsync(System.TimeSpan%2CSystem.TimeSpan%2CSystem.TimeSpan%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/a82c57e23add1cc3572684126641d1f5627b7a7c/Libplanet/Net/Swarm.cs/#L298">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Swarm_1_StartAsync_" data-uid="Libplanet.Net.Swarm`1.StartAsync*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_StartAsync_System_TimeSpan_System_TimeSpan_System_TimeSpan_System_Threading_CancellationToken_" data-uid="Libplanet.Net.Swarm`1.StartAsync(System.TimeSpan,System.TimeSpan,System.TimeSpan,System.Threading.CancellationToken)">StartAsync(TimeSpan, TimeSpan, TimeSpan, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Starts to periodically synchronize the <a class="xref" href="Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_BlockChain">BlockChain</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task StartAsync(TimeSpan dialTimeout, TimeSpan broadcastBlockInterval, TimeSpan broadcastTxInterval, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.timespan">TimeSpan</a></td>
+        <td><span class="parametername">dialTimeout</span></td>
+        <td><p>When the <a class="xref" href="Libplanet.Net.Swarm-1.html">Swarm&lt;T&gt;</a> tries to dial each peer in <a class="xref" href="Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_Peers">Peers</a>,
+the dial-up is cancelled after this timeout, and it tries another peer.
+If <code>null</code> is given it never gives up dial-ups.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.timespan">TimeSpan</a></td>
+        <td><span class="parametername">broadcastBlockInterval</span></td>
+        <td><p>Time interval between each broadcast of
+chain tip.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.timespan">TimeSpan</a></td>
+        <td><span class="parametername">broadcastTxInterval</span></td>
+        <td><p>Time interval between each broadcast of staged
+transactions.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>A cancellation token used to propagate notification that this
+operation should be canceled.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td><p>An awaitable task without value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Net_Swarm_1_StartAsync_System_TimeSpan_System_TimeSpan_System_TimeSpan_System_Threading_CancellationToken__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>If the <a class="xref" href="Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_BlockChain">BlockChain</a> has no blocks at all or there are long behind
+blocks to caught in the network this method could lead to unexpected behaviors, because
+this tries to render <em>all</em> actions in the behind blocks so that there are
+a lot of calls to methods of <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Renderers">Renderers</a> in a short
+period of time.  This can lead a game startup slow.  If you want to omit rendering of
+these actions in the behind blocks use <a class="xref" href="Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_PreloadAsync_System_Nullable_System_TimeSpan__System_IProgress_Libplanet_Net_PreloadState__System_Boolean_System_Threading_CancellationToken_">PreloadAsync(Nullable&lt;TimeSpan&gt;, IProgress&lt;PreloadState&gt;, Boolean, CancellationToken)</a> method too.</p>
+</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.SwarmException.html">SwarmException</a></td>
+        <td><p>Thrown when this <a class="xref" href="Libplanet.Net.Swarm-1.html">Swarm&lt;T&gt;</a> instance is
+already <a class="xref" href="Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_Running">Running</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/a82c57e23add1cc3572684126641d1f5627b7a7c/apiSpec/new?filename=Libplanet_Net_Swarm_1_StopAsync_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.StopAsync(System.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/a82c57e23add1cc3572684126641d1f5627b7a7c/Libplanet/Net/Swarm.cs/#L208">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Swarm_1_StopAsync_" data-uid="Libplanet.Net.Swarm`1.StopAsync*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_StopAsync_System_Threading_CancellationToken_" data-uid="Libplanet.Net.Swarm`1.StopAsync(System.Threading.CancellationToken)">StopAsync(CancellationToken)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task StopAsync(CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/a82c57e23add1cc3572684126641d1f5627b7a7c/apiSpec/new?filename=Libplanet_Net_Swarm_1_StopAsync_System_TimeSpan_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.StopAsync(System.TimeSpan%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/a82c57e23add1cc3572684126641d1f5627b7a7c/Libplanet/Net/Swarm.cs/#L215">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Swarm_1_StopAsync_" data-uid="Libplanet.Net.Swarm`1.StopAsync*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_StopAsync_System_TimeSpan_System_Threading_CancellationToken_" data-uid="Libplanet.Net.Swarm`1.StopAsync(System.TimeSpan,System.Threading.CancellationToken)">StopAsync(TimeSpan, CancellationToken)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task StopAsync(TimeSpan waitFor, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.timespan">TimeSpan</a></td>
+        <td><span class="parametername">waitFor</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/a82c57e23add1cc3572684126641d1f5627b7a7c/apiSpec/new?filename=Libplanet_Net_Swarm_1_WaitForRunningAsync.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.WaitForRunningAsync%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/a82c57e23add1cc3572684126641d1f5627b7a7c/Libplanet/Net/Swarm.cs/#L195">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Swarm_1_WaitForRunningAsync_" data-uid="Libplanet.Net.Swarm`1.WaitForRunningAsync*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_WaitForRunningAsync" data-uid="Libplanet.Net.Swarm`1.WaitForRunningAsync">WaitForRunningAsync()</h4>
+  <div class="markdown level1 summary"><p>Waits until this <a class="xref" href="Libplanet.Net.Swarm-1.html">Swarm&lt;T&gt;</a> instance gets started to run.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task WaitForRunningAsync()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a> completed when <a class="xref" href="Libplanet.Net.Transports.NetMQTransport.html#Libplanet_Net_Transports_NetMQTransport_Running">Running</a>
+property becomes <code>true</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Net_Swarm_1_WaitForRunningAsync_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Net.Transports.NetMQTransport.html#Libplanet_Net_Transports_NetMQTransport_WaitForRunningAsync">WaitForRunningAsync()</a></div>
+  </div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">System.IDisposable</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/new/a82c57e23add1cc3572684126641d1f5627b7a7c/apiSpec/new?filename=Libplanet_Net_Swarm_1.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/a82c57e23add1cc3572684126641d1f5627b7a7c/Libplanet/Net/Swarm.MessageHandlers.cs/#L14" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2018–2021 <a href="https://planetariumhq.com/">Planetarium</a>
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
