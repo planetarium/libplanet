@@ -102,7 +102,8 @@ namespace Libplanet.Blockchain
 
                         count += UnrenderActions(
                             evaluations: evaluations,
-                            block: block);
+                            block: block,
+                            stateCompleters: completers);
                     }
 
                     _logger.Debug(
@@ -163,7 +164,8 @@ namespace Libplanet.Blockchain
 
                         count += RenderActions(
                             evaluations: evaluations,
-                            block: block);
+                            block: block,
+                            stateCompleters: completers);
                     }
 
                     _logger.Debug(
@@ -232,7 +234,8 @@ namespace Libplanet.Blockchain
 
                     count += UnrenderActions(
                         evaluations: evaluations,
-                        block: block);
+                        block: block,
+                        stateCompleters: completers);
                 }
 
                 _logger.Debug(
@@ -252,7 +255,8 @@ namespace Libplanet.Blockchain
 
                     count += RenderActions(
                         evaluations: evaluations,
-                        block: block);
+                        block: block,
+                        stateCompleters: completers);
                 }
 
                 _logger.Debug(
@@ -289,17 +293,13 @@ namespace Libplanet.Blockchain
         internal long RenderActions(
             IReadOnlyList<ActionEvaluation> evaluations,
             Block<T> block,
-            StateCompleterSet<T>? stateCompleters = null)
+            StateCompleterSet<T> stateCompleters)
         {
             _logger.Debug("Render actions in block {blockIndex}: {block}", block?.Index, block);
 
-            // Since rendering process requires every step's states, if required block states
-            // are incomplete they are complemented anyway:
-            stateCompleters ??= StateCompleterSet<T>.Recalculate;
-
             if (evaluations is null)
             {
-                evaluations = ActionEvaluator.Evaluate(block, stateCompleters.Value);
+                evaluations = ActionEvaluator.Evaluate(block, stateCompleters);
             }
 
             long count = 0;
@@ -332,18 +332,14 @@ namespace Libplanet.Blockchain
         internal long UnrenderActions(
             IReadOnlyList<ActionEvaluation> evaluations,
             Block<T> block,
-            StateCompleterSet<T>? stateCompleters = null)
+            StateCompleterSet<T> stateCompleters)
         {
             _logger.Debug("Unender actions in block {blockIndex}: {block}", block?.Index, block);
-
-            // Since rendering process requires every step's states, if required block states
-            // are incomplete they are complemented anyway:
-            stateCompleters ??= StateCompleterSet<T>.Recalculate;
 
             if (evaluations is null)
             {
                 evaluations =
-                    ActionEvaluator.Evaluate(block, stateCompleters.Value)
+                    ActionEvaluator.Evaluate(block, stateCompleters)
                         .Reverse().ToImmutableList();
             }
 

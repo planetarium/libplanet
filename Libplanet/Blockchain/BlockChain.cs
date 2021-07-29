@@ -1417,7 +1417,10 @@ namespace Libplanet.Blockchain
                     {
                         if (renderActions)
                         {
-                            RenderActions(actionEvaluations, block, stateCompleters);
+                            RenderActions(
+                                evaluations: actionEvaluations,
+                                block: block,
+                                stateCompleters: (StateCompleterSet<T>)stateCompleters);
                         }
 
                         foreach (IActionRenderer<T> renderer in ActionRenderers)
