@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using Xunit;
@@ -40,6 +41,44 @@ namespace Libplanet.Tests
             ImmutableArray<byte> immutableDigest =
                 md5.Digest(Encoding.ASCII.GetBytes("hello").ToImmutableArray());
             AssertBytesEqual(expected.ToImmutableArray(), immutableDigest);
+        }
+
+        [Fact]
+        public void DigestMultipleTimes()
+        {
+            HashAlgorithmType sha256 = HashAlgorithmType.Of<SHA256>();
+            byte[] expected =
+            {
+                0x2c, 0xf2, 0x4d, 0xba, 0x5f, 0xb0, 0xa3, 0x0e, 0x26, 0xe8, 0x3b,
+                0x2a, 0xc5, 0xb9, 0xe2, 0x9e, 0x1b, 0x16, 0x1e, 0x5c, 0x1f, 0xa7,
+                0x42, 0x5e, 0x73, 0x04, 0x33, 0x62, 0x93, 0x8b, 0x98, 0x24,
+            };
+            byte[] input = Encoding.ASCII.GetBytes("hello");
+            byte[] digest;
+            for (int i = 0; i < 50; i++)
+            {
+                digest = sha256.Digest(input);
+                AssertBytesEqual(expected, digest);
+            }
+        }
+
+        [Fact]
+        public void DigestInParallel()
+        {
+            HashAlgorithmType sha256 = HashAlgorithmType.Of<SHA256>();
+            ImmutableArray<byte> expected = new byte[]
+            {
+                0x2c, 0xf2, 0x4d, 0xba, 0x5f, 0xb0, 0xa3, 0x0e, 0x26, 0xe8, 0x3b,
+                0x2a, 0xc5, 0xb9, 0xe2, 0x9e, 0x1b, 0x16, 0x1e, 0x5c, 0x1f, 0xa7,
+                0x42, 0x5e, 0x73, 0x04, 0x33, 0x62, 0x93, 0x8b, 0x98, 0x24,
+            }.ToImmutableArray();
+            ImmutableArray<byte> input = Encoding.ASCII.GetBytes("hello").ToImmutableArray();
+            ImmutableArray<byte>[] digests =
+                Enumerable.Repeat(input, 100).AsParallel().Select(b => sha256.Digest(b)).ToArray();
+            foreach (ImmutableArray<byte> digest in digests)
+            {
+                AssertBytesEqual(expected, digest);
+            }
         }
 
         [Fact]
