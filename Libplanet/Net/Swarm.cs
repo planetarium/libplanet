@@ -837,7 +837,8 @@ namespace Libplanet.Net
                         wId,
                         workspace.Tip
                     );
-                    BlockChain.Swap(workspace, render: render);
+                    System.Action renderSwap = BlockChain.Swap(workspace, render: render);
+                    renderSwap();
                 }
 
                 foreach (Guid chainId in chainIds)
