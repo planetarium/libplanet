@@ -1,6 +1,26 @@
 Libplanet changelog
 ===================
 
+Version 0.14.0
+--------------
+
+To be released.
+
+### Backward-incompatible API changes
+
+### Backward-incompatible network protocol changes
+
+### Backward-incompatible storage format changes
+
+### Added APIs
+
+### Behavioral changes
+
+### Bug fixes
+
+### CLI tools
+
+
 Version 0.13.0
 --------------
 
@@ -11,10 +31,6 @@ Released on July 28, 2021.
  -  Added `bool render = false` option to `Swarm<T>.PreloadAsync()`.
     Blocks and actions in preloaded blocks will be rendered if the switch
     is set to `true`.  [[#1391]]
-
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
 
 ### Added APIs
 

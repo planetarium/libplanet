@@ -140,13 +140,15 @@ jobs:
         tag="${GITHUB_REF#refs/*/}"
         github_user="${GITHUB_REPOSITORY%/*}"
         github_repo="${GITHUB_REPOSITORY#*/}"
-        for bundle in /tmp/bundles/*; do
-          .github/bin/github-release.sh upload \
-            --user "$github_user" \
-            --repo "$github_repo" \
-            --tag "$tag" \
-            --name "$(basename "$bundle")" \
-            --file "$bundle"
-        done
+        if [[ -d /tmp/bundles && "$(ls /tmp/bundles | wc -l)" -gt 0 ]]; then
+          for bundle in /tmp/bundles/*; do
+            .github/bin/github-release.sh upload \
+              --user "$github_user" \
+              --repo "$github_repo" \
+              --tag "$tag" \
+              --name "$(basename "$bundle")" \
+              --file "$bundle"
+          done
+        fi
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

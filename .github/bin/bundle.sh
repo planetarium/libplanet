@@ -41,6 +41,17 @@ pushd "$workdir"
   # Prepare a local NuGet repository
   mkdir repo/
   nuget add "$nupkg" -Source ./repo
+  nuget sources add \
+    -NonInteractive \
+    -Name "$workdir/repo" \
+    -Source "$workdir/repo"
+
+  if ! nuget sources list | grep -i nuget.org > /dev/null; then
+    nuget sources add \
+      -NonInteractive \
+      -Name nuget.org \
+      -Source https://api.nuget.org/v3/index.json
+  fi
 
   # Create a skeleton app to bundle assemblies
   app="BundleApp$(head -c 1024 /dev/urandom | md5sum | head -c 10)"
