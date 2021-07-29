@@ -79,25 +79,6 @@ namespace Libplanet.Blockchain
                 // If there is no rewind, it is not considered as a reorg.
                 bool reorg = rewindPath.Count > 0;
 
-                if (render && reorg)
-                {
-                    foreach (IRenderer<T> renderer in Renderers)
-                    {
-                        renderer.RenderReorg(
-                            oldTip: oldTip,
-                            newTip: newTip,
-                            branchpoint: branchpoint);
-                    }
-                }
-
-                RenderRewind(
-                    render: render,
-                    oldTip: oldTip,
-                    newTip: newTip,
-                    branchpoint: branchpoint,
-                    rewindPath: rewindPath,
-                    stateCompleters: completers);
-
                 _rwlock.EnterWriteLock();
                 try
                 {
@@ -124,19 +105,40 @@ namespace Libplanet.Blockchain
                     _blocks = new BlockSet<T>(Policy.GetHashAlgorithm, Store);
                     TipChanged?.Invoke(this, (oldTip, newTip));
 
-                    if (render)
-                    {
-                        foreach (IRenderer<T> renderer in Renderers)
-                        {
-                            renderer.RenderBlock(oldTip: oldTip, newTip: newTip);
-                        }
-                    }
-
                     Store.DeleteChainId(obsoleteId);
                 }
                 finally
                 {
                     _rwlock.ExitWriteLock();
+                }
+
+                if (render && reorg)
+                {
+                    foreach (IRenderer<T> renderer in Renderers)
+                    {
+                        renderer.RenderReorg(
+                            oldTip: oldTip,
+                            newTip: newTip,
+                            branchpoint: branchpoint);
+                    }
+                }
+
+                RenderRewind(
+                    render: render,
+                    oldTip: oldTip,
+                    newTip: newTip,
+                    branchpoint: branchpoint,
+                    rewindPath: rewindPath,
+                    stateCompleters: completers);
+
+                if (render)
+                {
+                    foreach (IRenderer<T> renderer in Renderers)
+                    {
+                        renderer.RenderBlock(
+                            oldTip: oldTip,
+                            newTip: newTip);
+                    }
                 }
 
                 RenderFastForward(
@@ -151,7 +153,10 @@ namespace Libplanet.Blockchain
                 {
                     foreach (IRenderer<T> renderer in Renderers)
                     {
-                        renderer.RenderReorgEnd(oldTip, newTip, branchpoint);
+                        renderer.RenderReorgEnd(
+                            oldTip: oldTip,
+                            newTip: newTip,
+                            branchpoint: branchpoint);
                     }
                 }
             }
@@ -191,6 +196,17 @@ namespace Libplanet.Blockchain
                 branchpoint: branchpoint,
                 rewindPath: rewindPath,
                 stateCompleters: stateCompleters);
+
+            if (render)
+            {
+                foreach (IRenderer<T> renderer in Renderers)
+                {
+                    renderer.RenderBlock(
+                        oldTip: oldTip,
+                        newTip: newTip);
+                }
+            }
+
             RenderFastForward(
                 render: render,
                 oldTip: oldTip,
