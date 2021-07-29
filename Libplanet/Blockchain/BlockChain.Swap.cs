@@ -112,53 +112,14 @@ namespace Libplanet.Blockchain
                     _rwlock.ExitWriteLock();
                 }
 
-                if (render && reorg)
-                {
-                    foreach (IRenderer<T> renderer in Renderers)
-                    {
-                        renderer.RenderReorg(
-                            oldTip: oldTip,
-                            newTip: newTip,
-                            branchpoint: branchpoint);
-                    }
-                }
-
-                RenderRewind(
+                RenderSwap(
                     render: render,
                     oldTip: oldTip,
                     newTip: newTip,
                     branchpoint: branchpoint,
                     rewindPath: rewindPath,
-                    stateCompleters: completers);
-
-                if (render)
-                {
-                    foreach (IRenderer<T> renderer in Renderers)
-                    {
-                        renderer.RenderBlock(
-                            oldTip: oldTip,
-                            newTip: newTip);
-                    }
-                }
-
-                RenderFastForward(
-                    render: render,
-                    oldTip: oldTip,
-                    newTip: newTip,
-                    branchpoint: branchpoint,
                     fastForwardPath: fastForwardPath,
                     stateCompleters: completers);
-
-                if (render && reorg)
-                {
-                    foreach (IRenderer<T> renderer in Renderers)
-                    {
-                        renderer.RenderReorgEnd(
-                            oldTip: oldTip,
-                            newTip: newTip,
-                            branchpoint: branchpoint);
-                    }
-                }
             }
             finally
             {
