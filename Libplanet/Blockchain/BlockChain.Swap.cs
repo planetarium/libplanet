@@ -50,9 +50,9 @@ namespace Libplanet.Blockchain
             }
 
             // Finds the branch point.
-            Block<T> topCommon = FindTopCommon(this, other);
+            Block<T> branchpoint = FindTopCommon(this, other);
 
-            if (topCommon is null)
+            if (branchpoint is null)
             {
                 const string msg =
                     "A chain cannot be reorged into a heterogeneous chain with a " +
@@ -62,8 +62,8 @@ namespace Libplanet.Blockchain
 
             _logger.Debug(
                 "The branchpoint is #{BranchpointIndex} {BranchpointHash}.",
-                topCommon.Index,
-                topCommon
+                branchpoint.Index,
+                branchpoint
             );
 
             _rwlock.EnterUpgradeableReadLock();
@@ -72,44 +72,31 @@ namespace Libplanet.Blockchain
                 Block<T> oldTip = Tip ?? Genesis, newTip = other.Tip ?? other.Genesis;
 
                 ImmutableList<Block<T>> rewindPath =
-                    GetRewindPath(this, topCommon.Hash);
+                    GetRewindPath(this, branchpoint.Hash);
                 ImmutableList<Block<T>> fastForwardPath =
-                    GetFastForwardPath(other, topCommon.Hash);
+                    GetFastForwardPath(other, branchpoint.Hash);
 
-                // Fast forwarding is not considered a reorg.
-                bool fastForward = rewindPath.Count == 0;
+                // If there is no rewind, it is not considered as a reorg.
+                bool reorg = rewindPath.Count > 0;
 
-                if (render && !fastForward)
+                if (render && reorg)
                 {
                     foreach (IRenderer<T> renderer in Renderers)
                     {
-                        renderer.RenderReorg(Tip, other.Tip, branchpoint: topCommon);
+                        renderer.RenderReorg(
+                            oldTip: oldTip,
+                            newTip: newTip,
+                            branchpoint: branchpoint);
                     }
                 }
 
-                if (render && ActionRenderers.Any())
-                {
-                    // Unrender stale actions.
-                    _logger.Debug("Unrendering abandoned actions...");
-
-                    long count = 0;
-
-                    foreach (Block<T> block in rewindPath)
-                    {
-                        ImmutableList<ActionEvaluation> evaluations =
-                            ActionEvaluator.Evaluate(block, completers)
-                                .ToImmutableList().Reverse();
-
-                        count += UnrenderActions(
-                            evaluations: evaluations,
-                            block: block,
-                            stateCompleters: completers);
-                    }
-
-                    _logger.Debug(
-                        $"{nameof(Swap)}() completed unrendering {{Actions}} actions.",
-                        count);
-                }
+                RenderRewind(
+                    render: render,
+                    oldTip: oldTip,
+                    newTip: newTip,
+                    branchpoint: branchpoint,
+                    rewindPath: rewindPath,
+                    stateCompleters: completers);
 
                 _rwlock.EnterWriteLock();
                 try
@@ -122,9 +109,9 @@ namespace Libplanet.Blockchain
 
                     // It assumes reorg is small size. If it was big, this may be heavy task.
                     ImmutableHashSet<Transaction<T>> unstagedTxs =
-                        GetTxsWithRange(this, topCommon, Tip).ToImmutableHashSet();
+                        GetTxsWithRange(this, branchpoint, Tip).ToImmutableHashSet();
                     ImmutableHashSet<Transaction<T>> stageTxs =
-                        GetTxsWithRange(other, topCommon, other.Tip).ToImmutableHashSet();
+                        GetTxsWithRange(other, branchpoint, other.Tip).ToImmutableHashSet();
                     ImmutableHashSet<Transaction<T>> restageTxs = unstagedTxs.Except(stageTxs);
                     foreach (Transaction<T> restageTx in restageTxs)
                     {
@@ -152,37 +139,19 @@ namespace Libplanet.Blockchain
                     _rwlock.ExitWriteLock();
                 }
 
-                if (render && ActionRenderers.Any())
-                {
-                    _logger.Debug("Rendering actions in new chain.");
+                RenderFastForward(
+                    render: render,
+                    oldTip: oldTip,
+                    newTip: newTip,
+                    branchpoint: branchpoint,
+                    fastForwardPath: fastForwardPath,
+                    stateCompleters: completers);
 
-                    long count = 0;
-                    foreach (Block<T> block in fastForwardPath)
-                    {
-                        ImmutableList<ActionEvaluation> evaluations =
-                            ActionEvaluator.Evaluate(block, completers).ToImmutableList();
-
-                        count += RenderActions(
-                            evaluations: evaluations,
-                            block: block,
-                            stateCompleters: completers);
-                    }
-
-                    _logger.Debug(
-                        $"{nameof(Swap)}() completed rendering {{Count}} actions.",
-                        count);
-
-                    foreach (IActionRenderer<T> renderer in ActionRenderers)
-                    {
-                        renderer.RenderBlockEnd(oldTip, newTip);
-                    }
-                }
-
-                if (render && !fastForward)
+                if (render && reorg)
                 {
                     foreach (IRenderer<T> renderer in Renderers)
                     {
-                        renderer.RenderReorgEnd(oldTip, newTip, topCommon);
+                        renderer.RenderReorgEnd(oldTip, newTip, branchpoint);
                     }
                 }
             }
@@ -199,12 +168,8 @@ namespace Libplanet.Blockchain
             Block<T> branchpoint,
             IReadOnlyList<Block<T>> rewindPath,
             IReadOnlyList<Block<T>> fastForwardPath,
-            StateCompleterSet<T>? stateCompleters = null)
+            StateCompleterSet<T> stateCompleters)
         {
-            // As render/unrender processing requires every step's states from the branchpoint
-            // to the new/stale tip, incomplete states need to be complemented anyway...
-            StateCompleterSet<T> completers = stateCompleters ?? StateCompleterSet<T>.Recalculate;
-
             // If there is no rewind, it is not considered as a reorg.
             bool reorg = rewindPath.Count > 0;
 
@@ -219,6 +184,41 @@ namespace Libplanet.Blockchain
                 }
             }
 
+            RenderRewind(
+                render: render,
+                oldTip: oldTip,
+                newTip: newTip,
+                branchpoint: branchpoint,
+                rewindPath: rewindPath,
+                stateCompleters: stateCompleters);
+            RenderFastForward(
+                render: render,
+                oldTip: oldTip,
+                newTip: newTip,
+                branchpoint: branchpoint,
+                fastForwardPath: fastForwardPath,
+                stateCompleters: stateCompleters);
+
+            if (render && reorg)
+            {
+                foreach (IRenderer<T> renderer in Renderers)
+                {
+                    renderer.RenderReorgEnd(
+                        oldTip: oldTip,
+                        newTip: newTip,
+                        branchpoint: branchpoint);
+                }
+            }
+        }
+
+        internal void RenderRewind(
+            bool render,
+            Block<T> oldTip,
+            Block<T> newTip,
+            Block<T> branchpoint,
+            IReadOnlyList<Block<T>> rewindPath,
+            StateCompleterSet<T> stateCompleters)
+        {
             if (render && ActionRenderers.Any())
             {
                 // Unrender stale actions.
@@ -229,20 +229,29 @@ namespace Libplanet.Blockchain
                 foreach (Block<T> block in rewindPath)
                 {
                     ImmutableList<ActionEvaluation> evaluations =
-                        ActionEvaluator.Evaluate(block, completers)
+                        ActionEvaluator.Evaluate(block, stateCompleters)
                             .ToImmutableList().Reverse();
 
                     count += UnrenderActions(
                         evaluations: evaluations,
                         block: block,
-                        stateCompleters: completers);
+                        stateCompleters: stateCompleters);
                 }
 
                 _logger.Debug(
                     $"{nameof(Swap)}() completed unrendering {{Actions}} actions.",
                     count);
             }
+        }
 
+        internal void RenderFastForward(
+            bool render,
+            Block<T> oldTip,
+            Block<T> newTip,
+            Block<T> branchpoint,
+            IReadOnlyList<Block<T>> fastForwardPath,
+            StateCompleterSet<T> stateCompleters)
+        {
             if (render && ActionRenderers.Any())
             {
                 _logger.Debug("Rendering actions in new chain.");
@@ -251,12 +260,12 @@ namespace Libplanet.Blockchain
                 foreach (Block<T> block in fastForwardPath)
                 {
                     ImmutableList<ActionEvaluation> evaluations =
-                        ActionEvaluator.Evaluate(block, completers).ToImmutableList();
+                        ActionEvaluator.Evaluate(block, stateCompleters).ToImmutableList();
 
                     count += RenderActions(
                         evaluations: evaluations,
                         block: block,
-                        stateCompleters: completers);
+                        stateCompleters: stateCompleters);
                 }
 
                 _logger.Debug(
@@ -266,17 +275,6 @@ namespace Libplanet.Blockchain
                 foreach (IActionRenderer<T> renderer in ActionRenderers)
                 {
                     renderer.RenderBlockEnd(oldTip, newTip);
-                }
-            }
-
-            if (render && reorg)
-            {
-                foreach (IRenderer<T> renderer in Renderers)
-                {
-                    renderer.RenderReorgEnd(
-                        oldTip: oldTip,
-                        newTip: newTip,
-                        branchpoint: branchpoint);
                 }
             }
         }
