@@ -62,7 +62,7 @@ namespace Libplanet.Net
                         "{SessionId}: Got a new " + nameof(BlockDemand) + " from {Peer}; started " +
                         "to fetch the block #{BlockIndex} {BlockHash}...";
                     _logger.Debug(startLogMsg, sessionId, peer, blockDemand.Header.Index, hash);
-                    await SyncPreviousBlocksAsync(
+                    System.Action renderSwap = await SyncPreviousBlocksAsync(
                         blockChain: BlockChain,
                         peer: peer,
                         stop: hash,
@@ -78,10 +78,12 @@ namespace Libplanet.Net
                         peer
                     );
 
+                    BroadcastBlock(peer.Address, BlockChain.Tip);
+                    renderSwap();
+
                     // FIXME: Clean up events
                     BlockReceived.Set();
                     BlockAppended.Set();
-                    BroadcastBlock(peer.Address, BlockChain.Tip);
 
                     ProcessFillBlocksFinished.Set();
                 }
@@ -125,7 +127,7 @@ namespace Libplanet.Net
             }
         }
 
-        private async Task SyncPreviousBlocksAsync(
+        private async Task<System.Action> SyncPreviousBlocksAsync(
             BlockChain<T> blockChain,
             BoundPeer peer,
             BlockHash? stop,
@@ -138,6 +140,7 @@ namespace Libplanet.Net
         {
             long previousTipIndex = blockChain.Tip?.Index ?? -1;
             BlockChain<T> synced = null;
+            System.Action renderSwap = () => { };
 
             try
             {
@@ -184,11 +187,10 @@ namespace Libplanet.Net
                         blockChain.Id,
                         synced.Id
                     );
-                    System.Action renderSwap = blockChain.Swap(
+                    renderSwap = blockChain.Swap(
                         synced,
                         render: true,
                         stateCompleters: null);
-                    renderSwap();
                     _logger.Debug(
                         "{SessionId}: The chain {ChainIdB} replaced {ChainIdA}",
                         logSessionId,
@@ -197,6 +199,8 @@ namespace Libplanet.Net
                     );
                 }
             }
+
+            return renderSwap;
         }
 
 #pragma warning disable MEN003
