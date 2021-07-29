@@ -6,6 +6,11 @@ Version 0.13.1
 
 To be released.
 
+ -  Fixed `HashAlgorithmType.Digest()` method's bug that it returns an incorrect
+    digest bytes when it is called by multiple threads at a time.  [[#1411]]
+
+[#1411]: https://github.com/planetarium/libplanet/pull/1411
+
 
 Version 0.13.0
 --------------
@@ -17,10 +22,6 @@ Released on July 28, 2021.
  -  Added `bool render = false` option to `Swarm<T>.PreloadAsync()`.
     Blocks and actions in preloaded blocks will be rendered if the switch
     is set to `true`.  [[#1391]]
-
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
 
 ### Added APIs
 
