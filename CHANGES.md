@@ -21,6 +21,17 @@ To be released.
 ### CLI tools
 
 
+Version 0.13.1
+--------------
+
+Released on July 29, 2021.
+
+ -  Fixed `HashAlgorithmType.Digest()` method's bug that it returns an incorrect
+    digest bytes when it is called by multiple threads at a time.  [[#1411]]
+
+[#1411]: https://github.com/planetarium/libplanet/pull/1411
+
+
 Version 0.13.0
 --------------
 
