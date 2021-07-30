@@ -1580,24 +1580,25 @@ namespace Libplanet.Net
 
                 var txs = new HashSet<Transaction<T>>();
                 var tasks = new List<Task<List<Transaction<T>>>>();
-                foreach (var kv in demands)
-                {
-                    IAsyncEnumerable<Transaction<T>> fetched =
-                        GetTxsAsync(kv.Key, kv.Value, cancellationToken);
-                    ValueTask<List<Transaction<T>>> vt = fetched.ToListAsync(cancellationToken);
-
-                    if (vt.IsCompletedSuccessfully)
-                    {
-                        txs.UnionWith(vt.Result);
-                    }
-                    else
-                    {
-                        tasks.Add(vt.AsTask());
-                    }
-                }
 
                 try
                 {
+                    foreach (var kv in demands)
+                    {
+                        IAsyncEnumerable<Transaction<T>> fetched =
+                            GetTxsAsync(kv.Key, kv.Value, cancellationToken);
+                        ValueTask<List<Transaction<T>>> vt = fetched.ToListAsync(cancellationToken);
+
+                        if (vt.IsCompletedSuccessfully)
+                        {
+                            txs.UnionWith(vt.Result);
+                        }
+                        else
+                        {
+                            tasks.Add(vt.AsTask());
+                        }
+                    }
+
                     await tasks.WhenAll();
                 }
                 catch (Exception)
