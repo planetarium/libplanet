@@ -6,6 +6,11 @@ Version 0.13.2
 
 To be released.
 
+ -  Fixed `Swarm<T>.ProcessFillTxs()` method's bug that it throws exception
+    when any of its subtask throws exception.  [[#1416]]
+
+[#1416]: https://github.com/planetarium/libplanet/pull/1416
+
 
 Version 0.13.1
 --------------
