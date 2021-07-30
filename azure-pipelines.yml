@@ -65,51 +65,6 @@ jobs:
       artifactName: coverage
   timeoutInMinutes: 30
 
-- job: Linux_Mono
-  pool:
-    vmImage: ubuntu-20.04
-  steps:
-  - task: UseDotNet@2
-    displayName: Stick with .NET Core SDK version compatible to Mono toolchain
-    inputs:
-      packageType: sdk
-      version: 3.1.101
-      installationPath: $(Agent.ToolsDirectory)/dotnet
-  - template: .azure-pipelines/mono.yml
-    parameters:
-      configuration: $(configuration)
-      turnServerUrls: $(turnServerUrls)
-      testArguments: -parallel none -stoponfail -verbose
-  timeoutInMinutes: 30
-
-- job: macOS_Mono
-  pool:
-    vmImage: macOS-10.15
-  steps:
-  - template: .azure-pipelines/mono.yml
-    parameters:
-      configuration: $(configuration)
-      turnServerUrls: $(turnServerUrls)
-      testArguments: -parallel none -stoponfail -verbose
-  timeoutInMinutes: 30
-
-- job: Windows_Mono
-  pool:
-    vmImage: windows-2019
-  steps:
-  - task: CmdLine@2
-    displayName: choco install mono
-    inputs:
-      script: choco install mono --yes
-  - template: .azure-pipelines/windows-net471.yml
-    parameters:
-      configuration: $(configuration)
-      turnServerUrls: $(turnServerUrls)
-      testPrefix: '"$PROGRAMFILES/Mono/bin/mono.exe"'
-      testArguments: -appdomains denied -parallel none -stoponfail -verbose
-      copySQLitePCLRaw: true
-  timeoutInMinutes: 30
-
 - job: macOS_Unity
   pool:
     vmImage: macOS-10.15
@@ -193,13 +148,3 @@ jobs:
       testArguments: -parallel none -stoponfail -verbose
       locale: fr_FR.UTF8
   timeoutInMinutes: 30
-
-- job: Windows_NETFramework
-  pool:
-    vmImage: windows-2019
-  steps:
-  - template: .azure-pipelines/windows-net471.yml
-    parameters:
-      configuration: $(configuration)
-      turnServerUrls: $(turnServerUrls)
-      testArguments: -parallel none -stoponfail -verbose
