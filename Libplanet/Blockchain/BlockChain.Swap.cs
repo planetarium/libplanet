@@ -14,7 +14,6 @@ namespace Libplanet.Blockchain
     {
         // FIXME it's very dangerous because replacing Id means
         // ALL blocks (referenced by MineBlock(), etc.) will be changed.
-        // we need to add a synchronization mechanism to handle this correctly.
         internal System.Action Swap(
             BlockChain<T> other,
             bool render,
@@ -51,26 +50,26 @@ namespace Libplanet.Blockchain
 
             System.Action renderSwap = () => { };
 
-            // Finds the branch point.
-            Block<T> branchpoint = FindTopCommon(this, other);
-
-            if (branchpoint is null)
-            {
-                const string msg =
-                    "A chain cannot be reorged into a heterogeneous chain with a " +
-                    "different genesis.";
-                throw new InvalidGenesisBlockException(Genesis.Hash, other.Genesis.Hash, msg);
-            }
-
-            _logger.Debug(
-                "The branchpoint is #{BranchpointIndex} {BranchpointHash}.",
-                branchpoint.Index,
-                branchpoint
-            );
-
             _rwlock.EnterUpgradeableReadLock();
             try
             {
+                // Finds the branch point.
+                Block<T> branchpoint = FindTopCommon(this, other);
+
+                if (branchpoint is null)
+                {
+                    const string msg =
+                        "A chain cannot be reorged into a heterogeneous chain with a " +
+                        "different genesis.";
+                    throw new InvalidGenesisBlockException(Genesis.Hash, other.Genesis.Hash, msg);
+                }
+
+                _logger.Debug(
+                    "The branchpoint is #{BranchpointIndex} {BranchpointHash}.",
+                    branchpoint.Index,
+                    branchpoint
+                );
+
                 Block<T> oldTip = Tip ?? Genesis, newTip = other.Tip ?? other.Genesis;
 
                 ImmutableList<Block<T>> rewindPath =
