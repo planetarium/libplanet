@@ -53,23 +53,9 @@ namespace Libplanet.Blocks
         /// Transactions become sorted in an unpredicted-before-mined order and then go to
         /// the <see cref="Transactions"/> property.
         /// </param>
-        /// <param name="hashAlgorithm">The hash algorithm for proof-of-work, if and only if
-        /// <paramref name="preEvaluationHash"/> is omitted.</param>
-        /// <param name="preEvaluationHash">The hash derived from the block <em>except of</em>
-        /// <paramref name="stateRootHash"/> (i.e., without action evaluation).
-        /// Automatically determined if <c>null</c> is passed, but <paramref name="hashAlgorithm"/>
-        /// is needed in that case.</param>
-        /// <param name="stateRootHash">The <see cref="ITrie.Hash"/> of the states on the block.
-        /// </param>
+        /// <param name="hashAlgorithm">The hash algorithm for the proof-of-work.</param>
         /// <param name="protocolVersion">The protocol version. <see cref="CurrentProtocolVersion"/>
         /// by default.</param>
-        /// <exception cref="ArgumentException">Thrown when either both
-        /// <paramref name="hashAlgorithm"/> and <paramref name="preEvaluationHash"/> are present
-        /// or both are missing.
-        /// <exception cref="ArgumentException">Thrown when <paramref name="stateRootHash"/>
-        /// is null while <paramref name="preEvaluationHash"/> is not null.
-        /// </exception>
-        /// </exception>
         /// <remarks>
         /// Due to historic reasons, there is non-trivial implicit logic embedded inside this
         /// constructor.  It is strongly recommended to use <see cref="Mine"/> instead.
@@ -84,33 +70,97 @@ namespace Libplanet.Blocks
             BlockHash? previousHash,
             DateTimeOffset timestamp,
             IReadOnlyList<Transaction<T>> transactions,
-            HashAlgorithmType hashAlgorithm = null,
-            ImmutableArray<byte>? preEvaluationHash = null,
-            HashDigest<SHA256>? stateRootHash = null,
+            HashAlgorithmType hashAlgorithm,
             int protocolVersion = CurrentProtocolVersion)
         {
-            // FIXME: This constructor needs to be separated into several overloads.
-            // Let (bool h, bool p, bool s) represent non-null arguments provided for
-            // hashAlgorithm, preEvaluationHash, and stateRootHash respectively.
-            // Despite its summary, currently accepted only use cases are:
-            //  - (true, false, false): Called when preEvaluationHash needs to be calculated.
-            //  - (false, true, false): Allowed purely for testing.  Normal code path should not
-            //    lead to this combination.
-            //  - (false, true, true): Called when stateRootHash needs to be attached.
-            // All other combinations are rejected.
-            if (!(hashAlgorithm is { } ^ preEvaluationHash is { }))
-            {
-                throw new ArgumentException(
-                    $"Exactly one of {nameof(hashAlgorithm)} " +
-                    $"and {nameof(preEvaluationHash)} should be provided as non-null.");
-            }
-            else if (!(preEvaluationHash is { }) && stateRootHash is { })
-            {
-                throw new ArgumentException(
-                    $"Parameter {nameof(stateRootHash)} cannot be non-null while" +
-                    $"{nameof(preEvaluationHash)} is null.");
-            }
+            ProtocolVersion = protocolVersion;
+            Index = index;
+            Difficulty = difficulty;
+            TotalDifficulty = totalDifficulty;
+            Nonce = nonce;
+            Miner = miner;
+            PreviousHash = previousHash;
+            Timestamp = timestamp;
+            Transactions = transactions.OrderBy(tx => tx.Id).ToArray();
+            TxHash = CalculateTxHashes(Transactions);
 
+            // FIXME: This only works due to sanity constraint on usage.
+#pragma warning disable SA1118
+            _header = new BlockHeader(
+                protocolVersion: ProtocolVersion,
+                index: Index,
+                timestamp: Timestamp.ToString(
+                    BlockHeader.TimestampFormat,
+                    CultureInfo.InvariantCulture),
+                nonce: Nonce.ToByteArray().ToImmutableArray(),
+                miner: Miner.ToByteArray().ToImmutableArray(),
+                difficulty: Difficulty,
+                totalDifficulty: TotalDifficulty,
+                previousHash: PreviousHash?.ToByteArray().ToImmutableArray()
+                    ?? ImmutableArray<byte>.Empty,
+                txHash: TxHash?.ToByteArray().ToImmutableArray()
+                    ?? ImmutableArray<byte>.Empty,
+                hashAlgorithm: hashAlgorithm);
+            _preEvaluationHash = Header.PreEvaluationHash;
+            StateRootHash = null;
+            _hash = new BlockHash(Header.Hash);
+#pragma warning restore SA1118
+
+            // Order transactions for evaluation
+            Transactions = OrderTxsForEvaluation(
+                ProtocolVersion,
+                Transactions,
+                PreEvaluationHash).ToImmutableArray();
+        }
+
+        /// <summary>
+        /// Creates a <see cref="Block{T}"/> instance by manually filling field values.
+        /// For a more automated way, see also the <see cref="Mine"/> method.
+        /// </summary>
+        /// <param name="index">The height of the block to create.  Goes to the <see cref="Index"/>.
+        /// </param>
+        /// <param name="difficulty">The mining difficulty that <paramref name="nonce"/> has to
+        /// satisfy.  Goes to the <see cref="Difficulty"/>.</param>
+        /// <param name="totalDifficulty">The total mining difficulty until this block.
+        /// See also <see cref="Difficulty"/>.</param>
+        /// <param name="nonce">The nonce which satisfy the given <paramref name="difficulty"/> with
+        /// any other field values.  Goes to the <see cref="Nonce"/>.</param>
+        /// <param name="miner">The <see cref="Address"/> of the miner of this block. Goes to the
+        /// <see cref="Miner"/>.</param>
+        /// <param name="previousHash">The previous block's <see cref="Hash"/>.  If it's a genesis
+        /// block (i.e., <paramref name="index"/> is 0) this should be <c>null</c>.
+        /// Goes to the <see cref="PreviousHash"/>.</param>
+        /// <param name="timestamp">The time this block is created.  Goes to
+        /// the <see cref="Timestamp"/>.</param>
+        /// <param name="transactions">The transactions to be mined together with this block.
+        /// Transactions become sorted in an unpredicted-before-mined order and then go to
+        /// the <see cref="Transactions"/> property.
+        /// </param>
+        /// <param name="preEvaluationHash">The hash derived from the block <em>except of</em>
+        /// <paramref name="stateRootHash"/> (i.e., without action evaluation).
+        /// Automatically determined if <c>null</c> is passed.</param>
+        /// <param name="stateRootHash">The <see cref="ITrie.Hash"/> of the states on the block.
+        /// </param>
+        /// <param name="protocolVersion">The protocol version. <see cref="CurrentProtocolVersion"/>
+        /// by default.</param>
+        /// <remarks>
+        /// Due to historic reasons, there is non-trivial implicit logic embedded inside this
+        /// constructor.  It is strongly recommended to use <see cref="Mine"/> instead.
+        /// </remarks>
+        /// <seealso cref="Mine"/>
+        public Block(
+            long index,
+            long difficulty,
+            BigInteger totalDifficulty,
+            Nonce nonce,
+            Address miner,
+            BlockHash? previousHash,
+            DateTimeOffset timestamp,
+            IReadOnlyList<Transaction<T>> transactions,
+            ImmutableArray<byte> preEvaluationHash,
+            HashDigest<SHA256> stateRootHash,
+            int protocolVersion = CurrentProtocolVersion)
+        {
             ProtocolVersion = protocolVersion;
             Index = index;
             Difficulty = difficulty;
@@ -123,56 +173,112 @@ namespace Libplanet.Blocks
             TxHash = CalculateTxHashes(Transactions);
 
 #pragma warning disable SA1118
-            if (hashAlgorithm is { } ha)
-            {
-                // FIXME: This only works due to sanity constraint on usage.
-                _header = new BlockHeader(
-                    protocolVersion: ProtocolVersion,
-                    index: Index,
-                    timestamp: Timestamp.ToString(
-                        BlockHeader.TimestampFormat,
-                        CultureInfo.InvariantCulture),
-                    nonce: Nonce.ToByteArray().ToImmutableArray(),
-                    miner: Miner.ToByteArray().ToImmutableArray(),
-                    difficulty: Difficulty,
-                    totalDifficulty: TotalDifficulty,
-                    previousHash: PreviousHash?.ToByteArray().ToImmutableArray()
-                        ?? ImmutableArray<byte>.Empty,
-                    txHash: TxHash?.ToByteArray().ToImmutableArray()
-                        ?? ImmutableArray<byte>.Empty,
-                    hashAlgorithm: ha);
-                _preEvaluationHash = Header.PreEvaluationHash;
-                StateRootHash = stateRootHash;
-                _hash = new BlockHash(Header.Hash);
-            }
-            else
-            {
-                ImmutableArray<byte> peh = preEvaluationHash
-                    ?? throw new NullReferenceException(
-                        $"Parameter {nameof(preEvaluationHash)} cannot be null.");
+            _header = new BlockHeader(
+                protocolVersion: ProtocolVersion,
+                index: Index,
+                timestamp: Timestamp.ToString(
+                    BlockHeader.TimestampFormat,
+                    CultureInfo.InvariantCulture),
+                nonce: Nonce.ToByteArray().ToImmutableArray(),
+                miner: Miner.ToByteArray().ToImmutableArray(),
+                difficulty: Difficulty,
+                totalDifficulty: TotalDifficulty,
+                previousHash: PreviousHash?.ToByteArray().ToImmutableArray()
+                    ?? ImmutableArray<byte>.Empty,
+                txHash: TxHash?.ToByteArray().ToImmutableArray()
+                    ?? ImmutableArray<byte>.Empty,
+                preEvaluationHash: preEvaluationHash,
+                stateRootHash: stateRootHash.ToByteArray().ToImmutableArray());
 
-                _header = new BlockHeader(
-                    protocolVersion: ProtocolVersion,
-                    index: Index,
-                    timestamp: Timestamp.ToString(
-                        BlockHeader.TimestampFormat,
-                        CultureInfo.InvariantCulture),
-                    nonce: Nonce.ToByteArray().ToImmutableArray(),
-                    miner: Miner.ToByteArray().ToImmutableArray(),
-                    difficulty: Difficulty,
-                    totalDifficulty: TotalDifficulty,
-                    previousHash: PreviousHash?.ToByteArray().ToImmutableArray()
-                        ?? ImmutableArray<byte>.Empty,
-                    txHash: TxHash?.ToByteArray().ToImmutableArray()
-                        ?? ImmutableArray<byte>.Empty,
-                    preEvaluationHash: peh,
-                    stateRootHash: stateRootHash?.ToByteArray().ToImmutableArray()
-                        ?? ImmutableArray<byte>.Empty);
+            _preEvaluationHash = Header.PreEvaluationHash;
+            StateRootHash = stateRootHash;
+            _hash = new BlockHash(Header.Hash);
+#pragma warning restore SA1118
 
-                _preEvaluationHash = Header.PreEvaluationHash;
-                StateRootHash = stateRootHash;
-                _hash = new BlockHash(Header.Hash);
-            }
+            // Order transactions for evaluation
+            Transactions = OrderTxsForEvaluation(
+                ProtocolVersion,
+                Transactions,
+                PreEvaluationHash).ToImmutableArray();
+        }
+
+        /// <summary>
+        /// Creates a <see cref="Block{T}"/> instance by manually filling field values.
+        /// For a more automated way, see also the <see cref="Mine"/> method.
+        /// </summary>
+        /// <param name="index">The height of the block to create.  Goes to the <see cref="Index"/>.
+        /// </param>
+        /// <param name="difficulty">The mining difficulty that <paramref name="nonce"/> has to
+        /// satisfy.  Goes to the <see cref="Difficulty"/>.</param>
+        /// <param name="totalDifficulty">The total mining difficulty until this block.
+        /// See also <see cref="Difficulty"/>.</param>
+        /// <param name="nonce">The nonce which satisfy the given <paramref name="difficulty"/> with
+        /// any other field values.  Goes to the <see cref="Nonce"/>.</param>
+        /// <param name="miner">The <see cref="Address"/> of the miner of this block. Goes to the
+        /// <see cref="Miner"/>.</param>
+        /// <param name="previousHash">The previous block's <see cref="Hash"/>.  If it's a genesis
+        /// block (i.e., <paramref name="index"/> is 0) this should be <c>null</c>.
+        /// Goes to the <see cref="PreviousHash"/>.</param>
+        /// <param name="timestamp">The time this block is created.  Goes to
+        /// the <see cref="Timestamp"/>.</param>
+        /// <param name="transactions">The transactions to be mined together with this block.
+        /// Transactions become sorted in an unpredicted-before-mined order and then go to
+        /// the <see cref="Transactions"/> property.
+        /// </param>
+        /// <param name="preEvaluationHash">The hash derived from the block <em>except of</em>
+        /// <see cref="Block{T}.StateRootHash"/> (i.e., without action evaluation).
+        /// Automatically determined if <c>null</c> is passed.</param>
+        /// <param name="protocolVersion">The protocol version. <see cref="CurrentProtocolVersion"/>
+        /// by default.</param>
+        /// <remarks>
+        /// Due to historic reasons, there is non-trivial implicit logic embedded inside this
+        /// constructor.  It is strongly recommended to use <see cref="Mine"/> instead.
+        /// </remarks>
+        /// <seealso cref="Mine"/>
+        public Block(
+            long index,
+            long difficulty,
+            BigInteger totalDifficulty,
+            Nonce nonce,
+            Address miner,
+            BlockHash? previousHash,
+            DateTimeOffset timestamp,
+            IReadOnlyList<Transaction<T>> transactions,
+            ImmutableArray<byte> preEvaluationHash,
+            int protocolVersion = CurrentProtocolVersion)
+        {
+            ProtocolVersion = protocolVersion;
+            Index = index;
+            Difficulty = difficulty;
+            TotalDifficulty = totalDifficulty;
+            Nonce = nonce;
+            Miner = miner;
+            PreviousHash = previousHash;
+            Timestamp = timestamp;
+            Transactions = transactions.OrderBy(tx => tx.Id).ToArray();
+            TxHash = CalculateTxHashes(Transactions);
+
+#pragma warning disable SA1118
+            _header = new BlockHeader(
+                protocolVersion: ProtocolVersion,
+                index: Index,
+                timestamp: Timestamp.ToString(
+                    BlockHeader.TimestampFormat,
+                    CultureInfo.InvariantCulture),
+                nonce: Nonce.ToByteArray().ToImmutableArray(),
+                miner: Miner.ToByteArray().ToImmutableArray(),
+                difficulty: Difficulty,
+                totalDifficulty: TotalDifficulty,
+                previousHash: PreviousHash?.ToByteArray().ToImmutableArray()
+                    ?? ImmutableArray<byte>.Empty,
+                txHash: TxHash?.ToByteArray().ToImmutableArray()
+                    ?? ImmutableArray<byte>.Empty,
+                preEvaluationHash: preEvaluationHash,
+                stateRootHash: ImmutableArray<byte>.Empty);
+
+            _preEvaluationHash = Header.PreEvaluationHash;
+            StateRootHash = null;
+            _hash = new BlockHash(Header.Hash);
 #pragma warning restore SA1118
 
             // Order transactions for evaluation
@@ -216,7 +322,6 @@ namespace Libplanet.Blocks
                 block.PreviousHash,
                 block.Timestamp,
                 block.Transactions,
-                hashAlgorithm: null,
                 preEvaluationHash: block.PreEvaluationHash,
                 stateRootHash: stateRootHash,
                 protocolVersion: block.ProtocolVersion)

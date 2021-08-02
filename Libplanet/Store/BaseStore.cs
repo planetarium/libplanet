@@ -79,13 +79,16 @@ namespace Libplanet.Store
                 BlockHash? prevHash = blockDigest.Header.PreviousHash.Any()
                     ? new BlockHash(blockDigest.Header.PreviousHash)
                     : (BlockHash?)null;
-                ImmutableArray<byte>? preEvaluationHash = blockDigest.Header.PreEvaluationHash.Any()
+                ImmutableArray<byte> preEvaluationHash = blockDigest.Header.PreEvaluationHash.Any()
                     ? blockDigest.Header.PreEvaluationHash
-                    : (ImmutableArray<byte>?)null;
+                    : throw new NullReferenceException(
+                        $"Stored block {blockHash} is missing its pre-evaluation hash.");
                 HashDigest<SHA256>? stateRootHash = blockDigest.Header.StateRootHash.Any()
                     ? new HashDigest<SHA256>(blockDigest.Header.StateRootHash)
                     : (HashDigest<SHA256>?)null;
 
+                if (stateRootHash is { } srh)
+                {
                 return new Block<T>(
                     index: blockDigest.Header.Index,
                     difficulty: blockDigest.Header.Difficulty,
@@ -102,9 +105,29 @@ namespace Libplanet.Store
                         .Select(bytes => GetTransaction<T>(new TxId(bytes.ToArray())))
                         .ToImmutableArray(),
                     preEvaluationHash: preEvaluationHash,
-                    stateRootHash: stateRootHash,
-                    protocolVersion: blockDigest.Header.ProtocolVersion
-                );
+                    stateRootHash: srh,
+                    protocolVersion: blockDigest.Header.ProtocolVersion);
+                }
+                else
+                {
+                    return new Block<T>(
+                        index: blockDigest.Header.Index,
+                        difficulty: blockDigest.Header.Difficulty,
+                        totalDifficulty: blockDigest.Header.TotalDifficulty,
+                        nonce: new Nonce(blockDigest.Header.Nonce.ToArray()),
+                        miner: new Address(blockDigest.Header.Miner),
+                        previousHash: prevHash,
+                        timestamp: DateTimeOffset.ParseExact(
+                            blockDigest.Header.Timestamp,
+                            BlockHeader.TimestampFormat,
+                            CultureInfo.InvariantCulture
+                        ).ToUniversalTime(),
+                        transactions: blockDigest.TxIds
+                            .Select(bytes => GetTransaction<T>(new TxId(bytes.ToArray())))
+                            .ToImmutableArray(),
+                        preEvaluationHash: preEvaluationHash,
+                        protocolVersion: blockDigest.Header.ProtocolVersion);
+                }
             }
 
             return null;
