@@ -11,6 +11,7 @@ using System.Threading;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Blockchain;
 using Libplanet.Store.Trie;
 using Libplanet.Tx;
 
@@ -21,7 +22,7 @@ namespace Libplanet.Blocks
         where T : IAction, new()
     {
         /// <summary>
-        /// The most latest protocol version.
+        /// The latest protocol version.
         /// </summary>
         public const int CurrentProtocolVersion = BlockHeader.CurrentProtocolVersion;
 
@@ -31,35 +32,33 @@ namespace Libplanet.Blocks
         private BlockHash? _hash = null;
 
         /// <summary>
-        /// Creates a <see cref="Block{T}"/> instance by manually filling field values.
-        /// For a more automated way, see also the <see cref="Mine"/> method.
+        /// Creates a <em>partial</em> <see cref="Block{T}"/> instance with
+        /// its <see cref="StateRootHash"/> missing by manually filling in
+        /// the necessary field values.  Used by <see cref="Mine"/>.
         /// </summary>
-        /// <param name="index">The height of the block to create.  Goes to the <see cref="Index"/>.
+        /// <param name="index">The height of the block to create.  Goes to <see cref="Index"/>.
         /// </param>
         /// <param name="difficulty">The mining difficulty that <paramref name="nonce"/> has to
-        /// satisfy.  Goes to the <see cref="Difficulty"/>.</param>
+        /// satisfy.  Goes to <see cref="Difficulty"/>.</param>
         /// <param name="totalDifficulty">The total mining difficulty until this block.
         /// See also <see cref="Difficulty"/>.</param>
-        /// <param name="nonce">The nonce which satisfy the given <paramref name="difficulty"/> with
-        /// any other field values.  Goes to the <see cref="Nonce"/>.</param>
-        /// <param name="miner">The <see cref="Address"/> of the miner of this block. Goes to the
+        /// <param name="nonce">The nonce which satisfies the given <paramref name="difficulty"/>
+        /// with other field values provided.  Goes to <see cref="Nonce"/>.</param>
+        /// <param name="miner">The <see cref="Address"/> of the miner of this block. Goes to
         /// <see cref="Miner"/>.</param>
         /// <param name="previousHash">The previous block's <see cref="Hash"/>.  If it's a genesis
-        /// block (i.e., <paramref name="index"/> is 0) this should be <c>null</c>.
-        /// Goes to the <see cref="PreviousHash"/>.</param>
+        /// block (i.e., <see cref="Index"/> is 0) this should be <c>null</c>.
+        /// Goes to <see cref="PreviousHash"/>.</param>
         /// <param name="timestamp">The time this block is created.  Goes to
-        /// the <see cref="Timestamp"/>.</param>
+        /// <see cref="Timestamp"/>.</param>
         /// <param name="transactions">The transactions to be mined together with this block.
         /// Transactions become sorted in an unpredicted-before-mined order and then go to
         /// the <see cref="Transactions"/> property.
         /// </param>
-        /// <param name="hashAlgorithm">The hash algorithm for the proof-of-work.</param>
+        /// <param name="hashAlgorithm">The hash algorithm used for the proof-of-work.
+        /// This is used to calculate <see cref="PreEvaluationHash"/> on the fly.</param>
         /// <param name="protocolVersion">The protocol version. <see cref="CurrentProtocolVersion"/>
         /// by default.</param>
-        /// <remarks>
-        /// Due to historic reasons, there is non-trivial implicit logic embedded inside this
-        /// constructor.  It is strongly recommended to use <see cref="Mine"/> instead.
-        /// </remarks>
         /// <seealso cref="Mine"/>
         public Block(
             long index,
@@ -101,10 +100,11 @@ namespace Libplanet.Blocks
                 txHash: TxHash?.ToByteArray().ToImmutableArray()
                     ?? ImmutableArray<byte>.Empty,
                 hashAlgorithm: hashAlgorithm);
+#pragma warning restore SA1118
+
             _preEvaluationHash = Header.PreEvaluationHash;
             StateRootHash = null;
             _hash = new BlockHash(Header.Hash);
-#pragma warning restore SA1118
 
             // Order transactions for evaluation
             Transactions = OrderTxsForEvaluation(
@@ -114,39 +114,35 @@ namespace Libplanet.Blocks
         }
 
         /// <summary>
-        /// Creates a <see cref="Block{T}"/> instance by manually filling field values.
-        /// For a more automated way, see also the <see cref="Mine"/> method.
+        /// Creates a <em>complete</em> <see cref="Block{T}"/> instance by manually filling in
+        /// the necessary field values.  Used by <see cref="BlockChain{T}"/> to attach
+        /// <paramref name="stateRootHash"/> to complete a <em>partial</em> <see cref="Block{T}"/>.
         /// </summary>
-        /// <param name="index">The height of the block to create.  Goes to the <see cref="Index"/>.
+        /// <param name="index">The height of the block to create.  Goes to <see cref="Index"/>.
         /// </param>
         /// <param name="difficulty">The mining difficulty that <paramref name="nonce"/> has to
-        /// satisfy.  Goes to the <see cref="Difficulty"/>.</param>
+        /// satisfy.  Goes to <see cref="Difficulty"/>.</param>
         /// <param name="totalDifficulty">The total mining difficulty until this block.
         /// See also <see cref="Difficulty"/>.</param>
-        /// <param name="nonce">The nonce which satisfy the given <paramref name="difficulty"/> with
-        /// any other field values.  Goes to the <see cref="Nonce"/>.</param>
+        /// <param name="nonce">The nonce which satisfies the given <paramref name="difficulty"/>
+        /// with other field values.  Goes to <see cref="Nonce"/>.</param>
         /// <param name="miner">The <see cref="Address"/> of the miner of this block. Goes to the
         /// <see cref="Miner"/>.</param>
         /// <param name="previousHash">The previous block's <see cref="Hash"/>.  If it's a genesis
-        /// block (i.e., <paramref name="index"/> is 0) this should be <c>null</c>.
-        /// Goes to the <see cref="PreviousHash"/>.</param>
+        /// block (i.e., <see cref="Index"/> is 0) this should be <c>null</c>.
+        /// Goes to <see cref="PreviousHash"/>.</param>
         /// <param name="timestamp">The time this block is created.  Goes to
-        /// the <see cref="Timestamp"/>.</param>
+        /// <see cref="Timestamp"/>.</param>
         /// <param name="transactions">The transactions to be mined together with this block.
         /// Transactions become sorted in an unpredicted-before-mined order and then go to
         /// the <see cref="Transactions"/> property.
         /// </param>
-        /// <param name="preEvaluationHash">The hash derived from the block <em>except of</em>
-        /// <paramref name="stateRootHash"/> (i.e., without action evaluation).
-        /// Automatically determined if <c>null</c> is passed.</param>
+        /// <param name="preEvaluationHash">The hash derived from the block <em>except</em>
+        /// <paramref name="stateRootHash"/> (i.e., without action evaluation).</param>
         /// <param name="stateRootHash">The <see cref="ITrie.Hash"/> of the states on the block.
         /// </param>
         /// <param name="protocolVersion">The protocol version. <see cref="CurrentProtocolVersion"/>
         /// by default.</param>
-        /// <remarks>
-        /// Due to historic reasons, there is non-trivial implicit logic embedded inside this
-        /// constructor.  It is strongly recommended to use <see cref="Mine"/> instead.
-        /// </remarks>
         /// <seealso cref="Mine"/>
         public Block(
             long index,
@@ -189,11 +185,11 @@ namespace Libplanet.Blocks
                     ?? ImmutableArray<byte>.Empty,
                 preEvaluationHash: preEvaluationHash,
                 stateRootHash: stateRootHash.ToByteArray().ToImmutableArray());
+#pragma warning restore SA1118
 
             _preEvaluationHash = Header.PreEvaluationHash;
             StateRootHash = stateRootHash;
             _hash = new BlockHash(Header.Hash);
-#pragma warning restore SA1118
 
             // Order transactions for evaluation
             Transactions = OrderTxsForEvaluation(
@@ -203,36 +199,35 @@ namespace Libplanet.Blocks
         }
 
         /// <summary>
-        /// Creates a <see cref="Block{T}"/> instance by manually filling field values.
-        /// For a more automated way, see also the <see cref="Mine"/> method.
+        /// Creates a partial <see cref="Block{T}"/> instance with its
+        /// <see cref="StateRootHash"/> missing.  Used to be used by <see cref="Mine"/>.
         /// </summary>
-        /// <param name="index">The height of the block to create.  Goes to the <see cref="Index"/>.
+        /// <param name="index">The height of the block to create.  Goes to <see cref="Index"/>.
         /// </param>
         /// <param name="difficulty">The mining difficulty that <paramref name="nonce"/> has to
-        /// satisfy.  Goes to the <see cref="Difficulty"/>.</param>
+        /// satisfy.  Goes to <see cref="Difficulty"/>.</param>
         /// <param name="totalDifficulty">The total mining difficulty until this block.
         /// See also <see cref="Difficulty"/>.</param>
-        /// <param name="nonce">The nonce which satisfy the given <paramref name="difficulty"/> with
-        /// any other field values.  Goes to the <see cref="Nonce"/>.</param>
-        /// <param name="miner">The <see cref="Address"/> of the miner of this block. Goes to the
+        /// <param name="nonce">The nonce which satisfy the given <paramref name="difficulty"/>
+        /// with other field values.  Goes to <see cref="Nonce"/>.</param>
+        /// <param name="miner">The <see cref="Address"/> of the miner of this block. Goes to
         /// <see cref="Miner"/>.</param>
         /// <param name="previousHash">The previous block's <see cref="Hash"/>.  If it's a genesis
-        /// block (i.e., <paramref name="index"/> is 0) this should be <c>null</c>.
-        /// Goes to the <see cref="PreviousHash"/>.</param>
+        /// block (i.e., <see cref="Index"/> is 0) this should be <c>null</c>.
+        /// Goes to <see cref="PreviousHash"/>.</param>
         /// <param name="timestamp">The time this block is created.  Goes to
-        /// the <see cref="Timestamp"/>.</param>
+        /// <see cref="Timestamp"/>.</param>
         /// <param name="transactions">The transactions to be mined together with this block.
         /// Transactions become sorted in an unpredicted-before-mined order and then go to
         /// the <see cref="Transactions"/> property.
         /// </param>
-        /// <param name="preEvaluationHash">The hash derived from the block <em>except of</em>
-        /// <see cref="Block{T}.StateRootHash"/> (i.e., without action evaluation).
-        /// Automatically determined if <c>null</c> is passed.</param>
+        /// <param name="preEvaluationHash">The hash derived from the block <em>except</em>
+        /// <see cref="Block{T}.StateRootHash"/> (i.e., without action evaluation).</param>
         /// <param name="protocolVersion">The protocol version. <see cref="CurrentProtocolVersion"/>
         /// by default.</param>
         /// <remarks>
-        /// Due to historic reasons, there is non-trivial implicit logic embedded inside this
-        /// constructor.  It is strongly recommended to use <see cref="Mine"/> instead.
+        /// This is flagged for <em>deprecation</em>.  Mostly left here for compatibility
+        /// with legacy unit tests.
         /// </remarks>
         /// <seealso cref="Mine"/>
         public Block(
@@ -275,11 +270,11 @@ namespace Libplanet.Blocks
                     ?? ImmutableArray<byte>.Empty,
                 preEvaluationHash: preEvaluationHash,
                 stateRootHash: ImmutableArray<byte>.Empty);
+#pragma warning restore SA1118
 
             _preEvaluationHash = Header.PreEvaluationHash;
             StateRootHash = null;
             _hash = new BlockHash(Header.Hash);
-#pragma warning restore SA1118
 
             // Order transactions for evaluation
             Transactions = OrderTxsForEvaluation(
@@ -387,7 +382,7 @@ namespace Libplanet.Blocks
             ?? throw new InvalidOperationException("Hash has not been set.");
 
         /// <summary>
-        /// The hash derived from the block <em>except of</em>
+        /// The hash derived from the block <em>except</em>
         /// <see cref="StateRootHash"/> (i.e., without action evaluation).
         /// Used for <see cref="BlockHeader.Validate"/> checking <see cref="Nonce"/>.
         /// </summary>
