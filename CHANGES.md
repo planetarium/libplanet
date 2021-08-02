@@ -8,6 +8,12 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  The manual constructor for `Block<T>()` is now split into three separate
+    constructors.  [[#1418]]
+     -  Arguments for `hashAlgorithm`, `preEvaluationHash`, and `stateRootHash`
+        can no longer be `null`.  A valid combination of non-null arguments
+        is now calls an appropriate constructor.
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -19,6 +25,8 @@ To be released.
 ### Bug fixes
 
 ### CLI tools
+
+[#1418]: https://github.com/planetarium/libplanet/pull/1418
 
 
 Version 0.13.1
