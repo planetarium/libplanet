@@ -121,6 +121,8 @@ To be released.
         value between `1` and `BlockChain<T>.Policy.MaxTransactionsPerBlock`.
  -  Similarly, `BlockChain<T>.MineBlock()` now internally uses
     `BlockChain<T>.Policy.GetMaxBlockBytes()` literally.  [[#1449], [#1463]]
+ -  `NetMQTransport` became to no more send CreatePermission to TURN client and
+    requires permission-less TURN server.  [[#1423]]
 
 ### Bug fixes
 
@@ -128,6 +130,7 @@ To be released.
 
 [#1358]: https://github.com/planetarium/libplanet/issues/1358
 [#1386]: https://github.com/planetarium/libplanet/pull/1386
+[#1423]: https://github.com/planetarium/libplanet/pull/1423
 [#1435]: https://github.com/planetarium/libplanet/issues/1435
 [#1440]: https://github.com/planetarium/libplanet/pull/1440
 [#1442]: https://github.com/planetarium/libplanet/pull/1442
