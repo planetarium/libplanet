@@ -61,7 +61,7 @@ namespace Libplanet.Blockchain.Renderers
         private long _reorgResistantHeight;
 
         /// <summary>
-        /// Creates a new <see cref="DelayedRenderer{T}"/> instance decorating the given
+        /// Creates a new <see cref="DelayedActionRenderer{T}"/> instance decorating the given
         /// <paramref name="renderer"/>.
         /// </summary>
         /// <param name="renderer">The renderer to decorate which has the <em>actual</em>

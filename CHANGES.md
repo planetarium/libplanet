@@ -15,6 +15,7 @@ To be released.
 ### Added APIs
 
  -  Added `NonblockRenderer<T>` class.  [[#1402], [#1422]]
+ -  Added `NonblockActionRenderer<T>` class.  [[#1402], [#1422]]
 
 ### Behavioral changes
 
