@@ -6,11 +6,14 @@ Version 0.13.2
 
 To be released.
 
- - When a reorg happens, `Swarm<T>` now broadcasts a reorged chain tip first
-   before rendering. [[#1385], [#1415]]
+ -  When a reorg happens, `Swarm<T>` now broadcasts a reorged chain tip first
+    before rendering. [[#1385], [#1415]]
+ -  Fixed a bug where `TurnClient` hadn't been recovered when TURN connection
+    had been disconnected.  [[#1424]]
 
 [#1385]: https://github.com/planetarium/libplanet/issues/1385
 [#1415]: https://github.com/planetarium/libplanet/pull/1415
+[#1424]: https://github.com/planetarium/libplanet/pull/1424
 
 
 Version 0.13.1

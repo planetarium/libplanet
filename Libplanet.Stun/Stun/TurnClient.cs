@@ -74,9 +74,7 @@ namespace Libplanet.Stun
         public async Task InitializeTurnAsync(CancellationToken cancellationToken)
         {
             _control = new TcpClient();
-#pragma warning disable PC001 // API not supported on all platforms
-            _control.Connect(_host, _port);
-#pragma warning restore PC001 // API not supported on all platforms
+            await _control.ConnectAsync(_host, _port);
             _processMessage = ProcessMessage(_turnTaskCts.Token);
 
             BehindNAT = await IsBehindNAT(cancellationToken);
@@ -119,7 +117,19 @@ namespace Libplanet.Stun
                     ClearSession();
                     _turnTaskCts = new CancellationTokenSource();
 
-                    await InitializeTurnAsync(cancellationToken);
+                    try
+                    {
+                        await InitializeTurnAsync(cancellationToken);
+                    }
+                    catch (Exception e)
+                    {
+                        _logger.Error(
+                            e,
+                            "Failed to initialize due to error ({Exception}); retry...",
+                            e
+                        );
+                        await Task.Delay(1000, cancellationToken);
+                    }
                 }
             }
         }
@@ -384,24 +394,14 @@ namespace Libplanet.Stun
 
         private async Task ProcessMessage(CancellationToken cancellationToken)
         {
-            while (!cancellationToken.IsCancellationRequested || _control.Connected)
+            while (!cancellationToken.IsCancellationRequested && _control.Connected)
             {
-                NetworkStream stream = _control.GetStream();
-
                 try
                 {
+                    NetworkStream stream = _control.GetStream();
                     StunMessage message;
-                    try
-                    {
-                        message = await StunMessage.ParseAsync(stream, cancellationToken);
-                        _logger.Debug("Stun Message is: {message}", message);
-                    }
-                    catch (TurnClientException e)
-                    {
-                        _logger.Error(e, "Failed to parse StunMessage. {e}", e);
-                        ClearResponses();
-                        break;
-                    }
+                    message = await StunMessage.ParseAsync(stream, cancellationToken);
+                    _logger.Debug("Parsed " + nameof(StunMessage) + ": {Message}", message);
 
                     if (message is ConnectionAttempt attempt)
                     {
@@ -414,6 +414,12 @@ namespace Libplanet.Stun
                         // tcs may be already canceled.
                         tcs.TrySetResult(message);
                     }
+                }
+                catch (TurnClientException e)
+                {
+                    _logger.Error(e, "Failed to parse " + nameof(StunMessage) + ": {Exception}", e);
+                    ClearResponses();
+                    break;
                 }
                 catch (Exception e)
                 {
