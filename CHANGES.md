@@ -16,6 +16,19 @@ Released on July 29, 2021.
     digest bytes when it is called by multiple threads at a time.  [[#1411]]
 
 [#1411]: https://github.com/planetarium/libplanet/pull/1411
+### Backward-incompatible API changes
+
+### Backward-incompatible network protocol changes
+
+### Backward-incompatible storage format changes
+
+### Added APIs
+
+### Behavioral changes
+
+### Bug fixes
+
+### CLI tools
 
 
 Version 0.13.0
