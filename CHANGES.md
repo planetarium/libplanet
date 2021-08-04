@@ -6,6 +6,12 @@ Version 0.13.2
 
 To be released.
 
+ - When a reorg happens, `Swarm<T>` now broadcasts a reorged chain tip first
+   before rendering. [[#1385], [#1415]]
+
+[#1385]: https://github.com/planetarium/libplanet/issues/1385
+[#1415]: https://github.com/planetarium/libplanet/pull/1415
+
 
 Version 0.13.1
 --------------
@@ -16,25 +22,6 @@ Released on July 29, 2021.
     digest bytes when it is called by multiple threads at a time.  [[#1411]]
 
 [#1411]: https://github.com/planetarium/libplanet/pull/1411
-### Backward-incompatible API changes
-
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
-### Added APIs
-
-### Behavioral changes
-
- - When a reorg happens, `Swarm<T>` now broadcasts a reorged chain tip first
-   before rendering. [[#1385], [#1415]]
-
-### Bug fixes
-
-### CLI tools
-
-[#1385]: https://github.com/planetarium/libplanet/issues/1385
-[#1415]: https://github.com/planetarium/libplanet/pull/1415
 
 
 Version 0.13.0
