@@ -4,27 +4,30 @@ Libplanet changelog
 Version 0.14.0
 --------------
 
-To be released.
-
-### Backward-incompatible API changes
-
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
+Released on Aug 5, 2021.
 
 ### Added APIs
 
  -  Added `NonblockRenderer<T>` class.  [[#1402], [#1422]]
  -  Added `NonblockActionRenderer<T>` class.  [[#1402], [#1422]]
 
-### Behavioral changes
-
-### Bug fixes
-
-### CLI tools
-
 [#1402]: https://github.com/planetarium/libplanet/issues/1402
 [#1422]: https://github.com/planetarium/libplanet/pull/1422
+
+
+Version 0.13.2
+--------------
+
+Released on Aug 5, 2021.
+
+ -  When a reorg happens, `Swarm<T>` now broadcasts a reorged chain tip first
+    before rendering. [[#1385], [#1415]]
+ -  Fixed a bug where `TurnClient` hadn't been recovered when TURN connection
+    had been disconnected.  [[#1424]]
+
+[#1385]: https://github.com/planetarium/libplanet/issues/1385
+[#1415]: https://github.com/planetarium/libplanet/pull/1415
+[#1424]: https://github.com/planetarium/libplanet/pull/1424
 
 
 Version 0.13.1
