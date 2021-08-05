@@ -52,17 +52,17 @@ namespace Libplanet.Blockchain.Renderers
         /// </summary>
         /// <param name="renderer">The renderer to decorate which has the <em>actual</em>
         /// implementations and receives events in a background thread.</param>
-        /// <param name="queue">The size of the internal event queue.</param>
+        /// <param name="queueSize">The size of the internal event queue.</param>
         /// <param name="fullMode">Specifies the behavior when the internal event queue is full so
         /// that no more event can be added.</param>
         [SuppressMessage(
             "Microsoft.StyleCop.CSharp.ReadabilityRules",
             "SA1118",
             Justification = "A switch expression should be multiline.")]
-        public NonblockRenderer(IRenderer<T> renderer, int queue, FullMode fullMode)
+        public NonblockRenderer(IRenderer<T> renderer, int queueSize, FullMode fullMode)
             : this(
                 renderer,
-                queue,
+                queueSize,
                 fullMode switch
                 {
                     FullMode.DropOldest => BoundedChannelFullMode.DropOldest,
@@ -78,13 +78,13 @@ namespace Libplanet.Blockchain.Renderers
         /// </summary>
         /// <param name="renderer">The renderer to decorate which has the <em>actual</em>
         /// implementations and receives events in a background thread.</param>
-        /// <param name="queue">The size of the internal event queue.</param>
+        /// <param name="queueSize">The size of the internal event queue.</param>
         /// <param name="fullFallback">Specifies the custom behavior when the internal event
         /// queue is full so that no more event can be added.</param>
-        public NonblockRenderer(IRenderer<T> renderer, int queue, FullFallback fullFallback)
+        public NonblockRenderer(IRenderer<T> renderer, int queueSize, FullFallback fullFallback)
             : this(
                 renderer,
-                queue,
+                queueSize,
                 BoundedChannelFullMode.DropWrite,
                 fullFallback
             )
