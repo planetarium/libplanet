@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.13.2
 --------------
 
-To be released.
+Released on Aug 5, 2021.
 
  -  When a reorg happens, `Swarm<T>` now broadcasts a reorged chain tip first
     before rendering. [[#1385], [#1415]]
