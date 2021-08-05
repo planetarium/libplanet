@@ -13,6 +13,7 @@ jobs:
 - job: Windows_NETCore_coverage
   pool:
     vmImage: windows-2019
+  continueOnError: true
   steps:
   - task: CmdLine@2
     displayName: dotnet tool install Codecov.Tool
@@ -27,6 +28,7 @@ jobs:
         --logger trx
         --collect "Code coverage"
         --logger "console;verbosity=normal"
+      continueOnTestError: true
   - task: Bash@3
     displayName: codecov
     inputs:

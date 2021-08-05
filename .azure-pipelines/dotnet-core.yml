@@ -4,6 +4,7 @@ parameters:
   locale: "en_US.UTF8"
   testTimeoutInMinutes: 16
   useDotnetTest: false
+  continueOnTestError: false
 
 steps:
 
@@ -70,6 +71,7 @@ steps:
       LANGUAGE: ${{ parameters.locale }}
       LC_ALL: ${{ parameters.locale }}
     timeoutInMinutes: ${{ parameters.testTimeoutInMinutes }}
+    continueOnError: ${{ parameters.continueOnTestError }}
   - task: PublishTestResults@2
     inputs:
       testRunner: XUnit
@@ -91,6 +93,7 @@ steps:
       LANGUAGE: ${{ parameters.locale }}
       LC_ALL: ${{ parameters.locale }}
     timeoutInMinutes: ${{ parameters.testTimeoutInMinutes }}
+    continueOnError: ${{ parameters.continueOnTestError }}
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
