@@ -45,6 +45,7 @@ namespace Libplanet.Blockchain.Renderers
         private readonly ChannelReader<System.Action> _reader;
         private readonly FullFallback? _fullFallback;
         private readonly Thread _worker;
+        private readonly object _workerLock = new object();
 
         /// <summary>
         /// Creates a new instance of <see cref="NonblockRenderer{T}"/> decorating the given
@@ -188,7 +189,15 @@ namespace Libplanet.Blockchain.Renderers
 
             if (!_worker.IsAlive)
             {
-                _worker.Start();
+                // ↑ To avoid entering the below lock at all except of the first time,
+                // checks one more time if the worker is alive before we try to lock.
+                lock (_workerLock)
+                {
+                    if (!_worker.IsAlive)
+                    {
+                        _worker.Start();
+                    }
+                }
             }
         }
     }
