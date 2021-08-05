@@ -14,11 +14,17 @@ To be released.
 
 ### Added APIs
 
+ -  Added `NonblockRenderer<T>` class.  [[#1402], [#1422]]
+ -  Added `NonblockActionRenderer<T>` class.  [[#1402], [#1422]]
+
 ### Behavioral changes
 
 ### Bug fixes
 
 ### CLI tools
+
+[#1402]: https://github.com/planetarium/libplanet/issues/1402
+[#1422]: https://github.com/planetarium/libplanet/pull/1422
 
 
 Version 0.13.1
