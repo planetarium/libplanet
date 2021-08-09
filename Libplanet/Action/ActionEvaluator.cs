@@ -11,6 +11,7 @@ using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Store.Trie;
 using Libplanet.Tx;
+using LruCacheNet;
 using Serilog;
 
 namespace Libplanet.Action
@@ -54,6 +55,8 @@ namespace Libplanet.Action
         private readonly BalanceGetter<T> _balanceGetter;
         private readonly Func<BlockHash, ITrie>? _trieGetter;
 
+        private readonly LruCache<BlockHash, IEnumerable<ActionEvaluation>> _evCache;
+
         /// <summary>
         /// Creates a new <see cref="ActionEvaluator{T}"/>.
         /// </summary>
@@ -80,6 +83,7 @@ namespace Libplanet.Action
             _stateGetter = stateGetter;
             _balanceGetter = balanceGetter;
             _trieGetter = trieGetter;
+            _evCache = new LruCache<BlockHash, IEnumerable<ActionEvaluation>>(capacity: 100);
         }
 
         /// <summary>
@@ -389,10 +393,23 @@ namespace Libplanet.Action
             // FIXME: Probably not the best place to have Validate().
             block.Validate(hashAlgorithm, currentTime);
 
-            return EvaluateTxs(
+            if (_evCache.TryGetValue(block.Hash, out IEnumerable<ActionEvaluation> cached))
+            {
+                _logger.Verbose(
+                    "_evCache hit. block.Hash: {blockHash}, # of cached: {count}",
+                    block.Hash,
+                    cached.Count()
+                );
+                return cached;
+            }
+
+            IEnumerable<ActionEvaluation> aevs = EvaluateTxs(
                 block: block,
                 previousStates: previousStates,
                 previousBlockStatesTrie: previousBlockStatesTrie);
+
+            _evCache[block.Hash] = aevs;
+            return aevs;
         }
 
         /// <summary>

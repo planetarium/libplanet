@@ -6,6 +6,14 @@ Version 0.14.1
 
 To be released.
 
+### Behavioral changes
+
+
+ -  Improved performance of `ActionEvaluator.Evaluate()` due to cache.
+    [[#1429]]
+
+[#1429]: https://github.com/planetarium/libplanet/pull/1429
+
 
 Version 0.14.0
 --------------
