@@ -6,9 +6,6 @@ Version 0.14.1
 
 To be released.
 
-### Behavioral changes
-
-
  -  Improved performance of `ActionEvaluator.Evaluate()` due to cache.
     [[#1429]]
 
