@@ -2,8 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Numerics;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Net.Messages;
@@ -86,10 +85,7 @@ namespace Libplanet.Net
                     break;
 
                 case BlockHeaderMessage blockHeader:
-                    Task.Run(
-                        async () => await ProcessBlockHeader(blockHeader, _cancellationToken),
-                        _cancellationToken
-                    );
+                    ProcessBlockHeader(blockHeader);
                     break;
 
                 default:
@@ -100,9 +96,7 @@ namespace Libplanet.Net
             }
         }
 
-        private async Task ProcessBlockHeader(
-            BlockHeaderMessage message,
-            CancellationToken cancellationToken = default(CancellationToken))
+        private void ProcessBlockHeader(BlockHeaderMessage message)
         {
             if (!(message.Remote is BoundPeer peer))
             {
@@ -150,27 +144,36 @@ namespace Libplanet.Net
                 return;
             }
 
-            using (await _blockSyncMutex.LockAsync(cancellationToken))
+            if (IsDemandNeeded(peer, header))
             {
-                if (IsDemandNeeded(header, peer))
-                {
-                    _logger.Debug(
-                        "BlockDemand #{index} {blockHash} from {peer}.",
-                        header.Index,
-                        ByteUtil.Hex(header.Hash),
-                        peer);
-                    BlockDemand = new BlockDemand(header, peer, DateTimeOffset.UtcNow);
-                }
-                else
-                {
-                    _logger.Debug(
-                        "No blocks are required " +
-                        "(current: {Current}, demand: {Demand}, received: {Received});" +
-                        $" {nameof(BlockHeaderMessage)} is ignored.",
-                        BlockChain.Tip.Index,
-                        BlockDemand?.Header.Index,
-                        header.Index);
-                }
+                _logger.Debug(
+                    "BlockDemand #{index} {blockHash} from {peer}.",
+                    header.Index,
+                    ByteUtil.Hex(header.Hash),
+                    peer);
+                BlockDemands[peer] = new BlockDemand(header, peer, DateTimeOffset.UtcNow);
+            }
+            else
+            {
+                long? demandIndex = BlockDemands.ContainsKey(peer)
+                    ? BlockDemands[peer].Header.Index
+                    : (long?)null;
+                BigInteger? demandDifficulty = BlockDemands.ContainsKey(peer)
+                    ? BlockDemands[peer].Header.TotalDifficulty
+                    : (BigInteger?)null;
+                _logger.Debug(
+                    "No blocks are required for peer {Peer} " +
+                    "(current: {Current}/{CurrentDifficulty}, " +
+                    "demand: {Demand}/{DemandDifficulty}, " +
+                    "received: {Received}/{ReceivedDifficulty}); " +
+                    $"{nameof(BlockHeaderMessage)} is ignored.",
+                    peer,
+                    BlockChain.Tip.Index,
+                    BlockChain.Tip.TotalDifficulty,
+                    demandIndex,
+                    demandDifficulty,
+                    header.Index,
+                    header.TotalDifficulty);
             }
         }
 
