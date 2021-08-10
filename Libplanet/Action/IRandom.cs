@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.Contracts;
 
 namespace Libplanet.Action
 {
@@ -10,6 +11,13 @@ namespace Libplanet.Action
     /// </summary>
     public interface IRandom
     {
+        /// <summary>
+        /// A number used to calculate a starting value for the pseudo-random
+        /// number sequence.
+        /// </summary>
+        [Pure]
+        int Seed { get; }
+
         /// <summary>
         /// Gets a non-negative random integer.
         /// </summary>
