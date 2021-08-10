@@ -487,6 +487,8 @@ Released on July 23, 2021.
  -  Added `ByteUtil.Satisfies()` method.  [[#1314], [#1352]]
  -  Added `BlockChain<T>.ExecuteActions()` method.  [[#1368]]
  -  Added `SwarmOptions.MinimumBroadcastTarget` property.  [[#1379]]
+ -  Added `StateCompleterSet<T>.ComplementAll` property.  [[#1386]]
+ -  Added `StateCompleterSet<T>.ComplementLatest` property.  [[#1386]]
 
 ### Behavioral changes
 
@@ -522,6 +524,9 @@ Released on July 23, 2021.
     call. [[#1347]]
  -  `BlockChain<T>.ExecuteActions()` became no longer throw
     `InvalidTxUpdatedAddressesException`.  [[#368], [#1389]]
+ -  `StateCompleterSet<T>.Recalculate` now evaluates states even for those
+    already in `IStateStore`.  Moreover, it also terminates early if possible
+    after reaching the `BlockHash` provided with a call.  [[#1386]]
 
 ### Bug fixes
 
@@ -640,6 +645,7 @@ Released on July 23, 2021.
 [#1368]: https://github.com/planetarium/libplanet/pull/1368
 [#1379]: https://github.com/planetarium/libplanet/pull/1379
 [#1389]: https://github.com/planetarium/libplanet/pull/1389
+[#1386]: https://github.com/planetarium/libplanet/pull/1386
 
 
 Version 0.11.1
