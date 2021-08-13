@@ -895,8 +895,8 @@ namespace Libplanet.Tests.Net
                 miner2.BroadcastBlock(block);
                 await miner1.BlockReceived.WaitAsync();
 
-                Assert.Equal(miner1.BlockChain.Tip, miner2.BlockChain.Tip);
-                Assert.Equal(miner1.BlockChain.Count, miner2.BlockChain.Count);
+                Assert.Equal(miner2.BlockChain.Count, miner1.BlockChain.Count);
+                Assert.Equal(miner2.BlockChain.Tip, miner1.BlockChain.Tip);
             }
             finally
             {
@@ -1007,7 +1007,7 @@ namespace Libplanet.Tests.Net
 
                 await BootstrapAsync(minerA, minerB.AsPeer);
 
-                Log.Debug("Reorg occurrs.");
+                Log.Debug("Reorg occurs.");
                 minerB.BroadcastBlock(blockC);
                 await minerA.BlockAppended.WaitAsync();
 

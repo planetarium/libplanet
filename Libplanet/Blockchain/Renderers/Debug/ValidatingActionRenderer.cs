@@ -417,7 +417,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
                             {
                                 throw BadRenderExc(
                                     "An action is from a block which has an unexpected index " +
-                                    $"#{idx} (expected: #{blockState.NewTip.Index}."
+                                    $"#{idx} (expected: #{blockState.NewTip.Index})."
                                 );
                             }
 
