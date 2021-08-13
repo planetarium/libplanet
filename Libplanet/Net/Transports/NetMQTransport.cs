@@ -154,7 +154,9 @@ namespace Libplanet.Net.Transports
                 );
             }
 
-            _logger = Log.ForContext<NetMQTransport>();
+            _logger = Log
+                .ForContext<NetMQTransport>()
+                .ForContext("Source", $"[{nameof(NetMQTransport)}] ");
 
             _requests = Channel.CreateUnbounded<MessageRequest>();
             _runtimeCancellationTokenSource = new CancellationTokenSource();
