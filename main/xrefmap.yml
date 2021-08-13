@@ -687,6 +687,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IRandom.NextBytes
   nameWithType: IRandom.NextBytes
+- uid: Libplanet.Action.IRandom.Seed
+  name: Seed
+  href: api/Libplanet.Action.IRandom.html#Libplanet_Action_IRandom_Seed
+  commentId: P:Libplanet.Action.IRandom.Seed
+  fullName: Libplanet.Action.IRandom.Seed
+  nameWithType: IRandom.Seed
+- uid: Libplanet.Action.IRandom.Seed*
+  name: Seed
+  href: api/Libplanet.Action.IRandom.html#Libplanet_Action_IRandom_Seed_
+  commentId: Overload:Libplanet.Action.IRandom.Seed
+  isSpec: "True"
+  fullName: Libplanet.Action.IRandom.Seed
+  nameWithType: IRandom.Seed
 - uid: Libplanet.Action.MissingActionTypeException
   name: MissingActionTypeException
   href: api/Libplanet.Action.MissingActionTypeException.html
