@@ -99,7 +99,9 @@ namespace Libplanet.Net
                 trustedAppProtocolVersionSigners?.ToImmutableHashSet();
 
             string loggerId = _privateKey.ToAddress().ToHex();
-            _logger = Log.ForContext<Swarm<T>>()
+            _logger = Log
+                .ForContext<Swarm<T>>()
+                .ForContext("Source", $"[{nameof(Swarm<T>)}] ")
                 .ForContext("SwarmId", loggerId);
 
             Options = options ?? new SwarmOptions();
