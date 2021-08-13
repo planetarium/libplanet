@@ -8,17 +8,33 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Removed `Swarm<T>.BlockDemand` property.  [[#1419], [#1425]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
 
 ### Added APIs
 
+ -  Added `BlockDemandTable<T>` class.  [[#1419], [#1425]]
+ -  Added `Swarm<T>.BlockDemandTable` property.  [[#1419], [#1425]]
+ -  Added `SwarmOptions.PollInterval` property.  [[#1419], [#1425]]
+ -  Added `SwarmOptions.MaximumPollPeers` property.  [[#1419], [#1425]]
+
 ### Behavioral changes
+
+ -  `Swarm<T>` became to sync blocks from multiple peers.  [[#1419], [#1425]]
 
 ### Bug fixes
 
+ -  Fixed a bug where `Swarm<T>.PreloadAsync()` failed to sync blocks from
+    the peer that has chain with higher difficulty, but lower index.
+    [[#1419], [#1425]]
+
 ### CLI tools
+
+[#1419]: https://github.com/planetarium/libplanet/issues/1419
+[#1425]: https://github.com/planetarium/libplanet/pull/1425
 
 
 Version 0.15.0
