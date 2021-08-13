@@ -8,6 +8,8 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Added `IRandom.Seed` property.  [[#1431]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -19,6 +21,8 @@ To be released.
 ### Bug fixes
 
 ### CLI tools
+
+[#1431]: https://github.com/planetarium/libplanet/pull/1431
 
 
 Version 0.14.0
