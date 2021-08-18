@@ -330,7 +330,12 @@ namespace Libplanet.Net
                 tasks.Add(Transport.RunAsync(_cancellationToken));
                 tasks.Add(BroadcastBlockAsync(broadcastBlockInterval, _cancellationToken));
                 tasks.Add(BroadcastTxAsync(broadcastTxInterval, _cancellationToken));
-                tasks.Add(ProcessFillBlocks(dialTimeout, _cancellationToken));
+                tasks.Add(
+                    FillBlocksAsync(
+                        dialTimeout,
+                        Options.PollInterval,
+                        Options.MaximumPollPeers,
+                        _cancellationToken));
                 tasks.Add(ProcessFillTxs(_cancellationToken));
                 if (Options.StaticPeers.Any())
                 {
@@ -454,7 +459,7 @@ namespace Libplanet.Net
         )
         {
             // FIXME: It would be better if it returns IAsyncEnumerable<PeerChainState> instead.
-            return (await DialToExistingPeers(dialTimeout, cancellationToken))
+            return (await DialToExistingPeers(dialTimeout, int.MaxValue, cancellationToken))
                 .Select(pp =>
                     new PeerChainState(
                         pp.Item1,
@@ -509,7 +514,7 @@ namespace Libplanet.Net
             );
 
             var peersWithExcerpts = await GetPeersWithExcerpts(
-                BlockChain.Tip, dialTimeout, cancellationToken);
+                BlockChain.Tip, dialTimeout, int.MaxValue, cancellationToken);
 
             if (!peersWithExcerpts.Any())
             {
@@ -805,7 +810,6 @@ namespace Libplanet.Net
                 long branchIndex = -1;
                 BlockHash branchPoint = default;
 
-                var perception = BlockChain.PerceiveBlock(excerpt);
                 if (!IsBlockNeeded(excerpt))
                 {
                     _logger.Verbose(
@@ -983,52 +987,60 @@ namespace Libplanet.Net
 
         private Task<(BoundPeer Peer, ChainStatus ChainStatus)[]> DialToExistingPeers(
             TimeSpan? dialTimeout,
+            int max,
             CancellationToken cancellationToken
         )
         {
             // FIXME: It would be better if it returns IAsyncEnumerable<(BoundPeer, ChainStatus)>
             // instead.
-            IEnumerable<Task<(BoundPeer, ChainStatus)>> tasks = Peers.Select(
-                peer => Transport.SendMessageWithReplyAsync(
-                    peer, new GetChainStatus(), dialTimeout, cancellationToken
-                ).ContinueWith<(BoundPeer, ChainStatus)>(
-                    t =>
-                    {
-                        if (t.IsFaulted || t.IsCanceled || !(t.Result is ChainStatus chainStatus))
+            var rnd = new System.Random();
+            IEnumerable<Task<(BoundPeer, ChainStatus)>> tasks = Peers.OrderBy(x => rnd.Next())
+                .Take(max)
+                .Select(
+                    peer => Transport.SendMessageWithReplyAsync(
+                        peer,
+                        new GetChainStatus(),
+                        dialTimeout,
+                        cancellationToken
+                    ).ContinueWith<(BoundPeer, ChainStatus)>(
+                        t =>
                         {
-                            switch (t.Exception?.InnerException)
+                            if (t.IsFaulted || t.IsCanceled ||
+                                !(t.Result is ChainStatus chainStatus))
                             {
-                                case TimeoutException te:
-                                    _logger.Debug(
-                                        $"TimeoutException occurred during dial to ({peer})."
-                                    );
-                                    break;
-                                case DifferentAppProtocolVersionException dapve:
-                                    _logger.Error(
-                                        dapve,
-                                        $"Protocol Version is different ({peer}).");
-                                    break;
-                                case Exception e:
-                                    _logger.Error(
-                                        e,
-                                        $"An unexpected exception occurred during dial to ({peer})."
-                                    );
-                                    break;
-                                default:
-                                    break;
-                            }
+                                switch (t.Exception?.InnerException)
+                                {
+                                    case TimeoutException te:
+                                        _logger.Debug(
+                                            $"TimeoutException occurred during dial to ({peer})."
+                                        );
+                                        break;
+                                    case DifferentAppProtocolVersionException dapve:
+                                        _logger.Error(
+                                            dapve,
+                                            $"Protocol Version is different ({peer}).");
+                                        break;
+                                    case Exception e:
+                                        string msg =
+                                            "An unexpected exception occurred during dial to " +
+                                            "({Peer}).";
+                                        _logger.Error(e, msg, peer);
+                                        break;
+                                    default:
+                                        break;
+                                }
 
-                            // Mark to skip
-                            return (peer, null);
-                        }
-                        else
-                        {
-                            return (peer, chainStatus);
-                        }
-                    },
-                    cancellationToken
-                )
-            );
+                                // Mark to skip
+                                return (peer, null);
+                            }
+                            else
+                            {
+                                return (peer, chainStatus);
+                            }
+                        },
+                        cancellationToken
+                    )
+                );
 
             return Task.WhenAll(tasks).ContinueWith(
                 t =>
@@ -1049,13 +1061,14 @@ namespace Libplanet.Net
         private async Task<List<(BoundPeer, IBlockExcerpt)>> GetPeersWithExcerpts(
             Block<T> initialTip,
             TimeSpan? dialTimeout,
+            int max,
             CancellationToken cancellationToken)
         {
             BlockHash genesisHash = BlockChain.Genesis.Hash;
             IComparer<BlockPerception> canonComparer = BlockChain.Policy.CanonicalChainComparer;
             BlockPerception tipPerception = BlockChain.PerceiveBlock(initialTip);
             var peersWithChainStatusAndDiff =
-                (await DialToExistingPeers(dialTimeout, cancellationToken))
+                (await DialToExistingPeers(dialTimeout, max, cancellationToken))
                 .Where(
                     pp =>
                     {

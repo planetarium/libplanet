@@ -28,79 +28,123 @@ namespace Libplanet.Net
 
         internal AsyncAutoResetEvent ProcessFillBlocksFinished { get; } = new AsyncAutoResetEvent();
 
-        private async Task ProcessFillBlocks(
+        /// <summary>
+        /// Fill blocks from the <see cref="BoundPeer"/>s in the
+        /// <see cref="Swarm{T}.RoutingTable"/>.
+        /// </summary>
+        /// <param name="timeout">
+        /// The timeout value for the request to get the tip of the block.
+        /// </param>
+        /// <param name="maximumPollPeers">The maximum targets to send request to.</param>
+        /// <param name="cancellationToken">
+        /// A cancellation token used to propagate notification that this
+        /// operation should be canceled.</param>
+        /// <returns>An awaitable task without value.</returns>
+        public async Task ProcessFillBlocksAsync(
             TimeSpan timeout,
+            int maximumPollPeers,
+            CancellationToken cancellationToken)
+        {
+            List<(BoundPeer, IBlockExcerpt)> peersWithBlockExcerpt =
+                await GetPeersWithExcerpts(
+                    BlockChain.Tip, timeout, maximumPollPeers, cancellationToken);
+            peersWithBlockExcerpt = peersWithBlockExcerpt
+                .Where(pair => IsBlockNeeded(pair.Item2)).ToList();
+            await ProcessFillBlocksAsync(peersWithBlockExcerpt, cancellationToken);
+        }
+
+        private async Task ProcessFillBlocksAsync(
+            List<(BoundPeer, IBlockExcerpt)> peersWithBlockExcerpt,
+            CancellationToken cancellationToken)
+        {
+            if (!peersWithBlockExcerpt.Any())
+            {
+                _logger.Verbose("No any excerpts to process");
+                return;
+            }
+
+            try
+            {
+                _logger.Verbose(
+                    $"The chain before {nameof(ProcessFillBlocksAsync)} : " +
+                    "{Id} #{Index} {Hash}",
+                    BlockChain.Id,
+                    BlockChain.Tip.Index,
+                    BlockChain.Tip.Hash);
+                var renderSwap = await SyncBlocksAsync(
+                    peersWithBlockExcerpt,
+                    BlockChain,
+                    null,
+                    false,
+                    true,
+                    cancellationToken);
+                BroadcastBlock(BlockChain.Tip);
+                renderSwap();
+
+                // FIXME: Should add new event handler that indicates rendering has finished,
+                // and move these events before BroadcastBlock()
+                BlockReceived.Set();
+                BlockAppended.Set();
+            }
+            catch (Exception e)
+            {
+                var msg =
+                    $"Unexpected exception occured during {nameof(ProcessFillBlocksAsync)}. {{e}}";
+                _logger.Error(e, msg, e);
+                FillBlocksAsyncFailed.Set();
+            }
+            finally
+            {
+                foreach (var demand in BlockDemands.Values)
+                {
+                    if (!IsDemandNeeded(demand.Peer, demand.Header))
+                    {
+                        BlockDemands.TryRemove(demand.Peer, out _);
+                    }
+                }
+
+                ProcessFillBlocksFinished.Set();
+            }
+        }
+
+        private async Task FillBlocksAsync(
+            TimeSpan timeout,
+            TimeSpan pollInterval,
+            int maximumPollPeers,
             CancellationToken cancellationToken
         )
         {
-            var sessionRandom = new Random();
+            var timeTaken = TimeSpan.Zero;
+            var checkInterval = TimeSpan.FromMilliseconds(100);
             while (!cancellationToken.IsCancellationRequested)
             {
-                if (!BlockDemands.Any())
+                if (BlockDemands.Any())
                 {
-                    await Task.Delay(100, cancellationToken);
+                    _logger.Debug(
+                        "List of BlockDemands: {@List}",
+                        BlockDemands.Values.Select(
+                            demand =>
+                                $"({demand.Peer.Address}: " +
+                                $"#{demand.Header.Index} {demand.Header.Hash.ToString()})"));
+                    List<(BoundPeer, IBlockExcerpt)> peersWithBlockExcerpt = BlockDemands.Values
+                        .Select(demand => (demand.Peer, (IBlockExcerpt)demand.Header)).ToList();
+                    await ProcessFillBlocksAsync(peersWithBlockExcerpt, cancellationToken);
+                }
+                else if (timeTaken > pollInterval)
+                {
+                    await ProcessFillBlocksAsync(timeout, maximumPollPeers, cancellationToken);
+                }
+                else
+                {
+                    await Task.Delay(checkInterval, cancellationToken);
+                    timeTaken += checkInterval;
                     continue;
                 }
 
-                int sessionId = sessionRandom.Next();
-                _logger.Debug(
-                    "List of BlockDemands: {@List}",
-                    BlockDemands.Values.Select(
-                        demand =>
-                            $"({demand.Peer.Address}: " +
-                            $"#{demand.Header.Index} {demand.Header.Hash.ToString()})"));
-
-                List<(BoundPeer, IBlockExcerpt)> peersWithBlockExcerpt =
-                    BlockDemands.Values
-                        .Select(demand => (demand.Peer, (IBlockExcerpt)demand.Header)).ToList();
-
-                try
-                {
-                    _logger.Verbose(
-                        $"{{Id}}: The chain before {nameof(ProcessFillBlocks)} : " +
-                        "{Id} #{Index} {Hash}",
-                        sessionId,
-                        BlockChain.Id,
-                        BlockChain.Tip.Index,
-                        BlockChain.Tip.Hash);
-                    var renderSwap = await SyncBlocksAsync(
-                        peersWithBlockExcerpt,
-                        BlockChain,
-                        null,
-                        false,
-                        true,
-                        cancellationToken);
-
-                    BroadcastBlock(BlockChain.Tip);
-                    renderSwap();
-
-                    // FIXME: Should add new event handler that indicates rendering has finished,
-                    // and move these events before BroadcastBlock()
-                    BlockReceived.Set();
-                    BlockAppended.Set();
-                }
-                catch (Exception e)
-                {
-                    var msg = $"Unexpected exception occured during {nameof(ProcessFillBlocks)}. " +
-                              "{e}";
-                    _logger.Error(e, msg, e);
-                    FillBlocksAsyncFailed.Set();
-                }
-                finally
-                {
-                    foreach (var demand in BlockDemands.Values)
-                    {
-                        if (!IsDemandNeeded(demand.Peer, demand.Header))
-                        {
-                            BlockDemands.TryRemove(demand.Peer, out _);
-                        }
-                    }
-
-                    ProcessFillBlocksFinished.Set();
-                }
+                timeTaken = TimeSpan.Zero;
             }
 
-            _logger.Debug($"{nameof(ProcessFillBlocks)} has finished.");
+            _logger.Debug($"{nameof(FillBlocksAsync)} has finished.");
         }
 
 #pragma warning disable MEN003

@@ -100,5 +100,15 @@ namespace Libplanet.Net
         /// </summary>
         /// <seealso cref="RoutingTable"/>
         public int BucketSize { get; set; } = Kademlia.BucketSize;
+
+        /// <summary>
+        /// The interval between block polling.
+        /// </summary>
+        public TimeSpan PollInterval { get; set; } = TimeSpan.FromSeconds(15);
+
+        /// <summary>
+        /// The maximum number of peers to poll blocks.
+        /// </summary>
+        public int MaximumPollPeers { get; set; } = int.MaxValue;
     }
 }
