@@ -4,7 +4,11 @@ Libplanet changelog
 Version 0.14.1
 --------------
 
-To be released.
+Released on Aug 18, 2021.
+
+  - Added additional tags to logging.  [[#1433]]
+
+[#1433]: https://github.com/planetarium/libplanet/pull/1433
 
 
 Version 0.14.0
