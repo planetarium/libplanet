@@ -4,23 +4,11 @@ Libplanet changelog
 Version 0.15.0
 --------------
 
-To be released.
+Released on August 18, 2021.
 
 ### Backward-incompatible API changes
 
  -  Added `IRandom.Seed` property.  [[#1431]]
-
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
-### Added APIs
-
-### Behavioral changes
-
-### Bug fixes
-
-### CLI tools
 
 [#1431]: https://github.com/planetarium/libplanet/pull/1431
 
@@ -28,7 +16,7 @@ To be released.
 Version 0.14.1
 --------------
 
-Released on Aug 18, 2021.
+Released on August 18, 2021.
 
   - Added additional tags to logging.  [[#1433]]
 
