@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -17,10 +16,10 @@ namespace Libplanet.Net
     {
         /// <summary>
         /// Information of <see cref="Swarm{T}"/>'s demand for new blocks.
-        /// It is null when the <see cref="Swarm{T}"/> does not have any block to demand.
-        /// <seealso cref="BlockDemand"/>
+        /// It is empty when the <see cref="Swarm{T}"/> does not have any block to demand.
+        /// <seealso cref="BlockDemandTable{T}"/>
         /// </summary>
-        public ConcurrentDictionary<BoundPeer, BlockDemand> BlockDemands { get; private set; }
+        public BlockDemandTable<T> BlockDemandTable { get; private set; }
 
         internal AsyncAutoResetEvent FillBlocksAsyncStarted { get; } = new AsyncAutoResetEvent();
 
@@ -40,7 +39,7 @@ namespace Libplanet.Net
         /// A cancellation token used to propagate notification that this
         /// operation should be canceled.</param>
         /// <returns>An awaitable task without value.</returns>
-        public async Task ProcessFillBlocksAsync(
+        internal async Task ProcessFillBlocksAsync(
             TimeSpan timeout,
             int maximumPollPeers,
             CancellationToken cancellationToken)
@@ -71,7 +70,7 @@ namespace Libplanet.Net
                     BlockChain.Id,
                     BlockChain.Tip.Index,
                     BlockChain.Tip.Hash);
-                var renderSwap = await SyncBlocksAsync(
+                System.Action renderSwap = await SyncBlocksAsync(
                     peersWithBlockExcerpt,
                     BlockChain,
                     null,
@@ -95,14 +94,7 @@ namespace Libplanet.Net
             }
             finally
             {
-                foreach (var demand in BlockDemands.Values)
-                {
-                    if (!IsDemandNeeded(demand.Peer, demand.Header))
-                    {
-                        BlockDemands.TryRemove(demand.Peer, out _);
-                    }
-                }
-
+                BlockDemandTable.Cleanup(BlockChain, IsBlockNeeded);
                 ProcessFillBlocksFinished.Set();
             }
         }
@@ -118,17 +110,13 @@ namespace Libplanet.Net
             var checkInterval = TimeSpan.FromMilliseconds(100);
             while (!cancellationToken.IsCancellationRequested)
             {
-                if (BlockDemands.Any())
+                if (BlockDemandTable.Any())
                 {
-                    _logger.Debug(
-                        "List of BlockDemands: {@List}",
-                        BlockDemands.Values.Select(
-                            demand =>
-                                $"({demand.Peer.Address}: " +
-                                $"#{demand.Header.Index} {demand.Header.Hash.ToString()})"));
-                    List<(BoundPeer, IBlockExcerpt)> peersWithBlockExcerpt = BlockDemands.Values
-                        .Select(demand => (demand.Peer, (IBlockExcerpt)demand.Header)).ToList();
-                    await ProcessFillBlocksAsync(peersWithBlockExcerpt, cancellationToken);
+                    List<(BoundPeer, IBlockExcerpt)> peersWithExcerpt = BlockDemandTable.Demands
+                        .Select(pair => (pair.Key, (IBlockExcerpt)pair.Value)).ToList();
+                    await ProcessFillBlocksAsync(
+                        peersWithExcerpt,
+                        cancellationToken);
                 }
                 else if (timeTaken > pollInterval)
                 {
@@ -263,7 +251,7 @@ namespace Libplanet.Net
                 await foreach (
                     var pair in completedBlocks.WithCancellation(blockDownloadCts.Token))
                 {
-                    pair.Deconstruct(out Block<T> block, out BoundPeer sourcePeer);
+                    (Block<T> block, BoundPeer sourcePeer) = pair;
                     _logger.Verbose(
                         "Got #{BlockIndex} {BlockHash} from {Peer}.",
                         block.Index,

@@ -1,5 +1,6 @@
 #nullable enable
 using System;
+using System.Numerics;
 using Libplanet.Blocks;
 
 namespace Libplanet.Net
@@ -7,7 +8,7 @@ namespace Libplanet.Net
     /// <summary>
     /// Struct represents <see cref="Swarm{T}"/>'s block demand status.
     /// </summary>
-    public readonly struct BlockDemand
+    public readonly struct BlockDemand : IBlockExcerpt
     {
         /// <summary>
         /// The <see cref="BlockHeader"/> of the block to request.
@@ -31,5 +32,13 @@ namespace Libplanet.Net
             Peer = peer;
             Timestamp = timestamp;
         }
+
+        public int ProtocolVersion => Header.ProtocolVersion;
+
+        public long Index => Header.Index;
+
+        public BlockHash Hash => ((IBlockExcerpt)Header).Hash;
+
+        public BigInteger TotalDifficulty => Header.TotalDifficulty;
     }
 }

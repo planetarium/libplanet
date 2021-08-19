@@ -144,22 +144,17 @@ namespace Libplanet.Net
                 return;
             }
 
-            if (IsDemandNeeded(peer, header))
+            if (!BlockDemandTable.Add(
+                BlockChain,
+                IsBlockNeeded,
+                new BlockDemand(header, peer, DateTimeOffset.UtcNow)))
             {
-                _logger.Debug(
-                    "BlockDemand #{index} {blockHash} from {peer}.",
-                    header.Index,
-                    ByteUtil.Hex(header.Hash),
-                    peer);
-                BlockDemands[peer] = new BlockDemand(header, peer, DateTimeOffset.UtcNow);
-            }
-            else
-            {
-                long? demandIndex = BlockDemands.ContainsKey(peer)
-                    ? BlockDemands[peer].Header.Index
+                IDictionary<BoundPeer, BlockDemand> demands = BlockDemandTable.Demands;
+                long? demandIndex = demands.ContainsKey(peer)
+                    ? demands[peer].Header.Index
                     : (long?)null;
-                BigInteger? demandDifficulty = BlockDemands.ContainsKey(peer)
-                    ? BlockDemands[peer].Header.TotalDifficulty
+                BigInteger? demandDifficulty = demands.ContainsKey(peer)
+                    ? demands[peer].Header.TotalDifficulty
                     : (BigInteger?)null;
                 _logger.Debug(
                     "No blocks are required for peer {Peer} " +

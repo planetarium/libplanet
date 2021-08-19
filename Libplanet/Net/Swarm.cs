@@ -222,7 +222,7 @@ namespace Libplanet.Net
                 await Transport.StopAsync(waitFor, cancellationToken);
             }
 
-            BlockDemands = new ConcurrentDictionary<BoundPeer, BlockDemand>();
+            BlockDemandTable = new BlockDemandTable<T>(Options.BlockDemandLifespan);
             _logger.Debug($"{nameof(Swarm<T>)} stopped.");
         }
 
@@ -305,7 +305,7 @@ namespace Libplanet.Net
             _cancellationToken = CancellationTokenSource.CreateLinkedTokenSource(
                     _workerCancellationTokenSource.Token, cancellationToken
                 ).Token;
-            BlockDemands = new ConcurrentDictionary<BoundPeer, BlockDemand>();
+            BlockDemandTable = new BlockDemandTable<T>(Options.BlockDemandLifespan);
             _demandTxIds = new ConcurrentDictionary<TxId, BoundPeer>();
             try
             {
@@ -1173,32 +1173,6 @@ namespace Libplanet.Net
             IComparer<BlockPerception> canonComparer = BlockChain.Policy.CanonicalChainComparer;
             var perception = BlockChain.PerceiveBlock(target);
             return canonComparer.Compare(perception, BlockChain.PerceiveBlock(BlockChain.Tip)) > 0;
-        }
-
-        private bool IsDemandNeeded(BoundPeer peer, BlockHeader target)
-        {
-            IComparer<BlockPerception> canonComparer = BlockChain.Policy.CanonicalChainComparer;
-            var perception = BlockChain.PerceiveBlock(target);
-            bool needed =
-                IsBlockNeeded(target) &&
-                (!BlockDemands.ContainsKey(peer) ||
-                (!(BlockDemands[peer] is var demand)
-                    || (demand.Timestamp + Options.BlockDemandLifespan <
-                        DateTimeOffset.UtcNow && !demand.Peer.Equals(peer))
-                    || canonComparer.Compare(
-                            BlockChain.PerceiveBlock(demand.Header, demand.Timestamp),
-                            perception
-                        ) < 0));
-            _logger.Verbose(
-                "Determining if a demand is actually needed: {Need}\nDemand: {Demand}" +
-                "\nTip: {Tip}\nBlockDemand: {BlockDemand}\nCanonicalChainComparer: {Comparer}",
-                needed ? "Need" : "Not need",
-                target.ToExcerptString(),
-                BlockChain.Tip.ToExcerptString(),
-                BlockDemands.ContainsKey(peer) ? BlockDemands[peer].Header.ToExcerptString() : null,
-                canonComparer
-            );
-            return needed;
         }
 
         private async Task ProcessFillTxs(CancellationToken cancellationToken)
