@@ -25,6 +25,16 @@ To be released.
 [#1431]: https://github.com/planetarium/libplanet/pull/1431
 
 
+Version 0.14.1
+--------------
+
+Released on Aug 18, 2021.
+
+  - Added additional tags to logging.  [[#1433]]
+
+[#1433]: https://github.com/planetarium/libplanet/pull/1433
+
+
 Version 0.14.0
 --------------
 
