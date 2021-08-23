@@ -89,7 +89,7 @@ namespace Libplanet.Explorer.Queries
             Address? signer, Address? involved, bool desc, long offset, int? limit)
         {
             Block<T> tip = Chain.Tip;
-            long tipIndex = tip?.Index ?? -1;
+            long tipIndex = tip.Index;
 
             if (offset < 0)
             {

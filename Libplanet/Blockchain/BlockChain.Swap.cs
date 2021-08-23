@@ -70,7 +70,7 @@ namespace Libplanet.Blockchain
                     branchpoint
                 );
 
-                Block<T> oldTip = Tip ?? Genesis, newTip = other.Tip ?? other.Genesis;
+                Block<T> oldTip = Tip, newTip = other.Tip;
 
                 ImmutableList<Block<T>> rewindPath =
                     GetRewindPath(this, branchpoint.Hash);
@@ -431,27 +431,24 @@ namespace Libplanet.Blockchain
         /// </returns>
         private static Block<T> FindTopCommon(BlockChain<T> c1, BlockChain<T> c2)
         {
-            if (!(c1.Tip is null))
+            long shorterHeight = Math.Min(c1.Count, c2.Count) - 1;
+            Block<T> b1 = c1[shorterHeight], b2 = c2[shorterHeight];
+
+            while (true)
             {
-                long shorterHeight = Math.Min(c1.Count, c2.Count) - 1;
-                Block<T> b1 = c1[shorterHeight], b2 = c2[shorterHeight];
-
-                while (true)
+                if (b1.Equals(b2))
                 {
-                    if (b1.Equals(b2))
-                    {
-                        return b1;
-                    }
+                    return b1;
+                }
 
-                    if (b1.PreviousHash is { } b1ph && b2.PreviousHash is { } b2ph)
-                    {
-                        b1 = c1[b1ph];
-                        b2 = c2[b2ph];
-                    }
-                    else
-                    {
-                        break;
-                    }
+                if (b1.PreviousHash is { } b1ph && b2.PreviousHash is { } b2ph)
+                {
+                    b1 = c1[b1ph];
+                    b2 = c2[b2ph];
+                }
+                else
+                {
+                    break;
                 }
             }
 
