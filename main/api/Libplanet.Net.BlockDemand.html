@@ -76,6 +76,10 @@
   <div class="markdown level0 summary"><p>Struct represents <a class="xref" href="Libplanet.Net.Swarm-1.html">Swarm&lt;T&gt;</a>'s block demand status.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Libplanet.Blocks.IBlockExcerpt.html">IBlockExcerpt</a></div>
+  </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
@@ -101,7 +105,7 @@
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
   <h5 id="Libplanet_Net_BlockDemand_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public struct BlockDemand</code></pre>
+    <pre><code class="lang-csharp hljs">public struct BlockDemand : IBlockExcerpt</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -110,7 +114,7 @@
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_BlockDemand__ctor_Libplanet_Blocks_BlockHeader_Libplanet_Net_BoundPeer_System_DateTimeOffset_.md&amp;value=---%0Auid%3A%20Libplanet.Net.BlockDemand.%23ctor(Libplanet.Blocks.BlockHeader%2CLibplanet.Net.BoundPeer%2CSystem.DateTimeOffset)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Net/BlockDemand.cs/#L28">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Net/BlockDemand.cs/#L29">View Source</a>
   </span>
   <a id="Libplanet_Net_BlockDemand__ctor_" data-uid="Libplanet.Net.BlockDemand.#ctor*"></a>
   <h4 id="Libplanet_Net_BlockDemand__ctor_Libplanet_Blocks_BlockHeader_Libplanet_Net_BoundPeer_System_DateTimeOffset_" data-uid="Libplanet.Net.BlockDemand.#ctor(Libplanet.Blocks.BlockHeader,Libplanet.Net.BoundPeer,System.DateTimeOffset)">BlockDemand(BlockHeader, BoundPeer, DateTimeOffset)</h4>
@@ -154,7 +158,7 @@
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_BlockDemand_Header.md&amp;value=---%0Auid%3A%20Libplanet.Net.BlockDemand.Header%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Net/BlockDemand.cs/#L15">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Net/BlockDemand.cs/#L16">View Source</a>
   </span>
   <h4 id="Libplanet_Net_BlockDemand_Header" data-uid="Libplanet.Net.BlockDemand.Header">Header</h4>
   <div class="markdown level1 summary"><p>The <a class="xref" href="Libplanet.Blocks.BlockHeader.html">BlockHeader</a> of the block to request.</p>
@@ -184,7 +188,7 @@
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_BlockDemand_Peer.md&amp;value=---%0Auid%3A%20Libplanet.Net.BlockDemand.Peer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Net/BlockDemand.cs/#L20">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Net/BlockDemand.cs/#L21">View Source</a>
   </span>
   <h4 id="Libplanet_Net_BlockDemand_Peer" data-uid="Libplanet.Net.BlockDemand.Peer">Peer</h4>
   <div class="markdown level1 summary"><p>The <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a> to request block hash from.</p>
@@ -214,7 +218,7 @@
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_BlockDemand_Timestamp.md&amp;value=---%0Auid%3A%20Libplanet.Net.BlockDemand.Timestamp%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Net/BlockDemand.cs/#L26">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Net/BlockDemand.cs/#L27">View Source</a>
   </span>
   <h4 id="Libplanet_Net_BlockDemand_Timestamp" data-uid="Libplanet.Net.BlockDemand.Timestamp">Timestamp</h4>
   <div class="markdown level1 summary"><p>The <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a> when
@@ -240,6 +244,136 @@ the corresponding block information was received.</p>
       </tr>
     </tbody>
   </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_BlockDemand_Hash.md&amp;value=---%0Auid%3A%20Libplanet.Net.BlockDemand.Hash%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Net/BlockDemand.cs/#L40">View Source</a>
+  </span>
+  <a id="Libplanet_Net_BlockDemand_Hash_" data-uid="Libplanet.Net.BlockDemand.Hash*"></a>
+  <h4 id="Libplanet_Net_BlockDemand_Hash" data-uid="Libplanet.Net.BlockDemand.Hash">Hash</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BlockHash Hash { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_BlockDemand_Index.md&amp;value=---%0Auid%3A%20Libplanet.Net.BlockDemand.Index%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Net/BlockDemand.cs/#L38">View Source</a>
+  </span>
+  <a id="Libplanet_Net_BlockDemand_Index_" data-uid="Libplanet.Net.BlockDemand.Index*"></a>
+  <h4 id="Libplanet_Net_BlockDemand_Index" data-uid="Libplanet.Net.BlockDemand.Index">Index</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long Index { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_BlockDemand_ProtocolVersion.md&amp;value=---%0Auid%3A%20Libplanet.Net.BlockDemand.ProtocolVersion%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Net/BlockDemand.cs/#L36">View Source</a>
+  </span>
+  <a id="Libplanet_Net_BlockDemand_ProtocolVersion_" data-uid="Libplanet.Net.BlockDemand.ProtocolVersion*"></a>
+  <h4 id="Libplanet_Net_BlockDemand_ProtocolVersion" data-uid="Libplanet.Net.BlockDemand.ProtocolVersion">ProtocolVersion</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int ProtocolVersion { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_BlockDemand_TotalDifficulty.md&amp;value=---%0Auid%3A%20Libplanet.Net.BlockDemand.TotalDifficulty%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Net/BlockDemand.cs/#L42">View Source</a>
+  </span>
+  <a id="Libplanet_Net_BlockDemand_TotalDifficulty_" data-uid="Libplanet.Net.BlockDemand.TotalDifficulty*"></a>
+  <h4 id="Libplanet_Net_BlockDemand_TotalDifficulty" data-uid="Libplanet.Net.BlockDemand.TotalDifficulty">TotalDifficulty</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BigInteger TotalDifficulty { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.numerics.biginteger">BigInteger</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Libplanet.Blocks.IBlockExcerpt.html">IBlockExcerpt</a>
+  </div>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Libplanet.Blocks.BlockExcerpt.html#Libplanet_Blocks_BlockExcerpt_ToExcerptString_Libplanet_Blocks_IBlockExcerpt_">BlockExcerpt.ToExcerptString(IBlockExcerpt)</a>
+  </div>
 </article>
           </div>
           
@@ -251,7 +385,7 @@ the corresponding block information was received.</p>
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_BlockDemand.md&amp;value=---%0Auid%3A%20Libplanet.Net.BlockDemand%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Net/BlockDemand.cs/#L10" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Net/BlockDemand.cs/#L11" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

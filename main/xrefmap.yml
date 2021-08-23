@@ -9909,24 +9909,172 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.BlockDemand.BlockDemand
   nameWithType: BlockDemand.BlockDemand
+- uid: Libplanet.Net.BlockDemand.Hash
+  name: Hash
+  href: api/Libplanet.Net.BlockDemand.html#Libplanet_Net_BlockDemand_Hash
+  commentId: P:Libplanet.Net.BlockDemand.Hash
+  fullName: Libplanet.Net.BlockDemand.Hash
+  nameWithType: BlockDemand.Hash
+- uid: Libplanet.Net.BlockDemand.Hash*
+  name: Hash
+  href: api/Libplanet.Net.BlockDemand.html#Libplanet_Net_BlockDemand_Hash_
+  commentId: Overload:Libplanet.Net.BlockDemand.Hash
+  isSpec: "True"
+  fullName: Libplanet.Net.BlockDemand.Hash
+  nameWithType: BlockDemand.Hash
 - uid: Libplanet.Net.BlockDemand.Header
   name: Header
   href: api/Libplanet.Net.BlockDemand.html#Libplanet_Net_BlockDemand_Header
   commentId: F:Libplanet.Net.BlockDemand.Header
   fullName: Libplanet.Net.BlockDemand.Header
   nameWithType: BlockDemand.Header
+- uid: Libplanet.Net.BlockDemand.Index
+  name: Index
+  href: api/Libplanet.Net.BlockDemand.html#Libplanet_Net_BlockDemand_Index
+  commentId: P:Libplanet.Net.BlockDemand.Index
+  fullName: Libplanet.Net.BlockDemand.Index
+  nameWithType: BlockDemand.Index
+- uid: Libplanet.Net.BlockDemand.Index*
+  name: Index
+  href: api/Libplanet.Net.BlockDemand.html#Libplanet_Net_BlockDemand_Index_
+  commentId: Overload:Libplanet.Net.BlockDemand.Index
+  isSpec: "True"
+  fullName: Libplanet.Net.BlockDemand.Index
+  nameWithType: BlockDemand.Index
 - uid: Libplanet.Net.BlockDemand.Peer
   name: Peer
   href: api/Libplanet.Net.BlockDemand.html#Libplanet_Net_BlockDemand_Peer
   commentId: F:Libplanet.Net.BlockDemand.Peer
   fullName: Libplanet.Net.BlockDemand.Peer
   nameWithType: BlockDemand.Peer
+- uid: Libplanet.Net.BlockDemand.ProtocolVersion
+  name: ProtocolVersion
+  href: api/Libplanet.Net.BlockDemand.html#Libplanet_Net_BlockDemand_ProtocolVersion
+  commentId: P:Libplanet.Net.BlockDemand.ProtocolVersion
+  fullName: Libplanet.Net.BlockDemand.ProtocolVersion
+  nameWithType: BlockDemand.ProtocolVersion
+- uid: Libplanet.Net.BlockDemand.ProtocolVersion*
+  name: ProtocolVersion
+  href: api/Libplanet.Net.BlockDemand.html#Libplanet_Net_BlockDemand_ProtocolVersion_
+  commentId: Overload:Libplanet.Net.BlockDemand.ProtocolVersion
+  isSpec: "True"
+  fullName: Libplanet.Net.BlockDemand.ProtocolVersion
+  nameWithType: BlockDemand.ProtocolVersion
 - uid: Libplanet.Net.BlockDemand.Timestamp
   name: Timestamp
   href: api/Libplanet.Net.BlockDemand.html#Libplanet_Net_BlockDemand_Timestamp
   commentId: F:Libplanet.Net.BlockDemand.Timestamp
   fullName: Libplanet.Net.BlockDemand.Timestamp
   nameWithType: BlockDemand.Timestamp
+- uid: Libplanet.Net.BlockDemand.TotalDifficulty
+  name: TotalDifficulty
+  href: api/Libplanet.Net.BlockDemand.html#Libplanet_Net_BlockDemand_TotalDifficulty
+  commentId: P:Libplanet.Net.BlockDemand.TotalDifficulty
+  fullName: Libplanet.Net.BlockDemand.TotalDifficulty
+  nameWithType: BlockDemand.TotalDifficulty
+- uid: Libplanet.Net.BlockDemand.TotalDifficulty*
+  name: TotalDifficulty
+  href: api/Libplanet.Net.BlockDemand.html#Libplanet_Net_BlockDemand_TotalDifficulty_
+  commentId: Overload:Libplanet.Net.BlockDemand.TotalDifficulty
+  isSpec: "True"
+  fullName: Libplanet.Net.BlockDemand.TotalDifficulty
+  nameWithType: BlockDemand.TotalDifficulty
+- uid: Libplanet.Net.BlockDemandTable`1
+  name: BlockDemandTable<T>
+  href: api/Libplanet.Net.BlockDemandTable-1.html
+  commentId: T:Libplanet.Net.BlockDemandTable`1
+  name.vb: BlockDemandTable(Of T)
+  fullName: Libplanet.Net.BlockDemandTable<T>
+  fullName.vb: Libplanet.Net.BlockDemandTable(Of T)
+  nameWithType: BlockDemandTable<T>
+  nameWithType.vb: BlockDemandTable(Of T)
+- uid: Libplanet.Net.BlockDemandTable`1.#ctor(System.TimeSpan)
+  name: BlockDemandTable(TimeSpan)
+  href: api/Libplanet.Net.BlockDemandTable-1.html#Libplanet_Net_BlockDemandTable_1__ctor_System_TimeSpan_
+  commentId: M:Libplanet.Net.BlockDemandTable`1.#ctor(System.TimeSpan)
+  fullName: Libplanet.Net.BlockDemandTable<T>.BlockDemandTable(System.TimeSpan)
+  fullName.vb: Libplanet.Net.BlockDemandTable(Of T).BlockDemandTable(System.TimeSpan)
+  nameWithType: BlockDemandTable<T>.BlockDemandTable(TimeSpan)
+  nameWithType.vb: BlockDemandTable(Of T).BlockDemandTable(TimeSpan)
+- uid: Libplanet.Net.BlockDemandTable`1.#ctor*
+  name: BlockDemandTable
+  href: api/Libplanet.Net.BlockDemandTable-1.html#Libplanet_Net_BlockDemandTable_1__ctor_
+  commentId: Overload:Libplanet.Net.BlockDemandTable`1.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Net.BlockDemandTable<T>.BlockDemandTable
+  fullName.vb: Libplanet.Net.BlockDemandTable(Of T).BlockDemandTable
+  nameWithType: BlockDemandTable<T>.BlockDemandTable
+  nameWithType.vb: BlockDemandTable(Of T).BlockDemandTable
+- uid: Libplanet.Net.BlockDemandTable`1.Add(Libplanet.Blockchain.BlockChain{`0},System.Func{Libplanet.Blocks.IBlockExcerpt,System.Boolean},Libplanet.Net.BlockDemand)
+  name: Add(BlockChain<T>, Func<IBlockExcerpt, Boolean>, BlockDemand)
+  href: api/Libplanet.Net.BlockDemandTable-1.html#Libplanet_Net_BlockDemandTable_1_Add_Libplanet_Blockchain_BlockChain__0__System_Func_Libplanet_Blocks_IBlockExcerpt_System_Boolean__Libplanet_Net_BlockDemand_
+  commentId: M:Libplanet.Net.BlockDemandTable`1.Add(Libplanet.Blockchain.BlockChain{`0},System.Func{Libplanet.Blocks.IBlockExcerpt,System.Boolean},Libplanet.Net.BlockDemand)
+  name.vb: Add(BlockChain(Of T), Func(Of IBlockExcerpt, Boolean), BlockDemand)
+  fullName: Libplanet.Net.BlockDemandTable<T>.Add(Libplanet.Blockchain.BlockChain<T>, System.Func<Libplanet.Blocks.IBlockExcerpt, System.Boolean>, Libplanet.Net.BlockDemand)
+  fullName.vb: Libplanet.Net.BlockDemandTable(Of T).Add(Libplanet.Blockchain.BlockChain(Of T), System.Func(Of Libplanet.Blocks.IBlockExcerpt, System.Boolean), Libplanet.Net.BlockDemand)
+  nameWithType: BlockDemandTable<T>.Add(BlockChain<T>, Func<IBlockExcerpt, Boolean>, BlockDemand)
+  nameWithType.vb: BlockDemandTable(Of T).Add(BlockChain(Of T), Func(Of IBlockExcerpt, Boolean), BlockDemand)
+- uid: Libplanet.Net.BlockDemandTable`1.Add*
+  name: Add
+  href: api/Libplanet.Net.BlockDemandTable-1.html#Libplanet_Net_BlockDemandTable_1_Add_
+  commentId: Overload:Libplanet.Net.BlockDemandTable`1.Add
+  isSpec: "True"
+  fullName: Libplanet.Net.BlockDemandTable<T>.Add
+  fullName.vb: Libplanet.Net.BlockDemandTable(Of T).Add
+  nameWithType: BlockDemandTable<T>.Add
+  nameWithType.vb: BlockDemandTable(Of T).Add
+- uid: Libplanet.Net.BlockDemandTable`1.Any
+  name: Any()
+  href: api/Libplanet.Net.BlockDemandTable-1.html#Libplanet_Net_BlockDemandTable_1_Any
+  commentId: M:Libplanet.Net.BlockDemandTable`1.Any
+  fullName: Libplanet.Net.BlockDemandTable<T>.Any()
+  fullName.vb: Libplanet.Net.BlockDemandTable(Of T).Any()
+  nameWithType: BlockDemandTable<T>.Any()
+  nameWithType.vb: BlockDemandTable(Of T).Any()
+- uid: Libplanet.Net.BlockDemandTable`1.Any*
+  name: Any
+  href: api/Libplanet.Net.BlockDemandTable-1.html#Libplanet_Net_BlockDemandTable_1_Any_
+  commentId: Overload:Libplanet.Net.BlockDemandTable`1.Any
+  isSpec: "True"
+  fullName: Libplanet.Net.BlockDemandTable<T>.Any
+  fullName.vb: Libplanet.Net.BlockDemandTable(Of T).Any
+  nameWithType: BlockDemandTable<T>.Any
+  nameWithType.vb: BlockDemandTable(Of T).Any
+- uid: Libplanet.Net.BlockDemandTable`1.Cleanup(Libplanet.Blockchain.BlockChain{`0},System.Func{Libplanet.Blocks.IBlockExcerpt,System.Boolean})
+  name: Cleanup(BlockChain<T>, Func<IBlockExcerpt, Boolean>)
+  href: api/Libplanet.Net.BlockDemandTable-1.html#Libplanet_Net_BlockDemandTable_1_Cleanup_Libplanet_Blockchain_BlockChain__0__System_Func_Libplanet_Blocks_IBlockExcerpt_System_Boolean__
+  commentId: M:Libplanet.Net.BlockDemandTable`1.Cleanup(Libplanet.Blockchain.BlockChain{`0},System.Func{Libplanet.Blocks.IBlockExcerpt,System.Boolean})
+  name.vb: Cleanup(BlockChain(Of T), Func(Of IBlockExcerpt, Boolean))
+  fullName: Libplanet.Net.BlockDemandTable<T>.Cleanup(Libplanet.Blockchain.BlockChain<T>, System.Func<Libplanet.Blocks.IBlockExcerpt, System.Boolean>)
+  fullName.vb: Libplanet.Net.BlockDemandTable(Of T).Cleanup(Libplanet.Blockchain.BlockChain(Of T), System.Func(Of Libplanet.Blocks.IBlockExcerpt, System.Boolean))
+  nameWithType: BlockDemandTable<T>.Cleanup(BlockChain<T>, Func<IBlockExcerpt, Boolean>)
+  nameWithType.vb: BlockDemandTable(Of T).Cleanup(BlockChain(Of T), Func(Of IBlockExcerpt, Boolean))
+- uid: Libplanet.Net.BlockDemandTable`1.Cleanup*
+  name: Cleanup
+  href: api/Libplanet.Net.BlockDemandTable-1.html#Libplanet_Net_BlockDemandTable_1_Cleanup_
+  commentId: Overload:Libplanet.Net.BlockDemandTable`1.Cleanup
+  isSpec: "True"
+  fullName: Libplanet.Net.BlockDemandTable<T>.Cleanup
+  fullName.vb: Libplanet.Net.BlockDemandTable(Of T).Cleanup
+  nameWithType: BlockDemandTable<T>.Cleanup
+  nameWithType.vb: BlockDemandTable(Of T).Cleanup
+- uid: Libplanet.Net.BlockDemandTable`1.Demands
+  name: Demands
+  href: api/Libplanet.Net.BlockDemandTable-1.html#Libplanet_Net_BlockDemandTable_1_Demands
+  commentId: P:Libplanet.Net.BlockDemandTable`1.Demands
+  fullName: Libplanet.Net.BlockDemandTable<T>.Demands
+  fullName.vb: Libplanet.Net.BlockDemandTable(Of T).Demands
+  nameWithType: BlockDemandTable<T>.Demands
+  nameWithType.vb: BlockDemandTable(Of T).Demands
+- uid: Libplanet.Net.BlockDemandTable`1.Demands*
+  name: Demands
+  href: api/Libplanet.Net.BlockDemandTable-1.html#Libplanet_Net_BlockDemandTable_1_Demands_
+  commentId: Overload:Libplanet.Net.BlockDemandTable`1.Demands
+  isSpec: "True"
+  fullName: Libplanet.Net.BlockDemandTable<T>.Demands
+  fullName.vb: Libplanet.Net.BlockDemandTable(Of T).Demands
+  nameWithType: BlockDemandTable<T>.Demands
+  nameWithType.vb: BlockDemandTable(Of T).Demands
 - uid: Libplanet.Net.BlockDownloadState
   name: BlockDownloadState
   href: api/Libplanet.Net.BlockDownloadState.html
@@ -11824,23 +11972,23 @@ references:
   fullName.vb: Libplanet.Net.Swarm(Of T).BlockChain
   nameWithType: Swarm<T>.BlockChain
   nameWithType.vb: Swarm(Of T).BlockChain
-- uid: Libplanet.Net.Swarm`1.BlockDemand
-  name: BlockDemand
-  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_BlockDemand
-  commentId: P:Libplanet.Net.Swarm`1.BlockDemand
-  fullName: Libplanet.Net.Swarm<T>.BlockDemand
-  fullName.vb: Libplanet.Net.Swarm(Of T).BlockDemand
-  nameWithType: Swarm<T>.BlockDemand
-  nameWithType.vb: Swarm(Of T).BlockDemand
-- uid: Libplanet.Net.Swarm`1.BlockDemand*
-  name: BlockDemand
-  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_BlockDemand_
-  commentId: Overload:Libplanet.Net.Swarm`1.BlockDemand
+- uid: Libplanet.Net.Swarm`1.BlockDemandTable
+  name: BlockDemandTable
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_BlockDemandTable
+  commentId: P:Libplanet.Net.Swarm`1.BlockDemandTable
+  fullName: Libplanet.Net.Swarm<T>.BlockDemandTable
+  fullName.vb: Libplanet.Net.Swarm(Of T).BlockDemandTable
+  nameWithType: Swarm<T>.BlockDemandTable
+  nameWithType.vb: Swarm(Of T).BlockDemandTable
+- uid: Libplanet.Net.Swarm`1.BlockDemandTable*
+  name: BlockDemandTable
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_BlockDemandTable_
+  commentId: Overload:Libplanet.Net.Swarm`1.BlockDemandTable
   isSpec: "True"
-  fullName: Libplanet.Net.Swarm<T>.BlockDemand
-  fullName.vb: Libplanet.Net.Swarm(Of T).BlockDemand
-  nameWithType: Swarm<T>.BlockDemand
-  nameWithType.vb: Swarm(Of T).BlockDemand
+  fullName: Libplanet.Net.Swarm<T>.BlockDemandTable
+  fullName.vb: Libplanet.Net.Swarm(Of T).BlockDemandTable
+  nameWithType: Swarm<T>.BlockDemandTable
+  nameWithType.vb: Swarm(Of T).BlockDemandTable
 - uid: Libplanet.Net.Swarm`1.BootstrapAsync(System.Collections.Generic.IEnumerable{Libplanet.Net.Peer},System.Double,System.Double,System.Int32,System.Threading.CancellationToken)
   name: BootstrapAsync(IEnumerable<Peer>, Double, Double, Int32, CancellationToken)
   href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_BootstrapAsync_System_Collections_Generic_IEnumerable_Libplanet_Net_Peer__System_Double_System_Double_System_Int32_System_Threading_CancellationToken_
@@ -12317,6 +12465,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.SwarmOptions.BucketSize
   nameWithType: SwarmOptions.BucketSize
+- uid: Libplanet.Net.SwarmOptions.MaximumPollPeers
+  name: MaximumPollPeers
+  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_MaximumPollPeers
+  commentId: P:Libplanet.Net.SwarmOptions.MaximumPollPeers
+  fullName: Libplanet.Net.SwarmOptions.MaximumPollPeers
+  nameWithType: SwarmOptions.MaximumPollPeers
+- uid: Libplanet.Net.SwarmOptions.MaximumPollPeers*
+  name: MaximumPollPeers
+  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_MaximumPollPeers_
+  commentId: Overload:Libplanet.Net.SwarmOptions.MaximumPollPeers
+  isSpec: "True"
+  fullName: Libplanet.Net.SwarmOptions.MaximumPollPeers
+  nameWithType: SwarmOptions.MaximumPollPeers
 - uid: Libplanet.Net.SwarmOptions.MaxTimeout
   name: MaxTimeout
   href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_MaxTimeout
@@ -12356,6 +12517,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.SwarmOptions.MinimumBroadcastTarget
   nameWithType: SwarmOptions.MinimumBroadcastTarget
+- uid: Libplanet.Net.SwarmOptions.PollInterval
+  name: PollInterval
+  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_PollInterval
+  commentId: P:Libplanet.Net.SwarmOptions.PollInterval
+  fullName: Libplanet.Net.SwarmOptions.PollInterval
+  nameWithType: SwarmOptions.PollInterval
+- uid: Libplanet.Net.SwarmOptions.PollInterval*
+  name: PollInterval
+  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_PollInterval_
+  commentId: Overload:Libplanet.Net.SwarmOptions.PollInterval
+  isSpec: "True"
+  fullName: Libplanet.Net.SwarmOptions.PollInterval
+  nameWithType: SwarmOptions.PollInterval
 - uid: Libplanet.Net.SwarmOptions.RecentStateRecvTimeout
   name: RecentStateRecvTimeout
   href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_RecentStateRecvTimeout

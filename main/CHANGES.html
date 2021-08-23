@@ -65,11 +65,28 @@
 <h2 id="version-0160">Version 0.16.0</h2>
 <p>To be released.</p>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
+<ul>
+<li>Removed <code>Swarm&lt;T&gt;.BlockDemand</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/1419">#1419</a>, <a href="https://github.com/planetarium/libplanet/pull/1425">#1425</a>]</li>
+</ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
+<ul>
+<li>Added <code>BlockDemandTable&lt;T&gt;</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/1419">#1419</a>, <a href="https://github.com/planetarium/libplanet/pull/1425">#1425</a>]</li>
+<li>Added <code>Swarm&lt;T&gt;.BlockDemandTable</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/1419">#1419</a>, <a href="https://github.com/planetarium/libplanet/pull/1425">#1425</a>]</li>
+<li>Added <code>SwarmOptions.PollInterval</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/1419">#1419</a>, <a href="https://github.com/planetarium/libplanet/pull/1425">#1425</a>]</li>
+<li>Added <code>SwarmOptions.MaximumPollPeers</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/1419">#1419</a>, <a href="https://github.com/planetarium/libplanet/pull/1425">#1425</a>]</li>
+</ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
+<ul>
+<li><code>Swarm&lt;T&gt;</code> became to sync blocks from multiple peers.  [<a href="https://github.com/planetarium/libplanet/issues/1419">#1419</a>, <a href="https://github.com/planetarium/libplanet/pull/1425">#1425</a>]</li>
+</ul>
 <h3 id="bug-fixes">Bug fixes</h3>
+<ul>
+<li>Fixed a bug where <code>Swarm&lt;T&gt;.PreloadAsync()</code> failed to sync blocks from
+the peer that has chain with higher difficulty, but lower index.
+[<a href="https://github.com/planetarium/libplanet/issues/1419">#1419</a>, <a href="https://github.com/planetarium/libplanet/pull/1425">#1425</a>]</li>
+</ul>
 <h3 id="cli-tools">CLI tools</h3>
 <h2 id="version-0150">Version 0.15.0</h2>
 <p>Released on August 18, 2021.</p>

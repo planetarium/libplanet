@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "Xo47ClYxuO27zvQo/Ii22Q=="
+          "hash": "evZEl3libkIUZGDaJWd3QA=="
         }
       },
       "is_incremental": false,
@@ -1617,7 +1617,19 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.BlockDemand.html",
-          "hash": "9NDC5m1N+JfXE6OQ+HiSpg=="
+          "hash": "xSDAOjvMmbc8WGUKeqNx3A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Net.BlockDemandTable-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Net.BlockDemandTable-1.html",
+          "hash": "+UDiobJ3dL9lyR9z7yBWJA=="
         }
       },
       "is_incremental": false,
@@ -1953,7 +1965,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Swarm-1.html",
-          "hash": "qs4IqjNT+wiR9OcbVmVQ1g=="
+          "hash": "d2zXwwy4/lGjU/vausUBjw=="
         }
       },
       "is_incremental": false,
@@ -1977,7 +1989,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.SwarmOptions.html",
-          "hash": "h4iR1Usg+jd9SHZg/ZuzFg=="
+          "hash": "v+hkLDIH37kl7IRTKP5lZA=="
         }
       },
       "is_incremental": false,
@@ -2049,7 +2061,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.html",
-          "hash": "Jn/dR5ZofMKcHPcutTgjZQ=="
+          "hash": "4qDj3ZILq9UwFYgqeZyoKg=="
         }
       },
       "is_incremental": false,
@@ -2493,7 +2505,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "AO1EK7PFy8+erMn+4qGGLQ=="
+          "hash": "xNRgOIMlC8QQlq6uEKbUXQ=="
         }
       },
       "is_incremental": false,
@@ -2602,7 +2614,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 198,
+          "total_file_count": 199,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
