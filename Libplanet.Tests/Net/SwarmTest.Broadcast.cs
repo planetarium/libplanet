@@ -748,5 +748,109 @@ namespace Libplanet.Tests.Net
                 await StopAsync(swarmB);
             }
         }
+
+        [Fact(Timeout = Timeout)]
+        public async Task PollBlocks()
+        {
+            var swarmA = CreateSwarm();
+            var swarmB = CreateSwarm();
+            var swarmC = CreateSwarm();
+
+            BlockChain<DumbAction> chainA = swarmA.BlockChain;
+            BlockChain<DumbAction> chainB = swarmB.BlockChain;
+            BlockChain<DumbAction> chainC = swarmC.BlockChain;
+
+            foreach (int i in Enumerable.Range(0, 10))
+            {
+                await chainA.MineBlock(swarmA.Address);
+            }
+
+            foreach (int i in Enumerable.Range(0, 5))
+            {
+                await chainB.MineBlock(swarmB.Address);
+            }
+
+            foreach (int i in Enumerable.Range(0, 3))
+            {
+                await chainB.MineBlock(swarmB.Address);
+            }
+
+            try
+            {
+                await StartAsync(swarmA);
+                await StartAsync(swarmB);
+                await StartAsync(swarmC);
+
+                await BootstrapAsync(swarmB, swarmA.AsPeer);
+                await BootstrapAsync(swarmC, swarmA.AsPeer);
+
+                await swarmC.ProcessFillBlocksAsync(TimeSpan.FromSeconds(5), int.MaxValue, default);
+
+                Assert.Equal(chainA.BlockHashes, chainC.BlockHashes);
+                Assert.NotEqual(chainB.BlockHashes, chainC.BlockHashes);
+            }
+            finally
+            {
+                await StopAsync(swarmA);
+                await StopAsync(swarmB);
+                await StopAsync(swarmC);
+
+                swarmA.Dispose();
+                swarmB.Dispose();
+                swarmC.Dispose();
+            }
+        }
+
+        [Fact(Timeout = Timeout)]
+        public async Task PollBlocksByDifficulty()
+        {
+            var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
+            var chain1 = TestUtils.MakeBlockChain(
+                policy,
+                new DefaultStore(null),
+                new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore()));
+            var chain2 = TestUtils.MakeBlockChain(
+                policy,
+                new DefaultStore(null),
+                new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore()));
+
+            var miner1 = CreateSwarm(chain1);
+            var miner2 = CreateSwarm(chain2);
+
+            await chain1.MineBlock(miner1.Address);
+            await chain1.MineBlock(miner2.Address);
+            long nextDifficulty =
+                (long)chain1.Tip.TotalDifficulty + policy.GetNextBlockDifficulty(chain2);
+            var block = TestUtils.MineNext(
+                chain2.Tip,
+                policy.GetHashAlgorithm,
+                difficulty: nextDifficulty,
+                blockInterval: TimeSpan.FromMilliseconds(1)
+            ).AttachStateRootHash(chain2.StateStore, policy);
+            chain2.Append(block);
+
+            Assert.True(chain1.Tip.Index > chain2.Tip.Index);
+            Assert.True(chain1.Tip.TotalDifficulty < chain2.Tip.TotalDifficulty);
+
+            try
+            {
+                await StartAsync(miner1);
+                await StartAsync(miner2);
+
+                await BootstrapAsync(miner2, miner1.AsPeer);
+
+                await miner1.ProcessFillBlocksAsync(TimeSpan.FromSeconds(5), int.MaxValue, default);
+
+                Assert.Equal(miner2.BlockChain.Count, miner1.BlockChain.Count);
+                Assert.Equal(miner2.BlockChain.Tip, miner1.BlockChain.Tip);
+            }
+            finally
+            {
+                await StopAsync(miner1);
+                await StopAsync(miner2);
+                miner1.Dispose();
+                miner2.Dispose();
+            }
+        }
     }
 }
