@@ -94,26 +94,26 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(BlockPerceptions[1], sorted[4]);
 
             sorted = BlockPerceptions
-                .Select(p => new BlockPerception(p.BlockExcerpt, currentTime))
+                .Select(p => new BlockPerception(p, currentTime))
                 .OrderBy(e => e, comparer)
                 .ToArray();
             PrintBlocks(sorted);
-            Assert.Equal(BlockPerceptions[2].BlockExcerpt, sorted[0].BlockExcerpt);
-            Assert.Equal(BlockPerceptions[1].BlockExcerpt, sorted[1].BlockExcerpt);
-            Assert.Equal(BlockPerceptions[0].BlockExcerpt, sorted[2].BlockExcerpt);
-            Assert.Equal(BlockPerceptions[4].BlockExcerpt, sorted[3].BlockExcerpt);
-            Assert.Equal(BlockPerceptions[3].BlockExcerpt, sorted[4].BlockExcerpt);
+            Assert.True(BlockPerceptions[2].ExcerptEquals(sorted[0]));
+            Assert.True(BlockPerceptions[1].ExcerptEquals(sorted[1]));
+            Assert.True(BlockPerceptions[0].ExcerptEquals(sorted[2]));
+            Assert.True(BlockPerceptions[4].ExcerptEquals(sorted[3]));
+            Assert.True(BlockPerceptions[3].ExcerptEquals(sorted[4]));
 
             sorted = BlockPerceptions
-                .Select(p => new BlockPerception(p.BlockExcerpt, currentTime - outdateAfter))
+                .Select(p => new BlockPerception(p, currentTime - outdateAfter))
                 .OrderBy(e => e, comparer)
                 .ToArray();
             PrintBlocks(sorted);
-            Assert.Equal(BlockPerceptions[2].BlockExcerpt, sorted[0].BlockExcerpt);
-            Assert.Equal(BlockPerceptions[1].BlockExcerpt, sorted[1].BlockExcerpt);
-            Assert.Equal(BlockPerceptions[0].BlockExcerpt, sorted[2].BlockExcerpt);
-            Assert.Equal(BlockPerceptions[4].BlockExcerpt, sorted[3].BlockExcerpt);
-            Assert.Equal(BlockPerceptions[3].BlockExcerpt, sorted[4].BlockExcerpt);
+            Assert.True(BlockPerceptions[2].ExcerptEquals(sorted[0]));
+            Assert.True(BlockPerceptions[1].ExcerptEquals(sorted[1]));
+            Assert.True(BlockPerceptions[0].ExcerptEquals(sorted[2]));
+            Assert.True(BlockPerceptions[4].ExcerptEquals(sorted[3]));
+            Assert.True(BlockPerceptions[3].ExcerptEquals(sorted[4]));
         }
 
         private static BlockHash H(string h) => BlockHash.FromString(h);

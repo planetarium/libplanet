@@ -29,8 +29,8 @@ namespace Libplanet.Tests.Net
                 case 1:
                     canonComparer = new AnonymousComparer<BlockPerception>((a, b) =>
                         string.Compare(
-                            a.BlockExcerpt.Hash.ToString(),
-                            b.BlockExcerpt.Hash.ToString(),
+                            a.Hash.ToString(),
+                            b.Hash.ToString(),
                             StringComparison.Ordinal
                         )
                     );
