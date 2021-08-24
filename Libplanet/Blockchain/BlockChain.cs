@@ -246,22 +246,8 @@ namespace Libplanet.Blockchain
 
         /// <summary>
         /// The topmost <see cref="Block{T}"/> of the current blockchain.
-        /// Can be <c>null</c> if the blockchain is empty.
         /// </summary>
-        public Block<T> Tip
-        {
-            get
-            {
-                try
-                {
-                    return this[-1];
-                }
-                catch (ArgumentOutOfRangeException)
-                {
-                    return null;
-                }
-            }
-        }
+        public Block<T> Tip => this[-1];
 
         /// <summary>
         /// The first <see cref="Block{T}"/> in the <see cref="BlockChain{T}"/>.
@@ -1266,7 +1252,7 @@ namespace Libplanet.Blockchain
             }
 
             _rwlock.EnterUpgradeableReadLock();
-            Block<T> prevTip = Tip;
+            Block<T> prevTip = Count > 0 ? Tip : null;
             try
             {
                 InvalidBlockException e = ValidateNextBlock(block);
@@ -1734,6 +1720,9 @@ namespace Libplanet.Blockchain
         {
             int actualProtocolVersion = nextBlock.ProtocolVersion;
             const int currentProtocolVersion = Block<T>.CurrentProtocolVersion;
+
+            // FIXME: Crude way of checking protocol version for non-genesis block.
+            // Ideally, whether this is called during instantiation should be made more explicit.
             if (actualProtocolVersion > currentProtocolVersion)
             {
                 string message =
@@ -1745,11 +1734,11 @@ namespace Libplanet.Blockchain
                     message
                 );
             }
-            else if (Tip is { } tip && actualProtocolVersion < tip.ProtocolVersion)
+            else if (Count > 0 && actualProtocolVersion < Tip.ProtocolVersion)
             {
                 string message =
                     "The protocol version is disallowed to be downgraded from the topmost block " +
-                    $"in the chain ({actualProtocolVersion} < {tip.ProtocolVersion}).";
+                    $"in the chain ({actualProtocolVersion} < {Tip.ProtocolVersion}).";
                 throw new InvalidBlockProtocolVersionException(actualProtocolVersion, message);
             }
 
@@ -1832,7 +1821,7 @@ namespace Libplanet.Blockchain
             _rwlock.EnterUpgradeableReadLock();
             try
             {
-                if (offset is null && Tip is null)
+                if (offset is null && Count == 0)
                 {
                     return null;
                 }

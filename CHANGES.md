@@ -9,6 +9,7 @@ To be released.
 ### Backward-incompatible API changes
 
  -  Removed `Swarm<T>.BlockDemand` property.  [[#1419], [#1425]]
+ -  `BlockChain<T>.Tip` property is now non-nullable.  [[#1430]]
 
 ### Backward-incompatible network protocol changes
 
@@ -35,6 +36,7 @@ To be released.
 
 [#1419]: https://github.com/planetarium/libplanet/issues/1419
 [#1425]: https://github.com/planetarium/libplanet/pull/1425
+[#1430]: https://github.com/planetarium/libplanet/pull/1430
 
 
 Version 0.15.0
