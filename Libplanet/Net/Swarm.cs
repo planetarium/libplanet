@@ -508,30 +508,41 @@ namespace Libplanet.Net
             );
 
             _logger.Debug(
-                "The tip before preloading begins: #{TipIndex} {TipHash}",
+                "Tip before preloading: #{TipIndex} {TipHash}",
                 BlockChain.Tip.Index,
                 BlockChain.Tip.Hash
             );
 
+            _logger.Information(
+                "Fetching excerpts from {PeersCount} peers...",
+                Peers.Count);
             var peersWithExcerpts = await GetPeersWithExcerpts(
                 BlockChain.Tip, dialTimeout, int.MaxValue, cancellationToken);
 
             if (!peersWithExcerpts.Any())
             {
-                _logger.Information("There is no appropriate peer for preloading.");
+                _logger.Information("There are no appropriate peers for preloading.");
                 return;
+            }
+            else
+            {
+                _logger.Information(
+                    "Fetched {PeersWithExcerptsCount} excerpts from {PeersCount} peers.",
+                    peersWithExcerpts.Count,
+                    Peers.Count);
             }
 
             PreloadStarted.Set();
+            _logger.Information("Preloading started...");
 
             BlockChain<T> workspace = BlockChain.Fork(BlockChain.Tip.Hash, inheritRenderers: false);
             var renderSwap = await CompleteBlocksAsync(
                 peersWithExcerpts,
                 workspace,
                 progress,
-                true,
-                render,
-                cancellationToken);
+                preload: true,
+                render: render,
+                cancellationToken: cancellationToken);
             renderSwap();
         }
 
@@ -633,7 +644,7 @@ namespace Libplanet.Net
                 ? t
                 : Options.BlockHashRecvTimeout;
             const string sendMsg =
-                "{SessionId}/{SubSessionId}: Sending a " + nameof(GetBlockHashes) +
+                "{SessionId}/{SubSessionId}: Sending a " + nameof(Messages.GetBlockHashes) +
                 " message (locator: {Locator}, stop: {Stop})...";
             _logger.Debug(sendMsg, logSessionId, subSessionId, locator, stop);
             Message parsedMessage = await Transport.SendMessageWithReplyAsync(
@@ -649,7 +660,7 @@ namespace Libplanet.Net
                 {
                     BlockHash[] hashes = blockHashes.Hashes.ToArray();
                     const string msg =
-                        "{SessionId}/{SubSessionId}: Received a " + nameof(BlockHashes) +
+                        "{SessionId}/{SubSessionId}: Received a " + nameof(Messages.BlockHashes) +
                         " message with an offset index {OffsetIndex} (total {Length} hashes).";
                     _logger.Debug(msg, logSessionId, subSessionId, idx, hashes.LongLength);
                     foreach (BlockHash hash in hashes)
@@ -661,7 +672,7 @@ namespace Libplanet.Net
                 else
                 {
                     const string msg =
-                        "{SessionId}/{SubSessionId}: Received a " + nameof(BlockHashes) +
+                        "{SessionId}/{SubSessionId}: Received a " + nameof(Messages.BlockHashes) +
                         " message, but it has zero hashes.";
                     _logger.Debug(msg, logSessionId, subSessionId);
                 }
@@ -801,16 +812,13 @@ namespace Libplanet.Net
         {
             BlockLocator locator = blockChain.GetBlockLocator(Options.BranchpointThreshold);
             int peersCount = peersWithExcerpts.Count;
-            int i = 0;
             var exceptions = new List<Exception>();
             IComparer<IBlockExcerpt> canonComparer = BlockChain.Policy.CanonicalChainComparer;
             foreach ((BoundPeer peer, IBlockExcerpt excerpt) in peersWithExcerpts)
             {
-                i++;
                 long peerIndex = excerpt.Index;
-
-                long branchIndex = -1;
-                BlockHash branchPoint = default;
+                long branchingIndex = -1;
+                BlockHash branchingBlock = default;
 
                 if (!IsBlockNeeded(excerpt))
                 {
@@ -820,7 +828,7 @@ namespace Libplanet.Net
                     continue;
                 }
 
-                long totalBlocksToDownload = -1;
+                long totalBlockHashesToDownload = -1;
                 var pairsToYield = new List<Tuple<long, BlockHash>>();
                 Exception error = null;
                 try
@@ -834,6 +842,15 @@ namespace Libplanet.Net
                         if (previousDownloadedCount == downloaded.Count &&
                             ++stagnant > stagnationLimit)
                         {
+                            const string stagnationMessage =
+                                "Stagnation limit of {StagnationLimit} reached while " +
+                                "fetching hashes from {Peer}. Continuing operation with " +
+                                "{DownloadCount} hashes downloaded so far.";
+                            _logger.Information(
+                                stagnationMessage,
+                                stagnationLimit,
+                                peer,
+                                downloaded.Count);
                             break;
                         }
 
@@ -842,25 +859,32 @@ namespace Libplanet.Net
                         // FIXME: First value of totalBlocksToDownload is -1.
                         _logger.Verbose(
                             "Request block hashes to {Peer} (height: {PeerHeight}) using " +
-                            "the locator {@Locator}... ({CurrentIndex}/{EstimatedTotalCount})",
+                            "locator {@Locator}... ({CurrentIndex}/{EstimatedTotalCount})",
                             peer,
                             peerIndex,
                             locator.Select(h => h.ToString()),
                             downloaded.Count,
-                            totalBlocksToDownload
+                            totalBlockHashesToDownload
                         );
 
-                        IAsyncEnumerable<Tuple<long, BlockHash>> blockHashes =
-                            GetBlockHashes(peer, locator, null, null, null, cancellationToken);
+                        List<Tuple<long, BlockHash>> blockHashes =
+                            await GetBlockHashes(
+                                peer: peer,
+                                locator: locator,
+                                stop: null,
+                                timeout: null,
+                                logSessionIds: null,
+                                cancellationToken: cancellationToken)
+                                .ToListAsync(cancellationToken);
 
-                        if (branchIndex == -1 &&
-                            await blockHashes.FirstAsync(cancellationToken) is { } t)
+                        if (branchingIndex == -1 &&
+                            blockHashes.FirstOrDefault() is { } t)
                         {
-                            t.Deconstruct(out branchIndex, out branchPoint);
-                            totalBlocksToDownload = peerIndex - branchIndex;
+                            t.Deconstruct(out branchingIndex, out branchingBlock);
+                            totalBlockHashesToDownload = peerIndex - branchingIndex;
                         }
 
-                        await foreach (Tuple<long, BlockHash> pair in blockHashes)
+                        foreach (Tuple<long, BlockHash> pair in blockHashes)
                         {
                             pair.Deconstruct(out long dlIndex, out BlockHash dlHash);
                             _logger.Verbose(
@@ -870,7 +894,7 @@ namespace Libplanet.Net
                                 dlHash
                             );
 
-                            if (downloaded.Contains(dlHash) || dlHash.Equals(branchPoint))
+                            if (downloaded.Contains(dlHash) || dlHash.Equals(branchingBlock))
                             {
                                 continue;
                             }
@@ -884,7 +908,7 @@ namespace Libplanet.Net
                                 new BlockHashDownloadState
                                 {
                                     EstimatedTotalBlockHashCount = Math.Max(
-                                        totalBlocksToDownload,
+                                        totalBlockHashesToDownload,
                                         downloaded.Count),
                                     ReceivedBlockHashCount = downloaded.Count,
                                     SourcePeer = peer,
@@ -898,15 +922,15 @@ namespace Libplanet.Net
                                 long arg = idx;
                                 if (idx < 0)
                                 {
-                                    idx = branchIndex + downloaded.Count + 1 + idx;
+                                    idx = branchingIndex + downloaded.Count + 1 + idx;
                                 }
 
-                                if (idx <= branchIndex)
+                                if (idx <= branchingIndex)
                                 {
                                     return blockChain.Store.IndexBlockHash(blockChain.Id, idx);
                                 }
 
-                                int relIdx = (int)(idx - branchIndex - 1);
+                                int relIdx = (int)(idx - branchingIndex - 1);
 
                                 try
                                 {
@@ -916,18 +940,18 @@ namespace Libplanet.Net
                                 {
                                     const string msg =
                                         "Failed to look up a block hash by its index {Index} " +
-                                        "(branchpoint index: {BranchpointIndex}; " +
+                                        "(branching index: {BranchingIndex}; " +
                                         "downloaded: {Downloaded}).";
-                                    _logger.Error(e, msg, arg, branchIndex, downloaded.Count);
+                                    _logger.Error(e, msg, arg, branchingIndex, downloaded.Count);
                                     return null;
                                 }
                             },
                             hash => blockChain.Store.GetBlock<T>(hash) is Block<T> b
                                 ? b.Index
-                                : branchIndex + 1 + downloaded.IndexOf(hash)
+                                : branchingIndex + 1 + downloaded.IndexOf(hash)
                         );
                     }
-                    while (downloaded.Count < totalBlocksToDownload);
+                    while (downloaded.Count < totalBlockHashesToDownload);
                 }
                 catch (Exception e)
                 {
@@ -941,30 +965,26 @@ namespace Libplanet.Net
 
                 if (error is null)
                 {
-                    break;
+                    yield break;
                 }
-
-                exceptions.Add(error);
-                if (i == peersCount)
+                else
                 {
-                    BoundPeer[] peers = peersWithExcerpts.Select(p => p.Item1).ToArray();
-                    _logger.Warning(
-                        error,
-                        "Failed to fetch demand block hashes from peers: {Peers}",
-                        peers
-                    );
-                    throw new AggregateException(
-                        "Failed to fetch demand block hashes from peers: " +
-                        string.Join(", ", peers.Select(p => p.ToString())),
-                        exceptions
-                    );
+                    const string message =
+                        "Failed to fetch demand block hashes from {Peer}; " +
+                        "retry with another peer...\n";
+                    _logger.Debug(error, message, peer, error);
+                    exceptions.Add(error);
                 }
-
-                const string message =
-                    "Failed to fetch demand block hashes from {Peer}; " +
-                    "retry with another peer...\n";
-                _logger.Debug(error, message, peer, error);
             }
+
+            BoundPeer[] peers = peersWithExcerpts.Select(p => p.Item1).ToArray();
+            _logger.Warning(
+                "Failed to fetch demand block hashes from peers: {Peers}",
+                peers);
+            throw new AggregateException(
+                "Failed to fetch demand block hashes from peers: " +
+                string.Join(", ", peers.Select(p => p.ToString())),
+                exceptions);
         }
 
         private void BroadcastBlock(Address? except, Block<T> block)
