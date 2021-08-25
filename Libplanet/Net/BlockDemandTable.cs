@@ -68,7 +68,7 @@ namespace Libplanet.Net
             Func<IBlockExcerpt, bool> predicate,
             BlockDemand target)
         {
-            IComparer<BlockPerception> canonComparer = blockChain.Policy.CanonicalChainComparer;
+            IComparer<IBlockExcerpt> canonComparer = blockChain.Policy.CanonicalChainComparer;
             BoundPeer peer = target.Peer;
             var perception = blockChain.PerceiveBlock(target);
             bool needed =

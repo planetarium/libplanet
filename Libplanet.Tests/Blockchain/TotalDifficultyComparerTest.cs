@@ -84,14 +84,14 @@ namespace Libplanet.Tests.Blockchain
 
             DateTimeOffset currentTime = DateTimeOffset.FromUnixTimeSeconds(1609426815);
             TimeSpan outdateAfter = TimeSpan.FromSeconds(15);
-            var comparer = new TotalDifficultyComparer(outdateAfter, () => currentTime);
+            var comparer = new TotalDifficultyComparer();
             BlockPerception[] sorted = BlockPerceptions.OrderBy(e => e, comparer).ToArray();
             PrintBlocks(sorted);
-            Assert.Equal(BlockPerceptions[0], sorted[0]);
-            Assert.Equal(BlockPerceptions[4], sorted[1]);
-            Assert.Equal(BlockPerceptions[3], sorted[2]);
-            Assert.Equal(BlockPerceptions[2], sorted[3]);
-            Assert.Equal(BlockPerceptions[1], sorted[4]);
+            Assert.True(BlockPerceptions[2].ExcerptEquals(sorted[0]));
+            Assert.True(BlockPerceptions[1].ExcerptEquals(sorted[1]));
+            Assert.True(BlockPerceptions[0].ExcerptEquals(sorted[2]));
+            Assert.True(BlockPerceptions[4].ExcerptEquals(sorted[3]));
+            Assert.True(BlockPerceptions[3].ExcerptEquals(sorted[4]));
 
             sorted = BlockPerceptions
                 .Select(p => new BlockPerception(p, currentTime))
