@@ -1,0 +1,676 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class KademliaProtocol
+   | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class KademliaProtocol
+   | Libplanet ">
+    <meta name="generator" content="docfx 2.56.6.0">
+    
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Net.Protocols.KademliaProtocol">
+  
+  
+  <h1 id="Libplanet_Net_Protocols_KademliaProtocol" data-uid="Libplanet.Net.Protocols.KademliaProtocol" class="text-break">Class KademliaProtocol
+  </h1>
+  <div class="markdown level0 summary"><p>A Kademlia based peer discovery protocol.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">KademliaProtocol</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Libplanet.Net.Protocols.IProtocol.html">IProtocol</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Net.Protocols.html">Libplanet.Net.Protocols</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.dll</h6>
+  <h5 id="Libplanet_Net_Protocols_KademliaProtocol_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class KademliaProtocol : IProtocol</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/71be30ea4b054e22aef85e6abdd7d07e9355d20a/apiSpec/new?filename=Libplanet_Net_Protocols_KademliaProtocol__ctor_Libplanet_Net_Protocols_RoutingTable_Libplanet_Net_Transports_ITransport_Libplanet_Address_System_Int32_System_Nullable_System_TimeSpan__.md&amp;value=---%0Auid%3A%20Libplanet.Net.Protocols.KademliaProtocol.%23ctor(Libplanet.Net.Protocols.RoutingTable%2CLibplanet.Net.Transports.ITransport%2CLibplanet.Address%2CSystem.Int32%2CSystem.Nullable%7BSystem.TimeSpan%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/71be30ea4b054e22aef85e6abdd7d07e9355d20a/Libplanet/Net/Protocols/KademliaProtocol.cs/#L43">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Protocols_KademliaProtocol__ctor_" data-uid="Libplanet.Net.Protocols.KademliaProtocol.#ctor*"></a>
+  <h4 id="Libplanet_Net_Protocols_KademliaProtocol__ctor_Libplanet_Net_Protocols_RoutingTable_Libplanet_Net_Transports_ITransport_Libplanet_Address_System_Int32_System_Nullable_System_TimeSpan__" data-uid="Libplanet.Net.Protocols.KademliaProtocol.#ctor(Libplanet.Net.Protocols.RoutingTable,Libplanet.Net.Transports.ITransport,Libplanet.Address,System.Int32,System.Nullable{System.TimeSpan})">KademliaProtocol(RoutingTable, ITransport, Address, Int32, Nullable&lt;TimeSpan&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates a <a class="xref" href="Libplanet.Net.Protocols.KademliaProtocol.html">KademliaProtocol</a> instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public KademliaProtocol(RoutingTable table, ITransport transport, Address address, int findConcurrency = 3, TimeSpan? requestTimeout = default(TimeSpan? ))</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.Protocols.RoutingTable.html">RoutingTable</a></td>
+        <td><span class="parametername">table</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Net.Protocols.RoutingTable.html">RoutingTable</a> where <a class="xref" href="Libplanet.Net.Peer.html">Peer</a>s are stored.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.Transports.ITransport.html">ITransport</a></td>
+        <td><span class="parametername">transport</span></td>
+        <td><p><a class="xref" href="Libplanet.Net.Transports.ITransport.html">ITransport</a> to process messages.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
+        <td><span class="parametername">address</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Address.html">Address</a> of the <a class="xref" href="Libplanet.Net.Peer.html">Peer</a>
+to be the reference point.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">findConcurrency</span></td>
+        <td><p>The number of concurrency in peer discovery.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.timespan">TimeSpan</a>&gt;</td>
+        <td><span class="parametername">requestTimeout</span></td>
+        <td><p>A timeout of waiting for the reply of messages.
+If it's omitted or <code>null</code> is given, will automatically be set to 5 seconds.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/71be30ea4b054e22aef85e6abdd7d07e9355d20a/apiSpec/new?filename=Libplanet_Net_Protocols_KademliaProtocol_AddPeersAsync_System_Collections_Generic_IEnumerable_Libplanet_Net_Peer__System_Nullable_System_TimeSpan__System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Protocols.KademliaProtocol.AddPeersAsync(System.Collections.Generic.IEnumerable%7BLibplanet.Net.Peer%7D%2CSystem.Nullable%7BSystem.TimeSpan%7D%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/71be30ea4b054e22aef85e6abdd7d07e9355d20a/Libplanet/Net/Protocols/KademliaProtocol.cs/#L140">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Protocols_KademliaProtocol_AddPeersAsync_" data-uid="Libplanet.Net.Protocols.KademliaProtocol.AddPeersAsync*"></a>
+  <h4 id="Libplanet_Net_Protocols_KademliaProtocol_AddPeersAsync_System_Collections_Generic_IEnumerable_Libplanet_Net_Peer__System_Nullable_System_TimeSpan__System_Threading_CancellationToken_" data-uid="Libplanet.Net.Protocols.KademliaProtocol.AddPeersAsync(System.Collections.Generic.IEnumerable{Libplanet.Net.Peer},System.Nullable{System.TimeSpan},System.Threading.CancellationToken)">AddPeersAsync(IEnumerable&lt;Peer&gt;, Nullable&lt;TimeSpan&gt;, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Tries to add given <code data-dev-comment-type="paramref" class="paramref">peers</code> to routing table
+by sending <span class="xref">Libplanet.Net.Messages.Ping</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task AddPeersAsync(IEnumerable&lt;Peer&gt; peers, TimeSpan? timeout, CancellationToken cancellationToken)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.Net.Peer.html">Peer</a>&gt;</td>
+        <td><span class="parametername">peers</span></td>
+        <td><p>The peers to add.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.timespan">TimeSpan</a>&gt;</td>
+        <td><span class="parametername">timeout</span></td>
+        <td><p>A timeout of waiting for the reply of <span class="xref">Libplanet.Net.Messages.Ping</span>
+message sent to <code data-dev-comment-type="paramref" class="paramref">peers</code>.
+If <code>null</code> is given, task never halts by itself
+even the target peer gives no any response.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>A cancellation token used to propagate notification that this
+operation should be canceled.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td><p>An awaitable task without value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/71be30ea4b054e22aef85e6abdd7d07e9355d20a/apiSpec/new?filename=Libplanet_Net_Protocols_KademliaProtocol_BootstrapAsync_System_Collections_Generic_IEnumerable_Libplanet_Net_BoundPeer__System_Nullable_System_TimeSpan__System_Nullable_System_TimeSpan__System_Int32_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Protocols.KademliaProtocol.BootstrapAsync(System.Collections.Generic.IEnumerable%7BLibplanet.Net.BoundPeer%7D%2CSystem.Nullable%7BSystem.TimeSpan%7D%2CSystem.Nullable%7BSystem.TimeSpan%7D%2CSystem.Int32%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/71be30ea4b054e22aef85e6abdd7d07e9355d20a/Libplanet/Net/Protocols/KademliaProtocol.cs/#L66">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Protocols_KademliaProtocol_BootstrapAsync_" data-uid="Libplanet.Net.Protocols.KademliaProtocol.BootstrapAsync*"></a>
+  <h4 id="Libplanet_Net_Protocols_KademliaProtocol_BootstrapAsync_System_Collections_Generic_IEnumerable_Libplanet_Net_BoundPeer__System_Nullable_System_TimeSpan__System_Nullable_System_TimeSpan__System_Int32_System_Threading_CancellationToken_" data-uid="Libplanet.Net.Protocols.KademliaProtocol.BootstrapAsync(System.Collections.Generic.IEnumerable{Libplanet.Net.BoundPeer},System.Nullable{System.TimeSpan},System.Nullable{System.TimeSpan},System.Int32,System.Threading.CancellationToken)">BootstrapAsync(IEnumerable&lt;BoundPeer&gt;, Nullable&lt;TimeSpan&gt;, Nullable&lt;TimeSpan&gt;, Int32, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Conducts peer discovery for given <code data-dev-comment-type="paramref" class="paramref">bootstrapPeers</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task BootstrapAsync(IEnumerable&lt;BoundPeer&gt; bootstrapPeers, TimeSpan? pingSeedTimeout, TimeSpan? findNeighborsTimeout, int depth, CancellationToken cancellationToken)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>&gt;</td>
+        <td><span class="parametername">bootstrapPeers</span></td>
+        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable&lt;T&gt;</a> of <a class="xref" href="Libplanet.Net.Peer.html">Peer</a>s
+to bootstrap.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.timespan">TimeSpan</a>&gt;</td>
+        <td><span class="parametername">pingSeedTimeout</span></td>
+        <td><p>A timeout of waiting for the reply of <span class="xref">Libplanet.Net.Messages.Ping</span>
+message sent to seed <a class="xref" href="Libplanet.Net.Peer.html">Peer</a>.
+If <code>null</code> is given, the task never halts by itself
+even no any response was given from the the target seed.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.timespan">TimeSpan</a>&gt;</td>
+        <td><span class="parametername">findNeighborsTimeout</span></td>
+        <td><p>A timeout of waiting for the reply of
+<span class="xref">Libplanet.Net.Messages.FindNeighbors</span> message sent to seed <a class="xref" href="Libplanet.Net.Peer.html">Peer</a>.
+If <code>null</code> is given, task never halts by itself
+even the target seed gives no any response.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">depth</span></td>
+        <td><p>Recursive operation depth to search peers from network.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>A cancellation token used to propagate notification that this
+operation should be canceled.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td><p>An awaitable task without value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/71be30ea4b054e22aef85e6abdd7d07e9355d20a/apiSpec/new?filename=Libplanet_Net_Protocols_KademliaProtocol_CheckAllPeersAsync_System_Nullable_System_TimeSpan__System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Protocols.KademliaProtocol.CheckAllPeersAsync(System.Nullable%7BSystem.TimeSpan%7D%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/71be30ea4b054e22aef85e6abdd7d07e9355d20a/Libplanet/Net/Protocols/KademliaProtocol.cs/#L238">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Protocols_KademliaProtocol_CheckAllPeersAsync_" data-uid="Libplanet.Net.Protocols.KademliaProtocol.CheckAllPeersAsync*"></a>
+  <h4 id="Libplanet_Net_Protocols_KademliaProtocol_CheckAllPeersAsync_System_Nullable_System_TimeSpan__System_Threading_CancellationToken_" data-uid="Libplanet.Net.Protocols.KademliaProtocol.CheckAllPeersAsync(System.Nullable{System.TimeSpan},System.Threading.CancellationToken)">CheckAllPeersAsync(Nullable&lt;TimeSpan&gt;, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Refreshes all peers in routing table.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task CheckAllPeersAsync(TimeSpan? timeout, CancellationToken cancellationToken)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.timespan">TimeSpan</a>&gt;</td>
+        <td><span class="parametername">timeout</span></td>
+        <td><p>A timeout of waiting for the reply of messages.
+If <code>null</code> is given, the task never halts by itself
+even no any response was given from the the target peer.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>A cancellation token used to propagate notification that this
+operation should be canceled.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td><p>An awaitable task without value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/71be30ea4b054e22aef85e6abdd7d07e9355d20a/apiSpec/new?filename=Libplanet_Net_Protocols_KademliaProtocol_CheckReplacementCacheAsync_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Protocols.KademliaProtocol.CheckReplacementCacheAsync(System.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/71be30ea4b054e22aef85e6abdd7d07e9355d20a/Libplanet/Net/Protocols/KademliaProtocol.cs/#L294">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Protocols_KademliaProtocol_CheckReplacementCacheAsync_" data-uid="Libplanet.Net.Protocols.KademliaProtocol.CheckReplacementCacheAsync*"></a>
+  <h4 id="Libplanet_Net_Protocols_KademliaProtocol_CheckReplacementCacheAsync_System_Threading_CancellationToken_" data-uid="Libplanet.Net.Protocols.KademliaProtocol.CheckReplacementCacheAsync(System.Threading.CancellationToken)">CheckReplacementCacheAsync(CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Checks the <span class="xref">Libplanet.Net.Protocols.KBucket</span> in the <a class="xref" href="Libplanet.Net.Protocols.RoutingTable.html">RoutingTable</a> and if
+there is an empty <span class="xref">Libplanet.Net.Protocols.KBucket</span>, fill it with <a class="xref" href="Libplanet.Net.Peer.html">Peer</a>s
+in the <span class="xref">Libplanet.Net.Protocols.KBucket.ReplacementCache</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task CheckReplacementCacheAsync(CancellationToken cancellationToken)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>A cancellation token used to propagate notification
+that this operation should be canceled.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td><p>An awaitable task without value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/71be30ea4b054e22aef85e6abdd7d07e9355d20a/apiSpec/new?filename=Libplanet_Net_Protocols_KademliaProtocol_FindSpecificPeerAsync_Libplanet_Address_System_Int32_System_Nullable_System_TimeSpan__System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Protocols.KademliaProtocol.FindSpecificPeerAsync(Libplanet.Address%2CSystem.Int32%2CSystem.Nullable%7BSystem.TimeSpan%7D%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/71be30ea4b054e22aef85e6abdd7d07e9355d20a/Libplanet/Net/Protocols/KademliaProtocol.cs/#L332">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Protocols_KademliaProtocol_FindSpecificPeerAsync_" data-uid="Libplanet.Net.Protocols.KademliaProtocol.FindSpecificPeerAsync*"></a>
+  <h4 id="Libplanet_Net_Protocols_KademliaProtocol_FindSpecificPeerAsync_Libplanet_Address_System_Int32_System_Nullable_System_TimeSpan__System_Threading_CancellationToken_" data-uid="Libplanet.Net.Protocols.KademliaProtocol.FindSpecificPeerAsync(Libplanet.Address,System.Int32,System.Nullable{System.TimeSpan},System.Threading.CancellationToken)">FindSpecificPeerAsync(Address, Int32, Nullable&lt;TimeSpan&gt;, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Use <span class="xref">Libplanet.Net.Messages.FindNeighbors</span> messages to to find a <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a> with
+<a class="xref" href="Libplanet.Address.html">Address</a> of <code data-dev-comment-type="paramref" class="paramref">target</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;BoundPeer&gt; FindSpecificPeerAsync(Address target, int depth, TimeSpan? timeout, CancellationToken cancellationToken)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
+        <td><span class="parametername">target</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Address.html">Address</a> to find.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">depth</span></td>
+        <td><p>Target depth of recursive operation.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.timespan">TimeSpan</a>&gt;</td>
+        <td><span class="parametername">timeout</span></td>
+        <td><p><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.timespan">TimeSpan</a> for waiting reply of
+<span class="xref">Libplanet.Net.Messages.FindNeighbors</span>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>A cancellation token used to propagate notification
+that this operation should be canceled.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>&gt;</td>
+        <td><p>A <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a> with <a class="xref" href="Libplanet.Address.html">Address</a> of
+<code data-dev-comment-type="paramref" class="paramref">target</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/71be30ea4b054e22aef85e6abdd7d07e9355d20a/apiSpec/new?filename=Libplanet_Net_Protocols_KademliaProtocol_RebuildConnectionAsync_System_Int32_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Protocols.KademliaProtocol.RebuildConnectionAsync(System.Int32%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/71be30ea4b054e22aef85e6abdd7d07e9355d20a/Libplanet/Net/Protocols/KademliaProtocol.cs/#L255">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Protocols_KademliaProtocol_RebuildConnectionAsync_" data-uid="Libplanet.Net.Protocols.KademliaProtocol.RebuildConnectionAsync*"></a>
+  <h4 id="Libplanet_Net_Protocols_KademliaProtocol_RebuildConnectionAsync_System_Int32_System_Threading_CancellationToken_" data-uid="Libplanet.Net.Protocols.KademliaProtocol.RebuildConnectionAsync(System.Int32,System.Threading.CancellationToken)">RebuildConnectionAsync(Int32, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Reconstructs network connection between peers on network.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task RebuildConnectionAsync(int depth, CancellationToken cancellationToken)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">depth</span></td>
+        <td><p>Recursive operation depth to search peers from network.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>A cancellation token used to propagate notification
+that this operation should be canceled.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td><p>An awaitable task without value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/71be30ea4b054e22aef85e6abdd7d07e9355d20a/apiSpec/new?filename=Libplanet_Net_Protocols_KademliaProtocol_RefreshTableAsync_System_TimeSpan_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Protocols.KademliaProtocol.RefreshTableAsync(System.TimeSpan%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/71be30ea4b054e22aef85e6abdd7d07e9355d20a/Libplanet/Net/Protocols/KademliaProtocol.cs/#L204">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Protocols_KademliaProtocol_RefreshTableAsync_" data-uid="Libplanet.Net.Protocols.KademliaProtocol.RefreshTableAsync*"></a>
+  <h4 id="Libplanet_Net_Protocols_KademliaProtocol_RefreshTableAsync_System_TimeSpan_System_Threading_CancellationToken_" data-uid="Libplanet.Net.Protocols.KademliaProtocol.RefreshTableAsync(System.TimeSpan,System.Threading.CancellationToken)">RefreshTableAsync(TimeSpan, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Checks whether <a class="xref" href="Libplanet.Net.Peer.html">Peer</a>s in <a class="xref" href="Libplanet.Net.Protocols.RoutingTable.html">RoutingTable</a> is online by
+sending <span class="xref">Libplanet.Net.Messages.Ping</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task RefreshTableAsync(TimeSpan maxAge, CancellationToken cancellationToken)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.timespan">TimeSpan</a></td>
+        <td><span class="parametername">maxAge</span></td>
+        <td><p>Maximum age of peer to validate.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>A cancellation token used to propagate notification
+that this operation should be canceled.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td><p>An awaitable task without value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Libplanet.Net.Protocols.IProtocol.html">IProtocol</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/new/71be30ea4b054e22aef85e6abdd7d07e9355d20a/apiSpec/new?filename=Libplanet_Net_Protocols_KademliaProtocol.md&amp;value=---%0Auid%3A%20Libplanet.Net.Protocols.KademliaProtocol%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/71be30ea4b054e22aef85e6abdd7d07e9355d20a/Libplanet/Net/Protocols/KademliaProtocol.cs/#L18" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2018–2021 <a href="https://planetariumhq.com/">Planetarium</a>
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
