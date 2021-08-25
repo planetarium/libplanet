@@ -4,16 +4,12 @@ Libplanet changelog
 Version 0.16.0
 --------------
 
-To be released.
+Released on August 25, 2021.
 
 ### Backward-incompatible API changes
 
  -  Removed `Swarm<T>.BlockDemand` property.  [[#1419], [#1425]]
  -  `BlockChain<T>.Tip` property is now non-nullable.  [[#1430]]
-
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
 
 ### Added APIs
 
