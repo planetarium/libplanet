@@ -1168,11 +1168,18 @@ namespace Libplanet.Net
             BroadcastMessage(except, message);
         }
 
+        /// <summary>
+        /// Checks if the corresponding <see cref="Block{T}"/> to a given
+        /// <see cref="IBlockExcerpt"/> is needed for <see cref="BlockChain"/>.
+        /// </summary>
+        /// <param name="target">The <see cref="IBlockExcerpt"/> to compare to the current
+        /// <see cref="BlockChain{T}.Tip"/> of <see cref="BlockChain"/>.</param>
+        /// <returns><c>true</c> if the corresponding <see cref="Block{T}"/> to
+        /// <paramref name="target"/> is needed, otherwise, <c>false</c>.</returns>
         private bool IsBlockNeeded(IBlockExcerpt target)
         {
             IComparer<IBlockExcerpt> canonComparer = BlockChain.Policy.CanonicalChainComparer;
-            var perception = BlockChain.PerceiveBlock(target);
-            return canonComparer.Compare(perception, BlockChain.PerceiveBlock(BlockChain.Tip)) > 0;
+            return canonComparer.Compare(target, BlockChain.Tip) > 0;
         }
 
         private async Task ProcessFillTxs(CancellationToken cancellationToken)
