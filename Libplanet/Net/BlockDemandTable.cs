@@ -27,24 +27,27 @@ namespace Libplanet.Net
 
         public bool Any() => _blockDemands.Any();
 
-        public bool Add(
+        public void Add(
             BlockChain<T> blockChain,
             Func<IBlockExcerpt, bool> predicate,
             BlockDemand demand)
         {
             if (IsDemandNeeded(blockChain, predicate, demand))
             {
-                Log.Debug(
-                    "BlockDemand #{index} {blockHash} from {peer}.",
-                    demand.Header.Index,
-                    ByteUtil.Hex(demand.Header.Hash),
-                    demand.Peer);
                 _blockDemands[demand.Peer] = demand;
-                return true;
+                Log.Debug(
+                    "BlockDemand #{Index} {BlockHash} from peer {Peer} added.",
+                    demand.Index,
+                    demand.Hash,
+                    demand.Peer);
             }
             else
             {
-                return false;
+                Log.Debug(
+                    "BlockDemand #{Index} {BlockHash} from peer {Peer} ignored.",
+                    demand.Index,
+                    demand.Hash,
+                    demand.Peer);
             }
         }
 
@@ -54,7 +57,7 @@ namespace Libplanet.Net
         {
             foreach (var demand in _blockDemands.Values)
             {
-                if (!IsDemandNeeded(blockChain, predicate, demand))
+                if (!predicate(demand) || IsDemandStale(demand))
                 {
                     _blockDemands.TryRemove(demand.Peer, out _);
                 }
@@ -66,31 +69,53 @@ namespace Libplanet.Net
         private bool IsDemandNeeded(
             BlockChain<T> blockChain,
             Func<IBlockExcerpt, bool> predicate,
-            BlockDemand target)
+            BlockDemand demand)
         {
             IComparer<IBlockExcerpt> canonComparer = blockChain.Policy.CanonicalChainComparer;
-            BoundPeer peer = target.Peer;
-            var perception = blockChain.PerceiveBlock(target);
-            bool needed =
-                predicate(target) &&
-                (!_blockDemands.ContainsKey(target.Peer) ||
-                 (!(_blockDemands[peer] is var demand)
-                  || (demand.Timestamp + _blockDemandLifespan <
-                      DateTimeOffset.UtcNow && !peer.Equals(target.Peer))
-                  || canonComparer.Compare(
-                      blockChain.PerceiveBlock(demand.Header, demand.Timestamp),
-                      perception
-                  ) < 0));
+            BlockDemand? oldDemand = _blockDemands.ContainsKey(demand.Peer)
+                ? _blockDemands[demand.Peer]
+                : (BlockDemand?)null;
+
+            bool needed;
+            if (IsDemandStale(demand))
+            {
+                needed = false;
+            }
+            else if (predicate(demand))
+            {
+                if (oldDemand is { } old)
+                {
+                    needed = IsDemandStale(old) || canonComparer.Compare(old, demand) < 0;
+                }
+                else
+                {
+                    needed = true;
+                }
+            }
+            else
+            {
+                needed = false;
+            }
+
             Log.Verbose(
-                "Determining if a demand is actually needed: {Need}\nDemand: {Demand}" +
-                "\nTip: {Tip}\nBlockDemand: {BlockDemand}\nCanonicalChainComparer: {Comparer}",
-                needed ? "Need" : "Not need",
-                target.ToExcerptString(),
+                "Determining if a demand is actually needed: {Need}\n" +
+                "Peer: {Peer}\n" +
+                "Demand: {Demand}\n" +
+                "Tip: {Tip}\n" +
+                "Old Demand: {OldDemand}\n" +
+                "CanonicalChainComparer: {Comparer}",
+                needed,
+                demand.Peer,
+                demand.ToExcerptString(),
                 blockChain.Tip.ToExcerptString(),
-                _blockDemands.ContainsKey(peer) ? _blockDemands[peer].ToExcerptString() : null,
-                canonComparer
-            );
+                oldDemand?.ToExcerptString(),
+                canonComparer);
             return needed;
+        }
+
+        private bool IsDemandStale(BlockDemand demand)
+        {
+            return demand.Timestamp + _blockDemandLifespan < DateTimeOffset.UtcNow;
         }
     }
 }
