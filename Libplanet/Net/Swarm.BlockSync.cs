@@ -74,9 +74,9 @@ namespace Libplanet.Net
                     peersWithBlockExcerpt,
                     BlockChain,
                     null,
-                    false,
-                    true,
-                    cancellationToken);
+                    preload: false,
+                    render: true,
+                    cancellationToken: cancellationToken);
                 BroadcastBlock(BlockChain.Tip);
                 renderSwap();
 
@@ -153,14 +153,12 @@ namespace Libplanet.Net
             // Note that it does not pass any renderers here so that they render nothing
             // (because the workspace chain is for underlying).
             System.Action renderSwap = () => { };
-            Guid wId = workspace.Id;
-            IStore wStore = workspace.Store;
             var chainIds = new HashSet<Guid>
             {
                 workspace.Id,
             };
             bool renderActions = render;
-            bool renderBlocks = render && renderActions;
+            bool renderBlocks = true;
 
             var complete = false;
 
@@ -170,7 +168,7 @@ namespace Libplanet.Net
                 FillBlocksAsyncStarted.Set();
 
                 var blockCompletion = new BlockCompletion<BoundPeer, T>(
-                    completionPredicate: wStore.ContainsBlock,
+                    completionPredicate: workspace.Store.ContainsBlock,
                     window: InitialBlockDownloadWindow
                 );
 
@@ -189,9 +187,8 @@ namespace Libplanet.Net
                     cancellationToken
                 ).WithCancellation(cancellationToken);
 
-                await foreach (var pair in demandBlockHashes)
+                await foreach ((long index, BlockHash hash) in demandBlockHashes)
                 {
-                    (long index, BlockHash hash) = pair;
                     cancellationToken.ThrowIfCancellationRequested();
 
                     if (index == 0 && !hash.Equals(workspace.Genesis.Hash))
@@ -249,9 +246,9 @@ namespace Libplanet.Net
                 );
 
                 await foreach (
-                    var pair in completedBlocks.WithCancellation(blockDownloadCts.Token))
+                    (Block<T> block, BoundPeer sourcePeer)
+                        in completedBlocks.WithCancellation(blockDownloadCts.Token))
                 {
-                    (Block<T> block, BoundPeer sourcePeer) = pair;
                     _logger.Verbose(
                         "Got #{BlockIndex} {BlockHash} from {Peer}.",
                         block.Index,
@@ -296,7 +293,7 @@ namespace Libplanet.Net
                     HashAlgorithmType hashAlgorithm =
                         workspace.Policy.GetHashAlgorithm(block.Index);
                     block.Validate(hashAlgorithm, DateTimeOffset.UtcNow);
-                    wStore.PutBlock(block);
+                    workspace.Store.PutBlock(block);
                     if (tempTip is null ||
                         BlockChain.Policy.CanonicalChainComparer.Compare(
                             BlockChain.PerceiveBlock(block),
@@ -345,7 +342,7 @@ namespace Libplanet.Net
                         Block<T> b = node.Value;
                         if (b.PreviousHash is { } p && !workspace.ContainsBlock(p))
                         {
-                            blockToAdd = wStore.GetBlock<T>(p);
+                            blockToAdd = workspace.Store.GetBlock<T>(p);
                         }
                         else
                         {
@@ -430,7 +427,7 @@ namespace Libplanet.Net
                     else
                     {
                         Block<T> first = deltaBlocks.First.Value, last = deltaBlocks.Last.Value;
-                        BlockHash g = wStore.IndexBlockHash(wId, 0L).Value;
+                        BlockHash g = workspace.Store.IndexBlockHash(workspace.Id, 0L).Value;
                         throw new SwarmException(
                             $"Downloaded blocks (#{first.Index} {first.Hash}\u2013" +
                             $"#{last.Index} {last.Hash}) are incompatible with the existing " +
@@ -465,7 +462,7 @@ namespace Libplanet.Net
                         $"{nameof(SyncBlocksAsync)}() is aborted. Complete? {complete}; " +
                         "delete the temporary working chain ({TId}: #{TIndex} {THash}), " +
                         "and make the existing chain ({EId}: #{EIndex} {EHash}) remains.",
-                        wId,
+                        workspace.Id,
                         workspace.Tip.Index,
                         workspace.Tip.Hash,
                         BlockChain.Id,
@@ -481,7 +478,7 @@ namespace Libplanet.Net
                         "the working chain ({2}: {3}).",
                         BlockChain.Id,
                         BlockChain.Tip,
-                        wId,
+                        workspace.Id,
                         workspace.Tip
                     );
 
@@ -493,11 +490,11 @@ namespace Libplanet.Net
                     if (!chainId.Equals(BlockChain.Id))
                     {
                         _logger.Verbose("Delete an unused chain: {ChainId}", chainId);
-                        wStore.DeleteChainId(chainId);
+                        workspace.Store.DeleteChainId(chainId);
                     }
                 }
 
-                _logger.Verbose("Remaining chains: {@ChainIds}", wStore.ListChainIds());
+                _logger.Verbose("Remaining chains: {@ChainIds}", workspace.Store.ListChainIds());
             }
 
             return renderSwap;
