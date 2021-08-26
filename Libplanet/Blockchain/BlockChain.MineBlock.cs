@@ -29,7 +29,8 @@ namespace Libplanet.Blockchain
         /// <param name="timestamp">The <see cref="DateTimeOffset"/> when mining started.</param>
         /// <param name="append">Whether to append the mined block immediately after mining.</param>
         /// <param name="maxTransactions">The maximum number of transactions that a block can
-        /// accept.  See also <see cref="IBlockPolicy{T}.MaxTransactionsPerBlock"/>.</param>
+        /// accept.  See also <see cref="IBlockPolicy{T}.GetMaxTransactionsPerBlock(long)"/>
+        /// method.</param>
         /// <param name="maxTransactionsPerSigner">The maximum number of transactions
         /// that a block can accept per signer.  See also
         /// <see cref="IBlockPolicy{T}.GetMaxTransactionsPerSignerPerBlock(long)"/>.</param>
@@ -50,7 +51,8 @@ namespace Libplanet.Blockchain
                     miner: miner,
                     timestamp: timestamp ?? DateTimeOffset.UtcNow,
                     append: append ?? true,
-                    maxTransactions: maxTransactions ?? Policy.MaxTransactionsPerBlock,
+                    maxTransactions: maxTransactions ??
+                        Policy.GetMaxTransactionsPerBlock(Count),
                     maxTransactionsPerSigner: maxTransactionsPerSigner
                         ?? Policy.GetMaxTransactionsPerSignerPerBlock(Count),
                     cancellationToken: cancellationToken ?? default(CancellationToken));
@@ -63,7 +65,8 @@ namespace Libplanet.Blockchain
         /// <param name="timestamp">The <see cref="DateTimeOffset"/> when mining started.</param>
         /// <param name="append">Whether to append the mined block immediately after mining.</param>
         /// <param name="maxTransactions">The maximum number of transactions that a block can
-        /// accept.  See also <see cref="IBlockPolicy{T}.MaxTransactionsPerBlock"/>.</param>
+        /// accept.  See also <see cref="IBlockPolicy{T}.GetMaxTransactionsPerBlock(long)"/>
+        /// method.</param>
         /// <param name="maxTransactionsPerSigner">The maximum number of transactions
         /// that a block can accept per signer.  See also
         /// <see cref="IBlockPolicy{T}.GetMaxTransactionsPerSignerPerBlock(long)"/>.</param>
@@ -86,7 +89,7 @@ namespace Libplanet.Blockchain
             void WatchTip(object target, (Block<T> OldTip, Block<T> NewTip) tip) => cts.Cancel();
             TipChanged += WatchTip;
 
-            long index = Store.CountIndex(Id);
+            long index = Count;
             long difficulty = Policy.GetNextBlockDifficulty(this);
             BlockHash? prevHash = Store.IndexBlockHash(Id, index - 1);
 

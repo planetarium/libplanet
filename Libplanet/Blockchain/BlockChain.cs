@@ -563,7 +563,7 @@ namespace Libplanet.Blockchain
         /// cref="IBlockPolicy{T}.GetMaxBlockBytes(long)"/>).</exception>
         /// <exception cref="BlockExceedingTransactionsException">Thrown when the given <paramref
         /// name="block"/> has too many transactions (according to <see
-        /// cref="IBlockPolicy{T}.MaxTransactionsPerBlock"/>).</exception>
+        /// cref="IBlockPolicy{T}.GetMaxTransactionsPerBlock(long)"/>).</exception>
         /// <exception cref="InvalidBlockException">Thrown when the given <paramref name="block"/>
         /// is invalid, in itself or according to the <see cref="Policy"/>.</exception>
         /// <exception cref="InvalidTxNonceException">Thrown when the
@@ -856,12 +856,12 @@ namespace Libplanet.Blockchain
 
             _logger.Debug("Trying to append block {blockIndex}: {block}", block?.Index, block);
 
-            if (block.Transactions.Count() is { } txCount &&
-                txCount > Policy.MaxTransactionsPerBlock)
+            int policyMaxTx = Policy.GetMaxTransactionsPerBlock(block.Index);
+            if (block.Transactions.Count() is { } txCount && txCount > policyMaxTx)
             {
                 throw new BlockExceedingTransactionsException(
                     txCount,
-                    Policy.MaxTransactionsPerBlock,
+                    policyMaxTx,
                     "The block to append has too many transactions."
                 );
             }

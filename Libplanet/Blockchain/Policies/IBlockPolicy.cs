@@ -31,11 +31,18 @@ namespace Libplanet.Blockchain.Policies
         IAction BlockAction { get; }
 
         /// <summary>
-        /// The maximum number of <see cref="Block{T}.Transactions"/> that a <see cref="Block{T}"/>
-        /// can accept.
+        /// Gets the maximum number of <see cref="Block{T}.Transactions"/> that
+        /// a <see cref="Block{T}"/> (of the given <paramref name="index"/>) can accept.
+        /// This value must not be negative and must be deterministic (i.e., must return
+        /// the same number for the same <paramref name="index"/>).
         /// </summary>
+        /// <param name="index">An <see cref="Block{T}.Index"/> of a block to mine or receive.
+        /// </param>
+        /// <returns>The maximum number of <see cref="Block{T}.Transactions"/> that
+        /// a <see cref="Block{T}"/> can accept.</returns>
+        /// <remarks>If the return value is less then 1, it's treated as 1.</remarks>
         [Pure]
-        int MaxTransactionsPerBlock { get; }
+        int GetMaxTransactionsPerBlock(long index);
 
         /// <summary>
         /// A predicate that determines if the transaction follows the block policy.

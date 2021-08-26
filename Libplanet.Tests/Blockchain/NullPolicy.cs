@@ -26,7 +26,7 @@ namespace Libplanet.Tests.Blockchain
 
         public IAction BlockAction => null;
 
-        public int MaxTransactionsPerBlock => int.MaxValue;
+        public int GetMaxTransactionsPerBlock(long index) => int.MaxValue;
 
         public bool DoesTransactionFollowsPolicy(
             Transaction<T> transaction,
@@ -44,6 +44,7 @@ namespace Libplanet.Tests.Blockchain
         public virtual HashAlgorithmType GetHashAlgorithm(long index) =>
             HashAlgorithmType.Of<SHA256>();
 
-        public int GetMaxTransactionsPerSignerPerBlock(long index) => MaxTransactionsPerBlock;
+        public int GetMaxTransactionsPerSignerPerBlock(long index) =>
+            GetMaxTransactionsPerBlock(index);
     }
 }

@@ -8,7 +8,7 @@ namespace Libplanet.Blocks
     /// <summary>
     /// The exception that is thrown when a <see cref="Block{T}"/> has too many
     /// <see cref="Block{T}.Transactions"/> (i.e., more than the number specified by
-    /// <see cref="IBlockPolicy{T}.MaxTransactionsPerBlock"/>).
+    /// <see cref="IBlockPolicy{T}.GetMaxTransactionsPerBlock(long)"/>).
     /// </summary>
     [Serializable]
     public class BlockExceedingTransactionsException : InvalidBlockException, ISerializable
@@ -42,7 +42,7 @@ namespace Libplanet.Blocks
         /// <summary>
         /// The maximum allowed number of transactions per block.
         /// </summary>
-        /// <seealso cref="IBlockPolicy{T}.MaxTransactionsPerBlock"/>
+        /// <seealso cref="IBlockPolicy{T}.GetMaxTransactionsPerBlock(long)"/>
         public int MaxTransactionsPerBlock { get; set; }
 
         public override void GetObjectData(SerializationInfo info, StreamingContext context)

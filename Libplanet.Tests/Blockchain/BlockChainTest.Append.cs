@@ -341,7 +341,7 @@ namespace Libplanet.Tests.Blockchain
             HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             PrivateKey signer = null;
             int nonce = 0;
-            int maxTxs = _blockChain.Policy.MaxTransactionsPerBlock;
+            int maxTxs = _blockChain.Policy.GetMaxTransactionsPerBlock(1);
             var manyTxs = new List<Transaction<DumbAction>>();
             for (int i = 0; i <= maxTxs; i++)
             {
