@@ -42,7 +42,7 @@ namespace Libplanet.Blockchain.Policies
         /// <param name="maxTransactionsPerBlock">Configures the constant return value of
         /// <see cref="GetMaxTransactionsPerBlock(long)"/> method.  100 by default.</param>
         /// <param name="minTransactionsPerBlock">Configures <see cref="MinTransactionsPerBlock"/>.
-        /// 100 by default.</param>
+        /// 0 by default.</param>
         /// <param name="maxBlockBytes">Configures <see cref="GetMaxBlockBytes(long)"/> where
         /// the block is not a genesis.  100 KiB by default.</param>
         /// <param name="maxGenesisBytes">Configures <see cref="GetMaxBlockBytes(long)"/> where
