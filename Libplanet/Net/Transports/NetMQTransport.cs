@@ -566,18 +566,21 @@ namespace Libplanet.Net.Transports
                 MessageHistory.Enqueue(message);
                 LastMessageTimestamp = DateTimeOffset.UtcNow;
 
-                try
+                Task.Run(() =>
                 {
-                    ProcessMessageHandler?.Invoke(this, message);
-                }
-                catch (Exception exc)
-                {
-                    _logger.Error(
-                        exc,
-                        "Something went wrong during message parsing: {0}",
-                        exc);
-                    throw;
-                }
+                    try
+                    {
+                        ProcessMessageHandler?.Invoke(this, message);
+                    }
+                    catch (Exception exc)
+                    {
+                        _logger.Error(
+                            exc,
+                            "Something went wrong during message parsing: {0}",
+                            exc);
+                        throw;
+                    }
+                });
             }
             catch (DifferentAppProtocolVersionException dapve)
             {
