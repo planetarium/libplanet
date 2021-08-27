@@ -4,7 +4,11 @@ Libplanet changelog
 Version 0.15.1
 --------------
 
-To be released.
+Released on August 28, 2021.
+
+ -  `NetMQTransport` became to process message in non blocking way.  [[#1451]]
+
+ [#1451]: https://github.com/planetarium/libplanet/pull/1451
 
 
 Version 0.15.0
