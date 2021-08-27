@@ -64,7 +64,7 @@ namespace Libplanet.Net
 
             try
             {
-                _logger.Verbose(
+                _logger.Debug(
                     $"The chain before {nameof(ProcessFillBlocksAsync)} : " +
                     "{Id} #{Index} {Hash}",
                     BlockChain.Id,
@@ -96,6 +96,7 @@ namespace Libplanet.Net
             {
                 BlockDemandTable.Cleanup(BlockChain, IsBlockNeeded);
                 ProcessFillBlocksFinished.Set();
+                _logger.Debug($"{nameof(ProcessFillBlocksAsync)} has finished successfully.");
             }
         }
 
@@ -114,12 +115,17 @@ namespace Libplanet.Net
                 {
                     List<(BoundPeer, IBlockExcerpt)> peersWithExcerpt = BlockDemandTable.Demands
                         .Select(pair => (pair.Key, (IBlockExcerpt)pair.Value)).ToList();
+                    _logger.Debug($"{nameof(ProcessFillBlocksAsync)} using block demand.");
                     await ProcessFillBlocksAsync(
                         peersWithExcerpt,
                         cancellationToken);
                 }
                 else if (timeTaken > pollInterval)
                 {
+                    var msg =
+                        $"{nameof(ProcessFillBlocksAsync)} due to the polling interval " +
+                        "{Interval}.";
+                    _logger.Debug(msg, pollInterval);
                     await ProcessFillBlocksAsync(timeout, maximumPollPeers, cancellationToken);
                 }
                 else
