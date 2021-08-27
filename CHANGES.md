@@ -6,20 +6,6 @@ Version 0.16.1
 
 To be released.
 
-### Backward-incompatible API changes
-
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
-### Added APIs
-
-### Behavioral changes
-
-### Bug fixes
-
-### CLI tools
-
 
 Version 0.16.0
 --------------
@@ -53,6 +39,16 @@ Released on August 25, 2021.
 [#1419]: https://github.com/planetarium/libplanet/issues/1419
 [#1425]: https://github.com/planetarium/libplanet/pull/1425
 [#1430]: https://github.com/planetarium/libplanet/pull/1430
+
+
+Version 0.15.1
+--------------
+
+Released on August 28, 2021.
+
+ -  `NetMQTransport` became to process message in non blocking way.  [[#1451]]
+
+ [#1451]: https://github.com/planetarium/libplanet/pull/1451
 
 
 Version 0.15.0
