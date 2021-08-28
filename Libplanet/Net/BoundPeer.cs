@@ -3,6 +3,7 @@ using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Net;
 using System.Runtime.Serialization;
+using Bencodex.Types;
 using Destructurama.Attributed;
 using Libplanet.Crypto;
 
@@ -12,6 +13,9 @@ namespace Libplanet.Net
     [Equals]
     public sealed class BoundPeer : Peer
     {
+        private static readonly byte[] EndPointHostKey = { 0x68 }; // 'h'
+        private static readonly byte[] EndPointPortKey = { 0x65 }; // 'e'
+
         /// <summary>
         /// Initializes a new instance of the <see cref="BoundPeer"/> class.
         /// </summary>
@@ -24,6 +28,14 @@ namespace Libplanet.Net
             DnsEndPoint endPoint)
         : this(publicKey, endPoint, null)
         {
+        }
+
+        public BoundPeer(Bencodex.Types.Dictionary dictionary)
+        : base(dictionary)
+        {
+            EndPoint = new DnsEndPoint(
+                (Text)dictionary[EndPointHostKey],
+                (Integer)dictionary[EndPointPortKey]);
         }
 
         internal BoundPeer(
@@ -120,6 +132,10 @@ namespace Libplanet.Net
             info.AddValue("end_point_host", EndPoint.Host);
             info.AddValue("end_point_port", EndPoint.Port);
         }
+
+        public override Bencodex.Types.Dictionary ToBencodex() => base.ToBencodex()
+            .Add(EndPointHostKey, EndPoint.Host)
+            .Add(EndPointPortKey, EndPoint.Port);
 
         /// <inheritdoc/>
         public override string ToString()
