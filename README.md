@@ -64,9 +64,10 @@ In addition to stable releases, we also provide pre-release packages.
 For every day and every merge commit, it is packed into a *.nupkg*
 and uploaded to [NuGet] with a hyphen-suffixed version name.
 
-For a merge commit build, a version name is like `0.1.0-dev.20181231235959`
-where `20181231235959` is a UTC timestamp of the build.
-For a daily build, a version name is like `0.1.0-nightly.20181231`.
+For a merge commit build, a version name looks like
+`0.1.0-dev.20181231235959+a0b1c2d` where `20181231235959` is a UTC timestamp of
+the build and `a0b1c2d` is the first 7 hexadecimals of the Git commit hash.
+For a daily build, a version name is like `0.1.0-nightly.20181231+a0b1c2d`.
 
 Unfortunately, Unity currently does not support NuGet.  There are some Unity
 plug-ins to deal with NuGet package system, and these seem immature at present.
