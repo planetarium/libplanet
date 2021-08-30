@@ -748,5 +748,61 @@ namespace Libplanet.Tests.Net
                 await StopAsync(swarmB);
             }
         }
+
+        [Fact(Timeout = Timeout)]
+        public async Task CanFillWithInvalidTransaction()
+        {
+            var privateKey = new PrivateKey();
+            var address = privateKey.ToAddress();
+            var swarm1 = CreateSwarm();
+            var swarm2 = CreateSwarm();
+
+            var tx1 = swarm2.BlockChain.MakeTransaction(
+                privateKey,
+                new[] { new DumbAction(address, "foo") });
+
+            var tx2 = swarm2.BlockChain.MakeTransaction(
+                privateKey,
+                new[] { new DumbAction(address, "bar") });
+
+            var tx3 = swarm2.BlockChain.MakeTransaction(
+                privateKey,
+                new[] { new DumbAction(address, "quz") });
+
+            var tx4 = Transaction<DumbAction>.Create(
+                4,
+                privateKey,
+                swarm1.BlockChain.Genesis.Hash,
+                new[] { new DumbAction(address, "qux") });
+
+            try
+            {
+                await StartAsync(swarm1);
+                await StartAsync(swarm2);
+
+                var transport = swarm1.Transport;
+                var msg = new GetTxs(new[] { tx1.Id, tx2.Id, tx3.Id, tx4.Id });
+                var replies = (await transport.SendMessageWithReplyAsync(
+                    (BoundPeer)swarm2.AsPeer,
+                    msg,
+                    TimeSpan.FromSeconds(1),
+                    4,
+                    default)).ToList();
+
+                Assert.Equal(3, replies.Count);
+                Assert.Equal(
+                    new[] { tx1, tx2, tx3 }.ToHashSet(),
+                    replies.Select(
+                        m => Transaction<DumbAction>.Deserialize(
+                            ((Libplanet.Net.Messages.Tx)m).Payload)).ToHashSet());
+            }
+            finally
+            {
+                await StopAsync(swarm1);
+                await StopAsync(swarm2);
+                swarm1.Dispose();
+                swarm2.Dispose();
+            }
+        }
     }
 }
