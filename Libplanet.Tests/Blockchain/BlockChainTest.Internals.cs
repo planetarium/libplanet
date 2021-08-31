@@ -70,7 +70,7 @@ namespace Libplanet.Tests.Blockchain
 
             _blockChain.MakeTransaction(a, new DumbAction[0]);
 
-            ImmutableArray<Transaction<DumbAction>> stagedTransactions =
+            ImmutableList<Transaction<DumbAction>> stagedTransactions =
                 _blockChain.ListStagedTransactions();
             (Address Signer, long Nonce)[] actual =
                 stagedTransactions.Select(tx => (tx.Signer, tx.Nonce)).ToArray();

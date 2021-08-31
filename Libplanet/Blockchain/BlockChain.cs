@@ -1266,7 +1266,7 @@ namespace Libplanet.Blockchain
             }
         }
 
-        internal ImmutableArray<Transaction<T>> ListStagedTransactions()
+        internal ImmutableList<Transaction<T>> ListStagedTransactions()
         {
             Transaction<T>[] txs = StagePolicy.Iterate(this).ToArray();
 
@@ -1281,7 +1281,7 @@ namespace Libplanet.Blockchain
                 Transaction<T> first = seat.First.Value;
                 seat.RemoveFirst();
                 return first;
-            }).ToImmutableArray();
+            }).ToImmutableList();
         }
 
         internal void SetStates(
