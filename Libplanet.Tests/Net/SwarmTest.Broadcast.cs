@@ -787,6 +787,7 @@ namespace Libplanet.Tests.Net
                     msg,
                     TimeSpan.FromSeconds(1),
                     4,
+                    true,
                     default)).ToList();
 
                 Assert.Equal(3, replies.Count);

@@ -391,6 +391,7 @@ namespace Libplanet.Net.Transports
                 message,
                 TimeSpan.FromSeconds(3),
                 0,
+                false,
                 cancellationToken);
 
         /// <inheritdoc />
@@ -401,7 +402,13 @@ namespace Libplanet.Net.Transports
             CancellationToken cancellationToken)
         {
             IEnumerable<Message> replies =
-                await SendMessageWithReplyAsync(peer, message, timeout, 1, cancellationToken);
+                await SendMessageWithReplyAsync(
+                    peer,
+                    message,
+                    timeout,
+                    1,
+                    false,
+                    cancellationToken);
             Message reply = replies.First();
 
             return reply;
@@ -413,7 +420,8 @@ namespace Libplanet.Net.Transports
             Message message,
             TimeSpan? timeout,
             int expectedResponses,
-            CancellationToken cancellationToken = default
+            bool returnWhenTimeout,
+            CancellationToken cancellationToken
         )
         {
             if (!(_turnClient is null) && _turnClient.BehindNAT)
@@ -438,7 +446,15 @@ namespace Libplanet.Net.Transports
                 using CancellationTokenRegistration ctr =
                     cancellationToken.Register(() => tcs.TrySetCanceled());
                 await _requests.Writer.WriteAsync(
-                    new MessageRequest(reqId, message, peer, now, timeout, expectedResponses, tcs),
+                    new MessageRequest(
+                        reqId,
+                        message,
+                        peer,
+                        now,
+                        timeout,
+                        expectedResponses,
+                        returnWhenTimeout,
+                        tcs),
                     cancellationToken
                 );
                 _logger.Verbose(
@@ -823,34 +839,46 @@ namespace Libplanet.Net.Transports
 
                 foreach (var i in Enumerable.Range(0, req.ExpectedResponses))
                 {
-                    NetMQMessage raw = await dealer.ReceiveMultipartMessageAsync(
-                        timeout: req.Timeout,
-                        cancellationToken: cancellationToken
-                    );
-                    const string rcvMsg =
-                        "Received a raw message ({FrameCount} frames), which replies to " +
-                        "the request {RequestId}, from {Peer}.";
-                    _logger.Verbose(
-                        rcvMsg,
-                        raw.FrameCount,
-                        req.Id,
-                        req.Peer
-                    );
-                    Message reply = Message.Parse(
-                        raw,
-                        true,
-                        _appProtocolVersion,
-                        _trustedAppProtocolVersionSigners,
-                        _differentAppProtocolVersionEncountered,
-                        _messageLifespan);
-                    _logger.Debug(
-                        "A reply to the request {RequestId} has parsed: {Reply} from {Peer}.",
-                        req.Id,
-                        reply,
-                        reply.Remote
-                    );
+                    try
+                    {
+                        NetMQMessage raw = await dealer.ReceiveMultipartMessageAsync(
+                            timeout: req.Timeout,
+                            cancellationToken: cancellationToken
+                        );
+                        const string rcvMsg =
+                            "Received a raw message ({FrameCount} frames), which replies to " +
+                            "the request {RequestId}, from {Peer}.";
+                        _logger.Verbose(
+                            rcvMsg,
+                            raw.FrameCount,
+                            req.Id,
+                            req.Peer
+                        );
+                        Message reply = Message.Parse(
+                            raw,
+                            true,
+                            _appProtocolVersion,
+                            _trustedAppProtocolVersionSigners,
+                            _differentAppProtocolVersionEncountered,
+                            _messageLifespan);
+                        _logger.Debug(
+                            "A reply to the request {RequestId} has parsed: {Reply} from {Peer}.",
+                            req.Id,
+                            reply,
+                            reply.Remote
+                        );
 
-                    result.Add(reply);
+                        result.Add(reply);
+                    }
+                    catch (TimeoutException)
+                    {
+                        if (req.ReturnWhenTimeout)
+                        {
+                            break;
+                        }
+
+                        throw;
+                    }
                 }
 
                 tcs.TrySetResult(result);
@@ -1003,6 +1031,7 @@ namespace Libplanet.Net.Transports
                 DateTimeOffset requestedTime,
                 in TimeSpan? timeout,
                 in int expectedResponses,
+                bool returnWhenTimeout,
                 TaskCompletionSource<IEnumerable<Message>> taskCompletionSource)
                 : this(
                       id,
@@ -1011,6 +1040,7 @@ namespace Libplanet.Net.Transports
                       requestedTime,
                       timeout,
                       expectedResponses,
+                      returnWhenTimeout,
                       taskCompletionSource,
                       0
                     )
@@ -1024,6 +1054,7 @@ namespace Libplanet.Net.Transports
                 DateTimeOffset requestedTime,
                 in TimeSpan? timeout,
                 in int expectedResponses,
+                bool returnWhenTimeout,
                 TaskCompletionSource<IEnumerable<Message>> taskCompletionSource,
                 int retried)
             {
@@ -1033,6 +1064,7 @@ namespace Libplanet.Net.Transports
                 RequestedTime = requestedTime;
                 Timeout = timeout;
                 ExpectedResponses = expectedResponses;
+                ReturnWhenTimeout = returnWhenTimeout;
                 TaskCompletionSource = taskCompletionSource;
                 _retried = retried;
             }
@@ -1049,6 +1081,8 @@ namespace Libplanet.Net.Transports
 
             public int ExpectedResponses { get; }
 
+            public bool ReturnWhenTimeout { get; }
+
             public TaskCompletionSource<IEnumerable<Message>> TaskCompletionSource { get; }
 
             public bool Retryable => _retried < 10;
@@ -1062,6 +1096,7 @@ namespace Libplanet.Net.Transports
                     RequestedTime,
                     Timeout,
                     ExpectedResponses,
+                    ReturnWhenTimeout,
                     TaskCompletionSource,
                     _retried + 1
                 );

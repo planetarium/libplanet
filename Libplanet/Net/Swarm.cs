@@ -1029,6 +1029,7 @@ namespace Libplanet.Net
                 request,
                 blockRecvTimeout,
                 ((hashCount - 1) / request.ChunkSize) + 1,
+                false,
                 cancellationToken
             );
 
@@ -1090,6 +1091,7 @@ namespace Libplanet.Net
                 request,
                 txRecvTimeout,
                 txCount,
+                true,
                 cancellationToken
             );
 
