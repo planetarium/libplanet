@@ -32,10 +32,8 @@ namespace Libplanet.Blockchain.Policies
 
         /// <summary>
         /// The maximum number of <see cref="Block{T}.Transactions"/> that a <see cref="Block{T}"/>
-        /// can accept.  This value must not be negative and must be deterministic (i.e., must not
-        /// change after an object is once instantiated).
+        /// can accept.
         /// </summary>
-        /// <remarks>If the value is less then 1, it's treated as 1.</remarks>
         [Pure]
         int MaxTransactionsPerBlock { get; }
 

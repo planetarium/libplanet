@@ -23,12 +23,7 @@ namespace Libplanet.Blockchain
         /// <param name="append">Whether to <see cref="Append(Block{T}, StateCompleterSet{T}?)"/>
         /// the mined block.  Turned on by default.</param>
         /// <param name="maxTransactions">The maximum number of transactions that a block can
-        /// accept.  This value must be greater than 0, and less than or equal to
-        /// <see cref="Policy"/>.<see cref="IBlockPolicy{T}.MaxTransactionsPerBlock"/>.
-        /// Zero and negative values are treated as 1. If it is omitted or more than
-        /// <see cref="Policy"/>.<see cref="IBlockPolicy{T}.MaxTransactionsPerBlock"/>, it will be
-        /// treated as <see cref="Policy"/>.<see cref="IBlockPolicy{T}.MaxTransactionsPerBlock"/>.
-        /// </param>
+        /// accept.  See also <see cref="IBlockPolicy{T}.MaxTransactionsPerBlock"/>.</param>
         /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
         /// operation should be canceled.
@@ -55,12 +50,7 @@ namespace Libplanet.Blockchain
         /// <param name="append">Whether to <see cref="Append(Block{T}, StateCompleterSet{T}?)"/>
         /// the mined block.  Turned on by default.</param>
         /// <param name="maxTransactions">The maximum number of transactions that a block can
-        /// accept.  This value must be greater than 0, and less than or equal to
-        /// <see cref="Policy"/>.<see cref="IBlockPolicy{T}.MaxTransactionsPerBlock"/>.
-        /// Zero and negative values are treated as 1. If it is omitted or more than
-        /// <see cref="Policy"/>.<see cref="IBlockPolicy{T}.MaxTransactionsPerBlock"/>, it will be
-        /// treated as <see cref="Policy"/>.<see cref="IBlockPolicy{T}.MaxTransactionsPerBlock"/>.
-        /// </param>
+        /// accept.  See also <see cref="IBlockPolicy{T}.MaxTransactionsPerBlock"/>.</param>
         /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
         /// operation should be canceled.
@@ -82,13 +72,9 @@ namespace Libplanet.Blockchain
             void WatchTip(object target, (Block<T> OldTip, Block<T> NewTip) tip) => cts.Cancel();
             TipChanged += WatchTip;
 
-            maxTransactions = Math.Max(
-                Math.Min(
-                    maxTransactions ?? Policy.MaxTransactionsPerBlock,
-                    Policy.MaxTransactionsPerBlock
-                ),
-                1
-            );
+            maxTransactions = Math.Min(
+                maxTransactions ?? Policy.MaxTransactionsPerBlock,
+                Policy.MaxTransactionsPerBlock);
 
             long index = Store.CountIndex(Id);
             long difficulty = Policy.GetNextBlockDifficulty(this);
