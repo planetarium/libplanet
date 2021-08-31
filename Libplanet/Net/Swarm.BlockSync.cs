@@ -39,7 +39,7 @@ namespace Libplanet.Net
         /// A cancellation token used to propagate notification that this
         /// operation should be canceled.</param>
         /// <returns>An awaitable task without value.</returns>
-        internal async Task ProcessFillBlocksAsync(
+        internal async Task PullBlocksAsync(
             TimeSpan timeout,
             int maximumPollPeers,
             CancellationToken cancellationToken)
@@ -49,10 +49,10 @@ namespace Libplanet.Net
                     BlockChain.Tip, timeout, maximumPollPeers, cancellationToken);
             peersWithBlockExcerpt = peersWithBlockExcerpt
                 .Where(pair => IsBlockNeeded(pair.Item2)).ToList();
-            await ProcessFillBlocksAsync(peersWithBlockExcerpt, cancellationToken);
+            await PullBlocksAsync(peersWithBlockExcerpt, cancellationToken);
         }
 
-        private async Task ProcessFillBlocksAsync(
+        private async Task PullBlocksAsync(
             List<(BoundPeer, IBlockExcerpt)> peersWithBlockExcerpt,
             CancellationToken cancellationToken)
         {
@@ -65,12 +65,12 @@ namespace Libplanet.Net
             try
             {
                 _logger.Verbose(
-                    $"The chain before {nameof(ProcessFillBlocksAsync)} : " +
+                    $"The chain before {nameof(PullBlocksAsync)} : " +
                     "{Id} #{Index} {Hash}",
                     BlockChain.Id,
                     BlockChain.Tip.Index,
                     BlockChain.Tip.Hash);
-                System.Action renderSwap = await SyncBlocksAsync(
+                System.Action renderSwap = await CompleteBlocksAsync(
                     peersWithBlockExcerpt,
                     BlockChain,
                     null,
@@ -88,7 +88,7 @@ namespace Libplanet.Net
             catch (Exception e)
             {
                 var msg =
-                    $"Unexpected exception occured during {nameof(ProcessFillBlocksAsync)}. {{e}}";
+                    $"Unexpected exception occured during {nameof(PullBlocksAsync)}. {{e}}";
                 _logger.Error(e, msg, e);
                 FillBlocksAsyncFailed.Set();
             }
@@ -114,13 +114,13 @@ namespace Libplanet.Net
                 {
                     List<(BoundPeer, IBlockExcerpt)> peersWithExcerpt = BlockDemandTable.Demands
                         .Select(pair => (pair.Key, (IBlockExcerpt)pair.Value)).ToList();
-                    await ProcessFillBlocksAsync(
+                    await PullBlocksAsync(
                         peersWithExcerpt,
                         cancellationToken);
                 }
                 else if (timeTaken > pollInterval)
                 {
-                    await ProcessFillBlocksAsync(timeout, maximumPollPeers, cancellationToken);
+                    await PullBlocksAsync(timeout, maximumPollPeers, cancellationToken);
                 }
                 else
                 {
@@ -136,7 +136,7 @@ namespace Libplanet.Net
         }
 
 #pragma warning disable MEN003
-        private async Task<System.Action> SyncBlocksAsync(
+        private async Task<System.Action> CompleteBlocksAsync(
             IList<(BoundPeer, IBlockExcerpt)> peersWithExcerpt,
             BlockChain<T> workspace,
             IProgress<PreloadState> progress,
@@ -166,7 +166,7 @@ namespace Libplanet.Net
 
             try
             {
-                _logger.Debug($"Start to {nameof(SyncBlocksAsync)}().");
+                _logger.Debug($"Start to {nameof(CompleteBlocksAsync)}().");
                 FillBlocksAsyncStarted.Set();
 
                 var blockCompletion = new BlockCompletion<BoundPeer, T>(
@@ -454,7 +454,7 @@ namespace Libplanet.Net
             {
                 if (cancellationToken.IsCancellationRequested)
                 {
-                    _logger.Information($"{nameof(SyncBlocksAsync)}() is canceled.");
+                    _logger.Information($"{nameof(CompleteBlocksAsync)}() is canceled.");
                 }
 
                 if (!complete
@@ -462,7 +462,7 @@ namespace Libplanet.Net
                     || cancellationToken.IsCancellationRequested)
                 {
                     _logger.Debug(
-                        $"{nameof(SyncBlocksAsync)}() is aborted. Complete? {complete}; " +
+                        $"{nameof(CompleteBlocksAsync)}() is aborted. Complete? {complete}; " +
                         "delete the temporary working chain ({TId}: #{TIndex} {THash}), " +
                         "and make the existing chain ({EId}: #{EIndex} {EHash}) remains.",
                         wId,
@@ -476,7 +476,7 @@ namespace Libplanet.Net
                 else
                 {
                     _logger.Debug(
-                        $"{nameof(SyncBlocksAsync)} finished; " +
+                        $"{nameof(CompleteBlocksAsync)} finished; " +
                         "replace the existing chain ({0}: {1}) with " +
                         "the working chain ({2}: {3}).",
                         BlockChain.Id,
