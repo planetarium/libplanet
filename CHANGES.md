@@ -19,11 +19,15 @@ To be released.
 
 ### Behavioral changes
 
+ -  Block sync using `BlockDemand` became not to fill blocks
+    from multiple peers.  [[#1457]]
+
 ### Bug fixes
 
 ### CLI tools
 
 [#1455]: https://github.com/planetarium/libplanet/pull/1455
+[#1457]: https://github.com/planetarium/libplanet/pull/1457
 
 
 Version 0.16.0
