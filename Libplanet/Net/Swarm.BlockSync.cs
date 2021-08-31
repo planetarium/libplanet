@@ -69,8 +69,8 @@ namespace Libplanet.Net
 
             try
             {
-                _logger.Verbose(
-                    $"The chain before {nameof(PullBlocksAsync)} : " +
+                _logger.Debug(
+                    $"The chain before {nameof(PullBlocksAsync)}() : " +
                     "{Id} #{Index} {Hash}",
                     BlockChain.Id,
                     BlockChain.Tip.Index,
@@ -93,13 +93,14 @@ namespace Libplanet.Net
             catch (Exception e)
             {
                 var msg =
-                    $"Unexpected exception occured during {nameof(PullBlocksAsync)}. {{e}}";
+                    $"Unexpected exception occured during {nameof(PullBlocksAsync)}(). {{e}}";
                 _logger.Error(e, msg, e);
                 FillBlocksAsyncFailed.Set();
             }
             finally
             {
                 ProcessFillBlocksFinished.Set();
+                _logger.Debug($"{nameof(PullBlocksAsync)}() has finished successfully.");
             }
         }
 
