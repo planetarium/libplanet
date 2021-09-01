@@ -6,6 +6,17 @@ Version 0.15.2
 
 To be released.
 
+ -  Removed `ITransport.SendMessageWithReplyAsync(BoundPeer,
+    Message, TimeSpan?, int, CancellationToken)` method.
+    Instead, added `ITransport.SendMessageWithReplyAsync(BoundPeer,
+    Message, TimeSpan?, int, bool, CancellationToken)` method.
+    [[#1458], [#1460]]
+ -  Fixed a bug where `GetTxs` request failed to receive transactions
+    if any messages are missing.  [[#1458], [#1460]]
+
+[#1458]: https://github.com/planetarium/libplanet/issues/1458
+[#1460]: https://github.com/planetarium/libplanet/pull/1460
+
 
 Version 0.15.1
 --------------
