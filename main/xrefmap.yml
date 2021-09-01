@@ -10346,6 +10346,12 @@ references:
   commentId: T:Libplanet.Net.BoundPeer
   fullName: Libplanet.Net.BoundPeer
   nameWithType: BoundPeer
+- uid: Libplanet.Net.BoundPeer.#ctor(Bencodex.Types.Dictionary)
+  name: BoundPeer(Bencodex.Types.Dictionary)
+  href: api/Libplanet.Net.BoundPeer.html#Libplanet_Net_BoundPeer__ctor_Bencodex_Types_Dictionary_
+  commentId: M:Libplanet.Net.BoundPeer.#ctor(Bencodex.Types.Dictionary)
+  fullName: Libplanet.Net.BoundPeer.BoundPeer(Bencodex.Types.Dictionary)
+  nameWithType: BoundPeer.BoundPeer(Bencodex.Types.Dictionary)
 - uid: Libplanet.Net.BoundPeer.#ctor(Libplanet.Crypto.PublicKey,System.Net.DnsEndPoint)
   name: BoundPeer(PublicKey, DnsEndPoint)
   href: api/Libplanet.Net.BoundPeer.html#Libplanet_Net_BoundPeer__ctor_Libplanet_Crypto_PublicKey_System_Net_DnsEndPoint_
@@ -10424,6 +10430,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.BoundPeer.ParsePeer
   nameWithType: BoundPeer.ParsePeer
+- uid: Libplanet.Net.BoundPeer.ToBencodex
+  name: ToBencodex()
+  href: api/Libplanet.Net.BoundPeer.html#Libplanet_Net_BoundPeer_ToBencodex
+  commentId: M:Libplanet.Net.BoundPeer.ToBencodex
+  fullName: Libplanet.Net.BoundPeer.ToBencodex()
+  nameWithType: BoundPeer.ToBencodex()
+- uid: Libplanet.Net.BoundPeer.ToBencodex*
+  name: ToBencodex
+  href: api/Libplanet.Net.BoundPeer.html#Libplanet_Net_BoundPeer_ToBencodex_
+  commentId: Overload:Libplanet.Net.BoundPeer.ToBencodex
+  isSpec: "True"
+  fullName: Libplanet.Net.BoundPeer.ToBencodex
+  nameWithType: BoundPeer.ToBencodex
 - uid: Libplanet.Net.BoundPeer.ToString
   name: ToString()
   href: api/Libplanet.Net.BoundPeer.html#Libplanet_Net_BoundPeer_ToString
@@ -10926,6 +10945,12 @@ references:
   commentId: T:Libplanet.Net.Peer
   fullName: Libplanet.Net.Peer
   nameWithType: Peer
+- uid: Libplanet.Net.Peer.#ctor(Bencodex.Types.Dictionary)
+  name: Peer(Bencodex.Types.Dictionary)
+  href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer__ctor_Bencodex_Types_Dictionary_
+  commentId: M:Libplanet.Net.Peer.#ctor(Bencodex.Types.Dictionary)
+  fullName: Libplanet.Net.Peer.Peer(Bencodex.Types.Dictionary)
+  nameWithType: Peer.Peer(Bencodex.Types.Dictionary)
 - uid: Libplanet.Net.Peer.#ctor(Libplanet.Crypto.PublicKey)
   name: Peer(PublicKey)
   href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer__ctor_Libplanet_Crypto_PublicKey_
@@ -11023,6 +11048,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Peer.PublicKey
   nameWithType: Peer.PublicKey
+- uid: Libplanet.Net.Peer.ToBencodex
+  name: ToBencodex()
+  href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer_ToBencodex
+  commentId: M:Libplanet.Net.Peer.ToBencodex
+  fullName: Libplanet.Net.Peer.ToBencodex()
+  nameWithType: Peer.ToBencodex()
+- uid: Libplanet.Net.Peer.ToBencodex*
+  name: ToBencodex
+  href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer_ToBencodex_
+  commentId: Overload:Libplanet.Net.Peer.ToBencodex
+  isSpec: "True"
+  fullName: Libplanet.Net.Peer.ToBencodex
+  nameWithType: Peer.ToBencodex
 - uid: Libplanet.Net.Peer.ToString
   name: ToString()
   href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer_ToString
