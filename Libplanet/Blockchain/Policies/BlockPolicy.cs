@@ -63,7 +63,7 @@ namespace Libplanet.Blockchain.Policies
             int maxBlockBytes = 100 * 1024,
             int maxGenesisBytes = 1024 * 1024,
             Func<Transaction<T>, BlockChain<T>, bool> doesTransactionFollowPolicy = null,
-            IComparer<BlockPerception> canonicalChainComparer = null,
+            IComparer<IBlockExcerpt> canonicalChainComparer = null,
             HashAlgorithmGetter hashAlgorithmGetter = null,
             Func<long, int> getMaxTransactionsPerSignerPerBlock = null)
             : this(
@@ -120,7 +120,7 @@ namespace Libplanet.Blockchain.Policies
             int maxBlockBytes,
             int maxGenesisBytes,
             Func<Transaction<T>, BlockChain<T>, bool> doesTransactionFollowPolicy = null,
-            IComparer<BlockPerception> canonicalChainComparer = null,
+            IComparer<IBlockExcerpt> canonicalChainComparer = null,
             HashAlgorithmGetter hashAlgorithmGetter = null,
             Func<long, int> getMaxTransactionsPerSignerPerBlock = null)
         {

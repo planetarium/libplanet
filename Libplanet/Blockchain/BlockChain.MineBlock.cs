@@ -44,8 +44,8 @@ namespace Libplanet.Blockchain
             bool? append = null,
             int? maxTransactions = null,
             int? maxTransactionsPerSigner = null,
-#pragma warning disable SA1118
             CancellationToken? cancellationToken = null) =>
+#pragma warning disable SA1118
                 await MineBlock(
                     miner: miner,
                     timestamp: timestamp ?? DateTimeOffset.UtcNow,
@@ -244,7 +244,7 @@ namespace Libplanet.Blockchain
 
             var storedNonces = new Dictionary<Address, long>();
             var nextNonces = new Dictionary<Address, long>();
-            var stagedCounts = new Dictionary<Address, int>();
+            var toMineCounts = new Dictionary<Address, int>();
 
             foreach (
                 (Transaction<T> tx, int i) in stagedTransactions.Select((val, idx) => (val, idx)))
@@ -262,7 +262,7 @@ namespace Libplanet.Blockchain
                 {
                     storedNonces[tx.Signer] = Store.GetTxNonce(Id, tx.Signer);
                     nextNonces[tx.Signer] = storedNonces[tx.Signer];
-                    stagedCounts[tx.Signer] = 0;
+                    toMineCounts[tx.Signer] = 0;
                 }
 
                 if (transactionsToMine.Count >= maxTransactions)
@@ -304,7 +304,7 @@ namespace Libplanet.Blockchain
                         continue;
                     }
 
-                    if (stagedCounts[tx.Signer] >= maxTransactionsPerSigner)
+                    if (toMineCounts[tx.Signer] >= maxTransactionsPerSigner)
                     {
                         _logger.Debug(
                             "Ignoring tx {Iter}/{Total} {Transaction} due to the maximum number " +
@@ -325,7 +325,7 @@ namespace Libplanet.Blockchain
                         tx.Id);
                     transactionsToMine.Add(tx);
                     nextNonces[tx.Signer] += 1;
-                    stagedCounts[tx.Signer] += 1;
+                    toMineCounts[tx.Signer] += 1;
                     estimatedBytes += tx.BytesLength;
                 }
                 else if (tx.Nonce < storedNonces[tx.Signer])

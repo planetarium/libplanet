@@ -9,7 +9,7 @@ To be released.
 ### Backward-incompatible API changes
 
  -  `BlockPerception` now implements `IBlockExcerpt` interface.  [[#1440]]
-    -  `BlockPerception.Excerpt` property removed.
+     -  `BlockPerception.Excerpt` property removed.
  -  `TotalDifficultyComparer` now implements `IComparer<IBlockExcerpt>`
     interface.  [[#1442]]
  -  Return type for `BlockDemandTable.Add()` is now `void`.  [[#1435], [#1443]]
@@ -24,6 +24,11 @@ To be released.
     `IReadOnlyList<byte>` (were both `byte[]`).  [[#1464]]
  -  `HashDigest<T>.DeriveFrom()` method's parameter type became
     `IReadOnlyList<byte>` (was `byte[]`).  [[#1464]]
+ -  `IBlockPolicy<T>.MaxTransactionsPerBlock` and
+    `IBlockPolicy<T>.GetMaxBlockBytes()` description changed for `0`
+    and negative values.  [[#1449], [#1463]]
+     -  Returned values from these will now be taken literally
+        by `BlockChain<T>`.
 
 ### Backward-incompatible network protocol changes
 
@@ -43,6 +48,10 @@ To be released.
     [[#1464]]
  -  Added `PublicKey.ToImmutableArray()` method.  [[#1464]]
  -  Added `Nonce(ImmutableArray<byte>)` overloaded constructor.  [[#1464]]
+ -  `IBlockPolicy.GetMaxTransactionsPerSignerPerBlock()` interface method added.
+    [[#1449], [#1463]]
+ -  `BlockChain<T>.MineBlock()` now takes `maxTransactionsPerSigner`
+    as an optional parameter.  [[#1449], [#1463]]
 
 ### Behavioral changes
 
@@ -56,6 +65,12 @@ To be released.
         tip of a chain is never considered as stale.
  -  Block sync using `BlockDemand` became not to fill blocks
     from multiple peers.  [[#1457]]
+ -  `BlockChain<T>.MineBlock()` now uses `maxTransactions` literally.
+    [[#1449], [#1463]]
+     -  Before, `maxTransactions` were internally automatically set to a
+        value between `1` and `BlockChain<T>.Policy.MaxTransactionsPerBlock`.
+ -  Similarly, `BlockChain<T>.MineBlock()` now internally uses
+    `BlockChain<T>.Policy.GetMaxBlockBytes()` literally.  [[#1449], [#1463]]
 
 ### Bug fixes
 
@@ -65,8 +80,10 @@ To be released.
 [#1440]: https://github.com/planetarium/libplanet/pull/1440
 [#1442]: https://github.com/planetarium/libplanet/pull/1442
 [#1443]: https://github.com/planetarium/libplanet/pull/1443
+[#1449]: https://github.com/planetarium/libplanet/issues/1449
 [#1455]: https://github.com/planetarium/libplanet/pull/1455
 [#1457]: https://github.com/planetarium/libplanet/pull/1457
+[#1463]: https://github.com/planetarium/libplanet/pull/1463
 [#1464]: https://github.com/planetarium/libplanet/pull/1464
 
 
@@ -131,7 +148,7 @@ Version 0.14.1
 
 Released on August 18, 2021.
 
-  - Added additional tags to logging.  [[#1433]]
+ -  Added additional tags to logging.  [[#1433]]
 
 [#1433]: https://github.com/planetarium/libplanet/pull/1433
 
@@ -924,8 +941,8 @@ Version 0.10.3
 
 Released on January 28, 2021.
 
--  `BlockChain<T>.MineBlock()` became to unstage transactions that have lower
-   nonce than expected.  [[#1174]]
+ -  `BlockChain<T>.MineBlock()` became to unstage transactions that have lower
+    nonce than expected.  [[#1174]]
 
 [#1174]: https://github.com/planetarium/libplanet/pull/1174
 
