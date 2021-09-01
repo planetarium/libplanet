@@ -30,7 +30,7 @@ namespace Libplanet.Blockchain
         /// <param name="append">Whether to append the mined block immediately after mining.</param>
         /// <param name="maxTransactions">The maximum number of transactions that a block can
         /// accept.  See also <see cref="IBlockPolicy{T}.MaxTransactionsPerBlock"/>.</param>
-        /// <param name="maxTransactionsPerSignerPerBlock">The maximum number of transactions
+        /// <param name="maxTransactionsPerSigner">The maximum number of transactions
         /// that a block can accept per signer.  See also
         /// <see cref="IBlockPolicy{T}.GetMaxTransactionsPerSignerPerBlock(long)"/>.</param>
         /// <param name="cancellationToken">A cancellation token used to propagate notification
@@ -43,7 +43,7 @@ namespace Libplanet.Blockchain
             DateTimeOffset? timestamp = null,
             bool? append = null,
             int? maxTransactions = null,
-            int? maxTransactionsPerSignerPerBlock = null,
+            int? maxTransactionsPerSigner = null,
 #pragma warning disable SA1118
             CancellationToken? cancellationToken = null) =>
                 await MineBlock(
@@ -51,7 +51,7 @@ namespace Libplanet.Blockchain
                     timestamp: timestamp ?? DateTimeOffset.UtcNow,
                     append: append ?? true,
                     maxTransactions: maxTransactions ?? Policy.MaxTransactionsPerBlock,
-                    maxTransactionsPerSignerPerBlock: maxTransactionsPerSignerPerBlock
+                    maxTransactionsPerSigner: maxTransactionsPerSigner
                         ?? Policy.GetMaxTransactionsPerSignerPerBlock(Count),
                     cancellationToken: cancellationToken ?? default(CancellationToken));
 #pragma warning restore SA1118
@@ -64,7 +64,7 @@ namespace Libplanet.Blockchain
         /// <param name="append">Whether to append the mined block immediately after mining.</param>
         /// <param name="maxTransactions">The maximum number of transactions that a block can
         /// accept.  See also <see cref="IBlockPolicy{T}.MaxTransactionsPerBlock"/>.</param>
-        /// <param name="maxTransactionsPerSignerPerBlock">The maximum number of transactions
+        /// <param name="maxTransactionsPerSigner">The maximum number of transactions
         /// that a block can accept per signer.  See also
         /// <see cref="IBlockPolicy{T}.GetMaxTransactionsPerSignerPerBlock(long)"/>.</param>
         /// <param name="cancellationToken">A cancellation token used to propagate notification
@@ -77,7 +77,7 @@ namespace Libplanet.Blockchain
             DateTimeOffset timestamp,
             bool append,
             int maxTransactions,
-            int maxTransactionsPerSignerPerBlock,
+            int maxTransactionsPerSigner,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             using var cts = new CancellationTokenSource();
@@ -105,7 +105,7 @@ namespace Libplanet.Blockchain
 
             var transactionsToMine = GatherTransactionsToMine(
                 maxTransactions: maxTransactions,
-                maxTransactionsPerSignerPerBlock: maxTransactionsPerSignerPerBlock);
+                maxTransactionsPerSigner: maxTransactionsPerSigner);
 
             _logger.Verbose(
                 "{SessionId}/{ProcessId}: Mined block #{Index} will include " +
@@ -197,9 +197,21 @@ namespace Libplanet.Blockchain
             return block;
         }
 
+        /// <summary>
+        /// Gathers <see cref="Transaction{T}"/>s for mining a next block
+        /// from the current set of staged <see cref="Transaction{T}"/>s.
+        /// </summary>
+        /// <param name="maxTransactions">The maximum number of <see cref="Transaction{T}"/>s
+        /// allowed.</param>
+        /// <param name="maxTransactionsPerSigner">The maximum number of
+        /// <see cref="Transaction{T}"/>s with the same signer allowed.</param>
+        /// <returns>An <see cref="ImmutableList"/> of <see cref="Transaction{T}"/>s with its
+        /// count not exceeding <paramref name="maxTransactions"/> and the number of
+        /// <see cref="Transaction{T}"/>s in the list for each signer not exceeding
+        /// <paramref name="maxTransactionsPerSigner"/>.</returns>
         internal ImmutableList<Transaction<T>> GatherTransactionsToMine(
             int maxTransactions,
-            int maxTransactionsPerSignerPerBlock)
+            int maxTransactionsPerSigner)
         {
             long index = Count;
             ImmutableList<Transaction<T>> stagedTransactions = ListStagedTransactions();
@@ -232,6 +244,7 @@ namespace Libplanet.Blockchain
 
             var storedNonces = new Dictionary<Address, long>();
             var nextNonces = new Dictionary<Address, long>();
+            var stagedCounts = new Dictionary<Address, int>();
 
             foreach (
                 (Transaction<T> tx, int i) in stagedTransactions.Select((val, idx) => (val, idx)))
@@ -249,14 +262,15 @@ namespace Libplanet.Blockchain
                 {
                     storedNonces[tx.Signer] = Store.GetTxNonce(Id, tx.Signer);
                     nextNonces[tx.Signer] = storedNonces[tx.Signer];
+                    stagedCounts[tx.Signer] = 0;
                 }
 
                 if (transactionsToMine.Count >= maxTransactions)
                 {
                     _logger.Information(
-                        "Ignoring tx {Iter}/{Total} {Transaction} and the rest of " +
+                        "Ignoring tx {Iter}/{Total} {Transaction} and the rest of the " +
                         "staged transactions due to the maximum number of " +
-                        "acceptable transactions: {MaxTransactions}",
+                        "transactions per block allowed hsa been reached: {Max}",
                         i,
                         stagedTransactions.Count,
                         tx.Id,
@@ -290,6 +304,19 @@ namespace Libplanet.Blockchain
                         continue;
                     }
 
+                    if (stagedCounts[tx.Signer] >= maxTransactionsPerSigner)
+                    {
+                        _logger.Debug(
+                            "Ignoring tx {Iter}/{Total} {Transaction} due to the maximum number " +
+                            "of transactions allowed per single signer per block " +
+                            "has been reached: {Max}",
+                            i,
+                            stagedTransactions.Count,
+                            tx.Id,
+                            maxTransactionsPerSigner);
+                        continue;
+                    }
+
                     _logger.Verbose(
                         "Adding tx {Iter}/{Total} {Transaction} to the list of transactions " +
                         "to be mined.",
@@ -298,6 +325,7 @@ namespace Libplanet.Blockchain
                         tx.Id);
                     transactionsToMine.Add(tx);
                     nextNonces[tx.Signer] += 1;
+                    stagedCounts[tx.Signer] += 1;
                     estimatedBytes += tx.BytesLength;
                 }
                 else if (tx.Nonce < storedNonces[tx.Signer])
