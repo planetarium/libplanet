@@ -21,11 +21,12 @@ namespace Libplanet.Blockchain
         /// </para>
         /// <para>
         /// All unprovided and/or <c>null</c> arguments are reassigned accordingly and redirected
-        /// to a overloaded method with non-nullable parameters.
+        /// to a overloaded method with non-nullable parameters.  By default, a policy adhering
+        /// block is produced with current timestamp and appended immediately to the chain.
         /// </para>
         /// </summary>
         /// <param name="miner">The <see cref="Address"/> of the miner that mines the block.</param>
-        /// <param name="currentTime">The <see cref="DateTimeOffset"/> when mining started.</param>
+        /// <param name="timestamp">The <see cref="DateTimeOffset"/> when mining started.</param>
         /// <param name="append">Whether to append the mined block immediately after mining.</param>
         /// <param name="maxTransactions">The maximum number of transactions that a block can
         /// accept.  See also <see cref="IBlockPolicy{T}.MaxTransactionsPerBlock"/>.</param>
@@ -39,7 +40,7 @@ namespace Libplanet.Blockchain
         /// <see cref="BlockChain{T}.Tip"/> is changed while mining.</exception>
         public async Task<Block<T>> MineBlock(
             Address miner,
-            DateTimeOffset? currentTime = null,
+            DateTimeOffset? timestamp = null,
             bool? append = null,
             int? maxTransactions = null,
             int? maxTransactionsPerSignerPerBlock = null,
@@ -47,7 +48,7 @@ namespace Libplanet.Blockchain
             CancellationToken? cancellationToken = null) =>
                 await MineBlock(
                     miner: miner,
-                    currentTime: currentTime ?? DateTimeOffset.UtcNow,
+                    timestamp: timestamp ?? DateTimeOffset.UtcNow,
                     append: append ?? true,
                     maxTransactions: maxTransactions ?? Policy.MaxTransactionsPerBlock,
                     maxTransactionsPerSignerPerBlock: maxTransactionsPerSignerPerBlock
@@ -59,23 +60,21 @@ namespace Libplanet.Blockchain
         /// Mines a next <see cref="Block{T}"/> using staged <see cref="Transaction{T}"/>s.
         /// </summary>
         /// <param name="miner">The <see cref="Address"/> of the miner that mines the block.</param>
-        /// <param name="currentTime">The <see cref="DateTimeOffset"/> when mining started.</param>
+        /// <param name="timestamp">The <see cref="DateTimeOffset"/> when mining started.</param>
         /// <param name="append">Whether to append the mined block immediately after mining.</param>
         /// <param name="maxTransactions">The maximum number of transactions that a block can
         /// accept.  See also <see cref="IBlockPolicy{T}.MaxTransactionsPerBlock"/>.</param>
         /// <param name="maxTransactionsPerSignerPerBlock">The maximum number of transactions
         /// that a block can accept per signer.  See also
         /// <see cref="IBlockPolicy{T}.GetMaxTransactionsPerSignerPerBlock(long)"/>.</param>
-        /// <param name="cancellationToken">
-        /// A cancellation token used to propagate notification that this
-        /// operation should be canceled.
-        /// </param>
+        /// <param name="cancellationToken">A cancellation token used to propagate notification
+        /// that this operation should be canceled.</param>
         /// <returns>An awaitable task with a <see cref="Block{T}"/> that is mined.</returns>
         /// <exception cref="OperationCanceledException">Thrown when
         /// <see cref="BlockChain{T}.Tip"/> is changed while mining.</exception>
         public async Task<Block<T>> MineBlock(
             Address miner,
-            DateTimeOffset currentTime,
+            DateTimeOffset timestamp,
             bool append,
             int maxTransactions,
             int maxTransactionsPerSignerPerBlock,
@@ -92,29 +91,28 @@ namespace Libplanet.Blockchain
             BlockHash? prevHash = Store.IndexBlockHash(Id, index - 1);
 
             int sessionId = new System.Random().Next();
-            int procId = Process.GetCurrentProcess().Id;
+            int processId = Process.GetCurrentProcess().Id;
             _logger.Debug(
-                "Starting to mine a block #{Index} [difficulty: {Difficulty}; prev: {prevHash}; " +
-                "session: {SessionId}; proc: {ProcessId}]... ",
+                "{SessionId}/{ProcessId}: Starting to mine block #{Index} with " +
+                "difficulty {Difficulty} and previous hash {PreviousHash}...",
+                sessionId,
+                processId,
                 index,
                 difficulty,
-                prevHash,
-                sessionId,
-                procId);
+                prevHash);
 
             HashAlgorithmType hashAlgorithm = Policy.GetHashAlgorithm(index);
 
             var transactionsToMine = GatherTransactionsToMine(
-                miner: miner,
-                timestamp: currentTime,
                 maxTransactions: maxTransactions,
                 maxTransactionsPerSignerPerBlock: maxTransactionsPerSignerPerBlock);
 
             _logger.Verbose(
-                "Mined block #{Index} by miner {Miner} will include " +
+                "{SessionId}/{ProcessId}: Mined block #{Index} will include " +
                 "{TransactionsCount} transactions.",
+                sessionId,
+                processId,
                 index,
-                miner,
                 transactionsToMine.Count);
 
             Block<T> block;
@@ -128,7 +126,7 @@ namespace Libplanet.Blockchain
                         previousTotalDifficulty: Tip.TotalDifficulty,
                         miner: miner,
                         previousHash: prevHash,
-                        timestamp: currentTime,
+                        timestamp: timestamp,
                         transactions: transactionsToMine,
                         cancellationToken: cancellationTokenSource.Token),
                     cancellationTokenSource.Token);
@@ -176,40 +174,30 @@ namespace Libplanet.Blockchain
             }
 
             _logger.Debug(
-                "Mined a block #{Index} [difficulty: {Difficulty}; prev: {prevHash}; " +
-                "session: {SessionId}; proc: {ProcessId}].",
-                index,
-                difficulty,
-                prevHash,
+                "{SessionId}/{ProcessId}: Mined block #{Index} {Hash} " +
+                "with difficulty {Difficulty} and previous hash {PreviousHash}.",
                 sessionId,
-                procId);
+                processId,
+                block.Index,
+                block.Hash,
+                block.Difficulty,
+                block.PreviousHash);
 
             if (append)
             {
                 Append(
                     block,
-                    currentTime,
+                    timestamp,
                     evaluateActions: true,
                     renderBlocks: true,
                     renderActions: true,
                     actionEvaluations: actionEvaluations);
-
-                _logger.Debug(
-                    "Appended a block #{Index} [difficulty: {Difficulty}; prev: {prevHash}; " +
-                    "session: {SessionId}; proc: {ProcessId}].",
-                    index,
-                    difficulty,
-                    prevHash,
-                    sessionId,
-                    procId);
             }
 
             return block;
         }
 
-        internal IReadOnlyList<Transaction<T>> GatherTransactionsToMine(
-            Address miner,
-            DateTimeOffset timestamp,
+        internal ImmutableList<Transaction<T>> GatherTransactionsToMine(
             int maxTransactions,
             int maxTransactionsPerSignerPerBlock)
         {
@@ -217,7 +205,7 @@ namespace Libplanet.Blockchain
             ImmutableList<Transaction<T>> stagedTransactions = ListStagedTransactions();
             _logger.Information(
                 "Gathering transactions to mine for block #{Index} from {TransactionsCount} " +
-                "staged transactions",
+                "staged transactions...",
                 index,
                 stagedTransactions.Count);
 
@@ -235,52 +223,43 @@ namespace Libplanet.Blockchain
                 difficulty: default,
                 totalDifficulty: default,
                 nonce: default,
-                miner: miner,
+                miner: default,
                 previousHash: prevHash,
-                timestamp: timestamp,
+                timestamp: default,
                 transactions: new Transaction<T>[0],
                 hashAlgorithm: hashAlgorithm).BytesLength;
             int maxBlockBytes = Policy.GetMaxBlockBytes(index);
 
-            var skippedSigners = new HashSet<Address>();
             var storedNonces = new Dictionary<Address, long>();
             var nextNonces = new Dictionary<Address, long>();
 
             foreach (
                 (Transaction<T> tx, int i) in stagedTransactions.Select((val, idx) => (val, idx)))
             {
+                _logger.Verbose(
+                    "Validating tx {Iter}/{Total} {Transaction} to include in block #{Index}...",
+                    i,
+                    stagedTransactions.Count,
+                    tx.Id,
+                    index);
+
                 // We don't care about nonce ordering here because `.ListStagedTransactions()`
                 // returns already ordered transactions by its nonce.
                 if (!storedNonces.ContainsKey(tx.Signer))
                 {
                     storedNonces[tx.Signer] = Store.GetTxNonce(Id, tx.Signer);
+                    nextNonces[tx.Signer] = storedNonces[tx.Signer];
                 }
-
-                if (nextNonces.TryGetValue(tx.Signer, out long prevNonce))
-                {
-                    nextNonces[tx.Signer] = prevNonce + 1;
-                }
-                else
-                {
-                    nextNonces[tx.Signer] = storedNonces[tx.Signer] + 1;
-                }
-
-                _logger.Verbose(
-                    "Preparing mining a block #{Index}; validating a tx {Index}/{Total} " +
-                    "{Transaction}...",
-                    index,
-                    i,
-                    stagedTransactions.Count,
-                    tx.Id);
 
                 if (transactionsToMine.Count >= maxTransactions)
                 {
                     _logger.Information(
-                        "Not all staged transactions will be included in a block #{Index} to " +
-                        "be mined by {Miner}, because it reaches the maximum number of " +
+                        "Ignoring tx {Iter}/{Total} {Transaction} and the rest of " +
+                        "staged transactions due to the maximum number of " +
                         "acceptable transactions: {MaxTransactions}",
-                        index,
-                        miner,
+                        i,
+                        stagedTransactions.Count,
+                        tx.Id,
                         maxTransactions);
                     break;
                 }
@@ -288,7 +267,7 @@ namespace Libplanet.Blockchain
                 if (!Policy.DoesTransactionFollowsPolicy(tx, this))
                 {
                     _logger.Debug(
-                        "Unstage the tx {Index}/{Total} {Transaction} as it doesn't follow policy.",
+                        "Unstaging tx {Iter}/{Total} {Transaction} as it does not follow policy.",
                         i,
                         stagedTransactions.Count,
                         tx.Id);
@@ -296,51 +275,53 @@ namespace Libplanet.Blockchain
                     continue;
                 }
 
-                if (storedNonces[tx.Signer] <= tx.Nonce && tx.Nonce < nextNonces[tx.Signer])
+                if (storedNonces[tx.Signer] <= tx.Nonce && tx.Nonce == nextNonces[tx.Signer])
                 {
                     if (estimatedBytes + tx.BytesLength > maxBlockBytes)
                     {
-                        // Once someone's tx is excluded from a block, their later txs are also all
-                        // excluded in the block, because later nonces become invalid.
-                        skippedSigners.Add(tx.Signer);
-                        _logger.Information(
-                            "The {Signer}'s transactions after the nonce #{Nonce} will be " +
-                            "excluded in a block #{Index} to be mined by {Miner}, because it " +
-                            "takes too long bytes.",
-                            tx.Signer,
-                            tx.Nonce,
-                            index,
-                            miner);
+                        _logger.Debug(
+                            "Ignoring tx {Iter}/{Total} {Transaction} due to the maximum size " +
+                            "allowed for a block: {CurrentEstimate}/{MaximumBlockBytes}",
+                            i,
+                            stagedTransactions.Count,
+                            tx.Id,
+                            estimatedBytes,
+                            maxBlockBytes);
                         continue;
                     }
 
+                    _logger.Verbose(
+                        "Adding tx {Iter}/{Total} {Transaction} to the list of transactions " +
+                        "to be mined.",
+                        i,
+                        stagedTransactions.Count,
+                        tx.Id);
                     transactionsToMine.Add(tx);
+                    nextNonces[tx.Signer] += 1;
                     estimatedBytes += tx.BytesLength;
                 }
                 else if (tx.Nonce < storedNonces[tx.Signer])
                 {
                     _logger.Debug(
-                        "Tx {Index}/{Total} {Transaction} has a lower nonce than expected: " +
-                        "{Nonce} ({Signer})." +
-                        "it will be discarded.",
+                        "Discarding tx {Iter}/{Total} {Transaction} by {Signer} " +
+                        "as it has lower nonce than the stored nonce: {Nonce}",
                         i,
                         stagedTransactions.Count,
                         tx.Id,
-                        tx.Nonce,
-                        tx.Signer);
+                        tx.Signer,
+                        tx.Nonce);
                     UnstageTransaction(tx);
                 }
                 else
                 {
                     _logger.Debug(
-                        "Tx {Index}/{Total} {Transaction} has a higher nonce than expected: " +
-                        "{Nonce} ({Signer}).  " +
-                        "It will be included by a block mined later.",
+                        "Ignoring tx {Iter}/{Total} {Transaction} by {Signer} " +
+                        "as it has higher nonce than expected: {Nonce}" +
                         i,
                         stagedTransactions.Count,
                         tx.Id,
-                        tx.Nonce,
-                        tx.Signer);
+                        tx.Signer,
+                        tx.Nonce);
                 }
 
                 if (timeout < DateTimeOffset.UtcNow)
@@ -352,7 +333,13 @@ namespace Libplanet.Blockchain
                 }
             }
 
-            return transactionsToMine;
+            _logger.Information(
+                "Gathered total of {TransactionsToMineCount} transactions to mine for " +
+                "block #{Index} from {StagedTransactionsCount} staged transactions.",
+                index,
+                transactionsToMine.Count,
+                stagedTransactions.Count);
+            return transactionsToMine.ToImmutableList();
         }
     }
 }
