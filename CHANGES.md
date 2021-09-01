@@ -10,6 +10,9 @@ To be released.
 
 ### Backward-incompatible network protocol changes
 
+-  `Message` became to serialize peer with bencodex instead of
+   `BinaryFormatter`.  [[#1455]]
+
 ### Backward-incompatible storage format changes
 
 ### Added APIs
@@ -19,6 +22,8 @@ To be released.
 ### Bug fixes
 
 ### CLI tools
+
+[#1455]: https://github.com/planetarium/libplanet/pull/1455
 
 
 Version 0.16.0

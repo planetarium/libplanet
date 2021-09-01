@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics.Contracts;
 using System.Net;
 using System.Runtime.Serialization;
+using Bencodex.Types;
 using Destructurama.Attributed;
 using Libplanet.Crypto;
 using Libplanet.Serialization;
@@ -16,8 +17,18 @@ namespace Libplanet.Net
     [Equals]
     public class Peer : ISerializable
     {
+        private static readonly byte[] PublicKeyKey = { 0x70 }; // 'p'
+        private static readonly byte[] PublicIpAddressKey = { 0x50 }; // 'P'
+
         public Peer(PublicKey publicKey)
         : this(publicKey, null)
+        {
+        }
+
+        public Peer(Bencodex.Types.Dictionary dictionary)
+        : this(
+            new PublicKey((Binary)dictionary[PublicKeyKey]),
+            dictionary[PublicIpAddressKey] is Text text ? IPAddress.Parse(text) : null)
         {
         }
 
@@ -71,6 +82,12 @@ namespace Libplanet.Net
             info.AddValue("public_key", PublicKey.Format(true));
             info.AddValue("public_ip_address", PublicIPAddress?.ToString());
         }
+
+        public virtual Bencodex.Types.Dictionary ToBencodex() => Bencodex.Types.Dictionary.Empty
+            .Add(PublicKeyKey, PublicKey.Format(true))
+            .Add(
+                PublicIpAddressKey,
+                !(PublicIPAddress is null) ? (IValue)(Text)PublicIPAddress.ToString() : Null.Value);
 
         /// <inheritdoc/>
         public override string ToString()
