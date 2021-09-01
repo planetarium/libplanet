@@ -117,9 +117,10 @@ namespace Libplanet.Net
             {
                 if (BlockDemandTable.Any())
                 {
-                    var largest =
-                        BlockDemandTable.Demands.Values.OrderBy(demand => demand.TotalDifficulty)
-                            .Last();
+                    BlockDemand largest =
+                        BlockDemandTable.Demands.Values.Aggregate(
+                            (acc, next) =>
+                                next.TotalDifficulty > acc.TotalDifficulty ? next : acc);
 
                     await ProcessBlockDemand(
                         largest,
