@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Numerics;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Net.Messages;
@@ -101,7 +100,7 @@ namespace Libplanet.Net
         {
             if (!(message.Remote is BoundPeer peer))
             {
-                _logger.Information(
+                _logger.Debug(
                     "BlockHeaderMessage was sent from invalid peer " +
                     "{PeerAddress}; ignored.",
                     message.Remote.Address
@@ -111,7 +110,7 @@ namespace Libplanet.Net
 
             if (!message.GenesisHash.Equals(BlockChain.Genesis.Hash))
             {
-                _logger.Information(
+                _logger.Debug(
                     "BlockHeaderMessage was sent from the peer " +
                     "{PeerAddress} with different genesis block {hash}; ignored.",
                     message.Remote.Address,
@@ -123,8 +122,8 @@ namespace Libplanet.Net
             BlockHeaderReceived.Set();
             BlockHeader header = message.Header;
 
-            _logger.Debug(
-                $"Received a {nameof(BlockHeader)} #{{BlockIndex}} {{BlockHash}}.",
+            _logger.Information(
+                $"Received {nameof(BlockHeader)} #{{BlockIndex}} {{BlockHash}}.",
                 header.Index,
                 ByteUtil.Hex(header.Hash)
             );
@@ -136,41 +135,38 @@ namespace Libplanet.Net
             }
             catch (InvalidBlockException ibe)
             {
-                _logger.Information(
+                _logger.Debug(
                     ibe,
-                    "A received header #{BlockIndex} {BlockHash} seems invalid; ignored.",
+                    "Received header #{BlockIndex} {BlockHash} seems invalid; ignored.",
                     header.Index,
                     ByteUtil.Hex(header.Hash)
                 );
                 return;
             }
 
-            if (!BlockDemandTable.Add(
+            if (!IsBlockNeeded(header))
+            {
+                _logger.Debug(
+                    "Received header #{BlockIndex} {BlockHash} from peer {Peer} is not needed " +
+                    "for the current chain with tip #{TipIndex} {TipHash}.",
+                    header.Index,
+                    ByteUtil.Hex(header.Hash),
+                    peer,
+                    BlockChain.Tip,
+                    BlockChain.Tip.Hash);
+                return;
+            }
+
+            _logger.Information(
+                "Adding received header #{BlockIndex} {BlockHash} from peer {Peer} to " +
+                $"{nameof(BlockDemandTable)}...",
+                header.Index,
+                ByteUtil.Hex(header.Hash),
+                peer);
+            BlockDemandTable.Add(
                 BlockChain,
                 IsBlockNeeded,
-                new BlockDemand(header, peer, DateTimeOffset.UtcNow)))
-            {
-                IDictionary<BoundPeer, BlockDemand> demands = BlockDemandTable.Demands;
-                long? demandIndex = demands.ContainsKey(peer)
-                    ? demands[peer].Header.Index
-                    : (long?)null;
-                BigInteger? demandDifficulty = demands.ContainsKey(peer)
-                    ? demands[peer].Header.TotalDifficulty
-                    : (BigInteger?)null;
-                _logger.Debug(
-                    "No blocks are required for peer {Peer} " +
-                    "(current: {Current}/{CurrentDifficulty}, " +
-                    "demand: {Demand}/{DemandDifficulty}, " +
-                    "received: {Received}/{ReceivedDifficulty}); " +
-                    $"{nameof(BlockHeaderMessage)} is ignored.",
-                    peer,
-                    BlockChain.Tip.Index,
-                    BlockChain.Tip.TotalDifficulty,
-                    demandIndex,
-                    demandDifficulty,
-                    header.Index,
-                    header.TotalDifficulty);
-            }
+                new BlockDemand(header, peer, DateTimeOffset.UtcNow));
         }
 
         private void TransferTxs(GetTxs getTxs)

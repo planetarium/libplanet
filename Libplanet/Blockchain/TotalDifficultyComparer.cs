@@ -31,7 +31,7 @@ namespace Libplanet.Blockchain
             // FIXME: This deviates from the documented behavior of IComparer<T>.
             if (x is null || y is null)
             {
-                throw new NullReferenceException(
+                throw new ArgumentNullException(
                     $"Neither {nameof(x)} nor {nameof(y)} should be null.");
             }
             else
