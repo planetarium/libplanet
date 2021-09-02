@@ -12,7 +12,7 @@ To be released.
     -  `BlockPerception.Excerpt` property removed.
  -  `TotalDifficultyComparer` now implements `IComparer<IBlockExcerpt>`
     interface.  [[#1442]]
- -  Return type for `BlockDemandTable.Add()` is now `void`.  [[#1443]]
+ -  Return type for `BlockDemandTable.Add()` is now `void`.  [[#1435], [#1443]]
 
 ### Backward-incompatible network protocol changes
 
