@@ -525,7 +525,7 @@ namespace Libplanet.Net
             PreloadStarted.Set();
 
             BlockChain<T> workspace = BlockChain.Fork(BlockChain.Tip.Hash, inheritRenderers: false);
-            var renderSwap = await SyncBlocksAsync(
+            var renderSwap = await CompleteBlocksAsync(
                 peersWithExcerpts,
                 workspace,
                 progress,

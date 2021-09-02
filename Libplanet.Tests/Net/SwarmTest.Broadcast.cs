@@ -750,7 +750,7 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact(Timeout = Timeout)]
-        public async Task PollBlocks()
+        public async Task PullBlocks()
         {
             var swarmA = CreateSwarm();
             var swarmB = CreateSwarm();
@@ -784,7 +784,7 @@ namespace Libplanet.Tests.Net
                 await BootstrapAsync(swarmB, swarmA.AsPeer);
                 await BootstrapAsync(swarmC, swarmA.AsPeer);
 
-                await swarmC.ProcessFillBlocksAsync(TimeSpan.FromSeconds(5), int.MaxValue, default);
+                await swarmC.PullBlocksAsync(TimeSpan.FromSeconds(5), int.MaxValue, default);
 
                 Assert.Equal(chainA.BlockHashes, chainC.BlockHashes);
                 Assert.NotEqual(chainB.BlockHashes, chainC.BlockHashes);
@@ -802,7 +802,7 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact(Timeout = Timeout)]
-        public async Task PollBlocksByDifficulty()
+        public async Task PullBlocksByDifficulty()
         {
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
             var chain1 = TestUtils.MakeBlockChain(
@@ -839,7 +839,7 @@ namespace Libplanet.Tests.Net
 
                 await BootstrapAsync(miner2, miner1.AsPeer);
 
-                await miner1.ProcessFillBlocksAsync(TimeSpan.FromSeconds(5), int.MaxValue, default);
+                await miner1.PullBlocksAsync(TimeSpan.FromSeconds(5), int.MaxValue, default);
 
                 Assert.Equal(miner2.BlockChain.Count, miner1.BlockChain.Count);
                 Assert.Equal(miner2.BlockChain.Tip, miner1.BlockChain.Tip);
