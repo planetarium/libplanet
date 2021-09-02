@@ -16,14 +16,14 @@ To be released.
 
 ### Backward-incompatible network protocol changes
 
--  `Message` became to serialize peer with bencodex instead of
-   `BinaryFormatter`.  [[#1455]]
+ -  `Message` became to serialize peer with bencodex instead of
+    `BinaryFormatter`.  [[#1455]]
 
 ### Backward-incompatible storage format changes
 
 ### Added APIs
 
-  - `IBlockExcerpt.ExcerptEquals` extension method added.  [[#1440]]
+ -  `IBlockExcerpt.ExcerptEquals` extension method added.  [[#1440]]
 
 ### Behavioral changes
 
