@@ -10,8 +10,11 @@ To be released.
 
  -  `BlockPerception` now implements `IBlockExcerpt` interface.  [[#1440]]
     -  `BlockPerception.Excerpt` property removed.
+<<<<<<< HEAD
  -  `TotalDifficultyComparer` now Implements `IComparer<IBlockExcerpt>`
     interface.  [[#1442]]
+=======
+>>>>>>> 4582c75b4 (Changelog)
 
 ### Backward-incompatible network protocol changes
 
