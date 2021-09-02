@@ -10,7 +10,7 @@ To be released.
 
  -  `BlockPerception` now implements `IBlockExcerpt` interface.  [[#1440]]
     -  `BlockPerception.Excerpt` property removed.
- -  `TotalDifficultyComparer` now Implements `IComparer<IBlockExcerpt>`
+ -  `TotalDifficultyComparer` now implements `IComparer<IBlockExcerpt>`
     interface.  [[#1442]]
  -  Return type for `BlockDemandTable.Add()` is now `void`.  [[#1443]]
 
