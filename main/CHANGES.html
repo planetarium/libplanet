@@ -71,8 +71,9 @@
 <li><code>BlockPerception.Excerpt</code> property removed.</li>
 </ul>
 </li>
-<li><code>TotalDifficultyComparer</code> now Implements <code>IComparer&lt;IBlockExcerpt&gt;</code>
+<li><code>TotalDifficultyComparer</code> now implements <code>IComparer&lt;IBlockExcerpt&gt;</code>
 interface.  [<a href="https://github.com/planetarium/libplanet/pull/1442">#1442</a>]</li>
+<li>Return type for <code>BlockDemandTable.Add()</code> is now <code>void</code>.  [<a href="https://github.com/planetarium/libplanet/issues/1435">#1435</a>, <a href="https://github.com/planetarium/libplanet/pull/1443">#1443</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <ul>
@@ -88,6 +89,15 @@ interface.  [<a href="https://github.com/planetarium/libplanet/pull/1442">#1442<
 <ul>
 <li><code>TotalDifficultyComparer</code> no longer considers perceived time when comparing
 <code>IBlockExcerpt</code>s.  [<a href="https://github.com/planetarium/libplanet/pull/1442">#1442</a>]</li>
+<li>General logic for determining the canonical chain has been updated.
+[<a href="https://github.com/planetarium/libplanet/issues/1435">#1435</a>, <a href="https://github.com/planetarium/libplanet/pull/1443">#1443</a>]
+<ul>
+<li>Perceived time is only used for marking a received header in
+<code>BlockDemandTable</code> in order to decide whether <code>BlockDemand</code> is stale
+or not.  This should prevent a tip regression for a local node, as the
+tip of a chain is never considered as stale.</li>
+</ul>
+</li>
 <li>Block sync using <code>BlockDemand</code> became not to fill blocks
 from multiple peers.  [<a href="https://github.com/planetarium/libplanet/pull/1457">#1457</a>]</li>
 </ul>
