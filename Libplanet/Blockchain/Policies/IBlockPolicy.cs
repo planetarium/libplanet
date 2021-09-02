@@ -97,5 +97,14 @@ namespace Libplanet.Blockchain.Policies
         /// do proof-of-work.</param>
         /// <returns>The <see cref="HashAlgorithmType"/> to use.</returns>
         HashAlgorithmType GetHashAlgorithm(long index);
+
+        /// <summary>
+        /// Returns the maximum number of transactions allowed per signer for
+        /// a <see cref="Block{T}"/>.
+        /// </summary>
+        /// <param name="index">The <see cref="Block{T}.Index"/> of the <see cref="Block{T}"/>
+        /// for which this policy should apply.</param>
+        /// <returns>The maximum number of transactions allowed per signer.</returns>
+        int GetMaxTransactionsPerSignerPerBlock(long index);
     }
 }
