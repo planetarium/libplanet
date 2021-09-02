@@ -135,7 +135,7 @@ namespace Libplanet.Extensions.Cocona.Commands
         )
         {
             PrivateKey key = UnprotectKey(keyId, passphrase);
-            byte[] rawKey = publicKey ? key.PublicKey.Format(true) : key.ByteArray;
+            byte[] rawKey = publicKey ? key.PublicKey.Format(true) : key.ToByteArray();
             if (bytes)
             {
                 using Stream stdout = Console.OpenStandardOutput();

@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Immutable;
+using System.Linq;
 using System.Text;
 using Libplanet.Crypto;
 using Xunit;
@@ -18,6 +20,8 @@ namespace Libplanet.Tests.Crypto
                 0x3f, 0xc7,
             };
             var key = new PrivateKey(bs);
+            Assert.Equal(bs, key.ToByteArray());
+            key = new PrivateKey(bs.ToImmutableArray());
             Assert.Equal(bs, key.ByteArray);
         }
 
@@ -30,20 +34,20 @@ namespace Libplanet.Tests.Crypto
                 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0,
             };
             Assert.Throws<ArgumentException>(() => new PrivateKey(bs));
+            ImmutableArray<byte> ibs = bs.ToImmutableArray();
+            Assert.Throws<ArgumentException>(() => new PrivateKey(ibs));
         }
 
         [Fact]
         public void PublicKeyTest()
         {
-            var key = new PrivateKey(
-                new byte[]
-                {
-                    0x82, 0xfc, 0x99, 0x47, 0xe8, 0x78, 0xfc, 0x7e, 0xd0, 0x1c,
-                    0x6c, 0x31, 0x06, 0x88, 0x60, 0x3f, 0x0a, 0x41, 0xc8, 0xe8,
-                    0x70, 0x4e, 0x5b, 0x99, 0x0e, 0x83, 0x88, 0x34, 0x3b, 0x0f,
-                    0xd4, 0x65,
-                }
-            );
+            byte[] keyBytes =
+            {
+                0x82, 0xfc, 0x99, 0x47, 0xe8, 0x78, 0xfc, 0x7e, 0xd0, 0x1c,
+                0x6c, 0x31, 0x06, 0x88, 0x60, 0x3f, 0x0a, 0x41, 0xc8, 0xe8,
+                0x70, 0x4e, 0x5b, 0x99, 0x0e, 0x83, 0x88, 0x34, 0x3b, 0x0f,
+                0xd4, 0x65,
+            };
             var expected = new byte[]
             {
                 0x04, 0xc7, 0xc6, 0x74, 0xa2, 0x23, 0x66, 0x1f, 0xae, 0xfe,
@@ -54,9 +58,12 @@ namespace Libplanet.Tests.Crypto
                 0x2f, 0xef, 0xa5, 0x28, 0x45, 0xbe, 0x22, 0x67, 0xd1, 0xf4,
                 0xd7, 0xaf, 0x32, 0x29, 0x74,
             };
-            var actual = key.PublicKey.Format(false);
 
-            Assert.Equal(expected, actual);
+            Assert.Equal(expected, new PrivateKey(keyBytes).PublicKey.Format(false));
+            Assert.Equal(
+                expected,
+                new PrivateKey(keyBytes.ToImmutableArray()).PublicKey.Format(false)
+            );
         }
 
         [Fact]
@@ -71,6 +78,8 @@ namespace Libplanet.Tests.Crypto
                     0xef, 0x88,
                 }
             );
+            var pubKey = pk.PublicKey;
+            var wrongPubKey = new PrivateKey().PublicKey;
             var payload = new byte[]
             {
                 0x64, 0x37, 0x3a, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x73,
@@ -94,19 +103,19 @@ namespace Libplanet.Tests.Crypto
                 0x30, 0x32, 0x54, 0x30, 0x33, 0x3a, 0x30, 0x34, 0x3a, 0x30,
                 0x35, 0x2e, 0x30, 0x30, 0x36, 0x30, 0x30, 0x30, 0x5a, 0x65,
             };
-            var expected = new byte[]
-            {
-                0x30, 0x44, 0x02, 0x20, 0x62, 0xcf, 0x8a, 0x04, 0x41, 0x9c,
-                0x6a, 0x03, 0xba, 0xf5, 0x5d, 0xe1, 0x0d, 0x9b, 0x20, 0x0e,
-                0xda, 0xa9, 0xdf, 0x2b, 0x9b, 0xf0, 0xcf, 0x98, 0x9f, 0xd6,
-                0x5d, 0x71, 0xc5, 0x5c, 0x35, 0x60, 0x02, 0x20, 0x2a, 0xa5,
-                0x59, 0x69, 0xd0, 0xad, 0xb1, 0x5e, 0x9e, 0x70, 0x8d, 0x83,
-                0x00, 0xe1, 0x05, 0x31, 0x1e, 0x1a, 0x16, 0x16, 0x5d, 0xb7,
-                0x3e, 0xd8, 0xf4, 0xf0, 0x05, 0x1d, 0x9f, 0x13, 0x81, 0xfd,
-            };
-            var actual = pk.Sign(payload);
 
-            Assert.Equal(expected, actual);
+            // byte[] API:
+            Assert.True(pubKey.Verify(payload, pk.Sign(payload)));
+            Assert.False(pubKey.Verify(payload.Skip(1).ToArray(), pk.Sign(payload)));
+            Assert.False(pubKey.Verify(payload, pk.Sign(payload).Skip(1).ToArray()));
+            Assert.False(wrongPubKey.Verify(payload, pk.Sign(payload)));
+            Assert.True(pubKey.Verify(payload, pk.Sign(payload)));
+
+            // ImmutableArray<byte> API:
+            var imPayload = payload.ToImmutableArray();
+            Assert.False(pubKey.Verify(payload.Skip(1).ToArray(), pk.Sign(imPayload).ToArray()));
+            Assert.False(pubKey.Verify(payload, pk.Sign(imPayload).Skip(1).ToArray()));
+            Assert.False(wrongPubKey.Verify(payload, pk.Sign(imPayload).ToArray()));
         }
 
         [Fact]
@@ -134,7 +143,7 @@ namespace Libplanet.Tests.Crypto
         }
 
         [Fact]
-        public void DecryptTest()
+        public void Decrypt()
         {
             var prvKey = new PrivateKey(
                 new byte[]
@@ -158,7 +167,8 @@ namespace Libplanet.Tests.Crypto
             };
             var expected = Encoding.ASCII.GetBytes("test message");
 
-            Assert.Equal(prvKey.Decrypt(cipherText), expected);
+            Assert.Equal(expected, prvKey.Decrypt(cipherText));
+            Assert.Equal(expected, prvKey.Decrypt(cipherText.ToImmutableArray()));
         }
 
         [Fact]
@@ -185,8 +195,10 @@ namespace Libplanet.Tests.Crypto
             var message = Encoding.ASCII.GetBytes("test message");
             var cipherText = key1.PublicKey.Encrypt(message);
 
+            Assert.Throws<InvalidCiphertextException>(() => key2.Decrypt(cipherText));
             Assert.Throws<InvalidCiphertextException>(
-                () => key2.Decrypt(cipherText));
+                () => key2.Decrypt(cipherText.ToImmutableArray())
+            );
         }
 
         [Fact]

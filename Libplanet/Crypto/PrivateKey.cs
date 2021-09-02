@@ -1,4 +1,7 @@
+#nullable enable
 using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Security.Cryptography;
@@ -39,36 +42,29 @@ namespace Libplanet.Crypto
     [Equals]
     public class PrivateKey
     {
-        private PublicKey _publicKey;
+        private PublicKey? _publicKey;
 
         /// <summary>
         /// Generates a new unique <see cref="PrivateKey"/> instance.
         /// It can be analogous to creating a new account in a degree.
         /// </summary>
         public PrivateKey()
-            : this(
-                GenerateKeyParam()
-            )
+            : this(GenerateKeyParam())
         {
         }
 
         /// <summary>
-        /// Creates a <see cref="PrivateKey"/> instance from the given
-        /// <see cref="byte"/> array (i.e., <paramref name="privateKey"/>),
-        /// which encodes a valid <a href="https://en.wikipedia.org/wiki/ECDSA">
-        /// ECDSA</a> private key.
+        /// Creates a <see cref="PrivateKey"/> instance from the given <see cref="byte"/>s (i.e.,
+        /// <paramref name="privateKey"/>), which encodes a valid
+        /// <a href="https://en.wikipedia.org/wiki/ECDSA">ECDSA</a> private key.
         /// </summary>
-        /// <param name="privateKey">A valid <see cref="byte"/> array that
-        /// encodes an ECDSA private key.
+        /// <param name="privateKey">A valid <see cref="byte"/>s that encodes an ECDSA private key.
         /// </param>
-        /// <remarks>A valid <see cref="byte"/> array for a <see cref="PrivateKey"/>.
-        /// Can be encoded using <see cref="ByteArray"/> property.
-        /// </remarks>
+        /// <remarks>A valid <see cref="byte"/> array for a <see cref="PrivateKey"/> can be encoded
+        /// using <see cref="ByteArray"/> property.</remarks>
         /// <seealso cref="ByteArray"/>
-        public PrivateKey(byte[] privateKey)
-            : this(
-                GenerateKeyFromBytes(privateKey)
-            )
+        public PrivateKey(IReadOnlyList<byte> privateKey)
+            : this(GenerateKeyFromBytes(privateKey is byte[] ba ? ba : privateKey.ToArray()))
         {
         }
 
@@ -99,27 +95,24 @@ namespace Libplanet.Crypto
         }
 
         /// <summary>
-        /// A <see cref="byte"/> array encoding of this private key.
+        /// An encoded <see cref="byte"/> array representation.
         /// </summary>
         /// <remarks>
-        /// An encoded <see cref="byte"/> array representation can recover
-        /// a <see cref="PrivateKey"/> object again using its constructor
-        /// (i.e., <see cref="PrivateKey(byte[])"/>.
-        /// <para>As like <see cref="PrivateKey"/> instances, this also must be
-        /// kept secret.  In practice, this must not be sent over the network,
-        /// and be securely stored in the file system.
-        /// For the most part, modern operating systems, mobile ones
-        /// in particular, provide their own API
-        /// to store password and private keys in the secure manner, which
-        /// means they encrypt things to store using their own hardware
-        /// security unit if possible.  See also <a
-        /// href="https://developer.android.com/training/articles/keystore"
-        /// >Android keystore system</a> or <a href="https://apple.co/2JHjxAq"
-        /// >iOS Secure Enclave</a>.</para>
+        /// An encoded <see cref="byte"/> array representation can be recovered to a <see
+        /// cref="PrivateKey"/> instance again using <see cref="PrivateKey(IReadOnlyList{byte})"/>
+        /// constructor.
+        /// <para>As like <see cref="PrivateKey"/> instances, it also must be kept secret.
+        /// In practice, this must not be sent over the network, and be securely stored in the file
+        /// system.  If you just want to store the in-memory private key in the persistent storage,
+        /// use <see cref="KeyStore.ProtectedPrivateKey"/> or <see cref="KeyStore.Web3KeyStore"/>.
+        /// </para>
+        /// <para>To get a mutable array instead of immutable one, use <see cref="ToByteArray()"/>
+        /// method instead.</para>
         /// </remarks>
-        /// <seealso cref="PrivateKey(byte[])"/>
+        /// <seealso cref="ToByteArray()"/>
+        /// <seealso cref="PrivateKey(IReadOnlyList{byte})"/>
         [Pure]
-        public byte[] ByteArray => KeyParam.D.ToByteArrayUnsigned();
+        public ImmutableArray<byte> ByteArray => ToByteArray().ToImmutableArray();
 
         internal ECPrivateKeyParameters KeyParam { get; }
 
@@ -153,38 +146,55 @@ namespace Libplanet.Crypto
         /// forged in the middle of transit.</description></item>
         /// </list>
         /// </summary>
-        /// <param name="message">A message to sign in <see cref="byte"/> array
-        /// representation.</param>
-        /// <returns>A signature that verifies the <paramref name="message"/>.
+        /// <param name="message">A message <see cref="byte"/>s to sign.</param>
+        /// <returns>A signature that proves the authenticity of the <paramref name="message"/>.
         /// It can be verified using
         /// <see cref="Libplanet.Crypto.PublicKey.Verify(byte[], byte[])"/>
         /// method.</returns>
         /// <seealso cref="Libplanet.Crypto.PublicKey.Verify(byte[], byte[])"/>
         public byte[] Sign(byte[] message)
         {
-            var h = new Sha256Digest();
-            var hashed = new byte[h.GetDigestSize()];
-            h.BlockUpdate(message, 0, message.Length);
-            h.DoFinal(hashed, 0);
-            h.Reset();
-
-            return CryptoConfig.CryptoBackend.Sign(new HashDigest<SHA256>(hashed), this);
+            HashDigest<SHA256> hashed = HashDigest<SHA256>.DeriveFrom(message);
+            return CryptoConfig.CryptoBackend.Sign(hashed, this);
         }
 
         /// <summary>
-        /// Converts a <paramref name="ciphertext"/> which was encrypted with
-        /// the corresponding <see cref="PublicKey"/> to the plain message.
+        /// Creates a signature from the given <paramref name="message"/>.
+        /// <para>A created signature can be verified by the corresponding <see cref="PublicKey"/>.
+        /// </para>
+        /// <para>Signatures can be created by only the <see cref="PrivateKey"/> which corresponds
+        /// a <see cref="PublicKey"/> to verify these signatures.</para>
+        /// <para>To sum up, a signature is used to guarantee:</para>
+        /// <list type="bullet">
+        /// <item><description>that the <paramref name="message"/> was created by someone possessing
+        /// the corresponding <see cref="PrivateKey"/>,</description></item>
+        /// <item><description>that the possessor cannot deny having sent the
+        /// <paramref name="message"/>, and</description></item>
+        /// <item><description>that the <paramref name="message"/> was not forged in the middle of
+        /// transit.</description></item>
+        /// </list>
         /// </summary>
-        /// <param name="ciphertext">The encrypted data.</param>
-        /// <returns>The plain data the <paramref name="ciphertext"/> encrypted.
+        /// <param name="message">A message <see cref="byte"/>s to sign.</param>
+        /// <returns>A signature that proves the authenticity of the <paramref name="message"/>.
         /// </returns>
+        public ImmutableArray<byte> Sign(ImmutableArray<byte> message)
+        {
+            HashDigest<SHA256> hashed = HashDigest<SHA256>.DeriveFrom(message);
+            return CryptoConfig.CryptoBackend.Sign(hashed, this).ToImmutableArray();
+        }
+
+        /// <summary>
+        /// Decrypts a <paramref name="ciphertext"/> which was encrypted with the corresponding
+        /// <see cref="PublicKey"/> to the original plain text.
+        /// </summary>
+        /// <param name="ciphertext">The encrypted message.</param>
+        /// <returns>The decrypted original message.</returns>
         /// <exception cref="InvalidCiphertextException">Thrown when the given
         /// <paramref name="ciphertext"/> is invalid.</exception>
         /// <remarks>
         /// Although the parameter name <paramref name="ciphertext"/> has the
-        /// word &#x201c;text&#x201d;, both a <paramref name="ciphertext"/>
-        /// and a returned message are a <see cref="byte"/> string,
-        /// not a Unicode <see cref="string"/>.
+        /// word &#x201c;text&#x201d;, both a <paramref name="ciphertext"/> and a returned message
+        /// are <see cref="byte"/>s, not Unicode <see cref="string"/>s.
         /// </remarks>
         /// <seealso cref="Libplanet.Crypto.PublicKey.Encrypt(byte[])"/>
         [Pure]
@@ -195,6 +205,23 @@ namespace Libplanet.Crypto
 
             return aes.Decrypt(ciphertext, 33);
         }
+
+        /// <summary>
+        /// Decrypts a <paramref name="ciphertext"/> which was encrypted with the corresponding
+        /// <see cref="PublicKey"/> to the original plain text.
+        /// </summary>
+        /// <param name="ciphertext">The encrypted message.</param>
+        /// <returns>The decrypted original message.</returns>
+        /// <exception cref="InvalidCiphertextException">Thrown when the given
+        /// <paramref name="ciphertext"/> is invalid.</exception>
+        /// <remarks>
+        /// Although the parameter name <paramref name="ciphertext"/> has the
+        /// word &#x201c;text&#x201d;, both a <paramref name="ciphertext"/> and a returned message
+        /// are <see cref="byte"/>s, not Unicode <see cref="string"/>s.
+        /// </remarks>
+        [Pure]
+        public ImmutableArray<byte> Decrypt(ImmutableArray<byte> ciphertext) =>
+            Decrypt(ciphertext.ToBuilder().ToArray()).ToImmutableArray();
 
         /// <summary>
         /// Securely exchange a <see cref="SymmetricKey"/> with a peer's
@@ -234,6 +261,31 @@ namespace Libplanet.Crypto
             return new SymmetricKey(result);
         }
 
+        /// <summary>
+        /// Encodes the private key into a corresponding mutable <see cref="byte"/> array
+        /// representation.
+        /// </summary>
+        /// <returns>An encoded <see cref="byte"/> array representation.  It guarantees that
+        /// returned arrays are never reused, and mutating on them does not affect
+        /// <see cref="PrivateKey"/> instance's internal states.</returns>
+        /// <remarks>
+        /// An encoded <see cref="byte"/> array representation can be recovered to a <see
+        /// cref="PrivateKey"/> instance again using <see cref="PrivateKey(IReadOnlyList{byte})"/>
+        /// constructor.
+        /// <para>As like <see cref="PrivateKey"/> instances, it also must be kept secret.
+        /// In practice, this must not be sent over the network, and be securely stored in the file
+        /// system.  If you just want to store the in-memory private key in the persistent storage,
+        /// use <see cref="KeyStore.ProtectedPrivateKey"/> or <see cref="KeyStore.Web3KeyStore"/>.
+        /// </para>
+        /// <para>To get an immutable array instead of mutable one, use <see cref="ByteArray"/>
+        /// property.</para>
+        /// </remarks>
+        /// <seealso cref="ByteArray"/>
+        /// <seealso cref="PrivateKey(IReadOnlyList{byte})"/>
+        [Pure]
+        public byte[] ToByteArray() =>
+            KeyParam.D.ToByteArrayUnsigned();
+
         internal static ECDomainParameters GetECParameters()
         {
             return GetECParameters("secp256k1");
@@ -254,7 +306,7 @@ namespace Libplanet.Crypto
                 new ECKeyGenerationParameters(ecParams, secureRandom);
             gen.Init(keyGenParam);
 
-            return gen.GenerateKeyPair().Private as ECPrivateKeyParameters;
+            return (ECPrivateKeyParameters)gen.GenerateKeyPair().Private;
         }
 
         private static ECPrivateKeyParameters GenerateKeyFromBytes(byte[] privateKey)
