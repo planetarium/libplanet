@@ -2372,70 +2372,6 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).UnstageTransaction
   nameWithType: BlockChain<T>.UnstageTransaction
   nameWithType.vb: BlockChain(Of T).UnstageTransaction
-- uid: Libplanet.Blockchain.BlockPerception
-  name: BlockPerception
-  href: api/Libplanet.Blockchain.BlockPerception.html
-  commentId: T:Libplanet.Blockchain.BlockPerception
-  fullName: Libplanet.Blockchain.BlockPerception
-  nameWithType: BlockPerception
-- uid: Libplanet.Blockchain.BlockPerception.#ctor(Libplanet.Blocks.IBlockExcerpt)
-  name: BlockPerception(IBlockExcerpt)
-  href: api/Libplanet.Blockchain.BlockPerception.html#Libplanet_Blockchain_BlockPerception__ctor_Libplanet_Blocks_IBlockExcerpt_
-  commentId: M:Libplanet.Blockchain.BlockPerception.#ctor(Libplanet.Blocks.IBlockExcerpt)
-  fullName: Libplanet.Blockchain.BlockPerception.BlockPerception(Libplanet.Blocks.IBlockExcerpt)
-  nameWithType: BlockPerception.BlockPerception(IBlockExcerpt)
-- uid: Libplanet.Blockchain.BlockPerception.#ctor(Libplanet.Blocks.IBlockExcerpt,System.DateTimeOffset)
-  name: BlockPerception(IBlockExcerpt, DateTimeOffset)
-  href: api/Libplanet.Blockchain.BlockPerception.html#Libplanet_Blockchain_BlockPerception__ctor_Libplanet_Blocks_IBlockExcerpt_System_DateTimeOffset_
-  commentId: M:Libplanet.Blockchain.BlockPerception.#ctor(Libplanet.Blocks.IBlockExcerpt,System.DateTimeOffset)
-  fullName: Libplanet.Blockchain.BlockPerception.BlockPerception(Libplanet.Blocks.IBlockExcerpt, System.DateTimeOffset)
-  nameWithType: BlockPerception.BlockPerception(IBlockExcerpt, DateTimeOffset)
-- uid: Libplanet.Blockchain.BlockPerception.#ctor*
-  name: BlockPerception
-  href: api/Libplanet.Blockchain.BlockPerception.html#Libplanet_Blockchain_BlockPerception__ctor_
-  commentId: Overload:Libplanet.Blockchain.BlockPerception.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.BlockPerception.BlockPerception
-  nameWithType: BlockPerception.BlockPerception
-- uid: Libplanet.Blockchain.BlockPerception.BlockExcerpt
-  name: BlockExcerpt
-  href: api/Libplanet.Blockchain.BlockPerception.html#Libplanet_Blockchain_BlockPerception_BlockExcerpt
-  commentId: P:Libplanet.Blockchain.BlockPerception.BlockExcerpt
-  fullName: Libplanet.Blockchain.BlockPerception.BlockExcerpt
-  nameWithType: BlockPerception.BlockExcerpt
-- uid: Libplanet.Blockchain.BlockPerception.BlockExcerpt*
-  name: BlockExcerpt
-  href: api/Libplanet.Blockchain.BlockPerception.html#Libplanet_Blockchain_BlockPerception_BlockExcerpt_
-  commentId: Overload:Libplanet.Blockchain.BlockPerception.BlockExcerpt
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.BlockPerception.BlockExcerpt
-  nameWithType: BlockPerception.BlockExcerpt
-- uid: Libplanet.Blockchain.BlockPerception.PerceivedTime
-  name: PerceivedTime
-  href: api/Libplanet.Blockchain.BlockPerception.html#Libplanet_Blockchain_BlockPerception_PerceivedTime
-  commentId: P:Libplanet.Blockchain.BlockPerception.PerceivedTime
-  fullName: Libplanet.Blockchain.BlockPerception.PerceivedTime
-  nameWithType: BlockPerception.PerceivedTime
-- uid: Libplanet.Blockchain.BlockPerception.PerceivedTime*
-  name: PerceivedTime
-  href: api/Libplanet.Blockchain.BlockPerception.html#Libplanet_Blockchain_BlockPerception_PerceivedTime_
-  commentId: Overload:Libplanet.Blockchain.BlockPerception.PerceivedTime
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.BlockPerception.PerceivedTime
-  nameWithType: BlockPerception.PerceivedTime
-- uid: Libplanet.Blockchain.BlockPerception.ToString
-  name: ToString()
-  href: api/Libplanet.Blockchain.BlockPerception.html#Libplanet_Blockchain_BlockPerception_ToString
-  commentId: M:Libplanet.Blockchain.BlockPerception.ToString
-  fullName: Libplanet.Blockchain.BlockPerception.ToString()
-  nameWithType: BlockPerception.ToString()
-- uid: Libplanet.Blockchain.BlockPerception.ToString*
-  name: ToString
-  href: api/Libplanet.Blockchain.BlockPerception.html#Libplanet_Blockchain_BlockPerception_ToString_
-  commentId: Overload:Libplanet.Blockchain.BlockPerception.ToString
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.BlockPerception.ToString
-  nameWithType: BlockPerception.ToString
 - uid: Libplanet.Blockchain.FungibleAssetStateCompleter`1
   name: FungibleAssetStateCompleter<T>
   href: api/Libplanet.Blockchain.FungibleAssetStateCompleter-1.html
@@ -2561,22 +2497,22 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T)
   nameWithType: BlockPolicy<T>
   nameWithType.vb: BlockPolicy(Of T)
-- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.Int32,System.Int64,System.Int32,System.Int32,System.Int32,System.Int32,System.Func{Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0},System.Boolean},System.Collections.Generic.IComparer{Libplanet.Blockchain.BlockPerception},Libplanet.Blocks.HashAlgorithmGetter)
+- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.Int32,System.Int64,System.Int32,System.Int32,System.Int32,System.Int32,System.Func{Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0},System.Boolean},System.Collections.Generic.IComparer{Libplanet.Blocks.BlockPerception},Libplanet.Blocks.HashAlgorithmGetter)
   name: BlockPolicy(IAction, Int32, Int64, Int32, Int32, Int32, Int32, Func<Transaction<T>, BlockChain<T>, Boolean>, IComparer<BlockPerception>, HashAlgorithmGetter)
-  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_System_Int32_System_Int64_System_Int32_System_Int32_System_Int32_System_Int32_System_Func_Libplanet_Tx_Transaction__0__Libplanet_Blockchain_BlockChain__0__System_Boolean__System_Collections_Generic_IComparer_Libplanet_Blockchain_BlockPerception__Libplanet_Blocks_HashAlgorithmGetter_
-  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.Int32,System.Int64,System.Int32,System.Int32,System.Int32,System.Int32,System.Func{Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0},System.Boolean},System.Collections.Generic.IComparer{Libplanet.Blockchain.BlockPerception},Libplanet.Blocks.HashAlgorithmGetter)
+  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_System_Int32_System_Int64_System_Int32_System_Int32_System_Int32_System_Int32_System_Func_Libplanet_Tx_Transaction__0__Libplanet_Blockchain_BlockChain__0__System_Boolean__System_Collections_Generic_IComparer_Libplanet_Blocks_BlockPerception__Libplanet_Blocks_HashAlgorithmGetter_
+  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.Int32,System.Int64,System.Int32,System.Int32,System.Int32,System.Int32,System.Func{Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0},System.Boolean},System.Collections.Generic.IComparer{Libplanet.Blocks.BlockPerception},Libplanet.Blocks.HashAlgorithmGetter)
   name.vb: BlockPolicy(IAction, Int32, Int64, Int32, Int32, Int32, Int32, Func(Of Transaction(Of T), BlockChain(Of T), Boolean), IComparer(Of BlockPerception), HashAlgorithmGetter)
-  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.BlockPolicy(Libplanet.Action.IAction, System.Int32, System.Int64, System.Int32, System.Int32, System.Int32, System.Int32, System.Func<Libplanet.Tx.Transaction<T>, Libplanet.Blockchain.BlockChain<T>, System.Boolean>, System.Collections.Generic.IComparer<Libplanet.Blockchain.BlockPerception>, Libplanet.Blocks.HashAlgorithmGetter)
-  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).BlockPolicy(Libplanet.Action.IAction, System.Int32, System.Int64, System.Int32, System.Int32, System.Int32, System.Int32, System.Func(Of Libplanet.Tx.Transaction(Of T), Libplanet.Blockchain.BlockChain(Of T), System.Boolean), System.Collections.Generic.IComparer(Of Libplanet.Blockchain.BlockPerception), Libplanet.Blocks.HashAlgorithmGetter)
+  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.BlockPolicy(Libplanet.Action.IAction, System.Int32, System.Int64, System.Int32, System.Int32, System.Int32, System.Int32, System.Func<Libplanet.Tx.Transaction<T>, Libplanet.Blockchain.BlockChain<T>, System.Boolean>, System.Collections.Generic.IComparer<Libplanet.Blocks.BlockPerception>, Libplanet.Blocks.HashAlgorithmGetter)
+  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).BlockPolicy(Libplanet.Action.IAction, System.Int32, System.Int64, System.Int32, System.Int32, System.Int32, System.Int32, System.Func(Of Libplanet.Tx.Transaction(Of T), Libplanet.Blockchain.BlockChain(Of T), System.Boolean), System.Collections.Generic.IComparer(Of Libplanet.Blocks.BlockPerception), Libplanet.Blocks.HashAlgorithmGetter)
   nameWithType: BlockPolicy<T>.BlockPolicy(IAction, Int32, Int64, Int32, Int32, Int32, Int32, Func<Transaction<T>, BlockChain<T>, Boolean>, IComparer<BlockPerception>, HashAlgorithmGetter)
   nameWithType.vb: BlockPolicy(Of T).BlockPolicy(IAction, Int32, Int64, Int32, Int32, Int32, Int32, Func(Of Transaction(Of T), BlockChain(Of T), Boolean), IComparer(Of BlockPerception), HashAlgorithmGetter)
-- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.TimeSpan,System.Int64,System.Int32,System.Int32,System.Int32,System.Int32,System.Func{Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0},System.Boolean},System.Collections.Generic.IComparer{Libplanet.Blockchain.BlockPerception},Libplanet.Blocks.HashAlgorithmGetter)
+- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.TimeSpan,System.Int64,System.Int32,System.Int32,System.Int32,System.Int32,System.Func{Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0},System.Boolean},System.Collections.Generic.IComparer{Libplanet.Blocks.BlockPerception},Libplanet.Blocks.HashAlgorithmGetter)
   name: BlockPolicy(IAction, TimeSpan, Int64, Int32, Int32, Int32, Int32, Func<Transaction<T>, BlockChain<T>, Boolean>, IComparer<BlockPerception>, HashAlgorithmGetter)
-  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_System_TimeSpan_System_Int64_System_Int32_System_Int32_System_Int32_System_Int32_System_Func_Libplanet_Tx_Transaction__0__Libplanet_Blockchain_BlockChain__0__System_Boolean__System_Collections_Generic_IComparer_Libplanet_Blockchain_BlockPerception__Libplanet_Blocks_HashAlgorithmGetter_
-  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.TimeSpan,System.Int64,System.Int32,System.Int32,System.Int32,System.Int32,System.Func{Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0},System.Boolean},System.Collections.Generic.IComparer{Libplanet.Blockchain.BlockPerception},Libplanet.Blocks.HashAlgorithmGetter)
+  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_System_TimeSpan_System_Int64_System_Int32_System_Int32_System_Int32_System_Int32_System_Func_Libplanet_Tx_Transaction__0__Libplanet_Blockchain_BlockChain__0__System_Boolean__System_Collections_Generic_IComparer_Libplanet_Blocks_BlockPerception__Libplanet_Blocks_HashAlgorithmGetter_
+  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.TimeSpan,System.Int64,System.Int32,System.Int32,System.Int32,System.Int32,System.Func{Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0},System.Boolean},System.Collections.Generic.IComparer{Libplanet.Blocks.BlockPerception},Libplanet.Blocks.HashAlgorithmGetter)
   name.vb: BlockPolicy(IAction, TimeSpan, Int64, Int32, Int32, Int32, Int32, Func(Of Transaction(Of T), BlockChain(Of T), Boolean), IComparer(Of BlockPerception), HashAlgorithmGetter)
-  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.BlockPolicy(Libplanet.Action.IAction, System.TimeSpan, System.Int64, System.Int32, System.Int32, System.Int32, System.Int32, System.Func<Libplanet.Tx.Transaction<T>, Libplanet.Blockchain.BlockChain<T>, System.Boolean>, System.Collections.Generic.IComparer<Libplanet.Blockchain.BlockPerception>, Libplanet.Blocks.HashAlgorithmGetter)
-  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).BlockPolicy(Libplanet.Action.IAction, System.TimeSpan, System.Int64, System.Int32, System.Int32, System.Int32, System.Int32, System.Func(Of Libplanet.Tx.Transaction(Of T), Libplanet.Blockchain.BlockChain(Of T), System.Boolean), System.Collections.Generic.IComparer(Of Libplanet.Blockchain.BlockPerception), Libplanet.Blocks.HashAlgorithmGetter)
+  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.BlockPolicy(Libplanet.Action.IAction, System.TimeSpan, System.Int64, System.Int32, System.Int32, System.Int32, System.Int32, System.Func<Libplanet.Tx.Transaction<T>, Libplanet.Blockchain.BlockChain<T>, System.Boolean>, System.Collections.Generic.IComparer<Libplanet.Blocks.BlockPerception>, Libplanet.Blocks.HashAlgorithmGetter)
+  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).BlockPolicy(Libplanet.Action.IAction, System.TimeSpan, System.Int64, System.Int32, System.Int32, System.Int32, System.Int32, System.Func(Of Libplanet.Tx.Transaction(Of T), Libplanet.Blockchain.BlockChain(Of T), System.Boolean), System.Collections.Generic.IComparer(Of Libplanet.Blocks.BlockPerception), Libplanet.Blocks.HashAlgorithmGetter)
   nameWithType: BlockPolicy<T>.BlockPolicy(IAction, TimeSpan, Int64, Int32, Int32, Int32, Int32, Func<Transaction<T>, BlockChain<T>, Boolean>, IComparer<BlockPerception>, HashAlgorithmGetter)
   nameWithType.vb: BlockPolicy(Of T).BlockPolicy(IAction, TimeSpan, Int64, Int32, Int32, Int32, Int32, Func(Of Transaction(Of T), BlockChain(Of T), Boolean), IComparer(Of BlockPerception), HashAlgorithmGetter)
 - uid: Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor*
@@ -4637,13 +4573,13 @@ references:
   fullName.vb: Libplanet.Blockchain.Renderers.DelayedActionRenderer(Of T)
   nameWithType: DelayedActionRenderer<T>
   nameWithType.vb: DelayedActionRenderer(Of T)
-- uid: Libplanet.Blockchain.Renderers.DelayedActionRenderer`1.#ctor(Libplanet.Blockchain.Renderers.IActionRenderer{`0},System.Collections.Generic.IComparer{Libplanet.Blockchain.BlockPerception},Libplanet.Store.IStore,System.Int32,System.Int64)
+- uid: Libplanet.Blockchain.Renderers.DelayedActionRenderer`1.#ctor(Libplanet.Blockchain.Renderers.IActionRenderer{`0},System.Collections.Generic.IComparer{Libplanet.Blocks.BlockPerception},Libplanet.Store.IStore,System.Int32,System.Int64)
   name: DelayedActionRenderer(IActionRenderer<T>, IComparer<BlockPerception>, IStore, Int32, Int64)
-  href: api/Libplanet.Blockchain.Renderers.DelayedActionRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedActionRenderer_1__ctor_Libplanet_Blockchain_Renderers_IActionRenderer__0__System_Collections_Generic_IComparer_Libplanet_Blockchain_BlockPerception__Libplanet_Store_IStore_System_Int32_System_Int64_
-  commentId: M:Libplanet.Blockchain.Renderers.DelayedActionRenderer`1.#ctor(Libplanet.Blockchain.Renderers.IActionRenderer{`0},System.Collections.Generic.IComparer{Libplanet.Blockchain.BlockPerception},Libplanet.Store.IStore,System.Int32,System.Int64)
+  href: api/Libplanet.Blockchain.Renderers.DelayedActionRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedActionRenderer_1__ctor_Libplanet_Blockchain_Renderers_IActionRenderer__0__System_Collections_Generic_IComparer_Libplanet_Blocks_BlockPerception__Libplanet_Store_IStore_System_Int32_System_Int64_
+  commentId: M:Libplanet.Blockchain.Renderers.DelayedActionRenderer`1.#ctor(Libplanet.Blockchain.Renderers.IActionRenderer{`0},System.Collections.Generic.IComparer{Libplanet.Blocks.BlockPerception},Libplanet.Store.IStore,System.Int32,System.Int64)
   name.vb: DelayedActionRenderer(IActionRenderer(Of T), IComparer(Of BlockPerception), IStore, Int32, Int64)
-  fullName: Libplanet.Blockchain.Renderers.DelayedActionRenderer<T>.DelayedActionRenderer(Libplanet.Blockchain.Renderers.IActionRenderer<T>, System.Collections.Generic.IComparer<Libplanet.Blockchain.BlockPerception>, Libplanet.Store.IStore, System.Int32, System.Int64)
-  fullName.vb: Libplanet.Blockchain.Renderers.DelayedActionRenderer(Of T).DelayedActionRenderer(Libplanet.Blockchain.Renderers.IActionRenderer(Of T), System.Collections.Generic.IComparer(Of Libplanet.Blockchain.BlockPerception), Libplanet.Store.IStore, System.Int32, System.Int64)
+  fullName: Libplanet.Blockchain.Renderers.DelayedActionRenderer<T>.DelayedActionRenderer(Libplanet.Blockchain.Renderers.IActionRenderer<T>, System.Collections.Generic.IComparer<Libplanet.Blocks.BlockPerception>, Libplanet.Store.IStore, System.Int32, System.Int64)
+  fullName.vb: Libplanet.Blockchain.Renderers.DelayedActionRenderer(Of T).DelayedActionRenderer(Libplanet.Blockchain.Renderers.IActionRenderer(Of T), System.Collections.Generic.IComparer(Of Libplanet.Blocks.BlockPerception), Libplanet.Store.IStore, System.Int32, System.Int64)
   nameWithType: DelayedActionRenderer<T>.DelayedActionRenderer(IActionRenderer<T>, IComparer<BlockPerception>, IStore, Int32, Int64)
   nameWithType.vb: DelayedActionRenderer(Of T).DelayedActionRenderer(IActionRenderer(Of T), IComparer(Of BlockPerception), IStore, Int32, Int64)
 - uid: Libplanet.Blockchain.Renderers.DelayedActionRenderer`1.#ctor*
@@ -4839,13 +4775,13 @@ references:
   fullName.vb: Libplanet.Blockchain.Renderers.DelayedRenderer(Of T)
   nameWithType: DelayedRenderer<T>
   nameWithType.vb: DelayedRenderer(Of T)
-- uid: Libplanet.Blockchain.Renderers.DelayedRenderer`1.#ctor(Libplanet.Blockchain.Renderers.IRenderer{`0},System.Collections.Generic.IComparer{Libplanet.Blockchain.BlockPerception},Libplanet.Store.IStore,System.Int32)
+- uid: Libplanet.Blockchain.Renderers.DelayedRenderer`1.#ctor(Libplanet.Blockchain.Renderers.IRenderer{`0},System.Collections.Generic.IComparer{Libplanet.Blocks.BlockPerception},Libplanet.Store.IStore,System.Int32)
   name: DelayedRenderer(IRenderer<T>, IComparer<BlockPerception>, IStore, Int32)
-  href: api/Libplanet.Blockchain.Renderers.DelayedRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedRenderer_1__ctor_Libplanet_Blockchain_Renderers_IRenderer__0__System_Collections_Generic_IComparer_Libplanet_Blockchain_BlockPerception__Libplanet_Store_IStore_System_Int32_
-  commentId: M:Libplanet.Blockchain.Renderers.DelayedRenderer`1.#ctor(Libplanet.Blockchain.Renderers.IRenderer{`0},System.Collections.Generic.IComparer{Libplanet.Blockchain.BlockPerception},Libplanet.Store.IStore,System.Int32)
+  href: api/Libplanet.Blockchain.Renderers.DelayedRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedRenderer_1__ctor_Libplanet_Blockchain_Renderers_IRenderer__0__System_Collections_Generic_IComparer_Libplanet_Blocks_BlockPerception__Libplanet_Store_IStore_System_Int32_
+  commentId: M:Libplanet.Blockchain.Renderers.DelayedRenderer`1.#ctor(Libplanet.Blockchain.Renderers.IRenderer{`0},System.Collections.Generic.IComparer{Libplanet.Blocks.BlockPerception},Libplanet.Store.IStore,System.Int32)
   name.vb: DelayedRenderer(IRenderer(Of T), IComparer(Of BlockPerception), IStore, Int32)
-  fullName: Libplanet.Blockchain.Renderers.DelayedRenderer<T>.DelayedRenderer(Libplanet.Blockchain.Renderers.IRenderer<T>, System.Collections.Generic.IComparer<Libplanet.Blockchain.BlockPerception>, Libplanet.Store.IStore, System.Int32)
-  fullName.vb: Libplanet.Blockchain.Renderers.DelayedRenderer(Of T).DelayedRenderer(Libplanet.Blockchain.Renderers.IRenderer(Of T), System.Collections.Generic.IComparer(Of Libplanet.Blockchain.BlockPerception), Libplanet.Store.IStore, System.Int32)
+  fullName: Libplanet.Blockchain.Renderers.DelayedRenderer<T>.DelayedRenderer(Libplanet.Blockchain.Renderers.IRenderer<T>, System.Collections.Generic.IComparer<Libplanet.Blocks.BlockPerception>, Libplanet.Store.IStore, System.Int32)
+  fullName.vb: Libplanet.Blockchain.Renderers.DelayedRenderer(Of T).DelayedRenderer(Libplanet.Blockchain.Renderers.IRenderer(Of T), System.Collections.Generic.IComparer(Of Libplanet.Blocks.BlockPerception), Libplanet.Store.IStore, System.Int32)
   nameWithType: DelayedRenderer<T>.DelayedRenderer(IRenderer<T>, IComparer<BlockPerception>, IStore, Int32)
   nameWithType.vb: DelayedRenderer(Of T).DelayedRenderer(IRenderer(Of T), IComparer(Of BlockPerception), IStore, Int32)
 - uid: Libplanet.Blockchain.Renderers.DelayedRenderer`1.#ctor*
@@ -5939,11 +5875,11 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.TotalDifficultyComparer.TotalDifficultyComparer
   nameWithType: TotalDifficultyComparer.TotalDifficultyComparer
-- uid: Libplanet.Blockchain.TotalDifficultyComparer.Compare(Libplanet.Blockchain.BlockPerception,Libplanet.Blockchain.BlockPerception)
+- uid: Libplanet.Blockchain.TotalDifficultyComparer.Compare(Libplanet.Blocks.BlockPerception,Libplanet.Blocks.BlockPerception)
   name: Compare(BlockPerception, BlockPerception)
-  href: api/Libplanet.Blockchain.TotalDifficultyComparer.html#Libplanet_Blockchain_TotalDifficultyComparer_Compare_Libplanet_Blockchain_BlockPerception_Libplanet_Blockchain_BlockPerception_
-  commentId: M:Libplanet.Blockchain.TotalDifficultyComparer.Compare(Libplanet.Blockchain.BlockPerception,Libplanet.Blockchain.BlockPerception)
-  fullName: Libplanet.Blockchain.TotalDifficultyComparer.Compare(Libplanet.Blockchain.BlockPerception, Libplanet.Blockchain.BlockPerception)
+  href: api/Libplanet.Blockchain.TotalDifficultyComparer.html#Libplanet_Blockchain_TotalDifficultyComparer_Compare_Libplanet_Blocks_BlockPerception_Libplanet_Blocks_BlockPerception_
+  commentId: M:Libplanet.Blockchain.TotalDifficultyComparer.Compare(Libplanet.Blocks.BlockPerception,Libplanet.Blocks.BlockPerception)
+  fullName: Libplanet.Blockchain.TotalDifficultyComparer.Compare(Libplanet.Blocks.BlockPerception, Libplanet.Blocks.BlockPerception)
   nameWithType: TotalDifficultyComparer.Compare(BlockPerception, BlockPerception)
 - uid: Libplanet.Blockchain.TotalDifficultyComparer.Compare*
   name: Compare
@@ -6578,25 +6514,38 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.BlockExceedingTransactionsException.MaxTransactionsPerBlock
   nameWithType: BlockExceedingTransactionsException.MaxTransactionsPerBlock
-- uid: Libplanet.Blocks.BlockExcerpt
-  name: BlockExcerpt
-  href: api/Libplanet.Blocks.BlockExcerpt.html
-  commentId: T:Libplanet.Blocks.BlockExcerpt
-  fullName: Libplanet.Blocks.BlockExcerpt
-  nameWithType: BlockExcerpt
-- uid: Libplanet.Blocks.BlockExcerpt.ToExcerptString(Libplanet.Blocks.IBlockExcerpt)
-  name: ToExcerptString(IBlockExcerpt)
-  href: api/Libplanet.Blocks.BlockExcerpt.html#Libplanet_Blocks_BlockExcerpt_ToExcerptString_Libplanet_Blocks_IBlockExcerpt_
-  commentId: M:Libplanet.Blocks.BlockExcerpt.ToExcerptString(Libplanet.Blocks.IBlockExcerpt)
-  fullName: Libplanet.Blocks.BlockExcerpt.ToExcerptString(Libplanet.Blocks.IBlockExcerpt)
-  nameWithType: BlockExcerpt.ToExcerptString(IBlockExcerpt)
-- uid: Libplanet.Blocks.BlockExcerpt.ToExcerptString*
-  name: ToExcerptString
-  href: api/Libplanet.Blocks.BlockExcerpt.html#Libplanet_Blocks_BlockExcerpt_ToExcerptString_
-  commentId: Overload:Libplanet.Blocks.BlockExcerpt.ToExcerptString
+- uid: Libplanet.Blocks.BlockExcerptExtensions
+  name: BlockExcerptExtensions
+  href: api/Libplanet.Blocks.BlockExcerptExtensions.html
+  commentId: T:Libplanet.Blocks.BlockExcerptExtensions
+  fullName: Libplanet.Blocks.BlockExcerptExtensions
+  nameWithType: BlockExcerptExtensions
+- uid: Libplanet.Blocks.BlockExcerptExtensions.ExcerptEquals(Libplanet.Blocks.IBlockExcerpt,Libplanet.Blocks.IBlockExcerpt)
+  name: ExcerptEquals(IBlockExcerpt, IBlockExcerpt)
+  href: api/Libplanet.Blocks.BlockExcerptExtensions.html#Libplanet_Blocks_BlockExcerptExtensions_ExcerptEquals_Libplanet_Blocks_IBlockExcerpt_Libplanet_Blocks_IBlockExcerpt_
+  commentId: M:Libplanet.Blocks.BlockExcerptExtensions.ExcerptEquals(Libplanet.Blocks.IBlockExcerpt,Libplanet.Blocks.IBlockExcerpt)
+  fullName: Libplanet.Blocks.BlockExcerptExtensions.ExcerptEquals(Libplanet.Blocks.IBlockExcerpt, Libplanet.Blocks.IBlockExcerpt)
+  nameWithType: BlockExcerptExtensions.ExcerptEquals(IBlockExcerpt, IBlockExcerpt)
+- uid: Libplanet.Blocks.BlockExcerptExtensions.ExcerptEquals*
+  name: ExcerptEquals
+  href: api/Libplanet.Blocks.BlockExcerptExtensions.html#Libplanet_Blocks_BlockExcerptExtensions_ExcerptEquals_
+  commentId: Overload:Libplanet.Blocks.BlockExcerptExtensions.ExcerptEquals
   isSpec: "True"
-  fullName: Libplanet.Blocks.BlockExcerpt.ToExcerptString
-  nameWithType: BlockExcerpt.ToExcerptString
+  fullName: Libplanet.Blocks.BlockExcerptExtensions.ExcerptEquals
+  nameWithType: BlockExcerptExtensions.ExcerptEquals
+- uid: Libplanet.Blocks.BlockExcerptExtensions.ToExcerptString(Libplanet.Blocks.IBlockExcerpt)
+  name: ToExcerptString(IBlockExcerpt)
+  href: api/Libplanet.Blocks.BlockExcerptExtensions.html#Libplanet_Blocks_BlockExcerptExtensions_ToExcerptString_Libplanet_Blocks_IBlockExcerpt_
+  commentId: M:Libplanet.Blocks.BlockExcerptExtensions.ToExcerptString(Libplanet.Blocks.IBlockExcerpt)
+  fullName: Libplanet.Blocks.BlockExcerptExtensions.ToExcerptString(Libplanet.Blocks.IBlockExcerpt)
+  nameWithType: BlockExcerptExtensions.ToExcerptString(IBlockExcerpt)
+- uid: Libplanet.Blocks.BlockExcerptExtensions.ToExcerptString*
+  name: ToExcerptString
+  href: api/Libplanet.Blocks.BlockExcerptExtensions.html#Libplanet_Blocks_BlockExcerptExtensions_ToExcerptString_
+  commentId: Overload:Libplanet.Blocks.BlockExcerptExtensions.ToExcerptString
+  isSpec: "True"
+  fullName: Libplanet.Blocks.BlockExcerptExtensions.ToExcerptString
+  nameWithType: BlockExcerptExtensions.ToExcerptString
 - uid: Libplanet.Blocks.BlockHash
   name: BlockHash
   href: api/Libplanet.Blocks.BlockHash.html
@@ -7006,6 +6955,109 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.BlockHeader.TxHash
   nameWithType: BlockHeader.TxHash
+- uid: Libplanet.Blocks.BlockPerception
+  name: BlockPerception
+  href: api/Libplanet.Blocks.BlockPerception.html
+  commentId: T:Libplanet.Blocks.BlockPerception
+  fullName: Libplanet.Blocks.BlockPerception
+  nameWithType: BlockPerception
+- uid: Libplanet.Blocks.BlockPerception.#ctor(Libplanet.Blocks.IBlockExcerpt)
+  name: BlockPerception(IBlockExcerpt)
+  href: api/Libplanet.Blocks.BlockPerception.html#Libplanet_Blocks_BlockPerception__ctor_Libplanet_Blocks_IBlockExcerpt_
+  commentId: M:Libplanet.Blocks.BlockPerception.#ctor(Libplanet.Blocks.IBlockExcerpt)
+  fullName: Libplanet.Blocks.BlockPerception.BlockPerception(Libplanet.Blocks.IBlockExcerpt)
+  nameWithType: BlockPerception.BlockPerception(IBlockExcerpt)
+- uid: Libplanet.Blocks.BlockPerception.#ctor(Libplanet.Blocks.IBlockExcerpt,System.DateTimeOffset)
+  name: BlockPerception(IBlockExcerpt, DateTimeOffset)
+  href: api/Libplanet.Blocks.BlockPerception.html#Libplanet_Blocks_BlockPerception__ctor_Libplanet_Blocks_IBlockExcerpt_System_DateTimeOffset_
+  commentId: M:Libplanet.Blocks.BlockPerception.#ctor(Libplanet.Blocks.IBlockExcerpt,System.DateTimeOffset)
+  fullName: Libplanet.Blocks.BlockPerception.BlockPerception(Libplanet.Blocks.IBlockExcerpt, System.DateTimeOffset)
+  nameWithType: BlockPerception.BlockPerception(IBlockExcerpt, DateTimeOffset)
+- uid: Libplanet.Blocks.BlockPerception.#ctor*
+  name: BlockPerception
+  href: api/Libplanet.Blocks.BlockPerception.html#Libplanet_Blocks_BlockPerception__ctor_
+  commentId: Overload:Libplanet.Blocks.BlockPerception.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Blocks.BlockPerception.BlockPerception
+  nameWithType: BlockPerception.BlockPerception
+- uid: Libplanet.Blocks.BlockPerception.Hash
+  name: Hash
+  href: api/Libplanet.Blocks.BlockPerception.html#Libplanet_Blocks_BlockPerception_Hash
+  commentId: P:Libplanet.Blocks.BlockPerception.Hash
+  fullName: Libplanet.Blocks.BlockPerception.Hash
+  nameWithType: BlockPerception.Hash
+- uid: Libplanet.Blocks.BlockPerception.Hash*
+  name: Hash
+  href: api/Libplanet.Blocks.BlockPerception.html#Libplanet_Blocks_BlockPerception_Hash_
+  commentId: Overload:Libplanet.Blocks.BlockPerception.Hash
+  isSpec: "True"
+  fullName: Libplanet.Blocks.BlockPerception.Hash
+  nameWithType: BlockPerception.Hash
+- uid: Libplanet.Blocks.BlockPerception.Index
+  name: Index
+  href: api/Libplanet.Blocks.BlockPerception.html#Libplanet_Blocks_BlockPerception_Index
+  commentId: P:Libplanet.Blocks.BlockPerception.Index
+  fullName: Libplanet.Blocks.BlockPerception.Index
+  nameWithType: BlockPerception.Index
+- uid: Libplanet.Blocks.BlockPerception.Index*
+  name: Index
+  href: api/Libplanet.Blocks.BlockPerception.html#Libplanet_Blocks_BlockPerception_Index_
+  commentId: Overload:Libplanet.Blocks.BlockPerception.Index
+  isSpec: "True"
+  fullName: Libplanet.Blocks.BlockPerception.Index
+  nameWithType: BlockPerception.Index
+- uid: Libplanet.Blocks.BlockPerception.PerceivedTime
+  name: PerceivedTime
+  href: api/Libplanet.Blocks.BlockPerception.html#Libplanet_Blocks_BlockPerception_PerceivedTime
+  commentId: P:Libplanet.Blocks.BlockPerception.PerceivedTime
+  fullName: Libplanet.Blocks.BlockPerception.PerceivedTime
+  nameWithType: BlockPerception.PerceivedTime
+- uid: Libplanet.Blocks.BlockPerception.PerceivedTime*
+  name: PerceivedTime
+  href: api/Libplanet.Blocks.BlockPerception.html#Libplanet_Blocks_BlockPerception_PerceivedTime_
+  commentId: Overload:Libplanet.Blocks.BlockPerception.PerceivedTime
+  isSpec: "True"
+  fullName: Libplanet.Blocks.BlockPerception.PerceivedTime
+  nameWithType: BlockPerception.PerceivedTime
+- uid: Libplanet.Blocks.BlockPerception.ProtocolVersion
+  name: ProtocolVersion
+  href: api/Libplanet.Blocks.BlockPerception.html#Libplanet_Blocks_BlockPerception_ProtocolVersion
+  commentId: P:Libplanet.Blocks.BlockPerception.ProtocolVersion
+  fullName: Libplanet.Blocks.BlockPerception.ProtocolVersion
+  nameWithType: BlockPerception.ProtocolVersion
+- uid: Libplanet.Blocks.BlockPerception.ProtocolVersion*
+  name: ProtocolVersion
+  href: api/Libplanet.Blocks.BlockPerception.html#Libplanet_Blocks_BlockPerception_ProtocolVersion_
+  commentId: Overload:Libplanet.Blocks.BlockPerception.ProtocolVersion
+  isSpec: "True"
+  fullName: Libplanet.Blocks.BlockPerception.ProtocolVersion
+  nameWithType: BlockPerception.ProtocolVersion
+- uid: Libplanet.Blocks.BlockPerception.ToString
+  name: ToString()
+  href: api/Libplanet.Blocks.BlockPerception.html#Libplanet_Blocks_BlockPerception_ToString
+  commentId: M:Libplanet.Blocks.BlockPerception.ToString
+  fullName: Libplanet.Blocks.BlockPerception.ToString()
+  nameWithType: BlockPerception.ToString()
+- uid: Libplanet.Blocks.BlockPerception.ToString*
+  name: ToString
+  href: api/Libplanet.Blocks.BlockPerception.html#Libplanet_Blocks_BlockPerception_ToString_
+  commentId: Overload:Libplanet.Blocks.BlockPerception.ToString
+  isSpec: "True"
+  fullName: Libplanet.Blocks.BlockPerception.ToString
+  nameWithType: BlockPerception.ToString
+- uid: Libplanet.Blocks.BlockPerception.TotalDifficulty
+  name: TotalDifficulty
+  href: api/Libplanet.Blocks.BlockPerception.html#Libplanet_Blocks_BlockPerception_TotalDifficulty
+  commentId: P:Libplanet.Blocks.BlockPerception.TotalDifficulty
+  fullName: Libplanet.Blocks.BlockPerception.TotalDifficulty
+  nameWithType: BlockPerception.TotalDifficulty
+- uid: Libplanet.Blocks.BlockPerception.TotalDifficulty*
+  name: TotalDifficulty
+  href: api/Libplanet.Blocks.BlockPerception.html#Libplanet_Blocks_BlockPerception_TotalDifficulty_
+  commentId: Overload:Libplanet.Blocks.BlockPerception.TotalDifficulty
+  isSpec: "True"
+  fullName: Libplanet.Blocks.BlockPerception.TotalDifficulty
+  nameWithType: BlockPerception.TotalDifficulty
 - uid: Libplanet.Blocks.HashAlgorithmGetter
   name: HashAlgorithmGetter
   href: api/Libplanet.Blocks.HashAlgorithmGetter.html
