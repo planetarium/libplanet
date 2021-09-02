@@ -8,6 +8,9 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  `BlockPerception` now implements `IBlockExcerpt` interface.  [[#1440]]
+    -  `BlockPerception.Excerpt` property removed.
+
 ### Backward-incompatible network protocol changes
 
 -  `Message` became to serialize peer with bencodex instead of
@@ -16,6 +19,8 @@ To be released.
 ### Backward-incompatible storage format changes
 
 ### Added APIs
+
+  - `IBlockExcerpt.ExcerptEquals` extension method added.  [[#1440]]
 
 ### Behavioral changes
 
@@ -26,6 +31,7 @@ To be released.
 
 ### CLI tools
 
+[#1440]: https://github.com/planetarium/libplanet/pull/1440
 [#1455]: https://github.com/planetarium/libplanet/pull/1455
 [#1457]: https://github.com/planetarium/libplanet/pull/1457
 
