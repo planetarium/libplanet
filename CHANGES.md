@@ -12,6 +12,7 @@ To be released.
     -  `BlockPerception.Excerpt` property removed.
  -  `TotalDifficultyComparer` now Implements `IComparer<IBlockExcerpt>`
     interface.  [[#1442]]
+ -  Return type for `BlockDemandTable.Add()` is now `void`.  [[#1443]]
 
 ### Backward-incompatible network protocol changes
 
@@ -28,6 +29,12 @@ To be released.
 
  -  `TotalDifficultyComparer` no longer considers perceived time when comparing
     `IBlockExcerpt`s.  [[#1442]]
+ -  General logic for determining the canonical chain has been updated.
+    [[#1435], [#1443]]
+     -  Perceived time is only used for marking a received header in
+        `BlockDemandTable` in order to decide whether `BlockDemand` is stale
+        or not.  This should prevent a tip regression for a local node, as the
+        tip of a chain is never considered as stale.
  -  Block sync using `BlockDemand` became not to fill blocks
     from multiple peers.  [[#1457]]
 
@@ -35,8 +42,10 @@ To be released.
 
 ### CLI tools
 
+[#1435]: https://github.com/planetarium/libplanet/issues/1435
 [#1440]: https://github.com/planetarium/libplanet/pull/1440
 [#1442]: https://github.com/planetarium/libplanet/pull/1442
+[#1443]: https://github.com/planetarium/libplanet/pull/1443
 [#1455]: https://github.com/planetarium/libplanet/pull/1455
 [#1457]: https://github.com/planetarium/libplanet/pull/1457
 
