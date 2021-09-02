@@ -95,11 +95,11 @@ namespace Libplanet.Tests.Blockchain
 
             DateTimeOffset timeA = DateTimeOffset.FromUnixTimeSeconds(1609426800);
             BlockPerception perceptionA = _blockChain.PerceiveBlock(blockA, timeA);
-            Assert.Equal(blockA, perceptionA.BlockExcerpt);
+            Assert.True(blockA.ExcerptEquals(perceptionA));
             Assert.Equal(timeA, perceptionA.PerceivedTime);
 
             perceptionA = _blockChain.PerceiveBlock(blockA);
-            Assert.Equal(blockA, perceptionA.BlockExcerpt);
+            Assert.True(blockA.ExcerptEquals(perceptionA));
             Assert.Equal(timeA, perceptionA.PerceivedTime);
 
             var blockB = new SimpleBlockExcerpt
@@ -114,12 +114,12 @@ namespace Libplanet.Tests.Blockchain
             DateTimeOffset timeBMin = DateTimeOffset.UtcNow;
             BlockPerception perceptionB = _blockChain.PerceiveBlock(blockB);
             DateTimeOffset timeBMax = DateTimeOffset.UtcNow;
-            Assert.Equal(blockB, perceptionB.BlockExcerpt);
+            Assert.True(blockB.ExcerptEquals(perceptionB));
             Assert.InRange(perceptionB.PerceivedTime, timeBMin, timeBMax);
 
             DateTimeOffset timeB = perceptionB.PerceivedTime;
             perceptionB = _blockChain.PerceiveBlock(blockB);
-            Assert.Equal(blockB, perceptionB.BlockExcerpt);
+            Assert.True(blockB.ExcerptEquals(perceptionB));
             Assert.Equal(timeB, perceptionB.PerceivedTime);
         }
 

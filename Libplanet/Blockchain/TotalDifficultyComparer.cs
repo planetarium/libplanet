@@ -65,9 +65,8 @@ namespace Libplanet.Blockchain
                 return xOutdated ? -1 : 1;
             }
 
-            IBlockExcerpt xBlock = x.BlockExcerpt, yBlock = y.BlockExcerpt;
-            int vcmp = xBlock.ProtocolVersion.CompareTo(yBlock.ProtocolVersion);
-            return vcmp == 0 ? xBlock.TotalDifficulty.CompareTo(yBlock.TotalDifficulty) : vcmp;
+            int vcmp = x.ProtocolVersion.CompareTo(y.ProtocolVersion);
+            return vcmp == 0 ? x.TotalDifficulty.CompareTo(y.TotalDifficulty) : vcmp;
         }
     }
 }
