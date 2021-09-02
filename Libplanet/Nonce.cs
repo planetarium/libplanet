@@ -27,14 +27,19 @@ namespace Libplanet
         /// <paramref name="nonce"/> is a <c>null</c>.</exception>
         /// <seealso cref="ToByteArray()"/>
         public Nonce(byte[] nonce)
+            : this(nonce?.ToImmutableArray() ?? throw new ArgumentNullException(nameof(nonce)))
         {
-            if (nonce == null)
-            {
-                throw new ArgumentNullException(nameof(nonce));
-            }
-
-            _byteArray = nonce.ToImmutableArray();
         }
+
+        /// <summary>
+        /// Converts an immutable <see cref="byte"/> array into a <see cref="Nonce"/> instance.
+        /// <para>This constructor is inverse of <see cref="ByteArray"/> property.</para>
+        /// </summary>
+        /// <param name="nonce">An immutable <see cref="byte"/> array to convert to
+        /// a <see cref="Nonce"/> instance.</param>
+        /// <seealso cref="ByteArray"/>
+        public Nonce(ImmutableArray<byte> nonce) =>
+            _byteArray = nonce;
 
         /// <summary>
         /// A bare immutable <see cref="byte"/> array of the nonce.

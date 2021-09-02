@@ -231,7 +231,7 @@ namespace Libplanet.Blocks
             Index = rawBlock.Header.Index;
             Difficulty = rawBlock.Header.Difficulty;
             TotalDifficulty = rawBlock.Header.TotalDifficulty;
-            Nonce = new Nonce(rawBlock.Header.Nonce.ToArray());
+            Nonce = new Nonce(rawBlock.Header.Nonce);
             Miner = new Address(rawBlock.Header.Miner);
             PreviousHash = rawBlock.Header.PreviousHash.Any()
                 ? new BlockHash(rawBlock.Header.PreviousHash)

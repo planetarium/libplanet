@@ -90,7 +90,7 @@ namespace Libplanet.Store
                     index: blockDigest.Header.Index,
                     difficulty: blockDigest.Header.Difficulty,
                     totalDifficulty: blockDigest.Header.TotalDifficulty,
-                    nonce: new Nonce(blockDigest.Header.Nonce.ToArray()),
+                    nonce: new Nonce(blockDigest.Header.Nonce),
                     miner: new Address(blockDigest.Header.Miner),
                     previousHash: prevHash,
                     timestamp: DateTimeOffset.ParseExact(

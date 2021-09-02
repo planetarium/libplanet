@@ -35,6 +35,7 @@ To be released.
  -  Added `PrivateKey.Decrypt(ImmutableArray<byte>)` overloaded method.
     [[#1464]]
  -  Added `PrivateKey.ToByteArray()` method.  [[#1464]]
+ -  Added `Nonce(ImmutableArray<byte>)` overloaded constructor.  [[#1464]]
 
 ### Behavioral changes
 
