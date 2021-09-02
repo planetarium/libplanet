@@ -59,13 +59,12 @@ namespace Libplanet.Blocks
 
         public override string ToString()
         {
-            const string F = nameof(IBlockExcerpt);
             return
                 $"{nameof(BlockPerception)} {{" +
-                $" {F}.{nameof(ProtocolVersion)} = {ProtocolVersion}," +
-                $" {F}.{nameof(Index)} = {Index}," +
-                $" {F}.{nameof(Hash)} = {Hash}," +
-                $" {F}.{nameof(TotalDifficulty)} = {TotalDifficulty}," +
+                $" {nameof(ProtocolVersion)} = {ProtocolVersion}," +
+                $" {nameof(Index)} = {Index}," +
+                $" {nameof(Hash)} = {Hash}," +
+                $" {nameof(TotalDifficulty)} = {TotalDifficulty}," +
                 $" {nameof(PerceivedTime)} = {PerceivedTime}" +
                 " }";
         }
