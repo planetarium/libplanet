@@ -71,6 +71,8 @@
 <li><code>BlockPerception.Excerpt</code> property removed.</li>
 </ul>
 </li>
+<li><code>TotalDifficultyComparer</code> now Implements <code>IComparer&lt;IBlockExcerpt&gt;</code>
+interface.  [<a href="https://github.com/planetarium/libplanet/pull/1442">#1442</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <ul>
@@ -84,6 +86,8 @@
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
+<li><code>TotalDifficultyComparer</code> no longer considers perceived time when comparing
+<code>IBlockExcerpt</code>s.  [<a href="https://github.com/planetarium/libplanet/pull/1442">#1442</a>]</li>
 <li>Block sync using <code>BlockDemand</code> became not to fill blocks
 from multiple peers.  [<a href="https://github.com/planetarium/libplanet/pull/1457">#1457</a>]</li>
 </ul>
