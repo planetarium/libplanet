@@ -577,7 +577,7 @@ namespace Libplanet.Net
         )
         {
             var sessionRandom = new Random();
-            IComparer<BlockPerception> canonComparer = BlockChain.Policy.CanonicalChainComparer;
+            IComparer<IBlockExcerpt> canonComparer = BlockChain.Policy.CanonicalChainComparer;
 
             int sessionId = sessionRandom.Next();
 

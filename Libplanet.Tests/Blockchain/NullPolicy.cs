@@ -21,8 +21,8 @@ namespace Libplanet.Tests.Blockchain
             _difficulty = difficulty;
         }
 
-        public IComparer<BlockPerception> CanonicalChainComparer =>
-            new TotalDifficultyComparer(TimeSpan.FromSeconds(3));
+        public IComparer<IBlockExcerpt> CanonicalChainComparer =>
+            new TotalDifficultyComparer();
 
         public IAction BlockAction => null;
 

@@ -801,7 +801,7 @@ namespace Libplanet.Net
             int peersCount = peersWithExcerpts.Count;
             int i = 0;
             var exceptions = new List<Exception>();
-            IComparer<BlockPerception> canonComparer = BlockChain.Policy.CanonicalChainComparer;
+            IComparer<IBlockExcerpt> canonComparer = BlockChain.Policy.CanonicalChainComparer;
             foreach ((BoundPeer peer, IBlockExcerpt excerpt) in peersWithExcerpts)
             {
                 i++;
@@ -1065,7 +1065,7 @@ namespace Libplanet.Net
             CancellationToken cancellationToken)
         {
             BlockHash genesisHash = BlockChain.Genesis.Hash;
-            IComparer<BlockPerception> canonComparer = BlockChain.Policy.CanonicalChainComparer;
+            IComparer<IBlockExcerpt> canonComparer = BlockChain.Policy.CanonicalChainComparer;
             BlockPerception tipPerception = BlockChain.PerceiveBlock(initialTip);
             var peersWithChainStatusAndDiff =
                 (await DialToExistingPeers(dialTimeout, max, cancellationToken))
@@ -1170,7 +1170,7 @@ namespace Libplanet.Net
 
         private bool IsBlockNeeded(IBlockExcerpt target)
         {
-            IComparer<BlockPerception> canonComparer = BlockChain.Policy.CanonicalChainComparer;
+            IComparer<IBlockExcerpt> canonComparer = BlockChain.Policy.CanonicalChainComparer;
             var perception = BlockChain.PerceiveBlock(target);
             return canonComparer.Compare(perception, BlockChain.PerceiveBlock(BlockChain.Tip)) > 0;
         }

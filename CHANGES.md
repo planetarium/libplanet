@@ -10,6 +10,8 @@ To be released.
 
  -  `BlockPerception` now implements `IBlockExcerpt` interface.  [[#1440]]
     -  `BlockPerception.Excerpt` property removed.
+ -  `TotalDifficultyComparer` now Implements `IComparer<IBlockExcerpt>`
+    interface.  [[#1442]]
 
 ### Backward-incompatible network protocol changes
 
@@ -24,6 +26,8 @@ To be released.
 
 ### Behavioral changes
 
+ -  `TotalDifficultyComparer` no longer considers perceived time when comparing
+    `IBlockExcerpt`s.  [[#1442]]
  -  Block sync using `BlockDemand` became not to fill blocks
     from multiple peers.  [[#1457]]
 
@@ -32,6 +36,7 @@ To be released.
 ### CLI tools
 
 [#1440]: https://github.com/planetarium/libplanet/pull/1440
+[#1442]: https://github.com/planetarium/libplanet/pull/1442
 [#1455]: https://github.com/planetarium/libplanet/pull/1455
 [#1457]: https://github.com/planetarium/libplanet/pull/1457
 

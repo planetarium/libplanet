@@ -58,7 +58,7 @@ namespace Libplanet.Blockchain.Policies
             int maxBlockBytes = 100 * 1024,
             int maxGenesisBytes = 1024 * 1024,
             Func<Transaction<T>, BlockChain<T>, bool> doesTransactionFollowPolicy = null,
-            IComparer<BlockPerception> canonicalChainComparer = null,
+            IComparer<IBlockExcerpt> canonicalChainComparer = null,
             HashAlgorithmGetter hashAlgorithmGetter = null
         )
             : this(
@@ -98,9 +98,7 @@ namespace Libplanet.Blockchain.Policies
         /// A predicate that determines if the transaction follows the block policy.
         /// </param>
         /// <param name="canonicalChainComparer">The custom rule to determine which is the canonical
-        /// chain.  If omitted, <see cref="TotalDifficultyComparer"/> (having
-        /// <see cref="TotalDifficultyComparer.OutdateAfter"/> configured to triple of
-        /// <paramref name="blockInterval"/>) is used by default.</param>
+        /// chain.  If omitted, <see cref="TotalDifficultyComparer"/> is used by default.</param>
         /// <param name="hashAlgorithmGetter">Configures <see cref="GetHashAlgorithm(long)"/>.
         /// If omitted, SHA-256 is used for every block.</param>
         public BlockPolicy(
@@ -112,9 +110,8 @@ namespace Libplanet.Blockchain.Policies
             int maxBlockBytes,
             int maxGenesisBytes,
             Func<Transaction<T>, BlockChain<T>, bool> doesTransactionFollowPolicy = null,
-            IComparer<BlockPerception> canonicalChainComparer = null,
-            HashAlgorithmGetter hashAlgorithmGetter = null
-        )
+            IComparer<IBlockExcerpt> canonicalChainComparer = null,
+            HashAlgorithmGetter hashAlgorithmGetter = null)
         {
             if (blockInterval < TimeSpan.Zero)
             {
@@ -150,7 +147,7 @@ namespace Libplanet.Blockchain.Policies
             _maxGenesisBytes = maxGenesisBytes;
             _doesTransactionFollowPolicy = doesTransactionFollowPolicy ?? ((_, __) => true);
             CanonicalChainComparer = canonicalChainComparer
-                ?? new TotalDifficultyComparer(blockInterval + blockInterval + blockInterval);
+                ?? new TotalDifficultyComparer();
             _hashAlgorithmGetter = hashAlgorithmGetter ?? (_ => HashAlgorithmType.Of<SHA256>());
         }
 
@@ -171,7 +168,7 @@ namespace Libplanet.Blockchain.Policies
         public TimeSpan BlockInterval { get; }
 
         /// <inheritdoc />
-        public IComparer<BlockPerception> CanonicalChainComparer { get; }
+        public IComparer<IBlockExcerpt> CanonicalChainComparer { get; }
 
         private long MinimumDifficulty { get; }
 

@@ -407,7 +407,7 @@ If omitted (default) explorer only the local blockchain store.")]
 
             public int MaxTransactionsPerBlock => _impl.MaxTransactionsPerBlock;
 
-            public IComparer<BlockPerception> CanonicalChainComparer =>
+            public IComparer<IBlockExcerpt> CanonicalChainComparer =>
                 _impl.CanonicalChainComparer;
 
             public bool DoesTransactionFollowsPolicy(
