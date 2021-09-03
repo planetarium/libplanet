@@ -18,6 +18,10 @@ To be released.
  -  `PrivateKey.ByteArray` property's type became `ImmutableArray<byte>`
     (was `byte[]`).  To get a mutable one, use `PrivateKey.ToByteArray()`
     method instead.  [[#1464]]
+ -  `PublicKey()` constructor's parameter type became `IReadOnlyList<byte>`
+    (was `byte[]`).  [[#1464]]
+ -  `PublicKey.Verify()` method's both parameters types became
+    `IReadOnlyList<byte>` (were both `byte[]`).  [[#1464]]
  -  `HashDigest<T>.DeriveFrom()` method's parameter type became
     `IReadOnlyList<byte>` (was `byte[]`).  [[#1464]]
 
@@ -35,6 +39,9 @@ To be released.
  -  Added `PrivateKey.Decrypt(ImmutableArray<byte>)` overloaded method.
     [[#1464]]
  -  Added `PrivateKey.ToByteArray()` method.  [[#1464]]
+ -  Added `PublicKey.Encrypt(ImmutableArray<byte>)` overloaded method.
+    [[#1464]]
+ -  Added `PublicKey.ToImmutableArray()` method.  [[#1464]]
  -  Added `Nonce(ImmutableArray<byte>)` overloaded constructor.  [[#1464]]
 
 ### Behavioral changes

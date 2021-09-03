@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System.Text;
 using Libplanet.Crypto;
 using Xunit;
@@ -6,6 +7,62 @@ namespace Libplanet.Tests.Crypto
 {
     public class PublicKeyTest
     {
+        [Fact]
+        public void Constructor()
+        {
+            byte[] bytes =
+            {
+                0x04, 0xb5, 0xa2, 0x4a, 0xa2, 0x11, 0x27, 0x20, 0x42, 0x3b,
+                0xad, 0x39, 0xa0, 0x20, 0x51, 0x82, 0x37, 0x9d, 0x6f, 0x2b,
+                0x33, 0xe3, 0x48, 0x7c, 0x9a, 0xb6, 0xcc, 0x8f, 0xc4, 0x96,
+                0xf8, 0xa5, 0x48, 0x34, 0x40, 0xef, 0xbb, 0xef, 0x06, 0x57,
+                0xac, 0x2e, 0xf6, 0xc6, 0xee, 0x05, 0xdb, 0x06, 0xa9, 0x45,
+                0x32, 0xfd, 0xa7, 0xdd, 0xc4, 0x4a, 0x16, 0x95, 0xe5, 0xce,
+                0x1a, 0x3d, 0x3c, 0x76, 0xdb,
+            };
+
+            var mutable = new PublicKey(bytes);
+            var immutable = new PublicKey(bytes.ToImmutableArray());
+            Assert.Equal(mutable, immutable);
+            var compressedMutable = new PublicKey(mutable.Format(compress: true));
+            Assert.Equal(mutable, compressedMutable);
+            var compressedImmutable = new PublicKey(immutable.ToImmutableArray(compress: true));
+            Assert.Equal(mutable, compressedImmutable);
+        }
+
+        [Fact]
+        public void Format()
+        {
+            byte[] bytes =
+            {
+                0x04, 0xb5, 0xa2, 0x4a, 0xa2, 0x11, 0x27, 0x20, 0x42, 0x3b,
+                0xad, 0x39, 0xa0, 0x20, 0x51, 0x82, 0x37, 0x9d, 0x6f, 0x2b,
+                0x33, 0xe3, 0x48, 0x7c, 0x9a, 0xb6, 0xcc, 0x8f, 0xc4, 0x96,
+                0xf8, 0xa5, 0x48, 0x34, 0x40, 0xef, 0xbb, 0xef, 0x06, 0x57,
+                0xac, 0x2e, 0xf6, 0xc6, 0xee, 0x05, 0xdb, 0x06, 0xa9, 0x45,
+                0x32, 0xfd, 0xa7, 0xdd, 0xc4, 0x4a, 0x16, 0x95, 0xe5, 0xce,
+                0x1a, 0x3d, 0x3c, 0x76, 0xdb,
+            };
+            byte[] compressed =
+            {
+                0x03, 0xb5, 0xa2, 0x4a, 0xa2, 0x11, 0x27, 0x20, 0x42, 0x3b, 0xad,
+                0x39, 0xa0, 0x20, 0x51, 0x82, 0x37, 0x9d, 0x6f, 0x2b, 0x33, 0xe3,
+                0x48, 0x7c, 0x9a, 0xb6, 0xcc, 0x8f, 0xc4, 0x96, 0xf8, 0xa5, 0x48,
+            };
+
+            var key = new PublicKey(bytes);
+            TestUtils.AssertBytesEqual(bytes, key.Format(compress: false));
+            TestUtils.AssertBytesEqual(compressed, key.Format(compress: true));
+            TestUtils.AssertBytesEqual(
+                bytes.ToImmutableArray(),
+                key.ToImmutableArray(compress: false)
+            );
+            TestUtils.AssertBytesEqual(
+                compressed.ToImmutableArray(),
+                key.ToImmutableArray(compress: true)
+            );
+        }
+
         [Fact]
         public void VerifyTest()
         {
@@ -63,9 +120,13 @@ namespace Libplanet.Tests.Crypto
             var prvKey = new PrivateKey();
             var pubKey = prvKey.PublicKey;
             var bs = Encoding.ASCII.GetBytes("hello world");
-            var encrypted = pubKey.Encrypt(bs);
 
-            Assert.Equal(bs, prvKey.Decrypt(encrypted));
+            var encrypted = pubKey.Encrypt(bs);
+            TestUtils.AssertBytesEqual(bs, prvKey.Decrypt(encrypted));
+
+            ImmutableArray<byte> immutable = bs.ToImmutableArray();
+            var encryptedImmutable = pubKey.Encrypt(immutable);
+            TestUtils.AssertBytesEqual(immutable, prvKey.Decrypt(encryptedImmutable));
         }
 
         [Fact]

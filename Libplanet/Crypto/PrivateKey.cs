@@ -148,10 +148,9 @@ namespace Libplanet.Crypto
         /// </summary>
         /// <param name="message">A message <see cref="byte"/>s to sign.</param>
         /// <returns>A signature that proves the authenticity of the <paramref name="message"/>.
-        /// It can be verified using
-        /// <see cref="Libplanet.Crypto.PublicKey.Verify(byte[], byte[])"/>
-        /// method.</returns>
-        /// <seealso cref="Libplanet.Crypto.PublicKey.Verify(byte[], byte[])"/>
+        /// It can be verified using <see cref="Libplanet.Crypto.PublicKey.Verify"/> method.
+        /// </returns>
+        /// <seealso cref="Libplanet.Crypto.PublicKey.Verify"/>
         public byte[] Sign(byte[] message)
         {
             HashDigest<SHA256> hashed = HashDigest<SHA256>.DeriveFrom(message);
@@ -176,7 +175,9 @@ namespace Libplanet.Crypto
         /// </summary>
         /// <param name="message">A message <see cref="byte"/>s to sign.</param>
         /// <returns>A signature that proves the authenticity of the <paramref name="message"/>.
+        /// It can be verified using <see cref="Libplanet.Crypto.PublicKey.Verify"/> method.
         /// </returns>
+        /// <seealso cref="Libplanet.Crypto.PublicKey.Verify"/>
         public ImmutableArray<byte> Sign(ImmutableArray<byte> message)
         {
             HashDigest<SHA256> hashed = HashDigest<SHA256>.DeriveFrom(message);
@@ -219,6 +220,7 @@ namespace Libplanet.Crypto
         /// word &#x201c;text&#x201d;, both a <paramref name="ciphertext"/> and a returned message
         /// are <see cref="byte"/>s, not Unicode <see cref="string"/>s.
         /// </remarks>
+        /// <seealso cref="Libplanet.Crypto.PublicKey.Encrypt(ImmutableArray{byte})"/>
         [Pure]
         public ImmutableArray<byte> Decrypt(ImmutableArray<byte> ciphertext) =>
             Decrypt(ciphertext.ToBuilder().ToArray()).ToImmutableArray();
