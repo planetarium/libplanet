@@ -32,10 +32,8 @@ namespace Libplanet.Blockchain.Policies
 
         /// <summary>
         /// The maximum number of <see cref="Block{T}.Transactions"/> that a <see cref="Block{T}"/>
-        /// can accept.  This value must not be negative and must be deterministic (i.e., must not
-        /// change after an object is once instantiated).
+        /// can accept.
         /// </summary>
-        /// <remarks>If the value is less then 1, it's treated as 1.</remarks>
         [Pure]
         int MaxTransactionsPerBlock { get; }
 
@@ -80,14 +78,11 @@ namespace Libplanet.Blockchain.Policies
 
         /// <summary>
         /// Gets the maximum length of a <see cref="Block{T}"/> in bytes.  It can vary depending on
-        /// a given <paramref name="index"/>, but should be deterministic; for the same
-        /// <paramref name="index"/>, the same value must be returned.
+        /// a given <paramref name="index"/>.
         /// </summary>
         /// <param name="index">An <see cref="Block{T}.Index"/> of a block to mine or receive.
         /// </param>
         /// <returns>The maximum length of a <see cref="Block{T}"/> in bytes to accept.</returns>
-        /// <remarks>If it returns less then 1, it is treated as 1, because there is no block
-        /// taking 0 bytes or negative length of bytes.</remarks>
         int GetMaxBlockBytes(long index);
 
         /// <summary>
@@ -97,5 +92,15 @@ namespace Libplanet.Blockchain.Policies
         /// do proof-of-work.</param>
         /// <returns>The <see cref="HashAlgorithmType"/> to use.</returns>
         HashAlgorithmType GetHashAlgorithm(long index);
+
+        /// <summary>
+        /// Returns the maximum number of transactions allowed per signer in
+        /// a <see cref="Block{T}"/>.
+        /// </summary>
+        /// <param name="index">The <see cref="Block{T}.Index"/> of the <see cref="Block{T}"/>
+        /// for which this policy should apply.</param>
+        /// <returns>The maximum number of transactions allowed per signer in
+        /// a <see cref="Block{T}"/>.</returns>
+        int GetMaxTransactionsPerSignerPerBlock(long index);
     }
 }

@@ -385,6 +385,83 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
+        public async void MineBlockWithMaxTransactions()
+        {
+            Assert.Equal(1, _blockChain.Count);
+
+            const int numKeys = 3;
+            const int redundancy = 16;
+            const int maxTransactions = 16;
+
+            Random random = new Random();
+            List<PrivateKey> privateKeys = Enumerable.Range(0, numKeys)
+                .Select(_ => new PrivateKey()).ToList();
+            List<PrivateKey> shuffledKeysWithRedundancy = Enumerable.Range(0, numKeys)
+                .Select(_ => redundancy)
+                .SelectMany(
+                    (int count, int index) => Enumerable.Range(0, count).Select(_ => index))
+                .OrderBy(_ => random.Next())
+                .Select(index => privateKeys[index]).ToList();
+
+            foreach (var key in shuffledKeysWithRedundancy)
+            {
+                _blockChain.MakeTransaction(key, new DumbAction[0]);
+            }
+
+            Assert.True(_blockChain.Policy.MaxTransactionsPerBlock > maxTransactions);
+
+            // These assume there will be enough time to mine as many transactions as
+            // possible.
+            Block<DumbAction> block;
+            block = await _blockChain.MineBlock(
+                _fx.Address1, append: false);
+            Assert.True(block.Transactions.Count > maxTransactions);
+            block = await _blockChain.MineBlock(
+                _fx.Address1, append: false, maxTransactions: maxTransactions);
+            Assert.Equal(block.Transactions.Count, maxTransactions);
+        }
+
+        [Fact]
+        public async void MineBlockWithMaxTransactionsPerSigner()
+        {
+            Assert.Equal(1, _blockChain.Count);
+
+            const int numKeys = 3;
+            const int redundancy = 16;
+            const int maxTransactions = 16;
+            const int maxTransactionsPerSigner = 4;
+
+            Random random = new Random();
+            List<PrivateKey> privateKeys = Enumerable.Range(0, numKeys)
+                .Select(_ => new PrivateKey()).ToList();
+            List<PrivateKey> shuffledKeysWithRedundancy = Enumerable.Range(0, numKeys)
+                .Select(_ => redundancy)
+                .SelectMany(
+                    (int count, int index) => Enumerable.Range(0, count).Select(_ => index))
+                .OrderBy(_ => random.Next())
+                .Select(index => privateKeys[index]).ToList();
+
+            foreach (var key in shuffledKeysWithRedundancy)
+            {
+                _blockChain.MakeTransaction(key, new DumbAction[0]);
+            }
+
+            Assert.True(_blockChain.Policy.MaxTransactionsPerBlock > maxTransactions);
+
+            // These assume there will be enough time to mine as many transactions as
+            // possible.
+            Block<DumbAction> block = await _blockChain.MineBlock(
+                _fx.Address1,
+                append: false,
+                maxTransactions: maxTransactions,
+                maxTransactionsPerSigner: maxTransactionsPerSigner);
+            foreach (var group in block.Transactions.GroupBy(tx => tx.Signer))
+            {
+                Assert.Equal(group.Count(), maxTransactionsPerSigner);
+            }
+        }
+
+        [Fact]
         private async void AbortMining()
         {
             // This test makes 2 different policies even it's abnormal

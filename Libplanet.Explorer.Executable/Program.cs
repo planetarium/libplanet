@@ -436,6 +436,9 @@ If omitted (default) explorer only the local blockchain store.")]
 
             public HashAlgorithmType GetHashAlgorithm(long index) =>
                 _impl.GetHashAlgorithm(index);
+
+            public int GetMaxTransactionsPerSignerPerBlock(long index) =>
+                _impl.GetMaxTransactionsPerSignerPerBlock(index);
         }
 
         internal class Startup : IBlockChainContext<NullAction>

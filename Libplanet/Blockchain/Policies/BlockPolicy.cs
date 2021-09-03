@@ -19,6 +19,7 @@ namespace Libplanet.Blockchain.Policies
         private readonly int _maxGenesisBytes;
         private readonly Func<Transaction<T>, BlockChain<T>, bool> _doesTransactionFollowPolicy;
         private readonly HashAlgorithmGetter _hashAlgorithmGetter;
+        private readonly Func<long, int> _getMaxTransactionsPerSignerPerBlock;
 
         /// <summary>
         /// Creates a <see cref="BlockPolicy{T}"/> with configuring
@@ -49,6 +50,10 @@ namespace Libplanet.Blockchain.Policies
         /// chain.  If omitted, <see cref="TotalDifficultyComparer"/> is used by default.</param>
         /// <param name="hashAlgorithmGetter">Configures <see cref="GetHashAlgorithm(long)"/>.
         /// If omitted, SHA-256 is used for every block.</param>
+        /// <param name="getMaxTransactionsPerSignerPerBlock">A function determining
+        /// how many transactions from the same signer can be included in a <see cref="Block{T}"/>
+        /// given the <see cref="Block{T}"/>'s index.  A constant function returning
+        /// <see cref="MaxTransactionsPerBlock"/> by default.</param>
         public BlockPolicy(
             IAction blockAction = null,
             int blockIntervalMilliseconds = 5000,
@@ -59,8 +64,8 @@ namespace Libplanet.Blockchain.Policies
             int maxGenesisBytes = 1024 * 1024,
             Func<Transaction<T>, BlockChain<T>, bool> doesTransactionFollowPolicy = null,
             IComparer<IBlockExcerpt> canonicalChainComparer = null,
-            HashAlgorithmGetter hashAlgorithmGetter = null
-        )
+            HashAlgorithmGetter hashAlgorithmGetter = null,
+            Func<long, int> getMaxTransactionsPerSignerPerBlock = null)
             : this(
                 blockAction,
                 TimeSpan.FromMilliseconds(blockIntervalMilliseconds),
@@ -71,7 +76,8 @@ namespace Libplanet.Blockchain.Policies
                 maxGenesisBytes,
                 doesTransactionFollowPolicy,
                 canonicalChainComparer,
-                hashAlgorithmGetter)
+                hashAlgorithmGetter,
+                getMaxTransactionsPerSignerPerBlock)
         {
         }
 
@@ -101,6 +107,10 @@ namespace Libplanet.Blockchain.Policies
         /// chain.  If omitted, <see cref="TotalDifficultyComparer"/> is used by default.</param>
         /// <param name="hashAlgorithmGetter">Configures <see cref="GetHashAlgorithm(long)"/>.
         /// If omitted, SHA-256 is used for every block.</param>
+        /// <param name="getMaxTransactionsPerSignerPerBlock">A function determining
+        /// how many transactions from the same signer can be included in a <see cref="Block{T}"/>
+        /// given the <see cref="Block{T}"/>'s index.  A constant function returning
+        /// <see cref="MaxTransactionsPerBlock"/> by default.</param>
         public BlockPolicy(
             IAction blockAction,
             TimeSpan blockInterval,
@@ -111,7 +121,8 @@ namespace Libplanet.Blockchain.Policies
             int maxGenesisBytes,
             Func<Transaction<T>, BlockChain<T>, bool> doesTransactionFollowPolicy = null,
             IComparer<IBlockExcerpt> canonicalChainComparer = null,
-            HashAlgorithmGetter hashAlgorithmGetter = null)
+            HashAlgorithmGetter hashAlgorithmGetter = null,
+            Func<long, int> getMaxTransactionsPerSignerPerBlock = null)
         {
             if (blockInterval < TimeSpan.Zero)
             {
@@ -149,6 +160,8 @@ namespace Libplanet.Blockchain.Policies
             CanonicalChainComparer = canonicalChainComparer
                 ?? new TotalDifficultyComparer();
             _hashAlgorithmGetter = hashAlgorithmGetter ?? (_ => HashAlgorithmType.Of<SHA256>());
+            _getMaxTransactionsPerSignerPerBlock = getMaxTransactionsPerSignerPerBlock
+                ?? ((_) => MaxTransactionsPerBlock);
         }
 
         /// <inheritdoc/>
@@ -191,7 +204,7 @@ namespace Libplanet.Blockchain.Policies
             return null;
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public virtual long GetNextBlockDifficulty(BlockChain<T> blocks)
         {
             long index = blocks.Count;
@@ -225,11 +238,15 @@ namespace Libplanet.Blockchain.Policies
             return Math.Max(nextDifficulty, MinimumDifficulty);
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public int GetMaxBlockBytes(long index) => index > 0 ? _maxBlockBytes : _maxGenesisBytes;
 
         /// <inheritdoc cref="IBlockPolicy{T}.GetHashAlgorithm(long)"/>
         public HashAlgorithmType GetHashAlgorithm(long index) =>
             _hashAlgorithmGetter(index);
+
+        /// <inheritdoc/>
+        public int GetMaxTransactionsPerSignerPerBlock(long index)
+            => _getMaxTransactionsPerSignerPerBlock(index);
     }
 }

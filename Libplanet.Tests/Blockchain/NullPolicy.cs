@@ -43,5 +43,7 @@ namespace Libplanet.Tests.Blockchain
 
         public virtual HashAlgorithmType GetHashAlgorithm(long index) =>
             HashAlgorithmType.Of<SHA256>();
+
+        public int GetMaxTransactionsPerSignerPerBlock(long index) => MaxTransactionsPerBlock;
     }
 }
