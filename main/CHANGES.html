@@ -74,6 +74,17 @@
 <li><code>TotalDifficultyComparer</code> now implements <code>IComparer&lt;IBlockExcerpt&gt;</code>
 interface.  [<a href="https://github.com/planetarium/libplanet/pull/1442">#1442</a>]</li>
 <li>Return type for <code>BlockDemandTable.Add()</code> is now <code>void</code>.  [<a href="https://github.com/planetarium/libplanet/issues/1435">#1435</a>, <a href="https://github.com/planetarium/libplanet/pull/1443">#1443</a>]</li>
+<li><code>PrivateKey()</code> constructor's parameter type became <code>IReadOnlyList&lt;byte&gt;</code>
+(was <code>byte[]</code>).  [<a href="https://github.com/planetarium/libplanet/pull/1464">#1464</a>]</li>
+<li><code>PrivateKey.ByteArray</code> property's type became <code>ImmutableArray&lt;byte&gt;</code>
+(was <code>byte[]</code>).  To get a mutable one, use <code>PrivateKey.ToByteArray()</code>
+method instead.  [<a href="https://github.com/planetarium/libplanet/pull/1464">#1464</a>]</li>
+<li><code>PublicKey()</code> constructor's parameter type became <code>IReadOnlyList&lt;byte&gt;</code>
+(was <code>byte[]</code>).  [<a href="https://github.com/planetarium/libplanet/pull/1464">#1464</a>]</li>
+<li><code>PublicKey.Verify()</code> method's both parameters types became
+<code>IReadOnlyList&lt;byte&gt;</code> (were both <code>byte[]</code>).  [<a href="https://github.com/planetarium/libplanet/pull/1464">#1464</a>]</li>
+<li><code>HashDigest&lt;T&gt;.DeriveFrom()</code> method's parameter type became
+<code>IReadOnlyList&lt;byte&gt;</code> (was <code>byte[]</code>).  [<a href="https://github.com/planetarium/libplanet/pull/1464">#1464</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <ul>
@@ -84,6 +95,14 @@ interface.  [<a href="https://github.com/planetarium/libplanet/pull/1442">#1442<
 <h3 id="added-apis">Added APIs</h3>
 <ul>
 <li><code>IBlockExcerpt.ExcerptEquals</code> extension method added.  [<a href="https://github.com/planetarium/libplanet/pull/1440">#1440</a>]</li>
+<li>Added <code>PrivateKey.Sign(ImmutableArray&lt;byte&gt;)</code> overloaded method.  [<a href="https://github.com/planetarium/libplanet/pull/1464">#1464</a>]</li>
+<li>Added <code>PrivateKey.Decrypt(ImmutableArray&lt;byte&gt;)</code> overloaded method.
+[<a href="https://github.com/planetarium/libplanet/pull/1464">#1464</a>]</li>
+<li>Added <code>PrivateKey.ToByteArray()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1464">#1464</a>]</li>
+<li>Added <code>PublicKey.Encrypt(ImmutableArray&lt;byte&gt;)</code> overloaded method.
+[<a href="https://github.com/planetarium/libplanet/pull/1464">#1464</a>]</li>
+<li>Added <code>PublicKey.ToImmutableArray()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1464">#1464</a>]</li>
+<li>Added <code>Nonce(ImmutableArray&lt;byte&gt;)</code> overloaded constructor.  [<a href="https://github.com/planetarium/libplanet/pull/1464">#1464</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>

@@ -7973,15 +7973,15 @@ references:
   commentId: M:Libplanet.Crypto.PrivateKey.#ctor
   fullName: Libplanet.Crypto.PrivateKey.PrivateKey()
   nameWithType: PrivateKey.PrivateKey()
-- uid: Libplanet.Crypto.PrivateKey.#ctor(System.Byte[])
-  name: PrivateKey(Byte[])
-  href: api/Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey__ctor_System_Byte___
-  commentId: M:Libplanet.Crypto.PrivateKey.#ctor(System.Byte[])
-  name.vb: PrivateKey(Byte())
-  fullName: Libplanet.Crypto.PrivateKey.PrivateKey(System.Byte[])
-  fullName.vb: Libplanet.Crypto.PrivateKey.PrivateKey(System.Byte())
-  nameWithType: PrivateKey.PrivateKey(Byte[])
-  nameWithType.vb: PrivateKey.PrivateKey(Byte())
+- uid: Libplanet.Crypto.PrivateKey.#ctor(System.Collections.Generic.IReadOnlyList{System.Byte})
+  name: PrivateKey(IReadOnlyList<Byte>)
+  href: api/Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey__ctor_System_Collections_Generic_IReadOnlyList_System_Byte__
+  commentId: M:Libplanet.Crypto.PrivateKey.#ctor(System.Collections.Generic.IReadOnlyList{System.Byte})
+  name.vb: PrivateKey(IReadOnlyList(Of Byte))
+  fullName: Libplanet.Crypto.PrivateKey.PrivateKey(System.Collections.Generic.IReadOnlyList<System.Byte>)
+  fullName.vb: Libplanet.Crypto.PrivateKey.PrivateKey(System.Collections.Generic.IReadOnlyList(Of System.Byte))
+  nameWithType: PrivateKey.PrivateKey(IReadOnlyList<Byte>)
+  nameWithType.vb: PrivateKey.PrivateKey(IReadOnlyList(Of Byte))
 - uid: Libplanet.Crypto.PrivateKey.#ctor*
   name: PrivateKey
   href: api/Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey__ctor_
@@ -8002,6 +8002,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Crypto.PrivateKey.ByteArray
   nameWithType: PrivateKey.ByteArray
+- uid: Libplanet.Crypto.PrivateKey.Decrypt(ImmutableArray{System.Byte})
+  name: Decrypt(ImmutableArray<Byte>)
+  href: api/Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_Decrypt_ImmutableArray_System_Byte__
+  commentId: M:Libplanet.Crypto.PrivateKey.Decrypt(ImmutableArray{System.Byte})
+  name.vb: Decrypt(ImmutableArray(Of Byte))
+  fullName: Libplanet.Crypto.PrivateKey.Decrypt(ImmutableArray<System.Byte>)
+  fullName.vb: Libplanet.Crypto.PrivateKey.Decrypt(ImmutableArray(Of System.Byte))
+  nameWithType: PrivateKey.Decrypt(ImmutableArray<Byte>)
+  nameWithType.vb: PrivateKey.Decrypt(ImmutableArray(Of Byte))
 - uid: Libplanet.Crypto.PrivateKey.Decrypt(System.Byte[])
   name: Decrypt(Byte[])
   href: api/Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_Decrypt_System_Byte___
@@ -8070,6 +8079,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Crypto.PrivateKey.PublicKey
   nameWithType: PrivateKey.PublicKey
+- uid: Libplanet.Crypto.PrivateKey.Sign(ImmutableArray{System.Byte})
+  name: Sign(ImmutableArray<Byte>)
+  href: api/Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_Sign_ImmutableArray_System_Byte__
+  commentId: M:Libplanet.Crypto.PrivateKey.Sign(ImmutableArray{System.Byte})
+  name.vb: Sign(ImmutableArray(Of Byte))
+  fullName: Libplanet.Crypto.PrivateKey.Sign(ImmutableArray<System.Byte>)
+  fullName.vb: Libplanet.Crypto.PrivateKey.Sign(ImmutableArray(Of System.Byte))
+  nameWithType: PrivateKey.Sign(ImmutableArray<Byte>)
+  nameWithType.vb: PrivateKey.Sign(ImmutableArray(Of Byte))
 - uid: Libplanet.Crypto.PrivateKey.Sign(System.Byte[])
   name: Sign(Byte[])
   href: api/Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_Sign_System_Byte___
@@ -8086,21 +8104,34 @@ references:
   isSpec: "True"
   fullName: Libplanet.Crypto.PrivateKey.Sign
   nameWithType: PrivateKey.Sign
+- uid: Libplanet.Crypto.PrivateKey.ToByteArray
+  name: ToByteArray()
+  href: api/Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_ToByteArray
+  commentId: M:Libplanet.Crypto.PrivateKey.ToByteArray
+  fullName: Libplanet.Crypto.PrivateKey.ToByteArray()
+  nameWithType: PrivateKey.ToByteArray()
+- uid: Libplanet.Crypto.PrivateKey.ToByteArray*
+  name: ToByteArray
+  href: api/Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_ToByteArray_
+  commentId: Overload:Libplanet.Crypto.PrivateKey.ToByteArray
+  isSpec: "True"
+  fullName: Libplanet.Crypto.PrivateKey.ToByteArray
+  nameWithType: PrivateKey.ToByteArray
 - uid: Libplanet.Crypto.PublicKey
   name: PublicKey
   href: api/Libplanet.Crypto.PublicKey.html
   commentId: T:Libplanet.Crypto.PublicKey
   fullName: Libplanet.Crypto.PublicKey
   nameWithType: PublicKey
-- uid: Libplanet.Crypto.PublicKey.#ctor(System.Byte[])
-  name: PublicKey(Byte[])
-  href: api/Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey__ctor_System_Byte___
-  commentId: M:Libplanet.Crypto.PublicKey.#ctor(System.Byte[])
-  name.vb: PublicKey(Byte())
-  fullName: Libplanet.Crypto.PublicKey.PublicKey(System.Byte[])
-  fullName.vb: Libplanet.Crypto.PublicKey.PublicKey(System.Byte())
-  nameWithType: PublicKey.PublicKey(Byte[])
-  nameWithType.vb: PublicKey.PublicKey(Byte())
+- uid: Libplanet.Crypto.PublicKey.#ctor(System.Collections.Generic.IReadOnlyList{System.Byte})
+  name: PublicKey(IReadOnlyList<Byte>)
+  href: api/Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey__ctor_System_Collections_Generic_IReadOnlyList_System_Byte__
+  commentId: M:Libplanet.Crypto.PublicKey.#ctor(System.Collections.Generic.IReadOnlyList{System.Byte})
+  name.vb: PublicKey(IReadOnlyList(Of Byte))
+  fullName: Libplanet.Crypto.PublicKey.PublicKey(System.Collections.Generic.IReadOnlyList<System.Byte>)
+  fullName.vb: Libplanet.Crypto.PublicKey.PublicKey(System.Collections.Generic.IReadOnlyList(Of System.Byte))
+  nameWithType: PublicKey.PublicKey(IReadOnlyList<Byte>)
+  nameWithType.vb: PublicKey.PublicKey(IReadOnlyList(Of Byte))
 - uid: Libplanet.Crypto.PublicKey.#ctor*
   name: PublicKey
   href: api/Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey__ctor_
@@ -8108,6 +8139,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Crypto.PublicKey.PublicKey
   nameWithType: PublicKey.PublicKey
+- uid: Libplanet.Crypto.PublicKey.Encrypt(ImmutableArray{System.Byte})
+  name: Encrypt(ImmutableArray<Byte>)
+  href: api/Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey_Encrypt_ImmutableArray_System_Byte__
+  commentId: M:Libplanet.Crypto.PublicKey.Encrypt(ImmutableArray{System.Byte})
+  name.vb: Encrypt(ImmutableArray(Of Byte))
+  fullName: Libplanet.Crypto.PublicKey.Encrypt(ImmutableArray<System.Byte>)
+  fullName.vb: Libplanet.Crypto.PublicKey.Encrypt(ImmutableArray(Of System.Byte))
+  nameWithType: PublicKey.Encrypt(ImmutableArray<Byte>)
+  nameWithType.vb: PublicKey.Encrypt(ImmutableArray(Of Byte))
 - uid: Libplanet.Crypto.PublicKey.Encrypt(System.Byte[])
   name: Encrypt(Byte[])
   href: api/Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey_Encrypt_System_Byte___
@@ -8163,15 +8203,28 @@ references:
   isSpec: "True"
   fullName: Libplanet.Crypto.PublicKey.Inequality
   nameWithType: PublicKey.Inequality
-- uid: Libplanet.Crypto.PublicKey.Verify(System.Byte[],System.Byte[])
-  name: Verify(Byte[], Byte[])
-  href: api/Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey_Verify_System_Byte___System_Byte___
-  commentId: M:Libplanet.Crypto.PublicKey.Verify(System.Byte[],System.Byte[])
-  name.vb: Verify(Byte(), Byte())
-  fullName: Libplanet.Crypto.PublicKey.Verify(System.Byte[], System.Byte[])
-  fullName.vb: Libplanet.Crypto.PublicKey.Verify(System.Byte(), System.Byte())
-  nameWithType: PublicKey.Verify(Byte[], Byte[])
-  nameWithType.vb: PublicKey.Verify(Byte(), Byte())
+- uid: Libplanet.Crypto.PublicKey.ToImmutableArray(System.Boolean)
+  name: ToImmutableArray(Boolean)
+  href: api/Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey_ToImmutableArray_System_Boolean_
+  commentId: M:Libplanet.Crypto.PublicKey.ToImmutableArray(System.Boolean)
+  fullName: Libplanet.Crypto.PublicKey.ToImmutableArray(System.Boolean)
+  nameWithType: PublicKey.ToImmutableArray(Boolean)
+- uid: Libplanet.Crypto.PublicKey.ToImmutableArray*
+  name: ToImmutableArray
+  href: api/Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey_ToImmutableArray_
+  commentId: Overload:Libplanet.Crypto.PublicKey.ToImmutableArray
+  isSpec: "True"
+  fullName: Libplanet.Crypto.PublicKey.ToImmutableArray
+  nameWithType: PublicKey.ToImmutableArray
+- uid: Libplanet.Crypto.PublicKey.Verify(System.Collections.Generic.IReadOnlyList{System.Byte},System.Collections.Generic.IReadOnlyList{System.Byte})
+  name: Verify(IReadOnlyList<Byte>, IReadOnlyList<Byte>)
+  href: api/Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey_Verify_System_Collections_Generic_IReadOnlyList_System_Byte__System_Collections_Generic_IReadOnlyList_System_Byte__
+  commentId: M:Libplanet.Crypto.PublicKey.Verify(System.Collections.Generic.IReadOnlyList{System.Byte},System.Collections.Generic.IReadOnlyList{System.Byte})
+  name.vb: Verify(IReadOnlyList(Of Byte), IReadOnlyList(Of Byte))
+  fullName: Libplanet.Crypto.PublicKey.Verify(System.Collections.Generic.IReadOnlyList<System.Byte>, System.Collections.Generic.IReadOnlyList<System.Byte>)
+  fullName.vb: Libplanet.Crypto.PublicKey.Verify(System.Collections.Generic.IReadOnlyList(Of System.Byte), System.Collections.Generic.IReadOnlyList(Of System.Byte))
+  nameWithType: PublicKey.Verify(IReadOnlyList<Byte>, IReadOnlyList<Byte>)
+  nameWithType.vb: PublicKey.Verify(IReadOnlyList(Of Byte), IReadOnlyList(Of Byte))
 - uid: Libplanet.Crypto.PublicKey.Verify*
   name: Verify
   href: api/Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey_Verify_
@@ -8507,15 +8560,15 @@ references:
   fullName.vb: Libplanet.HashDigest(Of T).ByteArray
   nameWithType: HashDigest<T>.ByteArray
   nameWithType.vb: HashDigest(Of T).ByteArray
-- uid: Libplanet.HashDigest`1.DeriveFrom(System.Byte[])
-  name: DeriveFrom(Byte[])
-  href: api/Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_DeriveFrom_System_Byte___
-  commentId: M:Libplanet.HashDigest`1.DeriveFrom(System.Byte[])
-  name.vb: DeriveFrom(Byte())
-  fullName: Libplanet.HashDigest<T>.DeriveFrom(System.Byte[])
-  fullName.vb: Libplanet.HashDigest(Of T).DeriveFrom(System.Byte())
-  nameWithType: HashDigest<T>.DeriveFrom(Byte[])
-  nameWithType.vb: HashDigest(Of T).DeriveFrom(Byte())
+- uid: Libplanet.HashDigest`1.DeriveFrom(System.Collections.Generic.IReadOnlyList{System.Byte})
+  name: DeriveFrom(IReadOnlyList<Byte>)
+  href: api/Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_DeriveFrom_System_Collections_Generic_IReadOnlyList_System_Byte__
+  commentId: M:Libplanet.HashDigest`1.DeriveFrom(System.Collections.Generic.IReadOnlyList{System.Byte})
+  name.vb: DeriveFrom(IReadOnlyList(Of Byte))
+  fullName: Libplanet.HashDigest<T>.DeriveFrom(System.Collections.Generic.IReadOnlyList<System.Byte>)
+  fullName.vb: Libplanet.HashDigest(Of T).DeriveFrom(System.Collections.Generic.IReadOnlyList(Of System.Byte))
+  nameWithType: HashDigest<T>.DeriveFrom(IReadOnlyList<Byte>)
+  nameWithType.vb: HashDigest(Of T).DeriveFrom(IReadOnlyList(Of Byte))
 - uid: Libplanet.HashDigest`1.DeriveFrom*
   name: DeriveFrom
   href: api/Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_DeriveFrom_
@@ -13116,6 +13169,15 @@ references:
   commentId: T:Libplanet.Nonce
   fullName: Libplanet.Nonce
   nameWithType: Nonce
+- uid: Libplanet.Nonce.#ctor(ImmutableArray{System.Byte})
+  name: Nonce(ImmutableArray<Byte>)
+  href: api/Libplanet.Nonce.html#Libplanet_Nonce__ctor_ImmutableArray_System_Byte__
+  commentId: M:Libplanet.Nonce.#ctor(ImmutableArray{System.Byte})
+  name.vb: Nonce(ImmutableArray(Of Byte))
+  fullName: Libplanet.Nonce.Nonce(ImmutableArray<System.Byte>)
+  fullName.vb: Libplanet.Nonce.Nonce(ImmutableArray(Of System.Byte))
+  nameWithType: Nonce.Nonce(ImmutableArray<Byte>)
+  nameWithType.vb: Nonce.Nonce(ImmutableArray(Of Byte))
 - uid: Libplanet.Nonce.#ctor(System.Byte[])
   name: Nonce(Byte[])
   href: api/Libplanet.Nonce.html#Libplanet_Nonce__ctor_System_Byte___
