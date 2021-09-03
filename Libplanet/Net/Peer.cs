@@ -27,7 +27,7 @@ namespace Libplanet.Net
 
         public Peer(Bencodex.Types.Dictionary dictionary)
         : this(
-            new PublicKey((Binary)dictionary[PublicKeyKey]),
+            new PublicKey(((Binary)dictionary[PublicKeyKey]).ByteArray),
             dictionary[PublicIpAddressKey] is Text text ? IPAddress.Parse(text) : null)
         {
         }

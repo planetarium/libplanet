@@ -1,7 +1,10 @@
+#nullable enable
 using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using System.Security.Cryptography;
-using Org.BouncyCastle.Crypto.Digests;
 using Org.BouncyCastle.Crypto.Parameters;
 
 namespace Libplanet.Crypto
@@ -41,8 +44,8 @@ namespace Libplanet.Crypto
         /// <see cref="Format(bool)"/> method.
         /// </remarks>
         /// <seealso cref="Format(bool)"/>
-        public PublicKey(byte[] publicKey)
-            : this(GetECPublicKeyParameters(publicKey))
+        public PublicKey(IReadOnlyList<byte> publicKey)
+            : this(GetECPublicKeyParameters(publicKey is byte[] ba ? ba : publicKey.ToArray()))
         {
         }
 
@@ -60,36 +63,50 @@ namespace Libplanet.Crypto
             Operator.Weave(left, right);
 
         /// <summary>
-        /// Encodes this public key into a <see cref="byte"/> array
-        /// representation.
+        /// Encodes this public key into a mutable <see cref="byte"/> array representation.
+        /// <para>To get an immutable one, use <see cref="ToImmutableArray(bool)"/> method
+        /// instead.</para>
         /// </summary>
-        /// <param name="compress">Returns a short length representation if
-        /// it is <c>true</c>.  This option does not lose any information.
-        /// </param>
-        /// <returns>An encoded <see cref="byte"/> array representation.
-        /// It can recover a <see cref="PublicKey"/> object again using
-        /// its constructor (i.e., <see cref="PublicKey(byte[])"/>)
-        /// regardless of compression.</returns>
-        /// <seealso cref="PublicKey(byte[])"/>
+        /// <param name="compress">Returns a short length representation if it is <c>true</c>.
+        /// This option does not lose any information.</param>
+        /// <returns>An encoded mutable <see cref="byte"/> array representation.  It can be
+        /// recovered to a <see cref="PublicKey"/> instance again using
+        /// <see cref="PublicKey(IReadOnlyList{byte})"/> constructor whether it is compressed
+        /// or not.</returns>
+        /// <seealso cref="ToImmutableArray(bool)"/>
+        /// <seealso cref="PublicKey(IReadOnlyList{byte})"/>
         [Pure]
-        public byte[] Format(bool compress)
-        {
-            return KeyParam.Q.GetEncoded(compress);
-        }
+        public byte[] Format(bool compress) =>
+            KeyParam.Q.GetEncoded(compress);
 
         /// <summary>
-        /// Converts a plain <paramref name="message"/> to a ciphertext
-        /// which can be decrypted with the corresponding <see cref="PrivateKey"
-        /// />.
+        /// Encodes this public key into a immutable <see cref="byte"/> array representation.
+        /// <para>To get an mutable one, use <see cref="Format(bool)"/> method instead.</para>
         /// </summary>
-        /// <param name="message">A binary data to be encrypted.</param>
+        /// <param name="compress">Returns a short length representation if it is <c>true</c>.
+        /// This option does not lose any information.</param>
+        /// <returns>An encoded immutable <see cref="byte"/> array representation.  It can be
+        /// recovered to a <see cref="PublicKey"/> instance again using
+        /// <see cref="PublicKey(IReadOnlyList{byte})"/> constructor whether it is compressed
+        /// or not.</returns>
+        /// <seealso cref="Format(bool)"/>
+        /// <seealso cref="PublicKey(IReadOnlyList{byte})"/>
+        [Pure]
+        public ImmutableArray<byte> ToImmutableArray(bool compress) =>
+            Format(compress).ToImmutableArray();
+
+        /// <summary>
+        /// Encrypts a plaintext <paramref name="message"/> to a ciphertext, which can be decrypted
+        /// with the corresponding <see cref="PrivateKey"/>.
+        /// </summary>
+        /// <param name="message">A binary data to encrypt.</param>
         /// <returns>
-        /// A ciphertext that was encrypted from the <paramref name="message"/>
-        /// and can be decrypted with the corresponding <see cref="PrivateKey"
-        /// />. (Although the word &#x201c;ciphertext&#x201d; has the word
-        /// &#x201c;text&#x201d;, a returned ciphertext is not a Unicode
-        /// <see cref="string"/>, but a <see cref="byte"/> array.)
+        /// A ciphertext that was encrypted from the original <paramref name="message"/>.
+        /// This can be decrypted with the corresponding <see cref="PrivateKey" />.
         /// </returns>
+        /// <remarks>Although the word &#x201c;ciphertext&#x201d; has the word &#x201c;text&#x201d;,
+        /// a returned ciphertext is not a Unicode <see cref="string"/>, but a mutable
+        /// <see cref="byte"/> array.</remarks>
         /// <seealso cref="PrivateKey.Decrypt(byte[])"/>
         public byte[] Encrypt(byte[] message)
         {
@@ -103,22 +120,37 @@ namespace Libplanet.Crypto
         }
 
         /// <summary>
-        /// Verifies whether a <paramref name="signature"/> was created from
-        /// a <paramref name="message"/> with the corresponding
-        /// <see cref="PrivateKey"/>.
+        /// Encrypts a plaintext <paramref name="message"/> to a ciphertext, which can be decrypted
+        /// with the corresponding <see cref="PrivateKey"/>.
         /// </summary>
-        /// <param name="message">A plain message that the
-        /// <paramref name="signature"/> was created from.  That is, a data
-        /// which was passed as an argument to
-        /// <see cref="PrivateKey.Sign(byte[])"/>.</param>
-        /// <param name="signature">A signature that was created from the
-        /// <paramref name="message"/>.  That is, a data which was returned
-        /// by <see cref="PrivateKey.Sign(byte[])"/>.</param>
-        /// <returns><c>true</c> if the <paramref name="signature"/> was created
-        /// from the <paramref name="message"/> with the corresponding
-        /// <see cref="PrivateKey"/>. Otherwise <c>false</c>.</returns>
+        /// <param name="message">A binary data to encrypt.</param>
+        /// <returns>
+        /// A ciphertext that was encrypted from the original <paramref name="message"/>.
+        /// This can be decrypted with the corresponding <see cref="PrivateKey" />.
+        /// </returns>
+        /// <remarks>Although the word &#x201c;ciphertext&#x201d; has the word &#x201c;text&#x201d;,
+        /// a returned ciphertext is not a Unicode <see cref="string"/>, but a mutable
+        /// <see cref="byte"/> array.</remarks>
+        /// <seealso cref="PrivateKey.Decrypt(ImmutableArray{byte})"/>
+        public ImmutableArray<byte> Encrypt(ImmutableArray<byte> message) =>
+            Encrypt(message.ToBuilder().ToArray()).ToImmutableArray();
+
+        /// <summary>
+        /// Verifies whether a <paramref name="signature"/> proves authenticity of
+        /// <paramref name="message"/> with the corresponding <see cref="PrivateKey"/>.
+        /// </summary>
+        /// <param name="message">A original plaintext message that the <paramref name="signature"/>
+        /// tries to prove its authenticity.  I.e., an argument data passed to
+        /// <see cref="PrivateKey.Sign(byte[])"/> or <see
+        /// cref="PrivateKey.Sign(ImmutableArray{byte})" /> methods.</param>
+        /// <param name="signature">A signature which tries to authenticity of
+        /// <paramref name="message"/>.  I.e., a data that <see cref="PrivateKey.Sign(byte[])"/> or
+        /// <see cref="PrivateKey.Sign(ImmutableArray{byte})"/> methods returned.</param>
+        /// <returns><c>true</c> if the <paramref name="signature"/> proves authenticity of
+        /// the <paramref name="message"/> with the corresponding <see cref="PrivateKey"/>.
+        /// Otherwise <c>false</c>.</returns>
         [Pure]
-        public bool Verify(byte[] message, byte[] signature)
+        public bool Verify(IReadOnlyList<byte> message, IReadOnlyList<byte> signature)
         {
             if (message == null)
             {
@@ -130,16 +162,11 @@ namespace Libplanet.Crypto
                 throw new ArgumentNullException(nameof(signature));
             }
 
-            var h = new Sha256Digest();
-            var hashed = new byte[h.GetDigestSize()];
-            h.BlockUpdate(message, 0, message.Length);
-            h.DoFinal(hashed, 0);
-            h.Reset();
-
             return CryptoConfig.CryptoBackend.Verify(
-                new HashDigest<SHA256>(hashed),
-                signature,
-                this);
+                HashDigest<SHA256>.DeriveFrom(message),
+                signature is byte[] ba ? ba : signature.ToArray(),
+                publicKey: this
+            );
         }
 
         private static ECPublicKeyParameters GetECPublicKeyParameters(byte[] bs)

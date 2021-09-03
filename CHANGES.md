@@ -13,17 +13,36 @@ To be released.
  -  `TotalDifficultyComparer` now implements `IComparer<IBlockExcerpt>`
     interface.  [[#1442]]
  -  Return type for `BlockDemandTable.Add()` is now `void`.  [[#1435], [#1443]]
+ -  `PrivateKey()` constructor's parameter type became `IReadOnlyList<byte>`
+    (was `byte[]`).  [[#1464]]
+ -  `PrivateKey.ByteArray` property's type became `ImmutableArray<byte>`
+    (was `byte[]`).  To get a mutable one, use `PrivateKey.ToByteArray()`
+    method instead.  [[#1464]]
+ -  `PublicKey()` constructor's parameter type became `IReadOnlyList<byte>`
+    (was `byte[]`).  [[#1464]]
+ -  `PublicKey.Verify()` method's both parameters types became
+    `IReadOnlyList<byte>` (were both `byte[]`).  [[#1464]]
+ -  `HashDigest<T>.DeriveFrom()` method's parameter type became
+    `IReadOnlyList<byte>` (was `byte[]`).  [[#1464]]
 
 ### Backward-incompatible network protocol changes
 
--  `Message` became to serialize peer with bencodex instead of
-   `BinaryFormatter`.  [[#1455]]
+ -  `Message` became to serialize peer with bencodex instead of
+    `BinaryFormatter`.  [[#1455]]
 
 ### Backward-incompatible storage format changes
 
 ### Added APIs
 
-  - `IBlockExcerpt.ExcerptEquals` extension method added.  [[#1440]]
+ -  `IBlockExcerpt.ExcerptEquals` extension method added.  [[#1440]]
+ -  Added `PrivateKey.Sign(ImmutableArray<byte>)` overloaded method.  [[#1464]]
+ -  Added `PrivateKey.Decrypt(ImmutableArray<byte>)` overloaded method.
+    [[#1464]]
+ -  Added `PrivateKey.ToByteArray()` method.  [[#1464]]
+ -  Added `PublicKey.Encrypt(ImmutableArray<byte>)` overloaded method.
+    [[#1464]]
+ -  Added `PublicKey.ToImmutableArray()` method.  [[#1464]]
+ -  Added `Nonce(ImmutableArray<byte>)` overloaded constructor.  [[#1464]]
 
 ### Behavioral changes
 
@@ -48,6 +67,7 @@ To be released.
 [#1443]: https://github.com/planetarium/libplanet/pull/1443
 [#1455]: https://github.com/planetarium/libplanet/pull/1455
 [#1457]: https://github.com/planetarium/libplanet/pull/1457
+[#1464]: https://github.com/planetarium/libplanet/pull/1464
 
 
 Version 0.16.0
