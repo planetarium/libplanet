@@ -1687,10 +1687,6 @@ namespace Libplanet.Tests.Blockchain
                         .Add(presentBlocks[1].Hash));
             }
 
-            // Just in case
-            Assert.True(stateStore.ContainsBlockStates(presentBlocks[0].Hash));
-            Assert.True(stateStore.ContainsBlockStates(presentBlocks[1].Hash));
-            Assert.False(stateStore.ContainsBlockStates(chain.Tip.Hash));
             return (signer, addresses, chain);
         }
 
