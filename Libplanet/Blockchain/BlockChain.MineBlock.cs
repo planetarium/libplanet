@@ -187,7 +187,6 @@ namespace Libplanet.Blockchain
             {
                 Append(
                     block,
-                    timestamp,
                     evaluateActions: true,
                     renderBlocks: true,
                     renderActions: true,

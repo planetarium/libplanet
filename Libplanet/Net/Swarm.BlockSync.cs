@@ -411,7 +411,6 @@ namespace Libplanet.Net
                                     deltaBlock.Hash);
                                 workspace.Append(
                                     deltaBlock,
-                                    DateTimeOffset.UtcNow,
                                     evaluateActions: !preload,
                                     renderBlocks: renderBlocks,
                                     renderActions: renderActions
@@ -896,7 +895,6 @@ namespace Libplanet.Net
 
                         workspace.Append(
                             block,
-                            DateTimeOffset.UtcNow,
                             evaluateActions: evaluateActions,
                             renderBlocks: renderBlocks,
                             renderActions: renderActions

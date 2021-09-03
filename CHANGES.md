@@ -29,6 +29,8 @@ To be released.
     and negative values.  [[#1449], [#1463]]
      -  Returned values from these will now be taken literally
         by `BlockChain<T>`.
+ -  Unused parameter `currentTime` removed from `BlockChain<T>.Append()`
+    [[#1462], [#1465]]
 
 ### Backward-incompatible network protocol changes
 
@@ -83,8 +85,10 @@ To be released.
 [#1449]: https://github.com/planetarium/libplanet/issues/1449
 [#1455]: https://github.com/planetarium/libplanet/pull/1455
 [#1457]: https://github.com/planetarium/libplanet/pull/1457
+[#1462]: https://github.com/planetarium/libplanet/issues/1462
 [#1463]: https://github.com/planetarium/libplanet/pull/1463
 [#1464]: https://github.com/planetarium/libplanet/pull/1464
+[#1465]: https://github.com/planetarium/libplanet/pull/1465
 
 
 Version 0.16.0

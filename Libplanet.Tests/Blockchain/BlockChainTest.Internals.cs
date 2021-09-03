@@ -132,7 +132,6 @@ namespace Libplanet.Tests.Blockchain
 
             _blockChain.Append(
                 block1,
-                DateTimeOffset.UtcNow,
                 evaluateActions: false,
                 renderBlocks: true,
                 renderActions: false
