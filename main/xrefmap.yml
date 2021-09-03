@@ -2380,6 +2380,22 @@ references:
   fullName.vb: Libplanet.Blockchain.FungibleAssetStateCompleters(Of T)
   nameWithType: FungibleAssetStateCompleters<T>
   nameWithType.vb: FungibleAssetStateCompleters(Of T)
+- uid: Libplanet.Blockchain.FungibleAssetStateCompleters`1.ComplementAll
+  name: ComplementAll
+  href: api/Libplanet.Blockchain.FungibleAssetStateCompleters-1.html#Libplanet_Blockchain_FungibleAssetStateCompleters_1_ComplementAll
+  commentId: F:Libplanet.Blockchain.FungibleAssetStateCompleters`1.ComplementAll
+  fullName: Libplanet.Blockchain.FungibleAssetStateCompleters<T>.ComplementAll
+  fullName.vb: Libplanet.Blockchain.FungibleAssetStateCompleters(Of T).ComplementAll
+  nameWithType: FungibleAssetStateCompleters<T>.ComplementAll
+  nameWithType.vb: FungibleAssetStateCompleters(Of T).ComplementAll
+- uid: Libplanet.Blockchain.FungibleAssetStateCompleters`1.ComplementLatest
+  name: ComplementLatest
+  href: api/Libplanet.Blockchain.FungibleAssetStateCompleters-1.html#Libplanet_Blockchain_FungibleAssetStateCompleters_1_ComplementLatest
+  commentId: F:Libplanet.Blockchain.FungibleAssetStateCompleters`1.ComplementLatest
+  fullName: Libplanet.Blockchain.FungibleAssetStateCompleters<T>.ComplementLatest
+  fullName.vb: Libplanet.Blockchain.FungibleAssetStateCompleters(Of T).ComplementLatest
+  nameWithType: FungibleAssetStateCompleters<T>.ComplementLatest
+  nameWithType.vb: FungibleAssetStateCompleters(Of T).ComplementLatest
 - uid: Libplanet.Blockchain.FungibleAssetStateCompleters`1.Recalculate
   name: Recalculate
   href: api/Libplanet.Blockchain.FungibleAssetStateCompleters-1.html#Libplanet_Blockchain_FungibleAssetStateCompleters_1_Recalculate
@@ -5796,6 +5812,22 @@ references:
   fullName.vb: Libplanet.Blockchain.StateCompleters(Of T)
   nameWithType: StateCompleters<T>
   nameWithType.vb: StateCompleters(Of T)
+- uid: Libplanet.Blockchain.StateCompleters`1.ComplementAll
+  name: ComplementAll
+  href: api/Libplanet.Blockchain.StateCompleters-1.html#Libplanet_Blockchain_StateCompleters_1_ComplementAll
+  commentId: F:Libplanet.Blockchain.StateCompleters`1.ComplementAll
+  fullName: Libplanet.Blockchain.StateCompleters<T>.ComplementAll
+  fullName.vb: Libplanet.Blockchain.StateCompleters(Of T).ComplementAll
+  nameWithType: StateCompleters<T>.ComplementAll
+  nameWithType.vb: StateCompleters(Of T).ComplementAll
+- uid: Libplanet.Blockchain.StateCompleters`1.ComplementLatest
+  name: ComplementLatest
+  href: api/Libplanet.Blockchain.StateCompleters-1.html#Libplanet_Blockchain_StateCompleters_1_ComplementLatest
+  commentId: F:Libplanet.Blockchain.StateCompleters`1.ComplementLatest
+  fullName: Libplanet.Blockchain.StateCompleters<T>.ComplementLatest
+  fullName.vb: Libplanet.Blockchain.StateCompleters(Of T).ComplementLatest
+  nameWithType: StateCompleters<T>.ComplementLatest
+  nameWithType.vb: StateCompleters(Of T).ComplementLatest
 - uid: Libplanet.Blockchain.StateCompleters`1.Recalculate
   name: Recalculate
   href: api/Libplanet.Blockchain.StateCompleters-1.html#Libplanet_Blockchain_StateCompleters_1_Recalculate
@@ -5821,6 +5853,22 @@ references:
   fullName.vb: Libplanet.Blockchain.StateCompleterSet(Of T)
   nameWithType: StateCompleterSet<T>
   nameWithType.vb: StateCompleterSet(Of T)
+- uid: Libplanet.Blockchain.StateCompleterSet`1.ComplementAll
+  name: ComplementAll
+  href: api/Libplanet.Blockchain.StateCompleterSet-1.html#Libplanet_Blockchain_StateCompleterSet_1_ComplementAll
+  commentId: F:Libplanet.Blockchain.StateCompleterSet`1.ComplementAll
+  fullName: Libplanet.Blockchain.StateCompleterSet<T>.ComplementAll
+  fullName.vb: Libplanet.Blockchain.StateCompleterSet(Of T).ComplementAll
+  nameWithType: StateCompleterSet<T>.ComplementAll
+  nameWithType.vb: StateCompleterSet(Of T).ComplementAll
+- uid: Libplanet.Blockchain.StateCompleterSet`1.ComplementLatest
+  name: ComplementLatest
+  href: api/Libplanet.Blockchain.StateCompleterSet-1.html#Libplanet_Blockchain_StateCompleterSet_1_ComplementLatest
+  commentId: F:Libplanet.Blockchain.StateCompleterSet`1.ComplementLatest
+  fullName: Libplanet.Blockchain.StateCompleterSet<T>.ComplementLatest
+  fullName.vb: Libplanet.Blockchain.StateCompleterSet(Of T).ComplementLatest
+  nameWithType: StateCompleterSet<T>.ComplementLatest
+  nameWithType.vb: StateCompleterSet(Of T).ComplementLatest
 - uid: Libplanet.Blockchain.StateCompleterSet`1.FungibleAssetStateCompleter
   name: FungibleAssetStateCompleter
   href: api/Libplanet.Blockchain.StateCompleterSet-1.html#Libplanet_Blockchain_StateCompleterSet_1_FungibleAssetStateCompleter

@@ -66,6 +66,8 @@
 <p>To be released.</p>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
 <ul>
+<li>Added <code>StateCompleterSet&lt;T&gt;.ComplementAll</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/1358">#1358</a>, <a href="https://github.com/planetarium/libplanet/pull/1386">#1386</a>]</li>
+<li>Added <code>StateCompleterSet&lt;T&gt;.ComplementLatest</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/1358">#1358</a>, <a href="https://github.com/planetarium/libplanet/pull/1386">#1386</a>]</li>
 <li><code>BlockPerception</code> now implements <code>IBlockExcerpt</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/1440">#1440</a>]
 <ul>
 <li><code>BlockPerception.Excerpt</code> property removed.</li>
@@ -120,6 +122,9 @@ as an optional parameter.  [<a href="https://github.com/planetarium/libplanet/is
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
+<li><code>StateCompleterSet&lt;T&gt;.Recalculate</code> now evaluates states even for those
+already in <code>IStateStore</code>.  Moreover, it also terminates early if possible
+after reaching the <code>BlockHash</code> provided with a call.  [<a href="https://github.com/planetarium/libplanet/issues/1358">#1358</a>, <a href="https://github.com/planetarium/libplanet/pull/1386">#1386</a>]</li>
 <li><code>TotalDifficultyComparer</code> no longer considers perceived time when comparing
 <code>IBlockExcerpt</code>s.  [<a href="https://github.com/planetarium/libplanet/pull/1442">#1442</a>]</li>
 <li>General logic for determining the canonical chain has been updated.
