@@ -1900,15 +1900,6 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).ActionRenderers
   nameWithType: BlockChain<T>.ActionRenderers
   nameWithType.vb: BlockChain(Of T).ActionRenderers
-- uid: Libplanet.Blockchain.BlockChain`1.Append(Libplanet.Blocks.Block{`0},System.DateTimeOffset,System.Nullable{Libplanet.Blockchain.StateCompleterSet{`0}})
-  name: Append(Block<T>, DateTimeOffset, Nullable<StateCompleterSet<T>>)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Append_Libplanet_Blocks_Block__0__System_DateTimeOffset_System_Nullable_Libplanet_Blockchain_StateCompleterSet__0___
-  commentId: M:Libplanet.Blockchain.BlockChain`1.Append(Libplanet.Blocks.Block{`0},System.DateTimeOffset,System.Nullable{Libplanet.Blockchain.StateCompleterSet{`0}})
-  name.vb: Append(Block(Of T), DateTimeOffset, Nullable(Of StateCompleterSet(Of T)))
-  fullName: Libplanet.Blockchain.BlockChain<T>.Append(Libplanet.Blocks.Block<T>, System.DateTimeOffset, System.Nullable<Libplanet.Blockchain.StateCompleterSet<T>>)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Append(Libplanet.Blocks.Block(Of T), System.DateTimeOffset, System.Nullable(Of Libplanet.Blockchain.StateCompleterSet(Of T)))
-  nameWithType: BlockChain<T>.Append(Block<T>, DateTimeOffset, Nullable<StateCompleterSet<T>>)
-  nameWithType.vb: BlockChain(Of T).Append(Block(Of T), DateTimeOffset, Nullable(Of StateCompleterSet(Of T)))
 - uid: Libplanet.Blockchain.BlockChain`1.Append(Libplanet.Blocks.Block{`0},System.Nullable{Libplanet.Blockchain.StateCompleterSet{`0}})
   name: Append(Block<T>, Nullable<StateCompleterSet<T>>)
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Append_Libplanet_Blocks_Block__0__System_Nullable_Libplanet_Blockchain_StateCompleterSet__0___
