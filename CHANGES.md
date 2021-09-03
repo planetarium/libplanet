@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.15.2
 --------------
 
-To be released.
+Released on September 3, 2021.
 
  -  Removed `ITransport.SendMessageWithReplyAsync(BoundPeer,
     Message, TimeSpan?, int, CancellationToken)` method.
