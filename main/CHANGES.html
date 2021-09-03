@@ -85,6 +85,14 @@ method instead.  [<a href="https://github.com/planetarium/libplanet/pull/1464">#
 <code>IReadOnlyList&lt;byte&gt;</code> (were both <code>byte[]</code>).  [<a href="https://github.com/planetarium/libplanet/pull/1464">#1464</a>]</li>
 <li><code>HashDigest&lt;T&gt;.DeriveFrom()</code> method's parameter type became
 <code>IReadOnlyList&lt;byte&gt;</code> (was <code>byte[]</code>).  [<a href="https://github.com/planetarium/libplanet/pull/1464">#1464</a>]</li>
+<li><code>IBlockPolicy&lt;T&gt;.MaxTransactionsPerBlock</code> and
+<code>IBlockPolicy&lt;T&gt;.GetMaxBlockBytes()</code> description changed for <code>0</code>
+and negative values.  [<a href="https://github.com/planetarium/libplanet/issues/1449">#1449</a>, <a href="https://github.com/planetarium/libplanet/pull/1463">#1463</a>]
+<ul>
+<li>Returned values from these will now be taken literally
+by <code>BlockChain&lt;T&gt;</code>.</li>
+</ul>
+</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <ul>
@@ -103,6 +111,10 @@ method instead.  [<a href="https://github.com/planetarium/libplanet/pull/1464">#
 [<a href="https://github.com/planetarium/libplanet/pull/1464">#1464</a>]</li>
 <li>Added <code>PublicKey.ToImmutableArray()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1464">#1464</a>]</li>
 <li>Added <code>Nonce(ImmutableArray&lt;byte&gt;)</code> overloaded constructor.  [<a href="https://github.com/planetarium/libplanet/pull/1464">#1464</a>]</li>
+<li><code>IBlockPolicy.GetMaxTransactionsPerSignerPerBlock()</code> interface method added.
+[<a href="https://github.com/planetarium/libplanet/issues/1449">#1449</a>, <a href="https://github.com/planetarium/libplanet/pull/1463">#1463</a>]</li>
+<li><code>BlockChain&lt;T&gt;.MineBlock()</code> now takes <code>maxTransactionsPerSigner</code>
+as an optional parameter.  [<a href="https://github.com/planetarium/libplanet/issues/1449">#1449</a>, <a href="https://github.com/planetarium/libplanet/pull/1463">#1463</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
@@ -119,6 +131,15 @@ tip of a chain is never considered as stale.</li>
 </li>
 <li>Block sync using <code>BlockDemand</code> became not to fill blocks
 from multiple peers.  [<a href="https://github.com/planetarium/libplanet/pull/1457">#1457</a>]</li>
+<li><code>BlockChain&lt;T&gt;.MineBlock()</code> now uses <code>maxTransactions</code> literally.
+[<a href="https://github.com/planetarium/libplanet/issues/1449">#1449</a>, <a href="https://github.com/planetarium/libplanet/pull/1463">#1463</a>]
+<ul>
+<li>Before, <code>maxTransactions</code> were internally automatically set to a
+value between <code>1</code> and <code>BlockChain&lt;T&gt;.Policy.MaxTransactionsPerBlock</code>.</li>
+</ul>
+</li>
+<li>Similarly, <code>BlockChain&lt;T&gt;.MineBlock()</code> now internally uses
+<code>BlockChain&lt;T&gt;.Policy.GetMaxBlockBytes()</code> literally.  [<a href="https://github.com/planetarium/libplanet/issues/1449">#1449</a>, <a href="https://github.com/planetarium/libplanet/pull/1463">#1463</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="cli-tools">CLI tools</h3>

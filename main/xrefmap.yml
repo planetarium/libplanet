@@ -2223,24 +2223,23 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).MakeTransaction
   nameWithType: BlockChain<T>.MakeTransaction
   nameWithType.vb: BlockChain(Of T).MakeTransaction
-- uid: Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Address,System.Boolean,System.Nullable{System.Int32},System.Threading.CancellationToken)
-  name: MineBlock(Address, Boolean, Nullable<Int32>, CancellationToken)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MineBlock_Libplanet_Address_System_Boolean_System_Nullable_System_Int32__System_Threading_CancellationToken_
-  commentId: M:Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Address,System.Boolean,System.Nullable{System.Int32},System.Threading.CancellationToken)
-  name.vb: MineBlock(Address, Boolean, Nullable(Of Int32), CancellationToken)
-  fullName: Libplanet.Blockchain.BlockChain<T>.MineBlock(Libplanet.Address, System.Boolean, System.Nullable<System.Int32>, System.Threading.CancellationToken)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).MineBlock(Libplanet.Address, System.Boolean, System.Nullable(Of System.Int32), System.Threading.CancellationToken)
-  nameWithType: BlockChain<T>.MineBlock(Address, Boolean, Nullable<Int32>, CancellationToken)
-  nameWithType.vb: BlockChain(Of T).MineBlock(Address, Boolean, Nullable(Of Int32), CancellationToken)
-- uid: Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Address,System.DateTimeOffset,System.Boolean,System.Nullable{System.Int32},System.Threading.CancellationToken)
-  name: MineBlock(Address, DateTimeOffset, Boolean, Nullable<Int32>, CancellationToken)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MineBlock_Libplanet_Address_System_DateTimeOffset_System_Boolean_System_Nullable_System_Int32__System_Threading_CancellationToken_
-  commentId: M:Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Address,System.DateTimeOffset,System.Boolean,System.Nullable{System.Int32},System.Threading.CancellationToken)
-  name.vb: MineBlock(Address, DateTimeOffset, Boolean, Nullable(Of Int32), CancellationToken)
-  fullName: Libplanet.Blockchain.BlockChain<T>.MineBlock(Libplanet.Address, System.DateTimeOffset, System.Boolean, System.Nullable<System.Int32>, System.Threading.CancellationToken)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).MineBlock(Libplanet.Address, System.DateTimeOffset, System.Boolean, System.Nullable(Of System.Int32), System.Threading.CancellationToken)
-  nameWithType: BlockChain<T>.MineBlock(Address, DateTimeOffset, Boolean, Nullable<Int32>, CancellationToken)
-  nameWithType.vb: BlockChain(Of T).MineBlock(Address, DateTimeOffset, Boolean, Nullable(Of Int32), CancellationToken)
+- uid: Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Address,System.DateTimeOffset,System.Boolean,System.Int32,System.Int32,System.Threading.CancellationToken)
+  name: MineBlock(Address, DateTimeOffset, Boolean, Int32, Int32, CancellationToken)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MineBlock_Libplanet_Address_System_DateTimeOffset_System_Boolean_System_Int32_System_Int32_System_Threading_CancellationToken_
+  commentId: M:Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Address,System.DateTimeOffset,System.Boolean,System.Int32,System.Int32,System.Threading.CancellationToken)
+  fullName: Libplanet.Blockchain.BlockChain<T>.MineBlock(Libplanet.Address, System.DateTimeOffset, System.Boolean, System.Int32, System.Int32, System.Threading.CancellationToken)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).MineBlock(Libplanet.Address, System.DateTimeOffset, System.Boolean, System.Int32, System.Int32, System.Threading.CancellationToken)
+  nameWithType: BlockChain<T>.MineBlock(Address, DateTimeOffset, Boolean, Int32, Int32, CancellationToken)
+  nameWithType.vb: BlockChain(Of T).MineBlock(Address, DateTimeOffset, Boolean, Int32, Int32, CancellationToken)
+- uid: Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Address,System.Nullable{System.DateTimeOffset},System.Nullable{System.Boolean},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Threading.CancellationToken})
+  name: MineBlock(Address, Nullable<DateTimeOffset>, Nullable<Boolean>, Nullable<Int32>, Nullable<Int32>, Nullable<CancellationToken>)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MineBlock_Libplanet_Address_System_Nullable_System_DateTimeOffset__System_Nullable_System_Boolean__System_Nullable_System_Int32__System_Nullable_System_Int32__System_Nullable_System_Threading_CancellationToken__
+  commentId: M:Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Address,System.Nullable{System.DateTimeOffset},System.Nullable{System.Boolean},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Threading.CancellationToken})
+  name.vb: MineBlock(Address, Nullable(Of DateTimeOffset), Nullable(Of Boolean), Nullable(Of Int32), Nullable(Of Int32), Nullable(Of CancellationToken))
+  fullName: Libplanet.Blockchain.BlockChain<T>.MineBlock(Libplanet.Address, System.Nullable<System.DateTimeOffset>, System.Nullable<System.Boolean>, System.Nullable<System.Int32>, System.Nullable<System.Int32>, System.Nullable<System.Threading.CancellationToken>)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).MineBlock(Libplanet.Address, System.Nullable(Of System.DateTimeOffset), System.Nullable(Of System.Boolean), System.Nullable(Of System.Int32), System.Nullable(Of System.Int32), System.Nullable(Of System.Threading.CancellationToken))
+  nameWithType: BlockChain<T>.MineBlock(Address, Nullable<DateTimeOffset>, Nullable<Boolean>, Nullable<Int32>, Nullable<Int32>, Nullable<CancellationToken>)
+  nameWithType.vb: BlockChain(Of T).MineBlock(Address, Nullable(Of DateTimeOffset), Nullable(Of Boolean), Nullable(Of Int32), Nullable(Of Int32), Nullable(Of CancellationToken))
 - uid: Libplanet.Blockchain.BlockChain`1.MineBlock*
   name: MineBlock
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MineBlock_
@@ -2497,24 +2496,24 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T)
   nameWithType: BlockPolicy<T>
   nameWithType.vb: BlockPolicy(Of T)
-- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.Int32,System.Int64,System.Int32,System.Int32,System.Int32,System.Int32,System.Func{Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0},System.Boolean},System.Collections.Generic.IComparer{Libplanet.Blocks.IBlockExcerpt},Libplanet.Blocks.HashAlgorithmGetter)
-  name: BlockPolicy(IAction, Int32, Int64, Int32, Int32, Int32, Int32, Func<Transaction<T>, BlockChain<T>, Boolean>, IComparer<IBlockExcerpt>, HashAlgorithmGetter)
-  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_System_Int32_System_Int64_System_Int32_System_Int32_System_Int32_System_Int32_System_Func_Libplanet_Tx_Transaction__0__Libplanet_Blockchain_BlockChain__0__System_Boolean__System_Collections_Generic_IComparer_Libplanet_Blocks_IBlockExcerpt__Libplanet_Blocks_HashAlgorithmGetter_
-  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.Int32,System.Int64,System.Int32,System.Int32,System.Int32,System.Int32,System.Func{Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0},System.Boolean},System.Collections.Generic.IComparer{Libplanet.Blocks.IBlockExcerpt},Libplanet.Blocks.HashAlgorithmGetter)
-  name.vb: BlockPolicy(IAction, Int32, Int64, Int32, Int32, Int32, Int32, Func(Of Transaction(Of T), BlockChain(Of T), Boolean), IComparer(Of IBlockExcerpt), HashAlgorithmGetter)
-  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.BlockPolicy(Libplanet.Action.IAction, System.Int32, System.Int64, System.Int32, System.Int32, System.Int32, System.Int32, System.Func<Libplanet.Tx.Transaction<T>, Libplanet.Blockchain.BlockChain<T>, System.Boolean>, System.Collections.Generic.IComparer<Libplanet.Blocks.IBlockExcerpt>, Libplanet.Blocks.HashAlgorithmGetter)
-  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).BlockPolicy(Libplanet.Action.IAction, System.Int32, System.Int64, System.Int32, System.Int32, System.Int32, System.Int32, System.Func(Of Libplanet.Tx.Transaction(Of T), Libplanet.Blockchain.BlockChain(Of T), System.Boolean), System.Collections.Generic.IComparer(Of Libplanet.Blocks.IBlockExcerpt), Libplanet.Blocks.HashAlgorithmGetter)
-  nameWithType: BlockPolicy<T>.BlockPolicy(IAction, Int32, Int64, Int32, Int32, Int32, Int32, Func<Transaction<T>, BlockChain<T>, Boolean>, IComparer<IBlockExcerpt>, HashAlgorithmGetter)
-  nameWithType.vb: BlockPolicy(Of T).BlockPolicy(IAction, Int32, Int64, Int32, Int32, Int32, Int32, Func(Of Transaction(Of T), BlockChain(Of T), Boolean), IComparer(Of IBlockExcerpt), HashAlgorithmGetter)
-- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.TimeSpan,System.Int64,System.Int32,System.Int32,System.Int32,System.Int32,System.Func{Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0},System.Boolean},System.Collections.Generic.IComparer{Libplanet.Blocks.IBlockExcerpt},Libplanet.Blocks.HashAlgorithmGetter)
-  name: BlockPolicy(IAction, TimeSpan, Int64, Int32, Int32, Int32, Int32, Func<Transaction<T>, BlockChain<T>, Boolean>, IComparer<IBlockExcerpt>, HashAlgorithmGetter)
-  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_System_TimeSpan_System_Int64_System_Int32_System_Int32_System_Int32_System_Int32_System_Func_Libplanet_Tx_Transaction__0__Libplanet_Blockchain_BlockChain__0__System_Boolean__System_Collections_Generic_IComparer_Libplanet_Blocks_IBlockExcerpt__Libplanet_Blocks_HashAlgorithmGetter_
-  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.TimeSpan,System.Int64,System.Int32,System.Int32,System.Int32,System.Int32,System.Func{Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0},System.Boolean},System.Collections.Generic.IComparer{Libplanet.Blocks.IBlockExcerpt},Libplanet.Blocks.HashAlgorithmGetter)
-  name.vb: BlockPolicy(IAction, TimeSpan, Int64, Int32, Int32, Int32, Int32, Func(Of Transaction(Of T), BlockChain(Of T), Boolean), IComparer(Of IBlockExcerpt), HashAlgorithmGetter)
-  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.BlockPolicy(Libplanet.Action.IAction, System.TimeSpan, System.Int64, System.Int32, System.Int32, System.Int32, System.Int32, System.Func<Libplanet.Tx.Transaction<T>, Libplanet.Blockchain.BlockChain<T>, System.Boolean>, System.Collections.Generic.IComparer<Libplanet.Blocks.IBlockExcerpt>, Libplanet.Blocks.HashAlgorithmGetter)
-  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).BlockPolicy(Libplanet.Action.IAction, System.TimeSpan, System.Int64, System.Int32, System.Int32, System.Int32, System.Int32, System.Func(Of Libplanet.Tx.Transaction(Of T), Libplanet.Blockchain.BlockChain(Of T), System.Boolean), System.Collections.Generic.IComparer(Of Libplanet.Blocks.IBlockExcerpt), Libplanet.Blocks.HashAlgorithmGetter)
-  nameWithType: BlockPolicy<T>.BlockPolicy(IAction, TimeSpan, Int64, Int32, Int32, Int32, Int32, Func<Transaction<T>, BlockChain<T>, Boolean>, IComparer<IBlockExcerpt>, HashAlgorithmGetter)
-  nameWithType.vb: BlockPolicy(Of T).BlockPolicy(IAction, TimeSpan, Int64, Int32, Int32, Int32, Int32, Func(Of Transaction(Of T), BlockChain(Of T), Boolean), IComparer(Of IBlockExcerpt), HashAlgorithmGetter)
+- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.Int32,System.Int64,System.Int32,System.Int32,System.Int32,System.Int32,System.Func{Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0},System.Boolean},System.Collections.Generic.IComparer{Libplanet.Blocks.IBlockExcerpt},Libplanet.Blocks.HashAlgorithmGetter,System.Func{System.Int64,System.Int32})
+  name: BlockPolicy(IAction, Int32, Int64, Int32, Int32, Int32, Int32, Func<Transaction<T>, BlockChain<T>, Boolean>, IComparer<IBlockExcerpt>, HashAlgorithmGetter, Func<Int64, Int32>)
+  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_System_Int32_System_Int64_System_Int32_System_Int32_System_Int32_System_Int32_System_Func_Libplanet_Tx_Transaction__0__Libplanet_Blockchain_BlockChain__0__System_Boolean__System_Collections_Generic_IComparer_Libplanet_Blocks_IBlockExcerpt__Libplanet_Blocks_HashAlgorithmGetter_System_Func_System_Int64_System_Int32__
+  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.Int32,System.Int64,System.Int32,System.Int32,System.Int32,System.Int32,System.Func{Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0},System.Boolean},System.Collections.Generic.IComparer{Libplanet.Blocks.IBlockExcerpt},Libplanet.Blocks.HashAlgorithmGetter,System.Func{System.Int64,System.Int32})
+  name.vb: BlockPolicy(IAction, Int32, Int64, Int32, Int32, Int32, Int32, Func(Of Transaction(Of T), BlockChain(Of T), Boolean), IComparer(Of IBlockExcerpt), HashAlgorithmGetter, Func(Of Int64, Int32))
+  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.BlockPolicy(Libplanet.Action.IAction, System.Int32, System.Int64, System.Int32, System.Int32, System.Int32, System.Int32, System.Func<Libplanet.Tx.Transaction<T>, Libplanet.Blockchain.BlockChain<T>, System.Boolean>, System.Collections.Generic.IComparer<Libplanet.Blocks.IBlockExcerpt>, Libplanet.Blocks.HashAlgorithmGetter, System.Func<System.Int64, System.Int32>)
+  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).BlockPolicy(Libplanet.Action.IAction, System.Int32, System.Int64, System.Int32, System.Int32, System.Int32, System.Int32, System.Func(Of Libplanet.Tx.Transaction(Of T), Libplanet.Blockchain.BlockChain(Of T), System.Boolean), System.Collections.Generic.IComparer(Of Libplanet.Blocks.IBlockExcerpt), Libplanet.Blocks.HashAlgorithmGetter, System.Func(Of System.Int64, System.Int32))
+  nameWithType: BlockPolicy<T>.BlockPolicy(IAction, Int32, Int64, Int32, Int32, Int32, Int32, Func<Transaction<T>, BlockChain<T>, Boolean>, IComparer<IBlockExcerpt>, HashAlgorithmGetter, Func<Int64, Int32>)
+  nameWithType.vb: BlockPolicy(Of T).BlockPolicy(IAction, Int32, Int64, Int32, Int32, Int32, Int32, Func(Of Transaction(Of T), BlockChain(Of T), Boolean), IComparer(Of IBlockExcerpt), HashAlgorithmGetter, Func(Of Int64, Int32))
+- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.TimeSpan,System.Int64,System.Int32,System.Int32,System.Int32,System.Int32,System.Func{Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0},System.Boolean},System.Collections.Generic.IComparer{Libplanet.Blocks.IBlockExcerpt},Libplanet.Blocks.HashAlgorithmGetter,System.Func{System.Int64,System.Int32})
+  name: BlockPolicy(IAction, TimeSpan, Int64, Int32, Int32, Int32, Int32, Func<Transaction<T>, BlockChain<T>, Boolean>, IComparer<IBlockExcerpt>, HashAlgorithmGetter, Func<Int64, Int32>)
+  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_System_TimeSpan_System_Int64_System_Int32_System_Int32_System_Int32_System_Int32_System_Func_Libplanet_Tx_Transaction__0__Libplanet_Blockchain_BlockChain__0__System_Boolean__System_Collections_Generic_IComparer_Libplanet_Blocks_IBlockExcerpt__Libplanet_Blocks_HashAlgorithmGetter_System_Func_System_Int64_System_Int32__
+  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.TimeSpan,System.Int64,System.Int32,System.Int32,System.Int32,System.Int32,System.Func{Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0},System.Boolean},System.Collections.Generic.IComparer{Libplanet.Blocks.IBlockExcerpt},Libplanet.Blocks.HashAlgorithmGetter,System.Func{System.Int64,System.Int32})
+  name.vb: BlockPolicy(IAction, TimeSpan, Int64, Int32, Int32, Int32, Int32, Func(Of Transaction(Of T), BlockChain(Of T), Boolean), IComparer(Of IBlockExcerpt), HashAlgorithmGetter, Func(Of Int64, Int32))
+  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.BlockPolicy(Libplanet.Action.IAction, System.TimeSpan, System.Int64, System.Int32, System.Int32, System.Int32, System.Int32, System.Func<Libplanet.Tx.Transaction<T>, Libplanet.Blockchain.BlockChain<T>, System.Boolean>, System.Collections.Generic.IComparer<Libplanet.Blocks.IBlockExcerpt>, Libplanet.Blocks.HashAlgorithmGetter, System.Func<System.Int64, System.Int32>)
+  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).BlockPolicy(Libplanet.Action.IAction, System.TimeSpan, System.Int64, System.Int32, System.Int32, System.Int32, System.Int32, System.Func(Of Libplanet.Tx.Transaction(Of T), Libplanet.Blockchain.BlockChain(Of T), System.Boolean), System.Collections.Generic.IComparer(Of Libplanet.Blocks.IBlockExcerpt), Libplanet.Blocks.HashAlgorithmGetter, System.Func(Of System.Int64, System.Int32))
+  nameWithType: BlockPolicy<T>.BlockPolicy(IAction, TimeSpan, Int64, Int32, Int32, Int32, Int32, Func<Transaction<T>, BlockChain<T>, Boolean>, IComparer<IBlockExcerpt>, HashAlgorithmGetter, Func<Int64, Int32>)
+  nameWithType.vb: BlockPolicy(Of T).BlockPolicy(IAction, TimeSpan, Int64, Int32, Int32, Int32, Int32, Func(Of Transaction(Of T), BlockChain(Of T), Boolean), IComparer(Of IBlockExcerpt), HashAlgorithmGetter, Func(Of Int64, Int32))
 - uid: Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor*
   name: BlockPolicy
   href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_
@@ -2627,6 +2626,23 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).GetMaxBlockBytes
   nameWithType: BlockPolicy<T>.GetMaxBlockBytes
   nameWithType.vb: BlockPolicy(Of T).GetMaxBlockBytes
+- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.GetMaxTransactionsPerSignerPerBlock(System.Int64)
+  name: GetMaxTransactionsPerSignerPerBlock(Int64)
+  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_GetMaxTransactionsPerSignerPerBlock_System_Int64_
+  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`1.GetMaxTransactionsPerSignerPerBlock(System.Int64)
+  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.GetMaxTransactionsPerSignerPerBlock(System.Int64)
+  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).GetMaxTransactionsPerSignerPerBlock(System.Int64)
+  nameWithType: BlockPolicy<T>.GetMaxTransactionsPerSignerPerBlock(Int64)
+  nameWithType.vb: BlockPolicy(Of T).GetMaxTransactionsPerSignerPerBlock(Int64)
+- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.GetMaxTransactionsPerSignerPerBlock*
+  name: GetMaxTransactionsPerSignerPerBlock
+  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_GetMaxTransactionsPerSignerPerBlock_
+  commentId: Overload:Libplanet.Blockchain.Policies.BlockPolicy`1.GetMaxTransactionsPerSignerPerBlock
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.GetMaxTransactionsPerSignerPerBlock
+  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).GetMaxTransactionsPerSignerPerBlock
+  nameWithType: BlockPolicy<T>.GetMaxTransactionsPerSignerPerBlock
+  nameWithType.vb: BlockPolicy(Of T).GetMaxTransactionsPerSignerPerBlock
 - uid: Libplanet.Blockchain.Policies.BlockPolicy`1.GetNextBlockDifficulty(Libplanet.Blockchain.BlockChain{`0})
   name: GetNextBlockDifficulty(BlockChain<T>)
   href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_GetNextBlockDifficulty_Libplanet_Blockchain_BlockChain__0__
@@ -2775,6 +2791,23 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of T).GetMaxBlockBytes
   nameWithType: IBlockPolicy<T>.GetMaxBlockBytes
   nameWithType.vb: IBlockPolicy(Of T).GetMaxBlockBytes
+- uid: Libplanet.Blockchain.Policies.IBlockPolicy`1.GetMaxTransactionsPerSignerPerBlock(System.Int64)
+  name: GetMaxTransactionsPerSignerPerBlock(Int64)
+  href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_GetMaxTransactionsPerSignerPerBlock_System_Int64_
+  commentId: M:Libplanet.Blockchain.Policies.IBlockPolicy`1.GetMaxTransactionsPerSignerPerBlock(System.Int64)
+  fullName: Libplanet.Blockchain.Policies.IBlockPolicy<T>.GetMaxTransactionsPerSignerPerBlock(System.Int64)
+  fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of T).GetMaxTransactionsPerSignerPerBlock(System.Int64)
+  nameWithType: IBlockPolicy<T>.GetMaxTransactionsPerSignerPerBlock(Int64)
+  nameWithType.vb: IBlockPolicy(Of T).GetMaxTransactionsPerSignerPerBlock(Int64)
+- uid: Libplanet.Blockchain.Policies.IBlockPolicy`1.GetMaxTransactionsPerSignerPerBlock*
+  name: GetMaxTransactionsPerSignerPerBlock
+  href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_GetMaxTransactionsPerSignerPerBlock_
+  commentId: Overload:Libplanet.Blockchain.Policies.IBlockPolicy`1.GetMaxTransactionsPerSignerPerBlock
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.Policies.IBlockPolicy<T>.GetMaxTransactionsPerSignerPerBlock
+  fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of T).GetMaxTransactionsPerSignerPerBlock
+  nameWithType: IBlockPolicy<T>.GetMaxTransactionsPerSignerPerBlock
+  nameWithType.vb: IBlockPolicy(Of T).GetMaxTransactionsPerSignerPerBlock
 - uid: Libplanet.Blockchain.Policies.IBlockPolicy`1.GetNextBlockDifficulty(Libplanet.Blockchain.BlockChain{`0})
   name: GetNextBlockDifficulty(BlockChain<T>)
   href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_GetNextBlockDifficulty_Libplanet_Blockchain_BlockChain__0__
