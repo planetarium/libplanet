@@ -363,6 +363,20 @@ namespace Libplanet.Blockchain
                 }
             }
 
+            if (transactionsToMine.Count < Policy.MinTransactionsPerBlock)
+            {
+                if (stagedTransactions.Count > transactionsToMine.Count)
+                {
+                    throw new OperationCanceledException(
+                        "stagedTransactions higher than transactionsToMine.");
+                }
+
+                throw new InvalidBlockMinTxException(
+                    transactionsToMine.Count,
+                    Policy.MinTransactionsPerBlock,
+                    "Below Minimum Transactions");
+            }
+
             _logger.Information(
                 "Gathered total of {TransactionsToMineCount} transactions to mine for " +
                 "block #{Index} from {StagedTransactionsCount} staged transactions.",
