@@ -168,6 +168,15 @@ the peer that has chain with higher difficulty, but lower index.
 [<a href="https://github.com/planetarium/libplanet/issues/1419">#1419</a>, <a href="https://github.com/planetarium/libplanet/pull/1425">#1425</a>]</li>
 </ul>
 <h3 id="cli-tools-1">CLI tools</h3>
+<h2 id="version-0152">Version 0.15.2</h2>
+<p>Released on September 3, 2021.</p>
+<ul>
+<li>Removed <code>ITransport.SendMessageWithReplyAsync(BoundPeer, Message, TimeSpan?, int, CancellationToken)</code> method.
+Instead, added <code>ITransport.SendMessageWithReplyAsync(BoundPeer, Message, TimeSpan?, int, bool, CancellationToken)</code> method.
+[<a href="https://github.com/planetarium/libplanet/issues/1458">#1458</a>, <a href="https://github.com/planetarium/libplanet/pull/1460">#1460</a>]</li>
+<li>Fixed a bug where <code>GetTxs</code> request failed to receive transactions
+if any messages are missing.  [<a href="https://github.com/planetarium/libplanet/issues/1458">#1458</a>, <a href="https://github.com/planetarium/libplanet/pull/1460">#1460</a>]</li>
+</ul>
 <h2 id="version-0151">Version 0.15.1</h2>
 <p>Released on August 28, 2021.</p>
 <ul>

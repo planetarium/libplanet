@@ -12909,15 +12909,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Transports.ITransport.SendMessageAsync
   nameWithType: ITransport.SendMessageAsync
-- uid: Libplanet.Net.Transports.ITransport.SendMessageWithReplyAsync(Libplanet.Net.BoundPeer,Libplanet.Net.Messages.Message,System.Nullable{System.TimeSpan},System.Int32,System.Threading.CancellationToken)
-  name: SendMessageWithReplyAsync(BoundPeer, Message, Nullable<TimeSpan>, Int32, CancellationToken)
-  href: api/Libplanet.Net.Transports.ITransport.html#Libplanet_Net_Transports_ITransport_SendMessageWithReplyAsync_Libplanet_Net_BoundPeer_Libplanet_Net_Messages_Message_System_Nullable_System_TimeSpan__System_Int32_System_Threading_CancellationToken_
-  commentId: M:Libplanet.Net.Transports.ITransport.SendMessageWithReplyAsync(Libplanet.Net.BoundPeer,Libplanet.Net.Messages.Message,System.Nullable{System.TimeSpan},System.Int32,System.Threading.CancellationToken)
-  name.vb: SendMessageWithReplyAsync(BoundPeer, Message, Nullable(Of TimeSpan), Int32, CancellationToken)
-  fullName: Libplanet.Net.Transports.ITransport.SendMessageWithReplyAsync(Libplanet.Net.BoundPeer, Libplanet.Net.Messages.Message, System.Nullable<System.TimeSpan>, System.Int32, System.Threading.CancellationToken)
-  fullName.vb: Libplanet.Net.Transports.ITransport.SendMessageWithReplyAsync(Libplanet.Net.BoundPeer, Libplanet.Net.Messages.Message, System.Nullable(Of System.TimeSpan), System.Int32, System.Threading.CancellationToken)
-  nameWithType: ITransport.SendMessageWithReplyAsync(BoundPeer, Message, Nullable<TimeSpan>, Int32, CancellationToken)
-  nameWithType.vb: ITransport.SendMessageWithReplyAsync(BoundPeer, Message, Nullable(Of TimeSpan), Int32, CancellationToken)
+- uid: Libplanet.Net.Transports.ITransport.SendMessageWithReplyAsync(Libplanet.Net.BoundPeer,Libplanet.Net.Messages.Message,System.Nullable{System.TimeSpan},System.Int32,System.Boolean,System.Threading.CancellationToken)
+  name: SendMessageWithReplyAsync(BoundPeer, Message, Nullable<TimeSpan>, Int32, Boolean, CancellationToken)
+  href: api/Libplanet.Net.Transports.ITransport.html#Libplanet_Net_Transports_ITransport_SendMessageWithReplyAsync_Libplanet_Net_BoundPeer_Libplanet_Net_Messages_Message_System_Nullable_System_TimeSpan__System_Int32_System_Boolean_System_Threading_CancellationToken_
+  commentId: M:Libplanet.Net.Transports.ITransport.SendMessageWithReplyAsync(Libplanet.Net.BoundPeer,Libplanet.Net.Messages.Message,System.Nullable{System.TimeSpan},System.Int32,System.Boolean,System.Threading.CancellationToken)
+  name.vb: SendMessageWithReplyAsync(BoundPeer, Message, Nullable(Of TimeSpan), Int32, Boolean, CancellationToken)
+  fullName: Libplanet.Net.Transports.ITransport.SendMessageWithReplyAsync(Libplanet.Net.BoundPeer, Libplanet.Net.Messages.Message, System.Nullable<System.TimeSpan>, System.Int32, System.Boolean, System.Threading.CancellationToken)
+  fullName.vb: Libplanet.Net.Transports.ITransport.SendMessageWithReplyAsync(Libplanet.Net.BoundPeer, Libplanet.Net.Messages.Message, System.Nullable(Of System.TimeSpan), System.Int32, System.Boolean, System.Threading.CancellationToken)
+  nameWithType: ITransport.SendMessageWithReplyAsync(BoundPeer, Message, Nullable<TimeSpan>, Int32, Boolean, CancellationToken)
+  nameWithType.vb: ITransport.SendMessageWithReplyAsync(BoundPeer, Message, Nullable(Of TimeSpan), Int32, Boolean, CancellationToken)
 - uid: Libplanet.Net.Transports.ITransport.SendMessageWithReplyAsync(Libplanet.Net.BoundPeer,Libplanet.Net.Messages.Message,System.Nullable{System.TimeSpan},System.Threading.CancellationToken)
   name: SendMessageWithReplyAsync(BoundPeer, Message, Nullable<TimeSpan>, CancellationToken)
   href: api/Libplanet.Net.Transports.ITransport.html#Libplanet_Net_Transports_ITransport_SendMessageWithReplyAsync_Libplanet_Net_BoundPeer_Libplanet_Net_Messages_Message_System_Nullable_System_TimeSpan__System_Threading_CancellationToken_
@@ -13095,15 +13095,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Transports.NetMQTransport.SendMessageAsync
   nameWithType: NetMQTransport.SendMessageAsync
-- uid: Libplanet.Net.Transports.NetMQTransport.SendMessageWithReplyAsync(Libplanet.Net.BoundPeer,Libplanet.Net.Messages.Message,System.Nullable{System.TimeSpan},System.Int32,System.Threading.CancellationToken)
-  name: SendMessageWithReplyAsync(BoundPeer, Message, Nullable<TimeSpan>, Int32, CancellationToken)
-  href: api/Libplanet.Net.Transports.NetMQTransport.html#Libplanet_Net_Transports_NetMQTransport_SendMessageWithReplyAsync_Libplanet_Net_BoundPeer_Libplanet_Net_Messages_Message_System_Nullable_System_TimeSpan__System_Int32_System_Threading_CancellationToken_
-  commentId: M:Libplanet.Net.Transports.NetMQTransport.SendMessageWithReplyAsync(Libplanet.Net.BoundPeer,Libplanet.Net.Messages.Message,System.Nullable{System.TimeSpan},System.Int32,System.Threading.CancellationToken)
-  name.vb: SendMessageWithReplyAsync(BoundPeer, Message, Nullable(Of TimeSpan), Int32, CancellationToken)
-  fullName: Libplanet.Net.Transports.NetMQTransport.SendMessageWithReplyAsync(Libplanet.Net.BoundPeer, Libplanet.Net.Messages.Message, System.Nullable<System.TimeSpan>, System.Int32, System.Threading.CancellationToken)
-  fullName.vb: Libplanet.Net.Transports.NetMQTransport.SendMessageWithReplyAsync(Libplanet.Net.BoundPeer, Libplanet.Net.Messages.Message, System.Nullable(Of System.TimeSpan), System.Int32, System.Threading.CancellationToken)
-  nameWithType: NetMQTransport.SendMessageWithReplyAsync(BoundPeer, Message, Nullable<TimeSpan>, Int32, CancellationToken)
-  nameWithType.vb: NetMQTransport.SendMessageWithReplyAsync(BoundPeer, Message, Nullable(Of TimeSpan), Int32, CancellationToken)
+- uid: Libplanet.Net.Transports.NetMQTransport.SendMessageWithReplyAsync(Libplanet.Net.BoundPeer,Libplanet.Net.Messages.Message,System.Nullable{System.TimeSpan},System.Int32,System.Boolean,System.Threading.CancellationToken)
+  name: SendMessageWithReplyAsync(BoundPeer, Message, Nullable<TimeSpan>, Int32, Boolean, CancellationToken)
+  href: api/Libplanet.Net.Transports.NetMQTransport.html#Libplanet_Net_Transports_NetMQTransport_SendMessageWithReplyAsync_Libplanet_Net_BoundPeer_Libplanet_Net_Messages_Message_System_Nullable_System_TimeSpan__System_Int32_System_Boolean_System_Threading_CancellationToken_
+  commentId: M:Libplanet.Net.Transports.NetMQTransport.SendMessageWithReplyAsync(Libplanet.Net.BoundPeer,Libplanet.Net.Messages.Message,System.Nullable{System.TimeSpan},System.Int32,System.Boolean,System.Threading.CancellationToken)
+  name.vb: SendMessageWithReplyAsync(BoundPeer, Message, Nullable(Of TimeSpan), Int32, Boolean, CancellationToken)
+  fullName: Libplanet.Net.Transports.NetMQTransport.SendMessageWithReplyAsync(Libplanet.Net.BoundPeer, Libplanet.Net.Messages.Message, System.Nullable<System.TimeSpan>, System.Int32, System.Boolean, System.Threading.CancellationToken)
+  fullName.vb: Libplanet.Net.Transports.NetMQTransport.SendMessageWithReplyAsync(Libplanet.Net.BoundPeer, Libplanet.Net.Messages.Message, System.Nullable(Of System.TimeSpan), System.Int32, System.Boolean, System.Threading.CancellationToken)
+  nameWithType: NetMQTransport.SendMessageWithReplyAsync(BoundPeer, Message, Nullable<TimeSpan>, Int32, Boolean, CancellationToken)
+  nameWithType.vb: NetMQTransport.SendMessageWithReplyAsync(BoundPeer, Message, Nullable(Of TimeSpan), Int32, Boolean, CancellationToken)
 - uid: Libplanet.Net.Transports.NetMQTransport.SendMessageWithReplyAsync(Libplanet.Net.BoundPeer,Libplanet.Net.Messages.Message,System.Nullable{System.TimeSpan},System.Threading.CancellationToken)
   name: SendMessageWithReplyAsync(BoundPeer, Message, Nullable<TimeSpan>, CancellationToken)
   href: api/Libplanet.Net.Transports.NetMQTransport.html#Libplanet_Net_Transports_NetMQTransport_SendMessageWithReplyAsync_Libplanet_Net_BoundPeer_Libplanet_Net_Messages_Message_System_Nullable_System_TimeSpan__System_Threading_CancellationToken_
