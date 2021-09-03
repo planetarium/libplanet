@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Globalization;
 using System.Linq;
 using System.Numerics;
-using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
@@ -76,34 +74,25 @@ namespace Libplanet.Store
         {
             if (GetBlockDigest(blockHash) is BlockDigest blockDigest)
             {
-                BlockHash? prevHash = blockDigest.Header.PreviousHash.Any()
-                    ? new BlockHash(blockDigest.Header.PreviousHash)
-                    : (BlockHash?)null;
-                ImmutableArray<byte>? preEvaluationHash = blockDigest.Header.PreEvaluationHash.Any()
-                    ? blockDigest.Header.PreEvaluationHash
+                BlockHeader header = blockDigest.Header;
+                ImmutableArray<byte>? preEvaluationHash = header.PreEvaluationHash.Any()
+                    ? header.PreEvaluationHash
                     : (ImmutableArray<byte>?)null;
-                HashDigest<SHA256>? stateRootHash = blockDigest.Header.StateRootHash.Any()
-                    ? new HashDigest<SHA256>(blockDigest.Header.StateRootHash)
-                    : (HashDigest<SHA256>?)null;
 
                 return new Block<T>(
-                    index: blockDigest.Header.Index,
-                    difficulty: blockDigest.Header.Difficulty,
-                    totalDifficulty: blockDigest.Header.TotalDifficulty,
-                    nonce: new Nonce(blockDigest.Header.Nonce),
-                    miner: new Address(blockDigest.Header.Miner),
-                    previousHash: prevHash,
-                    timestamp: DateTimeOffset.ParseExact(
-                        blockDigest.Header.Timestamp,
-                        BlockHeader.TimestampFormat,
-                        CultureInfo.InvariantCulture
-                    ).ToUniversalTime(),
+                    index: header.Index,
+                    difficulty: header.Difficulty,
+                    totalDifficulty: header.TotalDifficulty,
+                    nonce: header.Nonce,
+                    miner: header.Miner,
+                    previousHash: header.PreviousHash,
+                    timestamp: header.Timestamp,
                     transactions: blockDigest.TxIds
                         .Select(bytes => GetTransaction<T>(new TxId(bytes.ToArray())))
                         .ToImmutableArray(),
                     preEvaluationHash: preEvaluationHash,
-                    stateRootHash: stateRootHash,
-                    protocolVersion: blockDigest.Header.ProtocolVersion
+                    stateRootHash: header.StateRootHash,
+                    protocolVersion: header.ProtocolVersion
                 );
             }
 

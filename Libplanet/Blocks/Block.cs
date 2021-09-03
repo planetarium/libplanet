@@ -129,21 +129,17 @@ namespace Libplanet.Blocks
                 _header = new BlockHeader(
                     protocolVersion: ProtocolVersion,
                     index: Index,
-                    timestamp: Timestamp.ToString(
-                        BlockHeader.TimestampFormat,
-                        CultureInfo.InvariantCulture),
-                    nonce: Nonce.ToByteArray().ToImmutableArray(),
-                    miner: Miner.ToByteArray().ToImmutableArray(),
+                    timestamp: Timestamp,
+                    nonce: Nonce,
+                    miner: Miner,
                     difficulty: Difficulty,
                     totalDifficulty: TotalDifficulty,
-                    previousHash: PreviousHash?.ToByteArray().ToImmutableArray()
-                        ?? ImmutableArray<byte>.Empty,
-                    txHash: TxHash?.ToByteArray().ToImmutableArray()
-                        ?? ImmutableArray<byte>.Empty,
+                    previousHash: PreviousHash,
+                    txHash: TxHash,
                     hashAlgorithm: ha);
                 _preEvaluationHash = Header.PreEvaluationHash;
                 StateRootHash = stateRootHash;
-                _hash = new BlockHash(Header.Hash);
+                _hash = Header.Hash;
             }
             else
             {
@@ -154,24 +150,20 @@ namespace Libplanet.Blocks
                 _header = new BlockHeader(
                     protocolVersion: ProtocolVersion,
                     index: Index,
-                    timestamp: Timestamp.ToString(
-                        BlockHeader.TimestampFormat,
-                        CultureInfo.InvariantCulture),
-                    nonce: Nonce.ToByteArray().ToImmutableArray(),
-                    miner: Miner.ToByteArray().ToImmutableArray(),
+                    timestamp: Timestamp,
+                    nonce: Nonce,
+                    miner: Miner,
                     difficulty: Difficulty,
                     totalDifficulty: TotalDifficulty,
-                    previousHash: PreviousHash?.ToByteArray().ToImmutableArray()
-                        ?? ImmutableArray<byte>.Empty,
-                    txHash: TxHash?.ToByteArray().ToImmutableArray()
-                        ?? ImmutableArray<byte>.Empty,
+                    previousHash: PreviousHash,
+                    txHash: TxHash,
                     preEvaluationHash: peh,
-                    stateRootHash: stateRootHash?.ToByteArray().ToImmutableArray()
-                        ?? ImmutableArray<byte>.Empty);
+                    stateRootHash: stateRootHash
+                );
 
                 _preEvaluationHash = Header.PreEvaluationHash;
                 StateRootHash = stateRootHash;
-                _hash = new BlockHash(Header.Hash);
+                _hash = Header.Hash;
             }
 #pragma warning restore SA1118
 
@@ -231,18 +223,11 @@ namespace Libplanet.Blocks
             Index = rawBlock.Header.Index;
             Difficulty = rawBlock.Header.Difficulty;
             TotalDifficulty = rawBlock.Header.TotalDifficulty;
-            Nonce = new Nonce(rawBlock.Header.Nonce);
-            Miner = new Address(rawBlock.Header.Miner);
-            PreviousHash = rawBlock.Header.PreviousHash.Any()
-                ? new BlockHash(rawBlock.Header.PreviousHash)
-                : (BlockHash?)null;
-            Timestamp = DateTimeOffset.ParseExact(
-                Header.Timestamp,
-                BlockHeader.TimestampFormat,
-                CultureInfo.InvariantCulture).ToUniversalTime();
-            TxHash = Header.TxHash.Any()
-                ? new HashDigest<SHA256>(rawBlock.Header.TxHash)
-                : (HashDigest<SHA256>?)null;
+            Nonce = rawBlock.Header.Nonce;
+            Miner = rawBlock.Header.Miner;
+            PreviousHash = rawBlock.Header.PreviousHash;
+            Timestamp = Header.Timestamp;
+            TxHash = Header.TxHash;
 
             // FIXME: Transactions should be re-ordered to properly validate StateRootHash.
             // See also <https://github.com/planetarium/libplanet/issues/1299>.
@@ -260,10 +245,8 @@ namespace Libplanet.Blocks
             // See also <https://github.com/planetarium/libplanet/pull/1116#discussion_r535836480>.
             // FIXME: Normal path should not lead to StateRootHash being null.  Should be
             // refactored to throw an exception.
-            StateRootHash = rawBlock.Header.StateRootHash.Any()
-                ? new HashDigest<SHA256>(rawBlock.Header.StateRootHash)
-                : (HashDigest<SHA256>?)null;
-            _hash = new BlockHash(rawBlock.Header.Hash);
+            StateRootHash = rawBlock.Header.StateRootHash;
+            _hash = rawBlock.Header.Hash;
         }
 
         /// <summary>
@@ -273,8 +256,10 @@ namespace Libplanet.Blocks
         public int ProtocolVersion { get; }
 
         /// <summary>
-        /// <see cref="Hash"/> is derived from a serialized <see cref="Block{T}"/>
-        /// after <see cref="Transaction{T}.Actions"/> are evaluated.
+        /// The hash digest derived from the whole contents of the block including <see
+        /// cref="StateRootHash"/>, which is determined by evaluating <see cref="Transactions"/>
+        /// and a <see cref="Blockchain.Policies.IBlockPolicy{T}.BlockAction"/> (if exists).
+        /// <para>This is used for block's unique identifier.</para>
         /// </summary>
         /// <seealso cref="PreEvaluationHash"/>
         /// <seealso cref="StateRootHash"/>
@@ -284,7 +269,7 @@ namespace Libplanet.Blocks
         /// <summary>
         /// The hash derived from the block <em>except of</em>
         /// <see cref="StateRootHash"/> (i.e., without action evaluation).
-        /// Used for <see cref="BlockHeader.Validate"/> checking <see cref="Nonce"/>.
+        /// Used for <see cref="BlockHeader.Validate"/> method checking <see cref="Nonce"/>.
         /// </summary>
         /// <seealso cref="Nonce"/>
         /// <seealso cref="BlockHeader.Validate"/>
@@ -292,23 +277,40 @@ namespace Libplanet.Blocks
             ?? throw new InvalidOperationException("PreEvaluationHash is has not been set.");
 
         /// <summary>
-        /// The <see cref="ITrie.Hash"/> of the states on the block.
+        /// The <see cref="ITrie.Hash"/> of the resulting states after evaluating
+        /// <see cref="Transactions"/> and
+        /// a <see cref="Blockchain.Policies.IBlockPolicy{T}.BlockAction"/> (if exists).
         /// </summary>
         /// <seealso cref="ITrie.Hash"/>
         public HashDigest<SHA256>? StateRootHash { get; }
 
+        /// <summary>
+        /// The height of the block.
+        /// </summary>
         [IgnoreDuringEquals]
         public long Index { get; }
 
+        /// <summary>
+        /// The mining difficulty that the block's <see cref="Nonce"/> has to satisfy.
+        /// </summary>
         [IgnoreDuringEquals]
         public long Difficulty { get; }
 
+        /// <summary>
+        /// The total mining difficulty since the genesis including the block's difficulty.
+        /// </summary>
         [IgnoreDuringEquals]
         public BigInteger TotalDifficulty { get; }
 
+        /// <summary>
+        /// The block nonce which satisfies the <see cref="Difficulty"/>.
+        /// </summary>
         [IgnoreDuringEquals]
         public Nonce Nonce { get; }
 
+        /// <summary>
+        /// The address of the miner.
+        /// </summary>
         [IgnoreDuringEquals]
         public Address Miner { get; }
 
@@ -319,12 +321,22 @@ namespace Libplanet.Blocks
         [IgnoreDuringEquals]
         public BlockHash? PreviousHash { get; }
 
+        /// <summary>
+        /// The time the block is created.
+        /// </summary>
         [IgnoreDuringEquals]
         public DateTimeOffset Timestamp { get; }
 
+        /// <summary>
+        /// The hash of all transactions in the block.  This is <c>null</c> if the block has no
+        /// transactions.
+        /// </summary>
         [IgnoreDuringEquals]
         public HashDigest<SHA256>? TxHash { get; }
 
+        /// <summary>
+        /// Transactions belonging to the block.
+        /// </summary>
         [IgnoreDuringEquals]
         public IReadOnlyList<Transaction<T>> Transactions { get; }
 

@@ -22,7 +22,7 @@ To be released.
     method instead.  [[#1464]]
  -  `PublicKey()` constructor's parameter type became `IReadOnlyList<byte>`
     (was `byte[]`).  [[#1464]]
- -  `PublicKey.Verify()` method's both parameters types became
+ -  `PublicKey.Verify()` method's both parameter types became
     `IReadOnlyList<byte>` (were both `byte[]`).  [[#1464]]
  -  `HashDigest<T>.DeriveFrom()` method's parameter type became
     `IReadOnlyList<byte>` (was `byte[]`).  [[#1464]]
@@ -33,6 +33,29 @@ To be released.
         by `BlockChain<T>`.
  -  Unused parameter `currentTime` removed from `BlockChain<T>.Append()`
     [[#1462], [#1465]]
+ -  `BlockHeader`'s properties are now represented as richer types than before.
+    [[#1470]]
+     -  `BlockHeader.Timestamp` property's type became `DateTimeOffset`
+        (was `string`).
+     -  `BlockHeader.Nonce` property's type became `Nonce` (was
+        `ImmutableArray<byte>`).
+     -  `BlockHeader.Miner` property's type became `Address` (was
+        `ImmutableArray<byte>`).
+     -  `BlockHeader.PreviousHash` property's type became `BlockHash?` (was
+        `ImmutableArray<byte>`).
+     -  `BlockHeader.TxHash` property's type became `HashDigest<SHA256>?` (was
+        `ImmutableArray<byte>`).
+     -  `BlockHeader.Hash` property's type became `BlockHash` (was
+        `ImmutableArray<byte>`).
+     -  `BlockHeader.StateRootHash` property's type became `HashDigest<SHA256>?`
+        (was `ImmutableArray<byte>`).
+     -  Removed `BlockHeader(int, long, string, ImmutableArray<byte>,
+        ImmutableArray<byte>, long, BigInteger, ImmutableArray<byte>,
+        ImmutableArray<byte>, ImmutableArray<byte>, ImmutableArray<byte>,
+        ImmutableArray<byte>)` constructor.  Use `BlockHeader(int, long,
+        DateTimeOffset, Nonce, Address, long, BigInteger, BlockHash?,
+        HashDigest<SHA256>?, BlockHash, ImmutableArray<byte>,
+        HashDigest<SHA256>?)` constructor instead.
 
 ### Backward-incompatible network protocol changes
 
@@ -56,6 +79,9 @@ To be released.
     [[#1449], [#1463]]
  -  `BlockChain<T>.MineBlock()` now takes `maxTransactionsPerSigner`
     as an optional parameter.  [[#1449], [#1463]]
+ -  Added `BlockHeader(int, long, DateTimeOffset, Nonce, Address, long,
+    BigInteger, BlockHash?, HashDigest<SHA256>?, BlockHash,
+    ImmutableArray<byte>, HashDigest<SHA256>?)` constructor.  [[#1470]]
 
 ### Behavioral changes
 
@@ -96,6 +122,7 @@ To be released.
 [#1463]: https://github.com/planetarium/libplanet/pull/1463
 [#1464]: https://github.com/planetarium/libplanet/pull/1464
 [#1465]: https://github.com/planetarium/libplanet/pull/1465
+[#1470]: https://github.com/planetarium/libplanet/pull/1470
 
 
 Version 0.16.0
