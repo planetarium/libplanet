@@ -924,7 +924,6 @@ namespace Libplanet.Tests.Action
             chain.ExecuteActions(block);
             chain.Append(
                 block,
-                DateTimeOffset.UtcNow,
                 evaluateActions: false,
                 renderBlocks: true,
                 renderActions: false);

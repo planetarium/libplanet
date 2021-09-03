@@ -390,7 +390,7 @@ namespace Libplanet.Tests.Net
                         difficulty: policy.GetNextBlockDifficulty(minerChain),
                         blockInterval: TimeSpan.FromSeconds(1)
                 ).AttachStateRootHash(minerChain.StateStore, minerChain.Policy);
-                minerSwarm.BlockChain.Append(block, DateTimeOffset.UtcNow, false, true, false);
+                minerSwarm.BlockChain.Append(block, false, true, false);
 
                 await receiverSwarm.PreloadAsync(TimeSpan.FromSeconds(1));
 

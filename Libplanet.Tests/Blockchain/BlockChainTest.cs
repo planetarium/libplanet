@@ -874,7 +874,6 @@ namespace Libplanet.Tests.Blockchain
             ).AttachStateRootHash(_fx.StateStore, _policy);
             fork.Append(
                 forkTip,
-                DateTimeOffset.UtcNow,
                 evaluateActions: true,
                 renderBlocks: true,
                 renderActions: false

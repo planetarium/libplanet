@@ -181,7 +181,6 @@ namespace Libplanet.Blockchain
                 {
                     Append(
                         genesisBlock,
-                        currentTime: genesisBlock.Timestamp,
                         renderBlocks: !inFork,
                         renderActions: !inFork,
                         evaluateActions: !inFork
@@ -571,45 +570,12 @@ namespace Libplanet.Blockchain
         /// <see cref="Transaction{T}.Nonce"/> is different from
         /// <see cref="GetNextTxNonce"/> result of the
         /// <see cref="Transaction{T}.Signer"/>.</exception>
-        public void Append(Block<T> block, StateCompleterSet<T>? stateCompleters = null) =>
-            Append(block, DateTimeOffset.UtcNow, stateCompleters);
-
-        /// <summary>
-        /// Adds a <paramref name="block"/> to the end of this chain.
-        /// <para><see cref="Block{T}.Transactions"/> in the <paramref name="block"/> updates
-        /// states and balances in the blockchain, and <see cref="TxExecution"/>s for
-        /// transactions are recorded.</para>
-        /// <para>Note that <see cref="Renderers"/> receive events right after the <paramref
-        /// name="block"/> is confirmed (and thus all states reflect changes in the <paramref
-        /// name="block"/>).</para>
-        /// </summary>
-        /// <param name="block">A next <see cref="Block{T}"/>, which is mined,
-        /// to add.</param>
-        /// <param name="currentTime">The current time.</param>
-        /// <param name="stateCompleters">The strategy to complement incomplete block states which
-        /// are required for action execution and rendering.
-        /// <see cref="StateCompleterSet{T}.Recalculate"/> by default.
-        /// </param>
-        /// <exception cref="InvalidBlockBytesLengthException">Thrown when the given <paramref
-        /// name="block"/> is too long in bytes (according to <see
-        /// cref="IBlockPolicy{T}.GetMaxBlockBytes(long)"/>).</exception>
-        /// <exception cref="BlockExceedingTransactionsException">Thrown when the given <paramref
-        /// name="block"/> has too many transactions (according to <see
-        /// cref="IBlockPolicy{T}.MaxTransactionsPerBlock"/>).</exception>
-        /// <exception cref="InvalidBlockException">Thrown when the given <paramref name="block"/>
-        /// is invalid, in itself or according to the <see cref="Policy"/>.</exception>
-        /// <exception cref="InvalidTxNonceException">Thrown when the
-        /// <see cref="Transaction{T}.Nonce"/> is different from
-        /// <see cref="GetNextTxNonce"/> result of the
-        /// <see cref="Transaction{T}.Signer"/>.</exception>
         public void Append(
             Block<T> block,
-            DateTimeOffset currentTime,
             StateCompleterSet<T>? stateCompleters = null
         ) =>
             Append(
                 block,
-                currentTime,
                 evaluateActions: true,
                 renderBlocks: true,
                 renderActions: true,
@@ -866,7 +832,6 @@ namespace Libplanet.Blockchain
 #pragma warning disable MEN003
         internal void Append(
             Block<T> block,
-            DateTimeOffset currentTime,
             bool evaluateActions,
             bool renderBlocks,
             bool renderActions,

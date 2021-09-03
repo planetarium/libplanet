@@ -586,7 +586,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
             var block = await forked.MineBlock(fx.Address1, append: false);
             forked.Append(
                     block,
-                    DateTimeOffset.UtcNow,
                     evaluateActions: true,
                     renderBlocks: false,
                     renderActions: false
@@ -595,7 +594,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
             block = await forked.MineBlock(fx.Address1, append: false);
             forked.Append(
                     block,
-                    DateTimeOffset.UtcNow,
                     evaluateActions: true,
                     renderBlocks: false,
                     renderActions: false
@@ -604,7 +602,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
             block = await forked.MineBlock(fx.Address1, append: false);
             forked.Append(
                     block,
-                    DateTimeOffset.UtcNow,
                     evaluateActions: true,
                     renderBlocks: false,
                     renderActions: false
@@ -613,7 +610,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
             block = await forked.MineBlock(fx.Address1, append: false);
             forked.Append(
                     block,
-                    DateTimeOffset.UtcNow,
                     evaluateActions: true,
                     renderBlocks: false,
                     renderActions: false
@@ -709,7 +705,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
             var block = await forked.MineBlock(fx.Address1, append: false);
             forked.Append(
                     block,
-                    DateTimeOffset.UtcNow,
                     evaluateActions: true,
                     renderBlocks: false,
                     renderActions: false
@@ -717,7 +712,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
             block = await forked.MineBlock(fx.Address1, append: false);
             forked.Append(
                     block,
-                    DateTimeOffset.UtcNow,
                     evaluateActions: true,
                     renderBlocks: false,
                     renderActions: false

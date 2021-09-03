@@ -385,7 +385,6 @@ namespace Libplanet.Tests.Blockchain
             Assert.Throws<ArgumentException>(() =>
                 _blockChain.Append(
                     block,
-                    DateTimeOffset.UtcNow,
                     evaluateActions: false,
                     renderBlocks: true,
                     renderActions: true
@@ -396,7 +395,6 @@ namespace Libplanet.Tests.Blockchain
 
             _blockChain.Append(
                 block,
-                DateTimeOffset.UtcNow,
                 evaluateActions: false,
                 renderBlocks: true,
                 renderActions: false
