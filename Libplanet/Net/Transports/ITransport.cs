@@ -108,6 +108,8 @@ namespace Libplanet.Net.Transports
         /// <param name="message">A <see cref="Message"/> to send.</param>
         /// <param name="timeout">A timeout of waiting for the reply of the message.</param>
         /// <param name="expectedResponses">The number of expected replies for the message.</param>
+        /// <param name="returnWhenTimeout">Determines the behavior when failed to receive
+        /// <paramref name="expectedResponses"/> messages and timeout occurred.</param>
         /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
         /// operation should be canceled.</param>
@@ -118,7 +120,8 @@ namespace Libplanet.Net.Transports
             Message message,
             TimeSpan? timeout,
             int expectedResponses,
-            CancellationToken cancellationToken = default);
+            bool returnWhenTimeout,
+            CancellationToken cancellationToken);
 
         /// <summary>
         /// Broadcasts the <paramref name="message"/> to peers selected from the routing table.

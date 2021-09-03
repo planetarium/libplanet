@@ -371,6 +371,7 @@ namespace Libplanet.Tests.Net.Protocols
             Message message,
             TimeSpan? timeout,
             int expectedResponses,
+            bool returnWhenTimeout,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             return new[]
