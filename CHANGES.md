@@ -115,6 +115,7 @@ To be released.
 [#1440]: https://github.com/planetarium/libplanet/pull/1440
 [#1442]: https://github.com/planetarium/libplanet/pull/1442
 [#1443]: https://github.com/planetarium/libplanet/pull/1443
+[#1448]: https://github.com/planetarium/libplanet/issues/1448
 [#1449]: https://github.com/planetarium/libplanet/issues/1449
 [#1455]: https://github.com/planetarium/libplanet/pull/1455
 [#1457]: https://github.com/planetarium/libplanet/pull/1457
@@ -123,6 +124,7 @@ To be released.
 [#1464]: https://github.com/planetarium/libplanet/pull/1464
 [#1465]: https://github.com/planetarium/libplanet/pull/1465
 [#1470]: https://github.com/planetarium/libplanet/pull/1470
+[#1474]: https://github.com/planetarium/libplanet/pull/1474
 
 
 Version 0.16.0
