@@ -56,6 +56,8 @@ To be released.
         DateTimeOffset, Nonce, Address, long, BigInteger, BlockHash?,
         HashDigest<SHA256>?, BlockHash, ImmutableArray<byte>,
         HashDigest<SHA256>?)` constructor instead.
+ -  `IStore`, `IStateStore`, and `IKeyValueStore` interfaces now inherit
+    `IDisposable`.  [[#1448], [#1474]]
 
 ### Backward-incompatible network protocol changes
 
