@@ -1127,8 +1127,8 @@ namespace Libplanet.Tests.Store
         public void IdempotentDispose()
         {
 #pragma warning disable S3966 // Objects should not be disposed more than once
-            Fx.Store.Dispose();
-            Fx.Store.Dispose();
+            Fx.Store?.Dispose();
+            Fx.Store?.Dispose();
 #pragma warning restore S3966 // Objects should not be disposed more than once
         }
 

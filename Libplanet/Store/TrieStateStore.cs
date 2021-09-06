@@ -17,7 +17,7 @@ namespace Libplanet.Store
     /// <summary>
     /// An <see cref="IStateStore"/> implementation. It stores states with <see cref="MerkleTrie"/>.
     /// </summary>
-    public class TrieStateStore : IStateStore, IDisposable
+    public class TrieStateStore : IStateStore
     {
         private readonly IKeyValueStore _stateKeyValueStore;
         private readonly IKeyValueStore _stateHashKeyValueStore;

@@ -422,7 +422,7 @@ namespace Libplanet.Explorer.Store
             {
                 _db?.Dispose();
                 _memoryStream?.Dispose();
-                _store.Dispose();
+                _store?.Dispose();
                 _disposed = true;
             }
         }

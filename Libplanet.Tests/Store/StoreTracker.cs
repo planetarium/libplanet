@@ -263,7 +263,7 @@ namespace Libplanet.Tests.Store
         {
             if (!_disposed)
             {
-                _store.Dispose();
+                _store?.Dispose();
                 _disposed = true;
             }
         }

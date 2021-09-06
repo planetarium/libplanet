@@ -10,6 +10,7 @@ namespace Libplanet.Tests.Store
     public sealed class StateStoreTracker : BaseTracker, IStateStore
     {
         private readonly IStateStore _stateStore;
+        private bool _disposed = false;
 
         public StateStoreTracker(IStateStore stateStore)
         {
@@ -42,6 +43,15 @@ namespace Libplanet.Tests.Store
         {
             Log(nameof(ForkStates), sourceChainId, destinationChainId, branchPoint);
             _stateStore.ForkStates(sourceChainId, destinationChainId, branchPoint);
+        }
+
+        public void Dispose()
+        {
+            if (!_disposed)
+            {
+                _stateStore?.Dispose();
+                _disposed = true;
+            }
         }
     }
 }

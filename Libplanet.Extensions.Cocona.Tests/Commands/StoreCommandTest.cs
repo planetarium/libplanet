@@ -80,8 +80,8 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
                 v.Store.PutBlock(_block4);
                 v.Store.AppendIndex(guid, _block4.Hash);
 
-                (v.Store as IDisposable)?.Dispose();
-                (v.StateStore as IDisposable)?.Dispose();
+                v.Store?.Dispose();
+                v.StateStore?.Dispose();
             }
         }
 
