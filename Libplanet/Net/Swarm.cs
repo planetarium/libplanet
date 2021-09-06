@@ -1004,6 +1004,39 @@ namespace Libplanet.Net
         }
 
         /// <summary>
+        /// Gets <see cref="IBlockExcerpt"/>es from randomly selected <see cref="BoundPeer"/>s
+        /// from <see cref="Peers"/> with each <see cref="IBlockExcerpt"/> tied to
+        /// its originating <see cref="BoundPeer"/>.
+        /// </summary>
+        /// <param name="dialTimeout">Timeout for each dialing operation to
+        /// a <see cref="BoundPeer"/> in <see cref="Peers"/>.  Not having a timeout limit
+        /// is equivalent to setting this value to <c>null</c>.</param>
+        /// <param name="maxPeersToDial">Maximum number of <see cref="Peer"/>s to dial.</param>
+        /// <param name="cancellationToken">A cancellation token used to propagate notification
+        /// that this operation should be canceled.</param>
+        /// <returns>An awaitable task with a <see cref="List{T}"/> of tuples
+        /// of <see cref="BoundPeer"/> and <see cref="IBlockExcerpt"/> ordered by
+        /// the <see cref="IBlockPolicy{T}.CanonicalChainComparer"/> given by
+        /// <see cref="BlockChain{T}.Policy"/> in descending order.</returns>
+        private async Task<List<(BoundPeer, IBlockExcerpt)>> GetPeersWithExcerpts(
+            TimeSpan? dialTimeout,
+            int maxPeersToDial,
+            CancellationToken cancellationToken)
+        {
+            Block<T> tip = BlockChain.Tip;
+            BlockHash genesisHash = BlockChain.Genesis.Hash;
+            IComparer<IBlockExcerpt> canonComparer = BlockChain.Policy.CanonicalChainComparer;
+            return (await DialExistingPeers(dialTimeout, maxPeersToDial, cancellationToken))
+                .Where(
+                    pair => pair.Item2 is { } chainStatus &&
+                        genesisHash.Equals(chainStatus.GenesisHash) &&
+                        canonComparer.Compare(chainStatus, tip) > 0)
+                .Select(pair => (pair.Item1, (IBlockExcerpt)pair.Item2))
+                .OrderByDescending(pair => pair.Item2, canonComparer)
+                .ToList();
+        }
+
+        /// <summary>
         /// Gets <see cref="ChainStatus"/>es from randomly selected <see cref="BoundPeer"/>s
         /// from <see cref="Peers"/> with each <see cref="ChainStatus"/> tied to
         /// its originating <see cref="BoundPeer"/>.
@@ -1087,39 +1120,6 @@ namespace Libplanet.Net
                 },
                 cancellationToken
             );
-        }
-
-        /// <summary>
-        /// Gets <see cref="IBlockExcerpt"/>es from randomly selected <see cref="BoundPeer"/>s
-        /// from <see cref="Peers"/> with each <see cref="IBlockExcerpt"/> tied to
-        /// its originating <see cref="BoundPeer"/>.
-        /// </summary>
-        /// <param name="dialTimeout">Timeout for each dialing operation to
-        /// a <see cref="BoundPeer"/> in <see cref="Peers"/>.  Not having a timeout limit
-        /// is equivalent to setting this value to <c>null</c>.</param>
-        /// <param name="maxPeersToDial">Maximum number of <see cref="Peer"/>s to dial.</param>
-        /// <param name="cancellationToken">A cancellation token used to propagate notification
-        /// that this operation should be canceled.</param>
-        /// <returns>An awaitable task with a <see cref="List{T}"/> of tuples
-        /// of <see cref="BoundPeer"/> and <see cref="IBlockExcerpt"/> ordered by
-        /// the <see cref="IBlockPolicy{T}.CanonicalChainComparer"/> given by
-        /// <see cref="BlockChain{T}.Policy"/> in descending order.</returns>
-        private async Task<List<(BoundPeer, IBlockExcerpt)>> GetPeersWithExcerpts(
-            TimeSpan? dialTimeout,
-            int maxPeersToDial,
-            CancellationToken cancellationToken)
-        {
-            Block<T> tip = BlockChain.Tip;
-            BlockHash genesisHash = BlockChain.Genesis.Hash;
-            IComparer<IBlockExcerpt> canonComparer = BlockChain.Policy.CanonicalChainComparer;
-            return (await DialExistingPeers(dialTimeout, maxPeersToDial, cancellationToken))
-                .Where(
-                    pair => pair.Item2 is { } chainStatus &&
-                        genesisHash.Equals(chainStatus.GenesisHash) &&
-                        canonComparer.Compare(chainStatus, tip) > 0)
-                .Select(pair => (pair.Item1, (IBlockExcerpt)pair.Item2))
-                .OrderByDescending(pair => pair.Item2, canonComparer)
-                .ToList();
         }
 
         private async Task BroadcastBlockAsync(
