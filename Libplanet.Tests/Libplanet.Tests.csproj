@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <PackageReference Include="AsyncEnumerator" Version="4.0.2" />
+    <PackageReference Include="DiffPlex" Version="1.7.0" />
     <PackageReference Include="Menees.Analyzers.2017" Version="2.0.3">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
