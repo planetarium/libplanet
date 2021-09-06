@@ -388,78 +388,87 @@ namespace Libplanet.Tests.Blocks
             RawBlock rawGenesis = _fx.Genesis.ToRawBlock();
             Assert.Equal(0, rawGenesis.Header.Index);
             Assert.Equal(0, rawGenesis.Header.Difficulty);
-            Assert.Empty(rawGenesis.Header.PreviousHash);
-            Assert.Equal("2018-11-29T00:00:00.000000Z", rawGenesis.Header.Timestamp);
+            Assert.Null(rawGenesis.Header.PreviousHash);
             Assert.Equal(
-                ByteUtil.ParseHex("21744f4f08db23e044178dafb8273aeb5ebe6644"),
+                new DateTimeOffset(2018, 11, 29, 0, 0, 0, default),
+                rawGenesis.Header.Timestamp
+            );
+            AssertBytesEqual(
+                new Address("21744f4f08db23e044178dafb8273aeb5ebe6644"),
                 rawGenesis.Header.Miner
             );
             Assert.Empty(rawGenesis.Transactions);
-            Assert.Empty(rawGenesis.Header.TxHash);
-            Assert.Equal(
-                new byte[] { 0x01, 0x00, 0x00, 0x00 },
+            Assert.Null(rawGenesis.Header.TxHash);
+            AssertBytesEqual(
+                new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 }),
                 rawGenesis.Header.Nonce
             );
             AssertBytesEqual(
-                new byte[32]
+                new BlockHash(new byte[32]
                 {
                     0xd6, 0x93, 0xda, 0x38, 0x66, 0xa3, 0x4d, 0x65, 0x9e, 0x01, 0x4f, 0x97,
                     0xc8, 0xfe, 0xb0, 0x8a, 0xfe, 0x2e, 0x97, 0xc9, 0x9e, 0x3f, 0x33, 0x89,
                     0xda, 0x02, 0x5f, 0xd0, 0x66, 0x5c, 0x62, 0x1c,
-                },
-                rawGenesis.Header.Hash.ToArray()
+                }),
+                rawGenesis.Header.Hash
             );
 
             RawBlock rawNext = _fx.Next.ToRawBlock();
 
             Assert.Equal(1, rawNext.Header.Index);
             Assert.Equal(1, rawNext.Header.Difficulty);
-            Assert.Equal(rawGenesis.Header.Hash.ToArray(), rawNext.Header.PreviousHash.ToArray());
-            Assert.Equal("2018-11-29T00:00:15.000000Z", rawNext.Header.Timestamp);
+            AssertBytesEqual(rawGenesis.Header.Hash, rawNext.Header.PreviousHash ?? default);
             Assert.Equal(
-                ByteUtil.ParseHex("21744f4f08db23e044178dafb8273aeb5ebe6644"),
+                new DateTimeOffset(2018, 11, 29, 0, 0, 15, default),
+                rawNext.Header.Timestamp
+            );
+            AssertBytesEqual(
+                new Address("21744f4f08db23e044178dafb8273aeb5ebe6644"),
                 rawNext.Header.Miner
             );
             Assert.Empty(rawNext.Transactions);
-            Assert.Empty(rawNext.Header.TxHash);
+            Assert.Null(rawNext.Header.TxHash);
             AssertBytesEqual(
-                new byte[]
+                new BlockHash(new byte[]
                 {
                     0x1b, 0xba, 0x9f, 0xcf, 0x4c, 0x81, 0x52, 0xc8, 0x99, 0xed, 0x16, 0x74, 0xec,
                     0xbf, 0x4a, 0x65, 0x71, 0xc2, 0x71, 0x92, 0x2c, 0x08, 0x84, 0xae, 0x80, 0x9f,
                     0x91, 0xf0, 0x37, 0xbe, 0xd8, 0xfc,
-                },
-                rawNext.Header.Hash.ToArray()
+                }),
+                rawNext.Header.Hash
             );
 
             RawBlock rawHasText = _fx.HasTx.ToRawBlock();
 
             Assert.Equal(2, rawHasText.Header.Index);
             Assert.Equal(1, rawHasText.Header.Difficulty);
-            Assert.Equal(rawNext.Header.Hash.ToArray(), rawHasText.Header.PreviousHash.ToArray());
-            Assert.Equal("2018-11-29T00:00:30.000000Z", rawHasText.Header.Timestamp);
+            AssertBytesEqual(rawNext.Header.Hash, rawHasText.Header.PreviousHash ?? default);
             Assert.Equal(
-                ByteUtil.ParseHex("21744f4f08db23e044178dafb8273aeb5ebe6644"),
+                new DateTimeOffset(2018, 11, 29, 0, 0, 30, default),
+                rawHasText.Header.Timestamp
+            );
+            AssertBytesEqual(
+                new Address("21744f4f08db23e044178dafb8273aeb5ebe6644"),
                 rawHasText.Header.Miner
             );
             Assert.Single(rawHasText.Transactions);
             AssertBytesEqual(
-                new byte[]
+                new HashDigest<SHA256>(new byte[]
                 {
                     0x75, 0xa9, 0x2b, 0xf5, 0xcf, 0xf3, 0x5d, 0x5b, 0x4d, 0x0c, 0xb8, 0x40, 0xab,
                     0x61, 0x11, 0x3d, 0xee, 0xab, 0x6f, 0x78, 0x0f, 0x9b, 0x69, 0xfc, 0x48, 0x68,
                     0xe6, 0xba, 0xac, 0xdc, 0xcb, 0x54,
-                },
-                rawHasText.Header.TxHash.ToArray()
+                }),
+                rawHasText.Header.TxHash ?? default
             );
             AssertBytesEqual(
-                new byte[32]
+                new BlockHash(new byte[]
                 {
                     0x28, 0x40, 0xe8, 0x6a, 0x27, 0xda, 0x6e, 0x0d, 0xe6, 0x2e, 0xab, 0xab, 0x32,
                     0x95, 0x3e, 0x3b, 0x33, 0xf2, 0xa6, 0x51, 0x18, 0x35, 0xf1, 0x85, 0x1a, 0x1a,
                     0xcc, 0x51, 0xd7, 0x71, 0xcb, 0x99,
-                },
-                rawHasText.Header.Hash.ToArray()
+                }),
+                rawHasText.Header.Hash
             );
         }
 

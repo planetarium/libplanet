@@ -25,7 +25,7 @@ namespace Libplanet.Tests
         =>
             new HashDigest<T>(random.NextBytes(HashDigest<T>.Size));
 
-        public static BlockHash NextBlockHash(this Random random, int size) =>
-            new BlockHash(random.NextBytes(size));
+        public static BlockHash NextBlockHash(this Random random) =>
+            new BlockHash(random.NextBytes(BlockHash.Size));
     }
 }

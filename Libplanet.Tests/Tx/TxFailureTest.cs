@@ -2,7 +2,6 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Blocks;
 using Libplanet.Tx;
@@ -24,7 +23,7 @@ namespace Libplanet.Tests.Tx
         public TxFailureTest()
         {
             var random = new Random();
-            _blockHash = random.NextBlockHash(HashDigest<SHA256>.Size);
+            _blockHash = random.NextBlockHash();
             _txid = random.NextTxId();
             _fx = new TxFailure(_blockHash, _txid, new ArgumentNullException("foo"));
         }

@@ -125,7 +125,7 @@ namespace Libplanet.Net
             _logger.Information(
                 $"Received {nameof(BlockHeader)} #{{BlockIndex}} {{BlockHash}}.",
                 header.Index,
-                ByteUtil.Hex(header.Hash)
+                header.Hash
             );
 
             HashAlgorithmType hashAlgorithm = BlockChain.Policy.GetHashAlgorithm(header.Index);
@@ -139,7 +139,7 @@ namespace Libplanet.Net
                     ibe,
                     "Received header #{BlockIndex} {BlockHash} seems invalid; ignored.",
                     header.Index,
-                    ByteUtil.Hex(header.Hash)
+                    header.Hash
                 );
                 return;
             }
@@ -150,7 +150,7 @@ namespace Libplanet.Net
                     "Received header #{BlockIndex} {BlockHash} from peer {Peer} is not needed " +
                     "for the current chain with tip #{TipIndex} {TipHash}.",
                     header.Index,
-                    ByteUtil.Hex(header.Hash),
+                    header.Hash,
                     peer,
                     BlockChain.Tip,
                     BlockChain.Tip.Hash);
@@ -161,7 +161,7 @@ namespace Libplanet.Net
                 "Adding received header #{BlockIndex} {BlockHash} from peer {Peer} to " +
                 $"{nameof(BlockDemandTable)}...",
                 header.Index,
-                ByteUtil.Hex(header.Hash),
+                header.Hash,
                 peer);
             BlockDemandTable.Add(
                 BlockChain,

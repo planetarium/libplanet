@@ -592,7 +592,7 @@ namespace Libplanet.Net
                     return;
                 }
 
-                var hash = new BlockHash(demand.Header.Hash);
+                BlockHash hash = demand.Header.Hash;
                 const string startLogMsg =
                     "{SessionId}: Got a new " + nameof(BlockDemand) + " from {Peer}; started " +
                     "to fetch the block #{BlockIndex} {BlockHash}...";
