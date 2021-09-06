@@ -163,8 +163,8 @@ namespace Libplanet.Store
         {
             if (!_disposed)
             {
-                (_stateKeyValueStore as IDisposable)?.Dispose();
-                (_stateHashKeyValueStore as IDisposable)?.Dispose();
+                _stateKeyValueStore?.Dispose();
+                _stateHashKeyValueStore?.Dispose();
                 _disposed = true;
             }
         }

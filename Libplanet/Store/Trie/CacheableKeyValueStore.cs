@@ -8,7 +8,7 @@ namespace Libplanet.Store.Trie
     /// <summary>
     /// The proxy class to cache <see cref="IKeyValueStore"/> operations.
     /// </summary>
-    public class CacheableKeyValueStore : IKeyValueStore, IDisposable
+    public class CacheableKeyValueStore : IKeyValueStore
     {
         private readonly IKeyValueStore _keyValueStore;
         private readonly LruCache<byte[], byte[]> _cache;
@@ -68,7 +68,7 @@ namespace Libplanet.Store.Trie
 
         public void Dispose()
         {
-            (_keyValueStore as IDisposable)?.Dispose();
+            _keyValueStore?.Dispose();
         }
     }
 }
