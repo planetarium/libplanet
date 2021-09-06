@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class Transaction&lt;T&gt;
    | Libplanet ">
-    <meta name="generator" content="docfx 2.56.6.0">
+    <meta name="generator" content="docfx 2.58.2.0">
     
     <link rel="shortcut icon" href="../images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -646,7 +646,7 @@ included in the created <a class="xref" href="Libplanet.Tx.Transaction-1.html">T
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Transaction&lt;T&gt; Create(long nonce, PrivateKey privateKey, BlockHash? genesisHash, IEnumerable&lt;T&gt; actions, IImmutableSet&lt;Address&gt; updatedAddresses = null, DateTimeOffset? timestamp = default(DateTimeOffset? ))</code></pre>
+    <pre><code class="lang-csharp hljs">public static Transaction&lt;T&gt; Create(long nonce, PrivateKey privateKey, BlockHash? genesisHash, IEnumerable&lt;T&gt; actions, IImmutableSet&lt;Address&gt; updatedAddresses = null, DateTimeOffset? timestamp = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -796,7 +796,7 @@ constructor, it automatically fills the following values from:</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Transaction&lt;T&gt; CreateUnsigned(long nonce, PublicKey publicKey, BlockHash? genesisHash, IEnumerable&lt;T&gt; actions, IImmutableSet&lt;Address&gt; updatedAddresses = null, DateTimeOffset? timestamp = default(DateTimeOffset? ))</code></pre>
+    <pre><code class="lang-csharp hljs">public static Transaction&lt;T&gt; CreateUnsigned(long nonce, PublicKey publicKey, BlockHash? genesisHash, IEnumerable&lt;T&gt; actions, IImmutableSet&lt;Address&gt; updatedAddresses = null, DateTimeOffset? timestamp = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">

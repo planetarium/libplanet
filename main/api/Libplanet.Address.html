@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Struct Address
    | Libplanet ">
-    <meta name="generator" content="docfx 2.56.6.0">
+    <meta name="generator" content="docfx 2.58.2.0">
     
     <link rel="shortcut icon" href="../images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -120,7 +120,7 @@ can be used by Libplanet-backed games/apps too.</p>
   <h5 id="Libplanet_Address_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Serializable]
-public struct Address : ISerializable, IComparable&lt;Address&gt;, IComparable</code></pre>
+public readonly struct Address : ISerializable, IComparable&lt;Address&gt;, IComparable</code></pre>
   </div>
   <h5 id="Libplanet_Address_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>Every <a class="xref" href="Libplanet.Address.html">Address</a> value is immutable.</p>
@@ -466,7 +466,7 @@ passed to <code data-dev-comment-type="paramref" class="paramref">hex</code>.</p
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ImmutableArray&lt;byte&gt; ByteArray { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly ImmutableArray&lt;byte&gt; ByteArray { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -505,7 +505,7 @@ passed to <code data-dev-comment-type="paramref" class="paramref">hex</code>.</p
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void GetObjectData(SerializationInfo info, StreamingContext context)</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly void GetObjectData(SerializationInfo info, StreamingContext context)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -545,7 +545,7 @@ this <a class="xref" href="Libplanet.Address.html">Address</a>.</p>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Pure]
-public byte[] ToByteArray()</code></pre>
+public readonly byte[] ToByteArray()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -588,7 +588,7 @@ this <a class="xref" href="Libplanet.Address.html">Address</a>. The returned hex
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Pure]
-public string ToHex()</code></pre>
+public readonly string ToHex()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -639,7 +639,7 @@ hexadecimal string follows
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Pure]
-public override string ToString()</code></pre>
+public override readonly string ToString()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -794,7 +794,7 @@ instead.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">int IComparable.CompareTo(object obj)</code></pre>
+    <pre><code class="lang-csharp hljs">readonly int IComparable.CompareTo(object obj)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -841,7 +841,7 @@ instead.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">int IComparable&lt;Address&gt;.CompareTo(Address other)</code></pre>
+    <pre><code class="lang-csharp hljs">readonly int IComparable&lt;Address&gt;.CompareTo(Address other)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">

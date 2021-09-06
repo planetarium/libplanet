@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Struct AppProtocolVersion
    | Libplanet ">
-    <meta name="generator" content="docfx 2.56.6.0">
+    <meta name="generator" content="docfx 2.58.2.0">
     
     <link rel="shortcut icon" href="../images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -103,7 +103,7 @@ is claimed by its corresponding <a class="xref" href="Libplanet.Net.AppProtocolV
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
   <h5 id="Libplanet_Net_AppProtocolVersion_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public struct AppProtocolVersion : IEquatable&lt;AppProtocolVersion&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly struct AppProtocolVersion : IEquatable&lt;AppProtocolVersion&gt;</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -269,7 +269,7 @@ than that.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ImmutableArray&lt;byte&gt; Signature { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly ImmutableArray&lt;byte&gt; Signature { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -305,7 +305,7 @@ printable characters in the ASCII character set.</p>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Pure]
-public string Token { get; }</code></pre>
+public readonly string Token { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -342,7 +342,7 @@ public string Token { get; }</code></pre>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Pure]
-public bool Equals(AppProtocolVersion other)</code></pre>
+public readonly bool Equals(AppProtocolVersion other)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -390,7 +390,7 @@ public bool Equals(AppProtocolVersion other)</code></pre>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Pure]
-public override bool Equals(object obj)</code></pre>
+public override readonly bool Equals(object obj)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -517,7 +517,7 @@ format is invalid.  The detailed reason is in the message.</p>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Pure]
-public override int GetHashCode()</code></pre>
+public override readonly int GetHashCode()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -630,7 +630,7 @@ using the given private key.</p>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Pure]
-public override string ToString()</code></pre>
+public override readonly string ToString()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -664,7 +664,7 @@ public override string ToString()</code></pre>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Pure]
-public bool Verify(PublicKey publicKey)</code></pre>
+public readonly bool Verify(PublicKey publicKey)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">

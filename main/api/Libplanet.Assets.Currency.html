@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Struct Currency
    | Libplanet ">
-    <meta name="generator" content="docfx 2.56.6.0">
+    <meta name="generator" content="docfx 2.58.2.0">
     
     <link rel="shortcut icon" href="../images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -101,7 +101,7 @@ EUR (Euro), <em>not values</em> like $100 or €100.</p>
   <h5 id="Libplanet_Assets_Currency_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Serializable]
-public struct Currency : IEquatable&lt;Currency&gt;, ISerializable</code></pre>
+public readonly struct Currency : IEquatable&lt;Currency&gt;, ISerializable</code></pre>
   </div>
   <h5 id="Libplanet_Assets_Currency_examples"><strong>Examples</strong></h5>
   <p>Here is how US Dollar can be represented using <a class="xref" href="Libplanet.Assets.Currency.html">Currency</a>:</p>
@@ -415,7 +415,7 @@ to mint or burn assets of this currency.</p>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Pure]
-public bool AllowsToMint(Address address)</code></pre>
+public readonly bool AllowsToMint(Address address)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -466,7 +466,7 @@ mint or burn assets of this currency.</p>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Pure]
-public bool Equals(Currency other)</code></pre>
+public readonly bool Equals(Currency other)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -514,7 +514,7 @@ public bool Equals(Currency other)</code></pre>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Pure]
-public override bool Equals(object obj)</code></pre>
+public override readonly bool Equals(object obj)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -564,7 +564,7 @@ public override bool Equals(object obj)</code></pre>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Pure]
-public override int GetHashCode()</code></pre>
+public override readonly int GetHashCode()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -598,7 +598,7 @@ public override int GetHashCode()</code></pre>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Pure]
-public IValue Serialize()</code></pre>
+public readonly IValue Serialize()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -630,7 +630,7 @@ public IValue Serialize()</code></pre>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Pure]
-public override string ToString()</code></pre>
+public override readonly string ToString()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -794,7 +794,7 @@ specified <code data-dev-comment-type="paramref" class="paramref">currency</code
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)</code></pre>
+    <pre><code class="lang-csharp hljs">readonly void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">

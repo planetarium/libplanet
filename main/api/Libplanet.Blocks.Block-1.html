@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class Block&lt;T&gt;
    | Libplanet ">
-    <meta name="generator" content="docfx 2.56.6.0">
+    <meta name="generator" content="docfx 2.58.2.0">
     
     <link rel="shortcut icon" href="../images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -220,7 +220,7 @@ For a more automated way, see also the <a class="xref" href="Libplanet.Blocks.Bl
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Block(long index, long difficulty, BigInteger totalDifficulty, Nonce nonce, Address miner, BlockHash? previousHash, DateTimeOffset timestamp, IReadOnlyList&lt;Transaction&lt;T&gt;&gt; transactions, HashAlgorithmType hashAlgorithm = null, ImmutableArray&lt;byte&gt;? preEvaluationHash = default(ImmutableArray&lt;byte&gt;? ), HashDigest&lt;SHA256&gt;? stateRootHash = default(HashDigest&lt;SHA256&gt;? ), int protocolVersion = 1)</code></pre>
+    <pre><code class="lang-csharp hljs">public Block(long index, long difficulty, BigInteger totalDifficulty, Nonce nonce, Address miner, BlockHash? previousHash, DateTimeOffset timestamp, IReadOnlyList&lt;Transaction&lt;T&gt;&gt; transactions, HashAlgorithmType hashAlgorithm = null, ImmutableArray&lt;byte&gt;? preEvaluationHash = null, HashDigest&lt;SHA256&gt;? stateRootHash = null, int protocolVersion = 1)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">

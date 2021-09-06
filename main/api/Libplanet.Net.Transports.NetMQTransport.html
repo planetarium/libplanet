@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class NetMQTransport
    | Libplanet ">
-    <meta name="generator" content="docfx 2.56.6.0">
+    <meta name="generator" content="docfx 2.58.2.0">
     
     <link rel="shortcut icon" href="../images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -132,7 +132,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public NetMQTransport(RoutingTable table, PrivateKey privateKey, AppProtocolVersion appProtocolVersion, IImmutableSet&lt;PublicKey&gt; trustedAppProtocolVersionSigners, int workers, string host, int? listenPort, IEnumerable&lt;IceServer&gt; iceServers, DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered, int minimumBroadcastTarget, TimeSpan? messageLifespan = default(TimeSpan? ))</code></pre>
+    <pre><code class="lang-csharp hljs">public NetMQTransport(RoutingTable table, PrivateKey privateKey, AppProtocolVersion appProtocolVersion, IImmutableSet&lt;PublicKey&gt; trustedAppProtocolVersionSigners, int workers, string host, int? listenPort, IEnumerable&lt;IceServer&gt; iceServers, DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered, int minimumBroadcastTarget, TimeSpan? messageLifespan = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -450,7 +450,7 @@ matched to <a class="xref" href="Libplanet.Net.Messages.Message.html#Libplanet_N
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task RunAsync(CancellationToken cancellationToken)</code></pre>
+    <pre><code class="lang-csharp hljs">public async Task RunAsync(CancellationToken cancellationToken)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -565,7 +565,7 @@ to given <code data-dev-comment-type="paramref" class="paramref">peer</code> and
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;IEnumerable&lt;Message&gt;&gt; SendMessageWithReplyAsync(BoundPeer peer, Message message, TimeSpan? timeout, int expectedResponses, bool returnWhenTimeout, CancellationToken cancellationToken)</code></pre>
+    <pre><code class="lang-csharp hljs">public async Task&lt;IEnumerable&lt;Message&gt;&gt; SendMessageWithReplyAsync(BoundPeer peer, Message message, TimeSpan? timeout, int expectedResponses, bool returnWhenTimeout, CancellationToken cancellationToken)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -649,7 +649,7 @@ to given <code data-dev-comment-type="paramref" class="paramref">peer</code> and
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;Message&gt; SendMessageWithReplyAsync(BoundPeer peer, Message message, TimeSpan? timeout, CancellationToken cancellationToken)</code></pre>
+    <pre><code class="lang-csharp hljs">public async Task&lt;Message&gt; SendMessageWithReplyAsync(BoundPeer peer, Message message, TimeSpan? timeout, CancellationToken cancellationToken)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -719,7 +719,7 @@ sent by <code data-dev-comment-type="paramref" class="paramref">peer</code>.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task StartAsync(CancellationToken cancellationToken)</code></pre>
+    <pre><code class="lang-csharp hljs">public async Task StartAsync(CancellationToken cancellationToken)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -770,7 +770,7 @@ operation should be canceled.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task StopAsync(TimeSpan waitFor, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">public async Task StopAsync(TimeSpan waitFor, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">

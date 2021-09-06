@@ -2143,13 +2143,13 @@ references:
   nameWithType: BlockChain<T>.Id
   nameWithType.vb: BlockChain(Of T).Id
 - uid: Libplanet.Blockchain.BlockChain`1.Item(Libplanet.Blocks.BlockHash@)
-  name: Item[BlockHash]
+  name: Item[in BlockHash]
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Item_Libplanet_Blocks_BlockHash__
   commentId: P:Libplanet.Blockchain.BlockChain`1.Item(Libplanet.Blocks.BlockHash@)
   name.vb: Item(ByRef BlockHash)
-  fullName: Libplanet.Blockchain.BlockChain<T>.Item[Libplanet.Blocks.BlockHash]
+  fullName: Libplanet.Blockchain.BlockChain<T>.Item[in Libplanet.Blocks.BlockHash]
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Item(ByRef Libplanet.Blocks.BlockHash)
-  nameWithType: BlockChain<T>.Item[BlockHash]
+  nameWithType: BlockChain<T>.Item[in BlockHash]
   nameWithType.vb: BlockChain(Of T).Item(ByRef BlockHash)
 - uid: Libplanet.Blockchain.BlockChain`1.Item(System.Int32)
   name: Item[Int32]
@@ -7795,13 +7795,13 @@ references:
   fullName: Libplanet.ByteUtil.CalculateHashCode
   nameWithType: ByteUtil.CalculateHashCode
 - uid: Libplanet.ByteUtil.Hex(ImmutableArray{System.Byte}@)
-  name: Hex(ImmutableArray<Byte>)
+  name: Hex(in ImmutableArray<Byte>)
   href: api/Libplanet.ByteUtil.html#Libplanet_ByteUtil_Hex_ImmutableArray_System_Byte___
   commentId: M:Libplanet.ByteUtil.Hex(ImmutableArray{System.Byte}@)
   name.vb: Hex(ByRef ImmutableArray(Of Byte))
-  fullName: Libplanet.ByteUtil.Hex(ImmutableArray<System.Byte>)
+  fullName: Libplanet.ByteUtil.Hex(in ImmutableArray<System.Byte>)
   fullName.vb: Libplanet.ByteUtil.Hex(ByRef ImmutableArray(Of System.Byte))
-  nameWithType: ByteUtil.Hex(ImmutableArray<Byte>)
+  nameWithType: ByteUtil.Hex(in ImmutableArray<Byte>)
   nameWithType.vb: ByteUtil.Hex(ByRef ImmutableArray(Of Byte))
 - uid: Libplanet.ByteUtil.Hex(System.Byte[])
   name: Hex(Byte[])
@@ -8803,13 +8803,13 @@ references:
   fullName: Libplanet.KeyStore.Ciphers.Aes128Ctr
   nameWithType: Aes128Ctr
 - uid: Libplanet.KeyStore.Ciphers.Aes128Ctr.#ctor(ImmutableArray{System.Byte}@)
-  name: Aes128Ctr(ImmutableArray<Byte>)
+  name: Aes128Ctr(in ImmutableArray<Byte>)
   href: api/Libplanet.KeyStore.Ciphers.Aes128Ctr.html#Libplanet_KeyStore_Ciphers_Aes128Ctr__ctor_ImmutableArray_System_Byte___
   commentId: M:Libplanet.KeyStore.Ciphers.Aes128Ctr.#ctor(ImmutableArray{System.Byte}@)
   name.vb: Aes128Ctr(ByRef ImmutableArray(Of Byte))
-  fullName: Libplanet.KeyStore.Ciphers.Aes128Ctr.Aes128Ctr(ImmutableArray<System.Byte>)
+  fullName: Libplanet.KeyStore.Ciphers.Aes128Ctr.Aes128Ctr(in ImmutableArray<System.Byte>)
   fullName.vb: Libplanet.KeyStore.Ciphers.Aes128Ctr.Aes128Ctr(ByRef ImmutableArray(Of System.Byte))
-  nameWithType: Aes128Ctr.Aes128Ctr(ImmutableArray<Byte>)
+  nameWithType: Aes128Ctr.Aes128Ctr(in ImmutableArray<Byte>)
   nameWithType.vb: Aes128Ctr.Aes128Ctr(ByRef ImmutableArray(Of Byte))
 - uid: Libplanet.KeyStore.Ciphers.Aes128Ctr.#ctor(System.Byte[])
   name: Aes128Ctr(Byte[])
@@ -8828,13 +8828,13 @@ references:
   fullName: Libplanet.KeyStore.Ciphers.Aes128Ctr.Aes128Ctr
   nameWithType: Aes128Ctr.Aes128Ctr
 - uid: Libplanet.KeyStore.Ciphers.Aes128Ctr.Decrypt(ImmutableArray{System.Byte}@,ImmutableArray{System.Byte}@)
-  name: Decrypt(ImmutableArray<Byte>, ImmutableArray<Byte>)
+  name: Decrypt(in ImmutableArray<Byte>, in ImmutableArray<Byte>)
   href: api/Libplanet.KeyStore.Ciphers.Aes128Ctr.html#Libplanet_KeyStore_Ciphers_Aes128Ctr_Decrypt_ImmutableArray_System_Byte___ImmutableArray_System_Byte___
   commentId: M:Libplanet.KeyStore.Ciphers.Aes128Ctr.Decrypt(ImmutableArray{System.Byte}@,ImmutableArray{System.Byte}@)
   name.vb: Decrypt(ByRef ImmutableArray(Of Byte), ByRef ImmutableArray(Of Byte))
-  fullName: Libplanet.KeyStore.Ciphers.Aes128Ctr.Decrypt(ImmutableArray<System.Byte>, ImmutableArray<System.Byte>)
+  fullName: Libplanet.KeyStore.Ciphers.Aes128Ctr.Decrypt(in ImmutableArray<System.Byte>, in ImmutableArray<System.Byte>)
   fullName.vb: Libplanet.KeyStore.Ciphers.Aes128Ctr.Decrypt(ByRef ImmutableArray(Of System.Byte), ByRef ImmutableArray(Of System.Byte))
-  nameWithType: Aes128Ctr.Decrypt(ImmutableArray<Byte>, ImmutableArray<Byte>)
+  nameWithType: Aes128Ctr.Decrypt(in ImmutableArray<Byte>, in ImmutableArray<Byte>)
   nameWithType.vb: Aes128Ctr.Decrypt(ByRef ImmutableArray(Of Byte), ByRef ImmutableArray(Of Byte))
 - uid: Libplanet.KeyStore.Ciphers.Aes128Ctr.Decrypt*
   name: Decrypt
@@ -8844,13 +8844,13 @@ references:
   fullName: Libplanet.KeyStore.Ciphers.Aes128Ctr.Decrypt
   nameWithType: Aes128Ctr.Decrypt
 - uid: Libplanet.KeyStore.Ciphers.Aes128Ctr.Encrypt(ImmutableArray{System.Byte}@,ImmutableArray{System.Byte}@)
-  name: Encrypt(ImmutableArray<Byte>, ImmutableArray<Byte>)
+  name: Encrypt(in ImmutableArray<Byte>, in ImmutableArray<Byte>)
   href: api/Libplanet.KeyStore.Ciphers.Aes128Ctr.html#Libplanet_KeyStore_Ciphers_Aes128Ctr_Encrypt_ImmutableArray_System_Byte___ImmutableArray_System_Byte___
   commentId: M:Libplanet.KeyStore.Ciphers.Aes128Ctr.Encrypt(ImmutableArray{System.Byte}@,ImmutableArray{System.Byte}@)
   name.vb: Encrypt(ByRef ImmutableArray(Of Byte), ByRef ImmutableArray(Of Byte))
-  fullName: Libplanet.KeyStore.Ciphers.Aes128Ctr.Encrypt(ImmutableArray<System.Byte>, ImmutableArray<System.Byte>)
+  fullName: Libplanet.KeyStore.Ciphers.Aes128Ctr.Encrypt(in ImmutableArray<System.Byte>, in ImmutableArray<System.Byte>)
   fullName.vb: Libplanet.KeyStore.Ciphers.Aes128Ctr.Encrypt(ByRef ImmutableArray(Of System.Byte), ByRef ImmutableArray(Of System.Byte))
-  nameWithType: Aes128Ctr.Encrypt(ImmutableArray<Byte>, ImmutableArray<Byte>)
+  nameWithType: Aes128Ctr.Encrypt(in ImmutableArray<Byte>, in ImmutableArray<Byte>)
   nameWithType.vb: Aes128Ctr.Encrypt(ByRef ImmutableArray(Of Byte), ByRef ImmutableArray(Of Byte))
 - uid: Libplanet.KeyStore.Ciphers.Aes128Ctr.Encrypt*
   name: Encrypt
@@ -8892,13 +8892,13 @@ references:
   fullName: Libplanet.KeyStore.Ciphers.ICipher
   nameWithType: ICipher
 - uid: Libplanet.KeyStore.Ciphers.ICipher.Decrypt(ImmutableArray{System.Byte}@,ImmutableArray{System.Byte}@)
-  name: Decrypt(ImmutableArray<Byte>, ImmutableArray<Byte>)
+  name: Decrypt(in ImmutableArray<Byte>, in ImmutableArray<Byte>)
   href: api/Libplanet.KeyStore.Ciphers.ICipher.html#Libplanet_KeyStore_Ciphers_ICipher_Decrypt_ImmutableArray_System_Byte___ImmutableArray_System_Byte___
   commentId: M:Libplanet.KeyStore.Ciphers.ICipher.Decrypt(ImmutableArray{System.Byte}@,ImmutableArray{System.Byte}@)
   name.vb: Decrypt(ByRef ImmutableArray(Of Byte), ByRef ImmutableArray(Of Byte))
-  fullName: Libplanet.KeyStore.Ciphers.ICipher.Decrypt(ImmutableArray<System.Byte>, ImmutableArray<System.Byte>)
+  fullName: Libplanet.KeyStore.Ciphers.ICipher.Decrypt(in ImmutableArray<System.Byte>, in ImmutableArray<System.Byte>)
   fullName.vb: Libplanet.KeyStore.Ciphers.ICipher.Decrypt(ByRef ImmutableArray(Of System.Byte), ByRef ImmutableArray(Of System.Byte))
-  nameWithType: ICipher.Decrypt(ImmutableArray<Byte>, ImmutableArray<Byte>)
+  nameWithType: ICipher.Decrypt(in ImmutableArray<Byte>, in ImmutableArray<Byte>)
   nameWithType.vb: ICipher.Decrypt(ByRef ImmutableArray(Of Byte), ByRef ImmutableArray(Of Byte))
 - uid: Libplanet.KeyStore.Ciphers.ICipher.Decrypt*
   name: Decrypt
@@ -8908,13 +8908,13 @@ references:
   fullName: Libplanet.KeyStore.Ciphers.ICipher.Decrypt
   nameWithType: ICipher.Decrypt
 - uid: Libplanet.KeyStore.Ciphers.ICipher.Encrypt(ImmutableArray{System.Byte}@,ImmutableArray{System.Byte}@)
-  name: Encrypt(ImmutableArray<Byte>, ImmutableArray<Byte>)
+  name: Encrypt(in ImmutableArray<Byte>, in ImmutableArray<Byte>)
   href: api/Libplanet.KeyStore.Ciphers.ICipher.html#Libplanet_KeyStore_Ciphers_ICipher_Encrypt_ImmutableArray_System_Byte___ImmutableArray_System_Byte___
   commentId: M:Libplanet.KeyStore.Ciphers.ICipher.Encrypt(ImmutableArray{System.Byte}@,ImmutableArray{System.Byte}@)
   name.vb: Encrypt(ByRef ImmutableArray(Of Byte), ByRef ImmutableArray(Of Byte))
-  fullName: Libplanet.KeyStore.Ciphers.ICipher.Encrypt(ImmutableArray<System.Byte>, ImmutableArray<System.Byte>)
+  fullName: Libplanet.KeyStore.Ciphers.ICipher.Encrypt(in ImmutableArray<System.Byte>, in ImmutableArray<System.Byte>)
   fullName.vb: Libplanet.KeyStore.Ciphers.ICipher.Encrypt(ByRef ImmutableArray(Of System.Byte), ByRef ImmutableArray(Of System.Byte))
-  nameWithType: ICipher.Encrypt(ImmutableArray<Byte>, ImmutableArray<Byte>)
+  nameWithType: ICipher.Encrypt(in ImmutableArray<Byte>, in ImmutableArray<Byte>)
   nameWithType.vb: ICipher.Encrypt(ByRef ImmutableArray(Of Byte), ByRef ImmutableArray(Of Byte))
 - uid: Libplanet.KeyStore.Ciphers.ICipher.Encrypt*
   name: Encrypt
@@ -9014,13 +9014,13 @@ references:
   fullName: Libplanet.KeyStore.IncorrectPassphraseException
   nameWithType: IncorrectPassphraseException
 - uid: Libplanet.KeyStore.IncorrectPassphraseException.#ctor(System.String,System.String,ImmutableArray{System.Byte}@,ImmutableArray{System.Byte}@)
-  name: IncorrectPassphraseException(String, String, ImmutableArray<Byte>, ImmutableArray<Byte>)
+  name: IncorrectPassphraseException(String, String, in ImmutableArray<Byte>, in ImmutableArray<Byte>)
   href: api/Libplanet.KeyStore.IncorrectPassphraseException.html#Libplanet_KeyStore_IncorrectPassphraseException__ctor_System_String_System_String_ImmutableArray_System_Byte___ImmutableArray_System_Byte___
   commentId: M:Libplanet.KeyStore.IncorrectPassphraseException.#ctor(System.String,System.String,ImmutableArray{System.Byte}@,ImmutableArray{System.Byte}@)
   name.vb: IncorrectPassphraseException(String, String, ByRef ImmutableArray(Of Byte), ByRef ImmutableArray(Of Byte))
-  fullName: Libplanet.KeyStore.IncorrectPassphraseException.IncorrectPassphraseException(System.String, System.String, ImmutableArray<System.Byte>, ImmutableArray<System.Byte>)
+  fullName: Libplanet.KeyStore.IncorrectPassphraseException.IncorrectPassphraseException(System.String, System.String, in ImmutableArray<System.Byte>, in ImmutableArray<System.Byte>)
   fullName.vb: Libplanet.KeyStore.IncorrectPassphraseException.IncorrectPassphraseException(System.String, System.String, ByRef ImmutableArray(Of System.Byte), ByRef ImmutableArray(Of System.Byte))
-  nameWithType: IncorrectPassphraseException.IncorrectPassphraseException(String, String, ImmutableArray<Byte>, ImmutableArray<Byte>)
+  nameWithType: IncorrectPassphraseException.IncorrectPassphraseException(String, String, in ImmutableArray<Byte>, in ImmutableArray<Byte>)
   nameWithType.vb: IncorrectPassphraseException.IncorrectPassphraseException(String, String, ByRef ImmutableArray(Of Byte), ByRef ImmutableArray(Of Byte))
 - uid: Libplanet.KeyStore.IncorrectPassphraseException.#ctor*
   name: IncorrectPassphraseException
@@ -9122,13 +9122,13 @@ references:
   nameWithType: Pbkdf2<T>
   nameWithType.vb: Pbkdf2(Of T)
 - uid: Libplanet.KeyStore.Kdfs.Pbkdf2`1.#ctor(System.Int32,ImmutableArray{System.Byte}@,System.Int32)
-  name: Pbkdf2(Int32, ImmutableArray<Byte>, Int32)
+  name: Pbkdf2(Int32, in ImmutableArray<Byte>, Int32)
   href: api/Libplanet.KeyStore.Kdfs.Pbkdf2-1.html#Libplanet_KeyStore_Kdfs_Pbkdf2_1__ctor_System_Int32_ImmutableArray_System_Byte___System_Int32_
   commentId: M:Libplanet.KeyStore.Kdfs.Pbkdf2`1.#ctor(System.Int32,ImmutableArray{System.Byte}@,System.Int32)
   name.vb: Pbkdf2(Int32, ByRef ImmutableArray(Of Byte), Int32)
-  fullName: Libplanet.KeyStore.Kdfs.Pbkdf2<T>.Pbkdf2(System.Int32, ImmutableArray<System.Byte>, System.Int32)
+  fullName: Libplanet.KeyStore.Kdfs.Pbkdf2<T>.Pbkdf2(System.Int32, in ImmutableArray<System.Byte>, System.Int32)
   fullName.vb: Libplanet.KeyStore.Kdfs.Pbkdf2(Of T).Pbkdf2(System.Int32, ByRef ImmutableArray(Of System.Byte), System.Int32)
-  nameWithType: Pbkdf2<T>.Pbkdf2(Int32, ImmutableArray<Byte>, Int32)
+  nameWithType: Pbkdf2<T>.Pbkdf2(Int32, in ImmutableArray<Byte>, Int32)
   nameWithType.vb: Pbkdf2(Of T).Pbkdf2(Int32, ByRef ImmutableArray(Of Byte), Int32)
 - uid: Libplanet.KeyStore.Kdfs.Pbkdf2`1.#ctor(System.Int32,System.Byte[],System.Int32)
   name: Pbkdf2(Int32, Byte[], Int32)
@@ -9240,13 +9240,13 @@ references:
   fullName: Libplanet.KeyStore.Kdfs.Scrypt
   nameWithType: Scrypt
 - uid: Libplanet.KeyStore.Kdfs.Scrypt.#ctor(System.Int32,ImmutableArray{System.Byte}@,System.Int32,System.Int32,System.Int32)
-  name: Scrypt(Int32, ImmutableArray<Byte>, Int32, Int32, Int32)
+  name: Scrypt(Int32, in ImmutableArray<Byte>, Int32, Int32, Int32)
   href: api/Libplanet.KeyStore.Kdfs.Scrypt.html#Libplanet_KeyStore_Kdfs_Scrypt__ctor_System_Int32_ImmutableArray_System_Byte___System_Int32_System_Int32_System_Int32_
   commentId: M:Libplanet.KeyStore.Kdfs.Scrypt.#ctor(System.Int32,ImmutableArray{System.Byte}@,System.Int32,System.Int32,System.Int32)
   name.vb: Scrypt(Int32, ByRef ImmutableArray(Of Byte), Int32, Int32, Int32)
-  fullName: Libplanet.KeyStore.Kdfs.Scrypt.Scrypt(System.Int32, ImmutableArray<System.Byte>, System.Int32, System.Int32, System.Int32)
+  fullName: Libplanet.KeyStore.Kdfs.Scrypt.Scrypt(System.Int32, in ImmutableArray<System.Byte>, System.Int32, System.Int32, System.Int32)
   fullName.vb: Libplanet.KeyStore.Kdfs.Scrypt.Scrypt(System.Int32, ByRef ImmutableArray(Of System.Byte), System.Int32, System.Int32, System.Int32)
-  nameWithType: Scrypt.Scrypt(Int32, ImmutableArray<Byte>, Int32, Int32, Int32)
+  nameWithType: Scrypt.Scrypt(Int32, in ImmutableArray<Byte>, Int32, Int32, Int32)
   nameWithType.vb: Scrypt.Scrypt(Int32, ByRef ImmutableArray(Of Byte), Int32, Int32, Int32)
 - uid: Libplanet.KeyStore.Kdfs.Scrypt.#ctor(System.Int32,System.Byte[],System.Int32,System.Int32,System.Int32)
   name: Scrypt(Int32, Byte[], Int32, Int32, Int32)
@@ -9400,13 +9400,13 @@ references:
   fullName: Libplanet.KeyStore.MismatchedAddressException
   nameWithType: MismatchedAddressException
 - uid: Libplanet.KeyStore.MismatchedAddressException.#ctor(System.String,Libplanet.Address@,Libplanet.Address@)
-  name: MismatchedAddressException(String, Address, Address)
+  name: MismatchedAddressException(String, in Address, in Address)
   href: api/Libplanet.KeyStore.MismatchedAddressException.html#Libplanet_KeyStore_MismatchedAddressException__ctor_System_String_Libplanet_Address__Libplanet_Address__
   commentId: M:Libplanet.KeyStore.MismatchedAddressException.#ctor(System.String,Libplanet.Address@,Libplanet.Address@)
   name.vb: MismatchedAddressException(String, ByRef Address, ByRef Address)
-  fullName: Libplanet.KeyStore.MismatchedAddressException.MismatchedAddressException(System.String, Libplanet.Address, Libplanet.Address)
+  fullName: Libplanet.KeyStore.MismatchedAddressException.MismatchedAddressException(System.String, in Libplanet.Address, in Libplanet.Address)
   fullName.vb: Libplanet.KeyStore.MismatchedAddressException.MismatchedAddressException(System.String, ByRef Libplanet.Address, ByRef Libplanet.Address)
-  nameWithType: MismatchedAddressException.MismatchedAddressException(String, Address, Address)
+  nameWithType: MismatchedAddressException.MismatchedAddressException(String, in Address, in Address)
   nameWithType.vb: MismatchedAddressException.MismatchedAddressException(String, ByRef Address, ByRef Address)
 - uid: Libplanet.KeyStore.MismatchedAddressException.#ctor*
   name: MismatchedAddressException
@@ -9609,22 +9609,22 @@ references:
   fullName: Libplanet.KeyStore.ProtectedPrivateKey.Unprotect
   nameWithType: ProtectedPrivateKey.Unprotect
 - uid: Libplanet.KeyStore.ProtectedPrivateKey.WriteJson(System.IO.Stream,System.Nullable{System.Guid}@)
-  name: WriteJson(Stream, Nullable<Guid>)
+  name: WriteJson(Stream, in Nullable<Guid>)
   href: api/Libplanet.KeyStore.ProtectedPrivateKey.html#Libplanet_KeyStore_ProtectedPrivateKey_WriteJson_System_IO_Stream_System_Nullable_System_Guid___
   commentId: M:Libplanet.KeyStore.ProtectedPrivateKey.WriteJson(System.IO.Stream,System.Nullable{System.Guid}@)
   name.vb: WriteJson(Stream, ByRef Nullable(Of Guid))
-  fullName: Libplanet.KeyStore.ProtectedPrivateKey.WriteJson(System.IO.Stream, System.Nullable<System.Guid>)
+  fullName: Libplanet.KeyStore.ProtectedPrivateKey.WriteJson(System.IO.Stream, in System.Nullable<System.Guid>)
   fullName.vb: Libplanet.KeyStore.ProtectedPrivateKey.WriteJson(System.IO.Stream, ByRef System.Nullable(Of System.Guid))
-  nameWithType: ProtectedPrivateKey.WriteJson(Stream, Nullable<Guid>)
+  nameWithType: ProtectedPrivateKey.WriteJson(Stream, in Nullable<Guid>)
   nameWithType.vb: ProtectedPrivateKey.WriteJson(Stream, ByRef Nullable(Of Guid))
 - uid: Libplanet.KeyStore.ProtectedPrivateKey.WriteJson(Utf8JsonWriter,System.Nullable{System.Guid}@)
-  name: WriteJson(Utf8JsonWriter, Nullable<Guid>)
+  name: WriteJson(Utf8JsonWriter, in Nullable<Guid>)
   href: api/Libplanet.KeyStore.ProtectedPrivateKey.html#Libplanet_KeyStore_ProtectedPrivateKey_WriteJson_Utf8JsonWriter_System_Nullable_System_Guid___
   commentId: M:Libplanet.KeyStore.ProtectedPrivateKey.WriteJson(Utf8JsonWriter,System.Nullable{System.Guid}@)
   name.vb: WriteJson(Utf8JsonWriter, ByRef Nullable(Of Guid))
-  fullName: Libplanet.KeyStore.ProtectedPrivateKey.WriteJson(Utf8JsonWriter, System.Nullable<System.Guid>)
+  fullName: Libplanet.KeyStore.ProtectedPrivateKey.WriteJson(Utf8JsonWriter, in System.Nullable<System.Guid>)
   fullName.vb: Libplanet.KeyStore.ProtectedPrivateKey.WriteJson(Utf8JsonWriter, ByRef System.Nullable(Of System.Guid))
-  nameWithType: ProtectedPrivateKey.WriteJson(Utf8JsonWriter, Nullable<Guid>)
+  nameWithType: ProtectedPrivateKey.WriteJson(Utf8JsonWriter, in Nullable<Guid>)
   nameWithType.vb: ProtectedPrivateKey.WriteJson(Utf8JsonWriter, ByRef Nullable(Of Guid))
 - uid: Libplanet.KeyStore.ProtectedPrivateKey.WriteJson*
   name: WriteJson

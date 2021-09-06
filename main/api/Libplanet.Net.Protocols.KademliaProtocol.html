@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class KademliaProtocol
    | Libplanet ">
-    <meta name="generator" content="docfx 2.56.6.0">
+    <meta name="generator" content="docfx 2.58.2.0">
     
     <link rel="shortcut icon" href="../images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -131,7 +131,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public KademliaProtocol(RoutingTable table, ITransport transport, Address address, int findConcurrency = 3, TimeSpan? requestTimeout = default(TimeSpan? ))</code></pre>
+    <pre><code class="lang-csharp hljs">public KademliaProtocol(RoutingTable table, ITransport transport, Address address, int findConcurrency = 3, TimeSpan? requestTimeout = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -194,7 +194,7 @@ by sending <span class="xref">Libplanet.Net.Messages.Ping</span>.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task AddPeersAsync(IEnumerable&lt;Peer&gt; peers, TimeSpan? timeout, CancellationToken cancellationToken)</code></pre>
+    <pre><code class="lang-csharp hljs">public async Task AddPeersAsync(IEnumerable&lt;Peer&gt; peers, TimeSpan? timeout, CancellationToken cancellationToken)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -260,7 +260,7 @@ operation should be canceled.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task BootstrapAsync(IEnumerable&lt;BoundPeer&gt; bootstrapPeers, TimeSpan? pingSeedTimeout, TimeSpan? findNeighborsTimeout, int depth, CancellationToken cancellationToken)</code></pre>
+    <pre><code class="lang-csharp hljs">public async Task BootstrapAsync(IEnumerable&lt;BoundPeer&gt; bootstrapPeers, TimeSpan? pingSeedTimeout, TimeSpan? findNeighborsTimeout, int depth, CancellationToken cancellationToken)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -342,7 +342,7 @@ operation should be canceled.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task CheckAllPeersAsync(TimeSpan? timeout, CancellationToken cancellationToken)</code></pre>
+    <pre><code class="lang-csharp hljs">public async Task CheckAllPeersAsync(TimeSpan? timeout, CancellationToken cancellationToken)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -403,7 +403,7 @@ in the <span class="xref">Libplanet.Net.Protocols.KBucket.ReplacementCache</span
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task CheckReplacementCacheAsync(CancellationToken cancellationToken)</code></pre>
+    <pre><code class="lang-csharp hljs">public async Task CheckReplacementCacheAsync(CancellationToken cancellationToken)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -455,7 +455,7 @@ that this operation should be canceled.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;BoundPeer&gt; FindSpecificPeerAsync(Address target, int depth, TimeSpan? timeout, CancellationToken cancellationToken)</code></pre>
+    <pre><code class="lang-csharp hljs">public async Task&lt;BoundPeer&gt; FindSpecificPeerAsync(Address target, int depth, TimeSpan? timeout, CancellationToken cancellationToken)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -526,7 +526,7 @@ that this operation should be canceled.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task RebuildConnectionAsync(int depth, CancellationToken cancellationToken)</code></pre>
+    <pre><code class="lang-csharp hljs">public async Task RebuildConnectionAsync(int depth, CancellationToken cancellationToken)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -584,7 +584,7 @@ sending <span class="xref">Libplanet.Net.Messages.Ping</span>.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task RefreshTableAsync(TimeSpan maxAge, CancellationToken cancellationToken)</code></pre>
+    <pre><code class="lang-csharp hljs">public async Task RefreshTableAsync(TimeSpan maxAge, CancellationToken cancellationToken)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">

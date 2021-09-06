@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class Swarm&lt;T&gt;
    | Libplanet ">
-    <meta name="generator" content="docfx 2.56.6.0">
+    <meta name="generator" content="docfx 2.58.2.0">
     
     <link rel="shortcut icon" href="../images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -146,7 +146,7 @@ any communication with the network.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Swarm(BlockChain&lt;T&gt; blockChain, PrivateKey privateKey, AppProtocolVersion appProtocolVersion, int workers = 5, string host = null, int? listenPort = default(int? ), IEnumerable&lt;IceServer&gt; iceServers = null, DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered = null, IEnumerable&lt;PublicKey&gt; trustedAppProtocolVersionSigners = null, SwarmOptions options = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public Swarm(BlockChain&lt;T&gt; blockChain, PrivateKey privateKey, AppProtocolVersion appProtocolVersion, int workers = 5, string host = null, int? listenPort = null, IEnumerable&lt;IceServer&gt; iceServers = null, DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered = null, IEnumerable&lt;PublicKey&gt; trustedAppProtocolVersionSigners = null, SwarmOptions options = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -615,7 +615,7 @@ It can be <code>null</code> if no message has been arrived yet.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task AddPeersAsync(IEnumerable&lt;Peer&gt; peers, TimeSpan? timeout, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">public async Task AddPeersAsync(IEnumerable&lt;Peer&gt; peers, TimeSpan? timeout, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -678,7 +678,7 @@ that this operation should be canceled.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task BootstrapAsync(IEnumerable&lt;Peer&gt; seedPeers, double pingSeedTimeout, double findPeerTimeout, int depth = 3, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">public async Task BootstrapAsync(IEnumerable&lt;Peer&gt; seedPeers, double pingSeedTimeout, double findPeerTimeout, int depth = 3, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -746,7 +746,7 @@ that this operation should be canceled.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task BootstrapAsync(IEnumerable&lt;Peer&gt; seedPeers, TimeSpan? pingSeedTimeout, TimeSpan? findNeighborsTimeout, int depth = 3, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">public async Task BootstrapAsync(IEnumerable&lt;Peer&gt; seedPeers, TimeSpan? pingSeedTimeout, TimeSpan? findNeighborsTimeout, int depth = 3, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -903,7 +903,7 @@ not <a class="xref" href="Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_Runni
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task CheckAllPeersAsync(TimeSpan? timeout = default(TimeSpan? ), CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">public async Task CheckAllPeersAsync(TimeSpan? timeout = null, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -992,7 +992,7 @@ that this operation should be canceled.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;BoundPeer&gt; FindSpecificPeerAsync(Address target, int depth = 3, TimeSpan? timeout = default(TimeSpan? ), CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">public async Task&lt;BoundPeer&gt; FindSpecificPeerAsync(Address target, int depth = 3, TimeSpan? timeout = null, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1065,7 +1065,7 @@ Returns <code>null</code> if the peer with address does not exist.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;IEnumerable&lt;PeerChainState&gt;&gt; GetPeerChainStateAsync(TimeSpan? dialTimeout, CancellationToken cancellationToken)</code></pre>
+    <pre><code class="lang-csharp hljs">public async Task&lt;IEnumerable&lt;PeerChainState&gt;&gt; GetPeerChainStateAsync(TimeSpan? dialTimeout, CancellationToken cancellationToken)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1124,7 +1124,7 @@ operation should be canceled.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task PreloadAsync(TimeSpan? dialTimeout = default(TimeSpan? ), IProgress&lt;PreloadState&gt; progress = null, bool render = false, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">public async Task PreloadAsync(TimeSpan? dialTimeout = null, IProgress&lt;PreloadState&gt; progress = null, bool render = false, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1216,7 +1216,7 @@ failed.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task StartAsync(int millisecondsDialTimeout = 15000, int millisecondsBroadcastBlockInterval = 15000, int millisecondsBroadcastTxInterval = 5000, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">public async Task StartAsync(int millisecondsDialTimeout = 15000, int millisecondsBroadcastBlockInterval = 15000, int millisecondsBroadcastTxInterval = 5000, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1314,7 +1314,7 @@ already <a class="xref" href="Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_R
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task StartAsync(TimeSpan dialTimeout, TimeSpan broadcastBlockInterval, TimeSpan broadcastTxInterval, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">public async Task StartAsync(TimeSpan dialTimeout, TimeSpan broadcastBlockInterval, TimeSpan broadcastTxInterval, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1411,7 +1411,7 @@ already <a class="xref" href="Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_R
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task StopAsync(CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">public async Task StopAsync(CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1458,7 +1458,7 @@ already <a class="xref" href="Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_R
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task StopAsync(TimeSpan waitFor, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">public async Task StopAsync(TimeSpan waitFor, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">

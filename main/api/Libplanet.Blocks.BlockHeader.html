@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Struct BlockHeader
    | Libplanet ">
-    <meta name="generator" content="docfx 2.56.6.0">
+    <meta name="generator" content="docfx 2.58.2.0">
     
     <link rel="shortcut icon" href="../images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -105,7 +105,7 @@
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
   <h5 id="Libplanet_Blocks_BlockHeader_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public struct BlockHeader : IBlockExcerpt</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly struct BlockHeader : IBlockExcerpt</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -277,7 +277,7 @@ a <a class="xref" href="Libplanet.Blocks.BlockHeader.html">BlockHeader</a> insta
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public long Difficulty { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly long Difficulty { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -311,7 +311,7 @@ a <a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libpla
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BlockHash Hash { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly BlockHash Hash { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -347,7 +347,7 @@ a <a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libpla
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public long Index { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly long Index { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -378,7 +378,7 @@ a <a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libpla
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Address Miner { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly Address Miner { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -409,7 +409,7 @@ a <a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libpla
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Nonce Nonce { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly Nonce Nonce { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -442,7 +442,7 @@ Used for <span class="xref">Libplanet.Blocks.BlockHeader.Validate(Libplanet.Hash
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ImmutableArray&lt;byte&gt; PreEvaluationHash { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly ImmutableArray&lt;byte&gt; PreEvaluationHash { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -479,7 +479,7 @@ Used for <span class="xref">Libplanet.Blocks.BlockHeader.Validate(Libplanet.Hash
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BlockHash? PreviousHash { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly BlockHash? PreviousHash { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -510,7 +510,7 @@ Used for <span class="xref">Libplanet.Blocks.BlockHeader.Validate(Libplanet.Hash
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int ProtocolVersion { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly int ProtocolVersion { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -542,7 +542,7 @@ a <a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libpla
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public HashDigest&lt;SHA256&gt;? StateRootHash { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly HashDigest&lt;SHA256&gt;? StateRootHash { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -577,7 +577,7 @@ a <a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libpla
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public DateTimeOffset Timestamp { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly DateTimeOffset Timestamp { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -608,7 +608,7 @@ a <a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libpla
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BigInteger TotalDifficulty { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly BigInteger TotalDifficulty { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -640,7 +640,7 @@ transactions.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public HashDigest&lt;SHA256&gt;? TxHash { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly HashDigest&lt;SHA256&gt;? TxHash { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -723,7 +723,7 @@ transactions.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public byte[] Serialize()</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly byte[] Serialize()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -756,7 +756,7 @@ transactions.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Bencodex.Types.Dictionary ToBencodex()</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly Bencodex.Types.Dictionary ToBencodex()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">

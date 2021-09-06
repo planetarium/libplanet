@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class BlockChain&lt;T&gt;
    | Libplanet ">
-    <meta name="generator" content="docfx 2.56.6.0">
+    <meta name="generator" content="docfx 2.58.2.0">
     
     <link rel="shortcut icon" href="../images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -399,7 +399,7 @@ Returns a <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L318">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_Item_" data-uid="Libplanet.Blockchain.BlockChain`1.Item*"></a>
-  <h4 id="Libplanet_Blockchain_BlockChain_1_Item_Libplanet_Blocks_BlockHash__" data-uid="Libplanet.Blockchain.BlockChain`1.Item(Libplanet.Blocks.BlockHash@)">Item[BlockHash]</h4>
+  <h4 id="Libplanet_Blockchain_BlockChain_1_Item_Libplanet_Blocks_BlockHash__" data-uid="Libplanet.Blockchain.BlockChain`1.Item(Libplanet.Blocks.BlockHash@)">Item[in BlockHash]</h4>
   <div class="markdown level1 summary"><p>Gets the block corresponding to the <code data-dev-comment-type="paramref" class="paramref">blockHash</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -738,7 +738,7 @@ transactions are recorded.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Append(Block&lt;T&gt; block, StateCompleterSet&lt;T&gt;? stateCompleters = default(StateCompleterSet&lt;T&gt;? ))</code></pre>
+    <pre><code class="lang-csharp hljs">public void Append(Block&lt;T&gt; block, StateCompleterSet&lt;T&gt;? stateCompleters = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -870,7 +870,7 @@ results.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IReadOnlyList&lt;ActionEvaluation&gt; ExecuteActions(Block&lt;T&gt; block, StateCompleterSet&lt;T&gt;? stateCompleters = default(StateCompleterSet&lt;T&gt;? ))</code></pre>
+    <pre><code class="lang-csharp hljs">public IReadOnlyList&lt;ActionEvaluation&gt; ExecuteActions(Block&lt;T&gt; block, StateCompleterSet&lt;T&gt;? stateCompleters = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -948,7 +948,7 @@ Exposed as public for benchmarking.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public FungibleAssetValue GetBalance(Address address, Currency currency, BlockHash? offset = default(BlockHash? ), FungibleAssetStateCompleter&lt;T&gt; stateCompleter = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public FungibleAssetValue GetBalance(Address address, Currency currency, BlockHash? offset = null, FungibleAssetStateCompleter&lt;T&gt; stateCompleter = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1111,7 +1111,7 @@ instead.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IValue GetState(Address address, BlockHash? offset = default(BlockHash? ), StateCompleter&lt;T&gt; stateCompleter = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public IValue GetState(Address address, BlockHash? offset = null, StateCompleter&lt;T&gt; stateCompleter = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1308,7 +1308,7 @@ executed within the block, it returns <code>null</code> instead.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Block&lt;T&gt; MakeGenesisBlock(HashAlgorithmType hashAlgorithm, IEnumerable&lt;T&gt; actions = null, PrivateKey privateKey = null, DateTimeOffset? timestamp = default(DateTimeOffset? ), IAction blockAction = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Block&lt;T&gt; MakeGenesisBlock(HashAlgorithmType hashAlgorithm, IEnumerable&lt;T&gt; actions = null, PrivateKey privateKey = null, DateTimeOffset? timestamp = null, IAction blockAction = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1388,7 +1388,7 @@ Cannot create new transaction if the genesis block does not exist.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Transaction&lt;T&gt; MakeTransaction(PrivateKey privateKey, IEnumerable&lt;T&gt; actions, IImmutableSet&lt;Address&gt; updatedAddresses = null, DateTimeOffset? timestamp = default(DateTimeOffset? ))</code></pre>
+    <pre><code class="lang-csharp hljs">public Transaction&lt;T&gt; MakeTransaction(PrivateKey privateKey, IEnumerable&lt;T&gt; actions, IImmutableSet&lt;Address&gt; updatedAddresses = null, DateTimeOffset? timestamp = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1464,7 +1464,7 @@ signed.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;Block&lt;T&gt;&gt; MineBlock(Address miner, DateTimeOffset timestamp, bool append, int maxTransactions, int maxTransactionsPerSigner, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">public async Task&lt;Block&lt;T&gt;&gt; MineBlock(Address miner, DateTimeOffset timestamp, bool append, int maxTransactions, int maxTransactionsPerSigner, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1572,7 +1572,7 @@ block is produced with current timestamp and appended immediately to the chain.
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;Block&lt;T&gt;&gt; MineBlock(Address miner, DateTimeOffset? timestamp = default(DateTimeOffset? ), bool? append = default(bool? ), int? maxTransactions = default(int? ), int? maxTransactionsPerSigner = default(int? ), CancellationToken? cancellationToken = default(CancellationToken? ))</code></pre>
+    <pre><code class="lang-csharp hljs">public async Task&lt;Block&lt;T&gt;&gt; MineBlock(Address miner, DateTimeOffset? timestamp = null, bool? append = null, int? maxTransactions = null, int? maxTransactionsPerSigner = null, CancellationToken? cancellationToken = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1682,7 +1682,7 @@ In other words, this method is idempotent.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BlockPerception PerceiveBlock(IBlockExcerpt blockExcerpt, DateTimeOffset? perceivedTime = default(DateTimeOffset? ))</code></pre>
+    <pre><code class="lang-csharp hljs">public BlockPerception PerceiveBlock(IBlockExcerpt blockExcerpt, DateTimeOffset? perceivedTime = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">

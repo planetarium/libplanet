@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Struct FungibleAssetValue
    | Libplanet ">
-    <meta name="generator" content="docfx 2.56.6.0">
+    <meta name="generator" content="docfx 2.58.2.0">
     
     <link rel="shortcut icon" href="../images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -100,7 +100,7 @@
   <h5 id="Libplanet_Assets_FungibleAssetValue_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Serializable]
-public struct FungibleAssetValue : IEquatable&lt;FungibleAssetValue&gt;, IComparable&lt;FungibleAssetValue&gt;, IComparable, ISerializable</code></pre>
+public readonly struct FungibleAssetValue : IEquatable&lt;FungibleAssetValue&gt;, IComparable&lt;FungibleAssetValue&gt;, IComparable, ISerializable</code></pre>
   </div>
   <h5 id="Libplanet_Assets_FungibleAssetValue_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>It behaves like numbers except for division operator (<code>/</code>) to prevent to forget
@@ -378,7 +378,7 @@ separator, in absolute value.</p>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Pure]
-public BigInteger MajorUnit { get; }</code></pre>
+public readonly BigInteger MajorUnit { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -418,7 +418,7 @@ separator, in absolute value.</p>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Pure]
-public BigInteger MinorUnit { get; }</code></pre>
+public readonly BigInteger MinorUnit { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -457,7 +457,7 @@ public BigInteger MinorUnit { get; }</code></pre>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Pure]
-public int Sign { get; }</code></pre>
+public readonly int Sign { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -495,7 +495,7 @@ table:</p>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Pure]
-public FungibleAssetValue Abs()</code></pre>
+public readonly FungibleAssetValue Abs()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -527,7 +527,7 @@ public FungibleAssetValue Abs()</code></pre>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Pure]
-public int CompareTo(FungibleAssetValue other)</code></pre>
+public readonly int CompareTo(FungibleAssetValue other)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -575,7 +575,7 @@ public int CompareTo(FungibleAssetValue other)</code></pre>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Pure]
-public int CompareTo(object obj)</code></pre>
+public readonly int CompareTo(object obj)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -625,7 +625,7 @@ and the remainder.</p>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Pure]
-public (BigInteger Quotient, FungibleAssetValue Remainder) DivRem(FungibleAssetValue divisor)</code></pre>
+public readonly (BigInteger Quotient, FungibleAssetValue Remainder) DivRem(FungibleAssetValue divisor)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -655,7 +655,7 @@ public (BigInteger Quotient, FungibleAssetValue Remainder) DivRem(FungibleAssetV
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.valuetuple-2">ValueTuple</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.numerics.biginteger">BigInteger</a>, <a class="xref" href="Libplanet.Assets.FungibleAssetValue.html">FungibleAssetValue</a>&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.valuetuple-2">(T1, T2)</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.numerics.biginteger">BigInteger</a>, <a class="xref" href="Libplanet.Assets.FungibleAssetValue.html">FungibleAssetValue</a>&gt;</td>
         <td><p>A tuple of the <code>Quotient</code> and <code>Remainder</code> of the division.</p>
 </td>
       </tr>
@@ -700,7 +700,7 @@ the <code data-dev-comment-type="paramref" class="paramref">remainder</code> in 
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Pure]
-public BigInteger DivRem(FungibleAssetValue divisor, out FungibleAssetValue remainder)</code></pre>
+public readonly BigInteger DivRem(FungibleAssetValue divisor, out FungibleAssetValue remainder)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -783,7 +783,7 @@ and the remainder.</p>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Pure]
-public (FungibleAssetValue Quotient, FungibleAssetValue Remainder) DivRem(BigInteger divisor)</code></pre>
+public readonly (FungibleAssetValue Quotient, FungibleAssetValue Remainder) DivRem(BigInteger divisor)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -813,7 +813,7 @@ public (FungibleAssetValue Quotient, FungibleAssetValue Remainder) DivRem(BigInt
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.valuetuple-2">ValueTuple</a>&lt;<a class="xref" href="Libplanet.Assets.FungibleAssetValue.html">FungibleAssetValue</a>, <a class="xref" href="Libplanet.Assets.FungibleAssetValue.html">FungibleAssetValue</a>&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.valuetuple-2">(T1, T2)</a>&lt;<a class="xref" href="Libplanet.Assets.FungibleAssetValue.html">FungibleAssetValue</a>, <a class="xref" href="Libplanet.Assets.FungibleAssetValue.html">FungibleAssetValue</a>&gt;</td>
         <td><p>A tuple of the <code>Quotient</code> and <code>Remainder</code> of the division.</p>
 </td>
       </tr>
@@ -852,7 +852,7 @@ the <code data-dev-comment-type="paramref" class="paramref">remainder</code> in 
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Pure]
-public FungibleAssetValue DivRem(BigInteger divisor, out FungibleAssetValue remainder)</code></pre>
+public readonly FungibleAssetValue DivRem(BigInteger divisor, out FungibleAssetValue remainder)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -927,7 +927,7 @@ uninitialized.</p>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Pure]
-public bool Equals(FungibleAssetValue other)</code></pre>
+public readonly bool Equals(FungibleAssetValue other)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -975,7 +975,7 @@ public bool Equals(FungibleAssetValue other)</code></pre>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Pure]
-public override bool Equals(object obj)</code></pre>
+public override readonly bool Equals(object obj)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1085,7 +1085,7 @@ public override bool Equals(object obj)</code></pre>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Pure]
-public override int GetHashCode()</code></pre>
+public override readonly int GetHashCode()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1119,7 +1119,7 @@ public override int GetHashCode()</code></pre>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Pure]
-public string GetQuantityString(bool minorUnit = false)</code></pre>
+public readonly string GetQuantityString(bool minorUnit = false)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1245,7 +1245,7 @@ a valid numeric string.</p>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Pure]
-public override string ToString()</code></pre>
+public override readonly string ToString()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2108,7 +2108,7 @@ public static FungibleAssetValue operator -(FungibleAssetValue value)</code></pr
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)</code></pre>
+    <pre><code class="lang-csharp hljs">readonly void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
