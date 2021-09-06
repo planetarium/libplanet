@@ -27,6 +27,7 @@ namespace Libplanet.Explorer.Store
 
         // FIXME we should separate it.
         private readonly IStore _store;
+        private bool _disposed = false;
 
         public LiteDBRichStore(
             IStore store,
@@ -413,6 +414,17 @@ namespace Libplanet.Explorer.Store
                 Query.EQ(nameof(AddressRefDoc.AddressString), addressString)
             );
             return collection.Find(query, offset, limit).Select(doc => doc.TxId);
+        }
+
+        public void Dispose()
+        {
+            if (!_disposed)
+            {
+                _db?.Dispose();
+                _memoryStream?.Dispose();
+                _store.Dispose();
+                _disposed = true;
+            }
         }
 
         private LiteCollection<TxRefDoc> TxRefCollection() =>

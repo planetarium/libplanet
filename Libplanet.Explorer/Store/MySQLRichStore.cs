@@ -26,9 +26,9 @@ namespace Libplanet.Explorer.Store
 
         // FIXME we should separate it.
         private readonly IStore _store;
-
         private readonly MySqlCompiler _compiler;
         private readonly string _connectionString;
+        private bool _disposed = false;
 
         public MySQLRichStore(IStore store, MySQLRichStoreOptions options)
         {
@@ -377,6 +377,15 @@ namespace Libplanet.Explorer.Store
             return query.OrderBy("tx_nonce")
                 .Get<byte[]>()
                 .Select(bytes => new TxId(bytes));
+        }
+
+        public void Dispose()
+        {
+            if (!_disposed)
+            {
+                _store.Dispose();
+                _disposed = true;
+            }
         }
 
         private QueryFactory OpenDB() =>

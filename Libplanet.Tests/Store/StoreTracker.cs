@@ -11,6 +11,7 @@ namespace Libplanet.Tests.Store
     public sealed class StoreTracker : BaseTracker, IStore
     {
         private readonly IStore _store;
+        private bool _disposed = false;
 
         public StoreTracker(IStore store)
         {
@@ -256,6 +257,15 @@ namespace Libplanet.Tests.Store
         {
             Log(nameof(SetCanonicalChainId), chainId);
             _store.SetCanonicalChainId(chainId);
+        }
+
+        public void Dispose()
+        {
+            if (!_disposed)
+            {
+                _store.Dispose();
+                _disposed = true;
+            }
         }
     }
 }
