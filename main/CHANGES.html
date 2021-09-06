@@ -83,7 +83,7 @@ interface.  [<a href="https://github.com/planetarium/libplanet/pull/1442">#1442<
 method instead.  [<a href="https://github.com/planetarium/libplanet/pull/1464">#1464</a>]</li>
 <li><code>PublicKey()</code> constructor's parameter type became <code>IReadOnlyList&lt;byte&gt;</code>
 (was <code>byte[]</code>).  [<a href="https://github.com/planetarium/libplanet/pull/1464">#1464</a>]</li>
-<li><code>PublicKey.Verify()</code> method's both parameters types became
+<li><code>PublicKey.Verify()</code> method's both parameter types became
 <code>IReadOnlyList&lt;byte&gt;</code> (were both <code>byte[]</code>).  [<a href="https://github.com/planetarium/libplanet/pull/1464">#1464</a>]</li>
 <li><code>HashDigest&lt;T&gt;.DeriveFrom()</code> method's parameter type became
 <code>IReadOnlyList&lt;byte&gt;</code> (was <code>byte[]</code>).  [<a href="https://github.com/planetarium/libplanet/pull/1464">#1464</a>]</li>
@@ -97,6 +97,26 @@ by <code>BlockChain&lt;T&gt;</code>.</li>
 </li>
 <li>Unused parameter <code>currentTime</code> removed from <code>BlockChain&lt;T&gt;.Append()</code>
 [<a href="https://github.com/planetarium/libplanet/issues/1462">#1462</a>, <a href="https://github.com/planetarium/libplanet/pull/1465">#1465</a>]</li>
+<li><code>BlockHeader</code>'s properties are now represented as richer types than before.
+[<a href="https://github.com/planetarium/libplanet/pull/1470">#1470</a>]
+<ul>
+<li><code>BlockHeader.Timestamp</code> property's type became <code>DateTimeOffset</code>
+(was <code>string</code>).</li>
+<li><code>BlockHeader.Nonce</code> property's type became <code>Nonce</code> (was
+<code>ImmutableArray&lt;byte&gt;</code>).</li>
+<li><code>BlockHeader.Miner</code> property's type became <code>Address</code> (was
+<code>ImmutableArray&lt;byte&gt;</code>).</li>
+<li><code>BlockHeader.PreviousHash</code> property's type became <code>BlockHash?</code> (was
+<code>ImmutableArray&lt;byte&gt;</code>).</li>
+<li><code>BlockHeader.TxHash</code> property's type became <code>HashDigest&lt;SHA256&gt;?</code> (was
+<code>ImmutableArray&lt;byte&gt;</code>).</li>
+<li><code>BlockHeader.Hash</code> property's type became <code>BlockHash</code> (was
+<code>ImmutableArray&lt;byte&gt;</code>).</li>
+<li><code>BlockHeader.StateRootHash</code> property's type became <code>HashDigest&lt;SHA256&gt;?</code>
+(was <code>ImmutableArray&lt;byte&gt;</code>).</li>
+<li>Removed <code>BlockHeader(int, long, string, ImmutableArray&lt;byte&gt;, ImmutableArray&lt;byte&gt;, long, BigInteger, ImmutableArray&lt;byte&gt;, ImmutableArray&lt;byte&gt;, ImmutableArray&lt;byte&gt;, ImmutableArray&lt;byte&gt;, ImmutableArray&lt;byte&gt;)</code> constructor.  Use <code>BlockHeader(int, long, DateTimeOffset, Nonce, Address, long, BigInteger, BlockHash?, HashDigest&lt;SHA256&gt;?, BlockHash, ImmutableArray&lt;byte&gt;, HashDigest&lt;SHA256&gt;?)</code> constructor instead.</li>
+</ul>
+</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <ul>
@@ -119,6 +139,7 @@ by <code>BlockChain&lt;T&gt;</code>.</li>
 [<a href="https://github.com/planetarium/libplanet/issues/1449">#1449</a>, <a href="https://github.com/planetarium/libplanet/pull/1463">#1463</a>]</li>
 <li><code>BlockChain&lt;T&gt;.MineBlock()</code> now takes <code>maxTransactionsPerSigner</code>
 as an optional parameter.  [<a href="https://github.com/planetarium/libplanet/issues/1449">#1449</a>, <a href="https://github.com/planetarium/libplanet/pull/1463">#1463</a>]</li>
+<li>Added <code>BlockHeader(int, long, DateTimeOffset, Nonce, Address, long, BigInteger, BlockHash?, HashDigest&lt;SHA256&gt;?, BlockHash, ImmutableArray&lt;byte&gt;, HashDigest&lt;SHA256&gt;?)</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/1470">#1470</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
