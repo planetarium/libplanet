@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Diagnostics.CodeAnalysis;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Crypto;
@@ -721,10 +720,6 @@ namespace Libplanet.Tests.Tx
             Assert.Empty(t2.Actions);
         }
 
-        [SuppressMessage(
-            "Microsoft.StyleCop.CSharp.ReadabilityRules",
-            "SA1118",
-            Justification = "Long array literals should be multiline.")]
         internal RawTransaction GetExpectedRawTransaction(bool includeSingature)
         {
             var privateKey = new PrivateKey(new byte[]

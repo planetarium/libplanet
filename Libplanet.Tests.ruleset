@@ -12,6 +12,8 @@
     <Rule Id="SA1005" Action="None" />
     <!-- Closing parenthesis should be on line of opening parenthesis -->
     <Rule Id="SA1112" Action="None" />
+    <!-- The parameter spans multiple lines -->
+    <Rule Id="SA1118" Action="None" />
     <!-- Allow tuple types in signatures omit element names. -->
     <Rule Id="SA1414" Action="None" />
     <!-- Allow tuple fields to be referred by index (i.e. ItemN). -->

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography;
@@ -246,10 +245,6 @@ namespace Libplanet.Tests.Action
                     stateCompleterSet: StateCompleterSet<ThrowException>.Recalculate).ToList());
         }
 
-        [SuppressMessage(
-            "Microsoft.StyleCop.CSharp.ReadabilityRules",
-            "SA1118",
-            Justification = "Long array literals should be multiline.")]
         [Fact]
         public void EvaluateTxs()
         {
