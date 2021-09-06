@@ -2,7 +2,6 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net;
 using System.Runtime.CompilerServices;
@@ -10,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Action;
 using Libplanet.Blockchain;
+using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
@@ -459,7 +459,7 @@ namespace Libplanet.Net
         )
         {
             // FIXME: It would be better if it returns IAsyncEnumerable<PeerChainState> instead.
-            return (await DialToExistingPeers(dialTimeout, int.MaxValue, cancellationToken))
+            return (await DialExistingPeers(dialTimeout, int.MaxValue, cancellationToken))
                 .Select(pp =>
                     new PeerChainState(
                         pp.Item1,
@@ -492,10 +492,6 @@ namespace Libplanet.Net
         /// </remarks>
         /// <exception cref="AggregateException">Thrown when the given the block downloading is
         /// failed.</exception>
-        [SuppressMessage(
-            "Microsoft.StyleCop.CSharp.ReadabilityRules",
-            "MEN003",
-            Justification = "Many lines are just for writing logs.")]
         public async Task PreloadAsync(
             TimeSpan? dialTimeout = null,
             IProgress<PreloadState> progress = null,
@@ -517,7 +513,7 @@ namespace Libplanet.Net
                 "Fetching excerpts from {PeersCount} peers...",
                 Peers.Count);
             var peersWithExcerpts = await GetPeersWithExcerpts(
-                BlockChain.Tip, dialTimeout, int.MaxValue, cancellationToken);
+                dialTimeout, int.MaxValue, cancellationToken);
 
             if (!peersWithExcerpts.Any())
             {
@@ -1007,17 +1003,29 @@ namespace Libplanet.Net
             Transport.BroadcastMessage(except, message);
         }
 
-        private Task<(BoundPeer Peer, ChainStatus ChainStatus)[]> DialToExistingPeers(
+        /// <summary>
+        /// Gets <see cref="ChainStatus"/>es from randomly selected <see cref="BoundPeer"/>s
+        /// from <see cref="Peers"/> with each <see cref="ChainStatus"/> tied to
+        /// its originating <see cref="BoundPeer"/>.
+        /// </summary>
+        /// <param name="dialTimeout">Timeout for each dialing operation to
+        /// a <see cref="BoundPeer"/> in <see cref="Peers"/>.  Not having a timeout limit
+        /// is equivalent to setting this value to <c>null</c>.</param>
+        /// <param name="maxPeersToDial">Maximum number of <see cref="Peer"/>s to dial.</param>
+        /// <param name="cancellationToken">A cancellation token used to propagate notification
+        /// that this operation should be canceled.</param>
+        /// <returns>An awaitable task with an <see cref="Array"/> of tuples
+        /// of <see cref="BoundPeer"/> and <see cref="ChainStatus"/>.</returns>
+        private Task<(BoundPeer, ChainStatus)[]> DialExistingPeers(
             TimeSpan? dialTimeout,
-            int max,
-            CancellationToken cancellationToken
-        )
+            int maxPeersToDial,
+            CancellationToken cancellationToken)
         {
             // FIXME: It would be better if it returns IAsyncEnumerable<(BoundPeer, ChainStatus)>
             // instead.
             var rnd = new System.Random();
             IEnumerable<Task<(BoundPeer, ChainStatus)>> tasks = Peers.OrderBy(x => rnd.Next())
-                .Take(max)
+                .Take(maxPeersToDial)
                 .Select(
                     peer => Transport.SendMessageWithReplyAsync(
                         peer,
@@ -1025,26 +1033,27 @@ namespace Libplanet.Net
                         dialTimeout,
                         cancellationToken
                     ).ContinueWith<(BoundPeer, ChainStatus)>(
-                        t =>
+                        task =>
                         {
-                            if (t.IsFaulted || t.IsCanceled ||
-                                !(t.Result is ChainStatus chainStatus))
+                            if (task.IsFaulted || task.IsCanceled ||
+                                !(task.Result is ChainStatus chainStatus))
                             {
-                                switch (t.Exception?.InnerException)
+                                switch (task.Exception?.InnerException)
                                 {
                                     case TimeoutException te:
                                         _logger.Debug(
-                                            $"TimeoutException occurred during dial to ({peer})."
-                                        );
+                                            "TimeoutException occurred while dialing ({Peer}).",
+                                            peer);
                                         break;
                                     case DifferentAppProtocolVersionException dapve:
                                         _logger.Error(
                                             dapve,
-                                            $"Protocol Version is different ({peer}).");
+                                            "Protocol Version is different ({Peer}).",
+                                            peer);
                                         break;
                                     case Exception e:
                                         string msg =
-                                            "An unexpected exception occurred during dial to " +
+                                            "An unexpected exception occurred while dialing " +
                                             "({Peer}).";
                                         _logger.Error(e, msg, peer);
                                         break;
@@ -1065,51 +1074,51 @@ namespace Libplanet.Net
                 );
 
             return Task.WhenAll(tasks).ContinueWith(
-                t =>
+                task =>
                 {
-                    if (t.IsFaulted)
+                    if (task.IsFaulted)
                     {
-                        throw t.Exception;
+                        throw task.Exception;
                     }
 
-                    return t.Result
-                        .Where(pair => !(pair.Item1 is null || pair.Item2 is null))
+                    return task.Result
+                        .Where(pair => pair.Item1 is BoundPeer && pair.Item2 is ChainStatus)
                         .ToArray();
                 },
                 cancellationToken
             );
         }
 
+        /// <summary>
+        /// Gets <see cref="IBlockExcerpt"/>es from randomly selected <see cref="BoundPeer"/>s
+        /// from <see cref="Peers"/> with each <see cref="IBlockExcerpt"/> tied to
+        /// its originating <see cref="BoundPeer"/>.
+        /// </summary>
+        /// <param name="dialTimeout">Timeout for each dialing operation to
+        /// a <see cref="BoundPeer"/> in <see cref="Peers"/>.  Not having a timeout limit
+        /// is equivalent to setting this value to <c>null</c>.</param>
+        /// <param name="maxPeersToDial">Maximum number of <see cref="Peer"/>s to dial.</param>
+        /// <param name="cancellationToken">A cancellation token used to propagate notification
+        /// that this operation should be canceled.</param>
+        /// <returns>An awaitable task with a <see cref="List{T}"/> of tuples
+        /// of <see cref="BoundPeer"/> and <see cref="IBlockExcerpt"/> ordered by
+        /// the <see cref="IBlockPolicy{T}.CanonicalChainComparer"/> given by
+        /// <see cref="BlockChain{T}.Policy"/> in descending order.</returns>
         private async Task<List<(BoundPeer, IBlockExcerpt)>> GetPeersWithExcerpts(
-            Block<T> initialTip,
             TimeSpan? dialTimeout,
-            int max,
+            int maxPeersToDial,
             CancellationToken cancellationToken)
         {
+            Block<T> tip = BlockChain.Tip;
             BlockHash genesisHash = BlockChain.Genesis.Hash;
             IComparer<IBlockExcerpt> canonComparer = BlockChain.Policy.CanonicalChainComparer;
-            BlockPerception tipPerception = BlockChain.PerceiveBlock(initialTip);
-            var peersWithChainStatusAndDiff =
-                (await DialToExistingPeers(dialTimeout, max, cancellationToken))
+            return (await DialExistingPeers(dialTimeout, maxPeersToDial, cancellationToken))
                 .Where(
-                    pp =>
-                    {
-                        if (!(pp.ChainStatus is ChainStatus chainStatus))
-                        {
-                            return false;
-                        }
-
-                        return genesisHash.Equals(chainStatus.GenesisHash) && canonComparer.Compare(
-                            BlockChain.PerceiveBlock(chainStatus, chainStatus.Timestamp),
-                            tipPerception
-                        ) > 0;
-                    })
-                .Select(pp => (pp.Peer, pp.ChainStatus, pp.ChainStatus.TotalDifficulty))
-                .ToList();
-
-            return peersWithChainStatusAndDiff
-                .OrderByDescending(p => p.Item3)
-                .Select(p => (p.Item1, (IBlockExcerpt)p.Item2))
+                    pair => pair.Item2 is { } chainStatus &&
+                        genesisHash.Equals(chainStatus.GenesisHash) &&
+                        canonComparer.Compare(chainStatus, tip) > 0)
+                .Select(pair => (pair.Item1, (IBlockExcerpt)pair.Item2))
+                .OrderByDescending(pair => pair.Item2, canonComparer)
                 .ToList();
         }
 
