@@ -8095,6 +8095,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Crypto.PrivateKey.ExchangeKey
   nameWithType: PrivateKey.ExchangeKey
+- uid: Libplanet.Crypto.PrivateKey.FromString(System.String)
+  name: FromString(String)
+  href: api/Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_FromString_System_String_
+  commentId: M:Libplanet.Crypto.PrivateKey.FromString(System.String)
+  fullName: Libplanet.Crypto.PrivateKey.FromString(System.String)
+  nameWithType: PrivateKey.FromString(String)
+- uid: Libplanet.Crypto.PrivateKey.FromString*
+  name: FromString
+  href: api/Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_FromString_
+  commentId: Overload:Libplanet.Crypto.PrivateKey.FromString
+  isSpec: "True"
+  fullName: Libplanet.Crypto.PrivateKey.FromString
+  nameWithType: PrivateKey.FromString
 - uid: Libplanet.Crypto.PrivateKey.op_Equality(Libplanet.Crypto.PrivateKey,Libplanet.Crypto.PrivateKey)
   name: Equality(PrivateKey, PrivateKey)
   href: api/Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_op_Equality_Libplanet_Crypto_PrivateKey_Libplanet_Crypto_PrivateKey_

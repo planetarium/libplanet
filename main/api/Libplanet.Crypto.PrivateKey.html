@@ -280,7 +280,7 @@ this private key.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Crypto_PrivateKey_Decrypt_ImmutableArray_System_Byte__.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PrivateKey.Decrypt(ImmutableArray%7BSystem.Byte%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Crypto/PrivateKey.cs/#L224">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Crypto/PrivateKey.cs/#L248">View Source</a>
   </span>
   <a id="Libplanet_Crypto_PrivateKey_Decrypt_" data-uid="Libplanet.Crypto.PrivateKey.Decrypt*"></a>
   <h4 id="Libplanet_Crypto_PrivateKey_Decrypt_ImmutableArray_System_Byte__" data-uid="Libplanet.Crypto.PrivateKey.Decrypt(ImmutableArray{System.Byte})">Decrypt(ImmutableArray&lt;Byte&gt;)</h4>
@@ -358,7 +358,7 @@ are <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byt
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Crypto_PrivateKey_Decrypt_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PrivateKey.Decrypt(System.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Crypto/PrivateKey.cs/#L201">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Crypto/PrivateKey.cs/#L225">View Source</a>
   </span>
   <a id="Libplanet_Crypto_PrivateKey_Decrypt_" data-uid="Libplanet.Crypto.PrivateKey.Decrypt*"></a>
   <h4 id="Libplanet_Crypto_PrivateKey_Decrypt_System_Byte___" data-uid="Libplanet.Crypto.PrivateKey.Decrypt(System.Byte[])">Decrypt(Byte[])</h4>
@@ -436,7 +436,7 @@ are <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byt
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Crypto_PrivateKey_ExchangeKey_Libplanet_Crypto_PublicKey_.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PrivateKey.ExchangeKey(Libplanet.Crypto.PublicKey)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Crypto/PrivateKey.cs/#L246">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Crypto/PrivateKey.cs/#L270">View Source</a>
   </span>
   <a id="Libplanet_Crypto_PrivateKey_ExchangeKey_" data-uid="Libplanet.Crypto.PrivateKey.ExchangeKey*"></a>
   <h4 id="Libplanet_Crypto_PrivateKey_ExchangeKey_Libplanet_Crypto_PublicKey_" data-uid="Libplanet.Crypto.PrivateKey.ExchangeKey(Libplanet.Crypto.PublicKey)">ExchangeKey(PublicKey)</h4>
@@ -492,10 +492,91 @@ Note that it is not an elliptic-curve private key, but an <a href="https://en.wi
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Crypto_PrivateKey_FromString_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PrivateKey.FromString(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Crypto/PrivateKey.cs/#L137">View Source</a>
+  </span>
+  <a id="Libplanet_Crypto_PrivateKey_FromString_" data-uid="Libplanet.Crypto.PrivateKey.FromString*"></a>
+  <h4 id="Libplanet_Crypto_PrivateKey_FromString_System_String_" data-uid="Libplanet.Crypto.PrivateKey.FromString(System.String)">FromString(String)</h4>
+  <div class="markdown level1 summary"><p>Creates a <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a> instance from hexadecimal string of bytes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+public static PrivateKey FromString(string hex)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">hex</span></td>
+        <td><p>A hexadecimal string of a private key's
+<a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_ByteArray">ByteArray</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a></td>
+        <td><p>A created <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a> instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">hex</code>
+string is <code>null</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
+        <td><p>Thrown when the length of the given
+<code data-dev-comment-type="paramref" class="paramref">hex</code> string is an odd number, or it is empty.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.formatexception">FormatException</a></td>
+        <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">hex</code> string is
+not a valid hexadecimal string.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Crypto_PrivateKey_Sign_ImmutableArray_System_Byte__.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PrivateKey.Sign(ImmutableArray%7BSystem.Byte%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Crypto/PrivateKey.cs/#L181">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Crypto/PrivateKey.cs/#L205">View Source</a>
   </span>
   <a id="Libplanet_Crypto_PrivateKey_Sign_" data-uid="Libplanet.Crypto.PrivateKey.Sign*"></a>
   <h4 id="Libplanet_Crypto_PrivateKey_Sign_ImmutableArray_System_Byte__" data-uid="Libplanet.Crypto.PrivateKey.Sign(ImmutableArray{System.Byte})">Sign(ImmutableArray&lt;Byte&gt;)</h4>
@@ -559,7 +640,7 @@ It can be verified using <a class="xref" href="Libplanet.Crypto.PublicKey.html#L
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Crypto_PrivateKey_Sign_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PrivateKey.Sign(System.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Crypto/PrivateKey.cs/#L154">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Crypto/PrivateKey.cs/#L178">View Source</a>
   </span>
   <a id="Libplanet_Crypto_PrivateKey_Sign_" data-uid="Libplanet.Crypto.PrivateKey.Sign*"></a>
   <h4 id="Libplanet_Crypto_PrivateKey_Sign_System_Byte___" data-uid="Libplanet.Crypto.PrivateKey.Sign(System.Byte[])">Sign(Byte[])</h4>
@@ -631,7 +712,7 @@ It can be verified using <a class="xref" href="Libplanet.Crypto.PublicKey.html#L
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Crypto_PrivateKey_ToByteArray.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PrivateKey.ToByteArray%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Crypto/PrivateKey.cs/#L287">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Crypto/PrivateKey.cs/#L311">View Source</a>
   </span>
   <a id="Libplanet_Crypto_PrivateKey_ToByteArray_" data-uid="Libplanet.Crypto.PrivateKey.ToByteArray*"></a>
   <h4 id="Libplanet_Crypto_PrivateKey_ToByteArray" data-uid="Libplanet.Crypto.PrivateKey.ToByteArray">ToByteArray()</h4>
