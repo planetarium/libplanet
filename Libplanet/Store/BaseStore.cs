@@ -16,7 +16,7 @@ namespace Libplanet.Store
     /// <summary>
     /// Common code for several <see cref="IStore"/> implementations.
     /// </summary>
-    public abstract class BaseStore : IStore, IDisposable
+    public abstract class BaseStore : IStore
     {
         /// <inheritdoc />
         public abstract IEnumerable<Guid> ListChainIds();

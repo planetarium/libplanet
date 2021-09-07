@@ -472,6 +472,10 @@ If omitted (default) explorer only the local blockchain store.")]
                 where T : IAction, new()
             {
             }
+
+            public void Dispose()
+            {
+            }
         }
     }
 }

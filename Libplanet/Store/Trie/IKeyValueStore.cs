@@ -1,4 +1,5 @@
 #nullable enable
+using System;
 using System.Collections.Generic;
 
 namespace Libplanet.Store.Trie
@@ -6,7 +7,7 @@ namespace Libplanet.Store.Trie
     /// <summary>
     /// An interface to access key-value store.
     /// </summary>
-    public interface IKeyValueStore
+    public interface IKeyValueStore : IDisposable
     {
         public byte[] Get(byte[] key);
 

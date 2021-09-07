@@ -8,7 +8,7 @@ using Libplanet.Tx;
 
 namespace Libplanet.Store
 {
-    public interface IStore
+    public interface IStore : IDisposable
     {
         /// <summary>
         /// Lists existing chain IDs.

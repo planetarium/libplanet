@@ -1126,13 +1126,10 @@ namespace Libplanet.Tests.Store
         [SkippableFact]
         public void IdempotentDispose()
         {
-            if (Fx.Store is IDisposable disposableStore)
-            {
 #pragma warning disable S3966 // Objects should not be disposed more than once
-                disposableStore.Dispose();
-                disposableStore.Dispose();
+            Fx.Store?.Dispose();
+            Fx.Store?.Dispose();
 #pragma warning restore S3966 // Objects should not be disposed more than once
-            }
         }
 
         private class AtomicityTestAction : IAction

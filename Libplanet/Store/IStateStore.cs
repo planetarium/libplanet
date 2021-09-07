@@ -11,7 +11,7 @@ namespace Libplanet.Store
     /// <summary>
     /// An interface to store states.
     /// </summary>
-    public interface IStateStore
+    public interface IStateStore : IDisposable
     {
         /// <summary>
         /// Sets states mapped as relation <see cref="Block{T}.Hash"/> → states.

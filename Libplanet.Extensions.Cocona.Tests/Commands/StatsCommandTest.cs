@@ -88,8 +88,8 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
         {
             foreach (var storeFixture in _storeFixtures)
             {
-                (storeFixture.Store as IDisposable)?.Dispose();
-                (storeFixture.StateStore as IDisposable)?.Dispose();
+                storeFixture.Store?.Dispose();
+                storeFixture.StateStore?.Dispose();
             }
 
             Console.SetOut(_originalWriter);

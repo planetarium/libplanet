@@ -73,6 +73,10 @@ namespace Libplanet.Tests.Store
                 where T : IAction, new()
             {
             }
+
+            public void Dispose()
+            {
+            }
         }
     }
 }

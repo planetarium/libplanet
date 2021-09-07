@@ -37,6 +37,10 @@ namespace Libplanet.Tests.Store.Trie
             return Dictionary.ContainsKey(key);
         }
 
+        public void Dispose()
+        {
+        }
+
         public IEnumerable<byte[]> ListKeys() => Dictionary.Keys;
     }
 }
