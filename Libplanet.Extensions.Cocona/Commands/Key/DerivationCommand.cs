@@ -32,7 +32,7 @@ namespace Libplanet.Extensions.Cocona.Commands.Key
                  );
             }
 
-            var privateKey = new PrivateKey(ByteUtil.ParseHex(privateKeyHex));
+            PrivateKey privateKey = Crypto.PrivateKey.FromString(privateKeyHex);
             if (address)
             {
                 Console.Out.WriteLine(privateKey.ToAddress());

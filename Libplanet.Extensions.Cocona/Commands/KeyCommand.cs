@@ -97,8 +97,7 @@ namespace Libplanet.Extensions.Cocona.Commands
             PrivateKey key;
             try
             {
-                byte[] keyBytes = ByteUtil.ParseHex(rawKeyHex);
-                key = new PrivateKey(keyBytes);
+                key = PrivateKey.FromString(rawKeyHex);
             }
             catch (FormatException)
             {

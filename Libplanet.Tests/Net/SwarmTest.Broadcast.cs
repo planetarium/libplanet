@@ -433,17 +433,13 @@ namespace Libplanet.Tests.Net
         {
             // If the bucket stored peers are the same, the block may not propagate,
             // so specify private keys to make the buckets different.
-            var keyA = ByteUtil.ParseHex(
-                "8568eb6f287afedece2c7b918471183db0451e1a61535bb0381cfdf95b85df20");
-            var keyB = ByteUtil.ParseHex(
+            PrivateKey minerKey = PrivateKey.FromString(
                 "c34f7498befcc39a14f03b37833f6c7bb78310f1243616524eda70e078b8313c");
-            var keyC = ByteUtil.ParseHex(
-                "941bc2edfab840d79914d80fe3b30840628ac37a5d812d7f922b5d2405a223d3");
-
-            var minerKey = new PrivateKey(keyB);
-            var swarmA = CreateSwarm(new PrivateKey(keyA));
+            var swarmA = CreateSwarm(PrivateKey.FromString(
+                "8568eb6f287afedece2c7b918471183db0451e1a61535bb0381cfdf95b85df20"));
             var swarmB = CreateSwarm(minerKey);
-            var swarmC = CreateSwarm(new PrivateKey(keyC));
+            var swarmC = CreateSwarm(PrivateKey.FromString(
+                "941bc2edfab840d79914d80fe3b30840628ac37a5d812d7f922b5d2405a223d3"));
 
             BlockChain<DumbAction> chainA = swarmA.BlockChain;
             BlockChain<DumbAction> chainB = swarmB.BlockChain;
@@ -514,16 +510,12 @@ namespace Libplanet.Tests.Net
         {
             // If the bucket stored peers are the same, the block may not propagate,
             // so specify private keys to make the buckets different.
-            var keyA = ByteUtil.ParseHex(
-                "8568eb6f287afedece2c7b918471183db0451e1a61535bb0381cfdf95b85df20");
-            var keyB = ByteUtil.ParseHex(
-                "c34f7498befcc39a14f03b37833f6c7bb78310f1243616524eda70e078b8313c");
-            var keyC = ByteUtil.ParseHex(
-                "941bc2edfab840d79914d80fe3b30840628ac37a5d812d7f922b5d2405a223d3");
-
-            var swarmA = CreateSwarm(new PrivateKey(keyA));
-            var swarmB = CreateSwarm(new PrivateKey(keyB));
-            var swarmC = CreateSwarm(new PrivateKey(keyC));
+            var swarmA = CreateSwarm(PrivateKey.FromString(
+                "8568eb6f287afedece2c7b918471183db0451e1a61535bb0381cfdf95b85df20"));
+            var swarmB = CreateSwarm(PrivateKey.FromString(
+                "c34f7498befcc39a14f03b37833f6c7bb78310f1243616524eda70e078b8313c"));
+            var swarmC = CreateSwarm(PrivateKey.FromString(
+                "941bc2edfab840d79914d80fe3b30840628ac37a5d812d7f922b5d2405a223d3"));
 
             BlockChain<DumbAction> chainA = swarmA.BlockChain;
             BlockChain<DumbAction> chainB = swarmB.BlockChain;
