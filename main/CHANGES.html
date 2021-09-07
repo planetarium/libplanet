@@ -117,6 +117,8 @@ by <code>BlockChain&lt;T&gt;</code>.</li>
 <li>Removed <code>BlockHeader(int, long, string, ImmutableArray&lt;byte&gt;, ImmutableArray&lt;byte&gt;, long, BigInteger, ImmutableArray&lt;byte&gt;, ImmutableArray&lt;byte&gt;, ImmutableArray&lt;byte&gt;, ImmutableArray&lt;byte&gt;, ImmutableArray&lt;byte&gt;)</code> constructor.  Use <code>BlockHeader(int, long, DateTimeOffset, Nonce, Address, long, BigInteger, BlockHash?, HashDigest&lt;SHA256&gt;?, BlockHash, ImmutableArray&lt;byte&gt;, HashDigest&lt;SHA256&gt;?)</code> constructor instead.</li>
 </ul>
 </li>
+<li><code>IStore</code>, <code>IStateStore</code>, and <code>IKeyValueStore</code> interfaces now inherit
+<code>IDisposable</code>.  [<a href="https://github.com/planetarium/libplanet/issues/1448">#1448</a>, <a href="https://github.com/planetarium/libplanet/pull/1474">#1474</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <ul>
