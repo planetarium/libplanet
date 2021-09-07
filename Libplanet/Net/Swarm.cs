@@ -1048,7 +1048,9 @@ namespace Libplanet.Net
         /// <param name="cancellationToken">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
         /// <returns>An awaitable task with an <see cref="Array"/> of tuples
-        /// of <see cref="BoundPeer"/> and <see cref="ChainStatus"/>.</returns>
+        /// of <see cref="BoundPeer"/> and <see cref="ChainStatus"/> where
+        /// <see cref="ChainStatus"/> can be <c>null</c> if dialing fails for
+        /// a selected <see cref="BoundPeer"/>.</returns>
         private Task<(BoundPeer, ChainStatus)[]> DialExistingPeers(
             TimeSpan? dialTimeout,
             int maxPeersToDial,
@@ -1056,8 +1058,34 @@ namespace Libplanet.Net
         {
             // FIXME: It would be better if it returns IAsyncEnumerable<(BoundPeer, ChainStatus)>
             // instead.
+            void LogException(BoundPeer peer, Task<Message> task)
+            {
+                switch (task.Exception?.InnerException)
+                {
+                    case TimeoutException te:
+                        _logger.Debug(
+                            "TimeoutException occurred while dialing ({Peer}).",
+                            peer);
+                        break;
+                    case DifferentAppProtocolVersionException dapve:
+                        _logger.Error(
+                            dapve,
+                            "Protocol Version is different ({Peer}).",
+                            peer);
+                        break;
+                    case Exception e:
+                        string msg =
+                            "An unexpected exception occurred while dialing " +
+                            "({Peer}).";
+                        _logger.Error(e, msg, peer);
+                        break;
+                    default:
+                        break;
+                }
+            }
+
             var rnd = new System.Random();
-            IEnumerable<Task<(BoundPeer, ChainStatus)>> tasks = Peers.OrderBy(x => rnd.Next())
+            IEnumerable<Task<(BoundPeer, ChainStatus)>> tasks = Peers.OrderBy(_ => rnd.Next())
                 .Take(maxPeersToDial)
                 .Select(
                     peer => Transport.SendMessageWithReplyAsync(
@@ -1071,30 +1099,8 @@ namespace Libplanet.Net
                             if (task.IsFaulted || task.IsCanceled ||
                                 !(task.Result is ChainStatus chainStatus))
                             {
-                                switch (task.Exception?.InnerException)
-                                {
-                                    case TimeoutException te:
-                                        _logger.Debug(
-                                            "TimeoutException occurred while dialing ({Peer}).",
-                                            peer);
-                                        break;
-                                    case DifferentAppProtocolVersionException dapve:
-                                        _logger.Error(
-                                            dapve,
-                                            "Protocol Version is different ({Peer}).",
-                                            peer);
-                                        break;
-                                    case Exception e:
-                                        string msg =
-                                            "An unexpected exception occurred while dialing " +
-                                            "({Peer}).";
-                                        _logger.Error(e, msg, peer);
-                                        break;
-                                    default:
-                                        break;
-                                }
-
-                                // Mark to skip
+                                // Log and mark to skip
+                                LogException(peer, task);
                                 return (peer, null);
                             }
                             else
@@ -1114,9 +1120,7 @@ namespace Libplanet.Net
                         throw task.Exception;
                     }
 
-                    return task.Result
-                        .Where(pair => pair.Item1 is BoundPeer && pair.Item2 is ChainStatus)
-                        .ToArray();
+                    return task.Result.ToArray();
                 },
                 cancellationToken
             );
