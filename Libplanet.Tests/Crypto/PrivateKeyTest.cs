@@ -4,11 +4,32 @@ using System.Linq;
 using System.Text;
 using Libplanet.Crypto;
 using Xunit;
+using static Libplanet.Tests.TestUtils;
 
 namespace Libplanet.Tests.Crypto
 {
     public class PrivateKeyTest
     {
+        [Fact]
+        public void FromString()
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() => PrivateKey.FromString(string.Empty));
+            Assert.Throws<ArgumentOutOfRangeException>(() => PrivateKey.FromString("a"));
+            Assert.Throws<FormatException>(() => PrivateKey.FromString("zz"));
+            PrivateKey actual = PrivateKey.FromString(
+                "e07107ca4b0d19147fa1152a0f2c7884705d59cbb6318e2f901bd28dd9ff78e3"
+            );
+            AssertBytesEqual(
+                new byte[]
+                {
+                    0xe0, 0x71, 0x07, 0xca, 0x4b, 0x0d, 0x19, 0x14, 0x7f, 0xa1, 0x15,
+                    0x2a, 0x0f, 0x2c, 0x78, 0x84, 0x70, 0x5d, 0x59, 0xcb, 0xb6, 0x31,
+                    0x8e, 0x2f, 0x90, 0x1b, 0xd2, 0x8d, 0xd9, 0xff, 0x78, 0xe3,
+                },
+                actual.ToByteArray()
+            );
+        }
+
         [Fact]
         public void BytesTest()
         {
@@ -121,8 +142,9 @@ namespace Libplanet.Tests.Crypto
         [Fact]
         public void ExchangeTest()
         {
-            var prvKey = new PrivateKey(ByteUtil.ParseHex(
-                "82fc9947e878fc7ed01c6c310688603f0a41c8e8704e5b990e8388343b0fd465"));
+            PrivateKey prvKey = PrivateKey.FromString(
+                "82fc9947e878fc7ed01c6c310688603f0a41c8e8704e5b990e8388343b0fd465"
+            );
             byte[] pubkeyBytes = ByteUtil.ParseHex(
                 "5f706787ac72c1080275c1f398640fb07e9da0b124ae9734b28b8d0f01eda586"
             );

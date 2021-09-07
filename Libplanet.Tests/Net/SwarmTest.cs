@@ -1160,16 +1160,12 @@ namespace Libplanet.Tests.Net
         {
             // If the bucket stored peers are the same, the block may not propagate,
             // so specify private keys to make the buckets different.
-            var keyA = ByteUtil.ParseHex(
-                "8568eb6f287afedece2c7b918471183db0451e1a61535bb0381cfdf95b85df20");
-            var keyB = ByteUtil.ParseHex(
-                "c34f7498befcc39a14f03b37833f6c7bb78310f1243616524eda70e078b8313c");
-            var keyC = ByteUtil.ParseHex(
-                "941bc2edfab840d79914d80fe3b30840628ac37a5d812d7f922b5d2405a223d3");
-
-            var minerSwarmA = CreateSwarm(new PrivateKey(keyA));
-            var minerSwarmB = CreateSwarm(new PrivateKey(keyB));
-            var receiverSwarm = CreateSwarm(new PrivateKey(keyC));
+            var minerSwarmA = CreateSwarm(PrivateKey.FromString(
+                "8568eb6f287afedece2c7b918471183db0451e1a61535bb0381cfdf95b85df20"));
+            var minerSwarmB = CreateSwarm(PrivateKey.FromString(
+                "c34f7498befcc39a14f03b37833f6c7bb78310f1243616524eda70e078b8313c"));
+            var receiverSwarm = CreateSwarm(PrivateKey.FromString(
+                "941bc2edfab840d79914d80fe3b30840628ac37a5d812d7f922b5d2405a223d3"));
 
             BlockChain<DumbAction> minerChainA = minerSwarmA.BlockChain;
             BlockChain<DumbAction> minerChainB = minerSwarmB.BlockChain;

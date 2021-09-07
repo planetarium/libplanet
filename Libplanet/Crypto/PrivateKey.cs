@@ -123,6 +123,30 @@ namespace Libplanet.Crypto
             Operator.Weave(left, right);
 
         /// <summary>
+        /// Creates a <see cref="PrivateKey"/> instance from hexadecimal string of bytes.
+        /// </summary>
+        /// <param name="hex">A hexadecimal string of a private key's
+        /// <see cref="ByteArray"/>.</param>
+        /// <returns>A created <see cref="PrivateKey"/> instance.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when the given <paramref name="hex"/>
+        /// string is <c>null</c>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when the length of the given
+        /// <paramref name="hex"/> string is an odd number, or it is empty.</exception>
+        /// <exception cref="FormatException">Thrown when the given <paramref name="hex"/> string is
+        /// not a valid hexadecimal string.</exception>
+        [Pure]
+        public static PrivateKey FromString(string hex)
+        {
+            if (!hex.Any())
+            {
+                throw new ArgumentOutOfRangeException(nameof(hex), "Argument must not be empty.");
+            }
+
+            byte[] bytes = ByteUtil.ParseHex(hex);
+            return new PrivateKey(bytes);
+        }
+
+        /// <summary>
         /// Creates a signature from the given <paramref name="message"/>.
         /// <para>
         /// A created signature can be verified by the corresponding

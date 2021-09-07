@@ -69,6 +69,7 @@ To be released.
 ### Added APIs
 
  -  `IBlockExcerpt.ExcerptEquals` extension method added.  [[#1440]]
+ -  Added `PrivateKey.FromString()` method.  [[#1475]]
  -  Added `PrivateKey.Sign(ImmutableArray<byte>)` overloaded method.  [[#1464]]
  -  Added `PrivateKey.Decrypt(ImmutableArray<byte>)` overloaded method.
     [[#1464]]
@@ -127,6 +128,7 @@ To be released.
 [#1465]: https://github.com/planetarium/libplanet/pull/1465
 [#1470]: https://github.com/planetarium/libplanet/pull/1470
 [#1474]: https://github.com/planetarium/libplanet/pull/1474
+[#1475]: https://github.com/planetarium/libplanet/pull/1475
 
 
 Version 0.16.0
