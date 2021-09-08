@@ -2633,6 +2633,23 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).GetMaxBlockBytes
   nameWithType: BlockPolicy<T>.GetMaxBlockBytes
   nameWithType.vb: BlockPolicy(Of T).GetMaxBlockBytes
+- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.GetMaxTransactionsPerBlock(System.Int64)
+  name: GetMaxTransactionsPerBlock(Int64)
+  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_GetMaxTransactionsPerBlock_System_Int64_
+  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`1.GetMaxTransactionsPerBlock(System.Int64)
+  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.GetMaxTransactionsPerBlock(System.Int64)
+  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).GetMaxTransactionsPerBlock(System.Int64)
+  nameWithType: BlockPolicy<T>.GetMaxTransactionsPerBlock(Int64)
+  nameWithType.vb: BlockPolicy(Of T).GetMaxTransactionsPerBlock(Int64)
+- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.GetMaxTransactionsPerBlock*
+  name: GetMaxTransactionsPerBlock
+  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_GetMaxTransactionsPerBlock_
+  commentId: Overload:Libplanet.Blockchain.Policies.BlockPolicy`1.GetMaxTransactionsPerBlock
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.GetMaxTransactionsPerBlock
+  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).GetMaxTransactionsPerBlock
+  nameWithType: BlockPolicy<T>.GetMaxTransactionsPerBlock
+  nameWithType.vb: BlockPolicy(Of T).GetMaxTransactionsPerBlock
 - uid: Libplanet.Blockchain.Policies.BlockPolicy`1.GetMaxTransactionsPerSignerPerBlock(System.Int64)
   name: GetMaxTransactionsPerSignerPerBlock(Int64)
   href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_GetMaxTransactionsPerSignerPerBlock_System_Int64_
@@ -2668,23 +2685,6 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).GetNextBlockDifficulty
   nameWithType: BlockPolicy<T>.GetNextBlockDifficulty
   nameWithType.vb: BlockPolicy(Of T).GetNextBlockDifficulty
-- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.MaxTransactionsPerBlock
-  name: MaxTransactionsPerBlock
-  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_MaxTransactionsPerBlock
-  commentId: P:Libplanet.Blockchain.Policies.BlockPolicy`1.MaxTransactionsPerBlock
-  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.MaxTransactionsPerBlock
-  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).MaxTransactionsPerBlock
-  nameWithType: BlockPolicy<T>.MaxTransactionsPerBlock
-  nameWithType.vb: BlockPolicy(Of T).MaxTransactionsPerBlock
-- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.MaxTransactionsPerBlock*
-  name: MaxTransactionsPerBlock
-  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_MaxTransactionsPerBlock_
-  commentId: Overload:Libplanet.Blockchain.Policies.BlockPolicy`1.MaxTransactionsPerBlock
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.MaxTransactionsPerBlock
-  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).MaxTransactionsPerBlock
-  nameWithType: BlockPolicy<T>.MaxTransactionsPerBlock
-  nameWithType.vb: BlockPolicy(Of T).MaxTransactionsPerBlock
 - uid: Libplanet.Blockchain.Policies.BlockPolicy`1.ValidateNextBlock(Libplanet.Blockchain.BlockChain{`0},Libplanet.Blocks.Block{`0})
   name: ValidateNextBlock(BlockChain<T>, Block<T>)
   href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_ValidateNextBlock_Libplanet_Blockchain_BlockChain__0__Libplanet_Blocks_Block__0__
@@ -2798,6 +2798,23 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of T).GetMaxBlockBytes
   nameWithType: IBlockPolicy<T>.GetMaxBlockBytes
   nameWithType.vb: IBlockPolicy(Of T).GetMaxBlockBytes
+- uid: Libplanet.Blockchain.Policies.IBlockPolicy`1.GetMaxTransactionsPerBlock(System.Int64)
+  name: GetMaxTransactionsPerBlock(Int64)
+  href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_GetMaxTransactionsPerBlock_System_Int64_
+  commentId: M:Libplanet.Blockchain.Policies.IBlockPolicy`1.GetMaxTransactionsPerBlock(System.Int64)
+  fullName: Libplanet.Blockchain.Policies.IBlockPolicy<T>.GetMaxTransactionsPerBlock(System.Int64)
+  fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of T).GetMaxTransactionsPerBlock(System.Int64)
+  nameWithType: IBlockPolicy<T>.GetMaxTransactionsPerBlock(Int64)
+  nameWithType.vb: IBlockPolicy(Of T).GetMaxTransactionsPerBlock(Int64)
+- uid: Libplanet.Blockchain.Policies.IBlockPolicy`1.GetMaxTransactionsPerBlock*
+  name: GetMaxTransactionsPerBlock
+  href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_GetMaxTransactionsPerBlock_
+  commentId: Overload:Libplanet.Blockchain.Policies.IBlockPolicy`1.GetMaxTransactionsPerBlock
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.Policies.IBlockPolicy<T>.GetMaxTransactionsPerBlock
+  fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of T).GetMaxTransactionsPerBlock
+  nameWithType: IBlockPolicy<T>.GetMaxTransactionsPerBlock
+  nameWithType.vb: IBlockPolicy(Of T).GetMaxTransactionsPerBlock
 - uid: Libplanet.Blockchain.Policies.IBlockPolicy`1.GetMaxTransactionsPerSignerPerBlock(System.Int64)
   name: GetMaxTransactionsPerSignerPerBlock(Int64)
   href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_GetMaxTransactionsPerSignerPerBlock_System_Int64_
@@ -2833,23 +2850,6 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of T).GetNextBlockDifficulty
   nameWithType: IBlockPolicy<T>.GetNextBlockDifficulty
   nameWithType.vb: IBlockPolicy(Of T).GetNextBlockDifficulty
-- uid: Libplanet.Blockchain.Policies.IBlockPolicy`1.MaxTransactionsPerBlock
-  name: MaxTransactionsPerBlock
-  href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_MaxTransactionsPerBlock
-  commentId: P:Libplanet.Blockchain.Policies.IBlockPolicy`1.MaxTransactionsPerBlock
-  fullName: Libplanet.Blockchain.Policies.IBlockPolicy<T>.MaxTransactionsPerBlock
-  fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of T).MaxTransactionsPerBlock
-  nameWithType: IBlockPolicy<T>.MaxTransactionsPerBlock
-  nameWithType.vb: IBlockPolicy(Of T).MaxTransactionsPerBlock
-- uid: Libplanet.Blockchain.Policies.IBlockPolicy`1.MaxTransactionsPerBlock*
-  name: MaxTransactionsPerBlock
-  href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_MaxTransactionsPerBlock_
-  commentId: Overload:Libplanet.Blockchain.Policies.IBlockPolicy`1.MaxTransactionsPerBlock
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Policies.IBlockPolicy<T>.MaxTransactionsPerBlock
-  fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of T).MaxTransactionsPerBlock
-  nameWithType: IBlockPolicy<T>.MaxTransactionsPerBlock
-  nameWithType.vb: IBlockPolicy(Of T).MaxTransactionsPerBlock
 - uid: Libplanet.Blockchain.Policies.IBlockPolicy`1.ValidateNextBlock(Libplanet.Blockchain.BlockChain{`0},Libplanet.Blocks.Block{`0})
   name: ValidateNextBlock(BlockChain<T>, Block<T>)
   href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_ValidateNextBlock_Libplanet_Blockchain_BlockChain__0__Libplanet_Blocks_Block__0__
