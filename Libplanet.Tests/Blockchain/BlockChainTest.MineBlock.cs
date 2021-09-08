@@ -20,7 +20,7 @@ namespace Libplanet.Tests.Blockchain
     public partial class BlockChainTest
     {
         [Fact]
-        public async void MineBlock()
+        public async Task MineBlock()
         {
             // Tests if MineBlock() method will throw an exception if less than the minimum
             // transactions are present
@@ -113,7 +113,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async void MineBlockWithTxBatchSize()
+        public async Task MineBlockWithTxBatchSize()
         {
             List<PrivateKey> privateKeys = Enumerable.Range(0, 3)
                 .Select(_ => new PrivateKey()).ToList();
@@ -149,7 +149,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async void MineBlockWithPendingTxs()
+        public async Task MineBlockWithPendingTxs()
         {
             var keys = new[] { new PrivateKey(), new PrivateKey(), new PrivateKey() };
 
@@ -250,7 +250,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async void MineBlockWithPolicyViolationTx()
+        public async Task MineBlockWithPolicyViolationTx()
         {
             var validKey = new PrivateKey();
             var invalidKey = new PrivateKey();
@@ -290,7 +290,7 @@ namespace Libplanet.Tests.Blockchain
         [InlineData(3)]
         [InlineData(2)]
         [InlineData(1)]
-        public async void MineBlockWithReverseNonces(int maxTxs)
+        public async Task MineBlockWithReverseNonces(int maxTxs)
         {
             var key = new PrivateKey();
             var txs = new[]
@@ -358,7 +358,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async void MineBlockWithBlockAction()
+        public async Task MineBlockWithBlockAction()
         {
             var privateKey1 = new PrivateKey();
             var address1 = privateKey1.ToAddress();
@@ -400,7 +400,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async void MineBlockWithMaxTransactions()
+        public async Task MineBlockWithMaxTransactions()
         {
             Assert.Equal(1, _blockChain.Count);
 
@@ -439,7 +439,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async void MineBlockWithMaxTransactionsPerSigner()
+        public async Task MineBlockWithMaxTransactionsPerSigner()
         {
             Assert.Equal(1, _blockChain.Count);
 
@@ -481,7 +481,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        private async void AbortMining()
+        public async Task AbortMining()
         {
             // This test makes 2 different policies even it's abnormal
             // because to make a mining task run forever just for testing.
@@ -532,7 +532,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        private async Task IgnoreLowerNonceTxsAndMine()
+        public async Task IgnoreLowerNonceTxsAndMine()
         {
             var privateKey = new PrivateKey();
             var address = privateKey.ToAddress();
