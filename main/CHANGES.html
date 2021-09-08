@@ -76,6 +76,8 @@
 <li><code>TotalDifficultyComparer</code> now implements <code>IComparer&lt;IBlockExcerpt&gt;</code>
 interface.  [<a href="https://github.com/planetarium/libplanet/pull/1442">#1442</a>]</li>
 <li>Return type for <code>BlockDemandTable.Add()</code> is now <code>void</code>.  [<a href="https://github.com/planetarium/libplanet/issues/1435">#1435</a>, <a href="https://github.com/planetarium/libplanet/pull/1443">#1443</a>]</li>
+<li>Added <code>IBlockPolicy&lt;T&gt;.MinTransactionsPerBlock</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/1445">#1445</a>]</li>
+<li>Added <code>BlockInsufficientTxsException</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1445">#1445</a>]</li>
 <li><code>PrivateKey()</code> constructor's parameter type became <code>IReadOnlyList&lt;byte&gt;</code>
 (was <code>byte[]</code>).  [<a href="https://github.com/planetarium/libplanet/pull/1464">#1464</a>]</li>
 <li><code>PrivateKey.ByteArray</code> property's type became <code>ImmutableArray&lt;byte&gt;</code>
@@ -96,9 +98,9 @@ by <code>BlockChain&lt;T&gt;</code>.</li>
 </li>
 <li>Removed <code>IBlockPolicy&lt;T&gt;.MaxTransactionsPerBlock</code> property.  It is replaced
 by <code>IBlockPolicy&lt;T&gt;.GetMaxTransactionsPerBlock(long index)</code> method.
-[<a href="https://github.com/planetarium/libplanet/pull/1446">#1447</a>]</li>
+[<a href="https://github.com/planetarium/libplanet/pull/1447">#1447</a>]</li>
 <li>Added <code>IBlockPolicy&lt;T&gt;.GetMaxTransactionsPerBlock(long index)</code> method.
-[<a href="https://github.com/planetarium/libplanet/pull/1446">#1447</a>]</li>
+[<a href="https://github.com/planetarium/libplanet/pull/1447">#1447</a>]</li>
 <li>Unused parameter <code>currentTime</code> removed from <code>BlockChain&lt;T&gt;.Append()</code>
 [<a href="https://github.com/planetarium/libplanet/issues/1462">#1462</a>, <a href="https://github.com/planetarium/libplanet/pull/1465">#1465</a>]</li>
 <li><code>BlockHeader</code>'s properties are now represented as richer types than before.
