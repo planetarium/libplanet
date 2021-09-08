@@ -7,6 +7,7 @@ Version 0.17.0
 To be released.
 
 ### Backward-incompatible API changes
+- Added MinTransactionsPerBlock to assist in block validation
 
  -  Added `StateCompleterSet<T>.ComplementAll` property.  [[#1358], [#1386]]
  -  Added `StateCompleterSet<T>.ComplementLatest` property.  [[#1358], [#1386]]

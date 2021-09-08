@@ -58,6 +58,7 @@ namespace Libplanet.Tests.Blockchain.Policies
                 minimumDifficulty: 1024L,
                 difficultyBoundDivisor: 128,
                 maxTransactionsPerBlock: 100,
+                minTransactionsPerBlock: 0,
                 maxBlockBytes: 100 * 1024,
                 maxGenesisBytes: 1024 * 1024
             );
@@ -80,6 +81,7 @@ namespace Libplanet.Tests.Blockchain.Policies
                     minimumDifficulty: 1024,
                     difficultyBoundDivisor: 128,
                     maxTransactionsPerBlock: 100,
+                    minTransactionsPerBlock: 0,
                     maxBlockBytes: 100 * 1024,
                     maxGenesisBytes: 1024 * 1024
                 )
@@ -94,6 +96,7 @@ namespace Libplanet.Tests.Blockchain.Policies
                     minimumDifficulty: 0,
                     difficultyBoundDivisor: 128,
                     maxTransactionsPerBlock: 100,
+                    minTransactionsPerBlock: 0,
                     maxBlockBytes: 100 * 1024,
                     maxGenesisBytes: 1024 * 1024
                 )
@@ -105,6 +108,7 @@ namespace Libplanet.Tests.Blockchain.Policies
                     minimumDifficulty: 1024,
                     difficultyBoundDivisor: 1024,
                     maxTransactionsPerBlock: 100,
+                    minTransactionsPerBlock: 0,
                     maxBlockBytes: 100 * 1024,
                     maxGenesisBytes: 1024 * 1024
                 )
