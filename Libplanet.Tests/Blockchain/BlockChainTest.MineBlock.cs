@@ -37,13 +37,6 @@ namespace Libplanet.Tests.Blockchain
                     privateKey: new PrivateKey());
             _blockChainMinTx.StageTransaction(lightTx);
 
-            // Tests if MineBlock() method will throw an OperationCanceledException
-            // if there are staged transactions, but less than minimum can be included
-            await Assert.ThrowsAsync<OperationCanceledException>(async () =>
-            {
-                await _blockChainMinTx.MineBlock(_fx.Address3);
-            });
-
             Func<long, int> getMaxBlockBytes = _blockChain.Policy.GetMaxBlockBytes;
             HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             Assert.Equal(1, _blockChain.Count);
