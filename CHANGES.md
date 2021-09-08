@@ -26,11 +26,15 @@ To be released.
     `IReadOnlyList<byte>` (were both `byte[]`).  [[#1464]]
  -  `HashDigest<T>.DeriveFrom()` method's parameter type became
     `IReadOnlyList<byte>` (was `byte[]`).  [[#1464]]
- -  `IBlockPolicy<T>.MaxTransactionsPerBlock` and
-    `IBlockPolicy<T>.GetMaxBlockBytes()` description changed for `0`
+ -  `IBlockPolicy<T>.GetMaxBlockBytes()` description changed for `0`
     and negative values.  [[#1449], [#1463]]
      -  Returned values from these will now be taken literally
         by `BlockChain<T>`.
+ -  Removed `IBlockPolicy<T>.MaxTransactionsPerBlock` property.  It is replaced
+    by `IBlockPolicy<T>.GetMaxTransactionsPerBlock(long index)` method.
+    [[#1447]]
+ -  Added `IBlockPolicy<T>.GetMaxTransactionsPerBlock(long index)` method.
+    [[#1447]]
  -  Unused parameter `currentTime` removed from `BlockChain<T>.Append()`
     [[#1462], [#1465]]
  -  `BlockHeader`'s properties are now represented as richer types than before.
@@ -118,6 +122,7 @@ To be released.
 [#1440]: https://github.com/planetarium/libplanet/pull/1440
 [#1442]: https://github.com/planetarium/libplanet/pull/1442
 [#1443]: https://github.com/planetarium/libplanet/pull/1443
+[#1447]: https://github.com/planetarium/libplanet/pull/1446
 [#1448]: https://github.com/planetarium/libplanet/issues/1448
 [#1449]: https://github.com/planetarium/libplanet/issues/1449
 [#1455]: https://github.com/planetarium/libplanet/pull/1455

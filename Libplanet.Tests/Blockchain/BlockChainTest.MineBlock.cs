@@ -408,7 +408,9 @@ namespace Libplanet.Tests.Blockchain
                 _blockChain.MakeTransaction(key, new DumbAction[0]);
             }
 
-            Assert.True(_blockChain.Policy.MaxTransactionsPerBlock > maxTransactions);
+            Assert.True(
+                _blockChain.Policy.GetMaxTransactionsPerBlock(_blockChain.Count) > maxTransactions
+            );
 
             // These assume there will be enough time to mine as many transactions as
             // possible.
@@ -446,7 +448,9 @@ namespace Libplanet.Tests.Blockchain
                 _blockChain.MakeTransaction(key, new DumbAction[0]);
             }
 
-            Assert.True(_blockChain.Policy.MaxTransactionsPerBlock > maxTransactions);
+            Assert.True(
+                _blockChain.Policy.GetMaxTransactionsPerBlock(_blockChain.Count) > maxTransactions
+            );
 
             // These assume there will be enough time to mine as many transactions as
             // possible.
