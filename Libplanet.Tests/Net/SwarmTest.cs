@@ -17,7 +17,6 @@ using Libplanet.Crypto;
 using Libplanet.Net;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Protocols;
-using Libplanet.Net.Transports;
 using Libplanet.Store;
 using Libplanet.Stun;
 using Libplanet.Tests.Blockchain;
@@ -1548,73 +1547,6 @@ namespace Libplanet.Tests.Net
             {
                 await StopAsync(receiver);
                 await StopAsync(sender);
-            }
-        }
-
-        [Fact(Timeout = Timeout)]
-        public async Task DoNotFillMultipleTimes()
-        {
-            Swarm<DumbAction> receiver = CreateSwarm();
-            Swarm<DumbAction> sender1 = CreateSwarm();
-            Swarm<DumbAction> sender2 = CreateSwarm();
-
-            await StartAsync(receiver);
-            await StartAsync(sender1);
-            await StartAsync(sender2);
-
-            BlockChain<DumbAction> chain = receiver.BlockChain;
-            Block<DumbAction> b1 =
-                TestUtils.MineNext(chain.Genesis, chain.Policy.GetHashAlgorithm, difficulty: 1024)
-                    .AttachStateRootHash(sender1.BlockChain.StateStore, chain.Policy);
-
-            try
-            {
-                await BootstrapAsync(sender1, receiver.AsPeer);
-                await BootstrapAsync(sender2, receiver.AsPeer);
-
-                sender1.BlockChain.Append(b1);
-                sender2.BlockChain.Append(b1);
-
-                sender1.BroadcastBlock(b1);
-                sender2.BroadcastBlock(b1);
-
-                // Make sure that receiver swarm only filled once for same block
-                // that were broadcasted simultaneously.
-                await receiver.BlockReceived.WaitAsync();
-
-                // Awaits 1 second because receiver swarm may tried to fill again after filled.
-                await Task.Delay(1000);
-                var transport = receiver.Transport as NetMQTransport;
-                Log.Debug("Messages: {@Message}", transport.MessageHistory);
-                Assert.Single(
-                    transport.MessageHistory.Where(msg => msg is Libplanet.Net.Messages.Blocks));
-
-                Transaction<DumbAction> tx = Transaction<DumbAction>.Create(
-                    0,
-                    new PrivateKey(),
-                    sender1.BlockChain.Genesis.Hash,
-                    new DumbAction[] { }
-                );
-                sender1.BlockChain.StageTransaction(tx);
-                sender2.BlockChain.StageTransaction(tx);
-
-                // Make sure that receiver swarm only filled once for same transaction
-                // that were broadcasted simultaneously.
-                sender1.BroadcastTxs(new[] { tx });
-                sender2.BroadcastTxs(new[] { tx });
-
-                await receiver.TxReceived.WaitAsync();
-
-                // Awaits 1 second because receiver swarm may tried to fill again after filled.
-                await Task.Delay(1000);
-                Assert.Single(
-                    transport.MessageHistory.Where(msg => msg is Libplanet.Net.Messages.Tx));
-            }
-            finally
-            {
-                await StopAsync(receiver);
-                await StopAsync(sender1);
-                await StopAsync(sender2);
             }
         }
 
