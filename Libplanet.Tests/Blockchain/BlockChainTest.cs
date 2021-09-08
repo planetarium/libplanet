@@ -33,7 +33,9 @@ namespace Libplanet.Tests.Blockchain
         private readonly ILogger _logger;
         private StoreFixture _fx;
         private BlockPolicy<DumbAction> _policy;
+        private BlockPolicy<DumbAction> _policyMinTx;
         private BlockChain<DumbAction> _blockChain;
+        private BlockChain<DumbAction> _blockChainMinTx;
         private ValidatingActionRenderer<DumbAction> _renderer;
         private Block<DumbAction> _validNext;
         private List<Transaction<DumbAction>> _emptyTransaction;
@@ -48,12 +50,26 @@ namespace Libplanet.Tests.Blockchain
                 .CreateLogger()
                 .ForContext<BlockChainTest>();
 
-            _policy = new BlockPolicy<DumbAction>(new MinerReward(1), maxBlockBytes: 50 * 1024);
+            _policy = new BlockPolicy<DumbAction>(
+                new MinerReward(1),
+                maxBlockBytes: 50 * 1024);
+            _policyMinTx = new BlockPolicy<DumbAction>(
+                new MinerReward(1),
+                maxBlockBytes: 50 * 1024,
+                minTransactionsPerBlock: 1);
             _stagePolicy = new VolatileStagePolicy<DumbAction>();
             _fx = new DefaultStoreFixture(memory: true, blockAction: _policy.BlockAction);
             _renderer = new ValidatingActionRenderer<DumbAction>();
             _blockChain = new BlockChain<DumbAction>(
                 _policy,
+                _stagePolicy,
+                _fx.Store,
+                _fx.StateStore,
+                _fx.GenesisBlock,
+                renderers: new[] { new LoggedActionRenderer<DumbAction>(_renderer, Log.Logger) }
+            );
+            _blockChainMinTx = new BlockChain<DumbAction>(
+                _policyMinTx,
                 _stagePolicy,
                 _fx.Store,
                 _fx.StateStore,
@@ -1574,6 +1590,10 @@ namespace Libplanet.Tests.Blockchain
         ///     10   addresses[4]       Absent
         /// </code>
         /// </summary>
+        /// <param name="store">store.</param>
+        /// <param name="stateStore">State Store.</param>
+        /// <param name="renderer">Renderer.</param>
+        /// <returns>Tuple of addresses and chain.</returns>
         internal static (Address, Address[] Addresses, BlockChain<DumbAction> Chain)
             MakeIncompleteBlockStates(
                 IStore store,

@@ -22,6 +22,28 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public async void MineBlock()
         {
+            // Tests if MineBlock() method will throw an exception if less than the minimum
+            // transactions are present
+            await Assert.ThrowsAsync<InvalidBlockMinTxException>(async () =>
+            {
+                await _blockChainMinTx.MineBlock(_fx.Address3);
+            });
+            DumbAction[] fewActions =
+                Enumerable.Repeat(new DumbAction(default, "_"), 2).ToArray();
+
+            Transaction<DumbAction> lightTx = _fx.MakeTransaction(
+                    fewActions,
+                    nonce: 10, // Nonce too high - won't add to block
+                    privateKey: new PrivateKey());
+            _blockChainMinTx.StageTransaction(lightTx);
+
+            // Tests if MineBlock() method will throw an OperationCanceledException
+            // if there are staged transactions, but less than minimum can be included
+            await Assert.ThrowsAsync<OperationCanceledException>(async () =>
+            {
+                await _blockChainMinTx.MineBlock(_fx.Address3);
+            });
+
             Func<long, int> getMaxBlockBytes = _blockChain.Policy.GetMaxBlockBytes;
             HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             Assert.Equal(1, _blockChain.Count);
