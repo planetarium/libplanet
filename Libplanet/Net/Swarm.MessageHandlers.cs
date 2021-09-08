@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
-using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Net.Messages;
 using Libplanet.Tx;
@@ -212,13 +210,9 @@ namespace Libplanet.Net
                 message.Ids.Select(txid => txid.ToString())
             );
 
-            IStagePolicy<T> stagePolicy = BlockChain.StagePolicy;
-            ImmutableHashSet<TxId> newTxIds = message.Ids
-                .Where(id => !_demandTxIds.ContainsKey(id))
-                .Where(id => !stagePolicy.Ignores(BlockChain, id))
-                .ToImmutableHashSet();
+            HashSet<TxId> required = GetRequiredTxIds(message.Ids);
 
-            if (!newTxIds.Any())
+            if (!required.Any())
             {
                 _logger.Debug("No unaware transactions to receive.");
                 return;
@@ -226,11 +220,18 @@ namespace Libplanet.Net
 
             _logger.Debug(
                 "Unaware transactions to receive: {@TxIds}.",
-                newTxIds.Select(txid => txid.ToString())
+                required.Select(txid => txid.ToString())
             );
-            foreach (TxId txid in newTxIds)
+
+            if (_txSyncTaskQueue.ContainsKey(peer))
             {
-                _demandTxIds.TryAdd(txid, peer);
+                _txSyncTaskQueue[peer].UnionWith(required);
+            }
+            else
+            {
+                // spawn task.
+                _txSyncTaskQueue[peer] = required;
+                _ = RequestTxsFromPeerAsync(peer, _cancellationToken);
             }
         }
 
