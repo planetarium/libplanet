@@ -555,5 +555,51 @@ namespace Libplanet.Tests.Blockchain
             Assert.Single(b2.Transactions);
             Assert.Contains(txsB[3], b2.Transactions);
         }
+
+        [Fact]
+        public void GatherTransactionsToMine()
+        {
+            // TODO: We test more propertees of GatherTransactionsToMine() method:
+            //       - if transactions are cut off if they exceed GetMaxBlockBytes()
+            //       - if transactions with already consumed nonces are excluded
+            //       - if transactions with greater nonces than unconsumed nonces are excluded
+            //       - if transactions are cut off if the process exceeds the timeout (4 sec)
+            var keyA = new PrivateKey();
+            var keyB = new PrivateKey();
+            var keyC = new PrivateKey();
+            Address a = keyA.ToAddress();
+            Address b = keyB.ToAddress();
+            Address c = keyC.ToAddress();
+            _logger.Verbose("Address {Name}: {Address}", nameof(a), a);
+            _logger.Verbose("Address {Name}: {Address}", nameof(b), b);
+            _logger.Verbose("Address {Name}: {Address}", nameof(c), c);
+
+            Transaction<DumbAction>[] txsA = Enumerable.Range(0, 3)
+                .Select(nonce => _fx.MakeTransaction(nonce: nonce, privateKey: keyA))
+                .ToArray();
+            Transaction<DumbAction>[] txsB = Enumerable.Range(0, 4)
+                .Select(nonce => _fx.MakeTransaction(nonce: nonce, privateKey: keyB))
+                .ToArray();
+            Transaction<DumbAction>[] txsC = Enumerable.Range(0, 2)
+                .Select(nonce => _fx.MakeTransaction(nonce: nonce, privateKey: keyC))
+                .ToArray();
+            var random = new Random();
+            Transaction<DumbAction>[] txs =
+                txsA.Concat(txsB).Concat(txsC).Shuffle(random).ToArray();
+            Assert.Empty(_blockChain.ListStagedTransactions());
+            StageTransactions(txs);
+
+            ImmutableList<Transaction<DumbAction>> gathered =
+                _blockChain.GatherTransactionsToMine(5, 3);
+            Assert.Equal(5, gathered.Count);
+            var expectedNonces = new Dictionary<Address, long> { [a] = 0, [b] = 0, [c] = 0 };
+            foreach (Transaction<DumbAction> tx in gathered)
+            {
+                long expectedNonce = expectedNonces[tx.Signer];
+                Assert.True(expectedNonce < 3);
+                Assert.Equal(expectedNonce, tx.Nonce);
+                expectedNonces[tx.Signer] = expectedNonce + 1;
+            }
+        }
     }
 }
