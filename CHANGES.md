@@ -7,7 +7,6 @@ Version 0.17.0
 To be released.
 
 ### Backward-incompatible API changes
-
  -  Added `StateCompleterSet<T>.ComplementAll` property.  [[#1358], [#1386]]
  -  Added `StateCompleterSet<T>.ComplementLatest` property.  [[#1358], [#1386]]
  -  `BlockPerception` now implements `IBlockExcerpt` interface.  [[#1440]]
@@ -15,6 +14,8 @@ To be released.
  -  `TotalDifficultyComparer` now implements `IComparer<IBlockExcerpt>`
     interface.  [[#1442]]
  -  Return type for `BlockDemandTable.Add()` is now `void`.  [[#1435], [#1443]]
+ -  Added `IBlockPolicy<T>.MinTransactionsPerBlock` property.  [[#1445]]
+ -  Added `BlockInsufficientTxsException`.  [[#1445]]
  -  `PrivateKey()` constructor's parameter type became `IReadOnlyList<byte>`
     (was `byte[]`).  [[#1464]]
  -  `PrivateKey.ByteArray` property's type became `ImmutableArray<byte>`
@@ -122,7 +123,8 @@ To be released.
 [#1440]: https://github.com/planetarium/libplanet/pull/1440
 [#1442]: https://github.com/planetarium/libplanet/pull/1442
 [#1443]: https://github.com/planetarium/libplanet/pull/1443
-[#1447]: https://github.com/planetarium/libplanet/pull/1446
+[#1445]: https://github.com/planetarium/libplanet/pull/1445
+[#1447]: https://github.com/planetarium/libplanet/pull/1447
 [#1448]: https://github.com/planetarium/libplanet/issues/1448
 [#1449]: https://github.com/planetarium/libplanet/issues/1449
 [#1455]: https://github.com/planetarium/libplanet/pull/1455

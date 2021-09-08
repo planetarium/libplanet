@@ -1254,11 +1254,11 @@ namespace Libplanet.Blockchain
             IReadOnlyList<ActionEvaluation> actionEvaluations
         )
         {
-           if (!StateStore.ContainsBlockStates(block.Hash))
-           {
-               var totalDelta = actionEvaluations.GetTotalDelta(ToStateKey, ToFungibleAssetKey);
-               StateStore.SetStates(block, totalDelta);
-           }
+            if (!StateStore.ContainsBlockStates(block.Hash))
+            {
+                var totalDelta = actionEvaluations.GetTotalDelta(ToStateKey, ToFungibleAssetKey);
+                StateStore.SetStates(block, totalDelta);
+            }
         }
 
         internal IEnumerable<Block<T>> IterateBlocks(int offset = 0, int? limit = null)
