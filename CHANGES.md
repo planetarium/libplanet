@@ -15,6 +15,7 @@ To be released.
     interface.  [[#1442]]
  -  Return type for `BlockDemandTable.Add()` is now `void`.  [[#1435], [#1443]]
  -  Added `IBlockPolicy<T>.MinTransactionsPerBlock` property.  [[#1445]]
+ -  Added `BlockInsufficientTxsException`.  [[#1445]]
  -  `PrivateKey()` constructor's parameter type became `IReadOnlyList<byte>`
     (was `byte[]`).  [[#1464]]
  -  `PrivateKey.ByteArray` property's type became `ImmutableArray<byte>`

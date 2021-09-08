@@ -24,7 +24,7 @@ namespace Libplanet.Tests.Blockchain
         {
             // Tests if MineBlock() method will throw an exception if less than the minimum
             // transactions are present
-            await Assert.ThrowsAsync<InvalidBlockMinTxException>(async () =>
+            await Assert.ThrowsAsync<BlockInsufficientTxsException>(async () =>
             {
                 await _blockChainMinTx.MineBlock(_fx.Address3);
             });

@@ -10,7 +10,7 @@ namespace Libplanet.Blocks
     /// <see cref="Block{T}.Transactions"/> Count is too small.
     /// </summary>
     [Serializable]
-    public sealed class InvalidBlockMinTxException : InvalidBlockException, ISerializable
+    public sealed class BlockInsufficientTxsException : InvalidBlockException, ISerializable
     {
         /// <summary>
         /// Initializes a new instance of <see cref="InvalidBlockBytesLengthException"/> class.
@@ -21,7 +21,7 @@ namespace Libplanet.Blocks
         /// <param name="minTransactionsPerBlock">The minimum allowed transactions.  It is
         /// automatically included to the <see cref="Exception.Message"/> string.</param>
         /// <param name="message">The message that describes the error.</param>
-        public InvalidBlockMinTxException(
+        public BlockInsufficientTxsException(
             int transactionCount,
             int minTransactionsPerBlock,
             string message
@@ -35,7 +35,7 @@ namespace Libplanet.Blocks
             MinTransactionsPerBlock = minTransactionsPerBlock;
         }
 
-        private InvalidBlockMinTxException(SerializationInfo info, StreamingContext context)
+        private BlockInsufficientTxsException(SerializationInfo info, StreamingContext context)
             : base(info.GetString(nameof(Message)) ?? string.Empty)
         {
             TransactionCount = info.GetInt32(nameof(TransactionCount));

@@ -365,13 +365,7 @@ namespace Libplanet.Blockchain
 
             if (transactionsToMine.Count < Policy.MinTransactionsPerBlock)
             {
-                if (stagedTransactions.Count > transactionsToMine.Count)
-                {
-                    throw new OperationCanceledException(
-                        "stagedTransactions higher than transactionsToMine.");
-                }
-
-                throw new InvalidBlockMinTxException(
+                throw new BlockInsufficientTxsException(
                     transactionsToMine.Count,
                     Policy.MinTransactionsPerBlock,
                     "Below Minimum Transactions");
