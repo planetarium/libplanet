@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography;
 using Libplanet.Blocks;
 using Libplanet.Tx;
@@ -27,5 +29,11 @@ namespace Libplanet.Tests
 
         public static BlockHash NextBlockHash(this Random random) =>
             new BlockHash(random.NextBytes(BlockHash.Size));
+
+        public static IOrderedEnumerable<T> Shuffle<T>(this Random random, IEnumerable<T> source) =>
+            source.OrderBy(_ => random.Next());
+
+        public static IOrderedEnumerable<T> Shuffle<T>(this IEnumerable<T> source, Random random) =>
+            random.Shuffle(source);
     }
 }
