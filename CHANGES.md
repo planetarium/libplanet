@@ -40,6 +40,8 @@ To be released.
     [[#1462], [#1465]]
  -  Added an optional `maxTransactionsPerSigner` parameter to
     `BlockChain<T>.MineBlock()` method.  [[#1449], [#1463]]
+ -  Added an optional `txPriority` parameter to `BlockChain<T>.MineBlock()`
+    method. [[#1477]]
  -  `BlockHeader`'s properties are now represented as richer types than before.
     [[#1470]]
      -  `BlockHeader.Timestamp` property's type became `DateTimeOffset`

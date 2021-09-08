@@ -481,6 +481,55 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
+        public async Task MineBlockWithTxPriority()
+        {
+            var keyA = new PrivateKey();
+            var keyB = new PrivateKey();
+            var keyC = new PrivateKey();
+            Address a = keyA.ToAddress();
+            Address b = keyB.ToAddress();
+            Address c = keyC.ToAddress();
+            _logger.Verbose("Address {Name}: {Address}", nameof(a), a);
+            _logger.Verbose("Address {Name}: {Address}", nameof(b), b);
+            _logger.Verbose("Address {Name}: {Address}", nameof(c), c);
+
+            Transaction<DumbAction>[] txsA = Enumerable.Range(0, 3)
+                .Select(nonce => _fx.MakeTransaction(nonce: nonce, privateKey: keyA))
+                .ToArray();
+            Transaction<DumbAction>[] txsB = Enumerable.Range(0, 4)
+                .Select(nonce => _fx.MakeTransaction(nonce: nonce, privateKey: keyB))
+                .ToArray();
+            Transaction<DumbAction>[] txsC = Enumerable.Range(0, 2)
+                .Select(nonce => _fx.MakeTransaction(nonce: nonce, privateKey: keyC))
+                .ToArray();
+            var random = new Random();
+            Transaction<DumbAction>[] txs =
+                txsA.Concat(txsB).Concat(txsC).Shuffle(random).ToArray();
+            Assert.Empty(_blockChain.ListStagedTransactions());
+            StageTransactions(txs);
+
+            IComparer<Transaction<DumbAction>> txPriority =
+                Comparer<Transaction<DumbAction>>.Create((tx1, tx2) =>
+                {
+                    int rank1 = tx1.Signer.Equals(a) ? 0 : (tx1.Signer.Equals(b) ? 1 : 2);
+                    int rank2 = tx2.Signer.Equals(a) ? 0 : (tx2.Signer.Equals(b) ? 1 : 2);
+                    return rank1.CompareTo(rank2);
+                });
+
+            Block<DumbAction> block = await _blockChain.MineBlock(
+                default,
+                maxTransactions: 5,
+                maxTransactionsPerSigner: 3,
+                txPriority: txPriority
+            );
+            Assert.Equal(5, block.Transactions.Count);
+            Assert.Equal(
+                txsA.Concat(txsB.Take(2)).Select(tx => tx.Id).ToHashSet(),
+                block.Transactions.Select(tx => tx.Id).ToHashSet()
+            );
+        }
+
+        [Fact]
         public async Task AbortMining()
         {
             // This test makes 2 different policies even it's abnormal
