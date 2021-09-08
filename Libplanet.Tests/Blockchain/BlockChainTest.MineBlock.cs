@@ -589,6 +589,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Empty(_blockChain.ListStagedTransactions());
             StageTransactions(txs);
 
+            // Test if minTransactions and minTransactionsPerSigner work:
             ImmutableList<Transaction<DumbAction>> gathered =
                 _blockChain.GatherTransactionsToMine(5, 3);
             Assert.Equal(5, gathered.Count);
@@ -600,6 +601,20 @@ namespace Libplanet.Tests.Blockchain
                 Assert.Equal(expectedNonce, tx.Nonce);
                 expectedNonces[tx.Signer] = expectedNonce + 1;
             }
+
+            // Test if txPriority works:
+            IComparer<Transaction<DumbAction>> txPriority =
+                Comparer<Transaction<DumbAction>>.Create((tx1, tx2) =>
+                {
+                    int rank1 = tx1.Signer.Equals(a) ? 0 : (tx1.Signer.Equals(b) ? 1 : 2);
+                    int rank2 = tx2.Signer.Equals(a) ? 0 : (tx2.Signer.Equals(b) ? 1 : 2);
+                    return rank1.CompareTo(rank2);
+                });
+            gathered = _blockChain.GatherTransactionsToMine(8, 3, txPriority);
+            Assert.Equal(
+                txsA.Concat(txsB.Take(3)).Concat(txsC).Select(tx => tx.Id).ToArray(),
+                gathered.Select(tx => tx.Id).ToArray()
+            );
         }
     }
 }

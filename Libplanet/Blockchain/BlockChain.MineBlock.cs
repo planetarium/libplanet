@@ -207,16 +207,20 @@ namespace Libplanet.Blockchain
         /// allowed.</param>
         /// <param name="maxTransactionsPerSigner">The maximum number of
         /// <see cref="Transaction{T}"/>s with the same signer allowed.</param>
+        /// <param name="txPriority">An optional comparer for give certain transactions to
+        /// priority to belong to the block.  No certain priority by default.</param>
         /// <returns>An <see cref="ImmutableList"/> of <see cref="Transaction{T}"/>s with its
         /// count not exceeding <paramref name="maxTransactions"/> and the number of
         /// <see cref="Transaction{T}"/>s in the list for each signer not exceeding
         /// <paramref name="maxTransactionsPerSigner"/>.</returns>
         internal ImmutableList<Transaction<T>> GatherTransactionsToMine(
             int maxTransactions,
-            int maxTransactionsPerSigner)
+            int maxTransactionsPerSigner,
+            IComparer<Transaction<T>> txPriority = null
+        )
         {
             long index = Count;
-            ImmutableList<Transaction<T>> stagedTransactions = ListStagedTransactions();
+            ImmutableList<Transaction<T>> stagedTransactions = ListStagedTransactions(txPriority);
             _logger.Information(
                 "Gathering transactions to mine for block #{Index} from {TransactionsCount} " +
                 "staged transactions...",
