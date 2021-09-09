@@ -100,6 +100,10 @@ by <code>IBlockPolicy&lt;T&gt;.GetMaxTransactionsPerBlock(long index)</code> met
 [<a href="https://github.com/planetarium/libplanet/pull/1447">#1447</a>]</li>
 <li>Added <code>IBlockPolicy&lt;T&gt;.GetMaxTransactionsPerBlock(long index)</code> method.
 [<a href="https://github.com/planetarium/libplanet/pull/1447">#1447</a>]</li>
+<li>Added <code>IBlockPolicy&lt;T&gt;.GetMinTransactionsPerBlock(long index)</code> method.
+[<a href="https://github.com/planetarium/libplanet/pull/1479">#1479</a>]</li>
+<li>Added <code>IBlockPolicy&lt;T&gt;.GetMaxTransactionsPerSignerPerBlock(long index)</code>
+method.  [<a href="https://github.com/planetarium/libplanet/issues/1449">#1449</a>, <a href="https://github.com/planetarium/libplanet/pull/1463">#1463</a>]</li>
 <li>Unused parameter <code>currentTime</code> removed from <code>BlockChain&lt;T&gt;.Append()</code>.
 [<a href="https://github.com/planetarium/libplanet/issues/1462">#1462</a>, <a href="https://github.com/planetarium/libplanet/pull/1465">#1465</a>]</li>
 <li>Added an optional <code>maxTransactionsPerSigner</code> parameter to
@@ -147,11 +151,11 @@ method. [<a href="https://github.com/planetarium/libplanet/pull/1477">#1477</a>]
 [<a href="https://github.com/planetarium/libplanet/pull/1464">#1464</a>]</li>
 <li>Added <code>PublicKey.ToImmutableArray()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1464">#1464</a>]</li>
 <li>Added <code>Nonce(ImmutableArray&lt;byte&gt;)</code> overloaded constructor.  [<a href="https://github.com/planetarium/libplanet/pull/1464">#1464</a>]</li>
-<li>Added <code>IBlockPolicy.GetMaxTransactionsPerSignerPerBlock()</code> interface method.
-[<a href="https://github.com/planetarium/libplanet/issues/1449">#1449</a>, <a href="https://github.com/planetarium/libplanet/pull/1463">#1463</a>]</li>
+<li>Added <code>HashAlgorithmType.Digest(IEnumerable&lt;byte[]&gt;)</code> overloaded method.
+[<a href="https://github.com/planetarium/libplanet/pull/1480">#1480</a>]</li>
+<li>Added <code>HashAlgorithmType.Digest(IEnumerable&lt;ImmutableArray&lt;byte&gt;&gt;)</code>
+overloaded method.  [<a href="https://github.com/planetarium/libplanet/pull/1480">#1480</a>]</li>
 <li>Added <code>BlockHeader(int, long, DateTimeOffset, Nonce, Address, long, BigInteger, BlockHash?, HashDigest&lt;SHA256&gt;?, BlockHash, ImmutableArray&lt;byte&gt;, HashDigest&lt;SHA256&gt;?)</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/1470">#1470</a>]</li>
-<li>Added <code>IBlockPolicy&lt;T&gt;.GetMinTransactionsPerBlock()</code> interface method.
-[<a href="https://github.com/planetarium/libplanet/pull/1479">#1479</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>

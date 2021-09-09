@@ -8523,6 +8523,24 @@ references:
   fullName.vb: Libplanet.HashAlgorithmType.Digest(System.Byte())
   nameWithType: HashAlgorithmType.Digest(Byte[])
   nameWithType.vb: HashAlgorithmType.Digest(Byte())
+- uid: Libplanet.HashAlgorithmType.Digest(System.Collections.Generic.IEnumerable{ImmutableArray{System.Byte}})
+  name: Digest(IEnumerable<ImmutableArray<Byte>>)
+  href: api/Libplanet.HashAlgorithmType.html#Libplanet_HashAlgorithmType_Digest_System_Collections_Generic_IEnumerable_ImmutableArray_System_Byte___
+  commentId: M:Libplanet.HashAlgorithmType.Digest(System.Collections.Generic.IEnumerable{ImmutableArray{System.Byte}})
+  name.vb: Digest(IEnumerable(Of ImmutableArray(Of Byte)))
+  fullName: Libplanet.HashAlgorithmType.Digest(System.Collections.Generic.IEnumerable<ImmutableArray<System.Byte>>)
+  fullName.vb: Libplanet.HashAlgorithmType.Digest(System.Collections.Generic.IEnumerable(Of ImmutableArray(Of System.Byte)))
+  nameWithType: HashAlgorithmType.Digest(IEnumerable<ImmutableArray<Byte>>)
+  nameWithType.vb: HashAlgorithmType.Digest(IEnumerable(Of ImmutableArray(Of Byte)))
+- uid: Libplanet.HashAlgorithmType.Digest(System.Collections.Generic.IEnumerable{System.Byte[]})
+  name: Digest(IEnumerable<Byte[]>)
+  href: api/Libplanet.HashAlgorithmType.html#Libplanet_HashAlgorithmType_Digest_System_Collections_Generic_IEnumerable_System_Byte____
+  commentId: M:Libplanet.HashAlgorithmType.Digest(System.Collections.Generic.IEnumerable{System.Byte[]})
+  name.vb: Digest(IEnumerable(Of Byte()))
+  fullName: Libplanet.HashAlgorithmType.Digest(System.Collections.Generic.IEnumerable<System.Byte[]>)
+  fullName.vb: Libplanet.HashAlgorithmType.Digest(System.Collections.Generic.IEnumerable(Of System.Byte()))
+  nameWithType: HashAlgorithmType.Digest(IEnumerable<Byte[]>)
+  nameWithType.vb: HashAlgorithmType.Digest(IEnumerable(Of Byte()))
 - uid: Libplanet.HashAlgorithmType.Digest*
   name: Digest
   href: api/Libplanet.HashAlgorithmType.html#Libplanet_HashAlgorithmType_Digest_
