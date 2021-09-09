@@ -18,7 +18,7 @@ namespace Libplanet.Blockchain.Policies
     {
         private readonly int _maxBlockBytes;
         private readonly int _maxGenesisBytes;
-        private readonly Func<Transaction<T>, BlockChain<T>, bool> _doesTransactionFollowPolicy;
+        private readonly Func<BlockChain<T>, Transaction<T>, bool> _validateTxForNextBlock;
         private readonly HashAlgorithmGetter _hashAlgorithmGetter;
         private readonly int _minTransactionsPerBlock;
         private readonly int _maxTransactionsPerBlock;
@@ -48,7 +48,7 @@ namespace Libplanet.Blockchain.Policies
         /// the block is not a genesis.  100 KiB by default.</param>
         /// <param name="maxGenesisBytes">Configures <see cref="GetMaxBlockBytes(long)"/> where
         /// the block is a genesis.  1 MiB by default.</param>
-        /// <param name="doesTransactionFollowPolicy">
+        /// <param name="validateTxForNextBlock">
         /// A predicate that determines if the transaction follows the block policy.
         /// </param>
         /// <param name="canonicalChainComparer">The custom rule to determine which is the canonical
@@ -68,7 +68,7 @@ namespace Libplanet.Blockchain.Policies
             int minTransactionsPerBlock = 0,
             int maxBlockBytes = 100 * 1024,
             int maxGenesisBytes = 1024 * 1024,
-            Func<Transaction<T>, BlockChain<T>, bool> doesTransactionFollowPolicy = null,
+            Func<BlockChain<T>, Transaction<T>, bool> validateTxForNextBlock = null,
             IComparer<IBlockExcerpt> canonicalChainComparer = null,
             HashAlgorithmGetter hashAlgorithmGetter = null,
             Func<long, int> getMaxTransactionsPerSignerPerBlock = null)
@@ -81,7 +81,7 @@ namespace Libplanet.Blockchain.Policies
                 minTransactionsPerBlock,
                 maxBlockBytes,
                 maxGenesisBytes,
-                doesTransactionFollowPolicy,
+                validateTxForNextBlock,
                 canonicalChainComparer,
                 hashAlgorithmGetter,
                 getMaxTransactionsPerSignerPerBlock)
@@ -109,7 +109,7 @@ namespace Libplanet.Blockchain.Policies
         /// the block is not a genesis.</param>
         /// <param name="maxGenesisBytes">Configures <see cref="GetMaxBlockBytes(long)"/> where
         /// the block is a genesis.</param>
-        /// <param name="doesTransactionFollowPolicy">
+        /// <param name="validateTxForNextBlock">
         /// A predicate that determines if the transaction follows the block policy.
         /// </param>
         /// <param name="canonicalChainComparer">The custom rule to determine which is the canonical
@@ -129,7 +129,7 @@ namespace Libplanet.Blockchain.Policies
             int minTransactionsPerBlock,
             int maxBlockBytes,
             int maxGenesisBytes,
-            Func<Transaction<T>, BlockChain<T>, bool> doesTransactionFollowPolicy = null,
+            Func<BlockChain<T>, Transaction<T>, bool> validateTxForNextBlock = null,
             IComparer<IBlockExcerpt> canonicalChainComparer = null,
             HashAlgorithmGetter hashAlgorithmGetter = null,
             Func<long, int> getMaxTransactionsPerSignerPerBlock = null)
@@ -167,7 +167,7 @@ namespace Libplanet.Blockchain.Policies
             _minTransactionsPerBlock = minTransactionsPerBlock;
             _maxBlockBytes = maxBlockBytes;
             _maxGenesisBytes = maxGenesisBytes;
-            _doesTransactionFollowPolicy = doesTransactionFollowPolicy ?? ((_, __) => true);
+            _validateTxForNextBlock = validateTxForNextBlock ?? ((_, __) => true);
             CanonicalChainComparer = canonicalChainComparer
                 ?? new TotalDifficultyComparer();
             _hashAlgorithmGetter = hashAlgorithmGetter ?? (_ => HashAlgorithmType.Of<SHA256>());
@@ -195,27 +195,25 @@ namespace Libplanet.Blockchain.Policies
 
         private int DifficultyBoundDivisor { get; }
 
-        /// <inheritdoc
-        /// cref="IBlockPolicy{T}.DoesTransactionFollowsPolicy(Transaction{T}, BlockChain{T})"/>
-        public virtual bool DoesTransactionFollowsPolicy(
-            Transaction<T> transaction,
-            BlockChain<T> blockChain)
+        /// <inheritdoc/>
+        public virtual bool ValidateTxForNextBlock(
+            BlockChain<T> blockChain, Transaction<T> transaction)
         {
-            return _doesTransactionFollowPolicy(transaction, blockChain);
+            return _validateTxForNextBlock(blockChain, transaction);
         }
 
         /// <inheritdoc/>
         public virtual InvalidBlockException ValidateNextBlock(
-            BlockChain<T> blocks,
+            BlockChain<T> blockChain,
             Block<T> nextBlock)
         {
             return null;
         }
 
         /// <inheritdoc/>
-        public virtual long GetNextBlockDifficulty(BlockChain<T> blocks)
+        public virtual long GetNextBlockDifficulty(BlockChain<T> blockChain)
         {
-            long index = blocks.Count;
+            long index = blockChain.Count;
 
             if (index < 0)
             {
@@ -228,9 +226,9 @@ namespace Libplanet.Blockchain.Policies
                 return index == 0 ? 0 : MinimumDifficulty;
             }
 
-            var prevBlock = blocks[index - 1];
+            var prevBlock = blockChain[index - 1];
 
-            DateTimeOffset prevPrevTimestamp = blocks[index - 2].Timestamp;
+            DateTimeOffset prevPrevTimestamp = blockChain[index - 2].Timestamp;
             DateTimeOffset prevTimestamp = prevBlock.Timestamp;
             TimeSpan timeDiff = prevTimestamp - prevPrevTimestamp;
             long timeDiffMilliseconds = (long)timeDiff.TotalMilliseconds;

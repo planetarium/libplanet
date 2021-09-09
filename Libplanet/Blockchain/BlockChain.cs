@@ -893,7 +893,7 @@ namespace Libplanet.Blockchain
                 // the tx nounce order when the block was created
                 foreach (Transaction<T> tx1 in block.Transactions)
                 {
-                    if (!Policy.DoesTransactionFollowsPolicy(tx1, this))
+                    if (!Policy.ValidateTxForNextBlock(this, tx1))
                     {
                         throw new TxViolatingBlockPolicyException(
                             tx1.Id,

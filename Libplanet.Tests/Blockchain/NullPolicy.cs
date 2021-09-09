@@ -30,10 +30,8 @@ namespace Libplanet.Tests.Blockchain
 
         public int GetMaxTransactionsPerBlock(long index) => int.MaxValue;
 
-        public bool DoesTransactionFollowsPolicy(
-            Transaction<T> transaction,
-            BlockChain<T> blockChain
-        ) => true;
+        public bool ValidateTxForNextBlock(
+            BlockChain<T> blockChain, Transaction<T> transaction) => true;
 
         public long GetNextBlockDifficulty(BlockChain<T> blocks) =>
             blocks.Count == 0 ? 0 : _difficulty;

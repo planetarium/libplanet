@@ -414,11 +414,10 @@ If omitted (default) explorer only the local blockchain store.")]
             public int GetMaxTransactionsPerBlock(long index) =>
                 _impl.GetMaxTransactionsPerBlock(index);
 
-            public bool DoesTransactionFollowsPolicy(
-                Transaction<NullAction> transaction, BlockChain<NullAction> blockChain
-            )
+            public bool ValidateTxForNextBlock(
+                BlockChain<NullAction> blockChain, Transaction<NullAction> transaction)
             {
-                return _impl.DoesTransactionFollowsPolicy(transaction, blockChain);
+                return _impl.ValidateTxForNextBlock(blockChain, transaction);
             }
 
             public int GetMaxBlockBytes(long index)

@@ -1281,8 +1281,7 @@ namespace Libplanet.Net
                 }
 
                 txs = new HashSet<Transaction<T>>(
-                    txs.Where(tx => BlockChain.Policy.DoesTransactionFollowsPolicy(tx, BlockChain))
-                );
+                    txs.Where(tx => BlockChain.Policy.ValidateTxForNextBlock(BlockChain, tx)));
 
                 foreach (Transaction<T> tx in txs)
                 {

@@ -116,27 +116,27 @@ namespace Libplanet.Tests.Blockchain.Policies
         }
 
         [Fact]
-        public void DoesTransactionFollowPolicy()
+        public void ValidateTxForNextBlock()
         {
             var validKey = new PrivateKey();
 
-            bool IsSignerValid(Transaction<DumbAction> tx, BlockChain<DumbAction> chain)
+            bool IsSignerValid(BlockChain<DumbAction> chain, Transaction<DumbAction> tx)
             {
                 var validAddress = validKey.PublicKey.ToAddress();
                 return tx.Signer.Equals(validAddress);
             }
 
-            var policy = new BlockPolicy<DumbAction>(doesTransactionFollowPolicy: IsSignerValid);
+            var policy = new BlockPolicy<DumbAction>(validateTxForNextBlock: IsSignerValid);
 
             // Valid Transaction
             var validTx = _chain.MakeTransaction(validKey, new DumbAction[] { });
-            var expected = policy.DoesTransactionFollowsPolicy(validTx, _chain);
+            var expected = policy.ValidateTxForNextBlock(_chain, validTx);
             Assert.True(expected);
 
             // Invalid Transaction
             var invalidKey = new PrivateKey();
             var invalidTx = _chain.MakeTransaction(invalidKey, new DumbAction[] { });
-            expected = policy.DoesTransactionFollowsPolicy(invalidTx, _chain);
+            expected = policy.ValidateTxForNextBlock(_chain, invalidTx);
             Assert.False(expected);
         }
 
