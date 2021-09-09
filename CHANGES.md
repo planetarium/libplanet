@@ -7,6 +7,7 @@ Version 0.17.0
 To be released.
 
 ### Backward-incompatible API changes
+
  -  Added `StateCompleterSet<T>.ComplementAll` property.  [[#1358], [#1386]]
  -  Added `StateCompleterSet<T>.ComplementLatest` property.  [[#1358], [#1386]]
  -  `BlockPerception` now implements `IBlockExcerpt` interface.  [[#1440]]
@@ -35,6 +36,10 @@ To be released.
     [[#1447]]
  -  Added `IBlockPolicy<T>.GetMaxTransactionsPerBlock(long index)` method.
     [[#1447]]
+ -  Added `IBlockPolicy<T>.GetMinTransactionsPerBlock(long index)` method.
+    [[#1479]]
+ -  Added `IBlockPolicy<T>.GetMaxTransactionsPerSignerPerBlock(long index)`
+    method.  [[#1449], [#1463]]
  -  Unused parameter `currentTime` removed from `BlockChain<T>.Append()`.
     [[#1462], [#1465]]
  -  Added an optional `maxTransactionsPerSigner` parameter to
@@ -86,13 +91,13 @@ To be released.
     [[#1464]]
  -  Added `PublicKey.ToImmutableArray()` method.  [[#1464]]
  -  Added `Nonce(ImmutableArray<byte>)` overloaded constructor.  [[#1464]]
- -  Added `IBlockPolicy.GetMaxTransactionsPerSignerPerBlock()` interface method.
-    [[#1449], [#1463]]
+ -  Added `HashAlgorithmType.Digest(IEnumerable<byte[]>)` overloaded method.
+    [[#1480]]
+ -  Added `HashAlgorithmType.Digest(IEnumerable<ImmutableArray<byte>>)`
+    overloaded method.  [[#1480]]
  -  Added `BlockHeader(int, long, DateTimeOffset, Nonce, Address, long,
     BigInteger, BlockHash?, HashDigest<SHA256>?, BlockHash,
     ImmutableArray<byte>, HashDigest<SHA256>?)` constructor.  [[#1470]]
- -  Added `IBlockPolicy<T>.GetMinTransactionsPerBlock()` interface method.
-    [[#1479]]
 
 
 ### Behavioral changes
@@ -142,6 +147,7 @@ To be released.
 [#1475]: https://github.com/planetarium/libplanet/pull/1475
 [#1477]: https://github.com/planetarium/libplanet/pull/1477
 [#1479]: https://github.com/planetarium/libplanet/pull/1479
+[#1480]: https://github.com/planetarium/libplanet/pull/1480
 
 
 Version 0.16.0
