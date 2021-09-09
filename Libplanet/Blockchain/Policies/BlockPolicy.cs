@@ -18,9 +18,10 @@ namespace Libplanet.Blockchain.Policies
     {
         private readonly int _maxBlockBytes;
         private readonly int _maxGenesisBytes;
-        private readonly int _maxTransactionsPerBlock;
         private readonly Func<Transaction<T>, BlockChain<T>, bool> _doesTransactionFollowPolicy;
         private readonly HashAlgorithmGetter _hashAlgorithmGetter;
+        private readonly int _minTransactionsPerBlock;
+        private readonly int _maxTransactionsPerBlock;
         private readonly Func<long, int> _getMaxTransactionsPerSignerPerBlock;
 
         /// <summary>
@@ -41,8 +42,8 @@ namespace Libplanet.Blockchain.Policies
         /// <see cref="DifficultyBoundDivisor"/>. 128 by default.</param>
         /// <param name="maxTransactionsPerBlock">Configures the constant return value of
         /// <see cref="GetMaxTransactionsPerBlock(long)"/> method.  100 by default.</param>
-        /// <param name="minTransactionsPerBlock">Configures <see cref="MinTransactionsPerBlock"/>.
-        /// 0 by default.</param>
+        /// <param name="minTransactionsPerBlock">Configures the constant return value of
+        /// <see cref="GetMinTransactionsPerBlock"/> method.  0 by default.</param>
         /// <param name="maxBlockBytes">Configures <see cref="GetMaxBlockBytes(long)"/> where
         /// the block is not a genesis.  100 KiB by default.</param>
         /// <param name="maxGenesisBytes">Configures <see cref="GetMaxBlockBytes(long)"/> where
@@ -102,8 +103,8 @@ namespace Libplanet.Blockchain.Policies
         /// <see cref="DifficultyBoundDivisor"/>.</param>
         /// <param name="maxTransactionsPerBlock">Configures the constant return value of
         /// <see cref="GetMaxTransactionsPerBlock(long)"/> method.</param>
-        /// <param name="minTransactionsPerBlock">Configures <see cref="MinTransactionsPerBlock"/>.
-        /// </param>
+        /// <param name="minTransactionsPerBlock">Configures the constant return value of
+        /// <see cref="GetMinTransactionsPerBlock"/> method.  0 by default.</param>
         /// <param name="maxBlockBytes">Configures <see cref="GetMaxBlockBytes(long)"/> where
         /// the block is not a genesis.</param>
         /// <param name="maxGenesisBytes">Configures <see cref="GetMaxBlockBytes(long)"/> where
@@ -163,7 +164,7 @@ namespace Libplanet.Blockchain.Policies
             MinimumDifficulty = minimumDifficulty;
             DifficultyBoundDivisor = difficultyBoundDivisor;
             _maxTransactionsPerBlock = maxTransactionsPerBlock;
-            MinTransactionsPerBlock = minTransactionsPerBlock;
+            _minTransactionsPerBlock = minTransactionsPerBlock;
             _maxBlockBytes = maxBlockBytes;
             _maxGenesisBytes = maxGenesisBytes;
             _doesTransactionFollowPolicy = doesTransactionFollowPolicy ?? ((_, __) => true);
@@ -176,9 +177,6 @@ namespace Libplanet.Blockchain.Policies
 
         /// <inheritdoc/>
         public IAction BlockAction { get; }
-
-        /// <inheritdoc cref="IBlockPolicy{T}.MinTransactionsPerBlock"/>
-        public int MinTransactionsPerBlock { get; }
 
         /// <summary>
         /// An appropriate interval between consecutive <see cref="Block{T}"/>s.
@@ -251,15 +249,20 @@ namespace Libplanet.Blockchain.Policies
         /// <inheritdoc/>
         public int GetMaxBlockBytes(long index) => index > 0 ? _maxBlockBytes : _maxGenesisBytes;
 
-        /// <inheritdoc cref="IBlockPolicy{T}.GetMaxTransactionsPerBlock(long)"/>
+        /// <inheritdoc/>
+        [Pure]
+        public int GetMinTransactionsPerBlock(long index) => _minTransactionsPerBlock;
+
+        /// <inheritdoc/>
         [Pure]
         public int GetMaxTransactionsPerBlock(long index) => _maxTransactionsPerBlock;
 
-        /// <inheritdoc cref="IBlockPolicy{T}.GetHashAlgorithm(long)"/>
+        /// <inheritdoc/>
         public HashAlgorithmType GetHashAlgorithm(long index) =>
             _hashAlgorithmGetter(index);
 
         /// <inheritdoc/>
+        [Pure]
         public int GetMaxTransactionsPerSignerPerBlock(long index)
             => _getMaxTransactionsPerSignerPerBlock(index);
     }

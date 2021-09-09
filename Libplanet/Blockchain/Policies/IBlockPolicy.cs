@@ -31,13 +31,15 @@ namespace Libplanet.Blockchain.Policies
         IAction BlockAction { get; }
 
         /// <summary>
-        /// The minimum number of <see cref="Block{T}.Transactions"/> that a <see cref="Block{T}"/>
-        /// can accept.  This value must not be negative and must be deterministic (i.e., must not
-        /// change after an object is once instantiated).
+        /// Gets the minimum number of <see cref="Transaction{T}"/>s allowed for
+        /// a valid <see cref="Block{T}"/>.
         /// </summary>
-        /// <remarks>If the value is less then 0, it's treated as 0.</remarks>
+        /// <param name="index">The <see cref="Block{T}.Index"/> of the <see cref="Block{T}"/>
+        /// for which this constraint should apply.</param>
+        /// <returns>The minimum number of <see cref="Transaction{T}"/>s allowed for
+        /// a valid <see cref="Block{T}"/> can accept.</returns>
         [Pure]
-        int MinTransactionsPerBlock { get; }
+        int GetMinTransactionsPerBlock(long index);
 
         /// <summary>
         /// Gets the maximum number of <see cref="Block{T}.Transactions"/> that
