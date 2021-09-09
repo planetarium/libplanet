@@ -14,7 +14,6 @@ To be released.
  -  `TotalDifficultyComparer` now implements `IComparer<IBlockExcerpt>`
     interface.  [[#1442]]
  -  Return type for `BlockDemandTable.Add()` is now `void`.  [[#1435], [#1443]]
- -  Added `IBlockPolicy<T>.MinTransactionsPerBlock` property.  [[#1445]]
  -  Added `BlockInsufficientTxsException`.  [[#1445]]
  -  `PrivateKey()` constructor's parameter type became `IReadOnlyList<byte>`
     (was `byte[]`).  [[#1464]]
@@ -87,11 +86,14 @@ To be released.
     [[#1464]]
  -  Added `PublicKey.ToImmutableArray()` method.  [[#1464]]
  -  Added `Nonce(ImmutableArray<byte>)` overloaded constructor.  [[#1464]]
- -  `IBlockPolicy.GetMaxTransactionsPerSignerPerBlock()` interface method added.
+ -  Added `IBlockPolicy.GetMaxTransactionsPerSignerPerBlock()` interface method.
     [[#1449], [#1463]]
  -  Added `BlockHeader(int, long, DateTimeOffset, Nonce, Address, long,
     BigInteger, BlockHash?, HashDigest<SHA256>?, BlockHash,
     ImmutableArray<byte>, HashDigest<SHA256>?)` constructor.  [[#1470]]
+ -  Added `IBlockPolicy<T>.GetMinTransactionsPerBlock()` interface method.
+    [[#1479]]
+
 
 ### Behavioral changes
 
@@ -139,6 +141,7 @@ To be released.
 [#1474]: https://github.com/planetarium/libplanet/pull/1474
 [#1475]: https://github.com/planetarium/libplanet/pull/1475
 [#1477]: https://github.com/planetarium/libplanet/pull/1477
+[#1479]: https://github.com/planetarium/libplanet/pull/1479
 
 
 Version 0.16.0

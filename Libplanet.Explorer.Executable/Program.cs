@@ -405,10 +405,11 @@ If omitted (default) explorer only the local blockchain store.")]
 
             public IAction BlockAction => _impl.BlockAction;
 
-            public int MinTransactionsPerBlock => _impl.MinTransactionsPerBlock;
-
             public IComparer<IBlockExcerpt> CanonicalChainComparer =>
                 _impl.CanonicalChainComparer;
+
+            public int GetMinTransactionsPerBlock(long index) =>
+                _impl.GetMinTransactionsPerBlock(index);
 
             public int GetMaxTransactionsPerBlock(long index) =>
                 _impl.GetMaxTransactionsPerBlock(index);

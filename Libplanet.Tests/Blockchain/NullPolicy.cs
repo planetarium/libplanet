@@ -26,7 +26,7 @@ namespace Libplanet.Tests.Blockchain
 
         public IAction BlockAction => null;
 
-        public int MinTransactionsPerBlock => 0;
+        public int GetMinTransactionsPerBlock(long index) => 0;
 
         public int GetMaxTransactionsPerBlock(long index) => int.MaxValue;
 
