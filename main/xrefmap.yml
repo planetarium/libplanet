@@ -2214,23 +2214,24 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).MakeTransaction
   nameWithType: BlockChain<T>.MakeTransaction
   nameWithType.vb: BlockChain(Of T).MakeTransaction
-- uid: Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Address,System.DateTimeOffset,System.Boolean,System.Int32,System.Int32,System.Threading.CancellationToken)
-  name: MineBlock(Address, DateTimeOffset, Boolean, Int32, Int32, CancellationToken)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MineBlock_Libplanet_Address_System_DateTimeOffset_System_Boolean_System_Int32_System_Int32_System_Threading_CancellationToken_
-  commentId: M:Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Address,System.DateTimeOffset,System.Boolean,System.Int32,System.Int32,System.Threading.CancellationToken)
-  fullName: Libplanet.Blockchain.BlockChain<T>.MineBlock(Libplanet.Address, System.DateTimeOffset, System.Boolean, System.Int32, System.Int32, System.Threading.CancellationToken)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).MineBlock(Libplanet.Address, System.DateTimeOffset, System.Boolean, System.Int32, System.Int32, System.Threading.CancellationToken)
-  nameWithType: BlockChain<T>.MineBlock(Address, DateTimeOffset, Boolean, Int32, Int32, CancellationToken)
-  nameWithType.vb: BlockChain(Of T).MineBlock(Address, DateTimeOffset, Boolean, Int32, Int32, CancellationToken)
-- uid: Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Address,System.Nullable{System.DateTimeOffset},System.Nullable{System.Boolean},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Threading.CancellationToken})
-  name: MineBlock(Address, Nullable<DateTimeOffset>, Nullable<Boolean>, Nullable<Int32>, Nullable<Int32>, Nullable<CancellationToken>)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MineBlock_Libplanet_Address_System_Nullable_System_DateTimeOffset__System_Nullable_System_Boolean__System_Nullable_System_Int32__System_Nullable_System_Int32__System_Nullable_System_Threading_CancellationToken__
-  commentId: M:Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Address,System.Nullable{System.DateTimeOffset},System.Nullable{System.Boolean},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Threading.CancellationToken})
-  name.vb: MineBlock(Address, Nullable(Of DateTimeOffset), Nullable(Of Boolean), Nullable(Of Int32), Nullable(Of Int32), Nullable(Of CancellationToken))
-  fullName: Libplanet.Blockchain.BlockChain<T>.MineBlock(Libplanet.Address, System.Nullable<System.DateTimeOffset>, System.Nullable<System.Boolean>, System.Nullable<System.Int32>, System.Nullable<System.Int32>, System.Nullable<System.Threading.CancellationToken>)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).MineBlock(Libplanet.Address, System.Nullable(Of System.DateTimeOffset), System.Nullable(Of System.Boolean), System.Nullable(Of System.Int32), System.Nullable(Of System.Int32), System.Nullable(Of System.Threading.CancellationToken))
-  nameWithType: BlockChain<T>.MineBlock(Address, Nullable<DateTimeOffset>, Nullable<Boolean>, Nullable<Int32>, Nullable<Int32>, Nullable<CancellationToken>)
-  nameWithType.vb: BlockChain(Of T).MineBlock(Address, Nullable(Of DateTimeOffset), Nullable(Of Boolean), Nullable(Of Int32), Nullable(Of Int32), Nullable(Of CancellationToken))
+- uid: Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Address,System.DateTimeOffset,System.Boolean,System.Int32,System.Int32,System.Collections.Generic.IComparer{Libplanet.Tx.Transaction{`0}},System.Threading.CancellationToken)
+  name: MineBlock(Address, DateTimeOffset, Boolean, Int32, Int32, IComparer<Transaction<T>>, CancellationToken)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MineBlock_Libplanet_Address_System_DateTimeOffset_System_Boolean_System_Int32_System_Int32_System_Collections_Generic_IComparer_Libplanet_Tx_Transaction__0___System_Threading_CancellationToken_
+  commentId: M:Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Address,System.DateTimeOffset,System.Boolean,System.Int32,System.Int32,System.Collections.Generic.IComparer{Libplanet.Tx.Transaction{`0}},System.Threading.CancellationToken)
+  name.vb: MineBlock(Address, DateTimeOffset, Boolean, Int32, Int32, IComparer(Of Transaction(Of T)), CancellationToken)
+  fullName: Libplanet.Blockchain.BlockChain<T>.MineBlock(Libplanet.Address, System.DateTimeOffset, System.Boolean, System.Int32, System.Int32, System.Collections.Generic.IComparer<Libplanet.Tx.Transaction<T>>, System.Threading.CancellationToken)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).MineBlock(Libplanet.Address, System.DateTimeOffset, System.Boolean, System.Int32, System.Int32, System.Collections.Generic.IComparer(Of Libplanet.Tx.Transaction(Of T)), System.Threading.CancellationToken)
+  nameWithType: BlockChain<T>.MineBlock(Address, DateTimeOffset, Boolean, Int32, Int32, IComparer<Transaction<T>>, CancellationToken)
+  nameWithType.vb: BlockChain(Of T).MineBlock(Address, DateTimeOffset, Boolean, Int32, Int32, IComparer(Of Transaction(Of T)), CancellationToken)
+- uid: Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Address,System.Nullable{System.DateTimeOffset},System.Nullable{System.Boolean},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Collections.Generic.IComparer{Libplanet.Tx.Transaction{`0}},System.Nullable{System.Threading.CancellationToken})
+  name: MineBlock(Address, Nullable<DateTimeOffset>, Nullable<Boolean>, Nullable<Int32>, Nullable<Int32>, IComparer<Transaction<T>>, Nullable<CancellationToken>)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MineBlock_Libplanet_Address_System_Nullable_System_DateTimeOffset__System_Nullable_System_Boolean__System_Nullable_System_Int32__System_Nullable_System_Int32__System_Collections_Generic_IComparer_Libplanet_Tx_Transaction__0___System_Nullable_System_Threading_CancellationToken__
+  commentId: M:Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Address,System.Nullable{System.DateTimeOffset},System.Nullable{System.Boolean},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Collections.Generic.IComparer{Libplanet.Tx.Transaction{`0}},System.Nullable{System.Threading.CancellationToken})
+  name.vb: MineBlock(Address, Nullable(Of DateTimeOffset), Nullable(Of Boolean), Nullable(Of Int32), Nullable(Of Int32), IComparer(Of Transaction(Of T)), Nullable(Of CancellationToken))
+  fullName: Libplanet.Blockchain.BlockChain<T>.MineBlock(Libplanet.Address, System.Nullable<System.DateTimeOffset>, System.Nullable<System.Boolean>, System.Nullable<System.Int32>, System.Nullable<System.Int32>, System.Collections.Generic.IComparer<Libplanet.Tx.Transaction<T>>, System.Nullable<System.Threading.CancellationToken>)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).MineBlock(Libplanet.Address, System.Nullable(Of System.DateTimeOffset), System.Nullable(Of System.Boolean), System.Nullable(Of System.Int32), System.Nullable(Of System.Int32), System.Collections.Generic.IComparer(Of Libplanet.Tx.Transaction(Of T)), System.Nullable(Of System.Threading.CancellationToken))
+  nameWithType: BlockChain<T>.MineBlock(Address, Nullable<DateTimeOffset>, Nullable<Boolean>, Nullable<Int32>, Nullable<Int32>, IComparer<Transaction<T>>, Nullable<CancellationToken>)
+  nameWithType.vb: BlockChain(Of T).MineBlock(Address, Nullable(Of DateTimeOffset), Nullable(Of Boolean), Nullable(Of Int32), Nullable(Of Int32), IComparer(Of Transaction(Of T)), Nullable(Of CancellationToken))
 - uid: Libplanet.Blockchain.BlockChain`1.MineBlock*
   name: MineBlock
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MineBlock_

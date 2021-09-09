@@ -101,8 +101,12 @@ by <code>IBlockPolicy&lt;T&gt;.GetMaxTransactionsPerBlock(long index)</code> met
 [<a href="https://github.com/planetarium/libplanet/pull/1447">#1447</a>]</li>
 <li>Added <code>IBlockPolicy&lt;T&gt;.GetMaxTransactionsPerBlock(long index)</code> method.
 [<a href="https://github.com/planetarium/libplanet/pull/1447">#1447</a>]</li>
-<li>Unused parameter <code>currentTime</code> removed from <code>BlockChain&lt;T&gt;.Append()</code>
+<li>Unused parameter <code>currentTime</code> removed from <code>BlockChain&lt;T&gt;.Append()</code>.
 [<a href="https://github.com/planetarium/libplanet/issues/1462">#1462</a>, <a href="https://github.com/planetarium/libplanet/pull/1465">#1465</a>]</li>
+<li>Added an optional <code>maxTransactionsPerSigner</code> parameter to
+<code>BlockChain&lt;T&gt;.MineBlock()</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/1449">#1449</a>, <a href="https://github.com/planetarium/libplanet/pull/1463">#1463</a>]</li>
+<li>Added an optional <code>txPriority</code> parameter to <code>BlockChain&lt;T&gt;.MineBlock()</code>
+method. [<a href="https://github.com/planetarium/libplanet/pull/1477">#1477</a>]</li>
 <li><code>BlockHeader</code>'s properties are now represented as richer types than before.
 [<a href="https://github.com/planetarium/libplanet/pull/1470">#1470</a>]
 <ul>
@@ -128,7 +132,7 @@ by <code>IBlockPolicy&lt;T&gt;.GetMaxTransactionsPerBlock(long index)</code> met
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <ul>
-<li><code>Message</code> became to serialize peer with bencodex instead of
+<li><code>Message</code> became to serialize peer with Bencodex instead of
 <code>BinaryFormatter</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1455">#1455</a>]</li>
 </ul>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
@@ -146,8 +150,6 @@ by <code>IBlockPolicy&lt;T&gt;.GetMaxTransactionsPerBlock(long index)</code> met
 <li>Added <code>Nonce(ImmutableArray&lt;byte&gt;)</code> overloaded constructor.  [<a href="https://github.com/planetarium/libplanet/pull/1464">#1464</a>]</li>
 <li><code>IBlockPolicy.GetMaxTransactionsPerSignerPerBlock()</code> interface method added.
 [<a href="https://github.com/planetarium/libplanet/issues/1449">#1449</a>, <a href="https://github.com/planetarium/libplanet/pull/1463">#1463</a>]</li>
-<li><code>BlockChain&lt;T&gt;.MineBlock()</code> now takes <code>maxTransactionsPerSigner</code>
-as an optional parameter.  [<a href="https://github.com/planetarium/libplanet/issues/1449">#1449</a>, <a href="https://github.com/planetarium/libplanet/pull/1463">#1463</a>]</li>
 <li>Added <code>BlockHeader(int, long, DateTimeOffset, Nonce, Address, long, BigInteger, BlockHash?, HashDigest&lt;SHA256&gt;?, BlockHash, ImmutableArray&lt;byte&gt;, HashDigest&lt;SHA256&gt;?)</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/1470">#1470</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
