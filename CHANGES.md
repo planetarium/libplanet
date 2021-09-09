@@ -36,8 +36,12 @@ To be released.
     [[#1447]]
  -  Added `IBlockPolicy<T>.GetMaxTransactionsPerBlock(long index)` method.
     [[#1447]]
- -  Unused parameter `currentTime` removed from `BlockChain<T>.Append()`
+ -  Unused parameter `currentTime` removed from `BlockChain<T>.Append()`.
     [[#1462], [#1465]]
+ -  Added an optional `maxTransactionsPerSigner` parameter to
+    `BlockChain<T>.MineBlock()` method.  [[#1449], [#1463]]
+ -  Added an optional `txPriority` parameter to `BlockChain<T>.MineBlock()`
+    method. [[#1477]]
  -  `BlockHeader`'s properties are now represented as richer types than before.
     [[#1470]]
      -  `BlockHeader.Timestamp` property's type became `DateTimeOffset`
@@ -66,7 +70,7 @@ To be released.
 
 ### Backward-incompatible network protocol changes
 
- -  `Message` became to serialize peer with bencodex instead of
+ -  `Message` became to serialize peer with Bencodex instead of
     `BinaryFormatter`.  [[#1455]]
 
 ### Backward-incompatible storage format changes
@@ -85,8 +89,6 @@ To be released.
  -  Added `Nonce(ImmutableArray<byte>)` overloaded constructor.  [[#1464]]
  -  `IBlockPolicy.GetMaxTransactionsPerSignerPerBlock()` interface method added.
     [[#1449], [#1463]]
- -  `BlockChain<T>.MineBlock()` now takes `maxTransactionsPerSigner`
-    as an optional parameter.  [[#1449], [#1463]]
  -  Added `BlockHeader(int, long, DateTimeOffset, Nonce, Address, long,
     BigInteger, BlockHash?, HashDigest<SHA256>?, BlockHash,
     ImmutableArray<byte>, HashDigest<SHA256>?)` constructor.  [[#1470]]
@@ -136,6 +138,7 @@ To be released.
 [#1470]: https://github.com/planetarium/libplanet/pull/1470
 [#1474]: https://github.com/planetarium/libplanet/pull/1474
 [#1475]: https://github.com/planetarium/libplanet/pull/1475
+[#1477]: https://github.com/planetarium/libplanet/pull/1477
 
 
 Version 0.16.0

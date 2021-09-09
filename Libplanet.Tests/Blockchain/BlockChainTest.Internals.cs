@@ -38,7 +38,7 @@ namespace Libplanet.Tests.Blockchain
 
             // A normal case and corner cases:
             // A. Normal case (3 txs: 0, 1, 2)
-            // B. Nonces are out of order (2 tsx: 1, 0)
+            // B. Nonces are out of order (2 txs: 1, 0)
             // C. Smaller nonces have later timestamps (2 txs: 0 (later), 1)
             // D. Some nonce numbers are missed out (3 txs: 0, 1, 3)
             // E. Reused nonces (4 txs: 0, 1, 1, 2)
@@ -102,6 +102,44 @@ namespace Libplanet.Tests.Blockchain
             };
 
             Log.Logger.Debug("Expected vs Actual");
+            foreach ((var ex, var ac) in expected.Zip(actual, (e_, a_) => (e_, a_)))
+            {
+                Log.Logger.Debug(
+                    "{0} {1} != {2} {3}",
+                    signerMap[ex.Signer],
+                    ex.Nonce,
+                    signerMap[ac.Signer],
+                    ac.Nonce
+                );
+            }
+
+            Assert.Equal(expected, actual);
+
+            // A is prioritized over B, C, D, E:
+            IComparer<Transaction<DumbAction>> priority = Comparer<Transaction<DumbAction>>.Create(
+                (tx1, tx2) => tx1.Signer.Equals(a.ToAddress()) ? -1 : 1
+            );
+            stagedTransactions = _blockChain.ListStagedTransactions(priority);
+            actual = stagedTransactions.Select(tx => (tx.Signer, tx.Nonce)).ToArray();
+            expected = new (Address Signer, long Nonce)[]
+            {
+                (a.ToAddress(), 0),
+                (a.ToAddress(), 1),
+                (a.ToAddress(), 2),
+                (b.ToAddress(), 0),
+                (c.ToAddress(), 0),
+                (d.ToAddress(), 0),
+                (e.ToAddress(), 0),
+                (b.ToAddress(), 1),
+                (c.ToAddress(), 1),
+                (d.ToAddress(), 1),
+                (e.ToAddress(), 1),
+                (d.ToAddress(), 3),
+                (e.ToAddress(), 1),
+                (e.ToAddress(), 2),
+            };
+
+            Log.Logger.Debug("Expected vs Actual (txPriority)");
             foreach ((var ex, var ac) in expected.Zip(actual, (e_, a_) => (e_, a_)))
             {
                 Log.Logger.Debug(

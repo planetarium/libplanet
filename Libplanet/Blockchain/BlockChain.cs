@@ -1231,9 +1231,25 @@ namespace Libplanet.Blockchain
             }
         }
 
-        internal ImmutableList<Transaction<T>> ListStagedTransactions()
+        /// <summary>
+        /// Lists the all staged transactions, with properly ordered nonces.
+        /// </summary>
+        /// <param name="txPriority">An optional comparer for give certain transactions to
+        /// priority to belong to the block.  No certain priority by default.</param>
+        /// <returns>A list of staged transactions.  This guarantees that for transactions signed
+        /// by the same address, those with greater nonce never comes before those with
+        /// lesser nonce.</returns>
+        internal ImmutableList<Transaction<T>> ListStagedTransactions(
+            IComparer<Transaction<T>> txPriority = null
+        )
         {
-            Transaction<T>[] txs = StagePolicy.Iterate(this).ToArray();
+            IEnumerable<Transaction<T>> unorderedTxs = StagePolicy.Iterate(this);
+            if (txPriority is { } comparer)
+            {
+                unorderedTxs = unorderedTxs.OrderBy(tx => tx, comparer);
+            }
+
+            Transaction<T>[] txs = unorderedTxs.ToArray();
 
             Dictionary<Address, LinkedList<Transaction<T>>> seats = txs
                 .GroupBy(tx => tx.Signer)

@@ -34,6 +34,8 @@ namespace Libplanet.Blockchain
         /// <param name="maxTransactionsPerSigner">The maximum number of transactions
         /// that a block can accept per signer.  See also
         /// <see cref="IBlockPolicy{T}.GetMaxTransactionsPerSignerPerBlock(long)"/>.</param>
+        /// <param name="txPriority">An optional comparer for give certain transactions to
+        /// priority to belong to the block.  No certain priority by default.</param>
         /// <param name="cancellationToken">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
         /// <returns>An awaitable task with a <see cref="Block{T}"/> that is mined.</returns>
@@ -45,6 +47,7 @@ namespace Libplanet.Blockchain
             bool? append = null,
             int? maxTransactions = null,
             int? maxTransactionsPerSigner = null,
+            IComparer<Transaction<T>> txPriority = null,
             CancellationToken? cancellationToken = null) =>
 #pragma warning disable SA1118
                 await MineBlock(
@@ -55,6 +58,7 @@ namespace Libplanet.Blockchain
                         Policy.GetMaxTransactionsPerBlock(Count),
                     maxTransactionsPerSigner: maxTransactionsPerSigner
                         ?? Policy.GetMaxTransactionsPerSignerPerBlock(Count),
+                    txPriority: txPriority,
                     cancellationToken: cancellationToken ?? default(CancellationToken));
 #pragma warning restore SA1118
 
@@ -70,6 +74,8 @@ namespace Libplanet.Blockchain
         /// <param name="maxTransactionsPerSigner">The maximum number of transactions
         /// that a block can accept per signer.  See also
         /// <see cref="IBlockPolicy{T}.GetMaxTransactionsPerSignerPerBlock(long)"/>.</param>
+        /// <param name="txPriority">An optional comparer for give certain transactions to
+        /// priority to belong to the block.  No certain priority by default.</param>
         /// <param name="cancellationToken">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
         /// <returns>An awaitable task with a <see cref="Block{T}"/> that is mined.</returns>
@@ -81,6 +87,7 @@ namespace Libplanet.Blockchain
             bool append,
             int maxTransactions,
             int maxTransactionsPerSigner,
+            IComparer<Transaction<T>> txPriority = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             using var cts = new CancellationTokenSource();
@@ -108,7 +115,9 @@ namespace Libplanet.Blockchain
 
             var transactionsToMine = GatherTransactionsToMine(
                 maxTransactions: maxTransactions,
-                maxTransactionsPerSigner: maxTransactionsPerSigner);
+                maxTransactionsPerSigner: maxTransactionsPerSigner,
+                txPriority: txPriority
+            );
 
             _logger.Verbose(
                 "{SessionId}/{ProcessId}: Mined block #{Index} will include " +
@@ -207,16 +216,20 @@ namespace Libplanet.Blockchain
         /// allowed.</param>
         /// <param name="maxTransactionsPerSigner">The maximum number of
         /// <see cref="Transaction{T}"/>s with the same signer allowed.</param>
+        /// <param name="txPriority">An optional comparer for give certain transactions to
+        /// priority to belong to the block.  No certain priority by default.</param>
         /// <returns>An <see cref="ImmutableList"/> of <see cref="Transaction{T}"/>s with its
         /// count not exceeding <paramref name="maxTransactions"/> and the number of
         /// <see cref="Transaction{T}"/>s in the list for each signer not exceeding
         /// <paramref name="maxTransactionsPerSigner"/>.</returns>
         internal ImmutableList<Transaction<T>> GatherTransactionsToMine(
             int maxTransactions,
-            int maxTransactionsPerSigner)
+            int maxTransactionsPerSigner,
+            IComparer<Transaction<T>> txPriority = null
+        )
         {
             long index = Count;
-            ImmutableList<Transaction<T>> stagedTransactions = ListStagedTransactions();
+            ImmutableList<Transaction<T>> stagedTransactions = ListStagedTransactions(txPriority);
             _logger.Information(
                 "Gathering transactions to mine for block #{Index} from {TransactionsCount} " +
                 "staged transactions...",
