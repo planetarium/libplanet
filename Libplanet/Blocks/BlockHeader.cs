@@ -537,8 +537,10 @@ namespace Libplanet.Blocks
             }
         }
 
+        // FIXME: This method should be replaced by BlockContent<T>.ToBencodex() method.
         internal Bencodex.Types.Dictionary ToBencodexForPreEvaluationHash()
         {
+            // TODO: Include TotalDifficulty as well
             var dict = Bencodex.Types.Dictionary.Empty
                 .Add("index", Index)
                 .Add("timestamp", Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture))

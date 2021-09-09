@@ -54,6 +54,8 @@ namespace Libplanet
         /// <returns>A pair of <see cref="Nonce"/> value which satisfies the
         /// given <paramref name="difficulty"/>, and the succeeded hash
         /// digest.</returns>
+        /// <exception cref="OperationCanceledException">Thrown when the specified
+        /// <paramref name="cancellationToken"/> received a cancellation request.</exception>
         /// <seealso cref="Stamp"/>
         public static (Nonce Nonce, ImmutableArray<byte> Digest) Answer(
             Stamp stamp,
