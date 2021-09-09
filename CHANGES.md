@@ -88,6 +88,10 @@ To be released.
  -  Added `Nonce(ImmutableArray<byte>)` overloaded constructor.  [[#1464]]
  -  Added `IBlockPolicy.GetMaxTransactionsPerSignerPerBlock()` interface method.
     [[#1449], [#1463]]
+ -  Added `HashAlgorithmType.Digest(IEnumerable<byte[]>)` overloaded method.
+    [[#1480]]
+ -  Added `HashAlgorithmType.Digest(IEnumerable<ImmutableArray<byte>>)`
+    overloaded method.  [[#1480]]
  -  Added `BlockHeader(int, long, DateTimeOffset, Nonce, Address, long,
     BigInteger, BlockHash?, HashDigest<SHA256>?, BlockHash,
     ImmutableArray<byte>, HashDigest<SHA256>?)` constructor.  [[#1470]]
@@ -142,6 +146,7 @@ To be released.
 [#1475]: https://github.com/planetarium/libplanet/pull/1475
 [#1477]: https://github.com/planetarium/libplanet/pull/1477
 [#1479]: https://github.com/planetarium/libplanet/pull/1479
+[#1480]: https://github.com/planetarium/libplanet/pull/1480
 
 
 Version 0.16.0
