@@ -428,26 +428,19 @@ namespace Libplanet.Blocks
             byte[] stampSuffix = new byte[emptyNonce.Length - offset - nonceLength];
             Array.Copy(emptyNonce, offset + nonceLength, stampSuffix, 0, stampSuffix.Length);
 
+            byte[] colon = { 0x3a }; // ':'
+            IEnumerable<byte[]> Stamp(Nonce n)
+            {
+                int nLen = n.ByteArray.Length;
+                yield return stampPrefix;
+                yield return Encoding.ASCII.GetBytes(nLen.ToString(CultureInfo.InvariantCulture));
+                yield return colon; // ':'
+                yield return n.ToByteArray();
+                yield return stampSuffix;
+            }
+
             (Nonce nonce, _) = Hashcash.Answer(
-                n =>
-                {
-                    int nLen = n.ByteArray.Length;
-                    byte[] nLenStr = Encoding.ASCII.GetBytes(
-                        nLen.ToString(CultureInfo.InvariantCulture));
-                    int totalLen =
-                        stampPrefix.Length + nLenStr.Length + 1 + nLen + stampSuffix.Length;
-                    byte[] stamp = new byte[totalLen];
-                    Array.Copy(stampPrefix, stamp, stampPrefix.Length);
-                    int pos = stampPrefix.Length;
-                    Array.Copy(nLenStr, 0, stamp, pos, nLenStr.Length);
-                    pos += nLenStr.Length;
-                    stamp[pos] = 0x3a;  // ':'
-                    pos++;
-                    n.ByteArray.CopyTo(stamp, pos);
-                    pos += nLen;
-                    Array.Copy(stampSuffix, 0, stamp, pos, stampSuffix.Length);
-                    return stamp;
-                },
+                Stamp,
                 hashAlgorithm,
                 difficulty,
                 cancellationToken

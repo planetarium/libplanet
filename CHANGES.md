@@ -8,6 +8,9 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  `Hashcash.Stamp(Nonce)` delegate's return type became `IEnumerable<byte[]>`
+    (was `byte[]`).  [[#1492]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -19,6 +22,8 @@ To be released.
 ### Bug fixes
 
 ### CLI tools
+
+[#1492]: https://github.com/planetarium/libplanet/pull/1492
 
 
 Version 0.17.0
