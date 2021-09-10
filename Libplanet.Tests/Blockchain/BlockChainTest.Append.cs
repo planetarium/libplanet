@@ -437,10 +437,13 @@ namespace Libplanet.Tests.Blockchain
             var validKey = new PrivateKey();
             var invalidKey = new PrivateKey();
 
-            bool IsSignerValid(BlockChain<DumbAction> chain, Transaction<DumbAction> tx)
+            TxPolicyViolationException IsSignerValid(
+                BlockChain<DumbAction> chain, Transaction<DumbAction> tx)
             {
                 var validAddress = validKey.PublicKey.ToAddress();
-                return tx.Signer.Equals(validAddress);
+                return tx.Signer.Equals(validAddress)
+                    ? null
+                    : new TxPolicyViolationException(tx.Id, "invalid signer");
             }
 
             var policy = new BlockPolicy<DumbAction>(validateTxForNextBlock: IsSignerValid);
@@ -478,7 +481,7 @@ namespace Libplanet.Tests.Blockchain
                     blockInterval: TimeSpan.FromSeconds(10)
                 ).AttachStateRootHash(blockChain.StateStore, policy);
 
-                Assert.Throws<TxViolatingBlockPolicyException>(() => blockChain.Append(block2));
+                Assert.Throws<TxPolicyViolationException>(() => blockChain.Append(block2));
             }
         }
 
@@ -540,12 +543,12 @@ namespace Libplanet.Tests.Blockchain
         {
             var blockChain = new BlockChain<DumbAction>(
                 new NullPolicy<DumbAction>(
-                    new InvalidBlockDifficultyException(string.Empty)),
+                    new BlockPolicyViolationException(string.Empty)),
                 new VolatileStagePolicy<DumbAction>(),
                 _fx.Store,
                 _fx.StateStore,
                 _fx.GenesisBlock);
-            Assert.Throws<InvalidBlockDifficultyException>(
+            Assert.Throws<BlockPolicyViolationException>(
                 () => blockChain.Append(_fx.Block1));
         }
 

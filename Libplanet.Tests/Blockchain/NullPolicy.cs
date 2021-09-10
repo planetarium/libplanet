@@ -12,10 +12,11 @@ namespace Libplanet.Tests.Blockchain
     public class NullPolicy<T> : IBlockPolicy<T>
         where T : IAction, new()
     {
-        private readonly InvalidBlockException _exceptionToThrow;
+        private readonly BlockPolicyViolationException _exceptionToThrow;
         private readonly long _difficulty;
 
-        public NullPolicy(InvalidBlockException exceptionToThrow = null, long difficulty = 1)
+        public NullPolicy(
+            BlockPolicyViolationException exceptionToThrow = null, long difficulty = 1)
         {
             _exceptionToThrow = exceptionToThrow;
             _difficulty = difficulty;
@@ -30,14 +31,14 @@ namespace Libplanet.Tests.Blockchain
 
         public int GetMaxTransactionsPerBlock(long index) => int.MaxValue;
 
-        public bool ValidateTxForNextBlock(
-            BlockChain<T> blockChain, Transaction<T> transaction) => true;
-
         public long GetNextBlockDifficulty(BlockChain<T> blocks) =>
             blocks.Count == 0 ? 0 : _difficulty;
 
-        public InvalidBlockException ValidateNextBlock(BlockChain<T> blocks, Block<T> nextBlock) =>
-            _exceptionToThrow;
+        public TxPolicyViolationException ValidateTxForNextBlock(
+            BlockChain<T> blockChain, Transaction<T> transaction) => null;
+
+        public BlockPolicyViolationException ValidateNextBlock(
+            BlockChain<T> blocks, Block<T> nextBlock) => _exceptionToThrow;
 
         public int GetMaxBlockBytes(long index) => 1024 * 1024;
 

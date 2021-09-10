@@ -414,12 +414,6 @@ If omitted (default) explorer only the local blockchain store.")]
             public int GetMaxTransactionsPerBlock(long index) =>
                 _impl.GetMaxTransactionsPerBlock(index);
 
-            public bool ValidateTxForNextBlock(
-                BlockChain<NullAction> blockChain, Transaction<NullAction> transaction)
-            {
-                return _impl.ValidateTxForNextBlock(blockChain, transaction);
-            }
-
             public int GetMaxBlockBytes(long index)
             {
                 return _impl.GetMaxBlockBytes(index);
@@ -430,11 +424,17 @@ If omitted (default) explorer only the local blockchain store.")]
                 return 0;
             }
 
-            public InvalidBlockException ValidateNextBlock(
-                BlockChain<NullAction> blocks, Block<NullAction> nextBlock
+            public TxPolicyViolationException ValidateTxForNextBlock(
+                BlockChain<NullAction> blockChain, Transaction<NullAction> transaction)
+            {
+                return _impl.ValidateTxForNextBlock(blockChain, transaction);
+            }
+
+            public BlockPolicyViolationException ValidateNextBlock(
+                BlockChain<NullAction> blockChain, Block<NullAction> nextBlock
             )
             {
-                return _impl.ValidateNextBlock(blocks, nextBlock);
+                return _impl.ValidateNextBlock(blockChain, nextBlock);
             }
 
             public HashAlgorithmType GetHashAlgorithm(long index) =>

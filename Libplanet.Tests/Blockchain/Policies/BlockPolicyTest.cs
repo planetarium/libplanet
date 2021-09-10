@@ -113,10 +113,13 @@ namespace Libplanet.Tests.Blockchain.Policies
         {
             var validKey = new PrivateKey();
 
-            bool IsSignerValid(BlockChain<DumbAction> chain, Transaction<DumbAction> tx)
+            TxPolicyViolationException IsSignerValid(
+                BlockChain<DumbAction> chain, Transaction<DumbAction> tx)
             {
                 var validAddress = validKey.PublicKey.ToAddress();
-                return tx.Signer.Equals(validAddress);
+                return tx.Signer.Equals(validAddress)
+                    ? null
+                    : new TxPolicyViolationException(tx.Id, "invalid signer");
             }
 
             var policy = new BlockPolicy<DumbAction>(validateTxForNextBlock: IsSignerValid);
@@ -124,13 +127,13 @@ namespace Libplanet.Tests.Blockchain.Policies
             // Valid Transaction
             var validTx = _chain.MakeTransaction(validKey, new DumbAction[] { });
             var expected = policy.ValidateTxForNextBlock(_chain, validTx);
-            Assert.True(expected);
+            Assert.Null(expected);
 
             // Invalid Transaction
             var invalidKey = new PrivateKey();
             var invalidTx = _chain.MakeTransaction(invalidKey, new DumbAction[] { });
             expected = policy.ValidateTxForNextBlock(_chain, invalidTx);
-            Assert.False(expected);
+            Assert.NotNull(expected);
         }
 
         [Fact]

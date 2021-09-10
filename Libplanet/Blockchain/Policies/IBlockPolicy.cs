@@ -42,8 +42,9 @@ namespace Libplanet.Blockchain.Policies
         /// <param name="blockChain">The target <see cref="BlockChain{T}"/> to include
         /// given <paramref name="transaction"/>.</param>
         /// <param name="transaction">The <see cref="Transaction{T}"/> to consider.</param>
-        /// <returns>If <paramref name="transaction"/>is valid, <c>true</c>;
-        /// otherwise, <c>false</c>.</returns>
+        /// <returns>A <see cref="TxPolicyViolationException"/> with a description
+        /// as to why given <paramref name="transaction"/> is <em>invalid</em>,
+        /// or <c>null</c> if <paramref name="transaction"/> is <em>valid</em>.</returns>
         /// <remarks>
         /// This is used in two different cases:
         /// <list type="bullet">
@@ -59,7 +60,8 @@ namespace Libplanet.Blockchain.Policies
         /// This is called separately from <see cref="ValidateNextBlock"/> from
         /// a <see cref="BlockChain{T}"/>.
         /// </remarks>
-        bool ValidateTxForNextBlock(BlockChain<T> blockChain, Transaction<T> transaction);
+        TxPolicyViolationException? ValidateTxForNextBlock(
+            BlockChain<T> blockChain, Transaction<T> transaction);
 
         /// <summary>
         /// Checks if a <see cref="Block{T}"/> can be appended to
@@ -69,16 +71,17 @@ namespace Libplanet.Blockchain.Policies
         /// append <paramref name="nextBlock"/>.</param>
         /// <param name="nextBlock">The next block to append to
         /// <paramref name="blockChain"/>.</param>
-        /// <returns>An <see cref="InvalidBlockException"/> as to why given
-        /// <paramref name="nextBlock"/> is <em>invalid</em>, or <c>null</c> if
-        /// <paramref name="nextBlock"/> is <em>valid</em>.</returns>
+        /// <returns>A <see cref="BlockPolicyViolationException"/> with a description
+        /// as to why given <paramref name="nextBlock"/> is <em>invalid</em>,
+        /// or <c>null</c> if <paramref name="nextBlock"/> is <em>valid</em>.</returns>
         /// <remarks>
         /// Note that <see cref="ValidateTxForNextBlock"/> will be called separately from
         /// a <see cref="BlockChain{T}"/> when appending a <see cref="Block{T}"/>.
         /// Hence, to reduce redundancy, an implementation of this interface should not
         /// call <see cref="ValidateTxForNextBlock"/>.
         /// </remarks>
-        InvalidBlockException? ValidateNextBlock(BlockChain<T> blockChain, Block<T> nextBlock);
+        BlockPolicyViolationException? ValidateNextBlock(
+            BlockChain<T> blockChain, Block<T> nextBlock);
 
         /// <summary>
         /// Determines a right <see cref="Block{T}.Difficulty"/>
