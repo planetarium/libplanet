@@ -184,6 +184,9 @@ value between <code>1</code> and <code>BlockChain&lt;T&gt;.Policy.MaxTransaction
 </li>
 <li>Similarly, <code>BlockChain&lt;T&gt;.MineBlock()</code> now internally uses
 <code>BlockChain&lt;T&gt;.Policy.GetMaxBlockBytes()</code> literally.  [<a href="https://github.com/planetarium/libplanet/issues/1449">#1449</a>, <a href="https://github.com/planetarium/libplanet/pull/1463">#1463</a>]</li>
+<li><code>NetMQTransport</code> became to no more send CreatePermission to TURN client and
+require permission-less TURN server.  See <a href="https://github.com/coturn/coturn/blob/dc8f405f8543a83ad8c059ba6b9f930e1e5a1349/man/man1/turnserver.1#L402-L410">coturn's relevant configuration</a>
+as well.  [<a href="https://github.com/planetarium/libplanet/pull/1423">#1423</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="cli-tools">CLI tools</h3>
