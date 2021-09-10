@@ -196,7 +196,7 @@ namespace Libplanet.Net
                 }
                 catch (KeyNotFoundException)
                 {
-                    _logger.Warning("Requested TxId {TxId} does not exists.", txid);
+                    _logger.Warning("Requested TxId {TxId} does not exist.", txid);
                 }
             }
         }
