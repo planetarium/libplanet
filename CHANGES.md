@@ -71,6 +71,19 @@ To be released.
         HashDigest<SHA256>?)` constructor instead.
  -  `IStore`, `IStateStore`, and `IKeyValueStore` interfaces now inherit
     `IDisposable`.  [[#1448], [#1474]]
+ -  Multiple changes for `IBlockPolicy<T>` interface.  [[#1485]]
+     -  `bool DoesTransactionFollowsPolicy(BlockChain<T>, Transaction<T>)`
+        changed to `TxPolicyViolationException? ValidateTxForNextBlock(
+        BlockChain<T>, Transaction<T>)`.
+     -  `InvalidBlockException ValidateNextBlock(BlockChain<T>, Block<T>)`
+        changed to `BlockPolicyViolationException? ValidateNextBlock(
+        BlockChain<T>, Block<T>)`.
+     -  `GetNextBlockDifficulty(BlockChain<T>)` changed to
+        `GetNextBlockDifficulty(BlockChain<T>?)`.
+     -  `BlockPolicy<T>`, the default implementation for `IBlockPolicy<T>`,
+        has been updated accordingly.
+ -  Removed `BlockPolicy<T>()` constructor with `int blockIntervalMilliseconds`
+    parameter.  Use the one with `TimeSpan? blockInterval` instead.
 
 ### Backward-incompatible network protocol changes
 
@@ -98,7 +111,8 @@ To be released.
  -  Added `BlockHeader(int, long, DateTimeOffset, Nonce, Address, long,
     BigInteger, BlockHash?, HashDigest<SHA256>?, BlockHash,
     ImmutableArray<byte>, HashDigest<SHA256>?)` constructor.  [[#1470]]
-
+ -  Added `BlockPolicyViolationException` and `TxPolicyViolationException`
+    classes.  [[#1485]]
 
 ### Behavioral changes
 
@@ -153,6 +167,7 @@ To be released.
 [#1477]: https://github.com/planetarium/libplanet/pull/1477
 [#1479]: https://github.com/planetarium/libplanet/pull/1479
 [#1480]: https://github.com/planetarium/libplanet/pull/1480
+[#1485]: https://github.com/planetarium/libplanet/pull/1485
 
 
 Version 0.16.0
