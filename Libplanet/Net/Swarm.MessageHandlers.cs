@@ -177,18 +177,25 @@ namespace Libplanet.Net
         {
             foreach (TxId txid in getTxs.TxIds)
             {
-                Transaction<T> tx = BlockChain.GetTransaction(txid);
-
-                if (tx is null)
+                try
                 {
-                    continue;
+                    Transaction<T> tx = BlockChain.GetTransaction(txid);
+
+                    if (tx is null)
+                    {
+                        continue;
+                    }
+
+                    Message response = new Messages.Tx(tx.Serialize(true))
+                    {
+                        Identity = getTxs.Identity,
+                    };
+                    Transport.ReplyMessage(response);
                 }
-
-                Message response = new Messages.Tx(tx.Serialize(true))
+                catch (KeyNotFoundException)
                 {
-                    Identity = getTxs.Identity,
-                };
-                Transport.ReplyMessage(response);
+                    _logger.Warning("Requested TxId {TxId} does not exist.", txid);
+                }
             }
         }
 
