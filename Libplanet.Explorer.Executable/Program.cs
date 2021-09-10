@@ -348,11 +348,11 @@ If omitted (default) explorer only the local blockchain store.")]
             where T : IAction, new()
         {
             return new BlockPolicy<T>(
-                null,
-                blockIntervalMilliseconds: options.BlockIntervalMilliseconds,
+                blockAction: null,
+                blockInterval: TimeSpan.FromMilliseconds(options.BlockIntervalMilliseconds),
                 minimumDifficulty: options.MinimumDifficulty,
                 difficultyBoundDivisor: options.DifficultyBoundDivisor,
-                maxTransactionsPerBlock: options.MaxTransactionsPerBlock,
+                getMaxTransactionsPerBlock: _ => options.MaxTransactionsPerBlock,
                 maxBlockBytes: options.MaxBlockBytes,
                 maxGenesisBytes: options.MaxGenesisBytes);
         }

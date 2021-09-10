@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -19,120 +20,73 @@ namespace Libplanet.Blockchain.Policies
         private readonly int _maxBlockBytes;
         private readonly int _maxGenesisBytes;
         private readonly Func<BlockChain<T>, Transaction<T>, bool> _validateTxForNextBlock;
+        private readonly Func<BlockChain<T>, Block<T>, InvalidBlockException?> _validateNextBlock;
         private readonly HashAlgorithmGetter _hashAlgorithmGetter;
-        private readonly int _minTransactionsPerBlock;
-        private readonly int _maxTransactionsPerBlock;
+        private readonly Func<long, int> _getMinTransactionsPerBlock;
+        private readonly Func<long, int> _getMaxTransactionsPerBlock;
         private readonly Func<long, int> _getMaxTransactionsPerSignerPerBlock;
 
         /// <summary>
-        /// Creates a <see cref="BlockPolicy{T}"/> with configuring
-        /// <see cref="BlockInterval"/> in milliseconds,
-        /// <see cref="MinimumDifficulty"/> and
-        /// <see cref="DifficultyBoundDivisor"/>.
+        /// <para>
+        /// Creates a default <see cref="BlockPolicy{T}"/> instance.
+        /// </para>
+        /// <para>
+        /// Each unprovided argument will be assigned a default value.  See each parameter
+        /// description for more detail.
+        /// </para>
         /// </summary>
-        /// <param name="blockAction">A block action to execute and be rendered for every block.
+        /// <param name="blockAction">A <see cref="IAction"/> to executed for
+        /// every <see cref="Block{T}"/>.  Set to <c>null</c> by default, which results
+        /// in no additional execution other than those included in <see cref="Transaction{T}"/>s.
         /// </param>
-        /// <param name="blockIntervalMilliseconds">Configures
-        /// <see cref="BlockInterval"/> in milliseconds.
-        /// 5000 milliseconds by default.
+        /// <param name="blockInterval">Configures <see cref="BlockInterval"/>.
+        /// Set to <c>5</c> seconds by default.
         /// </param>
         /// <param name="minimumDifficulty">Configures
         /// <see cref="MinimumDifficulty"/>. 1024 by default.</param>
         /// <param name="difficultyBoundDivisor">Configures
         /// <see cref="DifficultyBoundDivisor"/>. 128 by default.</param>
-        /// <param name="maxTransactionsPerBlock">Configures the constant return value of
-        /// <see cref="GetMaxTransactionsPerBlock(long)"/> method.  100 by default.</param>
-        /// <param name="minTransactionsPerBlock">Configures the constant return value of
-        /// <see cref="GetMinTransactionsPerBlock"/> method.  0 by default.</param>
         /// <param name="maxBlockBytes">Configures <see cref="GetMaxBlockBytes(long)"/> where
         /// the block is not a genesis.  100 KiB by default.</param>
         /// <param name="maxGenesisBytes">Configures <see cref="GetMaxBlockBytes(long)"/> where
         /// the block is a genesis.  1 MiB by default.</param>
-        /// <param name="validateTxForNextBlock">
-        /// A predicate that determines if the transaction follows the block policy.
-        /// </param>
+        /// <param name="validateTxForNextBlock">The predicate that determines if
+        /// a <see cref="Transaction{T}"/> follows the policy.  Set to a constant function of
+        /// <c>true</c> by default.</param>
+        /// <param name="validateNextBlock">The predicate that determines if
+        /// a <see cref="Block{T}"/> follows the policy.  Set to a constant function of
+        /// <c>null</c> by default.</param>
         /// <param name="canonicalChainComparer">The custom rule to determine which is the canonical
         /// chain.  If omitted, <see cref="TotalDifficultyComparer"/> is used by default.</param>
         /// <param name="hashAlgorithmGetter">Configures <see cref="GetHashAlgorithm(long)"/>.
         /// If omitted, SHA-256 is used for every block.</param>
-        /// <param name="getMaxTransactionsPerSignerPerBlock">A function determining
-        /// how many transactions from the same signer can be included in a <see cref="Block{T}"/>
-        /// given the <see cref="Block{T}"/>'s index.  A constant function returning
-        /// <paramref name="maxTransactionsPerBlock"/> by default.</param>
+        /// <param name="getMinTransactionsPerBlock">The function determining the minimum number of
+        /// <see cref="Transaction{T}"/>s that must be included in a <see cref="Block{T}"/>.
+        /// Goes to <see cref="GetMinTransactionsPerBlock"/>.  Set to a constant function
+        /// of <c>0</c> by default.</param>
+        /// <param name="getMaxTransactionsPerBlock">The function determining how many
+        /// <see cref="Transaction{T}"/>s can be included in a <see cref="Block{T}"/>.
+        /// Goes to <see cref="GetMaxTransactionsPerBlock"/>.  Set to a constant function
+        /// of <c>100</c> by default.</param>
+        /// <param name="getMaxTransactionsPerSignerPerBlock">The function determining the maximum
+        /// number of transactions from the same signer that can be included in
+        /// a <see cref="Block{T}"/> given the <see cref="Block{T}"/>'s index.
+        /// Goes to <see cref="GetMaxTransactionsPerSignerPerBlock"/>.  Set to
+        /// <see cref="GetMaxTransactionsPerBlock"/> by default.</param>
         public BlockPolicy(
-            IAction blockAction = null,
-            int blockIntervalMilliseconds = 5000,
+            IAction? blockAction = null,
+            TimeSpan? blockInterval = null,
             long minimumDifficulty = 1024,
             int difficultyBoundDivisor = 128,
-            int maxTransactionsPerBlock = 100,
-            int minTransactionsPerBlock = 0,
             int maxBlockBytes = 100 * 1024,
             int maxGenesisBytes = 1024 * 1024,
-            Func<BlockChain<T>, Transaction<T>, bool> validateTxForNextBlock = null,
-            IComparer<IBlockExcerpt> canonicalChainComparer = null,
-            HashAlgorithmGetter hashAlgorithmGetter = null,
-            Func<long, int> getMaxTransactionsPerSignerPerBlock = null)
-            : this(
-                blockAction,
-                TimeSpan.FromMilliseconds(blockIntervalMilliseconds),
-                minimumDifficulty,
-                difficultyBoundDivisor,
-                maxTransactionsPerBlock,
-                minTransactionsPerBlock,
-                maxBlockBytes,
-                maxGenesisBytes,
-                validateTxForNextBlock,
-                canonicalChainComparer,
-                hashAlgorithmGetter,
-                getMaxTransactionsPerSignerPerBlock)
-        {
-        }
-
-        /// <summary>
-        /// Creates a <see cref="BlockPolicy{T}"/> with configuring
-        /// <see cref="BlockInterval"/>, <see cref="MinimumDifficulty"/> and
-        /// <see cref="DifficultyBoundDivisor"/>.
-        /// </summary>
-        /// <param name="blockAction">A block action to execute and be rendered for every block.
-        /// </param>
-        /// <param name="blockInterval">Configures <see cref="BlockInterval"/>.
-        /// </param>
-        /// <param name="minimumDifficulty">Configures
-        /// <see cref="MinimumDifficulty"/>.</param>
-        /// <param name="difficultyBoundDivisor">Configures
-        /// <see cref="DifficultyBoundDivisor"/>.</param>
-        /// <param name="maxTransactionsPerBlock">Configures the constant return value of
-        /// <see cref="GetMaxTransactionsPerBlock(long)"/> method.</param>
-        /// <param name="minTransactionsPerBlock">Configures the constant return value of
-        /// <see cref="GetMinTransactionsPerBlock"/> method.  0 by default.</param>
-        /// <param name="maxBlockBytes">Configures <see cref="GetMaxBlockBytes(long)"/> where
-        /// the block is not a genesis.</param>
-        /// <param name="maxGenesisBytes">Configures <see cref="GetMaxBlockBytes(long)"/> where
-        /// the block is a genesis.</param>
-        /// <param name="validateTxForNextBlock">
-        /// A predicate that determines if the transaction follows the block policy.
-        /// </param>
-        /// <param name="canonicalChainComparer">The custom rule to determine which is the canonical
-        /// chain.  If omitted, <see cref="TotalDifficultyComparer"/> is used by default.</param>
-        /// <param name="hashAlgorithmGetter">Configures <see cref="GetHashAlgorithm(long)"/>.
-        /// If omitted, SHA-256 is used for every block.</param>
-        /// <param name="getMaxTransactionsPerSignerPerBlock">A function determining
-        /// how many transactions from the same signer can be included in a <see cref="Block{T}"/>
-        /// given the <see cref="Block{T}"/>'s index.  A constant function returning
-        /// <paramref name="maxTransactionsPerBlock"/> by default.</param>
-        public BlockPolicy(
-            IAction blockAction,
-            TimeSpan blockInterval,
-            long minimumDifficulty,
-            int difficultyBoundDivisor,
-            int maxTransactionsPerBlock,
-            int minTransactionsPerBlock,
-            int maxBlockBytes,
-            int maxGenesisBytes,
-            Func<BlockChain<T>, Transaction<T>, bool> validateTxForNextBlock = null,
-            IComparer<IBlockExcerpt> canonicalChainComparer = null,
-            HashAlgorithmGetter hashAlgorithmGetter = null,
-            Func<long, int> getMaxTransactionsPerSignerPerBlock = null)
+            Func<BlockChain<T>, Transaction<T>, bool>? validateTxForNextBlock = null,
+            Func<BlockChain<T>, Block<T>, InvalidBlockException?>? validateNextBlock = null,
+            IComparer<IBlockExcerpt>? canonicalChainComparer = null,
+            HashAlgorithmGetter? hashAlgorithmGetter = null,
+            Func<long, int>? getMinTransactionsPerBlock = null,
+            Func<long, int>? getMaxTransactionsPerBlock = null,
+            Func<long, int>? getMaxTransactionsPerSignerPerBlock = null)
         {
             if (blockInterval < TimeSpan.Zero)
             {
@@ -140,43 +94,40 @@ namespace Libplanet.Blockchain.Policies
                     nameof(blockInterval),
                     "Interval between blocks cannot be negative.");
             }
-
-            if (minimumDifficulty < 0)
+            else if (minimumDifficulty < 0)
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(minimumDifficulty),
                     "Minimum difficulty must be greater than 0.");
             }
-
-            if (minimumDifficulty <= difficultyBoundDivisor)
+            else if (minimumDifficulty <= difficultyBoundDivisor)
             {
                 const string message =
                     "Difficulty bound divisor must be less than " +
                     "the minimum difficulty.";
-
                 throw new ArgumentOutOfRangeException(
                     nameof(difficultyBoundDivisor),
                     message);
             }
 
             BlockAction = blockAction;
-            BlockInterval = blockInterval;
+            BlockInterval = blockInterval ?? TimeSpan.FromMilliseconds(5000);
             MinimumDifficulty = minimumDifficulty;
             DifficultyBoundDivisor = difficultyBoundDivisor;
-            _maxTransactionsPerBlock = maxTransactionsPerBlock;
-            _minTransactionsPerBlock = minTransactionsPerBlock;
             _maxBlockBytes = maxBlockBytes;
             _maxGenesisBytes = maxGenesisBytes;
             _validateTxForNextBlock = validateTxForNextBlock ?? ((_, __) => true);
-            CanonicalChainComparer = canonicalChainComparer
-                ?? new TotalDifficultyComparer();
+            _validateNextBlock = validateNextBlock ?? ((_, __) => null);
+            CanonicalChainComparer = canonicalChainComparer ?? new TotalDifficultyComparer();
             _hashAlgorithmGetter = hashAlgorithmGetter ?? (_ => HashAlgorithmType.Of<SHA256>());
+            _getMinTransactionsPerBlock = getMinTransactionsPerBlock ?? (_ => 0);
+            _getMaxTransactionsPerBlock = getMaxTransactionsPerBlock ?? (_ => 100);
             _getMaxTransactionsPerSignerPerBlock = getMaxTransactionsPerSignerPerBlock
                 ?? GetMaxTransactionsPerBlock;
         }
 
         /// <inheritdoc/>
-        public IAction BlockAction { get; }
+        public IAction? BlockAction { get; }
 
         /// <summary>
         /// An appropriate interval between consecutive <see cref="Block{T}"/>s.
@@ -188,7 +139,7 @@ namespace Libplanet.Blockchain.Policies
         /// </summary>
         public TimeSpan BlockInterval { get; }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public IComparer<IBlockExcerpt> CanonicalChainComparer { get; }
 
         private long MinimumDifficulty { get; }
@@ -203,7 +154,7 @@ namespace Libplanet.Blockchain.Policies
         }
 
         /// <inheritdoc/>
-        public virtual InvalidBlockException ValidateNextBlock(
+        public virtual InvalidBlockException? ValidateNextBlock(
             BlockChain<T> blockChain,
             Block<T> nextBlock)
         {
@@ -211,8 +162,13 @@ namespace Libplanet.Blockchain.Policies
         }
 
         /// <inheritdoc/>
-        public virtual long GetNextBlockDifficulty(BlockChain<T> blockChain)
+        public virtual long GetNextBlockDifficulty(BlockChain<T>? blockChain)
         {
+            if (blockChain is null)
+            {
+                return MinimumDifficulty;
+            }
+
             long index = blockChain.Count;
 
             if (index < 0)
@@ -249,15 +205,14 @@ namespace Libplanet.Blockchain.Policies
 
         /// <inheritdoc/>
         [Pure]
-        public int GetMinTransactionsPerBlock(long index) => _minTransactionsPerBlock;
+        public int GetMinTransactionsPerBlock(long index) => _getMinTransactionsPerBlock(index);
 
         /// <inheritdoc/>
         [Pure]
-        public int GetMaxTransactionsPerBlock(long index) => _maxTransactionsPerBlock;
+        public int GetMaxTransactionsPerBlock(long index) => _getMaxTransactionsPerBlock(index);
 
         /// <inheritdoc/>
-        public HashAlgorithmType GetHashAlgorithm(long index) =>
-            _hashAlgorithmGetter(index);
+        public HashAlgorithmType GetHashAlgorithm(long index) => _hashAlgorithmGetter(index);
 
         /// <inheritdoc/>
         [Pure]

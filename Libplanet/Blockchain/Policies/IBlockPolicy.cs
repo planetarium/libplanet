@@ -31,9 +31,9 @@ namespace Libplanet.Blockchain.Policies
         IComparer<IBlockExcerpt> CanonicalChainComparer { get; }
 
         /// <summary>
-        /// A block action to execute and be rendered for every block.
+        /// An <see cref="IAction"/> to execute and be rendered for every block, if any.
         /// </summary>
-        IAction BlockAction { get; }
+        IAction? BlockAction { get; }
 
         /// <summary>
         /// Checks if a <see cref="Transaction{T}"/> can be included in a yet to be mined
@@ -89,7 +89,7 @@ namespace Libplanet.Blockchain.Policies
         /// followed by a new <see cref="Block{T}"/> to be mined.</param>
         /// <returns>A right <see cref="Block{T}.Difficulty"/>
         /// for a new <see cref="Block{T}"/> to be mined.</returns>
-        long GetNextBlockDifficulty(BlockChain<T> blockChain);
+        long GetNextBlockDifficulty(BlockChain<T>? blockChain);
 
         /// <summary>
         /// Gets the maximum length of a <see cref="Block{T}"/> in bytes.

@@ -32,8 +32,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             _output = output;
             _policy = new BlockPolicy<DumbAction>(
                 blockAction: null,
-                blockIntervalMilliseconds: 3 * 60 * 60 * 1000
-            );
+                blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000));
             _stagePolicy = new VolatileStagePolicy<DumbAction>();
             _chain = new BlockChain<DumbAction>(
                 _policy,
@@ -57,14 +56,13 @@ namespace Libplanet.Tests.Blockchain.Policies
                 blockInterval: tenSec,
                 minimumDifficulty: 1024L,
                 difficultyBoundDivisor: 128,
-                maxTransactionsPerBlock: 100,
-                minTransactionsPerBlock: 0,
                 maxBlockBytes: 100 * 1024,
                 maxGenesisBytes: 1024 * 1024
             );
             Assert.Equal(tenSec, a.BlockInterval);
 
-            var b = new BlockPolicy<DumbAction>(null, 65000);
+            var b = new BlockPolicy<DumbAction>(
+                blockInterval: TimeSpan.FromMilliseconds(65000));
             Assert.Equal(
                 new TimeSpan(0, 1, 5),
                 b.BlockInterval);
@@ -80,14 +78,13 @@ namespace Libplanet.Tests.Blockchain.Policies
                     blockInterval: tenSec.Negate(),
                     minimumDifficulty: 1024,
                     difficultyBoundDivisor: 128,
-                    maxTransactionsPerBlock: 100,
-                    minTransactionsPerBlock: 0,
                     maxBlockBytes: 100 * 1024,
                     maxGenesisBytes: 1024 * 1024
                 )
             );
             Assert.Throws<ArgumentOutOfRangeException>(
-                () => new BlockPolicy<DumbAction>(null, -5));
+                () => new BlockPolicy<DumbAction>(
+                    blockInterval: TimeSpan.FromMilliseconds(-5)));
 
             Assert.Throws<ArgumentOutOfRangeException>(() =>
                 new BlockPolicy<DumbAction>(
@@ -95,8 +92,6 @@ namespace Libplanet.Tests.Blockchain.Policies
                     blockInterval: tenSec,
                     minimumDifficulty: 0,
                     difficultyBoundDivisor: 128,
-                    maxTransactionsPerBlock: 100,
-                    minTransactionsPerBlock: 0,
                     maxBlockBytes: 100 * 1024,
                     maxGenesisBytes: 1024 * 1024
                 )
@@ -107,8 +102,6 @@ namespace Libplanet.Tests.Blockchain.Policies
                     blockInterval: tenSec,
                     minimumDifficulty: 1024,
                     difficultyBoundDivisor: 1024,
-                    maxTransactionsPerBlock: 100,
-                    minTransactionsPerBlock: 0,
                     maxBlockBytes: 100 * 1024,
                     maxGenesisBytes: 1024 * 1024
                 )
