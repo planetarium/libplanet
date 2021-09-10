@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
-using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
@@ -25,11 +24,6 @@ namespace Libplanet.Net.Transports
     public class NetMQTransport : ITransport
     {
         private const int MessageHistoryCapacity = 30;
-
-        // TURN Permission lifetime was defined in RFC 5766
-        // see also https://tools.ietf.org/html/rfc5766#section-8
-        private static readonly TimeSpan TurnPermissionLifetime =
-            TimeSpan.FromMinutes(5);
 
         private readonly PrivateKey _privateKey;
         private readonly AppProtocolVersion _appProtocolVersion;
@@ -266,8 +260,6 @@ namespace Libplanet.Net.Transports
             {
                 _turnClient = await IceServer.CreateTurnClient(_iceServers);
                 await _turnClient.StartAsync(_listenPort.Value, cancellationToken);
-
-                _ = RefreshPermissions(cancellationToken);
             }
 
             _cancellationToken = cancellationToken;
@@ -424,11 +416,6 @@ namespace Libplanet.Net.Transports
             CancellationToken cancellationToken
         )
         {
-            if (!(_turnClient is null) && _turnClient.BehindNAT)
-            {
-                await CreatePermission(peer);
-            }
-
             Guid reqId = Guid.NewGuid();
             try
             {
@@ -714,33 +701,6 @@ namespace Libplanet.Net.Transports
             }
         }
 
-        private async Task RefreshPermissions(
-            CancellationToken cancellationToken)
-        {
-            TimeSpan lifetime = TurnPermissionLifetime;
-            while (!cancellationToken.IsCancellationRequested)
-            {
-                try
-                {
-                    await Task.Delay(lifetime - TimeSpan.FromMinutes(1), cancellationToken);
-                    _logger.Debug("Refreshing permissions...");
-                    await Task.WhenAll(_table.Peers.Select(CreatePermission));
-                    cancellationToken.ThrowIfCancellationRequested();
-                }
-                catch (OperationCanceledException e)
-                {
-                    _logger.Warning(e, $"{nameof(RefreshPermissions)}() is cancelled.");
-                    throw;
-                }
-                catch (Exception e)
-                {
-                    var msg = "An unexpected exception occurred during " +
-                              $"{nameof(RefreshPermissions)}(): {{e}}";
-                    _logger.Error(e, msg, e);
-                }
-            }
-        }
-
         private async Task ProcessRuntime(
             CancellationToken cancellationToken = default)
         {
@@ -901,63 +861,6 @@ namespace Libplanet.Net.Transports
                 req.Message,
                 req.Id,
                 DateTimeOffset.UtcNow - startedTime);
-        }
-
-        private async Task CreatePermission(BoundPeer peer)
-        {
-            using var cts = new CancellationTokenSource();
-            IPAddress[] ips;
-
-            // Cancellation After 2.5 sec
-            cts.CancelAfter(2500);
-            if (peer.PublicIPAddress is null)
-            {
-                string peerHost = peer.EndPoint.Host;
-                if (IPAddress.TryParse(peerHost, out IPAddress asIp))
-                {
-                    ips = new[] { asIp };
-                }
-                else
-                {
-                    ips = await Dns.GetHostAddressesAsync(peerHost);
-                }
-            }
-            else
-            {
-                ips = new[] { peer.PublicIPAddress };
-            }
-
-            try
-            {
-                foreach (IPAddress ip in ips)
-                {
-                    var ep = new IPEndPoint(ip, peer.EndPoint.Port);
-                    if (IPAddress.IsLoopback(ip))
-                    {
-                        // This translation is only used in test case because a
-                        // seed node exposes loopback address as public address to
-                        // other node in test case
-                        ep = await _turnClient.GetMappedAddressAsync(cts.Token);
-                    }
-
-                    // FIXME Can we really ignore IPv6 case?
-                    if (ip.AddressFamily.Equals(AddressFamily.InterNetwork))
-                    {
-                        await _turnClient.CreatePermissionAsync(ep, cts.Token);
-                    }
-                }
-            }
-            catch (TaskCanceledException tce)
-            {
-                if (cts.IsCancellationRequested)
-                {
-                    _logger.Debug($"Timeout occurred during {nameof(CreatePermission)}: {tce}");
-                }
-                else
-                {
-                    throw;
-                }
-            }
         }
 
         private async Task DisposeUnusedDealerSockets(
