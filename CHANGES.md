@@ -122,7 +122,9 @@ To be released.
  -  Similarly, `BlockChain<T>.MineBlock()` now internally uses
     `BlockChain<T>.Policy.GetMaxBlockBytes()` literally.  [[#1449], [#1463]]
  -  `NetMQTransport` became to no more send CreatePermission to TURN client and
-    requires permission-less TURN server.  [[#1423]]
+    require permission-less TURN server.  See [coturn's relevant configuration](
+    https://github.com/coturn/coturn/blob/dc8f405f8543a83ad8c059ba6b9f930e1e5a1349/man/man1/turnserver.1#L402-L410)
+    as well.  [[#1423]]
 
 ### Bug fixes
 
