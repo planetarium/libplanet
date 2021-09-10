@@ -92,7 +92,7 @@ namespace Libplanet.Blockchain.Policies
         /// followed by a new <see cref="Block{T}"/> to be mined.</param>
         /// <returns>A right <see cref="Block{T}.Difficulty"/>
         /// for a new <see cref="Block{T}"/> to be mined.</returns>
-        long GetNextBlockDifficulty(BlockChain<T>? blockChain);
+        long GetNextBlockDifficulty(BlockChain<T> blockChain);
 
         /// <summary>
         /// Gets the maximum length of a <see cref="Block{T}"/> in bytes.

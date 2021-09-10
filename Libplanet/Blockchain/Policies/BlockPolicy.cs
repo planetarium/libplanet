@@ -169,13 +169,8 @@ namespace Libplanet.Blockchain.Policies
         }
 
         /// <inheritdoc/>
-        public virtual long GetNextBlockDifficulty(BlockChain<T>? blockChain)
+        public virtual long GetNextBlockDifficulty(BlockChain<T> blockChain)
         {
-            if (blockChain is null)
-            {
-                return MinimumDifficulty;
-            }
-
             long index = blockChain.Count;
 
             if (index < 0)

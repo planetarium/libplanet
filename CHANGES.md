@@ -78,8 +78,6 @@ To be released.
      -  `InvalidBlockException ValidateNextBlock(BlockChain<T>, Block<T>)`
         changed to `BlockPolicyViolationException? ValidateNextBlock(
         BlockChain<T>, Block<T>)`.
-     -  `GetNextBlockDifficulty(BlockChain<T>)` changed to
-        `GetNextBlockDifficulty(BlockChain<T>?)`.
      -  `BlockPolicy<T>`, the default implementation for `IBlockPolicy<T>`,
         has been updated accordingly.
  -  Removed `BlockPolicy<T>()` constructor with `int blockIntervalMilliseconds`
