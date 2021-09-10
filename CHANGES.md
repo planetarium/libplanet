@@ -4,7 +4,13 @@ Libplanet changelog
 Version 0.15.3
 --------------
 
-To be released.
+Released on September 10, 2021.
+
+ -  Fixed a bug where `Swarm<T>` fails to reply transaction when any of the
+    requested transactions id in `GetTxs` message does not exist in the storage.
+    [[#1481]]
+
+[#1481]: https://github.com/planetarium/libplanet/pull/1481
 
 
 Version 0.15.2
