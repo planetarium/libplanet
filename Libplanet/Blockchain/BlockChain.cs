@@ -162,11 +162,15 @@ namespace Libplanet.Blockchain
             Func<BlockHash, ITrie> trieGetter = StateStore is TrieStateStore trieStateStore
                 ? h => trieStateStore.GetTrie(h)
                 : (Func<BlockHash, ITrie>)null;
+            StateGetter<T> stateGetter = (address, hash)
+                => GetState(address, hash, StateCompleters<T>.Reject);
+            BalanceGetter<T> balanceGetter = (address, currency, hash)
+                => GetBalance(address, currency, hash, FungibleAssetStateCompleters<T>.Reject);
             ActionEvaluator = new ActionEvaluator<T>(
                 Policy.GetHashAlgorithm,
                 Policy.BlockAction,
-                GetState,
-                GetBalance,
+                stateGetter,
+                balanceGetter,
                 trieGetter);
 
             if (Count == 0)
@@ -382,12 +386,11 @@ namespace Libplanet.Blockchain
             var actionEvaluator = new ActionEvaluator<T>(
                 _ => hashAlgorithm,
                 blockAction,
-                (address, digest, stateCompleter) => null,
-                (address, currency, hash, fungibleAssetStateCompleter)
-                    => new FungibleAssetValue(currency),
+                ActionEvaluator<T>.NullStateGetter,
+                ActionEvaluator<T>.NullBalanceGetter,
                 null);
             var actionEvaluationResult = actionEvaluator
-                .Evaluate(block, StateCompleterSet<T>.Reject)
+                .Evaluate(block)
                 .GetTotalDelta(ToStateKey, ToFungibleAssetKey);
             ITrie trie = new MerkleTrie(new DefaultKeyValueStore(null));
             trie = trie.Set(actionEvaluationResult);
@@ -766,10 +769,7 @@ namespace Libplanet.Blockchain
             );
             IReadOnlyList<ActionEvaluation> evaluations = null;
             DateTimeOffset evaluateActionStarted = DateTimeOffset.Now;
-            evaluations = ActionEvaluator.Evaluate(
-                block,
-                stateCompleters ?? StateCompleterSet<T>.Recalculate
-            );
+            evaluations = ActionEvaluator.Evaluate(block);
             const string evalEndMsg =
                 "Evaluated actions in the block #{BlockIndex} {BlockHash} " +
                 "(duration: {DurationMs}ms).";

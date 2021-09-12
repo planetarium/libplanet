@@ -12,7 +12,6 @@ namespace Libplanet.Action
     /// to <see cref="BlockChain{T}"/>'s type parameter.</typeparam>
     /// <param name="address">The address of an account to read the state from.</param>
     /// <param name="hashDigest">The address of a block to read the state from.</param>
-    /// <param name="stateCompleter">The <see cref="StateCompleter{T}"/> to use.</param>
     /// <returns>The account state if exists.  Otherwise <c>null</c>.
     /// </returns>
     /// <remarks>
@@ -21,8 +20,7 @@ namespace Libplanet.Action
     /// of <paramref name="hashDigest"/>, returns <c>null</c> instead of throwing an exception.
     /// </remarks>
     public delegate IValue? StateGetter<T>(
-    Address address,
-    BlockHash? hashDigest,
-    StateCompleter<T> stateCompleter)
-        where T : IAction, new();
+        Address address,
+        BlockHash? hashDigest)
+            where T : IAction, new();
 }

@@ -209,8 +209,7 @@ namespace Libplanet.Blockchain
                 foreach (Block<T> block in rewindPath)
                 {
                     ImmutableList<ActionEvaluation> evaluations =
-                        ActionEvaluator.Evaluate(block, stateCompleters)
-                            .ToImmutableList().Reverse();
+                        ActionEvaluator.Evaluate(block).ToImmutableList().Reverse();
 
                     count += UnrenderActions(
                         evaluations: evaluations,
@@ -240,7 +239,7 @@ namespace Libplanet.Blockchain
                 foreach (Block<T> block in fastForwardPath)
                 {
                     ImmutableList<ActionEvaluation> evaluations =
-                        ActionEvaluator.Evaluate(block, stateCompleters).ToImmutableList();
+                        ActionEvaluator.Evaluate(block).ToImmutableList();
 
                     count += RenderActions(
                         evaluations: evaluations,
@@ -277,7 +276,7 @@ namespace Libplanet.Blockchain
 
             if (evaluations is null)
             {
-                evaluations = ActionEvaluator.Evaluate(block, stateCompleters);
+                evaluations = ActionEvaluator.Evaluate(block);
             }
 
             long count = 0;
@@ -317,8 +316,7 @@ namespace Libplanet.Blockchain
             if (evaluations is null)
             {
                 evaluations =
-                    ActionEvaluator.Evaluate(block, stateCompleters)
-                        .Reverse().ToImmutableList();
+                    ActionEvaluator.Evaluate(block).Reverse().ToImmutableList();
             }
 
             long count = 0;

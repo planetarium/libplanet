@@ -158,8 +158,7 @@ namespace Libplanet.Blockchain
                 TipChanged -= WatchTip;
             }
 
-            IReadOnlyList<ActionEvaluation> actionEvaluations = ActionEvaluator.Evaluate(
-                block, StateCompleterSet<T>.Recalculate);
+            IReadOnlyList<ActionEvaluation> actionEvaluations = ActionEvaluator.Evaluate(block);
 
             if (StateStore is TrieStateStore trieStateStore)
             {

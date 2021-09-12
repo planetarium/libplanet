@@ -21,11 +21,6 @@ namespace Libplanet.Blockchain
         {
             _logger.Verbose("Recalculating block states upto {BlockHash}...", blockHash);
 
-            // Prevent recursive trial to recalculate & complement incomplete block states by
-            // mistake; if the below code works as intended, these state completers must never
-            // be invoked.
-            StateCompleterSet<T> stateCompleters = StateCompleterSet<T>.Reject;
-
             foreach (BlockHash hash in BlockHashes)
             {
                 Block<T> block = this[hash];
@@ -34,10 +29,7 @@ namespace Libplanet.Blockchain
                     continue;
                 }
 
-                IReadOnlyList<ActionEvaluation> evaluations = ActionEvaluator.Evaluate(
-                    block,
-                    stateCompleters
-                );
+                IReadOnlyList<ActionEvaluation> evaluations = ActionEvaluator.Evaluate(block);
 
                 _rwlock.EnterWriteLock();
                 try
@@ -77,11 +69,6 @@ namespace Libplanet.Blockchain
         {
             _logger.Verbose("Complementing all block states upto {BlockHash}...", blockHash);
 
-            // Prevent recursive trial to recalculate & complement incomplete block states by
-            // mistake; if the below code works as intended, these state completers must never
-            // be invoked.
-            StateCompleterSet<T> stateCompleters = StateCompleterSet<T>.Reject;
-
             // Calculates and fills the incomplete states on the fly.
             foreach (BlockHash hash in BlockHashes)
             {
@@ -91,9 +78,7 @@ namespace Libplanet.Blockchain
                     continue;
                 }
 
-                IReadOnlyList<ActionEvaluation> evaluations = ActionEvaluator.Evaluate(
-                    block,
-                    stateCompleters);
+                IReadOnlyList<ActionEvaluation> evaluations = ActionEvaluator.Evaluate(block);
 
                 _rwlock.EnterWriteLock();
                 try
@@ -123,10 +108,6 @@ namespace Libplanet.Blockchain
         {
             _logger.Verbose("Complementing latest block states upto {BlockHash}...", blockHash);
 
-            // Prevent recursive trial to recalculate & complement incomplete block states by
-            // mistake; if the below code works as intended, these state completers must never
-            // be invoked.
-            StateCompleterSet<T> stateCompleters = StateCompleterSet<T>.Reject;
             Stack<BlockHash> stack = new Stack<BlockHash>();
             BlockHash? pointer = blockHash;
 
@@ -146,9 +127,7 @@ namespace Libplanet.Blockchain
             foreach (BlockHash hash in stack)
             {
                 Block<T> block = this[hash];
-                IReadOnlyList<ActionEvaluation> evaluations = ActionEvaluator.Evaluate(
-                    block,
-                    stateCompleters);
+                IReadOnlyList<ActionEvaluation> evaluations = ActionEvaluator.Evaluate(block);
 
                 _rwlock.EnterWriteLock();
                 try

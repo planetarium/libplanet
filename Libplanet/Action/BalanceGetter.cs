@@ -13,8 +13,6 @@ namespace Libplanet.Action
     /// <param name="address">The address of an account to read the state from.</param>
     /// <param name="currency">The currency to look up.</param>
     /// <param name="hashDigest">The address of a block to read the state from.</param>
-    /// <param name="fungibleAssetStateCompleter">The <see cref="FungibleAssetStateCompleter{T}"/>
-    /// to use.</param>
     /// <returns>
     /// The balance of the <paramref name="currency"/> at <paramref name="address"/>.
     /// </returns>
@@ -26,7 +24,6 @@ namespace Libplanet.Action
     public delegate FungibleAssetValue BalanceGetter<T>(
         Address address,
         Currency currency,
-        BlockHash? hashDigest,
-        FungibleAssetStateCompleter<T> fungibleAssetStateCompleter)
+        BlockHash? hashDigest)
             where T : IAction, new();
 }

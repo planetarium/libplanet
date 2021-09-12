@@ -6,7 +6,6 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Security.Cryptography;
 using Libplanet.Assets;
-using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Store.Trie;
@@ -24,11 +23,10 @@ namespace Libplanet.Action
         where T : IAction, new()
     {
         internal static readonly StateGetter<T> NullStateGetter =
-            (address, hashDigest, stateCompleter) => null;
+            (address, hashDigest) => null;
 
         internal static readonly BalanceGetter<T> NullBalanceGetter =
-            (address, currency, hashDigest, fungibleAssetStateCompleter)
-                => new FungibleAssetValue(currency);
+            (address, currency, hashDigest) => new FungibleAssetValue(currency);
 
         internal static readonly AccountStateGetter NullAccountStateGetter = address => null;
         internal static readonly AccountBalanceGetter NullAccountBalanceGetter =
@@ -86,7 +84,6 @@ namespace Libplanet.Action
         /// The main entry point for evaluating a <see cref="Block{T}"/>.
         /// </summary>
         /// <param name="block">The <see cref="Block{T}"/> to evaluate.</param>
-        /// <param name="stateCompleterSet">The <see cref="StateCompleterSet{T}"/> to use.</param>
         /// <returns> The result of evaluating every <see cref="IAction"/> related to
         /// <paramref name="block"/> as an <see cref="IReadOnlyList{T}"/> of
         /// <see cref="ActionEvaluation"/>s.</returns>
@@ -97,15 +94,13 @@ namespace Libplanet.Action
         /// the <see cref="IBlockPolicy{T}.BlockAction"/> held by the instance at the end.</para>
         /// </remarks>
         [Pure]
-        public IReadOnlyList<ActionEvaluation> Evaluate(
-            Block<T> block,
-            StateCompleterSet<T> stateCompleterSet)
+        public IReadOnlyList<ActionEvaluation> Evaluate(Block<T> block)
         {
             ITrie? previousBlockStatesTrie = !(_trieGetter is null) && block.PreviousHash is { } h
                 ? _trieGetter(h)
                 : null;
             IAccountStateDelta previousStates =
-                GetPreviousBlockOutputStates(block, stateCompleterSet);
+                GetPreviousBlockOutputStates(block);
 
             ImmutableList<ActionEvaluation> evaluations = EvaluateBlock(
                 block: block,
@@ -565,16 +560,13 @@ namespace Libplanet.Action
         /// Retrieves the last previous states for the previous block of <paramref name="block"/>.
         /// </summary>
         /// <param name="block">The <see cref="Block{T}"/> instance to reference.</param>
-        /// <param name="stateCompleterSet">The <see cref="StateCompleterSet{T}"/> to use.</param>
         /// <returns>The last previous <see cref="IAccountStateDelta"/> for the previous
         /// <see cref="Block{T}"/>.
         /// </returns>
-        private IAccountStateDelta GetPreviousBlockOutputStates(
-            Block<T> block,
-            StateCompleterSet<T> stateCompleterSet)
+        private IAccountStateDelta GetPreviousBlockOutputStates(Block<T> block)
         {
             (AccountStateGetter accountStateGetter, AccountBalanceGetter accountBalanceGetter) =
-                InitializeAccountGettersPair(block, stateCompleterSet);
+                InitializeAccountGettersPair(block);
             Address miner = block.Miner;
 
             return block.ProtocolVersion > 0
@@ -583,8 +575,7 @@ namespace Libplanet.Action
         }
 
         private (AccountStateGetter, AccountBalanceGetter) InitializeAccountGettersPair(
-            Block<T> block,
-            StateCompleterSet<T> stateCompleterSet)
+            Block<T> block)
         {
             AccountStateGetter accountStateGetter;
             AccountBalanceGetter accountBalanceGetter;
@@ -593,13 +584,11 @@ namespace Libplanet.Action
             {
                 accountStateGetter = address => _stateGetter(
                     address,
-                    previousHash,
-                    stateCompleterSet.StateCompleter);
+                    previousHash);
                 accountBalanceGetter = (address, currency) => _balanceGetter(
                     address,
                     currency,
-                    previousHash,
-                    stateCompleterSet.FungibleAssetStateCompleter);
+                    previousHash);
             }
             else
             {

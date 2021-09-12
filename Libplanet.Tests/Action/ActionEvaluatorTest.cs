@@ -91,14 +91,10 @@ namespace Libplanet.Tests.Action
 
             for (int i = 0; i < repeatCount; ++i)
             {
-                var actionEvaluations = actionEvaluator.Evaluate(
-                    noStateRootBlock,
-                    StateCompleterSet<RandomAction>.Reject);
+                var actionEvaluations = actionEvaluator.Evaluate(noStateRootBlock);
                 generatedRandomNumbers.Add(
                     (Integer)actionEvaluations[0].OutputStates.GetState(txAddress));
-                actionEvaluations = actionEvaluator.Evaluate(
-                    stateRootBlock,
-                    StateCompleterSet<RandomAction>.Reject);
+                actionEvaluations = actionEvaluator.Evaluate(stateRootBlock);
                 generatedRandomNumbers.Add(
                     (Integer)actionEvaluations[0].OutputStates.GetState(txAddress));
             }
@@ -134,9 +130,7 @@ namespace Libplanet.Tests.Action
             chain.StageTransaction(tx);
             await chain.MineBlock(_storeFx.Address1);
 
-            var evaluations = chain.ActionEvaluator.Evaluate(
-                chain.Tip,
-                StateCompleterSet<EvaluateTestAction>.Recalculate);
+            var evaluations = chain.ActionEvaluator.Evaluate(chain.Tip);
 
             Assert.False(evaluations[0].InputContext.BlockAction);
             Assert.Single(evaluations);
@@ -170,9 +164,7 @@ namespace Libplanet.Tests.Action
 
             chain.StageTransaction(tx);
             await chain.MineBlock(_storeFx.Address1);
-            var evaluations = chain.ActionEvaluator.Evaluate(
-                chain.Tip,
-                StateCompleterSet<ThrowException>.Recalculate);
+            var evaluations = chain.ActionEvaluator.Evaluate(chain.Tip);
 
             Assert.False(evaluations[0].InputContext.BlockAction);
             Assert.Single(evaluations);
@@ -242,9 +234,7 @@ namespace Libplanet.Tests.Action
                     previousStates: previousStates,
                     rehearsal: false).ToList());
             Assert.Throws<OutOfMemoryException>(
-                () => chain.ActionEvaluator.Evaluate(
-                    block: block,
-                    stateCompleterSet: StateCompleterSet<ThrowException>.Recalculate).ToList());
+                () => chain.ActionEvaluator.Evaluate(block).ToList());
         }
 
         [Fact]

@@ -386,7 +386,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             where T : IAction, new()
         {
             IValue StateGetter(
-                Address address, BlockHash? blockHash, StateCompleter<T> stateCompleter) =>
+                Address address, BlockHash? blockHash) =>
                 blockHash is null
                     ? null
                     : stateStore.GetState(ToStateKey(address), blockHash.Value);
@@ -394,8 +394,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             FungibleAssetValue FungibleAssetValueGetter(
                 Address address,
                 Currency currency,
-                BlockHash? blockHash,
-                FungibleAssetStateCompleter<T> stateCompleter)
+                BlockHash? blockHash)
             {
                 if (blockHash is null)
                 {
@@ -414,10 +413,9 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 policyBlockAction: blockAction,
                 stateGetter: StateGetter,
                 balanceGetter: FungibleAssetValueGetter,
-                trieGetter: null
-            );
+                trieGetter: null);
             var actionEvaluationResult = actionEvaluator
-                .Evaluate(block, StateCompleterSet<T>.Reject)
+                .Evaluate(block)
                 .GetTotalDelta(ToStateKey, ToFungibleAssetKey);
             stateStore.SetStates(block, actionEvaluationResult);
             if (stateStore is TrieStateStore trieStateStore)
