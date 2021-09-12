@@ -34,7 +34,7 @@ namespace Libplanet.Tests.Blockchain
         public long GetNextBlockDifficulty(BlockChain<T> blocks) =>
             blocks.Count == 0 ? 0 : _difficulty;
 
-        public TxPolicyViolationException ValidateTxForNextBlock(
+        public TxPolicyViolationException ValidateNextBlockTx(
             BlockChain<T> blockChain, Transaction<T> transaction) => null;
 
         public BlockPolicyViolationException ValidateNextBlock(

@@ -21,7 +21,7 @@ namespace Libplanet.Blockchain.Policies
         private readonly int _maxGenesisBytes;
 
         private readonly Func<BlockChain<T>, Transaction<T>, TxPolicyViolationException?>
-            _validateTxForNextBlock;
+            _validateNextBlockTx;
 
         private readonly Func<BlockChain<T>, Block<T>, BlockPolicyViolationException?>
             _validateNextBlock;
@@ -55,7 +55,7 @@ namespace Libplanet.Blockchain.Policies
         /// the block is not a genesis.  100 KiB by default.</param>
         /// <param name="maxGenesisBytes">Configures <see cref="GetMaxBlockBytes(long)"/> where
         /// the block is a genesis.  1 MiB by default.</param>
-        /// <param name="validateTxForNextBlock">The predicate that determines if
+        /// <param name="validateNextBlockTx">The predicate that determines if
         /// a <see cref="Transaction{T}"/> follows the policy.  Set to a constant function of
         /// <c>null</c> by default.</param>
         /// <param name="validateNextBlock">The predicate that determines if
@@ -86,7 +86,7 @@ namespace Libplanet.Blockchain.Policies
             int maxBlockBytes = 100 * 1024,
             int maxGenesisBytes = 1024 * 1024,
             Func<BlockChain<T>, Transaction<T>, TxPolicyViolationException?>?
-                validateTxForNextBlock = null,
+                validateNextBlockTx = null,
             Func<BlockChain<T>, Block<T>, BlockPolicyViolationException?>?
                 validateNextBlock = null,
             IComparer<IBlockExcerpt>? canonicalChainComparer = null,
@@ -123,7 +123,7 @@ namespace Libplanet.Blockchain.Policies
             DifficultyBoundDivisor = difficultyBoundDivisor;
             _maxBlockBytes = maxBlockBytes;
             _maxGenesisBytes = maxGenesisBytes;
-            _validateTxForNextBlock = validateTxForNextBlock ?? ((_, __) => null);
+            _validateNextBlockTx = validateNextBlockTx ?? ((_, __) => null);
             _validateNextBlock = validateNextBlock ?? ((_, __) => null);
             CanonicalChainComparer = canonicalChainComparer ?? new TotalDifficultyComparer();
             _hashAlgorithmGetter = hashAlgorithmGetter ?? (_ => HashAlgorithmType.Of<SHA256>());
@@ -154,10 +154,10 @@ namespace Libplanet.Blockchain.Policies
         private int DifficultyBoundDivisor { get; }
 
         /// <inheritdoc/>
-        public virtual TxPolicyViolationException? ValidateTxForNextBlock(
+        public virtual TxPolicyViolationException? ValidateNextBlockTx(
             BlockChain<T> blockChain, Transaction<T> transaction)
         {
-            return _validateTxForNextBlock(blockChain, transaction);
+            return _validateNextBlockTx(blockChain, transaction);
         }
 
         /// <inheritdoc/>

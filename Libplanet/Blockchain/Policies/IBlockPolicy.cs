@@ -60,7 +60,7 @@ namespace Libplanet.Blockchain.Policies
         /// This is called separately from <see cref="ValidateNextBlock"/> from
         /// a <see cref="BlockChain{T}"/>.
         /// </remarks>
-        TxPolicyViolationException? ValidateTxForNextBlock(
+        TxPolicyViolationException? ValidateNextBlockTx(
             BlockChain<T> blockChain, Transaction<T> transaction);
 
         /// <summary>
@@ -75,10 +75,10 @@ namespace Libplanet.Blockchain.Policies
         /// as to why given <paramref name="nextBlock"/> is <em>invalid</em>,
         /// or <c>null</c> if <paramref name="nextBlock"/> is <em>valid</em>.</returns>
         /// <remarks>
-        /// Note that <see cref="ValidateTxForNextBlock"/> will be called separately from
+        /// Note that <see cref="ValidateNextBlockTx"/> will be called separately from
         /// a <see cref="BlockChain{T}"/> when appending a <see cref="Block{T}"/>.
         /// Hence, to reduce redundancy, an implementation of this interface should not
-        /// call <see cref="ValidateTxForNextBlock"/>.
+        /// call <see cref="ValidateNextBlockTx"/>.
         /// </remarks>
         BlockPolicyViolationException? ValidateNextBlock(
             BlockChain<T> blockChain, Block<T> nextBlock);

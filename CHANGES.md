@@ -73,7 +73,7 @@ To be released.
     `IDisposable`.  [[#1448], [#1474]]
  -  Multiple changes for `IBlockPolicy<T>` interface.  [[#1485]]
      -  `bool DoesTransactionFollowsPolicy(BlockChain<T>, Transaction<T>)`
-        changed to `TxPolicyViolationException? ValidateTxForNextBlock(
+        changed to `TxPolicyViolationException? ValidateNextBlockTx(
         BlockChain<T>, Transaction<T>)`.
      -  `InvalidBlockException ValidateNextBlock(BlockChain<T>, Block<T>)`
         changed to `BlockPolicyViolationException? ValidateNextBlock(

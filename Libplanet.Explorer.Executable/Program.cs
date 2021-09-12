@@ -424,10 +424,10 @@ If omitted (default) explorer only the local blockchain store.")]
                 return 0;
             }
 
-            public TxPolicyViolationException ValidateTxForNextBlock(
+            public TxPolicyViolationException ValidateNextBlockTx(
                 BlockChain<NullAction> blockChain, Transaction<NullAction> transaction)
             {
-                return _impl.ValidateTxForNextBlock(blockChain, transaction);
+                return _impl.ValidateNextBlockTx(blockChain, transaction);
             }
 
             public BlockPolicyViolationException ValidateNextBlock(

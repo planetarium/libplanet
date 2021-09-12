@@ -109,7 +109,7 @@ namespace Libplanet.Tests.Blockchain.Policies
         }
 
         [Fact]
-        public void ValidateTxForNextBlock()
+        public void ValidateNextBlockTx()
         {
             var validKey = new PrivateKey();
 
@@ -122,17 +122,17 @@ namespace Libplanet.Tests.Blockchain.Policies
                     : new TxPolicyViolationException(tx.Id, "invalid signer");
             }
 
-            var policy = new BlockPolicy<DumbAction>(validateTxForNextBlock: IsSignerValid);
+            var policy = new BlockPolicy<DumbAction>(validateNextBlockTx: IsSignerValid);
 
             // Valid Transaction
             var validTx = _chain.MakeTransaction(validKey, new DumbAction[] { });
-            var expected = policy.ValidateTxForNextBlock(_chain, validTx);
+            var expected = policy.ValidateNextBlockTx(_chain, validTx);
             Assert.Null(expected);
 
             // Invalid Transaction
             var invalidKey = new PrivateKey();
             var invalidTx = _chain.MakeTransaction(invalidKey, new DumbAction[] { });
-            expected = policy.ValidateTxForNextBlock(_chain, invalidTx);
+            expected = policy.ValidateNextBlockTx(_chain, invalidTx);
             Assert.NotNull(expected);
         }
 

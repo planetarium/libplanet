@@ -1055,7 +1055,7 @@ namespace Libplanet.Tests.Net
                     : new TxPolicyViolationException(tx.Id, "invalid signer");
             }
 
-            var policy = new BlockPolicy<DumbAction>(validateTxForNextBlock: IsSignerValid);
+            var policy = new BlockPolicy<DumbAction>(validateNextBlockTx: IsSignerValid);
             var fx1 = new DefaultStoreFixture();
             var fx2 = new DefaultStoreFixture();
 
@@ -1114,7 +1114,7 @@ namespace Libplanet.Tests.Net
                     : new TxPolicyViolationException(tx.Id, "invalid signer");
             }
 
-            var policy = new BlockPolicy<DumbAction>(validateTxForNextBlock: IsSignerValid);
+            var policy = new BlockPolicy<DumbAction>(validateNextBlockTx: IsSignerValid);
             var fx1 = new DefaultStoreFixture();
             var fx2 = new DefaultStoreFixture();
 
