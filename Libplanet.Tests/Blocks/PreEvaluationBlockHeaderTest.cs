@@ -258,6 +258,71 @@ namespace Libplanet.Tests.Blocks
             );
         }
 
+        [Fact]
+        public void ToBencodex()
+        {
+            var random = new Random();
+
+            Bencodex.Types.Dictionary expectedGenesis = Bencodex.Types.Dictionary.Empty
+                .Add("index", 0L)
+                .Add("timestamp", "2021-09-06T04:46:39.123000Z")
+                .Add("difficulty", 0L)
+                .Add("nonce", _validGenesisProof.Nonce.ByteArray)
+                .Add(
+                    "reward_beneficiary",
+                    ByteUtil.ParseHex("268344BA46e6CA2A8a5096565548b9018bc687Ce")
+                )
+                .Add("protocol_version", 1)
+                .Add("state_root_hash", default(HashDigest<SHA256>).ByteArray);
+            var genesis = new PreEvaluationBlockHeader(
+                _contents.GenesisMetadata,
+                hashAlgorithm: _sha256,
+                nonce: _validGenesisProof.Nonce,
+                preEvaluationHash: _validGenesisProof.PreEvaluationHash
+            );
+            AssertBencodexEqual(expectedGenesis, genesis.ToBencodex(default));
+            HashDigest<SHA256> stateRootHash = random.NextHashDigest<SHA256>();
+            AssertBencodexEqual(
+                expectedGenesis.SetItem("state_root_hash", stateRootHash.ByteArray),
+                genesis.ToBencodex(stateRootHash)
+            );
+
+            Bencodex.Types.Dictionary expectedBlock1 = Bencodex.Types.Dictionary.Empty
+                .Add("index", 1L)
+                .Add("timestamp", "2021-09-06T08:01:09.045000Z")
+                .Add("difficulty", 12345L)
+                .Add("nonce", _validBlock1Proof.Nonce.ByteArray)
+                .Add(
+                    "reward_beneficiary",
+                    ByteUtil.ParseHex("8a29de186B85560D708451101C4Bf02D63b25c50")
+                )
+                .Add(
+                    "previous_hash",
+                    ByteUtil.ParseHex(
+                        "341e8f360597d5bc45ab96aabc5f1b0608063f30af7bd4153556c9536a07693a"
+                    )
+                )
+                .Add(
+                    "transaction_fingerprint",
+                    ByteUtil.ParseHex(
+                        "654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0"
+                    )
+                )
+                .Add("protocol_version", 1)
+                .Add("state_root_hash", default(HashDigest<SHA256>).ByteArray);
+            var block1 = new PreEvaluationBlockHeader(
+                _contents.BlockMetadata1,
+                hashAlgorithm: _sha256,
+                nonce: _validBlock1Proof.Nonce
+            );
+            AssertBencodexEqual(expectedBlock1, block1.ToBencodex(default));
+            stateRootHash = random.NextHashDigest<SHA256>();
+            AssertBencodexEqual(
+                expectedBlock1.SetItem("state_root_hash", stateRootHash.ByteArray),
+                block1.ToBencodex(stateRootHash)
+            );
+        }
+
         protected void AssertBlockContentEquals(
             BlockMetadata expected,
             PreEvaluationBlockHeader actual

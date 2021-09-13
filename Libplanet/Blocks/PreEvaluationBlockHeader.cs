@@ -218,6 +218,18 @@ namespace Libplanet.Blocks
         protected BlockMetadata Metadata { get; }
 
         /// <summary>
+        /// Serializes the block content into a Bencodex dictionary.  This data is used as
+        /// the input to calculate the block <see cref="Block{T}.Hash"/>, rather than transmitting
+        /// the block over the network.
+        /// </summary>
+        /// <param name="stateRootHash">The <see cref="Libplanet.Store.Trie.ITrie.Hash"/> of
+        /// the resulting states after evaluating transactions and
+        /// a <see cref="Blockchain.Policies.IBlockPolicy{T}.BlockAction"/> (if exists).</param>
+        /// <returns>The serialized block header in a Bencodex dictionary.</returns>
+        internal Bencodex.Types.Dictionary ToBencodex(HashDigest<SHA256> stateRootHash) =>
+            Metadata.ToBencodex(Nonce).Add("state_root_hash", stateRootHash.ByteArray);
+
+        /// <summary>
         /// Derives a hash digest of <paramref name="hashAlgorithm"/> from the given block
         /// <paramref name="metadata"/> and <paramref name="nonce"/>.
         /// </summary>
