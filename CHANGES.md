@@ -21,6 +21,7 @@ To be released.
 
 ### Added APIs
 
+ -  Added `BlockMetadata` class.  [[#1164], [#1492]]
  -  Added `BlockContent<T>` class.  [[#1164], [#1492]]
  -  Added `PreEvaluationBlock<T>` class.  [[#1146], [#1164], [#1492]]
  -  Added `BlockDigest.FromBlock<T>()` static method. [[#1492]]

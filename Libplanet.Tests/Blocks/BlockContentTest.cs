@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using Bencodex;
-using Bencodex.Types;
+using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Tests.Fixtures;
@@ -21,78 +22,53 @@ namespace Libplanet.Tests.Blocks
         private readonly ITestOutputHelper _output;
 
         public BlockContentTest(ITestOutputHelper output)
-            : base()
         {
             _output = output;
         }
 
-        [Fact]
-        public void ProtocolVersion()
+        [SuppressMessage("Usage", "xUnit1013", Justification = "Not a fixture.")]
+        public static void AssertBlockContentsEqual<T>(
+            BlockContent<T> expected,
+            BlockContent<T> actual
+        )
+            where T : IAction, new()
         {
-            int v = Block1.ProtocolVersion;
-            Assert.Throws<InvalidBlockProtocolVersionException>(() => Block1.ProtocolVersion = -1);
-            Assert.Equal(v, Block1.ProtocolVersion);
-            Assert.Throws<InvalidBlockProtocolVersionException>(
-                () => Block1.ProtocolVersion = Block<Arithmetic>.CurrentProtocolVersion + 1
+            if (expected is null)
+            {
+                Assert.Null(actual);
+                return;
+            }
+
+            Assert.NotNull(actual);
+            AssertBencodexEqual(expected.ToBencodex(default), actual.ToBencodex(default));
+            AssertBencodexEqual(expected.ToBencodex(default), actual.ToBencodex(default));
+            BlockMetadataTest.AssertBlockMetadataEqual(expected, actual);
+            AssertBytesEqual(expected.TxHash, actual.TxHash);
+            Assert.Equal(expected.Transactions.Count, actual.Transactions.Count);
+            for (int i = 0; i < expected.Transactions.Count; i++)
+            {
+                Assert.Equal(expected.Transactions[i], actual.Transactions[i]);
+            }
+        }
+
+        [Fact]
+        public void Constructor()
+        {
+            var genesis = new BlockContent<Arithmetic>(GenesisMetadata);
+            AssertBlockContentsEqual(Genesis, genesis);
+
+            var block1 = new BlockContent<Arithmetic>(BlockMetadata1, Block1.Transactions);
+            AssertBlockContentsEqual(Block1, block1);
+
+            var blockPv0 = new BlockContent<Arithmetic>(BlockMetadataPv0);
+            AssertBlockContentsEqual(BlockPv0, blockPv0);
+
+            Assert.Throws<InvalidBlockTxHashException>(() =>
+                new BlockContent<Arithmetic>(BlockMetadata1, Array.Empty<Transaction<Arithmetic>>())
             );
-            Assert.Equal(v, Block1.ProtocolVersion);
-        }
-
-        [Fact]
-        public void Index()
-        {
-            long idx = Block1.Index;
-            Assert.Throws<InvalidBlockIndexException>(() => Block1.Index = -1);
-            Assert.Equal(idx, Block1.Index);
-        }
-
-        [Fact]
-        public void Timestamp()
-        {
-            DateTimeOffset kstTimestamp =
-                new DateTimeOffset(2021, 9, 7, 9, 30, 12, 345, TimeSpan.FromHours(9));
-            Block1.Timestamp = kstTimestamp;
-            Assert.Equal(TimeSpan.Zero, Block1.Timestamp.Offset);
-            Assert.Equal(new DateTime(2021, 9, 7, 0, 30, 12, 345), Block1.Timestamp.DateTime);
-            Assert.Equal(kstTimestamp, Block1.Timestamp);
-        }
-
-        [Fact]
-        public void Difficulty()
-        {
-            BlockContent<Arithmetic> a = Block1.Clone();
-            a.Difficulty = Block1.Difficulty + 10L;
-            Assert.Equal(Block1.Difficulty + 10L, a.Difficulty);
-            Assert.Equal(Block1.TotalDifficulty + 10, a.TotalDifficulty);
-
-            BlockContent<Arithmetic> b = Block1.Clone();
-            Assert.Throws<InvalidBlockDifficultyException>(() => b.Difficulty = -1);
-            Assert.Equal(Block1.Difficulty, b.Difficulty);
-        }
-
-        [Fact]
-        public void TotalDifficulty()
-        {
-            BlockContent<Arithmetic> a = Block1.Clone();
-            a.TotalDifficulty = Block1.TotalDifficulty + 10;
-            Assert.Equal(Block1.TotalDifficulty + 10, a.TotalDifficulty);
-            Assert.Equal(Block1.Difficulty, a.Difficulty);
-
-            BlockContent<Arithmetic> b = Block1.Clone();
-            InvalidBlockTotalDifficultyException e =
-                Assert.Throws<InvalidBlockTotalDifficultyException>(() => b.TotalDifficulty = -1);
-            Assert.Equal(Block1.TotalDifficulty, b.TotalDifficulty);
-            Assert.Equal(Block1.Difficulty, b.Difficulty);
-            Assert.Equal(b.Difficulty, e.Difficulty);
-            Assert.Equal(-1, e.TotalDifficulty);
-
-            e = Assert.Throws<InvalidBlockTotalDifficultyException>(
-                () => b.TotalDifficulty = b.Difficulty - 1L
+            Assert.Throws<InvalidBlockTxHashException>(
+                () => new BlockContent<Arithmetic>(BlockMetadata1, new[] { Tx0InBlock1 })
             );
-            Assert.Equal(Block1.TotalDifficulty, b.TotalDifficulty);
-            Assert.Equal(Block1.Difficulty, b.Difficulty);
-            Assert.Equal(b.Difficulty, e.Difficulty);
-            Assert.Equal(b.Difficulty - 1L, e.TotalDifficulty);
         }
 
         [Fact]
@@ -216,140 +192,39 @@ namespace Libplanet.Tests.Blocks
                 0x4f, 0xfb, 0x26, 0x39, 0x27, 0x83, 0x24, 0x86, 0x8c, 0x91, 0x96,
                 0x5b, 0xc5, 0xf9, 0x6c, 0xb3, 0x07, 0x1d, 0x69, 0x03, 0xa0,
             });
-            AssertBytesEqual(expected, Block1.TxHash ?? default);
+            AssertBytesEqual(expected, Block1.TxHash);
             Assert.Null(BlockPv0.TxHash);
+
+            Assert.Throws<InvalidBlockTxHashException>(
+                () => Genesis.TxHash = default(HashDigest<SHA256>)
+            );
+            Assert.Throws<InvalidBlockTxHashException>(() => Block1.TxHash = null);
+            Assert.Throws<InvalidBlockTxHashException>(
+                () => Block1.TxHash = default(HashDigest<SHA256>)
+            );
+            Assert.Throws<InvalidBlockTxHashException>(
+                () => BlockPv0.TxHash = default(HashDigest<SHA256>)
+            );
         }
 
         [Fact]
         public void Clone()
         {
-            AssertBencodexEqual(
-                Genesis.ToBencodex(default),
-                Genesis.Clone().ToBencodex(default)
+            AssertBlockContentsEqual(Genesis, Genesis.Clone());
+            AssertBlockContentsEqual(
+                Genesis,
+                (BlockContent<Arithmetic>)((ICloneable)Genesis).Clone()
             );
-            AssertBencodexEqual(
-                Genesis.ToBencodex(default),
-                ((BlockContent<Arithmetic>)((ICloneable)Genesis).Clone()).ToBencodex(default)
+            AssertBlockContentsEqual(Block1, Block1.Clone());
+            AssertBlockContentsEqual(
+                Block1,
+                (BlockContent<Arithmetic>)((ICloneable)Block1).Clone()
             );
-            AssertBencodexEqual(
-                Block1.ToBencodex(default),
-                Block1.Clone().ToBencodex(default)
+            AssertBlockContentsEqual(BlockPv0, BlockPv0.Clone());
+            AssertBlockContentsEqual(
+                BlockPv0,
+                (BlockContent<Arithmetic>)((ICloneable)BlockPv0).Clone()
             );
-            AssertBencodexEqual(
-                Block1.ToBencodex(default),
-                ((BlockContent<Arithmetic>)((ICloneable)Block1).Clone()).ToBencodex(default)
-            );
-            AssertBencodexEqual(
-                BlockPv0.ToBencodex(default),
-                BlockPv0.Clone().ToBencodex(default)
-            );
-            AssertBencodexEqual(
-                BlockPv0.ToBencodex(default),
-                ((BlockContent<Arithmetic>)((ICloneable)BlockPv0).Clone()).ToBencodex(default)
-            );
-        }
-
-        [Fact]
-        public void ToBencodex()
-        {
-            Bencodex.Types.Dictionary expectedGenesis = Bencodex.Types.Dictionary.Empty
-                .Add("index", 0L)
-                .Add("timestamp", "2021-09-06T04:46:39.123000Z")
-                .Add("difficulty", 0L)
-                .Add("nonce", ImmutableArray<byte>.Empty)
-                .Add(
-                    "reward_beneficiary",
-                    ByteUtil.ParseHex("268344BA46e6CA2A8a5096565548b9018bc687Ce")
-                )
-                .Add("protocol_version", 1);
-            AssertBencodexEqual(expectedGenesis, Genesis.ToBencodex(default));
-            AssertBencodexEqual(
-                expectedGenesis.SetItem("nonce", new byte[] { 0x00, 0x01, 0x02 }),
-                Genesis.ToBencodex(new Nonce(new byte[] { 0x00, 0x01, 0x02 }))
-            );
-
-            Bencodex.Types.Dictionary expectedBlock1 = Bencodex.Types.Dictionary.Empty
-                .Add("index", 1L)
-                .Add("timestamp", "2021-09-06T08:01:09.045000Z")
-                .Add("difficulty", 12345L)
-                .Add("nonce", new byte[] { 0xff, 0xef, 0x01, 0xcc })
-                .Add(
-                    "reward_beneficiary",
-                    ByteUtil.ParseHex("8a29de186B85560D708451101C4Bf02D63b25c50")
-                )
-                .Add(
-                    "previous_hash",
-                    ByteUtil.ParseHex(
-                        "341e8f360597d5bc45ab96aabc5f1b0608063f30af7bd4153556c9536a07693a"
-                    )
-                )
-                .Add(
-                    "transaction_fingerprint",
-                    ByteUtil.ParseHex(
-                        "654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0"
-                    )
-                )
-                .Add("protocol_version", 1);
-            AssertBencodexEqual(
-                expectedBlock1,
-                Block1.ToBencodex(new Nonce(new byte[] { 0xff, 0xef, 0x01, 0xcc }))
-            );
-
-            AssertBencodexEqual(
-                (IValue)expectedGenesis.Remove((Text)"protocol_version"),
-                BlockPv0.ToBencodex(default)
-            );
-        }
-
-        [Fact]
-        public void MineNonce()
-        {
-            var codec = new Codec();
-
-            HashAlgorithmType sha256 = HashAlgorithmType.Of<SHA256>();
-            (Nonce nonce, ImmutableArray<byte> preEvaluationHash) = Genesis.MineNonce(sha256);
-            Assert.True(ByteUtil.Satisfies(preEvaluationHash, Genesis.Difficulty));
-            AssertBytesEqual(
-                sha256.Digest(codec.Encode(Genesis.ToBencodex(nonce))).ToImmutableArray(),
-                preEvaluationHash
-            );
-
-            HashAlgorithmType sha512 = HashAlgorithmType.Of<SHA512>();
-            (nonce, preEvaluationHash) = Block1.MineNonce(sha512);
-            Assert.True(ByteUtil.Satisfies(preEvaluationHash, Block1.Difficulty));
-            AssertBytesEqual(
-                sha512.Digest(codec.Encode(Block1.ToBencodex(nonce))).ToImmutableArray(),
-                preEvaluationHash
-            );
-        }
-
-        [Fact]
-        public void CancelMineNonce()
-        {
-            using (CancellationTokenSource source = new CancellationTokenSource())
-            {
-                HashAlgorithmType sha512 = HashAlgorithmType.Of<SHA512>();
-                Block1.Difficulty = long.MaxValue;
-
-                Exception exception = null;
-                Task task = Task.Run(() =>
-                {
-                    try
-                    {
-                        Block1.MineNonce(sha512, source.Token);
-                    }
-                    catch (OperationCanceledException ce)
-                    {
-                        exception = ce;
-                    }
-                });
-
-                source.Cancel();
-                bool taskEnded = task.Wait(TimeSpan.FromSeconds(10));
-                Assert.True(taskEnded);
-                Assert.NotNull(exception);
-                Assert.IsType<OperationCanceledException>(exception);
-            }
         }
 
         [Fact]

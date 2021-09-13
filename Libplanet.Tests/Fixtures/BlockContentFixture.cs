@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Immutable;
+using System.Security.Cryptography;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Tx;
@@ -9,10 +10,13 @@ namespace Libplanet.Tests.Fixtures
     public class BlockContentFixture
     {
         public readonly BlockHash GenesisHash;
+        public readonly BlockMetadata GenesisMetadata;
         public readonly BlockContent<Arithmetic> Genesis;
+        public readonly BlockMetadata BlockMetadata1;
         public readonly BlockContent<Arithmetic> Block1;
         public readonly Transaction<Arithmetic> Tx0InBlock1;
         public readonly Transaction<Arithmetic> Tx1InBlock1;
+        public readonly BlockMetadata BlockMetadataPv0;
         public readonly BlockContent<Arithmetic> BlockPv0;
 
         public BlockContentFixture()
@@ -24,15 +28,16 @@ namespace Libplanet.Tests.Fixtures
                 0x94, 0xe6, 0x9f, 0xfd, 0xe0, 0x1d, 0x26, 0xae, 0x14, 0xb5, 0x56,
                 0x20, 0x4d, 0x3f, 0x6a, 0xb5, 0x8f, 0x61, 0xf7, 0x84, 0x18,
             });
-            Genesis = new BlockContent<Arithmetic>
+            GenesisMetadata = new BlockMetadata
             {
                 Index = 0,
                 Timestamp = new DateTimeOffset(2021, 9, 6, 13, 46, 39, 123, kst),
                 Miner = genesisKey.ToAddress(),
                 Difficulty = 0,
                 PreviousHash = null,
-                Transactions = Array.Empty<Transaction<Arithmetic>>(),
+                TxHash = null,
             };
+            Genesis = new BlockContent<Arithmetic>(GenesisMetadata);
             GenesisHash = BlockHash.FromString(
                 "341e8f360597d5bc45ab96aabc5f1b0608063f30af7bd4153556c9536a07693a"
             );
@@ -42,6 +47,17 @@ namespace Libplanet.Tests.Fixtures
                 0x00, 0xa3, 0x2d, 0xf4, 0x88, 0xe7, 0x15, 0x49, 0x49, 0xd3, 0x1d,
                 0xdc, 0xac, 0x3c, 0xf9, 0x27, 0x8a, 0xcb, 0x57, 0x86, 0xc7,
             });
+            BlockMetadata1 = new BlockMetadata
+            {
+                Index = 1,
+                Timestamp = new DateTimeOffset(2021, 9, 6, 17, 1, 9, 45, kst),
+                Miner = block1Key.ToAddress(),
+                Difficulty = 12345,
+                PreviousHash = GenesisHash,
+                TxHash = HashDigest<SHA256>.FromString(
+                    "654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0"
+                ),
+            };
             var block1Tx0Key = PrivateKey.FromString(
                 "2d5c20079bc4b2e6eab9ecbb405da8ba6590c436edfb07b7d4466563d7dac096"
             );
@@ -79,20 +95,15 @@ namespace Libplanet.Tests.Fixtures
                 )
             );
             Tx1InBlock1.Validate(block1Tx1Key);
-            Block1 = new BlockContent<Arithmetic>
-            {
-                Index = 1,
-                Timestamp = new DateTimeOffset(2021, 9, 6, 17, 1, 9, 45, kst),
-                Miner = block1Key.ToAddress(),
-                Difficulty = 12345,
-                PreviousHash = GenesisHash,
-                Transactions = new[]
+            Block1 = new BlockContent<Arithmetic>(
+                BlockMetadata1,
+                new[]
                 {
                     Tx0InBlock1,
                     Tx1InBlock1,
-                },
-            };
-            BlockPv0 = new BlockContent<Arithmetic>
+                }
+            );
+            BlockMetadataPv0 = new BlockMetadata
             {
                 ProtocolVersion = 0,
                 Index = 0,
@@ -100,8 +111,9 @@ namespace Libplanet.Tests.Fixtures
                 Miner = genesisKey.ToAddress(),
                 Difficulty = 0,
                 PreviousHash = null,
-                Transactions = Array.Empty<Transaction<Arithmetic>>(),
+                TxHash = null,
             };
+            BlockPv0 = new BlockContent<Arithmetic>(BlockMetadataPv0);
         }
     }
 }
