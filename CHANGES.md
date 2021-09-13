@@ -18,6 +18,7 @@ To be released.
 ### Added APIs
 
  -  Added `BlockContent<T>` class.  [[#1164], [#1492]]
+ -  Added `PreEvaluationBlock<T>` class.  [[#1146], [#1164], [#1492]]
 
 ### Behavioral changes
 
@@ -25,6 +26,7 @@ To be released.
 
 ### CLI tools
 
+[#1146]: https://github.com/planetarium/libplanet/issues/1146
 [#1164]: https://github.com/planetarium/libplanet/issues/1164
 [#1492]: https://github.com/planetarium/libplanet/pull/1492
 
