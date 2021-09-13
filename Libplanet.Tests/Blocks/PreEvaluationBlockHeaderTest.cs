@@ -323,6 +323,44 @@ namespace Libplanet.Tests.Blocks
             );
         }
 
+        [Fact]
+        public void DeriveBlockHash()
+        {
+            Func<string, BlockHash> fromHex = BlockHash.FromString;
+            HashDigest<SHA256> arbitraryHash = HashDigest<SHA256>.FromString(
+                "e6b3803208416556db8de50670aaf0b642e13c90afd77d24da8f642dc3e8f320"
+            );
+
+            var genesis = new PreEvaluationBlockHeader(
+                _contents.GenesisMetadata,
+                hashAlgorithm: _sha256,
+                nonce: _validGenesisProof.Nonce,
+                preEvaluationHash: _validGenesisProof.PreEvaluationHash
+            );
+            AssertBytesEqual(
+                fromHex("d2103724c9fff9705998e014551d6449e3f2a27c67593432ccc8feb3d286e4ed"),
+                genesis.DeriveBlockHash(default)
+            );
+            AssertBytesEqual(
+                fromHex("885714ae8fe06983c54acbf0608bcfdb73aa9483e5043848213e6a1236b2462c"),
+                genesis.DeriveBlockHash(arbitraryHash)
+            );
+
+            var block1 = new PreEvaluationBlockHeader(
+                _contents.BlockMetadata1,
+                hashAlgorithm: _sha256,
+                nonce: _validBlock1Proof.Nonce
+            );
+            AssertBytesEqual(
+                fromHex("b2b9c1f6e2c30bd092ba3771ff7c6968817803a552cb74ddcde678eb07144acf"),
+                block1.DeriveBlockHash(default)
+            );
+            AssertBytesEqual(
+                fromHex("8e9b97992b99ad6c028ff07e06fdf39caadecbb8d10a2bf9b6f924de38993ce8"),
+                block1.DeriveBlockHash(arbitraryHash)
+            );
+        }
+
         protected void AssertBlockContentEquals(
             BlockMetadata expected,
             PreEvaluationBlockHeader actual

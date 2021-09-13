@@ -226,8 +226,19 @@ namespace Libplanet.Blocks
         /// the resulting states after evaluating transactions and
         /// a <see cref="Blockchain.Policies.IBlockPolicy{T}.BlockAction"/> (if exists).</param>
         /// <returns>The serialized block header in a Bencodex dictionary.</returns>
-        internal Bencodex.Types.Dictionary ToBencodex(HashDigest<SHA256> stateRootHash) =>
+        public Bencodex.Types.Dictionary ToBencodex(HashDigest<SHA256> stateRootHash) =>
             Metadata.ToBencodex(Nonce).Add("state_root_hash", stateRootHash.ByteArray);
+
+        /// <summary>
+        /// Derives a hash digest from the given pre-evaluation block header and
+        /// <paramref name="stateRootHash"/>.
+        /// </summary>
+        /// <param name="stateRootHash">The state root hash.</param>
+        /// <returns>A block hash.</returns>
+        public BlockHash DeriveBlockHash(
+            in HashDigest<SHA256> stateRootHash
+        ) =>
+            BlockHash.DeriveFrom(Codec.Encode(ToBencodex(stateRootHash)));
 
         /// <summary>
         /// Verifies if the <paramref name="preEvaluationHash"/> is the proper hash digest of
