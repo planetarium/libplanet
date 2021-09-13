@@ -25,6 +25,9 @@ namespace Libplanet.Blocks
         /// </summary>
         public const int CurrentProtocolVersion = BlockMetadata.CurrentProtocolVersion;
 
+        internal static readonly byte[] HeaderKey = { 0x48 }; // 'H'
+        internal static readonly byte[] TransactionsKey = { 0x54 }; // 'T'
+
         private int? _bytesLength = null;
         private BlockHeader? _header = null;
         private ImmutableArray<byte>? _preEvaluationHash = null;
@@ -174,17 +177,6 @@ namespace Libplanet.Blocks
                 PreEvaluationHash).ToImmutableArray();
         }
 
-        /// <summary>
-        /// Creates a <see cref="Block{T}"/> instance from its serialization.
-        /// </summary>
-        /// <param name="dict">The <see cref="Bencodex.Types.Dictionary"/>
-        /// representation of <see cref="Block{T}"/> instance.
-        /// </param>
-        public Block(Bencodex.Types.Dictionary dict)
-            : this(new RawBlock(dict))
-        {
-        }
-
 #pragma warning disable SA1514, SA1515
         // FIXME: This probably should not be public.
         // See also <https://github.com/planetarium/libplanet/issues/1146>.
@@ -215,38 +207,49 @@ namespace Libplanet.Blocks
         {
         }
 
-        private Block(RawBlock rawBlock)
+        /// <summary>
+        /// Creates a <see cref="Block{T}"/> instance from its serialization.
+        /// </summary>
+        /// <param name="dict">The <see cref="Bencodex.Types.Dictionary"/>
+        /// representation of <see cref="Block{T}"/> instance.
+        /// </param>
+        public Block(Bencodex.Types.Dictionary dict)
         {
-            _header = rawBlock.Header;
+            var header = new BlockHeader(dict.GetValue<Bencodex.Types.Dictionary>(HeaderKey));
+            var txs = dict.ContainsKey((IKey)(Binary)TransactionsKey)
+                ? dict.GetValue<Bencodex.Types.List>(TransactionsKey)
+                    .Select(tx => ((Binary)tx).ByteArray)
+                : Enumerable.Empty<ImmutableArray<byte>>();
+            _header = header;
 
-            ProtocolVersion = rawBlock.Header.ProtocolVersion;
-            Index = rawBlock.Header.Index;
-            Difficulty = rawBlock.Header.Difficulty;
-            TotalDifficulty = rawBlock.Header.TotalDifficulty;
-            Nonce = rawBlock.Header.Nonce;
-            Miner = rawBlock.Header.Miner;
-            PreviousHash = rawBlock.Header.PreviousHash;
-            Timestamp = Header.Timestamp;
-            TxHash = Header.TxHash;
+            ProtocolVersion = header.ProtocolVersion;
+            Index = header.Index;
+            Difficulty = header.Difficulty;
+            TotalDifficulty = header.TotalDifficulty;
+            Nonce = header.Nonce;
+            Miner = header.Miner;
+            PreviousHash = header.PreviousHash;
+            Timestamp = header.Timestamp;
+            TxHash = header.TxHash;
 
             // FIXME: Transactions should be re-ordered to properly validate StateRootHash.
             // See also <https://github.com/planetarium/libplanet/issues/1299>.
-            Transactions = rawBlock.Transactions
-                .Select(tx => Transaction<T>.Deserialize(tx.ToArray(), false))
+            Transactions = txs
+                .Select(tx => Transaction<T>.Deserialize(tx.ToBuilder().ToArray(), false))
                 .ToImmutableList();
 
-            _preEvaluationHash = rawBlock.Header.PreEvaluationHash.Any()
-                ? rawBlock.Header.PreEvaluationHash
+            _preEvaluationHash = header.PreEvaluationHash.Any()
+                ? header.PreEvaluationHash
                 : throw new ArgumentException(
-                    $"PreEvaluationHash of {nameof(rawBlock.Header)} cannot be empty.");
+                    $"PreEvaluationHash of {nameof(Header)} cannot be empty.");
 
             // FIXME: We should convert `StateRootHash`'s type to `HashDisgest<SHA256>` after
             // removing `IBlockStateStore`.
             // See also <https://github.com/planetarium/libplanet/pull/1116#discussion_r535836480>.
             // FIXME: Normal path should not lead to StateRootHash being null.  Should be
             // refactored to throw an exception.
-            StateRootHash = rawBlock.Header.StateRootHash;
-            _hash = rawBlock.Header.Hash;
+            StateRootHash = header.StateRootHash;
+            _hash = header.Hash;
         }
 
         /// <summary>
@@ -480,7 +483,19 @@ namespace Libplanet.Blocks
             return serialized;
         }
 
-        public Bencodex.Types.Dictionary ToBencodex() => ToRawBlock().ToBencodex();
+        public Bencodex.Types.Dictionary ToBencodex()
+        {
+            Bencodex.Types.Dictionary dict = Bencodex.Types.Dictionary.Empty
+                .Add(HeaderKey, Header.ToBencodex());
+
+            if (Transactions.Any())
+            {
+                var txs = Transactions.Select(tx => new Binary(tx.Serialize(true))).Cast<IValue>();
+                dict = dict.Add(TransactionsKey, txs);
+            }
+
+            return dict;
+        }
 
         public override string ToString()
         {
@@ -562,14 +577,6 @@ namespace Libplanet.Blocks
                     calculatedTxHash
                 );
             }
-        }
-
-        internal RawBlock ToRawBlock()
-        {
-            return new RawBlock(
-                header: Header,
-                transactions: Transactions
-                .Select(tx => tx.Serialize(true).ToImmutableArray()).ToImmutableArray());
         }
 
         private static IEnumerable<Transaction<T>> OrderTxsForEvaluationV0(
