@@ -24,7 +24,11 @@ namespace Libplanet.Blocks
     /// <seealso cref="BlockContent{T}"/>
     public class BlockMetadata : ICloneable
     {
-        private const int CurrentProtocolVersion = BlockHeader.CurrentProtocolVersion;
+        /// <summary>
+        /// The latest protocol version.
+        /// </summary>
+        public const int CurrentProtocolVersion = 1;
+
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
         private static readonly Codec Codec = new Codec();
 

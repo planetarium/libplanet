@@ -524,7 +524,7 @@ namespace Libplanet.Tests.Blocks
         public void OrderTxsForEvaluation()
         {
             // New test should be written once this breaks with a protocol version bump.
-            const int protocolVersion = BlockHeader.CurrentProtocolVersion;
+            const int protocolVersion = BlockMetadata.CurrentProtocolVersion;
             const int numSigners = 5;
             const int numTxsPerSigner = 3;
             var epoch = DateTimeOffset.FromUnixTimeSeconds(0);

@@ -102,7 +102,7 @@ namespace Libplanet.Tests.Blockchain
         {
             var blockA = new SimpleBlockExcerpt()
             {
-                ProtocolVersion = BlockHeader.CurrentProtocolVersion,
+                ProtocolVersion = BlockMetadata.CurrentProtocolVersion,
                 Index = 604665,
                 Hash = BlockHash.FromString(
                     "4f612467ed79cb854d1901f131ccfc8a40bba89651e1a9e1dcea1287dd70d8ee"),
@@ -120,7 +120,7 @@ namespace Libplanet.Tests.Blockchain
 
             var blockB = new SimpleBlockExcerpt
             {
-                ProtocolVersion = BlockHeader.CurrentProtocolVersion,
+                ProtocolVersion = BlockMetadata.CurrentProtocolVersion,
                 Index = 604664,
                 Hash = BlockHash.FromString(
                     "9a87556f3198d8bd48300d2a6a5957d661c760a7fb72ef4a4b8c01c155b77e99"),

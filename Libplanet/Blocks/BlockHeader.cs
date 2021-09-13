@@ -16,8 +16,6 @@ namespace Libplanet.Blocks
     /// </summary>
     public readonly struct BlockHeader : IBlockExcerpt
     {
-        internal const int CurrentProtocolVersion = 1;
-
         internal static readonly byte[] ProtocolVersionKey = { 0x00 };
 
         internal static readonly byte[] IndexKey = { 0x69 }; // 'i'
@@ -42,6 +40,7 @@ namespace Libplanet.Blocks
 
         internal static readonly byte[] PreEvaluationHashKey = { 0x63 }; // 'c'
 
+        private const int CurrentProtocolVersion = BlockMetadata.CurrentProtocolVersion;
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
 
         private static readonly TimeSpan TimestampThreshold =

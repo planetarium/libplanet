@@ -21,9 +21,9 @@ namespace Libplanet.Blocks
         where T : IAction, new()
     {
         /// <summary>
-        /// The most latest protocol version.
+        /// The latest protocol version.
         /// </summary>
-        public const int CurrentProtocolVersion = BlockHeader.CurrentProtocolVersion;
+        public const int CurrentProtocolVersion = BlockMetadata.CurrentProtocolVersion;
 
         private int? _bytesLength = null;
         private BlockHeader? _header = null;
