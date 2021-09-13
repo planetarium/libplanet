@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Immutable;
-using System.Security.Cryptography;
-using Bencodex;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Tests.Fixtures;
@@ -10,46 +7,11 @@ using static Libplanet.Tests.TestUtils;
 
 namespace Libplanet.Tests.Blocks
 {
-    public class PreEvaluationBlockTest
+    // FIXME: The most of the following tests are duplicated in PreEvaluationBlockHeaderTest.
+    public class PreEvaluationBlockTest : PreEvaluationBlockHeaderTest
     {
-        private readonly BlockContentFixture _contents;
-        private readonly Codec _codec;
-        private readonly HashAlgorithmType _sha256;
-        private readonly (Nonce Nonce, ImmutableArray<byte> PreEvaluationHash) _validGenesisProof;
-        private readonly (Nonce Nonce, ImmutableArray<byte> PreEvaluationHash) _validBlock1Proof;
-        private readonly (Nonce Nonce, ImmutableArray<byte> PreEvaluationHash) _invalidBlock1Proof;
-
-        public PreEvaluationBlockTest()
-        {
-            _contents = new BlockContentFixture();
-            _codec = new Codec();
-            _sha256 = HashAlgorithmType.Of<SHA256>();
-
-            var validGenesisNonce = default(Nonce);
-            byte[] validGenesisBytes =
-                _codec.Encode(_contents.Genesis.ToBencodex(validGenesisNonce));
-            ImmutableArray<byte> validGenesisPreEvalHash =
-                _sha256.Digest(validGenesisBytes).ToImmutableArray();
-            _validGenesisProof = (validGenesisNonce, validGenesisPreEvalHash);
-
-            var validBlock1Nonce = new Nonce(
-                new byte[] { 0x14, 0xf1, 0xa7, 0x05, 0x37, 0xbb, 0x97, 0xb2, 0x5f, 0x94 }
-            );
-            byte[] validBlock1Bytes = _codec.Encode(_contents.Block1.ToBencodex(validBlock1Nonce));
-            ImmutableArray<byte> validBlock1PreEvalHash =
-                _sha256.Digest(validBlock1Bytes).ToImmutableArray();
-            _validBlock1Proof = (validBlock1Nonce, validBlock1PreEvalHash);
-
-            var invalidBlock1Nonce = default(Nonce);
-            byte[] invalidBlock1Bytes =
-                _codec.Encode(_contents.Block1.ToBencodex(invalidBlock1Nonce));
-            ImmutableArray<byte> invalidBlock1PreEvalHash =
-                _sha256.Digest(invalidBlock1Bytes).ToImmutableArray();
-            _invalidBlock1Proof = (invalidBlock1Nonce, invalidBlock1PreEvalHash);
-        }
-
         [Fact]
-        public void UnsafeConstructor()
+        public override void UnsafeConstructor()
         {
             BlockContent<Arithmetic> content = _contents.Genesis.Clone();
             var preEvalBlock =
@@ -65,10 +27,6 @@ namespace Libplanet.Tests.Blocks
             AssertBytesEqual(_validBlock1Proof.Nonce, preEvalBlock.Nonce);
             Assert.Same(_sha256, preEvalBlock.HashAlgorithm);
             AssertBytesEqual(_validBlock1Proof.PreEvaluationHash, preEvalBlock.PreEvaluationHash);
-
-            // Mutating the BlockContent<T> instance does not affect PreEvaluatingBlock<T> instance:
-            content.Index++;
-            Assert.Equal(_contents.Block1.Index, preEvalBlock.Index);
 
             Assert.Throws<InvalidBlockNonceException>(
                 () => new PreEvaluationBlock<Arithmetic>(content, _sha256, _invalidBlock1Proof)
@@ -106,7 +64,7 @@ namespace Libplanet.Tests.Blocks
         }
 
         [Fact]
-        public void SafeConstructorWithPreEvaluationHash()
+        public override void SafeConstructorWithPreEvaluationHash()
         {
             BlockContent<Arithmetic> content = _contents.Genesis.Clone();
             var preEvalBlock = new PreEvaluationBlock<Arithmetic>(
@@ -156,7 +114,7 @@ namespace Libplanet.Tests.Blocks
         }
 
         [Fact]
-        public void SafeConstructorWithoutPreEvaluationHash()
+        public override void SafeConstructorWithoutPreEvaluationHash()
         {
             BlockContent<Arithmetic> content = _contents.Genesis.Clone();
             var preEvalBlock = new PreEvaluationBlock<Arithmetic>(
@@ -224,7 +182,7 @@ namespace Libplanet.Tests.Blocks
         }
 
         [Fact]
-        public void DontCheckPreEvaluationHashWithProtocolVersion0()
+        public override void DontCheckPreEvaluationHashWithProtocolVersion0()
         {
             // Since PreEvaluationHash comparison between the actual and the expected was not
             // implemented in ProtocolVersion == 0, we need to maintain this bug on
@@ -265,6 +223,7 @@ namespace Libplanet.Tests.Blocks
         )
             where T : IAction, new()
         {
+            base.AssertBlockContentEquals(expected, actual);
             Assert.NotNull(expected);
             Assert.NotNull(actual);
             Assert.Equal(expected.ProtocolVersion, actual.ProtocolVersion);
