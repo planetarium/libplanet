@@ -111,6 +111,14 @@ namespace Libplanet.Tests
 
         public static void AssertBytesEqual(byte[] expected, byte[] actual)
         {
+            if (expected is null)
+            {
+                Assert.Null(actual);
+                return;
+            }
+
+            Assert.NotNull(actual);
+
             string msg;
             if (expected.LongLength < 1024 && actual.LongLength < 1024 &&
                 expected.All(b => b < 0x80) && actual.All(b => b < 0x80))
@@ -119,19 +127,28 @@ namespace Libplanet.Tests
                 string expectedStr = Encoding.ASCII.GetString(expected);
                 string actualStr = Encoding.ASCII.GetString(actual);
                 msg = $@"Two byte arrays do not equal
-Expected: ({expected.LongLength}) {expectedStr}
-Actual:   ({actual.LongLength}) {actualStr}";
+Expected length: ({expected.LongLength}) {expectedStr}
+Actual length:   ({actual.LongLength}) {actualStr}";
             }
             else
             {
                 string expectedRepr = Repr(expected);
                 string actualRepr = Repr(actual);
                 msg = $@"Two byte arrays do not equal
-Expected: new byte[{expected.LongLength}] {{ {expectedRepr} }}
-Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
+Expected (C# array lit): new byte[{expected.LongLength}] {{ {expectedRepr} }}
+Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             }
 
-            Assert.True(expected.SequenceEqual(actual), msg);
+            if (!expected.SequenceEqual(actual))
+            {
+                throw new AssertActualExpectedException(
+                    ByteUtil.Hex(expected),
+                    ByteUtil.Hex(actual),
+                    msg,
+                    "Expected (hex)",
+                    "Actual (hex)"
+                );
+            }
 
             string Repr(byte[] bytes)
             {
@@ -152,18 +169,26 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         public static void AssertBytesEqual(
             ImmutableArray<byte> expected,
             ImmutableArray<byte> actual
-        )
-        {
+        ) =>
             AssertBytesEqual(expected.ToArray(), actual.ToArray());
-        }
 
-        public static void AssertBytesEqual(TxId expected, TxId actual)
-        {
+        public static void AssertBytesEqual(
+            ImmutableArray<byte>? expected,
+            ImmutableArray<byte>? actual
+        ) =>
+            AssertBytesEqual(expected?.ToArray(), actual?.ToArray());
+
+        public static void AssertBytesEqual(TxId expected, TxId actual) =>
             AssertBytesEqual(expected.ToByteArray(), actual.ToByteArray());
-        }
+
+        public static void AssertBytesEqual(TxId? expected, TxId? actual) =>
+            AssertBytesEqual(expected?.ToByteArray(), actual?.ToByteArray());
 
         public static void AssertBytesEqual(BlockHash expected, BlockHash actual) =>
             AssertBytesEqual(expected.ToByteArray(), actual.ToByteArray());
+
+        public static void AssertBytesEqual(BlockHash? expected, BlockHash? actual) =>
+            AssertBytesEqual(expected?.ToByteArray(), actual?.ToByteArray());
 
         public static void AssertBytesEqual<T>(
             HashDigest<T> expected,
@@ -174,11 +199,26 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             AssertBytesEqual(expected.ToByteArray(), actual.ToByteArray());
         }
 
+        public static void AssertBytesEqual<T>(
+            HashDigest<T>? expected,
+            HashDigest<T>? actual
+        )
+            where T : HashAlgorithm
+        {
+            AssertBytesEqual(expected?.ToByteArray(), actual?.ToByteArray());
+        }
+
         public static void AssertBytesEqual(Nonce expected, Nonce actual) =>
             AssertBytesEqual(expected.ToByteArray(), actual.ToByteArray());
 
+        public static void AssertBytesEqual(Nonce? expected, Nonce? actual) =>
+            AssertBytesEqual(expected?.ToByteArray(), actual?.ToByteArray());
+
         public static void AssertBytesEqual(Address expected, Address actual) =>
             AssertBytesEqual(expected.ToByteArray(), actual.ToByteArray());
+
+        public static void AssertBytesEqual(Address? expected, Address? actual) =>
+            AssertBytesEqual(expected?.ToByteArray(), actual?.ToByteArray());
 
         public static void AssertBencodexEqual(IValue expected, IValue actual)
         {
