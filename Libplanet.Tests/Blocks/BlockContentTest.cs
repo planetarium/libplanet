@@ -277,5 +277,20 @@ namespace Libplanet.Tests.Blocks
                 Assert.IsType<OperationCanceledException>(exception);
             }
         }
+
+        [Fact]
+        public void DeriveTxHash()
+        {
+            Assert.Null(
+                BlockContent<Arithmetic>.DeriveTxHash(Array.Empty<Transaction<Arithmetic>>())
+            );
+            AssertBytesEqual(
+                BlockMetadata1.TxHash,
+                BlockContent<Arithmetic>.DeriveTxHash(Block1.Transactions)
+            );
+            Assert.Throws<ArgumentException>(
+                () => BlockContent<Arithmetic>.DeriveTxHash(Block1.Transactions.Reverse())
+            );
+        }
     }
 }

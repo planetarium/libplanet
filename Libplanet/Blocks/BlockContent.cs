@@ -149,7 +149,7 @@ namespace Libplanet.Blocks
                 }
 
                 _transactions = value.OrderBy(tx => tx.Id).ToImmutableArray();
-                base.TxHash = Block<T>.CalculateTxHashes(_transactions);
+                base.TxHash = DeriveTxHash(_transactions);
             }
         }
 
@@ -226,5 +226,44 @@ namespace Libplanet.Blocks
                 hashAlgorithm,
                 MineNonce(hashAlgorithm, cancellationToken)
             );
+
+        /// <summary>
+        /// Derives <see cref="TxHash"/> from the given <paramref name="transactions"/>.
+        /// </summary>
+        /// <param name="transactions">The transactions to derive <see cref="TxHash"/> from.
+        /// This must be ordered by <see cref="Transaction{T}.Id"/>.</param>
+        /// <returns>The derived <see cref="TxHash"/>.</returns>
+        /// <exception cref="ArgumentException">Thrown when the <paramref name="transactions"/> are
+        /// not ordered by their <see cref="Transaction{T}.Id"/>s.</exception>
+        internal static HashDigest<SHA256>? DeriveTxHash(IEnumerable<Transaction<T>> transactions)
+        {
+            TxId? prevId = null;
+            SHA256 hasher = SHA256.Create();
+
+            // Bencodex lists look like: l...e
+            hasher.TransformBlock(new byte[] { 0x6c }, 0, 1, null, 0);  // "l"
+            foreach (Transaction<T> tx in transactions)
+            {
+                if (prevId is { } prev && prev.CompareTo(tx.Id) > 0)
+                {
+                    throw new ArgumentException(
+                        $"Transactions must be ordered by their {nameof(Transaction<T>.Id)}s.",
+                        nameof(transactions)
+                    );
+                }
+
+                byte[] payload = tx.Serialize(true);
+                hasher.TransformBlock(payload, 0, payload.Length, null, 0);
+                prevId = tx.Id;
+            }
+
+            if (prevId is null)
+            {
+                return null;
+            }
+
+            hasher.TransformFinalBlock(new byte[] { 0x65 }, 0, 1);  // "e"
+            return new HashDigest<SHA256>(hasher.Hash);
+        }
     }
 }

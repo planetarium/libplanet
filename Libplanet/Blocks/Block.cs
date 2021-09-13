@@ -120,7 +120,7 @@ namespace Libplanet.Blocks
             PreviousHash = previousHash;
             Timestamp = timestamp;
             Transactions = transactions.OrderBy(tx => tx.Id).ToArray();
-            TxHash = CalculateTxHashes(Transactions);
+            TxHash = BlockContent<T>.DeriveTxHash(Transactions);
 
 #pragma warning disable SA1118
             if (hashAlgorithm is { } ha)
@@ -518,32 +518,6 @@ namespace Libplanet.Blocks
                 : OrderTxsForEvaluationV0(txs, preEvaluationHash);
         }
 
-        // FIXME: This should be moved to BlockContent<T>.TxHash.
-        internal static HashDigest<SHA256>? CalculateTxHashes(IEnumerable<Transaction<T>> txs)
-        {
-            if (!txs.Any())
-            {
-                return null;
-            }
-
-            byte[][] serializedTxs = txs.Select(tx => tx.Serialize(true)).ToArray();
-            int txHashSourceLength = serializedTxs.Select(b => b.Length).Sum() + 2;
-            var txHashSource = new byte[txHashSourceLength];
-
-            // Bencodex lists look like: l...e
-            txHashSource[0] = 0x6c;
-            txHashSource[txHashSourceLength - 1] = 0x65;
-            int offset = 1;
-            foreach (byte[] serializedTx in serializedTxs)
-            {
-                serializedTx.CopyTo(txHashSource, offset);
-                offset += serializedTx.Length;
-            }
-
-            using SHA256 hashAlgo = SHA256.Create();
-            return HashDigest<SHA256>.DeriveFrom(txHashSource);
-        }
-
         /// <summary>
         /// Validates this <see cref="Block{T}"/> and throws an appropriate exception
         /// if not valid.
@@ -579,7 +553,7 @@ namespace Libplanet.Blocks
             }
 
             HashDigest<SHA256>? calculatedTxHash =
-                CalculateTxHashes(Transactions.OrderBy(tx => tx.Id));
+                BlockContent<T>.DeriveTxHash(Transactions.OrderBy(tx => tx.Id));
             if (!calculatedTxHash.Equals(TxHash))
             {
                 throw new InvalidBlockTxHashException(
