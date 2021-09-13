@@ -488,9 +488,10 @@ namespace Libplanet.RocksDBStore
                 PutTransaction(tx);
             }
 
-            byte[] value = block.ToBlockDigest().Serialize();
+            BlockDigest digest = BlockDigest.FromBlock(block);
+            byte[] value = digest.Serialize();
             _blockDb.Put(key, value);
-            _blockCache.AddOrUpdate(block.Hash, block.ToBlockDigest());
+            _blockCache.AddOrUpdate(block.Hash, digest);
         }
 
         /// <inheritdoc cref="BaseStore.DeleteBlock(BlockHash)"/>

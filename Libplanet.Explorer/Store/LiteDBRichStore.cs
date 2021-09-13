@@ -204,7 +204,7 @@ namespace Libplanet.Explorer.Store
                 StoreTxReferences(tx.Id, block.Hash, block.Index);
             }
 
-            _blockCache.AddOrUpdate(block.Hash, block.ToBlockDigest());
+            _blockCache.AddOrUpdate(block.Hash, BlockDigest.FromBlock(block));
         }
 
         /// <inheritdoc cref="IStore.ListChainIds()"/>

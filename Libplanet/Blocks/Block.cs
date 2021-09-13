@@ -482,20 +482,6 @@ namespace Libplanet.Blocks
 
         public Bencodex.Types.Dictionary ToBencodex() => ToRawBlock().ToBencodex();
 
-        /// <summary>
-        /// Gets <see cref="BlockDigest"/> representation of the <see cref="Block{T}"/>.
-        /// </summary>
-        /// <returns><see cref="BlockDigest"/> representation of the <see cref="Block{T}"/>.
-        /// </returns>
-        public BlockDigest ToBlockDigest()
-        {
-            return new BlockDigest(
-                header: Header,
-                txIds: Transactions
-                    .Select(tx => tx.Id.ToByteArray().ToImmutableArray())
-                    .ToImmutableArray());
-        }
-
         public override string ToString()
         {
             return Hash.ToString();

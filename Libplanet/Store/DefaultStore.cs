@@ -469,8 +469,9 @@ namespace Libplanet.Store
                 PutTransaction(tx);
             }
 
-            WriteContentAddressableFile(_blocks, path, block.ToBlockDigest().Serialize());
-            _blockCache.AddOrUpdate(block.Hash, block.ToBlockDigest());
+            BlockDigest digest = BlockDigest.FromBlock(block);
+            WriteContentAddressableFile(_blocks, path, digest.Serialize());
+            _blockCache.AddOrUpdate(block.Hash, digest);
         }
 
         /// <inheritdoc cref="BaseStore.DeleteBlock(BlockHash)"/>

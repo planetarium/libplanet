@@ -10,6 +10,10 @@ To be released.
 
  -  `Hashcash.Stamp(Nonce)` delegate's return type became `IEnumerable<byte[]>`
     (was `byte[]`).  [[#1492]]
+ -  Moved `BlockDigest` struct to `Libplanet.Store` namespace (from
+    `Libplanet.Blocks` namespace).  [[#1492]]
+ -  Removed `Block<T>.ToBlockDigest()` method.  Use `BlockDigest.FromBlock<T>()`
+    static method instead. [[#1492]]
 
 ### Backward-incompatible network protocol changes
 
@@ -19,6 +23,7 @@ To be released.
 
  -  Added `BlockContent<T>` class.  [[#1164], [#1492]]
  -  Added `PreEvaluationBlock<T>` class.  [[#1146], [#1164], [#1492]]
+ -  Added `BlockDigest.FromBlock<T>()` static method. [[#1492]]
 
 ### Behavioral changes
 

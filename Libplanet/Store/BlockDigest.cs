@@ -1,10 +1,13 @@
+#nullable enable
 using System.Collections.Immutable;
 using System.Linq;
 using Bencodex;
 using Bencodex.Types;
+using Libplanet.Action;
+using Libplanet.Blocks;
 using Libplanet.Tx;
 
-namespace Libplanet.Blocks
+namespace Libplanet.Store
 {
     /// <summary>
     /// Class that store uses to save blocks. This contains:
@@ -48,6 +51,24 @@ namespace Libplanet.Blocks
         public BlockHeader Header { get; }
 
         public ImmutableArray<ImmutableArray<byte>> TxIds { get; }
+
+        /// <summary>
+        /// Gets <see cref="BlockDigest"/> representation of the <see cref="Block{T}"/>.
+        /// </summary>
+        /// <param name="block">The block instance to get its digest.</param>
+        /// <typeparam name="T">An action type.</typeparam>
+        /// <returns><see cref="BlockDigest"/> representation of the <see cref="Block{T}"/>.
+        /// </returns>
+        public static BlockDigest FromBlock<T>(Block<T> block)
+            where T : IAction, new()
+        {
+            return new BlockDigest(
+                header: block.Header,
+                txIds: block.Transactions
+                    .Select(tx => tx.Id.ByteArray)
+                    .ToImmutableArray()
+            );
+        }
 
         /// <summary>
         /// Gets <see cref="BlockDigest"/> instance from serialized <paramref name="bytes"/>.

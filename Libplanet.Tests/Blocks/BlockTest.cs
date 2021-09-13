@@ -9,6 +9,7 @@ using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
+using Libplanet.Store;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tx;
 using Xunit;
@@ -506,7 +507,7 @@ namespace Libplanet.Tests.Blocks
             // Size of RawBlock
             Assert.Equal(214, emptyBlock.Serialize().Length);
             // Size of BlockDigest
-            Assert.Equal(214, emptyBlock.ToBlockDigest().Serialize().Length);
+            Assert.Equal(214, BlockDigest.FromBlock(emptyBlock).Serialize().Length);
             // Size of BlockHeader
             Assert.Equal(209, codec.Encode(emptyBlock.Header.ToBencodex()).Length);
 
@@ -514,7 +515,7 @@ namespace Libplanet.Tests.Blocks
             // Size of RawBlock
             Assert.Equal(704, txBlock.Serialize().Length);
             // Size of BlockDigest
-            Assert.Equal(299, txBlock.ToBlockDigest().Serialize().Length);
+            Assert.Equal(299, BlockDigest.FromBlock(txBlock).Serialize().Length);
             // Size of BlockHeader
             Assert.Equal(254, codec.Encode(txBlock.Header.ToBencodex()).Length);
         }
