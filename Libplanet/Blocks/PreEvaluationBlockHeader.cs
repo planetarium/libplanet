@@ -41,7 +41,7 @@ namespace Libplanet.Blocks
             : this(
                 (BlockMetadata)((ICloneable)metadata).Clone(),
                 hashAlgorithm,
-                (nonce, DerivePreEvaluationHash(hashAlgorithm, metadata, nonce))
+                (nonce, metadata.DerivePreEvaluationHash(hashAlgorithm, nonce))
             )
         {
         }
@@ -230,21 +230,6 @@ namespace Libplanet.Blocks
             Metadata.ToBencodex(Nonce).Add("state_root_hash", stateRootHash.ByteArray);
 
         /// <summary>
-        /// Derives a hash digest of <paramref name="hashAlgorithm"/> from the given block
-        /// <paramref name="metadata"/> and <paramref name="nonce"/>.
-        /// </summary>
-        /// <param name="hashAlgorithm">The hash algorithm to use.</param>
-        /// <param name="metadata">The block metadata.</param>
-        /// <param name="nonce">The proof-of-work nonce.</param>
-        /// <returns>A pre-evaluation block hash.</returns>
-        private static ImmutableArray<byte> DerivePreEvaluationHash(
-            HashAlgorithmType hashAlgorithm,
-            BlockMetadata metadata,
-            in Nonce nonce
-        ) =>
-            hashAlgorithm.Digest(Codec.Encode(metadata.ToBencodex(nonce))).ToImmutableArray();
-
-        /// <summary>
         /// Verifies if the <paramref name="preEvaluationHash"/> is the proper hash digest of
         /// the <paramref name="hashAlgorithm"/> derived from the given block
         /// <paramref name="metadata"/> and <paramref name="nonce"/>.
@@ -278,7 +263,7 @@ namespace Libplanet.Blocks
             }
 
             ImmutableArray<byte> expectedPreEvaluationHash =
-                DerivePreEvaluationHash(hashAlgorithm, metadata, nonce);
+                metadata.DerivePreEvaluationHash(hashAlgorithm, nonce);
             if (!ByteUtil.TimingSafelyCompare(preEvaluationHash, expectedPreEvaluationHash))
             {
                 string message =

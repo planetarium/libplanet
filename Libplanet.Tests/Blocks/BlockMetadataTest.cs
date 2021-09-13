@@ -190,6 +190,51 @@ namespace Libplanet.Tests.Blocks
         }
 
         [Fact]
+        public void DerivePreEvaluationHash()
+        {
+            ImmutableArray<byte> FromHex(string hex) =>
+                ByteUtil.ParseHex(hex).ToImmutableArray();
+
+            HashAlgorithmType sha256 = HashAlgorithmType.Of<SHA256>();
+            HashAlgorithmType sha512 = HashAlgorithmType.Of<SHA512>();
+            ImmutableArray<byte> hash = GenesisMetadata.DerivePreEvaluationHash(sha256, default);
+            AssertBytesEqual(
+                FromHex("29dc1a7dad84b68bfcc433a55c531ef81fb0d27967cd9e857ed2b9ef170ad1ae"),
+                hash
+            );
+
+            hash = GenesisMetadata.DerivePreEvaluationHash(sha512, default);
+            AssertBytesEqual(
+                FromHex(
+                    "b00ee7ec89245bf37a437b0ea16292c5b8c8b3b48d03b56b13a0e280384d2e89" +
+                    "d79292867f9e7b31a829ea3f2afa55aab4f05bba6497103f87cfaf85ee9eb0d9"
+                ),
+                hash
+            );
+
+            hash = BlockMetadata1.DerivePreEvaluationHash(
+                sha256,
+                new Nonce(FromHex("e7c1adf92c65d35aaae5"))
+            );
+            AssertBytesEqual(
+                FromHex("57e7c3056d366cb3c782029358812d4b56b3b4f69b9ee4687d0a3bc13e1c0000"),
+                hash
+            );
+
+            hash = BlockMetadata1.DerivePreEvaluationHash(
+                sha512,
+                new Nonce(FromHex("e3fd5a6308a1979845cc"))
+            );
+            AssertBytesEqual(
+                FromHex(
+                    "480601d27986f05713b0d99b28a73e1d9a8eda16ead16511bad6da1454cdac30" +
+                    "286544c8b6550d42a5939d388cd30c4f5bacb62e9e3a66880e29f07eec6b0100"
+                ),
+                hash
+            );
+        }
+
+        [Fact]
         public void MineNonce()
         {
             var codec = new Codec();

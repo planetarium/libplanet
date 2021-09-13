@@ -215,6 +215,19 @@ namespace Libplanet.Blocks
         }
 
         /// <summary>
+        /// Derives a hash digest of <paramref name="hashAlgorithm"/> from the block metadata and
+        /// <paramref name="nonce"/>.
+        /// </summary>
+        /// <param name="hashAlgorithm">The hash algorithm to use.</param>
+        /// <param name="nonce">The proof-of-work nonce.</param>
+        /// <returns>A pre-evaluation block hash.</returns>
+        public ImmutableArray<byte> DerivePreEvaluationHash(
+            HashAlgorithmType hashAlgorithm,
+            Nonce nonce
+        ) =>
+            hashAlgorithm.Digest(Codec.Encode(ToBencodex(nonce))).ToImmutableArray();
+
+        /// <summary>
         /// Mines the PoW (proof-of-work) nonce satisfying the block
         /// <see cref="BlockMetadata.Difficulty"/>.
         /// </summary>
