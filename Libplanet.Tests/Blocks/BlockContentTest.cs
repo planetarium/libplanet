@@ -351,5 +351,56 @@ namespace Libplanet.Tests.Blocks
                 Assert.IsType<OperationCanceledException>(exception);
             }
         }
+
+        [Fact]
+        public void Mine()
+        {
+            var codec = new Codec();
+
+            HashAlgorithmType sha256 = HashAlgorithmType.Of<SHA256>();
+            PreEvaluationBlock<Arithmetic> preEvalBlock = Genesis.Mine(sha256);
+            Assert.True(ByteUtil.Satisfies(preEvalBlock.PreEvaluationHash, Genesis.Difficulty));
+            AssertBytesEqual(
+                sha256.Digest(codec.Encode(Genesis.ToBencodex(preEvalBlock.Nonce))),
+                preEvalBlock.PreEvaluationHash.ToArray()
+            );
+
+            HashAlgorithmType sha512 = HashAlgorithmType.Of<SHA512>();
+            preEvalBlock = Block1.Mine(sha512);
+            Assert.True(ByteUtil.Satisfies(preEvalBlock.PreEvaluationHash, Block1.Difficulty));
+            AssertBytesEqual(
+                sha512.Digest(codec.Encode(Block1.ToBencodex(preEvalBlock.Nonce))),
+                preEvalBlock.PreEvaluationHash.ToArray()
+            );
+        }
+
+        [Fact]
+        public void CancelMine()
+        {
+            using (CancellationTokenSource source = new CancellationTokenSource())
+            {
+                HashAlgorithmType sha512 = HashAlgorithmType.Of<SHA512>();
+                Block1.Difficulty = long.MaxValue;
+
+                Exception exception = null;
+                Task task = Task.Run(() =>
+                {
+                    try
+                    {
+                        Block1.Mine(sha512, source.Token);
+                    }
+                    catch (OperationCanceledException ce)
+                    {
+                        exception = ce;
+                    }
+                });
+
+                source.Cancel();
+                bool taskEnded = task.Wait(TimeSpan.FromSeconds(10));
+                Assert.True(taskEnded);
+                Assert.NotNull(exception);
+                Assert.IsType<OperationCanceledException>(exception);
+            }
+        }
     }
 }

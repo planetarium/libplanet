@@ -277,6 +277,28 @@ namespace Libplanet.Blocks
         }
 
         /// <summary>
+        /// Mines the PoW (proof-of-work) nonce satisfying the block <see cref="Difficulty"/>,
+        /// and returns a valid <see cref="PreEvaluationBlock{T}"/> instance.
+        /// </summary>
+        /// <param name="hashAlgorithm">The hash algorithm to use for calculating pre-evaluation
+        /// hash.</param>
+        /// <param name="cancellationToken">An optional cancellation token used to propagate signal
+        /// that this operation should be cancelled.</param>
+        /// <returns>A <see cref="PreEvaluationBlock{T}"/> instance with a valid proof-of-work.
+        /// </returns>
+        /// <exception cref="OperationCanceledException">Thrown when the specified
+        /// <paramref name="cancellationToken"/> received a cancellation request.</exception>
+        public PreEvaluationBlock<T> Mine(
+            HashAlgorithmType hashAlgorithm,
+            CancellationToken cancellationToken = default
+        ) =>
+            new PreEvaluationBlock<T>(
+                this,
+                hashAlgorithm,
+                MineNonce(hashAlgorithm, cancellationToken)
+            );
+
+        /// <summary>
         /// Mines the PoW (proof-of-work) nonce satisfying the block <see cref="Difficulty"/>.
         /// </summary>
         /// <param name="hashAlgorithm">The hash algorithm to use for calculating pre-evaluation
