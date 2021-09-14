@@ -348,13 +348,12 @@ If omitted (default) explorer only the local blockchain store.")]
             where T : IAction, new()
         {
             return new BlockPolicy<T>(
-                null,
-                blockIntervalMilliseconds: options.BlockIntervalMilliseconds,
+                blockAction: null,
+                blockInterval: TimeSpan.FromMilliseconds(options.BlockIntervalMilliseconds),
                 minimumDifficulty: options.MinimumDifficulty,
                 difficultyBoundDivisor: options.DifficultyBoundDivisor,
-                maxTransactionsPerBlock: options.MaxTransactionsPerBlock,
-                maxBlockBytes: options.MaxBlockBytes,
-                maxGenesisBytes: options.MaxGenesisBytes);
+                getMaxBlockBytes: i => i > 0 ? options.MaxBlockBytes : options.MaxGenesisBytes,
+                getMaxTransactionsPerBlock: _ => options.MaxTransactionsPerBlock);
         }
 
         private static async Task StartSwarmAsync(
@@ -414,13 +413,6 @@ If omitted (default) explorer only the local blockchain store.")]
             public int GetMaxTransactionsPerBlock(long index) =>
                 _impl.GetMaxTransactionsPerBlock(index);
 
-            public bool DoesTransactionFollowsPolicy(
-                Transaction<NullAction> transaction, BlockChain<NullAction> blockChain
-            )
-            {
-                return _impl.DoesTransactionFollowsPolicy(transaction, blockChain);
-            }
-
             public int GetMaxBlockBytes(long index)
             {
                 return _impl.GetMaxBlockBytes(index);
@@ -431,11 +423,17 @@ If omitted (default) explorer only the local blockchain store.")]
                 return 0;
             }
 
-            public InvalidBlockException ValidateNextBlock(
-                BlockChain<NullAction> blocks, Block<NullAction> nextBlock
+            public TxPolicyViolationException ValidateNextBlockTx(
+                BlockChain<NullAction> blockChain, Transaction<NullAction> transaction)
+            {
+                return _impl.ValidateNextBlockTx(blockChain, transaction);
+            }
+
+            public BlockPolicyViolationException ValidateNextBlock(
+                BlockChain<NullAction> blockChain, Block<NullAction> nextBlock
             )
             {
-                return _impl.ValidateNextBlock(blocks, nextBlock);
+                return _impl.ValidateNextBlock(blockChain, nextBlock);
             }
 
             public HashAlgorithmType GetHashAlgorithm(long index) =>

@@ -42,7 +42,9 @@ namespace Libplanet.Tests.Action
                 .CreateLogger()
                 .ForContext<ActionEvaluatorTest>();
 
-            _policy = new BlockPolicy<DumbAction>(new MinerReward(1), maxBlockBytes: 50 * 1024);
+            _policy = new BlockPolicy<DumbAction>(
+                blockAction: new MinerReward(1),
+                getMaxBlockBytes: _ => 50 * 1024);
             _storeFx = new DefaultStoreFixture(memory: true, blockAction: _policy.BlockAction);
             _txFx = new TxFixture(null);
         }

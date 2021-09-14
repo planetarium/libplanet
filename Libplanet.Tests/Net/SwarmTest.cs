@@ -1046,13 +1046,16 @@ namespace Libplanet.Tests.Net
         {
             var validKey = new PrivateKey();
 
-            bool IsSignerValid(Transaction<DumbAction> tx, BlockChain<DumbAction> chain)
+            TxPolicyViolationException IsSignerValid(
+                BlockChain<DumbAction> chain, Transaction<DumbAction> tx)
             {
                 var validAddress = validKey.PublicKey.ToAddress();
-                return tx.Signer.Equals(validAddress);
+                return tx.Signer.Equals(validAddress)
+                    ? null
+                    : new TxPolicyViolationException(tx.Id, "invalid signer");
             }
 
-            var policy = new BlockPolicy<DumbAction>(doesTransactionFollowPolicy: IsSignerValid);
+            var policy = new BlockPolicy<DumbAction>(validateNextBlockTx: IsSignerValid);
             var fx1 = new DefaultStoreFixture();
             var fx2 = new DefaultStoreFixture();
 
@@ -1102,13 +1105,16 @@ namespace Libplanet.Tests.Net
         {
             var validKey = new PrivateKey();
 
-            bool IsSignerValid(Transaction<DumbAction> tx, BlockChain<DumbAction> chain)
+            TxPolicyViolationException IsSignerValid(
+                BlockChain<DumbAction> chain, Transaction<DumbAction> tx)
             {
                 var validAddress = validKey.PublicKey.ToAddress();
-                return tx.Signer.Equals(validAddress);
+                return tx.Signer.Equals(validAddress)
+                    ? null
+                    : new TxPolicyViolationException(tx.Id, "invalid signer");
             }
 
-            var policy = new BlockPolicy<DumbAction>(doesTransactionFollowPolicy: IsSignerValid);
+            var policy = new BlockPolicy<DumbAction>(validateNextBlockTx: IsSignerValid);
             var fx1 = new DefaultStoreFixture();
             var fx2 = new DefaultStoreFixture();
 

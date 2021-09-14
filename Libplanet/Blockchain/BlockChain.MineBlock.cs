@@ -293,7 +293,7 @@ namespace Libplanet.Blockchain
                     break;
                 }
 
-                if (!Policy.DoesTransactionFollowsPolicy(tx, this))
+                if (Policy.ValidateNextBlockTx(this, tx) is { } tpve)
                 {
                     _logger.Debug(
                         "Unstaging tx {Iter}/{Total} {Transaction} as it does not follow policy.",

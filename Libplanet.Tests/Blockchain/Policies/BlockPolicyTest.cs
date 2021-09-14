@@ -32,8 +32,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             _output = output;
             _policy = new BlockPolicy<DumbAction>(
                 blockAction: null,
-                blockIntervalMilliseconds: 3 * 60 * 60 * 1000
-            );
+                blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000));
             _stagePolicy = new VolatileStagePolicy<DumbAction>();
             _chain = new BlockChain<DumbAction>(
                 _policy,
@@ -56,15 +55,11 @@ namespace Libplanet.Tests.Blockchain.Policies
                 blockAction: null,
                 blockInterval: tenSec,
                 minimumDifficulty: 1024L,
-                difficultyBoundDivisor: 128,
-                maxTransactionsPerBlock: 100,
-                minTransactionsPerBlock: 0,
-                maxBlockBytes: 100 * 1024,
-                maxGenesisBytes: 1024 * 1024
-            );
+                difficultyBoundDivisor: 128);
             Assert.Equal(tenSec, a.BlockInterval);
 
-            var b = new BlockPolicy<DumbAction>(null, 65000);
+            var b = new BlockPolicy<DumbAction>(
+                blockInterval: TimeSpan.FromMilliseconds(65000));
             Assert.Equal(
                 new TimeSpan(0, 1, 5),
                 b.BlockInterval);
@@ -79,65 +74,54 @@ namespace Libplanet.Tests.Blockchain.Policies
                     blockAction: null,
                     blockInterval: tenSec.Negate(),
                     minimumDifficulty: 1024,
-                    difficultyBoundDivisor: 128,
-                    maxTransactionsPerBlock: 100,
-                    minTransactionsPerBlock: 0,
-                    maxBlockBytes: 100 * 1024,
-                    maxGenesisBytes: 1024 * 1024
-                )
+                    difficultyBoundDivisor: 128)
             );
             Assert.Throws<ArgumentOutOfRangeException>(
-                () => new BlockPolicy<DumbAction>(null, -5));
+                () => new BlockPolicy<DumbAction>(
+                    blockInterval: TimeSpan.FromMilliseconds(-5)));
 
             Assert.Throws<ArgumentOutOfRangeException>(() =>
                 new BlockPolicy<DumbAction>(
                     blockAction: null,
                     blockInterval: tenSec,
                     minimumDifficulty: 0,
-                    difficultyBoundDivisor: 128,
-                    maxTransactionsPerBlock: 100,
-                    minTransactionsPerBlock: 0,
-                    maxBlockBytes: 100 * 1024,
-                    maxGenesisBytes: 1024 * 1024
-                )
+                    difficultyBoundDivisor: 128)
             );
             Assert.Throws<ArgumentOutOfRangeException>(() =>
                 new BlockPolicy<DumbAction>(
                     blockAction: null,
                     blockInterval: tenSec,
                     minimumDifficulty: 1024,
-                    difficultyBoundDivisor: 1024,
-                    maxTransactionsPerBlock: 100,
-                    minTransactionsPerBlock: 0,
-                    maxBlockBytes: 100 * 1024,
-                    maxGenesisBytes: 1024 * 1024
-                )
+                    difficultyBoundDivisor: 1024)
             );
         }
 
         [Fact]
-        public void DoesTransactionFollowPolicy()
+        public void ValidateNextBlockTx()
         {
             var validKey = new PrivateKey();
 
-            bool IsSignerValid(Transaction<DumbAction> tx, BlockChain<DumbAction> chain)
+            TxPolicyViolationException IsSignerValid(
+                BlockChain<DumbAction> chain, Transaction<DumbAction> tx)
             {
                 var validAddress = validKey.PublicKey.ToAddress();
-                return tx.Signer.Equals(validAddress);
+                return tx.Signer.Equals(validAddress)
+                    ? null
+                    : new TxPolicyViolationException(tx.Id, "invalid signer");
             }
 
-            var policy = new BlockPolicy<DumbAction>(doesTransactionFollowPolicy: IsSignerValid);
+            var policy = new BlockPolicy<DumbAction>(validateNextBlockTx: IsSignerValid);
 
             // Valid Transaction
             var validTx = _chain.MakeTransaction(validKey, new DumbAction[] { });
-            var expected = policy.DoesTransactionFollowsPolicy(validTx, _chain);
-            Assert.True(expected);
+            var expected = policy.ValidateNextBlockTx(_chain, validTx);
+            Assert.Null(expected);
 
             // Invalid Transaction
             var invalidKey = new PrivateKey();
             var invalidTx = _chain.MakeTransaction(invalidKey, new DumbAction[] { });
-            expected = policy.DoesTransactionFollowsPolicy(invalidTx, _chain);
-            Assert.False(expected);
+            expected = policy.ValidateNextBlockTx(_chain, invalidTx);
+            Assert.NotNull(expected);
         }
 
         [Fact]
