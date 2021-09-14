@@ -86,6 +86,11 @@ To be released.
     `BlockPolicy<T>()` constructor with `Func<long, int>? getMaxBlockBytes`.
     [[#1485]]
  -  Removed `TxViolatingBlockPolicyException` class.  [[#1485]]
+ -  Unnecessary `stateCompleterSet` parameter removed from
+    `ActionEvaluator<T>.Evaluate()`.  [[#1487], [#1488]]
+ -  Unnecessary `stateCompleter` and `fungibleAssetStateCompleter` parameters
+    removed from `StateGetter<T>` and `BalanceGetter<T>` delegates respectively.
+    [[#1487], [#1488]]
 
 ### Backward-incompatible network protocol changes
 
@@ -106,13 +111,13 @@ To be released.
     [[#1464]]
  -  Added `PublicKey.ToImmutableArray()` method.  [[#1464]]
  -  Added `Nonce(ImmutableArray<byte>)` overloaded constructor.  [[#1464]]
+ -  Added `BlockHeader(int, long, DateTimeOffset, Nonce, Address, long,
+    BigInteger, BlockHash?, HashDigest<SHA256>?, BlockHash,
+    ImmutableArray<byte>, HashDigest<SHA256>?)` constructor.  [[#1470]]
  -  Added `HashAlgorithmType.Digest(IEnumerable<byte[]>)` overloaded method.
     [[#1480]]
  -  Added `HashAlgorithmType.Digest(IEnumerable<ImmutableArray<byte>>)`
     overloaded method.  [[#1480]]
- -  Added `BlockHeader(int, long, DateTimeOffset, Nonce, Address, long,
-    BigInteger, BlockHash?, HashDigest<SHA256>?, BlockHash,
-    ImmutableArray<byte>, HashDigest<SHA256>?)` constructor.  [[#1470]]
  -  Added `BlockPolicyViolationException` and `TxPolicyViolationException`
     classes.  [[#1485]]
 
@@ -170,6 +175,8 @@ To be released.
 [#1479]: https://github.com/planetarium/libplanet/pull/1479
 [#1480]: https://github.com/planetarium/libplanet/pull/1480
 [#1485]: https://github.com/planetarium/libplanet/pull/1485
+[#1487]: https://github.com/planetarium/libplanet/issues/1487
+[#1488]: https://github.com/planetarium/libplanet/pull/1488
 
 
 Version 0.16.0
