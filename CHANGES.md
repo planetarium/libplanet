@@ -81,7 +81,8 @@ To be released.
      -  `BlockPolicy<T>`, the default implementation for `IBlockPolicy<T>`,
         has been updated accordingly.
  -  Removed `BlockPolicy<T>()` constructor with `int blockIntervalMilliseconds`
-    parameter.  Use the one with `TimeSpan? blockInterval` instead.
+    parameter.  Use the one with `TimeSpan? blockInterval` instead.  [[#1485]]
+ -  Removed `TxViolatingBlockPolicyException` class.  [[#1485]]
 
 ### Backward-incompatible network protocol changes
 
