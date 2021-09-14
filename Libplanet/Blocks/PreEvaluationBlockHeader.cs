@@ -14,7 +14,7 @@ namespace Libplanet.Blocks
     /// </summary>
     /// <remarks>It guarantees that every instance of this type has a valid proof-of-work
     /// <see cref="Nonce"/> which satisfies its <see cref="Difficulty"/>.</remarks>
-    public class PreEvaluationBlockHeader
+    public class PreEvaluationBlockHeader : IPreEvaluationBlockHeader
     {
         protected static readonly Codec Codec = new Codec();
 
@@ -151,53 +151,31 @@ namespace Libplanet.Blocks
             PreEvaluationHash = proof.PreEvaluationHash;
         }
 
-        /// <summary>
-        /// The protocol version number.
-        /// </summary>
+        /// <inheritdoc cref="IBlockMetadata.ProtocolVersion"/>
         public int ProtocolVersion => Metadata.ProtocolVersion;
 
-        /// <summary>
-        /// The height of the block.
-        /// </summary>
-        /// <remarks>Zero means it is a genesis block.  Disallowed to be negative.</remarks>
+        /// <inheritdoc cref="IBlockMetadata.Index"/>
         public long Index => Metadata.Index;
 
-        /// <summary>
-        /// The time the block is created.
-        /// </summary>
-        /// <remarks>This is always UTC.</remarks>
+        /// <inheritdoc cref="IBlockMetadata.Timestamp"/>
         public DateTimeOffset Timestamp => Metadata.Timestamp;
 
-        /// <summary>
-        /// The proof-of-work nonce which satisfies the required <see cref="Difficulty"/>.
-        /// </summary>
+        /// <inheritdoc cref="IPreEvaluationBlockHeader.Nonce"/>
         public Nonce Nonce { get; }
 
-        /// <summary>
-        /// The address of the miner.
-        /// </summary>
+        /// <inheritdoc cref="IBlockMetadata.Miner"/>
         public Address Miner => Metadata.Miner;
 
-        /// <summary>
-        /// The mining difficulty that the block's <see cref="Nonce"/> has to satisfy.
-        /// </summary>
+        /// <inheritdoc cref="IBlockMetadata.Difficulty"/>
         public long Difficulty => Metadata.Difficulty;
 
-        /// <summary>
-        /// The total mining difficulty since the genesis including the block's difficulty.
-        /// </summary>
+        /// <inheritdoc cref="IBlockMetadata.TotalDifficulty"/>
         public BigInteger TotalDifficulty => Metadata.TotalDifficulty;
 
-        /// <summary>
-        /// The previous block's hash.  If it's a genesis block (i.e., its <see cref="Index"/> is 0)
-        /// this should be <c>null</c>.
-        /// </summary>
+        /// <inheritdoc cref="IBlockMetadata.PreviousHash"/>
         public BlockHash? PreviousHash => Metadata.PreviousHash;
 
-        /// <summary>
-        /// The hash of all transactions in the block.  This is <c>null</c> if the block has no
-        /// transactions.
-        /// </summary>
+        /// <inheritdoc cref="IBlockMetadata.TxHash"/>
         public HashDigest<SHA256>? TxHash => Metadata.TxHash;
 
         /// <summary>
@@ -205,11 +183,7 @@ namespace Libplanet.Blocks
         /// </summary>
         public HashAlgorithmType HashAlgorithm { get; }
 
-        /// <summary>
-        /// The hash derived from the block <em>except of</em> its state root hash (i.e., without
-        /// action evaluation).  Used for validating <see cref="Nonce"/>.
-        /// </summary>
-        /// <seealso cref="Nonce"/>
+        /// <inheritdoc cref="IPreEvaluationBlockHeader.PreEvaluationHash"/>
         public ImmutableArray<byte> PreEvaluationHash { get; }
 
         /// <summary>

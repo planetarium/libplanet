@@ -26,6 +26,28 @@ To be released.
  -  Added `PreEvaluationBlockHeader` class.  [[#1146], [#1164], [#1492]]
  -  Added `PreEvaluationBlock<T>` class.  [[#1146], [#1164], [#1492]]
  -  Added `BlockDigest.FromBlock<T>()` static method. [[#1492]]
+ -  Added `IBlockMetadata` interface.  [[#1164], [#1492]]
+     -  `Block<T>` became to implement `IBlockMetadata` interface.
+     -  `BlockHeader` became to implement `IBlockMetadata` interface.
+     -  `BlockMetadata` became to implement `IBlockMetadata` interface.
+     -  `BlockContent<T>` became to implement `IBlockMetadata` interface.
+     -  `PreEvaluationBlockHeader` became to implement `IBlockMetadata`
+        interface.
+     -  `PreEvaluationBlock<T>` implements `IBlockMetadata` interface.
+ -  Added `IBlockContent<T>` interface.  [[#1164], [#1492]]
+     -  `Block<T>` became to implement `IBlockContent<T>` interface.
+     -  `BlockContent<T>` became to implement `IBlockContent<T>` interface.
+     -  `PreEvaluationBlock<T>` implements `IBlockContent<T>` interface.
+ -  Added `IPreEvaluationBlockHeader` interface.  [[#1164], [#1492]]
+     -  `Block<T>` became to implement `IPreEvaluationBlockHeader` interface.
+     -  `BlockHeader` became to implement `IPreEvaluationBlockHeader` interface.
+     -  `PreEvaluationBlockHeader` became to implement
+        `IPreEvaluationBlockHeader` interface.
+     -  `PreEvaluationBlock<T>` implements `IPreEvaluationBlockHeader`
+        interface.
+ -  Added `IPreEvaluationBlock<T>` interface.  [[#1164], [#1492]]
+     -  `Block<T>` became to implement `IPreEvaluationBlock<T>` interface.
+     -  `PreEvaluationBlock<T>` implements `IPreEvaluationBlock<T>` interface.
 
 ### Behavioral changes
 

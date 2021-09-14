@@ -17,7 +17,7 @@ using Libplanet.Tx;
 namespace Libplanet.Blocks
 {
     [Equals]
-    public class Block<T> : IBlockExcerpt
+    public class Block<T> : IPreEvaluationBlock<T>, IBlockExcerpt
         where T : IAction, new()
     {
         /// <summary>
@@ -252,9 +252,7 @@ namespace Libplanet.Blocks
             _hash = header.Hash;
         }
 
-        /// <summary>
-        /// The protocol version number.
-        /// </summary>
+        /// <inheritdoc cref="IBlockMetadata.ProtocolVersion"/>
         [IgnoreDuringEquals]
         public int ProtocolVersion { get; }
 
@@ -269,12 +267,7 @@ namespace Libplanet.Blocks
         public BlockHash Hash => _hash
             ?? throw new InvalidOperationException("Hash has not been set.");
 
-        /// <summary>
-        /// The hash derived from the block <em>except of</em>
-        /// <see cref="StateRootHash"/> (i.e., without action evaluation).
-        /// Used for <see cref="BlockHeader.Validate"/> method checking <see cref="Nonce"/>.
-        /// </summary>
-        /// <seealso cref="Nonce"/>
+        /// <inheritdoc cref="IPreEvaluationBlockHeader.PreEvaluationHash"/>
         /// <seealso cref="BlockHeader.Validate"/>
         public ImmutableArray<byte> PreEvaluationHash => _preEvaluationHash
             ?? throw new InvalidOperationException("PreEvaluationHash is has not been set.");
@@ -287,59 +280,39 @@ namespace Libplanet.Blocks
         /// <seealso cref="ITrie.Hash"/>
         public HashDigest<SHA256>? StateRootHash { get; }
 
-        /// <summary>
-        /// The height of the block.
-        /// </summary>
+        /// <inheritdoc cref="IBlockMetadata.Index"/>
         [IgnoreDuringEquals]
         public long Index { get; }
 
-        /// <summary>
-        /// The mining difficulty that the block's <see cref="Nonce"/> has to satisfy.
-        /// </summary>
+        /// <inheritdoc cref="IBlockMetadata.Difficulty"/>
         [IgnoreDuringEquals]
         public long Difficulty { get; }
 
-        /// <summary>
-        /// The total mining difficulty since the genesis including the block's difficulty.
-        /// </summary>
+        /// <inheritdoc cref="IBlockMetadata.TotalDifficulty"/>
         [IgnoreDuringEquals]
         public BigInteger TotalDifficulty { get; }
 
-        /// <summary>
-        /// The block nonce which satisfies the <see cref="Difficulty"/>.
-        /// </summary>
+        /// <inheritdoc cref="IPreEvaluationBlockHeader.Nonce"/>
         [IgnoreDuringEquals]
         public Nonce Nonce { get; }
 
-        /// <summary>
-        /// The address of the miner.
-        /// </summary>
+        /// <inheritdoc cref="IBlockMetadata.Miner"/>
         [IgnoreDuringEquals]
         public Address Miner { get; }
 
-        /// <summary>
-        /// The <see cref="Hash"/> of its previous block.
-        /// This field is mandatory except for a genesis block.
-        /// </summary>
+        /// <inheritdoc cref="IBlockMetadata.PreviousHash"/>
         [IgnoreDuringEquals]
         public BlockHash? PreviousHash { get; }
 
-        /// <summary>
-        /// The time the block is created.
-        /// </summary>
+        /// <inheritdoc cref="IBlockMetadata.Timestamp"/>
         [IgnoreDuringEquals]
         public DateTimeOffset Timestamp { get; }
 
-        /// <summary>
-        /// The hash of all transactions in the block.  This is <c>null</c> if the block has no
-        /// transactions.
-        /// </summary>
+        /// <inheritdoc cref="IBlockMetadata.TxHash"/>
         [IgnoreDuringEquals]
         public HashDigest<SHA256>? TxHash { get; }
 
-        /// <summary>
-        /// Transactions belonging to the block.
-        /// </summary>
+        /// <inheritdoc cref="IBlockContent{T}.Transactions"/>
         [IgnoreDuringEquals]
         public IReadOnlyList<Transaction<T>> Transactions { get; }
 

@@ -22,7 +22,7 @@ namespace Libplanet.Blocks
     /// partly changed fields, use <see cref="Clone()"/> method and property setters on a copy
     /// instead.</remarks>
     /// <seealso cref="BlockContent{T}"/>
-    public class BlockMetadata : ICloneable
+    public class BlockMetadata : IBlockMetadata, ICloneable
     {
         /// <summary>
         /// The latest protocol version.
@@ -38,9 +38,7 @@ namespace Libplanet.Blocks
         private long _difficulty;
         private BigInteger _totalDifficulty;
 
-        /// <summary>
-        /// The protocol version number.
-        /// </summary>
+        /// <inheritdoc cref="IBlockMetadata.ProtocolVersion"/>
         public int ProtocolVersion
         {
             get => _protocolVersion;
@@ -65,10 +63,7 @@ namespace Libplanet.Blocks
             }
         }
 
-        /// <summary>
-        /// The height of the block.
-        /// </summary>
-        /// <remarks>Zero means it is a genesis block.  Disallowed to be negative.</remarks>
+        /// <inheritdoc cref="IBlockMetadata.Index"/>
         /// <exception cref="InvalidBlockIndexException">Thrown when the value to set is negative.
         /// </exception>
         public long Index
@@ -80,24 +75,17 @@ namespace Libplanet.Blocks
                 : throw new InvalidBlockIndexException($"A negative index is disallowed: {value}.");
         }
 
-        /// <summary>
-        /// The time the block is created.
-        /// </summary>
-        /// <remarks>This is always UTC.</remarks>
+        /// <inheritdoc cref="IBlockMetadata.Timestamp"/>
         public DateTimeOffset Timestamp
         {
             get => _timestamp;
             set => _timestamp = value.ToUniversalTime();
         }
 
-        /// <summary>
-        /// The address of the miner.
-        /// </summary>
+        /// <inheritdoc cref="IBlockMetadata.Miner"/>
         public Address Miner { get; set; }
 
-        /// <summary>
-        /// The mining difficulty that the block's <see cref="Nonce"/> has to satisfy.
-        /// </summary>
+        /// <inheritdoc cref="IBlockMetadata.Difficulty"/>
         /// <exception cref="InvalidBlockDifficultyException">Thrown when the value to set is
         ///  is negative.</exception>
         /// <remarks>This cannot not be negative.
@@ -124,14 +112,9 @@ namespace Libplanet.Blocks
             }
         }
 
-        /// <summary>
-        /// The total mining difficulty since the genesis including the block's
-        /// <see cref="Difficulty"/>.
-        /// </summary>
+        /// <inheritdoc cref="IBlockMetadata.TotalDifficulty"/>
         /// <exception cref="InvalidBlockTotalDifficultyException">Thrown when the value to set
         /// is less than <see cref="Difficulty"/>.</exception>
-        /// <remarks>This must be greater than or equal to <see cref="Difficulty"/> at least, and
-        /// must not be negative.</remarks>
         public BigInteger TotalDifficulty
         {
             get => _totalDifficulty;
@@ -157,16 +140,10 @@ namespace Libplanet.Blocks
             }
         }
 
-        /// <summary>
-        /// The previous block's hash.  If it's a genesis block (i.e., its <see cref="Index"/> is 0)
-        /// this should be <c>null</c>.
-        /// </summary>
+        /// <inheritdoc cref="IBlockMetadata.PreviousHash"/>
         public BlockHash? PreviousHash { get; set; }
 
-        /// <summary>
-        /// The hash of all transactions in the block.  This is <c>null</c> if the block has no
-        /// transactions.
-        /// </summary>
+        /// <inheritdoc cref="IBlockMetadata.TxHash"/>
         public virtual HashDigest<SHA256>? TxHash { get; set; }
 
         /// <summary>

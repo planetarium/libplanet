@@ -17,7 +17,7 @@ namespace Libplanet.Blocks
     /// <remarks>It guarantees that every instance of this type has a valid proof-of-work
     /// <see cref="Nonce"/> which satisfies its <see cref="PreEvaluationBlockHeader.Difficulty"/>.
     /// </remarks>
-    public sealed class PreEvaluationBlock<T> : PreEvaluationBlockHeader
+    public sealed class PreEvaluationBlock<T> : PreEvaluationBlockHeader, IPreEvaluationBlock<T>
         where T : IAction, new()
     {
         /// <summary>
@@ -104,10 +104,7 @@ namespace Libplanet.Blocks
         {
         }
 
-        /// <summary>
-        /// Transactions belonging to the block.
-        /// </summary>
-        /// <remarks>This is always ordered by <see cref="Transaction{T}.Id"/>.</remarks>
+        /// <inheritdoc cref="IBlockContent{T}.Transactions"/>
         public IReadOnlyList<Transaction<T>> Transactions => Content.Transactions;
 
         /// <summary>

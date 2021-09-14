@@ -14,7 +14,7 @@ namespace Libplanet.Blocks
     /// <summary>
     /// Block header containing information about <see cref="Block{T}"/>s except transactions.
     /// </summary>
-    public readonly struct BlockHeader : IBlockExcerpt
+    public readonly struct BlockHeader : IPreEvaluationBlockHeader, IBlockExcerpt
     {
         internal static readonly byte[] ProtocolVersionKey = { 0x00 };
 
@@ -259,51 +259,31 @@ namespace Libplanet.Blocks
             Hash = BlockHash.DeriveFrom(SerializeForHash());
         }
 
-        /// <summary>
-        /// The protocol version number.
-        /// </summary>
+        /// <inheritdoc cref="IBlockMetadata.ProtocolVersion"/>
         public int ProtocolVersion { get; }
 
-        /// <summary>
-        /// The height of the block.
-        /// </summary>
+        /// <inheritdoc cref="IBlockMetadata.Index"/>
         public long Index { get; }
 
-        /// <summary>
-        /// The time the block is created.
-        /// </summary>
+        /// <inheritdoc cref="IBlockMetadata.Timestamp"/>
         public DateTimeOffset Timestamp { get; }
 
-        /// <summary>
-        /// The block nonce which satisfies the <see cref="Difficulty"/>.
-        /// </summary>
+        /// <inheritdoc cref="IPreEvaluationBlockHeader.Nonce"/>
         public Nonce Nonce { get; }
 
-        /// <summary>
-        /// The address of the miner.
-        /// </summary>
+        /// <inheritdoc cref="IBlockMetadata.Miner"/>
         public Address Miner { get; }
 
-        /// <summary>
-        /// The mining difficulty that the block's <see cref="Nonce"/> has to satisfy.
-        /// </summary>
+        /// <inheritdoc cref="IBlockMetadata.Difficulty"/>
         public long Difficulty { get; }
 
-        /// <summary>
-        /// The total mining difficulty since the genesis including the block's difficulty.
-        /// </summary>
+        /// <inheritdoc cref="IBlockMetadata.TotalDifficulty"/>
         public BigInteger TotalDifficulty { get; }
 
-        /// <summary>
-        /// The previous block's <see cref="Hash"/>.  If it's a genesis block (i.e., its
-        /// <see cref="Block{T}.Index"/> is 0) this should be <c>null</c>.
-        /// </summary>
+        /// <inheritdoc cref="IBlockMetadata.PreviousHash"/>
         public BlockHash? PreviousHash { get; }
 
-        /// <summary>
-        /// The hash of all transactions in the block.  This is <c>null</c> if the block has no
-        /// transactions.
-        /// </summary>
+        /// <inheritdoc cref="IBlockMetadata.TxHash"/>
         public HashDigest<SHA256>? TxHash { get; }
 
         /// <summary>
@@ -316,13 +296,7 @@ namespace Libplanet.Blocks
         /// <seealso cref="StateRootHash"/>
         public BlockHash Hash { get; }
 
-        /// <summary>
-        /// The hash derived from the block <em>except of</em>
-        /// <see cref="StateRootHash"/> (i.e., without action evaluation).
-        /// Used for <see cref="Validate"/> method checking <see cref="Nonce"/>.
-        /// </summary>
-        /// <seealso cref="Nonce"/>
-        /// <seealso cref="Validate"/>
+        /// <inheritdoc cref="IPreEvaluationBlockHeader.PreEvaluationHash"/>
         public ImmutableArray<byte> PreEvaluationHash { get; }
 
         /// <summary>
