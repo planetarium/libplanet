@@ -132,6 +132,22 @@ method. [<a href="https://github.com/planetarium/libplanet/pull/1477">#1477</a>]
 </li>
 <li><code>IStore</code>, <code>IStateStore</code>, and <code>IKeyValueStore</code> interfaces now inherit
 <code>IDisposable</code>.  [<a href="https://github.com/planetarium/libplanet/issues/1448">#1448</a>, <a href="https://github.com/planetarium/libplanet/pull/1474">#1474</a>]</li>
+<li>Multiple changes for <code>IBlockPolicy&lt;T&gt;</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/1485">#1485</a>]
+<ul>
+<li><code>bool DoesTransactionFollowsPolicy(BlockChain&lt;T&gt;, Transaction&lt;T&gt;)</code>
+changed to <code>TxPolicyViolationException? ValidateNextBlockTx( BlockChain&lt;T&gt;, Transaction&lt;T&gt;)</code>.</li>
+<li><code>InvalidBlockException ValidateNextBlock(BlockChain&lt;T&gt;, Block&lt;T&gt;)</code>
+changed to <code>BlockPolicyViolationException? ValidateNextBlock( BlockChain&lt;T&gt;, Block&lt;T&gt;)</code>.</li>
+<li><code>BlockPolicy&lt;T&gt;</code>, the default implementation for <code>IBlockPolicy&lt;T&gt;</code>,
+has been updated accordingly.</li>
+</ul>
+</li>
+<li>Removed <code>BlockPolicy&lt;T&gt;()</code> constructor with <code>int blockIntervalMilliseconds</code>
+parameter.  Use the one with <code>TimeSpan? blockInterval</code> instead.  [<a href="https://github.com/planetarium/libplanet/pull/1485">#1485</a>]</li>
+<li>Replaced <code>int maxBlockBytes</code> and <code>int maxGenesisBytes</code> parameters from
+<code>BlockPolicy&lt;T&gt;()</code> constructor with <code>Func&lt;long, int&gt;? getMaxBlockBytes</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/1485">#1485</a>]</li>
+<li>Removed <code>TxViolatingBlockPolicyException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/1485">#1485</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <ul>
@@ -156,6 +172,8 @@ method. [<a href="https://github.com/planetarium/libplanet/pull/1477">#1477</a>]
 <li>Added <code>HashAlgorithmType.Digest(IEnumerable&lt;ImmutableArray&lt;byte&gt;&gt;)</code>
 overloaded method.  [<a href="https://github.com/planetarium/libplanet/pull/1480">#1480</a>]</li>
 <li>Added <code>BlockHeader(int, long, DateTimeOffset, Nonce, Address, long, BigInteger, BlockHash?, HashDigest&lt;SHA256&gt;?, BlockHash, ImmutableArray&lt;byte&gt;, HashDigest&lt;SHA256&gt;?)</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/1470">#1470</a>]</li>
+<li>Added <code>BlockPolicyViolationException</code> and <code>TxPolicyViolationException</code>
+classes.  [<a href="https://github.com/planetarium/libplanet/pull/1485">#1485</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>

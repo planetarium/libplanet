@@ -2504,24 +2504,15 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T)
   nameWithType: BlockPolicy<T>
   nameWithType.vb: BlockPolicy(Of T)
-- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.Int32,System.Int64,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Func{Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0},System.Boolean},System.Collections.Generic.IComparer{Libplanet.Blocks.IBlockExcerpt},Libplanet.Blocks.HashAlgorithmGetter,System.Func{System.Int64,System.Int32})
-  name: BlockPolicy(IAction, Int32, Int64, Int32, Int32, Int32, Int32, Int32, Func<Transaction<T>, BlockChain<T>, Boolean>, IComparer<IBlockExcerpt>, HashAlgorithmGetter, Func<Int64, Int32>)
-  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_System_Int32_System_Int64_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_System_Func_Libplanet_Tx_Transaction__0__Libplanet_Blockchain_BlockChain__0__System_Boolean__System_Collections_Generic_IComparer_Libplanet_Blocks_IBlockExcerpt__Libplanet_Blocks_HashAlgorithmGetter_System_Func_System_Int64_System_Int32__
-  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.Int32,System.Int64,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Func{Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0},System.Boolean},System.Collections.Generic.IComparer{Libplanet.Blocks.IBlockExcerpt},Libplanet.Blocks.HashAlgorithmGetter,System.Func{System.Int64,System.Int32})
-  name.vb: BlockPolicy(IAction, Int32, Int64, Int32, Int32, Int32, Int32, Int32, Func(Of Transaction(Of T), BlockChain(Of T), Boolean), IComparer(Of IBlockExcerpt), HashAlgorithmGetter, Func(Of Int64, Int32))
-  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.BlockPolicy(Libplanet.Action.IAction, System.Int32, System.Int64, System.Int32, System.Int32, System.Int32, System.Int32, System.Int32, System.Func<Libplanet.Tx.Transaction<T>, Libplanet.Blockchain.BlockChain<T>, System.Boolean>, System.Collections.Generic.IComparer<Libplanet.Blocks.IBlockExcerpt>, Libplanet.Blocks.HashAlgorithmGetter, System.Func<System.Int64, System.Int32>)
-  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).BlockPolicy(Libplanet.Action.IAction, System.Int32, System.Int64, System.Int32, System.Int32, System.Int32, System.Int32, System.Int32, System.Func(Of Libplanet.Tx.Transaction(Of T), Libplanet.Blockchain.BlockChain(Of T), System.Boolean), System.Collections.Generic.IComparer(Of Libplanet.Blocks.IBlockExcerpt), Libplanet.Blocks.HashAlgorithmGetter, System.Func(Of System.Int64, System.Int32))
-  nameWithType: BlockPolicy<T>.BlockPolicy(IAction, Int32, Int64, Int32, Int32, Int32, Int32, Int32, Func<Transaction<T>, BlockChain<T>, Boolean>, IComparer<IBlockExcerpt>, HashAlgorithmGetter, Func<Int64, Int32>)
-  nameWithType.vb: BlockPolicy(Of T).BlockPolicy(IAction, Int32, Int64, Int32, Int32, Int32, Int32, Int32, Func(Of Transaction(Of T), BlockChain(Of T), Boolean), IComparer(Of IBlockExcerpt), HashAlgorithmGetter, Func(Of Int64, Int32))
-- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.TimeSpan,System.Int64,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Func{Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0},System.Boolean},System.Collections.Generic.IComparer{Libplanet.Blocks.IBlockExcerpt},Libplanet.Blocks.HashAlgorithmGetter,System.Func{System.Int64,System.Int32})
-  name: BlockPolicy(IAction, TimeSpan, Int64, Int32, Int32, Int32, Int32, Int32, Func<Transaction<T>, BlockChain<T>, Boolean>, IComparer<IBlockExcerpt>, HashAlgorithmGetter, Func<Int64, Int32>)
-  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_System_TimeSpan_System_Int64_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_System_Func_Libplanet_Tx_Transaction__0__Libplanet_Blockchain_BlockChain__0__System_Boolean__System_Collections_Generic_IComparer_Libplanet_Blocks_IBlockExcerpt__Libplanet_Blocks_HashAlgorithmGetter_System_Func_System_Int64_System_Int32__
-  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.TimeSpan,System.Int64,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Func{Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0},System.Boolean},System.Collections.Generic.IComparer{Libplanet.Blocks.IBlockExcerpt},Libplanet.Blocks.HashAlgorithmGetter,System.Func{System.Int64,System.Int32})
-  name.vb: BlockPolicy(IAction, TimeSpan, Int64, Int32, Int32, Int32, Int32, Int32, Func(Of Transaction(Of T), BlockChain(Of T), Boolean), IComparer(Of IBlockExcerpt), HashAlgorithmGetter, Func(Of Int64, Int32))
-  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.BlockPolicy(Libplanet.Action.IAction, System.TimeSpan, System.Int64, System.Int32, System.Int32, System.Int32, System.Int32, System.Int32, System.Func<Libplanet.Tx.Transaction<T>, Libplanet.Blockchain.BlockChain<T>, System.Boolean>, System.Collections.Generic.IComparer<Libplanet.Blocks.IBlockExcerpt>, Libplanet.Blocks.HashAlgorithmGetter, System.Func<System.Int64, System.Int32>)
-  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).BlockPolicy(Libplanet.Action.IAction, System.TimeSpan, System.Int64, System.Int32, System.Int32, System.Int32, System.Int32, System.Int32, System.Func(Of Libplanet.Tx.Transaction(Of T), Libplanet.Blockchain.BlockChain(Of T), System.Boolean), System.Collections.Generic.IComparer(Of Libplanet.Blocks.IBlockExcerpt), Libplanet.Blocks.HashAlgorithmGetter, System.Func(Of System.Int64, System.Int32))
-  nameWithType: BlockPolicy<T>.BlockPolicy(IAction, TimeSpan, Int64, Int32, Int32, Int32, Int32, Int32, Func<Transaction<T>, BlockChain<T>, Boolean>, IComparer<IBlockExcerpt>, HashAlgorithmGetter, Func<Int64, Int32>)
-  nameWithType.vb: BlockPolicy(Of T).BlockPolicy(IAction, TimeSpan, Int64, Int32, Int32, Int32, Int32, Int32, Func(Of Transaction(Of T), BlockChain(Of T), Boolean), IComparer(Of IBlockExcerpt), HashAlgorithmGetter, Func(Of Int64, Int32))
+- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.Nullable{System.TimeSpan},System.Int64,System.Int32,System.Func{Libplanet.Blockchain.BlockChain{`0},Libplanet.Tx.Transaction{`0},Libplanet.Tx.TxPolicyViolationException},System.Func{Libplanet.Blockchain.BlockChain{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.BlockPolicyViolationException},System.Collections.Generic.IComparer{Libplanet.Blocks.IBlockExcerpt},Libplanet.Blocks.HashAlgorithmGetter,System.Func{System.Int64,System.Int32},System.Func{System.Int64,System.Int32},System.Func{System.Int64,System.Int32},System.Func{System.Int64,System.Int32})
+  name: BlockPolicy(IAction, Nullable<TimeSpan>, Int64, Int32, Func<BlockChain<T>, Transaction<T>, TxPolicyViolationException>, Func<BlockChain<T>, Block<T>, BlockPolicyViolationException>, IComparer<IBlockExcerpt>, HashAlgorithmGetter, Func<Int64, Int32>, Func<Int64, Int32>, Func<Int64, Int32>, Func<Int64, Int32>)
+  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_System_Nullable_System_TimeSpan__System_Int64_System_Int32_System_Func_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_Transaction__0__Libplanet_Tx_TxPolicyViolationException__System_Func_Libplanet_Blockchain_BlockChain__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_BlockPolicyViolationException__System_Collections_Generic_IComparer_Libplanet_Blocks_IBlockExcerpt__Libplanet_Blocks_HashAlgorithmGetter_System_Func_System_Int64_System_Int32__System_Func_System_Int64_System_Int32__System_Func_System_Int64_System_Int32__System_Func_System_Int64_System_Int32__
+  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.Nullable{System.TimeSpan},System.Int64,System.Int32,System.Func{Libplanet.Blockchain.BlockChain{`0},Libplanet.Tx.Transaction{`0},Libplanet.Tx.TxPolicyViolationException},System.Func{Libplanet.Blockchain.BlockChain{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.BlockPolicyViolationException},System.Collections.Generic.IComparer{Libplanet.Blocks.IBlockExcerpt},Libplanet.Blocks.HashAlgorithmGetter,System.Func{System.Int64,System.Int32},System.Func{System.Int64,System.Int32},System.Func{System.Int64,System.Int32},System.Func{System.Int64,System.Int32})
+  name.vb: BlockPolicy(IAction, Nullable(Of TimeSpan), Int64, Int32, Func(Of BlockChain(Of T), Transaction(Of T), TxPolicyViolationException), Func(Of BlockChain(Of T), Block(Of T), BlockPolicyViolationException), IComparer(Of IBlockExcerpt), HashAlgorithmGetter, Func(Of Int64, Int32), Func(Of Int64, Int32), Func(Of Int64, Int32), Func(Of Int64, Int32))
+  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.BlockPolicy(Libplanet.Action.IAction, System.Nullable<System.TimeSpan>, System.Int64, System.Int32, System.Func<Libplanet.Blockchain.BlockChain<T>, Libplanet.Tx.Transaction<T>, Libplanet.Tx.TxPolicyViolationException>, System.Func<Libplanet.Blockchain.BlockChain<T>, Libplanet.Blocks.Block<T>, Libplanet.Blocks.BlockPolicyViolationException>, System.Collections.Generic.IComparer<Libplanet.Blocks.IBlockExcerpt>, Libplanet.Blocks.HashAlgorithmGetter, System.Func<System.Int64, System.Int32>, System.Func<System.Int64, System.Int32>, System.Func<System.Int64, System.Int32>, System.Func<System.Int64, System.Int32>)
+  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).BlockPolicy(Libplanet.Action.IAction, System.Nullable(Of System.TimeSpan), System.Int64, System.Int32, System.Func(Of Libplanet.Blockchain.BlockChain(Of T), Libplanet.Tx.Transaction(Of T), Libplanet.Tx.TxPolicyViolationException), System.Func(Of Libplanet.Blockchain.BlockChain(Of T), Libplanet.Blocks.Block(Of T), Libplanet.Blocks.BlockPolicyViolationException), System.Collections.Generic.IComparer(Of Libplanet.Blocks.IBlockExcerpt), Libplanet.Blocks.HashAlgorithmGetter, System.Func(Of System.Int64, System.Int32), System.Func(Of System.Int64, System.Int32), System.Func(Of System.Int64, System.Int32), System.Func(Of System.Int64, System.Int32))
+  nameWithType: BlockPolicy<T>.BlockPolicy(IAction, Nullable<TimeSpan>, Int64, Int32, Func<BlockChain<T>, Transaction<T>, TxPolicyViolationException>, Func<BlockChain<T>, Block<T>, BlockPolicyViolationException>, IComparer<IBlockExcerpt>, HashAlgorithmGetter, Func<Int64, Int32>, Func<Int64, Int32>, Func<Int64, Int32>, Func<Int64, Int32>)
+  nameWithType.vb: BlockPolicy(Of T).BlockPolicy(IAction, Nullable(Of TimeSpan), Int64, Int32, Func(Of BlockChain(Of T), Transaction(Of T), TxPolicyViolationException), Func(Of BlockChain(Of T), Block(Of T), BlockPolicyViolationException), IComparer(Of IBlockExcerpt), HashAlgorithmGetter, Func(Of Int64, Int32), Func(Of Int64, Int32), Func(Of Int64, Int32), Func(Of Int64, Int32))
 - uid: Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor*
   name: BlockPolicy
   href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_
@@ -2582,24 +2573,6 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).CanonicalChainComparer
   nameWithType: BlockPolicy<T>.CanonicalChainComparer
   nameWithType.vb: BlockPolicy(Of T).CanonicalChainComparer
-- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.DoesTransactionFollowsPolicy(Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0})
-  name: DoesTransactionFollowsPolicy(Transaction<T>, BlockChain<T>)
-  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_DoesTransactionFollowsPolicy_Libplanet_Tx_Transaction__0__Libplanet_Blockchain_BlockChain__0__
-  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`1.DoesTransactionFollowsPolicy(Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0})
-  name.vb: DoesTransactionFollowsPolicy(Transaction(Of T), BlockChain(Of T))
-  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.DoesTransactionFollowsPolicy(Libplanet.Tx.Transaction<T>, Libplanet.Blockchain.BlockChain<T>)
-  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).DoesTransactionFollowsPolicy(Libplanet.Tx.Transaction(Of T), Libplanet.Blockchain.BlockChain(Of T))
-  nameWithType: BlockPolicy<T>.DoesTransactionFollowsPolicy(Transaction<T>, BlockChain<T>)
-  nameWithType.vb: BlockPolicy(Of T).DoesTransactionFollowsPolicy(Transaction(Of T), BlockChain(Of T))
-- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.DoesTransactionFollowsPolicy*
-  name: DoesTransactionFollowsPolicy
-  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_DoesTransactionFollowsPolicy_
-  commentId: Overload:Libplanet.Blockchain.Policies.BlockPolicy`1.DoesTransactionFollowsPolicy
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.DoesTransactionFollowsPolicy
-  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).DoesTransactionFollowsPolicy
-  nameWithType: BlockPolicy<T>.DoesTransactionFollowsPolicy
-  nameWithType.vb: BlockPolicy(Of T).DoesTransactionFollowsPolicy
 - uid: Libplanet.Blockchain.Policies.BlockPolicy`1.GetHashAlgorithm(System.Int64)
   name: GetHashAlgorithm(Int64)
   href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_GetHashAlgorithm_System_Int64_
@@ -2721,6 +2694,24 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).ValidateNextBlock
   nameWithType: BlockPolicy<T>.ValidateNextBlock
   nameWithType.vb: BlockPolicy(Of T).ValidateNextBlock
+- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.ValidateNextBlockTx(Libplanet.Blockchain.BlockChain{`0},Libplanet.Tx.Transaction{`0})
+  name: ValidateNextBlockTx(BlockChain<T>, Transaction<T>)
+  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_ValidateNextBlockTx_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_Transaction__0__
+  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`1.ValidateNextBlockTx(Libplanet.Blockchain.BlockChain{`0},Libplanet.Tx.Transaction{`0})
+  name.vb: ValidateNextBlockTx(BlockChain(Of T), Transaction(Of T))
+  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.ValidateNextBlockTx(Libplanet.Blockchain.BlockChain<T>, Libplanet.Tx.Transaction<T>)
+  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).ValidateNextBlockTx(Libplanet.Blockchain.BlockChain(Of T), Libplanet.Tx.Transaction(Of T))
+  nameWithType: BlockPolicy<T>.ValidateNextBlockTx(BlockChain<T>, Transaction<T>)
+  nameWithType.vb: BlockPolicy(Of T).ValidateNextBlockTx(BlockChain(Of T), Transaction(Of T))
+- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.ValidateNextBlockTx*
+  name: ValidateNextBlockTx
+  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_ValidateNextBlockTx_
+  commentId: Overload:Libplanet.Blockchain.Policies.BlockPolicy`1.ValidateNextBlockTx
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.ValidateNextBlockTx
+  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).ValidateNextBlockTx
+  nameWithType: BlockPolicy<T>.ValidateNextBlockTx
+  nameWithType.vb: BlockPolicy(Of T).ValidateNextBlockTx
 - uid: Libplanet.Blockchain.Policies.IBlockPolicy`1
   name: IBlockPolicy<T>
   href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html
@@ -2764,24 +2755,6 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of T).CanonicalChainComparer
   nameWithType: IBlockPolicy<T>.CanonicalChainComparer
   nameWithType.vb: IBlockPolicy(Of T).CanonicalChainComparer
-- uid: Libplanet.Blockchain.Policies.IBlockPolicy`1.DoesTransactionFollowsPolicy(Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0})
-  name: DoesTransactionFollowsPolicy(Transaction<T>, BlockChain<T>)
-  href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_DoesTransactionFollowsPolicy_Libplanet_Tx_Transaction__0__Libplanet_Blockchain_BlockChain__0__
-  commentId: M:Libplanet.Blockchain.Policies.IBlockPolicy`1.DoesTransactionFollowsPolicy(Libplanet.Tx.Transaction{`0},Libplanet.Blockchain.BlockChain{`0})
-  name.vb: DoesTransactionFollowsPolicy(Transaction(Of T), BlockChain(Of T))
-  fullName: Libplanet.Blockchain.Policies.IBlockPolicy<T>.DoesTransactionFollowsPolicy(Libplanet.Tx.Transaction<T>, Libplanet.Blockchain.BlockChain<T>)
-  fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of T).DoesTransactionFollowsPolicy(Libplanet.Tx.Transaction(Of T), Libplanet.Blockchain.BlockChain(Of T))
-  nameWithType: IBlockPolicy<T>.DoesTransactionFollowsPolicy(Transaction<T>, BlockChain<T>)
-  nameWithType.vb: IBlockPolicy(Of T).DoesTransactionFollowsPolicy(Transaction(Of T), BlockChain(Of T))
-- uid: Libplanet.Blockchain.Policies.IBlockPolicy`1.DoesTransactionFollowsPolicy*
-  name: DoesTransactionFollowsPolicy
-  href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_DoesTransactionFollowsPolicy_
-  commentId: Overload:Libplanet.Blockchain.Policies.IBlockPolicy`1.DoesTransactionFollowsPolicy
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Policies.IBlockPolicy<T>.DoesTransactionFollowsPolicy
-  fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of T).DoesTransactionFollowsPolicy
-  nameWithType: IBlockPolicy<T>.DoesTransactionFollowsPolicy
-  nameWithType.vb: IBlockPolicy(Of T).DoesTransactionFollowsPolicy
 - uid: Libplanet.Blockchain.Policies.IBlockPolicy`1.GetHashAlgorithm(System.Int64)
   name: GetHashAlgorithm(Int64)
   href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_GetHashAlgorithm_System_Int64_
@@ -2903,6 +2876,24 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of T).ValidateNextBlock
   nameWithType: IBlockPolicy<T>.ValidateNextBlock
   nameWithType.vb: IBlockPolicy(Of T).ValidateNextBlock
+- uid: Libplanet.Blockchain.Policies.IBlockPolicy`1.ValidateNextBlockTx(Libplanet.Blockchain.BlockChain{`0},Libplanet.Tx.Transaction{`0})
+  name: ValidateNextBlockTx(BlockChain<T>, Transaction<T>)
+  href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_ValidateNextBlockTx_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_Transaction__0__
+  commentId: M:Libplanet.Blockchain.Policies.IBlockPolicy`1.ValidateNextBlockTx(Libplanet.Blockchain.BlockChain{`0},Libplanet.Tx.Transaction{`0})
+  name.vb: ValidateNextBlockTx(BlockChain(Of T), Transaction(Of T))
+  fullName: Libplanet.Blockchain.Policies.IBlockPolicy<T>.ValidateNextBlockTx(Libplanet.Blockchain.BlockChain<T>, Libplanet.Tx.Transaction<T>)
+  fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of T).ValidateNextBlockTx(Libplanet.Blockchain.BlockChain(Of T), Libplanet.Tx.Transaction(Of T))
+  nameWithType: IBlockPolicy<T>.ValidateNextBlockTx(BlockChain<T>, Transaction<T>)
+  nameWithType.vb: IBlockPolicy(Of T).ValidateNextBlockTx(BlockChain(Of T), Transaction(Of T))
+- uid: Libplanet.Blockchain.Policies.IBlockPolicy`1.ValidateNextBlockTx*
+  name: ValidateNextBlockTx
+  href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_ValidateNextBlockTx_
+  commentId: Overload:Libplanet.Blockchain.Policies.IBlockPolicy`1.ValidateNextBlockTx
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.Policies.IBlockPolicy<T>.ValidateNextBlockTx
+  fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of T).ValidateNextBlockTx
+  nameWithType: IBlockPolicy<T>.ValidateNextBlockTx
+  nameWithType.vb: IBlockPolicy(Of T).ValidateNextBlockTx
 - uid: Libplanet.Blockchain.Policies.IStagePolicy`1
   name: IStagePolicy<T>
   href: api/Libplanet.Blockchain.Policies.IStagePolicy-1.html
@@ -7184,6 +7175,25 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.BlockPerception.TotalDifficulty
   nameWithType: BlockPerception.TotalDifficulty
+- uid: Libplanet.Blocks.BlockPolicyViolationException
+  name: BlockPolicyViolationException
+  href: api/Libplanet.Blocks.BlockPolicyViolationException.html
+  commentId: T:Libplanet.Blocks.BlockPolicyViolationException
+  fullName: Libplanet.Blocks.BlockPolicyViolationException
+  nameWithType: BlockPolicyViolationException
+- uid: Libplanet.Blocks.BlockPolicyViolationException.#ctor(System.String)
+  name: BlockPolicyViolationException(String)
+  href: api/Libplanet.Blocks.BlockPolicyViolationException.html#Libplanet_Blocks_BlockPolicyViolationException__ctor_System_String_
+  commentId: M:Libplanet.Blocks.BlockPolicyViolationException.#ctor(System.String)
+  fullName: Libplanet.Blocks.BlockPolicyViolationException.BlockPolicyViolationException(System.String)
+  nameWithType: BlockPolicyViolationException.BlockPolicyViolationException(String)
+- uid: Libplanet.Blocks.BlockPolicyViolationException.#ctor*
+  name: BlockPolicyViolationException
+  href: api/Libplanet.Blocks.BlockPolicyViolationException.html#Libplanet_Blocks_BlockPolicyViolationException__ctor_
+  commentId: Overload:Libplanet.Blocks.BlockPolicyViolationException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Blocks.BlockPolicyViolationException.BlockPolicyViolationException
+  nameWithType: BlockPolicyViolationException.BlockPolicyViolationException
 - uid: Libplanet.Blocks.HashAlgorithmGetter
   name: HashAlgorithmGetter
   href: api/Libplanet.Blocks.HashAlgorithmGetter.html
@@ -17169,6 +17179,25 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.TxId.ToString
   nameWithType: TxId.ToString
+- uid: Libplanet.Tx.TxPolicyViolationException
+  name: TxPolicyViolationException
+  href: api/Libplanet.Tx.TxPolicyViolationException.html
+  commentId: T:Libplanet.Tx.TxPolicyViolationException
+  fullName: Libplanet.Tx.TxPolicyViolationException
+  nameWithType: TxPolicyViolationException
+- uid: Libplanet.Tx.TxPolicyViolationException.#ctor(Libplanet.Tx.TxId,System.String)
+  name: TxPolicyViolationException(TxId, String)
+  href: api/Libplanet.Tx.TxPolicyViolationException.html#Libplanet_Tx_TxPolicyViolationException__ctor_Libplanet_Tx_TxId_System_String_
+  commentId: M:Libplanet.Tx.TxPolicyViolationException.#ctor(Libplanet.Tx.TxId,System.String)
+  fullName: Libplanet.Tx.TxPolicyViolationException.TxPolicyViolationException(Libplanet.Tx.TxId, System.String)
+  nameWithType: TxPolicyViolationException.TxPolicyViolationException(TxId, String)
+- uid: Libplanet.Tx.TxPolicyViolationException.#ctor*
+  name: TxPolicyViolationException
+  href: api/Libplanet.Tx.TxPolicyViolationException.html#Libplanet_Tx_TxPolicyViolationException__ctor_
+  commentId: Overload:Libplanet.Tx.TxPolicyViolationException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxPolicyViolationException.TxPolicyViolationException
+  nameWithType: TxPolicyViolationException.TxPolicyViolationException
 - uid: Libplanet.Tx.TxSuccess
   name: TxSuccess
   href: api/Libplanet.Tx.TxSuccess.html
@@ -17256,22 +17285,3 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.TxSuccess.UpdatedStates
   nameWithType: TxSuccess.UpdatedStates
-- uid: Libplanet.Tx.TxViolatingBlockPolicyException
-  name: TxViolatingBlockPolicyException
-  href: api/Libplanet.Tx.TxViolatingBlockPolicyException.html
-  commentId: T:Libplanet.Tx.TxViolatingBlockPolicyException
-  fullName: Libplanet.Tx.TxViolatingBlockPolicyException
-  nameWithType: TxViolatingBlockPolicyException
-- uid: Libplanet.Tx.TxViolatingBlockPolicyException.#ctor(Libplanet.Tx.TxId,System.String)
-  name: TxViolatingBlockPolicyException(TxId, String)
-  href: api/Libplanet.Tx.TxViolatingBlockPolicyException.html#Libplanet_Tx_TxViolatingBlockPolicyException__ctor_Libplanet_Tx_TxId_System_String_
-  commentId: M:Libplanet.Tx.TxViolatingBlockPolicyException.#ctor(Libplanet.Tx.TxId,System.String)
-  fullName: Libplanet.Tx.TxViolatingBlockPolicyException.TxViolatingBlockPolicyException(Libplanet.Tx.TxId, System.String)
-  nameWithType: TxViolatingBlockPolicyException.TxViolatingBlockPolicyException(TxId, String)
-- uid: Libplanet.Tx.TxViolatingBlockPolicyException.#ctor*
-  name: TxViolatingBlockPolicyException
-  href: api/Libplanet.Tx.TxViolatingBlockPolicyException.html#Libplanet_Tx_TxViolatingBlockPolicyException__ctor_
-  commentId: Overload:Libplanet.Tx.TxViolatingBlockPolicyException.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Tx.TxViolatingBlockPolicyException.TxViolatingBlockPolicyException
-  nameWithType: TxViolatingBlockPolicyException.TxViolatingBlockPolicyException

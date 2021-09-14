@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class TxViolatingBlockPolicyException
+    <title>Class TxPolicyViolationException
    | Libplanet </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class TxViolatingBlockPolicyException
+    <meta name="title" content="Class TxPolicyViolationException
    | Libplanet ">
     <meta name="generator" content="docfx 2.58.2.0">
     
@@ -68,13 +68,13 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Libplanet.Tx.TxViolatingBlockPolicyException">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Tx.TxPolicyViolationException">
   
   
-  <h1 id="Libplanet_Tx_TxViolatingBlockPolicyException" data-uid="Libplanet.Tx.TxViolatingBlockPolicyException" class="text-break">Class TxViolatingBlockPolicyException
+  <h1 id="Libplanet_Tx_TxPolicyViolationException" data-uid="Libplanet.Tx.TxPolicyViolationException" class="text-break">Class TxPolicyViolationException
   </h1>
-  <div class="markdown level0 summary"><p>The exception that is thrown when a <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> does not follow the
-block policy.</p>
+  <div class="markdown level0 summary"><p>An exception <em>returned</em> when a <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> violates
+a <a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html">IBlockPolicy&lt;T&gt;</a>.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -82,7 +82,7 @@ block policy.</p>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.exception">Exception</a></div>
     <div class="level2"><a class="xref" href="Libplanet.Tx.InvalidTxException.html">InvalidTxException</a></div>
-    <div class="level3"><span class="xref">TxViolatingBlockPolicyException</span></div>
+    <div class="level3"><span class="xref">TxPolicyViolationException</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
@@ -150,28 +150,28 @@ block policy.</p>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Tx.html">Libplanet.Tx</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
-  <h5 id="Libplanet_Tx_TxViolatingBlockPolicyException_syntax">Syntax</h5>
+  <h5 id="Libplanet_Tx_TxPolicyViolationException_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Serializable]
-public class TxViolatingBlockPolicyException : InvalidTxException, ISerializable</code></pre>
+public class TxPolicyViolationException : InvalidTxException, ISerializable</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxViolatingBlockPolicyException__ctor_Libplanet_Tx_TxId_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxViolatingBlockPolicyException.%23ctor(Libplanet.Tx.TxId%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxPolicyViolationException__ctor_Libplanet_Tx_TxId_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxPolicyViolationException.%23ctor(Libplanet.Tx.TxId%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxViolatingBlockPolicyException.cs/#L21">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxPolicyViolationException.cs/#L23">View Source</a>
   </span>
-  <a id="Libplanet_Tx_TxViolatingBlockPolicyException__ctor_" data-uid="Libplanet.Tx.TxViolatingBlockPolicyException.#ctor*"></a>
-  <h4 id="Libplanet_Tx_TxViolatingBlockPolicyException__ctor_Libplanet_Tx_TxId_System_String_" data-uid="Libplanet.Tx.TxViolatingBlockPolicyException.#ctor(Libplanet.Tx.TxId,System.String)">TxViolatingBlockPolicyException(TxId, String)</h4>
-  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Tx.TxViolatingBlockPolicyException.html">TxViolatingBlockPolicyException</a> object.</p>
+  <a id="Libplanet_Tx_TxPolicyViolationException__ctor_" data-uid="Libplanet.Tx.TxPolicyViolationException.#ctor*"></a>
+  <h4 id="Libplanet_Tx_TxPolicyViolationException__ctor_Libplanet_Tx_TxId_System_String_" data-uid="Libplanet.Tx.TxPolicyViolationException.#ctor(Libplanet.Tx.TxId,System.String)">TxPolicyViolationException(TxId, String)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Tx.TxPolicyViolationException.html">TxPolicyViolationException</a> instance.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public TxViolatingBlockPolicyException(TxId txid, string message)</code></pre>
+    <pre><code class="lang-csharp hljs">public TxPolicyViolationException(TxId txid, string message)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -186,15 +186,16 @@ public class TxViolatingBlockPolicyException : InvalidTxException, ISerializable
       <tr>
         <td><a class="xref" href="Libplanet.Tx.TxId.html">TxId</a></td>
         <td><span class="parametername">txid</span></td>
-        <td><p>The invalid <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a>.
-It is automatically included to the <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.exception.message#System_Exception_Message">Message</a>
-string.</p>
+        <td><p>The <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Id">Id</a> of the
+<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> violating a <a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html">IBlockPolicy&lt;T&gt;</a>.
+Gets prepended to <code data-dev-comment-type="paramref" class="paramref">message</code>.</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">message</span></td>
-        <td><p>Specifies an <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.exception.message#System_Exception_Message">Message</a>.</p>
+        <td><p>A description for the reason of violation
+given by an implementation of <a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html">IBlockPolicy&lt;T&gt;</a>.</p>
 </td>
       </tr>
     </tbody>
@@ -215,10 +216,10 @@ string.</p>
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxViolatingBlockPolicyException.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxViolatingBlockPolicyException%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxPolicyViolationException.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxPolicyViolationException%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxViolatingBlockPolicyException.cs/#L10" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxPolicyViolationException.cs/#L11" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

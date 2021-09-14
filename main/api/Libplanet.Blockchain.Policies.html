@@ -86,9 +86,14 @@
     <h3 id="interfaces">Interfaces
   </h3>
       <h4><a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html">IBlockPolicy&lt;T&gt;</a></h4>
-      <section><p>An interface to determine if consecutive <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>s are
-valid, and to suggest how difficult a <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Nonce">Nonce</a>
-for a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> to be mined.</p>
+      <section><p>
+An interface to determine if consecutive <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>s are valid.
+</p>
+<p>
+An implementation of this interface should perform <em>all policy dependent checks</em>,
+such as whether a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> has the right difficulty,
+a <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> has the right signer, etc.
+</p>
 </section>
       <h4><a class="xref" href="Libplanet.Blockchain.Policies.IStagePolicy-1.html">IStagePolicy&lt;T&gt;</a></h4>
       <section><p>The interface to configure a <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a>'s strategy to deal with staged
