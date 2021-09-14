@@ -5,11 +5,14 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Store;
+using Libplanet.Store.Trie;
 using Libplanet.Tx;
+using static Libplanet.Blockchain.KeyConverters;
 
 namespace Libplanet.Blockchain
 {
@@ -164,28 +167,20 @@ namespace Libplanet.Blockchain
             IReadOnlyList<ActionEvaluation> actionEvaluations = ActionEvaluator.Evaluate(
                 block, StateCompleterSet<T>.Recalculate);
 
-            if (StateStore is TrieStateStore trieStateStore)
+            _rwlock.EnterWriteLock();
+            try
             {
-                _rwlock.EnterWriteLock();
-                try
-                {
-                    SetStates(block, actionEvaluations);
-                    block = new Block<T>(block, trieStateStore.GetRootHash(block.Hash));
-
-                    // it's needed because `block.Hash` was updated with the state root hash.
-                    // FIXME: we need a method for calculating the state root hash without
-                    // `.SetStates()`.
-                    SetStates(block, actionEvaluations);
-                }
-                finally
-                {
-                    _rwlock.ExitWriteLock();
-                }
+                ImmutableDictionary<string, IValue> totalDelta =
+                    actionEvaluations.GetTotalDelta(ToStateKey, ToFungibleAssetKey);
+                ITrie trie = StateStore.Commit(
+                    Store.GetStateRootHash(block.PreviousHash),
+                    totalDelta
+                );
+                block = new Block<T>(block, trie.Hash);
             }
-            else
+            finally
             {
-                // We need to re-execute it.
-                actionEvaluations = null;
+                _rwlock.ExitWriteLock();
             }
 
             _logger.Debug(

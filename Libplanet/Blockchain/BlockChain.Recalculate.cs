@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Store;
@@ -29,7 +30,7 @@ namespace Libplanet.Blockchain
             foreach (BlockHash hash in BlockHashes)
             {
                 Block<T> block = this[hash];
-                if (StateStore.ContainsBlockStates(hash))
+                if (StateStore.ContainsStateRoot(block.StateRootHash.Value))
                 {
                     continue;
                 }
@@ -86,7 +87,7 @@ namespace Libplanet.Blockchain
             foreach (BlockHash hash in BlockHashes)
             {
                 Block<T> block = this[hash];
-                if (StateStore.ContainsBlockStates(hash))
+                if (StateStore.ContainsStateRoot(block.StateRootHash.Value))
                 {
                     continue;
                 }
@@ -132,7 +133,8 @@ namespace Libplanet.Blockchain
 
             while (pointer is { } p)
             {
-                if (StateStore.ContainsBlockStates(p))
+                HashDigest<SHA256>? stateRootHash = Store.GetStateRootHash(p);
+                if (stateRootHash is { } h && StateStore.ContainsStateRoot(h))
                 {
                     break;
                 }

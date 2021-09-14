@@ -1,94 +1,70 @@
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
 using Bencodex.Types;
-using Libplanet.Blocks;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Xunit;
+using static Libplanet.Tests.TestUtils;
 
 namespace Libplanet.Tests.Store
 {
     public class TrieStateStoreTest
     {
         private readonly IKeyValueStore _stateKeyValueStore;
-        private readonly IKeyValueStore _stateHashKeyValueStore;
-
-        private readonly IImmutableDictionary<string, IValue> _prestoredValues;
-
-        private readonly DefaultStoreFixture _fx;
 
         public TrieStateStoreTest()
         {
-            _fx = new DefaultStoreFixture();
-
             _stateKeyValueStore = new DefaultKeyValueStore(null);
-            _stateHashKeyValueStore = new DefaultKeyValueStore(null);
+        }
 
-            _prestoredValues = ImmutableDictionary<string, IValue>.Empty
-                .Add("foo", (Binary)TestUtils.GetRandomBytes(32))
-                .Add("bar", (Text)ByteUtil.Hex(TestUtils.GetRandomBytes(32)))
+        public static byte[] KeyFoo => StateStoreExtensions.KeyEncoding.GetBytes("foo");
+
+        public static byte[] KeyBar => StateStoreExtensions.KeyEncoding.GetBytes("bar");
+
+        public static byte[] KeyBaz => StateStoreExtensions.KeyEncoding.GetBytes("baz");
+
+        public static byte[] KeyQux => StateStoreExtensions.KeyEncoding.GetBytes("qux");
+
+        public static byte[] KeyQuux => StateStoreExtensions.KeyEncoding.GetBytes("quux");
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void GetStateRoot(bool secure)
+        {
+            var stateStore = new TrieStateStore(_stateKeyValueStore, secure);
+            ITrie empty = stateStore.GetStateRoot(null);
+            Assert.True(empty.Recorded);
+            Assert.False(empty.TryGet(KeyFoo, out _));
+            Assert.False(empty.TryGet(KeyBar, out _));
+            Assert.False(empty.TryGet(KeyBaz, out _));
+            Assert.False(empty.TryGet(KeyQux, out _));
+            Assert.False(empty.TryGet(KeyQuux, out _));
+
+            var values = ImmutableDictionary<string, IValue>.Empty
+                .Add("foo", (Binary)GetRandomBytes(32))
+                .Add("bar", (Text)ByteUtil.Hex(GetRandomBytes(32)))
                 .Add("baz", (Bencodex.Types.Boolean)false)
                 .Add("qux", Bencodex.Types.Dictionary.Empty);
-        }
+            HashDigest<SHA256> hash = stateStore.Commit(null, values, rehearsal: true).Hash;
 
-        [Theory]
-        [InlineData(true)]
-        [InlineData(false)]
-        public void SetStates(bool secure)
-        {
-            var stateStore = MakeTrieStateStoreFixture(secure);
-            // Check to set and to get.
-            Assert.Throws<KeyNotFoundException>(() => stateStore.GetRootHash(_fx.Block1.Hash));
-            Assert.False(stateStore.ContainsBlockStates(_fx.Block1.Hash));
-            var states = ImmutableDictionary<string, IValue>.Empty
-                .Add("foo", (Text)"value");
-            stateStore.SetStates(_fx.Block1, states);
-            Assert.Equal((Text)"value", stateStore.GetState("foo", _fx.Block1.Hash));
-            Assert.IsType<HashDigest<SHA256>>(stateStore.GetRootHash(_fx.Block1.Hash));
-            Assert.True(stateStore.ContainsBlockStates(_fx.Block1.Hash));
+            ITrie notFound = stateStore.GetStateRoot(hash);
+            Assert.False(notFound.Recorded);
 
-            stateStore.SetStates(_fx.Block2, _prestoredValues);
-
-            // Check same states have same state hash.
-            Assert.NotEqual(
-                stateStore.GetRootHash(_fx.GenesisBlock.Hash),
-                stateStore.GetRootHash(_fx.Block1.Hash));
-            Assert.Equal(
-                stateStore.GetRootHash(_fx.GenesisBlock.Hash),
-                stateStore.GetRootHash(_fx.Block2.Hash));
-        }
-
-        [Theory]
-        [InlineData(true)]
-        [InlineData(false)]
-        public void GetState(bool secure)
-        {
-            var stateStore = MakeTrieStateStoreFixture(secure);
-            foreach (var pair in _prestoredValues)
-            {
-                Assert.Equal(
-                    pair.Value,
-                    stateStore.GetState(pair.Key, _fx.GenesisBlock.Hash));
-            }
-        }
-
-        [Theory]
-        [InlineData(true)]
-        [InlineData(false)]
-        public void ExistsBlockState(bool secure)
-        {
-            var stateStore = MakeTrieStateStoreFixture(secure);
-            BlockHash randomBlockHash;
-            do
-            {
-                randomBlockHash = new BlockHash(TestUtils.GetRandomBytes(32));
-            }
-            while (randomBlockHash.Equals(_fx.GenesisBlock.Hash));
-
-            Assert.False(stateStore.ContainsBlockStates(randomBlockHash));
-            Assert.True(stateStore.ContainsBlockStates(_fx.GenesisBlock.Hash));
+            IValue value;
+            stateStore.Commit(null, values, rehearsal: false);
+            ITrie found = stateStore.GetStateRoot(hash);
+            Assert.True(found.Recorded);
+            Assert.True(found.TryGet(KeyFoo, out value));
+            AssertBencodexEqual(values["foo"], value);
+            Assert.True(found.TryGet(KeyBar, out value));
+            AssertBencodexEqual(values["bar"], value);
+            Assert.True(found.TryGet(KeyBaz, out value));
+            AssertBencodexEqual(values["baz"], value);
+            Assert.True(found.TryGet(KeyQux, out value));
+            AssertBencodexEqual(values["qux"], value);
+            Assert.False(empty.TryGet(KeyQuux, out _));
         }
 
         [Theory]
@@ -96,21 +72,27 @@ namespace Libplanet.Tests.Store
         [InlineData(false)]
         public void PruneStates(bool secure)
         {
-            var stateStore = MakeTrieStateStoreFixture(secure);
-            int prevStateHashesCount = _stateHashKeyValueStore.ListKeys().Count(),
-                prevStatesCount = _stateKeyValueStore.ListKeys().Count();
-            var nextStates = _prestoredValues.SetItem("foo", (Binary)TestUtils.GetRandomBytes(32));
-            stateStore.SetStates(_fx.Block1, nextStates);
+            var values = ImmutableDictionary<string, IValue>.Empty
+                .Add("foo", (Binary)GetRandomBytes(32))
+                .Add("bar", (Text)ByteUtil.Hex(GetRandomBytes(32)))
+                .Add("baz", (Bencodex.Types.Boolean)false)
+                .Add("qux", Bencodex.Types.Dictionary.Empty);
 
-            // Hash of _fx.Block1
-            Assert.Equal(prevStateHashesCount + 1, _stateHashKeyValueStore.ListKeys().Count());
+            var stateStore = new TrieStateStore(_stateKeyValueStore, secure);
+            ITrie first = stateStore.Commit(null, values);
+
+            int prevStatesCount = _stateKeyValueStore.ListKeys().Count();
+            ImmutableDictionary<string, IValue> nextStates =
+                values.SetItem("foo", (Binary)GetRandomBytes(32));
+            ITrie second = stateStore.Commit(first.Hash, nextStates);
+
             // foo = 0x666f6f
             // updated branch node (0x6, aka root) + updated branch node (0x66) +
             // updated short node + new value node
             Assert.Equal(prevStatesCount + 4, _stateKeyValueStore.ListKeys().Count());
 
-            stateStore.PruneStates(ImmutableHashSet<BlockHash>.Empty.Add(_fx.Block1.Hash));
-            Assert.Single(_stateHashKeyValueStore.ListKeys());
+            stateStore.PruneStates(ImmutableHashSet<HashDigest<SHA256>>.Empty.Add(second.Hash));
+
             // It will stay at the same count of nodes.
             Assert.Equal(prevStatesCount, _stateKeyValueStore.ListKeys().Count());
         }
@@ -120,22 +102,11 @@ namespace Libplanet.Tests.Store
         public void IdempotentDispose()
 #pragma warning restore S2699 // Tests should include assertions
         {
-            var stateStore = new TrieStateStore(
-                _stateKeyValueStore,
-                _stateHashKeyValueStore
-            );
+            var stateStore = new TrieStateStore(_stateKeyValueStore);
             stateStore.Dispose();
 #pragma warning disable S3966 // Objects should not be disposed more than once
             stateStore.Dispose();
 #pragma warning restore S3966 // Objects should not be disposed more than once
-        }
-
-        private TrieStateStore MakeTrieStateStoreFixture(bool secure)
-        {
-            var stateStore = new TrieStateStore(
-                _stateKeyValueStore, _stateHashKeyValueStore, secure);
-            stateStore.SetStates(_fx.GenesisBlock, _prestoredValues);
-            return stateStore;
         }
     }
 }

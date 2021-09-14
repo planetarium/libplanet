@@ -105,7 +105,7 @@ namespace Libplanet.Tests.Net
             BlockChain<DumbAction> seedChain = TestUtils.MakeBlockChain(
                 receiverChain.Policy,
                 new DefaultStore(path: null),
-                new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore()),
+                new TrieStateStore(new MemoryKeyValueStore()),
                 genesisBlock: invalidGenesisBlock);
             Swarm<DumbAction> seedSwarm = CreateSwarm(seedChain);
             try
@@ -634,7 +634,7 @@ namespace Libplanet.Tests.Net
                         new[] { transactions[0] },
                         null,
                         policy.GetNextBlockDifficulty(blockChain))
-                    .AttachStateRootHash(blockChain.StateStore, policy);
+                    .AttachStateRootHash(blockChain.Store, blockChain.StateStore, policy);
                 blockChain.Append(block1, true, true, false);
                 var block2 = TestUtils.MineNext(
                     block1,
@@ -642,7 +642,7 @@ namespace Libplanet.Tests.Net
                     new[] { transactions[1] },
                     null,
                     policy.GetNextBlockDifficulty(blockChain)
-                ).AttachStateRootHash(blockChain.StateStore, policy);
+                ).AttachStateRootHash(blockChain.Store, blockChain.StateStore, policy);
                 blockChain.Append(block2, true, true, false);
                 Log.Debug("Ready to broadcast blocks.");
                 minerSwarm.BroadcastBlock(block2);
@@ -802,11 +802,11 @@ namespace Libplanet.Tests.Net
             var chain1 = TestUtils.MakeBlockChain(
                 policy,
                 new DefaultStore(null),
-                new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore()));
+                new TrieStateStore(new MemoryKeyValueStore()));
             var chain2 = TestUtils.MakeBlockChain(
                 policy,
                 new DefaultStore(null),
-                new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore()));
+                new TrieStateStore(new MemoryKeyValueStore()));
 
             var miner1 = CreateSwarm(chain1);
             var miner2 = CreateSwarm(chain2);
@@ -820,7 +820,7 @@ namespace Libplanet.Tests.Net
                 policy.GetHashAlgorithm,
                 difficulty: nextDifficulty,
                 blockInterval: TimeSpan.FromMilliseconds(1)
-            ).AttachStateRootHash(chain2.StateStore, policy);
+            ).AttachStateRootHash(chain2.Store, chain2.StateStore, policy);
             chain2.Append(block);
 
             Assert.True(chain1.Tip.Index > chain2.Tip.Index);

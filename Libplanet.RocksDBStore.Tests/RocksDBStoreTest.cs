@@ -51,8 +51,7 @@ namespace Libplanet.RocksDBStore.Tests
             try
             {
                 var store = new RocksDBStore(path);
-                var stateStore =
-                    new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore());
+                var stateStore = new TrieStateStore(new MemoryKeyValueStore());
                 var blocks = new BlockChain<DumbAction>(
                     new NullPolicy<DumbAction>(),
                     new VolatileStagePolicy<DumbAction>(),

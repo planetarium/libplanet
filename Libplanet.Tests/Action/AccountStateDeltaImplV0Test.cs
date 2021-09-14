@@ -60,7 +60,7 @@ namespace Libplanet.Tests.Action
                     chain.Policy.GetHashAlgorithm,
                     new[] { tx },
                     protocolVersion: ProtocolVersion
-                ).AttachStateRootHash(chain.StateStore, chain.Policy)
+                ).AttachStateRootHash(chain.Store, chain.StateStore, chain.Policy)
             );
             Assert.Equal(
                 DumbAction.DumbCurrency * 6,

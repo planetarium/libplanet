@@ -66,8 +66,7 @@ namespace Libplanet.Tests.Action
                     genesisHash: null,
                     actions: new[] { new RandomAction(txAddress), }),
             };
-            var stateStore =
-                new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore());
+            var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             HashAlgorithmGetter hashAlgorithmGetter = _ => HashAlgorithmType.Of<SHA256>();
             var noStateRootBlock = TestUtils.MineGenesis(
                 hashAlgorithmGetter: hashAlgorithmGetter,
@@ -76,7 +75,8 @@ namespace Libplanet.Tests.Action
             var stateRootBlock = TestUtils.MineGenesis(
                 hashAlgorithmGetter: hashAlgorithmGetter,
                 timestamp: timestamp,
-                transactions: txs).AttachStateRootHash(hashAlgorithmGetter(0), stateStore, null);
+                transactions: txs
+            ).AttachStateRootHash(hashAlgorithmGetter(0), _ => null, stateStore, null);
             var actionEvaluator =
                 new ActionEvaluator<RandomAction>(
                     hashAlgorithmGetter: hashAlgorithmGetter,
@@ -119,8 +119,7 @@ namespace Libplanet.Tests.Action
             var action = new EvaluateTestAction();
 
             var store = new DefaultStore(null);
-            var stateStore =
-                new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore());
+            var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var chain = TestUtils.MakeBlockChain<EvaluateTestAction>(
                 policy: new BlockPolicy<EvaluateTestAction>(),
                 store: store,
@@ -156,8 +155,7 @@ namespace Libplanet.Tests.Action
             var action = new ThrowException { ThrowOnRehearsal = false, ThrowOnExecution = true };
 
             var store = new DefaultStore(null);
-            var stateStore =
-                new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore());
+            var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var chain = TestUtils.MakeBlockChain<ThrowException>(
                 policy: new BlockPolicy<ThrowException>(),
                 store: store,
@@ -198,7 +196,7 @@ namespace Libplanet.Tests.Action
 
             var store = new DefaultStore(null);
             var stateStore =
-                new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore());
+                new TrieStateStore(new MemoryKeyValueStore());
             var chain = TestUtils.MakeBlockChain<ThrowException>(
                 policy: new BlockPolicy<ThrowException>(),
                 store: store,
@@ -851,7 +849,7 @@ namespace Libplanet.Tests.Action
         {
             var store = new DefaultStore(null);
             var stateStore =
-                new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore());
+                new TrieStateStore(new MemoryKeyValueStore());
             var chain = TestUtils.MakeBlockChain<DumbAction>(
                 policy: _policy,
                 store: _storeFx.Store,
@@ -865,7 +863,7 @@ namespace Libplanet.Tests.Action
                 _policy.GetHashAlgorithm,
                 txs,
                 difficulty: chain.Policy.GetNextBlockDifficulty(chain)
-            ).AttachStateRootHash(chain.StateStore, _policy);
+            ).AttachStateRootHash(chain.Store, chain.StateStore, _policy);
             var stateCompleterSet = StateCompleterSet<DumbAction>.Recalculate;
 
             AccountStateGetter accountStateGetter =

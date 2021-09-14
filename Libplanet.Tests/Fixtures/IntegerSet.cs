@@ -65,7 +65,7 @@ namespace Libplanet.Tests.Fixtures
             policy = policy ?? new NullPolicy<Arithmetic>();
             Store = new DefaultStore(null);
             KVStore = new MemoryKeyValueStore();
-            StateStore = new TrieStateStore(KVStore, KVStore);
+            StateStore = new TrieStateStore(KVStore);
             Genesis = Block<Arithmetic>.Mine(
                 index: 0,
                 hashAlgorithm: policy.GetHashAlgorithm(0),
@@ -75,7 +75,7 @@ namespace Libplanet.Tests.Fixtures
                 previousHash: null,
                 timestamp: DateTimeOffset.UtcNow,
                 transactions: Txs
-            ).AttachStateRootHash(StateStore, policy);
+            ).AttachStateRootHash(Store, StateStore, policy);
             Chain = new BlockChain<Arithmetic>(
                 policy,
                 new VolatileStagePolicy<Arithmetic>(),
@@ -154,7 +154,7 @@ namespace Libplanet.Tests.Fixtures
                 DateTimeOffset.UtcNow,
                 cancellationToken: cancellationToken
             );
-            return draft.AttachStateRootHash(StateStore, Policy);
+            return draft.AttachStateRootHash(Store, StateStore, Policy);
         }
 
         public IAccountStateDelta CreateAccountStateDelta(Address signer, BlockHash? offset = null)
@@ -170,8 +170,14 @@ namespace Libplanet.Tests.Fixtures
         public IAccountStateDelta CreateAccountStateDelta(int signerIndex, BlockHash? offset = null)
             => CreateAccountStateDelta(Addresses[signerIndex], offset);
 
-        public ITrie GetTrie(BlockHash? blockHash) =>
-            blockHash is BlockHash h ? StateStore.GetTrie(h) : null;
+        public ITrie GetTrie(BlockHash? blockHash)
+        {
+            return (blockHash is BlockHash h &&
+                    Store.GetBlockDigest(h) is BlockDigest d &&
+                    d.Header.StateRootHash is HashDigest<SHA256> rootHash)
+                ? StateStore.GetStateRoot(rootHash)
+                : null;
+        }
 
         public struct TxWithContext
         {

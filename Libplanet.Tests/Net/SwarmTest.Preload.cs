@@ -114,10 +114,10 @@ namespace Libplanet.Tests.Net
             foreach (int i in Enumerable.Range(0, 11))
             {
                 Block<DumbAction> block = TestUtils.MineNext(
-                        previousBlock: i == 0 ? minerChain.Genesis : blocks[i - 1],
-                        hashAlgorithmGetter: minerChain.Policy.GetHashAlgorithm,
-                        difficulty: 1024)
-                    .AttachStateRootHash(minerChain.StateStore, minerChain.Policy);
+                    previousBlock: i == 0 ? minerChain.Genesis : blocks[i - 1],
+                    hashAlgorithmGetter: minerChain.Policy.GetHashAlgorithm,
+                    difficulty: 1024
+                ).AttachStateRootHash(minerChain.Store, minerChain.StateStore, minerChain.Policy);
                 blocks.Add(block);
                 if (i != 10)
                 {
@@ -249,13 +249,13 @@ namespace Libplanet.Tests.Net
             var chain1 = TestUtils.MakeBlockChain(
                 policy,
                 new DefaultStore(null),
-                new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore()),
+                new TrieStateStore(new MemoryKeyValueStore()),
                 renderers: new[] { renderer1 }
             );
             var chain2 = TestUtils.MakeBlockChain(
                 policy,
                 new DefaultStore(null),
-                new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore()),
+                new TrieStateStore(new MemoryKeyValueStore()),
                 renderers: new[] { renderer2 }
             );
             var receiver1 = CreateSwarm(chain1);
@@ -263,7 +263,7 @@ namespace Libplanet.Tests.Net
             var sender = CreateSwarm(TestUtils.MakeBlockChain(
                 policy,
                 new DefaultStore(null),
-                new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore())));
+                new TrieStateStore(new MemoryKeyValueStore())));
 
             int renderCount1 = 0, renderCount2 = 0;
 
@@ -389,7 +389,7 @@ namespace Libplanet.Tests.Net
                         new[] { tx },
                         difficulty: policy.GetNextBlockDifficulty(minerChain),
                         blockInterval: TimeSpan.FromSeconds(1)
-                ).AttachStateRootHash(minerChain.StateStore, minerChain.Policy);
+                ).AttachStateRootHash(minerChain.Store, minerChain.StateStore, minerChain.Policy);
                 minerSwarm.BlockChain.Append(block, false, true, false);
 
                 await receiverSwarm.PreloadAsync(TimeSpan.FromSeconds(1));
@@ -857,7 +857,7 @@ namespace Libplanet.Tests.Net
                 minerChain2.Tip,
                 minerChain2.Policy.GetHashAlgorithm,
                 difficulty: nextDifficulty
-            ).AttachStateRootHash(minerChain2.StateStore, minerChain2.Policy);
+            ).AttachStateRootHash(minerChain2.Store, minerChain2.StateStore, minerChain2.Policy);
             minerChain2.Append(block);
 
             Assert.True(minerChain1.Count > minerChain2.Count);
@@ -916,7 +916,7 @@ namespace Libplanet.Tests.Net
                 TestUtils.MakeBlockChain(
                     policy,
                     new DefaultStore(path: null),
-                    new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore()),
+                    new TrieStateStore(new MemoryKeyValueStore()),
                     genesisBlock: genesisBlock);
 
             BlockChain<DumbAction> receiverChain = MakeBlockChain(genesisBlock1);

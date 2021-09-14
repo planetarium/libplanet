@@ -160,8 +160,7 @@ namespace Libplanet.Tests.Blockchain.Policies
         public async Task GetNextBlockDifficulty()
         {
             var store = new DefaultStore(null);
-            var stateStore =
-                new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore());
+            var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var dateTimeOffset = FixtureEpoch;
             var chain =
                 TestUtils.MakeBlockChain(_policy, store, stateStore, timestamp: dateTimeOffset);

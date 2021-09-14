@@ -16,6 +16,26 @@ To be released.
     static method instead. [[#1492]]
  -  `ActionEvaluator<T>.Evaluate()` method's `block` parameter became to take
     `IPreEvaluationBlock<T>` (was `IBlock<T>`).  [[#1146], [#1164], [#1492]]
+ -  `IStateStore` now requires implementations to be trie.
+    [[#1128], [#1146], [#1492]]
+     -  Added `IStateStore.GetStateRoot()` method.
+     -  Added `IStateStore.PruneStates()` method.
+     -  Removed `IStateStore.SetStates<T>()` method.
+     -  Removed `IStateStore.GetState()` method.
+     -  Removed `IStateStore.ContainsBlockStates()` method.
+     -  Removed `IStateStore.ForkStates<T>()` method.
+ -  `TrieStateStore` no more stores associations between
+    `Block<T>.Hash`/`Block<T>.PreEvaluationHash` and `Block<T>.StateRootHash`,
+    because `Block<T>.StateRootHash` became mandatory.
+    [[#1128], [#1146], [#1492]]
+     -  Added `ITrie.Recorded` property.
+     -  Removed `IKeyValueStore stateHashKeyValueStore` parameter from
+        `TrieStateStore()` constructor.
+     -  Removed `TrieStateStore.GetTrie()` method.
+     -  Removed `TrieStateStore.GetRootHash()` method.
+     -  Replaced `TrieStateStore.PruneStates(IImmutableSet<BlockHash>)` method
+        with `TrieStateStore.PruneStates(IImmutableSet<HashDigest<SHA256>>)`
+        method.
 
 ### Backward-incompatible network protocol changes
 
@@ -52,6 +72,9 @@ To be released.
      -  `PreEvaluationBlock<T>` implements `IPreEvaluationBlock<T>` interface.
      -  `ActionEvaluator<T>.Evaluate()` method's `block` parameter became to
         take `IPreEvaluationBlock<T>` (was `IBlock<T>`).
+ -  Added `StateStoreExtensions` static class.  [[#1128], [#1146], [#1492]]
+ -  Added `StoreExtensions.GetStateRootHash()` extension method.
+    [[#1128], [#1146], [#1492]]
 
 ### Behavioral changes
 
@@ -59,6 +82,7 @@ To be released.
 
 ### CLI tools
 
+[#1128]: https://github.com/planetarium/libplanet/issues/1128
 [#1146]: https://github.com/planetarium/libplanet/issues/1146
 [#1164]: https://github.com/planetarium/libplanet/issues/1164
 [#1492]: https://github.com/planetarium/libplanet/pull/1492

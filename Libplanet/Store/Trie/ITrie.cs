@@ -16,6 +16,12 @@ namespace Libplanet.Store.Trie
         HashDigest<SHA256> Hash { get; }
 
         /// <summary>
+        /// Whether the trie root is recorded in the store.
+        /// </summary>
+        /// <remarks>Empty root is considered as recorded.</remarks>
+        bool Recorded { get; }
+
+        /// <summary>
         /// Stores the <paramref name="value"/> to the
         /// node corresponding to given <paramref name="key"/>.
         /// </summary>

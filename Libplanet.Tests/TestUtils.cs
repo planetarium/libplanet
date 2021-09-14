@@ -355,20 +355,63 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
 
         public static Block<T> AttachStateRootHash<T>(
             this Block<T> block,
+            Func<BlockHash?, HashDigest<SHA256>?> stateRootHashGetter,
             IStateStore stateStore,
             IBlockPolicy<T> policy
         )
-            where T : IAction, new() =>
-                AttachStateRootHash(block, policy.GetHashAlgorithm, stateStore, policy.BlockAction);
+            where T : IAction, new()
+        =>
+            AttachStateRootHash(
+                block,
+                policy.GetHashAlgorithm,
+                stateRootHashGetter,
+                stateStore,
+                policy.BlockAction
+            );
 
         public static Block<T> AttachStateRootHash<T>(
             this Block<T> block,
             HashAlgorithmType hashAlgorithm,
+            Func<BlockHash?, HashDigest<SHA256>?> stateRootHashGetter,
             IStateStore stateStore,
             IAction blockAction
         )
-            where T : IAction, new() =>
-                AttachStateRootHash(block, _ => hashAlgorithm, stateStore, blockAction);
+            where T : IAction, new()
+        =>
+            AttachStateRootHash(
+                block,
+                _ => hashAlgorithm,
+                stateRootHashGetter,
+                stateStore,
+                blockAction
+            );
+
+        public static Block<T> AttachStateRootHash<T>(
+            this Block<T> block,
+            IStore store,
+            IStateStore stateStore,
+            IBlockPolicy<T> policy
+        )
+            where T : IAction, new()
+        =>
+            AttachStateRootHash(
+                block,
+                policy.GetHashAlgorithm,
+                store,
+                stateStore,
+                policy.BlockAction
+            );
+
+        public static Block<T> AttachStateRootHash<T>(
+            this Block<T> block,
+            HashAlgorithmType hashAlgorithm,
+            IStore store,
+            IStateStore stateStore,
+            IAction blockAction
+        )
+            where T : IAction, new()
+        =>
+            AttachStateRootHash(block, _ => hashAlgorithm, store, stateStore, blockAction);
 
         public static string ToString(BitArray bitArray)
         {
@@ -421,6 +464,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             );
             genesisBlock = genesisBlock.AttachStateRootHash(
                 policy.GetHashAlgorithm,
+                store,
                 stateStore,
                 policy.BlockAction
             );
@@ -460,6 +504,23 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         private static Block<T> AttachStateRootHash<T>(
             this Block<T> block,
             HashAlgorithmGetter hashAlgorithmGetter,
+            IStore store,
+            IStateStore stateStore,
+            IAction blockAction
+        )
+            where T : IAction, new()
+        =>
+            block.AttachStateRootHash(
+                hashAlgorithmGetter,
+                store.GetStateRootHash,
+                stateStore,
+                blockAction
+            );
+
+        private static Block<T> AttachStateRootHash<T>(
+            this Block<T> block,
+            HashAlgorithmGetter hashAlgorithmGetter,
+            Func<BlockHash?, HashDigest<SHA256>?> stateRootHashGetter,
             IStateStore stateStore,
             IAction blockAction
         )
@@ -469,7 +530,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 Address address, BlockHash? blockHash, StateCompleter<T> stateCompleter) =>
                 blockHash is null
                     ? null
-                    : stateStore.GetState(ToStateKey(address), blockHash.Value);
+                    : stateStore.GetState(ToStateKey(address), stateRootHashGetter(blockHash));
 
             FungibleAssetValue FungibleAssetValueGetter(
                 Address address,
@@ -483,7 +544,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 }
 
                 IValue value = stateStore.GetState(
-                    ToFungibleAssetKey(address, currency), blockHash.Value);
+                    ToFungibleAssetKey(address, currency), stateRootHashGetter(blockHash));
                 return FungibleAssetValue.FromRawValue(
                     currency,
                     value is Bencodex.Types.Integer i ? i.Value : 0);
@@ -499,12 +560,18 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             var actionEvaluationResult = actionEvaluator
                 .Evaluate(block, StateCompleterSet<T>.Reject)
                 .GetTotalDelta(ToStateKey, ToFungibleAssetKey);
-            stateStore.SetStates(block, actionEvaluationResult);
-            if (stateStore is TrieStateStore trieStateStore)
-            {
-                block = new Block<T>(block, trieStateStore.GetRootHash(block.Hash));
-                stateStore.SetStates(block, actionEvaluationResult);
-            }
+            var prevStateRootHash = block.PreviousHash is BlockHash prevHash
+                ? stateRootHashGetter(prevHash)
+                : null;
+            Assert.True(
+                block.PreviousHash is null || !(prevStateRootHash is null),
+                $"{nameof(block.PreviousHash)} = {block.PreviousHash?.ToString() ?? "(NULL)"};\n" +
+                    $"{nameof(prevStateRootHash)} = {prevStateRootHash?.ToString() ?? "(NULL)"};"
+            );
+            HashDigest<SHA256> stateRootHash =
+                stateStore.Commit(prevStateRootHash, actionEvaluationResult).Hash;
+            Assert.True(stateStore.ContainsStateRoot(stateRootHash));
+            block = new Block<T>(block, stateRootHash);
 
             return block;
         }

@@ -777,7 +777,7 @@ namespace Libplanet.Tests.Net
                 policy2.GetHashAlgorithm,
                 difficulty: (long)chain1.Tip.TotalDifficulty + 1,
                 blockInterval: TimeSpan.FromMilliseconds(1)
-            ).AttachStateRootHash(chain2.StateStore, policy2);
+            ).AttachStateRootHash(chain2.Store, chain2.StateStore, policy2);
             chain2.Append(block3);
             try
             {
@@ -812,14 +812,14 @@ namespace Libplanet.Tests.Net
             var chain = TestUtils.MakeBlockChain(
                 policy,
                 new DefaultStore(null),
-                new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore()),
+                new TrieStateStore(new MemoryKeyValueStore()),
                 renderers: new[] { renderer }
             );
             var miner1 = CreateSwarm(chain);
             var miner2 = CreateSwarm(TestUtils.MakeBlockChain(
                 policy,
                 new DefaultStore(null),
-                new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore())));
+                new TrieStateStore(new MemoryKeyValueStore())));
 
             int renderCount = 0;
 
@@ -860,11 +860,11 @@ namespace Libplanet.Tests.Net
             var chain1 = TestUtils.MakeBlockChain(
                 policy,
                 new DefaultStore(null),
-                new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore()));
+                new TrieStateStore(new MemoryKeyValueStore()));
             var chain2 = TestUtils.MakeBlockChain(
                 policy,
                 new DefaultStore(null),
-                new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore()));
+                new TrieStateStore(new MemoryKeyValueStore()));
 
             var miner1 = CreateSwarm(chain1);
             var miner2 = CreateSwarm(chain2);
@@ -878,7 +878,7 @@ namespace Libplanet.Tests.Net
                 policy.GetHashAlgorithm,
                 difficulty: nextDifficulty,
                 blockInterval: TimeSpan.FromMilliseconds(1)
-            ).AttachStateRootHash(chain2.StateStore, policy);
+            ).AttachStateRootHash(chain2.Store, chain2.StateStore, policy);
             chain2.Append(block);
 
             Assert.True(chain1.Tip.Index > chain2.Tip.Index);
@@ -914,7 +914,7 @@ namespace Libplanet.Tests.Net
             Swarm<Sleep> MakeSwarm() => CreateSwarm(TestUtils.MakeBlockChain(
                 policy,
                 new DefaultStore(null),
-                new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore())));
+                new TrieStateStore(new MemoryKeyValueStore())));
 
             var miner1 = MakeSwarm();
             var miner2 = MakeSwarm();
@@ -1289,15 +1289,15 @@ namespace Libplanet.Tests.Net
 
             var genesisChainA = MakeGenesisChain(
                 new DefaultStore(null),
-                new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore()),
+                new TrieStateStore(new MemoryKeyValueStore()),
                 genesisBlockA);
             var genesisChainB = MakeGenesisChain(
                 new DefaultStore(null),
-                new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore()),
+                new TrieStateStore(new MemoryKeyValueStore()),
                 genesisBlockB);
             var genesisChainC = MakeGenesisChain(
                 new DefaultStore(null),
-                new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore()),
+                new TrieStateStore(new MemoryKeyValueStore()),
                 genesisBlockA);
 
             var swarmA = CreateSwarm(genesisChainA, privateKeyA);
@@ -1486,7 +1486,7 @@ namespace Libplanet.Tests.Net
             {
                 Block<DumbAction> block =
                     TestUtils.MineNext(chain.Tip, chain.Policy.GetHashAlgorithm, difficulty: 1024)
-                        .AttachStateRootHash(chain.StateStore, chain.Policy);
+                        .AttachStateRootHash(chain.Store, chain.StateStore, chain.Policy);
                 chain.Append(block);
             }
 
@@ -1526,7 +1526,7 @@ namespace Libplanet.Tests.Net
             {
                 Block<DumbAction> block =
                     TestUtils.MineNext(chain.Tip, chain.Policy.GetHashAlgorithm, difficulty: 1024)
-                        .AttachStateRootHash(chain.StateStore, chain.Policy);
+                        .AttachStateRootHash(chain.Store, chain.StateStore, chain.Policy);
                 chain.Append(block);
             }
 

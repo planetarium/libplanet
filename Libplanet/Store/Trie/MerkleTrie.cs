@@ -68,7 +68,11 @@ namespace Libplanet.Store.Trie
             _secure = secure;
         }
 
+        /// <inheritdoc cref="ITrie.Hash"/>
         public HashDigest<SHA256> Hash => Root?.Hash() ?? EmptyRootHash;
+
+        /// <inheritdoc cref="ITrie.Recorded"/>
+        public bool Recorded => Root is null || KeyValueStore.Exists(Hash.ToByteArray());
 
         internal INode? Root { get; }
 
