@@ -386,6 +386,10 @@ namespace Libplanet.Blockchain
                 (address, currency, hash, fungibleAssetStateCompleter)
                     => new FungibleAssetValue(currency),
                 null);
+
+            // FIXME: Probably not the best place to have Validate().
+            block.Validate(hashAlgorithm, DateTimeOffset.UtcNow);
+
             var actionEvaluationResult = actionEvaluator
                 .Evaluate(block, StateCompleterSet<T>.Reject)
                 .GetTotalDelta(ToStateKey, ToFungibleAssetKey);
@@ -874,6 +878,8 @@ namespace Libplanet.Blockchain
                     "The block to append is too long in bytes."
                 );
             }
+
+            block.Validate(Policy.GetHashAlgorithm(block.Index), DateTimeOffset.UtcNow);
 
             _rwlock.EnterUpgradeableReadLock();
             Block<T> prevTip = Count > 0 ? Tip : null;

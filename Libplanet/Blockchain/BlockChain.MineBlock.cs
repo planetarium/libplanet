@@ -158,6 +158,9 @@ namespace Libplanet.Blockchain
                 TipChanged -= WatchTip;
             }
 
+            // FIXME: Probably not the best place to have Validate().
+            block.Validate(hashAlgorithm, DateTimeOffset.UtcNow);
+
             IReadOnlyList<ActionEvaluation> actionEvaluations = ActionEvaluator.Evaluate(
                 block, StateCompleterSet<T>.Recalculate);
 

@@ -14,6 +14,8 @@ To be released.
     `Libplanet.Blocks` namespace).  [[#1492]]
  -  Removed `Block<T>.ToBlockDigest()` method.  Use `BlockDigest.FromBlock<T>()`
     static method instead. [[#1492]]
+ -  `ActionEvaluator<T>.Evaluate()` method's `block` parameter became to take
+    `IPreEvaluationBlock<T>` (was `IBlock<T>`).  [[#1146], [#1164], [#1492]]
 
 ### Backward-incompatible network protocol changes
 
@@ -48,6 +50,8 @@ To be released.
  -  Added `IPreEvaluationBlock<T>` interface.  [[#1164], [#1492]]
      -  `Block<T>` became to implement `IPreEvaluationBlock<T>` interface.
      -  `PreEvaluationBlock<T>` implements `IPreEvaluationBlock<T>` interface.
+     -  `ActionEvaluator<T>.Evaluate()` method's `block` parameter became to
+        take `IPreEvaluationBlock<T>` (was `IBlock<T>`).
 
 ### Behavioral changes
 
