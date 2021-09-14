@@ -1,9 +1,17 @@
 #nullable enable
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Security.Cryptography;
 using System.Threading;
+using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Assets;
+using Libplanet.Blockchain;
+using Libplanet.Store;
+using Libplanet.Store.Trie;
 using Libplanet.Tx;
+using static Libplanet.Blockchain.KeyConverters;
 
 namespace Libplanet.Blocks
 {
@@ -111,5 +119,85 @@ namespace Libplanet.Blocks
         /// The internal block content.
         /// </summary>
         private BlockContent<T> Content => (BlockContent<T>)Metadata;
+
+        /// <summary>
+        /// Evaluates all actions in the <see cref="Transactions"/> and
+        /// a <paramref name="blockAction"/> (if any), and determines
+        /// the <see cref="Block{T}.StateRootHash"/> from ground zero (i.e., empty state root).
+        /// </summary>
+        /// <param name="blockAction">An optional
+        /// <see cref="Blockchain.Policies.IBlockPolicy{T}.BlockAction"/>.</param>
+        /// <param name="stateStore">The <see cref="BlockChain{T}.StateStore"/>.</param>
+        /// <returns>The resulting <see cref="Block{T}.StateRootHash"/>.</returns>
+        /// <remarks>This can be used with only genesis blocks.  For blocks with indices greater
+        /// than zero, use <see cref="DetermineStateRootHash(BlockChain{T})"/> overloaded one
+        /// instead.</remarks>
+        public HashDigest<SHA256> DetermineStateRootHash(
+            IAction? blockAction,
+            IStateStore stateStore
+        )
+        {
+            // FIXME: Extract the mutual logic with other overloaded methods into a smaller method.
+            if (Index > 0)
+            {
+                throw new InvalidOperationException(
+                    $"{nameof(DetermineStateRootHash)}({nameof(IAction)}?, {nameof(IStateStore)})" +
+                    " method can be used with only genesis blocks; try other overloaded method" +
+                    " instead."
+                );
+            }
+
+            var actionEvaluator = new ActionEvaluator<T>(
+                _ => HashAlgorithm,
+                blockAction,
+                stateGetter: (address, digest, stateCompleter) => null,
+                balanceGetter: (address, currency, hash, fungibleAssetStateCompleter)
+                    => new FungibleAssetValue(currency),
+                trieGetter: null
+            );
+            IReadOnlyList<ActionEvaluation> actionEvaluations =
+                actionEvaluator.Evaluate(this, StateCompleterSet<T>.Reject);
+            ImmutableDictionary<string, IValue> totalDelta =
+                actionEvaluations.GetTotalDelta(ToStateKey, ToFungibleAssetKey);
+            ITrie trie = stateStore.Commit(stateStore.GetStateRoot(null).Hash, totalDelta);
+            return trie.Hash;
+        }
+
+        /// <summary>
+        /// Evaluates all actions in the <see cref="Transactions"/> and an optional
+        /// <see cref="Blockchain.Policies.IBlockPolicy{T}.BlockAction"/>, and determines
+        /// the <see cref="Block{T}.StateRootHash"/>.
+        /// </summary>
+        /// <param name="blockChain">The blockchain on which actions are evaluated based.</param>
+        /// <returns>The resulting <see cref="Block{T}.StateRootHash"/>.</returns>
+        public HashDigest<SHA256> DetermineStateRootHash(BlockChain<T> blockChain)
+        {
+            // FIXME: Take narrower input instead of a whole BlockChain<T>.
+            blockChain._rwlock.EnterUpgradeableReadLock();
+            try
+            {
+                IReadOnlyList<ActionEvaluation> actionEvaluations =
+                    blockChain.ActionEvaluator.Evaluate(this, StateCompleterSet<T>.Recalculate);
+                ImmutableDictionary<string, IValue> totalDelta =
+                    actionEvaluations.GetTotalDelta(ToStateKey, ToFungibleAssetKey);
+                blockChain._rwlock.EnterWriteLock();
+                try
+                {
+                    ITrie trie = blockChain.StateStore.Commit(
+                        blockChain.Store.GetStateRootHash(PreviousHash),
+                        totalDelta
+                    );
+                    return trie.Hash;
+                }
+                finally
+                {
+                    blockChain._rwlock.ExitWriteLock();
+                }
+            }
+            finally
+            {
+                blockChain._rwlock.ExitUpgradeableReadLock();
+            }
+        }
     }
 }

@@ -1,8 +1,14 @@
 using System;
+using System.Security.Cryptography;
 using Libplanet.Action;
+using Libplanet.Blockchain;
+using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
+using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Fixtures;
+using Libplanet.Tests.Store;
 using Xunit;
+using Xunit.Abstractions;
 using static Libplanet.Tests.TestUtils;
 
 namespace Libplanet.Tests.Blocks
@@ -10,6 +16,13 @@ namespace Libplanet.Tests.Blocks
     // FIXME: The most of the following tests are duplicated in PreEvaluationBlockHeaderTest.
     public class PreEvaluationBlockTest : PreEvaluationBlockHeaderTest
     {
+        private readonly ITestOutputHelper _output;
+
+        public PreEvaluationBlockTest(ITestOutputHelper output)
+        {
+            _output = output;
+        }
+
         [Fact]
         public override void UnsafeConstructor()
         {
@@ -215,6 +228,85 @@ namespace Libplanet.Tests.Blocks
                     preEvaluationHash: _validBlock1Proof.PreEvaluationHash
                 )
             );
+        }
+
+        [Fact]
+        public void DetermineStateRootHash()
+        {
+            Address address = _contents.Tx0InBlock1.Signer;
+            var blockAction = new SetStatesAtBlock(address, (Bencodex.Types.Integer)123, 0);
+            var policy = new BlockPolicy<Arithmetic>(
+                blockAction: blockAction,
+                blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000),
+                minimumDifficulty: 2,
+                difficultyStability: 1
+            );
+            var stagePolicy = new VolatileStagePolicy<Arithmetic>();
+
+            PreEvaluationBlock<Arithmetic> preEvalGenesis =
+                _contents.Genesis.Mine(policy.GetHashAlgorithm(0));
+
+            using (var fx = new DefaultStoreFixture())
+            {
+                HashDigest<SHA256> genesisStateRootHash =
+                    preEvalGenesis.DetermineStateRootHash(blockAction, fx.StateStore);
+                _output.WriteLine("#0 StateRootHash: {0}", genesisStateRootHash);
+                // FIXME: Define a Block<T>() overloaded constructor taking PreEvaluationBlock<T>.
+                var genesis = new Block<Arithmetic>(
+                    preEvalGenesis.Index,
+                    preEvalGenesis.Difficulty,
+                    preEvalGenesis.TotalDifficulty,
+                    preEvalGenesis.Nonce,
+                    preEvalGenesis.Miner,
+                    preEvalGenesis.PreviousHash,
+                    preEvalGenesis.Timestamp,
+                    preEvalGenesis.Transactions,
+                    preEvaluationHash: preEvalGenesis.PreEvaluationHash,
+                    stateRootHash: genesisStateRootHash,
+                    protocolVersion: preEvalGenesis.ProtocolVersion
+                );
+                _output.WriteLine("#1: {0}", genesis);
+
+                var blockChain = new BlockChain<Arithmetic>(
+                    policy,
+                    stagePolicy,
+                    fx.Store,
+                    fx.StateStore,
+                    genesis
+                );
+                AssertBencodexEqual((Bencodex.Types.Integer)123, blockChain.GetState(address));
+
+                HashDigest<SHA256> identicalGenesisStateRootHash =
+                    preEvalGenesis.DetermineStateRootHash(blockChain);
+                AssertBytesEqual(genesisStateRootHash, identicalGenesisStateRootHash);
+
+                BlockContent<Arithmetic> content1 = _contents.Block1;
+                content1.PreviousHash = genesis.Hash;
+                content1.Difficulty = 2;
+                content1.Transactions = new[] { _contents.Tx0InBlock1 };
+                PreEvaluationBlock<Arithmetic> preEval1 = content1.Mine(policy.GetHashAlgorithm(1));
+
+                HashDigest<SHA256> b1StateRootHash = preEval1.DetermineStateRootHash(blockChain);
+                _output.WriteLine("#1 StateRootHash: {0}", b1StateRootHash);
+                // FIXME: Define a Block<T>() overloaded constructor taking PreEvaluationBlock<T>.
+                var block1 = new Block<Arithmetic>(
+                    preEval1.Index,
+                    preEval1.Difficulty,
+                    preEval1.TotalDifficulty,
+                    preEval1.Nonce,
+                    preEval1.Miner,
+                    preEval1.PreviousHash,
+                    preEval1.Timestamp,
+                    preEval1.Transactions,
+                    preEvaluationHash: preEval1.PreEvaluationHash,
+                    stateRootHash: b1StateRootHash,
+                    protocolVersion: preEval1.ProtocolVersion
+                );
+                _output.WriteLine("#1: {0}", block1);
+
+                blockChain.Append(block1);
+                AssertBencodexEqual((Bencodex.Types.Integer)158, blockChain.GetState(address));
+            }
         }
 
         private void AssertBlockContentEquals<T>(
