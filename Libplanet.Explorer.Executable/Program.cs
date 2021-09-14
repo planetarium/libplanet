@@ -352,9 +352,8 @@ If omitted (default) explorer only the local blockchain store.")]
                 blockInterval: TimeSpan.FromMilliseconds(options.BlockIntervalMilliseconds),
                 minimumDifficulty: options.MinimumDifficulty,
                 difficultyBoundDivisor: options.DifficultyBoundDivisor,
-                getMaxTransactionsPerBlock: _ => options.MaxTransactionsPerBlock,
-                maxBlockBytes: options.MaxBlockBytes,
-                maxGenesisBytes: options.MaxGenesisBytes);
+                getMaxBlockBytes: i => i > 0 ? options.MaxBlockBytes : options.MaxGenesisBytes,
+                getMaxTransactionsPerBlock: _ => options.MaxTransactionsPerBlock);
         }
 
         private static async Task StartSwarmAsync(

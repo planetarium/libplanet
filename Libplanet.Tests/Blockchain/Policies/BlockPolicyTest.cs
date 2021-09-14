@@ -55,10 +55,7 @@ namespace Libplanet.Tests.Blockchain.Policies
                 blockAction: null,
                 blockInterval: tenSec,
                 minimumDifficulty: 1024L,
-                difficultyBoundDivisor: 128,
-                maxBlockBytes: 100 * 1024,
-                maxGenesisBytes: 1024 * 1024
-            );
+                difficultyBoundDivisor: 128);
             Assert.Equal(tenSec, a.BlockInterval);
 
             var b = new BlockPolicy<DumbAction>(
@@ -77,10 +74,7 @@ namespace Libplanet.Tests.Blockchain.Policies
                     blockAction: null,
                     blockInterval: tenSec.Negate(),
                     minimumDifficulty: 1024,
-                    difficultyBoundDivisor: 128,
-                    maxBlockBytes: 100 * 1024,
-                    maxGenesisBytes: 1024 * 1024
-                )
+                    difficultyBoundDivisor: 128)
             );
             Assert.Throws<ArgumentOutOfRangeException>(
                 () => new BlockPolicy<DumbAction>(
@@ -91,20 +85,14 @@ namespace Libplanet.Tests.Blockchain.Policies
                     blockAction: null,
                     blockInterval: tenSec,
                     minimumDifficulty: 0,
-                    difficultyBoundDivisor: 128,
-                    maxBlockBytes: 100 * 1024,
-                    maxGenesisBytes: 1024 * 1024
-                )
+                    difficultyBoundDivisor: 128)
             );
             Assert.Throws<ArgumentOutOfRangeException>(() =>
                 new BlockPolicy<DumbAction>(
                     blockAction: null,
                     blockInterval: tenSec,
                     minimumDifficulty: 1024,
-                    difficultyBoundDivisor: 1024,
-                    maxBlockBytes: 100 * 1024,
-                    maxGenesisBytes: 1024 * 1024
-                )
+                    difficultyBoundDivisor: 1024)
             );
         }
 

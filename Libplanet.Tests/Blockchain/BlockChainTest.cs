@@ -51,11 +51,11 @@ namespace Libplanet.Tests.Blockchain
                 .ForContext<BlockChainTest>();
 
             _policy = new BlockPolicy<DumbAction>(
-                new MinerReward(1),
-                maxBlockBytes: 50 * 1024);
+                blockAction: new MinerReward(1),
+                getMaxBlockBytes: _ => 50 * 1024);
             _policyMinTx = new BlockPolicy<DumbAction>(
-                new MinerReward(1),
-                maxBlockBytes: 50 * 1024,
+                blockAction: new MinerReward(1),
+                getMaxBlockBytes: _ => 50 * 1024,
                 getMinTransactionsPerBlock: _ => 1);
             _stagePolicy = new VolatileStagePolicy<DumbAction>();
             _fx = new DefaultStoreFixture(memory: true, blockAction: _policy.BlockAction);

@@ -82,6 +82,9 @@ To be released.
         has been updated accordingly.
  -  Removed `BlockPolicy<T>()` constructor with `int blockIntervalMilliseconds`
     parameter.  Use the one with `TimeSpan? blockInterval` instead.  [[#1485]]
+ -  Replaced `int maxBlockBytes` and `int maxGenesisBytes` parameters from
+    `BlockPolicy<T>()` constructor with `Func<long, int>? getMaxBlockBytes`.
+    [[#1485]]
  -  Removed `TxViolatingBlockPolicyException` class.  [[#1485]]
 
 ### Backward-incompatible network protocol changes
