@@ -1,6 +1,5 @@
 using System;
 using Bencodex.Types;
-using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
@@ -211,7 +210,7 @@ namespace Libplanet.Tests.Blockchain
             ).AttachStateRootHash(store, stateStore, policy);
 
             var policyWithBlockAction = new BlockPolicy<DumbAction>(
-                new SetStatesAtBlock1(),
+                new SetStatesAtBlock(default, (Text)"foo", 1),
                 policy.BlockInterval
             );
             var chain = new BlockChain<DumbAction>(
@@ -222,30 +221,6 @@ namespace Libplanet.Tests.Blockchain
                 genesisBlock
             );
             Assert.Throws<InvalidBlockStateRootHashException>(() => chain.Append(block1));
-        }
-
-        private class SetStatesAtBlock1 : IAction
-        {
-            public SetStatesAtBlock1()
-            {
-            }
-
-            public IValue PlainValue => Null.Value;
-
-            public void LoadPlainValue(IValue plainValue)
-            {
-            }
-
-            public IAccountStateDelta Execute(IActionContext context)
-            {
-                IAccountStateDelta states = context.PreviousStates;
-                if (context.BlockIndex == 1)
-                {
-                    states = states.SetState(default, (Text)"foo");
-                }
-
-                return states;
-            }
         }
     }
 }
