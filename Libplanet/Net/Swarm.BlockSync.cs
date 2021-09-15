@@ -244,6 +244,7 @@ namespace Libplanet.Net
                     blockCompletion.Complete(
                         peers: peersWithExcerpt.Select(pair => pair.Item1).ToList(),
                         blockFetcher: GetBlocksAsync,
+                        singleSessionTimeout: Options.MaxTimeout,
                         cancellationToken: cancellationToken
                     );
 
