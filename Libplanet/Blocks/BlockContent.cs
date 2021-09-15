@@ -20,7 +20,7 @@ namespace Libplanet.Blocks
     /// <see cref="Transaction{T}"/>, this type is mutable.  To get a distinct instance with
     /// partly changed fields, use <see cref="Clone()"/> method and property setters on a copy
     /// instead.</remarks>
-    public sealed class BlockContent<T> : BlockMetadata, ICloneable
+    public sealed class BlockContent<T> : BlockMetadata, IBlockContent<T>, ICloneable
         where T : IAction, new()
     {
         private IReadOnlyList<Transaction<T>> _transactions = ImmutableArray<Transaction<T>>.Empty;

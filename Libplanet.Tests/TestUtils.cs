@@ -257,6 +257,55 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             );
         }
 
+        public static void AssertBlockMetadataEqual(IBlockMetadata expected, IBlockMetadata actual)
+        {
+            Assert.NotNull(expected);
+            Assert.NotNull(actual);
+            Assert.Equal(expected.ProtocolVersion, actual.ProtocolVersion);
+            Assert.Equal(expected.Index, actual.Index);
+            Assert.Equal(expected.Timestamp, actual.Timestamp);
+            AssertBytesEqual(expected.Miner, actual.Miner);
+            Assert.Equal(expected.Difficulty, actual.Difficulty);
+            Assert.Equal(expected.TotalDifficulty, actual.TotalDifficulty);
+            AssertBytesEqual(expected.PreviousHash, actual.PreviousHash);
+            AssertBytesEqual(expected.TxHash, actual.TxHash);
+        }
+
+        public static void AssertBlockContentsEqual<T>(
+            IBlockContent<T> expected,
+            IBlockContent<T> actual
+        )
+            where T : IAction, new()
+        {
+            AssertBlockMetadataEqual(expected, actual);
+            Assert.Equal(expected.Transactions, actual.Transactions);
+        }
+
+        public static void AssertPreEvaluationBlockHeadersEqual(
+            IPreEvaluationBlockHeader expected,
+            IPreEvaluationBlockHeader actual
+        )
+        {
+            AssertBlockMetadataEqual(expected, actual);
+            if (expected is PreEvaluationBlockHeader e && actual is PreEvaluationBlockHeader a)
+            {
+                // FIXME: HashAlgorithm
+                Assert.Same(e.HashAlgorithm, a.HashAlgorithm);
+            }
+
+            AssertBytesEqual(expected.PreEvaluationHash, actual.PreEvaluationHash);
+        }
+
+        public static void AssertPreEvaluationBlocksEqual<T>(
+            IPreEvaluationBlock<T> expected,
+            IPreEvaluationBlock<T> actual
+        )
+            where T : IAction, new()
+        {
+            AssertPreEvaluationBlockHeadersEqual(expected, actual);
+            AssertBlockContentsEqual(expected, actual);
+        }
+
         public static byte[] GetRandomBytes(int size)
         {
             var bytes = new byte[size];

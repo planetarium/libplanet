@@ -56,14 +56,14 @@ namespace Libplanet.Tests.Blocks
             BlockMetadata metadata = _contents.GenesisMetadata.Clone();
             var preEvalBlock =
                 new PreEvaluationBlockHeader(metadata, _sha256, _validGenesisProof);
-            AssertBlockContentEquals(metadata, preEvalBlock);
+            AssertBlockMetadataEqual(metadata, preEvalBlock);
             AssertBytesEqual(_validGenesisProof.Nonce, preEvalBlock.Nonce);
             Assert.Same(_sha256, preEvalBlock.HashAlgorithm);
             AssertBytesEqual(_validGenesisProof.PreEvaluationHash, preEvalBlock.PreEvaluationHash);
 
             metadata = _contents.BlockMetadata1.Clone();
             preEvalBlock = new PreEvaluationBlockHeader(metadata, _sha256, _validBlock1Proof);
-            AssertBlockContentEquals(metadata, preEvalBlock);
+            AssertBlockMetadataEqual(metadata, preEvalBlock);
             AssertBytesEqual(_validBlock1Proof.Nonce, preEvalBlock.Nonce);
             Assert.Same(_sha256, preEvalBlock.HashAlgorithm);
             AssertBytesEqual(_validBlock1Proof.PreEvaluationHash, preEvalBlock.PreEvaluationHash);
@@ -113,7 +113,7 @@ namespace Libplanet.Tests.Blocks
                 nonce: _validGenesisProof.Nonce,
                 preEvaluationHash: _validGenesisProof.PreEvaluationHash
             );
-            AssertBlockContentEquals(metadata, preEvalBlock);
+            AssertBlockMetadataEqual(metadata, preEvalBlock);
             AssertBytesEqual(_validGenesisProof.Nonce, preEvalBlock.Nonce);
             Assert.Same(_sha256, preEvalBlock.HashAlgorithm);
             AssertBytesEqual(_validGenesisProof.PreEvaluationHash, preEvalBlock.PreEvaluationHash);
@@ -125,7 +125,7 @@ namespace Libplanet.Tests.Blocks
                 nonce: _validBlock1Proof.Nonce,
                 preEvaluationHash: _validBlock1Proof.PreEvaluationHash
             );
-            AssertBlockContentEquals(metadata, preEvalBlock);
+            AssertBlockMetadataEqual(metadata, preEvalBlock);
             AssertBytesEqual(_validBlock1Proof.Nonce, preEvalBlock.Nonce);
             Assert.Same(_sha256, preEvalBlock.HashAlgorithm);
             AssertBytesEqual(_validBlock1Proof.PreEvaluationHash, preEvalBlock.PreEvaluationHash);
@@ -163,7 +163,7 @@ namespace Libplanet.Tests.Blocks
                 hashAlgorithm: _sha256,
                 nonce: _validGenesisProof.Nonce
             );
-            AssertBlockContentEquals(metadata, preEvalBlock);
+            AssertBlockMetadataEqual(metadata, preEvalBlock);
             AssertBytesEqual(_validGenesisProof.Nonce, preEvalBlock.Nonce);
             Assert.Same(_sha256, preEvalBlock.HashAlgorithm);
             AssertBytesEqual(_validGenesisProof.PreEvaluationHash, preEvalBlock.PreEvaluationHash);
@@ -174,7 +174,7 @@ namespace Libplanet.Tests.Blocks
                 hashAlgorithm: _sha256,
                 nonce: _validBlock1Proof.Nonce
             );
-            AssertBlockContentEquals(metadata, preEvalBlock);
+            AssertBlockMetadataEqual(metadata, preEvalBlock);
             AssertBytesEqual(_validBlock1Proof.Nonce, preEvalBlock.Nonce);
             Assert.Same(_sha256, preEvalBlock.HashAlgorithm);
             AssertBytesEqual(_validBlock1Proof.PreEvaluationHash, preEvalBlock.PreEvaluationHash);
@@ -237,7 +237,7 @@ namespace Libplanet.Tests.Blocks
                 nonce: _validBlock1Proof.Nonce,
                 preEvaluationHash: _validBlock1Proof.PreEvaluationHash
             );
-            AssertBlockContentEquals(metadataPv0, preEvalBlockPv0);
+            AssertBlockMetadataEqual(metadataPv0, preEvalBlockPv0);
             AssertBytesEqual(_validBlock1Proof.Nonce, preEvalBlockPv0.Nonce);
             Assert.Same(_sha256, preEvalBlockPv0.HashAlgorithm);
             AssertBytesEqual(
@@ -359,23 +359,6 @@ namespace Libplanet.Tests.Blocks
                 fromHex("8e9b97992b99ad6c028ff07e06fdf39caadecbb8d10a2bf9b6f924de38993ce8"),
                 block1.DeriveBlockHash(arbitraryHash)
             );
-        }
-
-        protected void AssertBlockContentEquals(
-            BlockMetadata expected,
-            PreEvaluationBlockHeader actual
-        )
-        {
-            Assert.NotNull(expected);
-            Assert.NotNull(actual);
-            Assert.Equal(expected.ProtocolVersion, actual.ProtocolVersion);
-            Assert.Equal(expected.Index, actual.Index);
-            Assert.Equal(expected.Timestamp, actual.Timestamp);
-            AssertBytesEqual(expected.Miner, actual.Miner);
-            Assert.Equal(expected.Difficulty, actual.Difficulty);
-            Assert.Equal(expected.TotalDifficulty, actual.TotalDifficulty);
-            AssertBytesEqual(expected.PreviousHash, actual.PreviousHash);
-            AssertBytesEqual(expected.TxHash, actual.TxHash);
         }
     }
 }
