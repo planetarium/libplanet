@@ -306,10 +306,10 @@ namespace Libplanet.Explorer.Store
             _store.IterateBlockHashes();
 
         /// <inheritdoc cref="IStore.GetBlock{T}(BlockHash)"/>
-        public Block<T> GetBlock<T>(BlockHash blockHash)
+        public Block<T> GetBlock<T>(HashAlgorithmGetter hashAlgorithmGetter, BlockHash blockHash)
             where T : IAction, new()
         {
-            return _store.GetBlock<T>(blockHash);
+            return _store.GetBlock<T>(hashAlgorithmGetter, blockHash);
         }
 
         public void PutTransaction<T>(Transaction<T> tx)

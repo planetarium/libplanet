@@ -36,7 +36,10 @@ namespace Libplanet.Store
             {
                 foreach (BlockHash blockHash in from.IterateIndexes(chainId))
                 {
-                    Block<NullAction> block = from.GetBlock<NullAction>(blockHash);
+                    Block<NullAction> block = from.GetBlock<NullAction>(
+                        _ => HashAlgorithmType.Of<SHA256>(),  // thunk getter; doesn't matter here
+                        blockHash
+                    );
                     to.PutBlock(block);
                     to.AppendIndex(chainId, blockHash);
                 }

@@ -78,6 +78,7 @@ namespace Libplanet.Blocks
         /// Used for checking <paramref name="nonce"/>.  See also <see cref="Validate"/>.</param>
         /// <param name="stateRootHash">The <see cref="ITrie.Hash"/> of the resulting states after
         /// evaluating transactions and a block action (if exists).</param>
+        /// <param name="hashAlgorithm">The hash algorithm used for PoW mining.</param>
         /// <remarks>
         /// This is only exposed for testing. Should not be used as an entry point to create
         /// a <see cref="BlockHeader"/> instance under normal circumstances.
@@ -94,7 +95,8 @@ namespace Libplanet.Blocks
             HashDigest<SHA256>? txHash,
             BlockHash hash,
             ImmutableArray<byte> preEvaluationHash,
-            HashDigest<SHA256>? stateRootHash)
+            HashDigest<SHA256>? stateRootHash,
+            HashAlgorithmType hashAlgorithm)
         {
             ProtocolVersion = protocolVersion;
             Index = index;
@@ -108,15 +110,18 @@ namespace Libplanet.Blocks
             Hash = hash;
             PreEvaluationHash = preEvaluationHash;
             StateRootHash = stateRootHash;
+            HashAlgorithm = hashAlgorithm;
         }
 
         /// <summary>
         /// Creates a <see cref="BlockHeader"/> instance from its serialization.
         /// </summary>
+        /// <param name="hashAlgorithmGetter">The function to determine hash algorithm used for
+        /// proof-of-work mining.</param>
         /// <param name="dict">The <see cref="Bencodex.Types.Dictionary"/>
         /// representation of <see cref="BlockHeader"/> instance.
         /// </param>
-        public BlockHeader(Bencodex.Types.Dictionary dict)
+        public BlockHeader(HashAlgorithmGetter hashAlgorithmGetter, Bencodex.Types.Dictionary dict)
         {
             ProtocolVersion = dict.ContainsKey(ProtocolVersionKey)
                 ? (int)dict.GetValue<Integer>(ProtocolVersionKey)
@@ -148,6 +153,7 @@ namespace Libplanet.Blocks
                 ? new HashDigest<SHA256>(dict.GetValue<Binary>(StateRootHashKey).ByteArray)
                 : (HashDigest<SHA256>?)null;
 
+            HashAlgorithm = hashAlgorithmGetter(Index);
             Hash = new BlockHash(dict.GetValue<Binary>(HashKey).ByteArray);
         }
 
@@ -197,6 +203,7 @@ namespace Libplanet.Blocks
             TxHash = txHash;
 
             StateRootHash = null;
+            HashAlgorithm = hashAlgorithm;
             byte[] serialized = SerializeForPreEvaluationHash();
             PreEvaluationHash = hashAlgorithm.Digest(serialized).ToImmutableArray();
             Hash = BlockHash.DeriveFrom(serialized);
@@ -228,6 +235,7 @@ namespace Libplanet.Blocks
         /// Used for checking <paramref name="nonce"/>.  See also <see cref="Validate"/>.</param>
         /// <param name="stateRootHash">The <see cref="ITrie.Hash"/> of the resulting states after
         /// evaluating transactions and a block action (if exists).</param>
+        /// <param name="hashAlgorithm">The hash algorithm used for PoW mining.</param>
         internal BlockHeader(
             int protocolVersion,
             long index,
@@ -239,7 +247,9 @@ namespace Libplanet.Blocks
             BlockHash? previousHash,
             HashDigest<SHA256>? txHash,
             ImmutableArray<byte> preEvaluationHash,
-            HashDigest<SHA256>? stateRootHash)
+            HashDigest<SHA256>? stateRootHash,
+            HashAlgorithmType hashAlgorithm
+        )
         {
             // FIXME: Basic sanity check, such as whether stateRootHash is empty or not,
             // to prevent improper usage should be present. For the same reason as
@@ -256,11 +266,15 @@ namespace Libplanet.Blocks
 
             PreEvaluationHash = preEvaluationHash;
             StateRootHash = stateRootHash;
+            HashAlgorithm = hashAlgorithm;
             Hash = BlockHash.DeriveFrom(SerializeForHash());
         }
 
         /// <inheritdoc cref="IBlockMetadata.ProtocolVersion"/>
         public int ProtocolVersion { get; }
+
+        /// <inheritdoc cref="IPreEvaluationBlockHeader.HashAlgorithm"/>
+        public HashAlgorithmType HashAlgorithm { get; }
 
         /// <inheritdoc cref="IBlockMetadata.Index"/>
         public long Index { get; }
@@ -309,11 +323,13 @@ namespace Libplanet.Blocks
         /// <summary>
         /// Gets <see cref="BlockHeader"/> instance from serialized <paramref name="bytes"/>.
         /// </summary>
+        /// <param name="hashAlgorithmGetter">The function to determine hash algorithm used for
+        /// proof-of-work mining.</param>
         /// <param name="bytes">Serialized <see cref="BlockHeader"/>.</param>
         /// <returns>Deserialized <see cref="BlockHeader"/>.</returns>
         /// <exception cref="DecodingException">Thrown when decoded value is not
         /// <see cref="Bencodex.Types.Dictionary"/> type.</exception>
-        public static BlockHeader Deserialize(byte[] bytes)
+        public static BlockHeader Deserialize(HashAlgorithmGetter hashAlgorithmGetter, byte[] bytes)
         {
             IValue value = Codec.Decode(bytes);
             if (!(value is Bencodex.Types.Dictionary dict))
@@ -323,7 +339,7 @@ namespace Libplanet.Blocks
                     $"{value.GetType()}");
             }
 
-            return new BlockHeader(dict);
+            return new BlockHeader(hashAlgorithmGetter, dict);
         }
 
         /// <summary>
@@ -482,12 +498,24 @@ namespace Libplanet.Blocks
                 );
             }
 
+            if (!hashAlgorithm.Equals(HashAlgorithm))
+            {
+                string msg =
+                    $"Policy expects the block #{Index} to use {hashAlgorithm}, " +
+                    $"but block #{Index} {Hash} uses {HashAlgorithm}.";
+                throw new InvalidBlockPreEvaluationHashException(
+                    PreEvaluationHash,
+                    hashAlgorithm.Digest(SerializeForPreEvaluationHash()).ToImmutableArray(),
+                    msg
+                );
+            }
+
             // PreEvaluationHash comparison between the actual and the expected was not
             // implemented in ProtocolVersion == 0.
             if (ProtocolVersion > 0)
             {
                 byte[] expectedPreEvaluationHash =
-                    hashAlgorithm.Digest(SerializeForPreEvaluationHash());
+                    HashAlgorithm.Digest(SerializeForPreEvaluationHash());
                 if (!ByteUtil.TimingSafelyCompare(expectedPreEvaluationHash, PreEvaluationHash))
                 {
                     string message =

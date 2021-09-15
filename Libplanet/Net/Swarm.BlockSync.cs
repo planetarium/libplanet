@@ -353,7 +353,10 @@ namespace Libplanet.Net
                         Block<T> b = node.Value;
                         if (b.PreviousHash is { } p && !workspace.ContainsBlock(p))
                         {
-                            blockToAdd = workspace.Store.GetBlock<T>(p);
+                            blockToAdd = workspace.Store.GetBlock<T>(
+                                BlockChain.Policy.GetHashAlgorithm,
+                                p
+                            );
                         }
                         else
                         {

@@ -284,12 +284,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         )
         {
             AssertBlockMetadataEqual(expected, actual);
-            if (expected is PreEvaluationBlockHeader e && actual is PreEvaluationBlockHeader a)
-            {
-                // FIXME: HashAlgorithm
-                Assert.Same(e.HashAlgorithm, a.HashAlgorithm);
-            }
-
+            Assert.Same(expected.HashAlgorithm, actual.HashAlgorithm);
             AssertBytesEqual(expected.PreEvaluationHash, actual.PreEvaluationHash);
         }
 

@@ -26,7 +26,7 @@ namespace Libplanet.Blocks
         internal static readonly byte[] TransactionsKey = { 0x54 }; // 'T'
 
         private int? _bytesLength = null;
-        private BlockHeader? _header = null;
+        private BlockHeader? _header;
         private ImmutableArray<byte>? _preEvaluationHash = null;
         private BlockHash? _hash = null;
 
@@ -83,17 +83,11 @@ namespace Libplanet.Blocks
             BlockHash? previousHash,
             DateTimeOffset timestamp,
             IReadOnlyList<Transaction<T>> transactions,
-            HashAlgorithmType hashAlgorithm = null,
+            HashAlgorithmType hashAlgorithm,
+            HashDigest<SHA256> stateRootHash,
             ImmutableArray<byte>? preEvaluationHash = null,
-            HashDigest<SHA256>? stateRootHash = null,
             int protocolVersion = CurrentProtocolVersion)
         {
-            if (!(stateRootHash is { } srh))
-            {
-                // FIXME: Refactor constructors.
-                throw new ArgumentNullException(nameof(stateRootHash));
-            }
-
             ProtocolVersion = protocolVersion;
             Index = index;
             Difficulty = difficulty;
@@ -105,7 +99,7 @@ namespace Libplanet.Blocks
             Transactions = transactions.OrderBy(tx => tx.Id).ToArray();
             TxHash = BlockContent<T>.DeriveTxHash(Transactions);
 
-            if (hashAlgorithm is { } ha)
+            if (!(preEvaluationHash is { } peh))
             {
                 var tempHeader = new BlockHeader(
                     protocolVersion: ProtocolVersion,
@@ -117,13 +111,9 @@ namespace Libplanet.Blocks
                     totalDifficulty: TotalDifficulty,
                     previousHash: PreviousHash,
                     txHash: TxHash,
-                    hashAlgorithm: ha);
-                preEvaluationHash = tempHeader.PreEvaluationHash;
+                    hashAlgorithm: hashAlgorithm);
+                peh = tempHeader.PreEvaluationHash;
             }
-
-            ImmutableArray<byte> peh = preEvaluationHash
-                ?? throw new NullReferenceException(
-                    $"Parameter {nameof(preEvaluationHash)} cannot be null.");
 
             _header = new BlockHeader(
                 protocolVersion: ProtocolVersion,
@@ -136,11 +126,13 @@ namespace Libplanet.Blocks
                 previousHash: PreviousHash,
                 txHash: TxHash,
                 preEvaluationHash: peh,
-                stateRootHash: srh
+                stateRootHash: stateRootHash,
+                hashAlgorithm: hashAlgorithm
             );
 
+            HashAlgorithm = hashAlgorithm;
             _preEvaluationHash = Header.PreEvaluationHash;
-            StateRootHash = srh;
+            StateRootHash = stateRootHash;
             _hash = Header.Hash;
 
             // Order transactions for evaluation
@@ -168,6 +160,7 @@ namespace Libplanet.Blocks
                 preEvaluationBlock.PreviousHash,
                 preEvaluationBlock.Timestamp,
                 preEvaluationBlock.Transactions,
+                preEvaluationBlock.HashAlgorithm,
                 preEvaluationHash: preEvaluationBlock.PreEvaluationHash,
                 stateRootHash: stateRootHash,
                 protocolVersion: preEvaluationBlock.ProtocolVersion
@@ -178,12 +171,17 @@ namespace Libplanet.Blocks
         /// <summary>
         /// Creates a <see cref="Block{T}"/> instance from its serialization.
         /// </summary>
+        /// <param name="hashAlgorithmGetter">The function to determine hash algorithm used for
+        /// proof-of-work mining.</param>
         /// <param name="dict">The <see cref="Bencodex.Types.Dictionary"/>
         /// representation of <see cref="Block{T}"/> instance.
         /// </param>
-        public Block(Bencodex.Types.Dictionary dict)
+        public Block(HashAlgorithmGetter hashAlgorithmGetter, Bencodex.Types.Dictionary dict)
         {
-            var header = new BlockHeader(dict.GetValue<Bencodex.Types.Dictionary>(HeaderKey));
+            var header = new BlockHeader(
+                hashAlgorithmGetter,
+                dict.GetValue<Bencodex.Types.Dictionary>(HeaderKey)
+            );
             var txs = dict.ContainsKey((IKey)(Binary)TransactionsKey)
                 ? dict.GetValue<Bencodex.Types.List>(TransactionsKey)
                     .Select(tx => ((Binary)tx).ByteArray)
@@ -211,6 +209,7 @@ namespace Libplanet.Blocks
                 : throw new ArgumentException(
                     $"PreEvaluationHash of {nameof(Header)} cannot be empty.");
 
+            HashAlgorithm = header.HashAlgorithm;
             StateRootHash = header.StateRootHash.Value;
             _hash = header.Hash;
         }
@@ -218,6 +217,9 @@ namespace Libplanet.Blocks
         /// <inheritdoc cref="IBlockMetadata.ProtocolVersion"/>
         [IgnoreDuringEquals]
         public int ProtocolVersion { get; }
+
+        /// <inheritdoc cref="IPreEvaluationBlockHeader.HashAlgorithm"/>
+        public HashAlgorithmType HashAlgorithm { get; }
 
         /// <summary>
         /// The hash digest derived from the whole contents of the block including <see
@@ -308,12 +310,14 @@ namespace Libplanet.Blocks
         /// Decodes a <see cref="Block{T}"/>'s
         /// <a href="https://bencodex.org/">Bencodex</a> representation.
         /// </summary>
+        /// <param name="hashAlgorithmGetter">The function to determine hash algorithm used for
+        /// proof-of-work mining.</param>
         /// <param name="bytes">A <a href="https://bencodex.org/">Bencodex</a>
         /// representation of a <see cref="Block{T}"/>.</param>
         /// <returns>A decoded <see cref="Block{T}"/> object.</returns>
         /// <seealso cref="Serialize()"/>
         [Pure]
-        public static Block<T> Deserialize(byte[] bytes)
+        public static Block<T> Deserialize(HashAlgorithmGetter hashAlgorithmGetter, byte[] bytes)
         {
             IValue value = new Codec().Decode(bytes);
             if (!(value is Bencodex.Types.Dictionary dict))
@@ -323,7 +327,7 @@ namespace Libplanet.Blocks
                     $"{value.GetType()}");
             }
 
-            var block = new Block<T>(dict);
+            var block = new Block<T>(hashAlgorithmGetter, dict);
             block._bytesLength = bytes.Length;
             return block;
         }

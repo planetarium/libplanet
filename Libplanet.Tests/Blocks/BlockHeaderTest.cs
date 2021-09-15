@@ -34,7 +34,8 @@ namespace Libplanet.Tests.Blocks
                 previousHash: _fx.Genesis.PreviousHash,
                 timestamp: _fx.Genesis.Timestamp,
                 preEvaluationHash: _fx.Genesis.PreEvaluationHash,
-                stateRootHash: _fx.Genesis.StateRootHash
+                stateRootHash: _fx.Genesis.StateRootHash,
+                hashAlgorithm: _fx.GetHashAlgorithm(0)
             );
             Bencodex.Types.Dictionary expected = Bencodex.Types.Dictionary.Empty
                 .Add(BlockHeader.IndexKey, 0)
@@ -53,7 +54,10 @@ namespace Libplanet.Tests.Blocks
                 .Add(BlockHeader.PreEvaluationHashKey, _fx.Genesis.PreEvaluationHash)
                 .Add(BlockHeader.StateRootHashKey, _fx.Genesis.StateRootHash.ByteArray);
             AssertBencodexEqual(expected, header.ToBencodex());
-            AssertBencodexEqual(expected, new BlockHeader(expected).ToBencodex());
+            AssertBencodexEqual(
+                expected,
+                new BlockHeader(_fx.GetHashAlgorithm, expected).ToBencodex()
+            );
 
             var random = new Random();
             HashDigest<SHA256> randomHash = random.NextHashDigest<SHA256>();
@@ -70,7 +74,8 @@ namespace Libplanet.Tests.Blocks
                 previousHash: _fx.Genesis.Hash,
                 timestamp: _fx.Next.Timestamp,
                 preEvaluationHash: ImmutableArray<byte>.Empty,
-                stateRootHash: randomHash2
+                stateRootHash: randomHash2,
+                hashAlgorithm: _fx.GetHashAlgorithm(1)
             );
             expected = Bencodex.Types.Dictionary.Empty
                 .Add(BlockHeader.ProtocolVersionKey, 1)
@@ -94,7 +99,10 @@ namespace Libplanet.Tests.Blocks
                 .Add(BlockHeader.TxHashKey, randomHash.ByteArray)
                 .Add(BlockHeader.StateRootHashKey, randomHash2.ByteArray);
             AssertBencodexEqual(expected, header.ToBencodex());
-            AssertBencodexEqual(expected, new BlockHeader(expected).ToBencodex());
+            AssertBencodexEqual(
+                expected,
+                new BlockHeader(_fx.GetHashAlgorithm, expected).ToBencodex()
+            );
         }
 
         [Fact]
@@ -119,7 +127,8 @@ namespace Libplanet.Tests.Blocks
                 previousHash: _fx.Genesis.PreviousHash,
                 timestamp: _fx.Genesis.Timestamp,
                 preEvaluationHash: _fx.Genesis.PreEvaluationHash,
-                stateRootHash: _fx.Genesis.StateRootHash
+                stateRootHash: _fx.Genesis.StateRootHash,
+                hashAlgorithm: _fx.GetHashAlgorithm(0)
             );
 
             Assert.Throws<InvalidBlockHashException>(
@@ -141,7 +150,8 @@ namespace Libplanet.Tests.Blocks
                 previousHash: _fx.Next.PreviousHash,
                 timestamp: _fx.Next.Timestamp,
                 preEvaluationHash: GetRandomBytes(32).ToImmutableArray(),
-                stateRootHash: null
+                stateRootHash: null,
+                hashAlgorithm: _fx.GetHashAlgorithm(_fx.Next.Index)
             );
 
             Assert.Throws<InvalidBlockProtocolVersionException>(() =>
@@ -160,7 +170,8 @@ namespace Libplanet.Tests.Blocks
                 previousHash: _fx.Next.PreviousHash,
                 timestamp: _fx.Next.Timestamp,
                 preEvaluationHash: GetRandomBytes(32).ToImmutableArray(),
-                stateRootHash: null
+                stateRootHash: null,
+                hashAlgorithm: _fx.GetHashAlgorithm(_fx.Next.Index)
             );
 
             Assert.Throws<InvalidBlockProtocolVersionException>(() =>
@@ -173,7 +184,7 @@ namespace Libplanet.Tests.Blocks
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             DateTimeOffset future = now + TimeSpan.FromSeconds(16);
-            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
+            HashAlgorithmType hashAlgorithm = _fx.GetHashAlgorithm(0);
             BlockHeader header = MakeBlockHeader(
                 hashAlgorithm: hashAlgorithm,
                 protocolVersion: 0,
@@ -199,6 +210,7 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void ValidateNonce()
         {
+            HashAlgorithmType hashAlgorithm = _fx.GetHashAlgorithm(_fx.Next.Index);
             var header = new BlockHeader(
                 protocolVersion: 0,
                 index: _fx.Next.Index,
@@ -211,16 +223,18 @@ namespace Libplanet.Tests.Blocks
                 previousHash: _fx.Next.PreviousHash,
                 timestamp: _fx.Next.Timestamp,
                 preEvaluationHash: GetRandomBytes(32).ToImmutableArray(),
-                stateRootHash: null
+                stateRootHash: null,
+                hashAlgorithm: hashAlgorithm
             );
 
             Assert.Throws<InvalidBlockNonceException>(() =>
-                header.Validate(_fx.GetHashAlgorithm(_fx.Next.Index), DateTimeOffset.UtcNow));
+                header.Validate(hashAlgorithm, DateTimeOffset.UtcNow));
         }
 
         [Fact]
         public void ValidateIndex()
         {
+            HashAlgorithmType hashAlgorithm = _fx.GetHashAlgorithm(-1);
             var header = new BlockHeader(
                 protocolVersion: 0,
                 index: -1,
@@ -233,11 +247,12 @@ namespace Libplanet.Tests.Blocks
                 previousHash: _fx.Next.PreviousHash,
                 timestamp: _fx.Next.Timestamp,
                 preEvaluationHash: GetRandomBytes(32).ToImmutableArray(),
-                stateRootHash: null
+                stateRootHash: null,
+                hashAlgorithm: hashAlgorithm
             );
 
             Assert.Throws<InvalidBlockIndexException>(() =>
-                header.Validate(_fx.GetHashAlgorithm(-1), DateTimeOffset.UtcNow));
+                header.Validate(hashAlgorithm, DateTimeOffset.UtcNow));
         }
 
         [Fact]
@@ -257,7 +272,8 @@ namespace Libplanet.Tests.Blocks
                 miner: default,
                 timestamp: now,
                 preEvaluationHash: GetRandomBytes(32).ToImmutableArray(),
-                stateRootHash: null
+                stateRootHash: null,
+                hashAlgorithm: _fx.GetHashAlgorithm(0)
             );
 
             Assert.Throws<InvalidBlockDifficultyException>(() =>
@@ -275,7 +291,8 @@ namespace Libplanet.Tests.Blocks
                 miner: default,
                 timestamp: now,
                 preEvaluationHash: GetRandomBytes(32).ToImmutableArray(),
-                stateRootHash: null
+                stateRootHash: null,
+                hashAlgorithm: _fx.GetHashAlgorithm(10)
             );
 
             Assert.Throws<InvalidBlockDifficultyException>(() =>
@@ -293,7 +310,8 @@ namespace Libplanet.Tests.Blocks
                 miner: default,
                 timestamp: now,
                 preEvaluationHash: GetRandomBytes(32).ToImmutableArray(),
-                stateRootHash: null
+                stateRootHash: null,
+                hashAlgorithm: _fx.GetHashAlgorithm(10)
             );
 
             Assert.Throws<InvalidBlockTotalDifficultyException>(() =>
@@ -317,11 +335,12 @@ namespace Libplanet.Tests.Blocks
                 miner: default,
                 timestamp: now,
                 preEvaluationHash: GetRandomBytes(32).ToImmutableArray(),
-                stateRootHash: null
+                stateRootHash: null,
+                hashAlgorithm: _fx.GetHashAlgorithm(0)
             );
 
             Assert.Throws<InvalidBlockPreviousHashException>(() =>
-                genesisHeader.Validate(HashAlgorithmType.Of<SHA256>(), DateTimeOffset.UtcNow));
+                genesisHeader.Validate(_fx.GetHashAlgorithm(0), DateTimeOffset.UtcNow));
 
             var header = new BlockHeader(
                 protocolVersion: 0,
@@ -335,11 +354,12 @@ namespace Libplanet.Tests.Blocks
                 miner: default,
                 timestamp: now,
                 preEvaluationHash: GetRandomBytes(32).ToImmutableArray(),
-                stateRootHash: null
+                stateRootHash: null,
+                hashAlgorithm: _fx.GetHashAlgorithm(0)
             );
 
             Assert.Throws<InvalidBlockPreviousHashException>(() =>
-                genesisHeader.Validate(HashAlgorithmType.Of<SHA256>(), DateTimeOffset.UtcNow));
+                genesisHeader.Validate(_fx.GetHashAlgorithm(0), DateTimeOffset.UtcNow));
         }
 
         private BlockHeader MakeBlockHeader(
@@ -368,7 +388,8 @@ namespace Libplanet.Tests.Blocks
                 previousHash: previousHash,
                 txHash: txHash,
                 preEvaluationHash: preEvaluationHash,
-                stateRootHash: stateRootHash);
+                stateRootHash: stateRootHash,
+                hashAlgorithm: hashAlgorithm);
         }
     }
 }

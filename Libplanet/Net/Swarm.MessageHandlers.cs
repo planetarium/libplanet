@@ -118,7 +118,7 @@ namespace Libplanet.Net
             }
 
             BlockHeaderReceived.Set();
-            BlockHeader header = message.Header;
+            BlockHeader header = message.GetHeader(BlockChain.Policy.GetHashAlgorithm);
 
             _logger.Information(
                 $"Received {nameof(BlockHeader)} #{{BlockIndex}} {{BlockHash}}.",
@@ -234,7 +234,7 @@ namespace Libplanet.Net
                 _logger.Verbose(logMsg, i, total, hash, identityHex);
                 if (_store.ContainsBlock(hash))
                 {
-                    Block<T> block = _store.GetBlock<T>(hash);
+                    Block<T> block = _store.GetBlock<T>(BlockChain.Policy.GetHashAlgorithm, hash);
                     byte[] payload = block.Serialize();
                     blocks.Add(payload);
                 }

@@ -735,7 +735,10 @@ namespace Libplanet.Net
                     foreach (byte[] payload in payloads)
                     {
                         cancellationToken.ThrowIfCancellationRequested();
-                        Block<T> block = Block<T>.Deserialize(payload);
+                        Block<T> block = Block<T>.Deserialize(
+                            BlockChain.Policy.GetHashAlgorithm,
+                            payload
+                        );
 
                         yield return block;
                         count++;
@@ -941,10 +944,16 @@ namespace Libplanet.Net
                                     return null;
                                 }
                             },
-                            hash => blockChain.Store.GetBlock<T>(hash) is Block<T> b
-                                ? b.Index
-                                : branchingIndex + 1 + downloaded.IndexOf(hash)
-                        );
+                            hash =>
+                            {
+                                Block<T> block = blockChain.Store.GetBlock<T>(
+                                    blockChain.Policy.GetHashAlgorithm,
+                                    hash
+                                );
+                                return block is { } b
+                                    ? b.Index
+                                    : branchingIndex + 1 + downloaded.IndexOf(hash);
+                            });
                     }
                     while (downloaded.Count < totalBlockHashesToDownload);
                 }

@@ -2,6 +2,7 @@ using System.Security.Cryptography;
 using GraphQL;
 using GraphQL.Types;
 using Libplanet.Action;
+using Libplanet.Blockchain;
 using Libplanet.Blocks;
 using Libplanet.Explorer.Interfaces;
 using Libplanet.Store;
@@ -24,12 +25,18 @@ namespace Libplanet.Explorer.GraphTypes
             Field(x => x.Miner, type: typeof(NonNullGraphType<AddressType>));
             Field<BlockType<T>>(
                 "PreviousBlock",
-                resolve: ctx => ctx.Source.PreviousHash is BlockHash h
-                    ? ctx.UserContext[nameof(IBlockChainContext<T>.Store)]
-                        .As<IStore>()
-                        .GetBlock<T>(h)
-                    : null
-            );
+                resolve: ctx =>
+                {
+                    if (!(ctx.Source.PreviousHash is BlockHash h))
+                    {
+                        return null;
+                    }
+
+                    var store = (IStore)ctx.UserContext[nameof(IBlockChainContext<T>.Store)];
+                    var chain =
+                        (BlockChain<T>)ctx.UserContext[nameof(IBlockChainContext<T>.BlockChain)];
+                    return store.GetBlock<T>(chain.Policy.GetHashAlgorithm, h);
+                });
             Field(x => x.Timestamp);
             Field<ByteStringType>(
                 "StateRootHash",

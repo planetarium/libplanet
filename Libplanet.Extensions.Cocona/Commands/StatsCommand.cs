@@ -79,7 +79,9 @@ namespace Libplanet.Extensions.Cocona.Commands
 
             foreach (var hash in hashes)
             {
-                var block = store.GetBlock<Utils.DummyAction>(hash);
+                BlockDigest blockDigest = store.GetBlockDigest(hash) ??
+                    throw Utils.Error($"Failed to load the block {hash}.");
+                BlockHeader block = blockDigest.Header;
                 var perceivedTime = store.GetBlockPerceivedTime(hash);
 
                 Console.WriteLine(
@@ -87,7 +89,7 @@ namespace Libplanet.Extensions.Cocona.Commands
                     $"{block.Hash}," +
                     $"{block.Difficulty}," +
                     $"{block.Miner}," +
-                    $"{block.Transactions.Count}," +
+                    $"{blockDigest.TxIds.Length}," +
                     $"{block.Timestamp.ToUnixTimeMilliseconds()}," +
                     $"{perceivedTime?.ToUnixTimeMilliseconds()}");
             }

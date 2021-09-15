@@ -101,7 +101,7 @@ namespace Libplanet.Store
                 }
             }
 
-            Block<T> fetched = Store.GetBlock<T>(key);
+            Block<T> fetched = Store.GetBlock<T>(_hashAlgorithmGetter, key);
             if (fetched is { })
             {
                 _cache.AddOrUpdate(key, fetched);

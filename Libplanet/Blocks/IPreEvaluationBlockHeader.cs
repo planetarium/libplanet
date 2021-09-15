@@ -15,11 +15,10 @@ namespace Libplanet.Blocks
         /// </summary>
         Nonce Nonce { get; }
 
-        // TODO: HashAlgorithm
-        // <summary>
-        // The hash algorithm used for calculating <see cref="PreEvaluationHash"/>.
-        // </summary>
-        // HashAlgorithmType HashAlgorithm
+        /// <summary>
+        /// The hash algorithm used for calculating <see cref="PreEvaluationHash"/>.
+        /// </summary>
+        HashAlgorithmType HashAlgorithm { get; }
 
         /// <summary>
         /// The hash derived from the block <em>except of</em> its state root hash (i.e., without

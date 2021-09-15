@@ -178,9 +178,7 @@ namespace Libplanet.Blocks
         /// <inheritdoc cref="IBlockMetadata.TxHash"/>
         public HashDigest<SHA256>? TxHash => Metadata.TxHash;
 
-        /// <summary>
-        /// The hash algorithm used for calculating <see cref="PreEvaluationHash"/>.
-        /// </summary>
+        /// <inheritdoc cref="IPreEvaluationBlockHeader.HashAlgorithm"/>
         public HashAlgorithmType HashAlgorithm { get; }
 
         /// <inheritdoc cref="IPreEvaluationBlockHeader.PreEvaluationHash"/>

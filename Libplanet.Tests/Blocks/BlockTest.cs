@@ -216,7 +216,7 @@ namespace Libplanet.Tests.Blocks
                 ByteUtil.Hex(_fx.HasTx.Serialize())
             );
             Block<PolymorphicAction<BaseAction>> actual =
-                Block<PolymorphicAction<BaseAction>>.Deserialize(encoded);
+                Block<PolymorphicAction<BaseAction>>.Deserialize(_fx.GetHashAlgorithm, encoded);
             Assert.Equal(_fx.HasTx, actual);
             Assert.Equal(actual.BytesLength, encoded.Length);
             AssertBytesEqual(_fx.HasTx.Serialize(), encoded);
@@ -261,7 +261,8 @@ namespace Libplanet.Tests.Blocks
                 transactions: _fx.Next.Transactions,
                 preEvaluationHash: _fx.Next.PreEvaluationHash,
                 stateRootHash: default(HashDigest<SHA256>),
-                protocolVersion: _fx.Next.ProtocolVersion
+                protocolVersion: _fx.Next.ProtocolVersion,
+                hashAlgorithm: _fx.GetHashAlgorithm(_fx.Next.Index)
             );
 
             Assert.Throws<InvalidBlockNonceException>(() =>
@@ -420,7 +421,8 @@ namespace Libplanet.Tests.Blocks
                 timestamp: sameBlock1.Timestamp,
                 transactions: sameBlock1.Transactions,
                 preEvaluationHash: sameBlock1.PreEvaluationHash,
-                stateRootHash: sameBlock1.StateRootHash
+                stateRootHash: sameBlock1.StateRootHash,
+                hashAlgorithm: _fx.GetHashAlgorithm(sameBlock1.Index)
             );
             Block<PolymorphicAction<BaseAction>> differentBlock = _fx.Next;
 
@@ -614,6 +616,7 @@ namespace Libplanet.Tests.Blocks
             var txList = (List)blockDict[Block<DumbAction>.TransactionsKey];
 
             var abnormalTxs = new Block<DumbAction>(
+                _fx.GetHashAlgorithm,
                 blockDict.SetItem(
                     Block<DumbAction>.TransactionsKey,
                     (IValue)new List(txList.Take(2))
@@ -626,6 +629,7 @@ namespace Libplanet.Tests.Blocks
             Assert.Equal(abnormalTxs.TxHash, exc.BlockTxHash);
 
             var emptyTxs = new Block<DumbAction>(
+                _fx.GetHashAlgorithm,
                 blockDict.SetItem(
                     Block<DumbAction>.TransactionsKey,
                     (IValue)default(List)
@@ -649,7 +653,8 @@ namespace Libplanet.Tests.Blocks
                 previousHash: _fx.Next.PreviousHash,
                 timestamp: _fx.Next.Timestamp,
                 transactions: _fx.Next.Transactions,
-                stateRootHash: default(HashDigest<SHA256>)
+                stateRootHash: default(HashDigest<SHA256>),
+                hashAlgorithm: _fx.GetHashAlgorithm(_fx.Next.Index)
             );
 
             Assert.Throws<InvalidBlockPreEvaluationHashException>(() =>

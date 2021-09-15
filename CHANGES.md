@@ -25,6 +25,32 @@ To be released.
         constructor instead.
      -  Removed `Block<T>.Mine()` static method.  Use `BlockContent<T>.Mine()`
         and `PreEvaluationBlock<T>.Evaluate()` methods instead.
+ -  `Block<T>` and `BlockHeader` became aware of `HashAlgorithmType` used for
+    proof-of-work mining.  [[#1492]]
+     -  Added `Block<T>.HashAlgorithm` property.
+     -  Added `BlockHeader.HashAlgorithm` property.
+     -  Added `HashAlgorithmGetter hashAlgorithmGetter` parameter to
+        `Block<T>(Bencodex.Types.Dictionary)` overloaded constructor.
+     -  Added `HashAlgorithmGetter hashAlgorithmGetter` parameter to
+        `Block<T>.Deserialize()` static method.
+     -  Removed `BlockHeader(int, long, DateTimeOffset, Nonce, Address, long,
+        BigInteger, BlockHash?, HashDigest<SHA256>?, BlockHash,
+        ImmutableArray<byte>, HashDigest<SHA256>?)` constructor.
+        Use `BlockHeader(int, long, DateTimeOffset, Nonce, Address, long,
+        BigInteger, BlockHash?, HashDigest<SHA256>?, BlockHash,
+        ImmutableArray<byte>, HashDigest<SHA256>?, HashAlgorithmType)`
+        constructor instead.
+     -  Added `HashAlgorithmGetter hashAlgorithmGetter` parameter to
+        `BlockHeader(Bencodex.Types.Dictionary)` overloaded constructor.
+     -  Added `HashAlgorithmGetter hashAlgorithmGetter` parameter to
+        `BlockHeader.Deserialize()` static method.
+     -  Added `HashAlgorithmGetter hashAlgorithmGetter` parameter to
+        `IStore.GetBlock<T>()` method.
+     -  Added `HashAlgorithmGetter hashAlgorithmGetter` parameter to
+        `DelayedRenderer<T>()` constructor.
+     -  Added `HashAlgorithmGetter hashAlgorithmGetter` parameter to
+        `DelayedActionRenderer<T>()` constructor.
+     -  Added `DelayedRenderer<T>.HashAlgorithmGetter` property.
  -  `IStateStore` now requires implementations to be trie.
     [[#1128], [#1146], [#1492]]
      -  Added `IStateStore.GetStateRoot()` method.
@@ -59,6 +85,8 @@ To be released.
  -  Added `BlockDigest.FromBlock<T>()` static method. [[#1492]]
  -  Added `Block<T>(PreEvaluationBlock<T>, HashDigest<SHA256>)` overloaded
     constructor.  [[#1146], [#1164], [#1492]]
+ -  Added `Block<T>.HashAlgorithm` property.  [[#1492]]
+ -  Added `BlockHeader.HashAlgorithm` property.  [[#1492]]
  -  Added `IBlockMetadata` interface.  [[#1164], [#1492]]
      -  `Block<T>` became to implement `IBlockMetadata` interface.
      -  `BlockHeader` became to implement `IBlockMetadata` interface.
@@ -86,6 +114,7 @@ To be released.
  -  Added `StateStoreExtensions` static class.  [[#1128], [#1146], [#1492]]
  -  Added `StoreExtensions.GetStateRootHash()` extension method.
     [[#1128], [#1146], [#1492]]
+ -  Added `DelayedRenderer<T>.HashAlgorithmGetter` property.  [[#1492]]
 
 ### Behavioral changes
 

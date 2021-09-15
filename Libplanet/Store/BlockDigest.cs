@@ -1,6 +1,7 @@
 #nullable enable
 using System.Collections.Immutable;
 using System.Linq;
+using System.Security.Cryptography;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Action;
@@ -41,7 +42,10 @@ namespace Libplanet.Store
         /// </param>
         public BlockDigest(Bencodex.Types.Dictionary dict)
         {
-            Header = new BlockHeader(dict.GetValue<Bencodex.Types.Dictionary>(HeaderKey));
+            Header = new BlockHeader(
+                _ => HashAlgorithmType.Of<SHA256>(),  // thunk getter; doesn't matter here
+                dict.GetValue<Bencodex.Types.Dictionary>(HeaderKey)
+            );
             TxIds = dict.ContainsKey((IKey)(Binary)TransactionIdsKey)
                 ? dict.GetValue<Bencodex.Types.List>(TransactionIdsKey)
                     .Select(txId => ((Binary)txId).ToImmutableArray()).ToImmutableArray()

@@ -68,8 +68,8 @@ namespace Libplanet.Store
         /// <inheritdoc cref="IStore.IterateBlockHashes()"/>
         public abstract IEnumerable<BlockHash> IterateBlockHashes();
 
-        /// <inheritdoc cref="IStore.GetBlock{T}(BlockHash)"/>
-        public Block<T> GetBlock<T>(BlockHash blockHash)
+        /// <inheritdoc cref="IStore.GetBlock{T}"/>
+        public Block<T> GetBlock<T>(HashAlgorithmGetter hashAlgorithmGetter, BlockHash blockHash)
             where T : IAction, new()
         {
             if (GetBlockDigest(blockHash) is BlockDigest blockDigest)
@@ -91,8 +91,9 @@ namespace Libplanet.Store
                         .Select(bytes => GetTransaction<T>(new TxId(bytes.ToArray())))
                         .ToImmutableArray(),
                     preEvaluationHash: preEvaluationHash,
-                    stateRootHash: header.StateRootHash,
-                    protocolVersion: header.ProtocolVersion
+                    stateRootHash: header.StateRootHash.Value,
+                    protocolVersion: header.ProtocolVersion,
+                    hashAlgorithm: hashAlgorithmGetter(header.Index)
                 );
             }
 

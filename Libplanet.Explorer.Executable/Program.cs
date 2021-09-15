@@ -195,7 +195,7 @@ If omitted (default) explorer only the local blockchain store.")]
                         stagePolicy,
                         store,
                         stateStore,
-                        options.GenesisBlock);
+                        options.GetGenesisBlock(policy));
                 Startup.PreloadedSingleton = false;
                 Startup.BlockChainSingleton = blockChain;
                 Startup.StoreSingleton = store;

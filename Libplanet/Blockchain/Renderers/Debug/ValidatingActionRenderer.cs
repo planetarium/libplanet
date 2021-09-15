@@ -7,6 +7,7 @@ using Libplanet.Action;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Store;
+using Libplanet.Tx;
 
 namespace Libplanet.Blockchain.Renderers.Debug
 {
@@ -140,28 +141,38 @@ namespace Libplanet.Blockchain.Renderers.Debug
 
             IBlockPolicy<T> policy = chain.Policy;
             IStore store = chain.Store;
+            InvalidRenderException<T> heterogeneousGenesisError =
+                Error(Records, "Reorg occurred from the chain with different genesis.");
 
             List<IAction> expectedUnrenderedActions = new List<IAction>();
-            Block<T> block = oldTip;
-            while (!block.Equals(branchpoint))
+            BlockDigest block = BlockDigest.FromBlock(oldTip);
+            while (!block.Header.Hash.Equals(branchpoint.Hash))
             {
                 if (policy.BlockAction is IAction blockAction)
                 {
                     expectedUnrenderedActions.Add(blockAction);
                 }
 
+                IEnumerable<Transaction<T>> transactions = block.TxIds.Select(txid =>
+                    store.GetTransaction<T>(new TxId(txid.ToBuilder().ToArray()))
+                );
                 expectedUnrenderedActions.AddRange(
-                    block.Transactions.SelectMany(t => t.Actions).Cast<IAction>().Reverse());
-                block = store.GetBlock<T>(block.PreviousHash ??
-                    throw Error(Records, "Reorg occurred from the chain with different genesis."));
+                    transactions.SelectMany(t => t.Actions).Cast<IAction>().Reverse());
+
+                block = store.GetBlockDigest(
+                    block.Header.PreviousHash ?? throw heterogeneousGenesisError
+                ) ?? throw Error(Records, $"Failed to load block {block.Header.PreviousHash}.");
             }
 
             IEnumerable<IAction> expectedRenderedActionsBuffer = new List<IAction>();
-            block = newTip;
-            while (!block.Equals(branchpoint))
+            block = BlockDigest.FromBlock(newTip);
+            while (!block.Header.Hash.Equals(branchpoint.Hash))
             {
+                IEnumerable<Transaction<T>> transactions = block.TxIds.Select(txid =>
+                    store.GetTransaction<T>(new TxId(txid.ToBuilder().ToArray()))
+                );
                 IEnumerable<IAction> actions =
-                    block.Transactions.SelectMany(t => t.Actions).Cast<IAction>();
+                    transactions.SelectMany(t => t.Actions).Cast<IAction>();
                 if (policy.BlockAction is IAction blockAction)
                 {
 #if NET472 || NET471 || NET47 || NET462 || NET461
@@ -176,8 +187,9 @@ namespace Libplanet.Blockchain.Renderers.Debug
                 }
 
                 expectedRenderedActionsBuffer = actions.Concat(expectedRenderedActionsBuffer);
-                block = store.GetBlock<T>(block.PreviousHash ??
-                    throw Error(Records, "Reorg occurred from the chain with different genesis."));
+                block = store.GetBlockDigest(
+                    block.Header.PreviousHash ?? throw heterogeneousGenesisError
+                ) ?? throw Error(Records, $"Failed to load block {block.Header.PreviousHash}.");
             }
 
             IAction[] expectedRenderedActions = expectedRenderedActionsBuffer.ToArray();

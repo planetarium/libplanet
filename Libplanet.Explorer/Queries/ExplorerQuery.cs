@@ -176,7 +176,7 @@ namespace Libplanet.Explorer.Queries
         }
 
         internal static Block<T> GetBlockByHash(BlockHash hash) =>
-            Store.GetBlock<T>(hash);
+            Store.GetBlock<T>(Chain.Policy.GetHashAlgorithm, hash);
 
         internal static Block<T> GetBlockByIndex(long index)
         {
