@@ -118,30 +118,43 @@ namespace Libplanet.Net
             }
 
             BlockHeaderReceived.Set();
-            BlockHeader header = message.GetHeader(BlockChain.Policy.GetHashAlgorithm);
-
-            _logger.Information(
-                $"Received {nameof(BlockHeader)} #{{BlockIndex}} {{BlockHash}}.",
-                header.Index,
-                header.Hash
-            );
-
-            HashAlgorithmType hashAlgorithm = BlockChain.Policy.GetHashAlgorithm(header.Index);
+            BlockHeader header;
             try
             {
-                header.ValidateTimestamp();
-                header.Validate(hashAlgorithm, DateTimeOffset.UtcNow);
+                header = message.GetHeader(BlockChain.Policy.GetHashAlgorithm);
             }
-            catch (InvalidBlockException ibe)
+            catch (InvalidBlockHeaderException ibe)
             {
                 _logger.Debug(
                     ibe,
                     "Received header #{BlockIndex} {BlockHash} seems invalid; ignored.",
-                    header.Index,
-                    header.Hash
+                    ibe.BlockIndex,
+                    ibe.BlockHash
                 );
                 return;
             }
+
+            try
+            {
+                header.ValidateTimestamp();
+            }
+            catch (InvalidBlockTimestampException e)
+            {
+                _logger.Debug(
+                    e,
+                    "Received #{BlockIndex} {BlockHash}'s timestamp is invalid: {Timestamp}.",
+                    header.Index,
+                    header.Hash,
+                    header.Timestamp
+                );
+                return;
+            }
+
+            _logger.Information(
+                "Received " + nameof(BlockHeader) + " #{BlockIndex} {BlockHash}.",
+                header.Index,
+                header.Hash
+            );
 
             if (!IsBlockNeeded(header))
             {

@@ -561,11 +561,11 @@ namespace Libplanet.Tests.Action
                 Transaction<DumbAction>.Create(0, _txFx.PrivateKey1, null, actions);
             var block = new Block<DumbAction>(
                 index: 1,
-                difficulty: 0,
-                totalDifficulty: 0,
+                difficulty: 1,
+                totalDifficulty: 1,
                 nonce: new Nonce(new byte[0]),
                 miner: addresses[0],
-                previousHash: null,
+                previousHash: default(BlockHash),
                 timestamp: DateTimeOffset.UtcNow,
                 transactions: ImmutableArray.Create(tx),
                 stateRootHash: default(HashDigest<SHA256>),
@@ -708,11 +708,11 @@ namespace Libplanet.Tests.Action
                 trieGetter: null);
             var block = new Block<ThrowException>(
                 index: 123,
-                difficulty: 0,
-                totalDifficulty: 0,
+                difficulty: 1,
+                totalDifficulty: 1,
                 nonce: new Nonce(new byte[0]),
                 miner: GenesisMinerAddress,
-                previousHash: null,
+                previousHash: default(BlockHash),
                 timestamp: DateTimeOffset.UtcNow,
                 transactions: ImmutableArray.Create(tx),
                 stateRootHash: default(HashDigest<SHA256>),

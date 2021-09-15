@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
+using Bencodex;
 using Libplanet.Action;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Tx;
+using static Libplanet.Blocks.BlockMarshaler;
 
 namespace Libplanet.Blockchain
 {
@@ -110,7 +111,7 @@ namespace Libplanet.Blockchain
 
             long index = Count;
             long difficulty = Policy.GetNextBlockDifficulty(this);
-            BlockHash? prevHash = Store.IndexBlockHash(Id, index - 1);
+            BlockHash? prevHash = index > 0 ? Store.IndexBlockHash(Id, index - 1) : null;
 
             int sessionId = new System.Random().Next();
             int processId = Process.GetCurrentProcess().Id;
@@ -125,7 +126,18 @@ namespace Libplanet.Blockchain
 
             HashAlgorithmType hashAlgorithm = Policy.GetHashAlgorithm(index);
 
+            var metadata = new BlockMetadata
+            {
+                Index = index,
+                Difficulty = difficulty,
+                TotalDifficulty = Tip.TotalDifficulty + difficulty,
+                Miner = miner,
+                PreviousHash = prevHash,
+                Timestamp = timestamp,
+            };
+
             var transactionsToMine = GatherTransactionsToMine(
+                metadata,
                 maxTransactions: maxTransactions,
                 maxTransactionsPerSigner: maxTransactionsPerSigner,
                 txPriority: txPriority
@@ -139,17 +151,7 @@ namespace Libplanet.Blockchain
                 index,
                 transactionsToMine.Count);
 
-            var blockContent = new BlockContent<T>
-            {
-                Index = index,
-                Difficulty = difficulty,
-                TotalDifficulty = Tip.TotalDifficulty + difficulty,
-                Miner = miner,
-                PreviousHash = prevHash,
-                Timestamp = timestamp,
-                Transactions = transactionsToMine,
-            };
-
+            var blockContent = new BlockContent<T>(metadata) { Transactions = transactionsToMine };
             PreEvaluationBlock<T> preEval;
             try
             {
@@ -203,6 +205,7 @@ namespace Libplanet.Blockchain
         /// Gathers <see cref="Transaction{T}"/>s for mining a next block
         /// from the current set of staged <see cref="Transaction{T}"/>s.
         /// </summary>
+        /// <param name="metadata">The metadata of the block to be mined.</param>
         /// <param name="maxTransactions">The maximum number of <see cref="Transaction{T}"/>s
         /// allowed.</param>
         /// <param name="maxTransactionsPerSigner">The maximum number of
@@ -214,6 +217,7 @@ namespace Libplanet.Blockchain
         /// <see cref="Transaction{T}"/>s in the list for each signer not exceeding
         /// <paramref name="maxTransactionsPerSigner"/>.</returns>
         internal ImmutableList<Transaction<T>> GatherTransactionsToMine(
+            BlockMetadata metadata,
             int maxTransactions,
             int maxTransactionsPerSigner,
             IComparer<Transaction<T>> txPriority = null
@@ -232,22 +236,26 @@ namespace Libplanet.Blockchain
             // FIXME: The tx collection timeout should be configurable.
             DateTimeOffset timeout = DateTimeOffset.UtcNow + TimeSpan.FromSeconds(4);
 
-            BlockHash? prevHash = Count > 0 ? Tip.Hash : (BlockHash?)null;
             HashAlgorithmType hashAlgorithm = Policy.GetHashAlgorithm(index);
 
-            // Makes an empty block to estimate the length of bytes without transactions.
-            int estimatedBytes = new Block<T>(
-                index: default,
-                difficulty: default,
-                totalDifficulty: default,
-                nonce: default,
-                miner: default,
-                previousHash: prevHash,
-                timestamp: default,
-                transactions: new Transaction<T>[0],
-                hashAlgorithm: hashAlgorithm,
-                stateRootHash: default(HashDigest<SHA256>)
-            ).BytesLength;
+            // Makes an empty block payload to estimate the length of bytes without transactions.
+            Bencodex.Types.Dictionary marshaledEmptyBlock = MarshalBlock(
+                marshaledBlockHeader: MarshalBlockHeader(
+                    marshaledPreEvaluatedBlockHeader: MarshalPreEvaluationBlockHeader(
+                        marshaledMetadata: MarshalBlockMetadata(metadata),
+                        nonce: default,
+                        preEvaluationHash: new byte[hashAlgorithm.DigestSize].ToImmutableArray()
+                    ),
+                    stateRootHash: default,
+                    hash: default
+                ),
+                marshaledTransactions: BlockMarshaler.MarshalTransactions(
+                    Array.Empty<Transaction<T>>()
+                )
+            );
+            var codec = new Codec();
+            byte[] emptyBlockPayload = codec.Encode(marshaledEmptyBlock);
+            int estimatedBytes = emptyBlockPayload.Length;
             int maxBlockBytes = Policy.GetMaxBlockBytes(index);
 
             var storedNonces = new Dictionary<Address, long>();

@@ -34,20 +34,6 @@ namespace Libplanet.Action
         internal static readonly AccountBalanceGetter NullAccountBalanceGetter =
             (address, currency) => new FungibleAssetValue(currency);
 
-        // FIXME: Although used for dummy context, this can be confusing.
-        internal static readonly Block<T> NullBlock = new Block<T>(
-            index: 0,
-            difficulty: 0,
-            totalDifficulty: 0,
-            nonce: new Nonce(new byte[0]),
-            miner: new Address(new byte[Address.Size]),
-            previousHash: null,
-            timestamp: DateTimeOffset.UtcNow,
-            transactions: ImmutableArray<Transaction<T>>.Empty,
-            hashAlgorithm: HashAlgorithmType.Of<SHA256>(),
-            stateRootHash: default(HashDigest<SHA256>)
-        );
-
         private static readonly ILogger _logger = Log.ForContext<ActionEvaluator<T>>();
         private readonly HashAlgorithmGetter _hashAlgorithmGetter;
         private readonly IAction? _policyBlockAction;
@@ -150,12 +136,12 @@ namespace Libplanet.Action
                 NullAccountStateGetter,
                 NullAccountBalanceGetter,
                 tx.Signer);
-            IEnumerable<ActionEvaluation> evaluations = ActionEvaluator<T>.EvaluateActions(
-                preEvaluationHash: NullBlock.PreEvaluationHash,
-                blockIndex: NullBlock.Index,
+            IEnumerable<ActionEvaluation> evaluations = EvaluateActions(
+                preEvaluationHash: ImmutableArray<byte>.Empty,
+                blockIndex: default,
                 txid: tx.Id,
                 previousStates: previousStates,
-                miner: NullBlock.Miner,
+                miner: default,
                 signer: tx.Signer,
                 signature: tx.Signature,
                 actions: tx.Actions.Cast<IAction>().ToImmutableList(),

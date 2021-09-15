@@ -91,7 +91,7 @@ namespace Libplanet.Store
                         .Select(bytes => GetTransaction<T>(new TxId(bytes.ToArray())))
                         .ToImmutableArray(),
                     preEvaluationHash: preEvaluationHash,
-                    stateRootHash: header.StateRootHash.Value,
+                    stateRootHash: header.StateRootHash,
                     protocolVersion: header.ProtocolVersion,
                     hashAlgorithm: hashAlgorithmGetter(header.Index)
                 );

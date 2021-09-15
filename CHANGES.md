@@ -16,8 +16,8 @@ To be released.
     static method instead. [[#1492]]
  -  `ActionEvaluator<T>.Evaluate()` method's `block` parameter became to take
     `IPreEvaluationBlock<T>` (was `IBlock<T>`).  [[#1146], [#1164], [#1492]]
- -  `Block<T>` now guarantees that every instance has its `StateRootHash`.
-    [[#1128], [#1146], [#1492]]
+ -  `Block<T>` and `BlockHeader` now guarantee that their every instance has
+    its `StateRootHash`.  [[#1128], [#1146], [#1492]]
      -  `Block<T>.StateRootHash` property's type became `HashDigest<SHA256>`
         (was `HashDigest<SHA256>?`).
      -  Removed `Block<T>(Block<T>, HashDigest<SHA256>)` overloaded constructor.
@@ -25,6 +25,15 @@ To be released.
         constructor instead.
      -  Removed `Block<T>.Mine()` static method.  Use `BlockContent<T>.Mine()`
         and `PreEvaluationBlock<T>.Evaluate()` methods instead.
+     -  `BlockHeader.StateRootHash` property's type became `HashDigest<SHA256>`
+        (was `HashDigest<SHA256>?`).
+     -  Removed `BlockHeader(int, long, DateTimeOffset, Nonce, Address, long,
+        BigInteger, BlockHash?, HashDigest<SHA256>?, BlockHash,
+        ImmutableArray<byte>, HashDigest<SHA256>?)` constructor.
+        Use `BlockHeader(int, long, DateTimeOffset, Nonce, Address, long,
+        BigInteger, BlockHash?, HashDigest<SHA256>?, BlockHash,
+        ImmutableArray<byte>, HashDigest<SHA256>, HashAlgorithmType)`
+        constructor instead.
  -  `Block<T>` and `BlockHeader` became aware of `HashAlgorithmType` used for
     proof-of-work mining.  [[#1492]]
      -  Added `Block<T>.HashAlgorithm` property.
@@ -38,7 +47,7 @@ To be released.
         ImmutableArray<byte>, HashDigest<SHA256>?)` constructor.
         Use `BlockHeader(int, long, DateTimeOffset, Nonce, Address, long,
         BigInteger, BlockHash?, HashDigest<SHA256>?, BlockHash,
-        ImmutableArray<byte>, HashDigest<SHA256>?, HashAlgorithmType)`
+        ImmutableArray<byte>, HashDigest<SHA256>, HashAlgorithmType)`
         constructor instead.
      -  Added `HashAlgorithmGetter hashAlgorithmGetter` parameter to
         `BlockHeader(Bencodex.Types.Dictionary)` overloaded constructor.
@@ -78,6 +87,10 @@ To be released.
 
 ### Added APIs
 
+ -  Added `BlockHeader(int, long, DateTimeOffset, Nonce, Address, long,
+    BigInteger, BlockHash?, HashDigest<SHA256>?, BlockHash,
+    ImmutableArray<byte>, HashDigest<SHA256>, HashAlgorithmType)` constructor.
+    [[#1492]]
  -  Added `BlockMetadata` class.  [[#1164], [#1492]]
  -  Added `BlockContent<T>` class.  [[#1164], [#1492]]
  -  Added `PreEvaluationBlockHeader` class.  [[#1146], [#1164], [#1492]]
@@ -111,11 +124,16 @@ To be released.
      -  `PreEvaluationBlock<T>` implements `IPreEvaluationBlock<T>` interface.
      -  `ActionEvaluator<T>.Evaluate()` method's `block` parameter became to
         take `IPreEvaluationBlock<T>` (was `IBlock<T>`).
+ -  Added `IBlockHeader` interface.  [[#1146], [#1164], [#1492]]
+     -  `Block<T>` became to implement `IBlockHeader` interface.
+     -  `BlockHeader` became to implement `BlockHeader` interface.
  -  Added `BlockMetadataExtensions` static class.  [[#1164], [#1492]]
+ -  Added `BlockMarshaler` static class.  [[#1164], [#1492]]
  -  Added `StateStoreExtensions` static class.  [[#1128], [#1146], [#1492]]
  -  Added `StoreExtensions.GetStateRootHash()` extension method.
     [[#1128], [#1146], [#1492]]
  -  Added `DelayedRenderer<T>.HashAlgorithmGetter` property.  [[#1492]]
+ -  Added `InvalidBlockHeaderException` class.  [[#1164], [#1492]]
 
 ### Behavioral changes
 

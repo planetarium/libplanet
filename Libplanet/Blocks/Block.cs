@@ -14,7 +14,7 @@ using Libplanet.Tx;
 namespace Libplanet.Blocks
 {
     [Equals]
-    public class Block<T> : IPreEvaluationBlock<T>, IBlockExcerpt
+    public class Block<T> : IPreEvaluationBlock<T>, IBlockHeader
         where T : IAction, new()
     {
         /// <summary>
@@ -101,7 +101,25 @@ namespace Libplanet.Blocks
 
             if (!(preEvaluationHash is { } peh))
             {
-                var tempHeader = new BlockHeader(
+                var content = new BlockContent<T>
+                {
+                    ProtocolVersion = ProtocolVersion,
+                    Index = Index,
+                    Timestamp = Timestamp,
+                    Miner = Miner,
+                    Difficulty = Difficulty,
+                    TotalDifficulty = TotalDifficulty,
+                    PreviousHash = PreviousHash,
+                    Transactions = Transactions,
+                    TxHash = TxHash,
+                };
+                var preEval = new PreEvaluationBlock<T>(content, hashAlgorithm, Nonce);
+                peh = preEval.PreEvaluationHash;
+            }
+
+            try
+            {
+                _header = new BlockHeader(
                     protocolVersion: ProtocolVersion,
                     index: Index,
                     timestamp: Timestamp,
@@ -111,24 +129,15 @@ namespace Libplanet.Blocks
                     totalDifficulty: TotalDifficulty,
                     previousHash: PreviousHash,
                     txHash: TxHash,
-                    hashAlgorithm: hashAlgorithm);
-                peh = tempHeader.PreEvaluationHash;
+                    preEvaluationHash: peh,
+                    stateRootHash: stateRootHash,
+                    hashAlgorithm: hashAlgorithm
+                );
             }
-
-            _header = new BlockHeader(
-                protocolVersion: ProtocolVersion,
-                index: Index,
-                timestamp: Timestamp,
-                nonce: Nonce,
-                miner: Miner,
-                difficulty: Difficulty,
-                totalDifficulty: TotalDifficulty,
-                previousHash: PreviousHash,
-                txHash: TxHash,
-                preEvaluationHash: peh,
-                stateRootHash: stateRootHash,
-                hashAlgorithm: hashAlgorithm
-            );
+            catch (InvalidBlockHeaderException e)
+            {
+                throw e.InnerException ?? e;
+            }
 
             HashAlgorithm = hashAlgorithm;
             _preEvaluationHash = Header.PreEvaluationHash;
@@ -178,10 +187,19 @@ namespace Libplanet.Blocks
         /// </param>
         public Block(HashAlgorithmGetter hashAlgorithmGetter, Bencodex.Types.Dictionary dict)
         {
-            var header = new BlockHeader(
-                hashAlgorithmGetter,
-                dict.GetValue<Bencodex.Types.Dictionary>(HeaderKey)
-            );
+            BlockHeader header;
+            try
+            {
+                header = new BlockHeader(
+                    hashAlgorithmGetter,
+                    dict.GetValue<Bencodex.Types.Dictionary>(HeaderKey)
+                );
+            }
+            catch (InvalidBlockHeaderException e)
+            {
+                throw e.InnerException ?? e;
+            }
+
             var txs = dict.ContainsKey((IKey)(Binary)TransactionsKey)
                 ? dict.GetValue<Bencodex.Types.List>(TransactionsKey)
                     .Select(tx => ((Binary)tx).ByteArray)
@@ -210,7 +228,7 @@ namespace Libplanet.Blocks
                     $"PreEvaluationHash of {nameof(Header)} cannot be empty.");
 
             HashAlgorithm = header.HashAlgorithm;
-            StateRootHash = header.StateRootHash.Value;
+            StateRootHash = header.StateRootHash;
             _hash = header.Hash;
         }
 
@@ -237,12 +255,7 @@ namespace Libplanet.Blocks
         public ImmutableArray<byte> PreEvaluationHash => _preEvaluationHash
             ?? throw new InvalidOperationException("PreEvaluationHash is has not been set.");
 
-        /// <summary>
-        /// The <see cref="ITrie.Hash"/> of the resulting states after evaluating
-        /// <see cref="Transactions"/> and
-        /// a <see cref="Blockchain.Policies.IBlockPolicy{T}.BlockAction"/> (if exists).
-        /// </summary>
-        /// <seealso cref="ITrie.Hash"/>
+        /// <inheritdoc cref="IBlockHeader.StateRootHash"/>
         public HashDigest<SHA256> StateRootHash { get; }
 
         /// <inheritdoc cref="IBlockMetadata.Index"/>
@@ -416,7 +429,7 @@ namespace Libplanet.Blocks
         /// </exception>
         internal void Validate(HashAlgorithmType hashAlgorithm, DateTimeOffset currentTime)
         {
-            Header.Validate(hashAlgorithm, currentTime);
+            Header.Validate();
 
             foreach (Transaction<T> tx in Transactions)
             {

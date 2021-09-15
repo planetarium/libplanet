@@ -26,6 +26,8 @@
     "secp256k1",
     "struct",
     "txid",
+    "unmarshal",
+    "unmarshaling",
     "unstage",
     "unstaged",
     "unrender",

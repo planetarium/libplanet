@@ -659,7 +659,7 @@ namespace Libplanet.Tests.Blockchain
 
             // Test if minTransactions and minTransactionsPerSigner work:
             ImmutableList<Transaction<DumbAction>> gathered =
-                _blockChain.GatherTransactionsToMine(5, 3);
+                _blockChain.GatherTransactionsToMine(new BlockMetadata(), 5, 3);
             Assert.Equal(5, gathered.Count);
             var expectedNonces = new Dictionary<Address, long> { [a] = 0, [b] = 0, [c] = 0 };
             foreach (Transaction<DumbAction> tx in gathered)
@@ -678,7 +678,7 @@ namespace Libplanet.Tests.Blockchain
                     int rank2 = tx2.Signer.Equals(a) ? 0 : (tx2.Signer.Equals(b) ? 1 : 2);
                     return rank1.CompareTo(rank2);
                 });
-            gathered = _blockChain.GatherTransactionsToMine(8, 3, txPriority);
+            gathered = _blockChain.GatherTransactionsToMine(new BlockMetadata(), 8, 3, txPriority);
             Assert.Equal(
                 txsA.Concat(txsB.Take(3)).Concat(txsC).Select(tx => tx.Id).ToArray(),
                 gathered.Select(tx => tx.Id).ToArray()

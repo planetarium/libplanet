@@ -848,6 +848,33 @@ namespace Libplanet.Blockchain
                 );
             }
 
+            HashAlgorithmType expectedHashAlgorithm = Policy.GetHashAlgorithm(block.Index);
+            if (!block.HashAlgorithm.Equals(expectedHashAlgorithm))
+            {
+                var metadata = new BlockMetadata
+                {
+                    Index = block.Index,
+                    Difficulty = block.Difficulty,
+                    Miner = block.Miner,
+                    PreviousHash = block.PreviousHash,
+                    ProtocolVersion = block.ProtocolVersion,
+                    Timestamp = block.Timestamp,
+                    TotalDifficulty = block.TotalDifficulty,
+                    TxHash = block.TxHash,
+                };
+                var preEvalBlock =
+                    new PreEvaluationBlockHeader(metadata, expectedHashAlgorithm, block.Nonce);
+                string msg =
+                    $"According to the policy, block #{block.Index} has to use " +
+                    $"{expectedHashAlgorithm}.  However, block #{block.Index} {block.Hash} " +
+                    $"uses {block.HashAlgorithm}.";
+                throw new InvalidBlockPreEvaluationHashException(
+                    block.PreEvaluationHash,
+                    preEvalBlock.PreEvaluationHash,
+                    msg
+                );
+            }
+
             block.ValidateTimestamp();
             block.Validate(Policy.GetHashAlgorithm(block.Index), DateTimeOffset.UtcNow);
 

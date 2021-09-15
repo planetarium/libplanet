@@ -14,7 +14,7 @@ namespace Libplanet.Blocks
     /// <summary>
     /// Block header containing information about <see cref="Block{T}"/>s except transactions.
     /// </summary>
-    public readonly struct BlockHeader : IPreEvaluationBlockHeader, IBlockExcerpt
+    public readonly struct BlockHeader : IBlockHeader
     {
         internal static readonly byte[] ProtocolVersionKey = { 0x00 };
 
@@ -92,7 +92,7 @@ namespace Libplanet.Blocks
             HashDigest<SHA256>? txHash,
             BlockHash hash,
             ImmutableArray<byte> preEvaluationHash,
-            HashDigest<SHA256>? stateRootHash,
+            HashDigest<SHA256> stateRootHash,
             HashAlgorithmType hashAlgorithm)
         {
             ProtocolVersion = protocolVersion;
@@ -108,6 +108,15 @@ namespace Libplanet.Blocks
             PreEvaluationHash = preEvaluationHash;
             StateRootHash = stateRootHash;
             HashAlgorithm = hashAlgorithm;
+
+            try
+            {
+                Validate();
+            }
+            catch (InvalidBlockException e)
+            {
+                throw new InvalidBlockHeaderException(Index, Hash, e.Message, e);
+            }
         }
 
         /// <summary>
@@ -146,12 +155,20 @@ namespace Libplanet.Blocks
                 ? dict.GetValue<Binary>(PreEvaluationHashKey).ToImmutableArray()
                 : ImmutableArray<byte>.Empty;
 
-            StateRootHash = dict.ContainsKey((IKey)(Binary)StateRootHashKey)
-                ? new HashDigest<SHA256>(dict.GetValue<Binary>(StateRootHashKey).ByteArray)
-                : (HashDigest<SHA256>?)null;
+            StateRootHash =
+                new HashDigest<SHA256>(dict.GetValue<Binary>(StateRootHashKey).ByteArray);
 
             HashAlgorithm = hashAlgorithmGetter(Index);
             Hash = new BlockHash(dict.GetValue<Binary>(HashKey).ByteArray);
+
+            try
+            {
+                Validate();
+            }
+            catch (InvalidBlockException e)
+            {
+                throw new InvalidBlockHeaderException(Index, Hash, e.Message, e);
+            }
         }
 
         /// <summary>
@@ -176,6 +193,7 @@ namespace Libplanet.Blocks
         /// Goes to <see cref="PreviousHash"/>.</param>
         /// <param name="txHash">The result of hashing the transactions the block has.
         /// Goes to <see cref="TxHash"/>.</param>
+        /// <param name="stateRootHash">The state root hash.</param>
         /// <param name="hashAlgorithm">The proof-of-work hash algorithm.</param>
         internal BlockHeader(
             int protocolVersion,
@@ -187,6 +205,7 @@ namespace Libplanet.Blocks
             BigInteger totalDifficulty,
             BlockHash? previousHash,
             HashDigest<SHA256>? txHash,
+            HashDigest<SHA256> stateRootHash,
             HashAlgorithmType hashAlgorithm)
         {
             ProtocolVersion = protocolVersion;
@@ -199,11 +218,20 @@ namespace Libplanet.Blocks
             PreviousHash = previousHash;
             TxHash = txHash;
 
-            StateRootHash = null;
+            StateRootHash = stateRootHash;
             HashAlgorithm = hashAlgorithm;
             byte[] serialized = SerializeForPreEvaluationHash();
             PreEvaluationHash = hashAlgorithm.Digest(serialized).ToImmutableArray();
             Hash = BlockHash.DeriveFrom(serialized);
+
+            try
+            {
+                Validate();
+            }
+            catch (InvalidBlockException e)
+            {
+                throw new InvalidBlockHeaderException(Index, Hash, e.Message, e);
+            }
         }
 
         /// <summary>
@@ -244,7 +272,7 @@ namespace Libplanet.Blocks
             BlockHash? previousHash,
             HashDigest<SHA256>? txHash,
             ImmutableArray<byte> preEvaluationHash,
-            HashDigest<SHA256>? stateRootHash,
+            HashDigest<SHA256> stateRootHash,
             HashAlgorithmType hashAlgorithm
         )
         {
@@ -265,6 +293,15 @@ namespace Libplanet.Blocks
             StateRootHash = stateRootHash;
             HashAlgorithm = hashAlgorithm;
             Hash = BlockHash.DeriveFrom(SerializeForHash());
+
+            try
+            {
+                Validate();
+            }
+            catch (InvalidBlockException e)
+            {
+                throw new InvalidBlockHeaderException(Index, Hash, e.Message, e);
+            }
         }
 
         /// <inheritdoc cref="IBlockMetadata.ProtocolVersion"/>
@@ -310,12 +347,8 @@ namespace Libplanet.Blocks
         /// <inheritdoc cref="IPreEvaluationBlockHeader.PreEvaluationHash"/>
         public ImmutableArray<byte> PreEvaluationHash { get; }
 
-        /// <summary>
-        /// The <see cref="ITrie.Hash"/> of the resulting states after evaluating transactions and
-        /// a <see cref="Blockchain.Policies.IBlockPolicy{T}.BlockAction"/> (if exists).
-        /// </summary>
-        /// <seealso cref="ITrie.Hash"/>
-        public HashDigest<SHA256>? StateRootHash { get; }
+        /// <inheritdoc cref="IBlockHeader.StateRootHash"/>
+        public HashDigest<SHA256> StateRootHash { get; }
 
         /// <summary>
         /// Gets <see cref="BlockHeader"/> instance from serialized <paramref name="bytes"/>.
@@ -394,7 +427,7 @@ namespace Libplanet.Blocks
             return dict;
         }
 
-        internal void Validate(HashAlgorithmType hashAlgorithm, DateTimeOffset currentTime)
+        internal void Validate()
         {
             if (ProtocolVersion < 0)
             {
@@ -410,8 +443,6 @@ namespace Libplanet.Blocks
                     $"the highest known version is {CurrentProtocolVersion}.";
                 throw new InvalidBlockProtocolVersionException(ProtocolVersion, message);
             }
-
-            this.ValidateTimestamp(currentTime);
 
             if (Index < 0)
             {
@@ -486,18 +517,6 @@ namespace Libplanet.Blocks
                     $"Block #{Index} {Hash}'s pre-evaluation hash " +
                     $"({ByteUtil.Hex(PreEvaluationHash)}) with nonce " +
                     $"({Nonce}) does not satisfy its difficulty level {Difficulty}."
-                );
-            }
-
-            if (!hashAlgorithm.Equals(HashAlgorithm))
-            {
-                string msg =
-                    $"Policy expects the block #{Index} to use {hashAlgorithm}, " +
-                    $"but block #{Index} {Hash} uses {HashAlgorithm}.";
-                throw new InvalidBlockPreEvaluationHashException(
-                    PreEvaluationHash,
-                    hashAlgorithm.Digest(SerializeForPreEvaluationHash()).ToImmutableArray(),
-                    msg
                 );
             }
 
