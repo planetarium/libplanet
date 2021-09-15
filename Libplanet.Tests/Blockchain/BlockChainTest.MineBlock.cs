@@ -535,21 +535,18 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public async Task AbortMining()
         {
-            // This test makes 2 different policies even it's abnormal
-            // because to make a mining task run forever just for testing.
-            var policy1 = new NullPolicy<DumbAction>(difficulty: 1);
-            var policy2 = new NullPolicy<DumbAction>(difficulty: -1);
-            StoreFixture fx1 = new DefaultStoreFixture(blockAction: policy1.BlockAction);
-            StoreFixture fx2 = new DefaultStoreFixture(blockAction: policy2.BlockAction);
+            var policy = new NullPolicy<DumbAction>(difficulty: 2048);
+            StoreFixture fx1 = new DefaultStoreFixture(blockAction: policy.BlockAction);
+            StoreFixture fx2 = new DefaultStoreFixture(blockAction: policy.BlockAction);
             var chain1 = new BlockChain<DumbAction>(
-                policy1,
+                policy,
                 new VolatileStagePolicy<DumbAction>(),
                 fx1.Store,
                 fx1.StateStore,
                 fx1.GenesisBlock);
             var renderer2 = new RecordingActionRenderer<DumbAction>();
             var chain2 = new BlockChain<DumbAction>(
-                policy2,
+                policy,
                 new VolatileStagePolicy<DumbAction>(),
                 fx2.Store,
                 fx1.StateStore,

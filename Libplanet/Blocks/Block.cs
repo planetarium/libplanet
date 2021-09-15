@@ -2,12 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
-using System.Globalization;
 using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Action;
@@ -35,7 +32,7 @@ namespace Libplanet.Blocks
 
         /// <summary>
         /// Creates a <see cref="Block{T}"/> instance by manually filling field values.
-        /// For a more automated way, see also the <see cref="Mine"/> method.
+        /// For a more automated way, see also the <see cref="BlockContent{T}"/> method.
         /// </summary>
         /// <param name="index">The height of the block to create.  Goes to the <see cref="Index"/>.
         /// </param>
@@ -75,9 +72,8 @@ namespace Libplanet.Blocks
         /// </exception>
         /// <remarks>
         /// Due to historic reasons, there is non-trivial implicit logic embedded inside this
-        /// constructor.  It is strongly recommended to use <see cref="Mine"/> instead.
+        /// constructor.  It is strongly recommended to use <see cref="BlockContent{T}"/> instead.
         /// </remarks>
-        /// <seealso cref="Mine"/>
         public Block(
             long index,
             long difficulty,
@@ -92,26 +88,10 @@ namespace Libplanet.Blocks
             HashDigest<SHA256>? stateRootHash = null,
             int protocolVersion = CurrentProtocolVersion)
         {
-            // FIXME: This constructor needs to be separated into several overloads.
-            // Let (bool h, bool p, bool s) represent non-null arguments provided for
-            // hashAlgorithm, preEvaluationHash, and stateRootHash respectively.
-            // Despite its summary, currently accepted only use cases are:
-            //  - (true, false, false): Called when preEvaluationHash needs to be calculated.
-            //  - (false, true, false): Allowed purely for testing.  Normal code path should not
-            //    lead to this combination.
-            //  - (false, true, true): Called when stateRootHash needs to be attached.
-            // All other combinations are rejected.
-            if (!(hashAlgorithm is { } ^ preEvaluationHash is { }))
+            if (!(stateRootHash is { } srh))
             {
-                throw new ArgumentException(
-                    $"Exactly one of {nameof(hashAlgorithm)} " +
-                    $"and {nameof(preEvaluationHash)} should be provided as non-null.");
-            }
-            else if (!(preEvaluationHash is { }) && stateRootHash is { })
-            {
-                throw new ArgumentException(
-                    $"Parameter {nameof(stateRootHash)} cannot be non-null while" +
-                    $"{nameof(preEvaluationHash)} is null.");
+                // FIXME: Refactor constructors.
+                throw new ArgumentNullException(nameof(stateRootHash));
             }
 
             ProtocolVersion = protocolVersion;
@@ -125,11 +105,9 @@ namespace Libplanet.Blocks
             Transactions = transactions.OrderBy(tx => tx.Id).ToArray();
             TxHash = BlockContent<T>.DeriveTxHash(Transactions);
 
-#pragma warning disable SA1118
             if (hashAlgorithm is { } ha)
             {
-                // FIXME: This only works due to sanity constraint on usage.
-                _header = new BlockHeader(
+                var tempHeader = new BlockHeader(
                     protocolVersion: ProtocolVersion,
                     index: Index,
                     timestamp: Timestamp,
@@ -140,71 +118,36 @@ namespace Libplanet.Blocks
                     previousHash: PreviousHash,
                     txHash: TxHash,
                     hashAlgorithm: ha);
-                _preEvaluationHash = Header.PreEvaluationHash;
-                StateRootHash = stateRootHash;
-                _hash = Header.Hash;
+                preEvaluationHash = tempHeader.PreEvaluationHash;
             }
-            else
-            {
-                ImmutableArray<byte> peh = preEvaluationHash
-                    ?? throw new NullReferenceException(
-                        $"Parameter {nameof(preEvaluationHash)} cannot be null.");
 
-                _header = new BlockHeader(
-                    protocolVersion: ProtocolVersion,
-                    index: Index,
-                    timestamp: Timestamp,
-                    nonce: Nonce,
-                    miner: Miner,
-                    difficulty: Difficulty,
-                    totalDifficulty: TotalDifficulty,
-                    previousHash: PreviousHash,
-                    txHash: TxHash,
-                    preEvaluationHash: peh,
-                    stateRootHash: stateRootHash
-                );
+            ImmutableArray<byte> peh = preEvaluationHash
+                ?? throw new NullReferenceException(
+                    $"Parameter {nameof(preEvaluationHash)} cannot be null.");
 
-                _preEvaluationHash = Header.PreEvaluationHash;
-                StateRootHash = stateRootHash;
-                _hash = Header.Hash;
-            }
-#pragma warning restore SA1118
+            _header = new BlockHeader(
+                protocolVersion: ProtocolVersion,
+                index: Index,
+                timestamp: Timestamp,
+                nonce: Nonce,
+                miner: Miner,
+                difficulty: Difficulty,
+                totalDifficulty: TotalDifficulty,
+                previousHash: PreviousHash,
+                txHash: TxHash,
+                preEvaluationHash: peh,
+                stateRootHash: srh
+            );
+
+            _preEvaluationHash = Header.PreEvaluationHash;
+            StateRootHash = srh;
+            _hash = Header.Hash;
 
             // Order transactions for evaluation
             Transactions = OrderTxsForEvaluation(
                 ProtocolVersion,
                 Transactions,
                 PreEvaluationHash).ToImmutableArray();
-        }
-
-#pragma warning disable SA1514, SA1515
-        // FIXME: This probably should not be public.
-        // See also <https://github.com/planetarium/libplanet/issues/1146>.
-        /// <summary>
-        /// Creates a <see cref="Block{T}"/> instance by attaching <paramref name="stateRootHash"/>
-        /// to given <paramref name="block"/>.
-        /// </summary>
-        /// <param name="block">A <see cref="Block{T}"/> instance without
-        /// <see cref="Block{T}.StateRootHash"/> to use.</param>
-        /// <param name="stateRootHash">A <see cref="HashDigest{SHA256}"/> to attach.</param>
-#pragma warning restore SA1514, SA1515
-        public Block(
-            Block<T> block,
-            HashDigest<SHA256> stateRootHash)
-            : this(
-                block.Index,
-                block.Difficulty,
-                block.TotalDifficulty,
-                block.Nonce,
-                block.Miner,
-                block.PreviousHash,
-                block.Timestamp,
-                block.Transactions,
-                hashAlgorithm: null,
-                preEvaluationHash: block.PreEvaluationHash,
-                stateRootHash: stateRootHash,
-                protocolVersion: block.ProtocolVersion)
-        {
         }
 
         /// <summary>
@@ -268,12 +211,7 @@ namespace Libplanet.Blocks
                 : throw new ArgumentException(
                     $"PreEvaluationHash of {nameof(Header)} cannot be empty.");
 
-            // FIXME: We should convert `StateRootHash`'s type to `HashDisgest<SHA256>` after
-            // removing `IBlockStateStore`.
-            // See also <https://github.com/planetarium/libplanet/pull/1116#discussion_r535836480>.
-            // FIXME: Normal path should not lead to StateRootHash being null.  Should be
-            // refactored to throw an exception.
-            StateRootHash = header.StateRootHash;
+            StateRootHash = header.StateRootHash.Value;
             _hash = header.Hash;
         }
 
@@ -303,7 +241,7 @@ namespace Libplanet.Blocks
         /// a <see cref="Blockchain.Policies.IBlockPolicy{T}.BlockAction"/> (if exists).
         /// </summary>
         /// <seealso cref="ITrie.Hash"/>
-        public HashDigest<SHA256>? StateRootHash { get; }
+        public HashDigest<SHA256> StateRootHash { get; }
 
         /// <inheritdoc cref="IBlockMetadata.Index"/>
         [IgnoreDuringEquals]
@@ -365,90 +303,6 @@ namespace Libplanet.Blocks
 
         public static bool operator !=(Block<T> left, Block<T> right) =>
             Operator.Weave(left, right);
-
-        /// <summary>
-        /// Generate a block with given <paramref name="transactions"/>.
-        /// </summary>
-        /// <param name="index">Index of the block.</param>
-        /// <param name="hashAlgorithm">The hash algorithm to use for calculating
-        /// <see cref="Block{T}.PreEvaluationHash"/>.</param>
-        /// <param name="difficulty">Difficulty to find the <see cref="Block{T}"/>
-        /// <see cref="Nonce"/>.</param>
-        /// <param name="previousTotalDifficulty">The total difficulty until the previous
-        /// <see cref="Block{T}"/>.</param>
-        /// <param name="miner">The <see cref="Address"/> of miner that mines the block.</param>
-        /// <param name="previousHash">
-        /// The <see cref="HashDigest{SHA256}"/> of previous block.
-        /// </param>
-        /// <param name="timestamp">The <see cref="DateTimeOffset"/> when mining started.</param>
-        /// <param name="transactions"><see cref="Transaction{T}"/>s that are going to be included
-        /// in the block.</param>
-        /// <param name="protocolVersion">The protocol version.</param>
-        /// <param name="cancellationToken">
-        /// A cancellation token used to propagate notification that this
-        /// operation should be canceled.</param>
-        /// <returns>A <see cref="Block{T}"/> that mined.</returns>
-        public static Block<T> Mine(
-            long index,
-            HashAlgorithmType hashAlgorithm,
-            long difficulty,
-            BigInteger previousTotalDifficulty,
-            Address miner,
-            BlockHash? previousHash,
-            DateTimeOffset timestamp,
-            IEnumerable<Transaction<T>> transactions,
-            int protocolVersion = CurrentProtocolVersion,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            var txs = transactions.OrderBy(tx => tx.Id).ToImmutableArray();
-            Block<T> MakeBlock(Nonce n) => new Block<T>(
-                index,
-                difficulty,
-                previousTotalDifficulty + difficulty,
-                n,
-                miner,
-                previousHash,
-                timestamp,
-                txs,
-                hashAlgorithm: hashAlgorithm,
-                protocolVersion: protocolVersion);
-
-            // Poor man' way to optimize stamp...
-            // FIXME: We need to rather reorganize the serialization layout.
-            byte[] emptyNonce = MakeBlock(new Nonce(new byte[0])).Header.SerializeForHash();
-            byte[] oneByteNonce = MakeBlock(new Nonce(new byte[1])).Header.SerializeForHash();
-            int offset = 0;
-            while (offset < emptyNonce.Length && emptyNonce[offset].Equals(oneByteNonce[offset]))
-            {
-                offset++;
-            }
-
-            const int nonceLength = 2;  // In Bencodex, empty bytes are represented as "0:".
-            byte[] stampPrefix = new byte[offset];
-            Array.Copy(emptyNonce, stampPrefix, stampPrefix.Length);
-            byte[] stampSuffix = new byte[emptyNonce.Length - offset - nonceLength];
-            Array.Copy(emptyNonce, offset + nonceLength, stampSuffix, 0, stampSuffix.Length);
-
-            byte[] colon = { 0x3a }; // ':'
-            IEnumerable<byte[]> Stamp(Nonce n)
-            {
-                int nLen = n.ByteArray.Length;
-                yield return stampPrefix;
-                yield return Encoding.ASCII.GetBytes(nLen.ToString(CultureInfo.InvariantCulture));
-                yield return colon; // ':'
-                yield return n.ToByteArray();
-                yield return stampSuffix;
-            }
-
-            (Nonce nonce, _) = Hashcash.Answer(
-                Stamp,
-                hashAlgorithm,
-                difficulty,
-                cancellationToken
-            );
-
-            return MakeBlock(nonce);
-        }
 
         /// <summary>
         /// Decodes a <see cref="Block{T}"/>'s
@@ -614,19 +468,6 @@ namespace Libplanet.Blocks
                 .GroupBy(tx => tx.Signer)
                 .OrderBy(group => maskInteger ^ new BigInteger(group.Key.ToByteArray()))
                 .SelectMany(group => group.OrderBy(tx => tx.Nonce));
-        }
-
-        private readonly struct BlockSerializationContext
-        {
-            public BlockSerializationContext(bool hash, bool transactionData)
-            {
-                IncludeHash = hash;
-                IncludeTransactionData = transactionData;
-            }
-
-            internal bool IncludeHash { get; }
-
-            internal bool IncludeTransactionData { get; }
         }
     }
 }

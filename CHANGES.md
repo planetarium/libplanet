@@ -16,6 +16,15 @@ To be released.
     static method instead. [[#1492]]
  -  `ActionEvaluator<T>.Evaluate()` method's `block` parameter became to take
     `IPreEvaluationBlock<T>` (was `IBlock<T>`).  [[#1146], [#1164], [#1492]]
+ -  `Block<T>` now guarantees that every instance has its `StateRootHash`.
+    [[#1128], [#1146], [#1492]]
+     -  `Block<T>.StateRootHash` property's type became `HashDigest<SHA256>`
+        (was `HashDigest<SHA256>?`).
+     -  Removed `Block<T>(Block<T>, HashDigest<SHA256>)` overloaded constructor.
+        Use `Block<T>(PreEvaluationBlock<T>, HashDigest<SHA256>)` overloaded
+        constructor instead.
+     -  Removed `Block<T>.Mine()` static method.  Use `BlockContent<T>.Mine()`
+        and `PreEvaluationBlock<T>.Evaluate()` methods instead.
  -  `IStateStore` now requires implementations to be trie.
     [[#1128], [#1146], [#1492]]
      -  Added `IStateStore.GetStateRoot()` method.

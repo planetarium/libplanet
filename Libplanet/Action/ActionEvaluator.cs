@@ -44,7 +44,8 @@ namespace Libplanet.Action
             previousHash: null,
             timestamp: DateTimeOffset.UtcNow,
             transactions: ImmutableArray<Transaction<T>>.Empty,
-            hashAlgorithm: HashAlgorithmType.Of<SHA256>()
+            hashAlgorithm: HashAlgorithmType.Of<SHA256>(),
+            stateRootHash: default(HashDigest<SHA256>)
         );
 
         private static readonly ILogger _logger = Log.ForContext<ActionEvaluator<T>>();

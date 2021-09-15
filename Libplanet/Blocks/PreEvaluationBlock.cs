@@ -148,12 +148,9 @@ namespace Libplanet.Blocks
         /// <param name="blockChain">The blockchain on which actions are evaluated based.</param>
         /// <returns>The block combined with the resulting <see cref="Block{T}.StateRootHash"/>.
         /// </returns>
-        public Block<T> Evaluate(BlockChain<T> blockChain)
-        {
-            // FIXME: Take narrower input instead of a whole BlockChain<T>.
-            HashDigest<SHA256> stateRootHash = DetermineStateRootHash(blockChain);
-            return new Block<T>(this, stateRootHash);
-        }
+        // FIXME: Take narrower input instead of a whole BlockChain<T>.
+        public Block<T> Evaluate(BlockChain<T> blockChain) =>
+            EvaluateActions(blockChain).Block;
 
         /// <summary>
         /// Evaluates all actions in the <see cref="Transactions"/> and
@@ -207,9 +204,25 @@ namespace Libplanet.Blocks
         /// </summary>
         /// <param name="blockChain">The blockchain on which actions are evaluated based.</param>
         /// <returns>The resulting <see cref="Block{T}.StateRootHash"/>.</returns>
-        public HashDigest<SHA256> DetermineStateRootHash(BlockChain<T> blockChain)
+        public HashDigest<SHA256> DetermineStateRootHash(BlockChain<T> blockChain) =>
+            CalculateStateRootHash(blockChain).StateRootHash;
+
+        internal (Block<T> Block, IReadOnlyList<ActionEvaluation> ActionEvaluations)
+        EvaluateActions(BlockChain<T> blockChain)
         {
             // FIXME: Take narrower input instead of a whole BlockChain<T>.
+            (HashDigest<SHA256> stateRootHash, IReadOnlyList<ActionEvaluation> evals) =
+                CalculateStateRootHash(blockChain);
+            return (new Block<T>(this, stateRootHash), evals);
+        }
+
+        internal (
+            HashDigest<SHA256> StateRootHash,
+            IReadOnlyList<ActionEvaluation> ActionEvaluations
+        ) CalculateStateRootHash(BlockChain<T> blockChain)
+        {
+            // FIXME: Take narrower input instead of a whole BlockChain<T>.
+            // FIXME: Add a dedicate unit test for this method.
             blockChain._rwlock.EnterUpgradeableReadLock();
             try
             {
@@ -224,7 +237,7 @@ namespace Libplanet.Blocks
                         blockChain.Store.GetStateRootHash(PreviousHash),
                         totalDelta
                     );
-                    return trie.Hash;
+                    return (trie.Hash, actionEvaluations);
                 }
                 finally
                 {

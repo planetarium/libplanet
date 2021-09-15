@@ -51,7 +51,7 @@ namespace Libplanet.Tests.Blocks
                 .Add(BlockHeader.HashKey, _fx.Genesis.Hash.ByteArray)
                 .Add(BlockHeader.MinerKey, _fx.Genesis.Miner.ByteArray)
                 .Add(BlockHeader.PreEvaluationHashKey, _fx.Genesis.PreEvaluationHash)
-                .Add(BlockHeader.StateRootHashKey, _fx.Genesis.StateRootHash.Value.ByteArray);
+                .Add(BlockHeader.StateRootHashKey, _fx.Genesis.StateRootHash.ByteArray);
             AssertBencodexEqual(expected, header.ToBencodex());
             AssertBencodexEqual(expected, new BlockHeader(expected).ToBencodex());
 

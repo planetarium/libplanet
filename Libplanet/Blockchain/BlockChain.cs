@@ -164,7 +164,7 @@ namespace Libplanet.Blockchain
                 Policy.BlockAction,
                 GetState,
                 GetBalance,
-                hash => StateStore.GetStateRoot(_blocks[hash].StateRootHash.Value)
+                hash => StateStore.GetStateRoot(_blocks[hash].StateRootHash)
             );
 
             if (Count == 0)
@@ -357,43 +357,25 @@ namespace Libplanet.Blockchain
             DateTimeOffset? timestamp = null,
             IAction blockAction = null)
         {
-            privateKey = privateKey ?? new PrivateKey();
-            actions = actions ?? ImmutableArray<T>.Empty;
-            IEnumerable<Transaction<T>> transactions = new[]
+            privateKey ??= new PrivateKey();
+            actions ??= ImmutableArray<T>.Empty;
+            Transaction<T>[] transactions =
             {
                 Transaction<T>.Create(0, privateKey, null, actions, timestamp: timestamp),
             };
 
-            Block<T> block = Block<T>.Mine(
-                index: 0,
-                hashAlgorithm: hashAlgorithm,
-                difficulty: 0,
-                previousTotalDifficulty: 0,
-                miner: privateKey.ToAddress(),
-                previousHash: null,
-                timestamp: timestamp ?? DateTimeOffset.UtcNow,
-                transactions: transactions
-            );
+            BlockContent<T> content = new BlockContent<T>
+            {
+                Miner = privateKey.ToAddress(),
+                Timestamp = timestamp ?? DateTimeOffset.UtcNow,
+                Transactions = transactions,
+            };
 
-            var actionEvaluator = new ActionEvaluator<T>(
-                _ => hashAlgorithm,
+            PreEvaluationBlock<T> preEval = content.Mine(hashAlgorithm);
+            return preEval.Evaluate(
                 blockAction,
-                (address, digest, stateCompleter) => null,
-                (address, currency, hash, fungibleAssetStateCompleter)
-                    => new FungibleAssetValue(currency),
-                null);
-
-            // FIXME: Probably not the best place to have Validate().
-            block.Validate(hashAlgorithm, DateTimeOffset.UtcNow);
-
-            var actionEvaluationResult = actionEvaluator
-                .Evaluate(block, StateCompleterSet<T>.Reject)
-                .GetTotalDelta(ToStateKey, ToFungibleAssetKey);
-            ITrie trie = new MerkleTrie(new DefaultKeyValueStore(null));
-            trie = trie.Set(actionEvaluationResult);
-            var stateRootHash = trie.Commit(rehearsal: true).Hash;
-
-            return new Block<T>(block, stateRootHash);
+                new TrieStateStore(new DefaultKeyValueStore(null))
+            );
         }
 
         /// <summary>
@@ -799,8 +781,7 @@ namespace Libplanet.Blockchain
                 if (!rootHash.Equals(block.StateRootHash))
                 {
                     var message = $"The block #{block.Index} {block.Hash}'s state root hash " +
-                                    $"is {block.StateRootHash?.ToString()}, but the execution " +
-                                    $"result is {rootHash.ToString()}.";
+                        $"is {block.StateRootHash}, but the execution result is {rootHash}.";
                     throw new InvalidBlockStateRootHashException(
                         block.StateRootHash,
                         rootHash,
@@ -1263,7 +1244,7 @@ namespace Libplanet.Blockchain
             IReadOnlyList<ActionEvaluation> actionEvaluations
         )
         {
-            if (!StateStore.ContainsStateRoot(block.StateRootHash.Value))
+            if (!StateStore.ContainsStateRoot(block.StateRootHash))
             {
                 var totalDelta = actionEvaluations.GetTotalDelta(ToStateKey, ToFungibleAssetKey);
                 HashDigest<SHA256>? prevStateRootHash = Store.GetStateRootHash(block.PreviousHash);

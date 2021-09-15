@@ -30,7 +30,7 @@ namespace Libplanet.Blockchain
             foreach (BlockHash hash in BlockHashes)
             {
                 Block<T> block = this[hash];
-                if (StateStore.ContainsStateRoot(block.StateRootHash.Value))
+                if (StateStore.ContainsStateRoot(block.StateRootHash))
                 {
                     continue;
                 }
@@ -87,7 +87,7 @@ namespace Libplanet.Blockchain
             foreach (BlockHash hash in BlockHashes)
             {
                 Block<T> block = this[hash];
-                if (StateStore.ContainsStateRoot(block.StateRootHash.Value))
+                if (StateStore.ContainsStateRoot(block.StateRootHash))
                 {
                     continue;
                 }

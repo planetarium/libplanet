@@ -100,7 +100,7 @@ namespace Libplanet.Tests.Fixtures
             BigInteger prevState = Chain.GetState(signerAddress) is Bencodex.Types.Integer i
                 ? i.Value
                 : 0;
-            HashDigest<SHA256> prevStateRootHash = Chain.Tip.StateRootHash.Value;
+            HashDigest<SHA256> prevStateRootHash = Chain.Tip.StateRootHash;
             ITrie prevTrie = GetTrie(Chain.Tip.Hash);
             (BigInteger, HashDigest<SHA256>) prevPair = (prevState, prevStateRootHash);
             (BigInteger, HashDigest<SHA256>) stagedStates = Chain.ListStagedTransactions()

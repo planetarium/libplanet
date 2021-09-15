@@ -204,15 +204,16 @@ namespace Libplanet.Tests.Action
                 privateKey: privateKey,
                 genesisHash: genesis.Hash,
                 actions: new[] { action });
-            var block = Block<ThrowException>.Mine(
-                index: 1,
-                hashAlgorithm: HashAlgorithmType.Of<SHA256>(),
-                difficulty: 1,
-                previousTotalDifficulty: genesis.TotalDifficulty,
-                miner: _storeFx.Address1,
-                previousHash: genesis.Hash,
-                timestamp: DateTimeOffset.UtcNow,
-                transactions: ImmutableArray.Create(tx));
+            PreEvaluationBlock<ThrowException> block = new BlockContent<ThrowException>
+            {
+                Index = 1,
+                Difficulty = 1,
+                TotalDifficulty = genesis.TotalDifficulty + 1,
+                Miner = _storeFx.Address1,
+                PreviousHash = genesis.Hash,
+                Timestamp = DateTimeOffset.UtcNow,
+                Transactions = ImmutableArray.Create(tx),
+            }.Mine(HashAlgorithmType.Of<SHA256>());
             IAccountStateDelta previousStates = genesis.ProtocolVersion > 0
                 ? new AccountStateDeltaImpl(
                     ActionEvaluator<DumbAction>.NullAccountStateGetter,
@@ -567,6 +568,7 @@ namespace Libplanet.Tests.Action
                 previousHash: null,
                 timestamp: DateTimeOffset.UtcNow,
                 transactions: ImmutableArray.Create(tx),
+                stateRootHash: default(HashDigest<SHA256>),
                 hashAlgorithm: HashAlgorithmType.Of<SHA256>()
             );
             var actionEvaluator = new ActionEvaluator<DumbAction>(
@@ -713,6 +715,7 @@ namespace Libplanet.Tests.Action
                 previousHash: null,
                 timestamp: DateTimeOffset.UtcNow,
                 transactions: ImmutableArray.Create(tx),
+                stateRootHash: default(HashDigest<SHA256>),
                 hashAlgorithm: HashAlgorithmType.Of<SHA256>()
             );
             var nextStates = actionEvaluator.EvaluateTxResult(

@@ -3,16 +3,13 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
-using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
-using Libplanet.Store;
-using Libplanet.Store.Trie;
 using Libplanet.Tx;
-using static Libplanet.Blockchain.KeyConverters;
 
 namespace Libplanet.Blockchain
 {
@@ -96,7 +93,19 @@ namespace Libplanet.Blockchain
             using var cts = new CancellationTokenSource();
             using CancellationTokenSource cancellationTokenSource =
                 CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, cts.Token);
-            void WatchTip(object target, (Block<T> OldTip, Block<T> NewTip) tip) => cts.Cancel();
+
+            void WatchTip(object target, (Block<T> OldTip, Block<T> NewTip) tip)
+            {
+                try
+                {
+                    cts.Cancel();
+                }
+                catch (ObjectDisposedException)
+                {
+                    // Ignore if mining was already finished.
+                }
+            }
+
             TipChanged += WatchTip;
 
             long index = Count;
@@ -130,21 +139,24 @@ namespace Libplanet.Blockchain
                 index,
                 transactionsToMine.Count);
 
-            Block<T> block;
+            var blockContent = new BlockContent<T>
+            {
+                Index = index,
+                Difficulty = difficulty,
+                TotalDifficulty = Tip.TotalDifficulty + difficulty,
+                Miner = miner,
+                PreviousHash = prevHash,
+                Timestamp = timestamp,
+                Transactions = transactionsToMine,
+            };
+
+            PreEvaluationBlock<T> preEval;
             try
             {
-                block = await Task.Run(
-                    () => Block<T>.Mine(
-                        index: index,
-                        hashAlgorithm: hashAlgorithm,
-                        difficulty: difficulty,
-                        previousTotalDifficulty: Tip.TotalDifficulty,
-                        miner: miner,
-                        previousHash: prevHash,
-                        timestamp: timestamp,
-                        transactions: transactionsToMine,
-                        cancellationToken: cancellationTokenSource.Token),
-                    cancellationTokenSource.Token);
+                preEval = await Task.Run(
+                    () => blockContent.Mine(hashAlgorithm, cancellationTokenSource.Token),
+                    cancellationTokenSource.Token
+                );
             }
             catch (OperationCanceledException)
             {
@@ -161,27 +173,8 @@ namespace Libplanet.Blockchain
                 TipChanged -= WatchTip;
             }
 
-            // FIXME: Probably not the best place to have Validate().
-            block.Validate(hashAlgorithm, DateTimeOffset.UtcNow);
-
-            IReadOnlyList<ActionEvaluation> actionEvaluations = ActionEvaluator.Evaluate(
-                block, StateCompleterSet<T>.Recalculate);
-
-            _rwlock.EnterWriteLock();
-            try
-            {
-                ImmutableDictionary<string, IValue> totalDelta =
-                    actionEvaluations.GetTotalDelta(ToStateKey, ToFungibleAssetKey);
-                ITrie trie = StateStore.Commit(
-                    Store.GetStateRootHash(block.PreviousHash),
-                    totalDelta
-                );
-                block = new Block<T>(block, trie.Hash);
-            }
-            finally
-            {
-                _rwlock.ExitWriteLock();
-            }
+            (Block<T> block, IReadOnlyList<ActionEvaluation> actionEvaluations) =
+                preEval.EvaluateActions(this);
 
             _logger.Debug(
                 "{SessionId}/{ProcessId}: Mined block #{Index} {Hash} " +
@@ -252,7 +245,9 @@ namespace Libplanet.Blockchain
                 previousHash: prevHash,
                 timestamp: default,
                 transactions: new Transaction<T>[0],
-                hashAlgorithm: hashAlgorithm).BytesLength;
+                hashAlgorithm: hashAlgorithm,
+                stateRootHash: default(HashDigest<SHA256>)
+            ).BytesLength;
             int maxBlockBytes = Policy.GetMaxBlockBytes(index);
 
             var storedNonces = new Dictionary<Address, long>();

@@ -1188,14 +1188,14 @@ namespace Libplanet.Tests.Blockchain
                 = MakeIncompleteBlockStates();
             IStateStore stateStore = chain.StateStore;
 
-            Assert.False(stateStore.ContainsStateRoot(chain[6].StateRootHash.Value));
+            Assert.False(stateStore.ContainsStateRoot(chain[6].StateRootHash));
             IValue value = chain.GetState(
                 addresses[4],
                 chain[6].Hash,
                 StateCompleters<DumbAction>.Recalculate);
-            Assert.True(stateStore.ContainsStateRoot(chain[2].StateRootHash.Value));
-            Assert.True(stateStore.ContainsStateRoot(chain[6].StateRootHash.Value));
-            Assert.False(stateStore.ContainsStateRoot(chain[8].StateRootHash.Value));
+            Assert.True(stateStore.ContainsStateRoot(chain[2].StateRootHash));
+            Assert.True(stateStore.ContainsStateRoot(chain[6].StateRootHash));
+            Assert.False(stateStore.ContainsStateRoot(chain[8].StateRootHash));
         }
 
         [Fact]
@@ -1206,14 +1206,14 @@ namespace Libplanet.Tests.Blockchain
                 = MakeIncompleteBlockStates();
             IStateStore stateStore = chain.StateStore;
 
-            Assert.False(stateStore.ContainsStateRoot(chain[6].StateRootHash.Value));
+            Assert.False(stateStore.ContainsStateRoot(chain[6].StateRootHash));
             IValue value = chain.GetState(
                 addresses[4],
                 chain[6].Hash,
                 StateCompleters<DumbAction>.ComplementAll);
-            Assert.True(stateStore.ContainsStateRoot(chain[2].StateRootHash.Value));
-            Assert.True(stateStore.ContainsStateRoot(chain[6].StateRootHash.Value));
-            Assert.False(stateStore.ContainsStateRoot(chain[8].StateRootHash.Value));
+            Assert.True(stateStore.ContainsStateRoot(chain[2].StateRootHash));
+            Assert.True(stateStore.ContainsStateRoot(chain[6].StateRootHash));
+            Assert.False(stateStore.ContainsStateRoot(chain[8].StateRootHash));
         }
 
         [Fact]
@@ -1224,14 +1224,14 @@ namespace Libplanet.Tests.Blockchain
                 = MakeIncompleteBlockStates();
             IStateStore stateStore = chain.StateStore;
 
-            Assert.False(stateStore.ContainsStateRoot(chain[6].StateRootHash.Value));
+            Assert.False(stateStore.ContainsStateRoot(chain[6].StateRootHash));
             IValue value = chain.GetState(
                 addresses[4],
                 chain[6].Hash,
                 StateCompleters<DumbAction>.ComplementLatest);
-            Assert.False(stateStore.ContainsStateRoot(chain[2].StateRootHash.Value));
-            Assert.True(stateStore.ContainsStateRoot(chain[6].StateRootHash.Value));
-            Assert.False(stateStore.ContainsStateRoot(chain[8].StateRootHash.Value));
+            Assert.False(stateStore.ContainsStateRoot(chain[2].StateRootHash));
+            Assert.True(stateStore.ContainsStateRoot(chain[6].StateRootHash));
+            Assert.False(stateStore.ContainsStateRoot(chain[8].StateRootHash));
         }
 
         [Fact]
@@ -1697,8 +1697,8 @@ namespace Libplanet.Tests.Blockchain
 
             stateStore.PruneStates(
                 ImmutableHashSet<HashDigest<SHA256>>.Empty
-                    .Add(presentBlocks[0].StateRootHash.Value)
-                    .Add(presentBlocks[1].StateRootHash.Value)
+                    .Add(presentBlocks[0].StateRootHash)
+                    .Add(presentBlocks[1].StateRootHash)
             );
 
             return (signer, addresses, chain);
@@ -1894,19 +1894,6 @@ namespace Libplanet.Tests.Blockchain
 
             // Stage only txs having higher or equal with nonce than expected nonce.
             Assert.Single(_blockChain.GetStagedTransactionIds());
-        }
-
-        [Fact]
-        private void ConstructBlockchainWithGenesisBlockHavingStateRootHash()
-        {
-            var store = new DefaultStore(null);
-            var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            Block<DumbAction> genesis = TestUtils.MineGenesis<DumbAction>(_policy.GetHashAlgorithm)
-                .Evaluate(_policy.BlockAction, stateStore);
-            BlockChain<DumbAction> blockChain = TestUtils.MakeBlockChain(
-                _policy, store, stateStore, genesisBlock: genesis);
-
-            Assert.NotNull(blockChain[0].StateRootHash);
         }
     }
 }
