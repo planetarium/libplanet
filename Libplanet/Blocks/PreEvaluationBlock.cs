@@ -122,6 +122,41 @@ namespace Libplanet.Blocks
 
         /// <summary>
         /// Evaluates all actions in the <see cref="Transactions"/> and
+        /// a <paramref name="blockAction"/> (if any), and returns a <see cref="Block{T}"/> instance
+        /// combined with the <see cref="Block{T}.StateRootHash"/> determined from ground zero
+        /// (i.e., empty state root).
+        /// </summary>
+        /// <param name="blockAction">An optional
+        /// <see cref="Blockchain.Policies.IBlockPolicy{T}.BlockAction"/>.</param>
+        /// <param name="stateStore">The <see cref="BlockChain{T}.StateStore"/>.</param>
+        /// <returns>The block combined with the resulting <see cref="Block{T}.StateRootHash"/>.
+        /// </returns>
+        /// <remarks>This can be used with only genesis blocks.  For blocks with indices greater
+        /// than zero, use <see cref="DetermineStateRootHash(BlockChain{T})"/> overloaded one
+        /// instead.</remarks>
+        /// <exception cref="InvalidOperationException">Thrown when its
+        /// <see cref="IBlockMetadata.Index"/> is not zero.</exception>
+        public Block<T> Evaluate(IAction? blockAction, IStateStore stateStore) =>
+            new Block<T>(this, DetermineStateRootHash(blockAction, stateStore));
+
+        /// <summary>
+        /// Evaluates all actions in the <see cref="Transactions"/> and an optional
+        /// <see cref="Blockchain.Policies.IBlockPolicy{T}.BlockAction"/>, and returns
+        /// a <see cref="Block{T}"/> instance combined with the <see cref="Block{T}.StateRootHash"/>
+        /// determined from ground zero (i.e., empty state root).
+        /// </summary>
+        /// <param name="blockChain">The blockchain on which actions are evaluated based.</param>
+        /// <returns>The block combined with the resulting <see cref="Block{T}.StateRootHash"/>.
+        /// </returns>
+        public Block<T> Evaluate(BlockChain<T> blockChain)
+        {
+            // FIXME: Take narrower input instead of a whole BlockChain<T>.
+            HashDigest<SHA256> stateRootHash = DetermineStateRootHash(blockChain);
+            return new Block<T>(this, stateRootHash);
+        }
+
+        /// <summary>
+        /// Evaluates all actions in the <see cref="Transactions"/> and
         /// a <paramref name="blockAction"/> (if any), and determines
         /// the <see cref="Block{T}.StateRootHash"/> from ground zero (i.e., empty state root).
         /// </summary>
@@ -132,6 +167,8 @@ namespace Libplanet.Blocks
         /// <remarks>This can be used with only genesis blocks.  For blocks with indices greater
         /// than zero, use <see cref="DetermineStateRootHash(BlockChain{T})"/> overloaded one
         /// instead.</remarks>
+        /// <exception cref="InvalidOperationException">Thrown when its
+        /// <see cref="IBlockMetadata.Index"/> is not zero.</exception>
         public HashDigest<SHA256> DetermineStateRootHash(
             IAction? blockAction,
             IStateStore stateStore
