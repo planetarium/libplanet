@@ -303,6 +303,7 @@ namespace Libplanet.Net
                     );
                     HashAlgorithmType hashAlgorithm =
                         workspace.Policy.GetHashAlgorithm(block.Index);
+                    block.ValidateTimestamp();
                     block.Validate(hashAlgorithm, DateTimeOffset.UtcNow);
                     workspace.Store.PutBlock(block);
                     if (tempTip is null ||

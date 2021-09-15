@@ -111,6 +111,7 @@ To be released.
      -  `PreEvaluationBlock<T>` implements `IPreEvaluationBlock<T>` interface.
      -  `ActionEvaluator<T>.Evaluate()` method's `block` parameter became to
         take `IPreEvaluationBlock<T>` (was `IBlock<T>`).
+ -  Added `BlockMetadataExtensions` static class.  [[#1164], [#1492]]
  -  Added `StateStoreExtensions` static class.  [[#1128], [#1146], [#1492]]
  -  Added `StoreExtensions.GetStateRootHash()` extension method.
     [[#1128], [#1146], [#1492]]

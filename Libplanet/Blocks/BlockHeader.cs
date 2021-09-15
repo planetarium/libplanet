@@ -40,9 +40,6 @@ namespace Libplanet.Blocks
 
         internal static readonly byte[] PreEvaluationHashKey = { 0x63 }; // 'c'
 
-        internal static readonly TimeSpan TimestampThreshold =
-            TimeSpan.FromSeconds(15);
-
         private const int CurrentProtocolVersion = BlockMetadata.CurrentProtocolVersion;
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
 
@@ -414,13 +411,7 @@ namespace Libplanet.Blocks
                 throw new InvalidBlockProtocolVersionException(ProtocolVersion, message);
             }
 
-            if (currentTime + TimestampThreshold < Timestamp)
-            {
-                throw new InvalidBlockTimestampException(
-                    $"The block #{Index} {Hash}'s timestamp ({Timestamp}) is " +
-                    $"later than now ({currentTime}, threshold: {TimestampThreshold})."
-                );
-            }
+            this.ValidateTimestamp(currentTime);
 
             if (Index < 0)
             {

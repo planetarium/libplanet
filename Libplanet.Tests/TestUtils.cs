@@ -373,17 +373,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 ? new PreEvaluationBlock<T>(content, hashAlgorithm, new Nonce(nonceBytes))
                 : content.Mine(hashAlgorithm);
 
-            // FIXME: Duplicate with BlockHeader.Validate().  Time-dependent validation should be
-            // moved elsewhere.
-            DateTimeOffset currentTime = DateTimeOffset.Now;
-            if (currentTime + BlockHeader.TimestampThreshold < preEval.Timestamp)
-            {
-                throw new InvalidBlockTimestampException(
-                    $"The block #{preEval.Index}'s timestamp ({preEval.Timestamp}) is " +
-                    $"later than now ({currentTime}, threshold: {BlockHeader.TimestampThreshold})."
-                );
-            }
-
+            preEval.ValidateTimestamp();
             return preEval;
         }
 

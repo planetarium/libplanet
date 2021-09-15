@@ -848,6 +848,7 @@ namespace Libplanet.Blockchain
                 );
             }
 
+            block.ValidateTimestamp();
             block.Validate(Policy.GetHashAlgorithm(block.Index), DateTimeOffset.UtcNow);
 
             _rwlock.EnterUpgradeableReadLock();

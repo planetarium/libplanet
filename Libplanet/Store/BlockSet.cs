@@ -64,6 +64,7 @@ namespace Libplanet.Store
                         $"{value}.hash does not match to {key}");
                 }
 
+                value.ValidateTimestamp();
                 HashAlgorithmType hashAlgorithm = _hashAlgorithmGetter(value.Index);
                 value.Validate(hashAlgorithm, DateTimeOffset.UtcNow);
                 Store.PutBlock(value);
