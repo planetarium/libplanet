@@ -48,6 +48,8 @@ To be released.
  -  Added `PreEvaluationBlockHeader` class.  [[#1146], [#1164], [#1492]]
  -  Added `PreEvaluationBlock<T>` class.  [[#1146], [#1164], [#1492]]
  -  Added `BlockDigest.FromBlock<T>()` static method. [[#1492]]
+ -  Added `Block<T>(PreEvaluationBlock<T>, HashDigest<SHA256>)` overloaded
+    constructor.  [[#1146], [#1164], [#1492]]
  -  Added `IBlockMetadata` interface.  [[#1164], [#1492]]
      -  `Block<T>` became to implement `IBlockMetadata` interface.
      -  `BlockHeader` became to implement `IBlockMetadata` interface.

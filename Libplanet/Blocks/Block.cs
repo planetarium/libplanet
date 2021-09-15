@@ -208,6 +208,31 @@ namespace Libplanet.Blocks
         }
 
         /// <summary>
+        /// Creates a <see cref="Block{T}"/> instance by combining
+        /// a <paramref name="preEvaluationBlock"/> and its corresponding
+        /// <paramref name="stateRootHash"/>.
+        /// </summary>
+        /// <param name="preEvaluationBlock">A pre-evaluation block.</param>
+        /// <param name="stateRootHash">A state root hash determined from the given
+        /// <paramref name="preEvaluationBlock"/> and its previous state root.</param>
+        public Block(PreEvaluationBlock<T> preEvaluationBlock, HashDigest<SHA256> stateRootHash)
+            : this(
+                preEvaluationBlock.Index,
+                preEvaluationBlock.Difficulty,
+                preEvaluationBlock.TotalDifficulty,
+                preEvaluationBlock.Nonce,
+                preEvaluationBlock.Miner,
+                preEvaluationBlock.PreviousHash,
+                preEvaluationBlock.Timestamp,
+                preEvaluationBlock.Transactions,
+                preEvaluationHash: preEvaluationBlock.PreEvaluationHash,
+                stateRootHash: stateRootHash,
+                protocolVersion: preEvaluationBlock.ProtocolVersion
+            )
+        {
+        }
+
+        /// <summary>
         /// Creates a <see cref="Block{T}"/> instance from its serialization.
         /// </summary>
         /// <param name="dict">The <see cref="Bencodex.Types.Dictionary"/>

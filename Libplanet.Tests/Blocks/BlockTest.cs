@@ -11,6 +11,7 @@ using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Tests.Common.Action;
+using Libplanet.Tests.Fixtures;
 using Libplanet.Tx;
 using Xunit;
 using Xunit.Abstractions;
@@ -27,6 +28,21 @@ namespace Libplanet.Tests.Blocks
         {
             _fx = fixture;
             _output = output;
+        }
+
+        [Fact]
+        public void Constructor()
+        {
+            var contents = new BlockContentFixture();
+            var random = new System.Random();
+            var stateRootHash = random.NextHashDigest<SHA256>();
+            PreEvaluationBlock<Arithmetic> preEval = contents.Genesis.Mine(_fx.GetHashAlgorithm(0));
+            var block = new Block<Arithmetic>(
+                preEval,
+                stateRootHash
+            );
+            AssertPreEvaluationBlocksEqual(preEval, block);
+            AssertBytesEqual(stateRootHash, block.StateRootHash);
         }
 
         [Fact]
