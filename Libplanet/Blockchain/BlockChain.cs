@@ -842,15 +842,7 @@ namespace Libplanet.Blockchain
                 if (!storedNonces.ContainsKey(tx.Signer))
                 {
                     storedNonces[tx.Signer] = Store.GetTxNonce(Id, tx.Signer);
-                }
-
-                if (nextNonces.TryGetValue(tx.Signer, out long prevNonce))
-                {
-                    nextNonces[tx.Signer] = prevNonce + 1;
-                }
-                else
-                {
-                    nextNonces[tx.Signer] = storedNonces[tx.Signer] + 1;
+                    nextNonces[tx.Signer] = storedNonces[tx.Signer];
                 }
 
                 _logger.Verbose(
@@ -887,7 +879,7 @@ namespace Libplanet.Blockchain
                     continue;
                 }
 
-                if (storedNonces[tx.Signer] <= tx.Nonce && tx.Nonce < nextNonces[tx.Signer])
+                if (storedNonces[tx.Signer] <= tx.Nonce && tx.Nonce == nextNonces[tx.Signer])
                 {
                     if (estimatedBytes + tx.BytesLength > maxBlockBytes)
                     {
@@ -907,6 +899,7 @@ namespace Libplanet.Blockchain
                     }
 
                     transactionsToMine.Add(tx);
+                    nextNonces[tx.Signer] += 1;
                     estimatedBytes += tx.BytesLength;
                 }
                 else if (tx.Nonce < storedNonces[tx.Signer])
