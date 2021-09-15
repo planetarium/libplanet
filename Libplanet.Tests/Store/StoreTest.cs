@@ -85,8 +85,8 @@ namespace Libplanet.Tests.Store
         [SkippableFact]
         public void DeleteChainId()
         {
-            Block<DumbAction> block1 = TestUtils.MineNext(
-                TestUtils.MineGenesis<DumbAction>(Fx.GetHashAlgorithm),
+            Block<DumbAction> block1 = TestUtils.MineNextBlock(
+                TestUtils.MineGenesisBlock<DumbAction>(Fx.GetHashAlgorithm),
                 Fx.GetHashAlgorithm,
                 new[] { Fx.Transaction1 });
             Fx.Store.AppendIndex(Fx.StoreChainId, block1.Hash);
@@ -996,7 +996,8 @@ namespace Libplanet.Tests.Store
 
             // We need `Block<T>`s because `IStore` can't retrive index(long) by block hash without
             // actual block...
-            Block<DumbAction> anotherBlock3 = TestUtils.MineNext(Fx.Block2, Fx.GetHashAlgorithm);
+            Block<DumbAction> anotherBlock3 =
+                TestUtils.MineNextBlock(Fx.Block2, Fx.GetHashAlgorithm);
             store.PutBlock(Fx.GenesisBlock);
             store.PutBlock(Fx.Block1);
             store.PutBlock(Fx.Block2);
@@ -1046,24 +1047,26 @@ namespace Libplanet.Tests.Store
         }
 
         [SkippableFact]
-        public void Copy()
+        public async Task Copy()
         {
             using (StoreFixture fx = FxConstructor())
             using (StoreFixture fx2 = FxConstructor())
             {
                 IStore s1 = fx.Store, s2 = fx2.Store;
+                var policy = new NullPolicy<DumbAction>();
                 var blocks = new BlockChain<DumbAction>(
-                    new NullPolicy<DumbAction>(),
+                    policy,
                     new VolatileStagePolicy<DumbAction>(),
                     s1,
                     fx.StateStore,
-                    Fx.GenesisBlock
+                    TestUtils.MineGenesis<DumbAction>(policy.GetHashAlgorithm)
+                        .Evaluate(policy.BlockAction, fx.StateStore)
                 );
 
                 // FIXME: Need to add more complex blocks/transactions.
-                blocks.Append(Fx.Block1);
-                blocks.Append(Fx.Block2);
-                blocks.Append(Fx.Block3);
+                await blocks.MineBlock(default);
+                await blocks.MineBlock(default);
+                await blocks.MineBlock(default);
 
                 s1.Copy(to: Fx.Store);
                 Fx.Store.Copy(to: s2);
@@ -1094,7 +1097,7 @@ namespace Libplanet.Tests.Store
             {
                 Block<DumbAction> genesisBlock = fx.GenesisBlock;
                 // NOTE: it depends on that Block<T>.CurrentProtocolVersion is not 0.
-                Block<DumbAction> block = TestUtils.MineNext(
+                Block<DumbAction> block = TestUtils.MineNextBlock(
                     genesisBlock,
                     fx.GetHashAlgorithm,
                     protocolVersion: 0);

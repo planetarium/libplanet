@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -9,7 +8,6 @@ using Bencodex.Types;
 using DiffPlex.DiffBuilder;
 using DiffPlex.DiffBuilder.Model;
 using Libplanet.Action;
-using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers;
@@ -21,7 +19,6 @@ using Libplanet.Store;
 using Libplanet.Tx;
 using Xunit;
 using Xunit.Sdk;
-using static Libplanet.Blockchain.KeyConverters;
 using Random = System.Random;
 
 namespace Libplanet.Tests
@@ -314,7 +311,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             return bytes;
         }
 
-        public static Block<T> MineGenesis<T>(
+        public static PreEvaluationBlock<T> MineGenesis<T>(
             HashAlgorithmGetter hashAlgorithmGetter,
             Address? miner = null,
             IReadOnlyList<Transaction<T>> transactions = null,
@@ -323,28 +320,36 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         )
             where T : IAction, new()
         {
-            if (transactions is null)
+            var content = new BlockContent<T>
             {
-                transactions = new List<Transaction<T>>();
-            }
-
-            var block = new Block<T>(
-                index: 0,
-                difficulty: 0,
-                totalDifficulty: 0,
-                nonce: new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 }),
-                miner: miner ?? GenesisMinerAddress,
-                previousHash: null,
-                timestamp: timestamp ?? new DateTimeOffset(2018, 11, 29, 0, 0, 0, TimeSpan.Zero),
-                transactions: transactions,
-                hashAlgorithm: hashAlgorithmGetter(0),
-                protocolVersion: protocolVersion
+                Miner = miner ?? GenesisMinerAddress,
+                Timestamp = timestamp ?? new DateTimeOffset(2018, 11, 29, 0, 0, 0, TimeSpan.Zero),
+                Transactions = transactions ?? Array.Empty<Transaction<T>>(),
+                ProtocolVersion = protocolVersion,
+            };
+            return new PreEvaluationBlock<T>(
+                content,
+                hashAlgorithmGetter(content.Index),
+                new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 })
             );
-
-            return block;
         }
 
-        public static Block<T> MineNext<T>(
+        public static Block<T> MineGenesisBlock<T>(
+            HashAlgorithmGetter hashAlgorithmGetter,
+            Address? miner = null,
+            IReadOnlyList<Transaction<T>> transactions = null,
+            DateTimeOffset? timestamp = null,
+            int protocolVersion = Block<T>.CurrentProtocolVersion,
+            HashDigest<SHA256> stateRootHash = default
+        )
+            where T : IAction, new()
+        =>
+            new Block<T>(
+                MineGenesis(hashAlgorithmGetter, miner, transactions, timestamp, protocolVersion),
+                stateRootHash
+            );
+
+        public static PreEvaluationBlock<T> MineNext<T>(
             Block<T> previousBlock,
             HashAlgorithmGetter hashAlgorithmGetter,
             IReadOnlyList<Transaction<T>> txs = null,
@@ -356,118 +361,63 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         )
             where T : IAction, new()
         {
-            if (txs == null)
+            var content = new BlockContent<T>
             {
-                txs = new List<Transaction<T>>();
-            }
+                Index = previousBlock.Index + 1,
+                Difficulty = difficulty,
+                TotalDifficulty = previousBlock.TotalDifficulty + difficulty,
+                Miner = miner ?? previousBlock.Miner,
+                PreviousHash = previousBlock.Hash,
+                Timestamp = previousBlock.Timestamp.Add(blockInterval ?? TimeSpan.FromSeconds(15)),
+                Transactions = txs ?? Array.Empty<Transaction<T>>(),
+                ProtocolVersion = protocolVersion,
+            };
 
-            long index = previousBlock.Index + 1;
-            BlockHash previousHash = previousBlock.Hash;
-            DateTimeOffset timestamp =
-                previousBlock.Timestamp.Add(blockInterval ?? TimeSpan.FromSeconds(15));
+            HashAlgorithmType hashAlgorithm = hashAlgorithmGetter(previousBlock.Index + 1);
+            var preEval = nonce is byte[] nonceBytes
+                ? new PreEvaluationBlock<T>(content, hashAlgorithm, new Nonce(nonceBytes))
+                : content.Mine(hashAlgorithm);
 
-            Block<T> block;
-            if (nonce == null)
+            // FIXME: Duplicate with BlockHeader.Validate().  Time-dependent validation should be
+            // moved elsewhere.
+            DateTimeOffset currentTime = DateTimeOffset.Now;
+            if (currentTime + BlockHeader.TimestampThreshold < preEval.Timestamp)
             {
-                block = Block<T>.Mine(
-                    index: index,
-                    hashAlgorithm: hashAlgorithmGetter(index),
-                    difficulty: difficulty,
-                    previousTotalDifficulty: previousBlock.TotalDifficulty,
-                    miner: miner ?? previousBlock.Miner,
-                    previousHash: previousHash,
-                    timestamp: timestamp,
-                    transactions: txs,
-                    protocolVersion: protocolVersion
-                );
-            }
-            else
-            {
-                block = new Block<T>(
-                    index: index,
-                    difficulty: difficulty,
-                    totalDifficulty: previousBlock.TotalDifficulty + difficulty,
-                    nonce: new Nonce(nonce),
-                    miner: miner ?? previousBlock.Miner,
-                    previousHash: previousHash,
-                    timestamp: timestamp,
-                    transactions: txs,
-                    hashAlgorithm: hashAlgorithmGetter(index),
-                    protocolVersion: protocolVersion
+                throw new InvalidBlockTimestampException(
+                    $"The block #{preEval.Index}'s timestamp ({preEval.Timestamp}) is " +
+                    $"later than now ({currentTime}, threshold: {BlockHeader.TimestampThreshold})."
                 );
             }
 
-            block.Validate(hashAlgorithmGetter(index), DateTimeOffset.Now);
-
-            return block;
+            return preEval;
         }
 
-        public static Block<T> AttachStateRootHash<T>(
-            this Block<T> block,
-            Func<BlockHash?, HashDigest<SHA256>?> stateRootHashGetter,
-            IStateStore stateStore,
-            IBlockPolicy<T> policy
+        public static Block<T> MineNextBlock<T>(
+            Block<T> previousBlock,
+            HashAlgorithmGetter hashAlgorithmGetter,
+            IReadOnlyList<Transaction<T>> txs = null,
+            byte[] nonce = null,
+            long difficulty = 1,
+            Address? miner = null,
+            TimeSpan? blockInterval = null,
+            int protocolVersion = Block<T>.CurrentProtocolVersion,
+            HashDigest<SHA256> stateRootHash = default
         )
             where T : IAction, new()
         =>
-            AttachStateRootHash(
-                block,
-                policy.GetHashAlgorithm,
-                stateRootHashGetter,
-                stateStore,
-                policy.BlockAction
+            new Block<T>(
+                MineNext(
+                    previousBlock,
+                    hashAlgorithmGetter,
+                    txs,
+                    nonce,
+                    difficulty,
+                    miner,
+                    blockInterval,
+                    protocolVersion
+                ),
+                stateRootHash
             );
-
-        public static Block<T> AttachStateRootHash<T>(
-            this Block<T> block,
-            HashAlgorithmType hashAlgorithm,
-            Func<BlockHash?, HashDigest<SHA256>?> stateRootHashGetter,
-            IStateStore stateStore,
-            IAction blockAction
-        )
-            where T : IAction, new()
-        =>
-            AttachStateRootHash(
-                block,
-                _ => hashAlgorithm,
-                stateRootHashGetter,
-                stateStore,
-                blockAction
-            );
-
-        public static Block<T> AttachStateRootHash<T>(
-            this Block<T> block,
-            IStore store,
-            IStateStore stateStore,
-            IBlockPolicy<T> policy
-        )
-            where T : IAction, new()
-        =>
-            AttachStateRootHash(
-                block,
-                policy.GetHashAlgorithm,
-                store,
-                stateStore,
-                policy.BlockAction
-            );
-
-        public static Block<T> AttachStateRootHash<T>(
-            this Block<T> block,
-            HashAlgorithmType hashAlgorithm,
-            IStore store,
-            IStateStore stateStore,
-            IAction blockAction
-        )
-            where T : IAction, new()
-        =>
-            AttachStateRootHash(block, _ => hashAlgorithm, store, stateStore, blockAction);
-
-        public static string ToString(BitArray bitArray)
-        {
-            return new string(
-                bitArray.OfType<bool>().Select(b => b ? '1' : '0').ToArray()
-            );
-        }
 
         public static BlockChain<T> MakeBlockChain<T>(
             IBlockPolicy<T> policy,
@@ -499,24 +449,24 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 null,
                 actions,
                 timestamp: timestamp ?? DateTimeOffset.MinValue);
-            genesisBlock = genesisBlock ?? new Block<T>(
-                0,
-                0,
-                0,
-                new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 }),
-                GenesisMinerAddress,
-                null,
-                timestamp ?? DateTimeOffset.MinValue,
-                new[] { tx },
-                hashAlgorithm: policy.GetHashAlgorithm(0),
-                protocolVersion: protocolVersion
-            );
-            genesisBlock = genesisBlock.AttachStateRootHash(
-                policy.GetHashAlgorithm,
-                store,
-                stateStore,
-                policy.BlockAction
-            );
+
+            if (genesisBlock is null)
+            {
+                var content = new BlockContent<T>()
+                {
+                    Miner = GenesisMinerAddress,
+                    Timestamp = timestamp ?? DateTimeOffset.MinValue,
+                    Transactions = new[] { tx },
+                    ProtocolVersion = protocolVersion,
+                };
+                var preEval = new PreEvaluationBlock<T>(
+                    content,
+                    policy.GetHashAlgorithm(0),
+                    new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 })
+                );
+                genesisBlock = preEval.Evaluate(policy.BlockAction, stateStore);
+            }
+
             ValidatingActionRenderer<T> validator = null;
 #pragma warning disable S1121
             var chain = new BlockChain<T>(
@@ -548,81 +498,6 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             while (table.GetBucketIndexOf(privateKey.ToAddress()) != target);
 
             return privateKey;
-        }
-
-        private static Block<T> AttachStateRootHash<T>(
-            this Block<T> block,
-            HashAlgorithmGetter hashAlgorithmGetter,
-            IStore store,
-            IStateStore stateStore,
-            IAction blockAction
-        )
-            where T : IAction, new()
-        =>
-            block.AttachStateRootHash(
-                hashAlgorithmGetter,
-                store.GetStateRootHash,
-                stateStore,
-                blockAction
-            );
-
-        private static Block<T> AttachStateRootHash<T>(
-            this Block<T> block,
-            HashAlgorithmGetter hashAlgorithmGetter,
-            Func<BlockHash?, HashDigest<SHA256>?> stateRootHashGetter,
-            IStateStore stateStore,
-            IAction blockAction
-        )
-            where T : IAction, new()
-        {
-            IValue StateGetter(
-                Address address, BlockHash? blockHash, StateCompleter<T> stateCompleter) =>
-                blockHash is null
-                    ? null
-                    : stateStore.GetState(ToStateKey(address), stateRootHashGetter(blockHash));
-
-            FungibleAssetValue FungibleAssetValueGetter(
-                Address address,
-                Currency currency,
-                BlockHash? blockHash,
-                FungibleAssetStateCompleter<T> stateCompleter)
-            {
-                if (blockHash is null)
-                {
-                    return FungibleAssetValue.FromRawValue(currency, 0);
-                }
-
-                IValue value = stateStore.GetState(
-                    ToFungibleAssetKey(address, currency), stateRootHashGetter(blockHash));
-                return FungibleAssetValue.FromRawValue(
-                    currency,
-                    value is Bencodex.Types.Integer i ? i.Value : 0);
-            }
-
-            var actionEvaluator = new ActionEvaluator<T>(
-                hashAlgorithmGetter: hashAlgorithmGetter,
-                policyBlockAction: blockAction,
-                stateGetter: StateGetter,
-                balanceGetter: FungibleAssetValueGetter,
-                trieGetter: null
-            );
-            var actionEvaluationResult = actionEvaluator
-                .Evaluate(block, StateCompleterSet<T>.Reject)
-                .GetTotalDelta(ToStateKey, ToFungibleAssetKey);
-            var prevStateRootHash = block.PreviousHash is BlockHash prevHash
-                ? stateRootHashGetter(prevHash)
-                : null;
-            Assert.True(
-                block.PreviousHash is null || !(prevStateRootHash is null),
-                $"{nameof(block.PreviousHash)} = {block.PreviousHash?.ToString() ?? "(NULL)"};\n" +
-                    $"{nameof(prevStateRootHash)} = {prevStateRootHash?.ToString() ?? "(NULL)"};"
-            );
-            HashDigest<SHA256> stateRootHash =
-                stateStore.Commit(prevStateRootHash, actionEvaluationResult).Hash;
-            Assert.True(stateStore.ContainsStateRoot(stateRootHash));
-            block = new Block<T>(block, stateRootHash);
-
-            return block;
         }
     }
 }

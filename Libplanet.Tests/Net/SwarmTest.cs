@@ -772,12 +772,12 @@ namespace Libplanet.Tests.Net
             await chain2.MineBlock(swarm2.Address);
 
             // Creates a block that will make chain 2's total difficulty is higher than chain 1's.
-            var block3 = TestUtils.MineNext(
+            Block<DumbAction> block3 = TestUtils.MineNext(
                 chain2.Tip,
                 policy2.GetHashAlgorithm,
                 difficulty: (long)chain1.Tip.TotalDifficulty + 1,
                 blockInterval: TimeSpan.FromMilliseconds(1)
-            ).AttachStateRootHash(chain2.Store, chain2.StateStore, policy2);
+            ).Evaluate(chain2);
             chain2.Append(block3);
             try
             {
@@ -873,12 +873,12 @@ namespace Libplanet.Tests.Net
             await chain1.MineBlock(miner2.Address);
             long nextDifficulty =
                 (long)chain1.Tip.TotalDifficulty + policy.GetNextBlockDifficulty(chain2);
-            var block = TestUtils.MineNext(
+            Block<DumbAction> block = TestUtils.MineNext(
                 chain2.Tip,
                 policy.GetHashAlgorithm,
                 difficulty: nextDifficulty,
                 blockInterval: TimeSpan.FromMilliseconds(1)
-            ).AttachStateRootHash(chain2.Store, chain2.StateStore, policy);
+            ).Evaluate(chain2);
             chain2.Append(block);
 
             Assert.True(chain1.Tip.Index > chain2.Tip.Index);
@@ -1486,7 +1486,7 @@ namespace Libplanet.Tests.Net
             {
                 Block<DumbAction> block =
                     TestUtils.MineNext(chain.Tip, chain.Policy.GetHashAlgorithm, difficulty: 1024)
-                        .AttachStateRootHash(chain.Store, chain.StateStore, chain.Policy);
+                        .Evaluate(chain);
                 chain.Append(block);
             }
 
@@ -1526,7 +1526,7 @@ namespace Libplanet.Tests.Net
             {
                 Block<DumbAction> block =
                     TestUtils.MineNext(chain.Tip, chain.Policy.GetHashAlgorithm, difficulty: 1024)
-                        .AttachStateRootHash(chain.Store, chain.StateStore, chain.Policy);
+                        .Evaluate(chain);
                 chain.Append(block);
             }
 

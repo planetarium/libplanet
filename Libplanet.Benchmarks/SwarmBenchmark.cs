@@ -39,13 +39,13 @@ namespace Libplanet.Benchmarks
             _stagePolicy = new VolatileStagePolicy<DumbAction>();
             _blocks = new List<Block<DumbAction>>
             {
-                TestUtils.MineGenesis<DumbAction>(_policy.GetHashAlgorithm),
+                TestUtils.MineGenesisBlock<DumbAction>(_policy.GetHashAlgorithm),
             };
             _appProtocolVersion = AppProtocolVersion.Sign(new PrivateKey(), 1);
-            _blocks.Add(TestUtils.MineNext(_blocks[0], _policy.GetHashAlgorithm));
-            _blocks.Add(TestUtils.MineNext(_blocks[1], _policy.GetHashAlgorithm));
-            _blocks.Add(TestUtils.MineNext(_blocks[2], _policy.GetHashAlgorithm));
-            _blocks.Add(TestUtils.MineNext(_blocks[3], _policy.GetHashAlgorithm));
+            _blocks.Add(TestUtils.MineNextBlock(_blocks[0], _policy.GetHashAlgorithm));
+            _blocks.Add(TestUtils.MineNextBlock(_blocks[1], _policy.GetHashAlgorithm));
+            _blocks.Add(TestUtils.MineNextBlock(_blocks[2], _policy.GetHashAlgorithm));
+            _blocks.Add(TestUtils.MineNextBlock(_blocks[3], _policy.GetHashAlgorithm));
         }
 
         [IterationSetup(Targets = new[] {"BroadcastBlock", "BroadcastBlockWithoutFill"})]

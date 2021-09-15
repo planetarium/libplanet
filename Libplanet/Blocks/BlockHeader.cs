@@ -40,11 +40,11 @@ namespace Libplanet.Blocks
 
         internal static readonly byte[] PreEvaluationHashKey = { 0x63 }; // 'c'
 
+        internal static readonly TimeSpan TimestampThreshold =
+            TimeSpan.FromSeconds(15);
+
         private const int CurrentProtocolVersion = BlockMetadata.CurrentProtocolVersion;
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
-
-        private static readonly TimeSpan TimestampThreshold =
-            TimeSpan.FromSeconds(15);
 
         private static readonly Codec Codec = new Codec();
 

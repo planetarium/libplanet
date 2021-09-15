@@ -47,7 +47,7 @@ namespace Libplanet.Tests.Blockchain
                 miner: addresses[4],
                 difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
                 blockInterval: TimeSpan.FromSeconds(10)
-            ).AttachStateRootHash(_fx.Store, _fx.StateStore, _policy);
+            ).Evaluate(_blockChain);
             _blockChain.Append(block1);
             Block<DumbAction> block2 = TestUtils.MineNext(
                 block1,
@@ -55,7 +55,7 @@ namespace Libplanet.Tests.Blockchain
                 txs,
                 difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
                 blockInterval: TimeSpan.FromSeconds(10)
-            ).AttachStateRootHash(_fx.Store, _fx.StateStore, _policy);
+            ).Evaluate(_blockChain);
             foreach (Transaction<DumbAction> tx in txs)
             {
                 Assert.Null(getTxExecution(genesis.Hash, tx.Id));
@@ -206,7 +206,7 @@ namespace Libplanet.Tests.Blockchain
                 _blockChain.Policy.GetHashAlgorithm,
                 new[] { tx1Transfer, tx2Error, tx3Transfer },
                 difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain)
-            ).AttachStateRootHash(_fx.Store, _fx.StateStore, _policy);
+            ).Evaluate(_blockChain);
             _blockChain.Append(block3);
             var txExecution1 = getTxExecution(block3.Hash, tx1Transfer.Id);
             _logger.Verbose(nameof(txExecution1) + " = {@TxExecution}", txExecution1);
@@ -324,7 +324,7 @@ namespace Libplanet.Tests.Blockchain
                 heavyTxs,
                 difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
                 blockInterval: TimeSpan.FromSeconds(10)
-            );
+            ).Evaluate(_blockChain);
             int maxBytes = _blockChain.Policy.GetMaxBlockBytes(block1.Index);
             Assert.True(block1.BytesLength > maxBytes);
 
@@ -353,13 +353,13 @@ namespace Libplanet.Tests.Blockchain
 
             Assert.True(manyTxs.Count > maxTxs);
 
-            var block1 = TestUtils.MineNext(
+            Block<DumbAction> block1 = TestUtils.MineNext(
                 _blockChain.Genesis,
                 _blockChain.Policy.GetHashAlgorithm,
                 manyTxs,
                 difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
                 blockInterval: TimeSpan.FromSeconds(10)
-            );
+            ).Evaluate(_blockChain);
             Assert.Equal(manyTxs.Count, block1.Transactions.Count());
 
             var e = Assert.Throws<BlockExceedingTransactionsException>(() =>
@@ -377,11 +377,12 @@ namespace Libplanet.Tests.Blockchain
                 MakeFixturesForAppendTests();
             var genesis = _blockChain.Genesis;
 
-            var block = TestUtils.MineNext(
+            Block<DumbAction> block = TestUtils.MineNext(
                 genesis,
                 _blockChain.Policy.GetHashAlgorithm,
                 difficulty: 1024,
-                blockInterval: TimeSpan.FromSeconds(10));
+                blockInterval: TimeSpan.FromSeconds(10)
+            ).Evaluate(_blockChain);
             Assert.Throws<ArgumentException>(() =>
                 _blockChain.Append(
                     block,
@@ -467,7 +468,7 @@ namespace Libplanet.Tests.Blockchain
                     miner: miner,
                     difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
                     blockInterval: TimeSpan.FromSeconds(10)
-                ).AttachStateRootHash(blockChain.Store, blockChain.StateStore, policy);
+                ).Evaluate(blockChain);
 
                 blockChain.Append(block1);
 
@@ -478,7 +479,7 @@ namespace Libplanet.Tests.Blockchain
                     miner: miner,
                     difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
                     blockInterval: TimeSpan.FromSeconds(10)
-                ).AttachStateRootHash(blockChain.Store, blockChain.StateStore, policy);
+                ).Evaluate(blockChain);
 
                 Assert.Throws<TxPolicyViolationException>(() => blockChain.Append(block2));
             }
@@ -497,8 +498,8 @@ namespace Libplanet.Tests.Blockchain
                 _blockChain.Policy.GetHashAlgorithm,
                 miner: addresses[4],
                 difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
-                blockInterval: TimeSpan.FromSeconds(10))
-            .AttachStateRootHash(_fx.Store, _fx.StateStore, _policy);
+                blockInterval: TimeSpan.FromSeconds(10)
+            ).Evaluate(_blockChain);
             _blockChain.Append(block1);
             Assert.Empty(_blockChain.GetStagedTransactionIds());
 
@@ -512,7 +513,7 @@ namespace Libplanet.Tests.Blockchain
                 ImmutableArray<Transaction<DumbAction>>.Empty.Add(txs[0]),
                 difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
                 blockInterval: TimeSpan.FromSeconds(10)
-            ).AttachStateRootHash(_fx.Store, _fx.StateStore, _policy);
+            ).Evaluate(_blockChain);
             _blockChain.Append(block2);
             Assert.Equal(1, _blockChain.GetStagedTransactionIds().Count);
             StageTransactions(txs);
@@ -532,7 +533,7 @@ namespace Libplanet.Tests.Blockchain
                 ImmutableArray<Transaction<DumbAction>>.Empty.Add(txs[1]),
                 difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
                 blockInterval: TimeSpan.FromSeconds(10)
-            ).AttachStateRootHash(_fx.Store, _fx.StateStore, _policy);
+            ).Evaluate(_blockChain);
             _blockChain.Append(block3);
             Assert.Empty(_blockChain.GetStagedTransactionIds());
         }

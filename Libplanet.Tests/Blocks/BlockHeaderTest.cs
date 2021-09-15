@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Immutable;
 using System.Globalization;
-using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Blocks;
 using Libplanet.Tests.Common.Action;
 using Xunit;
+using static Libplanet.Tests.TestUtils;
 
 namespace Libplanet.Tests.Blocks
 {
@@ -50,9 +50,10 @@ namespace Libplanet.Tests.Blocks
                 .Add(BlockHeader.NonceKey, _fx.Genesis.Nonce.ByteArray)
                 .Add(BlockHeader.HashKey, _fx.Genesis.Hash.ByteArray)
                 .Add(BlockHeader.MinerKey, _fx.Genesis.Miner.ByteArray)
-                .Add(BlockHeader.PreEvaluationHashKey, _fx.Genesis.PreEvaluationHash.ToArray());
-            Assert.Equal(expected, header.ToBencodex());
-            Assert.Equal(expected, new BlockHeader(expected).ToBencodex());
+                .Add(BlockHeader.PreEvaluationHashKey, _fx.Genesis.PreEvaluationHash)
+                .Add(BlockHeader.StateRootHashKey, _fx.Genesis.StateRootHash.Value.ByteArray);
+            AssertBencodexEqual(expected, header.ToBencodex());
+            AssertBencodexEqual(expected, new BlockHeader(expected).ToBencodex());
 
             var random = new Random();
             HashDigest<SHA256> randomHash = random.NextHashDigest<SHA256>();
@@ -92,8 +93,8 @@ namespace Libplanet.Tests.Blocks
                 .Add(BlockHeader.PreviousHashKey, _fx.Genesis.Hash.ByteArray)
                 .Add(BlockHeader.TxHashKey, randomHash.ByteArray)
                 .Add(BlockHeader.StateRootHashKey, randomHash2.ByteArray);
-            Assert.Equal(expected, header.ToBencodex());
-            Assert.Equal(expected, new BlockHeader(expected).ToBencodex());
+            AssertBencodexEqual(expected, header.ToBencodex());
+            AssertBencodexEqual(expected, new BlockHeader(expected).ToBencodex());
         }
 
         [Fact]
@@ -139,7 +140,7 @@ namespace Libplanet.Tests.Blocks
                 txHash: _fx.Next.TxHash,
                 previousHash: _fx.Next.PreviousHash,
                 timestamp: _fx.Next.Timestamp,
-                preEvaluationHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
+                preEvaluationHash: GetRandomBytes(32).ToImmutableArray(),
                 stateRootHash: null
             );
 
@@ -158,7 +159,7 @@ namespace Libplanet.Tests.Blocks
                 txHash: _fx.Next.TxHash,
                 previousHash: _fx.Next.PreviousHash,
                 timestamp: _fx.Next.Timestamp,
-                preEvaluationHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
+                preEvaluationHash: GetRandomBytes(32).ToImmutableArray(),
                 stateRootHash: null
             );
 
@@ -184,7 +185,7 @@ namespace Libplanet.Tests.Blocks
                 txHash: default,
                 miner: default,
                 timestamp: future,
-                preEvaluationHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
+                preEvaluationHash: GetRandomBytes(32).ToImmutableArray(),
                 stateRootHash: new Random().NextHashDigest<SHA256>()
             );
 
@@ -209,7 +210,7 @@ namespace Libplanet.Tests.Blocks
                 txHash: _fx.Next.TxHash,
                 previousHash: _fx.Next.PreviousHash,
                 timestamp: _fx.Next.Timestamp,
-                preEvaluationHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
+                preEvaluationHash: GetRandomBytes(32).ToImmutableArray(),
                 stateRootHash: null
             );
 
@@ -231,7 +232,7 @@ namespace Libplanet.Tests.Blocks
                 txHash: _fx.Next.TxHash,
                 previousHash: _fx.Next.PreviousHash,
                 timestamp: _fx.Next.Timestamp,
-                preEvaluationHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
+                preEvaluationHash: GetRandomBytes(32).ToImmutableArray(),
                 stateRootHash: null
             );
 
@@ -255,7 +256,7 @@ namespace Libplanet.Tests.Blocks
                 hash: random.NextBlockHash(),
                 miner: default,
                 timestamp: now,
-                preEvaluationHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
+                preEvaluationHash: GetRandomBytes(32).ToImmutableArray(),
                 stateRootHash: null
             );
 
@@ -273,7 +274,7 @@ namespace Libplanet.Tests.Blocks
                 hash: random.NextBlockHash(),
                 miner: default,
                 timestamp: now,
-                preEvaluationHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
+                preEvaluationHash: GetRandomBytes(32).ToImmutableArray(),
                 stateRootHash: null
             );
 
@@ -291,7 +292,7 @@ namespace Libplanet.Tests.Blocks
                 hash: random.NextBlockHash(),
                 miner: default,
                 timestamp: now,
-                preEvaluationHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
+                preEvaluationHash: GetRandomBytes(32).ToImmutableArray(),
                 stateRootHash: null
             );
 
@@ -315,7 +316,7 @@ namespace Libplanet.Tests.Blocks
                 hash: random.NextBlockHash(),
                 miner: default,
                 timestamp: now,
-                preEvaluationHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
+                preEvaluationHash: GetRandomBytes(32).ToImmutableArray(),
                 stateRootHash: null
             );
 
@@ -333,7 +334,7 @@ namespace Libplanet.Tests.Blocks
                 hash: random.NextBlockHash(),
                 miner: default,
                 timestamp: now,
-                preEvaluationHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
+                preEvaluationHash: GetRandomBytes(32).ToImmutableArray(),
                 stateRootHash: null
             );
 

@@ -98,16 +98,13 @@ namespace Libplanet.Tests.Store
                     ? rh
                     : (HashDigest<SHA256>?)null;
             GenesisBlock = TestUtils.MineGenesis<DumbAction>(GetHashAlgorithm)
-                .AttachStateRootHash(GetHashAlgorithm(0), rootHashGetter, stateStore, blockAction);
+                .Evaluate(blockAction, stateStore);
             stateRootHashes[GenesisBlock.Hash] = GenesisBlock.StateRootHash.Value;
-            Block1 = TestUtils.MineNext(GenesisBlock, GetHashAlgorithm)
-                .AttachStateRootHash(GetHashAlgorithm(1), rootHashGetter, stateStore, blockAction);
+            Block1 = TestUtils.MineNextBlock(GenesisBlock, GetHashAlgorithm);
             stateRootHashes[Block1.Hash] = Block1.StateRootHash.Value;
-            Block2 = TestUtils.MineNext(Block1, GetHashAlgorithm)
-                .AttachStateRootHash(GetHashAlgorithm(2), rootHashGetter, stateStore, blockAction);
+            Block2 = TestUtils.MineNextBlock(Block1, GetHashAlgorithm);
             stateRootHashes[Block2.Hash] = Block2.StateRootHash.Value;
-            Block3 = TestUtils.MineNext(Block2, GetHashAlgorithm)
-                .AttachStateRootHash(GetHashAlgorithm(3), rootHashGetter, stateStore, blockAction);
+            Block3 = TestUtils.MineNextBlock(Block2, GetHashAlgorithm);
             stateRootHashes[Block3.Hash] = Block3.StateRootHash.Value;
 
             Transaction1 = MakeTransaction(new List<DumbAction>(), ImmutableHashSet<Address>.Empty);
