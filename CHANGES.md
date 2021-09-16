@@ -16,8 +16,9 @@ To be released.
     static method instead. [[#1492]]
  -  `ActionEvaluator<T>.Evaluate()` method's `block` parameter became to take
     `IPreEvaluationBlock<T>` (was `IBlock<T>`).  [[#1146], [#1164], [#1492]]
- -  `BlockHeader` now guarantees that their every instance has integrity.
-    [[#1164], [#1492]]
+ -  `Block<T>` and `BlockHeader` now guarantees that their every instance has
+    integrity.  [[#1164], [#1492]]
+     -  `Block<T>` became unable to be subclassed.
      -  Remove `Block<T>(long, long, BigInteger, Nonce, Address, BlockHash?,
         DateTimeOffset, IReadOnlyList<Transaction<T>>, HashAlgorithmType,
         HashDigest<SHA256>, ImmutableArray<byte>?, int)` overloaded constructor.

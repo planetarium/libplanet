@@ -16,8 +16,7 @@ namespace Libplanet.Blocks
     /// </summary>
     /// <typeparam name="T">A class implementing <see cref="IAction"/> to include.  This type
     /// parameter is aligned with <see cref="Transaction{T}"/>'s type parameter.</typeparam>
-    [Equals]
-    public class Block<T> : IPreEvaluationBlock<T>, IBlockHeader
+    public sealed class Block<T> : IPreEvaluationBlock<T>, IBlockHeader, IEquatable<Block<T>>
         where T : IAction, new()
     {
         /// <summary>
@@ -96,7 +95,6 @@ namespace Libplanet.Blocks
         }
 
         /// <inheritdoc cref="IBlockMetadata.ProtocolVersion"/>
-        [IgnoreDuringEquals]
         public int ProtocolVersion => _preEvaluationBlock.ProtocolVersion;
 
         /// <inheritdoc cref="IPreEvaluationBlockHeader.HashAlgorithm"/>
@@ -112,59 +110,80 @@ namespace Libplanet.Blocks
         public HashDigest<SHA256> StateRootHash => Header.StateRootHash;
 
         /// <inheritdoc cref="IBlockMetadata.Index"/>
-        [IgnoreDuringEquals]
         public long Index => _preEvaluationBlock.Index;
 
         /// <inheritdoc cref="IBlockMetadata.Difficulty"/>
-        [IgnoreDuringEquals]
         public long Difficulty => _preEvaluationBlock.Difficulty;
 
         /// <inheritdoc cref="IBlockMetadata.TotalDifficulty"/>
-        [IgnoreDuringEquals]
         public BigInteger TotalDifficulty => _preEvaluationBlock.TotalDifficulty;
 
         /// <inheritdoc cref="IPreEvaluationBlockHeader.Nonce"/>
-        [IgnoreDuringEquals]
         public Nonce Nonce => _preEvaluationBlock.Nonce;
 
         /// <inheritdoc cref="IBlockMetadata.Miner"/>
-        [IgnoreDuringEquals]
         public Address Miner => _preEvaluationBlock.Miner;
 
         /// <inheritdoc cref="IBlockMetadata.PreviousHash"/>
-        [IgnoreDuringEquals]
         public BlockHash? PreviousHash => _preEvaluationBlock.PreviousHash;
 
         /// <inheritdoc cref="IBlockMetadata.Timestamp"/>
-        [IgnoreDuringEquals]
         public DateTimeOffset Timestamp => _preEvaluationBlock.Timestamp;
 
         /// <inheritdoc cref="IBlockMetadata.TxHash"/>
-        [IgnoreDuringEquals]
         public HashDigest<SHA256>? TxHash => _preEvaluationBlock.TxHash;
 
         /// <inheritdoc cref="IBlockContent{T}.Transactions"/>
-        [IgnoreDuringEquals]
         public IReadOnlyList<Transaction<T>> Transactions => _preEvaluationBlock.Transactions;
 
         /// <summary>
         /// The bytes length in its serialized format.
         /// </summary>
-        [IgnoreDuringEquals]
         public int BytesLength =>
             _bytesLength ?? (int)(_bytesLength = Codec.Encode(this.MarshalBlock()).Length);
 
         /// <summary>
         /// The <see cref="BlockHeader"/> of the block.
         /// </summary>
-        [IgnoreDuringEquals]
         public BlockHeader Header { get; }
 
-        public static bool operator ==(Block<T> left, Block<T> right) =>
-            Operator.Weave(left, right);
+        /// <summary>
+        /// Equivalent to <see cref="IEquatable{T}.Equals(T)"/>.
+        /// </summary>
+        /// <param name="left">A block.</param>
+        /// <param name="right">Another block.</param>
+        /// <returns><c>true</c> if two blocks are equal.  Otherwise <c>false</c>.</returns>
+        public static bool operator ==(Block<T>? left, Block<T>? right) =>
+            Equals(left, right);
 
-        public static bool operator !=(Block<T> left, Block<T> right) =>
-            Operator.Weave(left, right);
+        /// <summary>
+        /// Negation of <see cref="IEquatable{T}.Equals(T)"/>.
+        /// </summary>
+        /// <param name="left">A block.</param>
+        /// <param name="right">Another block.</param>
+        /// <returns><c>true</c> if two blocks are different.  Otherwise <c>false</c>.</returns>
+        public static bool operator !=(Block<T>? left, Block<T>? right) =>
+            !Equals(left, right);
+
+        /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>
+        public bool Equals(Block<T>? other)
+        {
+            if (other is null)
+            {
+                return false;
+            }
+
+            return ReferenceEquals(this, other) ||
+                (Hash.Equals(other.Hash) && HashAlgorithm.Equals(other.HashAlgorithm));
+        }
+
+        /// <inheritdoc cref="object.Equals(object?)"/>
+        public override bool Equals(object? obj) =>
+            obj is Block<T> other && Equals(other);
+
+        /// <inheritdoc cref="object.GetHashCode()"/>
+        public override int GetHashCode() =>
+            unchecked((17 * 31 + Hash.GetHashCode()) * 31 + HashAlgorithm.GetHashCode());
 
         /// <inheritdoc cref="object.ToString()"/>
         public override string ToString() =>
