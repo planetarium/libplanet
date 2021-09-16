@@ -353,17 +353,19 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void ToBencodex()
         {
+            // FIXME: This actually does not test much.  We'd better write more comprehensive
+            // tests on BlockMarshaler, and remove all block types' own marshaling methods.
             Bencodex.Types.Dictionary rawGenesis = _fx.Genesis.ToBencodex();
             AssertBencodexEqual(
                 Bencodex.Types.Dictionary.Empty
-                    .Add(Block<DumbAction>.HeaderKey, _fx.Genesis.Header.ToBencodex()),
+                    .Add(Block<DumbAction>.HeaderKey, _fx.Genesis.Header.MarshalBlockHeader()),
                 rawGenesis
             );
 
             Bencodex.Types.Dictionary rawNext = _fx.Next.ToBencodex();
             AssertBencodexEqual(
                 Bencodex.Types.Dictionary.Empty
-                    .Add(Block<DumbAction>.HeaderKey, _fx.Next.Header.ToBencodex()),
+                    .Add(Block<DumbAction>.HeaderKey, _fx.Next.Header.MarshalBlockHeader()),
                 rawNext
             );
 
@@ -372,7 +374,7 @@ namespace Libplanet.Tests.Blocks
                 .Cast<IValue>();
             AssertBencodexEqual(
                 Bencodex.Types.Dictionary.Empty
-                    .Add(Block<DumbAction>.HeaderKey, _fx.HasTx.Header.ToBencodex())
+                    .Add(Block<DumbAction>.HeaderKey, _fx.HasTx.Header.MarshalBlockHeader())
                     .Add(Block<DumbAction>.TransactionsKey, txs),
                 rawHasTx
             );
@@ -416,7 +418,7 @@ namespace Libplanet.Tests.Blocks
             // Size of BlockDigest
             Assert.Equal(252, BlockDigest.FromBlock(emptyBlock).Serialize().Length);
             // Size of BlockHeader
-            Assert.Equal(247, codec.Encode(emptyBlock.Header.ToBencodex()).Length);
+            Assert.Equal(247, codec.Encode(emptyBlock.Header.MarshalBlockHeader()).Length);
 
             // Case of a block with txs, not contained state root.
             // Size of serialized bytes:
@@ -424,7 +426,7 @@ namespace Libplanet.Tests.Blocks
             // Size of BlockDigest
             Assert.Equal(337, BlockDigest.FromBlock(txBlock).Serialize().Length);
             // Size of BlockHeader
-            Assert.Equal(292, codec.Encode(txBlock.Header.ToBencodex()).Length);
+            Assert.Equal(292, codec.Encode(txBlock.Header.MarshalBlockHeader()).Length);
         }
 
         [Fact]

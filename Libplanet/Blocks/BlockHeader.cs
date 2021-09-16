@@ -1,12 +1,9 @@
 #nullable enable
 using System;
 using System.Collections.Immutable;
-using System.Globalization;
-using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography;
 using Bencodex;
-using Bencodex.Types;
 using Libplanet.Store.Trie;
 
 namespace Libplanet.Blocks
@@ -16,33 +13,7 @@ namespace Libplanet.Blocks
     /// </summary>
     public readonly struct BlockHeader : IBlockHeader
     {
-        internal static readonly byte[] ProtocolVersionKey = { 0x00 };
-
-        internal static readonly byte[] IndexKey = { 0x69 }; // 'i'
-
-        internal static readonly byte[] TimestampKey = { 0x74 }; // 't'
-
-        internal static readonly byte[] DifficultyKey = { 0x64 }; // 'd'
-
-        internal static readonly byte[] TotalDifficultyKey = { 0x54 }; // 'T'
-
-        internal static readonly byte[] NonceKey = { 0x6e }; // 'n'
-
-        internal static readonly byte[] MinerKey = { 0x6d }; // 'm'
-
-        internal static readonly byte[] PreviousHashKey = { 0x70 }; // 'p'
-
-        internal static readonly byte[] TxHashKey = { 0x78 }; // 'x'
-
-        internal static readonly byte[] HashKey = { 0x68 }; // 'h'
-
-        internal static readonly byte[] StateRootHashKey = { 0x73 }; // 's'
-
-        internal static readonly byte[] PreEvaluationHashKey = { 0x63 }; // 'c'
-
         private const int CurrentProtocolVersion = BlockMetadata.CurrentProtocolVersion;
-        private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
-
         private static readonly Codec Codec = new Codec();
 
         /// <summary>
@@ -120,58 +91,6 @@ namespace Libplanet.Blocks
         }
 
         /// <summary>
-        /// Creates a <see cref="BlockHeader"/> instance from its serialization.
-        /// </summary>
-        /// <param name="hashAlgorithmGetter">The function to determine hash algorithm used for
-        /// proof-of-work mining.</param>
-        /// <param name="dict">The <see cref="Bencodex.Types.Dictionary"/>
-        /// representation of <see cref="BlockHeader"/> instance.
-        /// </param>
-        public BlockHeader(HashAlgorithmGetter hashAlgorithmGetter, Bencodex.Types.Dictionary dict)
-        {
-            ProtocolVersion = dict.ContainsKey(ProtocolVersionKey)
-                ? (int)dict.GetValue<Integer>(ProtocolVersionKey)
-                : 0;
-            Index = dict.GetValue<Integer>(IndexKey);
-            Timestamp = DateTimeOffset.ParseExact(
-                dict.GetValue<Text>(TimestampKey),
-                TimestampFormat,
-                CultureInfo.InvariantCulture
-            ).ToUniversalTime();
-            Difficulty = dict.GetValue<Integer>(DifficultyKey);
-            TotalDifficulty = dict.GetValue<Integer>(TotalDifficultyKey);
-            Nonce = new Nonce(dict.GetValue<Binary>(NonceKey).ByteArray);
-            Miner = new Address(dict.GetValue<Binary>(MinerKey).ByteArray);
-
-            PreviousHash = dict.ContainsKey((IKey)(Binary)PreviousHashKey)
-                ? new BlockHash(dict.GetValue<Binary>(PreviousHashKey).ByteArray)
-                : (BlockHash?)null;
-
-            TxHash = dict.ContainsKey((IKey)(Binary)TxHashKey)
-                ? new HashDigest<SHA256>(dict.GetValue<Binary>(TxHashKey).ByteArray)
-                : (HashDigest<SHA256>?)null;
-
-            PreEvaluationHash = dict.ContainsKey((IKey)(Binary)PreEvaluationHashKey)
-                ? dict.GetValue<Binary>(PreEvaluationHashKey).ToImmutableArray()
-                : ImmutableArray<byte>.Empty;
-
-            StateRootHash =
-                new HashDigest<SHA256>(dict.GetValue<Binary>(StateRootHashKey).ByteArray);
-
-            HashAlgorithm = hashAlgorithmGetter(Index);
-            Hash = new BlockHash(dict.GetValue<Binary>(HashKey).ByteArray);
-
-            try
-            {
-                Validate();
-            }
-            catch (InvalidBlockException e)
-            {
-                throw new InvalidBlockHeaderException(Index, Hash, e.Message, e);
-            }
-        }
-
-        /// <summary>
         /// Creates a <see cref="BlockHeader"/> instance for a <see cref="Block{T}"/> instance with
         /// missing <see cref="Block{T}.StateRootHash"/>.
         /// </summary>
@@ -220,7 +139,13 @@ namespace Libplanet.Blocks
 
             StateRootHash = stateRootHash;
             HashAlgorithm = hashAlgorithm;
-            byte[] serialized = SerializeForPreEvaluationHash();
+            byte[] serialized = Codec.Encode(
+                new PreEvaluationBlockHeader(
+                    this.Copy(),
+                    hashAlgorithm,
+                    Nonce
+                ).ToBencodex(StateRootHash)
+            );
             PreEvaluationHash = hashAlgorithm.Digest(serialized).ToImmutableArray();
             Hash = BlockHash.DeriveFrom(serialized);
 
@@ -292,7 +217,14 @@ namespace Libplanet.Blocks
             PreEvaluationHash = preEvaluationHash;
             StateRootHash = stateRootHash;
             HashAlgorithm = hashAlgorithm;
-            Hash = BlockHash.DeriveFrom(SerializeForHash());
+            byte[] serialized = Codec.Encode(
+                new PreEvaluationBlockHeader(
+                    this.Copy(),
+                    hashAlgorithm,
+                    Nonce
+                ).ToBencodex(StateRootHash)
+            );
+            Hash = BlockHash.DeriveFrom(serialized);
 
             try
             {
@@ -349,83 +281,6 @@ namespace Libplanet.Blocks
 
         /// <inheritdoc cref="IBlockHeader.StateRootHash"/>
         public HashDigest<SHA256> StateRootHash { get; }
-
-        /// <summary>
-        /// Gets <see cref="BlockHeader"/> instance from serialized <paramref name="bytes"/>.
-        /// </summary>
-        /// <param name="hashAlgorithmGetter">The function to determine hash algorithm used for
-        /// proof-of-work mining.</param>
-        /// <param name="bytes">Serialized <see cref="BlockHeader"/>.</param>
-        /// <returns>Deserialized <see cref="BlockHeader"/>.</returns>
-        /// <exception cref="DecodingException">Thrown when decoded value is not
-        /// <see cref="Bencodex.Types.Dictionary"/> type.</exception>
-        public static BlockHeader Deserialize(HashAlgorithmGetter hashAlgorithmGetter, byte[] bytes)
-        {
-            IValue value = Codec.Decode(bytes);
-            if (!(value is Bencodex.Types.Dictionary dict))
-            {
-                throw new DecodingException(
-                    $"Expected {typeof(Bencodex.Types.Dictionary)} but " +
-                    $"{value.GetType()}");
-            }
-
-            return new BlockHeader(hashAlgorithmGetter, dict);
-        }
-
-        /// <summary>
-        /// Gets serialized byte array of the <see cref="BlockHeader"/>.
-        /// </summary>
-        /// <returns>Serialized byte array of <see cref="BlockHeader"/>.</returns>
-        public byte[] Serialize()
-        {
-            return new Codec().Encode(ToBencodex());
-        }
-
-        /// <summary>
-        /// Gets <see cref="Bencodex.Types.Dictionary"/> representation of
-        /// <see cref="BlockHeader"/>.
-        /// </summary>
-        /// <returns><see cref="Bencodex.Types.Dictionary"/> representation of
-        /// <see cref="BlockHeader"/>.</returns>
-        public Bencodex.Types.Dictionary ToBencodex()
-        {
-            string timestamp = Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture);
-            var dict = Bencodex.Types.Dictionary.Empty
-                .Add(IndexKey, Index)
-                .Add(TimestampKey, timestamp)
-                .Add(DifficultyKey, Difficulty)
-                .Add(TotalDifficultyKey, (IValue)(Bencodex.Types.Integer)TotalDifficulty)
-                .Add(NonceKey, Nonce.ByteArray)
-                .Add(MinerKey, Miner.ByteArray)
-                .Add(HashKey, Hash.ByteArray);
-
-            if (ProtocolVersion != 0)
-            {
-                dict = dict.Add(ProtocolVersionKey, ProtocolVersion);
-            }
-
-            if (PreviousHash is { } prev)
-            {
-                dict = dict.Add(PreviousHashKey, prev.ByteArray);
-            }
-
-            if (TxHash is { } th)
-            {
-                dict = dict.Add(TxHashKey, th.ByteArray);
-            }
-
-            if (PreEvaluationHash.Any())
-            {
-                dict = dict.Add(PreEvaluationHashKey, PreEvaluationHash.ToArray());
-            }
-
-            if (StateRootHash is { } rootHash)
-            {
-                dict = dict.Add(StateRootHashKey, rootHash.ByteArray);
-            }
-
-            return dict;
-        }
 
         internal void Validate()
         {
@@ -524,22 +379,32 @@ namespace Libplanet.Blocks
             // implemented in ProtocolVersion == 0.
             if (ProtocolVersion > 0)
             {
-                byte[] expectedPreEvaluationHash =
-                    HashAlgorithm.Digest(SerializeForPreEvaluationHash());
-                if (!ByteUtil.TimingSafelyCompare(expectedPreEvaluationHash, PreEvaluationHash))
+                var expected = new PreEvaluationBlockHeader(
+                    this.Copy(),
+                    HashAlgorithm,
+                    Nonce
+                );
+                if (!ByteUtil.TimingSafelyCompare(expected.PreEvaluationHash, PreEvaluationHash))
                 {
                     string message =
                         $"The expected pre-evaluation hash of block #{Index} " +
-                        $"{Hash} is {ByteUtil.Hex(expectedPreEvaluationHash)}, " +
+                        $"{Hash} is {ByteUtil.Hex(expected.PreEvaluationHash)}, " +
                         $"but its pre-evaluation hash is {ByteUtil.Hex(PreEvaluationHash)}.";
                     throw new InvalidBlockPreEvaluationHashException(
                         PreEvaluationHash,
-                        expectedPreEvaluationHash.ToImmutableArray(),
+                        expected.PreEvaluationHash.ToImmutableArray(),
                         message);
                 }
             }
 
-            BlockHash expectedHash = BlockHash.DeriveFrom(SerializeForHash());
+            byte[] expect = Codec.Encode(
+                new PreEvaluationBlockHeader(
+                    this.Copy(),
+                    HashAlgorithm,
+                    Nonce
+                ).ToBencodex(StateRootHash)
+            );
+            BlockHash expectedHash = BlockHash.DeriveFrom(expect);
             if (!Hash.Equals(expectedHash))
             {
                 throw new InvalidBlockHashException(
@@ -547,52 +412,5 @@ namespace Libplanet.Blocks
                     "the hash provided by the block.");
             }
         }
-
-        // FIXME: This method should be replaced by BlockContent<T>.ToBencodex() method.
-        internal Bencodex.Types.Dictionary ToBencodexForPreEvaluationHash()
-        {
-            // TODO: Include TotalDifficulty as well
-            var dict = Bencodex.Types.Dictionary.Empty
-                .Add("index", Index)
-                .Add("timestamp", Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture))
-                .Add("difficulty", Difficulty)
-                .Add("nonce", Nonce.ByteArray)
-                .Add("reward_beneficiary", Miner.ByteArray);
-
-            if (ProtocolVersion != 0)
-            {
-                dict = dict.Add("protocol_version", ProtocolVersion);
-            }
-
-            if (PreviousHash is { } prevHash)
-            {
-                dict = dict.Add("previous_hash", prevHash.ByteArray);
-            }
-
-            if (TxHash is { } txHash)
-            {
-                dict = dict.Add("transaction_fingerprint", txHash.ByteArray);
-            }
-
-            return dict;
-        }
-
-        internal Bencodex.Types.Dictionary ToBencodexForHash()
-        {
-            var dict = ToBencodexForPreEvaluationHash();
-
-            if (StateRootHash is { } rootHash)
-            {
-                dict = dict.Add("state_root_hash", rootHash.ByteArray);
-            }
-
-            return dict;
-        }
-
-        internal byte[] SerializeForPreEvaluationHash()
-            => new Codec().Encode(ToBencodexForPreEvaluationHash());
-
-        internal byte[] SerializeForHash()
-            => new Codec().Encode(ToBencodexForHash());
     }
 }

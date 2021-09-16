@@ -190,7 +190,7 @@ namespace Libplanet.Blocks
             BlockHeader header;
             try
             {
-                header = new BlockHeader(
+                header = BlockMarshaler.UnmarshalBlockHeader(
                     hashAlgorithmGetter,
                     dict.GetValue<Bencodex.Types.Dictionary>(HeaderKey)
                 );
@@ -355,7 +355,7 @@ namespace Libplanet.Blocks
         public Bencodex.Types.Dictionary ToBencodex()
         {
             Bencodex.Types.Dictionary dict = Bencodex.Types.Dictionary.Empty
-                .Add(HeaderKey, Header.ToBencodex());
+                .Add(HeaderKey, Header.MarshalBlockHeader());
 
             if (Transactions.Any())
             {

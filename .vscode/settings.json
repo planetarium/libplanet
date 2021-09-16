@@ -16,6 +16,7 @@
     "changeset",
     "ciphertext",
     "indeterministic",
+    "marshaler",
     "nonces",
     "outdate",
     "parameterless",

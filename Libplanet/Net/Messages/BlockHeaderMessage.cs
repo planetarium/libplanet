@@ -12,7 +12,7 @@ namespace Libplanet.Net.Messages
         public BlockHeaderMessage(BlockHash genesisHash, BlockHeader header)
         {
             GenesisHash = genesisHash;
-            HeaderDictionary = header.ToBencodex();
+            HeaderDictionary = header.MarshalBlockHeader();
         }
 
         public BlockHeaderMessage(NetMQFrame[] frames)
@@ -37,6 +37,6 @@ namespace Libplanet.Net.Messages
         }
 
         public BlockHeader GetHeader(HashAlgorithmGetter hashAlgorithmGetter) =>
-            new BlockHeader(hashAlgorithmGetter, HeaderDictionary);
+            BlockMarshaler.UnmarshalBlockHeader(hashAlgorithmGetter, HeaderDictionary);
     }
 }

@@ -42,7 +42,7 @@ namespace Libplanet.Store
         /// </param>
         public BlockDigest(Bencodex.Types.Dictionary dict)
         {
-            Header = new BlockHeader(
+            Header = BlockMarshaler.UnmarshalBlockHeader(
                 _ => HashAlgorithmType.Of<SHA256>(),  // thunk getter; doesn't matter here
                 dict.GetValue<Bencodex.Types.Dictionary>(HeaderKey)
             );
@@ -112,7 +112,7 @@ namespace Libplanet.Store
         public Bencodex.Types.Dictionary ToBencodex()
         {
             var dict = Bencodex.Types.Dictionary.Empty
-                .Add(HeaderKey, Header.ToBencodex());
+                .Add(HeaderKey, Header.MarshalBlockHeader());
 
             if (TxIds.Any())
             {

@@ -16,6 +16,20 @@ To be released.
     static method instead. [[#1492]]
  -  `ActionEvaluator<T>.Evaluate()` method's `block` parameter became to take
     `IPreEvaluationBlock<T>` (was `IBlock<T>`).  [[#1146], [#1164], [#1492]]
+ -  `BlockHeader` now guarantees that their every instance has integrity.
+    [[#1164], [#1492]]
+     -  When `BlockHeader` is instantiated, if there is no integrity in the
+        block header contents it became to throw `InvalidBlockHeaderException`.
+     -  Removed `BlockHeader(Bencodex.Types.Dictionary)` overloaded constructor.
+        Use `BlockMarshaler.UnmarshalBlockHeader()` static method instead.
+     -  Removed `BlockHeader.Deserialize()` static method.  Instead, use
+        `BlockMarshaler.UnmarshalBlockHeader()` static method and
+        `Bencodex.Codec` together.
+     -  Removed `BlockHeader.ToBencodex()` method.
+        Use `BlockMarshaler.MarshalBlockHeader()` static method instead.
+     -  Removed `BlockHeader.Serialize()` method.  Instead, use
+        `BlockMarshaler.MarshalBlockHeader()` static method and
+        `Bencodex.Codec` together.
  -  `Block<T>` and `BlockHeader` now guarantee that their every instance has
     its `StateRootHash`.  [[#1128], [#1146], [#1492]]
      -  `Block<T>.StateRootHash` property's type became `HashDigest<SHA256>`
@@ -49,10 +63,6 @@ To be released.
         BigInteger, BlockHash?, HashDigest<SHA256>?, BlockHash,
         ImmutableArray<byte>, HashDigest<SHA256>, HashAlgorithmType)`
         constructor instead.
-     -  Added `HashAlgorithmGetter hashAlgorithmGetter` parameter to
-        `BlockHeader(Bencodex.Types.Dictionary)` overloaded constructor.
-     -  Added `HashAlgorithmGetter hashAlgorithmGetter` parameter to
-        `BlockHeader.Deserialize()` static method.
      -  Added `HashAlgorithmGetter hashAlgorithmGetter` parameter to
         `IStore.GetBlock<T>()` method.
      -  Added `HashAlgorithmGetter hashAlgorithmGetter` parameter to
@@ -134,7 +144,7 @@ To be released.
  -  Added `StoreExtensions.GetStateRootHash()` extension method.
     [[#1128], [#1146], [#1492]]
  -  Added `DelayedRenderer<T>.HashAlgorithmGetter` property.  [[#1492]]
- -  Added `InvalidBlockHeaderException` class.  [[#1164], [#1492]]
+ -  Added `InvalidBlockHeaderException` class.  [[#1146], [#1164], [#1492]]
 
 ### Behavioral changes
 
