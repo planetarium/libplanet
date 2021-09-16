@@ -210,29 +210,7 @@ namespace Libplanet.Net
                 message.Ids.Select(txid => txid.ToString())
             );
 
-            HashSet<TxId> required = GetRequiredTxIds(message.Ids);
-
-            if (!required.Any())
-            {
-                _logger.Debug("No unaware transactions to receive.");
-                return;
-            }
-
-            _logger.Debug(
-                "Unaware transactions to receive: {@TxIds}.",
-                required.Select(txid => txid.ToString())
-            );
-
-            if (_txSyncTaskQueue.ContainsKey(peer))
-            {
-                _txSyncTaskQueue[peer].UnionWith(required);
-            }
-            else
-            {
-                // spawn task.
-                _txSyncTaskQueue[peer] = required;
-                _ = RequestTxsFromPeerAsync(peer, _cancellationToken);
-            }
+            TxCompletion.Demand(peer, message.Ids);
         }
 
         private void TransferBlocks(GetBlocks getData)

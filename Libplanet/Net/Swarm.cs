@@ -82,10 +82,6 @@ namespace Libplanet.Net
             _privateKey = privateKey ?? throw new ArgumentNullException(nameof(privateKey));
             LastSeenTimestamps =
                 new ConcurrentDictionary<Peer, DateTimeOffset>();
-            _txSyncTaskQueue = new ConcurrentDictionary<BoundPeer, HashSet<TxId>>();
-            _txIgnoreQueue = new FixedSizedQueue<TxId>(100);
-
-            TxReceived = new AsyncAutoResetEvent();
             BlockHeaderReceived = new AsyncAutoResetEvent();
             BlockAppended = new AsyncAutoResetEvent();
             BlockReceived = new AsyncAutoResetEvent();
@@ -103,6 +99,7 @@ namespace Libplanet.Net
                 .ForContext("SwarmId", loggerId);
 
             Options = options ?? new SwarmOptions();
+            TxCompletion = new TxCompletion<BoundPeer, T>(BlockChain, GetTxsAsync, BroadcastTxs);
             RoutingTable = new RoutingTable(Address, Options.TableSize, Options.BucketSize);
             Transport = new NetMQTransport(
                 RoutingTable,
@@ -168,6 +165,10 @@ namespace Libplanet.Net
 
         internal ITransport Transport { get; private set; }
 
+        internal TxCompletion<BoundPeer, T> TxCompletion { get; }
+
+        internal AsyncAutoResetEvent TxReceived => TxCompletion?.TxReceived;
+
         internal AsyncAutoResetEvent BlockHeaderReceived { get; }
 
         internal AsyncAutoResetEvent BlockReceived { get; }
@@ -197,7 +198,8 @@ namespace Libplanet.Net
             if (!_disposed)
             {
                 _workerCancellationTokenSource?.Cancel();
-                Transport.Dispose();
+                TxCompletion?.Dispose();
+                Transport?.Dispose();
                 _workerCancellationTokenSource?.Dispose();
                 _disposed = true;
             }
@@ -752,6 +754,50 @@ namespace Libplanet.Net
             _logger.Debug("Downloaded {Blocks} block(s) from {Peer}.", count, peer);
         }
 
+        internal async IAsyncEnumerable<Transaction<T>> GetTxsAsync(
+            BoundPeer peer,
+            IEnumerable<TxId> txIds,
+            [EnumeratorCancellation] CancellationToken cancellationToken)
+        {
+            var txIdsAsArray = txIds as TxId[] ?? txIds.ToArray();
+            var request = new GetTxs(txIdsAsArray);
+            int txCount = txIdsAsArray.Count();
+
+            _logger.Debug("Required tx count: {Count}.", txCount);
+
+            var txRecvTimeout = Options.TxRecvTimeout + TimeSpan.FromSeconds(txCount);
+            if (txRecvTimeout > Options.MaxTimeout)
+            {
+                txRecvTimeout = Options.MaxTimeout;
+            }
+
+            IEnumerable<Message> replies = await Transport.SendMessageWithReplyAsync(
+                peer,
+                request,
+                txRecvTimeout,
+                txCount,
+                true,
+                cancellationToken
+            );
+
+            foreach (Message message in replies)
+            {
+                if (message is Messages.Tx parsed)
+                {
+                    Transaction<T> tx = Transaction<T>.Deserialize(parsed.Payload);
+                    yield return tx;
+                }
+                else
+                {
+                    string errorMessage =
+                        $"Expected {nameof(Tx)} messages as response of " +
+                        $"the {nameof(GetTxs)} message, but got a {message.GetType().Name} " +
+                        $"message instead: {message}";
+                    throw new InvalidMessageException(errorMessage, message);
+                }
+            }
+        }
+
         internal async IAsyncEnumerable<(long, BlockHash)> GetDemandBlockHashes(
             BlockChain<T> blockChain,
             IList<(BoundPeer, IBlockExcerpt)> peersWithExcerpts,
@@ -944,11 +990,11 @@ namespace Libplanet.Net
             _logger.Debug("Block broadcasting complete.");
         }
 
-        private void BroadcastTxs(Address? except, IEnumerable<Transaction<T>> txs)
+        private void BroadcastTxs(BoundPeer except, IEnumerable<Transaction<T>> txs)
         {
             List<TxId> txIds = txs.Select(tx => tx.Id).ToList();
             _logger.Debug("Broadcast {TransactionsNumber} txs...", txIds.Count);
-            BroadcastTxIds(except, txIds);
+            BroadcastTxIds(except?.Address, txIds);
         }
 
         private void BroadcastMessage(Address? except, Message message)
