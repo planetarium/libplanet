@@ -249,7 +249,7 @@ namespace Libplanet.Net
                 if (_store.ContainsBlock(hash))
                 {
                     Block<T> block = _store.GetBlock<T>(BlockChain.Policy.GetHashAlgorithm, hash);
-                    byte[] payload = block.Serialize();
+                    byte[] payload = Codec.Encode(block.MarshalBlock());
                     blocks.Add(payload);
                 }
 

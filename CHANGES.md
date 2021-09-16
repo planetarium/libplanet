@@ -20,6 +20,17 @@ To be released.
     [[#1164], [#1492]]
      -  When `BlockHeader` is instantiated, if there is no integrity in the
         block header contents it became to throw `InvalidBlockHeaderException`.
+ -  `Block<T>` and `BlockHeader` have no more marshaling/unmarshaling methods.
+     -  Removed `Block<T>(Bencodex.Types.Dictionary)` overloaded constructor.
+        Use `BlockMarshaler.UnmarshalBlock()` static method instead.
+     -  Removed `Block<T>.Deserialize()` static method.  Instead, use
+        `BlockMarshaler.UnmarshalBlock()` static method and `Bencodex.Codec`
+        together.
+     -  Removed `Block<T>.ToBencodex()` method.
+        Use `BlockMarshaler.MarshalBlock()` static method instead.
+     -  Removed `Block<T>.Serialize()` method.  Instead, use
+        `BlockMarshaler.MarshalBlock()` static method and `Bencodex.Codec`
+        together.
      -  Removed `BlockHeader(Bencodex.Types.Dictionary)` overloaded constructor.
         Use `BlockMarshaler.UnmarshalBlockHeader()` static method instead.
      -  Removed `BlockHeader.Deserialize()` static method.  Instead, use
@@ -52,10 +63,6 @@ To be released.
     proof-of-work mining.  [[#1492]]
      -  Added `Block<T>.HashAlgorithm` property.
      -  Added `BlockHeader.HashAlgorithm` property.
-     -  Added `HashAlgorithmGetter hashAlgorithmGetter` parameter to
-        `Block<T>(Bencodex.Types.Dictionary)` overloaded constructor.
-     -  Added `HashAlgorithmGetter hashAlgorithmGetter` parameter to
-        `Block<T>.Deserialize()` static method.
      -  Removed `BlockHeader(int, long, DateTimeOffset, Nonce, Address, long,
         BigInteger, BlockHash?, HashDigest<SHA256>?, BlockHash,
         ImmutableArray<byte>, HashDigest<SHA256>?)` constructor.

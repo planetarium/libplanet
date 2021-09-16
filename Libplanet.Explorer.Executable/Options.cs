@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using Bencodex;
 using Libplanet.Action;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
@@ -12,6 +13,8 @@ namespace Libplanet.Explorer.Executable
 {
     public class Options
     {
+        private static readonly Codec Codec = new Codec();
+
         public Options(
             bool debug,
             string host,
@@ -166,7 +169,8 @@ namespace Libplanet.Explorer.Executable
             using (var client = new WebClient())
             {
                 var serialized = client.DownloadData(uri);
-                return Block<NullAction>.Deserialize(policy.GetHashAlgorithm, serialized);
+                var dict = (Bencodex.Types.Dictionary)Codec.Decode(serialized);
+                return BlockMarshaler.UnmarshalBlock<NullAction>(policy.GetHashAlgorithm, dict);
             }
         }
     }

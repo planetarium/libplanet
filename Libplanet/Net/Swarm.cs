@@ -7,6 +7,7 @@ using System.Net;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
+using Bencodex;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -26,6 +27,8 @@ namespace Libplanet.Net
         where T : IAction, new()
     {
         private const int InitialBlockDownloadWindow = 100;
+        private static readonly Codec Codec = new Codec();
+
         private readonly PrivateKey _privateKey;
         private readonly AppProtocolVersion _appProtocolVersion;
 
@@ -735,9 +738,9 @@ namespace Libplanet.Net
                     foreach (byte[] payload in payloads)
                     {
                         cancellationToken.ThrowIfCancellationRequested();
-                        Block<T> block = Block<T>.Deserialize(
+                        Block<T> block = BlockMarshaler.UnmarshalBlock<T>(
                             BlockChain.Policy.GetHashAlgorithm,
-                            payload
+                            (Bencodex.Types.Dictionary)Codec.Decode(payload)
                         );
 
                         yield return block;

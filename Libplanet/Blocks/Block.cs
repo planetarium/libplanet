@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography;
 using Bencodex;
-using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Store.Trie;
 using Libplanet.Tx;
@@ -24,6 +22,8 @@ namespace Libplanet.Blocks
 
         internal static readonly byte[] HeaderKey = { 0x48 }; // 'H'
         internal static readonly byte[] TransactionsKey = { 0x54 }; // 'T'
+
+        private static readonly Codec Codec = new Codec();
 
         private int? _bytesLength = null;
         private BlockHeader? _header;
@@ -177,61 +177,6 @@ namespace Libplanet.Blocks
         {
         }
 
-        /// <summary>
-        /// Creates a <see cref="Block{T}"/> instance from its serialization.
-        /// </summary>
-        /// <param name="hashAlgorithmGetter">The function to determine hash algorithm used for
-        /// proof-of-work mining.</param>
-        /// <param name="dict">The <see cref="Bencodex.Types.Dictionary"/>
-        /// representation of <see cref="Block{T}"/> instance.
-        /// </param>
-        public Block(HashAlgorithmGetter hashAlgorithmGetter, Bencodex.Types.Dictionary dict)
-        {
-            BlockHeader header;
-            try
-            {
-                header = BlockMarshaler.UnmarshalBlockHeader(
-                    hashAlgorithmGetter,
-                    dict.GetValue<Bencodex.Types.Dictionary>(HeaderKey)
-                );
-            }
-            catch (InvalidBlockHeaderException e)
-            {
-                throw e.InnerException ?? e;
-            }
-
-            var txs = dict.ContainsKey((IKey)(Binary)TransactionsKey)
-                ? dict.GetValue<Bencodex.Types.List>(TransactionsKey)
-                    .Select(tx => ((Binary)tx).ByteArray)
-                : Enumerable.Empty<ImmutableArray<byte>>();
-            _header = header;
-
-            ProtocolVersion = header.ProtocolVersion;
-            Index = header.Index;
-            Difficulty = header.Difficulty;
-            TotalDifficulty = header.TotalDifficulty;
-            Nonce = header.Nonce;
-            Miner = header.Miner;
-            PreviousHash = header.PreviousHash;
-            Timestamp = header.Timestamp;
-            TxHash = header.TxHash;
-
-            // FIXME: Transactions should be re-ordered to properly validate StateRootHash.
-            // See also <https://github.com/planetarium/libplanet/issues/1299>.
-            Transactions = txs
-                .Select(tx => Transaction<T>.Deserialize(tx.ToBuilder().ToArray(), false))
-                .ToImmutableList();
-
-            _preEvaluationHash = header.PreEvaluationHash.Any()
-                ? header.PreEvaluationHash
-                : throw new ArgumentException(
-                    $"PreEvaluationHash of {nameof(Header)} cannot be empty.");
-
-            HashAlgorithm = header.HashAlgorithm;
-            StateRootHash = header.StateRootHash;
-            _hash = header.Hash;
-        }
-
         /// <inheritdoc cref="IBlockMetadata.ProtocolVersion"/>
         [IgnoreDuringEquals]
         public int ProtocolVersion { get; }
@@ -298,13 +243,8 @@ namespace Libplanet.Blocks
         /// The bytes length in its serialized format.
         /// </summary>
         [IgnoreDuringEquals]
-        public int BytesLength
-        {
-            get
-            {
-                return _bytesLength ?? (int)(_bytesLength = Serialize().Length);
-            }
-        }
+        public int BytesLength =>
+            _bytesLength ?? (int)(_bytesLength = Codec.Encode(this.MarshalBlock()).Length);
 
         /// <summary>
         /// The <see cref="BlockHeader"/> of the block.
@@ -318,53 +258,6 @@ namespace Libplanet.Blocks
 
         public static bool operator !=(Block<T> left, Block<T> right) =>
             Operator.Weave(left, right);
-
-        /// <summary>
-        /// Decodes a <see cref="Block{T}"/>'s
-        /// <a href="https://bencodex.org/">Bencodex</a> representation.
-        /// </summary>
-        /// <param name="hashAlgorithmGetter">The function to determine hash algorithm used for
-        /// proof-of-work mining.</param>
-        /// <param name="bytes">A <a href="https://bencodex.org/">Bencodex</a>
-        /// representation of a <see cref="Block{T}"/>.</param>
-        /// <returns>A decoded <see cref="Block{T}"/> object.</returns>
-        /// <seealso cref="Serialize()"/>
-        [Pure]
-        public static Block<T> Deserialize(HashAlgorithmGetter hashAlgorithmGetter, byte[] bytes)
-        {
-            IValue value = new Codec().Decode(bytes);
-            if (!(value is Bencodex.Types.Dictionary dict))
-            {
-                throw new DecodingException(
-                    $"Expected {typeof(Bencodex.Types.Dictionary)} but " +
-                    $"{value.GetType()}");
-            }
-
-            var block = new Block<T>(hashAlgorithmGetter, dict);
-            block._bytesLength = bytes.Length;
-            return block;
-        }
-
-        public byte[] Serialize()
-        {
-            var codec = new Codec();
-            byte[] serialized = codec.Encode(ToBencodex());
-            return serialized;
-        }
-
-        public Bencodex.Types.Dictionary ToBencodex()
-        {
-            Bencodex.Types.Dictionary dict = Bencodex.Types.Dictionary.Empty
-                .Add(HeaderKey, Header.MarshalBlockHeader());
-
-            if (Transactions.Any())
-            {
-                var txs = Transactions.Select(tx => new Binary(tx.Serialize(true))).Cast<IValue>();
-                dict = dict.Add(TransactionsKey, txs);
-            }
-
-            return dict;
-        }
 
         public override string ToString()
         {

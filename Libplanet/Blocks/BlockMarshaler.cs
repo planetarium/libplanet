@@ -118,10 +118,17 @@ namespace Libplanet.Blocks
         public static Dictionary MarshalBlock(
             Dictionary marshaledBlockHeader,
             List marshaledTransactions
-        ) =>
-            Dictionary.Empty
-                .Add(HeaderKey, marshaledBlockHeader)
-                .Add(TransactionsKey, (IValue)marshaledTransactions);
+        )
+        {
+            Dictionary dict = Dictionary.Empty
+                .Add(HeaderKey, marshaledBlockHeader);
+            if (marshaledTransactions.Any())
+            {
+                dict = dict.Add(TransactionsKey, (IValue)marshaledTransactions);
+            }
+
+            return dict;
+        }
 
         public static Dictionary MarshalBlock<T>(this Block<T> block)
             where T : IAction, new()
@@ -222,8 +229,9 @@ namespace Libplanet.Blocks
                 hashAlgorithmGetter,
                 marshaled.GetValue<Dictionary>(HeaderKey)
             );
-            IReadOnlyList<Transaction<T>> txs =
-                UnmarshalTransactions<T>(marshaled.GetValue<List>(TransactionsKey));
+            IReadOnlyList<Transaction<T>> txs = marshaled.ContainsKey(TransactionsKey)
+                ? UnmarshalTransactions<T>(marshaled.GetValue<List>(TransactionsKey))
+                : ImmutableArray<Transaction<T>>.Empty;
             return new Block<T>(
                 index: header.Index,
                 difficulty: header.Difficulty,

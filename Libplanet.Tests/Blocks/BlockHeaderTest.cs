@@ -10,8 +10,6 @@ namespace Libplanet.Tests.Blocks
 {
     public class BlockHeaderTest : IClassFixture<BlockFixture>
     {
-        private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
-
         private BlockFixture _fx;
 
         public BlockHeaderTest(BlockFixture fixture) => _fx = fixture;
