@@ -86,6 +86,8 @@ To be released.
     `BlockPolicy<T>()` constructor with `Func<long, int>? getMaxBlockBytes`.
     [[#1485]]
  -  Removed `TxViolatingBlockPolicyException` class.  [[#1485]]
+ -  Optional parameter name `difficultyBoundDivisor` for `BlockPolicy<T>()`
+    constructor changed to `difficultyStability`.  [[#1495]]
 
 ### Backward-incompatible network protocol changes
 
@@ -115,6 +117,9 @@ To be released.
     ImmutableArray<byte>, HashDigest<SHA256>?)` constructor.  [[#1470]]
  -  Added `BlockPolicyViolationException` and `TxPolicyViolationException`
     classes.  [[#1485]]
+ -  Added `DifficultyAdjustment` static class.  [[#1495]]
+ -  Added `BlockPolicy<T>.DifficultyStability` and
+    `BlockPolicy<T>.MinimumDifficulty` properties.  [[#1495]]
 
 ### Behavioral changes
 
@@ -144,6 +149,14 @@ To be released.
 
 ### Bug fixes
 
+ -  Improper sanity checks for `minimumDifficulty` and `difficultyStability`
+    (changed from the old name `difficultyBoundDivisor`) arguments given to
+    `BlockPolicy<T>()` constructor fixed.  [[#1495]]
+     -  It was possible for `difficultyStability` not to be positive when this
+        makes no sense.
+     -  Wrongly threw an `ArgumentOutOfRangeException` for the case where
+        `minimumDifficulty` would equal `difficultyStability`.
+
 ### CLI tools
 
 [#1358]: https://github.com/planetarium/libplanet/issues/1358
@@ -170,6 +183,7 @@ To be released.
 [#1479]: https://github.com/planetarium/libplanet/pull/1479
 [#1480]: https://github.com/planetarium/libplanet/pull/1480
 [#1485]: https://github.com/planetarium/libplanet/pull/1485
+[#1495]: https://github.com/planetarium/libplanet/pull/1495
 
 
 Version 0.16.0
