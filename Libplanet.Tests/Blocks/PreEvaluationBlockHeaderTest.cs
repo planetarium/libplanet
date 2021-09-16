@@ -223,6 +223,19 @@ namespace Libplanet.Tests.Blocks
         }
 
         [Fact]
+        public void CopyConstructor()
+        {
+            BlockMetadata metadata = _contents.Genesis.Copy();
+            var preEvalBlock = new PreEvaluationBlockHeader(
+                metadata,
+                hashAlgorithm: _sha256,
+                nonce: _validGenesisProof.Nonce
+            );
+            var copy = new PreEvaluationBlockHeader(preEvalBlock);
+            AssertPreEvaluationBlockHeadersEqual(preEvalBlock, copy);
+        }
+
+        [Fact]
         public virtual void DontCheckPreEvaluationHashWithProtocolVersion0()
         {
             // Since PreEvaluationHash comparison between the actual and the expected was not

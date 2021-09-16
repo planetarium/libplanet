@@ -200,21 +200,8 @@ namespace Libplanet.Blocks
             HashDigest<SHA256> stateRootHash = new HashDigest<SHA256>(
                 marshaled.GetValue<Binary>(StateRootHashKey).ByteArray
             );
-            return new BlockHeader(
-                protocolVersion: preEvalHeader.ProtocolVersion,
-                index: preEvalHeader.Index,
-                timestamp: preEvalHeader.Timestamp,
-                nonce: preEvalHeader.Nonce,
-                miner: preEvalHeader.Miner,
-                difficulty: preEvalHeader.Difficulty,
-                totalDifficulty: preEvalHeader.TotalDifficulty,
-                previousHash: preEvalHeader.PreviousHash,
-                txHash: preEvalHeader.TxHash,
-                hash: UnmarshalBlockHeaderHash(marshaled),
-                preEvaluationHash: preEvalHeader.PreEvaluationHash,
-                stateRootHash: stateRootHash,
-                hashAlgorithm: preEvalHeader.HashAlgorithm
-            );
+            BlockHash hash = UnmarshalBlockHeaderHash(marshaled);
+            return new BlockHeader(preEvalHeader, stateRootHash, hash);
         }
 
         public static IReadOnlyList<Transaction<T>> UnmarshalTransactions<T>(List marshaled)

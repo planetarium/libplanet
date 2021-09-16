@@ -28,6 +28,14 @@ namespace Libplanet.Blocks
         /// <summary>
         /// A block's hash.
         /// </summary>
+        /// <summary>
+        /// The hash digest derived from the whole contents of the block including
+        /// <see cref="IBlockHeader.StateRootHash"/>, which is determined by evaluating transactions
+        /// and a <see cref="Blockchain.Policies.IBlockPolicy{T}.BlockAction"/> (if exists).
+        /// <para>This is used for block's unique identifier.</para>
+        /// </summary>
+        /// <seealso cref="IPreEvaluationBlockHeader.PreEvaluationHash"/>
+        /// <seealso cref="IBlockHeader.StateRootHash"/>
         /// <seealso cref="Block{T}.Hash"/>
         public BlockHash Hash { get; }
 

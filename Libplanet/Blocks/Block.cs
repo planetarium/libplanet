@@ -26,7 +26,7 @@ namespace Libplanet.Blocks
         private static readonly Codec Codec = new Codec();
 
         private int? _bytesLength;
-        private BlockHeader? _header;
+        private BlockHeader _header;
         private ImmutableArray<byte>? _preEvaluationHash;
         private BlockHash? _hash;
 
@@ -99,43 +99,35 @@ namespace Libplanet.Blocks
             Transactions = transactions.OrderBy(tx => tx.Id).ToArray();
             TxHash = BlockContent<T>.DeriveTxHash(Transactions);
 
-            if (!(preEvaluationHash is { } peh))
+            var content = new BlockContent<T>
             {
-                var content = new BlockContent<T>
-                {
-                    ProtocolVersion = ProtocolVersion,
-                    Index = Index,
-                    Timestamp = Timestamp,
-                    Miner = Miner,
-                    Difficulty = Difficulty,
-                    TotalDifficulty = TotalDifficulty,
-                    PreviousHash = PreviousHash,
-                    Transactions = Transactions,
-                    TxHash = TxHash,
-                };
-                var preEval = new PreEvaluationBlock<T>(content, hashAlgorithm, Nonce);
-                peh = preEval.PreEvaluationHash;
+                ProtocolVersion = ProtocolVersion,
+                Index = Index,
+                Timestamp = Timestamp,
+                Miner = Miner,
+                Difficulty = Difficulty,
+                TotalDifficulty = TotalDifficulty,
+                PreviousHash = PreviousHash,
+                Transactions = Transactions,
+                TxHash = TxHash,
+            };
+
+            PreEvaluationBlock<T> preEval;
+            if (preEvaluationHash is { } peh)
+            {
+                preEval = new PreEvaluationBlock<T>(content, hashAlgorithm, Nonce, peh);
+            }
+            else
+            {
+                preEval = new PreEvaluationBlock<T>(content, hashAlgorithm, Nonce);
             }
 
-            _header = new BlockHeader(
-                protocolVersion: ProtocolVersion,
-                index: Index,
-                timestamp: Timestamp,
-                nonce: Nonce,
-                miner: Miner,
-                difficulty: Difficulty,
-                totalDifficulty: TotalDifficulty,
-                previousHash: PreviousHash,
-                txHash: TxHash,
-                preEvaluationHash: peh,
-                stateRootHash: stateRootHash,
-                hashAlgorithm: hashAlgorithm
-            );
+            _header = new BlockHeader(preEval, stateRootHash);
 
             HashAlgorithm = hashAlgorithm;
             _preEvaluationHash = Header.PreEvaluationHash;
             StateRootHash = stateRootHash;
-            _hash = Header.Hash;
+            _hash = _header.Hash;
 
             // Order transactions for evaluation
             Transactions = OrderTxsForEvaluation(
@@ -189,7 +181,6 @@ namespace Libplanet.Blocks
             ?? throw new InvalidOperationException("Hash has not been set.");
 
         /// <inheritdoc cref="IPreEvaluationBlockHeader.PreEvaluationHash"/>
-        /// <seealso cref="BlockHeader.Validate"/>
         public ImmutableArray<byte> PreEvaluationHash => _preEvaluationHash
             ?? throw new InvalidOperationException("PreEvaluationHash is has not been set.");
 
@@ -315,8 +306,6 @@ namespace Libplanet.Blocks
         /// </exception>
         internal void Validate(HashAlgorithmType hashAlgorithm, DateTimeOffset currentTime)
         {
-            Header.Validate();
-
             foreach (Transaction<T> tx in Transactions)
             {
                 tx.Validate();

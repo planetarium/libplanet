@@ -18,8 +18,17 @@ To be released.
     `IPreEvaluationBlock<T>` (was `IBlock<T>`).  [[#1146], [#1164], [#1492]]
  -  `BlockHeader` now guarantees that their every instance has integrity.
     [[#1164], [#1492]]
-     -  When `BlockHeader` is instantiated, if there is no integrity in the
-        block header contents it became to throw `InvalidBlockException`.
+     -  `BlockHeader` is no more readonly struct, but a sealed class.
+     -  Removed `BlockHeader(int, long, string, ImmutableArray<byte>,
+        ImmutableArray<byte>, long, BigInteger, ImmutableArray<byte>,
+        ImmutableArray<byte>, ImmutableArray<byte>, ImmutableArray<byte>,
+        ImmutableArray<byte>)` constructor.  Use other overloaded constructors
+        instead.
+     -  Added `BlockHeader(PreEvaluationBlockHeader, HashDigest<SHA256>)`
+        constructor.
+     -  Added
+        `BlockHeader(PreEvaluationBlockHeader, HashDigest<SHA256>, BlockHash)`
+        constructor.
  -  `Block<T>` and `BlockHeader` have no more marshaling/unmarshaling methods.
      -  Removed `Block<T>(Bencodex.Types.Dictionary)` overloaded constructor.
         Use `BlockMarshaler.UnmarshalBlock()` static method instead.
@@ -52,13 +61,6 @@ To be released.
         and `PreEvaluationBlock<T>.Evaluate()` methods instead.
      -  `BlockHeader.StateRootHash` property's type became `HashDigest<SHA256>`
         (was `HashDigest<SHA256>?`).
-     -  Removed `BlockHeader(int, long, DateTimeOffset, Nonce, Address, long,
-        BigInteger, BlockHash?, HashDigest<SHA256>?, BlockHash,
-        ImmutableArray<byte>, HashDigest<SHA256>?)` constructor.
-        Use `BlockHeader(int, long, DateTimeOffset, Nonce, Address, long,
-        BigInteger, BlockHash?, HashDigest<SHA256>?, BlockHash,
-        ImmutableArray<byte>, HashDigest<SHA256>, HashAlgorithmType)`
-        constructor instead.
  -  `Block<T>` and `BlockHeader` became aware of `HashAlgorithmType` used for
     proof-of-work mining.  [[#1492]]
      -  Added `Block<T>.HashAlgorithm` property.
@@ -117,6 +119,10 @@ To be released.
     constructor.  [[#1146], [#1164], [#1492]]
  -  Added `Block<T>.HashAlgorithm` property.  [[#1492]]
  -  Added `BlockHeader.HashAlgorithm` property.  [[#1492]]
+ -  Added `BlockHeader(PreEvaluationBlockHeader, HashDigest<SHA256>)`
+    constructor.  [[#1164], [#1492]]
+ -  Added `BlockHeader(PreEvaluationBlockHeader, HashDigest<SHA256>, BlockHash)`
+    constructor.  [[#1164], [#1492]]
  -  Added `IBlockMetadata` interface.  [[#1164], [#1492]]
      -  `Block<T>` became to implement `IBlockMetadata` interface.
      -  `BlockHeader` became to implement `IBlockMetadata` interface.

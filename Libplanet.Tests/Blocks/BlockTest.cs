@@ -123,29 +123,6 @@ namespace Libplanet.Tests.Blocks
         }
 
         [Fact]
-        public void DetectInvalidNonce()
-        {
-            const int easyDifficulty = 4;
-
-            Assert.Throws<InvalidBlockNonceException>(() =>
-                new Block<PolymorphicAction<BaseAction>>(
-                    index: _fx.Next.Index,
-                    difficulty: easyDifficulty,
-                    totalDifficulty: _fx.Genesis.TotalDifficulty + easyDifficulty,
-                    nonce: new Nonce(new byte[] { 0x00 }),
-                    miner: _fx.Next.Miner,
-                    previousHash: _fx.Next.PreviousHash,
-                    timestamp: _fx.Next.Timestamp,
-                    transactions: _fx.Next.Transactions,
-                    preEvaluationHash: _fx.Next.PreEvaluationHash,
-                    stateRootHash: default(HashDigest<SHA256>),
-                    protocolVersion: _fx.Next.ProtocolVersion,
-                    hashAlgorithm: _fx.GetHashAlgorithm(_fx.Next.Index)
-                )
-            );
-        }
-
-        [Fact]
         public void DetectInvalidDifficulty()
         {
             HashAlgorithmType hashAlgo = _fx.GetHashAlgorithm(_fx.Genesis.Index);

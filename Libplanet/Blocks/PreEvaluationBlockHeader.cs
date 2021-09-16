@@ -19,6 +19,36 @@ namespace Libplanet.Blocks
         protected static readonly Codec Codec = new Codec();
 
         /// <summary>
+        /// Creates a <see cref="PreEvaluationBlockHeader"/>  by copying the fields of another
+        /// pre-evaluation block <paramref name="header"/>.
+        /// </summary>
+        /// <param name="header">A pre-evaluation block header to copy.</param>
+        /// <exception cref="InvalidBlockProtocolVersionException">Thrown when
+        /// the <paramref name="header"/>'s to set is <see cref="IBlockMetadata.ProtocolVersion"/>
+        /// is less than 0, or greater than <see cref="BlockMetadata.CurrentProtocolVersion"/>,
+        /// the latest known protocol version.</exception>
+        /// <exception cref="InvalidBlockIndexException">Thrown when the <paramref name="header"/>
+        /// has a negative <see cref="IBlockMetadata.Index"/>.</exception>
+        /// <exception cref="InvalidBlockDifficultyException">Thrown when
+        /// the <paramref name="header"/>'s <see cref="IBlockMetadata.Difficulty"/> is negative.
+        /// </exception>
+        /// <exception cref="InvalidBlockTotalDifficultyException">Thrown when
+        /// the <paramref name="header"/>'s <see cref="IBlockMetadata.TotalDifficulty"/> is less
+        /// than its <see cref="IBlockMetadata.Difficulty"/>.</exception>
+        /// <exception cref="InvalidBlockPreEvaluationHashException">Thrown when the given
+        /// pre-evaluation <paramref name="header"/>'s
+        /// <seealso cref="IPreEvaluationBlockHeader.PreEvaluationHash"/> is invalid.</exception>
+        /// <exception cref="InvalidBlockNonceException">Thrown when the given
+        /// pre-evaluation <paramref name="header"/>'s
+        /// <seealso cref="IPreEvaluationBlockHeader.Nonce"/> does not satisfy the required
+        /// <see cref="IBlockMetadata.Difficulty"/>.
+        /// </exception>
+        public PreEvaluationBlockHeader(IPreEvaluationBlockHeader header)
+            : this(header, header.HashAlgorithm, header.Nonce, header.PreEvaluationHash)
+        {
+        }
+
+        /// <summary>
         /// Creates a <see cref="PreEvaluationBlockHeader"/> instance with its
         /// <paramref name="metadata"/> and a valid proof-of-work <paramref name="nonce"/> which
         /// satisfies the required <see cref="Difficulty"/>.
@@ -108,9 +138,9 @@ namespace Libplanet.Blocks
         /// nonce.</param>
         /// <exception cref="InvalidBlockPreEvaluationHashException">Thrown when the given proof's
         /// hash is invalid.</exception>
-        /// <remarks>This does not verify if if a proof's hash is derived from the block
-        /// <paramref name="metadata"/> and the proof nonce.  Therefore, this unsafe constructor
-        /// shouldn't be used except for <see
+        /// <remarks>This does not verify if a <paramref name="proof"/>'s hash is derived from
+        /// the block <paramref name="metadata"/> and the proof nonce.  Therefore, this unsafe
+        /// constructor shouldn't be used except for <see
         /// cref="BlockContent{T}.Mine(HashAlgorithmType, CancellationToken)"/> method.</remarks>
         internal PreEvaluationBlockHeader(
             BlockMetadata metadata,
