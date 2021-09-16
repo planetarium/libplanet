@@ -117,6 +117,7 @@ To be released.
  -  Added `BlockHeader(int, long, DateTimeOffset, Nonce, Address, long,
     BigInteger, BlockHash?, HashDigest<SHA256>?, BlockHash,
     ImmutableArray<byte>, HashDigest<SHA256>?)` constructor.  [[#1470]]
+ -  Added `TxCompletion<TPeer, TAction>` class.  [[#1420], [#1478]]
  -  Added `BlockPolicyViolationException` and `TxPolicyViolationException`
     classes.  [[#1485]]
  -  Added `DifficultyAdjustment` static class.  [[#1495]]
