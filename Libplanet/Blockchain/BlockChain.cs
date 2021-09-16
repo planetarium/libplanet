@@ -851,17 +851,7 @@ namespace Libplanet.Blockchain
             HashAlgorithmType expectedHashAlgorithm = Policy.GetHashAlgorithm(block.Index);
             if (!block.HashAlgorithm.Equals(expectedHashAlgorithm))
             {
-                var metadata = new BlockMetadata
-                {
-                    Index = block.Index,
-                    Difficulty = block.Difficulty,
-                    Miner = block.Miner,
-                    PreviousHash = block.PreviousHash,
-                    ProtocolVersion = block.ProtocolVersion,
-                    Timestamp = block.Timestamp,
-                    TotalDifficulty = block.TotalDifficulty,
-                    TxHash = block.TxHash,
-                };
+                var metadata = new BlockMetadata(block);
                 var preEvalBlock =
                     new PreEvaluationBlockHeader(metadata, expectedHashAlgorithm, block.Nonce);
                 string msg =

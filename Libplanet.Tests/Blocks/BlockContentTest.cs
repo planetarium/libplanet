@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Immutable;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using Bencodex;
-using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Tests.Fixtures;
@@ -26,34 +24,39 @@ namespace Libplanet.Tests.Blocks
             _output = output;
         }
 
-        [SuppressMessage("Usage", "xUnit1013", Justification = "Not a fixture.")]
-        public static void AssertBlockContentsEqual<T>(
-            BlockContent<T> expected,
-            BlockContent<T> actual
-        )
-            where T : IAction, new()
-        {
-            if (expected is null)
-            {
-                Assert.Null(actual);
-                return;
-            }
-
-            Assert.NotNull(actual);
-            AssertBencodexEqual(expected.ToBencodex(default), actual.ToBencodex(default));
-            AssertBencodexEqual(expected.ToBencodex(default), actual.ToBencodex(default));
-            BlockMetadataTest.AssertBlockMetadataEqual(expected, actual);
-            AssertBytesEqual(expected.TxHash, actual.TxHash);
-            Assert.Equal(expected.Transactions.Count, actual.Transactions.Count);
-            for (int i = 0; i < expected.Transactions.Count; i++)
-            {
-                Assert.Equal(expected.Transactions[i], actual.Transactions[i]);
-            }
-        }
-
         [Fact]
         public void Constructor()
         {
+            DateTimeOffset before = DateTimeOffset.UtcNow;
+            var m = new BlockContent<Arithmetic>();
+            DateTimeOffset after = DateTimeOffset.UtcNow;
+            Assert.Equal(BlockMetadata.CurrentProtocolVersion, m.ProtocolVersion);
+            Assert.Equal(0, m.Index);
+            Assert.InRange(m.Timestamp, before, after);
+            AssertBytesEqual(default(Address), m.Miner);
+            Assert.Equal(0, m.Difficulty);
+            Assert.Equal(0, m.TotalDifficulty);
+            AssertBytesEqual(null, m.PreviousHash);
+            AssertBytesEqual(null, m.TxHash);
+            Assert.Empty(m.Transactions);
+        }
+
+        [Fact]
+        public void CopyConstructors()
+        {
+            var g = new BlockContent<Arithmetic>(Genesis);
+            AssertBlockContentsEqual(Genesis, g);
+
+            var b1 = new BlockContent<Arithmetic>(Block1);
+            AssertBlockContentsEqual(Block1, b1);
+
+            Assert.Throws<InvalidBlockTxHashException>(() =>
+                new BlockContent<Arithmetic>(new BlockMetadata(Block1))
+            );
+
+            var gM = new BlockContent<Arithmetic>(new BlockMetadata(Genesis));
+            AssertBlockMetadataEqual(Genesis, gM);
+
             var genesis = new BlockContent<Arithmetic>(GenesisMetadata);
             AssertBlockContentsEqual(Genesis, genesis);
 
@@ -113,7 +116,7 @@ namespace Libplanet.Tests.Blocks
                     "e63022002feb21bf0e4d76d25d17c8c1c4fbb3dfbda986e0693f984fbb302183ab7ece1"
                 )
             );
-            var block = Block1.Clone();
+            var block = Block1.Copy();
             InvalidTxNonceException e = Assert.Throws<InvalidTxNonceException>(
                 () => block.Transactions = new[] { Tx0InBlock1, Tx1InBlock1, dupTx1 }
             );
@@ -139,7 +142,7 @@ namespace Libplanet.Tests.Blocks
                     "cb16022057c851a01dd74797121385ccfc81e7b33842941189154b4d46d05e891a28e3eb"
                 )
             );
-            var block = Block1.Clone();
+            var block = Block1.Copy();
             InvalidTxNonceException e = Assert.Throws<InvalidTxNonceException>(
                 () => block.Transactions = new[] { Tx0InBlock1, Tx1InBlock1, dupTx1 }
             );
@@ -171,7 +174,7 @@ namespace Libplanet.Tests.Blocks
                     "310220167507575e982d47d7c6753b782a5f1beb6415af96e7db3ccaf83b516d5133d1"
                 )
             );
-            BlockContent<Arithmetic> block = Block1.Clone();
+            BlockContent<Arithmetic> block = Block1.Copy();
             Transaction<Arithmetic>[] inconsistentTxs =
                 block.Transactions.Append(txWithDifferentGenesis).ToArray();
             InvalidTxGenesisHashException e = Assert.Throws<InvalidTxGenesisHashException>(
@@ -204,26 +207,6 @@ namespace Libplanet.Tests.Blocks
             );
             Assert.Throws<InvalidBlockTxHashException>(
                 () => BlockPv0.TxHash = default(HashDigest<SHA256>)
-            );
-        }
-
-        [Fact]
-        public void Clone()
-        {
-            AssertBlockContentsEqual(Genesis, Genesis.Clone());
-            AssertBlockContentsEqual(
-                Genesis,
-                (BlockContent<Arithmetic>)((ICloneable)Genesis).Clone()
-            );
-            AssertBlockContentsEqual(Block1, Block1.Clone());
-            AssertBlockContentsEqual(
-                Block1,
-                (BlockContent<Arithmetic>)((ICloneable)Block1).Clone()
-            );
-            AssertBlockContentsEqual(BlockPv0, BlockPv0.Clone());
-            AssertBlockContentsEqual(
-                BlockPv0,
-                (BlockContent<Arithmetic>)((ICloneable)BlockPv0).Clone()
             );
         }
 

@@ -25,7 +25,7 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public override void UnsafeConstructor()
         {
-            BlockContent<Arithmetic> content = _contents.Genesis.Clone();
+            BlockContent<Arithmetic> content = _contents.Genesis.Copy();
             var preEvalBlock =
                 new PreEvaluationBlock<Arithmetic>(content, _sha256, _validGenesisProof);
             AssertBlockContentsEqual(content, preEvalBlock);
@@ -33,7 +33,7 @@ namespace Libplanet.Tests.Blocks
             Assert.Same(_sha256, preEvalBlock.HashAlgorithm);
             AssertBytesEqual(_validGenesisProof.PreEvaluationHash, preEvalBlock.PreEvaluationHash);
 
-            content = _contents.Block1.Clone();
+            content = _contents.Block1.Copy();
             preEvalBlock = new PreEvaluationBlock<Arithmetic>(content, _sha256, _validBlock1Proof);
             AssertBlockContentsEqual(content, preEvalBlock);
             AssertBytesEqual(_validBlock1Proof.Nonce, preEvalBlock.Nonce);
@@ -44,31 +44,31 @@ namespace Libplanet.Tests.Blocks
                 () => new PreEvaluationBlock<Arithmetic>(content, _sha256, _invalidBlock1Proof)
             );
 
-            content = _contents.Block1.Clone();
+            content = _contents.Block1.Copy();
             content.PreviousHash = null;
             Assert.Throws<InvalidBlockPreviousHashException>(
                 () => new PreEvaluationBlock<Arithmetic>(content, _sha256, _validBlock1Proof)
             );
 
-            content = _contents.Genesis.Clone();
+            content = _contents.Genesis.Copy();
             content.PreviousHash = _contents.GenesisHash;
             Assert.Throws<InvalidBlockPreviousHashException>(
                 () => new PreEvaluationBlock<Arithmetic>(content, _sha256, _validGenesisProof)
             );
 
-            content = _contents.Block1.Clone();
+            content = _contents.Block1.Copy();
             content.Difficulty = 0L;
             Assert.Throws<InvalidBlockDifficultyException>(
                 () => new PreEvaluationBlock<Arithmetic>(content, _sha256, _validBlock1Proof.Nonce)
             );
 
-            content = _contents.Genesis.Clone();
+            content = _contents.Genesis.Copy();
             content.Difficulty = 1L;
             Assert.Throws<InvalidBlockDifficultyException>(
                 () => new PreEvaluationBlock<Arithmetic>(content, _sha256, _validGenesisProof)
             );
 
-            content = _contents.Genesis.Clone();
+            content = _contents.Genesis.Copy();
             content.TotalDifficulty = 1;
             Assert.Throws<InvalidBlockTotalDifficultyException>(
                 () => new PreEvaluationBlock<Arithmetic>(content, _sha256, _validGenesisProof)
@@ -78,7 +78,7 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public override void SafeConstructorWithPreEvaluationHash()
         {
-            BlockContent<Arithmetic> content = _contents.Genesis.Clone();
+            BlockContent<Arithmetic> content = _contents.Genesis.Copy();
             var preEvalBlock = new PreEvaluationBlock<Arithmetic>(
                 content,
                 hashAlgorithm: _sha256,
@@ -90,7 +90,7 @@ namespace Libplanet.Tests.Blocks
             Assert.Same(_sha256, preEvalBlock.HashAlgorithm);
             AssertBytesEqual(_validGenesisProof.PreEvaluationHash, preEvalBlock.PreEvaluationHash);
 
-            content = _contents.Block1.Clone();
+            content = _contents.Block1.Copy();
             preEvalBlock = new PreEvaluationBlock<Arithmetic>(
                 content,
                 hashAlgorithm: _sha256,
@@ -106,7 +106,7 @@ namespace Libplanet.Tests.Blocks
             content.Index++;
             Assert.Equal(_contents.Block1.Index, preEvalBlock.Index);
 
-            content = _contents.Block1.Clone();
+            content = _contents.Block1.Copy();
             Assert.Throws<InvalidBlockNonceException>(() =>
                 new PreEvaluationBlock<Arithmetic>(
                     content,
@@ -128,7 +128,7 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public override void SafeConstructorWithoutPreEvaluationHash()
         {
-            BlockContent<Arithmetic> content = _contents.Genesis.Clone();
+            BlockContent<Arithmetic> content = _contents.Genesis.Copy();
             var preEvalBlock = new PreEvaluationBlock<Arithmetic>(
                 content,
                 hashAlgorithm: _sha256,
@@ -139,7 +139,7 @@ namespace Libplanet.Tests.Blocks
             Assert.Same(_sha256, preEvalBlock.HashAlgorithm);
             AssertBytesEqual(_validGenesisProof.PreEvaluationHash, preEvalBlock.PreEvaluationHash);
 
-            content = _contents.Block1.Clone();
+            content = _contents.Block1.Copy();
             preEvalBlock = new PreEvaluationBlock<Arithmetic>(
                 content,
                 hashAlgorithm: _sha256,
@@ -162,31 +162,31 @@ namespace Libplanet.Tests.Blocks
                 )
             );
 
-            content = _contents.Block1.Clone();
+            content = _contents.Block1.Copy();
             content.PreviousHash = null;
             Assert.Throws<InvalidBlockPreviousHashException>(
                 () => new PreEvaluationBlock<Arithmetic>(content, _sha256, _validBlock1Proof.Nonce)
             );
 
-            content = _contents.Genesis.Clone();
+            content = _contents.Genesis.Copy();
             content.PreviousHash = _contents.GenesisHash;
             Assert.Throws<InvalidBlockPreviousHashException>(
                 () => new PreEvaluationBlock<Arithmetic>(content, _sha256, _validGenesisProof.Nonce)
             );
 
-            content = _contents.Block1.Clone();
+            content = _contents.Block1.Copy();
             content.Difficulty = 0L;
             Assert.Throws<InvalidBlockDifficultyException>(
                 () => new PreEvaluationBlock<Arithmetic>(content, _sha256, _validBlock1Proof.Nonce)
             );
 
-            content = _contents.Genesis.Clone();
+            content = _contents.Genesis.Copy();
             content.Difficulty = 1L;
             Assert.Throws<InvalidBlockDifficultyException>(
                 () => new PreEvaluationBlock<Arithmetic>(content, _sha256, _validGenesisProof)
             );
 
-            content = _contents.Genesis.Clone();
+            content = _contents.Genesis.Copy();
             content.TotalDifficulty = 1;
             Assert.Throws<InvalidBlockTotalDifficultyException>(
                 () => new PreEvaluationBlock<Arithmetic>(content, _sha256, _validGenesisProof)
@@ -199,7 +199,7 @@ namespace Libplanet.Tests.Blocks
             // Since PreEvaluationHash comparison between the actual and the expected was not
             // implemented in ProtocolVersion == 0, we need to maintain this bug on
             // ProtocolVersion < 1 for backward compatibility:
-            BlockContent<Arithmetic> contentPv0 = _contents.Block1.Clone();
+            BlockContent<Arithmetic> contentPv0 = _contents.Block1.Copy();
             contentPv0.ProtocolVersion = 0;
             contentPv0.Timestamp += TimeSpan.FromSeconds(1);
             var preEvalBlockPv0 = new PreEvaluationBlock<Arithmetic>(
@@ -217,7 +217,7 @@ namespace Libplanet.Tests.Blocks
             );
 
             // However, such bug must be fixed after ProtocolVersion > 0:
-            BlockContent<Arithmetic> contentPv1 = _contents.Block1.Clone();
+            BlockContent<Arithmetic> contentPv1 = _contents.Block1.Copy();
             contentPv1.Timestamp += TimeSpan.FromSeconds(1);
             Assert.Throws<InvalidBlockPreEvaluationHashException>(() =>
                 new PreEvaluationBlock<Arithmetic>(

@@ -1,11 +1,21 @@
 using System;
 using Libplanet.Blocks;
+using Libplanet.Tests.Fixtures;
 using Xunit;
+using static Libplanet.Tests.TestUtils;
 
 namespace Libplanet.Tests.Blocks
 {
-    public class BlockMetadataExtensionsTest
+    public class BlockMetadataExtensionsTest : BlockContentFixture
     {
+        [Fact]
+        public void Copy()
+        {
+            AssertBlockMetadataEqual(GenesisMetadata, GenesisMetadata.Copy());
+            AssertBlockMetadataEqual(BlockMetadata1, BlockMetadata1.Copy());
+            AssertBlockMetadataEqual(BlockMetadataPv0, BlockMetadataPv0.Copy());
+        }
+
         [Fact]
         public void ValidateTimestamp()
         {

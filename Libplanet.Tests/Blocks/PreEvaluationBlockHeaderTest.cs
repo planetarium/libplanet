@@ -53,7 +53,7 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public virtual void UnsafeConstructor()
         {
-            BlockMetadata metadata = _contents.GenesisMetadata.Clone();
+            BlockMetadata metadata = _contents.GenesisMetadata.Copy();
             var preEvalBlock =
                 new PreEvaluationBlockHeader(metadata, _sha256, _validGenesisProof);
             AssertBlockMetadataEqual(metadata, preEvalBlock);
@@ -61,7 +61,7 @@ namespace Libplanet.Tests.Blocks
             Assert.Same(_sha256, preEvalBlock.HashAlgorithm);
             AssertBytesEqual(_validGenesisProof.PreEvaluationHash, preEvalBlock.PreEvaluationHash);
 
-            metadata = _contents.BlockMetadata1.Clone();
+            metadata = _contents.BlockMetadata1.Copy();
             preEvalBlock = new PreEvaluationBlockHeader(metadata, _sha256, _validBlock1Proof);
             AssertBlockMetadataEqual(metadata, preEvalBlock);
             AssertBytesEqual(_validBlock1Proof.Nonce, preEvalBlock.Nonce);
@@ -72,31 +72,31 @@ namespace Libplanet.Tests.Blocks
                 () => new PreEvaluationBlockHeader(metadata, _sha256, _invalidBlock1Proof)
             );
 
-            metadata = _contents.BlockMetadata1.Clone();
+            metadata = _contents.BlockMetadata1.Copy();
             metadata.PreviousHash = null;
             Assert.Throws<InvalidBlockPreviousHashException>(
                 () => new PreEvaluationBlockHeader(metadata, _sha256, _validBlock1Proof)
             );
 
-            metadata = _contents.GenesisMetadata.Clone();
+            metadata = _contents.GenesisMetadata.Copy();
             metadata.PreviousHash = _contents.GenesisHash;
             Assert.Throws<InvalidBlockPreviousHashException>(
                 () => new PreEvaluationBlockHeader(metadata, _sha256, _validGenesisProof)
             );
 
-            metadata = _contents.BlockMetadata1.Clone();
+            metadata = _contents.BlockMetadata1.Copy();
             metadata.Difficulty = 0L;
             Assert.Throws<InvalidBlockDifficultyException>(
                 () => new PreEvaluationBlockHeader(metadata, _sha256, _validBlock1Proof.Nonce)
             );
 
-            metadata = _contents.GenesisMetadata.Clone();
+            metadata = _contents.GenesisMetadata.Copy();
             metadata.Difficulty = 1L;
             Assert.Throws<InvalidBlockDifficultyException>(
                 () => new PreEvaluationBlockHeader(metadata, _sha256, _validGenesisProof)
             );
 
-            metadata = _contents.GenesisMetadata.Clone();
+            metadata = _contents.GenesisMetadata.Copy();
             metadata.TotalDifficulty = 1;
             Assert.Throws<InvalidBlockTotalDifficultyException>(
                 () => new PreEvaluationBlockHeader(metadata, _sha256, _validGenesisProof)
@@ -106,7 +106,7 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public virtual void SafeConstructorWithPreEvaluationHash()
         {
-            BlockMetadata metadata = _contents.GenesisMetadata.Clone();
+            BlockMetadata metadata = _contents.GenesisMetadata.Copy();
             var preEvalBlock = new PreEvaluationBlockHeader(
                 metadata,
                 hashAlgorithm: _sha256,
@@ -118,7 +118,7 @@ namespace Libplanet.Tests.Blocks
             Assert.Same(_sha256, preEvalBlock.HashAlgorithm);
             AssertBytesEqual(_validGenesisProof.PreEvaluationHash, preEvalBlock.PreEvaluationHash);
 
-            metadata = _contents.BlockMetadata1.Clone();
+            metadata = _contents.BlockMetadata1.Copy();
             preEvalBlock = new PreEvaluationBlockHeader(
                 metadata,
                 hashAlgorithm: _sha256,
@@ -135,7 +135,7 @@ namespace Libplanet.Tests.Blocks
             metadata.Index++;
             Assert.Equal(_contents.BlockMetadata1.Index, preEvalBlock.Index);
 
-            metadata = _contents.BlockMetadata1.Clone();
+            metadata = _contents.BlockMetadata1.Copy();
             Assert.Throws<InvalidBlockNonceException>(() =>
                 new PreEvaluationBlockHeader(
                     metadata,
@@ -157,7 +157,7 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public virtual void SafeConstructorWithoutPreEvaluationHash()
         {
-            BlockMetadata metadata = _contents.Genesis.Clone();
+            BlockMetadata metadata = _contents.Genesis.Copy();
             var preEvalBlock = new PreEvaluationBlockHeader(
                 metadata,
                 hashAlgorithm: _sha256,
@@ -168,7 +168,7 @@ namespace Libplanet.Tests.Blocks
             Assert.Same(_sha256, preEvalBlock.HashAlgorithm);
             AssertBytesEqual(_validGenesisProof.PreEvaluationHash, preEvalBlock.PreEvaluationHash);
 
-            metadata = _contents.BlockMetadata1.Clone();
+            metadata = _contents.BlockMetadata1.Copy();
             preEvalBlock = new PreEvaluationBlockHeader(
                 metadata,
                 hashAlgorithm: _sha256,
@@ -191,31 +191,31 @@ namespace Libplanet.Tests.Blocks
                 )
             );
 
-            metadata = _contents.BlockMetadata1.Clone();
+            metadata = _contents.BlockMetadata1.Copy();
             metadata.PreviousHash = null;
             Assert.Throws<InvalidBlockPreviousHashException>(
                 () => new PreEvaluationBlockHeader(metadata, _sha256, _validBlock1Proof.Nonce)
             );
 
-            metadata = _contents.GenesisMetadata.Clone();
+            metadata = _contents.GenesisMetadata.Copy();
             metadata.PreviousHash = _contents.GenesisHash;
             Assert.Throws<InvalidBlockPreviousHashException>(
                 () => new PreEvaluationBlockHeader(metadata, _sha256, _validGenesisProof.Nonce)
             );
 
-            metadata = _contents.BlockMetadata1.Clone();
+            metadata = _contents.BlockMetadata1.Copy();
             metadata.Difficulty = 0L;
             Assert.Throws<InvalidBlockDifficultyException>(
                 () => new PreEvaluationBlockHeader(metadata, _sha256, _validBlock1Proof.Nonce)
             );
 
-            metadata = _contents.GenesisMetadata.Clone();
+            metadata = _contents.GenesisMetadata.Copy();
             metadata.Difficulty = 1L;
             Assert.Throws<InvalidBlockDifficultyException>(
                 () => new PreEvaluationBlockHeader(metadata, _sha256, _validGenesisProof)
             );
 
-            metadata = _contents.GenesisMetadata.Clone();
+            metadata = _contents.GenesisMetadata.Copy();
             metadata.TotalDifficulty = 1;
             Assert.Throws<InvalidBlockTotalDifficultyException>(
                 () => new PreEvaluationBlockHeader(metadata, _sha256, _validGenesisProof)
@@ -228,7 +228,7 @@ namespace Libplanet.Tests.Blocks
             // Since PreEvaluationHash comparison between the actual and the expected was not
             // implemented in ProtocolVersion == 0, we need to maintain this bug on
             // ProtocolVersion < 1 for backward compatibility:
-            BlockMetadata metadataPv0 = _contents.BlockMetadata1.Clone();
+            BlockMetadata metadataPv0 = _contents.BlockMetadata1.Copy();
             metadataPv0.ProtocolVersion = 0;
             metadataPv0.Timestamp += TimeSpan.FromSeconds(1);
             var preEvalBlockPv0 = new PreEvaluationBlockHeader(
@@ -246,7 +246,7 @@ namespace Libplanet.Tests.Blocks
             );
 
             // However, such bug must be fixed after ProtocolVersion > 0:
-            BlockMetadata contentPv1 = _contents.BlockMetadata1.Clone();
+            BlockMetadata contentPv1 = _contents.BlockMetadata1.Copy();
             contentPv1.Timestamp += TimeSpan.FromSeconds(1);
             Assert.Throws<InvalidBlockPreEvaluationHashException>(() =>
                 new PreEvaluationBlockHeader(

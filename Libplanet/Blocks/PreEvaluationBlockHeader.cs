@@ -28,21 +28,29 @@ namespace Libplanet.Blocks
         /// <see cref="PreEvaluationHash"/>.</param>
         /// <param name="nonce">A valid proof-of-work nonce which satisfies the required
         /// <see cref="Difficulty"/>.</param>
+        /// <exception cref="InvalidBlockProtocolVersionException">Thrown when
+        /// the <paramref name="metadata"/>'s to set is <see cref="IBlockMetadata.ProtocolVersion"/>
+        /// is less than 0, or greater than <see cref="BlockMetadata.CurrentProtocolVersion"/>,
+        /// the latest known protocol version.</exception>
+        /// <exception cref="InvalidBlockIndexException">Thrown when the <paramref name="metadata"/>
+        /// has a negative <see cref="IBlockMetadata.Index"/>.</exception>
+        /// <exception cref="InvalidBlockDifficultyException">Thrown when
+        /// the <paramref name="metadata"/>'s <see cref="IBlockMetadata.Difficulty"/> is negative.
+        /// </exception>
+        /// <exception cref="InvalidBlockTotalDifficultyException">Thrown when
+        /// the <paramref name="metadata"/>'s <see cref="IBlockMetadata.TotalDifficulty"/> is less
+        /// than its <see cref="IBlockMetadata.Difficulty"/>.</exception>
         /// <exception cref="InvalidBlockNonceException">Thrown when the given proof-of-work
         /// <paramref name="nonce"/> does not satisfy the required <see cref="Difficulty"/>.
         /// </exception>
         /// <remarks><see cref="PreEvaluationHash"/> is automatically derived from the given
         /// arguments.</remarks>
         public PreEvaluationBlockHeader(
-            BlockMetadata metadata,
+            IBlockMetadata metadata,
             HashAlgorithmType hashAlgorithm,
             Nonce nonce
         )
-            : this(
-                (BlockMetadata)((ICloneable)metadata).Clone(),
-                hashAlgorithm,
-                (nonce, metadata.DerivePreEvaluationHash(hashAlgorithm, nonce))
-            )
+            : this(new BlockMetadata(metadata), hashAlgorithm, nonce)
         {
         }
 
@@ -59,22 +67,30 @@ namespace Libplanet.Blocks
         /// <see cref="Difficulty"/>.</param>
         /// <param name="preEvaluationHash">The hash digest of the <paramref name="hashAlgorithm"/>
         /// derived from the given arguments.</param>
+        /// <exception cref="InvalidBlockProtocolVersionException">Thrown when
+        /// the <paramref name="metadata"/>'s to set is <see cref="IBlockMetadata.ProtocolVersion"/>
+        /// is less than 0, or greater than <see cref="BlockMetadata.CurrentProtocolVersion"/>,
+        /// the latest known protocol version.</exception>
+        /// <exception cref="InvalidBlockIndexException">Thrown when the <paramref name="metadata"/>
+        /// has a negative <see cref="IBlockMetadata.Index"/>.</exception>
+        /// <exception cref="InvalidBlockDifficultyException">Thrown when
+        /// the <paramref name="metadata"/>'s <see cref="IBlockMetadata.Difficulty"/> is negative.
+        /// </exception>
+        /// <exception cref="InvalidBlockTotalDifficultyException">Thrown when
+        /// the <paramref name="metadata"/>'s <see cref="IBlockMetadata.TotalDifficulty"/> is less
+        /// than its <see cref="IBlockMetadata.Difficulty"/>.</exception>
         /// <exception cref="InvalidBlockPreEvaluationHashException">Thrown when the given
         /// <paramref name="preEvaluationHash"/> is invalid.</exception>
         /// <exception cref="InvalidBlockNonceException">Thrown when the given proof-of-work
         /// <paramref name="nonce"/> does not satisfy the required <see cref="Difficulty"/>.
         /// </exception>
         public PreEvaluationBlockHeader(
-            BlockMetadata metadata,
+            IBlockMetadata metadata,
             HashAlgorithmType hashAlgorithm,
             Nonce nonce,
             ImmutableArray<byte> preEvaluationHash
         )
-            : this(
-                (BlockMetadata)((ICloneable)metadata).Clone(),
-                hashAlgorithm,
-                CheckPreEvaluationHash(hashAlgorithm, metadata, nonce, preEvaluationHash)
-            )
+            : this(new BlockMetadata(metadata), hashAlgorithm, nonce, preEvaluationHash)
         {
         }
 
@@ -149,6 +165,33 @@ namespace Libplanet.Blocks
             Nonce = proof.Nonce;
             HashAlgorithm = hashAlgorithm;
             PreEvaluationHash = proof.PreEvaluationHash;
+        }
+
+        protected PreEvaluationBlockHeader(
+            BlockMetadata metadata,
+            HashAlgorithmType hashAlgorithm,
+            Nonce nonce
+        )
+            : this(
+                metadata,
+                hashAlgorithm,
+                (nonce, metadata.DerivePreEvaluationHash(hashAlgorithm, nonce))
+            )
+        {
+        }
+
+        protected PreEvaluationBlockHeader(
+            BlockMetadata metadata,
+            HashAlgorithmType hashAlgorithm,
+            Nonce nonce,
+            ImmutableArray<byte> preEvaluationHash
+        )
+            : this(
+                metadata,
+                hashAlgorithm,
+                CheckPreEvaluationHash(hashAlgorithm, metadata, nonce, preEvaluationHash)
+            )
+        {
         }
 
         /// <inheritdoc cref="IBlockMetadata.ProtocolVersion"/>

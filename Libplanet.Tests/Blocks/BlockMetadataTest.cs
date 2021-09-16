@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Immutable;
-using System.Diagnostics.CodeAnalysis;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,24 +22,29 @@ namespace Libplanet.Tests.Blocks
             _output = output;
         }
 
-        [SuppressMessage("Usage", "xUnit1013", Justification = "Not a fixture.")]
-        public static void AssertBlockMetadataEqual(BlockMetadata expected, BlockMetadata actual)
+        [Fact]
+        public void Constructor()
         {
-            if (expected is null)
-            {
-                Assert.Null(actual);
-                return;
-            }
+            DateTimeOffset before = DateTimeOffset.UtcNow;
+            var m = new BlockMetadata();
+            DateTimeOffset after = DateTimeOffset.UtcNow;
+            Assert.Equal(BlockMetadata.CurrentProtocolVersion, m.ProtocolVersion);
+            Assert.Equal(0, m.Index);
+            Assert.InRange(m.Timestamp, before, after);
+            AssertBytesEqual(default(Address), m.Miner);
+            Assert.Equal(0, m.Difficulty);
+            Assert.Equal(0, m.TotalDifficulty);
+            AssertBytesEqual(null, m.PreviousHash);
+            AssertBytesEqual(null, m.TxHash);
+        }
 
-            Assert.NotNull(actual);
-            Assert.Equal(expected.ProtocolVersion, actual.ProtocolVersion);
-            Assert.Equal(expected.Index, actual.Index);
-            Assert.Equal(expected.Timestamp, actual.Timestamp);
-            AssertBytesEqual(expected.Miner, actual.Miner);
-            Assert.Equal(expected.Difficulty, actual.Difficulty);
-            Assert.Equal(expected.TotalDifficulty, actual.TotalDifficulty);
-            AssertBytesEqual(expected.PreviousHash, actual.PreviousHash);
-            AssertBytesEqual(expected.TxHash, actual.TxHash);
+        [Fact]
+        public void CopyConstructor()
+        {
+            var g = new BlockMetadata(Genesis);
+            AssertBlockMetadataEqual(Genesis, g);
+            var b1 = new BlockMetadata(Block1);
+            AssertBlockMetadataEqual(Block1, b1);
         }
 
         [Fact]
@@ -82,12 +86,12 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void Difficulty()
         {
-            BlockMetadata a = BlockMetadata1.Clone();
+            BlockMetadata a = BlockMetadata1.Copy();
             a.Difficulty = BlockMetadata1.Difficulty + 10L;
             Assert.Equal(BlockMetadata1.Difficulty + 10L, a.Difficulty);
             Assert.Equal(BlockMetadata1.TotalDifficulty + 10, a.TotalDifficulty);
 
-            BlockMetadata b = BlockMetadata1.Clone();
+            BlockMetadata b = BlockMetadata1.Copy();
             Assert.Throws<InvalidBlockDifficultyException>(() => b.Difficulty = -1);
             Assert.Equal(BlockMetadata1.Difficulty, b.Difficulty);
         }
@@ -95,12 +99,12 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void TotalDifficulty()
         {
-            BlockMetadata a = BlockMetadata1.Clone();
+            BlockMetadata a = BlockMetadata1.Copy();
             a.TotalDifficulty = BlockMetadata1.TotalDifficulty + 10;
             Assert.Equal(BlockMetadata1.TotalDifficulty + 10, a.TotalDifficulty);
             Assert.Equal(BlockMetadata1.Difficulty, a.Difficulty);
 
-            BlockMetadata b = Block1.Clone();
+            BlockMetadata b = Block1.Copy();
             InvalidBlockTotalDifficultyException e =
                 Assert.Throws<InvalidBlockTotalDifficultyException>(() => b.TotalDifficulty = -1);
             Assert.Equal(BlockMetadata1.TotalDifficulty, b.TotalDifficulty);
@@ -115,26 +119,6 @@ namespace Libplanet.Tests.Blocks
             Assert.Equal(BlockMetadata1.Difficulty, b.Difficulty);
             Assert.Equal(b.Difficulty, e.Difficulty);
             Assert.Equal(b.Difficulty - 1L, e.TotalDifficulty);
-        }
-
-        [Fact]
-        public void Clone()
-        {
-            AssertBlockMetadataEqual(GenesisMetadata, GenesisMetadata.Clone());
-            AssertBlockMetadataEqual(
-                GenesisMetadata,
-                (BlockMetadata)((ICloneable)GenesisMetadata).Clone()
-            );
-            AssertBlockMetadataEqual(BlockMetadata1, BlockMetadata1.Clone());
-            AssertBlockMetadataEqual(
-                BlockMetadata1,
-                (BlockMetadata)((ICloneable)BlockMetadata1).Clone()
-            );
-            AssertBlockMetadataEqual(BlockMetadataPv0, BlockMetadataPv0.Clone());
-            AssertBlockMetadataEqual(
-                BlockMetadataPv0,
-                (BlockMetadata)((ICloneable)BlockMetadataPv0).Clone()
-            );
         }
 
         [Fact]

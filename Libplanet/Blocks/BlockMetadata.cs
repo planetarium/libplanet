@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Numerics;
 using System.Security.Cryptography;
@@ -19,10 +20,10 @@ namespace Libplanet.Blocks
     /// </summary>
     /// <remarks>Unlike other model types like <see cref="Block{T}"/> or
     /// <see cref="PreEvaluationBlock{T}"/>, this type is mutable.  To get a distinct instance with
-    /// partly changed fields, use <see cref="Clone()"/> method and property setters on a copy
-    /// instead.</remarks>
+    /// partly changed fields, use <see cref="BlockMetadata(IBlockMetadata)"/> constructor and
+    /// property setters on a copy instead.</remarks>
     /// <seealso cref="BlockContent{T}"/>
-    public class BlockMetadata : IBlockMetadata, ICloneable
+    public class BlockMetadata : IBlockMetadata
     {
         /// <summary>
         /// The latest protocol version.
@@ -37,8 +38,51 @@ namespace Libplanet.Blocks
         private DateTimeOffset _timestamp = DateTimeOffset.UtcNow;
         private long _difficulty;
         private BigInteger _totalDifficulty;
+        private HashDigest<SHA256>? _txHash;
+
+        /// <summary>
+        /// Creates a <see cref="BlockMetadata"/> by copying the fields of another block
+        /// <paramref name="metadata"/>.
+        /// </summary>
+        /// <param name="metadata">This source of the block metadata to copy.  This hasn't be
+        /// a actual <see cref="BlockMetadata"/> instance, but can be any object which implements
+        /// <see cref="IBlockMetadata"/> instance.</param>
+        /// <exception cref="InvalidBlockProtocolVersionException">Thrown when
+        /// the <paramref name="metadata"/>'s to set is <see cref="IBlockMetadata.ProtocolVersion"/>
+        /// is less than 0, or greater than <see cref="CurrentProtocolVersion"/>, the latest known
+        /// protocol version.</exception>
+        /// <exception cref="InvalidBlockIndexException">Thrown when the <paramref name="metadata"/>
+        /// has a negative <see cref="IBlockMetadata.Index"/>.</exception>
+        /// <exception cref="InvalidBlockDifficultyException">Thrown when
+        /// the <paramref name="metadata"/>'s <see cref="IBlockMetadata.Difficulty"/> is negative.
+        /// </exception>
+        /// <exception cref="InvalidBlockTotalDifficultyException">Thrown when
+        /// the <paramref name="metadata"/>'s <see cref="IBlockMetadata.TotalDifficulty"/> is less
+        /// than its <see cref="IBlockMetadata.Difficulty"/>.</exception>
+        public BlockMetadata(IBlockMetadata metadata)
+        {
+            ProtocolVersion = metadata.ProtocolVersion;
+            Index = metadata.Index;
+            Timestamp = metadata.Timestamp;
+            Miner = metadata.Miner;
+            Difficulty = metadata.Difficulty;
+            TotalDifficulty = metadata.TotalDifficulty;
+            PreviousHash = metadata.PreviousHash;
+            _txHash = metadata.TxHash;
+        }
+
+        /// <summary>
+        /// Creates an empty <see cref="BlockMetadata"/> instance.  Its properties can be easily
+        /// filled with C# object initializers.
+        /// </summary>
+        public BlockMetadata()
+        {
+        }
 
         /// <inheritdoc cref="IBlockMetadata.ProtocolVersion"/>
+        /// <exception cref="InvalidBlockProtocolVersionException">Thrown when the value to set is
+        /// less than 0, or greater than <see cref="CurrentProtocolVersion"/>, the latest known
+        /// protocol version.</exception>
         public int ProtocolVersion
         {
             get => _protocolVersion;
@@ -87,7 +131,7 @@ namespace Libplanet.Blocks
 
         /// <inheritdoc cref="IBlockMetadata.Difficulty"/>
         /// <exception cref="InvalidBlockDifficultyException">Thrown when the value to set is
-        ///  is negative.</exception>
+        /// negative.</exception>
         /// <remarks>This cannot not be negative.
         /// <para>When <see cref="Difficulty"/> is updated, <see cref="TotalDifficulty"/> is also
         /// updated together.  For example, when <see cref="Difficulty"/> = 10 and
@@ -144,17 +188,15 @@ namespace Libplanet.Blocks
         public BlockHash? PreviousHash { get; set; }
 
         /// <inheritdoc cref="IBlockMetadata.TxHash"/>
-        public virtual HashDigest<SHA256>? TxHash { get; set; }
-
-        /// <summary>
-        /// Makes a copy of the <see cref="BlockMetadata"/> instance.
-        /// </summary>
-        /// <returns>A copy of the instance.</returns>
-        public BlockMetadata Clone() =>
-            (BlockMetadata)MemberwiseClone();
-
-        /// <inheritdoc cref="ICloneable.Clone"/>
-        object ICloneable.Clone() => Clone();
+        [SuppressMessage(
+            "SonarQube",
+            "S2292",
+            Justification = "The backing field purposes to prevent intercepting from subclasses.")]
+        public virtual HashDigest<SHA256>? TxHash
+        {
+            get => _txHash;
+            set => _txHash = value;
+        }
 
         /// <summary>
         /// Serializes the block content into a Bencodex dictionary.  This data is used for

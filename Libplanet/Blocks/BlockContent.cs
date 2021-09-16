@@ -18,9 +18,9 @@ namespace Libplanet.Blocks
     /// parameter is aligned with <see cref="Transaction{T}"/>'s type parameter.</typeparam>
     /// <remarks>Unlike other model types like <see cref="Block{T}"/> or
     /// <see cref="Transaction{T}"/>, this type is mutable.  To get a distinct instance with
-    /// partly changed fields, use <see cref="Clone()"/> method and property setters on a copy
-    /// instead.</remarks>
-    public sealed class BlockContent<T> : BlockMetadata, IBlockContent<T>, ICloneable
+    /// partly changed fields, use <see cref="BlockContent{T}(IBlockContent{T})"/> constructor and
+    /// property setters on a copy instead.</remarks>
+    public sealed class BlockContent<T> : BlockMetadata, IBlockContent<T>
         where T : IAction, new()
     {
         private IReadOnlyList<Transaction<T>> _transactions = ImmutableArray<Transaction<T>>.Empty;
@@ -29,8 +29,20 @@ namespace Libplanet.Blocks
         /// Creates a new <see cref="BlockContent{T}"/> instance filled with the given
         /// <paramref name="metadata"/>'s contents and <paramref name="transactions"/>.
         /// </summary>
-        /// <param name="metadata">The <see cref="BlockMetadata"/> to copy.</param>
+        /// <param name="metadata">The <see cref="IBlockMetadata"/> to copy.</param>
         /// <param name="transactions">The transactions to include in the block.</param>
+        /// <exception cref="InvalidBlockProtocolVersionException">Thrown when
+        /// the <paramref name="metadata"/>'s to set is <see cref="IBlockMetadata.ProtocolVersion"/>
+        /// is less than 0, or greater than <see cref="BlockMetadata.CurrentProtocolVersion"/>,
+        /// the latest known protocol version.</exception>
+        /// <exception cref="InvalidBlockIndexException">Thrown when the <paramref name="metadata"/>
+        /// has a negative <see cref="IBlockMetadata.Index"/>.</exception>
+        /// <exception cref="InvalidBlockDifficultyException">Thrown when
+        /// the <paramref name="metadata"/>'s <see cref="IBlockMetadata.Difficulty"/> is negative.
+        /// </exception>
+        /// <exception cref="InvalidBlockTotalDifficultyException">Thrown when
+        /// the <paramref name="metadata"/>'s <see cref="IBlockMetadata.TotalDifficulty"/> is less
+        /// than its <see cref="IBlockMetadata.Difficulty"/>.</exception>
         /// <exception cref="InvalidTxSignatureException">Thrown when any tx signature is invalid or
         /// not signed by its signer.</exception>
         /// <exception cref="InvalidTxPublicKeyException">Thrown when any tx signer is not derived
@@ -43,17 +55,11 @@ namespace Libplanet.Blocks
         /// <exception cref="InvalidTxGenesisHashException">Thrown when transactions to set have
         /// inconsistent genesis hashes.</exception>
         /// <exception cref="InvalidBlockTxHashException">Thrown when the given
-        /// <paramref name="metadata"/>'s <see cref="BlockMetadata.TxHash"/> is inconsistent with
+        /// <paramref name="metadata"/>'s <see cref="IBlockMetadata.TxHash"/> is inconsistent with
         /// <paramref name="transactions"/>.</exception>
-        public BlockContent(BlockMetadata metadata, IEnumerable<Transaction<T>> transactions)
+        public BlockContent(IBlockMetadata metadata, IEnumerable<Transaction<T>> transactions)
+            : base(metadata)
         {
-            ProtocolVersion = metadata.ProtocolVersion;
-            Index = metadata.Index;
-            Timestamp = metadata.Timestamp;
-            Miner = metadata.Miner;
-            Difficulty = metadata.Difficulty;
-            TotalDifficulty = metadata.TotalDifficulty;
-            PreviousHash = metadata.PreviousHash;
             Transactions = transactions.ToImmutableArray();
             TxHash = metadata.TxHash;
         }
@@ -62,7 +68,18 @@ namespace Libplanet.Blocks
         /// Creates a new <see cref="BlockContent{T}"/> instance filled with the given
         /// <paramref name="metadata"/>'s contents and zero transactions.
         /// </summary>
-        /// <param name="metadata">The <see cref="BlockMetadata"/> to copy.</param>
+        /// <param name="metadata">The <see cref="IBlockMetadata"/> to copy.</param>
+        /// <exception cref="InvalidBlockProtocolVersionException">Thrown when
+        /// the <paramref name="metadata"/>'s to set is <see cref="IBlockMetadata.ProtocolVersion"/>
+        /// is less than 0, or greater than <see cref="BlockMetadata.CurrentProtocolVersion"/>,
+        /// the latest known protocol version.</exception>
+        /// <exception cref="InvalidBlockIndexException">Thrown when the value to set is negative.
+        /// </exception>
+        /// <exception cref="InvalidBlockDifficultyException">Thrown when the value to set is
+        ///  is negative.</exception>
+        /// <exception cref="InvalidBlockTotalDifficultyException">Thrown when
+        /// the <paramref name="metadata"/>'s <see cref="IBlockMetadata.TotalDifficulty"/> is less
+        /// than its <see cref="IBlockMetadata.Difficulty"/>.</exception>
         /// <exception cref="InvalidTxSignatureException">Thrown when any tx signature is invalid or
         /// not signed by its signer.</exception>
         /// <exception cref="InvalidTxPublicKeyException">Thrown when any tx signer is not derived
@@ -75,10 +92,47 @@ namespace Libplanet.Blocks
         /// <exception cref="InvalidTxGenesisHashException">Thrown when transactions to set have
         /// inconsistent genesis hashes.</exception>
         /// <exception cref="InvalidBlockTxHashException">Thrown when the given
-        /// <paramref name="metadata"/>'s <see cref="BlockMetadata.TxHash"/> is not <c>null</c>.
+        /// <paramref name="metadata"/>'s <see cref="IBlockMetadata.TxHash"/> is not <c>null</c>.
         /// </exception>
-        public BlockContent(BlockMetadata metadata)
+        public BlockContent(IBlockMetadata metadata)
             : this(metadata, Enumerable.Empty<Transaction<T>>())
+        {
+        }
+
+        /// <summary>
+        /// Creates a <see cref="BlockContent{T}"/> by copying the fields of another block
+        /// <paramref name="content"/>.
+        /// </summary>
+        /// <param name="content">This source of the block content to copy.  This hasn't be
+        /// a actual <see cref="BlockContent{T}"/> instance, but can be any object which implements
+        /// <see cref="IBlockContent{T}"/> instance.</param>
+        /// <exception cref="InvalidBlockProtocolVersionException">Thrown when
+        /// the <paramref name="content"/>'s to set is <see cref="IBlockMetadata.ProtocolVersion"/>
+        /// is less than 0, or greater than <see cref="BlockMetadata.CurrentProtocolVersion"/>,
+        /// the latest known protocol version.</exception>
+        /// <exception cref="InvalidBlockIndexException">Thrown when the value to set is negative.
+        /// </exception>
+        /// <exception cref="InvalidBlockDifficultyException">Thrown when the value to set is
+        ///  is negative.</exception>
+        /// <exception cref="InvalidBlockTotalDifficultyException">Thrown when
+        /// the <paramref name="content"/>'s <see cref="IBlockMetadata.TotalDifficulty"/> is less
+        /// than its <see cref="IBlockMetadata.Difficulty"/>.</exception>
+        /// <exception cref="InvalidTxSignatureException">Thrown when any tx signature is invalid or
+        /// not signed by its signer.</exception>
+        /// <exception cref="InvalidTxPublicKeyException">Thrown when any tx signer is not derived
+        /// from its its public key.</exception>
+        /// <exception cref="InvalidTxNonceException">Thrown when the same tx nonce is used by
+        /// a signer twice or more, or a tx nonce is used without its previous nonce by a signer.
+        /// Note that this validates only a block's intrinsic integrity between its transactions,
+        /// but does not guarantee integrity between blocks.  Such validation needs to be conducted
+        /// by <see cref="Blockchain.BlockChain{T}"/>.</exception>
+        /// <exception cref="InvalidTxGenesisHashException">Thrown when transactions to set have
+        /// inconsistent genesis hashes.</exception>
+        /// <exception cref="InvalidBlockTxHashException">Thrown when the given block
+        /// <paramref name="content"/>'s <see cref="IBlockMetadata.TxHash"/> is not consistent with
+        /// its <see cref="IBlockContent{T}.Transactions"/>.</exception>
+        public BlockContent(IBlockContent<T> content)
+            : this(content, content.Transactions)
         {
         }
 
@@ -193,16 +247,6 @@ namespace Libplanet.Blocks
                 }
             }
         }
-
-        /// <summary>
-        /// Makes a copy of the <see cref="BlockContent{T}"/> instance.
-        /// </summary>
-        /// <returns>A copy of the instance.</returns>
-        public new BlockContent<T> Clone() =>
-            (BlockContent<T>)MemberwiseClone();
-
-        /// <inheritdoc cref="ICloneable.Clone"/>
-        object ICloneable.Clone() => Clone();
 
         /// <summary>
         /// Mines the PoW (proof-of-work) nonce satisfying the block

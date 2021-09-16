@@ -128,6 +128,7 @@ To be released.
      -  `Block<T>` became to implement `IBlockHeader` interface.
      -  `BlockHeader` became to implement `BlockHeader` interface.
  -  Added `BlockMetadataExtensions` static class.  [[#1164], [#1492]]
+ -  Added `BlockContentExtensions` static class.  [[#1164], [#1492]]
  -  Added `BlockMarshaler` static class.  [[#1164], [#1492]]
  -  Added `StateStoreExtensions` static class.  [[#1128], [#1146], [#1492]]
  -  Added `StoreExtensions.GetStateRootHash()` extension method.
