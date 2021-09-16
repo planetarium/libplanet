@@ -204,12 +204,21 @@ namespace Libplanet.Store
             return IndexCollection(chainId).Count();
         }
 
-        /// <inheritdoc cref="BaseStore.IterateIndexes(Guid, int, int?)"/>
-        public override IEnumerable<BlockHash> IterateIndexes(Guid chainId, int offset, int? limit)
+        /// <inheritdoc cref="BaseStore.IterateIndexes(Guid, long, long?)"/>
+        public override IEnumerable<BlockHash> IterateIndexes(
+            Guid chainId,
+            long offset,
+            long? limit)
         {
-            return IndexCollection(chainId)
-                .Find(Query.All(), offset, limit ?? int.MaxValue)
-                .Select(i => i.Hash);
+            long limitValue = limit ?? int.MaxValue;
+            if (offset <= int.MaxValue && limitValue <= int.MaxValue)
+            {
+                return IndexCollection(chainId)
+                    .Find(Query.All(), (int)offset, (int)limitValue)
+                    .Select(i => i.Hash);
+            }
+
+            return LongFind(chainId, offset, limitValue);
         }
 
         /// <inheritdoc cref="BaseStore.IndexBlockHash(Guid, long)"/>
@@ -705,6 +714,23 @@ namespace Libplanet.Store
             {
                 CreateDirectoryRecursively(fs, path.GetDirectory());
                 fs.CreateDirectory(path);
+            }
+        }
+
+        private IEnumerable<BlockHash> LongFind(Guid chainId, long offset, long limit)
+        {
+            long start = offset + 1;
+            for (long i = start; i < limit + start; ++i)
+            {
+                var item = IndexCollection(chainId).FindById(i);
+                if (item != null)
+                {
+                    yield return item.Hash;
+                }
+                else
+                {
+                    yield break;
+                }
             }
         }
 

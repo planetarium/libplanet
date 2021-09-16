@@ -53,7 +53,7 @@ namespace Libplanet.Store
         /// <param name="limit">The maximum number of block hashes to get.</param>
         /// <returns>Block hashes in the index of the <paramref name="chainId"/>, in ascending
         /// order; the genesis block goes first, and the tip block goes last.</returns>
-        IEnumerable<BlockHash> IterateIndexes(Guid chainId, int offset = 0, int? limit = null);
+        IEnumerable<BlockHash> IterateIndexes(Guid chainId, long offset = 0L, long? limit = null);
 
         /// <summary>
         /// Determines the block hash by its <paramref name="index"/>.
@@ -85,7 +85,7 @@ namespace Libplanet.Store
         /// <param name="branchpoint">The branchpoint <see cref="Block{T}"/> to fork.</param>
         /// <exception cref="ChainIdNotFoundException">Thrown when the given
         /// <paramref name="sourceChainId"/> does not exist.</exception>
-        /// <seealso cref="IterateIndexes(Guid, int, int?)"/>
+        /// <seealso cref="IterateIndexes(Guid, long, long?)"/>
         /// <seealso cref="AppendIndex(Guid, BlockHash)"/>
         void ForkBlockIndexes(Guid sourceChainId, Guid destinationChainId, BlockHash branchpoint);
 

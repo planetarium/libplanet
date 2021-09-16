@@ -68,9 +68,9 @@ namespace Libplanet.Extensions.Cocona.Commands
             IEnumerable<BlockHash> hashes = store.IterateIndexes(
                 chainId,
                 offset: offset >= 0
-                    ? (int)offset
-                    : (int)(chainLength + offset),
-                limit: (int?)limit);
+                    ? offset
+                    : chainLength + offset,
+                limit: limit);
 
             if (header)
             {

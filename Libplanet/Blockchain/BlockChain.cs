@@ -1112,7 +1112,7 @@ namespace Libplanet.Blockchain
                 }
 
                 BlockHash? branchpoint = FindBranchpoint(locator);
-                var branchpointIndex = branchpoint is { } h ? (int)_blocks[h].Index : 0;
+                var branchpointIndex = branchpoint is { } h ? _blocks[h].Index : 0;
 
                 // FIXME: Currently, increasing count by one to satisfy
                 // the number defined by FindNextHashesChunkSize variable
@@ -1277,7 +1277,7 @@ namespace Libplanet.Blockchain
             }
         }
 
-        internal IEnumerable<Block<T>> IterateBlocks(int offset = 0, int? limit = null)
+        internal IEnumerable<Block<T>> IterateBlocks(long offset = 0L, long? limit = null)
         {
             _rwlock.EnterUpgradeableReadLock();
 
@@ -1294,7 +1294,7 @@ namespace Libplanet.Blockchain
             }
         }
 
-        internal IEnumerable<BlockHash> IterateBlockHashes(int offset = 0, int? limit = null)
+        internal IEnumerable<BlockHash> IterateBlockHashes(long offset = 0L, long? limit = null)
         {
             _rwlock.EnterUpgradeableReadLock();
 

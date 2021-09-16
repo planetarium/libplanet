@@ -29,8 +29,12 @@ namespace Libplanet.Store
 
         public abstract long CountIndex(Guid chainId);
 
-        /// <inheritdoc cref="IStore.IterateIndexes(Guid, int, int?)"/>
-        public abstract IEnumerable<BlockHash> IterateIndexes(Guid chainId, int offset, int? limit);
+        /// <inheritdoc cref="IStore.IterateIndexes(Guid, long, long?)"/>
+        public abstract IEnumerable<BlockHash> IterateIndexes(
+            Guid chainId,
+            long offset,
+            long? limit
+        );
 
         /// <inheritdoc cref="IStore.IndexBlockHash(Guid, long)"/>
         public abstract BlockHash? IndexBlockHash(Guid chainId, long index);

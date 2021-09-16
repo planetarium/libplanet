@@ -323,8 +323,11 @@ namespace Libplanet.RocksDBStore
             return 0;
         }
 
-        /// <inheritdoc cref="BaseStore.IterateIndexes(Guid, int, int?)"/>
-        public override IEnumerable<BlockHash> IterateIndexes(Guid chainId, int offset, int? limit)
+        /// <inheritdoc cref="BaseStore.IterateIndexes(Guid, long, long?)"/>
+        public override IEnumerable<BlockHash> IterateIndexes(
+            Guid chainId,
+            long offset,
+            long? limit)
             => IterateIndexes(chainId, offset, limit, false);
 
         /// <inheritdoc cref="BaseStore.IndexBlockHash(Guid, long)"/>
@@ -1124,8 +1127,8 @@ namespace Libplanet.RocksDBStore
 
         private IEnumerable<BlockHash> IterateIndexes(
             Guid chainId,
-            int offset,
-            int? limit,
+            long offset,
+            long? limit,
             bool includeDeleted
         )
         {
@@ -1142,7 +1145,7 @@ namespace Libplanet.RocksDBStore
                 Guid prevId = chainInfo.Item1;
                 long pi = chainInfo.Item2;
 
-                int expectedCount = (int)(pi - offset + 1);
+                long expectedCount = pi - offset + 1;
                 if (limit is { } limitNotNull && limitNotNull < expectedCount)
                 {
                     expectedCount = limitNotNull;
@@ -1164,7 +1167,7 @@ namespace Libplanet.RocksDBStore
 
             byte[] prefix = IndexKeyPrefix;
 
-            foreach (Iterator it in IterateDb(_chainDb, prefix, chainId).Skip(offset))
+            foreach (Iterator it in IterateDb(_chainDb, prefix, chainId).LongSkip(offset))
             {
                 if (count >= limit)
                 {

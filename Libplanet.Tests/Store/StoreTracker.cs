@@ -158,7 +158,7 @@ namespace Libplanet.Tests.Store
             return _store.IterateBlockHashes();
         }
 
-        public IEnumerable<BlockHash> IterateIndexes(Guid chainId, int offset, int? limit)
+        public IEnumerable<BlockHash> IterateIndexes(Guid chainId, long offset, long? limit)
         {
              Log(nameof(IterateIndexes), chainId, offset, limit);
              return _store.IterateIndexes(chainId, offset, limit);

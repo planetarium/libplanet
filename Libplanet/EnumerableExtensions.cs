@@ -1,13 +1,17 @@
 #if !NETSTANDARD2_1
 using System;
+#endif
 using System.Collections.Generic;
+#if !NETSTANDARD2_1
 using System.Diagnostics;
+#endif
 using System.Linq;
 
 namespace Libplanet
 {
-    internal static class EnumerableExtensions
+    public static class EnumerableExtensions
     {
+#if !NETSTANDARD2_1
         // Copied from .NET Runtime <https://git.io/JL8X6#L115-L154>
         public static IEnumerable<TSource> SkipLast<TSource>(
             this IEnumerable<TSource> source,
@@ -21,7 +25,27 @@ namespace Libplanet
 
             return count <= 0 ? source.Skip(0) : SkipLastIterator(source, count);
         }
+#endif
 
+        public static IEnumerable<TSource> LongSkip<TSource>(
+            this IEnumerable<TSource> source,
+            long count
+        )
+        {
+            if (count < 0)
+            {
+                count = 0;
+            }
+
+            if (count <= int.MaxValue)
+            {
+                return source.Skip((int)count);
+            }
+
+            return SkipIterator(source, count);
+        }
+
+#if !NETSTANDARD2_1
         private static IEnumerable<TSource> SkipLastIterator<TSource>(
             IEnumerable<TSource> source,
             int count
@@ -51,6 +75,24 @@ namespace Libplanet
                 }
             }
         }
+#endif
+
+        private static IEnumerable<TSource> SkipIterator<TSource>(
+            IEnumerable<TSource> source,
+            long count
+        )
+        {
+            foreach (var item in source)
+            {
+                if (count > 0)
+                {
+                    --count;
+                }
+                else
+                {
+                    yield return item;
+                }
+            }
+        }
     }
 }
-#endif

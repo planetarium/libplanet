@@ -198,11 +198,11 @@ namespace Libplanet.Explorer.Store
             return _store.CountIndex(chainId);
         }
 
-        /// <inheritdoc cref="IStore.IterateIndexes(Guid, int, int)"/>
+        /// <inheritdoc cref="IStore.IterateIndexes(Guid, long, long?)"/>
         public IEnumerable<BlockHash> IterateIndexes(
             Guid chainId,
-            int offset = 0,
-            int? limit = null
+            long offset = 0L,
+            long? limit = null
         ) =>
             _store.IterateIndexes(chainId, offset, limit);
 

@@ -204,13 +204,16 @@ namespace Libplanet.RocksDBStore
                 : RocksDBStoreBitConverter.ToInt64(bytes);
         }
 
-        /// <inheritdoc cref="BaseStore.IterateIndexes(Guid, int, int?)"/>
-        public override IEnumerable<BlockHash> IterateIndexes(Guid chainId, int offset, int? limit)
+        /// <inheritdoc cref="BaseStore.IterateIndexes(Guid, long, long?)"/>
+        public override IEnumerable<BlockHash> IterateIndexes(
+            Guid chainId,
+            long offset,
+            long? limit)
         {
-            int count = 0;
+            long count = 0;
             byte[] prefix = IndexKeyPrefix;
 
-            foreach (Iterator it in IterateDb(_chainDb, prefix, chainId).Skip(offset))
+            foreach (Iterator it in IterateDb(_chainDb, prefix, chainId).LongSkip(offset))
             {
                 if (count >= limit)
                 {

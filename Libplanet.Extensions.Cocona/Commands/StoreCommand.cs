@@ -177,7 +177,10 @@ namespace Libplanet.Extensions.Cocona.Commands
             return tx;
         }
 
-        private static IEnumerable<int> BuildTxIdBlockHashIndex(IStore store, int offset, int limit)
+        private static IEnumerable<long> BuildTxIdBlockHashIndex(
+            IStore store,
+            long offset,
+            long limit)
         {
             if (!(store.GetCanonicalChainId() is { } chainId))
             {
