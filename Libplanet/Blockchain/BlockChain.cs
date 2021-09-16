@@ -866,7 +866,6 @@ namespace Libplanet.Blockchain
             }
 
             block.ValidateTimestamp();
-            block.Validate(Policy.GetHashAlgorithm(block.Index), DateTimeOffset.UtcNow);
 
             _rwlock.EnterUpgradeableReadLock();
             Block<T> prevTip = Count > 0 ? Tip : null;
@@ -882,9 +881,7 @@ namespace Libplanet.Blockchain
 
                 var nonceDeltas = new Dictionary<Address, long>();
 
-                // block.Transactions have already been sorted by
-                // the tx nounce order when the block was created
-                foreach (Transaction<T> tx1 in block.Transactions)
+                foreach (Transaction<T> tx1 in block.Transactions.OrderBy(tx => tx.Nonce))
                 {
                     if (Policy.ValidateNextBlockTx(this, tx1) is { } tpve)
                     {

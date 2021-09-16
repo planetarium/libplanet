@@ -96,7 +96,7 @@ namespace Libplanet.Blocks
         /// <param name="preEvaluationHash">The hash digest of the <paramref name="hashAlgorithm"/>
         /// derived from the given arguments.</param>
         /// <exception cref="InvalidBlockProtocolVersionException">Thrown when
-        /// the <paramref name="content"/>'s to set is <see cref="IBlockMetadata.ProtocolVersion"/>
+        /// the <paramref name="content"/>'s <see cref="IBlockMetadata.ProtocolVersion"/>
         /// is less than 0, or greater than <see cref="BlockMetadata.CurrentProtocolVersion"/>,
         /// the latest known protocol version.</exception>
         /// <exception cref="InvalidBlockIndexException">Thrown when the value to set is negative.

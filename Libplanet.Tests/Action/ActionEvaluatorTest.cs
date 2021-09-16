@@ -13,6 +13,7 @@ using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Store;
+using Libplanet.Tests.Blocks;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Fixtures;
 using Libplanet.Tests.Store;
@@ -369,10 +370,8 @@ namespace Libplanet.Tests.Action
                     ActionEvaluator<DumbAction>.NullAccountStateGetter,
                     ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
                     block1.Miner);
-            ActionEvaluation[] evals1 = actionEvaluator.EvaluateBlock(
-                block1,
-                DateTimeOffset.UtcNow,
-                previousStates).ToArray();
+            ActionEvaluation[] evals1 =
+                actionEvaluator.EvaluateBlock(block1, previousStates).ToArray();
             IImmutableDictionary<Address, IValue> dirty1 = evals1.GetDirtyStates();
             IImmutableDictionary<(Address, Currency), FungibleAssetValue> balances1 =
                 evals1.GetDirtyBalances();
@@ -505,10 +504,7 @@ namespace Libplanet.Tests.Action
                     accountStateGetter,
                     accountBalanceGetter,
                     block2.Miner);
-            var evals2 = actionEvaluator.EvaluateBlock(
-                block2,
-                DateTimeOffset.UtcNow,
-                previousStates).ToArray();
+            var evals2 = actionEvaluator.EvaluateBlock(block2, previousStates).ToArray();
             IImmutableDictionary<Address, IValue> dirty2 = evals2.GetDirtyStates();
             IImmutableDictionary<(Address, Currency), FungibleAssetValue> balances2 =
                 evals2.GetDirtyBalances();
@@ -559,18 +555,15 @@ namespace Libplanet.Tests.Action
             };
             var tx =
                 Transaction<DumbAction>.Create(0, _txFx.PrivateKey1, null, actions);
-            var block = new Block<DumbAction>(
-                index: 1,
-                difficulty: 1,
-                totalDifficulty: 1,
-                nonce: new Nonce(new byte[0]),
-                miner: addresses[0],
-                previousHash: default(BlockHash),
-                timestamp: DateTimeOffset.UtcNow,
-                transactions: ImmutableArray.Create(tx),
-                stateRootHash: default(HashDigest<SHA256>),
-                hashAlgorithm: HashAlgorithmType.Of<SHA256>()
-            );
+            var block = new BlockContent<DumbAction>
+            {
+                Index = 1,
+                Difficulty = 1,
+                TotalDifficulty = 1,
+                Miner = addresses[0],
+                PreviousHash = default(BlockHash),
+                Transactions = ImmutableArray.Create(tx),
+            }.Mine(HashAlgorithmType.Of<SHA256>());
             var actionEvaluator = new ActionEvaluator<DumbAction>(
                 hashAlgorithmGetter: _ => HashAlgorithmType.Of<SHA256>(),
                 policyBlockAction: null,
@@ -706,18 +699,15 @@ namespace Libplanet.Tests.Action
                 stateGetter: ActionEvaluator<ThrowException>.NullStateGetter,
                 balanceGetter: ActionEvaluator<ThrowException>.NullBalanceGetter,
                 trieGetter: null);
-            var block = new Block<ThrowException>(
-                index: 123,
-                difficulty: 1,
-                totalDifficulty: 1,
-                nonce: new Nonce(new byte[0]),
-                miner: GenesisMinerAddress,
-                previousHash: default(BlockHash),
-                timestamp: DateTimeOffset.UtcNow,
-                transactions: ImmutableArray.Create(tx),
-                stateRootHash: default(HashDigest<SHA256>),
-                hashAlgorithm: HashAlgorithmType.Of<SHA256>()
-            );
+            var block = new BlockContent<ThrowException>
+            {
+                Index = 123,
+                Difficulty = 1,
+                TotalDifficulty = 1,
+                Miner = GenesisMinerAddress,
+                PreviousHash = default(BlockHash),
+                Transactions = ImmutableArray.Create(tx),
+            }.Mine(HashAlgorithmType.Of<SHA256>());
             var nextStates = actionEvaluator.EvaluateTxResult(
                 block: block,
                 tx: tx,
@@ -944,6 +934,99 @@ namespace Libplanet.Tests.Action
             Assert.Equal(
                 (Integer)2,
                 (Integer)evaluation.OutputStates.GetState(block.Miner));
+        }
+
+        [Fact]
+        public void OrderTxsForEvaluation()
+        {
+            // New test should be written once this breaks with a protocol version bump.
+            const int protocolVersion = BlockMetadata.CurrentProtocolVersion;
+            const int numSigners = 5;
+            const int numTxsPerSigner = 3;
+            var epoch = DateTimeOffset.FromUnixTimeSeconds(0);
+
+            TxFixture txFx = new BlockFixture().TxFixture;
+            ImmutableArray<PrivateKey> signers = ImmutableArray.Create(
+                txFx.PrivateKey1,
+                txFx.PrivateKey2,
+                txFx.PrivateKey3,
+                txFx.PrivateKey4,
+                txFx.PrivateKey5
+            );
+            ImmutableArray<ImmutableArray<int>> noncesPerSigner = ImmutableArray.Create(
+                ImmutableArray.Create(0, 2, 1),
+                ImmutableArray.Create(1, 0, 2),
+                ImmutableArray.Create(1, 2, 0),
+                ImmutableArray.Create(2, 0, 1),
+                ImmutableArray.Create(2, 1, 0)
+            );
+            // Unix Epoch used for hard coded timestamp.
+            ImmutableArray<Transaction<RandomAction>> txs =
+                signers.Zip(noncesPerSigner, (signer, nonces) => (signer, nonces))
+                    .SelectMany(
+                        signerNoncesPair => signerNoncesPair.nonces,
+                        (signerNoncesPair, nonce) => (signerNoncesPair.signer, nonce))
+                    .Select(signerNoncePair => Transaction<RandomAction>.Create(
+                        nonce: signerNoncePair.nonce,
+                        privateKey: signerNoncePair.signer,
+                        genesisHash: null,
+                        actions: new[] { new RandomAction(signerNoncePair.signer.ToAddress()) },
+                        timestamp: epoch)).ToImmutableArray();
+            // Rearrange transactions so that transactions are not grouped by signers
+            // while keeping the hard coded mixed order nonces above.
+            txs = txs
+                .Where((tx, i) => i % numTxsPerSigner == 0)
+                .Concat(txs.Where((tx, i) => i % numTxsPerSigner != 0)).ToImmutableArray();
+            byte[] preEvaluationHashBytes =
+            {
+                0x45, 0xa2, 0x21, 0x87, 0xe2, 0xd8, 0x85, 0x0b, 0xb3, 0x57,
+                0x88, 0x69, 0x58, 0xbc, 0x3e, 0x85, 0x60, 0x92, 0x9c, 0xcc,
+            };
+            ImmutableArray<byte> preEvaluationHash = preEvaluationHashBytes.ToImmutableArray();
+
+            var orderedTxs = ActionEvaluator<RandomAction>.OrderTxsForEvaluation(
+                protocolVersion: protocolVersion,
+                txs: txs,
+                preEvaluationHash: preEvaluationHash
+            ).ToImmutableArray();
+
+            // Check signers are grouped together.
+            for (int i = 0; i < numSigners; i++)
+            {
+                var signerTxs = orderedTxs.Skip(i * numTxsPerSigner).Take(numTxsPerSigner);
+                Assert.True(signerTxs.Select(tx => tx.Signer).Distinct().Count() == 1);
+            }
+
+            // Check nonces are ordered.
+            foreach (var signer in signers)
+            {
+                var signerTxs = orderedTxs.Where(tx => tx.Signer == signer.ToAddress());
+                Assert.Equal(signerTxs.OrderBy(tx => tx.Nonce).ToArray(), signerTxs.ToArray());
+            }
+
+            string[] originalAddresses =
+            {
+                "0xc2A86014073D662a4a9bFCF9CB54263dfa4F5cBc",
+                "0x921Ba81C0be280C8A2faed79E14aD2a098874759",
+                "0x1d2B31bF9A2CA71051f8c66E1C783Ae70EF32798",
+                "0xfcbfa4977B2Fc7A608E4Bd2F6F0D6b27C0a4cd13",
+                "0xB0ea0018Ab647418FA81c384194C9167e6A3C925",
+            };
+            string[] orderedAddresses =
+            {
+                "0x921Ba81C0be280C8A2faed79E14aD2a098874759",
+                "0x1d2B31bF9A2CA71051f8c66E1C783Ae70EF32798",
+                "0xB0ea0018Ab647418FA81c384194C9167e6A3C925",
+                "0xfcbfa4977B2Fc7A608E4Bd2F6F0D6b27C0a4cd13",
+                "0xc2A86014073D662a4a9bFCF9CB54263dfa4F5cBc",
+            };
+
+            Assert.True(originalAddresses.SequenceEqual(
+                signers.Select(signer => signer.ToAddress().ToString())));
+            Assert.True(orderedAddresses.SequenceEqual(
+                orderedTxs
+                    .Where((tx, i) => i % numTxsPerSigner == 0)
+                    .Select(tx => tx.Signer.ToString())));
         }
 
         private (Address[], Transaction<DumbAction>[]) MakeFixturesForAppendTests(

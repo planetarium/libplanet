@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Numerics;
 using System.Security.Cryptography;
 using Libplanet.Assets;
 using Libplanet.Blockchain;
@@ -96,7 +97,6 @@ namespace Libplanet.Action
 
             ImmutableList<ActionEvaluation> evaluations = EvaluateBlock(
                 block: block,
-                currentTime: DateTimeOffset.UtcNow,
                 previousStates: previousStates,
                 previousBlockStatesTrie: previousBlockStatesTrie).ToImmutableList();
 
@@ -345,11 +345,42 @@ namespace Libplanet.Action
         }
 
         /// <summary>
-        /// Evaluates <see cref="IAction"/>s in <see cref="Block{T}.Transactions"/>
+        /// Deterministically shuffles <paramref name="txs"/> for evaluation using
+        /// <paramref name="preEvaluationHash"/> as a random seed.
+        /// </summary>
+        /// <param name="protocolVersion">The <see cref="Block{T}.ProtocolVersion"/> that
+        /// <paramref name="txs"/> belong to.</param>
+        /// <param name="txs">The list of <see cref="Transaction{T}"/>s to shuffle.</param>
+        /// <param name="preEvaluationHash">The <see cref="Block{T}.PreEvaluationHash"/> to use
+        /// as a random seed when shuffling.</param>
+        /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="Transaction{T}"/>s in evaluation
+        /// order with the following properties:
+        /// <list type="bullet">
+        /// <item><see cref="Transaction{T}"/>s with the same <see cref="Transaction{T}.Signer"/>
+        /// value appear consecutive in the list.</item>
+        /// <item><see cref="Transaction{T}"/>s with the same <see cref="Transaction{T}.Signer"/>
+        /// value are ordered by <see cref="Transaction{T}.Nonce"/> value in ascending order.</item>
+        /// </list>
+        /// </returns>
+        /// <remarks>
+        /// This is to prevent an attempt to gain a first move advantage by participants.
+        /// </remarks>
+        [Pure]
+        internal static IEnumerable<Transaction<T>> OrderTxsForEvaluation(
+            int protocolVersion,
+            IEnumerable<Transaction<T>> txs,
+            ImmutableArray<byte> preEvaluationHash)
+        {
+            return protocolVersion > 1
+                ? OrderTxsForEvaluationV2(txs, preEvaluationHash)
+                : OrderTxsForEvaluationV0(txs, preEvaluationHash);
+        }
+
+        /// <summary>
+        /// Evaluates <see cref="IAction"/>s in <see cref="IBlockContent{T}.Transactions"/>
         /// of a given <see cref="Block{T}"/>.
         /// </summary>
         /// <param name="block">The block to evaluate.</param>
-        /// <param name="currentTime">The current time to validate time-wise conditions.</param>
         /// <param name="previousStates">The states immediately before an execution of any
         /// <see cref="IAction"/>s.</param>
         /// <param name="previousBlockStatesTrie">The <see cref="ITrie"/> containing the states
@@ -357,31 +388,21 @@ namespace Libplanet.Action
         /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="ActionEvaluation"/>s
         /// where each <see cref="ActionEvaluation"/> is the evaluation of an <see cref="IAction"/>.
         /// </returns>
-        /// <remarks>
-        /// This passes on an <see cref="InvalidBlockException"/> or an
-        /// <see cref="InvalidTxException"/> thrown by a call to <see cref="Block{T}.Validate"/>
-        /// of <paramref name="block"/>.
-        /// </remarks>
-        /// <seealso cref="Block{T}.Validate"/>
         /// <seealso cref="EvaluateTxs"/>
         [Pure]
         internal IEnumerable<ActionEvaluation> EvaluateBlock(
             IPreEvaluationBlock<T> block,
-            DateTimeOffset currentTime,
             IAccountStateDelta previousStates,
             ITrie? previousBlockStatesTrie = null)
-        {
-            HashAlgorithmType hashAlgorithm = _hashAlgorithmGetter(block.Index);
-
-            return EvaluateTxs(
+        =>
+            EvaluateTxs(
                 block: block,
                 previousStates: previousStates,
                 previousBlockStatesTrie: previousBlockStatesTrie);
-        }
 
         /// <summary>
-        /// Evaluates every <see cref="IAction"/> in <see cref="Block{T}.Transactions"/> of
-        /// a given <see cref="Block{T}"/>.
+        /// Evaluates every <see cref="IAction"/> in <see cref="IBlockContent{T}.Transactions"
+        /// /> of a given <see cref="IPreEvaluationBlock{T}"/>.
         /// </summary>
         /// <param name="block">The block to evaluate.</param>
         /// <param name="previousStates">The states immediately before any <see cref="IAction"/>s
@@ -389,7 +410,7 @@ namespace Libplanet.Action
         /// <param name="previousBlockStatesTrie">The trie to contain states at previous block.
         /// </param>
         /// <returns>Enumerates an <see cref="ActionEvaluation"/> for each action where
-        /// the order is determined by <see cref="Block{T}.Transactions"/> of
+        /// the order is determined by <see cref="IBlockContent{T}.Transactions"/> of
         /// <paramref name="block"/> and each respective <see cref="Transaction{T}.Actions"/>.
         /// </returns>
         [Pure]
@@ -399,7 +420,12 @@ namespace Libplanet.Action
             ITrie? previousBlockStatesTrie = null)
         {
             IAccountStateDelta delta = previousStates;
-            foreach (Transaction<T> tx in block.Transactions)
+            IEnumerable<Transaction<T>> orderedTxs = OrderTxsForEvaluation(
+                block.ProtocolVersion,
+                block.Transactions,
+                block.PreEvaluationHash
+            );
+            foreach (Transaction<T> tx in orderedTxs)
             {
                 delta = block.ProtocolVersion > 0
                     ? new AccountStateDeltaImpl(delta.GetState, delta.GetBalance, tx.Signer)
@@ -464,7 +490,7 @@ namespace Libplanet.Action
         /// Evaluates <see cref="Transaction{T}.Actions"/> of a given
         /// <see cref="Transaction{T}"/> and gets the resulting states.
         /// </summary>
-        /// <param name="block">The <see cref="Block{T}"/> that <paramref name="tx"/>
+        /// <param name="block">The <see cref="IPreEvaluationBlock{T}"/> that <paramref name="tx"/>
         /// belongs to.</param>
         /// <param name="tx">The <see cref="Transaction{T}"/> to evaluate.</param>
         /// <param name="previousStates">The states immediately before evaluating
@@ -478,7 +504,7 @@ namespace Libplanet.Action
         /// <paramref name="previousStates"/> as well.</returns>
         [Pure]
         internal IAccountStateDelta EvaluateTxResult(
-            Block<T> block,
+            IPreEvaluationBlock<T> block,
             Transaction<T> tx,
             IAccountStateDelta previousStates,
             bool rehearsal = false)
@@ -542,6 +568,47 @@ namespace Libplanet.Action
                 rehearsal: false,
                 previousBlockStatesTrie: previousBlockStatesTrie,
                 blockAction: true).Single();
+        }
+
+        [Pure]
+        private static IEnumerable<Transaction<T>> OrderTxsForEvaluationV0(
+            IEnumerable<Transaction<T>> txs,
+            ImmutableArray<byte> preEvaluationHash)
+        {
+            // As the order of transactions should be unpredictable until a block is mined,
+            // the sorter key should be derived from both a block hash and a txid.
+            var maskInteger = new BigInteger(preEvaluationHash.ToBuilder().ToArray());
+
+            // Transactions with the same signers are grouped first and the ordering of the groups
+            // is determined by the XOR aggregate of the txid's in the group with XOR bitmask
+            // applied using the pre-evaluation hash provided.  Then within each group,
+            // transactions are ordered by nonce.
+            return txs
+                .GroupBy(tx => tx.Signer)
+                .OrderBy(
+                    group => maskInteger ^ group
+                        .Select(tx => new BigInteger(tx.Id.ToByteArray()))
+                        .Aggregate((first, second) => first ^ second))
+                .SelectMany(group => group.OrderBy(tx => tx.Nonce));
+        }
+
+        [Pure]
+        private static IEnumerable<Transaction<T>> OrderTxsForEvaluationV2(
+            IEnumerable<Transaction<T>> txs,
+            ImmutableArray<byte> preEvaluationHash)
+        {
+            using SHA256 sha256 = SHA256.Create();
+            var maskInteger = new BigInteger(
+                sha256.ComputeHash(preEvaluationHash.ToBuilder().ToArray()));
+
+            // Transactions with the same signers are grouped first and the ordering of the groups
+            // is determined by the signer's address with XOR bitmask applied using
+            // the pre-evaluation hash provided.  Then within each group, transactions
+            // are ordered by nonce.
+            return txs
+                .GroupBy(tx => tx.Signer)
+                .OrderBy(group => maskInteger ^ new BigInteger(group.Key.ToByteArray()))
+                .SelectMany(group => group.OrderBy(tx => tx.Nonce));
         }
 
         /// <summary>

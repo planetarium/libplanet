@@ -156,6 +156,13 @@ namespace Libplanet.Blockchain.Renderers.Debug
                 IEnumerable<Transaction<T>> transactions = block.TxIds.Select(txid =>
                     store.GetTransaction<T>(new TxId(txid.ToBuilder().ToArray()))
                 );
+
+                transactions = ActionEvaluator<T>.OrderTxsForEvaluation(
+                    block.Header.ProtocolVersion,
+                    transactions,
+                    block.Header.PreEvaluationHash
+                );
+
                 expectedUnrenderedActions.AddRange(
                     transactions.SelectMany(t => t.Actions).Cast<IAction>().Reverse());
 
@@ -170,6 +177,11 @@ namespace Libplanet.Blockchain.Renderers.Debug
             {
                 IEnumerable<Transaction<T>> transactions = block.TxIds.Select(txid =>
                     store.GetTransaction<T>(new TxId(txid.ToBuilder().ToArray()))
+                );
+                transactions = ActionEvaluator<T>.OrderTxsForEvaluation(
+                    block.Header.ProtocolVersion,
+                    transactions,
+                    block.Header.PreEvaluationHash
                 );
                 IEnumerable<IAction> actions =
                     transactions.SelectMany(t => t.Actions).Cast<IAction>();

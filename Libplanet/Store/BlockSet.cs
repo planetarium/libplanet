@@ -1,5 +1,4 @@
 #nullable enable
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Libplanet.Action;
@@ -66,7 +65,6 @@ namespace Libplanet.Store
 
                 value.ValidateTimestamp();
                 HashAlgorithmType hashAlgorithm = _hashAlgorithmGetter(value.Index);
-                value.Validate(hashAlgorithm, DateTimeOffset.UtcNow);
                 Store.PutBlock(value);
                 _cache.AddOrUpdate(value.Hash, value);
             }

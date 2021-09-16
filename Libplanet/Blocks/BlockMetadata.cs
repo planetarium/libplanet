@@ -48,7 +48,7 @@ namespace Libplanet.Blocks
         /// a actual <see cref="BlockMetadata"/> instance, but can be any object which implements
         /// <see cref="IBlockMetadata"/> instance.</param>
         /// <exception cref="InvalidBlockProtocolVersionException">Thrown when
-        /// the <paramref name="metadata"/>'s to set is <see cref="IBlockMetadata.ProtocolVersion"/>
+        /// the <paramref name="metadata"/>'s <see cref="IBlockMetadata.ProtocolVersion"/>
         /// is less than 0, or greater than <see cref="CurrentProtocolVersion"/>, the latest known
         /// protocol version.</exception>
         /// <exception cref="InvalidBlockIndexException">Thrown when the <paramref name="metadata"/>

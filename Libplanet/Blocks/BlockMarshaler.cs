@@ -230,20 +230,7 @@ namespace Libplanet.Blocks
             IReadOnlyList<Transaction<T>> txs = marshaled.ContainsKey(TransactionsKey)
                 ? UnmarshalTransactions<T>(marshaled.GetValue<List>(TransactionsKey))
                 : ImmutableArray<Transaction<T>>.Empty;
-            return new Block<T>(
-                index: header.Index,
-                difficulty: header.Difficulty,
-                totalDifficulty: header.TotalDifficulty,
-                nonce: header.Nonce,
-                miner: header.Miner,
-                previousHash: header.PreviousHash,
-                timestamp: header.Timestamp,
-                transactions: txs,
-                hashAlgorithm: header.HashAlgorithm,
-                preEvaluationHash: header.PreEvaluationHash,
-                stateRootHash: header.StateRootHash,
-                protocolVersion: header.ProtocolVersion
-            );
+            return new Block<T>(header, txs);
         }
     }
 }

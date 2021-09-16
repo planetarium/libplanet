@@ -18,6 +18,7 @@ namespace Libplanet.Blocks
         /// Transactions belonging to the block.
         /// </summary>
         /// <remarks>This is always ordered by <see cref="Transaction{T}.Id"/>.</remarks>
+        // FIXME: Need to change the type to IImmutableSet<Transaction<T>>.
         IReadOnlyList<Transaction<T>> Transactions { get; }
     }
 }

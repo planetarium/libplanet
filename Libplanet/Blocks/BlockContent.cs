@@ -32,7 +32,7 @@ namespace Libplanet.Blocks
         /// <param name="metadata">The <see cref="IBlockMetadata"/> to copy.</param>
         /// <param name="transactions">The transactions to include in the block.</param>
         /// <exception cref="InvalidBlockProtocolVersionException">Thrown when
-        /// the <paramref name="metadata"/>'s to set is <see cref="IBlockMetadata.ProtocolVersion"/>
+        /// the <paramref name="metadata"/>'s <see cref="IBlockMetadata.ProtocolVersion"/>
         /// is less than 0, or greater than <see cref="BlockMetadata.CurrentProtocolVersion"/>,
         /// the latest known protocol version.</exception>
         /// <exception cref="InvalidBlockIndexException">Thrown when the <paramref name="metadata"/>
@@ -107,7 +107,7 @@ namespace Libplanet.Blocks
         /// a actual <see cref="BlockContent{T}"/> instance, but can be any object which implements
         /// <see cref="IBlockContent{T}"/> instance.</param>
         /// <exception cref="InvalidBlockProtocolVersionException">Thrown when
-        /// the <paramref name="content"/>'s to set is <see cref="IBlockMetadata.ProtocolVersion"/>
+        /// the <paramref name="content"/>'s <see cref="IBlockMetadata.ProtocolVersion"/>
         /// is less than 0, or greater than <see cref="BlockMetadata.CurrentProtocolVersion"/>,
         /// the latest known protocol version.</exception>
         /// <exception cref="InvalidBlockIndexException">Thrown when the value to set is negative.

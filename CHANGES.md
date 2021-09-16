@@ -18,6 +18,12 @@ To be released.
     `IPreEvaluationBlock<T>` (was `IBlock<T>`).  [[#1146], [#1164], [#1492]]
  -  `BlockHeader` now guarantees that their every instance has integrity.
     [[#1164], [#1492]]
+     -  Remove `Block<T>(long, long, BigInteger, Nonce, Address, BlockHash?,
+        DateTimeOffset, IReadOnlyList<Transaction<T>>, HashAlgorithmType,
+        HashDigest<SHA256>, ImmutableArray<byte>?, int)` overloaded constructor.
+        Use other overloaded constructors instead.
+     -  Added `Block<T>(PreEvaluationBlock<T>, HashDigest<SHA256>)` overloaded
+        constructor.
      -  `BlockHeader` is no more readonly struct, but a sealed class.
      -  Removed `BlockHeader(int, long, string, ImmutableArray<byte>,
         ImmutableArray<byte>, long, BigInteger, ImmutableArray<byte>,
@@ -25,10 +31,10 @@ To be released.
         ImmutableArray<byte>)` constructor.  Use other overloaded constructors
         instead.
      -  Added `BlockHeader(PreEvaluationBlockHeader, HashDigest<SHA256>)`
-        constructor.
+        overloaded constructor.
      -  Added
         `BlockHeader(PreEvaluationBlockHeader, HashDigest<SHA256>, BlockHash)`
-        constructor.
+        overloaded constructor.
  -  `Block<T>` and `BlockHeader` have no more marshaling/unmarshaling methods.
      -  Removed `Block<T>(Bencodex.Types.Dictionary)` overloaded constructor.
         Use `BlockMarshaler.UnmarshalBlock()` static method instead.
@@ -118,11 +124,15 @@ To be released.
  -  Added `Block<T>(PreEvaluationBlock<T>, HashDigest<SHA256>)` overloaded
     constructor.  [[#1146], [#1164], [#1492]]
  -  Added `Block<T>.HashAlgorithm` property.  [[#1492]]
+ -  Added `Block<T>(PreEvaluationBlock<T>, HashDigest<SHA256>)` overloaded
+    constructor.  [[#1164], [#1492]]
+ -  Added `Block<T>(IBlockHeader, IEnumerable<Transaction<T>>)` overloaded
+    constructor.  [[#1164], [#1492]]
  -  Added `BlockHeader.HashAlgorithm` property.  [[#1492]]
  -  Added `BlockHeader(PreEvaluationBlockHeader, HashDigest<SHA256>)`
-    constructor.  [[#1164], [#1492]]
+    overloaded constructor.  [[#1164], [#1492]]
  -  Added `BlockHeader(PreEvaluationBlockHeader, HashDigest<SHA256>, BlockHash)`
-    constructor.  [[#1164], [#1492]]
+    overloaded constructor.  [[#1164], [#1492]]
  -  Added `IBlockMetadata` interface.  [[#1164], [#1492]]
      -  `Block<T>` became to implement `IBlockMetadata` interface.
      -  `BlockHeader` became to implement `IBlockMetadata` interface.
@@ -159,6 +169,12 @@ To be released.
  -  Added `DelayedRenderer<T>.HashAlgorithmGetter` property.  [[#1492]]
 
 ### Behavioral changes
+
+ -  `Block<T>.Transactions` property is now ordered by `Transaction<T>.Id`
+    so that it's consistent with `IBlockContent<T>`'s other implementations.
+    As this behavior can be changed in the later releases, do not depend on
+    its ordering, but explicitly sort them before use when the order needs to b
+    guaranteed.  [[#1492]]
 
 ### Bug fixes
 
