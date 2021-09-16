@@ -23,7 +23,7 @@ namespace Libplanet.Tests.Blocks
 
         [Fact]
         public void ValidateHash() =>
-            AssertThrows<InvalidBlockHashException>(() =>
+            Assert.Throws<InvalidBlockHashException>(() =>
                 new BlockHeader(
                     protocolVersion: 0,
                     index: 0,
@@ -44,7 +44,7 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void ValidateProtocolVersion()
         {
-            AssertThrows<InvalidBlockProtocolVersionException>(() =>
+            Assert.Throws<InvalidBlockProtocolVersionException>(() =>
                 new BlockHeader(
                     protocolVersion: -1,
                     index: _fx.Next.Index,
@@ -62,7 +62,7 @@ namespace Libplanet.Tests.Blocks
                 )
             );
 
-            AssertThrows<InvalidBlockProtocolVersionException>(() =>
+            Assert.Throws<InvalidBlockProtocolVersionException>(() =>
                 new BlockHeader(
                     protocolVersion: Block<DumbAction>.CurrentProtocolVersion + 1,
                     index: _fx.Next.Index,
@@ -83,7 +83,7 @@ namespace Libplanet.Tests.Blocks
 
         [Fact]
         public void ValidateNonce() =>
-            AssertThrows<InvalidBlockNonceException>(() =>
+            Assert.Throws<InvalidBlockNonceException>(() =>
                 new BlockHeader(
                     protocolVersion: 0,
                     index: _fx.Next.Index,
@@ -103,7 +103,7 @@ namespace Libplanet.Tests.Blocks
 
         [Fact]
         public void ValidateIndex() =>
-            AssertThrows<InvalidBlockIndexException>(() =>
+            Assert.Throws<InvalidBlockIndexException>(() =>
                 new BlockHeader(
                     protocolVersion: 0,
                     index: -1,
@@ -127,7 +127,7 @@ namespace Libplanet.Tests.Blocks
             DateTimeOffset now = DateTimeOffset.UtcNow;
             var random = new Random();
 
-            AssertThrows<InvalidBlockDifficultyException>(() =>
+            Assert.Throws<InvalidBlockDifficultyException>(() =>
                 new BlockHeader(
                     protocolVersion: 0,
                     index: 0,
@@ -145,7 +145,7 @@ namespace Libplanet.Tests.Blocks
                 )
             );
 
-            AssertThrows<InvalidBlockDifficultyException>(() =>
+            Assert.Throws<InvalidBlockDifficultyException>(() =>
                 new BlockHeader(
                     protocolVersion: 0,
                     index: 10,
@@ -163,7 +163,7 @@ namespace Libplanet.Tests.Blocks
                 )
             );
 
-            AssertThrows<InvalidBlockTotalDifficultyException>(() =>
+            Assert.Throws<InvalidBlockTotalDifficultyException>(() =>
                 new BlockHeader(
                     protocolVersion: 0,
                     index: 10,
@@ -188,7 +188,7 @@ namespace Libplanet.Tests.Blocks
             DateTimeOffset now = DateTimeOffset.UtcNow;
             var random = new Random();
 
-            AssertThrows<InvalidBlockPreviousHashException>(() =>
+            Assert.Throws<InvalidBlockPreviousHashException>(() =>
                 new BlockHeader(
                     protocolVersion: 0,
                     index: 0,
@@ -206,7 +206,7 @@ namespace Libplanet.Tests.Blocks
                 )
             );
 
-            AssertThrows<InvalidBlockPreviousHashException>(() =>
+            Assert.Throws<InvalidBlockPreviousHashException>(() =>
                 new BlockHeader(
                     protocolVersion: 0,
                     index: 10,
@@ -224,7 +224,7 @@ namespace Libplanet.Tests.Blocks
                 )
             );
 
-            AssertThrows<InvalidBlockPreviousHashException>(() =>
+            Assert.Throws<InvalidBlockPreviousHashException>(() =>
                 new BlockHeader(
                     protocolVersion: 0,
                     index: 0,
@@ -241,15 +241,6 @@ namespace Libplanet.Tests.Blocks
                     hashAlgorithm: _fx.GetHashAlgorithm(0)
                 )
             );
-        }
-
-        private static T AssertThrows<T>(System.Action action)
-            where T : Exception
-        {
-            InvalidBlockHeaderException e = Assert.Throws<InvalidBlockHeaderException>(action);
-            Assert.NotNull(e.InnerException);
-            Assert.IsType<T>(e.InnerException);
-            return (T)e.InnerException;
         }
     }
 }

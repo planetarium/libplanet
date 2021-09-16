@@ -25,10 +25,10 @@ namespace Libplanet.Blocks
 
         private static readonly Codec Codec = new Codec();
 
-        private int? _bytesLength = null;
+        private int? _bytesLength;
         private BlockHeader? _header;
-        private ImmutableArray<byte>? _preEvaluationHash = null;
-        private BlockHash? _hash = null;
+        private ImmutableArray<byte>? _preEvaluationHash;
+        private BlockHash? _hash;
 
         /// <summary>
         /// Creates a <see cref="Block{T}"/> instance by manually filling field values.
@@ -117,27 +117,20 @@ namespace Libplanet.Blocks
                 peh = preEval.PreEvaluationHash;
             }
 
-            try
-            {
-                _header = new BlockHeader(
-                    protocolVersion: ProtocolVersion,
-                    index: Index,
-                    timestamp: Timestamp,
-                    nonce: Nonce,
-                    miner: Miner,
-                    difficulty: Difficulty,
-                    totalDifficulty: TotalDifficulty,
-                    previousHash: PreviousHash,
-                    txHash: TxHash,
-                    preEvaluationHash: peh,
-                    stateRootHash: stateRootHash,
-                    hashAlgorithm: hashAlgorithm
-                );
-            }
-            catch (InvalidBlockHeaderException e)
-            {
-                throw e.InnerException ?? e;
-            }
+            _header = new BlockHeader(
+                protocolVersion: ProtocolVersion,
+                index: Index,
+                timestamp: Timestamp,
+                nonce: Nonce,
+                miner: Miner,
+                difficulty: Difficulty,
+                totalDifficulty: TotalDifficulty,
+                previousHash: PreviousHash,
+                txHash: TxHash,
+                preEvaluationHash: peh,
+                stateRootHash: stateRootHash,
+                hashAlgorithm: hashAlgorithm
+            );
 
             HashAlgorithm = hashAlgorithm;
             _preEvaluationHash = Header.PreEvaluationHash;

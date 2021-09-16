@@ -25,6 +25,10 @@ namespace Libplanet.Net.Messages
 
         public Bencodex.Types.Dictionary HeaderDictionary { get; }
 
+        public long HeaderIndex => BlockMarshaler.UnmarshalBlockMetadataIndex(HeaderDictionary);
+
+        public BlockHash HeaderHash => BlockMarshaler.UnmarshalBlockHeaderHash(HeaderDictionary);
+
         protected override MessageType Type => MessageType.BlockHeaderMessage;
 
         protected override IEnumerable<NetMQFrame> DataFrames
@@ -36,7 +40,9 @@ namespace Libplanet.Net.Messages
             }
         }
 
-        public BlockHeader GetHeader(HashAlgorithmGetter hashAlgorithmGetter) =>
-            BlockMarshaler.UnmarshalBlockHeader(hashAlgorithmGetter, HeaderDictionary);
+        public BlockHeader GetHeader(HashAlgorithmGetter hashAlgorithmGetter)
+        {
+            return BlockMarshaler.UnmarshalBlockHeader(hashAlgorithmGetter, HeaderDictionary);
+        }
     }
 }

@@ -80,14 +80,7 @@ namespace Libplanet.Blocks
             StateRootHash = stateRootHash;
             HashAlgorithm = hashAlgorithm;
 
-            try
-            {
-                Validate();
-            }
-            catch (InvalidBlockException e)
-            {
-                throw new InvalidBlockHeaderException(Index, Hash, e.Message, e);
-            }
+            Validate();
         }
 
         /// <summary>
@@ -157,14 +150,7 @@ namespace Libplanet.Blocks
             );
             Hash = BlockHash.DeriveFrom(serialized);
 
-            try
-            {
-                Validate();
-            }
-            catch (InvalidBlockException e)
-            {
-                throw new InvalidBlockHeaderException(Index, Hash, e.Message, e);
-            }
+            Validate();
         }
 
         /// <inheritdoc cref="IBlockMetadata.ProtocolVersion"/>

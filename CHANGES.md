@@ -19,7 +19,7 @@ To be released.
  -  `BlockHeader` now guarantees that their every instance has integrity.
     [[#1164], [#1492]]
      -  When `BlockHeader` is instantiated, if there is no integrity in the
-        block header contents it became to throw `InvalidBlockHeaderException`.
+        block header contents it became to throw `InvalidBlockException`.
  -  `Block<T>` and `BlockHeader` have no more marshaling/unmarshaling methods.
      -  Removed `Block<T>(Bencodex.Types.Dictionary)` overloaded constructor.
         Use `BlockMarshaler.UnmarshalBlock()` static method instead.
@@ -151,7 +151,6 @@ To be released.
  -  Added `StoreExtensions.GetStateRootHash()` extension method.
     [[#1128], [#1146], [#1492]]
  -  Added `DelayedRenderer<T>.HashAlgorithmGetter` property.  [[#1492]]
- -  Added `InvalidBlockHeaderException` class.  [[#1146], [#1164], [#1492]]
 
 ### Behavioral changes
 

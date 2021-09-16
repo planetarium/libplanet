@@ -123,13 +123,13 @@ namespace Libplanet.Net
             {
                 header = message.GetHeader(BlockChain.Policy.GetHashAlgorithm);
             }
-            catch (InvalidBlockHeaderException ibe)
+            catch (InvalidBlockException ibe)
             {
                 _logger.Debug(
                     ibe,
                     "Received header #{BlockIndex} {BlockHash} seems invalid; ignored.",
-                    ibe.BlockIndex,
-                    ibe.BlockHash
+                    message.HeaderHash,
+                    message.HeaderIndex
                 );
                 return;
             }
