@@ -86,6 +86,8 @@ To be released.
     `BlockPolicy<T>()` constructor with `Func<long, int>? getMaxBlockBytes`.
     [[#1485]]
  -  Removed `TxViolatingBlockPolicyException` class.  [[#1485]]
+ -  Changed method signature from `IStore.IterateIndexes(Guid, int, int?)` to
+    `IStore.IterateIndexes(Guid, long, long?)` [[#1496]]
 
 ### Backward-incompatible network protocol changes
 
@@ -115,6 +117,7 @@ To be released.
     ImmutableArray<byte>, HashDigest<SHA256>?)` constructor.  [[#1470]]
  -  Added `BlockPolicyViolationException` and `TxPolicyViolationException`
     classes.  [[#1485]]
+ -  Added `IEnumerable<T>.LongSkip` extension method [[#1496]]
 
 ### Behavioral changes
 
@@ -170,6 +173,7 @@ To be released.
 [#1479]: https://github.com/planetarium/libplanet/pull/1479
 [#1480]: https://github.com/planetarium/libplanet/pull/1480
 [#1485]: https://github.com/planetarium/libplanet/pull/1485
+[#1496]: https://github.com/planetarium/libplanet/pull/1496
 
 
 Version 0.16.0
