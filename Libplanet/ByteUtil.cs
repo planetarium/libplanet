@@ -162,23 +162,20 @@ namespace Libplanet
                 return false;
             }
 
-            var maxTargetBytes = new byte[hashDigest.Count + 1];
-            maxTargetBytes[hashDigest.Count] = 0x01;
-            var maxTarget = new BigInteger(maxTargetBytes);
+            BigInteger maxTarget = BigInteger.One << 8 * hashDigest.Count;
             BigInteger target = maxTarget / difficulty;
 
-            var digestArray = new byte[hashDigest.Count + 1];
+            // Ensures the last byte to be zero to prevent negative result when converted
+            // to BigInteger.  Note that BigInteger(byte[]) assumes the input bytes are in
+            // little-endian order.
+            byte[] digestArray = new byte[hashDigest.Count + 1];
             int i = 0;
             foreach (byte b in hashDigest)
             {
                 digestArray[i++] = b;
             }
 
-            // Append zero to convert unsigned BigInteger.  Note that BigInteger(byte[]) assumes
-            // the input bytes are in little-endian order.
-            digestArray[i] = 0;
-
-            var result = new BigInteger(digestArray);
+            BigInteger result = new BigInteger(digestArray);
             return result < target;
         }
     }
