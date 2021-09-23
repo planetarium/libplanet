@@ -88,6 +88,8 @@ To be released.
  -  Removed `TxViolatingBlockPolicyException` class.  [[#1485]]
  -  Optional parameter name `difficultyBoundDivisor` for `BlockPolicy<T>()`
     constructor changed to `difficultyStability`.  [[#1495]]
+ -  Type for optional parameter `difficultyStability` for `BlockPolicy<T>()`
+    constructor changed to `long?` from `int?`.  [[#1495]]
 
 ### Backward-incompatible network protocol changes
 
@@ -149,13 +151,19 @@ To be released.
 
 ### Bug fixes
 
- -  Improper sanity checks for `minimumDifficulty` and `difficultyStability`
-    (changed from the old name `difficultyBoundDivisor`) arguments given to
+ -  Improper sanity checks for `targetBlockInterval` (changed from the old name
+    `blockInterval`), `minimumDifficulty`, and `difficultyStability` (changed
+    from the old name `difficultyBoundDivisor`) arguments given to
     `BlockPolicy<T>()` constructor fixed.  [[#1495]]
+     -  It was possible for `targetBlockInterval` to be zero, which would result
+        in division by zero, when this makes no sense.
      -  It was possible for `difficultyStability` not to be positive when this
         makes no sense.
      -  Wrongly threw an `ArgumentOutOfRangeException` for the case where
         `minimumDifficulty` would equal `difficultyStability`.
+     -  It was possible for `minimumDifficulty` to be zero, which would allow
+        difficulty to be stuck at zero indefinitely, when this does not
+        make sense.
 
 ### CLI tools
 

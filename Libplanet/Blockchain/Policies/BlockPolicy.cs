@@ -83,7 +83,7 @@ namespace Libplanet.Blockchain.Policies
         public BlockPolicy(
             IAction? blockAction = null,
             TimeSpan? blockInterval = null,
-            int? difficultyStability = null,
+            long? difficultyStability = null,
             long? minimumDifficulty = null,
             Func<BlockChain<T>, Transaction<T>, TxPolicyViolationException?>?
                 validateNextBlockTx = null,
@@ -131,7 +131,7 @@ namespace Libplanet.Blockchain.Policies
         /// See the corresponding parameter description for
         /// <see cref="DifficultyAdjustment{T}.BaseAlgorithm"/> for full detail.
         /// </summary>
-        public int DifficultyStability { get; }
+        public long DifficultyStability { get; }
 
         /// <summary>
         /// Minimum difficulty for a <see cref="Block{T}"/>.  See the corresponding

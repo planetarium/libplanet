@@ -10,9 +10,9 @@ namespace Libplanet.Blockchain.Policies
     {
         public static readonly TimeSpan DefaultTargetBlockInterval = TimeSpan.FromSeconds(5);
 
-        public static readonly int DefaultDifficultyStability = 128;
+        public static readonly long DefaultDifficultyStability = 128;
 
-        public static readonly int DefaultMinimumDifficulty = 1024;
+        public static readonly long DefaultMinimumDifficulty = 1024;
 
         /// <summary>
         /// An Ethereum based difficulty adjustment algorithm.
@@ -96,11 +96,11 @@ namespace Libplanet.Blockchain.Policies
             long difficultyStability,
             long minimumDifficulty)
         {
-            if (targetBlockInterval < TimeSpan.Zero)
+            if (targetBlockInterval <= TimeSpan.Zero)
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(targetBlockInterval),
-                    "Target interval between blocks must be non-negative.");
+                    "Target interval between blocks must be positive.");
             }
             else if (difficultyStability <= 0)
             {
@@ -114,11 +114,11 @@ namespace Libplanet.Blockchain.Policies
                     nameof(difficultyStability),
                     "Minimum difficulty must be greater than or equal to difficulty stability.");
             }
-            else if (minimumDifficulty < 0)
+            else if (minimumDifficulty <= 0)
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(minimumDifficulty),
-                    "Minimum difficulty must be non-negative.");
+                    "Minimum difficulty must be positive.");
             }
 
             return blockChain => BaseAlgorithm(
