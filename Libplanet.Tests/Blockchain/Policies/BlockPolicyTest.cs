@@ -48,14 +48,72 @@ namespace Libplanet.Tests.Blockchain.Policies
         }
 
         [Fact]
+        public void DifficultyAdjustment()
+        {
+            TimeSpan defaultInterval =
+                DifficultyAdjustment<DumbAction>.DefaultTargetBlockInterval;
+            long defaultStability =
+                DifficultyAdjustment<DumbAction>.DefaultDifficultyStability;
+            long defaultMinimum =
+                DifficultyAdjustment<DumbAction>.DefaultMinimumDifficulty;
+
+            // Should work with defaults.
+            DifficultyAdjustment<DumbAction>.AlgorithmFactory(
+                defaultInterval,
+                defaultStability,
+                defaultMinimum);
+
+            // Negative block interval.
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+                DifficultyAdjustment<DumbAction>.AlgorithmFactory(
+                    TimeSpan.FromMilliseconds(-5),
+                    defaultStability,
+                    defaultMinimum));
+
+            // Zero block interval.
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+                DifficultyAdjustment<DumbAction>.AlgorithmFactory(
+                    TimeSpan.FromMilliseconds(0),
+                    defaultStability,
+                    defaultMinimum));
+
+            // Invalid stability due to being too low.
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+                DifficultyAdjustment<DumbAction>.AlgorithmFactory(
+                    defaultInterval,
+                    0,
+                    defaultMinimum));
+
+            // Stability being equal to minimum difficulty should be fine.
+            DifficultyAdjustment<DumbAction>.AlgorithmFactory(
+                defaultInterval,
+                defaultMinimum,
+                defaultMinimum);
+
+            // Invalid stability in relation to minimum difficulty for stability being too high.
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+                DifficultyAdjustment<DumbAction>.AlgorithmFactory(
+                    defaultInterval,
+                    defaultMinimum + 1,
+                    defaultMinimum));
+
+            // Invalid minimum difficulty for being too low.
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+                DifficultyAdjustment<DumbAction>.AlgorithmFactory(
+                    defaultInterval,
+                    defaultStability,
+                    0));
+        }
+
+        [Fact]
         public void Constructors()
         {
             var tenSec = new TimeSpan(0, 0, 10);
             var a = new BlockPolicy<DumbAction>(
                 blockAction: null,
                 blockInterval: tenSec,
-                minimumDifficulty: 1024L,
-                difficultyBoundDivisor: 128);
+                difficultyStability: 128,
+                minimumDifficulty: 1024L);
             Assert.Equal(tenSec, a.BlockInterval);
 
             var b = new BlockPolicy<DumbAction>(
@@ -68,32 +126,6 @@ namespace Libplanet.Tests.Blockchain.Policies
             Assert.Equal(
                 new TimeSpan(0, 0, 5),
                 c.BlockInterval);
-
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
-                new BlockPolicy<DumbAction>(
-                    blockAction: null,
-                    blockInterval: tenSec.Negate(),
-                    minimumDifficulty: 1024,
-                    difficultyBoundDivisor: 128)
-            );
-            Assert.Throws<ArgumentOutOfRangeException>(
-                () => new BlockPolicy<DumbAction>(
-                    blockInterval: TimeSpan.FromMilliseconds(-5)));
-
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
-                new BlockPolicy<DumbAction>(
-                    blockAction: null,
-                    blockInterval: tenSec,
-                    minimumDifficulty: 0,
-                    difficultyBoundDivisor: 128)
-            );
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
-                new BlockPolicy<DumbAction>(
-                    blockAction: null,
-                    blockInterval: tenSec,
-                    minimumDifficulty: 1024,
-                    difficultyBoundDivisor: 1024)
-            );
         }
 
         [Fact]

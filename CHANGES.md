@@ -86,6 +86,10 @@ To be released.
     `BlockPolicy<T>()` constructor with `Func<long, int>? getMaxBlockBytes`.
     [[#1485]]
  -  Removed `TxViolatingBlockPolicyException` class.  [[#1485]]
+ -  Optional parameter name `difficultyBoundDivisor` for `BlockPolicy<T>()`
+    constructor changed to `difficultyStability`.  [[#1495]]
+ -  Type for optional parameter `difficultyStability` for `BlockPolicy<T>()`
+    constructor changed to `long?` from `int?`.  [[#1495]]
  -  Changed method signature from `IStore.IterateIndexes(Guid, int, int?)` to
     `IStore.IterateIndexes(Guid, long, long?)` [[#1496]]
 
@@ -117,6 +121,9 @@ To be released.
     ImmutableArray<byte>, HashDigest<SHA256>?)` constructor.  [[#1470]]
  -  Added `BlockPolicyViolationException` and `TxPolicyViolationException`
     classes.  [[#1485]]
+ -  Added `DifficultyAdjustment` static class.  [[#1495]]
+ -  Added `BlockPolicy<T>.DifficultyStability` and
+    `BlockPolicy<T>.MinimumDifficulty` properties.  [[#1495]]
  -  Added `IEnumerable<T>.LongSkip` extension method [[#1496]]
 
 ### Behavioral changes
@@ -147,6 +154,20 @@ To be released.
 
 ### Bug fixes
 
+ -  Improper sanity checks for `targetBlockInterval` (changed from the old name
+    `blockInterval`), `minimumDifficulty`, and `difficultyStability` (changed
+    from the old name `difficultyBoundDivisor`) arguments given to
+    `BlockPolicy<T>()` constructor fixed.  [[#1495]]
+     -  It was possible for `targetBlockInterval` to be zero, which would result
+        in division by zero, when this makes no sense.
+     -  It was possible for `difficultyStability` not to be positive when this
+        makes no sense.
+     -  Wrongly threw an `ArgumentOutOfRangeException` for the case where
+        `minimumDifficulty` would equal `difficultyStability`.
+     -  It was possible for `minimumDifficulty` to be zero, which would allow
+        difficulty to be stuck at zero indefinitely, when this does not
+        make sense.
+
 ### CLI tools
 
 [#1358]: https://github.com/planetarium/libplanet/issues/1358
@@ -173,6 +194,7 @@ To be released.
 [#1479]: https://github.com/planetarium/libplanet/pull/1479
 [#1480]: https://github.com/planetarium/libplanet/pull/1480
 [#1485]: https://github.com/planetarium/libplanet/pull/1485
+[#1495]: https://github.com/planetarium/libplanet/pull/1495
 [#1496]: https://github.com/planetarium/libplanet/pull/1496
 
 

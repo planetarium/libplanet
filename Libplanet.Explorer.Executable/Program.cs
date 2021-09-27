@@ -350,8 +350,8 @@ If omitted (default) explorer only the local blockchain store.")]
             return new BlockPolicy<T>(
                 blockAction: null,
                 blockInterval: TimeSpan.FromMilliseconds(options.BlockIntervalMilliseconds),
+                difficultyStability: options.DifficultyBoundDivisor,
                 minimumDifficulty: options.MinimumDifficulty,
-                difficultyBoundDivisor: options.DifficultyBoundDivisor,
                 getMaxBlockBytes: i => i > 0 ? options.MaxBlockBytes : options.MaxGenesisBytes,
                 getMaxTransactionsPerBlock: _ => options.MaxTransactionsPerBlock);
         }
