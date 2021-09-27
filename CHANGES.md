@@ -117,6 +117,7 @@ To be released.
  -  Added `BlockHeader(int, long, DateTimeOffset, Nonce, Address, long,
     BigInteger, BlockHash?, HashDigest<SHA256>?, BlockHash,
     ImmutableArray<byte>, HashDigest<SHA256>?)` constructor.  [[#1470]]
+ -  Added `TxCompletion<TPeer, TAction>` class.  [[#1420], [#1478]]
  -  Added `BlockPolicyViolationException` and `TxPolicyViolationException`
     classes.  [[#1485]]
  -  Added `DifficultyAdjustment` static class.  [[#1495]]
@@ -148,6 +149,8 @@ To be released.
     require permission-less TURN server.  See [coturn's relevant configuration](
     https://github.com/coturn/coturn/blob/dc8f405f8543a83ad8c059ba6b9f930e1e5a1349/man/man1/turnserver.1#L402-L410)
     as well.  [[#1423]]
+ -  `Swarm<T>` became to sync transactions from multiple peers
+    at the same time.  [[#1420], [#1478]]
 
 ### Bug fixes
 
@@ -169,6 +172,7 @@ To be released.
 
 [#1358]: https://github.com/planetarium/libplanet/issues/1358
 [#1386]: https://github.com/planetarium/libplanet/pull/1386
+[#1420]: https://github.com/planetarium/libplanet/issues/1420
 [#1423]: https://github.com/planetarium/libplanet/pull/1423
 [#1435]: https://github.com/planetarium/libplanet/issues/1435
 [#1440]: https://github.com/planetarium/libplanet/pull/1440
@@ -188,6 +192,7 @@ To be released.
 [#1474]: https://github.com/planetarium/libplanet/pull/1474
 [#1475]: https://github.com/planetarium/libplanet/pull/1475
 [#1477]: https://github.com/planetarium/libplanet/pull/1477
+[#1478]: https://github.com/planetarium/libplanet/pull/1478
 [#1479]: https://github.com/planetarium/libplanet/pull/1479
 [#1480]: https://github.com/planetarium/libplanet/pull/1480
 [#1485]: https://github.com/planetarium/libplanet/pull/1485
@@ -249,12 +254,12 @@ Released on September 3, 2021.
     Message, TimeSpan?, int, CancellationToken)` method.
     Instead, added `ITransport.SendMessageWithReplyAsync(BoundPeer,
     Message, TimeSpan?, int, bool, CancellationToken)` method.
-    [[#1458], [#1460]]
+    [[#1458], [#1461]]
  -  Fixed a bug where `GetTxs` request failed to receive transactions
-    if any messages are missing.  [[#1458], [#1460]]
+    if any messages are missing.  [[#1458], [#1461]]
 
 [#1458]: https://github.com/planetarium/libplanet/issues/1458
-[#1460]: https://github.com/planetarium/libplanet/pull/1460
+[#1461]: https://github.com/planetarium/libplanet/pull/1461
 
 
 Version 0.15.1

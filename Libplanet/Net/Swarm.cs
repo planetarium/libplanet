@@ -36,7 +36,6 @@ namespace Libplanet.Net
 
         private CancellationTokenSource _workerCancellationTokenSource;
         private CancellationToken _cancellationToken;
-        private ConcurrentDictionary<TxId, BoundPeer> _demandTxIds;
 
         private bool _disposed;
 
@@ -83,8 +82,6 @@ namespace Libplanet.Net
             _privateKey = privateKey ?? throw new ArgumentNullException(nameof(privateKey));
             LastSeenTimestamps =
                 new ConcurrentDictionary<Peer, DateTimeOffset>();
-
-            TxReceived = new AsyncAutoResetEvent();
             BlockHeaderReceived = new AsyncAutoResetEvent();
             BlockAppended = new AsyncAutoResetEvent();
             BlockReceived = new AsyncAutoResetEvent();
@@ -102,6 +99,7 @@ namespace Libplanet.Net
                 .ForContext("SwarmId", loggerId);
 
             Options = options ?? new SwarmOptions();
+            TxCompletion = new TxCompletion<BoundPeer, T>(BlockChain, GetTxsAsync, BroadcastTxs);
             RoutingTable = new RoutingTable(Address, Options.TableSize, Options.BucketSize);
             Transport = new NetMQTransport(
                 RoutingTable,
@@ -167,7 +165,9 @@ namespace Libplanet.Net
 
         internal ITransport Transport { get; private set; }
 
-        internal AsyncAutoResetEvent TxReceived { get; }
+        internal TxCompletion<BoundPeer, T> TxCompletion { get; }
+
+        internal AsyncAutoResetEvent TxReceived => TxCompletion?.TxReceived;
 
         internal AsyncAutoResetEvent BlockHeaderReceived { get; }
 
@@ -198,7 +198,8 @@ namespace Libplanet.Net
             if (!_disposed)
             {
                 _workerCancellationTokenSource?.Cancel();
-                Transport.Dispose();
+                TxCompletion?.Dispose();
+                Transport?.Dispose();
                 _workerCancellationTokenSource?.Dispose();
                 _disposed = true;
             }
@@ -306,7 +307,6 @@ namespace Libplanet.Net
                     _workerCancellationTokenSource.Token, cancellationToken
                 ).Token;
             BlockDemandTable = new BlockDemandTable<T>(Options.BlockDemandLifespan);
-            _demandTxIds = new ConcurrentDictionary<TxId, BoundPeer>();
             try
             {
                 await Transport.StartAsync(_cancellationToken);
@@ -336,7 +336,6 @@ namespace Libplanet.Net
                         Options.PollInterval,
                         Options.MaximumPollPeers,
                         _cancellationToken));
-                tasks.Add(ProcessFillTxs(_cancellationToken));
                 if (Options.StaticPeers.Any())
                 {
                     tasks.Add(
@@ -991,11 +990,11 @@ namespace Libplanet.Net
             _logger.Debug("Block broadcasting complete.");
         }
 
-        private void BroadcastTxs(Address? except, IEnumerable<Transaction<T>> txs)
+        private void BroadcastTxs(BoundPeer except, IEnumerable<Transaction<T>> txs)
         {
             List<TxId> txIds = txs.Select(tx => tx.Id).ToList();
             _logger.Debug("Broadcast {TransactionsNumber} txs...", txIds.Count);
-            BroadcastTxIds(except, txIds);
+            BroadcastTxIds(except?.Address, txIds);
         }
 
         private void BroadcastMessage(Address? except, Message message)
@@ -1215,113 +1214,6 @@ namespace Libplanet.Net
         {
             IComparer<IBlockExcerpt> canonComparer = BlockChain.Policy.CanonicalChainComparer;
             return canonComparer.Compare(target, BlockChain.Tip) > 0;
-        }
-
-        private async Task ProcessFillTxs(CancellationToken cancellationToken)
-        {
-            while (!cancellationToken.IsCancellationRequested)
-            {
-                if (_demandTxIds.IsEmpty)
-                {
-                    await Task.Delay(1, cancellationToken);
-                    continue;
-                }
-
-                _logger.Debug(
-                    "Processing txids: {@txIds}",
-                    _demandTxIds.Keys.Select(txid => txid.ToString()));
-                var demandTxIds = _demandTxIds.ToArray();
-                var demands = new Dictionary<BoundPeer, HashSet<TxId>>();
-
-                foreach (KeyValuePair<TxId, BoundPeer> kv in demandTxIds)
-                {
-                    if (!demands.ContainsKey(kv.Value))
-                    {
-                        demands[kv.Value] = new HashSet<TxId>();
-                    }
-
-                    demands[kv.Value].Add(kv.Key);
-                }
-
-                var txs = new HashSet<Transaction<T>>();
-                var tasks = new List<Task<List<Transaction<T>>>>();
-                foreach (var kv in demands)
-                {
-                    IAsyncEnumerable<Transaction<T>> fetched =
-                        GetTxsAsync(kv.Key, kv.Value, cancellationToken);
-                    ValueTask<List<Transaction<T>>> vt = fetched.ToListAsync(cancellationToken);
-
-                    if (vt.IsCompletedSuccessfully)
-                    {
-                        txs.UnionWith(vt.Result);
-                    }
-                    else
-                    {
-                        tasks.Add(vt.AsTask());
-                    }
-                }
-
-                try
-                {
-                    await tasks.WhenAll();
-                }
-                catch (Exception)
-                {
-                    _logger.Information(
-                        $"Some tasks faulted during {nameof(GetTxsAsync)}().");
-                }
-
-                foreach (Task<List<Transaction<T>>> task in tasks)
-                {
-                    if (!task.IsFaulted)
-                    {
-                        // `task.Result` is okay because we've already waited.
-                        txs.UnionWith(task.Result);
-                    }
-                }
-
-                txs = new HashSet<Transaction<T>>(
-                    txs.Where(
-                        tx => BlockChain.Policy.ValidateNextBlockTx(BlockChain, tx) is null));
-
-                foreach (Transaction<T> tx in txs)
-                {
-                    try
-                    {
-                        BlockChain.StageTransaction(tx);
-                    }
-                    catch (InvalidTxException ite)
-                    {
-                        _logger.Error(
-                            ite,
-                            "{TxId} will not be staged since it is invalid.",
-                            tx.Id
-                        );
-                    }
-                }
-
-                if (txs.Any())
-                {
-                    TxReceived.Set();
-                    _logger.Debug(
-                        "Txs staged successfully: {@txIds}",
-                        txs.Select(tx => tx.Id.ToString()));
-
-                    // FIXME: Should exclude peers of source of the transaction ids.
-                    BroadcastTxs(null, txs);
-                }
-                else
-                {
-                    _logger.Information(
-                        "Failed to get transactions to stage: {@txIds}",
-                        demandTxIds.Select(txId => txId.ToString()));
-                }
-
-                foreach (var kv in demandTxIds)
-                {
-                    _demandTxIds.TryRemove(kv.Key, out BoundPeer value);
-                }
-            }
         }
 
         private async Task RefreshTableAsync(
