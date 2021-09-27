@@ -28,6 +28,7 @@ namespace Libplanet.Blockchain.Policies
         private readonly Func<long, int> _getMinTransactionsPerBlock;
         private readonly Func<long, int> _getMaxTransactionsPerBlock;
         private readonly Func<long, int> _getMaxTransactionsPerSignerPerBlock;
+        private readonly Func<BlockChain<T>, long> _getNextBlockDifficulty;
 
         /// <summary>
         /// <para>
@@ -42,13 +43,16 @@ namespace Libplanet.Blockchain.Policies
         /// every <see cref="Block{T}"/>.  Set to <c>null</c> by default, which results
         /// in no additional execution other than those included in <see cref="Transaction{T}"/>s.
         /// </param>
-        /// <param name="blockInterval">Configures <see cref="BlockInterval"/>.
-        /// Set to <c>5</c> seconds by default.
+        /// <param name="blockInterval">Goes to <see cref="BlockInterval"/>.
+        /// Set to <see cref="DifficultyAdjustment{T}.DefaultTargetBlockInterval"/>
+        /// by default.
         /// </param>
-        /// <param name="minimumDifficulty">Configures
-        /// <see cref="MinimumDifficulty"/>. 1024 by default.</param>
-        /// <param name="difficultyBoundDivisor">Configures
-        /// <see cref="DifficultyBoundDivisor"/>. 128 by default.</param>
+        /// <param name="difficultyStability">Goes to <see cref="DifficultyStability"/>.
+        /// Set to <see cref="DifficultyAdjustment{T}.DefaultDifficultyStability"/>
+        /// by default.</param>
+        /// <param name="minimumDifficulty">Goes to <see cref="MinimumDifficulty"/>.
+        /// Set to <see cref="DifficultyAdjustment{T}.DefaultMinimumDifficulty"/>
+        /// by default.</param>
         /// <param name="validateNextBlockTx">The predicate that determines if
         /// a <see cref="Transaction{T}"/> follows the policy.  Set to a constant function of
         /// <c>null</c> by default.</param>
@@ -79,8 +83,8 @@ namespace Libplanet.Blockchain.Policies
         public BlockPolicy(
             IAction? blockAction = null,
             TimeSpan? blockInterval = null,
-            long minimumDifficulty = 1024,
-            int difficultyBoundDivisor = 128,
+            long? difficultyStability = null,
+            long? minimumDifficulty = null,
             Func<BlockChain<T>, Transaction<T>, TxPolicyViolationException?>?
                 validateNextBlockTx = null,
             Func<BlockChain<T>, Block<T>, BlockPolicyViolationException?>?
@@ -92,32 +96,13 @@ namespace Libplanet.Blockchain.Policies
             Func<long, int>? getMaxTransactionsPerBlock = null,
             Func<long, int>? getMaxTransactionsPerSignerPerBlock = null)
         {
-            if (blockInterval < TimeSpan.Zero)
-            {
-                throw new ArgumentOutOfRangeException(
-                    nameof(blockInterval),
-                    "Interval between blocks cannot be negative.");
-            }
-            else if (minimumDifficulty < 0)
-            {
-                throw new ArgumentOutOfRangeException(
-                    nameof(minimumDifficulty),
-                    "Minimum difficulty must be greater than 0.");
-            }
-            else if (minimumDifficulty <= difficultyBoundDivisor)
-            {
-                const string message =
-                    "Difficulty bound divisor must be less than " +
-                    "the minimum difficulty.";
-                throw new ArgumentOutOfRangeException(
-                    nameof(difficultyBoundDivisor),
-                    message);
-            }
-
             BlockAction = blockAction;
-            BlockInterval = blockInterval ?? TimeSpan.FromMilliseconds(5000);
-            MinimumDifficulty = minimumDifficulty;
-            DifficultyBoundDivisor = difficultyBoundDivisor;
+            BlockInterval = blockInterval
+                ?? DifficultyAdjustment<T>.DefaultTargetBlockInterval;
+            DifficultyStability = difficultyStability
+                ?? DifficultyAdjustment<T>.DefaultDifficultyStability;
+            MinimumDifficulty = minimumDifficulty
+                ?? DifficultyAdjustment<T>.DefaultMinimumDifficulty;
             _validateNextBlockTx = validateNextBlockTx ?? ((_, __) => null);
             _validateNextBlock = validateNextBlock ?? ((_, __) => null);
             CanonicalChainComparer = canonicalChainComparer ?? new TotalDifficultyComparer();
@@ -127,27 +112,36 @@ namespace Libplanet.Blockchain.Policies
             _getMaxTransactionsPerBlock = getMaxTransactionsPerBlock ?? (_ => 100);
             _getMaxTransactionsPerSignerPerBlock = getMaxTransactionsPerSignerPerBlock
                 ?? GetMaxTransactionsPerBlock;
+            _getNextBlockDifficulty = DifficultyAdjustment<T>.AlgorithmFactory(
+                BlockInterval, DifficultyStability, MinimumDifficulty);
         }
 
         /// <inheritdoc/>
         public IAction? BlockAction { get; }
 
         /// <summary>
-        /// An appropriate interval between consecutive <see cref="Block{T}"/>s.
-        /// It is usually from 20 to 30 seconds.
-        /// <para>If a previous interval took longer than this
-        /// <see cref="GetNextBlockDifficulty(BlockChain{T})"/> method
-        /// raises the <see cref="Block{T}.Difficulty"/>.  If it took shorter
-        /// than this <see cref="Block{T}.Difficulty"/> is dropped.</para>
+        /// Targeted time interval between two consecutive <see cref="Block{T}"/>s.
+        /// See the corresponding parameter description for
+        /// <see cref="DifficultyAdjustment{T}.BaseAlgorithm"/> for full detail.
         /// </summary>
         public TimeSpan BlockInterval { get; }
 
+        /// <summary>
+        /// Stability of a series of difficulties for a <see cref="BlockChain{T}"/>.
+        /// See the corresponding parameter description for
+        /// <see cref="DifficultyAdjustment{T}.BaseAlgorithm"/> for full detail.
+        /// </summary>
+        public long DifficultyStability { get; }
+
+        /// <summary>
+        /// Minimum difficulty for a <see cref="Block{T}"/>.  See the corresponding
+        /// parameter description for <see cref="DifficultyAdjustment{T}.BaseAlgorithm"/> for
+        /// full detail.
+        /// </summary>
+        public long MinimumDifficulty { get; }
+
         /// <inheritdoc/>
         public IComparer<IBlockExcerpt> CanonicalChainComparer { get; }
-
-        private long MinimumDifficulty { get; }
-
-        private int DifficultyBoundDivisor { get; }
 
         /// <inheritdoc/>
         public virtual TxPolicyViolationException? ValidateNextBlockTx(
@@ -165,38 +159,8 @@ namespace Libplanet.Blockchain.Policies
         }
 
         /// <inheritdoc/>
-        public virtual long GetNextBlockDifficulty(BlockChain<T> blockChain)
-        {
-            long index = blockChain.Count;
-
-            if (index < 0)
-            {
-                throw new InvalidBlockIndexException(
-                    $"Count of blocks must be 0 or more, but its value is {index}.");
-            }
-
-            if (index <= 1)
-            {
-                return index == 0 ? 0 : MinimumDifficulty;
-            }
-
-            var prevBlock = blockChain[index - 1];
-
-            DateTimeOffset prevPrevTimestamp = blockChain[index - 2].Timestamp;
-            DateTimeOffset prevTimestamp = prevBlock.Timestamp;
-            TimeSpan timeDiff = prevTimestamp - prevPrevTimestamp;
-            long timeDiffMilliseconds = (long)timeDiff.TotalMilliseconds;
-            const long minimumMultiplier = -99;
-            long multiplier = 1 - (timeDiffMilliseconds /
-                                   (long)BlockInterval.TotalMilliseconds);
-            multiplier = Math.Max(multiplier, minimumMultiplier);
-
-            var prevDifficulty = prevBlock.Difficulty;
-            var offset = prevDifficulty / DifficultyBoundDivisor;
-            long nextDifficulty = prevDifficulty + (offset * multiplier);
-
-            return Math.Max(nextDifficulty, MinimumDifficulty);
-        }
+        public virtual long GetNextBlockDifficulty(BlockChain<T> blockChain) =>
+            _getNextBlockDifficulty(blockChain);
 
         /// <inheritdoc/>
         [Pure]
