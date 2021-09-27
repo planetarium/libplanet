@@ -148,6 +148,10 @@ parameter.  Use the one with <code>TimeSpan? blockInterval</code> instead.  [<a 
 <code>BlockPolicy&lt;T&gt;()</code> constructor with <code>Func&lt;long, int&gt;? getMaxBlockBytes</code>.
 [<a href="https://github.com/planetarium/libplanet/pull/1485">#1485</a>]</li>
 <li>Removed <code>TxViolatingBlockPolicyException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/1485">#1485</a>]</li>
+<li>Optional parameter name <code>difficultyBoundDivisor</code> for <code>BlockPolicy&lt;T&gt;()</code>
+constructor changed to <code>difficultyStability</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1495">#1495</a>]</li>
+<li>Type for optional parameter <code>difficultyStability</code> for <code>BlockPolicy&lt;T&gt;()</code>
+constructor changed to <code>long?</code> from <code>int?</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1495">#1495</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <ul>
@@ -174,6 +178,9 @@ overloaded method.  [<a href="https://github.com/planetarium/libplanet/pull/1480
 <li>Added <code>BlockHeader(int, long, DateTimeOffset, Nonce, Address, long, BigInteger, BlockHash?, HashDigest&lt;SHA256&gt;?, BlockHash, ImmutableArray&lt;byte&gt;, HashDigest&lt;SHA256&gt;?)</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/1470">#1470</a>]</li>
 <li>Added <code>BlockPolicyViolationException</code> and <code>TxPolicyViolationException</code>
 classes.  [<a href="https://github.com/planetarium/libplanet/pull/1485">#1485</a>]</li>
+<li>Added <code>DifficultyAdjustment</code> static class.  [<a href="https://github.com/planetarium/libplanet/pull/1495">#1495</a>]</li>
+<li>Added <code>BlockPolicy&lt;T&gt;.DifficultyStability</code> and
+<code>BlockPolicy&lt;T&gt;.MinimumDifficulty</code> properties.  [<a href="https://github.com/planetarium/libplanet/pull/1495">#1495</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
@@ -207,6 +214,24 @@ require permission-less TURN server.  See <a href="https://github.com/coturn/cot
 as well.  [<a href="https://github.com/planetarium/libplanet/pull/1423">#1423</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
+<ul>
+<li>Improper sanity checks for <code>targetBlockInterval</code> (changed from the old name
+<code>blockInterval</code>), <code>minimumDifficulty</code>, and <code>difficultyStability</code> (changed
+from the old name <code>difficultyBoundDivisor</code>) arguments given to
+<code>BlockPolicy&lt;T&gt;()</code> constructor fixed.  [<a href="https://github.com/planetarium/libplanet/pull/1495">#1495</a>]
+<ul>
+<li>It was possible for <code>targetBlockInterval</code> to be zero, which would result
+in division by zero, when this makes no sense.</li>
+<li>It was possible for <code>difficultyStability</code> not to be positive when this
+makes no sense.</li>
+<li>Wrongly threw an <code>ArgumentOutOfRangeException</code> for the case where
+<code>minimumDifficulty</code> would equal <code>difficultyStability</code>.</li>
+<li>It was possible for <code>minimumDifficulty</code> to be zero, which would allow
+difficulty to be stuck at zero indefinitely, when this does not
+make sense.</li>
+</ul>
+</li>
+</ul>
 <h3 id="cli-tools">CLI tools</h3>
 <h2 id="version-0160">Version 0.16.0</h2>
 <p>Released on August 25, 2021.</p>

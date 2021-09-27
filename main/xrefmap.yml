@@ -2504,15 +2504,15 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T)
   nameWithType: BlockPolicy<T>
   nameWithType.vb: BlockPolicy(Of T)
-- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.Nullable{System.TimeSpan},System.Int64,System.Int32,System.Func{Libplanet.Blockchain.BlockChain{`0},Libplanet.Tx.Transaction{`0},Libplanet.Tx.TxPolicyViolationException},System.Func{Libplanet.Blockchain.BlockChain{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.BlockPolicyViolationException},System.Collections.Generic.IComparer{Libplanet.Blocks.IBlockExcerpt},Libplanet.Blocks.HashAlgorithmGetter,System.Func{System.Int64,System.Int32},System.Func{System.Int64,System.Int32},System.Func{System.Int64,System.Int32},System.Func{System.Int64,System.Int32})
-  name: BlockPolicy(IAction, Nullable<TimeSpan>, Int64, Int32, Func<BlockChain<T>, Transaction<T>, TxPolicyViolationException>, Func<BlockChain<T>, Block<T>, BlockPolicyViolationException>, IComparer<IBlockExcerpt>, HashAlgorithmGetter, Func<Int64, Int32>, Func<Int64, Int32>, Func<Int64, Int32>, Func<Int64, Int32>)
-  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_System_Nullable_System_TimeSpan__System_Int64_System_Int32_System_Func_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_Transaction__0__Libplanet_Tx_TxPolicyViolationException__System_Func_Libplanet_Blockchain_BlockChain__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_BlockPolicyViolationException__System_Collections_Generic_IComparer_Libplanet_Blocks_IBlockExcerpt__Libplanet_Blocks_HashAlgorithmGetter_System_Func_System_Int64_System_Int32__System_Func_System_Int64_System_Int32__System_Func_System_Int64_System_Int32__System_Func_System_Int64_System_Int32__
-  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.Nullable{System.TimeSpan},System.Int64,System.Int32,System.Func{Libplanet.Blockchain.BlockChain{`0},Libplanet.Tx.Transaction{`0},Libplanet.Tx.TxPolicyViolationException},System.Func{Libplanet.Blockchain.BlockChain{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.BlockPolicyViolationException},System.Collections.Generic.IComparer{Libplanet.Blocks.IBlockExcerpt},Libplanet.Blocks.HashAlgorithmGetter,System.Func{System.Int64,System.Int32},System.Func{System.Int64,System.Int32},System.Func{System.Int64,System.Int32},System.Func{System.Int64,System.Int32})
-  name.vb: BlockPolicy(IAction, Nullable(Of TimeSpan), Int64, Int32, Func(Of BlockChain(Of T), Transaction(Of T), TxPolicyViolationException), Func(Of BlockChain(Of T), Block(Of T), BlockPolicyViolationException), IComparer(Of IBlockExcerpt), HashAlgorithmGetter, Func(Of Int64, Int32), Func(Of Int64, Int32), Func(Of Int64, Int32), Func(Of Int64, Int32))
-  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.BlockPolicy(Libplanet.Action.IAction, System.Nullable<System.TimeSpan>, System.Int64, System.Int32, System.Func<Libplanet.Blockchain.BlockChain<T>, Libplanet.Tx.Transaction<T>, Libplanet.Tx.TxPolicyViolationException>, System.Func<Libplanet.Blockchain.BlockChain<T>, Libplanet.Blocks.Block<T>, Libplanet.Blocks.BlockPolicyViolationException>, System.Collections.Generic.IComparer<Libplanet.Blocks.IBlockExcerpt>, Libplanet.Blocks.HashAlgorithmGetter, System.Func<System.Int64, System.Int32>, System.Func<System.Int64, System.Int32>, System.Func<System.Int64, System.Int32>, System.Func<System.Int64, System.Int32>)
-  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).BlockPolicy(Libplanet.Action.IAction, System.Nullable(Of System.TimeSpan), System.Int64, System.Int32, System.Func(Of Libplanet.Blockchain.BlockChain(Of T), Libplanet.Tx.Transaction(Of T), Libplanet.Tx.TxPolicyViolationException), System.Func(Of Libplanet.Blockchain.BlockChain(Of T), Libplanet.Blocks.Block(Of T), Libplanet.Blocks.BlockPolicyViolationException), System.Collections.Generic.IComparer(Of Libplanet.Blocks.IBlockExcerpt), Libplanet.Blocks.HashAlgorithmGetter, System.Func(Of System.Int64, System.Int32), System.Func(Of System.Int64, System.Int32), System.Func(Of System.Int64, System.Int32), System.Func(Of System.Int64, System.Int32))
-  nameWithType: BlockPolicy<T>.BlockPolicy(IAction, Nullable<TimeSpan>, Int64, Int32, Func<BlockChain<T>, Transaction<T>, TxPolicyViolationException>, Func<BlockChain<T>, Block<T>, BlockPolicyViolationException>, IComparer<IBlockExcerpt>, HashAlgorithmGetter, Func<Int64, Int32>, Func<Int64, Int32>, Func<Int64, Int32>, Func<Int64, Int32>)
-  nameWithType.vb: BlockPolicy(Of T).BlockPolicy(IAction, Nullable(Of TimeSpan), Int64, Int32, Func(Of BlockChain(Of T), Transaction(Of T), TxPolicyViolationException), Func(Of BlockChain(Of T), Block(Of T), BlockPolicyViolationException), IComparer(Of IBlockExcerpt), HashAlgorithmGetter, Func(Of Int64, Int32), Func(Of Int64, Int32), Func(Of Int64, Int32), Func(Of Int64, Int32))
+- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.Nullable{System.TimeSpan},System.Nullable{System.Int64},System.Nullable{System.Int64},System.Func{Libplanet.Blockchain.BlockChain{`0},Libplanet.Tx.Transaction{`0},Libplanet.Tx.TxPolicyViolationException},System.Func{Libplanet.Blockchain.BlockChain{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.BlockPolicyViolationException},System.Collections.Generic.IComparer{Libplanet.Blocks.IBlockExcerpt},Libplanet.Blocks.HashAlgorithmGetter,System.Func{System.Int64,System.Int32},System.Func{System.Int64,System.Int32},System.Func{System.Int64,System.Int32},System.Func{System.Int64,System.Int32})
+  name: BlockPolicy(IAction, Nullable<TimeSpan>, Nullable<Int64>, Nullable<Int64>, Func<BlockChain<T>, Transaction<T>, TxPolicyViolationException>, Func<BlockChain<T>, Block<T>, BlockPolicyViolationException>, IComparer<IBlockExcerpt>, HashAlgorithmGetter, Func<Int64, Int32>, Func<Int64, Int32>, Func<Int64, Int32>, Func<Int64, Int32>)
+  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_System_Nullable_System_TimeSpan__System_Nullable_System_Int64__System_Nullable_System_Int64__System_Func_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_Transaction__0__Libplanet_Tx_TxPolicyViolationException__System_Func_Libplanet_Blockchain_BlockChain__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_BlockPolicyViolationException__System_Collections_Generic_IComparer_Libplanet_Blocks_IBlockExcerpt__Libplanet_Blocks_HashAlgorithmGetter_System_Func_System_Int64_System_Int32__System_Func_System_Int64_System_Int32__System_Func_System_Int64_System_Int32__System_Func_System_Int64_System_Int32__
+  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.Nullable{System.TimeSpan},System.Nullable{System.Int64},System.Nullable{System.Int64},System.Func{Libplanet.Blockchain.BlockChain{`0},Libplanet.Tx.Transaction{`0},Libplanet.Tx.TxPolicyViolationException},System.Func{Libplanet.Blockchain.BlockChain{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.BlockPolicyViolationException},System.Collections.Generic.IComparer{Libplanet.Blocks.IBlockExcerpt},Libplanet.Blocks.HashAlgorithmGetter,System.Func{System.Int64,System.Int32},System.Func{System.Int64,System.Int32},System.Func{System.Int64,System.Int32},System.Func{System.Int64,System.Int32})
+  name.vb: BlockPolicy(IAction, Nullable(Of TimeSpan), Nullable(Of Int64), Nullable(Of Int64), Func(Of BlockChain(Of T), Transaction(Of T), TxPolicyViolationException), Func(Of BlockChain(Of T), Block(Of T), BlockPolicyViolationException), IComparer(Of IBlockExcerpt), HashAlgorithmGetter, Func(Of Int64, Int32), Func(Of Int64, Int32), Func(Of Int64, Int32), Func(Of Int64, Int32))
+  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.BlockPolicy(Libplanet.Action.IAction, System.Nullable<System.TimeSpan>, System.Nullable<System.Int64>, System.Nullable<System.Int64>, System.Func<Libplanet.Blockchain.BlockChain<T>, Libplanet.Tx.Transaction<T>, Libplanet.Tx.TxPolicyViolationException>, System.Func<Libplanet.Blockchain.BlockChain<T>, Libplanet.Blocks.Block<T>, Libplanet.Blocks.BlockPolicyViolationException>, System.Collections.Generic.IComparer<Libplanet.Blocks.IBlockExcerpt>, Libplanet.Blocks.HashAlgorithmGetter, System.Func<System.Int64, System.Int32>, System.Func<System.Int64, System.Int32>, System.Func<System.Int64, System.Int32>, System.Func<System.Int64, System.Int32>)
+  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).BlockPolicy(Libplanet.Action.IAction, System.Nullable(Of System.TimeSpan), System.Nullable(Of System.Int64), System.Nullable(Of System.Int64), System.Func(Of Libplanet.Blockchain.BlockChain(Of T), Libplanet.Tx.Transaction(Of T), Libplanet.Tx.TxPolicyViolationException), System.Func(Of Libplanet.Blockchain.BlockChain(Of T), Libplanet.Blocks.Block(Of T), Libplanet.Blocks.BlockPolicyViolationException), System.Collections.Generic.IComparer(Of Libplanet.Blocks.IBlockExcerpt), Libplanet.Blocks.HashAlgorithmGetter, System.Func(Of System.Int64, System.Int32), System.Func(Of System.Int64, System.Int32), System.Func(Of System.Int64, System.Int32), System.Func(Of System.Int64, System.Int32))
+  nameWithType: BlockPolicy<T>.BlockPolicy(IAction, Nullable<TimeSpan>, Nullable<Int64>, Nullable<Int64>, Func<BlockChain<T>, Transaction<T>, TxPolicyViolationException>, Func<BlockChain<T>, Block<T>, BlockPolicyViolationException>, IComparer<IBlockExcerpt>, HashAlgorithmGetter, Func<Int64, Int32>, Func<Int64, Int32>, Func<Int64, Int32>, Func<Int64, Int32>)
+  nameWithType.vb: BlockPolicy(Of T).BlockPolicy(IAction, Nullable(Of TimeSpan), Nullable(Of Int64), Nullable(Of Int64), Func(Of BlockChain(Of T), Transaction(Of T), TxPolicyViolationException), Func(Of BlockChain(Of T), Block(Of T), BlockPolicyViolationException), IComparer(Of IBlockExcerpt), HashAlgorithmGetter, Func(Of Int64, Int32), Func(Of Int64, Int32), Func(Of Int64, Int32), Func(Of Int64, Int32))
 - uid: Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor*
   name: BlockPolicy
   href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_
@@ -2573,6 +2573,23 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).CanonicalChainComparer
   nameWithType: BlockPolicy<T>.CanonicalChainComparer
   nameWithType.vb: BlockPolicy(Of T).CanonicalChainComparer
+- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.DifficultyStability
+  name: DifficultyStability
+  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_DifficultyStability
+  commentId: P:Libplanet.Blockchain.Policies.BlockPolicy`1.DifficultyStability
+  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.DifficultyStability
+  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).DifficultyStability
+  nameWithType: BlockPolicy<T>.DifficultyStability
+  nameWithType.vb: BlockPolicy(Of T).DifficultyStability
+- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.DifficultyStability*
+  name: DifficultyStability
+  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_DifficultyStability_
+  commentId: Overload:Libplanet.Blockchain.Policies.BlockPolicy`1.DifficultyStability
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.DifficultyStability
+  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).DifficultyStability
+  nameWithType: BlockPolicy<T>.DifficultyStability
+  nameWithType.vb: BlockPolicy(Of T).DifficultyStability
 - uid: Libplanet.Blockchain.Policies.BlockPolicy`1.GetHashAlgorithm(System.Int64)
   name: GetHashAlgorithm(Int64)
   href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_GetHashAlgorithm_System_Int64_
@@ -2676,6 +2693,23 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).GetNextBlockDifficulty
   nameWithType: BlockPolicy<T>.GetNextBlockDifficulty
   nameWithType.vb: BlockPolicy(Of T).GetNextBlockDifficulty
+- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.MinimumDifficulty
+  name: MinimumDifficulty
+  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_MinimumDifficulty
+  commentId: P:Libplanet.Blockchain.Policies.BlockPolicy`1.MinimumDifficulty
+  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.MinimumDifficulty
+  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).MinimumDifficulty
+  nameWithType: BlockPolicy<T>.MinimumDifficulty
+  nameWithType.vb: BlockPolicy(Of T).MinimumDifficulty
+- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.MinimumDifficulty*
+  name: MinimumDifficulty
+  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_MinimumDifficulty_
+  commentId: Overload:Libplanet.Blockchain.Policies.BlockPolicy`1.MinimumDifficulty
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.MinimumDifficulty
+  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).MinimumDifficulty
+  nameWithType: BlockPolicy<T>.MinimumDifficulty
+  nameWithType.vb: BlockPolicy(Of T).MinimumDifficulty
 - uid: Libplanet.Blockchain.Policies.BlockPolicy`1.ValidateNextBlock(Libplanet.Blockchain.BlockChain{`0},Libplanet.Blocks.Block{`0})
   name: ValidateNextBlock(BlockChain<T>, Block<T>)
   href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_ValidateNextBlock_Libplanet_Blockchain_BlockChain__0__Libplanet_Blocks_Block__0__
@@ -2712,6 +2746,74 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).ValidateNextBlockTx
   nameWithType: BlockPolicy<T>.ValidateNextBlockTx
   nameWithType.vb: BlockPolicy(Of T).ValidateNextBlockTx
+- uid: Libplanet.Blockchain.Policies.DifficultyAdjustment`1
+  name: DifficultyAdjustment<T>
+  href: api/Libplanet.Blockchain.Policies.DifficultyAdjustment-1.html
+  commentId: T:Libplanet.Blockchain.Policies.DifficultyAdjustment`1
+  name.vb: DifficultyAdjustment(Of T)
+  fullName: Libplanet.Blockchain.Policies.DifficultyAdjustment<T>
+  fullName.vb: Libplanet.Blockchain.Policies.DifficultyAdjustment(Of T)
+  nameWithType: DifficultyAdjustment<T>
+  nameWithType.vb: DifficultyAdjustment(Of T)
+- uid: Libplanet.Blockchain.Policies.DifficultyAdjustment`1.AlgorithmFactory(System.TimeSpan,System.Int64,System.Int64)
+  name: AlgorithmFactory(TimeSpan, Int64, Int64)
+  href: api/Libplanet.Blockchain.Policies.DifficultyAdjustment-1.html#Libplanet_Blockchain_Policies_DifficultyAdjustment_1_AlgorithmFactory_System_TimeSpan_System_Int64_System_Int64_
+  commentId: M:Libplanet.Blockchain.Policies.DifficultyAdjustment`1.AlgorithmFactory(System.TimeSpan,System.Int64,System.Int64)
+  fullName: Libplanet.Blockchain.Policies.DifficultyAdjustment<T>.AlgorithmFactory(System.TimeSpan, System.Int64, System.Int64)
+  fullName.vb: Libplanet.Blockchain.Policies.DifficultyAdjustment(Of T).AlgorithmFactory(System.TimeSpan, System.Int64, System.Int64)
+  nameWithType: DifficultyAdjustment<T>.AlgorithmFactory(TimeSpan, Int64, Int64)
+  nameWithType.vb: DifficultyAdjustment(Of T).AlgorithmFactory(TimeSpan, Int64, Int64)
+- uid: Libplanet.Blockchain.Policies.DifficultyAdjustment`1.AlgorithmFactory*
+  name: AlgorithmFactory
+  href: api/Libplanet.Blockchain.Policies.DifficultyAdjustment-1.html#Libplanet_Blockchain_Policies_DifficultyAdjustment_1_AlgorithmFactory_
+  commentId: Overload:Libplanet.Blockchain.Policies.DifficultyAdjustment`1.AlgorithmFactory
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.Policies.DifficultyAdjustment<T>.AlgorithmFactory
+  fullName.vb: Libplanet.Blockchain.Policies.DifficultyAdjustment(Of T).AlgorithmFactory
+  nameWithType: DifficultyAdjustment<T>.AlgorithmFactory
+  nameWithType.vb: DifficultyAdjustment(Of T).AlgorithmFactory
+- uid: Libplanet.Blockchain.Policies.DifficultyAdjustment`1.BaseAlgorithm(Libplanet.Blockchain.BlockChain{`0},System.TimeSpan,System.Int64,System.Int64)
+  name: BaseAlgorithm(BlockChain<T>, TimeSpan, Int64, Int64)
+  href: api/Libplanet.Blockchain.Policies.DifficultyAdjustment-1.html#Libplanet_Blockchain_Policies_DifficultyAdjustment_1_BaseAlgorithm_Libplanet_Blockchain_BlockChain__0__System_TimeSpan_System_Int64_System_Int64_
+  commentId: M:Libplanet.Blockchain.Policies.DifficultyAdjustment`1.BaseAlgorithm(Libplanet.Blockchain.BlockChain{`0},System.TimeSpan,System.Int64,System.Int64)
+  name.vb: BaseAlgorithm(BlockChain(Of T), TimeSpan, Int64, Int64)
+  fullName: Libplanet.Blockchain.Policies.DifficultyAdjustment<T>.BaseAlgorithm(Libplanet.Blockchain.BlockChain<T>, System.TimeSpan, System.Int64, System.Int64)
+  fullName.vb: Libplanet.Blockchain.Policies.DifficultyAdjustment(Of T).BaseAlgorithm(Libplanet.Blockchain.BlockChain(Of T), System.TimeSpan, System.Int64, System.Int64)
+  nameWithType: DifficultyAdjustment<T>.BaseAlgorithm(BlockChain<T>, TimeSpan, Int64, Int64)
+  nameWithType.vb: DifficultyAdjustment(Of T).BaseAlgorithm(BlockChain(Of T), TimeSpan, Int64, Int64)
+- uid: Libplanet.Blockchain.Policies.DifficultyAdjustment`1.BaseAlgorithm*
+  name: BaseAlgorithm
+  href: api/Libplanet.Blockchain.Policies.DifficultyAdjustment-1.html#Libplanet_Blockchain_Policies_DifficultyAdjustment_1_BaseAlgorithm_
+  commentId: Overload:Libplanet.Blockchain.Policies.DifficultyAdjustment`1.BaseAlgorithm
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.Policies.DifficultyAdjustment<T>.BaseAlgorithm
+  fullName.vb: Libplanet.Blockchain.Policies.DifficultyAdjustment(Of T).BaseAlgorithm
+  nameWithType: DifficultyAdjustment<T>.BaseAlgorithm
+  nameWithType.vb: DifficultyAdjustment(Of T).BaseAlgorithm
+- uid: Libplanet.Blockchain.Policies.DifficultyAdjustment`1.DefaultDifficultyStability
+  name: DefaultDifficultyStability
+  href: api/Libplanet.Blockchain.Policies.DifficultyAdjustment-1.html#Libplanet_Blockchain_Policies_DifficultyAdjustment_1_DefaultDifficultyStability
+  commentId: F:Libplanet.Blockchain.Policies.DifficultyAdjustment`1.DefaultDifficultyStability
+  fullName: Libplanet.Blockchain.Policies.DifficultyAdjustment<T>.DefaultDifficultyStability
+  fullName.vb: Libplanet.Blockchain.Policies.DifficultyAdjustment(Of T).DefaultDifficultyStability
+  nameWithType: DifficultyAdjustment<T>.DefaultDifficultyStability
+  nameWithType.vb: DifficultyAdjustment(Of T).DefaultDifficultyStability
+- uid: Libplanet.Blockchain.Policies.DifficultyAdjustment`1.DefaultMinimumDifficulty
+  name: DefaultMinimumDifficulty
+  href: api/Libplanet.Blockchain.Policies.DifficultyAdjustment-1.html#Libplanet_Blockchain_Policies_DifficultyAdjustment_1_DefaultMinimumDifficulty
+  commentId: F:Libplanet.Blockchain.Policies.DifficultyAdjustment`1.DefaultMinimumDifficulty
+  fullName: Libplanet.Blockchain.Policies.DifficultyAdjustment<T>.DefaultMinimumDifficulty
+  fullName.vb: Libplanet.Blockchain.Policies.DifficultyAdjustment(Of T).DefaultMinimumDifficulty
+  nameWithType: DifficultyAdjustment<T>.DefaultMinimumDifficulty
+  nameWithType.vb: DifficultyAdjustment(Of T).DefaultMinimumDifficulty
+- uid: Libplanet.Blockchain.Policies.DifficultyAdjustment`1.DefaultTargetBlockInterval
+  name: DefaultTargetBlockInterval
+  href: api/Libplanet.Blockchain.Policies.DifficultyAdjustment-1.html#Libplanet_Blockchain_Policies_DifficultyAdjustment_1_DefaultTargetBlockInterval
+  commentId: F:Libplanet.Blockchain.Policies.DifficultyAdjustment`1.DefaultTargetBlockInterval
+  fullName: Libplanet.Blockchain.Policies.DifficultyAdjustment<T>.DefaultTargetBlockInterval
+  fullName.vb: Libplanet.Blockchain.Policies.DifficultyAdjustment(Of T).DefaultTargetBlockInterval
+  nameWithType: DifficultyAdjustment<T>.DefaultTargetBlockInterval
+  nameWithType.vb: DifficultyAdjustment(Of T).DefaultTargetBlockInterval
 - uid: Libplanet.Blockchain.Policies.IBlockPolicy`1
   name: IBlockPolicy<T>
   href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html
