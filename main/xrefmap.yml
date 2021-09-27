@@ -13454,6 +13454,94 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Transports.TransportException.TransportException
   nameWithType: TransportException.TransportException
+- uid: Libplanet.Net.TxCompletion`2
+  name: TxCompletion<TPeer, TAction>
+  href: api/Libplanet.Net.TxCompletion-2.html
+  commentId: T:Libplanet.Net.TxCompletion`2
+  name.vb: TxCompletion(Of TPeer, TAction)
+  fullName: Libplanet.Net.TxCompletion<TPeer, TAction>
+  fullName.vb: Libplanet.Net.TxCompletion(Of TPeer, TAction)
+  nameWithType: TxCompletion<TPeer, TAction>
+  nameWithType.vb: TxCompletion(Of TPeer, TAction)
+- uid: Libplanet.Net.TxCompletion`2.#ctor(Libplanet.Blockchain.BlockChain{`1},Libplanet.Net.TxCompletion{`0,`1}.TxFetcher,Libplanet.Net.TxCompletion{`0,`1}.TxBroadcaster)
+  name: TxCompletion(BlockChain<TAction>, TxCompletion<TPeer, TAction>.TxFetcher, TxCompletion<TPeer, TAction>.TxBroadcaster)
+  href: api/Libplanet.Net.TxCompletion-2.html#Libplanet_Net_TxCompletion_2__ctor_Libplanet_Blockchain_BlockChain__1__Libplanet_Net_TxCompletion__0__1__TxFetcher_Libplanet_Net_TxCompletion__0__1__TxBroadcaster_
+  commentId: M:Libplanet.Net.TxCompletion`2.#ctor(Libplanet.Blockchain.BlockChain{`1},Libplanet.Net.TxCompletion{`0,`1}.TxFetcher,Libplanet.Net.TxCompletion{`0,`1}.TxBroadcaster)
+  name.vb: TxCompletion(BlockChain(Of TAction), TxCompletion(Of TPeer, TAction).TxFetcher, TxCompletion(Of TPeer, TAction).TxBroadcaster)
+  fullName: Libplanet.Net.TxCompletion<TPeer, TAction>.TxCompletion(Libplanet.Blockchain.BlockChain<TAction>, Libplanet.Net.TxCompletion<TPeer, TAction>.TxFetcher, Libplanet.Net.TxCompletion<TPeer, TAction>.TxBroadcaster)
+  fullName.vb: Libplanet.Net.TxCompletion(Of TPeer, TAction).TxCompletion(Libplanet.Blockchain.BlockChain(Of TAction), Libplanet.Net.TxCompletion(Of TPeer, TAction).TxFetcher, Libplanet.Net.TxCompletion(Of TPeer, TAction).TxBroadcaster)
+  nameWithType: TxCompletion<TPeer, TAction>.TxCompletion(BlockChain<TAction>, TxCompletion<TPeer, TAction>.TxFetcher, TxCompletion<TPeer, TAction>.TxBroadcaster)
+  nameWithType.vb: TxCompletion(Of TPeer, TAction).TxCompletion(BlockChain(Of TAction), TxCompletion(Of TPeer, TAction).TxFetcher, TxCompletion(Of TPeer, TAction).TxBroadcaster)
+- uid: Libplanet.Net.TxCompletion`2.#ctor*
+  name: TxCompletion
+  href: api/Libplanet.Net.TxCompletion-2.html#Libplanet_Net_TxCompletion_2__ctor_
+  commentId: Overload:Libplanet.Net.TxCompletion`2.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Net.TxCompletion<TPeer, TAction>.TxCompletion
+  fullName.vb: Libplanet.Net.TxCompletion(Of TPeer, TAction).TxCompletion
+  nameWithType: TxCompletion<TPeer, TAction>.TxCompletion
+  nameWithType.vb: TxCompletion(Of TPeer, TAction).TxCompletion
+- uid: Libplanet.Net.TxCompletion`2.Demand(`0,Libplanet.Tx.TxId)
+  name: Demand(TPeer, TxId)
+  href: api/Libplanet.Net.TxCompletion-2.html#Libplanet_Net_TxCompletion_2_Demand__0_Libplanet_Tx_TxId_
+  commentId: M:Libplanet.Net.TxCompletion`2.Demand(`0,Libplanet.Tx.TxId)
+  fullName: Libplanet.Net.TxCompletion<TPeer, TAction>.Demand(TPeer, Libplanet.Tx.TxId)
+  fullName.vb: Libplanet.Net.TxCompletion(Of TPeer, TAction).Demand(TPeer, Libplanet.Tx.TxId)
+  nameWithType: TxCompletion<TPeer, TAction>.Demand(TPeer, TxId)
+  nameWithType.vb: TxCompletion(Of TPeer, TAction).Demand(TPeer, TxId)
+- uid: Libplanet.Net.TxCompletion`2.Demand(`0,System.Collections.Generic.IEnumerable{Libplanet.Tx.TxId})
+  name: Demand(TPeer, IEnumerable<TxId>)
+  href: api/Libplanet.Net.TxCompletion-2.html#Libplanet_Net_TxCompletion_2_Demand__0_System_Collections_Generic_IEnumerable_Libplanet_Tx_TxId__
+  commentId: M:Libplanet.Net.TxCompletion`2.Demand(`0,System.Collections.Generic.IEnumerable{Libplanet.Tx.TxId})
+  name.vb: Demand(TPeer, IEnumerable(Of TxId))
+  fullName: Libplanet.Net.TxCompletion<TPeer, TAction>.Demand(TPeer, System.Collections.Generic.IEnumerable<Libplanet.Tx.TxId>)
+  fullName.vb: Libplanet.Net.TxCompletion(Of TPeer, TAction).Demand(TPeer, System.Collections.Generic.IEnumerable(Of Libplanet.Tx.TxId))
+  nameWithType: TxCompletion<TPeer, TAction>.Demand(TPeer, IEnumerable<TxId>)
+  nameWithType.vb: TxCompletion(Of TPeer, TAction).Demand(TPeer, IEnumerable(Of TxId))
+- uid: Libplanet.Net.TxCompletion`2.Demand*
+  name: Demand
+  href: api/Libplanet.Net.TxCompletion-2.html#Libplanet_Net_TxCompletion_2_Demand_
+  commentId: Overload:Libplanet.Net.TxCompletion`2.Demand
+  isSpec: "True"
+  fullName: Libplanet.Net.TxCompletion<TPeer, TAction>.Demand
+  fullName.vb: Libplanet.Net.TxCompletion(Of TPeer, TAction).Demand
+  nameWithType: TxCompletion<TPeer, TAction>.Demand
+  nameWithType.vb: TxCompletion(Of TPeer, TAction).Demand
+- uid: Libplanet.Net.TxCompletion`2.Dispose
+  name: Dispose()
+  href: api/Libplanet.Net.TxCompletion-2.html#Libplanet_Net_TxCompletion_2_Dispose
+  commentId: M:Libplanet.Net.TxCompletion`2.Dispose
+  fullName: Libplanet.Net.TxCompletion<TPeer, TAction>.Dispose()
+  fullName.vb: Libplanet.Net.TxCompletion(Of TPeer, TAction).Dispose()
+  nameWithType: TxCompletion<TPeer, TAction>.Dispose()
+  nameWithType.vb: TxCompletion(Of TPeer, TAction).Dispose()
+- uid: Libplanet.Net.TxCompletion`2.Dispose*
+  name: Dispose
+  href: api/Libplanet.Net.TxCompletion-2.html#Libplanet_Net_TxCompletion_2_Dispose_
+  commentId: Overload:Libplanet.Net.TxCompletion`2.Dispose
+  isSpec: "True"
+  fullName: Libplanet.Net.TxCompletion<TPeer, TAction>.Dispose
+  fullName.vb: Libplanet.Net.TxCompletion(Of TPeer, TAction).Dispose
+  nameWithType: TxCompletion<TPeer, TAction>.Dispose
+  nameWithType.vb: TxCompletion(Of TPeer, TAction).Dispose
+- uid: Libplanet.Net.TxCompletion`2.TxBroadcaster
+  name: TxCompletion<TPeer, TAction>.TxBroadcaster
+  href: api/Libplanet.Net.TxCompletion-2.TxBroadcaster.html
+  commentId: T:Libplanet.Net.TxCompletion`2.TxBroadcaster
+  name.vb: TxCompletion(Of TPeer, TAction).TxBroadcaster
+  fullName: Libplanet.Net.TxCompletion<TPeer, TAction>.TxBroadcaster
+  fullName.vb: Libplanet.Net.TxCompletion(Of TPeer, TAction).TxBroadcaster
+  nameWithType: TxCompletion<TPeer, TAction>.TxBroadcaster
+  nameWithType.vb: TxCompletion(Of TPeer, TAction).TxBroadcaster
+- uid: Libplanet.Net.TxCompletion`2.TxFetcher
+  name: TxCompletion<TPeer, TAction>.TxFetcher
+  href: api/Libplanet.Net.TxCompletion-2.TxFetcher.html
+  commentId: T:Libplanet.Net.TxCompletion`2.TxFetcher
+  name.vb: TxCompletion(Of TPeer, TAction).TxFetcher
+  fullName: Libplanet.Net.TxCompletion<TPeer, TAction>.TxFetcher
+  fullName.vb: Libplanet.Net.TxCompletion(Of TPeer, TAction).TxFetcher
+  nameWithType: TxCompletion<TPeer, TAction>.TxFetcher
+  nameWithType.vb: TxCompletion(Of TPeer, TAction).TxFetcher
 - uid: Libplanet.Nonce
   name: Nonce
   href: api/Libplanet.Nonce.html

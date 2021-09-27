@@ -176,6 +176,7 @@ constructor changed to <code>long?</code> from <code>int?</code>.  [<a href="htt
 <li>Added <code>HashAlgorithmType.Digest(IEnumerable&lt;ImmutableArray&lt;byte&gt;&gt;)</code>
 overloaded method.  [<a href="https://github.com/planetarium/libplanet/pull/1480">#1480</a>]</li>
 <li>Added <code>BlockHeader(int, long, DateTimeOffset, Nonce, Address, long, BigInteger, BlockHash?, HashDigest&lt;SHA256&gt;?, BlockHash, ImmutableArray&lt;byte&gt;, HashDigest&lt;SHA256&gt;?)</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/1470">#1470</a>]</li>
+<li>Added <code>TxCompletion&lt;TPeer, TAction&gt;</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/1420">#1420</a>, <a href="https://github.com/planetarium/libplanet/pull/1478">#1478</a>]</li>
 <li>Added <code>BlockPolicyViolationException</code> and <code>TxPolicyViolationException</code>
 classes.  [<a href="https://github.com/planetarium/libplanet/pull/1485">#1485</a>]</li>
 <li>Added <code>DifficultyAdjustment</code> static class.  [<a href="https://github.com/planetarium/libplanet/pull/1495">#1495</a>]</li>
@@ -212,6 +213,8 @@ value between <code>1</code> and <code>BlockChain&lt;T&gt;.Policy.MaxTransaction
 <li><code>NetMQTransport</code> became to no more send CreatePermission to TURN client and
 require permission-less TURN server.  See <a href="https://github.com/coturn/coturn/blob/dc8f405f8543a83ad8c059ba6b9f930e1e5a1349/man/man1/turnserver.1#L402-L410">coturn's relevant configuration</a>
 as well.  [<a href="https://github.com/planetarium/libplanet/pull/1423">#1423</a>]</li>
+<li><code>Swarm&lt;T&gt;</code> became to sync transactions from multiple peers
+at the same time.  [<a href="https://github.com/planetarium/libplanet/issues/1420">#1420</a>, <a href="https://github.com/planetarium/libplanet/pull/1478">#1478</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
@@ -270,9 +273,9 @@ requested transactions id in <code>GetTxs</code> message does not exist in the s
 <ul>
 <li>Removed <code>ITransport.SendMessageWithReplyAsync(BoundPeer, Message, TimeSpan?, int, CancellationToken)</code> method.
 Instead, added <code>ITransport.SendMessageWithReplyAsync(BoundPeer, Message, TimeSpan?, int, bool, CancellationToken)</code> method.
-[<a href="https://github.com/planetarium/libplanet/issues/1458">#1458</a>, <a href="https://github.com/planetarium/libplanet/pull/1460">#1460</a>]</li>
+[<a href="https://github.com/planetarium/libplanet/issues/1458">#1458</a>, <a href="https://github.com/planetarium/libplanet/pull/1461">#1461</a>]</li>
 <li>Fixed a bug where <code>GetTxs</code> request failed to receive transactions
-if any messages are missing.  [<a href="https://github.com/planetarium/libplanet/issues/1458">#1458</a>, <a href="https://github.com/planetarium/libplanet/pull/1460">#1460</a>]</li>
+if any messages are missing.  [<a href="https://github.com/planetarium/libplanet/issues/1458">#1458</a>, <a href="https://github.com/planetarium/libplanet/pull/1461">#1461</a>]</li>
 </ul>
 <h2 id="version-0151">Version 0.15.1</h2>
 <p>Released on August 28, 2021.</p>
