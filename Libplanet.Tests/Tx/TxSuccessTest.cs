@@ -1,10 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Assets;
 using Libplanet.Blocks;
@@ -35,7 +33,7 @@ namespace Libplanet.Tests.Tx
         public TxSuccessTest()
         {
             var random = new Random();
-            _blockHash = random.NextBlockHash(HashDigest<SHA256>.Size);
+            _blockHash = random.NextBlockHash();
             _txid = random.NextTxId();
             _updatedStates = Enumerable.Repeat(random, 5).ToImmutableDictionary(
                 RandomExtensions.NextAddress,

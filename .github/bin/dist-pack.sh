@@ -47,9 +47,11 @@ for project in "${executables[@]}"; do
 done
 
 for project in "${projects[@]}"; do
-  dotnet_args="-p:Version=$version"
   if [ -f obj/version_suffix.txt ]; then
-    dotnet_args="$dotnet_args -p:NoPackageAnalysis=true"
+    version_suffix="$(cat obj/version_suffix.txt)"
+    dotnet_args="--version-suffix=$version_suffix -p:NoPackageAnalysis=true"
+  else
+    dotnet_args="-p:Version=$version"
   fi
   # shellcheck disable=SC2086
   dotnet build -c "$configuration" $dotnet_args

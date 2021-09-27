@@ -17,7 +17,6 @@ using Libplanet.Crypto;
 using Libplanet.Net;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Protocols;
-using Libplanet.Net.Transports;
 using Libplanet.Store;
 using Libplanet.Stun;
 using Libplanet.Tests.Blockchain;
@@ -895,8 +894,8 @@ namespace Libplanet.Tests.Net
                 miner2.BroadcastBlock(block);
                 await miner1.BlockReceived.WaitAsync();
 
-                Assert.Equal(miner1.BlockChain.Tip, miner2.BlockChain.Tip);
-                Assert.Equal(miner1.BlockChain.Count, miner2.BlockChain.Count);
+                Assert.Equal(miner2.BlockChain.Count, miner1.BlockChain.Count);
+                Assert.Equal(miner2.BlockChain.Tip, miner1.BlockChain.Tip);
             }
             finally
             {
@@ -1007,7 +1006,7 @@ namespace Libplanet.Tests.Net
 
                 await BootstrapAsync(minerA, minerB.AsPeer);
 
-                Log.Debug("Reorg occurrs.");
+                Log.Debug("Reorg occurs.");
                 minerB.BroadcastBlock(blockC);
                 await minerA.BlockAppended.WaitAsync();
 
@@ -1046,13 +1045,16 @@ namespace Libplanet.Tests.Net
         {
             var validKey = new PrivateKey();
 
-            bool IsSignerValid(Transaction<DumbAction> tx, BlockChain<DumbAction> chain)
+            TxPolicyViolationException IsSignerValid(
+                BlockChain<DumbAction> chain, Transaction<DumbAction> tx)
             {
                 var validAddress = validKey.PublicKey.ToAddress();
-                return tx.Signer.Equals(validAddress);
+                return tx.Signer.Equals(validAddress)
+                    ? null
+                    : new TxPolicyViolationException(tx.Id, "invalid signer");
             }
 
-            var policy = new BlockPolicy<DumbAction>(doesTransactionFollowPolicy: IsSignerValid);
+            var policy = new BlockPolicy<DumbAction>(validateNextBlockTx: IsSignerValid);
             var fx1 = new DefaultStoreFixture();
             var fx2 = new DefaultStoreFixture();
 
@@ -1102,13 +1104,16 @@ namespace Libplanet.Tests.Net
         {
             var validKey = new PrivateKey();
 
-            bool IsSignerValid(Transaction<DumbAction> tx, BlockChain<DumbAction> chain)
+            TxPolicyViolationException IsSignerValid(
+                BlockChain<DumbAction> chain, Transaction<DumbAction> tx)
             {
                 var validAddress = validKey.PublicKey.ToAddress();
-                return tx.Signer.Equals(validAddress);
+                return tx.Signer.Equals(validAddress)
+                    ? null
+                    : new TxPolicyViolationException(tx.Id, "invalid signer");
             }
 
-            var policy = new BlockPolicy<DumbAction>(doesTransactionFollowPolicy: IsSignerValid);
+            var policy = new BlockPolicy<DumbAction>(validateNextBlockTx: IsSignerValid);
             var fx1 = new DefaultStoreFixture();
             var fx2 = new DefaultStoreFixture();
 
@@ -1160,16 +1165,12 @@ namespace Libplanet.Tests.Net
         {
             // If the bucket stored peers are the same, the block may not propagate,
             // so specify private keys to make the buckets different.
-            var keyA = ByteUtil.ParseHex(
-                "8568eb6f287afedece2c7b918471183db0451e1a61535bb0381cfdf95b85df20");
-            var keyB = ByteUtil.ParseHex(
-                "c34f7498befcc39a14f03b37833f6c7bb78310f1243616524eda70e078b8313c");
-            var keyC = ByteUtil.ParseHex(
-                "941bc2edfab840d79914d80fe3b30840628ac37a5d812d7f922b5d2405a223d3");
-
-            var minerSwarmA = CreateSwarm(new PrivateKey(keyA));
-            var minerSwarmB = CreateSwarm(new PrivateKey(keyB));
-            var receiverSwarm = CreateSwarm(new PrivateKey(keyC));
+            var minerSwarmA = CreateSwarm(PrivateKey.FromString(
+                "8568eb6f287afedece2c7b918471183db0451e1a61535bb0381cfdf95b85df20"));
+            var minerSwarmB = CreateSwarm(PrivateKey.FromString(
+                "c34f7498befcc39a14f03b37833f6c7bb78310f1243616524eda70e078b8313c"));
+            var receiverSwarm = CreateSwarm(PrivateKey.FromString(
+                "941bc2edfab840d79914d80fe3b30840628ac37a5d812d7f922b5d2405a223d3"));
 
             BlockChain<DumbAction> minerChainA = minerSwarmA.BlockChain;
             BlockChain<DumbAction> minerChainB = minerSwarmB.BlockChain;
@@ -1549,73 +1550,6 @@ namespace Libplanet.Tests.Net
             }
         }
 
-        [Fact(Timeout = Timeout)]
-        public async Task DoNotFillMultipleTimes()
-        {
-            Swarm<DumbAction> receiver = CreateSwarm();
-            Swarm<DumbAction> sender1 = CreateSwarm();
-            Swarm<DumbAction> sender2 = CreateSwarm();
-
-            await StartAsync(receiver);
-            await StartAsync(sender1);
-            await StartAsync(sender2);
-
-            BlockChain<DumbAction> chain = receiver.BlockChain;
-            Block<DumbAction> b1 =
-                TestUtils.MineNext(chain.Genesis, chain.Policy.GetHashAlgorithm, difficulty: 1024)
-                    .AttachStateRootHash(sender1.BlockChain.StateStore, chain.Policy);
-
-            try
-            {
-                await BootstrapAsync(sender1, receiver.AsPeer);
-                await BootstrapAsync(sender2, receiver.AsPeer);
-
-                sender1.BlockChain.Append(b1);
-                sender2.BlockChain.Append(b1);
-
-                sender1.BroadcastBlock(b1);
-                sender2.BroadcastBlock(b1);
-
-                // Make sure that receiver swarm only filled once for same block
-                // that were broadcasted simultaneously.
-                await receiver.BlockReceived.WaitAsync();
-
-                // Awaits 1 second because receiver swarm may tried to fill again after filled.
-                await Task.Delay(1000);
-                var transport = receiver.Transport as NetMQTransport;
-                Log.Debug("Messages: {@Message}", transport.MessageHistory);
-                Assert.Single(
-                    transport.MessageHistory.Where(msg => msg is Libplanet.Net.Messages.Blocks));
-
-                Transaction<DumbAction> tx = Transaction<DumbAction>.Create(
-                    0,
-                    new PrivateKey(),
-                    sender1.BlockChain.Genesis.Hash,
-                    new DumbAction[] { }
-                );
-                sender1.BlockChain.StageTransaction(tx);
-                sender2.BlockChain.StageTransaction(tx);
-
-                // Make sure that receiver swarm only filled once for same transaction
-                // that were broadcasted simultaneously.
-                sender1.BroadcastTxs(new[] { tx });
-                sender2.BroadcastTxs(new[] { tx });
-
-                await receiver.TxReceived.WaitAsync();
-
-                // Awaits 1 second because receiver swarm may tried to fill again after filled.
-                await Task.Delay(1000);
-                Assert.Single(
-                    transport.MessageHistory.Where(msg => msg is Libplanet.Net.Messages.Tx));
-            }
-            finally
-            {
-                await StopAsync(receiver);
-                await StopAsync(sender1);
-                await StopAsync(sender2);
-            }
-        }
-
         [RetryFact(10, Timeout = Timeout)]
         public async Task GetPeerChainStateAsync()
         {
@@ -1696,163 +1630,6 @@ namespace Libplanet.Tests.Net
                 await StopAsync(swarm1);
                 await StopAsync(swarm2);
             }
-        }
-
-        [Fact(Timeout = Timeout)]
-        public async Task BlockDemand()
-        {
-            SwarmOptions swarmOptions = new SwarmOptions
-            {
-                // This value should be shorter than fillblock's timeout for testing.
-                BlockDemandLifespan = TimeSpan.FromSeconds(3),
-            };
-            var minerKey = new PrivateKey();
-            var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
-            Swarm<DumbAction> swarm = CreateSwarm(
-                privateKey: new PrivateKey(),
-                options: swarmOptions);
-            var dummy = TestUtils.MakeBlockChain(
-                policy,
-                new DefaultStore(path: null),
-                new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore()));
-            for (var i = 0; i < 20; i++)
-            {
-                await dummy.MineBlock(minerKey.ToAddress());
-            }
-
-            try
-            {
-                await StartAsync(swarm);
-                BoundPeer peer = swarm.AsPeer as BoundPeer;
-                Assert.NotNull(peer);
-                _logger.Debug(
-                    "{0}///{1}///{2}",
-                    peer.PublicKey,
-                    peer.EndPoint,
-                    peer.PublicIPAddress);
-
-                Block<DumbAction> lowerBlock = dummy[10];
-                Block<DumbAction> higherBlock = dummy[20];
-                Assert.True(lowerBlock.TotalDifficulty < higherBlock.TotalDifficulty);
-                var privateKey1 = new PrivateKey();
-                var privateKey2 = new PrivateKey();
-                var sender1 = new BoundPeer(
-                    privateKey1.PublicKey,
-                    new DnsEndPoint("127.0.0.1", 20000));
-                var sender2 = new BoundPeer(
-                    privateKey2.PublicKey,
-                    new DnsEndPoint("127.0.0.1", 20001));
-                _logger.Debug(
-                    "{0}///{1}///{2}",
-                    sender1.PublicKey,
-                    sender1.EndPoint,
-                    sender1.PublicIPAddress);
-                _logger.Debug("STEP1");
-
-                var netMQAddress = $"tcp://{peer.EndPoint.Host}:{peer.EndPoint.Port}";
-                using (var socket = new DealerSocket(netMQAddress))
-                {
-                    var request =
-                        new BlockHeaderMessage(swarm.BlockChain.Genesis.Hash, higherBlock.Header);
-                    socket.SendMultipartMessage(
-                        request.ToNetMQMessage(
-                            privateKey1,
-                            sender1,
-                            DateTimeOffset.UtcNow,
-                            swarm.AppProtocolVersion)
-                    );
-                    await swarm.BlockHeaderReceived.WaitAsync();
-                    await Task.Delay(100);
-                    Assert.NotNull(swarm.BlockDemand);
-                    var timestamp = swarm.BlockDemand.Value.Timestamp;
-                    Assert.Equal(higherBlock.Index, swarm.BlockDemand.Value.Header.Index);
-
-                    request =
-                        new BlockHeaderMessage(swarm.BlockChain.Genesis.Hash, lowerBlock.Header);
-                    socket.SendMultipartMessage(
-                        request.ToNetMQMessage(
-                            privateKey2,
-                            sender2,
-                            DateTimeOffset.UtcNow,
-                            swarm.AppProtocolVersion)
-                    );
-                    await swarm.BlockHeaderReceived.WaitAsync();
-                    // Await for context change
-                    await Task.Delay(100);
-                    Assert.NotNull(swarm.BlockDemand);
-                    // Demand will not be refreshed.
-                    Assert.Equal(higherBlock.Index, swarm.BlockDemand.Value.Header.Index);
-                    Assert.Equal(timestamp, swarm.BlockDemand.Value.Timestamp);
-
-                    await Task.Delay(
-                        swarmOptions.BlockDemandLifespan + TimeSpan.FromMilliseconds(100));
-
-                    request =
-                        new BlockHeaderMessage(swarm.BlockChain.Genesis.Hash, higherBlock.Header);
-                    socket.SendMultipartMessage(
-                        request.ToNetMQMessage(
-                            privateKey1,
-                            sender1,
-                            DateTimeOffset.UtcNow,
-                            swarm.AppProtocolVersion)
-                    );
-                    await swarm.BlockHeaderReceived.WaitAsync();
-                    await Task.Delay(100);
-                    Assert.NotNull(swarm.BlockDemand);
-                    // Demand will not be refreshed.
-                    Assert.Equal(higherBlock.Index, swarm.BlockDemand.Value.Header.Index);
-                    Assert.Equal(timestamp, swarm.BlockDemand.Value.Timestamp);
-
-                    request =
-                        new BlockHeaderMessage(swarm.BlockChain.Genesis.Hash, lowerBlock.Header);
-                    socket.SendMultipartMessage(
-                        request.ToNetMQMessage(
-                            privateKey2,
-                            sender2,
-                            DateTimeOffset.UtcNow,
-                            swarm.AppProtocolVersion)
-                    );
-                    await swarm.BlockHeaderReceived.WaitAsync();
-                    await Task.Delay(100);
-                    _logger.Debug("STEP5");
-                    Assert.NotNull(swarm.BlockDemand);
-                    // Demand will be replaced to lower one because it's stale.
-                    Assert.Equal(lowerBlock.Index, swarm.BlockDemand.Value.Header.Index);
-                }
-            }
-            finally
-            {
-                await StopAsync(swarm);
-            }
-        }
-
-        [Fact]
-        public async Task ResetBlockDemandIfNotChanged()
-        {
-            var minerKey = new PrivateKey();
-            Swarm<DumbAction> sender = CreateSwarm();
-            Swarm<DumbAction> receiver = CreateSwarm();
-            for (var i = 0; i < 20; i++)
-            {
-                await sender.BlockChain.MineBlock(minerKey.ToAddress());
-            }
-
-            Block<DumbAction> lowerBlock = sender.BlockChain[19],
-                higherBlock = sender.BlockChain[20];
-
-            await StartAsync(sender);
-            await StartAsync(receiver);
-            await BootstrapAsync(sender, receiver.AsPeer);
-
-            sender.BroadcastBlock(lowerBlock);
-            await receiver.FillBlocksAsyncStarted.WaitAsync();
-            sender.BroadcastBlock(higherBlock);
-            await receiver.ProcessFillBlocksFinished.WaitAsync();
-
-            Assert.NotNull(receiver.BlockDemand);
-            Assert.Equal(
-                higherBlock.Hash,
-                new BlockHash(receiver.BlockDemand.Value.Header.Hash));
         }
 
         private async Task<Task> StartAsync<T>(

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography;
@@ -43,7 +42,9 @@ namespace Libplanet.Tests.Action
                 .CreateLogger()
                 .ForContext<ActionEvaluatorTest>();
 
-            _policy = new BlockPolicy<DumbAction>(new MinerReward(1), maxBlockBytes: 50 * 1024);
+            _policy = new BlockPolicy<DumbAction>(
+                blockAction: new MinerReward(1),
+                getMaxBlockBytes: _ => 50 * 1024);
             _storeFx = new DefaultStoreFixture(memory: true, blockAction: _policy.BlockAction);
             _txFx = new TxFixture(null);
         }
@@ -246,10 +247,6 @@ namespace Libplanet.Tests.Action
                     stateCompleterSet: StateCompleterSet<ThrowException>.Recalculate).ToList());
         }
 
-        [SuppressMessage(
-            "Microsoft.StyleCop.CSharp.ReadabilityRules",
-            "SA1118",
-            Justification = "Long array literals should be multiline.")]
         [Fact]
         public void EvaluateTxs()
         {
@@ -924,7 +921,6 @@ namespace Libplanet.Tests.Action
             chain.ExecuteActions(block);
             chain.Append(
                 block,
-                DateTimeOffset.UtcNow,
                 evaluateActions: false,
                 renderBlocks: true,
                 renderActions: false);

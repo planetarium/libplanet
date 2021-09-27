@@ -20,8 +20,23 @@ namespace Libplanet.Tests.Blockchain
     public partial class BlockChainTest
     {
         [Fact]
-        public async void MineBlock()
+        public async Task MineBlock()
         {
+            // Tests if MineBlock() method will throw an exception if less than the minimum
+            // transactions are present
+            await Assert.ThrowsAsync<BlockInsufficientTxsException>(async () =>
+            {
+                await _blockChainMinTx.MineBlock(_fx.Address3);
+            });
+            DumbAction[] fewActions =
+                Enumerable.Repeat(new DumbAction(default, "_"), 2).ToArray();
+
+            Transaction<DumbAction> lightTx = _fx.MakeTransaction(
+                    fewActions,
+                    nonce: 10, // Nonce too high - won't add to block
+                    privateKey: new PrivateKey());
+            _blockChainMinTx.StageTransaction(lightTx);
+
             Func<long, int> getMaxBlockBytes = _blockChain.Policy.GetMaxBlockBytes;
             HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             Assert.Equal(1, _blockChain.Count);
@@ -98,7 +113,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async void MineBlockWithTxBatchSize()
+        public async Task MineBlockWithTxBatchSize()
         {
             List<PrivateKey> privateKeys = Enumerable.Range(0, 3)
                 .Select(_ => new PrivateKey()).ToList();
@@ -134,7 +149,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async void MineBlockWithPendingTxs()
+        public async Task MineBlockWithPendingTxs()
         {
             var keys = new[] { new PrivateKey(), new PrivateKey(), new PrivateKey() };
 
@@ -235,18 +250,21 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async void MineBlockWithPolicyViolationTx()
+        public async Task MineBlockWithPolicyViolationTx()
         {
             var validKey = new PrivateKey();
             var invalidKey = new PrivateKey();
 
-            bool IsSignerValid(Transaction<DumbAction> tx, BlockChain<DumbAction> chain)
+            TxPolicyViolationException IsSignerValid(
+                BlockChain<DumbAction> chain, Transaction<DumbAction> tx)
             {
                 var validAddress = validKey.PublicKey.ToAddress();
-                return tx.Signer.Equals(validAddress);
+                return tx.Signer.Equals(validAddress)
+                    ? null
+                    : new TxPolicyViolationException(tx.Id, "invalid signer");
             }
 
-            var policy = new BlockPolicy<DumbAction>(doesTransactionFollowPolicy: IsSignerValid);
+            var policy = new BlockPolicy<DumbAction>(validateNextBlockTx: IsSignerValid);
             using (var fx = new DefaultStoreFixture())
             {
                 var blockChain = new BlockChain<DumbAction>(
@@ -275,7 +293,7 @@ namespace Libplanet.Tests.Blockchain
         [InlineData(3)]
         [InlineData(2)]
         [InlineData(1)]
-        public async void MineBlockWithReverseNonces(int maxTxs)
+        public async Task MineBlockWithReverseNonces(int maxTxs)
         {
             var key = new PrivateKey();
             var txs = new[]
@@ -343,7 +361,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async void MineBlockWithBlockAction()
+        public async Task MineBlockWithBlockAction()
         {
             var privateKey1 = new PrivateKey();
             var address1 = privateKey1.ToAddress();
@@ -385,7 +403,137 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        private async void AbortMining()
+        public async Task MineBlockWithMaxTransactions()
+        {
+            Assert.Equal(1, _blockChain.Count);
+
+            const int numKeys = 3;
+            const int redundancy = 16;
+            const int maxTransactions = 16;
+
+            Random random = new Random();
+            List<PrivateKey> privateKeys = Enumerable.Range(0, numKeys)
+                .Select(_ => new PrivateKey()).ToList();
+            List<PrivateKey> shuffledKeysWithRedundancy = Enumerable.Range(0, numKeys)
+                .Select(_ => redundancy)
+                .SelectMany(
+                    (int count, int index) => Enumerable.Range(0, count).Select(_ => index))
+                .OrderBy(_ => random.Next())
+                .Select(index => privateKeys[index]).ToList();
+
+            foreach (var key in shuffledKeysWithRedundancy)
+            {
+                _blockChain.MakeTransaction(key, new DumbAction[0]);
+            }
+
+            Assert.True(
+                _blockChain.Policy.GetMaxTransactionsPerBlock(_blockChain.Count) > maxTransactions
+            );
+
+            // These assume there will be enough time to mine as many transactions as
+            // possible.
+            Block<DumbAction> block;
+            block = await _blockChain.MineBlock(
+                _fx.Address1, append: false);
+            Assert.True(block.Transactions.Count > maxTransactions);
+            block = await _blockChain.MineBlock(
+                _fx.Address1, append: false, maxTransactions: maxTransactions);
+            Assert.Equal(block.Transactions.Count, maxTransactions);
+        }
+
+        [Fact]
+        public async Task MineBlockWithMaxTransactionsPerSigner()
+        {
+            Assert.Equal(1, _blockChain.Count);
+
+            const int numKeys = 3;
+            const int redundancy = 16;
+            const int maxTransactions = 16;
+            const int maxTransactionsPerSigner = 4;
+
+            Random random = new Random();
+            List<PrivateKey> privateKeys = Enumerable.Range(0, numKeys)
+                .Select(_ => new PrivateKey()).ToList();
+            List<PrivateKey> shuffledKeysWithRedundancy = Enumerable.Range(0, numKeys)
+                .Select(_ => redundancy)
+                .SelectMany(
+                    (int count, int index) => Enumerable.Range(0, count).Select(_ => index))
+                .OrderBy(_ => random.Next())
+                .Select(index => privateKeys[index]).ToList();
+
+            foreach (var key in shuffledKeysWithRedundancy)
+            {
+                _blockChain.MakeTransaction(key, new DumbAction[0]);
+            }
+
+            Assert.True(
+                _blockChain.Policy.GetMaxTransactionsPerBlock(_blockChain.Count) > maxTransactions
+            );
+
+            // These assume there will be enough time to mine as many transactions as
+            // possible.
+            Block<DumbAction> block = await _blockChain.MineBlock(
+                _fx.Address1,
+                append: false,
+                maxTransactions: maxTransactions,
+                maxTransactionsPerSigner: maxTransactionsPerSigner);
+            foreach (var group in block.Transactions.GroupBy(tx => tx.Signer))
+            {
+                Assert.Equal(group.Count(), maxTransactionsPerSigner);
+            }
+        }
+
+        [Fact]
+        public async Task MineBlockWithTxPriority()
+        {
+            var keyA = new PrivateKey();
+            var keyB = new PrivateKey();
+            var keyC = new PrivateKey();
+            Address a = keyA.ToAddress();
+            Address b = keyB.ToAddress();
+            Address c = keyC.ToAddress();
+            _logger.Verbose("Address {Name}: {Address}", nameof(a), a);
+            _logger.Verbose("Address {Name}: {Address}", nameof(b), b);
+            _logger.Verbose("Address {Name}: {Address}", nameof(c), c);
+
+            Transaction<DumbAction>[] txsA = Enumerable.Range(0, 3)
+                .Select(nonce => _fx.MakeTransaction(nonce: nonce, privateKey: keyA))
+                .ToArray();
+            Transaction<DumbAction>[] txsB = Enumerable.Range(0, 4)
+                .Select(nonce => _fx.MakeTransaction(nonce: nonce, privateKey: keyB))
+                .ToArray();
+            Transaction<DumbAction>[] txsC = Enumerable.Range(0, 2)
+                .Select(nonce => _fx.MakeTransaction(nonce: nonce, privateKey: keyC))
+                .ToArray();
+            var random = new Random();
+            Transaction<DumbAction>[] txs =
+                txsA.Concat(txsB).Concat(txsC).Shuffle(random).ToArray();
+            Assert.Empty(_blockChain.ListStagedTransactions());
+            StageTransactions(txs);
+
+            IComparer<Transaction<DumbAction>> txPriority =
+                Comparer<Transaction<DumbAction>>.Create((tx1, tx2) =>
+                {
+                    int rank1 = tx1.Signer.Equals(a) ? 0 : (tx1.Signer.Equals(b) ? 1 : 2);
+                    int rank2 = tx2.Signer.Equals(a) ? 0 : (tx2.Signer.Equals(b) ? 1 : 2);
+                    return rank1.CompareTo(rank2);
+                });
+
+            Block<DumbAction> block = await _blockChain.MineBlock(
+                default,
+                maxTransactions: 5,
+                maxTransactionsPerSigner: 3,
+                txPriority: txPriority
+            );
+            Assert.Equal(5, block.Transactions.Count);
+            Assert.Equal(
+                txsA.Concat(txsB.Take(2)).Select(tx => tx.Id).ToHashSet(),
+                block.Transactions.Select(tx => tx.Id).ToHashSet()
+            );
+        }
+
+        [Fact]
+        public async Task AbortMining()
         {
             // This test makes 2 different policies even it's abnormal
             // because to make a mining task run forever just for testing.
@@ -436,7 +584,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        private async Task IgnoreLowerNonceTxsAndMine()
+        public async Task IgnoreLowerNonceTxsAndMine()
         {
             var privateKey = new PrivateKey();
             var address = privateKey.ToAddress();
@@ -461,7 +609,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        private async Task IgnoreDuplicatedNonceTxs()
+        public async Task IgnoreDuplicatedNonceTxs()
         {
             var privateKey = new PrivateKey();
             var address = privateKey.ToAddress();
@@ -477,6 +625,67 @@ namespace Libplanet.Tests.Blockchain
 
             Assert.Single(b.Transactions);
             Assert.Equal(txs[0], b.Transactions.Single());
+        }
+
+        [Fact]
+        public void GatherTransactionsToMine()
+        {
+            // TODO: We test more propertees of GatherTransactionsToMine() method:
+            //       - if transactions are cut off if they exceed GetMaxBlockBytes()
+            //       - if transactions with already consumed nonces are excluded
+            //       - if transactions with greater nonces than unconsumed nonces are excluded
+            //       - if transactions are cut off if the process exceeds the timeout (4 sec)
+            var keyA = new PrivateKey();
+            var keyB = new PrivateKey();
+            var keyC = new PrivateKey();
+            Address a = keyA.ToAddress();
+            Address b = keyB.ToAddress();
+            Address c = keyC.ToAddress();
+            _logger.Verbose("Address {Name}: {Address}", nameof(a), a);
+            _logger.Verbose("Address {Name}: {Address}", nameof(b), b);
+            _logger.Verbose("Address {Name}: {Address}", nameof(c), c);
+
+            Transaction<DumbAction>[] txsA = Enumerable.Range(0, 3)
+                .Select(nonce => _fx.MakeTransaction(nonce: nonce, privateKey: keyA))
+                .ToArray();
+            Transaction<DumbAction>[] txsB = Enumerable.Range(0, 4)
+                .Select(nonce => _fx.MakeTransaction(nonce: nonce, privateKey: keyB))
+                .ToArray();
+            Transaction<DumbAction>[] txsC = Enumerable.Range(0, 2)
+                .Select(nonce => _fx.MakeTransaction(nonce: nonce, privateKey: keyC))
+                .ToArray();
+            var random = new Random();
+            Transaction<DumbAction>[] txs =
+                txsA.Concat(txsB).Concat(txsC).Shuffle(random).ToArray();
+            Assert.Empty(_blockChain.ListStagedTransactions());
+            StageTransactions(txs);
+
+            // Test if minTransactions and minTransactionsPerSigner work:
+            ImmutableList<Transaction<DumbAction>> gathered =
+                _blockChain.GatherTransactionsToMine(5, 3);
+            Assert.Equal(5, gathered.Count);
+            var expectedNonces = new Dictionary<Address, long> { [a] = 0, [b] = 0, [c] = 0 };
+            foreach (Transaction<DumbAction> tx in gathered)
+            {
+                long expectedNonce = expectedNonces[tx.Signer];
+                Assert.True(expectedNonce < 3);
+                Assert.Equal(expectedNonce, tx.Nonce);
+                expectedNonces[tx.Signer] = expectedNonce + 1;
+            }
+
+            // Test if txPriority works:
+            IComparer<Transaction<DumbAction>> txPriority =
+                Comparer<Transaction<DumbAction>>.Create((tx1, tx2) =>
+                {
+                    int rank1 = tx1.Signer.Equals(a) ? 0 : (tx1.Signer.Equals(b) ? 1 : 2);
+                    int rank2 = tx2.Signer.Equals(a) ? 0 : (tx2.Signer.Equals(b) ? 1 : 2);
+                    return rank1.CompareTo(rank2);
+                });
+            gathered = _blockChain.GatherTransactionsToMine(8, 3, txPriority);
+            Assert.Equal(
+                txsA.Concat(txsB.Take(3)).Concat(txsC).Select(tx => tx.Id).ToArray(),
+                gathered.Select(tx => tx.Id).ToArray()
+            );
         }
     }
 }

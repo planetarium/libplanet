@@ -1,5 +1,7 @@
+#nullable enable
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Blocks;
@@ -15,224 +17,169 @@ namespace Libplanet.Blockchain.Policies
     public class BlockPolicy<T> : IBlockPolicy<T>
         where T : IAction, new()
     {
-        private readonly int _maxBlockBytes;
-        private readonly int _maxGenesisBytes;
-        private readonly Func<Transaction<T>, BlockChain<T>, bool> _doesTransactionFollowPolicy;
+        private readonly Func<BlockChain<T>, Transaction<T>, TxPolicyViolationException?>
+            _validateNextBlockTx;
+
+        private readonly Func<BlockChain<T>, Block<T>, BlockPolicyViolationException?>
+            _validateNextBlock;
+
         private readonly HashAlgorithmGetter _hashAlgorithmGetter;
+        private readonly Func<long, int> _getMaxBlockBytes;
+        private readonly Func<long, int> _getMinTransactionsPerBlock;
+        private readonly Func<long, int> _getMaxTransactionsPerBlock;
+        private readonly Func<long, int> _getMaxTransactionsPerSignerPerBlock;
+        private readonly Func<BlockChain<T>, long> _getNextBlockDifficulty;
 
         /// <summary>
-        /// Creates a <see cref="BlockPolicy{T}"/> with configuring
-        /// <see cref="BlockInterval"/> in milliseconds,
-        /// <see cref="MinimumDifficulty"/> and
-        /// <see cref="DifficultyBoundDivisor"/>.
+        /// <para>
+        /// Creates a default <see cref="BlockPolicy{T}"/> instance.
+        /// </para>
+        /// <para>
+        /// Each unprovided argument will be assigned a default value.  See each parameter
+        /// description for more detail.
+        /// </para>
         /// </summary>
-        /// <param name="blockAction">A block action to execute and be rendered for every block.
+        /// <param name="blockAction">A <see cref="IAction"/> to executed for
+        /// every <see cref="Block{T}"/>.  Set to <c>null</c> by default, which results
+        /// in no additional execution other than those included in <see cref="Transaction{T}"/>s.
         /// </param>
-        /// <param name="blockIntervalMilliseconds">Configures
-        /// <see cref="BlockInterval"/> in milliseconds.
-        /// 5000 milliseconds by default.
+        /// <param name="blockInterval">Goes to <see cref="BlockInterval"/>.
+        /// Set to <see cref="DifficultyAdjustment{T}.DefaultTargetBlockInterval"/>
+        /// by default.
         /// </param>
-        /// <param name="minimumDifficulty">Configures
-        /// <see cref="MinimumDifficulty"/>. 1024 by default.</param>
-        /// <param name="difficultyBoundDivisor">Configures
-        /// <see cref="DifficultyBoundDivisor"/>. 128 by default.</param>
-        /// <param name="maxTransactionsPerBlock">Configures <see cref="MaxTransactionsPerBlock"/>.
-        /// 100 by default.</param>
-        /// <param name="maxBlockBytes">Configures <see cref="GetMaxBlockBytes(long)"/> where
-        /// the block is not a genesis.  100 KiB by default.</param>
-        /// <param name="maxGenesisBytes">Configures <see cref="GetMaxBlockBytes(long)"/> where
-        /// the block is a genesis.  1 MiB by default.</param>
-        /// <param name="doesTransactionFollowPolicy">
-        /// A predicate that determines if the transaction follows the block policy.
-        /// </param>
+        /// <param name="difficultyStability">Goes to <see cref="DifficultyStability"/>.
+        /// Set to <see cref="DifficultyAdjustment{T}.DefaultDifficultyStability"/>
+        /// by default.</param>
+        /// <param name="minimumDifficulty">Goes to <see cref="MinimumDifficulty"/>.
+        /// Set to <see cref="DifficultyAdjustment{T}.DefaultMinimumDifficulty"/>
+        /// by default.</param>
+        /// <param name="validateNextBlockTx">The predicate that determines if
+        /// a <see cref="Transaction{T}"/> follows the policy.  Set to a constant function of
+        /// <c>null</c> by default.</param>
+        /// <param name="validateNextBlock">The predicate that determines if
+        /// a <see cref="Block{T}"/> follows the policy.  Set to a constant function of
+        /// <c>null</c> by default.</param>
         /// <param name="canonicalChainComparer">The custom rule to determine which is the canonical
         /// chain.  If omitted, <see cref="TotalDifficultyComparer"/> is used by default.</param>
         /// <param name="hashAlgorithmGetter">Configures <see cref="GetHashAlgorithm(long)"/>.
         /// If omitted, SHA-256 is used for every block.</param>
+        /// <param name="getMaxBlockBytes">The function determining the maximum size of
+        /// a <see cref="Block{T}"/> in number of <c>byte</c>s given
+        /// its <see cref="Block{T}.Index"/>.  Goes to <see cref="GetMaxBlockBytes"/>.
+        /// Set to a constant size of <c>100</c>KiB, i.e. <c>100 * 1024</c>, by default.</param>
+        /// <param name="getMinTransactionsPerBlock">The function determining the minimum number of
+        /// <see cref="Transaction{T}"/>s that must be included in a <see cref="Block{T}"/>.
+        /// Goes to <see cref="GetMinTransactionsPerBlock"/>.  Set to a constant function
+        /// of <c>0</c> by default.</param>
+        /// <param name="getMaxTransactionsPerBlock">The function determining how many
+        /// <see cref="Transaction{T}"/>s can be included in a <see cref="Block{T}"/>.
+        /// Goes to <see cref="GetMaxTransactionsPerBlock"/>.  Set to a constant function
+        /// of <c>100</c> by default.</param>
+        /// <param name="getMaxTransactionsPerSignerPerBlock">The function determining the maximum
+        /// number of transactions from the same signer that can be included in
+        /// a <see cref="Block{T}"/> given the <see cref="Block{T}"/>'s index.
+        /// Goes to <see cref="GetMaxTransactionsPerSignerPerBlock"/>.  Set to
+        /// <see cref="GetMaxTransactionsPerBlock"/> by default.</param>
         public BlockPolicy(
-            IAction blockAction = null,
-            int blockIntervalMilliseconds = 5000,
-            long minimumDifficulty = 1024,
-            int difficultyBoundDivisor = 128,
-            int maxTransactionsPerBlock = 100,
-            int maxBlockBytes = 100 * 1024,
-            int maxGenesisBytes = 1024 * 1024,
-            Func<Transaction<T>, BlockChain<T>, bool> doesTransactionFollowPolicy = null,
-            IComparer<BlockPerception> canonicalChainComparer = null,
-            HashAlgorithmGetter hashAlgorithmGetter = null
-        )
-            : this(
-                blockAction,
-                TimeSpan.FromMilliseconds(blockIntervalMilliseconds),
-                minimumDifficulty,
-                difficultyBoundDivisor,
-                maxTransactionsPerBlock,
-                maxBlockBytes,
-                maxGenesisBytes,
-                doesTransactionFollowPolicy,
-                canonicalChainComparer,
-                hashAlgorithmGetter)
+            IAction? blockAction = null,
+            TimeSpan? blockInterval = null,
+            long? difficultyStability = null,
+            long? minimumDifficulty = null,
+            Func<BlockChain<T>, Transaction<T>, TxPolicyViolationException?>?
+                validateNextBlockTx = null,
+            Func<BlockChain<T>, Block<T>, BlockPolicyViolationException?>?
+                validateNextBlock = null,
+            IComparer<IBlockExcerpt>? canonicalChainComparer = null,
+            HashAlgorithmGetter? hashAlgorithmGetter = null,
+            Func<long, int>? getMaxBlockBytes = null,
+            Func<long, int>? getMinTransactionsPerBlock = null,
+            Func<long, int>? getMaxTransactionsPerBlock = null,
+            Func<long, int>? getMaxTransactionsPerSignerPerBlock = null)
         {
-        }
-
-        /// <summary>
-        /// Creates a <see cref="BlockPolicy{T}"/> with configuring
-        /// <see cref="BlockInterval"/>, <see cref="MinimumDifficulty"/> and
-        /// <see cref="DifficultyBoundDivisor"/>.
-        /// </summary>
-        /// <param name="blockAction">A block action to execute and be rendered for every block.
-        /// </param>
-        /// <param name="blockInterval">Configures <see cref="BlockInterval"/>.
-        /// </param>
-        /// <param name="minimumDifficulty">Configures
-        /// <see cref="MinimumDifficulty"/>.</param>
-        /// <param name="difficultyBoundDivisor">Configures
-        /// <see cref="DifficultyBoundDivisor"/>.</param>
-        /// <param name="maxTransactionsPerBlock">Configures <see cref="MaxTransactionsPerBlock"/>.
-        /// </param>
-        /// <param name="maxBlockBytes">Configures <see cref="GetMaxBlockBytes(long)"/> where
-        /// the block is not a genesis.</param>
-        /// <param name="maxGenesisBytes">Configures <see cref="GetMaxBlockBytes(long)"/> where
-        /// the block is a genesis.</param>
-        /// <param name="doesTransactionFollowPolicy">
-        /// A predicate that determines if the transaction follows the block policy.
-        /// </param>
-        /// <param name="canonicalChainComparer">The custom rule to determine which is the canonical
-        /// chain.  If omitted, <see cref="TotalDifficultyComparer"/> (having
-        /// <see cref="TotalDifficultyComparer.OutdateAfter"/> configured to triple of
-        /// <paramref name="blockInterval"/>) is used by default.</param>
-        /// <param name="hashAlgorithmGetter">Configures <see cref="GetHashAlgorithm(long)"/>.
-        /// If omitted, SHA-256 is used for every block.</param>
-        public BlockPolicy(
-            IAction blockAction,
-            TimeSpan blockInterval,
-            long minimumDifficulty,
-            int difficultyBoundDivisor,
-            int maxTransactionsPerBlock,
-            int maxBlockBytes,
-            int maxGenesisBytes,
-            Func<Transaction<T>, BlockChain<T>, bool> doesTransactionFollowPolicy = null,
-            IComparer<BlockPerception> canonicalChainComparer = null,
-            HashAlgorithmGetter hashAlgorithmGetter = null
-        )
-        {
-            if (blockInterval < TimeSpan.Zero)
-            {
-                throw new ArgumentOutOfRangeException(
-                    nameof(blockInterval),
-                    "Interval between blocks cannot be negative.");
-            }
-
-            if (minimumDifficulty < 0)
-            {
-                throw new ArgumentOutOfRangeException(
-                    nameof(minimumDifficulty),
-                    "Minimum difficulty must be greater than 0.");
-            }
-
-            if (minimumDifficulty <= difficultyBoundDivisor)
-            {
-                const string message =
-                    "Difficulty bound divisor must be less than " +
-                    "the minimum difficulty.";
-
-                throw new ArgumentOutOfRangeException(
-                    nameof(difficultyBoundDivisor),
-                    message);
-            }
-
             BlockAction = blockAction;
-            BlockInterval = blockInterval;
-            MinimumDifficulty = minimumDifficulty;
-            DifficultyBoundDivisor = difficultyBoundDivisor;
-            MaxTransactionsPerBlock = maxTransactionsPerBlock;
-            _maxBlockBytes = maxBlockBytes;
-            _maxGenesisBytes = maxGenesisBytes;
-            _doesTransactionFollowPolicy = doesTransactionFollowPolicy ?? ((_, __) => true);
-            CanonicalChainComparer = canonicalChainComparer
-                ?? new TotalDifficultyComparer(blockInterval + blockInterval + blockInterval);
+            BlockInterval = blockInterval
+                ?? DifficultyAdjustment<T>.DefaultTargetBlockInterval;
+            DifficultyStability = difficultyStability
+                ?? DifficultyAdjustment<T>.DefaultDifficultyStability;
+            MinimumDifficulty = minimumDifficulty
+                ?? DifficultyAdjustment<T>.DefaultMinimumDifficulty;
+            _validateNextBlockTx = validateNextBlockTx ?? ((_, __) => null);
+            _validateNextBlock = validateNextBlock ?? ((_, __) => null);
+            CanonicalChainComparer = canonicalChainComparer ?? new TotalDifficultyComparer();
             _hashAlgorithmGetter = hashAlgorithmGetter ?? (_ => HashAlgorithmType.Of<SHA256>());
+            _getMaxBlockBytes = getMaxBlockBytes ?? (_ => 100 * 1024);
+            _getMinTransactionsPerBlock = getMinTransactionsPerBlock ?? (_ => 0);
+            _getMaxTransactionsPerBlock = getMaxTransactionsPerBlock ?? (_ => 100);
+            _getMaxTransactionsPerSignerPerBlock = getMaxTransactionsPerSignerPerBlock
+                ?? GetMaxTransactionsPerBlock;
+            _getNextBlockDifficulty = DifficultyAdjustment<T>.AlgorithmFactory(
+                BlockInterval, DifficultyStability, MinimumDifficulty);
         }
 
         /// <inheritdoc/>
-        public IAction BlockAction { get; }
-
-        /// <inheritdoc cref="IBlockPolicy{T}.MaxTransactionsPerBlock"/>
-        public int MaxTransactionsPerBlock { get; }
+        public IAction? BlockAction { get; }
 
         /// <summary>
-        /// An appropriate interval between consecutive <see cref="Block{T}"/>s.
-        /// It is usually from 20 to 30 seconds.
-        /// <para>If a previous interval took longer than this
-        /// <see cref="GetNextBlockDifficulty(BlockChain{T})"/> method
-        /// raises the <see cref="Block{T}.Difficulty"/>.  If it took shorter
-        /// than this <see cref="Block{T}.Difficulty"/> is dropped.</para>
+        /// Targeted time interval between two consecutive <see cref="Block{T}"/>s.
+        /// See the corresponding parameter description for
+        /// <see cref="DifficultyAdjustment{T}.BaseAlgorithm"/> for full detail.
         /// </summary>
         public TimeSpan BlockInterval { get; }
 
-        /// <inheritdoc />
-        public IComparer<BlockPerception> CanonicalChainComparer { get; }
+        /// <summary>
+        /// Stability of a series of difficulties for a <see cref="BlockChain{T}"/>.
+        /// See the corresponding parameter description for
+        /// <see cref="DifficultyAdjustment{T}.BaseAlgorithm"/> for full detail.
+        /// </summary>
+        public long DifficultyStability { get; }
 
-        private long MinimumDifficulty { get; }
+        /// <summary>
+        /// Minimum difficulty for a <see cref="Block{T}"/>.  See the corresponding
+        /// parameter description for <see cref="DifficultyAdjustment{T}.BaseAlgorithm"/> for
+        /// full detail.
+        /// </summary>
+        public long MinimumDifficulty { get; }
 
-        private int DifficultyBoundDivisor { get; }
+        /// <inheritdoc/>
+        public IComparer<IBlockExcerpt> CanonicalChainComparer { get; }
 
-        /// <inheritdoc
-        /// cref="IBlockPolicy{T}.DoesTransactionFollowsPolicy(Transaction{T}, BlockChain{T})"/>
-        public virtual bool DoesTransactionFollowsPolicy(
-            Transaction<T> transaction,
-            BlockChain<T> blockChain)
+        /// <inheritdoc/>
+        public virtual TxPolicyViolationException? ValidateNextBlockTx(
+            BlockChain<T> blockChain, Transaction<T> transaction)
         {
-            return _doesTransactionFollowPolicy(transaction, blockChain);
+            return _validateNextBlockTx(blockChain, transaction);
         }
 
         /// <inheritdoc/>
-        public virtual InvalidBlockException ValidateNextBlock(
-            BlockChain<T> blocks,
+        public virtual BlockPolicyViolationException? ValidateNextBlock(
+            BlockChain<T> blockChain,
             Block<T> nextBlock)
         {
-            return null;
+            return _validateNextBlock(blockChain, nextBlock);
         }
 
-        /// <inheritdoc />
-        public virtual long GetNextBlockDifficulty(BlockChain<T> blocks)
-        {
-            long index = blocks.Count;
+        /// <inheritdoc/>
+        public virtual long GetNextBlockDifficulty(BlockChain<T> blockChain) =>
+            _getNextBlockDifficulty(blockChain);
 
-            if (index < 0)
-            {
-                throw new InvalidBlockIndexException(
-                    $"Count of blocks must be 0 or more, but its value is {index}.");
-            }
+        /// <inheritdoc/>
+        [Pure]
+        public int GetMaxBlockBytes(long index) => _getMaxBlockBytes(index);
 
-            if (index <= 1)
-            {
-                return index == 0 ? 0 : MinimumDifficulty;
-            }
+        /// <inheritdoc/>
+        [Pure]
+        public int GetMinTransactionsPerBlock(long index) => _getMinTransactionsPerBlock(index);
 
-            var prevBlock = blocks[index - 1];
+        /// <inheritdoc/>
+        [Pure]
+        public int GetMaxTransactionsPerBlock(long index) => _getMaxTransactionsPerBlock(index);
 
-            DateTimeOffset prevPrevTimestamp = blocks[index - 2].Timestamp;
-            DateTimeOffset prevTimestamp = prevBlock.Timestamp;
-            TimeSpan timeDiff = prevTimestamp - prevPrevTimestamp;
-            long timeDiffMilliseconds = (long)timeDiff.TotalMilliseconds;
-            const long minimumMultiplier = -99;
-            long multiplier = 1 - (timeDiffMilliseconds /
-                                   (long)BlockInterval.TotalMilliseconds);
-            multiplier = Math.Max(multiplier, minimumMultiplier);
+        /// <inheritdoc/>
+        public HashAlgorithmType GetHashAlgorithm(long index) => _hashAlgorithmGetter(index);
 
-            var prevDifficulty = prevBlock.Difficulty;
-            var offset = prevDifficulty / DifficultyBoundDivisor;
-            long nextDifficulty = prevDifficulty + (offset * multiplier);
-
-            return Math.Max(nextDifficulty, MinimumDifficulty);
-        }
-
-        /// <inheritdoc />
-        public int GetMaxBlockBytes(long index) => index > 0 ? _maxBlockBytes : _maxGenesisBytes;
-
-        /// <inheritdoc cref="IBlockPolicy{T}.GetHashAlgorithm(long)"/>
-        public HashAlgorithmType GetHashAlgorithm(long index) =>
-            _hashAlgorithmGetter(index);
+        /// <inheritdoc/>
+        [Pure]
+        public int GetMaxTransactionsPerSignerPerBlock(long index)
+            => _getMaxTransactionsPerSignerPerBlock(index);
     }
 }

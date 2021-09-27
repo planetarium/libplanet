@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Immutable;
 using Xunit;
 
 namespace Libplanet.Tests
@@ -15,7 +16,7 @@ namespace Libplanet.Tests
         public void DefaultConstructor()
         {
             Nonce defaultValue = default;
-            Assert.Equal(new Nonce(new byte[0]), defaultValue);
+            Assert.Equal(new Nonce(ImmutableArray<byte>.Empty), defaultValue);
         }
 
         [Fact]
@@ -23,6 +24,8 @@ namespace Libplanet.Tests
         {
             byte[] nonceBytes = TestUtils.GetRandomBytes(5);
             var nonce = new Nonce(nonceBytes);
+            Assert.Equal(nonceBytes, nonce.ToByteArray());
+            nonce = new Nonce(nonceBytes.ToImmutableArray());
             Assert.Equal(nonceBytes, nonce.ToByteArray());
         }
 

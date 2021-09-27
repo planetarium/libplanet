@@ -2,9 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
+using Bencodex;
 using Destructurama.Attributed;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
@@ -24,6 +23,13 @@ namespace Libplanet.Net.Messages
         public const int CommonFrames = 5;
 
         internal const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
+
+        private static readonly Codec _codec;
+
+        static Message()
+        {
+            _codec = new Codec();
+        }
 
         /// <summary>
         /// <c>Enum</c> represents the type of the <see cref="Message"/>.
@@ -383,17 +389,21 @@ namespace Libplanet.Net.Messages
 
         protected static Peer DeserializePeer(byte[] bytes)
         {
-            var formatter = new BinaryFormatter();
-            using MemoryStream stream = new MemoryStream(bytes);
-            return (Peer)formatter.Deserialize(stream);
+            var dictionary = (Bencodex.Types.Dictionary)_codec.Decode(bytes);
+            try
+            {
+                return new BoundPeer(dictionary);
+            }
+            catch (KeyNotFoundException)
+            {
+            }
+
+            return new Peer(dictionary);
         }
 
         protected byte[] SerializePeer(Peer peer)
         {
-            var formatter = new BinaryFormatter();
-            using MemoryStream stream = new MemoryStream();
-            formatter.Serialize(stream, peer);
-            return stream.ToArray();
+            return _codec.Encode(peer.ToBencodex());
         }
 
         private static bool IsAppProtocolVersionValid(

@@ -433,17 +433,13 @@ namespace Libplanet.Tests.Net
         {
             // If the bucket stored peers are the same, the block may not propagate,
             // so specify private keys to make the buckets different.
-            var keyA = ByteUtil.ParseHex(
-                "8568eb6f287afedece2c7b918471183db0451e1a61535bb0381cfdf95b85df20");
-            var keyB = ByteUtil.ParseHex(
+            PrivateKey minerKey = PrivateKey.FromString(
                 "c34f7498befcc39a14f03b37833f6c7bb78310f1243616524eda70e078b8313c");
-            var keyC = ByteUtil.ParseHex(
-                "941bc2edfab840d79914d80fe3b30840628ac37a5d812d7f922b5d2405a223d3");
-
-            var minerKey = new PrivateKey(keyB);
-            var swarmA = CreateSwarm(new PrivateKey(keyA));
+            var swarmA = CreateSwarm(PrivateKey.FromString(
+                "8568eb6f287afedece2c7b918471183db0451e1a61535bb0381cfdf95b85df20"));
             var swarmB = CreateSwarm(minerKey);
-            var swarmC = CreateSwarm(new PrivateKey(keyC));
+            var swarmC = CreateSwarm(PrivateKey.FromString(
+                "941bc2edfab840d79914d80fe3b30840628ac37a5d812d7f922b5d2405a223d3"));
 
             BlockChain<DumbAction> chainA = swarmA.BlockChain;
             BlockChain<DumbAction> chainB = swarmB.BlockChain;
@@ -494,8 +490,10 @@ namespace Libplanet.Tests.Net
                 swarmA.BroadcastTxs(new[] { tx3, tx4 });
                 await swarmC.TxReceived.WaitAsync();
                 Assert.DoesNotContain(tx3.Id, chainB.GetStagedTransactionIds());
+                Assert.Contains(tx4.Id, chainB.GetStagedTransactionIds());
                 // SwarmC can not receive tx3 because SwarmB does not rebroadcast it.
                 Assert.DoesNotContain(tx3.Id, chainC.GetStagedTransactionIds());
+                Assert.Contains(tx4.Id, chainC.GetStagedTransactionIds());
             }
             finally
             {
@@ -514,16 +512,12 @@ namespace Libplanet.Tests.Net
         {
             // If the bucket stored peers are the same, the block may not propagate,
             // so specify private keys to make the buckets different.
-            var keyA = ByteUtil.ParseHex(
-                "8568eb6f287afedece2c7b918471183db0451e1a61535bb0381cfdf95b85df20");
-            var keyB = ByteUtil.ParseHex(
-                "c34f7498befcc39a14f03b37833f6c7bb78310f1243616524eda70e078b8313c");
-            var keyC = ByteUtil.ParseHex(
-                "941bc2edfab840d79914d80fe3b30840628ac37a5d812d7f922b5d2405a223d3");
-
-            var swarmA = CreateSwarm(new PrivateKey(keyA));
-            var swarmB = CreateSwarm(new PrivateKey(keyB));
-            var swarmC = CreateSwarm(new PrivateKey(keyC));
+            var swarmA = CreateSwarm(PrivateKey.FromString(
+                "8568eb6f287afedece2c7b918471183db0451e1a61535bb0381cfdf95b85df20"));
+            var swarmB = CreateSwarm(PrivateKey.FromString(
+                "c34f7498befcc39a14f03b37833f6c7bb78310f1243616524eda70e078b8313c"));
+            var swarmC = CreateSwarm(PrivateKey.FromString(
+                "941bc2edfab840d79914d80fe3b30840628ac37a5d812d7f922b5d2405a223d3"));
 
             BlockChain<DumbAction> chainA = swarmA.BlockChain;
             BlockChain<DumbAction> chainB = swarmB.BlockChain;
@@ -641,7 +635,7 @@ namespace Libplanet.Tests.Net
                         null,
                         policy.GetNextBlockDifficulty(blockChain))
                     .AttachStateRootHash(blockChain.StateStore, policy);
-                blockChain.Append(block1, DateTimeOffset.MinValue.AddSeconds(3), true, true, false);
+                blockChain.Append(block1, true, true, false);
                 var block2 = TestUtils.MineNext(
                     block1,
                     policy.GetHashAlgorithm,
@@ -649,7 +643,7 @@ namespace Libplanet.Tests.Net
                     null,
                     policy.GetNextBlockDifficulty(blockChain)
                 ).AttachStateRootHash(blockChain.StateStore, policy);
-                blockChain.Append(block2, DateTimeOffset.MinValue.AddSeconds(8), true, true, false);
+                blockChain.Append(block2, true, true, false);
                 Log.Debug("Ready to broadcast blocks.");
                 minerSwarm.BroadcastBlock(block2);
                 await receiverSwarm.BlockAppended.WaitAsync();
@@ -746,6 +740,110 @@ namespace Libplanet.Tests.Net
             {
                 await StopAsync(swarmA);
                 await StopAsync(swarmB);
+            }
+        }
+
+        [Fact(Timeout = Timeout)]
+        public async Task PullBlocks()
+        {
+            var swarmA = CreateSwarm();
+            var swarmB = CreateSwarm();
+            var swarmC = CreateSwarm();
+
+            BlockChain<DumbAction> chainA = swarmA.BlockChain;
+            BlockChain<DumbAction> chainB = swarmB.BlockChain;
+            BlockChain<DumbAction> chainC = swarmC.BlockChain;
+
+            foreach (int i in Enumerable.Range(0, 10))
+            {
+                await chainA.MineBlock(swarmA.Address);
+            }
+
+            foreach (int i in Enumerable.Range(0, 5))
+            {
+                await chainB.MineBlock(swarmB.Address);
+            }
+
+            foreach (int i in Enumerable.Range(0, 3))
+            {
+                await chainB.MineBlock(swarmB.Address);
+            }
+
+            try
+            {
+                await StartAsync(swarmA);
+                await StartAsync(swarmB);
+                await StartAsync(swarmC);
+
+                await BootstrapAsync(swarmB, swarmA.AsPeer);
+                await BootstrapAsync(swarmC, swarmA.AsPeer);
+
+                await swarmC.PullBlocksAsync(TimeSpan.FromSeconds(5), int.MaxValue, default);
+
+                Assert.Equal(chainA.BlockHashes, chainC.BlockHashes);
+                Assert.NotEqual(chainB.BlockHashes, chainC.BlockHashes);
+            }
+            finally
+            {
+                await StopAsync(swarmA);
+                await StopAsync(swarmB);
+                await StopAsync(swarmC);
+
+                swarmA.Dispose();
+                swarmB.Dispose();
+                swarmC.Dispose();
+            }
+        }
+
+        [Fact(Timeout = Timeout)]
+        public async Task PullBlocksByDifficulty()
+        {
+            var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
+            var chain1 = TestUtils.MakeBlockChain(
+                policy,
+                new DefaultStore(null),
+                new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore()));
+            var chain2 = TestUtils.MakeBlockChain(
+                policy,
+                new DefaultStore(null),
+                new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore()));
+
+            var miner1 = CreateSwarm(chain1);
+            var miner2 = CreateSwarm(chain2);
+
+            await chain1.MineBlock(miner1.Address);
+            await chain1.MineBlock(miner2.Address);
+            long nextDifficulty =
+                (long)chain1.Tip.TotalDifficulty + policy.GetNextBlockDifficulty(chain2);
+            var block = TestUtils.MineNext(
+                chain2.Tip,
+                policy.GetHashAlgorithm,
+                difficulty: nextDifficulty,
+                blockInterval: TimeSpan.FromMilliseconds(1)
+            ).AttachStateRootHash(chain2.StateStore, policy);
+            chain2.Append(block);
+
+            Assert.True(chain1.Tip.Index > chain2.Tip.Index);
+            Assert.True(chain1.Tip.TotalDifficulty < chain2.Tip.TotalDifficulty);
+
+            try
+            {
+                await StartAsync(miner1);
+                await StartAsync(miner2);
+
+                await BootstrapAsync(miner2, miner1.AsPeer);
+
+                await miner1.PullBlocksAsync(TimeSpan.FromSeconds(5), int.MaxValue, default);
+
+                Assert.Equal(miner2.BlockChain.Count, miner1.BlockChain.Count);
+                Assert.Equal(miner2.BlockChain.Tip, miner1.BlockChain.Tip);
+            }
+            finally
+            {
+                await StopAsync(miner1);
+                await StopAsync(miner2);
+                miner1.Dispose();
+                miner2.Dispose();
             }
         }
 

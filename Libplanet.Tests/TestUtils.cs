@@ -171,6 +171,12 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             AssertBytesEqual(expected.ToByteArray(), actual.ToByteArray());
         }
 
+        public static void AssertBytesEqual(Nonce expected, Nonce actual) =>
+            AssertBytesEqual(expected.ToByteArray(), actual.ToByteArray());
+
+        public static void AssertBytesEqual(Address expected, Address actual) =>
+            AssertBytesEqual(expected.ToByteArray(), actual.ToByteArray());
+
         public static byte[] GetRandomBytes(int size)
         {
             var bytes = new byte[size];

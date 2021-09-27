@@ -45,7 +45,7 @@ namespace Libplanet.Extensions.Cocona.Commands
             }
 
             Console.WriteLine($"It taken {DateTimeOffset.UtcNow - prev}");
-            (store as IDisposable)?.Dispose();
+            store?.Dispose();
         }
 
         [Command(Description = "Query block hashes by transaction id.")]
@@ -60,7 +60,7 @@ namespace Libplanet.Extensions.Cocona.Commands
             var blockHashes = store.IterateTxIdBlockHashIndex(new TxId(ByteUtil.ParseHex(strTxId)))
                 .ToImmutableArray();
             Console.WriteLine(Utils.SerializeHumanReadable(blockHashes));
-            (store as IDisposable)?.Dispose();
+            store?.Dispose();
         }
 
         [Command(Description = "Query a list of blocks by transaction id.")]
@@ -82,7 +82,7 @@ namespace Libplanet.Extensions.Cocona.Commands
 
             Console.WriteLine(Utils.SerializeHumanReadable(blocks));
 
-            (store as IDisposable)?.Dispose();
+            store?.Dispose();
         }
 
         [Command(Description = "Query a block by index.")]
@@ -97,7 +97,7 @@ namespace Libplanet.Extensions.Cocona.Commands
             var blockHash = GetBlockHash(store, blockIndex);
             var block = GetBlock<Utils.DummyAction>(store, blockHash);
             Console.WriteLine(Utils.SerializeHumanReadable(block));
-            (store as IDisposable)?.Dispose();
+            store?.Dispose();
         }
 
         [Command(Description = "Query a block by hash.")]
@@ -111,7 +111,7 @@ namespace Libplanet.Extensions.Cocona.Commands
             IStore store = LoadStoreFromUri(home);
             var block = GetBlock<Utils.DummyAction>(store, BlockHash.FromString(blockHash));
             Console.WriteLine(Utils.SerializeHumanReadable(block));
-            (store as IDisposable)?.Dispose();
+            store?.Dispose();
         }
 
         [Command(Description = "Query a transaction by tx id.")]
@@ -125,7 +125,7 @@ namespace Libplanet.Extensions.Cocona.Commands
             IStore store = LoadStoreFromUri(home);
             var tx = GetTransaction<Utils.DummyAction>(store, new TxId(ByteUtil.ParseHex(strTxId)));
             Console.WriteLine(Utils.SerializeHumanReadable(tx));
-            (store as IDisposable)?.Dispose();
+            store?.Dispose();
         }
 
         private static Block<T> GetBlock<T>(IStore store, BlockHash blockHash)

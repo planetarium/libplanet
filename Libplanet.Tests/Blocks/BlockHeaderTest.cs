@@ -13,6 +13,8 @@ namespace Libplanet.Tests.Blocks
 {
     public class BlockHeaderTest : IClassFixture<BlockFixture>
     {
+        private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
+
         private BlockFixture _fx;
 
         public BlockHeaderTest(BlockFixture fixture) => _fx = fixture;
@@ -25,55 +27,47 @@ namespace Libplanet.Tests.Blocks
                 index: 0,
                 difficulty: _fx.Genesis.Difficulty,
                 totalDifficulty: _fx.Genesis.TotalDifficulty,
-                nonce: _fx.Genesis.Nonce.ByteArray,
-                miner: _fx.Genesis.Miner.ByteArray,
-                hash: _fx.Genesis.Hash.ByteArray,
-                txHash: _fx.Genesis.TxHash?.ByteArray ?? ImmutableArray<byte>.Empty,
-                previousHash: _fx.Genesis.PreviousHash?.ByteArray ?? ImmutableArray<byte>.Empty,
-                timestamp: _fx.Genesis.Timestamp.ToString(
-                    BlockHeader.TimestampFormat,
-                    CultureInfo.InvariantCulture
-                ),
+                nonce: _fx.Genesis.Nonce,
+                miner: _fx.Genesis.Miner,
+                hash: _fx.Genesis.Hash,
+                txHash: _fx.Genesis.TxHash,
+                previousHash: _fx.Genesis.PreviousHash,
+                timestamp: _fx.Genesis.Timestamp,
                 preEvaluationHash: _fx.Genesis.PreEvaluationHash,
-                stateRootHash: _fx.Genesis.StateRootHash?.ByteArray ?? ImmutableArray<byte>.Empty
+                stateRootHash: _fx.Genesis.StateRootHash
             );
             Bencodex.Types.Dictionary expected = Bencodex.Types.Dictionary.Empty
                 .Add(BlockHeader.IndexKey, 0)
                 .Add(
                     BlockHeader.TimestampKey,
-                    _fx.Genesis.Timestamp.ToString(
-                        BlockHeader.TimestampFormat,
-                        CultureInfo.InvariantCulture
-                    )
+                    _fx.Genesis.Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture)
                 )
                 .Add(BlockHeader.DifficultyKey, _fx.Genesis.Difficulty)
                 .Add(
                     BlockHeader.TotalDifficultyKey,
                     (IValue)new Bencodex.Types.Integer(_fx.Genesis.TotalDifficulty)
                 )
-                .Add(BlockHeader.NonceKey, _fx.Genesis.Nonce.ToByteArray())
-                .Add(BlockHeader.HashKey, _fx.Genesis.Hash.ToByteArray())
-                .Add(BlockHeader.MinerKey, _fx.Genesis.Miner.ToByteArray())
+                .Add(BlockHeader.NonceKey, _fx.Genesis.Nonce.ByteArray)
+                .Add(BlockHeader.HashKey, _fx.Genesis.Hash.ByteArray)
+                .Add(BlockHeader.MinerKey, _fx.Genesis.Miner.ByteArray)
                 .Add(BlockHeader.PreEvaluationHashKey, _fx.Genesis.PreEvaluationHash.ToArray());
             Assert.Equal(expected, header.ToBencodex());
             Assert.Equal(expected, new BlockHeader(expected).ToBencodex());
 
-            ImmutableArray<byte> randomHash = TestUtils.GetRandomBytes(32).ToImmutableArray();
-            ImmutableArray<byte> randomHash2 = TestUtils.GetRandomBytes(32).ToImmutableArray();
+            var random = new Random();
+            HashDigest<SHA256> randomHash = random.NextHashDigest<SHA256>();
+            HashDigest<SHA256> randomHash2 = random.NextHashDigest<SHA256>();
             header = new BlockHeader(
                 protocolVersion: 1,
                 index: 1,
                 difficulty: _fx.Next.Difficulty,
                 totalDifficulty: _fx.Next.TotalDifficulty,
-                nonce: _fx.Next.Nonce.ByteArray,
-                miner: _fx.Next.Miner.ByteArray,
-                hash: _fx.Next.Hash.ByteArray,
+                nonce: _fx.Next.Nonce,
+                miner: _fx.Next.Miner,
+                hash: _fx.Next.Hash,
                 txHash: randomHash,
-                previousHash: _fx.Genesis.Hash.ByteArray,
-                timestamp: _fx.Next.Timestamp.ToString(
-                    BlockHeader.TimestampFormat,
-                    CultureInfo.InvariantCulture
-                ),
+                previousHash: _fx.Genesis.Hash,
+                timestamp: _fx.Next.Timestamp,
                 preEvaluationHash: ImmutableArray<byte>.Empty,
                 stateRootHash: randomHash2
             );
@@ -83,7 +77,7 @@ namespace Libplanet.Tests.Blocks
                 .Add(
                     BlockHeader.TimestampKey,
                     _fx.Next.Timestamp.ToString(
-                        BlockHeader.TimestampFormat,
+                        TimestampFormat,
                         CultureInfo.InvariantCulture
                     )
                 )
@@ -92,12 +86,12 @@ namespace Libplanet.Tests.Blocks
                     BlockHeader.TotalDifficultyKey,
                     (IValue)new Bencodex.Types.Integer(_fx.Next.TotalDifficulty)
                 )
-                .Add(BlockHeader.NonceKey, _fx.Next.Nonce.ToByteArray())
-                .Add(BlockHeader.MinerKey, _fx.Next.Miner.ToByteArray())
-                .Add(BlockHeader.HashKey, _fx.Next.Hash.ToByteArray())
-                .Add(BlockHeader.PreviousHashKey, _fx.Genesis.Hash.ToByteArray())
-                .Add(BlockHeader.TxHashKey, randomHash.ToArray())
-                .Add(BlockHeader.StateRootHashKey, randomHash2.ToArray());
+                .Add(BlockHeader.NonceKey, _fx.Next.Nonce.ByteArray)
+                .Add(BlockHeader.MinerKey, _fx.Next.Miner.ByteArray)
+                .Add(BlockHeader.HashKey, _fx.Next.Hash.ByteArray)
+                .Add(BlockHeader.PreviousHashKey, _fx.Genesis.Hash.ByteArray)
+                .Add(BlockHeader.TxHashKey, randomHash.ByteArray)
+                .Add(BlockHeader.StateRootHashKey, randomHash2.ByteArray);
             Assert.Equal(expected, header.ToBencodex());
             Assert.Equal(expected, new BlockHeader(expected).ToBencodex());
         }
@@ -117,17 +111,14 @@ namespace Libplanet.Tests.Blocks
                 index: 0,
                 difficulty: _fx.Genesis.Difficulty,
                 totalDifficulty: _fx.Genesis.TotalDifficulty,
-                nonce: _fx.Genesis.Nonce.ByteArray,
-                miner: _fx.Genesis.Miner.ByteArray,
-                hash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
-                txHash: _fx.Genesis.TxHash?.ByteArray ?? ImmutableArray<byte>.Empty,
-                previousHash: _fx.Genesis.PreviousHash?.ByteArray ?? ImmutableArray<byte>.Empty,
-                timestamp: _fx.Genesis.Timestamp.ToString(
-                    BlockHeader.TimestampFormat,
-                    CultureInfo.InvariantCulture
-                ),
+                nonce: _fx.Genesis.Nonce,
+                miner: _fx.Genesis.Miner,
+                hash: new Random().NextBlockHash(),
+                txHash: _fx.Genesis.TxHash,
+                previousHash: _fx.Genesis.PreviousHash,
+                timestamp: _fx.Genesis.Timestamp,
                 preEvaluationHash: _fx.Genesis.PreEvaluationHash,
-                stateRootHash: _fx.Genesis.StateRootHash?.ByteArray ?? ImmutableArray<byte>.Empty
+                stateRootHash: _fx.Genesis.StateRootHash
             );
 
             Assert.Throws<InvalidBlockHashException>(
@@ -142,17 +133,14 @@ namespace Libplanet.Tests.Blocks
                 index: _fx.Next.Index,
                 difficulty: _fx.Next.Difficulty,
                 totalDifficulty: _fx.Next.TotalDifficulty,
-                nonce: _fx.Next.Nonce.ByteArray,
-                miner: _fx.Next.Miner.ByteArray,
-                hash: _fx.Next.Hash.ByteArray,
-                txHash: _fx.Next.TxHash?.ByteArray ?? ImmutableArray<byte>.Empty,
-                previousHash: _fx.Next.PreviousHash?.ByteArray ?? ImmutableArray<byte>.Empty,
-                timestamp: _fx.Next.Timestamp.ToString(
-                    BlockHeader.TimestampFormat,
-                    CultureInfo.InvariantCulture
-                ),
+                nonce: _fx.Next.Nonce,
+                miner: _fx.Next.Miner,
+                hash: _fx.Next.Hash,
+                txHash: _fx.Next.TxHash,
+                previousHash: _fx.Next.PreviousHash,
+                timestamp: _fx.Next.Timestamp,
                 preEvaluationHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
-                stateRootHash: ImmutableArray<byte>.Empty
+                stateRootHash: null
             );
 
             Assert.Throws<InvalidBlockProtocolVersionException>(() =>
@@ -164,17 +152,14 @@ namespace Libplanet.Tests.Blocks
                 index: _fx.Next.Index,
                 difficulty: _fx.Next.Difficulty,
                 totalDifficulty: _fx.Next.TotalDifficulty,
-                nonce: _fx.Next.Nonce.ByteArray,
-                miner: _fx.Next.Miner.ByteArray,
-                hash: _fx.Next.Hash.ByteArray,
-                txHash: _fx.Next.TxHash?.ByteArray ?? ImmutableArray<byte>.Empty,
-                previousHash: _fx.Next.PreviousHash?.ByteArray ?? ImmutableArray<byte>.Empty,
-                timestamp: _fx.Next.Timestamp.ToString(
-                    BlockHeader.TimestampFormat,
-                    CultureInfo.InvariantCulture
-                ),
+                nonce: _fx.Next.Nonce,
+                miner: _fx.Next.Miner,
+                hash: _fx.Next.Hash,
+                txHash: _fx.Next.TxHash,
+                previousHash: _fx.Next.PreviousHash,
+                timestamp: _fx.Next.Timestamp,
                 preEvaluationHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
-                stateRootHash: ImmutableArray<byte>.Empty
+                stateRootHash: null
             );
 
             Assert.Throws<InvalidBlockProtocolVersionException>(() =>
@@ -186,8 +171,7 @@ namespace Libplanet.Tests.Blocks
         public void ValidateTimestamp()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
-            string future = (now + TimeSpan.FromSeconds(16))
-                .ToString(BlockHeader.TimestampFormat, CultureInfo.InvariantCulture);
+            DateTimeOffset future = now + TimeSpan.FromSeconds(16);
             HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             BlockHeader header = MakeBlockHeader(
                 hashAlgorithm: hashAlgorithm,
@@ -195,13 +179,14 @@ namespace Libplanet.Tests.Blocks
                 index: 0,
                 difficulty: 0,
                 totalDifficulty: 0,
-                nonce: ImmutableArray<byte>.Empty,
-                previousHash: ImmutableArray<byte>.Empty,
-                txHash: ImmutableArray<byte>.Empty,
-                miner: ImmutableArray<byte>.Empty,
+                nonce: default,
+                previousHash: null,
+                txHash: default,
+                miner: default,
                 timestamp: future,
                 preEvaluationHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
-                stateRootHash: TestUtils.GetRandomBytes(32).ToImmutableArray());
+                stateRootHash: new Random().NextHashDigest<SHA256>()
+            );
 
             Assert.Throws<InvalidBlockTimestampException>(
                 () => { header.Validate(hashAlgorithm, now); });
@@ -218,17 +203,14 @@ namespace Libplanet.Tests.Blocks
                 index: _fx.Next.Index,
                 difficulty: long.MaxValue,
                 totalDifficulty: _fx.Genesis.TotalDifficulty + long.MaxValue,
-                nonce: _fx.Next.Nonce.ByteArray,
-                miner: _fx.Next.Miner.ByteArray,
-                hash: _fx.Next.Hash.ByteArray,
-                txHash: _fx.Next.TxHash?.ByteArray ?? ImmutableArray<byte>.Empty,
-                previousHash: _fx.Next.PreviousHash?.ByteArray ?? ImmutableArray<byte>.Empty,
-                timestamp: _fx.Next.Timestamp.ToString(
-                    BlockHeader.TimestampFormat,
-                    CultureInfo.InvariantCulture
-                ),
+                nonce: _fx.Next.Nonce,
+                miner: _fx.Next.Miner,
+                hash: _fx.Next.Hash,
+                txHash: _fx.Next.TxHash,
+                previousHash: _fx.Next.PreviousHash,
+                timestamp: _fx.Next.Timestamp,
                 preEvaluationHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
-                stateRootHash: ImmutableArray<byte>.Empty
+                stateRootHash: null
             );
 
             Assert.Throws<InvalidBlockNonceException>(() =>
@@ -243,17 +225,14 @@ namespace Libplanet.Tests.Blocks
                 index: -1,
                 difficulty: _fx.Next.Difficulty,
                 totalDifficulty: _fx.Next.TotalDifficulty,
-                nonce: _fx.Next.Nonce.ByteArray,
-                miner: _fx.Next.Miner.ByteArray,
-                hash: _fx.Next.Hash.ByteArray,
-                txHash: _fx.Next.TxHash?.ByteArray ?? ImmutableArray<byte>.Empty,
-                previousHash: _fx.Next.PreviousHash?.ByteArray ?? ImmutableArray<byte>.Empty,
-                timestamp: _fx.Next.Timestamp.ToString(
-                    BlockHeader.TimestampFormat,
-                    CultureInfo.InvariantCulture
-                ),
+                nonce: _fx.Next.Nonce,
+                miner: _fx.Next.Miner,
+                hash: _fx.Next.Hash,
+                txHash: _fx.Next.TxHash,
+                previousHash: _fx.Next.PreviousHash,
+                timestamp: _fx.Next.Timestamp,
                 preEvaluationHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
-                stateRootHash: ImmutableArray<byte>.Empty
+                stateRootHash: null
             );
 
             Assert.Throws<InvalidBlockIndexException>(() =>
@@ -264,19 +243,20 @@ namespace Libplanet.Tests.Blocks
         public void ValidateDifficulty()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
+            var random = new Random();
             var genesisHeader = new BlockHeader(
                 protocolVersion: 0,
                 index: 0,
                 difficulty: 1000,
                 totalDifficulty: 1000,
-                nonce: ImmutableArray<byte>.Empty,
-                previousHash: ImmutableArray<byte>.Empty,
-                txHash: ImmutableArray<byte>.Empty,
-                hash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
-                miner: ImmutableArray<byte>.Empty,
-                timestamp: now.ToString(BlockHeader.TimestampFormat, CultureInfo.InvariantCulture),
+                nonce: default,
+                previousHash: null,
+                txHash: default,
+                hash: random.NextBlockHash(),
+                miner: default,
+                timestamp: now,
                 preEvaluationHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
-                stateRootHash: ImmutableArray<byte>.Empty
+                stateRootHash: null
             );
 
             Assert.Throws<InvalidBlockDifficultyException>(() =>
@@ -287,14 +267,14 @@ namespace Libplanet.Tests.Blocks
                 index: 10,
                 difficulty: 0,
                 totalDifficulty: 1000,
-                nonce: ImmutableArray<byte>.Empty,
-                previousHash: ImmutableArray<byte>.Empty,
-                txHash: ImmutableArray<byte>.Empty,
-                hash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
-                miner: ImmutableArray<byte>.Empty,
-                timestamp: now.ToString(BlockHeader.TimestampFormat, CultureInfo.InvariantCulture),
+                nonce: default,
+                previousHash: null,
+                txHash: default,
+                hash: random.NextBlockHash(),
+                miner: default,
+                timestamp: now,
                 preEvaluationHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
-                stateRootHash: ImmutableArray<byte>.Empty
+                stateRootHash: null
             );
 
             Assert.Throws<InvalidBlockDifficultyException>(() =>
@@ -305,14 +285,14 @@ namespace Libplanet.Tests.Blocks
                 index: 10,
                 difficulty: 1000,
                 totalDifficulty: 10,
-                nonce: ImmutableArray<byte>.Empty,
-                previousHash: ImmutableArray<byte>.Empty,
-                txHash: ImmutableArray<byte>.Empty,
-                hash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
-                miner: ImmutableArray<byte>.Empty,
-                timestamp: now.ToString(BlockHeader.TimestampFormat, CultureInfo.InvariantCulture),
+                nonce: default,
+                previousHash: null,
+                txHash: default(HashDigest<SHA256>),
+                hash: random.NextBlockHash(),
+                miner: default,
+                timestamp: now,
                 preEvaluationHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
-                stateRootHash: ImmutableArray<byte>.Empty
+                stateRootHash: null
             );
 
             Assert.Throws<InvalidBlockTotalDifficultyException>(() =>
@@ -323,19 +303,20 @@ namespace Libplanet.Tests.Blocks
         public void ValidatePreviousHash()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
+            var random = new Random();
             var genesisHeader = new BlockHeader(
                 protocolVersion: 0,
                 index: 0,
                 difficulty: 0,
                 totalDifficulty: 0,
-                nonce: ImmutableArray<byte>.Empty,
-                previousHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
-                txHash: ImmutableArray<byte>.Empty,
-                hash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
-                miner: ImmutableArray<byte>.Empty,
-                timestamp: now.ToString(BlockHeader.TimestampFormat, CultureInfo.InvariantCulture),
+                nonce: default,
+                previousHash: random.NextBlockHash(),
+                txHash: default(HashDigest<SHA256>),
+                hash: random.NextBlockHash(),
+                miner: default,
+                timestamp: now,
                 preEvaluationHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
-                stateRootHash: ImmutableArray<byte>.Empty
+                stateRootHash: null
             );
 
             Assert.Throws<InvalidBlockPreviousHashException>(() =>
@@ -346,14 +327,14 @@ namespace Libplanet.Tests.Blocks
                 index: 10,
                 difficulty: 1000,
                 totalDifficulty: 1500,
-                nonce: ImmutableArray<byte>.Empty,
-                previousHash: ImmutableArray<byte>.Empty,
-                txHash: ImmutableArray<byte>.Empty,
-                hash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
-                miner: ImmutableArray<byte>.Empty,
-                timestamp: now.ToString(BlockHeader.TimestampFormat, CultureInfo.InvariantCulture),
+                nonce: default,
+                previousHash: null,
+                txHash: default(HashDigest<SHA256>),
+                hash: random.NextBlockHash(),
+                miner: default,
+                timestamp: now,
                 preEvaluationHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
-                stateRootHash: ImmutableArray<byte>.Empty
+                stateRootHash: null
             );
 
             Assert.Throws<InvalidBlockPreviousHashException>(() =>
@@ -366,13 +347,13 @@ namespace Libplanet.Tests.Blocks
             long index,
             long difficulty,
             BigInteger totalDifficulty,
-            ImmutableArray<byte> nonce,
-            ImmutableArray<byte> previousHash,
-            ImmutableArray<byte> txHash,
-            ImmutableArray<byte> miner,
-            string timestamp,
+            Nonce nonce,
+            BlockHash? previousHash,
+            HashDigest<SHA256> txHash,
+            Address miner,
+            DateTimeOffset timestamp,
             ImmutableArray<byte> preEvaluationHash,
-            ImmutableArray<byte> stateRootHash
+            HashDigest<SHA256>? stateRootHash
         )
         {
             return new BlockHeader(

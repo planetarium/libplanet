@@ -348,13 +348,12 @@ If omitted (default) explorer only the local blockchain store.")]
             where T : IAction, new()
         {
             return new BlockPolicy<T>(
-                null,
-                blockIntervalMilliseconds: options.BlockIntervalMilliseconds,
+                blockAction: null,
+                blockInterval: TimeSpan.FromMilliseconds(options.BlockIntervalMilliseconds),
+                difficultyStability: options.DifficultyBoundDivisor,
                 minimumDifficulty: options.MinimumDifficulty,
-                difficultyBoundDivisor: options.DifficultyBoundDivisor,
-                maxTransactionsPerBlock: options.MaxTransactionsPerBlock,
-                maxBlockBytes: options.MaxBlockBytes,
-                maxGenesisBytes: options.MaxGenesisBytes);
+                getMaxBlockBytes: i => i > 0 ? options.MaxBlockBytes : options.MaxGenesisBytes,
+                getMaxTransactionsPerBlock: _ => options.MaxTransactionsPerBlock);
         }
 
         private static async Task StartSwarmAsync(
@@ -405,17 +404,14 @@ If omitted (default) explorer only the local blockchain store.")]
 
             public IAction BlockAction => _impl.BlockAction;
 
-            public int MaxTransactionsPerBlock => _impl.MaxTransactionsPerBlock;
-
-            public IComparer<BlockPerception> CanonicalChainComparer =>
+            public IComparer<IBlockExcerpt> CanonicalChainComparer =>
                 _impl.CanonicalChainComparer;
 
-            public bool DoesTransactionFollowsPolicy(
-                Transaction<NullAction> transaction, BlockChain<NullAction> blockChain
-            )
-            {
-                return _impl.DoesTransactionFollowsPolicy(transaction, blockChain);
-            }
+            public int GetMinTransactionsPerBlock(long index) =>
+                _impl.GetMinTransactionsPerBlock(index);
+
+            public int GetMaxTransactionsPerBlock(long index) =>
+                _impl.GetMaxTransactionsPerBlock(index);
 
             public int GetMaxBlockBytes(long index)
             {
@@ -427,15 +423,24 @@ If omitted (default) explorer only the local blockchain store.")]
                 return 0;
             }
 
-            public InvalidBlockException ValidateNextBlock(
-                BlockChain<NullAction> blocks, Block<NullAction> nextBlock
+            public TxPolicyViolationException ValidateNextBlockTx(
+                BlockChain<NullAction> blockChain, Transaction<NullAction> transaction)
+            {
+                return _impl.ValidateNextBlockTx(blockChain, transaction);
+            }
+
+            public BlockPolicyViolationException ValidateNextBlock(
+                BlockChain<NullAction> blockChain, Block<NullAction> nextBlock
             )
             {
-                return _impl.ValidateNextBlock(blocks, nextBlock);
+                return _impl.ValidateNextBlock(blockChain, nextBlock);
             }
 
             public HashAlgorithmType GetHashAlgorithm(long index) =>
                 _impl.GetHashAlgorithm(index);
+
+            public int GetMaxTransactionsPerSignerPerBlock(long index) =>
+                _impl.GetMaxTransactionsPerSignerPerBlock(index);
         }
 
         internal class Startup : IBlockChainContext<NullAction>
@@ -467,6 +472,10 @@ If omitted (default) explorer only the local blockchain store.")]
             public void ForkStates<T>(
                 Guid sourceChainId, Guid destinationChainId, Block<T> branchpoint)
                 where T : IAction, new()
+            {
+            }
+
+            public void Dispose()
             {
             }
         }

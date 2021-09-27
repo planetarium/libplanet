@@ -8,12 +8,17 @@ using Libplanet.Tx;
 namespace Libplanet.Blockchain.Policies
 {
     /// <summary>
-    /// An interface to determine if consecutive <see cref="Block{T}"/>s are
-    /// valid, and to suggest how difficult a <see cref="Block{T}.Nonce"/>
-    /// for a <see cref="Block{T}"/> to be mined.
+    /// <para>
+    /// An interface to determine if consecutive <see cref="Block{T}"/>s are valid.
+    /// </para>
+    /// <para>
+    /// An implementation of this interface should perform <em>all policy dependent checks</em>,
+    /// such as whether a <see cref="Block{T}"/> has the right difficulty,
+    /// a <see cref="Transaction{T}"/> has the right signer, etc.
+    /// </para>
     /// </summary>
     /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
-    /// to <see cref="Block{T}"/>'s type parameter.</typeparam>
+    /// <see cref="Block{T}"/>'s type parameter.</typeparam>
     public interface IBlockPolicy<T>
         where T : IAction, new()
     {
@@ -23,71 +28,78 @@ namespace Libplanet.Blockchain.Policies
         /// </summary>
         /// <seealso cref="IBlockExcerpt"/>
         /// <seealso cref="TotalDifficultyComparer"/>
-        IComparer<BlockPerception> CanonicalChainComparer { get; }
+        IComparer<IBlockExcerpt> CanonicalChainComparer { get; }
 
         /// <summary>
-        /// A block action to execute and be rendered for every block.
+        /// An <see cref="IAction"/> to execute and be rendered for every block, if any.
         /// </summary>
-        IAction BlockAction { get; }
+        IAction? BlockAction { get; }
 
         /// <summary>
-        /// The maximum number of <see cref="Block{T}.Transactions"/> that a <see cref="Block{T}"/>
-        /// can accept.  This value must not be negative and must be deterministic (i.e., must not
-        /// change after an object is once instantiated).
+        /// Checks if a <see cref="Transaction{T}"/> can be included in a yet to be mined
+        /// <see cref="Block{T}"/> that can be appended to the given <see cref="BlockChain{T}"/>.
         /// </summary>
-        /// <remarks>If the value is less then 1, it's treated as 1.</remarks>
-        [Pure]
-        int MaxTransactionsPerBlock { get; }
+        /// <param name="blockChain">The target <see cref="BlockChain{T}"/> to include
+        /// given <paramref name="transaction"/>.</param>
+        /// <param name="transaction">The <see cref="Transaction{T}"/> to consider.</param>
+        /// <returns>A <see cref="TxPolicyViolationException"/> with a description
+        /// as to why given <paramref name="transaction"/> is <em>invalid</em>,
+        /// or <c>null</c> if <paramref name="transaction"/> is <em>valid</em>.</returns>
+        /// <remarks>
+        /// This is used in two different cases:
+        /// <list type="bullet">
+        /// <item>
+        ///     <description>When selecting which <see cref="Transaction{T}"/> to include
+        ///     when mining a next <see cref="Block{T}"/>.</description>
+        /// </item>
+        /// <item>
+        ///     <description>When appending a <see cref="Block{T}"/>
+        ///     with <paramref name="transaction"/> to a <see cref="BlockChain{T}"/>.</description>
+        /// </item>
+        /// </list>
+        /// This is called separately from <see cref="ValidateNextBlock"/> from
+        /// a <see cref="BlockChain{T}"/>.
+        /// </remarks>
+        TxPolicyViolationException? ValidateNextBlockTx(
+            BlockChain<T> blockChain, Transaction<T> transaction);
 
         /// <summary>
-        /// A predicate that determines if the transaction follows the block policy.
+        /// Checks if a <see cref="Block{T}"/> can be appended to
+        /// the given <see cref="BlockChain{T}"/>.
         /// </summary>
-        /// <param name="transaction">A <see cref="Transaction{T}"/> to determine.</param>
-        /// <param name="blockChain">A <see cref="BlockChain{T}" /> for given
-        /// <paramref name="transaction" />.</param>
-        /// <returns><c>true</c> if <paramref name="transaction"/>is valid; otherwise, <c>false</c>.
-        /// </returns>
-        bool DoesTransactionFollowsPolicy(
-            Transaction<T> transaction,
-            BlockChain<T> blockChain
-        );
-
-        /// <summary>
-        /// Checks if <paramref name="nextBlock"/> is invalid, and if that
-        /// returns the reason.
-        /// <para>Note that it returns <c>null</c> when
-        /// <paramref name="nextBlock"/> is <em>valid</em>.</para>
-        /// </summary>
-        /// <param name="blocks">Consecutive <see cref="Block{T}"/>s to
+        /// <param name="blockChain">The target <see cref="BlockChain{T}"/> to
         /// append <paramref name="nextBlock"/>.</param>
         /// <param name="nextBlock">The next block to append to
-        /// <paramref name="blocks"/>.</param>
-        /// <returns>The reason why the given <paramref name="blocks"/> are
-        /// <em>invalid</em>, or <c>null</c> if <paramref name="blocks"/> are
-        /// <em>valid</em>.</returns>
-        InvalidBlockException? ValidateNextBlock(BlockChain<T> blocks, Block<T> nextBlock);
+        /// <paramref name="blockChain"/>.</param>
+        /// <returns>A <see cref="BlockPolicyViolationException"/> with a description
+        /// as to why given <paramref name="nextBlock"/> is <em>invalid</em>,
+        /// or <c>null</c> if <paramref name="nextBlock"/> is <em>valid</em>.</returns>
+        /// <remarks>
+        /// Note that <see cref="ValidateNextBlockTx"/> will be called separately from
+        /// a <see cref="BlockChain{T}"/> when appending a <see cref="Block{T}"/>.
+        /// Hence, to reduce redundancy, an implementation of this interface should not
+        /// call <see cref="ValidateNextBlockTx"/>.
+        /// </remarks>
+        BlockPolicyViolationException? ValidateNextBlock(
+            BlockChain<T> blockChain, Block<T> nextBlock);
 
         /// <summary>
         /// Determines a right <see cref="Block{T}.Difficulty"/>
         /// for a new <see cref="Block{T}"/> to be mined
-        /// right after the given <paramref name="blocks"/>.
+        /// right after the given <paramref name="blockChain"/>.
         /// </summary>
-        /// <param name="blocks">Consecutive <see cref="Block{T}"/>s to be
+        /// <param name="blockChain">Consecutive <see cref="Block{T}"/>s to be
         /// followed by a new <see cref="Block{T}"/> to be mined.</param>
         /// <returns>A right <see cref="Block{T}.Difficulty"/>
         /// for a new <see cref="Block{T}"/> to be mined.</returns>
-        long GetNextBlockDifficulty(BlockChain<T> blocks);
+        long GetNextBlockDifficulty(BlockChain<T> blockChain);
 
         /// <summary>
-        /// Gets the maximum length of a <see cref="Block{T}"/> in bytes.  It can vary depending on
-        /// a given <paramref name="index"/>, but should be deterministic; for the same
-        /// <paramref name="index"/>, the same value must be returned.
+        /// Gets the maximum length of a <see cref="Block{T}"/> in bytes.
         /// </summary>
-        /// <param name="index">An <see cref="Block{T}.Index"/> of a block to mine or receive.
-        /// </param>
+        /// <param name="index">The <see cref="Block{T}.Index"/> of the <see cref="Block{T}"/>
+        /// for which this constraint should apply.</param>
         /// <returns>The maximum length of a <see cref="Block{T}"/> in bytes to accept.</returns>
-        /// <remarks>If it returns less then 1, it is treated as 1, because there is no block
-        /// taking 0 bytes or negative length of bytes.</remarks>
         int GetMaxBlockBytes(long index);
 
         /// <summary>
@@ -97,5 +109,38 @@ namespace Libplanet.Blockchain.Policies
         /// do proof-of-work.</param>
         /// <returns>The <see cref="HashAlgorithmType"/> to use.</returns>
         HashAlgorithmType GetHashAlgorithm(long index);
+
+        /// <summary>
+        /// Gets the minimum number of <see cref="Transaction{T}"/>s allowed for
+        /// a valid <see cref="Block{T}"/>.
+        /// </summary>
+        /// <param name="index">The <see cref="Block{T}.Index"/> of the <see cref="Block{T}"/>
+        /// for which this constraint should apply.</param>
+        /// <returns>The minimum number of <see cref="Transaction{T}"/>s allowed for
+        /// a valid <see cref="Block{T}"/> can accept.</returns>
+        [Pure]
+        int GetMinTransactionsPerBlock(long index);
+
+        /// <summary>
+        /// Gets the maximum number of <see cref="Transaction{T}"/>s allowed for
+        /// a valid <see cref="Block{T}"/>.
+        /// </summary>
+        /// <param name="index">The <see cref="Block{T}.Index"/> of the <see cref="Block{T}"/>
+        /// for which this constraint should apply.</param>
+        /// <returns>The maximum number of <see cref="Transaction{T}"/>s allowed for
+        /// a valid <see cref="Block{T}"/> can accept.</returns>
+        [Pure]
+        int GetMaxTransactionsPerBlock(long index);
+
+        /// <summary>
+        /// Gets the maximum number of <see cref="Transaction{T}"/>s allowed per signer for
+        /// a valid <see cref="Block{T}"/>.
+        /// </summary>
+        /// <param name="index">The <see cref="Block{T}.Index"/> of the <see cref="Block{T}"/>
+        /// for which this constraint should apply.</param>
+        /// <returns>The maximum number of <see cref="Transaction{T}"/>s allowed per signer for
+        /// a valid <see cref="Block{T}"/> can accept.</returns>
+        [Pure]
+        int GetMaxTransactionsPerSignerPerBlock(long index);
     }
 }

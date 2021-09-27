@@ -1,8 +1,10 @@
 #nullable enable
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Threading;
@@ -109,6 +111,36 @@ namespace Libplanet
         [Pure]
         public ImmutableArray<byte> Digest(ImmutableArray<byte> input) =>
             Digest(input.ToBuilder().ToArray()).ToImmutableArray();
+
+        /// <summary>
+        /// Computes a hash digest of the hash algorithm from the given <paramref name="chunks"/> of
+        /// input bytes.
+        /// </summary>
+        /// <param name="chunks">The chunks of bytes to compute its hash.</param>
+        /// <returns>The hash digest derivied from input <paramref name="chunks"/>.</returns>
+        [Pure]
+        public byte[] Digest(IEnumerable<byte[]> chunks)
+        {
+            HashAlgorithm algo = _instance.Value!;
+            algo.Initialize();
+            foreach (byte[] chunk in chunks)
+            {
+                algo.TransformBlock(chunk, 0, chunk.Length, null, 0);
+            }
+
+            algo.TransformFinalBlock(Array.Empty<byte>(), 0, 0);
+            return algo.Hash;
+        }
+
+        /// <summary>
+        /// Computes a hash digest of the hash algorithm from the given <paramref name="chunks"/> of
+        /// input bytes.
+        /// </summary>
+        /// <param name="chunks">The chunks of bytes to compute its hash.</param>
+        /// <returns>The hash digest derivied from input <paramref name="chunks"/>.</returns>
+        [Pure]
+        public ImmutableArray<byte> Digest(IEnumerable<ImmutableArray<byte>> chunks) =>
+            Digest(chunks.Select(imm => imm.ToBuilder().ToArray())).ToImmutableArray();
 
         /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>
         [Pure]

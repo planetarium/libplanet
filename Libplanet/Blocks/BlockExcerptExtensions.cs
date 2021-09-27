@@ -5,7 +5,7 @@ namespace Libplanet.Blocks
     /// <summary>
     /// The extension methods for <see cref="IBlockExcerpt"/>.
     /// </summary>
-    public static class BlockExcerpt
+    public static class BlockExcerptExtensions
     {
         /// <summary>
         /// Shows <see cref="IBlockExcerpt"/> instance's members as a string.
@@ -21,6 +21,14 @@ namespace Libplanet.Blocks
                 $" {nameof(excerpt.Hash)} = {excerpt.Hash}," +
                 $" {nameof(excerpt.TotalDifficulty)} = {excerpt.TotalDifficulty}" +
                 " }";
+        }
+
+        public static bool ExcerptEquals(this IBlockExcerpt excerpt, IBlockExcerpt other)
+        {
+            return excerpt.ProtocolVersion.Equals(other.ProtocolVersion)
+                && excerpt.Index.Equals(other.Index)
+                && excerpt.Hash.Equals(other.Hash)
+                && excerpt.TotalDifficulty.Equals(other.TotalDifficulty);
         }
     }
 }

@@ -12,6 +12,8 @@
     <Rule Id="SA1005" Action="None" />
     <!-- Closing parenthesis should be on line of opening parenthesis -->
     <Rule Id="SA1112" Action="None" />
+    <!-- The parameter spans multiple lines -->
+    <Rule Id="SA1118" Action="None" />
     <!-- Allow tuple types in signatures omit element names. -->
     <Rule Id="SA1414" Action="None" />
     <!-- Allow tuple fields to be referred by index (i.e. ItemN). -->
@@ -68,6 +70,8 @@
     <Rule Id="S2933" Action="None" />
     <!-- Return 'Task' instead. -->
     <Rule Id="S3168" Action="None" />
+    <!-- Extract this nested ternary operation into an independent statement. -->
+    <Rule Id="S3358" Action="Info" />
     <!-- Make this test method non-'async' or return 'Task'. -->
     <Rule Id="S3433" Action="None" />
     <!-- Fix this implementation of 'IDisposable' to conform to the dispose

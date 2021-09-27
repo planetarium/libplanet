@@ -390,7 +390,7 @@ namespace Libplanet.Tests.Net
                         difficulty: policy.GetNextBlockDifficulty(minerChain),
                         blockInterval: TimeSpan.FromSeconds(1)
                 ).AttachStateRootHash(minerChain.StateStore, minerChain.Policy);
-                minerSwarm.BlockChain.Append(block, DateTimeOffset.UtcNow, false, true, false);
+                minerSwarm.BlockChain.Append(block, false, true, false);
 
                 await receiverSwarm.PreloadAsync(TimeSpan.FromSeconds(1));
 
@@ -693,14 +693,14 @@ namespace Libplanet.Tests.Net
             minerSwarm.FindNextHashesChunkSize = 2;
             await StartAsync(minerSwarm);
 
-            (BoundPeer, long)[] peers =
+            (BoundPeer, IBlockExcerpt)[] peersWithExcerpt =
             {
-                ((BoundPeer)minerSwarm.AsPeer, minerChain.Count - 1),
+                ((BoundPeer)minerSwarm.AsPeer, minerChain.Tip.Header),
             };
 
             (long, BlockHash)[] demands = await receiverSwarm.GetDemandBlockHashes(
                 receiverChain,
-                peers,
+                peersWithExcerpt,
                 progress: null,
                 cancellationToken: CancellationToken.None
             ).ToArrayAsync();
@@ -782,15 +782,15 @@ namespace Libplanet.Tests.Net
             minerSwarm.FindNextHashesChunkSize = 2;
             await StartAsync(minerSwarm);
 
-            (BoundPeer, long)[] peers =
+            (BoundPeer, IBlockExcerpt)[] peersWithBlockExcerpt =
             {
-                ((BoundPeer)minerSwarm.AsPeer, minerChain.Count - 1),
+                ((BoundPeer)minerSwarm.AsPeer, minerChain.Tip.Header),
             };
 
             long receivedCount = 0;
             (long, BlockHash)[] demands = await receiverSwarm.GetDemandBlockHashes(
                 receiverChain,
-                peers,
+                peersWithBlockExcerpt,
                 progress: new ActionProgress<PreloadState>(state =>
                 {
                     if (state is BlockHashDownloadState s &&

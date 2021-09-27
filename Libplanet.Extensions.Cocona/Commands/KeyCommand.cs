@@ -97,8 +97,7 @@ namespace Libplanet.Extensions.Cocona.Commands
             PrivateKey key;
             try
             {
-                byte[] keyBytes = ByteUtil.ParseHex(rawKeyHex);
-                key = new PrivateKey(keyBytes);
+                key = PrivateKey.FromString(rawKeyHex);
             }
             catch (FormatException)
             {
@@ -135,7 +134,7 @@ namespace Libplanet.Extensions.Cocona.Commands
         )
         {
             PrivateKey key = UnprotectKey(keyId, passphrase);
-            byte[] rawKey = publicKey ? key.PublicKey.Format(true) : key.ByteArray;
+            byte[] rawKey = publicKey ? key.PublicKey.Format(true) : key.ToByteArray();
             if (bytes)
             {
                 using Stream stdout = Console.OpenStandardOutput();

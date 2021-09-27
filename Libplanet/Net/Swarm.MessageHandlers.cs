@@ -1,10 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Net.Messages;
 using Libplanet.Tx;
@@ -87,10 +83,7 @@ namespace Libplanet.Net
                     break;
 
                 case BlockHeaderMessage blockHeader:
-                    Task.Run(
-                        async () => await ProcessBlockHeader(blockHeader, _cancellationToken),
-                        _cancellationToken
-                    );
+                    ProcessBlockHeader(blockHeader);
                     break;
 
                 default:
@@ -101,13 +94,11 @@ namespace Libplanet.Net
             }
         }
 
-        private async Task ProcessBlockHeader(
-            BlockHeaderMessage message,
-            CancellationToken cancellationToken = default(CancellationToken))
+        private void ProcessBlockHeader(BlockHeaderMessage message)
         {
             if (!(message.Remote is BoundPeer peer))
             {
-                _logger.Information(
+                _logger.Debug(
                     "BlockHeaderMessage was sent from invalid peer " +
                     "{PeerAddress}; ignored.",
                     message.Remote.Address
@@ -117,7 +108,7 @@ namespace Libplanet.Net
 
             if (!message.GenesisHash.Equals(BlockChain.Genesis.Hash))
             {
-                _logger.Information(
+                _logger.Debug(
                     "BlockHeaderMessage was sent from the peer " +
                     "{PeerAddress} with different genesis block {hash}; ignored.",
                     message.Remote.Address,
@@ -129,10 +120,10 @@ namespace Libplanet.Net
             BlockHeaderReceived.Set();
             BlockHeader header = message.Header;
 
-            _logger.Debug(
-                $"Received a {nameof(BlockHeader)} #{{BlockIndex}} {{BlockHash}}.",
+            _logger.Information(
+                $"Received {nameof(BlockHeader)} #{{BlockIndex}} {{BlockHash}}.",
                 header.Index,
-                ByteUtil.Hex(header.Hash)
+                header.Hash
             );
 
             HashAlgorithmType hashAlgorithm = BlockChain.Policy.GetHashAlgorithm(header.Index);
@@ -142,37 +133,38 @@ namespace Libplanet.Net
             }
             catch (InvalidBlockException ibe)
             {
-                _logger.Information(
+                _logger.Debug(
                     ibe,
-                    "A received header #{BlockIndex} {BlockHash} seems invalid; ignored.",
+                    "Received header #{BlockIndex} {BlockHash} seems invalid; ignored.",
                     header.Index,
-                    ByteUtil.Hex(header.Hash)
+                    header.Hash
                 );
                 return;
             }
 
-            using (await _blockSyncMutex.LockAsync(cancellationToken))
+            if (!IsBlockNeeded(header))
             {
-                if (IsDemandNeeded(header, peer))
-                {
-                    _logger.Debug(
-                        "BlockDemand #{index} {blockHash} from {peer}.",
-                        header.Index,
-                        ByteUtil.Hex(header.Hash),
-                        peer);
-                    BlockDemand = new BlockDemand(header, peer, DateTimeOffset.UtcNow);
-                }
-                else
-                {
-                    _logger.Debug(
-                        "No blocks are required " +
-                        "(current: {Current}, demand: {Demand}, received: {Received});" +
-                        $" {nameof(BlockHeaderMessage)} is ignored.",
-                        BlockChain.Tip.Index,
-                        BlockDemand?.Header.Index,
-                        header.Index);
-                }
+                _logger.Debug(
+                    "Received header #{BlockIndex} {BlockHash} from peer {Peer} is not needed " +
+                    "for the current chain with tip #{TipIndex} {TipHash}.",
+                    header.Index,
+                    header.Hash,
+                    peer,
+                    BlockChain.Tip,
+                    BlockChain.Tip.Hash);
+                return;
             }
+
+            _logger.Information(
+                "Adding received header #{BlockIndex} {BlockHash} from peer {Peer} to " +
+                $"{nameof(BlockDemandTable)}...",
+                header.Index,
+                header.Hash,
+                peer);
+            BlockDemandTable.Add(
+                BlockChain,
+                IsBlockNeeded,
+                new BlockDemand(header, peer, DateTimeOffset.UtcNow));
         }
 
         private void TransferTxs(GetTxs getTxs)
@@ -218,26 +210,7 @@ namespace Libplanet.Net
                 message.Ids.Select(txid => txid.ToString())
             );
 
-            IStagePolicy<T> stagePolicy = BlockChain.StagePolicy;
-            ImmutableHashSet<TxId> newTxIds = message.Ids
-                .Where(id => !_demandTxIds.ContainsKey(id))
-                .Where(id => !stagePolicy.Ignores(BlockChain, id))
-                .ToImmutableHashSet();
-
-            if (!newTxIds.Any())
-            {
-                _logger.Debug("No unaware transactions to receive.");
-                return;
-            }
-
-            _logger.Debug(
-                "Unaware transactions to receive: {@TxIds}.",
-                newTxIds.Select(txid => txid.ToString())
-            );
-            foreach (TxId txid in newTxIds)
-            {
-                _demandTxIds.TryAdd(txid, peer);
-            }
+            TxCompletion.Demand(peer, message.Ids);
         }
 
         private void TransferBlocks(GetBlocks getData)

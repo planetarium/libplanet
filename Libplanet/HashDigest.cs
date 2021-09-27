@@ -1,5 +1,6 @@
 #nullable enable
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Linq;
@@ -173,9 +174,9 @@ namespace Libplanet
         /// <param name="input">The bytes to compute its hash.</param>
         /// <returns>The hash digest derived from <paramref name="input"/>.</returns>
         [Pure]
-        public static HashDigest<T> DeriveFrom(byte[] input)
+        public static HashDigest<T> DeriveFrom(IReadOnlyList<byte> input)
         {
-            byte[] hash = _algorithm.Value!.ComputeHash(input);
+            byte[] hash = _algorithm.Value!.ComputeHash(input is byte[] ba ? ba : input.ToArray());
             return new HashDigest<T>(hash);
         }
 

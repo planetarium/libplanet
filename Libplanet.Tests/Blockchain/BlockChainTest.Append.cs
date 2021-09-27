@@ -341,7 +341,7 @@ namespace Libplanet.Tests.Blockchain
             HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             PrivateKey signer = null;
             int nonce = 0;
-            int maxTxs = _blockChain.Policy.MaxTransactionsPerBlock;
+            int maxTxs = _blockChain.Policy.GetMaxTransactionsPerBlock(1);
             var manyTxs = new List<Transaction<DumbAction>>();
             for (int i = 0; i <= maxTxs; i++)
             {
@@ -385,7 +385,6 @@ namespace Libplanet.Tests.Blockchain
             Assert.Throws<ArgumentException>(() =>
                 _blockChain.Append(
                     block,
-                    DateTimeOffset.UtcNow,
                     evaluateActions: false,
                     renderBlocks: true,
                     renderActions: true
@@ -396,7 +395,6 @@ namespace Libplanet.Tests.Blockchain
 
             _blockChain.Append(
                 block,
-                DateTimeOffset.UtcNow,
                 evaluateActions: false,
                 renderBlocks: true,
                 renderActions: false
@@ -439,13 +437,16 @@ namespace Libplanet.Tests.Blockchain
             var validKey = new PrivateKey();
             var invalidKey = new PrivateKey();
 
-            bool IsSignerValid(Transaction<DumbAction> tx, BlockChain<DumbAction> chain)
+            TxPolicyViolationException IsSignerValid(
+                BlockChain<DumbAction> chain, Transaction<DumbAction> tx)
             {
                 var validAddress = validKey.PublicKey.ToAddress();
-                return tx.Signer.Equals(validAddress);
+                return tx.Signer.Equals(validAddress)
+                    ? null
+                    : new TxPolicyViolationException(tx.Id, "invalid signer");
             }
 
-            var policy = new BlockPolicy<DumbAction>(doesTransactionFollowPolicy: IsSignerValid);
+            var policy = new BlockPolicy<DumbAction>(validateNextBlockTx: IsSignerValid);
             using (var fx = new DefaultStoreFixture())
             {
                 var blockChain = new BlockChain<DumbAction>(
@@ -480,7 +481,7 @@ namespace Libplanet.Tests.Blockchain
                     blockInterval: TimeSpan.FromSeconds(10)
                 ).AttachStateRootHash(blockChain.StateStore, policy);
 
-                Assert.Throws<TxViolatingBlockPolicyException>(() => blockChain.Append(block2));
+                Assert.Throws<TxPolicyViolationException>(() => blockChain.Append(block2));
             }
         }
 
@@ -542,12 +543,12 @@ namespace Libplanet.Tests.Blockchain
         {
             var blockChain = new BlockChain<DumbAction>(
                 new NullPolicy<DumbAction>(
-                    new InvalidBlockDifficultyException(string.Empty)),
+                    new BlockPolicyViolationException(string.Empty)),
                 new VolatileStagePolicy<DumbAction>(),
                 _fx.Store,
                 _fx.StateStore,
                 _fx.GenesisBlock);
-            Assert.Throws<InvalidBlockDifficultyException>(
+            Assert.Throws<BlockPolicyViolationException>(
                 () => blockChain.Append(_fx.Block1));
         }
 

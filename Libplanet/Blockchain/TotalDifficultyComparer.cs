@@ -16,58 +16,29 @@ namespace Libplanet.Blockchain
     /// protocol version, it always consider the higher version greater.</remarks>
     /// <seealso cref="IBlockPolicy{T}.CanonicalChainComparer"/>
     /// <seealso cref="IBlockExcerpt"/>
-    public class TotalDifficultyComparer : IComparer<BlockPerception>
+    public class TotalDifficultyComparer : IComparer<IBlockExcerpt>
     {
-        private readonly Func<DateTimeOffset> _currentTimeGetter;
-
         /// <summary>
         /// Creates a <see cref="TotalDifficultyComparer"/> instance.
         /// </summary>
-        /// <param name="outdateAfter">Blocks taken this time since they are perceived are
-        /// considered outdated, so that chains having these blocks as their tips become stale.
-        /// </param>
-        public TotalDifficultyComparer(TimeSpan outdateAfter)
-            : this(outdateAfter, () => DateTimeOffset.UtcNow)
+        public TotalDifficultyComparer()
         {
         }
-
-        /// <summary>
-        /// Creates a <see cref="TotalDifficultyComparer"/> instance.
-        /// </summary>
-        /// <param name="outdateAfter">Blocks taken this time since they are perceived are
-        /// considered outdated, so that chains having these blocks as their tips become stale.
-        /// </param>
-        /// <param name="currentTimeGetter">Configures the way to get the current time instead of
-        /// <see cref="DateTimeOffset.UtcNow"/> property.</param>
-        public TotalDifficultyComparer(
-            TimeSpan outdateAfter,
-            Func<DateTimeOffset> currentTimeGetter
-        )
-        {
-            _currentTimeGetter = currentTimeGetter;
-            OutdateAfter = outdateAfter;
-        }
-
-        /// <summary>
-        /// Blocks taken this time since they are perceived are considered outdated, so that
-        /// chains having these blocks as their tips become stale.
-        /// </summary>
-        public TimeSpan OutdateAfter { get; }
 
         /// <inheritdoc cref="IComparer{T}.Compare(T, T)"/>
-        public int Compare(BlockPerception x, BlockPerception y)
+        public int Compare(IBlockExcerpt? x, IBlockExcerpt? y)
         {
-            DateTimeOffset outdateBefore = _currentTimeGetter() - OutdateAfter;
-            bool xOutdated = x.PerceivedTime <= outdateBefore,
-                 yOutdated = y.PerceivedTime <= outdateBefore;
-            if (xOutdated != yOutdated)
+            // FIXME: This deviates from the documented behavior of IComparer<T>.
+            if (x is null || y is null)
             {
-                return xOutdated ? -1 : 1;
+                throw new ArgumentNullException(
+                    $"Neither {nameof(x)} nor {nameof(y)} should be null.");
             }
-
-            IBlockExcerpt xBlock = x.BlockExcerpt, yBlock = y.BlockExcerpt;
-            int vcmp = xBlock.ProtocolVersion.CompareTo(yBlock.ProtocolVersion);
-            return vcmp == 0 ? xBlock.TotalDifficulty.CompareTo(yBlock.TotalDifficulty) : vcmp;
+            else
+            {
+                int vcmp = x.ProtocolVersion.CompareTo(y.ProtocolVersion);
+                return vcmp == 0 ? x.TotalDifficulty.CompareTo(y.TotalDifficulty) : vcmp;
+            }
         }
     }
 }

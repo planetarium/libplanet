@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography;
 using System.Threading;
-using System.Threading.Tasks;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
@@ -183,7 +181,6 @@ namespace Libplanet.Blockchain
                 {
                     Append(
                         genesisBlock,
-                        currentTime: genesisBlock.Timestamp,
                         renderBlocks: !inFork,
                         renderActions: !inFork,
                         evaluateActions: !inFork
@@ -246,22 +243,8 @@ namespace Libplanet.Blockchain
 
         /// <summary>
         /// The topmost <see cref="Block{T}"/> of the current blockchain.
-        /// Can be <c>null</c> if the blockchain is empty.
         /// </summary>
-        public Block<T> Tip
-        {
-            get
-            {
-                try
-                {
-                    return this[-1];
-                }
-                catch (ArgumentOutOfRangeException)
-                {
-                    return null;
-                }
-            }
-        }
+        public Block<T> Tip => this[-1];
 
         /// <summary>
         /// The first <see cref="Block{T}"/> in the <see cref="BlockChain{T}"/>.
@@ -580,38 +563,7 @@ namespace Libplanet.Blockchain
         /// cref="IBlockPolicy{T}.GetMaxBlockBytes(long)"/>).</exception>
         /// <exception cref="BlockExceedingTransactionsException">Thrown when the given <paramref
         /// name="block"/> has too many transactions (according to <see
-        /// cref="IBlockPolicy{T}.MaxTransactionsPerBlock"/>).</exception>
-        /// <exception cref="InvalidBlockException">Thrown when the given <paramref name="block"/>
-        /// is invalid, in itself or according to the <see cref="Policy"/>.</exception>
-        /// <exception cref="InvalidTxNonceException">Thrown when the
-        /// <see cref="Transaction{T}.Nonce"/> is different from
-        /// <see cref="GetNextTxNonce"/> result of the
-        /// <see cref="Transaction{T}.Signer"/>.</exception>
-        public void Append(Block<T> block, StateCompleterSet<T>? stateCompleters = null) =>
-            Append(block, DateTimeOffset.UtcNow, stateCompleters);
-
-        /// <summary>
-        /// Adds a <paramref name="block"/> to the end of this chain.
-        /// <para><see cref="Block{T}.Transactions"/> in the <paramref name="block"/> updates
-        /// states and balances in the blockchain, and <see cref="TxExecution"/>s for
-        /// transactions are recorded.</para>
-        /// <para>Note that <see cref="Renderers"/> receive events right after the <paramref
-        /// name="block"/> is confirmed (and thus all states reflect changes in the <paramref
-        /// name="block"/>).</para>
-        /// </summary>
-        /// <param name="block">A next <see cref="Block{T}"/>, which is mined,
-        /// to add.</param>
-        /// <param name="currentTime">The current time.</param>
-        /// <param name="stateCompleters">The strategy to complement incomplete block states which
-        /// are required for action execution and rendering.
-        /// <see cref="StateCompleterSet{T}.Recalculate"/> by default.
-        /// </param>
-        /// <exception cref="InvalidBlockBytesLengthException">Thrown when the given <paramref
-        /// name="block"/> is too long in bytes (according to <see
-        /// cref="IBlockPolicy{T}.GetMaxBlockBytes(long)"/>).</exception>
-        /// <exception cref="BlockExceedingTransactionsException">Thrown when the given <paramref
-        /// name="block"/> has too many transactions (according to <see
-        /// cref="IBlockPolicy{T}.MaxTransactionsPerBlock"/>).</exception>
+        /// cref="IBlockPolicy{T}.GetMaxTransactionsPerBlock(long)"/>).</exception>
         /// <exception cref="InvalidBlockException">Thrown when the given <paramref name="block"/>
         /// is invalid, in itself or according to the <see cref="Policy"/>.</exception>
         /// <exception cref="InvalidTxNonceException">Thrown when the
@@ -620,12 +572,10 @@ namespace Libplanet.Blockchain
         /// <see cref="Transaction{T}.Signer"/>.</exception>
         public void Append(
             Block<T> block,
-            DateTimeOffset currentTime,
             StateCompleterSet<T>? stateCompleters = null
         ) =>
             Append(
                 block,
-                currentTime,
                 evaluateActions: true,
                 renderBlocks: true,
                 renderActions: true,
@@ -741,338 +691,6 @@ namespace Libplanet.Blockchain
 
             return new BlockPerception(blockExcerpt, time);
         }
-
-#pragma warning disable MEN003
-        /// <summary>
-        /// Mines a next <see cref="Block{T}"/> using staged <see cref="Transaction{T}"/>s,
-        /// and then <see cref="Append(Block{T}, StateCompleterSet{T}?)"/> it to the chain
-        /// (unless the <paramref name="append"/> option is turned off).
-        /// </summary>
-        /// <param name="miner">The <see cref="Address"/> of miner that mined the block.</param>
-        /// <param name="currentTime">The <see cref="DateTimeOffset"/> when mining started.</param>
-        /// <param name="append">Whether to <see cref="Append(Block{T}, StateCompleterSet{T}?)"/>
-        /// the mined block.  Turned on by default.</param>
-        /// <param name="maxTransactions">The maximum number of transactions that a block can
-        /// accept.  This value must be greater than 0, and less than or equal to
-        /// <see cref="Policy"/>.<see cref="IBlockPolicy{T}.MaxTransactionsPerBlock"/>.
-        /// Zero and negative values are treated as 1. If it is omitted or more than
-        /// <see cref="Policy"/>.<see cref="IBlockPolicy{T}.MaxTransactionsPerBlock"/>, it will be
-        /// treated as <see cref="Policy"/>.<see cref="IBlockPolicy{T}.MaxTransactionsPerBlock"/>.
-        /// </param>
-        /// <param name="cancellationToken">
-        /// A cancellation token used to propagate notification that this
-        /// operation should be canceled.
-        /// </param>
-        /// <returns>An awaitable task with a <see cref="Block{T}"/> that is mined.</returns>
-        /// <exception cref="OperationCanceledException">Thrown when
-        /// <see cref="BlockChain{T}.Tip"/> is changed while mining.</exception>
-        public async Task<Block<T>> MineBlock(
-            Address miner,
-            DateTimeOffset currentTime,
-            bool append = true,
-            int? maxTransactions = null,
-            CancellationToken cancellationToken = default(CancellationToken)
-        )
-        {
-            using var cts = new CancellationTokenSource();
-            using CancellationTokenSource cancellationTokenSource =
-                CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, cts.Token);
-            void WatchTip(object target, (Block<T> OldTip, Block<T> NewTip) tip) => cts.Cancel();
-            TipChanged += WatchTip;
-
-            maxTransactions = Math.Max(
-                Math.Min(
-                    maxTransactions ?? Policy.MaxTransactionsPerBlock,
-                    Policy.MaxTransactionsPerBlock
-                ),
-                1
-            );
-
-            long index = Store.CountIndex(Id);
-            long difficulty = Policy.GetNextBlockDifficulty(this);
-            BlockHash? prevHash = Store.IndexBlockHash(Id, index - 1);
-
-            int sessionId = new System.Random().Next();
-            int procId = Process.GetCurrentProcess().Id;
-            _logger.Debug(
-                "Start to mine a block #{Index} [difficulty: {Difficulty}; prev: {prevHash}; " +
-                "session: {SessionId}; proc: {ProcessId}]... ",
-                index,
-                difficulty,
-                prevHash,
-                sessionId,
-                procId
-            );
-
-            HashAlgorithmType hashAlgorithm = Policy.GetHashAlgorithm(index);
-
-            ImmutableArray<Transaction<T>> stagedTransactions = ListStagedTransactions();
-            _logger.Debug(
-                "There are {Transactions} staged transactions.",
-                stagedTransactions.Length
-            );
-
-            var transactionsToMine = new List<Transaction<T>>();
-            int i = 0;
-
-            // FIXME: The tx collection timeout should be configurable.
-            DateTimeOffset timeout = DateTimeOffset.UtcNow + TimeSpan.FromSeconds(4);
-
-            // Makes an empty block to estimate the length of bytes without transactions.
-            var estimatedBytes = new Block<T>(
-                index: index,
-                difficulty: difficulty,
-                totalDifficulty: Tip.TotalDifficulty,
-                nonce: default,
-                miner: miner,
-                previousHash: prevHash,
-                timestamp: currentTime,
-                transactions: new Transaction<T>[0],
-                hashAlgorithm: hashAlgorithm
-            ).BytesLength;
-            int maxBlockBytes = Math.Max(Policy.GetMaxBlockBytes(index), 1);
-            var skippedSigners = new HashSet<Address>();
-            var storedNonces = new Dictionary<Address, long>();
-            var nextNonces = new Dictionary<Address, long>();
-
-            foreach (Transaction<T> tx in stagedTransactions)
-            {
-                // We don't care about nonce ordering here because `.ListStagedTransactions()`
-                // returns already ordered transactions by its nonce.
-                if (!storedNonces.ContainsKey(tx.Signer))
-                {
-                    storedNonces[tx.Signer] = Store.GetTxNonce(Id, tx.Signer);
-                    nextNonces[tx.Signer] = storedNonces[tx.Signer];
-                }
-
-                _logger.Verbose(
-                    "Preparing mining a block #{Index}; validating a tx {Index}/{Total} " +
-                    "{Transaction}...",
-                    index,
-                    ++i,
-                    stagedTransactions.Length,
-                    tx.Id
-                );
-
-                if (transactionsToMine.Count >= maxTransactions)
-                {
-                    _logger.Information(
-                        "Not all staged transactions will be included in a block #{Index} to " +
-                        "be mined by {Miner}, because it reaches the maximum number of " +
-                        "acceptable transactions: {MaxTransactions}",
-                        index,
-                        miner,
-                        maxTransactions
-                    );
-                    break;
-                }
-
-                if (!Policy.DoesTransactionFollowsPolicy(tx, this))
-                {
-                    _logger.Debug(
-                        "Unstage the tx {Index}/{Total} {Transaction} as it doesn't follow policy.",
-                        i,
-                        stagedTransactions.Length,
-                        tx.Id
-                    );
-                    UnstageTransaction(tx);
-                    continue;
-                }
-
-                if (storedNonces[tx.Signer] <= tx.Nonce && tx.Nonce == nextNonces[tx.Signer])
-                {
-                    if (estimatedBytes + tx.BytesLength > maxBlockBytes)
-                    {
-                        // Once someone's tx is excluded from a block, their later txs are also all
-                        // excluded in the block, because later nonces become invalid.
-                        skippedSigners.Add(tx.Signer);
-                        _logger.Information(
-                            "The {Signer}'s transactions after the nonce #{Nonce} will be " +
-                            "excluded in a block #{Index} to be mined by {Miner}, because it " +
-                            "takes too long bytes.",
-                            tx.Signer,
-                            tx.Nonce,
-                            index,
-                            miner
-                        );
-                        continue;
-                    }
-
-                    transactionsToMine.Add(tx);
-                    nextNonces[tx.Signer] += 1;
-                    estimatedBytes += tx.BytesLength;
-                }
-                else if (tx.Nonce < storedNonces[tx.Signer])
-                {
-                    _logger.Debug(
-                        "Tx {Index}/{Total} {Transaction} has a lower nonce than expected: " +
-                        "{Nonce} ({Signer})." +
-                        "it will be discarded.",
-                        i,
-                        stagedTransactions.Length,
-                        tx.Id,
-                        tx.Nonce,
-                        tx.Signer
-                    );
-                    UnstageTransaction(tx);
-                }
-                else
-                {
-                    _logger.Debug(
-                        "Tx {Index}/{Total} {Transaction} has a higher nonce than expected: " +
-                        "{Nonce} ({Signer}).  " +
-                        "It will be included by a block mined later.",
-                        i,
-                        stagedTransactions.Length,
-                        tx.Id,
-                        tx.Nonce,
-                        tx.Signer
-                    );
-                }
-
-                if (timeout < DateTimeOffset.UtcNow)
-                {
-                    _logger.Debug(
-                        "Reached the time limit to collect staged transactions; other staged " +
-                        "transactions will be mined later."
-                    );
-                    break;
-                }
-            }
-
-            _logger.Verbose(
-                "A block #{Index} to be mined by {Miner} will include {Transactions} " +
-                "transactions out of {StagedTransactions} staged transactions.",
-                index,
-                miner,
-                transactionsToMine.Count,
-                stagedTransactions.Length
-            );
-
-            Block<T> block;
-            try
-            {
-                block = await Task.Run(
-                    () => Block<T>.Mine(
-                        index: index,
-                        hashAlgorithm: hashAlgorithm,
-                        difficulty: difficulty,
-                        previousTotalDifficulty: Tip.TotalDifficulty,
-                        miner: miner,
-                        previousHash: prevHash,
-                        timestamp: currentTime,
-                        transactions: transactionsToMine,
-                        cancellationToken: cancellationTokenSource.Token),
-                    cancellationTokenSource.Token
-                );
-            }
-            catch (OperationCanceledException)
-            {
-                if (cts.IsCancellationRequested)
-                {
-                    throw new OperationCanceledException(
-                        "Mining canceled due to change of tip index.");
-                }
-
-                throw new OperationCanceledException(cancellationToken);
-            }
-            finally
-            {
-                TipChanged -= WatchTip;
-            }
-
-            IReadOnlyList<ActionEvaluation> actionEvaluations = ActionEvaluator.Evaluate(
-                block, StateCompleterSet<T>.Recalculate);
-
-            if (StateStore is TrieStateStore trieStateStore)
-            {
-                _rwlock.EnterWriteLock();
-                try
-                {
-                    SetStates(block, actionEvaluations);
-                    block = new Block<T>(block, trieStateStore.GetRootHash(block.Hash));
-
-                    // it's needed because `block.Hash` was updated with the state root hash.
-                    // FIXME: we need a method for calculating the state root hash without
-                    // `.SetStates()`.
-                    SetStates(block, actionEvaluations);
-                }
-                finally
-                {
-                    _rwlock.ExitWriteLock();
-                }
-            }
-            else
-            {
-                // We need to re-execute it.
-                actionEvaluations = null;
-            }
-
-            _logger.Debug(
-                "Mined a block #{Index} [difficulty: {Difficulty}; prev: {prevHash}; " +
-                "session: {SessionId}; proc: {ProcessId}].",
-                index,
-                difficulty,
-                prevHash,
-                sessionId,
-                procId
-            );
-
-            if (append)
-            {
-                Append(
-                    block,
-                    currentTime,
-                    evaluateActions: true,
-                    renderBlocks: true,
-                    renderActions: true,
-                    actionEvaluations: actionEvaluations
-                );
-
-                _logger.Debug(
-                    "Appended a block #{Index} [difficulty: {Difficulty}; prev: {prevHash}; " +
-                    "session: {SessionId}; proc: {ProcessId}].",
-                    index,
-                    difficulty,
-                    prevHash,
-                    sessionId,
-                    procId
-                );
-            }
-
-            return block;
-        }
-#pragma warning restore MEN003
-
-        /// <summary>
-        /// Mines a next <see cref="Block{T}"/> using staged <see cref="Transaction{T}"/>s,
-        /// and then <see cref="Append(Block{T}, StateCompleterSet{T}?)"/> it to the chain
-        /// (unless the <paramref name="append"/> option is turned off).
-        /// </summary>
-        /// <param name="miner">The <see cref="Address"/> of miner that mined the block.</param>
-        /// <param name="append">Whether to <see cref="Append(Block{T}, StateCompleterSet{T}?)"/>
-        /// the mined block.  Turned on by default.</param>
-        /// <param name="maxTransactions">The maximum number of transactions that a block can
-        /// accept.  This value must be greater than 0, and less than or equal to
-        /// <see cref="Policy"/>.<see cref="IBlockPolicy{T}.MaxTransactionsPerBlock"/>.
-        /// Zero and negative values are treated as 1. If it is omitted or more than
-        /// <see cref="Policy"/>.<see cref="IBlockPolicy{T}.MaxTransactionsPerBlock"/>, it will be
-        /// treated as <see cref="Policy"/>.<see cref="IBlockPolicy{T}.MaxTransactionsPerBlock"/>.
-        /// </param>
-        /// <param name="cancellationToken">
-        /// A cancellation token used to propagate notification that this
-        /// operation should be canceled.
-        /// </param>
-        /// <returns>An awaitable task with a <see cref="Block{T}"/> that is mined.</returns>
-        /// <exception cref="OperationCanceledException">Thrown when
-        /// <see cref="BlockChain{T}.Tip"/> is changed while mining.</exception>
-        public Task<Block<T>> MineBlock(
-            Address miner,
-            bool append = true,
-            int? maxTransactions = null,
-            CancellationToken cancellationToken = default
-        ) =>
-            MineBlock(miner, DateTimeOffset.UtcNow, append, maxTransactions, cancellationToken);
 
         /// <summary>
         /// Creates a new <see cref="Transaction{T}"/> and stage the transaction.
@@ -1214,7 +832,6 @@ namespace Libplanet.Blockchain
 #pragma warning disable MEN003
         internal void Append(
             Block<T> block,
-            DateTimeOffset currentTime,
             bool evaluateActions,
             bool renderBlocks,
             bool renderActions,
@@ -1239,12 +856,12 @@ namespace Libplanet.Blockchain
 
             _logger.Debug("Trying to append block {blockIndex}: {block}", block?.Index, block);
 
-            if (block.Transactions.Count() is { } txCount &&
-                txCount > Policy.MaxTransactionsPerBlock)
+            int policyMaxTx = Policy.GetMaxTransactionsPerBlock(block.Index);
+            if (block.Transactions.Count() is { } txCount && txCount > policyMaxTx)
             {
                 throw new BlockExceedingTransactionsException(
                     txCount,
-                    Policy.MaxTransactionsPerBlock,
+                    policyMaxTx,
                     "The block to append has too many transactions."
                 );
             }
@@ -1259,7 +876,7 @@ namespace Libplanet.Blockchain
             }
 
             _rwlock.EnterUpgradeableReadLock();
-            Block<T> prevTip = Tip;
+            Block<T> prevTip = Count > 0 ? Tip : null;
             try
             {
                 InvalidBlockException e = ValidateNextBlock(block);
@@ -1276,9 +893,9 @@ namespace Libplanet.Blockchain
                 // the tx nounce order when the block was created
                 foreach (Transaction<T> tx1 in block.Transactions)
                 {
-                    if (!Policy.DoesTransactionFollowsPolicy(tx1, this))
+                    if (Policy.ValidateNextBlockTx(this, tx1) is { } tpve)
                     {
-                        throw new TxViolatingBlockPolicyException(
+                        throw new TxPolicyViolationException(
                             tx1.Id,
                             "According to BlockPolicy, this transaction is not valid.");
                     }
@@ -1614,9 +1231,25 @@ namespace Libplanet.Blockchain
             }
         }
 
-        internal ImmutableArray<Transaction<T>> ListStagedTransactions()
+        /// <summary>
+        /// Lists the all staged transactions, with properly ordered nonces.
+        /// </summary>
+        /// <param name="txPriority">An optional comparer for give certain transactions to
+        /// priority to belong to the block.  No certain priority by default.</param>
+        /// <returns>A list of staged transactions.  This guarantees that for transactions signed
+        /// by the same address, those with greater nonce never comes before those with
+        /// lesser nonce.</returns>
+        internal ImmutableList<Transaction<T>> ListStagedTransactions(
+            IComparer<Transaction<T>> txPriority = null
+        )
         {
-            Transaction<T>[] txs = StagePolicy.Iterate(this).ToArray();
+            IEnumerable<Transaction<T>> unorderedTxs = StagePolicy.Iterate(this);
+            if (txPriority is { } comparer)
+            {
+                unorderedTxs = unorderedTxs.OrderBy(tx => tx, comparer);
+            }
+
+            Transaction<T>[] txs = unorderedTxs.ToArray();
 
             Dictionary<Address, LinkedList<Transaction<T>>> seats = txs
                 .GroupBy(tx => tx.Signer)
@@ -1629,7 +1262,7 @@ namespace Libplanet.Blockchain
                 Transaction<T> first = seat.First.Value;
                 seat.RemoveFirst();
                 return first;
-            }).ToImmutableArray();
+            }).ToImmutableList();
         }
 
         internal void SetStates(
@@ -1637,11 +1270,11 @@ namespace Libplanet.Blockchain
             IReadOnlyList<ActionEvaluation> actionEvaluations
         )
         {
-           if (!StateStore.ContainsBlockStates(block.Hash))
-           {
-               var totalDelta = actionEvaluations.GetTotalDelta(ToStateKey, ToFungibleAssetKey);
-               StateStore.SetStates(block, totalDelta);
-           }
+            if (!StateStore.ContainsBlockStates(block.Hash))
+            {
+                var totalDelta = actionEvaluations.GetTotalDelta(ToStateKey, ToFungibleAssetKey);
+                StateStore.SetStates(block, totalDelta);
+            }
         }
 
         internal IEnumerable<Block<T>> IterateBlocks(int offset = 0, int? limit = null)
@@ -1683,50 +1316,13 @@ namespace Libplanet.Blockchain
             }
         }
 
-        /// <summary>
-        /// Calculates and complements a block's incomplete states on the fly.
-        /// </summary>
-        /// <param name="blockHash">The hash of a block which has incomplete states.</param>
-        internal void ComplementBlockStates(BlockHash blockHash)
-        {
-            _logger.Verbose("Recalculates the block {BlockHash}'s states...", blockHash);
-
-            // Prevent recursive trial to recalculate & complement incomplete block states by
-            // mistake; if the below code works as intended, these state completers must never
-            // be invoked.
-            StateCompleterSet<T> stateCompleters = StateCompleterSet<T>.Reject;
-
-            // Calculates and fills the incomplete states
-            // on the fly.
-            foreach (BlockHash hash in BlockHashes)
-            {
-                Block<T> block = this[hash];
-                if (StateStore.ContainsBlockStates(hash))
-                {
-                    continue;
-                }
-
-                IReadOnlyList<ActionEvaluation> evaluations = ActionEvaluator.Evaluate(
-                    block,
-                    stateCompleters
-                );
-
-                _rwlock.EnterWriteLock();
-                try
-                {
-                    SetStates(block, evaluations);
-                }
-                finally
-                {
-                    _rwlock.ExitWriteLock();
-                }
-            }
-        }
-
         private InvalidBlockException ValidateNextBlock(Block<T> nextBlock)
         {
             int actualProtocolVersion = nextBlock.ProtocolVersion;
             const int currentProtocolVersion = Block<T>.CurrentProtocolVersion;
+
+            // FIXME: Crude way of checking protocol version for non-genesis block.
+            // Ideally, whether this is called during instantiation should be made more explicit.
             if (actualProtocolVersion > currentProtocolVersion)
             {
                 string message =
@@ -1738,11 +1334,11 @@ namespace Libplanet.Blockchain
                     message
                 );
             }
-            else if (Tip is { } tip && actualProtocolVersion < tip.ProtocolVersion)
+            else if (Count > 0 && actualProtocolVersion < Tip.ProtocolVersion)
             {
                 string message =
                     "The protocol version is disallowed to be downgraded from the topmost block " +
-                    $"in the chain ({actualProtocolVersion} < {tip.ProtocolVersion}).";
+                    $"in the chain ({actualProtocolVersion} < {Tip.ProtocolVersion}).";
                 throw new InvalidBlockProtocolVersionException(actualProtocolVersion, message);
             }
 
@@ -1825,7 +1421,7 @@ namespace Libplanet.Blockchain
             _rwlock.EnterUpgradeableReadLock();
             try
             {
-                if (offset is null && Tip is null)
+                if (offset is null && Count == 0)
                 {
                     return null;
                 }

@@ -1,6 +1,238 @@
 Libplanet changelog
 ===================
 
+Version 0.17.0
+--------------
+
+To be released.
+
+### Backward-incompatible API changes
+
+ -  Added `StateCompleterSet<T>.ComplementAll` property.  [[#1358], [#1386]]
+ -  Added `StateCompleterSet<T>.ComplementLatest` property.  [[#1358], [#1386]]
+ -  `BlockPerception` now implements `IBlockExcerpt` interface.  [[#1440]]
+     -  `BlockPerception.Excerpt` property removed.
+ -  `TotalDifficultyComparer` now implements `IComparer<IBlockExcerpt>`
+    interface.  [[#1442]]
+ -  Return type for `BlockDemandTable.Add()` is now `void`.  [[#1435], [#1443]]
+ -  Added `BlockInsufficientTxsException`.  [[#1445]]
+ -  `PrivateKey()` constructor's parameter type became `IReadOnlyList<byte>`
+    (was `byte[]`).  [[#1464]]
+ -  `PrivateKey.ByteArray` property's type became `ImmutableArray<byte>`
+    (was `byte[]`).  To get a mutable one, use `PrivateKey.ToByteArray()`
+    method instead.  [[#1464]]
+ -  `PublicKey()` constructor's parameter type became `IReadOnlyList<byte>`
+    (was `byte[]`).  [[#1464]]
+ -  `PublicKey.Verify()` method's both parameter types became
+    `IReadOnlyList<byte>` (were both `byte[]`).  [[#1464]]
+ -  `HashDigest<T>.DeriveFrom()` method's parameter type became
+    `IReadOnlyList<byte>` (was `byte[]`).  [[#1464]]
+ -  `IBlockPolicy<T>.GetMaxBlockBytes()` description changed for `0`
+    and negative values.  [[#1449], [#1463]]
+     -  Returned values from these will now be taken literally
+        by `BlockChain<T>`.
+ -  Removed `IBlockPolicy<T>.MaxTransactionsPerBlock` property.  It is replaced
+    by `IBlockPolicy<T>.GetMaxTransactionsPerBlock(long index)` method.
+    [[#1447]]
+ -  Added `IBlockPolicy<T>.GetMaxTransactionsPerBlock(long index)` method.
+    [[#1447]]
+ -  Added `IBlockPolicy<T>.GetMinTransactionsPerBlock(long index)` method.
+    [[#1479]]
+ -  Added `IBlockPolicy<T>.GetMaxTransactionsPerSignerPerBlock(long index)`
+    method.  [[#1449], [#1463]]
+ -  Unused parameter `currentTime` removed from `BlockChain<T>.Append()`.
+    [[#1462], [#1465]]
+ -  Added an optional `maxTransactionsPerSigner` parameter to
+    `BlockChain<T>.MineBlock()` method.  [[#1449], [#1463]]
+ -  Added an optional `txPriority` parameter to `BlockChain<T>.MineBlock()`
+    method. [[#1477]]
+ -  `BlockHeader`'s properties are now represented as richer types than before.
+    [[#1470]]
+     -  `BlockHeader.Timestamp` property's type became `DateTimeOffset`
+        (was `string`).
+     -  `BlockHeader.Nonce` property's type became `Nonce` (was
+        `ImmutableArray<byte>`).
+     -  `BlockHeader.Miner` property's type became `Address` (was
+        `ImmutableArray<byte>`).
+     -  `BlockHeader.PreviousHash` property's type became `BlockHash?` (was
+        `ImmutableArray<byte>`).
+     -  `BlockHeader.TxHash` property's type became `HashDigest<SHA256>?` (was
+        `ImmutableArray<byte>`).
+     -  `BlockHeader.Hash` property's type became `BlockHash` (was
+        `ImmutableArray<byte>`).
+     -  `BlockHeader.StateRootHash` property's type became `HashDigest<SHA256>?`
+        (was `ImmutableArray<byte>`).
+     -  Removed `BlockHeader(int, long, string, ImmutableArray<byte>,
+        ImmutableArray<byte>, long, BigInteger, ImmutableArray<byte>,
+        ImmutableArray<byte>, ImmutableArray<byte>, ImmutableArray<byte>,
+        ImmutableArray<byte>)` constructor.  Use `BlockHeader(int, long,
+        DateTimeOffset, Nonce, Address, long, BigInteger, BlockHash?,
+        HashDigest<SHA256>?, BlockHash, ImmutableArray<byte>,
+        HashDigest<SHA256>?)` constructor instead.
+ -  `IStore`, `IStateStore`, and `IKeyValueStore` interfaces now inherit
+    `IDisposable`.  [[#1448], [#1474]]
+ -  Multiple changes for `IBlockPolicy<T>` interface.  [[#1485]]
+     -  `bool DoesTransactionFollowsPolicy(BlockChain<T>, Transaction<T>)`
+        changed to `TxPolicyViolationException? ValidateNextBlockTx(
+        BlockChain<T>, Transaction<T>)`.
+     -  `InvalidBlockException ValidateNextBlock(BlockChain<T>, Block<T>)`
+        changed to `BlockPolicyViolationException? ValidateNextBlock(
+        BlockChain<T>, Block<T>)`.
+     -  `BlockPolicy<T>`, the default implementation for `IBlockPolicy<T>`,
+        has been updated accordingly.
+ -  Removed `BlockPolicy<T>()` constructor with `int blockIntervalMilliseconds`
+    parameter.  Use the one with `TimeSpan? blockInterval` instead.  [[#1485]]
+ -  Replaced `int maxBlockBytes` and `int maxGenesisBytes` parameters from
+    `BlockPolicy<T>()` constructor with `Func<long, int>? getMaxBlockBytes`.
+    [[#1485]]
+ -  Removed `TxViolatingBlockPolicyException` class.  [[#1485]]
+ -  Optional parameter name `difficultyBoundDivisor` for `BlockPolicy<T>()`
+    constructor changed to `difficultyStability`.  [[#1495]]
+ -  Type for optional parameter `difficultyStability` for `BlockPolicy<T>()`
+    constructor changed to `long?` from `int?`.  [[#1495]]
+
+### Backward-incompatible network protocol changes
+
+ -  `Message` became to serialize peer with Bencodex instead of
+    `BinaryFormatter`.  [[#1455]]
+
+### Backward-incompatible storage format changes
+
+### Added APIs
+
+ -  `IBlockExcerpt.ExcerptEquals` extension method added.  [[#1440]]
+ -  Added `PrivateKey.FromString()` method.  [[#1475]]
+ -  Added `PrivateKey.Sign(ImmutableArray<byte>)` overloaded method.  [[#1464]]
+ -  Added `PrivateKey.Decrypt(ImmutableArray<byte>)` overloaded method.
+    [[#1464]]
+ -  Added `PrivateKey.ToByteArray()` method.  [[#1464]]
+ -  Added `PublicKey.Encrypt(ImmutableArray<byte>)` overloaded method.
+    [[#1464]]
+ -  Added `PublicKey.ToImmutableArray()` method.  [[#1464]]
+ -  Added `Nonce(ImmutableArray<byte>)` overloaded constructor.  [[#1464]]
+ -  Added `HashAlgorithmType.Digest(IEnumerable<byte[]>)` overloaded method.
+    [[#1480]]
+ -  Added `HashAlgorithmType.Digest(IEnumerable<ImmutableArray<byte>>)`
+    overloaded method.  [[#1480]]
+ -  Added `BlockHeader(int, long, DateTimeOffset, Nonce, Address, long,
+    BigInteger, BlockHash?, HashDigest<SHA256>?, BlockHash,
+    ImmutableArray<byte>, HashDigest<SHA256>?)` constructor.  [[#1470]]
+ -  Added `TxCompletion<TPeer, TAction>` class.  [[#1420], [#1478]]
+ -  Added `BlockPolicyViolationException` and `TxPolicyViolationException`
+    classes.  [[#1485]]
+ -  Added `DifficultyAdjustment` static class.  [[#1495]]
+ -  Added `BlockPolicy<T>.DifficultyStability` and
+    `BlockPolicy<T>.MinimumDifficulty` properties.  [[#1495]]
+
+### Behavioral changes
+
+ -  `StateCompleterSet<T>.Recalculate` now evaluates states even for those
+    already in `IStateStore`.  Moreover, it also terminates early if possible
+    after reaching the `BlockHash` provided with a call.  [[#1358], [#1386]]
+ -  `TotalDifficultyComparer` no longer considers perceived time when comparing
+    `IBlockExcerpt`s.  [[#1442]]
+ -  General logic for determining the canonical chain has been updated.
+    [[#1435], [#1443]]
+     -  Perceived time is only used for marking a received header in
+        `BlockDemandTable` in order to decide whether `BlockDemand` is stale
+        or not.  This should prevent a tip regression for a local node, as the
+        tip of a chain is never considered as stale.
+ -  Block sync using `BlockDemand` became not to fill blocks
+    from multiple peers.  [[#1457]]
+ -  `BlockChain<T>.MineBlock()` now uses `maxTransactions` literally.
+    [[#1449], [#1463]]
+     -  Before, `maxTransactions` were internally automatically set to a
+        value between `1` and `BlockChain<T>.Policy.MaxTransactionsPerBlock`.
+ -  Similarly, `BlockChain<T>.MineBlock()` now internally uses
+    `BlockChain<T>.Policy.GetMaxBlockBytes()` literally.  [[#1449], [#1463]]
+ -  `NetMQTransport` became to no more send CreatePermission to TURN client and
+    require permission-less TURN server.  See [coturn's relevant configuration](
+    https://github.com/coturn/coturn/blob/dc8f405f8543a83ad8c059ba6b9f930e1e5a1349/man/man1/turnserver.1#L402-L410)
+    as well.  [[#1423]]
+ -  `Swarm<T>` became to sync transactions from multiple peers
+    at the same time.  [[#1420], [#1478]]
+
+### Bug fixes
+
+ -  Improper sanity checks for `targetBlockInterval` (changed from the old name
+    `blockInterval`), `minimumDifficulty`, and `difficultyStability` (changed
+    from the old name `difficultyBoundDivisor`) arguments given to
+    `BlockPolicy<T>()` constructor fixed.  [[#1495]]
+     -  It was possible for `targetBlockInterval` to be zero, which would result
+        in division by zero, when this makes no sense.
+     -  It was possible for `difficultyStability` not to be positive when this
+        makes no sense.
+     -  Wrongly threw an `ArgumentOutOfRangeException` for the case where
+        `minimumDifficulty` would equal `difficultyStability`.
+     -  It was possible for `minimumDifficulty` to be zero, which would allow
+        difficulty to be stuck at zero indefinitely, when this does not
+        make sense.
+
+### CLI tools
+
+[#1358]: https://github.com/planetarium/libplanet/issues/1358
+[#1386]: https://github.com/planetarium/libplanet/pull/1386
+[#1420]: https://github.com/planetarium/libplanet/issues/1420
+[#1423]: https://github.com/planetarium/libplanet/pull/1423
+[#1435]: https://github.com/planetarium/libplanet/issues/1435
+[#1440]: https://github.com/planetarium/libplanet/pull/1440
+[#1442]: https://github.com/planetarium/libplanet/pull/1442
+[#1443]: https://github.com/planetarium/libplanet/pull/1443
+[#1445]: https://github.com/planetarium/libplanet/pull/1445
+[#1447]: https://github.com/planetarium/libplanet/pull/1447
+[#1448]: https://github.com/planetarium/libplanet/issues/1448
+[#1449]: https://github.com/planetarium/libplanet/issues/1449
+[#1455]: https://github.com/planetarium/libplanet/pull/1455
+[#1457]: https://github.com/planetarium/libplanet/pull/1457
+[#1462]: https://github.com/planetarium/libplanet/issues/1462
+[#1463]: https://github.com/planetarium/libplanet/pull/1463
+[#1464]: https://github.com/planetarium/libplanet/pull/1464
+[#1465]: https://github.com/planetarium/libplanet/pull/1465
+[#1470]: https://github.com/planetarium/libplanet/pull/1470
+[#1474]: https://github.com/planetarium/libplanet/pull/1474
+[#1475]: https://github.com/planetarium/libplanet/pull/1475
+[#1477]: https://github.com/planetarium/libplanet/pull/1477
+[#1478]: https://github.com/planetarium/libplanet/pull/1478
+[#1479]: https://github.com/planetarium/libplanet/pull/1479
+[#1480]: https://github.com/planetarium/libplanet/pull/1480
+[#1485]: https://github.com/planetarium/libplanet/pull/1485
+[#1495]: https://github.com/planetarium/libplanet/pull/1495
+
+
+Version 0.16.0
+--------------
+
+Released on August 25, 2021.
+
+### Backward-incompatible API changes
+
+ -  Removed `Swarm<T>.BlockDemand` property.  [[#1419], [#1425]]
+ -  `BlockChain<T>.Tip` property is now non-nullable.  [[#1430]]
+
+### Added APIs
+
+ -  Added `BlockDemandTable<T>` class.  [[#1419], [#1425]]
+ -  Added `Swarm<T>.BlockDemandTable` property.  [[#1419], [#1425]]
+ -  Added `SwarmOptions.PollInterval` property.  [[#1419], [#1425]]
+ -  Added `SwarmOptions.MaximumPollPeers` property.  [[#1419], [#1425]]
+
+### Behavioral changes
+
+ -  `Swarm<T>` became to sync blocks from multiple peers.  [[#1419], [#1425]]
+
+### Bug fixes
+
+ -  Fixed a bug where `Swarm<T>.PreloadAsync()` failed to sync blocks from
+    the peer that has chain with higher difficulty, but lower index.
+    [[#1419], [#1425]]
+
+### CLI tools
+
+[#1419]: https://github.com/planetarium/libplanet/issues/1419
+[#1425]: https://github.com/planetarium/libplanet/pull/1425
+[#1430]: https://github.com/planetarium/libplanet/pull/1430
+
+
 Version 0.15.4
 --------------
 
@@ -34,12 +266,12 @@ Released on September 3, 2021.
     Message, TimeSpan?, int, CancellationToken)` method.
     Instead, added `ITransport.SendMessageWithReplyAsync(BoundPeer,
     Message, TimeSpan?, int, bool, CancellationToken)` method.
-    [[#1458], [#1460]]
+    [[#1458], [#1461]]
  -  Fixed a bug where `GetTxs` request failed to receive transactions
-    if any messages are missing.  [[#1458], [#1460]]
+    if any messages are missing.  [[#1458], [#1461]]
 
 [#1458]: https://github.com/planetarium/libplanet/issues/1458
-[#1460]: https://github.com/planetarium/libplanet/pull/1460
+[#1461]: https://github.com/planetarium/libplanet/pull/1461
 
 
 Version 0.15.1
@@ -69,7 +301,7 @@ Version 0.14.1
 
 Released on August 18, 2021.
 
-  - Added additional tags to logging.  [[#1433]]
+ -  Added additional tags to logging.  [[#1433]]
 
 [#1433]: https://github.com/planetarium/libplanet/pull/1433
 
@@ -862,8 +1094,8 @@ Version 0.10.3
 
 Released on January 28, 2021.
 
--  `BlockChain<T>.MineBlock()` became to unstage transactions that have lower
-   nonce than expected.  [[#1174]]
+ -  `BlockChain<T>.MineBlock()` became to unstage transactions that have lower
+    nonce than expected.  [[#1174]]
 
 [#1174]: https://github.com/planetarium/libplanet/pull/1174
 
