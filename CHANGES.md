@@ -233,6 +233,18 @@ Released on August 25, 2021.
 [#1430]: https://github.com/planetarium/libplanet/pull/1430
 
 
+Version 0.15.4
+--------------
+
+Released on September 14, 2021.
+
+ -  Fixed a bug where `BlockChain<T>.MineBlock()` had created a block that
+    includes both transactions when there are two or more transactions with
+    the same nonce on the stage.  [[#1491]]
+
+[#1491]: https://github.com/planetarium/libplanet/pull/1491
+
+
 Version 0.15.3
 --------------
 

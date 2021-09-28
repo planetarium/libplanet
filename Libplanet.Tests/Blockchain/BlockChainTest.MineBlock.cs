@@ -609,6 +609,25 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
+        public async Task IgnoreDuplicatedNonceTxs()
+        {
+            var privateKey = new PrivateKey();
+            var address = privateKey.ToAddress();
+            var txs = Enumerable.Range(0, 3)
+                .Select(_ => _fx.MakeTransaction(
+                    nonce: 0,
+                    privateKey: privateKey,
+                    timestamp: DateTimeOffset.Now))
+                .ToArray();
+            StageTransactions(txs);
+            Block<DumbAction> b = await _blockChain.MineBlock(address, append: false);
+            _blockChain.Append(b);
+
+            Assert.Single(b.Transactions);
+            Assert.Equal(txs[0], b.Transactions.Single());
+        }
+
+        [Fact]
         public void GatherTransactionsToMine()
         {
             // TODO: We test more propertees of GatherTransactionsToMine() method:
