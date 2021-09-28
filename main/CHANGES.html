@@ -261,6 +261,13 @@ the peer that has chain with higher difficulty, but lower index.
 [<a href="https://github.com/planetarium/libplanet/issues/1419">#1419</a>, <a href="https://github.com/planetarium/libplanet/pull/1425">#1425</a>]</li>
 </ul>
 <h3 id="cli-tools-1">CLI tools</h3>
+<h2 id="version-0154">Version 0.15.4</h2>
+<p>Released on September 14, 2021.</p>
+<ul>
+<li>Fixed a bug where <code>BlockChain&lt;T&gt;.MineBlock()</code> had created a block that
+includes both transactions when there are two or more transactions with
+the same nonce on the stage.  [<a href="https://github.com/planetarium/libplanet/pull/1491">#1491</a>]</li>
+</ul>
 <h2 id="version-0153">Version 0.15.3</h2>
 <p>Released on September 10, 2021.</p>
 <ul>
