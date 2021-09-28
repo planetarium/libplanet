@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.17.0
 --------------
 
-To be released.
+Released on September 28, 2021.
 
 ### Backward-incompatible API changes
 
@@ -96,8 +96,6 @@ To be released.
  -  `Message` became to serialize peer with Bencodex instead of
     `BinaryFormatter`.  [[#1455]]
 
-### Backward-incompatible storage format changes
-
 ### Added APIs
 
  -  `IBlockExcerpt.ExcerptEquals` extension method added.  [[#1440]]
@@ -138,7 +136,7 @@ To be released.
         or not.  This should prevent a tip regression for a local node, as the
         tip of a chain is never considered as stale.
  -  Block sync using `BlockDemand` became not to fill blocks
-    from multiple peers.  [[#1457]]
+    from multiple peers.  [[#1459]]
  -  `BlockChain<T>.MineBlock()` now uses `maxTransactions` literally.
     [[#1449], [#1463]]
      -  Before, `maxTransactions` were internally automatically set to a
@@ -168,8 +166,6 @@ To be released.
         difficulty to be stuck at zero indefinitely, when this does not
         make sense.
 
-### CLI tools
-
 [#1358]: https://github.com/planetarium/libplanet/issues/1358
 [#1386]: https://github.com/planetarium/libplanet/pull/1386
 [#1420]: https://github.com/planetarium/libplanet/issues/1420
@@ -183,7 +179,7 @@ To be released.
 [#1448]: https://github.com/planetarium/libplanet/issues/1448
 [#1449]: https://github.com/planetarium/libplanet/issues/1449
 [#1455]: https://github.com/planetarium/libplanet/pull/1455
-[#1457]: https://github.com/planetarium/libplanet/pull/1457
+[#1459]: https://github.com/planetarium/libplanet/pull/1459
 [#1462]: https://github.com/planetarium/libplanet/issues/1462
 [#1463]: https://github.com/planetarium/libplanet/pull/1463
 [#1464]: https://github.com/planetarium/libplanet/pull/1464
