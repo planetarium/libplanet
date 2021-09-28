@@ -20,6 +20,12 @@ namespace Libplanet.Store
 
         private static readonly byte[] TransactionIdsKey = { 0x54 }; // 'T'
 
+        // FIXME: Rather than having a BlockHeader with a thunk HashAlgorithmType, let it have
+        //        separated fields like BlockMetadata, Nonce, PreEvaluationHash, StateRootHash...
+        private readonly BlockMetadata _metadata;
+        private readonly Nonce _nonce;
+        private readonly ImmutableArray<byte>? _preEvaluationHash;
+
         /// <summary>
         /// Creates <see cref="BlockDigest"/> instance from <see cref="BlockHeader"/> and
         /// <see cref="Transaction{T}"/> ids the <see cref="Block{T}"/> has.
@@ -29,7 +35,11 @@ namespace Libplanet.Store
         /// </param>
         public BlockDigest(BlockHeader header, ImmutableArray<ImmutableArray<byte>> txIds)
         {
-            Header = header;
+            _metadata = header.Copy();
+            _nonce = header.Nonce;
+            _preEvaluationHash = header.PreEvaluationHash;
+            StateRootHash = header.StateRootHash;
+            Hash = header.Hash;
             TxIds = txIds;
         }
 
@@ -42,17 +52,33 @@ namespace Libplanet.Store
         /// </param>
         public BlockDigest(Bencodex.Types.Dictionary dict)
         {
-            Header = BlockMarshaler.UnmarshalBlockHeader(
-                _ => HashAlgorithmType.Of<SHA256>(),  // thunk getter; doesn't matter here
-                dict.GetValue<Bencodex.Types.Dictionary>(HeaderKey)
-            );
+            var headerDict = dict.GetValue<Bencodex.Types.Dictionary>(HeaderKey);
+            var tuple = BlockMarshaler.UnmarshalPreEvaluationBlockHeader(headerDict);
+            _metadata = tuple.Metadata;
+            _nonce = tuple.Nonce;
+            _preEvaluationHash = tuple.PreEvaluationHash;
+            StateRootHash = BlockMarshaler.UnmarshalBlockHeaderStateRootHash(headerDict);
+            Hash = BlockMarshaler.UnmarshalBlockHeaderHash(headerDict);
             TxIds = dict.ContainsKey((IKey)(Binary)TransactionIdsKey)
                 ? dict.GetValue<Bencodex.Types.List>(TransactionIdsKey)
                     .Select(txId => ((Binary)txId).ToImmutableArray()).ToImmutableArray()
                 : ImmutableArray<ImmutableArray<byte>>.Empty;
         }
 
-        public BlockHeader Header { get; }
+        /// <summary>
+        /// The block index.
+        /// </summary>
+        public long Index => _metadata.Index;
+
+        /// <summary>
+        /// The block hash.
+        /// </summary>
+        public BlockHash Hash { get; }
+
+        /// <summary>
+        /// The state root hash.
+        /// </summary>
+        public HashDigest<SHA256> StateRootHash { get; }
 
         public ImmutableArray<ImmutableArray<byte>> TxIds { get; }
 
@@ -104,6 +130,30 @@ namespace Libplanet.Store
         }
 
         /// <summary>
+        /// Gets the block header.
+        /// </summary>
+        /// <param name="hashAlgorithmGetter">The function to determine hash algorithm used for
+        /// proof-of-work mining.</param>
+        /// <returns>The block header.</returns>
+        public BlockHeader GetHeader(HashAlgorithmGetter hashAlgorithmGetter)
+        {
+            HashAlgorithmType hashAlgorithm = hashAlgorithmGetter(Index);
+            var preEvalHeader = _preEvaluationHash is { } preEvalHash
+                ? new PreEvaluationBlockHeader(
+                    _metadata,
+                    hashAlgorithm,
+                    _nonce,
+                    preEvalHash
+                )
+                : new PreEvaluationBlockHeader(
+                    _metadata,
+                    hashAlgorithm,
+                    _nonce
+                );
+            return new BlockHeader(preEvalHeader, StateRootHash, Hash);
+        }
+
+        /// <summary>
         /// Gets <see cref="Bencodex.Types.Dictionary"/> representation of
         /// <see cref="BlockDigest"/>.
         /// </summary>
@@ -111,8 +161,14 @@ namespace Libplanet.Store
         /// <see cref="BlockDigest"/>.</returns>
         public Bencodex.Types.Dictionary ToBencodex()
         {
-            var dict = Bencodex.Types.Dictionary.Empty
-                .Add(HeaderKey, Header.MarshalBlockHeader());
+            var preEvalHeaderDict = BlockMarshaler.MarshalPreEvaluationBlockHeader(
+                BlockMarshaler.MarshalBlockMetadata(_metadata),
+                _nonce,
+                _preEvaluationHash ?? ImmutableArray<byte>.Empty
+            );
+            Dictionary headerDict =
+                BlockMarshaler.MarshalBlockHeader(preEvalHeaderDict, StateRootHash, Hash);
+            var dict = Bencodex.Types.Dictionary.Empty.Add(HeaderKey, headerDict);
 
             if (TxIds.Any())
             {

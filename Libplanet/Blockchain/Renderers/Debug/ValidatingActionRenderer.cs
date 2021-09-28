@@ -145,43 +145,43 @@ namespace Libplanet.Blockchain.Renderers.Debug
                 Error(Records, "Reorg occurred from the chain with different genesis.");
 
             List<IAction> expectedUnrenderedActions = new List<IAction>();
-            BlockDigest block = BlockDigest.FromBlock(oldTip);
-            while (!block.Header.Hash.Equals(branchpoint.Hash))
+            BlockHeader header = oldTip.Header;
+            IEnumerable<TxId> txIds = oldTip.Transactions.Select(tx => tx.Id);
+            while (!header.Hash.Equals(branchpoint.Hash))
             {
                 if (policy.BlockAction is IAction blockAction)
                 {
                     expectedUnrenderedActions.Add(blockAction);
                 }
 
-                IEnumerable<Transaction<T>> transactions = block.TxIds.Select(txid =>
-                    store.GetTransaction<T>(new TxId(txid.ToBuilder().ToArray()))
-                );
+                IEnumerable<Transaction<T>> transactions = txIds.Select(store.GetTransaction<T>);
 
                 transactions = ActionEvaluator<T>.OrderTxsForEvaluation(
-                    block.Header.ProtocolVersion,
+                    header.ProtocolVersion,
                     transactions,
-                    block.Header.PreEvaluationHash
+                    header.PreEvaluationHash
                 );
 
                 expectedUnrenderedActions.AddRange(
                     transactions.SelectMany(t => t.Actions).Cast<IAction>().Reverse());
 
-                block = store.GetBlockDigest(
-                    block.Header.PreviousHash ?? throw heterogeneousGenesisError
-                ) ?? throw Error(Records, $"Failed to load block {block.Header.PreviousHash}.");
+                BlockDigest prevDigest = store.GetBlockDigest(
+                    header.PreviousHash ?? throw heterogeneousGenesisError
+                ) ?? throw Error(Records, $"Failed to load block {header.PreviousHash}.");
+                header = prevDigest.GetHeader(policy.GetHashAlgorithm);
+                txIds = prevDigest.TxIds.Select(b => new TxId(b.ToBuilder().ToArray()));
             }
 
             IEnumerable<IAction> expectedRenderedActionsBuffer = new List<IAction>();
-            block = BlockDigest.FromBlock(newTip);
-            while (!block.Header.Hash.Equals(branchpoint.Hash))
+            header = newTip.Header;
+            txIds = newTip.Transactions.Select(tx => tx.Id);
+            while (!header.Hash.Equals(branchpoint.Hash))
             {
-                IEnumerable<Transaction<T>> transactions = block.TxIds.Select(txid =>
-                    store.GetTransaction<T>(new TxId(txid.ToBuilder().ToArray()))
-                );
+                IEnumerable<Transaction<T>> transactions = txIds.Select(store.GetTransaction<T>);
                 transactions = ActionEvaluator<T>.OrderTxsForEvaluation(
-                    block.Header.ProtocolVersion,
+                    header.ProtocolVersion,
                     transactions,
-                    block.Header.PreEvaluationHash
+                    header.PreEvaluationHash
                 );
                 IEnumerable<IAction> actions =
                     transactions.SelectMany(t => t.Actions).Cast<IAction>();
@@ -199,9 +199,11 @@ namespace Libplanet.Blockchain.Renderers.Debug
                 }
 
                 expectedRenderedActionsBuffer = actions.Concat(expectedRenderedActionsBuffer);
-                block = store.GetBlockDigest(
-                    block.Header.PreviousHash ?? throw heterogeneousGenesisError
-                ) ?? throw Error(Records, $"Failed to load block {block.Header.PreviousHash}.");
+                BlockDigest prevDigest = store.GetBlockDigest(
+                    header.PreviousHash ?? throw heterogeneousGenesisError
+                ) ?? throw Error(Records, $"Failed to load block {header.PreviousHash}.");
+                header = prevDigest.GetHeader(policy.GetHashAlgorithm);
+                txIds = prevDigest.TxIds.Select(b => new TxId(b.ToBuilder().ToArray()));
             }
 
             IAction[] expectedRenderedActions = expectedRenderedActionsBuffer.ToArray();

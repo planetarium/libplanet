@@ -165,22 +165,33 @@ namespace Libplanet.Blocks
                     : (HashDigest<SHA256>?)null,
             };
 
+        public static (BlockMetadata Metadata, Nonce Nonce, ImmutableArray<byte>? PreEvaluationHash)
+        UnmarshalPreEvaluationBlockHeader(Dictionary marshaled)
+        {
+            BlockMetadata metadata = UnmarshalBlockMetadata(marshaled);
+            var nonce = new Nonce(marshaled.GetValue<Binary>(NonceKey).ByteArray);
+            ImmutableArray<byte>? preEvalHash = marshaled.ContainsKey(PreEvaluationHashKey)
+                ? marshaled.GetValue<Binary>(PreEvaluationHashKey).ByteArray
+                : (ImmutableArray<byte>?)null;
+            return (metadata, nonce, preEvalHash);
+        }
+
         public static PreEvaluationBlockHeader UnmarshalPreEvaluationBlockHeader(
             HashAlgorithmGetter hashAlgorithmGetter,
             Dictionary marshaled
         )
         {
-            BlockMetadata metadata = UnmarshalBlockMetadata(marshaled);
+            (BlockMetadata metadata, Nonce nonce, ImmutableArray<byte>? preEvalHash) =
+                UnmarshalPreEvaluationBlockHeader(marshaled);
             HashAlgorithmType hashAlgorithm = hashAlgorithmGetter(metadata.Index);
-            var nonce = new Nonce(marshaled.GetValue<Binary>(NonceKey).ByteArray);
 
-            if (marshaled.ContainsKey(PreEvaluationHashKey))
+            if (preEvalHash is { } peh)
             {
                 return new PreEvaluationBlockHeader(
                     metadata,
                     hashAlgorithm,
                     nonce,
-                    preEvaluationHash: marshaled.GetValue<Binary>(PreEvaluationHashKey).ByteArray
+                    preEvaluationHash: peh
                 );
             }
 
@@ -190,6 +201,13 @@ namespace Libplanet.Blocks
         public static BlockHash UnmarshalBlockHeaderHash(Dictionary marshaledBlockHeader) =>
             new BlockHash(marshaledBlockHeader.GetValue<Binary>(HashKey).ByteArray);
 
+        public static HashDigest<SHA256> UnmarshalBlockHeaderStateRootHash(
+            Dictionary marshaledBlockHeader
+        ) =>
+            new HashDigest<SHA256>(
+                marshaledBlockHeader.GetValue<Binary>(StateRootHashKey).ByteArray
+            );
+
         public static BlockHeader UnmarshalBlockHeader(
             HashAlgorithmGetter hashAlgorithmGetter,
             Dictionary marshaled
@@ -197,9 +215,7 @@ namespace Libplanet.Blocks
         {
             PreEvaluationBlockHeader preEvalHeader =
                 UnmarshalPreEvaluationBlockHeader(hashAlgorithmGetter, marshaled);
-            HashDigest<SHA256> stateRootHash = new HashDigest<SHA256>(
-                marshaled.GetValue<Binary>(StateRootHashKey).ByteArray
-            );
+            HashDigest<SHA256> stateRootHash = UnmarshalBlockHeaderStateRootHash(marshaled);
             BlockHash hash = UnmarshalBlockHeaderHash(marshaled);
             return new BlockHeader(preEvalHeader, stateRootHash, hash);
         }
@@ -210,12 +226,6 @@ namespace Libplanet.Blocks
             marshaled
                 .Select(tx => Transaction<T>.Deserialize(((Binary)tx).ToByteArray(), true))
                 .ToImmutableArray();
-
-        public static long UnmarshalBlockIndex(Dictionary marshaledBlock) =>
-            UnmarshalBlockMetadataIndex(marshaledBlock.GetValue<Dictionary>(HeaderKey));
-
-        public static BlockHash UnmarshalBlockHash(Dictionary marshaledBlock) =>
-            UnmarshalBlockHeaderHash(marshaledBlock.GetValue<Dictionary>(HeaderKey));
 
         public static Block<T> UnmarshalBlock<T>(
             HashAlgorithmGetter hashAlgorithmGetter,

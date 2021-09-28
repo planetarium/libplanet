@@ -78,7 +78,7 @@ namespace Libplanet.Store
             BlockHash? blockHash
         ) =>
             blockHash is { } hash && store.GetBlockDigest(hash) is BlockDigest digest
-                ? digest.Header.StateRootHash
+                ? digest.StateRootHash
                 : (HashDigest<SHA256>?)null;
     }
 }

@@ -167,7 +167,7 @@ namespace Libplanet.Tests.Fixtures
         {
             return (blockHash is BlockHash h &&
                     Store.GetBlockDigest(h) is BlockDigest d &&
-                    d.Header.StateRootHash is HashDigest<SHA256> rootHash)
+                    d.StateRootHash is HashDigest<SHA256> rootHash)
                 ? StateStore.GetStateRoot(rootHash)
                 : null;
         }

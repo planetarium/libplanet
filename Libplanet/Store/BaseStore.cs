@@ -74,7 +74,7 @@ namespace Libplanet.Store
         {
             if (GetBlockDigest(blockHash) is BlockDigest blockDigest)
             {
-                BlockHeader header = blockDigest.Header;
+                BlockHeader header = blockDigest.GetHeader(hashAlgorithmGetter);
                 IEnumerable<Transaction<T>> txs = blockDigest.TxIds
                     .Select(bytes => GetTransaction<T>(new TxId(bytes.ToArray())));
                 return new Block<T>(header, txs);
@@ -86,7 +86,7 @@ namespace Libplanet.Store
         /// <inheritdoc cref="IStore.GetBlockIndex(BlockHash)"/>
         public long? GetBlockIndex(BlockHash blockHash)
         {
-            return GetBlockDigest(blockHash)?.Header.Index;
+            return GetBlockDigest(blockHash)?.Index;
         }
 
         /// <inheritdoc cref="IStore.GetBlockDigest(BlockHash)"/>

@@ -81,6 +81,9 @@ To be released.
         constructor instead.
      -  Added `HashAlgorithmGetter hashAlgorithmGetter` parameter to
         `IStore.GetBlock<T>()` method.
+     -  Removed `BlockDigest.Header` property.  Use `BlockDigest.GetHeader()`
+        method instead.
+     -  Added `BlockDigest.GetHeader()` method.
      -  Added `HashAlgorithmGetter hashAlgorithmGetter` parameter to
         `DelayedRenderer<T>()` constructor.
      -  Added `HashAlgorithmGetter hashAlgorithmGetter` parameter to
@@ -164,6 +167,10 @@ To be released.
  -  Added `BlockMetadataExtensions` static class.  [[#1164], [#1492]]
  -  Added `BlockContentExtensions` static class.  [[#1164], [#1492]]
  -  Added `BlockMarshaler` static class.  [[#1164], [#1492]]
+ -  Added `BlockDigest.Index` property.  [[#1492]]
+ -  Added `BlockDigest.Hash` property.  [[#1492]]
+ -  Added `BlockDigest.StateRootHash` property.  [[#1492]]
+ -  Added `BlockDigest.GetHeader()` method.  [[#1492]]
  -  Added `StateStoreExtensions` static class.  [[#1128], [#1146], [#1492]]
  -  Added `StoreExtensions.GetStateRootHash()` extension method.
     [[#1128], [#1146], [#1492]]
