@@ -463,11 +463,13 @@ namespace Libplanet.Tests.Net
                 ).ToArrayAsync();
 
                 var netMQAddress = $"tcp://{peer.EndPoint.Host}:{peer.EndPoint.Port}";
+                var codec = new NetMQMessageCodec();
                 using (var socket = new DealerSocket(netMQAddress))
                 {
                     var request = new GetBlocks(hashes.Select(pair => pair.Item2), 2);
                     socket.SendMultipartMessage(
-                        request.ToNetMQMessage(
+                        codec.Encode(
+                            request,
                             keyB,
                             swarmB.AsPeer,
                             DateTimeOffset.UtcNow,
@@ -475,27 +477,20 @@ namespace Libplanet.Tests.Net
                     );
 
                     NetMQMessage response = socket.ReceiveMultipartMessage();
-                    Message parsedMessage = Message.Parse(
+                    var blockMessage = (Libplanet.Net.Messages.Blocks)codec.Decode(
                         response,
                         true,
-                        swarmA.AppProtocolVersion,
-                        swarmA.TrustedAppProtocolVersionSigners,
-                        null,
+                        (i, p, v) => { },
                         null);
-                    Libplanet.Net.Messages.Blocks blockMessage =
-                        (Libplanet.Net.Messages.Blocks)parsedMessage;
 
                     Assert.Equal(2, blockMessage.Payloads.Count);
 
                     response = socket.ReceiveMultipartMessage();
-                    parsedMessage = Message.Parse(
+                    blockMessage = (Libplanet.Net.Messages.Blocks)codec.Decode(
                         response,
                         true,
-                        swarmA.AppProtocolVersion,
-                        swarmA.TrustedAppProtocolVersionSigners,
-                        null,
+                        (i, p, v) => { },
                         null);
-                    blockMessage = (Libplanet.Net.Messages.Blocks)parsedMessage;
 
                     Assert.Single(blockMessage.Payloads);
                 }

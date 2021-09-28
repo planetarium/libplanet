@@ -1,9 +1,9 @@
+#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Destructurama.Attributed;
 using Libplanet.Blocks;
-using NetMQ;
 
 namespace Libplanet.Net.Messages
 {
@@ -21,7 +21,8 @@ namespace Libplanet.Net.Messages
                     "The startIndex can be null iff hashes are empty."
                 );
             }
-            else if (!Hashes.Any() && !(StartIndex is null))
+
+            if (!Hashes.Any() && !(StartIndex is null))
             {
                 throw new ArgumentException(
                     "The startIndex has to be null if hashes are empty.",
@@ -30,16 +31,16 @@ namespace Libplanet.Net.Messages
             }
         }
 
-        public BlockHashes(NetMQFrame[] frames)
+        public BlockHashes(byte[][] dataFrames)
         {
-            int hashCount = frames[0].ConvertToInt32();
+            int hashCount = BitConverter.ToInt32(dataFrames[0], 0);
             var hashes = new List<BlockHash>(hashCount);
             if (hashCount > 0)
             {
-                StartIndex = frames[1].ConvertToInt64();
+                StartIndex = BitConverter.ToInt64(dataFrames[1], 0);
                 for (int i = 2, end = hashCount + 2; i < end; i++)
                 {
-                    hashes.Add(frames[i].ConvertToBlockHash());
+                    hashes.Add(new BlockHash(dataFrames[i]));
                 }
             }
 
@@ -58,24 +59,21 @@ namespace Libplanet.Net.Messages
         [LogAsScalar]
         public IEnumerable<BlockHash> Hashes { get; }
 
-        protected override MessageType Type => MessageType.BlockHashes;
+        public override MessageType Type => MessageType.BlockHashes;
 
-        protected override IEnumerable<NetMQFrame> DataFrames
+        public override IEnumerable<byte[]> DataFrames
         {
             get
             {
-                yield return new NetMQFrame(
-                    NetworkOrderBitsConverter.GetBytes(Hashes.Count()));
-                if (StartIndex is long offset)
+                var frames = new List<byte[]>();
+                frames.Add(BitConverter.GetBytes(Hashes.Count()));
+                if (StartIndex is { } offset)
                 {
-                    yield return new NetMQFrame(
-                        NetworkOrderBitsConverter.GetBytes(offset));
-
-                    foreach (BlockHash hash in Hashes)
-                    {
-                        yield return new NetMQFrame(hash.ToByteArray());
-                    }
+                    frames.Add(BitConverter.GetBytes(offset));
+                    frames.AddRange(Hashes.Select(hash => hash.ToByteArray()));
                 }
+
+                return frames;
             }
         }
     }

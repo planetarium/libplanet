@@ -27,7 +27,9 @@ namespace Libplanet.Net.Transports
             using var dealerSocket = new DealerSocket(ToNetMQAddress(peer));
             var key = new PrivateKey();
             var ping = new Ping();
-            NetMQMessage request = ping.ToNetMQMessage(
+            var netMQMessageCodec = new NetMQMessageCodec();
+            NetMQMessage request = netMQMessageCodec.Encode(
+                ping,
                 key,
                 new Peer(key.PublicKey),
                 DateTimeOffset.UtcNow,
