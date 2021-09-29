@@ -36,12 +36,12 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc cref="IStateStore.PruneStates(IImmutableSet{HashDigest{SHA256}})"/>
-        public void PruneStates(IImmutableSet<HashDigest<SHA256>> stateRootHashes)
+        public void PruneStates(IImmutableSet<HashDigest<SHA256>> survivalStateRootHashes)
         {
             var stopwatch = new Stopwatch();
             _logger.Verbose($"Started {nameof(PruneStates)}()");
-            var excludeNodes = new HashSet<HashDigest<SHA256>>();
-            foreach (HashDigest<SHA256> stateRootHash in stateRootHashes)
+            var survivalNodes = new HashSet<HashDigest<SHA256>>();
+            foreach (HashDigest<SHA256> stateRootHash in survivalStateRootHashes)
             {
                 var stateTrie = new MerkleTrie(
                     _stateKeyValueStore,
@@ -52,7 +52,7 @@ namespace Libplanet.Store
                 stopwatch.Start();
                 foreach (HashDigest<SHA256> nodeHash in stateTrie.IterateHashNodes())
                 {
-                    excludeNodes.Add(nodeHash);
+                    survivalNodes.Add(nodeHash);
                 }
 
                 _logger.Debug(
@@ -61,7 +61,7 @@ namespace Libplanet.Store
                 stopwatch.Stop();
             }
 
-            _logger.Debug("{Count} hash nodes are excluded.", excludeNodes.Count);
+            _logger.Debug("{Count} hash nodes will survive.", survivalNodes.Count);
 
             // Clean up nodes.
             long deleteCount = 0;
@@ -69,7 +69,7 @@ namespace Libplanet.Store
             stopwatch.Restart();
             foreach (var stateKey in _stateKeyValueStore.ListKeys())
             {
-                if (excludeNodes.Contains(new HashDigest<SHA256>(stateKey)))
+                if (survivalNodes.Contains(new HashDigest<SHA256>(stateKey)))
                 {
                     continue;
                 }

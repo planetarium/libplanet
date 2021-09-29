@@ -23,7 +23,8 @@ namespace Libplanet.Store
         /// <summary>
         /// Prunes the states no more used from the state store.
         /// </summary>
-        /// <param name="stateRootHashes">The state root hashes to prune.</param>
-        void PruneStates(IImmutableSet<HashDigest<SHA256>> stateRootHashes);
+        /// <param name="survivalStateRootHashes">The state root hashes <em>not</em> to prune.
+        /// These state root hashes are guaranteed to survive after pruning.</param>
+        void PruneStates(IImmutableSet<HashDigest<SHA256>> survivalStateRootHashes);
     }
 }
