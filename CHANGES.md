@@ -144,21 +144,24 @@ To be released.
      -  `BlockContent<T>` became to implement `IBlockMetadata` interface.
      -  `PreEvaluationBlockHeader` became to implement `IBlockMetadata`
         interface.
-     -  `PreEvaluationBlock<T>` implements `IBlockMetadata` interface.
+     -  `PreEvaluationBlock<T>` became to implement `IBlockMetadata` interface.
+     -  `BlockDigest` became to implement `IBlockMetadata` interface.
  -  Added `IBlockContent<T>` interface.  [[#1164], [#1492]]
      -  `Block<T>` became to implement `IBlockContent<T>` interface.
      -  `BlockContent<T>` became to implement `IBlockContent<T>` interface.
-     -  `PreEvaluationBlock<T>` implements `IBlockContent<T>` interface.
+     -  `PreEvaluationBlock<T>` became to implement `IBlockContent<T>`
+        interface.
  -  Added `IPreEvaluationBlockHeader` interface.  [[#1164], [#1492]]
      -  `Block<T>` became to implement `IPreEvaluationBlockHeader` interface.
      -  `BlockHeader` became to implement `IPreEvaluationBlockHeader` interface.
      -  `PreEvaluationBlockHeader` became to implement
         `IPreEvaluationBlockHeader` interface.
-     -  `PreEvaluationBlock<T>` implements `IPreEvaluationBlockHeader`
+     -  `PreEvaluationBlock<T>` became to implement `IPreEvaluationBlockHeader`
         interface.
  -  Added `IPreEvaluationBlock<T>` interface.  [[#1164], [#1492]]
      -  `Block<T>` became to implement `IPreEvaluationBlock<T>` interface.
-     -  `PreEvaluationBlock<T>` implements `IPreEvaluationBlock<T>` interface.
+     -  `PreEvaluationBlock<T>` became to implement `IPreEvaluationBlock<T>`
+        interface.
      -  `ActionEvaluator<T>.Evaluate()` method's `block` parameter became to
         take `IPreEvaluationBlock<T>` (was `IBlock<T>`).
  -  Added `IBlockHeader` interface.  [[#1146], [#1164], [#1492]]
@@ -175,6 +178,7 @@ To be released.
  -  Added `StoreExtensions.GetStateRootHash()` extension method.
     [[#1128], [#1146], [#1492]]
  -  Added `DelayedRenderer<T>.HashAlgorithmGetter` property.  [[#1492]]
+ -  `BlockDigest` became to implements `IBlockExcerpt`.
 
 ### Behavioral changes
 

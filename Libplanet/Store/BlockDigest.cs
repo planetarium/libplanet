@@ -1,6 +1,7 @@
 #nullable enable
 using System.Collections.Immutable;
 using System.Linq;
+using System.Numerics;
 using System.Security.Cryptography;
 using Bencodex;
 using Bencodex.Types;
@@ -14,7 +15,7 @@ namespace Libplanet.Store
     /// Class that store uses to save blocks. This contains:
     /// <see cref="BlockHeader"/>, and list of <see cref="Libplanet.Tx.TxId"/>s.
     /// </summary>
-    public readonly struct BlockDigest
+    public readonly struct BlockDigest : IBlockMetadata, IBlockExcerpt
     {
         private static readonly byte[] HeaderKey = { 0x48 }; // 'H'
 
@@ -65,10 +66,29 @@ namespace Libplanet.Store
                 : ImmutableArray<ImmutableArray<byte>>.Empty;
         }
 
-        /// <summary>
-        /// The block index.
-        /// </summary>
+        /// <inheritdoc cref="IBlockMetadata.ProtocolVersion"/>
+        public int ProtocolVersion => _metadata.ProtocolVersion;
+
+        /// <inheritdoc cref="IBlockMetadata.Index"/>
         public long Index => _metadata.Index;
+
+        /// <inheritdoc cref="IBlockMetadata.Timestamp"/>
+        public System.DateTimeOffset Timestamp => _metadata.Timestamp;
+
+        /// <inheritdoc cref="IBlockMetadata.Miner"/>
+        public Address Miner => _metadata.Miner;
+
+        /// <inheritdoc cref="IBlockMetadata.Difficulty"/>
+        public long Difficulty => _metadata.Difficulty;
+
+        /// <inheritdoc cref="IBlockMetadata.TotalDifficulty"/>
+        public BigInteger TotalDifficulty => _metadata.TotalDifficulty;
+
+        /// <inheritdoc cref="IBlockMetadata.PreviousHash"/>
+        public BlockHash? PreviousHash => _metadata.PreviousHash;
+
+        /// <inheritdoc cref="IBlockMetadata.TxHash"/>
+        public HashDigest<SHA256>? TxHash => _metadata.TxHash;
 
         /// <summary>
         /// The block hash.
