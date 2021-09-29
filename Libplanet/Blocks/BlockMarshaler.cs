@@ -227,6 +227,15 @@ namespace Libplanet.Blocks
                 .Select(tx => Transaction<T>.Deserialize(((Binary)tx).ToByteArray(), true))
                 .ToImmutableArray();
 
+        public static IReadOnlyList<Transaction<T>> UnmarshalBlockTransactions<T>(
+            Dictionary marshaledBlock
+        )
+            where T : IAction, new()
+        =>
+            marshaledBlock.ContainsKey(TransactionsKey)
+                ? UnmarshalTransactions<T>(marshaledBlock.GetValue<List>(TransactionsKey))
+                : ImmutableArray<Transaction<T>>.Empty;
+
         public static Block<T> UnmarshalBlock<T>(
             HashAlgorithmGetter hashAlgorithmGetter,
             Dictionary marshaled
@@ -237,9 +246,7 @@ namespace Libplanet.Blocks
                 hashAlgorithmGetter,
                 marshaled.GetValue<Dictionary>(HeaderKey)
             );
-            IReadOnlyList<Transaction<T>> txs = marshaled.ContainsKey(TransactionsKey)
-                ? UnmarshalTransactions<T>(marshaled.GetValue<List>(TransactionsKey))
-                : ImmutableArray<Transaction<T>>.Empty;
+            IReadOnlyList<Transaction<T>> txs = UnmarshalBlockTransactions<T>(marshaled);
             return new Block<T>(header, txs);
         }
     }
