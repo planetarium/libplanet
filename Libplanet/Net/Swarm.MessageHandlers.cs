@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
-using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Net.Messages;
 using Libplanet.Tx;
@@ -212,26 +210,7 @@ namespace Libplanet.Net
                 message.Ids.Select(txid => txid.ToString())
             );
 
-            IStagePolicy<T> stagePolicy = BlockChain.StagePolicy;
-            ImmutableHashSet<TxId> newTxIds = message.Ids
-                .Where(id => !_demandTxIds.ContainsKey(id))
-                .Where(id => !stagePolicy.Ignores(BlockChain, id))
-                .ToImmutableHashSet();
-
-            if (!newTxIds.Any())
-            {
-                _logger.Debug("No unaware transactions to receive.");
-                return;
-            }
-
-            _logger.Debug(
-                "Unaware transactions to receive: {@TxIds}.",
-                newTxIds.Select(txid => txid.ToString())
-            );
-            foreach (TxId txid in newTxIds)
-            {
-                _demandTxIds.TryAdd(txid, peer);
-            }
+            TxCompletion.Demand(peer, message.Ids);
         }
 
         private void TransferBlocks(GetBlocks getData)

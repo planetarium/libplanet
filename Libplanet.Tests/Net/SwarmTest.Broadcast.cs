@@ -490,8 +490,10 @@ namespace Libplanet.Tests.Net
                 swarmA.BroadcastTxs(new[] { tx3, tx4 });
                 await swarmC.TxReceived.WaitAsync();
                 Assert.DoesNotContain(tx3.Id, chainB.GetStagedTransactionIds());
+                Assert.Contains(tx4.Id, chainB.GetStagedTransactionIds());
                 // SwarmC can not receive tx3 because SwarmB does not rebroadcast it.
                 Assert.DoesNotContain(tx3.Id, chainC.GetStagedTransactionIds());
+                Assert.Contains(tx4.Id, chainC.GetStagedTransactionIds());
             }
             finally
             {

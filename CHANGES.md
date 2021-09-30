@@ -1,10 +1,30 @@
 Libplanet changelog
 ===================
 
-Version 0.17.0
+Version 0.18.0
 --------------
 
 To be released.
+
+### Backward-incompatible API changes
+
+### Backward-incompatible network protocol changes
+
+### Backward-incompatible storage format changes
+
+### Added APIs
+
+### Behavioral changes
+
+### Bug fixes
+
+### CLI tools
+
+
+Version 0.17.0
+--------------
+
+Released on September 28, 2021.
 
 ### Backward-incompatible API changes
 
@@ -98,8 +118,6 @@ To be released.
  -  `Message` became to serialize peer with Bencodex instead of
     `BinaryFormatter`.  [[#1455]]
 
-### Backward-incompatible storage format changes
-
 ### Added APIs
 
  -  `IBlockExcerpt.ExcerptEquals` extension method added.  [[#1440]]
@@ -119,6 +137,7 @@ To be released.
  -  Added `BlockHeader(int, long, DateTimeOffset, Nonce, Address, long,
     BigInteger, BlockHash?, HashDigest<SHA256>?, BlockHash,
     ImmutableArray<byte>, HashDigest<SHA256>?)` constructor.  [[#1470]]
+ -  Added `TxCompletion<TPeer, TAction>` class.  [[#1420], [#1478]]
  -  Added `BlockPolicyViolationException` and `TxPolicyViolationException`
     classes.  [[#1485]]
  -  Added `DifficultyAdjustment` static class.  [[#1495]]
@@ -140,7 +159,7 @@ To be released.
         or not.  This should prevent a tip regression for a local node, as the
         tip of a chain is never considered as stale.
  -  Block sync using `BlockDemand` became not to fill blocks
-    from multiple peers.  [[#1457]]
+    from multiple peers.  [[#1459]]
  -  `BlockChain<T>.MineBlock()` now uses `maxTransactions` literally.
     [[#1449], [#1463]]
      -  Before, `maxTransactions` were internally automatically set to a
@@ -151,6 +170,8 @@ To be released.
     require permission-less TURN server.  See [coturn's relevant configuration](
     https://github.com/coturn/coturn/blob/dc8f405f8543a83ad8c059ba6b9f930e1e5a1349/man/man1/turnserver.1#L402-L410)
     as well.  [[#1423]]
+ -  `Swarm<T>` became to sync transactions from multiple peers
+    at the same time.  [[#1420], [#1478]]
 
 ### Bug fixes
 
@@ -168,10 +189,9 @@ To be released.
         difficulty to be stuck at zero indefinitely, when this does not
         make sense.
 
-### CLI tools
-
 [#1358]: https://github.com/planetarium/libplanet/issues/1358
 [#1386]: https://github.com/planetarium/libplanet/pull/1386
+[#1420]: https://github.com/planetarium/libplanet/issues/1420
 [#1423]: https://github.com/planetarium/libplanet/pull/1423
 [#1435]: https://github.com/planetarium/libplanet/issues/1435
 [#1440]: https://github.com/planetarium/libplanet/pull/1440
@@ -182,7 +202,7 @@ To be released.
 [#1448]: https://github.com/planetarium/libplanet/issues/1448
 [#1449]: https://github.com/planetarium/libplanet/issues/1449
 [#1455]: https://github.com/planetarium/libplanet/pull/1455
-[#1457]: https://github.com/planetarium/libplanet/pull/1457
+[#1459]: https://github.com/planetarium/libplanet/pull/1459
 [#1462]: https://github.com/planetarium/libplanet/issues/1462
 [#1463]: https://github.com/planetarium/libplanet/pull/1463
 [#1464]: https://github.com/planetarium/libplanet/pull/1464
@@ -191,6 +211,7 @@ To be released.
 [#1474]: https://github.com/planetarium/libplanet/pull/1474
 [#1475]: https://github.com/planetarium/libplanet/pull/1475
 [#1477]: https://github.com/planetarium/libplanet/pull/1477
+[#1478]: https://github.com/planetarium/libplanet/pull/1478
 [#1479]: https://github.com/planetarium/libplanet/pull/1479
 [#1480]: https://github.com/planetarium/libplanet/pull/1480
 [#1485]: https://github.com/planetarium/libplanet/pull/1485
@@ -232,6 +253,18 @@ Released on August 25, 2021.
 [#1430]: https://github.com/planetarium/libplanet/pull/1430
 
 
+Version 0.15.4
+--------------
+
+Released on September 14, 2021.
+
+ -  Fixed a bug where `BlockChain<T>.MineBlock()` had created a block that
+    includes both transactions when there are two or more transactions with
+    the same nonce on the stage.  [[#1491]]
+
+[#1491]: https://github.com/planetarium/libplanet/pull/1491
+
+
 Version 0.15.3
 --------------
 
@@ -253,12 +286,12 @@ Released on September 3, 2021.
     Message, TimeSpan?, int, CancellationToken)` method.
     Instead, added `ITransport.SendMessageWithReplyAsync(BoundPeer,
     Message, TimeSpan?, int, bool, CancellationToken)` method.
-    [[#1458], [#1460]]
+    [[#1458], [#1461]]
  -  Fixed a bug where `GetTxs` request failed to receive transactions
-    if any messages are missing.  [[#1458], [#1460]]
+    if any messages are missing.  [[#1458], [#1461]]
 
 [#1458]: https://github.com/planetarium/libplanet/issues/1458
-[#1460]: https://github.com/planetarium/libplanet/pull/1460
+[#1461]: https://github.com/planetarium/libplanet/pull/1461
 
 
 Version 0.15.1
