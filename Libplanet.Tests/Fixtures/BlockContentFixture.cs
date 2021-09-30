@@ -18,6 +18,8 @@ namespace Libplanet.Tests.Fixtures
         public readonly Transaction<Arithmetic> Tx1InBlock1;
         public readonly BlockMetadata BlockMetadataPv0;
         public readonly BlockContent<Arithmetic> BlockPv0;
+        public readonly BlockMetadata BlockMetadataPv1;
+        public readonly BlockContent<Arithmetic> BlockPv1;
 
         public BlockContentFixture()
         {
@@ -52,7 +54,7 @@ namespace Libplanet.Tests.Fixtures
                 Index = 1,
                 Timestamp = new DateTimeOffset(2021, 9, 6, 17, 1, 9, 45, kst),
                 Miner = block1Key.ToAddress(),
-                Difficulty = 12345,
+                Difficulty = 123,
                 PreviousHash = GenesisHash,
                 TxHash = HashDigest<SHA256>.FromString(
                     "654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0"
@@ -114,6 +116,11 @@ namespace Libplanet.Tests.Fixtures
                 TxHash = null,
             };
             BlockPv0 = new BlockContent<Arithmetic>(BlockMetadataPv0);
+            BlockPv1 = new BlockContent<Arithmetic>(Block1)
+            {
+                ProtocolVersion = 1,
+            };
+            BlockMetadataPv1 = new BlockMetadata(BlockPv1);
         }
     }
 }

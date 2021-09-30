@@ -59,8 +59,7 @@ namespace Libplanet.Tests.Blocks
             Assert.Equal(new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 }), _fx.Genesis.Nonce);
             AssertBytesEqual(
                 BlockHash.FromString(
-                    "1f83d5e19ffe9e91661c01fae11e4946" +
-                    "ad290947f0e7b266409eee7d3adee78e"
+                    "e0be2a32dec25f65bfc905b71ad613855e96f34b37b4d75f2be8f897f5627ad7"
                 ),
                 _fx.Genesis.Hash
             );

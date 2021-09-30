@@ -42,7 +42,7 @@ namespace Libplanet.Tests.Blockchain
                 PreviousHash = _fx.GenesisBlock.Hash,
                 Timestamp = _fx.GenesisBlock.Timestamp.AddDays(1),
                 Transactions = _emptyTransaction,
-                ProtocolVersion = 1,
+                ProtocolVersion = _blockChain.Tip.ProtocolVersion,
             }.Mine(_fx.GetHashAlgorithm(1)).Evaluate(_blockChain);
             _blockChain.Append(block1);
 
@@ -55,7 +55,7 @@ namespace Libplanet.Tests.Blockchain
                 PreviousHash = block1.Hash,
                 Timestamp = _fx.GenesisBlock.Timestamp.AddDays(1),
                 Transactions = _emptyTransaction,
-                ProtocolVersion = 0,
+                ProtocolVersion = _blockChain.Tip.ProtocolVersion - 1,
             }.Mine(_fx.GetHashAlgorithm(2)).Evaluate(_blockChain);
             Assert.Throws<InvalidBlockProtocolVersionException>(() => _blockChain.Append(block2));
 

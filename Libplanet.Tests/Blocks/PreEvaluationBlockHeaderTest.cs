@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Security.Cryptography;
 using Bencodex;
 using Libplanet.Blocks;
@@ -33,8 +34,32 @@ namespace Libplanet.Tests.Blocks
                 _sha256.Digest(validGenesisBytes).ToImmutableArray();
             _validGenesisProof = (validGenesisNonce, validGenesisPreEvalHash);
 
+            // Checks if the hard-coded proof of the fixture is up-to-date.  If it's outdated,
+            // throws an exception that prints a regenerated up-to-date one:
+            const int lastCheckedProtocolVersion = 2;
+            if (_contents.BlockMetadata1.ProtocolVersion > lastCheckedProtocolVersion)
+            {
+                (Nonce Nonce, ImmutableArray<byte> Digest) regen =
+                    Hashcash.Answer(
+                        n => new[] { _codec.Encode(_contents.BlockMetadata1.ToBencodex(n)) },
+                        _sha256,
+                        _contents.BlockMetadata1.Difficulty
+                    );
+                string nonceLit = string.Join(
+                    ", ",
+                    regen.Nonce.ByteArray.Select(b => b < 0x10 ? $"0x0{b:x}" : $"0x{b:x}")
+                );
+                throw new Exception(
+                    $"As the CurrentProtocolVersion was bumped from {lastCheckedProtocolVersion} " +
+                    $"to {BlockMetadata.CurrentProtocolVersion}, hard-coded nonce proofs in " +
+                    $"the fixture is now outdated.  Check {nameof(PreEvaluationBlockHeaderTest)} " +
+                    "constructor and update the hard-coded nonce to the following up-to-date one:" +
+                    $"\n\n    new {nameof(Nonce)}(new byte[] {{ {nonceLit} }})\n\n"
+                );
+            }
+
             var validBlock1Nonce = new Nonce(
-                new byte[] { 0x14, 0xf1, 0xa7, 0x05, 0x37, 0xbb, 0x97, 0xb2, 0x5f, 0x94 }
+                new byte[] { 0x46, 0x9f, 0x2e, 0xe5, 0x25, 0x19, 0xc0, 0xf0, 0x3f, 0x3f }
             );
             byte[] validBlock1Bytes =
                 _codec.Encode(_contents.BlockMetadata1.ToBencodex(validBlock1Nonce));
@@ -260,6 +285,7 @@ namespace Libplanet.Tests.Blocks
 
             // However, such bug must be fixed after ProtocolVersion > 0:
             BlockMetadata contentPv1 = _contents.BlockMetadata1.Copy();
+            contentPv1.ProtocolVersion = 1;
             contentPv1.Timestamp += TimeSpan.FromSeconds(1);
             Assert.Throws<InvalidBlockPreEvaluationHashException>(() =>
                 new PreEvaluationBlockHeader(
@@ -280,12 +306,13 @@ namespace Libplanet.Tests.Blocks
                 .Add("index", 0L)
                 .Add("timestamp", "2021-09-06T04:46:39.123000Z")
                 .Add("difficulty", 0L)
+                .Add("total_difficulty", 0L)
                 .Add("nonce", _validGenesisProof.Nonce.ByteArray)
                 .Add(
                     "reward_beneficiary",
                     ByteUtil.ParseHex("268344BA46e6CA2A8a5096565548b9018bc687Ce")
                 )
-                .Add("protocol_version", 1)
+                .Add("protocol_version", 2)
                 .Add("state_root_hash", default(HashDigest<SHA256>).ByteArray);
             var genesis = new PreEvaluationBlockHeader(
                 _contents.GenesisMetadata,
@@ -303,7 +330,8 @@ namespace Libplanet.Tests.Blocks
             Bencodex.Types.Dictionary expectedBlock1 = Bencodex.Types.Dictionary.Empty
                 .Add("index", 1L)
                 .Add("timestamp", "2021-09-06T08:01:09.045000Z")
-                .Add("difficulty", 12345L)
+                .Add("difficulty", 123L)
+                .Add("total_difficulty", 123L)
                 .Add("nonce", _validBlock1Proof.Nonce.ByteArray)
                 .Add(
                     "reward_beneficiary",
@@ -321,7 +349,7 @@ namespace Libplanet.Tests.Blocks
                         "654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0"
                     )
                 )
-                .Add("protocol_version", 1)
+                .Add("protocol_version", 2)
                 .Add("state_root_hash", default(HashDigest<SHA256>).ByteArray);
             var block1 = new PreEvaluationBlockHeader(
                 _contents.BlockMetadata1,
@@ -351,11 +379,11 @@ namespace Libplanet.Tests.Blocks
                 preEvaluationHash: _validGenesisProof.PreEvaluationHash
             );
             AssertBytesEqual(
-                fromHex("d2103724c9fff9705998e014551d6449e3f2a27c67593432ccc8feb3d286e4ed"),
+                fromHex("c704c5470b44905dff896eba05570f57272f09fa6d0487e6739973cd943e0873"),
                 genesis.DeriveBlockHash(default)
             );
             AssertBytesEqual(
-                fromHex("885714ae8fe06983c54acbf0608bcfdb73aa9483e5043848213e6a1236b2462c"),
+                fromHex("07ad0a09ea61ebd1bd4a0d8ecd5da28b922ff901ea6517ae66cfb4038e44f960"),
                 genesis.DeriveBlockHash(arbitraryHash)
             );
 
@@ -365,11 +393,11 @@ namespace Libplanet.Tests.Blocks
                 nonce: _validBlock1Proof.Nonce
             );
             AssertBytesEqual(
-                fromHex("b2b9c1f6e2c30bd092ba3771ff7c6968817803a552cb74ddcde678eb07144acf"),
+                fromHex("5b7d1ac2dcf7f7d59d3d72bde1bf66ffe5c64a8a28c883ec9162a00222f994b0"),
                 block1.DeriveBlockHash(default)
             );
             AssertBytesEqual(
-                fromHex("8e9b97992b99ad6c028ff07e06fdf39caadecbb8d10a2bf9b6f924de38993ce8"),
+                fromHex("7ac6fad08ac79fa6f8195ba20824329485d2979f318a10fbf113f3d1e4d86db3"),
                 block1.DeriveBlockHash(arbitraryHash)
             );
         }

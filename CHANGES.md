@@ -68,6 +68,11 @@ To be released.
         and `PreEvaluationBlock<T>.Evaluate()` methods instead.
      -  `BlockHeader.StateRootHash` property's type became `HashDigest<SHA256>`
         (was `HashDigest<SHA256>?`).
+     -  The type of `InvalidBlockStateRootHashException()` constructor's
+        `expectedStateRootHash` parameter became `HashDigest<SHA256>`
+        (was `HashDigest<SHA256>?`).  [[#1507]]
+     -  `InvalidBlockStateRootHashException.ExpectedStateRootHash` property's
+        type became `HashDigest<SHA256>` (was `HashDigest<SHA256>?`).  [[#1507]]
  -  `Block<T>` and `BlockHeader` became aware of `HashAlgorithmType` used for
     proof-of-work mining.  [[#1492]]
      -  Added `Block<T>.HashAlgorithm` property.
@@ -111,6 +116,10 @@ To be released.
         method.
 
 ### Backward-incompatible network protocol changes
+
+ -  The `Block<T>.CurrentProtocolVersion` is bumped from 1 to 2:  [[#1507]]
+     -  Block's total difficulty value became included to the input of block
+        hashes and pre-evaluation hashes since the protocol version 2.
 
 ### Backward-incompatible storage format changes
 
@@ -196,6 +205,7 @@ To be released.
 [#1146]: https://github.com/planetarium/libplanet/issues/1146
 [#1164]: https://github.com/planetarium/libplanet/issues/1164
 [#1492]: https://github.com/planetarium/libplanet/pull/1492
+[#1507]: https://github.com/planetarium/libplanet/pull/1507
 
 
 Version 0.17.0

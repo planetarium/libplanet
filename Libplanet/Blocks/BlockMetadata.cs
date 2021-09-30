@@ -9,6 +9,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using Bencodex;
+using Bencodex.Types;
 
 namespace Libplanet.Blocks
 {
@@ -28,7 +29,7 @@ namespace Libplanet.Blocks
         /// <summary>
         /// The latest protocol version.
         /// </summary>
-        public const int CurrentProtocolVersion = 1;
+        public const int CurrentProtocolVersion = 2;
 
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
         private static readonly Codec Codec = new Codec();
@@ -228,6 +229,17 @@ namespace Libplanet.Blocks
             if (TxHash is { } txHash)
             {
                 dict = dict.Add("transaction_fingerprint", txHash.ByteArray);
+            }
+
+            // For blocks with ProtocolVersion < 2, they had lacked TotalDifficulty values in their
+            // serialization form.  As it was merely an unintended mistake, TotalDifficulty values
+            // have been added from ProtocolVersion >= 2:
+            if (ProtocolVersion >= 2)
+            {
+                dict = dict.Add(
+                    "total_difficulty",
+                    (IValue)(Bencodex.Types.Integer)TotalDifficulty
+                );
             }
 
             return dict;

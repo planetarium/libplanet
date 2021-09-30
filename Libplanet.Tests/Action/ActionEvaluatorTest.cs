@@ -430,7 +430,7 @@ namespace Libplanet.Tests.Action
                             recordRehearsal: true,
                             recordRandom: true),
                     },
-                    timestamp: DateTimeOffset.MinValue.AddSeconds(5)),
+                    timestamp: DateTimeOffset.MinValue.AddSeconds(4)),
             };
             i = 0;
             foreach (Transaction<DumbAction> tx in block2Txs)
