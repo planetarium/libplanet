@@ -196,6 +196,8 @@ To be released.
     As this behavior can be changed in the later releases, do not depend on
     its ordering, but explicitly sort them before use when the order needs to b
     guaranteed.  [[#1492]]
+ -  `PublicKey.ToString()` method now returns its hexadecimal representation
+    in compressed form.  [[#1507]]
 
 ### Bug fixes
 

@@ -169,6 +169,12 @@ namespace Libplanet.Crypto
             );
         }
 
+        /// <summary>
+        /// Gets the public key's hexadecimal representation in compressed form.
+        /// </summary>
+        /// <returns>The hexadecimal string of the public key's compressed bytes.</returns>
+        public override string ToString() => ByteUtil.Hex(Format(true));
+
         private static ECPublicKeyParameters GetECPublicKeyParameters(byte[] bs)
         {
             var ecParams = PrivateKey.GetECParameters();
