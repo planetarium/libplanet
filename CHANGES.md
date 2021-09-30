@@ -835,8 +835,6 @@ Released on July 23, 2021.
  -  `BlockChain<T>.Append()` cumulates indexes for pairs (TxId and BlockHash).
     A transaction inclusion for a block is retrievable by using this index.
     [[#1315], [#1329]]
- -  `Block<T>.Transactions` will be ordered using a different scheme once
-    the protocol version is bumped to `2`.  [[#1322], [#1323], [#1326]]
  -  `ActionEvaluator<T>.EvaluateActions()` now throws an unmanaged exception
     if `OutOfMemoryException` is caught from `IAction.Execute()`.
     [[#1320], [#1343]]
