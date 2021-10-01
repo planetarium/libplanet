@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using Bencodex;
 using Libplanet.Blocks;
+using Libplanet.Crypto;
 using Libplanet.Tests.Fixtures;
 using Xunit;
 using static Libplanet.ByteUtil;
@@ -404,6 +405,86 @@ namespace Libplanet.Tests.Blocks
                 expectedBlockPv1.SetItem("state_root_hash", stateRootHash.ByteArray),
                 blockPv1.ToBencodex(stateRootHash)
             );
+        }
+
+        [Fact]
+        public void MakeSignature()
+        {
+            HashDigest<SHA256> arbitraryHash = HashDigest<SHA256>.FromString(
+                "e6b3803208416556db8de50670aaf0b642e13c90afd77d24da8f642dc3e8f320"
+            );
+
+            var key = _contents.Block1Key;
+            var block1 = new PreEvaluationBlockHeader(
+                _contents.BlockMetadata1,
+                hashAlgorithm: _sha256,
+                nonce: _validBlock1Proof.Nonce
+            );
+            ImmutableArray<byte> validSig = block1.MakeSignature(key, arbitraryHash);
+            Assert.True(
+                key.PublicKey.Verify(_codec.Encode(block1.ToBencodex(arbitraryHash)), validSig)
+            );
+            Assert.False(
+                key.PublicKey.Verify(_codec.Encode(block1.ToBencodex(default)), validSig)
+            );
+            Assert.False(
+                new PrivateKey().PublicKey.Verify(
+                    _codec.Encode(block1.ToBencodex(arbitraryHash)),
+                    validSig
+                )
+            );
+
+            ArgumentException e = Assert.Throws<ArgumentException>(
+                () => block1.MakeSignature(new PrivateKey(), arbitraryHash)
+            );
+            Assert.Equal("privateKey", e.ParamName);
+            Assert.Contains("does not match", e.Message);
+
+            var blockPv1 = new PreEvaluationBlockHeader(
+                _contents.BlockPv1,
+                _sha256,
+                _contents.BlockPv1.Mine(_sha256).Nonce
+            );
+            InvalidOperationException e2 = Assert.Throws<InvalidOperationException>(
+                () => blockPv1.MakeSignature(key, arbitraryHash)
+            );
+            Assert.Contains("protocol version", e2.Message);
+        }
+
+        [Fact]
+        public void VerifySignature()
+        {
+            var random = new Random();
+            HashDigest<SHA256> arbitraryHash = HashDigest<SHA256>.FromString(
+                "e6b3803208416556db8de50670aaf0b642e13c90afd77d24da8f642dc3e8f320"
+            );
+
+            var block1 = new PreEvaluationBlockHeader(
+                _contents.BlockMetadata1,
+                hashAlgorithm: _sha256,
+                nonce: _validBlock1Proof.Nonce
+            );
+            ImmutableArray<byte> validSig = ByteUtil.ParseHex(
+                "3045022100ae733a8b3f54b8212710300f2cc2ca29de726be818880338aab39c5f0881d" +
+                "ccd022033eb32a9cfb1c39798efb4037caa0bab9c2f0c269101a6f471d0efaf1cce09a5"
+            ).ToImmutableArray();
+            Assert.True(block1.VerifySignature(validSig, arbitraryHash));
+            Assert.False(block1.VerifySignature(null, arbitraryHash));
+            Assert.False(block1.VerifySignature(validSig, default));
+            Assert.False(
+                block1.VerifySignature(
+                    random.NextBytes(validSig.Length).ToImmutableArray(),
+                    arbitraryHash
+                )
+            );
+
+            var blockPv1 = new PreEvaluationBlockHeader(
+                _contents.BlockPv1,
+                _sha256,
+                _contents.BlockPv1.Mine(_sha256).Nonce
+            );
+            Assert.True(blockPv1.VerifySignature(null, arbitraryHash));
+            Assert.False(blockPv1.VerifySignature(validSig, arbitraryHash));
         }
 
         [Fact]

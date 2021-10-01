@@ -300,6 +300,76 @@ namespace Libplanet.Blocks
             Metadata.ToBencodex(Nonce).Add("state_root_hash", stateRootHash.ByteArray);
 
         /// <summary>
+        /// Makes a signature of the block content with a <paramref name="stateRootHash"/> using
+        /// the given <paramref name="privateKey"/>.
+        /// </summary>
+        /// <param name="privateKey">The miner's private key.  This must match to the block's
+        /// <see cref="Miner"/> and <see cref="PublicKey"/>.</param>
+        /// <param name="stateRootHash">The state root hash to include to the input message to
+        /// sign.</param>
+        /// <returns>The signature of the block content with a <paramref name="stateRootHash"/>
+        /// using the given <paramref name="privateKey"/>.</returns>
+        /// <exception cref="InvalidOperationException">Thrown when the block's
+        /// <see cref="ProtocolVersion"/> is less than 2.</exception>
+        /// <exception cref="ArgumentException">Thrown when the given <paramref name="privateKey"/>
+        /// does not match to the block miner's <see cref="PublicKey"/>.</exception>
+        /// <remarks>As blocks have their signatures since the <see cref="ProtocolVersion"/> 2,
+        /// it is not usable with blocks of the earlier <see cref="ProtocolVersion"/>s than 2.
+        /// </remarks>
+        public ImmutableArray<byte> MakeSignature(
+            PrivateKey privateKey,
+            HashDigest<SHA256> stateRootHash
+        )
+        {
+            if (PublicKey is null)
+            {
+                throw new InvalidOperationException(
+                    "The block with the protocol version < 2 cannot be signed, because it lacks " +
+                    "its miner's public key so that others cannot verify its signature."
+                );
+            }
+            else if (!privateKey.PublicKey.Equals(PublicKey))
+            {
+                string m = "The given private key does not match to the miner's public key." +
+                    $"Block's public key: {PublicKey}\n" +
+                    $"Derived public key: {privateKey.PublicKey}\n";
+                throw new ArgumentException(m, nameof(privateKey));
+            }
+
+            byte[] msg = Codec.Encode(ToBencodex(stateRootHash));
+            byte[] sig = privateKey.Sign(msg);
+            return ImmutableArray.Create(sig);
+        }
+
+        /// <summary>
+        /// Verifies if the given block <paramref name="signature"/> is valid with the block
+        /// content and the specified <paramref name="stateRootHash"/>.
+        /// </summary>
+        /// <param name="signature">The block signature created using <see cref="MakeSignature"/>
+        /// method with the <paramref name="stateRootHash"/>.  This must be <c>null</c> for
+        /// blocks with earlier <seealso cref="ProtocolVersion"/>s than 2.</param>
+        /// <param name="stateRootHash">The state root hash included in the original message
+        /// of the signature.</param>
+        /// <returns><c>true</c> if the signature is valid.  <c>false</c> otherwise.</returns>
+        public bool VerifySignature(
+            ImmutableArray<byte>? signature,
+            HashDigest<SHA256> stateRootHash
+        )
+        {
+            if (PublicKey is { } pubKey && signature is { } sig)
+            {
+                byte[] msg = Codec.Encode(ToBencodex(stateRootHash));
+                return PublicKey.Verify(msg, sig);
+            }
+            else if (PublicKey is null)
+            {
+                return signature is null;
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Derives a hash digest from the given pre-evaluation block header and
         /// <paramref name="stateRootHash"/>.
         /// </summary>

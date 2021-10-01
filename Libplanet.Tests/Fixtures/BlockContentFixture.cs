@@ -9,13 +9,17 @@ namespace Libplanet.Tests.Fixtures
 {
     public class BlockContentFixture
     {
+        public readonly PrivateKey GenesisKey;
         public readonly BlockHash GenesisHash;
         public readonly BlockMetadata GenesisMetadata;
         public readonly BlockContent<Arithmetic> Genesis;
+
+        public readonly PrivateKey Block1Key;
         public readonly BlockMetadata BlockMetadata1;
         public readonly BlockContent<Arithmetic> Block1;
         public readonly Transaction<Arithmetic> Tx0InBlock1;
         public readonly Transaction<Arithmetic> Tx1InBlock1;
+
         public readonly BlockMetadata BlockMetadataPv0;
         public readonly BlockContent<Arithmetic> BlockPv0;
         public readonly BlockMetadata BlockMetadataPv1;
@@ -24,7 +28,7 @@ namespace Libplanet.Tests.Fixtures
         public BlockContentFixture()
         {
             TimeSpan kst = TimeSpan.FromHours(9);
-            var genesisKey = new PrivateKey(new byte[]
+            GenesisKey = new PrivateKey(new byte[]
             {
                 0x9b, 0xf4, 0x66, 0x4b, 0xa0, 0x9a, 0x89, 0xfa, 0xeb, 0x68, 0x4b,
                 0x94, 0xe6, 0x9f, 0xfd, 0xe0, 0x1d, 0x26, 0xae, 0x14, 0xb5, 0x56,
@@ -34,7 +38,7 @@ namespace Libplanet.Tests.Fixtures
             {
                 Index = 0,
                 Timestamp = new DateTimeOffset(2021, 9, 6, 13, 46, 39, 123, kst),
-                PublicKey = genesisKey.PublicKey,
+                PublicKey = GenesisKey.PublicKey,
                 Difficulty = 0,
                 PreviousHash = null,
                 TxHash = null,
@@ -43,7 +47,7 @@ namespace Libplanet.Tests.Fixtures
             GenesisHash = BlockHash.FromString(
                 "341e8f360597d5bc45ab96aabc5f1b0608063f30af7bd4153556c9536a07693a"
             );
-            var block1Key = new PrivateKey(new byte[]
+            Block1Key = new PrivateKey(new byte[]
             {
                 0xfc, 0xf3, 0x0b, 0x33, 0x3d, 0x04, 0xcc, 0xfe, 0xb5, 0x62, 0xf0,
                 0x00, 0xa3, 0x2d, 0xf4, 0x88, 0xe7, 0x15, 0x49, 0x49, 0xd3, 0x1d,
@@ -53,7 +57,7 @@ namespace Libplanet.Tests.Fixtures
             {
                 Index = 1,
                 Timestamp = new DateTimeOffset(2021, 9, 6, 17, 1, 9, 45, kst),
-                PublicKey = block1Key.PublicKey,
+                PublicKey = Block1Key.PublicKey,
                 Difficulty = 123,
                 PreviousHash = GenesisHash,
                 TxHash = HashDigest<SHA256>.FromString(
@@ -110,7 +114,7 @@ namespace Libplanet.Tests.Fixtures
                 ProtocolVersion = 0,
                 Index = 0,
                 Timestamp = new DateTimeOffset(2021, 9, 6, 13, 46, 39, 123, kst),
-                Miner = genesisKey.ToAddress(),
+                Miner = GenesisKey.ToAddress(),
                 Difficulty = 0,
                 PreviousHash = null,
                 TxHash = null,
