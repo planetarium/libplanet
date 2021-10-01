@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
+using Bencodex;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blocks;
@@ -54,12 +55,12 @@ namespace Libplanet.Tests.Blocks
                 _fx.Genesis.Timestamp
             );
             Assert.Equal(
-                new Address("21744f4f08db23e044178dafb8273aeb5ebe6644"),
+                new Address("66575E6FC6e4D06eA52FFF0B12258e8C3B99e65A"),
                 _fx.Genesis.Miner);
             Assert.Equal(new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 }), _fx.Genesis.Nonce);
             AssertBytesEqual(
                 BlockHash.FromString(
-                    "e0be2a32dec25f65bfc905b71ad613855e96f34b37b4d75f2be8f897f5627ad7"
+                    "dd24a6c5ddfcd311e11183ac16e1209b479dda7dc58f7100260b78a75d871431"
                 ),
                 _fx.Genesis.Hash
             );
@@ -74,9 +75,7 @@ namespace Libplanet.Tests.Blocks
                 new DateTimeOffset(2018, 11, 29, 0, 0, 15, TimeSpan.Zero),
                 _fx.Next.Timestamp
             );
-            Assert.Equal(
-                new Address("21744f4f08db23e044178dafb8273aeb5ebe6644"),
-                _fx.Next.Miner);
+            Assert.Equal(new Address("66575E6FC6e4D06eA52FFF0B12258e8C3B99e65A"), _fx.Next.Miner);
         }
 
         [Fact]
@@ -118,7 +117,10 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void BytesLength()
         {
-            Assert.Equal(214, _fx.Genesis.BytesLength);
+            Assert.Equal(
+                new Codec().Encode(_fx.Genesis.MarshalBlock()).Length,
+                _fx.Genesis.BytesLength
+            );
         }
 
         [Fact]

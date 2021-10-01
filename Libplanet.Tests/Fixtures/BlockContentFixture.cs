@@ -34,7 +34,7 @@ namespace Libplanet.Tests.Fixtures
             {
                 Index = 0,
                 Timestamp = new DateTimeOffset(2021, 9, 6, 13, 46, 39, 123, kst),
-                Miner = genesisKey.ToAddress(),
+                PublicKey = genesisKey.PublicKey,
                 Difficulty = 0,
                 PreviousHash = null,
                 TxHash = null,
@@ -53,7 +53,7 @@ namespace Libplanet.Tests.Fixtures
             {
                 Index = 1,
                 Timestamp = new DateTimeOffset(2021, 9, 6, 17, 1, 9, 45, kst),
-                Miner = block1Key.ToAddress(),
+                PublicKey = block1Key.PublicKey,
                 Difficulty = 123,
                 PreviousHash = GenesisHash,
                 TxHash = HashDigest<SHA256>.FromString(
@@ -119,6 +119,7 @@ namespace Libplanet.Tests.Fixtures
             BlockPv1 = new BlockContent<Arithmetic>(Block1)
             {
                 ProtocolVersion = 1,
+                PublicKey = null,
             };
             BlockMetadataPv1 = new BlockMetadata(BlockPv1);
         }

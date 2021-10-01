@@ -3,6 +3,7 @@ using System;
 using System.Collections.Immutable;
 using System.Numerics;
 using System.Security.Cryptography;
+using Libplanet.Crypto;
 
 namespace Libplanet.Blocks
 {
@@ -98,6 +99,9 @@ namespace Libplanet.Blocks
 
         /// <inheritdoc cref="IBlockMetadata.Miner"/>
         public Address Miner => _preEvaluationBlockHeader.Miner;
+
+        /// <inheritdoc cref="IBlockMetadata.PublicKey"/>
+        public PublicKey? PublicKey => _preEvaluationBlockHeader.PublicKey;
 
         /// <inheritdoc cref="IBlockMetadata.Difficulty"/>
         public long Difficulty => _preEvaluationBlockHeader.Difficulty;

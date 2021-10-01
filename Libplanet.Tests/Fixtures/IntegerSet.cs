@@ -26,7 +26,7 @@ namespace Libplanet.Tests.Fixtures
         public readonly IReadOnlyList<PrivateKey> PrivateKeys;
         public readonly IReadOnlyList<Address> Addresses;
         public readonly IReadOnlyList<Transaction<Arithmetic>> Txs;
-        public readonly Address Miner;
+        public readonly PrivateKey Miner;
         public readonly Block<Arithmetic> Genesis;
         public readonly BlockChain<Arithmetic> Chain;
         public readonly IStore Store;
@@ -61,14 +61,14 @@ namespace Libplanet.Tests.Fixtures
                     )
                 )
                 .ToImmutableArray();
-            Miner = new System.Random().NextAddress();
+            Miner = new PrivateKey();
             policy = policy ?? new NullPolicy<Arithmetic>();
             Store = new DefaultStore(null);
             KVStore = new MemoryKeyValueStore();
             StateStore = new TrieStateStore(KVStore);
             Genesis = new BlockContent<Arithmetic>
             {
-                Miner = Miner,
+                PublicKey = Miner.PublicKey,
                 Timestamp = DateTimeOffset.UtcNow,
                 Transactions = Txs,
             }.Mine(policy.GetHashAlgorithm(0)).Evaluate(policy.BlockAction, StateStore);
@@ -145,7 +145,7 @@ namespace Libplanet.Tests.Fixtures
 
         public Task<Block<Arithmetic>> Mine(CancellationToken cancellationToken = default) =>
             Chain.MineBlock(
-                Miner,
+                Miner.PublicKey,
                 DateTimeOffset.UtcNow,
                 cancellationToken: cancellationToken
             );

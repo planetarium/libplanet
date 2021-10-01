@@ -63,7 +63,7 @@ namespace Libplanet.Tests.Blockchain
                 privateKey: key
             );
             _blockChain.StageTransaction(txWithValidNonce);
-            await _blockChain.MineBlock(default);
+            await _blockChain.MineBlock(key.PublicKey);
             Assert.Empty(_blockChain.StagePolicy.Iterate(_blockChain));
 
             Transaction<DumbAction> txWithInvalidNonce = _fx.MakeTransaction(

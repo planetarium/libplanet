@@ -5,6 +5,7 @@ using System.Numerics;
 using System.Security.Cryptography;
 using System.Threading;
 using Bencodex;
+using Libplanet.Crypto;
 
 namespace Libplanet.Blocks
 {
@@ -161,6 +162,27 @@ namespace Libplanet.Blocks
                     "(except for genesis)."
                 );
             }
+            else if (metadata.ProtocolVersion >= 2 && metadata.PublicKey is null)
+            {
+                throw new InvalidBlockPublicKeyException(
+                    metadata.PublicKey,
+                    "Block's public key cannot be null unless its protocol version is less than 2."
+                );
+            }
+            else if (metadata.ProtocolVersion < 2 && metadata.PublicKey is { })
+            {
+                string msg =
+                    "As blocks became to have public keys since the protocol version 2, blocks " +
+                    $"with a protocol version {metadata.ProtocolVersion} cannot have public keys.";
+                throw new InvalidBlockPublicKeyException(metadata.PublicKey, msg);
+            }
+            else if (metadata.PublicKey is { } pubKey && !metadata.Miner.Equals(pubKey.ToAddress()))
+            {
+                string msg =
+                    $"The miner address {metadata.Miner} is not consistent with its public key " +
+                    $"{pubKey}.";
+                throw new InvalidBlockPublicKeyException(pubKey, msg);
+            }
             else if (!ByteUtil.Satisfies(proof.PreEvaluationHash, metadata.Difficulty))
             {
                 throw new InvalidBlockNonceException(
@@ -238,6 +260,9 @@ namespace Libplanet.Blocks
 
         /// <inheritdoc cref="IBlockMetadata.Miner"/>
         public Address Miner => Metadata.Miner;
+
+        /// <inheritdoc cref="IBlockMetadata.PublicKey"/>
+        public PublicKey? PublicKey => Metadata.PublicKey;
 
         /// <inheritdoc cref="IBlockMetadata.Difficulty"/>
         public long Difficulty => Metadata.Difficulty;

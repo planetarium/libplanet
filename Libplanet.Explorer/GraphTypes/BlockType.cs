@@ -23,6 +23,7 @@ namespace Libplanet.Explorer.GraphTypes
                 resolve: ctx => ctx.Source.Nonce.ToByteArray()
             );
             Field(x => x.Miner, type: typeof(NonNullGraphType<AddressType>));
+            Field(x => x.PublicKey, type: typeof(NonNullGraphType<PublicKeyType>));
             Field<BlockType<T>>(
                 "PreviousBlock",
                 resolve: ctx =>

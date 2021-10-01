@@ -1064,9 +1064,10 @@ namespace Libplanet.Tests.Store
                 );
 
                 // FIXME: Need to add more complex blocks/transactions.
-                await blocks.MineBlock(default);
-                await blocks.MineBlock(default);
-                await blocks.MineBlock(default);
+                var key = new PrivateKey().PublicKey;
+                await blocks.MineBlock(key);
+                await blocks.MineBlock(key);
+                await blocks.MineBlock(key);
 
                 s1.Copy(to: Fx.Store);
                 Fx.Store.Copy(to: s2);

@@ -366,7 +366,7 @@ namespace Libplanet.Blockchain
 
             BlockContent<T> content = new BlockContent<T>
             {
-                Miner = privateKey.ToAddress(),
+                PublicKey = privateKey.PublicKey,
                 Timestamp = timestamp ?? DateTimeOffset.UtcNow,
                 Transactions = transactions,
             };

@@ -6,6 +6,7 @@ using System.Numerics;
 using System.Security.Cryptography;
 using Bencodex;
 using Libplanet.Action;
+using Libplanet.Crypto;
 using Libplanet.Tx;
 
 namespace Libplanet.Blocks
@@ -123,6 +124,9 @@ namespace Libplanet.Blocks
 
         /// <inheritdoc cref="IBlockMetadata.Miner"/>
         public Address Miner => _preEvaluationBlock.Miner;
+
+        /// <inheritdoc cref="IBlockMetadata.PublicKey"/>
+        public PublicKey? PublicKey => _preEvaluationBlock.PublicKey;
 
         /// <inheritdoc cref="IBlockMetadata.PreviousHash"/>
         public BlockHash? PreviousHash => _preEvaluationBlock.PreviousHash;

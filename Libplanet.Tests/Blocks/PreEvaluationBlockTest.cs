@@ -156,7 +156,7 @@ namespace Libplanet.Tests.Blocks
 
             Assert.Throws<InvalidBlockNonceException>(() =>
                 new PreEvaluationBlock<Arithmetic>(
-                    content,
+                    _contents.Block1,
                     hashAlgorithm: _sha256,
                     nonce: _invalidBlock1Proof.Nonce
                 )
@@ -201,6 +201,7 @@ namespace Libplanet.Tests.Blocks
             // ProtocolVersion < 1 for backward compatibility:
             BlockContent<Arithmetic> contentPv0 = _contents.Block1.Copy();
             contentPv0.ProtocolVersion = 0;
+            contentPv0.PublicKey = null;
             contentPv0.Timestamp += TimeSpan.FromSeconds(1);
             var preEvalBlockPv0 = new PreEvaluationBlock<Arithmetic>(
                 contentPv0,
@@ -218,6 +219,7 @@ namespace Libplanet.Tests.Blocks
 
             // However, such bug must be fixed after ProtocolVersion > 0:
             BlockContent<Arithmetic> contentPv1 = _contents.Block1.Copy();
+            contentPv1.PublicKey = null;
             contentPv1.Timestamp += TimeSpan.FromSeconds(1);
             Assert.Throws<InvalidBlockPreEvaluationHashException>(() =>
                 new PreEvaluationBlock<Arithmetic>(

@@ -128,7 +128,8 @@ namespace Libplanet.Tests.Action
                 actions: new[] { action });
 
             chain.StageTransaction(tx);
-            await chain.MineBlock(_storeFx.Address1);
+            var miner = new PrivateKey();
+            await chain.MineBlock(miner.PublicKey);
 
             var evaluations = chain.ActionEvaluator.Evaluate(
                 chain.Tip,
@@ -138,7 +139,7 @@ namespace Libplanet.Tests.Action
             Assert.Single(evaluations);
             Assert.Null(evaluations.Single().Exception);
             Assert.Equal(chain.GetState(action.SignerKey), (Text)address.ToHex());
-            Assert.Equal(chain.GetState(action.MinerKey), (Text)_storeFx.Address1.ToHex());
+            Assert.Equal(chain.GetState(action.MinerKey), (Text)miner.ToAddress().ToHex());
             var state = chain.GetState(action.BlockIndexKey);
             Assert.Equal((long)(Integer)state, blockIndex);
         }
@@ -164,7 +165,7 @@ namespace Libplanet.Tests.Action
                 actions: new[] { action });
 
             chain.StageTransaction(tx);
-            await chain.MineBlock(_storeFx.Address1);
+            await chain.MineBlock(new PrivateKey().PublicKey);
             var evaluations = chain.ActionEvaluator.Evaluate(
                 chain.Tip,
                 StateCompleterSet<ThrowException>.Recalculate);
@@ -210,7 +211,7 @@ namespace Libplanet.Tests.Action
                 Index = 1,
                 Difficulty = 1,
                 TotalDifficulty = genesis.TotalDifficulty + 1,
-                Miner = _storeFx.Address1,
+                PublicKey = new PrivateKey().PublicKey,
                 PreviousHash = genesis.Hash,
                 Timestamp = DateTimeOffset.UtcNow,
                 Transactions = ImmutableArray.Create(tx),
@@ -347,7 +348,7 @@ namespace Libplanet.Tests.Action
                 Assert.Equal(block1Txs[expect.TxIdx].Id, eval.InputContext.TxId);
                 Assert.Equal(block1Txs[expect.TxIdx].Actions[expect.ActionIdx], eval.Action);
                 Assert.Equal(expect.Signer, eval.InputContext.Signer);
-                Assert.Equal(GenesisMinerAddress, eval.InputContext.Miner);
+                Assert.Equal(GenesisMiner.ToAddress(), eval.InputContext.Miner);
                 Assert.Equal(block1.Index, eval.InputContext.BlockIndex);
                 Assert.False(eval.InputContext.Rehearsal);
                 randomValue = eval.InputContext.Random.Next();
@@ -414,7 +415,7 @@ namespace Libplanet.Tests.Action
                     _txFx.PrivateKey2,
                     genesis.Hash,
                     new[] { MakeAction(addresses[3], 'E') },
-                    timestamp: DateTimeOffset.MinValue.AddSeconds(3)),
+                    timestamp: DateTimeOffset.MinValue.AddSeconds(4)),
                 Transaction<DumbAction>.Create(
                     0,
                     _txFx.PrivateKey3,
@@ -430,7 +431,7 @@ namespace Libplanet.Tests.Action
                             recordRehearsal: true,
                             recordRandom: true),
                     },
-                    timestamp: DateTimeOffset.MinValue.AddSeconds(4)),
+                    timestamp: DateTimeOffset.MinValue.AddSeconds(5)),
             };
             i = 0;
             foreach (Transaction<DumbAction> tx in block2Txs)
@@ -474,7 +475,7 @@ namespace Libplanet.Tests.Action
                 Assert.Equal(block2Txs[expect.Item1].Id, eval.InputContext.TxId);
                 Assert.Equal(block2Txs[expect.Item1].Actions[expect.Item2], eval.Action);
                 Assert.Equal(expect.Item4, eval.InputContext.Signer);
-                Assert.Equal(GenesisMinerAddress, eval.InputContext.Miner);
+                Assert.Equal(GenesisMiner.ToAddress(), eval.InputContext.Miner);
                 Assert.Equal(block2.Index, eval.InputContext.BlockIndex);
                 Assert.False(eval.InputContext.Rehearsal);
                 Assert.Null(eval.Exception);
@@ -522,12 +523,8 @@ namespace Libplanet.Tests.Action
         [Fact]
         public void EvaluateTx()
         {
-            Address[] addresses =
-            {
-                new PrivateKey().ToAddress(),
-                new PrivateKey().ToAddress(),
-                new PrivateKey().ToAddress(),
-            };
+            PrivateKey[] keys = { new PrivateKey(), new PrivateKey(), new PrivateKey() };
+            Address[] addresses = keys.Select(AddressExtensions.ToAddress).ToArray();
             DumbAction[] actions =
             {
                 new DumbAction(
@@ -560,7 +557,7 @@ namespace Libplanet.Tests.Action
                 Index = 1,
                 Difficulty = 1,
                 TotalDifficulty = 1,
-                Miner = addresses[0],
+                PublicKey = keys[0].PublicKey,
                 PreviousHash = default(BlockHash),
                 Transactions = ImmutableArray.Create(tx),
             }.Mine(HashAlgorithmType.Of<SHA256>());
@@ -704,7 +701,7 @@ namespace Libplanet.Tests.Action
                 Index = 123,
                 Difficulty = 1,
                 TotalDifficulty = 1,
-                Miner = GenesisMinerAddress,
+                PublicKey = GenesisMiner.PublicKey,
                 PreviousHash = default(BlockHash),
                 Transactions = ImmutableArray.Create(tx),
             }.Mine(HashAlgorithmType.Of<SHA256>());

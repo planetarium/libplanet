@@ -32,7 +32,7 @@ namespace Libplanet.Tests.Net
                 using (var storeFx = new DefaultStoreFixture(memory: true))
                 {
                     var chain = TestUtils.MakeBlockChain(policy, storeFx.Store, storeFx.StateStore);
-                    Address miner = new PrivateKey().ToAddress();
+                    var miner = new PrivateKey();
                     var signer = new PrivateKey();
                     Address address = signer.ToAddress();
                     Log.Logger.Information("Fixture blocks:");
@@ -46,7 +46,7 @@ namespace Libplanet.Tests.Net
                             );
                         }
 
-                        Block<DumbAction> block = await chain.MineBlock(miner);
+                        Block<DumbAction> block = await chain.MineBlock(miner.PublicKey);
                         Log.Logger.Information("  #{0,2} {1}", block.Index, block.Hash);
                     }
 

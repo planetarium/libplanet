@@ -7,6 +7,7 @@ using Bencodex;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blocks;
+using Libplanet.Crypto;
 using Libplanet.Tx;
 
 namespace Libplanet.Store
@@ -77,6 +78,9 @@ namespace Libplanet.Store
 
         /// <inheritdoc cref="IBlockMetadata.Miner"/>
         public Address Miner => _metadata.Miner;
+
+        /// <inheritdoc cref="IBlockMetadata.PublicKey"/>
+        public PublicKey? PublicKey => _metadata.PublicKey;
 
         /// <inheritdoc cref="IBlockMetadata.Difficulty"/>
         public long Difficulty => _metadata.Difficulty;

@@ -4,6 +4,7 @@ using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
+using Libplanet.Crypto;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Xunit;
@@ -24,9 +25,10 @@ namespace Libplanet.Tests.Blockchain
                     fx.StateStore,
                     new DumbAction[0]
                 );
-                Block<DumbAction> block1 = await chain.MineBlock(default);
+                var key = new PrivateKey().PublicKey;
+                Block<DumbAction> block1 = await chain.MineBlock(key);
                 Assert.Equal(16, block1.PreEvaluationHash.Length);
-                Block<DumbAction> block2 = await chain.MineBlock(default);
+                Block<DumbAction> block2 = await chain.MineBlock(key);
                 Assert.Equal(20, block2.PreEvaluationHash.Length);
             }
         }

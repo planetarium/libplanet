@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading;
 using Bencodex;
 using Bencodex.Types;
+using Libplanet.Crypto;
 
 namespace Libplanet.Blocks
 {
@@ -37,6 +38,8 @@ namespace Libplanet.Blocks
         private int _protocolVersion = CurrentProtocolVersion;
         private long _index;
         private DateTimeOffset _timestamp = DateTimeOffset.UtcNow;
+        private Address _miner;
+        private PublicKey? _publicKey;
         private long _difficulty;
         private BigInteger _totalDifficulty;
         private HashDigest<SHA256>? _txHash;
@@ -66,6 +69,7 @@ namespace Libplanet.Blocks
             Index = metadata.Index;
             Timestamp = metadata.Timestamp;
             Miner = metadata.Miner;
+            PublicKey = metadata.PublicKey;
             Difficulty = metadata.Difficulty;
             TotalDifficulty = metadata.TotalDifficulty;
             PreviousHash = metadata.PreviousHash;
@@ -128,7 +132,37 @@ namespace Libplanet.Blocks
         }
 
         /// <inheritdoc cref="IBlockMetadata.Miner"/>
-        public Address Miner { get; set; }
+        public Address Miner
+        {
+            get => _miner;
+            set
+            {
+                if (PublicKey is { } pubKey && !pubKey.ToAddress().Equals(value))
+                {
+                    throw new InvalidBlockPublicKeyException(
+                        pubKey,
+                        $"The miner address {value} is not consistent with its public key {pubKey}."
+                    );
+                }
+
+                _miner = value;
+            }
+        }
+
+        /// <inheritdoc cref="IBlockMetadata.PublicKey"/>
+        /// <remarks>Its setter also updates the <see cref="Miner"/> property too.</remarks>
+        public PublicKey? PublicKey
+        {
+            get => _publicKey;
+            set
+            {
+                _publicKey = value;
+                if (value is { } pubKey)
+                {
+                    _miner = pubKey.ToAddress();
+                }
+            }
+        }
 
         /// <inheritdoc cref="IBlockMetadata.Difficulty"/>
         /// <exception cref="InvalidBlockDifficultyException">Thrown when the value to set is
@@ -208,13 +242,11 @@ namespace Libplanet.Blocks
         /// <returns>The serialized block content in a Bencodex dictionary.</returns>
         public Bencodex.Types.Dictionary ToBencodex(Nonce nonce)
         {
-            // TODO: Include TotalDifficulty as well
             var dict = Bencodex.Types.Dictionary.Empty
                 .Add("index", Index)
                 .Add("timestamp", Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture))
                 .Add("difficulty", Difficulty)
-                .Add("nonce", nonce.ByteArray)
-                .Add("reward_beneficiary", Miner.ByteArray);
+                .Add("nonce", nonce.ByteArray);
 
             if (ProtocolVersion != 0)
             {
@@ -230,6 +262,17 @@ namespace Libplanet.Blocks
             {
                 dict = dict.Add("transaction_fingerprint", txHash.ByteArray);
             }
+
+            // As blocks hadn't been signed before ProtocolVersion <= 1, the PublicKey property
+            // is nullable type-wise.  Blocks with ProtocolVersion <= 1 had a `reward_beneficiary`
+            // field, which referred to the Miner address.  On the other hand, blocks with
+            // ProtocolVersion >= 2 have a `public_key` field instead.  (As Miner addresses can be
+            // derived from PublicKeys, we don't need to include both at a time.)  The PublicKey
+            // property in this class guarantees that its ProtocolVersion is <= 1 when it is null
+            // and its ProtocolVersion is >= 2 when it is not null:
+            dict = PublicKey is { } pubKey && ProtocolVersion > 1
+                ? dict.Add("public_key", pubKey.Format(compress: true)) // ProtocolVersion >= 2
+                : dict.Add("reward_beneficiary", Miner.ByteArray); /////// ProtocolVersion <= 1
 
             // For blocks with ProtocolVersion < 2, they had lacked TotalDifficulty values in their
             // serialization form.  As it was merely an unintended mistake, TotalDifficulty values

@@ -9,6 +9,7 @@ using Bencodex;
 using Libplanet.Action;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
+using Libplanet.Crypto;
 using Libplanet.Tx;
 using static Libplanet.Blocks.BlockMarshaler;
 
@@ -26,7 +27,7 @@ namespace Libplanet.Blockchain
         /// block is produced with current timestamp and appended immediately to the chain.
         /// </para>
         /// </summary>
-        /// <param name="miner">The <see cref="Address"/> of the miner that mines the block.</param>
+        /// <param name="miner">The miner's <see cref="PublicKey"/> that mines the block.</param>
         /// <param name="timestamp">The <see cref="DateTimeOffset"/> when mining started.</param>
         /// <param name="append">Whether to append the mined block immediately after mining.</param>
         /// <param name="maxTransactions">The maximum number of transactions that a block can
@@ -43,7 +44,7 @@ namespace Libplanet.Blockchain
         /// <exception cref="OperationCanceledException">Thrown when
         /// <see cref="BlockChain{T}.Tip"/> is changed while mining.</exception>
         public async Task<Block<T>> MineBlock(
-            Address miner,
+            PublicKey miner,
             DateTimeOffset? timestamp = null,
             bool? append = null,
             int? maxTransactions = null,
@@ -66,7 +67,7 @@ namespace Libplanet.Blockchain
         /// <summary>
         /// Mines a next <see cref="Block{T}"/> using staged <see cref="Transaction{T}"/>s.
         /// </summary>
-        /// <param name="miner">The <see cref="Address"/> of the miner that mines the block.</param>
+        /// <param name="miner">The miner's <see cref="PublicKey"/> that mines the block.</param>
         /// <param name="timestamp">The <see cref="DateTimeOffset"/> when mining started.</param>
         /// <param name="append">Whether to append the mined block immediately after mining.</param>
         /// <param name="maxTransactions">The maximum number of transactions that a block can
@@ -83,7 +84,7 @@ namespace Libplanet.Blockchain
         /// <exception cref="OperationCanceledException">Thrown when
         /// <see cref="BlockChain{T}.Tip"/> is changed while mining.</exception>
         public async Task<Block<T>> MineBlock(
-            Address miner,
+            PublicKey miner,
             DateTimeOffset timestamp,
             bool append,
             int maxTransactions,
@@ -131,7 +132,7 @@ namespace Libplanet.Blockchain
                 Index = index,
                 Difficulty = difficulty,
                 TotalDifficulty = Tip.TotalDifficulty + difficulty,
-                Miner = miner,
+                PublicKey = miner,
                 PreviousHash = prevHash,
                 Timestamp = timestamp,
             };
