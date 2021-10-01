@@ -30,18 +30,19 @@ namespace Libplanet.Tests.Blockchain.Renderers
             HashAlgorithmGetter hashAlgorithmGetter = _ => hashAlgorithm;
             var chainA = new Block<DumbAction>[10];
             var chainB = new Block<DumbAction>[chainA.Length];
-            chainA[0] = chainB[0] = TestUtils.MineGenesis<DumbAction>(hashAlgorithmGetter);
+            chainA[0] = chainB[0] = TestUtils.MineGenesisBlock<DumbAction>(hashAlgorithmGetter);
             for (int i = 1; i < chainA.Length / 2; i++)
             {
                 _branchpoint = chainA[i] = chainB[i] =
-                    TestUtils.MineNext(chainA[i - 1], hashAlgorithmGetter);
+                    TestUtils.MineNextBlock(chainA[i - 1], hashAlgorithmGetter);
             }
 
             int extraDifficulty = 1;
             for (int i = chainA.Length / 2; i < chainA.Length; i++)
             {
-                chainA[i] = TestUtils.MineNext(chainA[i - 1], hashAlgorithmGetter, difficulty: 2);
-                chainB[i] = TestUtils.MineNext(
+                chainA[i] =
+                    TestUtils.MineNextBlock(chainA[i - 1], hashAlgorithmGetter, difficulty: 2);
+                chainB[i] = TestUtils.MineNextBlock(
                     chainB[i - 1],
                     hashAlgorithmGetter,
                     difficulty: 2 + extraDifficulty
@@ -95,6 +96,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                     new AnonymousRenderer<DumbAction>(),
                     _canonicalChainComparer,
                     _store,
+                    _ => HashAlgorithmType.Of<SHA256>(),  // thunk getter; doesn't matter here
                     confirmations: invalidConfirmations
                 )
             );
@@ -119,6 +121,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 innerRenderer,
                 _canonicalChainComparer,
                 _store,
+                _ => HashAlgorithmType.Of<SHA256>(),  // thunk getter; doesn't matter here
                 confirmations: 3
             );
             Assert.Null(renderer.Tip);
@@ -177,6 +180,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 innerRenderer,
                 _canonicalChainComparer,
                 _store,
+                _ => HashAlgorithmType.Of<SHA256>(),  // thunk getter; doesn't matter here
                 confirmations: 3
             );
             var renderer = new LoggedRenderer<DumbAction>(

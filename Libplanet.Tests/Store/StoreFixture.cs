@@ -91,16 +91,21 @@ namespace Libplanet.Tests.Store
                 0x9c, 0xee,
             });
 
-            var stateStore =
-                new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore());
+            var stateStore = new TrieStateStore(new MemoryKeyValueStore());
+            var stateRootHashes = new Dictionary<BlockHash, HashDigest<SHA256>>();
+            Func<BlockHash?, HashDigest<SHA256>?> rootHashGetter = bh =>
+                bh is BlockHash h && stateRootHashes.TryGetValue(h, out HashDigest<SHA256> rh)
+                    ? rh
+                    : (HashDigest<SHA256>?)null;
             GenesisBlock = TestUtils.MineGenesis<DumbAction>(GetHashAlgorithm)
-                .AttachStateRootHash(GetHashAlgorithm(0), stateStore, blockAction);
-            Block1 = TestUtils.MineNext(GenesisBlock, GetHashAlgorithm)
-                .AttachStateRootHash(GetHashAlgorithm(1), stateStore, blockAction);
-            Block2 = TestUtils.MineNext(Block1, GetHashAlgorithm)
-                .AttachStateRootHash(GetHashAlgorithm(2), stateStore, blockAction);
-            Block3 = TestUtils.MineNext(Block2, GetHashAlgorithm)
-                .AttachStateRootHash(GetHashAlgorithm(3), stateStore, blockAction);
+                .Evaluate(blockAction, stateStore);
+            stateRootHashes[GenesisBlock.Hash] = GenesisBlock.StateRootHash;
+            Block1 = TestUtils.MineNextBlock(GenesisBlock, GetHashAlgorithm);
+            stateRootHashes[Block1.Hash] = Block1.StateRootHash;
+            Block2 = TestUtils.MineNextBlock(Block1, GetHashAlgorithm);
+            stateRootHashes[Block2.Hash] = Block2.StateRootHash;
+            Block3 = TestUtils.MineNextBlock(Block2, GetHashAlgorithm);
+            stateRootHashes[Block3.Hash] = Block3.StateRootHash;
 
             Transaction1 = MakeTransaction(new List<DumbAction>(), ImmutableHashSet<Address>.Empty);
             Transaction2 = MakeTransaction(new List<DumbAction>(), ImmutableHashSet<Address>.Empty);

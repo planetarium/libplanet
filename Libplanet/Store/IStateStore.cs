@@ -1,10 +1,8 @@
 #nullable enable
 using System;
 using System.Collections.Immutable;
-using Bencodex.Types;
-using Libplanet.Action;
-using Libplanet.Blockchain;
-using Libplanet.Blocks;
+using System.Security.Cryptography;
+using Libplanet.Store.Trie;
 
 namespace Libplanet.Store
 {
@@ -14,56 +12,19 @@ namespace Libplanet.Store
     public interface IStateStore : IDisposable
     {
         /// <summary>
-        /// Sets states mapped as relation <see cref="Block{T}.Hash"/> → states.
-        /// It guarantees <see cref="GetState"/> will return the same state if you passed same
-        /// <paramref name="block"/> unless it has overwritten.
+        /// Gets the state root trie of the <paramref name="stateRootHash"/> from the state store.
         /// </summary>
-        /// <param name="block">The <see cref="Block{T}"/> to set states.</param>
-        /// <param name="states">The dictionary of state keys to states.</param>
-        /// <typeparam name="T">An <see cref="IAction"/> type. It should match to
-        /// <paramref name="block"/>'s type parameter.</typeparam>
-        void SetStates<T>(
-            Block<T> block,
-            IImmutableDictionary<string, IValue> states)
-            where T : IAction, new();
+        /// <param name="stateRootHash">The state root hash of the state root trie to get.
+        /// If <c>null</c> is passed the empty state root trie is returned.</param>
+        /// <returns>The state root trie of the <paramref name="stateRootHash"/>.
+        /// If <c>null</c> is passed the empty state root trie is returned.</returns>
+        ITrie GetStateRoot(HashDigest<SHA256>? stateRootHash);
 
         /// <summary>
-        /// Gets state queried by <paramref name="stateKey"/> in the point,
-        /// <paramref name="blockHash"/>.
+        /// Prunes the states no more used from the state store.
         /// </summary>
-        /// <param name="stateKey">The key to query state.</param>
-        /// <param name="blockHash">The <see cref="Block{T}.Hash"/> which the point to query by
-        /// <paramref name="stateKey"/> at.</param>
-        /// <returns>The state queried from <paramref name="blockHash"/> and
-        /// <paramref name="stateKey"/>. If it couldn't find state, returns <c>null</c>.</returns>
-        IValue? GetState(string stateKey, BlockHash? blockHash = null);
-
-        /// <summary>
-        /// Checks if the states corresponded to the block derived from <paramref name="blockHash"/>
-        /// exist.
-        /// </summary>
-        /// <param name="blockHash">The <see cref="Block{T}.Hash"/> of <see cref="Block{T}"/>.
-        /// </param>
-        /// <returns>Whether it contains the block states corresponded to
-        /// <paramref name="blockHash"/>.
-        /// </returns>
-        bool ContainsBlockStates(BlockHash blockHash);
-
-        /// <summary>
-        /// Copies metadata related to states from <paramref name="sourceChainId"/> to
-        /// <paramref name="destinationChainId"/>, with <paramref name="branchpoint"/>.
-        /// </summary>
-        /// <param name="sourceChainId">The <see cref="BlockChain{T}.Id"/> of the chain which
-        /// copies from.</param>
-        /// <param name="destinationChainId">The <see cref="BlockChain{T}.Id"/> of the chain which
-        /// copies to.</param>
-        /// <param name="branchpoint">The branchpoint to begin coping.</param>
-        /// <typeparam name="T">An <see cref="IAction"/> type.  It should match to
-        /// <paramref name="branchpoint"/>'s type parameter.</typeparam>
-        void ForkStates<T>(
-            Guid sourceChainId,
-            Guid destinationChainId,
-            Block<T> branchpoint)
-            where T : IAction, new();
+        /// <param name="survivalStateRootHashes">The state root hashes <em>not</em> to prune.
+        /// These state root hashes are guaranteed to survive after pruning.</param>
+        void PruneStates(IImmutableSet<HashDigest<SHA256>> survivalStateRootHashes);
     }
 }

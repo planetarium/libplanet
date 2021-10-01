@@ -19,11 +19,13 @@ namespace Libplanet.Tests.Blockchain.Renderers
         private static HashAlgorithmType _hashAlgorithmType = HashAlgorithmType.Of<SHA256>();
 
         private static DumbBlock _genesis =
-            TestUtils.MineGenesis<DumbAction>(_ => _hashAlgorithmType, default(Address));
+            TestUtils.MineGenesisBlock<DumbAction>(_ => _hashAlgorithmType, default(Address));
 
-        private static DumbBlock _blockA = TestUtils.MineNext(_genesis, _ => _hashAlgorithmType);
+        private static DumbBlock _blockA =
+            TestUtils.MineNextBlock(_genesis, _ => _hashAlgorithmType);
 
-        private static DumbBlock _blockB = TestUtils.MineNext(_genesis, _ => _hashAlgorithmType);
+        private static DumbBlock _blockB =
+            TestUtils.MineNextBlock(_genesis, _ => _hashAlgorithmType);
 
         private ILogger _logger;
 

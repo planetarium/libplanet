@@ -118,29 +118,43 @@ namespace Libplanet.Net
             }
 
             BlockHeaderReceived.Set();
-            BlockHeader header = message.Header;
-
-            _logger.Information(
-                $"Received {nameof(BlockHeader)} #{{BlockIndex}} {{BlockHash}}.",
-                header.Index,
-                header.Hash
-            );
-
-            HashAlgorithmType hashAlgorithm = BlockChain.Policy.GetHashAlgorithm(header.Index);
+            BlockHeader header;
             try
             {
-                header.Validate(hashAlgorithm, DateTimeOffset.UtcNow);
+                header = message.GetHeader(BlockChain.Policy.GetHashAlgorithm);
             }
             catch (InvalidBlockException ibe)
             {
                 _logger.Debug(
                     ibe,
                     "Received header #{BlockIndex} {BlockHash} seems invalid; ignored.",
-                    header.Index,
-                    header.Hash
+                    message.HeaderHash,
+                    message.HeaderIndex
                 );
                 return;
             }
+
+            try
+            {
+                header.ValidateTimestamp();
+            }
+            catch (InvalidBlockTimestampException e)
+            {
+                _logger.Debug(
+                    e,
+                    "Received #{BlockIndex} {BlockHash}'s timestamp is invalid: {Timestamp}.",
+                    header.Index,
+                    header.Hash,
+                    header.Timestamp
+                );
+                return;
+            }
+
+            _logger.Information(
+                "Received " + nameof(BlockHeader) + " #{BlockIndex} {BlockHash}.",
+                header.Index,
+                header.Hash
+            );
 
             if (!IsBlockNeeded(header))
             {
@@ -234,8 +248,8 @@ namespace Libplanet.Net
                 _logger.Verbose(logMsg, i, total, hash, identityHex);
                 if (_store.ContainsBlock(hash))
                 {
-                    Block<T> block = _store.GetBlock<T>(hash);
-                    byte[] payload = block.Serialize();
+                    Block<T> block = _store.GetBlock<T>(BlockChain.Policy.GetHashAlgorithm, hash);
+                    byte[] payload = Codec.Encode(block.MarshalBlock());
                     blocks.Add(payload);
                 }
 

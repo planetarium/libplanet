@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Blockchain;
@@ -91,22 +89,18 @@ namespace Libplanet.Tests.Net
         {
             Swarm<DumbAction> receiverSwarm = CreateSwarm();
             BlockChain<DumbAction> receiverChain = receiverSwarm.BlockChain;
-            var invalidGenesisBlock = new Block<DumbAction>(
-                0,
-                0,
-                0,
-                new Nonce(new byte[] { 0x10, 0x00, 0x00, 0x00 }),
-                receiverSwarm.Address,
-                null,
-                DateTimeOffset.MinValue,
-                ImmutableArray<Transaction<DumbAction>>.Empty,
-                HashAlgorithmType.Of<SHA256>()
-            );
+            var seedStateStore = new TrieStateStore(new MemoryKeyValueStore());
+            IBlockPolicy<DumbAction> policy = receiverChain.Policy;
+            var mismatchedGenesis = new BlockContent<DumbAction>
+            {
+                Miner = receiverSwarm.Address,
+                Timestamp = DateTimeOffset.MinValue,
+            }.Mine(policy.GetHashAlgorithm(0)).Evaluate(policy.BlockAction, seedStateStore);
             BlockChain<DumbAction> seedChain = TestUtils.MakeBlockChain(
-                receiverChain.Policy,
+                policy,
                 new DefaultStore(path: null),
-                new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore()),
-                genesisBlock: invalidGenesisBlock);
+                seedStateStore,
+                genesisBlock: mismatchedGenesis);
             Swarm<DumbAction> seedSwarm = CreateSwarm(seedChain);
             try
             {
@@ -628,21 +622,21 @@ namespace Libplanet.Tests.Net
 
                 await BootstrapAsync(receiverSwarm, minerSwarm.AsPeer);
 
-                var block1 = TestUtils.MineNext(
+                Block<DumbAction> block1 = TestUtils.MineNext(
                         blockChain.Genesis,
                         policy.GetHashAlgorithm,
                         new[] { transactions[0] },
                         null,
                         policy.GetNextBlockDifficulty(blockChain))
-                    .AttachStateRootHash(blockChain.StateStore, policy);
+                    .Evaluate(blockChain);
                 blockChain.Append(block1, true, true, false);
-                var block2 = TestUtils.MineNext(
+                Block<DumbAction> block2 = TestUtils.MineNext(
                     block1,
                     policy.GetHashAlgorithm,
                     new[] { transactions[1] },
                     null,
                     policy.GetNextBlockDifficulty(blockChain)
-                ).AttachStateRootHash(blockChain.StateStore, policy);
+                ).Evaluate(blockChain);
                 blockChain.Append(block2, true, true, false);
                 Log.Debug("Ready to broadcast blocks.");
                 minerSwarm.BroadcastBlock(block2);
@@ -802,11 +796,11 @@ namespace Libplanet.Tests.Net
             var chain1 = TestUtils.MakeBlockChain(
                 policy,
                 new DefaultStore(null),
-                new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore()));
+                new TrieStateStore(new MemoryKeyValueStore()));
             var chain2 = TestUtils.MakeBlockChain(
                 policy,
                 new DefaultStore(null),
-                new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore()));
+                new TrieStateStore(new MemoryKeyValueStore()));
 
             var miner1 = CreateSwarm(chain1);
             var miner2 = CreateSwarm(chain2);
@@ -815,12 +809,12 @@ namespace Libplanet.Tests.Net
             await chain1.MineBlock(miner2.Address);
             long nextDifficulty =
                 (long)chain1.Tip.TotalDifficulty + policy.GetNextBlockDifficulty(chain2);
-            var block = TestUtils.MineNext(
+            Block<DumbAction> block = TestUtils.MineNext(
                 chain2.Tip,
                 policy.GetHashAlgorithm,
                 difficulty: nextDifficulty,
                 blockInterval: TimeSpan.FromMilliseconds(1)
-            ).AttachStateRootHash(chain2.StateStore, policy);
+            ).Evaluate(chain2);
             chain2.Append(block);
 
             Assert.True(chain1.Tip.Index > chain2.Tip.Index);

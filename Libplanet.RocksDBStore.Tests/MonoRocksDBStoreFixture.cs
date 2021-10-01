@@ -26,9 +26,7 @@ namespace Libplanet.RocksDBStore.Tests
         {
             IKeyValueStore stateKeyValueStore =
                 new RocksDBKeyValueStore(System.IO.Path.Combine(path, "states"));
-            IKeyValueStore stateHashKeyValueStore =
-                new RocksDBKeyValueStore(System.IO.Path.Combine(path, "states_hashes"));
-            return new TrieStateStore(stateKeyValueStore, stateHashKeyValueStore);
+            return new TrieStateStore(stateKeyValueStore);
         }
 
         public override void Dispose()

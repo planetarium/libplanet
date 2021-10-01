@@ -68,32 +68,16 @@ namespace Libplanet.Store
         /// <inheritdoc cref="IStore.IterateBlockHashes()"/>
         public abstract IEnumerable<BlockHash> IterateBlockHashes();
 
-        /// <inheritdoc cref="IStore.GetBlock{T}(BlockHash)"/>
-        public Block<T> GetBlock<T>(BlockHash blockHash)
+        /// <inheritdoc cref="IStore.GetBlock{T}"/>
+        public Block<T> GetBlock<T>(HashAlgorithmGetter hashAlgorithmGetter, BlockHash blockHash)
             where T : IAction, new()
         {
             if (GetBlockDigest(blockHash) is BlockDigest blockDigest)
             {
-                BlockHeader header = blockDigest.Header;
-                ImmutableArray<byte>? preEvaluationHash = header.PreEvaluationHash.Any()
-                    ? header.PreEvaluationHash
-                    : (ImmutableArray<byte>?)null;
-
-                return new Block<T>(
-                    index: header.Index,
-                    difficulty: header.Difficulty,
-                    totalDifficulty: header.TotalDifficulty,
-                    nonce: header.Nonce,
-                    miner: header.Miner,
-                    previousHash: header.PreviousHash,
-                    timestamp: header.Timestamp,
-                    transactions: blockDigest.TxIds
-                        .Select(bytes => GetTransaction<T>(new TxId(bytes.ToArray())))
-                        .ToImmutableArray(),
-                    preEvaluationHash: preEvaluationHash,
-                    stateRootHash: header.StateRootHash,
-                    protocolVersion: header.ProtocolVersion
-                );
+                BlockHeader header = blockDigest.GetHeader(hashAlgorithmGetter);
+                IEnumerable<Transaction<T>> txs = blockDigest.TxIds
+                    .Select(bytes => GetTransaction<T>(new TxId(bytes.ToArray())));
+                return new Block<T>(header, txs);
             }
 
             return null;
@@ -102,7 +86,7 @@ namespace Libplanet.Store
         /// <inheritdoc cref="IStore.GetBlockIndex(BlockHash)"/>
         public long? GetBlockIndex(BlockHash blockHash)
         {
-            return GetBlockDigest(blockHash)?.Header.Index;
+            return GetBlockDigest(blockHash)?.Index;
         }
 
         /// <inheritdoc cref="IStore.GetBlockDigest(BlockHash)"/>

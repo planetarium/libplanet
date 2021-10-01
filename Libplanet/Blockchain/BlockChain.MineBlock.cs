@@ -5,11 +5,12 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Bencodex;
 using Libplanet.Action;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
-using Libplanet.Store;
 using Libplanet.Tx;
+using static Libplanet.Blocks.BlockMarshaler;
 
 namespace Libplanet.Blockchain
 {
@@ -93,12 +94,24 @@ namespace Libplanet.Blockchain
             using var cts = new CancellationTokenSource();
             using CancellationTokenSource cancellationTokenSource =
                 CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, cts.Token);
-            void WatchTip(object target, (Block<T> OldTip, Block<T> NewTip) tip) => cts.Cancel();
+
+            void WatchTip(object target, (Block<T> OldTip, Block<T> NewTip) tip)
+            {
+                try
+                {
+                    cts.Cancel();
+                }
+                catch (ObjectDisposedException)
+                {
+                    // Ignore if mining was already finished.
+                }
+            }
+
             TipChanged += WatchTip;
 
             long index = Count;
             long difficulty = Policy.GetNextBlockDifficulty(this);
-            BlockHash? prevHash = Store.IndexBlockHash(Id, index - 1);
+            BlockHash? prevHash = index > 0 ? Store.IndexBlockHash(Id, index - 1) : null;
 
             int sessionId = new System.Random().Next();
             int processId = Process.GetCurrentProcess().Id;
@@ -113,7 +126,18 @@ namespace Libplanet.Blockchain
 
             HashAlgorithmType hashAlgorithm = Policy.GetHashAlgorithm(index);
 
+            var metadata = new BlockMetadata
+            {
+                Index = index,
+                Difficulty = difficulty,
+                TotalDifficulty = Tip.TotalDifficulty + difficulty,
+                Miner = miner,
+                PreviousHash = prevHash,
+                Timestamp = timestamp,
+            };
+
             var transactionsToMine = GatherTransactionsToMine(
+                metadata,
                 maxTransactions: maxTransactions,
                 maxTransactionsPerSigner: maxTransactionsPerSigner,
                 txPriority: txPriority
@@ -127,21 +151,14 @@ namespace Libplanet.Blockchain
                 index,
                 transactionsToMine.Count);
 
-            Block<T> block;
+            var blockContent = new BlockContent<T>(metadata) { Transactions = transactionsToMine };
+            PreEvaluationBlock<T> preEval;
             try
             {
-                block = await Task.Run(
-                    () => Block<T>.Mine(
-                        index: index,
-                        hashAlgorithm: hashAlgorithm,
-                        difficulty: difficulty,
-                        previousTotalDifficulty: Tip.TotalDifficulty,
-                        miner: miner,
-                        previousHash: prevHash,
-                        timestamp: timestamp,
-                        transactions: transactionsToMine,
-                        cancellationToken: cancellationTokenSource.Token),
-                    cancellationTokenSource.Token);
+                preEval = await Task.Run(
+                    () => blockContent.Mine(hashAlgorithm, cancellationTokenSource.Token),
+                    cancellationTokenSource.Token
+                );
             }
             catch (OperationCanceledException)
             {
@@ -158,32 +175,8 @@ namespace Libplanet.Blockchain
                 TipChanged -= WatchTip;
             }
 
-            IReadOnlyList<ActionEvaluation> actionEvaluations = ActionEvaluator.Evaluate(
-                block, StateCompleterSet<T>.Recalculate);
-
-            if (StateStore is TrieStateStore trieStateStore)
-            {
-                _rwlock.EnterWriteLock();
-                try
-                {
-                    SetStates(block, actionEvaluations);
-                    block = new Block<T>(block, trieStateStore.GetRootHash(block.Hash));
-
-                    // it's needed because `block.Hash` was updated with the state root hash.
-                    // FIXME: we need a method for calculating the state root hash without
-                    // `.SetStates()`.
-                    SetStates(block, actionEvaluations);
-                }
-                finally
-                {
-                    _rwlock.ExitWriteLock();
-                }
-            }
-            else
-            {
-                // We need to re-execute it.
-                actionEvaluations = null;
-            }
+            (Block<T> block, IReadOnlyList<ActionEvaluation> actionEvaluations) =
+                preEval.EvaluateActions(this);
 
             _logger.Debug(
                 "{SessionId}/{ProcessId}: Mined block #{Index} {Hash} " +
@@ -212,6 +205,7 @@ namespace Libplanet.Blockchain
         /// Gathers <see cref="Transaction{T}"/>s for mining a next block
         /// from the current set of staged <see cref="Transaction{T}"/>s.
         /// </summary>
+        /// <param name="metadata">The metadata of the block to be mined.</param>
         /// <param name="maxTransactions">The maximum number of <see cref="Transaction{T}"/>s
         /// allowed.</param>
         /// <param name="maxTransactionsPerSigner">The maximum number of
@@ -223,6 +217,7 @@ namespace Libplanet.Blockchain
         /// <see cref="Transaction{T}"/>s in the list for each signer not exceeding
         /// <paramref name="maxTransactionsPerSigner"/>.</returns>
         internal ImmutableList<Transaction<T>> GatherTransactionsToMine(
+            BlockMetadata metadata,
             int maxTransactions,
             int maxTransactionsPerSigner,
             IComparer<Transaction<T>> txPriority = null
@@ -241,20 +236,26 @@ namespace Libplanet.Blockchain
             // FIXME: The tx collection timeout should be configurable.
             DateTimeOffset timeout = DateTimeOffset.UtcNow + TimeSpan.FromSeconds(4);
 
-            BlockHash? prevHash = Count > 0 ? Tip.Hash : (BlockHash?)null;
             HashAlgorithmType hashAlgorithm = Policy.GetHashAlgorithm(index);
 
-            // Makes an empty block to estimate the length of bytes without transactions.
-            int estimatedBytes = new Block<T>(
-                index: default,
-                difficulty: default,
-                totalDifficulty: default,
-                nonce: default,
-                miner: default,
-                previousHash: prevHash,
-                timestamp: default,
-                transactions: new Transaction<T>[0],
-                hashAlgorithm: hashAlgorithm).BytesLength;
+            // Makes an empty block payload to estimate the length of bytes without transactions.
+            Bencodex.Types.Dictionary marshaledEmptyBlock = MarshalBlock(
+                marshaledBlockHeader: MarshalBlockHeader(
+                    marshaledPreEvaluatedBlockHeader: MarshalPreEvaluationBlockHeader(
+                        marshaledMetadata: MarshalBlockMetadata(metadata),
+                        nonce: default,
+                        preEvaluationHash: new byte[hashAlgorithm.DigestSize].ToImmutableArray()
+                    ),
+                    stateRootHash: default,
+                    hash: default
+                ),
+                marshaledTransactions: BlockMarshaler.MarshalTransactions(
+                    Array.Empty<Transaction<T>>()
+                )
+            );
+            var codec = new Codec();
+            byte[] emptyBlockPayload = codec.Encode(marshaledEmptyBlock);
+            int estimatedBytes = emptyBlockPayload.Length;
             int maxBlockBytes = Policy.GetMaxBlockBytes(index);
 
             var storedNonces = new Dictionary<Address, long>();

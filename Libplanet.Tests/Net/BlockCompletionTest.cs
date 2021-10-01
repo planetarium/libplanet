@@ -290,9 +290,9 @@ namespace Libplanet.Tests.Net
         public async Task CompleteWithBlockFetcherGivingWrongBlocks()
         {
             HashAlgorithmGetter hashAlgoGetter = _ => HashAlgorithmType.Of<SHA256>();
-            Block<DumbAction> genesis = TestUtils.MineGenesis<DumbAction>(hashAlgoGetter),
-                demand = TestUtils.MineNext(genesis, hashAlgoGetter),
-                wrong = TestUtils.MineNext(genesis, hashAlgoGetter);
+            Block<DumbAction> genesis = TestUtils.MineGenesisBlock<DumbAction>(hashAlgoGetter),
+                demand = TestUtils.MineNextBlock(genesis, hashAlgoGetter),
+                wrong = TestUtils.MineNextBlock(genesis, hashAlgoGetter);
             _logger.Debug("Genesis: #{Index} {Hash}", genesis.Index, genesis.Hash);
             _logger.Debug("Demand:  #{Index} {Hash}", demand.Index, demand.Hash);
             _logger.Debug("Wrong:   #{Index} {Hash}", wrong.Index, wrong.Hash);
@@ -401,12 +401,12 @@ namespace Libplanet.Tests.Net
             hashAlgorithmGetter = hashAlgorithmGetter ?? (_ => HashAlgorithmType.Of<SHA256>());
             if (count >= 1)
             {
-                Block<T> block = TestUtils.MineGenesis<T>(hashAlgorithmGetter);
+                Block<T> block = TestUtils.MineGenesisBlock<T>(hashAlgorithmGetter);
                 yield return block;
 
                 for (int i = 1; i < count; i++)
                 {
-                    block = TestUtils.MineNext(block, hashAlgorithmGetter);
+                    block = TestUtils.MineNextBlock(block, hashAlgorithmGetter);
                     yield return block;
                 }
             }

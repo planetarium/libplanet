@@ -15,12 +15,12 @@ namespace Libplanet.Tests.Blocks
 
         public BlockFixture()
         {
-            Genesis = TestUtils.MineGenesis<PolymorphicAction<BaseAction>>(
+            Genesis = TestUtils.MineGenesisBlock<PolymorphicAction<BaseAction>>(
                 hashAlgorithmGetter: GetHashAlgorithm,
                 protocolVersion: ProtocolVersion
             );
             TxFixture = new TxFixture(Genesis.Hash);
-            Next = TestUtils.MineNext(
+            Next = TestUtils.MineNextBlock(
                 Genesis,
                 hashAlgorithmGetter: GetHashAlgorithm,
                 nonce: new byte[] { 0x02, 0x00, 0x00, 0x00 },
@@ -30,7 +30,7 @@ namespace Libplanet.Tests.Blocks
             {
                 0x5c, 0x77, 0x74, 0xc2, 0x39, 0x69, 0x37, 0x51, 0x87, 0xa5,
             };
-            HasTx = TestUtils.MineNext(
+            HasTx = TestUtils.MineNextBlock(
                 Next,
                 hashAlgorithmGetter: GetHashAlgorithm,
                 txs: new List<Transaction<PolymorphicAction<BaseAction>>>

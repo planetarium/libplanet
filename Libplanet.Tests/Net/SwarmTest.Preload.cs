@@ -114,10 +114,10 @@ namespace Libplanet.Tests.Net
             foreach (int i in Enumerable.Range(0, 11))
             {
                 Block<DumbAction> block = TestUtils.MineNext(
-                        previousBlock: i == 0 ? minerChain.Genesis : blocks[i - 1],
-                        hashAlgorithmGetter: minerChain.Policy.GetHashAlgorithm,
-                        difficulty: 1024)
-                    .AttachStateRootHash(minerChain.StateStore, minerChain.Policy);
+                    previousBlock: i == 0 ? minerChain.Genesis : blocks[i - 1],
+                    hashAlgorithmGetter: minerChain.Policy.GetHashAlgorithm,
+                    difficulty: 1024
+                ).Evaluate(minerChain);
                 blocks.Add(block);
                 if (i != 10)
                 {
@@ -249,13 +249,13 @@ namespace Libplanet.Tests.Net
             var chain1 = TestUtils.MakeBlockChain(
                 policy,
                 new DefaultStore(null),
-                new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore()),
+                new TrieStateStore(new MemoryKeyValueStore()),
                 renderers: new[] { renderer1 }
             );
             var chain2 = TestUtils.MakeBlockChain(
                 policy,
                 new DefaultStore(null),
-                new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore()),
+                new TrieStateStore(new MemoryKeyValueStore()),
                 renderers: new[] { renderer2 }
             );
             var receiver1 = CreateSwarm(chain1);
@@ -263,7 +263,7 @@ namespace Libplanet.Tests.Net
             var sender = CreateSwarm(TestUtils.MakeBlockChain(
                 policy,
                 new DefaultStore(null),
-                new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore())));
+                new TrieStateStore(new MemoryKeyValueStore())));
 
             int renderCount1 = 0, renderCount2 = 0;
 
@@ -383,13 +383,13 @@ namespace Libplanet.Tests.Net
                     DateTimeOffset.UtcNow
                 );
 
-                var block = TestUtils.MineNext(
-                        minerChain.Tip,
-                        minerChain.Policy.GetHashAlgorithm,
-                        new[] { tx },
-                        difficulty: policy.GetNextBlockDifficulty(minerChain),
-                        blockInterval: TimeSpan.FromSeconds(1)
-                ).AttachStateRootHash(minerChain.StateStore, minerChain.Policy);
+                Block<ThrowException> block = TestUtils.MineNext(
+                    minerChain.Tip,
+                    minerChain.Policy.GetHashAlgorithm,
+                    new[] { tx },
+                    difficulty: policy.GetNextBlockDifficulty(minerChain),
+                    blockInterval: TimeSpan.FromSeconds(1)
+                ).Evaluate(minerChain);
                 minerSwarm.BlockChain.Append(block, false, true, false);
 
                 await receiverSwarm.PreloadAsync(TimeSpan.FromSeconds(1));
@@ -853,11 +853,11 @@ namespace Libplanet.Tests.Net
 
             long nextDifficulty = (long)minerChain1.Tip.TotalDifficulty +
                                   minerChain2.Policy.GetNextBlockDifficulty(minerChain2);
-            var block = TestUtils.MineNext(
+            Block<DumbAction> block = TestUtils.MineNext(
                 minerChain2.Tip,
                 minerChain2.Policy.GetHashAlgorithm,
                 difficulty: nextDifficulty
-            ).AttachStateRootHash(minerChain2.StateStore, minerChain2.Policy);
+            ).Evaluate(minerChain2);
             minerChain2.Append(block);
 
             Assert.True(minerChain1.Count > minerChain2.Count);
@@ -889,35 +889,32 @@ namespace Libplanet.Tests.Net
             var minerAddress = new PrivateKey().ToAddress();
             var policy = new BlockPolicy<DumbAction>();
             HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
-            var genesisBlock1 = new Block<DumbAction>(
-                0,
-                0,
-                0,
-                new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 }),
-                minerAddress,
-                null,
-                DateTimeOffset.MinValue,
-                ImmutableArray<Transaction<DumbAction>>.Empty,
-                hashAlgorithm
+            var genesisContent = new BlockContent<DumbAction>
+            {
+                Miner = minerAddress,
+                Timestamp = DateTimeOffset.MinValue,
+            };
+            var genesisBlock1 = new PreEvaluationBlock<DumbAction>(
+                genesisContent,
+                hashAlgorithm,
+                new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 })
             );
-            var genesisBlock2 = new Block<DumbAction>(
-                0,
-                0,
-                0,
-                new Nonce(new byte[] { 0x02, 0x00, 0x00, 0x00 }),
-                minerAddress,
-                null,
-                DateTimeOffset.MinValue,
-                ImmutableArray<Transaction<DumbAction>>.Empty,
-                hashAlgorithm
+            var genesisBlock2 = new PreEvaluationBlock<DumbAction>(
+                genesisContent,
+                hashAlgorithm,
+                new Nonce(new byte[] { 0x02, 0x00, 0x00, 0x00 })
             );
 
-            BlockChain<DumbAction> MakeBlockChain(Block<DumbAction> genesisBlock) =>
-                TestUtils.MakeBlockChain(
+            BlockChain<DumbAction> MakeBlockChain(PreEvaluationBlock<DumbAction> genesisBlock)
+            {
+                var stateStore = new TrieStateStore(new MemoryKeyValueStore());
+                return TestUtils.MakeBlockChain(
                     policy,
                     new DefaultStore(path: null),
-                    new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore()),
-                    genesisBlock: genesisBlock);
+                    stateStore,
+                    genesisBlock: genesisBlock.Evaluate(policy.BlockAction, stateStore)
+                );
+            }
 
             BlockChain<DumbAction> receiverChain = MakeBlockChain(genesisBlock1);
             BlockChain<DumbAction> validSeedChain = MakeBlockChain(genesisBlock1);

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Security.Cryptography;
 using Cocona;
 using Libplanet.Blocks;
 using Libplanet.RocksDBStore;
@@ -79,16 +80,19 @@ namespace Libplanet.Extensions.Cocona.Commands
 
             foreach (var hash in hashes)
             {
-                var block = store.GetBlock<Utils.DummyAction>(hash);
+                BlockDigest blockDigest = store.GetBlockDigest(hash) ??
+                    throw Utils.Error($"Failed to load the block {hash}.");
+                BlockHeader blockHeader =
+                    blockDigest.GetHeader(_ => HashAlgorithmType.Of<SHA256>());
                 var perceivedTime = store.GetBlockPerceivedTime(hash);
 
                 Console.WriteLine(
-                    $"{block.Index}," +
-                    $"{block.Hash}," +
-                    $"{block.Difficulty}," +
-                    $"{block.Miner}," +
-                    $"{block.Transactions.Count}," +
-                    $"{block.Timestamp.ToUnixTimeMilliseconds()}," +
+                    $"{blockHeader.Index}," +
+                    $"{blockHeader.Hash}," +
+                    $"{blockHeader.Difficulty}," +
+                    $"{blockHeader.Miner}," +
+                    $"{blockDigest.TxIds.Length}," +
+                    $"{blockHeader.Timestamp.ToUnixTimeMilliseconds()}," +
                     $"{perceivedTime?.ToUnixTimeMilliseconds()}");
             }
         }

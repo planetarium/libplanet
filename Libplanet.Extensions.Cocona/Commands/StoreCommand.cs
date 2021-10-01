@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Security.Cryptography;
 using Cocona;
 using Libplanet.Action;
 using Libplanet.Blocks;
@@ -131,7 +132,8 @@ namespace Libplanet.Extensions.Cocona.Commands
         private static Block<T> GetBlock<T>(IStore store, BlockHash blockHash)
             where T : IAction, new()
         {
-            if (!(store.GetBlock<T>(blockHash) is { } block))
+            HashAlgorithmGetter thunkGetter = _ => HashAlgorithmType.Of<SHA256>();
+            if (!(store.GetBlock<T>(thunkGetter, blockHash) is { } block))
             {
                 throw Utils.Error($"cannot find the block with the hash[{blockHash.ToString()}]");
             }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Bencodex.Types;
+using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers.Debug;
@@ -14,6 +15,7 @@ using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Libplanet.Tx;
 using Xunit;
+using Random = System.Random;
 
 namespace Libplanet.Tests.Blockchain
 {
@@ -43,7 +45,6 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal((Text)$"{TestUtils.GenesisMinerAddress}", _blockChain.GetState(default));
 
             Block<DumbAction> block = await _blockChain.MineBlock(_fx.Address1);
-            block.Validate(hashAlgorithm, DateTimeOffset.UtcNow);
             Assert.True(_blockChain.ContainsBlock(block.Hash));
             Assert.Equal(2, _blockChain.Count);
             Assert.True(block.BytesLength <= getMaxBlockBytes(block.Index));
@@ -53,7 +54,6 @@ namespace Libplanet.Tests.Blockchain
             );
 
             Block<DumbAction> anotherBlock = await _blockChain.MineBlock(_fx.Address2);
-            anotherBlock.Validate(hashAlgorithm, DateTimeOffset.UtcNow);
             Assert.True(_blockChain.ContainsBlock(anotherBlock.Hash));
             Assert.Equal(3, _blockChain.Count);
             Assert.True(anotherBlock.BytesLength <= getMaxBlockBytes(anotherBlock.Index));
@@ -63,7 +63,6 @@ namespace Libplanet.Tests.Blockchain
             );
 
             Block<DumbAction> block3 = await _blockChain.MineBlock(_fx.Address3, append: false);
-            block3.Validate(hashAlgorithm, DateTimeOffset.UtcNow);
             Assert.False(_blockChain.ContainsBlock(block3.Hash));
             Assert.Equal(3, _blockChain.Count);
             Assert.True(block3.BytesLength <= getMaxBlockBytes(block3.Index));
@@ -94,7 +93,6 @@ namespace Libplanet.Tests.Blockchain
             }
 
             Block<DumbAction> block4 = await _blockChain.MineBlock(_fx.Address3, append: false);
-            block4.Validate(hashAlgorithm, DateTimeOffset.UtcNow);
             Assert.False(_blockChain.ContainsBlock(block4.Hash));
             _logger.Debug(
                 $"{nameof(block4)}.{nameof(block4.BytesLength)} = {0}",
@@ -128,19 +126,16 @@ namespace Libplanet.Tests.Blockchain
             HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             Block<DumbAction> block =
                 await _blockChain.MineBlock(_fx.Address1, maxTransactions: 1);
-            block.Validate(hashAlgorithm, DateTimeOffset.UtcNow);
             Assert.Single(block.Transactions);
             Assert.Equal(5, _blockChain.GetStagedTransactionIds().Count);
 
             Block<DumbAction> block2 = await _blockChain.MineBlock(
                 _fx.Address2, DateTimeOffset.UtcNow, maxTransactions: 2);
-            block2.Validate(hashAlgorithm, DateTimeOffset.UtcNow);
             Assert.Equal(2, block2.Transactions.Count());
             Assert.Equal(3, _blockChain.GetStagedTransactionIds().Count);
 
             Block<DumbAction> block3 = await _blockChain.MineBlock(
                 _fx.Address3, append: false, maxTransactions: 4);
-            block3.Validate(hashAlgorithm, DateTimeOffset.UtcNow);
             Assert.Equal(3, block3.Transactions.Count());
             Assert.Equal(3, _blockChain.GetStagedTransactionIds().Count);
 
@@ -535,21 +530,18 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public async Task AbortMining()
         {
-            // This test makes 2 different policies even it's abnormal
-            // because to make a mining task run forever just for testing.
-            var policy1 = new NullPolicy<DumbAction>(difficulty: 1);
-            var policy2 = new NullPolicy<DumbAction>(difficulty: -1);
-            StoreFixture fx1 = new DefaultStoreFixture(blockAction: policy1.BlockAction);
-            StoreFixture fx2 = new DefaultStoreFixture(blockAction: policy2.BlockAction);
+            var policy = new NullPolicy<DumbAction>(difficulty: 2048);
+            StoreFixture fx1 = new DefaultStoreFixture(blockAction: policy.BlockAction);
+            StoreFixture fx2 = new DefaultStoreFixture(blockAction: policy.BlockAction);
             var chain1 = new BlockChain<DumbAction>(
-                policy1,
+                policy,
                 new VolatileStagePolicy<DumbAction>(),
                 fx1.Store,
                 fx1.StateStore,
                 fx1.GenesisBlock);
             var renderer2 = new RecordingActionRenderer<DumbAction>();
             var chain2 = new BlockChain<DumbAction>(
-                policy2,
+                policy,
                 new VolatileStagePolicy<DumbAction>(),
                 fx2.Store,
                 fx1.StateStore,
@@ -594,7 +586,14 @@ namespace Libplanet.Tests.Blockchain
                 .ToArray();
             StageTransactions(txsA);
             Block<DumbAction> b1 = await _blockChain.MineBlock(address);
-            Assert.Equal(txsA, b1.Transactions);
+            Assert.Equal(
+                txsA,
+                ActionEvaluator<DumbAction>.OrderTxsForEvaluation(
+                    b1.ProtocolVersion,
+                    b1.Transactions,
+                    b1.PreEvaluationHash
+                )
+            );
 
             var txsB = Enumerable.Range(0, 4)
                 .Select(nonce => _fx.MakeTransaction(
@@ -662,7 +661,7 @@ namespace Libplanet.Tests.Blockchain
 
             // Test if minTransactions and minTransactionsPerSigner work:
             ImmutableList<Transaction<DumbAction>> gathered =
-                _blockChain.GatherTransactionsToMine(5, 3);
+                _blockChain.GatherTransactionsToMine(new BlockMetadata(), 5, 3);
             Assert.Equal(5, gathered.Count);
             var expectedNonces = new Dictionary<Address, long> { [a] = 0, [b] = 0, [c] = 0 };
             foreach (Transaction<DumbAction> tx in gathered)
@@ -681,7 +680,7 @@ namespace Libplanet.Tests.Blockchain
                     int rank2 = tx2.Signer.Equals(a) ? 0 : (tx2.Signer.Equals(b) ? 1 : 2);
                     return rank1.CompareTo(rank2);
                 });
-            gathered = _blockChain.GatherTransactionsToMine(8, 3, txPriority);
+            gathered = _blockChain.GatherTransactionsToMine(new BlockMetadata(), 8, 3, txPriority);
             Assert.Equal(
                 txsA.Concat(txsB.Take(3)).Concat(txsC).Select(tx => tx.Id).ToArray(),
                 gathered.Select(tx => tx.Id).ToArray()

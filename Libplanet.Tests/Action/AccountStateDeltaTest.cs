@@ -197,10 +197,7 @@ namespace Libplanet.Tests.Action
         public virtual BlockChain<DumbAction> TransferAssetInBlock()
         {
             var store = new DefaultStore(null);
-            var stateStore = new TrieStateStore(
-                new DefaultKeyValueStore(null),
-                new DefaultKeyValueStore(null)
-            );
+            var stateStore = new TrieStateStore(new DefaultKeyValueStore(null));
             BlockChain<DumbAction> chain = TestUtils.MakeBlockChain(
                 new NullPolicy<DumbAction>(),
                 store,
@@ -221,7 +218,7 @@ namespace Libplanet.Tests.Action
                     chain.Policy.GetHashAlgorithm,
                     new[] { tx },
                     protocolVersion: ProtocolVersion
-                ).AttachStateRootHash(stateStore, chain.Policy)
+                ).Evaluate(chain)
             );
             Assert.Equal(
                 DumbAction.DumbCurrency * 5,

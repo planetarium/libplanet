@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Security.Cryptography;
+using Bencodex.Types;
 using GraphQL;
 using GraphQL.Types;
 using Libplanet.Action;
@@ -18,18 +19,17 @@ namespace Libplanet.Explorer.UnitTests.GraphTypes
         [Fact]
         public async void Query()
         {
+            var preEval = new BlockContent<NullAction>
+            {
+                Index = 1,
+                Difficulty = 1,
+                TotalDifficulty = 1,
+                Miner = new Address(TestUtils.GetRandomBytes(Address.Size)),
+                PreviousHash = new BlockHash(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
+                Timestamp = DateTimeOffset.UtcNow,
+            }.Mine(HashAlgorithmType.Of<SHA256>());
             var block = new Block<NullAction>(
-                1,
-                1,
-                1,
-                new Nonce(new byte[] { 0x01, 0x23, 0x45, 0x56 }),
-                new Address(TestUtils.GetRandomBytes(Address.Size)),
-                new BlockHash(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
-                DateTimeOffset.UtcNow,
-                ImmutableArray<Transaction<NullAction>>.Empty,
-                hashAlgorithm: HashAlgorithmType.Of<SHA256>());
-            block = new Block<NullAction>(
-                block,
+                preEval,
                 new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)));
             var query =
                 @"{
@@ -65,7 +65,7 @@ namespace Libplanet.Explorer.UnitTests.GraphTypes
                 new DateTimeOffsetGraphType().Serialize(block.Timestamp),
                 resultData["timestamp"]);
             Assert.Equal(
-                ByteUtil.Hex(block.StateRootHash?.ToByteArray()),
+                ByteUtil.Hex(block.StateRootHash.ToByteArray()),
                 resultData["stateRootHash"]);
         }
     }

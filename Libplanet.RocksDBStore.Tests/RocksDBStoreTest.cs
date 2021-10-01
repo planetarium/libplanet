@@ -51,8 +51,7 @@ namespace Libplanet.RocksDBStore.Tests
             try
             {
                 var store = new RocksDBStore(path);
-                var stateStore =
-                    new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore());
+                var stateStore = new TrieStateStore(new MemoryKeyValueStore());
                 var blocks = new BlockChain<DumbAction>(
                     new NullPolicy<DumbAction>(),
                     new VolatileStagePolicy<DumbAction>(),
@@ -93,7 +92,7 @@ namespace Libplanet.RocksDBStore.Tests
                 Enumerable.Range(0, 3).AsParallel().ForAll(i =>
                 {
                     var bHash = store.IndexBlockHash(cid, i).Value;
-                    var block = store.GetBlock<DumbAction>(bHash);
+                    var block = store.GetBlock<DumbAction>(Fx.GetHashAlgorithm, bHash);
                     Assert.NotNull(block);
                 });
             }

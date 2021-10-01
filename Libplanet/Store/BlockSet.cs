@@ -1,5 +1,4 @@
 #nullable enable
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Libplanet.Action;
@@ -64,8 +63,8 @@ namespace Libplanet.Store
                         $"{value}.hash does not match to {key}");
                 }
 
+                value.ValidateTimestamp();
                 HashAlgorithmType hashAlgorithm = _hashAlgorithmGetter(value.Index);
-                value.Validate(hashAlgorithm, DateTimeOffset.UtcNow);
                 Store.PutBlock(value);
                 _cache.AddOrUpdate(value.Hash, value);
             }
@@ -101,7 +100,7 @@ namespace Libplanet.Store
                 }
             }
 
-            Block<T> fetched = Store.GetBlock<T>(key);
+            Block<T> fetched = Store.GetBlock<T>(_hashAlgorithmGetter, key);
             if (fetched is { })
             {
                 _cache.AddOrUpdate(key, fetched);

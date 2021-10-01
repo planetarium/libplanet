@@ -2,6 +2,8 @@ using System.Linq;
 using GraphQL;
 using GraphQL.Types;
 using Libplanet.Action;
+using Libplanet.Blockchain;
+using Libplanet.Blocks;
 using Libplanet.Explorer.Interfaces;
 using Libplanet.Explorer.Store;
 using Libplanet.Tx;
@@ -33,13 +35,16 @@ namespace Libplanet.Explorer.GraphTypes
                 name: "BlockRef",
                 resolve: ctx =>
                 {
-                    // FIXME: use store with DI.
+                    // FIXME: use context with DI.
                     const string storeKey = nameof(IBlockChainContext<T>.Store);
-                    if (ctx.UserContext[storeKey] is IRichStore richStore)
+                    const string blockChainKey = nameof(IBlockChainContext<T>.BlockChain);
+                    if (ctx.UserContext[storeKey] is IRichStore richStore &&
+                        ctx.UserContext[blockChainKey] is BlockChain<T> chain)
                     {
+                        HashAlgorithmGetter hashAlgorithmGetter = chain.Policy.GetHashAlgorithm;
                         return richStore
                             .IterateTxReferences(ctx.Source.Id)
-                            .Select(r => richStore.GetBlock<T>(r.Item2));
+                            .Select(r => richStore.GetBlock<T>(hashAlgorithmGetter, r.Item2));
                     }
                     else
                     {

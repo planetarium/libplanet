@@ -1,13 +1,13 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using Bencodex.Types;
+using DiffPlex.DiffBuilder;
+using DiffPlex.DiffBuilder.Model;
 using Libplanet.Action;
-using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers;
@@ -18,7 +18,7 @@ using Libplanet.Net.Protocols;
 using Libplanet.Store;
 using Libplanet.Tx;
 using Xunit;
-using static Libplanet.Blockchain.KeyConverters;
+using Xunit.Sdk;
 using Random = System.Random;
 
 namespace Libplanet.Tests
@@ -108,6 +108,14 @@ namespace Libplanet.Tests
 
         public static void AssertBytesEqual(byte[] expected, byte[] actual)
         {
+            if (expected is null)
+            {
+                Assert.Null(actual);
+                return;
+            }
+
+            Assert.NotNull(actual);
+
             string msg;
             if (expected.LongLength < 1024 && actual.LongLength < 1024 &&
                 expected.All(b => b < 0x80) && actual.All(b => b < 0x80))
@@ -116,19 +124,28 @@ namespace Libplanet.Tests
                 string expectedStr = Encoding.ASCII.GetString(expected);
                 string actualStr = Encoding.ASCII.GetString(actual);
                 msg = $@"Two byte arrays do not equal
-Expected: ({expected.LongLength}) {expectedStr}
-Actual:   ({actual.LongLength}) {actualStr}";
+Expected length: ({expected.LongLength}) {expectedStr}
+Actual length:   ({actual.LongLength}) {actualStr}";
             }
             else
             {
                 string expectedRepr = Repr(expected);
                 string actualRepr = Repr(actual);
                 msg = $@"Two byte arrays do not equal
-Expected: new byte[{expected.LongLength}] {{ {expectedRepr} }}
-Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
+Expected (C# array lit): new byte[{expected.LongLength}] {{ {expectedRepr} }}
+Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             }
 
-            Assert.True(expected.SequenceEqual(actual), msg);
+            if (!expected.SequenceEqual(actual))
+            {
+                throw new AssertActualExpectedException(
+                    ByteUtil.Hex(expected),
+                    ByteUtil.Hex(actual),
+                    msg,
+                    "Expected (hex)",
+                    "Actual (hex)"
+                );
+            }
 
             string Repr(byte[] bytes)
             {
@@ -149,18 +166,26 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         public static void AssertBytesEqual(
             ImmutableArray<byte> expected,
             ImmutableArray<byte> actual
-        )
-        {
+        ) =>
             AssertBytesEqual(expected.ToArray(), actual.ToArray());
-        }
 
-        public static void AssertBytesEqual(TxId expected, TxId actual)
-        {
+        public static void AssertBytesEqual(
+            ImmutableArray<byte>? expected,
+            ImmutableArray<byte>? actual
+        ) =>
+            AssertBytesEqual(expected?.ToArray(), actual?.ToArray());
+
+        public static void AssertBytesEqual(TxId expected, TxId actual) =>
             AssertBytesEqual(expected.ToByteArray(), actual.ToByteArray());
-        }
+
+        public static void AssertBytesEqual(TxId? expected, TxId? actual) =>
+            AssertBytesEqual(expected?.ToByteArray(), actual?.ToByteArray());
 
         public static void AssertBytesEqual(BlockHash expected, BlockHash actual) =>
             AssertBytesEqual(expected.ToByteArray(), actual.ToByteArray());
+
+        public static void AssertBytesEqual(BlockHash? expected, BlockHash? actual) =>
+            AssertBytesEqual(expected?.ToByteArray(), actual?.ToByteArray());
 
         public static void AssertBytesEqual<T>(
             HashDigest<T> expected,
@@ -171,11 +196,107 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             AssertBytesEqual(expected.ToByteArray(), actual.ToByteArray());
         }
 
+        public static void AssertBytesEqual<T>(
+            HashDigest<T>? expected,
+            HashDigest<T>? actual
+        )
+            where T : HashAlgorithm
+        {
+            AssertBytesEqual(expected?.ToByteArray(), actual?.ToByteArray());
+        }
+
         public static void AssertBytesEqual(Nonce expected, Nonce actual) =>
             AssertBytesEqual(expected.ToByteArray(), actual.ToByteArray());
 
+        public static void AssertBytesEqual(Nonce? expected, Nonce? actual) =>
+            AssertBytesEqual(expected?.ToByteArray(), actual?.ToByteArray());
+
         public static void AssertBytesEqual(Address expected, Address actual) =>
             AssertBytesEqual(expected.ToByteArray(), actual.ToByteArray());
+
+        public static void AssertBytesEqual(Address? expected, Address? actual) =>
+            AssertBytesEqual(expected?.ToByteArray(), actual?.ToByteArray());
+
+        public static void AssertBencodexEqual(IValue expected, IValue actual)
+        {
+            bool equal = (expected is null && actual is null) ||
+                (expected is Null && actual is Null) ||
+                (expected is Bencodex.Types.Boolean && actual is Bencodex.Types.Boolean &&
+                    expected.Equals(actual)) ||
+                (expected is Integer && actual is Integer && expected.Equals(actual)) ||
+                (expected is Binary && actual is Binary && expected.Equals(actual)) ||
+                (expected is Text && actual is Text && expected.Equals(actual)) ||
+                (expected is List && actual is List && expected.Equals(actual)) ||
+                (expected is Dictionary && actual is Dictionary && expected.Equals(actual));
+            if (equal)
+            {
+                return;
+            }
+
+            string expectedInspection = expected?.ToString() ?? "(null)";
+            string actualInspection = actual?.ToString() ?? "(null)";
+            DiffPaneModel diffModel = InlineDiffBuilder.Diff(expectedInspection, actualInspection);
+            var prefixes = new Dictionary<ChangeType, string>
+            {
+                [ChangeType.Deleted] = "-",
+                [ChangeType.Inserted] = "+",
+                [ChangeType.Unchanged] = " ",
+            };
+
+            string diff = string.Join(
+                Environment.NewLine,
+                diffModel.Lines.Select(line =>
+                    (prefixes.TryGetValue(line.Type, out string prefix) ? prefix : " ") + line.Text
+                )
+            );
+            throw new XunitException(
+                "Two Bencodex values are not equal.\n--- Expected\n+++ Actual\n\n" + diff
+            );
+        }
+
+        public static void AssertBlockMetadataEqual(IBlockMetadata expected, IBlockMetadata actual)
+        {
+            Assert.NotNull(expected);
+            Assert.NotNull(actual);
+            Assert.Equal(expected.ProtocolVersion, actual.ProtocolVersion);
+            Assert.Equal(expected.Index, actual.Index);
+            Assert.Equal(expected.Timestamp, actual.Timestamp);
+            AssertBytesEqual(expected.Miner, actual.Miner);
+            Assert.Equal(expected.Difficulty, actual.Difficulty);
+            Assert.Equal(expected.TotalDifficulty, actual.TotalDifficulty);
+            AssertBytesEqual(expected.PreviousHash, actual.PreviousHash);
+            AssertBytesEqual(expected.TxHash, actual.TxHash);
+        }
+
+        public static void AssertBlockContentsEqual<T>(
+            IBlockContent<T> expected,
+            IBlockContent<T> actual
+        )
+            where T : IAction, new()
+        {
+            AssertBlockMetadataEqual(expected, actual);
+            Assert.Equal(expected.Transactions, actual.Transactions);
+        }
+
+        public static void AssertPreEvaluationBlockHeadersEqual(
+            IPreEvaluationBlockHeader expected,
+            IPreEvaluationBlockHeader actual
+        )
+        {
+            AssertBlockMetadataEqual(expected, actual);
+            Assert.Same(expected.HashAlgorithm, actual.HashAlgorithm);
+            AssertBytesEqual(expected.PreEvaluationHash, actual.PreEvaluationHash);
+        }
+
+        public static void AssertPreEvaluationBlocksEqual<T>(
+            IPreEvaluationBlock<T> expected,
+            IPreEvaluationBlock<T> actual
+        )
+            where T : IAction, new()
+        {
+            AssertPreEvaluationBlockHeadersEqual(expected, actual);
+            AssertBlockContentsEqual(expected, actual);
+        }
 
         public static byte[] GetRandomBytes(int size)
         {
@@ -185,7 +306,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             return bytes;
         }
 
-        public static Block<T> MineGenesis<T>(
+        public static PreEvaluationBlock<T> MineGenesis<T>(
             HashAlgorithmGetter hashAlgorithmGetter,
             Address? miner = null,
             IReadOnlyList<Transaction<T>> transactions = null,
@@ -194,28 +315,36 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         )
             where T : IAction, new()
         {
-            if (transactions is null)
+            var content = new BlockContent<T>
             {
-                transactions = new List<Transaction<T>>();
-            }
-
-            var block = new Block<T>(
-                index: 0,
-                difficulty: 0,
-                totalDifficulty: 0,
-                nonce: new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 }),
-                miner: miner ?? GenesisMinerAddress,
-                previousHash: null,
-                timestamp: timestamp ?? new DateTimeOffset(2018, 11, 29, 0, 0, 0, TimeSpan.Zero),
-                transactions: transactions,
-                hashAlgorithm: hashAlgorithmGetter(0),
-                protocolVersion: protocolVersion
+                Miner = miner ?? GenesisMinerAddress,
+                Timestamp = timestamp ?? new DateTimeOffset(2018, 11, 29, 0, 0, 0, TimeSpan.Zero),
+                Transactions = transactions ?? Array.Empty<Transaction<T>>(),
+                ProtocolVersion = protocolVersion,
+            };
+            return new PreEvaluationBlock<T>(
+                content,
+                hashAlgorithmGetter(content.Index),
+                new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 })
             );
-
-            return block;
         }
 
-        public static Block<T> MineNext<T>(
+        public static Block<T> MineGenesisBlock<T>(
+            HashAlgorithmGetter hashAlgorithmGetter,
+            Address? miner = null,
+            IReadOnlyList<Transaction<T>> transactions = null,
+            DateTimeOffset? timestamp = null,
+            int protocolVersion = Block<T>.CurrentProtocolVersion,
+            HashDigest<SHA256> stateRootHash = default
+        )
+            where T : IAction, new()
+        =>
+            new Block<T>(
+                MineGenesis(hashAlgorithmGetter, miner, transactions, timestamp, protocolVersion),
+                stateRootHash
+            );
+
+        public static PreEvaluationBlock<T> MineNext<T>(
             Block<T> previousBlock,
             HashAlgorithmGetter hashAlgorithmGetter,
             IReadOnlyList<Transaction<T>> txs = null,
@@ -227,75 +356,53 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         )
             where T : IAction, new()
         {
-            if (txs == null)
+            var content = new BlockContent<T>
             {
-                txs = new List<Transaction<T>>();
-            }
+                Index = previousBlock.Index + 1,
+                Difficulty = difficulty,
+                TotalDifficulty = previousBlock.TotalDifficulty + difficulty,
+                Miner = miner ?? previousBlock.Miner,
+                PreviousHash = previousBlock.Hash,
+                Timestamp = previousBlock.Timestamp.Add(blockInterval ?? TimeSpan.FromSeconds(15)),
+                Transactions = txs ?? Array.Empty<Transaction<T>>(),
+                ProtocolVersion = protocolVersion,
+            };
 
-            long index = previousBlock.Index + 1;
-            BlockHash previousHash = previousBlock.Hash;
-            DateTimeOffset timestamp =
-                previousBlock.Timestamp.Add(blockInterval ?? TimeSpan.FromSeconds(15));
+            HashAlgorithmType hashAlgorithm = hashAlgorithmGetter(previousBlock.Index + 1);
+            var preEval = nonce is byte[] nonceBytes
+                ? new PreEvaluationBlock<T>(content, hashAlgorithm, new Nonce(nonceBytes))
+                : content.Mine(hashAlgorithm);
 
-            Block<T> block;
-            if (nonce == null)
-            {
-                block = Block<T>.Mine(
-                    index: index,
-                    hashAlgorithm: hashAlgorithmGetter(index),
-                    difficulty: difficulty,
-                    previousTotalDifficulty: previousBlock.TotalDifficulty,
-                    miner: miner ?? previousBlock.Miner,
-                    previousHash: previousHash,
-                    timestamp: timestamp,
-                    transactions: txs,
-                    protocolVersion: protocolVersion
-                );
-            }
-            else
-            {
-                block = new Block<T>(
-                    index: index,
-                    difficulty: difficulty,
-                    totalDifficulty: previousBlock.TotalDifficulty + difficulty,
-                    nonce: new Nonce(nonce),
-                    miner: miner ?? previousBlock.Miner,
-                    previousHash: previousHash,
-                    timestamp: timestamp,
-                    transactions: txs,
-                    hashAlgorithm: hashAlgorithmGetter(index),
-                    protocolVersion: protocolVersion
-                );
-            }
-
-            block.Validate(hashAlgorithmGetter(index), DateTimeOffset.Now);
-
-            return block;
+            preEval.ValidateTimestamp();
+            return preEval;
         }
 
-        public static Block<T> AttachStateRootHash<T>(
-            this Block<T> block,
-            IStateStore stateStore,
-            IBlockPolicy<T> policy
+        public static Block<T> MineNextBlock<T>(
+            Block<T> previousBlock,
+            HashAlgorithmGetter hashAlgorithmGetter,
+            IReadOnlyList<Transaction<T>> txs = null,
+            byte[] nonce = null,
+            long difficulty = 1,
+            Address? miner = null,
+            TimeSpan? blockInterval = null,
+            int protocolVersion = Block<T>.CurrentProtocolVersion,
+            HashDigest<SHA256> stateRootHash = default
         )
-            where T : IAction, new() =>
-                AttachStateRootHash(block, policy.GetHashAlgorithm, stateStore, policy.BlockAction);
-
-        public static Block<T> AttachStateRootHash<T>(
-            this Block<T> block,
-            HashAlgorithmType hashAlgorithm,
-            IStateStore stateStore,
-            IAction blockAction
-        )
-            where T : IAction, new() =>
-                AttachStateRootHash(block, _ => hashAlgorithm, stateStore, blockAction);
-
-        public static string ToString(BitArray bitArray)
-        {
-            return new string(
-                bitArray.OfType<bool>().Select(b => b ? '1' : '0').ToArray()
+            where T : IAction, new()
+        =>
+            new Block<T>(
+                MineNext(
+                    previousBlock,
+                    hashAlgorithmGetter,
+                    txs,
+                    nonce,
+                    difficulty,
+                    miner,
+                    blockInterval,
+                    protocolVersion
+                ),
+                stateRootHash
             );
-        }
 
         public static BlockChain<T> MakeBlockChain<T>(
             IBlockPolicy<T> policy,
@@ -327,23 +434,24 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 null,
                 actions,
                 timestamp: timestamp ?? DateTimeOffset.MinValue);
-            genesisBlock = genesisBlock ?? new Block<T>(
-                0,
-                0,
-                0,
-                new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 }),
-                GenesisMinerAddress,
-                null,
-                timestamp ?? DateTimeOffset.MinValue,
-                new[] { tx },
-                hashAlgorithm: policy.GetHashAlgorithm(0),
-                protocolVersion: protocolVersion
-            );
-            genesisBlock = genesisBlock.AttachStateRootHash(
-                policy.GetHashAlgorithm,
-                stateStore,
-                policy.BlockAction
-            );
+
+            if (genesisBlock is null)
+            {
+                var content = new BlockContent<T>()
+                {
+                    Miner = GenesisMinerAddress,
+                    Timestamp = timestamp ?? DateTimeOffset.MinValue,
+                    Transactions = new[] { tx },
+                    ProtocolVersion = protocolVersion,
+                };
+                var preEval = new PreEvaluationBlock<T>(
+                    content,
+                    policy.GetHashAlgorithm(0),
+                    new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 })
+                );
+                genesisBlock = preEval.Evaluate(policy.BlockAction, stateStore);
+            }
+
             ValidatingActionRenderer<T> validator = null;
 #pragma warning disable S1121
             var chain = new BlockChain<T>(
@@ -375,58 +483,6 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             while (table.GetBucketIndexOf(privateKey.ToAddress()) != target);
 
             return privateKey;
-        }
-
-        private static Block<T> AttachStateRootHash<T>(
-            this Block<T> block,
-            HashAlgorithmGetter hashAlgorithmGetter,
-            IStateStore stateStore,
-            IAction blockAction
-        )
-            where T : IAction, new()
-        {
-            IValue StateGetter(
-                Address address, BlockHash? blockHash, StateCompleter<T> stateCompleter) =>
-                blockHash is null
-                    ? null
-                    : stateStore.GetState(ToStateKey(address), blockHash.Value);
-
-            FungibleAssetValue FungibleAssetValueGetter(
-                Address address,
-                Currency currency,
-                BlockHash? blockHash,
-                FungibleAssetStateCompleter<T> stateCompleter)
-            {
-                if (blockHash is null)
-                {
-                    return FungibleAssetValue.FromRawValue(currency, 0);
-                }
-
-                IValue value = stateStore.GetState(
-                    ToFungibleAssetKey(address, currency), blockHash.Value);
-                return FungibleAssetValue.FromRawValue(
-                    currency,
-                    value is Bencodex.Types.Integer i ? i.Value : 0);
-            }
-
-            var actionEvaluator = new ActionEvaluator<T>(
-                hashAlgorithmGetter: hashAlgorithmGetter,
-                policyBlockAction: blockAction,
-                stateGetter: StateGetter,
-                balanceGetter: FungibleAssetValueGetter,
-                trieGetter: null
-            );
-            var actionEvaluationResult = actionEvaluator
-                .Evaluate(block, StateCompleterSet<T>.Reject)
-                .GetTotalDelta(ToStateKey, ToFungibleAssetKey);
-            stateStore.SetStates(block, actionEvaluationResult);
-            if (stateStore is TrieStateStore trieStateStore)
-            {
-                block = new Block<T>(block, trieStateStore.GetRootHash(block.Hash));
-                stateStore.SetStates(block, actionEvaluationResult);
-            }
-
-            return block;
         }
     }
 }

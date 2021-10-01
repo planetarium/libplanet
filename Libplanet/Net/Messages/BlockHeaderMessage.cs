@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Bencodex;
 using Libplanet.Blocks;
 using NetMQ;
 
@@ -6,21 +7,27 @@ namespace Libplanet.Net.Messages
 {
     internal class BlockHeaderMessage : Message
     {
+        private static readonly Codec Codec = new Codec();
+
         public BlockHeaderMessage(BlockHash genesisHash, BlockHeader header)
         {
             GenesisHash = genesisHash;
-            Header = header;
+            HeaderDictionary = header.MarshalBlockHeader();
         }
 
         public BlockHeaderMessage(NetMQFrame[] frames)
         {
             GenesisHash = new BlockHash(frames[0].Buffer);
-            Header = BlockHeader.Deserialize(frames[1].Buffer);
+            HeaderDictionary = (Bencodex.Types.Dictionary)Codec.Decode(frames[1].Buffer);
         }
 
         public BlockHash GenesisHash { get; }
 
-        public BlockHeader Header { get; }
+        public Bencodex.Types.Dictionary HeaderDictionary { get; }
+
+        public long HeaderIndex => BlockMarshaler.UnmarshalBlockMetadataIndex(HeaderDictionary);
+
+        public BlockHash HeaderHash => BlockMarshaler.UnmarshalBlockHeaderHash(HeaderDictionary);
 
         protected override MessageType Type => MessageType.BlockHeaderMessage;
 
@@ -29,8 +36,13 @@ namespace Libplanet.Net.Messages
             get
             {
                 yield return new NetMQFrame(GenesisHash.ToByteArray());
-                yield return new NetMQFrame(Header.Serialize());
+                yield return new NetMQFrame(Codec.Encode(HeaderDictionary));
             }
+        }
+
+        public BlockHeader GetHeader(HashAlgorithmGetter hashAlgorithmGetter)
+        {
+            return BlockMarshaler.UnmarshalBlockHeader(hashAlgorithmGetter, HeaderDictionary);
         }
     }
 }

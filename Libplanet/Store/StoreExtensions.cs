@@ -2,12 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Tx;
 
 namespace Libplanet.Store
 {
+    /// <summary>
+    /// Convenient extension methods for <see cref="IStore"/>.
+    /// </summary>
     public static class StoreExtensions
     {
         /// <summary>
@@ -32,7 +36,10 @@ namespace Libplanet.Store
             {
                 foreach (BlockHash blockHash in from.IterateIndexes(chainId))
                 {
-                    Block<NullAction> block = from.GetBlock<NullAction>(blockHash);
+                    Block<NullAction> block = from.GetBlock<NullAction>(
+                        _ => HashAlgorithmType.Of<SHA256>(),  // thunk getter; doesn't matter here
+                        blockHash
+                    );
                     to.PutBlock(block);
                     to.AppendIndex(chainId, blockHash);
                 }
@@ -57,5 +64,21 @@ namespace Libplanet.Store
                 to.SetCanonicalChainId(canonId);
             }
         }
+
+        /// <summary>
+        /// Gets the <see cref="Block{T}.StateRootHash"/> of the given <paramref name="blockHash"/>.
+        /// </summary>
+        /// <param name="store">The store that blocks are stored.</param>
+        /// <param name="blockHash">The hash of the block to get the state root hash of.
+        /// If <c>null</c> is present, <c>null</c> is returned.</param>
+        /// <returns>The state root hash of the block, or <c>null</c> if the block is not found or
+        /// <paramref name="blockHash"/> is <c>null</c>.</returns>
+        public static HashDigest<SHA256>? GetStateRootHash(
+            this IStore store,
+            BlockHash? blockHash
+        ) =>
+            blockHash is { } hash && store.GetBlockDigest(hash) is BlockDigest digest
+                ? digest.StateRootHash
+                : (HashDigest<SHA256>?)null;
     }
 }

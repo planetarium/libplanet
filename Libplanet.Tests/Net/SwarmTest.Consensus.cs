@@ -44,12 +44,12 @@ namespace Libplanet.Tests.Net
             BlockChain<DumbAction> chain1 = TestUtils.MakeBlockChain(
                 policy,
                 new DefaultStore(null),
-                new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore())
+                new TrieStateStore(new MemoryKeyValueStore())
             );
             BlockChain<DumbAction> chain2 = TestUtils.MakeBlockChain(
                 policy,
                 new DefaultStore(null),
-                new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore())
+                new TrieStateStore(new MemoryKeyValueStore())
             );
 
             Swarm<DumbAction> miner1 = CreateSwarm(chain1);
@@ -69,7 +69,7 @@ namespace Libplanet.Tests.Net
                         policy.GetHashAlgorithm,
                         difficulty: nextDifficulty,
                         blockInterval: TimeSpan.FromMilliseconds(1)
-                    ).AttachStateRootHash(chain2.StateStore, policy);
+                    ).Evaluate(chain2);
                     _output.WriteLine("chain1's total difficulty: {0}", chain1.Tip.TotalDifficulty);
                     _output.WriteLine("chain2's total difficulty: {0}", bestBlock.TotalDifficulty);
                     break;
@@ -84,7 +84,7 @@ namespace Libplanet.Tests.Net
                             policy.GetHashAlgorithm,
                             difficulty: policy.GetNextBlockDifficulty(chain2),
                             blockInterval: TimeSpan.FromMilliseconds(1)
-                        ).AttachStateRootHash(chain2.StateStore, policy);
+                        ).Evaluate(chain2);
                         hashStr = bestBlock.Hash.ToString();
                         _output.WriteLine("chain1's tip hash: {0}", chain1.Tip.Hash);
                         _output.WriteLine("chain2's tip hash: {0}", bestBlock.Hash);

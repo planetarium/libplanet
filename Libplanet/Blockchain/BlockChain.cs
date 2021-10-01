@@ -159,22 +159,18 @@ namespace Libplanet.Blockchain
 
             _logger = Log.ForContext<BlockChain<T>>()
                 .ForContext("CanonicalChainId", Id);
-            Func<BlockHash, ITrie> trieGetter = StateStore is TrieStateStore trieStateStore
-                ? h => trieStateStore.GetTrie(h)
-                : (Func<BlockHash, ITrie>)null;
             ActionEvaluator = new ActionEvaluator<T>(
                 Policy.GetHashAlgorithm,
                 Policy.BlockAction,
                 GetState,
                 GetBalance,
-                trieGetter);
+                hash => StateStore.GetStateRoot(_blocks[hash].StateRootHash)
+            );
 
             if (Count == 0)
             {
-                if (inFork && StateStore is TrieStateStore)
+                if (inFork)
                 {
-                    // If the store is BlockStateStore, have to fork state reference too so
-                    // should use Append().
                     Store.AppendIndex(Id, genesisBlock.Hash);
                 }
                 else
@@ -361,39 +357,25 @@ namespace Libplanet.Blockchain
             DateTimeOffset? timestamp = null,
             IAction blockAction = null)
         {
-            privateKey = privateKey ?? new PrivateKey();
-            actions = actions ?? ImmutableArray<T>.Empty;
-            IEnumerable<Transaction<T>> transactions = new[]
+            privateKey ??= new PrivateKey();
+            actions ??= ImmutableArray<T>.Empty;
+            Transaction<T>[] transactions =
             {
                 Transaction<T>.Create(0, privateKey, null, actions, timestamp: timestamp),
             };
 
-            Block<T> block = Block<T>.Mine(
-                index: 0,
-                hashAlgorithm: hashAlgorithm,
-                difficulty: 0,
-                previousTotalDifficulty: 0,
-                miner: privateKey.ToAddress(),
-                previousHash: null,
-                timestamp: timestamp ?? DateTimeOffset.UtcNow,
-                transactions: transactions
-            );
+            BlockContent<T> content = new BlockContent<T>
+            {
+                Miner = privateKey.ToAddress(),
+                Timestamp = timestamp ?? DateTimeOffset.UtcNow,
+                Transactions = transactions,
+            };
 
-            var actionEvaluator = new ActionEvaluator<T>(
-                _ => hashAlgorithm,
+            PreEvaluationBlock<T> preEval = content.Mine(hashAlgorithm);
+            return preEval.Evaluate(
                 blockAction,
-                (address, digest, stateCompleter) => null,
-                (address, currency, hash, fungibleAssetStateCompleter)
-                    => new FungibleAssetValue(currency),
-                null);
-            var actionEvaluationResult = actionEvaluator
-                .Evaluate(block, StateCompleterSet<T>.Reject)
-                .GetTotalDelta(ToStateKey, ToFungibleAssetKey);
-            ITrie trie = new MerkleTrie(new DefaultKeyValueStore(null));
-            trie = trie.Set(actionEvaluationResult);
-            var stateRootHash = trie.Commit(rehearsal: true).Hash;
-
-            return new Block<T>(block, stateRootHash);
+                new TrieStateStore(new DefaultKeyValueStore(null))
+            );
         }
 
         /// <summary>
@@ -781,38 +763,29 @@ namespace Libplanet.Blockchain
             {
                 // Update states
                 DateTimeOffset setStatesStarted = DateTimeOffset.Now;
-                if (StateStore is TrieStateStore trieStateStore)
+                var totalDelta =
+                    evaluations.GetTotalDelta(ToStateKey, ToFungibleAssetKey);
+                const string deltaMsg =
+                    "Summarized the states delta made by the block #{BlockIndex} {BlockHash}." +
+                    "  Total {Keys} key(s) changed.";
+                _logger.Debug(deltaMsg, block.Index, block.Hash, totalDelta.Count);
+
+                HashDigest<SHA256>? prevStateRootHash = Store.GetStateRootHash(block.PreviousHash);
+                ITrie stateRoot = StateStore.Commit(prevStateRootHash, totalDelta);
+                HashDigest<SHA256> rootHash = stateRoot.Hash;
+                const string rootHashMsg =
+                    "Calculated the root hash of the states made by the block #{BlockIndex} " +
+                    "{BlockHash} for " + nameof(TrieStateStore) + ": {StateRootHash}.";
+                _logger.Debug(rootHashMsg, block.Index, block.Hash, rootHash);
+
+                if (!rootHash.Equals(block.StateRootHash))
                 {
-                    var totalDelta =
-                        evaluations.GetTotalDelta(ToStateKey, ToFungibleAssetKey);
-                    const string deltaMsg =
-                        "Summarized the states delta made by the block #{BlockIndex} {BlockHash}." +
-                        "  Total {Keys} key(s) changed.";
-                    _logger.Debug(deltaMsg, block.Index, block.Hash, totalDelta.Count);
-
-                    HashDigest<SHA256> rootHash =
-                        trieStateStore.EvalState(block, totalDelta);
-                    const string rootHashMsg =
-                        "Calculated the root hash of the states made by the block #{BlockIndex} " +
-                        "{BlockHash} for " + nameof(TrieStateStore) + ": {StateRootHash}.";
-                    _logger.Debug(rootHashMsg, block.Index, block.Hash, rootHash);
-
-                    if (!rootHash.Equals(block.StateRootHash))
-                    {
-                        var message = $"The block #{block.Index} {block.Hash}'s state root hash " +
-                                      $"is {block.StateRootHash?.ToString()}, but the execution " +
-                                      $"result is {rootHash.ToString()}.";
-                        throw new InvalidBlockStateRootHashException(
-                            block.StateRootHash,
-                            rootHash,
-                            message);
-                    }
-
-                    trieStateStore.SetStates(block, rootHash);
-                }
-                else
-                {
-                    SetStates(block, evaluations);
+                    var message = $"The block #{block.Index} {block.Hash}'s state root hash " +
+                        $"is {block.StateRootHash}, but the execution result is {rootHash}.";
+                    throw new InvalidBlockStateRootHashException(
+                        block.StateRootHash,
+                        rootHash,
+                        message);
                 }
 
                 const string endMsg =
@@ -875,6 +848,25 @@ namespace Libplanet.Blockchain
                 );
             }
 
+            HashAlgorithmType expectedHashAlgorithm = Policy.GetHashAlgorithm(block.Index);
+            if (!block.HashAlgorithm.Equals(expectedHashAlgorithm))
+            {
+                var metadata = new BlockMetadata(block);
+                var preEvalBlock =
+                    new PreEvaluationBlockHeader(metadata, expectedHashAlgorithm, block.Nonce);
+                string msg =
+                    $"According to the policy, block #{block.Index} has to use " +
+                    $"{expectedHashAlgorithm}.  However, block #{block.Index} {block.Hash} " +
+                    $"uses {block.HashAlgorithm}.";
+                throw new InvalidBlockPreEvaluationHashException(
+                    block.PreEvaluationHash,
+                    preEvalBlock.PreEvaluationHash,
+                    msg
+                );
+            }
+
+            block.ValidateTimestamp();
+
             _rwlock.EnterUpgradeableReadLock();
             Block<T> prevTip = Count > 0 ? Tip : null;
             try
@@ -889,9 +881,7 @@ namespace Libplanet.Blockchain
 
                 var nonceDeltas = new Dictionary<Address, long>();
 
-                // block.Transactions have already been sorted by
-                // the tx nounce order when the block was created
-                foreach (Transaction<T> tx1 in block.Transactions)
+                foreach (Transaction<T> tx1 in block.Transactions.OrderBy(tx => tx.Nonce))
                 {
                     if (Policy.ValidateNextBlockTx(this, tx1) is { } tpve)
                     {
@@ -1187,7 +1177,6 @@ namespace Libplanet.Blockchain
                 _rwlock.EnterReadLock();
 
                 Store.ForkBlockIndexes(Id, forkedId, point);
-                StateStore.ForkStates(Id, forked.Id, pointBlock);
                 Store.ForkTxNonces(Id, forked.Id);
 
                 for (Block<T> block = Tip;
@@ -1270,10 +1259,11 @@ namespace Libplanet.Blockchain
             IReadOnlyList<ActionEvaluation> actionEvaluations
         )
         {
-            if (!StateStore.ContainsBlockStates(block.Hash))
+            if (!StateStore.ContainsStateRoot(block.StateRootHash))
             {
                 var totalDelta = actionEvaluations.GetTotalDelta(ToStateKey, ToFungibleAssetKey);
-                StateStore.SetStates(block, totalDelta);
+                HashDigest<SHA256>? prevStateRootHash = Store.GetStateRootHash(block.PreviousHash);
+                StateStore.Commit(prevStateRootHash, totalDelta);
             }
         }
 
@@ -1426,11 +1416,12 @@ namespace Libplanet.Blockchain
                     return null;
                 }
 
-                offset ??= Tip.Hash;
+                BlockHash offsetHash = offset ?? Tip.Hash;
 
-                return StateStore.ContainsBlockStates(offset.Value)
-                    ? StateStore.GetState(key, offset)
-                    : rawStateCompleter(this, offset.Value);
+                HashDigest<SHA256>? stateRootHash = Store.GetStateRootHash(offsetHash);
+                return stateRootHash is { } h && StateStore.ContainsStateRoot(h)
+                    ? StateStore.GetState(key, stateRootHash)
+                    : rawStateCompleter(this, offsetHash);
             }
             finally
             {
