@@ -21,10 +21,10 @@ namespace Libplanet.Tests.Store
             return _stateStore.GetStateRoot(stateRootHash);
         }
 
-        public void PruneStates(IImmutableSet<HashDigest<SHA256>> stateRootHashes)
+        public void PruneStates(IImmutableSet<HashDigest<SHA256>> survivingStateRootHashes)
         {
-            Log(nameof(PruneStates), stateRootHashes);
-            _stateStore.PruneStates(stateRootHashes);
+            Log(nameof(PruneStates), survivingStateRootHashes);
+            _stateStore.PruneStates(survivingStateRootHashes);
         }
 
         public void Dispose()
