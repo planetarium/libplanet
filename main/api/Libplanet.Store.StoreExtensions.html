@@ -73,7 +73,8 @@
   
   <h1 id="Libplanet_Store_StoreExtensions" data-uid="Libplanet.Store.StoreExtensions" class="text-break">Class StoreExtensions
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>Convenient extension methods for <a class="xref" href="Libplanet.Store.IStore.html">IStore</a>.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
@@ -117,7 +118,7 @@
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_StoreExtensions_Copy_Libplanet_Store_IStore_Libplanet_Store_IStore_.md&amp;value=---%0Auid%3A%20Libplanet.Store.StoreExtensions.Copy(Libplanet.Store.IStore%2CLibplanet.Store.IStore)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/StoreExtensions.cs/#L23">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/StoreExtensions.cs/#L27">View Source</a>
   </span>
   <a id="Libplanet_Store_StoreExtensions_Copy_" data-uid="Libplanet.Store.StoreExtensions.Copy*"></a>
   <h4 id="Libplanet_Store_StoreExtensions_Copy_Libplanet_Store_IStore_Libplanet_Store_IStore_" data-uid="Libplanet.Store.StoreExtensions.Copy(Libplanet.Store.IStore,Libplanet.Store.IStore)">Copy(IStore, IStore)</h4>
@@ -172,6 +173,64 @@ between two different types of <a class="xref" href="Libplanet.Store.IStore.html
       </tr>
     </tbody>
   </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_StoreExtensions_GetStateRootHash_Libplanet_Store_IStore_System_Nullable_Libplanet_Blocks_BlockHash__.md&amp;value=---%0Auid%3A%20Libplanet.Store.StoreExtensions.GetStateRootHash(Libplanet.Store.IStore%2CSystem.Nullable%7BLibplanet.Blocks.BlockHash%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/StoreExtensions.cs/#L76">View Source</a>
+  </span>
+  <a id="Libplanet_Store_StoreExtensions_GetStateRootHash_" data-uid="Libplanet.Store.StoreExtensions.GetStateRootHash*"></a>
+  <h4 id="Libplanet_Store_StoreExtensions_GetStateRootHash_Libplanet_Store_IStore_System_Nullable_Libplanet_Blocks_BlockHash__" data-uid="Libplanet.Store.StoreExtensions.GetStateRootHash(Libplanet.Store.IStore,System.Nullable{Libplanet.Blocks.BlockHash})">GetStateRootHash(IStore, Nullable&lt;BlockHash&gt;)</h4>
+  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_StateRootHash">StateRootHash</a> of the given <code data-dev-comment-type="paramref" class="paramref">blockHash</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static HashDigest&lt;SHA256&gt;? GetStateRootHash(this IStore store, BlockHash? blockHash)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.IStore.html">IStore</a></td>
+        <td><span class="parametername">store</span></td>
+        <td><p>The store that blocks are stored.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
+        <td><span class="parametername">blockHash</span></td>
+        <td><p>The hash of the block to get the state root hash of.
+If <code>null</code> is present, <code>null</code> is returned.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;&gt;</td>
+        <td><p>The state root hash of the block, or <code>null</code> if the block is not found or
+<code data-dev-comment-type="paramref" class="paramref">blockHash</code> is <code>null</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
 </article>
           </div>
           
@@ -183,7 +242,7 @@ between two different types of <a class="xref" href="Libplanet.Store.IStore.html
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_StoreExtensions.md&amp;value=---%0Auid%3A%20Libplanet.Store.StoreExtensions%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/StoreExtensions.cs/#L11" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/StoreExtensions.cs/#L15" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

@@ -78,7 +78,16 @@
     <h3 id="classes">Classes
   </h3>
       <h4><a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a></h4>
-      <section></section>
+      <section><p>The complete block including all block contents and done proof-of-work and action
+evaluation.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Blocks.BlockContent-1.html">BlockContent&lt;T&gt;</a></h4>
+      <section><p>A block content without any proofs like nonce or hash.  This represents contents of a
+block that is not yet mined.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Blocks.BlockContentExtensions.html">BlockContentExtensions</a></h4>
+      <section><p>Convenient extension methods for <a class="xref" href="Libplanet.Blocks.IBlockContent-1.html">IBlockContent&lt;T&gt;</a>.</p>
+</section>
       <h4><a class="xref" href="Libplanet.Blocks.BlockExceedingTransactionsException.html">BlockExceedingTransactionsException</a></h4>
       <section><p>The exception that is thrown when a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> has too many
 <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Transactions">Transactions</a> (i.e., more than the number specified by
@@ -87,9 +96,23 @@
       <h4><a class="xref" href="Libplanet.Blocks.BlockExcerptExtensions.html">BlockExcerptExtensions</a></h4>
       <section><p>The extension methods for <a class="xref" href="Libplanet.Blocks.IBlockExcerpt.html">IBlockExcerpt</a>.</p>
 </section>
+      <h4><a class="xref" href="Libplanet.Blocks.BlockHeader.html">BlockHeader</a></h4>
+      <section><p>Block header containing information about <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>s except transactions.</p>
+</section>
       <h4><a class="xref" href="Libplanet.Blocks.BlockInsufficientTxsException.html">BlockInsufficientTxsException</a></h4>
       <section><p>The exception that is thrown when a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>'s
 <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Transactions">Transactions</a> Count is too small.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Blocks.BlockMarshaler.html">BlockMarshaler</a></h4>
+      <section><p>Marshaling and unmarshaling block data.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Blocks.BlockMetadata.html">BlockMetadata</a></h4>
+      <section><p>A block metadata without transactions or any proofs like nonce or hash.  This represents
+metadata of a block that is not yet mined nor proven.</p>
+<p>To represent a block content including its metadata and transactions, use <a class="xref" href="Libplanet.Blocks.BlockContent-1.html">BlockContent&lt;T&gt;</a>, which is its subclass.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Blocks.BlockMetadataExtensions.html">BlockMetadataExtensions</a></h4>
+      <section><p>Convenient extension methods for <a class="xref" href="Libplanet.Blocks.IBlockMetadata.html">IBlockMetadata</a>.</p>
 </section>
       <h4><a class="xref" href="Libplanet.Blocks.BlockPolicyViolationException.html">BlockPolicyViolationException</a></h4>
       <section><p>An exception <em>returned</em> when a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> violates
@@ -142,17 +165,19 @@ expects or the first block of <span class="xref">Libplanet.Blockchain.BlockLocat
 doesn't contain, because the block which <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> doesn't means
 the genesis block in other network.</p>
 </section>
+      <h4><a class="xref" href="Libplanet.Blocks.PreEvaluationBlock-1.html">PreEvaluationBlock&lt;T&gt;</a></h4>
+      <section><p>A block candidate without evaluating actions (in its <a class="xref" href="Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_Transactions">Transactions</a> and
+a possible <a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_BlockAction">BlockAction</a>) and state root
+hash.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Blocks.PreEvaluationBlockHeader.html">PreEvaluationBlockHeader</a></h4>
+      <section><p>A block candidate without evaluating actions (in its transactions and a possible
+<a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_BlockAction">BlockAction</a>) and state root hash.</p>
+</section>
     <h3 id="structs">Structs
   </h3>
-      <h4><a class="xref" href="Libplanet.Blocks.BlockDigest.html">BlockDigest</a></h4>
-      <section><p>Class that store uses to save blocks. This contains:
-<a class="xref" href="Libplanet.Blocks.BlockHeader.html">BlockHeader</a>, and list of <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a>s.</p>
-</section>
       <h4><a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a></h4>
       <section><p>A value type to represent SHA-256 digest of <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> data.</p>
-</section>
-      <h4><a class="xref" href="Libplanet.Blocks.BlockHeader.html">BlockHeader</a></h4>
-      <section><p>Block header containing information about <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>s except transactions.</p>
 </section>
       <h4><a class="xref" href="Libplanet.Blocks.BlockPerception.html">BlockPerception</a></h4>
       <section><p>
@@ -164,9 +189,31 @@ Used for keeping track of when the local node has percieved <a class="xref" href
 </section>
     <h3 id="interfaces">Interfaces
   </h3>
+      <h4><a class="xref" href="Libplanet.Blocks.IBlockContent-1.html">IBlockContent&lt;T&gt;</a></h4>
+      <section><p>A common interface for blocks that do not have any proofs, but have their metadata and
+containing <a class="xref" href="Libplanet.Blocks.IBlockContent-1.html#Libplanet_Blocks_IBlockContent_1_Transactions">Transactions</a>.</p>
+</section>
       <h4><a class="xref" href="Libplanet.Blocks.IBlockExcerpt.html">IBlockExcerpt</a></h4>
       <section><p>The very essential metadata extracted from a block.  This purposes to determine
 the canonical chain.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Blocks.IBlockHeader.html">IBlockHeader</a></h4>
+      <section><p>A common interface for blocks that have their proof-of-work <a class="xref" href="Libplanet.Nonce.html">Nonce</a>s and
+<a class="xref" href="Libplanet.Blocks.IBlockHeader.html#Libplanet_Blocks_IBlockHeader_StateRootHash">StateRootHash</a>es, but no transactions.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Blocks.IBlockMetadata.html">IBlockMetadata</a></h4>
+      <section><p>A common interface for blocks that do not have any proofs nor transactions (but only
+<a class="xref" href="Libplanet.Blocks.IBlockMetadata.html#Libplanet_Blocks_IBlockMetadata_TxHash">TxHash</a>).</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Blocks.IPreEvaluationBlock-1.html">IPreEvaluationBlock&lt;T&gt;</a></h4>
+      <section><p>A common interface for blocks that have their proof-of-work
+<a class="xref" href="Libplanet.Blocks.IPreEvaluationBlockHeader.html#Libplanet_Blocks_IPreEvaluationBlockHeader_Nonce">Nonce</a>s and
+<a class="xref" href="Libplanet.Blocks.IBlockContent-1.html#Libplanet_Blocks_IBlockContent_1_Transactions">Transactions</a>, but are not evaluated yet (i.e., their state
+root hashes are not yet determined).</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Blocks.IPreEvaluationBlockHeader.html">IPreEvaluationBlockHeader</a></h4>
+      <section><p>A common interface for blocks that have their proof-of-work <a class="xref" href="Libplanet.Blocks.IPreEvaluationBlockHeader.html#Libplanet_Blocks_IPreEvaluationBlockHeader_Nonce">Nonce</a>s,
+but are not evaluated yet (i.e., state root hash is not yet determined).</p>
 </section>
     <h3 id="delegates">Delegates
   </h3>

@@ -65,10 +65,207 @@
 <h2 id="version-0180">Version 0.18.0</h2>
 <p>To be released.</p>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
+<ul>
+<li><code>Hashcash.Stamp(Nonce)</code> delegate's return type became <code>IEnumerable&lt;byte[]&gt;</code>
+(was <code>byte[]</code>).  [<a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
+<li>Moved <code>BlockDigest</code> struct to <code>Libplanet.Store</code> namespace (from
+<code>Libplanet.Blocks</code> namespace).  [<a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
+<li>Removed <code>Block&lt;T&gt;.ToBlockDigest()</code> method.  Use <code>BlockDigest.FromBlock&lt;T&gt;()</code>
+static method instead. [<a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
+<li><code>ActionEvaluator&lt;T&gt;.Evaluate()</code> method's <code>block</code> parameter became to take
+<code>IPreEvaluationBlock&lt;T&gt;</code> (was <code>IBlock&lt;T&gt;</code>).  [<a href="https://github.com/planetarium/libplanet/issues/1146">#1146</a>, <a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
+<li><code>Block&lt;T&gt;</code> and <code>BlockHeader</code> now guarantees that their every instance has
+integrity.  [<a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]
+<ul>
+<li><code>Block&lt;T&gt;</code> became unable to be subclassed.</li>
+<li>Remove <code>Block&lt;T&gt;(long, long, BigInteger, Nonce, Address, BlockHash?, DateTimeOffset, IReadOnlyList&lt;Transaction&lt;T&gt;&gt;, HashAlgorithmType, HashDigest&lt;SHA256&gt;, ImmutableArray&lt;byte&gt;?, int)</code> overloaded constructor.
+Use other overloaded constructors instead.</li>
+<li>Added <code>Block&lt;T&gt;(PreEvaluationBlock&lt;T&gt;, HashDigest&lt;SHA256&gt;)</code> overloaded
+constructor.</li>
+<li><code>BlockHeader</code> is no more readonly struct, but a sealed class.</li>
+<li>Removed <code>BlockHeader(int, long, string, ImmutableArray&lt;byte&gt;, ImmutableArray&lt;byte&gt;, long, BigInteger, ImmutableArray&lt;byte&gt;, ImmutableArray&lt;byte&gt;, ImmutableArray&lt;byte&gt;, ImmutableArray&lt;byte&gt;, ImmutableArray&lt;byte&gt;)</code> constructor.  Use other overloaded constructors
+instead.</li>
+<li>Added <code>BlockHeader(PreEvaluationBlockHeader, HashDigest&lt;SHA256&gt;)</code>
+overloaded constructor.</li>
+<li>Added
+<code>BlockHeader(PreEvaluationBlockHeader, HashDigest&lt;SHA256&gt;, BlockHash)</code>
+overloaded constructor.</li>
+</ul>
+</li>
+<li><code>Block&lt;T&gt;</code> and <code>BlockHeader</code> have no more marshaling/unmarshaling methods.
+<ul>
+<li>Removed <code>Block&lt;T&gt;(Bencodex.Types.Dictionary)</code> overloaded constructor.
+Use <code>BlockMarshaler.UnmarshalBlock()</code> static method instead.</li>
+<li>Removed <code>Block&lt;T&gt;.Deserialize()</code> static method.  Instead, use
+<code>BlockMarshaler.UnmarshalBlock()</code> static method and <code>Bencodex.Codec</code>
+together.</li>
+<li>Removed <code>Block&lt;T&gt;.ToBencodex()</code> method.
+Use <code>BlockMarshaler.MarshalBlock()</code> static method instead.</li>
+<li>Removed <code>Block&lt;T&gt;.Serialize()</code> method.  Instead, use
+<code>BlockMarshaler.MarshalBlock()</code> static method and <code>Bencodex.Codec</code>
+together.</li>
+<li>Removed <code>BlockHeader(Bencodex.Types.Dictionary)</code> overloaded constructor.
+Use <code>BlockMarshaler.UnmarshalBlockHeader()</code> static method instead.</li>
+<li>Removed <code>BlockHeader.Deserialize()</code> static method.  Instead, use
+<code>BlockMarshaler.UnmarshalBlockHeader()</code> static method and
+<code>Bencodex.Codec</code> together.</li>
+<li>Removed <code>BlockHeader.ToBencodex()</code> method.
+Use <code>BlockMarshaler.MarshalBlockHeader()</code> static method instead.</li>
+<li>Removed <code>BlockHeader.Serialize()</code> method.  Instead, use
+<code>BlockMarshaler.MarshalBlockHeader()</code> static method and
+<code>Bencodex.Codec</code> together.</li>
+</ul>
+</li>
+<li><code>Block&lt;T&gt;</code> and <code>BlockHeader</code> now guarantee that their every instance has
+its <code>StateRootHash</code>.  [<a href="https://github.com/planetarium/libplanet/issues/1128">#1128</a>, <a href="https://github.com/planetarium/libplanet/issues/1146">#1146</a>, <a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]
+<ul>
+<li><code>Block&lt;T&gt;.StateRootHash</code> property's type became <code>HashDigest&lt;SHA256&gt;</code>
+(was <code>HashDigest&lt;SHA256&gt;?</code>).</li>
+<li>Removed <code>Block&lt;T&gt;(Block&lt;T&gt;, HashDigest&lt;SHA256&gt;)</code> overloaded constructor.
+Use <code>Block&lt;T&gt;(PreEvaluationBlock&lt;T&gt;, HashDigest&lt;SHA256&gt;)</code> overloaded
+constructor instead.</li>
+<li>Removed <code>Block&lt;T&gt;.Mine()</code> static method.  Use <code>BlockContent&lt;T&gt;.Mine()</code>
+and <code>PreEvaluationBlock&lt;T&gt;.Evaluate()</code> methods instead.</li>
+<li><code>BlockHeader.StateRootHash</code> property's type became <code>HashDigest&lt;SHA256&gt;</code>
+(was <code>HashDigest&lt;SHA256&gt;?</code>).</li>
+</ul>
+</li>
+<li><code>Block&lt;T&gt;</code> and <code>BlockHeader</code> became aware of <code>HashAlgorithmType</code> used for
+proof-of-work mining.  [<a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]
+<ul>
+<li>Added <code>Block&lt;T&gt;.HashAlgorithm</code> property.</li>
+<li>Added <code>BlockHeader.HashAlgorithm</code> property.</li>
+<li>Removed <code>BlockHeader(int, long, DateTimeOffset, Nonce, Address, long, BigInteger, BlockHash?, HashDigest&lt;SHA256&gt;?, BlockHash, ImmutableArray&lt;byte&gt;, HashDigest&lt;SHA256&gt;?)</code> constructor.
+Use <code>BlockHeader(int, long, DateTimeOffset, Nonce, Address, long, BigInteger, BlockHash?, HashDigest&lt;SHA256&gt;?, BlockHash, ImmutableArray&lt;byte&gt;, HashDigest&lt;SHA256&gt;, HashAlgorithmType)</code>
+constructor instead.</li>
+<li>Added <code>HashAlgorithmGetter hashAlgorithmGetter</code> parameter to
+<code>IStore.GetBlock&lt;T&gt;()</code> method.</li>
+<li>Removed <code>BlockDigest.Header</code> property.  Use <code>BlockDigest.GetHeader()</code>
+method instead.</li>
+<li>Added <code>BlockDigest.GetHeader()</code> method.</li>
+<li>Added <code>HashAlgorithmGetter hashAlgorithmGetter</code> parameter to
+<code>DelayedRenderer&lt;T&gt;()</code> constructor.</li>
+<li>Added <code>HashAlgorithmGetter hashAlgorithmGetter</code> parameter to
+<code>DelayedActionRenderer&lt;T&gt;()</code> constructor.</li>
+<li>Added <code>DelayedRenderer&lt;T&gt;.HashAlgorithmGetter</code> property.</li>
+</ul>
+</li>
+<li><code>IStateStore</code> now requires implementations to be trie.
+[<a href="https://github.com/planetarium/libplanet/issues/1128">#1128</a>, <a href="https://github.com/planetarium/libplanet/issues/1146">#1146</a>, <a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]
+<ul>
+<li>Added <code>IStateStore.GetStateRoot()</code> method.</li>
+<li>Added <code>IStateStore.PruneStates()</code> method.</li>
+<li>Removed <code>IStateStore.SetStates&lt;T&gt;()</code> method.</li>
+<li>Removed <code>IStateStore.GetState()</code> method.</li>
+<li>Removed <code>IStateStore.ContainsBlockStates()</code> method.</li>
+<li>Removed <code>IStateStore.ForkStates&lt;T&gt;()</code> method.</li>
+</ul>
+</li>
+<li><code>TrieStateStore</code> no more stores associations between
+<code>Block&lt;T&gt;.Hash</code>/<code>Block&lt;T&gt;.PreEvaluationHash</code> and <code>Block&lt;T&gt;.StateRootHash</code>,
+because <code>Block&lt;T&gt;.StateRootHash</code> became mandatory.
+[<a href="https://github.com/planetarium/libplanet/issues/1128">#1128</a>, <a href="https://github.com/planetarium/libplanet/issues/1146">#1146</a>, <a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]
+<ul>
+<li>Added <code>ITrie.Recorded</code> property.</li>
+<li>Removed <code>IKeyValueStore stateHashKeyValueStore</code> parameter from
+<code>TrieStateStore()</code> constructor.</li>
+<li>Removed <code>TrieStateStore.GetTrie()</code> method.</li>
+<li>Removed <code>TrieStateStore.GetRootHash()</code> method.</li>
+<li>Replaced <code>TrieStateStore.PruneStates(IImmutableSet&lt;BlockHash&gt;)</code> method
+with <code>TrieStateStore.PruneStates(IImmutableSet&lt;HashDigest&lt;SHA256&gt;&gt;)</code>
+method.</li>
+</ul>
+</li>
+</ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
+<ul>
+<li>Added <code>BlockHeader(int, long, DateTimeOffset, Nonce, Address, long, BigInteger, BlockHash?, HashDigest&lt;SHA256&gt;?, BlockHash, ImmutableArray&lt;byte&gt;, HashDigest&lt;SHA256&gt;, HashAlgorithmType)</code> constructor.
+[<a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
+<li>Added <code>BlockMetadata</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
+<li>Added <code>BlockContent&lt;T&gt;</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
+<li>Added <code>PreEvaluationBlockHeader</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/1146">#1146</a>, <a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
+<li>Added <code>PreEvaluationBlock&lt;T&gt;</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/1146">#1146</a>, <a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
+<li>Added <code>BlockDigest.FromBlock&lt;T&gt;()</code> static method. [<a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
+<li>Added <code>Block&lt;T&gt;(PreEvaluationBlock&lt;T&gt;, HashDigest&lt;SHA256&gt;)</code> overloaded
+constructor.  [<a href="https://github.com/planetarium/libplanet/issues/1146">#1146</a>, <a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
+<li>Added <code>Block&lt;T&gt;.HashAlgorithm</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
+<li>Added <code>Block&lt;T&gt;(PreEvaluationBlock&lt;T&gt;, HashDigest&lt;SHA256&gt;)</code> overloaded
+constructor.  [<a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
+<li>Added <code>Block&lt;T&gt;(IBlockHeader, IEnumerable&lt;Transaction&lt;T&gt;&gt;)</code> overloaded
+constructor.  [<a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
+<li>Added <code>BlockHeader.HashAlgorithm</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
+<li>Added <code>BlockHeader(PreEvaluationBlockHeader, HashDigest&lt;SHA256&gt;)</code>
+overloaded constructor.  [<a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
+<li>Added <code>BlockHeader(PreEvaluationBlockHeader, HashDigest&lt;SHA256&gt;, BlockHash)</code>
+overloaded constructor.  [<a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
+<li>Added <code>IBlockMetadata</code> interface.  [<a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]
+<ul>
+<li><code>Block&lt;T&gt;</code> became to implement <code>IBlockMetadata</code> interface.</li>
+<li><code>BlockHeader</code> became to implement <code>IBlockMetadata</code> interface.</li>
+<li><code>BlockMetadata</code> became to implement <code>IBlockMetadata</code> interface.</li>
+<li><code>BlockContent&lt;T&gt;</code> became to implement <code>IBlockMetadata</code> interface.</li>
+<li><code>PreEvaluationBlockHeader</code> became to implement <code>IBlockMetadata</code>
+interface.</li>
+<li><code>PreEvaluationBlock&lt;T&gt;</code> became to implement <code>IBlockMetadata</code> interface.</li>
+<li><code>BlockDigest</code> became to implement <code>IBlockMetadata</code> interface.</li>
+</ul>
+</li>
+<li>Added <code>IBlockContent&lt;T&gt;</code> interface.  [<a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]
+<ul>
+<li><code>Block&lt;T&gt;</code> became to implement <code>IBlockContent&lt;T&gt;</code> interface.</li>
+<li><code>BlockContent&lt;T&gt;</code> became to implement <code>IBlockContent&lt;T&gt;</code> interface.</li>
+<li><code>PreEvaluationBlock&lt;T&gt;</code> became to implement <code>IBlockContent&lt;T&gt;</code>
+interface.</li>
+</ul>
+</li>
+<li>Added <code>IPreEvaluationBlockHeader</code> interface.  [<a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]
+<ul>
+<li><code>Block&lt;T&gt;</code> became to implement <code>IPreEvaluationBlockHeader</code> interface.</li>
+<li><code>BlockHeader</code> became to implement <code>IPreEvaluationBlockHeader</code> interface.</li>
+<li><code>PreEvaluationBlockHeader</code> became to implement
+<code>IPreEvaluationBlockHeader</code> interface.</li>
+<li><code>PreEvaluationBlock&lt;T&gt;</code> became to implement <code>IPreEvaluationBlockHeader</code>
+interface.</li>
+</ul>
+</li>
+<li>Added <code>IPreEvaluationBlock&lt;T&gt;</code> interface.  [<a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]
+<ul>
+<li><code>Block&lt;T&gt;</code> became to implement <code>IPreEvaluationBlock&lt;T&gt;</code> interface.</li>
+<li><code>PreEvaluationBlock&lt;T&gt;</code> became to implement <code>IPreEvaluationBlock&lt;T&gt;</code>
+interface.</li>
+<li><code>ActionEvaluator&lt;T&gt;.Evaluate()</code> method's <code>block</code> parameter became to
+take <code>IPreEvaluationBlock&lt;T&gt;</code> (was <code>IBlock&lt;T&gt;</code>).</li>
+</ul>
+</li>
+<li>Added <code>IBlockHeader</code> interface.  [<a href="https://github.com/planetarium/libplanet/issues/1146">#1146</a>, <a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]
+<ul>
+<li><code>Block&lt;T&gt;</code> became to implement <code>IBlockHeader</code> interface.</li>
+<li><code>BlockHeader</code> became to implement <code>BlockHeader</code> interface.</li>
+</ul>
+</li>
+<li>Added <code>BlockMetadataExtensions</code> static class.  [<a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
+<li>Added <code>BlockContentExtensions</code> static class.  [<a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
+<li>Added <code>BlockMarshaler</code> static class.  [<a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
+<li>Added <code>BlockDigest.Index</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
+<li>Added <code>BlockDigest.Hash</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
+<li>Added <code>BlockDigest.StateRootHash</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
+<li>Added <code>BlockDigest.GetHeader()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
+<li>Added <code>StateStoreExtensions</code> static class.  [<a href="https://github.com/planetarium/libplanet/issues/1128">#1128</a>, <a href="https://github.com/planetarium/libplanet/issues/1146">#1146</a>, <a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
+<li>Added <code>StoreExtensions.GetStateRootHash()</code> extension method.
+[<a href="https://github.com/planetarium/libplanet/issues/1128">#1128</a>, <a href="https://github.com/planetarium/libplanet/issues/1146">#1146</a>, <a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
+<li>Added <code>DelayedRenderer&lt;T&gt;.HashAlgorithmGetter</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
+<li><code>BlockDigest</code> became to implements <code>IBlockExcerpt</code>.</li>
+</ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
+<ul>
+<li><code>Block&lt;T&gt;.Transactions</code> property is now ordered by <code>Transaction&lt;T&gt;.Id</code>
+so that it's consistent with <code>IBlockContent&lt;T&gt;</code>'s other implementations.
+As this behavior can be changed in the later releases, do not depend on
+its ordering, but explicitly sort them before use when the order needs to b
+guaranteed.  [<a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
+</ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="cli-tools">CLI tools</h3>
 <h2 id="version-0170">Version 0.17.0</h2>
