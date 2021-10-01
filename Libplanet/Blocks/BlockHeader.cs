@@ -29,10 +29,16 @@ namespace Libplanet.Blocks
             HashDigest<SHA256> stateRootHash,
             ImmutableArray<byte>? signature
         )
+#pragma warning disable SA1118
             : this(
                 preEvaluationBlockHeader,
-                (stateRootHash, signature, preEvaluationBlockHeader.DeriveBlockHash(stateRootHash))
+                (
+                    stateRootHash,
+                    signature,
+                    preEvaluationBlockHeader.DeriveBlockHash(stateRootHash, signature)
+                )
             )
+#pragma warning restore SA1118
         {
         }
 
@@ -60,7 +66,8 @@ namespace Libplanet.Blocks
                 (stateRootHash, signature, hash)
             )
         {
-            BlockHash expectedHash = preEvaluationBlockHeader.DeriveBlockHash(stateRootHash);
+            BlockHash expectedHash =
+                preEvaluationBlockHeader.DeriveBlockHash(stateRootHash, signature);
             if (!hash.Equals(expectedHash))
             {
                 throw new InvalidBlockHashException(

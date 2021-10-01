@@ -5,6 +5,7 @@ using System.Numerics;
 using System.Security.Cryptography;
 using System.Threading;
 using Bencodex;
+using Bencodex.Types;
 using Libplanet.Crypto;
 
 namespace Libplanet.Blocks
@@ -295,9 +296,24 @@ namespace Libplanet.Blocks
         /// <param name="stateRootHash">The <see cref="Libplanet.Store.Trie.ITrie.Hash"/> of
         /// the resulting states after evaluating transactions and
         /// a <see cref="Blockchain.Policies.IBlockPolicy{T}.BlockAction"/> (if exists).</param>
+        /// <param name="signature">The block signature created using <see cref="MakeSignature"/>
+        /// method with the <paramref name="stateRootHash"/>.  This must be <c>null</c> for
+        /// blocks with earlier <seealso cref="ProtocolVersion"/>s than 2.</param>
         /// <returns>The serialized block header in a Bencodex dictionary.</returns>
-        public Bencodex.Types.Dictionary ToBencodex(HashDigest<SHA256> stateRootHash) =>
-            Metadata.ToBencodex(Nonce).Add("state_root_hash", stateRootHash.ByteArray);
+        public Bencodex.Types.Dictionary ToBencodex(
+            HashDigest<SHA256> stateRootHash,
+            ImmutableArray<byte>? signature = null
+        )
+        {
+            Dictionary dict = Metadata.ToBencodex(Nonce)
+                .Add("state_root_hash", stateRootHash.ByteArray);
+            if (signature is { } sig)
+            {
+                dict = dict.Add("signature", sig);
+            }
+
+            return dict;
+        }
 
         /// <summary>
         /// Makes a signature of the block content with a <paramref name="stateRootHash"/> using
@@ -359,7 +375,7 @@ namespace Libplanet.Blocks
             if (PublicKey is { } pubKey && signature is { } sig)
             {
                 byte[] msg = Codec.Encode(ToBencodex(stateRootHash));
-                return PublicKey.Verify(msg, sig);
+                return pubKey.Verify(msg, sig);
             }
             else if (PublicKey is null)
             {
@@ -374,11 +390,15 @@ namespace Libplanet.Blocks
         /// <paramref name="stateRootHash"/>.
         /// </summary>
         /// <param name="stateRootHash">The state root hash.</param>
+        /// <param name="signature">The block signature created using <see cref="MakeSignature"/>
+        /// method with the <paramref name="stateRootHash"/>.  This must be <c>null</c> for
+        /// blocks with earlier <seealso cref="ProtocolVersion"/>s than 2.</param>
         /// <returns>A block hash.</returns>
         public BlockHash DeriveBlockHash(
-            in HashDigest<SHA256> stateRootHash
+            in HashDigest<SHA256> stateRootHash,
+            ImmutableArray<byte>? signature
         ) =>
-            BlockHash.DeriveFrom(Codec.Encode(ToBencodex(stateRootHash)));
+            BlockHash.DeriveFrom(Codec.Encode(ToBencodex(stateRootHash, signature)));
 
         /// <summary>
         /// Verifies if the <paramref name="preEvaluationHash"/> is the proper hash digest of

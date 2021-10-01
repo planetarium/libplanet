@@ -425,7 +425,7 @@ namespace Libplanet.Tests.Action
                     _txFx.PrivateKey2,
                     genesis.Hash,
                     new[] { MakeAction(addresses[3], 'E') },
-                    timestamp: DateTimeOffset.MinValue.AddSeconds(4)),
+                    timestamp: DateTimeOffset.MinValue.AddSeconds(3)),
                 Transaction<DumbAction>.Create(
                     0,
                     _txFx.PrivateKey3,
@@ -441,7 +441,7 @@ namespace Libplanet.Tests.Action
                             recordRehearsal: true,
                             recordRandom: true),
                     },
-                    timestamp: DateTimeOffset.MinValue.AddSeconds(5)),
+                    timestamp: DateTimeOffset.MinValue.AddSeconds(6)),
             };
             i = 0;
             foreach (Transaction<DumbAction> tx in block2Txs)

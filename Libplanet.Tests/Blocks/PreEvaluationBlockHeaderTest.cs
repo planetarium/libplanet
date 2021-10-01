@@ -503,11 +503,25 @@ namespace Libplanet.Tests.Blocks
             );
             AssertBytesEqual(
                 fromHex("d8524ca6cea91244564eb8e95e4b83704d997b34bee023849c51eedfc57ec1a4"),
-                genesis.DeriveBlockHash(default)
+                genesis.DeriveBlockHash(default, null)
+            );
+            AssertBytesEqual(
+                fromHex("8006aab7a37d27c8eb64c2d90d0815ee2f80fab6a85b797e9052627ecfa69213"),
+                genesis.DeriveBlockHash(
+                    default,
+                    genesis.MakeSignature(_contents.GenesisKey, default)
+                )
             );
             AssertBytesEqual(
                 fromHex("100e07c7c447c539a1a15216f68ec7820c69a70c09aad6c4981ab30fba04503b"),
-                genesis.DeriveBlockHash(arbitraryHash)
+                genesis.DeriveBlockHash(arbitraryHash, null)
+            );
+            AssertBytesEqual(
+                fromHex("38f0de2abd8641201b8ed50662e668dea09400c191c5e3898c29d8c685a7ccab"),
+                genesis.DeriveBlockHash(
+                    arbitraryHash,
+                    genesis.MakeSignature(_contents.GenesisKey, arbitraryHash)
+                )
             );
 
             var block1 = new PreEvaluationBlockHeader(
@@ -517,11 +531,22 @@ namespace Libplanet.Tests.Blocks
             );
             AssertBytesEqual(
                 fromHex("60756799c3fda2f177cf0180b9f9b6bc6df1337a730d1b4d6ae8846f35906530"),
-                block1.DeriveBlockHash(default)
+                block1.DeriveBlockHash(default, null)
+            );
+            AssertBytesEqual(
+                fromHex("4f995659dabaa1768c97938769fa30f039d77810986a1dc8809ecd0a31881da4"),
+                block1.DeriveBlockHash(default, block1.MakeSignature(_contents.Block1Key, default))
             );
             AssertBytesEqual(
                 fromHex("9c158442cb77066e3af85ff9bfc757728fb33648c75e238e906910fc628f3253"),
-                block1.DeriveBlockHash(arbitraryHash)
+                block1.DeriveBlockHash(arbitraryHash, null)
+            );
+            AssertBytesEqual(
+                fromHex("fc4a14bb2099bef4a301197602926e133a52d958e758e1d89d2d665e8f678f85"),
+                block1.DeriveBlockHash(
+                    arbitraryHash,
+                    block1.MakeSignature(_contents.Block1Key, arbitraryHash)
+                )
             );
         }
     }

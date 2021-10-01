@@ -144,7 +144,8 @@ To be released.
      -  Blocks became to have no miner's address since the protocol version 2,
         because it can be derived from miner's public key.  [[#1457]]
      -  Blocks became to have a signature made using miner's private key
-        since the protocol version 2.  [[#1457]]
+        since the protocol version 2.  Block signatures affect block hashes.
+        [[#1457]]
 
 ### Backward-incompatible storage format changes
 

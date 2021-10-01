@@ -44,40 +44,6 @@ namespace Libplanet.Tests.Blocks
         }
 
         [Fact]
-        public void Mine()
-        {
-            Assert.Equal(0, _fx.Genesis.Index);
-            Assert.Equal(0, _fx.Genesis.Difficulty);
-            Assert.Null(_fx.Genesis.PreviousHash);
-            Assert.Equal(
-                new DateTimeOffset(2018, 11, 29, 0, 0, 0, TimeSpan.Zero),
-                _fx.Genesis.Timestamp
-            );
-            Assert.Equal(
-                new Address("66575E6FC6e4D06eA52FFF0B12258e8C3B99e65A"),
-                _fx.Genesis.Miner);
-            Assert.Equal(new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 }), _fx.Genesis.Nonce);
-            AssertBytesEqual(
-                BlockHash.FromString(
-                    "dd24a6c5ddfcd311e11183ac16e1209b479dda7dc58f7100260b78a75d871431"
-                ),
-                _fx.Genesis.Hash
-            );
-
-            Block<PolymorphicAction<BaseAction>> next =
-                MineNextBlock(_fx.Genesis, _fx.GetHashAlgorithm, _fx.Miner);
-
-            Assert.Equal(1, _fx.Next.Index);
-            Assert.Equal(1, _fx.Next.Difficulty);
-            Assert.Equal(_fx.Genesis.Hash, _fx.Next.PreviousHash);
-            Assert.Equal(
-                new DateTimeOffset(2018, 11, 29, 0, 0, 15, TimeSpan.Zero),
-                _fx.Next.Timestamp
-            );
-            Assert.Equal(new Address("66575E6FC6e4D06eA52FFF0B12258e8C3B99e65A"), _fx.Next.Miner);
-        }
-
-        [Fact]
         public void CompareToOtherBlock()
         {
             Block<PolymorphicAction<BaseAction>> sameBlock1 = _fx.Genesis;
