@@ -794,6 +794,9 @@ namespace Libplanet.Blockchain
                     "(duration: {DurationMs}ms).";
                 double duration = (DateTimeOffset.Now - setStatesStarted).TotalMilliseconds;
                 _logger.Debug(endMsg, block.Index, block.Hash, duration);
+
+                IEnumerable<TxExecution> txExecutions = MakeTxExecutions(block, evaluations);
+                UpdateTxExecutions(txExecutions);
             }
             finally
             {
@@ -927,12 +930,6 @@ namespace Libplanet.Blockchain
                             block.Index,
                             block.Hash
                         );
-                    }
-
-                    if (actionEvaluations is { } evals)
-                    {
-                        IEnumerable<TxExecution> txExecutions = MakeTxExecutions(block, evals);
-                        UpdateTxExecutions(txExecutions);
                     }
 
                     _blocks[block.Hash] = block;

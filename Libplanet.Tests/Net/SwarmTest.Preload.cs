@@ -1036,5 +1036,57 @@ namespace Libplanet.Tests.Net
                 await StopAsync(seed);
             }
         }
+
+        [Fact(Timeout = Timeout)]
+        public async Task UpdateTxExecution()
+        {
+            var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
+            var fx1 = new DefaultStoreFixture(memory: true, blockAction: policy.BlockAction);
+            var fx2 = new DefaultStoreFixture(memory: true, blockAction: policy.BlockAction);
+            var seedChain = TestUtils.MakeBlockChain(policy, fx1.Store, fx1.StateStore);
+            var receiverChain = TestUtils.MakeBlockChain(policy, fx2.Store, fx2.StateStore);
+
+            Swarm<DumbAction> seed = CreateSwarm(seedChain);
+            Swarm<DumbAction> receiver = CreateSwarm(receiverChain);
+
+            List<Transaction<DumbAction>> transactions = new List<Transaction<DumbAction>>();
+            for (int i = 0; i < 10; i++)
+            {
+                var transaction = seedChain.MakeTransaction(
+                    new PrivateKey(),
+                    new[]
+                    {
+                        new DumbAction(default, $"Item{i}"),
+                    });
+                await seedChain.MineBlock(seed.Address);
+                transactions.Add(transaction);
+            }
+
+            Assert.Equal(10, seedChain.Tip.Index);
+
+            try
+            {
+                await StartAsync(seed);
+                await StartAsync(receiver);
+
+                await receiver.AddPeersAsync(
+                    new[] { seed.AsPeer }, null);
+                await receiver.PreloadAsync();
+
+                Assert.Equal(receiverChain.Tip, seedChain.Tip);
+
+                for (int i = 1; i < receiverChain.Count; i++)
+                {
+                    Assert.NotNull(fx2.Store.GetTxExecution(
+                        receiverChain[i].Hash,
+                        transactions[i - 1].Id));
+                }
+            }
+            finally
+            {
+                await StopAsync(seed);
+                await StopAsync(receiver);
+            }
+        }
     }
 }
