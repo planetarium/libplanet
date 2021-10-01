@@ -235,6 +235,9 @@ To be released.
 
 ### Bug fixes
 
+ -  Fixed `NullReferenceException` that `PublicKey.Verify()` method had thrown
+    with a non-null empty `signature`.  [[#1507]]
+
 ### CLI tools
 
 [#1128]: https://github.com/planetarium/libplanet/issues/1128

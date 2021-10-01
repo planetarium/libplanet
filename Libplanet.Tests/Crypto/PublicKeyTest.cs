@@ -112,6 +112,7 @@ namespace Libplanet.Tests.Crypto
                 0x3e, 0xd8, 0xf4, 0xf0, 0x05, 0x1d, 0x9f, 0x13, 0x81, 0xfd,
             };
             Assert.True(pubKey.Verify(payload, signature));
+            Assert.False(pubKey.Verify(payload, ImmutableArray<byte>.Empty));
         }
 
         [Fact]
