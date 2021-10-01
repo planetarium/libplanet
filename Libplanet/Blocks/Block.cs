@@ -76,7 +76,8 @@ namespace Libplanet.Blocks
                     header.Nonce,
                     header.PreEvaluationHash
                 ),
-                header.StateRootHash
+                header.StateRootHash,
+                header.Signature
             )
         {
         }
@@ -89,10 +90,17 @@ namespace Libplanet.Blocks
         /// <param name="preEvaluationBlock">A pre-evaluation block.</param>
         /// <param name="stateRootHash">A state root hash determined from the given
         /// <paramref name="preEvaluationBlock"/> and its previous state root.</param>
-        public Block(PreEvaluationBlock<T> preEvaluationBlock, HashDigest<SHA256> stateRootHash)
+        /// <param name="signature">The block signature made using the miner's private key.</param>
+        /// <exception cref="InvalidBlockSignatureException">Thrown when
+        /// the <paramref name="signature"/> signature is invalid.</exception>
+        public Block(
+            PreEvaluationBlock<T> preEvaluationBlock,
+            HashDigest<SHA256> stateRootHash,
+            ImmutableArray<byte>? signature
+        )
         {
             _preEvaluationBlock = preEvaluationBlock;
-            Header = new BlockHeader(preEvaluationBlock, stateRootHash);
+            Header = new BlockHeader(preEvaluationBlock, stateRootHash, signature);
         }
 
         /// <inheritdoc cref="IBlockMetadata.ProtocolVersion"/>
@@ -103,6 +111,9 @@ namespace Libplanet.Blocks
 
         /// <inheritdoc cref="IBlockExcerpt.Hash"/>
         public BlockHash Hash => Header.Hash;
+
+        /// <inheritdoc cref="IBlockHeader.Signature"/>
+        public ImmutableArray<byte>? Signature => Header.Signature;
 
         /// <inheritdoc cref="IPreEvaluationBlockHeader.PreEvaluationHash"/>
         public ImmutableArray<byte> PreEvaluationHash => _preEvaluationBlock.PreEvaluationHash;

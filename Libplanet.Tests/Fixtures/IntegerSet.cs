@@ -71,7 +71,7 @@ namespace Libplanet.Tests.Fixtures
                 PublicKey = Miner.PublicKey,
                 Timestamp = DateTimeOffset.UtcNow,
                 Transactions = Txs,
-            }.Mine(policy.GetHashAlgorithm(0)).Evaluate(policy.BlockAction, StateStore);
+            }.Mine(policy.GetHashAlgorithm(0)).Evaluate(Miner, policy.BlockAction, StateStore);
             Chain = new BlockChain<Arithmetic>(
                 policy,
                 new VolatileStagePolicy<Arithmetic>(),
@@ -145,7 +145,7 @@ namespace Libplanet.Tests.Fixtures
 
         public Task<Block<Arithmetic>> Mine(CancellationToken cancellationToken = default) =>
             Chain.MineBlock(
-                Miner.PublicKey,
+                Miner,
                 DateTimeOffset.UtcNow,
                 cancellationToken: cancellationToken
             );

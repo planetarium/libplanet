@@ -23,7 +23,7 @@ namespace Libplanet.Explorer.GraphTypes
                 resolve: ctx => ctx.Source.Nonce.ToByteArray()
             );
             Field(x => x.Miner, type: typeof(NonNullGraphType<AddressType>));
-            Field(x => x.PublicKey, type: typeof(NonNullGraphType<PublicKeyType>));
+            Field(x => x.PublicKey, type: typeof(PublicKeyType));
             Field<BlockType<T>>(
                 "PreviousBlock",
                 resolve: ctx =>
@@ -39,9 +39,12 @@ namespace Libplanet.Explorer.GraphTypes
                     return store.GetBlock<T>(chain.Policy.GetHashAlgorithm, h);
                 });
             Field(x => x.Timestamp);
-            Field<ByteStringType>(
+            Field<NonNullGraphType<ByteStringType>>(
                 "StateRootHash",
                 resolve: ctx => ctx.Source.StateRootHash.ToByteArray());
+            Field<ByteStringType>(
+                "Signature",
+                resolve: ctx => ctx.Source.Signature?.ToBuilder()?.ToArray());
             Field<NonNullGraphType<ListGraphType<NonNullGraphType<TransactionType<T>>>>>(
                 "transactions"
             );

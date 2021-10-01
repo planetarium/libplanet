@@ -41,6 +41,7 @@ namespace Libplanet.Store
             _nonce = header.Nonce;
             _preEvaluationHash = header.PreEvaluationHash;
             StateRootHash = header.StateRootHash;
+            Signature = header.Signature;
             Hash = header.Hash;
             TxIds = txIds;
         }
@@ -60,6 +61,7 @@ namespace Libplanet.Store
             _nonce = tuple.Nonce;
             _preEvaluationHash = tuple.PreEvaluationHash;
             StateRootHash = BlockMarshaler.UnmarshalBlockHeaderStateRootHash(headerDict);
+            Signature = BlockMarshaler.UnmarshalBlockHeaderSignature(headerDict);
             Hash = BlockMarshaler.UnmarshalBlockHeaderHash(headerDict);
             TxIds = dict.ContainsKey((IKey)(Binary)TransactionIdsKey)
                 ? dict.GetValue<Bencodex.Types.List>(TransactionIdsKey)
@@ -103,6 +105,11 @@ namespace Libplanet.Store
         /// The state root hash.
         /// </summary>
         public HashDigest<SHA256> StateRootHash { get; }
+
+        /// <summary>
+        /// The block signature.
+        /// </summary>
+        public ImmutableArray<byte>? Signature { get; }
 
         public ImmutableArray<ImmutableArray<byte>> TxIds { get; }
 
@@ -174,7 +181,7 @@ namespace Libplanet.Store
                     hashAlgorithm,
                     _nonce
                 );
-            return new BlockHeader(preEvalHeader, StateRootHash, Hash);
+            return new BlockHeader(preEvalHeader, StateRootHash, Signature, Hash);
         }
 
         /// <summary>
@@ -190,8 +197,12 @@ namespace Libplanet.Store
                 _nonce,
                 _preEvaluationHash ?? ImmutableArray<byte>.Empty
             );
-            Dictionary headerDict =
-                BlockMarshaler.MarshalBlockHeader(preEvalHeaderDict, StateRootHash, Hash);
+            Dictionary headerDict = BlockMarshaler.MarshalBlockHeader(
+                preEvalHeaderDict,
+                StateRootHash,
+                Signature,
+                Hash
+            );
             var dict = Bencodex.Types.Dictionary.Empty.Add(HeaderKey, headerDict);
 
             if (TxIds.Any())

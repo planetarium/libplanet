@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Blocks;
+using Libplanet.Crypto;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Tx;
 using Libplanet.Tx;
@@ -15,13 +16,16 @@ namespace Libplanet.Tests.Blocks
 
         public BlockFixture()
         {
+            Miner = TestUtils.GenesisMiner;
             Genesis = TestUtils.MineGenesisBlock<PolymorphicAction<BaseAction>>(
                 hashAlgorithmGetter: GetHashAlgorithm,
-                protocolVersion: ProtocolVersion
+                protocolVersion: ProtocolVersion,
+                miner: Miner
             );
             TxFixture = new TxFixture(Genesis.Hash);
             Next = TestUtils.MineNextBlock(
                 Genesis,
+                miner: Miner,
                 hashAlgorithmGetter: GetHashAlgorithm,
                 nonce: new byte[] { 0x02, 0x00, 0x00, 0x00 },
                 protocolVersion: ProtocolVersion
@@ -32,6 +36,7 @@ namespace Libplanet.Tests.Blocks
             };
             HasTx = TestUtils.MineNextBlock(
                 Next,
+                miner: Miner,
                 hashAlgorithmGetter: GetHashAlgorithm,
                 txs: new List<Transaction<PolymorphicAction<BaseAction>>>
                 {
@@ -43,6 +48,8 @@ namespace Libplanet.Tests.Blocks
         }
 
         internal TxFixture TxFixture { get; }
+
+        internal PrivateKey Miner { get; }
 
         internal Block<PolymorphicAction<BaseAction>> Genesis { get; }
 

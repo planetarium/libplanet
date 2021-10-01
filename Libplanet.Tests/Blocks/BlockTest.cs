@@ -36,12 +36,11 @@ namespace Libplanet.Tests.Blocks
             var random = new System.Random();
             var stateRootHash = random.NextHashDigest<SHA256>();
             PreEvaluationBlock<Arithmetic> preEval = contents.Genesis.Mine(_fx.GetHashAlgorithm(0));
-            var block = new Block<Arithmetic>(
-                preEval,
-                stateRootHash
-            );
+            ImmutableArray<byte> sig = preEval.MakeSignature(contents.GenesisKey, stateRootHash);
+            var block = new Block<Arithmetic>(preEval, stateRootHash, sig);
             AssertPreEvaluationBlocksEqual(preEval, block);
             AssertBytesEqual(stateRootHash, block.StateRootHash);
+            AssertBytesEqual(sig, block.Signature);
         }
 
         [Fact]
@@ -66,7 +65,7 @@ namespace Libplanet.Tests.Blocks
             );
 
             Block<PolymorphicAction<BaseAction>> next =
-                MineNextBlock(_fx.Genesis, _fx.GetHashAlgorithm);
+                MineNextBlock(_fx.Genesis, _fx.GetHashAlgorithm, _fx.Miner);
 
             Assert.Equal(1, _fx.Next.Index);
             Assert.Equal(1, _fx.Next.Difficulty);
@@ -142,7 +141,7 @@ namespace Libplanet.Tests.Blocks
             var invalidTx = new Transaction<DumbAction>(rawTx);
             Assert.Throws<InvalidTxSignatureException>(() =>
                 MineNext(
-                    MineGenesisBlock<DumbAction>(_fx.GetHashAlgorithm),
+                    MineGenesisBlock<DumbAction>(_fx.GetHashAlgorithm, _fx.Miner),
                     _fx.GetHashAlgorithm,
                     new List<Transaction<DumbAction>>
                     {
@@ -185,7 +184,7 @@ namespace Libplanet.Tests.Blocks
             );
             Assert.Throws<InvalidTxPublicKeyException>(() =>
                 MineNext(
-                    MineGenesisBlock<DumbAction>(_fx.GetHashAlgorithm),
+                    MineGenesisBlock<DumbAction>(_fx.GetHashAlgorithm, _fx.Miner),
                     _fx.GetHashAlgorithm,
                     new List<Transaction<DumbAction>> { invalidTx }
                 )

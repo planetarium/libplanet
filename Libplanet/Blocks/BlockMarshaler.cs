@@ -32,6 +32,7 @@ namespace Libplanet.Blocks
         private static readonly byte[] TxHashKey = { 0x78 }; // 'x'
         private static readonly byte[] HashKey = { 0x68 }; // 'h'
         private static readonly byte[] StateRootHashKey = { 0x73 }; // 's'
+        private static readonly byte[] SignatureKey = { 0x53 }; // 'S'
         private static readonly byte[] PreEvaluationHashKey = { 0x63 }; // 'c'
 
         // Block fields:
@@ -99,12 +100,18 @@ namespace Libplanet.Blocks
         public static Dictionary MarshalBlockHeader(
             Dictionary marshaledPreEvaluatedBlockHeader,
             HashDigest<SHA256> stateRootHash,
+            ImmutableArray<byte>? signature,
             BlockHash hash
         )
         {
             Dictionary dict = marshaledPreEvaluatedBlockHeader
                 .Add(StateRootHashKey, stateRootHash.ByteArray)
                 .Add(HashKey, hash.ByteArray);
+            if (signature is { } sig)
+            {
+                dict = dict.Add(SignatureKey, sig);
+            }
+
             return dict;
         }
 
@@ -112,6 +119,7 @@ namespace Libplanet.Blocks
             MarshalBlockHeader(
                 MarshalPreEvaluationBlockHeader(header),
                 header.StateRootHash,
+                header.Signature,
                 header.Hash
             );
 
@@ -226,6 +234,13 @@ namespace Libplanet.Blocks
                 marshaledBlockHeader.GetValue<Binary>(StateRootHashKey).ByteArray
             );
 
+        public static ImmutableArray<byte>? UnmarshalBlockHeaderSignature(
+            Dictionary marshaledBlockHeader
+        ) =>
+            marshaledBlockHeader.ContainsKey(SignatureKey)
+                ? marshaledBlockHeader.GetValue<Binary>(SignatureKey).ByteArray
+                : (ImmutableArray<byte>?)null;
+
         public static BlockHeader UnmarshalBlockHeader(
             HashAlgorithmGetter hashAlgorithmGetter,
             Dictionary marshaled
@@ -234,8 +249,9 @@ namespace Libplanet.Blocks
             PreEvaluationBlockHeader preEvalHeader =
                 UnmarshalPreEvaluationBlockHeader(hashAlgorithmGetter, marshaled);
             HashDigest<SHA256> stateRootHash = UnmarshalBlockHeaderStateRootHash(marshaled);
+            ImmutableArray<byte>? sig = UnmarshalBlockHeaderSignature(marshaled);
             BlockHash hash = UnmarshalBlockHeaderHash(marshaled);
-            return new BlockHeader(preEvalHeader, stateRootHash, hash);
+            return new BlockHeader(preEvalHeader, stateRootHash, sig, hash);
         }
 
         public static IReadOnlyList<Transaction<T>> UnmarshalTransactions<T>(List marshaled)

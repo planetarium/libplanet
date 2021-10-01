@@ -69,12 +69,14 @@ namespace Libplanet.Tests.Action
             };
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             HashAlgorithmGetter hashAlgorithmGetter = _ => HashAlgorithmType.Of<SHA256>();
-            PreEvaluationBlock<RandomAction> noStateRootBlock = TestUtils.MineGenesis(
+            PreEvaluationBlock<RandomAction> noStateRootBlock = MineGenesis(
                 hashAlgorithmGetter: hashAlgorithmGetter,
+                miner: GenesisMiner.PublicKey,
                 timestamp: timestamp,
                 transactions: txs
             );
-            Block<RandomAction> stateRootBlock = noStateRootBlock.Evaluate(null, stateStore);
+            Block<RandomAction> stateRootBlock =
+                noStateRootBlock.Evaluate(GenesisMiner, null, stateStore);
             var actionEvaluator =
                 new ActionEvaluator<RandomAction>(
                     hashAlgorithmGetter: hashAlgorithmGetter,
@@ -129,7 +131,7 @@ namespace Libplanet.Tests.Action
 
             chain.StageTransaction(tx);
             var miner = new PrivateKey();
-            await chain.MineBlock(miner.PublicKey);
+            await chain.MineBlock(miner);
 
             var evaluations = chain.ActionEvaluator.Evaluate(
                 chain.Tip,
@@ -165,7 +167,7 @@ namespace Libplanet.Tests.Action
                 actions: new[] { action });
 
             chain.StageTransaction(tx);
-            await chain.MineBlock(new PrivateKey().PublicKey);
+            await chain.MineBlock(new PrivateKey());
             var evaluations = chain.ActionEvaluator.Evaluate(
                 chain.Tip,
                 StateCompleterSet<ThrowException>.Recalculate);
@@ -269,7 +271,10 @@ namespace Libplanet.Tests.Action
             };
             HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             HashAlgorithmGetter hashAlgoGetter = _ => hashAlgorithm;
-            Block<DumbAction> genesis = MineGenesisBlock<DumbAction>(hashAlgoGetter);
+            Block<DumbAction> genesis = MineGenesisBlock<DumbAction>(
+                hashAlgoGetter,
+                TestUtils.GenesisMiner
+            );
             ActionEvaluator<DumbAction> actionEvaluator = new ActionEvaluator<DumbAction>(
                 hashAlgorithmGetter: _ => HashAlgorithmType.Of<SHA256>(),
                 policyBlockAction: null,
@@ -321,8 +326,13 @@ namespace Libplanet.Tests.Action
                 _logger.Debug("{0}[{1}] = {2}", nameof(block1Txs), i, tx.Id);
             }
 
-            Block<DumbAction> block1 =
-                MineNextBlock(genesis, hashAlgoGetter, block1Txs, new byte[] { });
+            Block<DumbAction> block1 = MineNextBlock(
+                genesis,
+                hashAlgoGetter,
+                GenesisMiner,
+                block1Txs,
+                new byte[] { }
+            );
             previousStates = block1.ProtocolVersion > 0
                 ? new AccountStateDeltaImpl(
                     ActionEvaluator<DumbAction>.NullAccountStateGetter,
@@ -439,8 +449,13 @@ namespace Libplanet.Tests.Action
                 _logger.Debug("{0}[{1}] = {2}", nameof(block2Txs), i, tx.Id);
             }
 
-            Block<DumbAction> block2 =
-                MineNextBlock(block1, hashAlgoGetter, block2Txs, new byte[] { });
+            Block<DumbAction> block2 = MineNextBlock(
+                block1,
+                hashAlgoGetter,
+                GenesisMiner,
+                block2Txs,
+                new byte[] { }
+            );
             AccountStateGetter accountStateGetter = dirty1.GetValueOrDefault;
             AccountBalanceGetter accountBalanceGetter = (address, currency)
                 => balances1.TryGetValue((address, currency), out FungibleAssetValue v)
@@ -835,23 +850,21 @@ namespace Libplanet.Tests.Action
         [Fact]
         public void EvaluatePolicyBlockAction()
         {
-            var store = new DefaultStore(null);
-            var stateStore =
-                new TrieStateStore(new MemoryKeyValueStore());
-            var chain = TestUtils.MakeBlockChain<DumbAction>(
+            var chain = MakeBlockChain(
                 policy: _policy,
                 store: _storeFx.Store,
                 stateStore: _storeFx.StateStore,
-                genesisBlock: _storeFx.GenesisBlock);
-            (var addresses, Transaction<DumbAction>[] txs) =
-                MakeFixturesForAppendTests();
+                genesisBlock: _storeFx.GenesisBlock,
+                privateKey: ChainPrivateKey);
+            (_, Transaction<DumbAction>[] txs) = MakeFixturesForAppendTests();
             var genesis = chain.Genesis;
-            var block = TestUtils.MineNext(
+            var block = MineNext(
                 genesis,
                 _policy.GetHashAlgorithm,
                 txs,
+                miner: GenesisMiner.PublicKey,
                 difficulty: chain.Policy.GetNextBlockDifficulty(chain)
-            ).Evaluate(chain);
+            ).Evaluate(GenesisMiner, chain);
             var stateCompleterSet = StateCompleterSet<DumbAction>.Recalculate;
 
             AccountStateGetter accountStateGetter =

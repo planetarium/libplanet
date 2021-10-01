@@ -46,7 +46,7 @@ namespace Libplanet.Tests.Net
                             );
                         }
 
-                        Block<DumbAction> block = await chain.MineBlock(miner.PublicKey);
+                        Block<DumbAction> block = await chain.MineBlock(miner);
                         Log.Logger.Information("  #{0,2} {1}", block.Index, block.Hash);
                     }
 

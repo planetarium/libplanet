@@ -18,6 +18,7 @@ using Libplanet.Tx;
 using Serilog;
 using Xunit;
 using Xunit.Abstractions;
+using static Libplanet.Tests.TestUtils;
 using FAV = Libplanet.Assets.FungibleAssetValue;
 
 namespace Libplanet.Tests.Store
@@ -85,9 +86,10 @@ namespace Libplanet.Tests.Store
         [SkippableFact]
         public void DeleteChainId()
         {
-            Block<DumbAction> block1 = TestUtils.MineNextBlock(
-                TestUtils.MineGenesisBlock<DumbAction>(Fx.GetHashAlgorithm),
+            Block<DumbAction> block1 = MineNextBlock(
+                MineGenesisBlock<DumbAction>(Fx.GetHashAlgorithm, GenesisMiner),
                 Fx.GetHashAlgorithm,
+                GenesisMiner,
                 new[] { Fx.Transaction1 });
             Fx.Store.AppendIndex(Fx.StoreChainId, block1.Hash);
             Guid arbitraryChainId = Guid.NewGuid();
@@ -997,7 +999,7 @@ namespace Libplanet.Tests.Store
             // We need `Block<T>`s because `IStore` can't retrive index(long) by block hash without
             // actual block...
             Block<DumbAction> anotherBlock3 =
-                TestUtils.MineNextBlock(Fx.Block2, Fx.GetHashAlgorithm);
+                MineNextBlock(Fx.Block2, Fx.GetHashAlgorithm, Fx.Miner);
             store.PutBlock(Fx.GenesisBlock);
             store.PutBlock(Fx.Block1);
             store.PutBlock(Fx.Block2);
@@ -1059,12 +1061,12 @@ namespace Libplanet.Tests.Store
                     new VolatileStagePolicy<DumbAction>(),
                     s1,
                     fx.StateStore,
-                    TestUtils.MineGenesis<DumbAction>(policy.GetHashAlgorithm)
-                        .Evaluate(policy.BlockAction, fx.StateStore)
+                    MineGenesis<DumbAction>(policy.GetHashAlgorithm, GenesisMiner.PublicKey)
+                        .Evaluate(GenesisMiner, policy.BlockAction, fx.StateStore)
                 );
 
                 // FIXME: Need to add more complex blocks/transactions.
-                var key = new PrivateKey().PublicKey;
+                var key = new PrivateKey();
                 await blocks.MineBlock(key);
                 await blocks.MineBlock(key);
                 await blocks.MineBlock(key);
@@ -1098,9 +1100,10 @@ namespace Libplanet.Tests.Store
             {
                 Block<DumbAction> genesisBlock = fx.GenesisBlock;
                 // NOTE: it depends on that Block<T>.CurrentProtocolVersion is not 0.
-                Block<DumbAction> block = TestUtils.MineNextBlock(
+                Block<DumbAction> block = MineNextBlock(
                     genesisBlock,
                     fx.GetHashAlgorithm,
+                    miner: fx.Miner,
                     protocolVersion: 0);
 
                 fx.Store.PutBlock(block);

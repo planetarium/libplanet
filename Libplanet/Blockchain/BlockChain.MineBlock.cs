@@ -44,7 +44,7 @@ namespace Libplanet.Blockchain
         /// <exception cref="OperationCanceledException">Thrown when
         /// <see cref="BlockChain{T}.Tip"/> is changed while mining.</exception>
         public async Task<Block<T>> MineBlock(
-            PublicKey miner,
+            PrivateKey miner,
             DateTimeOffset? timestamp = null,
             bool? append = null,
             int? maxTransactions = null,
@@ -84,7 +84,7 @@ namespace Libplanet.Blockchain
         /// <exception cref="OperationCanceledException">Thrown when
         /// <see cref="BlockChain{T}.Tip"/> is changed while mining.</exception>
         public async Task<Block<T>> MineBlock(
-            PublicKey miner,
+            PrivateKey miner,
             DateTimeOffset timestamp,
             bool append,
             int maxTransactions,
@@ -132,7 +132,7 @@ namespace Libplanet.Blockchain
                 Index = index,
                 Difficulty = difficulty,
                 TotalDifficulty = Tip.TotalDifficulty + difficulty,
-                PublicKey = miner,
+                PublicKey = miner.PublicKey,
                 PreviousHash = prevHash,
                 Timestamp = timestamp,
             };
@@ -177,7 +177,7 @@ namespace Libplanet.Blockchain
             }
 
             (Block<T> block, IReadOnlyList<ActionEvaluation> actionEvaluations) =
-                preEval.EvaluateActions(this);
+                preEval.EvaluateActions(miner, this);
 
             _logger.Debug(
                 "{SessionId}/{ProcessId}: Mined block #{Index} {Hash} " +
@@ -240,6 +240,10 @@ namespace Libplanet.Blockchain
             HashAlgorithmType hashAlgorithm = Policy.GetHashAlgorithm(index);
 
             // Makes an empty block payload to estimate the length of bytes without transactions.
+            // FIXME: We'd better to estimate only transactions rather than the whole block.
+            var dumbSig = metadata.PublicKey is null
+                ? (ImmutableArray<byte>?)null
+                : ImmutableArray.Create(new byte[71]);
             Bencodex.Types.Dictionary marshaledEmptyBlock = MarshalBlock(
                 marshaledBlockHeader: MarshalBlockHeader(
                     marshaledPreEvaluatedBlockHeader: MarshalPreEvaluationBlockHeader(
@@ -248,6 +252,7 @@ namespace Libplanet.Blockchain
                         preEvaluationHash: new byte[hashAlgorithm.DigestSize].ToImmutableArray()
                     ),
                     stateRootHash: default,
+                    signature: dumbSig,
                     hash: default
                 ),
                 marshaledTransactions: BlockMarshaler.MarshalTransactions(

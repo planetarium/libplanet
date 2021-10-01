@@ -164,7 +164,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             var dateTimeOffset = FixtureEpoch;
             var chain =
                 TestUtils.MakeBlockChain(_policy, store, stateStore, timestamp: dateTimeOffset);
-            PublicKey miner = new PrivateKey().PublicKey;
+            var miner = new PrivateKey();
             Assert.Equal(
                 1024,
                 _policy.GetNextBlockDifficulty(chain)

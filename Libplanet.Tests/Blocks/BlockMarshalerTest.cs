@@ -30,6 +30,7 @@ namespace Libplanet.Tests
         private static readonly byte[] TxHashKey = { 0x78 }; // 'x'
         private static readonly byte[] HashKey = { 0x68 }; // 'h'
         private static readonly byte[] StateRootHashKey = { 0x73 }; // 's'
+        private static readonly byte[] SignatureKey = { 0x53 }; // 'S'
         private static readonly byte[] PreEvaluationHashKey = { 0x63 }; // 'c'
 
         // Block fields:
@@ -69,6 +70,7 @@ namespace Libplanet.Tests
                 .Add(NonceKey, _fx.Genesis.Nonce.ByteArray)
                 .Add(PreEvaluationHashKey, _fx.Genesis.PreEvaluationHash)
                 .Add(StateRootHashKey, _fx.Genesis.StateRootHash.ByteArray)
+                .Add(SignatureKey, _fx.Genesis.Signature ?? default)
                 .Add(HashKey, _fx.Genesis.Hash.ByteArray);
             _marshaledGenesis = Dictionary.Empty
                 .Add(HeaderKey, expectedGenesisHeader);
@@ -87,6 +89,7 @@ namespace Libplanet.Tests
                 .Add(NonceKey, _fx.Next.Nonce.ByteArray)
                 .Add(PreEvaluationHashKey, _fx.Next.PreEvaluationHash)
                 .Add(StateRootHashKey, _fx.Next.StateRootHash.ByteArray)
+                .Add(SignatureKey, _fx.Next.Signature ?? default)
                 .Add(HashKey, _fx.Next.Hash.ByteArray);
             _marshaledNext = Dictionary.Empty
                 .Add(HeaderKey, expectedNextHeader);
@@ -106,6 +109,7 @@ namespace Libplanet.Tests
                 .Add(NonceKey, _fx.HasTx.Nonce.ByteArray)
                 .Add(PreEvaluationHashKey, _fx.HasTx.PreEvaluationHash)
                 .Add(StateRootHashKey, _fx.HasTx.StateRootHash.ByteArray)
+                .Add(SignatureKey, _fx.HasTx.Signature ?? default)
                 .Add(HashKey, _fx.HasTx.Hash.ByteArray);
             IValue expectedHasTxTxs = new List(
                 _fx.HasTx.Transactions.Select(tx => (Binary)tx.Serialize(true)).Cast<IValue>()

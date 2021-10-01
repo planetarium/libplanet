@@ -59,8 +59,8 @@ namespace Libplanet.Tests.Net
             Swarm<DumbAction> miner1 = CreateSwarm(chain1, key1);
             Swarm<DumbAction> miner2 = CreateSwarm(chain2, key2);
 
-            await chain1.MineBlock(key1.PublicKey);
-            await chain1.MineBlock(key2.PublicKey);
+            await chain1.MineBlock(key1);
+            await chain1.MineBlock(key2);
 
             Block<DumbAction> bestBlock;
             switch (canonComparerType)
@@ -72,8 +72,9 @@ namespace Libplanet.Tests.Net
                         chain2.Tip,
                         policy.GetHashAlgorithm,
                         difficulty: nextDifficulty,
-                        blockInterval: TimeSpan.FromMilliseconds(1)
-                    ).Evaluate(chain2);
+                        blockInterval: TimeSpan.FromMilliseconds(1),
+                        miner: TestUtils.ChainPrivateKey.PublicKey
+                    ).Evaluate(TestUtils.ChainPrivateKey, chain2);
                     _output.WriteLine("chain1's total difficulty: {0}", chain1.Tip.TotalDifficulty);
                     _output.WriteLine("chain2's total difficulty: {0}", bestBlock.TotalDifficulty);
                     break;
@@ -87,8 +88,9 @@ namespace Libplanet.Tests.Net
                             chain2.Tip,
                             policy.GetHashAlgorithm,
                             difficulty: policy.GetNextBlockDifficulty(chain2),
-                            blockInterval: TimeSpan.FromMilliseconds(1)
-                        ).Evaluate(chain2);
+                            blockInterval: TimeSpan.FromMilliseconds(1),
+                            miner: TestUtils.ChainPrivateKey.PublicKey
+                        ).Evaluate(TestUtils.ChainPrivateKey, chain2);
                         hashStr = bestBlock.Hash.ToString();
                         _output.WriteLine("chain1's tip hash: {0}", chain1.Tip.Hash);
                         _output.WriteLine("chain2's tip hash: {0}", bestBlock.Hash);

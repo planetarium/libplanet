@@ -14,7 +14,6 @@ namespace Libplanet.Benchmarks
     {
         private BlockChain<DumbAction> _blockChain;
         private PrivateKey _privateKey;
-        private PublicKey _publicKey;
 
         public MineBlock()
         {
@@ -27,13 +26,12 @@ namespace Libplanet.Benchmarks
                 fx.GenesisBlock
             );
             _privateKey = new PrivateKey();
-            _publicKey = _privateKey.PublicKey;
         }
 
         [Benchmark]
         public async Task<Block<DumbAction>> MineBlockEmpty()
         {
-            return await _blockChain.MineBlock(_publicKey);
+            return await _blockChain.MineBlock(_privateKey);
         }
 
         [IterationSetup(Target = "MineBlockOneTransactionNoAction")]
@@ -45,7 +43,7 @@ namespace Libplanet.Benchmarks
         [Benchmark]
         public async Task<Block<DumbAction>> MineBlockOneTransactionNoAction()
         {
-            return await _blockChain.MineBlock(_publicKey);
+            return await _blockChain.MineBlock(_privateKey);
         }
 
         [IterationSetup(Target = "MineBlockTenTransactionsNoAction")]
@@ -60,7 +58,7 @@ namespace Libplanet.Benchmarks
         [Benchmark]
         public async Task<Block<DumbAction>> MineBlockTenTransactionsNoAction()
         {
-            return await _blockChain.MineBlock(_publicKey);
+            return await _blockChain.MineBlock(_privateKey);
         }
 
         [IterationSetup(Target = "MineBlockOneTransactionWithActions")]
@@ -81,7 +79,7 @@ namespace Libplanet.Benchmarks
         [Benchmark]
         public async Task<Block<DumbAction>> MineBlockOneTransactionWithActions()
         {
-            return await _blockChain.MineBlock(_publicKey);
+            return await _blockChain.MineBlock(_privateKey);
         }
 
         [IterationSetup(Target = "MineBlockTenTransactionsWithActions")]
@@ -105,7 +103,7 @@ namespace Libplanet.Benchmarks
         [Benchmark]
         public async Task<Block<DumbAction>> MineBlockTenTransactionsWithActions()
         {
-            return await _blockChain.MineBlock(_publicKey);
+            return await _blockChain.MineBlock(_privateKey);
         }
     }
 }

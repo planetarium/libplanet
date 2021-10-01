@@ -7,6 +7,7 @@ using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
 using Libplanet.Blockchain;
+using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
@@ -198,11 +199,13 @@ namespace Libplanet.Tests.Action
         {
             var store = new DefaultStore(null);
             var stateStore = new TrieStateStore(new DefaultKeyValueStore(null));
+            var privateKey = new PrivateKey();
             BlockChain<DumbAction> chain = TestUtils.MakeBlockChain(
                 new NullPolicy<DumbAction>(),
                 store,
                 stateStore,
-                protocolVersion: ProtocolVersion
+                protocolVersion: ProtocolVersion,
+                privateKey: privateKey
             );
 
             DumbAction action = new DumbAction(_addr[0], "a", _addr[1], _addr[0], 5);
@@ -212,13 +215,20 @@ namespace Libplanet.Tests.Action
                 chain.Genesis.Hash,
                 new[] { action }
             );
+            var preEvalBlock = TestUtils.MineNext(
+                chain.Tip,
+                chain.Policy.GetHashAlgorithm,
+                new[] { tx },
+                miner: privateKey.PublicKey,
+                protocolVersion: ProtocolVersion
+            );
             chain.Append(
-                TestUtils.MineNext(
-                    chain.Tip,
-                    chain.Policy.GetHashAlgorithm,
-                    new[] { tx },
-                    protocolVersion: ProtocolVersion
-                ).Evaluate(chain)
+                ProtocolVersion < 2
+                ? new Block<DumbAction>(
+                    preEvalBlock,
+                    preEvalBlock.DetermineStateRootHash(chain),
+                    signature: null)
+                : preEvalBlock.Evaluate(privateKey, chain)
             );
             Assert.Equal(
                 DumbAction.DumbCurrency * 5,

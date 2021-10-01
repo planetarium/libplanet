@@ -30,21 +30,32 @@ namespace Libplanet.Tests.Blockchain.Renderers
             HashAlgorithmGetter hashAlgorithmGetter = _ => hashAlgorithm;
             var chainA = new Block<DumbAction>[10];
             var chainB = new Block<DumbAction>[chainA.Length];
-            chainA[0] = chainB[0] = TestUtils.MineGenesisBlock<DumbAction>(hashAlgorithmGetter);
+            chainA[0] = chainB[0] = TestUtils.MineGenesisBlock<DumbAction>(
+                hashAlgorithmGetter,
+                TestUtils.GenesisMiner
+            );
             for (int i = 1; i < chainA.Length / 2; i++)
             {
-                _branchpoint = chainA[i] = chainB[i] =
-                    TestUtils.MineNextBlock(chainA[i - 1], hashAlgorithmGetter);
+                _branchpoint = chainA[i] = chainB[i] = TestUtils.MineNextBlock(
+                    chainA[i - 1],
+                    hashAlgorithmGetter,
+                    TestUtils.GenesisMiner
+                );
             }
 
             int extraDifficulty = 1;
             for (int i = chainA.Length / 2; i < chainA.Length; i++)
             {
-                chainA[i] =
-                    TestUtils.MineNextBlock(chainA[i - 1], hashAlgorithmGetter, difficulty: 2);
+                chainA[i] = TestUtils.MineNextBlock(
+                    chainA[i - 1],
+                    hashAlgorithmGetter,
+                    TestUtils.GenesisMiner,
+                    difficulty: 2
+                );
                 chainB[i] = TestUtils.MineNextBlock(
                     chainB[i - 1],
                     hashAlgorithmGetter,
+                    TestUtils.GenesisMiner,
                     difficulty: 2 + extraDifficulty
                 );
 
