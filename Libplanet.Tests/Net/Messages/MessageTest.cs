@@ -81,27 +81,6 @@ namespace Libplanet.Tests.Net.Messages
         }
 
         [Fact]
-        public void Encode()
-        {
-            var privateKey = new PrivateKey();
-            var peer = new Peer(privateKey.PublicKey);
-            var dateTimeOffset = DateTimeOffset.UtcNow;
-            var appProtocolVersion = new AppProtocolVersion(
-                1,
-                new Bencodex.Types.Integer(0),
-                ImmutableArray<byte>.Empty,
-                default(Address));
-            var message = new Message(0x00);
-            var codec = new NetMQMessageCodec();
-            NetMQMessage raw =
-                codec.Encode(message, privateKey, peer, dateTimeOffset, appProtocolVersion);
-            var parsed = codec.Decode(raw, true, (i, p, v) => { }, null);
-            Assert.Equal(peer, parsed.Remote);
-            Assert.Equal(appProtocolVersion, parsed.Version);
-            Assert.Equal(dateTimeOffset, parsed.Timestamp);
-        }
-
-        [Fact]
         public void BlockHeaderMessage()
         {
             var privateKey = new PrivateKey();
@@ -163,6 +142,27 @@ namespace Libplanet.Tests.Net.Messages
                     (i, p, v) => { },
                     TimeSpan.FromSeconds(1));
             });
+        }
+
+        [Fact]
+        public void InvalidArguments()
+        {
+            var codec = new NetMQMessageCodec();
+            var message = new Ping();
+            var privateKey = new PrivateKey();
+            var apv = new AppProtocolVersion(
+                1,
+                new Bencodex.Types.Integer(0),
+                ImmutableArray<byte>.Empty,
+                default(Address));
+            Assert.Throws<ArgumentNullException>(
+                () => codec.Encode(message, privateKey, null, DateTimeOffset.UtcNow, apv));
+            Assert.Throws<ArgumentException>(
+                () => codec.Decode(
+                    new NetMQMessage(),
+                    true,
+                    (i, p, v) => { },
+                    null));
         }
     }
 }
