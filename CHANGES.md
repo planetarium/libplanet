@@ -8,17 +8,33 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Removed `Message.ToNetMQMessage()` method.
+    Use `IMessageCodec<T>.Encode()` method instead.  [[#1503]]
+ -  Removed `Message.Parse()` static method.
+    Use `IMessageCodec<T>.Decode()` method instead.  [[#1503]]
+
 ### Backward-incompatible network protocol changes
+
+ -  The order of the header of a `NetMQMessage` has been modified.  [[#1503]]
 
 ### Backward-incompatible storage format changes
 
 ### Added APIs
+
+ -  Added `Message.MessageFrame` enum.  [[#1503]]
+ -  Added `Message.Type` property.  [[#1503]]
+ -  Added `Message.DataFrames` property.  [[#1503]]
+ -  Added `IMessageCodec<T>` interface.  [[#1503]]
+ -  Added `NetMQMessageCodec` class which inherits `IMessageCodec<T>`.
+    [[#1503]]
 
 ### Behavioral changes
 
 ### Bug fixes
 
 ### CLI tools
+
+[#1503]: https://github.com/planetarium/libplanet/pull/1503
 
 
 Version 0.18.0
