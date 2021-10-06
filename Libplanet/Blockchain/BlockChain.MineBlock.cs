@@ -178,6 +178,8 @@ namespace Libplanet.Blockchain
 
             (Block<T> block, IReadOnlyList<ActionEvaluation> actionEvaluations) =
                 preEval.EvaluateActions(miner, this);
+            IEnumerable<TxExecution> txExecutions = MakeTxExecutions(block, actionEvaluations);
+            UpdateTxExecutions(txExecutions);
 
             _logger.Debug(
                 "{SessionId}/{ProcessId}: Mined block #{Index} {Hash} " +
