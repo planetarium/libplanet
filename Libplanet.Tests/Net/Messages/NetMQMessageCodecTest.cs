@@ -18,27 +18,6 @@ namespace Libplanet.Tests.Net.Messages
 {
     public class NetMQMessageCodecTest
     {
-        [Fact]
-        public void Encode()
-        {
-            var privateKey = new PrivateKey();
-            var peer = new Peer(privateKey.PublicKey);
-            var dateTimeOffset = DateTimeOffset.UtcNow;
-            var appProtocolVersion = new AppProtocolVersion(
-                1,
-                new Bencodex.Types.Integer(0),
-                ImmutableArray<byte>.Empty,
-                default(Address));
-            var message = new Ping();
-            var codec = new NetMQMessageCodec();
-            NetMQMessage raw =
-                codec.Encode(message, privateKey, peer, dateTimeOffset, appProtocolVersion);
-            var parsed = codec.Decode(raw, true, (i, p, v) => { }, null);
-            Assert.Equal(peer, parsed.Remote);
-            Assert.Equal(appProtocolVersion, parsed.Version);
-            Assert.Equal(dateTimeOffset, parsed.Timestamp);
-        }
-
         [Theory]
         [InlineData(Message.MessageType.Ping)]
         [InlineData(Message.MessageType.Pong)]
