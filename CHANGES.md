@@ -238,6 +238,7 @@ To be released.
 
  -  Fixed `NullReferenceException` that `PublicKey.Verify()` method had thrown
     with a non-null empty `signature`.  [[#1507]]
+ -  Fixed `TxExecution` not updating during preload. [[#1508], [#1509]]
 
 ### CLI tools
 
@@ -247,7 +248,8 @@ To be released.
 [#1457]: https://github.com/planetarium/libplanet/issues/1457
 [#1492]: https://github.com/planetarium/libplanet/pull/1492
 [#1507]: https://github.com/planetarium/libplanet/pull/1507
-
+[#1508]: https://github.com/planetarium/libplanet/issues/1508
+[#1509]: https://github.com/planetarium/libplanet/pull/1509
 
 Version 0.17.0
 --------------
