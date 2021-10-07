@@ -1040,6 +1040,7 @@ namespace Libplanet.Tests.Net
         [Fact(Timeout = Timeout)]
         public async Task UpdateTxExecution()
         {
+            PrivateKey seedKey = new PrivateKey();
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
             var fx1 = new DefaultStoreFixture(memory: true, blockAction: policy.BlockAction);
             var fx2 = new DefaultStoreFixture(memory: true, blockAction: policy.BlockAction);
@@ -1058,7 +1059,7 @@ namespace Libplanet.Tests.Net
                     {
                         new DumbAction(default, $"Item{i}"),
                     });
-                await seedChain.MineBlock(seed.Address);
+                await seedChain.MineBlock(seedKey);
                 transactions.Add(transaction);
             }
 
