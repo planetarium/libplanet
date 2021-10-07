@@ -21,11 +21,11 @@ namespace Libplanet.Tests.Blockchain
                 Index = 1,
                 Difficulty = 1024,
                 TotalDifficulty = _fx.GenesisBlock.TotalDifficulty + 1024,
-                Miner = _fx.GenesisBlock.Miner,
+                PublicKey = _fx.Miner.PublicKey,
                 PreviousHash = _fx.GenesisBlock.Hash,
                 Timestamp = _fx.GenesisBlock.Timestamp.AddDays(1),
                 Transactions = _emptyTransaction,
-            }.Mine(_fx.GetHashAlgorithm(1)).Evaluate(_blockChain);
+            }.Mine(_fx.GetHashAlgorithm(1)).Evaluate(_fx.Miner, _blockChain);
             _blockChain.Append(validNextBlock);
             Assert.Equal(_blockChain.Tip, validNextBlock);
         }
@@ -38,15 +38,15 @@ namespace Libplanet.Tests.Blockchain
                 Index = 1,
                 Difficulty = 1024,
                 TotalDifficulty = _fx.GenesisBlock.TotalDifficulty + 1024,
-                Miner = _fx.GenesisBlock.Miner,
+                PublicKey = _fx.Miner.PublicKey,
                 PreviousHash = _fx.GenesisBlock.Hash,
                 Timestamp = _fx.GenesisBlock.Timestamp.AddDays(1),
                 Transactions = _emptyTransaction,
-                ProtocolVersion = 1,
-            }.Mine(_fx.GetHashAlgorithm(1)).Evaluate(_blockChain);
+                ProtocolVersion = _blockChain.Tip.ProtocolVersion,
+            }.Mine(_fx.GetHashAlgorithm(1)).Evaluate(_fx.Miner, _blockChain);
             _blockChain.Append(block1);
 
-            Block<DumbAction> block2 = new BlockContent<DumbAction>
+            PreEvaluationBlock<DumbAction> preEvalblock2 = new BlockContent<DumbAction>
             {
                 Index = 2,
                 Difficulty = 1024,
@@ -55,8 +55,13 @@ namespace Libplanet.Tests.Blockchain
                 PreviousHash = block1.Hash,
                 Timestamp = _fx.GenesisBlock.Timestamp.AddDays(1),
                 Transactions = _emptyTransaction,
-                ProtocolVersion = 0,
-            }.Mine(_fx.GetHashAlgorithm(2)).Evaluate(_blockChain);
+                ProtocolVersion = _blockChain.Tip.ProtocolVersion - 1,
+            }.Mine(_fx.GetHashAlgorithm(2));
+            Block<DumbAction> block2 = new Block<DumbAction>(
+                preEvalblock2,
+                preEvalblock2.DetermineStateRootHash(_blockChain),
+                null
+            );
             Assert.Throws<InvalidBlockProtocolVersionException>(() => _blockChain.Append(block2));
 
             Assert.Throws<InvalidBlockProtocolVersionException>(() =>
@@ -66,12 +71,12 @@ namespace Libplanet.Tests.Blockchain
                     Index = 2,
                     Difficulty = 1024,
                     TotalDifficulty = block1.TotalDifficulty + 1024,
-                    Miner = _fx.GenesisBlock.Miner,
+                    PublicKey = _fx.Miner.PublicKey,
                     PreviousHash = block1.Hash,
                     Timestamp = _fx.GenesisBlock.Timestamp.AddDays(1),
                     Transactions = _emptyTransaction,
                     ProtocolVersion = BlockMetadata.CurrentProtocolVersion + 1,
-                }.Mine(_fx.GetHashAlgorithm(2)).Evaluate(_blockChain);
+                }.Mine(_fx.GetHashAlgorithm(2)).Evaluate(_fx.Miner, _blockChain);
                 _blockChain.Append(block3);
             });
         }
@@ -87,11 +92,11 @@ namespace Libplanet.Tests.Blockchain
                 Index = prev.Index,
                 Difficulty = 1,
                 TotalDifficulty = 1 + prev.TotalDifficulty,
-                Miner = prev.Miner,
+                PublicKey = _fx.Miner.PublicKey,
                 PreviousHash = prev.Hash,
                 Timestamp = prev.Timestamp.AddDays(1),
                 Transactions = _emptyTransaction,
-            }.Mine(_fx.GetHashAlgorithm(prev.Index)).Evaluate(_blockChain);
+            }.Mine(_fx.GetHashAlgorithm(prev.Index)).Evaluate(_fx.Miner, _blockChain);
             Assert.Throws<InvalidBlockIndexException>(
                 () => _blockChain.Append(blockWithAlreadyUsedIndex)
             );
@@ -101,11 +106,11 @@ namespace Libplanet.Tests.Blockchain
                 Index = prev.Index + 2,
                 Difficulty = 1,
                 TotalDifficulty = 1 + prev.TotalDifficulty,
-                Miner = prev.Miner,
+                PublicKey = _fx.Miner.PublicKey,
                 PreviousHash = prev.Hash,
                 Timestamp = prev.Timestamp.AddDays(1),
                 Transactions = _emptyTransaction,
-            }.Mine(_fx.GetHashAlgorithm(prev.Index + 2)).Evaluate(_blockChain);
+            }.Mine(_fx.GetHashAlgorithm(prev.Index + 2)).Evaluate(_fx.Miner, _blockChain);
             Assert.Throws<InvalidBlockIndexException>(
                 () => _blockChain.Append(blockWithIndexAfterNonexistentIndex)
             );
@@ -121,11 +126,11 @@ namespace Libplanet.Tests.Blockchain
                 Index = 2,
                 Difficulty = 1,
                 TotalDifficulty = _validNext.TotalDifficulty,
-                Miner = _fx.GenesisBlock.Miner,
+                PublicKey = _fx.Miner.PublicKey,
                 PreviousHash = _validNext.Hash,
                 Timestamp = _validNext.Timestamp.AddDays(1),
                 Transactions = _emptyTransaction,
-            }.Mine(_fx.GetHashAlgorithm(2)).Evaluate(_blockChain);
+            }.Mine(_fx.GetHashAlgorithm(2)).Evaluate(_fx.Miner, _blockChain);
             Assert.Throws<InvalidBlockDifficultyException>(() =>
                     _blockChain.Append(invalidDifficultyBlock));
         }
@@ -141,11 +146,11 @@ namespace Libplanet.Tests.Blockchain
                 Index = 2,
                 Difficulty = difficulty,
                 TotalDifficulty = _validNext.TotalDifficulty + difficulty - 1,
-                Miner = _fx.GenesisBlock.Miner,
+                PublicKey = _fx.Miner.PublicKey,
                 PreviousHash = _validNext.Hash,
                 Timestamp = _validNext.Timestamp.AddDays(1),
                 Transactions = _emptyTransaction,
-            }.Mine(_fx.GetHashAlgorithm(2)).Evaluate(_blockChain);
+            }.Mine(_fx.GetHashAlgorithm(2)).Evaluate(_fx.Miner, _blockChain);
             Assert.Throws<InvalidBlockTotalDifficultyException>(() =>
                     _blockChain.Append(invalidTotalDifficultyBlock));
         }
@@ -161,12 +166,12 @@ namespace Libplanet.Tests.Blockchain
                 Index = 2,
                 Difficulty = difficulty,
                 TotalDifficulty = _validNext.TotalDifficulty + difficulty,
-                Miner = _fx.GenesisBlock.Miner,
+                PublicKey = _fx.Miner.PublicKey,
                 // Wrong PreviousHash for test; it should be _validNext.Hash:
                 PreviousHash = _validNext.PreviousHash,
                 Timestamp = _validNext.Timestamp.AddDays(1),
                 Transactions = _emptyTransaction,
-            }.Mine(_fx.GetHashAlgorithm(2)).Evaluate(_blockChain);
+            }.Mine(_fx.GetHashAlgorithm(2)).Evaluate(_fx.Miner, _blockChain);
             Assert.Throws<InvalidBlockPreviousHashException>(() =>
                     _blockChain.Append(invalidPreviousHashBlock));
         }
@@ -182,11 +187,11 @@ namespace Libplanet.Tests.Blockchain
                 Index = 2,
                 Difficulty = difficulty,
                 TotalDifficulty = _validNext.TotalDifficulty + difficulty,
-                Miner = _fx.GenesisBlock.Miner,
+                PublicKey = _fx.Miner.PublicKey,
                 PreviousHash = _validNext.Hash,
                 Timestamp = _validNext.Timestamp.AddSeconds(-1),
                 Transactions = _emptyTransaction,
-            }.Mine(_fx.GetHashAlgorithm(2)).Evaluate(_blockChain);
+            }.Mine(_fx.GetHashAlgorithm(2)).Evaluate(_fx.Miner, _blockChain);
             Assert.Throws<InvalidBlockTimestampException>(() =>
                     _blockChain.Append(invalidPreviousTimestamp));
         }
@@ -200,8 +205,10 @@ namespace Libplanet.Tests.Blockchain
             );
             var stateStore = new TrieStateStore(stateKeyValueStore);
             var store = new DefaultStore(null);
-            var genesisBlock = TestUtils.MineGenesis<DumbAction>(policy.GetHashAlgorithm)
-                .Evaluate(policy.BlockAction, stateStore);
+            var genesisBlock = TestUtils.MineGenesis<DumbAction>(
+                policy.GetHashAlgorithm,
+                TestUtils.GenesisMiner.PublicKey
+            ).Evaluate(TestUtils.GenesisMiner, policy.BlockAction, stateStore);
             store.PutBlock(genesisBlock);
             Assert.NotNull(store.GetStateRootHash(genesisBlock.Hash));
 
@@ -218,11 +225,11 @@ namespace Libplanet.Tests.Blockchain
                 Index = 1,
                 Difficulty = 1024L,
                 TotalDifficulty = genesisBlock.TotalDifficulty + 1024,
-                Miner = genesisBlock.Miner,
+                PublicKey = TestUtils.GenesisMiner.PublicKey,
                 PreviousHash = genesisBlock.Hash,
                 Timestamp = genesisBlock.Timestamp.AddSeconds(1),
                 Transactions = _emptyTransaction,
-            }.Mine(policy.GetHashAlgorithm(1)).Evaluate(chain1);
+            }.Mine(policy.GetHashAlgorithm(1)).Evaluate(TestUtils.GenesisMiner, chain1);
 
             var policyWithBlockAction = new BlockPolicy<DumbAction>(
                 new SetStatesAtBlock(default, (Text)"foo", 1),

@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
+using Bencodex;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blocks;
@@ -35,49 +36,11 @@ namespace Libplanet.Tests.Blocks
             var random = new System.Random();
             var stateRootHash = random.NextHashDigest<SHA256>();
             PreEvaluationBlock<Arithmetic> preEval = contents.Genesis.Mine(_fx.GetHashAlgorithm(0));
-            var block = new Block<Arithmetic>(
-                preEval,
-                stateRootHash
-            );
+            ImmutableArray<byte> sig = preEval.MakeSignature(contents.GenesisKey, stateRootHash);
+            var block = new Block<Arithmetic>(preEval, stateRootHash, sig);
             AssertPreEvaluationBlocksEqual(preEval, block);
             AssertBytesEqual(stateRootHash, block.StateRootHash);
-        }
-
-        [Fact]
-        public void Mine()
-        {
-            Assert.Equal(0, _fx.Genesis.Index);
-            Assert.Equal(0, _fx.Genesis.Difficulty);
-            Assert.Null(_fx.Genesis.PreviousHash);
-            Assert.Equal(
-                new DateTimeOffset(2018, 11, 29, 0, 0, 0, TimeSpan.Zero),
-                _fx.Genesis.Timestamp
-            );
-            Assert.Equal(
-                new Address("21744f4f08db23e044178dafb8273aeb5ebe6644"),
-                _fx.Genesis.Miner);
-            Assert.Equal(new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 }), _fx.Genesis.Nonce);
-            AssertBytesEqual(
-                BlockHash.FromString(
-                    "1f83d5e19ffe9e91661c01fae11e4946" +
-                    "ad290947f0e7b266409eee7d3adee78e"
-                ),
-                _fx.Genesis.Hash
-            );
-
-            Block<PolymorphicAction<BaseAction>> next =
-                MineNextBlock(_fx.Genesis, _fx.GetHashAlgorithm);
-
-            Assert.Equal(1, _fx.Next.Index);
-            Assert.Equal(1, _fx.Next.Difficulty);
-            Assert.Equal(_fx.Genesis.Hash, _fx.Next.PreviousHash);
-            Assert.Equal(
-                new DateTimeOffset(2018, 11, 29, 0, 0, 15, TimeSpan.Zero),
-                _fx.Next.Timestamp
-            );
-            Assert.Equal(
-                new Address("21744f4f08db23e044178dafb8273aeb5ebe6644"),
-                _fx.Next.Miner);
+            AssertBytesEqual(sig, block.Signature);
         }
 
         [Fact]
@@ -119,7 +82,10 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void BytesLength()
         {
-            Assert.Equal(214, _fx.Genesis.BytesLength);
+            Assert.Equal(
+                new Codec().Encode(_fx.Genesis.MarshalBlock()).Length,
+                _fx.Genesis.BytesLength
+            );
         }
 
         [Fact]
@@ -141,7 +107,7 @@ namespace Libplanet.Tests.Blocks
             var invalidTx = new Transaction<DumbAction>(rawTx);
             Assert.Throws<InvalidTxSignatureException>(() =>
                 MineNext(
-                    MineGenesisBlock<DumbAction>(_fx.GetHashAlgorithm),
+                    MineGenesisBlock<DumbAction>(_fx.GetHashAlgorithm, _fx.Miner),
                     _fx.GetHashAlgorithm,
                     new List<Transaction<DumbAction>>
                     {
@@ -184,7 +150,7 @@ namespace Libplanet.Tests.Blocks
             );
             Assert.Throws<InvalidTxPublicKeyException>(() =>
                 MineNext(
-                    MineGenesisBlock<DumbAction>(_fx.GetHashAlgorithm),
+                    MineGenesisBlock<DumbAction>(_fx.GetHashAlgorithm, _fx.Miner),
                     _fx.GetHashAlgorithm,
                     new List<Transaction<DumbAction>> { invalidTx }
                 )

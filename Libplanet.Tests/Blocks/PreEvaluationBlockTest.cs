@@ -156,7 +156,7 @@ namespace Libplanet.Tests.Blocks
 
             Assert.Throws<InvalidBlockNonceException>(() =>
                 new PreEvaluationBlock<Arithmetic>(
-                    content,
+                    _contents.Block1,
                     hashAlgorithm: _sha256,
                     nonce: _invalidBlock1Proof.Nonce
                 )
@@ -201,6 +201,7 @@ namespace Libplanet.Tests.Blocks
             // ProtocolVersion < 1 for backward compatibility:
             BlockContent<Arithmetic> contentPv0 = _contents.Block1.Copy();
             contentPv0.ProtocolVersion = 0;
+            contentPv0.PublicKey = null;
             contentPv0.Timestamp += TimeSpan.FromSeconds(1);
             var preEvalBlockPv0 = new PreEvaluationBlock<Arithmetic>(
                 contentPv0,
@@ -218,6 +219,7 @@ namespace Libplanet.Tests.Blocks
 
             // However, such bug must be fixed after ProtocolVersion > 0:
             BlockContent<Arithmetic> contentPv1 = _contents.Block1.Copy();
+            contentPv1.PublicKey = null;
             contentPv1.Timestamp += TimeSpan.FromSeconds(1);
             Assert.Throws<InvalidBlockPreEvaluationHashException>(() =>
                 new PreEvaluationBlock<Arithmetic>(
@@ -247,7 +249,8 @@ namespace Libplanet.Tests.Blocks
 
             using (var fx = new DefaultStoreFixture())
             {
-                var genesis = preEvalGenesis.Evaluate(blockAction, fx.StateStore);
+                Block<Arithmetic> genesis =
+                    preEvalGenesis.Evaluate(_contents.GenesisKey, blockAction, fx.StateStore);
                 AssertPreEvaluationBlocksEqual(preEvalGenesis, genesis);
                 _output.WriteLine("#1: {0}", genesis);
 
@@ -270,7 +273,7 @@ namespace Libplanet.Tests.Blocks
                 content1.Transactions = new[] { _contents.Tx0InBlock1 };
                 PreEvaluationBlock<Arithmetic> preEval1 = content1.Mine(policy.GetHashAlgorithm(1));
 
-                var block1 = preEval1.Evaluate(blockChain);
+                Block<Arithmetic> block1 = preEval1.Evaluate(_contents.Block1Key, blockChain);
                 AssertPreEvaluationBlocksEqual(preEval1, block1);
                 _output.WriteLine("#1: {0}", block1);
 
@@ -304,7 +307,8 @@ namespace Libplanet.Tests.Blocks
                 HashDigest<SHA256> genesisStateRootHash =
                     preEvalGenesis.DetermineStateRootHash(blockAction, fx.StateStore);
                 _output.WriteLine("#0 StateRootHash: {0}", genesisStateRootHash);
-                var genesis = new Block<Arithmetic>(preEvalGenesis, genesisStateRootHash);
+                Block<Arithmetic> genesis =
+                    preEvalGenesis.Sign(_contents.GenesisKey, genesisStateRootHash);
                 _output.WriteLine("#1: {0}", genesis);
 
                 var blockChain = new BlockChain<Arithmetic>(
@@ -328,7 +332,7 @@ namespace Libplanet.Tests.Blocks
 
                 HashDigest<SHA256> b1StateRootHash = preEval1.DetermineStateRootHash(blockChain);
                 _output.WriteLine("#1 StateRootHash: {0}", b1StateRootHash);
-                var block1 = new Block<Arithmetic>(preEval1, b1StateRootHash);
+                Block<Arithmetic> block1 = preEval1.Sign(_contents.Block1Key, b1StateRootHash);
                 _output.WriteLine("#1: {0}", block1);
 
                 blockChain.Append(block1);

@@ -162,12 +162,18 @@ namespace Libplanet.Crypto
                 throw new ArgumentNullException(nameof(signature));
             }
 
-            return CryptoConfig.CryptoBackend.Verify(
+            return signature.Any() && CryptoConfig.CryptoBackend.Verify(
                 HashDigest<SHA256>.DeriveFrom(message),
                 signature is byte[] ba ? ba : signature.ToArray(),
                 publicKey: this
             );
         }
+
+        /// <summary>
+        /// Gets the public key's hexadecimal representation in compressed form.
+        /// </summary>
+        /// <returns>The hexadecimal string of the public key's compressed bytes.</returns>
+        public override string ToString() => ByteUtil.Hex(Format(true));
 
         private static ECPublicKeyParameters GetECPublicKeyParameters(byte[] bs)
         {

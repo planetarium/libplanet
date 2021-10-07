@@ -342,7 +342,7 @@ namespace Libplanet.Blockchain
         /// <param name="actions">List of actions will be included in the genesis block.
         /// If it's null, it will be replaced with <see cref="ImmutableArray{T}.Empty"/>
         /// as default.</param>
-        /// <param name="privateKey">A private key to sign the transaction in the genesis block.
+        /// <param name="privateKey">A private key to sign the transaction and the genesis block.
         /// If it's null, it will use new private key as default.</param>
         /// <param name="timestamp">The timestamp of the genesis block. If it's null, it will
         /// use <see cref="DateTimeOffset.UtcNow"/> as default.</param>
@@ -366,13 +366,14 @@ namespace Libplanet.Blockchain
 
             BlockContent<T> content = new BlockContent<T>
             {
-                Miner = privateKey.ToAddress(),
+                PublicKey = privateKey.PublicKey,
                 Timestamp = timestamp ?? DateTimeOffset.UtcNow,
                 Transactions = transactions,
             };
 
             PreEvaluationBlock<T> preEval = content.Mine(hashAlgorithm);
             return preEval.Evaluate(
+                privateKey,
                 blockAction,
                 new TrieStateStore(new DefaultKeyValueStore(null))
             );

@@ -12,37 +12,38 @@ namespace Libplanet.Benchmarks
 {
     public class MineBlock
     {
-        private StoreFixture _fx;
         private BlockChain<DumbAction> _blockChain;
+        private PrivateKey _privateKey;
 
         public MineBlock()
         {
-            _fx = new DefaultStoreFixture();
+            var fx = new DefaultStoreFixture();
             _blockChain = new BlockChain<DumbAction>(
                 new NullPolicy<DumbAction>(),
                 new VolatileStagePolicy<DumbAction>(),
-                _fx.Store,
-                _fx.StateStore,
-                _fx.GenesisBlock
+                fx.Store,
+                fx.StateStore,
+                fx.GenesisBlock
             );
+            _privateKey = new PrivateKey();
         }
 
         [Benchmark]
         public async Task<Block<DumbAction>> MineBlockEmpty()
         {
-            return await _blockChain.MineBlock(_fx.Address1);
+            return await _blockChain.MineBlock(_privateKey);
         }
 
         [IterationSetup(Target = "MineBlockOneTransactionNoAction")]
         public void MakeOneTransactionNoAction()
         {
-            _blockChain.MakeTransaction(new PrivateKey(), new DumbAction[] { });
+            _blockChain.MakeTransaction(_privateKey, new DumbAction[] { });
         }
 
         [Benchmark]
         public async Task<Block<DumbAction>> MineBlockOneTransactionNoAction()
         {
-            return await _blockChain.MineBlock(_fx.Address1);
+            return await _blockChain.MineBlock(_privateKey);
         }
 
         [IterationSetup(Target = "MineBlockTenTransactionsNoAction")]
@@ -57,7 +58,7 @@ namespace Libplanet.Benchmarks
         [Benchmark]
         public async Task<Block<DumbAction>> MineBlockTenTransactionsNoAction()
         {
-            return await _blockChain.MineBlock(_fx.Address1);
+            return await _blockChain.MineBlock(_privateKey);
         }
 
         [IterationSetup(Target = "MineBlockOneTransactionWithActions")]
@@ -78,7 +79,7 @@ namespace Libplanet.Benchmarks
         [Benchmark]
         public async Task<Block<DumbAction>> MineBlockOneTransactionWithActions()
         {
-            return await _blockChain.MineBlock(_fx.Address1);
+            return await _blockChain.MineBlock(_privateKey);
         }
 
         [IterationSetup(Target = "MineBlockTenTransactionsWithActions")]
@@ -102,7 +103,7 @@ namespace Libplanet.Benchmarks
         [Benchmark]
         public async Task<Block<DumbAction>> MineBlockTenTransactionsWithActions()
         {
-            return await _blockChain.MineBlock(_fx.Address1);
+            return await _blockChain.MineBlock(_privateKey);
         }
     }
 }

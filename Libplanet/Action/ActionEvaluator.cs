@@ -371,9 +371,7 @@ namespace Libplanet.Action
             IEnumerable<Transaction<T>> txs,
             ImmutableArray<byte> preEvaluationHash)
         {
-            return protocolVersion > 1
-                ? OrderTxsForEvaluationV2(txs, preEvaluationHash)
-                : OrderTxsForEvaluationV0(txs, preEvaluationHash);
+            return OrderTxsForEvaluationV0(txs, preEvaluationHash);
         }
 
         /// <summary>
@@ -589,25 +587,6 @@ namespace Libplanet.Action
                     group => maskInteger ^ group
                         .Select(tx => new BigInteger(tx.Id.ToByteArray()))
                         .Aggregate((first, second) => first ^ second))
-                .SelectMany(group => group.OrderBy(tx => tx.Nonce));
-        }
-
-        [Pure]
-        private static IEnumerable<Transaction<T>> OrderTxsForEvaluationV2(
-            IEnumerable<Transaction<T>> txs,
-            ImmutableArray<byte> preEvaluationHash)
-        {
-            using SHA256 sha256 = SHA256.Create();
-            var maskInteger = new BigInteger(
-                sha256.ComputeHash(preEvaluationHash.ToBuilder().ToArray()));
-
-            // Transactions with the same signers are grouped first and the ordering of the groups
-            // is determined by the signer's address with XOR bitmask applied using
-            // the pre-evaluation hash provided.  Then within each group, transactions
-            // are ordered by nonce.
-            return txs
-                .GroupBy(tx => tx.Signer)
-                .OrderBy(group => maskInteger ^ new BigInteger(group.Key.ToByteArray()))
                 .SelectMany(group => group.OrderBy(tx => tx.Nonce));
         }
 

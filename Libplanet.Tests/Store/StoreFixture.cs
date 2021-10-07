@@ -97,14 +97,17 @@ namespace Libplanet.Tests.Store
                 bh is BlockHash h && stateRootHashes.TryGetValue(h, out HashDigest<SHA256> rh)
                     ? rh
                     : (HashDigest<SHA256>?)null;
-            GenesisBlock = TestUtils.MineGenesis<DumbAction>(GetHashAlgorithm)
-                .Evaluate(blockAction, stateStore);
+            Miner = TestUtils.GenesisMiner;
+            GenesisBlock = TestUtils.MineGenesis<DumbAction>(
+                GetHashAlgorithm,
+                Miner.PublicKey
+            ).Evaluate(Miner, blockAction, stateStore);
             stateRootHashes[GenesisBlock.Hash] = GenesisBlock.StateRootHash;
-            Block1 = TestUtils.MineNextBlock(GenesisBlock, GetHashAlgorithm);
+            Block1 = TestUtils.MineNextBlock(GenesisBlock, GetHashAlgorithm, miner: Miner);
             stateRootHashes[Block1.Hash] = Block1.StateRootHash;
-            Block2 = TestUtils.MineNextBlock(Block1, GetHashAlgorithm);
+            Block2 = TestUtils.MineNextBlock(Block1, GetHashAlgorithm, miner: Miner);
             stateRootHashes[Block2.Hash] = Block2.StateRootHash;
-            Block3 = TestUtils.MineNextBlock(Block2, GetHashAlgorithm);
+            Block3 = TestUtils.MineNextBlock(Block2, GetHashAlgorithm, miner: Miner);
             stateRootHashes[Block3.Hash] = Block3.StateRootHash;
 
             Transaction1 = MakeTransaction(new List<DumbAction>(), ImmutableHashSet<Address>.Empty);
@@ -139,6 +142,8 @@ namespace Libplanet.Tests.Store
         public BlockHash Hash2 { get; }
 
         public BlockHash Hash3 { get; }
+
+        public PrivateKey Miner { get; }
 
         public Block<DumbAction> GenesisBlock { get; }
 

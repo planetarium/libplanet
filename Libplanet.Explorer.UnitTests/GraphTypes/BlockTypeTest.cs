@@ -7,6 +7,7 @@ using GraphQL;
 using GraphQL.Types;
 using Libplanet.Action;
 using Libplanet.Blocks;
+using Libplanet.Crypto;
 using Libplanet.Explorer.GraphTypes;
 using Libplanet.Tx;
 using Xunit;
@@ -19,18 +20,23 @@ namespace Libplanet.Explorer.UnitTests.GraphTypes
         [Fact]
         public async void Query()
         {
+            var privateKey = new PrivateKey();
             var preEval = new BlockContent<NullAction>
             {
                 Index = 1,
                 Difficulty = 1,
                 TotalDifficulty = 1,
-                Miner = new Address(TestUtils.GetRandomBytes(Address.Size)),
+                PublicKey = privateKey.PublicKey,
                 PreviousHash = new BlockHash(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
                 Timestamp = DateTimeOffset.UtcNow,
             }.Mine(HashAlgorithmType.Of<SHA256>());
+            var stateRootHash =
+                new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size));
             var block = new Block<NullAction>(
                 preEval,
-                new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)));
+                stateRootHash,
+                preEval.MakeSignature(privateKey, stateRootHash)
+            );
             var query =
                 @"{
                     index
@@ -39,8 +45,10 @@ namespace Libplanet.Explorer.UnitTests.GraphTypes
                     difficulty
                     totalDifficulty
                     miner
+                    publicKey
                     timestamp
                     stateRootHash
+                    signature
                 }";
 
             ExecutionResult result =

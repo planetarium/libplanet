@@ -167,8 +167,9 @@ namespace Libplanet.Tests.Blockchain
                 genesis,
                 _policy.GetHashAlgorithm,
                 txs,
+                miner: _fx.Miner.PublicKey,
                 difficulty: _policy.GetNextBlockDifficulty(_blockChain)
-            ).Evaluate(_blockChain);
+            ).Evaluate(_fx.Miner, _blockChain);
 
             _blockChain.Append(
                 block1,

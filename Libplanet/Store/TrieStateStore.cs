@@ -36,12 +36,12 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc cref="IStateStore.PruneStates(IImmutableSet{HashDigest{SHA256}})"/>
-        public void PruneStates(IImmutableSet<HashDigest<SHA256>> survivalStateRootHashes)
+        public void PruneStates(IImmutableSet<HashDigest<SHA256>> survivingStateRootHashes)
         {
             var stopwatch = new Stopwatch();
             _logger.Verbose($"Started {nameof(PruneStates)}()");
             var survivalNodes = new HashSet<HashDigest<SHA256>>();
-            foreach (HashDigest<SHA256> stateRootHash in survivalStateRootHashes)
+            foreach (HashDigest<SHA256> stateRootHash in survivingStateRootHashes)
             {
                 var stateTrie = new MerkleTrie(
                     _stateKeyValueStore,

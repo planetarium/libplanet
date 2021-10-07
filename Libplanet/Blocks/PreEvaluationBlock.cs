@@ -8,6 +8,7 @@ using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
 using Libplanet.Blockchain;
+using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tx;
@@ -174,33 +175,89 @@ namespace Libplanet.Blocks
         /// Evaluates all actions in the <see cref="Transactions"/> and
         /// a <paramref name="blockAction"/> (if any), and returns a <see cref="Block{T}"/> instance
         /// combined with the <see cref="Block{T}.StateRootHash"/> determined from ground zero
-        /// (i.e., empty state root).
+        /// (i.e., empty state root).  The returned <see cref="Block{T}"/> is signed by the given
+        /// <paramref name="privateKey"/>.
         /// </summary>
+        /// <param name="privateKey">The miner's private key to be used for signing the block.
+        /// This must match to the block's <see cref="PreEvaluationBlockHeader.Miner"/> and
+        /// <see cref="PreEvaluationBlockHeader.PublicKey"/>.</param>
         /// <param name="blockAction">An optional
         /// <see cref="Blockchain.Policies.IBlockPolicy{T}.BlockAction"/>.</param>
         /// <param name="stateStore">The <see cref="BlockChain{T}.StateStore"/>.</param>
         /// <returns>The block combined with the resulting <see cref="Block{T}.StateRootHash"/>.
-        /// </returns>
+        /// It is signed by the given <paramref name="privateKey"/>.</returns>
         /// <remarks>This can be used with only genesis blocks.  For blocks with indices greater
         /// than zero, use <see cref="DetermineStateRootHash(BlockChain{T})"/> overloaded one
         /// instead.</remarks>
         /// <exception cref="InvalidOperationException">Thrown when its
-        /// <see cref="IBlockMetadata.Index"/> is not zero.</exception>
-        public Block<T> Evaluate(IAction? blockAction, IStateStore stateStore) =>
-            new Block<T>(this, DetermineStateRootHash(blockAction, stateStore));
+        /// <see cref="IBlockMetadata.Index"/> is not zero, or the block's
+        /// <see cref="PreEvaluationBlockHeader.ProtocolVersion"/> is less than 2.</exception>
+        /// <exception cref="ArgumentException">Thrown when the given <paramref name="privateKey"/>
+        /// does not match to the block miner's <see cref="PublicKey"/>.</exception>
+        /// <remarks>As blocks have their signatures since the <see
+        /// cref="PreEvaluationBlockHeader.ProtocolVersion"/> 2, it is not usable with blocks of
+        /// the earlier <see cref="PreEvaluationBlockHeader.ProtocolVersion"/>s than 2.
+        /// To create a <see cref="Block{T}"/> instance with <see cref="Block{T}.ProtocolVersion"/>
+        /// less than 2, use <see cref="Block{T}"/>'s constructors with <c>null</c> signatures.
+        /// </remarks>
+        public Block<T> Evaluate(
+            PrivateKey privateKey,
+            IAction? blockAction,
+            IStateStore stateStore
+        ) =>
+            Sign(privateKey, DetermineStateRootHash(blockAction, stateStore));
 
         /// <summary>
         /// Evaluates all actions in the <see cref="Transactions"/> and an optional
         /// <see cref="Blockchain.Policies.IBlockPolicy{T}.BlockAction"/>, and returns
         /// a <see cref="Block{T}"/> instance combined with the <see cref="Block{T}.StateRootHash"/>
-        /// determined from ground zero (i.e., empty state root).
+        /// determined from ground zero (i.e., empty state root). The returned
+        /// <see cref="Block{T}"/> is signed by the given <paramref name="privateKey"/>.
         /// </summary>
+        /// <param name="privateKey">The miner's private key to be used for signing the block.
+        /// This must match to the block's <see cref="PreEvaluationBlockHeader.Miner"/> and
+        /// <see cref="PreEvaluationBlockHeader.PublicKey"/>.</param>
         /// <param name="blockChain">The blockchain on which actions are evaluated based.</param>
         /// <returns>The block combined with the resulting <see cref="Block{T}.StateRootHash"/>.
-        /// </returns>
+        /// It is signed by the given <paramref name="privateKey"/>.</returns>
+        /// <exception cref="InvalidOperationException">Thrown when the block's
+        /// <see cref="PreEvaluationBlockHeader.ProtocolVersion"/> is less than 2.</exception>
+        /// <exception cref="ArgumentException">Thrown when the given <paramref name="privateKey"/>
+        /// does not match to the block miner's <see cref="PublicKey"/>.</exception>
+        /// <remarks>As blocks have their signatures since the <see
+        /// cref="PreEvaluationBlockHeader.ProtocolVersion"/> 2, it is not usable with blocks of
+        /// the earlier <see cref="PreEvaluationBlockHeader.ProtocolVersion"/>s than 2.
+        /// To create a <see cref="Block{T}"/> instance with <see cref="Block{T}.ProtocolVersion"/>
+        /// less than 2, use <see cref="Block{T}"/>'s constructors with <c>null</c> signatures.
+        /// </remarks>
         // FIXME: Take narrower input instead of a whole BlockChain<T>.
-        public Block<T> Evaluate(BlockChain<T> blockChain) =>
-            EvaluateActions(blockChain).Block;
+        public Block<T> Evaluate(PrivateKey privateKey, BlockChain<T> blockChain) =>
+            EvaluateActions(privateKey, blockChain).Block;
+
+        /// <summary>
+        /// Signs the block content with the given <paramref name="stateRootHash"/>.
+        /// </summary>
+        /// <param name="privateKey">The miner's private key to be used for signing the block.
+        /// This must match to the block's <see cref="PreEvaluationBlockHeader.Miner"/> and
+        /// <see cref="PreEvaluationBlockHeader.PublicKey"/>.</param>
+        /// <param name="stateRootHash">The state root hash to include to the input message to
+        /// sign.</param>
+        /// <returns>The signed block with the <paramref name="stateRootHash"/>.</returns>
+        /// <exception cref="InvalidOperationException">Thrown when the block's
+        /// <see cref="PreEvaluationBlockHeader.ProtocolVersion"/> is less than 2.</exception>
+        /// <exception cref="ArgumentException">Thrown when the given <paramref name="privateKey"/>
+        /// does not match to the block miner's <see cref="PublicKey"/>.</exception>
+        /// <remarks>As blocks have their signatures since the <see
+        /// cref="PreEvaluationBlockHeader.ProtocolVersion"/> 2, it is not usable with blocks of
+        /// the earlier <see cref="PreEvaluationBlockHeader.ProtocolVersion"/>s than 2.
+        /// To create a <see cref="Block{T}"/> instance with <see cref="Block{T}.ProtocolVersion"/>
+        /// less than 2, use <see cref="Block{T}"/>'s constructors with <c>null</c> signatures.
+        /// </remarks>
+        public Block<T> Sign(PrivateKey privateKey, HashDigest<SHA256> stateRootHash)
+        {
+            ImmutableArray<byte> sig = MakeSignature(privateKey, stateRootHash);
+            return new Block<T>(this, stateRootHash, sig);
+        }
 
         /// <summary>
         /// Evaluates all actions in the <see cref="Transactions"/> and
@@ -258,12 +315,12 @@ namespace Libplanet.Blocks
             CalculateStateRootHash(blockChain).StateRootHash;
 
         internal (Block<T> Block, IReadOnlyList<ActionEvaluation> ActionEvaluations)
-        EvaluateActions(BlockChain<T> blockChain)
+        EvaluateActions(PrivateKey privateKey, BlockChain<T> blockChain)
         {
             // FIXME: Take narrower input instead of a whole BlockChain<T>.
             (HashDigest<SHA256> stateRootHash, IReadOnlyList<ActionEvaluation> evals) =
                 CalculateStateRootHash(blockChain);
-            return (new Block<T>(this, stateRootHash), evals);
+            return (Sign(privateKey, stateRootHash), evals);
         }
 
         internal (

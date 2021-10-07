@@ -1,5 +1,7 @@
 #nullable enable
+using System.Collections.Immutable;
 using System.Security.Cryptography;
+using Libplanet.Crypto;
 using Libplanet.Store.Trie;
 
 namespace Libplanet.Blocks
@@ -16,5 +18,16 @@ namespace Libplanet.Blocks
         /// </summary>
         /// <seealso cref="ITrie.Hash"/>
         HashDigest<SHA256> StateRootHash { get; }
+
+        /// <summary>
+        /// The digital signature of the whole block content (except for
+        /// <see cref="IBlockExcerpt.Hash"/>, which is derived from the signature and other
+        /// contents).  This is made by the <see cref="IBlockMetadata.Miner"/>'s
+        /// <see cref="PrivateKey"/>.
+        /// <para>As the block signature is introduced since the protocol version 2, it is
+        /// <c>null</c> for blocks with earlier protocol versions than 2.  Although the property
+        /// is type-wise, the block signature is mandatory since the protocol version 2.</para>
+        /// </summary>
+        ImmutableArray<byte>? Signature { get; }
     }
 }

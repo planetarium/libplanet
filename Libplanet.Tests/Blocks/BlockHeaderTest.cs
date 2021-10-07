@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Immutable;
+using System.Security.Cryptography;
 using Libplanet.Blocks;
 using Xunit;
 using static Libplanet.Tests.TestUtils;
@@ -18,20 +21,54 @@ namespace Libplanet.Tests.Blocks
             foreach (Block<FxAction> fx in fixtures)
             {
                 var preEval = new PreEvaluationBlockHeader(fx);
-                var header = new BlockHeader(preEval, fx.StateRootHash);
+                var header = new BlockHeader(preEval, fx.StateRootHash, fx.Signature);
                 AssertBytesEqual(header.Hash, fx.Hash);
                 AssertPreEvaluationBlockHeadersEqual(fx, header);
                 AssertBytesEqual(fx.StateRootHash, header.StateRootHash);
 
-                header = new BlockHeader(preEval, fx.StateRootHash, fx.Hash);
+                header = new BlockHeader(preEval, fx.StateRootHash, fx.Signature, fx.Hash);
                 AssertBytesEqual(header.Hash, fx.Hash);
                 AssertPreEvaluationBlockHeadersEqual(fx, header);
                 AssertBytesEqual(fx.StateRootHash, header.StateRootHash);
 
                 Assert.Throws<InvalidBlockHashException>(() =>
-                    new BlockHeader(preEval, fx.StateRootHash, default)
+                    new BlockHeader(preEval, fx.StateRootHash, fx.Signature, default)
                 );
             }
+        }
+
+        [Fact]
+        public void ValidateSignature()
+        {
+            Block<FxAction> fx = _fx.HasTx;
+            var preEval = new PreEvaluationBlockHeader(fx);
+            HashDigest<SHA256> arbitraryHash = new Random().NextHashDigest<SHA256>();
+            ImmutableArray<byte> invalidSig = preEval.MakeSignature(_fx.Miner, arbitraryHash);
+            InvalidBlockSignatureException e = Assert.Throws<InvalidBlockSignatureException>(() =>
+                new BlockHeader(preEval, fx.StateRootHash, invalidSig)
+            );
+            Assert.Equal(invalidSig, e.InvalidSignature);
+            Assert.Equal(fx.PublicKey, e.PublicKey);
+
+            BlockHash hashWithInvalidSig = preEval.DeriveBlockHash(arbitraryHash, invalidSig);
+            e = Assert.Throws<InvalidBlockSignatureException>(() =>
+                new BlockHeader(preEval, fx.StateRootHash, invalidSig, hashWithInvalidSig)
+            );
+            Assert.Equal(invalidSig, e.InvalidSignature);
+            Assert.Equal(fx.PublicKey, e.PublicKey);
+        }
+
+        [Fact]
+        public void ValidateHash()
+        {
+            Block<FxAction> fx = _fx.HasTx;
+            var preEval = new PreEvaluationBlockHeader(fx);
+            ImmutableArray<byte> sig = fx.Signature.Value;
+            HashDigest<SHA256> arbitraryHash = new Random().NextHashDigest<SHA256>();
+            BlockHash invalidHash = preEval.DeriveBlockHash(arbitraryHash, sig);
+            Assert.Throws<InvalidBlockHashException>(() =>
+                new BlockHeader(preEval, fx.StateRootHash, sig, invalidHash)
+            );
         }
 
         [Fact]
@@ -39,7 +76,8 @@ namespace Libplanet.Tests.Blocks
         {
             var header = new BlockHeader(
                 new PreEvaluationBlockHeader(_fx.HasTx),
-                _fx.HasTx.StateRootHash
+                _fx.HasTx.StateRootHash,
+                _fx.HasTx.Signature
             );
             Assert.Equal($"#{_fx.HasTx.Index} {_fx.HasTx.Hash}", header.ToString());
         }

@@ -4,6 +4,7 @@ using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
+using Libplanet.Crypto;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Xunit;
@@ -24,9 +25,10 @@ namespace Libplanet.Tests.Blockchain
                     fx.StateStore,
                     new DumbAction[0]
                 );
-                Block<DumbAction> block1 = await chain.MineBlock(default);
+                var key = new PrivateKey();
+                Block<DumbAction> block1 = await chain.MineBlock(key);
                 Assert.Equal(16, block1.PreEvaluationHash.Length);
-                Block<DumbAction> block2 = await chain.MineBlock(default);
+                Block<DumbAction> block2 = await chain.MineBlock(key);
                 Assert.Equal(20, block2.PreEvaluationHash.Length);
             }
         }
@@ -44,12 +46,18 @@ namespace Libplanet.Tests.Blockchain
                     new DumbAction[0]
                 );
                 HashAlgorithmType invalidAlgo = HashAlgorithmType.Of<SHA1>();
-                Block<DumbAction> invalid1 = TestUtils.MineNext(chain.Genesis, _ => invalidAlgo)
-                    .Evaluate(chain);
+                Block<DumbAction> invalid1 = TestUtils.MineNext(
+                    chain.Genesis,
+                    _ => invalidAlgo,
+                    miner: TestUtils.ChainPrivateKey.PublicKey
+                ).Evaluate(TestUtils.ChainPrivateKey, chain);
                 Assert.Throws<InvalidBlockPreEvaluationHashException>(() => chain.Append(invalid1));
                 HashAlgorithmType validAlgo = HashAlgorithmType.Of<MD5>();
-                Block<DumbAction> valid1 = TestUtils.MineNext(chain.Genesis, _ => validAlgo)
-                    .Evaluate(chain);
+                Block<DumbAction> valid1 = TestUtils.MineNext(
+                    chain.Genesis,
+                    _ => validAlgo,
+                    miner: TestUtils.ChainPrivateKey.PublicKey
+                ).Evaluate(TestUtils.ChainPrivateKey, chain);
                 chain.Append(valid1);
             }
         }

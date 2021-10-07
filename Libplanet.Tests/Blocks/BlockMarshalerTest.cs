@@ -4,6 +4,7 @@ using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Tests.Blocks;
+using Libplanet.Tests.Fixtures;
 using Xunit;
 using Xunit.Abstractions;
 using static Libplanet.Tests.TestUtils;
@@ -11,7 +12,8 @@ using FxAction = Libplanet.Action.PolymorphicAction<Libplanet.Tests.Common.Actio
 
 namespace Libplanet.Tests
 {
-    public class BlockMarshalerTest : IClassFixture<BlockFixture>
+    public class BlockMarshalerTest
+        : IClassFixture<BlockFixture>, IClassFixture<BlockContentFixture>
     {
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
 
@@ -23,10 +25,12 @@ namespace Libplanet.Tests
         private static readonly byte[] TotalDifficultyKey = { 0x54 }; // 'T'
         private static readonly byte[] NonceKey = { 0x6e }; // 'n'
         private static readonly byte[] MinerKey = { 0x6d }; // 'm'
+        private static readonly byte[] PublicKeyKey = { 0x50 }; // 'P'
         private static readonly byte[] PreviousHashKey = { 0x70 }; // 'p'
         private static readonly byte[] TxHashKey = { 0x78 }; // 'x'
         private static readonly byte[] HashKey = { 0x68 }; // 'h'
         private static readonly byte[] StateRootHashKey = { 0x73 }; // 's'
+        private static readonly byte[] SignatureKey = { 0x53 }; // 'S'
         private static readonly byte[] PreEvaluationHashKey = { 0x63 }; // 'c'
 
         // Block fields:
@@ -35,16 +39,25 @@ namespace Libplanet.Tests
 
         private readonly ITestOutputHelper _output;
         private readonly BlockFixture _fx;
+        private readonly BlockContentFixture _content;
+        private readonly Dictionary _marshaledGenesisMetadata;
         private readonly Dictionary _marshaledGenesis;
+        private readonly Dictionary _marshaledNextMetadata;
         private readonly Dictionary _marshaledNext;
+        private readonly Dictionary _marshaledHasTxMetadata;
         private readonly Dictionary _marshaledHasTx;
 
-        public BlockMarshalerTest(BlockFixture fixture, ITestOutputHelper output)
+        public BlockMarshalerTest(
+            BlockFixture fixture,
+            BlockContentFixture contentFixture,
+            ITestOutputHelper output
+        )
         {
             _output = output;
             _fx = fixture;
+            _content = contentFixture;
 
-            var expectedGenesisHeader = Dictionary.Empty
+            _marshaledGenesisMetadata = Dictionary.Empty
                 .Add(ProtocolVersionKey, _fx.Genesis.ProtocolVersion)
                 .Add(IndexKey, _fx.Genesis.Index)
                 .Add(
@@ -52,15 +65,17 @@ namespace Libplanet.Tests
                     _fx.Genesis.Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture))
                 .Add(DifficultyKey, _fx.Genesis.Difficulty)
                 .Add(TotalDifficultyKey, (IValue)(Integer)_fx.Genesis.TotalDifficulty)
+                .Add(PublicKeyKey, _fx.Genesis.PublicKey.Format(compress: true));
+            var expectedGenesisHeader = _marshaledGenesisMetadata
                 .Add(NonceKey, _fx.Genesis.Nonce.ByteArray)
-                .Add(MinerKey, _fx.Genesis.Miner.ByteArray)
                 .Add(PreEvaluationHashKey, _fx.Genesis.PreEvaluationHash)
                 .Add(StateRootHashKey, _fx.Genesis.StateRootHash.ByteArray)
+                .Add(SignatureKey, _fx.Genesis.Signature ?? default)
                 .Add(HashKey, _fx.Genesis.Hash.ByteArray);
             _marshaledGenesis = Dictionary.Empty
                 .Add(HeaderKey, expectedGenesisHeader);
 
-            var expectedNextHeader = Dictionary.Empty
+            _marshaledNextMetadata = Dictionary.Empty
                 .Add(ProtocolVersionKey, _fx.Next.ProtocolVersion)
                 .Add(IndexKey, _fx.Next.Index)
                 .Add(PreviousHashKey, _fx.Next.PreviousHash.Value.ByteArray)
@@ -69,15 +84,17 @@ namespace Libplanet.Tests
                     _fx.Next.Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture))
                 .Add(DifficultyKey, _fx.Next.Difficulty)
                 .Add(TotalDifficultyKey, (IValue)(Integer)_fx.Next.TotalDifficulty)
+                .Add(PublicKeyKey, _fx.Next.PublicKey.Format(compress: true));
+            var expectedNextHeader = _marshaledNextMetadata
                 .Add(NonceKey, _fx.Next.Nonce.ByteArray)
-                .Add(MinerKey, _fx.Next.Miner.ByteArray)
                 .Add(PreEvaluationHashKey, _fx.Next.PreEvaluationHash)
                 .Add(StateRootHashKey, _fx.Next.StateRootHash.ByteArray)
+                .Add(SignatureKey, _fx.Next.Signature ?? default)
                 .Add(HashKey, _fx.Next.Hash.ByteArray);
             _marshaledNext = Dictionary.Empty
                 .Add(HeaderKey, expectedNextHeader);
 
-            var expectedHasTxHeader = Dictionary.Empty
+            _marshaledHasTxMetadata = Dictionary.Empty
                 .Add(ProtocolVersionKey, _fx.HasTx.ProtocolVersion)
                 .Add(IndexKey, _fx.HasTx.Index)
                 .Add(PreviousHashKey, _fx.HasTx.PreviousHash.Value.ByteArray)
@@ -86,11 +103,13 @@ namespace Libplanet.Tests
                     _fx.HasTx.Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture))
                 .Add(DifficultyKey, _fx.HasTx.Difficulty)
                 .Add(TotalDifficultyKey, (IValue)(Integer)_fx.HasTx.TotalDifficulty)
+                .Add(PublicKeyKey, _fx.HasTx.PublicKey.Format(true))
+                .Add(TxHashKey, _fx.HasTx.TxHash.Value.ByteArray);
+            var expectedHasTxHeader = _marshaledHasTxMetadata
                 .Add(NonceKey, _fx.HasTx.Nonce.ByteArray)
-                .Add(MinerKey, _fx.HasTx.Miner.ByteArray)
-                .Add(TxHashKey, _fx.HasTx.TxHash.Value.ByteArray)
                 .Add(PreEvaluationHashKey, _fx.HasTx.PreEvaluationHash)
                 .Add(StateRootHashKey, _fx.HasTx.StateRootHash.ByteArray)
+                .Add(SignatureKey, _fx.HasTx.Signature ?? default)
                 .Add(HashKey, _fx.HasTx.Hash.ByteArray);
             IValue expectedHasTxTxs = new List(
                 _fx.HasTx.Transactions.Select(tx => (Binary)tx.Serialize(true)).Cast<IValue>()
@@ -98,6 +117,44 @@ namespace Libplanet.Tests
             _marshaledHasTx = Dictionary.Empty
                 .Add(HeaderKey, expectedHasTxHeader)
                 .Add(TransactionsKey, expectedHasTxTxs);
+        }
+
+        [Fact]
+        public void MarshalBlockMetadata()
+        {
+            AssertBencodexEqual(
+                _marshaledGenesisMetadata,
+                BlockMarshaler.MarshalBlockMetadata(_fx.Genesis)
+            );
+            AssertBencodexEqual(
+                _marshaledNextMetadata,
+                BlockMarshaler.MarshalBlockMetadata(_fx.Next)
+            );
+            AssertBencodexEqual(
+                _marshaledHasTxMetadata,
+                BlockMarshaler.MarshalBlockMetadata(_fx.HasTx)
+            );
+            AssertBencodexEqual(
+                Dictionary.Empty
+                    .Add(IndexKey, 0L)
+                    .Add(TimestampKey, "2021-09-06T04:46:39.123000Z")
+                    .Add(DifficultyKey, 0L)
+                    .Add(TotalDifficultyKey, 0)
+                    .Add(MinerKey, _content.BlockPv0.Miner.ByteArray),
+                BlockMarshaler.MarshalBlockMetadata(_content.BlockPv0)
+            );
+            AssertBencodexEqual(
+                Dictionary.Empty
+                    .Add(ProtocolVersionKey, 1)
+                    .Add(IndexKey, 1L)
+                    .Add(PreviousHashKey, _content.BlockPv1.PreviousHash?.ByteArray ?? default)
+                    .Add(TimestampKey, "2021-09-06T08:01:09.045000Z")
+                    .Add(DifficultyKey, 123L)
+                    .Add(TotalDifficultyKey, 123)
+                    .Add(MinerKey, _content.BlockPv1.Miner.ByteArray)
+                    .Add(TxHashKey, _content.BlockPv1.TxHash?.ByteArray ?? default),
+                BlockMarshaler.MarshalBlockMetadata(_content.BlockPv1)
+            );
         }
 
         [Fact]

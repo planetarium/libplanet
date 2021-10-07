@@ -9,6 +9,7 @@ using Libplanet.Blocks;
 using Libplanet.Tests.Fixtures;
 using Xunit;
 using Xunit.Abstractions;
+using static Libplanet.ByteUtil;
 using static Libplanet.Tests.TestUtils;
 
 namespace Libplanet.Tests.Blocks
@@ -122,54 +123,129 @@ namespace Libplanet.Tests.Blocks
         }
 
         [Fact]
-        public void ToBencodex()
+        public void MakeCandidateData()
         {
             Bencodex.Types.Dictionary expectedGenesis = Bencodex.Types.Dictionary.Empty
+                .Add("index", 0L)
+                .Add("timestamp", "2021-09-06T04:46:39.123000Z")
+                .Add("difficulty", 0L)
+                .Add("total_difficulty", 0)
+                .Add("nonce", ImmutableArray<byte>.Empty)
+                .Add(
+                    "public_key",
+                    ParseHex("0200e02709cc0c051dc105188c454a2e7ef7b36b85da34529d3abc1968167cf54f")
+                )
+                .Add("protocol_version", 2);
+            AssertBencodexEqual(expectedGenesis, GenesisMetadata.MakeCandidateData(default));
+            AssertBencodexEqual(
+                expectedGenesis.SetItem("nonce", new byte[] { 0x00, 0x01, 0x02 }),
+                GenesisMetadata.MakeCandidateData(new Nonce(new byte[] { 0x00, 0x01, 0x02 }))
+            );
+
+            Bencodex.Types.Dictionary expectedBlock1 = Bencodex.Types.Dictionary.Empty
+                .Add("index", 1L)
+                .Add("timestamp", "2021-09-06T08:01:09.045000Z")
+                .Add("difficulty", 123L)
+                .Add("total_difficulty", 123L)
+                .Add("nonce", new byte[] { 0xff, 0xef, 0x01, 0xcc })
+                .Add(
+                    "public_key",
+                    ParseHex("0215ba27a461a986f4ce7bcda1fd73dc708da767d0405729edaacaad7b7ff60eed")
+                )
+                .Add(
+                    "previous_hash",
+                    ParseHex("341e8f360597d5bc45ab96aabc5f1b0608063f30af7bd4153556c9536a07693a")
+                )
+                .Add(
+                    "transaction_fingerprint",
+                    ParseHex("654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0")
+                )
+                .Add("protocol_version", 2);
+            AssertBencodexEqual(
+                expectedBlock1,
+                BlockMetadata1.MakeCandidateData(new Nonce(new byte[] { 0xff, 0xef, 0x01, 0xcc }))
+            );
+
+            Bencodex.Types.Dictionary expectedPv0 = Bencodex.Types.Dictionary.Empty
+                .Add("index", 0L)
+                .Add("timestamp", "2021-09-06T04:46:39.123000Z")
+                .Add("difficulty", 0L)
+                .Add("nonce", ImmutableArray<byte>.Empty)
+                .Add("reward_beneficiary", ParseHex("268344BA46e6CA2A8a5096565548b9018bc687Ce"));
+            AssertBencodexEqual(expectedPv0, BlockMetadataPv0.MakeCandidateData(default));
+            AssertBencodexEqual(
+                expectedPv0.SetItem("nonce", new byte[] { 0x00, 0x01, 0x02 }),
+                BlockMetadataPv0.MakeCandidateData(new Nonce(new byte[] { 0x00, 0x01, 0x02 }))
+            );
+
+            Bencodex.Types.Dictionary expectedPv1 = Bencodex.Types.Dictionary.Empty
+                .Add("index", 1L)
+                .Add("timestamp", "2021-09-06T08:01:09.045000Z")
+                .Add("difficulty", 123L)
+                .Add("nonce", ImmutableArray<byte>.Empty)
+                .Add("reward_beneficiary", ParseHex("8a29de186B85560D708451101C4Bf02D63b25c50"))
+                .Add(
+                    "previous_hash",
+                    ParseHex("341e8f360597d5bc45ab96aabc5f1b0608063f30af7bd4153556c9536a07693a")
+                )
+                .Add(
+                    "transaction_fingerprint",
+                    ParseHex("654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0")
+                )
+                .Add("protocol_version", 1);
+            AssertBencodexEqual(expectedPv1, BlockMetadataPv1.MakeCandidateData(default));
+            AssertBencodexEqual(
+                expectedPv1.SetItem("nonce", new byte[] { 0x00, 0x01, 0x02 }),
+                BlockMetadataPv1.MakeCandidateData(new Nonce(new byte[] { 0x00, 0x01, 0x02 }))
+            );
+        }
+
+        [Fact]
+        public void MakeCandidateDataPv1()
+        {
+            Bencodex.Types.Dictionary expected = Bencodex.Types.Dictionary.Empty
+                .Add("index", 1L)
+                .Add("timestamp", "2021-09-06T08:01:09.045000Z")
+                .Add("difficulty", 123L)
+                .Add("nonce", new byte[] { 0xff, 0xef, 0x01, 0xcc })
+                .Add(
+                    "reward_beneficiary",
+                    ParseHex("8a29de186B85560D708451101C4Bf02D63b25c50")
+                )
+                .Add(
+                    "previous_hash",
+                    ParseHex(
+                        "341e8f360597d5bc45ab96aabc5f1b0608063f30af7bd4153556c9536a07693a"
+                    )
+                )
+                .Add(
+                    "transaction_fingerprint",
+                    ParseHex(
+                        "654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0"
+                    )
+                )
+                .Add("protocol_version", 1);
+            AssertBencodexEqual(
+                expected,
+                BlockMetadataPv1.MakeCandidateData(new Nonce(new byte[] { 0xff, 0xef, 0x01, 0xcc }))
+            );
+        }
+
+        [Fact]
+        public void MakeCandidateDataPv0()
+        {
+            Bencodex.Types.Dictionary expected = Bencodex.Types.Dictionary.Empty
                 .Add("index", 0L)
                 .Add("timestamp", "2021-09-06T04:46:39.123000Z")
                 .Add("difficulty", 0L)
                 .Add("nonce", ImmutableArray<byte>.Empty)
                 .Add(
                     "reward_beneficiary",
-                    ByteUtil.ParseHex("268344BA46e6CA2A8a5096565548b9018bc687Ce")
-                )
-                .Add("protocol_version", 1);
-            AssertBencodexEqual(expectedGenesis, GenesisMetadata.ToBencodex(default));
+                    ParseHex("268344BA46e6CA2A8a5096565548b9018bc687Ce")
+                );
             AssertBencodexEqual(
-                expectedGenesis.SetItem("nonce", new byte[] { 0x00, 0x01, 0x02 }),
-                GenesisMetadata.ToBencodex(new Nonce(new byte[] { 0x00, 0x01, 0x02 }))
-            );
-
-            Bencodex.Types.Dictionary expectedBlock1 = Bencodex.Types.Dictionary.Empty
-                .Add("index", 1L)
-                .Add("timestamp", "2021-09-06T08:01:09.045000Z")
-                .Add("difficulty", 12345L)
-                .Add("nonce", new byte[] { 0xff, 0xef, 0x01, 0xcc })
-                .Add(
-                    "reward_beneficiary",
-                    ByteUtil.ParseHex("8a29de186B85560D708451101C4Bf02D63b25c50")
-                )
-                .Add(
-                    "previous_hash",
-                    ByteUtil.ParseHex(
-                        "341e8f360597d5bc45ab96aabc5f1b0608063f30af7bd4153556c9536a07693a"
-                    )
-                )
-                .Add(
-                    "transaction_fingerprint",
-                    ByteUtil.ParseHex(
-                        "654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0"
-                    )
-                )
-                .Add("protocol_version", 1);
-            AssertBencodexEqual(
-                expectedBlock1,
-                BlockMetadata1.ToBencodex(new Nonce(new byte[] { 0xff, 0xef, 0x01, 0xcc }))
-            );
-
-            AssertBencodexEqual(
-                (IValue)expectedGenesis.Remove((Text)"protocol_version"),
-                BlockMetadataPv0.ToBencodex(default)
+                (IValue)expected.Remove((Text)"protocol_version"),
+                BlockMetadataPv0.MakeCandidateData(default)
             );
         }
 
@@ -177,21 +253,21 @@ namespace Libplanet.Tests.Blocks
         public void DerivePreEvaluationHash()
         {
             ImmutableArray<byte> FromHex(string hex) =>
-                ByteUtil.ParseHex(hex).ToImmutableArray();
+                ParseHex(hex).ToImmutableArray();
 
             HashAlgorithmType sha256 = HashAlgorithmType.Of<SHA256>();
             HashAlgorithmType sha512 = HashAlgorithmType.Of<SHA512>();
             ImmutableArray<byte> hash = GenesisMetadata.DerivePreEvaluationHash(sha256, default);
             AssertBytesEqual(
-                FromHex("29dc1a7dad84b68bfcc433a55c531ef81fb0d27967cd9e857ed2b9ef170ad1ae"),
+                FromHex("0bc1b1d6ff56e7e714d016e32e7a95417e51ee407717a65632cef29a1599e8c4"),
                 hash
             );
 
             hash = GenesisMetadata.DerivePreEvaluationHash(sha512, default);
             AssertBytesEqual(
                 FromHex(
-                    "b00ee7ec89245bf37a437b0ea16292c5b8c8b3b48d03b56b13a0e280384d2e89" +
-                    "d79292867f9e7b31a829ea3f2afa55aab4f05bba6497103f87cfaf85ee9eb0d9"
+                    "aa46f7b4a740ff144cd866505a1696461c004a4eaa6b032dafec194ae42c76d7" +
+                    "fadd4ca45bfbb802aa4b9af28d3150f5e1f67a94b32ddb399f5c455b3e118d03"
                 ),
                 hash
             );
@@ -201,7 +277,7 @@ namespace Libplanet.Tests.Blocks
                 new Nonce(FromHex("e7c1adf92c65d35aaae5"))
             );
             AssertBytesEqual(
-                FromHex("57e7c3056d366cb3c782029358812d4b56b3b4f69b9ee4687d0a3bc13e1c0000"),
+                FromHex("c9f3fc47ec5554dc1544fd1317760f16627366af728e2608348736673e2b7b3d"),
                 hash
             );
 
@@ -211,8 +287,8 @@ namespace Libplanet.Tests.Blocks
             );
             AssertBytesEqual(
                 FromHex(
-                    "480601d27986f05713b0d99b28a73e1d9a8eda16ead16511bad6da1454cdac30" +
-                    "286544c8b6550d42a5939d388cd30c4f5bacb62e9e3a66880e29f07eec6b0100"
+                    "41d59e78eef7f1bb4b95a2f34973674afc7840eb1a4a468f5ea303eda3e3cdb1" +
+                    "0ee2fdf9d900a07447fb2208197ef7dd76b83ed2e463886e234fa6b5e29c1bff"
                 ),
                 hash
             );
@@ -225,19 +301,19 @@ namespace Libplanet.Tests.Blocks
 
             HashAlgorithmType sha256 = HashAlgorithmType.Of<SHA256>();
             (Nonce nonce, ImmutableArray<byte> preEvalHash) = GenesisMetadata.MineNonce(sha256);
-            Assert.True(ByteUtil.Satisfies(preEvalHash, GenesisMetadata.Difficulty));
-            AssertBytesEqual(
-                sha256.Digest(codec.Encode(GenesisMetadata.ToBencodex(nonce))).ToImmutableArray(),
-                preEvalHash
+            Assert.True(Satisfies(preEvalHash, GenesisMetadata.Difficulty));
+            ImmutableArray<byte> actual = ImmutableArray.Create(
+                sha256.Digest(codec.Encode(GenesisMetadata.MakeCandidateData(nonce)))
             );
+            AssertBytesEqual(actual, preEvalHash);
 
             HashAlgorithmType sha512 = HashAlgorithmType.Of<SHA512>();
             (nonce, preEvalHash) = BlockMetadata1.MineNonce(sha512);
-            Assert.True(ByteUtil.Satisfies(preEvalHash, BlockMetadata1.Difficulty));
-            AssertBytesEqual(
-                sha512.Digest(codec.Encode(BlockMetadata1.ToBencodex(nonce))).ToImmutableArray(),
-                preEvalHash
+            Assert.True(Satisfies(preEvalHash, BlockMetadata1.Difficulty));
+            actual = ImmutableArray.Create(
+                sha512.Digest(codec.Encode(BlockMetadata1.MakeCandidateData(nonce)))
             );
+            AssertBytesEqual(actual, preEvalHash);
         }
 
         [Fact]

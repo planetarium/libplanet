@@ -7,6 +7,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Crypto;
 using Libplanet.Tx;
 
 namespace Libplanet.Blocks
@@ -26,10 +27,12 @@ namespace Libplanet.Blocks
         private static readonly byte[] TotalDifficultyKey = { 0x54 }; // 'T'
         private static readonly byte[] NonceKey = { 0x6e }; // 'n'
         private static readonly byte[] MinerKey = { 0x6d }; // 'm'
+        private static readonly byte[] PublicKeyKey = { 0x50 }; // 'P'
         private static readonly byte[] PreviousHashKey = { 0x70 }; // 'p'
         private static readonly byte[] TxHashKey = { 0x78 }; // 'x'
         private static readonly byte[] HashKey = { 0x68 }; // 'h'
         private static readonly byte[] StateRootHashKey = { 0x73 }; // 's'
+        private static readonly byte[] SignatureKey = { 0x53 }; // 'S'
         private static readonly byte[] PreEvaluationHashKey = { 0x63 }; // 'c'
 
         // Block fields:
@@ -44,8 +47,7 @@ namespace Libplanet.Blocks
                 .Add(IndexKey, metadata.Index)
                 .Add(TimestampKey, timestamp)
                 .Add(DifficultyKey, metadata.Difficulty)
-                .Add(TotalDifficultyKey, (IValue)new Integer(metadata.TotalDifficulty))
-                .Add(MinerKey, metadata.Miner.ByteArray);
+                .Add(TotalDifficultyKey, (IValue)new Integer(metadata.TotalDifficulty));
 
             if (metadata.ProtocolVersion != 0)
             {
@@ -61,6 +63,10 @@ namespace Libplanet.Blocks
             {
                 dict = dict.Add(TxHashKey, th.ByteArray);
             }
+
+            dict = metadata.PublicKey is { } pubKey
+                ? dict.Add(PublicKeyKey, pubKey.Format(compress: true))
+                : dict.Add(MinerKey, metadata.Miner.ByteArray);
 
             return dict;
         }
@@ -94,12 +100,18 @@ namespace Libplanet.Blocks
         public static Dictionary MarshalBlockHeader(
             Dictionary marshaledPreEvaluatedBlockHeader,
             HashDigest<SHA256> stateRootHash,
+            ImmutableArray<byte>? signature,
             BlockHash hash
         )
         {
             Dictionary dict = marshaledPreEvaluatedBlockHeader
                 .Add(StateRootHashKey, stateRootHash.ByteArray)
                 .Add(HashKey, hash.ByteArray);
+            if (signature is { } sig)
+            {
+                dict = dict.Add(SignatureKey, sig);
+            }
+
             return dict;
         }
 
@@ -107,6 +119,7 @@ namespace Libplanet.Blocks
             MarshalBlockHeader(
                 MarshalPreEvaluationBlockHeader(header),
                 header.StateRootHash,
+                header.Signature,
                 header.Hash
             );
 
@@ -141,8 +154,9 @@ namespace Libplanet.Blocks
         public static long UnmarshalBlockMetadataIndex(Dictionary marshaledMetadata) =>
             marshaledMetadata.GetValue<Integer>(IndexKey);
 
-        public static BlockMetadata UnmarshalBlockMetadata(Dictionary marshaled) =>
-            new BlockMetadata
+        public static BlockMetadata UnmarshalBlockMetadata(Dictionary marshaled)
+        {
+            var metadata = new BlockMetadata
             {
                 ProtocolVersion = marshaled.ContainsKey(ProtocolVersionKey)
                     ? (int)marshaled.GetValue<Integer>(ProtocolVersionKey)
@@ -153,7 +167,6 @@ namespace Libplanet.Blocks
                     TimestampFormat,
                     CultureInfo.InvariantCulture
                 ),
-                Miner = new Address(marshaled.GetValue<Binary>(MinerKey).ByteArray),
                 Difficulty = marshaled.GetValue<Integer>(DifficultyKey),
                 TotalDifficulty = marshaled.GetValue<Integer>(TotalDifficultyKey),
                 PreviousHash = marshaled.ContainsKey(PreviousHashKey)
@@ -164,6 +177,19 @@ namespace Libplanet.Blocks
                         marshaled.GetValue<Binary>(TxHashKey).ByteArray)
                     : (HashDigest<SHA256>?)null,
             };
+
+            if (marshaled.ContainsKey(PublicKeyKey))
+            {
+                metadata.PublicKey =
+                    new PublicKey(marshaled.GetValue<Binary>(PublicKeyKey).ByteArray);
+            }
+            else
+            {
+                metadata.Miner = new Address(marshaled.GetValue<Binary>(MinerKey).ByteArray);
+            }
+
+            return metadata;
+        }
 
         public static (BlockMetadata Metadata, Nonce Nonce, ImmutableArray<byte>? PreEvaluationHash)
         UnmarshalPreEvaluationBlockHeader(Dictionary marshaled)
@@ -208,6 +234,13 @@ namespace Libplanet.Blocks
                 marshaledBlockHeader.GetValue<Binary>(StateRootHashKey).ByteArray
             );
 
+        public static ImmutableArray<byte>? UnmarshalBlockHeaderSignature(
+            Dictionary marshaledBlockHeader
+        ) =>
+            marshaledBlockHeader.ContainsKey(SignatureKey)
+                ? marshaledBlockHeader.GetValue<Binary>(SignatureKey).ByteArray
+                : (ImmutableArray<byte>?)null;
+
         public static BlockHeader UnmarshalBlockHeader(
             HashAlgorithmGetter hashAlgorithmGetter,
             Dictionary marshaled
@@ -216,8 +249,9 @@ namespace Libplanet.Blocks
             PreEvaluationBlockHeader preEvalHeader =
                 UnmarshalPreEvaluationBlockHeader(hashAlgorithmGetter, marshaled);
             HashDigest<SHA256> stateRootHash = UnmarshalBlockHeaderStateRootHash(marshaled);
+            ImmutableArray<byte>? sig = UnmarshalBlockHeaderSignature(marshaled);
             BlockHash hash = UnmarshalBlockHeaderHash(marshaled);
-            return new BlockHeader(preEvalHeader, stateRootHash, hash);
+            return new BlockHeader(preEvalHeader, stateRootHash, sig, hash);
         }
 
         public static IReadOnlyList<Transaction<T>> UnmarshalTransactions<T>(List marshaled)
