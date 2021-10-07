@@ -219,7 +219,7 @@ namespace Libplanet.Tests.Blocks
             PreEvaluationBlock<Arithmetic> preEvalBlock = Genesis.Mine(sha256);
             Assert.True(ByteUtil.Satisfies(preEvalBlock.PreEvaluationHash, Genesis.Difficulty));
             AssertBytesEqual(
-                sha256.Digest(codec.Encode(Genesis.ToBencodex(preEvalBlock.Nonce))),
+                sha256.Digest(codec.Encode(Genesis.MakeCandidateData(preEvalBlock.Nonce))),
                 preEvalBlock.PreEvaluationHash.ToArray()
             );
 
@@ -227,7 +227,7 @@ namespace Libplanet.Tests.Blocks
             preEvalBlock = Block1.Mine(sha512);
             Assert.True(ByteUtil.Satisfies(preEvalBlock.PreEvaluationHash, Block1.Difficulty));
             AssertBytesEqual(
-                sha512.Digest(codec.Encode(Block1.ToBencodex(preEvalBlock.Nonce))),
+                sha512.Digest(codec.Encode(Block1.MakeCandidateData(preEvalBlock.Nonce))),
                 preEvalBlock.PreEvaluationHash.ToArray()
             );
         }

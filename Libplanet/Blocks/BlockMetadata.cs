@@ -234,13 +234,13 @@ namespace Libplanet.Blocks
         }
 
         /// <summary>
-        /// Serializes the block content into a Bencodex dictionary.  This data is used for
-        /// PoW (proof-of-work) to find the nonce, rather than transmitting the block over the
-        /// network.
+        /// Serializes data of a possible candidate shifted from it into a Bencodex dictionary.
+        /// This data is used for PoW (proof-of-work) to find the satisfying
+        /// <paramref name="nonce"/>, rather than transmitting the block over the network.
         /// </summary>
         /// <param name="nonce">The nonce of the block.</param>
         /// <returns>The serialized block content in a Bencodex dictionary.</returns>
-        public Bencodex.Types.Dictionary ToBencodex(Nonce nonce)
+        public Bencodex.Types.Dictionary MakeCandidateData(Nonce nonce)
         {
             var dict = Bencodex.Types.Dictionary.Empty
                 .Add("index", Index)
@@ -299,7 +299,7 @@ namespace Libplanet.Blocks
             HashAlgorithmType hashAlgorithm,
             Nonce nonce
         ) =>
-            hashAlgorithm.Digest(Codec.Encode(ToBencodex(nonce))).ToImmutableArray();
+            hashAlgorithm.Digest(Codec.Encode(MakeCandidateData(nonce))).ToImmutableArray();
 
         /// <summary>
         /// Mines the PoW (proof-of-work) nonce satisfying the block
@@ -323,8 +323,8 @@ namespace Libplanet.Blocks
         {
             // Poor man' way to optimize stamp...
             // FIXME: We need to rather reorganize the serialization layout.
-            byte[] emptyNonce = Codec.Encode(ToBencodex(default));
-            byte[] oneByteNonce = Codec.Encode(ToBencodex(new Nonce(new byte[1])));
+            byte[] emptyNonce = Codec.Encode(MakeCandidateData(default));
+            byte[] oneByteNonce = Codec.Encode(MakeCandidateData(new Nonce(new byte[1])));
             int offset = 0;
             while (offset < emptyNonce.Length && emptyNonce[offset].Equals(oneByteNonce[offset]))
             {

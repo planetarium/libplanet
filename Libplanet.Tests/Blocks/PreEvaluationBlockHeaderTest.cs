@@ -31,7 +31,7 @@ namespace Libplanet.Tests.Blocks
 
             var validGenesisNonce = default(Nonce);
             byte[] validGenesisBytes =
-                _codec.Encode(_contents.GenesisMetadata.ToBencodex(validGenesisNonce));
+                _codec.Encode(_contents.GenesisMetadata.MakeCandidateData(validGenesisNonce));
             ImmutableArray<byte> validGenesisPreEvalHash =
                 _sha256.Digest(validGenesisBytes).ToImmutableArray();
             _validGenesisProof = (validGenesisNonce, validGenesisPreEvalHash);
@@ -43,7 +43,7 @@ namespace Libplanet.Tests.Blocks
             {
                 (Nonce Nonce, ImmutableArray<byte> Digest) regen =
                     Hashcash.Answer(
-                        n => new[] { _codec.Encode(_contents.BlockMetadata1.ToBencodex(n)) },
+                        n => new[] { _codec.Encode(_contents.BlockMetadata1.MakeCandidateData(n)) },
                         _sha256,
                         _contents.BlockMetadata1.Difficulty
                     );
@@ -64,14 +64,14 @@ namespace Libplanet.Tests.Blocks
                 new byte[] { 0x0f, 0xe0, 0xb5, 0x1e, 0xa0, 0x6c, 0x6f, 0xc9, 0x0b, 0x4f }
             );
             byte[] validBlock1Bytes =
-                _codec.Encode(_contents.BlockMetadata1.ToBencodex(validBlock1Nonce));
+                _codec.Encode(_contents.BlockMetadata1.MakeCandidateData(validBlock1Nonce));
             ImmutableArray<byte> validBlock1PreEvalHash =
                 _sha256.Digest(validBlock1Bytes).ToImmutableArray();
             _validBlock1Proof = (validBlock1Nonce, validBlock1PreEvalHash);
 
             var invalidBlock1Nonce = default(Nonce);
             byte[] invalidBlock1Bytes =
-                _codec.Encode(_contents.BlockMetadata1.ToBencodex(invalidBlock1Nonce));
+                _codec.Encode(_contents.BlockMetadata1.MakeCandidateData(invalidBlock1Nonce));
             ImmutableArray<byte> invalidBlock1PreEvalHash =
                 _sha256.Digest(invalidBlock1Bytes).ToImmutableArray();
             _invalidBlock1Proof = (invalidBlock1Nonce, invalidBlock1PreEvalHash);
@@ -302,7 +302,7 @@ namespace Libplanet.Tests.Blocks
         }
 
         [Fact]
-        public void ToBencodex()
+        public void MakeCandidateData()
         {
             var random = new Random();
 
@@ -324,11 +324,11 @@ namespace Libplanet.Tests.Blocks
                 nonce: _validGenesisProof.Nonce,
                 preEvaluationHash: _validGenesisProof.PreEvaluationHash
             );
-            AssertBencodexEqual(expectedGenesis, genesis.ToBencodex(default));
+            AssertBencodexEqual(expectedGenesis, genesis.MakeCandidateData(default));
             HashDigest<SHA256> stateRootHash = random.NextHashDigest<SHA256>();
             AssertBencodexEqual(
                 expectedGenesis.SetItem("state_root_hash", stateRootHash.ByteArray),
-                genesis.ToBencodex(stateRootHash)
+                genesis.MakeCandidateData(stateRootHash)
             );
 
             Bencodex.Types.Dictionary expectedBlock1 = Bencodex.Types.Dictionary.Empty
@@ -360,11 +360,11 @@ namespace Libplanet.Tests.Blocks
                 hashAlgorithm: _sha256,
                 nonce: _validBlock1Proof.Nonce
             );
-            AssertBencodexEqual(expectedBlock1, block1.ToBencodex(default));
+            AssertBencodexEqual(expectedBlock1, block1.MakeCandidateData(default));
             stateRootHash = random.NextHashDigest<SHA256>();
             AssertBencodexEqual(
                 expectedBlock1.SetItem("state_root_hash", stateRootHash.ByteArray),
-                block1.ToBencodex(stateRootHash)
+                block1.MakeCandidateData(stateRootHash)
             );
 
             var blockPv0 = _contents.BlockPv0.Mine(_sha256);
@@ -375,11 +375,11 @@ namespace Libplanet.Tests.Blocks
                 .Add("nonce", blockPv0.Nonce.ByteArray)
                 .Add("reward_beneficiary", ParseHex("268344BA46e6CA2A8a5096565548b9018bc687Ce"))
                 .Add("state_root_hash", default(HashDigest<SHA256>).ByteArray);
-            AssertBencodexEqual(expectedBlockPv0, blockPv0.ToBencodex(default));
+            AssertBencodexEqual(expectedBlockPv0, blockPv0.MakeCandidateData(default));
             stateRootHash = random.NextHashDigest<SHA256>();
             AssertBencodexEqual(
                 expectedBlockPv0.SetItem("state_root_hash", stateRootHash.ByteArray),
-                blockPv0.ToBencodex(stateRootHash)
+                blockPv0.MakeCandidateData(stateRootHash)
             );
 
             var blockPv1 = _contents.BlockPv1.Mine(_sha256);
@@ -399,11 +399,11 @@ namespace Libplanet.Tests.Blocks
                 )
                 .Add("protocol_version", 1)
                 .Add("state_root_hash", default(HashDigest<SHA256>).ByteArray);
-            AssertBencodexEqual(expectedBlockPv1, blockPv1.ToBencodex(default));
+            AssertBencodexEqual(expectedBlockPv1, blockPv1.MakeCandidateData(default));
             stateRootHash = random.NextHashDigest<SHA256>();
             AssertBencodexEqual(
                 expectedBlockPv1.SetItem("state_root_hash", stateRootHash.ByteArray),
-                blockPv1.ToBencodex(stateRootHash)
+                blockPv1.MakeCandidateData(stateRootHash)
             );
         }
 
@@ -422,14 +422,17 @@ namespace Libplanet.Tests.Blocks
             );
             ImmutableArray<byte> validSig = block1.MakeSignature(key, arbitraryHash);
             Assert.True(
-                key.PublicKey.Verify(_codec.Encode(block1.ToBencodex(arbitraryHash)), validSig)
+                key.PublicKey.Verify(
+                    _codec.Encode(block1.MakeCandidateData(arbitraryHash)),
+                    validSig
+                )
             );
             Assert.False(
-                key.PublicKey.Verify(_codec.Encode(block1.ToBencodex(default)), validSig)
+                key.PublicKey.Verify(_codec.Encode(block1.MakeCandidateData(default)), validSig)
             );
             Assert.False(
                 new PrivateKey().PublicKey.Verify(
-                    _codec.Encode(block1.ToBencodex(arbitraryHash)),
+                    _codec.Encode(block1.MakeCandidateData(arbitraryHash)),
                     validSig
                 )
             );

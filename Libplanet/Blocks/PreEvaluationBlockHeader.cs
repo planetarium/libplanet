@@ -289,9 +289,9 @@ namespace Libplanet.Blocks
         protected BlockMetadata Metadata { get; }
 
         /// <summary>
-        /// Serializes the block content into a Bencodex dictionary.  This data is used as
-        /// the input to calculate the block <see cref="Block{T}.Hash"/>, rather than transmitting
-        /// the block over the network.
+        /// Serializes data of a possible candidate shifted from it into a Bencodex dictionary.
+        /// This data is used as the input to calculate the block <see cref="Block{T}.Hash"/>,
+        /// rather than transmitting the block over the network.
         /// </summary>
         /// <param name="stateRootHash">The <see cref="Libplanet.Store.Trie.ITrie.Hash"/> of
         /// the resulting states after evaluating transactions and
@@ -300,12 +300,12 @@ namespace Libplanet.Blocks
         /// method with the <paramref name="stateRootHash"/>.  This must be <c>null</c> for
         /// blocks with earlier <seealso cref="ProtocolVersion"/>s than 2.</param>
         /// <returns>The serialized block header in a Bencodex dictionary.</returns>
-        public Bencodex.Types.Dictionary ToBencodex(
+        public Bencodex.Types.Dictionary MakeCandidateData(
             HashDigest<SHA256> stateRootHash,
             ImmutableArray<byte>? signature = null
         )
         {
-            Dictionary dict = Metadata.ToBencodex(Nonce)
+            Dictionary dict = Metadata.MakeCandidateData(Nonce)
                 .Add("state_root_hash", stateRootHash.ByteArray);
             if (signature is { } sig)
             {
@@ -352,7 +352,7 @@ namespace Libplanet.Blocks
                 throw new ArgumentException(m, nameof(privateKey));
             }
 
-            byte[] msg = Codec.Encode(ToBencodex(stateRootHash));
+            byte[] msg = Codec.Encode(MakeCandidateData(stateRootHash));
             byte[] sig = privateKey.Sign(msg);
             return ImmutableArray.Create(sig);
         }
@@ -374,7 +374,7 @@ namespace Libplanet.Blocks
         {
             if (PublicKey is { } pubKey && signature is { } sig)
             {
-                byte[] msg = Codec.Encode(ToBencodex(stateRootHash));
+                byte[] msg = Codec.Encode(MakeCandidateData(stateRootHash));
                 return pubKey.Verify(msg, sig);
             }
             else if (PublicKey is null)
@@ -398,7 +398,7 @@ namespace Libplanet.Blocks
             in HashDigest<SHA256> stateRootHash,
             ImmutableArray<byte>? signature
         ) =>
-            BlockHash.DeriveFrom(Codec.Encode(ToBencodex(stateRootHash, signature)));
+            BlockHash.DeriveFrom(Codec.Encode(MakeCandidateData(stateRootHash, signature)));
 
         /// <summary>
         /// Verifies if the <paramref name="preEvaluationHash"/> is the proper hash digest of

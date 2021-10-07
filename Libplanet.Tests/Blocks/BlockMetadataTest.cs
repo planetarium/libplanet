@@ -123,7 +123,7 @@ namespace Libplanet.Tests.Blocks
         }
 
         [Fact]
-        public void ToBencodex()
+        public void MakeCandidateData()
         {
             Bencodex.Types.Dictionary expectedGenesis = Bencodex.Types.Dictionary.Empty
                 .Add("index", 0L)
@@ -136,10 +136,10 @@ namespace Libplanet.Tests.Blocks
                     ParseHex("0200e02709cc0c051dc105188c454a2e7ef7b36b85da34529d3abc1968167cf54f")
                 )
                 .Add("protocol_version", 2);
-            AssertBencodexEqual(expectedGenesis, GenesisMetadata.ToBencodex(default));
+            AssertBencodexEqual(expectedGenesis, GenesisMetadata.MakeCandidateData(default));
             AssertBencodexEqual(
                 expectedGenesis.SetItem("nonce", new byte[] { 0x00, 0x01, 0x02 }),
-                GenesisMetadata.ToBencodex(new Nonce(new byte[] { 0x00, 0x01, 0x02 }))
+                GenesisMetadata.MakeCandidateData(new Nonce(new byte[] { 0x00, 0x01, 0x02 }))
             );
 
             Bencodex.Types.Dictionary expectedBlock1 = Bencodex.Types.Dictionary.Empty
@@ -163,7 +163,7 @@ namespace Libplanet.Tests.Blocks
                 .Add("protocol_version", 2);
             AssertBencodexEqual(
                 expectedBlock1,
-                BlockMetadata1.ToBencodex(new Nonce(new byte[] { 0xff, 0xef, 0x01, 0xcc }))
+                BlockMetadata1.MakeCandidateData(new Nonce(new byte[] { 0xff, 0xef, 0x01, 0xcc }))
             );
 
             Bencodex.Types.Dictionary expectedPv0 = Bencodex.Types.Dictionary.Empty
@@ -172,10 +172,10 @@ namespace Libplanet.Tests.Blocks
                 .Add("difficulty", 0L)
                 .Add("nonce", ImmutableArray<byte>.Empty)
                 .Add("reward_beneficiary", ParseHex("268344BA46e6CA2A8a5096565548b9018bc687Ce"));
-            AssertBencodexEqual(expectedPv0, BlockMetadataPv0.ToBencodex(default));
+            AssertBencodexEqual(expectedPv0, BlockMetadataPv0.MakeCandidateData(default));
             AssertBencodexEqual(
                 expectedPv0.SetItem("nonce", new byte[] { 0x00, 0x01, 0x02 }),
-                BlockMetadataPv0.ToBencodex(new Nonce(new byte[] { 0x00, 0x01, 0x02 }))
+                BlockMetadataPv0.MakeCandidateData(new Nonce(new byte[] { 0x00, 0x01, 0x02 }))
             );
 
             Bencodex.Types.Dictionary expectedPv1 = Bencodex.Types.Dictionary.Empty
@@ -193,15 +193,15 @@ namespace Libplanet.Tests.Blocks
                     ParseHex("654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0")
                 )
                 .Add("protocol_version", 1);
-            AssertBencodexEqual(expectedPv1, BlockMetadataPv1.ToBencodex(default));
+            AssertBencodexEqual(expectedPv1, BlockMetadataPv1.MakeCandidateData(default));
             AssertBencodexEqual(
                 expectedPv1.SetItem("nonce", new byte[] { 0x00, 0x01, 0x02 }),
-                BlockMetadataPv1.ToBencodex(new Nonce(new byte[] { 0x00, 0x01, 0x02 }))
+                BlockMetadataPv1.MakeCandidateData(new Nonce(new byte[] { 0x00, 0x01, 0x02 }))
             );
         }
 
         [Fact]
-        public void ToBencodexPv1()
+        public void MakeCandidateDataPv1()
         {
             Bencodex.Types.Dictionary expected = Bencodex.Types.Dictionary.Empty
                 .Add("index", 1L)
@@ -227,12 +227,12 @@ namespace Libplanet.Tests.Blocks
                 .Add("protocol_version", 1);
             AssertBencodexEqual(
                 expected,
-                BlockMetadataPv1.ToBencodex(new Nonce(new byte[] { 0xff, 0xef, 0x01, 0xcc }))
+                BlockMetadataPv1.MakeCandidateData(new Nonce(new byte[] { 0xff, 0xef, 0x01, 0xcc }))
             );
         }
 
         [Fact]
-        public void ToBencodexPv0()
+        public void MakeCandidateDataPv0()
         {
             Bencodex.Types.Dictionary expected = Bencodex.Types.Dictionary.Empty
                 .Add("index", 0L)
@@ -245,7 +245,7 @@ namespace Libplanet.Tests.Blocks
                 );
             AssertBencodexEqual(
                 (IValue)expected.Remove((Text)"protocol_version"),
-                BlockMetadataPv0.ToBencodex(default)
+                BlockMetadataPv0.MakeCandidateData(default)
             );
         }
 
@@ -302,18 +302,18 @@ namespace Libplanet.Tests.Blocks
             HashAlgorithmType sha256 = HashAlgorithmType.Of<SHA256>();
             (Nonce nonce, ImmutableArray<byte> preEvalHash) = GenesisMetadata.MineNonce(sha256);
             Assert.True(Satisfies(preEvalHash, GenesisMetadata.Difficulty));
-            AssertBytesEqual(
-                sha256.Digest(codec.Encode(GenesisMetadata.ToBencodex(nonce))).ToImmutableArray(),
-                preEvalHash
+            ImmutableArray<byte> actual = ImmutableArray.Create(
+                sha256.Digest(codec.Encode(GenesisMetadata.MakeCandidateData(nonce)))
             );
+            AssertBytesEqual(actual, preEvalHash);
 
             HashAlgorithmType sha512 = HashAlgorithmType.Of<SHA512>();
             (nonce, preEvalHash) = BlockMetadata1.MineNonce(sha512);
             Assert.True(Satisfies(preEvalHash, BlockMetadata1.Difficulty));
-            AssertBytesEqual(
-                sha512.Digest(codec.Encode(BlockMetadata1.ToBencodex(nonce))).ToImmutableArray(),
-                preEvalHash
+            actual = ImmutableArray.Create(
+                sha512.Digest(codec.Encode(BlockMetadata1.MakeCandidateData(nonce)))
             );
+            AssertBytesEqual(actual, preEvalHash);
         }
 
         [Fact]
