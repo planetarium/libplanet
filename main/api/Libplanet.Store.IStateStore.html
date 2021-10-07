@@ -156,7 +156,7 @@ If <code>null</code> is passed the empty state root trie is returned.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">void PruneStates(IImmutableSet&lt;HashDigest&lt;SHA256&gt;&gt; survivalStateRootHashes)</code></pre>
+    <pre><code class="lang-csharp hljs">void PruneStates(IImmutableSet&lt;HashDigest&lt;SHA256&gt;&gt; survivingStateRootHashes)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -170,7 +170,7 @@ If <code>null</code> is passed the empty state root trie is returned.</p>
     <tbody>
       <tr>
         <td><span class="xref">IImmutableSet</span>&lt;<a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;&gt;</td>
-        <td><span class="parametername">survivalStateRootHashes</span></td>
+        <td><span class="parametername">survivingStateRootHashes</span></td>
         <td><p>The state root hashes <em>not</em> to prune.
 These state root hashes are guaranteed to survive after pruning.</p>
 </td>

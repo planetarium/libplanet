@@ -112,6 +112,9 @@ hash.</p>
       <a class="xref" href="Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_Miner">PreEvaluationBlockHeader.Miner</a>
     </div>
     <div>
+      <a class="xref" href="Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_PublicKey">PreEvaluationBlockHeader.PublicKey</a>
+    </div>
+    <div>
       <a class="xref" href="Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_Difficulty">PreEvaluationBlockHeader.Difficulty</a>
     </div>
     <div>
@@ -133,10 +136,16 @@ hash.</p>
       <a class="xref" href="Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_Metadata">PreEvaluationBlockHeader.Metadata</a>
     </div>
     <div>
-      <a class="xref" href="Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_ToBencodex_Libplanet_HashDigest_System_Security_Cryptography_SHA256__">PreEvaluationBlockHeader.ToBencodex(HashDigest&lt;SHA256&gt;)</a>
+      <a class="xref" href="Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_MakeCandidateData_Libplanet_HashDigest_System_Security_Cryptography_SHA256__System_Nullable_ImmutableArray_System_Byte___">PreEvaluationBlockHeader.MakeCandidateData(HashDigest&lt;SHA256&gt;, Nullable&lt;ImmutableArray&lt;Byte&gt;&gt;)</a>
     </div>
     <div>
-      <a class="xref" href="Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_DeriveBlockHash_Libplanet_HashDigest_System_Security_Cryptography_SHA256___">PreEvaluationBlockHeader.DeriveBlockHash(HashDigest&lt;SHA256&gt;)</a>
+      <a class="xref" href="Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_MakeSignature_Libplanet_Crypto_PrivateKey_Libplanet_HashDigest_System_Security_Cryptography_SHA256__">PreEvaluationBlockHeader.MakeSignature(PrivateKey, HashDigest&lt;SHA256&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_VerifySignature_System_Nullable_ImmutableArray_System_Byte___Libplanet_HashDigest_System_Security_Cryptography_SHA256__">PreEvaluationBlockHeader.VerifySignature(Nullable&lt;ImmutableArray&lt;Byte&gt;&gt;, HashDigest&lt;SHA256&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_DeriveBlockHash_Libplanet_HashDigest_System_Security_Cryptography_SHA256___System_Nullable_ImmutableArray_System_Byte___">PreEvaluationBlockHeader.DeriveBlockHash(HashDigest&lt;SHA256&gt;, Nullable&lt;ImmutableArray&lt;Byte&gt;&gt;)</a>
     </div>
     <div>
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
@@ -194,7 +203,7 @@ parameter is aligned with <a class="xref" href="Libplanet.Tx.Transaction-1.html"
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_PreEvaluationBlock_1__ctor_Libplanet_Blocks_IBlockContent__0__Libplanet_HashAlgorithmType_Libplanet_Nonce_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.PreEvaluationBlock%601.%23ctor(Libplanet.Blocks.IBlockContent%7B%600%7D%2CLibplanet.HashAlgorithmType%2CLibplanet.Nonce)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlock.cs/#L72">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlock.cs/#L73">View Source</a>
   </span>
   <a id="Libplanet_Blocks_PreEvaluationBlock_1__ctor_" data-uid="Libplanet.Blocks.PreEvaluationBlock`1.#ctor*"></a>
   <h4 id="Libplanet_Blocks_PreEvaluationBlock_1__ctor_Libplanet_Blocks_IBlockContent__0__Libplanet_HashAlgorithmType_Libplanet_Nonce_" data-uid="Libplanet.Blocks.PreEvaluationBlock`1.#ctor(Libplanet.Blocks.IBlockContent{`0},Libplanet.HashAlgorithmType,Libplanet.Nonce)">PreEvaluationBlock(IBlockContent&lt;T&gt;, HashAlgorithmType, Nonce)</h4>
@@ -326,7 +335,7 @@ its <a class="xref" href="Libplanet.Blocks.IBlockContent-1.html#Libplanet_Blocks
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_PreEvaluationBlock_1__ctor_Libplanet_Blocks_IBlockContent__0__Libplanet_HashAlgorithmType_Libplanet_Nonce_ImmutableArray_System_Byte__.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.PreEvaluationBlock%601.%23ctor(Libplanet.Blocks.IBlockContent%7B%600%7D%2CLibplanet.HashAlgorithmType%2CLibplanet.Nonce%2CImmutableArray%7BSystem.Byte%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlock.cs/#L128">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlock.cs/#L129">View Source</a>
   </span>
   <a id="Libplanet_Blocks_PreEvaluationBlock_1__ctor_" data-uid="Libplanet.Blocks.PreEvaluationBlock`1.#ctor*"></a>
   <h4 id="Libplanet_Blocks_PreEvaluationBlock_1__ctor_Libplanet_Blocks_IBlockContent__0__Libplanet_HashAlgorithmType_Libplanet_Nonce_ImmutableArray_System_Byte__" data-uid="Libplanet.Blocks.PreEvaluationBlock`1.#ctor(Libplanet.Blocks.IBlockContent{`0},Libplanet.HashAlgorithmType,Libplanet.Nonce,ImmutableArray{System.Byte})">PreEvaluationBlock(IBlockContent&lt;T&gt;, HashAlgorithmType, Nonce, ImmutableArray&lt;Byte&gt;)</h4>
@@ -470,7 +479,7 @@ its <a class="xref" href="Libplanet.Blocks.IBlockContent-1.html#Libplanet_Blocks
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_PreEvaluationBlock_1_Transactions.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.PreEvaluationBlock%601.Transactions%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlock.cs/#L166">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlock.cs/#L167">View Source</a>
   </span>
   <a id="Libplanet_Blocks_PreEvaluationBlock_1_Transactions_" data-uid="Libplanet.Blocks.PreEvaluationBlock`1.Transactions*"></a>
   <h4 id="Libplanet_Blocks_PreEvaluationBlock_1_Transactions" data-uid="Libplanet.Blocks.PreEvaluationBlock`1.Transactions">Transactions</h4>
@@ -506,7 +515,7 @@ its <a class="xref" href="Libplanet.Blocks.IBlockContent-1.html#Libplanet_Blocks
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_PreEvaluationBlock_1_DetermineStateRootHash_Libplanet_Action_IAction_Libplanet_Store_IStateStore_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.PreEvaluationBlock%601.DetermineStateRootHash(Libplanet.Action.IAction%2CLibplanet.Store.IStateStore)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlock.cs/#L219">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlock.cs/#L276">View Source</a>
   </span>
   <a id="Libplanet_Blocks_PreEvaluationBlock_1_DetermineStateRootHash_" data-uid="Libplanet.Blocks.PreEvaluationBlock`1.DetermineStateRootHash*"></a>
   <h4 id="Libplanet_Blocks_PreEvaluationBlock_1_DetermineStateRootHash_Libplanet_Action_IAction_Libplanet_Store_IStateStore_" data-uid="Libplanet.Blocks.PreEvaluationBlock`1.DetermineStateRootHash(Libplanet.Action.IAction,Libplanet.Store.IStateStore)">DetermineStateRootHash(IAction, IStateStore)</h4>
@@ -587,7 +596,7 @@ instead.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_PreEvaluationBlock_1_DetermineStateRootHash_Libplanet_Blockchain_BlockChain__0__.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.PreEvaluationBlock%601.DetermineStateRootHash(Libplanet.Blockchain.BlockChain%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlock.cs/#L257">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlock.cs/#L314">View Source</a>
   </span>
   <a id="Libplanet_Blocks_PreEvaluationBlock_1_DetermineStateRootHash_" data-uid="Libplanet.Blocks.PreEvaluationBlock`1.DetermineStateRootHash*"></a>
   <h4 id="Libplanet_Blocks_PreEvaluationBlock_1_DetermineStateRootHash_Libplanet_Blockchain_BlockChain__0__" data-uid="Libplanet.Blocks.PreEvaluationBlock`1.DetermineStateRootHash(Libplanet.Blockchain.BlockChain{`0})">DetermineStateRootHash(BlockChain&lt;T&gt;)</h4>
@@ -636,22 +645,23 @@ the <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_PreEvaluationBlock_1_Evaluate_Libplanet_Action_IAction_Libplanet_Store_IStateStore_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.PreEvaluationBlock%601.Evaluate(Libplanet.Action.IAction%2CLibplanet.Store.IStateStore)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_PreEvaluationBlock_1_Evaluate_Libplanet_Crypto_PrivateKey_Libplanet_Action_IAction_Libplanet_Store_IStateStore_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.PreEvaluationBlock%601.Evaluate(Libplanet.Crypto.PrivateKey%2CLibplanet.Action.IAction%2CLibplanet.Store.IStateStore)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlock.cs/#L189">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlock.cs/#L203">View Source</a>
   </span>
   <a id="Libplanet_Blocks_PreEvaluationBlock_1_Evaluate_" data-uid="Libplanet.Blocks.PreEvaluationBlock`1.Evaluate*"></a>
-  <h4 id="Libplanet_Blocks_PreEvaluationBlock_1_Evaluate_Libplanet_Action_IAction_Libplanet_Store_IStateStore_" data-uid="Libplanet.Blocks.PreEvaluationBlock`1.Evaluate(Libplanet.Action.IAction,Libplanet.Store.IStateStore)">Evaluate(IAction, IStateStore)</h4>
+  <h4 id="Libplanet_Blocks_PreEvaluationBlock_1_Evaluate_Libplanet_Crypto_PrivateKey_Libplanet_Action_IAction_Libplanet_Store_IStateStore_" data-uid="Libplanet.Blocks.PreEvaluationBlock`1.Evaluate(Libplanet.Crypto.PrivateKey,Libplanet.Action.IAction,Libplanet.Store.IStateStore)">Evaluate(PrivateKey, IAction, IStateStore)</h4>
   <div class="markdown level1 summary"><p>Evaluates all actions in the <a class="xref" href="Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_Transactions">Transactions</a> and
 a <code data-dev-comment-type="paramref" class="paramref">blockAction</code> (if any), and returns a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> instance
 combined with the <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_StateRootHash">StateRootHash</a> determined from ground zero
-(i.e., empty state root).</p>
+(i.e., empty state root).  The returned <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> is signed by the given
+<code data-dev-comment-type="paramref" class="paramref">privateKey</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Block&lt;T&gt; Evaluate(IAction blockAction, IStateStore stateStore)</code></pre>
+    <pre><code class="lang-csharp hljs">public Block&lt;T&gt; Evaluate(PrivateKey privateKey, IAction blockAction, IStateStore stateStore)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -663,6 +673,14 @@ combined with the <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a></td>
+        <td><span class="parametername">privateKey</span></td>
+        <td><p>The miner's private key to be used for signing the block.
+This must match to the block's <a class="xref" href="Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_Miner">Miner</a> and
+<a class="xref" href="Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_PublicKey">PublicKey</a>.</p>
+</td>
+      </tr>
       <tr>
         <td><a class="xref" href="Libplanet.Action.IAction.html">IAction</a></td>
         <td><span class="parametername">blockAction</span></td>
@@ -689,12 +707,13 @@ combined with the <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_
     <tbody>
       <tr>
         <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
-        <td><p>The block combined with the resulting <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_StateRootHash">StateRootHash</a>.</p>
+        <td><p>The block combined with the resulting <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_StateRootHash">StateRootHash</a>.
+It is signed by the given <code data-dev-comment-type="paramref" class="paramref">privateKey</code>.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Blocks_PreEvaluationBlock_1_Evaluate_Libplanet_Action_IAction_Libplanet_Store_IStateStore__remarks">Remarks</h5>
+  <h5 id="Libplanet_Blocks_PreEvaluationBlock_1_Evaluate_Libplanet_Crypto_PrivateKey_Libplanet_Action_IAction_Libplanet_Store_IStateStore__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>This can be used with only genesis blocks.  For blocks with indices greater
 than zero, use <a class="xref" href="Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_DetermineStateRootHash_Libplanet_Blockchain_BlockChain__0__">DetermineStateRootHash(BlockChain&lt;T&gt;)</a> overloaded one
 instead.</p>
@@ -711,29 +730,37 @@ instead.</p>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></td>
         <td><p>Thrown when its
-<a class="xref" href="Libplanet.Blocks.IBlockMetadata.html#Libplanet_Blocks_IBlockMetadata_Index">Index</a> is not zero.</p>
+<a class="xref" href="Libplanet.Blocks.IBlockMetadata.html#Libplanet_Blocks_IBlockMetadata_Index">Index</a> is not zero, or the block's
+<a class="xref" href="Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_ProtocolVersion">ProtocolVersion</a> is less than 2.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">privateKey</code>
+does not match to the block miner's <a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a>.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_PreEvaluationBlock_1_Evaluate_Libplanet_Blockchain_BlockChain__0__.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.PreEvaluationBlock%601.Evaluate(Libplanet.Blockchain.BlockChain%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_PreEvaluationBlock_1_Evaluate_Libplanet_Crypto_PrivateKey_Libplanet_Blockchain_BlockChain__0__.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.PreEvaluationBlock%601.Evaluate(Libplanet.Crypto.PrivateKey%2CLibplanet.Blockchain.BlockChain%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlock.cs/#L202">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlock.cs/#L234">View Source</a>
   </span>
   <a id="Libplanet_Blocks_PreEvaluationBlock_1_Evaluate_" data-uid="Libplanet.Blocks.PreEvaluationBlock`1.Evaluate*"></a>
-  <h4 id="Libplanet_Blocks_PreEvaluationBlock_1_Evaluate_Libplanet_Blockchain_BlockChain__0__" data-uid="Libplanet.Blocks.PreEvaluationBlock`1.Evaluate(Libplanet.Blockchain.BlockChain{`0})">Evaluate(BlockChain&lt;T&gt;)</h4>
+  <h4 id="Libplanet_Blocks_PreEvaluationBlock_1_Evaluate_Libplanet_Crypto_PrivateKey_Libplanet_Blockchain_BlockChain__0__" data-uid="Libplanet.Blocks.PreEvaluationBlock`1.Evaluate(Libplanet.Crypto.PrivateKey,Libplanet.Blockchain.BlockChain{`0})">Evaluate(PrivateKey, BlockChain&lt;T&gt;)</h4>
   <div class="markdown level1 summary"><p>Evaluates all actions in the <a class="xref" href="Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_Transactions">Transactions</a> and an optional
 <a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_BlockAction">BlockAction</a>, and returns
 a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> instance combined with the <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_StateRootHash">StateRootHash</a>
-determined from ground zero (i.e., empty state root).</p>
+determined from ground zero (i.e., empty state root). The returned
+<a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> is signed by the given <code data-dev-comment-type="paramref" class="paramref">privateKey</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Block&lt;T&gt; Evaluate(BlockChain&lt;T&gt; blockChain)</code></pre>
+    <pre><code class="lang-csharp hljs">public Block&lt;T&gt; Evaluate(PrivateKey privateKey, BlockChain&lt;T&gt; blockChain)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -745,6 +772,14 @@ determined from ground zero (i.e., empty state root).</p>
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a></td>
+        <td><span class="parametername">privateKey</span></td>
+        <td><p>The miner's private key to be used for signing the block.
+This must match to the block's <a class="xref" href="Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_Miner">Miner</a> and
+<a class="xref" href="Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_PublicKey">PublicKey</a>.</p>
+</td>
+      </tr>
       <tr>
         <td><a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain</a>&lt;T&gt;</td>
         <td><span class="parametername">blockChain</span></td>
@@ -764,7 +799,125 @@ determined from ground zero (i.e., empty state root).</p>
     <tbody>
       <tr>
         <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
-        <td><p>The block combined with the resulting <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_StateRootHash">StateRootHash</a>.</p>
+        <td><p>The block combined with the resulting <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_StateRootHash">StateRootHash</a>.
+It is signed by the given <code data-dev-comment-type="paramref" class="paramref">privateKey</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Blocks_PreEvaluationBlock_1_Evaluate_Libplanet_Crypto_PrivateKey_Libplanet_Blockchain_BlockChain__0___remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>As blocks have their signatures since the <a class="xref" href="Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_ProtocolVersion">ProtocolVersion</a> 2, it is not usable with blocks of
+the earlier <a class="xref" href="Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_ProtocolVersion">ProtocolVersion</a>s than 2.
+To create a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> instance with <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_ProtocolVersion">ProtocolVersion</a>
+less than 2, use <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>'s constructors with <code>null</code> signatures.</p>
+</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></td>
+        <td><p>Thrown when the block's
+<a class="xref" href="Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_ProtocolVersion">ProtocolVersion</a> is less than 2.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">privateKey</code>
+does not match to the block miner's <a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_PreEvaluationBlock_1_Sign_Libplanet_Crypto_PrivateKey_Libplanet_HashDigest_System_Security_Cryptography_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.PreEvaluationBlock%601.Sign(Libplanet.Crypto.PrivateKey%2CLibplanet.HashDigest%7BSystem.Security.Cryptography.SHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlock.cs/#L256">View Source</a>
+  </span>
+  <a id="Libplanet_Blocks_PreEvaluationBlock_1_Sign_" data-uid="Libplanet.Blocks.PreEvaluationBlock`1.Sign*"></a>
+  <h4 id="Libplanet_Blocks_PreEvaluationBlock_1_Sign_Libplanet_Crypto_PrivateKey_Libplanet_HashDigest_System_Security_Cryptography_SHA256__" data-uid="Libplanet.Blocks.PreEvaluationBlock`1.Sign(Libplanet.Crypto.PrivateKey,Libplanet.HashDigest{System.Security.Cryptography.SHA256})">Sign(PrivateKey, HashDigest&lt;SHA256&gt;)</h4>
+  <div class="markdown level1 summary"><p>Signs the block content with the given <code data-dev-comment-type="paramref" class="paramref">stateRootHash</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Block&lt;T&gt; Sign(PrivateKey privateKey, HashDigest&lt;SHA256&gt; stateRootHash)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a></td>
+        <td><span class="parametername">privateKey</span></td>
+        <td><p>The miner's private key to be used for signing the block.
+This must match to the block's <a class="xref" href="Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_Miner">Miner</a> and
+<a class="xref" href="Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_PublicKey">PublicKey</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;</td>
+        <td><span class="parametername">stateRootHash</span></td>
+        <td><p>The state root hash to include to the input message to
+sign.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td><p>The signed block with the <code data-dev-comment-type="paramref" class="paramref">stateRootHash</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Blocks_PreEvaluationBlock_1_Sign_Libplanet_Crypto_PrivateKey_Libplanet_HashDigest_System_Security_Cryptography_SHA256___remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>As blocks have their signatures since the <a class="xref" href="Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_ProtocolVersion">ProtocolVersion</a> 2, it is not usable with blocks of
+the earlier <a class="xref" href="Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_ProtocolVersion">ProtocolVersion</a>s than 2.
+To create a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> instance with <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_ProtocolVersion">ProtocolVersion</a>
+less than 2, use <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>'s constructors with <code>null</code> signatures.</p>
+</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></td>
+        <td><p>Thrown when the block's
+<a class="xref" href="Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_ProtocolVersion">ProtocolVersion</a> is less than 2.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">privateKey</code>
+does not match to the block miner's <a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a>.</p>
 </td>
       </tr>
     </tbody>
@@ -806,7 +959,7 @@ determined from ground zero (i.e., empty state root).</p>
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_PreEvaluationBlock_1.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.PreEvaluationBlock%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlock.cs/#L28" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlock.cs/#L29" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

@@ -2214,24 +2214,24 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).MakeTransaction
   nameWithType: BlockChain<T>.MakeTransaction
   nameWithType.vb: BlockChain(Of T).MakeTransaction
-- uid: Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Address,System.DateTimeOffset,System.Boolean,System.Int32,System.Int32,System.Collections.Generic.IComparer{Libplanet.Tx.Transaction{`0}},System.Threading.CancellationToken)
-  name: MineBlock(Address, DateTimeOffset, Boolean, Int32, Int32, IComparer<Transaction<T>>, CancellationToken)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MineBlock_Libplanet_Address_System_DateTimeOffset_System_Boolean_System_Int32_System_Int32_System_Collections_Generic_IComparer_Libplanet_Tx_Transaction__0___System_Threading_CancellationToken_
-  commentId: M:Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Address,System.DateTimeOffset,System.Boolean,System.Int32,System.Int32,System.Collections.Generic.IComparer{Libplanet.Tx.Transaction{`0}},System.Threading.CancellationToken)
-  name.vb: MineBlock(Address, DateTimeOffset, Boolean, Int32, Int32, IComparer(Of Transaction(Of T)), CancellationToken)
-  fullName: Libplanet.Blockchain.BlockChain<T>.MineBlock(Libplanet.Address, System.DateTimeOffset, System.Boolean, System.Int32, System.Int32, System.Collections.Generic.IComparer<Libplanet.Tx.Transaction<T>>, System.Threading.CancellationToken)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).MineBlock(Libplanet.Address, System.DateTimeOffset, System.Boolean, System.Int32, System.Int32, System.Collections.Generic.IComparer(Of Libplanet.Tx.Transaction(Of T)), System.Threading.CancellationToken)
-  nameWithType: BlockChain<T>.MineBlock(Address, DateTimeOffset, Boolean, Int32, Int32, IComparer<Transaction<T>>, CancellationToken)
-  nameWithType.vb: BlockChain(Of T).MineBlock(Address, DateTimeOffset, Boolean, Int32, Int32, IComparer(Of Transaction(Of T)), CancellationToken)
-- uid: Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Address,System.Nullable{System.DateTimeOffset},System.Nullable{System.Boolean},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Collections.Generic.IComparer{Libplanet.Tx.Transaction{`0}},System.Nullable{System.Threading.CancellationToken})
-  name: MineBlock(Address, Nullable<DateTimeOffset>, Nullable<Boolean>, Nullable<Int32>, Nullable<Int32>, IComparer<Transaction<T>>, Nullable<CancellationToken>)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MineBlock_Libplanet_Address_System_Nullable_System_DateTimeOffset__System_Nullable_System_Boolean__System_Nullable_System_Int32__System_Nullable_System_Int32__System_Collections_Generic_IComparer_Libplanet_Tx_Transaction__0___System_Nullable_System_Threading_CancellationToken__
-  commentId: M:Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Address,System.Nullable{System.DateTimeOffset},System.Nullable{System.Boolean},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Collections.Generic.IComparer{Libplanet.Tx.Transaction{`0}},System.Nullable{System.Threading.CancellationToken})
-  name.vb: MineBlock(Address, Nullable(Of DateTimeOffset), Nullable(Of Boolean), Nullable(Of Int32), Nullable(Of Int32), IComparer(Of Transaction(Of T)), Nullable(Of CancellationToken))
-  fullName: Libplanet.Blockchain.BlockChain<T>.MineBlock(Libplanet.Address, System.Nullable<System.DateTimeOffset>, System.Nullable<System.Boolean>, System.Nullable<System.Int32>, System.Nullable<System.Int32>, System.Collections.Generic.IComparer<Libplanet.Tx.Transaction<T>>, System.Nullable<System.Threading.CancellationToken>)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).MineBlock(Libplanet.Address, System.Nullable(Of System.DateTimeOffset), System.Nullable(Of System.Boolean), System.Nullable(Of System.Int32), System.Nullable(Of System.Int32), System.Collections.Generic.IComparer(Of Libplanet.Tx.Transaction(Of T)), System.Nullable(Of System.Threading.CancellationToken))
-  nameWithType: BlockChain<T>.MineBlock(Address, Nullable<DateTimeOffset>, Nullable<Boolean>, Nullable<Int32>, Nullable<Int32>, IComparer<Transaction<T>>, Nullable<CancellationToken>)
-  nameWithType.vb: BlockChain(Of T).MineBlock(Address, Nullable(Of DateTimeOffset), Nullable(Of Boolean), Nullable(Of Int32), Nullable(Of Int32), IComparer(Of Transaction(Of T)), Nullable(Of CancellationToken))
+- uid: Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Crypto.PrivateKey,System.DateTimeOffset,System.Boolean,System.Int32,System.Int32,System.Collections.Generic.IComparer{Libplanet.Tx.Transaction{`0}},System.Threading.CancellationToken)
+  name: MineBlock(PrivateKey, DateTimeOffset, Boolean, Int32, Int32, IComparer<Transaction<T>>, CancellationToken)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MineBlock_Libplanet_Crypto_PrivateKey_System_DateTimeOffset_System_Boolean_System_Int32_System_Int32_System_Collections_Generic_IComparer_Libplanet_Tx_Transaction__0___System_Threading_CancellationToken_
+  commentId: M:Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Crypto.PrivateKey,System.DateTimeOffset,System.Boolean,System.Int32,System.Int32,System.Collections.Generic.IComparer{Libplanet.Tx.Transaction{`0}},System.Threading.CancellationToken)
+  name.vb: MineBlock(PrivateKey, DateTimeOffset, Boolean, Int32, Int32, IComparer(Of Transaction(Of T)), CancellationToken)
+  fullName: Libplanet.Blockchain.BlockChain<T>.MineBlock(Libplanet.Crypto.PrivateKey, System.DateTimeOffset, System.Boolean, System.Int32, System.Int32, System.Collections.Generic.IComparer<Libplanet.Tx.Transaction<T>>, System.Threading.CancellationToken)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).MineBlock(Libplanet.Crypto.PrivateKey, System.DateTimeOffset, System.Boolean, System.Int32, System.Int32, System.Collections.Generic.IComparer(Of Libplanet.Tx.Transaction(Of T)), System.Threading.CancellationToken)
+  nameWithType: BlockChain<T>.MineBlock(PrivateKey, DateTimeOffset, Boolean, Int32, Int32, IComparer<Transaction<T>>, CancellationToken)
+  nameWithType.vb: BlockChain(Of T).MineBlock(PrivateKey, DateTimeOffset, Boolean, Int32, Int32, IComparer(Of Transaction(Of T)), CancellationToken)
+- uid: Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Crypto.PrivateKey,System.Nullable{System.DateTimeOffset},System.Nullable{System.Boolean},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Collections.Generic.IComparer{Libplanet.Tx.Transaction{`0}},System.Nullable{System.Threading.CancellationToken})
+  name: MineBlock(PrivateKey, Nullable<DateTimeOffset>, Nullable<Boolean>, Nullable<Int32>, Nullable<Int32>, IComparer<Transaction<T>>, Nullable<CancellationToken>)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MineBlock_Libplanet_Crypto_PrivateKey_System_Nullable_System_DateTimeOffset__System_Nullable_System_Boolean__System_Nullable_System_Int32__System_Nullable_System_Int32__System_Collections_Generic_IComparer_Libplanet_Tx_Transaction__0___System_Nullable_System_Threading_CancellationToken__
+  commentId: M:Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Crypto.PrivateKey,System.Nullable{System.DateTimeOffset},System.Nullable{System.Boolean},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Collections.Generic.IComparer{Libplanet.Tx.Transaction{`0}},System.Nullable{System.Threading.CancellationToken})
+  name.vb: MineBlock(PrivateKey, Nullable(Of DateTimeOffset), Nullable(Of Boolean), Nullable(Of Int32), Nullable(Of Int32), IComparer(Of Transaction(Of T)), Nullable(Of CancellationToken))
+  fullName: Libplanet.Blockchain.BlockChain<T>.MineBlock(Libplanet.Crypto.PrivateKey, System.Nullable<System.DateTimeOffset>, System.Nullable<System.Boolean>, System.Nullable<System.Int32>, System.Nullable<System.Int32>, System.Collections.Generic.IComparer<Libplanet.Tx.Transaction<T>>, System.Nullable<System.Threading.CancellationToken>)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).MineBlock(Libplanet.Crypto.PrivateKey, System.Nullable(Of System.DateTimeOffset), System.Nullable(Of System.Boolean), System.Nullable(Of System.Int32), System.Nullable(Of System.Int32), System.Collections.Generic.IComparer(Of Libplanet.Tx.Transaction(Of T)), System.Nullable(Of System.Threading.CancellationToken))
+  nameWithType: BlockChain<T>.MineBlock(PrivateKey, Nullable<DateTimeOffset>, Nullable<Boolean>, Nullable<Int32>, Nullable<Int32>, IComparer<Transaction<T>>, Nullable<CancellationToken>)
+  nameWithType.vb: BlockChain(Of T).MineBlock(PrivateKey, Nullable(Of DateTimeOffset), Nullable(Of Boolean), Nullable(Of Int32), Nullable(Of Int32), IComparer(Of Transaction(Of T)), Nullable(Of CancellationToken))
 - uid: Libplanet.Blockchain.BlockChain`1.MineBlock*
   name: MineBlock
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MineBlock_
@@ -6120,15 +6120,15 @@ references:
   fullName.vb: Libplanet.Blocks.Block(Of T).Block(Libplanet.Blocks.IBlockHeader, System.Collections.Generic.IEnumerable(Of Libplanet.Tx.Transaction(Of T)))
   nameWithType: Block<T>.Block(IBlockHeader, IEnumerable<Transaction<T>>)
   nameWithType.vb: Block(Of T).Block(IBlockHeader, IEnumerable(Of Transaction(Of T)))
-- uid: Libplanet.Blocks.Block`1.#ctor(Libplanet.Blocks.PreEvaluationBlock{`0},Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name: Block(PreEvaluationBlock<T>, HashDigest<SHA256>)
-  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1__ctor_Libplanet_Blocks_PreEvaluationBlock__0__Libplanet_HashDigest_System_Security_Cryptography_SHA256__
-  commentId: M:Libplanet.Blocks.Block`1.#ctor(Libplanet.Blocks.PreEvaluationBlock{`0},Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name.vb: Block(PreEvaluationBlock(Of T), HashDigest(Of SHA256))
-  fullName: Libplanet.Blocks.Block<T>.Block(Libplanet.Blocks.PreEvaluationBlock<T>, Libplanet.HashDigest<System.Security.Cryptography.SHA256>)
-  fullName.vb: Libplanet.Blocks.Block(Of T).Block(Libplanet.Blocks.PreEvaluationBlock(Of T), Libplanet.HashDigest(Of System.Security.Cryptography.SHA256))
-  nameWithType: Block<T>.Block(PreEvaluationBlock<T>, HashDigest<SHA256>)
-  nameWithType.vb: Block(Of T).Block(PreEvaluationBlock(Of T), HashDigest(Of SHA256))
+- uid: Libplanet.Blocks.Block`1.#ctor(Libplanet.Blocks.PreEvaluationBlock{`0},Libplanet.HashDigest{System.Security.Cryptography.SHA256},System.Nullable{ImmutableArray{System.Byte}})
+  name: Block(PreEvaluationBlock<T>, HashDigest<SHA256>, Nullable<ImmutableArray<Byte>>)
+  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1__ctor_Libplanet_Blocks_PreEvaluationBlock__0__Libplanet_HashDigest_System_Security_Cryptography_SHA256__System_Nullable_ImmutableArray_System_Byte___
+  commentId: M:Libplanet.Blocks.Block`1.#ctor(Libplanet.Blocks.PreEvaluationBlock{`0},Libplanet.HashDigest{System.Security.Cryptography.SHA256},System.Nullable{ImmutableArray{System.Byte}})
+  name.vb: Block(PreEvaluationBlock(Of T), HashDigest(Of SHA256), Nullable(Of ImmutableArray(Of Byte)))
+  fullName: Libplanet.Blocks.Block<T>.Block(Libplanet.Blocks.PreEvaluationBlock<T>, Libplanet.HashDigest<System.Security.Cryptography.SHA256>, System.Nullable<ImmutableArray<System.Byte>>)
+  fullName.vb: Libplanet.Blocks.Block(Of T).Block(Libplanet.Blocks.PreEvaluationBlock(Of T), Libplanet.HashDigest(Of System.Security.Cryptography.SHA256), System.Nullable(Of ImmutableArray(Of System.Byte)))
+  nameWithType: Block<T>.Block(PreEvaluationBlock<T>, HashDigest<SHA256>, Nullable<ImmutableArray<Byte>>)
+  nameWithType.vb: Block(Of T).Block(PreEvaluationBlock(Of T), HashDigest(Of SHA256), Nullable(Of ImmutableArray(Of Byte)))
 - uid: Libplanet.Blocks.Block`1.#ctor*
   name: Block
   href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1__ctor_
@@ -6412,6 +6412,40 @@ references:
   fullName.vb: Libplanet.Blocks.Block(Of T).ProtocolVersion
   nameWithType: Block<T>.ProtocolVersion
   nameWithType.vb: Block(Of T).ProtocolVersion
+- uid: Libplanet.Blocks.Block`1.PublicKey
+  name: PublicKey
+  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_PublicKey
+  commentId: P:Libplanet.Blocks.Block`1.PublicKey
+  fullName: Libplanet.Blocks.Block<T>.PublicKey
+  fullName.vb: Libplanet.Blocks.Block(Of T).PublicKey
+  nameWithType: Block<T>.PublicKey
+  nameWithType.vb: Block(Of T).PublicKey
+- uid: Libplanet.Blocks.Block`1.PublicKey*
+  name: PublicKey
+  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_PublicKey_
+  commentId: Overload:Libplanet.Blocks.Block`1.PublicKey
+  isSpec: "True"
+  fullName: Libplanet.Blocks.Block<T>.PublicKey
+  fullName.vb: Libplanet.Blocks.Block(Of T).PublicKey
+  nameWithType: Block<T>.PublicKey
+  nameWithType.vb: Block(Of T).PublicKey
+- uid: Libplanet.Blocks.Block`1.Signature
+  name: Signature
+  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Signature
+  commentId: P:Libplanet.Blocks.Block`1.Signature
+  fullName: Libplanet.Blocks.Block<T>.Signature
+  fullName.vb: Libplanet.Blocks.Block(Of T).Signature
+  nameWithType: Block<T>.Signature
+  nameWithType.vb: Block(Of T).Signature
+- uid: Libplanet.Blocks.Block`1.Signature*
+  name: Signature
+  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Signature_
+  commentId: Overload:Libplanet.Blocks.Block`1.Signature
+  isSpec: "True"
+  fullName: Libplanet.Blocks.Block<T>.Signature
+  fullName.vb: Libplanet.Blocks.Block(Of T).Signature
+  nameWithType: Block<T>.Signature
+  nameWithType.vb: Block(Of T).Signature
 - uid: Libplanet.Blocks.Block`1.StateRootHash
   name: StateRootHash
   href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_StateRootHash
@@ -6907,24 +6941,24 @@ references:
   commentId: T:Libplanet.Blocks.BlockHeader
   fullName: Libplanet.Blocks.BlockHeader
   nameWithType: BlockHeader
-- uid: Libplanet.Blocks.BlockHeader.#ctor(Libplanet.Blocks.PreEvaluationBlockHeader,Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name: BlockHeader(PreEvaluationBlockHeader, HashDigest<SHA256>)
-  href: api/Libplanet.Blocks.BlockHeader.html#Libplanet_Blocks_BlockHeader__ctor_Libplanet_Blocks_PreEvaluationBlockHeader_Libplanet_HashDigest_System_Security_Cryptography_SHA256__
-  commentId: M:Libplanet.Blocks.BlockHeader.#ctor(Libplanet.Blocks.PreEvaluationBlockHeader,Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name.vb: BlockHeader(PreEvaluationBlockHeader, HashDigest(Of SHA256))
-  fullName: Libplanet.Blocks.BlockHeader.BlockHeader(Libplanet.Blocks.PreEvaluationBlockHeader, Libplanet.HashDigest<System.Security.Cryptography.SHA256>)
-  fullName.vb: Libplanet.Blocks.BlockHeader.BlockHeader(Libplanet.Blocks.PreEvaluationBlockHeader, Libplanet.HashDigest(Of System.Security.Cryptography.SHA256))
-  nameWithType: BlockHeader.BlockHeader(PreEvaluationBlockHeader, HashDigest<SHA256>)
-  nameWithType.vb: BlockHeader.BlockHeader(PreEvaluationBlockHeader, HashDigest(Of SHA256))
-- uid: Libplanet.Blocks.BlockHeader.#ctor(Libplanet.Blocks.PreEvaluationBlockHeader,Libplanet.HashDigest{System.Security.Cryptography.SHA256},Libplanet.Blocks.BlockHash)
-  name: BlockHeader(PreEvaluationBlockHeader, HashDigest<SHA256>, BlockHash)
-  href: api/Libplanet.Blocks.BlockHeader.html#Libplanet_Blocks_BlockHeader__ctor_Libplanet_Blocks_PreEvaluationBlockHeader_Libplanet_HashDigest_System_Security_Cryptography_SHA256__Libplanet_Blocks_BlockHash_
-  commentId: M:Libplanet.Blocks.BlockHeader.#ctor(Libplanet.Blocks.PreEvaluationBlockHeader,Libplanet.HashDigest{System.Security.Cryptography.SHA256},Libplanet.Blocks.BlockHash)
-  name.vb: BlockHeader(PreEvaluationBlockHeader, HashDigest(Of SHA256), BlockHash)
-  fullName: Libplanet.Blocks.BlockHeader.BlockHeader(Libplanet.Blocks.PreEvaluationBlockHeader, Libplanet.HashDigest<System.Security.Cryptography.SHA256>, Libplanet.Blocks.BlockHash)
-  fullName.vb: Libplanet.Blocks.BlockHeader.BlockHeader(Libplanet.Blocks.PreEvaluationBlockHeader, Libplanet.HashDigest(Of System.Security.Cryptography.SHA256), Libplanet.Blocks.BlockHash)
-  nameWithType: BlockHeader.BlockHeader(PreEvaluationBlockHeader, HashDigest<SHA256>, BlockHash)
-  nameWithType.vb: BlockHeader.BlockHeader(PreEvaluationBlockHeader, HashDigest(Of SHA256), BlockHash)
+- uid: Libplanet.Blocks.BlockHeader.#ctor(Libplanet.Blocks.PreEvaluationBlockHeader,Libplanet.HashDigest{System.Security.Cryptography.SHA256},System.Nullable{ImmutableArray{System.Byte}})
+  name: BlockHeader(PreEvaluationBlockHeader, HashDigest<SHA256>, Nullable<ImmutableArray<Byte>>)
+  href: api/Libplanet.Blocks.BlockHeader.html#Libplanet_Blocks_BlockHeader__ctor_Libplanet_Blocks_PreEvaluationBlockHeader_Libplanet_HashDigest_System_Security_Cryptography_SHA256__System_Nullable_ImmutableArray_System_Byte___
+  commentId: M:Libplanet.Blocks.BlockHeader.#ctor(Libplanet.Blocks.PreEvaluationBlockHeader,Libplanet.HashDigest{System.Security.Cryptography.SHA256},System.Nullable{ImmutableArray{System.Byte}})
+  name.vb: BlockHeader(PreEvaluationBlockHeader, HashDigest(Of SHA256), Nullable(Of ImmutableArray(Of Byte)))
+  fullName: Libplanet.Blocks.BlockHeader.BlockHeader(Libplanet.Blocks.PreEvaluationBlockHeader, Libplanet.HashDigest<System.Security.Cryptography.SHA256>, System.Nullable<ImmutableArray<System.Byte>>)
+  fullName.vb: Libplanet.Blocks.BlockHeader.BlockHeader(Libplanet.Blocks.PreEvaluationBlockHeader, Libplanet.HashDigest(Of System.Security.Cryptography.SHA256), System.Nullable(Of ImmutableArray(Of System.Byte)))
+  nameWithType: BlockHeader.BlockHeader(PreEvaluationBlockHeader, HashDigest<SHA256>, Nullable<ImmutableArray<Byte>>)
+  nameWithType.vb: BlockHeader.BlockHeader(PreEvaluationBlockHeader, HashDigest(Of SHA256), Nullable(Of ImmutableArray(Of Byte)))
+- uid: Libplanet.Blocks.BlockHeader.#ctor(Libplanet.Blocks.PreEvaluationBlockHeader,Libplanet.HashDigest{System.Security.Cryptography.SHA256},System.Nullable{ImmutableArray{System.Byte}},Libplanet.Blocks.BlockHash)
+  name: BlockHeader(PreEvaluationBlockHeader, HashDigest<SHA256>, Nullable<ImmutableArray<Byte>>, BlockHash)
+  href: api/Libplanet.Blocks.BlockHeader.html#Libplanet_Blocks_BlockHeader__ctor_Libplanet_Blocks_PreEvaluationBlockHeader_Libplanet_HashDigest_System_Security_Cryptography_SHA256__System_Nullable_ImmutableArray_System_Byte___Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Blocks.BlockHeader.#ctor(Libplanet.Blocks.PreEvaluationBlockHeader,Libplanet.HashDigest{System.Security.Cryptography.SHA256},System.Nullable{ImmutableArray{System.Byte}},Libplanet.Blocks.BlockHash)
+  name.vb: BlockHeader(PreEvaluationBlockHeader, HashDigest(Of SHA256), Nullable(Of ImmutableArray(Of Byte)), BlockHash)
+  fullName: Libplanet.Blocks.BlockHeader.BlockHeader(Libplanet.Blocks.PreEvaluationBlockHeader, Libplanet.HashDigest<System.Security.Cryptography.SHA256>, System.Nullable<ImmutableArray<System.Byte>>, Libplanet.Blocks.BlockHash)
+  fullName.vb: Libplanet.Blocks.BlockHeader.BlockHeader(Libplanet.Blocks.PreEvaluationBlockHeader, Libplanet.HashDigest(Of System.Security.Cryptography.SHA256), System.Nullable(Of ImmutableArray(Of System.Byte)), Libplanet.Blocks.BlockHash)
+  nameWithType: BlockHeader.BlockHeader(PreEvaluationBlockHeader, HashDigest<SHA256>, Nullable<ImmutableArray<Byte>>, BlockHash)
+  nameWithType.vb: BlockHeader.BlockHeader(PreEvaluationBlockHeader, HashDigest(Of SHA256), Nullable(Of ImmutableArray(Of Byte)), BlockHash)
 - uid: Libplanet.Blocks.BlockHeader.#ctor*
   name: BlockHeader
   href: api/Libplanet.Blocks.BlockHeader.html#Libplanet_Blocks_BlockHeader__ctor_
@@ -7049,6 +7083,32 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.BlockHeader.ProtocolVersion
   nameWithType: BlockHeader.ProtocolVersion
+- uid: Libplanet.Blocks.BlockHeader.PublicKey
+  name: PublicKey
+  href: api/Libplanet.Blocks.BlockHeader.html#Libplanet_Blocks_BlockHeader_PublicKey
+  commentId: P:Libplanet.Blocks.BlockHeader.PublicKey
+  fullName: Libplanet.Blocks.BlockHeader.PublicKey
+  nameWithType: BlockHeader.PublicKey
+- uid: Libplanet.Blocks.BlockHeader.PublicKey*
+  name: PublicKey
+  href: api/Libplanet.Blocks.BlockHeader.html#Libplanet_Blocks_BlockHeader_PublicKey_
+  commentId: Overload:Libplanet.Blocks.BlockHeader.PublicKey
+  isSpec: "True"
+  fullName: Libplanet.Blocks.BlockHeader.PublicKey
+  nameWithType: BlockHeader.PublicKey
+- uid: Libplanet.Blocks.BlockHeader.Signature
+  name: Signature
+  href: api/Libplanet.Blocks.BlockHeader.html#Libplanet_Blocks_BlockHeader_Signature
+  commentId: P:Libplanet.Blocks.BlockHeader.Signature
+  fullName: Libplanet.Blocks.BlockHeader.Signature
+  nameWithType: BlockHeader.Signature
+- uid: Libplanet.Blocks.BlockHeader.Signature*
+  name: Signature
+  href: api/Libplanet.Blocks.BlockHeader.html#Libplanet_Blocks_BlockHeader_Signature_
+  commentId: Overload:Libplanet.Blocks.BlockHeader.Signature
+  isSpec: "True"
+  fullName: Libplanet.Blocks.BlockHeader.Signature
+  nameWithType: BlockHeader.Signature
 - uid: Libplanet.Blocks.BlockHeader.StateRootHash
   name: StateRootHash
   href: api/Libplanet.Blocks.BlockHeader.html#Libplanet_Blocks_BlockHeader_StateRootHash
@@ -7206,15 +7266,15 @@ references:
   commentId: M:Libplanet.Blocks.BlockMarshaler.MarshalBlockHeader(Libplanet.Blocks.IBlockHeader)
   fullName: Libplanet.Blocks.BlockMarshaler.MarshalBlockHeader(Libplanet.Blocks.IBlockHeader)
   nameWithType: BlockMarshaler.MarshalBlockHeader(IBlockHeader)
-- uid: Libplanet.Blocks.BlockMarshaler.MarshalBlockHeader(System.Collections.Generic.Dictionary,Libplanet.HashDigest{System.Security.Cryptography.SHA256},Libplanet.Blocks.BlockHash)
-  name: MarshalBlockHeader(Dictionary, HashDigest<SHA256>, BlockHash)
-  href: api/Libplanet.Blocks.BlockMarshaler.html#Libplanet_Blocks_BlockMarshaler_MarshalBlockHeader_System_Collections_Generic_Dictionary_Libplanet_HashDigest_System_Security_Cryptography_SHA256__Libplanet_Blocks_BlockHash_
-  commentId: M:Libplanet.Blocks.BlockMarshaler.MarshalBlockHeader(System.Collections.Generic.Dictionary,Libplanet.HashDigest{System.Security.Cryptography.SHA256},Libplanet.Blocks.BlockHash)
-  name.vb: MarshalBlockHeader(Dictionary, HashDigest(Of SHA256), BlockHash)
-  fullName: Libplanet.Blocks.BlockMarshaler.MarshalBlockHeader(System.Collections.Generic.Dictionary, Libplanet.HashDigest<System.Security.Cryptography.SHA256>, Libplanet.Blocks.BlockHash)
-  fullName.vb: Libplanet.Blocks.BlockMarshaler.MarshalBlockHeader(System.Collections.Generic.Dictionary, Libplanet.HashDigest(Of System.Security.Cryptography.SHA256), Libplanet.Blocks.BlockHash)
-  nameWithType: BlockMarshaler.MarshalBlockHeader(Dictionary, HashDigest<SHA256>, BlockHash)
-  nameWithType.vb: BlockMarshaler.MarshalBlockHeader(Dictionary, HashDigest(Of SHA256), BlockHash)
+- uid: Libplanet.Blocks.BlockMarshaler.MarshalBlockHeader(System.Collections.Generic.Dictionary,Libplanet.HashDigest{System.Security.Cryptography.SHA256},System.Nullable{ImmutableArray{System.Byte}},Libplanet.Blocks.BlockHash)
+  name: MarshalBlockHeader(Dictionary, HashDigest<SHA256>, Nullable<ImmutableArray<Byte>>, BlockHash)
+  href: api/Libplanet.Blocks.BlockMarshaler.html#Libplanet_Blocks_BlockMarshaler_MarshalBlockHeader_System_Collections_Generic_Dictionary_Libplanet_HashDigest_System_Security_Cryptography_SHA256__System_Nullable_ImmutableArray_System_Byte___Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Blocks.BlockMarshaler.MarshalBlockHeader(System.Collections.Generic.Dictionary,Libplanet.HashDigest{System.Security.Cryptography.SHA256},System.Nullable{ImmutableArray{System.Byte}},Libplanet.Blocks.BlockHash)
+  name.vb: MarshalBlockHeader(Dictionary, HashDigest(Of SHA256), Nullable(Of ImmutableArray(Of Byte)), BlockHash)
+  fullName: Libplanet.Blocks.BlockMarshaler.MarshalBlockHeader(System.Collections.Generic.Dictionary, Libplanet.HashDigest<System.Security.Cryptography.SHA256>, System.Nullable<ImmutableArray<System.Byte>>, Libplanet.Blocks.BlockHash)
+  fullName.vb: Libplanet.Blocks.BlockMarshaler.MarshalBlockHeader(System.Collections.Generic.Dictionary, Libplanet.HashDigest(Of System.Security.Cryptography.SHA256), System.Nullable(Of ImmutableArray(Of System.Byte)), Libplanet.Blocks.BlockHash)
+  nameWithType: BlockMarshaler.MarshalBlockHeader(Dictionary, HashDigest<SHA256>, Nullable<ImmutableArray<Byte>>, BlockHash)
+  nameWithType.vb: BlockMarshaler.MarshalBlockHeader(Dictionary, HashDigest(Of SHA256), Nullable(Of ImmutableArray(Of Byte)), BlockHash)
 - uid: Libplanet.Blocks.BlockMarshaler.MarshalBlockHeader*
   name: MarshalBlockHeader
   href: api/Libplanet.Blocks.BlockMarshaler.html#Libplanet_Blocks_BlockMarshaler_MarshalBlockHeader_
@@ -7315,6 +7375,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.BlockMarshaler.UnmarshalBlockHeaderHash
   nameWithType: BlockMarshaler.UnmarshalBlockHeaderHash
+- uid: Libplanet.Blocks.BlockMarshaler.UnmarshalBlockHeaderSignature(System.Collections.Generic.Dictionary)
+  name: UnmarshalBlockHeaderSignature(Dictionary)
+  href: api/Libplanet.Blocks.BlockMarshaler.html#Libplanet_Blocks_BlockMarshaler_UnmarshalBlockHeaderSignature_System_Collections_Generic_Dictionary_
+  commentId: M:Libplanet.Blocks.BlockMarshaler.UnmarshalBlockHeaderSignature(System.Collections.Generic.Dictionary)
+  fullName: Libplanet.Blocks.BlockMarshaler.UnmarshalBlockHeaderSignature(System.Collections.Generic.Dictionary)
+  nameWithType: BlockMarshaler.UnmarshalBlockHeaderSignature(Dictionary)
+- uid: Libplanet.Blocks.BlockMarshaler.UnmarshalBlockHeaderSignature*
+  name: UnmarshalBlockHeaderSignature
+  href: api/Libplanet.Blocks.BlockMarshaler.html#Libplanet_Blocks_BlockMarshaler_UnmarshalBlockHeaderSignature_
+  commentId: Overload:Libplanet.Blocks.BlockMarshaler.UnmarshalBlockHeaderSignature
+  isSpec: "True"
+  fullName: Libplanet.Blocks.BlockMarshaler.UnmarshalBlockHeaderSignature
+  nameWithType: BlockMarshaler.UnmarshalBlockHeaderSignature
 - uid: Libplanet.Blocks.BlockMarshaler.UnmarshalBlockHeaderStateRootHash(System.Collections.Generic.Dictionary)
   name: UnmarshalBlockHeaderStateRootHash(Dictionary)
   href: api/Libplanet.Blocks.BlockMarshaler.html#Libplanet_Blocks_BlockMarshaler_UnmarshalBlockHeaderStateRootHash_System_Collections_Generic_Dictionary_
@@ -7475,6 +7548,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.BlockMetadata.Index
   nameWithType: BlockMetadata.Index
+- uid: Libplanet.Blocks.BlockMetadata.MakeCandidateData(Libplanet.Nonce)
+  name: MakeCandidateData(Nonce)
+  href: api/Libplanet.Blocks.BlockMetadata.html#Libplanet_Blocks_BlockMetadata_MakeCandidateData_Libplanet_Nonce_
+  commentId: M:Libplanet.Blocks.BlockMetadata.MakeCandidateData(Libplanet.Nonce)
+  fullName: Libplanet.Blocks.BlockMetadata.MakeCandidateData(Libplanet.Nonce)
+  nameWithType: BlockMetadata.MakeCandidateData(Nonce)
+- uid: Libplanet.Blocks.BlockMetadata.MakeCandidateData*
+  name: MakeCandidateData
+  href: api/Libplanet.Blocks.BlockMetadata.html#Libplanet_Blocks_BlockMetadata_MakeCandidateData_
+  commentId: Overload:Libplanet.Blocks.BlockMetadata.MakeCandidateData
+  isSpec: "True"
+  fullName: Libplanet.Blocks.BlockMetadata.MakeCandidateData
+  nameWithType: BlockMetadata.MakeCandidateData
 - uid: Libplanet.Blocks.BlockMetadata.MineNonce(Libplanet.HashAlgorithmType,System.Threading.CancellationToken)
   name: MineNonce(HashAlgorithmType, CancellationToken)
   href: api/Libplanet.Blocks.BlockMetadata.html#Libplanet_Blocks_BlockMetadata_MineNonce_Libplanet_HashAlgorithmType_System_Threading_CancellationToken_
@@ -7527,6 +7613,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.BlockMetadata.ProtocolVersion
   nameWithType: BlockMetadata.ProtocolVersion
+- uid: Libplanet.Blocks.BlockMetadata.PublicKey
+  name: PublicKey
+  href: api/Libplanet.Blocks.BlockMetadata.html#Libplanet_Blocks_BlockMetadata_PublicKey
+  commentId: P:Libplanet.Blocks.BlockMetadata.PublicKey
+  fullName: Libplanet.Blocks.BlockMetadata.PublicKey
+  nameWithType: BlockMetadata.PublicKey
+- uid: Libplanet.Blocks.BlockMetadata.PublicKey*
+  name: PublicKey
+  href: api/Libplanet.Blocks.BlockMetadata.html#Libplanet_Blocks_BlockMetadata_PublicKey_
+  commentId: Overload:Libplanet.Blocks.BlockMetadata.PublicKey
+  isSpec: "True"
+  fullName: Libplanet.Blocks.BlockMetadata.PublicKey
+  nameWithType: BlockMetadata.PublicKey
 - uid: Libplanet.Blocks.BlockMetadata.Timestamp
   name: Timestamp
   href: api/Libplanet.Blocks.BlockMetadata.html#Libplanet_Blocks_BlockMetadata_Timestamp
@@ -7540,19 +7639,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.BlockMetadata.Timestamp
   nameWithType: BlockMetadata.Timestamp
-- uid: Libplanet.Blocks.BlockMetadata.ToBencodex(Libplanet.Nonce)
-  name: ToBencodex(Nonce)
-  href: api/Libplanet.Blocks.BlockMetadata.html#Libplanet_Blocks_BlockMetadata_ToBencodex_Libplanet_Nonce_
-  commentId: M:Libplanet.Blocks.BlockMetadata.ToBencodex(Libplanet.Nonce)
-  fullName: Libplanet.Blocks.BlockMetadata.ToBencodex(Libplanet.Nonce)
-  nameWithType: BlockMetadata.ToBencodex(Nonce)
-- uid: Libplanet.Blocks.BlockMetadata.ToBencodex*
-  name: ToBencodex
-  href: api/Libplanet.Blocks.BlockMetadata.html#Libplanet_Blocks_BlockMetadata_ToBencodex_
-  commentId: Overload:Libplanet.Blocks.BlockMetadata.ToBencodex
-  isSpec: "True"
-  fullName: Libplanet.Blocks.BlockMetadata.ToBencodex
-  nameWithType: BlockMetadata.ToBencodex
 - uid: Libplanet.Blocks.BlockMetadata.TotalDifficulty
   name: TotalDifficulty
   href: api/Libplanet.Blocks.BlockMetadata.html#Libplanet_Blocks_BlockMetadata_TotalDifficulty
@@ -7857,6 +7943,19 @@ references:
   commentId: T:Libplanet.Blocks.IBlockHeader
   fullName: Libplanet.Blocks.IBlockHeader
   nameWithType: IBlockHeader
+- uid: Libplanet.Blocks.IBlockHeader.Signature
+  name: Signature
+  href: api/Libplanet.Blocks.IBlockHeader.html#Libplanet_Blocks_IBlockHeader_Signature
+  commentId: P:Libplanet.Blocks.IBlockHeader.Signature
+  fullName: Libplanet.Blocks.IBlockHeader.Signature
+  nameWithType: IBlockHeader.Signature
+- uid: Libplanet.Blocks.IBlockHeader.Signature*
+  name: Signature
+  href: api/Libplanet.Blocks.IBlockHeader.html#Libplanet_Blocks_IBlockHeader_Signature_
+  commentId: Overload:Libplanet.Blocks.IBlockHeader.Signature
+  isSpec: "True"
+  fullName: Libplanet.Blocks.IBlockHeader.Signature
+  nameWithType: IBlockHeader.Signature
 - uid: Libplanet.Blocks.IBlockHeader.StateRootHash
   name: StateRootHash
   href: api/Libplanet.Blocks.IBlockHeader.html#Libplanet_Blocks_IBlockHeader_StateRootHash
@@ -7941,6 +8040,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.IBlockMetadata.ProtocolVersion
   nameWithType: IBlockMetadata.ProtocolVersion
+- uid: Libplanet.Blocks.IBlockMetadata.PublicKey
+  name: PublicKey
+  href: api/Libplanet.Blocks.IBlockMetadata.html#Libplanet_Blocks_IBlockMetadata_PublicKey
+  commentId: P:Libplanet.Blocks.IBlockMetadata.PublicKey
+  fullName: Libplanet.Blocks.IBlockMetadata.PublicKey
+  nameWithType: IBlockMetadata.PublicKey
+- uid: Libplanet.Blocks.IBlockMetadata.PublicKey*
+  name: PublicKey
+  href: api/Libplanet.Blocks.IBlockMetadata.html#Libplanet_Blocks_IBlockMetadata_PublicKey_
+  commentId: Overload:Libplanet.Blocks.IBlockMetadata.PublicKey
+  isSpec: "True"
+  fullName: Libplanet.Blocks.IBlockMetadata.PublicKey
+  nameWithType: IBlockMetadata.PublicKey
 - uid: Libplanet.Blocks.IBlockMetadata.Timestamp
   name: Timestamp
   href: api/Libplanet.Blocks.IBlockMetadata.html#Libplanet_Blocks_IBlockMetadata_Timestamp
@@ -8290,21 +8402,139 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.InvalidBlockProtocolVersionException.GetObjectData
   nameWithType: InvalidBlockProtocolVersionException.GetObjectData
+- uid: Libplanet.Blocks.InvalidBlockPublicKeyException
+  name: InvalidBlockPublicKeyException
+  href: api/Libplanet.Blocks.InvalidBlockPublicKeyException.html
+  commentId: T:Libplanet.Blocks.InvalidBlockPublicKeyException
+  fullName: Libplanet.Blocks.InvalidBlockPublicKeyException
+  nameWithType: InvalidBlockPublicKeyException
+- uid: Libplanet.Blocks.InvalidBlockPublicKeyException.#ctor(Libplanet.Crypto.PublicKey,System.String)
+  name: InvalidBlockPublicKeyException(PublicKey, String)
+  href: api/Libplanet.Blocks.InvalidBlockPublicKeyException.html#Libplanet_Blocks_InvalidBlockPublicKeyException__ctor_Libplanet_Crypto_PublicKey_System_String_
+  commentId: M:Libplanet.Blocks.InvalidBlockPublicKeyException.#ctor(Libplanet.Crypto.PublicKey,System.String)
+  fullName: Libplanet.Blocks.InvalidBlockPublicKeyException.InvalidBlockPublicKeyException(Libplanet.Crypto.PublicKey, System.String)
+  nameWithType: InvalidBlockPublicKeyException.InvalidBlockPublicKeyException(PublicKey, String)
+- uid: Libplanet.Blocks.InvalidBlockPublicKeyException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  name: InvalidBlockPublicKeyException(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Blocks.InvalidBlockPublicKeyException.html#Libplanet_Blocks_InvalidBlockPublicKeyException__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
+  commentId: M:Libplanet.Blocks.InvalidBlockPublicKeyException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  fullName: Libplanet.Blocks.InvalidBlockPublicKeyException.InvalidBlockPublicKeyException(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  nameWithType: InvalidBlockPublicKeyException.InvalidBlockPublicKeyException(SerializationInfo, StreamingContext)
+- uid: Libplanet.Blocks.InvalidBlockPublicKeyException.#ctor*
+  name: InvalidBlockPublicKeyException
+  href: api/Libplanet.Blocks.InvalidBlockPublicKeyException.html#Libplanet_Blocks_InvalidBlockPublicKeyException__ctor_
+  commentId: Overload:Libplanet.Blocks.InvalidBlockPublicKeyException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Blocks.InvalidBlockPublicKeyException.InvalidBlockPublicKeyException
+  nameWithType: InvalidBlockPublicKeyException.InvalidBlockPublicKeyException
+- uid: Libplanet.Blocks.InvalidBlockPublicKeyException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  name: GetObjectData(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Blocks.InvalidBlockPublicKeyException.html#Libplanet_Blocks_InvalidBlockPublicKeyException_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
+  commentId: M:Libplanet.Blocks.InvalidBlockPublicKeyException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  fullName: Libplanet.Blocks.InvalidBlockPublicKeyException.GetObjectData(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  nameWithType: InvalidBlockPublicKeyException.GetObjectData(SerializationInfo, StreamingContext)
+- uid: Libplanet.Blocks.InvalidBlockPublicKeyException.GetObjectData*
+  name: GetObjectData
+  href: api/Libplanet.Blocks.InvalidBlockPublicKeyException.html#Libplanet_Blocks_InvalidBlockPublicKeyException_GetObjectData_
+  commentId: Overload:Libplanet.Blocks.InvalidBlockPublicKeyException.GetObjectData
+  isSpec: "True"
+  fullName: Libplanet.Blocks.InvalidBlockPublicKeyException.GetObjectData
+  nameWithType: InvalidBlockPublicKeyException.GetObjectData
+- uid: Libplanet.Blocks.InvalidBlockPublicKeyException.InvalidPublicKey
+  name: InvalidPublicKey
+  href: api/Libplanet.Blocks.InvalidBlockPublicKeyException.html#Libplanet_Blocks_InvalidBlockPublicKeyException_InvalidPublicKey
+  commentId: P:Libplanet.Blocks.InvalidBlockPublicKeyException.InvalidPublicKey
+  fullName: Libplanet.Blocks.InvalidBlockPublicKeyException.InvalidPublicKey
+  nameWithType: InvalidBlockPublicKeyException.InvalidPublicKey
+- uid: Libplanet.Blocks.InvalidBlockPublicKeyException.InvalidPublicKey*
+  name: InvalidPublicKey
+  href: api/Libplanet.Blocks.InvalidBlockPublicKeyException.html#Libplanet_Blocks_InvalidBlockPublicKeyException_InvalidPublicKey_
+  commentId: Overload:Libplanet.Blocks.InvalidBlockPublicKeyException.InvalidPublicKey
+  isSpec: "True"
+  fullName: Libplanet.Blocks.InvalidBlockPublicKeyException.InvalidPublicKey
+  nameWithType: InvalidBlockPublicKeyException.InvalidPublicKey
+- uid: Libplanet.Blocks.InvalidBlockSignatureException
+  name: InvalidBlockSignatureException
+  href: api/Libplanet.Blocks.InvalidBlockSignatureException.html
+  commentId: T:Libplanet.Blocks.InvalidBlockSignatureException
+  fullName: Libplanet.Blocks.InvalidBlockSignatureException
+  nameWithType: InvalidBlockSignatureException
+- uid: Libplanet.Blocks.InvalidBlockSignatureException.#ctor(Libplanet.Crypto.PublicKey,System.Nullable{ImmutableArray{System.Byte}},System.String)
+  name: InvalidBlockSignatureException(PublicKey, Nullable<ImmutableArray<Byte>>, String)
+  href: api/Libplanet.Blocks.InvalidBlockSignatureException.html#Libplanet_Blocks_InvalidBlockSignatureException__ctor_Libplanet_Crypto_PublicKey_System_Nullable_ImmutableArray_System_Byte___System_String_
+  commentId: M:Libplanet.Blocks.InvalidBlockSignatureException.#ctor(Libplanet.Crypto.PublicKey,System.Nullable{ImmutableArray{System.Byte}},System.String)
+  name.vb: InvalidBlockSignatureException(PublicKey, Nullable(Of ImmutableArray(Of Byte)), String)
+  fullName: Libplanet.Blocks.InvalidBlockSignatureException.InvalidBlockSignatureException(Libplanet.Crypto.PublicKey, System.Nullable<ImmutableArray<System.Byte>>, System.String)
+  fullName.vb: Libplanet.Blocks.InvalidBlockSignatureException.InvalidBlockSignatureException(Libplanet.Crypto.PublicKey, System.Nullable(Of ImmutableArray(Of System.Byte)), System.String)
+  nameWithType: InvalidBlockSignatureException.InvalidBlockSignatureException(PublicKey, Nullable<ImmutableArray<Byte>>, String)
+  nameWithType.vb: InvalidBlockSignatureException.InvalidBlockSignatureException(PublicKey, Nullable(Of ImmutableArray(Of Byte)), String)
+- uid: Libplanet.Blocks.InvalidBlockSignatureException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  name: InvalidBlockSignatureException(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Blocks.InvalidBlockSignatureException.html#Libplanet_Blocks_InvalidBlockSignatureException__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
+  commentId: M:Libplanet.Blocks.InvalidBlockSignatureException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  fullName: Libplanet.Blocks.InvalidBlockSignatureException.InvalidBlockSignatureException(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  nameWithType: InvalidBlockSignatureException.InvalidBlockSignatureException(SerializationInfo, StreamingContext)
+- uid: Libplanet.Blocks.InvalidBlockSignatureException.#ctor*
+  name: InvalidBlockSignatureException
+  href: api/Libplanet.Blocks.InvalidBlockSignatureException.html#Libplanet_Blocks_InvalidBlockSignatureException__ctor_
+  commentId: Overload:Libplanet.Blocks.InvalidBlockSignatureException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Blocks.InvalidBlockSignatureException.InvalidBlockSignatureException
+  nameWithType: InvalidBlockSignatureException.InvalidBlockSignatureException
+- uid: Libplanet.Blocks.InvalidBlockSignatureException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  name: GetObjectData(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Blocks.InvalidBlockSignatureException.html#Libplanet_Blocks_InvalidBlockSignatureException_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
+  commentId: M:Libplanet.Blocks.InvalidBlockSignatureException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  fullName: Libplanet.Blocks.InvalidBlockSignatureException.GetObjectData(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  nameWithType: InvalidBlockSignatureException.GetObjectData(SerializationInfo, StreamingContext)
+- uid: Libplanet.Blocks.InvalidBlockSignatureException.GetObjectData*
+  name: GetObjectData
+  href: api/Libplanet.Blocks.InvalidBlockSignatureException.html#Libplanet_Blocks_InvalidBlockSignatureException_GetObjectData_
+  commentId: Overload:Libplanet.Blocks.InvalidBlockSignatureException.GetObjectData
+  isSpec: "True"
+  fullName: Libplanet.Blocks.InvalidBlockSignatureException.GetObjectData
+  nameWithType: InvalidBlockSignatureException.GetObjectData
+- uid: Libplanet.Blocks.InvalidBlockSignatureException.InvalidSignature
+  name: InvalidSignature
+  href: api/Libplanet.Blocks.InvalidBlockSignatureException.html#Libplanet_Blocks_InvalidBlockSignatureException_InvalidSignature
+  commentId: P:Libplanet.Blocks.InvalidBlockSignatureException.InvalidSignature
+  fullName: Libplanet.Blocks.InvalidBlockSignatureException.InvalidSignature
+  nameWithType: InvalidBlockSignatureException.InvalidSignature
+- uid: Libplanet.Blocks.InvalidBlockSignatureException.InvalidSignature*
+  name: InvalidSignature
+  href: api/Libplanet.Blocks.InvalidBlockSignatureException.html#Libplanet_Blocks_InvalidBlockSignatureException_InvalidSignature_
+  commentId: Overload:Libplanet.Blocks.InvalidBlockSignatureException.InvalidSignature
+  isSpec: "True"
+  fullName: Libplanet.Blocks.InvalidBlockSignatureException.InvalidSignature
+  nameWithType: InvalidBlockSignatureException.InvalidSignature
+- uid: Libplanet.Blocks.InvalidBlockSignatureException.PublicKey
+  name: PublicKey
+  href: api/Libplanet.Blocks.InvalidBlockSignatureException.html#Libplanet_Blocks_InvalidBlockSignatureException_PublicKey
+  commentId: P:Libplanet.Blocks.InvalidBlockSignatureException.PublicKey
+  fullName: Libplanet.Blocks.InvalidBlockSignatureException.PublicKey
+  nameWithType: InvalidBlockSignatureException.PublicKey
+- uid: Libplanet.Blocks.InvalidBlockSignatureException.PublicKey*
+  name: PublicKey
+  href: api/Libplanet.Blocks.InvalidBlockSignatureException.html#Libplanet_Blocks_InvalidBlockSignatureException_PublicKey_
+  commentId: Overload:Libplanet.Blocks.InvalidBlockSignatureException.PublicKey
+  isSpec: "True"
+  fullName: Libplanet.Blocks.InvalidBlockSignatureException.PublicKey
+  nameWithType: InvalidBlockSignatureException.PublicKey
 - uid: Libplanet.Blocks.InvalidBlockStateRootHashException
   name: InvalidBlockStateRootHashException
   href: api/Libplanet.Blocks.InvalidBlockStateRootHashException.html
   commentId: T:Libplanet.Blocks.InvalidBlockStateRootHashException
   fullName: Libplanet.Blocks.InvalidBlockStateRootHashException
   nameWithType: InvalidBlockStateRootHashException
-- uid: Libplanet.Blocks.InvalidBlockStateRootHashException.#ctor(System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},Libplanet.HashDigest{System.Security.Cryptography.SHA256},System.String)
-  name: InvalidBlockStateRootHashException(Nullable<HashDigest<SHA256>>, HashDigest<SHA256>, String)
-  href: api/Libplanet.Blocks.InvalidBlockStateRootHashException.html#Libplanet_Blocks_InvalidBlockStateRootHashException__ctor_System_Nullable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___Libplanet_HashDigest_System_Security_Cryptography_SHA256__System_String_
-  commentId: M:Libplanet.Blocks.InvalidBlockStateRootHashException.#ctor(System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},Libplanet.HashDigest{System.Security.Cryptography.SHA256},System.String)
-  name.vb: InvalidBlockStateRootHashException(Nullable(Of HashDigest(Of SHA256)), HashDigest(Of SHA256), String)
-  fullName: Libplanet.Blocks.InvalidBlockStateRootHashException.InvalidBlockStateRootHashException(System.Nullable<Libplanet.HashDigest<System.Security.Cryptography.SHA256>>, Libplanet.HashDigest<System.Security.Cryptography.SHA256>, System.String)
-  fullName.vb: Libplanet.Blocks.InvalidBlockStateRootHashException.InvalidBlockStateRootHashException(System.Nullable(Of Libplanet.HashDigest(Of System.Security.Cryptography.SHA256)), Libplanet.HashDigest(Of System.Security.Cryptography.SHA256), System.String)
-  nameWithType: InvalidBlockStateRootHashException.InvalidBlockStateRootHashException(Nullable<HashDigest<SHA256>>, HashDigest<SHA256>, String)
-  nameWithType.vb: InvalidBlockStateRootHashException.InvalidBlockStateRootHashException(Nullable(Of HashDigest(Of SHA256)), HashDigest(Of SHA256), String)
+- uid: Libplanet.Blocks.InvalidBlockStateRootHashException.#ctor(Libplanet.HashDigest{System.Security.Cryptography.SHA256},Libplanet.HashDigest{System.Security.Cryptography.SHA256},System.String)
+  name: InvalidBlockStateRootHashException(HashDigest<SHA256>, HashDigest<SHA256>, String)
+  href: api/Libplanet.Blocks.InvalidBlockStateRootHashException.html#Libplanet_Blocks_InvalidBlockStateRootHashException__ctor_Libplanet_HashDigest_System_Security_Cryptography_SHA256__Libplanet_HashDigest_System_Security_Cryptography_SHA256__System_String_
+  commentId: M:Libplanet.Blocks.InvalidBlockStateRootHashException.#ctor(Libplanet.HashDigest{System.Security.Cryptography.SHA256},Libplanet.HashDigest{System.Security.Cryptography.SHA256},System.String)
+  name.vb: InvalidBlockStateRootHashException(HashDigest(Of SHA256), HashDigest(Of SHA256), String)
+  fullName: Libplanet.Blocks.InvalidBlockStateRootHashException.InvalidBlockStateRootHashException(Libplanet.HashDigest<System.Security.Cryptography.SHA256>, Libplanet.HashDigest<System.Security.Cryptography.SHA256>, System.String)
+  fullName.vb: Libplanet.Blocks.InvalidBlockStateRootHashException.InvalidBlockStateRootHashException(Libplanet.HashDigest(Of System.Security.Cryptography.SHA256), Libplanet.HashDigest(Of System.Security.Cryptography.SHA256), System.String)
+  nameWithType: InvalidBlockStateRootHashException.InvalidBlockStateRootHashException(HashDigest<SHA256>, HashDigest<SHA256>, String)
+  nameWithType.vb: InvalidBlockStateRootHashException.InvalidBlockStateRootHashException(HashDigest(Of SHA256), HashDigest(Of SHA256), String)
 - uid: Libplanet.Blocks.InvalidBlockStateRootHashException.#ctor*
   name: InvalidBlockStateRootHashException
   href: api/Libplanet.Blocks.InvalidBlockStateRootHashException.html#Libplanet_Blocks_InvalidBlockStateRootHashException__ctor_
@@ -8669,23 +8899,23 @@ references:
   fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).DetermineStateRootHash
   nameWithType: PreEvaluationBlock<T>.DetermineStateRootHash
   nameWithType.vb: PreEvaluationBlock(Of T).DetermineStateRootHash
-- uid: Libplanet.Blocks.PreEvaluationBlock`1.Evaluate(Libplanet.Action.IAction,Libplanet.Store.IStateStore)
-  name: Evaluate(IAction, IStateStore)
-  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_Evaluate_Libplanet_Action_IAction_Libplanet_Store_IStateStore_
-  commentId: M:Libplanet.Blocks.PreEvaluationBlock`1.Evaluate(Libplanet.Action.IAction,Libplanet.Store.IStateStore)
-  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.Evaluate(Libplanet.Action.IAction, Libplanet.Store.IStateStore)
-  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).Evaluate(Libplanet.Action.IAction, Libplanet.Store.IStateStore)
-  nameWithType: PreEvaluationBlock<T>.Evaluate(IAction, IStateStore)
-  nameWithType.vb: PreEvaluationBlock(Of T).Evaluate(IAction, IStateStore)
-- uid: Libplanet.Blocks.PreEvaluationBlock`1.Evaluate(Libplanet.Blockchain.BlockChain{`0})
-  name: Evaluate(BlockChain<T>)
-  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_Evaluate_Libplanet_Blockchain_BlockChain__0__
-  commentId: M:Libplanet.Blocks.PreEvaluationBlock`1.Evaluate(Libplanet.Blockchain.BlockChain{`0})
-  name.vb: Evaluate(BlockChain(Of T))
-  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.Evaluate(Libplanet.Blockchain.BlockChain<T>)
-  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).Evaluate(Libplanet.Blockchain.BlockChain(Of T))
-  nameWithType: PreEvaluationBlock<T>.Evaluate(BlockChain<T>)
-  nameWithType.vb: PreEvaluationBlock(Of T).Evaluate(BlockChain(Of T))
+- uid: Libplanet.Blocks.PreEvaluationBlock`1.Evaluate(Libplanet.Crypto.PrivateKey,Libplanet.Action.IAction,Libplanet.Store.IStateStore)
+  name: Evaluate(PrivateKey, IAction, IStateStore)
+  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_Evaluate_Libplanet_Crypto_PrivateKey_Libplanet_Action_IAction_Libplanet_Store_IStateStore_
+  commentId: M:Libplanet.Blocks.PreEvaluationBlock`1.Evaluate(Libplanet.Crypto.PrivateKey,Libplanet.Action.IAction,Libplanet.Store.IStateStore)
+  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.Evaluate(Libplanet.Crypto.PrivateKey, Libplanet.Action.IAction, Libplanet.Store.IStateStore)
+  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).Evaluate(Libplanet.Crypto.PrivateKey, Libplanet.Action.IAction, Libplanet.Store.IStateStore)
+  nameWithType: PreEvaluationBlock<T>.Evaluate(PrivateKey, IAction, IStateStore)
+  nameWithType.vb: PreEvaluationBlock(Of T).Evaluate(PrivateKey, IAction, IStateStore)
+- uid: Libplanet.Blocks.PreEvaluationBlock`1.Evaluate(Libplanet.Crypto.PrivateKey,Libplanet.Blockchain.BlockChain{`0})
+  name: Evaluate(PrivateKey, BlockChain<T>)
+  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_Evaluate_Libplanet_Crypto_PrivateKey_Libplanet_Blockchain_BlockChain__0__
+  commentId: M:Libplanet.Blocks.PreEvaluationBlock`1.Evaluate(Libplanet.Crypto.PrivateKey,Libplanet.Blockchain.BlockChain{`0})
+  name.vb: Evaluate(PrivateKey, BlockChain(Of T))
+  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.Evaluate(Libplanet.Crypto.PrivateKey, Libplanet.Blockchain.BlockChain<T>)
+  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).Evaluate(Libplanet.Crypto.PrivateKey, Libplanet.Blockchain.BlockChain(Of T))
+  nameWithType: PreEvaluationBlock<T>.Evaluate(PrivateKey, BlockChain<T>)
+  nameWithType.vb: PreEvaluationBlock(Of T).Evaluate(PrivateKey, BlockChain(Of T))
 - uid: Libplanet.Blocks.PreEvaluationBlock`1.Evaluate*
   name: Evaluate
   href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_Evaluate_
@@ -8695,6 +8925,24 @@ references:
   fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).Evaluate
   nameWithType: PreEvaluationBlock<T>.Evaluate
   nameWithType.vb: PreEvaluationBlock(Of T).Evaluate
+- uid: Libplanet.Blocks.PreEvaluationBlock`1.Sign(Libplanet.Crypto.PrivateKey,Libplanet.HashDigest{System.Security.Cryptography.SHA256})
+  name: Sign(PrivateKey, HashDigest<SHA256>)
+  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_Sign_Libplanet_Crypto_PrivateKey_Libplanet_HashDigest_System_Security_Cryptography_SHA256__
+  commentId: M:Libplanet.Blocks.PreEvaluationBlock`1.Sign(Libplanet.Crypto.PrivateKey,Libplanet.HashDigest{System.Security.Cryptography.SHA256})
+  name.vb: Sign(PrivateKey, HashDigest(Of SHA256))
+  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.Sign(Libplanet.Crypto.PrivateKey, Libplanet.HashDigest<System.Security.Cryptography.SHA256>)
+  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).Sign(Libplanet.Crypto.PrivateKey, Libplanet.HashDigest(Of System.Security.Cryptography.SHA256))
+  nameWithType: PreEvaluationBlock<T>.Sign(PrivateKey, HashDigest<SHA256>)
+  nameWithType.vb: PreEvaluationBlock(Of T).Sign(PrivateKey, HashDigest(Of SHA256))
+- uid: Libplanet.Blocks.PreEvaluationBlock`1.Sign*
+  name: Sign
+  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_Sign_
+  commentId: Overload:Libplanet.Blocks.PreEvaluationBlock`1.Sign
+  isSpec: "True"
+  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.Sign
+  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).Sign
+  nameWithType: PreEvaluationBlock<T>.Sign
+  nameWithType.vb: PreEvaluationBlock(Of T).Sign
 - uid: Libplanet.Blocks.PreEvaluationBlock`1.Transactions
   name: Transactions
   href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_Transactions
@@ -8767,15 +9015,15 @@ references:
   commentId: F:Libplanet.Blocks.PreEvaluationBlockHeader.Codec
   fullName: Libplanet.Blocks.PreEvaluationBlockHeader.Codec
   nameWithType: PreEvaluationBlockHeader.Codec
-- uid: Libplanet.Blocks.PreEvaluationBlockHeader.DeriveBlockHash(Libplanet.HashDigest{System.Security.Cryptography.SHA256}@)
-  name: DeriveBlockHash(in HashDigest<SHA256>)
-  href: api/Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_DeriveBlockHash_Libplanet_HashDigest_System_Security_Cryptography_SHA256___
-  commentId: M:Libplanet.Blocks.PreEvaluationBlockHeader.DeriveBlockHash(Libplanet.HashDigest{System.Security.Cryptography.SHA256}@)
-  name.vb: DeriveBlockHash(ByRef HashDigest(Of SHA256))
-  fullName: Libplanet.Blocks.PreEvaluationBlockHeader.DeriveBlockHash(in Libplanet.HashDigest<System.Security.Cryptography.SHA256>)
-  fullName.vb: Libplanet.Blocks.PreEvaluationBlockHeader.DeriveBlockHash(ByRef Libplanet.HashDigest(Of System.Security.Cryptography.SHA256))
-  nameWithType: PreEvaluationBlockHeader.DeriveBlockHash(in HashDigest<SHA256>)
-  nameWithType.vb: PreEvaluationBlockHeader.DeriveBlockHash(ByRef HashDigest(Of SHA256))
+- uid: Libplanet.Blocks.PreEvaluationBlockHeader.DeriveBlockHash(Libplanet.HashDigest{System.Security.Cryptography.SHA256}@,System.Nullable{ImmutableArray{System.Byte}})
+  name: DeriveBlockHash(in HashDigest<SHA256>, Nullable<ImmutableArray<Byte>>)
+  href: api/Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_DeriveBlockHash_Libplanet_HashDigest_System_Security_Cryptography_SHA256___System_Nullable_ImmutableArray_System_Byte___
+  commentId: M:Libplanet.Blocks.PreEvaluationBlockHeader.DeriveBlockHash(Libplanet.HashDigest{System.Security.Cryptography.SHA256}@,System.Nullable{ImmutableArray{System.Byte}})
+  name.vb: DeriveBlockHash(ByRef HashDigest(Of SHA256), Nullable(Of ImmutableArray(Of Byte)))
+  fullName: Libplanet.Blocks.PreEvaluationBlockHeader.DeriveBlockHash(in Libplanet.HashDigest<System.Security.Cryptography.SHA256>, System.Nullable<ImmutableArray<System.Byte>>)
+  fullName.vb: Libplanet.Blocks.PreEvaluationBlockHeader.DeriveBlockHash(ByRef Libplanet.HashDigest(Of System.Security.Cryptography.SHA256), System.Nullable(Of ImmutableArray(Of System.Byte)))
+  nameWithType: PreEvaluationBlockHeader.DeriveBlockHash(in HashDigest<SHA256>, Nullable<ImmutableArray<Byte>>)
+  nameWithType.vb: PreEvaluationBlockHeader.DeriveBlockHash(ByRef HashDigest(Of SHA256), Nullable(Of ImmutableArray(Of Byte)))
 - uid: Libplanet.Blocks.PreEvaluationBlockHeader.DeriveBlockHash*
   name: DeriveBlockHash
   href: api/Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_DeriveBlockHash_
@@ -8822,6 +9070,38 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.PreEvaluationBlockHeader.Index
   nameWithType: PreEvaluationBlockHeader.Index
+- uid: Libplanet.Blocks.PreEvaluationBlockHeader.MakeCandidateData(Libplanet.HashDigest{System.Security.Cryptography.SHA256},System.Nullable{ImmutableArray{System.Byte}})
+  name: MakeCandidateData(HashDigest<SHA256>, Nullable<ImmutableArray<Byte>>)
+  href: api/Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_MakeCandidateData_Libplanet_HashDigest_System_Security_Cryptography_SHA256__System_Nullable_ImmutableArray_System_Byte___
+  commentId: M:Libplanet.Blocks.PreEvaluationBlockHeader.MakeCandidateData(Libplanet.HashDigest{System.Security.Cryptography.SHA256},System.Nullable{ImmutableArray{System.Byte}})
+  name.vb: MakeCandidateData(HashDigest(Of SHA256), Nullable(Of ImmutableArray(Of Byte)))
+  fullName: Libplanet.Blocks.PreEvaluationBlockHeader.MakeCandidateData(Libplanet.HashDigest<System.Security.Cryptography.SHA256>, System.Nullable<ImmutableArray<System.Byte>>)
+  fullName.vb: Libplanet.Blocks.PreEvaluationBlockHeader.MakeCandidateData(Libplanet.HashDigest(Of System.Security.Cryptography.SHA256), System.Nullable(Of ImmutableArray(Of System.Byte)))
+  nameWithType: PreEvaluationBlockHeader.MakeCandidateData(HashDigest<SHA256>, Nullable<ImmutableArray<Byte>>)
+  nameWithType.vb: PreEvaluationBlockHeader.MakeCandidateData(HashDigest(Of SHA256), Nullable(Of ImmutableArray(Of Byte)))
+- uid: Libplanet.Blocks.PreEvaluationBlockHeader.MakeCandidateData*
+  name: MakeCandidateData
+  href: api/Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_MakeCandidateData_
+  commentId: Overload:Libplanet.Blocks.PreEvaluationBlockHeader.MakeCandidateData
+  isSpec: "True"
+  fullName: Libplanet.Blocks.PreEvaluationBlockHeader.MakeCandidateData
+  nameWithType: PreEvaluationBlockHeader.MakeCandidateData
+- uid: Libplanet.Blocks.PreEvaluationBlockHeader.MakeSignature(Libplanet.Crypto.PrivateKey,Libplanet.HashDigest{System.Security.Cryptography.SHA256})
+  name: MakeSignature(PrivateKey, HashDigest<SHA256>)
+  href: api/Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_MakeSignature_Libplanet_Crypto_PrivateKey_Libplanet_HashDigest_System_Security_Cryptography_SHA256__
+  commentId: M:Libplanet.Blocks.PreEvaluationBlockHeader.MakeSignature(Libplanet.Crypto.PrivateKey,Libplanet.HashDigest{System.Security.Cryptography.SHA256})
+  name.vb: MakeSignature(PrivateKey, HashDigest(Of SHA256))
+  fullName: Libplanet.Blocks.PreEvaluationBlockHeader.MakeSignature(Libplanet.Crypto.PrivateKey, Libplanet.HashDigest<System.Security.Cryptography.SHA256>)
+  fullName.vb: Libplanet.Blocks.PreEvaluationBlockHeader.MakeSignature(Libplanet.Crypto.PrivateKey, Libplanet.HashDigest(Of System.Security.Cryptography.SHA256))
+  nameWithType: PreEvaluationBlockHeader.MakeSignature(PrivateKey, HashDigest<SHA256>)
+  nameWithType.vb: PreEvaluationBlockHeader.MakeSignature(PrivateKey, HashDigest(Of SHA256))
+- uid: Libplanet.Blocks.PreEvaluationBlockHeader.MakeSignature*
+  name: MakeSignature
+  href: api/Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_MakeSignature_
+  commentId: Overload:Libplanet.Blocks.PreEvaluationBlockHeader.MakeSignature
+  isSpec: "True"
+  fullName: Libplanet.Blocks.PreEvaluationBlockHeader.MakeSignature
+  nameWithType: PreEvaluationBlockHeader.MakeSignature
 - uid: Libplanet.Blocks.PreEvaluationBlockHeader.Metadata
   name: Metadata
   href: api/Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_Metadata
@@ -8900,6 +9180,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.PreEvaluationBlockHeader.ProtocolVersion
   nameWithType: PreEvaluationBlockHeader.ProtocolVersion
+- uid: Libplanet.Blocks.PreEvaluationBlockHeader.PublicKey
+  name: PublicKey
+  href: api/Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_PublicKey
+  commentId: P:Libplanet.Blocks.PreEvaluationBlockHeader.PublicKey
+  fullName: Libplanet.Blocks.PreEvaluationBlockHeader.PublicKey
+  nameWithType: PreEvaluationBlockHeader.PublicKey
+- uid: Libplanet.Blocks.PreEvaluationBlockHeader.PublicKey*
+  name: PublicKey
+  href: api/Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_PublicKey_
+  commentId: Overload:Libplanet.Blocks.PreEvaluationBlockHeader.PublicKey
+  isSpec: "True"
+  fullName: Libplanet.Blocks.PreEvaluationBlockHeader.PublicKey
+  nameWithType: PreEvaluationBlockHeader.PublicKey
 - uid: Libplanet.Blocks.PreEvaluationBlockHeader.Timestamp
   name: Timestamp
   href: api/Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_Timestamp
@@ -8913,22 +9206,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.PreEvaluationBlockHeader.Timestamp
   nameWithType: PreEvaluationBlockHeader.Timestamp
-- uid: Libplanet.Blocks.PreEvaluationBlockHeader.ToBencodex(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name: ToBencodex(HashDigest<SHA256>)
-  href: api/Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_ToBencodex_Libplanet_HashDigest_System_Security_Cryptography_SHA256__
-  commentId: M:Libplanet.Blocks.PreEvaluationBlockHeader.ToBencodex(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
-  name.vb: ToBencodex(HashDigest(Of SHA256))
-  fullName: Libplanet.Blocks.PreEvaluationBlockHeader.ToBencodex(Libplanet.HashDigest<System.Security.Cryptography.SHA256>)
-  fullName.vb: Libplanet.Blocks.PreEvaluationBlockHeader.ToBencodex(Libplanet.HashDigest(Of System.Security.Cryptography.SHA256))
-  nameWithType: PreEvaluationBlockHeader.ToBencodex(HashDigest<SHA256>)
-  nameWithType.vb: PreEvaluationBlockHeader.ToBencodex(HashDigest(Of SHA256))
-- uid: Libplanet.Blocks.PreEvaluationBlockHeader.ToBencodex*
-  name: ToBencodex
-  href: api/Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_ToBencodex_
-  commentId: Overload:Libplanet.Blocks.PreEvaluationBlockHeader.ToBencodex
-  isSpec: "True"
-  fullName: Libplanet.Blocks.PreEvaluationBlockHeader.ToBencodex
-  nameWithType: PreEvaluationBlockHeader.ToBencodex
 - uid: Libplanet.Blocks.PreEvaluationBlockHeader.TotalDifficulty
   name: TotalDifficulty
   href: api/Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_TotalDifficulty
@@ -8955,6 +9232,22 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.PreEvaluationBlockHeader.TxHash
   nameWithType: PreEvaluationBlockHeader.TxHash
+- uid: Libplanet.Blocks.PreEvaluationBlockHeader.VerifySignature(System.Nullable{ImmutableArray{System.Byte}},Libplanet.HashDigest{System.Security.Cryptography.SHA256})
+  name: VerifySignature(Nullable<ImmutableArray<Byte>>, HashDigest<SHA256>)
+  href: api/Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_VerifySignature_System_Nullable_ImmutableArray_System_Byte___Libplanet_HashDigest_System_Security_Cryptography_SHA256__
+  commentId: M:Libplanet.Blocks.PreEvaluationBlockHeader.VerifySignature(System.Nullable{ImmutableArray{System.Byte}},Libplanet.HashDigest{System.Security.Cryptography.SHA256})
+  name.vb: VerifySignature(Nullable(Of ImmutableArray(Of Byte)), HashDigest(Of SHA256))
+  fullName: Libplanet.Blocks.PreEvaluationBlockHeader.VerifySignature(System.Nullable<ImmutableArray<System.Byte>>, Libplanet.HashDigest<System.Security.Cryptography.SHA256>)
+  fullName.vb: Libplanet.Blocks.PreEvaluationBlockHeader.VerifySignature(System.Nullable(Of ImmutableArray(Of System.Byte)), Libplanet.HashDigest(Of System.Security.Cryptography.SHA256))
+  nameWithType: PreEvaluationBlockHeader.VerifySignature(Nullable<ImmutableArray<Byte>>, HashDigest<SHA256>)
+  nameWithType.vb: PreEvaluationBlockHeader.VerifySignature(Nullable(Of ImmutableArray(Of Byte)), HashDigest(Of SHA256))
+- uid: Libplanet.Blocks.PreEvaluationBlockHeader.VerifySignature*
+  name: VerifySignature
+  href: api/Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_VerifySignature_
+  commentId: Overload:Libplanet.Blocks.PreEvaluationBlockHeader.VerifySignature
+  isSpec: "True"
+  fullName: Libplanet.Blocks.PreEvaluationBlockHeader.VerifySignature
+  nameWithType: PreEvaluationBlockHeader.VerifySignature
 - uid: Libplanet.ByteArrayExtensions
   name: ByteArrayExtensions
   href: api/Libplanet.ByteArrayExtensions.html
@@ -9489,6 +9782,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Crypto.PublicKey.ToImmutableArray
   nameWithType: PublicKey.ToImmutableArray
+- uid: Libplanet.Crypto.PublicKey.ToString
+  name: ToString()
+  href: api/Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey_ToString
+  commentId: M:Libplanet.Crypto.PublicKey.ToString
+  fullName: Libplanet.Crypto.PublicKey.ToString()
+  nameWithType: PublicKey.ToString()
+- uid: Libplanet.Crypto.PublicKey.ToString*
+  name: ToString
+  href: api/Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey_ToString_
+  commentId: Overload:Libplanet.Crypto.PublicKey.ToString
+  isSpec: "True"
+  fullName: Libplanet.Crypto.PublicKey.ToString
+  nameWithType: PublicKey.ToString
 - uid: Libplanet.Crypto.PublicKey.Verify(System.Collections.Generic.IReadOnlyList{System.Byte},System.Collections.Generic.IReadOnlyList{System.Byte})
   name: Verify(IReadOnlyList<Byte>, IReadOnlyList<Byte>)
   href: api/Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey_Verify_System_Collections_Generic_IReadOnlyList_System_Byte__System_Collections_Generic_IReadOnlyList_System_Byte__
@@ -15706,6 +16012,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BlockDigest.ProtocolVersion
   nameWithType: BlockDigest.ProtocolVersion
+- uid: Libplanet.Store.BlockDigest.PublicKey
+  name: PublicKey
+  href: api/Libplanet.Store.BlockDigest.html#Libplanet_Store_BlockDigest_PublicKey
+  commentId: P:Libplanet.Store.BlockDigest.PublicKey
+  fullName: Libplanet.Store.BlockDigest.PublicKey
+  nameWithType: BlockDigest.PublicKey
+- uid: Libplanet.Store.BlockDigest.PublicKey*
+  name: PublicKey
+  href: api/Libplanet.Store.BlockDigest.html#Libplanet_Store_BlockDigest_PublicKey_
+  commentId: Overload:Libplanet.Store.BlockDigest.PublicKey
+  isSpec: "True"
+  fullName: Libplanet.Store.BlockDigest.PublicKey
+  nameWithType: BlockDigest.PublicKey
 - uid: Libplanet.Store.BlockDigest.Serialize
   name: Serialize()
   href: api/Libplanet.Store.BlockDigest.html#Libplanet_Store_BlockDigest_Serialize
@@ -15719,6 +16038,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BlockDigest.Serialize
   nameWithType: BlockDigest.Serialize
+- uid: Libplanet.Store.BlockDigest.Signature
+  name: Signature
+  href: api/Libplanet.Store.BlockDigest.html#Libplanet_Store_BlockDigest_Signature
+  commentId: P:Libplanet.Store.BlockDigest.Signature
+  fullName: Libplanet.Store.BlockDigest.Signature
+  nameWithType: BlockDigest.Signature
+- uid: Libplanet.Store.BlockDigest.Signature*
+  name: Signature
+  href: api/Libplanet.Store.BlockDigest.html#Libplanet_Store_BlockDigest_Signature_
+  commentId: Overload:Libplanet.Store.BlockDigest.Signature
+  isSpec: "True"
+  fullName: Libplanet.Store.BlockDigest.Signature
+  nameWithType: BlockDigest.Signature
 - uid: Libplanet.Store.BlockDigest.StateRootHash
   name: StateRootHash
   href: api/Libplanet.Store.BlockDigest.html#Libplanet_Store_BlockDigest_StateRootHash

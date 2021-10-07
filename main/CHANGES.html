@@ -80,16 +80,15 @@ integrity.  [<a href="https://github.com/planetarium/libplanet/issues/1164">#116
 <li><code>Block&lt;T&gt;</code> became unable to be subclassed.</li>
 <li>Remove <code>Block&lt;T&gt;(long, long, BigInteger, Nonce, Address, BlockHash?, DateTimeOffset, IReadOnlyList&lt;Transaction&lt;T&gt;&gt;, HashAlgorithmType, HashDigest&lt;SHA256&gt;, ImmutableArray&lt;byte&gt;?, int)</code> overloaded constructor.
 Use other overloaded constructors instead.</li>
-<li>Added <code>Block&lt;T&gt;(PreEvaluationBlock&lt;T&gt;, HashDigest&lt;SHA256&gt;)</code> overloaded
-constructor.</li>
+<li>Added <code>Block&lt;T&gt;(IBlockHeader header, IEnumerable&lt;Transaction&lt;T&gt;&gt;)</code>
+overloaded constructor.</li>
+<li>Added <code>Block&lt;T&gt;(PreEvaluationBlock&lt;T&gt;, HashDigest&lt;SHA256&gt;, ImmutableArray&lt;byte&gt;?)</code> overloaded constructor.  [<a href="https://github.com/planetarium/libplanet/issues/1457">#1457</a>, <a href="https://github.com/planetarium/libplanet/pull/1507">#1507</a>]</li>
 <li><code>BlockHeader</code> is no more readonly struct, but a sealed class.</li>
 <li>Removed <code>BlockHeader(int, long, string, ImmutableArray&lt;byte&gt;, ImmutableArray&lt;byte&gt;, long, BigInteger, ImmutableArray&lt;byte&gt;, ImmutableArray&lt;byte&gt;, ImmutableArray&lt;byte&gt;, ImmutableArray&lt;byte&gt;, ImmutableArray&lt;byte&gt;)</code> constructor.  Use other overloaded constructors
 instead.</li>
-<li>Added <code>BlockHeader(PreEvaluationBlockHeader, HashDigest&lt;SHA256&gt;)</code>
-overloaded constructor.</li>
-<li>Added
-<code>BlockHeader(PreEvaluationBlockHeader, HashDigest&lt;SHA256&gt;, BlockHash)</code>
-overloaded constructor.</li>
+<li>Added <code>BlockHeader(PreEvaluationBlockHeader, HashDigest&lt;SHA256&gt;, ImmutableArray&lt;byte&gt;?)</code> overloaded constructor.  [<a href="https://github.com/planetarium/libplanet/issues/1457">#1457</a>, <a href="https://github.com/planetarium/libplanet/pull/1507">#1507</a>]</li>
+<li>Added <code>BlockHeader(PreEvaluationBlockHeader, HashDigest&lt;SHA256&gt;, ImmutableArray&lt;byte&gt;?, BlockHash)</code> overloaded constructor.
+[<a href="https://github.com/planetarium/libplanet/issues/1457">#1457</a>, <a href="https://github.com/planetarium/libplanet/pull/1507">#1507</a>]</li>
 </ul>
 </li>
 <li><code>Block&lt;T&gt;</code> and <code>BlockHeader</code> have no more marshaling/unmarshaling methods.
@@ -128,6 +127,11 @@ constructor instead.</li>
 and <code>PreEvaluationBlock&lt;T&gt;.Evaluate()</code> methods instead.</li>
 <li><code>BlockHeader.StateRootHash</code> property's type became <code>HashDigest&lt;SHA256&gt;</code>
 (was <code>HashDigest&lt;SHA256&gt;?</code>).</li>
+<li>The type of <code>InvalidBlockStateRootHashException()</code> constructor's
+<code>expectedStateRootHash</code> parameter became <code>HashDigest&lt;SHA256&gt;</code>
+(was <code>HashDigest&lt;SHA256&gt;?</code>).  [<a href="https://github.com/planetarium/libplanet/pull/1507">#1507</a>]</li>
+<li><code>InvalidBlockStateRootHashException.ExpectedStateRootHash</code> property's
+type became <code>HashDigest&lt;SHA256&gt;</code> (was <code>HashDigest&lt;SHA256&gt;?</code>).  [<a href="https://github.com/planetarium/libplanet/pull/1507">#1507</a>]</li>
 </ul>
 </li>
 <li><code>Block&lt;T&gt;</code> and <code>BlockHeader</code> became aware of <code>HashAlgorithmType</code> used for
@@ -148,6 +152,21 @@ method instead.</li>
 <li>Added <code>HashAlgorithmGetter hashAlgorithmGetter</code> parameter to
 <code>DelayedActionRenderer&lt;T&gt;()</code> constructor.</li>
 <li>Added <code>DelayedRenderer&lt;T&gt;.HashAlgorithmGetter</code> property.</li>
+</ul>
+</li>
+<li>Blocks became signed by the miner since the protocol version 2.
+[<a href="https://github.com/planetarium/libplanet/issues/1457">#1457</a>, <a href="https://github.com/planetarium/libplanet/pull/1507">#1507</a>]
+<ul>
+<li>Added <code>Block&lt;T&gt;(PreEvaluationBlock&lt;T&gt;, HashDigest&lt;SHA256&gt;, ImmutableArray&lt;byte&gt;?)</code> overloaded constructor.  [<a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
+<li>Added <code>BlockHeader(PreEvaluationBlockHeader, HashDigest&lt;SHA256&gt;, ImmutableArray&lt;byte&gt;?)</code> overloaded constructor.  [<a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
+<li>Added <code>BlockHeader(PreEvaluationBlockHeader, HashDigest&lt;SHA256&gt;, ImmutableArray&lt;byte&gt;?, BlockHash)</code> overloaded constructor.
+[<a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
+<li>Added <code>Block&lt;T&gt;.Signature</code> property.</li>
+<li>Added <code>Block&lt;T&gt;.PublicKey</code> property.</li>
+<li>Added <code>BlockHeader.Signature</code> property.</li>
+<li>Added <code>BlockHeader.PublicKey</code> property.</li>
+<li>Added <code>InvalidBlockPublicKeyException</code> class.</li>
+<li>Added <code>InvalidBlockSignatureException</code> class.</li>
 </ul>
 </li>
 <li><code>IStateStore</code> now requires implementations to be trie.
@@ -176,31 +195,52 @@ with <code>TrieStateStore.PruneStates(IImmutableSet&lt;HashDigest&lt;SHA256&gt;&
 method.</li>
 </ul>
 </li>
+<li>The types of <code>BlockChain&lt;T&gt;.MineBlock()</code> overloaded methods' <code>miner</code>
+parameter became <code>PrivateKey</code> (were <code>Address</code>).  [<a href="https://github.com/planetarium/libplanet/issues/1457">#1457</a>, <a href="https://github.com/planetarium/libplanet/pull/1507">#1507</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
+<ul>
+<li>The <code>Block&lt;T&gt;.CurrentProtocolVersion</code> is bumped from 1 to 2:  [<a href="https://github.com/planetarium/libplanet/pull/1507">#1507</a>]
+<ul>
+<li>Block's total difficulty value became included to the input of block
+hashes and pre-evaluation hashes since the protocol version 2.</li>
+<li>Blocks became to have miner's public key as well since the protocol
+version 2.  [<a href="https://github.com/planetarium/libplanet/issues/1457">#1457</a>]</li>
+<li>Blocks became to have no miner's address since the protocol version 2,
+because it can be derived from miner's public key.  [<a href="https://github.com/planetarium/libplanet/issues/1457">#1457</a>]</li>
+<li>Blocks became to have a signature made using miner's private key
+since the protocol version 2.  Block signatures affect block hashes.
+[<a href="https://github.com/planetarium/libplanet/issues/1457">#1457</a>]</li>
+</ul>
+</li>
+</ul>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
 <ul>
-<li>Added <code>BlockHeader(int, long, DateTimeOffset, Nonce, Address, long, BigInteger, BlockHash?, HashDigest&lt;SHA256&gt;?, BlockHash, ImmutableArray&lt;byte&gt;, HashDigest&lt;SHA256&gt;, HashAlgorithmType)</code> constructor.
-[<a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
-<li>Added <code>BlockMetadata</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
+<li>Added <code>BlockMetadata</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/issues/1457">#1457</a>, <a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>, <a href="https://github.com/planetarium/libplanet/pull/1507">#1507</a>]</li>
 <li>Added <code>BlockContent&lt;T&gt;</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
-<li>Added <code>PreEvaluationBlockHeader</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/1146">#1146</a>, <a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
-<li>Added <code>PreEvaluationBlock&lt;T&gt;</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/1146">#1146</a>, <a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
+<li>Added <code>PreEvaluationBlockHeader</code> class.
+[<a href="https://github.com/planetarium/libplanet/issues/1146">#1146</a>, <a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/issues/1457">#1457</a>, <a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>, <a href="https://github.com/planetarium/libplanet/pull/1507">#1507</a>]</li>
+<li>Added <code>PreEvaluationBlock&lt;T&gt;</code> class.
+[<a href="https://github.com/planetarium/libplanet/issues/1146">#1146</a>, <a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/issues/1457">#1457</a>, <a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>, <a href="https://github.com/planetarium/libplanet/pull/1507">#1507</a>]</li>
 <li>Added <code>BlockDigest.FromBlock&lt;T&gt;()</code> static method. [<a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
 <li>Added <code>Block&lt;T&gt;(PreEvaluationBlock&lt;T&gt;, HashDigest&lt;SHA256&gt;)</code> overloaded
 constructor.  [<a href="https://github.com/planetarium/libplanet/issues/1146">#1146</a>, <a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
 <li>Added <code>Block&lt;T&gt;.HashAlgorithm</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
-<li>Added <code>Block&lt;T&gt;(PreEvaluationBlock&lt;T&gt;, HashDigest&lt;SHA256&gt;)</code> overloaded
-constructor.  [<a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
+<li>Added <code>Block&lt;T&gt;.PublicKey</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/1457">#1457</a>, <a href="https://github.com/planetarium/libplanet/pull/1507">#1507</a>]</li>
+<li>Added <code>Block&lt;T&gt;.Signature</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/1457">#1457</a>, <a href="https://github.com/planetarium/libplanet/pull/1507">#1507</a>]</li>
+<li>Added <code>Block&lt;T&gt;(PreEvaluationBlock&lt;T&gt;, HashDigest&lt;SHA256&gt;, ImmutableArray&lt;byte&gt;?)</code> overloaded constructor.
+[<a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/issues/1457">#1457</a>, <a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>, <a href="https://github.com/planetarium/libplanet/pull/1507">#1507</a>]</li>
 <li>Added <code>Block&lt;T&gt;(IBlockHeader, IEnumerable&lt;Transaction&lt;T&gt;&gt;)</code> overloaded
 constructor.  [<a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
 <li>Added <code>BlockHeader.HashAlgorithm</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
-<li>Added <code>BlockHeader(PreEvaluationBlockHeader, HashDigest&lt;SHA256&gt;)</code>
-overloaded constructor.  [<a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
-<li>Added <code>BlockHeader(PreEvaluationBlockHeader, HashDigest&lt;SHA256&gt;, BlockHash)</code>
-overloaded constructor.  [<a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
-<li>Added <code>IBlockMetadata</code> interface.  [<a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]
+<li>Added <code>BlockHeader.PublicKey</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/1457">#1457</a>, <a href="https://github.com/planetarium/libplanet/pull/1507">#1507</a>]</li>
+<li>Added <code>BlockHeader.Signature</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/1457">#1457</a>, <a href="https://github.com/planetarium/libplanet/pull/1507">#1507</a>]</li>
+<li>Added <code>BlockHeader(PreEvaluationBlockHeader, HashDigest&lt;SHA256&gt;, ImmutableArray&lt;byte&gt;?)</code> overloaded constructor.
+[<a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/issues/1457">#1457</a>, <a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>, <a href="https://github.com/planetarium/libplanet/pull/1507">#1507</a>]</li>
+<li>Added <code>BlockHeader(PreEvaluationBlockHeader, HashDigest&lt;SHA256&gt;, ImmutableArray&lt;byte&gt;?, BlockHash)</code> overloaded constructor.
+[<a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/issues/1457">#1457</a>, <a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>, <a href="https://github.com/planetarium/libplanet/pull/1507">#1507</a>]</li>
+<li>Added <code>IBlockMetadata</code> interface.  [<a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/issues/1457">#1457</a>, <a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>, <a href="https://github.com/planetarium/libplanet/pull/1507">#1507</a>]
 <ul>
 <li><code>Block&lt;T&gt;</code> became to implement <code>IBlockMetadata</code> interface.</li>
 <li><code>BlockHeader</code> became to implement <code>IBlockMetadata</code> interface.</li>
@@ -248,15 +288,14 @@ take <code>IPreEvaluationBlock&lt;T&gt;</code> (was <code>IBlock&lt;T&gt;</code>
 <li>Added <code>BlockMetadataExtensions</code> static class.  [<a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
 <li>Added <code>BlockContentExtensions</code> static class.  [<a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
 <li>Added <code>BlockMarshaler</code> static class.  [<a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
-<li>Added <code>BlockDigest.Index</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
-<li>Added <code>BlockDigest.Hash</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
-<li>Added <code>BlockDigest.StateRootHash</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
 <li>Added <code>BlockDigest.GetHeader()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
 <li>Added <code>StateStoreExtensions</code> static class.  [<a href="https://github.com/planetarium/libplanet/issues/1128">#1128</a>, <a href="https://github.com/planetarium/libplanet/issues/1146">#1146</a>, <a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
 <li>Added <code>StoreExtensions.GetStateRootHash()</code> extension method.
 [<a href="https://github.com/planetarium/libplanet/issues/1128">#1128</a>, <a href="https://github.com/planetarium/libplanet/issues/1146">#1146</a>, <a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
 <li>Added <code>DelayedRenderer&lt;T&gt;.HashAlgorithmGetter</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
-<li><code>BlockDigest</code> became to implements <code>IBlockExcerpt</code>.</li>
+<li><code>BlockDigest</code> became to implement <code>IBlockExcerpt</code>.</li>
+<li>Added <code>InvalidBlockPublicKeyException</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/1457">#1457</a>, <a href="https://github.com/planetarium/libplanet/pull/1507">#1507</a>]</li>
+<li>Added <code>InvalidBlockSignatureException</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/1457">#1457</a>, <a href="https://github.com/planetarium/libplanet/pull/1507">#1507</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
@@ -265,8 +304,19 @@ so that it's consistent with <code>IBlockContent&lt;T&gt;</code>'s other impleme
 As this behavior can be changed in the later releases, do not depend on
 its ordering, but explicitly sort them before use when the order needs to b
 guaranteed.  [<a href="https://github.com/planetarium/libplanet/pull/1492">#1492</a>]</li>
+<li>Blocks and block metadata became to have their miners' public keys too.
+Although it is backward compatible to the earlier protocol version than 2,
+blocks with the protocol version 2 or later must have public keys.
+If a block lacks public key, <code>InvalidBlockPublicKeyException</code> is thrown.
+[<a href="https://github.com/planetarium/libplanet/issues/1457">#1457</a>, <a href="https://github.com/planetarium/libplanet/pull/1507">#1507</a>]</li>
+<li><code>PublicKey.ToString()</code> method now returns its hexadecimal representation
+in compressed form.  [<a href="https://github.com/planetarium/libplanet/pull/1507">#1507</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
+<ul>
+<li>Fixed <code>NullReferenceException</code> that <code>PublicKey.Verify()</code> method had thrown
+with a non-null empty <code>signature</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1507">#1507</a>]</li>
+</ul>
 <h3 id="cli-tools">CLI tools</h3>
 <h2 id="version-0170">Version 0.17.0</h2>
 <p>Released on September 28, 2021.</p>
@@ -815,8 +865,6 @@ less space is used.  [<a href="https://github.com/planetarium/libplanet/issues/1
 <li><code>BlockChain&lt;T&gt;.Append()</code> cumulates indexes for pairs (TxId and BlockHash).
 A transaction inclusion for a block is retrievable by using this index.
 [<a href="https://github.com/planetarium/libplanet/issues/1315">#1315</a>, <a href="https://github.com/planetarium/libplanet/pull/1329">#1329</a>]</li>
-<li><code>Block&lt;T&gt;.Transactions</code> will be ordered using a different scheme once
-the protocol version is bumped to <code>2</code>.  [<a href="https://github.com/planetarium/libplanet/issues/1322">#1322</a>, <a href="https://github.com/planetarium/libplanet/issues/1323">#1323</a>, <a href="https://github.com/planetarium/libplanet/pull/1326">#1326</a>]</li>
 <li><code>ActionEvaluator&lt;T&gt;.EvaluateActions()</code> now throws an unmanaged exception
 if <code>OutOfMemoryException</code> is caught from <code>IAction.Execute()</code>.
 [<a href="https://github.com/planetarium/libplanet/issues/1320">#1320</a>, <a href="https://github.com/planetarium/libplanet/pull/1343">#1343</a>]</li>
