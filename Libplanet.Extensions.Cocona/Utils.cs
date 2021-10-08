@@ -227,19 +227,19 @@ namespace Libplanet.Extensions.Cocona
 
         private class HashAlgorithmTypeConverter : JsonConverter<HashAlgorithmType>
         {
+            // FIXME: Placeholder implementation.
             public override HashAlgorithmType Read(
                 ref Utf8JsonReader reader,
                 Type typeToConvert,
                 JsonSerializerOptions options)
-            =>
-                HashAlgorithmType.Of<SHA256>();
+                => HashAlgorithmType.Of<SHA256>();
 
+            // FIXME: Placeholder implementation.
             public override void Write(
                 Utf8JsonWriter writer,
                 HashAlgorithmType value,
                 JsonSerializerOptions options)
-            {
-            }
+                => writer.WriteStringValue(nameof(SHA256));
         }
     }
 }
