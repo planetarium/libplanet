@@ -2,6 +2,9 @@ using System;
 using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
+using System.Security.Cryptography;
+using Libplanet.Blocks;
+using Libplanet.Tests;
 using Xunit;
 
 namespace Libplanet.Extensions.Cocona.Tests
@@ -27,6 +30,18 @@ namespace Libplanet.Extensions.Cocona.Tests
             Assert.True(dummyClass.SampleByteArray.SequenceEqual(dummyClass2.SampleByteArray));
             Assert.Equal(dummyClass.SampleDateTimeOffset, dummyClass2.SampleDateTimeOffset);
         }
+
+        [Fact]
+        public void TestHumanReadableHashAlgorithmField()
+        {
+            Block<Utils.DummyAction> genesisBlock = TestUtils.MineGenesisBlock<Utils.DummyAction>(
+                GetHashAlgorithm, TestUtils.GenesisMiner);
+            var serialized = Utils.SerializeHumanReadable(genesisBlock);
+            Assert.Matches("\"HashAlgorithm\":[\\s]+\"[\\S]+\",", serialized);
+        }
+
+        private HashAlgorithmType GetHashAlgorithm(long blockIndex) =>
+            HashAlgorithmType.Of<SHA256>();
 
         private class DummyClass
         {
