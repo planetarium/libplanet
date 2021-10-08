@@ -2,13 +2,14 @@
 
 # shellcheck disable=SC2034
 projects=(
+  "Libplanet.Stun"
   "Libplanet"
   "Libplanet.RocksDBStore"
   "Libplanet.Analyzers"
   "Libplanet.Tools"
   "Libplanet.Explorer"
   "Libplanet.Explorer.Executable"
-  "Libplanet.Stun"
+  "Libplanet.Extensions.Cocona"
 )
 configuration=Release
 executables=(
