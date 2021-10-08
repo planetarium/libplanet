@@ -1,8 +1,6 @@
 using System.Security.Cryptography;
-using GraphQL;
 using GraphQL.Types;
 using Libplanet.Action;
-using Libplanet.Blockchain;
 using Libplanet.Blocks;
 using Libplanet.Explorer.Interfaces;
 using Libplanet.Store;
@@ -33,10 +31,11 @@ namespace Libplanet.Explorer.GraphTypes
                         return null;
                     }
 
+                    // FIXME: (BlockChain<T>) casting does not work
+                    // REF COMMIT HASH: d50c90933c17a70381ad758719144e01bf9c21dc
+                    HashAlgorithmGetter hashAlgorithmGetter = _ => HashAlgorithmType.Of<SHA256>();
                     var store = (IStore)ctx.UserContext[nameof(IBlockChainContext<T>.Store)];
-                    var chain =
-                        (BlockChain<T>)ctx.UserContext[nameof(IBlockChainContext<T>.BlockChain)];
-                    return store.GetBlock<T>(chain.Policy.GetHashAlgorithm, h);
+                    return store.GetBlock<T>(hashAlgorithmGetter, h);
                 });
             Field(x => x.Timestamp);
             Field<NonNullGraphType<ByteStringType>>(
