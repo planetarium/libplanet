@@ -35,13 +35,12 @@ namespace Libplanet.Extensions.Cocona.Tests
         public void TestHumanReadableHashAlgorithmField()
         {
             Block<Utils.DummyAction> genesisBlock = TestUtils.MineGenesisBlock<Utils.DummyAction>(
-                GetHashAlgorithm, TestUtils.GenesisMiner);
-            var serialized = Utils.SerializeHumanReadable(genesisBlock);
-            Assert.Matches("\"HashAlgorithm\":[\\s]+\"[\\S]+\",", serialized);
-        }
+                index => HashAlgorithmType.Of<SHA256>(), TestUtils.GenesisMiner);
 
-        private HashAlgorithmType GetHashAlgorithm(long blockIndex) =>
-            HashAlgorithmType.Of<SHA256>();
+            // FIXME: More tests should be added once variable hash gets implemented.
+            Assert.Matches(
+                "\"HashAlgorithm\":[\\s]+\"SHA256\",", Utils.SerializeHumanReadable(genesisBlock));
+        }
 
         private class DummyClass
         {
