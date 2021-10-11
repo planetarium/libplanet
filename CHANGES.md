@@ -1895,8 +1895,6 @@ Released on July 23, 2021.
 [#1315]: https://github.com/planetarium/libplanet/issues/1315
 [#1316]: https://github.com/planetarium/libplanet/issues/1316
 [#1320]: https://github.com/planetarium/libplanet/issues/1320
-[#1322]: https://github.com/planetarium/libplanet/issues/1322
-[#1323]: https://github.com/planetarium/libplanet/issues/1323
 [#1325]: https://github.com/planetarium/libplanet/pull/1325
 [#1326]: https://github.com/planetarium/libplanet/pull/1326
 [#1328]: https://github.com/planetarium/libplanet/pull/1328

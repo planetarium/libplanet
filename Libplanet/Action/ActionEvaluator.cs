@@ -371,7 +371,9 @@ namespace Libplanet.Action
             IEnumerable<Transaction<T>> txs,
             ImmutableArray<byte> preEvaluationHash)
         {
-            return OrderTxsForEvaluationV0(txs, preEvaluationHash);
+            return protocolVersion >= 3
+                ? OrderTxsForEvaluationV3(txs, preEvaluationHash)
+                : OrderTxsForEvaluationV0(txs, preEvaluationHash);
         }
 
         /// <summary>
@@ -593,6 +595,36 @@ namespace Libplanet.Action
                         .Select(tx => new BigInteger(tx.Id.ToByteArray()))
                         .Aggregate((first, second) => first ^ second))
                 .SelectMany(group => group.OrderBy(tx => tx.Nonce));
+        }
+
+        [Pure]
+        private static IEnumerable<Transaction<T>> OrderTxsForEvaluationV3(
+            IEnumerable<Transaction<T>> txs,
+            ImmutableArray<byte> preEvaluationHash)
+        {
+            using SHA256 sha256 = SHA256.Create();
+
+            var groups = txs
+                .GroupBy(tx => tx.Signer)
+                .OrderBy(group => group.Key)
+                .ToList();
+
+            // First hash assumes preEvaluationHash has enough entropy to make sampling of
+            // startIndex uniform enough.  Second hash is used to obfuscate parity.
+            byte[] firstHash = sha256.ComputeHash(preEvaluationHash.ToBuilder().ToArray());
+            byte[] secondHash = sha256.ComputeHash(firstHash);
+
+            int startIndex = (int)(new BigInteger(firstHash) % groups.Count);
+            startIndex = startIndex >= 0 ? startIndex : -startIndex;
+            bool reverse = secondHash[0] % 2 == 1;
+
+            var result = groups.Skip(startIndex).Concat(groups.Take(startIndex));
+            if (reverse)
+            {
+                result = result.Reverse();
+            }
+
+            return result.SelectMany(group => group.OrderBy(tx => tx.Nonce));
         }
 
         /// <summary>
