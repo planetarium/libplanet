@@ -40,9 +40,16 @@ namespace Libplanet.Tests.Net
         public FactOnlyTurnAvailableAttribute(int maxRetries = 1, int delayBetweenRetriesMs = 0)
             : base(maxRetries, delayBetweenRetriesMs)
         {
-            if (!GetIceServers().Any())
+            if (!TurnUris.Any())
             {
-                Skip = "Available only when any TURN server is running.";
+                Skip =
+                    $"Skipped as TURN/ICE servers are not configured; " +
+                    $"set the environment variable {TurnUrlsVarName} with " +
+                    $"space-separated TURN/ICE server URLs.";
+            }
+            else if (!GetIceServers().Any())
+            {
+                Skip = "Available only when any TURN/ICE server is running.";
             }
         }
 
