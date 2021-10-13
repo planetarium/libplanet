@@ -14,18 +14,10 @@ namespace Libplanet.Net.Messages
             StartIndex = startIndex;
             Hashes = hashes.ToList();
 
-            if (StartIndex is null && Hashes.Any())
-            {
-                throw new ArgumentNullException(
-                    nameof(startIndex),
-                    "The startIndex can be null iff hashes are empty."
-                );
-            }
-
-            if (!Hashes.Any() && !(StartIndex is null))
+            if (StartIndex is null == Hashes.Any())
             {
                 throw new ArgumentException(
-                    "The startIndex has to be null if hashes are empty.",
+                    "The startIndex can be null iff hashes are empty.",
                     nameof(startIndex)
                 );
             }

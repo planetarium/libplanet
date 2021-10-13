@@ -16,7 +16,7 @@ namespace Libplanet.Tests.Net.Messages
         [Fact]
         public void Constructor()
         {
-            Assert.Throws<ArgumentNullException>(() =>
+            Assert.Throws<ArgumentException>(() =>
                 new BlockHashes(null, new[] { default(BlockHash) })
             );
             Assert.Throws<ArgumentException>(() =>
