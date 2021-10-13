@@ -1025,7 +1025,7 @@ namespace Libplanet.Tests.Action
                 }
 
                 List<string> orderedAddresses;
-                if (protocolVersion > 1)
+                if (protocolVersion >= 3)
                 {
                     // Spec for protocol version >= 3.
                     orderedAddresses = new List<string>
