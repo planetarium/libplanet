@@ -1,12 +1,12 @@
 #!/bin/bash
-# Invoke github-release <https://github.com/aktau/github-release>.
+# Invoke github-release <https://github.com/github-release/github-release>.
 set -e
 
-if [[ ! -f /tmp/bin/linux/amd64/github-release ]]; then
-  wget -O /tmp/github-release.tar.bz2 \
-    https://github.com/aktau/github-release/releases/download/v0.7.2/linux-amd64-github-release.tar.bz2
-  tar xvfj /tmp/github-release.tar.bz2 -C /tmp
-  rm /tmp/github-release.tar.bz2
+if [[ ! -f /tmp/github-release ]]; then
+  wget -O /tmp/github-release.bz2 \
+    https://github.com/github-release/github-release/releases/download/v0.10.0/linux-amd64-github-release.bz2
+  bzip2 -d /tmp/github-release.bz2
+  chmod +x /tmp/github-release
 fi
 
-/tmp/bin/linux/amd64/github-release "$@"
+/tmp/github-release "$@"
