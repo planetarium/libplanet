@@ -9,10 +9,23 @@ if ! [[ -f "$SOLUTION" ]]; then
 fi
 
 list-projects() {
-  dotnet sln "$SOLUTION" list | grep '\...proj$' | awk -F/ '{ print $1 }'
+  dotnet sln "$SOLUTION" list | grep $'\\...proj\r$' | sed 's/[/\].*//'
 }
 
-check-project() {
+# shellcheck source=.github/bin/constants.sh
+. "$(dirname "$0")/../.github/bin/constants.sh"
+projects_index=" ${projects[*]} "
+
+check-github-actions() {
+  # shellcheck disable=SC2076
+  if [[ ! "$projects_index" =~ " $1 " ]]; then
+    echo "The project $1 is missing from the projects constant in the " \
+      ".github/bin/constants.sh file." > /dev/stderr
+    exit 1
+  fi
+}
+
+check-contributing() {
   if ! grep -E "^ -  \*$1\*: " CONTRIBUTING.md > /dev/null; then
     echo "The project $1 is not documented in the CONTRIBUTING.md file." \
       > /dev/stderr
@@ -21,7 +34,11 @@ check-project() {
 }
 
 for project in $(list-projects); do
-  check-project "$project" || exit 1
+  if ! [[ "$project" = *.Tests || "$project" = *.UnitTests \
+       || "$project" = *.Benchmarks ]]; then
+    check-github-actions "$project" || exit 1
+  fi
+  check-contributing "$project" || exit 1
 done
 
 # vim: set filetype=sh ts=2 sw=2 et:
