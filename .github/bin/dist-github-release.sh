@@ -61,7 +61,7 @@ github_repo="${GITHUB_REPOSITORY#*/}"
   --user "$github_user" \
   --repo "$github_repo" \
   --tag "$tag" \
-  --name "${projects[0]} $tag" \
+  --name "$solution $tag" \
   --description - < obj/release_note.txt
 
 for project in "${projects[@]}"; do

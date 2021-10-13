@@ -213,7 +213,7 @@ Released on October 13, 2021.
  -  Added `StoreExtensions.GetStateRootHash()` extension method.
     [[#1128], [#1146], [#1492]]
  -  Added `DelayedRenderer<T>.HashAlgorithmGetter` property.  [[#1492]]
- -  `BlockDigest` became to implement `IBlockExcerpt`.
+ -  `BlockDigest` became to implement `IBlockExcerpt`.  [[#1492]]
  -  Added `InvalidBlockPublicKeyException` class.  [[#1457], [#1507]]
  -  Added `InvalidBlockSignatureException` class.  [[#1457], [#1507]]
 

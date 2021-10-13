@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # shellcheck disable=SC2034
+solution="Libplanet"
 projects=(
   "Libplanet.Stun"
   "Libplanet"
