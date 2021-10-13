@@ -604,21 +604,28 @@ namespace Libplanet.Action
         {
             using SHA256 sha256 = SHA256.Create();
 
-            var groups = txs
-                .GroupBy(tx => tx.Signer)
-                .OrderBy(group => group.Key)
-                .ToList();
+            // Some deterministic preordering is necessary.
+            var groups = txs.GroupBy(tx => tx.Signer).OrderBy(group => group.Key).ToList();
 
-            // First hash assumes preEvaluationHash has enough entropy to make sampling of
-            // startIndex uniform enough.  Second hash is used to obfuscate parity.
-            byte[] firstHash = sha256.ComputeHash(preEvaluationHash.ToBuilder().ToArray());
-            byte[] secondHash = sha256.ComputeHash(firstHash);
+            // Although strictly not necessary, additional hash computation removes zero padding
+            // just in case.
+            byte[] reHash = sha256.ComputeHash(preEvaluationHash.ToBuilder().ToArray());
 
-            int startIndex = (int)(new BigInteger(firstHash) % groups.Count);
+            // As BigInteger uses little-endian, we take the last byte for parity to prevent
+            // the value of reverse directly tied to the parity of startIndex below.
+            bool reverse = reHash.Last() % 2 == 1;
+
+            // This assumes the entropy of preEvaluationHash, thus reHash, is large enough and
+            // its range with BigInteger conversion also is large enough that selection of
+            // startIndex is approximately uniform.
+            int startIndex = groups.Count <= 1
+                ? 0
+                : (int)(new BigInteger(reHash) % groups.Count);
             startIndex = startIndex >= 0 ? startIndex : -startIndex;
-            bool reverse = secondHash[0] % 2 == 1;
 
-            var result = groups.Skip(startIndex).Concat(groups.Take(startIndex));
+            var result = groups
+                .Skip(startIndex)
+                .Concat(groups.Take(startIndex));
             if (reverse)
             {
                 result = result.Reverse();
