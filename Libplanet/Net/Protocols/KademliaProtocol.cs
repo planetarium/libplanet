@@ -494,19 +494,20 @@ namespace Libplanet.Net.Protocols
             {
                 case Ping ping:
                 {
+                    _logger.Debug("Received message is Ping.");
                     ReceivePing(ping);
                     break;
                 }
 
-                case FindNeighbors findPeer:
+                case FindNeighbors findNeighbors:
                 {
-                    ReceiveFindPeer(findPeer);
+                    ReceiveFindPeer(findNeighbors);
                     break;
                 }
             }
 
             // Should we update peer status for non-protocol related messages? (i.e. BlockHashes)
-            Update(message?.Remote);
+            Update(message.Remote);
         }
 
         /// <summary>
@@ -694,8 +695,7 @@ namespace Libplanet.Net.Protocols
         {
             if (ping.Remote.Address.Equals(_address))
             {
-                throw new ArgumentException(
-                    "Cannot receive ping from self");
+                throw new ArgumentException("Cannot receive ping from self");
             }
 
             var pong = new Pong

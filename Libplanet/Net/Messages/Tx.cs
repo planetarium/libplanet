@@ -1,5 +1,5 @@
+#nullable enable
 using System.Collections.Generic;
-using NetMQ;
 
 namespace Libplanet.Net.Messages
 {
@@ -10,21 +10,15 @@ namespace Libplanet.Net.Messages
             Payload = payload;
         }
 
-        public Tx(NetMQFrame[] body)
+        public Tx(byte[][] dataFrames)
         {
-            Payload = body.ToByteArray();
+            Payload = dataFrames[0];
         }
 
         public byte[] Payload { get; }
 
-        protected override MessageType Type => MessageType.Tx;
+        public override MessageType Type => MessageType.Tx;
 
-        protected override IEnumerable<NetMQFrame> DataFrames
-        {
-            get
-            {
-                yield return new NetMQFrame(Payload);
-            }
-        }
+        public override IEnumerable<byte[]> DataFrames => new[] { Payload, };
     }
 }

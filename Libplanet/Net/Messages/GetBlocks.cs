@@ -1,8 +1,8 @@
+#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Libplanet.Blocks;
-using NetMQ;
 
 namespace Libplanet.Net.Messages
 {
@@ -21,36 +21,31 @@ namespace Libplanet.Net.Messages
             ChunkSize = chunkSize;
         }
 
-        public GetBlocks(NetMQFrame[] frames)
+        public GetBlocks(byte[][] dataFrames)
         {
-            int hashCount = frames[0].ConvertToInt32();
-            BlockHashes = frames
+            int hashCount = BitConverter.ToInt32(dataFrames[0], 0);
+            BlockHashes = dataFrames
                 .Skip(1).Take(hashCount)
-                .Select(f => f.ConvertToBlockHash())
+                .Select(ba => new BlockHash(ba))
                 .ToList();
-            ChunkSize = frames[1 + hashCount].ConvertToInt32();
+            ChunkSize = BitConverter.ToInt32(dataFrames[1 + hashCount], 0);
         }
 
         public IEnumerable<BlockHash> BlockHashes { get; }
 
         public int ChunkSize { get; }
 
-        protected override MessageType Type => MessageType.GetBlocks;
+        public override MessageType Type => MessageType.GetBlocks;
 
-        protected override IEnumerable<NetMQFrame> DataFrames
+        public override IEnumerable<byte[]> DataFrames
         {
             get
             {
-                yield return new NetMQFrame(
-                    NetworkOrderBitsConverter.GetBytes(BlockHashes.Count()));
-
-                foreach (BlockHash hash in BlockHashes)
-                {
-                    yield return new NetMQFrame(hash.ToByteArray());
-                }
-
-                yield return new NetMQFrame(
-                    NetworkOrderBitsConverter.GetBytes(ChunkSize));
+                var frames = new List<byte[]>();
+                frames.Add(BitConverter.GetBytes(BlockHashes.Count()));
+                frames.AddRange(BlockHashes.Select(hash => hash.ToByteArray()));
+                frames.Add(BitConverter.GetBytes(ChunkSize));
+                return frames;
             }
         }
     }

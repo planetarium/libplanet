@@ -1,7 +1,8 @@
+#nullable enable
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Libplanet.Tx;
-using NetMQ;
 
 namespace Libplanet.Net.Messages
 {
@@ -12,30 +13,27 @@ namespace Libplanet.Net.Messages
             TxIds = txIds;
         }
 
-        public GetTxs(NetMQFrame[] frames)
+        public GetTxs(byte[][] dataFrames)
         {
-            int txCount = frames[0].ConvertToInt32();
-            TxIds = frames
+            int txCount = BitConverter.ToInt32(dataFrames[0], 0);
+            TxIds = dataFrames
                 .Skip(1).Take(txCount)
-                .Select(f => f.ConvertToTxId())
+                .Select(ba => new TxId(ba))
                 .ToList();
         }
 
         public IEnumerable<TxId> TxIds { get; }
 
-        protected override MessageType Type => MessageType.GetTxs;
+        public override MessageType Type => MessageType.GetTxs;
 
-        protected override IEnumerable<NetMQFrame> DataFrames
+        public override IEnumerable<byte[]> DataFrames
         {
             get
             {
-                yield return new NetMQFrame(
-                    NetworkOrderBitsConverter.GetBytes(TxIds.Count()));
-
-                foreach (TxId id in TxIds)
-                {
-                    yield return new NetMQFrame(id.ToByteArray());
-                }
+                var frames = new List<byte[]>();
+                frames.Add(BitConverter.GetBytes(TxIds.Count()));
+                frames.AddRange(TxIds.Select(id => id.ToByteArray()));
+                return frames;
             }
         }
     }

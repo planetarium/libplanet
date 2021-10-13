@@ -208,13 +208,9 @@ namespace Libplanet.Tests.Net.Transports
                 transportA = CreateTransport(table);
                 await InitializeAsync(transportA);
 
-                Logger?.Debug("Stop1");
-
                 transportA.BroadcastMessage(transportD.AsPeer.Address, new Ping());
 
                 await Task.WhenAll(tcsB.Task, tcsC.Task);
-
-                Logger?.Debug("Stop2");
 
                 Assert.IsType<Ping>(tcsB.Task.Result);
                 Assert.IsType<Ping>(tcsC.Task.Result);
