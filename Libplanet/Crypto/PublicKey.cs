@@ -162,11 +162,23 @@ namespace Libplanet.Crypto
                 throw new ArgumentNullException(nameof(signature));
             }
 
-            return signature.Any() && CryptoConfig.CryptoBackend.Verify(
-                HashDigest<SHA256>.DeriveFrom(message),
-                signature is byte[] ba ? ba : signature.ToArray(),
-                publicKey: this
-            );
+            if (!signature.Any())
+            {
+                return false;
+            }
+
+            try
+            {
+                return CryptoConfig.CryptoBackend.Verify(
+                    HashDigest<SHA256>.DeriveFrom(message),
+                    signature is byte[] ba ? ba : signature.ToArray(),
+                    publicKey: this
+                );
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         /// <summary>

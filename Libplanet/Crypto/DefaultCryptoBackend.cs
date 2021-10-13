@@ -1,3 +1,4 @@
+#nullable enable
 using System.IO;
 using System.Security.Cryptography;
 using Org.BouncyCastle.Asn1;
@@ -54,6 +55,10 @@ namespace Libplanet.Crypto
                 return verifier.VerifySignature(messageHash.ToByteArray(), rs[0], rs[1]);
             }
             catch (IOException)
+            {
+                return false;
+            }
+            catch (Asn1ParsingException)
             {
                 return false;
             }

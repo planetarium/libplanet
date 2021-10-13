@@ -6,6 +6,11 @@ Version 0.18.1
 
 To be released.
 
+ -  Fixed a bug where `PublicKey.Verify()` method had thrown exceptions
+    for some invalid inputs.  [[#1520]]
+
+[#1520]: https://github.com/planetarium/libplanet/issues/1520
+
 
 Version 0.18.0
 --------------
