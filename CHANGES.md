@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.18.0
 --------------
 
-To be released.
+Released on October 13, 2021.
 
 ### Backward-incompatible API changes
 
@@ -147,8 +147,6 @@ To be released.
         since the protocol version 2.  Block signatures affect block hashes.
         [[#1457]]
 
-### Backward-incompatible storage format changes
-
 ### Added APIs
 
  -  Added `BlockMetadata` class.  [[#1164], [#1457], [#1492], [#1507]]
@@ -240,8 +238,6 @@ To be released.
     with a non-null empty `signature`.  [[#1507]]
  -  Fixed `TxExecution` not updating during preload. [[#1508], [#1509]]
 
-### CLI tools
-
 [#1128]: https://github.com/planetarium/libplanet/issues/1128
 [#1146]: https://github.com/planetarium/libplanet/issues/1146
 [#1164]: https://github.com/planetarium/libplanet/issues/1164
@@ -250,6 +246,7 @@ To be released.
 [#1507]: https://github.com/planetarium/libplanet/pull/1507
 [#1508]: https://github.com/planetarium/libplanet/issues/1508
 [#1509]: https://github.com/planetarium/libplanet/pull/1509
+
 
 Version 0.17.0
 --------------
