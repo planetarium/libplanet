@@ -26,7 +26,7 @@ namespace Libplanet.Tests.Fixtures
         public readonly IReadOnlyList<PrivateKey> PrivateKeys;
         public readonly IReadOnlyList<Address> Addresses;
         public readonly IReadOnlyList<Transaction<Arithmetic>> Txs;
-        public readonly Address Miner;
+        public readonly PrivateKey Miner;
         public readonly Block<Arithmetic> Genesis;
         public readonly BlockChain<Arithmetic> Chain;
         public readonly IStore Store;
@@ -61,21 +61,17 @@ namespace Libplanet.Tests.Fixtures
                     )
                 )
                 .ToImmutableArray();
-            Miner = new System.Random().NextAddress();
+            Miner = new PrivateKey();
             policy = policy ?? new NullPolicy<Arithmetic>();
             Store = new DefaultStore(null);
             KVStore = new MemoryKeyValueStore();
-            StateStore = new TrieStateStore(KVStore, KVStore);
-            Genesis = Block<Arithmetic>.Mine(
-                index: 0,
-                hashAlgorithm: policy.GetHashAlgorithm(0),
-                difficulty: 0,
-                previousTotalDifficulty: 0,
-                miner: Miner,
-                previousHash: null,
-                timestamp: DateTimeOffset.UtcNow,
-                transactions: Txs
-            ).AttachStateRootHash(StateStore, policy);
+            StateStore = new TrieStateStore(KVStore);
+            Genesis = new BlockContent<Arithmetic>
+            {
+                PublicKey = Miner.PublicKey,
+                Timestamp = DateTimeOffset.UtcNow,
+                Transactions = Txs,
+            }.Mine(policy.GetHashAlgorithm(0)).Evaluate(Miner, policy.BlockAction, StateStore);
             Chain = new BlockChain<Arithmetic>(
                 policy,
                 new VolatileStagePolicy<Arithmetic>(),
@@ -104,7 +100,7 @@ namespace Libplanet.Tests.Fixtures
             BigInteger prevState = Chain.GetState(signerAddress) is Bencodex.Types.Integer i
                 ? i.Value
                 : 0;
-            HashDigest<SHA256> prevStateRootHash = Chain.Tip.StateRootHash.Value;
+            HashDigest<SHA256> prevStateRootHash = Chain.Tip.StateRootHash;
             ITrie prevTrie = GetTrie(Chain.Tip.Hash);
             (BigInteger, HashDigest<SHA256>) prevPair = (prevState, prevStateRootHash);
             (BigInteger, HashDigest<SHA256>) stagedStates = Chain.ListStagedTransactions()
@@ -147,15 +143,12 @@ namespace Libplanet.Tests.Fixtures
         public TxWithContext Sign(int signerIndex, params Arithmetic[] actions) =>
             Sign(PrivateKeys[signerIndex], actions);
 
-        public async Task<Block<Arithmetic>> Mine(CancellationToken cancellationToken = default)
-        {
-            Block<Arithmetic> draft = await Chain.MineBlock(
+        public Task<Block<Arithmetic>> Mine(CancellationToken cancellationToken = default) =>
+            Chain.MineBlock(
                 Miner,
                 DateTimeOffset.UtcNow,
                 cancellationToken: cancellationToken
             );
-            return draft.AttachStateRootHash(StateStore, Policy);
-        }
 
         public IAccountStateDelta CreateAccountStateDelta(Address signer, BlockHash? offset = null)
         {
@@ -170,8 +163,14 @@ namespace Libplanet.Tests.Fixtures
         public IAccountStateDelta CreateAccountStateDelta(int signerIndex, BlockHash? offset = null)
             => CreateAccountStateDelta(Addresses[signerIndex], offset);
 
-        public ITrie GetTrie(BlockHash? blockHash) =>
-            blockHash is BlockHash h ? StateStore.GetTrie(h) : null;
+        public ITrie GetTrie(BlockHash? blockHash)
+        {
+            return (blockHash is BlockHash h &&
+                    Store.GetBlockDigest(h) is BlockDigest d &&
+                    d.StateRootHash is HashDigest<SHA256> rootHash)
+                ? StateStore.GetStateRoot(rootHash)
+                : null;
+        }
 
         public struct TxWithContext
         {

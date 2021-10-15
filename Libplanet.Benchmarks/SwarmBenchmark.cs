@@ -26,6 +26,7 @@ namespace Libplanet.Benchmarks
         private const int WaitTimeout = 5 * 1000;
         private readonly NullPolicy<DumbAction> _policy;
         private readonly IStagePolicy<DumbAction> _stagePolicy;
+        private readonly PrivateKey _miner;
         private readonly List<Block<DumbAction>> _blocks;
         private readonly AppProtocolVersion _appProtocolVersion;
         private PrivateKey[] _keys;
@@ -37,15 +38,16 @@ namespace Libplanet.Benchmarks
         {
             _policy = new NullPolicy<DumbAction>();
             _stagePolicy = new VolatileStagePolicy<DumbAction>();
+            _miner = TestUtils.ChainPrivateKey;
             _blocks = new List<Block<DumbAction>>
             {
-                TestUtils.MineGenesis<DumbAction>(_policy.GetHashAlgorithm),
+                TestUtils.MineGenesisBlock<DumbAction>(_policy.GetHashAlgorithm, _miner),
             };
             _appProtocolVersion = AppProtocolVersion.Sign(new PrivateKey(), 1);
-            _blocks.Add(TestUtils.MineNext(_blocks[0], _policy.GetHashAlgorithm));
-            _blocks.Add(TestUtils.MineNext(_blocks[1], _policy.GetHashAlgorithm));
-            _blocks.Add(TestUtils.MineNext(_blocks[2], _policy.GetHashAlgorithm));
-            _blocks.Add(TestUtils.MineNext(_blocks[3], _policy.GetHashAlgorithm));
+            _blocks.Add(TestUtils.MineNextBlock(_blocks[0], _policy.GetHashAlgorithm, _miner));
+            _blocks.Add(TestUtils.MineNextBlock(_blocks[1], _policy.GetHashAlgorithm, _miner));
+            _blocks.Add(TestUtils.MineNextBlock(_blocks[2], _policy.GetHashAlgorithm, _miner));
+            _blocks.Add(TestUtils.MineNextBlock(_blocks[3], _policy.GetHashAlgorithm, _miner));
         }
 
         [IterationSetup(Targets = new[] {"BroadcastBlock", "BroadcastBlockWithoutFill"})]

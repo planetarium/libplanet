@@ -1,21 +1,34 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <PackageId>Libplanet.Explorer</PackageId>
-    <LangVersion>8</LangVersion>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <RootNamespace>Libplanet.Explorer</RootNamespace>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <PackageProjectUrl>https://github.com/planetarium/libplanet-explorer</PackageProjectUrl>
+    <Title>Libplanet.Explorer</Title>
+    <PackageProjectUrl>https://libplanet.io/</PackageProjectUrl>
     <RepositoryUrl>git://github.com/planetarium/libplanet-explorer.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <Company>Planetarium</Company>
     <Authors>Planetarium</Authors>
-    <VersionPrefix>0.1.0</VersionPrefix>
+    <PackageLicenseExpression>LGPL-2.1-or-later</PackageLicenseExpression>
+    <RequireLicenseAcceptance>true</RequireLicenseAcceptance>
     <NoWarn>NU1701</NoWarn>
     <CodeAnalysisRuleSet>..\Libplanet.Explorer.ruleset</CodeAnalysisRuleSet>
+    <PackageIcon>icon.png</PackageIcon>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <LangVersion>8.0</LangVersion>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>Libplanet.Explorer</RootNamespace>
+    <AssemblyName>Libplanet.Explorere</AssemblyName>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <IsTestProject>false</IsTestProject>
+    <CodeAnalysisRuleSet>..\Libplanet.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="..\LICENSE" Pack="true" PackagePath="LICENSE.txt" />
+    <None Include="..\icon.png" Pack="true" PackagePath="icon.png" />
     <AdditionalFiles Include="..\Menees.Analyzers.Settings.xml">
       <Link>Menees.Analyzers.Settings.xml</Link>
     </AdditionalFiles>

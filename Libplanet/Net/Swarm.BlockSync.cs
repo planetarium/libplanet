@@ -303,7 +303,7 @@ namespace Libplanet.Net
                     );
                     HashAlgorithmType hashAlgorithm =
                         workspace.Policy.GetHashAlgorithm(block.Index);
-                    block.Validate(hashAlgorithm, DateTimeOffset.UtcNow);
+                    block.ValidateTimestamp();
                     workspace.Store.PutBlock(block);
                     if (tempTip is null ||
                         BlockChain.Policy.CanonicalChainComparer.Compare(
@@ -353,7 +353,10 @@ namespace Libplanet.Net
                         Block<T> b = node.Value;
                         if (b.PreviousHash is { } p && !workspace.ContainsBlock(p))
                         {
-                            blockToAdd = workspace.Store.GetBlock<T>(p);
+                            blockToAdd = workspace.Store.GetBlock<T>(
+                                BlockChain.Policy.GetHashAlgorithm,
+                                p
+                            );
                         }
                         else
                         {

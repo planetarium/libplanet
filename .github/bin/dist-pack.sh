@@ -49,7 +49,9 @@ done
 for project in "${projects[@]}"; do
   if [ -f obj/version_suffix.txt ]; then
     version_suffix="$(cat obj/version_suffix.txt)"
-    dotnet_args="--version-suffix=$version_suffix -p:NoPackageAnalysis=true"
+    dotnet_args="-p:VersionPrefix=$version_prefix" \
+    dotnet_args="$dotnet_args --version-suffix=$version_suffix"
+    dotnet_args="$dotnet_args -p:NoPackageAnalysis=true"
   else
     dotnet_args="-p:Version=$version"
   fi

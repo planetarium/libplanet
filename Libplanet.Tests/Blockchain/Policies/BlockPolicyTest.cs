@@ -160,46 +160,45 @@ namespace Libplanet.Tests.Blockchain.Policies
         public async Task GetNextBlockDifficulty()
         {
             var store = new DefaultStore(null);
-            var stateStore =
-                new TrieStateStore(new MemoryKeyValueStore(), new MemoryKeyValueStore());
+            var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var dateTimeOffset = FixtureEpoch;
             var chain =
                 TestUtils.MakeBlockChain(_policy, store, stateStore, timestamp: dateTimeOffset);
-            var address = _fx.Address1;
+            var miner = new PrivateKey();
             Assert.Equal(
                 1024,
                 _policy.GetNextBlockDifficulty(chain)
             );
             dateTimeOffset = FixtureEpoch + TimeSpan.FromHours(1);
-            await chain.MineBlock(address, dateTimeOffset);
+            await chain.MineBlock(miner, dateTimeOffset);
 
             Assert.Equal(
                 1032,
                 _policy.GetNextBlockDifficulty(chain)
             );
             dateTimeOffset = FixtureEpoch + TimeSpan.FromHours(3);
-            await chain.MineBlock(address, dateTimeOffset);
+            await chain.MineBlock(miner, dateTimeOffset);
 
             Assert.Equal(
                 1040,
                 _policy.GetNextBlockDifficulty(chain)
             );
             dateTimeOffset = FixtureEpoch + TimeSpan.FromHours(7);
-            await chain.MineBlock(address, dateTimeOffset);
+            await chain.MineBlock(miner, dateTimeOffset);
 
             Assert.Equal(
                 1040,
                 _policy.GetNextBlockDifficulty(chain)
             );
             dateTimeOffset = FixtureEpoch + TimeSpan.FromHours(9);
-            await chain.MineBlock(address, dateTimeOffset);
+            await chain.MineBlock(miner, dateTimeOffset);
 
             Assert.Equal(
                 1048,
                 _policy.GetNextBlockDifficulty(chain)
             );
             dateTimeOffset = FixtureEpoch + TimeSpan.FromHours(13);
-            await chain.MineBlock(address, dateTimeOffset);
+            await chain.MineBlock(miner, dateTimeOffset);
 
             Assert.Equal(
                 1048,

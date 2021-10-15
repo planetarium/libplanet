@@ -2,7 +2,7 @@
   <PropertyGroup>
     <PackageId>Libplanet</PackageId>
     <Title>Libplanet</Title>
-    <VersionPrefix>0.18.0</VersionPrefix>
+    <VersionPrefix>0.19.0</VersionPrefix>
     <!-- Note: don't be confused by the word "prefix" here.  It's merely a
     version without suffix like "-dev.123".  See the following examples:
       Version: 1.2.3-dev.456
@@ -61,7 +61,7 @@ https://docs.libplanet.io/</Description>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Bencodex" Version="0.3.0-dev.d6bdbb581c5d9cd024c0b428e1c9404cdf671b75" />
+    <PackageReference Include="Bencodex" Version="0.3.0" />
     <PackageReference Include="BouncyCastle.NetCore" Version="1.8.6" />
     <PackageReference Include="Destructurama.Attributed" Version="2.0.0" />
     <PackageReference Include="Equals.Fody" Version="4.0.1" />

@@ -1,5 +1,6 @@
 #nullable enable
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading;
 
@@ -25,13 +26,13 @@ namespace Libplanet
         /// <param name="nonce">An arbitrary nonce for an attempt, provided by
         /// <see cref="Hashcash.Answer(Stamp, HashAlgorithmType, long, CancellationToken)"/> method.
         /// </param>
-        /// <returns>A <see cref="byte"/> array determined from the given
-        /// <paramref name="nonce"/>.  It should return consistently
-        /// an equivalent array for equivalent <paramref name="nonce"/>
-        /// values.</returns>
+        /// <returns>Chunked <see cref="byte"/>s determined from the given <paramref name="nonce"/>.
+        /// It should return consistently equivalent bytes for equivalent <paramref name="nonce"/>
+        /// values.  The way how bytes are split into chunks can be flexible; regardless of the way,
+        /// they are concatenated into a single byte array.</returns>
         /// <seealso cref="Hashcash.Answer(Stamp, HashAlgorithmType, long, CancellationToken)"/>
         /// <seealso cref="Nonce"/>
-        public delegate byte[] Stamp(Nonce nonce);
+        public delegate IEnumerable<byte[]> Stamp(Nonce nonce);
 
         /// <summary>
         /// Finds a <see cref="Nonce"/> that satisfies the given
@@ -53,6 +54,8 @@ namespace Libplanet
         /// <returns>A pair of <see cref="Nonce"/> value which satisfies the
         /// given <paramref name="difficulty"/>, and the succeeded hash
         /// digest.</returns>
+        /// <exception cref="OperationCanceledException">Thrown when the specified
+        /// <paramref name="cancellationToken"/> received a cancellation request.</exception>
         /// <seealso cref="Stamp"/>
         public static (Nonce Nonce, ImmutableArray<byte> Digest) Answer(
             Stamp stamp,
@@ -68,7 +71,8 @@ namespace Libplanet
                 random.NextBytes(nonceBytes);
                 var nonce = new Nonce(nonceBytes);
 
-                var digest = hashAlgorithmType.Digest(stamp(nonce));
+                IEnumerable<byte[]> chunks = stamp(nonce);
+                byte[] digest = hashAlgorithmType.Digest(chunks);
                 if (ByteUtil.Satisfies(digest, difficulty))
                 {
                     return (nonce, ImmutableArray.Create(digest));

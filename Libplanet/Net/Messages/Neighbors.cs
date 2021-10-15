@@ -1,42 +1,44 @@
+#nullable enable
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using Bencodex;
 using Destructurama.Attributed;
-using NetMQ;
 
 namespace Libplanet.Net.Messages
 {
     internal class Neighbors : Message
     {
+        private static readonly Codec Codec = new Codec();
+
         public Neighbors(IEnumerable<BoundPeer> found)
         {
             Found = found.ToImmutableList();
         }
 
-        public Neighbors(NetMQFrame[] body)
+        public Neighbors(byte[][] dataFrames)
         {
-            int foundCount = body[0].ConvertToInt32();
-            Found = body.Skip(1).Take(foundCount)
-                .Select(f => DeserializePeer(f.ToByteArray()) as BoundPeer)
+            var codec = new Codec();
+            int foundCount = BitConverter.ToInt32(dataFrames[0], 0);
+            Found = dataFrames.Skip(1).Take(foundCount)
+                .Select(ba => new BoundPeer((Bencodex.Types.Dictionary)codec.Decode(ba)))
                 .ToImmutableList();
         }
 
         [LogAsScalar]
         public IImmutableList<BoundPeer> Found { get; }
 
-        protected override MessageType Type => MessageType.Neighbors;
+        public override MessageType Type => MessageType.Neighbors;
 
-        protected override IEnumerable<NetMQFrame> DataFrames
+        public override IEnumerable<byte[]> DataFrames
         {
             get
             {
-                yield return new NetMQFrame(
-                    NetworkOrderBitsConverter.GetBytes(Found.Count));
-
-                foreach (BoundPeer peer in Found)
-                {
-                    yield return new NetMQFrame(SerializePeer(peer));
-                }
+                var frames = new List<byte[]>();
+                frames.Add(BitConverter.GetBytes(Found.Count));
+                frames.AddRange(Found.Select(boundPeer => Codec.Encode(boundPeer.ToBencodex())));
+                return frames;
             }
         }
     }

@@ -36,9 +36,10 @@ namespace Libplanet.Benchmarks
                 _fx.Store,
                 _fx.StateStore,
                 _fx.GenesisBlock);
+            var key = new PrivateKey();
             for (var i = 0; i < 500; i++)
             {
-                _blockChain.MineBlock(_fx.Address1).Wait();
+                _blockChain.MineBlock(key).Wait();
             }
         }
 

@@ -1,24 +1,287 @@
 Libplanet changelog
 ===================
 
-Version 0.18.0
+Version 0.19.0
 --------------
 
 To be released.
 
 ### Backward-incompatible API changes
 
+ -  Removed `Message.ToNetMQMessage()` method.
+    Use `IMessageCodec<T>.Encode()` method instead.  [[#1503]]
+ -  Removed `Message.Parse()` static method.
+    Use `IMessageCodec<T>.Decode()` method instead.  [[#1503]]
+
 ### Backward-incompatible network protocol changes
+
+ -  The order of the header of a `NetMQMessage` has been modified.  [[#1503]]
 
 ### Backward-incompatible storage format changes
 
 ### Added APIs
+
+ -  Added `Message.MessageFrame` enum.  [[#1503]]
+ -  Added `Message.Type` property.  [[#1503]]
+ -  Added `Message.DataFrames` property.  [[#1503]]
+ -  Added `IMessageCodec<T>` interface.  [[#1503]]
+ -  Added `NetMQMessageCodec` class which inherits `IMessageCodec<T>`.
+    [[#1503]]
 
 ### Behavioral changes
 
 ### Bug fixes
 
 ### CLI tools
+
+[#1503]: https://github.com/planetarium/libplanet/pull/1503
+
+
+Version 0.18.0
+--------------
+
+Released on October 13, 2021.
+
+### Backward-incompatible API changes
+
+ -  `Hashcash.Stamp(Nonce)` delegate's return type became `IEnumerable<byte[]>`
+    (was `byte[]`).  [[#1492]]
+ -  Moved `BlockDigest` struct to `Libplanet.Store` namespace (from
+    `Libplanet.Blocks` namespace).  [[#1492]]
+ -  Removed `Block<T>.ToBlockDigest()` method.  Use `BlockDigest.FromBlock<T>()`
+    static method instead. [[#1492]]
+ -  `ActionEvaluator<T>.Evaluate()` method's `block` parameter became to take
+    `IPreEvaluationBlock<T>` (was `IBlock<T>`).  [[#1146], [#1164], [#1492]]
+ -  `Block<T>` and `BlockHeader` now guarantees that their every instance has
+    integrity.  [[#1164], [#1492]]
+     -  `Block<T>` became unable to be subclassed.
+     -  Remove `Block<T>(long, long, BigInteger, Nonce, Address, BlockHash?,
+        DateTimeOffset, IReadOnlyList<Transaction<T>>, HashAlgorithmType,
+        HashDigest<SHA256>, ImmutableArray<byte>?, int)` overloaded constructor.
+        Use other overloaded constructors instead.
+     -  Added `Block<T>(IBlockHeader header, IEnumerable<Transaction<T>>)`
+        overloaded constructor.
+     -  Added `Block<T>(PreEvaluationBlock<T>, HashDigest<SHA256>,
+        ImmutableArray<byte>?)` overloaded constructor.  [[#1457], [#1507]]
+     -  `BlockHeader` is no more readonly struct, but a sealed class.
+     -  Removed `BlockHeader(int, long, string, ImmutableArray<byte>,
+        ImmutableArray<byte>, long, BigInteger, ImmutableArray<byte>,
+        ImmutableArray<byte>, ImmutableArray<byte>, ImmutableArray<byte>,
+        ImmutableArray<byte>)` constructor.  Use other overloaded constructors
+        instead.
+     -  Added `BlockHeader(PreEvaluationBlockHeader, HashDigest<SHA256>,
+        ImmutableArray<byte>?)` overloaded constructor.  [[#1457], [#1507]]
+     -  Added `BlockHeader(PreEvaluationBlockHeader, HashDigest<SHA256>,
+        ImmutableArray<byte>?, BlockHash)` overloaded constructor.
+        [[#1457], [#1507]]
+ -  `Block<T>` and `BlockHeader` have no more marshaling/unmarshaling methods.
+     -  Removed `Block<T>(Bencodex.Types.Dictionary)` overloaded constructor.
+        Use `BlockMarshaler.UnmarshalBlock()` static method instead.
+     -  Removed `Block<T>.Deserialize()` static method.  Instead, use
+        `BlockMarshaler.UnmarshalBlock()` static method and `Bencodex.Codec`
+        together.
+     -  Removed `Block<T>.ToBencodex()` method.
+        Use `BlockMarshaler.MarshalBlock()` static method instead.
+     -  Removed `Block<T>.Serialize()` method.  Instead, use
+        `BlockMarshaler.MarshalBlock()` static method and `Bencodex.Codec`
+        together.
+     -  Removed `BlockHeader(Bencodex.Types.Dictionary)` overloaded constructor.
+        Use `BlockMarshaler.UnmarshalBlockHeader()` static method instead.
+     -  Removed `BlockHeader.Deserialize()` static method.  Instead, use
+        `BlockMarshaler.UnmarshalBlockHeader()` static method and
+        `Bencodex.Codec` together.
+     -  Removed `BlockHeader.ToBencodex()` method.
+        Use `BlockMarshaler.MarshalBlockHeader()` static method instead.
+     -  Removed `BlockHeader.Serialize()` method.  Instead, use
+        `BlockMarshaler.MarshalBlockHeader()` static method and
+        `Bencodex.Codec` together.
+ -  `Block<T>` and `BlockHeader` now guarantee that their every instance has
+    its `StateRootHash`.  [[#1128], [#1146], [#1492]]
+     -  `Block<T>.StateRootHash` property's type became `HashDigest<SHA256>`
+        (was `HashDigest<SHA256>?`).
+     -  Removed `Block<T>(Block<T>, HashDigest<SHA256>)` overloaded constructor.
+        Use `Block<T>(PreEvaluationBlock<T>, HashDigest<SHA256>)` overloaded
+        constructor instead.
+     -  Removed `Block<T>.Mine()` static method.  Use `BlockContent<T>.Mine()`
+        and `PreEvaluationBlock<T>.Evaluate()` methods instead.
+     -  `BlockHeader.StateRootHash` property's type became `HashDigest<SHA256>`
+        (was `HashDigest<SHA256>?`).
+     -  The type of `InvalidBlockStateRootHashException()` constructor's
+        `expectedStateRootHash` parameter became `HashDigest<SHA256>`
+        (was `HashDigest<SHA256>?`).  [[#1507]]
+     -  `InvalidBlockStateRootHashException.ExpectedStateRootHash` property's
+        type became `HashDigest<SHA256>` (was `HashDigest<SHA256>?`).  [[#1507]]
+ -  `Block<T>` and `BlockHeader` became aware of `HashAlgorithmType` used for
+    proof-of-work mining.  [[#1492]]
+     -  Added `Block<T>.HashAlgorithm` property.
+     -  Added `BlockHeader.HashAlgorithm` property.
+     -  Removed `BlockHeader(int, long, DateTimeOffset, Nonce, Address, long,
+        BigInteger, BlockHash?, HashDigest<SHA256>?, BlockHash,
+        ImmutableArray<byte>, HashDigest<SHA256>?)` constructor.
+        Use `BlockHeader(int, long, DateTimeOffset, Nonce, Address, long,
+        BigInteger, BlockHash?, HashDigest<SHA256>?, BlockHash,
+        ImmutableArray<byte>, HashDigest<SHA256>, HashAlgorithmType)`
+        constructor instead.
+     -  Added `HashAlgorithmGetter hashAlgorithmGetter` parameter to
+        `IStore.GetBlock<T>()` method.
+     -  Removed `BlockDigest.Header` property.  Use `BlockDigest.GetHeader()`
+        method instead.
+     -  Added `BlockDigest.GetHeader()` method.
+     -  Added `HashAlgorithmGetter hashAlgorithmGetter` parameter to
+        `DelayedRenderer<T>()` constructor.
+     -  Added `HashAlgorithmGetter hashAlgorithmGetter` parameter to
+        `DelayedActionRenderer<T>()` constructor.
+     -  Added `DelayedRenderer<T>.HashAlgorithmGetter` property.
+ -  Blocks became signed by the miner since the protocol version 2.
+    [[#1457], [#1507]]
+     -  Added `Block<T>(PreEvaluationBlock<T>, HashDigest<SHA256>,
+        ImmutableArray<byte>?)` overloaded constructor.  [[#1164], [#1492]]
+     -  Added `BlockHeader(PreEvaluationBlockHeader, HashDigest<SHA256>,
+        ImmutableArray<byte>?)` overloaded constructor.  [[#1164], [#1492]]
+     -  Added `BlockHeader(PreEvaluationBlockHeader, HashDigest<SHA256>,
+        ImmutableArray<byte>?, BlockHash)` overloaded constructor.
+        [[#1164], [#1492]]
+     -  Added `Block<T>.Signature` property.
+     -  Added `Block<T>.PublicKey` property.
+     -  Added `BlockHeader.Signature` property.
+     -  Added `BlockHeader.PublicKey` property.
+     -  Added `InvalidBlockPublicKeyException` class.
+     -  Added `InvalidBlockSignatureException` class.
+ -  `IStateStore` now requires implementations to be trie.
+    [[#1128], [#1146], [#1492]]
+     -  Added `IStateStore.GetStateRoot()` method.
+     -  Added `IStateStore.PruneStates()` method.
+     -  Removed `IStateStore.SetStates<T>()` method.
+     -  Removed `IStateStore.GetState()` method.
+     -  Removed `IStateStore.ContainsBlockStates()` method.
+     -  Removed `IStateStore.ForkStates<T>()` method.
+ -  `TrieStateStore` no more stores associations between
+    `Block<T>.Hash`/`Block<T>.PreEvaluationHash` and `Block<T>.StateRootHash`,
+    because `Block<T>.StateRootHash` became mandatory.
+    [[#1128], [#1146], [#1492]]
+     -  Added `ITrie.Recorded` property.
+     -  Removed `IKeyValueStore stateHashKeyValueStore` parameter from
+        `TrieStateStore()` constructor.
+     -  Removed `TrieStateStore.GetTrie()` method.
+     -  Removed `TrieStateStore.GetRootHash()` method.
+     -  Replaced `TrieStateStore.PruneStates(IImmutableSet<BlockHash>)` method
+        with `TrieStateStore.PruneStates(IImmutableSet<HashDigest<SHA256>>)`
+        method.
+ -  The types of `BlockChain<T>.MineBlock()` overloaded methods' `miner`
+    parameter became `PrivateKey` (were `Address`).  [[#1457], [#1507]]
+
+### Backward-incompatible network protocol changes
+
+ -  The `Block<T>.CurrentProtocolVersion` is bumped from 1 to 2:  [[#1507]]
+     -  Block's total difficulty value became included to the input of block
+        hashes and pre-evaluation hashes since the protocol version 2.
+     -  Blocks became to have miner's public key as well since the protocol
+        version 2.  [[#1457]]
+     -  Blocks became to have no miner's address since the protocol version 2,
+        because it can be derived from miner's public key.  [[#1457]]
+     -  Blocks became to have a signature made using miner's private key
+        since the protocol version 2.  Block signatures affect block hashes.
+        [[#1457]]
+
+### Added APIs
+
+ -  Added `BlockMetadata` class.  [[#1164], [#1457], [#1492], [#1507]]
+ -  Added `BlockContent<T>` class.  [[#1164], [#1492]]
+ -  Added `PreEvaluationBlockHeader` class.
+    [[#1146], [#1164], [#1457], [#1492], [#1507]]
+ -  Added `PreEvaluationBlock<T>` class.
+    [[#1146], [#1164], [#1457], [#1492], [#1507]]
+ -  Added `BlockDigest.FromBlock<T>()` static method. [[#1492]]
+ -  Added `Block<T>(PreEvaluationBlock<T>, HashDigest<SHA256>)` overloaded
+    constructor.  [[#1146], [#1164], [#1492]]
+ -  Added `Block<T>.HashAlgorithm` property.  [[#1492]]
+ -  Added `Block<T>.PublicKey` property.  [[#1457], [#1507]]
+ -  Added `Block<T>.Signature` property.  [[#1457], [#1507]]
+ -  Added `Block<T>(PreEvaluationBlock<T>, HashDigest<SHA256>,
+    ImmutableArray<byte>?)` overloaded constructor.
+    [[#1164], [#1457], [#1492], [#1507]]
+ -  Added `Block<T>(IBlockHeader, IEnumerable<Transaction<T>>)` overloaded
+    constructor.  [[#1164], [#1492]]
+ -  Added `BlockHeader.HashAlgorithm` property.  [[#1492]]
+ -  Added `BlockHeader.PublicKey` property.  [[#1457], [#1507]]
+ -  Added `BlockHeader.Signature` property.  [[#1457], [#1507]]
+ -  Added `BlockHeader(PreEvaluationBlockHeader, HashDigest<SHA256>,
+    ImmutableArray<byte>?)` overloaded constructor.
+    [[#1164], [#1457], [#1492], [#1507]]
+ -  Added `BlockHeader(PreEvaluationBlockHeader, HashDigest<SHA256>,
+    ImmutableArray<byte>?, BlockHash)` overloaded constructor.
+    [[#1164], [#1457], [#1492], [#1507]]
+ -  Added `IBlockMetadata` interface.  [[#1164], [#1457], [#1492], [#1507]]
+     -  `Block<T>` became to implement `IBlockMetadata` interface.
+     -  `BlockHeader` became to implement `IBlockMetadata` interface.
+     -  `BlockMetadata` became to implement `IBlockMetadata` interface.
+     -  `BlockContent<T>` became to implement `IBlockMetadata` interface.
+     -  `PreEvaluationBlockHeader` became to implement `IBlockMetadata`
+        interface.
+     -  `PreEvaluationBlock<T>` became to implement `IBlockMetadata` interface.
+     -  `BlockDigest` became to implement `IBlockMetadata` interface.
+ -  Added `IBlockContent<T>` interface.  [[#1164], [#1492]]
+     -  `Block<T>` became to implement `IBlockContent<T>` interface.
+     -  `BlockContent<T>` became to implement `IBlockContent<T>` interface.
+     -  `PreEvaluationBlock<T>` became to implement `IBlockContent<T>`
+        interface.
+ -  Added `IPreEvaluationBlockHeader` interface.  [[#1164], [#1492]]
+     -  `Block<T>` became to implement `IPreEvaluationBlockHeader` interface.
+     -  `BlockHeader` became to implement `IPreEvaluationBlockHeader` interface.
+     -  `PreEvaluationBlockHeader` became to implement
+        `IPreEvaluationBlockHeader` interface.
+     -  `PreEvaluationBlock<T>` became to implement `IPreEvaluationBlockHeader`
+        interface.
+ -  Added `IPreEvaluationBlock<T>` interface.  [[#1164], [#1492]]
+     -  `Block<T>` became to implement `IPreEvaluationBlock<T>` interface.
+     -  `PreEvaluationBlock<T>` became to implement `IPreEvaluationBlock<T>`
+        interface.
+     -  `ActionEvaluator<T>.Evaluate()` method's `block` parameter became to
+        take `IPreEvaluationBlock<T>` (was `IBlock<T>`).
+ -  Added `IBlockHeader` interface.  [[#1146], [#1164], [#1492]]
+     -  `Block<T>` became to implement `IBlockHeader` interface.
+     -  `BlockHeader` became to implement `BlockHeader` interface.
+ -  Added `BlockMetadataExtensions` static class.  [[#1164], [#1492]]
+ -  Added `BlockContentExtensions` static class.  [[#1164], [#1492]]
+ -  Added `BlockMarshaler` static class.  [[#1164], [#1492]]
+ -  Added `BlockDigest.GetHeader()` method.  [[#1492]]
+ -  Added `StateStoreExtensions` static class.  [[#1128], [#1146], [#1492]]
+ -  Added `StoreExtensions.GetStateRootHash()` extension method.
+    [[#1128], [#1146], [#1492]]
+ -  Added `DelayedRenderer<T>.HashAlgorithmGetter` property.  [[#1492]]
+ -  `BlockDigest` became to implement `IBlockExcerpt`.  [[#1492]]
+ -  Added `InvalidBlockPublicKeyException` class.  [[#1457], [#1507]]
+ -  Added `InvalidBlockSignatureException` class.  [[#1457], [#1507]]
+
+### Behavioral changes
+
+ -  `Block<T>.Transactions` property is now ordered by `Transaction<T>.Id`
+    so that it's consistent with `IBlockContent<T>`'s other implementations.
+    As this behavior can be changed in the later releases, do not depend on
+    its ordering, but explicitly sort them before use when the order needs to b
+    guaranteed.  [[#1492]]
+ -  Blocks and block metadata became to have their miners' public keys too.
+    Although it is backward compatible to the earlier protocol version than 2,
+    blocks with the protocol version 2 or later must have public keys.
+    If a block lacks public key, `InvalidBlockPublicKeyException` is thrown.
+    [[#1457], [#1507]]
+ -  `PublicKey.ToString()` method now returns its hexadecimal representation
+    in compressed form.  [[#1507]]
+
+### Bug fixes
+
+ -  Fixed `NullReferenceException` that `PublicKey.Verify()` method had thrown
+    with a non-null empty `signature`.  [[#1507]]
+ -  Fixed `TxExecution` not updating during preload. [[#1508], [#1509]]
+
+[#1128]: https://github.com/planetarium/libplanet/issues/1128
+[#1146]: https://github.com/planetarium/libplanet/issues/1146
+[#1164]: https://github.com/planetarium/libplanet/issues/1164
+[#1457]: https://github.com/planetarium/libplanet/issues/1457
+[#1492]: https://github.com/planetarium/libplanet/pull/1492
+[#1507]: https://github.com/planetarium/libplanet/pull/1507
+[#1508]: https://github.com/planetarium/libplanet/issues/1508
+[#1509]: https://github.com/planetarium/libplanet/pull/1509
 
 
 Version 0.17.0
@@ -662,8 +925,6 @@ Released on July 23, 2021.
  -  `BlockChain<T>.Append()` cumulates indexes for pairs (TxId and BlockHash).
     A transaction inclusion for a block is retrievable by using this index.
     [[#1315], [#1329]]
- -  `Block<T>.Transactions` will be ordered using a different scheme once
-    the protocol version is bumped to `2`.  [[#1322], [#1323], [#1326]]
  -  `ActionEvaluator<T>.EvaluateActions()` now throws an unmanaged exception
     if `OutOfMemoryException` is caught from `IAction.Execute()`.
     [[#1320], [#1343]]

@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using Bencodex;
 using Libplanet.Action;
+using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net;
@@ -11,6 +13,8 @@ namespace Libplanet.Explorer.Executable
 {
     public class Options
     {
+        private static readonly Codec Codec = new Codec();
+
         public Options(
             bool debug,
             string host,
@@ -159,16 +163,14 @@ namespace Libplanet.Explorer.Executable
 
         public string GenesisBlockPath { get; set; }
 
-        internal Block<NullAction> GenesisBlock
+        internal Block<NullAction> GetGenesisBlock(IBlockPolicy<NullAction> policy)
         {
-            get
+            var uri = new Uri(GenesisBlockPath);
+            using (var client = new WebClient())
             {
-                var uri = new Uri(GenesisBlockPath);
-                using (var client = new WebClient())
-                {
-                    var serialized = client.DownloadData(uri);
-                    return Block<NullAction>.Deserialize(serialized);
-                }
+                var serialized = client.DownloadData(uri);
+                var dict = (Bencodex.Types.Dictionary)Codec.Decode(serialized);
+                return BlockMarshaler.UnmarshalBlock<NullAction>(policy.GetHashAlgorithm, dict);
             }
         }
     }

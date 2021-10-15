@@ -16,7 +16,7 @@ namespace Libplanet.Tests.Net.Messages
         [Fact]
         public void Constructor()
         {
-            Assert.Throws<ArgumentNullException>(() =>
+            Assert.Throws<ArgumentException>(() =>
                 new BlockHashes(null, new[] { default(BlockHash) })
             );
             Assert.Throws<ArgumentException>(() =>
@@ -25,7 +25,7 @@ namespace Libplanet.Tests.Net.Messages
         }
 
         [Fact]
-        public void DataFrames()
+        public void Decode()
         {
             BlockHash[] blockHashes = GenerateRandomBlockHashes(100L).ToArray();
             var msg = new BlockHashes(123, blockHashes);
@@ -34,10 +34,18 @@ namespace Libplanet.Tests.Net.Messages
             var privKey = new PrivateKey();
             AppProtocolVersion ver = AppProtocolVersion.Sign(privKey, 3);
             Peer peer = new BoundPeer(privKey.PublicKey, new DnsEndPoint("0.0.0.0", 1234));
-            NetMQFrame[] frames = msg.ToNetMQMessage(privKey, peer, DateTimeOffset.UtcNow, ver)
-                .Skip(Message.CommonFrames)
-                .ToArray();
-            var restored = new BlockHashes(frames);
+            var messageCodec = new NetMQMessageCodec();
+            NetMQMessage encoded = messageCodec.Encode(
+                msg,
+                privKey,
+                peer,
+                DateTimeOffset.UtcNow,
+                ver);
+            BlockHashes restored = (BlockHashes)messageCodec.Decode(
+                encoded,
+                true,
+                (b, p, a) => { },
+                null);
             Assert.Equal(msg.StartIndex, restored.StartIndex);
             Assert.Equal(msg.Hashes, restored.Hashes);
         }

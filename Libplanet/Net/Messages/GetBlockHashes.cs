@@ -1,8 +1,9 @@
+#nullable enable
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
-using NetMQ;
 
 namespace Libplanet.Net.Messages
 {
@@ -14,38 +15,34 @@ namespace Libplanet.Net.Messages
             Stop = stop;
         }
 
-        public GetBlockHashes(NetMQFrame[] frames)
+        public GetBlockHashes(byte[][] dataFrames)
         {
-            int requestedHashCount = frames[0].ConvertToInt32();
+            int requestedHashCount = BitConverter.ToInt32(dataFrames[0], 0);
             Locator = new BlockLocator(
-                frames.Skip(1).Take(requestedHashCount)
-                .Select(NetMQFrameExtensions.ConvertToBlockHash));
-            Stop = frames[1 + requestedHashCount].IsEmpty
+                dataFrames.Skip(1).Take(requestedHashCount)
+                .Select(frame => new BlockHash(frame)));
+            Stop = dataFrames[1 + requestedHashCount].Length == 0
                 ? default(BlockHash?)
-                : frames[1 + requestedHashCount].ConvertToBlockHash();
+                : new BlockHash(dataFrames[1 + requestedHashCount]);
         }
 
         public BlockLocator Locator { get; }
 
         public BlockHash? Stop { get; }
 
-        protected override MessageType Type => MessageType.GetBlockHashes;
+        public override MessageType Type => MessageType.GetBlockHashes;
 
-        protected override IEnumerable<NetMQFrame> DataFrames
+        public override IEnumerable<byte[]> DataFrames
         {
             get
             {
-                yield return new NetMQFrame(
-                    NetworkOrderBitsConverter.GetBytes(Locator.Count()));
-
-                foreach (BlockHash hash in Locator)
-                {
-                    yield return new NetMQFrame(hash.ToByteArray());
-                }
-
-                yield return Stop is { } stop
-                    ? new NetMQFrame(stop.ToByteArray())
-                    : NetMQFrame.Empty;
+                var frames = new List<byte[]>();
+                frames.Add(BitConverter.GetBytes(Locator.Count()));
+                frames.AddRange(Locator.Select(hash => hash.ToByteArray()));
+                frames.Add(Stop is { } s
+                    ? s.ToByteArray()
+                    : new byte[] { });
+                return frames;
             }
         }
     }

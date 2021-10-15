@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Security.Cryptography;
+using Bencodex.Types;
 using GraphQL;
 using GraphQL.Types;
 using Libplanet.Action;
 using Libplanet.Blocks;
+using Libplanet.Crypto;
 using Libplanet.Explorer.GraphTypes;
 using Libplanet.Tx;
 using Xunit;
@@ -18,19 +20,23 @@ namespace Libplanet.Explorer.UnitTests.GraphTypes
         [Fact]
         public async void Query()
         {
+            var privateKey = new PrivateKey();
+            var preEval = new BlockContent<NullAction>
+            {
+                Index = 1,
+                Difficulty = 1,
+                TotalDifficulty = 1,
+                PublicKey = privateKey.PublicKey,
+                PreviousHash = new BlockHash(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
+                Timestamp = DateTimeOffset.UtcNow,
+            }.Mine(HashAlgorithmType.Of<SHA256>());
+            var stateRootHash =
+                new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size));
             var block = new Block<NullAction>(
-                1,
-                1,
-                1,
-                new Nonce(new byte[] { 0x01, 0x23, 0x45, 0x56 }),
-                new Address(TestUtils.GetRandomBytes(Address.Size)),
-                new BlockHash(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
-                DateTimeOffset.UtcNow,
-                ImmutableArray<Transaction<NullAction>>.Empty,
-                hashAlgorithm: HashAlgorithmType.Of<SHA256>());
-            block = new Block<NullAction>(
-                block,
-                new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)));
+                preEval,
+                stateRootHash,
+                preEval.MakeSignature(privateKey, stateRootHash)
+            );
             var query =
                 @"{
                     index
@@ -39,8 +45,10 @@ namespace Libplanet.Explorer.UnitTests.GraphTypes
                     difficulty
                     totalDifficulty
                     miner
+                    publicKey
                     timestamp
                     stateRootHash
+                    signature
                 }";
 
             ExecutionResult result =
@@ -65,7 +73,7 @@ namespace Libplanet.Explorer.UnitTests.GraphTypes
                 new DateTimeOffsetGraphType().Serialize(block.Timestamp),
                 resultData["timestamp"]);
             Assert.Equal(
-                ByteUtil.Hex(block.StateRootHash?.ToByteArray()),
+                ByteUtil.Hex(block.StateRootHash.ToByteArray()),
                 resultData["stateRootHash"]);
         }
     }

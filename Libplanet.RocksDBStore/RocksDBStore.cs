@@ -713,10 +713,11 @@ namespace Libplanet.RocksDBStore
                     }
                 }
 
-                byte[] value = block.ToBlockDigest().Serialize();
+                BlockDigest digest = BlockDigest.FromBlock(block);
+                byte[] value = digest.Serialize();
                 blockDb.Put(key, value);
                 _blockIndexDb.Put(key, RocksDBStoreBitConverter.GetBytes(blockDbName));
-                _blockCache.AddOrUpdate(block.Hash, block.ToBlockDigest());
+                _blockCache.AddOrUpdate(block.Hash, digest);
             }
             catch (Exception e)
             {

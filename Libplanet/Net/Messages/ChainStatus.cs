@@ -1,8 +1,9 @@
+#nullable enable
+using System;
 using System.Collections.Generic;
 using System.Numerics;
 using Destructurama.Attributed;
 using Libplanet.Blocks;
-using NetMQ;
 
 namespace Libplanet.Net.Messages
 {
@@ -22,13 +23,13 @@ namespace Libplanet.Net.Messages
             TotalDifficulty = totalDifficulty;
         }
 
-        public ChainStatus(NetMQFrame[] body)
+        public ChainStatus(byte[][] dataFrames)
         {
-            ProtocolVersion = body[0].ConvertToInt32();
-            GenesisHash = new BlockHash(body[1].Buffer);
-            TipIndex = body[2].ConvertToInt64();
-            TipHash = new BlockHash(body[3].Buffer);
-            TotalDifficulty = new BigInteger(body[4].ToByteArray());
+            ProtocolVersion = BitConverter.ToInt32(dataFrames[0], 0);
+            GenesisHash = new BlockHash(dataFrames[1]);
+            TipIndex = BitConverter.ToInt64(dataFrames[2], 0);
+            TipHash = new BlockHash(dataFrames[3]);
+            TotalDifficulty = new BigInteger(dataFrames[4]);
         }
 
         public int ProtocolVersion { get; }
@@ -48,19 +49,15 @@ namespace Libplanet.Net.Messages
         [LogAsScalar]
         BlockHash IBlockExcerpt.Hash => TipHash;
 
-        protected override Message.MessageType Type => Message.MessageType.ChainStatus;
+        public override MessageType Type => MessageType.ChainStatus;
 
-        protected override IEnumerable<NetMQFrame> DataFrames
+        public override IEnumerable<byte[]> DataFrames => new[]
         {
-            get
-            {
-                yield return new NetMQFrame(NetworkOrderBitsConverter.GetBytes(ProtocolVersion));
-                yield return new NetMQFrame(GenesisHash.ToByteArray());
-                yield return new NetMQFrame(
-                    NetworkOrderBitsConverter.GetBytes(TipIndex));
-                yield return new NetMQFrame(TipHash.ToByteArray());
-                yield return new NetMQFrame(TotalDifficulty.ToByteArray());
-            }
-        }
+            BitConverter.GetBytes(ProtocolVersion),
+            GenesisHash.ToByteArray(),
+            BitConverter.GetBytes(TipIndex),
+            TipHash.ToByteArray(),
+            TotalDifficulty.ToByteArray(),
+        };
     }
 }

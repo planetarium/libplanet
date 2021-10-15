@@ -1,373 +1,85 @@
 using System;
 using System.Collections.Immutable;
-using System.Globalization;
-using System.Linq;
-using System.Numerics;
 using System.Security.Cryptography;
-using Bencodex.Types;
 using Libplanet.Blocks;
-using Libplanet.Tests.Common.Action;
 using Xunit;
+using static Libplanet.Tests.TestUtils;
+using FxAction = Libplanet.Action.PolymorphicAction<Libplanet.Tests.Common.Action.BaseAction>;
 
 namespace Libplanet.Tests.Blocks
 {
     public class BlockHeaderTest : IClassFixture<BlockFixture>
     {
-        private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
-
         private BlockFixture _fx;
 
         public BlockHeaderTest(BlockFixture fixture) => _fx = fixture;
 
         [Fact]
-        public void ToBencodex()
+        public void Constructors()
         {
-            var header = new BlockHeader(
-                protocolVersion: 0,
-                index: 0,
-                difficulty: _fx.Genesis.Difficulty,
-                totalDifficulty: _fx.Genesis.TotalDifficulty,
-                nonce: _fx.Genesis.Nonce,
-                miner: _fx.Genesis.Miner,
-                hash: _fx.Genesis.Hash,
-                txHash: _fx.Genesis.TxHash,
-                previousHash: _fx.Genesis.PreviousHash,
-                timestamp: _fx.Genesis.Timestamp,
-                preEvaluationHash: _fx.Genesis.PreEvaluationHash,
-                stateRootHash: _fx.Genesis.StateRootHash
-            );
-            Bencodex.Types.Dictionary expected = Bencodex.Types.Dictionary.Empty
-                .Add(BlockHeader.IndexKey, 0)
-                .Add(
-                    BlockHeader.TimestampKey,
-                    _fx.Genesis.Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture)
-                )
-                .Add(BlockHeader.DifficultyKey, _fx.Genesis.Difficulty)
-                .Add(
-                    BlockHeader.TotalDifficultyKey,
-                    (IValue)new Bencodex.Types.Integer(_fx.Genesis.TotalDifficulty)
-                )
-                .Add(BlockHeader.NonceKey, _fx.Genesis.Nonce.ByteArray)
-                .Add(BlockHeader.HashKey, _fx.Genesis.Hash.ByteArray)
-                .Add(BlockHeader.MinerKey, _fx.Genesis.Miner.ByteArray)
-                .Add(BlockHeader.PreEvaluationHashKey, _fx.Genesis.PreEvaluationHash.ToArray());
-            Assert.Equal(expected, header.ToBencodex());
-            Assert.Equal(expected, new BlockHeader(expected).ToBencodex());
+            Block<FxAction>[] fixtures = { _fx.Genesis, _fx.Next, _fx.HasTx };
+            foreach (Block<FxAction> fx in fixtures)
+            {
+                var preEval = new PreEvaluationBlockHeader(fx);
+                var header = new BlockHeader(preEval, fx.StateRootHash, fx.Signature);
+                AssertBytesEqual(header.Hash, fx.Hash);
+                AssertPreEvaluationBlockHeadersEqual(fx, header);
+                AssertBytesEqual(fx.StateRootHash, header.StateRootHash);
 
-            var random = new Random();
-            HashDigest<SHA256> randomHash = random.NextHashDigest<SHA256>();
-            HashDigest<SHA256> randomHash2 = random.NextHashDigest<SHA256>();
-            header = new BlockHeader(
-                protocolVersion: 1,
-                index: 1,
-                difficulty: _fx.Next.Difficulty,
-                totalDifficulty: _fx.Next.TotalDifficulty,
-                nonce: _fx.Next.Nonce,
-                miner: _fx.Next.Miner,
-                hash: _fx.Next.Hash,
-                txHash: randomHash,
-                previousHash: _fx.Genesis.Hash,
-                timestamp: _fx.Next.Timestamp,
-                preEvaluationHash: ImmutableArray<byte>.Empty,
-                stateRootHash: randomHash2
-            );
-            expected = Bencodex.Types.Dictionary.Empty
-                .Add(BlockHeader.ProtocolVersionKey, 1)
-                .Add(BlockHeader.IndexKey, 1)
-                .Add(
-                    BlockHeader.TimestampKey,
-                    _fx.Next.Timestamp.ToString(
-                        TimestampFormat,
-                        CultureInfo.InvariantCulture
-                    )
-                )
-                .Add(BlockHeader.DifficultyKey, _fx.Next.Difficulty)
-                .Add(
-                    BlockHeader.TotalDifficultyKey,
-                    (IValue)new Bencodex.Types.Integer(_fx.Next.TotalDifficulty)
-                )
-                .Add(BlockHeader.NonceKey, _fx.Next.Nonce.ByteArray)
-                .Add(BlockHeader.MinerKey, _fx.Next.Miner.ByteArray)
-                .Add(BlockHeader.HashKey, _fx.Next.Hash.ByteArray)
-                .Add(BlockHeader.PreviousHashKey, _fx.Genesis.Hash.ByteArray)
-                .Add(BlockHeader.TxHashKey, randomHash.ByteArray)
-                .Add(BlockHeader.StateRootHashKey, randomHash2.ByteArray);
-            Assert.Equal(expected, header.ToBencodex());
-            Assert.Equal(expected, new BlockHeader(expected).ToBencodex());
+                header = new BlockHeader(preEval, fx.StateRootHash, fx.Signature, fx.Hash);
+                AssertBytesEqual(header.Hash, fx.Hash);
+                AssertPreEvaluationBlockHeadersEqual(fx, header);
+                AssertBytesEqual(fx.StateRootHash, header.StateRootHash);
+
+                Assert.Throws<InvalidBlockHashException>(() =>
+                    new BlockHeader(preEval, fx.StateRootHash, fx.Signature, default)
+                );
+            }
         }
 
         [Fact]
-        public void ValidateValidHeader()
+        public void ValidateSignature()
         {
-            _fx.Genesis.Header.Validate(_fx.GetHashAlgorithm(0), DateTimeOffset.UtcNow);
-            _fx.Next.Header.Validate(_fx.GetHashAlgorithm(1), DateTimeOffset.UtcNow);
+            Block<FxAction> fx = _fx.HasTx;
+            var preEval = new PreEvaluationBlockHeader(fx);
+            HashDigest<SHA256> arbitraryHash = new Random().NextHashDigest<SHA256>();
+            ImmutableArray<byte> invalidSig = preEval.MakeSignature(_fx.Miner, arbitraryHash);
+            InvalidBlockSignatureException e = Assert.Throws<InvalidBlockSignatureException>(() =>
+                new BlockHeader(preEval, fx.StateRootHash, invalidSig)
+            );
+            Assert.Equal(invalidSig, e.InvalidSignature);
+            Assert.Equal(fx.PublicKey, e.PublicKey);
+
+            BlockHash hashWithInvalidSig = preEval.DeriveBlockHash(arbitraryHash, invalidSig);
+            e = Assert.Throws<InvalidBlockSignatureException>(() =>
+                new BlockHeader(preEval, fx.StateRootHash, invalidSig, hashWithInvalidSig)
+            );
+            Assert.Equal(invalidSig, e.InvalidSignature);
+            Assert.Equal(fx.PublicKey, e.PublicKey);
         }
 
         [Fact]
         public void ValidateHash()
         {
-            var header = new BlockHeader(
-                protocolVersion: 0,
-                index: 0,
-                difficulty: _fx.Genesis.Difficulty,
-                totalDifficulty: _fx.Genesis.TotalDifficulty,
-                nonce: _fx.Genesis.Nonce,
-                miner: _fx.Genesis.Miner,
-                hash: new Random().NextBlockHash(),
-                txHash: _fx.Genesis.TxHash,
-                previousHash: _fx.Genesis.PreviousHash,
-                timestamp: _fx.Genesis.Timestamp,
-                preEvaluationHash: _fx.Genesis.PreEvaluationHash,
-                stateRootHash: _fx.Genesis.StateRootHash
+            Block<FxAction> fx = _fx.HasTx;
+            var preEval = new PreEvaluationBlockHeader(fx);
+            ImmutableArray<byte> sig = fx.Signature.Value;
+            HashDigest<SHA256> arbitraryHash = new Random().NextHashDigest<SHA256>();
+            BlockHash invalidHash = preEval.DeriveBlockHash(arbitraryHash, sig);
+            Assert.Throws<InvalidBlockHashException>(() =>
+                new BlockHeader(preEval, fx.StateRootHash, sig, invalidHash)
             );
-
-            Assert.Throws<InvalidBlockHashException>(
-                () => { header.Validate(_fx.GetHashAlgorithm(0), DateTime.UtcNow); });
         }
 
         [Fact]
-        public void ValidateProtocolVersion()
+        public void String()
         {
             var header = new BlockHeader(
-                protocolVersion: -1,
-                index: _fx.Next.Index,
-                difficulty: _fx.Next.Difficulty,
-                totalDifficulty: _fx.Next.TotalDifficulty,
-                nonce: _fx.Next.Nonce,
-                miner: _fx.Next.Miner,
-                hash: _fx.Next.Hash,
-                txHash: _fx.Next.TxHash,
-                previousHash: _fx.Next.PreviousHash,
-                timestamp: _fx.Next.Timestamp,
-                preEvaluationHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
-                stateRootHash: null
+                new PreEvaluationBlockHeader(_fx.HasTx),
+                _fx.HasTx.StateRootHash,
+                _fx.HasTx.Signature
             );
-
-            Assert.Throws<InvalidBlockProtocolVersionException>(() =>
-                header.Validate(_fx.GetHashAlgorithm(_fx.Next.Index), DateTimeOffset.UtcNow)
-            );
-
-            header = new BlockHeader(
-                protocolVersion: Block<DumbAction>.CurrentProtocolVersion + 1,
-                index: _fx.Next.Index,
-                difficulty: _fx.Next.Difficulty,
-                totalDifficulty: _fx.Next.TotalDifficulty,
-                nonce: _fx.Next.Nonce,
-                miner: _fx.Next.Miner,
-                hash: _fx.Next.Hash,
-                txHash: _fx.Next.TxHash,
-                previousHash: _fx.Next.PreviousHash,
-                timestamp: _fx.Next.Timestamp,
-                preEvaluationHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
-                stateRootHash: null
-            );
-
-            Assert.Throws<InvalidBlockProtocolVersionException>(() =>
-                header.Validate(_fx.GetHashAlgorithm(_fx.Next.Index), DateTimeOffset.UtcNow)
-            );
-        }
-
-        [Fact]
-        public void ValidateTimestamp()
-        {
-            DateTimeOffset now = DateTimeOffset.UtcNow;
-            DateTimeOffset future = now + TimeSpan.FromSeconds(16);
-            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
-            BlockHeader header = MakeBlockHeader(
-                hashAlgorithm: hashAlgorithm,
-                protocolVersion: 0,
-                index: 0,
-                difficulty: 0,
-                totalDifficulty: 0,
-                nonce: default,
-                previousHash: null,
-                txHash: default,
-                miner: default,
-                timestamp: future,
-                preEvaluationHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
-                stateRootHash: new Random().NextHashDigest<SHA256>()
-            );
-
-            Assert.Throws<InvalidBlockTimestampException>(
-                () => { header.Validate(hashAlgorithm, now); });
-
-            // it's okay because 2 seconds later.
-            header.Validate(hashAlgorithm, now + TimeSpan.FromSeconds(2));
-        }
-
-        [Fact]
-        public void ValidateNonce()
-        {
-            var header = new BlockHeader(
-                protocolVersion: 0,
-                index: _fx.Next.Index,
-                difficulty: long.MaxValue,
-                totalDifficulty: _fx.Genesis.TotalDifficulty + long.MaxValue,
-                nonce: _fx.Next.Nonce,
-                miner: _fx.Next.Miner,
-                hash: _fx.Next.Hash,
-                txHash: _fx.Next.TxHash,
-                previousHash: _fx.Next.PreviousHash,
-                timestamp: _fx.Next.Timestamp,
-                preEvaluationHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
-                stateRootHash: null
-            );
-
-            Assert.Throws<InvalidBlockNonceException>(() =>
-                header.Validate(_fx.GetHashAlgorithm(_fx.Next.Index), DateTimeOffset.UtcNow));
-        }
-
-        [Fact]
-        public void ValidateIndex()
-        {
-            var header = new BlockHeader(
-                protocolVersion: 0,
-                index: -1,
-                difficulty: _fx.Next.Difficulty,
-                totalDifficulty: _fx.Next.TotalDifficulty,
-                nonce: _fx.Next.Nonce,
-                miner: _fx.Next.Miner,
-                hash: _fx.Next.Hash,
-                txHash: _fx.Next.TxHash,
-                previousHash: _fx.Next.PreviousHash,
-                timestamp: _fx.Next.Timestamp,
-                preEvaluationHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
-                stateRootHash: null
-            );
-
-            Assert.Throws<InvalidBlockIndexException>(() =>
-                header.Validate(_fx.GetHashAlgorithm(-1), DateTimeOffset.UtcNow));
-        }
-
-        [Fact]
-        public void ValidateDifficulty()
-        {
-            DateTimeOffset now = DateTimeOffset.UtcNow;
-            var random = new Random();
-            var genesisHeader = new BlockHeader(
-                protocolVersion: 0,
-                index: 0,
-                difficulty: 1000,
-                totalDifficulty: 1000,
-                nonce: default,
-                previousHash: null,
-                txHash: default,
-                hash: random.NextBlockHash(),
-                miner: default,
-                timestamp: now,
-                preEvaluationHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
-                stateRootHash: null
-            );
-
-            Assert.Throws<InvalidBlockDifficultyException>(() =>
-                genesisHeader.Validate(_fx.GetHashAlgorithm(0), DateTimeOffset.UtcNow));
-
-            var header1 = new BlockHeader(
-                protocolVersion: 0,
-                index: 10,
-                difficulty: 0,
-                totalDifficulty: 1000,
-                nonce: default,
-                previousHash: null,
-                txHash: default,
-                hash: random.NextBlockHash(),
-                miner: default,
-                timestamp: now,
-                preEvaluationHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
-                stateRootHash: null
-            );
-
-            Assert.Throws<InvalidBlockDifficultyException>(() =>
-                header1.Validate(_fx.GetHashAlgorithm(10), DateTimeOffset.UtcNow));
-
-            var header2 = new BlockHeader(
-                protocolVersion: 0,
-                index: 10,
-                difficulty: 1000,
-                totalDifficulty: 10,
-                nonce: default,
-                previousHash: null,
-                txHash: default(HashDigest<SHA256>),
-                hash: random.NextBlockHash(),
-                miner: default,
-                timestamp: now,
-                preEvaluationHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
-                stateRootHash: null
-            );
-
-            Assert.Throws<InvalidBlockTotalDifficultyException>(() =>
-                header2.Validate(_fx.GetHashAlgorithm(10), DateTimeOffset.UtcNow));
-        }
-
-        [Fact]
-        public void ValidatePreviousHash()
-        {
-            DateTimeOffset now = DateTimeOffset.UtcNow;
-            var random = new Random();
-            var genesisHeader = new BlockHeader(
-                protocolVersion: 0,
-                index: 0,
-                difficulty: 0,
-                totalDifficulty: 0,
-                nonce: default,
-                previousHash: random.NextBlockHash(),
-                txHash: default(HashDigest<SHA256>),
-                hash: random.NextBlockHash(),
-                miner: default,
-                timestamp: now,
-                preEvaluationHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
-                stateRootHash: null
-            );
-
-            Assert.Throws<InvalidBlockPreviousHashException>(() =>
-                genesisHeader.Validate(HashAlgorithmType.Of<SHA256>(), DateTimeOffset.UtcNow));
-
-            var header = new BlockHeader(
-                protocolVersion: 0,
-                index: 10,
-                difficulty: 1000,
-                totalDifficulty: 1500,
-                nonce: default,
-                previousHash: null,
-                txHash: default(HashDigest<SHA256>),
-                hash: random.NextBlockHash(),
-                miner: default,
-                timestamp: now,
-                preEvaluationHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
-                stateRootHash: null
-            );
-
-            Assert.Throws<InvalidBlockPreviousHashException>(() =>
-                genesisHeader.Validate(HashAlgorithmType.Of<SHA256>(), DateTimeOffset.UtcNow));
-        }
-
-        private BlockHeader MakeBlockHeader(
-            HashAlgorithmType hashAlgorithm,
-            int protocolVersion,
-            long index,
-            long difficulty,
-            BigInteger totalDifficulty,
-            Nonce nonce,
-            BlockHash? previousHash,
-            HashDigest<SHA256> txHash,
-            Address miner,
-            DateTimeOffset timestamp,
-            ImmutableArray<byte> preEvaluationHash,
-            HashDigest<SHA256>? stateRootHash
-        )
-        {
-            return new BlockHeader(
-                protocolVersion: protocolVersion,
-                index: index,
-                timestamp: timestamp,
-                nonce: nonce,
-                miner: miner,
-                difficulty: difficulty,
-                totalDifficulty: totalDifficulty,
-                previousHash: previousHash,
-                txHash: txHash,
-                preEvaluationHash: preEvaluationHash,
-                stateRootHash: stateRootHash);
+            Assert.Equal($"#{_fx.HasTx.Index} {_fx.HasTx.Hash}", header.ToString());
         }
     }
 }

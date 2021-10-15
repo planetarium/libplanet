@@ -7,6 +7,7 @@ using System.Net;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
+using Bencodex;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -26,6 +27,8 @@ namespace Libplanet.Net
         where T : IAction, new()
     {
         private const int InitialBlockDownloadWindow = 100;
+        private static readonly Codec Codec = new Codec();
+
         private readonly PrivateKey _privateKey;
         private readonly AppProtocolVersion _appProtocolVersion;
 
@@ -735,7 +738,10 @@ namespace Libplanet.Net
                     foreach (byte[] payload in payloads)
                     {
                         cancellationToken.ThrowIfCancellationRequested();
-                        Block<T> block = Block<T>.Deserialize(payload);
+                        Block<T> block = BlockMarshaler.UnmarshalBlock<T>(
+                            BlockChain.Policy.GetHashAlgorithm,
+                            (Bencodex.Types.Dictionary)Codec.Decode(payload)
+                        );
 
                         yield return block;
                         count++;
@@ -941,10 +947,16 @@ namespace Libplanet.Net
                                     return null;
                                 }
                             },
-                            hash => blockChain.Store.GetBlock<T>(hash) is Block<T> b
-                                ? b.Index
-                                : branchingIndex + 1 + downloaded.IndexOf(hash)
-                        );
+                            hash =>
+                            {
+                                Block<T> block = blockChain.Store.GetBlock<T>(
+                                    blockChain.Policy.GetHashAlgorithm,
+                                    hash
+                                );
+                                return block is { } b
+                                    ? b.Index
+                                    : branchingIndex + 1 + downloaded.IndexOf(hash);
+                            });
                     }
                     while (downloaded.Count < totalBlockHashesToDownload);
                 }

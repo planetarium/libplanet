@@ -60,8 +60,9 @@ namespace Libplanet.Tests.Action
                     chain.Tip,
                     chain.Policy.GetHashAlgorithm,
                     new[] { tx },
+                    miner: _keys[1].PublicKey,
                     protocolVersion: ProtocolVersion
-                ).AttachStateRootHash(chain.StateStore, chain.Policy)
+                ).Evaluate(_keys[1], chain)
             );
             Assert.Equal(
                 DumbAction.DumbCurrency * 5,

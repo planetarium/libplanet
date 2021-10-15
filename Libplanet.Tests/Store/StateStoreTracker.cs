@@ -1,9 +1,7 @@
-using System;
 using System.Collections.Immutable;
-using Bencodex.Types;
-using Libplanet.Action;
-using Libplanet.Blocks;
+using System.Security.Cryptography;
 using Libplanet.Store;
+using Libplanet.Store.Trie;
 
 namespace Libplanet.Tests.Store
 {
@@ -17,32 +15,16 @@ namespace Libplanet.Tests.Store
             _stateStore = stateStore;
         }
 
-        public void SetStates<T>(
-            Block<T> blockHash,
-            IImmutableDictionary<string, IValue> states)
-            where T : IAction, new()
+        public ITrie GetStateRoot(HashDigest<SHA256>? stateRootHash)
         {
-            Log(nameof(SetStates), blockHash, states);
-            _stateStore.SetStates(blockHash, states);
+            Log(nameof(GetStateRoot), stateRootHash);
+            return _stateStore.GetStateRoot(stateRootHash);
         }
 
-        public IValue GetState(string stateKey, BlockHash? blockHash = null)
+        public void PruneStates(IImmutableSet<HashDigest<SHA256>> survivingStateRootHashes)
         {
-            Log(nameof(GetState), stateKey, blockHash);
-            return _stateStore.GetState(stateKey, blockHash);
-        }
-
-        public bool ContainsBlockStates(BlockHash blockHash)
-        {
-            Log(nameof(ContainsBlockStates), blockHash);
-            return _stateStore.ContainsBlockStates(blockHash);
-        }
-
-        public void ForkStates<T>(Guid sourceChainId, Guid destinationChainId, Block<T> branchPoint)
-            where T : IAction, new()
-        {
-            Log(nameof(ForkStates), sourceChainId, destinationChainId, branchPoint);
-            _stateStore.ForkStates(sourceChainId, destinationChainId, branchPoint);
+            Log(nameof(PruneStates), survivingStateRootHashes);
+            _stateStore.PruneStates(survivingStateRootHashes);
         }
 
         public void Dispose()

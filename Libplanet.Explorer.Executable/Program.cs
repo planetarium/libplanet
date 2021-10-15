@@ -18,6 +18,7 @@ using Libplanet.Explorer.Interfaces;
 using Libplanet.Explorer.Store;
 using Libplanet.Net;
 using Libplanet.Store;
+using Libplanet.Store.Trie;
 using Libplanet.Tx;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -194,7 +195,7 @@ If omitted (default) explorer only the local blockchain store.")]
                         stagePolicy,
                         store,
                         stateStore,
-                        options.GenesisBlock);
+                        options.GetGenesisBlock(policy));
                 Startup.PreloadedSingleton = false;
                 Startup.BlockChainSingleton = blockChain;
                 Startup.StoreSingleton = store;
@@ -460,18 +461,9 @@ If omitted (default) explorer only the local blockchain store.")]
 
         private class NoOpStateStore : IStateStore
         {
-            public void SetStates<T>(Block<T> block, IImmutableDictionary<string, IValue> states)
-                where T : IAction, new()
-            {
-            }
+            public ITrie GetStateRoot(HashDigest<SHA256>? stateRootHash) => null;
 
-            public IValue GetState(string stateKey, BlockHash? blockHash = null) => null;
-
-            public bool ContainsBlockStates(BlockHash blockHash) => false;
-
-            public void ForkStates<T>(
-                Guid sourceChainId, Guid destinationChainId, Block<T> branchpoint)
-                where T : IAction, new()
+            public void PruneStates(IImmutableSet<HashDigest<SHA256>> survivingStateRootHashes)
             {
             }
 

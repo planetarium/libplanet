@@ -1,5 +1,5 @@
+#nullable enable
 using System.Collections.Generic;
-using NetMQ;
 
 namespace Libplanet.Net.Messages
 {
@@ -11,21 +11,18 @@ namespace Libplanet.Net.Messages
             Target = target;
         }
 
-        public FindNeighbors(NetMQFrame[] body)
+        public FindNeighbors(byte[][] dataFrames)
         {
-            Target = new Address(body[0].ToByteArray());
+            Target = new Address(dataFrames[0]);
         }
 
         public Address Target { get; }
 
-        protected override MessageType Type => MessageType.FindNeighbors;
+        public override MessageType Type => MessageType.FindNeighbors;
 
-        protected override IEnumerable<NetMQFrame> DataFrames
+        public override IEnumerable<byte[]> DataFrames => new[]
         {
-            get
-            {
-                yield return new NetMQFrame(Target.ToByteArray());
-            }
-        }
+            Target.ToByteArray(),
+        };
     }
 }

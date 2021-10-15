@@ -1,36 +1,45 @@
+#nullable enable
 using System.Collections.Generic;
+using Bencodex;
 using Libplanet.Blocks;
-using NetMQ;
 
 namespace Libplanet.Net.Messages
 {
     internal class BlockHeaderMessage : Message
     {
+        private static readonly Codec Codec = new Codec();
+
         public BlockHeaderMessage(BlockHash genesisHash, BlockHeader header)
         {
             GenesisHash = genesisHash;
-            Header = header;
+            HeaderDictionary = header.MarshalBlockHeader();
         }
 
-        public BlockHeaderMessage(NetMQFrame[] frames)
+        public BlockHeaderMessage(byte[][] dataFrames)
         {
-            GenesisHash = new BlockHash(frames[0].Buffer);
-            Header = BlockHeader.Deserialize(frames[1].Buffer);
+            GenesisHash = new BlockHash(dataFrames[0]);
+            HeaderDictionary = (Bencodex.Types.Dictionary)Codec.Decode(dataFrames[1]);
         }
 
         public BlockHash GenesisHash { get; }
 
-        public BlockHeader Header { get; }
+        public Bencodex.Types.Dictionary HeaderDictionary { get; }
 
-        protected override MessageType Type => MessageType.BlockHeaderMessage;
+        public long HeaderIndex => BlockMarshaler.UnmarshalBlockMetadataIndex(HeaderDictionary);
 
-        protected override IEnumerable<NetMQFrame> DataFrames
+        public BlockHash HeaderHash => BlockMarshaler.UnmarshalBlockHeaderHash(HeaderDictionary);
+
+        public override MessageType Type => MessageType.BlockHeaderMessage;
+
+        public override IEnumerable<byte[]> DataFrames => new[]
         {
-            get
-            {
-                yield return new NetMQFrame(GenesisHash.ToByteArray());
-                yield return new NetMQFrame(Header.Serialize());
-            }
+            GenesisHash.ToByteArray(),
+            Codec.Encode(HeaderDictionary),
+        };
+
+        public BlockHeader GetHeader(HashAlgorithmGetter hashAlgorithmGetter)
+        {
+            return BlockMarshaler.UnmarshalBlockHeader(hashAlgorithmGetter, HeaderDictionary);
         }
     }
 }

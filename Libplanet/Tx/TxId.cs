@@ -119,6 +119,7 @@ namespace Libplanet.Tx
         [Pure]
         public override string ToString() => ToHex();
 
+        /// <inheritdoc cref="IComparable{T}.CompareTo(T)"/>
         public int CompareTo(TxId other)
         {
             for (int i = 0; i < Size; ++i)
@@ -133,6 +134,7 @@ namespace Libplanet.Tx
             return 0;
         }
 
+        /// <inheritdoc cref="IComparable.CompareTo(object)"/>
         public int CompareTo(object obj)
         {
             if (obj is TxId other)

@@ -1,5 +1,6 @@
 using Libplanet.Action;
 using Libplanet.Blockchain;
+using Libplanet.Blocks;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tx;
 using Xunit;
@@ -54,13 +55,19 @@ namespace Libplanet.Tests.Action
                 chain.Genesis.Hash,
                 new[] { action }
             );
+            PreEvaluationBlock<DumbAction> preEval = TestUtils.MineNext(
+                chain.Tip,
+                chain.Policy.GetHashAlgorithm,
+                new[] { tx },
+                miner: _keys[1].PublicKey,
+                protocolVersion: ProtocolVersion
+            );
             chain.Append(
-                TestUtils.MineNext(
-                    chain.Tip,
-                    chain.Policy.GetHashAlgorithm,
-                    new[] { tx },
-                    protocolVersion: ProtocolVersion
-                ).AttachStateRootHash(chain.StateStore, chain.Policy)
+                new Block<DumbAction>(
+                    preEval,
+                    preEval.DetermineStateRootHash(chain),
+                    signature: null
+                )
             );
             Assert.Equal(
                 DumbAction.DumbCurrency * 6,

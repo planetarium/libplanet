@@ -33,6 +33,7 @@ namespace Libplanet.Net.Transports
         private readonly ILogger _logger;
         private readonly TimeSpan? _messageLifespan;
         private readonly int _minimumBroadcastTarget;
+        private readonly NetMQMessageCodec _messageCodec;
 
         private NetMQQueue<NetMQMessage> _replyQueue;
         private NetMQQueue<(Address?, Message)> _broadcastQueue;
@@ -133,6 +134,7 @@ namespace Libplanet.Net.Transports
             _table = table;
             _minimumBroadcastTarget = minimumBroadcastTarget;
             _messageLifespan = messageLifespan;
+            _messageCodec = new NetMQMessageCodec();
 
             if (_host != null && _listenPort is int listenPortAsInt)
             {
@@ -535,11 +537,49 @@ namespace Libplanet.Net.Transports
         {
             string identityHex = ByteUtil.Hex(message.Identity);
             _logger.Debug("Reply {Message} to {Identity}...", message, identityHex);
-            _replyQueue.Enqueue(message.ToNetMQMessage(
+            _replyQueue.Enqueue(_messageCodec.Encode(
+                message,
                 _privateKey,
                 AsPeer,
                 DateTimeOffset.UtcNow,
                 _appProtocolVersion));
+        }
+
+        private void AppProtocolVersionValidator(
+            byte[] identity,
+            Peer remotePeer,
+            AppProtocolVersion remoteVersion)
+        {
+            bool valid;
+            if (remoteVersion.Equals(_appProtocolVersion))
+            {
+                valid = true;
+            }
+            else if (!(_trustedAppProtocolVersionSigners is null) &&
+                     !_trustedAppProtocolVersionSigners.Any(remoteVersion.Verify))
+            {
+                valid = false;
+            }
+            else if (_differentAppProtocolVersionEncountered is null)
+            {
+                valid = false;
+            }
+            else
+            {
+                valid = _differentAppProtocolVersionEncountered(
+                    remotePeer,
+                    remoteVersion,
+                    _appProtocolVersion);
+            }
+
+            if (!valid)
+            {
+                throw new DifferentAppProtocolVersionException(
+                    "The version of the received message is not valid.",
+                    identity,
+                    _appProtocolVersion,
+                    remoteVersion);
+            }
         }
 
         private void ReceiveMessage(object sender, NetMQSocketEventArgs e)
@@ -557,14 +597,13 @@ namespace Libplanet.Net.Transports
                     return;
                 }
 
-                Message message = Message.Parse(
+                Message message = _messageCodec.Decode(
                     raw,
                     false,
-                    _appProtocolVersion,
-                    _trustedAppProtocolVersionSigners,
-                    _differentAppProtocolVersionEncountered,
+                    AppProtocolVersionValidator,
                     _messageLifespan);
                 _logger.Debug("A message has parsed: {0}, from {1}", message, message.Remote);
+                _logger.Debug("Received peer is boundpeer? {0}", message.Remote is BoundPeer);
 
                 MessageHistory.Enqueue(message);
                 LastMessageTimestamp = DateTimeOffset.UtcNow;
@@ -627,7 +666,8 @@ namespace Libplanet.Net.Transports
                 _logger.Debug("Broadcasting message: {Message} as {AsPeer}", msg, AsPeer);
                 _logger.Debug("Peers to broadcast: {PeersCount}", peers.Count);
 
-                NetMQMessage message = msg.ToNetMQMessage(
+                NetMQMessage message = _messageCodec.Encode(
+                    msg,
                     _privateKey,
                     AsPeer,
                     DateTimeOffset.UtcNow,
@@ -775,7 +815,8 @@ namespace Libplanet.Net.Transports
                 req.Peer,
                 req.Message
             );
-            var message = req.Message.ToNetMQMessage(
+            var message = _messageCodec.Encode(
+                req.Message,
                 _privateKey,
                 AsPeer,
                 DateTimeOffset.UtcNow,
@@ -814,12 +855,10 @@ namespace Libplanet.Net.Transports
                             req.Id,
                             req.Peer
                         );
-                        Message reply = Message.Parse(
+                        Message reply = _messageCodec.Decode(
                             raw,
                             true,
-                            _appProtocolVersion,
-                            _trustedAppProtocolVersionSigners,
-                            _differentAppProtocolVersionEncountered,
+                            AppProtocolVersionValidator,
                             _messageLifespan);
                         _logger.Debug(
                             "A reply to the request {RequestId} has parsed: {Reply} from {Peer}.",

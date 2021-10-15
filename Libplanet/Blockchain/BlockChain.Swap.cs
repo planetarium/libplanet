@@ -87,7 +87,18 @@ namespace Libplanet.Blockchain
                         GetTxsWithRange(BlockChain<T> chain, Block<T> start, Block<T> end)
                         => Enumerable
                             .Range((int)start.Index + 1, (int)(end.Index - start.Index))
-                            .SelectMany(x => chain[x].Transactions);
+                            .SelectMany(x =>
+                            {
+                                // FIXME: Change the type of IBlockContent<T>.Transactions to
+                                // IImmutableSet<Transaction<T>>, and define a distinct property
+                                // to Block<T> for this ordering.
+                                Block<T> block = chain[x];
+                                return ActionEvaluator<T>.OrderTxsForEvaluation(
+                                    block.ProtocolVersion,
+                                    block.Transactions,
+                                    block.PreEvaluationHash
+                                );
+                            });
 
                     // It assumes reorg is small size. If it was big, this may be heavy task.
                     ImmutableHashSet<Transaction<T>> unstagedTxs =

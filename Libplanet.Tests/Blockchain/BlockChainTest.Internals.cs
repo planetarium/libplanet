@@ -7,10 +7,12 @@ using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
+using Libplanet.Store;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tx;
 using Serilog;
 using Xunit;
+using static Libplanet.Tests.TestUtils;
 using FAV = Libplanet.Assets.FungibleAssetValue;
 
 namespace Libplanet.Tests.Blockchain
@@ -161,12 +163,13 @@ namespace Libplanet.Tests.Blockchain
                 MakeFixturesForAppendTests();
             var genesis = _blockChain.Genesis;
 
-            Block<DumbAction> block1 = TestUtils.MineNext(
+            Block<DumbAction> block1 = MineNext(
                 genesis,
                 _policy.GetHashAlgorithm,
                 txs,
+                miner: _fx.Miner.PublicKey,
                 difficulty: _policy.GetNextBlockDifficulty(_blockChain)
-            ).AttachStateRootHash(_fx.StateStore, _policy);
+            ).Evaluate(_fx.Miner, _blockChain);
 
             _blockChain.Append(
                 block1,
@@ -190,9 +193,13 @@ namespace Libplanet.Tests.Blockchain
             _blockChain.ExecuteActions(block1);
             foreach (KeyValuePair<Address, IValue> pair in expectedStates)
             {
-                Assert.Equal(
+                AssertBencodexEqual(
                     pair.Value,
-                    _fx.StateStore.GetState(KeyConverters.ToStateKey(pair.Key), block1.Hash));
+                    _fx.StateStore.GetState(
+                        KeyConverters.ToStateKey(pair.Key),
+                        block1.StateRootHash
+                    )
+                );
             }
         }
 

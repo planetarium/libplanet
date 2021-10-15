@@ -1,7 +1,8 @@
+#nullable enable
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Libplanet.Tx;
-using NetMQ;
 
 namespace Libplanet.Net.Messages
 {
@@ -13,13 +14,13 @@ namespace Libplanet.Net.Messages
             Ids = txIds;
         }
 
-        public TxIds(NetMQFrame[] frames)
+        public TxIds(byte[][] dataFrames)
         {
-            Sender = new Address(frames[0].Buffer);
-            int txCount = frames[1].ConvertToInt32();
-            Ids = frames
+            Sender = new Address(dataFrames[0]);
+            int txCount = BitConverter.ToInt32(dataFrames[1], 0);
+            Ids = dataFrames
                 .Skip(2).Take(txCount)
-                .Select(f => f.ConvertToTxId())
+                .Select(ba => new TxId(ba))
                 .ToList();
         }
 
@@ -27,21 +28,17 @@ namespace Libplanet.Net.Messages
 
         public Address Sender { get; }
 
-        protected override MessageType Type => MessageType.TxIds;
+        public override MessageType Type => MessageType.TxIds;
 
-        protected override IEnumerable<NetMQFrame> DataFrames
+        public override IEnumerable<byte[]> DataFrames
         {
             get
             {
-                yield return new NetMQFrame(Sender.ToByteArray());
-
-                yield return new NetMQFrame(
-                    NetworkOrderBitsConverter.GetBytes(Ids.Count()));
-
-                foreach (TxId id in Ids)
-                {
-                    yield return new NetMQFrame(id.ToByteArray());
-                }
+                var frames = new List<byte[]>();
+                frames.Add(Sender.ToByteArray());
+                frames.Add(BitConverter.GetBytes(Ids.Count()));
+                frames.AddRange(Ids.Select(id => id.ToByteArray()));
+                return frames;
             }
         }
     }

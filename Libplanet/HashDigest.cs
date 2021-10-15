@@ -206,13 +206,7 @@ namespace Libplanet
             return ByteUtil.Hex(ToByteArray());
         }
 
-        [Pure]
-        public override bool Equals(object? obj)
-        {
-            return obj is IEquatable<HashDigest<T>> other
-                && other.Equals(this);
-        }
-
+        /// <inheritdoc cref="object.GetHashCode()"/>
         [Pure]
         public override int GetHashCode()
         {
@@ -228,8 +222,9 @@ namespace Libplanet
             return code;
         }
 
+        /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>
         [Pure]
-        bool IEquatable<HashDigest<T>>.Equals(HashDigest<T> other)
+        public bool Equals(HashDigest<T> other)
         {
             for (int i = 0; i < Size; i++)
             {
@@ -241,6 +236,11 @@ namespace Libplanet
 
             return true;
         }
+
+        /// <inheritdoc cref="object.Equals(object)"/>
+        [Pure]
+        public override bool Equals(object? obj) =>
+            obj is IEquatable<HashDigest<T>> other && other.Equals(this);
 
         /// <inheritdoc cref="ISerializable.GetObjectData(SerializationInfo, StreamingContext)"/>
         public void GetObjectData(SerializationInfo info, StreamingContext context)

@@ -22,10 +22,8 @@ namespace Libplanet.Blocks
         /// <see cref="Block{T}.StateRootHash"/>>.</param>
         /// <param name="actualStateRootHash">The hash of state trie on the block executed.</param>
         /// <param name="message">The message that describes the error.</param>
-        // FIXME: 'expectedStateRootHash' should be not nullable after it decided
-        //        to force state root hash.
         public InvalidBlockStateRootHashException(
-            HashDigest<SHA256>? expectedStateRootHash,
+            HashDigest<SHA256> expectedStateRootHash,
             HashDigest<SHA256> actualStateRootHash,
             string message)
             : base(message)
@@ -41,7 +39,7 @@ namespace Libplanet.Blocks
             ActualStateRootHash =
                 info.GetValue<HashDigest<SHA256>>(nameof(ActualStateRootHash));
             ExpectedStateRootHash =
-                info.GetValue<HashDigest<SHA256>?>(nameof(ExpectedStateRootHash));
+                info.GetValue<HashDigest<SHA256>>(nameof(ExpectedStateRootHash));
         }
 
         /// <summary>
@@ -54,7 +52,7 @@ namespace Libplanet.Blocks
         /// The hash recorded as <see cref="Block{T}.StateRootHash"/>>.
         /// </summary>
         [Pure]
-        public HashDigest<SHA256>? ExpectedStateRootHash { get; }
+        public HashDigest<SHA256> ExpectedStateRootHash { get; }
 
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {

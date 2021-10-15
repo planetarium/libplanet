@@ -36,11 +36,7 @@ namespace Libplanet.Tests.Store
                 new DefaultKeyValueStore(path is null
                     ? null
                     : System.IO.Path.Combine(path, "states"));
-            IKeyValueStore stateHashKeyValueStore =
-                new DefaultKeyValueStore(path is null
-                    ? null
-                    : System.IO.Path.Combine(path, "states_hashes"));
-            return new TrieStateStore(stateKeyValueStore, stateHashKeyValueStore);
+            return new TrieStateStore(stateKeyValueStore);
         }
 
         public override void Dispose()

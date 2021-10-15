@@ -1,6 +1,6 @@
 using System.Collections.Generic;
+using System.Text;
 using Libplanet.Net.Messages;
-using NetMQ;
 
 namespace Libplanet.Tests.Net.Protocols
 {
@@ -11,20 +11,15 @@ namespace Libplanet.Tests.Net.Protocols
             Data = data;
         }
 
-        public TestMessage(NetMQFrame[] body)
+        public TestMessage(byte[][] dataFrames)
         {
+            Data = Encoding.UTF8.GetString(dataFrames[0]);
         }
 
         public string Data { get; }
 
-        protected override MessageType Type => MessageType.Ping;
+        public override MessageType Type => MessageType.Ping;
 
-        protected override IEnumerable<NetMQFrame> DataFrames
-        {
-            get
-            {
-                yield break;
-            }
-        }
+        public override IEnumerable<byte[]> DataFrames => new[] { Encoding.UTF8.GetBytes(Data), };
     }
 }
