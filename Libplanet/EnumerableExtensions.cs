@@ -1,10 +1,6 @@
-#if !NETSTANDARD2_1
 using System;
-#endif
 using System.Collections.Generic;
-#if !NETSTANDARD2_1
 using System.Diagnostics;
-#endif
 using System.Linq;
 
 namespace Libplanet
@@ -45,7 +41,6 @@ namespace Libplanet
             return SkipIterator(source, count);
         }
 
-#if !NETSTANDARD2_1
         private static IEnumerable<TSource> SkipLastIterator<TSource>(
             IEnumerable<TSource> source,
             int count
@@ -75,7 +70,6 @@ namespace Libplanet
                 }
             }
         }
-#endif
 
         private static IEnumerable<TSource> SkipIterator<TSource>(
             IEnumerable<TSource> source,
