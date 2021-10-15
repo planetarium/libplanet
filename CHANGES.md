@@ -12,6 +12,8 @@ To be released.
     Use `IMessageCodec<T>.Encode()` method instead.  [[#1503]]
  -  Removed `Message.Parse()` static method.
     Use `IMessageCodec<T>.Decode()` method instead.  [[#1503]]
+ -  Changed method signature from `IStore.IterateIndexes(Guid, int, int?)` to
+    `IStore.IterateIndexes(Guid, long, long?)` [[#1496]]
 
 ### Backward-incompatible network protocol changes
 
@@ -27,6 +29,7 @@ To be released.
  -  Added `IMessageCodec<T>` interface.  [[#1503]]
  -  Added `NetMQMessageCodec` class which inherits `IMessageCodec<T>`.
     [[#1503]]
+ -  Added `IEnumerable<T>.LongSkip` extension method [[#1496]]
 
 ### Behavioral changes
 
@@ -35,6 +38,7 @@ To be released.
 ### CLI tools
 
 [#1503]: https://github.com/planetarium/libplanet/pull/1503
+[#1496]: https://github.com/planetarium/libplanet/pull/1496
 
 
 Version 0.18.0
@@ -373,8 +377,6 @@ Released on September 28, 2021.
     constructor changed to `difficultyStability`.  [[#1495]]
  -  Type for optional parameter `difficultyStability` for `BlockPolicy<T>()`
     constructor changed to `long?` from `int?`.  [[#1495]]
- -  Changed method signature from `IStore.IterateIndexes(Guid, int, int?)` to
-    `IStore.IterateIndexes(Guid, long, long?)` [[#1496]]
 
 ### Backward-incompatible network protocol changes
 
@@ -406,7 +408,6 @@ Released on September 28, 2021.
  -  Added `DifficultyAdjustment` static class.  [[#1495]]
  -  Added `BlockPolicy<T>.DifficultyStability` and
     `BlockPolicy<T>.MinimumDifficulty` properties.  [[#1495]]
- -  Added `IEnumerable<T>.LongSkip` extension method [[#1496]]
 
 ### Behavioral changes
 
@@ -479,7 +480,6 @@ Released on September 28, 2021.
 [#1480]: https://github.com/planetarium/libplanet/pull/1480
 [#1485]: https://github.com/planetarium/libplanet/pull/1485
 [#1495]: https://github.com/planetarium/libplanet/pull/1495
-[#1496]: https://github.com/planetarium/libplanet/pull/1496
 
 
 Version 0.16.0
