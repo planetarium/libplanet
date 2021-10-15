@@ -113,6 +113,21 @@ namespace Libplanet.Net.Messages
             /// value of the message.
             /// </summary>
             DifferentVersion = 0x30,
+
+            /// <summary>
+            /// Consensus New Round Message.
+            /// </summary>
+            ConsensusPropose = 0x40,
+
+            /// <summary>
+            /// Consensus New Round Message.
+            /// </summary>
+            ConsensusVote = 0x41,
+
+            /// <summary>
+            /// Consensus New Round Message.
+            /// </summary>
+            ConsensusVote23 = 0x42,
         }
 
         private enum MessageFrame
@@ -293,6 +308,9 @@ namespace Libplanet.Net.Messages
                 { MessageType.GetChainStatus, typeof(GetChainStatus) },
                 { MessageType.ChainStatus, typeof(ChainStatus) },
                 { MessageType.DifferentVersion, typeof(DifferentVersion) },
+                { MessageType.ConsensusPropose, typeof(ConsensusPropose) },
+                { MessageType.ConsensusVote, typeof(ConsensusVote) },
+                { MessageType.ConsensusVote23, typeof(ConsensusVote23) },
             };
 
             if (!types.TryGetValue(rawType, out Type type))

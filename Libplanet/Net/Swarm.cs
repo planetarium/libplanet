@@ -1009,6 +1009,27 @@ namespace Libplanet.Net
             BroadcastTxIds(except?.Address, txIds);
         }
 
+        private void BroadcastPropose(Address? except, long nodeId, long round, byte[] data)
+        {
+            _logger.Debug("Trying to broadcast propose...");
+            var message = new ConsensusPropose(nodeId, round, data);
+            BroadcastMessage(except, message);
+        }
+
+        private void BroadcastVote(Address? expect, long nodeId, long round, byte[] data)
+        {
+            _logger.Debug("Broadcast voting... {NodeId}, {Round}", nodeId, round);
+            var message = new ConsensusVote(nodeId, round, data);
+            BroadcastMessage(expect, message);
+        }
+
+        private void BroadcastVote23(Address? expect, long nodeId, long round, byte[] data)
+        {
+            _logger.Debug("Broadcast 2/3 voting... {NodeId}, {Round}", nodeId, round);
+            var message = new ConsensusVote23(nodeId, round, data);
+            BroadcastMessage(expect, message);
+        }
+
         private void BroadcastMessage(Address? except, Message message)
         {
             Transport.BroadcastMessage(except, message);
