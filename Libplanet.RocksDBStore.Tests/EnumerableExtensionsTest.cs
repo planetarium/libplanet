@@ -1,6 +1,6 @@
 using Xunit;
 
-namespace Libplanet.Tests
+namespace Libplanet.RocksDBStore.Tests
 {
     public class EnumerableExtensionsTest
     {
