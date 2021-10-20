@@ -1677,6 +1677,132 @@ namespace Libplanet.Tests.Net
             }
         }
 
+        [Fact(Timeout = Timeout)]
+        public async Task GetBlockFromOtherPeersOnTimeout()
+        {
+            var policy = new NullPolicy<DumbAction>();
+            Block<DumbAction> genesis =
+                BlockChain<DumbAction>.MakeGenesisBlock(policy.GetHashAlgorithm(0));
+            EmulatingUnstableGetBlockStore upstreamStoreA =
+                new EmulatingUnstableGetBlockStore(new DefaultStore(null));
+            var upstreamChainA = new BlockChain<DumbAction>(
+                policy,
+                new VolatileStagePolicy<DumbAction>(),
+                upstreamStoreA,
+                new TrieStateStore(new MemoryKeyValueStore()),
+                genesis
+            );
+            Block<DumbAction> block1 = await upstreamChainA.MineBlock(new PrivateKey());
+            Block<DumbAction> block2 =
+                await upstreamChainA.MineBlock(new PrivateKey(), append: false);
+            Swarm<DumbAction> upstreamA = CreateSwarm(upstreamChainA);
+
+            var upstreamChainB = new BlockChain<DumbAction>(
+                policy,
+                new VolatileStagePolicy<DumbAction>(),
+                new DefaultStore(null),
+                new TrieStateStore(new MemoryKeyValueStore()),
+                genesis
+            );
+            upstreamChainB.Append(block1);
+            Swarm<DumbAction> upstreamB = CreateSwarm(upstreamChainB);
+
+            var downstreamChain = new BlockChain<DumbAction>(
+                policy,
+                new VolatileStagePolicy<DumbAction>(),
+                new DefaultStore(null),
+                new TrieStateStore(new MemoryKeyValueStore()),
+                genesis
+            );
+            Swarm<DumbAction> downstream = CreateSwarm(downstreamChain);
+
+            _output.WriteLine("{0}: {1}", nameof(upstreamA), upstreamA.AsPeer);
+            _output.WriteLine("{0}: {1}", nameof(upstreamB), upstreamB.AsPeer);
+            _output.WriteLine("{0}: {1}", nameof(downstream), downstream.AsPeer);
+
+            try
+            {
+                await StartAsync(upstreamA);
+                await StartAsync(upstreamB);
+                await BootstrapAsync(downstream, new[] { upstreamA.AsPeer, upstreamB.AsPeer });
+                await StartAsync(downstream);
+
+                for (int i = 0, total = 30; !downstreamChain.Tip.Equals(block1) && i < total; i++)
+                {
+                    _output.WriteLine(
+                        "[{0}/{1}] Waiting a second for the {2} receiving the {3}... ({4})",
+                        i + 1,
+                        total,
+                        nameof(downstream),
+                        nameof(block1),
+                        block1
+                    );
+                    await Task.Delay(1000);
+                }
+
+                Assert.Equal(
+                    (block1.Index, block1.Hash),
+                    (downstreamChain.Tip.Index, downstreamChain.Tip.Hash) );
+
+                upstreamStoreA.BlockGettable = false;
+                upstreamChainA.Append(block2);
+                for (
+                    int i = 0, total = 30;
+                    !downstream.BlockDemandTable.Demands.Any(kv =>
+                        kv.Key.Address.Equals(upstreamA.Address) &&
+                        kv.Value.Header.Hash.Equals(block2.Header.Hash))
+                        && i < total;
+                    i++)
+                {
+                    _output.WriteLine(
+                        "[{0}/{1}] Waiting a second for the {2} receiving the {3} header... ({4})",
+                        i + 1,
+                        total,
+                        nameof(downstream),
+                        nameof(block2),
+                        block2
+                    );
+                    await Task.Delay(1000);
+                }
+
+                Assert.Contains(
+                    downstream.BlockDemandTable.Demands,
+                    kv =>
+                        kv.Key.Address.Equals(upstreamA.Address) &&
+                        kv.Value.Header.Hash.Equals(block2.Header.Hash)
+                );
+
+                // Even if the downstream received the block2's header from the upstreamA,
+                // as the upstreamA became unreachable now (GetBlockDelay = 10 mins) and
+                // the upstreamB has the block2 too, the downstream should be possible to receive
+                // it from the upstreamB instead of the upstreamA:
+                upstreamChainB.Append(block2);
+                for (int i = 0, total = 30; !downstreamChain.Tip.Equals(block2) && i < total; i++)
+                {
+                    _output.WriteLine(
+                        "[{0}/{1}] Waiting a second for the {2} receiving the {3}... ({4})",
+                        i + 1,
+                        total,
+                        nameof(downstream),
+                        nameof(block2),
+                        block2
+                    );
+                    await Task.Delay(1000);
+                }
+
+                Assert.Equal(
+                    (block2.Index, block2.Hash),
+                    (downstreamChain.Tip.Index, downstreamChain.Tip.Hash)
+                );
+            }
+            finally
+            {
+                await StopAsync(upstreamA);
+                await StopAsync(upstreamB);
+                await StopAsync(downstream);
+            }
+        }
+
         private async Task<Task> StartAsync<T>(
             Swarm<T> swarm,
             CancellationToken cancellationToken = default
@@ -1788,6 +1914,22 @@ namespace Libplanet.Tests.Net
             public void LoadPlainValue(IValue plainValue)
             {
             }
+        }
+
+        private class EmulatingUnstableGetBlockStore : ProxyStore
+        {
+            public EmulatingUnstableGetBlockStore(IStore store)
+                : base(store)
+            {
+            }
+
+            public bool BlockGettable { get; set; } = true;
+
+            public override Block<T> GetBlock<T>(
+                HashAlgorithmGetter hashAlgorithmGetter,
+                BlockHash blockHash
+            ) =>
+                BlockGettable ? base.GetBlock<T>(hashAlgorithmGetter, blockHash) : null;
         }
     }
 }
