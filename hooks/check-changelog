@@ -29,6 +29,7 @@ fi
 reached=
 line_no=1
 while IFS= read -r line; do
+  line="${line%$'\r'}"
   if [[ ${#line} -gt 80 &&
         "$(echo -n "$line" | LANG=en_US.UTF-8 wc -m)" -gt 80 &&
         $line != *https://* &&
