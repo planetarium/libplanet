@@ -8,6 +8,8 @@ To be released.
 
  -  Fixed a bug where `PublicKey.Verify()` method had thrown exceptions
     for some invalid inputs.  [[#1520]]
+ -  `BaseStore.GetBlock<T>()` method now throws `InvalidOperationException`
+    when it fails to load a requested block's transactions.  [[#1500], [#1532]]
  -  (Libplanet.RocksDBStore) Operations on `RocksDBStore` that update data
     no longer suppress the internal failures.  [[#1500], [#1532]]
 
