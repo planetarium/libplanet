@@ -1,3 +1,5 @@
+#nullable enable
+using System;
 using System.Security.Cryptography;
 
 namespace Libplanet.Crypto
@@ -35,6 +37,8 @@ namespace Libplanet.Crypto
         /// <returns><c>true</c> if the <paramref name="signature"/> was created
         /// from the <paramref name="messageHash"/> with the corresponding
         /// <see cref="PrivateKey"/>. Otherwise <c>false</c>.</returns>
+        /// <exception cref="Exception">If any exception is thrown, the given
+        /// <paramref name="signature"/> is considered as invalid.</exception>
         bool Verify(
             HashDigest<T> messageHash,
             byte[] signature,
