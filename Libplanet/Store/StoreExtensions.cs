@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Blocks;
-using Libplanet.Tx;
 
 namespace Libplanet.Store
 {
@@ -49,15 +47,6 @@ namespace Libplanet.Store
                     to.IncreaseTxNonce(chainId, kv.Key, kv.Value);
                 }
             }
-
-            ImmutableHashSet<TxId> stagedTxIds =
-                from.IterateStagedTransactionIds().ToImmutableHashSet();
-            foreach (TxId txid in stagedTxIds)
-            {
-                to.PutTransaction(from.GetTransaction<NullAction>(txid));
-            }
-
-            to.StageTransactionIds(stagedTxIds);
 
             if (from.GetCanonicalChainId() is Guid canonId)
             {

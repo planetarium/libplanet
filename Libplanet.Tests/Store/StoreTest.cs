@@ -656,61 +656,6 @@ namespace Libplanet.Tests.Store
         }
 
         [SkippableFact]
-        public void StoreStage()
-        {
-            Fx.Store.PutTransaction(Fx.Transaction1);
-            Fx.Store.PutTransaction(Fx.Transaction2);
-            Assert.Empty(Fx.Store.IterateStagedTransactionIds());
-
-            var txIds = new HashSet<TxId>
-            {
-                Fx.Transaction1.Id,
-                Fx.Transaction2.Id,
-            }.ToImmutableHashSet();
-
-            Fx.Store.StageTransactionIds(txIds);
-            Assert.Equal(
-                new HashSet<TxId>()
-                {
-                    Fx.Transaction1.Id,
-                    Fx.Transaction2.Id,
-                },
-                Fx.Store.IterateStagedTransactionIds().ToHashSet());
-
-            Fx.Store.UnstageTransactionIds(
-                new HashSet<TxId>
-                {
-                    Fx.Transaction1.Id,
-                });
-            Assert.Equal(
-                new HashSet<TxId>()
-                {
-                    Fx.Transaction2.Id,
-                },
-                Fx.Store.IterateStagedTransactionIds().ToHashSet());
-        }
-
-        [SkippableFact]
-        public void StoreStageOnce()
-        {
-            Fx.Store.PutTransaction(Fx.Transaction1);
-            Fx.Store.PutTransaction(Fx.Transaction2);
-
-            var txIds = new HashSet<TxId>
-            {
-                Fx.Transaction1.Id,
-                Fx.Transaction2.Id,
-            }.ToImmutableHashSet();
-
-            Fx.Store.StageTransactionIds(txIds);
-            Fx.Store.StageTransactionIds(ImmutableHashSet<TxId>.Empty.Add(Fx.Transaction1.Id));
-
-            Assert.Equal(
-                new[] { Fx.Transaction1.Id, Fx.Transaction2.Id }.OrderBy(txId => txId.ToHex()),
-                Fx.Store.IterateStagedTransactionIds().OrderBy(txId => txId.ToHex()));
-        }
-
-        [SkippableFact]
         public void TxNonce()
         {
             Assert.Equal(0, Fx.Store.GetTxNonce(Fx.StoreChainId, Fx.Transaction1.Signer));

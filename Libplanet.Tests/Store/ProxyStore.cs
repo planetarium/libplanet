@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Store;
@@ -78,18 +77,6 @@ namespace Libplanet.Tests.Store
             BlockHash branchpoint
         ) =>
             Store.ForkBlockIndexes(sourceChainId, destinationChainId, branchpoint);
-
-        /// <inheritdoc cref="IStore.StageTransactionIds(IImmutableSet{TxId})"/>
-        public virtual void StageTransactionIds(IImmutableSet<TxId> txids) =>
-            Store.StageTransactionIds(txids);
-
-        /// <inheritdoc cref="IStore.UnstageTransactionIds(ISet{TxId})"/>
-        public virtual void UnstageTransactionIds(ISet<TxId> txids) =>
-            Store.UnstageTransactionIds(txids);
-
-        /// <inheritdoc cref="IStore.UnstageTransactionIds(ISet{TxId})"/>
-        public virtual IEnumerable<TxId> IterateStagedTransactionIds() =>
-            Store.IterateStagedTransactionIds();
 
         /// <inheritdoc cref="IStore.IterateTransactionIds()"/>
         public virtual IEnumerable<TxId> IterateTransactionIds() =>

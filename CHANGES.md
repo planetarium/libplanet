@@ -8,6 +8,9 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Removed `IStore.StageTransactionIds()` method.  [[#1166], [#1535]]
+ -  Removed `IStore.UnstageTransactionIds()` method.  [[#1166], [#1535]]
+ -  Removed `IStore.IterateStagedTransactionIds()` method.  [[#1166], [#1535]]
  -  Removed `Message.ToNetMQMessage()` method.
     Use `IMessageCodec<T>.Encode()` method instead.  [[#1503]]
  -  Removed `Message.Parse()` static method.
@@ -34,7 +37,9 @@ To be released.
 
 ### CLI tools
 
+[#1166]: https://github.com/planetarium/libplanet/issues/1166
 [#1503]: https://github.com/planetarium/libplanet/pull/1503
+[#1535]: https://github.com/planetarium/libplanet/pull/1535
 
 
 Version 0.18.1

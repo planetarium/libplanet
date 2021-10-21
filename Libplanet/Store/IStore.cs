@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
@@ -88,24 +87,6 @@ namespace Libplanet.Store
         /// <seealso cref="IterateIndexes(Guid, int, int?)"/>
         /// <seealso cref="AppendIndex(Guid, BlockHash)"/>
         void ForkBlockIndexes(Guid sourceChainId, Guid destinationChainId, BlockHash branchpoint);
-
-        /// <summary>
-        /// Adds <see cref="TxId"/>s to the pending list so that
-        /// a next <see cref="Block{T}"/> to be mined contains the corresponding
-        /// <see cref="Transaction{T}"/>s.
-        /// </summary>
-        /// <param name="txids"><see cref="TxId"/>s to add to pending list.</param>
-        void StageTransactionIds(IImmutableSet<TxId> txids);
-
-        // FIXME: Replace ISet<TxId> with IImmutableSet<TxId>
-        void UnstageTransactionIds(ISet<TxId> txids);
-
-        /// <summary>
-        /// Iterates staged <see cref="TxId"/>s.
-        /// </summary>
-        /// <returns>Staged <see cref="TxId"/>s.  The earliest staged <see cref="TxId"/> goes first,
-        /// and the latest staged <see cref="TxId"/> goes last.</returns>
-        IEnumerable<TxId> IterateStagedTransactionIds();
 
         IEnumerable<TxId> IterateTransactionIds();
 

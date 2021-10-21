@@ -180,11 +180,6 @@ If omitted (default) explorer only the local blockchain store.")]
                 IRichStore store = LoadStore(options);
                 IStateStore stateStore = new NoOpStateStore();
 
-                var pendingTxs = store.IterateStagedTransactionIds()
-                    .ToImmutableHashSet();
-                store.UnstageTransactionIds(pendingTxs);
-                Log.Debug("Pending txs unstaged. [{PendingCount}] in store.", pendingTxs.Count);
-
                 IBlockPolicy<NullAction> policy =
                     new DumbBlockPolicy(LoadBlockPolicy<NullAction>(options));
                 IStagePolicy<NullAction> stagePolicy =

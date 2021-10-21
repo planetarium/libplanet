@@ -45,16 +45,6 @@ namespace Libplanet.Store
             BlockHash branchpoint
         );
 
-        /// <inheritdoc />
-        public abstract void StageTransactionIds(IImmutableSet<TxId> txids);
-
-        public abstract void UnstageTransactionIds(
-            ISet<TxId> txids
-        );
-
-        /// <inheritdoc />
-        public abstract IEnumerable<TxId> IterateStagedTransactionIds();
-
         public abstract IEnumerable<TxId> IterateTransactionIds();
 
         public abstract Transaction<T> GetTransaction<T>(TxId txid)
