@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.18.1
 --------------
 
-To be released.
+Released on October 21, 2021.
 
  -  Fixed a bug where `PublicKey.Verify()` method had thrown exceptions
     for some invalid inputs.  [[#1520]]
