@@ -4,12 +4,18 @@ Libplanet changelog
 Version 0.18.1
 --------------
 
-To be released.
+Released on October 21, 2021.
 
  -  Fixed a bug where `PublicKey.Verify()` method had thrown exceptions
     for some invalid inputs.  [[#1520]]
+ -  `BaseStore.GetBlock<T>()` method now throws `InvalidOperationException`
+    when it fails to load a requested block's transactions.  [[#1500], [#1532]]
+ -  (Libplanet.RocksDBStore) Operations on `RocksDBStore` that update data
+    no longer suppress the internal failures.  [[#1500], [#1532]]
 
+[#1500]: https://github.com/planetarium/libplanet/issues/1500
 [#1520]: https://github.com/planetarium/libplanet/issues/1520
+[#1532]: https://github.com/planetarium/libplanet/pull/1532
 
 
 Version 0.18.0

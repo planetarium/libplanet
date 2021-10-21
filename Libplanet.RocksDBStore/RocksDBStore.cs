@@ -268,6 +268,7 @@ namespace Libplanet.RocksDBStore
             catch (Exception e)
             {
                 LogUnexpectedException(nameof(DeleteChainId), e);
+                throw;
             }
         }
 
@@ -301,6 +302,7 @@ namespace Libplanet.RocksDBStore
             catch (Exception e)
             {
                 LogUnexpectedException(nameof(SetCanonicalChainId), e);
+                throw;
             }
         }
 
@@ -352,6 +354,7 @@ namespace Libplanet.RocksDBStore
             catch (Exception e)
             {
                 LogUnexpectedException(nameof(AppendIndex), e);
+                throw;
             }
 
             return index;
@@ -415,6 +418,7 @@ namespace Libplanet.RocksDBStore
             catch (Exception e)
             {
                 LogUnexpectedException(nameof(StageTransactionIds), e);
+                throw;
             }
         }
 
@@ -432,6 +436,7 @@ namespace Libplanet.RocksDBStore
             catch (Exception e)
             {
                 LogUnexpectedException(nameof(UnstageTransactionIds), e);
+                throw;
             }
         }
 
@@ -543,6 +548,7 @@ namespace Libplanet.RocksDBStore
             catch (Exception e)
             {
                 LogUnexpectedException(nameof(PutTransaction), e);
+                throw;
             }
             finally
             {
@@ -583,13 +589,12 @@ namespace Libplanet.RocksDBStore
             catch (Exception e)
             {
                 LogUnexpectedException(nameof(DeleteTransaction), e);
+                throw;
             }
             finally
             {
                 _rwTxLock.ExitWriteLock();
             }
-
-            return false;
         }
 
         /// <inheritdoc/>
@@ -719,6 +724,7 @@ namespace Libplanet.RocksDBStore
             catch (Exception e)
             {
                 LogUnexpectedException(nameof(PutBlock), e);
+                throw;
             }
             finally
             {
@@ -758,13 +764,12 @@ namespace Libplanet.RocksDBStore
             catch (Exception e)
             {
                 LogUnexpectedException(nameof(DeleteBlock), e);
+                throw;
             }
             finally
             {
                 _rwBlockLock.ExitWriteLock();
             }
-
-            return false;
         }
 
         /// <inheritdoc cref="BaseStore.ContainsBlock(BlockHash)"/>
@@ -859,6 +864,7 @@ namespace Libplanet.RocksDBStore
             catch (Exception e)
             {
                 LogUnexpectedException(nameof(SetBlockPerceivedTime), e);
+                throw;
             }
         }
 
@@ -934,6 +940,7 @@ namespace Libplanet.RocksDBStore
             catch (Exception e)
             {
                 LogUnexpectedException(nameof(IncreaseTxNonce), e);
+                throw;
             }
         }
 
@@ -1006,6 +1013,7 @@ namespace Libplanet.RocksDBStore
             catch (Exception e)
             {
                 LogUnexpectedException(nameof(ForkTxNonces), e);
+                throw;
             }
             finally
             {
