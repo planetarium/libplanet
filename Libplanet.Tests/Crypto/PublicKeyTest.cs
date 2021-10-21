@@ -1,12 +1,21 @@
+using System;
 using System.Collections.Immutable;
 using System.Text;
 using Libplanet.Crypto;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Libplanet.Tests.Crypto
 {
     public class PublicKeyTest
     {
+        private readonly ITestOutputHelper _output;
+
+        public PublicKeyTest(ITestOutputHelper output)
+        {
+            _output = output;
+        }
+
         [Fact]
         public void Constructor()
         {
@@ -64,7 +73,7 @@ namespace Libplanet.Tests.Crypto
         }
 
         [Fact]
-        public void VerifyTest()
+        public void Verify()
         {
             var pubKey = new PublicKey(
                 new byte[]
@@ -113,6 +122,106 @@ namespace Libplanet.Tests.Crypto
             };
             Assert.True(pubKey.Verify(payload, signature));
             Assert.False(pubKey.Verify(payload, ImmutableArray<byte>.Empty));
+        }
+
+        [Fact]
+        public void VerifyShouldNotCrashForAnyInputs()
+        {
+            var random = new Random();
+            var key = new PublicKey(new byte[]
+            {
+                0x04, 0xb5, 0xa2, 0x4a, 0xa2, 0x11, 0x27, 0x20, 0x42, 0x3b, 0xad, 0x39, 0xa0, 0x20,
+                0x51, 0x82, 0x37, 0x9d, 0x6f, 0x2b, 0x33, 0xe3, 0x48, 0x7c, 0x9a, 0xb6, 0xcc, 0x8f,
+                0xc4, 0x96, 0xf8, 0xa5, 0x48, 0x34, 0x40, 0xef, 0xbb, 0xef, 0x06, 0x57, 0xac, 0x2e,
+                0xf6, 0xc6, 0xee, 0x05, 0xdb, 0x06, 0xa9, 0x45, 0x32, 0xfd, 0xa7, 0xdd, 0xc4, 0x4a,
+                0x16, 0x95, 0xe5, 0xce, 0x1a, 0x3d, 0x3c, 0x76, 0xdb,
+            });
+            byte[][] testMessages =
+            {
+                // 0) Asn1ParsingException: corrupted stream - out of bounds length found: 77 >= 71
+                ByteUtil.ParseHex(
+                    "91cd3ac5b0ee0642dc5f3c64061d8b87d6a7a1f9bfd3c4159068ebffa229bebb" +
+                    "a1b9932496f358b26a4e3611abf1e46cd39d3d8da5b2a1bd082535470306a0b2"
+                ),
+                // 1) Asn1ParsingException: corrupted stream - out of bounds length found: 104 >= 71
+                ByteUtil.ParseHex(
+                    "dbee28545e490ff2b1311a0545a7498eb1bae9156207ee732f1ee59ec1b18bb4" +
+                    "7bdce857e2476eb4988e52263f9b51fdb3ceabb546e00cd4ffb52540637131ff"
+                ),
+            };
+            byte[][] testSignatures =
+            {
+                // 0) Asn1ParsingException: corrupted stream - out of bounds length found: 77 >= 71
+                ByteUtil.ParseHex(
+                    "a180c24d8966f1e24fef8e709cb36a9e837e2c04ec3016ef17d51b70be10af64ad846f2" +
+                    "a2e97e36cab5a3db623312055bb97c484da9cc6706ad335b34b81243f402ac218433f6f"
+                ),
+                // 1) Asn1ParsingException: corrupted stream - out of bounds length found: 104 >= 71
+                ByteUtil.ParseHex(
+                    "a5668968bef1ac694b357cd4b4c83494cde8eaf206d66d9ad014582c222e50275c5281d" +
+                    "811e83ec12141691164381f378191727b863ff9cef8ee98aa997f461de4557862465b82"
+                ),
+            };
+            Assert.Equal(testMessages.Length, testSignatures.Length);
+
+            for (int i = 0; i < testMessages.Length; i++)
+            {
+                bool validity;
+                byte[] message = testMessages[i];
+                byte[] sig = testSignatures[i];
+                try
+                {
+                    validity = key.Verify(message, sig);
+                }
+                catch (Exception)
+                {
+                    _output.WriteLine(
+                        "An unexpected exception is thrown by {0}.{1}() method with input #{2}:",
+                        nameof(PublicKey),
+                        nameof(PublicKey.Verify),
+                        i
+                    );
+                    _output.WriteLine("  message:   {0}", ByteUtil.Hex(message));
+                    _output.WriteLine("  signature: {0}", ByteUtil.Hex(sig));
+                    throw;
+                }
+
+                string msg =
+                    $"{nameof(PublicKey.Verify)}() method made an incorrect answer for input " +
+                    $"#{i}:\n" +
+                    $"  message:   {ByteUtil.Hex(message)}\n" +
+                    $"  signature: {ByteUtil.Hex(sig)}\n";
+                Assert.False(validity, msg);
+            }
+
+            for (int i = 0; i < 100; i++)
+            {
+                byte[] message = random.NextBytes(64);
+                byte[] sig = random.NextBytes(71);
+                bool validity;
+                try
+                {
+                    validity = key.Verify(message, sig);
+                }
+                catch (Exception)
+                {
+                    _output.WriteLine(
+                        "An unexpected exception is thrown by {0}.{1}() method with the input:",
+                        nameof(PublicKey),
+                        nameof(PublicKey.Verify)
+                    );
+                    _output.WriteLine("  message:   {0}", ByteUtil.Hex(message));
+                    _output.WriteLine("  signature: {0}", ByteUtil.Hex(sig));
+                    throw;
+                }
+
+                string msg =
+                    $"{nameof(PublicKey.Verify)}() method made an incorrect answer for the below " +
+                    "arbitrary inputs:\n" +
+                    $"  message:   {ByteUtil.Hex(message)}\n" +
+                    $"  signature: {ByteUtil.Hex(sig)}\n";
+                Assert.False(validity, msg);
+            }
         }
 
         [Fact]

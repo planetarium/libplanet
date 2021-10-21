@@ -75,9 +75,22 @@ namespace Libplanet.Store
             if (GetBlockDigest(blockHash) is BlockDigest blockDigest)
             {
                 BlockHeader header = blockDigest.GetHeader(hashAlgorithmGetter);
-                IEnumerable<Transaction<T>> txs = blockDigest.TxIds
-                    .Select(bytes => GetTransaction<T>(new TxId(bytes.ToArray())));
-                return new Block<T>(header, txs);
+                (TxId TxId, Transaction<T> Tx)[] txs = blockDigest.TxIds
+                    .Select(bytes => new TxId(bytes.ToArray()))
+                    .Select(txid => (txid, GetTransaction<T>(txid)))
+                    .ToArray();
+
+                TxId[] missingTxIds =
+                    txs.Where(pair => pair.Tx is null).Select(pair => pair.TxId).ToArray();
+                if (missingTxIds.Any())
+                {
+                    throw new InvalidOperationException(
+                        $"Failed to find {missingTxIds.Length} tx(s) (out of {txs.Length}):\n  " +
+                        string.Join("\n  ", missingTxIds)
+                    );
+                }
+
+                return new Block<T>(header, txs.Select(pair => pair.Tx));
             }
 
             return null;

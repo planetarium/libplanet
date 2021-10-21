@@ -7,25 +7,21 @@ end_of_line = lf
 insert_final_newline = true
 tab_width = 8
 trim_trailing_whitespace = true
-
-[*.{cs,csproj,md,xml}]
+max_line_length = 80
 indent_style = space
 continuation_indent_size = 4
-
-[*.{cs,md,xml}]
-max_line_length = 100
-
-[*.{cs,md}]
 indent_size = 4
 
-[{*.{ps1,sh},hooks/*}]
+[*.{ps1,sh,yaml,yml}]
 indent_size = 2
+continuation_indent_size = 2
 
 [*.{csproj,xml}]
 indent_size = 2
 quote_type = double
 
 [*.cs]
+max_line_length = 100
 curly_bracket_next_line = true
 spaces_around_operators = true
 indent_brace_style = Allman
@@ -41,7 +37,11 @@ quote_type = double
 
 [*.sln]
 indent_style = tab
-
-[*.{yaml,yml}]
-indent_style = space
 indent_size = 2
+
+[hooks/*]
+indent_size = 2
+continuation_indent_size = 2
+
+[stylecop.json]
+max_line_length =
