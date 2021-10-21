@@ -8,8 +8,12 @@ To be released.
 
  -  Fixed a bug where `PublicKey.Verify()` method had thrown exceptions
     for some invalid inputs.  [[#1520]]
+ -  (Libplanet.RocksDBStore) Operations on `RocksDBStore` that update data
+    no longer suppress the internal failures.  [[#1500], [#1532]]
 
+[#1500]: https://github.com/planetarium/libplanet/issues/1500
 [#1520]: https://github.com/planetarium/libplanet/issues/1520
+[#1532]: https://github.com/planetarium/libplanet/pull/1532
 
 
 Version 0.18.0
