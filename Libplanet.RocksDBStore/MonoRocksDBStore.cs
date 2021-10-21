@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -25,7 +24,6 @@ namespace Libplanet.RocksDBStore
         private const string BlockDbName = "block";
         private const string BlockPerceptionDbName = "blockpercept";
         private const string TxDbName = "tx";
-        private const string StagedTxDbName = "stagedtx";
         private const string TxExecutionDbName = "txexec";
         private const string TxIdBlockHashIndexDbName = "txbindex";
         private const string ChainDbName = "chain";
@@ -35,7 +33,6 @@ namespace Libplanet.RocksDBStore
         private static readonly byte[] BlockKeyPrefix = { (byte)'B' };
         private static readonly byte[] TxKeyPrefix = { (byte)'T' };
         private static readonly byte[] TxNonceKeyPrefix = { (byte)'N' };
-        private static readonly byte[] StagedTxKeyPrefix = { (byte)'t' };
         private static readonly byte[] TxExecutionKeyPrefix = { (byte)'e' };
         private static readonly byte[] TxIdBlockHashIndexPrefix = { (byte)'i' };
         private static readonly byte[] IndexCountKey = { (byte)'c' };
@@ -56,7 +53,6 @@ namespace Libplanet.RocksDBStore
         private readonly RocksDb _blockDb;
         private readonly RocksDb _blockPerceptionDb;
         private readonly RocksDb _txDb;
-        private readonly RocksDb _stagedTxDb;
         private readonly RocksDb _txExecutionDb;
         private readonly RocksDb _txIdBlockHashIndexDb;
         private readonly RocksDb _chainDb;
@@ -125,7 +121,6 @@ namespace Libplanet.RocksDBStore
             _blockPerceptionDb =
                 RocksDBUtils.OpenRocksDb(_options, RocksDbPath(BlockPerceptionDbName));
             _txDb = RocksDBUtils.OpenRocksDb(_options, RocksDbPath(TxDbName));
-            _stagedTxDb = RocksDBUtils.OpenRocksDb(_options, RocksDbPath(StagedTxDbName));
             _txExecutionDb =
                 RocksDBUtils.OpenRocksDb(_options, RocksDbPath(TxExecutionDbName));
             _txIdBlockHashIndexDb =
@@ -315,38 +310,6 @@ namespace Libplanet.RocksDBStore
                 RocksDBStoreBitConverter.GetBytes(index),
                 cf
             );
-        }
-
-        /// <inheritdoc/>
-        public override void StageTransactionIds(IImmutableSet<TxId> txids)
-        {
-            foreach (TxId txId in txids)
-            {
-                byte[] key = StagedTxKey(txId);
-                _stagedTxDb.Put(key, EmptyBytes);
-            }
-        }
-
-        /// <inheritdoc/>
-        public override void UnstageTransactionIds(ISet<TxId> txids)
-        {
-            foreach (TxId txId in txids)
-            {
-                byte[] key = StagedTxKey(txId);
-                _stagedTxDb.Remove(key);
-            }
-        }
-
-        /// <inheritdoc/>
-        public override IEnumerable<TxId> IterateStagedTransactionIds()
-        {
-            byte[] prefix = StagedTxKeyPrefix;
-            foreach (var it in IterateDb(_stagedTxDb, prefix))
-            {
-                byte[] key = it.Key();
-                byte[] txIdBytes = key.Skip(prefix.Length).ToArray();
-                yield return new TxId(txIdBytes);
-            }
         }
 
         /// <inheritdoc/>
@@ -689,7 +652,6 @@ namespace Libplanet.RocksDBStore
                 _blockPerceptionDb?.Dispose();
                 _txExecutionDb?.Dispose();
                 _txIdBlockHashIndexDb?.Dispose();
-                _stagedTxDb?.Dispose();
                 _disposed = true;
             }
         }
@@ -702,9 +664,6 @@ namespace Libplanet.RocksDBStore
 
         private byte[] TxNonceKey(in Address address) =>
             TxNonceKeyPrefix.Concat(address.ByteArray).ToArray();
-
-        private byte[] StagedTxKey(in TxId txId) =>
-            StagedTxKeyPrefix.Concat(txId.ByteArray).ToArray();
 
         private byte[] TxExecutionKey(in BlockHash blockHash, in TxId txId) =>
 

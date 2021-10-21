@@ -264,24 +264,6 @@ namespace Libplanet.Explorer.Store
         ) =>
             _store.ForkBlockIndexes(sourceChainId, destinationChainId, branchpoint);
 
-        /// <inheritdoc cref="IStore.StageTransactionIds(IImmutableSet{TxId})"/>
-        public void StageTransactionIds(IImmutableSet<TxId> txids)
-        {
-            _store.StageTransactionIds(txids);
-        }
-
-        /// <inheritdoc cref="IStore.UnstageTransactionIds(ISet{TxId})"/>
-        public void UnstageTransactionIds(ISet<TxId> txids)
-        {
-            _store.UnstageTransactionIds(txids);
-        }
-
-        /// <inheritdoc cref="IStore.IterateStagedTransactionIds()"/>
-        public IEnumerable<TxId> IterateStagedTransactionIds()
-        {
-            return _store.IterateStagedTransactionIds();
-        }
-
         /// <inheritdoc cref="IStore.IterateTransactionIds()"/>
         public IEnumerable<TxId> IterateTransactionIds()
         {

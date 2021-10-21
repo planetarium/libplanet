@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -155,9 +154,6 @@ namespace Libplanet.Store
             _blockCache = new LruCache<BlockHash, BlockDigest>(capacity: blockCacheSize);
         }
 
-        private LiteCollection<StagedTxIdDoc> StagedTxIds =>
-            _db.GetCollection<StagedTxIdDoc>("staged_txids");
-
         /// <inheritdoc/>
         public override IEnumerable<Guid> ListChainIds()
         {
@@ -258,27 +254,6 @@ namespace Libplanet.Store
             destColl.InsertBulk(srcColl.FindAll().TakeWhile(i => !i.Hash.Equals(branchpoint)));
 
             AppendIndex(destinationChainId, branchpoint);
-        }
-
-        /// <inheritdoc/>
-        public override void StageTransactionIds(IImmutableSet<TxId> txids)
-        {
-            StagedTxIds.InsertBulk(
-                txids.Select(txid => new StagedTxIdDoc { TxId = txid, })
-            );
-        }
-
-        /// <inheritdoc/>
-        public override void UnstageTransactionIds(ISet<TxId> txids)
-        {
-            StagedTxIds.Delete(tx => txids.Contains(tx.TxId));
-        }
-
-        /// <inheritdoc/>
-        public override IEnumerable<TxId> IterateStagedTransactionIds()
-        {
-            IEnumerable<StagedTxIdDoc> docs = StagedTxIds.FindAll();
-            return docs.Select(d => d.TxId).Distinct();
         }
 
         /// <inheritdoc/>
@@ -798,13 +773,6 @@ namespace Libplanet.Store
             public long Id { get; set; }
 
             public BlockHash Hash { get; set; }
-        }
-
-        private class StagedTxIdDoc
-        {
-            public long Id { get; set; }
-
-            public TxId TxId { get; set; }
         }
     }
 }

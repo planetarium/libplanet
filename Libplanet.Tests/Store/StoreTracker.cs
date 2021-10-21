@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Store;
@@ -164,12 +163,6 @@ namespace Libplanet.Tests.Store
              return _store.IterateIndexes(chainId, offset, limit);
         }
 
-        public IEnumerable<TxId> IterateStagedTransactionIds()
-        {
-            Log(nameof(IterateStagedTransactionIds));
-            return _store.IterateStagedTransactionIds();
-        }
-
         public IEnumerable<TxId> IterateTransactionIds()
         {
             Log(nameof(IterateTransactionIds));
@@ -233,18 +226,6 @@ namespace Libplanet.Tests.Store
         {
             Log(nameof(ForkTxNonces), sourceChainId, destinationChainId);
             _store.ForkTxNonces(sourceChainId, destinationChainId);
-        }
-
-        public void StageTransactionIds(IImmutableSet<TxId> txids)
-        {
-            Log(nameof(StageTransactionIds), txids);
-            _store.StageTransactionIds(txids);
-        }
-
-        public void UnstageTransactionIds(ISet<TxId> txids)
-        {
-            Log(nameof(UnstageTransactionIds), txids);
-            _store.UnstageTransactionIds(txids);
         }
 
         public Guid? GetCanonicalChainId()
