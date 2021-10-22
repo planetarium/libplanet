@@ -4,8 +4,6 @@ api/*.yml
 api/.manifest
 docfx/
 docfx.zip
-sqlitepclraw.core/
-sqlitepclraw.core.1.1.12.nuget
 /**/bin/
 /**/DROP/
 /**/packages/

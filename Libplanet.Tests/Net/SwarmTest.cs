@@ -1687,10 +1687,9 @@ namespace Libplanet.Tests.Net
                 new TrieStateStore(new MemoryKeyValueStore()),
                 genesis
             );
-            Block<DumbAction> block1 = await upstreamChainA.MineBlock(new PrivateKey());
-            Block<DumbAction> block2 =
-                await upstreamChainA.MineBlock(new PrivateKey(), append: false);
+            Task<Block<DumbAction>> miningBlock1 = upstreamChainA.MineBlock(new PrivateKey());
             Swarm<DumbAction> upstreamA = CreateSwarm(upstreamChainA);
+            Task<Task> startingUpstreamA = StartAsync(upstreamA);
 
             var upstreamChainB = new BlockChain<DumbAction>(
                 policy,
@@ -1699,8 +1698,8 @@ namespace Libplanet.Tests.Net
                 new TrieStateStore(new MemoryKeyValueStore()),
                 genesis
             );
-            upstreamChainB.Append(block1);
             Swarm<DumbAction> upstreamB = CreateSwarm(upstreamChainB);
+            Task<Task> startingUpstreamB = StartAsync(upstreamB);
 
             var downstreamChain = new BlockChain<DumbAction>(
                 policy,
@@ -1710,6 +1709,7 @@ namespace Libplanet.Tests.Net
                 genesis
             );
             Swarm<DumbAction> downstream = CreateSwarm(downstreamChain);
+            Task<Task> startingDownstream = StartAsync(downstream);
 
             _output.WriteLine("{0}: {1}", nameof(upstreamA), upstreamA.AsPeer);
             _output.WriteLine("{0}: {1}", nameof(upstreamB), upstreamB.AsPeer);
@@ -1717,12 +1717,36 @@ namespace Libplanet.Tests.Net
 
             try
             {
-                await StartAsync(upstreamA);
-                await StartAsync(upstreamB);
-                await BootstrapAsync(downstream, new[] { upstreamA.AsPeer, upstreamB.AsPeer });
-                await StartAsync(downstream);
+                await Task.WhenAll(
+                    startingUpstreamA,
+                    startingUpstreamB,
+                    startingDownstream
+                );
+                await Task.WhenAll(
+                    miningBlock1,
+                    upstreamA.AddPeersAsync(
+                        new[] { upstreamB.AsPeer, downstream.AsPeer },
+                        TimeSpan.FromMilliseconds(Timeout)
+                    ),
+                    upstreamB.AddPeersAsync(
+                        new[] { upstreamA.AsPeer, downstream.AsPeer },
+                        TimeSpan.FromMilliseconds(Timeout)
+                    ),
+                    downstream.AddPeersAsync(
+                        new[] { upstreamA.AsPeer, upstreamB.AsPeer },
+                        TimeSpan.FromMilliseconds(Timeout)
+                    )
+                );
+                Block<DumbAction> block1 = upstreamChainA.Tip;
+                Task<Block<DumbAction>> miningBlock2 =
+                    upstreamChainA.MineBlock(new PrivateKey(), append: false);
 
-                for (int i = 0, total = 30; !downstreamChain.Tip.Equals(block1) && i < total; i++)
+                upstreamA.BroadcastBlock(block1);
+                for (
+                    int i = 0, total = Timeout / 2 / 1000;
+                    !downstreamChain.Tip.Equals(block1) && i < total;
+                    ++i
+                )
                 {
                     _output.WriteLine(
                         "[{0}/{1}] Waiting a second for the {2} receiving the {3}... ({4})",
@@ -1737,17 +1761,21 @@ namespace Libplanet.Tests.Net
 
                 Assert.Equal(
                     (block1.Index, block1.Hash),
-                    (downstreamChain.Tip.Index, downstreamChain.Tip.Hash) );
+                    (downstreamChain.Tip.Index, downstreamChain.Tip.Hash)
+                );
 
+                Block<DumbAction> block2 = await miningBlock2;
                 upstreamStoreA.BlockGettable = false;
                 upstreamChainA.Append(block2);
+                upstreamA.BroadcastBlock(block2);
                 for (
-                    int i = 0, total = 30;
+                    int i = 0, total = Timeout / 2 / 1000;
                     !downstream.BlockDemandTable.Demands.Any(kv =>
                         kv.Key.Address.Equals(upstreamA.Address) &&
                         kv.Value.Header.Hash.Equals(block2.Header.Hash))
                         && i < total;
-                    i++)
+                    ++i
+                )
                 {
                     _output.WriteLine(
                         "[{0}/{1}] Waiting a second for the {2} receiving the {3} header... ({4})",
@@ -1772,7 +1800,11 @@ namespace Libplanet.Tests.Net
                 // the upstreamB has the block2 too, the downstream should be possible to receive
                 // it from the upstreamB instead of the upstreamA:
                 upstreamChainB.Append(block2);
-                for (int i = 0, total = 30; !downstreamChain.Tip.Equals(block2) && i < total; i++)
+                for (
+                    int i = 0, total = Timeout / 1000;
+                    !downstreamChain.Tip.Equals(block2) && i < total;
+                    ++i
+                )
                 {
                     _output.WriteLine(
                         "[{0}/{1}] Waiting a second for the {2} receiving the {3}... ({4})",

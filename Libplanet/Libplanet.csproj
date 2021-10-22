@@ -36,6 +36,7 @@ https://docs.libplanet.io/</Description>
     <LangVersion>8.0</LangVersion>
     <RootNamespace>Libplanet</RootNamespace>
     <AssemblyName>Libplanet</AssemblyName>
+    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>

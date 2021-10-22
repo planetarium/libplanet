@@ -19,6 +19,7 @@
   <TargetFramework>netstandard2.0</TargetFramework>
   <RootNamespace>Libplanet.RocksDBStore</RootNamespace>
   <AssemblyName>Libplanet.RocksDBStore</AssemblyName>
+  <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
   <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
   <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
