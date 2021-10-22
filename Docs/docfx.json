@@ -4,7 +4,9 @@
       "src": [
         {
           "files": [
-            "Libplanet/Libplanet.csproj"
+            "Libplanet/Libplanet.csproj",
+            "Libplanet.Stun/Libplanet.Stun.csproj",
+            "Libplanet.RocksDBStore/Libplanet.RocksDBStore.csproj"
           ],
           "exclude": ["**/bin/**", "**/obj/**"],
           "src": "../"
