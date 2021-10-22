@@ -15,6 +15,8 @@ To be released.
     Use `IMessageCodec<T>.Encode()` method instead.  [[#1503]]
  -  Removed `Message.Parse()` static method.
     Use `IMessageCodec<T>.Decode()` method instead.  [[#1503]]
+ -  Removed unused `HashAlgorithmGetter` type parameter from
+    `ActionEvaluator<T>()` constructor.  [[#1537]]
 
 ### Backward-incompatible network protocol changes
 
@@ -40,6 +42,7 @@ To be released.
 [#1166]: https://github.com/planetarium/libplanet/issues/1166
 [#1503]: https://github.com/planetarium/libplanet/pull/1503
 [#1535]: https://github.com/planetarium/libplanet/pull/1535
+[#1537]: https://github.com/planetarium/libplanet/pull/1537
 
 
 Version 0.18.1
