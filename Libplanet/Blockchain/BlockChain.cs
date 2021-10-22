@@ -160,7 +160,6 @@ namespace Libplanet.Blockchain
             _logger = Log.ForContext<BlockChain<T>>()
                 .ForContext("CanonicalChainId", Id);
             ActionEvaluator = new ActionEvaluator<T>(
-                Policy.GetHashAlgorithm,
                 Policy.BlockAction,
                 GetState,
                 GetBalance,

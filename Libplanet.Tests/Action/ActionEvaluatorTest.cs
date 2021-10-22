@@ -79,7 +79,6 @@ namespace Libplanet.Tests.Action
                 noStateRootBlock.Evaluate(GenesisMiner, null, stateStore);
             var actionEvaluator =
                 new ActionEvaluator<RandomAction>(
-                    hashAlgorithmGetter: hashAlgorithmGetter,
                     policyBlockAction: null,
                     stateGetter: ActionEvaluator<RandomAction>.NullStateGetter,
                     balanceGetter: ActionEvaluator<RandomAction>.NullBalanceGetter,
@@ -276,7 +275,6 @@ namespace Libplanet.Tests.Action
                 TestUtils.GenesisMiner
             );
             ActionEvaluator<DumbAction> actionEvaluator = new ActionEvaluator<DumbAction>(
-                hashAlgorithmGetter: _ => HashAlgorithmType.Of<SHA256>(),
                 policyBlockAction: null,
                 stateGetter: ActionEvaluator<DumbAction>.NullStateGetter,
                 balanceGetter: ActionEvaluator<DumbAction>.NullBalanceGetter,
@@ -577,7 +575,6 @@ namespace Libplanet.Tests.Action
                 Transactions = ImmutableArray.Create(tx),
             }.Mine(HashAlgorithmType.Of<SHA256>());
             var actionEvaluator = new ActionEvaluator<DumbAction>(
-                hashAlgorithmGetter: _ => HashAlgorithmType.Of<SHA256>(),
                 policyBlockAction: null,
                 stateGetter: ActionEvaluator<DumbAction>.NullStateGetter,
                 balanceGetter: ActionEvaluator<DumbAction>.NullBalanceGetter,
@@ -706,7 +703,6 @@ namespace Libplanet.Tests.Action
                 DateTimeOffset.UtcNow);
             var hash = new BlockHash(GetRandomBytes(32));
             var actionEvaluator = new ActionEvaluator<ThrowException>(
-                hashAlgorithmGetter: _ => HashAlgorithmType.Of<SHA256>(),
                 policyBlockAction: null,
                 stateGetter: ActionEvaluator<ThrowException>.NullStateGetter,
                 balanceGetter: ActionEvaluator<ThrowException>.NullBalanceGetter,
