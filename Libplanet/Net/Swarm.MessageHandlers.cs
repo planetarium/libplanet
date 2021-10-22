@@ -246,9 +246,8 @@ namespace Libplanet.Net
             foreach (BlockHash hash in hashes)
             {
                 _logger.Verbose(logMsg, i, total, hash, identityHex);
-                if (_store.ContainsBlock(hash))
+                if (_store.GetBlock<T>(BlockChain.Policy.GetHashAlgorithm, hash) is { } block)
                 {
-                    Block<T> block = _store.GetBlock<T>(BlockChain.Policy.GetHashAlgorithm, hash);
                     byte[] payload = Codec.Encode(block.MarshalBlock());
                     blocks.Add(payload);
                 }
