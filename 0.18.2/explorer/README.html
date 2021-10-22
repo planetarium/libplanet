@@ -1,0 +1,138 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Libplanet Explorer | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Libplanet Explorer | Libplanet ">
+    <meta name="generator" content="docfx 2.58.2.0">
+    
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="libplanet-explorer">Libplanet Explorer</h1>
+
+<p>Explorer blocks, transactions, and addresses on your Libplanet-powered
+distributed games.  For the frontend, see also <a href="https://github.com/planetarium/libplanet-explorer-frontend">libplanet-explorer-frontend</a>.</p>
+<h2 id="how-to-build-and-develop">How to build and develop</h2>
+<p>You need to install <a href="https://dotnet.microsoft.com/">.NET Core</a> 3.1 or higher.  It works on Linux, macOS,
+and Windows.  After you install them, execute the following command to run
+a development server:</p>
+<pre><code class="lang-bash">dotnet watch -p Libplanet.Explorer.Executable run -- \
+  --store-path BLOCKCHAIN_STORE_PATH
+</code></pre>
+<p><code>BLOCKCHAIN_STORE_PATH</code> refers to a directory or a file made by
+a Libplanet-powered game.  If you need a sample data file please contact us
+on <a href="https://discord.gg/planetarium">our Discord chat</a>!</p>
+<p>If you omit <code>--store-path</code> switch in online mode, explorer will use memory to
+store blockchain instead of storage.</p>
+<h2 id="graphql">GraphQL</h2>
+<p>The key purpose of this project is to provide GraphQL endpoint.  The endpoint
+is placed:</p>
+<pre><code>/graphql/
+</code></pre>
+<h2 id="graphql-playground">GraphQL Playground</h2>
+<p>This provides a built-in GraphQL Playground.  The web root path serves it:</p>
+<pre><code>/
+</code></pre>
+<h2 id="how-to-use-progressive-features">How to use progressive features</h2>
+<p>Now, it uses <code>IRichStore</code> to improve transaction query speed
+and provide more usable features (e.g., <code>blockRef</code>).</p>
+<p>It provides some implementations like below:</p>
+<ul>
+<li><code>LiteDBRichStore</code></li>
+<li><code>MySQLRichStore</code></li>
+</ul>
+<p>To use <code>MySQLRichStore</code>, it needs to fill command line arguments started with
+<code>mysql-</code> prefix fully and correctly.
+Else, it will use <code>LiteDBRichStore</code> as default.</p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/3c491a9e558eba9119d94a309ccadf2aa6701e2c/Libplanet.Explorer/README.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2018–2021 <a href="https://planetariumhq.com/">Planetarium</a>
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
