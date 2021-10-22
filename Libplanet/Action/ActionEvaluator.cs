@@ -36,7 +36,6 @@ namespace Libplanet.Action
             (address, currency) => new FungibleAssetValue(currency);
 
         private static readonly ILogger _logger = Log.ForContext<ActionEvaluator<T>>();
-        private readonly HashAlgorithmGetter _hashAlgorithmGetter;
         private readonly IAction? _policyBlockAction;
         private readonly StateGetter<T> _stateGetter;
         private readonly BalanceGetter<T> _balanceGetter;
@@ -45,8 +44,6 @@ namespace Libplanet.Action
         /// <summary>
         /// Creates a new <see cref="ActionEvaluator{T}"/>.
         /// </summary>
-        /// <param name="hashAlgorithmGetter">The function to determine a hash algorithm to use
-        /// for a block index.</param>
         /// <param name="policyBlockAction">The <see cref="IAction"/> provided by
         /// <see cref="IBlockPolicy{T}.BlockAction"/> to evaluate at the end for each
         /// <see cref="Block{T}"/> that gets evaluated.</param>
@@ -57,13 +54,11 @@ namespace Libplanet.Action
         /// <param name="trieGetter">The function to retrieve a trie for
         /// a provided <see cref="BlockHash"/>.</param>
         public ActionEvaluator(
-            HashAlgorithmGetter hashAlgorithmGetter,
             IAction? policyBlockAction,
             StateGetter<T> stateGetter,
             BalanceGetter<T> balanceGetter,
             Func<BlockHash, ITrie>? trieGetter)
         {
-            _hashAlgorithmGetter = hashAlgorithmGetter;
             _policyBlockAction = policyBlockAction;
             _stateGetter = stateGetter;
             _balanceGetter = balanceGetter;

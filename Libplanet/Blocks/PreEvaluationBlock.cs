@@ -289,7 +289,6 @@ namespace Libplanet.Blocks
             }
 
             var actionEvaluator = new ActionEvaluator<T>(
-                _ => HashAlgorithm,
                 blockAction,
                 stateGetter: (address, digest, stateCompleter) => null,
                 balanceGetter: (address, currency, hash, fungibleAssetStateCompleter)
