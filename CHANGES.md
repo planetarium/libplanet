@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.18.2
 --------------
 
-To be released.
+Released on October 22, 2021.
 
  -  Fixed a bug that `Swarm<T>` had not responded to `GetBlocks` requests
     when some of requested blocks fail to be loaded.  It now sends
