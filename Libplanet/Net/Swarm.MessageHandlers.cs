@@ -86,6 +86,10 @@ namespace Libplanet.Net
                     ProcessBlockHeader(blockHeader);
                     break;
 
+                case ConsensusMessage consensusMessage:
+                    ConsensusReactor.AppendMessage(consensusMessage);
+                    break;
+
                 default:
                     throw new InvalidMessageException(
                         $"Failed to handle message: {message}",

@@ -13,6 +13,7 @@ using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
+using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Protocols;
 using Libplanet.Net.Transports;
@@ -68,6 +69,7 @@ namespace Libplanet.Net
         /// to trust <see cref="AppProtocolVersion"/>s they signed.  To trust any party, pass
         /// <c>null</c>, which is default.</param>
         /// <param name="options">Options for <see cref="Swarm{T}"/>.</param>
+        /// <param name="consensusReactor">The reactor for consensus.</param>
         public Swarm(
             BlockChain<T> blockChain,
             PrivateKey privateKey,
@@ -78,7 +80,8 @@ namespace Libplanet.Net
             IEnumerable<IceServer> iceServers = null,
             DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered = null,
             IEnumerable<PublicKey> trustedAppProtocolVersionSigners = null,
-            SwarmOptions options = null)
+            SwarmOptions options = null,
+            IConsensusReactor consensusReactor = null)
         {
             BlockChain = blockChain ?? throw new ArgumentNullException(nameof(blockChain));
             _store = BlockChain.Store;
@@ -118,6 +121,9 @@ namespace Libplanet.Net
                 Options.MessageLifespan);
             Transport.ProcessMessageHandler += ProcessMessageHandler;
             PeerDiscovery = new KademliaProtocol(RoutingTable, Transport, Address);
+            ConsensusReactor = consensusReactor ?? new ConsensusReactor(
+                0,
+                new ConsensusBroadcaster(Transport));
         }
 
         ~Swarm()
@@ -187,6 +193,8 @@ namespace Libplanet.Net
         internal AsyncAutoResetEvent BlockDownloadStarted { get; } = new AsyncAutoResetEvent();
 
         internal SwarmOptions Options { get; }
+
+        internal IConsensusReactor ConsensusReactor { get; }
 
         /// <summary>
         /// Waits until this <see cref="Swarm{T}"/> instance gets started to run.
@@ -339,6 +347,7 @@ namespace Libplanet.Net
                         Options.PollInterval,
                         Options.MaximumPollPeers,
                         _cancellationToken));
+                tasks.Add(ConsensusReactor.ReactConsensusAsync(1, _cancellationToken));
                 if (Options.StaticPeers.Any())
                 {
                     tasks.Add(
@@ -1007,27 +1016,6 @@ namespace Libplanet.Net
             List<TxId> txIds = txs.Select(tx => tx.Id).ToList();
             _logger.Debug("Broadcast {TransactionsNumber} txs...", txIds.Count);
             BroadcastTxIds(except?.Address, txIds);
-        }
-
-        private void BroadcastPropose(Address? except, long nodeId, long round, byte[] data)
-        {
-            _logger.Debug("Trying to broadcast propose...");
-            var message = new ConsensusPropose(nodeId, round, data);
-            BroadcastMessage(except, message);
-        }
-
-        private void BroadcastVote(Address? expect, long nodeId, long round, byte[] data)
-        {
-            _logger.Debug("Broadcast voting... {NodeId}, {Round}", nodeId, round);
-            var message = new ConsensusVote(nodeId, round, data);
-            BroadcastMessage(expect, message);
-        }
-
-        private void BroadcastVote23(Address? expect, long nodeId, long round, byte[] data)
-        {
-            _logger.Debug("Broadcast 2/3 voting... {NodeId}, {Round}", nodeId, round);
-            var message = new ConsensusVote23(nodeId, round, data);
-            BroadcastMessage(expect, message);
         }
 
         private void BroadcastMessage(Address? except, Message message)
