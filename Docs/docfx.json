@@ -4,7 +4,9 @@
       "src": [
         {
           "files": [
-            "Libplanet/Libplanet.csproj"
+            "Libplanet/Libplanet.csproj",
+            "Libplanet.Stun/Libplanet.Stun.csproj",
+            "Libplanet.RocksDBStore/Libplanet.RocksDBStore.csproj"
           ],
           "exclude": ["**/bin/**", "**/obj/**"],
           "src": "../"
@@ -14,7 +16,7 @@
       "disableGitFeatures": false,
       "disableDefaultFilter": false,
       "properties": {
-        "TargetFramework": "netstandard2.0"
+        "TargetFramework": "netstandard2.1"
       }
     }
   ],
