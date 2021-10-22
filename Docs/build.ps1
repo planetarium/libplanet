@@ -60,6 +60,18 @@ if (-not (Test-Path "$BaseDir/docfx")) {
   Remove-Item "$BaseDir/docfx.zip"
 }
 
+# As DocFX requires the Git remote named "origin", which is hard-coded in
+# the DocFX internals (see also: # https://github.com/dotnet/docfx/issues/5547),
+# it fails to get VCS metadata without it.  To work around this, this script
+# temporarily adds the remote named "origin" if it does not exist, and removes
+# it when the script ends.
+$originExisted = -not ( `
+  git remote | Select-String -AllMatches -CaseSensitive -Quiet "origin")
+if ($originExisted) {
+  git remote add origin "git://github.com/planetarium/libplanet.git"
+}
+try {
+
 # Invoke docfx.exe which is a .NET application.  While it can be run in
 # the native way on Windows, it should be interpreted by Mono VM on other POSIX
 # systems.
@@ -98,4 +110,10 @@ if (-not (Test-Path "$BaseDir/_site/api/Libplanet.html")) {
 Failed to build: _site/api/Libplanet.html doesn't exist.
 "@
     exit 127
+}
+
+} finally {
+  if ($originExisted) {
+    git remote remove origin
+  }
 }
