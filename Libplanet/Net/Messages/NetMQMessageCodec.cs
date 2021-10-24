@@ -20,7 +20,7 @@ namespace Libplanet.Net.Messages
             _codec = new Codec();
         }
 
-        /// <inheritdoc cref="Encode"/>
+        /// <inheritdoc cref="IMessageCodec{T}.Encode"/>
         public NetMQMessage Encode(
             Message message,
             PrivateKey privateKey,
@@ -61,7 +61,7 @@ namespace Libplanet.Net.Messages
             return netMqMessage;
         }
 
-        /// <inheritdoc cref="Decode"/>
+        /// <inheritdoc cref="IMessageCodec{T}.Decode"/>
         public Message Decode(
             NetMQMessage encoded,
             bool reply,
