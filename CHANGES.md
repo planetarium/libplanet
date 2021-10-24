@@ -32,6 +32,7 @@ To be released.
  -  Added `IMessageCodec<T>` interface.  [[#1503]]
  -  Added `NetMQMessageCodec` class which inherits `IMessageCodec<T>`.
     [[#1503]]
+ -  Added `MemoryStore` class.  [[#1544]]
 
 ### Behavioral changes
 
@@ -43,6 +44,7 @@ To be released.
 [#1503]: https://github.com/planetarium/libplanet/pull/1503
 [#1535]: https://github.com/planetarium/libplanet/pull/1535
 [#1537]: https://github.com/planetarium/libplanet/pull/1537
+[#1544]: https://github.com/planetarium/libplanet/pull/1544
 
 
 Version 0.18.2

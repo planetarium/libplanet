@@ -3,6 +3,7 @@ using Libplanet.Store.Trie;
 
 namespace Libplanet.Tests.Store.Trie
 {
+    // FIXME: This should be exposed as a public class:
     public class MemoryKeyValueStore : IKeyValueStore
     {
         public MemoryKeyValueStore()
@@ -15,6 +16,7 @@ namespace Libplanet.Tests.Store.Trie
             Dictionary = new Dictionary<byte[], byte[]>(dictionary, new BytesEqualityComparer());
         }
 
+        // FIXME: This should be a ConcurrentDictionary<K, V>:
         private Dictionary<byte[], byte[]> Dictionary { get; }
 
         public byte[] Get(byte[] key)
