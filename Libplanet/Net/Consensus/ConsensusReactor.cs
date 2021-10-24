@@ -49,12 +49,7 @@ namespace Libplanet.Net.Consensus
             }
         }
 
-        private void BroadcastMessage(ConsensusMessage message)
-        {
-            _broadcaster.BroadcastMessage(message);
-        }
-
-        private void ProcessMessage(ConsensusMessage message)
+        internal void ProcessMessage(ConsensusMessage message)
         {
             switch (message)
             {
@@ -72,6 +67,16 @@ namespace Libplanet.Net.Consensus
             }
         }
 
+        internal ConsensusState GetState()
+        {
+            return _state;
+        }
+
+        private void BroadcastMessage(ConsensusMessage message)
+        {
+            _broadcaster.BroadcastMessage(message);
+        }
+
         private void Propose(ConsensusPropose propose)
         {
             switch (propose)
@@ -85,7 +90,6 @@ namespace Libplanet.Net.Consensus
             }
 
             _lock.EnterWriteLock();
-            _lock.EnterReadLock();
             _state.Data = propose.Data;
             _state.Vote23Count = _state.VoteCount = 0;
             _state.Step = ConsensusState.RoundStep.RoundStepPrevote;
@@ -102,7 +106,6 @@ namespace Libplanet.Net.Consensus
             }
 
             _state.Step = ConsensusState.RoundStep.RoundStepPrevoteWait;
-            _lock.EnterReadLock();
             _lock.ExitWriteLock();
         }
 

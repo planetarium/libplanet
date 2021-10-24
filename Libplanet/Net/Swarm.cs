@@ -70,6 +70,7 @@ namespace Libplanet.Net
         /// <c>null</c>, which is default.</param>
         /// <param name="options">Options for <see cref="Swarm{T}"/>.</param>
         /// <param name="consensusReactor">The reactor for consensus.</param>
+        /// <param name="nodeId">Node Id.</param>
         public Swarm(
             BlockChain<T> blockChain,
             PrivateKey privateKey,
@@ -81,7 +82,8 @@ namespace Libplanet.Net
             DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered = null,
             IEnumerable<PublicKey> trustedAppProtocolVersionSigners = null,
             SwarmOptions options = null,
-            IConsensusReactor consensusReactor = null)
+            IConsensusReactor consensusReactor = null,
+            long nodeId = 0)
         {
             BlockChain = blockChain ?? throw new ArgumentNullException(nameof(blockChain));
             _store = BlockChain.Store;
@@ -122,7 +124,7 @@ namespace Libplanet.Net
             Transport.ProcessMessageHandler += ProcessMessageHandler;
             PeerDiscovery = new KademliaProtocol(RoutingTable, Transport, Address);
             ConsensusReactor = consensusReactor ?? new ConsensusReactor(
-                0,
+                nodeId,
                 new ConsensusBroadcaster(Transport));
         }
 

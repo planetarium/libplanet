@@ -74,7 +74,8 @@ namespace Libplanet.Tests.Net
             IEnumerable<IceServer> iceServers = null,
             DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered = null,
             IEnumerable<PublicKey> trustedAppProtocolVersionSigners = null,
-            SwarmOptions options = null)
+            SwarmOptions options = null,
+            long nodeId = 0)
         {
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
             var fx = new DefaultStoreFixture(memory: true, blockAction: policy.BlockAction);
@@ -100,8 +101,8 @@ namespace Libplanet.Tests.Net
             IEnumerable<IceServer> iceServers = null,
             DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered = null,
             IEnumerable<PublicKey> trustedAppProtocolVersionSigners = null,
-            SwarmOptions options = null
-        )
+            SwarmOptions options = null,
+            long nodeId = 0)
             where T : IAction, new()
         {
             if (host is null && !(iceServers?.Any() ?? false))
@@ -119,7 +120,8 @@ namespace Libplanet.Tests.Net
                 iceServers,
                 differentAppProtocolVersionEncountered,
                 trustedAppProtocolVersionSigners,
-                options);
+                options,
+                nodeId: nodeId);
             _finalizers.Add(async () =>
             {
                 await StopAsync(swarm);
