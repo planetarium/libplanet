@@ -44,12 +44,12 @@ namespace Libplanet.Tests.Net
             );
             BlockChain<DumbAction> chain1 = TestUtils.MakeBlockChain(
                 policy,
-                new DefaultStore(null),
+                new MemoryStore(),
                 new TrieStateStore(new MemoryKeyValueStore())
             );
             BlockChain<DumbAction> chain2 = TestUtils.MakeBlockChain(
                 policy,
-                new DefaultStore(null),
+                new MemoryStore(),
                 new TrieStateStore(new MemoryKeyValueStore())
             );
 

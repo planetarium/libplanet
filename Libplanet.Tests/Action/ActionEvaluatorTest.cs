@@ -46,7 +46,7 @@ namespace Libplanet.Tests.Action
             _policy = new BlockPolicy<DumbAction>(
                 blockAction: new MinerReward(1),
                 getMaxBlockBytes: _ => 50 * 1024);
-            _storeFx = new DefaultStoreFixture(memory: true, blockAction: _policy.BlockAction);
+            _storeFx = new MemoryStoreFixture(_policy.BlockAction);
             _txFx = new TxFixture(null);
         }
 
@@ -116,7 +116,7 @@ namespace Libplanet.Tests.Action
 
             var action = new EvaluateTestAction();
 
-            var store = new DefaultStore(null);
+            var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var chain = TestUtils.MakeBlockChain<EvaluateTestAction>(
                 policy: new BlockPolicy<EvaluateTestAction>(),
@@ -153,7 +153,7 @@ namespace Libplanet.Tests.Action
 
             var action = new ThrowException { ThrowOnRehearsal = false, ThrowOnExecution = true };
 
-            var store = new DefaultStore(null);
+            var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var chain = TestUtils.MakeBlockChain<ThrowException>(
                 policy: new BlockPolicy<ThrowException>(),
@@ -193,7 +193,7 @@ namespace Libplanet.Tests.Action
                 ExceptionTypeToThrow = typeof(OutOfMemoryException),
             };
 
-            var store = new DefaultStore(null);
+            var store = new MemoryStore();
             var stateStore =
                 new TrieStateStore(new MemoryKeyValueStore());
             var chain = TestUtils.MakeBlockChain<ThrowException>(

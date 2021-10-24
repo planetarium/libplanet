@@ -10,7 +10,7 @@ namespace Libplanet.Tests.Store
 
         public StoreTrackerTest()
         {
-            _fx = new DefaultStoreFixture();
+            _fx = new MemoryStoreFixture();
             _tracker = new StoreTracker(_fx.Store);
         }
 

@@ -203,7 +203,7 @@ namespace Libplanet.Tests.Blockchain
                 blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000)
             );
             var stateStore = new TrieStateStore(stateKeyValueStore);
-            var store = new DefaultStore(null);
+            IStore store = new MemoryStore();
             var genesisBlock = TestUtils.MineGenesis<DumbAction>(
                 policy.GetHashAlgorithm,
                 TestUtils.GenesisMiner.PublicKey

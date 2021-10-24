@@ -102,7 +102,7 @@ namespace Libplanet.Tests.Net
                 .Evaluate(receiverKey, policy.BlockAction, seedStateStore);
             BlockChain<DumbAction> seedChain = TestUtils.MakeBlockChain(
                 policy,
-                new DefaultStore(path: null),
+                new MemoryStore(),
                 seedStateStore,
                 genesisBlock: mismatchedGenesis);
             var seedMiner = new PrivateKey();
@@ -376,7 +376,7 @@ namespace Libplanet.Tests.Net
 
             for (int i = 0; i < size; i++)
             {
-                fxs[i] = new DefaultStoreFixture(memory: true);
+                fxs[i] = new MemoryStoreFixture();
                 blockChains[i] = new BlockChain<DumbAction>(
                     policy,
                     new VolatileStagePolicy<DumbAction>(),
@@ -590,11 +590,11 @@ namespace Libplanet.Tests.Net
         public async Task BroadcastBlockWithSkip()
         {
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
-            var fx1 = new DefaultStoreFixture(memory: true);
+            var fx1 = new MemoryStoreFixture();
             var blockChain = TestUtils.MakeBlockChain(policy, fx1.Store, fx1.StateStore);
             var privateKey = new PrivateKey();
             var minerSwarm = CreateSwarm(blockChain, privateKey);
-            var fx2 = new DefaultStoreFixture(memory: true);
+            var fx2 = new MemoryStoreFixture();
             var receiverRenderer = new RecordingActionRenderer<DumbAction>();
             var loggedRenderer = new LoggedActionRenderer<DumbAction>(
                 receiverRenderer,
@@ -824,11 +824,11 @@ namespace Libplanet.Tests.Net
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
             var chain1 = TestUtils.MakeBlockChain(
                 policy,
-                new DefaultStore(null),
+                new MemoryStore(),
                 new TrieStateStore(new MemoryKeyValueStore()));
             var chain2 = TestUtils.MakeBlockChain(
                 policy,
-                new DefaultStore(null),
+                new MemoryStore(),
                 new TrieStateStore(new MemoryKeyValueStore()));
 
             var key1 = new PrivateKey();

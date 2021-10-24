@@ -62,7 +62,7 @@ namespace Libplanet.Tests.Fixtures
                 .ToImmutableArray();
             Miner = new PrivateKey();
             policy = policy ?? new NullPolicy<Arithmetic>();
-            Store = new DefaultStore(null);
+            Store = new MemoryStore();
             KVStore = new MemoryKeyValueStore();
             StateStore = new TrieStateStore(KVStore);
             Genesis = new BlockContent<Arithmetic>

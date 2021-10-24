@@ -14,7 +14,7 @@ namespace Libplanet.Tests.Store
 
         public BlockSetTest()
         {
-            _fx = new DefaultStoreFixture();
+            _fx = new MemoryStoreFixture();
             _set = new BlockSet<DumbAction>(_fx.GetHashAlgorithm, _fx.Store);
         }
 

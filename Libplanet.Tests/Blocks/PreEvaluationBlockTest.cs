@@ -247,7 +247,7 @@ namespace Libplanet.Tests.Blocks
             PreEvaluationBlock<Arithmetic> preEvalGenesis =
                 _contents.Genesis.Mine(policy.GetHashAlgorithm(0));
 
-            using (var fx = new DefaultStoreFixture())
+            using (var fx = new MemoryStoreFixture())
             {
                 Block<Arithmetic> genesis =
                     preEvalGenesis.Evaluate(_contents.GenesisKey, blockAction, fx.StateStore);
@@ -302,7 +302,7 @@ namespace Libplanet.Tests.Blocks
             PreEvaluationBlock<Arithmetic> preEvalGenesis =
                 _contents.Genesis.Mine(policy.GetHashAlgorithm(0));
 
-            using (var fx = new DefaultStoreFixture())
+            using (var fx = new MemoryStoreFixture())
             {
                 HashDigest<SHA256> genesisStateRootHash =
                     preEvalGenesis.DetermineStateRootHash(blockAction, fx.StateStore);

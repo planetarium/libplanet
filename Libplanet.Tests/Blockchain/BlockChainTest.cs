@@ -59,7 +59,7 @@ namespace Libplanet.Tests.Blockchain
                 getMaxBlockBytes: _ => 50 * 1024,
                 getMinTransactionsPerBlock: _ => 1);
             _stagePolicy = new VolatileStagePolicy<DumbAction>();
-            _fx = new DefaultStoreFixture(memory: true, blockAction: _policy.BlockAction);
+            _fx = new MemoryStoreFixture(blockAction: _policy.BlockAction);
             _renderer = new ValidatingActionRenderer<DumbAction>();
             _blockChain = new BlockChain<DumbAction>(
                 _policy,
@@ -203,7 +203,7 @@ namespace Libplanet.Tests.Blockchain
             HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             Block<PolymorphicAction<BaseAction>> genesisBlock =
                 BlockChain<PolymorphicAction<BaseAction>>.MakeGenesisBlock(hashAlgorithm);
-            var store = new DefaultStore(path: null);
+            var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var chain = new BlockChain<PolymorphicAction<BaseAction>>(
                 new BlockPolicy<PolymorphicAction<BaseAction>>(),
@@ -307,7 +307,7 @@ namespace Libplanet.Tests.Blockchain
             var key = new PrivateKey();
             Address miner = key.ToAddress();
 
-            using (var fx = new DefaultStoreFixture(memory: true))
+            using (var fx = new MemoryStoreFixture())
             {
                 var emptyRenderer = new AnonymousRenderer<DumbAction>();
                 var chain = new BlockChain<DumbAction>(
@@ -357,7 +357,7 @@ namespace Libplanet.Tests.Blockchain
         public async Task ActionRenderersHaveDistinctContexts()
         {
             var policy = new NullPolicy<DumbAction>();
-            var store = new DefaultStore(null);
+            var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var generatedRandomValueLogs = new List<int>();
             IActionRenderer<DumbAction>[] renderers = Enumerable.Range(0, 2).Select(i =>
@@ -396,7 +396,7 @@ namespace Libplanet.Tests.Blockchain
         public async Task RenderActionsAfterBlockIsRendered()
         {
             var policy = new NullPolicy<DumbAction>();
-            var store = new DefaultStore(null);
+            var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var recordingRenderer = new RecordingActionRenderer<DumbAction>();
             var renderer = new LoggedActionRenderer<DumbAction>(recordingRenderer, Log.Logger);
@@ -433,7 +433,7 @@ namespace Libplanet.Tests.Blockchain
         public async Task RenderActionsAfterAppendComplete()
         {
             var policy = new NullPolicy<DumbAction>();
-            var store = new DefaultStore(null);
+            var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             IActionRenderer<DumbAction> renderer = new AnonymousActionRenderer<DumbAction>
             {
@@ -605,7 +605,7 @@ namespace Libplanet.Tests.Blockchain
             var miner = new PrivateKey();
             var action = new DumbAction(stateKey, "genesis");
 
-            using (var store = new DefaultStore(null))
+            using (IStore store = new MemoryStore())
             using (var stateStore = new TrieStateStore(new MemoryKeyValueStore()))
             {
                 var genesis = MineGenesis(
@@ -817,8 +817,8 @@ namespace Libplanet.Tests.Blockchain
                 0xec, 0xe0,
             });
 
-            BlockChain<DumbAction> fork =
-                _blockChain.Fork(_blockChain.Tip.Hash);
+            BlockHash tipHash = _blockChain.Tip.Hash;
+            BlockChain<DumbAction> fork = _blockChain.Fork(tipHash);
 
             Transaction<DumbAction>[][] txsA =
             {
@@ -1039,8 +1039,7 @@ namespace Libplanet.Tests.Blockchain
         [InlineData(false)]
         public async Task ReorgIsUnableToHeterogenousChain(bool render)
         {
-            using (var fx2 = new DefaultStoreFixture(
-                memory: true, blockAction: _policy.BlockAction))
+            using (var fx2 = new MemoryStoreFixture(_policy.BlockAction))
             {
                 Block<DumbAction> genesis2 = MineGenesis<DumbAction>(
                     _policy.GetHashAlgorithm,
@@ -1180,7 +1179,7 @@ namespace Libplanet.Tests.Blockchain
                 new[] { new DumbAction(_fx.Address1, "item0.0", idempotent: true) }
             );
             var privateKey = new PrivateKey();
-            var store = new DefaultStore(path: null);
+            var store = new MemoryStore();
             var stateStore =
                 new TrieStateStore(new MemoryKeyValueStore());
 
@@ -1309,10 +1308,8 @@ namespace Libplanet.Tests.Blockchain
             var emptyLocator = new BlockLocator(new BlockHash[0]);
             var locator = new BlockLocator(new[] { b4.Hash, b3.Hash, b1.Hash });
 
-            using (var emptyFx = new DefaultStoreFixture(
-                memory: true, blockAction: _policy.BlockAction))
-            using (var forkFx = new DefaultStoreFixture(
-                memory: true, blockAction: _policy.BlockAction))
+            using (var emptyFx = new MemoryStoreFixture(_policy.BlockAction))
+            using (var forkFx = new MemoryStoreFixture(_policy.BlockAction))
             {
                 var genesisBlock = BlockChain<DumbAction>.MakeGenesisBlock(hashAlgorithm);
                 var emptyChain = new BlockChain<DumbAction>(
@@ -1844,7 +1841,7 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         private void ConstructWithGenesisBlock()
         {
-            var storeFixture = new DefaultStoreFixture();
+            var storeFixture = new MemoryStoreFixture();
             var policy = new NullPolicy<DumbAction>();
 
             var addresses = ImmutableList<Address>.Empty
@@ -1881,7 +1878,7 @@ namespace Libplanet.Tests.Blockchain
             var policy = new NullPolicy<DumbAction>();
             HashAlgorithmType hashAlgorithm = policy.GetHashAlgorithm(0);
             var stagePolicy = new VolatileStagePolicy<DumbAction>();
-            var store = new DefaultStore(null);
+            var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var genesisBlockA = BlockChain<DumbAction>.MakeGenesisBlock(hashAlgorithm);
             var genesisBlockB = BlockChain<DumbAction>.MakeGenesisBlock(hashAlgorithm);

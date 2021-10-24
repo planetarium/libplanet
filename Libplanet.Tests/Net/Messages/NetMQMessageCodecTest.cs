@@ -63,7 +63,7 @@ namespace Libplanet.Tests.Net.Messages
             IBlockPolicy<DumbAction> policy = new BlockPolicy<DumbAction>();
             BlockChain<DumbAction> chain = TestUtils.MakeBlockChain(
                 policy,
-                new DefaultStore(null),
+                new MemoryStore(),
                 new TrieStateStore(new MemoryKeyValueStore())
             );
             var codec = new Codec();
