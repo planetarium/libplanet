@@ -37,6 +37,9 @@ To be released.
 
 ### Behavioral changes
 
+ -  `IStore.ForkTxNonces()` method became to throw `ChainIdNotFoundException`
+    when a given `sourceChainId` does not exist.  [[#1544]]
+
 ### Bug fixes
 
 ### CLI tools

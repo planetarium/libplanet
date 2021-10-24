@@ -631,8 +631,15 @@ namespace Libplanet.Store
         public override void ForkTxNonces(Guid sourceChainId, Guid destinationChainId)
         {
             LiteCollection<BsonDocument> srcColl = TxNonceCollection(sourceChainId);
-            LiteCollection<BsonDocument> destColl = TxNonceCollection(destinationChainId);
+            if (!srcColl.Exists(_ => true))
+            {
+                throw new ChainIdNotFoundException(
+                    sourceChainId,
+                    $"No such chain ID: {sourceChainId}."
+                );
+            }
 
+            LiteCollection<BsonDocument> destColl = TxNonceCollection(destinationChainId);
             destColl.InsertBulk(srcColl.FindAll());
         }
 

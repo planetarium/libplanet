@@ -90,12 +90,17 @@ namespace Libplanet.Store
             return null;
         }
 
-        long IStore.AppendIndex(Guid chainId, BlockHash hash) =>
-            _indices.AddOrUpdate(
+        long IStore.AppendIndex(Guid chainId, BlockHash hash)
+        {
+            ImmutableList<BlockHash> list = _indices.AddOrUpdate(
                 chainId,
                 _ => ImmutableList.Create(hash),
                 (_, list) => list.Add(hash)
-            ).Count - 1;
+            );
+            _txNonces.GetOrAdd(chainId, _ => new ConcurrentDictionary<Address, long>());
+
+            return list.Count - 1;
+        }
 
         public void ForkBlockIndexes(
             Guid sourceChainId,
@@ -249,7 +254,13 @@ namespace Libplanet.Store
             if (_txNonces.TryGetValue(sourceChainId, out ConcurrentDictionary<Address, long> dict))
             {
                 _txNonces[destinationChainId] = dict;
+                return;
             }
+
+            throw new ChainIdNotFoundException(
+                sourceChainId,
+                $"No such chain ID: {sourceChainId}."
+            );
         }
     }
 }

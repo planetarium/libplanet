@@ -328,6 +328,8 @@ namespace Libplanet.Store
         /// <see cref="Transaction{T}"/> <see cref="Transaction{T}.Nonce"/>s to fork.</param>
         /// <param name="destinationChainId">The chain <see cref="BlockChain{T}.Id"/> of destination
         /// <see cref="Transaction{T}"/> <see cref="Transaction{T}.Nonce"/>s.</param>
+        /// <exception cref="ChainIdNotFoundException">Thrown when the given
+        /// <paramref name="sourceChainId"/> does not exist.</exception>
         void ForkTxNonces(Guid sourceChainId, Guid destinationChainId);
     }
 }

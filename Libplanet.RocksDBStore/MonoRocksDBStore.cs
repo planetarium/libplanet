@@ -622,10 +622,12 @@ namespace Libplanet.RocksDBStore
             byte[] prefix = TxNonceKeyPrefix;
             ColumnFamilyHandle cf = GetColumnFamily(_chainDb, destinationChainId);
             var writeBatch = new WriteBatch();
+            bool exist = false;
             try
             {
                 foreach (Iterator it in IterateDb(_chainDb, prefix, sourceChainId))
                 {
+                    exist = true;
                     writeBatch.Put(it.Key(), it.Value(), cf);
                     if (writeBatch.Count() >= ForkWriteBatchSize)
                     {
@@ -637,8 +639,19 @@ namespace Libplanet.RocksDBStore
             }
             finally
             {
-                _chainDb.Write(writeBatch);
-                writeBatch.Dispose();
+                if (exist)
+                {
+                    _chainDb.Write(writeBatch);
+                    writeBatch.Dispose();
+                }
+            }
+
+            if (!exist)
+            {
+                throw new ChainIdNotFoundException(
+                    sourceChainId,
+                    $"No such chain ID: {sourceChainId}."
+                );
             }
         }
 
