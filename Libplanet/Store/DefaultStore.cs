@@ -239,6 +239,14 @@ namespace Libplanet.Store
             BlockHash branchpoint)
         {
             LiteCollection<HashDoc> srcColl = IndexCollection(sourceChainId);
+            if (!srcColl.Exists(_ => true))
+            {
+                throw new ChainIdNotFoundException(
+                    sourceChainId,
+                    $"No such chain ID: {sourceChainId}."
+                );
+            }
+
             LiteCollection<HashDoc> destColl = IndexCollection(destinationChainId);
 
             BlockHash? genesisHash = IterateIndexes(sourceChainId, 0, 1)

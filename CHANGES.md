@@ -42,6 +42,19 @@ To be released.
 
 ### Bug fixes
 
+ -  Fixed `DefaultStore.ForkBlockIndexes()` method's bug that it had done
+    silently no-op when a given `sourceChainId` had not existed, which had not
+    been compliant with `IStore.ForkBlockIndexes()` method's specification.
+    [[#1544]]
+ -  (Libplanet.RocksDBStore) Fixed `RocksDBStore.ForkBlockIndexes()` method's
+    bug that it had done silently no-op when a given `sourceChainId` had not
+    existed, which had not been compliant with `IStore.ForkBlockIndexes()`
+    method's specification.  [[#1544]]
+ -  (Libplanet.RocksDBStore) Fixed `MonoRocksDBStore.ForkBlockIndexes()`
+    method's bug that it had done silently no-op when a given `sourceChainId`
+    had not existed, which had not been compliant with
+    `IStore.ForkBlockIndexes()` method's specification.  [[#1544]]
+
 ### CLI tools
 
 [#1166]: https://github.com/planetarium/libplanet/issues/1166

@@ -268,9 +268,18 @@ namespace Libplanet.RocksDBStore
             BlockHash branchpoint
         )
         {
-            BlockHash? genesisHash = IterateIndexes(sourceChainId, 0, 1).FirstOrDefault();
+            BlockHash[] bottoms = IterateIndexes(sourceChainId, 0, 1).ToArray();
+            BlockHash? genesisHash = bottoms.Any() ? bottoms[0] : (BlockHash?)null;
 
-            if (genesisHash is null || branchpoint.Equals(genesisHash))
+            if (genesisHash is null)
+            {
+                throw new ChainIdNotFoundException(
+                    sourceChainId,
+                    $"No such chain ID: {sourceChainId}."
+                );
+            }
+
+            if (branchpoint.Equals(genesisHash))
             {
                 return;
             }
