@@ -1,56 +1,69 @@
+#nullable enable
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Libplanet.Store.Trie
 {
-    public class MemoryKeyValueStore : IKeyValueStore
+    /// <summary>
+    /// Volatile in-memory key-value store.
+    /// <para>It is useful for storing temporal small chains, e.g., fixtures for unit tests of
+    /// game logic.</para>
+    /// </summary>
+    public sealed class MemoryKeyValueStore : IKeyValueStore
     {
-        public MemoryKeyValueStore()
-            : this(new Dictionary<byte[], byte[]>())
-        {
-        }
+        private readonly ConcurrentDictionary<byte[], byte[]> _dictionary =
+            new ConcurrentDictionary<byte[], byte[]>(new BytesEqualityComparer());
 
-        public MemoryKeyValueStore(Dictionary<byte[], byte[]> dictionary)
-        {
-            Dictionary = new ConcurrentDictionary<byte[], byte[]>(dictionary, new BytesComparer());
-        }
+        byte[] IKeyValueStore.Get(byte[] key) =>
+            _dictionary[key];
 
-        private ConcurrentDictionary<byte[], byte[]> Dictionary { get; }
+        void IKeyValueStore.Set(byte[] key, byte[] value) =>
+            _dictionary[key] = value;
 
-        public byte[] Get(byte[] key)
-        {
-            return Dictionary[key];
-        }
+        void IKeyValueStore.Delete(byte[] key) =>
+            _dictionary.TryRemove(key, out _);
 
-        public void Set(byte[] key, byte[] value)
-        {
-            Dictionary[key] = value;
-        }
+        bool IKeyValueStore.Exists(byte[] key) =>
+            _dictionary.ContainsKey(key);
 
-        public void Delete(byte[] key)
-        {
-            Dictionary.TryRemove(key, out _);
-        }
-
-        public bool Exists(byte[] key)
-        {
-            return Dictionary.ContainsKey(key);
-        }
-
-        public void Dispose()
+        void IDisposable.Dispose()
         {
             // Method intentionally left empty.
         }
 
-        public IEnumerable<byte[]> ListKeys() => Dictionary.Keys;
+        IEnumerable<byte[]> IKeyValueStore.ListKeys() =>
+            _dictionary.Keys;
 
-        private class BytesComparer : EqualityComparer<byte[]>
+        private class BytesEqualityComparer : EqualityComparer<byte[]>
         {
-            public override bool Equals(byte[] x, byte[] y) => x is { } xa && y is { } ya &&
-                xa.Length == ya.Length && Enumerable.Zip(xa, ya, (xb, yb) => xb == yb).All(b => b);
+            public override bool Equals(byte[]? x, byte[]? y)
+            {
+                if (x is { } xa && y is { } ya)
+                {
+                    if (xa.Length != ya.Length)
+                    {
+                        return false;
+                    }
 
-            public override int GetHashCode(byte[] obj) => 0;
+                    for (int i = 0; i < xa.Length; i++)
+                    {
+                        if (xa[i] != ya[i])
+                        {
+                            return false;
+                        }
+                    }
+
+                    return true;
+                }
+
+                return ReferenceEquals(x, y);
+            }
+
+            public override int GetHashCode(byte[] obj)
+            {
+                return 0;
+            }
         }
     }
 }

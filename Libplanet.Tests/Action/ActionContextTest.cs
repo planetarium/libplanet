@@ -148,7 +148,7 @@ namespace Libplanet.Tests.Action
         [InlineData(false)]
         public void LazyPreviousStateRootHash(bool callPreviousStateRootHash)
         {
-            var keyValueStore = new MemoryKeyValueStore();
+            IKeyValueStore keyValueStore = new MemoryKeyValueStore();
             ITrie previousBlockStatesTrie = new MerkleTrie(keyValueStore);
             previousBlockStatesTrie = previousBlockStatesTrie.Set(new byte[0], default(Null));
             var actionContext = new ActionContext(
