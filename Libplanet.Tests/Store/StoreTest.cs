@@ -1079,6 +1079,10 @@ namespace Libplanet.Tests.Store
             Assert.Equal(2, store.GetTxNonce(destinationChainId, Fx.Address2));
             Assert.Equal(3, store.GetTxNonce(destinationChainId, Fx.Address3));
 
+            store.IncreaseTxNonce(sourceChainId, Fx.Address1, 1);
+            Assert.Equal(2, store.GetTxNonce(sourceChainId, Fx.Address1));
+            Assert.Equal(1, store.GetTxNonce(destinationChainId, Fx.Address1));
+
             Assert.Throws<ChainIdNotFoundException>(
                 () => store.ForkTxNonces(Guid.NewGuid(), Guid.NewGuid())
             );

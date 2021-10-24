@@ -253,7 +253,7 @@ namespace Libplanet.Store
         {
             if (_txNonces.TryGetValue(sourceChainId, out ConcurrentDictionary<Address, long> dict))
             {
-                _txNonces[destinationChainId] = dict;
+                _txNonces[destinationChainId] = new ConcurrentDictionary<Address, long>(dict);
                 return;
             }
 
