@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using ImmutableTrie;
 using Libplanet.Blocks;
 using Libplanet.Tx;
 
@@ -15,8 +16,8 @@ namespace Libplanet.Store
     /// </summary>
     public sealed class MemoryStore : IStore
     {
-        private readonly ConcurrentDictionary<Guid, ImmutableList<BlockHash>> _indices =
-            new ConcurrentDictionary<Guid, ImmutableList<BlockHash>>();
+        private readonly ConcurrentDictionary<Guid, ImmutableTrieList<BlockHash>> _indices =
+            new ConcurrentDictionary<Guid, ImmutableTrieList<BlockHash>>();
 
         private readonly ConcurrentDictionary<BlockHash, BlockDigest> _blocks =
             new ConcurrentDictionary<BlockHash, BlockDigest>();
@@ -59,11 +60,11 @@ namespace Libplanet.Store
             _canonicalChainId = chainId;
 
         long IStore.CountIndex(Guid chainId) =>
-            _indices.TryGetValue(chainId, out ImmutableList<BlockHash> index) ? index.Count : 0;
+            _indices.TryGetValue(chainId, out ImmutableTrieList<BlockHash> index) ? index.Count : 0;
 
         IEnumerable<BlockHash> IStore.IterateIndexes(Guid chainId, int offset, int? limit)
         {
-            if (_indices.TryGetValue(chainId, out ImmutableList<BlockHash> list))
+            if (_indices.TryGetValue(chainId, out ImmutableTrieList<BlockHash> list))
             {
                 IEnumerable<BlockHash> index = list.Skip(offset);
                 return limit is { } l ? index.Take(l) : index;
@@ -74,7 +75,7 @@ namespace Libplanet.Store
 
         BlockHash? IStore.IndexBlockHash(Guid chainId, long index)
         {
-            if (_indices.TryGetValue(chainId, out ImmutableList<BlockHash> list))
+            if (_indices.TryGetValue(chainId, out ImmutableTrieList<BlockHash> list))
             {
                 if (index < 0)
                 {
@@ -92,9 +93,9 @@ namespace Libplanet.Store
 
         long IStore.AppendIndex(Guid chainId, BlockHash hash)
         {
-            ImmutableList<BlockHash> list = _indices.AddOrUpdate(
+            ImmutableTrieList<BlockHash> list = _indices.AddOrUpdate(
                 chainId,
-                _ => ImmutableList.Create(hash),
+                _ => ImmutableTrieList.Create(hash),
                 (_, list) => list.Add(hash)
             );
             _txNonces.GetOrAdd(chainId, _ => new ConcurrentDictionary<Address, long>());
@@ -108,7 +109,7 @@ namespace Libplanet.Store
             BlockHash branchpoint
         )
         {
-            if (!_indices.TryGetValue(sourceChainId, out ImmutableList<BlockHash> source))
+            if (!_indices.TryGetValue(sourceChainId, out ImmutableTrieList<BlockHash> source))
             {
                 throw new ChainIdNotFoundException(
                     sourceChainId,
