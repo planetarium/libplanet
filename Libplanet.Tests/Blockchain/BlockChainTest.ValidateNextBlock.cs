@@ -6,7 +6,6 @@ using Libplanet.Blocks;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tests.Common.Action;
-using Libplanet.Tests.Store.Trie;
 using Xunit;
 
 namespace Libplanet.Tests.Blockchain

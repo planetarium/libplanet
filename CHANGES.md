@@ -33,6 +33,7 @@ To be released.
  -  Added `NetMQMessageCodec` class which inherits `IMessageCodec<T>`.
     [[#1503]]
  -  Added `MemoryStore` class.  [[#1544]]
+ -  Added `MemoryKeyValueStore` class.  [[#1544]]
 
 ### Behavioral changes
 

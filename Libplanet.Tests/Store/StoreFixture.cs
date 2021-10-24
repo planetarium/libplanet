@@ -8,7 +8,6 @@ using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tests.Common.Action;
-using Libplanet.Tests.Store.Trie;
 using Libplanet.Tx;
 
 namespace Libplanet.Tests.Store

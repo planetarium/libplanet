@@ -16,7 +16,6 @@ using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tests.Blockchain;
-using Libplanet.Tests.Store.Trie;
 using Libplanet.Tx;
 
 namespace Libplanet.Tests.Fixtures

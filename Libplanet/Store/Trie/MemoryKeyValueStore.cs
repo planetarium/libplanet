@@ -1,9 +1,9 @@
+using System.Collections.Concurrent;
 using System.Collections.Generic;
-using Libplanet.Store.Trie;
+using System.Linq;
 
-namespace Libplanet.Tests.Store.Trie
+namespace Libplanet.Store.Trie
 {
-    // FIXME: This should be exposed as a public class:
     public class MemoryKeyValueStore : IKeyValueStore
     {
         public MemoryKeyValueStore()
@@ -13,11 +13,10 @@ namespace Libplanet.Tests.Store.Trie
 
         public MemoryKeyValueStore(Dictionary<byte[], byte[]> dictionary)
         {
-            Dictionary = new Dictionary<byte[], byte[]>(dictionary, new BytesEqualityComparer());
+            Dictionary = new ConcurrentDictionary<byte[], byte[]>(dictionary, new BytesComparer());
         }
 
-        // FIXME: This should be a ConcurrentDictionary<K, V>:
-        private Dictionary<byte[], byte[]> Dictionary { get; }
+        private ConcurrentDictionary<byte[], byte[]> Dictionary { get; }
 
         public byte[] Get(byte[] key)
         {
@@ -31,7 +30,7 @@ namespace Libplanet.Tests.Store.Trie
 
         public void Delete(byte[] key)
         {
-            Dictionary.Remove(key);
+            Dictionary.TryRemove(key, out _);
         }
 
         public bool Exists(byte[] key)
@@ -41,8 +40,17 @@ namespace Libplanet.Tests.Store.Trie
 
         public void Dispose()
         {
+            // Method intentionally left empty.
         }
 
         public IEnumerable<byte[]> ListKeys() => Dictionary.Keys;
+
+        private class BytesComparer : EqualityComparer<byte[]>
+        {
+            public override bool Equals(byte[] x, byte[] y) => x is { } xa && y is { } ya &&
+                xa.Length == ya.Length && Enumerable.Zip(xa, ya, (xb, yb) => xb == yb).All(b => b);
+
+            public override int GetHashCode(byte[] obj) => 0;
+        }
     }
 }

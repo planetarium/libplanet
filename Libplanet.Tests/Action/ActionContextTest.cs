@@ -5,7 +5,6 @@ using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
 using Libplanet.Store.Trie;
-using Libplanet.Tests.Store.Trie;
 using Libplanet.Tx;
 using Xunit;
 
