@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
@@ -548,34 +549,85 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public async Task AbortMining()
         {
-            var policy = new NullPolicy<DumbAction>(difficulty: 2048);
-            StoreFixture fx1 = new DefaultStoreFixture(blockAction: policy.BlockAction);
-            StoreFixture fx2 = new DefaultStoreFixture(blockAction: policy.BlockAction);
-            var chain1 = new BlockChain<DumbAction>(
-                policy,
-                new VolatileStagePolicy<DumbAction>(),
-                fx1.Store,
-                fx1.StateStore,
-                fx1.GenesisBlock);
-            var renderer2 = new RecordingActionRenderer<DumbAction>();
-            var chain2 = new BlockChain<DumbAction>(
-                policy,
-                new VolatileStagePolicy<DumbAction>(),
-                fx2.Store,
-                fx1.StateStore,
-                fx2.GenesisBlock,
-                renderers: new[] { renderer2 });
-            Block<DumbAction> genesis = fx1.GenesisBlock;
-
-            try
+            // Pre-mined genesis 7ae04b6fc0a3410eef40341129b19030ea2e6a0b922e5ae7cc96ab19109495c4:
+            var genesisContent = new BlockContent<DumbAction>
             {
-                Block<DumbAction> block = await chain1.MineBlock(new PrivateKey());
-                renderer2.ResetRecords();
+                Miner = GenesisMiner.ToAddress(),
+                ProtocolVersion = 2,
+                PublicKey = GenesisMiner.PublicKey,
+                Timestamp = new DateTimeOffset(2018, 11, 29, 0, 0, 0, TimeSpan.Zero),
+            };
+            var preEvalGenesis = new PreEvaluationBlock<DumbAction>(
+                genesisContent,
+                HashAlgorithmType.Of<SHA256>(),
+                new Nonce(new byte[] { 0x01, 0, 0, 0 })
+            );
+            var genesis = new Block<DumbAction>(
+                preEvalGenesis,
+                HashDigest<SHA256>.FromString(
+                    "1b16b1df538ba12dc3f97edbb85caa7050d46c148134290feba80f8236c83db9"
+                ),
+                ByteUtil.ParseHex(
+                    "30440220453709513c8ca92d3b90f5dd97ecac9c0f1af4b9aa8553ffe4d1b3f7887746" +
+                    "8e02206a484c56b9a7c2b6b7c6b26627714d6e14413dce1f3cc1291d48920d82dacb9f"
+                ).ToImmutableArray()
+            );
 
-                Task miningTask = chain2.MineBlock(new PrivateKey());
-                chain2.Append(block);
+            // Pre-mined block #1 ae44df4319711de80cc711668f56bfde9e5d958cc2296b63056c1b9c3df62d51:
+            var block1Content = new BlockContent<DumbAction>
+            {
+                ProtocolVersion = 2,
+                Index = 1,
+                Miner = GenesisMiner.ToAddress(),
+                PublicKey = GenesisMiner.PublicKey,
+                Timestamp = DateTimeOffset.ParseExact(
+                    "2021-10-25T07:54:53.512280Z",
+                    "yyyy-MM-ddTHH:mm:ss.ffffffZ",
+                    CultureInfo.InvariantCulture
+                ),
+                Difficulty = 100_000_000,
+                TotalDifficulty = 100_000_000,
+                PreviousHash = genesis.Hash,
+            };
+            var preEvalBlock1 = new PreEvaluationBlock<DumbAction>(
+                block1Content,
+                HashAlgorithmType.Of<SHA256>(),
+                new Nonce(new byte[] { 0x0a, 0x24, 0xc6, 0x92, 0xde, 0xfa, 0x5c, 0x64, 0xd0, 0x26 })
+            );
+            var block = new Block<DumbAction>(
+                preEvalBlock1,
+                HashDigest<SHA256>.FromString(
+                    "1b16b1df538ba12dc3f97edbb85caa7050d46c148134290feba80f8236c83db9"
+                ),
+                ByteUtil.ParseHex(
+                    "304502210083898c414d6ab45d380ae56d7f5cc63a6c102354a8c59904942e47a7b3fa9" +
+                    "1e2022055ab1c19a11ed980165ce472dac134db580448c5bffb51d0e8dcb4cb5bc71481"
+                ).ToImmutableArray()
+            );
 
-                IReadOnlyList<RenderRecord<DumbAction>.Block> records = renderer2.BlockRecords;
+            var renderer = new RecordingActionRenderer<DumbAction>();
+            var policy = new NullPolicy<DumbAction>(difficulty: 100_000_000);
+            StoreFixture fx = new DefaultStoreFixture(true, policy.BlockAction);
+            using (fx)
+            {
+                var chain = new BlockChain<DumbAction>(
+                    policy,
+                    new VolatileStagePolicy<DumbAction>(),
+                    fx.Store,
+                    fx.StateStore,
+                    genesis,
+                    renderers: new[] { renderer }
+                );
+                renderer.ResetRecords();
+
+                Task miningTask = chain.MineBlock(new PrivateKey());
+
+                // Waits 0.5 seconds for the miningTask to start watching if the tip changes:
+                await Task.Delay(500);
+
+                chain.Append(block);
+
+                IReadOnlyList<RenderRecord<DumbAction>.Block> records = renderer.BlockRecords;
                 Assert.Equal(2, records.Count);
                 foreach (RenderRecord<DumbAction>.Block record in records)
                 {
@@ -583,13 +635,8 @@ namespace Libplanet.Tests.Blockchain
                     Assert.Equal(block, record.NewTip);
                 }
 
-                // Waits about 10 seconds for the task receives the cancellation signal:
+                // Waits about 10 seconds for the task to receive the cancellation signal:
                 await AssertThatEventually(() => miningTask.IsCanceled, 10_000);
-            }
-            finally
-            {
-                fx1.Dispose();
-                fx2.Dispose();
             }
         }
 
