@@ -197,8 +197,8 @@ namespace Libplanet.Tests.Action
         [Fact]
         public virtual BlockChain<DumbAction> TransferAssetInBlock()
         {
-            var store = new DefaultStore(null);
-            var stateStore = new TrieStateStore(new DefaultKeyValueStore(null));
+            var store = new MemoryStore();
+            var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var privateKey = new PrivateKey();
             BlockChain<DumbAction> chain = TestUtils.MakeBlockChain(
                 new NullPolicy<DumbAction>(),

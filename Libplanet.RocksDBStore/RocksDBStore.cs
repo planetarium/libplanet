@@ -362,9 +362,18 @@ namespace Libplanet.RocksDBStore
             BlockHash branchpoint
         )
         {
-            BlockHash? genesisHash = IterateIndexes(sourceChainId, 0, 1).FirstOrDefault();
+            BlockHash[] bottoms = IterateIndexes(sourceChainId, 0, 1).ToArray();
+            BlockHash? genesisHash = bottoms.Any() ? bottoms[0] : (BlockHash?)null;
 
-            if (genesisHash is null || branchpoint.Equals(genesisHash))
+            if (genesisHash is null)
+            {
+                throw new ChainIdNotFoundException(
+                    sourceChainId,
+                    $"No such chain ID: {sourceChainId}."
+                );
+            }
+
+            if (branchpoint.Equals(genesisHash))
             {
                 return;
             }
@@ -943,10 +952,12 @@ namespace Libplanet.RocksDBStore
             byte[] prefix = TxNonceKeyPrefix;
             ColumnFamilyHandle cf = GetColumnFamily(_chainDb, destinationChainId);
             var writeBatch = new WriteBatch();
+            bool exist = false;
             try
             {
                 foreach (Iterator it in IterateDb(_chainDb, prefix, sourceChainId))
                 {
+                    exist = true;
                     writeBatch.Put(it.Key(), it.Value(), cf);
                     if (writeBatch.Count() >= ForkWriteBatchSize)
                     {
@@ -963,8 +974,19 @@ namespace Libplanet.RocksDBStore
             }
             finally
             {
-                _chainDb.Write(writeBatch);
-                writeBatch.Dispose();
+                if (exist)
+                {
+                    _chainDb.Write(writeBatch);
+                    writeBatch.Dispose();
+                }
+            }
+
+            if (!exist)
+            {
+                throw new ChainIdNotFoundException(
+                    sourceChainId,
+                    $"No such chain ID: {sourceChainId}."
+                );
             }
         }
 

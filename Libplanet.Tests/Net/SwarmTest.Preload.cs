@@ -14,9 +14,9 @@ using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net;
 using Libplanet.Store;
+using Libplanet.Store.Trie;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
-using Libplanet.Tests.Store.Trie;
 using Libplanet.Tx;
 using Serilog;
 using Serilog.Events;
@@ -253,13 +253,13 @@ namespace Libplanet.Tests.Net
             var renderer2 = new RecordingActionRenderer<DumbAction>();
             var chain1 = TestUtils.MakeBlockChain(
                 policy,
-                new DefaultStore(null),
+                new MemoryStore(),
                 new TrieStateStore(new MemoryKeyValueStore()),
                 renderers: new[] { renderer1 }
             );
             var chain2 = TestUtils.MakeBlockChain(
                 policy,
-                new DefaultStore(null),
+                new MemoryStore(),
                 new TrieStateStore(new MemoryKeyValueStore()),
                 renderers: new[] { renderer2 }
             );
@@ -271,7 +271,7 @@ namespace Libplanet.Tests.Net
             var sender = CreateSwarm(
                 TestUtils.MakeBlockChain(
                     policy,
-                    new DefaultStore(null),
+                    new MemoryStore(),
                     new TrieStateStore(new MemoryKeyValueStore())
                 ),
                 senderKey
@@ -364,8 +364,8 @@ namespace Libplanet.Tests.Net
         public async Task PreloadWithFailedActions()
         {
             var policy = new BlockPolicy<ThrowException>();
-            var fx1 = new DefaultStoreFixture(memory: true);
-            var fx2 = new DefaultStoreFixture(memory: true);
+            var fx1 = new MemoryStoreFixture();
+            var fx2 = new MemoryStoreFixture();
             var minerChain = TestUtils.MakeBlockChain(policy, fx1.Store, fx1.StateStore);
             var receiverChain = TestUtils.MakeBlockChain(policy, fx2.Store, fx2.StateStore);
 
@@ -427,10 +427,8 @@ namespace Libplanet.Tests.Net
             Swarm<DumbAction> receiverSwarm = CreateSwarm();
             var fxForNominers = new StoreFixture[2];
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
-            fxForNominers[0] =
-                new DefaultStoreFixture(memory: true, blockAction: policy.BlockAction);
-            fxForNominers[1] =
-                new DefaultStoreFixture(memory: true, blockAction: policy.BlockAction);
+            fxForNominers[0] = new MemoryStoreFixture(policy.BlockAction);
+            fxForNominers[1] = new MemoryStoreFixture(policy.BlockAction);
             var blockChainsForNominers = new[]
             {
                 TestUtils.MakeBlockChain(
@@ -934,7 +932,7 @@ namespace Libplanet.Tests.Net
                 var stateStore = new TrieStateStore(new MemoryKeyValueStore());
                 return TestUtils.MakeBlockChain(
                     policy,
-                    new DefaultStore(path: null),
+                    new MemoryStore(),
                     stateStore,
                     genesisBlock: genesisBlock.Evaluate(minerKey, policy.BlockAction, stateStore)
                 );
@@ -988,8 +986,8 @@ namespace Libplanet.Tests.Net
         public async Task ActionExecutionWithBranchpoint()
         {
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
-            var fx1 = new DefaultStoreFixture(memory: true, blockAction: policy.BlockAction);
-            var fx2 = new DefaultStoreFixture(memory: true, blockAction: policy.BlockAction);
+            var fx1 = new MemoryStoreFixture(policy.BlockAction);
+            var fx2 = new MemoryStoreFixture(policy.BlockAction);
             var seedChain = TestUtils.MakeBlockChain(policy, fx1.Store, fx1.StateStore);
             var receiverChain = TestUtils.MakeBlockChain(policy, fx2.Store, fx2.StateStore);
 
@@ -1042,8 +1040,8 @@ namespace Libplanet.Tests.Net
         {
             PrivateKey seedKey = new PrivateKey();
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
-            var fx1 = new DefaultStoreFixture(memory: true, blockAction: policy.BlockAction);
-            var fx2 = new DefaultStoreFixture(memory: true, blockAction: policy.BlockAction);
+            var fx1 = new MemoryStoreFixture(policy.BlockAction);
+            var fx2 = new MemoryStoreFixture(policy.BlockAction);
             var seedChain = TestUtils.MakeBlockChain(policy, fx1.Store, fx1.StateStore);
             var receiverChain = TestUtils.MakeBlockChain(policy, fx2.Store, fx2.StateStore);
 

@@ -7,8 +7,8 @@ using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net;
 using Libplanet.Store;
+using Libplanet.Store.Trie;
 using Libplanet.Tests.Common.Action;
-using Libplanet.Tests.Store.Trie;
 using Xunit;
 
 namespace Libplanet.Tests.Net
@@ -44,12 +44,12 @@ namespace Libplanet.Tests.Net
             );
             BlockChain<DumbAction> chain1 = TestUtils.MakeBlockChain(
                 policy,
-                new DefaultStore(null),
+                new MemoryStore(),
                 new TrieStateStore(new MemoryKeyValueStore())
             );
             BlockChain<DumbAction> chain2 = TestUtils.MakeBlockChain(
                 policy,
-                new DefaultStore(null),
+                new MemoryStore(),
                 new TrieStateStore(new MemoryKeyValueStore())
             );
 

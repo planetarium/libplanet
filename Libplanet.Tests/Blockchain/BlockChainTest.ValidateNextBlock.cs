@@ -6,7 +6,6 @@ using Libplanet.Blocks;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tests.Common.Action;
-using Libplanet.Tests.Store.Trie;
 using Xunit;
 
 namespace Libplanet.Tests.Blockchain
@@ -204,7 +203,7 @@ namespace Libplanet.Tests.Blockchain
                 blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000)
             );
             var stateStore = new TrieStateStore(stateKeyValueStore);
-            var store = new DefaultStore(null);
+            IStore store = new MemoryStore();
             var genesisBlock = TestUtils.MineGenesis<DumbAction>(
                 policy.GetHashAlgorithm,
                 TestUtils.GenesisMiner.PublicKey

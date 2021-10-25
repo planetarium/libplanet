@@ -58,7 +58,8 @@ namespace Libplanet.Store
         /// Determines the block hash by its <paramref name="index"/>.
         /// </summary>
         /// <param name="chainId">The chain ID of the index that contains the block.</param>
-        /// <param name="index">The index of the block to query its hash.</param>
+        /// <param name="index">The index of the block to query its hash.  Negative indices mean
+        /// the offset from the end.  For example, -1 means the topmost block.</param>
         /// <returns>The block hash of the index in the chain.  If there is no such index,
         /// it returns <c>null</c>.</returns>
         BlockHash? IndexBlockHash(Guid chainId, long index);
@@ -327,6 +328,8 @@ namespace Libplanet.Store
         /// <see cref="Transaction{T}"/> <see cref="Transaction{T}.Nonce"/>s to fork.</param>
         /// <param name="destinationChainId">The chain <see cref="BlockChain{T}.Id"/> of destination
         /// <see cref="Transaction{T}"/> <see cref="Transaction{T}.Nonce"/>s.</param>
+        /// <exception cref="ChainIdNotFoundException">Thrown when the given
+        /// <paramref name="sourceChainId"/> does not exist.</exception>
         void ForkTxNonces(Guid sourceChainId, Guid destinationChainId);
     }
 }

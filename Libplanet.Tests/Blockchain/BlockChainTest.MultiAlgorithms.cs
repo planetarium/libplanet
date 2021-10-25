@@ -16,7 +16,7 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public async Task MineBlockWithMultipleAlgorithms()
         {
-            using (var fx = new DefaultStoreFixture())
+            using (var fx = new MemoryStoreFixture())
             {
                 IBlockPolicy<DumbAction> policy = new MultiAlgoPolicy<DumbAction>();
                 BlockChain<DumbAction> chain = TestUtils.MakeBlockChain(
@@ -36,7 +36,7 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void ValidateWithMultipleAlgorithms()
         {
-            using (var fx = new DefaultStoreFixture())
+            using (var fx = new MemoryStoreFixture())
             {
                 IBlockPolicy<DumbAction> policy = new MultiAlgoPolicy<DumbAction>();
                 BlockChain<DumbAction> chain = TestUtils.MakeBlockChain(

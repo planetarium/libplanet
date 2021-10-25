@@ -32,10 +32,28 @@ To be released.
  -  Added `IMessageCodec<T>` interface.  [[#1503]]
  -  Added `NetMQMessageCodec` class which inherits `IMessageCodec<T>`.
     [[#1503]]
+ -  Added `MemoryStore` class.  [[#1544]]
+ -  Added `MemoryKeyValueStore` class.  [[#1544]]
 
 ### Behavioral changes
 
+ -  `IStore.ForkTxNonces()` method became to throw `ChainIdNotFoundException`
+    when a given `sourceChainId` does not exist.  [[#1544]]
+
 ### Bug fixes
+
+ -  Fixed `DefaultStore.ForkBlockIndexes()` method's bug that it had done
+    silently no-op when a given `sourceChainId` had not existed, which had not
+    been compliant with `IStore.ForkBlockIndexes()` method's specification.
+    [[#1544]]
+ -  (Libplanet.RocksDBStore) Fixed `RocksDBStore.ForkBlockIndexes()` method's
+    bug that it had done silently no-op when a given `sourceChainId` had not
+    existed, which had not been compliant with `IStore.ForkBlockIndexes()`
+    method's specification.  [[#1544]]
+ -  (Libplanet.RocksDBStore) Fixed `MonoRocksDBStore.ForkBlockIndexes()`
+    method's bug that it had done silently no-op when a given `sourceChainId`
+    had not existed, which had not been compliant with
+    `IStore.ForkBlockIndexes()` method's specification.  [[#1544]]
 
 ### CLI tools
 
@@ -43,6 +61,7 @@ To be released.
 [#1503]: https://github.com/planetarium/libplanet/pull/1503
 [#1535]: https://github.com/planetarium/libplanet/pull/1535
 [#1537]: https://github.com/planetarium/libplanet/pull/1537
+[#1544]: https://github.com/planetarium/libplanet/pull/1544
 
 
 Version 0.18.2

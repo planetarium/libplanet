@@ -17,7 +17,7 @@ namespace Libplanet.Tests.Net.Transports
         [Fact]
         public async Task QueryAppProtocolVersion()
         {
-            var fx = new DefaultStoreFixture();
+            var fx = new MemoryStoreFixture();
             var policy = new BlockPolicy<DumbAction>();
             var blockchain = TestUtils.MakeBlockChain(policy, fx.Store, fx.StateStore);
             var apvKey = new PrivateKey();

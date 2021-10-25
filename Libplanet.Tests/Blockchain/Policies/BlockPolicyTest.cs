@@ -5,9 +5,9 @@ using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Crypto;
 using Libplanet.Store;
+using Libplanet.Store.Trie;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
-using Libplanet.Tests.Store.Trie;
 using Libplanet.Tx;
 using Xunit;
 using Xunit.Abstractions;
@@ -28,7 +28,7 @@ namespace Libplanet.Tests.Blockchain.Policies
 
         public BlockPolicyTest(ITestOutputHelper output)
         {
-            _fx = new DefaultStoreFixture();
+            _fx = new MemoryStoreFixture();
             _output = output;
             _policy = new BlockPolicy<DumbAction>(
                 blockAction: null,
@@ -159,7 +159,7 @@ namespace Libplanet.Tests.Blockchain.Policies
         [Fact]
         public async Task GetNextBlockDifficulty()
         {
-            var store = new DefaultStore(null);
+            var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var dateTimeOffset = FixtureEpoch;
             var chain =

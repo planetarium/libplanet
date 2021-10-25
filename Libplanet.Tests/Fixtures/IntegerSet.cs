@@ -16,7 +16,6 @@ using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tests.Blockchain;
-using Libplanet.Tests.Store.Trie;
 using Libplanet.Tx;
 
 namespace Libplanet.Tests.Fixtures
@@ -63,7 +62,7 @@ namespace Libplanet.Tests.Fixtures
                 .ToImmutableArray();
             Miner = new PrivateKey();
             policy = policy ?? new NullPolicy<Arithmetic>();
-            Store = new DefaultStore(null);
+            Store = new MemoryStore();
             KVStore = new MemoryKeyValueStore();
             StateStore = new TrieStateStore(KVStore);
             Genesis = new BlockContent<Arithmetic>

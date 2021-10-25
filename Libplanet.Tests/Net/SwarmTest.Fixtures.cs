@@ -29,7 +29,7 @@ namespace Libplanet.Tests.Net
             if (blocks is null)
             {
                 var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
-                using (var storeFx = new DefaultStoreFixture(memory: true))
+                using (var storeFx = new MemoryStoreFixture())
                 {
                     var chain = TestUtils.MakeBlockChain(policy, storeFx.Store, storeFx.StateStore);
                     var miner = new PrivateKey();
@@ -77,7 +77,7 @@ namespace Libplanet.Tests.Net
             SwarmOptions options = null)
         {
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
-            var fx = new DefaultStoreFixture(memory: true, blockAction: policy.BlockAction);
+            var fx = new MemoryStoreFixture(policy.BlockAction);
             var blockchain = TestUtils.MakeBlockChain(policy, fx.Store, fx.StateStore);
             return CreateSwarm(
                 blockchain,

@@ -279,7 +279,7 @@ namespace Libplanet.Tests.Blockchain
             }
 
             var policy = new BlockPolicy<DumbAction>(validateNextBlockTx: IsSignerValid);
-            using (var fx = new DefaultStoreFixture())
+            using (var fx = new MemoryStoreFixture())
             {
                 var blockChain = new BlockChain<DumbAction>(
                     policy,
@@ -549,8 +549,8 @@ namespace Libplanet.Tests.Blockchain
         public async Task AbortMining()
         {
             var policy = new NullPolicy<DumbAction>(difficulty: 2048);
-            StoreFixture fx1 = new DefaultStoreFixture(blockAction: policy.BlockAction);
-            StoreFixture fx2 = new DefaultStoreFixture(blockAction: policy.BlockAction);
+            StoreFixture fx1 = new MemoryStoreFixture(policy.BlockAction);
+            StoreFixture fx2 = new MemoryStoreFixture(policy.BlockAction);
             var chain1 = new BlockChain<DumbAction>(
                 policy,
                 new VolatileStagePolicy<DumbAction>(),

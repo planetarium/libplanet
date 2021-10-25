@@ -18,11 +18,11 @@ using Libplanet.Net;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Protocols;
 using Libplanet.Store;
+using Libplanet.Store.Trie;
 using Libplanet.Stun;
 using Libplanet.Tests.Blockchain;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
-using Libplanet.Tests.Store.Trie;
 using Libplanet.Tx;
 using NetMQ;
 using NetMQ.Sockets;
@@ -549,7 +549,7 @@ namespace Libplanet.Tests.Net
         [Fact(Timeout = Timeout)]
         public void ThrowArgumentExceptionInConstructor()
         {
-            var fx = new DefaultStoreFixture();
+            var fx = new MemoryStoreFixture();
             var policy = new BlockPolicy<DumbAction>();
             var blockchain = TestUtils.MakeBlockChain(policy, fx.Store, fx.StateStore);
             var key = new PrivateKey();
@@ -758,8 +758,8 @@ namespace Libplanet.Tests.Net
             // while FillBlocksAsync.
             var policy1 = new BlockPolicy<DumbAction>();
             var policy2 = new NullPolicy<DumbAction>();
-            var fx1 = new DefaultStoreFixture(true);
-            var fx2 = new DefaultStoreFixture(true);
+            var fx1 = new MemoryStoreFixture();
+            var fx2 = new MemoryStoreFixture();
 
             var chain1 = TestUtils.MakeBlockChain(policy1, fx1.Store, fx1.StateStore);
             var chain2 = TestUtils.MakeBlockChain(policy2, fx2.Store, fx2.StateStore);
@@ -816,7 +816,7 @@ namespace Libplanet.Tests.Net
             var renderer = new RecordingActionRenderer<DumbAction>();
             var chain = TestUtils.MakeBlockChain(
                 policy,
-                new DefaultStore(null),
+                new MemoryStore(),
                 new TrieStateStore(new MemoryKeyValueStore()),
                 renderers: new[] { renderer }
             );
@@ -828,7 +828,7 @@ namespace Libplanet.Tests.Net
             var miner2 = CreateSwarm(
                 TestUtils.MakeBlockChain(
                     policy,
-                    new DefaultStore(null),
+                    new MemoryStore(),
                     new TrieStateStore(new MemoryKeyValueStore())
                 ),
                 key2
@@ -872,11 +872,11 @@ namespace Libplanet.Tests.Net
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
             var chain1 = TestUtils.MakeBlockChain(
                 policy,
-                new DefaultStore(null),
+                new MemoryStore(),
                 new TrieStateStore(new MemoryKeyValueStore()));
             var chain2 = TestUtils.MakeBlockChain(
                 policy,
-                new DefaultStore(null),
+                new MemoryStore(),
                 new TrieStateStore(new MemoryKeyValueStore()));
 
             var key1 = new PrivateKey();
@@ -932,7 +932,7 @@ namespace Libplanet.Tests.Net
                 CreateSwarm(
                     TestUtils.MakeBlockChain(
                         policy,
-                        new DefaultStore(null),
+                        new MemoryStore(),
                         new TrieStateStore(new MemoryKeyValueStore())
                     ),
                     key
@@ -1083,8 +1083,8 @@ namespace Libplanet.Tests.Net
             }
 
             var policy = new BlockPolicy<DumbAction>(validateNextBlockTx: IsSignerValid);
-            var fx1 = new DefaultStoreFixture();
-            var fx2 = new DefaultStoreFixture();
+            var fx1 = new MemoryStoreFixture();
+            var fx2 = new MemoryStoreFixture();
 
             var swarmA = CreateSwarm(
                 TestUtils.MakeBlockChain(policy, fx1.Store, fx1.StateStore, privateKey: validKey));
@@ -1142,8 +1142,8 @@ namespace Libplanet.Tests.Net
             }
 
             var policy = new BlockPolicy<DumbAction>(validateNextBlockTx: IsSignerValid);
-            var fx1 = new DefaultStoreFixture();
-            var fx2 = new DefaultStoreFixture();
+            var fx1 = new MemoryStoreFixture();
+            var fx2 = new MemoryStoreFixture();
 
             var swarmA = CreateSwarm(
                 TestUtils.MakeBlockChain(
@@ -1320,15 +1320,15 @@ namespace Libplanet.Tests.Net
                     genesisBlock);
 
             var genesisChainA = MakeGenesisChain(
-                new DefaultStore(null),
+                new MemoryStore(),
                 new TrieStateStore(new MemoryKeyValueStore()),
                 genesisBlockA);
             var genesisChainB = MakeGenesisChain(
-                new DefaultStore(null),
+                new MemoryStore(),
                 new TrieStateStore(new MemoryKeyValueStore()),
                 genesisBlockB);
             var genesisChainC = MakeGenesisChain(
-                new DefaultStore(null),
+                new MemoryStore(),
                 new TrieStateStore(new MemoryKeyValueStore()),
                 genesisBlockA);
 
@@ -1679,7 +1679,7 @@ namespace Libplanet.Tests.Net
             Block<DumbAction> genesis =
                 BlockChain<DumbAction>.MakeGenesisBlock(policy.GetHashAlgorithm(0));
             EmulatingUnstableGetBlockStore upstreamStoreA =
-                new EmulatingUnstableGetBlockStore(new DefaultStore(null));
+                new EmulatingUnstableGetBlockStore(new MemoryStore());
             var upstreamChainA = new BlockChain<DumbAction>(
                 policy,
                 new VolatileStagePolicy<DumbAction>(),
@@ -1694,7 +1694,7 @@ namespace Libplanet.Tests.Net
             var upstreamChainB = new BlockChain<DumbAction>(
                 policy,
                 new VolatileStagePolicy<DumbAction>(),
-                new DefaultStore(null),
+                new MemoryStore(),
                 new TrieStateStore(new MemoryKeyValueStore()),
                 genesis
             );
@@ -1704,7 +1704,7 @@ namespace Libplanet.Tests.Net
             var downstreamChain = new BlockChain<DumbAction>(
                 policy,
                 new VolatileStagePolicy<DumbAction>(),
-                new DefaultStore(null),
+                new MemoryStore(),
                 new TrieStateStore(new MemoryKeyValueStore()),
                 genesis
             );

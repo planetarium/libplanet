@@ -13,9 +13,9 @@ using Libplanet.Blockchain.Renderers.Debug;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Store;
+using Libplanet.Store.Trie;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
-using Libplanet.Tests.Store.Trie;
 using Libplanet.Tx;
 using Xunit;
 using FAV = Libplanet.Assets.FungibleAssetValue;
@@ -413,7 +413,7 @@ namespace Libplanet.Tests.Blockchain
         public async Task AppendWhenActionEvaluationFailed()
         {
             var policy = new NullPolicy<ThrowException>();
-            var store = new DefaultStore(null);
+            var store = new MemoryStore();
             var stateStore =
                 new TrieStateStore(new MemoryKeyValueStore());
             var renderer = new RecordingActionRenderer<ThrowException>();
@@ -452,7 +452,7 @@ namespace Libplanet.Tests.Blockchain
             }
 
             var policy = new BlockPolicy<DumbAction>(validateNextBlockTx: IsSignerValid);
-            using (var fx = new DefaultStoreFixture())
+            using (var fx = new MemoryStoreFixture())
             {
                 var blockChain = new BlockChain<DumbAction>(
                     policy,
