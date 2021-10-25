@@ -51,6 +51,11 @@ namespace Libplanet.Net
             }
         }
 
+        public void Remove(BoundPeer peer)
+        {
+            _blockDemands.TryRemove(peer, out _);
+        }
+
         public void Cleanup(
             BlockChain<T> blockChain,
             Func<IBlockExcerpt, bool> predicate)
