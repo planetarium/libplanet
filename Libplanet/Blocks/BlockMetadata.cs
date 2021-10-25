@@ -4,13 +4,16 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Crypto;
+using Nito.AsyncEx.Synchronous;
 
 namespace Libplanet.Blocks
 {
@@ -303,21 +306,68 @@ namespace Libplanet.Blocks
 
         /// <summary>
         /// Mines the PoW (proof-of-work) nonce satisfying the block
-        /// <see cref="BlockMetadata.Difficulty"/>.
+        /// <see cref="Difficulty"/>.
         /// </summary>
         /// <param name="hashAlgorithm">The hash algorithm to use for calculating pre-evaluation
         /// hash.</param>
         /// <param name="cancellationToken">An optional cancellation token used to propagate signal
         /// that this operation should be cancelled.</param>
         /// <returns>A pair of the mined nonce and the pre-evaluation hash that satisfy the
-        /// block <see cref="BlockMetadata.Difficulty"/>.</returns>
+        /// block <see cref="Difficulty"/>.</returns>
         /// <exception cref="OperationCanceledException">Thrown when the specified
         /// <paramref name="cancellationToken"/> received a cancellation request.</exception>
         public (Nonce Nonce, ImmutableArray<byte> PreEvaluationHash) MineNonce(
             HashAlgorithmType hashAlgorithm,
             CancellationToken cancellationToken = default
-        ) =>
-            Hashcash.Answer(GetStampFunction(), hashAlgorithm, Difficulty, cancellationToken);
+        ) => MineNonce(hashAlgorithm, Environment.ProcessorCount, cancellationToken);
+
+        /// <summary>
+        /// Mines the PoW (proof-of-work) nonce satisfying the block
+        /// <see cref="Difficulty"/>.
+        /// </summary>
+        /// <param name="hashAlgorithm">The hash algorithm to use for calculating pre-evaluation
+        /// hash.</param>
+        /// <param name="workers">The number of workers to run in parallel.
+        /// Must be greater than zero.</param>
+        /// <param name="cancellationToken">An optional cancellation token used to propagate signal
+        /// that this operation should be cancelled.</param>
+        /// <returns>A pair of the mined nonce and the pre-evaluation hash that satisfy the
+        /// block <see cref="Difficulty"/>.</returns>
+        /// <exception cref="OperationCanceledException">Thrown when the specified
+        /// <paramref name="cancellationToken"/> received a cancellation request.</exception>
+        public (Nonce Nonce, ImmutableArray<byte> PreEvaluationHash) MineNonce(
+            HashAlgorithmType hashAlgorithm,
+            int workers,
+            CancellationToken cancellationToken = default
+        )
+        {
+            if (workers < 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(workers));
+            }
+
+            using var cts = new CancellationTokenSource();
+            using CancellationTokenSource lts =
+                CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, cts.Token);
+            List<Task<(Nonce Nonce, ImmutableArray<byte> Digest)>> tasks =
+                Enumerable.Range(0, workers)
+                .Select(i => Task.Run(
+                    () => Hashcash.Answer(
+                        GetStampFunction(),
+                        hashAlgorithm,
+                        Difficulty,
+                        i * 1024,
+                        lts.Token
+                    )
+                ))
+                .ToList();
+            (Nonce n, ImmutableArray<byte> h) = Task.WhenAny(tasks)
+                .WaitAndUnwrapException()
+                .WaitAndUnwrapException();
+
+            cts.Cancel();
+            return (n, h);
+        }
 
         private Hashcash.Stamp GetStampFunction()
         {
