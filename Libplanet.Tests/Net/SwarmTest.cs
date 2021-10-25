@@ -1713,7 +1713,12 @@ namespace Libplanet.Tests.Net
                 new TrieStateStore(new MemoryKeyValueStore()),
                 genesis
             );
-            Swarm<DumbAction> downstream = CreateSwarm(downstreamChain);
+            var pollInterval = TimeSpan.FromSeconds(5);
+            Swarm<DumbAction> downstream = CreateSwarm(downstreamChain, options: new SwarmOptions
+            {
+                PollInterval = pollInterval,
+                MaxTimeout = pollInterval / 2,
+            });
             Task<Task> startingDownstream = StartAsync(downstream);
 
             _output.WriteLine("{0}: {1}", nameof(upstreamA), upstreamA.AsPeer);
@@ -1748,7 +1753,7 @@ namespace Libplanet.Tests.Net
 
                 upstreamA.BroadcastBlock(block1);
                 for (
-                    int i = 0, total = Timeout / 2 / 1000;
+                    int i = 0, total = (int)pollInterval.TotalSeconds * 2;
                     !downstreamChain.Tip.Equals(block1) && i < total;
                     ++i
                 )
@@ -1774,7 +1779,7 @@ namespace Libplanet.Tests.Net
                 upstreamChainA.Append(block2);
                 upstreamA.BroadcastBlock(block2);
                 for (
-                    int i = 0, total = Timeout / 2 / 1000;
+                    int i = 0, total = (int)pollInterval.TotalSeconds * 2;
                     !downstream.BlockDemandTable.Demands.Any(kv =>
                         kv.Key.Address.Equals(upstreamA.Address) &&
                         kv.Value.Header.Hash.Equals(block2.Header.Hash))
@@ -1806,7 +1811,7 @@ namespace Libplanet.Tests.Net
                 // it from the upstreamB instead of the upstreamA:
                 upstreamChainB.Append(block2);
                 for (
-                    int i = 0, total = Timeout / 1000;
+                    int i = 0, total = (int)pollInterval.TotalSeconds * 2;
                     !downstreamChain.Tip.Equals(block2) && i < total;
                     ++i
                 )
