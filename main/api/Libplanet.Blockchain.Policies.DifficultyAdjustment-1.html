@@ -80,36 +80,11 @@
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">DifficultyAdjustment&lt;T&gt;</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Blockchain.Policies.html">Libplanet.Blockchain.Policies</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
   <h5 id="Libplanet_Blockchain_Policies_DifficultyAdjustment_1_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static class DifficultyAdjustment&lt;T&gt;
-    where T : IAction, new()</code></pre>
+    <pre><code class="lang-csharp hljs">public static class DifficultyAdjustment&lt;T&gt; : object where T : IAction, new()</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -210,7 +185,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.timespan">TimeSpan</a></td>
+        <td><span class="xref">TimeSpan</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -219,14 +194,14 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_DifficultyAdjustment_1_AlgorithmFactory_System_TimeSpan_System_Int64_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.DifficultyAdjustment%601.AlgorithmFactory(System.TimeSpan%2CSystem.Int64%2CSystem.Int64)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_DifficultyAdjustment_1_AlgorithmFactory_TimeSpan_System_Int64_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.DifficultyAdjustment%601.AlgorithmFactory(TimeSpan%2CSystem.Int64%2CSystem.Int64)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/DifficultyAdjustment.cs/#L94">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Policies_DifficultyAdjustment_1_AlgorithmFactory_" data-uid="Libplanet.Blockchain.Policies.DifficultyAdjustment`1.AlgorithmFactory*"></a>
-  <h4 id="Libplanet_Blockchain_Policies_DifficultyAdjustment_1_AlgorithmFactory_System_TimeSpan_System_Int64_System_Int64_" data-uid="Libplanet.Blockchain.Policies.DifficultyAdjustment`1.AlgorithmFactory(System.TimeSpan,System.Int64,System.Int64)">AlgorithmFactory(TimeSpan, Int64, Int64)</h4>
-  <div class="markdown level1 summary"><p>Does sanity checks and binds arguments to the <a class="xref" href="Libplanet.Blockchain.Policies.DifficultyAdjustment-1.html#Libplanet_Blockchain_Policies_DifficultyAdjustment_1_BaseAlgorithm_Libplanet_Blockchain_BlockChain__0__System_TimeSpan_System_Int64_System_Int64_">BaseAlgorithm(BlockChain&lt;T&gt;, TimeSpan, Int64, Int64)</a> based
+  <h4 id="Libplanet_Blockchain_Policies_DifficultyAdjustment_1_AlgorithmFactory_TimeSpan_System_Int64_System_Int64_" data-uid="Libplanet.Blockchain.Policies.DifficultyAdjustment`1.AlgorithmFactory(TimeSpan,System.Int64,System.Int64)">AlgorithmFactory(TimeSpan, Int64, Int64)</h4>
+  <div class="markdown level1 summary"><p>Does sanity checks and binds arguments to the <a class="xref" href="Libplanet.Blockchain.Policies.DifficultyAdjustment-1.html#Libplanet_Blockchain_Policies_DifficultyAdjustment_1_BaseAlgorithm_Libplanet_Blockchain_BlockChain__0__TimeSpan_System_Int64_System_Int64_">BaseAlgorithm(BlockChain&lt;T&gt;, TimeSpan, Int64, Int64)</a> based
 difficulty adjustment algorithm.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -245,11 +220,11 @@ difficulty adjustment algorithm.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.timespan">TimeSpan</a></td>
+        <td><span class="xref">TimeSpan</span></td>
         <td><span class="parametername">targetBlockInterval</span></td>
         <td><p>The base block interval this difficulty adjustment
 algorithm targets.  In reality, the algorithm does not actually target the given
-<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.timespan">TimeSpan</a>.  Assuming stable hash rate, the actual average of
+<see cref="!:TimeSpan"></see>.  Assuming stable hash rate, the actual average of
 block intervals comes out to be about <code>targetBaseInterval * 1.4</code>.
 If ommited, set to <a class="xref" href="Libplanet.Blockchain.Policies.DifficultyAdjustment-1.html#Libplanet_Blockchain_Policies_DifficultyAdjustment_1_DefaultTargetBlockInterval">DefaultTargetBlockInterval</a> by default.</p>
 </td>
@@ -279,7 +254,7 @@ If ommited, set to <a class="xref" href="Libplanet.Blockchain.Policies.Difficult
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain</a>&lt;T&gt;, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a>&gt;</td>
+        <td><span class="xref">Func</span>&lt;<a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain</a>&lt;T&gt;, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a>&gt;</td>
         <td><p>The next target difficulty of a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> that gets
 appended to some <see cref="T:Libplanet.Blockchain.BlockChain`1"></see>.  If ommited, set to
 <a class="xref" href="Libplanet.Blockchain.Policies.DifficultyAdjustment-1.html#Libplanet_Blockchain_Policies_DifficultyAdjustment_1_DefaultMinimumDifficulty">DefaultMinimumDifficulty</a> by default.</p>
@@ -287,32 +262,15 @@ appended to some <see cref="T:Libplanet.Blockchain.BlockChain`1"></see>.  If omm
       </tr>
     </tbody>
   </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
-        <td><p>If any of the arguments fail to
-satisfy the necessary constraints for the formula to work.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_DifficultyAdjustment_1_BaseAlgorithm_Libplanet_Blockchain_BlockChain__0__System_TimeSpan_System_Int64_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.DifficultyAdjustment%601.BaseAlgorithm(Libplanet.Blockchain.BlockChain%7B%600%7D%2CSystem.TimeSpan%2CSystem.Int64%2CSystem.Int64)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_DifficultyAdjustment_1_BaseAlgorithm_Libplanet_Blockchain_BlockChain__0__TimeSpan_System_Int64_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.DifficultyAdjustment%601.BaseAlgorithm(Libplanet.Blockchain.BlockChain%7B%600%7D%2CTimeSpan%2CSystem.Int64%2CSystem.Int64)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/DifficultyAdjustment.cs/#L38">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Policies_DifficultyAdjustment_1_BaseAlgorithm_" data-uid="Libplanet.Blockchain.Policies.DifficultyAdjustment`1.BaseAlgorithm*"></a>
-  <h4 id="Libplanet_Blockchain_Policies_DifficultyAdjustment_1_BaseAlgorithm_Libplanet_Blockchain_BlockChain__0__System_TimeSpan_System_Int64_System_Int64_" data-uid="Libplanet.Blockchain.Policies.DifficultyAdjustment`1.BaseAlgorithm(Libplanet.Blockchain.BlockChain{`0},System.TimeSpan,System.Int64,System.Int64)">BaseAlgorithm(BlockChain&lt;T&gt;, TimeSpan, Int64, Int64)</h4>
+  <h4 id="Libplanet_Blockchain_Policies_DifficultyAdjustment_1_BaseAlgorithm_Libplanet_Blockchain_BlockChain__0__TimeSpan_System_Int64_System_Int64_" data-uid="Libplanet.Blockchain.Policies.DifficultyAdjustment`1.BaseAlgorithm(Libplanet.Blockchain.BlockChain{`0},TimeSpan,System.Int64,System.Int64)">BaseAlgorithm(BlockChain&lt;T&gt;, TimeSpan, Int64, Int64)</h4>
   <div class="markdown level1 summary"><p>An Ethereum based difficulty adjustment algorithm.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -338,11 +296,11 @@ to calculate the next difficulty from.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.timespan">TimeSpan</a></td>
+        <td><span class="xref">TimeSpan</span></td>
         <td><span class="parametername">targetBlockInterval</span></td>
         <td><p>The base block interval this difficulty adjustment
 algorithm targets.  In reality, the algorithm does not actually target the given
-<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.timespan">TimeSpan</a>.  Assuming stable hash rate, the actual average of
+<see cref="!:TimeSpan"></see>.  Assuming stable hash rate, the actual average of
 block intervals comes out to be about <code>targetBaseInterval * 1.4</code>.</p>
 </td>
       </tr>
@@ -378,27 +336,10 @@ appended to <code data-dev-comment-type="paramref" class="paramref">blockChain</
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Blockchain_Policies_DifficultyAdjustment_1_BaseAlgorithm_Libplanet_Blockchain_BlockChain__0__System_TimeSpan_System_Int64_System_Int64__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>It is strongly recommended to use the factory version <a class="xref" href="Libplanet.Blockchain.Policies.DifficultyAdjustment-1.html#Libplanet_Blockchain_Policies_DifficultyAdjustment_1_AlgorithmFactory_System_TimeSpan_System_Int64_System_Int64_">AlgorithmFactory(TimeSpan, Int64, Int64)</a>
+  <h5 id="Libplanet_Blockchain_Policies_DifficultyAdjustment_1_BaseAlgorithm_Libplanet_Blockchain_BlockChain__0__TimeSpan_System_Int64_System_Int64__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>It is strongly recommended to use the factory version <a class="xref" href="Libplanet.Blockchain.Policies.DifficultyAdjustment-1.html#Libplanet_Blockchain_Policies_DifficultyAdjustment_1_AlgorithmFactory_TimeSpan_System_Int64_System_Int64_">AlgorithmFactory(TimeSpan, Int64, Int64)</a>
 to get a working difficulty adjustment algorithm.</p>
 </div>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.indexoutofrangeexception">IndexOutOfRangeException</a></td>
-        <td><p>When the number of blocks
-in <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> is negative.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
 </article>
           </div>
           

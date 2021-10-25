@@ -79,7 +79,7 @@ maintaining the set of <a class="xref" href="Libplanet.Action.IAccountStateDelta
 that every possible <a class="xref" href="Libplanet.Address.html">Address</a> exists and
 is mapped to <code>null</code>.  That means that:</p>
 <ul><li>it does not have length,</li><li>its index getter never throws
-<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.keynotfoundexception">KeyNotFoundException</a>,
+<see cref="!:KeyNotFoundException"></see>,
 but returns <code>null</code> instead, and</li><li>filling an <a class="xref" href="Libplanet.Address.html">Address</a> with
 <code>null</code> state cannot be distinguished from
 the <a class="xref" href="Libplanet.Address.html">Address</a> having never been set to
@@ -113,8 +113,7 @@ method does not manipulate the instance, but returns a new
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-IImmutableSet&lt;Address&gt; StateUpdatedAddresses { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">IImmutableSet&lt;Address&gt; StateUpdatedAddresses { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -146,8 +145,7 @@ been updated since then.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-IImmutableSet&lt;Address&gt; UpdatedAddresses { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">IImmutableSet&lt;Address&gt; UpdatedAddresses { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -182,8 +180,7 @@ been updated since then.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-IImmutableDictionary&lt;Address, IImmutableSet&lt;Currency&gt;&gt; UpdatedFungibleAssets { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">IImmutableDictionary&lt;Address, IImmutableSet&lt;Currency&gt;&gt; UpdatedFungibleAssets { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -217,8 +214,7 @@ IImmutableDictionary&lt;Address, IImmutableSet&lt;Currency&gt;&gt; UpdatedFungib
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-IAccountStateDelta BurnAsset(Address owner, FungibleAssetValue value)</code></pre>
+    <pre><code class="lang-csharp hljs">IAccountStateDelta BurnAsset(Address owner, FungibleAssetValue value)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -270,12 +266,6 @@ IAccountStateDelta BurnAsset(Address owner, FungibleAssetValue value)</code></pr
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
-        <td><p>Thrown when the <code data-dev-comment-type="paramref" class="paramref">value</code>
-is less than or equal to zero.</p>
-</td>
-      </tr>
-      <tr>
         <td><a class="xref" href="Libplanet.Action.CurrencyPermissionException.html">CurrencyPermissionException</a></td>
         <td><p>Thrown when a transaction signer
 (or a miner in case of block actions) is not a member of the <a class="xref" href="Libplanet.Assets.FungibleAssetValue.html#Libplanet_Assets_FungibleAssetValue_Currency">Currency</a>'s <a class="xref" href="Libplanet.Assets.Currency.html#Libplanet_Assets_Currency_Minters">Minters</a>.</p>
@@ -303,8 +293,7 @@ has insufficient balance than <code data-dev-comment-type="paramref" class="para
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-FungibleAssetValue GetBalance(Address address, Currency currency)</code></pre>
+    <pre><code class="lang-csharp hljs">FungibleAssetValue GetBalance(Address address, Currency currency)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -360,8 +349,7 @@ FungibleAssetValue GetBalance(Address address, Currency currency)</code></pre>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-IValue? GetState(Address address)</code></pre>
+    <pre><code class="lang-csharp hljs">IValue? GetState(Address address)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -415,8 +403,7 @@ and give it to the <code data-dev-comment-type="paramref" class="paramref">recip
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-IAccountStateDelta MintAsset(Address recipient, FungibleAssetValue value)</code></pre>
+    <pre><code class="lang-csharp hljs">IAccountStateDelta MintAsset(Address recipient, FungibleAssetValue value)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -468,12 +455,6 @@ IAccountStateDelta MintAsset(Address recipient, FungibleAssetValue value)</code>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
-        <td><p>Thrown when the <code data-dev-comment-type="paramref" class="paramref">value</code>
-is less than or equal to 0.</p>
-</td>
-      </tr>
-      <tr>
         <td><a class="xref" href="Libplanet.Action.CurrencyPermissionException.html">CurrencyPermissionException</a></td>
         <td><p>Thrown when a transaction signer
 (or a miner in case of block actions) is not a member of the <a class="xref" href="Libplanet.Assets.FungibleAssetValue.html#Libplanet_Assets_FungibleAssetValue_Currency">Currency</a>'s <a class="xref" href="Libplanet.Assets.Currency.html#Libplanet_Assets_Currency_Minters">Minters</a>.</p>
@@ -497,8 +478,7 @@ is less than or equal to 0.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-IAccountStateDelta SetState(Address address, IValue state)</code></pre>
+    <pre><code class="lang-csharp hljs">IAccountStateDelta SetState(Address address, IValue state)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -563,8 +543,7 @@ from the <code data-dev-comment-type="paramref" class="paramref">sender</code> t
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-IAccountStateDelta TransferAsset(Address sender, Address recipient, FungibleAssetValue value, bool allowNegativeBalance = false)</code></pre>
+    <pre><code class="lang-csharp hljs">IAccountStateDelta TransferAsset(Address sender, Address recipient, FungibleAssetValue value, bool allowNegativeBalance = false)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -631,12 +610,6 @@ less than zero.  Turned off by default.</p>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
-        <td><p>Thrown when the <code data-dev-comment-type="paramref" class="paramref">value</code>
-is less than or equal to zero.</p>
-</td>
-      </tr>
       <tr>
         <td><a class="xref" href="Libplanet.Action.InsufficientBalanceException.html">InsufficientBalanceException</a></td>
         <td><p>Thrown when the <code data-dev-comment-type="paramref" class="paramref">sender</code>

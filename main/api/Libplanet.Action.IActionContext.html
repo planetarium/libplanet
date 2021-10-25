@@ -100,8 +100,7 @@ Passed to <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_I
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-bool BlockAction { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">bool BlockAction { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -133,8 +132,7 @@ bool BlockAction { get; }</code></pre>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-long BlockIndex { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">long BlockIndex { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -165,8 +163,7 @@ long BlockIndex { get; }</code></pre>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-Address Miner { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">Address Miner { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -211,7 +208,7 @@ the state root hash feature.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA256</span>&gt;&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -236,8 +233,7 @@ instances can be returned by <a class="xref" href="Libplanet.Action.IAction.html
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-IAccountStateDelta PreviousStates { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">IAccountStateDelta PreviousStates { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -286,7 +282,7 @@ nor a single transaction signer can predict the result and cheat.</p>
       <tr>
         <td><a class="xref" href="Libplanet.Action.IRandom.html">IRandom</a></td>
         <td><p>A random object that shares interface mostly equivalent
-to <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.random">Random</a>.</p>
+to <see cref="!:System.Random"></see>.</p>
 </td>
       </tr>
     </tbody>
@@ -307,8 +303,7 @@ in <a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_Action_I
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-bool Rehearsal { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">bool Rehearsal { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -327,7 +322,7 @@ bool Rehearsal { get; }</code></pre>
   </table>
   <h5 id="Libplanet_Action_IActionContext_Rehearsal_seealso">See Also</h5>
   <div class="seealso">
-      <div><a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Create_System_Int64_Libplanet_Crypto_PrivateKey_System_Nullable_Libplanet_Blocks_BlockHash__System_Collections_Generic_IEnumerable__0__IImmutableSet_Libplanet_Address__System_Nullable_System_DateTimeOffset__">Create(Int64, PrivateKey, Nullable&lt;BlockHash&gt;, IEnumerable&lt;T&gt;, IImmutableSet&lt;Address&gt;, Nullable&lt;DateTimeOffset&gt;)</a></div>
+      <div><a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Create_System_Int64_Libplanet_Crypto_PrivateKey_System_Nullable_Libplanet_Blocks_BlockHash__IEnumerable__0__IImmutableSet_Libplanet_Address__System_Nullable_DateTimeOffset__">Create(Int64, PrivateKey, Nullable&lt;BlockHash&gt;, IEnumerable&lt;T&gt;, IImmutableSet&lt;Address&gt;, Nullable&lt;DateTimeOffset&gt;)</a></div>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
@@ -344,8 +339,7 @@ a transaction that an executed <a class="xref" href="Libplanet.Action.IAction.ht
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-Address Signer { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">Address Signer { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -377,8 +371,7 @@ belongs to.  This is <code>null</code> iff <a class="xref" href="Libplanet.Actio
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-TxId? TxId { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">TxId? TxId { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -414,8 +407,7 @@ each other, in other words, one's state transfer must not affect the other one
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-IActionContext GetUnconsumedContext()</code></pre>
+    <pre><code class="lang-csharp hljs">IActionContext GetUnconsumedContext()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">

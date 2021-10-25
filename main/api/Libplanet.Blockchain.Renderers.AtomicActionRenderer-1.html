@@ -89,35 +89,11 @@ actions).</p>
     <div><a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer</a>&lt;T&gt;</div>
     <div><a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer</a>&lt;T&gt;</div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Blockchain.Renderers.html">Libplanet.Blockchain.Renderers</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
   <h5 id="Libplanet_Blockchain_Renderers_AtomicActionRenderer_1_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class AtomicActionRenderer&lt;T&gt; : IActionRenderer&lt;T&gt;, IRenderer&lt;T&gt; where T : IAction, new()</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class AtomicActionRenderer&lt;T&gt; : object, IActionRenderer&lt;T&gt;, IRenderer&lt;T&gt; where T : IAction, new()</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -138,8 +114,8 @@ actions).</p>
   </table>
   <h5 id="Libplanet_Blockchain_Renderers_AtomicActionRenderer_1_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>The wrapped <a class="xref" href="Libplanet.Blockchain.Renderers.AtomicActionRenderer-1.html#Libplanet_Blockchain_Renderers_AtomicActionRenderer_1_ActionRenderer">ActionRenderer</a> will not receive any
-<a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html#Libplanet_Blockchain_Renderers_IActionRenderer_1_RenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_System_Exception_">RenderActionError(IAction, IActionContext, Exception)</a> and
-<a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html#Libplanet_Blockchain_Renderers_IActionRenderer_1_UnrenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_System_Exception_">UnrenderActionError(IAction, IActionContext, Exception)</a> events except for block actions,
+<a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html#Libplanet_Blockchain_Renderers_IActionRenderer_1_RenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Exception_">RenderActionError(IAction, IActionContext, Exception)</a> and
+<a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html#Libplanet_Blockchain_Renderers_IActionRenderer_1_UnrenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Exception_">UnrenderActionError(IAction, IActionContext, Exception)</a> events except for block actions,
 which do not belong to any transactions.</p>
 </div>
   <h3 id="constructors">Constructors
@@ -175,7 +151,7 @@ which do not belong to any transactions.</p>
         <td><a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer</a>&lt;T&gt;</td>
         <td><span class="parametername">actionRenderer</span></td>
         <td><p>The inner action renderer which has the <em>actual</em>
-implementations and expects to receive no <a class="xref" href="Libplanet.Blockchain.Renderers.AtomicActionRenderer-1.html#Libplanet_Blockchain_Renderers_AtomicActionRenderer_1_RenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_System_Exception_">RenderActionError(IAction, IActionContext, Exception)</a>/<a class="xref" href="Libplanet.Blockchain.Renderers.AtomicActionRenderer-1.html#Libplanet_Blockchain_Renderers_AtomicActionRenderer_1_UnrenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_System_Exception_">UnrenderActionError(IAction, IActionContext, Exception)</a> events.</p>
+implementations and expects to receive no <a class="xref" href="Libplanet.Blockchain.Renderers.AtomicActionRenderer-1.html#Libplanet_Blockchain_Renderers_AtomicActionRenderer_1_RenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Exception_">RenderActionError(IAction, IActionContext, Exception)</a>/<a class="xref" href="Libplanet.Blockchain.Renderers.AtomicActionRenderer-1.html#Libplanet_Blockchain_Renderers_AtomicActionRenderer_1_UnrenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Exception_">UnrenderActionError(IAction, IActionContext, Exception)</a> events.</p>
 </td>
       </tr>
     </tbody>
@@ -192,7 +168,7 @@ implementations and expects to receive no <a class="xref" href="Libplanet.Blockc
   <a id="Libplanet_Blockchain_Renderers_AtomicActionRenderer_1_ActionRenderer_" data-uid="Libplanet.Blockchain.Renderers.AtomicActionRenderer`1.ActionRenderer*"></a>
   <h4 id="Libplanet_Blockchain_Renderers_AtomicActionRenderer_1_ActionRenderer" data-uid="Libplanet.Blockchain.Renderers.AtomicActionRenderer`1.ActionRenderer">ActionRenderer</h4>
   <div class="markdown level1 summary"><p>The inner action renderer which has the <em>actual</em> implementations and expects to
-receive no <a class="xref" href="Libplanet.Blockchain.Renderers.AtomicActionRenderer-1.html#Libplanet_Blockchain_Renderers_AtomicActionRenderer_1_RenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_System_Exception_">RenderActionError(IAction, IActionContext, Exception)</a>/<a class="xref" href="Libplanet.Blockchain.Renderers.AtomicActionRenderer-1.html#Libplanet_Blockchain_Renderers_AtomicActionRenderer_1_UnrenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_System_Exception_">UnrenderActionError(IAction, IActionContext, Exception)</a> events.</p>
+receive no <a class="xref" href="Libplanet.Blockchain.Renderers.AtomicActionRenderer-1.html#Libplanet_Blockchain_Renderers_AtomicActionRenderer_1_RenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Exception_">RenderActionError(IAction, IActionContext, Exception)</a>/<a class="xref" href="Libplanet.Blockchain.Renderers.AtomicActionRenderer-1.html#Libplanet_Blockchain_Renderers_AtomicActionRenderer_1_UnrenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Exception_">UnrenderActionError(IAction, IActionContext, Exception)</a> events.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -272,7 +248,7 @@ which means it is equivalent to the states <code data-dev-comment-type="paramref
   <h5 id="Libplanet_Blockchain_Renderers_AtomicActionRenderer_1_RenderAction_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>It is guaranteed to be called only once for an <code data-dev-comment-type="paramref" class="paramref">action</code>,
 and only after applied to the blockchain, unless an exception is thrown during executing
-the <code data-dev-comment-type="paramref" class="paramref">action</code> (in that case <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html#Libplanet_Blockchain_Renderers_IActionRenderer_1_RenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_System_Exception_">RenderActionError(IAction, IActionContext, Exception)</a> is called instead) or
+the <code data-dev-comment-type="paramref" class="paramref">action</code> (in that case <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html#Libplanet_Blockchain_Renderers_IActionRenderer_1_RenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Exception_">RenderActionError(IAction, IActionContext, Exception)</a> is called instead) or
 once the <code data-dev-comment-type="paramref" class="paramref">action</code> has been unrendered.</p>
 <p>Also note that this method is invoked after <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html#Libplanet_Blockchain_Renderers_IRenderer_1_RenderBlock_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__">RenderBlock(Block&lt;T&gt;, Block&lt;T&gt;)</a> method is called
 (where its second parameter <code>newTip</code> contains a transaction the <code data-dev-comment-type="paramref" class="paramref">action</code> belongs to).</p>
@@ -283,13 +259,13 @@ actions (<a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Tran
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_AtomicActionRenderer_1_RenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_System_Exception_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.AtomicActionRenderer%601.RenderActionError(Libplanet.Action.IAction%2CLibplanet.Action.IActionContext%2CSystem.Exception)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_AtomicActionRenderer_1_RenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Exception_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.AtomicActionRenderer%601.RenderActionError(Libplanet.Action.IAction%2CLibplanet.Action.IActionContext%2CException)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/AtomicActionRenderer.cs/#L125">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Renderers_AtomicActionRenderer_1_RenderActionError_" data-uid="Libplanet.Blockchain.Renderers.AtomicActionRenderer`1.RenderActionError*"></a>
-  <h4 id="Libplanet_Blockchain_Renderers_AtomicActionRenderer_1_RenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_System_Exception_" data-uid="Libplanet.Blockchain.Renderers.AtomicActionRenderer`1.RenderActionError(Libplanet.Action.IAction,Libplanet.Action.IActionContext,System.Exception)">RenderActionError(IAction, IActionContext, Exception)</h4>
+  <h4 id="Libplanet_Blockchain_Renderers_AtomicActionRenderer_1_RenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Exception_" data-uid="Libplanet.Blockchain.Renderers.AtomicActionRenderer`1.RenderActionError(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Exception)">RenderActionError(IAction, IActionContext, Exception)</h4>
   <div class="markdown level1 summary"><p>Does the similar things to <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html#Libplanet_Blockchain_Renderers_IActionRenderer_1_RenderAction_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_">RenderAction(IAction, IActionContext, IAccountStateDelta)</a>, except that this method
 is invoked when <code data-dev-comment-type="paramref" class="paramref">action</code> has terminated with an exception.</p>
 </div>
@@ -324,14 +300,14 @@ That means <a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.exception">Exception</a></td>
+        <td><span class="xref">Exception</span></td>
         <td><span class="parametername">exception</span></td>
         <td><p>The exception thrown during executing the <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Blockchain_Renderers_AtomicActionRenderer_1_RenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_System_Exception__remarks">Remarks</h5>
+  <h5 id="Libplanet_Blockchain_Renderers_AtomicActionRenderer_1_RenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Exception__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>Also note that this method is invoked after <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html#Libplanet_Blockchain_Renderers_IRenderer_1_RenderBlock_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__">RenderBlock(Block&lt;T&gt;, Block&lt;T&gt;)</a> method is called
 (where its second parameter <code>newTip</code> contains a transaction the <code data-dev-comment-type="paramref" class="paramref">action</code> belongs to).</p>
 <p>The reason why the parameter <code data-dev-comment-type="paramref" class="paramref">action</code> takes
@@ -598,16 +574,16 @@ with redrawing the graphics on the display at the finish.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_AtomicActionRenderer_1_UnrenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_System_Exception_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.AtomicActionRenderer%601.UnrenderActionError(Libplanet.Action.IAction%2CLibplanet.Action.IActionContext%2CSystem.Exception)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_AtomicActionRenderer_1_UnrenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Exception_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.AtomicActionRenderer%601.UnrenderActionError(Libplanet.Action.IAction%2CLibplanet.Action.IActionContext%2CException)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/AtomicActionRenderer.cs/#L144">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Renderers_AtomicActionRenderer_1_UnrenderActionError_" data-uid="Libplanet.Blockchain.Renderers.AtomicActionRenderer`1.UnrenderActionError*"></a>
-  <h4 id="Libplanet_Blockchain_Renderers_AtomicActionRenderer_1_UnrenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_System_Exception_" data-uid="Libplanet.Blockchain.Renderers.AtomicActionRenderer`1.UnrenderActionError(Libplanet.Action.IAction,Libplanet.Action.IActionContext,System.Exception)">UnrenderActionError(IAction, IActionContext, Exception)</h4>
+  <h4 id="Libplanet_Blockchain_Renderers_AtomicActionRenderer_1_UnrenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Exception_" data-uid="Libplanet.Blockchain.Renderers.AtomicActionRenderer`1.UnrenderActionError(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Exception)">UnrenderActionError(IAction, IActionContext, Exception)</h4>
   <div class="markdown level1 summary"><p>Does the similar things to <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html#Libplanet_Blockchain_Renderers_IActionRenderer_1_UnrenderAction_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_">UnrenderAction(IAction, IActionContext, IAccountStateDelta)</a>, except that
 this method is invoked when <code data-dev-comment-type="paramref" class="paramref">action</code> has terminated with an exception.</p>
-<p>This method takes the equivalent arguments to <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html#Libplanet_Blockchain_Renderers_IActionRenderer_1_RenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_System_Exception_">RenderActionError(IAction, IActionContext, Exception)</a> method.</p>
+<p>This method takes the equivalent arguments to <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html#Libplanet_Blockchain_Renderers_IActionRenderer_1_RenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Exception_">RenderActionError(IAction, IActionContext, Exception)</a> method.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -640,14 +616,14 @@ That means <a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.exception">Exception</a></td>
+        <td><span class="xref">Exception</span></td>
         <td><span class="parametername">exception</span></td>
         <td><p>The exception thrown during executing the <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Blockchain_Renderers_AtomicActionRenderer_1_UnrenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_System_Exception__remarks">Remarks</h5>
+  <h5 id="Libplanet_Blockchain_Renderers_AtomicActionRenderer_1_UnrenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Exception__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>The reason why the parameter <code data-dev-comment-type="paramref" class="paramref">action</code> takes
 <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> instead of <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> is because it can take
 block actions (<a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_BlockAction">BlockAction</a>) besides transaction

@@ -65,12 +65,52 @@
 <h2 id="version-0190">Version 0.19.0</h2>
 <p>To be released.</p>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
+<ul>
+<li>Removed <code>IStore.StageTransactionIds()</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/1166">#1166</a>, <a href="https://github.com/planetarium/libplanet/pull/1535">#1535</a>]</li>
+<li>Removed <code>IStore.UnstageTransactionIds()</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/1166">#1166</a>, <a href="https://github.com/planetarium/libplanet/pull/1535">#1535</a>]</li>
+<li>Removed <code>IStore.IterateStagedTransactionIds()</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/1166">#1166</a>, <a href="https://github.com/planetarium/libplanet/pull/1535">#1535</a>]</li>
+<li>Removed <code>Message.ToNetMQMessage()</code> method.
+Use <code>IMessageCodec&lt;T&gt;.Encode()</code> method instead.  [<a href="https://github.com/planetarium/libplanet/pull/1503">#1503</a>]</li>
+<li>Removed <code>Message.Parse()</code> static method.
+Use <code>IMessageCodec&lt;T&gt;.Decode()</code> method instead.  [<a href="https://github.com/planetarium/libplanet/pull/1503">#1503</a>]</li>
+<li>Removed unused <code>HashAlgorithmGetter</code> type parameter from
+<code>ActionEvaluator&lt;T&gt;()</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/1537">#1537</a>]</li>
+</ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
+<ul>
+<li>The order of the header of a <code>NetMQMessage</code> has been modified.  [<a href="https://github.com/planetarium/libplanet/pull/1503">#1503</a>]</li>
+</ul>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
+<ul>
+<li>Added <code>Message.MessageFrame</code> enum.  [<a href="https://github.com/planetarium/libplanet/pull/1503">#1503</a>]</li>
+<li>Added <code>Message.Type</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/1503">#1503</a>]</li>
+<li>Added <code>Message.DataFrames</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/1503">#1503</a>]</li>
+<li>Added <code>IMessageCodec&lt;T&gt;</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/1503">#1503</a>]</li>
+<li>Added <code>NetMQMessageCodec</code> class which inherits <code>IMessageCodec&lt;T&gt;</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/1503">#1503</a>]</li>
+</ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="cli-tools">CLI tools</h3>
+<h2 id="version-0182">Version 0.18.2</h2>
+<p>Released on October 22, 2021.</p>
+<ul>
+<li>Fixed a bug that <code>Swarm&lt;T&gt;</code> had not responded to <code>GetBlocks</code> requests
+when some of requested blocks fail to be loaded.  It now sends
+a <code>Blocks</code> response with successfully loaded blocks for the same
+situation.  [<a href="https://github.com/planetarium/libplanet/pull/1540">#1540</a>]</li>
+</ul>
+<h2 id="version-0181">Version 0.18.1</h2>
+<p>Released on October 21, 2021.</p>
+<ul>
+<li>Fixed a bug where <code>PublicKey.Verify()</code> method had thrown exceptions
+for some invalid inputs.  [<a href="https://github.com/planetarium/libplanet/issues/1520">#1520</a>]</li>
+<li><code>BaseStore.GetBlock&lt;T&gt;()</code> method now throws <code>InvalidOperationException</code>
+when it fails to load a requested block's transactions.  [<a href="https://github.com/planetarium/libplanet/issues/1500">#1500</a>, <a href="https://github.com/planetarium/libplanet/pull/1532">#1532</a>]</li>
+<li>(Libplanet.RocksDBStore) Operations on <code>RocksDBStore</code> that update data
+no longer suppress the internal failures.  [<a href="https://github.com/planetarium/libplanet/issues/1500">#1500</a>, <a href="https://github.com/planetarium/libplanet/pull/1532">#1532</a>]</li>
+</ul>
 <h2 id="version-0180">Version 0.18.0</h2>
 <p>Released on October 13, 2021.</p>
 <h3 id="backward-incompatible-api-changes-1">Backward-incompatible API changes</h3>

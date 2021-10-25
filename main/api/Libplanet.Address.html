@@ -93,34 +93,15 @@ can be used by Libplanet-backed games/apps too.</p>
   <div class="markdown level0 conceptual"></div>
   <div classs="implements">
     <h5>Implements</h5>
-    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.runtime.serialization.iserializable">ISerializable</a></div>
-    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable-1">IComparable</a>&lt;<a class="xref" href="Libplanet.Address.html">Address</a>&gt;</div>
-    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable">IComparable</a></div>
-  </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.valuetype.equals#System_ValueType_Equals_System_Object_">ValueType.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.valuetype.gethashcode#System_ValueType_GetHashCode">ValueType.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
+    <div><span class="xref">ISerializable</span></div>
+    <div><span class="xref">IComparable</span>&lt;<a class="xref" href="Libplanet.Address.html">Address</a>&gt;</div>
+    <div><span class="xref">IComparable</span></div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.html">Libplanet</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
   <h5 id="Libplanet_Address_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Serializable]
-public readonly struct Address : ISerializable, IComparable&lt;Address&gt;, IComparable</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly struct Address : ISerializable, IComparable&lt;Address&gt;, IComparable</code></pre>
   </div>
   <h5 id="Libplanet_Address_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>Every <a class="xref" href="Libplanet.Address.html">Address</a> value is immutable.</p>
@@ -157,25 +138,8 @@ public readonly struct Address : ISerializable, IComparable&lt;Address&gt;, ICom
       <tr>
         <td><span class="xref">Binary</span></td>
         <td><span class="parametername">address</span></td>
-        <td><p>A Bencodex <see cref="!:Binary"></see> of 20 <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>s which
+        <td><p>A Bencodex <see cref="!:Binary"></see> of 20 <see cref="!:System.Byte"></see>s which
 represents an <a class="xref" href="Libplanet.Address.html">Address</a>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
-        <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">address</code>
-did not lengthen 20 bytes.</p>
 </td>
       </tr>
     </tbody>
@@ -189,7 +153,7 @@ did not lengthen 20 bytes.</p>
   </span>
   <a id="Libplanet_Address__ctor_" data-uid="Libplanet.Address.#ctor*"></a>
   <h4 id="Libplanet_Address__ctor_ImmutableArray_System_Byte__" data-uid="Libplanet.Address.#ctor(ImmutableArray{System.Byte})">Address(ImmutableArray&lt;Byte&gt;)</h4>
-  <div class="markdown level1 summary"><p>Creates an <a class="xref" href="Libplanet.Address.html">Address</a> instance from the given immutable <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array (i.e., <code data-dev-comment-type="paramref" class="paramref">address</code>).</p>
+  <div class="markdown level1 summary"><p>Creates an <a class="xref" href="Libplanet.Address.html">Address</a> instance from the given immutable <see cref="!:System.Byte"></see> array (i.e., <code data-dev-comment-type="paramref" class="paramref">address</code>).</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -209,32 +173,16 @@ did not lengthen 20 bytes.</p>
       <tr>
         <td><span class="xref">ImmutableArray</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
         <td><span class="parametername">address</span></td>
-        <td><p>An immutable array of 20 <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>s which
+        <td><p>An immutable array of 20 <see cref="!:System.Byte"></see>s which
 represents an <a class="xref" href="Libplanet.Address.html">Address</a>.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <h5 id="Libplanet_Address__ctor_ImmutableArray_System_Byte___remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>A valid <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array which represents an
+  <div class="markdown level1 remarks"><p>A valid <see cref="!:System.Byte"></see> array which represents an
 <a class="xref" href="Libplanet.Address.html">Address</a> can be gotten using <a class="xref" href="Libplanet.Address.html#Libplanet_Address_ToByteArray">ToByteArray()</a> method.</p>
 </div>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
-        <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">address</code> array did not lengthen 20 bytes.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <h5 id="Libplanet_Address__ctor_ImmutableArray_System_Byte___seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Address.html#Libplanet_Address_ByteArray">ByteArray</a></div>
@@ -291,7 +239,7 @@ the corresponding <a class="xref" href="Libplanet.Address.html">Address</a> from
   </span>
   <a id="Libplanet_Address__ctor_" data-uid="Libplanet.Address.#ctor*"></a>
   <h4 id="Libplanet_Address__ctor_System_Byte___" data-uid="Libplanet.Address.#ctor(System.Byte[])">Address(Byte[])</h4>
-  <div class="markdown level1 summary"><p>Creates an <a class="xref" href="Libplanet.Address.html">Address</a> instance from the given <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array (i.e., <code data-dev-comment-type="paramref" class="paramref">address</code>).</p>
+  <div class="markdown level1 summary"><p>Creates an <a class="xref" href="Libplanet.Address.html">Address</a> instance from the given <see cref="!:System.Byte"></see> array (i.e., <code data-dev-comment-type="paramref" class="paramref">address</code>).</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -311,38 +259,16 @@ the corresponding <a class="xref" href="Libplanet.Address.html">Address</a> from
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
         <td><span class="parametername">address</span></td>
-        <td><p>An array of 20 <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>s which
+        <td><p>An array of 20 <see cref="!:System.Byte"></see>s which
 represents an <a class="xref" href="Libplanet.Address.html">Address</a>.  This must not be <code>null</code>.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <h5 id="Libplanet_Address__ctor_System_Byte____remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>A valid <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array which represents an
+  <div class="markdown level1 remarks"><p>A valid <see cref="!:System.Byte"></see> array which represents an
 <a class="xref" href="Libplanet.Address.html">Address</a> can be gotten using <a class="xref" href="Libplanet.Address.html#Libplanet_Address_ToByteArray">ToByteArray()</a> method.</p>
 </div>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>Thrown when <code>null</code> was
-passed to <code data-dev-comment-type="paramref" class="paramref">address</code>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
-        <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">address</code> array did not lengthen 20 bytes.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <h5 id="Libplanet_Address__ctor_System_Byte____seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Address.html#Libplanet_Address_ToByteArray">ToByteArray()</a></div>
@@ -384,38 +310,6 @@ should be all lower-case or mixed-case which follows <a href="https://github.com
       </tr>
     </tbody>
   </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>Thrown when <code>null</code> was
-passed to <code data-dev-comment-type="paramref" class="paramref">hex</code>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
-        <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">hex</code> did not lengthen 40 characters.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
-        <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">hex</code> is mixed-case and the checksum is invalid.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
-        <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">hex</code> does not consist of ASCII characters.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="fields">Fields
   </h3>
   <span class="small pull-right mobile-hide">
@@ -426,13 +320,13 @@ passed to <code data-dev-comment-type="paramref" class="paramref">hex</code>.</p
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Address.cs/#L50">View Source</a>
   </span>
   <h4 id="Libplanet_Address_Size" data-uid="Libplanet.Address.Size">Size</h4>
-  <div class="markdown level1 summary"><p>The <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>s size that each <a class="xref" href="Libplanet.Address.html">Address</a> takes.</p>
-<p>It is 20 <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>s.</p>
+  <div class="markdown level1 summary"><p>The <see cref="!:System.Byte"></see>s size that each <a class="xref" href="Libplanet.Address.html">Address</a> takes.</p>
+<p>It is 20 <see cref="!:System.Byte"></see>s.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int Size = 20</code></pre>
+    <pre><code class="lang-csharp hljs">public const int Size = null</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -460,7 +354,7 @@ passed to <code data-dev-comment-type="paramref" class="paramref">hex</code>.</p
   </span>
   <a id="Libplanet_Address_ByteArray_" data-uid="Libplanet.Address.ByteArray*"></a>
   <h4 id="Libplanet_Address_ByteArray" data-uid="Libplanet.Address.ByteArray">ByteArray</h4>
-  <div class="markdown level1 summary"><p>An immutable array of 20 <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>s that represent this
+  <div class="markdown level1 summary"><p>An immutable array of 20 <see cref="!:System.Byte"></see>s that represent this
 <a class="xref" href="Libplanet.Address.html">Address</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -494,13 +388,13 @@ passed to <code data-dev-comment-type="paramref" class="paramref">hex</code>.</p
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Address_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.Address.GetObjectData(System.Runtime.Serialization.SerializationInfo%2CSystem.Runtime.Serialization.StreamingContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Address_GetObjectData_SerializationInfo_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.Address.GetObjectData(SerializationInfo%2CStreamingContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Address.cs/#L243">View Source</a>
   </span>
   <a id="Libplanet_Address_GetObjectData_" data-uid="Libplanet.Address.GetObjectData*"></a>
-  <h4 id="Libplanet_Address_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_" data-uid="Libplanet.Address.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">GetObjectData(SerializationInfo, StreamingContext)</h4>
+  <h4 id="Libplanet_Address_GetObjectData_SerializationInfo_StreamingContext_" data-uid="Libplanet.Address.GetObjectData(SerializationInfo,StreamingContext)">GetObjectData(SerializationInfo, StreamingContext)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -518,12 +412,12 @@ passed to <code data-dev-comment-type="paramref" class="paramref">hex</code>.</p
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.runtime.serialization.serializationinfo">SerializationInfo</a></td>
+        <td><span class="xref">SerializationInfo</span></td>
         <td><span class="parametername">info</span></td>
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.runtime.serialization.streamingcontext">StreamingContext</a></td>
+        <td><span class="xref">StreamingContext</span></td>
         <td><span class="parametername">context</span></td>
         <td></td>
       </tr>
@@ -538,14 +432,13 @@ passed to <code data-dev-comment-type="paramref" class="paramref">hex</code>.</p
   </span>
   <a id="Libplanet_Address_ToByteArray_" data-uid="Libplanet.Address.ToByteArray*"></a>
   <h4 id="Libplanet_Address_ToByteArray" data-uid="Libplanet.Address.ToByteArray">ToByteArray()</h4>
-  <div class="markdown level1 summary"><p>Gets a mutable array of 20 <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>s that represent
+  <div class="markdown level1 summary"><p>Gets a mutable array of 20 <see cref="!:System.Byte"></see>s that represent
 this <a class="xref" href="Libplanet.Address.html">Address</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public readonly byte[] ToByteArray()</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly byte[] ToByteArray()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -587,8 +480,7 @@ this <a class="xref" href="Libplanet.Address.html">Address</a>. The returned hex
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public readonly string ToHex()</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly string ToHex()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -638,8 +530,7 @@ hexadecimal string follows
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public override readonly string ToString()</code></pre>
+    <pre><code class="lang-csharp hljs">public override readonly string ToString()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -658,8 +549,6 @@ this <a class="xref" href="Libplanet.Address.html">Address</a>.</p>
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.valuetype.tostring#System_ValueType_ToString">ValueType.ToString()</a></div>
   <h5 id="Libplanet_Address_ToString_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>As the returned string is <code>0x</code>-prefixed, for
 hexadecimal without prefix, call <a class="xref" href="Libplanet.Address.html#Libplanet_Address_ToHex">ToHex()</a> method
@@ -779,111 +668,15 @@ instead.</p>
       </tr>
     </tbody>
   </table>
-  <h3 id="eii">Explicit Interface Implementations
-  </h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Address_System_IComparable_CompareTo_System_Object_.md&amp;value=---%0Auid%3A%20Libplanet.Address.System%23IComparable%23CompareTo(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Address.cs/#L264">View Source</a>
-  </span>
-  <a id="Libplanet_Address_System_IComparable_CompareTo_" data-uid="Libplanet.Address.System#IComparable#CompareTo*"></a>
-  <h4 id="Libplanet_Address_System_IComparable_CompareTo_System_Object_" data-uid="Libplanet.Address.System#IComparable#CompareTo(System.Object)">IComparable.CompareTo(Object)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">readonly int IComparable.CompareTo(object obj)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
-        <td><span class="parametername">obj</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Address_System_IComparable_Libplanet_Address__CompareTo_Libplanet_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Address.System%23IComparable%7BLibplanet%23Address%7D%23CompareTo(Libplanet.Address)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Address.cs/#L248">View Source</a>
-  </span>
-  <a id="Libplanet_Address_System_IComparable_Libplanet_Address__CompareTo_" data-uid="Libplanet.Address.System#IComparable{Libplanet#Address}#CompareTo*"></a>
-  <h4 id="Libplanet_Address_System_IComparable_Libplanet_Address__CompareTo_Libplanet_Address_" data-uid="Libplanet.Address.System#IComparable{Libplanet#Address}#CompareTo(Libplanet.Address)">IComparable&lt;Address&gt;.CompareTo(Address)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">readonly int IComparable&lt;Address&gt;.CompareTo(Address other)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
-        <td><span class="parametername">other</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="implements">Implements</h3>
   <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.runtime.serialization.iserializable">System.Runtime.Serialization.ISerializable</a>
+      <span class="xref">ISerializable</span>
   </div>
   <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable-1">System.IComparable&lt;T&gt;</a>
+      <span class="xref">IComparable&lt;&gt;</span>
   </div>
   <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable">System.IComparable</a>
+      <span class="xref">IComparable</span>
   </div>
   <h3 id="seealso">See Also</h3>
   <div class="seealso">

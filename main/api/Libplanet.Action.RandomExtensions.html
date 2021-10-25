@@ -82,35 +82,11 @@ to deal with <a class="xref" href="Libplanet.Action.IRandom.html">IRandom</a>.</
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">RandomExtensions</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Action.html">Libplanet.Action</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
   <h5 id="Libplanet_Action_RandomExtensions_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static class RandomExtensions</code></pre>
+    <pre><code class="lang-csharp hljs">public static class RandomExtensions : object</code></pre>
   </div>
   <h3 id="methods">Methods
   </h3>
@@ -123,7 +99,7 @@ to deal with <a class="xref" href="Libplanet.Action.IRandom.html">IRandom</a>.</
   </span>
   <a id="Libplanet_Action_RandomExtensions_GenerateRandomGuid_" data-uid="Libplanet.Action.RandomExtensions.GenerateRandomGuid*"></a>
   <h4 id="Libplanet_Action_RandomExtensions_GenerateRandomGuid_Libplanet_Action_IRandom_" data-uid="Libplanet.Action.RandomExtensions.GenerateRandomGuid(Libplanet.Action.IRandom)">GenerateRandomGuid(IRandom)</h4>
-  <div class="markdown level1 summary"><p>Generates a UUID version 4, i.e., a random <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.guid">Guid</a>.
+  <div class="markdown level1 summary"><p>Generates a UUID version 4, i.e., a random <see cref="!:Guid"></see>.
 Please refer to <a href="https://tools.ietf.org/html/rfc4122#section-4.4">RFC 4122</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -145,7 +121,7 @@ Please refer to <a href="https://tools.ietf.org/html/rfc4122#section-4.4">RFC 41
         <td><a class="xref" href="Libplanet.Action.IRandom.html">IRandom</a></td>
         <td><span class="parametername">random</span></td>
         <td><p><a class="xref" href="Libplanet.Action.IRandom.html">IRandom</a> to generate
-a random <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.guid">Guid</a>.</p>
+a random <see cref="!:Guid"></see>.</p>
 </td>
       </tr>
     </tbody>
@@ -160,8 +136,8 @@ a random <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.guid
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.guid">Guid</a></td>
-        <td><p>Generated random <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.guid">Guid</a>.</p>
+        <td><span class="xref">Guid</span></td>
+        <td><p>Generated random <see cref="!:Guid"></see>.</p>
 </td>
       </tr>
     </tbody>

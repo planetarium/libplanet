@@ -85,35 +85,11 @@
     <h5>Implements</h5>
     <div><a class="xref" href="Libplanet.Blockchain.Policies.IStagePolicy-1.html">IStagePolicy</a>&lt;T&gt;</div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Blockchain.Policies.html">Libplanet.Blockchain.Policies</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
   <h5 id="Libplanet_Blockchain_Policies_VolatileStagePolicy_1_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class VolatileStagePolicy&lt;T&gt; : IStagePolicy&lt;T&gt; where T : IAction, new()</code></pre>
+    <pre><code class="lang-csharp hljs">public class VolatileStagePolicy&lt;T&gt; : object, IStagePolicy&lt;T&gt; where T : IAction, new()</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -153,13 +129,13 @@ to <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_VolatileStagePolicy_1__ctor_System_TimeSpan_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.VolatileStagePolicy%601.%23ctor(System.TimeSpan)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_VolatileStagePolicy_1__ctor_TimeSpan_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.VolatileStagePolicy%601.%23ctor(TimeSpan)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/VolatileStagePolicy.cs/#L38">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Policies_VolatileStagePolicy_1__ctor_" data-uid="Libplanet.Blockchain.Policies.VolatileStagePolicy`1.#ctor*"></a>
-  <h4 id="Libplanet_Blockchain_Policies_VolatileStagePolicy_1__ctor_System_TimeSpan_" data-uid="Libplanet.Blockchain.Policies.VolatileStagePolicy`1.#ctor(System.TimeSpan)">VolatileStagePolicy(TimeSpan)</h4>
+  <h4 id="Libplanet_Blockchain_Policies_VolatileStagePolicy_1__ctor_TimeSpan_" data-uid="Libplanet.Blockchain.Policies.VolatileStagePolicy`1.#ctor(TimeSpan)">VolatileStagePolicy(TimeSpan)</h4>
   <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Blockchain.Policies.VolatileStagePolicy-1.html">VolatileStagePolicy&lt;T&gt;</a> instance.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -178,7 +154,7 @@ to <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.timespan">TimeSpan</a></td>
+        <td><span class="xref">TimeSpan</span></td>
         <td><span class="parametername">lifetime</span></td>
         <td><p>Volatilizes staged transactions older than this <code data-dev-comment-type="paramref" class="paramref">lifetime</code>.  See also the <a class="xref" href="Libplanet.Blockchain.Policies.VolatileStagePolicy-1.html#Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Lifetime">Lifetime</a> property.</p>
 </td>
@@ -214,7 +190,7 @@ to <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.timespan">TimeSpan</a></td>
+        <td><span class="xref">TimeSpan</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -430,7 +406,7 @@ Otherwise, <code>false</code>.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction</a>&lt;T&gt;&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction</a>&lt;T&gt;&gt;</td>
         <td><p>Staged transactions.  The earliest staged transaction goes first,
 and the latest staged transaction goes last.</p>
 </td>

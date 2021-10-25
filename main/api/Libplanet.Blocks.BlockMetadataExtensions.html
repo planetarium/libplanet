@@ -81,35 +81,11 @@
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">BlockMetadataExtensions</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Blocks.html">Libplanet.Blocks</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
   <h5 id="Libplanet_Blocks_BlockMetadataExtensions_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static class BlockMetadataExtensions</code></pre>
+    <pre><code class="lang-csharp hljs">public static class BlockMetadataExtensions : object</code></pre>
   </div>
   <h3 id="methods">Methods
   </h3>
@@ -266,13 +242,13 @@ compared to the current time.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_BlockMetadataExtensions_ValidateTimestamp_Libplanet_Blocks_IBlockMetadata_System_DateTimeOffset_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.BlockMetadataExtensions.ValidateTimestamp(Libplanet.Blocks.IBlockMetadata%2CSystem.DateTimeOffset)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_BlockMetadataExtensions_ValidateTimestamp_Libplanet_Blocks_IBlockMetadata_DateTimeOffset_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.BlockMetadataExtensions.ValidateTimestamp(Libplanet.Blocks.IBlockMetadata%2CDateTimeOffset)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/BlockMetadataExtensions.cs/#L61">View Source</a>
   </span>
   <a id="Libplanet_Blocks_BlockMetadataExtensions_ValidateTimestamp_" data-uid="Libplanet.Blocks.BlockMetadataExtensions.ValidateTimestamp*"></a>
-  <h4 id="Libplanet_Blocks_BlockMetadataExtensions_ValidateTimestamp_Libplanet_Blocks_IBlockMetadata_System_DateTimeOffset_" data-uid="Libplanet.Blocks.BlockMetadataExtensions.ValidateTimestamp(Libplanet.Blocks.IBlockMetadata,System.DateTimeOffset)">ValidateTimestamp(IBlockMetadata, DateTimeOffset)</h4>
+  <h4 id="Libplanet_Blocks_BlockMetadataExtensions_ValidateTimestamp_Libplanet_Blocks_IBlockMetadata_DateTimeOffset_" data-uid="Libplanet.Blocks.BlockMetadataExtensions.ValidateTimestamp(Libplanet.Blocks.IBlockMetadata,DateTimeOffset)">ValidateTimestamp(IBlockMetadata, DateTimeOffset)</h4>
   <div class="markdown level1 summary"><p>Checks if the given <code data-dev-comment-type="paramref" class="paramref">blockMetadata</code>'s
 <a class="xref" href="Libplanet.Blocks.IBlockMetadata.html#Libplanet_Blocks_IBlockMetadata_Timestamp">Timestamp</a> is valid.  No-op if valid.</p>
 </div>
@@ -298,7 +274,7 @@ compared to the current time.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a></td>
+        <td><span class="xref">DateTimeOffset</span></td>
         <td><span class="parametername">currentTime</span></td>
         <td><p>Explicitly specify the current time.</p>
 </td>

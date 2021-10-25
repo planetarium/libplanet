@@ -73,7 +73,7 @@
   
   <h1 id="Libplanet_Action_ExtractableException" data-uid="Libplanet.Action.ExtractableException" class="text-break">Class ExtractableException
   </h1>
-  <div class="markdown level0 summary"><p>Extension methods for <a class="xref" href="Libplanet.Action.IExtractableException.html">IExtractableException</a> and other <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.exception">Exception</a>s
+  <div class="markdown level0 summary"><p>Extension methods for <a class="xref" href="Libplanet.Action.IExtractableException.html">IExtractableException</a> and other <see cref="!:Exception"></see>s
 that do not implement <a class="xref" href="Libplanet.Action.IExtractableException.html">IExtractableException</a>.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
@@ -82,54 +82,29 @@ that do not implement <a class="xref" href="Libplanet.Action.IExtractableExcepti
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">ExtractableException</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Action.html">Libplanet.Action</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
   <h5 id="Libplanet_Action_ExtractableException_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static class ExtractableException</code></pre>
+    <pre><code class="lang-csharp hljs">public static class ExtractableException : object</code></pre>
   </div>
   <h3 id="methods">Methods
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_ExtractableException_ExtractMetadata_System_Exception_.md&amp;value=---%0Auid%3A%20Libplanet.Action.ExtractableException.ExtractMetadata(System.Exception)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_ExtractableException_ExtractMetadata_Exception_.md&amp;value=---%0Auid%3A%20Libplanet.Action.ExtractableException.ExtractMetadata(Exception)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/ExtractableException.cs/#L20">View Source</a>
   </span>
   <a id="Libplanet_Action_ExtractableException_ExtractMetadata_" data-uid="Libplanet.Action.ExtractableException.ExtractMetadata*"></a>
-  <h4 id="Libplanet_Action_ExtractableException_ExtractMetadata_System_Exception_" data-uid="Libplanet.Action.ExtractableException.ExtractMetadata(System.Exception)">ExtractMetadata(Exception)</h4>
+  <h4 id="Libplanet_Action_ExtractableException_ExtractMetadata_Exception_" data-uid="Libplanet.Action.ExtractableException.ExtractMetadata(Exception)">ExtractMetadata(Exception)</h4>
   <div class="markdown level1 summary"><p>Extracts metadata from any exception in a general way.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public static IValue? ExtractMetadata(this Exception exception)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IValue? ExtractMetadata(this Exception exception)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -142,7 +117,7 @@ public static IValue? ExtractMetadata(this Exception exception)</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.exception">Exception</a></td>
+        <td><span class="xref">Exception</span></td>
         <td><span class="parametername">exception</span></td>
         <td><p>An exception to extract its metadata from.</p>
 </td>

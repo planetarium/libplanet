@@ -81,47 +81,23 @@
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">StateStoreExtensions</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Store.html">Libplanet.Store</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
   <h5 id="Libplanet_Store_StateStoreExtensions_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static class StateStoreExtensions</code></pre>
+    <pre><code class="lang-csharp hljs">public static class StateStoreExtensions : object</code></pre>
   </div>
   <h3 id="methods">Methods
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_StateStoreExtensions_Commit_Libplanet_Store_IStateStore_System_Nullable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___IImmutableDictionary_System_String_IValue__System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Store.StateStoreExtensions.Commit(Libplanet.Store.IStateStore%2CSystem.Nullable%7BLibplanet.HashDigest%7BSystem.Security.Cryptography.SHA256%7D%7D%2CIImmutableDictionary%7BSystem.String%2CIValue%7D%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_StateStoreExtensions_Commit_Libplanet_Store_IStateStore_System_Nullable_Libplanet_HashDigest_SHA256___IImmutableDictionary_System_String_IValue__System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Store.StateStoreExtensions.Commit(Libplanet.Store.IStateStore%2CSystem.Nullable%7BLibplanet.HashDigest%7BSHA256%7D%7D%2CIImmutableDictionary%7BSystem.String%2CIValue%7D%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/StateStoreExtensions.cs/#L34">View Source</a>
   </span>
   <a id="Libplanet_Store_StateStoreExtensions_Commit_" data-uid="Libplanet.Store.StateStoreExtensions.Commit*"></a>
-  <h4 id="Libplanet_Store_StateStoreExtensions_Commit_Libplanet_Store_IStateStore_System_Nullable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___IImmutableDictionary_System_String_IValue__System_Boolean_" data-uid="Libplanet.Store.StateStoreExtensions.Commit(Libplanet.Store.IStateStore,System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},IImmutableDictionary{System.String,IValue},System.Boolean)">Commit(IStateStore, Nullable&lt;HashDigest&lt;SHA256&gt;&gt;, IImmutableDictionary&lt;String, IValue&gt;, Boolean)</h4>
+  <h4 id="Libplanet_Store_StateStoreExtensions_Commit_Libplanet_Store_IStateStore_System_Nullable_Libplanet_HashDigest_SHA256___IImmutableDictionary_System_String_IValue__System_Boolean_" data-uid="Libplanet.Store.StateStoreExtensions.Commit(Libplanet.Store.IStateStore,System.Nullable{Libplanet.HashDigest{SHA256}},IImmutableDictionary{System.String,IValue},System.Boolean)">Commit(IStateStore, Nullable&lt;HashDigest&lt;SHA256&gt;&gt;, IImmutableDictionary&lt;String, IValue&gt;, Boolean)</h4>
   <div class="markdown level1 summary"><p>Records <code data-dev-comment-type="paramref" class="paramref">rawStatesDelta</code> which is based on the previous state
 root, and returns the new state root.</p>
 </div>
@@ -148,7 +124,7 @@ the <code data-dev-comment-type="paramref" class="paramref">rawStatesDelta</code
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA256</span>&gt;&gt;</td>
         <td><span class="parametername">previousStateRootHash</span></td>
         <td><p>The state root hash on which
 the <code data-dev-comment-type="paramref" class="paramref">rawStatesDelta</code> is based.</p>
@@ -188,13 +164,13 @@ Turned off by default.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_StateStoreExtensions_ContainsStateRoot_Libplanet_Store_IStateStore_Libplanet_HashDigest_System_Security_Cryptography_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.StateStoreExtensions.ContainsStateRoot(Libplanet.Store.IStateStore%2CLibplanet.HashDigest%7BSystem.Security.Cryptography.SHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_StateStoreExtensions_ContainsStateRoot_Libplanet_Store_IStateStore_Libplanet_HashDigest_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.StateStoreExtensions.ContainsStateRoot(Libplanet.Store.IStateStore%2CLibplanet.HashDigest%7BSHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/StateStoreExtensions.cs/#L81">View Source</a>
   </span>
   <a id="Libplanet_Store_StateStoreExtensions_ContainsStateRoot_" data-uid="Libplanet.Store.StateStoreExtensions.ContainsStateRoot*"></a>
-  <h4 id="Libplanet_Store_StateStoreExtensions_ContainsStateRoot_Libplanet_Store_IStateStore_Libplanet_HashDigest_System_Security_Cryptography_SHA256__" data-uid="Libplanet.Store.StateStoreExtensions.ContainsStateRoot(Libplanet.Store.IStateStore,Libplanet.HashDigest{System.Security.Cryptography.SHA256})">ContainsStateRoot(IStateStore, HashDigest&lt;SHA256&gt;)</h4>
+  <h4 id="Libplanet_Store_StateStoreExtensions_ContainsStateRoot_Libplanet_Store_IStateStore_Libplanet_HashDigest_SHA256__" data-uid="Libplanet.Store.StateStoreExtensions.ContainsStateRoot(Libplanet.Store.IStateStore,Libplanet.HashDigest{SHA256})">ContainsStateRoot(IStateStore, HashDigest&lt;SHA256&gt;)</h4>
   <div class="markdown level1 summary"><p>Checks if the state root is recorded in the <code data-dev-comment-type="paramref" class="paramref">stateStore</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -220,7 +196,7 @@ recorded in it.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;</td>
+        <td><a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA256</span>&gt;</td>
         <td><span class="parametername">stateRootHash</span></td>
         <td><p>The hash of the state root to check if it is recorded.</p>
 </td>
@@ -246,13 +222,13 @@ otherwise, <code>false</code>.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_StateStoreExtensions_GetState_Libplanet_Store_IStateStore_System_String_System_Nullable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___.md&amp;value=---%0Auid%3A%20Libplanet.Store.StateStoreExtensions.GetState(Libplanet.Store.IStateStore%2CSystem.String%2CSystem.Nullable%7BLibplanet.HashDigest%7BSystem.Security.Cryptography.SHA256%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_StateStoreExtensions_GetState_Libplanet_Store_IStateStore_System_String_System_Nullable_Libplanet_HashDigest_SHA256___.md&amp;value=---%0Auid%3A%20Libplanet.Store.StateStoreExtensions.GetState(Libplanet.Store.IStateStore%2CSystem.String%2CSystem.Nullable%7BLibplanet.HashDigest%7BSHA256%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/StateStoreExtensions.cs/#L61">View Source</a>
   </span>
   <a id="Libplanet_Store_StateStoreExtensions_GetState_" data-uid="Libplanet.Store.StateStoreExtensions.GetState*"></a>
-  <h4 id="Libplanet_Store_StateStoreExtensions_GetState_Libplanet_Store_IStateStore_System_String_System_Nullable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___" data-uid="Libplanet.Store.StateStoreExtensions.GetState(Libplanet.Store.IStateStore,System.String,System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}})">GetState(IStateStore, String, Nullable&lt;HashDigest&lt;SHA256&gt;&gt;)</h4>
+  <h4 id="Libplanet_Store_StateStoreExtensions_GetState_Libplanet_Store_IStateStore_System_String_System_Nullable_Libplanet_HashDigest_SHA256___" data-uid="Libplanet.Store.StateStoreExtensions.GetState(Libplanet.Store.IStateStore,System.String,System.Nullable{Libplanet.HashDigest{SHA256}})">GetState(IStateStore, String, Nullable&lt;HashDigest&lt;SHA256&gt;&gt;)</h4>
   <div class="markdown level1 summary"><p>Gets the state of the <code data-dev-comment-type="paramref" class="paramref">rawStateKey</code> from
 the <code data-dev-comment-type="paramref" class="paramref">stateRootHash</code>.</p>
 </div>
@@ -284,7 +260,7 @@ the <code data-dev-comment-type="paramref" class="paramref">stateRootHash</code>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA256</span>&gt;&gt;</td>
         <td><span class="parametername">stateRootHash</span></td>
         <td><p>The state root hash to get the state.</p>
 </td>

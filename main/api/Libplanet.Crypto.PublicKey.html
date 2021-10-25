@@ -92,32 +92,11 @@ Libplanet-backed games/apps too.</p>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">PublicKey</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Crypto.html">Libplanet.Crypto</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
   <h5 id="Libplanet_Crypto_PublicKey_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class PublicKey</code></pre>
+    <pre><code class="lang-csharp hljs">public class PublicKey : object</code></pre>
   </div>
   <h5 id="Libplanet_Crypto_PublicKey_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>Every <a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a> object is immutable.</p>
@@ -126,15 +105,15 @@ Libplanet-backed games/apps too.</p>
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Crypto_PublicKey__ctor_System_Collections_Generic_IReadOnlyList_System_Byte__.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PublicKey.%23ctor(System.Collections.Generic.IReadOnlyList%7BSystem.Byte%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Crypto_PublicKey__ctor_IReadOnlyList_System_Byte__.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PublicKey.%23ctor(IReadOnlyList%7BSystem.Byte%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Crypto/PublicKey.cs/#L47">View Source</a>
   </span>
   <a id="Libplanet_Crypto_PublicKey__ctor_" data-uid="Libplanet.Crypto.PublicKey.#ctor*"></a>
-  <h4 id="Libplanet_Crypto_PublicKey__ctor_System_Collections_Generic_IReadOnlyList_System_Byte__" data-uid="Libplanet.Crypto.PublicKey.#ctor(System.Collections.Generic.IReadOnlyList{System.Byte})">PublicKey(IReadOnlyList&lt;Byte&gt;)</h4>
+  <h4 id="Libplanet_Crypto_PublicKey__ctor_IReadOnlyList_System_Byte__" data-uid="Libplanet.Crypto.PublicKey.#ctor(IReadOnlyList{System.Byte})">PublicKey(IReadOnlyList&lt;Byte&gt;)</h4>
   <div class="markdown level1 summary"><p>Creates a <a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a> instance from the given
-<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array (i.e., <code data-dev-comment-type="paramref" class="paramref">publicKey</code>),
+<see cref="!:System.Byte"></see> array (i.e., <code data-dev-comment-type="paramref" class="paramref">publicKey</code>),
 which encodes a valid <a href="https://en.wikipedia.org/wiki/ECDSA">
 ECDSA</a> public key.</p>
 </div>
@@ -154,21 +133,21 @@ ECDSA</a> public key.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
         <td><span class="parametername">publicKey</span></td>
-        <td><p>A valid <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array that
+        <td><p>A valid <see cref="!:System.Byte"></see> array that
 encodes an ECDSA public key.  It can be either compressed or
 not.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Crypto_PublicKey__ctor_System_Collections_Generic_IReadOnlyList_System_Byte___remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>A valid <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array for
+  <h5 id="Libplanet_Crypto_PublicKey__ctor_IReadOnlyList_System_Byte___remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>A valid <see cref="!:System.Byte"></see> array for
 a <a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a> can be encoded using
 <a class="xref" href="Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey_Format_System_Boolean_">Format(Boolean)</a> method.</p>
 </div>
-  <h5 id="Libplanet_Crypto_PublicKey__ctor_System_Collections_Generic_IReadOnlyList_System_Byte___seealso">See Also</h5>
+  <h5 id="Libplanet_Crypto_PublicKey__ctor_IReadOnlyList_System_Byte___seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey_Format_System_Boolean_">Format(Boolean)</a></div>
   </div>
@@ -228,8 +207,8 @@ This can be decrypted with the corresponding <a class="xref" href="Libplanet.Cry
   </table>
   <h5 id="Libplanet_Crypto_PublicKey_Encrypt_ImmutableArray_System_Byte___remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>Although the word “ciphertext” has the word “text”,
-a returned ciphertext is not a Unicode <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, but a mutable
-<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array.</p>
+a returned ciphertext is not a Unicode <see cref="!:System.String"></see>, but a mutable
+<see cref="!:System.Byte"></see> array.</p>
 </div>
   <h5 id="Libplanet_Crypto_PublicKey_Encrypt_ImmutableArray_System_Byte___seealso">See Also</h5>
   <div class="seealso">
@@ -289,8 +268,8 @@ This can be decrypted with the corresponding <a class="xref" href="Libplanet.Cry
   </table>
   <h5 id="Libplanet_Crypto_PublicKey_Encrypt_System_Byte____remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>Although the word “ciphertext” has the word “text”,
-a returned ciphertext is not a Unicode <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, but a mutable
-<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array.</p>
+a returned ciphertext is not a Unicode <see cref="!:System.String"></see>, but a mutable
+<see cref="!:System.Byte"></see> array.</p>
 </div>
   <h5 id="Libplanet_Crypto_PublicKey_Encrypt_System_Byte____seealso">See Also</h5>
   <div class="seealso">
@@ -305,15 +284,14 @@ a returned ciphertext is not a Unicode <a class="xref" href="https://docs.micros
   </span>
   <a id="Libplanet_Crypto_PublicKey_Format_" data-uid="Libplanet.Crypto.PublicKey.Format*"></a>
   <h4 id="Libplanet_Crypto_PublicKey_Format_System_Boolean_" data-uid="Libplanet.Crypto.PublicKey.Format(System.Boolean)">Format(Boolean)</h4>
-  <div class="markdown level1 summary"><p>Encodes this public key into a mutable <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array representation.</p>
+  <div class="markdown level1 summary"><p>Encodes this public key into a mutable <see cref="!:System.Byte"></see> array representation.</p>
 <p>To get an immutable one, use <a class="xref" href="Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey_ToImmutableArray_System_Boolean_">ToImmutableArray(Boolean)</a> method
 instead.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public byte[] Format(bool compress)</code></pre>
+    <pre><code class="lang-csharp hljs">public byte[] Format(bool compress)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -345,9 +323,9 @@ This option does not lose any information.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
-        <td><p>An encoded mutable <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array representation.  It can be
+        <td><p>An encoded mutable <see cref="!:System.Byte"></see> array representation.  It can be
 recovered to a <a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a> instance again using
-<a class="xref" href="Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey__ctor_System_Collections_Generic_IReadOnlyList_System_Byte__">PublicKey(IReadOnlyList&lt;Byte&gt;)</a> constructor whether it is compressed
+<a class="xref" href="Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey__ctor_IReadOnlyList_System_Byte__">PublicKey(IReadOnlyList&lt;Byte&gt;)</a> constructor whether it is compressed
 or not.</p>
 </td>
       </tr>
@@ -356,7 +334,7 @@ or not.</p>
   <h5 id="Libplanet_Crypto_PublicKey_Format_System_Boolean__seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey_ToImmutableArray_System_Boolean_">ToImmutableArray(Boolean)</a></div>
-      <div><a class="xref" href="Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey__ctor_System_Collections_Generic_IReadOnlyList_System_Byte__">PublicKey(IReadOnlyList&lt;Byte&gt;)</a></div>
+      <div><a class="xref" href="Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey__ctor_IReadOnlyList_System_Byte__">PublicKey(IReadOnlyList&lt;Byte&gt;)</a></div>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
@@ -367,14 +345,13 @@ or not.</p>
   </span>
   <a id="Libplanet_Crypto_PublicKey_ToImmutableArray_" data-uid="Libplanet.Crypto.PublicKey.ToImmutableArray*"></a>
   <h4 id="Libplanet_Crypto_PublicKey_ToImmutableArray_System_Boolean_" data-uid="Libplanet.Crypto.PublicKey.ToImmutableArray(System.Boolean)">ToImmutableArray(Boolean)</h4>
-  <div class="markdown level1 summary"><p>Encodes this public key into a immutable <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array representation.</p>
+  <div class="markdown level1 summary"><p>Encodes this public key into a immutable <see cref="!:System.Byte"></see> array representation.</p>
 <p>To get an mutable one, use <a class="xref" href="Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey_Format_System_Boolean_">Format(Boolean)</a> method instead.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public ImmutableArray&lt;byte&gt; ToImmutableArray(bool compress)</code></pre>
+    <pre><code class="lang-csharp hljs">public ImmutableArray&lt;byte&gt; ToImmutableArray(bool compress)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -406,9 +383,9 @@ This option does not lose any information.</p>
     <tbody>
       <tr>
         <td><span class="xref">ImmutableArray</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
-        <td><p>An encoded immutable <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array representation.  It can be
+        <td><p>An encoded immutable <see cref="!:System.Byte"></see> array representation.  It can be
 recovered to a <a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a> instance again using
-<a class="xref" href="Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey__ctor_System_Collections_Generic_IReadOnlyList_System_Byte__">PublicKey(IReadOnlyList&lt;Byte&gt;)</a> constructor whether it is compressed
+<a class="xref" href="Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey__ctor_IReadOnlyList_System_Byte__">PublicKey(IReadOnlyList&lt;Byte&gt;)</a> constructor whether it is compressed
 or not.</p>
 </td>
       </tr>
@@ -417,14 +394,14 @@ or not.</p>
   <h5 id="Libplanet_Crypto_PublicKey_ToImmutableArray_System_Boolean__seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey_Format_System_Boolean_">Format(Boolean)</a></div>
-      <div><a class="xref" href="Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey__ctor_System_Collections_Generic_IReadOnlyList_System_Byte__">PublicKey(IReadOnlyList&lt;Byte&gt;)</a></div>
+      <div><a class="xref" href="Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey__ctor_IReadOnlyList_System_Byte__">PublicKey(IReadOnlyList&lt;Byte&gt;)</a></div>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Crypto_PublicKey_ToString.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PublicKey.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Crypto/PublicKey.cs/#L176">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Crypto/PublicKey.cs/#L188">View Source</a>
   </span>
   <a id="Libplanet_Crypto_PublicKey_ToString_" data-uid="Libplanet.Crypto.PublicKey.ToString*"></a>
   <h4 id="Libplanet_Crypto_PublicKey_ToString" data-uid="Libplanet.Crypto.PublicKey.ToString">ToString()</h4>
@@ -451,25 +428,22 @@ or not.</p>
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Crypto_PublicKey_Verify_System_Collections_Generic_IReadOnlyList_System_Byte__System_Collections_Generic_IReadOnlyList_System_Byte__.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PublicKey.Verify(System.Collections.Generic.IReadOnlyList%7BSystem.Byte%7D%2CSystem.Collections.Generic.IReadOnlyList%7BSystem.Byte%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Crypto_PublicKey_Verify_IReadOnlyList_System_Byte__IReadOnlyList_System_Byte__.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PublicKey.Verify(IReadOnlyList%7BSystem.Byte%7D%2CIReadOnlyList%7BSystem.Byte%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Crypto/PublicKey.cs/#L152">View Source</a>
   </span>
   <a id="Libplanet_Crypto_PublicKey_Verify_" data-uid="Libplanet.Crypto.PublicKey.Verify*"></a>
-  <h4 id="Libplanet_Crypto_PublicKey_Verify_System_Collections_Generic_IReadOnlyList_System_Byte__System_Collections_Generic_IReadOnlyList_System_Byte__" data-uid="Libplanet.Crypto.PublicKey.Verify(System.Collections.Generic.IReadOnlyList{System.Byte},System.Collections.Generic.IReadOnlyList{System.Byte})">Verify(IReadOnlyList&lt;Byte&gt;, IReadOnlyList&lt;Byte&gt;)</h4>
+  <h4 id="Libplanet_Crypto_PublicKey_Verify_IReadOnlyList_System_Byte__IReadOnlyList_System_Byte__" data-uid="Libplanet.Crypto.PublicKey.Verify(IReadOnlyList{System.Byte},IReadOnlyList{System.Byte})">Verify(IReadOnlyList&lt;Byte&gt;, IReadOnlyList&lt;Byte&gt;)</h4>
   <div class="markdown level1 summary"><p>Verifies whether a <code data-dev-comment-type="paramref" class="paramref">signature</code> proves authenticity of
 <code data-dev-comment-type="paramref" class="paramref">message</code> with the corresponding <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public bool Verify(IReadOnlyList&lt;byte&gt; message, IReadOnlyList&lt;byte&gt; signature)</code></pre>
+    <pre><code class="lang-csharp hljs">public bool Verify(IReadOnlyList&lt;byte&gt; message, IReadOnlyList&lt;byte&gt; signature)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -482,7 +456,7 @@ public bool Verify(IReadOnlyList&lt;byte&gt; message, IReadOnlyList&lt;byte&gt; 
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
         <td><span class="parametername">message</span></td>
         <td><p>A original plaintext message that the <code data-dev-comment-type="paramref" class="paramref">signature</code>
 tries to prove its authenticity.  I.e., an argument data passed to
@@ -490,7 +464,7 @@ tries to prove its authenticity.  I.e., an argument data passed to
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
         <td><span class="parametername">signature</span></td>
         <td><p>A signature which tries to authenticity of
 <code data-dev-comment-type="paramref" class="paramref">message</code>.  I.e., a data that <a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_Sign_System_Byte___">Sign(Byte[])</a> or
