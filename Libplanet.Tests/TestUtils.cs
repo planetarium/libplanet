@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 using Bencodex.Types;
 using DiffPlex.DiffBuilder;
 using DiffPlex.DiffBuilder.Model;
@@ -495,5 +497,35 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
 
             return privateKey;
         }
+
+        public static async Task AssertThatEventually(
+            Expression<Func<bool>> condition,
+            TimeSpan timeout,
+            TimeSpan delay
+        )
+        {
+            Func<bool> conditionFunc = condition.Compile();
+            DateTimeOffset until = DateTimeOffset.UtcNow + timeout;
+            while (!conditionFunc() && DateTimeOffset.UtcNow <= until)
+            {
+                await Task.Delay(delay);
+            }
+
+            Assert.True(
+                conditionFunc(),
+                $"Waited {timeout} but the condition ({condition.Body}) has never been satisfied."
+            );
+        }
+
+        public static Task AssertThatEventually(
+            Expression<Func<bool>> condition,
+            int timeoutMilliseconds,
+            int delayMilliseconds = 100
+        ) =>
+            AssertThatEventually(
+                condition,
+                TimeSpan.FromMilliseconds(timeoutMilliseconds),
+                TimeSpan.FromMilliseconds(delayMilliseconds)
+            );
     }
 }
