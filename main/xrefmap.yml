@@ -18331,6 +18331,616 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStore.SetCanonicalChainId
   nameWithType: IStore.SetCanonicalChainId
+- uid: Libplanet.Store.MemoryStore
+  name: MemoryStore
+  href: api/Libplanet.Store.MemoryStore.html
+  commentId: T:Libplanet.Store.MemoryStore
+  fullName: Libplanet.Store.MemoryStore
+  nameWithType: MemoryStore
+- uid: Libplanet.Store.MemoryStore.ForkBlockIndexes(Guid,Guid,Libplanet.Blocks.BlockHash)
+  name: ForkBlockIndexes(Guid, Guid, BlockHash)
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_ForkBlockIndexes_Guid_Guid_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Store.MemoryStore.ForkBlockIndexes(Guid,Guid,Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.Store.MemoryStore.ForkBlockIndexes(Guid, Guid, Libplanet.Blocks.BlockHash)
+  nameWithType: MemoryStore.ForkBlockIndexes(Guid, Guid, BlockHash)
+- uid: Libplanet.Store.MemoryStore.ForkBlockIndexes*
+  name: ForkBlockIndexes
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_ForkBlockIndexes_
+  commentId: Overload:Libplanet.Store.MemoryStore.ForkBlockIndexes
+  isSpec: "True"
+  fullName: Libplanet.Store.MemoryStore.ForkBlockIndexes
+  nameWithType: MemoryStore.ForkBlockIndexes
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#AppendIndex(Guid,Libplanet.Blocks.BlockHash)
+  name: IStore.AppendIndex(Guid, BlockHash)
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_AppendIndex_Guid_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#AppendIndex(Guid,Libplanet.Blocks.BlockHash)
+  name.vb: Libplanet.Store.IStore.AppendIndex(Guid, BlockHash)
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.AppendIndex(Guid, Libplanet.Blocks.BlockHash)
+  nameWithType: MemoryStore.IStore.AppendIndex(Guid, BlockHash)
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.AppendIndex(Guid, BlockHash)
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#AppendIndex*
+  name: IStore.AppendIndex
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_AppendIndex_
+  commentId: Overload:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#AppendIndex
+  isSpec: "True"
+  name.vb: Libplanet.Store.IStore.AppendIndex
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.AppendIndex
+  nameWithType: MemoryStore.IStore.AppendIndex
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.AppendIndex
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#ContainsBlock(Libplanet.Blocks.BlockHash)
+  name: IStore.ContainsBlock(BlockHash)
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_ContainsBlock_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#ContainsBlock(Libplanet.Blocks.BlockHash)
+  name.vb: Libplanet.Store.IStore.ContainsBlock(BlockHash)
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.ContainsBlock(Libplanet.Blocks.BlockHash)
+  nameWithType: MemoryStore.IStore.ContainsBlock(BlockHash)
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.ContainsBlock(BlockHash)
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#ContainsBlock*
+  name: IStore.ContainsBlock
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_ContainsBlock_
+  commentId: Overload:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#ContainsBlock
+  isSpec: "True"
+  name.vb: Libplanet.Store.IStore.ContainsBlock
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.ContainsBlock
+  nameWithType: MemoryStore.IStore.ContainsBlock
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.ContainsBlock
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#ContainsTransaction(Libplanet.Tx.TxId)
+  name: IStore.ContainsTransaction(TxId)
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_ContainsTransaction_Libplanet_Tx_TxId_
+  commentId: M:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#ContainsTransaction(Libplanet.Tx.TxId)
+  name.vb: Libplanet.Store.IStore.ContainsTransaction(TxId)
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.ContainsTransaction(Libplanet.Tx.TxId)
+  nameWithType: MemoryStore.IStore.ContainsTransaction(TxId)
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.ContainsTransaction(TxId)
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#ContainsTransaction*
+  name: IStore.ContainsTransaction
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_ContainsTransaction_
+  commentId: Overload:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#ContainsTransaction
+  isSpec: "True"
+  name.vb: Libplanet.Store.IStore.ContainsTransaction
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.ContainsTransaction
+  nameWithType: MemoryStore.IStore.ContainsTransaction
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.ContainsTransaction
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#CountBlocks
+  name: IStore.CountBlocks()
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_CountBlocks
+  commentId: M:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#CountBlocks
+  name.vb: Libplanet.Store.IStore.CountBlocks()
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.CountBlocks()
+  nameWithType: MemoryStore.IStore.CountBlocks()
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.CountBlocks()
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#CountBlocks*
+  name: IStore.CountBlocks
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_CountBlocks_
+  commentId: Overload:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#CountBlocks
+  isSpec: "True"
+  name.vb: Libplanet.Store.IStore.CountBlocks
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.CountBlocks
+  nameWithType: MemoryStore.IStore.CountBlocks
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.CountBlocks
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#CountIndex(Guid)
+  name: IStore.CountIndex(Guid)
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_CountIndex_Guid_
+  commentId: M:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#CountIndex(Guid)
+  name.vb: Libplanet.Store.IStore.CountIndex(Guid)
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.CountIndex(Guid)
+  nameWithType: MemoryStore.IStore.CountIndex(Guid)
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.CountIndex(Guid)
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#CountIndex*
+  name: IStore.CountIndex
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_CountIndex_
+  commentId: Overload:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#CountIndex
+  isSpec: "True"
+  name.vb: Libplanet.Store.IStore.CountIndex
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.CountIndex
+  nameWithType: MemoryStore.IStore.CountIndex
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.CountIndex
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#CountTransactions
+  name: IStore.CountTransactions()
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_CountTransactions
+  commentId: M:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#CountTransactions
+  name.vb: Libplanet.Store.IStore.CountTransactions()
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.CountTransactions()
+  nameWithType: MemoryStore.IStore.CountTransactions()
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.CountTransactions()
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#CountTransactions*
+  name: IStore.CountTransactions
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_CountTransactions_
+  commentId: Overload:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#CountTransactions
+  isSpec: "True"
+  name.vb: Libplanet.Store.IStore.CountTransactions
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.CountTransactions
+  nameWithType: MemoryStore.IStore.CountTransactions
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.CountTransactions
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#DeleteBlock(Libplanet.Blocks.BlockHash)
+  name: IStore.DeleteBlock(BlockHash)
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_DeleteBlock_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#DeleteBlock(Libplanet.Blocks.BlockHash)
+  name.vb: Libplanet.Store.IStore.DeleteBlock(BlockHash)
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.DeleteBlock(Libplanet.Blocks.BlockHash)
+  nameWithType: MemoryStore.IStore.DeleteBlock(BlockHash)
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.DeleteBlock(BlockHash)
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#DeleteBlock*
+  name: IStore.DeleteBlock
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_DeleteBlock_
+  commentId: Overload:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#DeleteBlock
+  isSpec: "True"
+  name.vb: Libplanet.Store.IStore.DeleteBlock
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.DeleteBlock
+  nameWithType: MemoryStore.IStore.DeleteBlock
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.DeleteBlock
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#DeleteChainId(Guid)
+  name: IStore.DeleteChainId(Guid)
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_DeleteChainId_Guid_
+  commentId: M:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#DeleteChainId(Guid)
+  name.vb: Libplanet.Store.IStore.DeleteChainId(Guid)
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.DeleteChainId(Guid)
+  nameWithType: MemoryStore.IStore.DeleteChainId(Guid)
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.DeleteChainId(Guid)
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#DeleteChainId*
+  name: IStore.DeleteChainId
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_DeleteChainId_
+  commentId: Overload:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#DeleteChainId
+  isSpec: "True"
+  name.vb: Libplanet.Store.IStore.DeleteChainId
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.DeleteChainId
+  nameWithType: MemoryStore.IStore.DeleteChainId
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.DeleteChainId
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#DeleteTransaction(Libplanet.Tx.TxId)
+  name: IStore.DeleteTransaction(TxId)
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_DeleteTransaction_Libplanet_Tx_TxId_
+  commentId: M:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#DeleteTransaction(Libplanet.Tx.TxId)
+  name.vb: Libplanet.Store.IStore.DeleteTransaction(TxId)
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.DeleteTransaction(Libplanet.Tx.TxId)
+  nameWithType: MemoryStore.IStore.DeleteTransaction(TxId)
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.DeleteTransaction(TxId)
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#DeleteTransaction*
+  name: IStore.DeleteTransaction
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_DeleteTransaction_
+  commentId: Overload:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#DeleteTransaction
+  isSpec: "True"
+  name.vb: Libplanet.Store.IStore.DeleteTransaction
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.DeleteTransaction
+  nameWithType: MemoryStore.IStore.DeleteTransaction
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.DeleteTransaction
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#DeleteTxIdBlockHashIndex(Libplanet.Tx.TxId,Libplanet.Blocks.BlockHash)
+  name: IStore.DeleteTxIdBlockHashIndex(TxId, BlockHash)
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_DeleteTxIdBlockHashIndex_Libplanet_Tx_TxId_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#DeleteTxIdBlockHashIndex(Libplanet.Tx.TxId,Libplanet.Blocks.BlockHash)
+  name.vb: Libplanet.Store.IStore.DeleteTxIdBlockHashIndex(TxId, BlockHash)
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.DeleteTxIdBlockHashIndex(Libplanet.Tx.TxId, Libplanet.Blocks.BlockHash)
+  nameWithType: MemoryStore.IStore.DeleteTxIdBlockHashIndex(TxId, BlockHash)
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.DeleteTxIdBlockHashIndex(TxId, BlockHash)
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#DeleteTxIdBlockHashIndex*
+  name: IStore.DeleteTxIdBlockHashIndex
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_DeleteTxIdBlockHashIndex_
+  commentId: Overload:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#DeleteTxIdBlockHashIndex
+  isSpec: "True"
+  name.vb: Libplanet.Store.IStore.DeleteTxIdBlockHashIndex
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.DeleteTxIdBlockHashIndex
+  nameWithType: MemoryStore.IStore.DeleteTxIdBlockHashIndex
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.DeleteTxIdBlockHashIndex
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#ForkTxNonces(Guid,Guid)
+  name: IStore.ForkTxNonces(Guid, Guid)
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_ForkTxNonces_Guid_Guid_
+  commentId: M:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#ForkTxNonces(Guid,Guid)
+  name.vb: Libplanet.Store.IStore.ForkTxNonces(Guid, Guid)
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.ForkTxNonces(Guid, Guid)
+  nameWithType: MemoryStore.IStore.ForkTxNonces(Guid, Guid)
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.ForkTxNonces(Guid, Guid)
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#ForkTxNonces*
+  name: IStore.ForkTxNonces
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_ForkTxNonces_
+  commentId: Overload:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#ForkTxNonces
+  isSpec: "True"
+  name.vb: Libplanet.Store.IStore.ForkTxNonces
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.ForkTxNonces
+  nameWithType: MemoryStore.IStore.ForkTxNonces
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.ForkTxNonces
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetBlock*
+  name: IStore.GetBlock
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetBlock_
+  commentId: Overload:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetBlock
+  isSpec: "True"
+  name.vb: Libplanet.Store.IStore.GetBlock
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.GetBlock
+  nameWithType: MemoryStore.IStore.GetBlock
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.GetBlock
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetBlock``1(Libplanet.Blocks.HashAlgorithmGetter,Libplanet.Blocks.BlockHash)
+  name: IStore.GetBlock<T>(HashAlgorithmGetter, BlockHash)
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetBlock__1_Libplanet_Blocks_HashAlgorithmGetter_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetBlock``1(Libplanet.Blocks.HashAlgorithmGetter,Libplanet.Blocks.BlockHash)
+  name.vb: Libplanet.Store.IStore.GetBlock(Of T)(HashAlgorithmGetter, BlockHash)
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.GetBlock<T>(Libplanet.Blocks.HashAlgorithmGetter, Libplanet.Blocks.BlockHash)
+  fullName.vb: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.GetBlock(Of T)(Libplanet.Blocks.HashAlgorithmGetter, Libplanet.Blocks.BlockHash)
+  nameWithType: MemoryStore.IStore.GetBlock<T>(HashAlgorithmGetter, BlockHash)
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.GetBlock(Of T)(HashAlgorithmGetter, BlockHash)
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetBlockDigest(Libplanet.Blocks.BlockHash)
+  name: IStore.GetBlockDigest(BlockHash)
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetBlockDigest_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetBlockDigest(Libplanet.Blocks.BlockHash)
+  name.vb: Libplanet.Store.IStore.GetBlockDigest(BlockHash)
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.GetBlockDigest(Libplanet.Blocks.BlockHash)
+  nameWithType: MemoryStore.IStore.GetBlockDigest(BlockHash)
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.GetBlockDigest(BlockHash)
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetBlockDigest*
+  name: IStore.GetBlockDigest
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetBlockDigest_
+  commentId: Overload:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetBlockDigest
+  isSpec: "True"
+  name.vb: Libplanet.Store.IStore.GetBlockDigest
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.GetBlockDigest
+  nameWithType: MemoryStore.IStore.GetBlockDigest
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.GetBlockDigest
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetBlockIndex(Libplanet.Blocks.BlockHash)
+  name: IStore.GetBlockIndex(BlockHash)
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetBlockIndex_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetBlockIndex(Libplanet.Blocks.BlockHash)
+  name.vb: Libplanet.Store.IStore.GetBlockIndex(BlockHash)
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.GetBlockIndex(Libplanet.Blocks.BlockHash)
+  nameWithType: MemoryStore.IStore.GetBlockIndex(BlockHash)
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.GetBlockIndex(BlockHash)
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetBlockIndex*
+  name: IStore.GetBlockIndex
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetBlockIndex_
+  commentId: Overload:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetBlockIndex
+  isSpec: "True"
+  name.vb: Libplanet.Store.IStore.GetBlockIndex
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.GetBlockIndex
+  nameWithType: MemoryStore.IStore.GetBlockIndex
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.GetBlockIndex
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetBlockPerceivedTime(Libplanet.Blocks.BlockHash)
+  name: IStore.GetBlockPerceivedTime(BlockHash)
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetBlockPerceivedTime_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetBlockPerceivedTime(Libplanet.Blocks.BlockHash)
+  name.vb: Libplanet.Store.IStore.GetBlockPerceivedTime(BlockHash)
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.GetBlockPerceivedTime(Libplanet.Blocks.BlockHash)
+  nameWithType: MemoryStore.IStore.GetBlockPerceivedTime(BlockHash)
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.GetBlockPerceivedTime(BlockHash)
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetBlockPerceivedTime*
+  name: IStore.GetBlockPerceivedTime
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetBlockPerceivedTime_
+  commentId: Overload:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetBlockPerceivedTime
+  isSpec: "True"
+  name.vb: Libplanet.Store.IStore.GetBlockPerceivedTime
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.GetBlockPerceivedTime
+  nameWithType: MemoryStore.IStore.GetBlockPerceivedTime
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.GetBlockPerceivedTime
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetCanonicalChainId
+  name: IStore.GetCanonicalChainId()
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetCanonicalChainId
+  commentId: M:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetCanonicalChainId
+  name.vb: Libplanet.Store.IStore.GetCanonicalChainId()
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.GetCanonicalChainId()
+  nameWithType: MemoryStore.IStore.GetCanonicalChainId()
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.GetCanonicalChainId()
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetCanonicalChainId*
+  name: IStore.GetCanonicalChainId
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetCanonicalChainId_
+  commentId: Overload:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetCanonicalChainId
+  isSpec: "True"
+  name.vb: Libplanet.Store.IStore.GetCanonicalChainId
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.GetCanonicalChainId
+  nameWithType: MemoryStore.IStore.GetCanonicalChainId
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.GetCanonicalChainId
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetFirstTxIdBlockHashIndex(Libplanet.Tx.TxId)
+  name: IStore.GetFirstTxIdBlockHashIndex(TxId)
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetFirstTxIdBlockHashIndex_Libplanet_Tx_TxId_
+  commentId: M:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetFirstTxIdBlockHashIndex(Libplanet.Tx.TxId)
+  name.vb: Libplanet.Store.IStore.GetFirstTxIdBlockHashIndex(TxId)
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.GetFirstTxIdBlockHashIndex(Libplanet.Tx.TxId)
+  nameWithType: MemoryStore.IStore.GetFirstTxIdBlockHashIndex(TxId)
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.GetFirstTxIdBlockHashIndex(TxId)
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetFirstTxIdBlockHashIndex*
+  name: IStore.GetFirstTxIdBlockHashIndex
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetFirstTxIdBlockHashIndex_
+  commentId: Overload:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetFirstTxIdBlockHashIndex
+  isSpec: "True"
+  name.vb: Libplanet.Store.IStore.GetFirstTxIdBlockHashIndex
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.GetFirstTxIdBlockHashIndex
+  nameWithType: MemoryStore.IStore.GetFirstTxIdBlockHashIndex
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.GetFirstTxIdBlockHashIndex
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetTransaction*
+  name: IStore.GetTransaction
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetTransaction_
+  commentId: Overload:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetTransaction
+  isSpec: "True"
+  name.vb: Libplanet.Store.IStore.GetTransaction
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.GetTransaction
+  nameWithType: MemoryStore.IStore.GetTransaction
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.GetTransaction
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetTransaction``1(Libplanet.Tx.TxId)
+  name: IStore.GetTransaction<T>(TxId)
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetTransaction__1_Libplanet_Tx_TxId_
+  commentId: M:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetTransaction``1(Libplanet.Tx.TxId)
+  name.vb: Libplanet.Store.IStore.GetTransaction(Of T)(TxId)
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.GetTransaction<T>(Libplanet.Tx.TxId)
+  fullName.vb: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.GetTransaction(Of T)(Libplanet.Tx.TxId)
+  nameWithType: MemoryStore.IStore.GetTransaction<T>(TxId)
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.GetTransaction(Of T)(TxId)
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetTxExecution(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId)
+  name: IStore.GetTxExecution(BlockHash, TxId)
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetTxExecution_Libplanet_Blocks_BlockHash_Libplanet_Tx_TxId_
+  commentId: M:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetTxExecution(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId)
+  name.vb: Libplanet.Store.IStore.GetTxExecution(BlockHash, TxId)
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.GetTxExecution(Libplanet.Blocks.BlockHash, Libplanet.Tx.TxId)
+  nameWithType: MemoryStore.IStore.GetTxExecution(BlockHash, TxId)
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.GetTxExecution(BlockHash, TxId)
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetTxExecution*
+  name: IStore.GetTxExecution
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetTxExecution_
+  commentId: Overload:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetTxExecution
+  isSpec: "True"
+  name.vb: Libplanet.Store.IStore.GetTxExecution
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.GetTxExecution
+  nameWithType: MemoryStore.IStore.GetTxExecution
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.GetTxExecution
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetTxNonce(Guid,Libplanet.Address)
+  name: IStore.GetTxNonce(Guid, Address)
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetTxNonce_Guid_Libplanet_Address_
+  commentId: M:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetTxNonce(Guid,Libplanet.Address)
+  name.vb: Libplanet.Store.IStore.GetTxNonce(Guid, Address)
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.GetTxNonce(Guid, Libplanet.Address)
+  nameWithType: MemoryStore.IStore.GetTxNonce(Guid, Address)
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.GetTxNonce(Guid, Address)
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetTxNonce*
+  name: IStore.GetTxNonce
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetTxNonce_
+  commentId: Overload:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetTxNonce
+  isSpec: "True"
+  name.vb: Libplanet.Store.IStore.GetTxNonce
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.GetTxNonce
+  nameWithType: MemoryStore.IStore.GetTxNonce
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.GetTxNonce
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#IncreaseTxNonce(Guid,Libplanet.Address,System.Int64)
+  name: IStore.IncreaseTxNonce(Guid, Address, Int64)
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_IncreaseTxNonce_Guid_Libplanet_Address_System_Int64_
+  commentId: M:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#IncreaseTxNonce(Guid,Libplanet.Address,System.Int64)
+  name.vb: Libplanet.Store.IStore.IncreaseTxNonce(Guid, Address, Int64)
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.IncreaseTxNonce(Guid, Libplanet.Address, System.Int64)
+  nameWithType: MemoryStore.IStore.IncreaseTxNonce(Guid, Address, Int64)
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.IncreaseTxNonce(Guid, Address, Int64)
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#IncreaseTxNonce*
+  name: IStore.IncreaseTxNonce
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_IncreaseTxNonce_
+  commentId: Overload:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#IncreaseTxNonce
+  isSpec: "True"
+  name.vb: Libplanet.Store.IStore.IncreaseTxNonce
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.IncreaseTxNonce
+  nameWithType: MemoryStore.IStore.IncreaseTxNonce
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.IncreaseTxNonce
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#IndexBlockHash(Guid,System.Int64)
+  name: IStore.IndexBlockHash(Guid, Int64)
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_IndexBlockHash_Guid_System_Int64_
+  commentId: M:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#IndexBlockHash(Guid,System.Int64)
+  name.vb: Libplanet.Store.IStore.IndexBlockHash(Guid, Int64)
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.IndexBlockHash(Guid, System.Int64)
+  nameWithType: MemoryStore.IStore.IndexBlockHash(Guid, Int64)
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.IndexBlockHash(Guid, Int64)
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#IndexBlockHash*
+  name: IStore.IndexBlockHash
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_IndexBlockHash_
+  commentId: Overload:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#IndexBlockHash
+  isSpec: "True"
+  name.vb: Libplanet.Store.IStore.IndexBlockHash
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.IndexBlockHash
+  nameWithType: MemoryStore.IStore.IndexBlockHash
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.IndexBlockHash
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#IterateBlockHashes
+  name: IStore.IterateBlockHashes()
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_IterateBlockHashes
+  commentId: M:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#IterateBlockHashes
+  name.vb: Libplanet.Store.IStore.IterateBlockHashes()
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.IterateBlockHashes()
+  nameWithType: MemoryStore.IStore.IterateBlockHashes()
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.IterateBlockHashes()
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#IterateBlockHashes*
+  name: IStore.IterateBlockHashes
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_IterateBlockHashes_
+  commentId: Overload:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#IterateBlockHashes
+  isSpec: "True"
+  name.vb: Libplanet.Store.IStore.IterateBlockHashes
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.IterateBlockHashes
+  nameWithType: MemoryStore.IStore.IterateBlockHashes
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.IterateBlockHashes
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#IterateIndexes(Guid,System.Int32,System.Nullable{System.Int32})
+  name: IStore.IterateIndexes(Guid, Int32, Nullable<Int32>)
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_IterateIndexes_Guid_System_Int32_System_Nullable_System_Int32__
+  commentId: M:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#IterateIndexes(Guid,System.Int32,System.Nullable{System.Int32})
+  name.vb: Libplanet.Store.IStore.IterateIndexes(Guid, Int32, Nullable(Of Int32))
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.IterateIndexes(Guid, System.Int32, System.Nullable<System.Int32>)
+  fullName.vb: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.IterateIndexes(Guid, System.Int32, System.Nullable(Of System.Int32))
+  nameWithType: MemoryStore.IStore.IterateIndexes(Guid, Int32, Nullable<Int32>)
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.IterateIndexes(Guid, Int32, Nullable(Of Int32))
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#IterateIndexes*
+  name: IStore.IterateIndexes
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_IterateIndexes_
+  commentId: Overload:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#IterateIndexes
+  isSpec: "True"
+  name.vb: Libplanet.Store.IStore.IterateIndexes
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.IterateIndexes
+  nameWithType: MemoryStore.IStore.IterateIndexes
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.IterateIndexes
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#IterateTransactionIds
+  name: IStore.IterateTransactionIds()
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_IterateTransactionIds
+  commentId: M:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#IterateTransactionIds
+  name.vb: Libplanet.Store.IStore.IterateTransactionIds()
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.IterateTransactionIds()
+  nameWithType: MemoryStore.IStore.IterateTransactionIds()
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.IterateTransactionIds()
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#IterateTransactionIds*
+  name: IStore.IterateTransactionIds
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_IterateTransactionIds_
+  commentId: Overload:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#IterateTransactionIds
+  isSpec: "True"
+  name.vb: Libplanet.Store.IStore.IterateTransactionIds
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.IterateTransactionIds
+  nameWithType: MemoryStore.IStore.IterateTransactionIds
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.IterateTransactionIds
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#IterateTxIdBlockHashIndex(Libplanet.Tx.TxId)
+  name: IStore.IterateTxIdBlockHashIndex(TxId)
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_IterateTxIdBlockHashIndex_Libplanet_Tx_TxId_
+  commentId: M:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#IterateTxIdBlockHashIndex(Libplanet.Tx.TxId)
+  name.vb: Libplanet.Store.IStore.IterateTxIdBlockHashIndex(TxId)
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.IterateTxIdBlockHashIndex(Libplanet.Tx.TxId)
+  nameWithType: MemoryStore.IStore.IterateTxIdBlockHashIndex(TxId)
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.IterateTxIdBlockHashIndex(TxId)
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#IterateTxIdBlockHashIndex*
+  name: IStore.IterateTxIdBlockHashIndex
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_IterateTxIdBlockHashIndex_
+  commentId: Overload:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#IterateTxIdBlockHashIndex
+  isSpec: "True"
+  name.vb: Libplanet.Store.IStore.IterateTxIdBlockHashIndex
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.IterateTxIdBlockHashIndex
+  nameWithType: MemoryStore.IStore.IterateTxIdBlockHashIndex
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.IterateTxIdBlockHashIndex
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#ListChainIds
+  name: IStore.ListChainIds()
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_ListChainIds
+  commentId: M:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#ListChainIds
+  name.vb: Libplanet.Store.IStore.ListChainIds()
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.ListChainIds()
+  nameWithType: MemoryStore.IStore.ListChainIds()
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.ListChainIds()
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#ListChainIds*
+  name: IStore.ListChainIds
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_ListChainIds_
+  commentId: Overload:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#ListChainIds
+  isSpec: "True"
+  name.vb: Libplanet.Store.IStore.ListChainIds
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.ListChainIds
+  nameWithType: MemoryStore.IStore.ListChainIds
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.ListChainIds
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#ListTxNonces(Guid)
+  name: IStore.ListTxNonces(Guid)
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_ListTxNonces_Guid_
+  commentId: M:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#ListTxNonces(Guid)
+  name.vb: Libplanet.Store.IStore.ListTxNonces(Guid)
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.ListTxNonces(Guid)
+  nameWithType: MemoryStore.IStore.ListTxNonces(Guid)
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.ListTxNonces(Guid)
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#ListTxNonces*
+  name: IStore.ListTxNonces
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_ListTxNonces_
+  commentId: Overload:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#ListTxNonces
+  isSpec: "True"
+  name.vb: Libplanet.Store.IStore.ListTxNonces
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.ListTxNonces
+  nameWithType: MemoryStore.IStore.ListTxNonces
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.ListTxNonces
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#PutBlock*
+  name: IStore.PutBlock
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_PutBlock_
+  commentId: Overload:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#PutBlock
+  isSpec: "True"
+  name.vb: Libplanet.Store.IStore.PutBlock
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.PutBlock
+  nameWithType: MemoryStore.IStore.PutBlock
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.PutBlock
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#PutBlock``1(Libplanet.Blocks.Block{``0})
+  name: IStore.PutBlock<T>(Block<T>)
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_PutBlock__1_Libplanet_Blocks_Block___0__
+  commentId: M:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#PutBlock``1(Libplanet.Blocks.Block{``0})
+  name.vb: Libplanet.Store.IStore.PutBlock(Of T)(Block(Of T))
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.PutBlock<T>(Libplanet.Blocks.Block<T>)
+  fullName.vb: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.PutBlock(Of T)(Libplanet.Blocks.Block(Of T))
+  nameWithType: MemoryStore.IStore.PutBlock<T>(Block<T>)
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.PutBlock(Of T)(Block(Of T))
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#PutTransaction*
+  name: IStore.PutTransaction
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_PutTransaction_
+  commentId: Overload:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#PutTransaction
+  isSpec: "True"
+  name.vb: Libplanet.Store.IStore.PutTransaction
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.PutTransaction
+  nameWithType: MemoryStore.IStore.PutTransaction
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.PutTransaction
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#PutTransaction``1(Libplanet.Tx.Transaction{``0})
+  name: IStore.PutTransaction<T>(Transaction<T>)
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_PutTransaction__1_Libplanet_Tx_Transaction___0__
+  commentId: M:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#PutTransaction``1(Libplanet.Tx.Transaction{``0})
+  name.vb: Libplanet.Store.IStore.PutTransaction(Of T)(Transaction(Of T))
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.PutTransaction<T>(Libplanet.Tx.Transaction<T>)
+  fullName.vb: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.PutTransaction(Of T)(Libplanet.Tx.Transaction(Of T))
+  nameWithType: MemoryStore.IStore.PutTransaction<T>(Transaction<T>)
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.PutTransaction(Of T)(Transaction(Of T))
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#PutTxExecution(Libplanet.Tx.TxFailure)
+  name: IStore.PutTxExecution(TxFailure)
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_PutTxExecution_Libplanet_Tx_TxFailure_
+  commentId: M:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#PutTxExecution(Libplanet.Tx.TxFailure)
+  name.vb: Libplanet.Store.IStore.PutTxExecution(TxFailure)
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.PutTxExecution(Libplanet.Tx.TxFailure)
+  nameWithType: MemoryStore.IStore.PutTxExecution(TxFailure)
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.PutTxExecution(TxFailure)
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#PutTxExecution(Libplanet.Tx.TxSuccess)
+  name: IStore.PutTxExecution(TxSuccess)
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_PutTxExecution_Libplanet_Tx_TxSuccess_
+  commentId: M:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#PutTxExecution(Libplanet.Tx.TxSuccess)
+  name.vb: Libplanet.Store.IStore.PutTxExecution(TxSuccess)
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.PutTxExecution(Libplanet.Tx.TxSuccess)
+  nameWithType: MemoryStore.IStore.PutTxExecution(TxSuccess)
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.PutTxExecution(TxSuccess)
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#PutTxExecution*
+  name: IStore.PutTxExecution
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_PutTxExecution_
+  commentId: Overload:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#PutTxExecution
+  isSpec: "True"
+  name.vb: Libplanet.Store.IStore.PutTxExecution
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.PutTxExecution
+  nameWithType: MemoryStore.IStore.PutTxExecution
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.PutTxExecution
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#PutTxIdBlockHashIndex(Libplanet.Tx.TxId,Libplanet.Blocks.BlockHash)
+  name: IStore.PutTxIdBlockHashIndex(TxId, BlockHash)
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_PutTxIdBlockHashIndex_Libplanet_Tx_TxId_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#PutTxIdBlockHashIndex(Libplanet.Tx.TxId,Libplanet.Blocks.BlockHash)
+  name.vb: Libplanet.Store.IStore.PutTxIdBlockHashIndex(TxId, BlockHash)
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.PutTxIdBlockHashIndex(Libplanet.Tx.TxId, Libplanet.Blocks.BlockHash)
+  nameWithType: MemoryStore.IStore.PutTxIdBlockHashIndex(TxId, BlockHash)
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.PutTxIdBlockHashIndex(TxId, BlockHash)
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#PutTxIdBlockHashIndex*
+  name: IStore.PutTxIdBlockHashIndex
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_PutTxIdBlockHashIndex_
+  commentId: Overload:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#PutTxIdBlockHashIndex
+  isSpec: "True"
+  name.vb: Libplanet.Store.IStore.PutTxIdBlockHashIndex
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.PutTxIdBlockHashIndex
+  nameWithType: MemoryStore.IStore.PutTxIdBlockHashIndex
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.PutTxIdBlockHashIndex
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#SetBlockPerceivedTime(Libplanet.Blocks.BlockHash,DateTimeOffset)
+  name: IStore.SetBlockPerceivedTime(BlockHash, DateTimeOffset)
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_SetBlockPerceivedTime_Libplanet_Blocks_BlockHash_DateTimeOffset_
+  commentId: M:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#SetBlockPerceivedTime(Libplanet.Blocks.BlockHash,DateTimeOffset)
+  name.vb: Libplanet.Store.IStore.SetBlockPerceivedTime(BlockHash, DateTimeOffset)
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.SetBlockPerceivedTime(Libplanet.Blocks.BlockHash, DateTimeOffset)
+  nameWithType: MemoryStore.IStore.SetBlockPerceivedTime(BlockHash, DateTimeOffset)
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.SetBlockPerceivedTime(BlockHash, DateTimeOffset)
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#SetBlockPerceivedTime*
+  name: IStore.SetBlockPerceivedTime
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_SetBlockPerceivedTime_
+  commentId: Overload:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#SetBlockPerceivedTime
+  isSpec: "True"
+  name.vb: Libplanet.Store.IStore.SetBlockPerceivedTime
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.SetBlockPerceivedTime
+  nameWithType: MemoryStore.IStore.SetBlockPerceivedTime
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.SetBlockPerceivedTime
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#SetCanonicalChainId(Guid)
+  name: IStore.SetCanonicalChainId(Guid)
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_SetCanonicalChainId_Guid_
+  commentId: M:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#SetCanonicalChainId(Guid)
+  name.vb: Libplanet.Store.IStore.SetCanonicalChainId(Guid)
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.SetCanonicalChainId(Guid)
+  nameWithType: MemoryStore.IStore.SetCanonicalChainId(Guid)
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.SetCanonicalChainId(Guid)
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#SetCanonicalChainId*
+  name: IStore.SetCanonicalChainId
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_SetCanonicalChainId_
+  commentId: Overload:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#SetCanonicalChainId
+  isSpec: "True"
+  name.vb: Libplanet.Store.IStore.SetCanonicalChainId
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.SetCanonicalChainId
+  nameWithType: MemoryStore.IStore.SetCanonicalChainId
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.SetCanonicalChainId
 - uid: Libplanet.Store.StateStoreExtensions
   name: StateStoreExtensions
   href: api/Libplanet.Store.StateStoreExtensions.html
@@ -18838,6 +19448,101 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.ITrie.TryGet
   nameWithType: ITrie.TryGet
+- uid: Libplanet.Store.Trie.MemoryKeyValueStore
+  name: MemoryKeyValueStore
+  href: api/Libplanet.Store.Trie.MemoryKeyValueStore.html
+  commentId: T:Libplanet.Store.Trie.MemoryKeyValueStore
+  fullName: Libplanet.Store.Trie.MemoryKeyValueStore
+  nameWithType: MemoryKeyValueStore
+- uid: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet#Store#Trie#IKeyValueStore#Delete(System.Byte[])
+  name: IKeyValueStore.Delete(Byte[])
+  href: api/Libplanet.Store.Trie.MemoryKeyValueStore.html#Libplanet_Store_Trie_MemoryKeyValueStore_Libplanet_Store_Trie_IKeyValueStore_Delete_System_Byte___
+  commentId: M:Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet#Store#Trie#IKeyValueStore#Delete(System.Byte[])
+  name.vb: Libplanet.Store.Trie.IKeyValueStore.Delete(Byte())
+  fullName: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Delete(System.Byte[])
+  fullName.vb: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Delete(System.Byte())
+  nameWithType: MemoryKeyValueStore.IKeyValueStore.Delete(Byte[])
+  nameWithType.vb: MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Delete(Byte())
+- uid: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet#Store#Trie#IKeyValueStore#Delete*
+  name: IKeyValueStore.Delete
+  href: api/Libplanet.Store.Trie.MemoryKeyValueStore.html#Libplanet_Store_Trie_MemoryKeyValueStore_Libplanet_Store_Trie_IKeyValueStore_Delete_
+  commentId: Overload:Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet#Store#Trie#IKeyValueStore#Delete
+  isSpec: "True"
+  name.vb: Libplanet.Store.Trie.IKeyValueStore.Delete
+  fullName: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Delete
+  nameWithType: MemoryKeyValueStore.IKeyValueStore.Delete
+  nameWithType.vb: MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Delete
+- uid: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet#Store#Trie#IKeyValueStore#Exists(System.Byte[])
+  name: IKeyValueStore.Exists(Byte[])
+  href: api/Libplanet.Store.Trie.MemoryKeyValueStore.html#Libplanet_Store_Trie_MemoryKeyValueStore_Libplanet_Store_Trie_IKeyValueStore_Exists_System_Byte___
+  commentId: M:Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet#Store#Trie#IKeyValueStore#Exists(System.Byte[])
+  name.vb: Libplanet.Store.Trie.IKeyValueStore.Exists(Byte())
+  fullName: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Exists(System.Byte[])
+  fullName.vb: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Exists(System.Byte())
+  nameWithType: MemoryKeyValueStore.IKeyValueStore.Exists(Byte[])
+  nameWithType.vb: MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Exists(Byte())
+- uid: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet#Store#Trie#IKeyValueStore#Exists*
+  name: IKeyValueStore.Exists
+  href: api/Libplanet.Store.Trie.MemoryKeyValueStore.html#Libplanet_Store_Trie_MemoryKeyValueStore_Libplanet_Store_Trie_IKeyValueStore_Exists_
+  commentId: Overload:Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet#Store#Trie#IKeyValueStore#Exists
+  isSpec: "True"
+  name.vb: Libplanet.Store.Trie.IKeyValueStore.Exists
+  fullName: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Exists
+  nameWithType: MemoryKeyValueStore.IKeyValueStore.Exists
+  nameWithType.vb: MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Exists
+- uid: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet#Store#Trie#IKeyValueStore#Get(System.Byte[])
+  name: IKeyValueStore.Get(Byte[])
+  href: api/Libplanet.Store.Trie.MemoryKeyValueStore.html#Libplanet_Store_Trie_MemoryKeyValueStore_Libplanet_Store_Trie_IKeyValueStore_Get_System_Byte___
+  commentId: M:Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet#Store#Trie#IKeyValueStore#Get(System.Byte[])
+  name.vb: Libplanet.Store.Trie.IKeyValueStore.Get(Byte())
+  fullName: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Get(System.Byte[])
+  fullName.vb: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Get(System.Byte())
+  nameWithType: MemoryKeyValueStore.IKeyValueStore.Get(Byte[])
+  nameWithType.vb: MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Get(Byte())
+- uid: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet#Store#Trie#IKeyValueStore#Get*
+  name: IKeyValueStore.Get
+  href: api/Libplanet.Store.Trie.MemoryKeyValueStore.html#Libplanet_Store_Trie_MemoryKeyValueStore_Libplanet_Store_Trie_IKeyValueStore_Get_
+  commentId: Overload:Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet#Store#Trie#IKeyValueStore#Get
+  isSpec: "True"
+  name.vb: Libplanet.Store.Trie.IKeyValueStore.Get
+  fullName: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Get
+  nameWithType: MemoryKeyValueStore.IKeyValueStore.Get
+  nameWithType.vb: MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Get
+- uid: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet#Store#Trie#IKeyValueStore#ListKeys
+  name: IKeyValueStore.ListKeys()
+  href: api/Libplanet.Store.Trie.MemoryKeyValueStore.html#Libplanet_Store_Trie_MemoryKeyValueStore_Libplanet_Store_Trie_IKeyValueStore_ListKeys
+  commentId: M:Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet#Store#Trie#IKeyValueStore#ListKeys
+  name.vb: Libplanet.Store.Trie.IKeyValueStore.ListKeys()
+  fullName: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.ListKeys()
+  nameWithType: MemoryKeyValueStore.IKeyValueStore.ListKeys()
+  nameWithType.vb: MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.ListKeys()
+- uid: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet#Store#Trie#IKeyValueStore#ListKeys*
+  name: IKeyValueStore.ListKeys
+  href: api/Libplanet.Store.Trie.MemoryKeyValueStore.html#Libplanet_Store_Trie_MemoryKeyValueStore_Libplanet_Store_Trie_IKeyValueStore_ListKeys_
+  commentId: Overload:Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet#Store#Trie#IKeyValueStore#ListKeys
+  isSpec: "True"
+  name.vb: Libplanet.Store.Trie.IKeyValueStore.ListKeys
+  fullName: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.ListKeys
+  nameWithType: MemoryKeyValueStore.IKeyValueStore.ListKeys
+  nameWithType.vb: MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.ListKeys
+- uid: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet#Store#Trie#IKeyValueStore#Set(System.Byte[],System.Byte[])
+  name: IKeyValueStore.Set(Byte[], Byte[])
+  href: api/Libplanet.Store.Trie.MemoryKeyValueStore.html#Libplanet_Store_Trie_MemoryKeyValueStore_Libplanet_Store_Trie_IKeyValueStore_Set_System_Byte___System_Byte___
+  commentId: M:Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet#Store#Trie#IKeyValueStore#Set(System.Byte[],System.Byte[])
+  name.vb: Libplanet.Store.Trie.IKeyValueStore.Set(Byte(), Byte())
+  fullName: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Set(System.Byte[], System.Byte[])
+  fullName.vb: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Set(System.Byte(), System.Byte())
+  nameWithType: MemoryKeyValueStore.IKeyValueStore.Set(Byte[], Byte[])
+  nameWithType.vb: MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Set(Byte(), Byte())
+- uid: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet#Store#Trie#IKeyValueStore#Set*
+  name: IKeyValueStore.Set
+  href: api/Libplanet.Store.Trie.MemoryKeyValueStore.html#Libplanet_Store_Trie_MemoryKeyValueStore_Libplanet_Store_Trie_IKeyValueStore_Set_
+  commentId: Overload:Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet#Store#Trie#IKeyValueStore#Set
+  isSpec: "True"
+  name.vb: Libplanet.Store.Trie.IKeyValueStore.Set
+  fullName: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Set
+  nameWithType: MemoryKeyValueStore.IKeyValueStore.Set
+  nameWithType.vb: MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Set
 - uid: Libplanet.Store.Trie.MerkleTrie
   name: MerkleTrie
   href: api/Libplanet.Store.Trie.MerkleTrie.html
