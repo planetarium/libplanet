@@ -583,8 +583,8 @@ namespace Libplanet.Tests.Blockchain
                     Assert.Equal(block, record.NewTip);
                 }
 
-                await Task.Delay(100);
-                Assert.True(miningTask.IsCanceled);
+                // Waits about 10 seconds for the task receives the cancellation signal:
+                await AssertThatEventually(() => miningTask.IsCanceled, 10_000);
             }
             finally
             {
