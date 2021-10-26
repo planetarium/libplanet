@@ -91,6 +91,7 @@ Use <code>IMessageCodec&lt;T&gt;.Decode()</code> method instead.  [<a href="http
 [<a href="https://github.com/planetarium/libplanet/pull/1503">#1503</a>]</li>
 <li>Added <code>MemoryStore</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/1544">#1544</a>]</li>
 <li>Added <code>MemoryKeyValueStore</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/1544">#1544</a>]</li>
+<li>Added <code>BlockDemandTable.Remove()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1549">#1549</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
@@ -114,6 +115,8 @@ method's specification.  [<a href="https://github.com/planetarium/libplanet/pull
 method's bug that it had done silently no-op when a given <code>sourceChainId</code>
 had not existed, which had not been compliant with
 <code>IStore.ForkBlockIndexes()</code> method's specification.  [<a href="https://github.com/planetarium/libplanet/pull/1544">#1544</a>]</li>
+<li>Fixed a bug where <code>Swarm&lt;T&gt;</code> did not removed failed block demands from the
+<code>BlockDemandTable</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1549">#1549</a>]</li>
 </ul>
 <h3 id="cli-tools">CLI tools</h3>
 <h2 id="version-0182">Version 0.18.2</h2>

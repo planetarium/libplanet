@@ -11706,6 +11706,23 @@ references:
   fullName.vb: Libplanet.Net.BlockDemandTable(Of T).Demands
   nameWithType: BlockDemandTable<T>.Demands
   nameWithType.vb: BlockDemandTable(Of T).Demands
+- uid: Libplanet.Net.BlockDemandTable`1.Remove(Libplanet.Net.BoundPeer)
+  name: Remove(BoundPeer)
+  href: api/Libplanet.Net.BlockDemandTable-1.html#Libplanet_Net_BlockDemandTable_1_Remove_Libplanet_Net_BoundPeer_
+  commentId: M:Libplanet.Net.BlockDemandTable`1.Remove(Libplanet.Net.BoundPeer)
+  fullName: Libplanet.Net.BlockDemandTable<T>.Remove(Libplanet.Net.BoundPeer)
+  fullName.vb: Libplanet.Net.BlockDemandTable(Of T).Remove(Libplanet.Net.BoundPeer)
+  nameWithType: BlockDemandTable<T>.Remove(BoundPeer)
+  nameWithType.vb: BlockDemandTable(Of T).Remove(BoundPeer)
+- uid: Libplanet.Net.BlockDemandTable`1.Remove*
+  name: Remove
+  href: api/Libplanet.Net.BlockDemandTable-1.html#Libplanet_Net_BlockDemandTable_1_Remove_
+  commentId: Overload:Libplanet.Net.BlockDemandTable`1.Remove
+  isSpec: "True"
+  fullName: Libplanet.Net.BlockDemandTable<T>.Remove
+  fullName.vb: Libplanet.Net.BlockDemandTable(Of T).Remove
+  nameWithType: BlockDemandTable<T>.Remove
+  nameWithType.vb: BlockDemandTable(Of T).Remove
 - uid: Libplanet.Net.BlockDownloadState
   name: BlockDownloadState
   href: api/Libplanet.Net.BlockDownloadState.html
