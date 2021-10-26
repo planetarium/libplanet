@@ -1713,11 +1713,11 @@ namespace Libplanet.Tests.Net
                 new TrieStateStore(new MemoryKeyValueStore()),
                 genesis
             );
-            var pollInterval = TimeSpan.FromSeconds(5);
+            const int pollInterval = 5000;
             Swarm<DumbAction> downstream = CreateSwarm(downstreamChain, options: new SwarmOptions
             {
-                PollInterval = pollInterval,
-                MaxTimeout = pollInterval / 2,
+                PollInterval = TimeSpan.FromMilliseconds(pollInterval),
+                MaxTimeout = TimeSpan.FromMilliseconds((double)pollInterval / 2),
             });
             Task<Task> startingDownstream = StartAsync(downstream);
 
@@ -1753,7 +1753,7 @@ namespace Libplanet.Tests.Net
 
                 upstreamA.BroadcastBlock(block1);
                 for (
-                    int i = 0, total = (int)pollInterval.TotalSeconds * 2;
+                    int i = 0, total = pollInterval * 2 / 1000;
                     !downstreamChain.Tip.Equals(block1) && i < total;
                     ++i
                 )
@@ -1779,7 +1779,7 @@ namespace Libplanet.Tests.Net
                 upstreamChainA.Append(block2);
                 upstreamA.BroadcastBlock(block2);
                 for (
-                    int i = 0, total = (int)pollInterval.TotalSeconds * 2;
+                    int i = 0, total = pollInterval * 2 / 1000;
                     !downstream.BlockDemandTable.Demands.Any(kv =>
                         kv.Key.Address.Equals(upstreamA.Address) &&
                         kv.Value.Header.Hash.Equals(block2.Header.Hash))
@@ -1811,7 +1811,7 @@ namespace Libplanet.Tests.Net
                 // it from the upstreamB instead of the upstreamA:
                 upstreamChainB.Append(block2);
                 for (
-                    int i = 0, total = (int)pollInterval.TotalSeconds * 2;
+                    int i = 0, total = pollInterval * 2 / 1000;
                     !downstreamChain.Tip.Equals(block2) && i < total;
                     ++i
                 )
