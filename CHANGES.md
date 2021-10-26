@@ -46,6 +46,9 @@ To be released.
     silently no-op when a given `sourceChainId` had not existed, which had not
     been compliant with `IStore.ForkBlockIndexes()` method's specification.
     [[#1544]]
+ -  Fixed `Swarm<T>`'s bug that it had thrown `PingTimeoutException` if any
+    peer in configured `SwarmOptions.StaticPeers` is unreachable.
+    [[#1550], [#1551]]
  -  (Libplanet.RocksDBStore) Fixed `RocksDBStore.ForkBlockIndexes()` method's
     bug that it had done silently no-op when a given `sourceChainId` had not
     existed, which had not been compliant with `IStore.ForkBlockIndexes()`
@@ -62,6 +65,8 @@ To be released.
 [#1535]: https://github.com/planetarium/libplanet/pull/1535
 [#1537]: https://github.com/planetarium/libplanet/pull/1537
 [#1544]: https://github.com/planetarium/libplanet/pull/1544
+[#1550]: https://github.com/planetarium/libplanet/issues/1550
+[#1551]: https://github.com/planetarium/libplanet/pull/1551
 
 
 Version 0.18.2
