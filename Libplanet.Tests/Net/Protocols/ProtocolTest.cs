@@ -6,13 +6,15 @@ using System.Threading.Tasks;
 using Libplanet.Crypto;
 using Libplanet.Net;
 using Libplanet.Net.Protocols;
+using NetMQ;
 using Serilog;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace Libplanet.Tests.Net.Protocols
 {
-    public class ProtocolTest
+    [Collection("NetMQConfiguration")]
+    public class ProtocolTest : IDisposable
     {
         private const int Timeout = 60 * 1000;
         private readonly Dictionary<Address, TestTransport> _transports;
@@ -29,6 +31,11 @@ namespace Libplanet.Tests.Net.Protocols
                 .ForContext<ProtocolTest>();
 
             _transports = new Dictionary<Address, TestTransport>();
+        }
+
+        public void Dispose()
+        {
+            NetMQConfig.Cleanup(false);
         }
 
         [Fact]

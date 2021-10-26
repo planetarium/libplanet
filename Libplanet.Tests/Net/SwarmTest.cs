@@ -34,6 +34,7 @@ using static Libplanet.Tests.TestUtils;
 
 namespace Libplanet.Tests.Net
 {
+    [Collection("NetMQConfiguration")]
     public partial class SwarmTest : IDisposable
     {
         private const int Timeout = 60 * 1000;

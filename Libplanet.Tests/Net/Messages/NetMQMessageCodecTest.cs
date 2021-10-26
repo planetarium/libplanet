@@ -16,8 +16,14 @@ using Xunit;
 
 namespace Libplanet.Tests.Net.Messages
 {
-    public class NetMQMessageCodecTest
+    [Collection("NetMQConfiguration")]
+    public class NetMQMessageCodecTest : IDisposable
     {
+        public void Dispose()
+        {
+            NetMQConfig.Cleanup(false);
+        }
+
         [Theory]
         [InlineData(Message.MessageType.Ping)]
         [InlineData(Message.MessageType.Pong)]
