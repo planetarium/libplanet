@@ -30,6 +30,7 @@ using Serilog;
 using xRetry;
 using Xunit;
 using Xunit.Abstractions;
+using static Libplanet.Tests.TestUtils;
 
 namespace Libplanet.Tests.Net
 {
@@ -300,14 +301,18 @@ namespace Libplanet.Tests.Net
                         {
                             (BoundPeer)swarmA.AsPeer,
                             (BoundPeer)swarmB.AsPeer,
+                            // Unreachable peer:
+                            new BoundPeer(
+                                new PrivateKey().PublicKey,
+                                new DnsEndPoint("127.0.0.1", 65535)
+                            ),
                         }.ToImmutableHashSet(),
                         StaticPeersMaintainPeriod = TimeSpan.FromMilliseconds(100),
                     });
 
                 await StartAsync(swarm);
-                await Task.Delay(500);
-                Assert.Contains(swarmA.AsPeer, swarm.Peers);
-                Assert.Contains(swarmB.AsPeer, swarm.Peers);
+                await AssertThatEventually(() => swarm.Peers.Contains(swarmA.AsPeer), 5_000);
+                await AssertThatEventually(() => swarm.Peers.Contains(swarmB.AsPeer), 5_000);
 
                 _logger.Debug("Address of swarmA: {Address}", swarmA.Address);
                 await StopAsync(swarmA);
@@ -324,9 +329,8 @@ namespace Libplanet.Tests.Net
                 Assert.Contains(swarmB.AsPeer, swarm.Peers);
 
                 await StartAsync(swarmC);
-                await Task.Delay(500);
-                Assert.Contains(swarmC.AsPeer, swarm.Peers);
-                Assert.Contains(swarmB.AsPeer, swarm.Peers);
+                await AssertThatEventually(() => swarm.Peers.Contains(swarmB.AsPeer), 5_000);
+                await AssertThatEventually(() => swarm.Peers.Contains(swarmC.AsPeer), 5_000);
 
                 await StopAsync(swarm);
             }
