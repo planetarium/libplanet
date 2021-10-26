@@ -13,8 +13,14 @@ using Xunit;
 
 namespace Libplanet.Tests.Net.Messages
 {
-    public class MessageTest
+    [Collection("NetMQConfiguration")]
+    public class MessageTest : IDisposable
     {
+        public void Dispose()
+        {
+            NetMQConfig.Cleanup(false);
+        }
+
         [Fact]
         public void DifferentAppProtocolVersionStructure()
         {

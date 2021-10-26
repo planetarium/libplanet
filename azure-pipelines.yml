@@ -114,6 +114,17 @@ jobs:
       testArguments: -parallel none -stoponfail -verbose
   timeoutInMinutes: 30
 
+- job: Windows_NETCore
+  pool:
+    vmImage: windows-2019
+  steps:
+  - template: .azure-pipelines/dotnet-core.yml
+    parameters:
+      configuration: $(configuration)
+      turnServerUrls: $(turnServerUrls)
+      testArguments: -parallel none -stoponfail -verbose
+  timeoutInMinutes: 30
+
 # Run tests with an alternative locale configuration
 - job: Linux_NETCore_ar_SA
   pool:

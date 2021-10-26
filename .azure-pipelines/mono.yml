@@ -3,7 +3,7 @@ parameters:
   testDisplayName: xunit.console.exe *.Tests.dll
   testCommand: "mono --server xunit.runner.console.*/tools/net47/xunit.console.exe"
   testArguments: -verbose -parallel none
-  testTimeoutInMinutes: 16
+  testTimeoutInMinutes: 25  # FIXME: It's too long.
   excludeTests: ""
   publicTestResult: true
 

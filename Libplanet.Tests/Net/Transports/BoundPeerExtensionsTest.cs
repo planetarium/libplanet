@@ -8,12 +8,19 @@ using Libplanet.Net;
 using Libplanet.Net.Transports;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
+using NetMQ;
 using Xunit;
 
 namespace Libplanet.Tests.Net.Transports
 {
-    public class BoundPeerExtensionsTest
+    [Collection("NetMQConfiguration")]
+    public class BoundPeerExtensionsTest : IDisposable
     {
+        public void Dispose()
+        {
+            NetMQConfig.Cleanup(false);
+        }
+
         [Fact]
         public async Task QueryAppProtocolVersion()
         {

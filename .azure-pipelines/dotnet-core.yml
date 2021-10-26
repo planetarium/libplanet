@@ -2,7 +2,7 @@ parameters:
   configuration: Debug
   testArguments: ""
   locale: "en_US.UTF8"
-  testTimeoutInMinutes: 16
+  testTimeoutInMinutes: 25  # FIXME: It's too long.
   useDotnetTest: false
   continueOnTestError: false
 
