@@ -103,6 +103,9 @@ when a given <code>sourceChainId</code> does not exist.  [<a href="https://githu
 silently no-op when a given <code>sourceChainId</code> had not existed, which had not
 been compliant with <code>IStore.ForkBlockIndexes()</code> method's specification.
 [<a href="https://github.com/planetarium/libplanet/pull/1544">#1544</a>]</li>
+<li>Fixed <code>Swarm&lt;T&gt;</code>'s bug that it had thrown <code>PingTimeoutException</code> if any
+peer in configured <code>SwarmOptions.StaticPeers</code> is unreachable.
+[<a href="https://github.com/planetarium/libplanet/issues/1550">#1550</a>, <a href="https://github.com/planetarium/libplanet/pull/1551">#1551</a>]</li>
 <li>(Libplanet.RocksDBStore) Fixed <code>RocksDBStore.ForkBlockIndexes()</code> method's
 bug that it had done silently no-op when a given <code>sourceChainId</code> had not
 existed, which had not been compliant with <code>IStore.ForkBlockIndexes()</code>
