@@ -6,6 +6,12 @@ Version 0.18.3
 
 To be released.
 
+ -  Fixed a bug where `Swarm<T>` did not removed failed block demands from the
+    `BlockDemandTable`.  [[#1549], [#1562]]
+
+[#1549]: https://github.com/planetarium/libplanet/pull/1549
+[#1562]: https://github.com/planetarium/libplanet/pull/1561
+
 
 Version 0.18.2
 --------------
