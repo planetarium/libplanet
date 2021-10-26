@@ -126,6 +126,7 @@ namespace Libplanet.Net
                         largest,
                         timeout,
                         cancellationToken);
+                    BlockDemandTable.Remove(largest.Peer);
                 }
                 else if (timeTaken > pollInterval)
                 {

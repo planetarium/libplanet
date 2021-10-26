@@ -34,6 +34,7 @@ To be released.
     [[#1503]]
  -  Added `MemoryStore` class.  [[#1544]]
  -  Added `MemoryKeyValueStore` class.  [[#1544]]
+ -  Added `BlockDemandTable.Remove()` method.  [[#1549]]
 
 ### Behavioral changes
 
@@ -57,6 +58,8 @@ To be released.
     method's bug that it had done silently no-op when a given `sourceChainId`
     had not existed, which had not been compliant with
     `IStore.ForkBlockIndexes()` method's specification.  [[#1544]]
+ -  Fixed a bug where `Swarm<T>` did not removed failed block demands from the
+    `BlockDemandTable`.  [[#1549]]
 
 ### CLI tools
 
@@ -66,6 +69,7 @@ To be released.
 [#1537]: https://github.com/planetarium/libplanet/pull/1537
 [#1544]: https://github.com/planetarium/libplanet/pull/1544
 [#1550]: https://github.com/planetarium/libplanet/issues/1550
+[#1549]: https://github.com/planetarium/libplanet/pull/1549
 [#1551]: https://github.com/planetarium/libplanet/pull/1551
 
 
