@@ -3,6 +3,18 @@ version: 2.1
 orbs:
   win: circleci/windows@2.2.0
 
+commands:
+  concat_files:
+    description: Concatenate file contents
+    parameters:
+      glob: { type: string }
+      to: { type: string }
+    steps:
+    - run:
+        name: Concatenate file contents
+        command: "cat -s <<parameters.glob>> > <<parameters.to>>"
+        shell: bash
+
 jobs:
   build-and-test:
     executor:
@@ -10,6 +22,15 @@ jobs:
       size: large
     steps:
     - checkout
+    - concat_files:
+        glob: "*/*.csproj"
+        to: combined-package-files.txt
+    - restore_cache:
+        keys:
+        - v1-deps-{{ arch }}-{{ checksum "combined-package-files.txt" }}
+        - v1-deps-{{ arch }}
+        - v1-deps
+    - run: dotnet restore
     - run: dotnet build -c Release -p:SkipSonar=true
     - run: >-
         dotnet test
@@ -17,6 +38,10 @@ jobs:
         -l "junit;MethodFormat=Full;FailureBodyFormat=Verbose;LogFilePath=/tmp/junit/{assembly}.xml"
     - store_test_results:
         path: /tmp/junit
+    - save_cache:
+        key: v1-deps-{{ arch }}-{{ checksum "combined-package-files.txt" }}
+        paths:
+        - C:\Users\circleci\.nuget\packages
 
 workflows:
   main:
