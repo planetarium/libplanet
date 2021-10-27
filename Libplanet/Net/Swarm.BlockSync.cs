@@ -111,7 +111,6 @@ namespace Libplanet.Net
             CancellationToken cancellationToken
         )
         {
-            var timeTaken = TimeSpan.Zero;
             var checkInterval = TimeSpan.FromMilliseconds(100);
             while (!cancellationToken.IsCancellationRequested)
             {
@@ -128,22 +127,48 @@ namespace Libplanet.Net
                         cancellationToken);
                     BlockDemandTable.Remove(largest.Peer);
                 }
-                else if (timeTaken > pollInterval)
-                {
-                    await PullBlocksAsync(timeout, maximumPollPeers, cancellationToken);
-                }
                 else
                 {
                     await Task.Delay(checkInterval, cancellationToken);
-                    timeTaken += checkInterval;
                     continue;
                 }
 
                 BlockDemandTable.Cleanup(BlockChain, IsBlockNeeded);
-                timeTaken = TimeSpan.Zero;
             }
 
             _logger.Debug($"{nameof(FillBlocksAsync)} has finished.");
+        }
+
+        private async Task PollBlocksAsync(
+            TimeSpan timeout,
+            TimeSpan tipLifespan,
+            int maximumPollPeers,
+            CancellationToken cancellationToken
+        )
+        {
+            IBlockExcerpt lastTip = BlockChain.Tip;
+            DateTimeOffset lastUpdated = DateTimeOffset.UtcNow;
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                if (!lastTip.Hash.Equals(BlockChain.Tip.Hash))
+                {
+                    lastUpdated = DateTimeOffset.UtcNow;
+                    lastTip = BlockChain.Tip;
+                }
+                else if (lastUpdated + tipLifespan > DateTimeOffset.UtcNow)
+                {
+                    _logger.Debug(
+                        "The tip #{TipIndex} {TipHash} is expired (last updated: {LastUpdated}); " +
+                        "pull blocks from neighbor peers...",
+                        lastTip.Index,
+                        lastTip.Hash,
+                        lastUpdated
+                    );
+                    await PullBlocksAsync(timeout, maximumPollPeers, cancellationToken);
+                }
+
+                await Task.Delay(1000, cancellationToken);
+            }
         }
 
 #pragma warning disable MEN003

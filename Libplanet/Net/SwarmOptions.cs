@@ -32,11 +32,6 @@ namespace Libplanet.Net
         public TimeSpan TxRecvTimeout { get; set; } = TimeSpan.FromSeconds(3);
 
         /// <summary>
-        /// The timeout used to receive recent states from other peers.
-        /// </summary>
-        public TimeSpan RecentStateRecvTimeout { get; set; } = TimeSpan.FromSeconds(90);
-
-        /// <summary>
         /// The timeout used to block download in preloading.
         /// </summary>
         public TimeSpan BlockDownloadTimeout { get; set; } = Timeout.InfiniteTimeSpan;
@@ -110,5 +105,12 @@ namespace Libplanet.Net
         /// The maximum number of peers to poll blocks.
         /// </summary>
         public int MaximumPollPeers { get; set; } = int.MaxValue;
+
+        /// <summary>
+        /// The lifespan of the <see cref="BlockChain{T}.Tip"/>.  When the tip has not been updated
+        /// for the configured lifespan, <see cref="Swarm{T}"/> pulls new blocks from neighbor
+        /// peers.
+        /// </summary>
+        public TimeSpan TipLifespan { get; set; } = TimeSpan.FromSeconds(30);
     }
 }

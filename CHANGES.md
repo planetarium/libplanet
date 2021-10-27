@@ -28,6 +28,9 @@ To be released.
 
 ### Added APIs
 
+ -  Added
+    `BlockMetadata.MineNonce(HashAlgorithmType, int, CancellationToken)`
+    overloaded method.  [[#1546]]
  -  Added `Message.MessageFrame` enum.  [[#1503]]
  -  Added `Message.Type` property.  [[#1503]]
  -  Added `Message.DataFrames` property.  [[#1503]]
@@ -37,16 +40,19 @@ To be released.
  -  Added `MemoryStore` class.  [[#1544]]
  -  Added `MemoryKeyValueStore` class.  [[#1544]]
  -  Added `BlockDemandTable.Remove()` method.  [[#1549]]
- -  Added
-    `BlockMetadata.MineNonce(HashAlgorithmType, int, CancellationToken)`
-    overloaded method.  [[#1546]]
+ -  Added `SwarmOptions.TipLifespan` property.  [[#1557]]
 
 ### Behavioral changes
 
- -  `IStore.ForkTxNonces()` method became to throw `ChainIdNotFoundException`
-    when a given `sourceChainId` does not exist.  [[#1544]]
  -  `BlockMetadata.MineNonce()` method became to use multithreading when
     looking for the nonce.  [[#1546]]
+ -  `IStore.ForkTxNonces()` method became to throw `ChainIdNotFoundException`
+    when a given `sourceChainId` does not exist.  [[#1544]]
+ -  `Swarm<T>.StartAsync()` method became to poll neighbor peers if they have
+    any new blocks whether `Swarm<T>.BlockDemandTable` is empty or not.
+    The polling is triggered when `Swarm<T>.BlockChain`'s `Tip` has been
+    unchanged for a while.  Expiration time for tips can be configured
+    through `SwarmOptions.TipLifespan` property.  [[#1557]]
 
 ### Bug fixes
 
@@ -79,6 +85,7 @@ To be released.
 [#1550]: https://github.com/planetarium/libplanet/issues/1550
 [#1549]: https://github.com/planetarium/libplanet/pull/1549
 [#1551]: https://github.com/planetarium/libplanet/pull/1551
+[#1557]: https://github.com/planetarium/libplanet/pull/1557
 
 
 Version 0.18.2
