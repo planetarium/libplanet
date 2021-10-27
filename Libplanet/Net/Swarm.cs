@@ -339,6 +339,14 @@ namespace Libplanet.Net
                         Options.PollInterval,
                         Options.MaximumPollPeers,
                         _cancellationToken));
+                tasks.Add(
+                    PollBlocksAsync(
+                        dialTimeout,
+                        Options.TipLifespan,
+                        Options.MaximumPollPeers,
+                        _cancellationToken
+                    )
+                );
                 if (Options.StaticPeers.Any())
                 {
                     tasks.Add(

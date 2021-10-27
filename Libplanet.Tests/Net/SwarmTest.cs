@@ -1722,6 +1722,7 @@ namespace Libplanet.Tests.Net
             {
                 PollInterval = TimeSpan.FromMilliseconds(pollInterval),
                 MaxTimeout = TimeSpan.FromMilliseconds((double)pollInterval / 2),
+                TipLifespan = TimeSpan.FromMilliseconds(pollInterval),
             });
             Task<Task> startingDownstream = StartAsync(downstream);
 
@@ -1756,22 +1757,13 @@ namespace Libplanet.Tests.Net
                     upstreamChainA.MineBlock(new PrivateKey(), append: false);
 
                 upstreamA.BroadcastBlock(block1);
-                for (
-                    int i = 0, total = pollInterval * 2 / 1000;
-                    !downstreamChain.Tip.Equals(block1) && i < total;
-                    ++i
-                )
-                {
-                    _output.WriteLine(
-                        "[{0}/{1}] Waiting a second for the {2} receiving the {3}... ({4})",
-                        i + 1,
-                        total,
-                        nameof(downstream),
-                        nameof(block1),
-                        block1
-                    );
-                    await Task.Delay(1000);
-                }
+                await AssertThatEventually(
+                    () => downstreamChain.Tip.Equals(block1),
+                    pollInterval * 2,
+                    1_000,
+                    _output,
+                    $"the {nameof(downstream)} receiving the {nameof(block1)} ({block1})"
+                );
 
                 Assert.Equal(
                     (block1.Index, block1.Hash),
@@ -1782,25 +1774,16 @@ namespace Libplanet.Tests.Net
                 upstreamStoreA.BlockGettable = false;
                 upstreamChainA.Append(block2);
                 upstreamA.BroadcastBlock(block2);
-                for (
-                    int i = 0, total = pollInterval * 2 / 1000;
-                    !downstream.BlockDemandTable.Demands.Any(kv =>
+                await AssertThatEventually(
+                    () => downstream.BlockDemandTable.Demands.Any(kv =>
                         kv.Key.Address.Equals(upstreamA.Address) &&
-                        kv.Value.Header.Hash.Equals(block2.Header.Hash))
-                        && i < total;
-                    ++i
-                )
-                {
-                    _output.WriteLine(
-                        "[{0}/{1}] Waiting a second for the {2} receiving the {3} header... ({4})",
-                        i + 1,
-                        total,
-                        nameof(downstream),
-                        nameof(block2),
-                        block2
-                    );
-                    await Task.Delay(1000);
-                }
+                        kv.Value.Header.Hash.Equals(block2.Header.Hash)
+                    ),
+                    pollInterval * 2,
+                    1_000,
+                    _output,
+                    $"the {nameof(downstream)} receiving the {nameof(block2)} header ({block2})"
+                );
 
                 Assert.Contains(
                     downstream.BlockDemandTable.Demands,
@@ -1810,30 +1793,16 @@ namespace Libplanet.Tests.Net
                 );
 
                 // Even if the downstream received the block2's header from the upstreamA,
-                // as the upstreamA became unreachable now (GetBlockDelay = 10 mins) and
+                // as the upstreamA became unreachable now (BlockGettable = false) and
                 // the upstreamB has the block2 too, the downstream should be possible to receive
                 // it from the upstreamB instead of the upstreamA:
                 upstreamChainB.Append(block2);
-                for (
-                    int i = 0, total = pollInterval * 2 / 1000;
-                    !downstreamChain.Tip.Equals(block2) && i < total;
-                    ++i
-                )
-                {
-                    _output.WriteLine(
-                        "[{0}/{1}] Waiting a second for the {2} receiving the {3}... ({4})",
-                        i + 1,
-                        total,
-                        nameof(downstream),
-                        nameof(block2),
-                        block2
-                    );
-                    await Task.Delay(1000);
-                }
-
-                Assert.Equal(
-                    (block2.Index, block2.Hash),
-                    (downstreamChain.Tip.Index, downstreamChain.Tip.Hash)
+                await AssertThatEventually(
+                    () => downstreamChain.Tip.Equals(block2),
+                    pollInterval * 4,
+                    1_000,
+                    _output,
+                    $"the {nameof(downstream)} receiving the {nameof(block2)} ({block2})"
                 );
             }
             finally
