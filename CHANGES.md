@@ -17,6 +17,8 @@ To be released.
     Use `IMessageCodec<T>.Decode()` method instead.  [[#1503]]
  -  Removed unused `HashAlgorithmGetter` type parameter from
     `ActionEvaluator<T>()` constructor.  [[#1537]]
+ -  `Hashcash.Answer()` method became to take random `seed` value explicitly.
+    [[#1546]]
 
 ### Backward-incompatible network protocol changes
 
@@ -35,11 +37,16 @@ To be released.
  -  Added `MemoryStore` class.  [[#1544]]
  -  Added `MemoryKeyValueStore` class.  [[#1544]]
  -  Added `BlockDemandTable.Remove()` method.  [[#1549]]
+ -  Added
+    `BlockMetadata.MineNonce(HashAlgorithmType, int, CancellationToken)`
+    overloaded method.  [[#1546]]
 
 ### Behavioral changes
 
  -  `IStore.ForkTxNonces()` method became to throw `ChainIdNotFoundException`
     when a given `sourceChainId` does not exist.  [[#1544]]
+ -  `BlockMetadata.MineNonce()` method became to use multithreading when
+    looking for the nonce.  [[#1546]]
 
 ### Bug fixes
 
@@ -68,6 +75,7 @@ To be released.
 [#1535]: https://github.com/planetarium/libplanet/pull/1535
 [#1537]: https://github.com/planetarium/libplanet/pull/1537
 [#1544]: https://github.com/planetarium/libplanet/pull/1544
+[#1546]: https://github.com/planetarium/libplanet/pull/1546
 [#1550]: https://github.com/planetarium/libplanet/issues/1550
 [#1549]: https://github.com/planetarium/libplanet/pull/1549
 [#1551]: https://github.com/planetarium/libplanet/pull/1551

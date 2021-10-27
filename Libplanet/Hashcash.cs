@@ -24,13 +24,15 @@ namespace Libplanet
         /// should not vary for different <paramref name="nonce"/>s.</para>
         /// </summary>
         /// <param name="nonce">An arbitrary nonce for an attempt, provided by
-        /// <see cref="Hashcash.Answer(Stamp, HashAlgorithmType, long, CancellationToken)"/> method.
+        /// <see cref="Hashcash.Answer(Stamp, HashAlgorithmType, long, int, CancellationToken)"/>
+        /// method.
         /// </param>
         /// <returns>Chunked <see cref="byte"/>s determined from the given <paramref name="nonce"/>.
         /// It should return consistently equivalent bytes for equivalent <paramref name="nonce"/>
         /// values.  The way how bytes are split into chunks can be flexible; regardless of the way,
         /// they are concatenated into a single byte array.</returns>
-        /// <seealso cref="Hashcash.Answer(Stamp, HashAlgorithmType, long, CancellationToken)"/>
+        /// <seealso cref="Hashcash.Answer(Stamp, HashAlgorithmType, long, int, CancellationToken)"
+        /// />
         /// <seealso cref="Nonce"/>
         public delegate IEnumerable<byte[]> Stamp(Nonce nonce);
 
@@ -47,6 +49,7 @@ namespace Libplanet
         /// <param name="hashAlgorithmType">The hash algorithm to use.</param>
         /// <param name="difficulty">A number to calculate the target number
         /// for which the returned answer should be less than.</param>
+        /// <param name="seed">The seed number for random generator.</param>
         /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
         /// operation should be canceled.
@@ -61,11 +64,12 @@ namespace Libplanet
             Stamp stamp,
             HashAlgorithmType hashAlgorithmType,
             long difficulty,
+            int seed,
             CancellationToken cancellationToken = default
         )
         {
             var nonceBytes = new byte[10];
-            var random = new Random();
+            var random = new Random(seed);
             while (!cancellationToken.IsCancellationRequested)
             {
                 random.NextBytes(nonceBytes);

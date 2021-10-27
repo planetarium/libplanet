@@ -16,7 +16,7 @@ namespace Libplanet.Tests
         {
             IEnumerable<byte[]> Stamp(Nonce nonce) => new[] { challenge, nonce.ToByteArray() };
             (Nonce answer, ImmutableArray<byte> digest) =
-                Hashcash.Answer(Stamp, HashAlgorithmType.Of<SHA256>(), difficulty);
+                Hashcash.Answer(Stamp, HashAlgorithmType.Of<SHA256>(), difficulty, 0);
             Assert.True(Satisfies(digest.ToArray(), difficulty));
             TestUtils.AssertBytesEqual(
                 digest.ToArray(),
