@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.19.0
 --------------
 
-To be released.
+Released on October 27, 2021.
 
 ### Backward-incompatible API changes
 
@@ -23,8 +23,6 @@ To be released.
 ### Backward-incompatible network protocol changes
 
  -  The order of the header of a `NetMQMessage` has been modified.  [[#1503]]
-
-### Backward-incompatible storage format changes
 
 ### Added APIs
 
@@ -73,8 +71,6 @@ To be released.
     `IStore.ForkBlockIndexes()` method's specification.  [[#1544]]
  -  Fixed a bug where `Swarm<T>` did not removed failed block demands from the
     `BlockDemandTable`.  [[#1549]]
-
-### CLI tools
 
 [#1166]: https://github.com/planetarium/libplanet/issues/1166
 [#1503]: https://github.com/planetarium/libplanet/pull/1503
