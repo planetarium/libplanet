@@ -74,11 +74,18 @@ namespace Libplanet.Tests.Net
             IEnumerable<IceServer> iceServers = null,
             DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered = null,
             IEnumerable<PublicKey> trustedAppProtocolVersionSigners = null,
-            SwarmOptions options = null)
+            SwarmOptions options = null,
+            IBlockPolicy<DumbAction> policy = null,
+            Block<DumbAction> genesis = null)
         {
-            var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
+            policy = policy ?? new BlockPolicy<DumbAction>(new MinerReward(1));
             var fx = new DefaultStoreFixture(memory: true, blockAction: policy.BlockAction);
-            var blockchain = TestUtils.MakeBlockChain(policy, fx.Store, fx.StateStore);
+            var blockchain = TestUtils.MakeBlockChain(
+                policy,
+                fx.Store,
+                fx.StateStore,
+                genesisBlock: genesis
+            );
             return CreateSwarm(
                 blockchain,
                 privateKey,
