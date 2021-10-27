@@ -7524,6 +7524,12 @@ references:
   commentId: M:Libplanet.Blocks.BlockMetadata.MineNonce(Libplanet.HashAlgorithmType,CancellationToken)
   fullName: Libplanet.Blocks.BlockMetadata.MineNonce(Libplanet.HashAlgorithmType, CancellationToken)
   nameWithType: BlockMetadata.MineNonce(HashAlgorithmType, CancellationToken)
+- uid: Libplanet.Blocks.BlockMetadata.MineNonce(Libplanet.HashAlgorithmType,System.Int32,CancellationToken)
+  name: MineNonce(HashAlgorithmType, Int32, CancellationToken)
+  href: api/Libplanet.Blocks.BlockMetadata.html#Libplanet_Blocks_BlockMetadata_MineNonce_Libplanet_HashAlgorithmType_System_Int32_CancellationToken_
+  commentId: M:Libplanet.Blocks.BlockMetadata.MineNonce(Libplanet.HashAlgorithmType,System.Int32,CancellationToken)
+  fullName: Libplanet.Blocks.BlockMetadata.MineNonce(Libplanet.HashAlgorithmType, System.Int32, CancellationToken)
+  nameWithType: BlockMetadata.MineNonce(HashAlgorithmType, Int32, CancellationToken)
 - uid: Libplanet.Blocks.BlockMetadata.MineNonce*
   name: MineNonce
   href: api/Libplanet.Blocks.BlockMetadata.html#Libplanet_Blocks_BlockMetadata_MineNonce_
@@ -10045,12 +10051,12 @@ references:
   commentId: T:Libplanet.Hashcash
   fullName: Libplanet.Hashcash
   nameWithType: Hashcash
-- uid: Libplanet.Hashcash.Answer(Libplanet.Hashcash.Stamp,Libplanet.HashAlgorithmType,System.Int64,CancellationToken)
-  name: Answer(Hashcash.Stamp, HashAlgorithmType, Int64, CancellationToken)
-  href: api/Libplanet.Hashcash.html#Libplanet_Hashcash_Answer_Libplanet_Hashcash_Stamp_Libplanet_HashAlgorithmType_System_Int64_CancellationToken_
-  commentId: M:Libplanet.Hashcash.Answer(Libplanet.Hashcash.Stamp,Libplanet.HashAlgorithmType,System.Int64,CancellationToken)
-  fullName: Libplanet.Hashcash.Answer(Libplanet.Hashcash.Stamp, Libplanet.HashAlgorithmType, System.Int64, CancellationToken)
-  nameWithType: Hashcash.Answer(Hashcash.Stamp, HashAlgorithmType, Int64, CancellationToken)
+- uid: Libplanet.Hashcash.Answer(Libplanet.Hashcash.Stamp,Libplanet.HashAlgorithmType,System.Int64,System.Int32,CancellationToken)
+  name: Answer(Hashcash.Stamp, HashAlgorithmType, Int64, Int32, CancellationToken)
+  href: api/Libplanet.Hashcash.html#Libplanet_Hashcash_Answer_Libplanet_Hashcash_Stamp_Libplanet_HashAlgorithmType_System_Int64_System_Int32_CancellationToken_
+  commentId: M:Libplanet.Hashcash.Answer(Libplanet.Hashcash.Stamp,Libplanet.HashAlgorithmType,System.Int64,System.Int32,CancellationToken)
+  fullName: Libplanet.Hashcash.Answer(Libplanet.Hashcash.Stamp, Libplanet.HashAlgorithmType, System.Int64, System.Int32, CancellationToken)
+  nameWithType: Hashcash.Answer(Hashcash.Stamp, HashAlgorithmType, Int64, Int32, CancellationToken)
 - uid: Libplanet.Hashcash.Answer*
   name: Answer
   href: api/Libplanet.Hashcash.html#Libplanet_Hashcash_Answer_

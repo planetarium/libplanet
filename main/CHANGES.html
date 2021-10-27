@@ -75,6 +75,8 @@ Use <code>IMessageCodec&lt;T&gt;.Encode()</code> method instead.  [<a href="http
 Use <code>IMessageCodec&lt;T&gt;.Decode()</code> method instead.  [<a href="https://github.com/planetarium/libplanet/pull/1503">#1503</a>]</li>
 <li>Removed unused <code>HashAlgorithmGetter</code> type parameter from
 <code>ActionEvaluator&lt;T&gt;()</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/1537">#1537</a>]</li>
+<li><code>Hashcash.Answer()</code> method became to take random <code>seed</code> value explicitly.
+[<a href="https://github.com/planetarium/libplanet/pull/1546">#1546</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <ul>
@@ -92,11 +94,16 @@ Use <code>IMessageCodec&lt;T&gt;.Decode()</code> method instead.  [<a href="http
 <li>Added <code>MemoryStore</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/1544">#1544</a>]</li>
 <li>Added <code>MemoryKeyValueStore</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/1544">#1544</a>]</li>
 <li>Added <code>BlockDemandTable.Remove()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1549">#1549</a>]</li>
+<li>Added
+<code>BlockMetadata.MineNonce(HashAlgorithmType, int, CancellationToken)</code>
+overloaded method.  [<a href="https://github.com/planetarium/libplanet/pull/1546">#1546</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
 <li><code>IStore.ForkTxNonces()</code> method became to throw <code>ChainIdNotFoundException</code>
 when a given <code>sourceChainId</code> does not exist.  [<a href="https://github.com/planetarium/libplanet/pull/1544">#1544</a>]</li>
+<li><code>BlockMetadata.MineNonce()</code> method became to use multithreading when
+looking for the nonce.  [<a href="https://github.com/planetarium/libplanet/pull/1546">#1546</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
