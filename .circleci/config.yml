@@ -11,7 +11,12 @@ jobs:
     steps:
     - checkout
     - run: dotnet build -c Release -p:SkipSonar=true
-    - run: dotnet test -c Release
+    - run: >-
+        dotnet test
+        -c Release
+        -l "junit;MethodFormat=Full;FailureBodyFormat=Verbose;LogFilePath=/tmp/junit/{assembly}.xml"
+    - store_test_results:
+        path: /tmp/junit
 
 workflows:
   main:
