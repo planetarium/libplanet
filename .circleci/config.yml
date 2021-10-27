@@ -1,0 +1,19 @@
+version: 2.1
+
+orbs:
+  win: circleci/windows@2.2.0
+
+jobs:
+  build-and-test:
+    executor:
+      name: win/default
+      size: large
+    steps:
+    - checkout
+    - run: dotnet build -c Release -p:SkipSonar=true
+    - run: dotnet test -c Release
+
+workflows:
+  main:
+    jobs:
+    - build-and-test
