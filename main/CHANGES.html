@@ -85,6 +85,9 @@ Use <code>IMessageCodec&lt;T&gt;.Decode()</code> method instead.  [<a href="http
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
 <ul>
+<li>Added
+<code>BlockMetadata.MineNonce(HashAlgorithmType, int, CancellationToken)</code>
+overloaded method.  [<a href="https://github.com/planetarium/libplanet/pull/1546">#1546</a>]</li>
 <li>Added <code>Message.MessageFrame</code> enum.  [<a href="https://github.com/planetarium/libplanet/pull/1503">#1503</a>]</li>
 <li>Added <code>Message.Type</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/1503">#1503</a>]</li>
 <li>Added <code>Message.DataFrames</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/1503">#1503</a>]</li>
@@ -94,16 +97,19 @@ Use <code>IMessageCodec&lt;T&gt;.Decode()</code> method instead.  [<a href="http
 <li>Added <code>MemoryStore</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/1544">#1544</a>]</li>
 <li>Added <code>MemoryKeyValueStore</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/1544">#1544</a>]</li>
 <li>Added <code>BlockDemandTable.Remove()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1549">#1549</a>]</li>
-<li>Added
-<code>BlockMetadata.MineNonce(HashAlgorithmType, int, CancellationToken)</code>
-overloaded method.  [<a href="https://github.com/planetarium/libplanet/pull/1546">#1546</a>]</li>
+<li>Added <code>SwarmOptions.TipLifespan</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/1557">#1557</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
-<li><code>IStore.ForkTxNonces()</code> method became to throw <code>ChainIdNotFoundException</code>
-when a given <code>sourceChainId</code> does not exist.  [<a href="https://github.com/planetarium/libplanet/pull/1544">#1544</a>]</li>
 <li><code>BlockMetadata.MineNonce()</code> method became to use multithreading when
 looking for the nonce.  [<a href="https://github.com/planetarium/libplanet/pull/1546">#1546</a>]</li>
+<li><code>IStore.ForkTxNonces()</code> method became to throw <code>ChainIdNotFoundException</code>
+when a given <code>sourceChainId</code> does not exist.  [<a href="https://github.com/planetarium/libplanet/pull/1544">#1544</a>]</li>
+<li><code>Swarm&lt;T&gt;.StartAsync()</code> method became to poll neighbor peers if they have
+any new blocks whether <code>Swarm&lt;T&gt;.BlockDemandTable</code> is empty or not.
+The polling is triggered when <code>Swarm&lt;T&gt;.BlockChain</code>'s <code>Tip</code> has been
+unchanged for a while.  Expiration time for tips can be configured
+through <code>SwarmOptions.TipLifespan</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/1557">#1557</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>

@@ -14292,19 +14292,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.SwarmOptions.PollInterval
   nameWithType: SwarmOptions.PollInterval
-- uid: Libplanet.Net.SwarmOptions.RecentStateRecvTimeout
-  name: RecentStateRecvTimeout
-  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_RecentStateRecvTimeout
-  commentId: P:Libplanet.Net.SwarmOptions.RecentStateRecvTimeout
-  fullName: Libplanet.Net.SwarmOptions.RecentStateRecvTimeout
-  nameWithType: SwarmOptions.RecentStateRecvTimeout
-- uid: Libplanet.Net.SwarmOptions.RecentStateRecvTimeout*
-  name: RecentStateRecvTimeout
-  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_RecentStateRecvTimeout_
-  commentId: Overload:Libplanet.Net.SwarmOptions.RecentStateRecvTimeout
-  isSpec: "True"
-  fullName: Libplanet.Net.SwarmOptions.RecentStateRecvTimeout
-  nameWithType: SwarmOptions.RecentStateRecvTimeout
 - uid: Libplanet.Net.SwarmOptions.RefreshLifespan
   name: RefreshLifespan
   href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_RefreshLifespan
@@ -14370,6 +14357,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.SwarmOptions.TableSize
   nameWithType: SwarmOptions.TableSize
+- uid: Libplanet.Net.SwarmOptions.TipLifespan
+  name: TipLifespan
+  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_TipLifespan
+  commentId: P:Libplanet.Net.SwarmOptions.TipLifespan
+  fullName: Libplanet.Net.SwarmOptions.TipLifespan
+  nameWithType: SwarmOptions.TipLifespan
+- uid: Libplanet.Net.SwarmOptions.TipLifespan*
+  name: TipLifespan
+  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_TipLifespan_
+  commentId: Overload:Libplanet.Net.SwarmOptions.TipLifespan
+  isSpec: "True"
+  fullName: Libplanet.Net.SwarmOptions.TipLifespan
+  nameWithType: SwarmOptions.TipLifespan
 - uid: Libplanet.Net.SwarmOptions.TxRecvTimeout
   name: TxRecvTimeout
   href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_TxRecvTimeout
