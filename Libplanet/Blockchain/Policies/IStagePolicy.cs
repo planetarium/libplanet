@@ -71,5 +71,13 @@ namespace Libplanet.Blockchain.Policies
         /// <returns>Staged transactions.  The earliest staged transaction goes first,
         /// and the latest staged transaction goes last.</returns>
         public IEnumerable<Transaction<T>> Iterate(BlockChain<T> blockChain);
+
+        /// <summary>
+        /// Get a next transaction nonce according to <paramref name="address"/>.
+        /// </summary>
+        /// <param name="blockChain"><see cref="BlockChain{T}"/> instance to get nonce.</param>
+        /// <param name="address"><see cref="Address"/> to get transaction.</param>
+        /// <returns>The next transaction nonce.</returns>
+        public long GetNextTxNonce(BlockChain<T> blockChain, Address address);
     }
 }

@@ -618,31 +618,7 @@ namespace Libplanet.Blockchain
         /// <returns>The next <see cref="Transaction{T}.Nonce"/> value of the
         /// <paramref name="address"/>.</returns>
         public long GetNextTxNonce(Address address)
-        {
-            long nonce = Store.GetTxNonce(Id, address);
-            long prevNonce = nonce - 1;
-            IOrderedEnumerable<long> stagedTxNonces = StagePolicy.Iterate(this)
-                .Where(tx => tx.Signer.Equals(address) && tx.Nonce > prevNonce)
-                .Select(tx => tx.Nonce)
-                .OrderBy(n => n);
-
-            foreach (long n in stagedTxNonces)
-            {
-                if (n < nonce)
-                {
-                    continue;
-                }
-
-                if (n != nonce)
-                {
-                    break;
-                }
-
-                nonce++;
-            }
-
-            return nonce;
-        }
+            => StagePolicy.GetNextTxNonce(this, address);
 
         /// <summary>
         /// Records and queries the <paramref name="perceivedTime"/> of the given
