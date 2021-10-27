@@ -190,5 +190,32 @@ namespace Libplanet.Blockchain.Policies
                 _lock.ExitWriteLock();
             }
         }
+
+        public long GetNextTxNonce(BlockChain<T> blockChain, Address address)
+        {
+            long nonce = blockChain.Store.GetTxNonce(blockChain.Id, address);
+            long prevNonce = nonce - 1;
+            IOrderedEnumerable<long> stagedTxNonces = Iterate(blockChain)
+                .Where(tx => tx.Signer.Equals(address) && tx.Nonce > prevNonce)
+                .Select(tx => tx.Nonce)
+                .OrderBy(n => n);
+
+            foreach (long n in stagedTxNonces)
+            {
+                if (n < nonce)
+                {
+                    continue;
+                }
+
+                if (n != nonce)
+                {
+                    break;
+                }
+
+                nonce++;
+            }
+
+            return nonce;
+        }
     }
 }
