@@ -191,6 +191,7 @@ namespace Libplanet.Blockchain.Policies
             }
         }
 
+        /// <inheritdoc cref="IStagePolicy{T}.GetNextTxNonce(BlockChain{T}, Address)"/>
         public long GetNextTxNonce(BlockChain<T> blockChain, Address address)
         {
             long nonce = blockChain.Store.GetTxNonce(blockChain.Id, address);

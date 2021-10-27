@@ -73,7 +73,7 @@ namespace Libplanet.Blockchain.Policies
         public IEnumerable<Transaction<T>> Iterate(BlockChain<T> blockChain);
 
         /// <summary>
-        /// Get a next transaction nonce according to <paramref name="address"/>.
+        /// Get the next transaction nonce according for the <paramref name="address"/>.
         /// </summary>
         /// <param name="blockChain"><see cref="BlockChain{T}"/> instance to get nonce.</param>
         /// <param name="address"><see cref="Address"/> to get transaction.</param>

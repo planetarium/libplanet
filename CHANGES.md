@@ -61,8 +61,7 @@ Released on October 27, 2021.
  -  Added
     `BlockMetadata.MineNonce(HashAlgorithmType, int, CancellationToken)`
     overloaded method.  [[#1546]]
- -  Added `IStagePolicy<T>.GetNextTxNonce` interface.  [[#1553], [#1556]]
- -  Added `VolatileStagePolicy<T>.GetNextTxNonce` method.  [[#1553], [#1556]]
+ -  Added `IStagePolicy<T>.GetNextTxNonce` method.  [[#1553], [#1556]]
  -  Added `SwarmOptions.TipLifespan` property.  [[#1557]]
 
 ### Behavioral changes
