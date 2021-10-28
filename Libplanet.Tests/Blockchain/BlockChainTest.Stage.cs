@@ -20,10 +20,10 @@ namespace Libplanet.Tests.Blockchain
                 _fx.Transaction1,
                 _fx.Transaction2,
             };
-            Assert.Empty(_blockChain.StagePolicy.Iterate(_blockChain));
+            Assert.Empty(_blockChain.StagePolicy.Iterate());
 
             StageTransactions(txs);
-            Assert.Equal(txs, _blockChain.StagePolicy.Iterate(_blockChain).ToHashSet());
+            Assert.Equal(txs, _blockChain.StagePolicy.Iterate().ToHashSet());
         }
 
         [Fact]
@@ -64,7 +64,7 @@ namespace Libplanet.Tests.Blockchain
             );
             _blockChain.StageTransaction(txWithValidNonce);
             await _blockChain.MineBlock(key);
-            Assert.Empty(_blockChain.StagePolicy.Iterate(_blockChain));
+            Assert.Empty(_blockChain.StagePolicy.Iterate());
 
             Transaction<DumbAction> txWithInvalidNonce = _fx.MakeTransaction(
                 new DumbAction[0],
@@ -73,7 +73,7 @@ namespace Libplanet.Tests.Blockchain
                 privateKey: key
             );
             _blockChain.StageTransaction(txWithInvalidNonce);
-            Assert.Empty(_blockChain.StagePolicy.Iterate(_blockChain));
+            Assert.Empty(_blockChain.StagePolicy.Iterate());
             Assert.True(_blockChain.StagePolicy.Ignores(_blockChain, txWithInvalidNonce.Id));
         }
 

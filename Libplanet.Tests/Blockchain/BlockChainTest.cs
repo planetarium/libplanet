@@ -1402,7 +1402,7 @@ namespace Libplanet.Tests.Blockchain
             };
             StageTransactions(txsE);
 
-            foreach (var tx in _blockChain.StagePolicy.Iterate(_blockChain))
+            foreach (var tx in _blockChain.StagePolicy.Iterate())
             {
                 _logger.Fatal(
                     "{Id}; {Signer}; {Nonce}; {Timestamp}",
@@ -1511,7 +1511,7 @@ namespace Libplanet.Tests.Blockchain
             _blockChain.MakeTransaction(privateKey, actions);
 
             List<Transaction<DumbAction>> txs = _stagePolicy
-                .Iterate(_blockChain)
+                .Iterate()
                 .OrderBy(tx => tx.Nonce)
                 .ToList();
 

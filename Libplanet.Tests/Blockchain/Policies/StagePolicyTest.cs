@@ -44,26 +44,26 @@ namespace Libplanet.Tests.Blockchain.Policies
         [Fact]
         public void Stage()
         {
-            Assert.Empty(StagePolicy.Iterate(_chain));
+            Assert.Empty(StagePolicy.Iterate());
 
             StagePolicy.Stage(_chain, _txs[0]);
-            Assert.Equal(_txs.Take(1), StagePolicy.Iterate(_chain));
+            Assert.Equal(_txs.Take(1), StagePolicy.Iterate());
 
             StagePolicy.Stage(_chain, _txs[1]);
-            Assert.Equal(_txs.Take(2), StagePolicy.Iterate(_chain));
+            Assert.Equal(_txs.Take(2), StagePolicy.Iterate());
 
             // Even if already staged one is passed it throws no exception and silently ignored.
             StagePolicy.Stage(_chain, _txs[0]);
-            Assert.Equal(_txs.Take(2), StagePolicy.Iterate(_chain));
+            Assert.Equal(_txs.Take(2), StagePolicy.Iterate());
 
             StagePolicy.Stage(_chain, _txs[2]);
-            Assert.Equal(_txs.Take(3), StagePolicy.Iterate(_chain));
+            Assert.Equal(_txs.Take(3), StagePolicy.Iterate());
 
             // If a transaction had been unstaged, it can be staged again.
             StagePolicy.Unstage(_chain, _txs[2].Id);
-            Assert.Equal(_txs.Take(2), StagePolicy.Iterate(_chain));
+            Assert.Equal(_txs.Take(2), StagePolicy.Iterate());
             StagePolicy.Stage(_chain, _txs[2]);
-            Assert.Equal(_txs.Take(3), StagePolicy.Iterate(_chain));
+            Assert.Equal(_txs.Take(3), StagePolicy.Iterate());
 
             // If a transaction is marked as ignored, it cannot be staged.
             StagePolicy.Ignore(_chain, _txs[3].Id);
@@ -79,16 +79,16 @@ namespace Libplanet.Tests.Blockchain.Policies
                 StagePolicy.Stage(_chain, tx);
             }
 
-            Assert.Equal(_txs, StagePolicy.Iterate(_chain));
+            Assert.Equal(_txs, StagePolicy.Iterate());
 
             StagePolicy.Unstage(_chain, _txs[0].Id);
-            Assert.Equal(_txs.Skip(1), StagePolicy.Iterate(_chain));
+            Assert.Equal(_txs.Skip(1), StagePolicy.Iterate());
 
             StagePolicy.Unstage(_chain, _txs.Last().Id);
-            Assert.Equal(_txs.Skip(1).SkipLast(1), StagePolicy.Iterate(_chain));
+            Assert.Equal(_txs.Skip(1).SkipLast(1), StagePolicy.Iterate());
 
             StagePolicy.Unstage(_chain, _txs[2].Id);
-            Assert.Equal(new[] { _txs[1], _txs[3] }, StagePolicy.Iterate(_chain));
+            Assert.Equal(new[] { _txs[1], _txs[3] }, StagePolicy.Iterate());
         }
 
         [Fact]

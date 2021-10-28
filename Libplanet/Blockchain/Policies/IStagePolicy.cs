@@ -67,10 +67,9 @@ namespace Libplanet.Blockchain.Policies
         /// <summary>
         /// Enumerates all staged transaction IDs.
         /// </summary>
-        /// <param name="blockChain">The chain of the stage to enumerate.</param>
         /// <returns>Staged transactions.  The earliest staged transaction goes first,
         /// and the latest staged transaction goes last.</returns>
-        public IEnumerable<Transaction<T>> Iterate(BlockChain<T> blockChain);
+        public IEnumerable<Transaction<T>> Iterate();
 
         /// <summary>
         /// Get the next transaction nonce according for the <paramref name="address"/>.
