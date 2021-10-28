@@ -16,7 +16,34 @@ commands:
         shell: bash
 
 jobs:
-  build-and-test:
+  linux:
+    docker:
+    - image: mcr.microsoft.com/dotnet/sdk:3.1
+    resource_class: xlarge
+    steps:
+    - checkout
+    - concat_files:
+        glob: "*/*.csproj"
+        to: combined-package-files.txt
+    - restore_cache:
+        keys:
+        - v1-deps-{{ arch }}-{{ checksum "combined-package-files.txt" }}
+        - v1-deps-{{ arch }}
+        - v1-deps
+    - run: dotnet restore
+    - run: dotnet build -c Release -p:SkipSonar=true
+    - run: >-
+        dotnet test
+        -c Release
+        -l "junit;MethodFormat=Full;FailureBodyFormat=Verbose;LogFilePath=/tmp/junit/{assembly}.xml"
+    - store_test_results:
+        path: /tmp/junit
+    - save_cache:
+        key: v1-deps-{{ arch }}-{{ checksum "combined-package-files.txt" }}
+        paths:
+        - ~/.nuget/packages
+
+  windows:
     executor:
       name: win/default
       size: large
@@ -41,9 +68,10 @@ jobs:
     - save_cache:
         key: v1-deps-{{ arch }}-{{ checksum "combined-package-files.txt" }}
         paths:
-        - C:\Users\circleci\.nuget\packages
+        - ~/.nuget/packages
 
 workflows:
   main:
     jobs:
-    - build-and-test
+    - linux
+    - windows
