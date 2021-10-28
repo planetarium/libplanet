@@ -350,32 +350,25 @@ namespace Libplanet.Blocks
             {
                 throw new ArgumentOutOfRangeException(nameof(workers));
             }
-            else if (workers < 2)
+
+            Hashcash.Stamp stamp = GetStampFunction();
+            var random = new Random();
+            if (workers < 2)
             {
-                return Hashcash.Answer(
-                    GetStampFunction(),
-                    hashAlgorithm,
-                    Difficulty,
-                    new Random().Next(),
-                    cancellationToken
-                );
+                int seed = random.Next();
+                return Hashcash.Answer(stamp, hashAlgorithm, Difficulty, seed, cancellationToken);
             }
 
             using var cts = new CancellationTokenSource();
             using CancellationTokenSource lts =
                 CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, cts.Token);
-            List<Task<(Nonce Nonce, ImmutableArray<byte> Digest)>> tasks =
-                Enumerable.Range(0, workers)
-                .Select(i => Task.Run(
-                    () => Hashcash.Answer(
-                        GetStampFunction(),
-                        hashAlgorithm,
-                        Difficulty,
-                        i * 1024,
-                        lts.Token
-                    )
-                ))
-                .ToList();
+            int[] seeds = Enumerable.Range(0, workers).Select(_ => random.Next()).ToArray();
+            Task<(Nonce Nonce, ImmutableArray<byte> Digest)>[] tasks = seeds.Select(seed =>
+                Task.Run(
+                    () => Hashcash.Answer(stamp, hashAlgorithm, Difficulty, seed, lts.Token),
+                    lts.Token
+                )
+            ).ToArray();
             (Nonce n, ImmutableArray<byte> h) = Task.WhenAny(tasks)
                 .WaitAndUnwrapException()
                 .WaitAndUnwrapException();

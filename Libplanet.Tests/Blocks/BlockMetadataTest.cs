@@ -341,7 +341,7 @@ namespace Libplanet.Tests.Blocks
                 bool taskEnded = task.Wait(TimeSpan.FromSeconds(10));
                 Assert.True(taskEnded);
                 Assert.NotNull(exception);
-                Assert.IsType<OperationCanceledException>(exception);
+                Assert.IsAssignableFrom<OperationCanceledException>(exception);
             }
         }
     }
