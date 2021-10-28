@@ -65,9 +65,16 @@
 <h2 id="version-0200">Version 0.20.0</h2>
 <p>To be released.</p>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
+<ul>
+<li>Removed unused <code>BlockChain&lt;T&gt;</code> type parameter from
+<code>IStagePolicy&lt;T&gt;.Iterate()</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/1553">#1553</a>, <a href="https://github.com/planetarium/libplanet/pull/1556">#1556</a>]</li>
+</ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
+<ul>
+<li>Added <code>IStagePolicy&lt;T&gt;.GetNextTxNonce()</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/1553">#1553</a>, <a href="https://github.com/planetarium/libplanet/pull/1556">#1556</a>]</li>
+</ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="cli-tools">CLI tools</h3>
@@ -105,6 +112,9 @@ overloaded method.  [<a href="https://github.com/planetarium/libplanet/pull/1546
 <li>Added <code>MemoryStore</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/1544">#1544</a>]</li>
 <li>Added <code>MemoryKeyValueStore</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/1544">#1544</a>]</li>
 <li>Added <code>BlockDemandTable.Remove()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1549">#1549</a>]</li>
+<li>Added
+<code>BlockMetadata.MineNonce(HashAlgorithmType, int, CancellationToken)</code>
+overloaded method.  [<a href="https://github.com/planetarium/libplanet/pull/1546">#1546</a>]</li>
 <li>Added <code>SwarmOptions.TipLifespan</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/1557">#1557</a>]</li>
 </ul>
 <h3 id="behavioral-changes-1">Behavioral changes</h3>
