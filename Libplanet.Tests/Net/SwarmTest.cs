@@ -1485,6 +1485,12 @@ namespace Libplanet.Tests.Net
             Swarm<DumbAction> swarmB = CreateSwarm();
             Swarm<DumbAction> swarmC = CreateSwarm();
             Swarm<DumbAction> swarmD = CreateSwarm();
+
+            _output.WriteLine("{0}: {1}", nameof(swarmA), swarmA.AsPeer);
+            _output.WriteLine("{0}: {1}", nameof(swarmB), swarmB.AsPeer);
+            _output.WriteLine("{0}: {1}", nameof(swarmC), swarmC.AsPeer);
+            _output.WriteLine("{0}: {1}", nameof(swarmD), swarmD.AsPeer);
+
             try
             {
                 await StartAsync(swarmA);
