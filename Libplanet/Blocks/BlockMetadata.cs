@@ -319,7 +319,12 @@ namespace Libplanet.Blocks
         public (Nonce Nonce, ImmutableArray<byte> PreEvaluationHash) MineNonce(
             HashAlgorithmType hashAlgorithm,
             CancellationToken cancellationToken = default
-        ) => MineNonce(hashAlgorithm, Environment.ProcessorCount, cancellationToken);
+        ) =>
+            MineNonce(
+                hashAlgorithm,
+                Environment.ProcessorCount > 1 ? Environment.ProcessorCount / 2 : 1,
+                cancellationToken
+            );
 
         /// <summary>
         /// Mines the PoW (proof-of-work) nonce satisfying the block
