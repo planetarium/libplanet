@@ -294,13 +294,18 @@ namespace Libplanet.Tests.Blocks
             );
         }
 
-        [Fact]
-        public void MineNonce()
+        [Theory]
+        [InlineData(null)]
+        [InlineData(1)]
+        [InlineData(2)]
+        public void MineNonce(int? workers)
         {
             var codec = new Codec();
 
             HashAlgorithmType sha256 = HashAlgorithmType.Of<SHA256>();
-            (Nonce nonce, ImmutableArray<byte> preEvalHash) = GenesisMetadata.MineNonce(sha256);
+            (Nonce nonce, ImmutableArray<byte> preEvalHash) = workers is int w
+                ? GenesisMetadata.MineNonce(sha256, workers: w)
+                : GenesisMetadata.MineNonce(sha256);
             Assert.True(Satisfies(preEvalHash, GenesisMetadata.Difficulty));
             ImmutableArray<byte> actual = ImmutableArray.Create(
                 sha256.Digest(codec.Encode(GenesisMetadata.MakeCandidateData(nonce)))
@@ -308,7 +313,9 @@ namespace Libplanet.Tests.Blocks
             AssertBytesEqual(actual, preEvalHash);
 
             HashAlgorithmType sha512 = HashAlgorithmType.Of<SHA512>();
-            (nonce, preEvalHash) = BlockMetadata1.MineNonce(sha512);
+            (nonce, preEvalHash) = workers is int n
+                ? BlockMetadata1.MineNonce(sha512, workers: n)
+                : BlockMetadata1.MineNonce(sha512);
             Assert.True(Satisfies(preEvalHash, BlockMetadata1.Difficulty));
             actual = ImmutableArray.Create(
                 sha512.Digest(codec.Encode(BlockMetadata1.MakeCandidateData(nonce)))
@@ -316,8 +323,11 @@ namespace Libplanet.Tests.Blocks
             AssertBytesEqual(actual, preEvalHash);
         }
 
-        [Fact]
-        public void CancelMineNonce()
+        [Theory]
+        [InlineData(null)]
+        [InlineData(1)]
+        [InlineData(2)]
+        public void CancelMineNonce(int? workers)
         {
             using (CancellationTokenSource source = new CancellationTokenSource())
             {
@@ -329,7 +339,14 @@ namespace Libplanet.Tests.Blocks
                 {
                     try
                     {
-                        BlockMetadata1.MineNonce(sha512, source.Token);
+                        if (workers is int w)
+                        {
+                            BlockMetadata1.MineNonce(sha512, w, source.Token);
+                        }
+                        else
+                        {
+                            BlockMetadata1.MineNonce(sha512, source.Token);
+                        }
                     }
                     catch (OperationCanceledException ce)
                     {
