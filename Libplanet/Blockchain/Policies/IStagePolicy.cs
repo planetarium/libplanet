@@ -74,9 +74,10 @@ namespace Libplanet.Blockchain.Policies
         /// <summary>
         /// Get the next transaction nonce according for the <paramref name="address"/>.
         /// </summary>
-        /// <param name="blockChain"><see cref="BlockChain{T}"/> instance to get nonce.</param>
         /// <param name="address"><see cref="Address"/> to get transaction.</param>
+        /// <param name="currentNonce">Receives the most recent nonce of the
+        /// <paramref name="address"/> being looked up on the blockchain.</param>
         /// <returns>The next transaction nonce.</returns>
-        public long GetNextTxNonce(BlockChain<T> blockChain, Address address);
+        public long GetNextTxNonce(Address address, long currentNonce);
     }
 }

@@ -139,8 +139,8 @@ namespace Libplanet.Blockchain.Policies
             return null;
         }
 
-        /// <inheritdoc cref="IStagePolicy{T}.Iterate(BlockChain{T})"/>
-        public IEnumerable<Transaction<T>> Iterate(BlockChain<T> blockChain)
+        /// <inheritdoc cref="IStagePolicy{T}.Iterate"/>
+        public IEnumerable<Transaction<T>> Iterate()
         {
             _lock.EnterReadLock();
             TxId[] queue;
@@ -191,12 +191,12 @@ namespace Libplanet.Blockchain.Policies
             }
         }
 
-        /// <inheritdoc cref="IStagePolicy{T}.GetNextTxNonce(BlockChain{T}, Address)"/>
-        public long GetNextTxNonce(BlockChain<T> blockChain, Address address)
+        /// <inheritdoc cref="IStagePolicy{T}.GetNextTxNonce"/>
+        public long GetNextTxNonce(Address address, long currentNonce)
         {
-            long nonce = blockChain.Store.GetTxNonce(blockChain.Id, address);
+            long nonce = currentNonce;
             long prevNonce = nonce - 1;
-            IOrderedEnumerable<long> stagedTxNonces = Iterate(blockChain)
+            IOrderedEnumerable<long> stagedTxNonces = Iterate()
                 .Where(tx => tx.Signer.Equals(address) && tx.Nonce > prevNonce)
                 .Select(tx => tx.Nonce)
                 .OrderBy(n => n);
