@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 using Bencodex.Types;
 using DiffPlex.DiffBuilder;
 using DiffPlex.DiffBuilder.Model;
@@ -18,6 +20,7 @@ using Libplanet.Net.Protocols;
 using Libplanet.Store;
 using Libplanet.Tx;
 using Xunit;
+using Xunit.Abstractions;
 using Xunit.Sdk;
 using Random = System.Random;
 
@@ -495,5 +498,50 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
 
             return privateKey;
         }
+
+        public static async Task AssertThatEventually(
+            Expression<Func<bool>> condition,
+            TimeSpan timeout,
+            TimeSpan delay,
+            ITestOutputHelper output = null,
+            string conditionLabel = null
+        )
+        {
+            Func<bool> conditionFunc = condition.Compile();
+            DateTimeOffset started = DateTimeOffset.UtcNow;
+            DateTimeOffset until = started + timeout;
+            while (!conditionFunc() && DateTimeOffset.UtcNow <= until)
+            {
+                output?.WriteLine(
+                    "[{0}/{1}] Waiting for {2}...",
+                    until - started,
+                    timeout,
+                    conditionLabel is string c ? c : $"satisfying the condition ({condition.Body})"
+                );
+                await Task.Delay(delay);
+            }
+
+            Assert.True(
+                conditionFunc(),
+                $"Waited {timeout} but the condition (" +
+                    (conditionLabel is string l ? l : condition.Body.ToString()) +
+                    ") has never been satisfied."
+            );
+        }
+
+        public static Task AssertThatEventually(
+            Expression<Func<bool>> condition,
+            int timeoutMilliseconds,
+            int delayMilliseconds = 100,
+            ITestOutputHelper output = null,
+            string conditionLabel = null
+        ) =>
+            AssertThatEventually(
+                condition,
+                TimeSpan.FromMilliseconds(timeoutMilliseconds),
+                TimeSpan.FromMilliseconds(delayMilliseconds),
+                output,
+                conditionLabel
+            );
     }
 }

@@ -13,6 +13,7 @@ using Libplanet.Net;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Transports;
 using Libplanet.Store;
+using Libplanet.Tests.Blockchain;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Libplanet.Tests.Store.Trie;
@@ -30,16 +31,36 @@ namespace Libplanet.Tests.Net
         public async Task BroadcastBlockToReconnectedPeer()
         {
             var miner = new PrivateKey();
-            Swarm<DumbAction> seed = CreateSwarm(miner);
-            BlockChain<DumbAction> chainWithBlocks = seed.BlockChain;
-
-            var privateKey = new PrivateKey();
-            Swarm<DumbAction> swarmA = CreateSwarm(privateKey: privateKey);
-            Swarm<DumbAction> swarmB = CreateSwarm(privateKey: privateKey);
-
+            var policy = new NullPolicy<DumbAction>();
+            var fx = new DefaultStoreFixture(true, policy.BlockAction);
+            var minerChain = TestUtils.MakeBlockChain(policy, fx.Store, fx.StateStore);
             foreach (int i in Enumerable.Range(0, 10))
             {
-                await chainWithBlocks.MineBlock(miner);
+                await minerChain.MineBlock(miner);
+            }
+
+            Swarm<DumbAction> seed = CreateSwarm(
+                miner,
+                policy: policy,
+                genesis: minerChain.Genesis
+            );
+            BlockChain<DumbAction> seedChain = seed.BlockChain;
+
+            var privateKey = new PrivateKey();
+            Swarm<DumbAction> swarmA = CreateSwarm(
+                privateKey: privateKey,
+                policy: policy,
+                genesis: minerChain.Genesis
+            );
+            Swarm<DumbAction> swarmB = CreateSwarm(
+                privateKey: privateKey,
+                policy: policy,
+                genesis: minerChain.Genesis
+            );
+
+            foreach (BlockHash blockHash in minerChain.BlockHashes.Skip(1).Take(4))
+            {
+                seedChain.Append(minerChain[blockHash]);
             }
 
             try
@@ -58,6 +79,11 @@ namespace Libplanet.Tests.Net
 
                 Assert.DoesNotContain(swarmA.AsPeer, seed.Peers);
 
+                foreach (BlockHash blockHash in minerChain.BlockHashes.Skip(5))
+                {
+                    seedChain.Append(minerChain[blockHash]);
+                }
+
                 await swarmB.AddPeersAsync(new[] { seed.AsPeer }, null);
 
                 // This is added for context switching.
@@ -66,12 +92,12 @@ namespace Libplanet.Tests.Net
                 Assert.Contains(swarmB.AsPeer, seed.Peers);
                 Assert.Contains(seed.AsPeer, swarmB.Peers);
 
-                seed.BroadcastBlock(chainWithBlocks.Tip);
+                seed.BroadcastBlock(seedChain.Tip);
 
                 await swarmB.BlockAppended.WaitAsync();
 
-                Assert.NotEqual(chainWithBlocks.BlockHashes, swarmA.BlockChain.BlockHashes);
-                Assert.Equal(chainWithBlocks.BlockHashes, swarmB.BlockChain.BlockHashes);
+                Assert.NotEqual(seedChain.BlockHashes, swarmA.BlockChain.BlockHashes);
+                Assert.Equal(seedChain.BlockHashes, swarmB.BlockChain.BlockHashes);
             }
             finally
             {

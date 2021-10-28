@@ -25,7 +25,20 @@ for project in "${executables[@]}"; do
       -p:Version="$version" \
       --configuration "$configuration" \
       --output "$output_dir" \
-      "$project"
+      "$project" || \
+        if [[ "$?" = "139" ]]; then
+          # On GitHub Actions, `dotnet` command occasionally fails due to
+          # segfault.
+          dotnet publish \
+            --runtime "$rid" \
+            -p:PublishSingleFile=true \
+            -p:Version="$version" \
+            --configuration "$configuration" \
+            --output "$output_dir" \
+            "$project"
+        else
+          exit 1
+        fi
     bin_name="$(find "$output_dir" -type f -executable -exec basename {} \;)"
     pushd "$output_dir"
     if [[ "$rid" = win-* ]]; then
@@ -56,9 +69,21 @@ for project in "${projects[@]}"; do
     dotnet_args="-p:Version=$version"
   fi
   # shellcheck disable=SC2086
-  dotnet build -c "$configuration" $dotnet_args
+  dotnet build -c "$configuration" $dotnet_args || \
+    if [[ "$?" = "139" ]]; then
+      # On GitHub Actions, `dotnet` command occasionally fails due to segfault.
+      dotnet build -c "$configuration" $dotnet_args
+    else
+      exit 1
+    fi
   # shellcheck disable=SC2086
-  dotnet pack "$project" -c "$configuration" $dotnet_args
+  dotnet pack "$project" -c "$configuration" $dotnet_args || \
+    if [[ "$?" = "139" ]]; then
+      # On GitHub Actions, `dotnet` command occasionally fails due to segfault.
+      dotnet pack "$project" -c "$configuration" $dotnet_args
+    else
+      exit 1
+    fi
 
   ls -al "./$project/bin/$configuration/"
   if [ "$package_version" != "$version_prefix" ]; then

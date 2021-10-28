@@ -66,6 +66,11 @@ namespace Libplanet.Net
             Log.Verbose("Successfully cleaned up demands.");
         }
 
+        internal void Remove(BoundPeer peer)
+        {
+            _blockDemands.TryRemove(peer, out _);
+        }
+
         private bool IsDemandNeeded(
             BlockChain<T> blockChain,
             Func<IBlockExcerpt, bool> predicate,

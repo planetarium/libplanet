@@ -339,6 +339,14 @@ namespace Libplanet.Net
                         Options.PollInterval,
                         Options.MaximumPollPeers,
                         _cancellationToken));
+                tasks.Add(
+                    PollBlocksAsync(
+                        dialTimeout,
+                        Options.TipLifespan,
+                        Options.MaximumPollPeers,
+                        _cancellationToken
+                    )
+                );
                 if (Options.StaticPeers.Any())
                 {
                     tasks.Add(
@@ -1286,19 +1294,23 @@ namespace Libplanet.Net
             TimeSpan period,
             CancellationToken cancellationToken)
         {
+            TimeSpan timeout = TimeSpan.FromSeconds(3);
             while (!cancellationToken.IsCancellationRequested)
             {
-                await Task.Delay(period, cancellationToken);
-                Options.StaticPeers.AsParallel().ForAll(async boundPeer =>
-                {
-                    if (!RoutingTable.Contains(boundPeer))
+                var tasks = Options.StaticPeers
+                    .Where(peer => !RoutingTable.Contains(peer))
+                    .Select(async peer =>
                     {
-                        await AddPeersAsync(
-                            new[] { boundPeer },
-                            TimeSpan.FromSeconds(3),
-                            cancellationToken);
-                    }
-                });
+                        try
+                        {
+                            await AddPeersAsync(new[] { peer }, timeout, cancellationToken);
+                        }
+                        catch (TimeoutException)
+                        {
+                        }
+                    });
+                await Task.WhenAll(tasks);
+                await Task.Delay(period, cancellationToken);
             }
         }
     }

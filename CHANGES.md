@@ -4,7 +4,24 @@ Libplanet changelog
 Version 0.18.3
 --------------
 
-To be released.
+Released on October 28, 2021.  Mainly backported critical bug fixes from
+0.19.0.  [[#1562]]
+
+ -  `Swarm<T>.StartAsync()` method became to poll neighbor peers if they have
+    any new blocks whether `Swarm<T>.BlockDemandTable` is empty or not.
+    The polling is triggered when `Swarm<T>.BlockChain`'s `Tip` has been
+    unchanged for a while.  [[#1557]]
+ -  Fixed `Swarm<T>`'s bug that it had thrown `PingTimeoutException` if any
+    peer in configured `SwarmOptions.StaticPeers` is unreachable.
+    [[#1550], [#1551]]
+ -  Fixed a bug where `Swarm<T>` did not removed failed block demands from the
+    `BlockDemandTable`.  [[#1549]]
+
+[#1549]: https://github.com/planetarium/libplanet/pull/1549
+[#1550]: https://github.com/planetarium/libplanet/issues/1550
+[#1551]: https://github.com/planetarium/libplanet/pull/1551
+[#1557]: https://github.com/planetarium/libplanet/pull/1557
+[#1562]: https://github.com/planetarium/libplanet/pull/1561
 
 
 Version 0.18.2
