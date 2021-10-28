@@ -1226,21 +1226,36 @@ namespace Libplanet.Tests.Net
                 await minerChainB.MineBlock(keyB);
                 minerSwarmA.BroadcastBlock(b1);
                 await receiverSwarm.BlockAppended.WaitAsync();
-                Assert.Equal(receiverChain.Tip, minerChainA.Tip);
+                await AssertThatEventually(
+                    () => receiverChain.Tip.Equals(minerChainA.Tip),
+                    5_000,
+                    conditionLabel:
+                        $"{nameof(receiverChain)}'s tip being same to {nameof(minerChainA)}'s tip"
+                );
 
                 // Broadcast SwarmB's second block.
                 await minerChainA.MineBlock(keyA);
                 var b2 = await minerChainB.MineBlock(keyB);
                 minerSwarmB.BroadcastBlock(b2);
                 await receiverSwarm.BlockAppended.WaitAsync();
-                Assert.Equal(receiverChain.Tip, minerChainB.Tip);
+                await AssertThatEventually(
+                    () => receiverChain.Tip.Equals(minerChainB.Tip),
+                    5_000,
+                    conditionLabel:
+                        $"{nameof(receiverChain)}'s tip being same to {nameof(minerChainA)}'s tip"
+                );
 
                 // Broadcast SwarmA's third block.
                 var b3 = await minerChainA.MineBlock(keyA);
                 await minerChainB.MineBlock(keyB);
                 minerSwarmA.BroadcastBlock(b3);
                 await receiverSwarm.BlockAppended.WaitAsync();
-                Assert.Equal(receiverChain.Tip, minerChainA.Tip);
+                await AssertThatEventually(
+                    () => receiverChain.Tip.Equals(minerChainA.Tip),
+                    5_000,
+                    conditionLabel:
+                        $"{nameof(receiverChain)}'s tip being same to {nameof(minerChainA)}'s tip"
+                );
             }
             finally
             {
