@@ -618,31 +618,7 @@ namespace Libplanet.Blockchain
         /// <returns>The next <see cref="Transaction{T}.Nonce"/> value of the
         /// <paramref name="address"/>.</returns>
         public long GetNextTxNonce(Address address)
-        {
-            long nonce = Store.GetTxNonce(Id, address);
-            long prevNonce = nonce - 1;
-            IOrderedEnumerable<long> stagedTxNonces = StagePolicy.Iterate(this)
-                .Where(tx => tx.Signer.Equals(address) && tx.Nonce > prevNonce)
-                .Select(tx => tx.Nonce)
-                .OrderBy(n => n);
-
-            foreach (long n in stagedTxNonces)
-            {
-                if (n < nonce)
-                {
-                    continue;
-                }
-
-                if (n != nonce)
-                {
-                    break;
-                }
-
-                nonce++;
-            }
-
-            return nonce;
-        }
+            => StagePolicy.GetNextTxNonce(address, Store.GetTxNonce(Id, address));
 
         /// <summary>
         /// Records and queries the <paramref name="perceivedTime"/> of the given
@@ -719,7 +695,7 @@ namespace Libplanet.Blockchain
         public IImmutableSet<TxId> GetStagedTransactionIds()
         {
             // FIXME: How about turning this method to the StagedTransactions property?
-            return StagePolicy.Iterate(this).Select(tx => tx.Id).ToImmutableHashSet();
+            return StagePolicy.Iterate().Select(tx => tx.Id).ToImmutableHashSet();
         }
 
         /// <summary>
@@ -971,7 +947,7 @@ namespace Libplanet.Blockchain
                     _rwlock.ExitWriteLock();
                 }
 
-                ISet<TxId> txIds = StagePolicy.Iterate(this)
+                ISet<TxId> txIds = StagePolicy.Iterate()
                     .Where(tx => maxNonces.TryGetValue(tx.Signer, out long nonce) &&
                         tx.Nonce <= nonce)
                     .Select(tx => tx.Id)
@@ -1229,7 +1205,7 @@ namespace Libplanet.Blockchain
             IComparer<Transaction<T>> txPriority = null
         )
         {
-            IEnumerable<Transaction<T>> unorderedTxs = StagePolicy.Iterate(this);
+            IEnumerable<Transaction<T>> unorderedTxs = StagePolicy.Iterate();
             if (txPriority is { } comparer)
             {
                 unorderedTxs = unorderedTxs.OrderBy(tx => tx, comparer);

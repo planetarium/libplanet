@@ -31,7 +31,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             _stagePolicy.Stage(_chain, tx);
             Assert.True(_stagePolicy.Ignores(_chain, tx.Id));
             Assert.Equal(tx, _stagePolicy.Get(_chain, tx.Id, false));
-            Assert.Contains(tx, _stagePolicy.Iterate(_chain));
+            Assert.Contains(tx, _stagePolicy.Iterate());
 
             // On some targets TimeSpan * int does not exist:
             Thread.Sleep(timeBuffer);
@@ -39,7 +39,7 @@ namespace Libplanet.Tests.Blockchain.Policies
 
             Assert.False(_stagePolicy.Ignores(_chain, tx.Id));
             Assert.Null(_stagePolicy.Get(_chain, tx.Id, true));
-            Assert.DoesNotContain(tx, _stagePolicy.Iterate(_chain));
+            Assert.DoesNotContain(tx, _stagePolicy.Iterate());
         }
     }
 }

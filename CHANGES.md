@@ -8,17 +8,26 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Removed unused `BlockChain<T>` type parameter from
+    `IStagePolicy<T>.Iterate()` method.  [[#1553], [#1556]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
 
 ### Added APIs
 
+ -  Added `IStagePolicy<T>.GetNextTxNonce()` method.  [[#1553], [#1556]]
+
 ### Behavioral changes
 
 ### Bug fixes
 
 ### CLI tools
+
+
+[#1553]: https://github.com/planetarium/libplanet/issues/1553
+[#1556]: https://github.com/planetarium/libplanet/pull/1556
 
 
 Version 0.19.0
@@ -58,6 +67,9 @@ Released on October 27, 2021.
  -  Added `MemoryStore` class.  [[#1544]]
  -  Added `MemoryKeyValueStore` class.  [[#1544]]
  -  Added `BlockDemandTable.Remove()` method.  [[#1549]]
+ -  Added
+    `BlockMetadata.MineNonce(HashAlgorithmType, int, CancellationToken)`
+    overloaded method.  [[#1546]]
  -  Added `SwarmOptions.TipLifespan` property.  [[#1557]]
 
 ### Behavioral changes
