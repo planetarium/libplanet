@@ -192,9 +192,9 @@ namespace Libplanet.Blockchain.Policies
         }
 
         /// <inheritdoc cref="IStagePolicy{T}.GetNextTxNonce"/>
-        public long GetNextTxNonce(Address address, long currentNonce)
+        public long GetNextTxNonce(Address address, long minedTxs)
         {
-            long nonce = currentNonce;
+            long nonce = minedTxs;
             long prevNonce = nonce - 1;
             IOrderedEnumerable<long> stagedTxNonces = Iterate()
                 .Where(tx => tx.Signer.Equals(address) && tx.Nonce > prevNonce)
