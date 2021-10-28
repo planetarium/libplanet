@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Libplanet.Net;
+using Libplanet.Stun;
 using Xunit;
 
 namespace Libplanet.Tests.Net
@@ -32,10 +33,28 @@ namespace Libplanet.Tests.Net
                 async () => { await IceServer.CreateTurnClient(servers); });
 
             servers.Add(new IceServer(new[] { turnUri }, userInfo[0], userInfo[1]));
-            var turnClient = await IceServer.CreateTurnClient(servers);
+            for (int i = 3; i > 0; i--)
+            {
+                TurnClient turnClient;
+                try
+                {
+                    turnClient = await IceServer.CreateTurnClient(servers);
+                }
+                catch (IceServerException)
+                {
+                    // Try up to 3 times, as the servers are not well operational.
+                    if (i > 1)
+                    {
+                        await Task.Delay(1000);
+                        continue;
+                    }
 
-            Assert.Equal(userInfo[0], turnClient.Username);
-            Assert.Equal(userInfo[1], turnClient.Password);
+                    throw;
+                }
+
+                Assert.Equal(userInfo[0], turnClient.Username);
+                Assert.Equal(userInfo[1], turnClient.Password);
+            }
         }
     }
 }
