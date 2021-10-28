@@ -345,6 +345,16 @@ namespace Libplanet.Blocks
             {
                 throw new ArgumentOutOfRangeException(nameof(workers));
             }
+            else if (workers < 2)
+            {
+                return Hashcash.Answer(
+                    GetStampFunction(),
+                    hashAlgorithm,
+                    Difficulty,
+                    new Random().Next(),
+                    cancellationToken
+                );
+            }
 
             using var cts = new CancellationTokenSource();
             using CancellationTokenSource lts =

@@ -6,6 +6,11 @@ Version 0.19.1
 
 To be released.
 
+ -  `BlockMetadata.MineNonce()` method now does not spawn a new thread
+    if the `workers` is less than 2.  [[#1564]]
+
+[#1564]: https://github.com/planetarium/libplanet/pull/1564
+
 
 Version 0.19.0
 --------------
