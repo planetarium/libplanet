@@ -8,17 +8,26 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Removed unused `BlockChain<T>` type parameter from
+    `IStagePolicy<T>.Iterate()` method.  [[#1553], [#1556]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
 
 ### Added APIs
 
+ -  Added `IStagePolicy<T>.GetNextTxNonce()` method.  [[#1553], [#1556]]
+
 ### Behavioral changes
 
 ### Bug fixes
 
 ### CLI tools
+
+
+[#1553]: https://github.com/planetarium/libplanet/issues/1553
+[#1556]: https://github.com/planetarium/libplanet/pull/1556
 
 
 Version 0.19.0
@@ -61,7 +70,6 @@ Released on October 27, 2021.
  -  Added
     `BlockMetadata.MineNonce(HashAlgorithmType, int, CancellationToken)`
     overloaded method.  [[#1546]]
- -  Added `IStagePolicy<T>.GetNextTxNonce` method.  [[#1553], [#1556]]
  -  Added `SwarmOptions.TipLifespan` property.  [[#1557]]
 
 ### Behavioral changes
@@ -105,8 +113,6 @@ Released on October 27, 2021.
 [#1550]: https://github.com/planetarium/libplanet/issues/1550
 [#1549]: https://github.com/planetarium/libplanet/pull/1549
 [#1551]: https://github.com/planetarium/libplanet/pull/1551
-[#1553]: https://github.com/planetarium/libplanet/issues/1553
-[#1556]: https://github.com/planetarium/libplanet/pull/1556
 [#1557]: https://github.com/planetarium/libplanet/pull/1557
 
 
