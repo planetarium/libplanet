@@ -19,7 +19,8 @@ jobs:
   linux:
     docker:
     - image: mcr.microsoft.com/dotnet/sdk:3.1
-    resource_class: xlarge
+    resource_class: large
+    parallelism: 4
     steps:
     - checkout
     - concat_files:
@@ -31,11 +32,39 @@ jobs:
         - v1-deps-{{ arch }}
         - v1-deps
     - run: dotnet restore
-    - run: dotnet build -c Release -p:SkipSonar=true
+    - run: dotnet build --no-restore -c Release -p:SkipSonar=true
+    - run:
+        shell: bash
+        command: |
+          set -evx
+          dotnet test --no-restore --no-build -c Release --list-tests \
+          > .dotnet-list-tests.txt
+          grep -E '^    ' .dotnet-list-tests.txt \
+          | sed -E 's/^    |\(.*?\)$//g' \
+          | uniq \
+          | /usr/bin/sort -R --random-source=CHANGES.md \
+          > .tests.txt
+          total="$(wc -l .tests.txt | awk '{ print $1 }')"
+          part="$(( (total + CIRCLE_NODE_TOTAL - 1) / CIRCLE_NODE_TOTAL ))"
+          tail -n +$((CIRCLE_NODE_INDEX * part + 1)) .tests.txt \
+          | head -n $part \
+          > .current_tests.txt
+          first=1
+          while read test; do
+            if [[ "$first" = "1" ]]; then
+              echo "FullyQualifiedName=$test"
+              first=0
+            else
+              echo "| FullyQualifiedName=$test"
+            fi
+          done < .current_tests.txt > .test-filter.txt
     - run: >-
         dotnet test
+        --no-restore
+        --no-build
         -c Release
-        -l "junit;MethodFormat=Full;FailureBodyFormat=Verbose;LogFilePath=/tmp/junit/{assembly}.xml"
+        -l "junit;FailureBodyFormat=Verbose;LogFilePath=/tmp/junit/{assembly}.xml"
+        --filter "$(cat .test-filter.txt)"
     - store_test_results:
         path: /tmp/junit
     - save_cache:
@@ -47,6 +76,7 @@ jobs:
     executor:
       name: win/default
       size: large
+    parallelism: 4
     steps:
     - checkout
     - concat_files:
@@ -58,11 +88,39 @@ jobs:
         - v1-deps-{{ arch }}
         - v1-deps
     - run: dotnet restore
-    - run: dotnet build -c Release -p:SkipSonar=true
+    - run: dotnet build --no-restore -c Release -p:SkipSonar=true
+    - run:
+        shell: bash
+        command: |
+          set -evx
+          dotnet test --no-restore --no-build -c Release --list-tests \
+          > .dotnet-list-tests.txt
+          grep -E '^    ' .dotnet-list-tests.txt \
+          | sed -E 's/^    |\(.*?\)$//g' \
+          | uniq \
+          | /usr/bin/sort -R --random-source=CHANGES.md \
+          > .tests.txt
+          total="$(wc -l .tests.txt | awk '{ print $1 }')"
+          part="$(( (total + CIRCLE_NODE_TOTAL - 1) / CIRCLE_NODE_TOTAL ))"
+          tail -n +$((CIRCLE_NODE_INDEX * part + 1)) .tests.txt \
+          | head -n $part \
+          > .current_tests.txt
+          first=1
+          while read test; do
+            if [[ "$first" = "1" ]]; then
+              echo "FullyQualifiedName=$test"
+              first=0
+            else
+              echo "| FullyQualifiedName=$test"
+            fi
+          done < .current_tests.txt > .test-filter.txt
     - run: >-
         dotnet test
+        --no-restore
+        --no-build
         -c Release
-        -l "junit;MethodFormat=Full;FailureBodyFormat=Verbose;LogFilePath=/tmp/junit/{assembly}.xml"
+        -l "junit;FailureBodyFormat=Verbose;LogFilePath=/tmp/junit/{assembly}.xml"
+        --filter "$(cat .test-filter.txt)"
     - store_test_results:
         path: /tmp/junit
     - save_cache:
