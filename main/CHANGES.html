@@ -78,6 +78,18 @@
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="cli-tools">CLI tools</h3>
+<h2 id="version-0191">Version 0.19.1</h2>
+<p>Released on October 29, 2021.</p>
+<ul>
+<li><code>BlockMetadata.MineNonce()</code> method and other mining methods based on it
+now do not spawn a new thread if the <code>workers</code> is less than 2.  [<a href="https://github.com/planetarium/libplanet/pull/1564">#1564</a>]</li>
+<li><code>BlockMetadata.MineNonce()</code> method and other mining methods based on it
+now uses the half of the present logical processors (i.e.,
+<code>Environment.ProcessorCount / 2</code>) by default.  If there is only one logical
+processor, uses one worker.  [<a href="https://github.com/planetarium/libplanet/pull/1564">#1564</a>]</li>
+<li>Rolled back the order of the header of a <code>Message</code> so that it is compatible
+with nodes based on Libplanet pre-0.19.0.  [<a href="https://github.com/planetarium/libplanet/pull/1565">#1565</a>]</li>
+</ul>
 <h2 id="version-0190">Version 0.19.0</h2>
 <p>Released on October 27, 2021.</p>
 <h3 id="backward-incompatible-api-changes-1">Backward-incompatible API changes</h3>
@@ -96,7 +108,7 @@ Use <code>IMessageCodec&lt;T&gt;.Decode()</code> method instead.  [<a href="http
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes-1">Backward-incompatible network protocol changes</h3>
 <ul>
-<li>The order of the header of a <code>NetMQMessage</code> has been modified.  [<a href="https://github.com/planetarium/libplanet/pull/1503">#1503</a>]</li>
+<li>The order of the header of a <code>Message</code> has been modified.  [<a href="https://github.com/planetarium/libplanet/pull/1503">#1503</a>]</li>
 </ul>
 <h3 id="added-apis-1">Added APIs</h3>
 <ul>
@@ -146,6 +158,20 @@ method's specification.  [<a href="https://github.com/planetarium/libplanet/pull
 method's bug that it had done silently no-op when a given <code>sourceChainId</code>
 had not existed, which had not been compliant with
 <code>IStore.ForkBlockIndexes()</code> method's specification.  [<a href="https://github.com/planetarium/libplanet/pull/1544">#1544</a>]</li>
+<li>Fixed a bug where <code>Swarm&lt;T&gt;</code> did not removed failed block demands from the
+<code>BlockDemandTable</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1549">#1549</a>]</li>
+</ul>
+<h2 id="version-0183">Version 0.18.3</h2>
+<p>Released on October 28, 2021.  Mainly backported critical bug fixes from
+0.19.0.  [<a href="https://github.com/planetarium/libplanet/pull/1561">#1562</a>]</p>
+<ul>
+<li><code>Swarm&lt;T&gt;.StartAsync()</code> method became to poll neighbor peers if they have
+any new blocks whether <code>Swarm&lt;T&gt;.BlockDemandTable</code> is empty or not.
+The polling is triggered when <code>Swarm&lt;T&gt;.BlockChain</code>'s <code>Tip</code> has been
+unchanged for a while.  [<a href="https://github.com/planetarium/libplanet/pull/1557">#1557</a>]</li>
+<li>Fixed <code>Swarm&lt;T&gt;</code>'s bug that it had thrown <code>PingTimeoutException</code> if any
+peer in configured <code>SwarmOptions.StaticPeers</code> is unreachable.
+[<a href="https://github.com/planetarium/libplanet/issues/1550">#1550</a>, <a href="https://github.com/planetarium/libplanet/pull/1551">#1551</a>]</li>
 <li>Fixed a bug where <code>Swarm&lt;T&gt;</code> did not removed failed block demands from the
 <code>BlockDemandTable</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1549">#1549</a>]</li>
 </ul>

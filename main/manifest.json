@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "2zKxiza7UoyIb9g5Nc9sAp/pNIquIRlt8fJzhkAz9ok="
+          "hash": "rlifkj6M1ivvphufeRxRAV+CK8xJdMkEvZH0RwATqzQ="
         }
       },
       "is_incremental": false,
@@ -1017,7 +1017,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blocks.BlockMetadata.html",
-          "hash": "H+gbWfgPM9XJI/deepmFa1HyxyG72TqoprAJIjHb3kk="
+          "hash": "9ZQcpgRdvbRK3D9ZAuDRdkz70Ov4+HvJnCmKFO9FMY4="
         }
       },
       "is_incremental": false,
