@@ -107,19 +107,19 @@ namespace Libplanet.Net.Messages
             Version = 0,
 
             /// <summary>
+            /// Frame containing the type of the message.
+            /// </summary>
+            Type = 1,
+
+            /// <summary>
             /// Frame containing the sender <see cref="Peer"/> of the <see cref="Message"/>.
             /// </summary>
-            Peer = 1,
+            Peer = 2,
 
             /// <summary>
             /// Frame containing the datetime when the <see cref="Message"/> is created.
             /// </summary>
-            Timestamp = 2,
-
-            /// <summary>
-            /// Frame containing the type of the message.
-            /// </summary>
-            Type = 3,
+            Timestamp = 3,
 
             /// <summary>
             /// Frame containing signature of the <see cref="Message"/>.

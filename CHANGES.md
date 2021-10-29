@@ -12,7 +12,10 @@ To be released.
     now uses the half of the present logical processors (i.e.,
     `Environment.ProcessorCount / 2`) by default.  If there is only one logical
     processor, uses one worker.  [[#1564]]
+ -  The order of the header of a `Message` has been modified,
+    which is the same with the one before version 0.19.0.  [[#1565]]
 
+[#1565]: https://github.com/planetarium/libplanet/pull/1565
 [#1564]: https://github.com/planetarium/libplanet/pull/1564
 
 
@@ -37,7 +40,7 @@ Released on October 27, 2021.
 
 ### Backward-incompatible network protocol changes
 
- -  The order of the header of a `NetMQMessage` has been modified.  [[#1503]]
+ -  The order of the header of a `Message` has been modified.  [[#1503]]
 
 ### Added APIs
 
