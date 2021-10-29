@@ -41,10 +41,10 @@ namespace Libplanet.Net.Messages
                 netMqMessage.Append(frame);
             }
 
-            // Write headers. (inverse order, version-peer-timestamp-type)
-            netMqMessage.Push((int)message.Type);
+            // Write headers. (inverse order, version-type-peer-timestamp)
             netMqMessage.Push(timestamp.Ticks);
             netMqMessage.Push(_codec.Encode(peer.ToBencodex()));
+            netMqMessage.Push((int)message.Type);
             netMqMessage.Push(version.Token);
 
             // Make and insert signature
@@ -73,8 +73,8 @@ namespace Libplanet.Net.Messages
                 throw new ArgumentException("Can't parse empty NetMQMessage.");
             }
 
-            // (reply == true)            [version, peer, timestamp, type, sign, frames...]
-            // (reply == false) [identity, version, peer, timestamp, type, sign, frames...]
+            // (reply == true)            [version, type, peer, timestamp, sign, frames...]
+            // (reply == false) [identity, version, type, peer, timestamp, sign, frames...]
             NetMQFrame[] remains = reply ? encoded.ToArray() : encoded.Skip(1).ToArray();
 
             var versionToken = remains[(int)Message.MessageFrame.Version].ConvertToString();
@@ -130,9 +130,9 @@ namespace Libplanet.Net.Messages
             var headerWithoutSign = new[]
             {
                 remains[(int)Message.MessageFrame.Version],
+                remains[(int)Message.MessageFrame.Type],
                 remains[(int)Message.MessageFrame.Peer],
                 remains[(int)Message.MessageFrame.Timestamp],
-                remains[(int)Message.MessageFrame.Type],
             };
 
             var messageForVerify = headerWithoutSign.Concat(body).ToArray();
