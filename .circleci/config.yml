@@ -15,24 +15,24 @@ commands:
         command: "cat -s <<parameters.glob>> > <<parameters.to>>"
         shell: bash
 
-jobs:
-  linux-build:
-    docker:
-    - image: mcr.microsoft.com/dotnet/sdk:3.1
-    resource_class: xlarge
+  build_base:
+    parameters:
+      collect_tests_to:
+        type: string
+        default: .tests.txt
     steps:
     - checkout
     - concat_files:
         glob: "*/*.csproj"
-        to: combined-package-files.txt
+        to: .combined-package-files.txt
     - restore_cache:
         keys:
-        - v1-deps-{{ arch }}-{{ checksum "combined-package-files.txt" }}
+        - v1-deps-{{ arch }}-{{ checksum ".combined-package-files.txt" }}
         - v1-deps-{{ arch }}
         - v1-deps
     - run: dotnet restore
     - save_cache:
-        key: v1-deps-{{ arch }}-{{ checksum "combined-package-files.txt" }}
+        key: v1-deps-{{ arch }}-{{ checksum ".combined-package-files.txt" }}
         paths:
         - ~/.nuget/packages
     - run: dotnet build --no-restore -c Release -p:SkipSonar=true
@@ -47,126 +47,78 @@ jobs:
           | sed -E 's/^    |\(.*?\)$//g' \
           | uniq \
           | /usr/bin/sort -R --random-source=CHANGES.md \
-          > .tests.txt
+          > "<<parameters.collect_tests_to>>"
     - persist_to_workspace:
         root: .
         paths:
-        - .tests.txt
+        - <<parameters.collect_tests_to>>
         - "*/bin/"
         - "*/obj/"
+
+  test_base:
+    parameters:
+      collect_tests_from:
+        type: string
+        default: .tests.txt
+    steps:
+    - checkout
+    - attach_workspace:
+        at: .
+    - run:
+        description: Distribute tests
+        shell: bash
+        command: |
+          tests_collection="<<parameters.collect_tests_from>>"
+          total="$(wc -l "$tests_collection" | awk '{ print $1 }')"
+          part="$(( (total + CIRCLE_NODE_TOTAL - 1) / CIRCLE_NODE_TOTAL ))"
+          tail -n +$((CIRCLE_NODE_INDEX * part + 1)) "$tests_collection" \
+          | head -n $part \
+          > .current_tests.txt
+          first=1
+          while read test; do
+            if [[ "$first" = "1" ]]; then
+              echo "FullyQualifiedName=$test"
+              first=0
+            else
+              echo "| FullyQualifiedName=$test"
+            fi
+          done < .current_tests.txt > .test-filter.txt
+    - run: >-
+        dotnet test
+        --no-restore
+        --no-build
+        -c Release
+        -l "junit;FailureBodyFormat=Verbose;LogFilePath=/tmp/junit/{assembly}.xml"
+        --filter "$(cat .test-filter.txt)"
+    - store_test_results:
+        path: /tmp/junit
+
+jobs:
+  linux-build:
+    docker:
+    - image: mcr.microsoft.com/dotnet/sdk:3.1
+    resource_class: xlarge
+    steps: [build_base]
 
   linux-test:
     docker:
     - image: mcr.microsoft.com/dotnet/sdk:3.1
     resource_class: large
     parallelism: 4
-    steps:
-    - checkout
-    - attach_workspace:
-        at: .
-    - run:
-        description: Distribute tests
-        shell: bash
-        command: |
-          total="$(wc -l .tests.txt | awk '{ print $1 }')"
-          part="$(( (total + CIRCLE_NODE_TOTAL - 1) / CIRCLE_NODE_TOTAL ))"
-          tail -n +$((CIRCLE_NODE_INDEX * part + 1)) .tests.txt \
-          | head -n $part \
-          > .current_tests.txt
-          first=1
-          while read test; do
-            if [[ "$first" = "1" ]]; then
-              echo "FullyQualifiedName=$test"
-              first=0
-            else
-              echo "| FullyQualifiedName=$test"
-            fi
-          done < .current_tests.txt > .test-filter.txt
-    - run: >-
-        dotnet test
-        --no-restore
-        --no-build
-        -c Release
-        -l "junit;FailureBodyFormat=Verbose;LogFilePath=/tmp/junit/{assembly}.xml"
-        --filter "$(cat .test-filter.txt)"
-    - store_test_results:
-        path: /tmp/junit
+    steps: [test_base]
 
   windows-build:
     executor:
       name: win/default
       size: xlarge
-    steps:
-    - checkout
-    - concat_files:
-        glob: "*/*.csproj"
-        to: combined-package-files.txt
-    - restore_cache:
-        keys:
-        - v1-deps-{{ arch }}-{{ checksum "combined-package-files.txt" }}
-        - v1-deps-{{ arch }}
-        - v1-deps
-    - run: dotnet restore
-    - save_cache:
-        key: v1-deps-{{ arch }}-{{ checksum "combined-package-files.txt" }}
-        paths:
-        - ~/.nuget/packages
-    - run: dotnet build --no-restore -c Release -p:SkipSonar=true
-    - run:
-        description: Collect tests
-        shell: bash
-        command: |
-          set -evx
-          dotnet test --no-restore --no-build -c Release --list-tests \
-          > .dotnet-list-tests.txt
-          grep -E '^    ' .dotnet-list-tests.txt \
-          | sed -E 's/^    |\(.*?\)$//g' \
-          | uniq \
-          | /usr/bin/sort -R --random-source=CHANGES.md \
-          > .tests.txt
-    - persist_to_workspace:
-        root: .
-        paths:
-        - .tests.txt
-        - "*/bin/"
-        - "*/obj/"
+    steps: [build_base]
 
   windows-test:
     executor:
       name: win/default
       size: large
     parallelism: 4
-    steps:
-    - checkout
-    - attach_workspace:
-        at: .
-    - run:
-        description: Distribute tests
-        shell: bash
-        command: |
-          total="$(wc -l .tests.txt | awk '{ print $1 }')"
-          part="$(( (total + CIRCLE_NODE_TOTAL - 1) / CIRCLE_NODE_TOTAL ))"
-          tail -n +$((CIRCLE_NODE_INDEX * part + 1)) .tests.txt \
-          | head -n $part \
-          > .current_tests.txt
-          first=1
-          while read test; do
-            if [[ "$first" = "1" ]]; then
-              echo "FullyQualifiedName=$test"
-              first=0
-            else
-              echo "| FullyQualifiedName=$test"
-            fi
-          done < .current_tests.txt > .test-filter.txt
-    - run: >-
-        dotnet test
-        --no-restore
-        --no-build
-        -c Release
-        -l "junit;FailureBodyFormat=Verbose;LogFilePath=/tmp/junit/{assembly}.xml"
-        --filter "$(cat .test-filter.txt)"
-    - store_test_results:
-        path: /tmp/junit
+    steps: [test_base]
 
 workflows:
   main:
