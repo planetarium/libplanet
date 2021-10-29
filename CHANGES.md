@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.19.1
 --------------
 
-To be released.
+Released on October 29, 2021.
 
  -  `BlockMetadata.MineNonce()` method and other mining methods based on it
     now do not spawn a new thread if the `workers` is less than 2.  [[#1564]]
@@ -12,8 +12,8 @@ To be released.
     now uses the half of the present logical processors (i.e.,
     `Environment.ProcessorCount / 2`) by default.  If there is only one logical
     processor, uses one worker.  [[#1564]]
- -  The order of the header of a `Message` has been modified,
-    which is the same with the one before version 0.19.0.  [[#1565]]
+ -  Rolled back the order of the header of a `Message` so that it is compatible
+    with nodes based on Libplanet pre-0.19.0.  [[#1565]]
 
 [#1565]: https://github.com/planetarium/libplanet/pull/1565
 [#1564]: https://github.com/planetarium/libplanet/pull/1564
