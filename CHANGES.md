@@ -13,9 +13,9 @@ To be released.
     `Environment.ProcessorCount / 2`) by default.  If there is only one logical
     processor, uses one worker.  [[#1564]]
  -  The order of the header of a `Message` has been modified,
-    which is the same with the one before version 0.19.0  [[#1565]]
+    which is the same with the one before version 0.19.0.  [[#1565]]
 
-[#1503]: https://github.com/planetarium/libplanet/pull/1565
+[#1565]: https://github.com/planetarium/libplanet/pull/1565
 [#1564]: https://github.com/planetarium/libplanet/pull/1564
 
 
