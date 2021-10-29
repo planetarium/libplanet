@@ -808,6 +808,8 @@ namespace Libplanet.Tests.Net
                 await chainA.MineBlock(keyA);
             }
 
+            Block<DumbAction> chainATip = chainA.Tip;
+
             foreach (int i in Enumerable.Range(0, 5))
             {
                 await chainB.MineBlock(keyB);
@@ -815,7 +817,7 @@ namespace Libplanet.Tests.Net
 
             foreach (int i in Enumerable.Range(0, 3))
             {
-                await chainB.MineBlock(keyB);
+                await chainC.MineBlock(keyB);
             }
 
             try
@@ -828,9 +830,7 @@ namespace Libplanet.Tests.Net
                 await BootstrapAsync(swarmC, swarmA.AsPeer);
 
                 await swarmC.PullBlocksAsync(TimeSpan.FromSeconds(5), int.MaxValue, default);
-
-                Assert.Equal(chainA.BlockHashes, chainC.BlockHashes);
-                Assert.NotEqual(chainB.BlockHashes, chainC.BlockHashes);
+                Assert.Equal(chainC.Tip, chainATip);
             }
             finally
             {
