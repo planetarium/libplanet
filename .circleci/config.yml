@@ -15,6 +15,32 @@ commands:
         command: "cat -s <<parameters.glob>> > <<parameters.to>>"
         shell: bash
 
+  brew_cask_install:
+    description: "brew install --cask <<parameters.package>>"
+    parameters:
+      package: { type: string }
+      tap: { type: string, default: "" }
+    steps:
+    - restore_cache:
+        keys:
+        - "v1-brew-cask-<<parameters.tap>>/<<parameters.package>>"
+    - run: |
+        if brew list --cask | grep <<parameters.package>>; then
+          if [[ "<<parameters.tap>>" != "" ]]; then
+            brew tap "<<parameters.tap>>"
+          fi
+          brew reinstall --cask <<parameters.package>>
+        else
+          if [[ "<<parameters.tap>>" != "" ]]; then
+            brew tap "<<parameters.tap>>"
+          fi
+          brew install --cask <<parameters.package>>
+        fi
+    - save_cache:
+        key: "v1-brew-cask-<<parameters.tap>>/<<parameters.package>>"
+        paths:
+        - "/usr/local/Caskroom/<<parameters.package>>/"
+
   build_base:
     parameters:
       collect_tests_to:
@@ -25,11 +51,14 @@ commands:
     - concat_files:
         glob: "*/*.csproj"
         to: .combined-package-files.txt
+    - run:
+        shell: bash
+        # On macOS executor, "$HOME" directory does not exist:
+        command: 'if [[ ! -d "$HOME" ]]; then mkdir -p "$HOME"; fi; echo $HOME'
     - restore_cache:
         keys:
         - v1-deps-{{ arch }}-{{ checksum ".combined-package-files.txt" }}
         - v1-deps-{{ arch }}
-        - v1-deps
     - run: dotnet restore
     - save_cache:
         key: v1-deps-{{ arch }}-{{ checksum ".combined-package-files.txt" }}
@@ -41,6 +70,10 @@ commands:
         shell: bash
         command: |
           set -evx
+          if ! command -v dotnet > /dev/null && \
+             [[ -d /usr/local/share/dotnet ]]; then
+            export PATH="/usr/local/share/dotnet:$PATH"
+          fi
           dotnet test --no-restore --no-build -c Release --list-tests \
           > .dotnet-list-tests.txt
           grep -E '^    ' .dotnet-list-tests.txt \
@@ -68,12 +101,22 @@ commands:
         description: Distribute tests
         shell: bash
         command: |
+          set -evx
+          if ! command -v dotnet > /dev/null && \
+             [[ -d /usr/local/share/dotnet ]]; then
+            export PATH="/usr/local/share/dotnet:$PATH"
+          fi
           tests_collection="<<parameters.collect_tests_from>>"
           total="$(wc -l "$tests_collection" | awk '{ print $1 }')"
           part="$(( (total + CIRCLE_NODE_TOTAL - 1) / CIRCLE_NODE_TOTAL ))"
           tail -n +$((CIRCLE_NODE_INDEX * part + 1)) "$tests_collection" \
-          | head -n $part \
-          > .current_tests.txt
+          > .head_tests.txt
+          if [[ "$part" = "0" ]]; then
+            cp .head_tests.txt .current_tests.txt
+          else
+            head -n $part .head_tests.txt > .current_tests.txt
+          fi
+          cat .current_tests.txt
           first=1
           while read test; do
             if [[ "$first" = "1" ]]; then
@@ -107,6 +150,23 @@ jobs:
     parallelism: 4
     steps: [test_base]
 
+  macos-build:
+    macos:
+      xcode: 11.3.0
+    steps:
+    - brew_cask_install:
+        package: isen-ng/dotnet-sdk-versions/dotnet-sdk3-1-400
+    - build_base
+
+  macos-test:
+    macos:
+      xcode: 11.3.0
+    parallelism: 8
+    steps:
+    - brew_cask_install:
+        package: isen-ng/dotnet-sdk-versions/dotnet-sdk3-1-400
+    - test_base
+
   windows-build:
     executor:
       name: win/default
@@ -126,6 +186,7 @@ workflows:
     - linux-build
     - linux-test:
         requires: [linux-build]
-    - windows-build
+    - macos-test:
+        requires: [linux-build]
     - windows-test:
-        requires: [windows-build]
+        requires: [linux-build]
