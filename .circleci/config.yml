@@ -16,34 +16,58 @@ commands:
         shell: bash
 
 jobs:
-  linux:
+  linux-build:
+    docker:
+    - image: mcr.microsoft.com/dotnet/sdk:3.1
+    resource_class: xlarge
+    steps:
+    - checkout
+    - concat_files:
+        glob: "*/*.csproj"
+        to: combined-package-files.txt
+    - restore_cache:
+        keys:
+        - v1-deps-{{ arch }}-{{ checksum "combined-package-files.txt" }}
+        - v1-deps-{{ arch }}
+        - v1-deps
+    - run: dotnet restore
+    - save_cache:
+        key: v1-deps-{{ arch }}-{{ checksum "combined-package-files.txt" }}
+        paths:
+        - ~/.nuget/packages
+    - run: dotnet build --no-restore -c Release -p:SkipSonar=true
+    - run:
+        description: Collect tests
+        shell: bash
+        command: |
+          set -evx
+          dotnet test --no-restore --no-build -c Release --list-tests \
+          > .dotnet-list-tests.txt
+          grep -E '^    ' .dotnet-list-tests.txt \
+          | sed -E 's/^    |\(.*?\)$//g' \
+          | uniq \
+          | /usr/bin/sort -R --random-source=CHANGES.md \
+          > .tests.txt
+    - persist_to_workspace:
+        root: .
+        paths:
+        - .tests.txt
+        - "*/bin/"
+        - "*/obj/"
+
+  linux-test:
     docker:
     - image: mcr.microsoft.com/dotnet/sdk:3.1
     resource_class: large
     parallelism: 4
     steps:
     - checkout
-    - concat_files:
-        glob: "*/*.csproj"
-        to: combined-package-files.txt
-    - restore_cache:
-        keys:
-        - v1-deps-{{ arch }}-{{ checksum "combined-package-files.txt" }}
-        - v1-deps-{{ arch }}
-        - v1-deps
-    - run: dotnet restore
-    - run: dotnet build --no-restore -c Release -p:SkipSonar=true
+    - attach_workspace:
+        at: .
     - run:
+        description: Distribute tests
         shell: bash
         command: |
-          set -evx
-          dotnet test --no-restore --no-build -c Release --list-tests \
-          > .dotnet-list-tests.txt
-          grep -E '^    ' .dotnet-list-tests.txt \
-          | sed -E 's/^    |\(.*?\)$//g' \
-          | uniq \
-          | /usr/bin/sort -R --random-source=CHANGES.md \
-          > .tests.txt
           total="$(wc -l .tests.txt | awk '{ print $1 }')"
           part="$(( (total + CIRCLE_NODE_TOTAL - 1) / CIRCLE_NODE_TOTAL ))"
           tail -n +$((CIRCLE_NODE_INDEX * part + 1)) .tests.txt \
@@ -67,16 +91,11 @@ jobs:
         --filter "$(cat .test-filter.txt)"
     - store_test_results:
         path: /tmp/junit
-    - save_cache:
-        key: v1-deps-{{ arch }}-{{ checksum "combined-package-files.txt" }}
-        paths:
-        - ~/.nuget/packages
 
-  windows:
+  windows-build:
     executor:
       name: win/default
-      size: large
-    parallelism: 4
+      size: xlarge
     steps:
     - checkout
     - concat_files:
@@ -88,8 +107,13 @@ jobs:
         - v1-deps-{{ arch }}
         - v1-deps
     - run: dotnet restore
+    - save_cache:
+        key: v1-deps-{{ arch }}-{{ checksum "combined-package-files.txt" }}
+        paths:
+        - ~/.nuget/packages
     - run: dotnet build --no-restore -c Release -p:SkipSonar=true
     - run:
+        description: Collect tests
         shell: bash
         command: |
           set -evx
@@ -100,6 +124,26 @@ jobs:
           | uniq \
           | /usr/bin/sort -R --random-source=CHANGES.md \
           > .tests.txt
+    - persist_to_workspace:
+        root: .
+        paths:
+        - .tests.txt
+        - "*/bin/"
+        - "*/obj/"
+
+  windows-test:
+    executor:
+      name: win/default
+      size: large
+    parallelism: 4
+    steps:
+    - checkout
+    - attach_workspace:
+        at: .
+    - run:
+        description: Distribute tests
+        shell: bash
+        command: |
           total="$(wc -l .tests.txt | awk '{ print $1 }')"
           part="$(( (total + CIRCLE_NODE_TOTAL - 1) / CIRCLE_NODE_TOTAL ))"
           tail -n +$((CIRCLE_NODE_INDEX * part + 1)) .tests.txt \
@@ -123,13 +167,13 @@ jobs:
         --filter "$(cat .test-filter.txt)"
     - store_test_results:
         path: /tmp/junit
-    - save_cache:
-        key: v1-deps-{{ arch }}-{{ checksum "combined-package-files.txt" }}
-        paths:
-        - ~/.nuget/packages
 
 workflows:
   main:
     jobs:
-    - linux
-    - windows
+    - linux-build
+    - linux-test:
+        requires: [linux-build]
+    - windows-build
+    - windows-test:
+        requires: [windows-build]
