@@ -6,6 +6,15 @@ Version 0.19.1
 
 To be released.
 
+ -  `BlockMetadata.MineNonce()` method and other mining methods based on it
+    now do not spawn a new thread if the `workers` is less than 2.  [[#1564]]
+ -  `BlockMetadata.MineNonce()` method and other mining methods based on it
+    now uses the half of the present logical processors (i.e.,
+    `Environment.ProcessorCount / 2`) by default.  If there is only one logical
+    processor, uses one worker.  [[#1564]]
+
+[#1564]: https://github.com/planetarium/libplanet/pull/1564
+
 
 Version 0.19.0
 --------------

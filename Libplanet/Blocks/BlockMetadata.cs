@@ -319,7 +319,12 @@ namespace Libplanet.Blocks
         public (Nonce Nonce, ImmutableArray<byte> PreEvaluationHash) MineNonce(
             HashAlgorithmType hashAlgorithm,
             CancellationToken cancellationToken = default
-        ) => MineNonce(hashAlgorithm, Environment.ProcessorCount, cancellationToken);
+        ) =>
+            MineNonce(
+                hashAlgorithm,
+                Environment.ProcessorCount > 1 ? Environment.ProcessorCount / 2 : 1,
+                cancellationToken
+            );
 
         /// <summary>
         /// Mines the PoW (proof-of-work) nonce satisfying the block
@@ -346,21 +351,24 @@ namespace Libplanet.Blocks
                 throw new ArgumentOutOfRangeException(nameof(workers));
             }
 
+            Hashcash.Stamp stamp = GetStampFunction();
+            var random = new Random();
+            if (workers < 2)
+            {
+                int seed = random.Next();
+                return Hashcash.Answer(stamp, hashAlgorithm, Difficulty, seed, cancellationToken);
+            }
+
             using var cts = new CancellationTokenSource();
             using CancellationTokenSource lts =
                 CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, cts.Token);
-            List<Task<(Nonce Nonce, ImmutableArray<byte> Digest)>> tasks =
-                Enumerable.Range(0, workers)
-                .Select(i => Task.Run(
-                    () => Hashcash.Answer(
-                        GetStampFunction(),
-                        hashAlgorithm,
-                        Difficulty,
-                        i * 1024,
-                        lts.Token
-                    )
-                ))
-                .ToList();
+            int[] seeds = Enumerable.Range(0, workers).Select(_ => random.Next()).ToArray();
+            Task<(Nonce Nonce, ImmutableArray<byte> Digest)>[] tasks = seeds.Select(seed =>
+                Task.Run(
+                    () => Hashcash.Answer(stamp, hashAlgorithm, Difficulty, seed, lts.Token),
+                    lts.Token
+                )
+            ).ToArray();
             (Nonce n, ImmutableArray<byte> h) = Task.WhenAny(tasks)
                 .WaitAndUnwrapException()
                 .WaitAndUnwrapException();
