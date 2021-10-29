@@ -136,8 +136,8 @@ namespace Libplanet.Tests.Net.Messages
             var frames = new NetMQMessage();
             frames.Push(netMqMessage[4]);
             frames.Push(netMqMessage[3]);
-            frames.Push(netMqMessage[2]);
-            frames.Push(fakeMessage[1]);
+            frames.Push(fakeMessage[2]);
+            frames.Push(netMqMessage[1]);
             frames.Push(netMqMessage[0]);
 
             Assert.Throws<InvalidMessageException>(() =>
