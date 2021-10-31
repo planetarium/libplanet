@@ -227,7 +227,7 @@ You can build these assemblies using `msbuild -r` Mono or .NET Framework
 provide.
 *You can't build them using `dotnet build` command or `dotnet msbuild`,*
 because the Unity runtime is not based on .NET Core but Mono,
-which is compatible with .NET Framework 4.6.
+which is compatible with .NET Framework 4.7.
 Please be sure that Mono's *bin* directory is prior to .NET Core's one
 (or it's okay too if .NET Core is not installed at all).  Mono or .NET
 Framework's `msbuild` could try to use .NET Core's version of several
@@ -239,9 +239,9 @@ option as well.
 
 To sum up, the instruction is like below (the example is assuming Linux):
 
-    msbuild -r
+    msbuild -r -p:TestsTargetFramework=net47
     xunit-unity-runner/StandaloneLinux64 \
-      "`pwd`"/*.Tests/bin/Debug/net47/*.Tests.dll
+      "$PWD"/*.Tests/bin/Debug/net47/*.Tests.dll
 
 [xunit-unity-runner]: https://github.com/planetarium/xunit-unity-runner
 [4]: https://github.com/planetarium/xunit-unity-runner/releases/latest

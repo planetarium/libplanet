@@ -41,7 +41,7 @@ commands:
         paths:
         - "/usr/local/Caskroom/<<parameters.package>>/"
 
-  build_base:
+  netcore_build_base:
     parameters:
       collect_tests_to:
         type: string
@@ -51,10 +51,6 @@ commands:
     - concat_files:
         glob: "*/*.csproj"
         to: .combined-package-files.txt
-    - run:
-        shell: bash
-        # On macOS executor, "$HOME" directory does not exist:
-        command: 'if [[ ! -d "$HOME" ]]; then mkdir -p "$HOME"; fi; echo $HOME'
     - restore_cache:
         keys:
         - v1-deps-{{ arch }}-{{ checksum ".combined-package-files.txt" }}
@@ -88,7 +84,37 @@ commands:
         - "*/bin/"
         - "*/obj/"
 
-  test_base:
+  mono_build_base:
+    steps:
+    - checkout
+    - concat_files:
+        glob: "*/*.csproj"
+        to: .combined-package-files.txt
+    - restore_cache:
+        keys:
+        - v1-deps-{{ arch }}-{{ checksum ".combined-package-files.txt" }}
+        - v1-deps-{{ arch }}
+    - run: |
+        msbuild \
+          -t:Restore \
+          -p:Configuration=Release \
+          -p:TestsTargetFramework=net47
+    - save_cache:
+        key: v1-deps-{{ arch }}-{{ checksum ".combined-package-files.txt" }}
+        paths:
+        - ~/.nuget/packages
+    - run: |
+        msbuild \
+          -p:Configuration=Release \
+          -p:TestsTargetFramework=net47 \
+          -p:SkipSonar=true
+    - persist_to_workspace:
+        root: .
+        paths:
+        - "*/bin/"
+        - "*/obj/"
+
+  netcore_test_base:
     parameters:
       collect_tests_from:
         type: string
@@ -126,67 +152,120 @@ commands:
               echo "| FullyQualifiedName=$test"
             fi
           done < .current_tests.txt > .test-filter.txt
-    - run: >-
-        dotnet test
-        --no-restore
-        --no-build
-        -c Release
-        -l "junit;FailureBodyFormat=Verbose;LogFilePath=/tmp/junit/{assembly}.xml"
-        --filter "$(cat .test-filter.txt)"
+    - run:
+        command: >-
+          dotnet test
+          --no-restore
+          --no-build
+          -c Release
+          -l "junit;FailureBodyFormat=Verbose;LogFilePath=/tmp/junit/{assembly}.xml"
+          --filter "$(cat .test-filter.txt)"
+        no_output_timeout: 65s
+    - store_test_results:
+        path: /tmp/junit
+
+  unity_test_base:
+    parameters:
+      runner_target:
+        type: string
+        default: StandaloneLinux64
+      runner_version:
+        type: string
+        default: 0.4.0
+    steps:
+    - checkout
+    - attach_workspace:
+        at: .
+    - run:
+        shell: bash
+        command: |
+          set -evx
+          url="https://github.com/planetarium/xunit-unity-runner/releases/download/<<parameters.runner_version>>/xunit-unity-runner-<<parameters.runner_version>>-<<parameters.runner_target>>.tar.bz2"
+          mkdir -p /tmp/xur/
+          curl -o "/tmp/xur.tar.bz2" -L "$url"
+          pushd /tmp/xur/
+          tar xvfj ../xur.tar.bz2
+          popd
+          if [[ "<<parameters.runner_target>>" = "StandaloneOSX" ]]; then
+            xur_path=/tmp/xur/StandaloneOSX.app/Contents/MacOS/StandardOSX
+          else
+            xur_path=/tmp/xur/<<parameters.runner_target>>
+          fi
+          if [[ "$CIRCLE_NODE_TOTAL" != "" ]]; then
+            "$xur_path" \
+              --distributed=$CIRCLE_NODE_INDEX/$CIRCLE_NODE_TOTAL \
+              --distributed-seed=$CIRCLE_BUILD_NUM \
+              --report-xml-path=/tmp/xur.xml \
+              "$PWD"/*.Tests/bin/Release/net47/*.Tests.dll
+          else
+            "$xur_path" \
+              --report-xml-path=/tmp/xur.xml \
+              "$PWD"/*.Tests/bin/Release/net47/*.Tests.dll
+          fi
+        no_output_timeout: 65s
+    - run:
+        shell: bash
+        command: |
+          xsltproc -o /tmp/junit/xur.xml .circleci/xunit-junit.xslt /tmp/xur.xml
+        when: always
     - store_test_results:
         path: /tmp/junit
 
 jobs:
-  linux-build:
+  linux-netcore-build:
     docker:
     - image: mcr.microsoft.com/dotnet/sdk:3.1
     resource_class: xlarge
-    steps: [build_base]
+    steps: [netcore_build_base]
 
-  linux-test:
+  linux-mono-build:
+    docker:
+    - image: mono:6.12
+    resource_class: xlarge
+    steps: [mono_build_base]
+
+  linux-netcore-test:
     docker:
     - image: mcr.microsoft.com/dotnet/sdk:3.1
     resource_class: large
     parallelism: 4
-    steps: [test_base]
+    steps: [netcore_test_base]
 
-  macos-build:
-    macos:
-      xcode: 11.3.0
-    steps:
-    - brew_cask_install:
-        package: isen-ng/dotnet-sdk-versions/dotnet-sdk3-1-400
-    - build_base
-
-  macos-test:
+  macos-netcore-test:
     macos:
       xcode: 11.3.0
     parallelism: 8
     steps:
     - brew_cask_install:
         package: isen-ng/dotnet-sdk-versions/dotnet-sdk3-1-400
-    - test_base
+    - netcore_test_base
 
-  windows-build:
-    executor:
-      name: win/default
-      size: xlarge
-    steps: [build_base]
-
-  windows-test:
+  windows-netcore-test:
     executor:
       name: win/default
       size: large
     parallelism: 4
-    steps: [test_base]
+    steps: [netcore_test_base]
+
+  linux-unity-test:
+    docker:
+    - image: mono:6.12
+    resource_class: large
+    parallelism: 8
+    steps:
+    - run: apt update -y && apt install -y xsltproc
+    - unity_test_base
 
 workflows:
   main:
     jobs:
-    - linux-build
-    - linux-test:
-        requires: [linux-build]
-    - macos-test:
-        requires: [linux-build]
-    - windows-test:
-        requires: [linux-build]
+    - linux-netcore-build
+    - linux-mono-build
+    - linux-netcore-test:
+        requires: [linux-netcore-build]
+    - macos-netcore-test:
+        requires: [linux-netcore-build]
+    - windows-netcore-test:
+        requires: [linux-netcore-build]
+    - linux-unity-test:
+        requires: [linux-mono-build]
