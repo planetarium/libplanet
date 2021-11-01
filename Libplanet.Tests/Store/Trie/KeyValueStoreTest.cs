@@ -37,6 +37,34 @@ namespace Libplanet.Tests.Store.Trie
             Assert.Throws<KeyNotFoundException>(() => KeyValueStore.Get(randomKey));
         }
 
+        [SkippableFact]
+        public void Set()
+        {
+            byte[] key = Random.NextBytes(PreStoredDataKeySize);
+            byte[] value = Random.NextBytes(PreStoredDataValueSize);
+            KeyValueStore.Set(key, value);
+
+            Assert.Equal(value, KeyValueStore.Get(key));
+        }
+
+        [SkippableFact]
+        public void SetMany()
+        {
+            var values = new Dictionary<byte[], byte[]>();
+            foreach (int i in Enumerable.Range(0, 10))
+            {
+                values[Random.NextBytes(PreStoredDataKeySize)] =
+                    Random.NextBytes(PreStoredDataValueSize);
+            }
+
+            KeyValueStore.Set(values);
+
+            foreach (KeyValuePair<byte[], byte[]> kv in values)
+            {
+                Assert.Equal(kv.Value, KeyValueStore.Get(kv.Key));
+            }
+        }
+
         // This test will cover DefaultKeyValueStore.Set
         [SkippableFact]
         public void Overwrite()

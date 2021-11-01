@@ -1,5 +1,6 @@
 #nullable enable
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -119,15 +120,22 @@ namespace Libplanet.Store.Trie
                 return new MerkleTrie(KeyValueStore, new HashNode(EmptyRootHash));
             }
 
-            var newRoot = Commit(Root, rehearsal);
+            var batch = new ConcurrentDictionary<byte[], byte[]>();
+            var newRoot = Commit(Root, batch, rehearsal);
+            var serialized = newRoot.Serialize();
 
             // It assumes embedded node if it's not HashNode.
             if (!(newRoot is HashNode) && !rehearsal)
             {
-                KeyValueStore.Set(newRoot.Hash().ToByteArray(), newRoot.Serialize());
+                KeyValueStore.Set(
+                    HashDigest<SHA256>.DeriveFrom(serialized).ToByteArray(),
+                    serialized
+                );
             }
 
-            return new MerkleTrie(KeyValueStore, newRoot);
+            KeyValueStore.Set(batch);
+            var rv = new MerkleTrie(KeyValueStore, newRoot);
+            return rv;
         }
 
         internal IEnumerable<HashDigest<SHA256>> IterateHashNodes()
@@ -191,7 +199,7 @@ namespace Libplanet.Store.Trie
             }
         }
 
-        private INode Commit(INode node, bool rehearsal = false)
+        private INode Commit(INode node, IDictionary<byte[], byte[]> batch, bool rehearsal = false)
         {
             switch (node)
             {
@@ -199,89 +207,92 @@ namespace Libplanet.Store.Trie
                     return node;
 
                 case FullNode fullNode:
-                    return CommitFullNode(fullNode, rehearsal);
+                    return CommitFullNode(fullNode, batch, rehearsal);
 
                 case ShortNode shortNode:
-                    return CommitShortNode(shortNode, rehearsal);
+                    return CommitShortNode(shortNode, batch, rehearsal);
 
                 case ValueNode valueNode:
-                    return CommitValueNode(valueNode, rehearsal);
+                    return CommitValueNode(valueNode, batch, rehearsal);
 
                 default:
                     throw new NotSupportedException("Not supported node came.");
             }
         }
 
-        private INode CommitFullNode(FullNode fullNode, bool rehearsal)
+        private INode CommitFullNode(
+            FullNode fullNode,
+            IDictionary<byte[], byte[]> batch,
+            bool rehearsal)
         {
-            var virtualChildren = new INode?[FullNode.ChildrenCount];
-            for (int i = 0; i < FullNode.ChildrenCount; ++i)
-            {
-                INode? child = fullNode.Children[i];
-                virtualChildren[i] = child is null
-                    ? null
-                    : Commit(child, rehearsal);
-            }
+            var virtualChildren = fullNode.Children
+                .Select(c => c is null ? null : Commit(c, batch, rehearsal))
+                .ToImmutableArray();
 
-            fullNode = new FullNode(virtualChildren.ToImmutableArray());
-            if (fullNode.Serialize().Length <= HashDigest<SHA256>.Size)
+            fullNode = new FullNode(virtualChildren);
+            var serialized = fullNode.Serialize();
+
+            if (serialized.Length <= HashDigest<SHA256>.Size)
             {
                 return fullNode;
             }
             else
             {
-                var fullNodeHash = fullNode.Hash();
+                var nodeHash = HashDigest<SHA256>.DeriveFrom(serialized);
                 if (!rehearsal)
                 {
-                    KeyValueStore.Set(
-                        fullNodeHash.ToByteArray(),
-                        fullNode.Serialize());
+                    batch[nodeHash.ToByteArray()] = serialized;
                 }
 
-                return new HashNode(fullNodeHash);
+                return new HashNode(nodeHash);
             }
         }
 
-        private INode CommitShortNode(ShortNode shortNode, bool rehearsal)
+        private INode CommitShortNode(
+            ShortNode shortNode,
+            IDictionary<byte[], byte[]> batch,
+            bool rehearsal)
         {
-            var committedValueNode = Commit(shortNode.Value!);
+            var committedValueNode = Commit(shortNode.Value!, batch);
             shortNode = new ShortNode(shortNode.Key, committedValueNode);
-            if (shortNode.Serialize().Length <= HashDigest<SHA256>.Size)
+            byte[] serialized = shortNode.Serialize();
+            if (serialized.Length <= HashDigest<SHA256>.Size)
             {
                 return shortNode;
             }
             else
             {
-                var shortNodeHash = shortNode.Hash();
+                var nodeHash = HashDigest<SHA256>.DeriveFrom(serialized);
                 if (!rehearsal)
                 {
-                    KeyValueStore.Set(
-                        shortNodeHash.ToByteArray(),
-                        shortNode.Serialize());
+                    batch[nodeHash.ToByteArray()] = serialized;
                 }
 
-                return new HashNode(shortNodeHash);
+                return new HashNode(nodeHash);
             }
         }
 
-        private INode CommitValueNode(ValueNode valueNode, bool rehearsal)
+        private INode CommitValueNode(
+            ValueNode valueNode,
+            IDictionary<byte[], byte[]> batch,
+            bool rehearsal
+        )
         {
-            int nodeSize = valueNode.Serialize().Length;
+            var serialized = valueNode.Serialize();
+            int nodeSize = serialized.Length;
             if (nodeSize <= HashDigest<SHA256>.Size)
             {
                 return valueNode;
             }
             else
             {
-                var valueNodeHash = valueNode.Hash();
+                var nodeHash = HashDigest<SHA256>.DeriveFrom(serialized);
                 if (!rehearsal)
                 {
-                    KeyValueStore.Set(
-                        valueNodeHash.ToByteArray(),
-                        valueNode.Serialize());
+                    batch[nodeHash.ToByteArray()] = serialized;
                 }
 
-                return new HashNode(valueNodeHash);
+                return new HashNode(nodeHash);
             }
         }
 

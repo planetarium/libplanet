@@ -21,6 +21,9 @@ To be released.
 
 ### Behavioral changes
 
+ -  Improved performance of `MerkleTrie.Commit()` and
+    `BlockChain<T>.ExecuteActions()`.   [[#1570]]
+
 ### Bug fixes
 
 ### CLI tools

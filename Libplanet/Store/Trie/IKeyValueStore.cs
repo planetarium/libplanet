@@ -13,6 +13,12 @@ namespace Libplanet.Store.Trie
 
         public void Set(byte[] key, byte[] value);
 
+        /// <summary>
+        /// Sets all values in the given dictionary.
+        /// </summary>
+        /// <param name="values">A values to set.</param>
+        public void Set(IDictionary<byte[], byte[]> values);
+
         public void Delete(byte[] key);
 
         public bool Exists(byte[] key);

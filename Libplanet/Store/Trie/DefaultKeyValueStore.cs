@@ -60,6 +60,14 @@ namespace Libplanet.Store.Trie
             _root.WriteAllBytes(path, value);
         }
 
+        public void Set(IDictionary<byte[], byte[]> values)
+        {
+            foreach (KeyValuePair<byte[], byte[]> kv in values)
+            {
+                Set(kv.Key, kv.Value);
+            }
+        }
+
         /// <inheritdoc/>
         public void Delete(byte[] key)
         {

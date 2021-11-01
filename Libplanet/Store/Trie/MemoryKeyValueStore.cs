@@ -21,6 +21,14 @@ namespace Libplanet.Store.Trie
         void IKeyValueStore.Set(byte[] key, byte[] value) =>
             _dictionary[key] = value;
 
+        void IKeyValueStore.Set(IDictionary<byte[], byte[]> values)
+        {
+            foreach (KeyValuePair<byte[], byte[]> kv in values)
+            {
+                _dictionary[kv.Key] = kv.Value;
+            }
+        }
+
         void IKeyValueStore.Delete(byte[] key) =>
             _dictionary.TryRemove(key, out _);
 

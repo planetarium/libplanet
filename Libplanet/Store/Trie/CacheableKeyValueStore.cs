@@ -50,6 +50,11 @@ namespace Libplanet.Store.Trie
             _cache[key] = value;
         }
 
+        public void Set(IDictionary<byte[], byte[]> values)
+        {
+            _keyValueStore.Set(values);
+        }
+
         /// <inheritdoc/>
         public void Delete(byte[] key)
         {
