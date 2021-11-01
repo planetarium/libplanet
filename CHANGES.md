@@ -12,6 +12,8 @@ To be released.
 
  -  (Libplanet.RocksDBStore) Removed `MonoRocksDBStore` class.
     [[#1513], [#1579]]
+ -  Removed `Rehearsal` parameter from `ITrie.Commit()` and
+    `StateStoreExtensions.Commit()`.  [[#1570]]
 
 ### Backward-incompatible network protocol changes
 

@@ -27,15 +27,11 @@ namespace Libplanet.Store
         /// <param name="previousStateRootHash">The state root hash on which
         /// the <paramref name="rawStatesDelta"/> is based.</param>
         /// <param name="rawStatesDelta">The raw states delta to be recorded.</param>
-        /// <param name="rehearsal">If turned on, the <paramref name="rawStatesDelta"/> is not
-        /// recorded to the <paramref name="stateStore"/>, but only shadow trie root is returned.
-        /// Turned off by default.</param>
         /// <returns>The new state root.</returns>
         public static ITrie Commit(
             this IStateStore stateStore,
             HashDigest<SHA256>? previousStateRootHash,
-            IImmutableDictionary<string, IValue> rawStatesDelta,
-            bool rehearsal = false
+            IImmutableDictionary<string, IValue> rawStatesDelta
         )
         {
             ITrie trie = stateStore.GetStateRoot(previousStateRootHash);
@@ -45,8 +41,8 @@ namespace Libplanet.Store
                 trie = trie.Set(keyBytes, pair.Value);
             }
 
-            ITrie stage = trie.Commit(rehearsal);
-            return rehearsal ? stage : stateStore.GetStateRoot(stage.Hash);
+            ITrie stage = trie.Commit();
+            return stateStore.GetStateRoot(stage.Hash);
         }
 
         /// <summary>
