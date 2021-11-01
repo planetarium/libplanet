@@ -171,7 +171,7 @@ commands:
         default: StandaloneLinux64
       runner_version:
         type: string
-        default: 0.4.0
+        default: 0.5.0
     steps:
     - checkout
     - attach_workspace:
@@ -184,32 +184,40 @@ commands:
           mkdir -p /tmp/xur/
           curl -o "/tmp/xur.tar.bz2" -L "$url"
           pushd /tmp/xur/
-          tar xvfj ../xur.tar.bz2
+          bzip2 -d ../xur.tar.bz2
+          tar xvf ../xur.tar
           popd
           if [[ "<<parameters.runner_target>>" = "StandaloneOSX" ]]; then
-            xur_path=/tmp/xur/StandaloneOSX.app/Contents/MacOS/StandardOSX
+            xur_path=/tmp/xur/StandaloneOSX.app/Contents/MacOS/unity-xunit
           else
             xur_path=/tmp/xur/<<parameters.runner_target>>
           fi
+          args=(
+            "--hang-seconds=60"
+            "--parallel=1"
+            "--report-xml-path=$PWD/.xur.xml"
+          )
           if [[ "$CIRCLE_NODE_TOTAL" != "" ]]; then
-            "$xur_path" \
-              --distributed=$CIRCLE_NODE_INDEX/$CIRCLE_NODE_TOTAL \
-              --distributed-seed=$CIRCLE_BUILD_NUM \
-              --report-xml-path=/tmp/xur.xml \
-              "$PWD"/*.Tests/bin/Release/net47/*.Tests.dll
-          else
-            "$xur_path" \
-              --report-xml-path=/tmp/xur.xml \
-              "$PWD"/*.Tests/bin/Release/net47/*.Tests.dll
+            args+=(
+              "--distributed=$CIRCLE_NODE_INDEX/$CIRCLE_NODE_TOTAL"
+              "--distributed-seed=$CIRCLE_BUILD_NUM"
+            )
           fi
+          for project in *.Tests; do
+            args+=("$PWD/$project/bin/Release/net47/$project.dll")
+          done
+          "$xur_path" "${args[@]}"
         no_output_timeout: 65s
     - run:
         shell: bash
         command: |
-          xsltproc -o /tmp/junit/xur.xml .circleci/xunit-junit.xslt /tmp/xur.xml
+          set -evx
+          mkdir -p _junit
+          xsltproc -o _junit/xur.xml .circleci/xunit-junit.xslt .xur.xml
+          cat _junit/xur.xml
         when: always
     - store_test_results:
-        path: /tmp/junit
+        path: _junit
 
 jobs:
   linux-netcore-build:
@@ -256,6 +264,24 @@ jobs:
     - run: apt update -y && apt install -y xsltproc
     - unity_test_base
 
+  macos-unity-test:
+    macos:
+      xcode: 11.3.0
+    parallelism: 4
+    steps:
+    - unity_test_base:
+        runner_target: StandaloneOSX
+
+  windows-unity-test:
+    executor:
+      name: win/default
+      size: large
+    parallelism: 4
+    steps:
+    - run: choco install bzip2 xsltproc
+    - unity_test_base:
+        runner_target: StandaloneWindows64
+
 workflows:
   main:
     jobs:
@@ -268,4 +294,8 @@ workflows:
     - windows-netcore-test:
         requires: [linux-netcore-build]
     - linux-unity-test:
+        requires: [linux-mono-build]
+    - macos-unity-test:
+        requires: [linux-mono-build]
+    - windows-unity-test:
         requires: [linux-mono-build]
