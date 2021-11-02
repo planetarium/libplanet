@@ -1,6 +1,17 @@
 Libplanet changelog
 ===================
 
+Version 0.18.4
+--------------
+
+Released on November 2, 2021.
+
+ -  `PrivateKey(IReadOnlyList<byte>)` overloaded constructor no more accepts
+    a list shorter or longer than 32 bytes.  [[#1571]]
+ -  `PrivateKey.FromString()` method no more accept a hexadecimal digits
+    shorter or longer than 64 characters.  [[#1571]]
+
+
 Version 0.18.3
 --------------
 

@@ -42,6 +42,7 @@ namespace Libplanet.Crypto
     [Equals]
     public class PrivateKey
     {
+        private const int KeyByteSize = 32;
         private PublicKey? _publicKey;
 
         /// <summary>
@@ -60,12 +61,35 @@ namespace Libplanet.Crypto
         /// </summary>
         /// <param name="privateKey">A valid <see cref="byte"/>s that encodes an ECDSA private key.
         /// </param>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when the given
+        /// <paramref name="privateKey"/> is too short or too long.</exception>
         /// <remarks>A valid <see cref="byte"/> array for a <see cref="PrivateKey"/> can be encoded
         /// using <see cref="ByteArray"/> property.</remarks>
         /// <seealso cref="ByteArray"/>
         public PrivateKey(IReadOnlyList<byte> privateKey)
-            : this(GenerateKeyFromBytes(privateKey is byte[] ba ? ba : privateKey.ToArray()))
+            : this(privateKey is byte[] ba ? ba : privateKey.ToArray(), informedConsent: true)
         {
+            if (privateKey.Count != KeyByteSize)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(privateKey),
+                    $"The key must be {KeyByteSize} bytes."
+                );
+            }
+        }
+
+        internal PrivateKey(byte[] unverifiedKey, bool informedConsent)
+            : this(GenerateKeyFromBytes(unverifiedKey))
+        {
+            // The `informedConsent` parameter mainly purposes to prevent this overload from
+            // being chosen instead of PrivatKey(IReadOnly<byte>) by mistake.
+            if (!informedConsent)
+            {
+                throw new ArgumentException(
+                    nameof(informedConsent),
+                    "The caller should ensure the key is valid and safe enough."
+                );
+            }
         }
 
         private PrivateKey(ECPrivateKeyParameters keyParam)
@@ -131,19 +155,22 @@ namespace Libplanet.Crypto
         /// <exception cref="ArgumentNullException">Thrown when the given <paramref name="hex"/>
         /// string is <c>null</c>.</exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the length of the given
-        /// <paramref name="hex"/> string is an odd number, or it is empty.</exception>
+        /// <paramref name="hex"/> string is too short or too long.</exception>
         /// <exception cref="FormatException">Thrown when the given <paramref name="hex"/> string is
         /// not a valid hexadecimal string.</exception>
         [Pure]
         public static PrivateKey FromString(string hex)
         {
-            if (!hex.Any())
+            byte[] bytes = ByteUtil.ParseHex(hex);
+            if (bytes.Length != KeyByteSize)
             {
-                throw new ArgumentOutOfRangeException(nameof(hex), "Argument must not be empty.");
+                throw new ArgumentOutOfRangeException(
+                    nameof(hex),
+                    $"Expected {KeyByteSize * 2} hexadecimal digits."
+                );
             }
 
-            byte[] bytes = ByteUtil.ParseHex(hex);
-            return new PrivateKey(bytes);
+            return new PrivateKey(unverifiedKey: bytes, informedConsent: true);
         }
 
         /// <summary>

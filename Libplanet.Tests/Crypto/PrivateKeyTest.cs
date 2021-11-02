@@ -15,6 +15,17 @@ namespace Libplanet.Tests.Crypto
         {
             Assert.Throws<ArgumentOutOfRangeException>(() => PrivateKey.FromString(string.Empty));
             Assert.Throws<ArgumentOutOfRangeException>(() => PrivateKey.FromString("a"));
+            Assert.Throws<ArgumentOutOfRangeException>(() => PrivateKey.FromString("870912"));
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+                PrivateKey.FromString(
+                    "00000000000000000000000000000000000000000000000000000000870912"
+                )
+            );
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+                PrivateKey.FromString(
+                    "000000000000000000000000000000000000000000000000000000000000870912"
+                )
+            );
             Assert.Throws<FormatException>(() => PrivateKey.FromString("zz"));
             PrivateKey actual = PrivateKey.FromString(
                 "e07107ca4b0d19147fa1152a0f2c7884705d59cbb6318e2f901bd28dd9ff78e3"
@@ -49,7 +60,27 @@ namespace Libplanet.Tests.Crypto
         [Fact]
         public void BytesSanityCheckTest()
         {
-            var bs = new byte[]
+            Assert.Throws<ArgumentOutOfRangeException>(
+                () => new PrivateKey(new byte[] { 0x87, 0x09, 0x12 })
+             );
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+                new PrivateKey(new byte[31]
+                {
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0x87, 0x09, 0x12,
+                })
+            );
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+                new PrivateKey(new byte[33]
+                {
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0x87, 0x09, 0x12,
+                })
+            );
+
+            var bs = new byte[20]
             {
                 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0,
                 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0,
