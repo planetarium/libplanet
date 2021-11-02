@@ -120,6 +120,18 @@ commands:
         type: string
         default: .tests.txt
     steps:
+    - restore_cache:
+        keys:
+        - v1-dotcover-{{ arch }}
+    - run: >-
+        dotnet tool install
+        --global
+        JetBrains.dotCover.GlobalTool
+        --version 2021.2.2
+    - save_cache:
+        key: v1-dotcover-{{ arch }}
+        paths:
+        - ~/.nuget/packages
     - checkout
     - attach_workspace:
         at: .
@@ -154,15 +166,27 @@ commands:
           done < .current_tests.txt > .test-filter.txt
     - run:
         command: >-
-          dotnet test
+          ~/.dotnet/tools/dotnet-dotcover test
           --no-restore
           --no-build
           -c Release
           -l "junit;FailureBodyFormat=Verbose;LogFilePath=/tmp/junit/{assembly}.xml"
           --filter "$(cat .test-filter.txt)"
+          --dcDisableDefaultFilters
+          --dcReportType=DetailedXML
+          --dcFilters="+:Libplanet;+:Libplanet.*;-:Libplanet.Tests;-:Libplanet.*.Tests;-:Libplanet.*.UnitTests;-:Libplanet.Benchmarks;-:Libplanet.Explorer"
         no_output_timeout: 65s
     - store_test_results:
         path: /tmp/junit
+    - run:
+        shell: bash
+        command: |
+          curl -s https://codecov.io/bash | bash -s -- \
+            -f dotCover.Output.xml \
+            -t "$CODECOV_TOKEN" \
+            -n "$CIRCLE_BUILD_NUM" \
+            -Z
+        when: always
 
   unity_test_base:
     parameters:
