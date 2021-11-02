@@ -6,6 +6,11 @@ Version 0.18.4
 
 To be released.
 
+ -  `PrivateKey(IReadOnlyList<byte>)` overloaded constructor no more accepts
+    a list shorter or longer than 32 bytes.  [[#1571]]
+ -  `PrivateKey.FromString()` method no more accept a hexadecimal digits
+    shorter or longer than 64 characters.  [[#1571]]
+
 
 Version 0.18.3
 --------------
