@@ -279,6 +279,10 @@ If omitted (default) explorer only the local blockchain store.")]
 
         private static IRichStore LoadStore(Options options)
         {
+            // FIXME: This method basically does the same thing to Libplanet.Extensions.Cocona's
+            // StoreCommand.LoadStoreFromUri() & StatsCommand.LoadStoreFromUri() methods.
+            // The duplicate code should be extract to a shared common method.
+            // https://github.com/planetarium/libplanet/issues/1573
             bool readOnlyMode = options.Seeds is null;
             IStore innerStore;
             switch (options.StoreType)
@@ -290,10 +294,12 @@ If omitted (default) explorer only the local blockchain store.")]
                       keepLogFileNum: 1);
                     break;
                 case "monorocksdb":
+#pragma warning disable CS0618 // Type or member is obsolete
                     innerStore = new RocksDBStore.MonoRocksDBStore(
                         options.StorePath,
                         maxTotalWalSize: 16 * 1024 * 1024,
                         keepLogFileNum: 1);
+#pragma warning restore CS0618 // Type or member is obsolete
                     break;
                 case "default":
                     innerStore = new DefaultStore(

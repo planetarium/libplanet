@@ -6,6 +6,11 @@ Version 0.20.0
 
 To be released.
 
+### Deprecated APIs
+
+ -  (Libplanet.RocksDBStore) `MonoRocksDBStore` will be gone in the next minor
+    release: 0.21.0.  [[#1513], [#1574]]
+
 ### Backward-incompatible API changes
 
  -  Removed unused `BlockChain<T>` type parameter from
@@ -25,8 +30,10 @@ To be released.
 
 ### CLI tools
 
+[#1513]: https://github.com/planetarium/libplanet/issues/1513
 [#1553]: https://github.com/planetarium/libplanet/issues/1553
 [#1556]: https://github.com/planetarium/libplanet/pull/1556
+[#1574]: https://github.com/planetarium/libplanet/pull/1574
 
 
 Version 0.19.1

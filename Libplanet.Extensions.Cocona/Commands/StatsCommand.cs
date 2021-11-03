@@ -23,7 +23,9 @@ namespace Libplanet.Extensions.Cocona.Commands
                 {
                     ["default"] = storePath => new DefaultStore(storePath),
                     ["rocksdb"] = storePath => new RocksDBStore.RocksDBStore(storePath),
+#pragma warning disable CS0618 // Type or member is obsolete
                     ["monorocksdb"] = storePath => new MonoRocksDBStore(storePath),
+#pragma warning restore CS0618 // Type or member is obsolete
                 }.ToImmutableSortedDictionary();
 
         [Command(Description = "Outputs a summary of a stored chain in a CSV format.")]
@@ -99,6 +101,10 @@ namespace Libplanet.Extensions.Cocona.Commands
 
         private IStore LoadStoreFromUri(string rawUri)
         {
+            // FIXME: This method basically does the same thing to StoreCommand.LoadStoreFromUri()
+            // method and Libplanet.Explorer.Executable's Program.LoadStore() method.
+            // The duplicate code should be extract to a shared common method.
+            // https://github.com/planetarium/libplanet/issues/1573
             var uri = new Uri(rawUri);
             var scheme = uri.Scheme;
             var splitScheme = scheme.Split('+');
