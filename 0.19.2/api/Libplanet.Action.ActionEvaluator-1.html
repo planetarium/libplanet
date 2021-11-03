@@ -1,0 +1,274 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class ActionEvaluator&lt;T&gt;
+   | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class ActionEvaluator&lt;T&gt;
+   | Libplanet ">
+    <meta name="generator" content="docfx 2.58.2.0">
+    
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Action.ActionEvaluator`1">
+  
+  
+  <h1 id="Libplanet_Action_ActionEvaluator_1" data-uid="Libplanet.Action.ActionEvaluator`1" class="text-break">Class ActionEvaluator&lt;T&gt;
+  </h1>
+  <div class="markdown level0 summary"><p>Class responsible for handling of <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> evaluations.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">ActionEvaluator&lt;T&gt;</span></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Action.html">Libplanet.Action</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.dll</h6>
+  <h5 id="Libplanet_Action_ActionEvaluator_1_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class ActionEvaluator&lt;T&gt; : object where T : IAction, new()</code></pre>
+  </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>An <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> type.  It should match
+the <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>'s type parameter.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/f45f2b55cb06bec91d9f94cdc4fed8d6bac37f0b/apiSpec/new?filename=Libplanet_Action_ActionEvaluator_1__ctor_Libplanet_Action_IAction_Libplanet_Action_StateGetter__0__Libplanet_Action_BalanceGetter__0__System_Nullable_Func_Libplanet_Blocks_BlockHash_Libplanet_Store_Trie_ITrie___.md&amp;value=---%0Auid%3A%20Libplanet.Action.ActionEvaluator%601.%23ctor(Libplanet.Action.IAction%2CLibplanet.Action.StateGetter%7B%600%7D%2CLibplanet.Action.BalanceGetter%7B%600%7D%2CSystem.Nullable%7BFunc%7BLibplanet.Blocks.BlockHash%2CLibplanet.Store.Trie.ITrie%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/f45f2b55cb06bec91d9f94cdc4fed8d6bac37f0b/Libplanet/Action/ActionEvaluator.cs/#L56">View Source</a>
+  </span>
+  <a id="Libplanet_Action_ActionEvaluator_1__ctor_" data-uid="Libplanet.Action.ActionEvaluator`1.#ctor*"></a>
+  <h4 id="Libplanet_Action_ActionEvaluator_1__ctor_Libplanet_Action_IAction_Libplanet_Action_StateGetter__0__Libplanet_Action_BalanceGetter__0__System_Nullable_Func_Libplanet_Blocks_BlockHash_Libplanet_Store_Trie_ITrie___" data-uid="Libplanet.Action.ActionEvaluator`1.#ctor(Libplanet.Action.IAction,Libplanet.Action.StateGetter{`0},Libplanet.Action.BalanceGetter{`0},System.Nullable{Func{Libplanet.Blocks.BlockHash,Libplanet.Store.Trie.ITrie}})">ActionEvaluator(IAction, StateGetter&lt;T&gt;, BalanceGetter&lt;T&gt;, Nullable&lt;Func&lt;BlockHash, ITrie&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Action.ActionEvaluator-1.html">ActionEvaluator&lt;T&gt;</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ActionEvaluator(IAction policyBlockAction, StateGetter&lt;T&gt; stateGetter, BalanceGetter&lt;T&gt; balanceGetter, Func&lt;BlockHash, ITrie&gt;? trieGetter)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.IAction.html">IAction</a></td>
+        <td><span class="parametername">policyBlockAction</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> provided by
+<a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_BlockAction">BlockAction</a> to evaluate at the end for each
+<a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> that gets evaluated.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.StateGetter-1.html">StateGetter</a>&lt;T&gt;</td>
+        <td><span class="parametername">stateGetter</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Action.StateGetter-1.html">StateGetter&lt;T&gt;</a> to use to retreive
+the states for a provided <a class="xref" href="Libplanet.Address.html">Address</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.BalanceGetter-1.html">BalanceGetter</a>&lt;T&gt;</td>
+        <td><span class="parametername">balanceGetter</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Action.BalanceGetter-1.html">BalanceGetter&lt;T&gt;</a> to use to retreive
+the balance for a provided <a class="xref" href="Libplanet.Address.html">Address</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">Func</span>&lt;<a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a>, <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a>&gt;&gt;</td>
+        <td><span class="parametername">trieGetter</span></td>
+        <td><p>The function to retrieve a trie for
+a provided <a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/f45f2b55cb06bec91d9f94cdc4fed8d6bac37f0b/apiSpec/new?filename=Libplanet_Action_ActionEvaluator_1_Evaluate_Libplanet_Blocks_IPreEvaluationBlock__0__Libplanet_Blockchain_StateCompleterSet__0__.md&amp;value=---%0Auid%3A%20Libplanet.Action.ActionEvaluator%601.Evaluate(Libplanet.Blocks.IPreEvaluationBlock%7B%600%7D%2CLibplanet.Blockchain.StateCompleterSet%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/f45f2b55cb06bec91d9f94cdc4fed8d6bac37f0b/Libplanet/Action/ActionEvaluator.cs/#L82">View Source</a>
+  </span>
+  <a id="Libplanet_Action_ActionEvaluator_1_Evaluate_" data-uid="Libplanet.Action.ActionEvaluator`1.Evaluate*"></a>
+  <h4 id="Libplanet_Action_ActionEvaluator_1_Evaluate_Libplanet_Blocks_IPreEvaluationBlock__0__Libplanet_Blockchain_StateCompleterSet__0__" data-uid="Libplanet.Action.ActionEvaluator`1.Evaluate(Libplanet.Blocks.IPreEvaluationBlock{`0},Libplanet.Blockchain.StateCompleterSet{`0})">Evaluate(IPreEvaluationBlock&lt;T&gt;, StateCompleterSet&lt;T&gt;)</h4>
+  <div class="markdown level1 summary"><p>The main entry point for evaluating a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IReadOnlyList&lt;ActionEvaluation&gt; Evaluate(IPreEvaluationBlock&lt;T&gt; block, StateCompleterSet&lt;T&gt; stateCompleterSet)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.IPreEvaluationBlock-1.html">IPreEvaluationBlock</a>&lt;T&gt;</td>
+        <td><span class="parametername">block</span></td>
+        <td><p>The block to evaluate.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blockchain.StateCompleterSet-1.html">StateCompleterSet</a>&lt;T&gt;</td>
+        <td><span class="parametername">stateCompleterSet</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Blockchain.StateCompleterSet-1.html">StateCompleterSet&lt;T&gt;</a> to use.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="Libplanet.Action.ActionEvaluation.html">ActionEvaluation</a>&gt;</td>
+        <td><p>The result of evaluating every <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> related to
+<code data-dev-comment-type="paramref" class="paramref">block</code> as an <see cref="!:IReadOnlyList&lt;T>"></see> of
+<a class="xref" href="Libplanet.Action.ActionEvaluation.html">ActionEvaluation</a>s.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Action_ActionEvaluator_1_Evaluate_Libplanet_Blocks_IPreEvaluationBlock__0__Libplanet_Blockchain_StateCompleterSet__0___remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Publicly exposed for benchmarking.</p>
+<p>First evaluates all <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>s in <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Transactions">Transactions</a>
+of <code data-dev-comment-type="paramref" class="paramref">block</code> and appends the evaluation of
+the <a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_BlockAction">BlockAction</a> held by the instance at the end.</p>
+</div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/new/f45f2b55cb06bec91d9f94cdc4fed8d6bac37f0b/apiSpec/new?filename=Libplanet_Action_ActionEvaluator_1.md&amp;value=---%0Auid%3A%20Libplanet.Action.ActionEvaluator%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/f45f2b55cb06bec91d9f94cdc4fed8d6bac37f0b/Libplanet/Action/ActionEvaluator.cs/#L24" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2018–2021 <a href="https://planetariumhq.com/">Planetarium</a>
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
