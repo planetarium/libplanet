@@ -274,7 +274,7 @@ jobs:
   macos-netcore-test:
     macos:
       xcode: 11.3.0
-    parallelism: 8
+    parallelism: 6
     steps:
     - brew_cask_install:
         package: isen-ng/dotnet-sdk-versions/dotnet-sdk3-1-400
