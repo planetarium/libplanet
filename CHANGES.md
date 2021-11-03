@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.20.0
 --------------
 
-To be released.
+Released on November 3, 2021.
 
 ### Deprecated APIs
 
@@ -16,24 +16,33 @@ To be released.
  -  Removed unused `BlockChain<T>` type parameter from
     `IStagePolicy<T>.Iterate()` method.  [[#1553], [#1556]]
 
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
 ### Added APIs
 
  -  Added `IStagePolicy<T>.GetNextTxNonce()` method.  [[#1553], [#1556]]
-
-### Behavioral changes
-
-### Bug fixes
-
-### CLI tools
 
 [#1513]: https://github.com/planetarium/libplanet/issues/1513
 [#1553]: https://github.com/planetarium/libplanet/issues/1553
 [#1556]: https://github.com/planetarium/libplanet/pull/1556
 [#1574]: https://github.com/planetarium/libplanet/pull/1574
+
+
+Version 0.19.2
+--------------
+
+Released on November 3, 2021.
+
+ -  `PrivateKey(IReadOnlyList<byte>)` overloaded constructor no more accepts
+    a list shorter or longer than 32 bytes.  [[#1571], [#1572]]
+ -  `PrivateKey.FromString()` method no more accept a hexadecimal digits
+    shorter or longer than 64 characters.  [[#1571], [#1572]]
+ -  Fixed a bug where `HashAlgorithmType.Digest(byte[])` and
+    `HashAlgorithmType.Digest(ImmutableArray<byte>)` methods had returned
+    a wrong hash digest after `HashAlgorithmType.Digest(IEnumerable<byte[]>)`
+    or `HashAlgorithmType.Digest(IEnumerable<ImmutableArray<byte>>)` methods
+    had been once called.  [[#1575], [#1576]]
+
+[#1572]: https://github.com/planetarium/libplanet/pull/1572
+[#1576]: https://github.com/planetarium/libplanet/pull/1576
 
 
 Version 0.19.1
@@ -138,6 +147,33 @@ Released on October 27, 2021.
 [#1549]: https://github.com/planetarium/libplanet/pull/1549
 [#1551]: https://github.com/planetarium/libplanet/pull/1551
 [#1557]: https://github.com/planetarium/libplanet/pull/1557
+
+
+Version 0.18.5
+--------------
+
+Released on November 3, 2021.
+
+ -  Fixed a bug where `HashAlgorithmType.Digest(byte[])` and
+    `HashAlgorithmType.Digest(ImmutableArray<byte>)` methods had returned
+    a wrong hash digest after `HashAlgorithmType.Digest(IEnumerable<byte[]>)`
+    or `HashAlgorithmType.Digest(IEnumerable<ImmutableArray<byte>>)` methods
+    had been once called.  [[#1575]]
+
+[#1575]: https://github.com/planetarium/libplanet/pull/1575
+
+
+Version 0.18.4
+--------------
+
+Released on November 2, 2021.
+
+ -  `PrivateKey(IReadOnlyList<byte>)` overloaded constructor no more accepts
+    a list shorter or longer than 32 bytes.  [[#1571]]
+ -  `PrivateKey.FromString()` method no more accept a hexadecimal digits
+    shorter or longer than 64 characters.  [[#1571]]
+
+[#1571]: https://github.com/planetarium/libplanet/pull/1571
 
 
 Version 0.18.3
