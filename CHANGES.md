@@ -6,6 +6,13 @@ Version 0.19.2
 
 To be released.
 
+ -  `PrivateKey(IReadOnlyList<byte>)` overloaded constructor no more accepts
+    a list shorter or longer than 32 bytes.  [[#1571], [#1572]]
+ -  `PrivateKey.FromString()` method no more accept a hexadecimal digits
+    shorter or longer than 64 characters.  [[#1571], [#1572]]
+
+[#1572]: https://github.com/planetarium/libplanet/pull/1572
+
 
 Version 0.19.1
 --------------
@@ -106,6 +113,19 @@ Released on October 27, 2021.
 [#1549]: https://github.com/planetarium/libplanet/pull/1549
 [#1551]: https://github.com/planetarium/libplanet/pull/1551
 [#1557]: https://github.com/planetarium/libplanet/pull/1557
+
+
+Version 0.18.4
+--------------
+
+Released on November 2, 2021.
+
+ -  `PrivateKey(IReadOnlyList<byte>)` overloaded constructor no more accepts
+    a list shorter or longer than 32 bytes.  [[#1571]]
+ -  `PrivateKey.FromString()` method no more accept a hexadecimal digits
+    shorter or longer than 64 characters.  [[#1571]]
+
+[#1571]: https://github.com/planetarium/libplanet/pull/1571
 
 
 Version 0.18.3
