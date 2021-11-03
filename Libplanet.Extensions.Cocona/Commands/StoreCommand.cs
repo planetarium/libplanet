@@ -7,7 +7,6 @@ using System.Security.Cryptography;
 using Cocona;
 using Libplanet.Action;
 using Libplanet.Blocks;
-using Libplanet.RocksDBStore;
 using Libplanet.Store;
 using Libplanet.Tx;
 
@@ -25,9 +24,6 @@ namespace Libplanet.Extensions.Cocona.Commands
                 {
                     ["default"] = storePath => new DefaultStore(storePath),
                     ["rocksdb"] = storePath => new RocksDBStore.RocksDBStore(storePath),
-#pragma warning disable CS0618 // Type or member is obsolete
-                    ["monorocksdb"] = storePath => new MonoRocksDBStore(storePath),
-#pragma warning restore CS0618 // Type or member is obsolete
                 }.ToImmutableSortedDictionary();
 
         [Command(Description = "Build an index for transaction id and block hash.")]

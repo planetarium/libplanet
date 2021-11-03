@@ -5,7 +5,6 @@ using System.Collections.Immutable;
 using System.Security.Cryptography;
 using Cocona;
 using Libplanet.Blocks;
-using Libplanet.RocksDBStore;
 using Libplanet.Store;
 
 namespace Libplanet.Extensions.Cocona.Commands
@@ -23,9 +22,6 @@ namespace Libplanet.Extensions.Cocona.Commands
                 {
                     ["default"] = storePath => new DefaultStore(storePath),
                     ["rocksdb"] = storePath => new RocksDBStore.RocksDBStore(storePath),
-#pragma warning disable CS0618 // Type or member is obsolete
-                    ["monorocksdb"] = storePath => new MonoRocksDBStore(storePath),
-#pragma warning restore CS0618 // Type or member is obsolete
                 }.ToImmutableSortedDictionary();
 
         [Command(Description = "Outputs a summary of a stored chain in a CSV format.")]
