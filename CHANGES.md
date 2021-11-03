@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.19.2
 --------------
 
-To be released.
+Released on November 3, 2021.
 
  -  `PrivateKey(IReadOnlyList<byte>)` overloaded constructor no more accepts
     a list shorter or longer than 32 bytes.  [[#1571], [#1572]]
