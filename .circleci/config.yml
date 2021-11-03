@@ -151,10 +151,6 @@ commands:
         shell: bash
         command: |
           set -evx
-          if ! command -v dotnet > /dev/null && \
-             [[ -d /usr/local/share/dotnet ]]; then
-            export PATH="/usr/local/share/dotnet:$PATH"
-          fi
           tests_collection="<<parameters.collect_tests_from>>"
           total="$(wc -l "$tests_collection" | awk '{ print $1 }')"
           part="$(( (total + CIRCLE_NODE_TOTAL - 1) / CIRCLE_NODE_TOTAL ))"
@@ -282,19 +278,27 @@ jobs:
     steps:
     - restore_cache:
         keys:
-        - v1-brew-cask-isen-ng/dotnet-sdk-versions/dotnet-sdk3-1-400
+        - v1-macos-dotnet-sdk-5.0
     - run: |
-        if ! command -v dotnet; then
-          if brew list --cask | grep dotnet-sdk3-1-400; then
-            brew reinstall --cask isen-ng/dotnet-sdk-versions/dotnet-sdk3-1-400
-          else
-            brew install --cask isen-ng/dotnet-sdk-versions/dotnet-sdk3-1-400
-          fi
+        {
+          echo export PATH="$HOME/.dotnet:$PATH"
+          echo export DOTNET_ROOT="$HOME/.dotnet"
+        } >> $BASH_ENV
+    - run: |
+        set -evx
+        echo $PATH > /dev/stderr
+        if ! command -v dotnet && [[ ! -f "$HOME/.dotnet/dotnet" ]]; then
+          curl -L -o /tmp/dotnet-install.sh https://dot.net/v1/dotnet-install.sh
+          chmod +x /tmp/dotnet-install.sh
+          /tmp/dotnet-install.sh \
+            --verbose \
+            --channel 5.0
         fi
+        command -v dotnet
     - save_cache:
-        key: v1-brew-cask-isen-ng/dotnet-sdk-versions/dotnet-sdk3-1-400
+        key: v1-macos-dotnet-sdk-5.0
         paths:
-        - /usr/local/Caskroom/isen-ng/dotnet-sdk-versions/dotnet-sdk3-1-400/
+        - ~/.dotnet/
     - netcore_test_base
 
   windows-netcore-test:
