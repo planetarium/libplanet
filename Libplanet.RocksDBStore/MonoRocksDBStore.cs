@@ -19,6 +19,8 @@ namespace Libplanet.RocksDBStore
     /// This stores data in the RocksDB.
     /// </summary>
     /// <seealso cref="IStore"/>
+    [Obsolete("This legacy storage format is no more maintained.  Use " + nameof(RocksDBStore) +
+              " instead.")]
     public class MonoRocksDBStore : BaseStore
     {
         private const string BlockDbName = "block";

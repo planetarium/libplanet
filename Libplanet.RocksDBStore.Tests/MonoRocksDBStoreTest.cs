@@ -12,6 +12,7 @@ using Xunit.Abstractions;
 
 namespace Libplanet.RocksDBStore.Tests
 {
+    [Obsolete(nameof(MonoRocksDBStore) + " is deprecated.")]
     public class MonoRocksDBStoreTest : StoreTest, IDisposable
     {
         private readonly MonoRocksDBStoreFixture _fx;

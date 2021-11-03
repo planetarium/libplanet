@@ -23,7 +23,9 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
                 _storeFixtures = ImmutableArray.Create<StoreFixture>(
                     new DefaultStoreFixture(false),
                     new RocksDBStoreFixture(),
+#pragma warning disable CS0618 // Type or member is obsolete
                     new MonoRocksDBStoreFixture()
+#pragma warning restore CS0618 // Type or member is obsolete
                 );
             }
             catch (TypeInitializationException)

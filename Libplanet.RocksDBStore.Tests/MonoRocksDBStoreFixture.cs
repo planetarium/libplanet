@@ -6,6 +6,7 @@ using Libplanet.Tests.Store;
 
 namespace Libplanet.RocksDBStore.Tests
 {
+    [Obsolete(nameof(MonoRocksDBStore) + " is deprecated.")]
     public class MonoRocksDBStoreFixture : StoreFixture
     {
         public MonoRocksDBStoreFixture()

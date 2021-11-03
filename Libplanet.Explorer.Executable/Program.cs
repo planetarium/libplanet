@@ -294,10 +294,12 @@ If omitted (default) explorer only the local blockchain store.")]
                       keepLogFileNum: 1);
                     break;
                 case "monorocksdb":
+#pragma warning disable CS0618 // Type or member is obsolete
                     innerStore = new RocksDBStore.MonoRocksDBStore(
                         options.StorePath,
                         maxTotalWalSize: 16 * 1024 * 1024,
                         keepLogFileNum: 1);
+#pragma warning restore CS0618 // Type or member is obsolete
                     break;
                 case "default":
                     innerStore = new DefaultStore(
