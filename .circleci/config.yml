@@ -41,6 +41,43 @@ commands:
         paths:
         - "/usr/local/Caskroom/<<parameters.package>>/"
 
+  codecov:
+    description: Upload a code coverage report file to Codecov.io
+    parameters:
+      file: { type: string }
+    steps:
+    - restore_cache:
+        keys:
+        - "v1-codecov"
+        when: always
+    - run:
+        shell: bash
+        command: |
+          set -evx
+          case "$OSTYPE" in
+            darwin*) plat=macos;;
+            msys*)   plat=windows; suffix=.exe;;
+            cygwin*) plat=windows; suffix=.exe;;
+            *)       plat=linux;;
+          esac
+          mkdir -p _codecov_uploader/$plat/
+          pushd _codecov_uploader/$plat/
+          if [[ ! -f "codecov$suffix" ]]; then
+            curl -OL "https://uploader.codecov.io/latest/$plat/codecov$suffix"
+          fi
+          chmod +x "codecov$suffix"
+          popd
+          "_codecov_uploader/$plat/codecov$suffix" \
+            -K \
+            -f '<<parameters.file>>' \
+            -n "$CIRCLE_BUILD_NUM"
+        when: always
+    - save_cache:
+        key: "v1-codecov"
+        paths:
+        - _codecov_uploader/
+        when: always
+
   netcore_build_base:
     parameters:
       collect_tests_to:
@@ -178,15 +215,8 @@ commands:
         no_output_timeout: 65s
     - store_test_results:
         path: /tmp/junit
-    - run:
-        shell: bash
-        command: |
-          curl -s https://codecov.io/bash | bash -s -- \
-            -f dotCover.Output.xml \
-            -t "$CODECOV_TOKEN" \
-            -n "$CIRCLE_BUILD_NUM" \
-            -Z
-        when: always
+    - codecov:
+        file: dotCover.Output.xml
 
   unity_test_base:
     parameters:
