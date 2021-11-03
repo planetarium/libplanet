@@ -149,7 +149,8 @@ This stores data in the RocksDB.</p>
   <h6><strong>Assembly</strong>: Libplanet.RocksDBStore.dll</h6>
   <h5 id="Libplanet_RocksDBStore_MonoRocksDBStore_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class MonoRocksDBStore : BaseStore, IStore, IDisposable</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;This legacy storage format is no more maintained.  Use RocksDBStore instead.&quot;)]
+public class MonoRocksDBStore : BaseStore, IStore, IDisposable</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -158,7 +159,7 @@ This stores data in the RocksDB.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_MonoRocksDBStore__ctor_System_String_System_Int32_System_Int32_System_Nullable_System_UInt64__System_Nullable_System_UInt64__System_Nullable_System_UInt64__.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.MonoRocksDBStore.%23ctor(System.String%2CSystem.Int32%2CSystem.Int32%2CSystem.Nullable%7BSystem.UInt64%7D%2CSystem.Nullable%7BSystem.UInt64%7D%2CSystem.Nullable%7BSystem.UInt64%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L75">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L77">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_MonoRocksDBStore__ctor_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.#ctor*"></a>
   <h4 id="Libplanet_RocksDBStore_MonoRocksDBStore__ctor_System_String_System_Int32_System_Int32_System_Nullable_System_UInt64__System_Nullable_System_UInt64__System_Nullable_System_UInt64__" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.#ctor(System.String,System.Int32,System.Int32,System.Nullable{System.UInt64},System.Nullable{System.UInt64},System.Nullable{System.UInt64})">MonoRocksDBStore(String, Int32, Int32, Nullable&lt;UInt64&gt;, Nullable&lt;UInt64&gt;, Nullable&lt;UInt64&gt;)</h4>
@@ -227,7 +228,7 @@ RocksDB option.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_MonoRocksDBStore_AppendIndex_System_Guid_Libplanet_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.MonoRocksDBStore.AppendIndex(System.Guid%2CLibplanet.Blocks.BlockHash)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L245">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L247">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_MonoRocksDBStore_AppendIndex_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.AppendIndex*"></a>
   <h4 id="Libplanet_RocksDBStore_MonoRocksDBStore_AppendIndex_System_Guid_Libplanet_Blocks_BlockHash_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.AppendIndex(System.Guid,Libplanet.Blocks.BlockHash)">AppendIndex(Guid, BlockHash)</h4>
@@ -279,7 +280,7 @@ RocksDB option.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_MonoRocksDBStore_ContainsBlock_Libplanet_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.MonoRocksDBStore.ContainsBlock(Libplanet.Blocks.BlockHash)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L486">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L488">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_MonoRocksDBStore_ContainsBlock_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.ContainsBlock*"></a>
   <h4 id="Libplanet_RocksDBStore_MonoRocksDBStore_ContainsBlock_Libplanet_Blocks_BlockHash_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.ContainsBlock(Libplanet.Blocks.BlockHash)">ContainsBlock(BlockHash)</h4>
@@ -334,7 +335,7 @@ the specified <code data-dev-comment-type="paramref" class="paramref">blockHash<
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_MonoRocksDBStore_ContainsTransaction_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.MonoRocksDBStore.ContainsTransaction(Libplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L396">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L398">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_MonoRocksDBStore_ContainsTransaction_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.ContainsTransaction*"></a>
   <h4 id="Libplanet_RocksDBStore_MonoRocksDBStore_ContainsTransaction_Libplanet_Tx_TxId_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.ContainsTransaction(Libplanet.Tx.TxId)">ContainsTransaction(TxId)</h4>
@@ -389,7 +390,7 @@ with the specified <code data-dev-comment-type="paramref" class="paramref">txId<
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_MonoRocksDBStore_CountBlocks.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.MonoRocksDBStore.CountBlocks%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L624">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L626">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_MonoRocksDBStore_CountBlocks_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.CountBlocks*"></a>
   <h4 id="Libplanet_RocksDBStore_MonoRocksDBStore_CountBlocks" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.CountBlocks">CountBlocks()</h4>
@@ -421,7 +422,7 @@ with the specified <code data-dev-comment-type="paramref" class="paramref">txId<
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_MonoRocksDBStore_CountIndex_System_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.MonoRocksDBStore.CountIndex(System.Guid)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L193">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L195">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_MonoRocksDBStore_CountIndex_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.CountIndex*"></a>
   <h4 id="Libplanet_RocksDBStore_MonoRocksDBStore_CountIndex_System_Guid_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.CountIndex(System.Guid)">CountIndex(Guid)</h4>
@@ -468,7 +469,7 @@ with the specified <code data-dev-comment-type="paramref" class="paramref">txId<
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_MonoRocksDBStore_CountTransactions.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.MonoRocksDBStore.CountTransactions%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L618">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L620">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_MonoRocksDBStore_CountTransactions_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.CountTransactions*"></a>
   <h4 id="Libplanet_RocksDBStore_MonoRocksDBStore_CountTransactions" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.CountTransactions">CountTransactions()</h4>
@@ -500,7 +501,7 @@ with the specified <code data-dev-comment-type="paramref" class="paramref">txId<
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_MonoRocksDBStore_DeleteBlock_Libplanet_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.MonoRocksDBStore.DeleteBlock(Libplanet.Blocks.BlockHash)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L470">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L472">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_MonoRocksDBStore_DeleteBlock_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.DeleteBlock*"></a>
   <h4 id="Libplanet_RocksDBStore_MonoRocksDBStore_DeleteBlock_Libplanet_Blocks_BlockHash_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.DeleteBlock(Libplanet.Blocks.BlockHash)">DeleteBlock(BlockHash)</h4>
@@ -552,7 +553,7 @@ with the specified <code data-dev-comment-type="paramref" class="paramref">txId<
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_MonoRocksDBStore_DeleteChainId_System_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.MonoRocksDBStore.DeleteChainId(System.Guid)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L159">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L161">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_MonoRocksDBStore_DeleteChainId_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.DeleteChainId*"></a>
   <h4 id="Libplanet_RocksDBStore_MonoRocksDBStore_DeleteChainId_System_Guid_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.DeleteChainId(System.Guid)">DeleteChainId(Guid)</h4>
@@ -584,7 +585,7 @@ with the specified <code data-dev-comment-type="paramref" class="paramref">txId<
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_MonoRocksDBStore_DeleteTransaction_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.MonoRocksDBStore.DeleteTransaction(Libplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L380">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L382">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_MonoRocksDBStore_DeleteTransaction_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.DeleteTransaction*"></a>
   <h4 id="Libplanet_RocksDBStore_MonoRocksDBStore_DeleteTransaction_Libplanet_Tx_TxId_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.DeleteTransaction(Libplanet.Tx.TxId)">DeleteTransaction(TxId)</h4>
@@ -633,7 +634,7 @@ with the specified <code data-dev-comment-type="paramref" class="paramref">txId<
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_MonoRocksDBStore_DeleteTxIdBlockHashIndex_Libplanet_Tx_TxId_Libplanet_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.MonoRocksDBStore.DeleteTxIdBlockHashIndex(Libplanet.Tx.TxId%2CLibplanet.Blocks.BlockHash)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L534">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L536">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_MonoRocksDBStore_DeleteTxIdBlockHashIndex_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.DeleteTxIdBlockHashIndex*"></a>
   <h4 id="Libplanet_RocksDBStore_MonoRocksDBStore_DeleteTxIdBlockHashIndex_Libplanet_Tx_TxId_Libplanet_Blocks_BlockHash_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.DeleteTxIdBlockHashIndex(Libplanet.Tx.TxId,Libplanet.Blocks.BlockHash)">DeleteTxIdBlockHashIndex(TxId, BlockHash)</h4>
@@ -676,7 +677,7 @@ of the <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>.<
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_MonoRocksDBStore_Dispose.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.MonoRocksDBStore.Dispose%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L667">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L669">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_MonoRocksDBStore_Dispose_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.Dispose*"></a>
   <h4 id="Libplanet_RocksDBStore_MonoRocksDBStore_Dispose" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.Dispose">Dispose()</h4>
@@ -693,7 +694,7 @@ of the <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>.<
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_MonoRocksDBStore_ForkBlockIndexes_System_Guid_System_Guid_Libplanet_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.MonoRocksDBStore.ForkBlockIndexes(System.Guid%2CSystem.Guid%2CLibplanet.Blocks.BlockHash)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L265">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L267">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_MonoRocksDBStore_ForkBlockIndexes_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.ForkBlockIndexes*"></a>
   <h4 id="Libplanet_RocksDBStore_MonoRocksDBStore_ForkBlockIndexes_System_Guid_System_Guid_Libplanet_Blocks_BlockHash_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.ForkBlockIndexes(System.Guid,System.Guid,Libplanet.Blocks.BlockHash)">ForkBlockIndexes(Guid, Guid, BlockHash)</h4>
@@ -735,7 +736,7 @@ of the <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>.<
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_MonoRocksDBStore_ForkTxNonces_System_Guid_System_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.MonoRocksDBStore.ForkTxNonces(System.Guid%2CSystem.Guid)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L629">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L631">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_MonoRocksDBStore_ForkTxNonces_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.ForkTxNonces*"></a>
   <h4 id="Libplanet_RocksDBStore_MonoRocksDBStore_ForkTxNonces_System_Guid_System_Guid_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.ForkTxNonces(System.Guid,System.Guid)">ForkTxNonces(Guid, Guid)</h4>
@@ -772,7 +773,7 @@ of the <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>.<
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_MonoRocksDBStore_GetBlockDigest_Libplanet_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.MonoRocksDBStore.GetBlockDigest(Libplanet.Blocks.BlockHash)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L422">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L424">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_MonoRocksDBStore_GetBlockDigest_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.GetBlockDigest*"></a>
   <h4 id="Libplanet_RocksDBStore_MonoRocksDBStore_GetBlockDigest_Libplanet_Blocks_BlockHash_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.GetBlockDigest(Libplanet.Blocks.BlockHash)">GetBlockDigest(BlockHash)</h4>
@@ -826,7 +827,7 @@ of the <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>.<
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_MonoRocksDBStore_GetBlockPerceivedTime_Libplanet_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.MonoRocksDBStore.GetBlockPerceivedTime(Libplanet.Blocks.BlockHash)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L565">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L567">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_MonoRocksDBStore_GetBlockPerceivedTime_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.GetBlockPerceivedTime*"></a>
   <h4 id="Libplanet_RocksDBStore_MonoRocksDBStore_GetBlockPerceivedTime_Libplanet_Blocks_BlockHash_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.GetBlockPerceivedTime(Libplanet.Blocks.BlockHash)">GetBlockPerceivedTime(BlockHash)</h4>
@@ -878,7 +879,7 @@ of the <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>.<
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_MonoRocksDBStore_GetCanonicalChainId.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.MonoRocksDBStore.GetCanonicalChainId%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L176">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L178">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_MonoRocksDBStore_GetCanonicalChainId_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.GetCanonicalChainId*"></a>
   <h4 id="Libplanet_RocksDBStore_MonoRocksDBStore_GetCanonicalChainId" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.GetCanonicalChainId">GetCanonicalChainId()</h4>
@@ -916,7 +917,7 @@ of the <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>.<
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_MonoRocksDBStore_GetTransaction__1_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.MonoRocksDBStore.GetTransaction%60%601(Libplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L340">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L342">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_MonoRocksDBStore_GetTransaction_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.GetTransaction*"></a>
   <h4 id="Libplanet_RocksDBStore_MonoRocksDBStore_GetTransaction__1_Libplanet_Tx_TxId_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.GetTransaction``1(Libplanet.Tx.TxId)">GetTransaction&lt;T&gt;(TxId)</h4>
@@ -981,7 +982,7 @@ of the <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>.<
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_MonoRocksDBStore_GetTxExecution_Libplanet_Blocks_BlockHash_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.MonoRocksDBStore.GetTxExecution(Libplanet.Blocks.BlockHash%2CLibplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L513">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L515">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_MonoRocksDBStore_GetTxExecution_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.GetTxExecution*"></a>
   <h4 id="Libplanet_RocksDBStore_MonoRocksDBStore_GetTxExecution_Libplanet_Blocks_BlockHash_Libplanet_Tx_TxId_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.GetTxExecution(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId)">GetTxExecution(BlockHash, TxId)</h4>
@@ -1047,7 +1048,7 @@ execution to retrieve.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_MonoRocksDBStore_GetTxNonce_System_Guid_Libplanet_Address_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.MonoRocksDBStore.GetTxNonce(System.Guid%2CLibplanet.Address)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L594">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L596">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_MonoRocksDBStore_GetTxNonce_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.GetTxNonce*"></a>
   <h4 id="Libplanet_RocksDBStore_MonoRocksDBStore_GetTxNonce_System_Guid_Libplanet_Address_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.GetTxNonce(System.Guid,Libplanet.Address)">GetTxNonce(Guid, Address)</h4>
@@ -1099,7 +1100,7 @@ execution to retrieve.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_MonoRocksDBStore_IncreaseTxNonce_System_Guid_Libplanet_Address_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.MonoRocksDBStore.IncreaseTxNonce(System.Guid%2CLibplanet.Address%2CSystem.Int64)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L606">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L608">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_MonoRocksDBStore_IncreaseTxNonce_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.IncreaseTxNonce*"></a>
   <h4 id="Libplanet_RocksDBStore_MonoRocksDBStore_IncreaseTxNonce_System_Guid_Libplanet_Address_System_Int64_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.IncreaseTxNonce(System.Guid,Libplanet.Address,System.Int64)">IncreaseTxNonce(Guid, Address, Int64)</h4>
@@ -1141,7 +1142,7 @@ execution to retrieve.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_MonoRocksDBStore_IndexBlockHash_System_Guid_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.MonoRocksDBStore.IndexBlockHash(System.Guid%2CSystem.Int64)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L223">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L225">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_MonoRocksDBStore_IndexBlockHash_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.IndexBlockHash*"></a>
   <h4 id="Libplanet_RocksDBStore_MonoRocksDBStore_IndexBlockHash_System_Guid_System_Int64_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.IndexBlockHash(System.Guid,System.Int64)">IndexBlockHash(Guid, Int64)</h4>
@@ -1193,7 +1194,7 @@ execution to retrieve.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_MonoRocksDBStore_IterateBlockHashes.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.MonoRocksDBStore.IterateBlockHashes%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L409">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L411">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_MonoRocksDBStore_IterateBlockHashes_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.IterateBlockHashes*"></a>
   <h4 id="Libplanet_RocksDBStore_MonoRocksDBStore_IterateBlockHashes" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.IterateBlockHashes">IterateBlockHashes()</h4>
@@ -1227,7 +1228,7 @@ execution to retrieve.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_MonoRocksDBStore_IterateIndexes_System_Guid_System_Int32_System_Nullable_System_Int32__.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.MonoRocksDBStore.IterateIndexes(System.Guid%2CSystem.Int32%2CSystem.Nullable%7BSystem.Int32%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L203">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L205">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_MonoRocksDBStore_IterateIndexes_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.IterateIndexes*"></a>
   <h4 id="Libplanet_RocksDBStore_MonoRocksDBStore_IterateIndexes_System_Guid_System_Int32_System_Nullable_System_Int32__" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.IterateIndexes(System.Guid,System.Int32,System.Nullable{System.Int32})">IterateIndexes(Guid, Int32, Nullable&lt;Int32&gt;)</h4>
@@ -1284,7 +1285,7 @@ execution to retrieve.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_MonoRocksDBStore_IterateTransactionIds.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.MonoRocksDBStore.IterateTransactionIds%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L325">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L327">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_MonoRocksDBStore_IterateTransactionIds_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.IterateTransactionIds*"></a>
   <h4 id="Libplanet_RocksDBStore_MonoRocksDBStore_IterateTransactionIds" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.IterateTransactionIds">IterateTransactionIds()</h4>
@@ -1316,7 +1317,7 @@ execution to retrieve.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_MonoRocksDBStore_IterateTxIdBlockHashIndex_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.MonoRocksDBStore.IterateTxIdBlockHashIndex(Libplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L542">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L544">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_MonoRocksDBStore_IterateTxIdBlockHashIndex_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.IterateTxIdBlockHashIndex*"></a>
   <h4 id="Libplanet_RocksDBStore_MonoRocksDBStore_IterateTxIdBlockHashIndex_Libplanet_Tx_TxId_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.IterateTxIdBlockHashIndex(Libplanet.Tx.TxId)">IterateTxIdBlockHashIndex(TxId)</h4>
@@ -1368,7 +1369,7 @@ execution to retrieve.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_MonoRocksDBStore_ListChainIds.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.MonoRocksDBStore.ListChainIds%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L137">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L139">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_MonoRocksDBStore_ListChainIds_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.ListChainIds*"></a>
   <h4 id="Libplanet_RocksDBStore_MonoRocksDBStore_ListChainIds" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.ListChainIds">ListChainIds()</h4>
@@ -1402,7 +1403,7 @@ execution to retrieve.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_MonoRocksDBStore_ListTxNonces_System_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.MonoRocksDBStore.ListTxNonces(System.Guid)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L578">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L580">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_MonoRocksDBStore_ListTxNonces_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.ListTxNonces*"></a>
   <h4 id="Libplanet_RocksDBStore_MonoRocksDBStore_ListTxNonces_System_Guid_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.ListTxNonces(System.Guid)">ListTxNonces(Guid)</h4>
@@ -1449,7 +1450,7 @@ execution to retrieve.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_MonoRocksDBStore_PutBlock__1_Libplanet_Blocks_Block___0__.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.MonoRocksDBStore.PutBlock%60%601(Libplanet.Blocks.Block%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L444">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L446">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_MonoRocksDBStore_PutBlock_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.PutBlock*"></a>
   <h4 id="Libplanet_RocksDBStore_MonoRocksDBStore_PutBlock__1_Libplanet_Blocks_Block___0__" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.PutBlock``1(Libplanet.Blocks.Block{``0})">PutBlock&lt;T&gt;(Block&lt;T&gt;)</h4>
@@ -1504,7 +1505,7 @@ If the same block already exists in the store it does nothing.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_MonoRocksDBStore_PutTransaction__1_Libplanet_Tx_Transaction___0__.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.MonoRocksDBStore.PutTransaction%60%601(Libplanet.Tx.Transaction%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L361">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L363">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_MonoRocksDBStore_PutTransaction_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.PutTransaction*"></a>
   <h4 id="Libplanet_RocksDBStore_MonoRocksDBStore_PutTransaction__1_Libplanet_Tx_Transaction___0__" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.PutTransaction``1(Libplanet.Tx.Transaction{``0})">PutTransaction&lt;T&gt;(Transaction&lt;T&gt;)</h4>
@@ -1554,7 +1555,7 @@ If the same block already exists in the store it does nothing.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_MonoRocksDBStore_PutTxExecution_Libplanet_Tx_TxFailure_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.MonoRocksDBStore.PutTxExecution(Libplanet.Tx.TxFailure)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L506">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L508">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_MonoRocksDBStore_PutTxExecution_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.PutTxExecution*"></a>
   <h4 id="Libplanet_RocksDBStore_MonoRocksDBStore_PutTxExecution_Libplanet_Tx_TxFailure_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.PutTxExecution(Libplanet.Tx.TxFailure)">PutTxExecution(TxFailure)</h4>
@@ -1600,7 +1601,7 @@ and <a class="xref" href="Libplanet.Tx.TxExecution.html#Libplanet_Tx_TxExecution
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_MonoRocksDBStore_PutTxExecution_Libplanet_Tx_TxSuccess_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.MonoRocksDBStore.PutTxExecution(Libplanet.Tx.TxSuccess)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L499">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L501">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_MonoRocksDBStore_PutTxExecution_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.PutTxExecution*"></a>
   <h4 id="Libplanet_RocksDBStore_MonoRocksDBStore_PutTxExecution_Libplanet_Tx_TxSuccess_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.PutTxExecution(Libplanet.Tx.TxSuccess)">PutTxExecution(TxSuccess)</h4>
@@ -1646,7 +1647,7 @@ and <a class="xref" href="Libplanet.Tx.TxExecution.html#Libplanet_Tx_TxExecution
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_MonoRocksDBStore_PutTxIdBlockHashIndex_Libplanet_Tx_TxId_Libplanet_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.MonoRocksDBStore.PutTxIdBlockHashIndex(Libplanet.Tx.TxId%2CLibplanet.Blocks.BlockHash)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L525">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L527">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_MonoRocksDBStore_PutTxIdBlockHashIndex_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.PutTxIdBlockHashIndex*"></a>
   <h4 id="Libplanet_RocksDBStore_MonoRocksDBStore_PutTxIdBlockHashIndex_Libplanet_Tx_TxId_Libplanet_Blocks_BlockHash_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.PutTxIdBlockHashIndex(Libplanet.Tx.TxId,Libplanet.Blocks.BlockHash)">PutTxIdBlockHashIndex(TxId, BlockHash)</h4>
@@ -1690,7 +1691,7 @@ it overwrites the record silently.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_MonoRocksDBStore_SetBlockPerceivedTime_Libplanet_Blocks_BlockHash_System_DateTimeOffset_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.MonoRocksDBStore.SetBlockPerceivedTime(Libplanet.Blocks.BlockHash%2CSystem.DateTimeOffset)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L552">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L554">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_MonoRocksDBStore_SetBlockPerceivedTime_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.SetBlockPerceivedTime*"></a>
   <h4 id="Libplanet_RocksDBStore_MonoRocksDBStore_SetBlockPerceivedTime_Libplanet_Blocks_BlockHash_System_DateTimeOffset_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.SetBlockPerceivedTime(Libplanet.Blocks.BlockHash,System.DateTimeOffset)">SetBlockPerceivedTime(BlockHash, DateTimeOffset)</h4>
@@ -1727,7 +1728,7 @@ it overwrites the record silently.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_MonoRocksDBStore_SetCanonicalChainId_System_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.MonoRocksDBStore.SetCanonicalChainId(System.Guid)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L186">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/MonoRocksDBStore.cs/#L188">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_MonoRocksDBStore_SetCanonicalChainId_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.SetCanonicalChainId*"></a>
   <h4 id="Libplanet_RocksDBStore_MonoRocksDBStore_SetCanonicalChainId_System_Guid_" data-uid="Libplanet.RocksDBStore.MonoRocksDBStore.SetCanonicalChainId(System.Guid)">SetCanonicalChainId(Guid)</h4>

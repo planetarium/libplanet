@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "rlifkj6M1ivvphufeRxRAV+CK8xJdMkEvZH0RwATqzQ="
+          "hash": "uk2KRx3DOobMroHhFc6iKNXMndxC0Ypnz6Q48+nX7U8="
         }
       },
       "is_incremental": false,
@@ -2349,7 +2349,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.RocksDBStore.MonoRocksDBStore.html",
-          "hash": "xdPMKDG7aTdrSW/blIAQTHpdhWofYkXhrdU2jtPpBE8="
+          "hash": "HCPM9/nVi4aaaD1c2Rc77HYeEdh/jq67zIaaPl0ihgw="
         }
       },
       "is_incremental": false,
