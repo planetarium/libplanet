@@ -6,6 +6,8 @@ Version 0.21.0
 
 To be released.
 
+### Deprecated APIs
+
 ### Backward-incompatible API changes
 
 ### Backward-incompatible network protocol changes
