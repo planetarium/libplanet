@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+#if !NETFRAMEWORK
 using System.Linq;
+#endif
 using System.Security.Cryptography;
 using Libplanet.Blocks;
 using Xunit;
