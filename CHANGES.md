@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.20.0
 --------------
 
-To be released.
+Released on November 3, 2021.
 
 ### Deprecated APIs
 
@@ -16,19 +16,9 @@ To be released.
  -  Removed unused `BlockChain<T>` type parameter from
     `IStagePolicy<T>.Iterate()` method.  [[#1553], [#1556]]
 
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
 ### Added APIs
 
  -  Added `IStagePolicy<T>.GetNextTxNonce()` method.  [[#1553], [#1556]]
-
-### Behavioral changes
-
-### Bug fixes
-
-### CLI tools
 
 [#1513]: https://github.com/planetarium/libplanet/issues/1513
 [#1553]: https://github.com/planetarium/libplanet/issues/1553
