@@ -15,32 +15,6 @@ commands:
         command: "cat -s <<parameters.glob>> > <<parameters.to>>"
         shell: bash
 
-  brew_cask_install:
-    description: "brew install --cask <<parameters.package>>"
-    parameters:
-      package: { type: string }
-      tap: { type: string, default: "" }
-    steps:
-    - restore_cache:
-        keys:
-        - "v1-brew-cask-<<parameters.tap>>/<<parameters.package>>"
-    - run: |
-        if brew list --cask | grep <<parameters.package>>; then
-          if [[ "<<parameters.tap>>" != "" ]]; then
-            brew tap "<<parameters.tap>>"
-          fi
-          brew reinstall --cask <<parameters.package>>
-        else
-          if [[ "<<parameters.tap>>" != "" ]]; then
-            brew tap "<<parameters.tap>>"
-          fi
-          brew install --cask <<parameters.package>>
-        fi
-    - save_cache:
-        key: "v1-brew-cask-<<parameters.tap>>/<<parameters.package>>"
-        paths:
-        - "/usr/local/Caskroom/<<parameters.package>>/"
-
   codecov:
     description: Upload a code coverage report file to Codecov.io
     parameters:
@@ -306,8 +280,21 @@ jobs:
       xcode: 11.3.0
     parallelism: 6
     steps:
-    - brew_cask_install:
-        package: isen-ng/dotnet-sdk-versions/dotnet-sdk3-1-400
+    - restore_cache:
+        keys:
+        - v1-brew-cask-isen-ng/dotnet-sdk-versions/dotnet-sdk3-1-400
+    - run: |
+        if ! command -v dotnet; then
+          if brew list --cask | grep dotnet-sdk3-1-400; then
+            brew reinstall --cask isen-ng/dotnet-sdk-versions/dotnet-sdk3-1-400
+          else
+            brew install --cask isen-ng/dotnet-sdk-versions/dotnet-sdk3-1-400
+          fi
+        fi
+    - save_cache:
+        key: v1-brew-cask-isen-ng/dotnet-sdk-versions/dotnet-sdk3-1-400
+        paths:
+        - /usr/local/Caskroom/isen-ng/dotnet-sdk-versions/dotnet-sdk3-1-400/
     - netcore_test_base
 
   windows-netcore-test:
