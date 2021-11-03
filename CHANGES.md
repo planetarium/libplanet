@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.18.5
 --------------
 
-To be released.
+Released on November 3, 2021.
 
  -  Fixed a bug where `HashAlgorithmType.Digest(byte[])` and
    `HashAlgorithmType.Digest(ImmutableArray<byte>)` methods had returned
