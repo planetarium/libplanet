@@ -205,6 +205,10 @@ namespace Libplanet.Extensions.Cocona.Commands
 
         private IStore LoadStoreFromUri(string rawUri)
         {
+            // FIXME: This method basically does the same thing to StatsCommand.LoadStoreFromUri()
+            // method and Libplanet.Explorer.Executable's Program.LoadStore() method.
+            // The duplicate code should be extract to a shared common method.
+            // https://github.com/planetarium/libplanet/issues/1573
             var uri = new Uri(rawUri);
             var scheme = uri.Scheme;
             var splitScheme = scheme.Split('+');
