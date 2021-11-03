@@ -4,12 +4,20 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using Xunit;
+using Xunit.Abstractions;
 using static Libplanet.Tests.TestUtils;
 
 namespace Libplanet.Tests
 {
     public class HashAlgorithmTypeTest
     {
+        private readonly ITestOutputHelper _output;
+
+        public HashAlgorithmTypeTest(ITestOutputHelper output)
+        {
+            _output = output;
+        }
+
         [Fact]
         public void Of()
         {
@@ -87,16 +95,20 @@ namespace Libplanet.Tests
                 Encoding.ASCII.GetBytes("Bar"),
             };
             byte[] digest;
-            for (int i = 0; i < 20; i++)
+            const int trial = 20;
+            for (int i = 0; i < trial; i++)
             {
+                _output.WriteLine("[{0}] The trial {1}/{2}...", i, i + 1, trial);
                 for (int j = 0; j < 2; j++)
                 {
+                    _output.WriteLine("[{0}-{1}] Hash an input as a whole...", i, j);
                     digest = sha256.Digest(input);
                     AssertBytesEqual(expected, digest);
                 }
 
                 for (int j = 0; j < 2; j++)
                 {
+                    _output.WriteLine("[{0}-{1}] Hash an input as multiple chunks...", i, j);
                     digest = sha256.Digest(chunkedInput);
                     AssertBytesEqual(expected, digest);
                 }
