@@ -216,6 +216,11 @@ commands:
           else
             xur_path=/tmp/xur/<<parameters.runner_target>>
           fi
+          excluded_classes=(
+            "Libplanet.Tests.Net.Protocols.ProtocolTest"
+            "Libplanet.Tests.Net.SwarmTest"
+            "Libplanet.Tests.Net.Transports.NetMQTransportTest"
+          )
           args=(
             "--hang-seconds=60"
             "--parallel=1"
@@ -227,6 +232,9 @@ commands:
               "--distributed-seed=$CIRCLE_BUILD_NUM"
             )
           fi
+          for c in "${exluced_classes[@]}"; do
+            args+=("--exclude-class=$c")
+          done
           for project in *.Tests; do
             args+=("$PWD/$project/bin/Release/net47/$project.dll")
           done
@@ -283,7 +291,7 @@ jobs:
     docker:
     - image: mono:6.12
     resource_class: large
-    parallelism: 8
+    parallelism: 4
     steps:
     - run: apt update -y && apt install -y xsltproc
     - unity_test_base
