@@ -1,6 +1,20 @@
 Libplanet changelog
 ===================
 
+Version 0.18.5
+--------------
+
+Released on November 3, 2021.
+
+ -  Fixed a bug where `HashAlgorithmType.Digest(byte[])` and
+   `HashAlgorithmType.Digest(ImmutableArray<byte>)` methods had returned
+   a wrong hash digest after `HashAlgorithmType.Digest(IEnumerable<byte[]>)`
+   or `HashAlgorithmType.Digest(IEnumerable<ImmutableArray<byte>>)` methods
+   had been once called.  [[#1575]]
+
+[#1575]: https://github.com/planetarium/libplanet/pull/1575
+
+
 Version 0.18.4
 --------------
 
@@ -10,6 +24,8 @@ Released on November 2, 2021.
     a list shorter or longer than 32 bytes.  [[#1571]]
  -  `PrivateKey.FromString()` method no more accept a hexadecimal digits
     shorter or longer than 64 characters.  [[#1571]]
+
+[#1571]: https://github.com/planetarium/libplanet/pull/1571
 
 
 Version 0.18.3

@@ -99,8 +99,12 @@ namespace Libplanet
         /// <param name="input">The bytes to compute its hash.</param>
         /// <returns>The hash digest derived from <paramref name="input"/>.</returns>
         [Pure]
-        public byte[] Digest(byte[] input) =>
-            _instance.Value!.ComputeHash(input);
+        public byte[] Digest(byte[] input)
+        {
+            HashAlgorithm algo = _instance.Value!;
+            algo.Initialize();
+            return algo.ComputeHash(input);
+        }
 
         /// <summary>
         /// Computes a hash digest of the hash algorithm from the given
