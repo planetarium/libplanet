@@ -4,6 +4,13 @@ orbs:
   win: circleci/windows@2.2.0
 
 commands:
+  ulimit:
+    parameters:
+      n: { type: integer }
+    steps:
+    - run:
+        command: "echo 'ulimit -n <<parameters.n>>' >> $BASH_ENV"
+
   concat_files:
     description: Concatenate file contents
     parameters:
@@ -208,6 +215,7 @@ commands:
         type: string
         default: en_US.UTF-8
     steps:
+    - ulimit: { n: 10240 }
     - restore_cache:
         keys:
         - v1-macos-dotnet-sdk-3.1
@@ -382,6 +390,7 @@ jobs:
       xcode: 11.3.0
     parallelism: 3
     steps:
+    - ulimit: { n: 10240 }
     - unity_test_base:
         runner_target: StandaloneOSX
 
