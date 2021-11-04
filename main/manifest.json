@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "lVDodktQQGx2MLvTQxeNIRmFAlgsjW35b2uWllfSHGg="
+          "hash": "j63QANzPZvq9DBxkinCP9ylJSwXi1s6cvfMDTHZp3UU="
         }
       },
       "is_incremental": false,
@@ -2345,18 +2345,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/Libplanet.RocksDBStore.MonoRocksDBStore.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Libplanet.RocksDBStore.MonoRocksDBStore.html",
-          "hash": "HCPM9/nVi4aaaD1c2Rc77HYeEdh/jq67zIaaPl0ihgw="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/Libplanet.RocksDBStore.RocksDBKeyValueStore.yml",
       "output": {
         ".html": {
@@ -2385,7 +2373,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.RocksDBStore.html",
-          "hash": "THvz0XDmdGw9M+WLFU0yyZahpc+QnydtDut1n6ak9u4="
+          "hash": "XqzLoOwfPVVLRo5qPjzzsYWcsd/emznm1mg/OvBIJ/0="
         }
       },
       "is_incremental": false,
@@ -2433,7 +2421,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.BaseStore.html",
-          "hash": "3jCuV0upRTLgW/4q1fLZvwGa2D5f24irUywYWul/AOQ="
+          "hash": "5gghf5fCxLBaEXmsthITPeNL5rxQnblYopWQOzJRK+s="
         }
       },
       "is_incremental": false,
@@ -3381,7 +3369,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "wLhqD/j+xUeAah48ywPgIvaqzHKrHLUIc/WlF8GyM3Y="
+          "hash": "xZSoU9dhdzq2+XFAoHyj5gHTjEJqT5HduDTy9Ga9VgY="
         }
       },
       "is_incremental": false,
@@ -3490,7 +3478,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 272,
+          "total_file_count": 271,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
