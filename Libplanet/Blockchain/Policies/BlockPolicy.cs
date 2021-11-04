@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Blocks;
@@ -57,8 +58,8 @@ namespace Libplanet.Blockchain.Policies
         /// a <see cref="Transaction{T}"/> follows the policy.  Set to a constant function of
         /// <c>null</c> by default.</param>
         /// <param name="validateNextBlock">The predicate that determines if
-        /// a <see cref="Block{T}"/> follows the policy.  Set to a constant function of
-        /// <c>null</c> by default.</param>
+        /// a <see cref="Block{T}"/> follows the policy.  Set to a default implementation
+        /// where block bytes count and block transactions count are validated.</param>
         /// <param name="canonicalChainComparer">The custom rule to determine which is the canonical
         /// chain.  If omitted, <see cref="TotalDifficultyComparer"/> is used by default.</param>
         /// <param name="hashAlgorithmGetter">Configures <see cref="GetHashAlgorithm(long)"/>.
@@ -103,8 +104,6 @@ namespace Libplanet.Blockchain.Policies
                 ?? DifficultyAdjustment<T>.DefaultDifficultyStability;
             MinimumDifficulty = minimumDifficulty
                 ?? DifficultyAdjustment<T>.DefaultMinimumDifficulty;
-            _validateNextBlockTx = validateNextBlockTx ?? ((_, __) => null);
-            _validateNextBlock = validateNextBlock ?? ((_, __) => null);
             CanonicalChainComparer = canonicalChainComparer ?? new TotalDifficultyComparer();
             _hashAlgorithmGetter = hashAlgorithmGetter ?? (_ => HashAlgorithmType.Of<SHA256>());
             _getMaxBlockBytes = getMaxBlockBytes ?? (_ => 100 * 1024);
@@ -114,6 +113,59 @@ namespace Libplanet.Blockchain.Policies
                 ?? GetMaxTransactionsPerBlock;
             _getNextBlockDifficulty = DifficultyAdjustment<T>.AlgorithmFactory(
                 BlockInterval, DifficultyStability, MinimumDifficulty);
+
+            _validateNextBlockTx = validateNextBlockTx ?? ((_, __) => null);
+            if (validateNextBlock is { } vnb)
+            {
+                _validateNextBlock = vnb;
+            }
+            else
+            {
+                _validateNextBlock = (blockchain, block) =>
+                {
+                    int maxBlockBytes = GetMaxBlockBytes(block.Index);
+                    int minTransactionsPerBlock = GetMinTransactionsPerBlock(block.Index);
+                    int maxTransactionsPerBlock = GetMaxTransactionsPerBlock(block.Index);
+                    int maxTransactionsPerSignerPerBlock =
+                        GetMaxTransactionsPerSignerPerBlock(block.Index);
+                    if (block.BytesLength > maxBlockBytes)
+                    {
+                        return new BlockPolicyViolationException(
+                            $"The size of block #{block.Index} {block.Hash} is too large " +
+                            $"where the maximum number of bytes allowed is {maxBlockBytes}: " +
+                            $"{block.BytesLength}");
+                    }
+                    else if (block.Transactions.Count < minTransactionsPerBlock)
+                    {
+                        return new BlockPolicyViolationException(
+                            $"Block #{block.Index} {block.Hash} should include " +
+                            $"at least {minTransactionsPerBlock} transaction(s): " +
+                            $"{block.Transactions.Count}");
+                    }
+                    else if (block.Transactions.Count > maxTransactionsPerBlock)
+                    {
+                        return new BlockPolicyViolationException(
+                            $"Block #{block.Index} {block.Hash} should include " +
+                            $"at most {maxTransactionsPerBlock} transaction(s): " +
+                            $"{block.Transactions.Count}");
+                    }
+                    else if (block.Transactions
+                        .GroupBy(tx => tx.Signer)
+                        .Any(group => group.Count()
+                            > maxTransactionsPerSignerPerBlock))
+                    {
+                        return new BlockPolicyViolationException(
+                            $"Block #{block.Index} {block.Hash} includes too many " +
+                            $"transactions from a single signer where the maximum number of " +
+                            $"transactions allowed by a single signer per block " +
+                            $"is {maxTransactionsPerSignerPerBlock}.");
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                };
+            }
         }
 
         /// <inheritdoc/>
