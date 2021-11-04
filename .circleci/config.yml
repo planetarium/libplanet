@@ -268,13 +268,13 @@ jobs:
     docker:
     - image: mcr.microsoft.com/dotnet/sdk:3.1
     resource_class: large
-    parallelism: 4
+    parallelism: 3
     steps: [netcore_test_base]
 
   macos-netcore-test:
     macos:
       xcode: 11.3.0
-    parallelism: 6
+    parallelism: 4
     steps:
     - restore_cache:
         keys:
@@ -312,7 +312,7 @@ jobs:
     docker:
     - image: mono:6.12
     resource_class: large
-    parallelism: 4
+    parallelism: 3
     steps:
     - run: apt update -y && apt install -y xsltproc
     - unity_test_base
