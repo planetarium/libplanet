@@ -130,6 +130,9 @@ commands:
       collect_tests_from:
         type: string
         default: .tests.txt
+      locale:
+        type: string
+        default: en_US.UTF-8
     steps:
     - restore_cache:
         keys:
@@ -182,11 +185,51 @@ commands:
           --dcDisableDefaultFilters
           --dcReportType=DetailedXML
           --dcFilters="+:Libplanet;+:Libplanet.*;-:Libplanet.Tests;-:Libplanet.*.Tests;-:Libplanet.*.UnitTests;-:Libplanet.Benchmarks;-:Libplanet.Explorer"
-        no_output_timeout: 65s
+        no_output_timeout: 180s
+        environment:
+          LC_ALL: "<<parameters.locale>>"
+          LANG: "<<parameters.locale>>"
+          LANGUAGE: "<<parameters.locale>>"
     - store_test_results:
         path: /tmp/junit
     - codecov:
         file: dotCover.Output.xml
+
+  macos_netcore_test_base:
+    parameters:
+      collect_tests_from:
+        type: string
+        default: .tests.txt
+      locale:
+        type: string
+        default: en_US.UTF-8
+    steps:
+    - restore_cache:
+        keys:
+        - v1-macos-dotnet-sdk-3.1
+    - run: |
+        {
+          echo export PATH="$HOME/.dotnet:$PATH"
+          echo export DOTNET_ROOT="$HOME/.dotnet"
+        } >> $BASH_ENV
+    - run: |
+        set -evx
+        echo $PATH > /dev/stderr
+        if ! command -v dotnet && [[ ! -f "$HOME/.dotnet/dotnet" ]]; then
+          curl -L -o /tmp/dotnet-install.sh https://dot.net/v1/dotnet-install.sh
+          chmod +x /tmp/dotnet-install.sh
+          /tmp/dotnet-install.sh \
+            --verbose \
+            --channel 3.1
+        fi
+        command -v dotnet
+    - save_cache:
+        key: v1-macos-dotnet-sdk-3.1
+        paths:
+        - ~/.dotnet/
+    - netcore_test_base:
+        collect_tests_from: <<parameters.collect_tests_from>>
+        locale: <<parameters.locale>>
 
   unity_test_base:
     parameters:
@@ -268,51 +311,44 @@ jobs:
     docker:
     - image: mcr.microsoft.com/dotnet/sdk:3.1
     resource_class: large
-    parallelism: 3
+    parallelism: 2
     steps: [netcore_test_base]
+
+  linux-netcore-test-fr-FR:
+    docker:
+    - image: mcr.microsoft.com/dotnet/sdk:3.1
+    resource_class: large
+    parallelism: 2
+    steps:
+    - netcore_test_base:
+        locale: fr_FR.UTF-8
 
   macos-netcore-test:
     macos:
       xcode: 11.3.0
-    parallelism: 4
+    parallelism: 3
+    steps: [macos_netcore_test_base]
+
+  macos-netcore-test-ar-SA:
+    macos:
+      xcode: 11.3.0
+    parallelism: 3
     steps:
-    - restore_cache:
-        keys:
-        - v1-macos-dotnet-sdk-5.0
-    - run: |
-        {
-          echo export PATH="$HOME/.dotnet:$PATH"
-          echo export DOTNET_ROOT="$HOME/.dotnet"
-        } >> $BASH_ENV
-    - run: |
-        set -evx
-        echo $PATH > /dev/stderr
-        if ! command -v dotnet && [[ ! -f "$HOME/.dotnet/dotnet" ]]; then
-          curl -L -o /tmp/dotnet-install.sh https://dot.net/v1/dotnet-install.sh
-          chmod +x /tmp/dotnet-install.sh
-          /tmp/dotnet-install.sh \
-            --verbose \
-            --channel 5.0
-        fi
-        command -v dotnet
-    - save_cache:
-        key: v1-macos-dotnet-sdk-5.0
-        paths:
-        - ~/.dotnet/
-    - netcore_test_base
+    - macos_netcore_test_base:
+        locale: ar_SA.UTF-8
 
   windows-netcore-test:
     executor:
       name: win/default
       size: large
-    parallelism: 4
+    parallelism: 3
     steps: [netcore_test_base]
 
   linux-unity-test:
     docker:
     - image: mono:6.12
     resource_class: large
-    parallelism: 3
+    parallelism: 2
     steps:
     - run: apt update -y && apt install -y xsltproc
     - unity_test_base
@@ -320,7 +356,7 @@ jobs:
   macos-unity-test:
     macos:
       xcode: 11.3.0
-    parallelism: 4
+    parallelism: 3
     steps:
     - unity_test_base:
         runner_target: StandaloneOSX
@@ -329,7 +365,7 @@ jobs:
     executor:
       name: win/default
       size: large
-    parallelism: 4
+    parallelism: 3
     steps:
     - run: choco install bzip2 xsltproc
     - unity_test_base:
@@ -342,7 +378,11 @@ workflows:
     - linux-mono-build
     - linux-netcore-test:
         requires: [linux-netcore-build]
+    - linux-netcore-test-fr-FR:
+        requires: [linux-netcore-build]
     - macos-netcore-test:
+        requires: [linux-netcore-build]
+    - macos-netcore-test-ar-SA:
         requires: [linux-netcore-build]
     - windows-netcore-test:
         requires: [linux-netcore-build]
