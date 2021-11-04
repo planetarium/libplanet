@@ -317,6 +317,16 @@ jobs:
     parallelism: 2
     steps: [netcore_test_base]
 
+  linux-netcore-test-ar-SA:
+    docker:
+    - image: mcr.microsoft.com/dotnet/sdk:3.1
+    resource_class: large
+    working_directory: /mnt/ramdisk
+    parallelism: 2
+    steps:
+    - netcore_test_base:
+        locale: ar_SA.UTF-8
+
   linux-netcore-test-fr-FR:
     docker:
     - image: mcr.microsoft.com/dotnet/sdk:3.1
@@ -330,16 +340,8 @@ jobs:
   macos-netcore-test:
     macos:
       xcode: 11.3.0
-    parallelism: 3
+    parallelism: 4
     steps: [macos_netcore_test_base]
-
-  macos-netcore-test-ar-SA:
-    macos:
-      xcode: 11.3.0
-    parallelism: 3
-    steps:
-    - macos_netcore_test_base:
-        locale: ar_SA.UTF-8
 
   windows-netcore-test:
     executor:
@@ -370,7 +372,7 @@ jobs:
     executor:
       name: win/default
       size: large
-    parallelism: 3
+    parallelism: 4
     steps:
     - run: choco install bzip2 xsltproc
     - unity_test_base:
@@ -383,11 +385,11 @@ workflows:
     - linux-mono-build
     - linux-netcore-test:
         requires: [linux-netcore-build]
+    - linux-netcore-test-ar-SA:
+        requires: [linux-netcore-build]
     - linux-netcore-test-fr-FR:
         requires: [linux-netcore-build]
     - macos-netcore-test:
-        requires: [linux-netcore-build]
-    - macos-netcore-test-ar-SA:
         requires: [linux-netcore-build]
     - windows-netcore-test:
         requires: [linux-netcore-build]
