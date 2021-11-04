@@ -220,6 +220,9 @@ namespace Libplanet.Net
             CancellationToken cancellationToken = default(CancellationToken)
         )
         {
+            _logger.Debug("Stopping watching " + nameof(BlockChain) + " for tip changes...");
+            BlockChain.TipChanged -= OnBlockChainTipChanged;
+
             _logger.Debug($"Stopping {nameof(Swarm<T>)}...");
             using (await _runningMutex.LockAsync())
             {
@@ -321,6 +324,9 @@ namespace Libplanet.Net
 
             _logger.Debug("Starting swarm...");
             _logger.Debug("Peer information : {Peer}", AsPeer);
+
+            _logger.Debug("Watching the " + nameof(BlockChain) + " for tip changes...");
+            BlockChain.TipChanged += OnBlockChainTipChanged;
 
             try
             {
