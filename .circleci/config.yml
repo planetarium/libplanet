@@ -25,6 +25,7 @@ commands:
         - "v1-codecov"
         when: always
     - run:
+        name: Upload a code coverage report file to Codecov.io
         shell: bash
         command: |
           set -evx
@@ -73,7 +74,7 @@ commands:
         - ~/.nuget/packages
     - run: dotnet build --no-restore -c Release -p:SkipSonar=true
     - run:
-        description: Collect tests
+        name: Collect tests
         shell: bash
         command: |
           set -evx
@@ -137,11 +138,13 @@ commands:
     - restore_cache:
         keys:
         - v1-dotcover-{{ arch }}
-    - run: >-
-        dotnet tool install
-        --global
-        JetBrains.dotCover.GlobalTool
-        --version 2021.2.2
+    - run:
+        name: Install JetBrains dotCover
+        command: >-
+          dotnet tool install
+          --global
+          JetBrains.dotCover.GlobalTool
+          --version 2021.2.2
     - save_cache:
         key: v1-dotcover-{{ arch }}
         paths:
@@ -150,7 +153,7 @@ commands:
     - attach_workspace:
         at: .
     - run:
-        description: Distribute tests
+        name: Distribute tests
         shell: bash
         command: |
           set -evx
@@ -175,6 +178,7 @@ commands:
             fi
           done < .current_tests.txt > .test-filter.txt
     - run:
+        name: Run tests (using dotCover)
         command: >-
           ~/.dotnet/tools/dotnet-dotcover test
           --no-restore
@@ -207,22 +211,31 @@ commands:
     - restore_cache:
         keys:
         - v1-macos-dotnet-sdk-3.1
-    - run: |
-        {
-          echo export PATH="$HOME/.dotnet:$PATH"
-          echo export DOTNET_ROOT="$HOME/.dotnet"
-        } >> $BASH_ENV
-    - run: |
-        set -evx
-        echo $PATH > /dev/stderr
-        if ! command -v dotnet && [[ ! -f "$HOME/.dotnet/dotnet" ]]; then
-          curl -L -o /tmp/dotnet-install.sh https://dot.net/v1/dotnet-install.sh
-          chmod +x /tmp/dotnet-install.sh
-          /tmp/dotnet-install.sh \
-            --verbose \
-            --channel 3.1
-        fi
-        command -v dotnet
+    - run:
+        name: Export PATH & DOTNET_ROOT
+        shell: bash
+        command: |
+          {
+            echo export PATH="$HOME/.dotnet:$PATH"
+            echo export DOTNET_ROOT="$HOME/.dotnet"
+          } >> $BASH_ENV
+    - run:
+        name: Install .NET Core 3.1 SDK
+        shell: bash
+        command: |
+          set -evx
+          echo $PATH > /dev/stderr
+          if ! command -v dotnet && [[ ! -f "$HOME/.dotnet/dotnet" ]]; then
+            curl \
+              -L \
+              -o /tmp/dotnet-install.sh \
+              https://dot.net/v1/dotnet-install.sh
+            chmod +x /tmp/dotnet-install.sh
+            /tmp/dotnet-install.sh \
+              --verbose \
+              --channel 3.1
+          fi
+          command -v dotnet
     - save_cache:
         key: v1-macos-dotnet-sdk-3.1
         paths:
@@ -244,6 +257,7 @@ commands:
     - attach_workspace:
         at: .
     - run:
+        name: Run tests (using xunit-unity-runner <<parameters.runner_version>>)
         shell: bash
         command: |
           set -evx
@@ -284,6 +298,7 @@ commands:
           "$xur_path" "${args[@]}"
         no_output_timeout: 65s
     - run:
+        name: Transform xUnit.net report XML to JUnit report XML
         shell: bash
         command: |
           set -evx
@@ -357,7 +372,9 @@ jobs:
     working_directory: /mnt/ramdisk
     parallelism: 2
     steps:
-    - run: apt update -y && apt install -y xsltproc
+    - run:
+        name: Install xsltproc
+        command: apt update -y && apt install -y xsltproc
     - unity_test_base
 
   macos-unity-test:
@@ -374,7 +391,9 @@ jobs:
       size: large
     parallelism: 4
     steps:
-    - run: choco install bzip2 xsltproc
+    - run:
+        name: Install bzip2 & xsltproc
+        command: choco install bzip2 xsltproc
     - unity_test_base:
         runner_target: StandaloneWindows64
 
