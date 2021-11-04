@@ -299,18 +299,21 @@ jobs:
     docker:
     - image: mcr.microsoft.com/dotnet/sdk:3.1
     resource_class: xlarge
+    working_directory: /mnt/ramdisk
     steps: [netcore_build_base]
 
   linux-mono-build:
     docker:
     - image: mono:6.12
     resource_class: xlarge
+    working_directory: /mnt/ramdisk
     steps: [mono_build_base]
 
   linux-netcore-test:
     docker:
     - image: mcr.microsoft.com/dotnet/sdk:3.1
     resource_class: large
+    working_directory: /mnt/ramdisk
     parallelism: 2
     steps: [netcore_test_base]
 
@@ -318,6 +321,7 @@ jobs:
     docker:
     - image: mcr.microsoft.com/dotnet/sdk:3.1
     resource_class: large
+    working_directory: /mnt/ramdisk
     parallelism: 2
     steps:
     - netcore_test_base:
@@ -348,6 +352,7 @@ jobs:
     docker:
     - image: mono:6.12
     resource_class: large
+    working_directory: /mnt/ramdisk
     parallelism: 2
     steps:
     - run: apt update -y && apt install -y xsltproc
