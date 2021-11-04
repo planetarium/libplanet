@@ -10,6 +10,9 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  (Libplanet.RocksDBStore) Removed `MonoRocksDBStore` class.
+    [[#1513], [#1579]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -21,6 +24,13 @@ To be released.
 ### Bug fixes
 
 ### CLI tools
+
+ -  `planet stats` command's `-p`/`--path` option no more supports the store
+    type `monorocksdb`.  [[#1513], [#1579]]
+ -  Subcommands under `planet store` no more supports the store type
+    `monorocksdb`.  [[#1513], [#1579]]
+
+[#1579]: https://github.com/planetarium/libplanet/pull/1579
 
 
 Version 0.20.0
