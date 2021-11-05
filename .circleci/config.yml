@@ -141,21 +141,27 @@ commands:
       locale:
         type: string
         default: en_US.UTF-8
+      code_coverage:
+        type: boolean
+        default: true
     steps:
-    - restore_cache:
-        keys:
-        - v1-dotcover-{{ arch }}
-    - run:
-        name: Install JetBrains dotCover
-        command: >-
-          dotnet tool install
-          --global
-          JetBrains.dotCover.GlobalTool
-          --version 2021.2.2
-    - save_cache:
-        key: v1-dotcover-{{ arch }}
-        paths:
-        - ~/.nuget/packages
+    - when:
+        condition: "<<parameters.code_coverage>>"
+        steps:
+        - restore_cache:
+            keys:
+            - v1-dotcover-{{ arch }}
+        - run:
+            name: Install JetBrains dotCover
+            command: >-
+              dotnet tool install
+              --global
+              JetBrains.dotCover.GlobalTool
+              --version 2021.2.2
+        - save_cache:
+            key: v1-dotcover-{{ arch }}
+            paths:
+            - ~/.nuget/packages
     - checkout
     - attach_workspace:
         at: .
@@ -184,27 +190,47 @@ commands:
               echo "| FullyQualifiedName=$test"
             fi
           done < .current_tests.txt > .test-filter.txt
-    - run:
-        name: Run tests (using dotCover)
-        command: >-
-          ~/.dotnet/tools/dotnet-dotcover test
-          --no-restore
-          --no-build
-          -c Release
-          -l "junit;FailureBodyFormat=Verbose;LogFilePath=/tmp/junit/{assembly}.xml"
-          --filter "$(cat .test-filter.txt)"
-          --dcDisableDefaultFilters
-          --dcReportType=DetailedXML
-          --dcFilters="+:Libplanet;+:Libplanet.*;-:Libplanet.Tests;-:Libplanet.*.Tests;-:Libplanet.*.UnitTests;-:Libplanet.Benchmarks;-:Libplanet.Explorer"
-        no_output_timeout: 180s
-        environment:
-          LC_ALL: "<<parameters.locale>>"
-          LANG: "<<parameters.locale>>"
-          LANGUAGE: "<<parameters.locale>>"
-    - store_test_results:
-        path: /tmp/junit
-    - codecov:
-        file: dotCover.Output.xml
+    - when:
+        condition: "<<parameters.code_coverage>>"
+        steps:
+        - run:
+            name: Run tests (using dotCover)
+            command: >-
+              ~/.dotnet/tools/dotnet-dotcover test
+              --no-restore
+              --no-build
+              -c Release
+              -l "junit;FailureBodyFormat=Verbose;LogFilePath=/tmp/junit/{assembly}.xml"
+              --filter "$(cat .test-filter.txt)"
+              --dcDisableDefaultFilters
+              --dcReportType=DetailedXML
+              --dcFilters="+:Libplanet;+:Libplanet.*;-:Libplanet.Tests;-:Libplanet.*.Tests;-:Libplanet.*.UnitTests;-:Libplanet.Benchmarks;-:Libplanet.Explorer"
+            no_output_timeout: 180s
+            environment:
+              LC_ALL: "<<parameters.locale>>"
+              LANG: "<<parameters.locale>>"
+              LANGUAGE: "<<parameters.locale>>"
+        - store_test_results:
+            path: /tmp/junit
+        - codecov:
+            file: dotCover.Output.xml
+    - unless:
+        condition: "<<parameters.code_coverage>>"
+        steps:
+        - run:
+            name: Run tests
+            command: >-
+              dotnet test
+              --no-restore
+              --no-build
+              -c Release
+              -l "junit;FailureBodyFormat=Verbose;LogFilePath=/tmp/junit/{assembly}.xml"
+              --filter "$(cat .test-filter.txt)"
+            no_output_timeout: 120s
+            environment:
+              LC_ALL: "<<parameters.locale>>"
+              LANG: "<<parameters.locale>>"
+              LANGUAGE: "<<parameters.locale>>"
 
   macos_netcore_test_base:
     parameters:
@@ -214,6 +240,9 @@ commands:
       locale:
         type: string
         default: en_US.UTF-8
+      code_coverage:
+        type: boolean
+        default: true
     steps:
     - ulimit: { n: 10240 }
     - restore_cache:
@@ -249,8 +278,9 @@ commands:
         paths:
         - ~/.dotnet/
     - netcore_test_base:
-        collect_tests_from: <<parameters.collect_tests_from>>
-        locale: <<parameters.locale>>
+        collect_tests_from: "<<parameters.collect_tests_from>>"
+        locale: "<<parameters.locale>>"
+        code_coverage: "<<parameters.code_coverage>>"
 
   unity_test_base:
     parameters:
@@ -364,7 +394,8 @@ jobs:
     macos:
       xcode: 11.3.0
     parallelism: 4
-    steps: [macos_netcore_test_base]
+    steps:
+    - macos_netcore_test_base: { code_coverage: false }
 
   windows-netcore-test:
     executor:
