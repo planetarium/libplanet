@@ -6,6 +6,11 @@ Version 0.19.3
 
 To be released.
 
+ -  `Swarm<T>` became to broadcast a new block to peers immediately after
+    `Swarm<T>.BlockChain`'s `Tip` changes while it is `Running`.  [[#1582]]
+
+[#1582]: https://github.com/planetarium/libplanet/pull/1582
+
 
 Version 0.19.2
 --------------
