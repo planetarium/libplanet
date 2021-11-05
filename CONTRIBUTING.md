@@ -143,7 +143,7 @@ on GitHub consists of several projects:
 [libplanet-explorer-frontend]: https://github.com/planetarium/libplanet-explorer-frontend
 
 
-Tests [![Build Status](https://dev.azure.com/planetarium/libplanet/_apis/build/status/planetarium.libplanet?branchName=main)][Azure Pipelines] [![Codecov](https://codecov.io/gh/planetarium/libplanet/branch/main/graph/badge.svg)][2]
+Tests [![Build Status (CircleCI)](https://circleci.com/gh/planetarium/libplanet/tree/main.svg?style=shield)][CircleCI] [![Build Status (Azure Pipelines)](https://dev.azure.com/planetarium/libplanet/_apis/build/status/planetarium.libplanet?branchName=main)][Azure Pipelines] [![Codecov](https://codecov.io/gh/planetarium/libplanet/branch/main/graph/badge.svg)][2]
 -----
 
 We write as complete tests as possible to the corresponding implementation code.
@@ -182,6 +182,7 @@ mono xunit.runner.console.*/tools/net47/xunit.console.exe \
     *.Tests/bin/Debug/net47/*.Tests.dll
 ~~~~
 
+[CircleCI]: https://app.circleci.com/pipelines/github/planetarium/libplanet
 [Azure Pipelines]: https://dev.azure.com/planetarium/libplanet/_build?definitionId=3&_a=summary&repositoryFilter=3&branchFilter=622%2C622%2C622%2C622
 [3]: https://codecov.io/gh/planetarium/libplanet
 [Xunit]: https://xunit.github.io/
@@ -209,7 +210,7 @@ or cloud offers like [Xirsys].
 
 Unity is one of our platforms we primarily target to support, so we've been
 testing Libplanet on the actual Unity runtime, and you could see whether it's
-passed on [Azure Pipelines].
+passed on [CircleCI] & [Azure Pipelines].
 
 However, if it fails and it does not fail on other platforms but only Unity,
 you need to run Unity tests on your own machine so that you rapidily and
@@ -217,7 +218,7 @@ repeatedly tinker things, make a try, and immediately get feedback from them.
 
 Here's how to run Unity tests on your machine.  We've made and used
 [xunit-unity-runner] to run [Xunit] tests on the actual Unity runtime,
-and our build jobs on Azure Pipelines also use this.  This test runner
+and our build jobs on CircleCI/Azure Pipelines also use this.  This test runner
 is actually a Unity app, though it's not a game app.  As of June 2019,
 there are [executable binaries][4] for Linux, macOS, and Windows.
 Its usage is simple.  It's a CLI app that takes *absolute* paths to

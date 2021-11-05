@@ -2,7 +2,8 @@ Libplanet
 =========
 
 [![Discord](https://img.shields.io/discord/539405872346955788.svg?color=7289da&logo=discord&logoColor=white)][Discord]
-[![Build Status](https://dev.azure.com/planetarium/libplanet/_apis/build/status/planetarium.libplanet?branchName=main)][Azure Pipelines]
+[![Build Status (CircleCI)](https://circleci.com/gh/planetarium/libplanet/tree/main.svg?style=shield)][CircleCI]
+[![Build Status (Azure Pipelines)](https://dev.azure.com/planetarium/libplanet/_apis/build/status/planetarium.libplanet?branchName=main)][Azure Pipelines]
 [![Codecov](https://codecov.io/gh/planetarium/libplanet/branch/main/graph/badge.svg)][Codecov]
 [![NuGet](https://img.shields.io/nuget/v/Libplanet.svg?style=flat)][NuGet]
 [![NuGet (prerelease)](https://img.shields.io/nuget/vpre/Libplanet.svg?style=flat)][NuGet]
@@ -31,6 +32,7 @@ To learn more about why Planetarium is creating technology for fully
 decentralized games, please refer to our [blog post].
 
 [Discord]: https://discord.gg/planetarium
+[CircleCI]: https://app.circleci.com/pipelines/github/planetarium/libplanet
 [Azure Pipelines]: https://dev.azure.com/planetarium/libplanet/_build?definitionId=3&_a=summary&repositoryFilter=3&branchFilter=622%2C622%2C622%2C622
 [Codecov]: https://codecov.io/gh/planetarium/libplanet
 [NuGet]: https://www.nuget.org/packages/Libplanet/
