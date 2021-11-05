@@ -378,7 +378,7 @@ jobs:
     - image: mono:6.12
     resource_class: large
     working_directory: /mnt/ramdisk
-    parallelism: 2
+    parallelism: 4
     steps:
     - run:
         name: Install xsltproc
@@ -423,7 +423,9 @@ workflows:
         requires: [linux-netcore-build]
     - linux-unity-test:
         requires: [linux-mono-build]
-    - macos-unity-test:
-        requires: [linux-mono-build]
-    - windows-unity-test:
-        requires: [linux-mono-build]
+    # Temporarily turned off due to CircleCI's slow worker node assignments of
+    # macOS and Windows VMs:
+    #- macos-unity-test:
+    #    requires: [linux-mono-build]
+    #- windows-unity-test:
+    #    requires: [linux-mono-build]
