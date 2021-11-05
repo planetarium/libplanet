@@ -446,6 +446,15 @@ namespace Libplanet.Net
             }
         }
 
+        /// <summary>
+        /// Broadcasts the given block to peers.
+        /// <para>The message is immediately broadcasted, and it is done if the same block has
+        /// already been broadcasted before.</para>
+        /// </summary>
+        /// <param name="block">The block to broadcast to peers.</param>
+        /// <remarks>It does not have to be called manually, because <see cref="Swarm{T}"/> in
+        /// itself watches <see cref="BlockChain"/> for <see cref="BlockChain{T}.Tip"/> changes and
+        /// immediately broadcasts updates if anything changes.</remarks>
         public void BroadcastBlock(Block<T> block)
         {
             BroadcastBlock(null, block);
