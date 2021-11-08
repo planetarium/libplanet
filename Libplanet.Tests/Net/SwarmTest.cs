@@ -1132,7 +1132,7 @@ namespace Libplanet.Tests.Net
             }
         }
 
-        [Fact(Timeout = Timeout)]
+        [RetryFact(Timeout = Timeout)]
         public async Task IgnoreTransactionFromDifferentGenesis()
         {
             var validKey = new PrivateKey();
@@ -1204,9 +1204,51 @@ namespace Libplanet.Tests.Net
                 "c34f7498befcc39a14f03b37833f6c7bb78310f1243616524eda70e078b8313c");
             PrivateKey keyC = PrivateKey.FromString(
                 "941bc2edfab840d79914d80fe3b30840628ac37a5d812d7f922b5d2405a223d3");
-            var minerSwarmA = CreateSwarm(keyA);
-            var minerSwarmB = CreateSwarm(keyB);
-            var receiverSwarm = CreateSwarm(keyC);
+
+            var policy = new NullPolicy<DumbAction>();
+            var policyA = new NullPolicy<DumbAction>();
+            var policyB = new NullPolicy<DumbAction>();
+            Block<DumbAction> genesis = MineGenesisBlock<DumbAction>(
+                policy.GetHashAlgorithm,
+                keyC,
+                stateRootHash: MerkleTrie.EmptyRootHash);
+            Block<DumbAction> aBlock1 = MineNextBlock(
+                genesis,
+                policyA.GetHashAlgorithm,
+                keyA,
+                difficulty: 10,
+                stateRootHash: MerkleTrie.EmptyRootHash);
+            Block<DumbAction> aBlock2 = MineNextBlock(
+                aBlock1,
+                policyA.GetHashAlgorithm,
+                keyA,
+                difficulty: 9,
+                stateRootHash: MerkleTrie.EmptyRootHash);
+            Block<DumbAction> aBlock3 = MineNextBlock(
+                aBlock2,
+                policyA.GetHashAlgorithm,
+                keyA,
+                difficulty: 11,
+                stateRootHash: MerkleTrie.EmptyRootHash);
+            Block<DumbAction> bBlock1 = MineNextBlock(
+                genesis,
+                policyB.GetHashAlgorithm,
+                keyB,
+                difficulty: 9,
+                stateRootHash: MerkleTrie.EmptyRootHash);
+            Block<DumbAction> bBlock2 = MineNextBlock(
+                bBlock1,
+                policyB.GetHashAlgorithm,
+                keyB,
+                difficulty: 11,
+                stateRootHash: MerkleTrie.EmptyRootHash);
+
+            policyA.BlockedMiners.Add(keyB.ToAddress());
+            policyB.BlockedMiners.Add(keyA.ToAddress());
+
+            var minerSwarmA = CreateSwarm(keyA, policy: policyA, genesis: genesis);
+            var minerSwarmB = CreateSwarm(keyB, policy: policyB, genesis: genesis);
+            var receiverSwarm = CreateSwarm(keyC, policy: policy, genesis: genesis);
 
             BlockChain<DumbAction> minerChainA = minerSwarmA.BlockChain;
             BlockChain<DumbAction> minerChainB = minerSwarmB.BlockChain;
@@ -1222,9 +1264,8 @@ namespace Libplanet.Tests.Net
                 await BootstrapAsync(minerSwarmB, receiverSwarm.AsPeer);
 
                 // Broadcast SwarmA's first block.
-                var b1 = await minerChainA.MineBlock(keyA);
-                await minerChainB.MineBlock(keyB);
-                minerSwarmA.BroadcastBlock(b1);
+                minerChainA.Append(aBlock1);
+                minerChainB.Append(bBlock1);
                 await receiverSwarm.BlockAppended.WaitAsync();
                 await AssertThatEventually(
                     () => receiverChain.Tip.Equals(minerChainA.Tip),
@@ -1234,9 +1275,8 @@ namespace Libplanet.Tests.Net
                 );
 
                 // Broadcast SwarmB's second block.
-                await minerChainA.MineBlock(keyA);
-                var b2 = await minerChainB.MineBlock(keyB);
-                minerSwarmB.BroadcastBlock(b2);
+                minerChainB.Append(bBlock2);
+                minerChainA.Append(aBlock2);
                 await receiverSwarm.BlockAppended.WaitAsync();
                 await AssertThatEventually(
                     () => receiverChain.Tip.Equals(minerChainB.Tip),
@@ -1246,9 +1286,7 @@ namespace Libplanet.Tests.Net
                 );
 
                 // Broadcast SwarmA's third block.
-                var b3 = await minerChainA.MineBlock(keyA);
-                await minerChainB.MineBlock(keyB);
-                minerSwarmA.BroadcastBlock(b3);
+                minerChainA.Append(aBlock3);
                 await receiverSwarm.BlockAppended.WaitAsync();
                 await AssertThatEventually(
                     () => receiverChain.Tip.Equals(minerChainA.Tip),

@@ -15,6 +15,7 @@ using Libplanet.Crypto;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Libplanet.Tx;
+using xRetry;
 using Xunit;
 using static Libplanet.Tests.TestUtils;
 using Random = System.Random;
@@ -546,7 +547,7 @@ namespace Libplanet.Tests.Blockchain
             );
         }
 
-        [Fact]
+        [RetryFact]
         public async Task AbortMining()
         {
             // Pre-mined genesis 7ae04b6fc0a3410eef40341129b19030ea2e6a0b922e5ae7cc96ab19109495c4:
