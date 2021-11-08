@@ -206,7 +206,9 @@ namespace Libplanet.Blockchain
         /// <summary>
         /// An event which is invoked when <see cref="Tip"/> is changed.
         /// </summary>
-        private event EventHandler<(Block<T> OldTip, Block<T> NewTip)> TipChanged;
+        // FIXME: This should be completely replaced by IRenderer<T>.RenderBlock() or any other
+        // alternatives.
+        internal event EventHandler<(Block<T> OldTip, Block<T> NewTip)> TipChanged;
 
         /// <summary>
         /// The list of registered renderers listening the state changes.

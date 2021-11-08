@@ -993,5 +993,13 @@ namespace Libplanet.Net
             return workspace;
         }
 #pragma warning restore MEN003
+
+        private void OnBlockChainTipChanged(object sender, (Block<T> OldTip, Block<T> NewTip) e)
+        {
+            if (Running)
+            {
+                BroadcastBlock(e.NewTip);
+            }
+        }
     }
 }

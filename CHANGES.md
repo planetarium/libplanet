@@ -33,6 +33,18 @@ To be released.
 [#1579]: https://github.com/planetarium/libplanet/pull/1579
 
 
+Version 0.20.1
+--------------
+
+Released on November 8, 2021.
+
+ -  `Swarm<T>` became to broadcast a new block to peers immediately after
+    `Swarm<T>.BlockChain`'s `Tip` changes while it is `Running`.
+    [[#1582], [#1586]]
+
+[#1586]: https://github.com/planetarium/libplanet/pull/1586
+
+
 Version 0.20.0
 --------------
 
@@ -56,6 +68,17 @@ Released on November 3, 2021.
 [#1553]: https://github.com/planetarium/libplanet/issues/1553
 [#1556]: https://github.com/planetarium/libplanet/pull/1556
 [#1574]: https://github.com/planetarium/libplanet/pull/1574
+
+
+Version 0.19.3
+--------------
+
+Released on November 8, 2021.
+
+ -  `Swarm<T>` became to broadcast a new block to peers immediately after
+    `Swarm<T>.BlockChain`'s `Tip` changes while it is `Running`.  [[#1582]]
+
+[#1582]: https://github.com/planetarium/libplanet/pull/1582
 
 
 Version 0.19.2

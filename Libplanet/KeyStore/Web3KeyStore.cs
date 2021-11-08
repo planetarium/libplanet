@@ -20,7 +20,11 @@ namespace Libplanet.KeyStore
     public class Web3KeyStore : IKeyStore
     {
         private static readonly string DefaultPath = System.IO.Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) is { } p && p.Any()
+                ? p
+                : System.IO.Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+                    ".config"),
             "planetarium",
             "keystore"
         );
