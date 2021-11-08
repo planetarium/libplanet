@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.19.3
 --------------
 
-To be released.
+Released on November 8, 2021.
 
  -  `Swarm<T>` became to broadcast a new block to peers immediately after
     `Swarm<T>.BlockChain`'s `Tip` changes while it is `Running`.  [[#1582]]
