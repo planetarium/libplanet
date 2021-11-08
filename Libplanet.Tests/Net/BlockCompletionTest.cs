@@ -13,6 +13,7 @@ using Libplanet.Net;
 using Libplanet.Tests.Common.Action;
 using Nito.AsyncEx;
 using Serilog;
+using xRetry;
 using Xunit;
 using Xunit.Abstractions;
 using AsyncEnumerable = System.Linq.AsyncEnumerable;
@@ -103,7 +104,7 @@ namespace Libplanet.Tests.Net
             }
         }
 
-        [Fact(Timeout = Timeout)]
+        [RetryFact(Timeout = Timeout)]
         public async void EnumerateChunks()
         {
             // 0, 1: Already existed blocks

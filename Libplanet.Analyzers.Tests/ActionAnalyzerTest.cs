@@ -8,7 +8,7 @@ namespace Libplanet.Analyzers.Tests
 {
     public class ActionAnalyzerTest : DiagnosticVerifier
     {
-        [Fact]
+        [CSharpAnalysisFact]
         public void EmptyCode()
         {
             VerifyDiagnostic(@"
@@ -18,7 +18,7 @@ namespace Libplanet.Analyzers.Tests
             ");
         }
 
-        [Fact]
+        [CSharpAnalysisFact]
         public void LA1001_SystemRandomBreaksActionDeterminism()
         {
             var test = @"
@@ -50,7 +50,7 @@ namespace Libplanet.Analyzers.Tests
             VerifyDiagnostic(test, expected);
         }
 
-        [Theory]
+        [CSharpAnalysisTheory]
         [InlineData(
             false,
             null,

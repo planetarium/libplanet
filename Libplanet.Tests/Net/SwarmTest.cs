@@ -1132,7 +1132,7 @@ namespace Libplanet.Tests.Net
             }
         }
 
-        [Fact(Timeout = Timeout)]
+        [RetryFact(Timeout = Timeout)]
         public async Task IgnoreTransactionFromDifferentGenesis()
         {
             var validKey = new PrivateKey();

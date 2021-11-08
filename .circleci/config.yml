@@ -1,0 +1,462 @@
+version: 2.1
+
+orbs:
+  win: circleci/windows@2.2.0
+
+commands:
+  ulimit:
+    parameters:
+      n: { type: integer }
+    steps:
+    - run:
+        command: "echo 'ulimit -n <<parameters.n>>' >> $BASH_ENV"
+
+  concat_files:
+    description: Concatenate file contents
+    parameters:
+      glob: { type: string }
+      to: { type: string }
+    steps:
+    - run:
+        name: Concatenate file contents
+        command: "cat -s <<parameters.glob>> > <<parameters.to>>"
+        shell: bash
+
+  codecov:
+    description: Upload a code coverage report file to Codecov.io
+    parameters:
+      file: { type: string }
+    steps:
+    - restore_cache:
+        keys:
+        - "v1-codecov"
+        when: always
+    - run:
+        name: Upload a code coverage report file to Codecov.io
+        shell: bash
+        command: |
+          set -evx
+          case "$OSTYPE" in
+            darwin*) plat=macos;;
+            msys*)   plat=windows; suffix=.exe;;
+            cygwin*) plat=windows; suffix=.exe;;
+            *)       plat=linux;;
+          esac
+          mkdir -p _codecov_uploader/$plat/
+          pushd _codecov_uploader/$plat/
+          if [[ ! -f "codecov$suffix" ]]; then
+            curl -OL "https://uploader.codecov.io/latest/$plat/codecov$suffix"
+          fi
+          chmod +x "codecov$suffix"
+          popd
+          "_codecov_uploader/$plat/codecov$suffix" \
+            -K \
+            -f '<<parameters.file>>' \
+            -n "$CIRCLE_BUILD_NUM"
+        when: always
+    - save_cache:
+        key: "v1-codecov"
+        paths:
+        - _codecov_uploader/
+        when: always
+
+  netcore_build_base:
+    parameters:
+      collect_tests_to:
+        type: string
+        default: .tests.txt
+    steps:
+    - checkout
+    - concat_files:
+        glob: "*/*.csproj"
+        to: .combined-package-files.txt
+    - restore_cache:
+        keys:
+        - v1-deps-{{ arch }}-{{ checksum ".combined-package-files.txt" }}
+        - v1-deps-{{ arch }}
+    - run: dotnet restore
+    - save_cache:
+        key: v1-deps-{{ arch }}-{{ checksum ".combined-package-files.txt" }}
+        paths:
+        - ~/.nuget/packages
+    - run: dotnet build --no-restore -c Release -p:SkipSonar=true
+    - run:
+        name: Collect tests
+        shell: bash
+        command: |
+          set -evx
+          if ! command -v dotnet > /dev/null && \
+             [[ -d /usr/local/share/dotnet ]]; then
+            export PATH="/usr/local/share/dotnet:$PATH"
+          fi
+          dotnet test --no-restore --no-build -c Release --list-tests \
+          > .dotnet-list-tests.txt
+          grep -E '^    ' .dotnet-list-tests.txt \
+          | sed -E 's/^    |\(.*?\)$//g' \
+          | uniq \
+          | /usr/bin/sort -R --random-source=CHANGES.md \
+          > "<<parameters.collect_tests_to>>"
+    - persist_to_workspace:
+        root: .
+        paths:
+        - <<parameters.collect_tests_to>>
+        - "*/bin/"
+        - "*/obj/"
+
+  mono_build_base:
+    steps:
+    - checkout
+    - concat_files:
+        glob: "*/*.csproj"
+        to: .combined-package-files.txt
+    - restore_cache:
+        keys:
+        - v1-deps-{{ arch }}-{{ checksum ".combined-package-files.txt" }}
+        - v1-deps-{{ arch }}
+    - run: |
+        msbuild \
+          -t:Restore \
+          -p:Configuration=Release \
+          -p:TestsTargetFramework=net47
+    - save_cache:
+        key: v1-deps-{{ arch }}-{{ checksum ".combined-package-files.txt" }}
+        paths:
+        - ~/.nuget/packages
+    - run: |
+        msbuild \
+          -p:Configuration=Release \
+          -p:TestsTargetFramework=net47 \
+          -p:SkipSonar=true
+    - persist_to_workspace:
+        root: .
+        paths:
+        - "*/bin/"
+        - "*/obj/"
+
+  netcore_test_base:
+    parameters:
+      collect_tests_from:
+        type: string
+        default: .tests.txt
+      locale:
+        type: string
+        default: en_US.UTF-8
+      code_coverage:
+        type: boolean
+        default: true
+    steps:
+    - when:
+        condition: "<<parameters.code_coverage>>"
+        steps:
+        - restore_cache:
+            keys:
+            - v1-dotcover-{{ arch }}
+        - run:
+            name: Install JetBrains dotCover
+            command: >-
+              dotnet tool install
+              --global
+              JetBrains.dotCover.GlobalTool
+              --version 2021.2.2
+        - save_cache:
+            key: v1-dotcover-{{ arch }}
+            paths:
+            - ~/.nuget/packages
+    - checkout
+    - attach_workspace:
+        at: .
+    - run:
+        name: Distribute tests
+        shell: bash
+        command: |
+          set -evx
+          tests_collection="<<parameters.collect_tests_from>>"
+          total="$(wc -l "$tests_collection" | awk '{ print $1 }')"
+          part="$(( (total + CIRCLE_NODE_TOTAL - 1) / CIRCLE_NODE_TOTAL ))"
+          tail -n +$((CIRCLE_NODE_INDEX * part + 1)) "$tests_collection" \
+          > .head_tests.txt
+          if [[ "$part" = "0" ]]; then
+            cp .head_tests.txt .current_tests.txt
+          else
+            head -n $part .head_tests.txt > .current_tests.txt
+          fi
+          cat .current_tests.txt
+          first=1
+          while read test; do
+            if [[ "$first" = "1" ]]; then
+              echo "FullyQualifiedName=$test"
+              first=0
+            else
+              echo "| FullyQualifiedName=$test"
+            fi
+          done < .current_tests.txt > .test-filter.txt
+    - when:
+        condition: "<<parameters.code_coverage>>"
+        steps:
+        - run:
+            name: Run tests (using dotCover)
+            command: >-
+              ~/.dotnet/tools/dotnet-dotcover test
+              --no-restore
+              --no-build
+              -c Release
+              -l "junit;FailureBodyFormat=Verbose;LogFilePath=/tmp/junit/{assembly}.xml"
+              --filter "$(cat .test-filter.txt)"
+              --dcDisableDefaultFilters
+              --dcReportType=DetailedXML
+              --dcFilters="+:Libplanet;+:Libplanet.*;-:Libplanet.Tests;-:Libplanet.*.Tests;-:Libplanet.*.UnitTests;-:Libplanet.Benchmarks;-:Libplanet.Explorer"
+            no_output_timeout: 180s
+            environment:
+              LC_ALL: "<<parameters.locale>>"
+              LANG: "<<parameters.locale>>"
+              LANGUAGE: "<<parameters.locale>>"
+        - store_test_results:
+            path: /tmp/junit
+        - codecov:
+            file: dotCover.Output.xml
+    - unless:
+        condition: "<<parameters.code_coverage>>"
+        steps:
+        - run:
+            name: Run tests
+            command: >-
+              dotnet test
+              --no-restore
+              --no-build
+              -c Release
+              -l "junit;FailureBodyFormat=Verbose;LogFilePath=/tmp/junit/{assembly}.xml"
+              --filter "$(cat .test-filter.txt)"
+            no_output_timeout: 120s
+            environment:
+              LC_ALL: "<<parameters.locale>>"
+              LANG: "<<parameters.locale>>"
+              LANGUAGE: "<<parameters.locale>>"
+
+  macos_netcore_test_base:
+    parameters:
+      collect_tests_from:
+        type: string
+        default: .tests.txt
+      locale:
+        type: string
+        default: en_US.UTF-8
+      code_coverage:
+        type: boolean
+        default: true
+    steps:
+    - ulimit: { n: 10240 }
+    - restore_cache:
+        keys:
+        - v1-macos-dotnet-sdk-3.1
+    - run:
+        name: Export PATH & DOTNET_ROOT
+        shell: bash
+        command: |
+          {
+            echo export PATH="$HOME/.dotnet:$PATH"
+            echo export DOTNET_ROOT="$HOME/.dotnet"
+          } >> $BASH_ENV
+    - run:
+        name: Install .NET Core 3.1 SDK
+        shell: bash
+        command: |
+          set -evx
+          echo $PATH > /dev/stderr
+          if ! command -v dotnet && [[ ! -f "$HOME/.dotnet/dotnet" ]]; then
+            curl \
+              -L \
+              -o /tmp/dotnet-install.sh \
+              https://dot.net/v1/dotnet-install.sh
+            chmod +x /tmp/dotnet-install.sh
+            /tmp/dotnet-install.sh \
+              --verbose \
+              --channel 3.1
+          fi
+          command -v dotnet
+    - save_cache:
+        key: v1-macos-dotnet-sdk-3.1
+        paths:
+        - ~/.dotnet/
+    - netcore_test_base:
+        collect_tests_from: "<<parameters.collect_tests_from>>"
+        locale: "<<parameters.locale>>"
+        code_coverage: "<<parameters.code_coverage>>"
+
+  unity_test_base:
+    parameters:
+      runner_target:
+        type: string
+        default: StandaloneLinux64
+      runner_version:
+        type: string
+        default: 0.5.0
+    steps:
+    - checkout
+    - attach_workspace:
+        at: .
+    - run:
+        name: Run tests (using xunit-unity-runner <<parameters.runner_version>>)
+        shell: bash
+        command: |
+          set -evx
+          url="https://github.com/planetarium/xunit-unity-runner/releases/download/<<parameters.runner_version>>/xunit-unity-runner-<<parameters.runner_version>>-<<parameters.runner_target>>.tar.bz2"
+          mkdir -p /tmp/xur/
+          curl -o "/tmp/xur.tar.bz2" -L "$url"
+          pushd /tmp/xur/
+          bzip2 -d ../xur.tar.bz2
+          tar xvf ../xur.tar
+          popd
+          if [[ "<<parameters.runner_target>>" = "StandaloneOSX" ]]; then
+            xur_path=/tmp/xur/StandaloneOSX.app/Contents/MacOS/unity-xunit
+          else
+            xur_path=/tmp/xur/<<parameters.runner_target>>
+          fi
+          excluded_classes=(
+            "Libplanet.Tests.Net.Protocols.ProtocolTest"
+            "Libplanet.Tests.Net.SwarmTest"
+            "Libplanet.Tests.Net.Transports.NetMQTransportTest"
+          )
+          args=(
+            "--hang-seconds=60"
+            "--parallel=1"
+            "--report-xml-path=$PWD/.xur.xml"
+          )
+          if [[ "$CIRCLE_NODE_TOTAL" != "" ]]; then
+            args+=(
+              "--distributed=$CIRCLE_NODE_INDEX/$CIRCLE_NODE_TOTAL"
+              "--distributed-seed=$CIRCLE_BUILD_NUM"
+            )
+          fi
+          for c in "${exluced_classes[@]}"; do
+            args+=("--exclude-class=$c")
+          done
+          for project in *.Tests; do
+            args+=("$PWD/$project/bin/Release/net47/$project.dll")
+          done
+          "$xur_path" "${args[@]}"
+        no_output_timeout: 65s
+    - run:
+        name: Transform xUnit.net report XML to JUnit report XML
+        shell: bash
+        command: |
+          set -evx
+          mkdir -p _junit
+          xsltproc -o _junit/xur.xml .circleci/xunit-junit.xslt .xur.xml
+          cat _junit/xur.xml
+        when: always
+    - store_test_results:
+        path: _junit
+
+jobs:
+  linux-netcore-build:
+    docker:
+    - image: mcr.microsoft.com/dotnet/sdk:3.1
+    resource_class: xlarge
+    working_directory: /mnt/ramdisk
+    steps: [netcore_build_base]
+
+  linux-mono-build:
+    docker:
+    - image: mono:6.12
+    resource_class: xlarge
+    working_directory: /mnt/ramdisk
+    steps: [mono_build_base]
+
+  linux-netcore-test:
+    docker:
+    - image: mcr.microsoft.com/dotnet/sdk:3.1
+    resource_class: large
+    working_directory: /mnt/ramdisk
+    parallelism: 2
+    steps: [netcore_test_base]
+
+  linux-netcore-test-ar-SA:
+    docker:
+    - image: mcr.microsoft.com/dotnet/sdk:3.1
+    resource_class: large
+    working_directory: /mnt/ramdisk
+    parallelism: 2
+    steps:
+    - netcore_test_base:
+        locale: ar_SA.UTF-8
+
+  linux-netcore-test-fr-FR:
+    docker:
+    - image: mcr.microsoft.com/dotnet/sdk:3.1
+    resource_class: large
+    working_directory: /mnt/ramdisk
+    parallelism: 2
+    steps:
+    - netcore_test_base:
+        locale: fr_FR.UTF-8
+
+  macos-netcore-test:
+    macos:
+      xcode: 11.3.0
+    parallelism: 4
+    steps:
+    - macos_netcore_test_base: { code_coverage: false }
+
+  windows-netcore-test:
+    executor:
+      name: win/default
+      size: large
+    parallelism: 3
+    steps: [netcore_test_base]
+
+  linux-unity-test:
+    docker:
+    - image: mono:6.12
+    resource_class: large
+    working_directory: /mnt/ramdisk
+    parallelism: 4
+    steps:
+    - run:
+        name: Install xsltproc
+        command: apt update -y && apt install -y xsltproc
+    - unity_test_base
+
+  macos-unity-test:
+    macos:
+      xcode: 11.3.0
+    parallelism: 3
+    steps:
+    - ulimit: { n: 10240 }
+    - unity_test_base:
+        runner_target: StandaloneOSX
+
+  windows-unity-test:
+    executor:
+      name: win/default
+      size: large
+    parallelism: 4
+    steps:
+    - run:
+        name: Install bzip2 & xsltproc
+        command: choco install bzip2 xsltproc
+    - unity_test_base:
+        runner_target: StandaloneWindows64
+
+workflows:
+  main:
+    jobs:
+    - linux-netcore-build
+    - linux-mono-build
+    - linux-netcore-test:
+        requires: [linux-netcore-build]
+    - linux-netcore-test-ar-SA:
+        requires: [linux-netcore-build]
+    - linux-netcore-test-fr-FR:
+        requires: [linux-netcore-build]
+    - macos-netcore-test:
+        requires: [linux-netcore-build]
+    - windows-netcore-test:
+        requires: [linux-netcore-build]
+    - linux-unity-test:
+        requires: [linux-mono-build]
+    # Temporarily turned off due to CircleCI's slow worker node assignments of
+    # macOS and Windows VMs:
+    #- macos-unity-test:
+    #    requires: [linux-mono-build]
+    #- windows-unity-test:
+    #    requires: [linux-mono-build]
