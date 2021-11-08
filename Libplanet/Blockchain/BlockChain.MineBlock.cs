@@ -396,8 +396,8 @@ namespace Libplanet.Blockchain
             _logger.Information(
                 "Gathered total of {TransactionsToMineCount} transactions to mine for " +
                 "block #{Index} from {StagedTransactionsCount} staged transactions.",
-                index,
                 transactionsToMine.Count,
+                index,
                 stagedTransactions.Count);
             return transactionsToMine.ToImmutableList();
         }

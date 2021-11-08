@@ -390,7 +390,7 @@ namespace Libplanet.Tests.Net
             }
         }
 
-        [Fact(Timeout = Timeout)]
+        [RetryFact(Timeout = Timeout)]
         public async Task BroadcastTxAsyncMany()
         {
             int size = 5;
@@ -658,6 +658,25 @@ namespace Libplanet.Tests.Net
                     privateKey: privateKey),
             };
 
+            Block<DumbAction> block1 = TestUtils.MineNext(
+                blockChain.Genesis,
+                policy.GetHashAlgorithm,
+                new[] { transactions[0] },
+                null,
+                policy.GetNextBlockDifficulty(blockChain),
+                miner: TestUtils.GenesisMiner.PublicKey
+            ).Evaluate(TestUtils.GenesisMiner, blockChain);
+            blockChain.Append(block1, true, true, false);
+            Block<DumbAction> block2 = TestUtils.MineNext(
+                block1,
+                policy.GetHashAlgorithm,
+                new[] { transactions[1] },
+                null,
+                policy.GetNextBlockDifficulty(blockChain),
+                miner: TestUtils.GenesisMiner.PublicKey
+            ).Evaluate(TestUtils.GenesisMiner, blockChain);
+            blockChain.Append(block2, true, true, false);
+
             try
             {
                 await StartAsync(minerSwarm);
@@ -665,28 +684,12 @@ namespace Libplanet.Tests.Net
 
                 await BootstrapAsync(receiverSwarm, minerSwarm.AsPeer);
 
-                Block<DumbAction> block1 = TestUtils.MineNext(
-                    blockChain.Genesis,
-                    policy.GetHashAlgorithm,
-                    new[] { transactions[0] },
-                    null,
-                    policy.GetNextBlockDifficulty(blockChain),
-                    miner: TestUtils.GenesisMiner.PublicKey
-                ).Evaluate(TestUtils.GenesisMiner, blockChain);
-                blockChain.Append(block1, true, true, false);
-                Block<DumbAction> block2 = TestUtils.MineNext(
-                    block1,
-                    policy.GetHashAlgorithm,
-                    new[] { transactions[1] },
-                    null,
-                    policy.GetNextBlockDifficulty(blockChain),
-                    miner: TestUtils.GenesisMiner.PublicKey
-                ).Evaluate(TestUtils.GenesisMiner, blockChain);
-                blockChain.Append(block2, true, true, false);
-                Log.Debug("Ready to broadcast blocks.");
                 minerSwarm.BroadcastBlock(block2);
-                await receiverSwarm.BlockAppended.WaitAsync();
 
+                await TestUtils.AssertThatEventually(
+                    () => receiverChain.Tip.Equals(block2),
+                    5_000
+                );
                 Assert.Equal(3, receiverChain.Count);
                 Assert.Equal(4, renderCount);
             }

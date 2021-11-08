@@ -21,6 +21,10 @@
 **/.idea/**/modules.xml
 **/.idea/**/projectSettingsUpdater.xml
 
+# dotCover
+dotCover.Output.*
+dotCover.Output/
+
 *.suo
 *.user
 .vs/

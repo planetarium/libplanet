@@ -18,7 +18,7 @@
     <LangVersion>8.0</LangVersion>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>Libplanet.Explorer</RootNamespace>
-    <AssemblyName>Libplanet.Explorere</AssemblyName>
+    <AssemblyName>Libplanet.Explorer</AssemblyName>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
