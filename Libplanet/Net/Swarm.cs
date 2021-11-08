@@ -114,6 +114,43 @@ namespace Libplanet.Net
             PeerDiscovery = new KademliaProtocol(RoutingTable, Transport, Address);
         }
 
+        internal Swarm(
+            BlockChain<T> blockChain,
+            PrivateKey privateKey,
+            AppProtocolVersion appProtocolVersion,
+            RoutingTable routingTable,
+            ITransport transport,
+            IEnumerable<PublicKey> trustedAppProtocolVersionSigners = null,
+            SwarmOptions options = null)
+        {
+            BlockChain = blockChain ?? throw new ArgumentNullException(nameof(blockChain));
+            _store = BlockChain.Store;
+            _privateKey = privateKey ?? throw new ArgumentNullException(nameof(privateKey));
+            LastSeenTimestamps =
+                new ConcurrentDictionary<Peer, DateTimeOffset>();
+            BlockHeaderReceived = new AsyncAutoResetEvent();
+            BlockAppended = new AsyncAutoResetEvent();
+            BlockReceived = new AsyncAutoResetEvent();
+
+            _runningMutex = new AsyncLock();
+            _appProtocolVersion = appProtocolVersion;
+            TrustedAppProtocolVersionSigners =
+                trustedAppProtocolVersionSigners?.ToImmutableHashSet();
+
+            string loggerId = _privateKey.ToAddress().ToHex();
+            _logger = Log
+                .ForContext<Swarm<T>>()
+                .ForContext("Source", $"[{nameof(Swarm<T>)}] ")
+                .ForContext("SwarmId", loggerId);
+
+            Options = options ?? new SwarmOptions();
+            TxCompletion = new TxCompletion<BoundPeer, T>(BlockChain, GetTxsAsync, BroadcastTxs);
+            RoutingTable = routingTable;
+            Transport = transport;
+            Transport.ProcessMessageHandler.Register(ProcessMessageHandlerAsync);
+            PeerDiscovery = new KademliaProtocol(RoutingTable, Transport, Address);
+        }
+
         ~Swarm()
         {
             // FIXME If possible, we should stop Swarm appropriately here.
