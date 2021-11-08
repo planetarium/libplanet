@@ -1,0 +1,5 @@
+# As the gh-pages branch does not need to be built using CircleCI,
+# let jobs empty.
+version: 2.1
+jobs: {}
+workflows: {}
