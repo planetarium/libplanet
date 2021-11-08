@@ -87,7 +87,7 @@ for _ in 1 2 3; do
 
   git -C /tmp/gh-pages commit \
     --allow-empty \
-    -m "Publish docs from $commit_hash"
+    -m "Publish docs from $commit_hash [ci skip]"
 
   if git -C /tmp/gh-pages push origin gh-pages; then
     break
