@@ -245,7 +245,7 @@ namespace Libplanet.Tests.Net
             }
         }
 
-        [Fact(Timeout = Timeout)]
+        [RetryFact(Timeout = Timeout)]
         public async Task RenderInPreload()
         {
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
