@@ -1271,24 +1271,6 @@ namespace Libplanet.Blockchain
                 return new InvalidBlockProtocolVersionException(actualProtocolVersion, message);
             }
 
-            // FIXME: This should also be offloaded to Policy.ValidateNextBlock().
-            HashAlgorithmType expectedHashAlgorithm = Policy.GetHashAlgorithm(block.Index);
-            if (!block.HashAlgorithm.Equals(expectedHashAlgorithm))
-            {
-                var metadata = new BlockMetadata(block);
-                var preEvalBlock =
-                    new PreEvaluationBlockHeader(metadata, expectedHashAlgorithm, block.Nonce);
-                string msg =
-                    $"According to the policy, block #{block.Index} has to use " +
-                    $"{expectedHashAlgorithm}.  However, block #{block.Index} {block.Hash} " +
-                    $"uses {block.HashAlgorithm}.";
-                throw new InvalidBlockPreEvaluationHashException(
-                    block.PreEvaluationHash,
-                    preEvalBlock.PreEvaluationHash,
-                    msg
-                );
-            }
-
             BlockPolicyViolationException bpve = Policy.ValidateNextBlock(this, block);
             if (bpve is { })
             {

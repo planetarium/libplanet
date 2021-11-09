@@ -59,7 +59,8 @@ namespace Libplanet.Blockchain.Policies
         /// <c>null</c> by default.</param>
         /// <param name="validateNextBlock">The predicate that determines if
         /// a <see cref="Block{T}"/> follows the policy.  Set to a default implementation
-        /// where block bytes count and block transactions count are validated.</param>
+        /// where block's hash algorithm type, bytes count, and transactions count are validated.
+        /// </param>
         /// <param name="canonicalChainComparer">The custom rule to determine which is the canonical
         /// chain.  If omitted, <see cref="TotalDifficultyComparer"/> is used by default.</param>
         /// <param name="hashAlgorithmGetter">Configures <see cref="GetHashAlgorithm(long)"/>.
@@ -123,12 +124,20 @@ namespace Libplanet.Blockchain.Policies
             {
                 _validateNextBlock = (blockchain, block) =>
                 {
+                    HashAlgorithmType hashAlgorithm = GetHashAlgorithm(block.Index);
                     int maxBlockBytes = GetMaxBlockBytes(block.Index);
                     int minTransactionsPerBlock = GetMinTransactionsPerBlock(block.Index);
                     int maxTransactionsPerBlock = GetMaxTransactionsPerBlock(block.Index);
                     int maxTransactionsPerSignerPerBlock =
                         GetMaxTransactionsPerSignerPerBlock(block.Index);
-                    if (block.BytesLength > maxBlockBytes)
+
+                    if (!block.HashAlgorithm.Equals(hashAlgorithm))
+                    {
+                        return new BlockPolicyViolationException(
+                            $"The hash algorithm type of block #{block.Index} {block.Hash} " +
+                            $"does not match {hashAlgorithm}: {block.HashAlgorithm}");
+                    }
+                    else if (block.BytesLength > maxBlockBytes)
                     {
                         return new BlockPolicyViolationException(
                             $"The size of block #{block.Index} {block.Hash} is too large " +
