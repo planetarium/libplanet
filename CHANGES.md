@@ -12,6 +12,10 @@ To be released.
 
  -  (Libplanet.RocksDBStore) Removed `MonoRocksDBStore` class.
     [[#1513], [#1579]]
+ -  Removed `rehearsal` parameter from `ITrie.Commit()` method.
+    [[#1554], [#1570]]
+ -  Removed `rehearsal` parameter from `StateStoreExtensions.Commit()`
+    extension method.  [[#1554], [#1570]]
 
 ### Backward-incompatible network protocol changes
 
@@ -20,6 +24,9 @@ To be released.
 ### Added APIs
 
 ### Behavioral changes
+
+ -  Improved performance of `MerkleTrie.Commit()` and
+    `BlockChain<T>.ExecuteActions()` methods.   [[#1554], [#1570]]
 
 ### Bug fixes
 

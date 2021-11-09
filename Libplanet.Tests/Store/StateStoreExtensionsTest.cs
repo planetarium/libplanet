@@ -52,16 +52,9 @@ namespace Libplanet.Tests.Store
         [MemberData(nameof(StateStores))]
         public void Commit(string label, IStateStore stateStore)
         {
-            ITrie dryA = stateStore.Commit(null, DeltaA, rehearsal: true);
-            Assert.False(dryA.Recorded);
-            Assert.False(dryA.TryGet(KeyFoo, out _));
-            Assert.False(dryA.TryGet(KeyBar, out _));
-            Assert.False(dryA.TryGet(KeyBaz, out _));
-
             IValue value;
-            ITrie a = stateStore.Commit(null, DeltaA, rehearsal: false);
+            ITrie a = stateStore.Commit(null, DeltaA);
             Assert.True(a.Recorded);
-            AssertBytesEqual(dryA.Hash, a.Hash);
             Assert.True(a.TryGet(KeyFoo, out value));
             AssertBencodexEqual((Text)"abc", value);
             Assert.True(a.TryGet(KeyBar, out value));
@@ -106,19 +99,8 @@ namespace Libplanet.Tests.Store
         [MemberData(nameof(StateStores))]
         public void ContainsStateRoot(string label, IStateStore stateStore)
         {
-            ITrie dryA = stateStore.Commit(null, DeltaA, rehearsal: true);
-            Assert.False(stateStore.ContainsStateRoot(dryA.Hash));
-
-            ITrie a = stateStore.Commit(null, DeltaA, rehearsal: false);
-            Assert.True(stateStore.ContainsStateRoot(dryA.Hash));
+            ITrie a = stateStore.Commit(null, DeltaA);
             Assert.True(stateStore.ContainsStateRoot(a.Hash));
-
-            ITrie dryB = stateStore.Commit(dryA.Hash, DeltaB, rehearsal: true);
-            Assert.False(stateStore.ContainsStateRoot(dryB.Hash));
-
-            ITrie b = stateStore.Commit(a.Hash, DeltaB);
-            Assert.True(stateStore.ContainsStateRoot(dryB.Hash));
-            Assert.True(stateStore.ContainsStateRoot(b.Hash));
         }
     }
 }

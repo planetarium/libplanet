@@ -47,13 +47,8 @@ namespace Libplanet.Tests.Store
                 .Add("bar", (Text)ByteUtil.Hex(GetRandomBytes(32)))
                 .Add("baz", (Bencodex.Types.Boolean)false)
                 .Add("qux", Bencodex.Types.Dictionary.Empty);
-            HashDigest<SHA256> hash = stateStore.Commit(null, values, rehearsal: true).Hash;
-
-            ITrie notFound = stateStore.GetStateRoot(hash);
-            Assert.False(notFound.Recorded);
-
             IValue value;
-            stateStore.Commit(null, values, rehearsal: false);
+            HashDigest<SHA256> hash = stateStore.Commit(null, values).Hash;
             ITrie found = stateStore.GetStateRoot(hash);
             Assert.True(found.Recorded);
             Assert.True(found.TryGet(KeyFoo, out value));

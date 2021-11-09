@@ -37,6 +37,19 @@ namespace Libplanet.RocksDBStore
         }
 
         /// <inheritdoc/>
+        public void Set(IDictionary<byte[], byte[]> values)
+        {
+            using var writeBatch = new WriteBatch();
+
+            foreach (KeyValuePair<byte[], byte[]> kv in values)
+            {
+                writeBatch.Put(kv.Key, kv.Value);
+            }
+
+            _keyValueDb.Write(writeBatch);
+        }
+
+        /// <inheritdoc/>
         public void Delete(byte[] key)
         {
             _keyValueDb.Remove(key);
