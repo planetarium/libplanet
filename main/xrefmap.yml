@@ -15128,6 +15128,15 @@ references:
   fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(System.Byte(), System.Byte())
   nameWithType: RocksDBKeyValueStore.Set(Byte[], Byte[])
   nameWithType.vb: RocksDBKeyValueStore.Set(Byte(), Byte())
+- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(System.Collections.Generic.IDictionary{System.Byte[],System.Byte[]})
+  name: Set(IDictionary<Byte[], Byte[]>)
+  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Set_System_Collections_Generic_IDictionary_System_Byte___System_Byte____
+  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(System.Collections.Generic.IDictionary{System.Byte[],System.Byte[]})
+  name.vb: Set(IDictionary(Of Byte(), Byte()))
+  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(System.Collections.Generic.IDictionary<System.Byte[], System.Byte[]>)
+  fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(System.Collections.Generic.IDictionary(Of System.Byte(), System.Byte()))
+  nameWithType: RocksDBKeyValueStore.Set(IDictionary<Byte[], Byte[]>)
+  nameWithType.vb: RocksDBKeyValueStore.Set(IDictionary(Of Byte(), Byte()))
 - uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set*
   name: Set
   href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Set_
@@ -18533,15 +18542,15 @@ references:
   commentId: T:Libplanet.Store.StateStoreExtensions
   fullName: Libplanet.Store.StateStoreExtensions
   nameWithType: StateStoreExtensions
-- uid: Libplanet.Store.StateStoreExtensions.Commit(Libplanet.Store.IStateStore,System.Nullable{Libplanet.HashDigest{SHA256}},IImmutableDictionary{System.String,IValue},System.Boolean)
-  name: Commit(IStateStore, Nullable<HashDigest<SHA256>>, IImmutableDictionary<String, IValue>, Boolean)
-  href: api/Libplanet.Store.StateStoreExtensions.html#Libplanet_Store_StateStoreExtensions_Commit_Libplanet_Store_IStateStore_System_Nullable_Libplanet_HashDigest_SHA256___IImmutableDictionary_System_String_IValue__System_Boolean_
-  commentId: M:Libplanet.Store.StateStoreExtensions.Commit(Libplanet.Store.IStateStore,System.Nullable{Libplanet.HashDigest{SHA256}},IImmutableDictionary{System.String,IValue},System.Boolean)
-  name.vb: Commit(IStateStore, Nullable(Of HashDigest(Of SHA256)), IImmutableDictionary(Of String, IValue), Boolean)
-  fullName: Libplanet.Store.StateStoreExtensions.Commit(Libplanet.Store.IStateStore, System.Nullable<Libplanet.HashDigest<SHA256>>, IImmutableDictionary<System.String, IValue>, System.Boolean)
-  fullName.vb: Libplanet.Store.StateStoreExtensions.Commit(Libplanet.Store.IStateStore, System.Nullable(Of Libplanet.HashDigest(Of SHA256)), IImmutableDictionary(Of System.String, IValue), System.Boolean)
-  nameWithType: StateStoreExtensions.Commit(IStateStore, Nullable<HashDigest<SHA256>>, IImmutableDictionary<String, IValue>, Boolean)
-  nameWithType.vb: StateStoreExtensions.Commit(IStateStore, Nullable(Of HashDigest(Of SHA256)), IImmutableDictionary(Of String, IValue), Boolean)
+- uid: Libplanet.Store.StateStoreExtensions.Commit(Libplanet.Store.IStateStore,System.Nullable{Libplanet.HashDigest{SHA256}},IImmutableDictionary{System.String,IValue})
+  name: Commit(IStateStore, Nullable<HashDigest<SHA256>>, IImmutableDictionary<String, IValue>)
+  href: api/Libplanet.Store.StateStoreExtensions.html#Libplanet_Store_StateStoreExtensions_Commit_Libplanet_Store_IStateStore_System_Nullable_Libplanet_HashDigest_SHA256___IImmutableDictionary_System_String_IValue__
+  commentId: M:Libplanet.Store.StateStoreExtensions.Commit(Libplanet.Store.IStateStore,System.Nullable{Libplanet.HashDigest{SHA256}},IImmutableDictionary{System.String,IValue})
+  name.vb: Commit(IStateStore, Nullable(Of HashDigest(Of SHA256)), IImmutableDictionary(Of String, IValue))
+  fullName: Libplanet.Store.StateStoreExtensions.Commit(Libplanet.Store.IStateStore, System.Nullable<Libplanet.HashDigest<SHA256>>, IImmutableDictionary<System.String, IValue>)
+  fullName.vb: Libplanet.Store.StateStoreExtensions.Commit(Libplanet.Store.IStateStore, System.Nullable(Of Libplanet.HashDigest(Of SHA256)), IImmutableDictionary(Of System.String, IValue))
+  nameWithType: StateStoreExtensions.Commit(IStateStore, Nullable<HashDigest<SHA256>>, IImmutableDictionary<String, IValue>)
+  nameWithType.vb: StateStoreExtensions.Commit(IStateStore, Nullable(Of HashDigest(Of SHA256)), IImmutableDictionary(Of String, IValue))
 - uid: Libplanet.Store.StateStoreExtensions.Commit*
   name: Commit
   href: api/Libplanet.Store.StateStoreExtensions.html#Libplanet_Store_StateStoreExtensions_Commit_
@@ -18715,6 +18724,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.CacheableKeyValueStore.ListKeys
   nameWithType: CacheableKeyValueStore.ListKeys
+- uid: Libplanet.Store.Trie.CacheableKeyValueStore.Set(IDictionary{System.Byte[],System.Byte[]})
+  name: Set(IDictionary<Byte[], Byte[]>)
+  href: api/Libplanet.Store.Trie.CacheableKeyValueStore.html#Libplanet_Store_Trie_CacheableKeyValueStore_Set_IDictionary_System_Byte___System_Byte____
+  commentId: M:Libplanet.Store.Trie.CacheableKeyValueStore.Set(IDictionary{System.Byte[],System.Byte[]})
+  name.vb: Set(IDictionary(Of Byte(), Byte()))
+  fullName: Libplanet.Store.Trie.CacheableKeyValueStore.Set(IDictionary<System.Byte[], System.Byte[]>)
+  fullName.vb: Libplanet.Store.Trie.CacheableKeyValueStore.Set(IDictionary(Of System.Byte(), System.Byte()))
+  nameWithType: CacheableKeyValueStore.Set(IDictionary<Byte[], Byte[]>)
+  nameWithType.vb: CacheableKeyValueStore.Set(IDictionary(Of Byte(), Byte()))
 - uid: Libplanet.Store.Trie.CacheableKeyValueStore.Set(System.Byte[],System.Byte[])
   name: Set(Byte[], Byte[])
   href: api/Libplanet.Store.Trie.CacheableKeyValueStore.html#Libplanet_Store_Trie_CacheableKeyValueStore_Set_System_Byte___System_Byte___
@@ -18827,6 +18845,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.DefaultKeyValueStore.ListKeys
   nameWithType: DefaultKeyValueStore.ListKeys
+- uid: Libplanet.Store.Trie.DefaultKeyValueStore.Set(IDictionary{System.Byte[],System.Byte[]})
+  name: Set(IDictionary<Byte[], Byte[]>)
+  href: api/Libplanet.Store.Trie.DefaultKeyValueStore.html#Libplanet_Store_Trie_DefaultKeyValueStore_Set_IDictionary_System_Byte___System_Byte____
+  commentId: M:Libplanet.Store.Trie.DefaultKeyValueStore.Set(IDictionary{System.Byte[],System.Byte[]})
+  name.vb: Set(IDictionary(Of Byte(), Byte()))
+  fullName: Libplanet.Store.Trie.DefaultKeyValueStore.Set(IDictionary<System.Byte[], System.Byte[]>)
+  fullName.vb: Libplanet.Store.Trie.DefaultKeyValueStore.Set(IDictionary(Of System.Byte(), System.Byte()))
+  nameWithType: DefaultKeyValueStore.Set(IDictionary<Byte[], Byte[]>)
+  nameWithType.vb: DefaultKeyValueStore.Set(IDictionary(Of Byte(), Byte()))
 - uid: Libplanet.Store.Trie.DefaultKeyValueStore.Set(System.Byte[],System.Byte[])
   name: Set(Byte[], Byte[])
   href: api/Libplanet.Store.Trie.DefaultKeyValueStore.html#Libplanet_Store_Trie_DefaultKeyValueStore_Set_System_Byte___System_Byte___
@@ -18910,6 +18937,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.IKeyValueStore.ListKeys
   nameWithType: IKeyValueStore.ListKeys
+- uid: Libplanet.Store.Trie.IKeyValueStore.Set(IDictionary{System.Byte[],System.Byte[]})
+  name: Set(IDictionary<Byte[], Byte[]>)
+  href: api/Libplanet.Store.Trie.IKeyValueStore.html#Libplanet_Store_Trie_IKeyValueStore_Set_IDictionary_System_Byte___System_Byte____
+  commentId: M:Libplanet.Store.Trie.IKeyValueStore.Set(IDictionary{System.Byte[],System.Byte[]})
+  name.vb: Set(IDictionary(Of Byte(), Byte()))
+  fullName: Libplanet.Store.Trie.IKeyValueStore.Set(IDictionary<System.Byte[], System.Byte[]>)
+  fullName.vb: Libplanet.Store.Trie.IKeyValueStore.Set(IDictionary(Of System.Byte(), System.Byte()))
+  nameWithType: IKeyValueStore.Set(IDictionary<Byte[], Byte[]>)
+  nameWithType.vb: IKeyValueStore.Set(IDictionary(Of Byte(), Byte()))
 - uid: Libplanet.Store.Trie.IKeyValueStore.Set(System.Byte[],System.Byte[])
   name: Set(Byte[], Byte[])
   href: api/Libplanet.Store.Trie.IKeyValueStore.html#Libplanet_Store_Trie_IKeyValueStore_Set_System_Byte___System_Byte___
@@ -18963,12 +18999,12 @@ references:
   commentId: T:Libplanet.Store.Trie.ITrie
   fullName: Libplanet.Store.Trie.ITrie
   nameWithType: ITrie
-- uid: Libplanet.Store.Trie.ITrie.Commit(System.Boolean)
-  name: Commit(Boolean)
-  href: api/Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Commit_System_Boolean_
-  commentId: M:Libplanet.Store.Trie.ITrie.Commit(System.Boolean)
-  fullName: Libplanet.Store.Trie.ITrie.Commit(System.Boolean)
-  nameWithType: ITrie.Commit(Boolean)
+- uid: Libplanet.Store.Trie.ITrie.Commit
+  name: Commit()
+  href: api/Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Commit
+  commentId: M:Libplanet.Store.Trie.ITrie.Commit
+  fullName: Libplanet.Store.Trie.ITrie.Commit()
+  nameWithType: ITrie.Commit()
 - uid: Libplanet.Store.Trie.ITrie.Commit*
   name: Commit
   href: api/Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Commit_
@@ -19111,6 +19147,15 @@ references:
   fullName: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.ListKeys
   nameWithType: MemoryKeyValueStore.IKeyValueStore.ListKeys
   nameWithType.vb: MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.ListKeys
+- uid: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet#Store#Trie#IKeyValueStore#Set(IDictionary{System.Byte[],System.Byte[]})
+  name: IKeyValueStore.Set(IDictionary<Byte[], Byte[]>)
+  href: api/Libplanet.Store.Trie.MemoryKeyValueStore.html#Libplanet_Store_Trie_MemoryKeyValueStore_Libplanet_Store_Trie_IKeyValueStore_Set_IDictionary_System_Byte___System_Byte____
+  commentId: M:Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet#Store#Trie#IKeyValueStore#Set(IDictionary{System.Byte[],System.Byte[]})
+  name.vb: Libplanet.Store.Trie.IKeyValueStore.Set(IDictionary(Of Byte(), Byte()))
+  fullName: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Set(IDictionary<System.Byte[], System.Byte[]>)
+  fullName.vb: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Set(IDictionary(Of System.Byte(), System.Byte()))
+  nameWithType: MemoryKeyValueStore.IKeyValueStore.Set(IDictionary<Byte[], Byte[]>)
+  nameWithType.vb: MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Set(IDictionary(Of Byte(), Byte()))
 - uid: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet#Store#Trie#IKeyValueStore#Set(System.Byte[],System.Byte[])
   name: IKeyValueStore.Set(Byte[], Byte[])
   href: api/Libplanet.Store.Trie.MemoryKeyValueStore.html#Libplanet_Store_Trie_MemoryKeyValueStore_Libplanet_Store_Trie_IKeyValueStore_Set_System_Byte___System_Byte___
@@ -19151,12 +19196,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.MerkleTrie.MerkleTrie
   nameWithType: MerkleTrie.MerkleTrie
-- uid: Libplanet.Store.Trie.MerkleTrie.Commit(System.Boolean)
-  name: Commit(Boolean)
-  href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_Commit_System_Boolean_
-  commentId: M:Libplanet.Store.Trie.MerkleTrie.Commit(System.Boolean)
-  fullName: Libplanet.Store.Trie.MerkleTrie.Commit(System.Boolean)
-  nameWithType: MerkleTrie.Commit(Boolean)
+- uid: Libplanet.Store.Trie.MerkleTrie.Commit
+  name: Commit()
+  href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_Commit
+  commentId: M:Libplanet.Store.Trie.MerkleTrie.Commit
+  fullName: Libplanet.Store.Trie.MerkleTrie.Commit()
+  nameWithType: MerkleTrie.Commit()
 - uid: Libplanet.Store.Trie.MerkleTrie.Commit*
   name: Commit
   href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_Commit_

@@ -69,11 +69,19 @@
 <ul>
 <li>(Libplanet.RocksDBStore) Removed <code>MonoRocksDBStore</code> class.
 [<a href="https://github.com/planetarium/libplanet/issues/1513">#1513</a>, <a href="https://github.com/planetarium/libplanet/pull/1579">#1579</a>]</li>
+<li>Removed <code>rehearsal</code> parameter from <code>ITrie.Commit()</code> method.
+[[#1554], [#1570]]</li>
+<li>Removed <code>rehearsal</code> parameter from <code>StateStoreExtensions.Commit()</code>
+extension method.  [[#1554], [#1570]]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
 <h3 id="behavioral-changes">Behavioral changes</h3>
+<ul>
+<li>Improved performance of <code>MerkleTrie.Commit()</code> and
+<code>BlockChain&lt;T&gt;.ExecuteActions()</code> methods.   [[#1554], [#1570]]</li>
+</ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="cli-tools">CLI tools</h3>
 <ul>

@@ -91,20 +91,20 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_StateStoreExtensions_Commit_Libplanet_Store_IStateStore_System_Nullable_Libplanet_HashDigest_SHA256___IImmutableDictionary_System_String_IValue__System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Store.StateStoreExtensions.Commit(Libplanet.Store.IStateStore%2CSystem.Nullable%7BLibplanet.HashDigest%7BSHA256%7D%7D%2CIImmutableDictionary%7BSystem.String%2CIValue%7D%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_StateStoreExtensions_Commit_Libplanet_Store_IStateStore_System_Nullable_Libplanet_HashDigest_SHA256___IImmutableDictionary_System_String_IValue__.md&amp;value=---%0Auid%3A%20Libplanet.Store.StateStoreExtensions.Commit(Libplanet.Store.IStateStore%2CSystem.Nullable%7BLibplanet.HashDigest%7BSHA256%7D%7D%2CIImmutableDictionary%7BSystem.String%2CIValue%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/StateStoreExtensions.cs/#L34">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/StateStoreExtensions.cs/#L31">View Source</a>
   </span>
   <a id="Libplanet_Store_StateStoreExtensions_Commit_" data-uid="Libplanet.Store.StateStoreExtensions.Commit*"></a>
-  <h4 id="Libplanet_Store_StateStoreExtensions_Commit_Libplanet_Store_IStateStore_System_Nullable_Libplanet_HashDigest_SHA256___IImmutableDictionary_System_String_IValue__System_Boolean_" data-uid="Libplanet.Store.StateStoreExtensions.Commit(Libplanet.Store.IStateStore,System.Nullable{Libplanet.HashDigest{SHA256}},IImmutableDictionary{System.String,IValue},System.Boolean)">Commit(IStateStore, Nullable&lt;HashDigest&lt;SHA256&gt;&gt;, IImmutableDictionary&lt;String, IValue&gt;, Boolean)</h4>
+  <h4 id="Libplanet_Store_StateStoreExtensions_Commit_Libplanet_Store_IStateStore_System_Nullable_Libplanet_HashDigest_SHA256___IImmutableDictionary_System_String_IValue__" data-uid="Libplanet.Store.StateStoreExtensions.Commit(Libplanet.Store.IStateStore,System.Nullable{Libplanet.HashDigest{SHA256}},IImmutableDictionary{System.String,IValue})">Commit(IStateStore, Nullable&lt;HashDigest&lt;SHA256&gt;&gt;, IImmutableDictionary&lt;String, IValue&gt;)</h4>
   <div class="markdown level1 summary"><p>Records <code data-dev-comment-type="paramref" class="paramref">rawStatesDelta</code> which is based on the previous state
 root, and returns the new state root.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static ITrie Commit(this IStateStore stateStore, HashDigest&lt;SHA256&gt;? previousStateRootHash, IImmutableDictionary&lt;string, IValue&gt; rawStatesDelta, bool rehearsal = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public static ITrie Commit(this IStateStore stateStore, HashDigest&lt;SHA256&gt;? previousStateRootHash, IImmutableDictionary&lt;string, IValue&gt; rawStatesDelta)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -136,14 +136,6 @@ the <code data-dev-comment-type="paramref" class="paramref">rawStatesDelta</code
         <td><p>The raw states delta to be recorded.</p>
 </td>
       </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><span class="parametername">rehearsal</span></td>
-        <td><p>If turned on, the <code data-dev-comment-type="paramref" class="paramref">rawStatesDelta</code> is not
-recorded to the <code data-dev-comment-type="paramref" class="paramref">stateStore</code>, but only shadow trie root is returned.
-Turned off by default.</p>
-</td>
-      </tr>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
@@ -167,7 +159,7 @@ Turned off by default.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_StateStoreExtensions_ContainsStateRoot_Libplanet_Store_IStateStore_Libplanet_HashDigest_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.StateStoreExtensions.ContainsStateRoot(Libplanet.Store.IStateStore%2CLibplanet.HashDigest%7BSHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/StateStoreExtensions.cs/#L81">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/StateStoreExtensions.cs/#L77">View Source</a>
   </span>
   <a id="Libplanet_Store_StateStoreExtensions_ContainsStateRoot_" data-uid="Libplanet.Store.StateStoreExtensions.ContainsStateRoot*"></a>
   <h4 id="Libplanet_Store_StateStoreExtensions_ContainsStateRoot_Libplanet_Store_IStateStore_Libplanet_HashDigest_SHA256__" data-uid="Libplanet.Store.StateStoreExtensions.ContainsStateRoot(Libplanet.Store.IStateStore,Libplanet.HashDigest{SHA256})">ContainsStateRoot(IStateStore, HashDigest&lt;SHA256&gt;)</h4>
@@ -225,7 +217,7 @@ otherwise, <code>false</code>.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_StateStoreExtensions_GetState_Libplanet_Store_IStateStore_System_String_System_Nullable_Libplanet_HashDigest_SHA256___.md&amp;value=---%0Auid%3A%20Libplanet.Store.StateStoreExtensions.GetState(Libplanet.Store.IStateStore%2CSystem.String%2CSystem.Nullable%7BLibplanet.HashDigest%7BSHA256%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/StateStoreExtensions.cs/#L61">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/StateStoreExtensions.cs/#L57">View Source</a>
   </span>
   <a id="Libplanet_Store_StateStoreExtensions_GetState_" data-uid="Libplanet.Store.StateStoreExtensions.GetState*"></a>
   <h4 id="Libplanet_Store_StateStoreExtensions_GetState_Libplanet_Store_IStateStore_System_String_System_Nullable_Libplanet_HashDigest_SHA256___" data-uid="Libplanet.Store.StateStoreExtensions.GetState(Libplanet.Store.IStateStore,System.String,System.Nullable{Libplanet.HashDigest{SHA256}})">GetState(IStateStore, String, Nullable&lt;HashDigest&lt;SHA256&gt;&gt;)</h4>
