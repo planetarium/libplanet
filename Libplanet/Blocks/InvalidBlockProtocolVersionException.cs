@@ -10,7 +10,7 @@ namespace Libplanet.Blocks
     /// <see cref="BlockHeader.ProtocolVersion"/>) is invalid.
     /// </summary>
     [Serializable]
-    public sealed class InvalidBlockProtocolVersionException : InvalidBlockException, ISerializable
+    public sealed class InvalidBlockProtocolVersionException : InvalidBlockException
     {
         /// <summary>
         /// Initializes a new instance of <see cref="InvalidBlockProtocolVersionException"/> class.

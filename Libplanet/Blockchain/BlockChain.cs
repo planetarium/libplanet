@@ -810,54 +810,18 @@ namespace Libplanet.Blockchain
 
             _logger.Debug("Trying to append block {blockIndex}: {block}", block?.Index, block);
 
-            int policyMaxTx = Policy.GetMaxTransactionsPerBlock(block.Index);
-            if (block.Transactions.Count() is { } txCount && txCount > policyMaxTx)
-            {
-                throw new BlockExceedingTransactionsException(
-                    txCount,
-                    policyMaxTx,
-                    "The block to append has too many transactions."
-                );
-            }
-
-            if (block.BytesLength > Policy.GetMaxBlockBytes(block.Index))
-            {
-                throw new InvalidBlockBytesLengthException(
-                    block.BytesLength,
-                    Policy.GetMaxBlockBytes(block.Index),
-                    "The block to append is too long in bytes."
-                );
-            }
-
-            HashAlgorithmType expectedHashAlgorithm = Policy.GetHashAlgorithm(block.Index);
-            if (!block.HashAlgorithm.Equals(expectedHashAlgorithm))
-            {
-                var metadata = new BlockMetadata(block);
-                var preEvalBlock =
-                    new PreEvaluationBlockHeader(metadata, expectedHashAlgorithm, block.Nonce);
-                string msg =
-                    $"According to the policy, block #{block.Index} has to use " +
-                    $"{expectedHashAlgorithm}.  However, block #{block.Index} {block.Hash} " +
-                    $"uses {block.HashAlgorithm}.";
-                throw new InvalidBlockPreEvaluationHashException(
-                    block.PreEvaluationHash,
-                    preEvalBlock.PreEvaluationHash,
-                    msg
-                );
-            }
-
             block.ValidateTimestamp();
 
             _rwlock.EnterUpgradeableReadLock();
             Block<T> prevTip = Count > 0 ? Tip : null;
             try
             {
-                InvalidBlockException e = ValidateNextBlock(block);
+                InvalidBlockException ibe = ValidateNextBlock(block);
 
-                if (!(e is null))
+                if (!(ibe is null))
                 {
-                    _logger.Error(e, "Append failed. The block is invalid.");
-                    throw e;
+                    _logger.Error(ibe, "Append failed. The block is invalid.");
+                    throw ibe;
                 }
 
                 var nonceDeltas = new Dictionary<Address, long>();
@@ -1281,9 +1245,9 @@ namespace Libplanet.Blockchain
             }
         }
 
-        private InvalidBlockException ValidateNextBlock(Block<T> nextBlock)
+        private InvalidBlockException ValidateNextBlock(Block<T> block)
         {
-            int actualProtocolVersion = nextBlock.ProtocolVersion;
+            int actualProtocolVersion = block.ProtocolVersion;
             const int currentProtocolVersion = Block<T>.CurrentProtocolVersion;
 
             // FIXME: Crude way of checking protocol version for non-genesis block.
@@ -1292,9 +1256,9 @@ namespace Libplanet.Blockchain
             {
                 string message =
                     $"The protocol version ({actualProtocolVersion}) of the block " +
-                    $"#{nextBlock.Index} {nextBlock.Hash} is not supported by this node." +
+                    $"#{block.Index} {block.Hash} is not supported by this node." +
                     $"The highest supported protocol version is {currentProtocolVersion}.";
-                throw new InvalidBlockProtocolVersionException(
+                return new InvalidBlockProtocolVersionException(
                     actualProtocolVersion,
                     message
                 );
@@ -1304,73 +1268,90 @@ namespace Libplanet.Blockchain
                 string message =
                     "The protocol version is disallowed to be downgraded from the topmost block " +
                     $"in the chain ({actualProtocolVersion} < {Tip.ProtocolVersion}).";
-                throw new InvalidBlockProtocolVersionException(actualProtocolVersion, message);
+                return new InvalidBlockProtocolVersionException(actualProtocolVersion, message);
             }
 
-            InvalidBlockException e = Policy.ValidateNextBlock(this, nextBlock);
-
-            if (!(e is null))
+            // FIXME: This should also be offloaded to Policy.ValidateNextBlock().
+            HashAlgorithmType expectedHashAlgorithm = Policy.GetHashAlgorithm(block.Index);
+            if (!block.HashAlgorithm.Equals(expectedHashAlgorithm))
             {
-                return e;
+                var metadata = new BlockMetadata(block);
+                var preEvalBlock =
+                    new PreEvaluationBlockHeader(metadata, expectedHashAlgorithm, block.Nonce);
+                string msg =
+                    $"According to the policy, block #{block.Index} has to use " +
+                    $"{expectedHashAlgorithm}.  However, block #{block.Index} {block.Hash} " +
+                    $"uses {block.HashAlgorithm}.";
+                throw new InvalidBlockPreEvaluationHashException(
+                    block.PreEvaluationHash,
+                    preEvalBlock.PreEvaluationHash,
+                    msg
+                );
+            }
+
+            BlockPolicyViolationException bpve = Policy.ValidateNextBlock(this, block);
+            if (bpve is { })
+            {
+                return bpve;
             }
 
             long index = this.Count;
             long difficulty = Policy.GetNextBlockDifficulty(this);
             BigInteger totalDifficulty = index >= 1
-                    ? this[index - 1].TotalDifficulty + nextBlock.Difficulty
-                    : nextBlock.Difficulty;
+                    ? this[index - 1].TotalDifficulty + block.Difficulty
+                    : block.Difficulty;
 
             Block<T> lastBlock = index >= 1 ? this[index - 1] : null;
             BlockHash? prevHash = lastBlock?.Hash;
             DateTimeOffset? prevTimestamp = lastBlock?.Timestamp;
 
-            if (nextBlock.Index != index)
+            if (block.Index != index)
             {
                 return new InvalidBlockIndexException(
-                    $"The expected index of block {nextBlock.Hash} is #{index}, " +
-                    $"but its index is #{nextBlock.Index}.");
+                    $"The expected index of block {block.Hash} is #{index}, " +
+                    $"but its index is #{block.Index}.");
             }
 
-            if (nextBlock.Difficulty < difficulty)
+            if (block.Difficulty < difficulty)
             {
                 return new InvalidBlockDifficultyException(
-                    $"The expected difficulty of the block #{index} {nextBlock.Hash} " +
-                    $"is {difficulty}, but its difficulty is {nextBlock.Difficulty}.");
+                    $"The expected difficulty of the block #{index} {block.Hash} " +
+                    $"is {difficulty}, but its difficulty is {block.Difficulty}.");
             }
 
-            if (nextBlock.TotalDifficulty != totalDifficulty)
+            if (block.TotalDifficulty != totalDifficulty)
             {
                 var msg = $"The expected total difficulty of the block #{index} " +
-                          $"{nextBlock.Hash} is {totalDifficulty}, but its difficulty is " +
-                          $"{nextBlock.TotalDifficulty}.";
+                          $"{block.Hash} is {totalDifficulty}, but its difficulty is " +
+                          $"{block.TotalDifficulty}.";
                 return new InvalidBlockTotalDifficultyException(
-                    nextBlock.Difficulty,
-                    nextBlock.TotalDifficulty,
+                    block.Difficulty,
+                    block.TotalDifficulty,
                     msg);
             }
 
-            if (!nextBlock.PreviousHash.Equals(prevHash))
+            if (!block.PreviousHash.Equals(prevHash))
             {
                 if (prevHash is null)
                 {
                     return new InvalidBlockPreviousHashException(
-                        $"The genesis block {nextBlock.Hash} should not have previous hash, " +
-                        $"but its value is {nextBlock.PreviousHash}.");
+                        $"The genesis block {block.Hash} should not have previous hash, " +
+                        $"but its value is {block.PreviousHash}.");
                 }
 
                 return new InvalidBlockPreviousHashException(
-                    $"The block #{index} {nextBlock.Hash} is not continuous from the " +
+                    $"The block #{index} {block.Hash} is not continuous from the " +
                     $"block #{index - 1}; while previous block's hash is " +
-                    $"{prevHash}, the block #{index} {nextBlock.Hash}'s pointer to " +
+                    $"{prevHash}, the block #{index} {block.Hash}'s pointer to " +
                     "the previous hash refers to " +
-                    (nextBlock.PreviousHash?.ToString() ?? "nothing") + ".");
+                    (block.PreviousHash?.ToString() ?? "nothing") + ".");
             }
 
-            if (nextBlock.Timestamp < prevTimestamp)
+            if (block.Timestamp < prevTimestamp)
             {
                 return new InvalidBlockTimestampException(
-                    $"The block #{index} {nextBlock.Hash}'s timestamp " +
-                    $"({nextBlock.Timestamp}) is earlier than " +
+                    $"The block #{index} {block.Hash}'s timestamp " +
+                    $"({block.Timestamp}) is earlier than " +
                     $"the block #{index - 1}'s ({prevTimestamp}).");
             }
 

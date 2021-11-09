@@ -10,7 +10,7 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void Serialization()
         {
-            var e = new InvalidBlockBytesLengthException(10, 5, "A message.");
+            var e = new InvalidBlockBytesLengthException("A message.", 10, 5);
             var f = new BinaryFormatter();
             InvalidBlockBytesLengthException e2;
 
@@ -22,7 +22,7 @@ namespace Libplanet.Tests.Blocks
             }
 
             Assert.Equal(e.Message, e2.Message);
-            Assert.Equal(e.BlockBytesLength, e2.BlockBytesLength);
+            Assert.Equal(e.BytesLength, e2.BytesLength);
             Assert.Equal(e.MaxBlockBytesLength, e2.MaxBlockBytesLength);
         }
     }

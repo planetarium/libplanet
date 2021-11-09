@@ -10,7 +10,7 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void Serialization()
         {
-            var e = new BlockExceedingTransactionsException(100, 50, "A message.");
+            var e = new BlockExceedingTransactionsException("A message.", 100, 50);
             var f = new BinaryFormatter();
             BlockExceedingTransactionsException e2;
 
