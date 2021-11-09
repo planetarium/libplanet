@@ -7,9 +7,13 @@ Version 0.20.2
  -  (Libplnaet.RocksDBStore) Fixed `DefaultStore.ForkBlockIndexes()` method's
     bug that it had been thrown `ChainIdNotFoundException` when received a
     chain forked from already deleted.  [[#1591], [#1592]]
+ -  Fixed improper implementations of `BlockExceedingTransactionsException`
+    `InvalidBlockBytesLengthException` in regards to serialization and
+    related tests.  [#1594]
 
-[#1591]:  https://github.com/planetarium/libplanet/issues/1591
+[#1591]: https://github.com/planetarium/libplanet/issues/1591
 [#1592]: https://github.com/planetarium/libplanet/pull/1592
+[#1594]: https://github.com/planetarium/libplanet/pull/1594
 
 
 Version 0.20.1
