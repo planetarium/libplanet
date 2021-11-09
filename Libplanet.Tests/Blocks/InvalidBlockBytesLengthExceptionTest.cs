@@ -7,6 +7,7 @@ namespace Libplanet.Tests.Blocks
 {
     public class InvalidBlockBytesLengthExceptionTest
     {
+        [Fact]
         public void Serialization()
         {
             var e = new InvalidBlockBytesLengthException(10, 5, "A message.");

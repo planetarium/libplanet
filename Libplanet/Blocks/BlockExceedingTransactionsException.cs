@@ -11,7 +11,7 @@ namespace Libplanet.Blocks
     /// <see cref="IBlockPolicy{T}.GetMaxTransactionsPerBlock(long)"/>).
     /// </summary>
     [Serializable]
-    public class BlockExceedingTransactionsException : InvalidBlockException, ISerializable
+    public class BlockExceedingTransactionsException : InvalidBlockException
     {
         public BlockExceedingTransactionsException(
             int actualTransactions,
@@ -48,7 +48,6 @@ namespace Libplanet.Blocks
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
-            info.AddValue(nameof(Message), Message);
             info.AddValue(nameof(ActualTransactions), ActualTransactions);
             info.AddValue(nameof(MaxTransactionsPerBlock), MaxTransactionsPerBlock);
         }
