@@ -10,6 +10,12 @@ namespace Libplanet.Extensions.Cocona
             var password = new StringBuilder();
 
             Console.Write(prompt);
+
+            if (Console.IsInputRedirected)
+            {
+                return Console.ReadLine();
+            }
+
             do
             {
                 var key = Console.ReadKey(true).KeyChar;
