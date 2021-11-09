@@ -1,28 +1,30 @@
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Security.Cryptography;
 using Libplanet.Blocks;
 using Xunit;
 
 namespace Libplanet.Tests.Blocks
 {
-    public class InvalidBlockBytesLengthExceptionTest
+    public class InvalidBlockHashAlgorithmTypeExceptionTest
     {
         [Fact]
         public void Serialization()
         {
-            var e = new InvalidBlockBytesLengthException("A message.", 10);
+            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
+            var e = new InvalidBlockHashAlgorithmTypeException("A message.", hashAlgorithm);
             var f = new BinaryFormatter();
-            InvalidBlockBytesLengthException e2;
+            InvalidBlockHashAlgorithmTypeException e2;
 
             using (var s = new MemoryStream())
             {
                 f.Serialize(s, e);
                 s.Seek(0, SeekOrigin.Begin);
-                e2 = (InvalidBlockBytesLengthException)f.Deserialize(s);
+                e2 = (InvalidBlockHashAlgorithmTypeException)f.Deserialize(s);
             }
 
             Assert.Equal(e.Message, e2.Message);
-            Assert.Equal(e.BytesLength, e2.BytesLength);
+            Assert.Equal(e.HashAlgorithmName, e2.HashAlgorithmName);
         }
     }
 }

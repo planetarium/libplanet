@@ -6,36 +6,36 @@ using Libplanet.Blockchain.Policies;
 namespace Libplanet.Blocks
 {
     /// <summary>
-    /// An exception thrown when <see cref="Block{T}.BytesLength"/>
+    /// An exception thrown when the count of <see cref="Block{T}.Transactions"/>
     /// does not follow the constraint provided by <see cref="IBlockPolicy{T}"/>.
     /// </summary>
     [Serializable]
-    public sealed class InvalidBlockBytesLengthException : BlockPolicyViolationException
+    public sealed class InvalidBlockTxCountException : BlockPolicyViolationException
     {
         /// <summary>
-        /// Initializes a new instance of <see cref="InvalidBlockBytesLengthException"/> class.
+        /// Initializes a new instance of <see cref="InvalidBlockTxCountException"/> class.
         /// </summary>
         /// <param name="message">The message that describes the error.</param>
-        /// <param name="bytesLength">The invalid <see cref="Block{T}.BytesLength"/>
+        /// <param name="txCount">The invalid count of <see cref="Block{T}.Transactions"/>
         /// according to <see cref="IBlockPolicy{T}"/>.</param>
-        public InvalidBlockBytesLengthException(string message, int bytesLength)
+        public InvalidBlockTxCountException(string message, int txCount)
             : base(message)
         {
-            BytesLength = bytesLength;
+            TxCount = txCount;
         }
 
-        private InvalidBlockBytesLengthException(SerializationInfo info, StreamingContext context)
+        private InvalidBlockTxCountException(SerializationInfo info, StreamingContext context)
             : base(info.GetString(nameof(Message)) ?? string.Empty)
         {
-            BytesLength = info.GetInt32(nameof(BytesLength));
+            TxCount = info.GetInt32(nameof(TxCount));
         }
 
-        public int BytesLength { get; private set; }
+        public int TxCount { get; private set; }
 
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
-            info.AddValue(nameof(BytesLength), BytesLength);
+            info.AddValue(nameof(TxCount), TxCount);
         }
     }
 }

@@ -29,9 +29,9 @@ namespace Libplanet
         private HashAlgorithmType(Type type)
         {
             Type = type;
-            MethodInfo method = type.GetMethod(nameof(HashAlgorithm.Create), new Type[0])!;
+            MethodInfo method = Type.GetMethod(nameof(HashAlgorithm.Create), new Type[0])!;
             string excMsg =
-                $"Failed to invoke {type.FullName}.{nameof(HashAlgorithm.Create)}() static method.";
+                $"Failed to invoke {Type.FullName}.{nameof(HashAlgorithm.Create)}() static method.";
             _instanceCtor = method;
             _instance = new ThreadLocal<HashAlgorithm>(() =>
                 _instanceCtor?.Invoke(null, new object[0]) as HashAlgorithm

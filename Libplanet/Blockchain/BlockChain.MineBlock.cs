@@ -388,7 +388,7 @@ namespace Libplanet.Blockchain
             if (transactionsToMine.Count < Policy.GetMinTransactionsPerBlock(index))
             {
                 throw new BlockInsufficientTxsException(
-                    "Below Minimum Transactions",
+                    "Below Minimum Transactions.",
                     transactionsToMine.Count,
                     Policy.GetMinTransactionsPerBlock(index));
             }
