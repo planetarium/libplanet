@@ -4,6 +4,8 @@ Libplanet changelog
 Version 0.20.2
 --------------
 
+Released on November 9, 2021.
+
  -  (Libplnaet.RocksDBStore) Fixed `DefaultStore.ForkBlockIndexes()` method's
     bug that it had been thrown `ChainIdNotFoundException` when received a
     chain forked from already deleted.  [[#1591], [#1592]]
