@@ -277,6 +277,33 @@ namespace Libplanet.Tests.Store
         }
 
         [SkippableFact]
+        public void ForkFromChainWithDeletion()
+        {
+            IStore store = Fx.Store;
+            Guid chainA = Guid.NewGuid();
+            Guid chainB = Guid.NewGuid();
+            Guid chainC = Guid.NewGuid();
+
+            // We need `Block<T>`s because `IStore` can't retrive index(long) by block hash without
+            // actual block...
+            store.PutBlock(Fx.GenesisBlock);
+            store.PutBlock(Fx.Block1);
+            store.PutBlock(Fx.Block2);
+            store.PutBlock(Fx.Block3);
+
+            store.AppendIndex(chainA, Fx.GenesisBlock.Hash);
+            store.AppendIndex(chainA, Fx.Block1.Hash);
+            store.ForkBlockIndexes(chainA, chainB, Fx.Block1.Hash);
+            store.DeleteChainId(chainA);
+
+            store.ForkBlockIndexes(chainB, chainC, Fx.Block1.Hash);
+            Assert.Equal(
+                Fx.Block1.Hash,
+                store.IndexBlockHash(chainC, Fx.Block1.Index)
+            );
+        }
+
+        [SkippableFact]
         public void CanonicalChainId()
         {
             Assert.Null(Fx.Store.GetCanonicalChainId());

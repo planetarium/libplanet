@@ -11,7 +11,7 @@ namespace Libplanet.Blocks
     /// is too long.
     /// </summary>
     [Serializable]
-    public sealed class InvalidBlockBytesLengthException : InvalidBlockException, ISerializable
+    public sealed class InvalidBlockBytesLengthException : InvalidBlockException
     {
         /// <summary>
         /// Initializes a new instance of <see cref="InvalidBlockBytesLengthException"/> class.
@@ -57,7 +57,6 @@ namespace Libplanet.Blocks
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
-            info.AddValue(nameof(Message), Message);
             info.AddValue(nameof(BlockBytesLength), BlockBytesLength);
             info.AddValue(nameof(MaxBlockBytesLength), MaxBlockBytesLength);
         }

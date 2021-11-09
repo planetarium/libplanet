@@ -387,7 +387,9 @@ namespace Libplanet.RocksDBStore
 
             long bpIndex = GetBlockIndex(branchpoint).Value;
 
+            // Do fork from previous chain instead current if it's available and same as current.
             if (GetPreviousChainInfo(srcCf) is { } chainInfo &&
+                !IsDeletionMarked(GetColumnFamily(_chainDb, chainInfo.Item1)) &&
                 chainInfo.Item2 == bpIndex)
             {
                 ForkBlockIndexes(chainInfo.Item1, destinationChainId, branchpoint);
