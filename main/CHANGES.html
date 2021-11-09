@@ -82,6 +82,16 @@ type <code>monorocksdb</code>.  [<a href="https://github.com/planetarium/libplan
 <li>Subcommands under <code>planet store</code> no more supports the store type
 <code>monorocksdb</code>.  [<a href="https://github.com/planetarium/libplanet/issues/1513">#1513</a>, <a href="https://github.com/planetarium/libplanet/pull/1579">#1579</a>]</li>
 </ul>
+<h2 id="version-0202">Version 0.20.2</h2>
+<p>Released on November 9, 2021.</p>
+<ul>
+<li>(Libplnaet.RocksDBStore) Fixed <code>DefaultStore.ForkBlockIndexes()</code> method's
+bug that it had been thrown <code>ChainIdNotFoundException</code> when received a
+chain forked from already deleted.  [<a href="https://github.com/planetarium/libplanet/issues/1591">#1591</a>, <a href="https://github.com/planetarium/libplanet/pull/1592">#1592</a>]</li>
+<li>Fixed improper implementations of <code>BlockExceedingTransactionsException</code>
+<code>InvalidBlockBytesLengthException</code> in regards to serialization and
+related tests.  [<a href="https://github.com/planetarium/libplanet/pull/1594">#1594</a>]</li>
+</ul>
 <h2 id="version-0201">Version 0.20.1</h2>
 <p>Released on November 8, 2021.</p>
 <ul>
