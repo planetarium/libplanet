@@ -542,12 +542,10 @@ namespace Libplanet.Blockchain
         /// are required for action execution and rendering.
         /// <see cref="StateCompleterSet{T}.Recalculate"/> by default.
         /// </param>
-        /// <exception cref="InvalidBlockBytesLengthException">Thrown when the given <paramref
-        /// name="block"/> is too long in bytes (according to <see
-        /// cref="IBlockPolicy{T}.GetMaxBlockBytes(long)"/>).</exception>
-        /// <exception cref="BlockExceedingTransactionsException">Thrown when the given <paramref
-        /// name="block"/> has too many transactions (according to <see
-        /// cref="IBlockPolicy{T}.GetMaxTransactionsPerBlock(long)"/>).</exception>
+        /// <exception cref="BlockPolicyViolationException">Thrown when given
+        /// <paramref name="block"/> does not satisfy any of the constraints
+        /// validated by <see cref="IBlockPolicy{T}.ValidateNextBlock"/> of <see cref="Policy"/>.
+        /// </exception>
         /// <exception cref="InvalidBlockException">Thrown when the given <paramref name="block"/>
         /// is invalid, in itself or according to the <see cref="Policy"/>.</exception>
         /// <exception cref="InvalidTxNonceException">Thrown when the
