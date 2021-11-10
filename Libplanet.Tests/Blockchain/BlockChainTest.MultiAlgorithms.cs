@@ -52,7 +52,8 @@ namespace Libplanet.Tests.Blockchain
                     miner: TestUtils.ChainPrivateKey.PublicKey,
                     difficulty: policy.GetNextBlockDifficulty(chain)
                 ).Evaluate(TestUtils.ChainPrivateKey, chain);
-                Assert.Throws<BlockPolicyViolationException>(() => chain.Append(invalidBlock));
+                Assert.Throws<InvalidBlockHashAlgorithmTypeException>(
+                    () => chain.Append(invalidBlock));
                 HashAlgorithmType validAlgo = HashAlgorithmType.Of<MD5>();
                 Block<DumbAction> validBlock = TestUtils.MineNext(
                     chain.Genesis,

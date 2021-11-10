@@ -133,46 +133,55 @@ namespace Libplanet.Blockchain.Policies
 
                     if (!block.HashAlgorithm.Equals(hashAlgorithm))
                     {
-                        return new BlockPolicyViolationException(
+                        return new InvalidBlockHashAlgorithmTypeException(
                             $"The hash algorithm type of block #{block.Index} {block.Hash} " +
-                            $"does not match {hashAlgorithm}: {block.HashAlgorithm}");
+                            $"does not match {hashAlgorithm}: {block.HashAlgorithm}",
+                            hashAlgorithm);
                     }
                     else if (block.BytesLength > maxBlockBytes)
                     {
-                        return new BlockPolicyViolationException(
+                        return new InvalidBlockBytesLengthException(
                             $"The size of block #{block.Index} {block.Hash} is too large " +
                             $"where the maximum number of bytes allowed is {maxBlockBytes}: " +
-                            $"{block.BytesLength}");
+                            $"{block.BytesLength}",
+                            block.BytesLength);
                     }
                     else if (block.Transactions.Count < minTransactionsPerBlock)
                     {
-                        return new BlockPolicyViolationException(
+                        return new InvalidBlockTxCountException(
                             $"Block #{block.Index} {block.Hash} should include " +
                             $"at least {minTransactionsPerBlock} transaction(s): " +
-                            $"{block.Transactions.Count}");
+                            $"{block.Transactions.Count}",
+                            block.Transactions.Count);
                     }
                     else if (block.Transactions.Count > maxTransactionsPerBlock)
                     {
-                        return new BlockPolicyViolationException(
+                        return new InvalidBlockTxCountException(
                             $"Block #{block.Index} {block.Hash} should include " +
                             $"at most {maxTransactionsPerBlock} transaction(s): " +
-                            $"{block.Transactions.Count}");
-                    }
-                    else if (block.Transactions
-                        .GroupBy(tx => tx.Signer)
-                        .Any(group => group.Count()
-                            > maxTransactionsPerSignerPerBlock))
-                    {
-                        return new BlockPolicyViolationException(
-                            $"Block #{block.Index} {block.Hash} includes too many " +
-                            $"transactions from a single signer where the maximum number of " +
-                            $"transactions allowed by a single signer per block " +
-                            $"is {maxTransactionsPerSignerPerBlock}.");
+                            $"{block.Transactions.Count}",
+                            block.Transactions.Count);
                     }
                     else
                     {
-                        return null;
+                        var groups = block.Transactions
+                            .GroupBy(tx => tx.Signer)
+                            .Where(group => group.Count() > maxTransactionsPerSignerPerBlock);
+                        if (groups.Any())
+                        {
+                            var offendingGroup = groups.First();
+                            return new InvalidBlockTxCountPerSignerException(
+                                $"Block #{block.Index} {block.Hash} includes too many " +
+                                $"transactions from signer {offendingGroup.Key} where " +
+                                $"the maximum number of transactions allowed by a single signer " +
+                                $"per block is {maxTransactionsPerSignerPerBlock}: " +
+                                $"{offendingGroup.Count()}",
+                                offendingGroup.Key,
+                                offendingGroup.Count());
+                        }
                     }
+
+                    return null;
                 };
             }
         }

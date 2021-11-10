@@ -333,10 +333,9 @@ namespace Libplanet.Tests.Blockchain
             int maxBytes = _blockChain.Policy.GetMaxBlockBytes(block.Index);
             Assert.True(block.BytesLength > maxBytes);
 
-            var e = Assert.Throws<BlockPolicyViolationException>(() =>
+            var e = Assert.Throws<InvalidBlockBytesLengthException>(() =>
                 _blockChain.Append(block)
             );
-            Assert.IsAssignableFrom<InvalidBlockException>(e);
         }
 
         [Fact]
@@ -366,10 +365,9 @@ namespace Libplanet.Tests.Blockchain
             ).Evaluate(miner, _blockChain);
             Assert.Equal(manyTxs.Count, block.Transactions.Count());
 
-            var e = Assert.Throws<BlockPolicyViolationException>(() =>
+            var e = Assert.Throws<InvalidBlockTxCountException>(() =>
                 _blockChain.Append(block)
             );
-            Assert.IsAssignableFrom<InvalidBlockException>(e);
         }
 
         [Fact]
