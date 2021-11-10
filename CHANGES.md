@@ -16,12 +16,34 @@ To be released.
     [[#1554], [#1570]]
  -  Removed `rehearsal` parameter from `StateStoreExtensions.Commit()`
     extension method.  [[#1554], [#1570]]
+ -  Removed `ITransport.RunAsync()` method.
+    `ITransport.StartAsync()` now conducts operation that
+    `ITransport.RunAsync()` used to conduct.  [[#1523]]
+ -  Removed `ITransport.ReplyMessage()` method which was non-blocking.
+    Instead, added `ITransport.ReplyMessageAsync()` asynchronous method
+    which is awaited until the reply message is sent.  [[#1523]]
+ -  The type of `ITransport.ProcessMessageHandler` became
+    `AsyncDelegate<T>` (which was `EventHandler`).  [[#1523]]
+ -  Removed unused `BlockChain<T>` type parameter from
+    `IStagePolicy<T>.Iterate()` method.  [[#1553], [#1556]]
 
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
 
 ### Added APIs
+
+ -  Added `ITransport.MessageHistory` property.  [[#1523]]
+ -  Added `ITransport.WaitForRunning()` method.  [[#1523]]
+ -  Added `TcpTransport` class which implements `ITransport` interface.
+    [[#1523]]
+ -  Added `SwarmOptions.Type` property.  [[#1523]]
+ -  Added `SwarmOptions.TransportType` enum.  [[#1523]]
+ -  Added `AsyncDelegate<T>` class.  [[#1523]]
+ -  Added `InvalidMagicCookieException` class.  [[#1523]]
+ -  Added `MessageCodec` class which inherits `IMessageCodec<T>`.
+    [[#1523]]
+ -  Added `IStagePolicy<T>.GetNextTxNonce()` method.  [[#1553], [#1556]]
 
 ### Behavioral changes
 
@@ -38,6 +60,7 @@ To be released.
     `monorocksdb`.  [[#1513], [#1579]]
 
 [#1579]: https://github.com/planetarium/libplanet/pull/1579
+[#1523]: https://github.com/planetarium/libplanet/pull/1523
 
 
 Version 0.20.2

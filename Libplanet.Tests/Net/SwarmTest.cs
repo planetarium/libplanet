@@ -17,6 +17,7 @@ using Libplanet.Crypto;
 using Libplanet.Net;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Protocols;
+using Libplanet.Net.Transports;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Stun;
@@ -24,8 +25,6 @@ using Libplanet.Tests.Blockchain;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Libplanet.Tx;
-using NetMQ;
-using NetMQ.Sockets;
 using Serilog;
 using xRetry;
 using Xunit;
@@ -71,9 +70,6 @@ namespace Libplanet.Tests.Net
             }
 
             Log.Logger.Debug("Finished to finalize {Resources} resources.", _finalizers.Count);
-
-            NetMQConfig.Cleanup(false);
-            Log.Logger.Debug($"Finished to clean up the {nameof(NetMQConfig)} singleton.");
         }
 
         [Fact(Timeout = Timeout)]
@@ -100,8 +96,9 @@ namespace Libplanet.Tests.Net
         {
             Swarm<DumbAction> seed = CreateSwarm();
 
-            Swarm<DumbAction> swarmA = CreateSwarm();
-            Swarm<DumbAction> swarmB = CreateSwarm();
+            var privateKey = new PrivateKey();
+            Swarm<DumbAction> swarmA = CreateSwarm(privateKey: privateKey);
+            Swarm<DumbAction> swarmB = CreateSwarm(privateKey: privateKey);
 
             try
             {
@@ -467,38 +464,24 @@ namespace Libplanet.Tests.Net
                     null
                 ).ToArrayAsync();
 
-                var netMQAddress = $"tcp://{peer.EndPoint.Host}:{peer.EndPoint.Port}";
-                var codec = new NetMQMessageCodec();
-                using (var socket = new DealerSocket(netMQAddress))
-                {
-                    var request = new GetBlocks(hashes.Select(pair => pair.Item2), 2);
-                    socket.SendMultipartMessage(
-                        codec.Encode(
-                            request,
-                            keyB,
-                            swarmB.AsPeer,
-                            DateTimeOffset.UtcNow,
-                            swarmB.AppProtocolVersion)
-                    );
+                ITransport transport = swarmB.Transport;
 
-                    NetMQMessage response = socket.ReceiveMultipartMessage();
-                    var blockMessage = (Libplanet.Net.Messages.Blocks)codec.Decode(
-                        response,
-                        true,
-                        (i, p, v) => { },
-                        null);
+                var request = new GetBlocks(hashes.Select(pair => pair.Item2), 2);
+                Message[] responses = (await transport.SendMessageWithReplyAsync(
+                    (BoundPeer)swarmA.AsPeer,
+                    request,
+                    null,
+                    2,
+                    false,
+                    default)).ToArray();
+                var blockMessage = (Libplanet.Net.Messages.Blocks)responses[0];
 
-                    Assert.Equal(2, blockMessage.Payloads.Count);
+                Assert.Equal(2, responses.Length);
+                Assert.Equal(2, blockMessage.Payloads.Count);
 
-                    response = socket.ReceiveMultipartMessage();
-                    blockMessage = (Libplanet.Net.Messages.Blocks)codec.Decode(
-                        response,
-                        true,
-                        (i, p, v) => { },
-                        null);
+                blockMessage = (Libplanet.Net.Messages.Blocks)responses[1];
 
-                    Assert.Single(blockMessage.Payloads);
-                }
+                Assert.Single(blockMessage.Payloads);
             }
             finally
             {
@@ -1649,6 +1632,57 @@ namespace Libplanet.Tests.Net
             {
                 await StopAsync(receiver);
                 await StopAsync(sender);
+            }
+        }
+
+        [Fact(Timeout = Timeout)]
+        public async Task DoNotFillMultipleTimes()
+        {
+            Swarm<DumbAction> receiver = CreateSwarm();
+            Swarm<DumbAction> sender1 = CreateSwarm();
+            Swarm<DumbAction> sender2 = CreateSwarm();
+
+            await StartAsync(receiver);
+            await StartAsync(sender1);
+            await StartAsync(sender2);
+
+            BlockChain<DumbAction> chain = receiver.BlockChain;
+            var minerKey = new PrivateKey();
+            Block<DumbAction> b1 =
+                TestUtils.MineNext(
+                        chain.Genesis,
+                        chain.Policy.GetHashAlgorithm,
+                        difficulty: 1024,
+                        miner: minerKey.PublicKey)
+                    .Evaluate(minerKey, chain);
+
+            try
+            {
+                await BootstrapAsync(sender1, receiver.AsPeer);
+                await BootstrapAsync(sender2, receiver.AsPeer);
+
+                sender1.BlockChain.Append(b1);
+                sender2.BlockChain.Append(b1);
+
+                sender1.BroadcastBlock(b1);
+                sender2.BroadcastBlock(b1);
+
+                // Make sure that receiver swarm only filled once for same block
+                // that were broadcasted simultaneously.
+                await receiver.BlockReceived.WaitAsync();
+
+                // Awaits 1 second because receiver swarm may tried to fill again after filled.
+                await Task.Delay(1000);
+                var transport = receiver.Transport;
+                Log.Debug("Messages: {@Message}", transport.MessageHistory);
+                Assert.Single(
+                    transport.MessageHistory.Where(msg => msg is Libplanet.Net.Messages.Blocks));
+            }
+            finally
+            {
+                await StopAsync(receiver);
+                await StopAsync(sender1);
+                await StopAsync(sender2);
             }
         }
 
