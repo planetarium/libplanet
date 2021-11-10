@@ -73,10 +73,33 @@
 [[#1554], [#1570]]</li>
 <li>Removed <code>rehearsal</code> parameter from <code>StateStoreExtensions.Commit()</code>
 extension method.  [[#1554], [#1570]]</li>
+<li>Removed <code>ITransport.RunAsync()</code> method.
+<code>ITransport.StartAsync()</code> now conducts operation that
+<code>ITransport.RunAsync()</code> used to conduct.  [<a href="https://github.com/planetarium/libplanet/pull/1523">#1523</a>]</li>
+<li>Removed <code>ITransport.ReplyMessage()</code> method which was non-blocking.
+Instead, added <code>ITransport.ReplyMessageAsync()</code> asynchronous method
+which is awaited until the reply message is sent.  [<a href="https://github.com/planetarium/libplanet/pull/1523">#1523</a>]</li>
+<li>The type of <code>ITransport.ProcessMessageHandler</code> became
+<code>AsyncDelegate&lt;T&gt;</code> (which was <code>EventHandler</code>).  [<a href="https://github.com/planetarium/libplanet/pull/1523">#1523</a>]</li>
+<li>Removed unused <code>BlockChain&lt;T&gt;</code> type parameter from
+<code>IStagePolicy&lt;T&gt;.Iterate()</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/1553">#1553</a>, <a href="https://github.com/planetarium/libplanet/pull/1556">#1556</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
+<ul>
+<li>Added <code>ITransport.MessageHistory</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/1523">#1523</a>]</li>
+<li>Added <code>ITransport.WaitForRunning()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1523">#1523</a>]</li>
+<li>Added <code>TcpTransport</code> class which implements <code>ITransport</code> interface.
+[<a href="https://github.com/planetarium/libplanet/pull/1523">#1523</a>]</li>
+<li>Added <code>SwarmOptions.Type</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/1523">#1523</a>]</li>
+<li>Added <code>SwarmOptions.TransportType</code> enum.  [<a href="https://github.com/planetarium/libplanet/pull/1523">#1523</a>]</li>
+<li>Added <code>AsyncDelegate&lt;T&gt;</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/1523">#1523</a>]</li>
+<li>Added <code>InvalidMagicCookieException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/1523">#1523</a>]</li>
+<li>Added <code>MessageCodec</code> class which inherits <code>IMessageCodec&lt;T&gt;</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/1523">#1523</a>]</li>
+<li>Added <code>IStagePolicy&lt;T&gt;.GetNextTxNonce()</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/1553">#1553</a>, <a href="https://github.com/planetarium/libplanet/pull/1556">#1556</a>]</li>
+</ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
 <li>Improved performance of <code>MerkleTrie.Commit()</code> and

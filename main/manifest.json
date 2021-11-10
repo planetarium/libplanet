@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "XrzChbfNdE/wp2kDzgXZjds4OM68pjr2cuVzQ3CLd/Y="
+          "hash": "i7/lBcwTsssMVQfwbmGJoJwJDq4tmBEuMTE2L8N15Ys="
         }
       },
       "is_incremental": false,
@@ -1805,6 +1805,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Net.AsyncDelegate-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Net.AsyncDelegate-1.html",
+          "hash": "yOX3E1IRQlWoTWFxxvXyqRvxrKP4Na17pm+tkNt4KKs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Libplanet.Net.BlockDemand.yml",
       "output": {
         ".html": {
@@ -1869,7 +1881,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.BoundPeer.html",
-          "hash": "+bn8W/BdrAr2p11ghYEZ6WINgN7S2XPS9yEUltlfHc8="
+          "hash": "M3HSWCf28scIprinxP9wLeXKOaOd5zvpZV8m9wgCjEs="
         }
       },
       "is_incremental": false,
@@ -1997,6 +2009,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Net.Messages.MessageCodec.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Net.Messages.MessageCodec.html",
+          "hash": "GkNMZwPpANVsb73fajGjMD8Ah0huQM66pKaIdq+NOiY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Libplanet.Net.Messages.NetMQMessageCodec.yml",
       "output": {
         ".html": {
@@ -2013,7 +2037,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Messages.html",
-          "hash": "zPnoSe/beZ1HqqJi9lx5mr8B4JrTKdIMzUOXAjv2+7o="
+          "hash": "5mskrT7Zyds8McZmL//BOg95K/BxP+poR2VitDGIQzE="
         }
       },
       "is_incremental": false,
@@ -2193,7 +2217,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Swarm-1.html",
-          "hash": "CCPNSfOKu4YFT92L3q4N85u0XaUw+0S3QmjSjFqsMsY="
+          "hash": "2MveCYuRdOVWbZgbPtd1cXeE3J4yG3AcHDzlEa+1SQo="
         }
       },
       "is_incremental": false,
@@ -2213,11 +2237,23 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Net.SwarmOptions.TransportType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Net.SwarmOptions.TransportType.html",
+          "hash": "8P81pW2ZAe0buG9/U/HZaPw8OgjOAIxBN1JNsAzdIQQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Libplanet.Net.SwarmOptions.yml",
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.SwarmOptions.html",
-          "hash": "X8V8UYzJWt20nmGX2NXGhitgcHfn+Jy7dmD0JczC5B0="
+          "hash": "TDYeSj7uumTM2jKraBFUs6hmnffL6asUGJC16UbXSsw="
         }
       },
       "is_incremental": false,
@@ -2229,7 +2265,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Transports.BoundPeerExtensions.html",
-          "hash": "AhyVgfvIzoIDBXrUJfEQdb/y8BBcVsb2zzKKQ24HWVk="
+          "hash": "1PIsNbDsTHwjAx5xdRJTrQusrXKkkCY9+4oKiU3TNr4="
         }
       },
       "is_incremental": false,
@@ -2241,7 +2277,19 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Transports.ITransport.html",
-          "hash": "Wq2lMxbgYt7+Q1e1Ue0KrsfJE09Bpkg+u0jqocgiTb0="
+          "hash": "xaRydpiIE626bzeO5FC+tvvPJAL3Ey/ntMno0qvpPhA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Net.Transports.InvalidMagicCookieException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Net.Transports.InvalidMagicCookieException.html",
+          "hash": "fv+eXI+u2KOaR5M/au1FQuX+N2oa+O8AVgVjgNu6tWw="
         }
       },
       "is_incremental": false,
@@ -2253,7 +2301,19 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Transports.NetMQTransport.html",
-          "hash": "tcMaxXwTwQIVSM9/Qauz45hGdiV0syPuQ2/6HaZJ4E4="
+          "hash": "SUzzg44Jb3S4c7wGbLQBiIHYaEQUQ7ZpYOUyN9g7PIw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Net.Transports.TcpTransport.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Net.Transports.TcpTransport.html",
+          "hash": "Jid9UcFsOeyFr44Gc+VUasRZYVpSE1DPGxFBFluyIo8="
         }
       },
       "is_incremental": false,
@@ -2277,7 +2337,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Transports.html",
-          "hash": "qLfuSWiVspZNTrQi5dVpUdzWP8vJhiwBAn0CCUVnsb0="
+          "hash": "y0Bs+nQ0BsyADyxZgF0xC0lKT3jS7kQ54uvf3ylgvLg="
         }
       },
       "is_incremental": false,
@@ -2325,7 +2385,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.html",
-          "hash": "UxMTnjs/vSV3BTZEWYE8OT2sa7soy1d7zZQbLapa3Ac="
+          "hash": "T2Ndsks8dSotYCJoDsRjpHGreKRBrxA8tizMGKLuuYk="
         }
       },
       "is_incremental": false,
@@ -3369,7 +3429,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "xZSoU9dhdzq2+XFAoHyj5gHTjEJqT5HduDTy9Ga9VgY="
+          "hash": "5c6KwfjkR00lOnprk79v9yaDWNajenrw1Q0y18xUD7o="
         }
       },
       "is_incremental": false,
@@ -3478,7 +3538,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 271,
+          "total_file_count": 276,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
