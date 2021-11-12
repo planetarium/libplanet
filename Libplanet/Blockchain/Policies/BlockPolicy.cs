@@ -167,17 +167,17 @@ namespace Libplanet.Blockchain.Policies
                         var groups = block.Transactions
                             .GroupBy(tx => tx.Signer)
                             .Where(group => group.Count() > maxTransactionsPerSignerPerBlock);
-                        if (groups.Any())
+                        if (groups.FirstOrDefault() is { } offendingGroup)
                         {
-                            var offendingGroup = groups.First();
+                            int offendingGroupCount = offendingGroup.Count();
                             return new InvalidBlockTxCountPerSignerException(
                                 $"Block #{block.Index} {block.Hash} includes too many " +
                                 $"transactions from signer {offendingGroup.Key} where " +
                                 $"the maximum number of transactions allowed by a single signer " +
                                 $"per block is {maxTransactionsPerSignerPerBlock}: " +
-                                $"{offendingGroup.Count()}",
+                                $"{offendingGroupCount}",
                                 offendingGroup.Key,
-                                offendingGroup.Count());
+                                offendingGroupCount);
                         }
                     }
 
