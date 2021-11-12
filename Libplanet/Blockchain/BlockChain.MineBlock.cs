@@ -30,9 +30,11 @@ namespace Libplanet.Blockchain
         /// <param name="miner">The miner's <see cref="PublicKey"/> that mines the block.</param>
         /// <param name="timestamp">The <see cref="DateTimeOffset"/> when mining started.</param>
         /// <param name="append">Whether to append the mined block immediately after mining.</param>
+        /// <param name="maxBlockBytes">The maximum number of bytes a block can have.
+        /// See also <see cref="IBlockPolicy{T}.GetMaxBlockBytes(long)"/>.</param>
         /// <param name="maxTransactions">The maximum number of transactions that a block can
-        /// accept.  See also <see cref="IBlockPolicy{T}.GetMaxTransactionsPerBlock(long)"/>
-        /// method.</param>
+        /// accept.  See also <see cref="IBlockPolicy{T}.GetMaxTransactionsPerBlock(long)"/>.
+        /// </param>
         /// <param name="maxTransactionsPerSigner">The maximum number of transactions
         /// that a block can accept per signer.  See also
         /// <see cref="IBlockPolicy{T}.GetMaxTransactionsPerSignerPerBlock(long)"/>.</param>
@@ -47,6 +49,7 @@ namespace Libplanet.Blockchain
             PrivateKey miner,
             DateTimeOffset? timestamp = null,
             bool? append = null,
+            int? maxBlockBytes = null,
             int? maxTransactions = null,
             int? maxTransactionsPerSigner = null,
             IComparer<Transaction<T>> txPriority = null,
@@ -56,8 +59,10 @@ namespace Libplanet.Blockchain
                     miner: miner,
                     timestamp: timestamp ?? DateTimeOffset.UtcNow,
                     append: append ?? true,
-                    maxTransactions: maxTransactions ??
-                        Policy.GetMaxTransactionsPerBlock(Count),
+                    maxBlockBytes: maxBlockBytes
+                        ?? Policy.GetMaxBlockBytes(Count),
+                    maxTransactions: maxTransactions
+                        ?? Policy.GetMaxTransactionsPerBlock(Count),
                     maxTransactionsPerSigner: maxTransactionsPerSigner
                         ?? Policy.GetMaxTransactionsPerSignerPerBlock(Count),
                     txPriority: txPriority,
@@ -70,9 +75,11 @@ namespace Libplanet.Blockchain
         /// <param name="miner">The miner's <see cref="PublicKey"/> that mines the block.</param>
         /// <param name="timestamp">The <see cref="DateTimeOffset"/> when mining started.</param>
         /// <param name="append">Whether to append the mined block immediately after mining.</param>
+        /// <param name="maxBlockBytes">The maximum number of bytes a block can have.
+        /// See also <see cref="IBlockPolicy{T}.GetMaxBlockBytes(long)"/>.</param>
         /// <param name="maxTransactions">The maximum number of transactions that a block can
-        /// accept.  See also <see cref="IBlockPolicy{T}.GetMaxTransactionsPerBlock(long)"/>
-        /// method.</param>
+        /// accept.  See also <see cref="IBlockPolicy{T}.GetMaxTransactionsPerBlock(long)"/>.
+        /// </param>
         /// <param name="maxTransactionsPerSigner">The maximum number of transactions
         /// that a block can accept per signer.  See also
         /// <see cref="IBlockPolicy{T}.GetMaxTransactionsPerSignerPerBlock(long)"/>.</param>
@@ -87,6 +94,7 @@ namespace Libplanet.Blockchain
             PrivateKey miner,
             DateTimeOffset timestamp,
             bool append,
+            int maxBlockBytes,
             int maxTransactions,
             int maxTransactionsPerSigner,
             IComparer<Transaction<T>> txPriority = null,
@@ -107,8 +115,6 @@ namespace Libplanet.Blockchain
                     // Ignore if mining was already finished.
                 }
             }
-
-            TipChanged += WatchTip;
 
             long index = Count;
             long difficulty = Policy.GetNextBlockDifficulty(this);
@@ -139,10 +145,20 @@ namespace Libplanet.Blockchain
 
             var transactionsToMine = GatherTransactionsToMine(
                 metadata,
+                maxBlockBytes: maxBlockBytes,
                 maxTransactions: maxTransactions,
                 maxTransactionsPerSigner: maxTransactionsPerSigner,
                 txPriority: txPriority
             );
+
+            if (transactionsToMine.Count < Policy.GetMinTransactionsPerBlock(index))
+            {
+                cts.Cancel();
+                throw new OperationCanceledException(
+                    $"Mining canceled due to insufficient number of gathered transactions " +
+                    $"to mine for the requirement of {Policy.GetMinTransactionsPerBlock(index)} " +
+                    $"given by the policy: {transactionsToMine.Count}");
+            }
 
             _logger.Verbose(
                 "{SessionId}/{ProcessId}: Mined block #{Index} will include " +
@@ -154,6 +170,9 @@ namespace Libplanet.Blockchain
 
             var blockContent = new BlockContent<T>(metadata) { Transactions = transactionsToMine };
             PreEvaluationBlock<T> preEval;
+
+            TipChanged += WatchTip;
+
             try
             {
                 preEval = await Task.Run(
@@ -209,6 +228,7 @@ namespace Libplanet.Blockchain
         /// from the current set of staged <see cref="Transaction{T}"/>s.
         /// </summary>
         /// <param name="metadata">The metadata of the block to be mined.</param>
+        /// <param name="maxBlockBytes">The maximum number of bytes a block can have.</param>
         /// <param name="maxTransactions">The maximum number of <see cref="Transaction{T}"/>s
         /// allowed.</param>
         /// <param name="maxTransactionsPerSigner">The maximum number of
@@ -221,6 +241,7 @@ namespace Libplanet.Blockchain
         /// <paramref name="maxTransactionsPerSigner"/>.</returns>
         internal ImmutableList<Transaction<T>> GatherTransactionsToMine(
             BlockMetadata metadata,
+            int maxBlockBytes,
             int maxTransactions,
             int maxTransactionsPerSigner,
             IComparer<Transaction<T>> txPriority = null
@@ -239,6 +260,7 @@ namespace Libplanet.Blockchain
             // FIXME: The tx collection timeout should be configurable.
             DateTimeOffset timeout = DateTimeOffset.UtcNow + TimeSpan.FromSeconds(4);
 
+            // FIXME: Possibly better to not directly refer to policy.
             HashAlgorithmType hashAlgorithm = Policy.GetHashAlgorithm(index);
 
             // Makes an empty block payload to estimate the length of bytes without transactions.
@@ -264,7 +286,6 @@ namespace Libplanet.Blockchain
             var codec = new Codec();
             byte[] emptyBlockPayload = codec.Encode(marshaledEmptyBlock);
             int estimatedBytes = emptyBlockPayload.Length;
-            int maxBlockBytes = Policy.GetMaxBlockBytes(index);
 
             var storedNonces = new Dictionary<Address, long>();
             var nextNonces = new Dictionary<Address, long>();
@@ -383,14 +404,6 @@ namespace Libplanet.Blockchain
                         "transactions will be mined later.");
                     break;
                 }
-            }
-
-            if (transactionsToMine.Count < Policy.GetMinTransactionsPerBlock(index))
-            {
-                throw new BlockInsufficientTxsException(
-                    transactionsToMine.Count,
-                    Policy.GetMinTransactionsPerBlock(index),
-                    "Below Minimum Transactions");
             }
 
             _logger.Information(

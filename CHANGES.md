@@ -26,6 +26,11 @@ To be released.
     `AsyncDelegate<T>` (which was `EventHandler`).  [[#1523]]
  -  Removed unused `BlockChain<T>` type parameter from
     `IStagePolicy<T>.Iterate()` method.  [[#1553], [#1556]]
+ -  Removed unsued `HashAlgorithmTable` class.  [[#1600]]
+ -  `BlockChain<T>.MineBlock()` and `BlockChain<T>.GatherTransactionsToMine()`
+    now additionally accepts `maxBlockBytes` parameter of type `int`.  [[#1600]]
+ -  Removed `BlockInsufficientTxsException` and
+    `BlockExceedingTransactionsException` classes.  [[#1504], [#1600]]
 
 ### Backward-incompatible network protocol changes
 
@@ -44,11 +49,22 @@ To be released.
  -  Added `MessageCodec` class which inherits `IMessageCodec<T>`.
     [[#1523]]
  -  Added `IStagePolicy<T>.GetNextTxNonce()` method.  [[#1553], [#1556]]
+ -  Added `InvalidBlockBytesLengthException`, `InvalidBlockTxCountException`,
+    `InvalidBlockHashAlgorithmTypeException`, and
+    `InvalidBlockTxCountPerSignerException` classes.  [[#1504], [#1600]]
 
 ### Behavioral changes
 
  -  Improved performance of `MerkleTrie.Commit()` and
     `BlockChain<T>.ExecuteActions()` methods.   [[#1554], [#1570]]
+ -  `Swarm<T>.MineBlock()` now throws `OperationCanceledException` instead
+    of `BlockInsufficientTxsException` when there are no sufficient number
+    of blocks to mine.  [[#1600]]
+ -  Default implementation `BlockPolicy<T>.ValidateNextBlock()`
+    of `IBlockPolicy<T>` now validates the type for `Block<T>.HashAlgorithm`,
+    size for `Block<T>.BytesLength`, and count for `Block<T>.Transactions`.
+    [[#1504], [#1600]]
+
 
 ### Bug fixes
 
@@ -59,8 +75,10 @@ To be released.
  -  Subcommands under `planet store` no more supports the store type
     `monorocksdb`.  [[#1513], [#1579]]
 
+[#1504]: https://github.com/planetarium/libplanet/issues/1504
 [#1579]: https://github.com/planetarium/libplanet/pull/1579
 [#1523]: https://github.com/planetarium/libplanet/pull/1523
+[#1600]: https://github.com/planetarium/libplanet/pull/1600
 
 
 Version 0.20.2

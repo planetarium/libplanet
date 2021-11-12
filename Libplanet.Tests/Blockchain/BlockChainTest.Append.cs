@@ -297,7 +297,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public void AppendThrowsInvalidBlockBytesLengthException()
+        public void AppendFailDueToInvalidBytesLength()
         {
             HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             DumbAction[] manyActions =
@@ -322,7 +322,7 @@ namespace Libplanet.Tests.Blockchain
             }
 
             var miner = new PrivateKey();
-            var block1 = TestUtils.MineNext(
+            var block = TestUtils.MineNext(
                 _blockChain.Genesis,
                 _blockChain.Policy.GetHashAlgorithm,
                 heavyTxs,
@@ -330,18 +330,16 @@ namespace Libplanet.Tests.Blockchain
                 difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
                 blockInterval: TimeSpan.FromSeconds(10)
             ).Evaluate(miner, _blockChain);
-            int maxBytes = _blockChain.Policy.GetMaxBlockBytes(block1.Index);
-            Assert.True(block1.BytesLength > maxBytes);
+            int maxBytes = _blockChain.Policy.GetMaxBlockBytes(block.Index);
+            Assert.True(block.BytesLength > maxBytes);
 
             var e = Assert.Throws<InvalidBlockBytesLengthException>(() =>
-                _blockChain.Append(block1)
+                _blockChain.Append(block)
             );
-            Assert.Equal(maxBytes, e.MaxBlockBytesLength);
-            Assert.Equal(block1.BytesLength, e.BlockBytesLength);
         }
 
         [Fact]
-        public void AppendThrowsBlockExceedingTransactionsException()
+        public void AppendFailDueToInvalidTxCount()
         {
             int nonce = 0;
             int maxTxs = _blockChain.Policy.GetMaxTransactionsPerBlock(1);
@@ -357,7 +355,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.True(manyTxs.Count > maxTxs);
 
             var miner = new PrivateKey();
-            Block<DumbAction> block1 = TestUtils.MineNext(
+            Block<DumbAction> block = TestUtils.MineNext(
                 _blockChain.Genesis,
                 _blockChain.Policy.GetHashAlgorithm,
                 manyTxs,
@@ -365,14 +363,11 @@ namespace Libplanet.Tests.Blockchain
                 difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
                 blockInterval: TimeSpan.FromSeconds(10)
             ).Evaluate(miner, _blockChain);
-            Assert.Equal(manyTxs.Count, block1.Transactions.Count());
+            Assert.Equal(manyTxs.Count, block.Transactions.Count());
 
-            var e = Assert.Throws<BlockExceedingTransactionsException>(() =>
-                _blockChain.Append(block1)
+            var e = Assert.Throws<InvalidBlockTxCountException>(() =>
+                _blockChain.Append(block)
             );
-            Assert.IsAssignableFrom<InvalidBlockException>(e);
-            Assert.Equal(maxTxs, e.MaxTransactionsPerBlock);
-            Assert.Equal(manyTxs.Count, e.ActualTransactions);
         }
 
         [Fact]
