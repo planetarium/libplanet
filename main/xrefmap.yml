@@ -2164,24 +2164,24 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).MakeTransaction
   nameWithType: BlockChain<T>.MakeTransaction
   nameWithType.vb: BlockChain(Of T).MakeTransaction
-- uid: Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Crypto.PrivateKey,DateTimeOffset,System.Boolean,System.Int32,System.Int32,IComparer{Libplanet.Tx.Transaction{`0}},CancellationToken)
-  name: MineBlock(PrivateKey, DateTimeOffset, Boolean, Int32, Int32, IComparer<Transaction<T>>, CancellationToken)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MineBlock_Libplanet_Crypto_PrivateKey_DateTimeOffset_System_Boolean_System_Int32_System_Int32_IComparer_Libplanet_Tx_Transaction__0___CancellationToken_
-  commentId: M:Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Crypto.PrivateKey,DateTimeOffset,System.Boolean,System.Int32,System.Int32,IComparer{Libplanet.Tx.Transaction{`0}},CancellationToken)
-  name.vb: MineBlock(PrivateKey, DateTimeOffset, Boolean, Int32, Int32, IComparer(Of Transaction(Of T)), CancellationToken)
-  fullName: Libplanet.Blockchain.BlockChain<T>.MineBlock(Libplanet.Crypto.PrivateKey, DateTimeOffset, System.Boolean, System.Int32, System.Int32, IComparer<Libplanet.Tx.Transaction<T>>, CancellationToken)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).MineBlock(Libplanet.Crypto.PrivateKey, DateTimeOffset, System.Boolean, System.Int32, System.Int32, IComparer(Of Libplanet.Tx.Transaction(Of T)), CancellationToken)
-  nameWithType: BlockChain<T>.MineBlock(PrivateKey, DateTimeOffset, Boolean, Int32, Int32, IComparer<Transaction<T>>, CancellationToken)
-  nameWithType.vb: BlockChain(Of T).MineBlock(PrivateKey, DateTimeOffset, Boolean, Int32, Int32, IComparer(Of Transaction(Of T)), CancellationToken)
-- uid: Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Crypto.PrivateKey,System.Nullable{DateTimeOffset},System.Nullable{System.Boolean},System.Nullable{System.Int32},System.Nullable{System.Int32},IComparer{Libplanet.Tx.Transaction{`0}},System.Nullable{CancellationToken})
-  name: MineBlock(PrivateKey, Nullable<DateTimeOffset>, Nullable<Boolean>, Nullable<Int32>, Nullable<Int32>, IComparer<Transaction<T>>, Nullable<CancellationToken>)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MineBlock_Libplanet_Crypto_PrivateKey_System_Nullable_DateTimeOffset__System_Nullable_System_Boolean__System_Nullable_System_Int32__System_Nullable_System_Int32__IComparer_Libplanet_Tx_Transaction__0___System_Nullable_CancellationToken__
-  commentId: M:Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Crypto.PrivateKey,System.Nullable{DateTimeOffset},System.Nullable{System.Boolean},System.Nullable{System.Int32},System.Nullable{System.Int32},IComparer{Libplanet.Tx.Transaction{`0}},System.Nullable{CancellationToken})
-  name.vb: MineBlock(PrivateKey, Nullable(Of DateTimeOffset), Nullable(Of Boolean), Nullable(Of Int32), Nullable(Of Int32), IComparer(Of Transaction(Of T)), Nullable(Of CancellationToken))
-  fullName: Libplanet.Blockchain.BlockChain<T>.MineBlock(Libplanet.Crypto.PrivateKey, System.Nullable<DateTimeOffset>, System.Nullable<System.Boolean>, System.Nullable<System.Int32>, System.Nullable<System.Int32>, IComparer<Libplanet.Tx.Transaction<T>>, System.Nullable<CancellationToken>)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).MineBlock(Libplanet.Crypto.PrivateKey, System.Nullable(Of DateTimeOffset), System.Nullable(Of System.Boolean), System.Nullable(Of System.Int32), System.Nullable(Of System.Int32), IComparer(Of Libplanet.Tx.Transaction(Of T)), System.Nullable(Of CancellationToken))
-  nameWithType: BlockChain<T>.MineBlock(PrivateKey, Nullable<DateTimeOffset>, Nullable<Boolean>, Nullable<Int32>, Nullable<Int32>, IComparer<Transaction<T>>, Nullable<CancellationToken>)
-  nameWithType.vb: BlockChain(Of T).MineBlock(PrivateKey, Nullable(Of DateTimeOffset), Nullable(Of Boolean), Nullable(Of Int32), Nullable(Of Int32), IComparer(Of Transaction(Of T)), Nullable(Of CancellationToken))
+- uid: Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Crypto.PrivateKey,DateTimeOffset,System.Boolean,System.Int32,System.Int32,System.Int32,IComparer{Libplanet.Tx.Transaction{`0}},CancellationToken)
+  name: MineBlock(PrivateKey, DateTimeOffset, Boolean, Int32, Int32, Int32, IComparer<Transaction<T>>, CancellationToken)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MineBlock_Libplanet_Crypto_PrivateKey_DateTimeOffset_System_Boolean_System_Int32_System_Int32_System_Int32_IComparer_Libplanet_Tx_Transaction__0___CancellationToken_
+  commentId: M:Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Crypto.PrivateKey,DateTimeOffset,System.Boolean,System.Int32,System.Int32,System.Int32,IComparer{Libplanet.Tx.Transaction{`0}},CancellationToken)
+  name.vb: MineBlock(PrivateKey, DateTimeOffset, Boolean, Int32, Int32, Int32, IComparer(Of Transaction(Of T)), CancellationToken)
+  fullName: Libplanet.Blockchain.BlockChain<T>.MineBlock(Libplanet.Crypto.PrivateKey, DateTimeOffset, System.Boolean, System.Int32, System.Int32, System.Int32, IComparer<Libplanet.Tx.Transaction<T>>, CancellationToken)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).MineBlock(Libplanet.Crypto.PrivateKey, DateTimeOffset, System.Boolean, System.Int32, System.Int32, System.Int32, IComparer(Of Libplanet.Tx.Transaction(Of T)), CancellationToken)
+  nameWithType: BlockChain<T>.MineBlock(PrivateKey, DateTimeOffset, Boolean, Int32, Int32, Int32, IComparer<Transaction<T>>, CancellationToken)
+  nameWithType.vb: BlockChain(Of T).MineBlock(PrivateKey, DateTimeOffset, Boolean, Int32, Int32, Int32, IComparer(Of Transaction(Of T)), CancellationToken)
+- uid: Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Crypto.PrivateKey,System.Nullable{DateTimeOffset},System.Nullable{System.Boolean},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},IComparer{Libplanet.Tx.Transaction{`0}},System.Nullable{CancellationToken})
+  name: MineBlock(PrivateKey, Nullable<DateTimeOffset>, Nullable<Boolean>, Nullable<Int32>, Nullable<Int32>, Nullable<Int32>, IComparer<Transaction<T>>, Nullable<CancellationToken>)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MineBlock_Libplanet_Crypto_PrivateKey_System_Nullable_DateTimeOffset__System_Nullable_System_Boolean__System_Nullable_System_Int32__System_Nullable_System_Int32__System_Nullable_System_Int32__IComparer_Libplanet_Tx_Transaction__0___System_Nullable_CancellationToken__
+  commentId: M:Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Crypto.PrivateKey,System.Nullable{DateTimeOffset},System.Nullable{System.Boolean},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},IComparer{Libplanet.Tx.Transaction{`0}},System.Nullable{CancellationToken})
+  name.vb: MineBlock(PrivateKey, Nullable(Of DateTimeOffset), Nullable(Of Boolean), Nullable(Of Int32), Nullable(Of Int32), Nullable(Of Int32), IComparer(Of Transaction(Of T)), Nullable(Of CancellationToken))
+  fullName: Libplanet.Blockchain.BlockChain<T>.MineBlock(Libplanet.Crypto.PrivateKey, System.Nullable<DateTimeOffset>, System.Nullable<System.Boolean>, System.Nullable<System.Int32>, System.Nullable<System.Int32>, System.Nullable<System.Int32>, IComparer<Libplanet.Tx.Transaction<T>>, System.Nullable<CancellationToken>)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).MineBlock(Libplanet.Crypto.PrivateKey, System.Nullable(Of DateTimeOffset), System.Nullable(Of System.Boolean), System.Nullable(Of System.Int32), System.Nullable(Of System.Int32), System.Nullable(Of System.Int32), IComparer(Of Libplanet.Tx.Transaction(Of T)), System.Nullable(Of CancellationToken))
+  nameWithType: BlockChain<T>.MineBlock(PrivateKey, Nullable<DateTimeOffset>, Nullable<Boolean>, Nullable<Int32>, Nullable<Int32>, Nullable<Int32>, IComparer<Transaction<T>>, Nullable<CancellationToken>)
+  nameWithType.vb: BlockChain(Of T).MineBlock(PrivateKey, Nullable(Of DateTimeOffset), Nullable(Of Boolean), Nullable(Of Int32), Nullable(Of Int32), Nullable(Of Int32), IComparer(Of Transaction(Of T)), Nullable(Of CancellationToken))
 - uid: Libplanet.Blockchain.BlockChain`1.MineBlock*
   name: MineBlock
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MineBlock_
@@ -6659,70 +6659,6 @@ references:
   fullName.vb: Libplanet.Blocks.BlockContentExtensions.Copy(Of T)(Libplanet.Blocks.IBlockContent(Of T))
   nameWithType: BlockContentExtensions.Copy<T>(IBlockContent<T>)
   nameWithType.vb: BlockContentExtensions.Copy(Of T)(IBlockContent(Of T))
-- uid: Libplanet.Blocks.BlockExceedingTransactionsException
-  name: BlockExceedingTransactionsException
-  href: api/Libplanet.Blocks.BlockExceedingTransactionsException.html
-  commentId: T:Libplanet.Blocks.BlockExceedingTransactionsException
-  fullName: Libplanet.Blocks.BlockExceedingTransactionsException
-  nameWithType: BlockExceedingTransactionsException
-- uid: Libplanet.Blocks.BlockExceedingTransactionsException.#ctor(SerializationInfo,StreamingContext)
-  name: BlockExceedingTransactionsException(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Blocks.BlockExceedingTransactionsException.html#Libplanet_Blocks_BlockExceedingTransactionsException__ctor_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Blocks.BlockExceedingTransactionsException.#ctor(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Blocks.BlockExceedingTransactionsException.BlockExceedingTransactionsException(SerializationInfo, StreamingContext)
-  nameWithType: BlockExceedingTransactionsException.BlockExceedingTransactionsException(SerializationInfo, StreamingContext)
-- uid: Libplanet.Blocks.BlockExceedingTransactionsException.#ctor(System.Int32,System.Int32,System.String)
-  name: BlockExceedingTransactionsException(Int32, Int32, String)
-  href: api/Libplanet.Blocks.BlockExceedingTransactionsException.html#Libplanet_Blocks_BlockExceedingTransactionsException__ctor_System_Int32_System_Int32_System_String_
-  commentId: M:Libplanet.Blocks.BlockExceedingTransactionsException.#ctor(System.Int32,System.Int32,System.String)
-  fullName: Libplanet.Blocks.BlockExceedingTransactionsException.BlockExceedingTransactionsException(System.Int32, System.Int32, System.String)
-  nameWithType: BlockExceedingTransactionsException.BlockExceedingTransactionsException(Int32, Int32, String)
-- uid: Libplanet.Blocks.BlockExceedingTransactionsException.#ctor*
-  name: BlockExceedingTransactionsException
-  href: api/Libplanet.Blocks.BlockExceedingTransactionsException.html#Libplanet_Blocks_BlockExceedingTransactionsException__ctor_
-  commentId: Overload:Libplanet.Blocks.BlockExceedingTransactionsException.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Blocks.BlockExceedingTransactionsException.BlockExceedingTransactionsException
-  nameWithType: BlockExceedingTransactionsException.BlockExceedingTransactionsException
-- uid: Libplanet.Blocks.BlockExceedingTransactionsException.ActualTransactions
-  name: ActualTransactions
-  href: api/Libplanet.Blocks.BlockExceedingTransactionsException.html#Libplanet_Blocks_BlockExceedingTransactionsException_ActualTransactions
-  commentId: P:Libplanet.Blocks.BlockExceedingTransactionsException.ActualTransactions
-  fullName: Libplanet.Blocks.BlockExceedingTransactionsException.ActualTransactions
-  nameWithType: BlockExceedingTransactionsException.ActualTransactions
-- uid: Libplanet.Blocks.BlockExceedingTransactionsException.ActualTransactions*
-  name: ActualTransactions
-  href: api/Libplanet.Blocks.BlockExceedingTransactionsException.html#Libplanet_Blocks_BlockExceedingTransactionsException_ActualTransactions_
-  commentId: Overload:Libplanet.Blocks.BlockExceedingTransactionsException.ActualTransactions
-  isSpec: "True"
-  fullName: Libplanet.Blocks.BlockExceedingTransactionsException.ActualTransactions
-  nameWithType: BlockExceedingTransactionsException.ActualTransactions
-- uid: Libplanet.Blocks.BlockExceedingTransactionsException.GetObjectData(SerializationInfo,StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Blocks.BlockExceedingTransactionsException.html#Libplanet_Blocks_BlockExceedingTransactionsException_GetObjectData_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Blocks.BlockExceedingTransactionsException.GetObjectData(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Blocks.BlockExceedingTransactionsException.GetObjectData(SerializationInfo, StreamingContext)
-  nameWithType: BlockExceedingTransactionsException.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Blocks.BlockExceedingTransactionsException.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Blocks.BlockExceedingTransactionsException.html#Libplanet_Blocks_BlockExceedingTransactionsException_GetObjectData_
-  commentId: Overload:Libplanet.Blocks.BlockExceedingTransactionsException.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Blocks.BlockExceedingTransactionsException.GetObjectData
-  nameWithType: BlockExceedingTransactionsException.GetObjectData
-- uid: Libplanet.Blocks.BlockExceedingTransactionsException.MaxTransactionsPerBlock
-  name: MaxTransactionsPerBlock
-  href: api/Libplanet.Blocks.BlockExceedingTransactionsException.html#Libplanet_Blocks_BlockExceedingTransactionsException_MaxTransactionsPerBlock
-  commentId: P:Libplanet.Blocks.BlockExceedingTransactionsException.MaxTransactionsPerBlock
-  fullName: Libplanet.Blocks.BlockExceedingTransactionsException.MaxTransactionsPerBlock
-  nameWithType: BlockExceedingTransactionsException.MaxTransactionsPerBlock
-- uid: Libplanet.Blocks.BlockExceedingTransactionsException.MaxTransactionsPerBlock*
-  name: MaxTransactionsPerBlock
-  href: api/Libplanet.Blocks.BlockExceedingTransactionsException.html#Libplanet_Blocks_BlockExceedingTransactionsException_MaxTransactionsPerBlock_
-  commentId: Overload:Libplanet.Blocks.BlockExceedingTransactionsException.MaxTransactionsPerBlock
-  isSpec: "True"
-  fullName: Libplanet.Blocks.BlockExceedingTransactionsException.MaxTransactionsPerBlock
-  nameWithType: BlockExceedingTransactionsException.MaxTransactionsPerBlock
 - uid: Libplanet.Blocks.BlockExcerptExtensions
   name: BlockExcerptExtensions
   href: api/Libplanet.Blocks.BlockExcerptExtensions.html
@@ -7163,64 +7099,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.BlockHeader.TxHash
   nameWithType: BlockHeader.TxHash
-- uid: Libplanet.Blocks.BlockInsufficientTxsException
-  name: BlockInsufficientTxsException
-  href: api/Libplanet.Blocks.BlockInsufficientTxsException.html
-  commentId: T:Libplanet.Blocks.BlockInsufficientTxsException
-  fullName: Libplanet.Blocks.BlockInsufficientTxsException
-  nameWithType: BlockInsufficientTxsException
-- uid: Libplanet.Blocks.BlockInsufficientTxsException.#ctor(System.Int32,System.Int32,System.String)
-  name: BlockInsufficientTxsException(Int32, Int32, String)
-  href: api/Libplanet.Blocks.BlockInsufficientTxsException.html#Libplanet_Blocks_BlockInsufficientTxsException__ctor_System_Int32_System_Int32_System_String_
-  commentId: M:Libplanet.Blocks.BlockInsufficientTxsException.#ctor(System.Int32,System.Int32,System.String)
-  fullName: Libplanet.Blocks.BlockInsufficientTxsException.BlockInsufficientTxsException(System.Int32, System.Int32, System.String)
-  nameWithType: BlockInsufficientTxsException.BlockInsufficientTxsException(Int32, Int32, String)
-- uid: Libplanet.Blocks.BlockInsufficientTxsException.#ctor*
-  name: BlockInsufficientTxsException
-  href: api/Libplanet.Blocks.BlockInsufficientTxsException.html#Libplanet_Blocks_BlockInsufficientTxsException__ctor_
-  commentId: Overload:Libplanet.Blocks.BlockInsufficientTxsException.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Blocks.BlockInsufficientTxsException.BlockInsufficientTxsException
-  nameWithType: BlockInsufficientTxsException.BlockInsufficientTxsException
-- uid: Libplanet.Blocks.BlockInsufficientTxsException.GetObjectData(SerializationInfo,StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Blocks.BlockInsufficientTxsException.html#Libplanet_Blocks_BlockInsufficientTxsException_GetObjectData_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Blocks.BlockInsufficientTxsException.GetObjectData(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Blocks.BlockInsufficientTxsException.GetObjectData(SerializationInfo, StreamingContext)
-  nameWithType: BlockInsufficientTxsException.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Blocks.BlockInsufficientTxsException.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Blocks.BlockInsufficientTxsException.html#Libplanet_Blocks_BlockInsufficientTxsException_GetObjectData_
-  commentId: Overload:Libplanet.Blocks.BlockInsufficientTxsException.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Blocks.BlockInsufficientTxsException.GetObjectData
-  nameWithType: BlockInsufficientTxsException.GetObjectData
-- uid: Libplanet.Blocks.BlockInsufficientTxsException.MinTransactionsPerBlock
-  name: MinTransactionsPerBlock
-  href: api/Libplanet.Blocks.BlockInsufficientTxsException.html#Libplanet_Blocks_BlockInsufficientTxsException_MinTransactionsPerBlock
-  commentId: P:Libplanet.Blocks.BlockInsufficientTxsException.MinTransactionsPerBlock
-  fullName: Libplanet.Blocks.BlockInsufficientTxsException.MinTransactionsPerBlock
-  nameWithType: BlockInsufficientTxsException.MinTransactionsPerBlock
-- uid: Libplanet.Blocks.BlockInsufficientTxsException.MinTransactionsPerBlock*
-  name: MinTransactionsPerBlock
-  href: api/Libplanet.Blocks.BlockInsufficientTxsException.html#Libplanet_Blocks_BlockInsufficientTxsException_MinTransactionsPerBlock_
-  commentId: Overload:Libplanet.Blocks.BlockInsufficientTxsException.MinTransactionsPerBlock
-  isSpec: "True"
-  fullName: Libplanet.Blocks.BlockInsufficientTxsException.MinTransactionsPerBlock
-  nameWithType: BlockInsufficientTxsException.MinTransactionsPerBlock
-- uid: Libplanet.Blocks.BlockInsufficientTxsException.TransactionCount
-  name: TransactionCount
-  href: api/Libplanet.Blocks.BlockInsufficientTxsException.html#Libplanet_Blocks_BlockInsufficientTxsException_TransactionCount
-  commentId: P:Libplanet.Blocks.BlockInsufficientTxsException.TransactionCount
-  fullName: Libplanet.Blocks.BlockInsufficientTxsException.TransactionCount
-  nameWithType: BlockInsufficientTxsException.TransactionCount
-- uid: Libplanet.Blocks.BlockInsufficientTxsException.TransactionCount*
-  name: TransactionCount
-  href: api/Libplanet.Blocks.BlockInsufficientTxsException.html#Libplanet_Blocks_BlockInsufficientTxsException_TransactionCount_
-  commentId: Overload:Libplanet.Blocks.BlockInsufficientTxsException.TransactionCount
-  isSpec: "True"
-  fullName: Libplanet.Blocks.BlockInsufficientTxsException.TransactionCount
-  nameWithType: BlockInsufficientTxsException.TransactionCount
 - uid: Libplanet.Blocks.BlockMarshaler
   name: BlockMarshaler
   href: api/Libplanet.Blocks.BlockMarshaler.html
@@ -7826,28 +7704,6 @@ references:
   commentId: T:Libplanet.Blocks.HashAlgorithmGetter
   fullName: Libplanet.Blocks.HashAlgorithmGetter
   nameWithType: HashAlgorithmGetter
-- uid: Libplanet.Blocks.HashAlgorithmTable
-  name: HashAlgorithmTable
-  href: api/Libplanet.Blocks.HashAlgorithmTable.html
-  commentId: T:Libplanet.Blocks.HashAlgorithmTable
-  fullName: Libplanet.Blocks.HashAlgorithmTable
-  nameWithType: HashAlgorithmTable
-- uid: Libplanet.Blocks.HashAlgorithmTable.ToHashAlgorithmGetter(IEnumerable{KeyValuePair{System.Int64,Libplanet.HashAlgorithmType}})
-  name: ToHashAlgorithmGetter(IEnumerable<KeyValuePair<Int64, HashAlgorithmType>>)
-  href: api/Libplanet.Blocks.HashAlgorithmTable.html#Libplanet_Blocks_HashAlgorithmTable_ToHashAlgorithmGetter_IEnumerable_KeyValuePair_System_Int64_Libplanet_HashAlgorithmType___
-  commentId: M:Libplanet.Blocks.HashAlgorithmTable.ToHashAlgorithmGetter(IEnumerable{KeyValuePair{System.Int64,Libplanet.HashAlgorithmType}})
-  name.vb: ToHashAlgorithmGetter(IEnumerable(Of KeyValuePair(Of Int64, HashAlgorithmType)))
-  fullName: Libplanet.Blocks.HashAlgorithmTable.ToHashAlgorithmGetter(IEnumerable<KeyValuePair<System.Int64, Libplanet.HashAlgorithmType>>)
-  fullName.vb: Libplanet.Blocks.HashAlgorithmTable.ToHashAlgorithmGetter(IEnumerable(Of KeyValuePair(Of System.Int64, Libplanet.HashAlgorithmType)))
-  nameWithType: HashAlgorithmTable.ToHashAlgorithmGetter(IEnumerable<KeyValuePair<Int64, HashAlgorithmType>>)
-  nameWithType.vb: HashAlgorithmTable.ToHashAlgorithmGetter(IEnumerable(Of KeyValuePair(Of Int64, HashAlgorithmType)))
-- uid: Libplanet.Blocks.HashAlgorithmTable.ToHashAlgorithmGetter*
-  name: ToHashAlgorithmGetter
-  href: api/Libplanet.Blocks.HashAlgorithmTable.html#Libplanet_Blocks_HashAlgorithmTable_ToHashAlgorithmGetter_
-  commentId: Overload:Libplanet.Blocks.HashAlgorithmTable.ToHashAlgorithmGetter
-  isSpec: "True"
-  fullName: Libplanet.Blocks.HashAlgorithmTable.ToHashAlgorithmGetter
-  nameWithType: HashAlgorithmTable.ToHashAlgorithmGetter
 - uid: Libplanet.Blocks.IBlockContent`1
   name: IBlockContent<T>
   href: api/Libplanet.Blocks.IBlockContent-1.html
@@ -8093,12 +7949,12 @@ references:
   commentId: T:Libplanet.Blocks.InvalidBlockBytesLengthException
   fullName: Libplanet.Blocks.InvalidBlockBytesLengthException
   nameWithType: InvalidBlockBytesLengthException
-- uid: Libplanet.Blocks.InvalidBlockBytesLengthException.#ctor(System.Int32,System.Int32,System.String)
-  name: InvalidBlockBytesLengthException(Int32, Int32, String)
-  href: api/Libplanet.Blocks.InvalidBlockBytesLengthException.html#Libplanet_Blocks_InvalidBlockBytesLengthException__ctor_System_Int32_System_Int32_System_String_
-  commentId: M:Libplanet.Blocks.InvalidBlockBytesLengthException.#ctor(System.Int32,System.Int32,System.String)
-  fullName: Libplanet.Blocks.InvalidBlockBytesLengthException.InvalidBlockBytesLengthException(System.Int32, System.Int32, System.String)
-  nameWithType: InvalidBlockBytesLengthException.InvalidBlockBytesLengthException(Int32, Int32, String)
+- uid: Libplanet.Blocks.InvalidBlockBytesLengthException.#ctor(System.String,System.Int32)
+  name: InvalidBlockBytesLengthException(String, Int32)
+  href: api/Libplanet.Blocks.InvalidBlockBytesLengthException.html#Libplanet_Blocks_InvalidBlockBytesLengthException__ctor_System_String_System_Int32_
+  commentId: M:Libplanet.Blocks.InvalidBlockBytesLengthException.#ctor(System.String,System.Int32)
+  fullName: Libplanet.Blocks.InvalidBlockBytesLengthException.InvalidBlockBytesLengthException(System.String, System.Int32)
+  nameWithType: InvalidBlockBytesLengthException.InvalidBlockBytesLengthException(String, Int32)
 - uid: Libplanet.Blocks.InvalidBlockBytesLengthException.#ctor*
   name: InvalidBlockBytesLengthException
   href: api/Libplanet.Blocks.InvalidBlockBytesLengthException.html#Libplanet_Blocks_InvalidBlockBytesLengthException__ctor_
@@ -8106,19 +7962,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.InvalidBlockBytesLengthException.InvalidBlockBytesLengthException
   nameWithType: InvalidBlockBytesLengthException.InvalidBlockBytesLengthException
-- uid: Libplanet.Blocks.InvalidBlockBytesLengthException.BlockBytesLength
-  name: BlockBytesLength
-  href: api/Libplanet.Blocks.InvalidBlockBytesLengthException.html#Libplanet_Blocks_InvalidBlockBytesLengthException_BlockBytesLength
-  commentId: P:Libplanet.Blocks.InvalidBlockBytesLengthException.BlockBytesLength
-  fullName: Libplanet.Blocks.InvalidBlockBytesLengthException.BlockBytesLength
-  nameWithType: InvalidBlockBytesLengthException.BlockBytesLength
-- uid: Libplanet.Blocks.InvalidBlockBytesLengthException.BlockBytesLength*
-  name: BlockBytesLength
-  href: api/Libplanet.Blocks.InvalidBlockBytesLengthException.html#Libplanet_Blocks_InvalidBlockBytesLengthException_BlockBytesLength_
-  commentId: Overload:Libplanet.Blocks.InvalidBlockBytesLengthException.BlockBytesLength
+- uid: Libplanet.Blocks.InvalidBlockBytesLengthException.BytesLength
+  name: BytesLength
+  href: api/Libplanet.Blocks.InvalidBlockBytesLengthException.html#Libplanet_Blocks_InvalidBlockBytesLengthException_BytesLength
+  commentId: P:Libplanet.Blocks.InvalidBlockBytesLengthException.BytesLength
+  fullName: Libplanet.Blocks.InvalidBlockBytesLengthException.BytesLength
+  nameWithType: InvalidBlockBytesLengthException.BytesLength
+- uid: Libplanet.Blocks.InvalidBlockBytesLengthException.BytesLength*
+  name: BytesLength
+  href: api/Libplanet.Blocks.InvalidBlockBytesLengthException.html#Libplanet_Blocks_InvalidBlockBytesLengthException_BytesLength_
+  commentId: Overload:Libplanet.Blocks.InvalidBlockBytesLengthException.BytesLength
   isSpec: "True"
-  fullName: Libplanet.Blocks.InvalidBlockBytesLengthException.BlockBytesLength
-  nameWithType: InvalidBlockBytesLengthException.BlockBytesLength
+  fullName: Libplanet.Blocks.InvalidBlockBytesLengthException.BytesLength
+  nameWithType: InvalidBlockBytesLengthException.BytesLength
 - uid: Libplanet.Blocks.InvalidBlockBytesLengthException.GetObjectData(SerializationInfo,StreamingContext)
   name: GetObjectData(SerializationInfo, StreamingContext)
   href: api/Libplanet.Blocks.InvalidBlockBytesLengthException.html#Libplanet_Blocks_InvalidBlockBytesLengthException_GetObjectData_SerializationInfo_StreamingContext_
@@ -8132,19 +7988,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.InvalidBlockBytesLengthException.GetObjectData
   nameWithType: InvalidBlockBytesLengthException.GetObjectData
-- uid: Libplanet.Blocks.InvalidBlockBytesLengthException.MaxBlockBytesLength
-  name: MaxBlockBytesLength
-  href: api/Libplanet.Blocks.InvalidBlockBytesLengthException.html#Libplanet_Blocks_InvalidBlockBytesLengthException_MaxBlockBytesLength
-  commentId: P:Libplanet.Blocks.InvalidBlockBytesLengthException.MaxBlockBytesLength
-  fullName: Libplanet.Blocks.InvalidBlockBytesLengthException.MaxBlockBytesLength
-  nameWithType: InvalidBlockBytesLengthException.MaxBlockBytesLength
-- uid: Libplanet.Blocks.InvalidBlockBytesLengthException.MaxBlockBytesLength*
-  name: MaxBlockBytesLength
-  href: api/Libplanet.Blocks.InvalidBlockBytesLengthException.html#Libplanet_Blocks_InvalidBlockBytesLengthException_MaxBlockBytesLength_
-  commentId: Overload:Libplanet.Blocks.InvalidBlockBytesLengthException.MaxBlockBytesLength
-  isSpec: "True"
-  fullName: Libplanet.Blocks.InvalidBlockBytesLengthException.MaxBlockBytesLength
-  nameWithType: InvalidBlockBytesLengthException.MaxBlockBytesLength
 - uid: Libplanet.Blocks.InvalidBlockDifficultyException
   name: InvalidBlockDifficultyException
   href: api/Libplanet.Blocks.InvalidBlockDifficultyException.html
@@ -8189,6 +8032,51 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.InvalidBlockException.InvalidBlockException
   nameWithType: InvalidBlockException.InvalidBlockException
+- uid: Libplanet.Blocks.InvalidBlockHashAlgorithmTypeException
+  name: InvalidBlockHashAlgorithmTypeException
+  href: api/Libplanet.Blocks.InvalidBlockHashAlgorithmTypeException.html
+  commentId: T:Libplanet.Blocks.InvalidBlockHashAlgorithmTypeException
+  fullName: Libplanet.Blocks.InvalidBlockHashAlgorithmTypeException
+  nameWithType: InvalidBlockHashAlgorithmTypeException
+- uid: Libplanet.Blocks.InvalidBlockHashAlgorithmTypeException.#ctor(System.String,Libplanet.HashAlgorithmType)
+  name: InvalidBlockHashAlgorithmTypeException(String, HashAlgorithmType)
+  href: api/Libplanet.Blocks.InvalidBlockHashAlgorithmTypeException.html#Libplanet_Blocks_InvalidBlockHashAlgorithmTypeException__ctor_System_String_Libplanet_HashAlgorithmType_
+  commentId: M:Libplanet.Blocks.InvalidBlockHashAlgorithmTypeException.#ctor(System.String,Libplanet.HashAlgorithmType)
+  fullName: Libplanet.Blocks.InvalidBlockHashAlgorithmTypeException.InvalidBlockHashAlgorithmTypeException(System.String, Libplanet.HashAlgorithmType)
+  nameWithType: InvalidBlockHashAlgorithmTypeException.InvalidBlockHashAlgorithmTypeException(String, HashAlgorithmType)
+- uid: Libplanet.Blocks.InvalidBlockHashAlgorithmTypeException.#ctor*
+  name: InvalidBlockHashAlgorithmTypeException
+  href: api/Libplanet.Blocks.InvalidBlockHashAlgorithmTypeException.html#Libplanet_Blocks_InvalidBlockHashAlgorithmTypeException__ctor_
+  commentId: Overload:Libplanet.Blocks.InvalidBlockHashAlgorithmTypeException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Blocks.InvalidBlockHashAlgorithmTypeException.InvalidBlockHashAlgorithmTypeException
+  nameWithType: InvalidBlockHashAlgorithmTypeException.InvalidBlockHashAlgorithmTypeException
+- uid: Libplanet.Blocks.InvalidBlockHashAlgorithmTypeException.GetObjectData(SerializationInfo,StreamingContext)
+  name: GetObjectData(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Blocks.InvalidBlockHashAlgorithmTypeException.html#Libplanet_Blocks_InvalidBlockHashAlgorithmTypeException_GetObjectData_SerializationInfo_StreamingContext_
+  commentId: M:Libplanet.Blocks.InvalidBlockHashAlgorithmTypeException.GetObjectData(SerializationInfo,StreamingContext)
+  fullName: Libplanet.Blocks.InvalidBlockHashAlgorithmTypeException.GetObjectData(SerializationInfo, StreamingContext)
+  nameWithType: InvalidBlockHashAlgorithmTypeException.GetObjectData(SerializationInfo, StreamingContext)
+- uid: Libplanet.Blocks.InvalidBlockHashAlgorithmTypeException.GetObjectData*
+  name: GetObjectData
+  href: api/Libplanet.Blocks.InvalidBlockHashAlgorithmTypeException.html#Libplanet_Blocks_InvalidBlockHashAlgorithmTypeException_GetObjectData_
+  commentId: Overload:Libplanet.Blocks.InvalidBlockHashAlgorithmTypeException.GetObjectData
+  isSpec: "True"
+  fullName: Libplanet.Blocks.InvalidBlockHashAlgorithmTypeException.GetObjectData
+  nameWithType: InvalidBlockHashAlgorithmTypeException.GetObjectData
+- uid: Libplanet.Blocks.InvalidBlockHashAlgorithmTypeException.HashAlgorithmName
+  name: HashAlgorithmName
+  href: api/Libplanet.Blocks.InvalidBlockHashAlgorithmTypeException.html#Libplanet_Blocks_InvalidBlockHashAlgorithmTypeException_HashAlgorithmName
+  commentId: P:Libplanet.Blocks.InvalidBlockHashAlgorithmTypeException.HashAlgorithmName
+  fullName: Libplanet.Blocks.InvalidBlockHashAlgorithmTypeException.HashAlgorithmName
+  nameWithType: InvalidBlockHashAlgorithmTypeException.HashAlgorithmName
+- uid: Libplanet.Blocks.InvalidBlockHashAlgorithmTypeException.HashAlgorithmName*
+  name: HashAlgorithmName
+  href: api/Libplanet.Blocks.InvalidBlockHashAlgorithmTypeException.html#Libplanet_Blocks_InvalidBlockHashAlgorithmTypeException_HashAlgorithmName_
+  commentId: Overload:Libplanet.Blocks.InvalidBlockHashAlgorithmTypeException.HashAlgorithmName
+  isSpec: "True"
+  fullName: Libplanet.Blocks.InvalidBlockHashAlgorithmTypeException.HashAlgorithmName
+  nameWithType: InvalidBlockHashAlgorithmTypeException.HashAlgorithmName
 - uid: Libplanet.Blocks.InvalidBlockHashException
   name: InvalidBlockHashException
   href: api/Libplanet.Blocks.InvalidBlockHashException.html
@@ -8640,6 +8528,109 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.InvalidBlockTotalDifficultyException.TotalDifficulty
   nameWithType: InvalidBlockTotalDifficultyException.TotalDifficulty
+- uid: Libplanet.Blocks.InvalidBlockTxCountException
+  name: InvalidBlockTxCountException
+  href: api/Libplanet.Blocks.InvalidBlockTxCountException.html
+  commentId: T:Libplanet.Blocks.InvalidBlockTxCountException
+  fullName: Libplanet.Blocks.InvalidBlockTxCountException
+  nameWithType: InvalidBlockTxCountException
+- uid: Libplanet.Blocks.InvalidBlockTxCountException.#ctor(System.String,System.Int32)
+  name: InvalidBlockTxCountException(String, Int32)
+  href: api/Libplanet.Blocks.InvalidBlockTxCountException.html#Libplanet_Blocks_InvalidBlockTxCountException__ctor_System_String_System_Int32_
+  commentId: M:Libplanet.Blocks.InvalidBlockTxCountException.#ctor(System.String,System.Int32)
+  fullName: Libplanet.Blocks.InvalidBlockTxCountException.InvalidBlockTxCountException(System.String, System.Int32)
+  nameWithType: InvalidBlockTxCountException.InvalidBlockTxCountException(String, Int32)
+- uid: Libplanet.Blocks.InvalidBlockTxCountException.#ctor*
+  name: InvalidBlockTxCountException
+  href: api/Libplanet.Blocks.InvalidBlockTxCountException.html#Libplanet_Blocks_InvalidBlockTxCountException__ctor_
+  commentId: Overload:Libplanet.Blocks.InvalidBlockTxCountException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Blocks.InvalidBlockTxCountException.InvalidBlockTxCountException
+  nameWithType: InvalidBlockTxCountException.InvalidBlockTxCountException
+- uid: Libplanet.Blocks.InvalidBlockTxCountException.GetObjectData(SerializationInfo,StreamingContext)
+  name: GetObjectData(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Blocks.InvalidBlockTxCountException.html#Libplanet_Blocks_InvalidBlockTxCountException_GetObjectData_SerializationInfo_StreamingContext_
+  commentId: M:Libplanet.Blocks.InvalidBlockTxCountException.GetObjectData(SerializationInfo,StreamingContext)
+  fullName: Libplanet.Blocks.InvalidBlockTxCountException.GetObjectData(SerializationInfo, StreamingContext)
+  nameWithType: InvalidBlockTxCountException.GetObjectData(SerializationInfo, StreamingContext)
+- uid: Libplanet.Blocks.InvalidBlockTxCountException.GetObjectData*
+  name: GetObjectData
+  href: api/Libplanet.Blocks.InvalidBlockTxCountException.html#Libplanet_Blocks_InvalidBlockTxCountException_GetObjectData_
+  commentId: Overload:Libplanet.Blocks.InvalidBlockTxCountException.GetObjectData
+  isSpec: "True"
+  fullName: Libplanet.Blocks.InvalidBlockTxCountException.GetObjectData
+  nameWithType: InvalidBlockTxCountException.GetObjectData
+- uid: Libplanet.Blocks.InvalidBlockTxCountException.TxCount
+  name: TxCount
+  href: api/Libplanet.Blocks.InvalidBlockTxCountException.html#Libplanet_Blocks_InvalidBlockTxCountException_TxCount
+  commentId: P:Libplanet.Blocks.InvalidBlockTxCountException.TxCount
+  fullName: Libplanet.Blocks.InvalidBlockTxCountException.TxCount
+  nameWithType: InvalidBlockTxCountException.TxCount
+- uid: Libplanet.Blocks.InvalidBlockTxCountException.TxCount*
+  name: TxCount
+  href: api/Libplanet.Blocks.InvalidBlockTxCountException.html#Libplanet_Blocks_InvalidBlockTxCountException_TxCount_
+  commentId: Overload:Libplanet.Blocks.InvalidBlockTxCountException.TxCount
+  isSpec: "True"
+  fullName: Libplanet.Blocks.InvalidBlockTxCountException.TxCount
+  nameWithType: InvalidBlockTxCountException.TxCount
+- uid: Libplanet.Blocks.InvalidBlockTxCountPerSignerException
+  name: InvalidBlockTxCountPerSignerException
+  href: api/Libplanet.Blocks.InvalidBlockTxCountPerSignerException.html
+  commentId: T:Libplanet.Blocks.InvalidBlockTxCountPerSignerException
+  fullName: Libplanet.Blocks.InvalidBlockTxCountPerSignerException
+  nameWithType: InvalidBlockTxCountPerSignerException
+- uid: Libplanet.Blocks.InvalidBlockTxCountPerSignerException.#ctor(System.String,Libplanet.Address,System.Int32)
+  name: InvalidBlockTxCountPerSignerException(String, Address, Int32)
+  href: api/Libplanet.Blocks.InvalidBlockTxCountPerSignerException.html#Libplanet_Blocks_InvalidBlockTxCountPerSignerException__ctor_System_String_Libplanet_Address_System_Int32_
+  commentId: M:Libplanet.Blocks.InvalidBlockTxCountPerSignerException.#ctor(System.String,Libplanet.Address,System.Int32)
+  fullName: Libplanet.Blocks.InvalidBlockTxCountPerSignerException.InvalidBlockTxCountPerSignerException(System.String, Libplanet.Address, System.Int32)
+  nameWithType: InvalidBlockTxCountPerSignerException.InvalidBlockTxCountPerSignerException(String, Address, Int32)
+- uid: Libplanet.Blocks.InvalidBlockTxCountPerSignerException.#ctor*
+  name: InvalidBlockTxCountPerSignerException
+  href: api/Libplanet.Blocks.InvalidBlockTxCountPerSignerException.html#Libplanet_Blocks_InvalidBlockTxCountPerSignerException__ctor_
+  commentId: Overload:Libplanet.Blocks.InvalidBlockTxCountPerSignerException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Blocks.InvalidBlockTxCountPerSignerException.InvalidBlockTxCountPerSignerException
+  nameWithType: InvalidBlockTxCountPerSignerException.InvalidBlockTxCountPerSignerException
+- uid: Libplanet.Blocks.InvalidBlockTxCountPerSignerException.GetObjectData(SerializationInfo,StreamingContext)
+  name: GetObjectData(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Blocks.InvalidBlockTxCountPerSignerException.html#Libplanet_Blocks_InvalidBlockTxCountPerSignerException_GetObjectData_SerializationInfo_StreamingContext_
+  commentId: M:Libplanet.Blocks.InvalidBlockTxCountPerSignerException.GetObjectData(SerializationInfo,StreamingContext)
+  fullName: Libplanet.Blocks.InvalidBlockTxCountPerSignerException.GetObjectData(SerializationInfo, StreamingContext)
+  nameWithType: InvalidBlockTxCountPerSignerException.GetObjectData(SerializationInfo, StreamingContext)
+- uid: Libplanet.Blocks.InvalidBlockTxCountPerSignerException.GetObjectData*
+  name: GetObjectData
+  href: api/Libplanet.Blocks.InvalidBlockTxCountPerSignerException.html#Libplanet_Blocks_InvalidBlockTxCountPerSignerException_GetObjectData_
+  commentId: Overload:Libplanet.Blocks.InvalidBlockTxCountPerSignerException.GetObjectData
+  isSpec: "True"
+  fullName: Libplanet.Blocks.InvalidBlockTxCountPerSignerException.GetObjectData
+  nameWithType: InvalidBlockTxCountPerSignerException.GetObjectData
+- uid: Libplanet.Blocks.InvalidBlockTxCountPerSignerException.Signer
+  name: Signer
+  href: api/Libplanet.Blocks.InvalidBlockTxCountPerSignerException.html#Libplanet_Blocks_InvalidBlockTxCountPerSignerException_Signer
+  commentId: P:Libplanet.Blocks.InvalidBlockTxCountPerSignerException.Signer
+  fullName: Libplanet.Blocks.InvalidBlockTxCountPerSignerException.Signer
+  nameWithType: InvalidBlockTxCountPerSignerException.Signer
+- uid: Libplanet.Blocks.InvalidBlockTxCountPerSignerException.Signer*
+  name: Signer
+  href: api/Libplanet.Blocks.InvalidBlockTxCountPerSignerException.html#Libplanet_Blocks_InvalidBlockTxCountPerSignerException_Signer_
+  commentId: Overload:Libplanet.Blocks.InvalidBlockTxCountPerSignerException.Signer
+  isSpec: "True"
+  fullName: Libplanet.Blocks.InvalidBlockTxCountPerSignerException.Signer
+  nameWithType: InvalidBlockTxCountPerSignerException.Signer
+- uid: Libplanet.Blocks.InvalidBlockTxCountPerSignerException.TxCount
+  name: TxCount
+  href: api/Libplanet.Blocks.InvalidBlockTxCountPerSignerException.html#Libplanet_Blocks_InvalidBlockTxCountPerSignerException_TxCount
+  commentId: P:Libplanet.Blocks.InvalidBlockTxCountPerSignerException.TxCount
+  fullName: Libplanet.Blocks.InvalidBlockTxCountPerSignerException.TxCount
+  nameWithType: InvalidBlockTxCountPerSignerException.TxCount
+- uid: Libplanet.Blocks.InvalidBlockTxCountPerSignerException.TxCount*
+  name: TxCount
+  href: api/Libplanet.Blocks.InvalidBlockTxCountPerSignerException.html#Libplanet_Blocks_InvalidBlockTxCountPerSignerException_TxCount_
+  commentId: Overload:Libplanet.Blocks.InvalidBlockTxCountPerSignerException.TxCount
+  isSpec: "True"
+  fullName: Libplanet.Blocks.InvalidBlockTxCountPerSignerException.TxCount
+  nameWithType: InvalidBlockTxCountPerSignerException.TxCount
 - uid: Libplanet.Blocks.InvalidBlockTxHashException
   name: InvalidBlockTxHashException
   href: api/Libplanet.Blocks.InvalidBlockTxHashException.html

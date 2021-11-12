@@ -83,6 +83,11 @@ which is awaited until the reply message is sent.  [<a href="https://github.com/
 <code>AsyncDelegate&lt;T&gt;</code> (which was <code>EventHandler</code>).  [<a href="https://github.com/planetarium/libplanet/pull/1523">#1523</a>]</li>
 <li>Removed unused <code>BlockChain&lt;T&gt;</code> type parameter from
 <code>IStagePolicy&lt;T&gt;.Iterate()</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/1553">#1553</a>, <a href="https://github.com/planetarium/libplanet/pull/1556">#1556</a>]</li>
+<li>Removed unsued <code>HashAlgorithmTable</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/1600">#1600</a>]</li>
+<li><code>BlockChain&lt;T&gt;.MineBlock()</code> and <code>BlockChain&lt;T&gt;.GatherTransactionsToMine()</code>
+now additionally accepts <code>maxBlockBytes</code> parameter of type <code>int</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1600">#1600</a>]</li>
+<li>Removed <code>BlockInsufficientTxsException</code> and
+<code>BlockExceedingTransactionsException</code> classes.  [<a href="https://github.com/planetarium/libplanet/issues/1504">#1504</a>, <a href="https://github.com/planetarium/libplanet/pull/1600">#1600</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
@@ -99,11 +104,21 @@ which is awaited until the reply message is sent.  [<a href="https://github.com/
 <li>Added <code>MessageCodec</code> class which inherits <code>IMessageCodec&lt;T&gt;</code>.
 [<a href="https://github.com/planetarium/libplanet/pull/1523">#1523</a>]</li>
 <li>Added <code>IStagePolicy&lt;T&gt;.GetNextTxNonce()</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/1553">#1553</a>, <a href="https://github.com/planetarium/libplanet/pull/1556">#1556</a>]</li>
+<li>Added <code>InvalidBlockBytesLengthException</code>, <code>InvalidBlockTxCountException</code>,
+<code>InvalidBlockHashAlgorithmTypeException</code>, and
+<code>InvalidBlockTxCountPerSignerException</code> classes.  [<a href="https://github.com/planetarium/libplanet/issues/1504">#1504</a>, <a href="https://github.com/planetarium/libplanet/pull/1600">#1600</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
 <li>Improved performance of <code>MerkleTrie.Commit()</code> and
 <code>BlockChain&lt;T&gt;.ExecuteActions()</code> methods.   [[#1554], [#1570]]</li>
+<li><code>Swarm&lt;T&gt;.MineBlock()</code> now throws <code>OperationCanceledException</code> instead
+of <code>BlockInsufficientTxsException</code> when there are no sufficient number
+of blocks to mine.  [<a href="https://github.com/planetarium/libplanet/pull/1600">#1600</a>]</li>
+<li>Default implementation <code>BlockPolicy&lt;T&gt;.ValidateNextBlock()</code>
+of <code>IBlockPolicy&lt;T&gt;</code> now validates the type for <code>Block&lt;T&gt;.HashAlgorithm</code>,
+size for <code>Block&lt;T&gt;.BytesLength</code>, and count for <code>Block&lt;T&gt;.Transactions</code>.
+[<a href="https://github.com/planetarium/libplanet/issues/1504">#1504</a>, <a href="https://github.com/planetarium/libplanet/pull/1600">#1600</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="cli-tools">CLI tools</h3>

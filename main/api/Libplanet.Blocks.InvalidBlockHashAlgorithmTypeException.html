@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class InvalidBlockProtocolVersionException
+    <title>Class InvalidBlockHashAlgorithmTypeException
    | Libplanet </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class InvalidBlockProtocolVersionException
+    <meta name="title" content="Class InvalidBlockHashAlgorithmTypeException
    | Libplanet ">
     <meta name="generator" content="docfx 2.58.2.0">
     
@@ -68,45 +68,45 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Libplanet.Blocks.InvalidBlockProtocolVersionException">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Blocks.InvalidBlockHashAlgorithmTypeException">
   
   
-  <h1 id="Libplanet_Blocks_InvalidBlockProtocolVersionException" data-uid="Libplanet.Blocks.InvalidBlockProtocolVersionException" class="text-break">Class InvalidBlockProtocolVersionException
+  <h1 id="Libplanet_Blocks_InvalidBlockHashAlgorithmTypeException" data-uid="Libplanet.Blocks.InvalidBlockHashAlgorithmTypeException" class="text-break">Class InvalidBlockHashAlgorithmTypeException
   </h1>
-  <div class="markdown level0 summary"><p>The exception that is thrown when a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>'s
-<a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_ProtocolVersion">ProtocolVersion</a> (or a <a class="xref" href="Libplanet.Blocks.BlockHeader.html">BlockHeader</a>'s
-<a class="xref" href="Libplanet.Blocks.BlockHeader.html#Libplanet_Blocks_BlockHeader_ProtocolVersion">ProtocolVersion</a>) is invalid.</p>
+  <div class="markdown level0 summary"><p>An exception thrown when <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_HashAlgorithm">HashAlgorithm</a>
+does not match the one provided by <a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html">IBlockPolicy&lt;T&gt;</a>.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><a class="xref" href="Libplanet.Blocks.InvalidBlockException.html">InvalidBlockException</a></div>
-    <div class="level2"><span class="xref">InvalidBlockProtocolVersionException</span></div>
+    <div class="level2"><a class="xref" href="Libplanet.Blocks.BlockPolicyViolationException.html">BlockPolicyViolationException</a></div>
+    <div class="level3"><span class="xref">InvalidBlockHashAlgorithmTypeException</span></div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Blocks.html">Libplanet.Blocks</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
-  <h5 id="Libplanet_Blocks_InvalidBlockProtocolVersionException_syntax">Syntax</h5>
+  <h5 id="Libplanet_Blocks_InvalidBlockHashAlgorithmTypeException_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class InvalidBlockProtocolVersionException : InvalidBlockException</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class InvalidBlockHashAlgorithmTypeException : BlockPolicyViolationException</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_InvalidBlockProtocolVersionException__ctor_System_Int32_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.InvalidBlockProtocolVersionException.%23ctor(System.Int32%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_InvalidBlockHashAlgorithmTypeException__ctor_System_String_Libplanet_HashAlgorithmType_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.InvalidBlockHashAlgorithmTypeException.%23ctor(System.String%2CLibplanet.HashAlgorithmType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/InvalidBlockProtocolVersionException.cs/#L21">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/InvalidBlockHashAlgorithmTypeException.cs/#L22">View Source</a>
   </span>
-  <a id="Libplanet_Blocks_InvalidBlockProtocolVersionException__ctor_" data-uid="Libplanet.Blocks.InvalidBlockProtocolVersionException.#ctor*"></a>
-  <h4 id="Libplanet_Blocks_InvalidBlockProtocolVersionException__ctor_System_Int32_System_String_" data-uid="Libplanet.Blocks.InvalidBlockProtocolVersionException.#ctor(System.Int32,System.String)">InvalidBlockProtocolVersionException(Int32, String)</h4>
-  <div class="markdown level1 summary"><p>Initializes a new instance of <a class="xref" href="Libplanet.Blocks.InvalidBlockProtocolVersionException.html">InvalidBlockProtocolVersionException</a> class.</p>
+  <a id="Libplanet_Blocks_InvalidBlockHashAlgorithmTypeException__ctor_" data-uid="Libplanet.Blocks.InvalidBlockHashAlgorithmTypeException.#ctor*"></a>
+  <h4 id="Libplanet_Blocks_InvalidBlockHashAlgorithmTypeException__ctor_System_String_Libplanet_HashAlgorithmType_" data-uid="Libplanet.Blocks.InvalidBlockHashAlgorithmTypeException.#ctor(System.String,Libplanet.HashAlgorithmType)">InvalidBlockHashAlgorithmTypeException(String, HashAlgorithmType)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of <a class="xref" href="Libplanet.Blocks.InvalidBlockTxCountException.html">InvalidBlockTxCountException</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public InvalidBlockProtocolVersionException(int actualProtocolVersion, string message)</code></pre>
+    <pre><code class="lang-csharp hljs">public InvalidBlockHashAlgorithmTypeException(string message, HashAlgorithmType hashAlgorithm)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -119,15 +119,16 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td><span class="parametername">actualProtocolVersion</span></td>
-        <td><p>The actual block protocol version which is invalid.</p>
-</td>
-      </tr>
-      <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">message</span></td>
         <td><p>The message that describes the error.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.HashAlgorithmType.html">HashAlgorithmType</a></td>
+        <td><span class="parametername">hashAlgorithm</span></td>
+        <td><p>The invalid <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_HashAlgorithm">HashAlgorithm</a>
+according to <a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html">IBlockPolicy&lt;T&gt;</a>.</p>
 </td>
       </tr>
     </tbody>
@@ -136,19 +137,18 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_InvalidBlockProtocolVersionException_ActualProtocolVersion.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.InvalidBlockProtocolVersionException.ActualProtocolVersion%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_InvalidBlockHashAlgorithmTypeException_HashAlgorithmName.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.InvalidBlockHashAlgorithmTypeException.HashAlgorithmName%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/InvalidBlockProtocolVersionException.cs/#L39">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/InvalidBlockHashAlgorithmTypeException.cs/#L38">View Source</a>
   </span>
-  <a id="Libplanet_Blocks_InvalidBlockProtocolVersionException_ActualProtocolVersion_" data-uid="Libplanet.Blocks.InvalidBlockProtocolVersionException.ActualProtocolVersion*"></a>
-  <h4 id="Libplanet_Blocks_InvalidBlockProtocolVersionException_ActualProtocolVersion" data-uid="Libplanet.Blocks.InvalidBlockProtocolVersionException.ActualProtocolVersion">ActualProtocolVersion</h4>
-  <div class="markdown level1 summary"><p>The actual block protocol version which is invalid.</p>
-</div>
+  <a id="Libplanet_Blocks_InvalidBlockHashAlgorithmTypeException_HashAlgorithmName_" data-uid="Libplanet.Blocks.InvalidBlockHashAlgorithmTypeException.HashAlgorithmName*"></a>
+  <h4 id="Libplanet_Blocks_InvalidBlockHashAlgorithmTypeException_HashAlgorithmName" data-uid="Libplanet.Blocks.InvalidBlockHashAlgorithmTypeException.HashAlgorithmName">HashAlgorithmName</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int ActualProtocolVersion { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public string HashAlgorithmName { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -160,7 +160,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -169,13 +169,13 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_InvalidBlockProtocolVersionException_GetObjectData_SerializationInfo_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.InvalidBlockProtocolVersionException.GetObjectData(SerializationInfo%2CStreamingContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_InvalidBlockHashAlgorithmTypeException_GetObjectData_SerializationInfo_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.InvalidBlockHashAlgorithmTypeException.GetObjectData(SerializationInfo%2CStreamingContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/InvalidBlockProtocolVersionException.cs/#L42">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/InvalidBlockHashAlgorithmTypeException.cs/#L40">View Source</a>
   </span>
-  <a id="Libplanet_Blocks_InvalidBlockProtocolVersionException_GetObjectData_" data-uid="Libplanet.Blocks.InvalidBlockProtocolVersionException.GetObjectData*"></a>
-  <h4 id="Libplanet_Blocks_InvalidBlockProtocolVersionException_GetObjectData_SerializationInfo_StreamingContext_" data-uid="Libplanet.Blocks.InvalidBlockProtocolVersionException.GetObjectData(SerializationInfo,StreamingContext)">GetObjectData(SerializationInfo, StreamingContext)</h4>
+  <a id="Libplanet_Blocks_InvalidBlockHashAlgorithmTypeException_GetObjectData_" data-uid="Libplanet.Blocks.InvalidBlockHashAlgorithmTypeException.GetObjectData*"></a>
+  <h4 id="Libplanet_Blocks_InvalidBlockHashAlgorithmTypeException_GetObjectData_SerializationInfo_StreamingContext_" data-uid="Libplanet.Blocks.InvalidBlockHashAlgorithmTypeException.GetObjectData(SerializationInfo,StreamingContext)">GetObjectData(SerializationInfo, StreamingContext)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -212,10 +212,10 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_InvalidBlockProtocolVersionException.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.InvalidBlockProtocolVersionException%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_InvalidBlockHashAlgorithmTypeException.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.InvalidBlockHashAlgorithmTypeException%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/InvalidBlockProtocolVersionException.cs/#L12" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/InvalidBlockHashAlgorithmTypeException.cs/#L13" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

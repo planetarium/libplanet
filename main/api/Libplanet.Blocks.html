@@ -88,20 +88,11 @@ block that is not yet mined.</p>
       <h4><a class="xref" href="Libplanet.Blocks.BlockContentExtensions.html">BlockContentExtensions</a></h4>
       <section><p>Convenient extension methods for <a class="xref" href="Libplanet.Blocks.IBlockContent-1.html">IBlockContent&lt;T&gt;</a>.</p>
 </section>
-      <h4><a class="xref" href="Libplanet.Blocks.BlockExceedingTransactionsException.html">BlockExceedingTransactionsException</a></h4>
-      <section><p>The exception that is thrown when a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> has too many
-<a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Transactions">Transactions</a> (i.e., more than the number specified by
-<a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_GetMaxTransactionsPerBlock_System_Int64_">GetMaxTransactionsPerBlock(Int64)</a>).</p>
-</section>
       <h4><a class="xref" href="Libplanet.Blocks.BlockExcerptExtensions.html">BlockExcerptExtensions</a></h4>
       <section><p>The extension methods for <a class="xref" href="Libplanet.Blocks.IBlockExcerpt.html">IBlockExcerpt</a>.</p>
 </section>
       <h4><a class="xref" href="Libplanet.Blocks.BlockHeader.html">BlockHeader</a></h4>
       <section><p>Block header containing information about <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>s except transactions.</p>
-</section>
-      <h4><a class="xref" href="Libplanet.Blocks.BlockInsufficientTxsException.html">BlockInsufficientTxsException</a></h4>
-      <section><p>The exception that is thrown when a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>'s
-<a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Transactions">Transactions</a> Count is too small.</p>
 </section>
       <h4><a class="xref" href="Libplanet.Blocks.BlockMarshaler.html">BlockMarshaler</a></h4>
       <section><p>Marshaling and unmarshaling block data.</p>
@@ -118,18 +109,19 @@ metadata of a block that is not yet mined nor proven.</p>
       <section><p>An exception <em>returned</em> when a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> violates
 a <a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html">IBlockPolicy&lt;T&gt;</a>.</p>
 </section>
-      <h4><a class="xref" href="Libplanet.Blocks.HashAlgorithmTable.html">HashAlgorithmTable</a></h4>
-      <section></section>
       <h4><a class="xref" href="Libplanet.Blocks.InvalidBlockBytesLengthException.html">InvalidBlockBytesLengthException</a></h4>
-      <section><p>The exception that is thrown when a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>'s
-<a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_BytesLength">BytesLength</a> (i.e., the length of bytes in its serialized format)
-is too long.</p>
+      <section><p>An exception thrown when <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_BytesLength">BytesLength</a>
+does not follow the constraint provided by <a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html">IBlockPolicy&lt;T&gt;</a>.</p>
 </section>
       <h4><a class="xref" href="Libplanet.Blocks.InvalidBlockDifficultyException.html">InvalidBlockDifficultyException</a></h4>
       <section></section>
       <h4><a class="xref" href="Libplanet.Blocks.InvalidBlockException.html">InvalidBlockException</a></h4>
       <section><p>Serves as the base class for exceptions related <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>s' integrity and
 validity.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Blocks.InvalidBlockHashAlgorithmTypeException.html">InvalidBlockHashAlgorithmTypeException</a></h4>
+      <section><p>An exception thrown when <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_HashAlgorithm">HashAlgorithm</a>
+does not match the one provided by <a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html">IBlockPolicy&lt;T&gt;</a>.</p>
 </section>
       <h4><a class="xref" href="Libplanet.Blocks.InvalidBlockHashException.html">InvalidBlockHashException</a></h4>
       <section></section>
@@ -162,6 +154,14 @@ mismatches to the state root hash of the trie on the block executed in local.</p
       <section></section>
       <h4><a class="xref" href="Libplanet.Blocks.InvalidBlockTotalDifficultyException.html">InvalidBlockTotalDifficultyException</a></h4>
       <section></section>
+      <h4><a class="xref" href="Libplanet.Blocks.InvalidBlockTxCountException.html">InvalidBlockTxCountException</a></h4>
+      <section><p>An exception thrown when the count of <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Transactions">Transactions</a>
+does not follow the constraint provided by <a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html">IBlockPolicy&lt;T&gt;</a>.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Blocks.InvalidBlockTxCountPerSignerException.html">InvalidBlockTxCountPerSignerException</a></h4>
+      <section><p>An exception thrown when the count of <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Transactions">Transactions</a>
+does not follow the constraint provided by <a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html">IBlockPolicy&lt;T&gt;</a>.</p>
+</section>
       <h4><a class="xref" href="Libplanet.Blocks.InvalidBlockTxHashException.html">InvalidBlockTxHashException</a></h4>
       <section></section>
       <h4><a class="xref" href="Libplanet.Blocks.InvalidGenesisBlockException.html">InvalidGenesisBlockException</a></h4>
