@@ -157,7 +157,7 @@ namespace Libplanet.Net
             if (Running)
             {
                 _logger.Warning(
-                    "Swarm is scheduled to destruct, but NetMQTransport progress is still running."
+                    "Swarm is scheduled to destruct, but Transport progress is still running."
                 );
             }
         }
@@ -910,10 +910,10 @@ namespace Libplanet.Net
                         // FIXME: First value of totalBlocksToDownload is -1.
                         _logger.Verbose(
                             "Request block hashes to {Peer} (height: {PeerHeight}) using " +
-                            "locator {@Locator}... ({CurrentIndex}/{EstimatedTotalCount})",
+                            "locator {LocatorHead}... ({CurrentIndex}/{EstimatedTotalCount})",
                             peer,
                             peerIndex,
-                            locator.Select(h => h.ToString()),
+                            locator.FirstOrDefault(),
                             downloaded.Count,
                             totalBlockHashesToDownload
                         );
