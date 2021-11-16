@@ -67,6 +67,8 @@ Released on November 16, 2021.
     `monorocksdb`.  [[#1513], [#1579]]
 
 [#1504]: https://github.com/planetarium/libplanet/issues/1504
+[#1554]: https://github.com/planetarium/libplanet/issues/1554
+[#1570]: https://github.com/planetarium/libplanet/pull/1570
 [#1579]: https://github.com/planetarium/libplanet/pull/1579
 [#1523]: https://github.com/planetarium/libplanet/pull/1523
 [#1600]: https://github.com/planetarium/libplanet/pull/1600
