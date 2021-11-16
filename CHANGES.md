@@ -4,9 +4,7 @@ Libplanet changelog
 Version 0.21.0
 --------------
 
-To be released.
-
-### Deprecated APIs
+Released on November 16, 2021.
 
 ### Backward-incompatible API changes
 
@@ -31,10 +29,6 @@ To be released.
     now additionally accepts `maxBlockBytes` parameter of type `int`.  [[#1600]]
  -  Removed `BlockInsufficientTxsException` and
     `BlockExceedingTransactionsException` classes.  [[#1504], [#1600]]
-
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
 
 ### Added APIs
 
@@ -64,9 +58,6 @@ To be released.
     of `IBlockPolicy<T>` now validates the type for `Block<T>.HashAlgorithm`,
     size for `Block<T>.BytesLength`, and count for `Block<T>.Transactions`.
     [[#1504], [#1600]]
-
-
-### Bug fixes
 
 ### CLI tools
 
