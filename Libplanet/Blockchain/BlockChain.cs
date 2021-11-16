@@ -157,7 +157,9 @@ namespace Libplanet.Blockchain
                 Store.SetCanonicalChainId(Id);
             }
 
-            _logger = Log.ForContext<BlockChain<T>>()
+            _logger = Log
+                .ForContext<BlockChain<T>>()
+                .ForContext("Source", $"[{nameof(BlockChain<T>)}] ")
                 .ForContext("CanonicalChainId", Id);
             ActionEvaluator = new ActionEvaluator<T>(
                 Policy.BlockAction,
@@ -998,7 +1000,8 @@ namespace Libplanet.Blockchain
             {
                 _rwlock.EnterReadLock();
 
-                _logger.Debug("Finding branchpoint (locator: {Locator}).", locator);
+                _logger.Debug(
+                    "Finding a branchpoint with locator {LocatorHead}.", locator.FirstOrDefault());
                 foreach (BlockHash hash in locator)
                 {
                     if (_blocks.ContainsKey(hash)
@@ -1006,15 +1009,17 @@ namespace Libplanet.Blockchain
                         && hash.Equals(Store.IndexBlockHash(Id, block.Index)))
                     {
                         _logger.Debug(
-                            "Found the branchpoint (locator: {Locator}): {Hash}.",
-                            locator,
+                            "Found a branchpoint with locator {LocatorHead}: {Hash}.",
+                            locator.FirstOrDefault(),
                             hash
                         );
                         return hash;
                     }
                 }
 
-                _logger.Debug("Failed to find the branchpoint (locator: {Locator}).", locator);
+                _logger.Debug(
+                    "Failed to find a branchpoint locator {LocatorHead}.",
+                    locator.FirstOrDefault());
                 return null;
             }
             finally

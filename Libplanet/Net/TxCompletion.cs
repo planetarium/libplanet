@@ -82,8 +82,8 @@ namespace Libplanet.Net
             }
 
             _logger.Debug(
-                "Unaware transactions to receive: {@TxIds}.",
-                required.Select(txid => txid.ToString())
+                "Unaware transactions to receive: {TxIdCount}.",
+                required.Count
             );
 
             if (_txSyncTasks.ContainsKey(peer))
@@ -141,7 +141,7 @@ namespace Libplanet.Net
 
                                 _logger.Debug(
                                     "Received transaction {TxId} will not be staged " +
-                                    "since it does not follows policy.",
+                                    "since it does not follow policy.",
                                     tx.Id);
                                 _blockChain.StagePolicy.Ignore(_blockChain, tx.Id);
                                 return false;
@@ -157,7 +157,7 @@ namespace Libplanet.Net
                         {
                             _logger.Error(
                                 ite,
-                                "{TxId} will not be staged since it is invalid.",
+                                "Transaction {TxId} will not be staged since it is invalid.",
                                 tx.Id);
                         }
                     }
@@ -166,8 +166,8 @@ namespace Libplanet.Net
                     {
                         TxReceived.Set();
                         _logger.Debug(
-                            "Txs staged successfully: {@TxIds}",
-                            txs.Select(tx => tx.Id.ToString()));
+                            "{TxCount} txs staged successfully.",
+                            txs.Count);
 
                         // TODO: txs includes transaction which were ignored due to its nonce,
                         // which should not be re-broadcasted.
@@ -176,8 +176,8 @@ namespace Libplanet.Net
                     else
                     {
                         _logger.Information(
-                            "Failed to get transactions to stage: {@TxIds}",
-                            _requiredTxIds[peer].Select(txId => txId.ToString()));
+                            "Failed to get {TxIdCount} transactions to stage.",
+                            _requiredTxIds[peer].Count);
                     }
                 }
                 catch (Exception)

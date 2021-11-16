@@ -20,7 +20,9 @@ namespace Libplanet.Net
 
                 case GetChainStatus getChainStatus:
                 {
-                    _logger.Debug($"Received a {nameof(GetChainStatus)} message.");
+                    _logger.Debug(
+                        "Received a {MessageType} message.",
+                        nameof(Messages.GetChainStatus));
 
                     // This is based on the assumption that genesis block always exists.
                     Block<T> tip = BlockChain.Tip;
@@ -41,11 +43,10 @@ namespace Libplanet.Net
 
                 case GetBlockHashes getBlockHashes:
                 {
-                    const string msg =
-                        "Received a " + nameof(GetBlockHashes) + " message " +
-                        "(stop: {Stop}).";
-                    BlockHash[] locatorArray = getBlockHashes.Locator.ToArray();
-                    _logger.Debug(msg, getBlockHashes.Stop);
+                    _logger.Debug(
+                        "Received a {MessageType} message (stop: {Stop}).",
+                        nameof(Messages.GetBlockHashes),
+                        getBlockHashes.Stop);
                     BlockChain.FindNextHashes(
                         getBlockHashes.Locator,
                         getBlockHashes.Stop,
@@ -54,10 +55,13 @@ namespace Libplanet.Net
                         out long? offset,
                         out IReadOnlyList<BlockHash> hashes
                     );
-                    const string resultMsg =
-                        "Found hashes after the branchpoint (stop: {Stop}): " +
-                        "{Hashes} (offset: {Offset}.";
-                    _logger.Debug(resultMsg, getBlockHashes.Stop, hashes, offset);
+                    _logger.Debug(
+                        "Found {HashCount} hashes after the branchpoint (offset: {Offset}) " +
+                        "with locator {LocatorHead} (stop: {Stop}).",
+                        hashes.Count,
+                        offset,
+                        getBlockHashes.Locator.FirstOrDefault(),
+                        getBlockHashes.Stop);
                     var reply = new BlockHashes(offset, hashes)
                     {
                         Identity = getBlockHashes.Identity,
@@ -80,7 +84,9 @@ namespace Libplanet.Net
                     break;
 
                 case BlockHashes _:
-                    _logger.Error($"{nameof(BlockHashes)} messages are only for IBD.");
+                    _logger.Error(
+                        "{MessageType} messages are only for IBD.",
+                        nameof(Messages.BlockHashes));
                     break;
 
                 case BlockHeaderMessage blockHeader:
@@ -100,9 +106,9 @@ namespace Libplanet.Net
             if (!(message.Remote is BoundPeer peer))
             {
                 _logger.Debug(
-                    "BlockHeaderMessage was sent from invalid peer " +
-                    "{PeerAddress}; ignored.",
-                    message.Remote.Address
+                    "{MessageType} message was sent from an invalid peer {Peer}.",
+                    nameof(Messages.BlockHeaderMessage),
+                    message.Remote
                 );
                 return;
             }
@@ -110,9 +116,10 @@ namespace Libplanet.Net
             if (!message.GenesisHash.Equals(BlockChain.Genesis.Hash))
             {
                 _logger.Debug(
-                    "BlockHeaderMessage was sent from the peer " +
-                    "{PeerAddress} with different genesis block {hash}; ignored.",
-                    message.Remote.Address,
+                    "{MessageType} message was sent from a peer {Peer} with " +
+                    "a different genesis block {Hash}.",
+                    nameof(Messages.BlockHeaderMessage),
+                    message.Remote,
                     message.GenesisHash
                 );
                 return;
@@ -128,7 +135,7 @@ namespace Libplanet.Net
             {
                 _logger.Debug(
                     ibe,
-                    "Received header #{BlockIndex} {BlockHash} seems invalid; ignored.",
+                    "Received header #{BlockIndex} {BlockHash} is invalid.",
                     message.HeaderHash,
                     message.HeaderIndex
                 );
@@ -143,7 +150,7 @@ namespace Libplanet.Net
             {
                 _logger.Debug(
                     e,
-                    "Received #{BlockIndex} {BlockHash}'s timestamp is invalid: {Timestamp}.",
+                    "Received header #{BlockIndex} {BlockHash} has invalid timestamp: {Timestamp}.",
                     header.Index,
                     header.Hash,
                     header.Timestamp
@@ -213,16 +220,18 @@ namespace Libplanet.Net
             if (!(message.Remote is BoundPeer peer))
             {
                 _logger.Information(
-                    $"Ignores a {nameof(TxIds)} message because it was sent by an invalid peer: " +
+                    "Ignoring a {MessageType} message because it was sent by an invalid peer: " +
                     "{PeerAddress}.",
+                    nameof(Messages.TxIds),
                     message.Remote?.Address.ToHex()
                 );
                 return;
             }
 
             _logger.Debug(
-                $"Received a {nameof(TxIds)} message: {{@TxIds}}.",
-                message.Ids.Select(txid => txid.ToString())
+                "Received a {MessageType} message with {TxIdCount} txIds.",
+                nameof(Messages.TxIds),
+                message.Ids.Count()
             );
 
             TxCompletion.Demand(peer, message.Ids);
@@ -232,7 +241,8 @@ namespace Libplanet.Net
         {
             string identityHex = ByteUtil.Hex(getData.Identity);
             _logger.Verbose(
-                $"Preparing a {nameof(Blocks)} message to reply to {{Identity}}...",
+                "Preparing a {MessageType} message to reply to {Identity}...",
+                nameof(Messages.Blocks),
                 identityHex
             );
 
@@ -242,7 +252,7 @@ namespace Libplanet.Net
             int i = 1;
             int total = hashes.Count;
             const string logMsg =
-                "Fetching a block #{Index}/{Total} ({Hash}) to include to " +
+                "Fetching block {Index}/{Total} {Hash} to include in " +
                 "a reply to {Identity}...";
             foreach (BlockHash hash in hashes)
             {

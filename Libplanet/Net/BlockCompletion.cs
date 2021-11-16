@@ -128,8 +128,8 @@ namespace Libplanet.Net
             if (block.PreviousHash is { } prevHash)
             {
                 _logger.Verbose(
-                    "The block #{BlockIndex} {BlockHash}'s previous block #{PreviousIndex} " +
-                    "{PreviousHash} is needed; add it to the queue...",
+                    "Block #{BlockIndex} {BlockHash}'s previous block " +
+                    "#{PreviousIndex} {PreviousHash} is needed; adding it to the queue...",
                     block.Index,
                     block.Hash,
                     block.Index - 1,
@@ -141,8 +141,8 @@ namespace Libplanet.Net
             if (_satisfiedBlocks.TryUpdate(block.Hash, true, false))
             {
                 _logger.Verbose(
-                    "Completed the block #{BlockIndex} {BlockHash}. " +
-                    "(Remained incomplete demands: {IncompleteDemands})",
+                    "Completed block #{BlockIndex} {BlockHash}. " +
+                    "(Remaining incomplete demands: {IncompleteDemands})",
                     block.Index,
                     block.Hash,
                     _demands.Count + _satisfiedBlocks.Count(kv => !kv.Value)
@@ -153,8 +153,8 @@ namespace Libplanet.Net
             if (_satisfiedBlocks.ContainsKey(block.Hash))
             {
                 _logger.Verbose(
-                    "The block #{BlockIndex} {BlockHash} is already complete. " +
-                    "(Remained incomplete demands: {IncompleteDemands})",
+                    "Block #{BlockIndex} {BlockHash} is already complete. " +
+                    "(Remaining incomplete demands: {IncompleteDemands})",
                     block.Index,
                     block.Hash,
                     _demands.Count + _satisfiedBlocks.Count(kv => !kv.Value)
@@ -163,8 +163,8 @@ namespace Libplanet.Net
             }
 
             _logger.Verbose(
-                "The block #{BlockIndex} {BlockHash} has never demanded. " +
-                "(Remained incomplete demands: {IncompleteDemands})",
+                "Block #{BlockIndex} {BlockHash} was never demanded. " +
+                "(Remaining incomplete demands: {IncompleteDemands})",
                 block.Index,
                 block.Hash,
                 _demands.Count + _satisfiedBlocks.Count(kv => !kv.Value)
@@ -246,7 +246,7 @@ namespace Libplanet.Net
 
                 yield return pair;
                 _logger.Verbose(
-                    "Completed a block {BlockIndex} {BlockHash} from {Peer}.",
+                    "Completed block #{BlockIndex} {BlockHash} from {Peer}.",
                     pair.Item1.Index,
                     pair.Item1.Hash,
                     pair.Item2
@@ -345,7 +345,7 @@ namespace Libplanet.Net
                         ct
                     );
                     using CancellationTokenRegistration ctr = timeoutToken.Register(() =>
-                        _logger.Debug("Timed out to wait a response from {Peer}.", peer)
+                        _logger.Debug("Timed out while waiting for a response from {Peer}.", peer)
                     );
                     CancellationToken linkedToken = linkedTokenSource.Token;
 
@@ -357,8 +357,7 @@ namespace Libplanet.Net
                         await foreach (Block<TAction> block in blocks)
                         {
                             _logger.Debug(
-                                "Downloaded a block #{BlockIndex} {BlockHash} " +
-                                "from {Peer}.",
+                                "Downloaded block #{BlockIndex} {BlockHash} from {Peer}.",
                                 block.Index,
                                 block.Hash,
                                 peer
@@ -389,13 +388,13 @@ namespace Libplanet.Net
 
                         _logger.Debug(
                             e,
-                            "Timed out to wait a response from {Peer}.",
+                            "Timed out while waiting for a response from {Peer}.",
                             peer
                         );
                     }
                     catch (Exception e)
                     {
-                        _logger.Error(e, "A blockFetcher job (peer: {Peer}) is failed.", peer);
+                        _logger.Error(e, "A blockFetcher job (peer: {Peer}) has failed.", peer);
                     }
                 }
                 finally

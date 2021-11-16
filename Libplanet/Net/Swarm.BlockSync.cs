@@ -350,7 +350,7 @@ namespace Libplanet.Net
                         SourcePeer = sourcePeer,
                     });
                     _logger.Debug(
-                        "Appended a block #{BlockIndex} {BlockHash} " +
+                        "Appended block #{BlockIndex} {BlockHash} " +
                         "to the workspace chain.",
                         block.Index,
                         block.Hash
@@ -359,7 +359,7 @@ namespace Libplanet.Net
 
                 tipCandidate = tempTip;
                 _logger.Debug(
-                    "TipCandidate: #{Index} {Block}",
+                    "TipCandidate: #{Index} {Hash}",
                     tipCandidate?.Index,
                     tipCandidate?.Hash);
 
@@ -557,7 +557,7 @@ namespace Libplanet.Net
             long actionsCount = 0, txsCount = 0, initHeight = branchpoint?.Index + 1 ?? 0;
             int count = 0, totalCount = (int)(workspace.Count - initHeight);
             DateTimeOffset executionStarted = DateTimeOffset.Now;
-            _logger.Debug("Starts to execute actions of {0} blocks.", totalCount);
+            _logger.Debug("Starting to execute actions of {BlockCount} blocks.", totalCount);
             var blockHashes = workspace.IterateBlockHashes((int)initHeight);
             foreach (BlockHash hash in blockHashes)
             {
@@ -576,7 +576,10 @@ namespace Libplanet.Net
                 actionsCount +=
                     transactions.Sum(tx => tx.Actions.Count);
 
-                _logger.Debug("Executed actions in the block {0}.", block.Hash);
+                _logger.Debug(
+                    "Executed actions in block #{Index} {Hash}.",
+                    block.Index,
+                    block.Hash);
                 progress?.Report(new ActionExecutionState()
                 {
                     TotalBlockCount = totalCount,
@@ -693,7 +696,7 @@ namespace Libplanet.Net
                 long receivedBlockCount = currentTipIndex - previousTipIndex;
 
                 const string startMsg =
-                    "{SessionId}: Starts " + nameof(SyncPreviousBlocksAsync) + "()...";
+                    "{SessionId}: Starting " + nameof(SyncPreviousBlocksAsync) + "()...";
                 _logger.Debug(startMsg, logSessionId);
                 FillBlocksAsyncStarted.Set();
                 synced = await SyncBlocksAsync(
@@ -729,7 +732,7 @@ namespace Libplanet.Net
                 )
                 {
                     _logger.Debug(
-                        "{SessionId}: Swap the chain {ChainIdA} for the chain {ChainIdB}...",
+                        "{SessionId}: Swapping chain {ChainIdA} with chain {ChainIdB}...",
                         logSessionId,
                         blockChain.Id,
                         synced.Id
@@ -739,10 +742,10 @@ namespace Libplanet.Net
                         render: true,
                         stateCompleters: null);
                     _logger.Debug(
-                        "{SessionId}: The chain {ChainIdB} replaced {ChainIdA}",
+                        "{SessionId}: Swapped chain {ChainIdA} with chain {ChainIdB}.",
                         logSessionId,
-                        synced.Id,
-                        blockChain.Id
+                        blockChain.Id,
+                        synced.Id
                     );
                 }
             }
@@ -803,10 +806,10 @@ namespace Libplanet.Net
                     if (!hashes.Any())
                     {
                         _logger.Debug(
-                            "{SessionId}/{SubSessionId}: Peer {0} returned no hashes; ignored.",
+                            "{SessionId}/{SubSessionId}: Peer {Peer} returned no hashes; ignored.",
                             logSessionId,
                             subSessionId,
-                            peer.Address.ToHex()
+                            peer
                         );
                         return workspace;
                     }
@@ -827,7 +830,7 @@ namespace Libplanet.Net
                     if (tip is null || branchpoint.Equals(tip.Hash))
                     {
                         _logger.Debug(
-                            "{SessionId}/{SubSessionId}: It doesn't need to fork.",
+                            "{SessionId}/{SubSessionId}: No need to fork.",
                             logSessionId,
                             subSessionId
                         );
@@ -852,7 +855,7 @@ namespace Libplanet.Net
                     else
                     {
                         _logger.Debug(
-                            "{SessionId}/{SubSessionId}: Needs to fork; trying to fork...",
+                            "{SessionId}/{SubSessionId}: Trying to fork...",
                             logSessionId,
                             subSessionId
                         );
@@ -908,7 +911,7 @@ namespace Libplanet.Net
                     await foreach (Block<T> block in blocks)
                     {
                         const string startMsg =
-                            "{SessionId}/{SubSessionId}: Try to append a block " +
+                            "{SessionId}/{SubSessionId}: Trying to append block " +
                             "#{BlockIndex} {BlockHash}...";
                         _logger.Debug(
                             startMsg,
@@ -935,8 +938,7 @@ namespace Libplanet.Net
                             SourcePeer = peer,
                         });
                         const string endMsg =
-                            "{SessionId}/{SubSessionId}: Block #{BlockIndex} {BlockHash} " +
-                            "was appended.";
+                            "{SessionId}/{SubSessionId}: Appended block #{BlockIndex} {BlockHash}.";
                         _logger.Debug(endMsg, logSessionId, subSessionId, block.Index, block.Hash);
                     }
 
@@ -947,7 +949,7 @@ namespace Libplanet.Net
                     if (receivedBlockCountCurrentLoop < FindNextHashesChunkSize && isEndedFirstTime)
                     {
                         _logger.Debug(
-                            "{SessionId}/{SubSessionId}: Got {Blocks} blocks from Peer {Peer} " +
+                            "{SessionId}/{SubSessionId}: Got {Count} blocks from Peer {Peer} " +
                             "(tip: #{TipIndex} {TipHash})",
                             logSessionId,
                             subSessionId,

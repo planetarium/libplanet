@@ -129,7 +129,7 @@ namespace Libplanet.Net.Messages
 
         /// <summary>
         /// <c>byte[]</c>-typed identity of the message.
-        /// If a message B is the reply of the message A,
+        /// If message B is a reply to message A,
         /// B's identity must be set to A's identity.
         /// </summary>
         public byte[]? Identity { get; set; }

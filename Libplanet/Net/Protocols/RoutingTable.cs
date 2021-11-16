@@ -42,7 +42,9 @@ namespace Libplanet.Net.Protocols
             _address = address;
             TableSize = tableSize;
             BucketSize = bucketSize;
-            _logger = Log.ForContext<RoutingTable>();
+            _logger = Log
+                .ForContext<RoutingTable>()
+                .ForContext("Source", $"[{nameof(RoutingTable)}] ");
 
             var random = new Random();
             _buckets = new KBucket[TableSize];
@@ -130,12 +132,12 @@ namespace Libplanet.Net.Protocols
             if (peer.Address.Equals(_address))
             {
                 throw new ArgumentException(
-                    "A peer is disallowed to remove itself to its routing table.",
+                    "A node is disallowed to remove itself from its routing table.",
                     nameof(peer)
                 );
             }
 
-            _logger.Debug("Removing peer {Peer} from routing table.", peer);
+            _logger.Debug("Removing peer {Peer} from the routing table.", peer);
             return BucketOf(peer).RemovePeer(peer);
         }
 
@@ -245,15 +247,12 @@ namespace Libplanet.Net.Protocols
             if (peer.Address.Equals(_address))
             {
                 throw new ArgumentException(
-                    "A peer is disallowed to add itself to its routing table.",
+                    "A node is disallowed to add itself to its routing table.",
                     nameof(peer)
                 );
             }
 
-            _logger.Debug(
-                "Adding a peer {Peer} to peer {Address}'s routing table...",
-                peer,
-                _address);
+            _logger.Debug("Adding peer {Peer} to the routing table...", peer);
             BucketOf(peer).AddPeer(peer, updated);
         }
 
