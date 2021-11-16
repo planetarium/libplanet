@@ -1,6 +1,6 @@
 # This workflow checks if the build (compilation) succeeds without any errors.
-# Although the build is done in CircleCI/AzP as well, to speed up the build time
-# some checks are turned off in CircleCI/AzP.  To conduct the complete checks
+# Although the build is done in CircleCI as well, to speed up the build time
+# some checks are turned off in CircleCI.  To conduct the complete checks
 # there should be this separated workflow.
 # See also the below issues:
 # - https://github.com/planetarium/libplanet/pull/979
