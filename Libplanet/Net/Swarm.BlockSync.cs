@@ -687,7 +687,7 @@ namespace Libplanet.Net
         )
         {
             long previousTipIndex = blockChain.Tip?.Index ?? -1;
-            BlockChain<T> synced = null;
+            BlockChain<T> synced = null, forked = null;
             System.Action renderSwap = () => { };
 
             try
@@ -695,13 +695,15 @@ namespace Libplanet.Net
                 long currentTipIndex = blockChain.Tip?.Index ?? -1;
                 long receivedBlockCount = currentTipIndex - previousTipIndex;
 
+                forked = blockChain.Tip is { } tip ? blockChain.Fork(tip.Hash) : blockChain;
+
                 const string startMsg =
                     "{SessionId}: Starting " + nameof(SyncPreviousBlocksAsync) + "()...";
                 _logger.Debug(startMsg, logSessionId);
                 FillBlocksAsyncStarted.Set();
                 synced = await SyncBlocksAsync(
                     peer,
-                    blockChain,
+                    forked,
                     stop,
                     progress,
                     totalBlockCount,
@@ -717,6 +719,7 @@ namespace Libplanet.Net
             }
             catch (Exception)
             {
+                _store.DeleteChainId(forked.Id);
                 FillBlocksAsyncFailed.Set();
                 throw;
             }
@@ -737,9 +740,10 @@ namespace Libplanet.Net
                         blockChain.Id,
                         synced.Id
                     );
+                    bool render = !syncedB.Id.Equals(forked.Id);
                     renderSwap = blockChain.Swap(
                         synced,
-                        render: true,
+                        render: render,
                         stateCompleters: null);
                     _logger.Debug(
                         "{SessionId}: Swapped chain {ChainIdA} with chain {ChainIdB}.",
