@@ -193,6 +193,8 @@ namespace Libplanet.Net
             {
                 workspace.Id,
             };
+            workspace = workspace.Fork(workspace.Tip.Hash);
+            chainIds.Add(workspace.Id);
             bool renderActions = render;
             bool renderBlocks = true;
 
