@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using Serilog;
 
@@ -31,12 +32,13 @@ namespace Libplanet.Net.Protocols
         {
             if (tableSize <= 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(tableSize));
+                throw new ArgumentOutOfRangeException(
+                    $"The value of {nameof(tableSize)} must be positive.");
             }
-
-            if (bucketSize <= 0)
+            else if (bucketSize <= 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(bucketSize));
+                throw new ArgumentOutOfRangeException(
+                    $"The value of {nameof(bucketSize)} must be positive.");
             }
 
             _address = address;
@@ -52,8 +54,6 @@ namespace Libplanet.Net.Protocols
             {
                 _buckets[i] = new KBucket(BucketSize, random, _logger);
             }
-
-            var initialized = DateTimeOffset.UtcNow;
         }
 
         /// <summary>
@@ -75,13 +75,13 @@ namespace Libplanet.Net.Protocols
         /// An <see cref="IReadOnlyList{T}"/> of peers in the table.
         /// </summary>
         public IReadOnlyList<BoundPeer> Peers =>
-            NonEmptyBuckets.SelectMany(bucket => bucket.Peers).ToArray();
+            NonEmptyBuckets.SelectMany(bucket => bucket.Peers).ToImmutableArray();
 
         /// <summary>
         /// An <see cref="IReadOnlyList{T}"/> of <see cref="PeerState"/> of peers in the table.
         /// </summary>
         public IReadOnlyList<PeerState> PeerStates =>
-            NonEmptyBuckets.SelectMany(bucket => bucket.PeerStates).ToArray();
+            NonEmptyBuckets.SelectMany(bucket => bucket.PeerStates).ToImmutableArray();
 
         internal IReadOnlyList<IReadOnlyList<BoundPeer>> CachesToCheck
         {
@@ -100,7 +100,7 @@ namespace Libplanet.Net.Protocols
         {
             get
             {
-                return _buckets.Where(bucket => !bucket.IsFull()).ToArray();
+                return _buckets.Where(bucket => !bucket.IsFull).ToArray();
             }
         }
 
@@ -108,7 +108,7 @@ namespace Libplanet.Net.Protocols
         {
             get
             {
-                return _buckets.Where(bucket => !bucket.IsEmpty()).ToArray();
+                return _buckets.Where(bucket => !bucket.IsEmpty).ToArray();
             }
         }
 
@@ -202,7 +202,7 @@ namespace Libplanet.Net.Protocols
         {
             // TODO: Should include static peers?
             var sorted = _buckets
-                .Where(b => !b.IsEmpty())
+                .Where(b => !b.IsEmpty)
                 .SelectMany(b => b.Peers)
                 .ToList();
 

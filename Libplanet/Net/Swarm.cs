@@ -181,8 +181,6 @@ namespace Libplanet.Net
 
         public IReadOnlyList<BoundPeer> Peers => RoutingTable.Peers;
 
-        public IReadOnlyList<PeerState> PeersStates => RoutingTable.PeerStates;
-
         /// <summary>
         /// The <see cref="BlockChain{T}"/> instance this <see cref="Swarm{T}"/> instance
         /// synchronizes with.

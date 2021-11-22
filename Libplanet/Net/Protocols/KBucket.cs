@@ -29,6 +29,10 @@ namespace Libplanet.Net.Protocols
 
         public int Count => _peerStates.Count;
 
+        public bool IsEmpty => _peerStates.Count == 0;
+
+        public bool IsFull => _peerStates.Count >= _size;
+
         /// <summary>
         /// Most recently used peer.
         /// </summary>
@@ -85,7 +89,7 @@ namespace Libplanet.Net.Protocols
             }
             else
             {
-                if (IsFull())
+                if (IsFull)
                 {
                     _logger.Verbose("Bucket is full to add peer {Peer}", peer);
                     if (ReplacementCache.TryAdd(peer, updated))
@@ -153,34 +157,22 @@ namespace Libplanet.Net.Protocols
             }
         }
 
-        public bool IsEmpty()
-        {
-            return _peerStates.Count == 0;
-        }
-
-        public bool IsFull()
-        {
-            return _peerStates.Count >= _size;
-        }
-
         public BoundPeer GetRandomPeer(Address? except)
         {
-            BoundPeer[] peers;
+            List<BoundPeer> peers;
             if (except is null)
             {
-                peers = _peerStates.Values.Select(d => d.Peer).ToArray();
+                peers = _peerStates.Values.Select(d => d.Peer).ToList();
             }
             else
             {
                 peers = _peerStates
                     .Where(kv => !kv.Key.Equals(except.Value))
                     .Select(kv => kv.Value.Peer)
-                    .ToArray();
+                    .ToList();
             }
 
-            int size = peers.Length;
-
-            return size == 0 ? null : peers[_random.Next(size)];
+            return peers.Count > 0 ? peers[_random.Next(peers.Count)] : null;
         }
 
         public void Check(BoundPeer peer, DateTimeOffset start, DateTimeOffset end)
