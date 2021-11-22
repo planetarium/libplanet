@@ -216,7 +216,7 @@ namespace Libplanet.Store
             {
                 const string msg = nameof(TxExecution) +
                     " must be serialized as a Bencodex dictionary, not {ActualValue}.";
-                logger?.Error(msg, decoded.Inspection);
+                logger?.Error(msg, decoded.Inspect(false));
                 return null;
             }
 

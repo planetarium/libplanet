@@ -127,7 +127,7 @@ namespace Libplanet.Tests.Net
 
             var claim3 = new AppProtocolVersion(
                 claim.Version,
-                default(Bencodex.Types.Null),
+                Bencodex.Types.Null.Value,
                 claim.Signature,
                 claim.Signer
             );

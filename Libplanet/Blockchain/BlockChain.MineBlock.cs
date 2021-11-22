@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Bencodex;
+using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
@@ -49,7 +50,7 @@ namespace Libplanet.Blockchain
             PrivateKey miner,
             DateTimeOffset? timestamp = null,
             bool? append = null,
-            int? maxBlockBytes = null,
+            long? maxBlockBytes = null,
             int? maxTransactions = null,
             int? maxTransactionsPerSigner = null,
             IComparer<Transaction<T>> txPriority = null,
@@ -94,7 +95,7 @@ namespace Libplanet.Blockchain
             PrivateKey miner,
             DateTimeOffset timestamp,
             bool append,
-            int maxBlockBytes,
+            long maxBlockBytes,
             int maxTransactions,
             int maxTransactionsPerSigner,
             IComparer<Transaction<T>> txPriority = null,
@@ -241,7 +242,7 @@ namespace Libplanet.Blockchain
         /// <paramref name="maxTransactionsPerSigner"/>.</returns>
         internal ImmutableList<Transaction<T>> GatherTransactionsToMine(
             BlockMetadata metadata,
-            int maxBlockBytes,
+            long maxBlockBytes,
             int maxTransactions,
             int maxTransactionsPerSigner,
             IComparer<Transaction<T>> txPriority = null
@@ -283,9 +284,7 @@ namespace Libplanet.Blockchain
                     Array.Empty<Transaction<T>>()
                 )
             );
-            var codec = new Codec();
-            byte[] emptyBlockPayload = codec.Encode(marshaledEmptyBlock);
-            int estimatedBytes = emptyBlockPayload.Length;
+            Dictionary estimatedEncoding = marshaledEmptyBlock;
 
             var storedNonces = new Dictionary<Address, long>();
             var nextNonces = new Dictionary<Address, long>();
@@ -336,7 +335,9 @@ namespace Libplanet.Blockchain
 
                 if (storedNonces[tx.Signer] <= tx.Nonce && tx.Nonce == nextNonces[tx.Signer])
                 {
-                    if (estimatedBytes + tx.BytesLength > maxBlockBytes)
+                    Dictionary txAddedBlockEncoding =
+                        AppendTxToMarshaledBlock(estimatedEncoding, tx);
+                    if (txAddedBlockEncoding.EncodingLength > maxBlockBytes)
                     {
                         _logger.Debug(
                             "Ignoring tx {Iter}/{Total} {Transaction} due to the maximum size " +
@@ -344,7 +345,7 @@ namespace Libplanet.Blockchain
                             i,
                             stagedTransactions.Count,
                             tx.Id,
-                            estimatedBytes,
+                            txAddedBlockEncoding.EncodingLength,
                             maxBlockBytes);
                         continue;
                     }
@@ -371,7 +372,7 @@ namespace Libplanet.Blockchain
                     transactionsToMine.Add(tx);
                     nextNonces[tx.Signer] += 1;
                     toMineCounts[tx.Signer] += 1;
-                    estimatedBytes += tx.BytesLength;
+                    estimatedEncoding = txAddedBlockEncoding;
                 }
                 else if (tx.Nonce < storedNonces[tx.Signer])
                 {

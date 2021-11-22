@@ -100,7 +100,7 @@ namespace Libplanet.Blockchain.Policies
         /// <param name="index">The <see cref="Block{T}.Index"/> of the <see cref="Block{T}"/>
         /// for which this constraint should apply.</param>
         /// <returns>The maximum length of a <see cref="Block{T}"/> in bytes to accept.</returns>
-        int GetMaxBlockBytes(long index);
+        long GetMaxBlockBytes(long index);
 
         /// <summary>
         /// Gets the <see cref="HashAlgorithmType"/> to use for block's proof-of-work.

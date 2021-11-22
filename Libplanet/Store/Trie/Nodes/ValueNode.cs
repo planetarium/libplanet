@@ -29,10 +29,9 @@ namespace Libplanet.Store.Trie.Nodes
             return codec.Encode(ToBencodex());
         }
 
-        public IValue ToBencodex()
-        {
-            return new List(new IValue[] { default(Null)!, Value });
-        }
+        /// <inheritdoc cref="INode.ToBencodex()"/>
+        public IValue ToBencodex() =>
+            new List(Null.Value, Value);
 
         public override int GetHashCode() => Value?.GetHashCode() ?? 0;
     }

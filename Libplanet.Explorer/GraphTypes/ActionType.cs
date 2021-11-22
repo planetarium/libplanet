@@ -47,7 +47,7 @@ namespace Libplanet.Explorer.GraphTypes
 
             Field<NonNullGraphType<StringGraphType>>(
                 name: "Inspection",
-                resolve: ctx => ctx.Source.PlainValue.Inspection
+                resolve: ctx => ctx.Source.PlainValue.Inspect(loadAll: true)
             );
 
             Name = "Action";

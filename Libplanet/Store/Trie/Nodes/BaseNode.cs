@@ -23,6 +23,7 @@ namespace Libplanet.Store.Trie.Nodes
 
         public byte[] Serialize() => _codec.Encode(ToBencodex());
 
+        /// <inheritdoc cref="INode.ToBencodex()"/>
         public abstract IValue ToBencodex();
     }
 }

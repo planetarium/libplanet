@@ -4,7 +4,6 @@ using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
-using Bencodex;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blocks;
@@ -77,15 +76,6 @@ namespace Libplanet.Tests.Blocks
             var blockB = MineGenesis(algoGetter, timestamp: timestamp, transactions: txs);
 
             Assert.True(blockA.Transactions.SequenceEqual(blockB.Transactions));
-        }
-
-        [Fact]
-        public void BytesLength()
-        {
-            Assert.Equal(
-                new Codec().Encode(_fx.Genesis.MarshalBlock()).Length,
-                _fx.Genesis.BytesLength
-            );
         }
 
         [Fact]

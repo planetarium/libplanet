@@ -28,7 +28,7 @@ namespace Libplanet.Analyzers.Tests
                 namespace SampleGame {
                     public class SampleAction : IAction {
                         public SampleAction() {}
-                        public IValue PlainValue => default(Null);
+                        public IValue PlainValue => Null.Value;
                         public void LoadPlainValue(IValue plainValue) {}
                         public IAccountStateDelta Execute(IActionContext context) {
                             new Random().Next();
@@ -112,7 +112,7 @@ namespace Libplanet.Analyzers.Tests
                 namespace SampleGame {
                     public class SampleAction : IAction {
                         public SampleAction() {}
-                        public IValue PlainValue => default(Null);
+                        public IValue PlainValue => Null.Value;
                         public void LoadPlainValue(IValue plainValue) {}
                         public IAccountStateDelta Execute(IActionContext context) {
                             // Following code should all fail:

@@ -10,6 +10,19 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Removed `Transaction<T>.BytesLength` property.  [[#1609]]
+ -  Removed `Block<T>.BytesLength` property.  [[#1609]]
+ -  The types of `BlockChain<T>.MineBlock()` overloaded methods' `maxBlockBytes`
+    parameters became `long?` (were `int?`).  [[#1609]]
+ -  The type of `IBlockPolicy<T>.GetMaxBlockBytes(long)` method became `long`
+    (was `int`).  [[#1609]]
+ -  The type of `BlockPolicy<T>()` constructor's `getMaxBlockBytes` parameter
+    became `Func<long, long>?` (was `Func<long, int>?`).  [[#1609]]
+ -  The type of `InvalidBlockBytesLengthException()` constructor's `bytesLength`
+    parameter became `long` (was `int`).  [[#1609]]
+ -  The type of `InvalidBlockBytesLengthException.BytesLength` property became
+    `long` (was `int`).  [[#1609]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -23,9 +36,17 @@ To be released.
 
 ### Bug fixes
 
+### Dependencies
+
+ -  Upgraded *Bencodex* from 0.3.0 to
+    [0.4.0-dev.20211123080042+d7f6c810][Bencodex 0.4.0-dev.20211123080042].
+    [[#1609]]
+
 ### CLI tools
 
 [#1606]: https://github.com/planetarium/libplanet/pull/1606
+[#1609]: https://github.com/planetarium/libplanet/pull/1609
+[Bencodex 0.4.0-dev.20211123080042]: https://www.nuget.org/packages/Bencodex/0.4.0-dev.20211123080042
 
 
 Version 0.21.0

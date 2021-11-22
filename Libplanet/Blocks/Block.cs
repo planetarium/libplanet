@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Numerics;
 using System.Security.Cryptography;
-using Bencodex;
 using Libplanet.Action;
 using Libplanet.Crypto;
 using Libplanet.Tx;
@@ -25,10 +24,7 @@ namespace Libplanet.Blocks
         /// </summary>
         public const int CurrentProtocolVersion = BlockMetadata.CurrentProtocolVersion;
 
-        private static readonly Codec Codec = new Codec();
-
         private readonly PreEvaluationBlock<T> _preEvaluationBlock;
-        private int? _bytesLength;
 
         /// <summary>
         /// Creates a <see cref="Block{T}"/> instance by combining a block <paramref name="header"/>
@@ -150,12 +146,6 @@ namespace Libplanet.Blocks
 
         /// <inheritdoc cref="IBlockContent{T}.Transactions"/>
         public IReadOnlyList<Transaction<T>> Transactions => _preEvaluationBlock.Transactions;
-
-        /// <summary>
-        /// The bytes length in its serialized format.
-        /// </summary>
-        public int BytesLength =>
-            _bytesLength ?? (int)(_bytesLength = Codec.Encode(this.MarshalBlock()).Length);
 
         /// <summary>
         /// The <see cref="BlockHeader"/> of the block.

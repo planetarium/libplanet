@@ -1087,7 +1087,7 @@ namespace Libplanet.Tests.Action
             public readonly Address MinerKey = new PrivateKey().ToAddress();
             public readonly Address BlockIndexKey = new PrivateKey().ToAddress();
 
-            public IValue PlainValue => default(Dictionary);
+            public IValue PlainValue => Dictionary.Empty;
 
             public void LoadPlainValue(IValue plainValue)
             {

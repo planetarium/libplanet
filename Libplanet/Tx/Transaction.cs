@@ -36,7 +36,6 @@ namespace Libplanet.Tx
         private TxId? _id;
         private byte[] _signature;
         private byte[] _bytes;
-        private int _bytesLength;
 
         /// <summary>
         /// Creates a new <see cref="Transaction{T}"/>.
@@ -257,19 +256,6 @@ namespace Libplanet.Tx
         public BlockHash? GenesisHash { get; }
 
         /// <summary>
-        /// The bytes length in its serialized format.
-        /// </summary>
-        public int BytesLength
-        {
-            get
-            {
-                // Note that Serialize() by itself caches _byteLength, so that this ByteLength
-                // property never invokes Serialize() more than once.
-                return _bytesLength > 0 ? _bytesLength : Serialize(true).Length;
-            }
-        }
-
-        /// <summary>
         /// Decodes a <see cref="Transaction{T}"/>'s
         /// <a href="https://bencodex.org/">Bencodex</a> representation.
         /// </summary>
@@ -306,7 +292,6 @@ namespace Libplanet.Tx
                 tx._bytes = bytes;
             }
 
-            tx._bytesLength = bytes.Length;
             return tx;
         }
 
@@ -602,7 +587,7 @@ namespace Libplanet.Tx
                         int sigEnd = sigOffset + _signature.Length;
                         var buffer = new byte[_bytes.Length - sigField.Length];
                         Array.Copy(_bytes, buffer, sigOffset);
-                        Array.Copy(_bytes, sigEnd, buffer, sigOffset, _bytesLength - sigEnd);
+                        Array.Copy(_bytes, sigEnd, buffer, sigOffset, _bytes.Length - sigEnd);
                         return buffer;
                     }
                 }
@@ -610,14 +595,9 @@ namespace Libplanet.Tx
 
             codec ??= new Codec();
             byte[] serialized = codec.Encode(ToBencodex(sign));
-            if (sign)
+            if (sign && serialized.Length < BytesCacheThreshold)
             {
-                if (serialized.Length < BytesCacheThreshold)
-                {
-                    _bytes = serialized;
-                }
-
-                _bytesLength = serialized.Length;
+                _bytes = serialized;
             }
 
             return serialized;

@@ -32,7 +32,7 @@ namespace Libplanet.Tests.Fixtures
         public IValue PlainValue => Bencodex.Types.Dictionary.Empty
             .Add(
                 "op",
-                Operator is OperatorType op ? new Text(op.ToString()) : (IValue)default(Null)
+                Operator is OperatorType op ? new Text(op.ToString()) : (IValue)Null.Value
             )
             .Add("operand", (IValue)new Bencodex.Types.Integer(Operand));
 
