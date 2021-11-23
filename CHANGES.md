@@ -18,14 +18,9 @@ To be released.
 
 ### Behavioral changes
 
- -  `Swarm<T>` became to append blocks to forked chain to avoid locking
-    the canonical chain while syncing recent blocks. [[#1606]]
-
 ### Bug fixes
 
 ### CLI tools
-
-[#1606]: https://github.com/planetarium/libplanet/pull/1606
 
 
 Version 0.21.0
