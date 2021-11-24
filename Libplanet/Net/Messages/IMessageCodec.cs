@@ -42,10 +42,6 @@ namespace Libplanet.Net.Messages
         /// <param name="appProtocolVersionValidator">
         /// The delegate validates the app protocol version of the message.
         /// </param>
-        /// <param name="lifetime">
-        /// The lifetime of a message.
-        /// Messages generated before this value from the current time are ignored.
-        /// If <c>null</c> is given, messages will not be ignored by its timestamp.</param>
         /// <returns>A <see cref="Message"/> parsed from <paramref name="encoded"/>.</returns>
         /// <exception cref="ArgumentException">
         /// Thrown when empty <paramref name="encoded"/> is given.</exception>
@@ -58,7 +54,6 @@ namespace Libplanet.Net.Messages
         Message Decode(
             T encoded,
             bool reply,
-            Action<byte[], Peer, AppProtocolVersion> appProtocolVersionValidator,
-            TimeSpan? lifetime);
+            Action<byte[], Peer, AppProtocolVersion> appProtocolVersionValidator);
     }
 }

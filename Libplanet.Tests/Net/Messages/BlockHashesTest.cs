@@ -50,8 +50,7 @@ namespace Libplanet.Tests.Net.Messages
             BlockHashes restored = (BlockHashes)messageCodec.Decode(
                 encoded,
                 true,
-                (b, p, a) => { },
-                null);
+                (b, p, a) => { });
             Assert.Equal(msg.StartIndex, restored.StartIndex);
             Assert.Equal(msg.Hashes, restored.Hashes);
         }

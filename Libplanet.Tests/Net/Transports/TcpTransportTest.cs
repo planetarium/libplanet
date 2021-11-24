@@ -119,7 +119,7 @@ namespace Libplanet.Tests.Net.Transports
                     Identity = Guid.NewGuid().ToByteArray(),
                 };
 
-                var codec = new MessageCodec();
+                var codec = new TcpMessageCodec();
                 byte[] serialized = codec.Encode(
                     message,
                     new PrivateKey(),

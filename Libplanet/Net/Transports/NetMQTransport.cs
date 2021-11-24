@@ -31,7 +31,6 @@ namespace Libplanet.Net.Transports
         private readonly string _host;
         private readonly IList<IceServer> _iceServers;
         private readonly ILogger _logger;
-        private readonly TimeSpan? _messageLifespan;
         private readonly int _minimumBroadcastTarget;
         private readonly NetMQMessageCodec _messageCodec;
 
@@ -134,8 +133,7 @@ namespace Libplanet.Net.Transports
             _differentAppProtocolVersionEncountered = differentAppProtocolVersionEncountered;
             _table = table;
             _minimumBroadcastTarget = minimumBroadcastTarget;
-            _messageLifespan = messageLifespan;
-            _messageCodec = new NetMQMessageCodec();
+            _messageCodec = new NetMQMessageCodec(messageLifespan);
 
             if (_host != null && _listenPort is int listenPortAsInt)
             {
@@ -626,8 +624,7 @@ namespace Libplanet.Net.Transports
                 Message message = _messageCodec.Decode(
                     raw,
                     false,
-                    AppProtocolVersionValidator,
-                    _messageLifespan);
+                    AppProtocolVersionValidator);
                 _logger.Debug("A message has parsed: {0}, from {1}", message, message.Remote);
                 _logger.Debug("Received peer is boundpeer? {0}", message.Remote is BoundPeer);
 
@@ -888,8 +885,7 @@ namespace Libplanet.Net.Transports
                         Message reply = _messageCodec.Decode(
                             raw,
                             true,
-                            AppProtocolVersionValidator,
-                            _messageLifespan);
+                            AppProtocolVersionValidator);
                         _logger.Debug(
                             "A reply to the request {RequestId} has parsed: {Reply} from {Peer}.",
                             req.Id,

@@ -96,7 +96,7 @@ namespace Libplanet.Net.Transports
             {
                 Identity = Guid.NewGuid().ToByteArray(),
             };
-            var messageCodec = new MessageCodec();
+            var messageCodec = new TcpMessageCodec();
 
             byte[] serialized = messageCodec.Encode(
                 ping,
