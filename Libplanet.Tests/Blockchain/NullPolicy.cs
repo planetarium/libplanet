@@ -54,7 +54,7 @@ namespace Libplanet.Tests.Blockchain
                 : null;
         }
 
-        public int GetMaxBlockBytes(long index) => 1024 * 1024;
+        public long GetMaxBlockBytes(long index) => 1024 * 1024;
 
         public virtual HashAlgorithmType GetHashAlgorithm(long index) =>
             HashAlgorithmType.Of<SHA256>();

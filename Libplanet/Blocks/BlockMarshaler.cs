@@ -151,6 +151,26 @@ namespace Libplanet.Blocks
                 MarshalTransactions(block.Transactions)
             );
 
+        public static Dictionary AppendTxToMarshaledBlock<T>(
+            Dictionary marshaledBlock,
+            Transaction<T> tx
+        )
+            where T : IAction, new()
+        {
+            List marshaledTxs;
+            try
+            {
+                marshaledTxs = (List)marshaledBlock[TransactionsKey];
+            }
+            catch (KeyNotFoundException)
+            {
+                marshaledTxs = List.Empty;
+            }
+
+            marshaledTxs = marshaledTxs.Add(tx.ToBencodex(true));
+            return marshaledBlock.SetItem(TransactionsKey, (IValue)marshaledTxs);
+        }
+
         public static long UnmarshalBlockMetadataIndex(Dictionary marshaledMetadata) =>
             marshaledMetadata.GetValue<Integer>(IndexKey);
 

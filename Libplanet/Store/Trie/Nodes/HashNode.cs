@@ -28,10 +28,9 @@ namespace Libplanet.Store.Trie.Nodes
             return HashDigest.ToByteArray();
         }
 
-        public IValue ToBencodex()
-        {
-            return (Binary)HashDigest.ToByteArray();
-        }
+        /// <inheritdoc cref="INode.ToBencodex()"/>
+        public IValue ToBencodex() =>
+            new Binary(HashDigest.ToByteArray());
 
         public override int GetHashCode()
         {

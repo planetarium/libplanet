@@ -239,7 +239,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
                     return "[N/A]";
                 }
 
-                return action.PlainValue.Inspection
+                return action.PlainValue.Inspect(loadAll: true)
                     .Replace(" \n ", " ")
                     .Replace(" \n", " ")
                     .Replace("\n ", " ")

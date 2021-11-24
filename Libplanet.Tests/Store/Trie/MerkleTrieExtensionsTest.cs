@@ -17,13 +17,13 @@ namespace Libplanet.Tests.Store.Trie
             MerkleTrie trieA = new MerkleTrie(keyValueStore),
                 trieB = new MerkleTrie(keyValueStore);
 
-            trieA = (MerkleTrie)trieA.Set(new byte[] { 0x01, }, default(Null))
-                .Set(new byte[] { 0x02, }, default(Null))
-                .Set(new byte[] { 0x03, }, default(Null))
+            trieA = (MerkleTrie)trieA.Set(new byte[] { 0x01, }, Null.Value)
+                .Set(new byte[] { 0x02, }, Null.Value)
+                .Set(new byte[] { 0x03, }, Null.Value)
                 .Commit();
             trieB = (MerkleTrie)trieB.Set(new byte[] { 0x01, }, Dictionary.Empty)
-                .Set(new byte[] { 0x02, }, default(Null))
-                .Set(new byte[] { 0x04, }, default(Null))
+                .Set(new byte[] { 0x02, }, Null.Value)
+                .Set(new byte[] { 0x04, }, Null.Value)
                 .Commit();
 
             Dictionary<string, (HashDigest<SHA256> Root, IValue Value)[]> differentNodes =
@@ -47,10 +47,10 @@ namespace Libplanet.Tests.Store.Trie
             IKeyValueStore keyValueStore = new MemoryKeyValueStore();
             MerkleTrie trie = new MerkleTrie(keyValueStore);
 
-            trie = (MerkleTrie)trie.Set(new byte[] { 0x01, }, default(Null))
-                    .Set(new byte[] { 0x02, }, default(Null))
-                    .Set(new byte[] { 0x03, }, default(Null))
-                    .Set(new byte[] { 0x04, }, default(Null))
+            trie = (MerkleTrie)trie.Set(new byte[] { 0x01, }, Null.Value)
+                    .Set(new byte[] { 0x02, }, Null.Value)
+                    .Set(new byte[] { 0x03, }, Null.Value)
+                    .Set(new byte[] { 0x04, }, Null.Value)
                     .Set(new byte[] { 0xbe, 0xef }, Dictionary.Empty);
 
             Dictionary<ImmutableArray<byte>, IValue> states =
@@ -59,10 +59,10 @@ namespace Libplanet.Tests.Store.Trie
                     pair => pair.Value,
                     new ImmutableArrayEqualityComparer<byte>());
             Assert.Equal(5, states.Count);
-            Assert.Equal(default(Null), states[ImmutableArray<byte>.Empty.Add(0x01)]);
-            Assert.Equal(default(Null), states[ImmutableArray<byte>.Empty.Add(0x02)]);
-            Assert.Equal(default(Null), states[ImmutableArray<byte>.Empty.Add(0x03)]);
-            Assert.Equal(default(Null), states[ImmutableArray<byte>.Empty.Add(0x04)]);
+            Assert.Equal(Null.Value, states[ImmutableArray<byte>.Empty.Add(0x01)]);
+            Assert.Equal(Null.Value, states[ImmutableArray<byte>.Empty.Add(0x02)]);
+            Assert.Equal(Null.Value, states[ImmutableArray<byte>.Empty.Add(0x03)]);
+            Assert.Equal(Null.Value, states[ImmutableArray<byte>.Empty.Add(0x04)]);
             Assert.Equal(Dictionary.Empty, states[ImmutableArray<byte>.Empty.Add(0xbe).Add(0xef)]);
 
             trie = (MerkleTrie)trie.Commit();
@@ -71,10 +71,10 @@ namespace Libplanet.Tests.Store.Trie
                 pair => pair.Value,
                 new ImmutableArrayEqualityComparer<byte>());
             Assert.Equal(5, states.Count);
-            Assert.Equal(default(Null), states[ImmutableArray<byte>.Empty.Add(0x01)]);
-            Assert.Equal(default(Null), states[ImmutableArray<byte>.Empty.Add(0x02)]);
-            Assert.Equal(default(Null), states[ImmutableArray<byte>.Empty.Add(0x03)]);
-            Assert.Equal(default(Null), states[ImmutableArray<byte>.Empty.Add(0x04)]);
+            Assert.Equal(Null.Value, states[ImmutableArray<byte>.Empty.Add(0x01)]);
+            Assert.Equal(Null.Value, states[ImmutableArray<byte>.Empty.Add(0x02)]);
+            Assert.Equal(Null.Value, states[ImmutableArray<byte>.Empty.Add(0x03)]);
+            Assert.Equal(Null.Value, states[ImmutableArray<byte>.Empty.Add(0x04)]);
             Assert.Equal(Dictionary.Empty, states[ImmutableArray<byte>.Empty.Add(0xbe).Add(0xef)]);
         }
     }

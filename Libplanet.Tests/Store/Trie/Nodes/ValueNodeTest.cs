@@ -11,11 +11,11 @@ namespace Libplanet.Tests.Store.Trie.Nodes
         {
             var values = new IValue[]
             {
-                default(Null),
+                Null.Value,
                 (Binary)ByteUtil.ParseHex("beef"),
                 (Integer)0xbeef,
                 Dictionary.Empty,
-                default(List),
+                List.Empty,
             };
 
             foreach (var value in values)
@@ -23,7 +23,7 @@ namespace Libplanet.Tests.Store.Trie.Nodes
                 var valueNode = new ValueNode(value);
                 var expected = new List(new[]
                 {
-                    default(Null), value,
+                    Null.Value, value,
                 });
                 Assert.Equal(expected, valueNode.ToBencodex());
             }

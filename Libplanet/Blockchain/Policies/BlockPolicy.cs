@@ -25,7 +25,7 @@ namespace Libplanet.Blockchain.Policies
             _validateNextBlock;
 
         private readonly HashAlgorithmGetter _hashAlgorithmGetter;
-        private readonly Func<long, int> _getMaxBlockBytes;
+        private readonly Func<long, long> _getMaxBlockBytes;
         private readonly Func<long, int> _getMinTransactionsPerBlock;
         private readonly Func<long, int> _getMaxTransactionsPerBlock;
         private readonly Func<long, int> _getMaxTransactionsPerSignerPerBlock;
@@ -93,7 +93,7 @@ namespace Libplanet.Blockchain.Policies
                 validateNextBlock = null,
             IComparer<IBlockExcerpt>? canonicalChainComparer = null,
             HashAlgorithmGetter? hashAlgorithmGetter = null,
-            Func<long, int>? getMaxBlockBytes = null,
+            Func<long, long>? getMaxBlockBytes = null,
             Func<long, int>? getMinTransactionsPerBlock = null,
             Func<long, int>? getMaxTransactionsPerBlock = null,
             Func<long, int>? getMaxTransactionsPerSignerPerBlock = null)
@@ -107,7 +107,7 @@ namespace Libplanet.Blockchain.Policies
                 ?? DifficultyAdjustment<T>.DefaultMinimumDifficulty;
             CanonicalChainComparer = canonicalChainComparer ?? new TotalDifficultyComparer();
             _hashAlgorithmGetter = hashAlgorithmGetter ?? (_ => HashAlgorithmType.Of<SHA256>());
-            _getMaxBlockBytes = getMaxBlockBytes ?? (_ => 100 * 1024);
+            _getMaxBlockBytes = getMaxBlockBytes ?? (_ => 100L * 1024L);
             _getMinTransactionsPerBlock = getMinTransactionsPerBlock ?? (_ => 0);
             _getMaxTransactionsPerBlock = getMaxTransactionsPerBlock ?? (_ => 100);
             _getMaxTransactionsPerSignerPerBlock = getMaxTransactionsPerSignerPerBlock
@@ -125,7 +125,7 @@ namespace Libplanet.Blockchain.Policies
                 _validateNextBlock = (blockchain, block) =>
                 {
                     HashAlgorithmType hashAlgorithm = GetHashAlgorithm(block.Index);
-                    int maxBlockBytes = GetMaxBlockBytes(block.Index);
+                    long maxBlockBytes = GetMaxBlockBytes(block.Index);
                     int minTransactionsPerBlock = GetMinTransactionsPerBlock(block.Index);
                     int maxTransactionsPerBlock = GetMaxTransactionsPerBlock(block.Index);
                     int maxTransactionsPerSignerPerBlock =
@@ -138,13 +138,16 @@ namespace Libplanet.Blockchain.Policies
                             $"does not match {hashAlgorithm}: {block.HashAlgorithm}",
                             hashAlgorithm);
                     }
-                    else if (block.BytesLength > maxBlockBytes)
+
+                    long blockBytes = block.MarshalBlock().EncodingLength;
+                    if (blockBytes > maxBlockBytes)
                     {
                         return new InvalidBlockBytesLengthException(
                             $"The size of block #{block.Index} {block.Hash} is too large " +
                             $"where the maximum number of bytes allowed is {maxBlockBytes}: " +
-                            $"{block.BytesLength}",
-                            block.BytesLength);
+                            $"{blockBytes}.",
+                            blockBytes
+                        );
                     }
                     else if (block.Transactions.Count < minTransactionsPerBlock)
                     {
@@ -234,7 +237,7 @@ namespace Libplanet.Blockchain.Policies
 
         /// <inheritdoc/>
         [Pure]
-        public int GetMaxBlockBytes(long index) => _getMaxBlockBytes(index);
+        public long GetMaxBlockBytes(long index) => _getMaxBlockBytes(index);
 
         /// <inheritdoc/>
         [Pure]

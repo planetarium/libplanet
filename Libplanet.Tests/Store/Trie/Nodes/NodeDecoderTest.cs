@@ -17,21 +17,21 @@ namespace Libplanet.Tests.Store.Trie.Nodes
             var list = new List(new IValue[]
             {
                 (Binary)hashA.ToByteArray(),
-                default(Null),
-                default(Null),
-                default(Null),
-                default(Null),
-                default(Null),
-                default(Null),
-                default(Null),
-                default(Null),
-                default(Null),
-                default(Null),
-                default(Null),
-                default(Null),
-                default(Null),
-                default(Null),
-                default(Null),
+                Null.Value,
+                Null.Value,
+                Null.Value,
+                Null.Value,
+                Null.Value,
+                Null.Value,
+                Null.Value,
+                Null.Value,
+                Null.Value,
+                Null.Value,
+                Null.Value,
+                Null.Value,
+                Null.Value,
+                Null.Value,
+                Null.Value,
                 (Binary)hashB.ToByteArray(),
             });
             Assert.Equal(17, list.Count);
@@ -52,7 +52,7 @@ namespace Libplanet.Tests.Store.Trie.Nodes
         [InlineData(18)]
         public void DecodeInvalidFullNodeThrowsException(int listCount)
         {
-            var list = new List(Enumerable.Repeat((IValue)default(Null), listCount));
+            var list = new List(Enumerable.Repeat((IValue)Null.Value, listCount));
             Assert.Throws<InvalidTrieNodeException>(() => NodeDecoder.Decode(list));
         }
 
@@ -62,7 +62,7 @@ namespace Libplanet.Tests.Store.Trie.Nodes
             var list = new List(new IValue[]
             {
                 (Binary)ByteUtil.ParseHex("beef").ToArray(),
-                new List(new IValue[] { default(Null), (Text)"beef", }),
+                new List(new IValue[] { Null.Value, (Text)"beef", }),
             });
 
             INode node = NodeDecoder.Decode(list);

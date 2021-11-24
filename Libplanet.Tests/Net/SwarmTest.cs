@@ -2002,7 +2002,7 @@ namespace Libplanet.Tests.Net
 
         private class Sleep : IAction
         {
-            public IValue PlainValue => default(Null);
+            public IValue PlainValue => Null.Value;
 
             public IAccountStateDelta Execute(IActionContext context)
             {

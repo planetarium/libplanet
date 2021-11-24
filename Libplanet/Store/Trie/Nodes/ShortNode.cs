@@ -1,8 +1,6 @@
 #nullable enable
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 using Bencodex.Types;
 
 namespace Libplanet.Store.Trie.Nodes
@@ -50,15 +48,8 @@ namespace Libplanet.Store.Trie.Nodes
             }
         }
 
-        public override IValue ToBencodex()
-        {
-            var list = new List<IValue>
-            {
-                (Bencodex.Types.Binary)Key.ToArray(),
-                Value!.ToBencodex(),
-            };
-
-            return new Bencodex.Types.List(list);
-        }
+        /// <inheritdoc cref="INode.ToBencodex()"/>
+        public override IValue ToBencodex() =>
+            new Bencodex.Types.List(new Binary(Key), Value!.ToBencodex());
     }
 }

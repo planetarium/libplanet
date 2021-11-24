@@ -29,11 +29,11 @@ namespace Libplanet.Tools.Tests
             using var stateKeyValueStoreB = new DefaultKeyValueStore(_pathB);
             _trieA = new MerkleTrie(stateKeyValueStoreA).Set(
                 ImmutableDictionary<string, IValue>.Empty
-                    .Add("deleted", default(Null))
+                    .Add("deleted", Null.Value)
                     .Add("common", (Text)"before")).Commit();
             _trieB = new MerkleTrie(stateKeyValueStoreB).Set(
                 ImmutableDictionary<string, IValue>.Empty
-                    .Add("created", default(Null))
+                    .Add("created", Null.Value)
                     .Add("common", (Text)"after")).Commit();
         }
 

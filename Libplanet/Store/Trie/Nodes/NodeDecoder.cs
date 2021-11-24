@@ -1,5 +1,4 @@
 #nullable enable
-using System;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
@@ -35,7 +34,7 @@ namespace Libplanet.Store.Trie.Nodes
 
                     default:
                         throw new InvalidTrieNodeException(
-                            $"Can't decode a node from the bencodex value: {value.Inspection}");
+                            $"Can't decode a node from the bencodex value: {value.Inspect(false)}");
                 }
             }
 
@@ -73,7 +72,7 @@ namespace Libplanet.Store.Trie.Nodes
             switch (value)
             {
                 case List list:
-                    if (EstimateSize(list) > HashDigest<SHA256>.Size)
+                    if (list.EncodingLength > HashDigest<SHA256>.Size)
                     {
                         throw new InvalidTrieNodeException("Invalid embedded node exists.");
                     }
@@ -96,17 +95,6 @@ namespace Libplanet.Store.Trie.Nodes
             }
 
             throw new InvalidTrieNodeException("Failed to decode reference node or embedded node.");
-        }
-
-        private static long EstimateSize(IValue value)
-        {
-            long size = 0;
-            foreach (var chunk in value.EncodeIntoChunks())
-            {
-                size += chunk.Length;
-            }
-
-            return size;
         }
     }
 }

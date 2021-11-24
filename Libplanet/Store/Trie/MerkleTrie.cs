@@ -28,7 +28,7 @@ namespace Libplanet.Store.Trie
         static MerkleTrie()
         {
             _codec = new Codec();
-            var bxNull = _codec.Encode(default(Null)!);
+            var bxNull = _codec.Encode(Null.Value!);
             EmptyRootHash = HashDigest<SHA256>.DeriveFrom(bxNull);
         }
 
@@ -310,8 +310,9 @@ namespace Libplanet.Store.Trie
                     return Insert(hn, prefix, key, value);
 
                 default:
-                    throw new InvalidTrieNodeException("Not supported node came." +
-                                                       $" raw: {node.ToBencodex().Inspection}");
+                    throw new InvalidTrieNodeException(
+                        $"Unsupported node value: {node.ToBencodex().Inspect(false)}"
+                    );
             }
         }
 
@@ -423,7 +424,8 @@ namespace Libplanet.Store.Trie
 
                 default:
                     throw new InvalidTrieNodeException(
-                        $"Invalid node: raw: {node.ToBencodex().Inspection}");
+                        $"Invalid node value: {node.ToBencodex().Inspect(false)}"
+                    );
             }
         }
 

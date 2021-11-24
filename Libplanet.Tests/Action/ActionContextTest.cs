@@ -150,7 +150,7 @@ namespace Libplanet.Tests.Action
         {
             IKeyValueStore keyValueStore = new MemoryKeyValueStore();
             ITrie previousBlockStatesTrie = new MerkleTrie(keyValueStore);
-            previousBlockStatesTrie = previousBlockStatesTrie.Set(new byte[0], default(Null));
+            previousBlockStatesTrie = previousBlockStatesTrie.Set(new byte[0], Null.Value);
             var actionContext = new ActionContext(
                 signer: _address,
                 txid: _txid,

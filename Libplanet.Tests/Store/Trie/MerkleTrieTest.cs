@@ -41,7 +41,7 @@ namespace Libplanet.Tests.Store.Trie
 
             merkleTrie = (MerkleTrie)merkleTrie.Set(
                 new byte[] { 0xbe, 0xef, },
-                Dictionary.Empty.Add(TestUtils.GetRandomBytes(32), default(Null)));
+                Dictionary.Empty.Add(TestUtils.GetRandomBytes(32), Null.Value));
             // There are (ShortNode, ValueNode)
             Assert.Equal(2, merkleTrie.IterateNodes().Count());
 

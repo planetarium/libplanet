@@ -407,10 +407,8 @@ If omitted (default) explorer only the local blockchain store.")]
             public int GetMaxTransactionsPerBlock(long index) =>
                 _impl.GetMaxTransactionsPerBlock(index);
 
-            public int GetMaxBlockBytes(long index)
-            {
-                return _impl.GetMaxBlockBytes(index);
-            }
+            public long GetMaxBlockBytes(long index) =>
+                _impl.GetMaxBlockBytes(index);
 
             public long GetNextBlockDifficulty(BlockChain<NullAction> blocks)
             {

@@ -83,9 +83,8 @@ namespace Libplanet.Store.Trie.Nodes
             return Children.GetHashCode();
         }
 
-        public override IValue ToBencodex()
-        {
-            return new List(Children.Select(child => child?.ToBencodex() ?? default(Null)));
-        }
+        /// <inheritdoc cref="INode.ToBencodex()"/>
+        public override IValue ToBencodex() =>
+            new List(Children.Select(child => child?.ToBencodex() ?? Null.Value));
     }
 }
