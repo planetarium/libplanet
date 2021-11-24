@@ -1,6 +1,7 @@
 #nullable enable
 using System;
 using System.Runtime.Serialization;
+using Libplanet.Serialization;
 
 namespace Libplanet.Net
 {
@@ -10,7 +11,7 @@ namespace Libplanet.Net
         internal InvalidTimestampException(
             string message,
             DateTimeOffset createdOffset,
-            TimeSpan lifespan,
+            TimeSpan? lifespan,
             DateTimeOffset currentOffset,
             Exception innerException
         )
@@ -24,7 +25,7 @@ namespace Libplanet.Net
         internal InvalidTimestampException(
             string message,
             DateTimeOffset createdOffset,
-            TimeSpan lifespan,
+            TimeSpan? lifespan,
             DateTimeOffset currentOffset)
             : base(message)
         {
@@ -39,31 +40,16 @@ namespace Libplanet.Net
         )
             : base(info, context)
         {
-            CreatedOffset = info.GetValue(nameof(CreatedOffset), typeof(DateTimeOffset))
-                is DateTimeOffset createdOffset
-                ? createdOffset
-                : throw new SerializationException(
-                    $"{nameof(CreatedOffset)} is expected to be a non-null " +
-                    $"{nameof(DateTimeOffset)}.");
-            Lifespan = info.GetValue(nameof(Lifespan), typeof(TimeSpan))
-                is TimeSpan lifetime
-                ? lifetime
-                : throw new SerializationException(
-                    $"{nameof(Lifespan)} is expected to be a non-null " +
-                    $"{nameof(TimeSpan)}.");
-            CurrentOffset = info.GetValue(nameof(CurrentOffset), typeof(DateTimeOffset))
-                is DateTimeOffset currentOffset
-                ? currentOffset
-                : throw new SerializationException(
-                    $"{nameof(CurrentOffset)} is expected to be a non-null " +
-                    $"{nameof(DateTimeOffset)}.");
+            CreatedOffset = info.GetValue<DateTimeOffset>(nameof(CreatedOffset));
+            Lifespan = info.GetValue<TimeSpan?>(nameof(Lifespan));
+            CurrentOffset = info.GetValue<DateTimeOffset>(nameof(CurrentOffset));
         }
 
-        internal DateTimeOffset CreatedOffset { get; }
+        internal DateTimeOffset CreatedOffset { get; private set; }
 
-        internal TimeSpan Lifespan { get; }
+        internal TimeSpan? Lifespan { get; private set; }
 
-        internal DateTimeOffset CurrentOffset { get; }
+        internal DateTimeOffset CurrentOffset { get; private set; }
 
         public override void GetObjectData(
             SerializationInfo info, StreamingContext context)
