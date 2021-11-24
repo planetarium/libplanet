@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Runtime.Serialization;
 using Libplanet.Serialization;
 
@@ -16,9 +17,9 @@ namespace Libplanet.Net.Transports
         }
 
         public InvalidMagicCookieException(
+            string message,
             IEnumerable<byte> expected,
-            IEnumerable<byte> actual,
-            string message)
+            IEnumerable<byte> actual)
             : base(message)
         {
             Expected = expected.ToImmutableArray();
@@ -26,9 +27,9 @@ namespace Libplanet.Net.Transports
         }
 
         public InvalidMagicCookieException(
+            string message,
             IEnumerable<byte> expected,
             IEnumerable<byte> actual,
-            string message,
             Exception innerException)
             : base(message, innerException)
         {
@@ -42,8 +43,8 @@ namespace Libplanet.Net.Transports
         )
             : base(info, context)
         {
-            Expected = info.GetValue<ImmutableArray<byte>>(nameof(Expected));
-            Actual = info.GetValue<ImmutableArray<byte>>(nameof(Actual));
+            Expected = info.GetValue<byte[]>(nameof(Expected)).ToImmutableArray();
+            Actual = info.GetValue<byte[]>(nameof(Actual)).ToImmutableArray();
         }
 
         public ImmutableArray<byte> Expected { get; private set; }
@@ -53,8 +54,8 @@ namespace Libplanet.Net.Transports
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
-            info.AddValue(nameof(Expected), Expected);
-            info.AddValue(nameof(Actual), Actual);
+            info.AddValue(nameof(Expected), Expected.ToArray());
+            info.AddValue(nameof(Actual), Actual.ToArray());
         }
     }
 }
