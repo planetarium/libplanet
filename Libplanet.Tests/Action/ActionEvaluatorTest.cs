@@ -318,8 +318,8 @@ namespace Libplanet.Tests.Action
                     actions: new DumbAction[0],
                     timestamp: DateTimeOffset.MinValue.AddSeconds(7)),
             };
-            int i = 0;
-            foreach (Transaction<DumbAction> tx in block1Txs)
+            foreach ((var tx, var i) in block1Txs.Zip(
+                Enumerable.Range(0, block1Txs.Count()), (x, y) => (x, y)))
             {
                 _logger.Debug("{0}[{1}] = {2}", nameof(block1Txs), i, tx.Id);
             }
@@ -441,8 +441,8 @@ namespace Libplanet.Tests.Action
                     },
                     timestamp: DateTimeOffset.MinValue.AddSeconds(6)),
             };
-            i = 0;
-            foreach (Transaction<DumbAction> tx in block2Txs)
+            foreach ((var tx, var i) in block2Txs.Zip(
+                Enumerable.Range(0, block2Txs.Count()), (x, y) => (x, y)))
             {
                 _logger.Debug("{0}[{1}] = {2}", nameof(block2Txs), i, tx.Id);
             }
@@ -472,10 +472,11 @@ namespace Libplanet.Tests.Action
             evals = actionEvaluator.EvaluateTxs(
                 block2,
                 previousStates).ToImmutableArray();
+
             expectations = new[]
             {
-                (0, 0, new[] { "A,D", "B", "C", null, null }, _txFx.Address1),
-                (1, 0, new[] { "A,D", "B", "C", "E", null }, _txFx.Address2),
+                (1, 0, new[] { "A", "B", "C", "E", null }, _txFx.Address2),
+                (0, 0, new[] { "A,D", "B", "C", "E", null }, _txFx.Address1),
                 (
                     2,
                     0,
@@ -486,15 +487,15 @@ namespace Libplanet.Tests.Action
             Assert.Equal(expectations.Length, evals.Length);
             foreach (var (expect, eval) in expectations.Zip(evals, (x, y) => (x, y)))
             {
-                Assert.Equal(block2Txs[expect.Item1].Id, eval.InputContext.TxId);
-                Assert.Equal(block2Txs[expect.Item1].Actions[expect.Item2], eval.Action);
-                Assert.Equal(expect.Item4, eval.InputContext.Signer);
+                Assert.Equal(block2Txs[expect.TxIdx].Id, eval.InputContext.TxId);
+                Assert.Equal(block2Txs[expect.TxIdx].Actions[expect.Item2], eval.Action);
+                Assert.Equal(expect.Signer, eval.InputContext.Signer);
                 Assert.Equal(GenesisMiner.ToAddress(), eval.InputContext.Miner);
                 Assert.Equal(block2.Index, eval.InputContext.BlockIndex);
                 Assert.False(eval.InputContext.Rehearsal);
                 Assert.Null(eval.Exception);
                 Assert.Equal(
-                    expect.Item3,
+                    expect.UpdatedStates,
                     addresses
                         .Select(eval.OutputStates.GetState)
                         .Select(x => x is Text t ? t.Value : null));
