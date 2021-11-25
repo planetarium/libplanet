@@ -96,6 +96,15 @@ the canonical chain while syncing recent blocks. [<a href="https://github.com/pl
 [<a href="https://github.com/planetarium/libplanet/pull/1609">#1609</a>]</li>
 </ul>
 <h3 id="cli-tools">CLI tools</h3>
+<h2 id="version-0211">Version 0.21.1</h2>
+<p>Released on November 25, 2021.</p>
+<ul>
+<li><code>SwarmOptions.TipLifespan</code> property' default value was changed.
+The default lifespan for a tip going stale is now <code>60</code> seconds instead of
+<code>30</code> seconds for the purpose of polling blocks.  [<a href="https://github.com/planetarium/libplanet/pull/1614">#1614</a>]</li>
+<li><code>Swarm&lt;T&gt;</code>'s internal logic for determining when the <code>BlockChain&lt;T&gt;.Tip</code>
+becomes stale is now fixed.  [<a href="https://github.com/planetarium/libplanet/pull/1614">#1614</a>]</li>
+</ul>
 <h2 id="version-0210">Version 0.21.0</h2>
 <p>Released on November 16, 2021.</p>
 <h3 id="backward-incompatible-api-changes-1">Backward-incompatible API changes</h3>
