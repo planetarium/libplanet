@@ -33,7 +33,7 @@ namespace Libplanet.Blocks
         /// <summary>
         /// The latest protocol version.
         /// </summary>
-        public const int CurrentProtocolVersion = 2;
+        public const int CurrentProtocolVersion = 3;
 
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
         private static readonly Codec Codec = new Codec();
