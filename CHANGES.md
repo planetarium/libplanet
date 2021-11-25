@@ -41,9 +41,12 @@ To be released.
 ### Behavioral changes
 
  -  `Swarm<T>` became to append blocks to forked chain to avoid locking
-    the canonical chain while syncing recent blocks. [[#1606]]
+    the canonical chain while syncing recent blocks.  [[#1606]]
 
 ### Bug fixes
+
+ -  `InvalidMagicCookieException` and `InvalidTimestampException` can now
+    be serialized and deserialized.  [[#1613]]
 
 ### Dependencies
 
@@ -57,6 +60,7 @@ To be released.
 [#1609]: https://github.com/planetarium/libplanet/pull/1609
 [Bencodex 0.4.0-dev.20211123080042]: https://www.nuget.org/packages/Bencodex/0.4.0-dev.20211123080042
 [#1610]: https://github.com/planetarium/libplanet/pull/1610
+[#1613]: https://github.com/planetarium/libplanet/pull/1613
 
 
 Version 0.21.2
