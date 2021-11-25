@@ -1,0 +1,893 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class NetMQTransport
+   | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class NetMQTransport
+   | Libplanet ">
+    <meta name="generator" content="docfx 2.58.2.0">
+    
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Net.Transports.NetMQTransport">
+  
+  
+  <h1 id="Libplanet_Net_Transports_NetMQTransport" data-uid="Libplanet.Net.Transports.NetMQTransport" class="text-break">Class NetMQTransport
+  </h1>
+  <div class="markdown level0 summary"><p>Implementation of <a class="xref" href="Libplanet.Net.Transports.ITransport.html">ITransport</a> interface using NetMQ.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">NetMQTransport</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Libplanet.Net.Transports.ITransport.html">ITransport</a></div>
+    <div><span class="xref">IDisposable</span></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Net.Transports.html">Libplanet.Net.Transports</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.dll</h6>
+  <h5 id="Libplanet_Net_Transports_NetMQTransport_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class NetMQTransport : object, ITransport, IDisposable</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/8176787db1e9b4b02991e90d5f8f90497d6b9cc7/apiSpec/new?filename=Libplanet_Net_Transports_NetMQTransport__ctor_Libplanet_Net_Protocols_RoutingTable_Libplanet_Crypto_PrivateKey_Libplanet_Net_AppProtocolVersion_IImmutableSet_Libplanet_Crypto_PublicKey__System_Int32_System_String_System_Nullable_System_Int32__IEnumerable_Libplanet_Net_IceServer__Libplanet_Net_DifferentAppProtocolVersionEncountered_System_Int32_System_Nullable_TimeSpan__.md&amp;value=---%0Auid%3A%20Libplanet.Net.Transports.NetMQTransport.%23ctor(Libplanet.Net.Protocols.RoutingTable%2CLibplanet.Crypto.PrivateKey%2CLibplanet.Net.AppProtocolVersion%2CIImmutableSet%7BLibplanet.Crypto.PublicKey%7D%2CSystem.Int32%2CSystem.String%2CSystem.Nullable%7BSystem.Int32%7D%2CIEnumerable%7BLibplanet.Net.IceServer%7D%2CLibplanet.Net.DifferentAppProtocolVersionEncountered%2CSystem.Int32%2CSystem.Nullable%7BTimeSpan%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/8176787db1e9b4b02991e90d5f8f90497d6b9cc7/Libplanet/Net/Transports/NetMQTransport.cs/#L114">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Transports_NetMQTransport__ctor_" data-uid="Libplanet.Net.Transports.NetMQTransport.#ctor*"></a>
+  <h4 id="Libplanet_Net_Transports_NetMQTransport__ctor_Libplanet_Net_Protocols_RoutingTable_Libplanet_Crypto_PrivateKey_Libplanet_Net_AppProtocolVersion_IImmutableSet_Libplanet_Crypto_PublicKey__System_Int32_System_String_System_Nullable_System_Int32__IEnumerable_Libplanet_Net_IceServer__Libplanet_Net_DifferentAppProtocolVersionEncountered_System_Int32_System_Nullable_TimeSpan__" data-uid="Libplanet.Net.Transports.NetMQTransport.#ctor(Libplanet.Net.Protocols.RoutingTable,Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,IImmutableSet{Libplanet.Crypto.PublicKey},System.Int32,System.String,System.Nullable{System.Int32},IEnumerable{Libplanet.Net.IceServer},Libplanet.Net.DifferentAppProtocolVersionEncountered,System.Int32,System.Nullable{TimeSpan})">NetMQTransport(RoutingTable, PrivateKey, AppProtocolVersion, IImmutableSet&lt;PublicKey&gt;, Int32, String, Nullable&lt;Int32&gt;, IEnumerable&lt;IceServer&gt;, DifferentAppProtocolVersionEncountered, Int32, Nullable&lt;TimeSpan&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates <a class="xref" href="Libplanet.Net.Transports.NetMQTransport.html">NetMQTransport</a> instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public NetMQTransport(RoutingTable table, PrivateKey privateKey, AppProtocolVersion appProtocolVersion, IImmutableSet&lt;PublicKey&gt; trustedAppProtocolVersionSigners, int workers, string host, int? listenPort, IEnumerable&lt;IceServer&gt; iceServers, DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered, int minimumBroadcastTarget, TimeSpan? messageLifespan = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.Protocols.RoutingTable.html">RoutingTable</a></td>
+        <td><span class="parametername">table</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Net.Protocols.RoutingTable.html">RoutingTable</a> that manages <a class="xref" href="Libplanet.Net.Peer.html">Peer</a>s which are connected
+with this <a class="xref" href="Libplanet.Net.Peer.html">Peer</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a></td>
+        <td><span class="parametername">privateKey</span></td>
+        <td><p><a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a> of the transport layer.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a></td>
+        <td><span class="parametername">appProtocolVersion</span></td>
+        <td><p><a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a>-typed
+version of the transport layer.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">IImmutableSet</span>&lt;<a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a>&gt;</td>
+        <td><span class="parametername">trustedAppProtocolVersionSigners</span></td>
+        <td><p><a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a>s of parties
+to trust <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a>s they signed.  To trust any party, pass
+<code>null</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">workers</span></td>
+        <td><p>The number of background workers (i.e., threads).</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">host</span></td>
+        <td><p>A hostname to be a part of a public endpoint, that peers use when
+they connect to this node.  Note that this is not a hostname to listen to;
+<a class="xref" href="Libplanet.Net.Transports.NetMQTransport.html">NetMQTransport</a> always listens to 0.0.0.0 &amp; ::/0.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a>&gt;</td>
+        <td><span class="parametername">listenPort</span></td>
+        <td><p>A port number to listen to.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Libplanet.Net.IceServer.html">IceServer</a>&gt;</td>
+        <td><span class="parametername">iceServers</span></td>
+        <td><p><a href="https://en.wikipedia.org/wiki/Interactive_Connectivity_Establishment">ICE</a>
+servers to use for TURN/STUN.  Purposes to traverse NAT.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.DifferentAppProtocolVersionEncountered.html">DifferentAppProtocolVersionEncountered</a></td>
+        <td><span class="parametername">differentAppProtocolVersionEncountered</span></td>
+        <td><p>A delegate called back when a peer
+with one different from <code data-dev-comment-type="paramref" class="paramref">appProtocolVersion</code>, and their version is
+signed by a trusted party (i.e., <code data-dev-comment-type="paramref" class="paramref">trustedAppProtocolVersionSigners</code>).
+If this callback returns <code>false</code>, an encountered peer is ignored.  If this callback
+is omitted, all peers with different <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a>s are ignored.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">minimumBroadcastTarget</span></td>
+        <td><p>The number of minimum peers to broadcast messages.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">TimeSpan</span>&gt;</td>
+        <td><span class="parametername">messageLifespan</span></td>
+        <td><p>The lifespan of a message.
+Messages generated before this value from the current time are ignored.
+If <code>null</code> is given, messages will not be ignored by its timestamp.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/8176787db1e9b4b02991e90d5f8f90497d6b9cc7/apiSpec/new?filename=Libplanet_Net_Transports_NetMQTransport_AsPeer.md&amp;value=---%0Auid%3A%20Libplanet.Net.Transports.NetMQTransport.AsPeer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/8176787db1e9b4b02991e90d5f8f90497d6b9cc7/Libplanet/Net/Transports/NetMQTransport.cs/#L213">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Transports_NetMQTransport_AsPeer_" data-uid="Libplanet.Net.Transports.NetMQTransport.AsPeer*"></a>
+  <h4 id="Libplanet_Net_Transports_NetMQTransport_AsPeer" data-uid="Libplanet.Net.Transports.NetMQTransport.AsPeer">AsPeer</h4>
+  <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Net.Peer.html">Peer</a> representation of <a class="xref" href="Libplanet.Net.Transports.ITransport.html">ITransport</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Peer AsPeer { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.Peer.html">Peer</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/8176787db1e9b4b02991e90d5f8f90497d6b9cc7/apiSpec/new?filename=Libplanet_Net_Transports_NetMQTransport_LastMessageTimestamp.md&amp;value=---%0Auid%3A%20Libplanet.Net.Transports.NetMQTransport.LastMessageTimestamp%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/8176787db1e9b4b02991e90d5f8f90497d6b9cc7/Libplanet/Net/Transports/NetMQTransport.cs/#L218">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Transports_NetMQTransport_LastMessageTimestamp_" data-uid="Libplanet.Net.Transports.NetMQTransport.LastMessageTimestamp*"></a>
+  <h4 id="Libplanet_Net_Transports_NetMQTransport_LastMessageTimestamp" data-uid="Libplanet.Net.Transports.NetMQTransport.LastMessageTimestamp">LastMessageTimestamp</h4>
+  <div class="markdown level1 summary"><p>The <see cref="!:DateTimeOffset"></see> of the last message was received.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DateTimeOffset? LastMessageTimestamp { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">DateTimeOffset</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/8176787db1e9b4b02991e90d5f8f90497d6b9cc7/apiSpec/new?filename=Libplanet_Net_Transports_NetMQTransport_MessageHistory.md&amp;value=---%0Auid%3A%20Libplanet.Net.Transports.NetMQTransport.MessageHistory%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/8176787db1e9b4b02991e90d5f8f90497d6b9cc7/Libplanet/Net/Transports/NetMQTransport.cs/#L239">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Transports_NetMQTransport_MessageHistory_" data-uid="Libplanet.Net.Transports.NetMQTransport.MessageHistory*"></a>
+  <h4 id="Libplanet_Net_Transports_NetMQTransport_MessageHistory" data-uid="Libplanet.Net.Transports.NetMQTransport.MessageHistory">MessageHistory</h4>
+  <div class="markdown level1 summary"><p>A fixed sized queue that keeps history of <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> received.
+It saves at most 30 recent <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>s.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ConcurrentQueue&lt;Message&gt; MessageHistory { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ConcurrentQueue</span>&lt;<a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/8176787db1e9b4b02991e90d5f8f90497d6b9cc7/apiSpec/new?filename=Libplanet_Net_Transports_NetMQTransport_ProcessMessageHandler.md&amp;value=---%0Auid%3A%20Libplanet.Net.Transports.NetMQTransport.ProcessMessageHandler%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/8176787db1e9b4b02991e90d5f8f90497d6b9cc7/Libplanet/Net/Transports/NetMQTransport.cs/#L210">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Transports_NetMQTransport_ProcessMessageHandler_" data-uid="Libplanet.Net.Transports.NetMQTransport.ProcessMessageHandler*"></a>
+  <h4 id="Libplanet_Net_Transports_NetMQTransport_ProcessMessageHandler" data-uid="Libplanet.Net.Transports.NetMQTransport.ProcessMessageHandler">ProcessMessageHandler</h4>
+  <div class="markdown level1 summary"><p>The list of tasks invoked when a message that is not
+a reply is received. To handle reply, please use <a class="xref" href="Libplanet.Net.Transports.ITransport.html#Libplanet_Net_Transports_ITransport_SendMessageWithReplyAsync_Libplanet_Net_BoundPeer_Libplanet_Net_Messages_Message_System_Nullable_TimeSpan__CancellationToken_">SendMessageWithReplyAsync(BoundPeer, Message, Nullable&lt;TimeSpan&gt;, CancellationToken)</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public AsyncDelegate&lt;Message&gt; ProcessMessageHandler { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.AsyncDelegate-1.html">AsyncDelegate</a>&lt;<a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/8176787db1e9b4b02991e90d5f8f90497d6b9cc7/apiSpec/new?filename=Libplanet_Net_Transports_NetMQTransport_Running.md&amp;value=---%0Auid%3A%20Libplanet.Net.Transports.NetMQTransport.Running%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/8176787db1e9b4b02991e90d5f8f90497d6b9cc7/Libplanet/Net/Transports/NetMQTransport.cs/#L221">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Transports_NetMQTransport_Running_" data-uid="Libplanet.Net.Transports.NetMQTransport.Running*"></a>
+  <h4 id="Libplanet_Net_Transports_NetMQTransport_Running" data-uid="Libplanet.Net.Transports.NetMQTransport.Running">Running</h4>
+  <div class="markdown level1 summary"><p>Whether this <a class="xref" href="Libplanet.Net.Transports.ITransport.html">ITransport</a> instance is running.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Running { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>Gets the value indicates whether the instance is running.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/8176787db1e9b4b02991e90d5f8f90497d6b9cc7/apiSpec/new?filename=Libplanet_Net_Transports_NetMQTransport_BroadcastMessage_System_Nullable_Libplanet_Address__Libplanet_Net_Messages_Message_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Transports.NetMQTransport.BroadcastMessage(System.Nullable%7BLibplanet.Address%7D%2CLibplanet.Net.Messages.Message)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/8176787db1e9b4b02991e90d5f8f90497d6b9cc7/Libplanet/Net/Transports/NetMQTransport.cs/#L539">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Transports_NetMQTransport_BroadcastMessage_" data-uid="Libplanet.Net.Transports.NetMQTransport.BroadcastMessage*"></a>
+  <h4 id="Libplanet_Net_Transports_NetMQTransport_BroadcastMessage_System_Nullable_Libplanet_Address__Libplanet_Net_Messages_Message_" data-uid="Libplanet.Net.Transports.NetMQTransport.BroadcastMessage(System.Nullable{Libplanet.Address},Libplanet.Net.Messages.Message)">BroadcastMessage(Nullable&lt;Address&gt;, Message)</h4>
+  <div class="markdown level1 summary"><p>Broadcasts the <code data-dev-comment-type="paramref" class="paramref">message</code> to peers selected from the routing table.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void BroadcastMessage(Address? except, Message message)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Address.html">Address</a>&gt;</td>
+        <td><span class="parametername">except</span></td>
+        <td><p>An <a class="xref" href="Libplanet.Address.html">Address</a> to exclude from broadcasting.
+If <code>null</code> is given, no peers will be excluded.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a></td>
+        <td><span class="parametername">message</span></td>
+        <td><p>A <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> to broadcast.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/8176787db1e9b4b02991e90d5f8f90497d6b9cc7/apiSpec/new?filename=Libplanet_Net_Transports_NetMQTransport_Dispose.md&amp;value=---%0Auid%3A%20Libplanet.Net.Transports.NetMQTransport.Dispose%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/8176787db1e9b4b02991e90d5f8f90497d6b9cc7/Libplanet/Net/Transports/NetMQTransport.cs/#L358">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Transports_NetMQTransport_Dispose_" data-uid="Libplanet.Net.Transports.NetMQTransport.Dispose*"></a>
+  <h4 id="Libplanet_Net_Transports_NetMQTransport_Dispose" data-uid="Libplanet.Net.Transports.NetMQTransport.Dispose">Dispose()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Dispose()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/8176787db1e9b4b02991e90d5f8f90497d6b9cc7/apiSpec/new?filename=Libplanet_Net_Transports_NetMQTransport_ReplyMessageAsync_Libplanet_Net_Messages_Message_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Transports.NetMQTransport.ReplyMessageAsync(Libplanet.Net.Messages.Message%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/8176787db1e9b4b02991e90d5f8f90497d6b9cc7/Libplanet/Net/Transports/NetMQTransport.cs/#L550">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Transports_NetMQTransport_ReplyMessageAsync_" data-uid="Libplanet.Net.Transports.NetMQTransport.ReplyMessageAsync*"></a>
+  <h4 id="Libplanet_Net_Transports_NetMQTransport_ReplyMessageAsync_Libplanet_Net_Messages_Message_CancellationToken_" data-uid="Libplanet.Net.Transports.NetMQTransport.ReplyMessageAsync(Libplanet.Net.Messages.Message,CancellationToken)">ReplyMessageAsync(Message, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Replies message.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public async Task ReplyMessageAsync(Message message, CancellationToken cancellationToken)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a></td>
+        <td><span class="parametername">message</span></td>
+        <td><p>A <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> to reply.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>A cancellation token used to propagate notification that this
+operation should be canceled.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td><p>An awaitable task without value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Net_Transports_NetMQTransport_ReplyMessageAsync_Libplanet_Net_Messages_Message_CancellationToken__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The <a class="xref" href="Libplanet.Net.Messages.Message.html#Libplanet_Net_Messages_Message_Identity">Identity</a> of the given <code data-dev-comment-type="paramref" class="paramref">message</code> must be
+matched to <a class="xref" href="Libplanet.Net.Messages.Message.html#Libplanet_Net_Messages_Message_Identity">Identity</a> of a message corresponding to the given
+<code data-dev-comment-type="paramref" class="paramref">message</code>.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/8176787db1e9b4b02991e90d5f8f90497d6b9cc7/apiSpec/new?filename=Libplanet_Net_Transports_NetMQTransport_SendMessageAsync_Libplanet_Net_BoundPeer_Libplanet_Net_Messages_Message_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Transports.NetMQTransport.SendMessageAsync(Libplanet.Net.BoundPeer%2CLibplanet.Net.Messages.Message%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/8176787db1e9b4b02991e90d5f8f90497d6b9cc7/Libplanet/Net/Transports/NetMQTransport.cs/#L379">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Transports_NetMQTransport_SendMessageAsync_" data-uid="Libplanet.Net.Transports.NetMQTransport.SendMessageAsync*"></a>
+  <h4 id="Libplanet_Net_Transports_NetMQTransport_SendMessageAsync_Libplanet_Net_BoundPeer_Libplanet_Net_Messages_Message_CancellationToken_" data-uid="Libplanet.Net.Transports.NetMQTransport.SendMessageAsync(Libplanet.Net.BoundPeer,Libplanet.Net.Messages.Message,CancellationToken)">SendMessageAsync(BoundPeer, Message, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Sends the <code data-dev-comment-type="paramref" class="paramref">message</code> to given <code data-dev-comment-type="paramref" class="paramref">peer</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task SendMessageAsync(BoundPeer peer, Message message, CancellationToken cancellationToken)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a></td>
+        <td><span class="parametername">peer</span></td>
+        <td><p>A <a class="xref" href="Libplanet.Net.Peer.html">Peer</a> to send message to.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a></td>
+        <td><span class="parametername">message</span></td>
+        <td><p>A <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> to send.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>A cancellation token used to propagate notification that this
+operation should be canceled.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td><p>An awaitable task without value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/8176787db1e9b4b02991e90d5f8f90497d6b9cc7/apiSpec/new?filename=Libplanet_Net_Transports_NetMQTransport_SendMessageWithReplyAsync_Libplanet_Net_BoundPeer_Libplanet_Net_Messages_Message_System_Nullable_TimeSpan__CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Transports.NetMQTransport.SendMessageWithReplyAsync(Libplanet.Net.BoundPeer%2CLibplanet.Net.Messages.Message%2CSystem.Nullable%7BTimeSpan%7D%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/8176787db1e9b4b02991e90d5f8f90497d6b9cc7/Libplanet/Net/Transports/NetMQTransport.cs/#L392">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Transports_NetMQTransport_SendMessageWithReplyAsync_" data-uid="Libplanet.Net.Transports.NetMQTransport.SendMessageWithReplyAsync*"></a>
+  <h4 id="Libplanet_Net_Transports_NetMQTransport_SendMessageWithReplyAsync_Libplanet_Net_BoundPeer_Libplanet_Net_Messages_Message_System_Nullable_TimeSpan__CancellationToken_" data-uid="Libplanet.Net.Transports.NetMQTransport.SendMessageWithReplyAsync(Libplanet.Net.BoundPeer,Libplanet.Net.Messages.Message,System.Nullable{TimeSpan},CancellationToken)">SendMessageWithReplyAsync(BoundPeer, Message, Nullable&lt;TimeSpan&gt;, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Sends the <code data-dev-comment-type="paramref" class="paramref">message</code>
+to given <code data-dev-comment-type="paramref" class="paramref">peer</code> and waits for its single reply.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public async Task&lt;Message&gt; SendMessageWithReplyAsync(BoundPeer peer, Message message, TimeSpan? timeout, CancellationToken cancellationToken)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a></td>
+        <td><span class="parametername">peer</span></td>
+        <td><p>A <a class="xref" href="Libplanet.Net.Peer.html">Peer</a> to send message to.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a></td>
+        <td><span class="parametername">message</span></td>
+        <td><p>A <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> to send.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">TimeSpan</span>&gt;</td>
+        <td><span class="parametername">timeout</span></td>
+        <td><p>A timeout of waiting for the reply of the message.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>A cancellation token used to propagate notification that this
+operation should be canceled.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span>&lt;<a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>&gt;</td>
+        <td><p>The replies of the <code data-dev-comment-type="paramref" class="paramref">message</code>
+sent by <code data-dev-comment-type="paramref" class="paramref">peer</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/8176787db1e9b4b02991e90d5f8f90497d6b9cc7/apiSpec/new?filename=Libplanet_Net_Transports_NetMQTransport_SendMessageWithReplyAsync_Libplanet_Net_BoundPeer_Libplanet_Net_Messages_Message_System_Nullable_TimeSpan__System_Int32_System_Boolean_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Transports.NetMQTransport.SendMessageWithReplyAsync(Libplanet.Net.BoundPeer%2CLibplanet.Net.Messages.Message%2CSystem.Nullable%7BTimeSpan%7D%2CSystem.Int32%2CSystem.Boolean%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/8176787db1e9b4b02991e90d5f8f90497d6b9cc7/Libplanet/Net/Transports/NetMQTransport.cs/#L412">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Transports_NetMQTransport_SendMessageWithReplyAsync_" data-uid="Libplanet.Net.Transports.NetMQTransport.SendMessageWithReplyAsync*"></a>
+  <h4 id="Libplanet_Net_Transports_NetMQTransport_SendMessageWithReplyAsync_Libplanet_Net_BoundPeer_Libplanet_Net_Messages_Message_System_Nullable_TimeSpan__System_Int32_System_Boolean_CancellationToken_" data-uid="Libplanet.Net.Transports.NetMQTransport.SendMessageWithReplyAsync(Libplanet.Net.BoundPeer,Libplanet.Net.Messages.Message,System.Nullable{TimeSpan},System.Int32,System.Boolean,CancellationToken)">SendMessageWithReplyAsync(BoundPeer, Message, Nullable&lt;TimeSpan&gt;, Int32, Boolean, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Sends the <code data-dev-comment-type="paramref" class="paramref">message</code>
+to given <code data-dev-comment-type="paramref" class="paramref">peer</code> and waits for its multiple replies.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public async Task&lt;IEnumerable&lt;Message&gt;&gt; SendMessageWithReplyAsync(BoundPeer peer, Message message, TimeSpan? timeout, int expectedResponses, bool returnWhenTimeout, CancellationToken cancellationToken)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a></td>
+        <td><span class="parametername">peer</span></td>
+        <td><p>A <a class="xref" href="Libplanet.Net.Peer.html">Peer</a> to send message to.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a></td>
+        <td><span class="parametername">message</span></td>
+        <td><p>A <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> to send.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">TimeSpan</span>&gt;</td>
+        <td><span class="parametername">timeout</span></td>
+        <td><p>A timeout of waiting for the reply of the message.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">expectedResponses</span></td>
+        <td><p>The number of expected replies for the message.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">returnWhenTimeout</span></td>
+        <td><p>Determines the behavior when failed to receive
+<code data-dev-comment-type="paramref" class="paramref">expectedResponses</code> messages and timeout occurred.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>A cancellation token used to propagate notification that this
+operation should be canceled.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span>&lt;<span class="xref">IEnumerable</span>&lt;<a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>&gt;&gt;</td>
+        <td><p>The replies of the <code data-dev-comment-type="paramref" class="paramref">message</code>
+sent by <code data-dev-comment-type="paramref" class="paramref">peer</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/8176787db1e9b4b02991e90d5f8f90497d6b9cc7/apiSpec/new?filename=Libplanet_Net_Transports_NetMQTransport_StartAsync_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Transports.NetMQTransport.StartAsync(CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/8176787db1e9b4b02991e90d5f8f90497d6b9cc7/Libplanet/Net/Transports/NetMQTransport.cs/#L246">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Transports_NetMQTransport_StartAsync_" data-uid="Libplanet.Net.Transports.NetMQTransport.StartAsync*"></a>
+  <h4 id="Libplanet_Net_Transports_NetMQTransport_StartAsync_CancellationToken_" data-uid="Libplanet.Net.Transports.NetMQTransport.StartAsync(CancellationToken)">StartAsync(CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Initiates and runs transport layer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public async Task StartAsync(CancellationToken cancellationToken)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>A cancellation token used to propagate notification that this
+operation should be canceled.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td><p>An awaitable task without value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/8176787db1e9b4b02991e90d5f8f90497d6b9cc7/apiSpec/new?filename=Libplanet_Net_Transports_NetMQTransport_StopAsync_TimeSpan_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Transports.NetMQTransport.StopAsync(TimeSpan%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/8176787db1e9b4b02991e90d5f8f90497d6b9cc7/Libplanet/Net/Transports/NetMQTransport.cs/#L312">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Transports_NetMQTransport_StopAsync_" data-uid="Libplanet.Net.Transports.NetMQTransport.StopAsync*"></a>
+  <h4 id="Libplanet_Net_Transports_NetMQTransport_StopAsync_TimeSpan_CancellationToken_" data-uid="Libplanet.Net.Transports.NetMQTransport.StopAsync(TimeSpan,CancellationToken)">StopAsync(TimeSpan, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Stops running transport layer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public async Task StopAsync(TimeSpan waitFor, CancellationToken cancellationToken = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TimeSpan</span></td>
+        <td><span class="parametername">waitFor</span></td>
+        <td><p>The <see cref="!:TimeSpan"></see> of delay
+before actual stopping.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>A cancellation token used to propagate notification that this
+operation should be canceled.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td><p>An awaitable task without value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/8176787db1e9b4b02991e90d5f8f90497d6b9cc7/apiSpec/new?filename=Libplanet_Net_Transports_NetMQTransport_WaitForRunningAsync.md&amp;value=---%0Auid%3A%20Libplanet.Net.Transports.NetMQTransport.WaitForRunningAsync%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/8176787db1e9b4b02991e90d5f8f90497d6b9cc7/Libplanet/Net/Transports/NetMQTransport.cs/#L376">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Transports_NetMQTransport_WaitForRunningAsync_" data-uid="Libplanet.Net.Transports.NetMQTransport.WaitForRunningAsync*"></a>
+  <h4 id="Libplanet_Net_Transports_NetMQTransport_WaitForRunningAsync" data-uid="Libplanet.Net.Transports.NetMQTransport.WaitForRunningAsync">WaitForRunningAsync()</h4>
+  <div class="markdown level1 summary"><p>Waits until this <a class="xref" href="Libplanet.Net.Transports.ITransport.html">ITransport</a> instance gets started to run.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task WaitForRunningAsync()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td><p>A <see cref="!:Task"></see> completed when <a class="xref" href="Libplanet.Net.Transports.ITransport.html#Libplanet_Net_Transports_ITransport_Running">Running</a>
+property becomes <code>true</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Libplanet.Net.Transports.ITransport.html">ITransport</a>
+  </div>
+  <div>
+      <span class="xref">IDisposable</span>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/new/8176787db1e9b4b02991e90d5f8f90497d6b9cc7/apiSpec/new?filename=Libplanet_Net_Transports_NetMQTransport.md&amp;value=---%0Auid%3A%20Libplanet.Net.Transports.NetMQTransport%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/8176787db1e9b4b02991e90d5f8f90497d6b9cc7/Libplanet/Net/Transports/NetMQTransport.cs/#L24" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2018–2021 <a href="https://planetariumhq.com/">Planetarium</a>
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
