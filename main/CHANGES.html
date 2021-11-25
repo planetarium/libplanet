@@ -79,6 +79,15 @@ became <code>Func&lt;long, long&gt;?</code> (was <code>Func&lt;long, int&gt;?</c
 parameter became <code>long</code> (was <code>int</code>).  [<a href="https://github.com/planetarium/libplanet/pull/1609">#1609</a>]</li>
 <li>The type of <code>InvalidBlockBytesLengthException.BytesLength</code> property became
 <code>long</code> (was <code>int</code>).  [<a href="https://github.com/planetarium/libplanet/pull/1609">#1609</a>]</li>
+<li>Methods <code>IsEmpty()</code> and <code>IsFull()</code> of <code>KBucket</code> changed to properties
+<code>IsEmpty</code> and <code>IsFull</code> respectively.  [<a href="https://github.com/planetarium/libplanet/pull/1610">#1610</a>]</li>
+<li><code>MessageCodec</code> class renamed to <code>TcpMessageCodec</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1610">#1610</a>]</li>
+<li><code>lifetime</code> parameter removed from <code>IMessageCodec.Decode()</code>.
+<code>messageLifespan</code> parameter added to constructors of <code>NetMQMessageCodec</code>
+and <code>TcpMessageCodec</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1610">#1610</a>]</li>
+<li>Removed unused <code>PeerStates</code> property from <code>Swarm&lt;T&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1610">#1610</a>]</li>
+<li>Method name <code>BoundPeer.QueryAppProtocolVersion()</code> changed to
+<code>BoundPeer.QueryAppProtocolVersionNetMQ()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1610">#1610</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>

@@ -12422,15 +12422,15 @@ references:
   fullName.vb: Libplanet.Net.Messages.IMessageCodec(Of T)
   nameWithType: IMessageCodec<T>
   nameWithType.vb: IMessageCodec(Of T)
-- uid: Libplanet.Net.Messages.IMessageCodec`1.Decode(`0,System.Boolean,Libplanet.Action{System.Byte[],Libplanet.Net.Peer,Libplanet.Net.AppProtocolVersion},System.Nullable{TimeSpan})
-  name: Decode(T, Boolean, Action<Byte[], Peer, AppProtocolVersion>, Nullable<TimeSpan>)
-  href: api/Libplanet.Net.Messages.IMessageCodec-1.html#Libplanet_Net_Messages_IMessageCodec_1_Decode__0_System_Boolean_Libplanet_Action_System_Byte___Libplanet_Net_Peer_Libplanet_Net_AppProtocolVersion__System_Nullable_TimeSpan__
-  commentId: M:Libplanet.Net.Messages.IMessageCodec`1.Decode(`0,System.Boolean,Libplanet.Action{System.Byte[],Libplanet.Net.Peer,Libplanet.Net.AppProtocolVersion},System.Nullable{TimeSpan})
-  name.vb: Decode(T, Boolean, Action(Of Byte(), Peer, AppProtocolVersion), Nullable(Of TimeSpan))
-  fullName: Libplanet.Net.Messages.IMessageCodec<T>.Decode(T, System.Boolean, Libplanet.Action<System.Byte[], Libplanet.Net.Peer, Libplanet.Net.AppProtocolVersion>, System.Nullable<TimeSpan>)
-  fullName.vb: Libplanet.Net.Messages.IMessageCodec(Of T).Decode(T, System.Boolean, Libplanet.Action(Of System.Byte(), Libplanet.Net.Peer, Libplanet.Net.AppProtocolVersion), System.Nullable(Of TimeSpan))
-  nameWithType: IMessageCodec<T>.Decode(T, Boolean, Action<Byte[], Peer, AppProtocolVersion>, Nullable<TimeSpan>)
-  nameWithType.vb: IMessageCodec(Of T).Decode(T, Boolean, Action(Of Byte(), Peer, AppProtocolVersion), Nullable(Of TimeSpan))
+- uid: Libplanet.Net.Messages.IMessageCodec`1.Decode(`0,System.Boolean,Libplanet.Action{System.Byte[],Libplanet.Net.Peer,Libplanet.Net.AppProtocolVersion})
+  name: Decode(T, Boolean, Action<Byte[], Peer, AppProtocolVersion>)
+  href: api/Libplanet.Net.Messages.IMessageCodec-1.html#Libplanet_Net_Messages_IMessageCodec_1_Decode__0_System_Boolean_Libplanet_Action_System_Byte___Libplanet_Net_Peer_Libplanet_Net_AppProtocolVersion__
+  commentId: M:Libplanet.Net.Messages.IMessageCodec`1.Decode(`0,System.Boolean,Libplanet.Action{System.Byte[],Libplanet.Net.Peer,Libplanet.Net.AppProtocolVersion})
+  name.vb: Decode(T, Boolean, Action(Of Byte(), Peer, AppProtocolVersion))
+  fullName: Libplanet.Net.Messages.IMessageCodec<T>.Decode(T, System.Boolean, Libplanet.Action<System.Byte[], Libplanet.Net.Peer, Libplanet.Net.AppProtocolVersion>)
+  fullName.vb: Libplanet.Net.Messages.IMessageCodec(Of T).Decode(T, System.Boolean, Libplanet.Action(Of System.Byte(), Libplanet.Net.Peer, Libplanet.Net.AppProtocolVersion))
+  nameWithType: IMessageCodec<T>.Decode(T, Boolean, Action<Byte[], Peer, AppProtocolVersion>)
+  nameWithType.vb: IMessageCodec(Of T).Decode(T, Boolean, Action(Of Byte(), Peer, AppProtocolVersion))
 - uid: Libplanet.Net.Messages.IMessageCodec`1.Decode*
   name: Decode
   href: api/Libplanet.Net.Messages.IMessageCodec-1.html#Libplanet_Net_Messages_IMessageCodec_1_Decode_
@@ -12679,66 +12679,21 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Messages.Message.Version
   nameWithType: Message.Version
-- uid: Libplanet.Net.Messages.MessageCodec
-  name: MessageCodec
-  href: api/Libplanet.Net.Messages.MessageCodec.html
-  commentId: T:Libplanet.Net.Messages.MessageCodec
-  fullName: Libplanet.Net.Messages.MessageCodec
-  nameWithType: MessageCodec
-- uid: Libplanet.Net.Messages.MessageCodec.#ctor
-  name: MessageCodec()
-  href: api/Libplanet.Net.Messages.MessageCodec.html#Libplanet_Net_Messages_MessageCodec__ctor
-  commentId: M:Libplanet.Net.Messages.MessageCodec.#ctor
-  fullName: Libplanet.Net.Messages.MessageCodec.MessageCodec()
-  nameWithType: MessageCodec.MessageCodec()
-- uid: Libplanet.Net.Messages.MessageCodec.#ctor*
-  name: MessageCodec
-  href: api/Libplanet.Net.Messages.MessageCodec.html#Libplanet_Net_Messages_MessageCodec__ctor_
-  commentId: Overload:Libplanet.Net.Messages.MessageCodec.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Net.Messages.MessageCodec.MessageCodec
-  nameWithType: MessageCodec.MessageCodec
-- uid: Libplanet.Net.Messages.MessageCodec.Decode(System.Byte[],System.Boolean,Libplanet.Action{System.Byte[],Libplanet.Net.Peer,Libplanet.Net.AppProtocolVersion},System.Nullable{TimeSpan})
-  name: Decode(Byte[], Boolean, Action<Byte[], Peer, AppProtocolVersion>, Nullable<TimeSpan>)
-  href: api/Libplanet.Net.Messages.MessageCodec.html#Libplanet_Net_Messages_MessageCodec_Decode_System_Byte___System_Boolean_Libplanet_Action_System_Byte___Libplanet_Net_Peer_Libplanet_Net_AppProtocolVersion__System_Nullable_TimeSpan__
-  commentId: M:Libplanet.Net.Messages.MessageCodec.Decode(System.Byte[],System.Boolean,Libplanet.Action{System.Byte[],Libplanet.Net.Peer,Libplanet.Net.AppProtocolVersion},System.Nullable{TimeSpan})
-  name.vb: Decode(Byte(), Boolean, Action(Of Byte(), Peer, AppProtocolVersion), Nullable(Of TimeSpan))
-  fullName: Libplanet.Net.Messages.MessageCodec.Decode(System.Byte[], System.Boolean, Libplanet.Action<System.Byte[], Libplanet.Net.Peer, Libplanet.Net.AppProtocolVersion>, System.Nullable<TimeSpan>)
-  fullName.vb: Libplanet.Net.Messages.MessageCodec.Decode(System.Byte(), System.Boolean, Libplanet.Action(Of System.Byte(), Libplanet.Net.Peer, Libplanet.Net.AppProtocolVersion), System.Nullable(Of TimeSpan))
-  nameWithType: MessageCodec.Decode(Byte[], Boolean, Action<Byte[], Peer, AppProtocolVersion>, Nullable<TimeSpan>)
-  nameWithType.vb: MessageCodec.Decode(Byte(), Boolean, Action(Of Byte(), Peer, AppProtocolVersion), Nullable(Of TimeSpan))
-- uid: Libplanet.Net.Messages.MessageCodec.Decode*
-  name: Decode
-  href: api/Libplanet.Net.Messages.MessageCodec.html#Libplanet_Net_Messages_MessageCodec_Decode_
-  commentId: Overload:Libplanet.Net.Messages.MessageCodec.Decode
-  isSpec: "True"
-  fullName: Libplanet.Net.Messages.MessageCodec.Decode
-  nameWithType: MessageCodec.Decode
-- uid: Libplanet.Net.Messages.MessageCodec.Encode(Libplanet.Net.Messages.Message,Libplanet.Crypto.PrivateKey,Libplanet.Net.Peer,DateTimeOffset,Libplanet.Net.AppProtocolVersion)
-  name: Encode(Message, PrivateKey, Peer, DateTimeOffset, AppProtocolVersion)
-  href: api/Libplanet.Net.Messages.MessageCodec.html#Libplanet_Net_Messages_MessageCodec_Encode_Libplanet_Net_Messages_Message_Libplanet_Crypto_PrivateKey_Libplanet_Net_Peer_DateTimeOffset_Libplanet_Net_AppProtocolVersion_
-  commentId: M:Libplanet.Net.Messages.MessageCodec.Encode(Libplanet.Net.Messages.Message,Libplanet.Crypto.PrivateKey,Libplanet.Net.Peer,DateTimeOffset,Libplanet.Net.AppProtocolVersion)
-  fullName: Libplanet.Net.Messages.MessageCodec.Encode(Libplanet.Net.Messages.Message, Libplanet.Crypto.PrivateKey, Libplanet.Net.Peer, DateTimeOffset, Libplanet.Net.AppProtocolVersion)
-  nameWithType: MessageCodec.Encode(Message, PrivateKey, Peer, DateTimeOffset, AppProtocolVersion)
-- uid: Libplanet.Net.Messages.MessageCodec.Encode*
-  name: Encode
-  href: api/Libplanet.Net.Messages.MessageCodec.html#Libplanet_Net_Messages_MessageCodec_Encode_
-  commentId: Overload:Libplanet.Net.Messages.MessageCodec.Encode
-  isSpec: "True"
-  fullName: Libplanet.Net.Messages.MessageCodec.Encode
-  nameWithType: MessageCodec.Encode
 - uid: Libplanet.Net.Messages.NetMQMessageCodec
   name: NetMQMessageCodec
   href: api/Libplanet.Net.Messages.NetMQMessageCodec.html
   commentId: T:Libplanet.Net.Messages.NetMQMessageCodec
   fullName: Libplanet.Net.Messages.NetMQMessageCodec
   nameWithType: NetMQMessageCodec
-- uid: Libplanet.Net.Messages.NetMQMessageCodec.#ctor
-  name: NetMQMessageCodec()
-  href: api/Libplanet.Net.Messages.NetMQMessageCodec.html#Libplanet_Net_Messages_NetMQMessageCodec__ctor
-  commentId: M:Libplanet.Net.Messages.NetMQMessageCodec.#ctor
-  fullName: Libplanet.Net.Messages.NetMQMessageCodec.NetMQMessageCodec()
-  nameWithType: NetMQMessageCodec.NetMQMessageCodec()
+- uid: Libplanet.Net.Messages.NetMQMessageCodec.#ctor(System.Nullable{TimeSpan})
+  name: NetMQMessageCodec(Nullable<TimeSpan>)
+  href: api/Libplanet.Net.Messages.NetMQMessageCodec.html#Libplanet_Net_Messages_NetMQMessageCodec__ctor_System_Nullable_TimeSpan__
+  commentId: M:Libplanet.Net.Messages.NetMQMessageCodec.#ctor(System.Nullable{TimeSpan})
+  name.vb: NetMQMessageCodec(Nullable(Of TimeSpan))
+  fullName: Libplanet.Net.Messages.NetMQMessageCodec.NetMQMessageCodec(System.Nullable<TimeSpan>)
+  fullName.vb: Libplanet.Net.Messages.NetMQMessageCodec.NetMQMessageCodec(System.Nullable(Of TimeSpan))
+  nameWithType: NetMQMessageCodec.NetMQMessageCodec(Nullable<TimeSpan>)
+  nameWithType.vb: NetMQMessageCodec.NetMQMessageCodec(Nullable(Of TimeSpan))
 - uid: Libplanet.Net.Messages.NetMQMessageCodec.#ctor*
   name: NetMQMessageCodec
   href: api/Libplanet.Net.Messages.NetMQMessageCodec.html#Libplanet_Net_Messages_NetMQMessageCodec__ctor_
@@ -12746,15 +12701,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Messages.NetMQMessageCodec.NetMQMessageCodec
   nameWithType: NetMQMessageCodec.NetMQMessageCodec
-- uid: Libplanet.Net.Messages.NetMQMessageCodec.Decode(NetMQMessage,System.Boolean,Libplanet.Action{System.Byte[],Libplanet.Net.Peer,Libplanet.Net.AppProtocolVersion},System.Nullable{TimeSpan})
-  name: Decode(NetMQMessage, Boolean, Action<Byte[], Peer, AppProtocolVersion>, Nullable<TimeSpan>)
-  href: api/Libplanet.Net.Messages.NetMQMessageCodec.html#Libplanet_Net_Messages_NetMQMessageCodec_Decode_NetMQMessage_System_Boolean_Libplanet_Action_System_Byte___Libplanet_Net_Peer_Libplanet_Net_AppProtocolVersion__System_Nullable_TimeSpan__
-  commentId: M:Libplanet.Net.Messages.NetMQMessageCodec.Decode(NetMQMessage,System.Boolean,Libplanet.Action{System.Byte[],Libplanet.Net.Peer,Libplanet.Net.AppProtocolVersion},System.Nullable{TimeSpan})
-  name.vb: Decode(NetMQMessage, Boolean, Action(Of Byte(), Peer, AppProtocolVersion), Nullable(Of TimeSpan))
-  fullName: Libplanet.Net.Messages.NetMQMessageCodec.Decode(NetMQMessage, System.Boolean, Libplanet.Action<System.Byte[], Libplanet.Net.Peer, Libplanet.Net.AppProtocolVersion>, System.Nullable<TimeSpan>)
-  fullName.vb: Libplanet.Net.Messages.NetMQMessageCodec.Decode(NetMQMessage, System.Boolean, Libplanet.Action(Of System.Byte(), Libplanet.Net.Peer, Libplanet.Net.AppProtocolVersion), System.Nullable(Of TimeSpan))
-  nameWithType: NetMQMessageCodec.Decode(NetMQMessage, Boolean, Action<Byte[], Peer, AppProtocolVersion>, Nullable<TimeSpan>)
-  nameWithType.vb: NetMQMessageCodec.Decode(NetMQMessage, Boolean, Action(Of Byte(), Peer, AppProtocolVersion), Nullable(Of TimeSpan))
+- uid: Libplanet.Net.Messages.NetMQMessageCodec.Decode(NetMQMessage,System.Boolean,Libplanet.Action{System.Byte[],Libplanet.Net.Peer,Libplanet.Net.AppProtocolVersion})
+  name: Decode(NetMQMessage, Boolean, Action<Byte[], Peer, AppProtocolVersion>)
+  href: api/Libplanet.Net.Messages.NetMQMessageCodec.html#Libplanet_Net_Messages_NetMQMessageCodec_Decode_NetMQMessage_System_Boolean_Libplanet_Action_System_Byte___Libplanet_Net_Peer_Libplanet_Net_AppProtocolVersion__
+  commentId: M:Libplanet.Net.Messages.NetMQMessageCodec.Decode(NetMQMessage,System.Boolean,Libplanet.Action{System.Byte[],Libplanet.Net.Peer,Libplanet.Net.AppProtocolVersion})
+  name.vb: Decode(NetMQMessage, Boolean, Action(Of Byte(), Peer, AppProtocolVersion))
+  fullName: Libplanet.Net.Messages.NetMQMessageCodec.Decode(NetMQMessage, System.Boolean, Libplanet.Action<System.Byte[], Libplanet.Net.Peer, Libplanet.Net.AppProtocolVersion>)
+  fullName.vb: Libplanet.Net.Messages.NetMQMessageCodec.Decode(NetMQMessage, System.Boolean, Libplanet.Action(Of System.Byte(), Libplanet.Net.Peer, Libplanet.Net.AppProtocolVersion))
+  nameWithType: NetMQMessageCodec.Decode(NetMQMessage, Boolean, Action<Byte[], Peer, AppProtocolVersion>)
+  nameWithType.vb: NetMQMessageCodec.Decode(NetMQMessage, Boolean, Action(Of Byte(), Peer, AppProtocolVersion))
 - uid: Libplanet.Net.Messages.NetMQMessageCodec.Decode*
   name: Decode
   href: api/Libplanet.Net.Messages.NetMQMessageCodec.html#Libplanet_Net_Messages_NetMQMessageCodec_Decode_
@@ -12775,6 +12730,57 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Messages.NetMQMessageCodec.Encode
   nameWithType: NetMQMessageCodec.Encode
+- uid: Libplanet.Net.Messages.TcpMessageCodec
+  name: TcpMessageCodec
+  href: api/Libplanet.Net.Messages.TcpMessageCodec.html
+  commentId: T:Libplanet.Net.Messages.TcpMessageCodec
+  fullName: Libplanet.Net.Messages.TcpMessageCodec
+  nameWithType: TcpMessageCodec
+- uid: Libplanet.Net.Messages.TcpMessageCodec.#ctor(System.Nullable{TimeSpan})
+  name: TcpMessageCodec(Nullable<TimeSpan>)
+  href: api/Libplanet.Net.Messages.TcpMessageCodec.html#Libplanet_Net_Messages_TcpMessageCodec__ctor_System_Nullable_TimeSpan__
+  commentId: M:Libplanet.Net.Messages.TcpMessageCodec.#ctor(System.Nullable{TimeSpan})
+  name.vb: TcpMessageCodec(Nullable(Of TimeSpan))
+  fullName: Libplanet.Net.Messages.TcpMessageCodec.TcpMessageCodec(System.Nullable<TimeSpan>)
+  fullName.vb: Libplanet.Net.Messages.TcpMessageCodec.TcpMessageCodec(System.Nullable(Of TimeSpan))
+  nameWithType: TcpMessageCodec.TcpMessageCodec(Nullable<TimeSpan>)
+  nameWithType.vb: TcpMessageCodec.TcpMessageCodec(Nullable(Of TimeSpan))
+- uid: Libplanet.Net.Messages.TcpMessageCodec.#ctor*
+  name: TcpMessageCodec
+  href: api/Libplanet.Net.Messages.TcpMessageCodec.html#Libplanet_Net_Messages_TcpMessageCodec__ctor_
+  commentId: Overload:Libplanet.Net.Messages.TcpMessageCodec.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Net.Messages.TcpMessageCodec.TcpMessageCodec
+  nameWithType: TcpMessageCodec.TcpMessageCodec
+- uid: Libplanet.Net.Messages.TcpMessageCodec.Decode(System.Byte[],System.Boolean,Libplanet.Action{System.Byte[],Libplanet.Net.Peer,Libplanet.Net.AppProtocolVersion})
+  name: Decode(Byte[], Boolean, Action<Byte[], Peer, AppProtocolVersion>)
+  href: api/Libplanet.Net.Messages.TcpMessageCodec.html#Libplanet_Net_Messages_TcpMessageCodec_Decode_System_Byte___System_Boolean_Libplanet_Action_System_Byte___Libplanet_Net_Peer_Libplanet_Net_AppProtocolVersion__
+  commentId: M:Libplanet.Net.Messages.TcpMessageCodec.Decode(System.Byte[],System.Boolean,Libplanet.Action{System.Byte[],Libplanet.Net.Peer,Libplanet.Net.AppProtocolVersion})
+  name.vb: Decode(Byte(), Boolean, Action(Of Byte(), Peer, AppProtocolVersion))
+  fullName: Libplanet.Net.Messages.TcpMessageCodec.Decode(System.Byte[], System.Boolean, Libplanet.Action<System.Byte[], Libplanet.Net.Peer, Libplanet.Net.AppProtocolVersion>)
+  fullName.vb: Libplanet.Net.Messages.TcpMessageCodec.Decode(System.Byte(), System.Boolean, Libplanet.Action(Of System.Byte(), Libplanet.Net.Peer, Libplanet.Net.AppProtocolVersion))
+  nameWithType: TcpMessageCodec.Decode(Byte[], Boolean, Action<Byte[], Peer, AppProtocolVersion>)
+  nameWithType.vb: TcpMessageCodec.Decode(Byte(), Boolean, Action(Of Byte(), Peer, AppProtocolVersion))
+- uid: Libplanet.Net.Messages.TcpMessageCodec.Decode*
+  name: Decode
+  href: api/Libplanet.Net.Messages.TcpMessageCodec.html#Libplanet_Net_Messages_TcpMessageCodec_Decode_
+  commentId: Overload:Libplanet.Net.Messages.TcpMessageCodec.Decode
+  isSpec: "True"
+  fullName: Libplanet.Net.Messages.TcpMessageCodec.Decode
+  nameWithType: TcpMessageCodec.Decode
+- uid: Libplanet.Net.Messages.TcpMessageCodec.Encode(Libplanet.Net.Messages.Message,Libplanet.Crypto.PrivateKey,Libplanet.Net.Peer,DateTimeOffset,Libplanet.Net.AppProtocolVersion)
+  name: Encode(Message, PrivateKey, Peer, DateTimeOffset, AppProtocolVersion)
+  href: api/Libplanet.Net.Messages.TcpMessageCodec.html#Libplanet_Net_Messages_TcpMessageCodec_Encode_Libplanet_Net_Messages_Message_Libplanet_Crypto_PrivateKey_Libplanet_Net_Peer_DateTimeOffset_Libplanet_Net_AppProtocolVersion_
+  commentId: M:Libplanet.Net.Messages.TcpMessageCodec.Encode(Libplanet.Net.Messages.Message,Libplanet.Crypto.PrivateKey,Libplanet.Net.Peer,DateTimeOffset,Libplanet.Net.AppProtocolVersion)
+  fullName: Libplanet.Net.Messages.TcpMessageCodec.Encode(Libplanet.Net.Messages.Message, Libplanet.Crypto.PrivateKey, Libplanet.Net.Peer, DateTimeOffset, Libplanet.Net.AppProtocolVersion)
+  nameWithType: TcpMessageCodec.Encode(Message, PrivateKey, Peer, DateTimeOffset, AppProtocolVersion)
+- uid: Libplanet.Net.Messages.TcpMessageCodec.Encode*
+  name: Encode
+  href: api/Libplanet.Net.Messages.TcpMessageCodec.html#Libplanet_Net_Messages_TcpMessageCodec_Encode_
+  commentId: Overload:Libplanet.Net.Messages.TcpMessageCodec.Encode
+  isSpec: "True"
+  fullName: Libplanet.Net.Messages.TcpMessageCodec.Encode
+  nameWithType: TcpMessageCodec.Encode
 - uid: Libplanet.Net.NoSwarmContextException
   name: NoSwarmContextException
   href: api/Libplanet.Net.NoSwarmContextException.html
@@ -14119,23 +14125,6 @@ references:
   fullName.vb: Libplanet.Net.Swarm(Of T).Peers
   nameWithType: Swarm<T>.Peers
   nameWithType.vb: Swarm(Of T).Peers
-- uid: Libplanet.Net.Swarm`1.PeersStates
-  name: PeersStates
-  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_PeersStates
-  commentId: P:Libplanet.Net.Swarm`1.PeersStates
-  fullName: Libplanet.Net.Swarm<T>.PeersStates
-  fullName.vb: Libplanet.Net.Swarm(Of T).PeersStates
-  nameWithType: Swarm<T>.PeersStates
-  nameWithType.vb: Swarm(Of T).PeersStates
-- uid: Libplanet.Net.Swarm`1.PeersStates*
-  name: PeersStates
-  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_PeersStates_
-  commentId: Overload:Libplanet.Net.Swarm`1.PeersStates
-  isSpec: "True"
-  fullName: Libplanet.Net.Swarm<T>.PeersStates
-  fullName.vb: Libplanet.Net.Swarm(Of T).PeersStates
-  nameWithType: Swarm<T>.PeersStates
-  nameWithType.vb: Swarm(Of T).PeersStates
 - uid: Libplanet.Net.Swarm`1.PreloadAsync(System.Nullable{TimeSpan},IProgress{Libplanet.Net.PreloadState},System.Boolean,CancellationToken)
   name: PreloadAsync(Nullable<TimeSpan>, IProgress<PreloadState>, Boolean, CancellationToken)
   href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_PreloadAsync_System_Nullable_TimeSpan__IProgress_Libplanet_Net_PreloadState__System_Boolean_CancellationToken_
@@ -14575,22 +14564,22 @@ references:
   commentId: T:Libplanet.Net.Transports.BoundPeerExtensions
   fullName: Libplanet.Net.Transports.BoundPeerExtensions
   nameWithType: BoundPeerExtensions
-- uid: Libplanet.Net.Transports.BoundPeerExtensions.QueryAppProtocolVersion(Libplanet.Net.BoundPeer,System.Nullable{TimeSpan})
-  name: QueryAppProtocolVersion(BoundPeer, Nullable<TimeSpan>)
-  href: api/Libplanet.Net.Transports.BoundPeerExtensions.html#Libplanet_Net_Transports_BoundPeerExtensions_QueryAppProtocolVersion_Libplanet_Net_BoundPeer_System_Nullable_TimeSpan__
-  commentId: M:Libplanet.Net.Transports.BoundPeerExtensions.QueryAppProtocolVersion(Libplanet.Net.BoundPeer,System.Nullable{TimeSpan})
-  name.vb: QueryAppProtocolVersion(BoundPeer, Nullable(Of TimeSpan))
-  fullName: Libplanet.Net.Transports.BoundPeerExtensions.QueryAppProtocolVersion(Libplanet.Net.BoundPeer, System.Nullable<TimeSpan>)
-  fullName.vb: Libplanet.Net.Transports.BoundPeerExtensions.QueryAppProtocolVersion(Libplanet.Net.BoundPeer, System.Nullable(Of TimeSpan))
-  nameWithType: BoundPeerExtensions.QueryAppProtocolVersion(BoundPeer, Nullable<TimeSpan>)
-  nameWithType.vb: BoundPeerExtensions.QueryAppProtocolVersion(BoundPeer, Nullable(Of TimeSpan))
-- uid: Libplanet.Net.Transports.BoundPeerExtensions.QueryAppProtocolVersion*
-  name: QueryAppProtocolVersion
-  href: api/Libplanet.Net.Transports.BoundPeerExtensions.html#Libplanet_Net_Transports_BoundPeerExtensions_QueryAppProtocolVersion_
-  commentId: Overload:Libplanet.Net.Transports.BoundPeerExtensions.QueryAppProtocolVersion
+- uid: Libplanet.Net.Transports.BoundPeerExtensions.QueryAppProtocolVersionNetMQ(Libplanet.Net.BoundPeer,System.Nullable{TimeSpan})
+  name: QueryAppProtocolVersionNetMQ(BoundPeer, Nullable<TimeSpan>)
+  href: api/Libplanet.Net.Transports.BoundPeerExtensions.html#Libplanet_Net_Transports_BoundPeerExtensions_QueryAppProtocolVersionNetMQ_Libplanet_Net_BoundPeer_System_Nullable_TimeSpan__
+  commentId: M:Libplanet.Net.Transports.BoundPeerExtensions.QueryAppProtocolVersionNetMQ(Libplanet.Net.BoundPeer,System.Nullable{TimeSpan})
+  name.vb: QueryAppProtocolVersionNetMQ(BoundPeer, Nullable(Of TimeSpan))
+  fullName: Libplanet.Net.Transports.BoundPeerExtensions.QueryAppProtocolVersionNetMQ(Libplanet.Net.BoundPeer, System.Nullable<TimeSpan>)
+  fullName.vb: Libplanet.Net.Transports.BoundPeerExtensions.QueryAppProtocolVersionNetMQ(Libplanet.Net.BoundPeer, System.Nullable(Of TimeSpan))
+  nameWithType: BoundPeerExtensions.QueryAppProtocolVersionNetMQ(BoundPeer, Nullable<TimeSpan>)
+  nameWithType.vb: BoundPeerExtensions.QueryAppProtocolVersionNetMQ(BoundPeer, Nullable(Of TimeSpan))
+- uid: Libplanet.Net.Transports.BoundPeerExtensions.QueryAppProtocolVersionNetMQ*
+  name: QueryAppProtocolVersionNetMQ
+  href: api/Libplanet.Net.Transports.BoundPeerExtensions.html#Libplanet_Net_Transports_BoundPeerExtensions_QueryAppProtocolVersionNetMQ_
+  commentId: Overload:Libplanet.Net.Transports.BoundPeerExtensions.QueryAppProtocolVersionNetMQ
   isSpec: "True"
-  fullName: Libplanet.Net.Transports.BoundPeerExtensions.QueryAppProtocolVersion
-  nameWithType: BoundPeerExtensions.QueryAppProtocolVersion
+  fullName: Libplanet.Net.Transports.BoundPeerExtensions.QueryAppProtocolVersionNetMQ
+  nameWithType: BoundPeerExtensions.QueryAppProtocolVersionNetMQ
 - uid: Libplanet.Net.Transports.BoundPeerExtensions.QueryAppProtocolVersionTcp(Libplanet.Net.BoundPeer,System.Nullable{TimeSpan},CancellationToken)
   name: QueryAppProtocolVersionTcp(BoundPeer, Nullable<TimeSpan>, CancellationToken)
   href: api/Libplanet.Net.Transports.BoundPeerExtensions.html#Libplanet_Net_Transports_BoundPeerExtensions_QueryAppProtocolVersionTcp_Libplanet_Net_BoundPeer_System_Nullable_TimeSpan__CancellationToken_
