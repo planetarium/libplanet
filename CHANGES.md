@@ -6,15 +6,11 @@ Version 0.21.1
 
 To be released.
 
-### Behavioral changes
-
- -  The default lifespan for a tip going stale is now `60` seconds instead of
+ -  `SwarmOptions.TipLifespan` property' default value was changed.
+    The default lifespan for a tip going stale is now `60` seconds instead of
     `30` seconds for the purpose of polling blocks.  [[#1614]]
-
-### Bug fixes
-
- -  Internal logic for determining when the tip becomes stale is now fixed.
-    [[#1614]]
+ -  `Swarm<T>`'s internal logic for determining when the `BlockChain<T>.Tip`
+    becomes stale is now fixed.  [[#1614]]
 
 [#1614]: https://github.com/planetarium/libplanet/pull/1614
 
