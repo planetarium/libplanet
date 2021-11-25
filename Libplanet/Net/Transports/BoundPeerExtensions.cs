@@ -23,7 +23,7 @@ namespace Libplanet.Net.Transports
         /// <see cref="AppProtocolVersion"/>.</param>
         /// <param name="timeout">Timeout value for request.</param>
         /// <returns><see cref="AppProtocolVersion"/> of given peer. </returns>
-        public static AppProtocolVersion QueryAppProtocolVersion(
+        public static AppProtocolVersion QueryAppProtocolVersionNetMQ(
             this BoundPeer peer,
             TimeSpan? timeout = null
         )
@@ -96,7 +96,7 @@ namespace Libplanet.Net.Transports
             {
                 Identity = Guid.NewGuid().ToByteArray(),
             };
-            var messageCodec = new MessageCodec();
+            var messageCodec = new TcpMessageCodec();
 
             byte[] serialized = messageCodec.Encode(
                 ping,

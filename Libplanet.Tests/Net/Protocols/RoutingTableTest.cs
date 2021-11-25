@@ -54,12 +54,12 @@ namespace Libplanet.Tests.Net.Protocols
                 new DnsEndPoint("0.0.0.0", 1234));
 
             Assert.Empty(bucket.Peers);
-            Assert.True(bucket.IsEmpty());
+            Assert.True(bucket.IsEmpty);
             bucket.AddPeer(peer1, DateTimeOffset.UtcNow);
             Assert.True(bucket.Contains(peer1));
             Assert.False(bucket.Contains(peer2));
-            Assert.False(bucket.IsEmpty());
-            Assert.False(bucket.IsFull());
+            Assert.False(bucket.IsEmpty);
+            Assert.False(bucket.IsFull);
             // This sleep statement is used to distinguish updated time of followings.
             Thread.Sleep(100);
             bucket.AddPeer(peer2, DateTimeOffset.UtcNow);
@@ -75,7 +75,7 @@ namespace Libplanet.Tests.Net.Protocols
             bucket.AddPeer(peer3, DateTimeOffset.UtcNow);
             Thread.Sleep(100);
             bucket.AddPeer(peer4, DateTimeOffset.UtcNow);
-            Assert.True(bucket.IsFull());
+            Assert.True(bucket.IsFull);
             Assert.Equal(
                 bucket.Peers.ToHashSet(),
                 new HashSet<BoundPeer> { peer1, peer2, peer3, peer4 }
@@ -104,7 +104,7 @@ namespace Libplanet.Tests.Net.Protocols
             Assert.Equal(3, bucket.Peers.Count());
 
             bucket.Clear();
-            Assert.True(bucket.IsEmpty());
+            Assert.True(bucket.IsEmpty);
         }
 
         [Fact]

@@ -48,8 +48,7 @@ namespace Libplanet.Tests.Net.Messages
                         string.Empty,
                         i,
                         v,
-                        v),
-                    null));
+                        v)));
         }
 
         [Fact]
@@ -65,7 +64,7 @@ namespace Libplanet.Tests.Net.Messages
                 ImmutableArray<byte>.Empty,
                 default(Address));
             var message = new Ping();
-            var codec = new NetMQMessageCodec();
+            var codec = new NetMQMessageCodec(TimeSpan.FromSeconds(1));
             NetMQMessage futureRaw =
                 codec.Encode(message, privateKey, peer, futureOffset, appProtocolVersion);
             // Messages from the future throws InvalidTimestampException.
@@ -73,8 +72,7 @@ namespace Libplanet.Tests.Net.Messages
                 codec.Decode(
                     futureRaw,
                     true,
-                    (i, p, v) => { },
-                    TimeSpan.FromSeconds(1)));
+                    (i, p, v) => { }));
             NetMQMessage pastRaw =
                 codec.Encode(message, privateKey, peer, pastOffset, appProtocolVersion);
             // Messages from the far past throws InvalidTimestampException.
@@ -82,8 +80,7 @@ namespace Libplanet.Tests.Net.Messages
                 codec.Decode(
                     pastRaw,
                     true,
-                    (i, p, v) => { },
-                    TimeSpan.FromSeconds(1)));
+                    (i, p, v) => { }));
         }
 
         [Fact]
@@ -105,7 +102,7 @@ namespace Libplanet.Tests.Net.Messages
             var codec = new NetMQMessageCodec();
             NetMQMessage raw =
                 codec.Encode(message, privateKey, peer, dateTimeOffset, appProtocolVersion);
-            var parsed = codec.Decode(raw, true, (i, p, v) => { }, null);
+            var parsed = codec.Decode(raw, true, (i, p, v) => { });
             Assert.Equal(peer, parsed.Remote);
         }
 
@@ -145,8 +142,7 @@ namespace Libplanet.Tests.Net.Messages
                 codec.Decode(
                     frames,
                     true,
-                    (i, p, v) => { },
-                    TimeSpan.FromSeconds(1));
+                    (i, p, v) => { });
             });
         }
 
@@ -167,8 +163,7 @@ namespace Libplanet.Tests.Net.Messages
                 () => codec.Decode(
                     new NetMQMessage(),
                     true,
-                    (i, p, v) => { },
-                    null));
+                    (i, p, v) => { }));
         }
     }
 }

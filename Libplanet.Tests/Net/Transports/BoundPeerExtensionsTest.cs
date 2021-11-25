@@ -56,7 +56,7 @@ namespace Libplanet.Tests.Net.Transports
                 {
                     if (swarm.Transport is NetMQTransport)
                     {
-                        peer.QueryAppProtocolVersion(timeout: TimeSpan.FromSeconds(1));
+                        peer.QueryAppProtocolVersionNetMQ(timeout: TimeSpan.FromSeconds(1));
                     }
                     else if (swarm.Transport is TcpTransport)
                     {
@@ -74,7 +74,7 @@ namespace Libplanet.Tests.Net.Transports
                     AppProtocolVersion receivedAPV = default;
                     if (swarm.Transport is NetMQTransport)
                     {
-                        receivedAPV = peer.QueryAppProtocolVersion();
+                        receivedAPV = peer.QueryAppProtocolVersionNetMQ();
                     }
                     else if (swarm.Transport is TcpTransport)
                     {

@@ -10,15 +10,21 @@ using Libplanet.Crypto;
 
 namespace Libplanet.Net.Messages
 {
-    public class MessageCodec : IMessageCodec<byte[]>
+    public class TcpMessageCodec : IMessageCodec<byte[]>
     {
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
 
         private readonly Codec _codec;
+        private readonly TimeSpan? _messageLifespan;
 
-        public MessageCodec()
+        /// <summary>
+        /// Creates a <see cref="TcpMessageCodec"/> instance.
+        /// </summary>
+        /// <param name="messageLifespan">Lifespan to use for messages when decoding.</param>
+        public TcpMessageCodec(TimeSpan? messageLifespan = null)
         {
             _codec = new Codec();
+            _messageLifespan = messageLifespan;
         }
 
         /// <inheritdoc cref="IMessageCodec{T}.Encode"/>
@@ -73,8 +79,7 @@ namespace Libplanet.Net.Messages
         public Message Decode(
             byte[] encoded,
             bool reply,
-            Action<byte[], Peer, AppProtocolVersion> appProtocolVersionValidator,
-            TimeSpan? lifetime)
+            Action<byte[], Peer, AppProtocolVersion> appProtocolVersionValidator)
         {
             if (encoded.Length == 0)
             {
@@ -128,15 +133,15 @@ namespace Libplanet.Net.Messages
             var timestamp = new DateTimeOffset(ticks, TimeSpan.Zero);
 
             var currentTime = DateTimeOffset.UtcNow;
-            if (!(lifetime is null) &&
-                (currentTime < timestamp || timestamp + lifetime < currentTime))
+            if (_messageLifespan is TimeSpan lifespan &&
+                (currentTime < timestamp || timestamp + lifespan < currentTime))
             {
                 var msg = $"Received message is invalid, created at " +
                           $"{timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture)} " +
-                          $"but designated lifetime is {lifetime} and the current datetime " +
+                          $"but designated lifetime is {lifespan} and the current datetime " +
                           $"offset is " +
                           $"{currentTime.ToString(TimestampFormat, CultureInfo.InvariantCulture)}.";
-                throw new InvalidTimestampException(msg, timestamp, lifetime.Value, currentTime);
+                throw new InvalidTimestampException(msg, timestamp, lifespan, currentTime);
             }
 
             byte[] signature = remains[(int)Message.MessageFrame.Sign];

@@ -45,8 +45,7 @@ namespace Libplanet.Net.Transports
         private readonly IList<IceServer>? _iceServers;
         private readonly ILogger _logger;
         private readonly int _minimumBroadcastTarget;
-        private readonly TimeSpan? _messageLifespan;
-        private readonly MessageCodec _messageCodec;
+        private readonly TcpMessageCodec _messageCodec;
 
         private readonly ConcurrentDictionary<Guid, ReplyStream> _streams;
 
@@ -83,8 +82,7 @@ namespace Libplanet.Net.Transports
             _differentAppProtocolVersionEncountered = differentAppProtocolVersionEncountered;
             _iceServers = iceServers?.ToList();
             _minimumBroadcastTarget = minimumBroadcastTarget;
-            _messageLifespan = messageLifespan;
-            _messageCodec = new MessageCodec();
+            _messageCodec = new TcpMessageCodec(messageLifespan);
             _streams = new ConcurrentDictionary<Guid, ReplyStream>();
 
             if (!(_host is null) && listenPort is { } listenPortAsInt)
@@ -618,8 +616,7 @@ namespace Libplanet.Net.Transports
             Message message = _messageCodec.Decode(
                 content.ToArray(),
                 false,
-                AppProtocolVersionValidator,
-                _messageLifespan);
+                AppProtocolVersionValidator);
 
             _logger.Verbose(
                 "ReadMessageAsync success. Received message {Message} from network stream.",
