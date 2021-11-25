@@ -57,7 +57,7 @@ namespace Libplanet.Net
                     );
                     _logger.Debug(
                         "Found {HashCount} hashes after the branchpoint (offset: {Offset}) " +
-                        "with locator {LocatorHead} (stop: {Stop}).",
+                        "with locator [{LocatorHead}, ...] (stop: {Stop}).",
                         hashes.Count,
                         offset,
                         getBlockHashes.Locator.FirstOrDefault(),

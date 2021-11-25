@@ -128,7 +128,7 @@ namespace Libplanet.Net
         /// for the configured lifespan, <see cref="Swarm{T}"/> pulls new blocks from neighbor
         /// peers.
         /// </summary>
-        public TimeSpan TipLifespan { get; set; } = TimeSpan.FromSeconds(30);
+        public TimeSpan TipLifespan { get; set; } = TimeSpan.FromSeconds(60);
 
         /// <summary>
         /// The type of <see cref="ITransport"/> used in <see cref="Swarm{T}"/>.

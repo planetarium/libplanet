@@ -257,11 +257,17 @@ namespace Libplanet.Action
                     // Because OutOfMemory is thrown non-deterministically depending on the state
                     // of the node, we should throw without further handling.
                     var message =
-                        $"The action {action} (block #{blockIndex}, pre-evaluation hash " +
-                        $"{preEvaluationHash}, tx {txid}) threw an exception " +
-                        "during execution:\n" +
-                        $"{e}";
-                    _logger.Error(e, message);
+                        "Action {Action} of tx {TxId} of block #{BlockIndex} with " +
+                        "pre-evaluation hash {PreEvaluationHash} threw an exception " +
+                        "during execution: {Exception}";
+                    _logger.Error(
+                        e,
+                        message,
+                        action,
+                        txid,
+                        blockIndex,
+                        ByteUtil.Hex(preEvaluationHash),
+                        e);
                     throw;
                 }
                 catch (Exception e)
@@ -284,22 +290,22 @@ namespace Libplanet.Action
                     {
                         var stateRootHash = context.PreviousStateRootHash;
                         var message =
-                            "The action {Action} (block #{BlockIndex}, pre-evaluation hash " +
-                            "{PreEvaluationHash}, tx {TxId}, previous state root hash " +
-                            "{StateRootHash}) threw an exception during execution:\n" +
-                            "{InnerException}";
+                            "Action {Action} of tx {TxId} of block #{BlockIndex} with " +
+                            "pre-evaluation hash {PreEvaluationHash} and previous " +
+                            "state root hash {StateRootHash} threw an exception " +
+                            "during execution: {InnerException}";
                         _logger.Error(
                             e,
                             message,
                             action,
-                            blockIndex,
-                            preEvaluationHash,
                             txid,
+                            blockIndex,
+                            ByteUtil.Hex(preEvaluationHash),
                             stateRootHash,
                             e);
                         var innerMessage =
                             $"The action {action} (block #{blockIndex}, " +
-                            $"pre-evaluation hash {preEvaluationHash}, tx {txid}, " +
+                            $"pre-evaluation hash {ByteUtil.Hex(preEvaluationHash)}, tx {txid}, " +
                             $"previous state root hash {stateRootHash}) threw " +
                             "an exception during execution.  " +
                             "See also this exception's InnerException property.";
