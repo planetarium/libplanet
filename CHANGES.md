@@ -29,6 +29,8 @@ To be released.
     `messageLifespan` parameter added to constructors of `NetMQMessageCodec`
     and `TcpMessageCodec`.  [[#1610]]
  -  Removed unused `PeerStates` property from `Swarm<T>`.  [[#1610]]
+ -  Method name `BoundPeer.QueryAppProtocolVersion()` changed to
+    `BoundPeer.QueryAppProtocolVersionNetMQ()`.  [[#1610]]
 
 ### Backward-incompatible network protocol changes
 
@@ -54,7 +56,7 @@ To be released.
 [#1606]: https://github.com/planetarium/libplanet/pull/1606
 [#1609]: https://github.com/planetarium/libplanet/pull/1609
 [Bencodex 0.4.0-dev.20211123080042]: https://www.nuget.org/packages/Bencodex/0.4.0-dev.20211123080042
-[#1610]: https://github.com/planetarium/libplanet/pull/1609
+[#1610]: https://github.com/planetarium/libplanet/pull/1610
 
 
 Version 0.21.1
