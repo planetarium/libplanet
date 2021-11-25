@@ -7,6 +7,17 @@ Version 0.21.2
 To be released.
 
 
+Version 0.21.2
+--------------
+
+Released on November 25, 2021.
+
+-  `planet apv query` command became to communicate with `NetMQTransport` 
+    instead of `TcpTransport`.   [[#1618]]
+    
+[#1618]: https://github.com/planetarium/libplanet/pull/1618
+
+
 Version 0.21.1
 --------------
 
