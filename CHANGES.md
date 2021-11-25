@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.21.1
 --------------
 
-To be released.
+Released on November 25, 2021.
 
  -  `SwarmOptions.TipLifespan` property' default value was changed.
     The default lifespan for a tip going stale is now `60` seconds instead of
