@@ -49,6 +49,20 @@ To be released.
 [Bencodex 0.4.0-dev.20211123080042]: https://www.nuget.org/packages/Bencodex/0.4.0-dev.20211123080042
 
 
+Version 0.21.1
+--------------
+
+Released on November 25, 2021.
+
+ -  `SwarmOptions.TipLifespan` property' default value was changed.
+    The default lifespan for a tip going stale is now `60` seconds instead of
+    `30` seconds for the purpose of polling blocks.  [[#1614]]
+ -  `Swarm<T>`'s internal logic for determining when the `BlockChain<T>.Tip`
+    becomes stale is now fixed.  [[#1614]]
+
+[#1614]: https://github.com/planetarium/libplanet/pull/1614
+
+
 Version 0.21.0
 --------------
 

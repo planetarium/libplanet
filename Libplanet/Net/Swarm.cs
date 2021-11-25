@@ -692,9 +692,15 @@ namespace Libplanet.Net
                 ? t
                 : Options.BlockHashRecvTimeout;
             const string sendMsg =
-                "{SessionId}/{SubSessionId}: Sending a " + nameof(Messages.GetBlockHashes) +
-                " message (locator: {Locator}, stop: {Stop})...";
-            _logger.Debug(sendMsg, logSessionId, subSessionId, locator, stop);
+                "{SessionId}/{SubSessionId}: Sending a {MessageType} " +
+                "message with locator [{LocatorHead}, ...] (stop: {Stop})...";
+            _logger.Debug(
+                sendMsg,
+                logSessionId,
+                subSessionId,
+                nameof(Messages.GetBlockHashes),
+                locator,
+                stop);
             Message parsedMessage = await Transport.SendMessageWithReplyAsync(
                 peer,
                 request,
@@ -910,7 +916,7 @@ namespace Libplanet.Net
                         // FIXME: First value of totalBlocksToDownload is -1.
                         _logger.Verbose(
                             "Request block hashes to {Peer} (height: {PeerHeight}) using " +
-                            "locator {LocatorHead}... ({CurrentIndex}/{EstimatedTotalCount})",
+                            "locator [{LocatorHead}, ...] ({CurrentIndex}/{EstimatedTotalCount})",
                             peer,
                             peerIndex,
                             locator.FirstOrDefault(),

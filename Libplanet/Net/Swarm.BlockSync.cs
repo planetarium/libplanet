@@ -6,7 +6,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
-using Libplanet.Store;
 using Libplanet.Tx;
 using Nito.AsyncEx;
 
@@ -155,11 +154,11 @@ namespace Libplanet.Net
                     lastUpdated = DateTimeOffset.UtcNow;
                     lastTip = BlockChain.Tip;
                 }
-                else if (lastUpdated + tipLifespan > DateTimeOffset.UtcNow)
+                else if (lastUpdated + tipLifespan < DateTimeOffset.UtcNow)
                 {
                     _logger.Debug(
-                        "The tip #{TipIndex} {TipHash} is expired (last updated: {LastUpdated}); " +
-                        "pull blocks from neighbor peers...",
+                        "Tip #{TipIndex} {TipHash} has expired (last updated: {LastUpdated}); " +
+                        "pulling blocks from neighbor peers...",
                         lastTip.Index,
                         lastTip.Hash,
                         lastUpdated
