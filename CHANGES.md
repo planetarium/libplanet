@@ -6,6 +6,18 @@ Version 0.21.1
 
 To be released.
 
+### Behavioral changes
+
+ -  The default lifespan for a tip going stale is now `60` seconds instead of
+    `30` seconds for the purpose of polling blocks.  [[#1614]]
+
+### Bug fixes
+
+ -  Internal logic for determining when the tip becomes stale is now fixed.
+    [[#1614]]
+
+[#1614]: https://github.com/planetarium/libplanet/pull/1614
+
 
 Version 0.21.0
 --------------
