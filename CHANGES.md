@@ -29,6 +29,9 @@ To be released.
 
 ### Backward-incompatible network protocol changes
 
+ -  The `Block<T>.CurrentProtocolVersion` is bumped from 2 to 3.
+    [[#1322], [#1323], [#1518]]
+
 ### Backward-incompatible storage format changes
 
 ### Added APIs
@@ -43,6 +46,8 @@ To be released.
 
 ### Behavioral changes
 
+ -  `Block<T>.Transactions` is ordered using a different scheme for
+    evaluation due to protocol version bump.  [[#1322], [#1323], [#1518]]
  -  (Libplanet.Net) `NetMQTransport.SendMessageWithReplyAsync()` should now
     complete its process within given timeframe `timeout` argument instead
     of possibly taking longer on some edge cases when waiting for
@@ -67,6 +72,9 @@ To be released.
     in one line as JSON whenever a different key is found,
     than it outputs all of the different nodes at once.  [[#1729]]
 
+[#1322]: https://github.com/planetarium/libplanet/issues/1322
+[#1323]: https://github.com/planetarium/libplanet/issues/1323
+[#1518]: https://github.com/planetarium/libplanet/pull/1518
 [#1593]: https://github.com/planetarium/libplanet/pull/1593
 [#1729]: https://github.com/planetarium/libplanet/pull/1729
 [#1734]: https://github.com/planetarium/libplanet/issues/1734
