@@ -1,24 +1,21 @@
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using Libplanet.Blocks;
-using Libplanet.Tests.Tx;
+using Libplanet.Crypto;
 using Xunit;
 
 namespace Libplanet.Tests.Blocks
 {
     public class InvalidBlockTxCountPerSignerExceptionTest
     {
-        private TxFixture _txFx;
-
         public InvalidBlockTxCountPerSignerExceptionTest()
         {
-            _txFx = new TxFixture(null);
         }
 
         [Fact]
         public void Serialization()
         {
-            Address signer = _txFx.Address1;
+            Address signer = new PrivateKey().PublicKey.ToAddress();
             var e = new InvalidBlockTxCountPerSignerException("A message.", signer, 10);
             var f = new BinaryFormatter();
             InvalidBlockTxCountPerSignerException e2;
