@@ -4,7 +4,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
-using System.Threading.Tasks;
 using Bencodex;
 using Bencodex.Types;
 using global::Cocona;
@@ -281,7 +280,7 @@ namespace Libplanet.Extensions.Cocona.Commands
         }
 
         [Command(Description = "Query app protocol version (a.k.a. APV) of target node.")]
-        public async Task Query(
+        public void Query(
             [Argument(
                 Name = "TARGET",
 #pragma warning disable MEN002 // Line is too long
@@ -303,7 +302,9 @@ namespace Libplanet.Extensions.Cocona.Commands
 
             try
             {
-                apv = await peer.QueryAppProtocolVersionTcp();
+                // FIXME: Must provide --transport option.
+                // https://github.com/planetarium/libplanet/issues/1623
+                apv = peer.QueryAppProtocolVersionNetMQ();
             }
             catch
             {
