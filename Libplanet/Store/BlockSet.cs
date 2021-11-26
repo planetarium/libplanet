@@ -1,9 +1,10 @@
 #nullable enable
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Caching;
 using Libplanet.Action;
 using Libplanet.Blocks;
-using LruCacheNet;
 
 namespace Libplanet.Store
 {
@@ -11,13 +12,13 @@ namespace Libplanet.Store
         where T : IAction, new()
     {
         private readonly HashAlgorithmGetter _hashAlgorithmGetter;
-        private readonly LruCache<BlockHash, Block<T>> _cache;
+        private readonly LRUCache<BlockHash, Block<T>> _cache;
 
         public BlockSet(HashAlgorithmGetter hashAlgorithmGetter, IStore store, int cacheSize = 4096)
             : base(store)
         {
             _hashAlgorithmGetter = hashAlgorithmGetter;
-            _cache = new LruCache<BlockHash, Block<T>>(cacheSize);
+            _cache = new LRUCache<BlockHash, Block<T>>(cacheSize, Math.Max(cacheSize / 64, 8));
         }
 
         public override ICollection<BlockHash> Keys =>
@@ -66,7 +67,7 @@ namespace Libplanet.Store
                 value.ValidateTimestamp();
                 HashAlgorithmType hashAlgorithm = _hashAlgorithmGetter(value.Index);
                 Store.PutBlock(value);
-                _cache.AddOrUpdate(value.Hash, value);
+                _cache.AddReplace(value.Hash, value);
             }
         }
 
@@ -87,7 +88,7 @@ namespace Libplanet.Store
 
         private Block<T>? GetBlock(BlockHash key)
         {
-            if (_cache.TryGetValue(key, out Block<T> cached))
+            if (_cache.TryGet(key, out Block<T> cached))
             {
                 if (Store.ContainsBlock(key))
                 {
@@ -103,7 +104,7 @@ namespace Libplanet.Store
             Block<T> fetched = Store.GetBlock<T>(_hashAlgorithmGetter, key);
             if (fetched is { })
             {
-                _cache.AddOrUpdate(key, fetched);
+                _cache.AddReplace(key, fetched);
             }
 
             return fetched;

@@ -53,14 +53,16 @@ To be released.
  -  Upgraded *Bencodex* from 0.3.0 to
     [0.4.0-dev.20211123080042+d7f6c810][Bencodex 0.4.0-dev.20211123080042].
     [[#1609]]
+ -  Now depends on [*Caching.dll* 1.4.0.1][Caching.dll 1.4.0.1].
 
 ### CLI tools
 
 [#1606]: https://github.com/planetarium/libplanet/pull/1606
 [#1609]: https://github.com/planetarium/libplanet/pull/1609
-[Bencodex 0.4.0-dev.20211123080042]: https://www.nuget.org/packages/Bencodex/0.4.0-dev.20211123080042
 [#1610]: https://github.com/planetarium/libplanet/pull/1610
 [#1613]: https://github.com/planetarium/libplanet/pull/1613
+[Bencodex 0.4.0-dev.20211123080042]: https://www.nuget.org/packages/Bencodex/0.4.0-dev.20211123080042
+[Caching.dll 1.4.0.1]: https://www.nuget.org/packages/Caching.dll/1.4.0.1
 
 
 Version 0.21.2
