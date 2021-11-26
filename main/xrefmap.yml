@@ -14611,30 +14611,30 @@ references:
   fullName.vb: Libplanet.Net.Transports.InvalidMagicCookieException.InvalidMagicCookieException(IEnumerable(Of System.Byte), IEnumerable(Of System.Byte))
   nameWithType: InvalidMagicCookieException.InvalidMagicCookieException(IEnumerable<Byte>, IEnumerable<Byte>)
   nameWithType.vb: InvalidMagicCookieException.InvalidMagicCookieException(IEnumerable(Of Byte), IEnumerable(Of Byte))
-- uid: Libplanet.Net.Transports.InvalidMagicCookieException.#ctor(IEnumerable{System.Byte},IEnumerable{System.Byte},System.String)
-  name: InvalidMagicCookieException(IEnumerable<Byte>, IEnumerable<Byte>, String)
-  href: api/Libplanet.Net.Transports.InvalidMagicCookieException.html#Libplanet_Net_Transports_InvalidMagicCookieException__ctor_IEnumerable_System_Byte__IEnumerable_System_Byte__System_String_
-  commentId: M:Libplanet.Net.Transports.InvalidMagicCookieException.#ctor(IEnumerable{System.Byte},IEnumerable{System.Byte},System.String)
-  name.vb: InvalidMagicCookieException(IEnumerable(Of Byte), IEnumerable(Of Byte), String)
-  fullName: Libplanet.Net.Transports.InvalidMagicCookieException.InvalidMagicCookieException(IEnumerable<System.Byte>, IEnumerable<System.Byte>, System.String)
-  fullName.vb: Libplanet.Net.Transports.InvalidMagicCookieException.InvalidMagicCookieException(IEnumerable(Of System.Byte), IEnumerable(Of System.Byte), System.String)
-  nameWithType: InvalidMagicCookieException.InvalidMagicCookieException(IEnumerable<Byte>, IEnumerable<Byte>, String)
-  nameWithType.vb: InvalidMagicCookieException.InvalidMagicCookieException(IEnumerable(Of Byte), IEnumerable(Of Byte), String)
-- uid: Libplanet.Net.Transports.InvalidMagicCookieException.#ctor(IEnumerable{System.Byte},IEnumerable{System.Byte},System.String,Exception)
-  name: InvalidMagicCookieException(IEnumerable<Byte>, IEnumerable<Byte>, String, Exception)
-  href: api/Libplanet.Net.Transports.InvalidMagicCookieException.html#Libplanet_Net_Transports_InvalidMagicCookieException__ctor_IEnumerable_System_Byte__IEnumerable_System_Byte__System_String_Exception_
-  commentId: M:Libplanet.Net.Transports.InvalidMagicCookieException.#ctor(IEnumerable{System.Byte},IEnumerable{System.Byte},System.String,Exception)
-  name.vb: InvalidMagicCookieException(IEnumerable(Of Byte), IEnumerable(Of Byte), String, Exception)
-  fullName: Libplanet.Net.Transports.InvalidMagicCookieException.InvalidMagicCookieException(IEnumerable<System.Byte>, IEnumerable<System.Byte>, System.String, Exception)
-  fullName.vb: Libplanet.Net.Transports.InvalidMagicCookieException.InvalidMagicCookieException(IEnumerable(Of System.Byte), IEnumerable(Of System.Byte), System.String, Exception)
-  nameWithType: InvalidMagicCookieException.InvalidMagicCookieException(IEnumerable<Byte>, IEnumerable<Byte>, String, Exception)
-  nameWithType.vb: InvalidMagicCookieException.InvalidMagicCookieException(IEnumerable(Of Byte), IEnumerable(Of Byte), String, Exception)
 - uid: Libplanet.Net.Transports.InvalidMagicCookieException.#ctor(SerializationInfo,StreamingContext)
   name: InvalidMagicCookieException(SerializationInfo, StreamingContext)
   href: api/Libplanet.Net.Transports.InvalidMagicCookieException.html#Libplanet_Net_Transports_InvalidMagicCookieException__ctor_SerializationInfo_StreamingContext_
   commentId: M:Libplanet.Net.Transports.InvalidMagicCookieException.#ctor(SerializationInfo,StreamingContext)
   fullName: Libplanet.Net.Transports.InvalidMagicCookieException.InvalidMagicCookieException(SerializationInfo, StreamingContext)
   nameWithType: InvalidMagicCookieException.InvalidMagicCookieException(SerializationInfo, StreamingContext)
+- uid: Libplanet.Net.Transports.InvalidMagicCookieException.#ctor(System.String,IEnumerable{System.Byte},IEnumerable{System.Byte})
+  name: InvalidMagicCookieException(String, IEnumerable<Byte>, IEnumerable<Byte>)
+  href: api/Libplanet.Net.Transports.InvalidMagicCookieException.html#Libplanet_Net_Transports_InvalidMagicCookieException__ctor_System_String_IEnumerable_System_Byte__IEnumerable_System_Byte__
+  commentId: M:Libplanet.Net.Transports.InvalidMagicCookieException.#ctor(System.String,IEnumerable{System.Byte},IEnumerable{System.Byte})
+  name.vb: InvalidMagicCookieException(String, IEnumerable(Of Byte), IEnumerable(Of Byte))
+  fullName: Libplanet.Net.Transports.InvalidMagicCookieException.InvalidMagicCookieException(System.String, IEnumerable<System.Byte>, IEnumerable<System.Byte>)
+  fullName.vb: Libplanet.Net.Transports.InvalidMagicCookieException.InvalidMagicCookieException(System.String, IEnumerable(Of System.Byte), IEnumerable(Of System.Byte))
+  nameWithType: InvalidMagicCookieException.InvalidMagicCookieException(String, IEnumerable<Byte>, IEnumerable<Byte>)
+  nameWithType.vb: InvalidMagicCookieException.InvalidMagicCookieException(String, IEnumerable(Of Byte), IEnumerable(Of Byte))
+- uid: Libplanet.Net.Transports.InvalidMagicCookieException.#ctor(System.String,IEnumerable{System.Byte},IEnumerable{System.Byte},Exception)
+  name: InvalidMagicCookieException(String, IEnumerable<Byte>, IEnumerable<Byte>, Exception)
+  href: api/Libplanet.Net.Transports.InvalidMagicCookieException.html#Libplanet_Net_Transports_InvalidMagicCookieException__ctor_System_String_IEnumerable_System_Byte__IEnumerable_System_Byte__Exception_
+  commentId: M:Libplanet.Net.Transports.InvalidMagicCookieException.#ctor(System.String,IEnumerable{System.Byte},IEnumerable{System.Byte},Exception)
+  name.vb: InvalidMagicCookieException(String, IEnumerable(Of Byte), IEnumerable(Of Byte), Exception)
+  fullName: Libplanet.Net.Transports.InvalidMagicCookieException.InvalidMagicCookieException(System.String, IEnumerable<System.Byte>, IEnumerable<System.Byte>, Exception)
+  fullName.vb: Libplanet.Net.Transports.InvalidMagicCookieException.InvalidMagicCookieException(System.String, IEnumerable(Of System.Byte), IEnumerable(Of System.Byte), Exception)
+  nameWithType: InvalidMagicCookieException.InvalidMagicCookieException(String, IEnumerable<Byte>, IEnumerable<Byte>, Exception)
+  nameWithType.vb: InvalidMagicCookieException.InvalidMagicCookieException(String, IEnumerable(Of Byte), IEnumerable(Of Byte), Exception)
 - uid: Libplanet.Net.Transports.InvalidMagicCookieException.#ctor*
   name: InvalidMagicCookieException
   href: api/Libplanet.Net.Transports.InvalidMagicCookieException.html#Libplanet_Net_Transports_InvalidMagicCookieException__ctor_

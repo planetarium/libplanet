@@ -95,9 +95,13 @@ and <code>TcpMessageCodec</code>.  [<a href="https://github.com/planetarium/libp
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
 <li><code>Swarm&lt;T&gt;</code> became to append blocks to forked chain to avoid locking
-the canonical chain while syncing recent blocks. [<a href="https://github.com/planetarium/libplanet/pull/1606">#1606</a>]</li>
+the canonical chain while syncing recent blocks.  [<a href="https://github.com/planetarium/libplanet/pull/1606">#1606</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
+<ul>
+<li><code>InvalidMagicCookieException</code> and <code>InvalidTimestampException</code> can now
+be serialized and deserialized.  [<a href="https://github.com/planetarium/libplanet/pull/1613">#1613</a>]</li>
+</ul>
 <h3 id="dependencies">Dependencies</h3>
 <ul>
 <li>Upgraded <em>Bencodex</em> from 0.3.0 to
