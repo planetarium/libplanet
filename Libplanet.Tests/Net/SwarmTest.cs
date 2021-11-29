@@ -563,11 +563,12 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact(Timeout = Timeout)]
-        public void CanResolveEndPoint()
+        public async Task CanResolveEndPoint()
         {
             var expected = new DnsEndPoint("1.2.3.4", 5678);
             using (Swarm<DumbAction> s = CreateSwarm(host: "1.2.3.4", listenPort: 5678))
             {
+                await ((TcpTransport)s.Transport).Initialize();
                 Assert.Equal(expected, s.EndPoint);
                 Assert.Equal(expected, (s.AsPeer as BoundPeer)?.EndPoint);
             }

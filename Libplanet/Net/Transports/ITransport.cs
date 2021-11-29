@@ -17,7 +17,7 @@ namespace Libplanet.Net.Transports
         /// <summary>
         /// The list of tasks invoked when a message that is not
         /// a reply is received. To handle reply, please use <see cref=
-        /// "SendMessageWithReplyAsync(BoundPeer,Message,TimeSpan?,CancellationToken)"/>.
+        /// "SendMessageWithReplyAsync(BoundPeer, Message, TimeSpan?, CancellationToken)"/>.
         /// </summary>
         AsyncDelegate<Message> ProcessMessageHandler { get; }
 

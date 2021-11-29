@@ -145,6 +145,7 @@ namespace Libplanet.Tests.Net.Transports
                 Assert.IsType<BoundPeer>(peer);
                 Assert.Equal(privateKey.ToAddress(), peer.Address);
 
+                await InitializeAsync(boundTransport);
                 peer = boundTransport.AsPeer;
                 Assert.IsType<BoundPeer>(peer);
                 var boundPeer = (BoundPeer)peer;

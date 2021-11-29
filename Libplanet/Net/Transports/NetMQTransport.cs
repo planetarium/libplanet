@@ -40,8 +40,7 @@ namespace Libplanet.Net.Transports
         private RouterSocket _router;
         private NetMQPoller _routerPoller;
         private NetMQPoller _broadcastPoller;
-
-        private int? _listenPort;
+        private int _listenPort;
         private TurnClient _turnClient;
         private DnsEndPoint _hostEndPoint;
 
@@ -127,31 +126,24 @@ namespace Libplanet.Net.Transports
                 .ForContext<NetMQTransport>()
                 .ForContext("Source", nameof(NetMQTransport));
 
+            if (host is null && (iceServers is null || !iceServers.Any()))
+            {
+                throw new ArgumentException(
+                    $"Swarm requires either {nameof(host)} or {nameof(iceServers)}.");
+            }
+
             Running = false;
 
             _privateKey = privateKey;
             _appProtocolVersion = appProtocolVersion;
             _trustedAppProtocolVersionSigners = trustedAppProtocolVersionSigners;
             _host = host;
-            _listenPort = listenPort;
+            _iceServers = iceServers?.ToList();
+            _listenPort = listenPort ?? 0;
             _differentAppProtocolVersionEncountered = differentAppProtocolVersionEncountered;
             _table = table;
             _minimumBroadcastTarget = minimumBroadcastTarget;
             _messageCodec = new NetMQMessageCodec(messageLifespan);
-
-            if (_host != null && _listenPort is int listenPortAsInt)
-            {
-                _hostEndPoint = new DnsEndPoint(_host, listenPortAsInt);
-            }
-
-            _iceServers = iceServers?.ToList();
-            if (_host == null && (_iceServers == null || !_iceServers.Any()))
-            {
-                throw new ArgumentException(
-                    $"Swarm requires either {nameof(host)} or " +
-                    $"{nameof(iceServers)}."
-                );
-            }
 
             _requests = Channel.CreateUnbounded<MessageRequest>();
             _runtimeProcessorCancellationTokenSource = new CancellationTokenSource();
@@ -241,7 +233,7 @@ namespace Libplanet.Net.Transports
         internal DnsEndPoint EndPoint => _turnClient?.EndPoint ?? _hostEndPoint;
 
         /// <inheritdoc />
-        public async Task StartAsync(CancellationToken cancellationToken)
+        public async Task StartAsync(CancellationToken cancellationToken = default)
         {
             if (_disposed)
             {
@@ -253,36 +245,12 @@ namespace Libplanet.Net.Transports
                 throw new TransportException("Transport is already running.");
             }
 
-            _router = new RouterSocket();
-            _router.Options.RouterHandover = true;
+            await Initialize(cancellationToken);
 
-            if (_listenPort == null)
-            {
-                _listenPort = _router.BindRandomPort("tcp://*");
-            }
-            else
-            {
-                _router.Bind($"tcp://*:{_listenPort}");
-            }
-
-            _logger.Information($"Listen on {_listenPort}");
             _runtimeCancellationTokenSource =
                 CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
             _turnCancellationTokenSource =
                 CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-
-            if (_host is null && !(_iceServers is null))
-            {
-                _turnClient = await IceServer.CreateTurnClient(_iceServers);
-                await _turnClient.StartAsync(_listenPort.Value, cancellationToken);
-            }
-
-            if (_turnClient is null || !_turnClient.BehindNAT)
-            {
-                _hostEndPoint = new DnsEndPoint(
-                    _host ?? PublicIPAddress.ToString(),
-                    _listenPort.Value);
-            }
 
             _replyQueue = new NetMQQueue<NetMQMessage>();
             _broadcastQueue = new NetMQQueue<(Address?, Message)>();
@@ -567,6 +535,38 @@ namespace Libplanet.Net.Transports
 
             await tcs.Task;
             _replyCompletionSources.TryRemove(identityHex, out _);
+        }
+
+        internal async Task Initialize(CancellationToken cancellationToken = default)
+        {
+            _router = new RouterSocket();
+            _router.Options.RouterHandover = true;
+
+            if (_listenPort == 0)
+            {
+                _listenPort = _router.BindRandomPort("tcp://*");
+            }
+            else
+            {
+                _router.Bind($"tcp://*:{_listenPort}");
+            }
+
+            _logger.Information("Listening on {Port}...", _listenPort);
+
+            if (_host is { } host)
+            {
+                _hostEndPoint = new DnsEndPoint(host, _listenPort);
+            }
+            else if (_iceServers is { } iceServers)
+            {
+                _turnClient = await IceServer.CreateTurnClient(_iceServers);
+                await _turnClient.StartAsync(_listenPort, cancellationToken);
+                if (!_turnClient.BehindNAT)
+                {
+                    _hostEndPoint = new DnsEndPoint(
+                        _turnClient.PublicAddress.ToString(), _listenPort);
+                }
+            }
         }
 
         private void AppProtocolVersionValidator(
