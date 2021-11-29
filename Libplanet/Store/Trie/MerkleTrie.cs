@@ -234,11 +234,8 @@ namespace Libplanet.Store.Trie
                 return fullNode;
             }
 
-            var serialized = _codec.Encode(fullNode.ToBencodex());
-            var nodeHash = HashDigest<SHA256>.DeriveFrom(serialized);
-            values[nodeHash.ToByteArray()] = serialized;
-
-            return new HashNode(nodeHash);
+            byte[] nodeHash = Encode(fullNode.ToBencodex(), values);
+            return new HashNode(new HashDigest<SHA256>(nodeHash));
         }
 
         private INode CommitShortNode(ShortNode shortNode, IDictionary<byte[], byte[]> values)
@@ -251,11 +248,8 @@ namespace Libplanet.Store.Trie
                 return shortNode;
             }
 
-            byte[] serialized = _codec.Encode(encoded);
-            HashDigest<SHA256> nodeHash = HashDigest<SHA256>.DeriveFrom(serialized);
-            values[nodeHash.ToByteArray()] = serialized;
-
-            return new HashNode(nodeHash);
+            byte[] nodeHash = Encode(encoded, values);
+            return new HashNode(new HashDigest<SHA256>(nodeHash));
         }
 
         private INode CommitValueNode(ValueNode valueNode, IDictionary<byte[], byte[]> values)
@@ -267,11 +261,16 @@ namespace Libplanet.Store.Trie
                 return valueNode;
             }
 
-            byte[] serialized = _codec.Encode(encoded);
-            var nodeHash = HashDigest<SHA256>.DeriveFrom(serialized);
-            values[nodeHash.ToByteArray()] = serialized;
+            byte[] nodeHash = Encode(encoded, values);
+            return new HashNode(new HashDigest<SHA256>(nodeHash));
+        }
 
-            return new HashNode(nodeHash);
+        private byte[] Encode(IValue value, IDictionary<byte[], byte[]> values)
+        {
+            byte[] serialized = _codec.Encode(value);
+            byte[] nodeHash = SHA256.Create().ComputeHash(serialized);
+            values[nodeHash] = serialized;
+            return nodeHash;
         }
 
         private INode Insert(
