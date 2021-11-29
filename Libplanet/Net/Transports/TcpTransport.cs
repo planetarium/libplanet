@@ -102,7 +102,9 @@ namespace Libplanet.Net.Transports
                 );
             }
 
-            _logger = Log.ForContext<TcpTransport>();
+            _logger = Log
+                .ForContext<TcpTransport>()
+                .ForContext("Source", $"[{nameof(TcpTransport)}] ");
             _runtimeCancellationTokenSource = new CancellationTokenSource();
             _turnCancellationTokenSource = new CancellationTokenSource();
             _listener = new TcpListener(new IPEndPoint(IPAddress.Any, listenPort ?? 0));
@@ -143,22 +145,6 @@ namespace Libplanet.Net.Transports
         internal IPAddress? PublicIPAddress => _turnClient?.PublicAddress;
 
         internal DnsEndPoint? EndPoint => _turnClient?.EndPoint ?? _hostEndPoint;
-
-        public void Dispose()
-        {
-            if (!_disposed)
-            {
-                _listener.Stop();
-                _runtimeCancellationTokenSource.Cancel();
-                _turnCancellationTokenSource.Cancel();
-
-                _runtimeCancellationTokenSource.Dispose();
-                _turnCancellationTokenSource.Dispose();
-                StopAllStreamsAsync().Wait();
-                Running = false;
-                _disposed = true;
-            }
-        }
 
         /// <inheritdoc cref="ITransport.StartAsync"/>
         public async Task StartAsync(CancellationToken cancellationToken = default)
@@ -225,6 +211,22 @@ namespace Libplanet.Net.Transports
                 _turnCancellationTokenSource.Cancel();
                 await StopAllStreamsAsync();
                 Running = false;
+            }
+        }
+
+        public void Dispose()
+        {
+            if (!_disposed)
+            {
+                _listener.Stop();
+                _runtimeCancellationTokenSource.Cancel();
+                _turnCancellationTokenSource.Cancel();
+
+                _runtimeCancellationTokenSource.Dispose();
+                _turnCancellationTokenSource.Dispose();
+                StopAllStreamsAsync().Wait();
+                Running = false;
+                _disposed = true;
             }
         }
 
