@@ -4,6 +4,7 @@ using Bencodex.Types;
 
 namespace Libplanet.Store.Trie
 {
+    // FIXME: As it's not an interface, it should be renamed to TrieExtensions.
     internal static class ITrieExtensions
     {
         public static ITrie Set(this ITrie trie, IImmutableDictionary<byte[], IValue> values)

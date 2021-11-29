@@ -1,5 +1,4 @@
 #nullable enable
-using Bencodex;
 using Bencodex.Types;
 
 namespace Libplanet.Store.Trie.Nodes
@@ -22,12 +21,6 @@ namespace Libplanet.Store.Trie.Nodes
 
         public static bool operator !=(ValueNode left, ValueNode right) =>
             Operator.Weave(left, right);
-
-        public byte[] Serialize()
-        {
-            var codec = new Codec();
-            return codec.Encode(ToBencodex());
-        }
 
         /// <inheritdoc cref="INode.ToBencodex()"/>
         public IValue ToBencodex() =>

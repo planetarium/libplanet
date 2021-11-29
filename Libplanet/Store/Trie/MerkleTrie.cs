@@ -122,11 +122,11 @@ namespace Libplanet.Store.Trie
 
             var values = new ConcurrentDictionary<byte[], byte[]>();
             var newRoot = Commit(Root, values);
-            var serialized = newRoot.Serialize();
 
             // It assumes embedded node if it's not HashNode.
             if (!(newRoot is HashNode))
             {
+                byte[] serialized = _codec.Encode(newRoot.ToBencodex());
                 KeyValueStore.Set(
                     HashDigest<SHA256>.DeriveFrom(serialized).ToByteArray(),
                     serialized
@@ -227,54 +227,51 @@ namespace Libplanet.Store.Trie
                 .ToImmutableArray();
 
             fullNode = new FullNode(virtualChildren);
-            var serialized = fullNode.Serialize();
+            IValue encoded = fullNode.ToBencodex();
 
-            if (serialized.Length <= HashDigest<SHA256>.Size)
+            if (encoded.EncodingLength <= HashDigest<SHA256>.Size)
             {
                 return fullNode;
             }
-            else
-            {
-                var nodeHash = HashDigest<SHA256>.DeriveFrom(serialized);
-                values[nodeHash.ToByteArray()] = serialized;
 
-                return new HashNode(nodeHash);
-            }
+            var serialized = _codec.Encode(fullNode.ToBencodex());
+            var nodeHash = HashDigest<SHA256>.DeriveFrom(serialized);
+            values[nodeHash.ToByteArray()] = serialized;
+
+            return new HashNode(nodeHash);
         }
 
         private INode CommitShortNode(ShortNode shortNode, IDictionary<byte[], byte[]> values)
         {
             var committedValueNode = Commit(shortNode.Value!, values);
             shortNode = new ShortNode(shortNode.Key, committedValueNode);
-            byte[] serialized = shortNode.Serialize();
-            if (serialized.Length <= HashDigest<SHA256>.Size)
+            IValue encoded = shortNode.ToBencodex();
+            if (encoded.EncodingLength <= HashDigest<SHA256>.Size)
             {
                 return shortNode;
             }
-            else
-            {
-                var nodeHash = HashDigest<SHA256>.DeriveFrom(serialized);
-                values[nodeHash.ToByteArray()] = serialized;
 
-                return new HashNode(nodeHash);
-            }
+            byte[] serialized = _codec.Encode(encoded);
+            HashDigest<SHA256> nodeHash = HashDigest<SHA256>.DeriveFrom(serialized);
+            values[nodeHash.ToByteArray()] = serialized;
+
+            return new HashNode(nodeHash);
         }
 
         private INode CommitValueNode(ValueNode valueNode, IDictionary<byte[], byte[]> values)
         {
-            var serialized = valueNode.Serialize();
-            int nodeSize = serialized.Length;
+            IValue encoded = valueNode.ToBencodex();
+            var nodeSize = encoded.EncodingLength;
             if (nodeSize <= HashDigest<SHA256>.Size)
             {
                 return valueNode;
             }
-            else
-            {
-                var nodeHash = HashDigest<SHA256>.DeriveFrom(serialized);
-                values[nodeHash.ToByteArray()] = serialized;
 
-                return new HashNode(nodeHash);
-            }
+            byte[] serialized = _codec.Encode(encoded);
+            var nodeHash = HashDigest<SHA256>.DeriveFrom(serialized);
+            values[nodeHash.ToByteArray()] = serialized;
+
+            return new HashNode(nodeHash);
         }
 
         private INode Insert(
