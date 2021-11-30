@@ -49,6 +49,9 @@ To be released.
 
  -  `InvalidMagicCookieException` and `InvalidTimestampException` can now
     be serialized and deserialized.  [[#1613]]
+ -  Fixed a bug where `PolymorphicAction<T>` had thrown `InvalidCastException`
+    when inner action's `.PlainValue` returns other value than
+    `Bencodex.Types.Dictionary`.  [[#1628]]
 
 ### Dependencies
 
@@ -69,6 +72,7 @@ To be released.
 [#1613]: https://github.com/planetarium/libplanet/pull/1613
 [#1625]: https://github.com/planetarium/libplanet/pull/1625
 [#1627]: https://github.com/planetarium/libplanet/pull/1627
+[#1628]: https://github.com/planetarium/libplanet/pull/1628
 [Libplanet.Stun]: https://www.nuget.org/packages/Libplanet.Stun/
 [Bencodex 0.4.0-dev.20211123080042]: https://www.nuget.org/packages/Bencodex/0.4.0-dev.20211123080042
 [Caching.dll 1.4.0.1]: https://www.nuget.org/packages/Caching.dll/1.4.0.1
