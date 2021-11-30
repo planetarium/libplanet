@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using Libplanet.Action;
@@ -76,6 +77,18 @@ namespace Libplanet.Blockchain.Policies
                 try
                 {
                     _queue.Add(transaction.Id);
+                    const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
+                    _logger
+                        .ForContext("Tag", "Metric")
+                        .Debug(
+                            "Transaction {TxId} by {Signer} " +
+                            "with timestamp {TxTimestamp} staged at {StagedTimestamp}.",
+                            transaction.Id,
+                            transaction.Signer,
+                            transaction.Timestamp.ToString(
+                                TimestampFormat, CultureInfo.InvariantCulture),
+                            DateTimeOffset.UtcNow.ToString(
+                                TimestampFormat, CultureInfo.InvariantCulture));
                 }
                 finally
                 {
