@@ -19,6 +19,7 @@ To be released.  The solution now can be built on Apple Silicon
 
  -  Parameter `except` for `KBucket.GetRandomPeer()` now defaults to `null`.
     [[#1631]]
+ -  Added `ArrayEqualityComparer<T>` class.  [[#1636]]
 
 ### Behavioral changes
 
@@ -37,6 +38,7 @@ To be released.  The solution now can be built on Apple Silicon
 
 [#1631]: https://github.com/planetarium/libplanet/pull/1631
 [#1635]: https://github.com/planetarium/libplanet/pull/1635
+[#1636]: https://github.com/planetarium/libplanet/pull/1636
 [Planetarium.RocksDbSharp 6.2.4-planetarium]: https://www.nuget.org/packages/Planetarium.RocksDbSharp/6.2.4-planetarium
 
 
