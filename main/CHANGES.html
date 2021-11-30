@@ -103,6 +103,9 @@ tagged as <code>Metric</code>.  [<a href="https://github.com/planetarium/libplan
 <ul>
 <li><code>InvalidMagicCookieException</code> and <code>InvalidTimestampException</code> can now
 be serialized and deserialized.  [<a href="https://github.com/planetarium/libplanet/pull/1613">#1613</a>]</li>
+<li>Fixed a bug where <code>PolymorphicAction&lt;T&gt;</code> had thrown <code>InvalidCastException</code>
+when inner action's <code>.PlainValue</code> returns other value than
+<code>Bencodex.Types.Dictionary</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1628">#1628</a>]</li>
 </ul>
 <h3 id="dependencies">Dependencies</h3>
 <ul>
