@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Bencodex.Types;
 using Libplanet.Action;
@@ -100,6 +101,47 @@ namespace Libplanet.Tests.Action
                 "Libplanet.Action.PolymorphicAction" +
                 "<Libplanet.Tests.Common.Action.DetectRehearsal>",
                 new PolymorphicAction<BaseAction>(new DetectRehearsal()).ToString());
+        }
+
+        [Fact]
+        public void TextPlainValue()
+        {
+            var a = new TextPlainValueAction("just string");
+            var pa = new PolymorphicAction<BaseAction>(a);
+
+            var plainValue = pa.PlainValue;
+#pragma warning disable 612
+            var newPa = new PolymorphicAction<BaseAction>();
+#pragma warning restore 612
+            newPa.LoadPlainValue(plainValue);
+            Assert.Equal("just string", (Text)newPa.InnerAction.PlainValue);
+        }
+
+        [ActionType("TextPlainValueAction")]
+        private class TextPlainValueAction : BaseAction
+        {
+            private string _value;
+
+            public TextPlainValueAction()
+            {
+            }
+
+            public TextPlainValueAction(string value)
+            {
+                _value = value;
+            }
+
+            public override IValue PlainValue => (Text)_value;
+
+            public override IAccountStateDelta Execute(IActionContext context)
+            {
+                throw new NotSupportedException();
+            }
+
+            public override void LoadPlainValue(IValue plainValue)
+            {
+                _value = (Text)plainValue;
+            }
         }
     }
 }
