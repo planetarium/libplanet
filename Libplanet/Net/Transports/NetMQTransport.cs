@@ -123,6 +123,10 @@ namespace Libplanet.Net.Transports
             int minimumBroadcastTarget,
             TimeSpan? messageLifespan = null)
         {
+            _logger = Log
+                .ForContext<NetMQTransport>()
+                .ForContext("Source", nameof(NetMQTransport));
+
             Running = false;
 
             _privateKey = privateKey;
@@ -148,10 +152,6 @@ namespace Libplanet.Net.Transports
                     $"{nameof(iceServers)}."
                 );
             }
-
-            _logger = Log
-                .ForContext<NetMQTransport>()
-                .ForContext("Source", $"[{nameof(NetMQTransport)}] ");
 
             _requests = Channel.CreateUnbounded<MessageRequest>();
             _runtimeProcessorCancellationTokenSource = new CancellationTokenSource();

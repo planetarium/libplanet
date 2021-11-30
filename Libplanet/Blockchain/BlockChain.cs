@@ -159,7 +159,7 @@ namespace Libplanet.Blockchain
 
             _logger = Log
                 .ForContext<BlockChain<T>>()
-                .ForContext("Source", $"[{nameof(BlockChain<T>)}] ")
+                .ForContext("Source", nameof(BlockChain<T>))
                 .ForContext("CanonicalChainId", Id);
             ActionEvaluator = new ActionEvaluator<T>(
                 Policy.BlockAction,

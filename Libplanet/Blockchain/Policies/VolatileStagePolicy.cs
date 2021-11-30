@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading;
 using Libplanet.Action;
 using Libplanet.Tx;
+using Serilog;
 
 namespace Libplanet.Blockchain.Policies
 {
@@ -20,6 +21,7 @@ namespace Libplanet.Blockchain.Policies
         private readonly ConcurrentDictionary<TxId, Transaction<T>?> _set;
         private readonly List<TxId> _queue;
         private readonly ReaderWriterLockSlim _lock;
+        private readonly ILogger _logger;
 
         /// <summary>
         /// Creates a new <see cref="VolatileStagePolicy{T}"/> instance.
@@ -37,6 +39,7 @@ namespace Libplanet.Blockchain.Policies
         /// name="lifetime"/>.  See also the <see cref="Lifetime"/> property.</param>
         public VolatileStagePolicy(TimeSpan lifetime)
         {
+            _logger = Log.ForContext<VolatileStagePolicy<T>>();
             Lifetime = lifetime;
             _set = new ConcurrentDictionary<TxId, Transaction<T>?>();
             _queue = new List<TxId>();

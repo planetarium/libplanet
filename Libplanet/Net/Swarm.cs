@@ -98,7 +98,7 @@ namespace Libplanet.Net
             string loggerId = _privateKey.ToAddress().ToHex();
             _logger = Log
                 .ForContext<Swarm<T>>()
-                .ForContext("Source", $"[{nameof(Swarm<T>)}] ")
+                .ForContext("Source", nameof(Swarm<T>))
                 .ForContext("SwarmId", loggerId);
 
             Options = options ?? new SwarmOptions();
@@ -140,7 +140,7 @@ namespace Libplanet.Net
             string loggerId = _privateKey.ToAddress().ToHex();
             _logger = Log
                 .ForContext<Swarm<T>>()
-                .ForContext("Source", $"[{nameof(Swarm<T>)}] ")
+                .ForContext("Source", nameof(Swarm<T>))
                 .ForContext("SwarmId", loggerId);
 
             Options = options ?? new SwarmOptions();
