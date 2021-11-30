@@ -65,7 +65,7 @@ namespace Libplanet.Tests.Net.Protocols
             bucket.AddPeer(peer2, DateTimeOffset.UtcNow);
             Thread.Sleep(100);
             Assert.Contains(
-                bucket.GetRandomPeer(null),
+                bucket.GetRandomPeer(),
                 new[] { peer1, peer2 }
             );
             Assert.Contains(
@@ -81,7 +81,7 @@ namespace Libplanet.Tests.Net.Protocols
                 new HashSet<BoundPeer> { peer1, peer2, peer3, peer4 }
             );
             Assert.Contains(
-                bucket.GetRandomPeer(null),
+                bucket.GetRandomPeer(),
                 new[] { peer1, peer2, peer3, peer4 }
             );
             Thread.Sleep(100);

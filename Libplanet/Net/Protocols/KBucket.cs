@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -11,9 +12,7 @@ namespace Libplanet.Net.Protocols
         private readonly int _size;
         private readonly Random _random;
         private readonly ConcurrentDictionary<Address, PeerState> _peerStates;
-
         private readonly ILogger _logger;
-
         private DateTimeOffset _lastUpdated;
 
         public KBucket(int size, Random random, ILogger logger)
@@ -34,32 +33,20 @@ namespace Libplanet.Net.Protocols
         public bool IsFull => _peerStates.Count >= _size;
 
         /// <summary>
-        /// Most recently used peer.
+        /// The <see cref="PeerState"/> used most recently. If the bucket is empty,
+        /// this is <c>null</c>.
         /// </summary>
-        public PeerState Head
-        {
-            get
-            {
-                return _peerStates.Values.Aggregate(
-                    (x, y) =>
-                        x.LastUpdated > y.LastUpdated ? x : y
-                );
-            }
-        }
+        public PeerState? Head => _peerStates.Values
+            .OrderBy(peerState => peerState.LastUpdated)
+            .LastOrDefault();
 
         /// <summary>
-        /// Least recently used peer.
+        /// The <see cref="PeerState"/> used longest time ago. If the bucket is empty,
+        /// this is <c>null</c>.
         /// </summary>
-        public PeerState Tail
-        {
-            get
-            {
-                return _peerStates.Values.Aggregate(
-                    (x, y) =>
-                        x.LastUpdated < y.LastUpdated ? x : y
-                );
-            }
-        }
+        public PeerState? Tail => _peerStates.Values
+            .OrderBy(peerState => peerState.LastUpdated)
+            .FirstOrDefault();
 
         public IEnumerable<BoundPeer> Peers => _peerStates.Values.Select(state => state.Peer);
 
@@ -69,14 +56,8 @@ namespace Libplanet.Net.Protocols
         // the bucket is full and least recently used peer responds.
         public ConcurrentDictionary<BoundPeer, DateTimeOffset> ReplacementCache { get; }
 
-        // returns head if the bucket is full and doest not containing target.
         public void AddPeer(BoundPeer peer, DateTimeOffset updated)
         {
-            if (peer is null)
-            {
-                throw new ArgumentNullException(nameof(peer));
-            }
-
             if (_peerStates.ContainsKey(peer.Address))
             {
                 _logger.Verbose("Bucket already contains peer {Peer}", peer);
@@ -125,17 +106,33 @@ namespace Libplanet.Net.Protocols
             }
         }
 
+        /// <summary>
+        /// Checks whether the bucket contains given <paramref name="peer"/>.
+        /// </summary>
+        /// <param name="peer">The <see cref="BoundPeer"/> to check.</param>
+        /// <returns><c>true</c> if the bucket contains <paramref name="peer"/>,
+        /// <c>false</c> otherwise.</returns>
         public bool Contains(BoundPeer peer)
         {
             return _peerStates.ContainsKey(peer.Address);
         }
 
+        /// <summary>
+        /// Empties the bucket.
+        /// </summary>
         public void Clear()
         {
             _peerStates.Clear();
             _lastUpdated = DateTimeOffset.UtcNow;
         }
 
+        /// <summary>
+        /// Removes given <paramref name="peer"/> from the bucket.
+        /// </summary>
+        /// <param name="peer">The <see cref="BoundPeer"/> to remove.</param>
+        /// <returns>
+        /// <c>true</c> if <paramref name="peer"/> was removed, <c>false</c> otherwise.
+        /// </returns>
         public bool RemovePeer(BoundPeer peer)
         {
             if (_peerStates.ContainsKey(peer.Address))
@@ -157,21 +154,22 @@ namespace Libplanet.Net.Protocols
             }
         }
 
-        public BoundPeer GetRandomPeer(Address? except)
+        /// <summary>
+        /// Selects a random <see cref="BoundPeer"/> in the bucket excluding
+        /// <paramref name="except"/>.
+        /// </summary>
+        /// <param name="except">The <see cref="BoundPeer"/> to exclude when selecting.</param>
+        /// <returns>
+        /// A randomly selected <see cref="BoundPeer"/> in the bucket excluding
+        /// <paramref name="except"/>. If no <see cref="BoundPeer"/> can be selected,
+        /// <c>null</c> is returned.
+        /// </returns>
+        public BoundPeer? GetRandomPeer(Address? except = null)
         {
-            List<BoundPeer> peers;
-            if (except is null)
-            {
-                peers = _peerStates.Values.Select(d => d.Peer).ToList();
-            }
-            else
-            {
-                peers = _peerStates
-                    .Where(kv => !kv.Key.Equals(except.Value))
-                    .Select(kv => kv.Value.Peer)
-                    .ToList();
-            }
-
+            List<BoundPeer> peers = _peerStates.Values
+                .Select(d => d.Peer)
+                .Where(p => (!(except is Address e) || !p.Address.Equals(e)))
+                .ToList();
             return peers.Count > 0 ? peers[_random.Next(peers.Count)] : null;
         }
 
