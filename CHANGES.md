@@ -4,9 +4,7 @@ Libplanet changelog
 Version 0.22.0
 --------------
 
-To be released.
-
-### Deprecated APIs
+Released on November 30, 2021.
 
 ### Backward-incompatible API changes
 
@@ -32,12 +30,6 @@ To be released.
  -  Method name `BoundPeer.QueryAppProtocolVersion()` changed to
     `BoundPeer.QueryAppProtocolVersionNetMQ()`.  [[#1610]]
 
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
-### Added APIs
-
 ### Behavioral changes
 
  -  `Swarm<T>` became to append blocks to forked chain to avoid locking
@@ -61,8 +53,6 @@ To be released.
     [0.4.0-dev.20211123080042+d7f6c810][Bencodex 0.4.0-dev.20211123080042].
     [[#1609]]
  -  Now depends on [*Caching.dll* 1.4.0.1][Caching.dll 1.4.0.1].
-
-### CLI tools
 
 [#813]: https://github.com/planetarium/libplanet/issues/813
 [#1279]: https://github.com/planetarium/libplanet/pull/1279
