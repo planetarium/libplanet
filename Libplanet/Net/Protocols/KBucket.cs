@@ -17,6 +17,12 @@ namespace Libplanet.Net.Protocols
 
         public KBucket(int size, Random random, ILogger logger)
         {
+            if (size <= 0)
+            {
+                throw new ArgumentOutOfRangeException(
+                    $"The value of {nameof(size)} must be positive.");
+            }
+
             _size = size;
             _random = random;
             _logger = logger;
