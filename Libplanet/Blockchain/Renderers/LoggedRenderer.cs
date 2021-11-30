@@ -54,7 +54,7 @@ namespace Libplanet.Blockchain.Renderers
             Renderer = renderer;
             Logger = logger
                 .ForContext<LoggedRenderer<T>>()
-                .ForContext("Source", $"[{nameof(LoggedRenderer<T>)}] ")
+                .ForContext("Source", nameof(LoggedRenderer<T>))
                 .ForContext(renderer.GetType());
             Level = level;
         }

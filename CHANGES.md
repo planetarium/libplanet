@@ -42,6 +42,8 @@ To be released.
 
  -  `Swarm<T>` became to append blocks to forked chain to avoid locking
     the canonical chain while syncing recent blocks.  [[#1606]]
+ -  More streamlined structured logging together with additional logs
+    tagged as `Metric`.  [[#1627]]
 
 ### Bug fixes
 
@@ -66,6 +68,7 @@ To be released.
 [#1610]: https://github.com/planetarium/libplanet/pull/1610
 [#1613]: https://github.com/planetarium/libplanet/pull/1613
 [#1625]: https://github.com/planetarium/libplanet/pull/1625
+[#1627]: https://github.com/planetarium/libplanet/pull/1627
 [Libplanet.Stun]: https://www.nuget.org/packages/Libplanet.Stun/
 [Bencodex 0.4.0-dev.20211123080042]: https://www.nuget.org/packages/Bencodex/0.4.0-dev.20211123080042
 [Caching.dll 1.4.0.1]: https://www.nuget.org/packages/Caching.dll/1.4.0.1

@@ -2,10 +2,12 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using Libplanet.Action;
 using Libplanet.Tx;
+using Serilog;
 
 namespace Libplanet.Blockchain.Policies
 {
@@ -20,6 +22,7 @@ namespace Libplanet.Blockchain.Policies
         private readonly ConcurrentDictionary<TxId, Transaction<T>?> _set;
         private readonly List<TxId> _queue;
         private readonly ReaderWriterLockSlim _lock;
+        private readonly ILogger _logger;
 
         /// <summary>
         /// Creates a new <see cref="VolatileStagePolicy{T}"/> instance.
@@ -37,6 +40,7 @@ namespace Libplanet.Blockchain.Policies
         /// name="lifetime"/>.  See also the <see cref="Lifetime"/> property.</param>
         public VolatileStagePolicy(TimeSpan lifetime)
         {
+            _logger = Log.ForContext<VolatileStagePolicy<T>>();
             Lifetime = lifetime;
             _set = new ConcurrentDictionary<TxId, Transaction<T>?>();
             _queue = new List<TxId>();
@@ -73,6 +77,18 @@ namespace Libplanet.Blockchain.Policies
                 try
                 {
                     _queue.Add(transaction.Id);
+                    const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
+                    _logger
+                        .ForContext("Tag", "Metric")
+                        .Debug(
+                            "Transaction {TxId} by {Signer} " +
+                            "with timestamp {TxTimestamp} staged at {StagedTimestamp}.",
+                            transaction.Id,
+                            transaction.Signer,
+                            transaction.Timestamp.ToString(
+                                TimestampFormat, CultureInfo.InvariantCulture),
+                            DateTimeOffset.UtcNow.ToString(
+                                TimestampFormat, CultureInfo.InvariantCulture));
                 }
                 finally
                 {

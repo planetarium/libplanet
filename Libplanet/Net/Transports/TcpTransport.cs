@@ -71,6 +71,10 @@ namespace Libplanet.Net.Transports
             int minimumBroadcastTarget,
             TimeSpan? messageLifespan = null)
         {
+            _logger = Log
+                .ForContext<TcpTransport>()
+                .ForContext("Source", nameof(TcpTransport));
+
             _runningEvent = null!;
             Running = false;
 

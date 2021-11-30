@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography;
@@ -159,7 +160,7 @@ namespace Libplanet.Blockchain
 
             _logger = Log
                 .ForContext<BlockChain<T>>()
-                .ForContext("Source", $"[{nameof(BlockChain<T>)}] ")
+                .ForContext("Source", nameof(BlockChain<T>))
                 .ForContext("CanonicalChainId", Id);
             ActionEvaluator = new ActionEvaluator<T>(
                 Policy.BlockAction,
@@ -730,11 +731,14 @@ namespace Libplanet.Blockchain
                 block,
                 stateCompleters ?? StateCompleterSet<T>.Recalculate
             );
-            const string evalEndMsg =
-                "Evaluated actions in the block #{BlockIndex} {BlockHash} " +
-                "(duration: {DurationMs}ms).";
-            double evalDuration = (DateTimeOffset.Now - evaluateActionStarted).TotalMilliseconds;
-            _logger.Debug(evalEndMsg, block.Index, block.Hash, evalDuration);
+            TimeSpan evalDuration = DateTimeOffset.Now - evaluateActionStarted;
+            _logger
+                .ForContext("Tag", "Metric")
+                .Debug(
+                    "Actions in block #{BlockIndex} {BlockHash} evaluated in {DurationMs:F0}ms.",
+                    block.Index,
+                    block.Hash,
+                    evalDuration.TotalMilliseconds);
 
             _rwlock.EnterWriteLock();
             try
@@ -744,7 +748,7 @@ namespace Libplanet.Blockchain
                 var totalDelta =
                     evaluations.GetTotalDelta(ToStateKey, ToFungibleAssetKey);
                 const string deltaMsg =
-                    "Summarized the states delta made by the block #{BlockIndex} {BlockHash}." +
+                    "Summarized the states delta made by block #{BlockIndex} {BlockHash}." +
                     "  Total {Keys} key(s) changed.";
                 _logger.Debug(deltaMsg, block.Index, block.Hash, totalDelta.Count);
 
@@ -752,13 +756,13 @@ namespace Libplanet.Blockchain
                 ITrie stateRoot = StateStore.Commit(prevStateRootHash, totalDelta);
                 HashDigest<SHA256> rootHash = stateRoot.Hash;
                 const string rootHashMsg =
-                    "Calculated the root hash of the states made by the block #{BlockIndex} " +
+                    "Calculated the root hash of the states made by block #{BlockIndex} " +
                     "{BlockHash} for " + nameof(TrieStateStore) + ": {StateRootHash}.";
                 _logger.Debug(rootHashMsg, block.Index, block.Hash, rootHash);
 
                 if (!rootHash.Equals(block.StateRootHash))
                 {
-                    var message = $"The block #{block.Index} {block.Hash}'s state root hash " +
+                    var message = $"Block #{block.Index} {block.Hash}'s state root hash " +
                         $"is {block.StateRootHash}, but the execution result is {rootHash}.";
                     throw new InvalidBlockStateRootHashException(
                         block.StateRootHash,
@@ -766,11 +770,15 @@ namespace Libplanet.Blockchain
                         message);
                 }
 
-                const string endMsg =
-                    "Finished to update states affected by the block #{BlockIndex} {BlockHash} " +
-                    "(duration: {DurationMs}ms).";
-                double duration = (DateTimeOffset.Now - setStatesStarted).TotalMilliseconds;
-                _logger.Debug(endMsg, block.Index, block.Hash, duration);
+                TimeSpan setStatesDuration = DateTimeOffset.Now - setStatesStarted;
+                _logger
+                    .ForContext("Tag", "Metric")
+                    .Debug(
+                    "Finished updating the states affected by block #{BlockIndex} {BlockHash} " +
+                    "in {DurationMs:F0}ms.",
+                    block.Index,
+                    block.Hash,
+                    setStatesDuration.TotalMilliseconds);
 
                 IEnumerable<TxExecution> txExecutions = MakeTxExecutions(block, evaluations);
                 UpdateTxExecutions(txExecutions);
@@ -871,6 +879,20 @@ namespace Libplanet.Blockchain
                             block.Index,
                             block.Hash
                         );
+
+                        // FIXME: Using evaluateActions as a proxy flag for preloading status.
+                        const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
+                        _logger
+                            .ForContext("Tag", "Metric")
+                            .Debug(
+                                "Block #{BlockIndex} {BlockHash} with " +
+                                "timestamp {BlockTimestamp} appended at {AppendTimestamp}.",
+                                block.Index,
+                                block.Hash,
+                                block.Timestamp.ToString(
+                                    TimestampFormat, CultureInfo.InvariantCulture),
+                                DateTimeOffset.UtcNow.ToString(
+                                    TimestampFormat, CultureInfo.InvariantCulture));
                     }
 
                     _blocks[block.Hash] = block;

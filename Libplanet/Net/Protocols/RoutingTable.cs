@@ -46,7 +46,7 @@ namespace Libplanet.Net.Protocols
             BucketSize = bucketSize;
             _logger = Log
                 .ForContext<RoutingTable>()
-                .ForContext("Source", $"[{nameof(RoutingTable)}] ");
+                .ForContext("Source", nameof(RoutingTable));
 
             var random = new Random();
             _buckets = new KBucket[TableSize];
