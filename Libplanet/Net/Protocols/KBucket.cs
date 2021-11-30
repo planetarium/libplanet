@@ -135,21 +135,14 @@ namespace Libplanet.Net.Protocols
         /// </returns>
         public bool RemovePeer(BoundPeer peer)
         {
-            if (_peerStates.ContainsKey(peer.Address))
+            if (_peerStates.TryRemove(peer.Address, out var digest))
             {
-                if (_peerStates.TryRemove(peer.Address, out var digest))
-                {
-                    _logger.Verbose("Removed peer {Peer} from bucket.", peer);
-                    return true;
-                }
-                else
-                {
-                    _logger.Verbose("Failed to remove peer {Peer} from bucket.", peer);
-                    return false;
-                }
+                _logger.Verbose("Removed peer {Peer} from bucket.", peer);
+                return true;
             }
             else
             {
+                _logger.Verbose("Failed to remove peer {Peer} from bucket.", peer);
                 return false;
             }
         }
