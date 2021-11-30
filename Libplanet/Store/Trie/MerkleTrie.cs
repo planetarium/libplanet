@@ -7,6 +7,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using Bencodex;
 using Bencodex.Types;
+using Libplanet.Misc;
 using Libplanet.Store.Trie.Nodes;
 
 namespace Libplanet.Store.Trie
@@ -120,7 +121,8 @@ namespace Libplanet.Store.Trie
                 return new MerkleTrie(KeyValueStore, new HashNode(EmptyRootHash));
             }
 
-            var values = new ConcurrentDictionary<byte[], byte[]>();
+            var values = new ConcurrentDictionary<byte[], byte[]>(
+                new ArrayEqualityComparer<byte>());
             var newRoot = Commit(Root, values);
 
             // It assumes embedded node if it's not HashNode.
