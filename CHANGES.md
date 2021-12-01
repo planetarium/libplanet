@@ -16,11 +16,19 @@ To be released.
 
 ### Added APIs
 
+ -  Parameter `except` for `KBucket.GetRandomPeer()` now defaults to `null`.
+    [[#1631]]
+
 ### Behavioral changes
 
 ### Bug fixes
 
+ -  `KBucket.Head` and `KBucket.Tail` now properly return `null` if
+    the bucket is empty instead of faulting.  [[#1631]]
+
 ### CLI tools
+
+[#1631]: https://github.com/planetarium/libplanet/pull/1631
 
 
 Version 0.22.0
