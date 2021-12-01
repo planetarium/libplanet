@@ -470,10 +470,11 @@ namespace Libplanet.Net.Transports
                         MessageHistory.Enqueue(msg);
                     }
 
-                    const string logMsg =
-                        "Received {ReplyMessageCount} reply messages to {RequestId} " +
-                        "from the {Peer}: {@ReplyMessages}.";
-                    _logger.Debug(logMsg, reply.Count, reqId, peer, reply);
+                    _logger.Debug(
+                        "Received {ReplyMessageCount} reply messages to {RequestId} from {Peer}.",
+                        reply.Count,
+                        reqId,
+                        peer);
 
                     return reply;
                 }
