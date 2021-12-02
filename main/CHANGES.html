@@ -63,7 +63,8 @@
 <h1 id="libplanet-changelog">Libplanet changelog</h1>
 
 <h2 id="version-0230">Version 0.23.0</h2>
-<p>To be released.</p>
+<p>To be released.  The solution now can be built on Apple Silicon
+(aarch64-apple-darwin).</p>
 <h3 id="deprecated-apis">Deprecated APIs</h3>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
@@ -78,6 +79,12 @@
 <ul>
 <li><code>KBucket.Head</code> and <code>KBucket.Tail</code> now properly return <code>null</code> if
 the bucket is empty instead of faulting.  [<a href="https://github.com/planetarium/libplanet/pull/1631">#1631</a>]</li>
+</ul>
+<h3 id="dependencies">Dependencies</h3>
+<ul>
+<li>Upgraded <em>Planetarium.RocksDbSharp</em> from 6.2.3 to
+<a href="https://www.nuget.org/packages/Planetarium.RocksDbSharp/6.2.4-planetarium">6.2.4-planetarium</a>.
+[<a href="https://github.com/planetarium/libplanet/pull/1635">#1635</a>]</li>
 </ul>
 <h3 id="cli-tools">CLI tools</h3>
 <h2 id="version-0220">Version 0.22.0</h2>
@@ -121,7 +128,7 @@ be serialized and deserialized.  [<a href="https://github.com/planetarium/libpla
 when inner action's <code>.PlainValue</code> returns other value than
 <code>Bencodex.Types.Dictionary</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1628">#1628</a>]</li>
 </ul>
-<h3 id="dependencies">Dependencies</h3>
+<h3 id="dependencies-1">Dependencies</h3>
 <ul>
 <li><em>Libplanet.Stun</em> assembly is now distributed as a seaprate NuGet package:
 <a href="https://www.nuget.org/packages/Libplanet.Stun/"><em>Libplanet.Stun</em></a>.  [<a href="https://github.com/planetarium/libplanet/issues/813">#813</a>, <a href="https://github.com/planetarium/libplanet/pull/1279">#1279</a>, <a href="https://github.com/planetarium/libplanet/pull/1625">#1625</a>]</li>
