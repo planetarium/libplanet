@@ -7,6 +7,12 @@
         <IsPublishable>false</IsPublishable>
     </PropertyGroup>
 
+    <PropertyGroup Condition="
+      '$([System.Runtime.InteropServices.RuntimeInformation]::
+        OSArchitecture.ToString())' == 'Arm64' ">
+      <TargetFramework>net6.0</TargetFramework>
+    </PropertyGroup>
+
     <ItemGroup>
         <PackageReference Include="JunitXml.TestLogger" Version="3.0.98" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.3" />

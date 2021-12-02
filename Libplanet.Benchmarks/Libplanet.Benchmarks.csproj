@@ -17,6 +17,12 @@
     <AdditionalFiles Include="..\stylecop.json" />
   </ItemGroup>
 
+  <PropertyGroup Condition="
+    '$([System.Runtime.InteropServices.RuntimeInformation]::
+      OSArchitecture.ToString())' == 'Arm64' ">
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
   <PropertyGroup Condition=" '$(MSBuildRuntimeType)'=='Mono' And
                              '$(BuildingByReSharper)'!='true'">
     <TargetFramework>net47</TargetFramework>
