@@ -4,10 +4,12 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using Libplanet.Crypto;
+using Libplanet.Net;
+using Libplanet.Net.Protocols;
 using Serilog.Core;
 using Xunit;
 
-namespace Libplanet.Net.Protocols
+namespace Libplanet.Tests.Net.Protocols
 {
     public class KBucketTest
     {
