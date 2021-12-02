@@ -23,6 +23,13 @@ To be released.  The solution now can be built on Apple Silicon
 
 ### Behavioral changes
 
+ -  States became to take up much less space than before by reducing unnecessary
+    duplicate data.  Although this guarantees the backward compatibility with
+    the existing state store, in order to take complete effect of this
+    optimization, please replay your existing blockchain from the genesis block
+    with the empty store.  [[#1636]]
+
+
 ### Bug fixes
 
  -  `KBucket.Head` and `KBucket.Tail` now properly return `null` if
@@ -30,6 +37,9 @@ To be released.  The solution now can be built on Apple Silicon
 
 ### Dependencies
 
+ -  Upgraded *Bencodex* from 0.4.0-dev.20211123080042+d7f6c810 to
+    [0.4.0-dev.20211202015312+d837934e][Bencodex 0.4.0-dev.20211202015312].
+    [[#1636]]
  -  Upgraded *Planetarium.RocksDbSharp* from 6.2.3 to
     [6.2.4-planetarium][Planetarium.RocksDbSharp 6.2.4-planetarium].
     [[#1635]]
@@ -39,6 +49,7 @@ To be released.  The solution now can be built on Apple Silicon
 [#1631]: https://github.com/planetarium/libplanet/pull/1631
 [#1635]: https://github.com/planetarium/libplanet/pull/1635
 [#1636]: https://github.com/planetarium/libplanet/pull/1636
+[Bencodex 0.4.0-dev.20211202015312]: https://www.nuget.org/packages/Bencodex/0.4.0-dev.20211202015312
 [Planetarium.RocksDbSharp 6.2.4-planetarium]: https://www.nuget.org/packages/Planetarium.RocksDbSharp/6.2.4-planetarium
 
 

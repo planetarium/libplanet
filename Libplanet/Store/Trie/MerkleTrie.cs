@@ -3,6 +3,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Security.Cryptography;
 using Bencodex;
@@ -22,6 +23,8 @@ namespace Libplanet.Store.Trie
     {
         public static readonly HashDigest<SHA256> EmptyRootHash;
 
+        private const long OffloadThresholdBytes = 512L;
+
         private static Codec _codec;
 
         private readonly bool _secure;
@@ -29,7 +32,7 @@ namespace Libplanet.Store.Trie
         static MerkleTrie()
         {
             _codec = new Codec();
-            var bxNull = _codec.Encode(Null.Value!);
+            var bxNull = _codec.Encode(Null.Value);
             EmptyRootHash = HashDigest<SHA256>.DeriveFrom(bxNull);
         }
 
@@ -236,8 +239,7 @@ namespace Libplanet.Store.Trie
                 return fullNode;
             }
 
-            byte[] nodeHash = Encode(fullNode.ToBencodex(), values);
-            return new HashNode(new HashDigest<SHA256>(nodeHash));
+            return Encode(fullNode.ToBencodex(), values);
         }
 
         private INode CommitShortNode(ShortNode shortNode, IDictionary<byte[], byte[]> values)
@@ -250,8 +252,7 @@ namespace Libplanet.Store.Trie
                 return shortNode;
             }
 
-            byte[] nodeHash = Encode(encoded, values);
-            return new HashNode(new HashDigest<SHA256>(nodeHash));
+            return Encode(encoded, values);
         }
 
         private INode CommitValueNode(ValueNode valueNode, IDictionary<byte[], byte[]> values)
@@ -263,16 +264,19 @@ namespace Libplanet.Store.Trie
                 return valueNode;
             }
 
-            byte[] nodeHash = Encode(encoded, values);
-            return new HashNode(new HashDigest<SHA256>(nodeHash));
+            return Encode(encoded, values);
         }
 
-        private byte[] Encode(IValue value, IDictionary<byte[], byte[]> values)
+        private HashNode Encode(IValue intermediateEncoding, IDictionary<byte[], byte[]> values)
         {
-            byte[] serialized = _codec.Encode(value);
-            byte[] nodeHash = SHA256.Create().ComputeHash(serialized);
+            var offloadOptions = new OffloadOptions(values, KeyValueStore);
+            byte[] serialized = _codec.Encode(intermediateEncoding, offloadOptions);
+            byte[] fullEncoding = offloadOptions.Offloaded
+                ? _codec.Encode(intermediateEncoding)
+                : serialized;
+            byte[] nodeHash = SHA256.Create().ComputeHash(fullEncoding);
             values[nodeHash] = serialized;
-            return nodeHash;
+            return new HashNode(new HashDigest<SHA256>(nodeHash));
         }
 
         private INode Insert(
@@ -435,9 +439,15 @@ namespace Libplanet.Store.Trie
         /// <returns>The node corresponding to <paramref name="nodeHash"/>.</returns>
         private INode? GetNode(HashDigest<SHA256> nodeHash)
         {
-            return NodeDecoder.Decode(
-                _codec.Decode(KeyValueStore.Get(nodeHash.ToByteArray())));
+            IValue intermediateEncoding = _codec.Decode(
+                KeyValueStore.Get(nodeHash.ToByteArray()),
+                LoadIndirectValue
+            );
+            return NodeDecoder.Decode(intermediateEncoding);
         }
+
+        private IValue LoadIndirectValue(Fingerprint fp) =>
+            _codec.Decode(KeyValueStore.Get(fp.Serialize()), LoadIndirectValue);
 
         private byte[] ToKey(byte[] key)
         {
@@ -456,6 +466,37 @@ namespace Libplanet.Store.Trie
             }
 
             return res;
+        }
+
+        private sealed class OffloadOptions : IOffloadOptions
+        {
+            [SuppressMessage(
+                "Microsoft.StyleCop.CSharp.CSharpRules",
+                "SA1401:FieldsMustBePrivate",
+                Justification = "It's a private class and we want to get rid of runtime overhead.")]
+            public bool Offloaded;
+            private readonly IDictionary<byte[], byte[]> _dirty;
+            private readonly IKeyValueStore _store;
+
+            public OffloadOptions(IDictionary<byte[], byte[]> dirty, IKeyValueStore store)
+            {
+                _dirty = dirty;
+                _store = store;
+                Offloaded = false;
+            }
+
+            public bool Embeds(in IndirectValue indirectValue) =>
+                indirectValue.EncodingLength < OffloadThresholdBytes;
+
+            public void Offload(in IndirectValue indirectValue, IndirectValue.Loader? loader)
+            {
+                Offloaded = true;
+                byte[] fp = indirectValue.Fingerprint.Serialize();
+                if (!_dirty.ContainsKey(fp) && !_store.Exists(fp))
+                {
+                    _dirty[fp] = _codec.Encode(indirectValue.GetValue(loader), this);
+                }
+            }
         }
     }
 }
