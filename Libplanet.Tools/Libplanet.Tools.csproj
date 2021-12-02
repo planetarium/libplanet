@@ -32,6 +32,12 @@
     <CodeAnalysisRuleSet>..\Libplanet.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
+  <PropertyGroup Condition="
+    '$([System.Runtime.InteropServices.RuntimeInformation]::
+      OSArchitecture.ToString())' == 'Arm64' ">
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
   <PropertyGroup Condition=" '$(PublishSingleFile)' != 'true' ">
     <PackAsTool>true</PackAsTool>
     <AssemblyName>Libplanet.Tools</AssemblyName>

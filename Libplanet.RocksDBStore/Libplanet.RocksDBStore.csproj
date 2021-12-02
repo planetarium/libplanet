@@ -23,6 +23,7 @@
   <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
   <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>$(NoWarn);NU5104</NoWarn>
   <IsTestProject>false</IsTestProject>
   <CodeAnalysisRuleSet>..\Libplanet.ruleset</CodeAnalysisRuleSet>
 </PropertyGroup>
@@ -46,7 +47,7 @@
       runtime; build; native; contentfiles; analyzers; buildtransitive
     </IncludeAssets>
   </PackageReference>
-  <PackageReference Include="Planetarium.RocksDbSharp" Version="6.2.3" />
+  <PackageReference Include="Planetarium.RocksDbSharp" Version="6.2.4-planetarium" />
   <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.205">
     <PrivateAssets>all</PrivateAssets>
     <IncludeAssets>

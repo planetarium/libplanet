@@ -6,7 +6,7 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <IsTestProject>true</IsTestProject>
     <LangVersion>7.1</LangVersion>
-    <NoWarn>$(NoWarn);SA1401</NoWarn>
+    <NoWarn>$(NoWarn);SA1401;SYSLIB0011</NoWarn>
     <CodeAnalysisRuleSet>..\Libplanet.Tests.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
@@ -16,6 +16,12 @@
     </AdditionalFiles>
     <AdditionalFiles Include="..\stylecop.json" />
   </ItemGroup>
+
+  <PropertyGroup Condition="
+    '$([System.Runtime.InteropServices.RuntimeInformation]::
+      OSArchitecture.ToString())' == 'Arm64' ">
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
 
   <PropertyGroup Condition=" '$(TestsTargetFramework)'!='' ">
     <TargetFramework>$(TestsTargetFramework)</TargetFramework>
