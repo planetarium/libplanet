@@ -441,16 +441,17 @@ namespace Libplanet.Net.Transports
                 // FIXME should we also cancel tcs sender side too?
                 using CancellationTokenRegistration ctr =
                     cts.Token.Register(() => tcs.TrySetCanceled());
+                MessageRequest req = new MessageRequest(
+                    reqId,
+                    message,
+                    peer,
+                    now,
+                    timeout,
+                    expectedResponses,
+                    returnWhenTimeout,
+                    tcs);
                 await _requests.Writer.WriteAsync(
-                    new MessageRequest(
-                        reqId,
-                        message,
-                        peer,
-                        now,
-                        timeout,
-                        expectedResponses,
-                        returnWhenTimeout,
-                        tcs),
+                    req,
                     cts.Token
                 );
                 _logger.Verbose(
@@ -471,9 +472,11 @@ namespace Libplanet.Net.Transports
                     }
 
                     _logger.Debug(
-                        "Received {ReplyMessageCount} reply messages to {RequestId} from {Peer}.",
+                        "Received {ReplyMessageCount} reply messages to " +
+                        "{RequestId} {RequestMessage} from {Peer}.",
                         reply.Count,
-                        reqId,
+                        req.Id,
+                        req.Message,
                         peer);
 
                     return reply;
