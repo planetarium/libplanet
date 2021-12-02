@@ -6,6 +6,12 @@ Version 0.22.1
 
 To be released.
 
+### Behavioral changes
+
+ -  Compacted log output for convenience.  [[#1633]]
+
+[#1633]: https://github.com/planetarium/libplanet/pull/1633
+
 
 Version 0.22.0
 --------------

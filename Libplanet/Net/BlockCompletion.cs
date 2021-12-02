@@ -334,8 +334,8 @@ namespace Libplanet.Net
                 try
                 {
                     _logger.Debug(
-                        "Request blocks {BlockHashes} to {Peer}...",
-                        blockHashes,
+                        "Requesting {BlockCount} blocks from {Peer}...",
+                        blockHashes.Count,
                         peer
                     );
                     using var timeout = new CancellationTokenSource(singleSessionTimeout);
