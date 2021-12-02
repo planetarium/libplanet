@@ -83,22 +83,18 @@ namespace Libplanet.Blockchain
                 _rwlock.EnterWriteLock();
                 try
                 {
+                    IEnumerable<long> LongRange(long start, long count)
+                    {
+                        for (long i = 0; i < count; i++)
+                        {
+                            yield return start + i;
+                        }
+                    }
+
                     IEnumerable<Transaction<T>>
-                        GetTxsWithRange(BlockChain<T> chain, Block<T> start, Block<T> end)
-                        => Enumerable
-                            .Range((int)start.Index + 1, (int)(end.Index - start.Index))
-                            .SelectMany(x =>
-                            {
-                                // FIXME: Change the type of IBlockContent<T>.Transactions to
-                                // IImmutableSet<Transaction<T>>, and define a distinct property
-                                // to Block<T> for this ordering.
-                                Block<T> block = chain[x];
-                                return ActionEvaluator<T>.OrderTxsForEvaluation(
-                                    block.ProtocolVersion,
-                                    block.Transactions,
-                                    block.PreEvaluationHash
-                                );
-                            });
+                        GetTxsWithRange(BlockChain<T> chain, Block<T> start, Block<T> end) =>
+                            LongRange(start.Index + 1, end.Index - start.Index)
+                            .SelectMany(index => chain[index].Transactions);
 
                     // It assumes reorg is small size. If it was big, this may be heavy task.
                     ImmutableHashSet<Transaction<T>> unstagedTxs =
