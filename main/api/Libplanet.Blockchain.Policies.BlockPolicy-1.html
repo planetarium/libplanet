@@ -78,7 +78,7 @@
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
-    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">BlockPolicy&lt;T&gt;</span></div>
   </div>
   <div classs="implements">
@@ -151,7 +151,7 @@ in no additional execution other than those included in <a class="xref" href="Li
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">TimeSpan</span>&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">TimeSpan</span>&gt;</td>
         <td><span class="parametername">blockInterval</span></td>
         <td><p>Goes to <a class="xref" href="Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_BlockInterval">BlockInterval</a>.
 Set to <a class="xref" href="Libplanet.Blockchain.Policies.DifficultyAdjustment-1.html#Libplanet_Blockchain_Policies_DifficultyAdjustment_1_DefaultTargetBlockInterval">DefaultTargetBlockInterval</a>
@@ -159,7 +159,7 @@ by default.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Int64</span>&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a>&gt;</td>
         <td><span class="parametername">difficultyStability</span></td>
         <td><p>Goes to <a class="xref" href="Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_DifficultyStability">DifficultyStability</a>.
 Set to <a class="xref" href="Libplanet.Blockchain.Policies.DifficultyAdjustment-1.html#Libplanet_Blockchain_Policies_DifficultyAdjustment_1_DefaultDifficultyStability">DefaultDifficultyStability</a>
@@ -167,7 +167,7 @@ by default.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Int64</span>&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a>&gt;</td>
         <td><span class="parametername">minimumDifficulty</span></td>
         <td><p>Goes to <a class="xref" href="Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_MinimumDifficulty">MinimumDifficulty</a>.
 Set to <a class="xref" href="Libplanet.Blockchain.Policies.DifficultyAdjustment-1.html#Libplanet_Blockchain_Policies_DifficultyAdjustment_1_DefaultMinimumDifficulty">DefaultMinimumDifficulty</a>
@@ -175,7 +175,7 @@ by default.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">Func</span>&lt;<a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain</a>&lt;T&gt;, <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction</a>&lt;T&gt;, <a class="xref" href="Libplanet.Tx.TxPolicyViolationException.html">TxPolicyViolationException</a>&gt;&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">Func</span>&lt;<a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain</a>&lt;T&gt;, <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction</a>&lt;T&gt;, <a class="xref" href="Libplanet.Tx.TxPolicyViolationException.html">TxPolicyViolationException</a>&gt;&gt;</td>
         <td><span class="parametername">validateNextBlockTx</span></td>
         <td><p>The predicate that determines if
 a <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> follows the policy.  Set to a constant function of
@@ -183,7 +183,7 @@ a <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">Func</span>&lt;<a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain</a>&lt;T&gt;, <a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;, <a class="xref" href="Libplanet.Blocks.BlockPolicyViolationException.html">BlockPolicyViolationException</a>&gt;&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">Func</span>&lt;<a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain</a>&lt;T&gt;, <a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;, <a class="xref" href="Libplanet.Blocks.BlockPolicyViolationException.html">BlockPolicyViolationException</a>&gt;&gt;</td>
         <td><span class="parametername">validateNextBlock</span></td>
         <td><p>The predicate that determines if
 a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> follows the policy.  Set to a default implementation
@@ -191,7 +191,7 @@ where block's hash algorithm type, bytes count, and transactions count are valid
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">IComparer</span>&lt;<a class="xref" href="Libplanet.Blocks.IBlockExcerpt.html">IBlockExcerpt</a>&gt;&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">IComparer</span>&lt;<a class="xref" href="Libplanet.Blocks.IBlockExcerpt.html">IBlockExcerpt</a>&gt;&gt;</td>
         <td><span class="parametername">canonicalChainComparer</span></td>
         <td><p>The custom rule to determine which is the canonical
 chain.  If omitted, <a class="xref" href="Libplanet.Blockchain.TotalDifficultyComparer.html">TotalDifficultyComparer</a> is used by default.</p>
@@ -205,7 +205,7 @@ If omitted, SHA-256 is used for every block.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">Func</span>&lt;<span class="xref">System.Int64</span>, <span class="xref">System.Int64</span>&gt;&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">Func</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a>&gt;&gt;</td>
         <td><span class="parametername">getMaxBlockBytes</span></td>
         <td><p>The function determining the maximum size of
 a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> in number of <code>byte</code>s given
@@ -214,7 +214,7 @@ Set to a constant size of <code>100</code>KiB, i.e. <code>100 * 1024</code>, by 
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">Func</span>&lt;<span class="xref">System.Int64</span>, <span class="xref">System.Int32</span>&gt;&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">Func</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a>&gt;&gt;</td>
         <td><span class="parametername">getMinTransactionsPerBlock</span></td>
         <td><p>The function determining the minimum number of
 <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s that must be included in a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>.
@@ -223,7 +223,7 @@ of <code>0</code> by default.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">Func</span>&lt;<span class="xref">System.Int64</span>, <span class="xref">System.Int32</span>&gt;&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">Func</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a>&gt;&gt;</td>
         <td><span class="parametername">getMaxTransactionsPerBlock</span></td>
         <td><p>The function determining how many
 <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s can be included in a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>.
@@ -232,7 +232,7 @@ of <code>100</code> by default.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">Func</span>&lt;<span class="xref">System.Int64</span>, <span class="xref">System.Int32</span>&gt;&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">Func</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a>&gt;&gt;</td>
         <td><span class="parametername">getMaxTransactionsPerSignerPerBlock</span></td>
         <td><p>The function determining the maximum
 number of transactions from the same signer that can be included in
@@ -374,7 +374,7 @@ See the corresponding parameter description for
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Int64</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -407,7 +407,7 @@ full detail.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Int64</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -441,7 +441,7 @@ full detail.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Int64</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
         <td><span class="parametername">index</span></td>
         <td><p>The <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Index">Index</a> of the <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> to
 do proof-of-work.</p>
@@ -492,7 +492,7 @@ do proof-of-work.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Int64</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
         <td><span class="parametername">index</span></td>
         <td><p>The <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Index">Index</a> of the <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>
 for which this constraint should apply.</p>
@@ -510,7 +510,7 @@ for which this constraint should apply.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Int64</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
         <td><p>The maximum length of a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> in bytes to accept.</p>
 </td>
       </tr>
@@ -544,7 +544,7 @@ a valid <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>.
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Int64</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
         <td><span class="parametername">index</span></td>
         <td><p>The <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Index">Index</a> of the <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>
 for which this constraint should apply.</p>
@@ -562,7 +562,7 @@ for which this constraint should apply.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Int32</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td><p>The maximum number of <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s allowed for
 a valid <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> can accept.</p>
 </td>
@@ -597,7 +597,7 @@ a valid <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>.
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Int64</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
         <td><span class="parametername">index</span></td>
         <td><p>The <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Index">Index</a> of the <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>
 for which this constraint should apply.</p>
@@ -615,7 +615,7 @@ for which this constraint should apply.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Int32</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td><p>The maximum number of <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s allowed per signer for
 a valid <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> can accept.</p>
 </td>
@@ -650,7 +650,7 @@ a valid <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>.
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Int64</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
         <td><span class="parametername">index</span></td>
         <td><p>The <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Index">Index</a> of the <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>
 for which this constraint should apply.</p>
@@ -668,7 +668,7 @@ for which this constraint should apply.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Int32</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td><p>The minimum number of <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s allowed for
 a valid <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> can accept.</p>
 </td>
@@ -722,7 +722,7 @@ followed by a new <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Int64</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
         <td><p>A right <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Difficulty">Difficulty</a>
 for a new <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> to be mined.</p>
 </td>
