@@ -199,7 +199,6 @@ namespace Libplanet.Net.Transports
                 TaskScheduler.Default
             );
 
-            MessageHistory = new FixedSizedQueue<Message>(MessageHistoryCapacity);
             ProcessMessageHandler = new AsyncDelegate<Message>();
             _dealers = new ConcurrentDictionary<Address, DealerSocket>();
             _replyCompletionSources =
@@ -234,9 +233,6 @@ namespace Libplanet.Net.Transports
                 }
             }
         }
-
-        /// <inheritdoc cref="ITransport.MessageHistory"/>
-        public ConcurrentQueue<Message> MessageHistory { get; }
 
         internal IPAddress PublicIPAddress => _turnClient?.PublicAddress;
 
@@ -467,11 +463,6 @@ namespace Libplanet.Net.Transports
                 if (expectedResponses > 0)
                 {
                     var reply = (await tcs.Task).ToList();
-                    foreach (var msg in reply)
-                    {
-                        MessageHistory.Enqueue(msg);
-                    }
-
                     const string logMsg =
                         "Received {ReplyMessageCount} reply messages to {RequestId} " +
                         "from the {Peer}: {@ReplyMessages}.";
@@ -631,7 +622,6 @@ namespace Libplanet.Net.Transports
                 _logger.Debug("A message has parsed: {0}, from {1}", message, message.Remote);
                 _logger.Debug("Received peer is boundpeer? {0}", message.Remote is BoundPeer);
 
-                MessageHistory.Enqueue(message);
                 LastMessageTimestamp = DateTimeOffset.UtcNow;
 
                 Task.Run(() =>
