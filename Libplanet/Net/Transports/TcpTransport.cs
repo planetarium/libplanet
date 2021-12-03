@@ -22,7 +22,6 @@ namespace Libplanet.Net.Transports
     {
         public static readonly byte[] MagicCookie = { 0x4c, 0x50 }; // 'L', 'P'
 
-        private const int MessageHistoryCapacity = 30;
         private const int ListenerBacklog = 100;
         private const int MaxReplyStreams = 3000;
 
@@ -107,7 +106,6 @@ namespace Libplanet.Net.Transports
             _turnCancellationTokenSource = new CancellationTokenSource();
             _listener = new TcpListener(new IPEndPoint(IPAddress.Any, listenPort ?? 0));
             ProcessMessageHandler = new AsyncDelegate<Message>();
-            MessageHistory = new FixedSizedQueue<Message>(MessageHistoryCapacity);
         }
 
         /// <inheritdoc cref="ITransport.ProcessMessageHandler"/>
@@ -137,8 +135,6 @@ namespace Libplanet.Net.Transports
                 }
             }
         }
-
-        public ConcurrentQueue<Message> MessageHistory { get; }
 
         internal IPAddress? PublicIPAddress => _turnClient?.PublicAddress;
 
@@ -342,7 +338,6 @@ namespace Libplanet.Net.Transports
                             "Received message was {Message}. Total: {Count}",
                             received,
                             replies.Count);
-                        MessageHistory.Enqueue(received);
                         replies.Add(received);
                         expectedResponses--;
                     }
@@ -715,7 +710,6 @@ namespace Libplanet.Net.Transports
             {
                 _logger.Verbose("Trying to receive message");
                 Message message = await ReadMessageAsync(client, cancellationToken);
-                MessageHistory.Enqueue(message);
                 LastMessageTimestamp = DateTimeOffset.UtcNow;
                 _logger.Debug(
                     "A message has parsed: {Message}, from {Remove}",

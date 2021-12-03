@@ -6,11 +6,16 @@ Version 0.22.1
 
 To be released.
 
+### Backward-incompatible API changes
+
+ - Removed `ITransport.MessageHistory` property due to memory leak. [[#1639]]
+
 ### Behavioral changes
 
  -  Compacted log output for convenience.  [[#1633]]
 
 [#1633]: https://github.com/planetarium/libplanet/pull/1633
+[#1639]: https://github.com/planetarium/libplanet/pull/1639
 
 
 Version 0.22.0
