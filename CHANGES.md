@@ -17,6 +17,11 @@ To be released.  The solution now can be built on Apple Silicon
 
 ### Added APIs
 
+ -  Added `PreEvaluationBlock<T>.DetermineStateRootHash(BlockChain<T>,
+    StateCompleterSet<T>, out IImmutableDictionary<string, IValue>)` overloaded
+    method.  [[#1636]]
+ -  Added `PreEvaluationBlock<T>.DetermineStateRootHash(IAction?, IStateStore,
+    out IImmutableDictionary<string, IValue>)` overloaded method.  [[#1636]]
  -  Parameter `except` for `KBucket.GetRandomPeer()` now defaults to `null`.
     [[#1631]]
  -  Added `ArrayEqualityComparer<T>` class.  [[#1636]]
