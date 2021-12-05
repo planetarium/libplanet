@@ -1,0 +1,1220 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class BlockMarshaler
+   | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class BlockMarshaler
+   | Libplanet ">
+    <meta name="generator" content="docfx 2.58.2.0">
+    
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Blocks.BlockMarshaler">
+  
+  
+  <h1 id="Libplanet_Blocks_BlockMarshaler" data-uid="Libplanet.Blocks.BlockMarshaler" class="text-break">Class BlockMarshaler
+  </h1>
+  <div class="markdown level0 summary"><p>Marshaling and unmarshaling block data.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">BlockMarshaler</span></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Blocks.html">Libplanet.Blocks</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.dll</h6>
+  <h5 id="Libplanet_Blocks_BlockMarshaler_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static class BlockMarshaler : object</code></pre>
+  </div>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/eb370e3595adc342df72e4aa2cbb61c6a26fa56d/apiSpec/new?filename=Libplanet_Blocks_BlockMarshaler_AppendTxToMarshaledBlock__1_Dictionary_Libplanet_Tx_Transaction___0__.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.BlockMarshaler.AppendTxToMarshaledBlock%60%601(Dictionary%2CLibplanet.Tx.Transaction%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/eb370e3595adc342df72e4aa2cbb61c6a26fa56d/Libplanet/Blocks/BlockMarshaler.cs/#L154">View Source</a>
+  </span>
+  <a id="Libplanet_Blocks_BlockMarshaler_AppendTxToMarshaledBlock_" data-uid="Libplanet.Blocks.BlockMarshaler.AppendTxToMarshaledBlock*"></a>
+  <h4 id="Libplanet_Blocks_BlockMarshaler_AppendTxToMarshaledBlock__1_Dictionary_Libplanet_Tx_Transaction___0__" data-uid="Libplanet.Blocks.BlockMarshaler.AppendTxToMarshaledBlock``1(Dictionary,Libplanet.Tx.Transaction{``0})">AppendTxToMarshaledBlock&lt;T&gt;(Dictionary, Transaction&lt;T&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Dictionary AppendTxToMarshaledBlock&lt;T&gt;(Dictionary marshaledBlock, Transaction&lt;T&gt; tx)
+    where T : IAction, new()</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Dictionary</span></td>
+        <td><span class="parametername">marshaledBlock</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction</a>&lt;T&gt;</td>
+        <td><span class="parametername">tx</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Dictionary</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/eb370e3595adc342df72e4aa2cbb61c6a26fa56d/apiSpec/new?filename=Libplanet_Blocks_BlockMarshaler_MarshalBlock_Dictionary_List_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.BlockMarshaler.MarshalBlock(Dictionary%2CList)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/eb370e3595adc342df72e4aa2cbb61c6a26fa56d/Libplanet/Blocks/BlockMarshaler.cs/#L131">View Source</a>
+  </span>
+  <a id="Libplanet_Blocks_BlockMarshaler_MarshalBlock_" data-uid="Libplanet.Blocks.BlockMarshaler.MarshalBlock*"></a>
+  <h4 id="Libplanet_Blocks_BlockMarshaler_MarshalBlock_Dictionary_List_" data-uid="Libplanet.Blocks.BlockMarshaler.MarshalBlock(Dictionary,List)">MarshalBlock(Dictionary, List)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Dictionary MarshalBlock(Dictionary marshaledBlockHeader, List marshaledTransactions)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Dictionary</span></td>
+        <td><span class="parametername">marshaledBlockHeader</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">List</span></td>
+        <td><span class="parametername">marshaledTransactions</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Dictionary</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/eb370e3595adc342df72e4aa2cbb61c6a26fa56d/apiSpec/new?filename=Libplanet_Blocks_BlockMarshaler_MarshalBlock__1_Libplanet_Blocks_Block___0__.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.BlockMarshaler.MarshalBlock%60%601(Libplanet.Blocks.Block%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/eb370e3595adc342df72e4aa2cbb61c6a26fa56d/Libplanet/Blocks/BlockMarshaler.cs/#L146">View Source</a>
+  </span>
+  <a id="Libplanet_Blocks_BlockMarshaler_MarshalBlock_" data-uid="Libplanet.Blocks.BlockMarshaler.MarshalBlock*"></a>
+  <h4 id="Libplanet_Blocks_BlockMarshaler_MarshalBlock__1_Libplanet_Blocks_Block___0__" data-uid="Libplanet.Blocks.BlockMarshaler.MarshalBlock``1(Libplanet.Blocks.Block{``0})">MarshalBlock&lt;T&gt;(Block&lt;T&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Dictionary MarshalBlock&lt;T&gt;(this Block&lt;T&gt; block)
+    where T : IAction, new()</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td><span class="parametername">block</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Dictionary</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/eb370e3595adc342df72e4aa2cbb61c6a26fa56d/apiSpec/new?filename=Libplanet_Blocks_BlockMarshaler_MarshalBlockHeader_Dictionary_Libplanet_HashDigest_SHA256__System_Nullable_ImmutableArray_System_Byte___Libplanet_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.BlockMarshaler.MarshalBlockHeader(Dictionary%2CLibplanet.HashDigest%7BSHA256%7D%2CSystem.Nullable%7BImmutableArray%7BSystem.Byte%7D%7D%2CLibplanet.Blocks.BlockHash)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/eb370e3595adc342df72e4aa2cbb61c6a26fa56d/Libplanet/Blocks/BlockMarshaler.cs/#L100">View Source</a>
+  </span>
+  <a id="Libplanet_Blocks_BlockMarshaler_MarshalBlockHeader_" data-uid="Libplanet.Blocks.BlockMarshaler.MarshalBlockHeader*"></a>
+  <h4 id="Libplanet_Blocks_BlockMarshaler_MarshalBlockHeader_Dictionary_Libplanet_HashDigest_SHA256__System_Nullable_ImmutableArray_System_Byte___Libplanet_Blocks_BlockHash_" data-uid="Libplanet.Blocks.BlockMarshaler.MarshalBlockHeader(Dictionary,Libplanet.HashDigest{SHA256},System.Nullable{ImmutableArray{System.Byte}},Libplanet.Blocks.BlockHash)">MarshalBlockHeader(Dictionary, HashDigest&lt;SHA256&gt;, Nullable&lt;ImmutableArray&lt;Byte&gt;&gt;, BlockHash)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Dictionary MarshalBlockHeader(Dictionary marshaledPreEvaluatedBlockHeader, HashDigest&lt;SHA256&gt; stateRootHash, ImmutableArray&lt;byte&gt;? signature, BlockHash hash)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Dictionary</span></td>
+        <td><span class="parametername">marshaledPreEvaluatedBlockHeader</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA256</span>&gt;</td>
+        <td><span class="parametername">stateRootHash</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">ImmutableArray</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;&gt;</td>
+        <td><span class="parametername">signature</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a></td>
+        <td><span class="parametername">hash</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Dictionary</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/eb370e3595adc342df72e4aa2cbb61c6a26fa56d/apiSpec/new?filename=Libplanet_Blocks_BlockMarshaler_MarshalBlockHeader_Libplanet_Blocks_IBlockHeader_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.BlockMarshaler.MarshalBlockHeader(Libplanet.Blocks.IBlockHeader)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/eb370e3595adc342df72e4aa2cbb61c6a26fa56d/Libplanet/Blocks/BlockMarshaler.cs/#L118">View Source</a>
+  </span>
+  <a id="Libplanet_Blocks_BlockMarshaler_MarshalBlockHeader_" data-uid="Libplanet.Blocks.BlockMarshaler.MarshalBlockHeader*"></a>
+  <h4 id="Libplanet_Blocks_BlockMarshaler_MarshalBlockHeader_Libplanet_Blocks_IBlockHeader_" data-uid="Libplanet.Blocks.BlockMarshaler.MarshalBlockHeader(Libplanet.Blocks.IBlockHeader)">MarshalBlockHeader(IBlockHeader)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Dictionary MarshalBlockHeader(this IBlockHeader header)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.IBlockHeader.html">IBlockHeader</a></td>
+        <td><span class="parametername">header</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Dictionary</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/eb370e3595adc342df72e4aa2cbb61c6a26fa56d/apiSpec/new?filename=Libplanet_Blocks_BlockMarshaler_MarshalBlockMetadata_Libplanet_Blocks_IBlockMetadata_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.BlockMarshaler.MarshalBlockMetadata(Libplanet.Blocks.IBlockMetadata)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/eb370e3595adc342df72e4aa2cbb61c6a26fa56d/Libplanet/Blocks/BlockMarshaler.cs/#L42">View Source</a>
+  </span>
+  <a id="Libplanet_Blocks_BlockMarshaler_MarshalBlockMetadata_" data-uid="Libplanet.Blocks.BlockMarshaler.MarshalBlockMetadata*"></a>
+  <h4 id="Libplanet_Blocks_BlockMarshaler_MarshalBlockMetadata_Libplanet_Blocks_IBlockMetadata_" data-uid="Libplanet.Blocks.BlockMarshaler.MarshalBlockMetadata(Libplanet.Blocks.IBlockMetadata)">MarshalBlockMetadata(IBlockMetadata)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Dictionary MarshalBlockMetadata(IBlockMetadata metadata)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.IBlockMetadata.html">IBlockMetadata</a></td>
+        <td><span class="parametername">metadata</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Dictionary</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/eb370e3595adc342df72e4aa2cbb61c6a26fa56d/apiSpec/new?filename=Libplanet_Blocks_BlockMarshaler_MarshalPreEvaluationBlockHeader_Dictionary_Libplanet_Nonce_ImmutableArray_System_Byte__.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.BlockMarshaler.MarshalPreEvaluationBlockHeader(Dictionary%2CLibplanet.Nonce%2CImmutableArray%7BSystem.Byte%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/eb370e3595adc342df72e4aa2cbb61c6a26fa56d/Libplanet/Blocks/BlockMarshaler.cs/#L74">View Source</a>
+  </span>
+  <a id="Libplanet_Blocks_BlockMarshaler_MarshalPreEvaluationBlockHeader_" data-uid="Libplanet.Blocks.BlockMarshaler.MarshalPreEvaluationBlockHeader*"></a>
+  <h4 id="Libplanet_Blocks_BlockMarshaler_MarshalPreEvaluationBlockHeader_Dictionary_Libplanet_Nonce_ImmutableArray_System_Byte__" data-uid="Libplanet.Blocks.BlockMarshaler.MarshalPreEvaluationBlockHeader(Dictionary,Libplanet.Nonce,ImmutableArray{System.Byte})">MarshalPreEvaluationBlockHeader(Dictionary, Nonce, ImmutableArray&lt;Byte&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Dictionary MarshalPreEvaluationBlockHeader(Dictionary marshaledMetadata, Nonce nonce, ImmutableArray&lt;byte&gt; preEvaluationHash)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Dictionary</span></td>
+        <td><span class="parametername">marshaledMetadata</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Nonce.html">Nonce</a></td>
+        <td><span class="parametername">nonce</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">ImmutableArray</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
+        <td><span class="parametername">preEvaluationHash</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Dictionary</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/eb370e3595adc342df72e4aa2cbb61c6a26fa56d/apiSpec/new?filename=Libplanet_Blocks_BlockMarshaler_MarshalPreEvaluationBlockHeader_Libplanet_Blocks_IPreEvaluationBlockHeader_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.BlockMarshaler.MarshalPreEvaluationBlockHeader(Libplanet.Blocks.IPreEvaluationBlockHeader)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/eb370e3595adc342df72e4aa2cbb61c6a26fa56d/Libplanet/Blocks/BlockMarshaler.cs/#L91">View Source</a>
+  </span>
+  <a id="Libplanet_Blocks_BlockMarshaler_MarshalPreEvaluationBlockHeader_" data-uid="Libplanet.Blocks.BlockMarshaler.MarshalPreEvaluationBlockHeader*"></a>
+  <h4 id="Libplanet_Blocks_BlockMarshaler_MarshalPreEvaluationBlockHeader_Libplanet_Blocks_IPreEvaluationBlockHeader_" data-uid="Libplanet.Blocks.BlockMarshaler.MarshalPreEvaluationBlockHeader(Libplanet.Blocks.IPreEvaluationBlockHeader)">MarshalPreEvaluationBlockHeader(IPreEvaluationBlockHeader)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Dictionary MarshalPreEvaluationBlockHeader(IPreEvaluationBlockHeader header)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.IPreEvaluationBlockHeader.html">IPreEvaluationBlockHeader</a></td>
+        <td><span class="parametername">header</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Dictionary</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/eb370e3595adc342df72e4aa2cbb61c6a26fa56d/apiSpec/new?filename=Libplanet_Blocks_BlockMarshaler_MarshalTransactions__1_IReadOnlyList_Libplanet_Tx_Transaction___0___.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.BlockMarshaler.MarshalTransactions%60%601(IReadOnlyList%7BLibplanet.Tx.Transaction%7B%60%600%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/eb370e3595adc342df72e4aa2cbb61c6a26fa56d/Libplanet/Blocks/BlockMarshaler.cs/#L126">View Source</a>
+  </span>
+  <a id="Libplanet_Blocks_BlockMarshaler_MarshalTransactions_" data-uid="Libplanet.Blocks.BlockMarshaler.MarshalTransactions*"></a>
+  <h4 id="Libplanet_Blocks_BlockMarshaler_MarshalTransactions__1_IReadOnlyList_Libplanet_Tx_Transaction___0___" data-uid="Libplanet.Blocks.BlockMarshaler.MarshalTransactions``1(IReadOnlyList{Libplanet.Tx.Transaction{``0}})">MarshalTransactions&lt;T&gt;(IReadOnlyList&lt;Transaction&lt;T&gt;&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static List MarshalTransactions&lt;T&gt;(this IReadOnlyList&lt;Transaction&lt;T&gt;&gt; txs)
+    where T : IAction, new()</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction</a>&lt;T&gt;&gt;</td>
+        <td><span class="parametername">txs</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">List</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/eb370e3595adc342df72e4aa2cbb61c6a26fa56d/apiSpec/new?filename=Libplanet_Blocks_BlockMarshaler_UnmarshalBlock__1_Libplanet_Blocks_HashAlgorithmGetter_Dictionary_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.BlockMarshaler.UnmarshalBlock%60%601(Libplanet.Blocks.HashAlgorithmGetter%2CDictionary)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/eb370e3595adc342df72e4aa2cbb61c6a26fa56d/Libplanet/Blocks/BlockMarshaler.cs/#L293">View Source</a>
+  </span>
+  <a id="Libplanet_Blocks_BlockMarshaler_UnmarshalBlock_" data-uid="Libplanet.Blocks.BlockMarshaler.UnmarshalBlock*"></a>
+  <h4 id="Libplanet_Blocks_BlockMarshaler_UnmarshalBlock__1_Libplanet_Blocks_HashAlgorithmGetter_Dictionary_" data-uid="Libplanet.Blocks.BlockMarshaler.UnmarshalBlock``1(Libplanet.Blocks.HashAlgorithmGetter,Dictionary)">UnmarshalBlock&lt;T&gt;(HashAlgorithmGetter, Dictionary)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Block&lt;T&gt; UnmarshalBlock&lt;T&gt;(HashAlgorithmGetter hashAlgorithmGetter, Dictionary marshaled)
+    where T : IAction, new()</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.HashAlgorithmGetter.html">HashAlgorithmGetter</a></td>
+        <td><span class="parametername">hashAlgorithmGetter</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Dictionary</span></td>
+        <td><span class="parametername">marshaled</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/eb370e3595adc342df72e4aa2cbb61c6a26fa56d/apiSpec/new?filename=Libplanet_Blocks_BlockMarshaler_UnmarshalBlockHeader_Libplanet_Blocks_HashAlgorithmGetter_Dictionary_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.BlockMarshaler.UnmarshalBlockHeader(Libplanet.Blocks.HashAlgorithmGetter%2CDictionary)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/eb370e3595adc342df72e4aa2cbb61c6a26fa56d/Libplanet/Blocks/BlockMarshaler.cs/#L264">View Source</a>
+  </span>
+  <a id="Libplanet_Blocks_BlockMarshaler_UnmarshalBlockHeader_" data-uid="Libplanet.Blocks.BlockMarshaler.UnmarshalBlockHeader*"></a>
+  <h4 id="Libplanet_Blocks_BlockMarshaler_UnmarshalBlockHeader_Libplanet_Blocks_HashAlgorithmGetter_Dictionary_" data-uid="Libplanet.Blocks.BlockMarshaler.UnmarshalBlockHeader(Libplanet.Blocks.HashAlgorithmGetter,Dictionary)">UnmarshalBlockHeader(HashAlgorithmGetter, Dictionary)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static BlockHeader UnmarshalBlockHeader(HashAlgorithmGetter hashAlgorithmGetter, Dictionary marshaled)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.HashAlgorithmGetter.html">HashAlgorithmGetter</a></td>
+        <td><span class="parametername">hashAlgorithmGetter</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Dictionary</span></td>
+        <td><span class="parametername">marshaled</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.BlockHeader.html">BlockHeader</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/eb370e3595adc342df72e4aa2cbb61c6a26fa56d/apiSpec/new?filename=Libplanet_Blocks_BlockMarshaler_UnmarshalBlockHeaderHash_Dictionary_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.BlockMarshaler.UnmarshalBlockHeaderHash(Dictionary)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/eb370e3595adc342df72e4aa2cbb61c6a26fa56d/Libplanet/Blocks/BlockMarshaler.cs/#L247">View Source</a>
+  </span>
+  <a id="Libplanet_Blocks_BlockMarshaler_UnmarshalBlockHeaderHash_" data-uid="Libplanet.Blocks.BlockMarshaler.UnmarshalBlockHeaderHash*"></a>
+  <h4 id="Libplanet_Blocks_BlockMarshaler_UnmarshalBlockHeaderHash_Dictionary_" data-uid="Libplanet.Blocks.BlockMarshaler.UnmarshalBlockHeaderHash(Dictionary)">UnmarshalBlockHeaderHash(Dictionary)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static BlockHash UnmarshalBlockHeaderHash(Dictionary marshaledBlockHeader)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Dictionary</span></td>
+        <td><span class="parametername">marshaledBlockHeader</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/eb370e3595adc342df72e4aa2cbb61c6a26fa56d/apiSpec/new?filename=Libplanet_Blocks_BlockMarshaler_UnmarshalBlockHeaderSignature_Dictionary_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.BlockMarshaler.UnmarshalBlockHeaderSignature(Dictionary)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/eb370e3595adc342df72e4aa2cbb61c6a26fa56d/Libplanet/Blocks/BlockMarshaler.cs/#L257">View Source</a>
+  </span>
+  <a id="Libplanet_Blocks_BlockMarshaler_UnmarshalBlockHeaderSignature_" data-uid="Libplanet.Blocks.BlockMarshaler.UnmarshalBlockHeaderSignature*"></a>
+  <h4 id="Libplanet_Blocks_BlockMarshaler_UnmarshalBlockHeaderSignature_Dictionary_" data-uid="Libplanet.Blocks.BlockMarshaler.UnmarshalBlockHeaderSignature(Dictionary)">UnmarshalBlockHeaderSignature(Dictionary)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ImmutableArray&lt;byte&gt;? UnmarshalBlockHeaderSignature(Dictionary marshaledBlockHeader)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Dictionary</span></td>
+        <td><span class="parametername">marshaledBlockHeader</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">ImmutableArray</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/eb370e3595adc342df72e4aa2cbb61c6a26fa56d/apiSpec/new?filename=Libplanet_Blocks_BlockMarshaler_UnmarshalBlockHeaderStateRootHash_Dictionary_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.BlockMarshaler.UnmarshalBlockHeaderStateRootHash(Dictionary)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/eb370e3595adc342df72e4aa2cbb61c6a26fa56d/Libplanet/Blocks/BlockMarshaler.cs/#L250">View Source</a>
+  </span>
+  <a id="Libplanet_Blocks_BlockMarshaler_UnmarshalBlockHeaderStateRootHash_" data-uid="Libplanet.Blocks.BlockMarshaler.UnmarshalBlockHeaderStateRootHash*"></a>
+  <h4 id="Libplanet_Blocks_BlockMarshaler_UnmarshalBlockHeaderStateRootHash_Dictionary_" data-uid="Libplanet.Blocks.BlockMarshaler.UnmarshalBlockHeaderStateRootHash(Dictionary)">UnmarshalBlockHeaderStateRootHash(Dictionary)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static HashDigest&lt;SHA256&gt; UnmarshalBlockHeaderStateRootHash(Dictionary marshaledBlockHeader)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Dictionary</span></td>
+        <td><span class="parametername">marshaledBlockHeader</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA256</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/eb370e3595adc342df72e4aa2cbb61c6a26fa56d/apiSpec/new?filename=Libplanet_Blocks_BlockMarshaler_UnmarshalBlockMetadata_Dictionary_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.BlockMarshaler.UnmarshalBlockMetadata(Dictionary)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/eb370e3595adc342df72e4aa2cbb61c6a26fa56d/Libplanet/Blocks/BlockMarshaler.cs/#L177">View Source</a>
+  </span>
+  <a id="Libplanet_Blocks_BlockMarshaler_UnmarshalBlockMetadata_" data-uid="Libplanet.Blocks.BlockMarshaler.UnmarshalBlockMetadata*"></a>
+  <h4 id="Libplanet_Blocks_BlockMarshaler_UnmarshalBlockMetadata_Dictionary_" data-uid="Libplanet.Blocks.BlockMarshaler.UnmarshalBlockMetadata(Dictionary)">UnmarshalBlockMetadata(Dictionary)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static BlockMetadata UnmarshalBlockMetadata(Dictionary marshaled)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Dictionary</span></td>
+        <td><span class="parametername">marshaled</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.BlockMetadata.html">BlockMetadata</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/eb370e3595adc342df72e4aa2cbb61c6a26fa56d/apiSpec/new?filename=Libplanet_Blocks_BlockMarshaler_UnmarshalBlockMetadataIndex_Dictionary_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.BlockMarshaler.UnmarshalBlockMetadataIndex(Dictionary)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/eb370e3595adc342df72e4aa2cbb61c6a26fa56d/Libplanet/Blocks/BlockMarshaler.cs/#L174">View Source</a>
+  </span>
+  <a id="Libplanet_Blocks_BlockMarshaler_UnmarshalBlockMetadataIndex_" data-uid="Libplanet.Blocks.BlockMarshaler.UnmarshalBlockMetadataIndex*"></a>
+  <h4 id="Libplanet_Blocks_BlockMarshaler_UnmarshalBlockMetadataIndex_Dictionary_" data-uid="Libplanet.Blocks.BlockMarshaler.UnmarshalBlockMetadataIndex(Dictionary)">UnmarshalBlockMetadataIndex(Dictionary)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static long UnmarshalBlockMetadataIndex(Dictionary marshaledMetadata)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Dictionary</span></td>
+        <td><span class="parametername">marshaledMetadata</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/eb370e3595adc342df72e4aa2cbb61c6a26fa56d/apiSpec/new?filename=Libplanet_Blocks_BlockMarshaler_UnmarshalBlockTransactions__1_Dictionary_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.BlockMarshaler.UnmarshalBlockTransactions%60%601(Dictionary)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/eb370e3595adc342df72e4aa2cbb61c6a26fa56d/Libplanet/Blocks/BlockMarshaler.cs/#L284">View Source</a>
+  </span>
+  <a id="Libplanet_Blocks_BlockMarshaler_UnmarshalBlockTransactions_" data-uid="Libplanet.Blocks.BlockMarshaler.UnmarshalBlockTransactions*"></a>
+  <h4 id="Libplanet_Blocks_BlockMarshaler_UnmarshalBlockTransactions__1_Dictionary_" data-uid="Libplanet.Blocks.BlockMarshaler.UnmarshalBlockTransactions``1(Dictionary)">UnmarshalBlockTransactions&lt;T&gt;(Dictionary)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IReadOnlyList&lt;Transaction&lt;T&gt;&gt; UnmarshalBlockTransactions&lt;T&gt;(Dictionary marshaledBlock)
+    where T : IAction, new()</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Dictionary</span></td>
+        <td><span class="parametername">marshaledBlock</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction</a>&lt;T&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/eb370e3595adc342df72e4aa2cbb61c6a26fa56d/apiSpec/new?filename=Libplanet_Blocks_BlockMarshaler_UnmarshalPreEvaluationBlockHeader_Dictionary_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.BlockMarshaler.UnmarshalPreEvaluationBlockHeader(Dictionary)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/eb370e3595adc342df72e4aa2cbb61c6a26fa56d/Libplanet/Blocks/BlockMarshaler.cs/#L214">View Source</a>
+  </span>
+  <a id="Libplanet_Blocks_BlockMarshaler_UnmarshalPreEvaluationBlockHeader_" data-uid="Libplanet.Blocks.BlockMarshaler.UnmarshalPreEvaluationBlockHeader*"></a>
+  <h4 id="Libplanet_Blocks_BlockMarshaler_UnmarshalPreEvaluationBlockHeader_Dictionary_" data-uid="Libplanet.Blocks.BlockMarshaler.UnmarshalPreEvaluationBlockHeader(Dictionary)">UnmarshalPreEvaluationBlockHeader(Dictionary)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static (BlockMetadata Metadata, Nonce Nonce, ImmutableArray&lt;byte&gt;? PreEvaluationHash) UnmarshalPreEvaluationBlockHeader(Dictionary marshaled)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Dictionary</span></td>
+        <td><span class="parametername">marshaled</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.valuetuple-3">(, , )</a>&lt;<a class="xref" href="Libplanet.Blocks.BlockMetadata.html">BlockMetadata</a>, <a class="xref" href="Libplanet.Nonce.html">Nonce</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">ImmutableArray</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/eb370e3595adc342df72e4aa2cbb61c6a26fa56d/apiSpec/new?filename=Libplanet_Blocks_BlockMarshaler_UnmarshalPreEvaluationBlockHeader_Libplanet_Blocks_HashAlgorithmGetter_Dictionary_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.BlockMarshaler.UnmarshalPreEvaluationBlockHeader(Libplanet.Blocks.HashAlgorithmGetter%2CDictionary)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/eb370e3595adc342df72e4aa2cbb61c6a26fa56d/Libplanet/Blocks/BlockMarshaler.cs/#L225">View Source</a>
+  </span>
+  <a id="Libplanet_Blocks_BlockMarshaler_UnmarshalPreEvaluationBlockHeader_" data-uid="Libplanet.Blocks.BlockMarshaler.UnmarshalPreEvaluationBlockHeader*"></a>
+  <h4 id="Libplanet_Blocks_BlockMarshaler_UnmarshalPreEvaluationBlockHeader_Libplanet_Blocks_HashAlgorithmGetter_Dictionary_" data-uid="Libplanet.Blocks.BlockMarshaler.UnmarshalPreEvaluationBlockHeader(Libplanet.Blocks.HashAlgorithmGetter,Dictionary)">UnmarshalPreEvaluationBlockHeader(HashAlgorithmGetter, Dictionary)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static PreEvaluationBlockHeader UnmarshalPreEvaluationBlockHeader(HashAlgorithmGetter hashAlgorithmGetter, Dictionary marshaled)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.HashAlgorithmGetter.html">HashAlgorithmGetter</a></td>
+        <td><span class="parametername">hashAlgorithmGetter</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Dictionary</span></td>
+        <td><span class="parametername">marshaled</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.PreEvaluationBlockHeader.html">PreEvaluationBlockHeader</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/eb370e3595adc342df72e4aa2cbb61c6a26fa56d/apiSpec/new?filename=Libplanet_Blocks_BlockMarshaler_UnmarshalTransactions__1_List_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.BlockMarshaler.UnmarshalTransactions%60%601(List)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/eb370e3595adc342df72e4aa2cbb61c6a26fa56d/Libplanet/Blocks/BlockMarshaler.cs/#L277">View Source</a>
+  </span>
+  <a id="Libplanet_Blocks_BlockMarshaler_UnmarshalTransactions_" data-uid="Libplanet.Blocks.BlockMarshaler.UnmarshalTransactions*"></a>
+  <h4 id="Libplanet_Blocks_BlockMarshaler_UnmarshalTransactions__1_List_" data-uid="Libplanet.Blocks.BlockMarshaler.UnmarshalTransactions``1(List)">UnmarshalTransactions&lt;T&gt;(List)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IReadOnlyList&lt;Transaction&lt;T&gt;&gt; UnmarshalTransactions&lt;T&gt;(List marshaled)
+    where T : IAction, new()</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">List</span></td>
+        <td><span class="parametername">marshaled</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction</a>&lt;T&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/new/eb370e3595adc342df72e4aa2cbb61c6a26fa56d/apiSpec/new?filename=Libplanet_Blocks_BlockMarshaler.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.BlockMarshaler%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/eb370e3595adc342df72e4aa2cbb61c6a26fa56d/Libplanet/Blocks/BlockMarshaler.cs/#L18" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2018–2021 <a href="https://planetariumhq.com/">Planetarium</a>
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
