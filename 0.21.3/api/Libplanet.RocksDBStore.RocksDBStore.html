@@ -1,0 +1,1832 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class RocksDBStore
+   | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class RocksDBStore
+   | Libplanet ">
+    <meta name="generator" content="docfx 2.58.2.0">
+    
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.RocksDBStore.RocksDBStore">
+  
+  
+  <h1 id="Libplanet_RocksDBStore_RocksDBStore" data-uid="Libplanet.RocksDBStore.RocksDBStore" class="text-break">Class RocksDBStore
+  </h1>
+  <div class="markdown level0 summary"><p>The <a href="https://rocksdb.org/">RocksDB</a> <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> implementation,
+which is more production-ready than <a class="xref" href="Libplanet.Store.DefaultStore.html">DefaultStore</a>.
+This stores data in the RocksDB with multiple partitions under the hood.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><a class="xref" href="Libplanet.Store.BaseStore.html">BaseStore</a></div>
+    <div class="level2"><span class="xref">RocksDBStore</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Libplanet.Store.IStore.html">IStore</a></div>
+    <div><span class="xref">IDisposable</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_SetCanonicalChainId_Guid_">BaseStore.SetCanonicalChainId(Guid)</a>
+    </div>
+    <div>
+      <a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_CountIndex_Guid_">BaseStore.CountIndex(Guid)</a>
+    </div>
+    <div>
+      <a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_IterateIndexes_Guid_System_Int32_System_Nullable_System_Int32__">BaseStore.IterateIndexes(Guid, Int32, Nullable&lt;Int32&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_IndexBlockHash_Guid_System_Int64_">BaseStore.IndexBlockHash(Guid, Int64)</a>
+    </div>
+    <div>
+      <a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_AppendIndex_Guid_Libplanet_Blocks_BlockHash_">BaseStore.AppendIndex(Guid, BlockHash)</a>
+    </div>
+    <div>
+      <a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ForkBlockIndexes_Guid_Guid_Libplanet_Blocks_BlockHash_">BaseStore.ForkBlockIndexes(Guid, Guid, BlockHash)</a>
+    </div>
+    <div>
+      <a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetBlock__1_Libplanet_Blocks_HashAlgorithmGetter_Libplanet_Blocks_BlockHash_">BaseStore.GetBlock&lt;T&gt;(HashAlgorithmGetter, BlockHash)</a>
+    </div>
+    <div>
+      <a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetBlockIndex_Libplanet_Blocks_BlockHash_">BaseStore.GetBlockIndex(BlockHash)</a>
+    </div>
+    <div>
+      <a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetFirstTxIdBlockHashIndex_Libplanet_Tx_TxId_">BaseStore.GetFirstTxIdBlockHashIndex(TxId)</a>
+    </div>
+    <div>
+      <a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_SetBlockPerceivedTime_Libplanet_Blocks_BlockHash_DateTimeOffset_">BaseStore.SetBlockPerceivedTime(BlockHash, DateTimeOffset)</a>
+    </div>
+    <div>
+      <a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ListTxNonces_Guid_">BaseStore.ListTxNonces(Guid)</a>
+    </div>
+    <div>
+      <a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetTxNonce_Guid_Libplanet_Address_">BaseStore.GetTxNonce(Guid, Address)</a>
+    </div>
+    <div>
+      <a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_IncreaseTxNonce_Guid_Libplanet_Address_System_Int64_">BaseStore.IncreaseTxNonce(Guid, Address, Int64)</a>
+    </div>
+    <div>
+      <a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_DeleteChainId_Guid_">BaseStore.DeleteChainId(Guid)</a>
+    </div>
+    <div>
+      <a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ForkTxNonces_Guid_Guid_">BaseStore.ForkTxNonces(Guid, Guid)</a>
+    </div>
+    <div>
+      <a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_SerializeTxExecution_Libplanet_Tx_TxSuccess_">BaseStore.SerializeTxExecution(TxSuccess)</a>
+    </div>
+    <div>
+      <a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_SerializeTxExecution_Libplanet_Tx_TxFailure_">BaseStore.SerializeTxExecution(TxFailure)</a>
+    </div>
+    <div>
+      <a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_DeserializeTxExecution_Libplanet_Blocks_BlockHash_Libplanet_Tx_TxId_IValue_ILogger_">BaseStore.DeserializeTxExecution(BlockHash, TxId, IValue, ILogger)</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.RocksDBStore.html">Libplanet.RocksDBStore</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.RocksDBStore.dll</h6>
+  <h5 id="Libplanet_RocksDBStore_RocksDBStore_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class RocksDBStore : BaseStore, IStore, IDisposable</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore__ctor_System_String_System_Int32_System_Int32_System_Nullable_System_UInt64__System_Nullable_System_UInt64__System_Nullable_System_UInt64__System_Int32_System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.%23ctor(System.String%2CSystem.Int32%2CSystem.Int32%2CSystem.Nullable%7BSystem.UInt64%7D%2CSystem.Nullable%7BSystem.UInt64%7D%2CSystem.Nullable%7BSystem.UInt64%7D%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/Libplanet.RocksDBStore/RocksDBStore.cs/#L95">View Source</a>
+  </span>
+  <a id="Libplanet_RocksDBStore_RocksDBStore__ctor_" data-uid="Libplanet.RocksDBStore.RocksDBStore.#ctor*"></a>
+  <h4 id="Libplanet_RocksDBStore_RocksDBStore__ctor_System_String_System_Int32_System_Int32_System_Nullable_System_UInt64__System_Nullable_System_UInt64__System_Nullable_System_UInt64__System_Int32_System_Int32_System_Int32_" data-uid="Libplanet.RocksDBStore.RocksDBStore.#ctor(System.String,System.Int32,System.Int32,System.Nullable{System.UInt64},System.Nullable{System.UInt64},System.Nullable{System.UInt64},System.Int32,System.Int32,System.Int32)">RocksDBStore(String, Int32, Int32, Nullable&lt;UInt64&gt;, Nullable&lt;UInt64&gt;, Nullable&lt;UInt64&gt;, Int32, Int32, Int32)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.RocksDBStore.RocksDBStore.html">RocksDBStore</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public RocksDBStore(string path, int blockCacheSize = 512, int txCacheSize = 1024, ulong? maxTotalWalSize = null, ulong? keepLogFileNum = null, ulong? maxLogFileSize = null, int txEpochUnitSeconds = 86400, int blockEpochUnitSeconds = 86400, int dbConnectionCacheSize = 100)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">path</span></td>
+        <td><p>The path of the directory where the storage files will be saved.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">blockCacheSize</span></td>
+        <td><p>The capacity of the block cache.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">txCacheSize</span></td>
+        <td><p>The capacity of the transaction cache.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.uint64">UInt64</a>&gt;</td>
+        <td><span class="parametername">maxTotalWalSize</span></td>
+        <td><p>The number to configure <code>max_total_wal_size</code> RocksDB
+option.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.uint64">UInt64</a>&gt;</td>
+        <td><span class="parametername">keepLogFileNum</span></td>
+        <td><p>The number to configure <code>keep_log_file_num</code> RocksDB
+option.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.uint64">UInt64</a>&gt;</td>
+        <td><span class="parametername">maxLogFileSize</span></td>
+        <td><p>The number to configure <code>max_log_file_size</code>
+RocksDB option.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">txEpochUnitSeconds</span></td>
+        <td><p>The interval between epochs of DB partions containing
+transactions.  86,400 seconds by default.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">blockEpochUnitSeconds</span></td>
+        <td><p>The interval between epochs of DB partions
+containing blocks.  86,400 seconds by default.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">dbConnectionCacheSize</span></td>
+        <td><p>The capacity of the block and transaction
+RocksDB connection cache. 100 by default.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_AppendIndex_System_Guid_Libplanet_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.AppendIndex(System.Guid%2CLibplanet.Blocks.BlockHash)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/Libplanet.RocksDBStore/RocksDBStore.cs/#L332">View Source</a>
+  </span>
+  <a id="Libplanet_RocksDBStore_RocksDBStore_AppendIndex_" data-uid="Libplanet.RocksDBStore.RocksDBStore.AppendIndex*"></a>
+  <h4 id="Libplanet_RocksDBStore_RocksDBStore_AppendIndex_System_Guid_Libplanet_Blocks_BlockHash_" data-uid="Libplanet.RocksDBStore.RocksDBStore.AppendIndex(System.Guid,Libplanet.Blocks.BlockHash)">AppendIndex(Guid, BlockHash)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override long AppendIndex(Guid chainId, BlockHash hash)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.guid">Guid</a></td>
+        <td><span class="parametername">chainId</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a></td>
+        <td><span class="parametername">hash</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_ContainsBlock_Libplanet_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.ContainsBlock(Libplanet.Blocks.BlockHash)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/Libplanet.RocksDBStore/RocksDBStore.cs/#L734">View Source</a>
+  </span>
+  <a id="Libplanet_RocksDBStore_RocksDBStore_ContainsBlock_" data-uid="Libplanet.RocksDBStore.RocksDBStore.ContainsBlock*"></a>
+  <h4 id="Libplanet_RocksDBStore_RocksDBStore_ContainsBlock_Libplanet_Blocks_BlockHash_" data-uid="Libplanet.RocksDBStore.RocksDBStore.ContainsBlock(Libplanet.Blocks.BlockHash)">ContainsBlock(BlockHash)</h4>
+  <div class="markdown level1 summary"><p>Determines whether the <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> contains <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>
+the specified <code data-dev-comment-type="paramref" class="paramref">blockHash</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool ContainsBlock(BlockHash blockHash)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a></td>
+        <td><span class="parametername">blockHash</span></td>
+        <td><p>The <a class="xref" href="Libplanet.HashDigest-1.html">HashDigest&lt;T&gt;</a> of the <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> to
+check if it is in the <a class="xref" href="Libplanet.Store.IStore.html">IStore</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if the <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> contains <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> with
+the specified <code data-dev-comment-type="paramref" class="paramref">blockHash</code>; otherwise, <code>false</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ContainsBlock_Libplanet_Blocks_BlockHash_">BaseStore.ContainsBlock(BlockHash)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_ContainsTransaction_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.ContainsTransaction(Libplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/Libplanet.RocksDBStore/RocksDBStore.cs/#L559">View Source</a>
+  </span>
+  <a id="Libplanet_RocksDBStore_RocksDBStore_ContainsTransaction_" data-uid="Libplanet.RocksDBStore.RocksDBStore.ContainsTransaction*"></a>
+  <h4 id="Libplanet_RocksDBStore_RocksDBStore_ContainsTransaction_Libplanet_Tx_TxId_" data-uid="Libplanet.RocksDBStore.RocksDBStore.ContainsTransaction(Libplanet.Tx.TxId)">ContainsTransaction(TxId)</h4>
+  <div class="markdown level1 summary"><p>Determines whether the <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> contains <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>
+the specified <code data-dev-comment-type="paramref" class="paramref">txId</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool ContainsTransaction(TxId txId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.TxId.html">TxId</a></td>
+        <td><span class="parametername">txId</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a> of the <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>
+to check if it is in the <a class="xref" href="Libplanet.Store.IStore.html">IStore</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if the <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> contains <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>
+with the specified <code data-dev-comment-type="paramref" class="paramref">txId</code>; otherwise, <code>false</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ContainsTransaction_Libplanet_Tx_TxId_">BaseStore.ContainsTransaction(TxId)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_CountBlocks.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.CountBlocks%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/Libplanet.RocksDBStore/RocksDBStore.cs/#L912">View Source</a>
+  </span>
+  <a id="Libplanet_RocksDBStore_RocksDBStore_CountBlocks_" data-uid="Libplanet.RocksDBStore.RocksDBStore.CountBlocks*"></a>
+  <h4 id="Libplanet_RocksDBStore_RocksDBStore_CountBlocks" data-uid="Libplanet.RocksDBStore.RocksDBStore.CountBlocks">CountBlocks()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override long CountBlocks()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_CountBlocks">BaseStore.CountBlocks()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_CountIndex_System_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.CountIndex(System.Guid)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/Libplanet.RocksDBStore/RocksDBStore.cs/#L305">View Source</a>
+  </span>
+  <a id="Libplanet_RocksDBStore_RocksDBStore_CountIndex_" data-uid="Libplanet.RocksDBStore.RocksDBStore.CountIndex*"></a>
+  <h4 id="Libplanet_RocksDBStore_RocksDBStore_CountIndex_System_Guid_" data-uid="Libplanet.RocksDBStore.RocksDBStore.CountIndex(System.Guid)">CountIndex(Guid)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override long CountIndex(Guid chainId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.guid">Guid</a></td>
+        <td><span class="parametername">chainId</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_CountTransactions.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.CountTransactions%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/Libplanet.RocksDBStore/RocksDBStore.cs/#L906">View Source</a>
+  </span>
+  <a id="Libplanet_RocksDBStore_RocksDBStore_CountTransactions_" data-uid="Libplanet.RocksDBStore.RocksDBStore.CountTransactions*"></a>
+  <h4 id="Libplanet_RocksDBStore_RocksDBStore_CountTransactions" data-uid="Libplanet.RocksDBStore.RocksDBStore.CountTransactions">CountTransactions()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override long CountTransactions()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_CountTransactions">BaseStore.CountTransactions()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_DeleteBlock_Libplanet_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.DeleteBlock(Libplanet.Blocks.BlockHash)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/Libplanet.RocksDBStore/RocksDBStore.cs/#L694">View Source</a>
+  </span>
+  <a id="Libplanet_RocksDBStore_RocksDBStore_DeleteBlock_" data-uid="Libplanet.RocksDBStore.RocksDBStore.DeleteBlock*"></a>
+  <h4 id="Libplanet_RocksDBStore_RocksDBStore_DeleteBlock_Libplanet_Blocks_BlockHash_" data-uid="Libplanet.RocksDBStore.RocksDBStore.DeleteBlock(Libplanet.Blocks.BlockHash)">DeleteBlock(BlockHash)</h4>
+  <div class="markdown level1 summary"><p>Removes a block from the store.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool DeleteBlock(BlockHash blockHash)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a></td>
+        <td><span class="parametername">blockHash</span></td>
+        <td><p>The hash of a block to remove.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>false</code> if such block does not exist. Otherwise <code>true</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_DeleteBlock_Libplanet_Blocks_BlockHash_">BaseStore.DeleteBlock(BlockHash)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_DeleteChainId_System_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.DeleteChainId(System.Guid)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/Libplanet.RocksDBStore/RocksDBStore.cs/#L213">View Source</a>
+  </span>
+  <a id="Libplanet_RocksDBStore_RocksDBStore_DeleteChainId_" data-uid="Libplanet.RocksDBStore.RocksDBStore.DeleteChainId*"></a>
+  <h4 id="Libplanet_RocksDBStore_RocksDBStore_DeleteChainId_System_Guid_" data-uid="Libplanet.RocksDBStore.RocksDBStore.DeleteChainId(System.Guid)">DeleteChainId(Guid)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void DeleteChainId(Guid chainId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.guid">Guid</a></td>
+        <td><span class="parametername">chainId</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_DeleteTransaction_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.DeleteTransaction(Libplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/Libplanet.RocksDBStore/RocksDBStore.cs/#L518">View Source</a>
+  </span>
+  <a id="Libplanet_RocksDBStore_RocksDBStore_DeleteTransaction_" data-uid="Libplanet.RocksDBStore.RocksDBStore.DeleteTransaction*"></a>
+  <h4 id="Libplanet_RocksDBStore_RocksDBStore_DeleteTransaction_Libplanet_Tx_TxId_" data-uid="Libplanet.RocksDBStore.RocksDBStore.DeleteTransaction(Libplanet.Tx.TxId)">DeleteTransaction(TxId)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool DeleteTransaction(TxId txid)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.TxId.html">TxId</a></td>
+        <td><span class="parametername">txid</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_DeleteTransaction_Libplanet_Tx_TxId_">BaseStore.DeleteTransaction(TxId)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_DeleteTxIdBlockHashIndex_Libplanet_Tx_TxId_Libplanet_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.DeleteTxIdBlockHashIndex(Libplanet.Tx.TxId%2CLibplanet.Blocks.BlockHash)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/Libplanet.RocksDBStore/RocksDBStore.cs/#L765">View Source</a>
+  </span>
+  <a id="Libplanet_RocksDBStore_RocksDBStore_DeleteTxIdBlockHashIndex_" data-uid="Libplanet.RocksDBStore.RocksDBStore.DeleteTxIdBlockHashIndex*"></a>
+  <h4 id="Libplanet_RocksDBStore_RocksDBStore_DeleteTxIdBlockHashIndex_Libplanet_Tx_TxId_Libplanet_Blocks_BlockHash_" data-uid="Libplanet.RocksDBStore.RocksDBStore.DeleteTxIdBlockHashIndex(Libplanet.Tx.TxId,Libplanet.Blocks.BlockHash)">DeleteTxIdBlockHashIndex(TxId, BlockHash)</h4>
+  <div class="markdown level1 summary"><p>Deletes the index for the <code data-dev-comment-type="paramref" class="paramref">txId</code> and <code data-dev-comment-type="paramref" class="paramref">blockHash</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void DeleteTxIdBlockHashIndex(TxId txId, BlockHash blockHash)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.TxId.html">TxId</a></td>
+        <td><span class="parametername">txId</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a> of the <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a></td>
+        <td><span class="parametername">blockHash</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a>
+of the <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_DeleteTxIdBlockHashIndex_Libplanet_Tx_TxId_Libplanet_Blocks_BlockHash_">BaseStore.DeleteTxIdBlockHashIndex(TxId, BlockHash)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_Dispose.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.Dispose%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/Libplanet.RocksDBStore/RocksDBStore.cs/#L917">View Source</a>
+  </span>
+  <a id="Libplanet_RocksDBStore_RocksDBStore_Dispose_" data-uid="Libplanet.RocksDBStore.RocksDBStore.Dispose*"></a>
+  <h4 id="Libplanet_RocksDBStore_RocksDBStore_Dispose" data-uid="Libplanet.RocksDBStore.RocksDBStore.Dispose">Dispose()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void Dispose()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_Dispose">BaseStore.Dispose()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_ForkBlockIndexes_System_Guid_System_Guid_Libplanet_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.ForkBlockIndexes(System.Guid%2CSystem.Guid%2CLibplanet.Blocks.BlockHash)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/Libplanet.RocksDBStore/RocksDBStore.cs/#L359">View Source</a>
+  </span>
+  <a id="Libplanet_RocksDBStore_RocksDBStore_ForkBlockIndexes_" data-uid="Libplanet.RocksDBStore.RocksDBStore.ForkBlockIndexes*"></a>
+  <h4 id="Libplanet_RocksDBStore_RocksDBStore_ForkBlockIndexes_System_Guid_System_Guid_Libplanet_Blocks_BlockHash_" data-uid="Libplanet.RocksDBStore.RocksDBStore.ForkBlockIndexes(System.Guid,System.Guid,Libplanet.Blocks.BlockHash)">ForkBlockIndexes(Guid, Guid, BlockHash)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void ForkBlockIndexes(Guid sourceChainId, Guid destinationChainId, BlockHash branchpoint)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.guid">Guid</a></td>
+        <td><span class="parametername">sourceChainId</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.guid">Guid</a></td>
+        <td><span class="parametername">destinationChainId</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a></td>
+        <td><span class="parametername">branchpoint</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_ForkTxNonces_System_Guid_System_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.ForkTxNonces(System.Guid%2CSystem.Guid)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/Libplanet.RocksDBStore/RocksDBStore.cs/#L952">View Source</a>
+  </span>
+  <a id="Libplanet_RocksDBStore_RocksDBStore_ForkTxNonces_" data-uid="Libplanet.RocksDBStore.RocksDBStore.ForkTxNonces*"></a>
+  <h4 id="Libplanet_RocksDBStore_RocksDBStore_ForkTxNonces_System_Guid_System_Guid_" data-uid="Libplanet.RocksDBStore.RocksDBStore.ForkTxNonces(System.Guid,System.Guid)">ForkTxNonces(Guid, Guid)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void ForkTxNonces(Guid sourceChainId, Guid destinationChainId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.guid">Guid</a></td>
+        <td><span class="parametername">sourceChainId</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.guid">Guid</a></td>
+        <td><span class="parametername">destinationChainId</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_GetBlockDigest_Libplanet_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.GetBlockDigest(Libplanet.Blocks.BlockHash)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/Libplanet.RocksDBStore/RocksDBStore.cs/#L594">View Source</a>
+  </span>
+  <a id="Libplanet_RocksDBStore_RocksDBStore_GetBlockDigest_" data-uid="Libplanet.RocksDBStore.RocksDBStore.GetBlockDigest*"></a>
+  <h4 id="Libplanet_RocksDBStore_RocksDBStore_GetBlockDigest_Libplanet_Blocks_BlockHash_" data-uid="Libplanet.RocksDBStore.RocksDBStore.GetBlockDigest(Libplanet.Blocks.BlockHash)">GetBlockDigest(BlockHash)</h4>
+  <div class="markdown level1 summary"><p>Gets the corresponding stored <a class="xref" href="Libplanet.Store.BlockDigest.html">BlockDigest</a> to the given
+<code data-dev-comment-type="paramref" class="paramref">blockHash</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override BlockDigest? GetBlockDigest(BlockHash blockHash)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a></td>
+        <td><span class="parametername">blockHash</span></td>
+        <td><p><a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Hash">Hash</a> to find.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Store.BlockDigest.html">BlockDigest</a>&gt;</td>
+        <td><p>A found <a class="xref" href="Libplanet.Store.BlockDigest.html">BlockDigest</a>, or <code>null</code> if no block having such
+<code data-dev-comment-type="paramref" class="paramref">blockHash</code> is stored.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetBlockDigest_Libplanet_Blocks_BlockHash_">BaseStore.GetBlockDigest(BlockHash)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_GetBlockPerceivedTime_Libplanet_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.GetBlockPerceivedTime(Libplanet.Blocks.BlockHash)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/Libplanet.RocksDBStore/RocksDBStore.cs/#L830">View Source</a>
+  </span>
+  <a id="Libplanet_RocksDBStore_RocksDBStore_GetBlockPerceivedTime_" data-uid="Libplanet.RocksDBStore.RocksDBStore.GetBlockPerceivedTime*"></a>
+  <h4 id="Libplanet_RocksDBStore_RocksDBStore_GetBlockPerceivedTime_Libplanet_Blocks_BlockHash_" data-uid="Libplanet.RocksDBStore.RocksDBStore.GetBlockPerceivedTime(Libplanet.Blocks.BlockHash)">GetBlockPerceivedTime(BlockHash)</h4>
+  <div class="markdown level1 summary"><p>Queries the perceived time of a block, if it has been recorded.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override DateTimeOffset? GetBlockPerceivedTime(BlockHash blockHash)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a></td>
+        <td><span class="parametername">blockHash</span></td>
+        <td><p><a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Hash">Hash</a> to query.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a>&gt;</td>
+        <td><p>The perceived time of a block, if it exists.  Otherwise, <code>null</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetBlockPerceivedTime_Libplanet_Blocks_BlockHash_">BaseStore.GetBlockPerceivedTime(BlockHash)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_GetCanonicalChainId.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.GetCanonicalChainId%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/Libplanet.RocksDBStore/RocksDBStore.cs/#L271">View Source</a>
+  </span>
+  <a id="Libplanet_RocksDBStore_RocksDBStore_GetCanonicalChainId_" data-uid="Libplanet.RocksDBStore.RocksDBStore.GetCanonicalChainId*"></a>
+  <h4 id="Libplanet_RocksDBStore_RocksDBStore_GetCanonicalChainId" data-uid="Libplanet.RocksDBStore.RocksDBStore.GetCanonicalChainId">GetCanonicalChainId()</h4>
+  <div class="markdown level1 summary"><p>Gets the ID of the current canonical chain.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override Guid? GetCanonicalChainId()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.guid">Guid</a>&gt;</td>
+        <td><p>The ID of the current canonical chain.  Maybe <code>null</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetCanonicalChainId">BaseStore.GetCanonicalChainId()</a></div>
+  <h5 id="Libplanet_RocksDBStore_RocksDBStore_GetCanonicalChainId_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.IStore.html#Libplanet_Store_IStore_SetCanonicalChainId_Guid_">SetCanonicalChainId</a>(<span class="xref">Guid</span>)</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_GetTransaction__1_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.GetTransaction%60%601(Libplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/Libplanet.RocksDBStore/RocksDBStore.cs/#L429">View Source</a>
+  </span>
+  <a id="Libplanet_RocksDBStore_RocksDBStore_GetTransaction_" data-uid="Libplanet.RocksDBStore.RocksDBStore.GetTransaction*"></a>
+  <h4 id="Libplanet_RocksDBStore_RocksDBStore_GetTransaction__1_Libplanet_Tx_TxId_" data-uid="Libplanet.RocksDBStore.RocksDBStore.GetTransaction``1(Libplanet.Tx.TxId)">GetTransaction&lt;T&gt;(TxId)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override Transaction&lt;T&gt; GetTransaction&lt;T&gt;(TxId txid)
+    where T : IAction, new()</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.TxId.html">TxId</a></td>
+        <td><span class="parametername">txid</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetTransaction__1_Libplanet_Tx_TxId_">BaseStore.GetTransaction&lt;T&gt;(TxId)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_GetTxExecution_Libplanet_Blocks_BlockHash_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.GetTxExecution(Libplanet.Blocks.BlockHash%2CLibplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/Libplanet.RocksDBStore/RocksDBStore.cs/#L797">View Source</a>
+  </span>
+  <a id="Libplanet_RocksDBStore_RocksDBStore_GetTxExecution_" data-uid="Libplanet.RocksDBStore.RocksDBStore.GetTxExecution*"></a>
+  <h4 id="Libplanet_RocksDBStore_RocksDBStore_GetTxExecution_Libplanet_Blocks_BlockHash_Libplanet_Tx_TxId_" data-uid="Libplanet.RocksDBStore.RocksDBStore.GetTxExecution(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId)">GetTxExecution(BlockHash, TxId)</h4>
+  <div class="markdown level1 summary"><p>Retrieves the recorded transaction execution summary.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override TxExecution GetTxExecution(BlockHash blockHash, TxId txid)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a></td>
+        <td><span class="parametername">blockHash</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Hash">Hash</a> of the recorded transaction
+execution to retrieve.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.TxId.html">TxId</a></td>
+        <td><span class="parametername">txid</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Id">Id</a> of the recorded transaction
+execution to retrieve.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.TxExecution.html">TxExecution</a></td>
+        <td><p>The recorded transaction execution summary.  If it has been never recorded
+<code>null</code> is returned instead.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetTxExecution_Libplanet_Blocks_BlockHash_Libplanet_Tx_TxId_">BaseStore.GetTxExecution(BlockHash, TxId)</a></div>
+  <h5 id="Libplanet_RocksDBStore_RocksDBStore_GetTxExecution_Libplanet_Blocks_BlockHash_Libplanet_Tx_TxId__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.IStore.html#Libplanet_Store_IStore_PutTxExecution_Libplanet_Tx_TxFailure_">PutTxExecution</a>(<a class="xref" href="Libplanet.Tx.TxFailure.html">TxFailure</a>)</div>
+      <div><a class="xref" href="Libplanet.Store.IStore.html#Libplanet_Store_IStore_PutTxExecution_Libplanet_Tx_TxSuccess_">PutTxExecution</a>(<a class="xref" href="Libplanet.Tx.TxSuccess.html">TxSuccess</a>)</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_GetTxNonce_System_Guid_Libplanet_Address_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.GetTxNonce(System.Guid%2CLibplanet.Address)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/Libplanet.RocksDBStore/RocksDBStore.cs/#L866">View Source</a>
+  </span>
+  <a id="Libplanet_RocksDBStore_RocksDBStore_GetTxNonce_" data-uid="Libplanet.RocksDBStore.RocksDBStore.GetTxNonce*"></a>
+  <h4 id="Libplanet_RocksDBStore_RocksDBStore_GetTxNonce_System_Guid_Libplanet_Address_" data-uid="Libplanet.RocksDBStore.RocksDBStore.GetTxNonce(System.Guid,Libplanet.Address)">GetTxNonce(Guid, Address)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override long GetTxNonce(Guid chainId, Address address)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.guid">Guid</a></td>
+        <td><span class="parametername">chainId</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
+        <td><span class="parametername">address</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_IncreaseTxNonce_System_Guid_Libplanet_Address_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.IncreaseTxNonce(System.Guid%2CLibplanet.Address%2CSystem.Int64)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/Libplanet.RocksDBStore/RocksDBStore.cs/#L886">View Source</a>
+  </span>
+  <a id="Libplanet_RocksDBStore_RocksDBStore_IncreaseTxNonce_" data-uid="Libplanet.RocksDBStore.RocksDBStore.IncreaseTxNonce*"></a>
+  <h4 id="Libplanet_RocksDBStore_RocksDBStore_IncreaseTxNonce_System_Guid_Libplanet_Address_System_Int64_" data-uid="Libplanet.RocksDBStore.RocksDBStore.IncreaseTxNonce(System.Guid,Libplanet.Address,System.Int64)">IncreaseTxNonce(Guid, Address, Int64)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void IncreaseTxNonce(Guid chainId, Address signer, long delta = 1L)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.guid">Guid</a></td>
+        <td><span class="parametername">chainId</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
+        <td><span class="parametername">signer</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><span class="parametername">delta</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_IndexBlockHash_System_Guid_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.IndexBlockHash(System.Guid%2CSystem.Int64)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/Libplanet.RocksDBStore/RocksDBStore.cs/#L328">View Source</a>
+  </span>
+  <a id="Libplanet_RocksDBStore_RocksDBStore_IndexBlockHash_" data-uid="Libplanet.RocksDBStore.RocksDBStore.IndexBlockHash*"></a>
+  <h4 id="Libplanet_RocksDBStore_RocksDBStore_IndexBlockHash_System_Guid_System_Int64_" data-uid="Libplanet.RocksDBStore.RocksDBStore.IndexBlockHash(System.Guid,System.Int64)">IndexBlockHash(Guid, Int64)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override BlockHash? IndexBlockHash(Guid chainId, long index)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.guid">Guid</a></td>
+        <td><span class="parametername">chainId</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><span class="parametername">index</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_IterateBlockHashes.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.IterateBlockHashes%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/Libplanet.RocksDBStore/RocksDBStore.cs/#L581">View Source</a>
+  </span>
+  <a id="Libplanet_RocksDBStore_RocksDBStore_IterateBlockHashes_" data-uid="Libplanet.RocksDBStore.RocksDBStore.IterateBlockHashes*"></a>
+  <h4 id="Libplanet_RocksDBStore_RocksDBStore_IterateBlockHashes" data-uid="Libplanet.RocksDBStore.RocksDBStore.IterateBlockHashes">IterateBlockHashes()</h4>
+  <div class="markdown level1 summary"><p>Lists all block hashes in the store, regardless of their belonging chains.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IEnumerable&lt;BlockHash&gt; IterateBlockHashes()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
+        <td><p>All block hashes in the store.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_IterateBlockHashes">BaseStore.IterateBlockHashes()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_IterateIndexes_System_Guid_System_Int32_System_Nullable_System_Int32__.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.IterateIndexes(System.Guid%2CSystem.Int32%2CSystem.Nullable%7BSystem.Int32%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/Libplanet.RocksDBStore/RocksDBStore.cs/#L324">View Source</a>
+  </span>
+  <a id="Libplanet_RocksDBStore_RocksDBStore_IterateIndexes_" data-uid="Libplanet.RocksDBStore.RocksDBStore.IterateIndexes*"></a>
+  <h4 id="Libplanet_RocksDBStore_RocksDBStore_IterateIndexes_System_Guid_System_Int32_System_Nullable_System_Int32__" data-uid="Libplanet.RocksDBStore.RocksDBStore.IterateIndexes(System.Guid,System.Int32,System.Nullable{System.Int32})">IterateIndexes(Guid, Int32, Nullable&lt;Int32&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IEnumerable&lt;BlockHash&gt; IterateIndexes(Guid chainId, int offset, int? limit)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.guid">Guid</a></td>
+        <td><span class="parametername">chainId</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">offset</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a>&gt;</td>
+        <td><span class="parametername">limit</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_IterateTransactionIds.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.IterateTransactionIds%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/Libplanet.RocksDBStore/RocksDBStore.cs/#L414">View Source</a>
+  </span>
+  <a id="Libplanet_RocksDBStore_RocksDBStore_IterateTransactionIds_" data-uid="Libplanet.RocksDBStore.RocksDBStore.IterateTransactionIds*"></a>
+  <h4 id="Libplanet_RocksDBStore_RocksDBStore_IterateTransactionIds" data-uid="Libplanet.RocksDBStore.RocksDBStore.IterateTransactionIds">IterateTransactionIds()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IEnumerable&lt;TxId&gt; IterateTransactionIds()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.Tx.TxId.html">TxId</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_IterateTransactionIds">BaseStore.IterateTransactionIds()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_IterateTxIdBlockHashIndex_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.IterateTxIdBlockHashIndex(Libplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/Libplanet.RocksDBStore/RocksDBStore.cs/#L773">View Source</a>
+  </span>
+  <a id="Libplanet_RocksDBStore_RocksDBStore_IterateTxIdBlockHashIndex_" data-uid="Libplanet.RocksDBStore.RocksDBStore.IterateTxIdBlockHashIndex*"></a>
+  <h4 id="Libplanet_RocksDBStore_RocksDBStore_IterateTxIdBlockHashIndex_Libplanet_Tx_TxId_" data-uid="Libplanet.RocksDBStore.RocksDBStore.IterateTxIdBlockHashIndex(Libplanet.Tx.TxId)">IterateTxIdBlockHashIndex(TxId)</h4>
+  <div class="markdown level1 summary"><p>Retrieves <a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a>es indexed by the <code data-dev-comment-type="paramref" class="paramref">txId</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IEnumerable&lt;BlockHash&gt; IterateTxIdBlockHashIndex(TxId txId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.TxId.html">TxId</a></td>
+        <td><span class="parametername">txId</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a> of the <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
+        <td><p><a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a>es if the index exists.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_IterateTxIdBlockHashIndex_Libplanet_Tx_TxId_">BaseStore.IterateTxIdBlockHashIndex(TxId)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_ListChainIds.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.ListChainIds%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/Libplanet.RocksDBStore/RocksDBStore.cs/#L186">View Source</a>
+  </span>
+  <a id="Libplanet_RocksDBStore_RocksDBStore_ListChainIds_" data-uid="Libplanet.RocksDBStore.RocksDBStore.ListChainIds*"></a>
+  <h4 id="Libplanet_RocksDBStore_RocksDBStore_ListChainIds" data-uid="Libplanet.RocksDBStore.RocksDBStore.ListChainIds">ListChainIds()</h4>
+  <div class="markdown level1 summary"><p>Lists existing chain IDs.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IEnumerable&lt;Guid&gt; ListChainIds()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.guid">Guid</a>&gt;</td>
+        <td><p>Existing chain IDs.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ListChainIds">BaseStore.ListChainIds()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_ListTxNonces_System_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.ListTxNonces(System.Guid)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/Libplanet.RocksDBStore/RocksDBStore.cs/#L850">View Source</a>
+  </span>
+  <a id="Libplanet_RocksDBStore_RocksDBStore_ListTxNonces_" data-uid="Libplanet.RocksDBStore.RocksDBStore.ListTxNonces*"></a>
+  <h4 id="Libplanet_RocksDBStore_RocksDBStore_ListTxNonces_System_Guid_" data-uid="Libplanet.RocksDBStore.RocksDBStore.ListTxNonces(System.Guid)">ListTxNonces(Guid)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IEnumerable&lt;KeyValuePair&lt;Address, long&gt;&gt; ListTxNonces(Guid chainId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.guid">Guid</a></td>
+        <td><span class="parametername">chainId</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2">KeyValuePair</a>&lt;<a class="xref" href="Libplanet.Address.html">Address</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a>&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_PutBlock__1_Libplanet_Blocks_Block___0__.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.PutBlock%60%601(Libplanet.Blocks.Block%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/Libplanet.RocksDBStore/RocksDBStore.cs/#L641">View Source</a>
+  </span>
+  <a id="Libplanet_RocksDBStore_RocksDBStore_PutBlock_" data-uid="Libplanet.RocksDBStore.RocksDBStore.PutBlock*"></a>
+  <h4 id="Libplanet_RocksDBStore_RocksDBStore_PutBlock__1_Libplanet_Blocks_Block___0__" data-uid="Libplanet.RocksDBStore.RocksDBStore.PutBlock``1(Libplanet.Blocks.Block{``0})">PutBlock&lt;T&gt;(Block&lt;T&gt;)</h4>
+  <div class="markdown level1 summary"><p>Puts the given <code data-dev-comment-type="paramref" class="paramref">block</code> in to the store.
+If the same block already exists in the store it does nothing.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void PutBlock&lt;T&gt;(Block&lt;T&gt; block)
+    where T : IAction, new()</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td><span class="parametername">block</span></td>
+        <td><p>A <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> to put into the store.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>An <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> class used with
+<code data-dev-comment-type="paramref" class="paramref">block</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">Libplanet.Store.BaseStore.PutBlock&lt;T&gt;(Libplanet.Blocks.Block&lt;T&gt;)</span></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_PutTransaction__1_Libplanet_Tx_Transaction___0__.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.PutTransaction%60%601(Libplanet.Tx.Transaction%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/Libplanet.RocksDBStore/RocksDBStore.cs/#L474">View Source</a>
+  </span>
+  <a id="Libplanet_RocksDBStore_RocksDBStore_PutTransaction_" data-uid="Libplanet.RocksDBStore.RocksDBStore.PutTransaction*"></a>
+  <h4 id="Libplanet_RocksDBStore_RocksDBStore_PutTransaction__1_Libplanet_Tx_Transaction___0__" data-uid="Libplanet.RocksDBStore.RocksDBStore.PutTransaction``1(Libplanet.Tx.Transaction{``0})">PutTransaction&lt;T&gt;(Transaction&lt;T&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void PutTransaction&lt;T&gt;(Transaction&lt;T&gt; tx)
+    where T : IAction, new()</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction</a>&lt;T&gt;</td>
+        <td><span class="parametername">tx</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">Libplanet.Store.BaseStore.PutTransaction&lt;T&gt;(Libplanet.Tx.Transaction&lt;T&gt;)</span></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_PutTxExecution_Libplanet_Tx_TxFailure_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.PutTxExecution(Libplanet.Tx.TxFailure)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/Libplanet.RocksDBStore/RocksDBStore.cs/#L790">View Source</a>
+  </span>
+  <a id="Libplanet_RocksDBStore_RocksDBStore_PutTxExecution_" data-uid="Libplanet.RocksDBStore.RocksDBStore.PutTxExecution*"></a>
+  <h4 id="Libplanet_RocksDBStore_RocksDBStore_PutTxExecution_Libplanet_Tx_TxFailure_" data-uid="Libplanet.RocksDBStore.RocksDBStore.PutTxExecution(Libplanet.Tx.TxFailure)">PutTxExecution(TxFailure)</h4>
+  <div class="markdown level1 summary"><p>Records the given <code data-dev-comment-type="paramref" class="paramref">txFailure</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void PutTxExecution(TxFailure txFailure)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.TxFailure.html">TxFailure</a></td>
+        <td><span class="parametername">txFailure</span></td>
+        <td><p>The failed transaction execution summary to record.
+Must not be <code>null</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_PutTxExecution_Libplanet_Tx_TxFailure_">BaseStore.PutTxExecution(TxFailure)</a></div>
+  <h5 id="Libplanet_RocksDBStore_RocksDBStore_PutTxExecution_Libplanet_Tx_TxFailure__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>If there is already the record for the same <a class="xref" href="Libplanet.Tx.TxExecution.html#Libplanet_Tx_TxExecution_BlockHash">BlockHash</a>
+and <a class="xref" href="Libplanet.Tx.TxExecution.html#Libplanet_Tx_TxExecution_TxId">TxId</a>, the record is silently overwritten.</p>
+</div>
+  <h5 id="Libplanet_RocksDBStore_RocksDBStore_PutTxExecution_Libplanet_Tx_TxFailure__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.IStore.html#Libplanet_Store_IStore_PutTxExecution_Libplanet_Tx_TxSuccess_">PutTxExecution</a>(<a class="xref" href="Libplanet.Tx.TxSuccess.html">TxSuccess</a>)</div>
+      <div><a class="xref" href="Libplanet.Store.IStore.html#Libplanet_Store_IStore_GetTxExecution_Libplanet_Blocks_BlockHash_Libplanet_Tx_TxId_">GetTxExecution</a>(<a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a>, <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a>)</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_PutTxExecution_Libplanet_Tx_TxSuccess_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.PutTxExecution(Libplanet.Tx.TxSuccess)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/Libplanet.RocksDBStore/RocksDBStore.cs/#L783">View Source</a>
+  </span>
+  <a id="Libplanet_RocksDBStore_RocksDBStore_PutTxExecution_" data-uid="Libplanet.RocksDBStore.RocksDBStore.PutTxExecution*"></a>
+  <h4 id="Libplanet_RocksDBStore_RocksDBStore_PutTxExecution_Libplanet_Tx_TxSuccess_" data-uid="Libplanet.RocksDBStore.RocksDBStore.PutTxExecution(Libplanet.Tx.TxSuccess)">PutTxExecution(TxSuccess)</h4>
+  <div class="markdown level1 summary"><p>Records the given <code data-dev-comment-type="paramref" class="paramref">txSuccess</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void PutTxExecution(TxSuccess txSuccess)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.TxSuccess.html">TxSuccess</a></td>
+        <td><span class="parametername">txSuccess</span></td>
+        <td><p>The successful transaction execution summary to record.
+Must not be <code>null</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_PutTxExecution_Libplanet_Tx_TxSuccess_">BaseStore.PutTxExecution(TxSuccess)</a></div>
+  <h5 id="Libplanet_RocksDBStore_RocksDBStore_PutTxExecution_Libplanet_Tx_TxSuccess__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>If there is already the record for the same <a class="xref" href="Libplanet.Tx.TxExecution.html#Libplanet_Tx_TxExecution_BlockHash">BlockHash</a>
+and <a class="xref" href="Libplanet.Tx.TxExecution.html#Libplanet_Tx_TxExecution_TxId">TxId</a>, the record is silently overwritten.</p>
+</div>
+  <h5 id="Libplanet_RocksDBStore_RocksDBStore_PutTxExecution_Libplanet_Tx_TxSuccess__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.IStore.html#Libplanet_Store_IStore_PutTxExecution_Libplanet_Tx_TxFailure_">PutTxExecution</a>(<a class="xref" href="Libplanet.Tx.TxFailure.html">TxFailure</a>)</div>
+      <div><a class="xref" href="Libplanet.Store.IStore.html#Libplanet_Store_IStore_GetTxExecution_Libplanet_Blocks_BlockHash_Libplanet_Tx_TxId_">GetTxExecution</a>(<a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a>, <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a>)</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_PutTxIdBlockHashIndex_Libplanet_Tx_TxId_Libplanet_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.PutTxIdBlockHashIndex(Libplanet.Tx.TxId%2CLibplanet.Blocks.BlockHash)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/Libplanet.RocksDBStore/RocksDBStore.cs/#L756">View Source</a>
+  </span>
+  <a id="Libplanet_RocksDBStore_RocksDBStore_PutTxIdBlockHashIndex_" data-uid="Libplanet.RocksDBStore.RocksDBStore.PutTxIdBlockHashIndex*"></a>
+  <h4 id="Libplanet_RocksDBStore_RocksDBStore_PutTxIdBlockHashIndex_Libplanet_Tx_TxId_Libplanet_Blocks_BlockHash_" data-uid="Libplanet.RocksDBStore.RocksDBStore.PutTxIdBlockHashIndex(Libplanet.Tx.TxId,Libplanet.Blocks.BlockHash)">PutTxIdBlockHashIndex(TxId, BlockHash)</h4>
+  <div class="markdown level1 summary"><p>Records a index for given pair <code data-dev-comment-type="paramref" class="paramref">txId</code> and <code data-dev-comment-type="paramref" class="paramref">blockHash</code>.
+If there exist a record for <code data-dev-comment-type="paramref" class="paramref">txId</code> already,
+it overwrites the record silently.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void PutTxIdBlockHashIndex(TxId txId, BlockHash blockHash)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.TxId.html">TxId</a></td>
+        <td><span class="parametername">txId</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a> of the <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a></td>
+        <td><span class="parametername">blockHash</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a> of the <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_PutTxIdBlockHashIndex_Libplanet_Tx_TxId_Libplanet_Blocks_BlockHash_">BaseStore.PutTxIdBlockHashIndex(TxId, BlockHash)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_SetBlockPerceivedTime_Libplanet_Blocks_BlockHash_System_DateTimeOffset_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.SetBlockPerceivedTime(Libplanet.Blocks.BlockHash%2CSystem.DateTimeOffset)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/Libplanet.RocksDBStore/RocksDBStore.cs/#L809">View Source</a>
+  </span>
+  <a id="Libplanet_RocksDBStore_RocksDBStore_SetBlockPerceivedTime_" data-uid="Libplanet.RocksDBStore.RocksDBStore.SetBlockPerceivedTime*"></a>
+  <h4 id="Libplanet_RocksDBStore_RocksDBStore_SetBlockPerceivedTime_Libplanet_Blocks_BlockHash_System_DateTimeOffset_" data-uid="Libplanet.RocksDBStore.RocksDBStore.SetBlockPerceivedTime(Libplanet.Blocks.BlockHash,System.DateTimeOffset)">SetBlockPerceivedTime(BlockHash, DateTimeOffset)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void SetBlockPerceivedTime(BlockHash blockHash, DateTimeOffset perceivedTime)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a></td>
+        <td><span class="parametername">blockHash</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.datetimeoffset">System.DateTimeOffset</a></td>
+        <td><span class="parametername">perceivedTime</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_SetCanonicalChainId_System_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.SetCanonicalChainId(System.Guid)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/Libplanet.RocksDBStore/RocksDBStore.cs/#L290">View Source</a>
+  </span>
+  <a id="Libplanet_RocksDBStore_RocksDBStore_SetCanonicalChainId_" data-uid="Libplanet.RocksDBStore.RocksDBStore.SetCanonicalChainId*"></a>
+  <h4 id="Libplanet_RocksDBStore_RocksDBStore_SetCanonicalChainId_System_Guid_" data-uid="Libplanet.RocksDBStore.RocksDBStore.SetCanonicalChainId(System.Guid)">SetCanonicalChainId(Guid)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void SetCanonicalChainId(Guid chainId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.guid">Guid</a></td>
+        <td><span class="parametername">chainId</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Libplanet.Store.IStore.html">IStore</a>
+  </div>
+  <div>
+      <span class="xref">IDisposable</span>
+  </div>
+  <h3 id="seealso">See Also</h3>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.IStore.html">IStore</a></div>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/new/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/1bcf37f74a483a495c3925f0c42c8cbc78c5fbb3/Libplanet.RocksDBStore/RocksDBStore.cs/#L23" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2018–2021 <a href="https://planetariumhq.com/">Planetarium</a>
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
