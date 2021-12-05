@@ -1635,57 +1635,6 @@ namespace Libplanet.Tests.Net
             }
         }
 
-        [Fact(Timeout = Timeout)]
-        public async Task DoNotFillMultipleTimes()
-        {
-            Swarm<DumbAction> receiver = CreateSwarm();
-            Swarm<DumbAction> sender1 = CreateSwarm();
-            Swarm<DumbAction> sender2 = CreateSwarm();
-
-            await StartAsync(receiver);
-            await StartAsync(sender1);
-            await StartAsync(sender2);
-
-            BlockChain<DumbAction> chain = receiver.BlockChain;
-            var minerKey = new PrivateKey();
-            Block<DumbAction> b1 =
-                TestUtils.MineNext(
-                        chain.Genesis,
-                        chain.Policy.GetHashAlgorithm,
-                        difficulty: 1024,
-                        miner: minerKey.PublicKey)
-                    .Evaluate(minerKey, chain);
-
-            try
-            {
-                await BootstrapAsync(sender1, receiver.AsPeer);
-                await BootstrapAsync(sender2, receiver.AsPeer);
-
-                sender1.BlockChain.Append(b1);
-                sender2.BlockChain.Append(b1);
-
-                sender1.BroadcastBlock(b1);
-                sender2.BroadcastBlock(b1);
-
-                // Make sure that receiver swarm only filled once for same block
-                // that were broadcasted simultaneously.
-                await receiver.BlockReceived.WaitAsync();
-
-                // Awaits 1 second because receiver swarm may tried to fill again after filled.
-                await Task.Delay(1000);
-                var transport = receiver.Transport;
-                Log.Debug("Messages: {@Message}", transport.MessageHistory);
-                Assert.Single(
-                    transport.MessageHistory.Where(msg => msg is Libplanet.Net.Messages.Blocks));
-            }
-            finally
-            {
-                await StopAsync(receiver);
-                await StopAsync(sender1);
-                await StopAsync(sender2);
-            }
-        }
-
         [RetryFact(10, Timeout = Timeout)]
         public async Task GetPeerChainStateAsync()
         {
