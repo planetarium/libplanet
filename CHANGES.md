@@ -4,15 +4,10 @@ Libplanet changelog
 Version 0.22.1
 --------------
 
-To be released.
+Released on December 5, 2021.
 
-### Backward-incompatible API changes
-
+ - Compacted log output for convenience.  [[#1633]]
  - Removed `ITransport.MessageHistory` property due to memory leak. [[#1639]]
-
-### Behavioral changes
-
- -  Compacted log output for convenience.  [[#1633]]
 
 [#1633]: https://github.com/planetarium/libplanet/pull/1633
 [#1639]: https://github.com/planetarium/libplanet/pull/1639
