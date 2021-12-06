@@ -697,7 +697,7 @@ namespace Libplanet.Net
                 logSessionId,
                 subSessionId,
                 nameof(Messages.GetBlockHashes),
-                locator,
+                locator.FirstOrDefault(),
                 stop);
             Message parsedMessage = await Transport.SendMessageWithReplyAsync(
                 peer,
@@ -1282,8 +1282,8 @@ namespace Libplanet.Net
                             if (txIds.Any())
                             {
                                 _logger.Debug(
-                                    "Broadcast Staged Transactions: [{txIds}]",
-                                    string.Join(", ", txIds));
+                                    "Broadcasting {TxCount} staged transactions...",
+                                    txIds.Count);
                                 BroadcastTxIds(null, txIds);
                             }
                         }, cancellationToken);

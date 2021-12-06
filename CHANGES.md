@@ -40,6 +40,18 @@ To be released.  The solution now can be built on Apple Silicon
 [Planetarium.RocksDbSharp 6.2.4-planetarium]: https://www.nuget.org/packages/Planetarium.RocksDbSharp/6.2.4-planetarium
 
 
+Version 0.22.1
+--------------
+
+Released on December 5, 2021.
+
+ - Compacted log output for convenience.  [[#1633]]
+ - Removed `ITransport.MessageHistory` property due to memory leak. [[#1639]]
+
+[#1633]: https://github.com/planetarium/libplanet/pull/1633
+[#1639]: https://github.com/planetarium/libplanet/pull/1639
+
+
 Version 0.22.0
 --------------
 

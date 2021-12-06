@@ -120,10 +120,10 @@ namespace Libplanet.Tests.Net
             var seedStateStore = new TrieStateStore(new MemoryKeyValueStore());
             IBlockPolicy<DumbAction> policy = receiverChain.Policy;
             Block<DumbAction> mismatchedGenesis = new BlockContent<DumbAction>
-                {
-                    PublicKey = receiverKey.PublicKey,
-                    Timestamp = DateTimeOffset.MinValue,
-                }
+            {
+                PublicKey = receiverKey.PublicKey,
+                Timestamp = DateTimeOffset.MinValue,
+            }
                 .Mine(policy.GetHashAlgorithm(0))
                 .Evaluate(receiverKey, policy.BlockAction, seedStateStore);
             BlockChain<DumbAction> seedChain = TestUtils.MakeBlockChain(
@@ -141,13 +141,6 @@ namespace Libplanet.Tests.Net
                 await receiverSwarm.AddPeersAsync(new[] { seedSwarm.AsPeer }, null);
                 Block<DumbAction> block = await seedChain.MineBlock(seedMiner);
                 seedSwarm.BroadcastBlock(block);
-                while (receiverSwarm.Transport.MessageHistory
-                    .Any(msg => msg is BlockHeaderMessage))
-                {
-                    await Task.Delay(100);
-                }
-
-                await Task.Delay(100);
                 Assert.NotEqual(seedChain.Tip, receiverChain.Tip);
             }
             finally

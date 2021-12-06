@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Threading;
@@ -39,13 +38,6 @@ namespace Libplanet.Net.Transports
         /// <value>Gets the value indicates whether the instance is running.</value>
         [Pure]
         bool Running { get; }
-
-        /// <summary>
-        /// A fixed sized queue that keeps history of <see cref="Message"/> received.
-        /// It saves at most 30 recent <see cref="Message"/>s.
-        /// </summary>
-        [Pure]
-        ConcurrentQueue<Message> MessageHistory { get; }
 
         /// <summary>
         /// Initiates and runs transport layer.
