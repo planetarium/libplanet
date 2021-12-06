@@ -111,13 +111,25 @@ namespace Libplanet.Analyzers
                 $"{ns}.Immutable.IImmutableSet`1",
             };
 
-            bool IsDictOrSet(ITypeSymbol? valType) => valType is ITypeSymbol t &&
-                t.OriginalDefinition.AllInterfaces
+            string[] sortedTypes =
+            {
+                $"{ns}.Generic.SortedDictionary`2",
+                $"{ns}.Immutable.ImmutableSortedDictionary`2",
+                $"{ns}.Generic.SortedSet`1",
+                $"{ns}.Immutable.ImmutableSortedSet`1",
+                "Bencodex.Types.Dictionary",
+            };
+
+            bool IsDictOrSet(ITypeSymbol? valType) =>
+                valType is ITypeSymbol t && t.OriginalDefinition.AllInterfaces
                     .OfType<ITypeSymbol>()
                     .Select(ifce => ifce.OriginalDefinition)
                     .OfType<ITypeSymbol>()
-                    .Any(i => dictOrSets.Any(dst => TypeEquals(i, dst))
-                    );
+                    .Any(i => dictOrSets.Any(dst => TypeEquals(i, dst)));
+
+            bool IsUnordered(ITypeSymbol? valType) =>
+                valType is ITypeSymbol t && IsDictOrSet(t) &&
+                !sortedTypes.Any(sortedType => TypeEquals(t.OriginalDefinition, sortedType));
 
             switch (context.Operation)
             {
@@ -164,7 +176,7 @@ namespace Libplanet.Analyzers
                     }
 
                     ITypeSymbol? valType = conv.Operand?.Type;
-                    if (IsDictOrSet(valType))
+                    if (IsUnordered(valType))
                     {
                         string func = "enumerating";
                         if (conv.Parent is IArgumentOperation argConv)
@@ -197,7 +209,7 @@ namespace Libplanet.Analyzers
                 {
                     IOperation collection = loop.Collection;
                     ITypeSymbol? collType = collection.Type;
-                    if (IsDictOrSet(collType))
+                    if (IsUnordered(collType))
                     {
                         Diagnostic diag = Diagnostic.Create(
                             Rules[$"{IdPrefix}1002"],

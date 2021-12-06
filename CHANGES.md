@@ -33,6 +33,15 @@ To be released.  The solution now can be built on Apple Silicon
     the existing state store, in order to take complete effect of this
     optimization, please replay your existing blockchain from the genesis block
     with the empty store.  [[#1636]]
+ -  (Libplanet.Analyzers) Rule LAA1002 no more warns about enumerating sorted
+    sets/dictionaries:
+     -  `System.Collections.Generic.SortedDictionary<TKey, TValue>`
+     -  `System.Collections.Generic.SortedSet<T>`
+     -  `System.Collections.Immutable.ImmutableSortedDictionary<TKey, TValue>`
+     -  `System.Collections.Immutable.ImmutableSortedSet<T>`
+     -  `Bencodex.Types.Dictionary` (which became to guarantee enumeration order
+        since [Bencodex 0.4.0-dev.20211116020419+abea0858][Bencodex
+        0.4.0-dev.20211116020419])
 
 ### Bug fixes
 
@@ -53,6 +62,7 @@ To be released.  The solution now can be built on Apple Silicon
 [#1631]: https://github.com/planetarium/libplanet/pull/1631
 [#1635]: https://github.com/planetarium/libplanet/pull/1635
 [#1636]: https://github.com/planetarium/libplanet/pull/1636
+[Bencodex 0.4.0-dev.20211116020419]: https://www.nuget.org/packages/Bencodex/0.4.0-dev.20211116020419
 [Bencodex 0.4.0-dev.20211205152306]: https://www.nuget.org/packages/Bencodex/0.4.0-dev.20211205152306
 [Planetarium.RocksDbSharp 6.2.4-planetarium]: https://www.nuget.org/packages/Planetarium.RocksDbSharp/6.2.4-planetarium
 
