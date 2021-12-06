@@ -14729,19 +14729,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Transports.ITransport.LastMessageTimestamp
   nameWithType: ITransport.LastMessageTimestamp
-- uid: Libplanet.Net.Transports.ITransport.MessageHistory
-  name: MessageHistory
-  href: api/Libplanet.Net.Transports.ITransport.html#Libplanet_Net_Transports_ITransport_MessageHistory
-  commentId: P:Libplanet.Net.Transports.ITransport.MessageHistory
-  fullName: Libplanet.Net.Transports.ITransport.MessageHistory
-  nameWithType: ITransport.MessageHistory
-- uid: Libplanet.Net.Transports.ITransport.MessageHistory*
-  name: MessageHistory
-  href: api/Libplanet.Net.Transports.ITransport.html#Libplanet_Net_Transports_ITransport_MessageHistory_
-  commentId: Overload:Libplanet.Net.Transports.ITransport.MessageHistory
-  isSpec: "True"
-  fullName: Libplanet.Net.Transports.ITransport.MessageHistory
-  nameWithType: ITransport.MessageHistory
 - uid: Libplanet.Net.Transports.ITransport.ProcessMessageHandler
   name: ProcessMessageHandler
   href: api/Libplanet.Net.Transports.ITransport.html#Libplanet_Net_Transports_ITransport_ProcessMessageHandler
@@ -14935,19 +14922,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Transports.NetMQTransport.LastMessageTimestamp
   nameWithType: NetMQTransport.LastMessageTimestamp
-- uid: Libplanet.Net.Transports.NetMQTransport.MessageHistory
-  name: MessageHistory
-  href: api/Libplanet.Net.Transports.NetMQTransport.html#Libplanet_Net_Transports_NetMQTransport_MessageHistory
-  commentId: P:Libplanet.Net.Transports.NetMQTransport.MessageHistory
-  fullName: Libplanet.Net.Transports.NetMQTransport.MessageHistory
-  nameWithType: NetMQTransport.MessageHistory
-- uid: Libplanet.Net.Transports.NetMQTransport.MessageHistory*
-  name: MessageHistory
-  href: api/Libplanet.Net.Transports.NetMQTransport.html#Libplanet_Net_Transports_NetMQTransport_MessageHistory_
-  commentId: Overload:Libplanet.Net.Transports.NetMQTransport.MessageHistory
-  isSpec: "True"
-  fullName: Libplanet.Net.Transports.NetMQTransport.MessageHistory
-  nameWithType: NetMQTransport.MessageHistory
 - uid: Libplanet.Net.Transports.NetMQTransport.ProcessMessageHandler
   name: ProcessMessageHandler
   href: api/Libplanet.Net.Transports.NetMQTransport.html#Libplanet_Net_Transports_NetMQTransport_ProcessMessageHandler
@@ -15147,19 +15121,6 @@ references:
   commentId: F:Libplanet.Net.Transports.TcpTransport.MagicCookie
   fullName: Libplanet.Net.Transports.TcpTransport.MagicCookie
   nameWithType: TcpTransport.MagicCookie
-- uid: Libplanet.Net.Transports.TcpTransport.MessageHistory
-  name: MessageHistory
-  href: api/Libplanet.Net.Transports.TcpTransport.html#Libplanet_Net_Transports_TcpTransport_MessageHistory
-  commentId: P:Libplanet.Net.Transports.TcpTransport.MessageHistory
-  fullName: Libplanet.Net.Transports.TcpTransport.MessageHistory
-  nameWithType: TcpTransport.MessageHistory
-- uid: Libplanet.Net.Transports.TcpTransport.MessageHistory*
-  name: MessageHistory
-  href: api/Libplanet.Net.Transports.TcpTransport.html#Libplanet_Net_Transports_TcpTransport_MessageHistory_
-  commentId: Overload:Libplanet.Net.Transports.TcpTransport.MessageHistory
-  isSpec: "True"
-  fullName: Libplanet.Net.Transports.TcpTransport.MessageHistory
-  nameWithType: TcpTransport.MessageHistory
 - uid: Libplanet.Net.Transports.TcpTransport.ProcessMessageHandler
   name: ProcessMessageHandler
   href: api/Libplanet.Net.Transports.TcpTransport.html#Libplanet_Net_Transports_TcpTransport_ProcessMessageHandler
