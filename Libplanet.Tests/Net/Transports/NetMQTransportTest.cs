@@ -2,15 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
 using Libplanet.Crypto;
 using Libplanet.Net;
-using Libplanet.Net.Messages;
 using Libplanet.Net.Protocols;
 using Libplanet.Net.Transports;
 using NetMQ;
-using Nito.AsyncEx;
 using Serilog;
 using Xunit;
 using Xunit.Abstractions;
@@ -61,45 +57,6 @@ namespace Libplanet.Tests.Net.Transports
         public void Dispose()
         {
             NetMQConfig.Cleanup(false);
-        }
-
-        [SkippableFact(Timeout = Timeout, Skip = "Target method is broken.")]
-        public async Task MessageHistory()
-        {
-            var transportA = CreateNetMQTransport();
-            var transportB = CreateNetMQTransport();
-
-            var messageReceived = new AsyncAutoResetEvent();
-            transportB.ProcessMessageHandler.Register(async message =>
-            {
-                messageReceived.Set();
-                await Task.Yield();
-            });
-
-            try
-            {
-                await InitializeAsync(transportA);
-                await InitializeAsync(transportB);
-                var boundPeer = (BoundPeer)transportB.AsPeer;
-                Task t = messageReceived.WaitAsync();
-                await transportA.SendMessageAsync(boundPeer, new Ping(), CancellationToken.None);
-                await t;
-                t = messageReceived.WaitAsync();
-                await transportA.SendMessageAsync(boundPeer, new Pong(), CancellationToken.None);
-                await t;
-
-                transportB.MessageHistory.TryDequeue(out var message1);
-                transportB.MessageHistory.TryDequeue(out var message2);
-                Assert.IsType<Ping>(message1);
-                Assert.Equal(transportA.AsPeer, message1?.Remote);
-                Assert.IsType<Pong>(message2);
-                Assert.Equal(transportA.AsPeer, message2?.Remote);
-            }
-            finally
-            {
-                transportA.Dispose();
-                transportB.Dispose();
-            }
         }
 
         private NetMQTransport CreateNetMQTransport(
