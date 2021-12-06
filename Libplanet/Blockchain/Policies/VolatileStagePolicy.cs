@@ -15,7 +15,7 @@ namespace Libplanet.Blockchain.Policies
     /// In-memory staged transactions.
     /// </summary>
     /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
-    /// to <see cref="BlockChain{T}"/>'s type parameter.</typeparam>
+    /// the <see cref="BlockChain{T}"/>'s type parameter.</typeparam>
     public class VolatileStagePolicy<T> : IStagePolicy<T>
         where T : IAction, new()
     {
@@ -26,7 +26,7 @@ namespace Libplanet.Blockchain.Policies
 
         /// <summary>
         /// Creates a new <see cref="VolatileStagePolicy{T}"/> instance.
-        /// <para><see cref="Lifetime"/> is configured to 3 hours.</para>
+        /// By default, <see cref="Lifetime"/> is configured to 3 hours.
         /// </summary>
         public VolatileStagePolicy()
             : this(TimeSpan.FromHours(3))
@@ -36,8 +36,8 @@ namespace Libplanet.Blockchain.Policies
         /// <summary>
         /// Creates a new <see cref="VolatileStagePolicy{T}"/> instance.
         /// </summary>
-        /// <param name="lifetime">Volatilizes staged transactions older than this <paramref
-        /// name="lifetime"/>.  See also the <see cref="Lifetime"/> property.</param>
+        /// <param name="lifetime">Volatilizes staged transactions older than this
+        /// <see cref="TimeSpan"/>.  See also <see cref="Lifetime"/>.</param>
         public VolatileStagePolicy(TimeSpan lifetime)
         {
             _logger = Log.ForContext<VolatileStagePolicy<T>>();
@@ -48,12 +48,15 @@ namespace Libplanet.Blockchain.Policies
         }
 
         /// <summary>
-        /// Volatilizes staged transactions older than this <see cref="Lifetime"/>.
-        /// <para>Note that transactions older than the lifetime never cannot be staged.</para>
+        /// Lifespan for <see cref="Transaction{T}"/>s.  Any <see cref="Transaction{T}"/> older
+        /// than this <see cref="TimeSpan"/> will be considered stale.
         /// </summary>
+        /// <remarks>
+        /// Stale <see cref="Transaction{T}"/>s cannot be staged.
+        /// </remarks>
         public TimeSpan Lifetime { get; }
 
-        /// <inheritdoc cref="IStagePolicy{T}.Stage(BlockChain{T}, Transaction{T})"/>
+        /// <inheritdoc/>
         public void Stage(BlockChain<T> blockChain, Transaction<T> transaction)
         {
             if (DateTimeOffset.UtcNow - Lifetime > transaction.Timestamp)
@@ -104,7 +107,7 @@ namespace Libplanet.Blockchain.Policies
             }
         }
 
-        /// <inheritdoc cref="IStagePolicy{T}.Unstage(BlockChain{T}, TxId)"/>
+        /// <inheritdoc/>
         public void Unstage(BlockChain<T> blockChain, TxId id)
         {
             _lock.EnterWriteLock();
@@ -112,16 +115,16 @@ namespace Libplanet.Blockchain.Policies
             _lock.ExitWriteLock();
         }
 
-        /// <inheritdoc cref="IStagePolicy{T}.Ignore(BlockChain{T}, TxId)"/>
+        /// <inheritdoc/>
         public void Ignore(BlockChain<T> blockChain, TxId id) =>
             _set.TryAdd(id, null);
 
-        /// <inheritdoc cref="IStagePolicy{T}.Ignores(BlockChain{T}, TxId)"/>
+        /// <inheritdoc/>
         public bool Ignores(BlockChain<T> blockChain, TxId id) =>
             (_set.TryGetValue(id, out Transaction<T>? tx) && tx is null)
             || Get(blockChain, id, includeUnstaged: true) is { };
 
-        /// <inheritdoc cref="IStagePolicy{T}.Get(BlockChain{T}, TxId, bool)"/>
+        /// <inheritdoc/>
         public Transaction<T>? Get(BlockChain<T> blockChain, TxId id, bool includeUnstaged)
         {
             if (!_set.TryGetValue(id, out Transaction<T>? tx) || tx is null)
@@ -155,7 +158,7 @@ namespace Libplanet.Blockchain.Policies
             return null;
         }
 
-        /// <inheritdoc cref="IStagePolicy{T}.Iterate"/>
+        /// <inheritdoc/>
         public IEnumerable<Transaction<T>> Iterate()
         {
             _lock.EnterReadLock();
@@ -207,7 +210,7 @@ namespace Libplanet.Blockchain.Policies
             }
         }
 
-        /// <inheritdoc cref="IStagePolicy{T}.GetNextTxNonce"/>
+        /// <inheritdoc/>
         public long GetNextTxNonce(Address address, long minedTxs)
         {
             long nonce = minedTxs;
