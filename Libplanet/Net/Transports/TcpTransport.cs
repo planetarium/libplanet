@@ -31,8 +31,7 @@ namespace Libplanet.Net.Transports
 
         // TURN Permission lifetime was defined in RFC 5766
         // see also https://tools.ietf.org/html/rfc5766#section-8
-        private static readonly TimeSpan TurnPermissionLifetime =
-            TimeSpan.FromMinutes(5);
+        private static readonly TimeSpan TurnPermissionLifetime = TimeSpan.FromMinutes(5);
 
         private readonly RoutingTable _table;
         private readonly PrivateKey _privateKey;
@@ -53,9 +52,10 @@ namespace Libplanet.Net.Transports
         private CancellationTokenSource _runtimeCancellationTokenSource;
         private CancellationTokenSource _turnCancellationTokenSource;
 
-        private DnsEndPoint? _hostEndPoint;
         private TcpListener _listener;
+        private int _listenPort;
         private TurnClient? _turnClient;
+        private DnsEndPoint? _hostEndPoint;
 
         private bool _disposed;
 
@@ -75,6 +75,12 @@ namespace Libplanet.Net.Transports
                 .ForContext<TcpTransport>()
                 .ForContext("Source", nameof(TcpTransport));
 
+            if (host is null && !iceServers.Any())
+            {
+                throw new ArgumentException(
+                    $"Swarm requires either {nameof(host)} or {nameof(iceServers)}.");
+            }
+
             _runningEvent = null!;
             Running = false;
 
@@ -83,29 +89,16 @@ namespace Libplanet.Net.Transports
             _appProtocolVersion = appProtocolVersion;
             _trustedAppProtocolVersionSigners = trustedAppProtocolVersionSigners;
             _host = host;
+            _iceServers = iceServers.ToList();
             _differentAppProtocolVersionEncountered = differentAppProtocolVersionEncountered;
-            _iceServers = iceServers?.ToList();
             _minimumBroadcastTarget = minimumBroadcastTarget;
             _messageCodec = new TcpMessageCodec(messageLifespan);
             _streams = new ConcurrentDictionary<Guid, ReplyStream>();
-
-            if (!(_host is null) && listenPort is { } listenPortAsInt)
-            {
-                _hostEndPoint = new DnsEndPoint(_host, listenPortAsInt);
-            }
-
-            if (_host == null && (_iceServers == null || !_iceServers.Any()))
-            {
-                throw new ArgumentException(
-                    $"Swarm requires either {nameof(host)} or " +
-                    $"{nameof(iceServers)}."
-                );
-            }
-
-            _logger = Log.ForContext<TcpTransport>();
             _runtimeCancellationTokenSource = new CancellationTokenSource();
             _turnCancellationTokenSource = new CancellationTokenSource();
-            _listener = new TcpListener(new IPEndPoint(IPAddress.Any, listenPort ?? 0));
+            _listenPort = listenPort ?? 0;
+            _listener = new TcpListener(new IPEndPoint(IPAddress.Any, _listenPort));
+
             ProcessMessageHandler = new AsyncDelegate<Message>();
             MessageHistory = new FixedSizedQueue<Message>(MessageHistoryCapacity);
         }
@@ -144,22 +137,6 @@ namespace Libplanet.Net.Transports
 
         internal DnsEndPoint? EndPoint => _turnClient?.EndPoint ?? _hostEndPoint;
 
-        public void Dispose()
-        {
-            if (!_disposed)
-            {
-                _listener.Stop();
-                _runtimeCancellationTokenSource.Cancel();
-                _turnCancellationTokenSource.Cancel();
-
-                _runtimeCancellationTokenSource.Dispose();
-                _turnCancellationTokenSource.Dispose();
-                StopAllStreamsAsync().Wait();
-                Running = false;
-                _disposed = true;
-            }
-        }
-
         /// <inheritdoc cref="ITransport.StartAsync"/>
         public async Task StartAsync(CancellationToken cancellationToken = default)
         {
@@ -173,31 +150,12 @@ namespace Libplanet.Net.Transports
                 throw new TransportException("Transport is already running.");
             }
 
-            _listener.Start(ListenerBacklog);
-            int listenPort = ((IPEndPoint)_listener.LocalEndpoint).Port;
+            await Initialize(cancellationToken);
 
-            _logger.Information("Listen on {Port}", listenPort);
             _runtimeCancellationTokenSource =
                 CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
             _turnCancellationTokenSource =
                 CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-
-            if (_host is null && !(_iceServers is null))
-            {
-                _turnClient = await IceServer.CreateTurnClient(_iceServers);
-                await _turnClient.StartAsync(listenPort, cancellationToken);
-            }
-
-            if (_turnClient is null || !_turnClient.BehindNAT)
-            {
-                string? host = _host ?? PublicIPAddress?.ToString();
-                if (host is null)
-                {
-                    throw new TransportException("Host is null.");
-                }
-
-                _hostEndPoint = new DnsEndPoint(host, listenPort);
-            }
 
             List<Task> tasks = new List<Task>();
 
@@ -205,7 +163,7 @@ namespace Libplanet.Net.Transports
             tasks.Add(ProcessRuntime(_runtimeCancellationTokenSource.Token));
 
             Running = true;
-            _logger.Debug("Start to run. TurnClient: {Client}", _turnClient);
+            _logger.Debug("Started to run. TurnClient: {Client}", _turnClient);
 
             await await Task.WhenAny(tasks);
         }
@@ -225,6 +183,22 @@ namespace Libplanet.Net.Transports
                 _turnCancellationTokenSource.Cancel();
                 await StopAllStreamsAsync();
                 Running = false;
+            }
+        }
+
+        public void Dispose()
+        {
+            if (!_disposed)
+            {
+                _listener.Stop();
+                _runtimeCancellationTokenSource.Cancel();
+                _turnCancellationTokenSource.Cancel();
+
+                _runtimeCancellationTokenSource.Dispose();
+                _turnCancellationTokenSource.Dispose();
+                StopAllStreamsAsync().Wait();
+                Running = false;
+                _disposed = true;
             }
         }
 
@@ -503,6 +477,29 @@ namespace Libplanet.Net.Transports
                     "Failed to reply message {Message} with {Id}. Corresponding stream is removed.",
                     message,
                     id);
+            }
+        }
+
+        internal async Task Initialize(CancellationToken cancellationToken = default)
+        {
+            _listener.Start(ListenerBacklog);
+            _listenPort = ((IPEndPoint)_listener.LocalEndpoint).Port;
+
+            _logger.Information("Listening on {Port}...", _listenPort);
+
+            if (_host is { } host)
+            {
+                _hostEndPoint = new DnsEndPoint(host, _listenPort);
+            }
+            else if (_iceServers is { } iceServers)
+            {
+                _turnClient = await IceServer.CreateTurnClient(_iceServers);
+                await _turnClient.StartAsync(_listenPort, cancellationToken);
+                if (!_turnClient.BehindNAT)
+                {
+                    _hostEndPoint = new DnsEndPoint(
+                        _turnClient.PublicAddress.ToString(), _listenPort);
+                }
             }
         }
 
