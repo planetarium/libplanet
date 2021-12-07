@@ -325,11 +325,11 @@ namespace Libplanet.Blockchain
                 if (Policy.ValidateNextBlockTx(this, tx) is { } tpve)
                 {
                     _logger.Debug(
-                        "Unstaging tx {Iter}/{Total} {Transaction} as it does not follow policy.",
+                        "Ignoring tx {Iter}/{Total} {Transaction} as it does not follow policy.",
                         i,
                         stagedTransactions.Count,
                         tx.Id);
-                    UnstageTransaction(tx);
+                    StagePolicy.Ignore(this, tx.Id);
                     continue;
                 }
 
@@ -377,14 +377,13 @@ namespace Libplanet.Blockchain
                 else if (tx.Nonce < storedNonces[tx.Signer])
                 {
                     _logger.Debug(
-                        "Discarding tx {Iter}/{Total} {Transaction} by {Signer} " +
+                        "Ignoring tx {Iter}/{Total} {Transaction} by {Signer} " +
                         "as it has lower nonce than the stored nonce: {Nonce}",
                         i,
                         stagedTransactions.Count,
                         tx.Id,
                         tx.Signer,
                         tx.Nonce);
-                    UnstageTransaction(tx);
                 }
                 else
                 {
