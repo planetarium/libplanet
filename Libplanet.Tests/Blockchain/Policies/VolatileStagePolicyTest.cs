@@ -26,18 +26,15 @@ namespace Libplanet.Tests.Blockchain.Policies
                 _key,
                 _fx.GenesisBlock.Hash,
                 Enumerable.Empty<DumbAction>(),
-                timestamp: DateTimeOffset.UtcNow - _stagePolicy.Lifetime + timeBuffer
+                timestamp: (DateTimeOffset.UtcNow - _stagePolicy.Lifetime) + timeBuffer
             );
             _stagePolicy.Stage(_chain, tx);
-            Assert.True(_stagePolicy.Ignores(_chain, tx.Id));
             Assert.Equal(tx, _stagePolicy.Get(_chain, tx.Id, false));
             Assert.Contains(tx, _stagePolicy.Iterate());
 
-            // On some targets TimeSpan * int does not exist:
+            // On some targets TimeSpan * int does not exist.
             Thread.Sleep(timeBuffer);
             Thread.Sleep(timeBuffer);
-
-            Assert.False(_stagePolicy.Ignores(_chain, tx.Id));
             Assert.Null(_stagePolicy.Get(_chain, tx.Id, true));
             Assert.DoesNotContain(tx, _stagePolicy.Iterate());
         }
