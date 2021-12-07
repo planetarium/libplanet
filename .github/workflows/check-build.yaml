@@ -14,7 +14,7 @@ name: check-build
 jobs:
   build:
     name: check-build
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@main
       if: github.event_name != 'pull_request'

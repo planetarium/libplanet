@@ -13,7 +13,7 @@ jobs:
   build:
     if: github.event_name != 'schedule' || github.repository == 'planetarium/libplanet'
     name: dist
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@main
       if: github.event_name != 'pull_request'
@@ -67,7 +67,7 @@ jobs:
   docs:
     if: github.event_name != 'schedule' || github.repository == 'planetarium/libplanet'
     name: docs
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@main
       if: github.event_name != 'pull_request'
@@ -106,7 +106,7 @@ jobs:
   bundle:
     name: bundle
     needs: [build]
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
     - run: sudo apt-get install nuget
     - uses: actions/checkout@main
