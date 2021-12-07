@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
-using System.Threading.Tasks;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Tests.Common.Action;
@@ -51,30 +49,6 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(1, _blockChain.GetStagedTransactionIds().Count);
             Assert.Throws<InvalidTxGenesisHashException>(() => _blockChain.StageTransaction(tx3));
             Assert.Equal(1, _blockChain.GetStagedTransactionIds().Count);
-        }
-
-        [Fact]
-        public async Task TransactionsWithTxsShouldNotBeStaged()
-        {
-            var key = new PrivateKey();
-            Transaction<DumbAction> txWithValidNonce = _fx.MakeTransaction(
-                new DumbAction[0],
-                ImmutableHashSet<Address>.Empty,
-                privateKey: key
-            );
-            _blockChain.StageTransaction(txWithValidNonce);
-            await _blockChain.MineBlock(key);
-            Assert.Empty(_blockChain.StagePolicy.Iterate());
-
-            Transaction<DumbAction> txWithInvalidNonce = _fx.MakeTransaction(
-                new DumbAction[0],
-                ImmutableHashSet<Address>.Empty,
-                nonce: txWithValidNonce.Nonce,
-                privateKey: key
-            );
-            _blockChain.StageTransaction(txWithInvalidNonce);
-            Assert.Empty(_blockChain.StagePolicy.Iterate());
-            Assert.True(_blockChain.StagePolicy.Ignores(_blockChain, txWithInvalidNonce.Id));
         }
 
         [Fact]
