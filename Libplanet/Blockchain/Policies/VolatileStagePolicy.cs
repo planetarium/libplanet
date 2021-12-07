@@ -64,18 +64,18 @@ namespace Libplanet.Blockchain.Policies
                 return;
             }
 
+            _lock.EnterUpgradeableReadLock();
             try
             {
-                _lock.EnterUpgradeableReadLock();
                 if (_ignored.Contains(transaction.Id))
                 {
                     return;
                 }
                 else
                 {
+                    _lock.EnterWriteLock();
                     try
                     {
-                        _lock.EnterWriteLock();
                         if (_staged.TryAdd(transaction.Id, transaction))
                         {
                             const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
@@ -107,9 +107,9 @@ namespace Libplanet.Blockchain.Policies
         /// <inheritdoc/>
         public void Unstage(BlockChain<T> blockChain, TxId id)
         {
+            _lock.EnterWriteLock();
             try
             {
-                _lock.EnterWriteLock();
                 _staged.TryRemove(id, out _);
             }
             finally
@@ -121,17 +121,17 @@ namespace Libplanet.Blockchain.Policies
         /// <inheritdoc/>
         public void Ignore(BlockChain<T> blockChain, TxId id)
         {
+            _lock.EnterUpgradeableReadLock();
             try
             {
-                _lock.EnterUpgradeableReadLock();
                 if (_ignored.Contains(id))
                 {
                     return;
                 }
 
+                _lock.EnterWriteLock();
                 try
                 {
-                    _lock.EnterWriteLock();
                     _ignored.Add(id);
                 }
                 finally
@@ -148,9 +148,9 @@ namespace Libplanet.Blockchain.Policies
         /// <inheritdoc/>
         public bool Ignores(BlockChain<T> blockChain, TxId id)
         {
+            _lock.EnterReadLock();
             try
             {
-                _lock.EnterReadLock();
                 return _ignored.Contains(id);
             }
             finally
@@ -164,9 +164,9 @@ namespace Libplanet.Blockchain.Policies
         {
             Transaction<T>? transaction = null;
 
+            _lock.EnterWriteLock();
             try
             {
-                _lock.EnterWriteLock();
                 _staged.TryGetValue(id, out transaction);
 
                 if (transaction is Transaction<T> tx && (Exipred(tx) || _ignored.Contains(tx.Id)))
@@ -189,16 +189,16 @@ namespace Libplanet.Blockchain.Policies
             Transaction<T>? transaction = null;
             List<Transaction<T>> transactions = new List<Transaction<T>>();
 
+            _lock.EnterUpgradeableReadLock();
             try
             {
-                _lock.EnterUpgradeableReadLock();
                 List<TxId> txIds = _staged.Keys.ToList();
                 foreach (TxId txId in txIds)
                 {
                     // FIXME: Should use Get() method with an API update.
+                    _lock.EnterWriteLock();
                     try
                     {
-                        _lock.EnterWriteLock();
                         _staged.TryGetValue(txId, out transaction);
 
                         if (transaction is Transaction<T> tx)

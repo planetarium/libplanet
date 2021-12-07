@@ -18,11 +18,21 @@ To be released.
 
 ### Behavioral changes
 
+ -  Description of `IStagePolicy` and its default implementation
+    `VolatileStagePolicy` is overhauled.  [[#1648]]
+     -  `IStagePolicy.Iterate()` no longer guarantees any kind of ordering.
+     -  `IStagePolicy.Ignore()` now also unstages the `Transaction<T>`.
+     -  `VolatileStagePolicy` now holds every previously known unconfirmed
+        `Transaction<T>` regardless of its staging/unstaging history unless
+        it is expired or ignored.
+
 ### Bug fixes
 
 ### Dependencies
 
 ### CLI tools
+
+[#1648]: https://github.com/planetarium/libplanet/pull/1648
 
 
 Version 0.23.2
@@ -86,6 +96,8 @@ Apple Silicon (aarch64-apple-darwin).
      -  `System.Collections.Immutable.ImmutableSortedSet<T>`
      -  `Bencodex.Types.Dictionary` (which became to guarantee enumeration order
         since [Bencodex 0.4.0])
+        since [Bencodex 0.4.0-dev.20211116020419+abea0858][Bencodex
+        0.4.0-dev.20211116020419])
 
 ### Bug fixes
 
