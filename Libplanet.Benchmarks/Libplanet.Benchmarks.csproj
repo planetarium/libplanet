@@ -23,6 +23,10 @@
     <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(BenchmarksTargetFramework)'!='' ">
+    <TargetFramework>$(BenchmarksTargetFramework)</TargetFramework>
+  </PropertyGroup>
+
   <PropertyGroup Condition=" '$(MSBuildRuntimeType)'=='Mono' And
                              '$(BuildingByReSharper)'!='true'">
     <TargetFramework>net47</TargetFramework>
@@ -33,7 +37,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BenchmarkDotNet" Version="0.12.1" />
+    <PackageReference Include="BenchmarkDotNet" Version="0.13.1" />
   </ItemGroup>
 
   <ItemGroup>

@@ -307,7 +307,7 @@ namespace Libplanet.Blocks
             }
 
             hasher.TransformFinalBlock(new byte[] { 0x65 }, 0, 1);  // "e"
-            return new HashDigest<SHA256>(hasher.Hash);
+            return new HashDigest<SHA256>(hasher.Hash ?? Array.Empty<byte>());
         }
     }
 }

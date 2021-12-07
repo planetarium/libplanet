@@ -22,5 +22,25 @@ jobs:
         ref: ${{ github.pull_request.head.sha }}
     - uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.1.x
-    - run: 'dotnet run -p Libplanet.Benchmarks -c Release -- -j short -f "*"'
+        dotnet-version: 6.0.x
+    - run: |
+        jq --arg v 6.0.0 '.sdk.version = $v' global.json > _global.json
+        cp _global.json global.json
+    - run: >-
+        dotnet build Libplanet.Benchmarks
+        --framework net6.0
+        --configuration Release
+        /p:BenchmarksTargetFramework=net6.0
+        /p:TestsTargetFramework=net6.0
+    - run: >-
+        dotnet run
+        --project Libplanet.Benchmarks
+        --no-build
+        --framework net6.0
+        --configuration Release
+        --property BenchmarksTargetFramework=net6.0
+        --property TestsTargetFramework=net6.0
+        --
+        --runtimes net6.0
+        --job short
+        --filter "*"

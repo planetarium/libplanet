@@ -133,7 +133,7 @@ namespace Libplanet
             }
 
             algo.TransformFinalBlock(Array.Empty<byte>(), 0, 0);
-            return algo.Hash;
+            return algo.Hash ?? Array.Empty<byte>();
         }
 
         /// <summary>

@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
-using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.Serialization;
@@ -62,6 +61,8 @@ namespace Libplanet.Assets
         /// </summary>
         public readonly HashDigest<SHA1> Hash;
 
+        private static readonly Codec _codec = new Codec();
+
         /// <summary>
         /// Defines a <see cref="Currency"/> type.
         /// </summary>
@@ -88,7 +89,7 @@ namespace Libplanet.Assets
             Ticker = ticker;
             Minters = minters;
             DecimalPlaces = decimalPlaces;
-            Hash = GetHash();
+            Hash = GetHash(ticker, decimalPlaces, minters);
         }
 
         /// <summary>
@@ -168,7 +169,7 @@ namespace Libplanet.Assets
                 Minters = null;
             }
 
-            Hash = GetHash();
+            Hash = GetHash(ticker, DecimalPlaces, Minters);
         }
 
         private Currency(SerializationInfo info, StreamingContext context)
@@ -185,7 +186,7 @@ namespace Libplanet.Assets
                 Minters = default;
             }
 
-            Hash = GetHash();
+            Hash = GetHash(Ticker, DecimalPlaces, Minters);
         }
 
         /// <summary>
@@ -265,27 +266,33 @@ namespace Libplanet.Assets
         /// </summary>
         /// <returns>The serialized Bencodex value.</returns>
         [Pure]
-        public IValue Serialize()
+        public IValue Serialize() =>
+            Serialize(Ticker, DecimalPlaces, Minters);
+
+        [Pure]
+        private static IValue Serialize(
+            string ticker,
+            byte decimalPlaces,
+            IImmutableSet<Address>? minters
+        )
         {
-            IValue minters = Minters is ImmutableHashSet<Address> a
+            IValue minterList = minters is ImmutableHashSet<Address> a
                 ? new List(a.OrderBy(m => m).Select(m => (IValue)new Binary(m.ByteArray)))
                 : (IValue)Null.Value;
             return Dictionary.Empty
-                .Add("ticker", Ticker)
-                .Add("decimals", DecimalPlaces)
-                .Add("minters", minters);
+                .Add("ticker", ticker)
+                .Add("decimals", decimalPlaces)
+                .Add("minters", minterList);
         }
 
         [Pure]
-        private HashDigest<SHA1> GetHash()
-        {
-            using var buffer = new MemoryStream();
-            using var sha1 = new SHA1CryptoServiceProvider();
-            using var stream = new CryptoStream(buffer, sha1, CryptoStreamMode.Write);
-            var codec = new Codec();
-            codec.Encode(Serialize(), stream);
-            stream.FlushFinalBlock();
-            return new HashDigest<SHA1>(sha1.Hash);
-        }
+        private static HashDigest<SHA1> GetHash(
+            string ticker,
+            byte decimalPlaces,
+            IImmutableSet<Address>? minters
+        ) =>
+            HashDigest<SHA1>.DeriveFrom(
+                _codec.Encode(Serialize(ticker, decimalPlaces, minters))
+            );
     }
 }

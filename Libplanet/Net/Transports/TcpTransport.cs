@@ -279,7 +279,7 @@ namespace Libplanet.Net.Transports
                 await client.ConnectAsync(peer.EndPoint.Host, peer.EndPoint.Port);
                 _logger.Verbose(
                     "SendMessageAsync client: {EndPoint}",
-                    (IPEndPoint)client.Client.LocalEndPoint);
+                    (IPEndPoint?)client.Client.LocalEndPoint);
                 client.ReceiveTimeout = timeout?.Milliseconds ?? 0;
                 await WriteMessageAsync(message, client, linkedTokenSource.Token);
                 _logger.Verbose(
@@ -667,7 +667,7 @@ namespace Libplanet.Net.Transports
                     client.LingerState = new LingerOption(true, 1);
                     _logger.Verbose(
                         "Connected to tcp client {Address}.",
-                        (IPEndPoint)client.Client.RemoteEndPoint);
+                        (IPEndPoint?)client.Client.RemoteEndPoint);
                     Guid guid = Guid.NewGuid();
                     _logger.Verbose("Start to accept message of {Id}.", guid);
 

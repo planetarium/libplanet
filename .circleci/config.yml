@@ -247,7 +247,7 @@ commands:
     - ulimit: { n: 10240 }
     - restore_cache:
         keys:
-        - v1-macos-dotnet-sdk-3.1
+        - v1-macos-dotnet-sdk-6
     - run:
         name: Export PATH & DOTNET_ROOT
         shell: bash
@@ -257,7 +257,7 @@ commands:
             echo export DOTNET_ROOT="$HOME/.dotnet"
           } >> $BASH_ENV
     - run:
-        name: Install .NET Core 3.1 SDK
+        name: Install .NET 6 SDK
         shell: bash
         command: |
           set -evx
@@ -270,11 +270,11 @@ commands:
             chmod +x /tmp/dotnet-install.sh
             /tmp/dotnet-install.sh \
               --verbose \
-              --channel 3.1
+              --channel 6.0.x
           fi
           command -v dotnet
     - save_cache:
-        key: v1-macos-dotnet-sdk-3.1
+        key: v1-macos-dotnet-sdk-6
         paths:
         - ~/.dotnet/
     - netcore_test_base:
