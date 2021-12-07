@@ -44,7 +44,12 @@ To be released.
 
 ### CLI tools
 
+ -  Now arm64 binaires are distributed as well as x64:  [[#1650]]
+     -  linux-arm64
+     -  win-arm64
+
 [#1648]: https://github.com/planetarium/libplanet/pull/1648
+[#1650]: https://github.com/planetarium/libplanet/pull/1650
 [#1669]: https://github.com/planetarium/libplanet/pull/1669
 
 

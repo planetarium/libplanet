@@ -21,6 +21,7 @@ for project in "${executables[@]}"; do
     mkdir -p "$output_dir"
     dotnet publish \
       --runtime "$rid" \
+      --self-contained \
       -p:PublishSingleFile=true \
       -p:Version="$version" \
       --configuration "$configuration" \
@@ -31,6 +32,7 @@ for project in "${executables[@]}"; do
           # segfault.
           dotnet publish \
             --runtime "$rid" \
+            --self-contained \
             -p:PublishSingleFile=true \
             -p:Version="$version" \
             --configuration "$configuration" \

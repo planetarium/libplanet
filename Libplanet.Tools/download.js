@@ -18,8 +18,8 @@ const packageMetadata = require("./package.json");
 const URL_BASE = "https://github.com/planetarium/libplanet/releases/download";
 const SUFFIXES = {
   darwin: {x64: "osx-x64.tar.xz"},
-  linux: {x64: "linux-x64.tar.xz"},
-  win32: {x64: "win-x64.zip"},
+  linux: {arm64: "osx-arm64.tar.xz", x64: "linux-x64.tar.xz"},
+  win32: {arm64: "win-arm64.zip", x64: "win-x64.zip"},
 };
 const BIN_NAME = process.platform == "win32" ? "planet.exe" : "planet";
 const BIN_PATH = path.join(__dirname, "bin");

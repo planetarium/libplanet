@@ -19,7 +19,8 @@ executables=(
 )
 
 # https://docs.microsoft.com/en-us/dotnet/core/rid-catalog
-rids=(linux-x64 osx-x64 win-x64)
+rids=(linux-arm64 linux-x64 osx-x64 win-arm64 win-x64)
+# FIXME: osx-arm64 cannot be cross-compiled from other-than osx-arm64 machines.
 
 # Publish a package only if the repository is upstream (planetarium/libplanet)
 # and the branch is for releases (main or *-maintenance or 9c-*).
