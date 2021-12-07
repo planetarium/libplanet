@@ -690,7 +690,7 @@ namespace Libplanet.Tests.Blockchain
             _blockChain.Append(b);
 
             Assert.Single(b.Transactions);
-            Assert.Equal(txs[0], b.Transactions.Single());
+            Assert.Contains(b.Transactions.Single(), txs);
         }
 
         [Fact]
