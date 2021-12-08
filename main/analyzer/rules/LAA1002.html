@@ -73,6 +73,15 @@ ordered before being enumerated.</p>
 <li><code>System.Collections.Immutable.IImmutableSet&lt;V&gt;</code></li>
 <li><code>System.Collections.IDictionary</code></li>
 </ul>
+<p>However, the following containers are excepted as they are already sorted:</p>
+<ul>
+<li><code>System.Collections.Generic.SortedDictionary&lt;K, V&gt;</code></li>
+<li><code>System.Collections.Generic.SortedSet&lt;T&gt;</code></li>
+<li><code>System.Collections.Immutable.ImmutableSortedDictionary&lt;K, V&gt;</code></li>
+<li><code>System.Collections.Immutable.ImmutableSortedSet&lt;T&gt;</code></li>
+<li><code>Bencodex.Types.Dictionary</code> (which became to guarantee enumeration order
+since <a href="https://www.nuget.org/packages/Bencodex/0.4.0-dev.20211116020419">Bencodex 0.4.0-dev.20211116020419+abea0858</a>)</li>
+</ul>
 <h2 id="examples">Examples</h2>
 <p>The following code is warned by the rule LAA1002:</p>
 <pre><code class="lang-csharp">public IAccountStateDelta Execute(IActionContext context)

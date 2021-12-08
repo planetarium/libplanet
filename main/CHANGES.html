@@ -71,10 +71,32 @@
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
 <ul>
+<li>Added <code>PreEvaluationBlock&lt;T&gt;.DetermineStateRootHash(BlockChain&lt;T&gt;, StateCompleterSet&lt;T&gt;, out IImmutableDictionary&lt;string, IValue&gt;)</code> overloaded
+method.  [<a href="https://github.com/planetarium/libplanet/pull/1636">#1636</a>]</li>
+<li>Added <code>PreEvaluationBlock&lt;T&gt;.DetermineStateRootHash(IAction?, IStateStore, out IImmutableDictionary&lt;string, IValue&gt;)</code> overloaded method.  [<a href="https://github.com/planetarium/libplanet/pull/1636">#1636</a>]</li>
 <li>Parameter <code>except</code> for <code>KBucket.GetRandomPeer()</code> now defaults to <code>null</code>.
 [<a href="https://github.com/planetarium/libplanet/pull/1631">#1631</a>]</li>
+<li>Added <code>ArrayEqualityComparer&lt;T&gt;</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/1636">#1636</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
+<ul>
+<li>States became to take up much less space than before by reducing unnecessary
+duplicate data.  Although this guarantees the backward compatibility with
+the existing state store, in order to take complete effect of this
+optimization, please replay your existing blockchain from the genesis block
+with the empty store.  [<a href="https://github.com/planetarium/libplanet/pull/1636">#1636</a>]</li>
+<li>(Libplanet.Analyzers) Rule LAA1002 no more warns about enumerating sorted
+sets/dictionaries:
+<ul>
+<li><code>System.Collections.Generic.SortedDictionary&lt;TKey, TValue&gt;</code></li>
+<li><code>System.Collections.Generic.SortedSet&lt;T&gt;</code></li>
+<li><code>System.Collections.Immutable.ImmutableSortedDictionary&lt;TKey, TValue&gt;</code></li>
+<li><code>System.Collections.Immutable.ImmutableSortedSet&lt;T&gt;</code></li>
+<li><code>Bencodex.Types.Dictionary</code> (which became to guarantee enumeration order
+since <a href="https://www.nuget.org/packages/Bencodex/0.4.0-dev.20211116020419">Bencodex 0.4.0-dev.20211116020419+abea0858</a>)</li>
+</ul>
+</li>
+</ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
 <li><code>KBucket.Head</code> and <code>KBucket.Tail</code> now properly return <code>null</code> if
@@ -82,6 +104,9 @@ the bucket is empty instead of faulting.  [<a href="https://github.com/planetari
 </ul>
 <h3 id="dependencies">Dependencies</h3>
 <ul>
+<li>Upgraded <em>Bencodex</em> from 0.4.0-dev.20211123080042+d7f6c810 to
+<a href="https://www.nuget.org/packages/Bencodex/0.4.0-dev.20211205152306">0.4.0-dev.20211205152306+db8d4e1b</a>.
+[<a href="https://github.com/planetarium/libplanet/pull/1636">#1636</a>]</li>
 <li>Upgraded <em>Planetarium.RocksDbSharp</em> from 6.2.3 to
 <a href="https://www.nuget.org/packages/Planetarium.RocksDbSharp/6.2.4-planetarium">6.2.4-planetarium</a>.
 [<a href="https://github.com/planetarium/libplanet/pull/1635">#1635</a>]</li>

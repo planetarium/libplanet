@@ -8866,6 +8866,15 @@ references:
   fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).DetermineStateRootHash(Libplanet.Action.IAction, Libplanet.Store.IStateStore)
   nameWithType: PreEvaluationBlock<T>.DetermineStateRootHash(IAction, IStateStore)
   nameWithType.vb: PreEvaluationBlock(Of T).DetermineStateRootHash(IAction, IStateStore)
+- uid: Libplanet.Blocks.PreEvaluationBlock`1.DetermineStateRootHash(Libplanet.Action.IAction,Libplanet.Store.IStateStore,IImmutableDictionary{System.String,IValue}@)
+  name: DetermineStateRootHash(IAction, IStateStore, out IImmutableDictionary<String, IValue>)
+  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_DetermineStateRootHash_Libplanet_Action_IAction_Libplanet_Store_IStateStore_IImmutableDictionary_System_String_IValue___
+  commentId: M:Libplanet.Blocks.PreEvaluationBlock`1.DetermineStateRootHash(Libplanet.Action.IAction,Libplanet.Store.IStateStore,IImmutableDictionary{System.String,IValue}@)
+  name.vb: DetermineStateRootHash(IAction, IStateStore, ByRef IImmutableDictionary(Of String, IValue))
+  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.DetermineStateRootHash(Libplanet.Action.IAction, Libplanet.Store.IStateStore, out IImmutableDictionary<System.String, IValue>)
+  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).DetermineStateRootHash(Libplanet.Action.IAction, Libplanet.Store.IStateStore, ByRef IImmutableDictionary(Of System.String, IValue))
+  nameWithType: PreEvaluationBlock<T>.DetermineStateRootHash(IAction, IStateStore, out IImmutableDictionary<String, IValue>)
+  nameWithType.vb: PreEvaluationBlock(Of T).DetermineStateRootHash(IAction, IStateStore, ByRef IImmutableDictionary(Of String, IValue))
 - uid: Libplanet.Blocks.PreEvaluationBlock`1.DetermineStateRootHash(Libplanet.Blockchain.BlockChain{`0})
   name: DetermineStateRootHash(BlockChain<T>)
   href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_DetermineStateRootHash_Libplanet_Blockchain_BlockChain__0__
@@ -8875,6 +8884,15 @@ references:
   fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).DetermineStateRootHash(Libplanet.Blockchain.BlockChain(Of T))
   nameWithType: PreEvaluationBlock<T>.DetermineStateRootHash(BlockChain<T>)
   nameWithType.vb: PreEvaluationBlock(Of T).DetermineStateRootHash(BlockChain(Of T))
+- uid: Libplanet.Blocks.PreEvaluationBlock`1.DetermineStateRootHash(Libplanet.Blockchain.BlockChain{`0},Libplanet.Blockchain.StateCompleterSet{`0},IImmutableDictionary{System.String,IValue}@)
+  name: DetermineStateRootHash(BlockChain<T>, StateCompleterSet<T>, out IImmutableDictionary<String, IValue>)
+  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_DetermineStateRootHash_Libplanet_Blockchain_BlockChain__0__Libplanet_Blockchain_StateCompleterSet__0__IImmutableDictionary_System_String_IValue___
+  commentId: M:Libplanet.Blocks.PreEvaluationBlock`1.DetermineStateRootHash(Libplanet.Blockchain.BlockChain{`0},Libplanet.Blockchain.StateCompleterSet{`0},IImmutableDictionary{System.String,IValue}@)
+  name.vb: DetermineStateRootHash(BlockChain(Of T), StateCompleterSet(Of T), ByRef IImmutableDictionary(Of String, IValue))
+  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.DetermineStateRootHash(Libplanet.Blockchain.BlockChain<T>, Libplanet.Blockchain.StateCompleterSet<T>, out IImmutableDictionary<System.String, IValue>)
+  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).DetermineStateRootHash(Libplanet.Blockchain.BlockChain(Of T), Libplanet.Blockchain.StateCompleterSet(Of T), ByRef IImmutableDictionary(Of System.String, IValue))
+  nameWithType: PreEvaluationBlock<T>.DetermineStateRootHash(BlockChain<T>, StateCompleterSet<T>, out IImmutableDictionary<String, IValue>)
+  nameWithType.vb: PreEvaluationBlock(Of T).DetermineStateRootHash(BlockChain(Of T), StateCompleterSet(Of T), ByRef IImmutableDictionary(Of String, IValue))
 - uid: Libplanet.Blocks.PreEvaluationBlock`1.DetermineStateRootHash*
   name: DetermineStateRootHash
   href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_DetermineStateRootHash_
@@ -11283,6 +11301,92 @@ references:
   isSpec: "True"
   fullName: Libplanet.KeyStore.Web3KeyStore.Remove
   nameWithType: Web3KeyStore.Remove
+- uid: Libplanet.Misc
+  name: Libplanet.Misc
+  href: api/Libplanet.Misc.html
+  commentId: N:Libplanet.Misc
+  fullName: Libplanet.Misc
+  nameWithType: Libplanet.Misc
+- uid: Libplanet.Misc.ArrayEqualityComparer`1
+  name: ArrayEqualityComparer<T>
+  href: api/Libplanet.Misc.ArrayEqualityComparer-1.html
+  commentId: T:Libplanet.Misc.ArrayEqualityComparer`1
+  name.vb: ArrayEqualityComparer(Of T)
+  fullName: Libplanet.Misc.ArrayEqualityComparer<T>
+  fullName.vb: Libplanet.Misc.ArrayEqualityComparer(Of T)
+  nameWithType: ArrayEqualityComparer<T>
+  nameWithType.vb: ArrayEqualityComparer(Of T)
+- uid: Libplanet.Misc.ArrayEqualityComparer`1.#ctor(System.Nullable{IEqualityComparer{`0}})
+  name: ArrayEqualityComparer(Nullable<IEqualityComparer<T>>)
+  href: api/Libplanet.Misc.ArrayEqualityComparer-1.html#Libplanet_Misc_ArrayEqualityComparer_1__ctor_System_Nullable_IEqualityComparer__0___
+  commentId: M:Libplanet.Misc.ArrayEqualityComparer`1.#ctor(System.Nullable{IEqualityComparer{`0}})
+  name.vb: ArrayEqualityComparer(Nullable(Of IEqualityComparer(Of T)))
+  fullName: Libplanet.Misc.ArrayEqualityComparer<T>.ArrayEqualityComparer(System.Nullable<IEqualityComparer<T>>)
+  fullName.vb: Libplanet.Misc.ArrayEqualityComparer(Of T).ArrayEqualityComparer(System.Nullable(Of IEqualityComparer(Of T)))
+  nameWithType: ArrayEqualityComparer<T>.ArrayEqualityComparer(Nullable<IEqualityComparer<T>>)
+  nameWithType.vb: ArrayEqualityComparer(Of T).ArrayEqualityComparer(Nullable(Of IEqualityComparer(Of T)))
+- uid: Libplanet.Misc.ArrayEqualityComparer`1.#ctor*
+  name: ArrayEqualityComparer
+  href: api/Libplanet.Misc.ArrayEqualityComparer-1.html#Libplanet_Misc_ArrayEqualityComparer_1__ctor_
+  commentId: Overload:Libplanet.Misc.ArrayEqualityComparer`1.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Misc.ArrayEqualityComparer<T>.ArrayEqualityComparer
+  fullName.vb: Libplanet.Misc.ArrayEqualityComparer(Of T).ArrayEqualityComparer
+  nameWithType: ArrayEqualityComparer<T>.ArrayEqualityComparer
+  nameWithType.vb: ArrayEqualityComparer(Of T).ArrayEqualityComparer
+- uid: Libplanet.Misc.ArrayEqualityComparer`1.ElementComparer
+  name: ElementComparer
+  href: api/Libplanet.Misc.ArrayEqualityComparer-1.html#Libplanet_Misc_ArrayEqualityComparer_1_ElementComparer
+  commentId: P:Libplanet.Misc.ArrayEqualityComparer`1.ElementComparer
+  fullName: Libplanet.Misc.ArrayEqualityComparer<T>.ElementComparer
+  fullName.vb: Libplanet.Misc.ArrayEqualityComparer(Of T).ElementComparer
+  nameWithType: ArrayEqualityComparer<T>.ElementComparer
+  nameWithType.vb: ArrayEqualityComparer(Of T).ElementComparer
+- uid: Libplanet.Misc.ArrayEqualityComparer`1.ElementComparer*
+  name: ElementComparer
+  href: api/Libplanet.Misc.ArrayEqualityComparer-1.html#Libplanet_Misc_ArrayEqualityComparer_1_ElementComparer_
+  commentId: Overload:Libplanet.Misc.ArrayEqualityComparer`1.ElementComparer
+  isSpec: "True"
+  fullName: Libplanet.Misc.ArrayEqualityComparer<T>.ElementComparer
+  fullName.vb: Libplanet.Misc.ArrayEqualityComparer(Of T).ElementComparer
+  nameWithType: ArrayEqualityComparer<T>.ElementComparer
+  nameWithType.vb: ArrayEqualityComparer(Of T).ElementComparer
+- uid: Libplanet.Misc.ArrayEqualityComparer`1.Equals(`0[],`0[])
+  name: Equals(T[], T[])
+  href: api/Libplanet.Misc.ArrayEqualityComparer-1.html#Libplanet_Misc_ArrayEqualityComparer_1_Equals__0____0___
+  commentId: M:Libplanet.Misc.ArrayEqualityComparer`1.Equals(`0[],`0[])
+  name.vb: Equals(T(), T())
+  fullName: Libplanet.Misc.ArrayEqualityComparer<T>.Equals(T[], T[])
+  fullName.vb: Libplanet.Misc.ArrayEqualityComparer(Of T).Equals(T(), T())
+  nameWithType: ArrayEqualityComparer<T>.Equals(T[], T[])
+  nameWithType.vb: ArrayEqualityComparer(Of T).Equals(T(), T())
+- uid: Libplanet.Misc.ArrayEqualityComparer`1.Equals*
+  name: Equals
+  href: api/Libplanet.Misc.ArrayEqualityComparer-1.html#Libplanet_Misc_ArrayEqualityComparer_1_Equals_
+  commentId: Overload:Libplanet.Misc.ArrayEqualityComparer`1.Equals
+  isSpec: "True"
+  fullName: Libplanet.Misc.ArrayEqualityComparer<T>.Equals
+  fullName.vb: Libplanet.Misc.ArrayEqualityComparer(Of T).Equals
+  nameWithType: ArrayEqualityComparer<T>.Equals
+  nameWithType.vb: ArrayEqualityComparer(Of T).Equals
+- uid: Libplanet.Misc.ArrayEqualityComparer`1.GetHashCode(`0[])
+  name: GetHashCode(T[])
+  href: api/Libplanet.Misc.ArrayEqualityComparer-1.html#Libplanet_Misc_ArrayEqualityComparer_1_GetHashCode__0___
+  commentId: M:Libplanet.Misc.ArrayEqualityComparer`1.GetHashCode(`0[])
+  name.vb: GetHashCode(T())
+  fullName: Libplanet.Misc.ArrayEqualityComparer<T>.GetHashCode(T[])
+  fullName.vb: Libplanet.Misc.ArrayEqualityComparer(Of T).GetHashCode(T())
+  nameWithType: ArrayEqualityComparer<T>.GetHashCode(T[])
+  nameWithType.vb: ArrayEqualityComparer(Of T).GetHashCode(T())
+- uid: Libplanet.Misc.ArrayEqualityComparer`1.GetHashCode*
+  name: GetHashCode
+  href: api/Libplanet.Misc.ArrayEqualityComparer-1.html#Libplanet_Misc_ArrayEqualityComparer_1_GetHashCode_
+  commentId: Overload:Libplanet.Misc.ArrayEqualityComparer`1.GetHashCode
+  isSpec: "True"
+  fullName: Libplanet.Misc.ArrayEqualityComparer<T>.GetHashCode
+  fullName.vb: Libplanet.Misc.ArrayEqualityComparer(Of T).GetHashCode
+  nameWithType: ArrayEqualityComparer<T>.GetHashCode
+  nameWithType.vb: ArrayEqualityComparer(Of T).GetHashCode
 - uid: Libplanet.Net
   name: Libplanet.Net
   href: api/Libplanet.Net.html

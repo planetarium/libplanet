@@ -555,10 +555,80 @@ instead.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_PreEvaluationBlock_1_DetermineStateRootHash_Libplanet_Action_IAction_Libplanet_Store_IStateStore_IImmutableDictionary_System_String_IValue___.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.PreEvaluationBlock%601.DetermineStateRootHash(Libplanet.Action.IAction%2CLibplanet.Store.IStateStore%2CIImmutableDictionary%7BSystem.String%2CIValue%7D%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlock.cs/#L297">View Source</a>
+  </span>
+  <a id="Libplanet_Blocks_PreEvaluationBlock_1_DetermineStateRootHash_" data-uid="Libplanet.Blocks.PreEvaluationBlock`1.DetermineStateRootHash*"></a>
+  <h4 id="Libplanet_Blocks_PreEvaluationBlock_1_DetermineStateRootHash_Libplanet_Action_IAction_Libplanet_Store_IStateStore_IImmutableDictionary_System_String_IValue___" data-uid="Libplanet.Blocks.PreEvaluationBlock`1.DetermineStateRootHash(Libplanet.Action.IAction,Libplanet.Store.IStateStore,IImmutableDictionary{System.String,IValue}@)">DetermineStateRootHash(IAction, IStateStore, out IImmutableDictionary&lt;String, IValue&gt;)</h4>
+  <div class="markdown level1 summary"><p>Evaluates all actions in the <a class="xref" href="Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_Transactions">Transactions</a> and
+a <code data-dev-comment-type="paramref" class="paramref">blockAction</code> (if any), and determines
+the <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_StateRootHash">StateRootHash</a> from ground zero (i.e., empty state root).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public HashDigest&lt;SHA256&gt; DetermineStateRootHash(IAction blockAction, IStateStore stateStore, out IImmutableDictionary&lt;string, IValue&gt; statesDelta)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.IAction.html">IAction</a></td>
+        <td><span class="parametername">blockAction</span></td>
+        <td><p>An optional
+<a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_BlockAction">BlockAction</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a></td>
+        <td><span class="parametername">stateStore</span></td>
+        <td><p>The <span class="xref">Libplanet.Blockchain.BlockChain`1.StateStore</span>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">IImmutableDictionary</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, <span class="xref">IValue</span>&gt;</td>
+        <td><span class="parametername">statesDelta</span></td>
+        <td><p>Returns made changes on states.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA256</span>&gt;</td>
+        <td><p>The resulting <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_StateRootHash">StateRootHash</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Blocks_PreEvaluationBlock_1_DetermineStateRootHash_Libplanet_Action_IAction_Libplanet_Store_IStateStore_IImmutableDictionary_System_String_IValue____remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This can be used with only genesis blocks.  For blocks with indices greater
+than zero, use <a class="xref" href="Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_DetermineStateRootHash_Libplanet_Blockchain_BlockChain__0__">DetermineStateRootHash(BlockChain&lt;T&gt;)</a> overloaded one
+instead.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_PreEvaluationBlock_1_DetermineStateRootHash_Libplanet_Blockchain_BlockChain__0__.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.PreEvaluationBlock%601.DetermineStateRootHash(Libplanet.Blockchain.BlockChain%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlock.cs/#L313">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlock.cs/#L334">View Source</a>
   </span>
   <a id="Libplanet_Blocks_PreEvaluationBlock_1_DetermineStateRootHash_" data-uid="Libplanet.Blocks.PreEvaluationBlock`1.DetermineStateRootHash*"></a>
   <h4 id="Libplanet_Blocks_PreEvaluationBlock_1_DetermineStateRootHash_Libplanet_Blockchain_BlockChain__0__" data-uid="Libplanet.Blocks.PreEvaluationBlock`1.DetermineStateRootHash(Libplanet.Blockchain.BlockChain{`0})">DetermineStateRootHash(BlockChain&lt;T&gt;)</h4>
@@ -585,6 +655,71 @@ the <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1
         <td><a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain</a>&lt;T&gt;</td>
         <td><span class="parametername">blockChain</span></td>
         <td><p>The blockchain on which actions are evaluated based.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA256</span>&gt;</td>
+        <td><p>The resulting <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_StateRootHash">StateRootHash</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_PreEvaluationBlock_1_DetermineStateRootHash_Libplanet_Blockchain_BlockChain__0__Libplanet_Blockchain_StateCompleterSet__0__IImmutableDictionary_System_String_IValue___.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.PreEvaluationBlock%601.DetermineStateRootHash(Libplanet.Blockchain.BlockChain%7B%600%7D%2CLibplanet.Blockchain.StateCompleterSet%7B%600%7D%2CIImmutableDictionary%7BSystem.String%2CIValue%7D%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlock.cs/#L347">View Source</a>
+  </span>
+  <a id="Libplanet_Blocks_PreEvaluationBlock_1_DetermineStateRootHash_" data-uid="Libplanet.Blocks.PreEvaluationBlock`1.DetermineStateRootHash*"></a>
+  <h4 id="Libplanet_Blocks_PreEvaluationBlock_1_DetermineStateRootHash_Libplanet_Blockchain_BlockChain__0__Libplanet_Blockchain_StateCompleterSet__0__IImmutableDictionary_System_String_IValue___" data-uid="Libplanet.Blocks.PreEvaluationBlock`1.DetermineStateRootHash(Libplanet.Blockchain.BlockChain{`0},Libplanet.Blockchain.StateCompleterSet{`0},IImmutableDictionary{System.String,IValue}@)">DetermineStateRootHash(BlockChain&lt;T&gt;, StateCompleterSet&lt;T&gt;, out IImmutableDictionary&lt;String, IValue&gt;)</h4>
+  <div class="markdown level1 summary"><p>Evaluates all actions in the <a class="xref" href="Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_Transactions">Transactions</a> and an optional
+<a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_BlockAction">BlockAction</a>, and determines
+the <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_StateRootHash">StateRootHash</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public HashDigest&lt;SHA256&gt; DetermineStateRootHash(BlockChain&lt;T&gt; blockChain, StateCompleterSet&lt;T&gt; stateCompleterSet, out IImmutableDictionary&lt;string, IValue&gt; statesDelta)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain</a>&lt;T&gt;</td>
+        <td><span class="parametername">blockChain</span></td>
+        <td><p>The blockchain on which actions are evaluated based.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blockchain.StateCompleterSet-1.html">StateCompleterSet</a>&lt;T&gt;</td>
+        <td><span class="parametername">stateCompleterSet</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Blockchain.StateCompleterSet-1.html">StateCompleterSet&lt;T&gt;</a> to use when
+it needs states unevaluated yet.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">IImmutableDictionary</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, <span class="xref">IValue</span>&gt;</td>
+        <td><span class="parametername">statesDelta</span></td>
+        <td><p>Returns made changes on states.</p>
 </td>
       </tr>
     </tbody>
