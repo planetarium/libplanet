@@ -47,6 +47,8 @@ To be released.  The solution now can be built on Apple Silicon
 
  -  `KBucket.Head` and `KBucket.Tail` now properly return `null` if
     the bucket is empty instead of faulting.  [[#1631]]
+ -  `TxCompletion.Demand()` no longer requests `Transaction<T>`s already in
+    storage.  [[#1649]]
 
 ### Dependencies
 
@@ -62,6 +64,7 @@ To be released.  The solution now can be built on Apple Silicon
 [#1631]: https://github.com/planetarium/libplanet/pull/1631
 [#1635]: https://github.com/planetarium/libplanet/pull/1635
 [#1636]: https://github.com/planetarium/libplanet/pull/1636
+[#1649]: https://github.com/planetarium/libplanet/pull/1649
 [Bencodex 0.4.0-dev.20211116020419]: https://www.nuget.org/packages/Bencodex/0.4.0-dev.20211116020419
 [Bencodex 0.4.0-dev.20211205152306]: https://www.nuget.org/packages/Bencodex/0.4.0-dev.20211205152306
 [Planetarium.RocksDbSharp 6.2.4-planetarium]: https://www.nuget.org/packages/Planetarium.RocksDbSharp/6.2.4-planetarium
