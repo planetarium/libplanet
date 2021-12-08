@@ -74,11 +74,25 @@ namespace Libplanet.Analyzers.Tests
         )]
         [InlineData(true, null, "char", "char[]", "new char[] { 'a', 'b', 'c' }")]
         [InlineData(
-            false,
+            true,
+            null,
+            "int",
+            "System.Collections.Generic.SortedSet<int>",
+            "new SortedSet<int> { 1, 2, 3 }"
+        )]
+        [InlineData(
+            true,
+            "string, int",
+            "System.Collections.Generic.KeyValuePair<string, int>",
+            "System.Collections.Generic.SortedDictionary<string, int>",
+            "new SortedDictionary<string, int> { [\"foo\"] = 1, [\"bar\"] = 2 }"
+        )]
+        [InlineData(
+            true,
             "Bencodex.Types.IKey, Bencodex.Types.IValue",
             "System.Collections.Generic.KeyValuePair<Bencodex.Types.IKey, Bencodex.Types.IValue>",
             "Bencodex.Types.Dictionary",
-            "new Bencodex.Types.Dictionary(new Dictionary<IKey, IValue> { })"
+            "Bencodex.Types.Dictionary.Empty.Add(\"foo\", 1).Add(\"bar\", 2)"
         )]
         public void LAA1002_DictionariesOrSetsShouldBeOrderedToEnumerate(
             bool pass,

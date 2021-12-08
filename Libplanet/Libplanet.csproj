@@ -62,7 +62,7 @@ https://docs.libplanet.io/</Description>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Bencodex" Version="0.4.0-dev.20211123080042+d7f6c810" />
+    <PackageReference Include="Bencodex" Version="0.4.0-dev.20211205152306+db8d4e1b" />
     <PackageReference Include="BouncyCastle.NetCore" Version="1.8.6" />
     <PackageReference Include="Caching.dll" Version="1.4.0.1" />
     <PackageReference Include="Destructurama.Attributed" Version="2.0.0" />

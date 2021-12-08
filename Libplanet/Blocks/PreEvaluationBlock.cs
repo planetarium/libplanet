@@ -277,6 +277,28 @@ namespace Libplanet.Blocks
             IAction? blockAction,
             IStateStore stateStore
         )
+            => DetermineStateRootHash(blockAction, stateStore, out _);
+
+        /// <summary>
+        /// Evaluates all actions in the <see cref="Transactions"/> and
+        /// a <paramref name="blockAction"/> (if any), and determines
+        /// the <see cref="Block{T}.StateRootHash"/> from ground zero (i.e., empty state root).
+        /// </summary>
+        /// <param name="blockAction">An optional
+        /// <see cref="Blockchain.Policies.IBlockPolicy{T}.BlockAction"/>.</param>
+        /// <param name="stateStore">The <see cref="BlockChain{T}.StateStore"/>.</param>
+        /// <param name="statesDelta">Returns made changes on states.</param>
+        /// <returns>The resulting <see cref="Block{T}.StateRootHash"/>.</returns>
+        /// <remarks>This can be used with only genesis blocks.  For blocks with indices greater
+        /// than zero, use <see cref="DetermineStateRootHash(BlockChain{T})"/> overloaded one
+        /// instead.</remarks>
+        /// <exception cref="InvalidOperationException">Thrown when its
+        /// <see cref="IBlockMetadata.Index"/> is not zero.</exception>
+        public HashDigest<SHA256> DetermineStateRootHash(
+            IAction? blockAction,
+            IStateStore stateStore,
+            out IImmutableDictionary<string, IValue> statesDelta
+        )
         {
             // FIXME: Extract the mutual logic with other overloaded methods into a smaller method.
             if (Index > 0)
@@ -297,9 +319,8 @@ namespace Libplanet.Blocks
             );
             IReadOnlyList<ActionEvaluation> actionEvaluations =
                 actionEvaluator.Evaluate(this, StateCompleterSet<T>.Reject);
-            ImmutableDictionary<string, IValue> totalDelta =
-                actionEvaluations.GetTotalDelta(ToStateKey, ToFungibleAssetKey);
-            ITrie trie = stateStore.Commit(stateStore.GetStateRoot(null).Hash, totalDelta);
+            statesDelta = actionEvaluations.GetTotalDelta(ToStateKey, ToFungibleAssetKey);
+            ITrie trie = stateStore.Commit(stateStore.GetStateRoot(null).Hash, statesDelta);
             return trie.Hash;
         }
 
@@ -311,21 +332,42 @@ namespace Libplanet.Blocks
         /// <param name="blockChain">The blockchain on which actions are evaluated based.</param>
         /// <returns>The resulting <see cref="Block{T}.StateRootHash"/>.</returns>
         public HashDigest<SHA256> DetermineStateRootHash(BlockChain<T> blockChain) =>
-            CalculateStateRootHash(blockChain).StateRootHash;
+            DetermineStateRootHash(blockChain, StateCompleterSet<T>.Recalculate, out _);
+
+        /// <summary>
+        /// Evaluates all actions in the <see cref="Transactions"/> and an optional
+        /// <see cref="Blockchain.Policies.IBlockPolicy{T}.BlockAction"/>, and determines
+        /// the <see cref="Block{T}.StateRootHash"/>.
+        /// </summary>
+        /// <param name="blockChain">The blockchain on which actions are evaluated based.</param>
+        /// <param name="stateCompleterSet">The <see cref="StateCompleterSet{T}"/> to use when
+        /// it needs states unevaluated yet.</param>
+        /// <param name="statesDelta">Returns made changes on states.</param>
+        /// <returns>The resulting <see cref="Block{T}.StateRootHash"/>.</returns>
+        public HashDigest<SHA256> DetermineStateRootHash(
+            BlockChain<T> blockChain,
+            StateCompleterSet<T> stateCompleterSet,
+            out IImmutableDictionary<string, IValue> statesDelta
+        ) =>
+            CalculateStateRootHash(blockChain, stateCompleterSet, out statesDelta).StateRootHash;
 
         internal (Block<T> Block, IReadOnlyList<ActionEvaluation> ActionEvaluations)
         EvaluateActions(PrivateKey privateKey, BlockChain<T> blockChain)
         {
             // FIXME: Take narrower input instead of a whole BlockChain<T>.
             (HashDigest<SHA256> stateRootHash, IReadOnlyList<ActionEvaluation> evals) =
-                CalculateStateRootHash(blockChain);
+                CalculateStateRootHash(blockChain, StateCompleterSet<T>.Recalculate, out _);
             return (Sign(privateKey, stateRootHash), evals);
         }
 
         internal (
             HashDigest<SHA256> StateRootHash,
             IReadOnlyList<ActionEvaluation> ActionEvaluations
-        ) CalculateStateRootHash(BlockChain<T> blockChain)
+        ) CalculateStateRootHash(
+            BlockChain<T> blockChain,
+            StateCompleterSet<T> stateCompleterSet,
+            out IImmutableDictionary<string, IValue> statesDelta
+        )
         {
             // FIXME: Take narrower input instead of a whole BlockChain<T>.
             // FIXME: Add a dedicate unit test for this method.
@@ -333,15 +375,14 @@ namespace Libplanet.Blocks
             try
             {
                 IReadOnlyList<ActionEvaluation> actionEvaluations =
-                    blockChain.ActionEvaluator.Evaluate(this, StateCompleterSet<T>.Recalculate);
-                ImmutableDictionary<string, IValue> totalDelta =
-                    actionEvaluations.GetTotalDelta(ToStateKey, ToFungibleAssetKey);
+                    blockChain.ActionEvaluator.Evaluate(this, stateCompleterSet);
+                statesDelta = actionEvaluations.GetTotalDelta(ToStateKey, ToFungibleAssetKey);
                 blockChain._rwlock.EnterWriteLock();
                 try
                 {
                     ITrie trie = blockChain.StateStore.Commit(
                         blockChain.Store.GetStateRootHash(PreviousHash),
-                        totalDelta
+                        statesDelta
                     );
                     return (trie.Hash, actionEvaluations);
                 }

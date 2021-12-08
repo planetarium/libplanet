@@ -3,10 +3,12 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Security.Cryptography;
 using Bencodex;
 using Bencodex.Types;
+using Libplanet.Misc;
 using Libplanet.Store.Trie.Nodes;
 
 namespace Libplanet.Store.Trie
@@ -21,14 +23,19 @@ namespace Libplanet.Store.Trie
     {
         public static readonly HashDigest<SHA256> EmptyRootHash;
 
-        private static Codec _codec;
+        private const long OffloadThresholdBytes = 256L;
+
+        private static readonly ConcurrentDictionary<Fingerprint, WeakReference<IValue>> _valueCache
+            = new ConcurrentDictionary<Fingerprint, WeakReference<IValue>>();
+
+        private static readonly Codec _codec;
 
         private readonly bool _secure;
 
         static MerkleTrie()
         {
             _codec = new Codec();
-            var bxNull = _codec.Encode(Null.Value!);
+            var bxNull = _codec.Encode(Null.Value);
             EmptyRootHash = HashDigest<SHA256>.DeriveFrom(bxNull);
         }
 
@@ -120,17 +127,15 @@ namespace Libplanet.Store.Trie
                 return new MerkleTrie(KeyValueStore, new HashNode(EmptyRootHash));
             }
 
-            var values = new ConcurrentDictionary<byte[], byte[]>();
+            var values = new ConcurrentDictionary<byte[], byte[]>(
+                new ArrayEqualityComparer<byte>());
             var newRoot = Commit(Root, values);
-            var serialized = newRoot.Serialize();
 
             // It assumes embedded node if it's not HashNode.
             if (!(newRoot is HashNode))
             {
-                KeyValueStore.Set(
-                    HashDigest<SHA256>.DeriveFrom(serialized).ToByteArray(),
-                    serialized
-                );
+                byte[] serialized = _codec.Encode(newRoot.ToBencodex());
+                values[SHA256.Create().ComputeHash(serialized)] = serialized;
             }
 
             KeyValueStore.Set(values);
@@ -199,6 +204,17 @@ namespace Libplanet.Store.Trie
             }
         }
 
+        private static void FreeValueCache()
+        {
+            foreach (KeyValuePair<Fingerprint, WeakReference<IValue>> kv in _valueCache)
+            {
+                if (!kv.Value.TryGetTarget(out _))
+                {
+                    _valueCache.TryRemove(kv.Key, out _);
+                }
+            }
+        }
+
         private INode Commit(INode node, IDictionary<byte[], byte[]> values)
         {
             switch (node)
@@ -227,54 +243,51 @@ namespace Libplanet.Store.Trie
                 .ToImmutableArray();
 
             fullNode = new FullNode(virtualChildren);
-            var serialized = fullNode.Serialize();
+            IValue encoded = fullNode.ToBencodex();
 
-            if (serialized.Length <= HashDigest<SHA256>.Size)
+            if (encoded.EncodingLength <= HashDigest<SHA256>.Size)
             {
                 return fullNode;
             }
-            else
-            {
-                var nodeHash = HashDigest<SHA256>.DeriveFrom(serialized);
-                values[nodeHash.ToByteArray()] = serialized;
 
-                return new HashNode(nodeHash);
-            }
+            return Encode(fullNode.ToBencodex(), values);
         }
 
         private INode CommitShortNode(ShortNode shortNode, IDictionary<byte[], byte[]> values)
         {
             var committedValueNode = Commit(shortNode.Value!, values);
             shortNode = new ShortNode(shortNode.Key, committedValueNode);
-            byte[] serialized = shortNode.Serialize();
-            if (serialized.Length <= HashDigest<SHA256>.Size)
+            IValue encoded = shortNode.ToBencodex();
+            if (encoded.EncodingLength <= HashDigest<SHA256>.Size)
             {
                 return shortNode;
             }
-            else
-            {
-                var nodeHash = HashDigest<SHA256>.DeriveFrom(serialized);
-                values[nodeHash.ToByteArray()] = serialized;
 
-                return new HashNode(nodeHash);
-            }
+            return Encode(encoded, values);
         }
 
         private INode CommitValueNode(ValueNode valueNode, IDictionary<byte[], byte[]> values)
         {
-            var serialized = valueNode.Serialize();
-            int nodeSize = serialized.Length;
+            IValue encoded = valueNode.ToBencodex();
+            var nodeSize = encoded.EncodingLength;
             if (nodeSize <= HashDigest<SHA256>.Size)
             {
                 return valueNode;
             }
-            else
-            {
-                var nodeHash = HashDigest<SHA256>.DeriveFrom(serialized);
-                values[nodeHash.ToByteArray()] = serialized;
 
-                return new HashNode(nodeHash);
-            }
+            return Encode(encoded, values);
+        }
+
+        private HashNode Encode(IValue intermediateEncoding, IDictionary<byte[], byte[]> values)
+        {
+            var offloadOptions = new OffloadOptions(OffloadThresholdBytes, values, KeyValueStore);
+            byte[] serialized = _codec.Encode(intermediateEncoding, offloadOptions);
+            byte[] fullEncoding = offloadOptions.Offloaded
+                ? _codec.Encode(intermediateEncoding)
+                : serialized;
+            byte[] nodeHash = SHA256.Create().ComputeHash(fullEncoding);
+            values[nodeHash] = serialized;
+            return new HashNode(new HashDigest<SHA256>(nodeHash));
         }
 
         private INode Insert(
@@ -437,8 +450,87 @@ namespace Libplanet.Store.Trie
         /// <returns>The node corresponding to <paramref name="nodeHash"/>.</returns>
         private INode? GetNode(HashDigest<SHA256> nodeHash)
         {
-            return NodeDecoder.Decode(
-                _codec.Decode(KeyValueStore.Get(nodeHash.ToByteArray())));
+            IValue intermediateEncoding = _codec.Decode(
+                KeyValueStore.Get(nodeHash.ToByteArray()),
+                LoadIndirectValue
+            );
+            return NodeDecoder.Decode(intermediateEncoding);
+        }
+
+        private IValue LoadIndirectValue(Fingerprint fp)
+        {
+            if (fp.EncodingLength >= OffloadThresholdBytes &&
+                _valueCache.TryGetValue(fp, out WeakReference<IValue>? weakRef) &&
+                weakRef is { } w)
+            {
+                if (w.TryGetTarget(out IValue? cached) && cached is { } cachedValue)
+                {
+                    return cachedValue;
+                }
+
+                _valueCache.TryRemove(fp, out _);
+            }
+
+            if (fp.Kind != ValueKind.Dictionary)
+            {
+                FreeValueCache();
+                IValue v = _codec.Decode(KeyValueStore.Get(fp.Serialize()), LoadIndirectValue);
+                if (fp != v.Fingerprint)
+                {
+                    throw new InvalidOperationException(
+                        $"Failed to load an offloaded value." +
+                        $"\nExpected: {fp}\nActual:   {v.Fingerprint}\nLoaded:   {v}"
+                    );
+                }
+                else if (fp.EncodingLength >= OffloadThresholdBytes)
+                {
+                    _valueCache[fp] = new WeakReference<IValue>(v);
+                }
+
+                return v;
+            }
+
+            var pair = (List)_codec.Decode(KeyValueStore.Get(fp.Serialize()), LoadIndirectValue);
+            IEnumerable<IndirectValue> reprs =
+                pair.EnumerateIndirectValues(out IndirectValue.Loader? reprLoader);
+            Dictionary value;
+            if (reprLoader is { } l)
+            {
+                IndirectValue keysIv = reprs.First();
+                var keys = keysIv.LoadedValue is List lst ? lst : (List)keysIv.GetValue(l);
+                IEnumerable<KeyValuePair<IKey, IndirectValue>> indirectPairs = keys.Zip(
+                    reprs.Skip(1).Select(group => (List)group.GetValue(l)).SelectMany(vs =>
+                        vs.EnumerateIndirectValues(out _)
+                    ),
+                    (k, v) => new KeyValuePair<IKey, IndirectValue>((IKey)k, v)
+                );
+                value = new Dictionary(indirectPairs, l);
+            }
+            else
+            {
+                var keys = (List)pair[0];
+                IEnumerable<KeyValuePair<IKey, IValue>> pairs = keys.Zip(
+                    pair.Skip(1).SelectMany(group => (List)group),
+                    (k, v) => new KeyValuePair<IKey, IValue>((IKey)k, v)
+                );
+                value = new Dictionary(pairs);
+            }
+
+            if (fp != value.Fingerprint)
+            {
+                throw new InvalidOperationException(
+                    $"Failed to load an offloaded value." +
+                    $"\nExpected: {fp}\nActual:   {value.Fingerprint}\nLoaded:   {value}"
+                );
+            }
+
+            FreeValueCache();
+            if (fp.EncodingLength >= OffloadThresholdBytes)
+            {
+                _valueCache[fp] = new WeakReference<IValue>(value);
+            }
+
+            return value;
         }
 
         private byte[] ToKey(byte[] key)
@@ -458,6 +550,102 @@ namespace Libplanet.Store.Trie
             }
 
             return res;
+        }
+
+        private sealed class OffloadOptions : IOffloadOptions
+        {
+            [SuppressMessage(
+                "Microsoft.StyleCop.CSharp.CSharpRules",
+                "SA1401:FieldsMustBePrivate",
+                Justification = "It's a private class and we want to get rid of runtime overhead.")]
+            public bool Offloaded;
+
+            private readonly long _thresholdBytes;
+            private readonly IDictionary<byte[], byte[]> _dirty;
+            private readonly IKeyValueStore _store;
+
+            public OffloadOptions(
+                long thresholdBytes,
+                IDictionary<byte[], byte[]> dirty,
+                IKeyValueStore store
+            )
+            {
+                _thresholdBytes = thresholdBytes;
+                _dirty = dirty;
+                _store = store;
+                Offloaded = false;
+            }
+
+            public bool Embeds(in IndirectValue indirectValue) =>
+                indirectValue.EncodingLength < _thresholdBytes;
+
+            public void Offload(in IndirectValue indirectValue, IndirectValue.Loader? loader)
+            {
+                Offloaded = true;
+                byte[] fp = indirectValue.Fingerprint.Serialize();
+                if (!_dirty.ContainsKey(fp) && !_store.Exists(fp))
+                {
+                    IValue value = indirectValue.GetValue(loader);
+                    IValue repr = value;
+                    if (repr is Dictionary dict)
+                    {
+                        // For dictionaries, in order to reduce duplicate common keys (= schema),
+                        // they are encoded in [keys, [v, v', ...], [v'', v''', ...], ...] where
+                        // keys = [k, k', ...]  instead of [k, v, k', v', ...].
+                        // Keys and value groups can be offloaded too.
+                        const int groupSize = 5;
+                        var keys = new List<IKey>(dict.Count);
+                        var valueGroups =
+                            new IValue[1 + (int)Math.Ceiling((double)dict.Count / groupSize)];
+                        IEnumerable<KeyValuePair<IKey, IndirectValue>> pairs =
+                            dict.EnumerableIndirectPairs(out loader);
+                        if (loader is { } l)
+                        {
+                            var group = new List<IndirectValue>(groupSize);
+                            int g = 1;
+                            foreach (KeyValuePair<IKey, IndirectValue> pair in pairs)
+                            {
+                                keys.Add(pair.Key);
+                                group.Add(pair.Value);
+                                if (group.Count >= groupSize || keys.Count >= dict.Count)
+                                {
+                                    List valueGroup = new List(group, l);
+                                    group.Clear();
+                                    valueGroups[g] = valueGroup;
+                                    g++;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            var group = new List<IValue>(groupSize);
+                            int g = 1;
+                            foreach (KeyValuePair<IKey, IValue> pair in dict)
+                            {
+                                keys.Add(pair.Key);
+                                group.Add(pair.Value);
+                                if (group.Count >= groupSize || keys.Count >= dict.Count)
+                                {
+                                    List valueGroup = new List(group);
+                                    group.Clear();
+                                    valueGroups[g] = valueGroup;
+                                    g++;
+                                }
+                            }
+                        }
+
+                        valueGroups[0] = new List(keys);
+                        repr = new List(valueGroups);
+                    }
+
+                    _dirty[fp] = _codec.Encode(repr, this);
+                    if (!_valueCache.ContainsKey(indirectValue.Fingerprint))
+                    {
+                        FreeValueCache();
+                        _valueCache[indirectValue.Fingerprint] = new WeakReference<IValue>(value);
+                    }
+                }
+            }
         }
     }
 }

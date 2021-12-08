@@ -38,6 +38,9 @@ namespace Libplanet.Store
         /// <inheritdoc cref="IStateStore.PruneStates(IImmutableSet{HashDigest{SHA256}})"/>
         public void PruneStates(IImmutableSet<HashDigest<SHA256>> survivingStateRootHashes)
         {
+            // TODO: As MerkleTrie now have two levels of Merkle trees (one for accounts and one for
+            // Bencodex values), it needs to be fixed so that it can prune offloaded Bencodex
+            // values too.
             var stopwatch = new Stopwatch();
             _logger.Verbose($"Started {nameof(PruneStates)}()");
             var survivalNodes = new HashSet<HashDigest<SHA256>>();
