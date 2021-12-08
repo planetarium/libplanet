@@ -101,6 +101,8 @@ since <a href="https://www.nuget.org/packages/Bencodex/0.4.0-dev.20211116020419"
 <ul>
 <li><code>KBucket.Head</code> and <code>KBucket.Tail</code> now properly return <code>null</code> if
 the bucket is empty instead of faulting.  [<a href="https://github.com/planetarium/libplanet/pull/1631">#1631</a>]</li>
+<li><code>TxCompletion.Demand()</code> no longer requests <code>Transaction&lt;T&gt;</code>s already in
+storage.  [<a href="https://github.com/planetarium/libplanet/pull/1649">#1649</a>]</li>
 </ul>
 <h3 id="dependencies">Dependencies</h3>
 <ul>
