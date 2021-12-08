@@ -18,10 +18,10 @@ namespace Libplanet.Tests.Blockchain
                 _fx.Transaction1,
                 _fx.Transaction2,
             };
-            Assert.Empty(_blockChain.StagePolicy.Iterate());
+            Assert.Empty(_blockChain.StagePolicy.Iterate(_blockChain));
 
             StageTransactions(txs);
-            Assert.Equal(txs, _blockChain.StagePolicy.Iterate().ToHashSet());
+            Assert.Equal(txs, _blockChain.StagePolicy.Iterate(_blockChain).ToHashSet());
         }
 
         [Fact]

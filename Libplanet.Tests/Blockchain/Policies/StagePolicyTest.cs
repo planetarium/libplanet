@@ -52,26 +52,26 @@ namespace Libplanet.Tests.Blockchain.Policies
                 Assert.Equal(setOne.OrderBy(tx => tx.Id), setTwo.OrderBy(tx => tx.Id));
             }
 
-            Assert.Empty(StagePolicy.Iterate());
+            Assert.Empty(StagePolicy.Iterate(_chain));
 
             StagePolicy.Stage(_chain, _txs[0]);
-            AssertTxSetEqual(_txs.Take(1), StagePolicy.Iterate());
+            AssertTxSetEqual(_txs.Take(1), StagePolicy.Iterate(_chain));
 
             StagePolicy.Stage(_chain, _txs[1]);
-            AssertTxSetEqual(_txs.Take(2), StagePolicy.Iterate());
+            AssertTxSetEqual(_txs.Take(2), StagePolicy.Iterate(_chain));
 
             // If already staged, no exception is thrown.
             StagePolicy.Stage(_chain, _txs[0]);
-            AssertTxSetEqual(_txs.Take(2), StagePolicy.Iterate());
+            AssertTxSetEqual(_txs.Take(2), StagePolicy.Iterate(_chain));
 
             StagePolicy.Stage(_chain, _txs[2]);
-            AssertTxSetEqual(_txs.Take(3), StagePolicy.Iterate());
+            AssertTxSetEqual(_txs.Take(3), StagePolicy.Iterate(_chain));
 
             // If a transaction had been unstaged, it can be staged again.
             StagePolicy.Unstage(_chain, _txs[2].Id);
-            AssertTxSetEqual(_txs.Take(2), StagePolicy.Iterate());
+            AssertTxSetEqual(_txs.Take(2), StagePolicy.Iterate(_chain));
             StagePolicy.Stage(_chain, _txs[2]);
-            AssertTxSetEqual(_txs.Take(3), StagePolicy.Iterate());
+            AssertTxSetEqual(_txs.Take(3), StagePolicy.Iterate(_chain));
         }
 
         [Fact]
@@ -89,20 +89,20 @@ namespace Libplanet.Tests.Blockchain.Policies
                 StagePolicy.Stage(_chain, tx);
             }
 
-            AssertTxSetEqual(_txs, StagePolicy.Iterate());
+            AssertTxSetEqual(_txs, StagePolicy.Iterate(_chain));
 
             StagePolicy.Unstage(_chain, _txs[0].Id);
-            AssertTxSetEqual(_txs.Skip(1), StagePolicy.Iterate());
+            AssertTxSetEqual(_txs.Skip(1), StagePolicy.Iterate(_chain));
 
             // If already unstaged, no exception is thrown.
             StagePolicy.Unstage(_chain, _txs[0].Id);
-            AssertTxSetEqual(_txs.Skip(1), StagePolicy.Iterate());
+            AssertTxSetEqual(_txs.Skip(1), StagePolicy.Iterate(_chain));
 
             StagePolicy.Unstage(_chain, _txs.Last().Id);
-            AssertTxSetEqual(_txs.Skip(1).SkipLast(1), StagePolicy.Iterate());
+            AssertTxSetEqual(_txs.Skip(1).SkipLast(1), StagePolicy.Iterate(_chain));
 
             StagePolicy.Unstage(_chain, _txs[2].Id);
-            AssertTxSetEqual(new[] { _txs[1], _txs[3] }, StagePolicy.Iterate());
+            AssertTxSetEqual(new[] { _txs[1], _txs[3] }, StagePolicy.Iterate(_chain));
         }
 
         [Fact]
@@ -113,15 +113,15 @@ namespace Libplanet.Tests.Blockchain.Policies
             StagePolicy.Ignore(_chain, _txs[0].Id);
             Assert.True(StagePolicy.Ignores(_chain, _txs[0].Id));
             StagePolicy.Stage(_chain, _txs[0]);
-            Assert.Null(StagePolicy.Get(_chain, _txs[0].Id, includeUnstaged: true));
+            Assert.Null(StagePolicy.Get(_chain, _txs[0].Id));
 
             // Ignore unstages.
             Assert.False(StagePolicy.Ignores(_chain, _txs[1].Id));
             StagePolicy.Stage(_chain, _txs[1]);
-            Assert.Equal(_txs[1], StagePolicy.Get(_chain, _txs[1].Id, includeUnstaged: true));
+            Assert.Equal(_txs[1], StagePolicy.Get(_chain, _txs[1].Id));
             StagePolicy.Ignore(_chain, _txs[1].Id);
             Assert.True(StagePolicy.Ignores(_chain, _txs[1].Id));
-            Assert.Null(StagePolicy.Get(_chain, _txs[1].Id, includeUnstaged: true));
+            Assert.Null(StagePolicy.Get(_chain, _txs[1].Id));
         }
 
         [Fact]
@@ -154,29 +154,29 @@ namespace Libplanet.Tests.Blockchain.Policies
         {
             foreach (Transaction<DumbAction> tx in _txs)
             {
-                Assert.Null(StagePolicy.Get(_chain, tx.Id, includeUnstaged: false));
-                Assert.Null(StagePolicy.Get(_chain, tx.Id, includeUnstaged: true));
+                Assert.Null(StagePolicy.Get(_chain, tx.Id));
+                Assert.Null(StagePolicy.Get(_chain, tx.Id));
             }
 
             StagePolicy.Stage(_chain, _txs[0]);
-            Assert.Equal(_txs[0], StagePolicy.Get(_chain, _txs[0].Id, includeUnstaged: false));
-            Assert.Equal(_txs[0], StagePolicy.Get(_chain, _txs[0].Id, includeUnstaged: true));
+            Assert.Equal(_txs[0], StagePolicy.Get(_chain, _txs[0].Id));
+            Assert.Equal(_txs[0], StagePolicy.Get(_chain, _txs[0].Id));
 
             foreach (Transaction<DumbAction> tx in _txs.Skip(1))
             {
-                Assert.Null(StagePolicy.Get(_chain, tx.Id, includeUnstaged: false));
-                Assert.Null(StagePolicy.Get(_chain, tx.Id, includeUnstaged: true));
+                Assert.Null(StagePolicy.Get(_chain, tx.Id));
+                Assert.Null(StagePolicy.Get(_chain, tx.Id));
             }
 
             // FIXME: Parameter includedUnstaged is deprecated.  Should be removed with API update.
             StagePolicy.Unstage(_chain, _txs[0].Id);
-            Assert.Null(StagePolicy.Get(_chain, _txs[0].Id, includeUnstaged: false));
-            Assert.Null(StagePolicy.Get(_chain, _txs[0].Id, includeUnstaged: true));
+            Assert.Null(StagePolicy.Get(_chain, _txs[0].Id));
+            Assert.Null(StagePolicy.Get(_chain, _txs[0].Id));
 
             foreach (Transaction<DumbAction> tx in _txs.Skip(1))
             {
-                Assert.Null(StagePolicy.Get(_chain, tx.Id, includeUnstaged: false));
-                Assert.Null(StagePolicy.Get(_chain, tx.Id, includeUnstaged: true));
+                Assert.Null(StagePolicy.Get(_chain, tx.Id));
+                Assert.Null(StagePolicy.Get(_chain, tx.Id));
             }
         }
     }

@@ -420,7 +420,7 @@ namespace Libplanet.Blockchain
         /// <see cref="Transaction{T}"/> with a given <paramref name="txId"/>.</exception>
         public Transaction<T> GetTransaction(TxId txId)
         {
-            if (StagePolicy.Get(this, txId, includeUnstaged: true) is { } tx)
+            if (StagePolicy.Get(this, txId) is { } tx)
             {
                 return tx;
             }
@@ -608,7 +608,7 @@ namespace Libplanet.Blockchain
         /// <returns>The next <see cref="Transaction{T}.Nonce"/> value of the
         /// <paramref name="address"/>.</returns>
         public long GetNextTxNonce(Address address)
-            => StagePolicy.GetNextTxNonce(address, Store.GetTxNonce(Id, address));
+            => StagePolicy.GetNextTxNonce(this, address, Store.GetTxNonce(Id, address));
 
         /// <summary>
         /// Records and queries the <paramref name="perceivedTime"/> of the given
@@ -685,7 +685,7 @@ namespace Libplanet.Blockchain
         public IImmutableSet<TxId> GetStagedTransactionIds()
         {
             // FIXME: How about turning this method to the StagedTransactions property?
-            return StagePolicy.Iterate().Select(tx => tx.Id).ToImmutableHashSet();
+            return StagePolicy.Iterate(this).Select(tx => tx.Id).ToImmutableHashSet();
         }
 
         /// <summary>
@@ -1164,7 +1164,7 @@ namespace Libplanet.Blockchain
             IComparer<Transaction<T>> txPriority = null
         )
         {
-            IEnumerable<Transaction<T>> unorderedTxs = StagePolicy.Iterate();
+            IEnumerable<Transaction<T>> unorderedTxs = StagePolicy.Iterate(this);
             if (txPriority is { } comparer)
             {
                 unorderedTxs = unorderedTxs.OrderBy(tx => tx, comparer);

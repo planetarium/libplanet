@@ -163,7 +163,7 @@ namespace Libplanet.Explorer.Queries
                     $"{nameof(ListStagedTransactions)} doesn't support negative offset.");
             }
 
-            var stagedTxs = Chain.StagePolicy.Iterate()
+            var stagedTxs = Chain.StagePolicy.Iterate(Chain)
                 .Where(tx => IsValidTransaction(tx, signer, involved))
                 .Skip(offset);
 

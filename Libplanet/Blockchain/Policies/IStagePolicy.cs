@@ -20,7 +20,7 @@ namespace Libplanet.Blockchain.Policies
         /// <summary>
         /// Stages a <paramref name="transaction"/>.
         /// </summary>
-        /// <param name="blockChain">The chain to stage the <paramref name="transaction"/>.
+        /// <param name="blockChain">The <see cref="BlockChain{T}"/> that the stage belongs to.
         /// </param>
         /// <param name="transaction">The <seealso cref="Transaction{T}"/> to be staged.</param>
         /// <remarks>
@@ -38,7 +38,8 @@ namespace Libplanet.Blockchain.Policies
         /// <summary>
         /// Unstages a transaction <paramref name="id"/>.
         /// </summary>
-        /// <param name="blockChain">The chain to unstage the <paramref name="id"/>.</param>
+        /// <param name="blockChain">The <see cref="BlockChain{T}"/> that the stage belongs to.
+        /// </param>
         /// <param name="id">The <seealso cref="Transaction{T}.Id"/> to unstage.</param>
         /// <remarks>
         /// This does not throw any exception regardless of whether <paramref name="id"/> was
@@ -49,7 +50,8 @@ namespace Libplanet.Blockchain.Policies
         /// <summary>
         /// Marks given <paramref name="id"/> as ignored.
         /// </summary>
-        /// <param name="blockChain">The chain that the stage belongs to.</param>
+        /// <param name="blockChain">The <see cref="BlockChain{T}"/> that the stage belongs to.
+        /// </param>
         /// <param name="id">The <see cref="Transaction{T}.Id"/> to ignore.</param>
         /// <remarks>
         /// If the <see cref="Transaction{T}"/> associated with <paramref name="id"/> is already
@@ -60,7 +62,8 @@ namespace Libplanet.Blockchain.Policies
         /// <summary>
         /// Checks if given <paramref name="id"/> is marked as ignored.
         /// </summary>
-        /// <param name="blockChain">The chain that the stage belongs to.</param>
+        /// <param name="blockChain">The <see cref="BlockChain{T}"/> that the stage belongs to.
+        /// </param>
         /// <param name="id">The <see cref="Transaction{T}.Id"/> to check.</param>
         /// <returns><c>true</c> if <paramref name="id"/> is marked as ignored,
         /// <c>false</c> otherwise.</returns>
@@ -69,28 +72,35 @@ namespace Libplanet.Blockchain.Policies
         /// <summary>
         /// Retrieves a staged <see cref="Transaction{T}"/> by its <paramref name="id"/>.
         /// </summary>
-        /// <param name="blockChain">The chain that the stage belongs to.</param>
+        /// <param name="blockChain">The <see cref="BlockChain{T}"/> that the stage belongs to.
+        /// </param>
         /// <param name="id">The <see cref="Transaction{T}.Id"/> to get.</param>
-        /// <param name="includeUnstaged">Whether to include transactions that had once staged but
-        /// unstaged then.</param>
+        /// <param name="filtered">Whether to filter masked staged <see cref="Transaction{T}"/>s
+        /// or not.  Set to <c>true</c> by default.</param>
         /// <returns>The staged <see cref="Transaction{T}"/> associated with <paramref name="id"/>
         /// if found,  <c>null</c> otherwise.</returns>
-        public Transaction<T>? Get(BlockChain<T> blockChain, TxId id, bool includeUnstaged);
+        public Transaction<T>? Get(BlockChain<T> blockChain, TxId id, bool filtered = true);
 
         /// <summary>
         /// Enumerates all staged <see cref="Transaction{T}"/>s.
         /// </summary>
+        /// <param name="blockChain">The <see cref="BlockChain{T}"/> that the stage belongs to.
+        /// </param>
+        /// <param name="filtered">Whether to filter masked staged <see cref="Transaction{T}"/>s
+        /// or not.  Set to <c>true</c> by default.</param>
         /// <returns>All staged transactions.  No ordering is guaranteed.</returns>
-        public IEnumerable<Transaction<T>> Iterate();
+        public IEnumerable<Transaction<T>> Iterate(BlockChain<T> blockChain, bool filtered = true);
 
         /// <summary>
         /// Calculates the next nonce according for given <paramref name="address"/>.
         /// </summary>
+        /// <param name="blockChain">The <see cref="BlockChain{T}"/> that the stage belongs to.
+        /// </param>
         /// <param name="address">The <see cref="Address"/> to calculate the next nonce for.
         /// </param>
         /// <param name="minedTxs">The number of mined <see cref="Transaction{T}"/>s by
         /// <paramref name="address"/> included in the <see cref="BlockChain{T}"/>.</param>
         /// <returns>The next appropriate nonce for <paramref name="address"/>.</returns>
-        public long GetNextTxNonce(Address address, long minedTxs);
+        public long GetNextTxNonce(BlockChain<T> blockChain, Address address, long minedTxs);
     }
 }

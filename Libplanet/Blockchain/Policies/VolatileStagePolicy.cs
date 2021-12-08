@@ -12,7 +12,27 @@ using Serilog;
 namespace Libplanet.Blockchain.Policies
 {
     /// <summary>
-    /// In-memory staged transactions.
+    /// <para>
+    /// An in memory implementation of the <see cref="IStagePolicy{T}"/>.
+    /// </para>
+    /// <para>
+    /// This implementation holds on to every unconfirmed <see cref="Transaction{T}"/> except
+    /// for the following reasons:
+    /// <list type="bullet">
+    ///     <item>
+    ///         <description>A <see cref="Transaction{T}"/> has been specifically marked to
+    ///         be ignored due to <see cref="Transaction{T}"/> not being valid.</description>
+    ///     </item>
+    ///     <item>
+    ///         <description>A <see cref="Transaction{T}"/> has expired due to its staleness.
+    ///         </description>
+    ///     </item>
+    /// </list>
+    /// </para>
+    /// <para>
+    /// Additionally, any <see cref="Transaction{T}"/> with a lower nonce than that of returned by
+    /// the <see cref="BlockChain{T}"/> is masked and filtered by default.
+    /// </para>
     /// </summary>
     /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
     /// the <see cref="BlockChain{T}"/>'s type parameter.</typeparam>
@@ -160,7 +180,7 @@ namespace Libplanet.Blockchain.Policies
         }
 
         /// <inheritdoc/>
-        public Transaction<T>? Get(BlockChain<T> blockChain, TxId id, bool includeUnstaged)
+        public Transaction<T>? Get(BlockChain<T> blockChain, TxId id, bool filtered = true)
         {
             Transaction<T>? transaction = null;
 
@@ -184,7 +204,7 @@ namespace Libplanet.Blockchain.Policies
         }
 
         /// <inheritdoc/>
-        public IEnumerable<Transaction<T>> Iterate()
+        public IEnumerable<Transaction<T>> Iterate(BlockChain<T> blockChain, bool filtered = true)
         {
             Transaction<T>? transaction = null;
             List<Transaction<T>> transactions = new List<Transaction<T>>();
@@ -228,10 +248,10 @@ namespace Libplanet.Blockchain.Policies
         }
 
         /// <inheritdoc/>
-        public long GetNextTxNonce(Address address, long minedTxs)
+        public long GetNextTxNonce(BlockChain<T> blockChain, Address address, long minedTxs)
         {
             long nonce = minedTxs;
-            IEnumerable<long> stagedTxNonces = Iterate()
+            IEnumerable<long> stagedTxNonces = Iterate(blockChain)
                 .Where(tx => tx.Signer.Equals(address) && tx.Nonce >= minedTxs)
                 .Select(tx => tx.Nonce)
                 .OrderBy(n => n);
