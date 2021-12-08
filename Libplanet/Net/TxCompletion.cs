@@ -101,10 +101,12 @@ namespace Libplanet.Net
 
         private HashSet<TxId> GetRequiredTxIds(IEnumerable<TxId> ids)
         {
-            return new HashSet<TxId>(ids.Where(IsTxIdRequired));
+            return new HashSet<TxId>(ids
+                .Where(txId =>
+                    !_blockChain.StagePolicy.Ignores(_blockChain, txId)
+                        && _blockChain.StagePolicy.Get(_blockChain, txId, true) is null
+                        && _blockChain.Store.GetTransaction<TAction>(txId) is null));
         }
-
-        private bool IsTxIdRequired(TxId id) => !_blockChain.StagePolicy.Ignores(_blockChain, id);
 
         private async Task RequestTxsFromPeerAsync(
             TPeer peer,
