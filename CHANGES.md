@@ -4,16 +4,10 @@ Libplanet changelog
 Version 0.23.0
 --------------
 
-To be released.  The solution now can be built on Apple Silicon
-(aarch64-apple-darwin).
+Released on December 8, 2021.
 
-### Deprecated APIs
-
-### Backward-incompatible API changes
-
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
+From this version Libplanrt can be built on arm64 machines including
+Apple Silicon (aarch64-apple-darwin).
 
 ### Added APIs
 
@@ -40,8 +34,7 @@ To be released.  The solution now can be built on Apple Silicon
      -  `System.Collections.Immutable.ImmutableSortedDictionary<TKey, TValue>`
      -  `System.Collections.Immutable.ImmutableSortedSet<T>`
      -  `Bencodex.Types.Dictionary` (which became to guarantee enumeration order
-        since [Bencodex 0.4.0-dev.20211116020419+abea0858][Bencodex
-        0.4.0-dev.20211116020419])
+        since [Bencodex 0.4.0])
 
 ### Bug fixes
 
@@ -53,20 +46,16 @@ To be released.  The solution now can be built on Apple Silicon
 ### Dependencies
 
  -  Upgraded *Bencodex* from 0.4.0-dev.20211123080042+d7f6c810 to
-    [0.4.0-dev.20211205152306+db8d4e1b][Bencodex 0.4.0-dev.20211205152306].
-    [[#1636]]
+    [0.4.0][Bencodex 0.4.0].  [[#1636]]
  -  Upgraded *Planetarium.RocksDbSharp* from 6.2.3 to
     [6.2.4-planetarium][Planetarium.RocksDbSharp 6.2.4-planetarium].
     [[#1635]]
-
-### CLI tools
 
 [#1631]: https://github.com/planetarium/libplanet/pull/1631
 [#1635]: https://github.com/planetarium/libplanet/pull/1635
 [#1636]: https://github.com/planetarium/libplanet/pull/1636
 [#1649]: https://github.com/planetarium/libplanet/pull/1649
-[Bencodex 0.4.0-dev.20211116020419]: https://www.nuget.org/packages/Bencodex/0.4.0-dev.20211116020419
-[Bencodex 0.4.0-dev.20211205152306]: https://www.nuget.org/packages/Bencodex/0.4.0-dev.20211205152306
+[Bencodex 0.4.0]: https://www.nuget.org/packages/Bencodex/0.4.0
 [Planetarium.RocksDbSharp 6.2.4-planetarium]: https://www.nuget.org/packages/Planetarium.RocksDbSharp/6.2.4-planetarium
 
 
@@ -75,8 +64,8 @@ Version 0.22.1
 
 Released on December 5, 2021.
 
- - Compacted log output for convenience.  [[#1633]]
- - Removed `ITransport.MessageHistory` property due to memory leak. [[#1639]]
+ -  Compacted log output for convenience.  [[#1633]]
+ -  Removed `ITransport.MessageHistory` property due to memory leak. [[#1639]]
 
 [#1633]: https://github.com/planetarium/libplanet/pull/1633
 [#1639]: https://github.com/planetarium/libplanet/pull/1639
