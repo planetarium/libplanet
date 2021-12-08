@@ -189,24 +189,38 @@ namespace Libplanet.Blockchain.Policies
             {
                 _staged.TryGetValue(id, out transaction);
 
-                if (transaction is Transaction<T> tx && (Exipred(tx) || _ignored.Contains(tx.Id)))
+                if (transaction is Transaction<T> tx)
                 {
-                    _staged.TryRemove(id, out _);
-                    transaction = null;
+                    if (Exipred(tx) || _ignored.Contains(tx.Id))
+                    {
+                        _staged.TryRemove(id, out _);
+                        return null;
+                    }
+                    else if (filtered)
+                    {
+                        return blockChain.Store.GetTxNonce(blockChain.Id, tx.Signer) <= tx.Nonce
+                            ? tx
+                            : null;
+                    }
+                    else
+                    {
+                        return tx;
+                    }
+                }
+                else
+                {
+                    return null;
                 }
             }
             finally
             {
                 _lock.ExitWriteLock();
             }
-
-            return transaction;
         }
 
         /// <inheritdoc/>
         public IEnumerable<Transaction<T>> Iterate(BlockChain<T> blockChain, bool filtered = true)
         {
-            Transaction<T>? transaction = null;
             List<Transaction<T>> transactions = new List<Transaction<T>>();
 
             _lock.EnterUpgradeableReadLock();
@@ -215,27 +229,9 @@ namespace Libplanet.Blockchain.Policies
                 List<TxId> txIds = _staged.Keys.ToList();
                 foreach (TxId txId in txIds)
                 {
-                    // FIXME: Should use Get() method with an API update.
-                    _lock.EnterWriteLock();
-                    try
+                    if (Get(blockChain, txId, filtered) is Transaction<T> tx)
                     {
-                        _staged.TryGetValue(txId, out transaction);
-
-                        if (transaction is Transaction<T> tx)
-                        {
-                            if (Exipred(tx) || _ignored.Contains(tx.Id))
-                            {
-                                _staged.TryRemove(txId, out _);
-                            }
-                            else
-                            {
-                                transactions.Add(tx);
-                            }
-                        }
-                    }
-                    finally
-                    {
-                        _lock.ExitWriteLock();
+                        transactions.Add(tx);
                     }
                 }
             }
@@ -250,25 +246,21 @@ namespace Libplanet.Blockchain.Policies
         /// <inheritdoc/>
         public long GetNextTxNonce(BlockChain<T> blockChain, Address address, long minedTxs)
         {
-            long nonce = minedTxs;
-            IEnumerable<long> stagedTxNonces = Iterate(blockChain)
-                .Where(tx => tx.Signer.Equals(address) && tx.Nonce >= minedTxs)
-                .Select(tx => tx.Nonce)
-                .OrderBy(n => n);
+            long nonce = blockChain.Store.GetTxNonce(blockChain.Id, address);
+            IEnumerable<Transaction<T>> orderedTxs = Iterate(blockChain, filtered: true)
+                .Where(tx => tx.Signer.Equals(address))
+                .OrderBy(tx => tx.Nonce);
 
-            foreach (long n in stagedTxNonces)
+            foreach (Transaction<T> tx in orderedTxs)
             {
-                if (n < nonce)
-                {
-                    continue;
-                }
-
-                if (n != nonce)
+                if (nonce < tx.Nonce)
                 {
                     break;
                 }
-
-                nonce++;
+                else if (nonce == tx.Nonce)
+                {
+                    nonce++;
+                }
             }
 
             return nonce;
