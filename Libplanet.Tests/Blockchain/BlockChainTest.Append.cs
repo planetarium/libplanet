@@ -539,7 +539,7 @@ namespace Libplanet.Tests.Blockchain
                 blockInterval: TimeSpan.FromSeconds(10)
             ).Evaluate(privateKey, _blockChain);
             _blockChain.Append(block3);
-            Assert.Equal(1, _blockChain.GetStagedTransactionIds().Count);
+            Assert.Empty(_blockChain.GetStagedTransactionIds());
         }
 
         [Fact]
@@ -604,17 +604,27 @@ namespace Libplanet.Tests.Blockchain
                 {
                     txA0, txA1, txA2, txA0_, txA1_, txB0, txB1, txB2, txB0_, txB1_,
                 }.Select(tx => tx.Id).ToImmutableHashSet(),
-                _blockChain.GetStagedTransactionIds()
-            );
+                _blockChain.GetStagedTransactionIds());
 
             _blockChain.Append(block);
             AssertTxIdSetEqual(
                 new Transaction<DumbAction>[]
                 {
+                    txA2, txB0, txB1, txB2, txB0_, txB1_,
+                }.Select(tx => tx.Id).ToImmutableHashSet(),
+                _blockChain.GetStagedTransactionIds());
+            AssertTxIdSetEqual(
+                new Transaction<DumbAction>[]
+                {
+                    txA2, txB0, txB1, txB2, txB0_, txB1_,
+                }.Select(tx => tx.Id).ToImmutableHashSet(),
+                _blockChain.StagePolicy.Iterate(_blockChain, filtered: true).Select(tx => tx.Id));
+            AssertTxIdSetEqual(
+                new Transaction<DumbAction>[]
+                {
                     txA2, txA0_, txA1_, txB0, txB1, txB2, txB0_, txB1_,
                 }.Select(tx => tx.Id).ToImmutableHashSet(),
-                _blockChain.GetStagedTransactionIds()
-            );
+                _blockChain.StagePolicy.Iterate(_blockChain, filtered: false).Select(tx => tx.Id));
         }
     }
 }

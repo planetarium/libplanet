@@ -155,27 +155,21 @@ namespace Libplanet.Tests.Blockchain.Policies
             foreach (Transaction<DumbAction> tx in _txs)
             {
                 Assert.Null(StagePolicy.Get(_chain, tx.Id));
-                Assert.Null(StagePolicy.Get(_chain, tx.Id));
             }
 
             StagePolicy.Stage(_chain, _txs[0]);
             Assert.Equal(_txs[0], StagePolicy.Get(_chain, _txs[0].Id));
-            Assert.Equal(_txs[0], StagePolicy.Get(_chain, _txs[0].Id));
 
             foreach (Transaction<DumbAction> tx in _txs.Skip(1))
             {
-                Assert.Null(StagePolicy.Get(_chain, tx.Id));
                 Assert.Null(StagePolicy.Get(_chain, tx.Id));
             }
 
-            // FIXME: Parameter includedUnstaged is deprecated.  Should be removed with API update.
             StagePolicy.Unstage(_chain, _txs[0].Id);
-            Assert.Null(StagePolicy.Get(_chain, _txs[0].Id));
             Assert.Null(StagePolicy.Get(_chain, _txs[0].Id));
 
             foreach (Transaction<DumbAction> tx in _txs.Skip(1))
             {
-                Assert.Null(StagePolicy.Get(_chain, tx.Id));
                 Assert.Null(StagePolicy.Get(_chain, tx.Id));
             }
         }

@@ -1902,5 +1902,37 @@ namespace Libplanet.Tests.Blockchain
                 );
             });
         }
+
+        [Fact]
+        private async Task FilterLowerNonceTxAfterStaging()
+        {
+            var privateKey = new PrivateKey();
+            var address = privateKey.ToAddress();
+            var txsA = Enumerable.Range(0, 3)
+                .Select(nonce => _fx.MakeTransaction(
+                    nonce: nonce, privateKey: privateKey, timestamp: DateTimeOffset.Now))
+                .ToArray();
+            StageTransactions(txsA);
+            Block<DumbAction> b1 = await _blockChain.MineBlock(privateKey);
+            Assert.Equal(
+                txsA,
+                ActionEvaluator<DumbAction>.OrderTxsForEvaluation(
+                    b1.ProtocolVersion,
+                    b1.Transactions,
+                    b1.PreEvaluationHash
+                )
+            );
+
+            var txsB = Enumerable.Range(0, 4)
+                .Select(nonce => _fx.MakeTransaction(
+                    nonce: nonce, privateKey: privateKey, timestamp: DateTimeOffset.Now))
+                .ToArray();
+            StageTransactions(txsB);
+
+            // Stage only txs having higher or equal with nonce than expected nonce.
+            Assert.Single(_blockChain.GetStagedTransactionIds());
+            Assert.Single(_blockChain.StagePolicy.Iterate(_blockChain, filtered: true));
+            Assert.Equal(4, _blockChain.StagePolicy.Iterate(_blockChain, filtered: false).Count());
+        }
     }
 }

@@ -375,7 +375,9 @@ namespace Libplanet.Tests.Blockchain
             Block<DumbAction> block = await _blockChain.MineBlock(new PrivateKey());
 
             Assert.Empty(block.Transactions);
-            Assert.Single(_blockChain.ListStagedTransactions());
+            Assert.Empty(_blockChain.ListStagedTransactions());
+            Assert.Empty(_blockChain.StagePolicy.Iterate(_blockChain, filtered: true));
+            Assert.Single(_blockChain.StagePolicy.Iterate(_blockChain, filtered: false));
         }
 
         [Fact]
