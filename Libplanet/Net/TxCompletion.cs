@@ -104,7 +104,7 @@ namespace Libplanet.Net
             return new HashSet<TxId>(ids
                 .Where(txId =>
                     !_blockChain.StagePolicy.Ignores(_blockChain, txId)
-                        && _blockChain.StagePolicy.Get(_blockChain, txId) is null
+                        && _blockChain.StagePolicy.Get(_blockChain, txId, filtered: false) is null
                         && _blockChain.Store.GetTransaction<TAction>(txId) is null));
         }
 

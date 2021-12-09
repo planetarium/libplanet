@@ -98,20 +98,24 @@ namespace Libplanet.Blockchain
                             .ToImmutableHashSet();
 
                     // It assumes reorg is small size. If it was big, this may be heavy task.
-                    ImmutableHashSet<Transaction<T>> unstagedTxs =
+                    ImmutableHashSet<Transaction<T>> txsToStage =
                         GetTxsWithRange(this, branchpoint, Tip);
-                    ImmutableHashSet<Transaction<T>> stageTxs =
+                    ImmutableHashSet<Transaction<T>> txsToUnstage =
                         GetTxsWithRange(other, branchpoint, other.Tip);
-                    ImmutableHashSet<Transaction<T>> restageTxs = unstagedTxs.Except(stageTxs);
-                    foreach (Transaction<T> restageTx in restageTxs)
+                    foreach (Transaction<T> tx in txsToStage)
                     {
-                        StagePolicy.Stage(this, restageTx);
+                        StagePolicy.Stage(this, tx);
                     }
 
                     Guid obsoleteId = Id;
                     Id = other.Id;
                     Store.SetCanonicalChainId(Id);
                     _blocks = new BlockSet<T>(Policy.GetHashAlgorithm, Store);
+                    foreach (Transaction<T> tx in txsToUnstage)
+                    {
+                        StagePolicy.Unstage(this, tx.Id);
+                    }
+
                     TipChanged?.Invoke(this, (oldTip, newTip));
 
                     Store.DeleteChainId(obsoleteId);

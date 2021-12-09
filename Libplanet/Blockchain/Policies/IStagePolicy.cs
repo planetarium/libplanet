@@ -98,9 +98,7 @@ namespace Libplanet.Blockchain.Policies
         /// </param>
         /// <param name="address">The <see cref="Address"/> to calculate the next nonce for.
         /// </param>
-        /// <param name="minedTxs">The number of mined <see cref="Transaction{T}"/>s by
-        /// <paramref name="address"/> included in the <see cref="BlockChain{T}"/>.</param>
         /// <returns>The next appropriate nonce for <paramref name="address"/>.</returns>
-        public long GetNextTxNonce(BlockChain<T> blockChain, Address address, long minedTxs);
+        public long GetNextTxNonce(BlockChain<T> blockChain, Address address);
     }
 }

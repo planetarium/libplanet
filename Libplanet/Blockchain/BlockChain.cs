@@ -608,7 +608,7 @@ namespace Libplanet.Blockchain
         /// <returns>The next <see cref="Transaction{T}.Nonce"/> value of the
         /// <paramref name="address"/>.</returns>
         public long GetNextTxNonce(Address address)
-            => StagePolicy.GetNextTxNonce(this, address, Store.GetTxNonce(Id, address));
+            => StagePolicy.GetNextTxNonce(this, address);
 
         /// <summary>
         /// Records and queries the <paramref name="perceivedTime"/> of the given

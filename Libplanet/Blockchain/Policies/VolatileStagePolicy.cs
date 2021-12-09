@@ -244,7 +244,7 @@ namespace Libplanet.Blockchain.Policies
         }
 
         /// <inheritdoc/>
-        public long GetNextTxNonce(BlockChain<T> blockChain, Address address, long minedTxs)
+        public long GetNextTxNonce(BlockChain<T> blockChain, Address address)
         {
             long nonce = blockChain.Store.GetTxNonce(blockChain.Id, address);
             IEnumerable<Transaction<T>> orderedTxs = Iterate(blockChain, filtered: true)
