@@ -1375,25 +1375,17 @@ namespace Libplanet.Blockchain
             Func<BlockChain<T>, BlockHash, IValue> rawStateCompleter
         )
         {
-            _rwlock.EnterUpgradeableReadLock();
-            try
+            if (offset is null && Count == 0)
             {
-                if (offset is null && Count == 0)
-                {
-                    return null;
-                }
-
-                BlockHash offsetHash = offset ?? Tip.Hash;
-
-                HashDigest<SHA256>? stateRootHash = Store.GetStateRootHash(offsetHash);
-                return stateRootHash is { } h && StateStore.ContainsStateRoot(h)
-                    ? StateStore.GetState(key, stateRootHash)
-                    : rawStateCompleter(this, offsetHash);
+                return null;
             }
-            finally
-            {
-                _rwlock.ExitUpgradeableReadLock();
-            }
+
+            BlockHash offsetHash = offset ?? Tip.Hash;
+
+            HashDigest<SHA256>? stateRootHash = Store.GetStateRootHash(offsetHash);
+            return stateRootHash is { } h && StateStore.ContainsStateRoot(h)
+                ? StateStore.GetState(key, stateRootHash)
+                : rawStateCompleter(this, offsetHash);
         }
     }
 }

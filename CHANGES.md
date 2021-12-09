@@ -6,6 +6,11 @@ Version 0.23.2
 
 To be released.
 
+ -  Removed unnecessary a reader lock on `BlockChain<T>.GetState()` method to
+    improve parallelism.  [[#1657]]
+
+[#1657]: https://github.com/planetarium/libplanet/pull/1657
+
 
 Version 0.23.1
 --------------
