@@ -40,7 +40,7 @@ namespace Libplanet.Store
         {
             // TODO: As MerkleTrie now have two levels of Merkle trees (one for accounts and one for
             // Bencodex values), it needs to be fixed so that it can prune offloaded Bencodex
-            // values too.
+            // values too.  https://github.com/planetarium/libplanet/issues/1653
             var stopwatch = new Stopwatch();
             _logger.Verbose($"Started {nameof(PruneStates)}()");
             var survivalNodes = new HashSet<HashDigest<SHA256>>();
@@ -72,7 +72,10 @@ namespace Libplanet.Store
             stopwatch.Restart();
             foreach (var stateKey in _stateKeyValueStore.ListKeys())
             {
-                if (survivalNodes.Contains(new HashDigest<SHA256>(stateKey)))
+                // FIXME: Bencodex fingerprints also should be tracked.
+                //        https://github.com/planetarium/libplanet/issues/1653
+                if (stateKey.Length != HashDigest<SHA256>.Size ||
+                    survivalNodes.Contains(new HashDigest<SHA256>(stateKey)))
                 {
                     continue;
                 }

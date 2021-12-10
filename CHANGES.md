@@ -4,7 +4,13 @@ Libplanet changelog
 Version 0.23.1
 --------------
 
-To be released.
+Released on December 10, 2021.
+
+ -  Fixed `TrieStateStore.PruneStates()` method's bug that it had thrown
+    `ArgumentOutOfRangeException`.  [[#1653], [#1654]]
+
+[#1653]: https://github.com/planetarium/libplanet/issues/1653
+[#1654]: https://github.com/planetarium/libplanet/pull/1654
 
 
 Version 0.23.0
