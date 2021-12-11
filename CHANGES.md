@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.23.2
 --------------
 
-To be released.
+Released on December 13, 2021.
 
  -  Removed unnecessary a reader lock on `BlockChain<T>.GetState()` method to
     improve parallelism.  [[#1657]]
