@@ -10,6 +10,8 @@ To be released.
     improve parallelism.  [[#1657]]
  -  Improved performance of `Swarm<T>`'s block synchronization.  [[#1657]]
  -  Fixed a bug where `Swarm<T>` had swapped to improper chain.  [[#1657]]
+ -  Fixed a bug where `RocksDBStore.ForkBlockIndexes()` had created temporary
+    chains unnecessarily.  [[#1657]]
 
 [#1657]: https://github.com/planetarium/libplanet/pull/1657
 
