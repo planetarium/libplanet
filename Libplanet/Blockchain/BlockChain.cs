@@ -1070,7 +1070,7 @@ namespace Libplanet.Blockchain
                 }
 
                 BlockHash? branchpoint = FindBranchpoint(locator);
-                var branchpointIndex = branchpoint is { } h ? (int)_blocks[h].Index : 0;
+                var branchpointIndex = branchpoint is { } h ? (int)Store.GetBlockIndex(h)! : 0;
 
                 // FIXME: Currently, increasing count by one to satisfy
                 // the number defined by FindNextHashesChunkSize variable

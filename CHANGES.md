@@ -8,6 +8,7 @@ To be released.
 
  -  Removed unnecessary a reader lock on `BlockChain<T>.GetState()` method to
     improve parallelism.  [[#1657]]
+ -  Improved performance of `Swarm<T>`'s block synchronization.  [[#1657]]
  -  Fixed a bug where `Swarm<T>` had swapped to improper chain.  [[#1657]]
 
 [#1657]: https://github.com/planetarium/libplanet/pull/1657
