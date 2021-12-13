@@ -91,16 +91,17 @@ namespace Libplanet.Blockchain
                         }
                     }
 
-                    IEnumerable<Transaction<T>>
+                    ImmutableHashSet<Transaction<T>>
                         GetTxsWithRange(BlockChain<T> chain, Block<T> start, Block<T> end) =>
                             LongRange(start.Index + 1, end.Index - start.Index)
-                            .SelectMany(index => chain[index].Transactions);
+                            .SelectMany(index => chain[index].Transactions)
+                            .ToImmutableHashSet();
 
                     // It assumes reorg is small size. If it was big, this may be heavy task.
                     ImmutableHashSet<Transaction<T>> unstagedTxs =
-                        GetTxsWithRange(this, branchpoint, Tip).ToImmutableHashSet();
+                        GetTxsWithRange(this, branchpoint, Tip);
                     ImmutableHashSet<Transaction<T>> stageTxs =
-                        GetTxsWithRange(other, branchpoint, other.Tip).ToImmutableHashSet();
+                        GetTxsWithRange(other, branchpoint, other.Tip);
                     ImmutableHashSet<Transaction<T>> restageTxs = unstagedTxs.Except(stageTxs);
                     foreach (Transaction<T> restageTx in restageTxs)
                     {
