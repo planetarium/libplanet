@@ -23,7 +23,7 @@ namespace Libplanet.Store.Trie
     {
         public static readonly HashDigest<SHA256> EmptyRootHash;
 
-        private const long OffloadThresholdBytes = 256L;
+        private const long OffloadThresholdBytes = 0x7fffffffffffffffL;
 
         private static readonly ConcurrentDictionary<Fingerprint, WeakReference<IValue>> _valueCache
             = new ConcurrentDictionary<Fingerprint, WeakReference<IValue>>();
@@ -593,7 +593,7 @@ namespace Libplanet.Store.Trie
                         // they are encoded in [keys, [v, v', ...], [v'', v''', ...], ...] where
                         // keys = [k, k', ...]  instead of [k, v, k', v', ...].
                         // Keys and value groups can be offloaded too.
-                        const int groupSize = 5;
+                        const int groupSize = 0x7fffffff;
                         var keys = new List<IKey>(dict.Count);
                         var valueGroups =
                             new IValue[1 + (int)Math.Ceiling((double)dict.Count / groupSize)];
