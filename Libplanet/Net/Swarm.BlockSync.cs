@@ -494,6 +494,8 @@ namespace Libplanet.Net
                     _logger.Information($"{nameof(CompleteBlocksAsync)}() is canceled.");
                 }
 
+                IComparer<IBlockExcerpt> canonComparer = BlockChain.Policy.CanonicalChainComparer;
+
                 if (!complete
                     || workspace.Tip == BlockChain.Tip
                     || cancellationToken.IsCancellationRequested)
@@ -508,6 +510,22 @@ namespace Libplanet.Net
                         BlockChain.Id,
                         BlockChain.Tip.Index,
                         BlockChain.Tip.Hash
+                    );
+                }
+                else if (canonComparer.Compare(
+                        BlockChain.PerceiveBlock(workspace.Tip),
+                        BlockChain.PerceiveBlock(BlockChain.Tip)) < 0)
+                {
+                    _logger.Debug(
+                        $"{nameof(CompleteBlocksAsync)}() is aborted since existing chain " +
+                        "({EId}: #{EIndex} {EHash}) already has proper tip than " +
+                        "temporary working chain ({TId}: #{TIndex} {THash}).",
+                        BlockChain.Id,
+                        BlockChain.Tip.Index,
+                        BlockChain.Tip.Hash,
+                        workspace.Id,
+                        workspace.Tip.Index,
+                        workspace.Tip.Hash
                     );
                 }
                 else
