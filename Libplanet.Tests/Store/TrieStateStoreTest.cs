@@ -89,14 +89,14 @@ namespace Libplanet.Tests.Store
             // foo = 0x666f6f
             // updated branch node (0x6, aka root) + updated branch node (0x66) +
             // updated short node + new value nodes
-            Assert.Equal(prevStatesCount + 5, _stateKeyValueStore.ListKeys().Count());
+            Assert.Equal(prevStatesCount + 4, _stateKeyValueStore.ListKeys().Count());
 
             stateStore.PruneStates(ImmutableHashSet<HashDigest<SHA256>>.Empty.Add(second.Hash));
 
             // It will stay at the same count of nodes.
             // FIXME: Bencodex fingerprints also should be tracked.
             //        https://github.com/planetarium/libplanet/issues/1653
-            Assert.Equal(prevStatesCount + 1, _stateKeyValueStore.ListKeys().Count());
+            Assert.Equal(prevStatesCount, _stateKeyValueStore.ListKeys().Count());
         }
 
         [Fact]
