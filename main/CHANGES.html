@@ -66,10 +66,36 @@
 <p>To be released.</p>
 <h3 id="deprecated-apis">Deprecated APIs</h3>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
+<ul>
+<li><code>IStagePolicy&lt;T&gt;</code>'s <code>interface</code> methods updated.  Notably,
+all <code>IStagePolicy&lt;T&gt;</code> now accept <code>BlockChain&lt;T&gt;</code> as its parameter.
+[<a href="https://github.com/planetarium/libplanet/pull/1648">#1648</a>]
+<ul>
+<li><code>Get(BlockChain&lt;T&gt; blockChain, TxId id, bool includeInstaged)</code> changed
+to <code>Get(BlockChain&lt;T&gt; blockChain, TxId id, bool filtered = true)</code>.</li>
+<li><code>Iterate()</code> changed to
+<code>Iterate(BlockChain&lt;T&gt; blockChain, bool filtered = true)</code>.</li>
+<li><code>GetNextTxNonce(Address address, long minedTxs)</code> changed to
+<code>GetNextTxNonce(BlockChain&lt;T&gt; blockChain, Address address)</code>.</li>
+</ul>
+</li>
+</ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
 <h3 id="behavioral-changes">Behavioral changes</h3>
+<ul>
+<li>Description of <code>IStagePolicy&lt;T&gt;</code> and its default implementation
+<code>VolatileStagePolicy&lt;T&gt;</code> is overhauled.  [<a href="https://github.com/planetarium/libplanet/pull/1648">#1648</a>]
+<ul>
+<li><code>IStagePolicy&lt;T&gt;.Iterate()</code> no longer guarantees any kind of ordering.</li>
+<li><code>IStagePolicy&lt;T&gt;.Ignore()</code> now also unstages the <code>Transaction&lt;T&gt;</code>.</li>
+<li><code>VolatileStagePolicy&lt;T&gt;</code> now holds every previously known unconfirmed
+<code>Transaction&lt;T&gt;</code> regardless of its staging/unstaging history unless
+it is expired or ignored.</li>
+</ul>
+</li>
+</ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="dependencies">Dependencies</h3>
 <h3 id="cli-tools">CLI tools</h3>

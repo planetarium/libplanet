@@ -73,7 +73,20 @@
   
   <h1 id="Libplanet_Blockchain_Policies_VolatileStagePolicy_1" data-uid="Libplanet.Blockchain.Policies.VolatileStagePolicy`1" class="text-break">Class VolatileStagePolicy&lt;T&gt;
   </h1>
-  <div class="markdown level0 summary"><p>In-memory staged transactions.</p>
+  <div class="markdown level0 summary"><p>
+An in memory implementation of the <a class="xref" href="Libplanet.Blockchain.Policies.IStagePolicy-1.html">IStagePolicy&lt;T&gt;</a>.
+</p>
+<p>
+This implementation holds on to every unconfirmed <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> except
+for the following reasons:
+<ul><li>A <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> has been specifically marked to
+        be ignored due to <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> not being valid.</li><li>A <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> has expired due to its staleness.
+</li></ul>
+</p>
+<p>
+Additionally, any <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> with a lower nonce than that of returned by
+the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> is masked and filtered by default.
+</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -103,7 +116,7 @@
       <tr>
         <td><span class="parametername">T</span></td>
         <td><p>An <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> type.  It should match
-to <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a>'s type parameter.</p>
+the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a>'s type parameter.</p>
 </td>
       </tr>
     </tbody>
@@ -115,12 +128,12 @@ to <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_VolatileStagePolicy_1__ctor.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.VolatileStagePolicy%601.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/VolatileStagePolicy.cs/#L31">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/VolatileStagePolicy.cs/#L51">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Policies_VolatileStagePolicy_1__ctor_" data-uid="Libplanet.Blockchain.Policies.VolatileStagePolicy`1.#ctor*"></a>
   <h4 id="Libplanet_Blockchain_Policies_VolatileStagePolicy_1__ctor" data-uid="Libplanet.Blockchain.Policies.VolatileStagePolicy`1.#ctor">VolatileStagePolicy()</h4>
-  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Blockchain.Policies.VolatileStagePolicy-1.html">VolatileStagePolicy&lt;T&gt;</a> instance.</p>
-<p><a class="xref" href="Libplanet.Blockchain.Policies.VolatileStagePolicy-1.html#Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Lifetime">Lifetime</a> is configured to 3 hours.</p>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Blockchain.Policies.VolatileStagePolicy-1.html">VolatileStagePolicy&lt;T&gt;</a> instance.
+By default, <a class="xref" href="Libplanet.Blockchain.Policies.VolatileStagePolicy-1.html#Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Lifetime">Lifetime</a> is configured to 3 hours.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -132,7 +145,7 @@ to <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_VolatileStagePolicy_1__ctor_TimeSpan_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.VolatileStagePolicy%601.%23ctor(TimeSpan)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/VolatileStagePolicy.cs/#L41">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/VolatileStagePolicy.cs/#L61">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Policies_VolatileStagePolicy_1__ctor_" data-uid="Libplanet.Blockchain.Policies.VolatileStagePolicy`1.#ctor*"></a>
   <h4 id="Libplanet_Blockchain_Policies_VolatileStagePolicy_1__ctor_TimeSpan_" data-uid="Libplanet.Blockchain.Policies.VolatileStagePolicy`1.#ctor(TimeSpan)">VolatileStagePolicy(TimeSpan)</h4>
@@ -156,7 +169,8 @@ to <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T
       <tr>
         <td><span class="xref">TimeSpan</span></td>
         <td><span class="parametername">lifetime</span></td>
-        <td><p>Volatilizes staged transactions older than this <code data-dev-comment-type="paramref" class="paramref">lifetime</code>.  See also the <a class="xref" href="Libplanet.Blockchain.Policies.VolatileStagePolicy-1.html#Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Lifetime">Lifetime</a> property.</p>
+        <td><p>Volatilizes staged transactions older than this
+<see cref="!:TimeSpan"></see>.  See also <a class="xref" href="Libplanet.Blockchain.Policies.VolatileStagePolicy-1.html#Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Lifetime">Lifetime</a>.</p>
 </td>
       </tr>
     </tbody>
@@ -168,12 +182,12 @@ to <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Lifetime.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.VolatileStagePolicy%601.Lifetime%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/VolatileStagePolicy.cs/#L54">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/VolatileStagePolicy.cs/#L77">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Lifetime_" data-uid="Libplanet.Blockchain.Policies.VolatileStagePolicy`1.Lifetime*"></a>
   <h4 id="Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Lifetime" data-uid="Libplanet.Blockchain.Policies.VolatileStagePolicy`1.Lifetime">Lifetime</h4>
-  <div class="markdown level1 summary"><p>Volatilizes staged transactions older than this <a class="xref" href="Libplanet.Blockchain.Policies.VolatileStagePolicy-1.html#Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Lifetime">Lifetime</a>.</p>
-<p>Note that transactions older than the lifetime never cannot be staged.</p>
+  <div class="markdown level1 summary"><p>Lifespan for <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s.  Any <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> older
+than this <see cref="!:TimeSpan"></see> will be considered expired.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -195,6 +209,9 @@ to <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T
       </tr>
     </tbody>
   </table>
+  <h5 id="Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Lifetime_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Expired <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s cannot be staged.</p>
+</div>
   <h3 id="methods">Methods
   </h3>
   <span class="small pull-right mobile-hide">
@@ -202,16 +219,16 @@ to <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Get_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_TxId_System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.VolatileStagePolicy%601.Get(Libplanet.Blockchain.BlockChain%7B%600%7D%2CLibplanet.Tx.TxId%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/VolatileStagePolicy.cs/#L125">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/VolatileStagePolicy.cs/#L183">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Get_" data-uid="Libplanet.Blockchain.Policies.VolatileStagePolicy`1.Get*"></a>
   <h4 id="Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Get_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_TxId_System_Boolean_" data-uid="Libplanet.Blockchain.Policies.VolatileStagePolicy`1.Get(Libplanet.Blockchain.BlockChain{`0},Libplanet.Tx.TxId,System.Boolean)">Get(BlockChain&lt;T&gt;, TxId, Boolean)</h4>
-  <div class="markdown level1 summary"><p>Gets a staged <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> by its <code data-dev-comment-type="paramref" class="paramref">id</code>.</p>
+  <div class="markdown level1 summary"><p>Retrieves a staged <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> by its <code data-dev-comment-type="paramref" class="paramref">id</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Transaction&lt;T&gt; Get(BlockChain&lt;T&gt; blockChain, TxId id, bool includeUnstaged)</code></pre>
+    <pre><code class="lang-csharp hljs">public Transaction&lt;T&gt; Get(BlockChain&lt;T&gt; blockChain, TxId id, bool filtered = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -226,7 +243,7 @@ to <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T
       <tr>
         <td><a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain</a>&lt;T&gt;</td>
         <td><span class="parametername">blockChain</span></td>
-        <td><p>The chain that the stage belongs to.</p>
+        <td><p>The <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> that the stage belongs to.</p>
 </td>
       </tr>
       <tr>
@@ -237,9 +254,9 @@ to <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><span class="parametername">includeUnstaged</span></td>
-        <td><p>Whether to include transactions that had once staged but
-unstaged then.</p>
+        <td><span class="parametername">filtered</span></td>
+        <td><p>Whether to filter masked staged <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s
+or not.  Set to <code>true</code> by default.</p>
 </td>
       </tr>
     </tbody>
@@ -255,27 +272,27 @@ unstaged then.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction</a>&lt;T&gt;</td>
-        <td><p>A staged transaction if found.  If it had never staged <code>null</code> is
-returned.</p>
+        <td><p>The staged <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> associated with <code data-dev-comment-type="paramref" class="paramref">id</code>
+if found,  <code>null</code> otherwise.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_VolatileStagePolicy_1_GetNextTxNonce_Libplanet_Address_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.VolatileStagePolicy%601.GetNextTxNonce(Libplanet.Address%2CSystem.Int64)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_VolatileStagePolicy_1_GetNextTxNonce_Libplanet_Blockchain_BlockChain__0__Libplanet_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.VolatileStagePolicy%601.GetNextTxNonce(Libplanet.Blockchain.BlockChain%7B%600%7D%2CLibplanet.Address)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/VolatileStagePolicy.cs/#L211">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/VolatileStagePolicy.cs/#L247">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Policies_VolatileStagePolicy_1_GetNextTxNonce_" data-uid="Libplanet.Blockchain.Policies.VolatileStagePolicy`1.GetNextTxNonce*"></a>
-  <h4 id="Libplanet_Blockchain_Policies_VolatileStagePolicy_1_GetNextTxNonce_Libplanet_Address_System_Int64_" data-uid="Libplanet.Blockchain.Policies.VolatileStagePolicy`1.GetNextTxNonce(Libplanet.Address,System.Int64)">GetNextTxNonce(Address, Int64)</h4>
-  <div class="markdown level1 summary"><p>Get the next transaction nonce according for the <code data-dev-comment-type="paramref" class="paramref">address</code>.</p>
+  <h4 id="Libplanet_Blockchain_Policies_VolatileStagePolicy_1_GetNextTxNonce_Libplanet_Blockchain_BlockChain__0__Libplanet_Address_" data-uid="Libplanet.Blockchain.Policies.VolatileStagePolicy`1.GetNextTxNonce(Libplanet.Blockchain.BlockChain{`0},Libplanet.Address)">GetNextTxNonce(BlockChain&lt;T&gt;, Address)</h4>
+  <div class="markdown level1 summary"><p>Calculates the next nonce according for given <code data-dev-comment-type="paramref" class="paramref">address</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public long GetNextTxNonce(Address address, long minedTxs)</code></pre>
+    <pre><code class="lang-csharp hljs">public long GetNextTxNonce(BlockChain&lt;T&gt; blockChain, Address address)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -288,16 +305,15 @@ returned.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
-        <td><span class="parametername">address</span></td>
-        <td><p><a class="xref" href="Libplanet.Address.html">Address</a> to get transaction.</p>
+        <td><a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain</a>&lt;T&gt;</td>
+        <td><span class="parametername">blockChain</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> that the stage belongs to.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
-        <td><span class="parametername">minedTxs</span></td>
-        <td><p>Receives the expected latest nonce of the
-<code data-dev-comment-type="paramref" class="paramref">address</code> being looked up on the blockchain.</p>
+        <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
+        <td><span class="parametername">address</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Address.html">Address</a> to calculate the next nonce for.</p>
 </td>
       </tr>
     </tbody>
@@ -313,7 +329,7 @@ returned.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
-        <td><p>The next transaction nonce.</p>
+        <td><p>The next appropriate nonce for <code data-dev-comment-type="paramref" class="paramref">address</code>.</p>
 </td>
       </tr>
     </tbody>
@@ -323,11 +339,11 @@ returned.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Ignore_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.VolatileStagePolicy%601.Ignore(Libplanet.Blockchain.BlockChain%7B%600%7D%2CLibplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/VolatileStagePolicy.cs/#L116">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/VolatileStagePolicy.cs/#L142">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Ignore_" data-uid="Libplanet.Blockchain.Policies.VolatileStagePolicy`1.Ignore*"></a>
   <h4 id="Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Ignore_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_TxId_" data-uid="Libplanet.Blockchain.Policies.VolatileStagePolicy`1.Ignore(Libplanet.Blockchain.BlockChain{`0},Libplanet.Tx.TxId)">Ignore(BlockChain&lt;T&gt;, TxId)</h4>
-  <div class="markdown level1 summary"><p>Marks a transaction as ignored, so that it will be never staged.</p>
+  <div class="markdown level1 summary"><p>Marks given <code data-dev-comment-type="paramref" class="paramref">id</code> as ignored.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -347,7 +363,7 @@ returned.</p>
       <tr>
         <td><a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain</a>&lt;T&gt;</td>
         <td><span class="parametername">blockChain</span></td>
-        <td><p>The chain that the stage belongs to.</p>
+        <td><p>The <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> that the stage belongs to.</p>
 </td>
       </tr>
       <tr>
@@ -359,19 +375,19 @@ returned.</p>
     </tbody>
   </table>
   <h5 id="Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Ignore_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_TxId__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>If the transaction is already in the stage, this method does nothing.</p>
+  <div class="markdown level1 remarks"><p>If the <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> associated with <code data-dev-comment-type="paramref" class="paramref">id</code> is already
+staged, this also unstages the <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Ignores_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.VolatileStagePolicy%601.Ignores(Libplanet.Blockchain.BlockChain%7B%600%7D%2CLibplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/VolatileStagePolicy.cs/#L120">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/VolatileStagePolicy.cs/#L169">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Ignores_" data-uid="Libplanet.Blockchain.Policies.VolatileStagePolicy`1.Ignores*"></a>
   <h4 id="Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Ignores_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_TxId_" data-uid="Libplanet.Blockchain.Policies.VolatileStagePolicy`1.Ignores(Libplanet.Blockchain.BlockChain{`0},Libplanet.Tx.TxId)">Ignores(BlockChain&lt;T&gt;, TxId)</h4>
-  <div class="markdown level1 summary"><p>Checks if a transaction should be ignored for any reasons (for example, it is already
-staged or marked as ignored).</p>
+  <div class="markdown level1 summary"><p>Checks if given <code data-dev-comment-type="paramref" class="paramref">id</code> is marked as ignored.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -391,7 +407,7 @@ staged or marked as ignored).</p>
       <tr>
         <td><a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain</a>&lt;T&gt;</td>
         <td><span class="parametername">blockChain</span></td>
-        <td><p>The chain that the stage belongs to.</p>
+        <td><p>The <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> that the stage belongs to.</p>
 </td>
       </tr>
       <tr>
@@ -413,28 +429,53 @@ staged or marked as ignored).</p>
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p><code>true</code> if a transaction should be ignored.
-Otherwise, <code>false</code>.</p>
+        <td><p><code>true</code> if <code data-dev-comment-type="paramref" class="paramref">id</code> is marked as ignored,
+<code>false</code> otherwise.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Iterate.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.VolatileStagePolicy%601.Iterate%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Iterate_Libplanet_Blockchain_BlockChain__0__System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.VolatileStagePolicy%601.Iterate(Libplanet.Blockchain.BlockChain%7B%600%7D%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/VolatileStagePolicy.cs/#L159">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/VolatileStagePolicy.cs/#L222">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Iterate_" data-uid="Libplanet.Blockchain.Policies.VolatileStagePolicy`1.Iterate*"></a>
-  <h4 id="Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Iterate" data-uid="Libplanet.Blockchain.Policies.VolatileStagePolicy`1.Iterate">Iterate()</h4>
-  <div class="markdown level1 summary"><p>Enumerates all staged transaction IDs.</p>
+  <h4 id="Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Iterate_Libplanet_Blockchain_BlockChain__0__System_Boolean_" data-uid="Libplanet.Blockchain.Policies.VolatileStagePolicy`1.Iterate(Libplanet.Blockchain.BlockChain{`0},System.Boolean)">Iterate(BlockChain&lt;T&gt;, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Enumerates all staged <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IEnumerable&lt;Transaction&lt;T&gt;&gt; Iterate()</code></pre>
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;Transaction&lt;T&gt;&gt; Iterate(BlockChain&lt;T&gt; blockChain, bool filtered = true)</code></pre>
   </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain</a>&lt;T&gt;</td>
+        <td><span class="parametername">blockChain</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> that the stage belongs to.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">filtered</span></td>
+        <td><p>Whether to filter masked staged <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s
+or not.  Set to <code>true</code> by default.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -446,8 +487,7 @@ Otherwise, <code>false</code>.</p>
     <tbody>
       <tr>
         <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction</a>&lt;T&gt;&gt;</td>
-        <td><p>Staged transactions.  The earliest staged transaction goes first,
-and the latest staged transaction goes last.</p>
+        <td><p>All staged transactions.  No ordering is guaranteed.</p>
 </td>
       </tr>
     </tbody>
@@ -457,7 +497,7 @@ and the latest staged transaction goes last.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Stage_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_Transaction__0__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.VolatileStagePolicy%601.Stage(Libplanet.Blockchain.BlockChain%7B%600%7D%2CLibplanet.Tx.Transaction%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/VolatileStagePolicy.cs/#L57">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/VolatileStagePolicy.cs/#L80">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Stage_" data-uid="Libplanet.Blockchain.Policies.VolatileStagePolicy`1.Stage*"></a>
   <h4 id="Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Stage_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_Transaction__0__" data-uid="Libplanet.Blockchain.Policies.VolatileStagePolicy`1.Stage(Libplanet.Blockchain.BlockChain{`0},Libplanet.Tx.Transaction{`0})">Stage(BlockChain&lt;T&gt;, Transaction&lt;T&gt;)</h4>
@@ -481,7 +521,7 @@ and the latest staged transaction goes last.</p>
       <tr>
         <td><a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain</a>&lt;T&gt;</td>
         <td><span class="parametername">blockChain</span></td>
-        <td><p>The chain to stage the <code data-dev-comment-type="paramref" class="paramref">transaction</code>.</p>
+        <td><p>The <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> that the stage belongs to.</p>
 </td>
       </tr>
       <tr>
@@ -493,20 +533,25 @@ and the latest staged transaction goes last.</p>
     </tbody>
   </table>
   <h5 id="Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Stage_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_Transaction__0___remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>It does not throw any exception even if the <code data-dev-comment-type="paramref" class="paramref">transaction</code> has
-already been staged.  It does nothing either if the <code data-dev-comment-type="paramref" class="paramref">transaction</code> has
-marked as ignored (using <a class="xref" href="Libplanet.Blockchain.Policies.IStagePolicy-1.html#Libplanet_Blockchain_Policies_IStagePolicy_1_Ignore_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_TxId_">Ignore(BlockChain&lt;T&gt;, TxId)</a> method).</p>
+  <div class="markdown level1 remarks"><p>
+This does not throw any exception regardless of whether <code data-dev-comment-type="paramref" class="paramref">transaction</code>
+was successfully staged or not.
+</p>
+<p>
+If the <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Id">Id</a> of <code data-dev-comment-type="paramref" class="paramref">transaction</code> is marked
+as ignored, <code data-dev-comment-type="paramref" class="paramref">transaction</code> will not be staged.
+</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Unstage_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.VolatileStagePolicy%601.Unstage(Libplanet.Blockchain.BlockChain%7B%600%7D%2CLibplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/VolatileStagePolicy.cs/#L108">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/VolatileStagePolicy.cs/#L128">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Unstage_" data-uid="Libplanet.Blockchain.Policies.VolatileStagePolicy`1.Unstage*"></a>
   <h4 id="Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Unstage_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_TxId_" data-uid="Libplanet.Blockchain.Policies.VolatileStagePolicy`1.Unstage(Libplanet.Blockchain.BlockChain{`0},Libplanet.Tx.TxId)">Unstage(BlockChain&lt;T&gt;, TxId)</h4>
-  <div class="markdown level1 summary"><p>Removes a transaction <code data-dev-comment-type="paramref" class="paramref">id</code> from the stage.</p>
+  <div class="markdown level1 summary"><p>Unstages a transaction <code data-dev-comment-type="paramref" class="paramref">id</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -526,20 +571,20 @@ marked as ignored (using <a class="xref" href="Libplanet.Blockchain.Policies.ISt
       <tr>
         <td><a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain</a>&lt;T&gt;</td>
         <td><span class="parametername">blockChain</span></td>
-        <td><p>The chain to unstage the <code data-dev-comment-type="paramref" class="paramref">id</code>.</p>
+        <td><p>The <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> that the stage belongs to.</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="Libplanet.Tx.TxId.html">TxId</a></td>
         <td><span class="parametername">id</span></td>
-        <td><p>The <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Id">Id</a> to remove.</p>
+        <td><p>The <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Id">Id</a> to unstage.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <h5 id="Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Unstage_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_TxId__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>It does not throw any exception even if the <code data-dev-comment-type="paramref" class="paramref">id</code> has never
-been staged.</p>
+  <div class="markdown level1 remarks"><p>This does not throw any exception regardless of whether <code data-dev-comment-type="paramref" class="paramref">id</code> was
+successfully unstaged or not.</p>
 </div>
   <h3 id="implements">Implements</h3>
   <div>
@@ -556,7 +601,7 @@ been staged.</p>
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_VolatileStagePolicy_1.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.VolatileStagePolicy%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/VolatileStagePolicy.cs/#L19" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/VolatileStagePolicy.cs/#L39" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
