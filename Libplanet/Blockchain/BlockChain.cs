@@ -735,7 +735,9 @@ namespace Libplanet.Blockchain
             _logger
                 .ForContext("Tag", "Metric")
                 .Debug(
-                    "Actions in block #{BlockIndex} {BlockHash} evaluated in {DurationMs:F0}ms.",
+                    "Actions in {TxCount} transactions for block #{BlockIndex} {BlockHash} " +
+                    "evaluated in {DurationMs:F0}ms.",
+                    block.Transactions.Count,
                     block.Index,
                     block.Hash,
                     evalDuration.TotalMilliseconds);
@@ -748,9 +750,9 @@ namespace Libplanet.Blockchain
                 var totalDelta =
                     evaluations.GetTotalDelta(ToStateKey, ToFungibleAssetKey);
                 const string deltaMsg =
-                    "Summarized the states delta made by block #{BlockIndex} {BlockHash}." +
-                    "  Total {Keys} key(s) changed.";
-                _logger.Debug(deltaMsg, block.Index, block.Hash, totalDelta.Count);
+                    "Summarized the states delta with {KeyCount} key changes " +
+                    "made by block #{BlockIndex} {BlockHash}.";
+                _logger.Debug(deltaMsg, totalDelta.Count, block.Index, block.Hash);
 
                 HashDigest<SHA256>? prevStateRootHash = Store.GetStateRootHash(block.PreviousHash);
                 ITrie stateRoot = StateStore.Commit(prevStateRootHash, totalDelta);
@@ -774,8 +776,9 @@ namespace Libplanet.Blockchain
                 _logger
                     .ForContext("Tag", "Metric")
                     .Debug(
-                    "Finished updating the states affected by block #{BlockIndex} {BlockHash} " +
-                    "in {DurationMs:F0}ms.",
+                    "Finished updating the states with {KeyCount} key changes affected by " +
+                    "block #{BlockIndex} {BlockHash} in {DurationMs:F0}ms.",
+                    totalDelta.Count,
                     block.Index,
                     block.Hash,
                     setStatesDuration.TotalMilliseconds);
@@ -1067,7 +1070,7 @@ namespace Libplanet.Blockchain
                 }
 
                 BlockHash? branchpoint = FindBranchpoint(locator);
-                var branchpointIndex = branchpoint is { } h ? (int)_blocks[h].Index : 0;
+                var branchpointIndex = branchpoint is { } h ? (int)Store.GetBlockIndex(h)! : 0;
 
                 // FIXME: Currently, increasing count by one to satisfy
                 // the number defined by FindNextHashesChunkSize variable
@@ -1372,25 +1375,17 @@ namespace Libplanet.Blockchain
             Func<BlockChain<T>, BlockHash, IValue> rawStateCompleter
         )
         {
-            _rwlock.EnterUpgradeableReadLock();
-            try
+            if (offset is null && Count == 0)
             {
-                if (offset is null && Count == 0)
-                {
-                    return null;
-                }
-
-                BlockHash offsetHash = offset ?? Tip.Hash;
-
-                HashDigest<SHA256>? stateRootHash = Store.GetStateRootHash(offsetHash);
-                return stateRootHash is { } h && StateStore.ContainsStateRoot(h)
-                    ? StateStore.GetState(key, stateRootHash)
-                    : rawStateCompleter(this, offsetHash);
+                return null;
             }
-            finally
-            {
-                _rwlock.ExitUpgradeableReadLock();
-            }
+
+            BlockHash offsetHash = offset ?? Tip.Hash;
+
+            HashDigest<SHA256>? stateRootHash = Store.GetStateRootHash(offsetHash);
+            return stateRootHash is { } h && StateStore.ContainsStateRoot(h)
+                ? StateStore.GetState(key, stateRootHash)
+                : rawStateCompleter(this, offsetHash);
         }
     }
 }
