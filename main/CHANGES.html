@@ -73,6 +73,16 @@
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="dependencies">Dependencies</h3>
 <h3 id="cli-tools">CLI tools</h3>
+<h2 id="version-0232">Version 0.23.2</h2>
+<p>Released on December 13, 2021.</p>
+<ul>
+<li>Removed unnecessary a reader lock on <code>BlockChain&lt;T&gt;.GetState()</code> method to
+improve parallelism.  [<a href="https://github.com/planetarium/libplanet/pull/1657">#1657</a>]</li>
+<li>Improved performance of <code>Swarm&lt;T&gt;</code>'s block synchronization.  [<a href="https://github.com/planetarium/libplanet/pull/1657">#1657</a>]</li>
+<li>Fixed a bug where <code>Swarm&lt;T&gt;</code> had swapped to improper chain.  [<a href="https://github.com/planetarium/libplanet/pull/1657">#1657</a>]</li>
+<li>Fixed a bug where <code>RocksDBStore.ForkBlockIndexes()</code> had created temporary
+chains unnecessarily.  [<a href="https://github.com/planetarium/libplanet/pull/1657">#1657</a>]</li>
+</ul>
 <h2 id="version-0231">Version 0.23.1</h2>
 <p>Released on December 10, 2021.</p>
 <ul>

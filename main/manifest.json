@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "sNHbUmlRQUFWyw5SKSGBsLMbi73b9wh0eYZ4SCghzV4="
+          "hash": "zpG/Vs513uVlajX45VfebRcA1o+iKXxIceRYaH5HiN0="
         }
       },
       "is_incremental": false,
@@ -2445,7 +2445,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.RocksDBStore.RocksDBStore.html",
-          "hash": "34lvADflhEJEPUCGXbCGff+bZFyS9KAJwblmGjylqwM="
+          "hash": "Ah5AGIUffJtE22K/RuAYBgg6cI/5JJKXZoxWhFCHqp4="
         }
       },
       "is_incremental": false,
