@@ -25,6 +25,21 @@ To be released.
 ### CLI tools
 
 
+Version 0.23.2
+--------------
+
+Released on December 13, 2021.
+
+ -  Removed unnecessary a reader lock on `BlockChain<T>.GetState()` method to
+    improve parallelism.  [[#1657]]
+ -  Improved performance of `Swarm<T>`'s block synchronization.  [[#1657]]
+ -  Fixed a bug where `Swarm<T>` had swapped to improper chain.  [[#1657]]
+ -  Fixed a bug where `RocksDBStore.ForkBlockIndexes()` had created temporary
+    chains unnecessarily.  [[#1657]]
+
+[#1657]: https://github.com/planetarium/libplanet/pull/1657
+
+
 Version 0.23.1
 --------------
 

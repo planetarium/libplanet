@@ -83,28 +83,25 @@ namespace Libplanet.Blockchain
                 _rwlock.EnterWriteLock();
                 try
                 {
-                    IEnumerable<Transaction<T>>
-                        GetTxsWithRange(BlockChain<T> chain, Block<T> start, Block<T> end)
-                        => Enumerable
-                            .Range((int)start.Index + 1, (int)(end.Index - start.Index))
-                            .SelectMany(x =>
-                            {
-                                // FIXME: Change the type of IBlockContent<T>.Transactions to
-                                // IImmutableSet<Transaction<T>>, and define a distinct property
-                                // to Block<T> for this ordering.
-                                Block<T> block = chain[x];
-                                return ActionEvaluator<T>.OrderTxsForEvaluation(
-                                    block.ProtocolVersion,
-                                    block.Transactions,
-                                    block.PreEvaluationHash
-                                );
-                            });
+                    IEnumerable<long> LongRange(long start, long count)
+                    {
+                        for (long i = 0; i < count; i++)
+                        {
+                            yield return start + i;
+                        }
+                    }
+
+                    ImmutableHashSet<Transaction<T>>
+                        GetTxsWithRange(BlockChain<T> chain, Block<T> start, Block<T> end) =>
+                            LongRange(start.Index + 1, end.Index - start.Index)
+                            .SelectMany(index => chain[index].Transactions)
+                            .ToImmutableHashSet();
 
                     // It assumes reorg is small size. If it was big, this may be heavy task.
                     ImmutableHashSet<Transaction<T>> unstagedTxs =
-                        GetTxsWithRange(this, branchpoint, Tip).ToImmutableHashSet();
+                        GetTxsWithRange(this, branchpoint, Tip);
                     ImmutableHashSet<Transaction<T>> stageTxs =
-                        GetTxsWithRange(other, branchpoint, other.Tip).ToImmutableHashSet();
+                        GetTxsWithRange(other, branchpoint, other.Tip);
                     ImmutableHashSet<Transaction<T>> restageTxs = unstagedTxs.Except(stageTxs);
                     foreach (Transaction<T> restageTx in restageTxs)
                     {

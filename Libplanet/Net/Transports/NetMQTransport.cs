@@ -965,12 +965,18 @@ namespace Libplanet.Net.Transports
                     }
                     catch (TerminatingException)
                     {
-                        _logger.Error($"TerminatingException occurred during poller.Run()");
+                        _logger.Error("TerminatingException occurred during poller.Run()");
                     }
                     catch (ObjectDisposedException)
                     {
                         _logger.Error(
-                            $"ObjectDisposedException occurred during poller.Run()"
+                            "ObjectDisposedException occurred during poller.Run()"
+                        );
+                    }
+                    catch (Exception e)
+                    {
+                        _logger.Error(
+                            e, "An unexpected exception ocurred during poller.Run() {e}", e
                         );
                     }
                 },
