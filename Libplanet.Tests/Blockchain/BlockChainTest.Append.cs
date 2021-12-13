@@ -492,7 +492,9 @@ namespace Libplanet.Tests.Blockchain
             (Address[] addresses, Transaction<DumbAction>[] txs) =
                 MakeFixturesForAppendTests(privateKey, epoch: DateTimeOffset.UtcNow);
             var genesis = _blockChain.Genesis;
+            Assert.Empty(_blockChain.GetStagedTransactionIds());
 
+            // Mining with empty staged.
             Block<DumbAction> block1 = TestUtils.MineNext(
                 genesis,
                 _blockChain.Policy.GetHashAlgorithm,
@@ -504,9 +506,9 @@ namespace Libplanet.Tests.Blockchain
             Assert.Empty(_blockChain.GetStagedTransactionIds());
 
             StageTransactions(txs);
-
             Assert.Equal(2, _blockChain.GetStagedTransactionIds().Count);
 
+            // Tx with nonce 0 is mined.
             Block<DumbAction> block2 = TestUtils.MineNext(
                 block1,
                 _blockChain.Policy.GetHashAlgorithm,
@@ -517,9 +519,8 @@ namespace Libplanet.Tests.Blockchain
             ).Evaluate(privateKey, _blockChain);
             _blockChain.Append(block2);
             Assert.Equal(1, _blockChain.GetStagedTransactionIds().Count);
-            StageTransactions(txs);
-            Assert.Equal(1, _blockChain.GetStagedTransactionIds().Count);
 
+            // Two txs with nonce 1 are staged.
             var actions = new[] { new DumbAction(addresses[0], "foobar") };
             Transaction<DumbAction>[] txs2 =
             {
@@ -528,6 +529,7 @@ namespace Libplanet.Tests.Blockchain
             StageTransactions(txs2);
             Assert.Equal(2, _blockChain.GetStagedTransactionIds().Count);
 
+            // Unmined tx is left intact in the stage.
             Block<DumbAction> block3 = TestUtils.MineNext(
                 block2,
                 _blockChain.Policy.GetHashAlgorithm,
@@ -557,6 +559,14 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public async Task AppendWithdrawTxsWithExpiredNoncesFromStage()
         {
+            void AssertTxIdSetEqual(
+                IEnumerable<TxId> setOne,
+                IEnumerable<TxId> setTwo)
+            {
+                Assert.Equal(
+                    setOne.OrderBy(id => id), setTwo.OrderBy(id => id));
+            }
+
             var signerA = new PrivateKey();
             var signerB = new PrivateKey();
             BlockHash genesis = _blockChain.Genesis.Hash;
@@ -589,22 +599,32 @@ namespace Libplanet.Tests.Blockchain
             _blockChain.StageTransaction(txB2);
             _blockChain.StageTransaction(txB0_);
             _blockChain.StageTransaction(txB1_);
-            Assert.Equal(
+            AssertTxIdSetEqual(
                 new Transaction<DumbAction>[]
                 {
                     txA0, txA1, txA2, txA0_, txA1_, txB0, txB1, txB2, txB0_, txB1_,
                 }.Select(tx => tx.Id).ToImmutableHashSet(),
-                _blockChain.GetStagedTransactionIds()
-            );
+                _blockChain.GetStagedTransactionIds());
 
             _blockChain.Append(block);
-            Assert.Equal(
+            AssertTxIdSetEqual(
                 new Transaction<DumbAction>[]
                 {
                     txA2, txB0, txB1, txB2, txB0_, txB1_,
                 }.Select(tx => tx.Id).ToImmutableHashSet(),
-                _blockChain.GetStagedTransactionIds()
-            );
+                _blockChain.GetStagedTransactionIds());
+            AssertTxIdSetEqual(
+                new Transaction<DumbAction>[]
+                {
+                    txA2, txB0, txB1, txB2, txB0_, txB1_,
+                }.Select(tx => tx.Id).ToImmutableHashSet(),
+                _blockChain.StagePolicy.Iterate(_blockChain, filtered: true).Select(tx => tx.Id));
+            AssertTxIdSetEqual(
+                new Transaction<DumbAction>[]
+                {
+                    txA2, txA0_, txA1_, txB0, txB1, txB2, txB0_, txB1_,
+                }.Select(tx => tx.Id).ToImmutableHashSet(),
+                _blockChain.StagePolicy.Iterate(_blockChain, filtered: false).Select(tx => tx.Id));
         }
     }
 }

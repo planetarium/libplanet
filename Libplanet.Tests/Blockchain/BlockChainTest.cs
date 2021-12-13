@@ -1402,7 +1402,7 @@ namespace Libplanet.Tests.Blockchain
             };
             StageTransactions(txsE);
 
-            foreach (var tx in _blockChain.StagePolicy.Iterate())
+            foreach (var tx in _blockChain.StagePolicy.Iterate(_blockChain))
             {
                 _logger.Fatal(
                     "{Id}; {Signer}; {Nonce}; {Timestamp}",
@@ -1511,7 +1511,7 @@ namespace Libplanet.Tests.Blockchain
             _blockChain.MakeTransaction(privateKey, actions);
 
             List<Transaction<DumbAction>> txs = _stagePolicy
-                .Iterate()
+                .Iterate(_blockChain)
                 .OrderBy(tx => tx.Nonce)
                 .ToList();
 
@@ -1543,7 +1543,7 @@ namespace Libplanet.Tests.Blockchain
             var txIds = _blockChain.GetStagedTransactionIds();
 
             var nonces = txIds
-                .Select(id => _stagePolicy.Get(_blockChain, id, includeUnstaged: true)
+                .Select(id => _stagePolicy.Get(_blockChain, id)
                     ?? _blockChain.GetTransaction(id))
                 .Select(tx => tx.Nonce)
                 .OrderBy(nonce => nonce)
@@ -1904,7 +1904,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        private async Task IgnoreLowerNonceTxWhenStaging()
+        private async Task FilterLowerNonceTxAfterStaging()
         {
             var privateKey = new PrivateKey();
             var address = privateKey.ToAddress();
@@ -1931,6 +1931,8 @@ namespace Libplanet.Tests.Blockchain
 
             // Stage only txs having higher or equal with nonce than expected nonce.
             Assert.Single(_blockChain.GetStagedTransactionIds());
+            Assert.Single(_blockChain.StagePolicy.Iterate(_blockChain, filtered: true));
+            Assert.Equal(4, _blockChain.StagePolicy.Iterate(_blockChain, filtered: false).Count());
         }
     }
 }

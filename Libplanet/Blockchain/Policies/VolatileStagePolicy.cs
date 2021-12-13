@@ -12,21 +12,41 @@ using Serilog;
 namespace Libplanet.Blockchain.Policies
 {
     /// <summary>
-    /// In-memory staged transactions.
+    /// <para>
+    /// An in memory implementation of the <see cref="IStagePolicy{T}"/>.
+    /// </para>
+    /// <para>
+    /// This implementation holds on to every unconfirmed <see cref="Transaction{T}"/> except
+    /// for the following reasons:
+    /// <list type="bullet">
+    ///     <item>
+    ///         <description>A <see cref="Transaction{T}"/> has been specifically marked to
+    ///         be ignored due to <see cref="Transaction{T}"/> not being valid.</description>
+    ///     </item>
+    ///     <item>
+    ///         <description>A <see cref="Transaction{T}"/> has expired due to its staleness.
+    ///         </description>
+    ///     </item>
+    /// </list>
+    /// </para>
+    /// <para>
+    /// Additionally, any <see cref="Transaction{T}"/> with a lower nonce than that of returned by
+    /// the <see cref="BlockChain{T}"/> is masked and filtered by default.
+    /// </para>
     /// </summary>
     /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
-    /// to <see cref="BlockChain{T}"/>'s type parameter.</typeparam>
+    /// the <see cref="BlockChain{T}"/>'s type parameter.</typeparam>
     public class VolatileStagePolicy<T> : IStagePolicy<T>
         where T : IAction, new()
     {
-        private readonly ConcurrentDictionary<TxId, Transaction<T>?> _set;
-        private readonly List<TxId> _queue;
+        private readonly ConcurrentDictionary<TxId, Transaction<T>> _staged;
+        private readonly ConcurrentBag<TxId> _ignored;
         private readonly ReaderWriterLockSlim _lock;
         private readonly ILogger _logger;
 
         /// <summary>
         /// Creates a new <see cref="VolatileStagePolicy{T}"/> instance.
-        /// <para><see cref="Lifetime"/> is configured to 3 hours.</para>
+        /// By default, <see cref="Lifetime"/> is configured to 3 hours.
         /// </summary>
         public VolatileStagePolicy()
             : this(TimeSpan.FromHours(3))
@@ -36,59 +56,103 @@ namespace Libplanet.Blockchain.Policies
         /// <summary>
         /// Creates a new <see cref="VolatileStagePolicy{T}"/> instance.
         /// </summary>
-        /// <param name="lifetime">Volatilizes staged transactions older than this <paramref
-        /// name="lifetime"/>.  See also the <see cref="Lifetime"/> property.</param>
+        /// <param name="lifetime">Volatilizes staged transactions older than this
+        /// <see cref="TimeSpan"/>.  See also <see cref="Lifetime"/>.</param>
         public VolatileStagePolicy(TimeSpan lifetime)
         {
             _logger = Log.ForContext<VolatileStagePolicy<T>>();
             Lifetime = lifetime;
-            _set = new ConcurrentDictionary<TxId, Transaction<T>?>();
-            _queue = new List<TxId>();
+            _staged = new ConcurrentDictionary<TxId, Transaction<T>>();
+            _ignored = new ConcurrentBag<TxId>();
             _lock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
         }
 
         /// <summary>
-        /// Volatilizes staged transactions older than this <see cref="Lifetime"/>.
-        /// <para>Note that transactions older than the lifetime never cannot be staged.</para>
+        /// Lifespan for <see cref="Transaction{T}"/>s.  Any <see cref="Transaction{T}"/> older
+        /// than this <see cref="TimeSpan"/> will be considered expired.
         /// </summary>
+        /// <remarks>
+        /// Expired <see cref="Transaction{T}"/>s cannot be staged.
+        /// </remarks>
         public TimeSpan Lifetime { get; }
 
-        /// <inheritdoc cref="IStagePolicy{T}.Stage(BlockChain{T}, Transaction{T})"/>
+        /// <inheritdoc/>
         public void Stage(BlockChain<T> blockChain, Transaction<T> transaction)
         {
-            if (DateTimeOffset.UtcNow - Lifetime > transaction.Timestamp)
+            if (Exipred(transaction))
             {
-                // The transaction is already expired; don't stage it at all.
                 return;
             }
 
+            _lock.EnterUpgradeableReadLock();
             try
             {
-                if (!_set.TryAdd(transaction.Id, transaction))
+                if (_ignored.Contains(transaction.Id))
                 {
-                    _lock.EnterUpgradeableReadLock();
-                    if (_queue.Contains(transaction.Id))
+                    return;
+                }
+                else
+                {
+                    _lock.EnterWriteLock();
+                    try
                     {
-                        return;
+                        if (_staged.TryAdd(transaction.Id, transaction))
+                        {
+                            const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
+                            _logger
+                                .ForContext("Tag", "Metric")
+                                .Debug(
+                                    "Transaction {TxId} by {Signer} " +
+                                    "with timestamp {TxTimestamp} staged at {StagedTimestamp}.",
+                                    transaction.Id,
+                                    transaction.Signer,
+                                    transaction.Timestamp.ToString(
+                                        TimestampFormat, CultureInfo.InvariantCulture),
+                                    DateTimeOffset.UtcNow.ToString(
+                                        TimestampFormat, CultureInfo.InvariantCulture));
+                        }
                     }
+                    finally
+                    {
+                        _lock.ExitWriteLock();
+                    }
+                }
+            }
+            finally
+            {
+                _lock.ExitUpgradeableReadLock();
+            }
+        }
+
+        /// <inheritdoc/>
+        public void Unstage(BlockChain<T> blockChain, TxId id)
+        {
+            _lock.EnterWriteLock();
+            try
+            {
+                _staged.TryRemove(id, out _);
+            }
+            finally
+            {
+                _lock.ExitWriteLock();
+            }
+        }
+
+        /// <inheritdoc/>
+        public void Ignore(BlockChain<T> blockChain, TxId id)
+        {
+            _lock.EnterUpgradeableReadLock();
+            try
+            {
+                if (_ignored.Contains(id))
+                {
+                    return;
                 }
 
                 _lock.EnterWriteLock();
                 try
                 {
-                    _queue.Add(transaction.Id);
-                    const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
-                    _logger
-                        .ForContext("Tag", "Metric")
-                        .Debug(
-                            "Transaction {TxId} by {Signer} " +
-                            "with timestamp {TxTimestamp} staged at {StagedTimestamp}.",
-                            transaction.Id,
-                            transaction.Signer,
-                            transaction.Timestamp.ToString(
-                                TimestampFormat, CultureInfo.InvariantCulture),
-                            DateTimeOffset.UtcNow.ToString(
-                                TimestampFormat, CultureInfo.InvariantCulture));
+                    _ignored.Add(id);
                 }
                 finally
                 {
@@ -97,108 +161,55 @@ namespace Libplanet.Blockchain.Policies
             }
             finally
             {
-                if (_lock.IsUpgradeableReadLockHeld)
-                {
-                    _lock.ExitUpgradeableReadLock();
-                }
+                _lock.ExitUpgradeableReadLock();
             }
         }
 
-        /// <inheritdoc cref="IStagePolicy{T}.Unstage(BlockChain{T}, TxId)"/>
-        public void Unstage(BlockChain<T> blockChain, TxId id)
-        {
-            _lock.EnterWriteLock();
-            _queue.Remove(id);
-            _lock.ExitWriteLock();
-        }
-
-        /// <inheritdoc cref="IStagePolicy{T}.Ignore(BlockChain{T}, TxId)"/>
-        public void Ignore(BlockChain<T> blockChain, TxId id) =>
-            _set.TryAdd(id, null);
-
-        /// <inheritdoc cref="IStagePolicy{T}.Ignores(BlockChain{T}, TxId)"/>
-        public bool Ignores(BlockChain<T> blockChain, TxId id) =>
-            (_set.TryGetValue(id, out Transaction<T>? tx) && tx is null)
-            || Get(blockChain, id, includeUnstaged: true) is { };
-
-        /// <inheritdoc cref="IStagePolicy{T}.Get(BlockChain{T}, TxId, bool)"/>
-        public Transaction<T>? Get(BlockChain<T> blockChain, TxId id, bool includeUnstaged)
-        {
-            if (!_set.TryGetValue(id, out Transaction<T>? tx) || tx is null)
-            {
-                return null;
-            }
-            else if (tx.Timestamp >= DateTimeOffset.UtcNow - Lifetime)
-            {
-                _lock.EnterReadLock();
-                try
-                {
-                    return includeUnstaged || _queue.Contains(id) ? tx : null;
-                }
-                finally
-                {
-                    _lock.ExitReadLock();
-                }
-            }
-
-            _lock.EnterWriteLock();
-            try
-            {
-                _queue.Remove(id);
-                _set.TryRemove(id, out _);
-            }
-            finally
-            {
-                _lock.ExitWriteLock();
-            }
-
-            return null;
-        }
-
-        /// <inheritdoc cref="IStagePolicy{T}.Iterate"/>
-        public IEnumerable<Transaction<T>> Iterate()
+        /// <inheritdoc/>
+        public bool Ignores(BlockChain<T> blockChain, TxId id)
         {
             _lock.EnterReadLock();
-            TxId[] queue;
             try
             {
-                queue = _queue.ToArray();
+                return _ignored.Contains(id);
             }
             finally
             {
                 _lock.ExitReadLock();
             }
+        }
 
-            DateTimeOffset exp = DateTimeOffset.UtcNow - Lifetime;
-            var expired = new List<TxId>();
-            foreach (TxId txid in queue)
-            {
-                if (_set.TryGetValue(txid, out Transaction<T>? tx) && !(tx is null))
-                {
-                    if (tx.Timestamp > exp)
-                    {
-                        yield return tx;
-                    }
-                    else
-                    {
-                        expired.Add(tx.Id);
-                    }
-                }
-            }
+        /// <inheritdoc/>
+        public Transaction<T>? Get(BlockChain<T> blockChain, TxId id, bool filtered = true)
+        {
+            Transaction<T>? transaction = null;
 
-            if (!expired.Any())
-            {
-                yield break;
-            }
-
-            // Clean up expired transactions (if any exist).
             _lock.EnterWriteLock();
             try
             {
-                foreach (TxId txid in expired)
+                _staged.TryGetValue(id, out transaction);
+
+                if (transaction is Transaction<T> tx)
                 {
-                    _queue.Remove(txid);
-                    _set.TryRemove(txid, out _);
+                    if (Exipred(tx) || _ignored.Contains(tx.Id))
+                    {
+                        _staged.TryRemove(id, out _);
+                        return null;
+                    }
+                    else if (filtered)
+                    {
+                        return blockChain.Store.GetTxNonce(blockChain.Id, tx.Signer) <= tx.Nonce
+                            ? tx
+                            : null;
+                    }
+                    else
+                    {
+                        return tx;
+                    }
+                }
+                else
+                {
+                    return null;
                 }
             }
             finally
@@ -207,32 +218,55 @@ namespace Libplanet.Blockchain.Policies
             }
         }
 
-        /// <inheritdoc cref="IStagePolicy{T}.GetNextTxNonce"/>
-        public long GetNextTxNonce(Address address, long minedTxs)
+        /// <inheritdoc/>
+        public IEnumerable<Transaction<T>> Iterate(BlockChain<T> blockChain, bool filtered = true)
         {
-            long nonce = minedTxs;
-            long prevNonce = nonce - 1;
-            IOrderedEnumerable<long> stagedTxNonces = Iterate()
-                .Where(tx => tx.Signer.Equals(address) && tx.Nonce > prevNonce)
-                .Select(tx => tx.Nonce)
-                .OrderBy(n => n);
+            List<Transaction<T>> transactions = new List<Transaction<T>>();
 
-            foreach (long n in stagedTxNonces)
+            _lock.EnterUpgradeableReadLock();
+            try
             {
-                if (n < nonce)
+                List<TxId> txIds = _staged.Keys.ToList();
+                foreach (TxId txId in txIds)
                 {
-                    continue;
+                    if (Get(blockChain, txId, filtered) is Transaction<T> tx)
+                    {
+                        transactions.Add(tx);
+                    }
                 }
+            }
+            finally
+            {
+                _lock.ExitUpgradeableReadLock();
+            }
 
-                if (n != nonce)
+            return transactions;
+        }
+
+        /// <inheritdoc/>
+        public long GetNextTxNonce(BlockChain<T> blockChain, Address address)
+        {
+            long nonce = blockChain.Store.GetTxNonce(blockChain.Id, address);
+            IEnumerable<Transaction<T>> orderedTxs = Iterate(blockChain, filtered: true)
+                .Where(tx => tx.Signer.Equals(address))
+                .OrderBy(tx => tx.Nonce);
+
+            foreach (Transaction<T> tx in orderedTxs)
+            {
+                if (nonce < tx.Nonce)
                 {
                     break;
                 }
-
-                nonce++;
+                else if (nonce == tx.Nonce)
+                {
+                    nonce++;
+                }
             }
 
             return nonce;
         }
+
+        private bool Exipred(Transaction<T> transaction) =>
+            transaction.Timestamp + Lifetime < DateTimeOffset.UtcNow;
     }
 }

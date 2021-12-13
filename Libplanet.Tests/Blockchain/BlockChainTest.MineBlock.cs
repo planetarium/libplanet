@@ -376,6 +376,8 @@ namespace Libplanet.Tests.Blockchain
 
             Assert.Empty(block.Transactions);
             Assert.Empty(_blockChain.ListStagedTransactions());
+            Assert.Empty(_blockChain.StagePolicy.Iterate(_blockChain, filtered: true));
+            Assert.Single(_blockChain.StagePolicy.Iterate(_blockChain, filtered: false));
         }
 
         [Fact]
@@ -690,7 +692,7 @@ namespace Libplanet.Tests.Blockchain
             _blockChain.Append(b);
 
             Assert.Single(b.Transactions);
-            Assert.Equal(txs[0], b.Transactions.Single());
+            Assert.Contains(b.Transactions.Single(), txs);
         }
 
         [Fact]

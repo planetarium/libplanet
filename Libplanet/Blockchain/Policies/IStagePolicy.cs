@@ -6,78 +6,99 @@ using Libplanet.Tx;
 namespace Libplanet.Blockchain.Policies
 {
     /// <summary>
-    /// The interface to configure a <see cref="BlockChain{T}"/>'s strategy to deal with staged
+    /// An interface to configure a <see cref="BlockChain{T}"/>'s strategy to deal with staged
     /// transactions.
     /// </summary>
     /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
-    /// to <see cref="BlockChain{T}"/>'s type parameter.</typeparam>
-    /// <remarks>Every operation on an object implementing this must be thread-safe.</remarks>
+    /// the <see cref="BlockChain{T}"/>'s type parameter.</typeparam>
+    /// <remarks>
+    /// Every operation of an implementation of this <c>interface</c> must be thread-safe.
+    /// </remarks>
     public interface IStagePolicy<T>
         where T : IAction, new()
     {
         /// <summary>
         /// Stages a <paramref name="transaction"/>.
         /// </summary>
-        /// <param name="blockChain">The chain to stage the <paramref name="transaction"/>.
+        /// <param name="blockChain">The <see cref="BlockChain{T}"/> that the stage belongs to.
         /// </param>
         /// <param name="transaction">The <seealso cref="Transaction{T}"/> to be staged.</param>
-        /// <remarks>It does not throw any exception even if the <paramref name="transaction"/> has
-        /// already been staged.  It does nothing either if the <paramref name="transaction"/> has
-        /// marked as ignored (using <see cref="Ignore(BlockChain{T}, TxId)"/> method).</remarks>
+        /// <remarks>
+        /// <para>
+        /// This does not throw any exception regardless of whether <paramref name="transaction"/>
+        /// was successfully staged or not.
+        /// </para>
+        /// <para>
+        /// If the <see cref="Transaction{T}.Id"/> of <paramref name="transaction"/> is marked
+        /// as ignored, <paramref name="transaction"/> will not be staged.
+        /// </para>
+        /// </remarks>
         public void Stage(BlockChain<T> blockChain, Transaction<T> transaction);
 
         /// <summary>
-        /// Removes a transaction <paramref name="id"/> from the stage.
+        /// Unstages a transaction <paramref name="id"/>.
         /// </summary>
-        /// <param name="blockChain">The chain to unstage the <paramref name="id"/>.</param>
-        /// <param name="id">The <seealso cref="Transaction{T}.Id"/> to remove.</param>
-        /// <remarks>It does not throw any exception even if the <paramref name="id"/> has never
-        /// been staged.</remarks>
+        /// <param name="blockChain">The <see cref="BlockChain{T}"/> that the stage belongs to.
+        /// </param>
+        /// <param name="id">The <seealso cref="Transaction{T}.Id"/> to unstage.</param>
+        /// <remarks>
+        /// This does not throw any exception regardless of whether <paramref name="id"/> was
+        /// successfully unstaged or not.
+        /// </remarks>
         public void Unstage(BlockChain<T> blockChain, TxId id);
 
         /// <summary>
-        /// Marks a transaction as ignored, so that it will be never staged.
+        /// Marks given <paramref name="id"/> as ignored.
         /// </summary>
-        /// <param name="blockChain">The chain that the stage belongs to.</param>
+        /// <param name="blockChain">The <see cref="BlockChain{T}"/> that the stage belongs to.
+        /// </param>
         /// <param name="id">The <see cref="Transaction{T}.Id"/> to ignore.</param>
-        /// <remarks>If the transaction is already in the stage, this method does nothing.</remarks>
+        /// <remarks>
+        /// If the <see cref="Transaction{T}"/> associated with <paramref name="id"/> is already
+        /// staged, this also unstages the <see cref="Transaction{T}"/>.
+        /// </remarks>
         public void Ignore(BlockChain<T> blockChain, TxId id);
 
         /// <summary>
-        /// Checks if a transaction should be ignored for any reasons (for example, it is already
-        /// staged or marked as ignored).
+        /// Checks if given <paramref name="id"/> is marked as ignored.
         /// </summary>
-        /// <param name="blockChain">The chain that the stage belongs to.</param>
+        /// <param name="blockChain">The <see cref="BlockChain{T}"/> that the stage belongs to.
+        /// </param>
         /// <param name="id">The <see cref="Transaction{T}.Id"/> to check.</param>
-        /// <returns><c>true</c> if a transaction should be ignored.
-        /// Otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if <paramref name="id"/> is marked as ignored,
+        /// <c>false</c> otherwise.</returns>
         public bool Ignores(BlockChain<T> blockChain, TxId id);
 
         /// <summary>
-        /// Gets a staged <see cref="Transaction{T}"/> by its <paramref name="id"/>.
+        /// Retrieves a staged <see cref="Transaction{T}"/> by its <paramref name="id"/>.
         /// </summary>
-        /// <param name="blockChain">The chain that the stage belongs to.</param>
+        /// <param name="blockChain">The <see cref="BlockChain{T}"/> that the stage belongs to.
+        /// </param>
         /// <param name="id">The <see cref="Transaction{T}.Id"/> to get.</param>
-        /// <param name="includeUnstaged">Whether to include transactions that had once staged but
-        /// unstaged then.</param>
-        /// <returns>A staged transaction if found.  If it had never staged <c>null</c> is
-        /// returned.</returns>
-        public Transaction<T>? Get(BlockChain<T> blockChain, TxId id, bool includeUnstaged);
+        /// <param name="filtered">Whether to filter masked staged <see cref="Transaction{T}"/>s
+        /// or not.  Set to <c>true</c> by default.</param>
+        /// <returns>The staged <see cref="Transaction{T}"/> associated with <paramref name="id"/>
+        /// if found,  <c>null</c> otherwise.</returns>
+        public Transaction<T>? Get(BlockChain<T> blockChain, TxId id, bool filtered = true);
 
         /// <summary>
-        /// Enumerates all staged transaction IDs.
+        /// Enumerates all staged <see cref="Transaction{T}"/>s.
         /// </summary>
-        /// <returns>Staged transactions.  The earliest staged transaction goes first,
-        /// and the latest staged transaction goes last.</returns>
-        public IEnumerable<Transaction<T>> Iterate();
+        /// <param name="blockChain">The <see cref="BlockChain{T}"/> that the stage belongs to.
+        /// </param>
+        /// <param name="filtered">Whether to filter masked staged <see cref="Transaction{T}"/>s
+        /// or not.  Set to <c>true</c> by default.</param>
+        /// <returns>All staged transactions.  No ordering is guaranteed.</returns>
+        public IEnumerable<Transaction<T>> Iterate(BlockChain<T> blockChain, bool filtered = true);
 
         /// <summary>
-        /// Get the next transaction nonce according for the <paramref name="address"/>.
+        /// Calculates the next nonce according for given <paramref name="address"/>.
         /// </summary>
-        /// <param name="address"><see cref="Address"/> to get transaction.</param>
-        /// <param name="minedTxs">Receives the expected latest nonce of the
-        /// <paramref name="address"/> being looked up on the blockchain.</param>
-        /// <returns>The next transaction nonce.</returns>
-        public long GetNextTxNonce(Address address, long minedTxs);
+        /// <param name="blockChain">The <see cref="BlockChain{T}"/> that the stage belongs to.
+        /// </param>
+        /// <param name="address">The <see cref="Address"/> to calculate the next nonce for.
+        /// </param>
+        /// <returns>The next appropriate nonce for <paramref name="address"/>.</returns>
+        public long GetNextTxNonce(BlockChain<T> blockChain, Address address);
     }
 }

@@ -420,7 +420,7 @@ namespace Libplanet.Blockchain
         /// <see cref="Transaction{T}"/> with a given <paramref name="txId"/>.</exception>
         public Transaction<T> GetTransaction(TxId txId)
         {
-            if (StagePolicy.Get(this, txId, includeUnstaged: true) is { } tx)
+            if (StagePolicy.Get(this, txId) is { } tx)
             {
                 return tx;
             }
@@ -568,9 +568,8 @@ namespace Libplanet.Blockchain
             );
 
         /// <summary>
-        /// Adds a <paramref name="transaction"/> to the pending list so that
-        /// a next <see cref="Block{T}"/> to be mined contains the given
-        /// <paramref name="transaction"/>.
+        /// Adds <paramref name="transaction"/> to the pending list so that a next
+        /// <see cref="Block{T}"/> to be mined may contain given <paramref name="transaction"/>.
         /// </summary>
         /// <param name="transaction"><see cref="Transaction{T}"/> to add to the pending list.
         /// </param>
@@ -589,19 +588,7 @@ namespace Libplanet.Blockchain
                     msg);
             }
 
-            if (StagePolicy.Ignores(this, transaction.Id))
-            {
-                return;
-            }
-
-            if (transaction.Nonce >= Store.GetTxNonce(Id, transaction.Signer))
-            {
-                StagePolicy.Stage(this, transaction);
-            }
-            else
-            {
-                StagePolicy.Ignore(this, transaction.Id);
-            }
+            StagePolicy.Stage(this, transaction);
         }
 
         /// <summary>
@@ -621,7 +608,7 @@ namespace Libplanet.Blockchain
         /// <returns>The next <see cref="Transaction{T}.Nonce"/> value of the
         /// <paramref name="address"/>.</returns>
         public long GetNextTxNonce(Address address)
-            => StagePolicy.GetNextTxNonce(address, Store.GetTxNonce(Id, address));
+            => StagePolicy.GetNextTxNonce(this, address);
 
         /// <summary>
         /// Records and queries the <paramref name="perceivedTime"/> of the given
@@ -698,7 +685,7 @@ namespace Libplanet.Blockchain
         public IImmutableSet<TxId> GetStagedTransactionIds()
         {
             // FIXME: How about turning this method to the StagedTransactions property?
-            return StagePolicy.Iterate().Select(tx => tx.Id).ToImmutableHashSet();
+            return StagePolicy.Iterate(this).Select(tx => tx.Id).ToImmutableHashSet();
         }
 
         /// <summary>
@@ -865,7 +852,6 @@ namespace Libplanet.Blockchain
                     nonceDeltas[txSigner] = nonceDelta + 1;
                 }
 
-                ImmutableDictionary<Address, long> maxNonces;
                 _rwlock.EnterWriteLock();
                 try
                 {
@@ -910,55 +896,33 @@ namespace Libplanet.Blockchain
                     {
                         Store.PutTxIdBlockHashIndex(tx.Id, block.Hash);
                     }
-
-                    const string unstageStartMsg =
-                        "Unstaging {Txs} transaction(s) which belong to the block " +
-                        "#{BlockIndex} {BlockHash}...";
-                    _logger.Debug(
-                        unstageStartMsg,
-                        block.Transactions.Count(),
-                        block.Index,
-                        block.Hash
-                    );
-
-                    maxNonces = block.Transactions
-                        .GroupBy(
-                            t => t.Signer,
-                            t => t.Nonce,
-                            (signer, nonces) => new
-                            {
-                                signer = signer,
-                                maxNonce = nonces.Max(),
-                            }
-                        )
-                        .ToImmutableDictionary(t => t.signer, t => t.maxNonce);
                 }
                 finally
                 {
                     _rwlock.ExitWriteLock();
                 }
 
-                ISet<TxId> txIds = StagePolicy.Iterate()
-                    .Where(tx => maxNonces.TryGetValue(tx.Signer, out long nonce) &&
-                        tx.Nonce <= nonce)
-                    .Select(tx => tx.Id)
-                    .ToImmutableHashSet();
-                foreach (TxId txId in txIds)
+                _logger.Debug(
+                    "Unstaging {TxCount} transactions from block #{BlockIndex} {BlockHash}...",
+                    block.Transactions.Count(),
+                    block.Index,
+                    block.Hash);
+                foreach (Transaction<T> tx in block.Transactions)
                 {
-                    StagePolicy.Unstage(this, txId);
+                    UnstageTransaction(tx);
                 }
 
-                const string unstageEndMsg =
-                    "Unstaged {Txs} transaction(s), which belong to the block " +
-                    "#{BlockIndex} {BlockHash}...";
-                _logger.Debug(unstageEndMsg, txIds.Count, block.Index, block.Hash);
+                _logger.Debug(
+                    "Unstaged {TxCount} transactions, from block #{BlockIndex} {BlockHash}...",
+                    block.Transactions.Count(),
+                    block.Index,
+                    block.Hash);
 
                 TipChanged?.Invoke(this, (prevTip, block));
                 _logger.Debug(
                     "Appended the block #{BlockIndex} {BlockHash}.",
                     block.Index,
-                    block.Hash
-                );
+                    block.Hash);
 
                 if (renderBlocks)
                 {
@@ -1200,7 +1164,7 @@ namespace Libplanet.Blockchain
             IComparer<Transaction<T>> txPriority = null
         )
         {
-            IEnumerable<Transaction<T>> unorderedTxs = StagePolicy.Iterate();
+            IEnumerable<Transaction<T>> unorderedTxs = StagePolicy.Iterate(this);
             if (txPriority is { } comparer)
             {
                 unorderedTxs = unorderedTxs.OrderBy(tx => tx, comparer);

@@ -485,6 +485,7 @@ namespace Libplanet.Tests.Net
                     actions: new DumbAction[] { });
                 Assert.Equal(0, tx1.Nonce);
                 Assert.Equal(1, tx2.Nonce);
+
                 await StartAsync(swarmA);
                 await StartAsync(swarmB);
                 await swarmA.AddPeersAsync(new[] { swarmB.AsPeer }, null);
@@ -496,10 +497,12 @@ namespace Libplanet.Tests.Net
 
                 chainA.UnstageTransaction(tx2);
                 Assert.Equal(1, chainA.GetNextTxNonce(privateKey.ToAddress()));
+
                 swarmA.RoutingTable.RemovePeer((BoundPeer)swarmB.AsPeer);
                 swarmB.RoutingTable.RemovePeer((BoundPeer)swarmA.AsPeer);
                 Assert.Empty(swarmA.Peers);
                 Assert.Empty(swarmB.Peers);
+
                 await chainB.MineBlock(keyB);
 
                 var tx3 = chainA.MakeTransaction(
@@ -517,10 +520,19 @@ namespace Libplanet.Tests.Net
 
                 swarmA.BroadcastTxs(new[] { tx3, tx4 });
                 await swarmC.TxReceived.WaitAsync();
+
+                // SwarmB receives tx3 and is staged, but policy filters it.
                 Assert.DoesNotContain(tx3.Id, chainB.GetStagedTransactionIds());
+                Assert.Contains(
+                    tx3.Id,
+                    chainB.StagePolicy.Iterate(chainB, filtered: false).Select(tx => tx.Id));
                 Assert.Contains(tx4.Id, chainB.GetStagedTransactionIds());
+
                 // SwarmC can not receive tx3 because SwarmB does not rebroadcast it.
                 Assert.DoesNotContain(tx3.Id, chainC.GetStagedTransactionIds());
+                Assert.DoesNotContain(
+                    tx3.Id,
+                    chainC.StagePolicy.Iterate(chainC, filtered: false).Select(tx => tx.Id));
                 Assert.Contains(tx4.Id, chainC.GetStagedTransactionIds());
             }
             finally

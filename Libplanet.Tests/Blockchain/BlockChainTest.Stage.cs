@@ -20,10 +20,10 @@ namespace Libplanet.Tests.Blockchain
                 _fx.Transaction1,
                 _fx.Transaction2,
             };
-            Assert.Empty(_blockChain.StagePolicy.Iterate());
+            Assert.Empty(_blockChain.StagePolicy.Iterate(_blockChain));
 
             StageTransactions(txs);
-            Assert.Equal(txs, _blockChain.StagePolicy.Iterate().ToHashSet());
+            Assert.Equal(txs, _blockChain.StagePolicy.Iterate(_blockChain).ToHashSet());
         }
 
         [Fact]
@@ -54,7 +54,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async Task TransactionsWithTxsShouldNotBeStaged()
+        public async Task TransactionsWithDuplicatedNonceShouldBeFiltered()
         {
             var key = new PrivateKey();
             Transaction<DumbAction> txWithValidNonce = _fx.MakeTransaction(
@@ -64,7 +64,9 @@ namespace Libplanet.Tests.Blockchain
             );
             _blockChain.StageTransaction(txWithValidNonce);
             await _blockChain.MineBlock(key);
-            Assert.Empty(_blockChain.StagePolicy.Iterate());
+            Assert.Empty(_blockChain.GetStagedTransactionIds());
+            Assert.Empty(_blockChain.StagePolicy.Iterate(_blockChain, filtered: true));
+            Assert.Empty(_blockChain.StagePolicy.Iterate(_blockChain, filtered: false));
 
             Transaction<DumbAction> txWithInvalidNonce = _fx.MakeTransaction(
                 new DumbAction[0],
@@ -73,8 +75,9 @@ namespace Libplanet.Tests.Blockchain
                 privateKey: key
             );
             _blockChain.StageTransaction(txWithInvalidNonce);
-            Assert.Empty(_blockChain.StagePolicy.Iterate());
-            Assert.True(_blockChain.StagePolicy.Ignores(_blockChain, txWithInvalidNonce.Id));
+            Assert.Empty(_blockChain.GetStagedTransactionIds());
+            Assert.Empty(_blockChain.StagePolicy.Iterate(_blockChain, filtered: true));
+            Assert.NotEmpty(_blockChain.StagePolicy.Iterate(_blockChain, filtered: false));
         }
 
         [Fact]

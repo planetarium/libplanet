@@ -10,6 +10,16 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  `IStagePolicy<T>`'s `interface` methods updated.  Notably,
+    all `IStagePolicy<T>` now accept `BlockChain<T>` as its parameter.
+    [[#1648]]
+     -  `Get(BlockChain<T> blockChain, TxId id, bool includeInstaged)` changed
+        to `Get(BlockChain<T> blockChain, TxId id, bool filtered = true)`.
+     -  `Iterate()` changed to
+        `Iterate(BlockChain<T> blockChain, bool filtered = true)`.
+     -  `GetNextTxNonce(Address address, long minedTxs)` changed to
+        `GetNextTxNonce(BlockChain<T> blockChain, Address address)`.
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -18,11 +28,21 @@ To be released.
 
 ### Behavioral changes
 
+ -  Description of `IStagePolicy<T>` and its default implementation
+    `VolatileStagePolicy<T>` is overhauled.  [[#1648]]
+     -  `IStagePolicy<T>.Iterate()` no longer guarantees any kind of ordering.
+     -  `IStagePolicy<T>.Ignore()` now also unstages the `Transaction<T>`.
+     -  `VolatileStagePolicy<T>` now holds every previously known unconfirmed
+        `Transaction<T>` regardless of its staging/unstaging history unless
+        it is expired or ignored.
+
 ### Bug fixes
 
 ### Dependencies
 
 ### CLI tools
+
+[#1648]: https://github.com/planetarium/libplanet/pull/1648
 
 
 Version 0.23.2
