@@ -4,7 +4,13 @@ Libplanet changelog
 Version 0.23.3
 --------------
 
-To be released.
+Released on December 13, 2021.
+
+ -  Virtually disabled state fragmentation due to its critical negative impact
+    on action evaluation performance.  This will be enabled again after more
+    practical tests in the future releases.  [[#1665]]
+
+[#1665]: https://github.com/planetarium/libplanet/pull/1665
 
 
 Version 0.23.2
