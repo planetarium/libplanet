@@ -389,7 +389,7 @@ namespace Libplanet.Blockchain
                 {
                     _logger.Debug(
                         "Ignoring tx {Iter}/{Total} {Transaction} by {Signer} " +
-                        "as it has higher nonce than expected: {Nonce}" +
+                        "as it has higher nonce than expected: {Nonce}",
                         i,
                         stagedTransactions.Count,
                         tx.Id,
