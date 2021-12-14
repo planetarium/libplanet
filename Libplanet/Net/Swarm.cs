@@ -1100,7 +1100,7 @@ namespace Libplanet.Net
         private void BroadcastTxs(BoundPeer except, IEnumerable<Transaction<T>> txs)
         {
             List<TxId> txIds = txs.Select(tx => tx.Id).ToList();
-            _logger.Debug("Broadcast {TransactionsNumber} txs...", txIds.Count);
+            _logger.Debug("Broadcasting {TxIdCount} txIds...", txIds.Count);
             BroadcastTxIds(except?.Address, txIds);
         }
 

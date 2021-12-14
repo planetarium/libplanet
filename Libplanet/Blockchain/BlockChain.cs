@@ -840,7 +840,7 @@ namespace Libplanet.Blockchain
 
                     if (!expectedNonce.Equals(tx1.Nonce))
                     {
-                        _logger.Debug("Append failed. The tx `{transaction}` is invalid.", tx1);
+                        _logger.Debug("Append failed. The tx `{TxId}` is invalid.", tx1.Id);
                         throw new InvalidTxNonceException(
                             tx1.Id,
                             expectedNonce,
