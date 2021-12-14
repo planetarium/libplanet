@@ -763,12 +763,12 @@ namespace Libplanet.Blockchain
                 _logger
                     .ForContext("Tag", "Metric")
                     .Debug(
-                    "Finished updating the states with {KeyCount} key changes affected by " +
-                    "block #{BlockIndex} {BlockHash} in {DurationMs:F0}ms.",
-                    totalDelta.Count,
-                    block.Index,
-                    block.Hash,
-                    setStatesDuration.TotalMilliseconds);
+                        "Finished updating the states with {KeyCount} key changes affected by " +
+                        "block #{BlockIndex} {BlockHash} in {DurationMs:F0}ms.",
+                        totalDelta.Count,
+                        block.Index,
+                        block.Hash,
+                        setStatesDuration.TotalMilliseconds);
 
                 IEnumerable<TxExecution> txExecutions = MakeTxExecutions(block, evaluations);
                 UpdateTxExecutions(txExecutions);
@@ -1025,6 +1025,7 @@ namespace Libplanet.Blockchain
         {
             try
             {
+                DateTimeOffset startTime = DateTimeOffset.Now;
                 _rwlock.EnterReadLock();
 
                 BlockHash? tip = Store.IndexBlockHash(Id, -1);
@@ -1065,6 +1066,16 @@ namespace Libplanet.Blockchain
 
                     count--;
                 }
+
+                TimeSpan duration = DateTimeOffset.Now - startTime;
+                _logger
+                    .ForContext("Tag", "Metric")
+                    .Debug(
+                        "Found {HashCount} hashes from storage with {ChainIdCount} chain ids " +
+                        "in {DurationMs:F0}ms.",
+                        result.Count,
+                        Store.ListChainIds().Count(),
+                        duration.TotalMilliseconds);
 
                 return new Tuple<long?, IReadOnlyList<BlockHash>>(branchpointIndex, result);
             }
