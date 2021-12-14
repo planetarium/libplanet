@@ -35,6 +35,8 @@ To be released.
      -  `VolatileStagePolicy<T>` now holds every previously known unconfirmed
         `Transaction<T>` regardless of its staging/unstaging history unless
         it is expired or ignored.
+ -  New log output tagged with `Metric` added to measure execution time for
+    `BlockChain<T>.FindNextHashes()`.  [[#1669]]
 
 ### Bug fixes
 
@@ -43,6 +45,7 @@ To be released.
 ### CLI tools
 
 [#1648]: https://github.com/planetarium/libplanet/pull/1648
+[#1669]: https://github.com/planetarium/libplanet/pull/1669
 
 
 Version 0.23.3
