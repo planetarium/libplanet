@@ -13,7 +13,7 @@ jobs:
   build:
     if: github.event_name != 'schedule' || github.repository == 'planetarium/libplanet'
     name: dist
-    runs-on: ubuntu-20.04
+    runs-on: windows-2022
     steps:
     - uses: actions/checkout@main
       if: github.event_name != 'pull_request'
@@ -30,30 +30,35 @@ jobs:
         scope: '@planetarium'
     - run: .github/bin/dist-version.ps1
       shell: pwsh
-    - run: .github/bin/dist-release-note.sh CHANGES.md obj/release_note.txt
+    - run: .github/bin/dist-release-note.ps1 CHANGES.md obj/release_note.txt
+      shell: pwsh
     - uses: actions/upload-artifact@main
       with:
         name: dist-obj
         path: obj/
     - run: .github/bin/dist-pack.sh
+      shell: bash
     - run: |
         . .github/bin/constants.sh
-        mkdir -p /tmp/dist-bin/
+        mkdir -p "${{ runner.temp }}/dist-bin/"
         for project in "${projects[@]}"; do
-          cp -r "$project/bin/$configuration"/* /tmp/dist-bin/
+          cp -r "$project/bin/$configuration"/* "${{ runner.temp }}/dist-bin/"
         done
+      shell: bash
     - uses: actions/upload-artifact@main
       with:
         name: dist-bin
-        path: /tmp/dist-bin/
+        path: "${{ runner.temp }}/dist-bin/"
     - if: >-
         github.event_name != 'pull_request' &&
         startsWith(github.ref, 'refs/tags/')
       run: .github/bin/dist-github-release.sh
+      shell: bash
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - if: github.event_name != 'pull_request' && env.NUGET_API_KEY != ''
       run: .github/bin/dist-nuget.sh
+      shell: bash
       env:
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
     - if: >-
@@ -61,6 +66,7 @@ jobs:
         startsWith(github.ref, 'refs/tags/') &&
         env.NODE_AUTH_TOKEN != ''
       run: .github/bin/dist-npm.sh
+      shell: bash
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
 

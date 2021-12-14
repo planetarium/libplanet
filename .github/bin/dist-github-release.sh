@@ -74,7 +74,6 @@ for project in "${projects[@]}"; do
     --file "$nupkg_path"
 done
 
-
 for project in "${executables[@]}"; do
   for rid in "${rids[@]}"; do
     for exec_path in "./$project/bin/$configuration"/*-"$tag-$rid".*

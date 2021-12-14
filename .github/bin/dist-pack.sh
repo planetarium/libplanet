@@ -17,12 +17,13 @@ package_version="$(cat obj/package_version.txt)"
 
 for project in "${executables[@]}"; do
   for rid in "${rids[@]}"; do
-    output_dir="./$project/bin/$configuration/$rid/"
+    output_dir="$project/bin/$configuration/$rid/"
     mkdir -p "$output_dir"
     dotnet publish \
       --runtime "$rid" \
       --self-contained \
       -p:PublishSingleFile=true \
+      -p:PublishTrimmed=true \
       -p:Version="$version" \
       --configuration "$configuration" \
       --output "$output_dir" \
@@ -41,7 +42,20 @@ for project in "${executables[@]}"; do
         else
           exit 1
         fi
-    bin_name="$(find "$output_dir" -type f -executable -exec basename {} \;)"
+    for f in "$output_dir"/*; do
+      if file -b "$f" \
+         | grep '^ELF\b\|\bexecutable\b' > /dev/null; then
+        bin_name="$(basename "$f")"
+        break
+      fi
+    done
+    if [[ "$bin_name" = "" ]]; then
+      {
+        echo "No executable file was made for $project ($rid):"
+        ls -al "$output_dir"
+      } > /dev/stderr
+      exit 1
+    fi
     pushd "$output_dir"
     if [[ "$rid" = win-* ]]; then
       if command -v 7z > /dev/null; then
@@ -50,7 +64,10 @@ for project in "${executables[@]}"; do
         zip -r9 "../${bin_name%.exe}-$version-$rid.zip" ./*
       fi
     else
-      tar cvfJ "../$bin_name-$version-$rid.tar.xz" ./*
+      tar cvfJ \
+        "../$bin_name-$version-$rid.tar.xz" \
+        --mode=+x \
+        ./"$bin_name"*
     fi
     popd
     rm -rf "$output_dir"
