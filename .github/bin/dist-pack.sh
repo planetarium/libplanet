@@ -44,7 +44,11 @@ for project in "${executables[@]}"; do
     bin_name="$(find "$output_dir" -type f -executable -exec basename {} \;)"
     pushd "$output_dir"
     if [[ "$rid" = win-* ]]; then
-      zip -r9 "../${bin_name%.exe}-$version-$rid.zip" ./*
+      if command -v 7z > /dev/null; then
+        7z a -r -mx9 "../${bin_name%.exe}-$version-$rid.zip" ./*
+      else
+        zip -r9 "../${bin_name%.exe}-$version-$rid.zip" ./*
+      fi
     else
       tar cvfJ "../$bin_name-$version-$rid.tar.xz" ./*
     fi
