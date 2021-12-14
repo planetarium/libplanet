@@ -15,6 +15,9 @@ if (-not (Test-Path obj/package_version.txt)) {
 $versionPrefix = (Get-Content obj/version_prefix.txt).Trim()
 $packageVersion = (Get-Content obj/package_version.txt).Trim()
 
+Write-Output "versionPrefix: $versionPrefix"
+Write-Output "packageVersion: $packageVersion"
+
 Invoke-WebRequest `
   -Uri "https://github.com/dahlia/submark/releases/download/0.2.0/submark-win64.exe" `
   -OutFile "$env:Temp\submark.exe"
@@ -24,6 +27,8 @@ Invoke-WebRequest `
   --h2 "Version $versionPrefix" `
   "$changelogPath"
 Remove-Item "$env:Temp\submark.exe"
+
+Get-Content "$outputPath"
 
 if ((Get-Content "$outputPath").Trim().Length -lt 1) {
   Write-Error "There is no section for the version $versionPrefix."

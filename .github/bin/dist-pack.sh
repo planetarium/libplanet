@@ -43,6 +43,7 @@ for project in "${executables[@]}"; do
           exit 1
         fi
     for f in "$output_dir"/*; do
+      file "$f"
       if file -b "$f" \
          | grep '^ELF\b\|\bexecutable\b' > /dev/null; then
         bin_name="$(basename "$f")"

@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.24.0
 --------------
 
-To be released.
+Test release.
 
 ### Deprecated APIs
 
