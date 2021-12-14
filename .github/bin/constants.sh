@@ -15,7 +15,6 @@ projects=(
 configuration=Release
 executables=(
   "Libplanet.Tools"
-  "Libplanet.Explorer.Executable"
 )
 
 # https://docs.microsoft.com/en-us/dotnet/core/rid-catalog
