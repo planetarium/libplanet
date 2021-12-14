@@ -163,7 +163,7 @@ namespace Libplanet.Blockchain
 
             _logger.Verbose(
                 "{SessionId}/{ProcessId}: Mined block #{Index} will include " +
-                "{TransactionsCount} transactions.",
+                "{TxCount} transactions.",
                 sessionId,
                 processId,
                 index,
@@ -251,7 +251,7 @@ namespace Libplanet.Blockchain
             long index = Count;
             ImmutableList<Transaction<T>> stagedTransactions = ListStagedTransactions(txPriority);
             _logger.Information(
-                "Gathering transactions to mine for block #{Index} from {TransactionsCount} " +
+                "Gathering transactions to mine for block #{Index} from {TxCount} " +
                 "staged transactions...",
                 index,
                 stagedTransactions.Count);
@@ -294,7 +294,7 @@ namespace Libplanet.Blockchain
                 (Transaction<T> tx, int i) in stagedTransactions.Select((val, idx) => (val, idx)))
             {
                 _logger.Verbose(
-                    "Validating tx {Iter}/{Total} {Transaction} to include in block #{Index}...",
+                    "Validating tx {Iter}/{Total} {TxId} to include in block #{Index}...",
                     i,
                     stagedTransactions.Count,
                     tx.Id,
@@ -312,7 +312,7 @@ namespace Libplanet.Blockchain
                 if (transactionsToMine.Count >= maxTransactions)
                 {
                     _logger.Information(
-                        "Ignoring tx {Iter}/{Total} {Transaction} and the rest of the " +
+                        "Ignoring tx {Iter}/{Total} {TxId} and the rest of the " +
                         "staged transactions due to the maximum number of " +
                         "transactions per block allowed hsa been reached: {Max}",
                         i,
@@ -325,7 +325,7 @@ namespace Libplanet.Blockchain
                 if (Policy.ValidateNextBlockTx(this, tx) is { } tpve)
                 {
                     _logger.Debug(
-                        "Ignoring tx {Iter}/{Total} {Transaction} as it does not follow policy.",
+                        "Ignoring tx {Iter}/{Total} {TxId} as it does not follow policy.",
                         i,
                         stagedTransactions.Count,
                         tx.Id);
@@ -340,7 +340,7 @@ namespace Libplanet.Blockchain
                     if (txAddedBlockEncoding.EncodingLength > maxBlockBytes)
                     {
                         _logger.Debug(
-                            "Ignoring tx {Iter}/{Total} {Transaction} due to the maximum size " +
+                            "Ignoring tx {Iter}/{Total} {TxId} due to the maximum size " +
                             "allowed for a block: {CurrentEstimate}/{MaximumBlockBytes}",
                             i,
                             stagedTransactions.Count,
@@ -353,7 +353,7 @@ namespace Libplanet.Blockchain
                     if (toMineCounts[tx.Signer] >= maxTransactionsPerSigner)
                     {
                         _logger.Debug(
-                            "Ignoring tx {Iter}/{Total} {Transaction} due to the maximum number " +
+                            "Ignoring tx {Iter}/{Total} {TxId} due to the maximum number " +
                             "of transactions allowed per single signer per block " +
                             "has been reached: {Max}",
                             i,
@@ -364,7 +364,7 @@ namespace Libplanet.Blockchain
                     }
 
                     _logger.Verbose(
-                        "Adding tx {Iter}/{Total} {Transaction} to the list of transactions " +
+                        "Adding tx {Iter}/{Total} {TxId} to the list of transactions " +
                         "to be mined.",
                         i,
                         stagedTransactions.Count,
@@ -377,7 +377,7 @@ namespace Libplanet.Blockchain
                 else if (tx.Nonce < storedNonces[tx.Signer])
                 {
                     _logger.Debug(
-                        "Ignoring tx {Iter}/{Total} {Transaction} by {Signer} " +
+                        "Ignoring tx {Iter}/{Total} {TxId} by {Signer} " +
                         "as it has lower nonce than the stored nonce: {Nonce}",
                         i,
                         stagedTransactions.Count,
@@ -388,8 +388,8 @@ namespace Libplanet.Blockchain
                 else
                 {
                     _logger.Debug(
-                        "Ignoring tx {Iter}/{Total} {Transaction} by {Signer} " +
-                        "as it has higher nonce than expected: {Nonce}" +
+                        "Ignoring tx {Iter}/{Total} {TxId} by {Signer} " +
+                        "as it has higher nonce than expected: {Nonce}",
                         i,
                         stagedTransactions.Count,
                         tx.Id,
