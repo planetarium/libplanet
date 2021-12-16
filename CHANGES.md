@@ -18,11 +18,16 @@ To be released.
 
 ### Behavioral changes
 
+ -  Improved performance of `Swarm<T>`'s block propagation.  [[#1676]]
+
 ### Bug fixes
 
 ### Dependencies
 
 ### CLI tools
+
+
+[#1676]: https://github.com/planetarium/libplanet/pull/1676
 
 
 Version 0.24.1

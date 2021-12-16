@@ -1040,66 +1040,60 @@ namespace Libplanet.Blockchain
             BlockHash? stop = null,
             int count = 500)
         {
-            try
+            DateTimeOffset startTime = DateTimeOffset.Now;
+
+            // FIXME Theatrically, we don't accept empty chain. so `tip` can't be null on this
+            // assumption. but during some test case(e.g. GetDemandBlockHashesDuringReorg),
+            // it had been occurred.
+            // We should find a reason for that and fix it before remote this early return.
+            BlockHash? tip = Store.IndexBlockHash(Id, -1);
+            if (tip is null)
             {
-                DateTimeOffset startTime = DateTimeOffset.Now;
-                _rwlock.EnterReadLock();
-
-                BlockHash? tip = Store.IndexBlockHash(Id, -1);
-                if (tip is null)
-                {
-                    return new Tuple<long?, IReadOnlyList<BlockHash>>(null, new BlockHash[0]);
-                }
-
-                BlockHash? branchpoint = FindBranchpoint(locator);
-                var branchpointIndex = branchpoint is { } h ? (int)Store.GetBlockIndex(h)! : 0;
-
-                // FIXME: Currently, increasing count by one to satisfy
-                // the number defined by FindNextHashesChunkSize variable
-                // when branchPointIndex didn't indicate genesis block.
-                // Since branchPointIndex is same as the latest block of
-                // requesting peer.
-                if (branchpointIndex > 0)
-                {
-                    count++;
-                }
-
-                IEnumerable<BlockHash> hashes = Store.IterateIndexes(Id, branchpointIndex, count);
-
-                var result = new List<BlockHash>();
-                foreach (BlockHash hash in hashes)
-                {
-                    if (count == 0)
-                    {
-                        break;
-                    }
-
-                    result.Add(hash);
-
-                    if (hash.Equals(stop))
-                    {
-                        break;
-                    }
-
-                    count--;
-                }
-
-                TimeSpan duration = DateTimeOffset.Now - startTime;
-                _logger
-                    .ForContext("Tag", "Metric")
-                    .Debug(
-                        "Found {HashCount} hashes from storage with {ChainIdCount} chain ids " +
-                        "in {DurationMs:F0}ms.",
-                        result.Count,
-                        Store.ListChainIds().Count(),
-                        duration.TotalMilliseconds);
-
-                return new Tuple<long?, IReadOnlyList<BlockHash>>(branchpointIndex, result);
+                return new Tuple<long?, IReadOnlyList<BlockHash>>(null, new BlockHash[0]);
             }
-            finally
+
+            BlockHash? branchpoint = FindBranchpoint(locator);
+            var branchpointIndex = branchpoint is { } h ? (int)Store.GetBlockIndex(h)! : 0;
+
+            // FIXME: Currently, increasing count by one to satisfy
+            // the number defined by FindNextHashesChunkSize variable
+            // when branchPointIndex didn't indicate genesis block.
+            // Since branchPointIndex is same as the latest block of
+            // requesting peer.
+            if (branchpointIndex > 0)
             {
-                _rwlock.ExitReadLock();
+                count++;
             }
+
+            var result = new List<BlockHash>();
+            foreach (BlockHash hash in Store.IterateIndexes(Id, branchpointIndex, count))
+            {
+                if (count == 0)
+                {
+                    break;
+                }
+
+                result.Add(hash);
+
+                if (hash.Equals(stop))
+                {
+                    break;
+                }
+
+                count--;
+            }
+
+            TimeSpan duration = DateTimeOffset.Now - startTime;
+            _logger
+                .ForContext("Tag", "Metric")
+                .Debug(
+                    "Found {HashCount} hashes from storage with {ChainIdCount} chain ids " +
+                    "in {DurationMs:F0}ms.",
+                    result.Count,
+                    Store.ListChainIds().Count(),
+                    duration.TotalMilliseconds);
+
+            return new Tuple<long?, IReadOnlyList<BlockHash>>(branchpointIndex, result);
         }
 
         internal BlockChain<T> Fork(BlockHash point, bool inheritRenderers = true)
