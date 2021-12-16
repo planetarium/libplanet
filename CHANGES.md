@@ -4,9 +4,7 @@ Libplanet changelog
 Version 0.24.0
 --------------
 
-To be released.
-
-### Deprecated APIs
+Released on December 16, 2021.
 
 ### Backward-incompatible API changes
 
@@ -19,12 +17,6 @@ To be released.
         `Iterate(BlockChain<T> blockChain, bool filtered = true)`.
      -  `GetNextTxNonce(Address address, long minedTxs)` changed to
         `GetNextTxNonce(BlockChain<T> blockChain, Address address)`.
-
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
-### Added APIs
 
 ### Behavioral changes
 
@@ -42,10 +34,6 @@ To be released.
 
  -  Fixed a bug where `TxCompletion` had broadcasted invalid transactions.
     [[#1661]]
-
-### Dependencies
-
-### CLI tools
 
 [#1648]: https://github.com/planetarium/libplanet/pull/1648
 [#1661]: https://github.com/planetarium/libplanet/pull/1661
