@@ -540,6 +540,63 @@ namespace Libplanet.Tests.Blockchain
             ).Evaluate(privateKey, _blockChain);
             _blockChain.Append(block3);
             Assert.Empty(_blockChain.GetStagedTransactionIds());
+            Assert.Empty(_blockChain.StagePolicy.Iterate(_blockChain, filtered: true));
+            Assert.Single(_blockChain.StagePolicy.Iterate(_blockChain, filtered: false));
+        }
+
+        [Fact]
+        public void DoesNotUnstageOnAppendForForkedChain()
+        {
+            PrivateKey privateKey = new PrivateKey();
+            (_, Transaction<DumbAction>[] txs) =
+                MakeFixturesForAppendTests(privateKey, epoch: DateTimeOffset.UtcNow);
+            var genesis = _blockChain.Genesis;
+            Assert.Empty(_blockChain.GetStagedTransactionIds());
+            var workspace = _blockChain.Fork(_blockChain.Genesis.Hash);
+            Assert.Empty(_blockChain.ListStagedTransactions());
+
+            // Forked chain shares stage policy.
+            StageTransactions(txs);
+            Assert.Equal(2, _blockChain.StagePolicy.Iterate(_blockChain, filtered: false).Count());
+            Assert.Equal(2, workspace.StagePolicy.Iterate(workspace, filtered: false).Count());
+
+            // Mine nonce 0 tx.
+            Block<DumbAction> block1 = TestUtils.MineNext(
+                genesis,
+                _blockChain.Policy.GetHashAlgorithm,
+                miner: privateKey.PublicKey,
+                txs: ImmutableArray<Transaction<DumbAction>>.Empty.Add(txs[0]),
+                difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
+                blockInterval: TimeSpan.FromSeconds(10)
+            ).Evaluate(privateKey, _blockChain);
+
+            // Not actually unstaged, but lower nonce is filtered for workspace.
+            workspace.Append(block1);
+            Assert.Equal(2, _blockChain.ListStagedTransactions().Count);
+            Assert.Single(workspace.ListStagedTransactions());
+            Assert.Equal(2, workspace.StagePolicy.Iterate(workspace, filtered: false).Count());
+
+            // Actually gets unstaged.
+            _blockChain.Append(block1);
+            Assert.Single(_blockChain.ListStagedTransactions());
+            Assert.Single(workspace.ListStagedTransactions());
+            Assert.Single(workspace.StagePolicy.Iterate(workspace, filtered: false));
+
+            // Mine nonce 1 tx.
+            Block<DumbAction> block2 = TestUtils.MineNext(
+                block1,
+                _blockChain.Policy.GetHashAlgorithm,
+                miner: privateKey.PublicKey,
+                txs: ImmutableArray<Transaction<DumbAction>>.Empty.Add(txs[1]),
+                difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
+                blockInterval: TimeSpan.FromSeconds(10)
+            ).Evaluate(privateKey, _blockChain);
+
+            // Actually gets unstaged.
+            _blockChain.Append(block2);
+            Assert.Empty(_blockChain.ListStagedTransactions());
+            Assert.Empty(workspace.ListStagedTransactions());
+            Assert.Empty(workspace.StagePolicy.Iterate(workspace, filtered: false));
         }
 
         [Fact]
