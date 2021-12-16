@@ -4,9 +4,7 @@ Libplanet changelog
 Version 0.24.1
 --------------
 
-To be released.
-
-### Bug fixes
+Released on December 16, 2021.
 
  -  Fixed a bug where `Transaction<T>`s were unstaged when they were not
     supposed to.  [[#1672]]
