@@ -6,10 +6,6 @@ Version 0.24.1
 
 To be released.
 
-### Added APIs
-
- -  Added `BlockChain<T>.IsCanonical` property.  [[#1672]]
-
 ### Bug fixes
 
  -  Fixed a bug where `Transaction<T>`s were unstaged when they were not
