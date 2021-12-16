@@ -25,6 +25,17 @@ To be released.
 ### CLI tools
 
 
+Version 0.24.1
+--------------
+
+Released on December 16, 2021.
+
+ -  Fixed a bug where `Transaction<T>`s were unstaged when they were not
+    supposed to.  [[#1672]]
+
+[#1672]: https://github.com/planetarium/libplanet/pull/1672
+
+
 Version 0.24.0
 --------------
 
