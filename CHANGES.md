@@ -18,7 +18,9 @@ To be released.
 
 ### Behavioral changes
 
- -  Improved performance of `Swarm<T>`'s block propagation.  [[#1676]]
+  -  Improved performance of `Swarm<T>`'s block propagation.  [[#1676]]
+  -  Improved performance of `RocksDBStore<T>.IterateIndexes()` method.
+     [[#1676]]
 
 ### Bug fixes
 

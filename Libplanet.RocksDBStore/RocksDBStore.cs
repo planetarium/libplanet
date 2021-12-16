@@ -72,6 +72,7 @@ namespace Libplanet.RocksDBStore
         private readonly ReaderWriterLockSlim _rwBlockLock;
         private bool _disposed = false;
         private object _chainForkDeleteLock = new object();
+        private LruCache<Guid, LruCache<(int, int?), List<BlockHash>>> _indexCache;
 
         /// <summary>
         /// Creates a new <seealso cref="RocksDBStore"/>.
@@ -120,6 +121,7 @@ namespace Libplanet.RocksDBStore
 
             _txCache = new LruCache<TxId, object>(capacity: txCacheSize);
             _blockCache = new LruCache<BlockHash, BlockDigest>(capacity: blockCacheSize);
+            _indexCache = new LruCache<Guid, LruCache<(int, int?), List<BlockHash>>>(64);
 
             _path = path;
             _txEpochUnitSeconds = txEpochUnitSeconds > 0
@@ -212,6 +214,7 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override void DeleteChainId(Guid chainId)
         {
+            _indexCache.Remove(chainId);
             ColumnFamilyHandle cf = GetColumnFamily(_chainDb, chainId);
             if (HasFork(chainId))
             {
@@ -322,7 +325,24 @@ namespace Libplanet.RocksDBStore
 
         /// <inheritdoc cref="BaseStore.IterateIndexes(Guid, int, int?)"/>
         public override IEnumerable<BlockHash> IterateIndexes(Guid chainId, int offset, int? limit)
-            => IterateIndexes(chainId, offset, limit, false);
+        {
+            if (_indexCache.TryGetValue(chainId, out LruCache<(int, int?), List<BlockHash>> ic) &&
+                ic.TryGetValue((offset, limit), out List<BlockHash> cached))
+            {
+                return cached;
+            }
+
+            List<BlockHash> indexes = IterateIndexes(chainId, offset, limit, false)
+                .ToList();
+
+            if (ic is null)
+            {
+                _indexCache[chainId] = new LruCache<(int, int?), List<BlockHash>>();
+            }
+
+            _indexCache[chainId][(offset, limit)] = indexes;
+            return indexes;
+        }
 
         /// <inheritdoc cref="BaseStore.IndexBlockHash(Guid, long)"/>
         public override BlockHash? IndexBlockHash(Guid chainId, long index)
@@ -351,6 +371,8 @@ namespace Libplanet.RocksDBStore
                 LogUnexpectedException(nameof(AppendIndex), e);
                 throw;
             }
+
+            _indexCache.Remove(chainId);
 
             return index;
         }
