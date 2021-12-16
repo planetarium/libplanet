@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -149,11 +150,17 @@ namespace Libplanet.Net
                                 return false;
                             }));
 
+                    var validTxs = new List<Transaction<TAction>>();
+                    IImmutableSet<TxId> stagedTxIds = _blockChain.GetStagedTransactionIds();
                     foreach (var tx in txs)
                     {
                         try
                         {
-                            _blockChain.StageTransaction(tx);
+                            if (!stagedTxIds.Contains(tx.Id))
+                            {
+                                _blockChain.StageTransaction(tx);
+                                validTxs.Add(tx);
+                            }
                         }
                         catch (InvalidTxException ite)
                         {
@@ -164,16 +171,20 @@ namespace Libplanet.Net
                         }
                     }
 
+                    // To maintain the consistency of the unit tests.
                     if (txs.Any())
                     {
                         TxReceived.Set();
+                    }
+
+                    if (validTxs.Any())
+                    {
                         _logger.Debug(
-                            "{TxCount} txs staged successfully.",
+                            "{ValidTxCount} txs staged successfully out of {TxCount}.",
+                            validTxs.Count,
                             txs.Count);
 
-                        // TODO: txs includes transaction which were ignored due to its nonce,
-                        // which should not be re-broadcasted.
-                        _txBroadcaster(peer, txs);
+                        _txBroadcaster(peer, validTxs);
                     }
                     else
                     {

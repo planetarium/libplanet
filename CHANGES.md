@@ -40,11 +40,15 @@ To be released.
 
 ### Bug fixes
 
+ -  Fixed a bug where `TxCompletion` had broadcasted invalid transactions.
+    [[#1661]]
+
 ### Dependencies
 
 ### CLI tools
 
 [#1648]: https://github.com/planetarium/libplanet/pull/1648
+[#1661]: https://github.com/planetarium/libplanet/pull/1661
 [#1669]: https://github.com/planetarium/libplanet/pull/1669
 
 
